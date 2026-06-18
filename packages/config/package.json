@@ -1,0 +1,9 @@
+{
+  "name": "@my-modern-app/config",
+  "version": "0.0.1",
+  "private": true,
+  "files": ["eslint", "typescript"],
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}

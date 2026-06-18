@@ -1,0 +1,24 @@
+{
+  "name": "@my-modern-app/api",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "eslint src/**/*.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "hono": "^4.3.0",
+    "zod": "^3.23.0",
+    "@my-modern-app/shared-types": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.10.0",
+    "typescript": "^5.4.0",
+    "@my-modern-app/config": "workspace:*"
+  }
+}

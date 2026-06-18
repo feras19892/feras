@@ -10,13 +10,23 @@ interface SimState {
 const props = defineProps<{
   params: SpringParams
   simState: SimState
+  oscillationCount?: number
 }>()
 
 const emit = defineEmits<{
   (e: 'toggle-mass'): void
   (e: 'pull-down'): void
   (e: 'push-up'): void
+  (e: 'snapshot', dataUrl: string): void
 }>()
+
+function captureSnapshot() {
+  const canvas = canvasRef.value
+  if (!canvas) return
+  try {
+    emit('snapshot', canvas.toDataURL('image/png'))
+  } catch { /* ignore */ }
+}
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const wrapRef = ref<HTMLDivElement | null>(null)
@@ -61,7 +71,7 @@ onUnmounted(() => {
   stopPush()
 })
 
-defineExpose({ draw })
+defineExpose({ draw, captureSnapshot })
 </script>
 
 <template>
@@ -90,6 +100,11 @@ defineExpose({ draw })
         title="ضغط لأعلى"
       >⬆️ ضغط</button>
     </div>
+    <div v-if="simState.running && oscillationCount !== undefined" class="osc-counter">
+      <span class="osc-num">{{ oscillationCount }}</span>
+      <span class="osc-label">اهتزاز</span>
+    </div>
+    <button class="snapshot-btn" @click="captureSnapshot()" title="📸 التقاط لقطة">📸</button>
     <canvas ref="canvasRef" width="700" height="420" />
   </div>
 </template>
@@ -104,4 +119,8 @@ defineExpose({ draw })
 .spring-btn:hover { background: #252D3A; }
 .spring-btn.pull:hover { border-color: #22c55e; color: #22c55e; }
 .spring-btn.push:hover { border-color: #ef4444; color: #ef4444; }
+.osc-counter { position: absolute; top: 8px; right: 8px; z-index: 10; background: #1E2530; border: 1px solid #2D3645; border-radius: 6px; padding: .3rem .6rem; font-size: .72rem; display: flex; align-items: center; gap: .3rem; color: #D1D7E0; }
+.osc-num { color: #5B8DB8; font-weight: 700; font-size: .9rem; }
+.snapshot-btn { position: absolute; top: 8px; right: 100px; z-index: 10; background: #1E2530; border: 1px solid #2D3645; border-radius: 6px; padding: .25rem .4rem; font-size: .75rem; cursor: pointer; transition: all .15s; }
+.snapshot-btn:hover { background: #252D3A; border-color: #5B8DB8; }
 </style>

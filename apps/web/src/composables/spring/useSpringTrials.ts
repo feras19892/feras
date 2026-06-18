@@ -75,6 +75,10 @@ export function useSpringTrials(params: SpringParams, measured: Ref<Measured>) {
 
   function recordTrial() {
     if (!measured.value.T) return
+    if (params.mass < 0.01 || params.mass > 20) {
+      alert('الكتلة يجب أن تكون بين 0.01 و 20 كجم')
+      return
+    }
     pushHistory()
     const noiseLevel = 0.02  // ~2% reading error (human-like)
     const noisyT = gaussianNoise(measured.value.T, measured.value.T * noiseLevel)
@@ -115,11 +119,12 @@ export function useSpringTrials(params: SpringParams, measured: Ref<Measured>) {
       if (!raw) return
       const parsed = JSON.parse(raw)
       if (Array.isArray(parsed.trials)) {
-        trials.value = parsed.trials
-        nextTrialId = parsed.nextId ?? (trials.value.length > 0 ? Math.max(...trials.value.map(t => t.id)) + 1 : 1)
+        // Filter out corrupted trials with impossible mass values
+        const valid = parsed.trials.filter((t: any) => t && typeof t.mass === 'number' && t.mass >= 0.01 && t.mass <= 20)
+        trials.value = valid
+        nextTrialId = parsed.nextId ?? (valid.length > 0 ? Math.max(...valid.map((t: any) => t.id)) + 1 : 1)
         if (parsed.calcResult) calcResult.value = parsed.calcResult
-        // Initialize history with loaded state
-        history.value = [[...trials.value]]
+        history.value = [[...valid]]
         historyIndex.value = 0
       }
     } catch { /* ignore */ }

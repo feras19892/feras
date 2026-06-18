@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { computed, shallowRef, watch } from 'vue'
+import { openLabReport } from '../../../utils/lab-report'
+import type { LabReportTable, LabReportParam, LabReportStat } from '../../../utils/lab-report'
 
 interface StaticReading {
   mass: number; yLoad: number; yUnload: number; yAvg: number; deltaY: number; force: number
@@ -15,6 +17,7 @@ const props = defineProps<{
   kStatic: number | null
   kDynamic: number | null
   theoreticalK: number
+  canvasSnapshot?: string
 }>()
 
 const emit = defineEmits<{
@@ -45,12 +48,14 @@ function emitDynamic() {
 function updateStatic(i: number, key: keyof StaticReading, raw: string) {
   const n = parseFloat(raw)
   if (Number.isNaN(n)) return
-  staticEdit.value[i] = { ...staticEdit.value[i], [key]: n }
-  // Recalculate derived values
-  const r = staticEdit.value[i]
-  if (key === 'mass' || key === 'deltaY') {
-    r.force = r.mass * 9.81
+  const r = { ...staticEdit.value[i] }
+  if (key === 'mass') {
+    r.mass = n / 1000  // input shows grams, store in kg
+  } else {
+    (r as any)[key] = n
   }
+  r.force = r.mass * 9.81
+  staticEdit.value[i] = r
   staticEdit.value = [...staticEdit.value]
   emitStatic()
 }
@@ -58,13 +63,17 @@ function updateStatic(i: number, key: keyof StaticReading, raw: string) {
 function updateDynamic(i: number, key: keyof DynamicTrial, raw: string) {
   const n = parseFloat(raw)
   if (Number.isNaN(n)) return
-  const t = { ...dynamicEdit.value[i], [key]: n }
-  // Recalculate derived: tAvg, T, T2
-  if (key.startsWith('t')) {
+  const t = { ...dynamicEdit.value[i] }
+  if (key === 'mass') {
+    t.mass = n / 1000  // input shows grams, store in kg
+  } else if (key.startsWith('t')) {
+    (t as any)[key] = n
     const times = [t.t1, t.t2, t.t3].filter(v => v > 0)
     t.tAvg = times.length ? times.reduce((a, b) => a + b, 0) / times.length : 0
-    t.T = t.tAvg / 20  // 20 oscillations
+    t.T = t.tAvg / 20
     t.T2 = t.T * t.T
+  } else {
+    (t as any)[key] = n
   }
   dynamicEdit.value[i] = t
   dynamicEdit.value = [...dynamicEdit.value]
@@ -119,10 +128,67 @@ const sourcesOfError = [
 ]
 
 function printReport() { window.print() }
+
+function openFullReport() {
+  const staticTable: LabReportTable = {
+    caption: 'الجزء الاستاتيكي (قانون هوك)',
+    headers: ['#', 'm (g)', String.fromCharCode(0x0394) + 'y (cm)', 'F (N)'],
+    rows: props.staticReadings.map((r, i) => [
+      i + 1,
+      (r.mass * 1000).toFixed(0),
+      r.deltaY.toFixed(2),
+      r.force.toFixed(3),
+    ]),
+  }
+  const dynamicTable: LabReportTable = {
+    caption: 'الجزء الديناميكي (الحركة الاهتزازية)',
+    headers: ['#', 'm (g)', 't₁ (s)', 't₂ (s)', 't₃ (s)', 'T (s)', 'T² (s²)'],
+    rows: props.dynamicTrials.map((t, i) => [
+      i + 1,
+      (t.mass * 1000).toFixed(0),
+      t.t1.toFixed(2),
+      t.t2.toFixed(2),
+      t.t3.toFixed(2),
+      t.T.toFixed(3),
+      t.T2.toFixed(4),
+    ]),
+  }
+  const summaryStats: LabReportStat[] = []
+  if (kAvg.value) summaryStats.push({ label: 'k المتوسط', value: kAvg.value.toFixed(2), unit: 'N/m', highlight: true })
+  if (props.kStatic) summaryStats.push({ label: 'k استاتيكي', value: props.kStatic.toFixed(2), unit: 'N/m' })
+  if (props.kDynamic) summaryStats.push({ label: 'k ديناميكي', value: props.kDynamic.toFixed(2), unit: 'N/m' })
+  if (errorPercent.value !== null) summaryStats.push({ label: 'نسبة الخطأ', value: errorPercent.value.toFixed(2), unit: '%' })
+
+  openLabReport({
+    title: '📋 تقرير تجربة النابض',
+    icon: '🧪',
+    experimentName: 'الحركة التوافقية البسيطة',
+    dir: 'rtl',
+    dateLocale: 'ar',
+    params: [
+      { label: 'k النظري', value: props.theoreticalK.toFixed(2), unit: 'N/m' },
+      { label: 'عدد القراءات الاستاتيكية', value: props.staticReadings.length },
+      { label: 'عدد القراءات الديناميكية', value: props.dynamicTrials.length },
+    ],
+    summaryStats,
+    tables: [staticTable, dynamicTable].filter(t => t.rows.length > 0),
+    htmlBlocks: [
+      {
+        title: 'مصادر الأخطاء المحتملة',
+        html: '<ul style="margin:0;padding-right:1.2rem;font-size:.85rem"><li>احتكاك الهواء</li><li>دقة ساعة الإيقاف</li><li>خطأ زاوية النظر (parallax)</li><li>تشوه النابض غير الخطي</li><li>اهتزازات الطاولة</li><li>عدم مركزية الكتلة</li></ul>',
+      },
+    ],
+    footerNote: 'تم إنشاء هذا التقرير من المحاكاة التفاعلية',
+    canvasSnapshot: props.canvasSnapshot,
+    openPrintDialog: true,
+    sendToTeacher: true,
+  })
+}
 </script>
 
 <template>
   <div class="report-panel">
+    <button class="close-btn" @click="emit('close')">✕</button>
     <section class="student-info">
       <h5>معلومات الطالب</h5>
       <div class="info-grid">
@@ -144,7 +210,6 @@ function printReport() { window.print() }
         <textarea v-model="studentNotes" @change="saveStudentInfo" placeholder="أدخل ملاحظاتك عن التجربة..."></textarea>
       </div>
     </section>
-
     <section v-if="staticEdit.length">
       <h5>1. الجزء الاستاتيكي (قانون هوك) <span class="edit-hint">✏️ قابل للتعديل</span></h5>
       <table class="report-table">
@@ -154,7 +219,7 @@ function printReport() { window.print() }
         <tbody>
           <tr v-for="(r, i) in staticEdit" :key="i">
             <td>{{ i + 1 }}</td>
-            <td><input class="edit-input" :value="(r.mass * 1000).toFixed(0)" @change="e => updateStatic(i, 'mass', (+(e.target as HTMLInputElement).value / 1000).toString())" /></td>
+            <td><input class="edit-input" :value="(r.mass * 1000).toFixed(0)" @change="e => updateStatic(i, 'mass', (e.target as HTMLInputElement).value)" /></td>
             <td><input class="edit-input" :value="r.deltaY.toFixed(2)" @change="e => updateStatic(i, 'deltaY', (e.target as HTMLInputElement).value)" /></td>
             <td>{{ r.force.toFixed(3) }}</td>
           </tr>
@@ -164,7 +229,6 @@ function printReport() { window.print() }
         <b>k (استاتيكي):</b> {{ kStatic.toFixed(2) }} N/m
       </div>
     </section>
-
     <section v-if="dynamicEdit.length">
       <h5>2. الجزء الديناميكي (الحركة الاهتزازية) <span class="edit-hint">✏️ قابل للتعديل</span></h5>
       <table class="report-table">
@@ -174,7 +238,7 @@ function printReport() { window.print() }
         <tbody>
           <tr v-for="(t, i) in dynamicEdit" :key="i">
             <td>{{ i + 1 }}</td>
-            <td><input class="edit-input" :value="(t.mass * 1000).toFixed(0)" @change="e => updateDynamic(i, 'mass', (+(e.target as HTMLInputElement).value / 1000).toString())" /></td>
+            <td><input class="edit-input" :value="(t.mass * 1000).toFixed(0)" @change="e => updateDynamic(i, 'mass', (e.target as HTMLInputElement).value)" /></td>
             <td><input class="edit-input" :value="t.t1.toFixed(2)" @change="e => updateDynamic(i, 't1', (e.target as HTMLInputElement).value)" /></td>
             <td><input class="edit-input" :value="t.t2.toFixed(2)" @change="e => updateDynamic(i, 't2', (e.target as HTMLInputElement).value)" /></td>
             <td><input class="edit-input" :value="t.t3.toFixed(2)" @change="e => updateDynamic(i, 't3', (e.target as HTMLInputElement).value)" /></td>
@@ -187,7 +251,6 @@ function printReport() { window.print() }
         <b>k (ديناميكي):</b> {{ kDynamic.toFixed(2) }} N/m
       </div>
     </section>
-
     <section v-if="kAvg">
       <h5>3. المقارنة والاستنتاج</h5>
       <div class="result-line">
@@ -207,56 +270,13 @@ function printReport() { window.print() }
         </ul>
       </div>
     </section>
-
     <div class="print-bar" v-if="staticEdit.length || dynamicEdit.length">
-      <button class="print-btn" @click="printReport()">&#x1F5A8; طباعة التقرير</button>
+      <button class="print-btn" @click="printReport()">🖨️ طباعة</button>
+      <button class="print-btn primary" @click="openFullReport()">📋 تقرير كامل</button>
     </div>
-
     <div class="no-data" v-if="!staticEdit.length && !dynamicEdit.length">
       لا توجد بيانات مسجلة. قم بإجراء التجربة أولاً.
     </div>
   </div>
 </template>
-
-<style scoped>
-.report-panel { display: flex; flex-direction: column; gap: .6rem; }
-h4 { margin: 0 0 .3rem; font-size: .9rem; color: #D1D7E0; }
-h5 { margin: 0; font-size: .82rem; color: #5B8DB8; }
-h6 { margin: 0 0 .2rem; font-size: .75rem; color: #8B95A5; }
-section { background: #161B22; border: 1px solid #2D3645; border-radius: 8px; padding: .5rem; }
-.report-table { width: 100%; border-collapse: collapse; font-size: .72rem; margin-top: .3rem; }
-.report-table th, .report-table td { border: 1px solid #2D3645; padding: .2rem .3rem; text-align: center; color: #D1D7E0; }
-.report-table th { background: #252D3A; }
-.result-line { font-size: .78rem; color: #D1D7E0; margin-top: .3rem; }
-.error-sources ul { margin: .2rem 0; padding-right: 1.2rem; font-size: .75rem; color: #8B95A5; }
-.no-data { text-align: center; color: #8B95A5; font-size: .8rem; padding: 1rem; }
-.print-bar { display: flex; justify-content: center; margin-top: .3rem; }
-.print-btn { background: #252D3A; border: 1px solid #2D3645; color: #5B8DB8; border-radius: 4px; padding: .3rem .7rem; font-size: .75rem; cursor: pointer; }
-.print-btn:hover { background: rgba(91,141,184,.15); }
-.edit-hint { font-size: .65rem; color: #5B8DB8; margin-right: .3rem; font-weight: 400; }
-.edit-input { width: 55px; background: #161B22; border: 1px solid #2D3645; color: #D1D7E0; border-radius: 3px; padding: .15rem; font-size: .72rem; text-align: center; }
-.edit-input:focus { border-color: #5B8DB8; outline: none; }
-
-.info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin-top: .3rem; }
-.info-field { display: flex; flex-direction: column; gap: .2rem; }
-.info-field label { font-size: .72rem; color: #8B95A5; }
-.info-field input, .info-field textarea {
-  background: #161B22; border: 1px solid #2D3645; color: #D1D7E0;
-  border-radius: 4px; padding: .25rem .4rem; font-size: .75rem;
-}
-.info-field input:focus, .info-field textarea:focus { border-color: #5B8DB8; outline: none; }
-.info-field.notes { grid-column: 1 / -1; }
-.info-field textarea { min-height: 60px; resize: vertical; }
-
-@media print {
-  .modal-overlay { position: static; background: transparent !important; }
-  .report-panel { max-width: 100%; max-height: none; overflow: visible; background: #fff !important; color: #000 !important; border: none !important; }
-  section { background: #fff !important; border: 1px solid #ccc !important; box-shadow: none !important; }
-  h4, h5, h6 { color: #000 !important; }
-  .report-table th { background: #f0f0f0 !important; color: #000 !important; }
-  .report-table td { color: #000 !important; border-color: #ccc !important; }
-  .result-line { color: #000 !important; }
-  .error-sources ul { color: #333 !important; }
-  .print-bar, .close-btn { display: none !important; }
-}
-</style>
+<style src="./SpringReport.css" scoped></style>

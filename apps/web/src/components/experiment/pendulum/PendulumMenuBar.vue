@@ -1,16 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
-
 const router = useRouter()
-
-const props = defineProps<{
-  title: string
-  icon?: string
-  experimentRoute?: string
-  experimentName?: string
-}>()
-
+const props = defineProps<{ title: string; icon?: string; experimentRoute?: string; experimentName?: string }>()
 const emit = defineEmits<{
   (e: 'togglePanel', id: string): void
   (e: 'showAllPanels'): void
@@ -19,22 +11,18 @@ const emit = defineEmits<{
   (e: 'reset'): void
   (e: 'recordTrial'): void
   (e: 'runLab'): void
-  (e: 'calcK' | 'calcG'): void
+  (e: 'calcG'): void
   (e: 'calcT'): void
-  (e: 'calcM' | 'calcL'): void
-  (e: 'calcFitK' | 'calcFitG'): void
+  (e: 'calcL'): void
+  (e: 'calcFitG'): void
   (e: 'toggleHelp'): void
   (e: 'printReport'): void
 }>()
-
 const activeMenu = ref<string | null>(null)
 const menuRef = ref<HTMLElement | null>(null)
-
 function toggleMenu(menu: string) { activeMenu.value = activeMenu.value === menu ? null : menu }
 function closeMenu() { activeMenu.value = null }
-function onMenuClick(e: MouseEvent) {
-  if (menuRef.value && !menuRef.value.contains(e.target as Node)) closeMenu()
-}
+function onMenuClick(e: MouseEvent) { if (menuRef.value && !menuRef.value.contains(e.target as Node)) closeMenu() }
 onMounted(() => window.addEventListener('click', onMenuClick))
 onUnmounted(() => window.removeEventListener('click', onMenuClick))
 </script>
@@ -62,15 +50,14 @@ onUnmounted(() => window.removeEventListener('click', onMenuClick))
           <div class="menu-row check" @click="emit('togglePanel','fft');"><span class="mi">&#x1F4CA;</span><span>FFT</span></div>
           <div class="menu-row check" @click="emit('togglePanel','scatter');"><span class="mi">&#x1F4C8;</span><span>Scatter</span></div>
           <div class="menu-row check" @click="emit('togglePanel','tutor');"><span class="mi">&#x1F9EA;</span><span>تحليل</span></div>
-          <div v-if="experimentRoute?.includes('spring')" class="menu-row check" @click="emit('togglePanel','static');"><span class="mi">&#x1F4D0;</span><span>إستاتيكي</span></div>
           <div class="menu-row check" @click="emit('togglePanel','error');"><span class="mi">&#x2696;&#xFE0F;</span><span>أخطاء</span></div>
         </div>
       </div>
     </div>
-    <div class="menu-center">{{ icon || '&#x1F9EA;' }} {{ title }}</div>
+    <div class="menu-center">{{ icon || '🕰️' }} {{ title }}</div>
     <div class="menu-right">
       <div class="menu-group">
-        <button v-if="experimentRoute" class="menu-btn" @click="router.push(experimentRoute)">{{ icon || '&#x1F9EA;' }} {{ experimentName || title }}</button>
+        <button v-if="experimentRoute" class="menu-btn" @click="router.push(experimentRoute)">{{ icon || '🕰️' }} {{ experimentName || title }}</button>
       </div>
       <div class="menu-group">
         <button class="menu-btn" :class="{open:activeMenu==='run'}" @click.stop="toggleMenu('run')">تشغيل</button>

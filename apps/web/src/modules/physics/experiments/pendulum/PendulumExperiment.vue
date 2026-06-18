@@ -1,0 +1,203 @@
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { usePendulumExperiment } from '../../../../composables/pendulum/usePendulumExperiment'
+import { usePendulumReport } from '../../../../composables/pendulum/usePendulumReport'
+import { useProjectileMotion } from '../../../../composables/pendulum/useProjectileMotion'
+import { useCoupledPendulum } from '../../../../composables/pendulum/useCoupledPendulum'
+import PendulumMenuBar from '../../../../components/experiment/pendulum/PendulumMenuBar.vue'
+import PendulumCanvas from '../../../../components/experiment/pendulum/PendulumCanvas.vue'
+import CoupledPendulumCanvas from '../../../../components/experiment/pendulum/CoupledPendulumCanvas.vue'
+import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import PendulumPanelBody from '../../../../components/experiment/pendulum/PendulumPanelBody.vue'
+import PendulumOverlayPanels from '../../../../components/experiment/pendulum/PendulumOverlayPanels.vue'
+import PendulumReport from '../../../../components/experiment/pendulum/PendulumReport.vue'
+import PendulumControlBar from '../../../../components/experiment/pendulum/PendulumControlBar.vue'
+import PendulumHelpModal from '../../../../components/experiment/pendulum/PendulumHelpModal.vue'
+
+const ex = usePendulumExperiment()
+const rep = usePendulumReport()
+const projectile = useProjectileMotion({ g: ex.params.g })
+const coupled = useCoupledPendulum({ length: ex.params.length, g: ex.params.g, mass: ex.params.mass, damping: ex.params.damping, springK: ex.params.springK, springRestLength: ex.params.springRestLength, theta10: ex.params.theta0, theta20: 0 })
+const mode = ref<'pendulum' | 'projectile' | 'coupled'>('pendulum')
+
+watch(() => [ex.params.length, ex.params.g, ex.params.mass, ex.params.damping, ex.params.springK, ex.params.springRestLength], () => {
+  coupled.state.running = false
+})
+const helpOpen = ref(false)
+const reportOpen = ref(false)
+const canvasRef = ref<InstanceType<typeof PendulumCanvas> | null>(null)
+
+function openFullReport() { rep.captureSnapshot(canvasRef.value); rep.openFullReport(ex) }
+
+function isRunning() {
+  if (mode.value === 'pendulum') return ex.lab.sim.running
+  if (mode.value === 'projectile') return projectile.state.running
+  return coupled.state.running
+}
+function isPaused() {
+  if (mode.value === 'pendulum') return ex.lab.sim.paused
+  if (mode.value === 'projectile') return false
+  return coupled.state.paused
+}
+function launchLabel() {
+  const r = isRunning(), p = isPaused()
+  return r && !p ? '⏸️ توقف' : '▶️ بدء'
+}
+function onTogglePause() {
+  if (mode.value === 'pendulum') ex.lab.togglePause()
+  else if (mode.value === 'projectile') {
+    if (!projectile.state.running) {
+      const L = ex.params.length, th = ex.params.theta0
+      const px = L * Math.sin(th), py = -L * Math.cos(th)
+      const vx = 0, vy = 0
+      projectile.start(px, py, vx, vy)
+    } else { projectile.reset() }
+  } else if (mode.value === 'coupled') { coupled.togglePause() }
+}
+function onReset() {
+  if (mode.value === 'projectile') projectile.reset()
+  else if (mode.value === 'coupled') coupled.reset()
+  ex.resetSim()
+}
+
+function onChangeMode(newMode: 'pendulum' | 'projectile' | 'coupled') {
+  mode.value = newMode
+  if (newMode === 'pendulum') { projectile.reset(); coupled.reset() }
+  else if (newMode === 'projectile') { coupled.reset() }
+  else if (newMode === 'coupled') { projectile.reset() }
+  ex.resetSim()
+}
+function onKeyDown(e: KeyboardEvent) {
+  const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
+  if (tag === 'input' || tag === 'textarea' || tag === 'select') return
+  if (e.code === 'Space') { e.preventDefault(); onTogglePause() }
+  else if (e.key === 'r' || e.key === 'R') { if (confirm('هل تريد إعادة تعيين المحاكاة؟')) onReset() }
+  else if (e.key === 's' || e.key === 'S') { if (mode.value === 'pendulum') ex.trials.recordTrial() }
+  else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); if (e.shiftKey) ex.trials.redo(); else ex.trials.undo() }
+  else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ex.trials.redo() }
+  else if (e.key === '?') { helpOpen.value = !helpOpen.value }
+}
+let rafId: number | null = null
+function tickModes() {
+  if (mode.value === 'projectile' && projectile.state.running) { projectile.step(1 / 60) }
+  if (mode.value === 'coupled' && coupled.state.running && !coupled.state.paused) { coupled.step(1 / 60, ex.lab.speed.value) }
+  rafId = requestAnimationFrame(tickModes)
+}
+
+onMounted(() => { window.addEventListener('keydown', onKeyDown); rafId = requestAnimationFrame(tickModes) })
+onUnmounted(() => { window.removeEventListener('keydown', onKeyDown); if (rafId) cancelAnimationFrame(rafId) })
+</script>
+
+<template>
+  <div class="pendulum-lab">
+    <PendulumMenuBar title="البندول البسيط" icon="🕰️" experiment-route="/physics/mechanics/pendulum" experiment-name="Pendulum"
+      @toggle-panel="ex.layout.togglePanel" @show-all-panels="ex.layout.showAllPanels" @export-csv="ex.trials.exportCsv"
+      @toggle-pause="ex.lab.togglePause" @reset="ex.resetSim" @record-trial="ex.trials.recordTrial" @run-lab="ex.runPendulumLab"
+      @calc-g="ex.trials.calcG" @calc-t="ex.trials.calcT" @calc-l="ex.trials.calcL" @calc-fit-g="ex.trials.calcFitG"
+      @toggle-help="helpOpen = !helpOpen" @print-report="reportOpen = true"
+    />
+
+    <PendulumHelpModal :open="helpOpen" @close="helpOpen = false" />
+
+    <div class="lab-grid">
+      <div class="lab-col data-col" :style="{ width: ex.colWidths.data + 'px' }">
+        <template v-for="id in ex.getColumnPanels('data')" :key="id">
+          <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id)"
+            @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
+            <PendulumPanelBody :id="id" :trials="ex.trials.trials.value" :calc-result="ex.trials.calcResult.value" :params="ex.params" :sim="ex.lab.sim"
+              :measured="ex.getMeasured()" :fft-result="ex.fftResult.value" :trial-stats="ex.trials.trialStats.value" :tutor-type="ex.tutorType.value" :tutor-message="ex.tutorMessage.value"
+              @update:trials="ex.trials.trials.value = $event" @update:fft-result="ex.fftResult.value = $event" @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials"
+              @calc-g="ex.trials.calcG" @calc-t="ex.trials.calcT" @calc-l="ex.trials.calcL" @calc-fit-g="ex.trials.calcFitG" @show-calc="html => ex.trials.calcResult.value = html"
+            />
+          </DraggablePanel>
+        </template>
+      </div>
+      <div class="resizer" @mousedown="ex.onResizeStart('data', $event)"></div>
+      <div class="lab-col vis-col">
+        <PendulumCanvas v-if="mode !== 'coupled'" ref="canvasRef" :params="ex.params" :sim-state="ex.lab.sim" :projectile-state="projectile.state" :mode="mode" :oscillation-count="Math.floor(ex.lab.sim.zeroCrossings.length / 2)" @snapshot="rep.onSnapshot($event)" />
+        <CoupledPendulumCanvas v-else :params="{ length: ex.params.length, mass: ex.params.mass, springK: ex.params.springK }" :sim-state="{ theta1: coupled.state.theta1, theta2: coupled.state.theta2, running: coupled.state.running }" />
+        <div v-if="ex.hasVisibleVisPanels && mode === 'pendulum'" class="chart-row">
+          <template v-for="id in ex.getColumnPanels('vis')" :key="id">
+            <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="chart-panel lab-card" :id="id" :title="ex.layout.panelTitle(id)"
+              @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
+              <PendulumPanelBody :id="id" :trials="ex.trials.trials.value" :calc-result="ex.trials.calcResult.value" :params="ex.params" :sim="ex.lab.sim"
+                :measured="ex.getMeasured()" :fft-result="ex.fftResult.value" :trial-stats="ex.trials.trialStats.value" :tutor-type="ex.tutorType.value" :tutor-message="ex.tutorMessage.value"
+                @update:trials="ex.trials.trials.value = $event" @update:fft-result="ex.fftResult.value = $event" @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials"
+                @calc-g="ex.trials.calcG" @calc-t="ex.trials.calcT" @calc-l="ex.trials.calcL" @calc-fit-g="ex.trials.calcFitG" @show-calc="html => ex.trials.calcResult.value = html"
+              />
+            </DraggablePanel>
+          </template>
+        </div>
+      </div>
+      <div class="resizer" @mousedown="ex.onResizeStart('vis', $event)"></div>
+      <div class="lab-col ctrl-col" :style="{ width: ex.colWidths.ctrl + 'px' }">
+        <template v-for="id in ex.getColumnPanels('ctrl')" :key="id">
+          <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id)"
+            @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
+            <PendulumPanelBody :id="id" :trials="ex.trials.trials.value" :calc-result="ex.trials.calcResult.value" :params="ex.params" :sim="ex.lab.sim"
+              :measured="ex.getMeasured()" :fft-result="ex.fftResult.value" :trial-stats="ex.trials.trialStats.value" :tutor-type="ex.tutorType.value" :tutor-message="ex.tutorMessage.value"
+              @update:trials="ex.trials.trials.value = $event" @update:fft-result="ex.fftResult.value = $event" @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials"
+              @calc-g="ex.trials.calcG" @calc-t="ex.trials.calcT" @calc-l="ex.trials.calcL" @calc-fit-g="ex.trials.calcFitG" @show-calc="html => ex.trials.calcResult.value = html"
+            />
+          </DraggablePanel>
+        </template>
+      </div>
+    </div>
+
+    <PendulumOverlayPanels :maximized="ex.layout.maximized" :panel-title="ex.layout.panelTitle" :trials="ex.trials.trials.value" :calc-result="ex.trials.calcResult.value"
+      :params="ex.params" :sim="ex.lab.sim" :measured="ex.getMeasured()" :fft-result="ex.fftResult.value" :trial-stats="ex.trials.trialStats.value" :tutor-type="ex.tutorType.value" :tutor-message="ex.tutorMessage.value"
+      @maximize="ex.layout.maximizePanel" @drop="ex.handleDrop" @update:trials="ex.trials.trials.value = $event" @update:fft-result="ex.fftResult.value = $event" @update:params="Object.assign(ex.params, $event)"
+      @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials" @calc-g="ex.trials.calcG" @calc-t="ex.trials.calcT" @calc-l="ex.trials.calcL" @calc-fit-g="ex.trials.calcFitG" @show-calc="html => ex.trials.calcResult.value = html"
+    />
+
+    <PendulumControlBar
+      :launch-label="launchLabel()"
+      :speed="ex.lab.speed.value"
+      :can-undo="ex.trials.canUndo()"
+      :can-redo="ex.trials.canRedo()"
+      :step-index="ex.stepIndex.value"
+      :running="isRunning()"
+      :paused="isPaused()"
+      :mode="mode"
+      @toggle-pause="onTogglePause"
+      @reset="onReset"
+      @record-trial="ex.trials.recordTrial"
+      @change-mode="onChangeMode"
+      @clear-trials="ex.trials.clearTrials"
+      @export-csv="ex.trials.exportCsv"
+      @undo="ex.trials.undo"
+      @redo="ex.trials.redo"
+      @update:speed="v => ex.lab.speed.value = v"
+    />
+
+    <div class="hint-bar" v-if="mode === 'pendulum' && !ex.lab.sim.running"><span>💡 اضغط "بدء" لبدء الاهتزاز، ثم "تسجيل" لحفظ القراءة</span></div>
+    <div class="hint-bar active" v-else-if="mode === 'pendulum' && ex.lab.sim.measurementPeriod === null"><span>⏳ انتظر استقرار الاهتزاز...</span></div>
+    <div class="hint-bar success" v-else-if="mode === 'pendulum'"><span>✅ القراءة مستقرة — اضغط "تسجيل" لحفظها</span></div>
+    <div class="hint-bar" v-else-if="mode === 'projectile' && !projectile.state.running"><span>🎯 اضغط "بدء" لإطلاق المقذوف</span></div>
+    <div class="hint-bar active" v-else-if="mode === 'projectile'"><span>🎯 المقذوف في الجو — v={{ Math.sqrt(projectile.state.vx**2 + projectile.state.vy**2).toFixed(2) }} m/s</span></div>
+    <div class="hint-bar" v-else-if="mode === 'coupled' && !coupled.state.running"><span>🔗 اضغط "بدء" لبدء البندول المقترن</span></div>
+    <div class="hint-bar active" v-else-if="mode === 'coupled' && coupled.state.paused"><span>⏸️ متوقف مؤقتاً</span></div>
+    <div class="hint-bar success" v-else-if="mode === 'coupled'"><span>🔗 البندول المقترن يعمل</span></div>
+
+    <PendulumReport v-if="reportOpen" style="position:fixed;inset:5%;z-index:200;overflow:auto;background:#0d1117;border-radius:12px;border:1px solid #2D3645;box-shadow:0 20px 60px rgba(0,0,0,.5)"
+      :trials="ex.trials.trials.value" :g-theoretical="ex.params.g" :canvas-snapshot="rep.canvasSnapshot.value" @close="reportOpen = false"
+    />
+  </div>
+</template>
+
+<style scoped>
+.pendulum-lab { background: linear-gradient(160deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); color: #e2e8f0; padding: .6rem .8rem; height: 100vh; display: flex; flex-direction: column; gap: .5rem; overflow: hidden; }
+.lab-grid { display: flex; flex-direction: row; flex: 1; min-height: 0; overflow: hidden; gap: .3rem; }
+.lab-col { display: flex; flex-direction: column; gap: .5rem; overflow-y: auto; min-height: 0; padding: .3rem; border-radius: 10px; }
+.data-col { background: rgba(30,41,59,0.5); border: 1px solid rgba(71,85,105,0.3); backdrop-filter: blur(4px); }
+.vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 0; }
+.ctrl-col { background: rgba(30,41,59,0.5); border: 1px solid rgba(71,85,105,0.3); backdrop-filter: blur(4px); }
+.resizer { width: 5px; cursor: col-resize; background: #334155; transition: background .2s; flex-shrink: 0; border-radius: 3px; }
+.resizer:hover, .resizer:active { background: #60a5fa; box-shadow: 0 0 6px rgba(96,165,250,0.4); }
+.chart-row { display: flex; gap: .5rem; width: 100%; margin-top: .3rem; flex: 0 0 200px; min-height: 0; align-items: stretch; }
+.chart-row:empty { display: none; }
+.chart-panel { flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden; border-radius: 8px; }
+.hint-bar { background: linear-gradient(90deg, rgba(30,41,59,0.8), rgba(51,65,85,0.6)); border: 1px solid rgba(71,85,105,0.4); border-radius: 8px; padding: .4rem .8rem; font-size: .78rem; color: #94a3b8; text-align: center; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+.hint-bar.active { border-color: #60a5fa; color: #60a5fa; background: rgba(96,165,250,0.08); }
+.hint-bar.success { border-color: #34d399; color: #34d399; background: rgba(52,211,153,0.08); }
+</style>

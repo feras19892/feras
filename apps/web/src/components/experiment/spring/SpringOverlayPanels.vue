@@ -30,6 +30,7 @@ const props = defineProps<{
   trialStats: { T_mean: number; T_std: number; k_mean: number; k_std: number }
   tutorType: 'info' | 'warn' | 'success'
   tutorMessage: string
+  canvasSnapshot?: string
 }>()
 
 const emit = defineEmits<{
@@ -91,6 +92,7 @@ function emitMaximize(id: string) {
             :trial-stats="trialStats"
             :tutor-type="tutorType"
             :tutor-message="tutorMessage"
+            :canvas-snapshot="canvasSnapshot"
             @update:trials="emit('update:trials', $event)"
             @update:fft-result="emit('update:fftResult', $event)"
             @update:params="emit('update:params', $event)"

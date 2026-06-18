@@ -240,12 +240,25 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = null;
   }
 
+  function setSession(u: User, t: string) {
+    user.value = u;
+    setToken(t);
+    clearGuestState();
+  }
+
+  function clearSession() {
+    logout();
+  }
+
+  const isAuthenticated = isLoggedIn;
+
   return {
     user, token, loading, error,
     guestMode, currentClassId, classes,
-    isLoggedIn, role,
+    isLoggedIn, isAuthenticated, role,
     isGuest, isStudent, isTeacher, isResearcher, isAdmin,
     login, registerWithRole, fetchMe, updatePassword,
     joinClass, createClass, selectClass, loginAsGuest, logout,
+    setSession, clearSession,
   };
 });

@@ -1,0 +1,38 @@
+.report-panel { display: flex; flex-direction: column; gap: .6rem; position: relative; }
+h4 { margin: 0 0 .3rem; font-size: .9rem; color: #D1D7E0; }
+h5, h6 { margin: 0 0 .2rem; font-size: .75rem; color: #8B95A5; }
+h5 { color: #5B8DB8; font-size: .82rem; margin: 0; }
+section { background: #161B22; border: 1px solid #2D3645; border-radius: 8px; padding: .5rem; }
+.report-table { width: 100%; border-collapse: collapse; font-size: .72rem; margin-top: .3rem; }
+.report-table th, .report-table td { border: 1px solid #2D3645; padding: .2rem .3rem; text-align: center; color: #D1D7E0; }
+.report-table th { background: #252D3A; }
+.result-line { font-size: .78rem; color: #D1D7E0; margin-top: .3rem; }
+.error-sources ul { margin: .2rem 0; padding-right: 1.2rem; font-size: .75rem; color: #8B95A5; }
+.no-data { text-align: center; color: #8B95A5; font-size: .8rem; padding: 1rem; }
+.print-bar { display: flex; justify-content: center; margin-top: .3rem; gap: .3rem; }
+.print-btn { background: #252D3A; border: 1px solid #2D3645; color: #5B8DB8; border-radius: 4px; padding: .3rem .7rem; font-size: .75rem; cursor: pointer; }
+.print-btn:hover { background: rgba(91,141,184,.15); }
+.print-btn.primary { background: rgba(91,141,184,.15); border-color: #5B8DB8; color: #5B8DB8; font-weight: 700; }
+.edit-hint { font-size: .65rem; color: #5B8DB8; margin-right: .3rem; font-weight: 400; }
+.edit-input { width: 55px; background: #161B22; border: 1px solid #2D3645; color: #D1D7E0; border-radius: 3px; padding: .15rem; font-size: .72rem; text-align: center; }
+.edit-input:focus { border-color: #5B8DB8; outline: none; }
+.info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin-top: .3rem; }
+.info-field { display: flex; flex-direction: column; gap: .2rem; }
+.info-field label { font-size: .72rem; color: #8B95A5; }
+.info-field input, .info-field textarea { background: #161B22; border: 1px solid #2D3645; color: #D1D7E0; border-radius: 4px; padding: .25rem .4rem; font-size: .75rem; }
+.info-field input:focus, .info-field textarea:focus { border-color: #5B8DB8; outline: none; }
+.info-field.notes { grid-column: 1 / -1; }
+.info-field textarea { min-height: 60px; resize: vertical; }
+.close-btn { position: absolute; top: 6px; left: 6px; z-index: 10; background: #252D3A; border: 1px solid #2D3645; color: #8B95A5; border-radius: 4px; padding: .15rem .4rem; font-size: .75rem; cursor: pointer; }
+.close-btn:hover { background: #3a4555; color: #D1D7E0; }
+@media print {
+  .modal-overlay { position: static; background: transparent !important; }
+  .report-panel { max-width: 100%; max-height: none; overflow: visible; background: #fff !important; color: #000 !important; border: none !important; }
+  section { background: #fff !important; border: 1px solid #ccc !important; box-shadow: none !important; }
+  h4, h5, h6 { color: #000 !important; }
+  .report-table th { background: #f0f0f0 !important; color: #000 !important; }
+  .report-table td { color: #000 !important; border-color: #ccc !important; }
+  .result-line { color: #000 !important; }
+  .error-sources ul { color: #333 !important; }
+  .print-bar, .close-btn { display: none !important; }
+}

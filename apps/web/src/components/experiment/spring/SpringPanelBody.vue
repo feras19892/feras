@@ -40,6 +40,7 @@ const props = defineProps<{
   trialStats: { T_mean: number; T_std: number; k_mean: number; k_std: number }
   tutorType: 'info' | 'warn' | 'success'
   tutorMessage: string
+  canvasSnapshot?: string
 }>()
 
 const emit = defineEmits<{
@@ -184,6 +185,7 @@ const emit = defineEmits<{
     :k-static="staticK"
     :k-dynamic="kDynamic"
     :theoretical-k="params.k"
+    :canvas-snapshot="canvasSnapshot"
     @update:static-readings="emit('update:staticReadings', $event)"
     @update:dynamic-trials="emit('update:dynamicTrials', $event)"
   />

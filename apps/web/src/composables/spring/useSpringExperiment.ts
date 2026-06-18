@@ -1,4 +1,19 @@
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+
+function toDynamicTrials(trials: { mass: number; T: number }[]) {
+  return trials.map(t => {
+    const tTotal = t.T * 20  // time for 20 oscillations
+    return {
+      mass: t.mass,
+      t1: tTotal,
+      t2: tTotal,
+      t3: tTotal,
+      tAvg: tTotal,
+      T: t.T,
+      T2: t.T * t.T,
+    }
+  })
+}
 import type { SpringParams } from '../../modules/physics/experiments/spring/useSpringPhysics'
 import { useSpringLab } from './useSpringLab'
 import { useSpringLayout } from './useSpringLayout'
@@ -45,27 +60,27 @@ export function useSpringExperiment() {
 
   const staticK = ref<number | null>(null)
   const staticReadings = ref<any[]>([])
-  const dynamicTrials = ref<any[]>([])
-  const kDynamic = ref<number | null>(null)
   const fftResult = ref<{ freqs: number[]; amplitudes: number[]; dominantFreq: number } | null>(null)
   let ignoreParamsWatch = false
 
+  const dynamicTrials = computed(() => toDynamicTrials(trials.trials.value))
+  const kDynamic = computed(() => trials.trials.value.length > 0 ? trials.trialStats.value.k_mean : null)
+
   function onStaticComplete(readings: any[], k: number | null) { staticReadings.value = readings; staticK.value = k }
-  function onDynamicComplete(t: any[], k: number | null) { dynamicTrials.value = t; kDynamic.value = k }
+  function onDynamicComplete(t: any[], k: number | null) { /* no-op, kDynamic is computed */ }
 
   watch(() => [params.mass, params.k, params.amplitude, params.damping], () => { 
     if (ignoreParamsWatch) return
     if (!lab.running.value) resetSim() 
   })
 
-  // Auto-save static/dynamic experiment state
-  watch([staticK, staticReadings, kDynamic, dynamicTrials], () => {
+  // Auto-save static experiment state
+  watch([staticK, staticReadings], () => {
     try {
       localStorage.setItem('spring:experiment:v1', JSON.stringify({
         staticK: staticK.value,
         staticReadings: staticReadings.value,
         kDynamic: kDynamic.value,
-        dynamicTrials: dynamicTrials.value,
       }))
     } catch { /* ignore */ }
   }, { deep: true })
@@ -80,9 +95,12 @@ export function useSpringExperiment() {
       if (raw) {
         const parsed = JSON.parse(raw)
         if (parsed.staticK !== undefined) staticK.value = parsed.staticK
-        if (parsed.staticReadings) staticReadings.value = parsed.staticReadings
-        if (parsed.kDynamic !== undefined) kDynamic.value = parsed.kDynamic
-        if (parsed.dynamicTrials) dynamicTrials.value = parsed.dynamicTrials
+        if (Array.isArray(parsed.staticReadings)) {
+          // Filter corrupted readings with impossible values
+          staticReadings.value = parsed.staticReadings.filter((r: any) =>
+            r && typeof r.mass === 'number' && r.mass >= 0 && r.mass <= 20
+          )
+        }
       }
     } catch { /* ignore */ }
     resetSim()

@@ -5,7 +5,7 @@ export function useAuth() {
 
   async function login(email: string, password: string) {
     // TODO: استدعاء API للتسجيل
-    store.setSession({ id: '1', email, name: 'User' }, 'fake-token');
+    store.setSession({ id: 1, email, name: 'User', role: 'student' as const }, 'fake-token');
   }
 
   function logout() {

@@ -1,5 +1,6 @@
 import { reactive, computed } from 'vue'
 import type { SpringParams } from '../../modules/physics/experiments/spring/useSpringPhysics'
+import { calculateStaticRow } from './physicsUtils'
 
 export interface StaticReading {
   id: number
@@ -53,14 +54,15 @@ export function useSpringStatic(params: SpringParams) {
 
   function recordLoad() {
     if (state.phase !== 'loading') return
+    const validated = calculateStaticRow(nextId, state.currentMass * 1000, params.k)
     state.readings.push({
       id: nextId++,
       mass: state.currentMass,
       yLoad: state.currentY,
       yUnload: 0,
-      yAvg: 0,
-      deltaY: 0,
-      force: 0,
+      yAvg: state.currentY,
+      deltaY: validated.displacementCm,
+      force: validated.forceNewton,
     })
   }
 
@@ -72,7 +74,6 @@ export function useSpringStatic(params: SpringParams) {
 
   function recordUnload() {
     if (state.phase !== 'unloading') return
-    // Find the matching reading by mass
     const reading = state.readings
       .slice()
       .reverse()
@@ -81,9 +82,9 @@ export function useSpringStatic(params: SpringParams) {
       reading.yUnload = state.currentY
       reading.yAvg = (reading.yLoad + reading.yUnload) / 2
       reading.deltaY = Math.abs(reading.yAvg - y0.value)
-      reading.force = reading.mass * 9.81
+      const validated = calculateStaticRow(reading.id, reading.mass * 1000, params.k)
+      reading.force = validated.forceNewton
     }
-    // Decrease mass for next step
     state.currentMass -= stepMass
     if (state.currentMass < 0) state.currentMass = 0
     params.mass = state.currentMass

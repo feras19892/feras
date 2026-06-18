@@ -4,6 +4,7 @@ import { defineAsyncComponent } from 'vue';
 // This is the ONLY place that links catalog entries to actual implementations
 const experimentMap: Record<string, () => Promise<any>> = {
   'spring': () => import('./experiments/spring/SpringExperiment.vue'),
+  'pendulum': () => import('./experiments/pendulum/PendulumExperiment.vue'),
 };
 
 export function loadExperiment(id: string) {

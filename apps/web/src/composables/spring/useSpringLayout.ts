@@ -12,7 +12,7 @@ const defaultPanelColumn: Record<PanelId, ColumnId> = {
 }
 
 const defaultColumnOrder: Record<ColumnId, PanelId[]> = {
-  data: ['table', 'scatter', 'equations', 'static', 'error', 'tutor', 'report'],
+  data: ['table', 'scatter', 'equations', 'static', 'error', 'tutor'],
   vis: ['signal', 'fft', 'photogate'],
   ctrl: ['params', 'guide', 'stats'],
 }
@@ -25,7 +25,7 @@ const allPanelIds: PanelId[] = [
 export function useSpringLayout() {
   const panels = reactive<Record<PanelId, boolean>>({
     table: true, equations: true, signal: true, params: true, guide: true, stats: true,
-    fft: true, scatter: true, tutor: true, static: true, error: true, report: true, photogate: true,
+    fft: true, scatter: true, tutor: true, static: true, error: true, report: false, photogate: true,
   })
 
   const maximized = reactive<Record<PanelId, boolean>>({

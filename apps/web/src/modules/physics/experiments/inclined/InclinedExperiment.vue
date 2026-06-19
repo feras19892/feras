@@ -47,7 +47,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
             <InclinedPanelBody :id="id" :trials="ex.trials.trials.value" :params="ex.params" :sim="ex.lab.sim"
               :measured="ex.getMeasured()" :trial-stats="ex.trials.trialStats.value" :calc-result="ex.trials.calcResult.value"
-              @remove="ex.trials.removeTrial" @calc-acceleration="ex.trials.calcAcceleration" @calc-time="ex.trials.calcTime" @calc-velocity="ex.trials.calcVelocity" @calc-normal="ex.trials.calcNormal"
+              @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @calc-acceleration="ex.trials.calcAcceleration" @calc-time="ex.trials.calcTime" @calc-velocity="ex.trials.calcVelocity" @calc-normal="ex.trials.calcNormal"
             />
           </DraggablePanel>
         </template>
@@ -66,6 +66,20 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             </DraggablePanel>
           </template>
         </div>
+        <InclinedControlBar
+          :launch-label="ex.lab.sim.running && !ex.lab.sim.paused ? '⏸️ توقف' : '▶️ بدء'"
+          :speed="ex.lab.speed.value"
+          :can-undo="ex.trials.canUndo()"
+          :can-redo="ex.trials.canRedo()"
+          @toggle-pause="ex.lab.togglePause"
+          @reset="ex.resetSim"
+          @record-trial="ex.trials.recordTrial"
+          @clear-trials="ex.trials.clearTrials"
+          @export-csv="ex.trials.exportCsv"
+          @undo="ex.trials.undo"
+          @redo="ex.trials.redo"
+          @update:speed="v => ex.lab.speed.value = v"
+        />
       </div>
       <div class="resizer" @mousedown="ex.onResizeStart('vis', $event)"></div>
       <div class="lab-col ctrl-col" :style="{ width: ex.colWidths.ctrl + 'px' }">
@@ -74,7 +88,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
             <InclinedPanelBody :id="id" :trials="ex.trials.trials.value" :params="ex.params" :sim="ex.lab.sim"
               :measured="ex.getMeasured()" :trial-stats="ex.trials.trialStats.value" :calc-result="ex.trials.calcResult.value"
-              @remove="ex.trials.removeTrial" @calc-acceleration="ex.trials.calcAcceleration" @calc-time="ex.trials.calcTime" @calc-velocity="ex.trials.calcVelocity" @calc-normal="ex.trials.calcNormal"
+              @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @calc-acceleration="ex.trials.calcAcceleration" @calc-time="ex.trials.calcTime" @calc-velocity="ex.trials.calcVelocity" @calc-normal="ex.trials.calcNormal"
             />
           </DraggablePanel>
         </template>
@@ -83,23 +97,8 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 
     <InclinedOverlayPanels :maximized="ex.layout.maximized" :panel-title="(id: string) => ex.layout.panelTitle(id as any)" :trials="ex.trials.trials.value"
       :params="ex.params" :sim="ex.lab.sim" :measured="ex.getMeasured()" :trial-stats="ex.trials.trialStats.value" :calc-result="ex.trials.calcResult.value"
-      @maximize="ex.layout.maximizePanel" @drop="ex.handleDrop" @remove="ex.trials.removeTrial"
+      @maximize="ex.layout.maximizePanel" @drop="ex.handleDrop" @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial"
       @calc-acceleration="ex.trials.calcAcceleration" @calc-time="ex.trials.calcTime" @calc-velocity="ex.trials.calcVelocity" @calc-normal="ex.trials.calcNormal"
-    />
-
-    <InclinedControlBar
-      :launch-label="ex.lab.sim.running && !ex.lab.sim.paused ? '⏸️ توقف' : '▶️ بدء'"
-      :speed="ex.lab.speed.value"
-      :can-undo="ex.trials.canUndo()"
-      :can-redo="ex.trials.canRedo()"
-      @toggle-pause="ex.lab.togglePause"
-      @reset="ex.resetSim"
-      @record-trial="ex.trials.recordTrial"
-      @clear-trials="ex.trials.clearTrials"
-      @export-csv="ex.trials.exportCsv"
-      @undo="ex.trials.undo"
-      @redo="ex.trials.redo"
-      @update:speed="v => ex.lab.speed.value = v"
     />
 
     <InclinedStatusBar :running="ex.lab.sim.running" :paused="ex.lab.sim.paused" :arrived="ex.lab.sim.arrived" />
@@ -119,7 +118,9 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 .ctrl-col { background: rgba(255,255,255,0.02); }
 .resizer { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0; }
 .resizer:hover, .resizer:active { background: #5B8DB8; }
-.chart-row { display: flex; gap: .5rem; width: 100%; margin-top: .3rem; flex: 0 0 180px; min-height: 0; align-items: stretch; }
+.chart-row { display: flex; gap: .5rem; width: 100%; margin-top: .3rem; flex: 0 0 220px; min-height: 0; align-items: stretch; }
 .chart-row:empty { display: none; }
 .chart-panel { flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden; }
+.lab-col > .lab-card { flex: 1 1 auto; min-height: 0; }
+.lab-col > .lab-card + .lab-card { flex: 0 0 auto; }
 </style>

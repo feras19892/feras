@@ -80,7 +80,7 @@ export function useInclinedTrials(params: InclinedParams, measured: Ref<Inclined
       ? gaussianNoise(measured.value.finalVelocity!, measured.value.finalVelocity! * noiseLevel)
       : measured.value.finalVelocity!
 
-    const theoretical = calculateInclinedSummary(params.thetaDeg, params.length, params.mass, params.g, params.mu)
+    const theoretical = calculateInclinedSummary(params.thetaDeg, params.length, params.mass, params.g, params.mu, params.airResistance, params.cd, params.area)
     const err = Math.abs((a - theoretical.acceleration) / theoretical.acceleration) * 100
 
     trials.value = [...trials.value, {
@@ -120,19 +120,19 @@ export function useInclinedTrials(params: InclinedParams, measured: Ref<Inclined
 
   const calcResult = ref('اضغط على زر لعرض الحساب')
   function calcAcceleration() {
-    const summary = calculateInclinedSummary(params.thetaDeg, params.length, params.mass, params.g, params.mu)
-    calcResult.value = `<b>المعادلة:</b> a = g(sinθ − μ·cosθ)<br><b>التعويض:</b> a = ${params.g}×(sin(${params.thetaDeg}°) − ${params.mu}×cos(${params.thetaDeg}°))<br><b>النتيجة:</b> a = <b>${summary.acceleration} m/s²</b>`
+    const summary = calculateInclinedSummary(params.thetaDeg, params.length, params.mass, params.g, params.mu, params.airResistance, params.cd, params.area)
+    calcResult.value = `<b>المعادلة:</b> a = g(sinθ − μ·cosθ) − Fd/m<br><b>التعويض:</b> a = ${params.g}×(sin(${params.thetaDeg}°) − ${params.mu}×cos(${params.thetaDeg}°))${params.airResistance ? ' − Fd/' + params.mass : ''}<br><b>النتيجة:</b> a = <b>${summary.acceleration} m/s²</b>`
   }
   function calcTime() {
-    const summary = calculateInclinedSummary(params.thetaDeg, params.length, params.mass, params.g, params.mu)
+    const summary = calculateInclinedSummary(params.thetaDeg, params.length, params.mass, params.g, params.mu, params.airResistance, params.cd, params.area)
     calcResult.value = `<b>المعادلة:</b> t = √(2L/a)<br><b>التعويض:</b> t = √(2×${params.length} / ${summary.acceleration})<br><b>النتيجة:</b> t = <b>${summary.timeOfArrival} s</b>`
   }
   function calcVelocity() {
-    const summary = calculateInclinedSummary(params.thetaDeg, params.length, params.mass, params.g, params.mu)
+    const summary = calculateInclinedSummary(params.thetaDeg, params.length, params.mass, params.g, params.mu, params.airResistance, params.cd, params.area)
     calcResult.value = `<b>المعادلة:</b> v = √(2aL)<br><b>التعويض:</b> v = √(2×${summary.acceleration}×${params.length})<br><b>النتيجة:</b> v = <b>${summary.finalVelocity} m/s</b>`
   }
   function calcNormal() {
-    const summary = calculateInclinedSummary(params.thetaDeg, params.length, params.mass, params.g, params.mu)
+    const summary = calculateInclinedSummary(params.thetaDeg, params.length, params.mass, params.g, params.mu, params.airResistance, params.cd, params.area)
     calcResult.value = `<b>المعادلة:</b> N = m·g·cos(θ)<br><b>التعويض:</b> N = ${params.mass}×${params.g}×cos(${params.thetaDeg}°)<br><b>النتيجة:</b> N = <b>${summary.normalForce} N</b>`
   }
 

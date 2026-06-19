@@ -1,5 +1,5 @@
-import { reactive, ref, type Ref } from 'vue'
-import { calculateInclinedSummary, inclinedStep } from '../../../../composables/inclined/inclinedUtils'
+import { reactive, ref } from 'vue'
+import { calculateInclinedSummary, inclinedStep, inclinedStepWithDrag, toRad } from '../../../../composables/inclined/inclinedUtils'
 
 export interface InclinedParams {
   thetaDeg: number
@@ -7,6 +7,10 @@ export interface InclinedParams {
   mass: number
   g: number
   mu: number
+  airResistance: boolean
+  bodyTypeId: string
+  cd: number
+  area: number
 }
 
 export interface InclinedState {
@@ -25,6 +29,7 @@ export interface InclinedMeasured {
   normalForce: number | null
   parallelForce: number | null
   frictionForce: number | null
+  dragForce: number | null
 }
 
 export function useInclinedPhysics(params: InclinedParams) {
@@ -44,6 +49,7 @@ export function useInclinedPhysics(params: InclinedParams) {
     normalForce: null,
     parallelForce: null,
     frictionForce: null,
+    dragForce: null,
   })
 
   let _a = 0
@@ -53,14 +59,23 @@ export function useInclinedPhysics(params: InclinedParams) {
     const sDt = dt * speed
     sim.t += sDt
 
-    const next = inclinedStep(sim.s, sim.v, sDt, _a)
-    sim.s = next.s
-    sim.v = next.v
+    if (!params.airResistance) {
+      const next = inclinedStep(sim.s, sim.v, sDt, _a)
+      sim.s = next.s
+      sim.v = next.v
+    } else {
+      const thetaRad = toRad(params.thetaDeg)
+      const sin = Math.sin(thetaRad)
+      const cos = Math.cos(thetaRad)
+      const next = inclinedStepWithDrag(sim.s, sim.v, sDt, params.g, sin, params.mu, cos, params.mass, params.cd, params.area)
+      sim.s = next.s
+      sim.v = next.v
+    }
 
     if (sim.s >= params.length) {
       sim.s = params.length
       sim.arrived = true
-      const summary = calculateInclinedSummary(params.thetaDeg, params.length, params.mass, params.g, params.mu)
+      const summary = calculateInclinedSummary(params.thetaDeg, params.length, params.mass, params.g, params.mu, params.airResistance, params.cd, params.area)
       measured.value = {
         acceleration: summary.acceleration,
         timeOfArrival: sim.t,
@@ -68,12 +83,13 @@ export function useInclinedPhysics(params: InclinedParams) {
         normalForce: summary.normalForce,
         parallelForce: summary.parallelForce,
         frictionForce: summary.frictionForce,
+        dragForce: summary.dragForce,
       }
     }
   }
 
   function start() {
-    const summary = calculateInclinedSummary(params.thetaDeg, params.length, params.mass, params.g, params.mu)
+    const summary = calculateInclinedSummary(params.thetaDeg, params.length, params.mass, params.g, params.mu, params.airResistance, params.cd, params.area)
     _a = summary.acceleration
 
     sim.running = true
@@ -89,16 +105,12 @@ export function useInclinedPhysics(params: InclinedParams) {
       normalForce: null,
       parallelForce: null,
       frictionForce: null,
+      dragForce: null,
     }
   }
 
-  function stop() {
-    sim.running = false
-  }
-
-  function togglePause() {
-    sim.paused = !sim.paused
-  }
+  function stop() { sim.running = false }
+  function togglePause() { sim.paused = !sim.paused }
 
   function reset() {
     sim.running = false
@@ -114,6 +126,7 @@ export function useInclinedPhysics(params: InclinedParams) {
       normalForce: null,
       parallelForce: null,
       frictionForce: null,
+      dragForce: null,
     }
   }
 

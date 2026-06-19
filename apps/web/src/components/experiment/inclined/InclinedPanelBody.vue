@@ -13,7 +13,7 @@ const props = defineProps<{
   trials: InclinedTrial[]
   params: InclinedParams
   sim: { t: number; s: number; v: number; arrived: boolean; running: boolean }
-  measured: { acceleration: number | null; timeOfArrival: number | null; finalVelocity: number | null; normalForce: number | null; parallelForce: number | null; frictionForce: number | null }
+  measured: { acceleration: number | null; timeOfArrival: number | null; finalVelocity: number | null; normalForce: number | null; parallelForce: number | null; frictionForce: number | null; dragForce: number | null }
   trialStats: { a_mean: number; a_std: number; t_mean: number; t_std: number; v_mean: number; v_std: number }
   calcResult: string
 }>()
@@ -31,7 +31,7 @@ const emit = defineEmits<{
 
 <template>
   <div class="panel-body">
-    <InclinedParamsPanel v-if="id === 'params'" :params="params" />
+    <InclinedParamsPanel v-if="id === 'params'" :params="params" @update:params="emit('update:params', $event)" />
     <InclinedTablePanel v-else-if="id === 'table'" :trials="trials" @remove="emit('remove', $event)" />
     <InclinedScatterPanel v-else-if="id === 'scatter'" :trials="trials" />
     <InclinedSignalPanel v-else-if="id === 'signal'" :sim-state="sim" :params="params" />

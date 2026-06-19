@@ -31,9 +31,10 @@ function draw() {
   if (!ctx) return
   const w = canvas.width, h = canvas.height
 
-  if (props.simState.t === 0) points = []
-  if (!props.simState.arrived) {
-    points.push({ t: props.simState.t, v: props.simState.v })
+  const { t, v, arrived } = props.simState
+  if (t === 0) points = []
+  if (!arrived && t > 0) {
+    points.push({ t, v })
     if (points.length > 300) points = points.slice(-300)
   }
 
@@ -99,7 +100,7 @@ function draw() {
   ctx.stroke()
 }
 
-watch(() => [props.simState.t, props.simState.v, props.simState.arrived], draw, { flush: 'post' })
+watch(() => props.simState, draw, { deep: true, flush: 'post' })
 
 let resizeObs: ResizeObserver | null = null
 onMounted(() => {

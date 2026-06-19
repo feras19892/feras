@@ -13,7 +13,7 @@ const defaultPanelColumn: Record<PanelId, ColumnId> = {
 
 const defaultColumnOrder: Record<ColumnId, PanelId[]> = {
   data: ['table', 'equations', 'stats', 'scatter', 'error'],
-  vis: ['signal'],
+  vis: [],
   ctrl: ['params', 'guide'],
 }
 
@@ -25,7 +25,7 @@ const allPanelIds: PanelId[] = [
 export function useInclinedLayout() {
   const panels = reactive<Record<PanelId, boolean>>({
     table: true, equations: true, stats: true, scatter: true, error: false,
-    signal: true,
+    signal: false,
     params: true, guide: true,
   })
 

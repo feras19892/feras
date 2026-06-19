@@ -5,7 +5,7 @@ import { useInclinedLayout } from './useInclinedLayout'
 import { useInclinedTrials } from './useInclinedTrials'
 
 export function useInclinedExperiment() {
-  const params = reactive<InclinedParams>({ thetaDeg: 30, length: 2.0, mass: 1.0, g: 9.81, mu: 0.0 })
+  const params = reactive<InclinedParams>({ thetaDeg: 30, length: 2.0, mass: 1.0, g: 9.81, mu: 0.0, airResistance: false, bodyTypeId: 'block', cd: 1.05, area: 0.01 })
 
   const lab = useInclinedLab(params)
   const layout = useInclinedLayout()
@@ -24,7 +24,7 @@ export function useInclinedExperiment() {
     return 'الجسم ينزلق...'
   })
 
-  watch(() => [params.thetaDeg, params.length, params.mass, params.g, params.mu], () => { if (!lab.running.value) resetSim() })
+  watch(() => [params.thetaDeg, params.length, params.mass, params.g, params.mu, params.airResistance, params.bodyTypeId, params.cd, params.area], () => { if (!lab.running.value) resetSim() })
 
   onMounted(() => {
     localStorage.removeItem('inclined:layout:v1')

@@ -5,7 +5,7 @@ import { useProjectileLayout } from './useProjectileLayout'
 import { useProjectileTrials } from './useProjectileTrials'
 
 export function useProjectileExperiment() {
-  const params = reactive<ProjectileParams>({ v0: 10, angleDeg: 45, g: 9.81, x0: 0, y0: 0, targetX: 30, targetY: 0, targetRadius: 3, targetVisible: false, targetMode: false })
+  const params = reactive<ProjectileParams>({ v0: 10, angleDeg: 45, g: 9.81, x0: 0, y0: 0, targetX: 30, targetY: 0, targetRadius: 3, targetVisible: false, targetMode: false, dragCoeff: 0 })
 
   const lab = useProjectileLab(params)
   const layout = useProjectileLayout()
@@ -18,7 +18,7 @@ export function useProjectileExperiment() {
   const tutorType = computed(() => { if (!lab.sim.running) return 'info'; if (lab.sim.paused) return 'warn'; return 'success' })
   const tutorMessage = computed(() => { if (!lab.sim.running) return 'جاهز للبدء'; if (lab.sim.paused) return 'متوقف مؤقتاً'; if (lab.sim.landed) return 'هبط! اضغط تسجيل'; return 'المقذوف في الجو...' })
 
-  watch(() => [params.v0, params.angleDeg, params.g, params.x0, params.y0], () => { if (!lab.running.value) resetSim() })
+  watch(() => [params.v0, params.angleDeg, params.g, params.x0, params.y0, params.dragCoeff], () => { if (!lab.running.value) lab.resetSim() })
 
   onMounted(() => {
     localStorage.removeItem('projectile:layout:v1')

@@ -1,6 +1,7 @@
 import type { ProjectileParams, ProjectilePoint } from '../../modules/physics/experiments/projectile/useProjectilePhysics'
 import { useProjectileTargetDraw } from './useProjectileTargetDraw'
 import { useProjectileGrid } from './useProjectileGrid'
+import { useProjectileDigitalScreen } from './useProjectileDigitalScreen'
 
 interface SimState {
   x: number; y: number; vx: number; vy: number; t: number
@@ -9,11 +10,13 @@ interface SimState {
   targetHit: boolean
   distanceToTarget: number | null
   maxHeightReached: number
+  landingSpeed: number
 }
 
 export function useProjectileDraw(canvasRef: { value: HTMLCanvasElement | null }, params: ProjectileParams, simState: SimState) {
   const { drawTarget } = useProjectileTargetDraw()
   const { toScreen, drawGrid, drawAxes } = useProjectileGrid(params)
+  const { draw: drawDigitalScreen } = useProjectileDigitalScreen(params, simState)
 
   function drawLauncher(ctx: CanvasRenderingContext2D, _ts: ReturnType<typeof toScreen>) {
     const { sx, sy, scale } = _ts
@@ -32,7 +35,7 @@ export function useProjectileDraw(canvasRef: { value: HTMLCanvasElement | null }
 
   function drawGround(ctx: CanvasRenderingContext2D, w: number, h: number, _ts: ReturnType<typeof toScreen>) {
     const { margin, groundY } = _ts
-    ctx.fillStyle = '#1e293b'
+    ctx.fillStyle = '#252D3A'
     ctx.fillRect(margin, groundY, w - margin * 2, h - groundY)
     ctx.strokeStyle = '#334155'
     ctx.lineWidth = 1
@@ -105,28 +108,6 @@ export function useProjectileDraw(canvasRef: { value: HTMLCanvasElement | null }
     ctx.closePath(); ctx.fillStyle = '#22c55e'; ctx.fill()
   }
 
-  function drawClock(ctx: CanvasRenderingContext2D, w: number, _ts: ReturnType<typeof toScreen>) {
-    const boxW = 170
-    ctx.fillStyle = 'rgba(15,23,42,0.9)'
-    ctx.beginPath()
-    ctx.roundRect(w - boxW - 10, 10, boxW, 28, 6)
-    ctx.fill()
-    ctx.strokeStyle = 'rgba(71,85,105,0.5)'; ctx.lineWidth = 1; ctx.stroke()
-    ctx.fillStyle = '#e2e8f0'; ctx.font = '12px monospace'; ctx.textAlign = 'left'
-    ctx.fillText(`t=${simState.t.toFixed(1)}s`, w - boxW, 29)
-    ctx.fillStyle = '#94a3b8'; ctx.font = '11px monospace'
-    ctx.fillText(`hₘₐₓ=${simState.maxHeightReached.toFixed(1)}m`, w - boxW + 75, 29)
-  }
-
-  function drawInfoBar(ctx: CanvasRenderingContext2D, w: number, _h: number) {
-    const vMag = Math.sqrt(simState.vx ** 2 + simState.vy ** 2)
-    ctx.fillStyle = 'rgba(30,41,59,0.75)'
-    ctx.beginPath(); ctx.roundRect(10, 46, 220, 22, 4); ctx.fill()
-    ctx.fillStyle = '#cbd5e1'; ctx.font = '11px monospace'; ctx.textAlign = 'left'
-    const info = `v=${vMag.toFixed(1)}  y=${simState.y.toFixed(1)}  t=${simState.t.toFixed(2)}`
-    ctx.fillText(info, 18, 61)
-  }
-
   function draw() {
     const canvas = canvasRef.value
     if (!canvas) return
@@ -135,9 +116,10 @@ export function useProjectileDraw(canvasRef: { value: HTMLCanvasElement | null }
     const w = canvas.width, h = canvas.height
     ctx.clearRect(0, 0, w, h)
 
+    // Dark theme canvas background
     const grad = ctx.createLinearGradient(0, 0, 0, h)
-    grad.addColorStop(0, '#f8fafc')
-    grad.addColorStop(1, '#e2e8f0')
+    grad.addColorStop(0, '#1e293b')
+    grad.addColorStop(1, '#0f172a')
     ctx.fillStyle = grad; ctx.fillRect(0, 0, w, h)
 
     const _ts = toScreen(w, h, 0, 0)
@@ -150,8 +132,7 @@ export function useProjectileDraw(canvasRef: { value: HTMLCanvasElement | null }
     drawTrail(ctx, w, h, _ts)
     drawBall(ctx, w, h, _ts, ballPos)
     drawVelocity(ctx, w, h, ballPos)
-    drawClock(ctx, w, _ts)
-    drawInfoBar(ctx, w, h)
+    drawDigitalScreen(ctx, w)
   }
 
   return { draw }

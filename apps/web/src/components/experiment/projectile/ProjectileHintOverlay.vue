@@ -29,9 +29,11 @@ function onCheck() {
     <div class="hint-panel" v-if="open">
       <div class="hint-title">📐 المعادلة</div>
       <div class="hint-eq">{{ hint.equation }}</div>
+      <div class="hint-eq hint-sub">{{ hint.sin2theta }}</div>
       <div class="hint-tip">🎯 الهدف عند {{ hint.targetX }} متر</div>
       <div class="hint-msg">{{ hint.message }}</div>
-      <div class="hint-tip">💡 فكّر: كيف تؤثر v₀ والزاوية على sin(2θ)؟</div>
+      <div class="hint-tip">{{ hint.tip }}</div>
+      <div class="hint-strat">📌 {{ hint.strategy }}</div>
       <hr />
       <div class="hint-guess">
         <div class="hint-title">🧮 جرب بنفسك</div>
@@ -57,6 +59,8 @@ function onCheck() {
 .hint-row b { color: #D1D7E0; }
 .hint-msg { margin-top: .4rem; font-size: .75rem; color: #f59e0b; background: rgba(245,158,11,.08); padding: .3rem .5rem; border-radius: 4px; }
 .hint-tip { margin-top: .3rem; font-size: .72rem; color: #22c55e; }
+.hint-strat { margin-top: .3rem; font-size: .72rem; color: #fbbf24; background: rgba(251,191,36,.08); padding: .3rem .5rem; border-radius: 4px; }
+.hint-sub { font-size: .7rem; color: #8B95A5; background: transparent; margin-top: -.3rem; }
 hr { border: none; border-top: 1px solid #2D3645; margin: .5rem 0; }
 .hint-guess .guess-row { display: flex; gap: .3rem; align-items: center; margin-top: .3rem; }
 .hint-guess input { width: 50px; padding: .2rem; border-radius: 4px; border: 1px solid #2D3645; background: #252D3A; color: #D1D7E0; font-size: .72rem; text-align: center; }

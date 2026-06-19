@@ -12,6 +12,7 @@ export interface ProjectileParams {
   targetRadius: number
   targetVisible: boolean
   targetMode: boolean
+  dragCoeff: number
 }
 
 export interface ProjectilePoint {
@@ -33,6 +34,7 @@ export interface ProjectileState {
   targetHit: boolean
   distanceToTarget: number | null
   maxHeightReached: number
+  landingSpeed: number
 }
 
 export function useProjectilePhysics(params: ProjectileParams) {
@@ -50,54 +52,43 @@ export function useProjectilePhysics(params: ProjectileParams) {
     targetHit: false,
     distanceToTarget: null,
     maxHeightReached: 0,
+    landingSpeed: 0,
   })
 
-  // Cache initial velocity components
-  let initVx = 0
-  let initVy = 0
-  let initTime = 0
-
   function toRad(deg: number) { return (deg * Math.PI) / 180 }
-
-  function computePosition(elapsed: number) {
-    const x = params.x0 + initVx * elapsed
-    const y = params.y0 + initVy * elapsed - 0.5 * params.g * elapsed * elapsed
-    const vy = initVy - params.g * elapsed
-    return { x, y, vy }
-  }
 
   function step(dt: number, speedMultiplier: number = 1) {
     if (state.landed) return
 
     const sdt = dt * speedMultiplier
+
+    // Linear air drag: a_drag = -k * v
+    const ax = -params.dragCoeff * state.vx
+    const ay = -params.g - params.dragCoeff * state.vy
+
+    // Euler integration
+    const prevX = state.x
+    const prevY = state.y
+    state.vx += ax * sdt
+    state.vy += ay * sdt
+    state.x += state.vx * sdt
+    state.y += state.vy * sdt
     state.t += sdt
 
-    const elapsed = state.t - initTime
-    const pos = computePosition(elapsed)
-
-    // Ground collision: freeze at landing point
-    if (pos.y <= 0) {
+    // Ground collision: interpolate exact landing point
+    if (state.y <= 0) {
       state.landed = true
       state.y = 0
-      // Interpolate exact landing x
-      const prevElapsed = elapsed - sdt
-      const prevPos = computePosition(prevElapsed)
-      if (prevPos.y > 0 && pos.y <= 0) {
-        const ratio = prevPos.y / (prevPos.y - pos.y)
-        state.x = prevPos.x + (pos.x - prevPos.x) * ratio
-      } else {
-        state.x = pos.x
+      if (prevY > 0) {
+        const ratio = prevY / (prevY - state.y)
+        state.x = prevX + (state.x - prevX) * ratio
       }
+      state.landingSpeed = Math.sqrt(state.vx * state.vx + state.vy * state.vy)
       state.vy = 0
-      state.vx = initVx
       stop()
       return
     }
 
-    state.x = pos.x
-    state.y = pos.y
-    state.vx = initVx
-    state.vy = pos.vy
     if (state.y > state.maxHeightReached) state.maxHeightReached = state.y
 
     // Target collision detection
@@ -109,6 +100,7 @@ export function useProjectilePhysics(params: ProjectileParams) {
       if (state.targetHit) {
         state.landed = true
         state.running = false
+        state.landingSpeed = Math.sqrt(state.vx * state.vx + state.vy * state.vy)
         return
       }
     }
@@ -121,9 +113,8 @@ export function useProjectilePhysics(params: ProjectileParams) {
 
   function start() {
     const rad = toRad(params.angleDeg)
-    initVx = params.v0 * Math.cos(rad)
-    initVy = params.v0 * Math.sin(rad)
-    initTime = 0
+    const v0x = params.v0 * Math.cos(rad)
+    const v0y = params.v0 * Math.sin(rad)
 
     state.running = true
     state.paused = false
@@ -131,8 +122,9 @@ export function useProjectilePhysics(params: ProjectileParams) {
     state.t = 0
     state.x = params.x0
     state.y = params.y0
-    state.vx = initVx
-    state.vy = initVy
+    state.vx = v0x
+    state.vy = v0y
+    state.landingSpeed = 0
     state.trail = [{ x: params.x0, y: params.y0 }]
     state.signalSeries = []
   }
@@ -160,6 +152,7 @@ export function useProjectilePhysics(params: ProjectileParams) {
     state.targetHit = false
     state.distanceToTarget = null
     state.maxHeightReached = 0
+    state.landingSpeed = 0
   }
 
   const measured = computed(() => {

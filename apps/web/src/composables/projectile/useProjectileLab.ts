@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useProjectilePhysics, type ProjectileParams } from '../../modules/physics/experiments/projectile/useProjectilePhysics'
 
 export function useProjectileLab(params: ProjectileParams, onTick?: () => void) {
@@ -10,6 +10,19 @@ export function useProjectileLab(params: ProjectileParams, onTick?: () => void) 
   const labFlowRunning = ref(false)
   let rafId: number | null = null
   let waitRafId: number | null = null
+  let autoResetTimer: ReturnType<typeof setTimeout> | null = null
+
+  // Auto-reset only in target mode when target is missed (not in normal projectile mode)
+  watch(() => sim.landed, (landed) => {
+    if (autoResetTimer) { clearTimeout(autoResetTimer); autoResetTimer = null }
+    const inTargetMode = params.targetMode === true && params.targetVisible === true
+    if (landed && inTargetMode && sim.targetHit === false) {
+      autoResetTimer = setTimeout(() => {
+        autoResetTimer = null
+        if (sim.landed && sim.targetHit === false) resetSim()
+      }, 1000)
+    }
+  })
 
   function tickFrame() {
     if (!sim.running || sim.paused) return
@@ -50,6 +63,7 @@ export function useProjectileLab(params: ProjectileParams, onTick?: () => void) 
   }
 
   function resetSim() {
+    if (autoResetTimer) { clearTimeout(autoResetTimer); autoResetTimer = null }
     stopSim()
     reset()
   }

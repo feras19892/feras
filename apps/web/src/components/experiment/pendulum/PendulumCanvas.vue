@@ -10,7 +10,16 @@ const emit = defineEmits<{ (e: 'snapshot', dataUrl: string): void }>()
 function captureSnapshot() {
   const canvas = canvasRef.value
   if (!canvas) return
-  try { emit('snapshot', canvas.toDataURL('image/png')) } catch { /* ignore */ }
+  try {
+    const dataUrl = canvas.toDataURL('image/png')
+    emit('snapshot', dataUrl)
+    const link = document.createElement('a')
+    link.href = dataUrl
+    link.download = `pendulum_${Date.now()}.png`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  } catch { /* ignore */ }
 }
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)

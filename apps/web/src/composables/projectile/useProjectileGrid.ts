@@ -15,8 +15,8 @@ export function useProjectileGrid(params: ProjectileParams) {
     const g = params.g
     const R = (v0 * v0 * Math.sin(2 * rad)) / g
     const H = (Math.pow(v0 * Math.sin(rad), 2)) / (2 * g)
-    const maxX = Math.max(R * 1.6, 50)
-    const maxY = Math.max(H * 1.6, 30)
+    const maxX = params.targetMode && params.targetVisible ? Math.max(params.targetX * 1.5, R * 1.6, 80) : Math.max(R * 1.6, 50)
+    const maxY = params.targetMode && params.targetVisible ? Math.max(H * 1.6, params.targetX * 0.3, 30) : Math.max(H * 1.6, 30)
     const scaleX = (w - margin * 2) / maxX
     const scaleY = (groundY - margin * 2) / maxY
     const scale = Math.min(scaleX, scaleY)

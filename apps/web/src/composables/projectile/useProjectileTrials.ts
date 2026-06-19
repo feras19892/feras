@@ -19,7 +19,7 @@ export interface ProjectileMeasured {
   range: number | null
 }
 
-const SAVE_KEY = 'projectile:trials:v1'
+export const SAVE_KEY = 'projectile:trials:v1'
 
 export function useProjectileTrials(params: ProjectileParams, measured: Ref<ProjectileMeasured>) {
   const trials = ref<ProjectileTrial[]>([])
@@ -140,6 +140,7 @@ export function useProjectileTrials(params: ProjectileParams, measured: Ref<Proj
   }
 
   const calcResult = ref('اضغط على زر لعرض الحساب')
+  const fitResult = ref<{ slope: number; intercept: number } | null>(null)
 
   function calcFlightTime() {
     const rad = (params.angleDeg * Math.PI) / 180
@@ -164,7 +165,8 @@ export function useProjectileTrials(params: ProjectileParams, measured: Ref<Proj
     const xs = trials.value.map(t => Math.sin(2 * (t.angleDegrees * Math.PI) / 180))
     const ys = trials.value.map(t => t.rangeMeters)
     const fit = linearRegression(xs, ys)
-    if (!fit || Math.abs(fit.slope) < 1e-12) { calcResult.value = 'بيانات غير كافية'; return }
+    if (!fit || Math.abs(fit.slope) < 1e-12) { calcResult.value = 'بيانات غير كافية'; fitResult.value = null; return }
+    fitResult.value = { slope: fit.slope, intercept: fit.intercept }
     const v0Est = Math.sqrt(Math.abs(fit.slope) * params.g)
     const quality = fit.r2 > 0.98 ? '✅' : fit.r2 > 0.9 ? '🟡' : '⚠️'
     calcResult.value = `R = ${fit.slope.toFixed(5)}·sin(2θ) ${fit.intercept >= 0 ? '+' : ''} ${fit.intercept.toFixed(5)}<br>R² = ${fit.r2.toFixed(4)} ${quality}<br>v₀ ≈ <b>${v0Est.toFixed(2)} m/s</b>`
@@ -175,6 +177,6 @@ export function useProjectileTrials(params: ProjectileParams, measured: Ref<Proj
     recordTrial, removeTrial, clearTrials, exportCsv,
     undo, redo, canUndo, canRedo,
     autoLoad,
-    calcResult, calcFlightTime, calcMaxHeight, calcRange, calcFitRange,
+    calcResult, fitResult, calcFlightTime, calcMaxHeight, calcRange, calcFitRange,
   }
 }

@@ -4,6 +4,7 @@ const props = defineProps<{
   panelTitle: (id: string) => string
   trials: any[]
   calcResult: string
+  fitResult?: { slope: number; intercept: number } | null
   params: any
   sim: any
   measured: any
@@ -37,7 +38,7 @@ import ProjectilePanelBody from './ProjectilePanelBody.vue'
         </div>
         <ProjectilePanelBody
           :id="id" :trials="trials" :calc-result="calcResult" :params="params" :sim="sim"
-          :measured="measured" :trial-stats="trialStats"
+          :measured="measured" :trial-stats="trialStats" :fit-result="fitResult"
           @update:trials="emit('update:trials', $event)" @update:params="emit('update:params', $event)"
           @remove="emit('remove', $event)" @clear="emit('clear')"
           @calc-flight-time="emit('calcFlightTime')" @calc-max-height="emit('calcMaxHeight')"

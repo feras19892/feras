@@ -11,6 +11,7 @@ const props = defineProps<{
   trialStats: any
   tutorType?: string
   tutorMessage?: string
+  fitResult?: { slope: number; intercept: number } | null
 }>()
 
 const emit = defineEmits<{
@@ -28,7 +29,7 @@ const emit = defineEmits<{
 const mean = (arr: number[]) => arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0
 const std = (arr: number[]) => { const m = mean(arr); return Math.sqrt(arr.reduce((sum, v) => sum + (v - m) ** 2, 0) / arr.length) }
 
-import { ref, watch, nextTick } from 'vue'
+import { ref, watch, nextTick, onMounted } from 'vue'
 const signalCanvas = ref<HTMLCanvasElement | null>(null)
 const vxCanvas = ref<HTMLCanvasElement | null>(null)
 const vyCanvas = ref<HTMLCanvasElement | null>(null)
@@ -39,12 +40,15 @@ function drawLineChart(canvas: HTMLCanvasElement | null, data: {x:number,y:numbe
   const ctx = canvas.getContext('2d')
   if (!ctx) return
   const w = canvas.width, h = canvas.height, pad = 20
-  ctx.clearRect(0,0,w,h)
+  ctx.fillStyle = '#1E2530'; ctx.fillRect(0,0,w,h)
   if (data.length < 2) { ctx.fillStyle='#64748b'; ctx.font='12px sans-serif'; ctx.textAlign='center'; ctx.fillText('لا توجد بيانات',w/2,h/2); return }
   const xs = data.map(d=>d.x), ys = data.map(d=>d.y)
   const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys)
-  const rx = maxX===minX ? 1 : (w-pad*2)/(maxX-minX), ry = maxY===minY ? 1 : (h-pad*2)/(maxY-minY)
-  const sx = (x:number) => pad + (x-minX)*rx, sy = (y:number) => h - pad - (y-minY)*ry
+  const xRange = maxX===minX ? 1 : maxX-minX
+  const yRange = maxY===minY ? 1 : maxY-minY
+  const rx = (w-pad*2)/xRange, ry = (h-pad*2)/yRange
+  const sx = (x:number) => pad + (x-minX)*rx
+  const sy = (y:number) => h - pad - (y-minY)*ry
   ctx.strokeStyle='rgba(148,163,184,0.2)'; ctx.lineWidth=1
   for (let i=0;i<5;i++){ const y=pad+(h-pad*2)*i/4; ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(w-pad,y);ctx.stroke() }
   for (let i=0;i<5;i++){ const x=pad+(w-pad*2)*i/4; ctx.beginPath();ctx.moveTo(x,pad);ctx.lineTo(x,h-pad);ctx.stroke() }
@@ -59,26 +63,79 @@ function drawLineChart(canvas: HTMLCanvasElement | null, data: {x:number,y:numbe
   ctx.fillText(xLabel,w-pad-10,h-pad+12);ctx.fillText(yLabel,pad-8,pad+8)
 }
 
-function drawScatter(canvas: HTMLCanvasElement | null, data: {x:number,y:number}[], color: string) {
+function drawScatter(canvas: HTMLCanvasElement | null, data: {x:number,y:number}[], color: string, fit?: { slope: number; intercept: number } | null) {
   if (!canvas) return
   const ctx = canvas.getContext('2d')
   if (!ctx) return
-  const w = canvas.width, h = canvas.height, pad = 20
-  ctx.clearRect(0,0,w,h)
+  const w = canvas.width, h = canvas.height
+  const padL = 36, padR = 12, padT = 12, padB = 28
+  const plotW = w - padL - padR, plotH = h - padT - padB
+  ctx.fillStyle = '#1E2530'; ctx.fillRect(0,0,w,h)
   if (data.length < 1) { ctx.fillStyle='#64748b'; ctx.font='12px sans-serif'; ctx.textAlign='center'; ctx.fillText('سجل قراءات أولاً',w/2,h/2); return }
+
   const xs = data.map(d=>d.x), ys = data.map(d=>d.y)
-  const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys)
-  const rx = maxX===minX ? 1 : (w-pad*2)/(maxX-minX), ry = maxY===minY ? 1 : (h-pad*2)/(maxY-minY)
-  const sx = (x:number) => pad + (x-minX)*rx, sy = (y:number) => h - pad - (y-minY)*ry
-  ctx.strokeStyle='rgba(148,163,184,0.2)'; ctx.lineWidth=1
-  for (let i=0;i<5;i++){ const y=pad+(h-pad*2)*i/4; ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(w-pad,y);ctx.stroke() }
-  for (let i=0;i<5;i++){ const x=pad+(w-pad*2)*i/4; ctx.beginPath();ctx.moveTo(x,pad);ctx.lineTo(x,h-pad);ctx.stroke() }
-  ctx.fillStyle=color; data.forEach(p=>{ ctx.beginPath();ctx.arc(sx(p.x),sy(p.y),3,0,Math.PI*2);ctx.fill() })
-  ctx.strokeStyle='#475569'; ctx.lineWidth=1
-  ctx.beginPath();ctx.moveTo(pad,h-pad);ctx.lineTo(w-pad,h-pad);ctx.stroke()
-  ctx.beginPath();ctx.moveTo(pad,pad);ctx.lineTo(pad,h-pad);ctx.stroke()
-  ctx.fillStyle='#94a3b8';ctx.font='10px sans-serif';ctx.textAlign='center'
-  ctx.fillText('θ (°)',w-pad-10,h-pad+12);ctx.fillText('R (m)',pad-8,pad+8)
+  let minX = Math.min(...xs), maxX = Math.max(...xs)
+  let minY = Math.min(...ys), maxY = Math.max(...ys)
+  if (maxX === minX) { minX -= 10; maxX += 10 }
+  if (maxY === minY) { minY -= 5;  maxY += 5 }
+  // Add 10% margin so points don't touch edges
+  const xMargin = (maxX - minX) * 0.1
+  const yMargin = (maxY - minY) * 0.1
+  minX -= xMargin; maxX += xMargin
+  minY -= yMargin; maxY += yMargin
+
+  const rx = plotW / (maxX - minX)
+  const ry = plotH / (maxY - minY)
+  const sx = (x:number) => padL + (x - minX) * rx
+  const sy = (y:number) => h - padB - (y - minY) * ry
+
+  // Grid + ticks
+  ctx.strokeStyle='rgba(148,163,184,0.15)'; ctx.lineWidth=1
+  ctx.fillStyle='#94a3b8'; ctx.font='9px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='top'
+  for (let i=0;i<=4;i++){
+    const t = i/4
+    const x = padL + plotW*t
+    const xVal = minX + (maxX-minX)*t
+    ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, h-padB); ctx.stroke()
+    ctx.fillText(xVal.toFixed(0), x, h-padB+4)
+  }
+  ctx.textAlign='right'; ctx.textBaseline='middle'
+  for (let i=0;i<=4;i++){
+    const t = i/4
+    const y = h - padB - plotH*t
+    const yVal = minY + (maxY-minY)*t
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(w-padR, y); ctx.stroke()
+    ctx.fillText(yVal.toFixed(0), padL-4, y)
+  }
+
+  // Points
+  ctx.fillStyle=color; data.forEach(p=>{ ctx.beginPath();ctx.arc(sx(p.x),sy(p.y),4,0,Math.PI*2);ctx.fill() })
+
+  // Fit curve: R = slope·sin(2θ) + intercept
+  if (fit) {
+    ctx.strokeStyle = '#f97316'; ctx.lineWidth = 2
+    ctx.beginPath()
+    for (let i = 0; i <= 80; i++) {
+      const theta = minX + (maxX - minX) * (i / 80)
+      const rad = theta * Math.PI / 180
+      const yFit = fit.slope * Math.sin(2 * rad) + fit.intercept
+      const px = sx(theta)
+      const py = sy(yFit)
+      if (i === 0) ctx.moveTo(px, py)
+      else ctx.lineTo(px, py)
+    }
+    ctx.stroke()
+  }
+
+  // Axes
+  ctx.strokeStyle='#64748b'; ctx.lineWidth=1.5
+  ctx.beginPath(); ctx.moveTo(padL,h-padB); ctx.lineTo(w-padR,h-padB); ctx.stroke()
+  ctx.beginPath(); ctx.moveTo(padL,padT); ctx.lineTo(padL,h-padB); ctx.stroke()
+
+  // Labels
+  ctx.fillStyle='#94a3b8'; ctx.font='bold 10px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='top'
+  ctx.fillText('θ (°)', w/2, h-12)
+  ctx.save(); ctx.translate(10, h/2); ctx.rotate(-Math.PI/2); ctx.textAlign='center'; ctx.fillText('R (m)', 0, 0); ctx.restore()
 }
 
 function drawCharts() {
@@ -86,11 +143,12 @@ function drawCharts() {
     if (signalCanvas.value && props.sim?.trail) drawLineChart(signalCanvas.value, props.sim.trail.map((p:any)=>({x:p.x,y:p.y})), '#3b82f6', 'x (m)', 'y (m)')
     if (vxCanvas.value && props.sim?.signalSeries) drawLineChart(vxCanvas.value, props.sim.signalSeries.map((s:any)=>({x:s.t,y:s.vx})), '#22c55e', 't (s)', 'vx (m/s)')
     if (vyCanvas.value && props.sim?.signalSeries) drawLineChart(vyCanvas.value, props.sim.signalSeries.map((s:any)=>({x:s.t,y:s.vy})), '#ef4444', 't (s)', 'vy (m/s)')
-    if (scatterCanvas.value && props.trials?.length) drawScatter(scatterCanvas.value, props.trials.map((t:any)=>({x:t.angleDegrees,y:t.rangeMeters})), '#3b82f6')
+    if (scatterCanvas.value && props.trials?.length) drawScatter(scatterCanvas.value, props.trials.map((t:any)=>({x:t.angleDegrees,y:t.rangeMeters})), '#3b82f6', props.fitResult)
   })
 }
 
-watch(() => [props.id, props.sim?.trail?.length, props.sim?.signalSeries?.length, props.trials?.length], drawCharts, { flush: 'post' })
+watch(() => [props.id, props.sim?.trail?.length, props.sim?.signalSeries?.length, props.trials?.length, props.fitResult], drawCharts, { flush: 'post' })
+onMounted(drawCharts)
 </script>
 
 <template>
@@ -102,6 +160,7 @@ watch(() => [props.id, props.sim?.trail?.length, props.sim?.signalSeries?.length
       <div class="param-row"><label>g (m/s²)</label><div class="param-inputs"><input type="range" min="1" max="50" step="0.1" :value="params.g" @input="emit('update:params', { ...params, g: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.g" @input="emit('update:params', { ...params, g: +($event.target as HTMLInputElement).value })"></div></div>
       <div class="param-row"><label>x₀ (m)</label><div class="param-inputs"><input type="range" min="0" max="500" step="0.1" :value="params.x0" @input="emit('update:params', { ...params, x0: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.x0" @input="emit('update:params', { ...params, x0: +($event.target as HTMLInputElement).value })"></div></div>
       <div class="param-row"><label>y₀ (m)</label><div class="param-inputs"><input type="range" min="0" max="200" step="0.1" :value="params.y0" @input="emit('update:params', { ...params, y0: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.y0" @input="emit('update:params', { ...params, y0: +($event.target as HTMLInputElement).value })"></div></div>
+      <div class="param-row"><label>مقاومة الهواء k</label><div class="param-inputs"><input type="range" min="0" max="2" step="0.01" :value="params.dragCoeff" @input="emit('update:params', { ...params, dragCoeff: +($event.target as HTMLInputElement).value })"><input type="number" step="0.01" :value="params.dragCoeff" @input="emit('update:params', { ...params, dragCoeff: +($event.target as HTMLInputElement).value })"></div></div>
     </template>
 
     <!-- table panel -->
@@ -110,7 +169,7 @@ watch(() => [props.id, props.sim?.trail?.length, props.sim?.signalSeries?.length
       <table v-else>
         <thead><tr><th>#</th><th>الزاوية</th><th>v₀</th><th>الزمن</th><th>الارتفاع</th><th>المدى</th><th></th></tr></thead>
         <tbody>
-          <tr v-for="t in trials" :key="t.id"><td>{{ t.id }}</td><td>{{ t.angleDegrees }}°</td><td>{{ t.initialVelocity }}</td><td>{{ t.flightTimeSec.toFixed(3) }}</td><td>{{ t.maxHeightMeters.toFixed(3) }}</td><td>{{ t.rangeMeters.toFixed(3) }}</td><td><button @click="emit('remove', t.id)">×</button></td></tr>
+          <tr v-for="t in trials" :key="t.id"><td>{{ t.id }}</td><td>{{ t.angleDegrees }}°</td><td>{{ t.initialVelocity }}</td><td>{{ t.flightTimeSec.toFixed(2) }}</td><td>{{ t.maxHeightMeters.toFixed(2) }}</td><td>{{ t.rangeMeters.toFixed(2) }}</td><td><button @click="emit('remove', t.id)">×</button></td></tr>
         </tbody>
       </table>
       <button class="btn-clear" @click="emit('clear')">مسح الكل</button>
@@ -141,10 +200,10 @@ watch(() => [props.id, props.sim?.trail?.length, props.sim?.signalSeries?.length
     <!-- stats panel -->
     <template v-else-if="id === 'stats'">
       <div class="stats-grid">
-        <div class="stat"><span class="label">متوسط المدى</span><span class="val">{{ trialStats?.range_mean?.toFixed(3) ?? '--' }} m</span></div>
-        <div class="stat"><span class="label">انحراف المدى</span><span class="val">{{ trialStats?.range_std?.toFixed(3) ?? '--' }} m</span></div>
-        <div class="stat"><span class="label">متوسط الزمن</span><span class="val">{{ trialStats?.flightTime_mean?.toFixed(3) ?? '--' }} s</span></div>
-        <div class="stat"><span class="label">انحراف الزمن</span><span class="val">{{ trialStats?.flightTime_std?.toFixed(3) ?? '--' }} s</span></div>
+        <div class="stat"><span class="label">متوسط المدى</span><span class="val">{{ trialStats?.range_mean?.toFixed(2) ?? '--' }} m</span></div>
+        <div class="stat"><span class="label">انحراف المدى</span><span class="val">{{ trialStats?.range_std?.toFixed(2) ?? '--' }} m</span></div>
+        <div class="stat"><span class="label">متوسط الزمن</span><span class="val">{{ trialStats?.flightTime_mean?.toFixed(2) ?? '--' }} s</span></div>
+        <div class="stat"><span class="label">انحراف الزمن</span><span class="val">{{ trialStats?.flightTime_std?.toFixed(2) ?? '--' }} s</span></div>
       </div>
     </template>
 

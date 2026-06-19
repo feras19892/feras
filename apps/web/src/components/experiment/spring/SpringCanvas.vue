@@ -24,7 +24,14 @@ function captureSnapshot() {
   const canvas = canvasRef.value
   if (!canvas) return
   try {
-    emit('snapshot', canvas.toDataURL('image/png'))
+    const dataUrl = canvas.toDataURL('image/png')
+    emit('snapshot', dataUrl)
+    const link = document.createElement('a')
+    link.href = dataUrl
+    link.download = `spring_${Date.now()}.png`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
   } catch { /* ignore */ }
 }
 

@@ -56,9 +56,15 @@ export function useProjectileTargetDraw() {
     const tx = margin + params.targetX * scale
     const ty = groundY - params.targetY * scale
     drawTree(ctx, tx, ty, scale, simState.targetHit)
-    // Label
+    // Distance label above tree
+    ctx.fillStyle = '#1e293b'
+    ctx.beginPath(); ctx.roundRect(tx - 28, ty - scale * 0.9 - 18, 56, 18, 4); ctx.fill()
+    ctx.strokeStyle = simState.targetHit ? '#22c55e' : '#5B8DB8'; ctx.lineWidth = 1; ctx.stroke()
+    ctx.fillStyle = '#e2e8f0'; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
+    ctx.fillText(`x=${params.targetX.toFixed(1)}m`, tx, ty - scale * 0.9 - 9)
+    // Hit emoji
     ctx.fillStyle = simState.targetHit ? '#22c55e' : '#ef4444'
-    ctx.font = '10px sans-serif'; ctx.textAlign = 'center'
+    ctx.font = '12px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'
     ctx.fillText(simState.targetHit ? '🎯' : '🌲', tx, ty - scale * 0.8)
   }
   return { drawTarget }

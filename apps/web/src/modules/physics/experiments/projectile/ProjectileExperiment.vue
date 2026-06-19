@@ -52,7 +52,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
           <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id)"
             @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
             <ProjectilePanelBody :id="id" :trials="ex.trials.trials.value" :calc-result="ex.trials.calcResult.value" :params="ex.params" :sim="ex.lab.sim"
-              :measured="ex.getMeasured()" :trial-stats="ex.trials.trialStats.value" :tutor-type="ex.tutorType.value" :tutor-message="ex.tutorMessage.value"
+              :measured="ex.getMeasured()" :trial-stats="ex.trials.trialStats.value" :tutor-type="ex.tutorType.value" :tutor-message="ex.tutorMessage.value" :fit-result="ex.trials.fitResult.value"
               @update:trials="ex.trials.trials.value = $event" @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials"
               @calc-flight-time="ex.trials.calcFlightTime" @calc-max-height="ex.trials.calcMaxHeight" @calc-range="ex.trials.calcRange" @calc-fit-range="ex.trials.calcFitRange" @show-calc="html => ex.trials.calcResult.value = html"
             />
@@ -67,7 +67,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="chart-panel lab-card" :id="id" :title="ex.layout.panelTitle(id)"
               @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
               <ProjectilePanelBody :id="id" :trials="ex.trials.trials.value" :calc-result="ex.trials.calcResult.value" :params="ex.params" :sim="ex.lab.sim"
-                :measured="ex.getMeasured()" :trial-stats="ex.trials.trialStats.value" :tutor-type="ex.tutorType.value" :tutor-message="ex.tutorMessage.value"
+                :measured="ex.getMeasured()" :trial-stats="ex.trials.trialStats.value" :tutor-type="ex.tutorType.value" :tutor-message="ex.tutorMessage.value" :fit-result="ex.trials.fitResult.value"
                 @update:trials="ex.trials.trials.value = $event" @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials"
                 @calc-flight-time="ex.trials.calcFlightTime" @calc-max-height="ex.trials.calcMaxHeight" @calc-range="ex.trials.calcRange" @calc-fit-range="ex.trials.calcFitRange" @show-calc="html => ex.trials.calcResult.value = html"
               />
@@ -81,7 +81,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
           <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id)"
             @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
             <ProjectilePanelBody :id="id" :trials="ex.trials.trials.value" :calc-result="ex.trials.calcResult.value" :params="ex.params" :sim="ex.lab.sim"
-              :measured="ex.getMeasured()" :trial-stats="ex.trials.trialStats.value" :tutor-type="ex.tutorType.value" :tutor-message="ex.tutorMessage.value"
+              :measured="ex.getMeasured()" :trial-stats="ex.trials.trialStats.value" :tutor-type="ex.tutorType.value" :tutor-message="ex.tutorMessage.value" :fit-result="ex.trials.fitResult.value"
               @update:trials="ex.trials.trials.value = $event" @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials"
               @calc-flight-time="ex.trials.calcFlightTime" @calc-max-height="ex.trials.calcMaxHeight" @calc-range="ex.trials.calcRange" @calc-fit-range="ex.trials.calcFitRange" @show-calc="html => ex.trials.calcResult.value = html"
             />
@@ -90,7 +90,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       </div>
     </div>
 
-    <ProjectileOverlayPanels :maximized="ex.layout.maximized" :panel-title="(id: string) => ex.layout.panelTitle(id as any)" :trials="ex.trials.trials.value" :calc-result="ex.trials.calcResult.value"
+    <ProjectileOverlayPanels :maximized="ex.layout.maximized" :panel-title="(id: string) => ex.layout.panelTitle(id as any)" :trials="ex.trials.trials.value" :calc-result="ex.trials.calcResult.value" :fit-result="ex.trials.fitResult.value"
       :params="ex.params" :sim="ex.lab.sim" :measured="ex.getMeasured()" :trial-stats="ex.trials.trialStats.value"
       @maximize="ex.layout.maximizePanel" @drop="ex.handleDrop" @update:trials="ex.trials.trials.value = $event" @update:params="Object.assign(ex.params, $event)"
       @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials" @calc-flight-time="ex.trials.calcFlightTime" @calc-max-height="ex.trials.calcMaxHeight" @calc-range="ex.trials.calcRange" @calc-fit-range="ex.trials.calcFitRange" @show-calc="html => ex.trials.calcResult.value = html"
@@ -119,7 +119,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <div class="hint-bar success" v-else><span>✅ هبط! اضغط "تسجيل" لحفظ القراءة</span></div>
 
     <ProjectileStatusBar :running="ex.lab.sim.running" :paused="ex.lab.sim.paused" />
-    <ProjectileReport v-if="reportOpen" :trials="ex.trials.trials.value" :g-theoretical="ex.params.g" :canvas-snapshot="rep.canvasSnapshot.value" @close="reportOpen = false" />
+    <ProjectileReport v-if="reportOpen" :trials="ex.trials.trials.value" :params="ex.params" :trial-stats="ex.trials.trialStats.value" :fit-result="ex.trials.fitResult.value" :g-theoretical="ex.params.g" :canvas-snapshot="rep.canvasSnapshot.value" @close="reportOpen = false" />
   </div>
 </template>
 

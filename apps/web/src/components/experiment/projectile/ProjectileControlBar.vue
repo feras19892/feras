@@ -4,6 +4,7 @@ const props = defineProps<{
   speed: number
   canUndo?: boolean
   canRedo?: boolean
+  targetMode?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -15,6 +16,7 @@ const emit = defineEmits<{
   (e: 'undo'): void
   (e: 'redo'): void
   (e: 'update:speed', val: number): void
+  (e: 'toggleTargetMode'): void
 }>()
 
 function onClear() {
@@ -36,6 +38,7 @@ function decSpeed() {
     <button class="btn-primary" @click="$emit('togglePause')">{{ launchLabel }}</button>
     <button class="btn-secondary" @click="$emit('reset')">&#x1F504; إعادة</button>
     <button class="btn-secondary" @click="$emit('recordTrial')">&#x1F4CC; تسجيل</button>
+    <button class="btn-target" :class="{active: targetMode}" @click="$emit('toggleTargetMode')" title="وضع الهدف">🎯</button>
     <button class="btn-undo" :disabled="!canUndo" @click="$emit('undo')" title="تراجع (Ctrl+Z)">&#x21A9; تراجع</button>
     <button class="btn-undo" :disabled="!canRedo" @click="$emit('redo')" title="إعادة (Ctrl+Y)">&#x21AA; إعادة</button>
     <button class="btn-undo" @click="onClear">&#x1F5D1; مسح</button>
@@ -56,6 +59,9 @@ function decSpeed() {
 .btn-secondary { background:#252D3A; color:#8B95A5; border:1px solid #2D3645; }
 .btn-secondary:hover { background:#2D3645; color:#D1D7E0; }
 .btn-undo { background:#252D3A; color:#8B95A5; border:1px solid #2D3645; }
+.btn-target { background:#252D3A; color:#8B95A5; border:1px solid #2D3645; font-size:.85rem; padding:.45rem .6rem; }
+.btn-target.active { background:rgba(91,141,184,.15); color:#5B8DB8; border-color:rgba(91,141,184,.3); }
+.btn-target:hover { background:#2D3645; }
 .speed-group { display:flex; align-items:center; gap:.2rem; background:#161B22; border:1px solid #2D3645; border-radius:5px; padding:.2rem .3rem; }
 .btn-speed { background:#252D3A; color:#5B8DB8; border:1px solid #2D3645; width:24px; height:24px; display:flex; align-items:center; justify-content:center; padding:0; font-size:.9rem; border-radius:4px; cursor:pointer; }
 .btn-speed:hover { background:#2D3645; }

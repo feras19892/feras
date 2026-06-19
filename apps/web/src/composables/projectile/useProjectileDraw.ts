@@ -1,58 +1,19 @@
 import type { ProjectileParams, ProjectilePoint } from '../../modules/physics/experiments/projectile/useProjectilePhysics'
+import { useProjectileTargetDraw } from './useProjectileTargetDraw'
+import { useProjectileGrid } from './useProjectileGrid'
 
 interface SimState {
   x: number; y: number; vx: number; vy: number; t: number
   running: boolean; paused: boolean; landed: boolean
   trail: ProjectilePoint[]
+  targetHit: boolean
+  distanceToTarget: number | null
+  maxHeightReached: number
 }
 
 export function useProjectileDraw(canvasRef: { value: HTMLCanvasElement | null }, params: ProjectileParams, simState: SimState) {
-  function toScreen(w: number, h: number, x: number, y: number) {
-    const margin = 50
-    const groundY = h - margin
-    const rad = (params.angleDeg * Math.PI) / 180
-    const v0 = params.v0
-    const g = params.g
-    const R = (v0 * v0 * Math.sin(2 * rad)) / g
-    const H = (Math.pow(v0 * Math.sin(rad), 2)) / (2 * g)
-    const maxX = Math.max(R * 1.6, 50)
-    const maxY = Math.max(H * 1.6, 30)
-    const scaleX = (w - margin * 2) / maxX
-    const scaleY = (groundY - margin * 2) / maxY
-    const scale = Math.min(scaleX, scaleY)
-    const sx = margin + x * scale
-    const sy = groundY - y * scale
-    return { sx, sy, scale, margin, groundY }
-  }
-
-  function drawGrid(ctx: CanvasRenderingContext2D, w: number, h: number, _ts: ReturnType<typeof toScreen>) {
-    const { margin, groundY, scale } = _ts
-    ctx.strokeStyle = 'rgba(148,163,184,0.15)'
-    ctx.lineWidth = 1
-    const step = 20
-    for (let x = margin; x < w - margin; x += step) {
-      ctx.beginPath(); ctx.moveTo(x, margin); ctx.lineTo(x, groundY); ctx.stroke()
-    }
-    for (let y = margin; y < groundY; y += step) {
-      ctx.beginPath(); ctx.moveTo(margin, y); ctx.lineTo(w - margin, y); ctx.stroke()
-    }
-  }
-
-  function drawAxes(ctx: CanvasRenderingContext2D, w: number, h: number, _ts: ReturnType<typeof toScreen>) {
-    const { margin, groundY } = _ts
-    ctx.strokeStyle = '#475569'
-    ctx.lineWidth = 2
-    ctx.beginPath(); ctx.moveTo(margin, groundY); ctx.lineTo(w - margin, groundY); ctx.stroke()
-    ctx.beginPath(); ctx.moveTo(margin, margin); ctx.lineTo(margin, groundY); ctx.stroke()
-    // Arrow X
-    ctx.beginPath(); ctx.moveTo(w - margin, groundY); ctx.lineTo(w - margin - 10, groundY - 4); ctx.lineTo(w - margin - 10, groundY + 4); ctx.closePath(); ctx.fillStyle = '#475569'; ctx.fill()
-    // Arrow Y
-    ctx.beginPath(); ctx.moveTo(margin, margin); ctx.lineTo(margin - 4, margin + 10); ctx.lineTo(margin + 4, margin + 10); ctx.closePath(); ctx.fillStyle = '#475569'; ctx.fill()
-    // Labels
-    ctx.fillStyle = '#94a3b8'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center'
-    ctx.fillText('X (m)', w - margin - 15, groundY + 15)
-    ctx.fillText('Y (m)', margin - 15, margin + 15)
-  }
+  const { drawTarget } = useProjectileTargetDraw()
+  const { toScreen, drawGrid, drawAxes } = useProjectileGrid(params)
 
   function drawLauncher(ctx: CanvasRenderingContext2D, _ts: ReturnType<typeof toScreen>) {
     const { sx, sy, scale } = _ts
@@ -145,13 +106,16 @@ export function useProjectileDraw(canvasRef: { value: HTMLCanvasElement | null }
   }
 
   function drawClock(ctx: CanvasRenderingContext2D, w: number, _ts: ReturnType<typeof toScreen>) {
+    const boxW = 170
     ctx.fillStyle = 'rgba(15,23,42,0.9)'
     ctx.beginPath()
-    ctx.roundRect(w - 120, 10, 100, 28, 6)
+    ctx.roundRect(w - boxW - 10, 10, boxW, 28, 6)
     ctx.fill()
     ctx.strokeStyle = 'rgba(71,85,105,0.5)'; ctx.lineWidth = 1; ctx.stroke()
-    ctx.fillStyle = '#e2e8f0'; ctx.font = '13px monospace'; ctx.textAlign = 'center'
-    ctx.fillText(`t = ${simState.t.toFixed(2)} s`, w - 70, 29)
+    ctx.fillStyle = '#e2e8f0'; ctx.font = '12px monospace'; ctx.textAlign = 'left'
+    ctx.fillText(`t=${simState.t.toFixed(1)}s`, w - boxW, 29)
+    ctx.fillStyle = '#94a3b8'; ctx.font = '11px monospace'
+    ctx.fillText(`hₘₐₓ=${simState.maxHeightReached.toFixed(1)}m`, w - boxW + 75, 29)
   }
 
   function drawInfoBar(ctx: CanvasRenderingContext2D, w: number, _h: number) {
@@ -181,6 +145,7 @@ export function useProjectileDraw(canvasRef: { value: HTMLCanvasElement | null }
     drawGrid(ctx, w, h, _ts)
     drawGround(ctx, w, h, _ts)
     drawAxes(ctx, w, h, _ts)
+    drawTarget(ctx, w, h, params, simState, _ts.margin, _ts.groundY, _ts.scale)
     drawLauncher(ctx, _ts)
     drawTrail(ctx, w, h, _ts)
     drawBall(ctx, w, h, _ts, ballPos)

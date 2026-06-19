@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useProjectileDraw } from '../../../composables/projectile/useProjectileDraw'
+import { useProjectileGrid } from '../../../composables/projectile/useProjectileGrid'
+import ProjectileHintOverlay from './ProjectileHintOverlay.vue'
 import type { ProjectileParams, ProjectilePoint } from '../../../modules/physics/experiments/projectile/useProjectilePhysics'
 
 interface SimState {
   x: number; y: number; vx: number; vy: number; t: number
   running: boolean; paused: boolean; landed: boolean
   trail: ProjectilePoint[]
+  targetHit: boolean
+  distanceToTarget: number | null
+  maxHeightReached: number
 }
 
 const props = defineProps<{
@@ -16,11 +21,15 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'snapshot', dataUrl: string): void
+  (e: 'update:targetX', val: number): void
+  (e: 'update:targetY', val: number): void
 }>()
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const wrapRef = ref<HTMLDivElement | null>(null)
 const { draw } = useProjectileDraw(canvasRef, props.params, props.simState)
+const { screenToWorld, toScreen } = useProjectileGrid(props.params)
+const draggingTarget = ref(false)
 
 function captureSnapshot() {
   const canvas = canvasRef.value
@@ -36,9 +45,47 @@ function resizeCanvas() {
   canvas.height = Math.max(rect.height, 300)
 }
 
+function getCanvasPos(e: MouseEvent) {
+  const canvas = canvasRef.value
+  if (!canvas) return { x: 0, y: 0 }
+  const rect = canvas.getBoundingClientRect()
+  return { x: e.clientX - rect.left, y: e.clientY - rect.top }
+}
+
+function onMouseDown(e: MouseEvent) {
+  if (!props.params.targetMode || !props.params.targetVisible) return
+  const pos = getCanvasPos(e)
+  const w = canvasRef.value?.width ?? 0
+  const h = canvasRef.value?.height ?? 0
+  const ts = toScreen(w, h, 0, 0)
+  const tx = ts.margin + props.params.targetX * ts.scale
+  const ty = ts.groundY - props.params.targetY * ts.scale
+  const dx = pos.x - tx
+  const dy = pos.y - ty
+  const dist = Math.sqrt(dx * dx + dy * dy)
+  if (dist < 40) {
+    draggingTarget.value = true
+    e.preventDefault()
+  }
+}
+
+function onMouseMove(e: MouseEvent) {
+  if (!draggingTarget.value) return
+  const pos = getCanvasPos(e)
+  const w = canvasRef.value?.width ?? 0
+  const h = canvasRef.value?.height ?? 0
+  const world = screenToWorld(w, h, pos.x, pos.y)
+  emit('update:targetX', Math.max(0, world.x))
+  emit('update:targetY', Math.max(0, world.y))
+}
+
+function onMouseUp() {
+  draggingTarget.value = false
+}
+
 watch(() => [
-  props.params.v0, props.params.angleDeg, props.params.g,
-  props.simState.x, props.simState.y, props.simState.vx, props.simState.vy, props.simState.t, props.simState.landed,
+  props.params.v0, props.params.angleDeg, props.params.g, props.params.targetMode, props.params.targetVisible, props.params.targetX, props.params.targetRadius,
+  props.simState.x, props.simState.y, props.simState.vx, props.simState.vy, props.simState.t, props.simState.landed, props.simState.targetHit,
 ], draw, { flush: 'post' })
 
 let resizeObs: ResizeObserver | null = null
@@ -58,7 +105,8 @@ defineExpose({ draw, captureSnapshot })
 <template>
   <div ref="wrapRef" class="canvas-wrap">
     <button class="snapshot-btn" @click="captureSnapshot()" title="📸 التقاط لقطة">📸</button>
-    <canvas ref="canvasRef" width="700" height="420" />
+    <ProjectileHintOverlay :v0="params.v0" :angle-deg="params.angleDeg" :g="params.g" :target-x="params.targetX" :target-mode="params.targetMode" />
+    <canvas ref="canvasRef" width="700" height="420" @mousedown="onMouseDown" @mousemove="onMouseMove" @mouseup="onMouseUp" @mouseleave="onMouseUp" :style="{ cursor: draggingTarget ? 'grabbing' : params.targetMode ? 'grab' : 'default' }" />
   </div>
 </template>
 

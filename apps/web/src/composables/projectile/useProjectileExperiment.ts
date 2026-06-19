@@ -5,7 +5,7 @@ import { useProjectileLayout } from './useProjectileLayout'
 import { useProjectileTrials } from './useProjectileTrials'
 
 export function useProjectileExperiment() {
-  const params = reactive<ProjectileParams>({ v0: 10, angleDeg: 45, g: 9.81, x0: 0, y0: 0 })
+  const params = reactive<ProjectileParams>({ v0: 10, angleDeg: 45, g: 9.81, x0: 0, y0: 0, targetX: 30, targetY: 0, targetRadius: 3, targetVisible: false, targetMode: false })
 
   const lab = useProjectileLab(params)
   const layout = useProjectileLayout()

@@ -61,7 +61,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       </div>
       <div class="resizer" @mousedown="ex.onResizeStart('data', $event)"></div>
       <div class="lab-col vis-col">
-        <ProjectileCanvas ref="canvasRef" :params="ex.params" :sim-state="ex.lab.sim" @snapshot="rep.onSnapshot" />
+        <ProjectileCanvas ref="canvasRef" :params="ex.params" :sim-state="ex.lab.sim" @snapshot="rep.onSnapshot" @update:target-x="v => ex.params.targetX = v" @update:target-y="v => ex.params.targetY = v" />
         <div v-if="ex.hasVisibleVisPanels" class="chart-row">
           <template v-for="id in ex.getColumnPanels('vis')" :key="id">
             <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="chart-panel lab-card" :id="id" :title="ex.layout.panelTitle(id)"
@@ -101,6 +101,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       :speed="ex.lab.speed.value"
       :can-undo="ex.trials.canUndo()"
       :can-redo="ex.trials.canRedo()"
+      :target-mode="ex.params.targetMode"
       @toggle-pause="ex.lab.togglePause"
       @reset="ex.resetSim"
       @record-trial="ex.trials.recordTrial"
@@ -109,10 +110,12 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @undo="ex.trials.undo"
       @redo="ex.trials.redo"
       @update:speed="v => ex.lab.speed.value = v"
+      @toggle-target-mode="ex.params.targetMode = !ex.params.targetMode; ex.params.targetVisible = ex.params.targetMode"
     />
 
     <div class="hint-bar" v-if="!ex.lab.sim.running"><span>💡 اضبط v₀ والزاوية، ثم اضغط "بدء"</span></div>
-    <div class="hint-bar active" v-else-if="ex.lab.sim.running && !ex.lab.sim.landed"><span>🚀 المقذوف في الجو — انتظر الهبوط...</span></div>
+    <div class="hint-bar active" v-else-if="ex.lab.sim.running && !ex.lab.sim.landed && !ex.lab.sim.targetHit"><span>🚀 المقذوف في الجو — انتظر الهبوط...</span></div>
+    <div class="hint-bar target-hit" v-else-if="ex.lab.sim.targetHit"><span>🎯 إصابة! المسافة: {{ ex.lab.sim.distanceToTarget?.toFixed(2) ?? '--' }} m</span></div>
     <div class="hint-bar success" v-else><span>✅ هبط! اضغط "تسجيل" لحفظ القراءة</span></div>
 
     <ProjectileStatusBar :running="ex.lab.sim.running" :paused="ex.lab.sim.paused" />
@@ -135,4 +138,5 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 .hint-bar { background: #252D3A; border: 1px solid #2D3645; border-radius: 6px; padding: .35rem .7rem; font-size: .75rem; color: #8B95A5; text-align: center; flex-shrink: 0; }
 .hint-bar.active { border-color: #5B8DB8; color: #5B8DB8; background: rgba(91,141,184,.08); }
 .hint-bar.success { border-color: #22c55e; color: #22c55e; background: rgba(34,197,94,.08); }
+.hint-bar.target-hit { border-color: #ef4444; color: #ef4444; background: rgba(239,68,68,.08); }
 </style>

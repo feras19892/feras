@@ -1,4 +1,5 @@
 import { computed, reactive } from 'vue'
+import { calcFlightTime, calcMaxHeight, calcRange } from './projectileTheoretical'
 
 export interface ProjectileParams {
   v0: number
@@ -6,6 +7,11 @@ export interface ProjectileParams {
   g: number
   x0: number
   y0: number
+  targetX: number
+  targetY: number
+  targetRadius: number
+  targetVisible: boolean
+  targetMode: boolean
 }
 
 export interface ProjectilePoint {
@@ -24,6 +30,9 @@ export interface ProjectileState {
   landed: boolean
   trail: ProjectilePoint[]
   signalSeries: { t: number; vx: number; vy: number }[]
+  targetHit: boolean
+  distanceToTarget: number | null
+  maxHeightReached: number
 }
 
 export function useProjectilePhysics(params: ProjectileParams) {
@@ -38,6 +47,9 @@ export function useProjectilePhysics(params: ProjectileParams) {
     landed: false,
     trail: [],
     signalSeries: [],
+    targetHit: false,
+    distanceToTarget: null,
+    maxHeightReached: 0,
   })
 
   // Cache initial velocity components
@@ -86,6 +98,20 @@ export function useProjectilePhysics(params: ProjectileParams) {
     state.y = pos.y
     state.vx = initVx
     state.vy = pos.vy
+    if (state.y > state.maxHeightReached) state.maxHeightReached = state.y
+
+    // Target collision detection
+    if (params.targetMode && params.targetVisible) {
+      const dx = state.x - params.targetX
+      const dy = state.y - params.targetY
+      state.distanceToTarget = Math.sqrt(dx * dx + dy * dy)
+      state.targetHit = state.distanceToTarget <= params.targetRadius
+      if (state.targetHit) {
+        state.landed = true
+        state.running = false
+        return
+      }
+    }
 
     state.trail.push({ x: state.x, y: state.y })
     if (state.trail.length > 2000) state.trail.shift()
@@ -131,37 +157,18 @@ export function useProjectilePhysics(params: ProjectileParams) {
     state.landed = false
     state.trail = []
     state.signalSeries = []
+    state.targetHit = false
+    state.distanceToTarget = null
+    state.maxHeightReached = 0
   }
-
-  const theoreticalFlightTime = computed(() => {
-    if (params.v0 <= 0 || params.g <= 0) return null
-    const rad = toRad(params.angleDeg)
-    return (2 * params.v0 * Math.sin(rad)) / params.g
-  })
-
-  const theoreticalMaxHeight = computed(() => {
-    if (params.v0 <= 0 || params.g <= 0) return null
-    const rad = toRad(params.angleDeg)
-    return (Math.pow(params.v0 * Math.sin(rad), 2)) / (2 * params.g)
-  })
-
-  const theoreticalRange = computed(() => {
-    if (params.v0 <= 0 || params.g <= 0) return null
-    const rad = toRad(params.angleDeg)
-    return (Math.pow(params.v0, 2) * Math.sin(2 * rad)) / params.g
-  })
 
   const measured = computed(() => {
     const rad = toRad(params.angleDeg)
-    const sin = Math.sin(rad)
-    const sin2 = Math.sin(2 * rad)
-    const v0 = params.v0
     const g = params.g
-
-    const flightTime = g > 0 && v0 > 0 ? (2 * v0 * sin) / g : null
-    const maxHeight = g > 0 && v0 > 0 ? (Math.pow(v0 * sin, 2)) / (2 * g) : null
-    const range = g > 0 && v0 > 0 ? (Math.pow(v0, 2) * sin2) / g : null
-
+    const v0 = params.v0
+    const flightTime = g > 0 && v0 > 0 ? calcFlightTime(v0, rad, g) : null
+    const maxHeight = g > 0 && v0 > 0 ? calcMaxHeight(v0, rad, g) : null
+    const range = g > 0 && v0 > 0 ? calcRange(v0, rad, g) : null
     return { flightTime, maxHeight, range }
   })
 
@@ -172,9 +179,6 @@ export function useProjectilePhysics(params: ProjectileParams) {
     stop,
     togglePause,
     reset,
-    theoreticalFlightTime,
-    theoreticalMaxHeight,
-    theoreticalRange,
     measured,
   }
 }

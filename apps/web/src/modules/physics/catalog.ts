@@ -35,6 +35,7 @@ export const branches: Branch[] = [
       { id: 'pendulum', name: 'Pendulum', nameAr: 'البندول', icon: '🕰️', difficulty: 'easy', tags: ['shm', 'gravity'], route: '' },
       { id: 'projectile', name: 'Projectile Motion', nameAr: 'حركة المقذوفات', icon: '🚀', difficulty: 'medium', tags: ['kinematics', '2d'], route: '' },
       { id: 'freefall', name: 'Free Fall', nameAr: 'السقوط الحر', icon: '🍎', difficulty: 'easy', tags: ['gravity', 'kinematics'], route: '' },
+      { id: 'inclined', name: 'Inclined Plane', nameAr: 'المنحدر المائل', icon: '📐', difficulty: 'easy', tags: ['kinematics', 'forces', 'friction'], route: '' },
     ],
   },
   {

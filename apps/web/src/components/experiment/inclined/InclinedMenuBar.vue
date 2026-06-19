@@ -1,13 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
-const router = useRouter()
-const props = defineProps<{
-  title: string
-  icon?: string
-  experimentRoute?: string
-  experimentName?: string
-}>()
+
 const emit = defineEmits<{
   (e: 'togglePanel', id: string): void
   (e: 'showAllPanels'): void
@@ -16,18 +9,18 @@ const emit = defineEmits<{
   (e: 'reset'): void
   (e: 'recordTrial'): void
   (e: 'runLab'): void
-  (e: 'calcG'): void
-  (e: 'calcT'): void
-  (e: 'calcV'): void
-  (e: 'calcFitG'): void
   (e: 'toggleHelp'): void
   (e: 'printReport'): void
 }>()
+
 const activeMenu = ref<string | null>(null)
 const menuRef = ref<HTMLElement | null>(null)
+
 function toggleMenu(menu: string) { activeMenu.value = activeMenu.value === menu ? null : menu }
 function closeMenu() { activeMenu.value = null }
-function onMenuClick(e: MouseEvent) { if (menuRef.value && !menuRef.value.contains(e.target as Node)) closeMenu() }
+function onMenuClick(e: MouseEvent) {
+  if (menuRef.value && !menuRef.value.contains(e.target as Node)) closeMenu()
+}
 onMounted(() => window.addEventListener('click', onMenuClick))
 onUnmounted(() => window.removeEventListener('click', onMenuClick))
 </script>
@@ -49,20 +42,16 @@ onUnmounted(() => window.removeEventListener('click', onMenuClick))
           <div class="menu-row check" @click="emit('togglePanel','table');"><span class="mi">&#x1F4CB;</span><span>جدول</span></div>
           <div class="menu-row check" @click="emit('togglePanel','equations');"><span class="mi">&#x2697;&#xFE0F;</span><span>حسابات</span></div>
           <div class="menu-row check" @click="emit('togglePanel','signal');"><span class="mi">&#x1F4C8;</span><span>إشارة</span></div>
+          <div class="menu-row check" @click="emit('togglePanel','scatter');"><span class="mi">&#x1F4C8;</span><span>مسار</span></div>
           <div class="menu-row check" @click="emit('togglePanel','params');"><span class="mi">&#x2699;&#xFE0F;</span><span>معاملات</span></div>
           <div class="menu-row check" @click="emit('togglePanel','guide');"><span class="mi">&#x1F4CB;</span><span>دليل</span></div>
           <div class="menu-row check" @click="emit('togglePanel','stats');"><span class="mi">&#x1F4CA;</span><span>إحصائيات</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','scatter');"><span class="mi">&#x1F4C8;</span><span>Scatter</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','tutor');"><span class="mi">&#x1F9EA;</span><span>تحليل</span></div>
           <div class="menu-row check" @click="emit('togglePanel','error');"><span class="mi">&#x2696;&#xFE0F;</span><span>أخطاء</span></div>
         </div>
       </div>
     </div>
-    <div class="menu-center">{{ icon || '🍎' }} {{ title }}</div>
+    <div class="menu-center">📐 المنحدر المائل</div>
     <div class="menu-right">
-      <div class="menu-group">
-        <button v-if="experimentRoute" class="menu-btn" @click="router.push(experimentRoute)">{{ icon || '🍎' }} {{ experimentName || title }}</button>
-      </div>
       <div class="menu-group">
         <button class="menu-btn" :class="{open:activeMenu==='run'}" @click.stop="toggleMenu('run')">تشغيل</button>
         <div v-if="activeMenu==='run'" class="menu-dropdown" @click.stop>
@@ -77,10 +66,7 @@ onUnmounted(() => window.removeEventListener('click', onMenuClick))
         <button class="menu-btn" @click="emit('printReport')">&#x1F4C4; طباعة التقرير</button>
       </div>
       <div class="menu-group">
-        <button class="menu-btn" :class="{open:activeMenu==='help'}" @click.stop="toggleMenu('help')">&#x2753; مساعدة</button>
-        <div v-if="activeMenu==='help'" class="menu-dropdown" @click.stop>
-          <div class="menu-row" @click="emit('toggleHelp'); closeMenu()"><span class="mi">&#x1F4D6;</span><span>دليل الاستخدام</span></div>
-        </div>
+        <button class="menu-btn" @click="emit('toggleHelp')">&#x2753; مساعدة</button>
       </div>
     </div>
   </nav>

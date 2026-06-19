@@ -1,7 +1,6 @@
 import { ref, computed, type Ref } from 'vue'
 import { downloadCsv } from '../../components/experiment/spring/downloadCsv'
 import { linearRegression } from '../../components/experiment/spring/linearRegression'
-import { calculateFreeFallRow } from './freeFallUtils'
 import type { FreeFallParams } from '../../modules/physics/experiments/freefall/useFreeFallPhysics'
 
 export interface FreeFallTrial {
@@ -60,10 +59,10 @@ export function useFreeFallTrials(params: FreeFallParams, measured: Ref<FreeFall
       : measured.value.flightTime
     const gCalc = (2 * params.h) / (timeToRecord * timeToRecord)
     const err = Math.abs((gCalc - params.g) / params.g) * 100
-    const row = calculateFreeFallRow(nextTrialId, params.h, params.g)
     trials.value = [...trials.value, {
       id: nextTrialId++, heightMeters: params.h, timeSec: timeToRecord,
-      timeSquaredSec2: row.timeSquaredSec2, impactVelocityMs: row.impactVelocityMs,
+      timeSquaredSec2: timeToRecord * timeToRecord,
+      impactVelocityMs: params.g * timeToRecord,
       gCalc, err,
     }]
     autoSave()

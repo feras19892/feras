@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 
-const props = defineProps<{ simState: { t: number; y: number; vy: number } }>()
+const props = defineProps<{
+  simState: { t: number; s: number; v: number; arrived: boolean }
+  params: { thetaDeg: number; length: number; mass: number; g: number; mu: number }
+}>()
+
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const wrapRef = ref<HTMLDivElement | null>(null)
 
-let points: { t: number; y: number; vy: number }[] = []
+let points: { t: number; v: number }[] = []
 
 function resizeCanvas() {
   const canvas = canvasRef.value
@@ -28,8 +32,10 @@ function draw() {
   const w = canvas.width, h = canvas.height
 
   if (props.simState.t === 0) points = []
-  points.push({ t: props.simState.t, y: props.simState.y, vy: props.simState.vy })
-  if (points.length > 300) points = points.slice(-300)
+  if (!props.simState.arrived) {
+    points.push({ t: props.simState.t, v: props.simState.v })
+    if (points.length > 300) points = points.slice(-300)
+  }
 
   ctx.clearRect(0, 0, w, h)
   ctx.fillStyle = '#fffef7'
@@ -37,25 +43,20 @@ function draw() {
 
   if (!points.length) {
     ctx.fillStyle = '#64748b'; ctx.font = '14px Segoe UI'; ctx.textAlign = 'center'
-    ctx.fillText('الإشارة تظهر هنا بعد بدء السقوط', w / 2, h / 2)
+    ctx.fillText('الإشارة تظهر هنا بعد بدء النزول', w / 2, h / 2)
     ctx.textAlign = 'start'; return
   }
 
   const padL = 44, padR = 10, padT = 28, padB = 34
   const W = w - padL - padR, H = h - padT - padB
-  const groundY = padT + H
 
   const maxT = Math.max(...points.map(p => p.t)) || 1
-  const maxY = Math.max(...points.map(p => p.y)) || 1
+  const maxV = Math.max(...points.map(p => p.v), 0.1) || 1
 
   // Grid
   ctx.strokeStyle = 'rgba(148,163,184,0.15)'; ctx.lineWidth = 1
   for (let i = 0; i <= 4; i++) { const y = padT + (i / 4) * H; ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(w - padR, y); ctx.stroke() }
   for (let i = 0; i <= 5; i++) { const x = padL + (i / 5) * W; ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, h - padB); ctx.stroke() }
-
-  // Ground line
-  ctx.strokeStyle = 'rgba(148,163,184,0.4)'; ctx.setLineDash([6, 4])
-  ctx.beginPath(); ctx.moveTo(padL, groundY); ctx.lineTo(w - padR, groundY); ctx.stroke(); ctx.setLineDash([])
 
   // Axes
   ctx.strokeStyle = '#64748b'; ctx.lineWidth = 1.5
@@ -77,38 +78,28 @@ function draw() {
   ctx.textAlign = 'right'
   for (let i = 0; i <= 4; i++) {
     const frac = i / 4
-    const yVal = frac * maxY
+    const vVal = frac * maxV
     const py = padT + H - frac * H
     ctx.fillStyle = '#475569'; ctx.font = '9px Segoe UI'
-    ctx.fillText(yVal.toFixed(2), padL - 6, py + 4)
+    ctx.fillText(vVal.toFixed(2), padL - 6, py + 4)
     ctx.strokeStyle = '#64748b'; ctx.lineWidth = 1
     ctx.beginPath(); ctx.moveTo(padL - 4, py); ctx.lineTo(padL, py); ctx.stroke()
   }
   ctx.save(); ctx.translate(16, padT + H / 2); ctx.rotate(-Math.PI / 2)
   ctx.fillStyle = '#475569'; ctx.font = 'bold 10px Segoe UI'; ctx.textAlign = 'center'
-  ctx.fillText('y (m)', 0, 0); ctx.restore()
+  ctx.fillText('v (m/s)', 0, 0); ctx.restore()
 
-  // y(t) line
-  ctx.strokeStyle = '#dc2626'; ctx.lineWidth = 2; ctx.beginPath()
+  // v(t) line (ascending straight line)
+  ctx.strokeStyle = '#2563eb'; ctx.lineWidth = 2; ctx.beginPath()
   points.forEach((p, i) => {
     const px = padL + (p.t / maxT) * W
-    const py = padT + H - (p.y / maxY) * H
-    if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py)
-  })
-  ctx.stroke()
-
-  // v(t) line
-  ctx.strokeStyle = '#5B8DB8'; ctx.lineWidth = 1; ctx.beginPath()
-  const maxVy = Math.max(...points.map(p => Math.abs(p.vy))) || 1
-  points.forEach((p, i) => {
-    const px = padL + (p.t / maxT) * W
-    const py = padT + H / 2 - (p.vy / maxVy) * (H * 0.35)
+    const py = padT + H - (p.v / maxV) * H
     if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py)
   })
   ctx.stroke()
 }
 
-watch(() => [props.simState.t, props.simState.y, props.simState.vy], draw, { flush: 'post' })
+watch(() => [props.simState.t, props.simState.v, props.simState.arrived], draw, { flush: 'post' })
 
 let resizeObs: ResizeObserver | null = null
 onMounted(() => {

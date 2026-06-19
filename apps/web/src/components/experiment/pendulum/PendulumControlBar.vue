@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import PendulumStepTracker from './PendulumStepTracker.vue'
 import PendulumStatusBar from './PendulumStatusBar.vue'
-import PendulumModeSwitcher from './PendulumModeSwitcher.vue'
 
 const props = defineProps<{
   launchLabel: string
@@ -11,7 +10,6 @@ const props = defineProps<{
   stepIndex?: number
   running?: boolean
   paused?: boolean
-  mode?: 'pendulum' | 'projectile' | 'coupled'
 }>()
 
 const emit = defineEmits<{
@@ -22,7 +20,6 @@ const emit = defineEmits<{
   (e: 'exportCsv'): void
   (e: 'undo'): void
   (e: 'redo'): void
-  (e: 'changeMode', val: 'pendulum' | 'projectile' | 'coupled'): void
   (e: 'update:speed', val: number): void
 }>()
 
@@ -41,7 +38,6 @@ function decSpeed() { const next = Math.round((props.speed - 0.25) * 100) / 100;
     <button class="btn-primary" @click="$emit('togglePause')">{{ launchLabel }}</button>
     <button class="btn-secondary" @click="$emit('reset')">&#x1F504; إعادة</button>
     <button class="btn-secondary" @click="$emit('recordTrial')">&#x1F4CC; تسجيل</button>
-    <PendulumModeSwitcher :mode="mode ?? 'pendulum'" @change="emit('changeMode', $event)" />
     <button class="btn-undo" :disabled="!canUndo" @click="$emit('undo')" title="تراجع (Ctrl+Z)">&#x21A9; تراجع</button>
     <button class="btn-undo" :disabled="!canRedo" @click="$emit('redo')" title="إعادة (Ctrl+Y)">&#x21AA; إعادة</button>
     <button class="btn-undo" @click="onClear">&#x1F5D1; مسح</button>

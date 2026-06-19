@@ -1,36 +1,36 @@
 import { reactive } from 'vue'
 
 export type ColumnId = 'data' | 'vis' | 'ctrl'
-export type PanelId = 'table' | 'equations' | 'error' | 'scatter' | 'tutor' | 'signal' | 'fft' | 'phase' | 'params' | 'guide' | 'stats' | 'report'
+export type PanelId = 'table' | 'equations' | 'scatter' | 'tutor' | 'signal' | 'vxSignal' | 'vySignal' | 'params' | 'guide' | 'stats' | 'report'
 
-const layoutStorageKey = 'pendulum:layout:v1'
+const layoutStorageKey = 'projectile:layout:v1'
 
 const defaultPanelColumn: Record<PanelId, ColumnId> = {
-  table: 'data', equations: 'data', error: 'data', scatter: 'data', tutor: 'data', report: 'data',
-  signal: 'vis', fft: 'vis', phase: 'vis',
+  table: 'data', equations: 'data', scatter: 'data', tutor: 'data', report: 'data',
+  signal: 'vis', vxSignal: 'vis', vySignal: 'vis',
   params: 'ctrl', guide: 'ctrl', stats: 'ctrl',
 }
 
 const defaultColumnOrder: Record<ColumnId, PanelId[]> = {
-  data: ['table', 'scatter', 'equations', 'error', 'tutor'],
-  vis: ['signal', 'fft', 'phase'],
+  data: ['table', 'scatter', 'equations', 'tutor'],
+  vis: ['signal', 'vxSignal', 'vySignal'],
   ctrl: ['params', 'guide', 'stats'],
 }
 
 const allPanelIds: PanelId[] = [
-  'table', 'equations', 'error', 'scatter', 'tutor', 'report',
-  'signal', 'fft', 'phase', 'params', 'guide', 'stats',
+  'table', 'equations', 'scatter', 'tutor', 'report',
+  'signal', 'vxSignal', 'vySignal', 'params', 'guide', 'stats',
 ]
 
-export function usePendulumLayout() {
+export function useProjectileLayout() {
   const panels = reactive<Record<PanelId, boolean>>({
     table: true, equations: true, signal: true, params: true, guide: true, stats: true,
-    fft: true, phase: true, scatter: true, tutor: true, error: true, report: false,
+    vxSignal: true, vySignal: true, scatter: true, tutor: true, report: false,
   })
 
   const maximized = reactive<Record<PanelId, boolean>>({
     table: false, equations: false, signal: false, params: false, guide: false, stats: false,
-    fft: false, phase: false, scatter: false, tutor: false, error: false, report: false,
+    vxSignal: false, vySignal: false, scatter: false, tutor: false, report: false,
   })
 
   const panelColumn = reactive<Record<PanelId, ColumnId>>({ ...defaultPanelColumn })
@@ -86,13 +86,17 @@ export function usePendulumLayout() {
 
   function panelTitle(id: PanelId) {
     const titles: Record<PanelId, string> = {
-      table: '📋 قراءات', equations: '⚗️ حسابات', error: '⚖️ أخطاء',
-      scatter: '📈 Scatter', tutor: '⚖️ تحليل مباشر', report: '📋 تقرير',
-      signal: '📈 إشارة θ(t)', fft: '📊 FFT', phase: '🔄 فضاء الطور',
+      table: '📋 قراءات', equations: '⚗️ حسابات', scatter: '📈 Scatter',
+      tutor: '⚖️ تحليل مباشر', report: '📋 تقرير',
+      signal: '📈 مسار y(x)', vxSignal: '📈 vₓ(t)', vySignal: '📈 vᵧ(t)',
       params: '⚙️ معاملات', guide: '📋 دليل', stats: '📊 إحصائيات',
     }
     return titles[id] ?? '📊 إحصائيات'
   }
 
-  return { panels, maximized, panelColumn, columnOrder, isPanelVisible, togglePanel, showAllPanels, maximizePanel, movePanel, applyPersistedLayout, resetLayout, panelTitle }
+  return {
+    panels, maximized, panelColumn, columnOrder,
+    isPanelVisible, togglePanel, showAllPanels, maximizePanel, movePanel,
+    applyPersistedLayout, resetLayout, panelTitle,
+  }
 }

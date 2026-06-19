@@ -5,6 +5,7 @@ import { defineAsyncComponent } from 'vue';
 const experimentMap: Record<string, () => Promise<any>> = {
   'spring': () => import('./experiments/spring/SpringExperiment.vue'),
   'pendulum': () => import('./experiments/pendulum/PendulumExperiment.vue'),
+  'projectile': () => import('./experiments/projectile/ProjectileExperiment.vue'),
 };
 
 export function loadExperiment(id: string) {

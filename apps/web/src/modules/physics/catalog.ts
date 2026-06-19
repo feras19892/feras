@@ -33,7 +33,7 @@ export const branches: Branch[] = [
     experiments: [
       { id: 'spring', name: 'Spring Oscillation', nameAr: 'تجربة النابض', icon: '📐', difficulty: 'easy', tags: ['shm', 'harmonic'], route: '' },
       { id: 'pendulum', name: 'Pendulum', nameAr: 'البندول', icon: '🕰️', difficulty: 'easy', tags: ['shm', 'gravity'], route: '' },
-      { id: 'projectile', name: 'Projectile Motion', nameAr: 'القذائف', icon: '🚀', difficulty: 'medium', tags: ['kinematics'], route: '' },
+      { id: 'projectile', name: 'Projectile Motion', nameAr: 'حركة المقذوفات', icon: '🚀', difficulty: 'medium', tags: ['kinematics', '2d'], route: '' },
     ],
   },
   {

@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { usePendulumExperiment } from '../../../../composables/pendulum/usePendulumExperiment'
 import { usePendulumReport } from '../../../../composables/pendulum/usePendulumReport'
-import { useProjectileMotion } from '../../../../composables/pendulum/useProjectileMotion'
-import { useCoupledPendulum } from '../../../../composables/pendulum/useCoupledPendulum'
 import PendulumMenuBar from '../../../../components/experiment/pendulum/PendulumMenuBar.vue'
 import PendulumCanvas from '../../../../components/experiment/pendulum/PendulumCanvas.vue'
-import CoupledPendulumCanvas from '../../../../components/experiment/pendulum/CoupledPendulumCanvas.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 import PendulumPanelBody from '../../../../components/experiment/pendulum/PendulumPanelBody.vue'
 import PendulumOverlayPanels from '../../../../components/experiment/pendulum/PendulumOverlayPanels.vue'
@@ -16,76 +13,23 @@ import PendulumHelpModal from '../../../../components/experiment/pendulum/Pendul
 
 const ex = usePendulumExperiment()
 const rep = usePendulumReport()
-const projectile = useProjectileMotion({ g: ex.params.g })
-const coupled = useCoupledPendulum({ length: ex.params.length, g: ex.params.g, mass: ex.params.mass, damping: ex.params.damping, springK: ex.params.springK, springRestLength: ex.params.springRestLength, theta10: ex.params.theta0, theta20: 0 })
-const mode = ref<'pendulum' | 'projectile' | 'coupled'>('pendulum')
-
-watch(() => [ex.params.length, ex.params.g, ex.params.mass, ex.params.damping, ex.params.springK, ex.params.springRestLength], () => {
-  coupled.state.running = false
-})
 const helpOpen = ref(false)
 const reportOpen = ref(false)
 const canvasRef = ref<InstanceType<typeof PendulumCanvas> | null>(null)
 
 function openFullReport() { rep.captureSnapshot(canvasRef.value); rep.openFullReport(ex) }
-
-function isRunning() {
-  if (mode.value === 'pendulum') return ex.lab.sim.running
-  if (mode.value === 'projectile') return projectile.state.running
-  return coupled.state.running
-}
-function isPaused() {
-  if (mode.value === 'pendulum') return ex.lab.sim.paused
-  if (mode.value === 'projectile') return false
-  return coupled.state.paused
-}
-function launchLabel() {
-  const r = isRunning(), p = isPaused()
-  return r && !p ? '⏸️ توقف' : '▶️ بدء'
-}
-function onTogglePause() {
-  if (mode.value === 'pendulum') ex.lab.togglePause()
-  else if (mode.value === 'projectile') {
-    if (!projectile.state.running) {
-      const L = ex.params.length, th = ex.params.theta0
-      const px = L * Math.sin(th), py = -L * Math.cos(th)
-      const vx = 0, vy = 0
-      projectile.start(px, py, vx, vy)
-    } else { projectile.reset() }
-  } else if (mode.value === 'coupled') { coupled.togglePause() }
-}
-function onReset() {
-  if (mode.value === 'projectile') projectile.reset()
-  else if (mode.value === 'coupled') coupled.reset()
-  ex.resetSim()
-}
-
-function onChangeMode(newMode: 'pendulum' | 'projectile' | 'coupled') {
-  mode.value = newMode
-  if (newMode === 'pendulum') { projectile.reset(); coupled.reset() }
-  else if (newMode === 'projectile') { coupled.reset() }
-  else if (newMode === 'coupled') { projectile.reset() }
-  ex.resetSim()
-}
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return
-  if (e.code === 'Space') { e.preventDefault(); onTogglePause() }
-  else if (e.key === 'r' || e.key === 'R') { if (confirm('هل تريد إعادة تعيين المحاكاة؟')) onReset() }
-  else if (e.key === 's' || e.key === 'S') { if (mode.value === 'pendulum') ex.trials.recordTrial() }
+  if (e.code === 'Space') { e.preventDefault(); ex.lab.togglePause() }
+  else if (e.key === 'r' || e.key === 'R') { if (confirm('هل تريد إعادة تعيين المحاكاة؟')) ex.resetSim() }
+  else if (e.key === 's' || e.key === 'S') { ex.trials.recordTrial() }
   else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); if (e.shiftKey) ex.trials.redo(); else ex.trials.undo() }
   else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ex.trials.redo() }
   else if (e.key === '?') { helpOpen.value = !helpOpen.value }
 }
-let rafId: number | null = null
-function tickModes() {
-  if (mode.value === 'projectile' && projectile.state.running) { projectile.step(1 / 60) }
-  if (mode.value === 'coupled' && coupled.state.running && !coupled.state.paused) { coupled.step(1 / 60, ex.lab.speed.value) }
-  rafId = requestAnimationFrame(tickModes)
-}
-
-onMounted(() => { window.addEventListener('keydown', onKeyDown); rafId = requestAnimationFrame(tickModes) })
-onUnmounted(() => { window.removeEventListener('keydown', onKeyDown); if (rafId) cancelAnimationFrame(rafId) })
+onMounted(() => window.addEventListener('keydown', onKeyDown))
+onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 </script>
 
 <template>
@@ -114,9 +58,8 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown); if (rafId)
       </div>
       <div class="resizer" @mousedown="ex.onResizeStart('data', $event)"></div>
       <div class="lab-col vis-col">
-        <PendulumCanvas v-if="mode !== 'coupled'" ref="canvasRef" :params="ex.params" :sim-state="ex.lab.sim" :projectile-state="projectile.state" :mode="mode" :oscillation-count="Math.floor(ex.lab.sim.zeroCrossings.length / 2)" @snapshot="rep.onSnapshot($event)" />
-        <CoupledPendulumCanvas v-else :params="{ length: ex.params.length, mass: ex.params.mass, springK: ex.params.springK }" :sim-state="{ theta1: coupled.state.theta1, theta2: coupled.state.theta2, running: coupled.state.running }" />
-        <div v-if="ex.hasVisibleVisPanels && mode === 'pendulum'" class="chart-row">
+        <PendulumCanvas ref="canvasRef" :params="ex.params" :sim-state="ex.lab.sim" :oscillation-count="Math.floor(ex.lab.sim.zeroCrossings.length / 2)" @snapshot="rep.onSnapshot($event)" />
+        <div v-if="ex.hasVisibleVisPanels" class="chart-row">
           <template v-for="id in ex.getColumnPanels('vis')" :key="id">
             <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="chart-panel lab-card" :id="id" :title="ex.layout.panelTitle(id)"
               @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
@@ -151,18 +94,16 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown); if (rafId)
     />
 
     <PendulumControlBar
-      :launch-label="launchLabel()"
+      :launch-label="ex.lab.sim.running && !ex.lab.sim.paused ? '⏸️ توقف' : '▶️ بدء'"
       :speed="ex.lab.speed.value"
       :can-undo="ex.trials.canUndo()"
       :can-redo="ex.trials.canRedo()"
       :step-index="ex.stepIndex.value"
-      :running="isRunning()"
-      :paused="isPaused()"
-      :mode="mode"
-      @toggle-pause="onTogglePause"
-      @reset="onReset"
+      :running="ex.lab.sim.running"
+      :paused="ex.lab.sim.paused"
+      @toggle-pause="ex.lab.togglePause"
+      @reset="ex.resetSim"
       @record-trial="ex.trials.recordTrial"
-      @change-mode="onChangeMode"
       @clear-trials="ex.trials.clearTrials"
       @export-csv="ex.trials.exportCsv"
       @undo="ex.trials.undo"
@@ -170,14 +111,9 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown); if (rafId)
       @update:speed="v => ex.lab.speed.value = v"
     />
 
-    <div class="hint-bar" v-if="mode === 'pendulum' && !ex.lab.sim.running"><span>💡 اضغط "بدء" لبدء الاهتزاز، ثم "تسجيل" لحفظ القراءة</span></div>
-    <div class="hint-bar active" v-else-if="mode === 'pendulum' && ex.lab.sim.measurementPeriod === null"><span>⏳ انتظر استقرار الاهتزاز...</span></div>
-    <div class="hint-bar success" v-else-if="mode === 'pendulum'"><span>✅ القراءة مستقرة — اضغط "تسجيل" لحفظها</span></div>
-    <div class="hint-bar" v-else-if="mode === 'projectile' && !projectile.state.running"><span>🎯 اضغط "بدء" لإطلاق المقذوف</span></div>
-    <div class="hint-bar active" v-else-if="mode === 'projectile'"><span>🎯 المقذوف في الجو — v={{ Math.sqrt(projectile.state.vx**2 + projectile.state.vy**2).toFixed(2) }} m/s</span></div>
-    <div class="hint-bar" v-else-if="mode === 'coupled' && !coupled.state.running"><span>🔗 اضغط "بدء" لبدء البندول المقترن</span></div>
-    <div class="hint-bar active" v-else-if="mode === 'coupled' && coupled.state.paused"><span>⏸️ متوقف مؤقتاً</span></div>
-    <div class="hint-bar success" v-else-if="mode === 'coupled'"><span>🔗 البندول المقترن يعمل</span></div>
+    <div class="hint-bar" v-if="!ex.lab.sim.running"><span>💡 اضغط "بدء" لبدء الاهتزاز، ثم "تسجيل" لحفظ القراءة</span></div>
+    <div class="hint-bar active" v-else-if="ex.lab.sim.measurementPeriod === null"><span>⏳ انتظر استقرار الاهتزاز...</span></div>
+    <div class="hint-bar success" v-else><span>✅ القراءة مستقرة — اضغط "تسجيل" لحفظها</span></div>
 
     <PendulumReport v-if="reportOpen" style="position:fixed;inset:5%;z-index:200;overflow:auto;background:#0d1117;border-radius:12px;border:1px solid #2D3645;box-shadow:0 20px 60px rgba(0,0,0,.5)"
       :trials="ex.trials.trials.value" :g-theoretical="ex.params.g" :canvas-snapshot="rep.canvasSnapshot.value" @close="reportOpen = false"

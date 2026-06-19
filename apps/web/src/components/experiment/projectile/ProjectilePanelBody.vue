@@ -1,0 +1,206 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+
+const props = defineProps<{
+  id: string
+  trials: any[]
+  calcResult: string
+  params: any
+  sim: any
+  measured: any
+  trialStats: any
+  tutorType?: string
+  tutorMessage?: string
+}>()
+
+const emit = defineEmits<{
+  (e: 'update:trials', val: any[]): void
+  (e: 'update:params', val: any): void
+  (e: 'remove', id: number): void
+  (e: 'clear'): void
+  (e: 'calcFlightTime'): void
+  (e: 'calcMaxHeight'): void
+  (e: 'calcRange'): void
+  (e: 'calcFitRange'): void
+  (e: 'showCalc', html: string): void
+}>()
+
+const mean = (arr: number[]) => arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0
+const std = (arr: number[]) => { const m = mean(arr); return Math.sqrt(arr.reduce((sum, v) => sum + (v - m) ** 2, 0) / arr.length) }
+
+import { ref, watch, nextTick } from 'vue'
+const signalCanvas = ref<HTMLCanvasElement | null>(null)
+const vxCanvas = ref<HTMLCanvasElement | null>(null)
+const vyCanvas = ref<HTMLCanvasElement | null>(null)
+const scatterCanvas = ref<HTMLCanvasElement | null>(null)
+
+function drawLineChart(canvas: HTMLCanvasElement | null, data: {x:number,y:number}[], color: string, xLabel: string, yLabel: string) {
+  if (!canvas) return
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return
+  const w = canvas.width, h = canvas.height, pad = 20
+  ctx.clearRect(0,0,w,h)
+  if (data.length < 2) { ctx.fillStyle='#64748b'; ctx.font='12px sans-serif'; ctx.textAlign='center'; ctx.fillText('لا توجد بيانات',w/2,h/2); return }
+  const xs = data.map(d=>d.x), ys = data.map(d=>d.y)
+  const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys)
+  const rx = maxX===minX ? 1 : (w-pad*2)/(maxX-minX), ry = maxY===minY ? 1 : (h-pad*2)/(maxY-minY)
+  const sx = (x:number) => pad + (x-minX)*rx, sy = (y:number) => h - pad - (y-minY)*ry
+  ctx.strokeStyle='rgba(148,163,184,0.2)'; ctx.lineWidth=1
+  for (let i=0;i<5;i++){ const y=pad+(h-pad*2)*i/4; ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(w-pad,y);ctx.stroke() }
+  for (let i=0;i<5;i++){ const x=pad+(w-pad*2)*i/4; ctx.beginPath();ctx.moveTo(x,pad);ctx.lineTo(x,h-pad);ctx.stroke() }
+  ctx.strokeStyle=color; ctx.lineWidth=2; ctx.beginPath()
+  data.forEach((p,i)=>{ if(i===0) ctx.moveTo(sx(p.x),sy(p.y)); else ctx.lineTo(sx(p.x),sy(p.y)) })
+  ctx.stroke()
+  ctx.fillStyle=color; data.forEach(p=>{ ctx.beginPath();ctx.arc(sx(p.x),sy(p.y),2,0,Math.PI*2);ctx.fill() })
+  ctx.strokeStyle='#475569'; ctx.lineWidth=1
+  ctx.beginPath();ctx.moveTo(pad,h-pad);ctx.lineTo(w-pad,h-pad);ctx.stroke()
+  ctx.beginPath();ctx.moveTo(pad,pad);ctx.lineTo(pad,h-pad);ctx.stroke()
+  ctx.fillStyle='#94a3b8';ctx.font='10px sans-serif';ctx.textAlign='center'
+  ctx.fillText(xLabel,w-pad-10,h-pad+12);ctx.fillText(yLabel,pad-8,pad+8)
+}
+
+function drawScatter(canvas: HTMLCanvasElement | null, data: {x:number,y:number}[], color: string) {
+  if (!canvas) return
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return
+  const w = canvas.width, h = canvas.height, pad = 20
+  ctx.clearRect(0,0,w,h)
+  if (data.length < 1) { ctx.fillStyle='#64748b'; ctx.font='12px sans-serif'; ctx.textAlign='center'; ctx.fillText('سجل قراءات أولاً',w/2,h/2); return }
+  const xs = data.map(d=>d.x), ys = data.map(d=>d.y)
+  const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys)
+  const rx = maxX===minX ? 1 : (w-pad*2)/(maxX-minX), ry = maxY===minY ? 1 : (h-pad*2)/(maxY-minY)
+  const sx = (x:number) => pad + (x-minX)*rx, sy = (y:number) => h - pad - (y-minY)*ry
+  ctx.strokeStyle='rgba(148,163,184,0.2)'; ctx.lineWidth=1
+  for (let i=0;i<5;i++){ const y=pad+(h-pad*2)*i/4; ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(w-pad,y);ctx.stroke() }
+  for (let i=0;i<5;i++){ const x=pad+(w-pad*2)*i/4; ctx.beginPath();ctx.moveTo(x,pad);ctx.lineTo(x,h-pad);ctx.stroke() }
+  ctx.fillStyle=color; data.forEach(p=>{ ctx.beginPath();ctx.arc(sx(p.x),sy(p.y),3,0,Math.PI*2);ctx.fill() })
+  ctx.strokeStyle='#475569'; ctx.lineWidth=1
+  ctx.beginPath();ctx.moveTo(pad,h-pad);ctx.lineTo(w-pad,h-pad);ctx.stroke()
+  ctx.beginPath();ctx.moveTo(pad,pad);ctx.lineTo(pad,h-pad);ctx.stroke()
+  ctx.fillStyle='#94a3b8';ctx.font='10px sans-serif';ctx.textAlign='center'
+  ctx.fillText('θ (°)',w-pad-10,h-pad+12);ctx.fillText('R (m)',pad-8,pad+8)
+}
+
+function drawCharts() {
+  nextTick(() => {
+    if (signalCanvas.value && props.sim?.trail) drawLineChart(signalCanvas.value, props.sim.trail.map((p:any)=>({x:p.x,y:p.y})), '#3b82f6', 'x (m)', 'y (m)')
+    if (vxCanvas.value && props.sim?.signalSeries) drawLineChart(vxCanvas.value, props.sim.signalSeries.map((s:any)=>({x:s.t,y:s.vx})), '#22c55e', 't (s)', 'vx (m/s)')
+    if (vyCanvas.value && props.sim?.signalSeries) drawLineChart(vyCanvas.value, props.sim.signalSeries.map((s:any)=>({x:s.t,y:s.vy})), '#ef4444', 't (s)', 'vy (m/s)')
+    if (scatterCanvas.value && props.trials?.length) drawScatter(scatterCanvas.value, props.trials.map((t:any)=>({x:t.angleDegrees,y:t.rangeMeters})), '#3b82f6')
+  })
+}
+
+watch(() => [props.id, props.sim?.trail?.length, props.sim?.signalSeries?.length, props.trials?.length], drawCharts, { flush: 'post' })
+</script>
+
+<template>
+  <div class="panel-body">
+    <!-- params panel -->
+    <template v-if="id === 'params'">
+      <div class="param-row"><label>v₀ (m/s)</label><div class="param-inputs"><input type="range" min="1" max="100" step="0.1" :value="params.v0" @input="emit('update:params', { ...params, v0: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.v0" @input="emit('update:params', { ...params, v0: +($event.target as HTMLInputElement).value })"></div></div>
+      <div class="param-row"><label>الزاوية (°)</label><div class="param-inputs"><input type="range" min="0" max="90" step="0.1" :value="params.angleDeg" @input="emit('update:params', { ...params, angleDeg: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.angleDeg" @input="emit('update:params', { ...params, angleDeg: +($event.target as HTMLInputElement).value })"></div></div>
+      <div class="param-row"><label>g (m/s²)</label><div class="param-inputs"><input type="range" min="1" max="50" step="0.1" :value="params.g" @input="emit('update:params', { ...params, g: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.g" @input="emit('update:params', { ...params, g: +($event.target as HTMLInputElement).value })"></div></div>
+      <div class="param-row"><label>x₀ (m)</label><div class="param-inputs"><input type="range" min="0" max="500" step="0.1" :value="params.x0" @input="emit('update:params', { ...params, x0: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.x0" @input="emit('update:params', { ...params, x0: +($event.target as HTMLInputElement).value })"></div></div>
+      <div class="param-row"><label>y₀ (m)</label><div class="param-inputs"><input type="range" min="0" max="200" step="0.1" :value="params.y0" @input="emit('update:params', { ...params, y0: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.y0" @input="emit('update:params', { ...params, y0: +($event.target as HTMLInputElement).value })"></div></div>
+    </template>
+
+    <!-- table panel -->
+    <template v-else-if="id === 'table'">
+      <div v-if="!trials.length" class="empty">لا توجد قراءات</div>
+      <table v-else>
+        <thead><tr><th>#</th><th>الزاوية</th><th>v₀</th><th>الزمن</th><th>الارتفاع</th><th>المدى</th><th></th></tr></thead>
+        <tbody>
+          <tr v-for="t in trials" :key="t.id"><td>{{ t.id }}</td><td>{{ t.angleDegrees }}°</td><td>{{ t.initialVelocity }}</td><td>{{ t.flightTimeSec.toFixed(3) }}</td><td>{{ t.maxHeightMeters.toFixed(3) }}</td><td>{{ t.rangeMeters.toFixed(3) }}</td><td><button @click="emit('remove', t.id)">×</button></td></tr>
+        </tbody>
+      </table>
+      <button class="btn-clear" @click="emit('clear')">مسح الكل</button>
+    </template>
+
+    <!-- equations panel -->
+    <template v-else-if="id === 'equations'">
+      <div class="calc-btns">
+        <button @click="emit('calcFlightTime')">حساب زمن التحليق</button>
+        <button @click="emit('calcMaxHeight')">حساب أقصى ارتفاع</button>
+        <button @click="emit('calcRange')">حساب المدى</button>
+        <button @click="emit('calcFitRange')">ملائمة المدى</button>
+      </div>
+      <div class="calc-result" v-html="calcResult"></div>
+    </template>
+
+    <!-- guide panel -->
+    <template v-else-if="id === 'guide'">
+      <ol class="guide-list">
+        <li>اضبط v₀ والزاوية θ</li>
+        <li>اضغط "بدء" لإطلاق المقذوف</li>
+        <li>انتظر الهبوط ثم اضغط "تسجيل"</li>
+        <li>غير الزاوية وكرر القياسات</li>
+        <li>حلل العلاقة R-θ</li>
+      </ol>
+    </template>
+
+    <!-- stats panel -->
+    <template v-else-if="id === 'stats'">
+      <div class="stats-grid">
+        <div class="stat"><span class="label">متوسط المدى</span><span class="val">{{ trialStats?.range_mean?.toFixed(3) ?? '--' }} m</span></div>
+        <div class="stat"><span class="label">انحراف المدى</span><span class="val">{{ trialStats?.range_std?.toFixed(3) ?? '--' }} m</span></div>
+        <div class="stat"><span class="label">متوسط الزمن</span><span class="val">{{ trialStats?.flightTime_mean?.toFixed(3) ?? '--' }} s</span></div>
+        <div class="stat"><span class="label">انحراف الزمن</span><span class="val">{{ trialStats?.flightTime_std?.toFixed(3) ?? '--' }} s</span></div>
+      </div>
+    </template>
+
+    <!-- tutor panel -->
+    <template v-else-if="id === 'tutor'">
+      <div class="tutor" :class="tutorType"><span>{{ tutorMessage ?? 'جاهز' }}</span></div>
+    </template>
+
+    <!-- signal: trajectory y(x) -->
+    <template v-else-if="id === 'signal'">
+      <canvas ref="signalCanvas" class="chart-canvas" width="300" height="140" />
+    </template>
+    <!-- vxSignal: vx(t) -->
+    <template v-else-if="id === 'vxSignal'">
+      <canvas ref="vxCanvas" class="chart-canvas" width="300" height="140" />
+    </template>
+    <!-- vySignal: vy(t) -->
+    <template v-else-if="id === 'vySignal'">
+      <canvas ref="vyCanvas" class="chart-canvas" width="300" height="140" />
+    </template>
+    <!-- scatter: R vs theta -->
+    <template v-else-if="id === 'scatter'">
+      <canvas ref="scatterCanvas" class="chart-canvas" width="300" height="140" />
+    </template>
+    <template v-else>
+      <div class="placeholder">{{ id }}</div>
+    </template>
+  </div>
+</template>
+
+<style scoped>
+.panel-body { padding: .4rem; font-size: .78rem; }
+.param-row { display: flex; flex-direction: column; gap: .1rem; margin-bottom: .25rem; }
+.param-row label { font-size: .68rem; color: #8B95A5; font-weight: 600; }
+.param-inputs { display: flex; gap: .3rem; align-items: center; }
+.param-inputs input[type="range"] { flex: 1; }
+.param-inputs input[type="number"] { width: 60px; padding: .35rem .4rem; border-radius: 4px; border: 1px solid #2D3645; background: #252D3A; color: #D1D7E0; font-size: .75rem; text-align: center; }
+.empty { text-align: center; color: #8B95A5; padding: 1rem; }
+table { width: 100%; border-collapse: collapse; font-size: .7rem; }
+th, td { padding: .25rem .3rem; text-align: center; border-bottom: 1px solid #2D3645; }
+th { color: #8B95A5; background: #1E2530; }
+.btn-clear { margin-top: .4rem; width: 100%; padding: .3rem; background: #ef4444; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: .72rem; }
+.calc-btns { display: flex; flex-direction: column; gap: .25rem; }
+.calc-btns button { padding: .3rem .5rem; background: #252D3A; color: #D1D7E0; border: 1px solid #2D3645; border-radius: 6px; cursor: pointer; font-size: .72rem; }
+.calc-btns button:hover { background: #2D3645; }
+.calc-result { margin-top: .4rem; padding: .4rem; background: #1E2530; border-radius: 6px; font-size: .72rem; line-height: 1.5; }
+.guide-list { padding-right: 1.2rem; margin: 0; color: #8B95A5; font-size: .75rem; }
+.guide-list li { margin-bottom: .3rem; }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem; }
+.stat { background: #1E2530; padding: .3rem .5rem; border-radius: 6px; display: flex; flex-direction: column; }
+.stat .label { font-size: .65rem; color: #8B95A5; }
+.stat .val { font-size: .8rem; color: #5B8DB8; font-family: monospace; }
+.tutor { padding: .4rem .6rem; border-radius: 6px; font-size: .75rem; }
+.tutor.info { background: rgba(91,141,184,.1); color: #5B8DB8; }
+.tutor.warn { background: rgba(245,158,11,.1); color: #f59e0b; }
+.tutor.success { background: rgba(34,197,94,.1); color: #22c55e; }
+.placeholder { text-align: center; color: #8B95A5; padding: 2rem; }
+.chart-canvas { width: 100%; height: 140px; background: #1E2530; border-radius: 6px; border: 1px solid #2D3645; }
+</style>

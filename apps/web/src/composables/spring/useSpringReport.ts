@@ -1,39 +1,12 @@
-import { ref } from 'vue'
-import { openLabReport } from '../../utils/lab-report'
+import { useExperimentReport } from '../useExperimentReport'
 import type { LabReportTable, LabReportStat } from '../../utils/lab-report'
 
 export function useSpringReport() {
-  const canvasSnapshot = ref<string>('')
-
-  function captureSnapshot(canvasRef: { captureSnapshot?: () => void } | null) {
-    canvasRef?.captureSnapshot?.()
-  }
-
-  function onSnapshot(dataUrl: string) {
-    canvasSnapshot.value = dataUrl
-  }
+  const rep = useExperimentReport('spring_report_student')
 
   function openFullReport(ex: any) {
     const staticReadings = ex.staticReadings.value
     const dynamicTrials = ex.dynamicTrials.value
-
-    // Student info from localStorage
-    let studentInfo = ''
-    try {
-      const raw = localStorage.getItem('spring_report_student')
-      if (raw) {
-        const d = JSON.parse(raw)
-        const fields: [string, string][] = []
-        if (d.name) fields.push(['👤 الاسم', d.name])
-        if (d.email) fields.push(['📧 البريد', d.email])
-        if (d.class) fields.push(['🏫 الصف / الفصل', d.class])
-        if (d.course) fields.push(['📚 المادة', d.course])
-        if (d.instructor) fields.push(['👨‍🏫 المدرس', d.instructor])
-        if (d.school) fields.push(['🏛️ المدرسة', d.school])
-        studentInfo = fields.map(([k, v]) => `<tr><td style="font-weight:600;color:#334155;background:#f8fafc;width:30%">${k}</td><td style="font-family:monospace;color:#1e3a8a">${v}</td></tr>`).join('')
-        if (studentInfo) studentInfo = `<section class="sec"><h2 class="sec-heading params-heading">📋 معلومات الطالب</h2><table class="params-table"><tbody>${studentInfo}</tbody></table></section>`
-      }
-    } catch { /* ignore */ }
 
     const staticTable: LabReportTable = {
       caption: 'الجزء الاستاتيكي — قانون هوك',
@@ -97,7 +70,7 @@ export function useSpringReport() {
 </div>`
     }
 
-    openLabReport({
+    rep.openFullReport({
       title: '📋 تقرير تجربة النابض',
       icon: '🧪',
       experimentName: 'الحركة التوافقية البسيطة',
@@ -119,18 +92,14 @@ export function useSpringReport() {
       summaryStats: stats,
       tables: [staticTable, dynamicTable].filter(t => t.rows.length > 0),
       htmlBlocks: [
-        studentInfo ? { title: '📋 معلومات الطالب', html: studentInfo } : null,
         { title: '⚖️ القوانين الفيزيائية', html: lawsBlock },
         calculationsBlock ? { title: '📐 الحسابات والمعادلات', html: calculationsBlock } : null,
         regressionBlock ? { title: '📈 نتائج الانحدار الخطي', html: regressionBlock } : null,
         { title: '⚠️ مصادر الأخطاء المحتملة', html: '<ul style="margin:0;padding-right:1.2rem;font-size:.85rem"><li>احتكاك الهواء</li><li>دقة ساعة الإيقاف</li><li>خطأ زاوية النظر (parallax)</li><li>تشوه النابض غير الخطي</li><li>اهتزازات الطاولة</li><li>عدم مركزية الكتلة</li></ul>' },
       ].filter(Boolean) as any,
-      canvasSnapshot: canvasSnapshot.value || undefined,
       footerNote: 'تم إنشاء هذا التقرير من المحاكاة التفاعلية • فيزياء الميكانيكا',
-      openPrintDialog: true,
-      sendToTeacher: true,
     })
   }
 
-  return { canvasSnapshot, captureSnapshot, onSnapshot, openFullReport }
+  return { ...rep, openFullReport }
 }

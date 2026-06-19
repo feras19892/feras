@@ -119,7 +119,10 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <div class="hint-bar success" v-else><span>✅ هبط! اضغط "تسجيل" لحفظ القراءة</span></div>
 
     <ProjectileStatusBar :running="ex.lab.sim.running" :paused="ex.lab.sim.paused" />
-    <ProjectileReport v-if="reportOpen" :trials="ex.trials.trials.value" :params="ex.params" :trial-stats="ex.trials.trialStats.value" :fit-result="ex.trials.fitResult.value" :g-theoretical="ex.params.g" :canvas-snapshot="rep.canvasSnapshot.value" @close="reportOpen = false" />
+    <ProjectileReport v-if="reportOpen" style="position:fixed;inset:5%;z-index:200;overflow:auto;background:#0d1117;border-radius:12px;border:1px solid #2D3645;box-shadow:0 20px 60px rgba(0,0,0,.5)"
+      :trials="ex.trials.trials.value" :params="ex.params" :trial-stats="ex.trials.trialStats.value" :fit-result="ex.trials.fitResult.value" :g-theoretical="ex.params.g"
+      @close="reportOpen = false" @open-full-report="rep.openFullReport(ex)"
+    />
   </div>
 </template>
 

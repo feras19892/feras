@@ -25,18 +25,7 @@ export function openLabReport(options: OpenLabReportOptions): Window | null {
   const now = new Date().toLocaleString(locale)
   const sendToTeacherScript = options.sendToTeacher ? buildSendScript(options) : ''
 
-  const studentInfo: Record<string, string> = {}
-  try {
-    const raw = localStorage.getItem('spring_report_student')
-    if (raw) {
-      const d = JSON.parse(raw)
-      if (d.name) studentInfo['الاسم'] = d.name
-      if (d.email) studentInfo['البريد'] = d.email
-      if (d.class) studentInfo['الصف'] = d.class
-    }
-  } catch { /* ignore */ }
-
-  const studentHtml = buildStudentHtml(dir, studentInfo)
+  const studentHtml = buildStudentHtml(dir, {})
   const metaRows = buildMetaHtml(options.meta ?? {})
   const paramsHtml = buildParamsHtml(options.params, strings.paramsHeading, dir)
   const statsHtml = buildStatsHtml(options.summaryStats, strings.resultsHeading)

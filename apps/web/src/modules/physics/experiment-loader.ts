@@ -6,6 +6,7 @@ const experimentMap: Record<string, () => Promise<any>> = {
   'spring': () => import('./experiments/spring/SpringExperiment.vue'),
   'pendulum': () => import('./experiments/pendulum/PendulumExperiment.vue'),
   'projectile': () => import('./experiments/projectile/ProjectileExperiment.vue'),
+  'freefall': () => import('./experiments/freefall/FreeFallExperiment.vue'),
 };
 
 export function loadExperiment(id: string) {

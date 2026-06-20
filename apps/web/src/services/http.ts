@@ -10,17 +10,54 @@ export interface FetchOptions extends RequestInit {
   signal?: AbortSignal;
 }
 
+let accessToken: string | null = null;
+
+export function setAccessToken(token: string | null) {
+  accessToken = token;
+}
+
+export function getAccessToken(): string | null {
+  return accessToken;
+}
+
 export async function fetchJson<T>(path: string, options: FetchOptions = {}): Promise<T> {
-  const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
   const mergedHeaders: Record<string, string> = {
     Accept: 'application/json',
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
     ...((options.headers as Record<string, string>) ?? {}),
   };
-  const response = await fetch(apiUrl(path), {
+
+  let response = await fetch(apiUrl(path), {
     ...options,
     headers: mergedHeaders,
+    credentials: 'include',
   });
+
+  if (response.status === 401) {
+    try {
+      const refreshRes = await fetch(apiUrl('/api/auth/refresh'), {
+        method: 'POST',
+        credentials: 'include',
+      });
+      if (refreshRes.ok) {
+        const refreshData = await refreshRes.json();
+        if (refreshData.token) {
+          accessToken = refreshData.token;
+          mergedHeaders.Authorization = `Bearer ${accessToken}`;
+          response = await fetch(apiUrl(path), {
+            ...options,
+            headers: mergedHeaders,
+            credentials: 'include',
+          });
+        }
+      } else {
+        accessToken = null;
+      }
+    } catch {
+      accessToken = null;
+    }
+  }
+
   if (!response.ok) {
     throw new Error(`Request failed: ${response.status} ${response.statusText}`);
   }

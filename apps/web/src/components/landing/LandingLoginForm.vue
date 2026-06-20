@@ -30,12 +30,12 @@ function handleLogin() {
       <form @submit.prevent="handleLogin">
         <div class="field">
           <label>{{ t('auth.email') || 'البريد الإلكتروني' }}</label>
-          <input v-model="email" type="email" required />
+          <input v-model="email" type="email" required autocomplete="username" name="email" />
         </div>
         <div class="field">
           <label>{{ t('auth.password') || 'كلمة السر' }}</label>
           <div class="password-wrap">
-            <input v-model="password" :type="showPassword ? 'text' : 'password'" required />
+            <input v-model="password" :type="showPassword ? 'text' : 'password'" required autocomplete="current-password" name="password" />
             <button type="button" class="toggle-pw" @click.prevent="showPassword = !showPassword">
               {{ showPassword ? '🙈' : '👁️' }}
             </button>
@@ -46,9 +46,9 @@ function handleLogin() {
           <button type="submit" class="btn-submit">
             {{ t('auth.login') || 'دخول' }}
           </button>
-          <button type="button" class="btn-register" @click.prevent="emit('register')">
+          <router-link to="/register" class="btn-register">
             {{ t('auth.register') || 'إنشاء حساب' }}
-          </button>
+          </router-link>
         </div>
       </form>
     </div>

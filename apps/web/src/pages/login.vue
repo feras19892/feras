@@ -41,12 +41,12 @@ function enterAsGuest() {
       <form @submit.prevent="handleLogin">
         <div class="field">
           <label>البريد الإلكتروني</label>
-          <input v-model="email" type="email" required />
+          <input v-model="email" type="email" required autocomplete="username" name="email" />
         </div>
         <div class="field">
           <label>كلمة السر</label>
           <div class="password-wrap">
-            <input v-model="password" :type="showPassword ? 'text' : 'password'" required />
+            <input v-model="password" :type="showPassword ? 'text' : 'password'" required autocomplete="current-password" name="password" />
             <button type="button" class="toggle-pw" @click.prevent="showPassword = !showPassword">
               {{ showPassword ? '🙈' : '👁️' }}
             </button>

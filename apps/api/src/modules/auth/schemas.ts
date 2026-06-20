@@ -7,4 +7,5 @@ export const loginSchema = z.object({
 
 export const registerSchema = loginSchema.extend({
   name: z.string().min(2),
+  role: z.enum(['student', 'teacher', 'admin']).optional().default('student'),
 });

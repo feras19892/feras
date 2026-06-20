@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useAuthStore } from './modules/auth/stores/auth';
 
 const routes = [
   {
@@ -22,6 +23,7 @@ const routes = [
   {
     path: '/home',
     name: 'Home',
+    meta: { requiresAuth: true, roles: ['student', 'teacher', 'admin'] },
     component: () => import('./pages/dashboard.vue'),
   },
   {
@@ -44,6 +46,21 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const auth = useAuthStore();
+
+  if (to.meta.requiresAuth && !auth.isAuthenticated && !auth.isGuest) {
+    return next('/');
+  }
+
+  const requiredRoles = to.meta.roles as string[] | undefined;
+  if (requiredRoles && !requiredRoles.includes(auth.role || '')) {
+    return next('/');
+  }
+
+  next();
 });
 
 export default router;

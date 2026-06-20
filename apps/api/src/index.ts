@@ -5,15 +5,22 @@ import { serve } from '@hono/node-server';
 import { authRoutes } from './modules/auth/handlers.js';
 import { dashboardRoutes } from './modules/dashboard/handlers.js';
 import { settingsRoutes } from './modules/settings/handlers.js';
+import { runMigrations } from './db/index.js';
+import { loginRateLimit } from './shared/middleware/rate-limit.js';
+
+await runMigrations();
 
 const app = new Hono();
 
 const corsOrigin = process.env.CORS_ORIGIN
-  ? process.env.CORS_ORIGIN.split(',').map(s => s.trim())
+  ? process.env.CORS_ORIGIN.split(',').map((s) => s.trim())
   : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'];
+
 app.use(cors({ origin: corsOrigin, credentials: true }));
 app.use(logger());
 
+app.use('/api/auth/login', loginRateLimit);
+app.use('/api/auth/register', loginRateLimit);
 app.route('/api/auth', authRoutes);
 app.route('/api/dashboard', dashboardRoutes);
 app.route('/api/settings', settingsRoutes);

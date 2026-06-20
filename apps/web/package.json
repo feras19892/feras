@@ -17,7 +17,8 @@
     "pinia": "^2.1.0",
     "splitpanes": "^4.1.2",
     "vue": "^3.4.0",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@my-modern-app/config": "workspace:*",

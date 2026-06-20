@@ -14,9 +14,16 @@
     "hono": "^4.3.0",
     "@hono/node-server": "^1.11.0",
     "zod": "^3.23.0",
+    "@hono/zod-validator": "^0.2.2",
+    "bcryptjs": "^2.4.3",
+    "jose": "^5.6.3",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
+    "hono-rate-limiter": "^0.4.0",
     "@my-modern-app/shared-types": "workspace:*"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.0.0",
     "@typescript-eslint/parser": "^7.0.0",
     "eslint": "^8.57.0",

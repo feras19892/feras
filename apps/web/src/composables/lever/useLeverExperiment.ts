@@ -37,14 +37,14 @@ export function useLeverExperiment() {
     return []
   }
 
-  const colWidths = reactive({ data: 260, vis: 0 })
+  const colWidths = reactive({ data: 460, vis: 0 })
 
   function onResizeStart(side: 'data' | 'vis', e: MouseEvent) {
     const startX = e.clientX
     const startData = colWidths.data
     function onMove(ev: MouseEvent) {
       const dx = ev.clientX - startX
-      if (side === 'data') { colWidths.data = Math.max(200, Math.min(500, startData - dx)) }
+      if (side === 'data') { colWidths.data = Math.max(260, Math.min(500, startData - dx)) }
     }
     function onUp() { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp) }
     window.addEventListener('mousemove', onMove)

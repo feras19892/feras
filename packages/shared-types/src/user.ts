@@ -8,13 +8,6 @@ export interface User {
   created_at?: string
 }
 
-export interface ClassInfo {
-  id: string
-  name: string
-  code: string
-  role: 'student' | 'teacher'
-}
-
 export interface RegisterCredentials {
   email: string
   password: string

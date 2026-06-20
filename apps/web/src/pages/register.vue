@@ -1,23 +1,46 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../modules/auth/stores/auth';
 
 const router = useRouter();
 const auth = useAuthStore();
 
-const name = ref('');
+onMounted(() => {
+  localStorage.clear();
+  auth.user = null;
+  auth.guestMode = false;
+  auth.guestRole = null;
+  auth.currentClassId = null;
+  auth.classes = [];
+});
+
+const firstName = ref('');
+const lastName = ref('');
 const email = ref('');
 const password = ref('');
 const confirmPassword = ref('');
+const showPassword = ref(false);
+const showConfirmPassword = ref(false);
 const formError = ref('');
-const selectedRole = ref<'teacher' | 'student'>('student');
+const selectedRole = ref<'teacher' | 'student' | 'admin'>('student');
 
 async function handleRegister() {
   formError.value = '';
 
-  if (!name.value.trim() || !email.value.trim() || !password.value) {
+  const fullName = `${firstName.value.trim()} ${lastName.value.trim()}`.trim();
+  const trimmedEmail = email.value.trim();
+  if (!fullName || !trimmedEmail || !password.value) {
     formError.value = 'يرجى ملء جميع الحقول';
+    return;
+  }
+  if (fullName.length < 2) {
+    formError.value = 'الاسم يجب أن يكون حرفين على الأقل';
+    return;
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(trimmedEmail)) {
+    formError.value = 'البريد الإلكتروني غير صالح';
     return;
   }
   if (password.value !== confirmPassword.value) {
@@ -32,7 +55,7 @@ async function handleRegister() {
   const ok = await auth.registerWithRole(
     email.value.trim(),
     password.value,
-    name.value.trim(),
+    fullName,
     selectedRole.value
   );
   if (ok) {
@@ -49,13 +72,19 @@ async function handleRegister() {
       <div class="app-header">
         <h1>إنشاء حساب جديد</h1>
         <p class="subtitle">
-          {{ selectedRole === 'teacher' ? '👨‍🏫 مدرس' : '🎓 طالب' }}
+          {{ selectedRole === 'teacher' ? '👨‍🏫 مدرس' : selectedRole === 'admin' ? '⚙️ مشرف' : '🎓 طالب' }}
         </p>
       </div>
       <form @submit.prevent="handleRegister">
-        <div class="field">
-          <label>الاسم الكامل</label>
-          <input v-model="name" type="text" required />
+        <div class="field-row">
+          <div class="field half">
+            <label>الاسم</label>
+            <input v-model="firstName" type="text" required autocomplete="given-name" name="firstName" />
+          </div>
+          <div class="field half">
+            <label>اللقب</label>
+            <input v-model="lastName" type="text" required autocomplete="family-name" name="lastName" />
+          </div>
         </div>
         <div class="field">
           <label>نوع الحساب</label>
@@ -76,19 +105,59 @@ async function handleRegister() {
             >
               🎓 طالب
             </button>
+            <button
+              type="button"
+              class="role-option"
+              :class="{ active: selectedRole === 'admin' }"
+              @click="selectedRole = 'admin'"
+            >
+              ⚙️ مشرف
+            </button>
           </div>
         </div>
         <div class="field">
           <label>البريد الإلكتروني</label>
-          <input v-model="email" type="email" required />
+          <input v-model="email" type="email" required autocomplete="username" name="email" />
         </div>
         <div class="field">
           <label>كلمة المرور</label>
-          <input v-model="password" type="password" required />
+          <div class="password-wrapper">
+            <input
+              v-model="password"
+              :type="showPassword ? 'text' : 'password'"
+              required
+              autocomplete="new-password"
+              name="password"
+            />
+            <button
+              type="button"
+              class="eye-btn"
+              @click="showPassword = !showPassword"
+              :title="showPassword ? 'إخفاء' : 'إظهار'"
+            >
+              {{ showPassword ? '🙈' : '👁️' }}
+            </button>
+          </div>
         </div>
         <div class="field">
           <label>تأكيد كلمة المرور</label>
-          <input v-model="confirmPassword" type="password" required />
+          <div class="password-wrapper">
+            <input
+              v-model="confirmPassword"
+              :type="showConfirmPassword ? 'text' : 'password'"
+              required
+              autocomplete="new-password"
+              name="confirmPassword"
+            />
+            <button
+              type="button"
+              class="eye-btn"
+              @click="showConfirmPassword = !showConfirmPassword"
+              :title="showConfirmPassword ? 'إخفاء' : 'إظهار'"
+            >
+              {{ showConfirmPassword ? '🙈' : '👁️' }}
+            </button>
+          </div>
         </div>
         <p v-if="formError" class="error">{{ formError }}</p>
         <button type="submit" class="btn-submit" :disabled="auth.loading">
@@ -136,6 +205,29 @@ input {
   box-sizing: border-box;
 }
 input:focus { outline: none; border-color: #06b6d4; }
+.field-row { display: flex; gap: 0.5rem; }
+.field.half { flex: 1; margin-bottom: 0; }
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.password-wrapper input {
+  flex: 1;
+  padding-right: 2.4rem;
+}
+.eye-btn {
+  position: absolute;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0;
+  color: #94a3b8;
+  line-height: 1;
+}
+.eye-btn:hover { color: #e2e8f0; }
 .error { color: #fca5a5; font-size: 0.8rem; margin: 0.5rem 0; }
 .btn-submit {
   width: 100%;

@@ -1,9 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed, watch } from 'vue';
-import { fetchJson } from '../../../services/http';
+import { fetchJson, setAccessToken } from '../../../services/http';
 import type { User, UserRole, ClassInfo } from '@my-modern-app/shared-types';
-
-const TOKEN_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
 function loadJson<T>(key: string, fallback: T): T {
   try {
@@ -16,7 +14,6 @@ function loadJson<T>(key: string, fallback: T): T {
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null);
-  const token = ref<string | null>(localStorage.getItem('auth_token'));
   const loading = ref(false);
   const error = ref<string | null>(null);
 
@@ -30,7 +27,7 @@ export const useAuthStore = defineStore('auth', () => {
     if (guestMode.value) return guestRole.value || 'guest';
     return user.value?.role ?? null;
   });
-  const isGuest = computed(() => role.value === 'guest');
+  const isGuest = computed(() => guestMode.value);
   const isStudent = computed(() => role.value === 'student');
   const isTeacher = computed(() => role.value === 'teacher');
   const isResearcher = computed(() => role.value === 'researcher');
@@ -56,24 +53,6 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('auth_classes');
   }
 
-  function setToken(t: string) {
-    token.value = t;
-    localStorage.setItem('auth_token', t);
-    localStorage.setItem('auth_token_set_at', String(Date.now()));
-  }
-
-  function clearToken() {
-    token.value = null;
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('auth_token_set_at');
-  }
-
-  function isTokenExpired(): boolean {
-    const setAt = localStorage.getItem('auth_token_set_at');
-    if (!setAt) return true;
-    return Date.now() - Number(setAt) > TOKEN_MAX_AGE_MS;
-  }
-
   function extractStatusCode(err: unknown): number | null {
     const msg = err instanceof Error ? err.message : String(err);
     const match = msg.match(/Request failed:\s*(\d{3})\b/);
@@ -96,7 +75,7 @@ export const useAuthStore = defineStore('auth', () => {
       });
       clearGuestState();
       user.value = data.user;
-      setToken(data.token);
+      setAccessToken(data.token);
       return true;
     } catch (err) {
       const status = extractStatusCode(err);
@@ -109,11 +88,11 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function registerWithRole(email: string, password: string, name: string, roleVal: 'teacher' | 'student') {
+  async function registerWithRole(email: string, password: string, name: string, roleVal: 'teacher' | 'student' | 'admin') {
     loading.value = true;
     error.value = null;
     try {
-      await fetchJson<{ user: User }>('/api/auth/register', {
+      await fetchJson<{ success: boolean; user?: User }>('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, name, role: roleVal }),
@@ -125,7 +104,7 @@ export const useAuthStore = defineStore('auth', () => {
       });
       clearGuestState();
       user.value = loginData.user;
-      setToken(loginData.token);
+      setAccessToken(loginData.token);
       return true;
     } catch (err) {
       const status = extractStatusCode(err);
@@ -140,15 +119,30 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function fetchMe() {
-    if (!token.value || isTokenExpired()) {
-      logout();
-      return;
-    }
     try {
       const data = await fetchJson<{ user: User }>('/api/auth/me');
       user.value = data.user;
     } catch {
       logout();
+    }
+  }
+
+  async function init() {
+    try {
+      const data = await fetchJson<{ user: User }>('/api/auth/me');
+      user.value = data.user;
+    } catch {
+      user.value = null;
+    }
+  }
+
+  async function tryRestore() {
+    try {
+      const data = await fetchJson<{ user: User }>('/api/auth/me');
+      user.value = data.user;
+      return true;
+    } catch {
+      return false;
     }
   }
 
@@ -234,15 +228,20 @@ export const useAuthStore = defineStore('auth', () => {
     guestRole.value = role || null;
   }
 
-  function logout() {
-    clearToken();
+  async function logout() {
+    try {
+      await fetchJson('/api/auth/logout', { method: 'POST' });
+    } catch {
+      // ignore logout errors
+    }
+    setAccessToken(null);
     clearGuestState();
     user.value = null;
   }
 
   function setSession(u: User, t: string) {
     user.value = u;
-    setToken(t);
+    setAccessToken(t);
     clearGuestState();
   }
 
@@ -253,11 +252,11 @@ export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = isLoggedIn;
 
   return {
-    user, token, loading, error,
-    guestMode, currentClassId, classes,
+    user, loading, error,
+    guestMode, guestRole, currentClassId, classes,
     isLoggedIn, isAuthenticated, role,
     isGuest, isStudent, isTeacher, isResearcher, isAdmin,
-    login, registerWithRole, fetchMe, updatePassword,
+    login, registerWithRole, fetchMe, init, updatePassword,
     joinClass, createClass, selectClass, loginAsGuest, logout,
     setSession, clearSession,
   };

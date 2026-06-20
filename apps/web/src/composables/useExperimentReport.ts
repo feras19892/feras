@@ -18,7 +18,7 @@ export function useExperimentReport(studentStorageKey: string) {
   }
 
   function buildStudentHtmlBlock(): LabReportHtmlBlock | null {
-    let studentInfo: Record<string, string> = {}
+    const studentInfo: Record<string, string> = {}
     try {
       const raw = localStorage.getItem(studentStorageKey)
       if (raw) {

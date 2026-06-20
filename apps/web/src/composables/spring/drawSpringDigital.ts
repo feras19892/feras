@@ -6,7 +6,7 @@ export function drawSpringDigital(
   massY: number,
   natEqY: number,
   staticStretchCm: number,
-  pxPerCm: number
+  _pxPerCm: number
 ) {
   const hasMass = params.mass > 1e-6
   const padX = w - 168
@@ -74,6 +74,7 @@ export function drawSpringDigital(
     { label: 'y', val: currentPosCm, unit: 'cm', highlight: false },
     { label: 'Δx', val: dispFromEqCm, unit: 'cm', highlight: hasMass && Math.abs(simState.x) > 0.001 },
     { label: 'v', val: velocity, unit: 'm/s', highlight: hasMass && Math.abs(simState.v) > 0.01 },
+    { label: 't', val: timeS, unit: 's', highlight: false },
   ]
 
   rows.forEach((r, i) => {

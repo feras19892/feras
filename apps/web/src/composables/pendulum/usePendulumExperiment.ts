@@ -1,10 +1,15 @@
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { sendToAnalysis } from '../../composables/analysis/sendToAnalysis'
+import type { AnalysisPayload } from '../../types/physics'
 import type { PendulumParams } from '../../modules/physics/experiments/pendulum/usePendulumPhysics'
 import { usePendulumLab } from './usePendulumLab'
 import { usePendulumLayout } from './usePendulumLayout'
 import { usePendulumTrials } from './usePendulumTrials'
 
 export function usePendulumExperiment() {
+  const router = useRouter()
+
   const params = reactive<PendulumParams>({ length: 0.50, g: 9.81, theta0: 10 * Math.PI / 180, theta0Deg: 10, mass: 0.05, damping: 0.02, measureCycles: 20, bobRadius: 0.02, airDensity: 1.225, springK: 10, springRestLength: 0.08 })
 
   // Sync theta0 <-> theta0Deg (avoid circular loop)
@@ -91,6 +96,30 @@ export function usePendulumExperiment() {
     }
   }
 
+  function exportToAnalysis() {
+    const tList = trials.trials.value
+    if (tList.length === 0) { alert('لا توجد قراءات مسجلة'); return }
+    const readings = tList.map(t => ({ length: t.length, T: t.T, T2: t.T * t.T, gCalc: t.gCalc }))
+    const payload: AnalysisPayload = {
+      sourceExperiment: 'pendulum', sourceNameAr: 'البندول البسيط', readings,
+      columns: [
+        { key: 'length', label: 'طول الخيط', unit: 'm' },
+        { key: 'T', label: 'الدورة', unit: 's' },
+        { key: 'T2', label: 'T²', unit: 's²' },
+        { key: 'gCalc', label: 'g المحسوب', unit: 'm/s²' },
+      ],
+      equations: [
+        { name: 'قانون البندول', formula: 'T = 2π√(L/g)', variables: [{ symbol: 'L', label: 'طول الخيط' }, { symbol: 'T', label: 'الدورة' }, { symbol: 'g', label: 'تسارع الجاذبية' }], solveFor: ['g', 'T', 'L'] },
+        { name: 'g من الانحدار', formula: 'T² = (4π²/g) · L', variables: [{ symbol: 'L', label: 'طول الخيط' }, { symbol: 'T', label: 'الدورة' }, { symbol: 'g', label: 'تسارع الجاذبية' }], solveFor: ['g'] },
+      ],
+      suggestedPlots: [
+        { xKey: 'length', yKey: 'T2', xLabel: 'L (m)', yLabel: 'T² (s²)', type: 'scatter' },
+        { xKey: 'length', yKey: 'T', xLabel: 'L (m)', yLabel: 'T (s)', type: 'scatter' },
+      ],
+    }
+    sendToAnalysis(payload)
+  }
+
   return {
     params, lab, layout, trials,
     resetSim, runPendulumLab,
@@ -99,5 +128,6 @@ export function usePendulumExperiment() {
     colClasses, hasVisibleVisPanels, getColumnPanels,
     getMeasured, getEffectiveMass,
     colWidths, onResizeStart, handleDrop,
+    exportToAnalysis,
   }
 }

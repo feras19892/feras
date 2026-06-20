@@ -70,6 +70,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @calc-fit-k="ex.trials.calcFitK"
       @toggle-help="helpOpen = !helpOpen"
       @print-report="reportOpen = true"
+      @analyze-results="ex.exportToAnalysis"
     />
 
     <SpringHelpModal :open="helpOpen" @close="helpOpen = false" />
@@ -281,7 +282,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @push-up="ex.pushUp"
     />
 
-    <SpringReport v-if="reportOpen" style="position:fixed;inset:5%;z-index:200;overflow:auto;background:#0d1117;border-radius:12px;border:1px solid #2D3645;box-shadow:0 20px 60px rgba(0,0,0,.5)" :static-readings="ex.staticReadings.value" :dynamic-trials="ex.dynamicTrials.value" :k-static="ex.staticK.value" :k-dynamic="ex.kDynamic.value" :theoretical-k="ex.params.k" @close="reportOpen = false" @open-full-report="rep.openFullReport(ex)" />
+    <SpringReport v-if="reportOpen" style="position:fixed;inset:5%;z-index:200;overflow:auto;background:#0d1117;border-radius:12px;border:1px solid #2D3645;box-shadow:0 20px 60px rgba(0,0,0,.5)" :static-readings="ex.staticReadings.value" :dynamic-trials="ex.dynamicTrials.value" :k-static="ex.staticK.value" :k-dynamic="ex.kDynamic.value" :theoretical-k="ex.params.k" @close="reportOpen = false" @open-full-report="openFullReport" />
   </div></template>
 
 <style scoped>

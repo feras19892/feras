@@ -30,7 +30,7 @@ async function handleJoinClass() {
         localStorage.setItem('physlab_guest_classes', JSON.stringify(teacherClasses))
         joinLoading.value = false; showJoinModal.value = false; joinCode.value = ''; return
       }
-    } catch {}
+    } catch { /* ignore */ }
     joinLoading.value = false; joinError.value = 'الكود غير صحيح'; return
   }
 

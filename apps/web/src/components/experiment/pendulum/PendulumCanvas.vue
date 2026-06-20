@@ -31,7 +31,6 @@ function draw() {
   const ctx = canvas.getContext('2d')
   if (!ctx) return
   const w = canvas.width, h = canvas.height
-  const dpr = window.devicePixelRatio || 1
   ctx.clearRect(0, 0, w, h)
 
   // Background gradient

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed, watch } from 'vue';
 import { fetchJson } from '../../../services/http';
-import type { User, UserRole, ClassInfo, RegisterCredentials } from '@my-modern-app/shared-types';
+import type { User, UserRole, ClassInfo } from '@my-modern-app/shared-types';
 
 const TOKEN_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 

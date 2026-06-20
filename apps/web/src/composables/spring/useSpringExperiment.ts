@@ -1,4 +1,7 @@
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { sendToAnalysis } from '../../composables/analysis/sendToAnalysis'
+import type { AnalysisPayload } from '../../types/physics'
 
 function toDynamicTrials(trials: { mass: number; T: number }[]) {
   return trials.map(t => {
@@ -20,6 +23,8 @@ import { useSpringLayout } from './useSpringLayout'
 import { useSpringTrials } from './useSpringTrials'
 
 export function useSpringExperiment() {
+  const router = useRouter()
+
   const params = reactive<SpringParams>({ mass: 1.0, k: 50, amplitude: 0.03, damping: 0.5, measureCycles: 5, dampingModel: 'linear', springMass: 0.15 })
   const previousMass = ref(1.0)
 
@@ -67,7 +72,7 @@ export function useSpringExperiment() {
   const kDynamic = computed(() => trials.trials.value.length > 0 ? trials.trialStats.value.k_mean : null)
 
   function onStaticComplete(readings: any[], k: number | null) { staticReadings.value = readings; staticK.value = k }
-  function onDynamicComplete(t: any[], k: number | null) { /* no-op, kDynamic is computed */ }
+  function onDynamicComplete(_t: any[], _k: number | null) { /* no-op, kDynamic is computed */ }
 
   watch(() => [params.mass, params.k, params.amplitude, params.damping], () => { 
     if (ignoreParamsWatch) return
@@ -156,6 +161,58 @@ export function useSpringExperiment() {
     }
   }
 
+  function exportToAnalysis() {
+    const tList = trials.trials.value
+    if (tList.length === 0) { alert('لا توجد قراءات مسجلة'); return }
+
+    const readings = tList.map(t => ({
+      mass: t.mass,
+      T: t.T,
+      T2: t.T * t.T,
+      kCalc: t.kCalc,
+    }))
+
+    const payload: AnalysisPayload = {
+      sourceExperiment: 'spring',
+      sourceNameAr: 'تجربة النابض',
+      readings,
+      columns: [
+        { key: 'mass', label: 'الكتلة', unit: 'kg' },
+        { key: 'T', label: 'الدورة', unit: 's' },
+        { key: 'T2', label: 'T²', unit: 's²' },
+        { key: 'kCalc', label: 'k المحسوب', unit: 'N/m' },
+      ],
+      equations: [
+        {
+          name: 'قانون النابض',
+          formula: 'T = 2π√(m/k)',
+          variables: [
+            { symbol: 'm', label: 'الكتلة' },
+            { symbol: 'T', label: 'الدورة' },
+            { symbol: 'k', label: 'ثابت النابض' },
+          ],
+          solveFor: ['k', 'T', 'm'],
+        },
+        {
+          name: 'ثابت النابض من الانحدار',
+          formula: 'T² = (4π²/k) · m',
+          variables: [
+            { symbol: 'm', label: 'الكتلة' },
+            { symbol: 'T', label: 'الدورة' },
+            { symbol: 'k', label: 'ثابت النابض' },
+          ],
+          solveFor: ['k'],
+        },
+      ],
+      suggestedPlots: [
+        { xKey: 'mass', yKey: 'T2', xLabel: 'm (kg)', yLabel: 'T² (s²)', type: 'scatter' },
+        { xKey: 'mass', yKey: 'T', xLabel: 'm (kg)', yLabel: 'T (s)', type: 'scatter' },
+      ],
+    }
+
+    sendToAnalysis(payload)
+  }
+
   return {
     params, previousMass, lab, layout, trials,
     resetSim, toggleMass, runSpringLab, pullDown, pushUp,
@@ -165,5 +222,6 @@ export function useSpringExperiment() {
     colClasses, hasVisibleVisPanels, getColumnPanels,
     getMeasured, getEffectiveMass,
     colWidths, onResizeStart, handleDrop,
+    exportToAnalysis,
   }
 }

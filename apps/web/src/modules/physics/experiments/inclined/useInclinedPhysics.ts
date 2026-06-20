@@ -70,6 +70,7 @@ export function useInclinedPhysics(params: InclinedParams) {
       const next = inclinedStepWithDrag(sim.s, sim.v, sDt, params.g, sin, params.mu, cos, params.mass, params.cd, params.area)
       sim.s = next.s
       sim.v = next.v
+      measured.value.acceleration = Number(next.a.toFixed(3))
     }
 
     if (sim.s >= params.length) {
@@ -77,7 +78,7 @@ export function useInclinedPhysics(params: InclinedParams) {
       sim.arrived = true
       const summary = calculateInclinedSummary(params.thetaDeg, params.length, params.mass, params.g, params.mu, params.airResistance, params.cd, params.area)
       measured.value = {
-        acceleration: summary.acceleration,
+        acceleration: measured.value.acceleration ?? summary.acceleration,
         timeOfArrival: sim.t,
         finalVelocity: sim.v,
         normalForce: summary.normalForce,

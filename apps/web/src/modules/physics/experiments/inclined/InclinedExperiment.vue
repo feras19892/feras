@@ -36,6 +36,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @toggle-panel="ex.layout.togglePanel" @show-all-panels="ex.layout.showAllPanels" @export-csv="ex.trials.exportCsv"
       @toggle-pause="ex.lab.togglePause" @reset="ex.resetSim" @record-trial="ex.trials.recordTrial" @run-lab="ex.runInclinedLab"
       @toggle-help="helpOpen = !helpOpen" @print-report="reportOpen = true"
+      @analyze-results="ex.exportToAnalysis"
     />
 
     <InclinedHelpModal :open="helpOpen" @close="helpOpen = false" />

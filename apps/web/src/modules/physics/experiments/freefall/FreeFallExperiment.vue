@@ -49,6 +49,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @toggle-help="helpOpen = !helpOpen" @print-report="reportOpen = true"
       @export-csv="ex.trials.exportCsv" @toggle-panel="ex.layout.togglePanel"
       @show-all-panels="ex.layout.showAllPanels"
+      @analyze-results="ex.exportToAnalysis"
     />
 
     <FreeFallHelpModal :open="helpOpen" @close="helpOpen = false" />

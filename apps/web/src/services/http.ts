@@ -1,4 +1,4 @@
-export const API_BASE_URL: string = (import.meta as any).env?.VITE_API_BASE_URL || 'http://localhost:3000';
+export const API_BASE_URL: string = ((import.meta as unknown as { env?: Record<string, string> }).env?.VITE_API_BASE_URL) || 'http://localhost:3000';
 
 export function apiUrl(path: string): string {
   if (path.startsWith('http')) return path;

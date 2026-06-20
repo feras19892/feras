@@ -8,6 +8,8 @@ const experimentMap: Record<string, () => Promise<any>> = {
   'projectile': () => import('./experiments/projectile/ProjectileExperiment.vue'),
   'freefall': () => import('./experiments/freefall/FreeFallExperiment.vue'),
   'inclined': () => import('./experiments/inclined/InclinedExperiment.vue'),
+  'collision': () => import('./experiments/collision/CollisionExperiment.vue'),
+  'analysis-calc': () => import('./experiments/analysis-calc/AnalysisCalcExperiment.vue'),
 };
 
 export function loadExperiment(id: string) {

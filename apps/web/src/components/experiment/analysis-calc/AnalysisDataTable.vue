@@ -1,0 +1,147 @@
+<script setup lang="ts">
+import { computed } from 'vue';
+import type { AnalysisColumnMeta } from '../../../types/physics';
+
+const props = defineProps<{
+  readings: Record<string, number>[];
+  columns: AnalysisColumnMeta[];
+}>();
+
+const emit = defineEmits<{
+  (e: 'update-cell', row: number, key: string, value: number): void;
+}>();
+
+const rows = computed(() => props.readings);
+
+// Smart outlier detection: highlight values > 2σ from mean
+const outlierMap = computed(() => {
+  const map: Record<string, boolean[]> = {};
+  for (const col of props.columns) {
+    const vals = props.readings.map(r => r[col.key]).filter(v => typeof v === 'number' && !isNaN(v));
+    if (vals.length < 3) { map[col.key] = props.readings.map(() => false); continue; }
+    const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
+    const std = Math.sqrt(vals.reduce((s, v) => s + (v - mean) ** 2, 0) / vals.length);
+    map[col.key] = props.readings.map(r => std > 1e-9 && Math.abs((r[col.key] ?? 0) - mean) > 2 * std);
+  }
+  return map;
+});
+
+function onInput(row: number, key: string, ev: Event) {
+  const val = parseFloat((ev.target as HTMLInputElement).value);
+  if (!isNaN(val)) {
+    emit('update-cell', row, key, val);
+  }
+}
+
+function addRow() {
+  const empty: Record<string, number> = {};
+  for (const c of props.columns) { empty[c.key] = 0; }
+  props.readings.push(empty);
+}
+
+function removeRow(index: number) {
+  props.readings.splice(index, 1);
+}
+</script>
+
+<template>
+  <div class="table-panel">
+    <div class="panel-header">
+      <span>📋 جدول القراءات</span>
+      <button class="btn-add" @click="addRow">+ صف</button>
+    </div>
+    <div class="table-wrap">
+      <table v-if="columns.length">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th v-for="col in columns" :key="col.key">
+              {{ col.label }} <span v-if="col.unit" class="unit">({{ col.unit }})</span>
+            </th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(row, i) in rows" :key="i">
+            <td class="idx">{{ i + 1 }}</td>
+            <td v-for="col in columns" :key="col.key" :class="{ outlier: outlierMap[col.key]?.[i] }">
+              <input
+                type="number"
+                step="any"
+                :value="row[col.key] !== undefined ? Number(row[col.key]).toFixed(3) : ''"
+                @input="onInput(i, col.key, $event)"
+                :title="outlierMap[col.key]?.[i] ? 'قيمة شاذة (> 2σ من المتوسط)' : ''"
+              />
+            </td>
+            <td>
+              <button class="btn-del" @click="removeRow(i)">✕</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p v-else class="empty">لا توجد بيانات</p>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.table-panel {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  font-size: 0.85rem;
+  color: #67e8f9;
+  font-weight: 600;
+}
+.btn-add {
+  background: rgba(34,197,94,0.15);
+  border: 1px solid rgba(34,197,94,0.3);
+  color: #4ade80;
+  border-radius: 0.3rem;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+.table-wrap { overflow: auto; max-height: 260px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+th, td { padding: 0.2rem 0.3rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+th { color: #94a3b8; font-weight: 700; background: rgba(255,255,255,0.02); position: sticky; top: 0; font-size: 0.85rem; }
+.idx { color: #64748b; width: 24px; font-size: 0.8rem; }
+.unit { color: #64748b; font-size: 0.65rem; }
+input {
+  width: 100%;
+  padding: 0.15rem 0.2rem;
+  border-radius: 0.2rem;
+  border: 1px solid #334155;
+  background: #0f172a;
+  color: #e2e8f0;
+  font-size: 0.9rem;
+  text-align: center;
+  font-weight: 600;
+}
+.btn-del {
+  background: none;
+  border: none;
+  color: #f87171;
+  cursor: pointer;
+  font-size: 0.7rem;
+  padding: 0.05rem 0.2rem;
+}
+.empty { color: #64748b; text-align: center; padding: 1rem; font-size: 0.85rem; }
+td.outlier input {
+  background: rgba(245,158,11,0.15);
+  border-color: rgba(245,158,11,0.5);
+  color: #fbbf24;
+}
+</style>

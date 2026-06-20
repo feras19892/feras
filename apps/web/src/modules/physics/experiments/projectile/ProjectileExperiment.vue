@@ -41,6 +41,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @toggle-pause="ex.lab.togglePause" @reset="ex.resetSim" @record-trial="ex.trials.recordTrial" @run-lab="ex.runProjectileLab"
       @calc-flight-time="ex.trials.calcFlightTime" @calc-max-height="ex.trials.calcMaxHeight" @calc-range="ex.trials.calcRange" @calc-fit-range="ex.trials.calcFitRange"
       @toggle-help="helpOpen = !helpOpen" @print-report="reportOpen = true"
+      @analyze-results="ex.exportToAnalysis"
     />
 
     <ProjectileHelpModal :open="helpOpen" @close="helpOpen = false" />

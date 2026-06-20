@@ -39,6 +39,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @toggle-pause="ex.lab.togglePause" @reset="ex.resetSim" @record-trial="ex.trials.recordTrial" @run-lab="ex.runPendulumLab"
       @calc-g="ex.trials.calcG" @calc-t="ex.trials.calcT" @calc-l="ex.trials.calcL" @calc-fit-g="ex.trials.calcFitG"
       @toggle-help="helpOpen = !helpOpen" @print-report="reportOpen = true"
+      @analyze-results="ex.exportToAnalysis"
     />
 
     <PendulumHelpModal :open="helpOpen" @close="helpOpen = false" />
@@ -116,7 +117,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <div class="hint-bar success" v-else><span>✅ القراءة مستقرة — اضغط "تسجيل" لحفظها</span></div>
 
     <PendulumReport v-if="reportOpen" style="position:fixed;inset:5%;z-index:200;overflow:auto;background:#0d1117;border-radius:12px;border:1px solid #2D3645;box-shadow:0 20px 60px rgba(0,0,0,.5)"
-      :trials="ex.trials.trials.value" :g-theoretical="ex.params.g" @close="reportOpen = false" @open-full-report="rep.openFullReport(ex)"
+      :trials="ex.trials.trials.value" :g-theoretical="ex.params.g" @close="reportOpen = false" @open-full-report="openFullReport"
     />
   </div>
 </template>

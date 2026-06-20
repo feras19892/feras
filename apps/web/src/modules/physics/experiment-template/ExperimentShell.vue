@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import type { ExperimentConfig, PanelState } from './types';
 
-const props = defineProps<{
+defineProps<{
   config: ExperimentConfig;
 }>();
 

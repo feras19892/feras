@@ -30,7 +30,7 @@ import ProjectilePanelBody from './ProjectilePanelBody.vue'
 
 <template>
   <Teleport to="body">
-    <div v-for="[id, active] in Object.entries(maximized).filter(([,a]) => a)" :key="id" class="overlay-backdrop" @click="emit('maximize', id)">
+    <div v-for="[id, _active] in Object.entries(maximized).filter(([,a]) => a)" :key="id" class="overlay-backdrop" @click="emit('maximize', id)">
       <div class="overlay-panel" @click.stop @drop.prevent="emit('drop', id, $event.clientX, $event.clientY)" @dragover.prevent>
         <div class="overlay-header">
           <span>{{ panelTitle(id) }}</span>

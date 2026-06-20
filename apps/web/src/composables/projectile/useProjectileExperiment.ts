@@ -1,10 +1,15 @@
 import { computed, onMounted, onUnmounted, reactive, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { sendToAnalysis } from '../../composables/analysis/sendToAnalysis'
+import type { AnalysisPayload } from '../../types/physics'
 import type { ProjectileParams } from '../../modules/physics/experiments/projectile/useProjectilePhysics'
 import { useProjectileLab } from './useProjectileLab'
 import { useProjectileLayout } from './useProjectileLayout'
 import { useProjectileTrials } from './useProjectileTrials'
 
 export function useProjectileExperiment() {
+  const router = useRouter()
+
   const params = reactive<ProjectileParams>({ v0: 10, angleDeg: 45, g: 9.81, x0: 0, y0: 0, targetX: 30, targetY: 0, targetRadius: 3, targetVisible: false, targetMode: false, dragCoeff: 0 })
 
   const lab = useProjectileLab(params)
@@ -74,6 +79,34 @@ export function useProjectileExperiment() {
     }
   }
 
+  function exportToAnalysis() {
+    const tList = trials.trials.value
+    if (tList.length === 0) { alert('لا توجد قراءات مسجلة'); return }
+    const readings = tList.map(t => ({
+      angleDegrees: t.angleDegrees, initialVelocity: t.initialVelocity,
+      flightTimeSec: t.flightTimeSec, maxHeightMeters: t.maxHeightMeters, rangeMeters: t.rangeMeters,
+    }))
+    const payload: AnalysisPayload = {
+      sourceExperiment: 'projectile', sourceNameAr: 'حركة المقذوفات', readings,
+      columns: [
+        { key: 'angleDegrees', label: 'الزاوية', unit: '°' },
+        { key: 'initialVelocity', label: 'v₀', unit: 'm/s' },
+        { key: 'flightTimeSec', label: 'زمن الرحلة', unit: 's' },
+        { key: 'maxHeightMeters', label: 'الارتفاع الأقصى', unit: 'm' },
+        { key: 'rangeMeters', label: 'المدى', unit: 'm' },
+      ],
+      equations: [
+        { name: 'المدى الأقصى', formula: 'R = v₀²·sin(2θ)/g', variables: [{ symbol: 'v0', label: 'v₀' }, { symbol: 'θ', label: 'الزاوية' }, { symbol: 'g', label: 'g' }, { symbol: 'R', label: 'المدى' }], solveFor: ['R', 'v0', 'θ'] },
+        { name: 'الارتفاع الأقصى', formula: 'H = v₀²·sin²(θ)/(2g)', variables: [{ symbol: 'v0', label: 'v₀' }, { symbol: 'θ', label: 'الزاوية' }, { symbol: 'g', label: 'g' }, { symbol: 'H', label: 'الارتفاع' }], solveFor: ['H'] },
+      ],
+      suggestedPlots: [
+        { xKey: 'angleDegrees', yKey: 'rangeMeters', xLabel: 'θ (°)', yLabel: 'R (m)', type: 'scatter' },
+        { xKey: 'initialVelocity', yKey: 'rangeMeters', xLabel: 'v₀ (m/s)', yLabel: 'R (m)', type: 'scatter' },
+      ],
+    }
+    sendToAnalysis(payload)
+  }
+
   return {
     params, lab, layout, trials,
     resetSim, runProjectileLab,
@@ -81,5 +114,6 @@ export function useProjectileExperiment() {
     colClasses, hasVisibleVisPanels, getColumnPanels,
     getMeasured,
     colWidths, onResizeStart, handleDrop,
+    exportToAnalysis,
   }
 }

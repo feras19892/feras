@@ -1,16 +1,11 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import type { FreeFallParams } from '../../../modules/physics/experiments/freefall/useFreeFallPhysics'
 import type { FreeFallState } from '../../../modules/physics/experiments/freefall/useFreeFallPhysics'
 
 const props = defineProps<{
   params: FreeFallParams
   simState: FreeFallState
-}>()
-
-const emit = defineEmits<{
-  (e: 'snapshot', dataUrl: string): void
-  (e: 'update:height', h: number): void
 }>()
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)

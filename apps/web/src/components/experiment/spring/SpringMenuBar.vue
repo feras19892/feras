@@ -25,6 +25,7 @@ const emit = defineEmits<{
   (e: 'calcFitK' | 'calcFitG'): void
   (e: 'toggleHelp'): void
   (e: 'printReport'): void
+  (e: 'analyzeResults'): void
 }>()
 
 const activeMenu = ref<string | null>(null)
@@ -83,6 +84,9 @@ onUnmounted(() => window.removeEventListener('click', onMenuClick))
         </div>
       </div>
       <div class="menu-group">
+        <button class="menu-btn analyze-btn" @click="emit('analyzeResults')">📊 تحليل النتائج</button>
+      </div>
+      <div class="menu-group">
         <button class="menu-btn" @click="emit('printReport')">&#x1F4C4; طباعة التقرير</button>
       </div>
       <div class="menu-group">
@@ -109,4 +113,6 @@ onUnmounted(() => window.removeEventListener('click', onMenuClick))
 .menu-row .mi { width:20px; text-align:center; font-size:.85rem; flex-shrink:0; }
 .menu-sep { height:1px; background:#2D3645; margin:.25rem .4rem; }
 .menu-row.restore { color:#5B8DB8; font-weight:700; }
+.analyze-btn { color:#4ade80 !important; font-weight:700; }
+.analyze-btn:hover { background:rgba(34,197,94,.12) !important; }
 </style>

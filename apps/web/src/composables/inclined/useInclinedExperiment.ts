@@ -1,10 +1,15 @@
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { sendToAnalysis } from '../../composables/analysis/sendToAnalysis'
+import type { AnalysisPayload } from '../../types/physics'
 import type { InclinedParams } from '../../modules/physics/experiments/inclined/useInclinedPhysics'
 import { useInclinedLab } from './useInclinedLab'
 import { useInclinedLayout } from './useInclinedLayout'
 import { useInclinedTrials } from './useInclinedTrials'
 
 export function useInclinedExperiment() {
+  const router = useRouter()
+
   const params = reactive<InclinedParams>({ thetaDeg: 30, length: 2.0, mass: 1.0, g: 9.81, mu: 0.0, airResistance: false, bodyTypeId: 'block', cd: 1.05, area: 0.01 })
 
   const lab = useInclinedLab(params)
@@ -80,6 +85,35 @@ export function useInclinedExperiment() {
     }
   }
 
+  function exportToAnalysis() {
+    const tList = trials.trials.value
+    if (tList.length === 0) { alert('لا توجد قراءات مسجلة'); return }
+    const readings = tList.map(t => ({
+      thetaDeg: t.thetaDeg, length: t.length, mass: t.mass,
+      acceleration: t.acceleration, timeOfArrival: t.timeOfArrival, finalVelocity: t.finalVelocity,
+    }))
+    const payload: AnalysisPayload = {
+      sourceExperiment: 'inclined', sourceNameAr: 'المنحدر المائل', readings,
+      columns: [
+        { key: 'thetaDeg', label: 'الزاوية', unit: '°' },
+        { key: 'length', label: 'الطول', unit: 'm' },
+        { key: 'mass', label: 'الكتلة', unit: 'kg' },
+        { key: 'acceleration', label: 'التسارع', unit: 'm/s²' },
+        { key: 'timeOfArrival', label: 'الزمن', unit: 's' },
+        { key: 'finalVelocity', label: 'السرعة النهائية', unit: 'm/s' },
+      ],
+      equations: [
+        { name: 'قانون نيوتن على المنحدر', formula: 'a = g·sinθ − μ·g·cosθ', variables: [{ symbol: 'a', label: 'التسارع' }, { symbol: 'g', label: 'g' }, { symbol: 'θ', label: 'الزاوية' }, { symbol: 'μ', label: 'معامل الاحتكاك' }], solveFor: ['a', 'μ', 'θ'] },
+        { name: 'الحركة المنتظمة', formula: 's = ½at²', variables: [{ symbol: 's', label: 'المسافة' }, { symbol: 'a', label: 'التسارع' }, { symbol: 't', label: 'الزمن' }], solveFor: ['a', 't', 's'] },
+      ],
+      suggestedPlots: [
+        { xKey: 'thetaDeg', yKey: 'acceleration', xLabel: 'θ (°)', yLabel: 'a (m/s²)', type: 'scatter' },
+        { xKey: 'timeOfArrival', yKey: 'length', xLabel: 't (s)', yLabel: 's (m)', type: 'scatter' },
+      ],
+    }
+    sendToAnalysis(payload)
+  }
+
   return {
     params, lab, layout, trials,
     resetSim, runInclinedLab,
@@ -88,5 +122,6 @@ export function useInclinedExperiment() {
     getMeasured,
     colWidths, onResizeStart, handleDrop,
     enableNoise,
+    exportToAnalysis,
   }
 }

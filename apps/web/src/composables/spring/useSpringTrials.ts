@@ -119,8 +119,14 @@ export function useSpringTrials(params: SpringParams, measured: Ref<Measured>) {
       if (!raw) return
       const parsed = JSON.parse(raw)
       if (Array.isArray(parsed.trials)) {
-        // Filter out corrupted trials with impossible mass values
-        const valid = parsed.trials.filter((t: any) => t && typeof t.mass === 'number' && t.mass >= 0.01 && t.mass <= 20)
+        const valid = parsed.trials.filter((t: any) => {
+          if (!t || typeof t.mass !== 'number' || t.mass < 0.01 || t.mass > 20) return false
+          if (typeof t.T !== 'number' || t.T <= 0 || t.T > 20) return false
+          // Sanity check: T should be roughly consistent with mass and k (within 3x of theoretical)
+          const theoreticalT = 2 * Math.PI * Math.sqrt(t.mass / Math.max(t.k, 1))
+          if (t.T < theoreticalT / 3 || t.T > theoreticalT * 3) return false
+          return true
+        })
         trials.value = valid
         nextTrialId = parsed.nextId ?? (valid.length > 0 ? Math.max(...valid.map((t: any) => t.id)) + 1 : 1)
         if (parsed.calcResult) calcResult.value = parsed.calcResult

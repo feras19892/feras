@@ -12,11 +12,14 @@
   },
   "dependencies": {
     "hono": "^4.3.0",
+    "@hono/node-server": "^1.11.0",
     "zod": "^3.23.0",
     "@my-modern-app/shared-types": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.57.0",
     "tsx": "^4.10.0",
     "typescript": "^5.4.0",
     "@my-modern-app/config": "workspace:*"

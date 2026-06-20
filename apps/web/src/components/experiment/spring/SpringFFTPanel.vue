@@ -9,11 +9,6 @@ const props = defineProps<{
   params: { mass: number; k: number }
 }>()
 
-const emit = defineEmits<{
-  (e: 'runFFT'): void
-  (e: 'clearFFT'): void
-}>()
-
 const fftWindow = ref<'hann' | 'rect'>('hann')
 const fftSampleRate = ref(200)
 const fftResult = defineModel<FftResult | null>({ required: true })

@@ -1,0 +1,51 @@
+<script setup lang="ts">
+import CollisionPanelBody from './CollisionPanelBody.vue'
+
+const props = defineProps<{
+  maximized: Record<string, boolean>
+  panelTitle: (id: string) => string
+  params: any
+  sim: any
+  trials: any[]
+  trialStats: any
+  calcResult: string
+}>()
+
+const emit = defineEmits<{
+  (e: 'maximize', id: string): void
+  (e: 'update:params', val: any): void
+  (e: 'remove', id: number): void
+  (e: 'clear'): void
+  (e: 'calcFinalVelocity'): void
+  (e: 'calcMomentumDiff'): void
+  (e: 'calcEnergyLoss'): void
+  (e: 'close'): void
+  (e: 'openFullReport'): void
+}>()
+</script>
+
+<template>
+  <Teleport to="body">
+    <div v-for="[id, active] in Object.entries(maximized).filter(([,a]) => a)" :key="id" class="overlay-backdrop" @click="emit('maximize', id)">
+      <div class="overlay-panel" @click.stop>
+        <div class="overlay-header">
+          <span>{{ panelTitle(id) }}</span>
+          <button @click="emit('maximize', id)">×</button>
+        </div>
+        <CollisionPanelBody :id="id" :params="params" :sim="sim" :trials="trials" :trial-stats="trialStats" :calc-result="calcResult"
+          @update:params="emit('update:params', $event)" @remove="emit('remove', $event)" @clear="emit('clear')"
+          @calc-final-velocity="emit('calcFinalVelocity')" @calc-momentum-diff="emit('calcMomentumDiff')" @calc-energy-loss="emit('calcEnergyLoss')"
+          @close="emit('close')" @open-full-report="emit('openFullReport')"
+        />
+      </div>
+    </div>
+  </Teleport>
+</template>
+
+<style scoped>
+.overlay-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 150; display: flex; align-items: center; justify-content: center; }
+.overlay-panel { background: #161B22; border: 1px solid #2D3645; border-radius: 10px; width: 90vw; max-width: 800px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden; }
+.overlay-header { display: flex; justify-content: space-between; align-items: center; padding: .6rem .8rem; border-bottom: 1px solid #2D3645; }
+.overlay-header span { color: #D1D7E0; font-size: .82rem; font-weight: 600; }
+.overlay-header button { background: none; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer; }
+</style>

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-
 const props = defineProps<{
   id: string
   trials: any[]
@@ -25,9 +23,6 @@ const emit = defineEmits<{
   (e: 'calcFitRange'): void
   (e: 'showCalc', html: string): void
 }>()
-
-const mean = (arr: number[]) => arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0
-const std = (arr: number[]) => { const m = mean(arr); return Math.sqrt(arr.reduce((sum, v) => sum + (v - m) ** 2, 0) / arr.length) }
 
 import { ref, watch, nextTick, onMounted } from 'vue'
 const signalCanvas = ref<HTMLCanvasElement | null>(null)

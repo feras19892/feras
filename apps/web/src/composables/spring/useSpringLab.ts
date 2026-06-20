@@ -1,4 +1,4 @@
-import { ref, type Ref } from 'vue'
+import { ref } from 'vue'
 import { useSpringPhysics, type SpringParams } from '../../modules/physics/experiments/spring/useSpringPhysics'
 
 export function useSpringLab(params: SpringParams, onTick?: () => void) {

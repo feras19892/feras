@@ -27,7 +27,7 @@ export function buildMetaHtml(meta: Record<string, string>): string {
     .join('')
 }
 
-export function buildParamsHtml(params: OpenLabReportOptions['params'], heading: string, dir: 'rtl' | 'ltr'): string {
+export function buildParamsHtml(params: OpenLabReportOptions['params'], heading: string, _dir: 'rtl' | 'ltr'): string {
   if (!params?.length) return ''
   const rows = params
     .map(p => `<tr><td class="param-label">${eh(p.label)}</td><td class="param-value">${eh(String(p.value))}${p.unit ? ` <span class="unit">${eh(p.unit)}</span>` : ''}</td></tr>`)

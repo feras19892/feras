@@ -1,10 +1,15 @@
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { sendToAnalysis } from '../../composables/analysis/sendToAnalysis'
+import type { AnalysisPayload } from '../../types/physics'
 import type { FreeFallParams } from '../../modules/physics/experiments/freefall/useFreeFallPhysics'
 import { useFreeFallLab } from './useFreeFallLab'
 import { useFreeFallLayout } from './useFreeFallLayout'
 import { useFreeFallTrials } from './useFreeFallTrials'
 
 export function useFreeFallExperiment() {
+  const router = useRouter()
+
   const params = reactive<FreeFallParams>({ h: 0.50, g: 9.81, mass: 1.0, airResistance: false, dragCoeff: 0.1 })
 
   const lab = useFreeFallLab(params)
@@ -75,6 +80,30 @@ export function useFreeFallExperiment() {
     }
   }
 
+  function exportToAnalysis() {
+    const tList = trials.trials.value
+    if (tList.length === 0) { alert('لا توجد قراءات مسجلة'); return }
+    const readings = tList.map(t => ({ h: t.heightMeters, t: t.timeSec, t2: t.timeSquaredSec2, gCalc: t.gCalc }))
+    const payload: AnalysisPayload = {
+      sourceExperiment: 'freefall', sourceNameAr: 'السقوط الحر', readings,
+      columns: [
+        { key: 'h', label: 'الارتفاع', unit: 'm' },
+        { key: 't', label: 'الزمن', unit: 's' },
+        { key: 't2', label: 't²', unit: 's²' },
+        { key: 'gCalc', label: 'g المحسوب', unit: 'm/s²' },
+      ],
+      equations: [
+        { name: 'السقوط الحر', formula: 'h = ½gt²', variables: [{ symbol: 'h', label: 'الارتفاع' }, { symbol: 't', label: 'الزمن' }, { symbol: 'g', label: 'تسارع الجاذبية' }], solveFor: ['g', 't', 'h'] },
+        { name: 'g من القياس', formula: 'g = 2h/t²', variables: [{ symbol: 'h', label: 'الارتفاع' }, { symbol: 't', label: 'الزمن' }, { symbol: 'g', label: 'تسارع الجاذبية' }], solveFor: ['g'] },
+      ],
+      suggestedPlots: [
+        { xKey: 't2', yKey: 'h', xLabel: 't² (s²)', yLabel: 'h (m)', type: 'scatter' },
+        { xKey: 'h', yKey: 'gCalc', xLabel: 'h (m)', yLabel: 'g (m/s²)', type: 'scatter' },
+      ],
+    }
+    sendToAnalysis(payload)
+  }
+
   return {
     params, lab, layout, trials,
     resetSim, runFreeFallLab,
@@ -83,5 +112,6 @@ export function useFreeFallExperiment() {
     getMeasured,
     colWidths, onResizeStart, handleDrop,
     enableNoise,
+    exportToAnalysis,
   }
 }

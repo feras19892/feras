@@ -23,7 +23,7 @@ const goToBranch = (branchId: string) => {
 
 const loadCards = async () => {
   loading.value = true
-  try { cards.value = await fetchHomeCards() } catch {} finally { loading.value = false }
+  try { cards.value = await fetchHomeCards() } catch { /* ignore */ } finally { loading.value = false }
 }
 
 onMounted(async () => {

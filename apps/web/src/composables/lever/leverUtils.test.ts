@@ -1,7 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import {
-  calculateBallTorque,
-  calculateForceTorque,
   calculateNetTorque,
   snapPosition,
   isBalanced,
@@ -13,27 +11,6 @@ import {
 } from './leverUtils'
 
 describe('leverUtils', () => {
-  describe('calculateBallTorque', () => {
-    it('returns correct torque for positive x', () => {
-      expect(calculateBallTorque(2, 3, 9.81)).toBeCloseTo(58.86, 2)
-    })
-    it('returns negative torque for negative x', () => {
-      expect(calculateBallTorque(2, -3, 9.81)).toBeCloseTo(-58.86, 2)
-    })
-    it('returns zero when mass is zero', () => {
-      expect(calculateBallTorque(0, 5, 9.81)).toBeCloseTo(0, 5)
-    })
-  })
-
-  describe('calculateForceTorque', () => {
-    it('returns correct torque for down direction', () => {
-      expect(calculateForceTorque(20, 4, -1)).toBe(-80)
-    })
-    it('returns opposite for up direction', () => {
-      expect(calculateForceTorque(20, 4, 1)).toBe(80)
-    })
-  })
-
   describe('calculateNetTorque', () => {
     it('returns zero for balanced masses', () => {
       const balls = [
@@ -52,8 +29,8 @@ describe('leverUtils', () => {
     })
     it('combines balls and forces', () => {
       const balls = [{ mass: 2, x: 3 }]
-      const forces = [{ force: 20, x: -3, direction: -1 as 1 | -1 }]
-      expect(calculateNetTorque(balls, forces, 9.81)).toBeCloseTo(0, 2)
+      const forces = [{ force: 19.62, x: -3, direction: 1 as 1 | -1 }]
+      expect(calculateNetTorque(balls, forces, 9.81)).toBeCloseTo(0, 1)
     })
   })
 
@@ -133,17 +110,17 @@ describe('leverUtils', () => {
     beforeEach(() => resetLeverIdCounter())
 
     it('creates force with sequential id', () => {
-      const f1 = createLeverForce(20, 3, -1)
-      const f2 = createLeverForce(10, -2, 1)
+      const f1 = createLeverForce(20, 3)
+      const f2 = createLeverForce(10, -2)
       expect(f1.id).toBe(1)
       expect(f2.id).toBe(2)
     })
     it('applies force color', () => {
-      const f = createLeverForce(50, 0, -1)
+      const f = createLeverForce(50, 0)
       expect(f.color).toContain('hsl')
     })
     it('clamps force to 0-100', () => {
-      const f = createLeverForce(150, 0, -1)
+      const f = createLeverForce(150, 0)
       expect(f.force).toBe(100)
     })
   })

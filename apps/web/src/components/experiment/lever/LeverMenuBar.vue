@@ -17,7 +17,6 @@ const emit = defineEmits<{
   (e: 'recordTrial'): void
   (e: 'toggleHelp'): void
   (e: 'analyzeResults'): void
-  (e: 'startChallenge'): void
 }>()
 
 const activeMenu = ref<string | null>(null)
@@ -47,13 +46,9 @@ onUnmounted(() => window.removeEventListener('click', onMenuClick))
         <button class="menu-btn" :class="{open:activeMenu==='view'}" @click.stop="toggleMenu('view')">عرض</button>
         <div v-if="activeMenu==='view'" class="menu-dropdown" @click.stop>
           <div class="menu-row check" @click="emit('togglePanel','table');"><span class="mi">&#x1F4CB;</span><span>جدول</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','params');"><span class="mi">&#x2699;&#xFE0F;</span><span>معاملات</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','guide');"><span class="mi">&#x1F4CB;</span><span>دليل</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','stats');"><span class="mi">&#x1F4CA;</span><span>إحصائيات</span></div>
           <div class="menu-row check" @click="emit('togglePanel','signal');"><span class="mi">&#x1F4C8;</span><span>توزيع العزوم</span></div>
           <div class="menu-row check" @click="emit('togglePanel','equation');"><span class="mi">&#x1F9EA;</span><span>المعادلة</span></div>
           <div class="menu-row check" @click="emit('togglePanel','report');"><span class="mi">&#x1F4C4;</span><span>تقرير</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','challenge');"><span class="mi">&#x1F3AF;</span><span>تحدي</span></div>
         </div>
       </div>
     </div>
@@ -65,8 +60,6 @@ onUnmounted(() => window.removeEventListener('click', onMenuClick))
           <div class="menu-row" @click="emit('togglePause'); closeMenu()"><span class="mi">&#x25B6;</span><span>بدء/توقف</span></div>
           <div class="menu-row" @click="emit('reset'); closeMenu()"><span class="mi">&#x1F504;</span><span>إعادة</span></div>
           <div class="menu-row" @click="emit('recordTrial'); closeMenu()"><span class="mi">&#x1F4CC;</span><span>تسجيل</span></div>
-          <div class="menu-sep" />
-          <div class="menu-row" @click="emit('startChallenge'); closeMenu()"><span class="mi">&#x1F3AF;</span><span>بدء التحدي</span></div>
         </div>
       </div>
       <div class="menu-group">

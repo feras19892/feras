@@ -1,25 +1,23 @@
 import { reactive, ref } from 'vue'
 
-const STORAGE_KEY = 'lever:layout:v2'
+const STORAGE_KEY = 'lever:layout:v4'
 
 const DEFAULT_ORDER = {
-  data: ['balls', 'table', 'signal', 'challenge'],
+  data: ['balls', 'table'],
   vis: [],
-  ctrl: [],
 }
 
 const PANEL_TITLES: Record<string, string> = {
   balls: '🔴 الكرات',
   table: '📋 جدول القراءات',
   signal: '📈 توزيع العزوم',
-  challenge: '🎯 التحدي',
   stats: '📊 إحصائيات',
   equation: '🧮 المعادلة',
   report: '📝 التقرير',
 }
 
 export function useLeverLayout() {
-  const visible = ref<Set<string>>(new Set(['balls']))
+  const visible = ref<Set<string>>(new Set(['balls', 'table']))
   const columnOrder = reactive<Record<string, string[]>>(JSON.parse(JSON.stringify(DEFAULT_ORDER)))
   const maximized = reactive<Record<string, boolean>>({})
 
@@ -31,6 +29,10 @@ export function useLeverLayout() {
   }
   function showAllPanels() {
     visible.value = new Set(Object.keys(PANEL_TITLES))
+    persist()
+  }
+  function showPanels(ids: string[]) {
+    for (const id of ids) visible.value.add(id)
     persist()
   }
   function panelTitle(id: string) { return PANEL_TITLES[id] || id }
@@ -79,6 +81,7 @@ export function useLeverLayout() {
     isPanelVisible,
     togglePanel,
     showAllPanels,
+    showPanels,
     panelTitle,
     maximizePanel,
     movePanel,

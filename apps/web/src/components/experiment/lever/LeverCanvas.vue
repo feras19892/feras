@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import type { LeverParams, LeverState } from '../../../modules/physics/experiments/lever/useLeverPhysics'
-import { snapPosition } from '../../../composables/lever/leverUtils'
+import { snapPosition, uniqueColorPerId } from '../../../composables/lever/leverUtils'
 
 const props = defineProps<{
   params: LeverParams
@@ -9,20 +9,283 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'addBall', mass: number, x: number): void
-  (e: 'addForce', force: number, x: number, direction: 1 | -1): void
   (e: 'removeBall', id: number): void
   (e: 'moveBall', id: number, x: number): void
   (e: 'setBallMass', id: number, mass: number): void
   (e: 'removeForce', id: number): void
   (e: 'moveForce', id: number, x: number): void
-  (e: 'toggleForceDirection', id: number): void
 }>()
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const wrapRef = ref<HTMLDivElement | null>(null)
 
 let draggingId: number | null = null
+
+const hoverTarget = ref<{ type: 'ball' | 'force'; id: number } | null>(null)
+const hoverPx = ref(0)
+const hoverPy = ref(0)
+
+// Smooth tilt animation
+let currentTilt = 0
+let animRaf: number | null = null
+
+function animateTilt() {
+  const target = props.simState.tiltDeg * Math.PI / 180
+  const diff = target - currentTilt
+  if (Math.abs(diff) < 0.001) {
+    currentTilt = target
+    draw()
+    return
+  }
+  currentTilt += diff * 0.15
+  draw()
+  animRaf = requestAnimationFrame(animateTilt)
+}
+
+function getScreenPos(worldX: number, worldY: number) {
+  const canvas = canvasRef.value
+  if (!canvas) return { x: 0, y: 0 }
+  const rect = canvas.getBoundingClientRect()
+  const w = canvas.width
+  const h = canvas.height
+  const cx = w / 2
+  const cy = h / 2 + 40
+  const scale = (w - 80) / props.params.beamLength
+  const tilt = currentTilt
+  const px = cx + worldX * scale
+  const py = cy + worldY
+  return { x: rect.left + px, y: rect.top + py }
+}
+
+function drawBackground(ctx: CanvasRenderingContext2D, w: number, h: number) {
+  // Radial gradient background
+  const grad = ctx.createRadialGradient(w / 2, h / 2, 50, w / 2, h / 2, Math.max(w, h))
+  grad.addColorStop(0, '#1e293b')
+  grad.addColorStop(1, '#0f172a')
+  ctx.fillStyle = grad
+  ctx.fillRect(0, 0, w, h)
+
+  // Subtle dot grid
+  ctx.fillStyle = 'rgba(148,163,184,0.06)'
+  const spacing = 30
+  for (let x = 0; x < w; x += spacing) {
+    for (let y = 0; y < h; y += spacing) {
+      ctx.beginPath()
+      ctx.arc(x, y, 1, 0, Math.PI * 2)
+      ctx.fill()
+    }
+  }
+}
+
+function drawRuler(ctx: CanvasRenderingContext2D, scale: number, tilt: number) {
+  const step = 1
+  const half = props.params.beamLength / 2
+  ctx.fillStyle = 'rgba(148,163,184,0.5)'
+  for (let x = -half; x <= half + 0.001; x += step) {
+    const px = x * scale
+    const isMajor = Math.abs(x) % 1 < 0.001
+    const tickH = isMajor ? 8 : 4
+    ctx.fillRect(px - 0.5, 5, 1, tickH)
+  }
+  // Numbers counter-rotated so they stay horizontal
+  ctx.fillStyle = 'rgba(148,163,184,0.65)'
+  ctx.font = '10px sans-serif'
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'top'
+  for (let x = -half; x <= half + 0.001; x += step) {
+    const isMajor = Math.abs(x) % 1 < 0.001
+    if (!isMajor) continue
+    const px = x * scale
+    ctx.save()
+    ctx.translate(px, 16)
+    ctx.rotate(-tilt)
+    ctx.fillText(Math.abs(x) < 0.01 ? '0' : String(Math.abs(x)), 0, 0)
+    ctx.restore()
+  }
+}
+
+function drawFloor(ctx: CanvasRenderingContext2D, w: number, h: number) {
+  const floorY = h - 20
+  ctx.strokeStyle = 'rgba(148,163,184,0.15)'
+  ctx.lineWidth = 1
+  ctx.beginPath()
+  ctx.moveTo(40, floorY)
+  ctx.lineTo(w - 40, floorY)
+  ctx.stroke()
+}
+
+function drawBeam(ctx: CanvasRenderingContext2D, halfLen: number) {
+  // Metallic beam with gradient
+  const beamGrad = ctx.createLinearGradient(0, -4, 0, 4)
+  beamGrad.addColorStop(0, '#475569')
+  beamGrad.addColorStop(0.3, '#94a3b8')
+  beamGrad.addColorStop(0.7, '#64748b')
+  beamGrad.addColorStop(1, '#334155')
+  ctx.strokeStyle = beamGrad
+  ctx.lineWidth = 8
+  ctx.lineCap = 'round'
+  ctx.beginPath()
+  ctx.moveTo(-halfLen, 0)
+  ctx.lineTo(halfLen, 0)
+  ctx.stroke()
+
+  // Beam shine line
+  ctx.strokeStyle = 'rgba(255,255,255,0.15)'
+  ctx.lineWidth = 1.5
+  ctx.beginPath()
+  ctx.moveTo(-halfLen, -2)
+  ctx.lineTo(halfLen, -2)
+  ctx.stroke()
+}
+
+function drawPivot(ctx: CanvasRenderingContext2D) {
+  // 3D metallic triangle
+  const baseW = 18
+  const baseH = 22
+  // Shadow
+  ctx.fillStyle = 'rgba(0,0,0,0.3)'
+  ctx.beginPath()
+  ctx.moveTo(0, 0)
+  ctx.lineTo(-baseW / 2 + 3, baseH + 3)
+  ctx.lineTo(baseW / 2 + 3, baseH + 3)
+  ctx.closePath()
+  ctx.fill()
+
+  // Main body gradient
+  const pGrad = ctx.createLinearGradient(-baseW / 2, 0, baseW / 2, 0)
+  pGrad.addColorStop(0, '#b45309')
+  pGrad.addColorStop(0.3, '#fbbf24')
+  pGrad.addColorStop(0.7, '#d97706')
+  pGrad.addColorStop(1, '#92400e')
+  ctx.fillStyle = pGrad
+  ctx.beginPath()
+  ctx.moveTo(0, 0)
+  ctx.lineTo(-baseW / 2, baseH)
+  ctx.lineTo(baseW / 2, baseH)
+  ctx.closePath()
+  ctx.fill()
+
+  // Highlight
+  ctx.strokeStyle = 'rgba(255,255,255,0.3)'
+  ctx.lineWidth = 1.5
+  ctx.beginPath()
+  ctx.moveTo(0, 2)
+  ctx.lineTo(-baseW / 4, baseH - 4)
+  ctx.stroke()
+}
+
+function drawBall(ctx: CanvasRenderingContext2D, b: typeof props.simState.balls[0], scale: number, tilt: number) {
+  const px = b.x * scale
+  const r = 8 + b.mass * 4
+  const by = -r - 6
+  const uc = uniqueColorPerId(b.id)
+
+  // Drop shadow on beam
+  ctx.fillStyle = 'rgba(0,0,0,0.25)'
+  ctx.beginPath()
+  ctx.ellipse(px, 3, r * 0.8, r * 0.25, 0, 0, Math.PI * 2)
+  ctx.fill()
+
+  // 3D sphere with radial gradient
+  const bGrad = ctx.createRadialGradient(px - r * 0.3, by - r * 0.3, r * 0.1, px, by, r)
+  bGrad.addColorStop(0, '#fff')
+  bGrad.addColorStop(0.2, uc)
+  bGrad.addColorStop(1, adjustBrightness(uc, -40))
+  ctx.fillStyle = bGrad
+  ctx.beginPath()
+  ctx.arc(px, by, r, 0, Math.PI * 2)
+  ctx.fill()
+
+  // Rim light
+  ctx.strokeStyle = 'rgba(255,255,255,0.25)'
+  ctx.lineWidth = 1
+  ctx.beginPath()
+  ctx.arc(px, by, r - 1, Math.PI * 1.1, Math.PI * 1.6)
+  ctx.stroke()
+
+  // Ball label
+  ctx.save()
+  ctx.translate(px, by)
+  ctx.rotate(-tilt)
+  ctx.fillStyle = '#fff'
+  ctx.font = 'bold 11px sans-serif'
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.shadowColor = 'rgba(0,0,0,0.5)'
+  ctx.shadowBlur = 4
+  ctx.fillText(b.isUnknown ? '?' : String(b.mass), 0, 0)
+  ctx.shadowBlur = 0
+  ctx.restore()
+}
+
+function drawForce(ctx: CanvasRenderingContext2D, f: typeof props.simState.forces[0], scale: number) {
+  const px = f.x * scale
+  const arrowLen = (f.force / 100) * 60
+  const isDown = f.direction === 1
+  const endY = isDown ? arrowLen + 20 : -arrowLen - 20
+  const uc = uniqueColorPerId(f.id)
+
+  // Glow behind arrow
+  ctx.save()
+  ctx.shadowColor = uc
+  ctx.shadowBlur = 12
+  ctx.strokeStyle = uc
+  ctx.fillStyle = uc
+  ctx.lineWidth = 3
+  ctx.lineCap = 'round'
+
+  // Shaft
+  ctx.beginPath()
+  ctx.moveTo(px, -10)
+  ctx.lineTo(px, endY)
+  ctx.stroke()
+  ctx.restore()
+
+  // Arrowhead
+  const headSize = 8
+  const headY = isDown ? endY - headSize : endY + headSize
+  ctx.fillStyle = uc
+  ctx.beginPath()
+  ctx.moveTo(px, endY)
+  ctx.lineTo(px - headSize / 2, headY)
+  ctx.lineTo(px + headSize / 2, headY)
+  ctx.closePath()
+  ctx.fill()
+
+  // Dashed reference line
+  ctx.setLineDash([3, 4])
+  ctx.strokeStyle = 'rgba(148,163,184,0.15)'
+  ctx.lineWidth = 1
+  ctx.beginPath()
+  ctx.moveTo(px, 0)
+  ctx.lineTo(px, endY)
+  ctx.stroke()
+  ctx.setLineDash([])
+
+  // Label with background
+  const labelY = isDown ? endY + 14 : endY - 14
+  const text = f.isUnknown ? '?' : `${f.force}N`
+  ctx.font = 'bold 10px sans-serif'
+  const tw = ctx.measureText(text).width
+  ctx.fillStyle = 'rgba(15,23,42,0.7)'
+  ctx.beginPath()
+  ctx.roundRect(px - tw / 2 - 4, labelY - 7, tw + 8, 14, 4)
+  ctx.fill()
+  ctx.fillStyle = '#fff'
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText(text, px, labelY)
+}
+
+// Helper to darken a hsl color string
+function adjustBrightness(hslStr: string, delta: number): string {
+  const match = hslStr.match(/hsl\((\d+(?:\.\d+)?),\s*(\d+)%,\s*(\d+)%\)/)
+  if (!match) return hslStr
+  const h = match[1], s = match[2]
+  let l = parseInt(match[3]) + delta
+  l = Math.max(10, Math.min(90, l))
+  return `hsl(${h}, ${s}%, ${l}%)`
+}
 
 function draw() {
   const canvas = canvasRef.value
@@ -31,124 +294,47 @@ function draw() {
   if (!ctx) return
 
   const w = canvas.width, h = canvas.height
-  ctx.clearRect(0, 0, w, h)
-  ctx.fillStyle = '#0f172a'
-  ctx.fillRect(0, 0, w, h)
+  drawBackground(ctx, w, h)
+  drawFloor(ctx, w, h)
 
   const cx = w / 2
   const cy = h / 2 + 40
   const scale = (w - 80) / props.params.beamLength
-  const tilt = props.simState.tiltDeg * Math.PI / 180
+  const halfLen = (props.params.beamLength / 2) * scale
 
   ctx.save()
   ctx.translate(cx, cy)
-  ctx.rotate(tilt)
+  ctx.rotate(currentTilt)
 
-  // Beam
-  const halfLen = (props.params.beamLength / 2) * scale
-  ctx.strokeStyle = '#94a3b8'
-  ctx.lineWidth = 6
-  ctx.beginPath()
-  ctx.moveTo(-halfLen, 0)
-  ctx.lineTo(halfLen, 0)
-  ctx.stroke()
+  drawRuler(ctx, scale, currentTilt)
+  drawBeam(ctx, halfLen)
+  drawPivot(ctx)
 
-  // Snap pegs
-  ctx.fillStyle = '#475569'
-  const step = props.params.snapStep
-  for (let x = -props.params.beamLength / 2; x <= props.params.beamLength / 2 + 1e-6; x += step) {
-    const px = x * scale
-    ctx.beginPath()
-    ctx.arc(px, 0, 3, 0, Math.PI * 2)
-    ctx.fill()
-    ctx.save()
-    ctx.translate(px, 8)
-    ctx.rotate(-tilt)
-    ctx.fillStyle = '#64748b'
-    ctx.font = '10px sans-serif'
-    ctx.textAlign = 'center'
-    ctx.fillText(String(Math.round(x * 10) / 10), 0, 0)
-    ctx.restore()
-  }
-
-  // Pivot
-  ctx.fillStyle = '#fbbf24'
-  ctx.beginPath()
-  ctx.moveTo(0, 0)
-  ctx.lineTo(-10, 18)
-  ctx.lineTo(10, 18)
-  ctx.closePath()
-  ctx.fill()
-
-  // Balls (Circles)
-  for (const b of props.simState.balls) {
-    const px = b.x * scale
-    const r = 8 + b.mass * 4
-    ctx.fillStyle = b.color
-    ctx.beginPath()
-    ctx.arc(px, -r - 6, r, 0, Math.PI * 2)
-    ctx.fill()
-    ctx.strokeStyle = '#fff'
-    ctx.lineWidth = 1.5
-    ctx.stroke()
-
-    // Ball label
-    ctx.save()
-    ctx.translate(px, -r - 6)
-    ctx.rotate(-tilt)
-    ctx.fillStyle = '#fff'
-    ctx.font = 'bold 11px sans-serif'
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'middle'
-    ctx.fillText(b.isUnknown ? '?' : String(b.mass), 0, 0)
-    ctx.restore()
-  }
-
-  // Forces (Arrows)
-  for (const f of props.simState.forces) {
-    const px = f.x * scale
-    const arrowLen = (f.force / 100) * 60
-    const endY = f.direction === 1 ? -arrowLen - 20 : arrowLen + 20
-
-    ctx.strokeStyle = f.color
-    ctx.fillStyle = f.color
-    ctx.lineWidth = 3
-
-    // Shaft
-    ctx.beginPath()
-    ctx.moveTo(px, -10)
-    ctx.lineTo(px, endY)
-    ctx.stroke()
-
-    // Arrowhead
-    const headSize = 7
-    const headY = f.direction === 1 ? endY + headSize : endY - headSize
-    ctx.beginPath()
-    ctx.moveTo(px, endY)
-    ctx.lineTo(px - headSize / 2, headY)
-    ctx.lineTo(px + headSize / 2, headY)
-    ctx.closePath()
-    ctx.fill()
-
-    // Label
-    ctx.fillStyle = '#fff'
-    ctx.font = 'bold 10px sans-serif'
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'middle'
-    const labelY = f.direction === 1 ? endY - 10 : endY + 10
-    ctx.fillText(f.isUnknown ? '?' : `${f.force}N`, px, labelY)
-  }
+  for (const b of props.simState.balls) drawBall(ctx, b, scale, currentTilt)
+  for (const f of props.simState.forces) drawForce(ctx, f, scale)
 
   ctx.restore()
 
-  // Status text
-  ctx.fillStyle = '#e2e8f0'
+  // Status badge
+  const isBal = props.simState.isBalanced
+  const statusText = isBal ? '⚖️ متوازن' : `τ = ${props.simState.netTorque.toFixed(2)} N·m`
   ctx.font = 'bold 13px sans-serif'
+  const tw = ctx.measureText(statusText).width
+  ctx.fillStyle = isBal ? 'rgba(34,197,94,0.15)' : 'rgba(91,141,184,0.15)'
+  ctx.strokeStyle = isBal ? 'rgba(34,197,94,0.4)' : 'rgba(91,141,184,0.4)'
+  ctx.lineWidth = 1
+  const bx = w / 2 - tw / 2 - 12
+  const by = 10
+  const bw = tw + 24
+  const bh = 26
+  ctx.beginPath()
+  ctx.roundRect(bx, by, bw, bh, 6)
+  ctx.fill()
+  ctx.stroke()
+  ctx.fillStyle = isBal ? '#22c55e' : '#5B8DB8'
   ctx.textAlign = 'center'
-  const status = props.simState.isBalanced
-    ? '⚖️ متوازن'
-    : `τ = ${props.simState.netTorque.toFixed(2)} N·m`
-  ctx.fillText(status, w / 2, 24)
+  ctx.textBaseline = 'middle'
+  ctx.fillText(statusText, w / 2, by + bh / 2)
 }
 
 function toWorldX(clientX: number): number {
@@ -175,21 +361,48 @@ function onPointerDown(e: PointerEvent) {
     dragType = 'force'
     draggingId = hitForce.id
     ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
-  } else {
-    emit('addBall', 1, snapped)
   }
 }
 
 function onPointerMove(e: PointerEvent) {
-  if (draggingId === null || dragType === null) return
+  if (draggingId !== null && dragType !== null) {
+    const x = toWorldX(e.clientX)
+    if (dragType === 'ball') emit('moveBall', draggingId, x)
+    else emit('moveForce', draggingId, x)
+    return
+  }
+  // Hover detection
   const x = toWorldX(e.clientX)
-  if (dragType === 'ball') emit('moveBall', draggingId, x)
-  else emit('moveForce', draggingId, x)
+  const snapped = snapPosition(x, props.params.snapStep, props.params.beamLength)
+  const hitBall = props.simState.balls.find(b => Math.abs(b.x - snapped) < 0.35)
+  const hitForce = props.simState.forces.find(f => Math.abs(f.x - snapped) < 0.35)
+  if (hitBall) {
+    hoverTarget.value = { type: 'ball', id: hitBall.id }
+    const r = 8 + hitBall.mass * 4
+    const pos = getScreenPos(hitBall.x, -r - 6 - r - 4)
+    hoverPx.value = pos.x
+    hoverPy.value = pos.y
+  } else if (hitForce) {
+    hoverTarget.value = { type: 'force', id: hitForce.id }
+    const arrowLen = (hitForce.force / 100) * 60
+    const pos = getScreenPos(hitForce.x, -arrowLen - 20 - 10)
+    hoverPx.value = pos.x
+    hoverPy.value = pos.y
+  } else {
+    hoverTarget.value = null
+  }
 }
 
 function onPointerUp() {
   draggingId = null
   dragType = null
+}
+
+function deleteHover() {
+  if (!hoverTarget.value) return
+  if (hoverTarget.value.type === 'ball') emit('removeBall', hoverTarget.value.id)
+  else emit('removeForce', hoverTarget.value.id)
+  hoverTarget.value = null
 }
 
 function onDblClick(e: MouseEvent) {
@@ -204,11 +417,15 @@ function onDblClick(e: MouseEvent) {
       if (!isNaN(num) && num > 0) emit('setBallMass', hitBall.id, num)
     }
   } else if (hitForce) {
-    emit('toggleForceDirection', hitForce.id)
+    if (confirm('حذف القوة؟')) emit('removeForce', hitForce.id)
   }
 }
 
-watch(() => [props.simState.tiltDeg, props.simState.balls.length, props.simState.forces.length, props.simState.netTorque], draw, { deep: true })
+watch(() => props.simState.tiltDeg, () => {
+  if (animRaf) cancelAnimationFrame(animRaf)
+  animateTilt()
+})
+watch(() => [props.simState.balls.length, props.simState.forces.length, props.simState.netTorque], draw, { deep: true })
 
 let ro: ResizeObserver | null = null
 onMounted(() => {
@@ -235,11 +452,22 @@ onUnmounted(() => { if (ro) ro.disconnect() })
       @pointermove="onPointerMove"
       @pointerup="onPointerUp"
       @dblclick="onDblClick"
+      @mouseleave="hoverTarget = null"
     />
+    <button
+      v-if="hoverTarget"
+      class="hover-del"
+      :style="{ left: (hoverPx - 10) + 'px', top: (hoverPy - 10) + 'px' }"
+      @click="deleteHover"
+      title="حذف"
+    >&#x2715;</button>
   </div>
 </template>
 
 <style scoped>
-.lever-wrap { position:relative; flex:1; min-height:0; overflow:hidden; background:#0f172a; border-radius:8px; border:1px solid #2D3645; }
-.lever-wrap canvas { position:absolute; inset:0; width:100%; height:100%; display:block; cursor:pointer; }
+.lever-wrap { position:relative; flex:1; min-height:0; overflow:hidden; border-radius:12px; border:1px solid rgba(91,141,184,0.15); box-shadow:0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.03); }
+.lever-wrap canvas { position:absolute; inset:0; width:100%; height:100%; display:block; cursor:grab; }
+.lever-wrap canvas:active { cursor:grabbing; }
+.hover-del { position:fixed; z-index:200; width:22px; height:22px; border-radius:50%; background:linear-gradient(135deg,#ef4444,#dc2626); color:#fff; border:none; font-size:12px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; box-shadow:0 2px 8px rgba(239,68,68,0.4); transition:transform .15s, box-shadow .15s; }
+.hover-del:hover { transform:scale(1.15); box-shadow:0 4px 12px rgba(239,68,68,0.5); }
 </style>

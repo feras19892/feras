@@ -44,7 +44,6 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @record-trial="ex.trials.recordTrial"
       @toggle-help="helpOpen = !helpOpen"
       @analyze-results="ex.exportToAnalysis"
-      @start-challenge="ex.startChallenge"
     />
 
     <LeverHelpModal :open="helpOpen" @close="helpOpen = false" />
@@ -66,20 +65,19 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
               :id="id"
               :sim="ex.lab.sim"
               :trials="ex.trials.trials.value"
-              :challenge-solved="ex.challengeSolved.value"
               @remove="ex.trials.removeTrial"
               @clear="ex.trials.clearTrials"
-              @start-challenge="ex.startChallenge"
-              @check-challenge="ex.checkChallenge"
             />
             <LeverBallTable
               v-else
               :balls="ex.lab.sim.balls"
               :forces="ex.lab.sim.forces"
               @add-ball="ex.lab.addBall(1, 0)"
-              @add-force="ex.lab.addForce(20, 0, -1)"
+              @add-force="ex.lab.addForce(20, 0)"
               @update-mass="ex.lab.setBallMass"
               @update-x="ex.lab.moveBall"
+              @update-force="ex.lab.setForceValue"
+              @update-force-x="ex.lab.moveForce"
               @remove="ex.lab.removeBall"
               @toggle-force-direction="ex.lab.toggleForceDirection"
             />
@@ -91,52 +89,12 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
         <LeverCanvas
           :params="ex.params"
           :sim-state="ex.lab.sim"
-          @add-ball="ex.lab.addBall"
-          @add-force="ex.lab.addForce"
           @remove-ball="ex.lab.removeBall"
           @move-ball="ex.lab.moveBall"
           @set-ball-mass="ex.lab.setBallMass"
           @remove-force="ex.lab.removeForce"
           @move-force="ex.lab.moveForce"
-          @toggle-force-direction="ex.lab.toggleForceDirection"
         />
-      </div>
-      <div class="resizer" @mousedown="ex.onResizeStart('vis', $event)"></div>
-      <div class="lab-col ctrl-col" :style="{ width: ex.colWidths.ctrl + 'px' }">
-        <template v-for="id in ex.getColumnPanels('ctrl')" :key="id">
-          <DraggablePanel
-            v-if="ex.layout.isPanelVisible(id)"
-            class="lab-card"
-            :id="id"
-            :title="ex.layout.panelTitle(id)"
-            @maximize="ex.layout.maximizePanel"
-            @hide="ex.layout.togglePanel"
-            @drop="ex.handleDrop"
-          >
-            <LeverPanelBody
-              v-if="id !== 'balls'"
-              :id="id"
-              :sim="ex.lab.sim"
-              :trials="ex.trials.trials.value"
-              :challenge-solved="ex.challengeSolved.value"
-              @remove="ex.trials.removeTrial"
-              @clear="ex.trials.clearTrials"
-              @start-challenge="ex.startChallenge"
-              @check-challenge="ex.checkChallenge"
-            />
-            <LeverBallTable
-              v-else
-              :balls="ex.lab.sim.balls"
-              :forces="ex.lab.sim.forces"
-              @add-ball="ex.lab.addBall(1, 0)"
-              @add-force="ex.lab.addForce(20, 0, -1)"
-              @update-mass="ex.lab.setBallMass"
-              @update-x="ex.lab.moveBall"
-              @remove="ex.lab.removeBall"
-              @toggle-force-direction="ex.lab.toggleForceDirection"
-            />
-          </DraggablePanel>
-        </template>
       </div>
     </div>
 
@@ -145,13 +103,10 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       :panel-title="ex.layout.panelTitle"
       :trials="ex.trials.trials.value"
       :sim="ex.lab.sim"
-      :challenge-solved="ex.challengeSolved.value"
       @maximize="ex.layout.maximizePanel"
       @drop="ex.handleDrop"
       @remove="ex.trials.removeTrial"
       @clear="ex.trials.clearTrials"
-      @start-challenge="ex.startChallenge"
-      @check-challenge="ex.checkChallenge"
     />
 
     <div class="hint-bar" v-if="ex.lab.sim.balls.length === 0 && ex.lab.sim.forces.length === 0"><span>💡 اضغط "+ كرة" أو "+ قوة" لإضافة</span></div>
@@ -177,24 +132,22 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @export-csv="ex.trials.exportCsv"
       @undo="ex.trials.undo"
       @redo="ex.trials.redo"
-      @start-challenge="ex.startChallenge"
     />
   </div>
 </template>
 
 <style scoped>
-.lever-lab { background:#161B22; color:#D1D7E0; padding:.6rem .8rem; height:100vh; display:flex; flex-direction:column; gap:.5rem; overflow:hidden; }
+.lever-lab { background:linear-gradient(180deg,#0f172a,#1e293b); color:#D1D7E0; padding:.4rem .5rem; height:100vh; display:flex; flex-direction:column; gap:.3rem; overflow:hidden; }
 .lab-grid { display:flex; flex-direction:row; flex:1; min-height:0; overflow:hidden; }
-.lab-col { display:flex; flex-direction:column; gap:.5rem; overflow-y:auto; min-height:0; }
-.data-col { background:rgba(255,255,255,0.02); }
+.lab-col { display:flex; flex-direction:column; gap:.3rem; overflow-y:auto; min-height:0; }
+.data-col { flex-shrink:0; }
 .vis-col { align-items:stretch; justify-content:flex-start; background:transparent; flex:1; min-width:0; }
-.ctrl-col { background:rgba(255,255,255,0.02); }
-.resizer { width:6px; cursor:col-resize; background:#2D3645; transition:background .2s; flex-shrink:0; }
+.resizer { width:6px; cursor:col-resize; background:rgba(45,54,69,0.5); transition:background .2s; flex-shrink:0; }
 .resizer:hover, .resizer:active { background:#5B8DB8; }
 .chart-row { display:flex; gap:.5rem; width:100%; margin-top:.3rem; flex:0 0 180px; min-height:0; align-items:stretch; }
 .chart-row:empty { display:none; }
 .chart-panel { flex:1; min-width:0; display:flex; flex-direction:column; overflow:hidden; }
-.hint-bar { background:#252D3A; border:1px solid #2D3645; border-radius:6px; padding:.35rem .7rem; font-size:.75rem; color:#8B95A5; text-align:center; flex-shrink:0; }
-.hint-bar.active { border-color:#5B8DB8; color:#5B8DB8; background:rgba(91,141,184,.08); }
-.hint-bar.success { border-color:#22c55e; color:#22c55e; background:rgba(34,197,94,.08); }
+.hint-bar { background:rgba(30,41,59,0.6); backdrop-filter:blur(8px); border:1px solid rgba(91,141,184,0.15); border-radius:6px; padding:.25rem .5rem; font-size:.7rem; color:#8B95A5; text-align:center; flex-shrink:0; }
+.hint-bar.active { border-color:rgba(91,141,184,0.4); color:#5B8DB8; background:rgba(91,141,184,.1); }
+.hint-bar.success { border-color:rgba(34,197,94,0.4); color:#22c55e; background:rgba(34,197,94,.12); }
 </style>

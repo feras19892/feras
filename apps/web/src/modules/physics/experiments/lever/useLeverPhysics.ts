@@ -81,7 +81,7 @@ export function useLeverPhysics(params: LeverParams) {
   }
 
   // === Force methods ===
-  function addForce(force: number, x: number, direction: 1 | -1 = -1, isUnknown = false): number {
+  function addForce(force: number, x: number, direction: 1 | -1 = 1, isUnknown = false): number {
     const snapped = snapPosition(x, params.snapStep, params.beamLength)
     const lf = createLeverForce(force, snapped, direction, state.nextId++, isUnknown)
     state.forces.push(lf)
@@ -105,7 +105,7 @@ export function useLeverPhysics(params: LeverParams) {
     const f = state.forces.find(item => item.id === id)
     if (!f) return
     f.force = Math.max(0, Math.min(100, force))
-    f.color = forceColor(f.force, f.direction)
+    f.color = forceColor(f.force)
     recalc()
   }
 
@@ -113,7 +113,6 @@ export function useLeverPhysics(params: LeverParams) {
     const f = state.forces.find(item => item.id === id)
     if (!f) return
     f.direction = direction
-    f.color = forceColor(f.force, direction)
     recalc()
   }
 
@@ -121,7 +120,6 @@ export function useLeverPhysics(params: LeverParams) {
     const f = state.forces.find(item => item.id === id)
     if (!f) return
     f.direction = f.direction === 1 ? -1 : 1
-    f.color = forceColor(f.force, f.direction)
     recalc()
   }
 

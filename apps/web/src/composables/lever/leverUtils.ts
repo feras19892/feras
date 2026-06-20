@@ -1,7 +1,7 @@
 /**
- * Lever Physics Utilities - Hybrid Ball + Force Model
+ * Lever Physics Utilities - Hybrid Model
  * عزم الكرة: τ = m · g · x
- * عزم القوة: τ = F · x · direction
+ * عزم القوة: τ = F · x (دائماً لأسفل، مثل الوزن)
  */
 
 export interface LeverBall {
@@ -19,14 +19,6 @@ export interface LeverForce {
   direction: 1 | -1
   color: string
   isUnknown?: boolean
-}
-
-export function calculateBallTorque(mass: number, x: number, g: number): number {
-  return mass * g * x
-}
-
-export function calculateForceTorque(force: number, x: number, direction: 1 | -1): number {
-  return force * x * direction
 }
 
 export function calculateNetTorque(
@@ -69,12 +61,15 @@ export function ballColor(mass: number, maxMass = 10): string {
   return `hsl(${hue}, 80%, ${lightness}%)`
 }
 
-export function forceColor(force: number, direction: 1 | -1): string {
+export function forceColor(force: number): string {
   const intensity = Math.min(force / 50, 1)
-  if (direction === 1) {
-    return `hsl(210, ${60 + intensity * 40}%, ${45 + intensity * 15}%)`
-  }
   return `hsl(0, ${60 + intensity * 40}%, ${45 + intensity * 15}%)`
+}
+
+/** Unique distinct color for each object ID */
+export function uniqueColorPerId(id: number): string {
+  const hue = ((id * 137.508) % 360)
+  return `hsl(${hue}, 70%, 55%)`
 }
 
 let _nextId = 1
@@ -89,14 +84,14 @@ export function createLeverBall(mass: number, x: number, id?: number, isUnknown 
 }
 
 export function createLeverForce(
-  force: number, x: number, direction: 1 | -1 = -1, id?: number, isUnknown = false,
+  force: number, x: number, direction: 1 | -1 = 1, id?: number, isUnknown = false,
 ): LeverForce {
   return {
     id: id ?? _nextId++,
     force: Math.max(0, Math.min(100, force)),
     x,
     direction,
-    color: forceColor(force, direction),
+    color: forceColor(force),
     isUnknown,
   }
 }

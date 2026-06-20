@@ -11,7 +11,7 @@ export interface LeverTrial {
   tiltDeg: number
   isBalanced: boolean
   balls: Pick<LeverBall, 'mass' | 'x'>[]
-  forces: Pick<LeverForce, 'force' | 'x' | 'direction'>[]
+  forces: Pick<LeverForce, 'force' | 'x'>[]
   unknownMass?: number
 }
 
@@ -77,7 +77,7 @@ export function useLeverTrials(_params: LeverParams, sim: LeverState) {
       tiltDeg: sim.tiltDeg,
       isBalanced: sim.isBalanced,
       balls: sim.balls.map(b => ({ mass: b.mass, x: b.x })),
-      forces: sim.forces.map(f => ({ force: f.force, x: f.x, direction: f.direction })),
+      forces: sim.forces.map(f => ({ force: f.force, x: f.x })),
       unknownMass,
     }
     pushHistory()

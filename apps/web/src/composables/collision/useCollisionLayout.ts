@@ -34,6 +34,10 @@ export function useCollisionLayout() {
     visible.value = new Set(Object.keys(PANEL_TITLES))
     persist()
   }
+  function showPanels(ids: string[]) {
+    for (const id of ids) visible.value.add(id)
+    persist()
+  }
   function panelTitle(id: string) { return PANEL_TITLES[id] || id }
 
   function maximizePanel(id: string) {
@@ -80,6 +84,7 @@ export function useCollisionLayout() {
     isPanelVisible,
     togglePanel,
     showAllPanels,
+    showPanels,
     panelTitle,
     maximizePanel,
     movePanel,

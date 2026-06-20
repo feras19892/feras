@@ -72,6 +72,7 @@ export function useCollisionExperiment() {
   onUnmounted(() => lab.cleanup())
 
   function exportToAnalysis() {
+    layout.showPanels(['params', 'data'])
     const tList = trials.trials.value
     if (tList.length === 0) { alert('لا توجد قراءات مسجلة'); return }
     const readings = tList.map(t => ({

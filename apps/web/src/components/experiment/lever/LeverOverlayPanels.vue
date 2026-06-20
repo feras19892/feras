@@ -7,7 +7,6 @@ const props = defineProps<{
   panelTitle: (id: string) => string
   trials: any[]
   sim: any
-  challengeSolved?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -15,8 +14,6 @@ const emit = defineEmits<{
   (e: 'drop', id: string, x: number, y: number): void
   (e: 'remove', id: number): void
   (e: 'clear'): void
-  (e: 'startChallenge'): void
-  (e: 'checkChallenge', guess: number): void
 }>()
 </script>
 
@@ -36,11 +33,8 @@ const emit = defineEmits<{
             :id="id"
             :sim="sim"
             :trials="trials"
-            :challenge-solved="challengeSolved"
             @remove="emit('remove', $event)"
             @clear="emit('clear')"
-            @start-challenge="emit('startChallenge')"
-            @check-challenge="emit('checkChallenge', $event)"
           />
         </DraggablePanel>
       </div>

@@ -28,44 +28,23 @@ export function useLeverExperiment() {
       : `↺ العزم لليسار (${Math.abs(lab.sim.netTorque).toFixed(1)} N·m)`
   })
 
-  // === Challenge (Unknown Mass) ===
-  const unknownMassId = ref<number | null>(null)
-  const challengeSolved = ref(false)
-
-  function startChallenge() {
-    lab.resetSim()
-    const unknownMass = Math.round((1 + Math.random() * 5) * 10) / 10
-    unknownMassId.value = lab.addBall(unknownMass, -3, true)
-    lab.addBall(2, 3)
-    challengeSolved.value = false
-  }
-
-  function checkChallenge(guess: number) {
-    if (unknownMassId.value === null) return false
-    const realMass = lab.sim.balls.find(b => b.id === unknownMassId.value)?.mass ?? 0
-    challengeSolved.value = Math.abs(guess - realMass) < 0.1
-    return challengeSolved.value
-  }
-
   // === Drag & Drop / Resizing ===
-  const colClasses: Record<string, string> = { data: 'data-col', vis: 'vis-col', ctrl: 'ctrl-col' }
+  const colClasses: Record<string, string> = { data: 'data-col', vis: 'vis-col' }
   const hasVisibleVisPanels = computed(() => getColumnPanels('vis').some(id => layout.isPanelVisible(id)))
 
   function getColumnPanels(col: string) {
-    if (col === 'data' || col === 'vis' || col === 'ctrl') return layout.columnOrder[col]
+    if (col === 'data' || col === 'vis') return layout.columnOrder[col]
     return []
   }
 
-  const colWidths = reactive({ data: 280, vis: 0, ctrl: 280 })
+  const colWidths = reactive({ data: 260, vis: 0 })
 
   function onResizeStart(side: 'data' | 'vis', e: MouseEvent) {
     const startX = e.clientX
     const startData = colWidths.data
-    const startCtrl = colWidths.ctrl
     function onMove(ev: MouseEvent) {
       const dx = ev.clientX - startX
-      if (side === 'data') { colWidths.data = Math.max(160, Math.min(500, startData - dx)) }
-      else { colWidths.ctrl = Math.max(160, Math.min(500, startCtrl + dx)) }
+      if (side === 'data') { colWidths.data = Math.max(200, Math.min(500, startData - dx)) }
     }
     function onUp() { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp) }
     window.addEventListener('mousemove', onMove)
@@ -73,8 +52,8 @@ export function useLeverExperiment() {
   }
 
   function handleDrop(id: string, x: number, y: number) {
-    type ColumnId = 'data' | 'vis' | 'ctrl'
-    const cols: ColumnId[] = ['data', 'vis', 'ctrl']
+    type ColumnId = 'data' | 'vis'
+    const cols: ColumnId[] = ['data', 'vis']
     for (const col of cols) {
       const colEl = document.querySelector(`.${colClasses[col]}`)
       if (!colEl) continue
@@ -97,6 +76,7 @@ export function useLeverExperiment() {
 
   // === Export to Analysis ===
   function exportToAnalysis() {
+    layout.showPanels(['balls', 'table'])
     const tList = trials.trials.value
     if (tList.length === 0) { alert('لا توجد قراءات مسجلة'); return }
 
@@ -168,10 +148,6 @@ export function useLeverExperiment() {
     stepIndex,
     tutorType,
     tutorMessage,
-    unknownMassId,
-    challengeSolved,
-    startChallenge,
-    checkChallenge,
     colClasses,
     hasVisibleVisPanels,
     getColumnPanels,

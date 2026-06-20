@@ -14,13 +14,14 @@ const emit = defineEmits<{
 <template>
   <div class="table-panel">
     <table v-if="trials.length">
-      <thead><tr><th>#</th><th>العزم</th><th>الميلان</th><th>كرات</th><th>حالة</th><th></th></tr></thead>
+      <thead><tr><th>#</th><th>العزم</th><th>الميلان</th><th>كرات</th><th>قوى</th><th>حالة</th><th></th></tr></thead>
       <tbody>
         <tr v-for="t in trials" :key="t.id">
           <td>{{ t.trialNo }}</td>
           <td>{{ t.netTorque.toFixed(1) }}</td>
           <td>{{ t.tiltDeg.toFixed(1) }}°</td>
           <td>{{ t.balls.length }}</td>
+          <td>{{ t.forces.length }}</td>
           <td><span :class="['badge', t.isBalanced ? 'ok' : 'no']">{{ t.isBalanced ? 'متوازن' : 'غير متوازن' }}</span></td>
           <td><button class="btn-del" @click="emit('remove', t.id)">&#x2715;</button></td>
         </tr>

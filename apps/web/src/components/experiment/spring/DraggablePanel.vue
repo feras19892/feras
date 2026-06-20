@@ -69,15 +69,16 @@ function onDrop(e: MouseEvent) {
 </template>
 
 <style scoped>
-.draggable-panel { background: #1E2530; border-radius: 8px; padding: .6rem; border: 1px solid #2D3645; display: flex; flex-direction: column; transition: box-shadow .2s; }
-.draggable-panel.dragging { box-shadow: 0 16px 48px rgba(0,0,0,.6); z-index: 9999; border: 2px dashed #5B8DB8; opacity: .92; }
+.draggable-panel { background: rgba(30,37,48,0.7); backdrop-filter:blur(12px); border-radius: 10px; padding: .5rem .55rem; border: 1px solid rgba(91,141,184,0.12); display: flex; flex-direction: column; transition: box-shadow .25s, border-color .25s; box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+.draggable-panel:hover { border-color: rgba(91,141,184,0.22); box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+.draggable-panel.dragging { box-shadow: 0 20px 60px rgba(0,0,0,.5); z-index: 9999; border: 2px dashed #5B8DB8; opacity: .92; }
 
 .chart-panel { flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden; }
 
-.card-header { display: flex; justify-content: space-between; align-items: center; margin: 0 0 .3rem; flex-shrink: 0; cursor: grab; }
+.card-header { display: flex; justify-content: space-between; align-items: center; margin: 0 0 .25rem; flex-shrink: 0; cursor: grab; padding-bottom:.25rem; border-bottom:1px solid rgba(91,141,184,0.08); }
 .card-header:active { cursor: grabbing; }
-.card-header h4 { margin: 0; font-size: .82rem; color: #D1D7E0; font-weight: 700; user-select: none; }
-.panel-actions { display: flex; gap: .2rem; }
-.pa-btn { background: transparent; border: 1px solid #2D3645; color: #8B95A5; border-radius: 4px; cursor: pointer; font-size: .7rem; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; padding: 0; }
-.pa-btn:hover { background: rgba(91,141,184,.15); color: #5B8DB8; }
+.card-header h4 { margin: 0; font-size: .78rem; color: #94a3b8; font-weight: 700; user-select: none; letter-spacing:.3px; }
+.panel-actions { display: flex; gap: .15rem; }
+.pa-btn { background: rgba(45,54,69,0.4); border: 1px solid rgba(91,141,184,0.1); color: #8B95A5; border-radius: 5px; cursor: pointer; font-size: .68rem; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; padding: 0; transition:all .15s; }
+.pa-btn:hover { background: rgba(91,141,184,.18); color: #5B8DB8; border-color: rgba(91,141,184,0.25); transform:scale(1.05); }
 </style>

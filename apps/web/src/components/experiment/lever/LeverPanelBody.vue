@@ -4,8 +4,6 @@ import LeverStatsPanel from './LeverStatsPanel.vue'
 import LeverSignalPanel from './LeverSignalPanel.vue'
 import LeverEquationPanel from './LeverEquationPanel.vue'
 import LeverReportPanel from './LeverReportPanel.vue'
-import LeverChallengePanel from './LeverChallengePanel.vue'
-
 import type { LeverTrial } from '../../../composables/lever/useLeverTrials'
 import type { LeverState } from '../../../modules/physics/experiments/lever/useLeverPhysics'
 
@@ -13,14 +11,11 @@ const props = defineProps<{
   id: string
   sim: LeverState
   trials: LeverTrial[]
-  challengeSolved?: boolean
 }>()
 
 const emit = defineEmits<{
   (e: 'remove', id: number): void
   (e: 'clear'): void
-  (e: 'startChallenge'): void
-  (e: 'checkChallenge', guess: number): void
 }>()
 </script>
 
@@ -30,7 +25,6 @@ const emit = defineEmits<{
   <LeverSignalPanel v-else-if="id === 'signal'" :trials="trials" />
   <LeverEquationPanel v-else-if="id === 'equation'" />
   <LeverReportPanel v-else-if="id === 'report'" :trials="trials" />
-  <LeverChallengePanel v-else-if="id === 'challenge'" :challenge-solved="challengeSolved ?? false" @start-challenge="emit('startChallenge')" @check-challenge="emit('checkChallenge', $event)" />
   <div v-else class="placeholder">اللوحة {{ id }}</div>
 </template>
 

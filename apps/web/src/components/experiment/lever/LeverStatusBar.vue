@@ -21,8 +21,8 @@ const props = defineProps<{
 </template>
 
 <style scoped>
-.status-bar { display:flex; justify-content:center; gap:.5rem; padding:.35rem .7rem; background:#1E2530; border-radius:6px; border:1px solid #2D3645; flex-shrink:0; }
-.status-pill { font-size:.75rem; padding:.25rem .6rem; border-radius:4px; background:#252D3A; color:#8B95A5; font-weight:600; }
+.status-bar { display:flex; justify-content:center; gap:.35rem; padding:.25rem .5rem; background:#1E2530; border-radius:5px; border:1px solid #2D3645; flex-shrink:0; }
+.status-pill { font-size:.7rem; padding:.2rem .45rem; border-radius:3px; background:#252D3A; color:#8B95A5; font-weight:600; }
 .status-pill.balanced { background:rgba(34,197,94,.12); color:#22c55e; }
 .status-pill.unbalanced { background:rgba(239,68,68,.12); color:#f87171; }
 </style>

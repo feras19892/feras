@@ -27,6 +27,22 @@ function setTab(tab: string) {
 
     <!-- Admin Tools (center) -->
     <div v-if="auth.isAdmin" class="nav-tools">
+      <button class="tool-btn" :class="{ active: activeTab === 'classes' }" @click="setTab('classes')">
+        <span class="tool-icon">🏫</span>
+        <span class="tool-label">فصولي</span>
+      </button>
+      <button class="tool-btn" :class="{ active: activeTab === 'experiments' }" @click="setTab('experiments')">
+        <span class="tool-icon">📋</span>
+        <span class="tool-label">تجاربي</span>
+      </button>
+      <button class="tool-btn" :class="{ active: activeTab === 'grading' }" @click="setTab('grading')">
+        <span class="tool-icon">✅</span>
+        <span class="tool-label">تصحيح</span>
+      </button>
+      <button class="tool-btn" :class="{ active: activeTab === 'stats' }" @click="setTab('stats')">
+        <span class="tool-icon">📊</span>
+        <span class="tool-label">إحصائيات</span>
+      </button>
       <button class="tool-btn admin-tool" @click="router.push('/admin')">
         <span class="tool-icon">🛡️</span>
         <span class="tool-label">الإدارة</span>
@@ -71,7 +87,11 @@ function setTab(tab: string) {
 
     <!-- User / Logout -->
     <div class="nav-user">
-      <div class="user-badge" v-if="auth.isTeacher">
+      <div class="user-badge" v-if="auth.isAdmin">
+        <span class="user-icon">🛡️</span>
+        <span class="user-role">مشرف</span>
+      </div>
+      <div class="user-badge" v-else-if="auth.isTeacher">
         <span class="user-icon">👨‍🏫</span>
         <span class="user-role">معلم</span>
       </div>

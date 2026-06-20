@@ -1,192 +1,24 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
-import type { AnalysisEquation } from '../../../types/physics';
+import { useEquationSolver } from '../../../composables/experiment/analysis/useEquationSolver'
+import EquationDetail from './EquationDetail.vue'
+import type { AnalysisEquation } from '../../../types/physics'
 
 const props = defineProps<{
   equations: AnalysisEquation[];
   readings: Record<string, number>[];
 }>();
 
-const selectedIndex = ref(0);
-const varValues = ref<Record<string, number>>({});
-const targetVar = ref('');
-const result = ref<string | null>(null);
-
-function round3(n: number) { return Math.round(n * 1000) / 1000; }
-
-function fillFromReadings() {
-  if (!props.equations.length) return;
-  const eq = props.equations[selectedIndex.value];
-  if (!eq) return;
-  for (const row of props.readings) {
-    let hasValue = false;
-    for (const v of eq.variables) {
-      if (row[v.symbol] !== undefined && row[v.symbol] !== 0) {
-        varValues.value[v.symbol] = round3(row[v.symbol]);
-        hasValue = true;
-      }
-    }
-    if (hasValue) break;
-  }
-}
-
-watch(() => props.equations, (eqs) => {
-  if (eqs.length) {
-    selectedIndex.value = 0;
-    const vars: Record<string, number> = {};
-    for (const v of eqs[0].variables) { vars[v.symbol] = v.value ?? 0; }
-    varValues.value = vars;
-    targetVar.value = eqs[0].solveFor[0] ?? '';
-    fillFromReadings();
-  }
-}, { immediate: true });
-
-watch(() => props.readings, () => { fillFromReadings(); }, { deep: true });
-
-const activeEquation = computed(() => props.equations[selectedIndex.value]);
-
-function solve() {
-  const eq = activeEquation.value;
-  if (!eq || !targetVar.value) { result.value = null; return; }
-
-  const vals = { ...varValues.value };
-  const missing = targetVar.value;
-  const f = (n: number) => n.toFixed(4);
-
-  // Helper: build step-by-step result
-  function steps(name: string, formula: string, value: number) {
-    return `${name} = ${formula} = ${f(value)}`;
-  }
-
-  // === Spring ===
-  if (eq.formula.includes('T = 2π√(m/k)')) {
-    const m = vals['m'] ?? 0; const T = vals['T'] ?? 0; const k = vals['k'] ?? 0;
-    if (missing === 'k' && m > 0 && T > 0) {
-      const v = (4 * Math.PI * Math.PI * m) / (T * T);
-      result.value = steps('k', `4π²·m/T² = 4π²·${f(m)}/${f(T*T)}`, v);
-    } else if (missing === 'T' && m > 0 && k > 0) {
-      const v = 2 * Math.PI * Math.sqrt(m / k);
-      result.value = steps('T', `2π√(m/k) = 2π√(${f(m)}/${f(k)})`, v);
-    } else if (missing === 'm' && T > 0 && k > 0) {
-      const v = (k * T * T) / (4 * Math.PI * Math.PI);
-      result.value = steps('m', `k·T²/(4π²) = ${f(k)}·${f(T*T)}/(4π²)`, v);
-    } else result.value = 'أدخل قيم صحيحة للمتغيرات المعروفة';
-  }
-  // === Pendulum ===
-  else if (eq.formula.includes('T = 2π√(L/g)')) {
-    const L = vals['L'] ?? 0; const T = vals['T'] ?? 0; const g = vals['g'] ?? 0;
-    if (missing === 'g' && L > 0 && T > 0) {
-      const v = (4 * Math.PI * Math.PI * L) / (T * T);
-      result.value = steps('g', `4π²·L/T² = 4π²·${f(L)}/${f(T*T)}`, v);
-    } else if (missing === 'T' && L > 0 && g > 0) {
-      const v = 2 * Math.PI * Math.sqrt(L / g);
-      result.value = steps('T', `2π√(L/g) = 2π√(${f(L)}/${f(g)})`, v);
-    } else if (missing === 'L' && T > 0 && g > 0) {
-      const v = (g * T * T) / (4 * Math.PI * Math.PI);
-      result.value = steps('L', `g·T²/(4π²) = ${f(g)}·${f(T*T)}/(4π²)`, v);
-    } else result.value = 'أدخل قيم صحيحة للمتغيرات المعروفة';
-  }
-  // === Pendulum T² form ===
-  else if (eq.formula.includes('T² = (4π²/g)·L')) {
-    const L = vals['L'] ?? 0; const T = vals['T'] ?? 0;
-    if (missing === 'g' && L > 0 && T > 0) {
-      const v = (4 * Math.PI * Math.PI * L) / (T * T);
-      result.value = steps('g', `4π²·L/T² = 4π²·${f(L)}/${f(T*T)}`, v);
-    } else result.value = 'أدخل قيم صحيحة';
-  }
-  // === Free Fall ===
-  else if (eq.formula.includes('h = ½gt²')) {
-    const h = vals['h'] ?? 0; const t = vals['t'] ?? 0; const g = vals['g'] ?? 0;
-    if (missing === 'g' && h > 0 && t > 0) {
-      const v = (2 * h) / (t * t);
-      result.value = steps('g', `2h/t² = 2·${f(h)}/${f(t*t)}`, v);
-    } else if (missing === 't' && h > 0 && g > 0) {
-      const v = Math.sqrt((2 * h) / g);
-      result.value = steps('t', `√(2h/g) = √(2·${f(h)}/${f(g)})`, v);
-    } else if (missing === 'h' && g > 0 && t > 0) {
-      const v = 0.5 * g * t * t;
-      result.value = steps('h', `½gt² = ½·${f(g)}·${f(t*t)}`, v);
-    } else result.value = 'أدخل قيم صحيحة للمتغيرات المعروفة';
-  }
-  // === Inclined Plane ===
-  else if (eq.formula.includes('a = g·sinθ − μ·g·cosθ')) {
-    const a = vals['a'] ?? 0; const g = vals['g'] ?? 0; const theta = (vals['θ'] ?? 0) * Math.PI / 180; const mu = vals['μ'] ?? 0;
-    if (missing === 'a' && g > 0) {
-      const v = g * Math.sin(theta) - mu * g * Math.cos(theta);
-      result.value = steps('a', `g·sinθ−μ·g·cosθ = ${f(g)}·${f(Math.sin(theta))}−${f(mu)}·${f(g)}·${f(Math.cos(theta))}`, v);
-    } else if (missing === 'μ' && g > 0 && Math.cos(theta) > 1e-6) {
-      const v = (g * Math.sin(theta) - a) / (g * Math.cos(theta));
-      result.value = steps('μ', `(g·sinθ−a)/(g·cosθ)`, v);
-    } else result.value = 'أدخل قيم صحيحة';
-  }
-  else if (eq.formula.includes('s = ½at²')) {
-    const s = vals['s'] ?? 0; const a = vals['a'] ?? 0; const t = vals['t'] ?? 0;
-    if (missing === 'a' && s > 0 && t > 0) {
-      const v = (2 * s) / (t * t);
-      result.value = steps('a', `2s/t² = 2·${f(s)}/${f(t*t)}`, v);
-    } else if (missing === 't' && s > 0 && a > 0) {
-      const v = Math.sqrt((2 * s) / a);
-      result.value = steps('t', `√(2s/a) = √(2·${f(s)}/${f(a)})`, v);
-    } else if (missing === 's' && a > 0 && t > 0) {
-      const v = 0.5 * a * t * t;
-      result.value = steps('s', `½at² = ½·${f(a)}·${f(t*t)}`, v);
-    } else result.value = 'أدخل قيم صحيحة';
-  }
-  // === Collision ===
-  else if (eq.formula.includes('m₁v₁i + m₂v₂i = m₁v₁f + m₂v₂f')) {
-    const m1 = vals['m1'] ?? 0; const m2 = vals['m2'] ?? 0;
-    const v1i = vals['v1i'] ?? 0; const v2i = vals['v2i'] ?? 0;
-    const v1f = vals['v1f'] ?? 0; const v2f = vals['v2f'] ?? 0;
-    if (missing === 'v1f') {
-      const v = (m1 * v1i + m2 * v2i - m2 * v2f) / m1;
-      result.value = steps('v₁f', `(m₁v₁i+m₂v₂i−m₂v₂f)/m₁`, v);
-    } else if (missing === 'v2f') {
-      const v = (m1 * v1i + m2 * v2i - m1 * v1f) / m2;
-      result.value = steps('v₂f', `(m₁v₁i+m₂v₂i−m₁v₁f)/m₂`, v);
-    } else result.value = 'أدخل قيم صحيحة';
-  }
-  else if (eq.formula.includes('e = (v₂f − v₁f)/(v₁i − v₂i)')) {
-    const v1i = vals['v1i'] ?? 0; const v2i = vals['v2i'] ?? 0; const v1f = vals['v1f'] ?? 0; const v2f = vals['v2f'] ?? 0;
-    if (missing === 'e' && Math.abs(v1i - v2i) > 1e-6) {
-      const v = (v2f - v1f) / (v1i - v2i);
-      result.value = steps('e', `(v₂f−v₁f)/(v₁i−v₂i)`, v);
-    } else result.value = 'أدخل قيم صحيحة';
-  }
-  // === Projectile ===
-  else if (eq.formula.includes('R = v₀²·sin(2θ)/g')) {
-    const v0 = vals['v0'] ?? 0; const theta = (vals['θ'] ?? 0) * Math.PI / 180; const g = vals['g'] ?? 0; const R = vals['R'] ?? 0;
-    if (missing === 'R' && v0 > 0 && g > 0) {
-      const v = (v0 * v0 * Math.sin(2 * theta)) / g;
-      result.value = steps('R', `v₀²·sin(2θ)/g`, v);
-    } else if (missing === 'v0' && R > 0 && g > 0 && Math.sin(2*theta) > 1e-6) {
-      const v = Math.sqrt((R * g) / Math.sin(2 * theta));
-      result.value = steps('v₀', `√(R·g/sin(2θ))`, v);
-    } else if (missing === 'θ' && R > 0 && v0 > 0 && g > 0) {
-      const v = Math.asin((R * g) / (v0 * v0)) / 2 * 180 / Math.PI;
-      result.value = steps('θ', `½·arcsin(R·g/v₀²)`, v);
-    } else result.value = 'أدخل قيم صحيحة';
-  }
-  else if (eq.formula.includes('H = v₀²·sin²(θ)/(2g)')) {
-    const v0 = vals['v0'] ?? 0; const theta = (vals['θ'] ?? 0) * Math.PI / 180; const g = vals['g'] ?? 0;
-    if (missing === 'H' && v0 > 0 && g > 0) {
-      const v = (v0 * v0 * Math.sin(theta) * Math.sin(theta)) / (2 * g);
-      result.value = steps('H', `v₀²·sin²(θ)/(2g)`, v);
-    } else result.value = 'أدخل قيم صحيحة';
-  }
-  else {
-    result.value = `حساب ${missing} من المعادلة ${eq.formula}`;
-  }
-}
-
-// Auto-solve when enough inputs are filled
-watch([varValues, targetVar], () => {
-  const eq = activeEquation.value;
-  if (!eq || !targetVar.value) return;
-  const known = eq.variables.filter(v => varValues.value[v.symbol] !== undefined && varValues.value[v.symbol] !== 0).length;
-  const total = eq.variables.length;
-  // Auto-solve if all but one variable is known
-  if (known >= total - 1) solve();
-}, { deep: true });
+const {
+  selectedIndex,
+  varValues,
+  targetVar,
+  result,
+  activeEquation,
+  solve,
+} = useEquationSolver(
+  () => props.equations,
+  () => props.readings
+);
 </script>
 
 <template>
@@ -206,33 +38,13 @@ watch([varValues, targetVar], () => {
         </button>
       </div>
 
-      <div v-if="activeEquation" class="eq-detail">
-        <div class="formula">{{ activeEquation.formula }}</div>
-
-        <div class="vars">
-          <div v-for="v in activeEquation.variables" :key="v.symbol" class="var-row">
-            <label>{{ v.label }} ({{ v.symbol }})</label>
-            <input
-              type="number"
-              step="any"
-              v-model.number="varValues[v.symbol]"
-            />
-          </div>
-        </div>
-
-        <div class="solve-row">
-          <label>احسب:</label>
-          <select v-model="targetVar">
-            <option v-for="s in activeEquation.solveFor" :key="s" :value="s">{{ s }}</option>
-          </select>
-          <button class="btn-solve" @click="solve">= احسب</button>
-        </div>
-
-        <div v-if="result" class="result">
-          <div class="result-label">✅ الناتج</div>
-          <div class="result-value">{{ result }}</div>
-        </div>
-      </div>
+      <EquationDetail
+        :equation="activeEquation"
+        v-model:var-values="varValues"
+        v-model:target-var="targetVar"
+        :result="result"
+        @solve="solve"
+      />
     </div>
     <p v-else class="empty">لا توجد معادلات</p>
   </div>

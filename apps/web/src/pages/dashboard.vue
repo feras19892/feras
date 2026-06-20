@@ -27,7 +27,7 @@ const loadCards = async () => {
 }
 
 onMounted(async () => {
-  if (auth.isTeacher) activeTab.value = 'experiments'
+  if (auth.isTeacher || auth.isAdmin) activeTab.value = 'experiments'
   else if (auth.isStudent) activeTab.value = 'branches'
   if (!auth.user && !auth.isGuest) { await auth.fetchMe() }
   await loadCards()
@@ -39,11 +39,11 @@ onMounted(async () => {
     <AppNavbar v-model:active-tab="activeTab" />
 
     <main class="main-content">
-      <ClassManager v-if="auth.isTeacher && activeTab === 'classes'" />
+      <ClassManager v-if="(auth.isTeacher || auth.isAdmin) && activeTab === 'classes'" />
       <StudentClasses v-else-if="auth.isStudent && activeTab === 'classes'" />
 
-      <!-- Teacher tabs -->
-      <template v-else-if="auth.isTeacher && activeTab === 'experiments'">
+      <!-- Teacher & Admin tabs -->
+      <template v-else-if="(auth.isTeacher || auth.isAdmin) && activeTab === 'experiments'">
         <h2 style="text-align:center; color:#e2e8f0; margin:0 0 1.5rem;">📋 التجارب المتاحة</h2>
         <p v-if="loading" class="loading-text">...</p>
         <div v-else class="cards-grid">
@@ -59,11 +59,11 @@ onMounted(async () => {
           />
         </div>
       </template>
-      <div v-else-if="auth.isTeacher && activeTab === 'grading'" class="teacher-tab">
+      <div v-else-if="(auth.isTeacher || auth.isAdmin) && activeTab === 'grading'" class="teacher-tab">
         <h2>✅ تصحيح</h2>
         <p>قريباً — تصحيح التقارير</p>
       </div>
-      <div v-else-if="auth.isTeacher && activeTab === 'stats'" class="teacher-tab">
+      <div v-else-if="(auth.isTeacher || auth.isAdmin) && activeTab === 'stats'" class="teacher-tab">
         <h2>📊 إحصائيات</h2>
         <p>قريباً — إحصائيات الطلاب</p>
       </div>
@@ -88,8 +88,8 @@ onMounted(async () => {
         </div>
       </div>
 
-      <!-- Default for teacher when on branches or other tabs -->
-      <template v-else-if="auth.isTeacher">
+      <!-- Default for teacher/admin when on branches or other tabs -->
+      <template v-else-if="auth.isTeacher || auth.isAdmin">
         <p v-if="loading" class="loading-text">...</p>
         <div v-else class="cards-grid">
           <BranchCard

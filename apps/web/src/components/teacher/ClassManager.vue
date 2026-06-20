@@ -1,60 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useAuthStore } from '../../modules/auth/stores/auth'
+import { useClassManager } from '../../composables/teacher/useClassManager'
+import CreateClassModal from './CreateClassModal.vue'
 
-const auth = useAuthStore()
-const classes = ref<{ id: string; name: string; code: string }[]>([])
-const showModal = ref(false)
-const newClassName = ref('')
-
-function generateCode(): string {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-  let code = ''
-  for (let i = 0; i < 6; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length))
-  }
-  return code
-}
-
-function loadLocalClasses() {
-  try {
-    const raw = localStorage.getItem('physlab_guest_classes')
-    if (raw) classes.value = JSON.parse(raw)
-  } catch {
-    classes.value = []
-  }
-}
-
-function saveLocalClasses() {
-  localStorage.setItem('physlab_guest_classes', JSON.stringify(classes.value))
-}
-
-function createClass() {
-  if (!newClassName.value.trim()) return
-  const newClass = {
-    id: 'local-' + Date.now(),
-    name: newClassName.value.trim(),
-    code: generateCode(),
-  }
-  classes.value.push(newClass)
-  saveLocalClasses()
-  newClassName.value = ''
-  showModal.value = false
-}
-
-function deleteClass(id: string) {
-  if (!confirm('هل أنت متأكد من حذف هذا الفصل؟')) return
-  classes.value = classes.value.filter(c => c.id !== id)
-  saveLocalClasses()
-}
-
-function copyCode(code: string) {
-  navigator.clipboard?.writeText(code)
-}
-
-onMounted(() => {
-  if (auth.guestMode) loadLocalClasses()
-})
+const { classes, showModal, newClassName, createClass, deleteClass, copyCode } = useClassManager()
 </script>
 
 <template>
@@ -86,17 +34,11 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Modal -->
-    <div v-if="showModal" class="modal-overlay" @click.self="showModal = false">
-      <div class="join-modal">
-        <h3>إنشاء فصل جديد</h3>
-        <input v-model="newClassName" type="text" placeholder="اسم الفصل" @keyup.enter="createClass" />
-        <div class="join-actions">
-          <button class="join-cancel" @click="showModal = false">إلغاء</button>
-          <button class="join-confirm" @click="createClass">إنشاء</button>
-        </div>
-      </div>
-    </div>
+    <CreateClassModal
+      v-model:show="showModal"
+      v-model="newClassName"
+      @confirm="createClass"
+    />
   </div>
 </template>
 
@@ -231,71 +173,4 @@ onMounted(() => {
 
 .sc-copy:hover, .sc-delete:hover { opacity: 1; }
 
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 200;
-}
-
-.join-modal {
-  background: rgba(15, 23, 42, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  width: 90%;
-  max-width: 360px;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.join-modal h3 {
-  margin: 0;
-  font-size: 1.1rem;
-  color: #f1f5f9;
-  text-align: center;
-}
-
-.join-modal input {
-  padding: 0.7rem 1rem;
-  border-radius: 0.6rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(0, 0, 0, 0.3);
-  color: #e2e8f0;
-  font-size: 0.9rem;
-  font-family: inherit;
-}
-
-.join-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.join-cancel, .join-confirm {
-  flex: 1;
-  padding: 0.55rem;
-  border-radius: 0.55rem;
-  font-size: 0.85rem;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: inherit;
-  transition: all 0.2s;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.join-cancel {
-  background: rgba(255, 255, 255, 0.05);
-  color: #94a3b8;
-}
-
-.join-confirm {
-  background: linear-gradient(135deg, #4f46e5, #7c3aed);
-  color: #fff;
-  border: none;
-}
 </style>

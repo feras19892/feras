@@ -1,5 +1,4 @@
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
 import { sendToAnalysis } from '../../composables/analysis/sendToAnalysis'
 import type { AnalysisPayload } from '../../types/physics'
 
@@ -23,7 +22,6 @@ import { useSpringLayout } from './useSpringLayout'
 import { useSpringTrials } from './useSpringTrials'
 
 export function useSpringExperiment() {
-  const router = useRouter()
 
   const params = reactive<SpringParams>({ mass: 1.0, k: 50, amplitude: 0.03, damping: 0.5, measureCycles: 5, dampingModel: 'linear', springMass: 0.15 })
   const previousMass = ref(1.0)

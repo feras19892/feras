@@ -7,17 +7,29 @@ const props = defineProps<{
   simState: CollisionState
 }>()
 
-const emit = defineEmits<{
-  (e: 'snapshot', dataUrl: string): void
-}>()
-
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 
 // Trail history
 const trail1 = ref<{ x: number; t: number }[]>([])
 const trail2 = ref<{ x: number; t: number }[]>([])
-let particles: { x: number; y: number; vx: number; vy: number; life: number; maxLife: number; color: string }[] = []
+const particles: { x: number; y: number; vx: number; vy: number; life: number; maxLife: number; color: string }[] = []
 let lastCollided = false
+let shockwave: { x: number; y: number; r: number; alpha: number } | null = null
+
+function playBoom() {
+  try {
+    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)()
+    const osc = ctx.createOscillator()
+    const gain = ctx.createGain()
+    osc.type = 'sine'
+    osc.frequency.setValueAtTime(150, ctx.currentTime)
+    osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.3)
+    gain.gain.setValueAtTime(0.3, ctx.currentTime)
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3)
+    osc.connect(gain); gain.connect(ctx.destination)
+    osc.start(); osc.stop(ctx.currentTime + 0.3)
+  } catch { /* ignore */ }
+}
 
 function draw() {
   const canvas = canvasRef.value
@@ -132,21 +144,34 @@ function draw() {
   ctx.fillText('m₂', cx2, cy + 2)
   ctx.restore()
 
-  // Collision particles
+  // Shockwave + sound on first collision frame
   if (collided && !lastCollided) {
-    for (let i = 0; i < 20; i++) {
-      const angle = (Math.PI * 2 * i) / 20 + Math.random() * 0.3
-      const speed = 1 + Math.random() * 3
+    playBoom()
+    shockwave = { x: (cx1 + cx2) / 2, y: cy, r: 10, alpha: 1 }
+    for (let i = 0; i < 30; i++) {
+      const angle = (Math.PI * 2 * i) / 30 + Math.random() * 0.5
+      const speed = 2 + Math.random() * 5
       particles.push({
         x: (cx1 + cx2) / 2, y: cy,
         vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
-        life: 1, maxLife: 0.5 + Math.random() * 0.5,
-        color: Math.random() > 0.5 ? '#fbbf24' : '#f87171'
+        life: 1, maxLife: 0.6 + Math.random() * 0.6,
+        color: Math.random() > 0.3 ? '#fbbf24' : '#f87171'
       })
     }
     lastCollided = true
   }
   if (!collided) lastCollided = false
+
+  // Draw shockwave ring
+  if (shockwave) {
+    ctx.save()
+    ctx.strokeStyle = `rgba(251,191,36,${shockwave.alpha})`
+    ctx.lineWidth = 3
+    ctx.beginPath(); ctx.arc(shockwave.x, shockwave.y, shockwave.r, 0, Math.PI * 2); ctx.stroke()
+    ctx.restore()
+    shockwave.r += 4; shockwave.alpha -= 0.03
+    if (shockwave.alpha <= 0) shockwave = null
+  }
 
   // Draw & update particles
   for (let i = particles.length - 1; i >= 0; i--) {
@@ -161,39 +186,81 @@ function draw() {
     ctx.restore()
   }
 
-  // Velocity arrows — bigger
+  // Velocity arrows — compact, above balls
   function drawArrow(c: CanvasRenderingContext2D, x: number, y: number, v: number, color: string, r: number) {
-    if (Math.abs(v) < 0.1) return
-    const len = Math.min(120, Math.abs(v) * 22)
+    if (Math.abs(v) < 0.3) return
+    const len = Math.min(70, Math.abs(v) * 12)
     const dir = v > 0 ? 1 : -1
+    const ay = y - r - 14
     c.save()
-    c.strokeStyle = color; c.lineWidth = 4
-    c.beginPath(); c.moveTo(x, y - r - 24); c.lineTo(x + len * dir, y - r - 24); c.stroke()
-    c.fillStyle = color
+    c.strokeStyle = color; c.lineWidth = 3; c.globalAlpha = 0.85
+    c.beginPath(); c.moveTo(x, ay); c.lineTo(x + len * dir, ay); c.stroke()
+    c.fillStyle = color; c.globalAlpha = 0.85
     c.beginPath()
-    c.moveTo(x + len * dir, y - r - 24)
-    c.lineTo(x + len * dir - 10 * dir, y - r - 30)
-    c.lineTo(x + len * dir - 10 * dir, y - r - 18)
+    c.moveTo(x + len * dir, ay)
+    c.lineTo(x + len * dir - 7 * dir, ay - 5)
+    c.lineTo(x + len * dir - 7 * dir, ay + 5)
     c.closePath(); c.fill()
-    c.fillStyle = color; c.font = 'bold 13px "Segoe UI"'; c.textAlign = 'center'; c.textBaseline = 'bottom'
-    c.fillText(`${v.toFixed(1)}`, x + (len * dir) / 2, y - r - 30)
+    c.fillStyle = color; c.font = 'bold 11px "Segoe UI"'; c.textAlign = 'center'; c.textBaseline = 'bottom'
+    c.fillText(`${v.toFixed(1)}`, x + (len * dir) / 2, ay - 6)
     c.restore()
   }
   drawArrow(ctx, cx1, cy, collided ? (v1f ?? 0) : v1, '#34d399', sr1)
   drawArrow(ctx, cx2, cy, collided ? (v2f ?? 0) : v2, '#34d399', sr2)
 
-  // Live HUD — bigger
+  // Walls
   ctx.save()
-  ctx.fillStyle = 'rgba(15,23,42,0.9)'
-  ctx.strokeStyle = 'rgba(148,163,184,0.25)'; ctx.lineWidth = 1.5
-  ctx.beginPath(); ctx.roundRect(12, 10, 170, 88, 8); ctx.fill(); ctx.stroke()
-  ctx.fillStyle = '#e2e8f0'; ctx.font = 'bold 14px "Segoe UI"'; ctx.textAlign = 'left'; ctx.textBaseline = 'top'
-  ctx.fillText(`v₁ = ${(collided ? (v1f ?? v1) : v1).toFixed(2)} m/s`, 22, 18)
-  ctx.fillStyle = '#38bdf8'
-  ctx.fillText(`v₂ = ${(collided ? (v2f ?? v2) : v2).toFixed(2)} m/s`, 22, 40)
-  ctx.fillStyle = '#94a3b8'
-  ctx.fillText(`t = ${t.toFixed(2)} s`, 22, 62)
+  ctx.fillStyle = 'rgba(71,85,105,0.5)'
+  const wallW = 12
+  ctx.fillRect(0, cy - 60, wallW, 120)
+  ctx.fillRect(w - wallW, cy - 60, wallW, 120)
+  ctx.strokeStyle = '#64748b'; ctx.lineWidth = 2
+  ctx.strokeRect(0, cy - 60, wallW, 120)
+  ctx.strokeRect(w - wallW, cy - 60, wallW, 120)
+  ctx.fillStyle = '#94a3b8'; ctx.font = 'bold 10px "Segoe UI"'; ctx.textAlign = 'center'
+  ctx.save(); ctx.translate(6, cy); ctx.rotate(-Math.PI/2); ctx.fillText('حاجز', 0, 0); ctx.restore()
+  ctx.save(); ctx.translate(w - 6, cy); ctx.rotate(Math.PI/2); ctx.fillText('حاجز', 0, 0); ctx.restore()
   ctx.restore()
+
+  // Live HUD — bigger + Pi/Pf/KE
+  ctx.save()
+  ctx.fillStyle = 'rgba(15,23,42,0.92)'
+  ctx.strokeStyle = 'rgba(148,163,184,0.3)'; ctx.lineWidth = 1.5
+  const rx = 12, ry = 10, rw = 200, rh = 148, rr = 8
+  ctx.beginPath(); ctx.moveTo(rx + rr, ry); ctx.lineTo(rx + rw - rr, ry); ctx.arcTo(rx + rw, ry, rx + rw, ry + rr, rr); ctx.lineTo(rx + rw, ry + rh - rr); ctx.arcTo(rx + rw, ry + rh, rx + rw - rr, ry + rh, rr); ctx.lineTo(rx + rr, ry + rh); ctx.arcTo(rx, ry + rh, rx, ry + rh - rr, rr); ctx.lineTo(rx, ry + rr); ctx.arcTo(rx, ry, rx + rr, ry, rr); ctx.closePath(); ctx.fill(); ctx.stroke()
+  ctx.fillStyle = '#e2e8f0'; ctx.font = 'bold 13px "Segoe UI"'; ctx.textAlign = 'left'; ctx.textBaseline = 'top'
+  ctx.fillText(`v₁ = ${(collided ? (v1f ?? v1) : v1).toFixed(2)} m/s`, 22, 16)
+  ctx.fillStyle = '#38bdf8'
+  ctx.fillText(`v₂ = ${(collided ? (v2f ?? v2) : v2).toFixed(2)} m/s`, 22, 36)
+  ctx.fillStyle = '#94a3b8'
+  ctx.fillText(`t = ${t.toFixed(2)} s`, 22, 56)
+  // Physics counters
+  const st = props.simState
+  if (st.KEi !== null && st.KEf !== null) {
+    ctx.fillStyle = '#fbbf24'; ctx.font = 'bold 11px "Segoe UI"'
+    ctx.fillText(`Pقبل = ${st.Pi?.toFixed(1)}  |  Pبعد = ${st.Pf?.toFixed(1)}`, 22, 80)
+    ctx.fillStyle = '#34d399'
+    ctx.fillText(`KEقبل = ${st.KEi?.toFixed(1)} J`, 22, 98)
+    ctx.fillStyle = '#f87171'
+    ctx.fillText(`KEبعد = ${st.KEf?.toFixed(1)} J  |  فقدان ${st.lossPercent?.toFixed(0)}%`, 22, 116)
+  }
+  ctx.restore()
+
+  // Countdown to collision
+  if (running && !collided && !st.paused) {
+    const dist = Math.abs(x2 - x1) - (props.params.r1 + props.params.r2)
+    const relV = Math.abs(v1 - v2)
+    if (dist > 0 && relV > 0.1) {
+      const timeToCollide = dist / relV
+      if (timeToCollide < 3) {
+        ctx.save()
+        ctx.fillStyle = 'rgba(251,191,36,0.9)'
+        ctx.font = 'bold 18px "Segoe UI"'; ctx.textAlign = 'center'; ctx.textBaseline = 'top'
+        ctx.fillText(`التصادم خلال ${timeToCollide.toFixed(1)}s`, w / 2, 80)
+        ctx.restore()
+      }
+    }
+  }
 
   // Status text — bigger
   ctx.save()

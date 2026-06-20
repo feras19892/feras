@@ -1,5 +1,4 @@
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
 import { sendToAnalysis } from '../../composables/analysis/sendToAnalysis'
 import type { AnalysisPayload } from '../../types/physics'
 import type { FreeFallParams } from '../../modules/physics/experiments/freefall/useFreeFallPhysics'
@@ -8,7 +7,6 @@ import { useFreeFallLayout } from './useFreeFallLayout'
 import { useFreeFallTrials } from './useFreeFallTrials'
 
 export function useFreeFallExperiment() {
-  const router = useRouter()
 
   const params = reactive<FreeFallParams>({ h: 0.50, g: 9.81, mass: 1.0, airResistance: false, dragCoeff: 0.1 })
 

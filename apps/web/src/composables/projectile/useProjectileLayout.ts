@@ -3,17 +3,17 @@ import { reactive } from 'vue'
 export type ColumnId = 'data' | 'vis' | 'ctrl'
 export type PanelId = 'table' | 'equations' | 'scatter' | 'tutor' | 'signal' | 'vxSignal' | 'vySignal' | 'params' | 'guide' | 'stats' | 'report'
 
-const layoutStorageKey = 'projectile:layout:v2'
+const layoutStorageKey = 'projectile:layout:v3'
 
 const defaultPanelColumn: Record<PanelId, ColumnId> = {
   table: 'data', equations: 'data', scatter: 'data', tutor: 'data', report: 'data',
-  signal: 'vis', vxSignal: 'vis', vySignal: 'vis',
+  signal: 'data', vxSignal: 'data', vySignal: 'data',
   params: 'ctrl', guide: 'ctrl', stats: 'ctrl',
 }
 
 const defaultColumnOrder: Record<ColumnId, PanelId[]> = {
-  data: ['table'],
-  vis: ['signal', 'vxSignal', 'vySignal'],
+  data: ['table', 'signal', 'vxSignal', 'vySignal'],
+  vis: [],
   ctrl: ['params', 'guide'],
 }
 
@@ -23,7 +23,7 @@ const allPanelIds: PanelId[] = [
 ]
 
 export function useProjectileLayout() {
-  try { localStorage.removeItem('projectile:layout:v1') } catch { /* ignore */ }
+  try { localStorage.removeItem('projectile:layout:v1'); localStorage.removeItem('projectile:layout:v2') } catch { /* ignore */ }
 
   const panels = reactive<Record<PanelId, boolean>>({
     table: true, equations: false, signal: true, params: true, guide: true, stats: false,

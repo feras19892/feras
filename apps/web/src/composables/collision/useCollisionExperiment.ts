@@ -1,5 +1,4 @@
-import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, onMounted, onUnmounted, reactive, watch } from 'vue'
 import { sendToAnalysis } from '../../composables/analysis/sendToAnalysis'
 import type { AnalysisPayload } from '../../types/physics'
 import type { CollisionParams } from '../../modules/physics/experiments/collision/useCollisionPhysics'
@@ -8,7 +7,6 @@ import { useCollisionTrials } from './useCollisionTrials'
 import { useCollisionLayout } from './useCollisionLayout'
 
 export function useCollisionExperiment() {
-  const router = useRouter()
 
   const params = reactive<CollisionParams>({ m1: 2, m2: 3, v1i: 3, v2i: -2, r1: 0.2, r2: 0.2, e: 1 })
 

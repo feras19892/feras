@@ -1,5 +1,4 @@
 import { computed, onMounted, onUnmounted, reactive, watch } from 'vue'
-import { useRouter } from 'vue-router'
 import { sendToAnalysis } from '../../composables/analysis/sendToAnalysis'
 import type { AnalysisPayload } from '../../types/physics'
 import type { ProjectileParams } from '../../modules/physics/experiments/projectile/useProjectilePhysics'
@@ -8,7 +7,6 @@ import { useProjectileLayout } from './useProjectileLayout'
 import { useProjectileTrials } from './useProjectileTrials'
 
 export function useProjectileExperiment() {
-  const router = useRouter()
 
   const params = reactive<ProjectileParams>({ v0: 10, angleDeg: 45, g: 9.81, x0: 0, y0: 0, targetX: 30, targetY: 0, targetRadius: 3, targetVisible: false, targetMode: false, dragCoeff: 0 })
 

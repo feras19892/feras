@@ -3,9 +3,6 @@ import {
   detectCollision,
   separateBalls,
   computeFinalVelocities,
-  computeMomentum,
-  computeKE,
-  computeEnergyLoss,
   computeCollisionResult,
 } from './collisionUtils'
 

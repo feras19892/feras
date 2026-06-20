@@ -36,10 +36,12 @@ function onInput(row: number, key: string, ev: Event) {
 function addRow() {
   const empty: Record<string, number> = {};
   for (const c of props.columns) { empty[c.key] = 0; }
+  // eslint-disable-next-line vue/no-mutating-props
   props.readings.push(empty);
 }
 
 function removeRow(index: number) {
+  // eslint-disable-next-line vue/no-mutating-props
   props.readings.splice(index, 1);
 }
 </script>

@@ -9,6 +9,7 @@ const experimentMap: Record<string, () => Promise<any>> = {
   'freefall': () => import('./experiments/freefall/FreeFallExperiment.vue'),
   'inclined': () => import('./experiments/inclined/InclinedExperiment.vue'),
   'collision': () => import('./experiments/collision/CollisionExperiment.vue'),
+  'lever': () => import('./experiments/lever/LeverExperiment.vue'),
   'analysis-calc': () => import('./experiments/analysis-calc/AnalysisCalcExperiment.vue'),
 };
 

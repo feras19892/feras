@@ -1,5 +1,4 @@
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
 import { sendToAnalysis } from '../../composables/analysis/sendToAnalysis'
 import type { AnalysisPayload } from '../../types/physics'
 import type { InclinedParams } from '../../modules/physics/experiments/inclined/useInclinedPhysics'
@@ -8,7 +7,6 @@ import { useInclinedLayout } from './useInclinedLayout'
 import { useInclinedTrials } from './useInclinedTrials'
 
 export function useInclinedExperiment() {
-  const router = useRouter()
 
   const params = reactive<InclinedParams>({ thetaDeg: 30, length: 2.0, mass: 1.0, g: 9.81, mu: 0.0, airResistance: false, bodyTypeId: 'block', cd: 1.05, area: 0.01 })
 

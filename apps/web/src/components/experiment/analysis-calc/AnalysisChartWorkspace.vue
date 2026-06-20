@@ -15,6 +15,7 @@ const canvasRef = ref<HTMLCanvasElement | null>(null);
 const hoverPoint = ref<{ x: number; y: number; px: number; py: number } | null>(null);
 const tooltip = ref('');
 const showSlopeResult = ref(false);
+const showAxisControls = ref(false);
 
 const numericKeys = computed(() => props.columns.map(c => c.key));
 
@@ -33,8 +34,8 @@ function fmtTick(n: number): string {
   if (absN >= 100) return n.toFixed(1);
   if (absN >= 10) return n.toFixed(2);
   if (absN >= 1) return n.toFixed(3);
-  if (absN >= 0.1) return n.toFixed(3);
-  return n.toFixed(4);
+  if (absN >= 0.01) return n.toFixed(4);
+  return n.toExponential(2);
 }
 
 watch(() => props.suggestedPlots, (plots) => {
@@ -128,8 +129,8 @@ function draw() {
   canvas.style.height = (rect.height - 32) + 'px';
   ctx.scale(dpr, dpr);
 
-  const w = rect.width;
-  const h = rect.height - 4;
+  const w = canvas.clientWidth;
+  const h = canvas.clientHeight - 4;
 
   ctx.clearRect(0, 0, w, h);
   ctx.fillStyle = '#0f172a';
@@ -141,8 +142,8 @@ function draw() {
     return;
   }
 
-  const metrics = getChartMetrics(rect);
-  const { pad, minX, maxX, minY, maxY, rangeX, rangeY, dataMinX, dataMinY, dataRangeX, dataRangeY } = metrics;
+  const metrics = getChartMetrics();
+  const { pad, minX, maxX, minY, rangeX, rangeY, dataMinX, dataMinY, dataRangeX, dataRangeY } = metrics;
 
   const toPx = (x: number, y: number) => ({
     px: pad + ((x - minX) / rangeX) * (w - pad * 2),
@@ -274,7 +275,7 @@ watch([points, xKey, yKey], () => { draw(); }, { deep: true });
 
 let ro: ResizeObserver | null = null;
 // Shared metrics for draw + hover
-function getChartMetrics(rect: DOMRect) {
+function getChartMetrics() {
   const xs = points.value.map(p => p.x); const ys = points.value.map(p => p.y);
   const dataMinX = Math.min(...xs); const dataMaxX = Math.max(...xs);
   const dataMinY = Math.min(...ys); const dataMaxY = Math.max(...ys);
@@ -294,7 +295,7 @@ function onMouseMove(e: MouseEvent) {
   const canvas = canvasRef.value; if (!canvas) return;
   const rect = canvas.getBoundingClientRect();
   if (points.value.length === 0) return;
-  const { pad, minX, minY, rangeX, rangeY } = getChartMetrics(rect);
+  const { pad, minX, minY, rangeX, rangeY } = getChartMetrics();
   const mx = e.clientX - rect.left; const my = e.clientY - rect.top;
   let closest: { x: number; y: number; px: number; py: number; dist: number } | null = null;
   for (const p of points.value) {
@@ -332,11 +333,19 @@ onUnmounted(() => {
   <div class="chart-panel" ref="containerRef">
     <div class="panel-header">
       <span>📈 رسم بياني</span>
-      <div class="controls">
+      <button class="btn-toggle" @click="showAxisControls = !showAxisControls">
+        {{ showAxisControls ? '✕' : '⚙️' }} محاور
+      </button>
+    </div>
+    <div v-if="showAxisControls" class="axis-controls">
+      <div class="ctrl-row">
+        <label>محور X</label>
         <select v-model="xKey">
           <option v-for="k in numericKeys" :key="k" :value="k">{{ k }}</option>
         </select>
-        <span class="vs">ضد</span>
+      </div>
+      <div class="ctrl-row">
+        <label>محور Y</label>
         <select v-model="yKey">
           <option v-for="k in numericKeys" :key="k" :value="k">{{ k }}</option>
         </select>
@@ -348,14 +357,6 @@ onUnmounted(() => {
       <span class="r2">R² = {{ regression.r2.toFixed(4) }}</span>
     </div>
     <div v-if="slopeWarning" class="slope-warning">{{ slopeWarning }}</div>
-    <div v-if="regression && points.length >= 2" class="slope-calc">
-      <div class="calc-title">📐 حساب الميل</div>
-      <div class="calc-steps">
-        <div class="step">m = (n·Σxy − Σx·Σy) / (n·Σx² − (Σx)²)</div>
-        <div class="step">m = ({{ points.length }}·{{ sumXY.toFixed(3) }} − {{ sumX.toFixed(3) }}·{{ sumY.toFixed(3) }}) / ({{ points.length }}·{{ sumX2.toFixed(3) }} − {{ sumX.toFixed(3) }}²)</div>
-        <div class="step final">m = {{ regression.slope.toFixed(4) }}</div>
-      </div>
-    </div>
     <div v-if="slopeCalc" class="slope-action">
       <button class="btn-calc" @click="showSlopeResult = !showSlopeResult">
         🔬 {{ slopeCalc.label }}
@@ -391,7 +392,11 @@ onUnmounted(() => {
   font-weight: 700;
   flex-shrink: 0;
 }
-.controls { display: flex; align-items: center; gap: 0.4rem; }
+.btn-toggle { background: rgba(91,141,184,.15); border: 1px solid #334155; color: #67e8f9; border-radius: 0.3rem; padding: 0.25rem 0.6rem; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
+.btn-toggle:hover { background: rgba(91,141,184,.25); }
+.axis-controls { display: flex; gap: 1rem; padding: 0.5rem 0.9rem; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; }
+.ctrl-row { display: flex; align-items: center; gap: 0.4rem; }
+.ctrl-row label { color: #94a3b8; font-size: 0.8rem; font-weight: 600; }
 select {
   background: #0f172a;
   border: 1px solid #334155;

@@ -1,5 +1,4 @@
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
 import { sendToAnalysis } from '../../composables/analysis/sendToAnalysis'
 import type { AnalysisPayload } from '../../types/physics'
 import type { PendulumParams } from '../../modules/physics/experiments/pendulum/usePendulumPhysics'
@@ -8,7 +7,6 @@ import { usePendulumLayout } from './usePendulumLayout'
 import { usePendulumTrials } from './usePendulumTrials'
 
 export function usePendulumExperiment() {
-  const router = useRouter()
 
   const params = reactive<PendulumParams>({ length: 0.50, g: 9.81, theta0: 10 * Math.PI / 180, theta0Deg: 10, mass: 0.05, damping: 0.02, measureCycles: 20, bobRadius: 0.02, airDensity: 1.225, springK: 10, springRestLength: 0.08 })
 

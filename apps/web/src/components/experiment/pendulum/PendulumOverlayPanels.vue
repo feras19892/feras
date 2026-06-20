@@ -8,19 +8,16 @@ interface Measured { T: number | null; f: number | null; omega: number | null; g
 interface SimState { theta: number; omega: number; t: number; running: boolean; paused: boolean; signalSeries: { t: number; theta: number }[]; measurementPeriod: number | null }
 
 const props = defineProps<{
-  maximized: Record<PanelId, boolean>; panelTitle: (id: PanelId) => string; trials: PendulumTrial[]; calcResult: string
-  params: PendulumParams; sim: SimState; measured: Measured; fftResult: any
-  trialStats: { T_mean: number; T_std: number; g_mean: number; g_std: number }
-  tutorType: 'info' | 'warn' | 'success'; tutorMessage: string; canvasSnapshot?: string
+  maximized: Record<PanelId, boolean>; panelTitle: (id: PanelId) => string; trials: PendulumTrial[]
+  params: PendulumParams; sim: SimState; measured: Measured
 }>()
 
 const emit = defineEmits<{
-  (e: 'maximize', id: string): void; (e: 'update:trials', val: PendulumTrial[]): void; (e: 'update:fftResult', val: any): void
+  (e: 'maximize', id: string): void; (e: 'update:trials', val: PendulumTrial[]): void
   (e: 'update:params', val: PendulumParams): void; (e: 'remove', id: number): void; (e: 'clear'): void
-  (e: 'calcG'): void; (e: 'calcT'): void; (e: 'calcL'): void; (e: 'calcFitG'): void; (e: 'showCalc', html: string): void
 }>()
 
-const allIds: PanelId[] = ['table', 'equations', 'scatter', 'tutor', 'signal', 'fft', 'params', 'guide', 'stats', 'error']
+const allIds: PanelId[] = ['table', 'signal', 'params', 'guide']
 function isMaximized(id: string) { return (props.maximized as any)[id] as boolean }
 function emitMaximize(id: string) { emit('maximize', id) }
 </script>
@@ -31,10 +28,9 @@ function emitMaximize(id: string) { emit('maximize', id) }
       <div v-if="isMaximized(id)" class="panel-overlay" @click.self="emitMaximize(id)">
         <div class="overlay-card">
           <div class="card-header"><h4>{{ panelTitle(id) }}</h4><button class="pa-btn" @click="emitMaximize(id)">&#x2715;</button></div>
-          <PendulumPanelBody :id="id" :trials="trials" :calc-result="calcResult" :params="params" :sim="sim" :measured="measured"
-            :fft-result="fftResult" :trial-stats="trialStats" :tutor-type="tutorType" :tutor-message="tutorMessage" :canvas-snapshot="canvasSnapshot"
-            @update:trials="emit('update:trials', $event)" @update:fft-result="emit('update:fftResult', $event)" @update:params="emit('update:params', $event)"
-            @remove="emit('remove', $event)" @clear="emit('clear')" @calc-g="emit('calcG')" @calc-t="emit('calcT')" @calc-l="emit('calcL')" @calc-fit-g="emit('calcFitG')" @show-calc="emit('showCalc', $event)" />
+          <PendulumPanelBody :id="id" :trials="trials" :params="params" :sim="sim" :measured="measured"
+            @update:trials="emit('update:trials', $event)" @update:params="emit('update:params', $event)"
+            @remove="emit('remove', $event)" @clear="emit('clear')" />
         </div>
       </div>
     </template>

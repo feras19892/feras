@@ -12,10 +12,29 @@ const emit = defineEmits<{
 function update<K extends keyof CollisionParams>(key: K, value: CollisionParams[K]) {
   emit('update:params', { [key]: value })
 }
+
+const presets = [
+  { name: 'تبادل', desc: 'e=1, m₁=m₂', params: { m1: 1, m2: 1, v1i: 4, v2i: 0, e: 1 } },
+  { name: 'التحام', desc: 'e=0, مضادان', params: { m1: 2, m2: 1, v1i: 3, v2i: -3, e: 0 } },
+  { name: 'جدار', desc: 'm₂ ضخم', params: { m1: 0.1, m2: 500, v1i: 5, v2i: 0, e: 1 } },
+  { name: 'جزئي', desc: 'e=0.5', params: { m1: 1, m2: 1, v1i: 4, v2i: 0, e: 0.5 } },
+]
+
+function applyPreset(p: Partial<CollisionParams>) {
+  emit('update:params', p)
+}
 </script>
 
 <template>
   <div class="params-panel">
+    <div class="presets-bar">
+      <div class="presets-label">⚡ قوالب</div>
+      <div class="presets-row">
+        <button v-for="preset in presets" :key="preset.name" class="preset-btn" :title="preset.desc" @click="applyPreset(preset.params)">
+          {{ preset.name }}
+        </button>
+      </div>
+    </div>
     <div class="param-row">
       <label>m₁ (kg)</label>
       <input type="range" min="0.1" max="10" step="0.1" :value="params.m1" @input="update('m1', +($event.target as HTMLInputElement).value)">
@@ -63,5 +82,20 @@ function update<K extends keyof CollisionParams>(key: K, value: CollisionParams[
 .param-row span { width: 50px; text-align: left; color: #5B8DB8; font-family: monospace; }
 .param-row span.pos { color: #22c55e; }
 .param-row span.neg { color: #ef4444; }
+.presets-bar { margin-bottom: .6rem; padding-bottom: .4rem; border-bottom: 1px dashed #2D3645; }
+.presets-label { font-size: .72rem; color: #fbbf24; font-weight: 700; margin-bottom: .3rem; }
+.presets-row { display: flex; flex-wrap: wrap; gap: .3rem; }
+.preset-btn {
+  flex: 1; min-width: 60px;
+  padding: .35rem .4rem; font-size: .68rem; font-weight: 700;
+  background: linear-gradient(135deg, #334155, #1e293b);
+  border: 1px solid rgba(71,85,105,0.4); border-radius: 6px;
+  color: #cbd5e1; cursor: pointer; transition: all .15s;
+}
+.preset-btn:hover {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #fff; border-color: rgba(96,165,250,0.5);
+  transform: translateY(-1px);
+}
 .hint { font-size: .68rem; color: #94a3b8; text-align: center; margin-top: .3rem; border-top: 1px dashed #2D3645; padding-top: .3rem; }
 </style>

@@ -130,6 +130,6 @@ defineExpose({ draw })
 </template>
 
 <style scoped>
-.chart-wrap { width: 100%; flex: 1; min-height: 0; position: relative; }
+.chart-wrap { width: 100%; height: 180px; min-height: 180px; position: relative; flex-shrink: 0; }
 .chart-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; background: #fffef7; border-radius: 8px; border: 1px solid #2D3645; }
 </style>

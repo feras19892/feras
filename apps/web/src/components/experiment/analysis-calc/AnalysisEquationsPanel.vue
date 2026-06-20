@@ -12,16 +12,17 @@ const varValues = ref<Record<string, number>>({});
 const targetVar = ref('');
 const result = ref<string | null>(null);
 
+function round3(n: number) { return Math.round(n * 1000) / 1000; }
+
 function fillFromReadings() {
   if (!props.equations.length) return;
   const eq = props.equations[selectedIndex.value];
   if (!eq) return;
-  // Try to fill from first non-empty row
   for (const row of props.readings) {
     let hasValue = false;
     for (const v of eq.variables) {
       if (row[v.symbol] !== undefined && row[v.symbol] !== 0) {
-        varValues.value[v.symbol] = row[v.symbol];
+        varValues.value[v.symbol] = round3(row[v.symbol]);
         hasValue = true;
       }
     }
@@ -247,76 +248,78 @@ watch([varValues, targetVar], () => {
   flex-direction: column;
 }
 .panel-header {
-  padding: 0.6rem 0.9rem;
+  padding: 0.4rem 0.6rem;
   background: rgba(255,255,255,0.04);
   border-bottom: 1px solid rgba(255,255,255,0.06);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   color: #67e8f9;
   font-weight: 700;
 }
-.body { padding: 0.6rem; display: flex; flex-direction: column; gap: 0.5rem; }
-.eq-list { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.body { padding: 0.4rem; display: flex; flex-direction: column; gap: 0.35rem; }
+.eq-list { display: flex; gap: 0.3rem; flex-wrap: wrap; }
 .eq-tab {
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.08);
   color: #94a3b8;
-  border-radius: 0.35rem;
-  padding: 0.3rem 0.6rem;
-  font-size: 0.85rem;
+  border-radius: 0.3rem;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.75rem;
   cursor: pointer;
 }
 .eq-tab.active { background: rgba(6,182,212,0.15); color: #67e8f9; border-color: rgba(6,182,212,0.3); }
 .formula {
   font-family: 'Courier New', monospace;
   background: rgba(0,0,0,0.2);
-  padding: 0.5rem 0.7rem;
-  border-radius: 0.3rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 0.25rem;
   color: #e2e8f0;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   text-align: center;
   font-weight: 600;
 }
-.vars { display: flex; flex-direction: column; gap: 0.4rem; }
-.var-row { display: flex; align-items: center; gap: 0.5rem; }
-.var-row label { font-size: 0.85rem; color: #94a3b8; min-width: 90px; font-weight: 600; }
+.vars { display: flex; flex-direction: column; gap: 0.25rem; }
+.var-row { display: flex; align-items: center; gap: 0.4rem; }
+.var-row label { font-size: 0.78rem; color: #94a3b8; min-width: 80px; font-weight: 600; }
 .var-row input {
   flex: 1;
   background: #0f172a;
   border: 1px solid #334155;
   color: #e2e8f0;
-  border-radius: 0.25rem;
-  padding: 0.35rem 0.5rem;
-  font-size: 0.9rem;
+  border-radius: 0.2rem;
+  padding: 0.25rem 0.35rem;
+  font-size: 0.85rem;
+  width: 0;
+  min-width: 0;
 }
-.solve-row { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.3rem; }
-.solve-row label { font-size: 0.85rem; color: #94a3b8; font-weight: 600; }
+.solve-row { display: flex; align-items: center; gap: 0.4rem; margin-top: 0.2rem; }
+.solve-row label { font-size: 0.78rem; color: #94a3b8; font-weight: 600; }
 select {
   background: #0f172a;
   border: 1px solid #334155;
   color: #e2e8f0;
-  border-radius: 0.25rem;
-  padding: 0.3rem 0.5rem;
-  font-size: 0.85rem;
+  border-radius: 0.2rem;
+  padding: 0.2rem 0.35rem;
+  font-size: 0.78rem;
 }
 .btn-solve {
   background: linear-gradient(135deg, #06b6d4, #0891b2);
   border: none;
   color: #fff;
-  border-radius: 0.3rem;
-  padding: 0.35rem 0.7rem;
-  font-size: 0.85rem;
+  border-radius: 0.25rem;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.78rem;
   cursor: pointer;
   font-weight: 700;
 }
 .result {
   background: rgba(34,197,94,0.08);
   border: 1px solid rgba(34,197,94,0.2);
-  border-radius: 0.3rem;
-  padding: 0.5rem 0.7rem;
-  margin-top: 0.3rem;
+  border-radius: 0.25rem;
+  padding: 0.35rem 0.5rem;
+  margin-top: 0.2rem;
   text-align: center;
 }
-.result-label { font-size: 0.8rem; color: #4ade80; margin-bottom: 0.25rem; font-weight: 700; }
-.result-value { color: #e2e8f0; font-size: 0.9rem; font-family: 'Courier New', monospace; font-weight: 700; }
-.empty { color: #64748b; text-align: center; padding: 1rem; font-size: 0.9rem; }
+.result-label { font-size: 0.75rem; color: #4ade80; margin-bottom: 0.15rem; font-weight: 700; }
+.result-value { color: #e2e8f0; font-size: 0.85rem; font-family: 'Courier New', monospace; font-weight: 700; }
+.empty { color: #64748b; text-align: center; padding: 0.8rem; font-size: 0.85rem; }
 </style>

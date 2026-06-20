@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useSpringExperiment } from '../../../../composables/spring/useSpringExperiment'
-import { useSpringReport } from '../../../../composables/spring/useSpringReport'
 import SpringMenuBar from '../../../../components/experiment/spring/SpringMenuBar.vue'
 import SpringCanvas from '../../../../components/experiment/spring/SpringCanvas.vue'
 import SpringStatusBar from '../../../../components/experiment/spring/SpringStatusBar.vue'
@@ -11,18 +10,9 @@ import DraggablePanel from '../../../../components/experiment/spring/DraggablePa
 import SpringPanelBody from '../../../../components/experiment/spring/SpringPanelBody.vue'
 import SpringOverlayPanels from '../../../../components/experiment/spring/SpringOverlayPanels.vue'
 import SpringHelpModal from '../../../../components/experiment/spring/SpringHelpModal.vue'
-import SpringReport from '../../../../components/experiment/spring/SpringReport.vue'
-
 const ex = useSpringExperiment()
-const rep = useSpringReport()
 const helpOpen = ref(false)
-const reportOpen = ref(false)
 const canvasRef = ref<InstanceType<typeof SpringCanvas> | null>(null)
-
-function openFullReport() {
-  rep.captureSnapshot(canvasRef.value)
-  rep.openFullReport(ex)
-}
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return
@@ -64,12 +54,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @reset="ex.resetSim"
       @record-trial="ex.trials.recordTrial"
       @run-lab="ex.runSpringLab"
-      @calc-k="ex.trials.calcK"
-      @calc-t="ex.trials.calcT"
-      @calc-m="ex.trials.calcM"
-      @calc-fit-k="ex.trials.calcFitK"
       @toggle-help="helpOpen = !helpOpen"
-      @print-report="reportOpen = true"
       @analyze-results="ex.exportToAnalysis"
     />
 
@@ -92,84 +77,17 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             <SpringPanelBody
               :id="id"
               :trials="ex.trials.trials.value"
-              :calc-result="ex.trials.calcResult.value"
               :params="ex.params"
               :sim="ex.lab.sim"
               :measured="ex.getMeasured()"
               :effective-mass="ex.getEffectiveMass()"
-              :fft-result="ex.fftResult.value"
-              :static-k="ex.staticK.value"
-              :static-readings="ex.staticReadings.value"
-              :dynamic-trials="ex.dynamicTrials.value"
-              :k-dynamic="ex.kDynamic.value"
-              :trial-stats="ex.trials.trialStats.value"
-              :tutor-type="ex.tutorType.value"
-              :tutor-message="ex.tutorMessage.value"
-              :canvas-snapshot="rep.canvasSnapshot.value ?? undefined"
-              @update:trials="ex.trials.trials.value = $event"
-              @update:fft-result="ex.fftResult.value = $event"
-              @update:params="Object.assign(ex.params, $event)"
-              @update:static-readings="ex.onStaticComplete($event, ex.staticK.value)"
-              @update:static-k="ex.staticK.value = $event"
-              @update:dynamic-trials="() => {}"
-              @update:k-dynamic="() => {}"
-              @remove="ex.trials.removeTrial"
-              @clear="ex.trials.clearTrials"
-              @calc-k="ex.trials.calcK"
-              @calc-t="ex.trials.calcT"
-              @calc-m="ex.trials.calcM"
-              @calc-fit-k="ex.trials.calcFitK"
             />
           </DraggablePanel>
         </template>
       </div>
       <div class="resizer" @mousedown="ex.onResizeStart('data', $event)"></div>
       <div class="lab-col vis-col">
-        <SpringCanvas ref="canvasRef" :params="ex.params" :sim-state="ex.lab.sim" :oscillation-count="Math.floor(ex.lab.sim.zeroCrossings.length / 2)" @toggle-mass="ex.toggleMass" @pull-down="ex.pullDown" @push-up="ex.pushUp" @snapshot="rep.onSnapshot($event)" />
-        <div v-if="ex.hasVisibleVisPanels" class="chart-row">
-          <template v-for="id in ex.getColumnPanels('vis')" :key="id">
-            <DraggablePanel
-              v-if="ex.layout.isPanelVisible(id)"
-              class="chart-panel lab-card"
-              :id="id"
-              :title="ex.layout.panelTitle(id)"
-              @maximize="ex.layout.maximizePanel"
-              @hide="ex.layout.togglePanel"
-              @drop="ex.handleDrop"
-            >
-              <SpringPanelBody
-                :id="id"
-                :trials="ex.trials.trials.value"
-                :calc-result="ex.trials.calcResult.value"
-                :params="ex.params"
-                :sim="ex.lab.sim"
-                :measured="ex.getMeasured()"
-                :effective-mass="ex.getEffectiveMass()"
-                :fft-result="ex.fftResult.value"
-                :static-k="ex.staticK.value"
-                :static-readings="ex.staticReadings.value"
-                :dynamic-trials="ex.dynamicTrials.value"
-                :k-dynamic="ex.kDynamic.value"
-                :trial-stats="ex.trials.trialStats.value"
-                :tutor-type="ex.tutorType.value"
-                :tutor-message="ex.tutorMessage.value"
-                @update:trials="ex.trials.trials.value = $event"
-                @update:fft-result="ex.fftResult.value = $event"
-                @update:params="Object.assign(ex.params, $event)"
-                @update:static-readings="ex.onStaticComplete($event, ex.staticK.value)"
-                @update:static-k="ex.staticK.value = $event"
-                @update:dynamic-trials="() => {}"
-                @update:k-dynamic="() => {}"
-                @remove="ex.trials.removeTrial"
-                @clear="ex.trials.clearTrials"
-                @calc-k="ex.trials.calcK"
-                @calc-t="ex.trials.calcT"
-                @calc-m="ex.trials.calcM"
-                @calc-fit-k="ex.trials.calcFitK"
-              />
-            </DraggablePanel>
-          </template>
-        </div>
+        <SpringCanvas ref="canvasRef" :params="ex.params" :sim-state="ex.lab.sim" :oscillation-count="Math.floor(ex.lab.sim.zeroCrossings.length / 2)" @toggle-mass="ex.toggleMass" @pull-down="ex.pullDown" @push-up="ex.pushUp" />
       </div>
       <div class="resizer" @mousedown="ex.onResizeStart('vis', $event)"></div>
       <div class="lab-col ctrl-col" :style="{ width: ex.colWidths.ctrl + 'px' }">
@@ -186,33 +104,10 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             <SpringPanelBody
               :id="id"
               :trials="ex.trials.trials.value"
-              :calc-result="ex.trials.calcResult.value"
               :params="ex.params"
               :sim="ex.lab.sim"
               :measured="ex.getMeasured()"
               :effective-mass="ex.getEffectiveMass()"
-              :fft-result="ex.fftResult.value"
-              :static-k="ex.staticK.value"
-              :static-readings="ex.staticReadings.value"
-              :dynamic-trials="ex.dynamicTrials.value"
-              :k-dynamic="ex.kDynamic.value"
-              :trial-stats="ex.trials.trialStats.value"
-              :tutor-type="ex.tutorType.value"
-              :tutor-message="ex.tutorMessage.value"
-              :canvas-snapshot="rep.canvasSnapshot.value ?? undefined"
-              @update:trials="ex.trials.trials.value = $event"
-              @update:fft-result="ex.fftResult.value = $event"
-              @update:params="Object.assign(ex.params, $event)"
-              @update:static-readings="ex.onStaticComplete($event, ex.staticK.value)"
-              @update:static-k="ex.staticK.value = $event"
-              @update:dynamic-trials="() => {}"
-              @update:k-dynamic="() => {}"
-              @remove="ex.trials.removeTrial"
-              @clear="ex.trials.clearTrials"
-              @calc-k="ex.trials.calcK"
-              @calc-t="ex.trials.calcT"
-              @calc-m="ex.trials.calcM"
-              @calc-fit-k="ex.trials.calcFitK"
             />
           </DraggablePanel>
         </template>
@@ -223,35 +118,16 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       :maximized="ex.layout.maximized"
       :panel-title="ex.layout.panelTitle"
       :trials="ex.trials.trials.value"
-      :calc-result="ex.trials.calcResult.value"
       :params="ex.params"
       :sim="ex.lab.sim"
       :measured="ex.getMeasured()"
       :effective-mass="ex.getEffectiveMass()"
-      :fft-result="ex.fftResult.value"
-      :static-k="ex.staticK.value"
-      :static-readings="ex.staticReadings.value"
-      :dynamic-trials="ex.dynamicTrials.value"
-      :k-dynamic="ex.kDynamic.value"
-      :trial-stats="ex.trials.trialStats.value"
-      :tutor-type="ex.tutorType.value"
-      :tutor-message="ex.tutorMessage.value"
-      :canvas-snapshot="rep.canvasSnapshot.value ?? undefined"
       @maximize="ex.layout.maximizePanel"
       @drop="ex.handleDrop"
       @update:trials="ex.trials.trials.value = $event"
-      @update:fft-result="ex.fftResult.value = $event"
       @update:params="Object.assign(ex.params, $event)"
-      @update:static-readings="ex.staticReadings.value = $event"
-      @update:static-k="ex.staticK.value = $event"
-      @update:dynamic-trials="() => {}"
-      @update:k-dynamic="() => {}"
       @remove="ex.trials.removeTrial"
       @clear="ex.trials.clearTrials"
-      @calc-k="ex.trials.calcK"
-      @calc-t="ex.trials.calcT"
-      @calc-m="ex.trials.calcM"
-      @calc-fit-k="ex.trials.calcFitK"
     />
 
     <div class="hint-bar" v-if="!ex.lab.running.value">
@@ -282,7 +158,6 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @push-up="ex.pushUp"
     />
 
-    <SpringReport v-if="reportOpen" style="position:fixed;inset:5%;z-index:200;overflow:auto;background:#0d1117;border-radius:12px;border:1px solid #2D3645;box-shadow:0 20px 60px rgba(0,0,0,.5)" :static-readings="ex.staticReadings.value" :dynamic-trials="ex.dynamicTrials.value" :k-static="ex.staticK.value" :k-dynamic="ex.kDynamic.value" :theoretical-k="ex.params.k" @close="reportOpen = false" @open-full-report="openFullReport" />
   </div></template>
 
 <style scoped>

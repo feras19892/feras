@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useCollisionExperiment } from '../../../../composables/collision/useCollisionExperiment'
-import { useCollisionReport } from '../../../../composables/collision/useCollisionReport'
 import CollisionMenuBar from '../../../../components/experiment/collision/CollisionMenuBar.vue'
 import CollisionCanvas from '../../../../components/experiment/collision/CollisionCanvas.vue'
 import CollisionControlBar from '../../../../components/experiment/collision/CollisionControlBar.vue'
@@ -9,19 +8,10 @@ import CollisionStatusBar from '../../../../components/experiment/collision/Coll
 import CollisionHelpModal from '../../../../components/experiment/collision/CollisionHelpModal.vue'
 import CollisionPanelBody from '../../../../components/experiment/collision/CollisionPanelBody.vue'
 import CollisionOverlayPanels from '../../../../components/experiment/collision/CollisionOverlayPanels.vue'
-import CollisionReport from '../../../../components/experiment/collision/CollisionReport.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 
 const ex = useCollisionExperiment()
-const rep = useCollisionReport()
 const helpOpen = ref(false)
-const reportOpen = ref(false)
-const canvasRef = ref<InstanceType<typeof CollisionCanvas> | null>(null)
-
-function openFullReport() {
-  rep.captureSnapshot(canvasRef.value)
-  rep.openFullReport(ex)
-}
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
@@ -46,7 +36,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       experiment-route="/physics/mechanics/collision"
       experiment-name="1D Collision"
       @toggle-pause="ex.lab.togglePause" @reset="ex.resetSim" @record-trial="ex.trials.recordTrial"
-      @toggle-help="helpOpen = !helpOpen" @print-report="reportOpen = true"
+      @toggle-help="helpOpen = !helpOpen"
       @export-csv="ex.trials.exportCsv" @toggle-panel="ex.layout.togglePanel"
       @show-all-panels="ex.layout.showAllPanels"
       @analyze-results="ex.exportToAnalysis"
@@ -59,42 +49,23 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
         <template v-for="id in ex.getColumnPanels('data')" :key="id">
           <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id as any)"
             @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
-            <CollisionPanelBody :id="id" :params="ex.params" :sim="ex.lab.sim" :trials="ex.trials.trials.value"
-              :trial-stats="ex.trials.trialStats.value" :calc-result="ex.trials.calcResult.value"
+            <CollisionPanelBody :id="id" :params="ex.params" :sim="ex.lab.sim" :trials="ex.trials.trials.value" :signal-series="ex.lab.signalSeries.value"
               @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials"
-              @calc-final-velocity="ex.trials.calcFinalVelocity" @calc-momentum-diff="ex.trials.calcMomentumDiff" @calc-energy-loss="ex.trials.calcEnergyLoss"
-              @close="reportOpen = false" @open-full-report="openFullReport"
             />
           </DraggablePanel>
         </template>
       </div>
       <div class="resizer" @mousedown="ex.onResizeStart('data', $event)"></div>
       <div class="lab-col vis-col">
-        <CollisionCanvas ref="canvasRef" :params="ex.params" :sim-state="ex.lab.sim" @snapshot="rep.onSnapshot($event)" />
-        <div v-if="ex.hasVisibleVisPanels" class="chart-row">
-          <template v-for="id in ex.getColumnPanels('vis')" :key="id">
-            <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="chart-panel lab-card" :id="id" :title="ex.layout.panelTitle(id as any)"
-              @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
-              <CollisionPanelBody :id="id" :params="ex.params" :sim="ex.lab.sim" :trials="ex.trials.trials.value"
-                :trial-stats="ex.trials.trialStats.value" :calc-result="ex.trials.calcResult.value"
-                @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials"
-                @calc-final-velocity="ex.trials.calcFinalVelocity" @calc-momentum-diff="ex.trials.calcMomentumDiff" @calc-energy-loss="ex.trials.calcEnergyLoss"
-                @close="reportOpen = false" @open-full-report="openFullReport"
-              />
-            </DraggablePanel>
-          </template>
-        </div>
+        <CollisionCanvas :params="ex.params" :sim-state="ex.lab.sim" />
       </div>
       <div class="resizer" @mousedown="ex.onResizeStart('vis', $event)"></div>
       <div class="lab-col ctrl-col" :style="{ width: ex.colWidths.ctrl + 'px' }">
         <template v-for="id in ex.getColumnPanels('ctrl')" :key="id">
           <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id as any)"
             @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
-            <CollisionPanelBody :id="id" :params="ex.params" :sim="ex.lab.sim" :trials="ex.trials.trials.value"
-              :trial-stats="ex.trials.trialStats.value" :calc-result="ex.trials.calcResult.value"
+            <CollisionPanelBody :id="id" :params="ex.params" :sim="ex.lab.sim" :trials="ex.trials.trials.value" :signal-series="ex.lab.signalSeries.value"
               @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials"
-              @calc-final-velocity="ex.trials.calcFinalVelocity" @calc-momentum-diff="ex.trials.calcMomentumDiff" @calc-energy-loss="ex.trials.calcEnergyLoss"
-              @close="reportOpen = false" @open-full-report="openFullReport"
             />
           </DraggablePanel>
         </template>
@@ -106,18 +77,11 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       :panel-title="ex.layout.panelTitle"
       :params="ex.params"
       :sim="ex.lab.sim"
-      :trials="ex.trials.trials.value"
-      :trial-stats="ex.trials.trialStats.value"
-      :calc-result="ex.trials.calcResult.value"
+      :trials="ex.trials.trials.value" :signal-series="ex.lab.signalSeries.value"
       @maximize="ex.layout.maximizePanel"
       @update:params="Object.assign(ex.params, $event)"
       @remove="ex.trials.removeTrial"
       @clear="ex.trials.clearTrials"
-      @calc-final-velocity="ex.trials.calcFinalVelocity"
-      @calc-momentum-diff="ex.trials.calcMomentumDiff"
-      @calc-energy-loss="ex.trials.calcEnergyLoss"
-      @close="reportOpen = false"
-      @open-full-report="openFullReport"
     />
 
     <div class="hint-bar" v-if="!ex.lab.sim.running"><span>💡 اضبط المعاملات واضغط "بدء"</span></div>
@@ -140,11 +104,6 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @undo="ex.trials.undo"
       @redo="ex.trials.redo"
       @update:speed="v => ex.lab.speed.value = v"
-    />
-
-    <CollisionReport v-if="reportOpen" style="position:fixed;inset:5%;z-index:200;overflow:auto;background:#0d1117;border-radius:12px;border:1px solid #2D3645;box-shadow:0 20px 60px rgba(0,0,0,.5)"
-      :trials="ex.trials.trials.value" :params="ex.params" :trial-stats="ex.trials.trialStats.value"
-      @close="reportOpen = false" @open-full-report="openFullReport"
     />
   </div>
 </template>

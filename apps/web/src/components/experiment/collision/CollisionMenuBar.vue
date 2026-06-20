@@ -19,7 +19,6 @@ const emit = defineEmits<{
   (e: 'reset'): void
   (e: 'recordTrial'): void
   (e: 'toggleHelp'): void
-  (e: 'printReport'): void
   (e: 'analyzeResults'): void
 }>()
 
@@ -51,9 +50,6 @@ onUnmounted(() => window.removeEventListener('click', onMenuClick))
         <div v-if="activeMenu==='view'" class="menu-dropdown" @click.stop>
           <div class="menu-row check" @click="emit('togglePanel','params');"><span class="mi">&#x2699;&#xFE0F;</span><span>معاملات</span></div>
           <div class="menu-row check" @click="emit('togglePanel','data');"><span class="mi">&#x1F4CB;</span><span>بيانات</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','stats');"><span class="mi">&#x1F4CA;</span><span>إحصائيات</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','equations');"><span class="mi">&#x2697;&#xFE0F;</span><span>معادلات</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','report');"><span class="mi">&#x1F4C4;</span><span>تقرير</span></div>
         </div>
       </div>
     </div>
@@ -72,9 +68,6 @@ onUnmounted(() => window.removeEventListener('click', onMenuClick))
       </div>
       <div class="menu-group">
         <button class="menu-btn analyze-btn" @click="emit('analyzeResults')">📊 تحليل النتائج</button>
-      </div>
-      <div class="menu-group">
-        <button class="menu-btn" @click="emit('printReport')">&#x1F4C4; طباعة التقرير</button>
       </div>
       <div class="menu-group">
         <button class="menu-btn" @click="emit('toggleHelp')">&#x2753; مساعدة</button>

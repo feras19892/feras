@@ -56,41 +56,44 @@ const stats = computed(() => {
   font-weight: 600;
 }
 .stats-body {
-  display: flex;
-  gap: 0.5rem;
-  padding: 0.5rem;
-  overflow-x: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
+  gap: 0.25rem;
+  padding: 0.3rem;
+  overflow-y: auto;
 }
 .stat-col {
   background: rgba(0,0,0,0.15);
-  border-radius: 0.35rem;
-  padding: 0.35rem 0.5rem;
-  min-width: 100px;
-  flex: 1;
+  border-radius: 0.25rem;
+  padding: 0.2rem 0.25rem;
+  min-width: 0;
 }
 .stat-name {
-  font-size: 0.85rem;
+  font-size: 0.68rem;
   color: #e2e8f0;
   font-weight: 700;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.1rem;
   text-align: center;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.unit { color: #64748b; font-size: 0.75rem; }
+.unit { color: #64748b; font-size: 0.55rem; }
 .stat-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.25rem;
+  gap: 0.1rem;
 }
 .stat-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.85rem;
-  padding: 0.25rem 0.4rem;
-  border-radius: 0.2rem;
+  font-size: 0.65rem;
+  padding: 0.1rem 0.2rem;
+  border-radius: 0.15rem;
   background: rgba(255,255,255,0.03);
+  gap: 0.2rem;
 }
-.label { color: #94a3b8; font-weight: 700; }
-.val { color: #e2e8f0; font-family: 'Courier New', monospace; font-weight: 700; }
+.label { color: #94a3b8; font-weight: 700; flex-shrink: 0; }
+.val { color: #e2e8f0; font-family: 'Courier New', monospace; font-weight: 700; font-size: 0.65rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 </style>

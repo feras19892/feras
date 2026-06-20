@@ -1,9 +1,9 @@
 import { reactive, ref } from 'vue'
 
-const STORAGE_KEY = 'collision:layout:v1'
+const STORAGE_KEY = 'collision:layout:v2'
 
 const DEFAULT_ORDER = {
-  data: ['data', 'stats', 'equations', 'report'],
+  data: ['data', 'signal'],
   vis: [],
   ctrl: ['params'],
 }
@@ -11,13 +11,16 @@ const DEFAULT_ORDER = {
 const PANEL_TITLES: Record<string, string> = {
   params: '⚙️ المعاملات',
   data: '📊 البيانات',
+  signal: '📈 إشارة v(t)',
   stats: '📈 الإحصائيات',
   equations: '🧮 المعادلات',
   report: '📝 التقرير',
 }
 
 export function useCollisionLayout() {
-  const visible = ref<Set<string>>(new Set(['params', 'data', 'stats', 'equations', 'report']))
+  try { localStorage.removeItem('collision:layout:v1') } catch { /* ignore */ }
+
+  const visible = ref<Set<string>>(new Set(['params', 'data', 'signal']))
   const columnOrder = reactive<Record<string, string[]>>(JSON.parse(JSON.stringify(DEFAULT_ORDER)))
   const maximized = reactive<Record<string, boolean>>({})
 

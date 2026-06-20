@@ -3,7 +3,7 @@ import { reactive } from 'vue'
 export type ColumnId = 'data' | 'vis' | 'ctrl'
 export type PanelId = 'table' | 'equations' | 'stats' | 'scatter' | 'signal' | 'params' | 'guide' | 'error'
 
-const layoutStorageKey = 'inclined:layout:v1'
+const layoutStorageKey = 'inclined:layout:v2'
 
 const defaultPanelColumn: Record<PanelId, ColumnId> = {
   table: 'data', equations: 'data', stats: 'data', scatter: 'data', error: 'data',
@@ -12,7 +12,7 @@ const defaultPanelColumn: Record<PanelId, ColumnId> = {
 }
 
 const defaultColumnOrder: Record<ColumnId, PanelId[]> = {
-  data: ['table', 'equations', 'stats', 'scatter', 'error'],
+  data: ['table'],
   vis: [],
   ctrl: ['params', 'guide'],
 }
@@ -23,9 +23,11 @@ const allPanelIds: PanelId[] = [
 ]
 
 export function useInclinedLayout() {
+  try { localStorage.removeItem('inclined:layout:v1') } catch { /* ignore */ }
+
   const panels = reactive<Record<PanelId, boolean>>({
-    table: true, equations: true, stats: true, scatter: true, error: false,
-    signal: false,
+    table: true, equations: false, stats: false, scatter: false, error: false,
+    signal: true,
     params: true, guide: true,
   })
 

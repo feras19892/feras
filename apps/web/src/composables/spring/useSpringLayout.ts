@@ -1,36 +1,34 @@
 import { reactive } from 'vue'
 
 export type ColumnId = 'data' | 'vis' | 'ctrl'
-export type PanelId = 'table' | 'equations' | 'static' | 'error' | 'scatter' | 'tutor' | 'signal' | 'fft' | 'params' | 'guide' | 'stats' | 'report' | 'photogate'
+export type PanelId = 'table' | 'signal' | 'params' | 'guide'
 
-const layoutStorageKey = 'spring:layout:v1'
+const layoutStorageKey = 'spring:layout:v2'
 
 const defaultPanelColumn: Record<PanelId, ColumnId> = {
-  table: 'data', equations: 'data', static: 'data', error: 'data', scatter: 'data', tutor: 'data', report: 'data',
-  signal: 'vis', fft: 'vis', photogate: 'vis',
-  params: 'ctrl', guide: 'ctrl', stats: 'ctrl',
+  table: 'data',
+  signal: 'data',
+  params: 'ctrl', guide: 'ctrl',
 }
 
 const defaultColumnOrder: Record<ColumnId, PanelId[]> = {
-  data: ['table', 'scatter', 'equations', 'static', 'error', 'tutor'],
-  vis: ['signal', 'fft', 'photogate'],
-  ctrl: ['params', 'guide', 'stats'],
+  data: ['table', 'signal'],
+  vis: [],
+  ctrl: ['params', 'guide'],
 }
 
-const allPanelIds: PanelId[] = [
-  'table', 'equations', 'static', 'error', 'scatter', 'tutor', 'report',
-  'signal', 'fft', 'photogate', 'params', 'guide', 'stats',
-]
+const allPanelIds: PanelId[] = ['table', 'signal', 'params', 'guide']
 
 export function useSpringLayout() {
+  // Clear old v1 layout to prevent stale analysis panels from appearing
+  try { localStorage.removeItem('spring:layout:v1') } catch { /* ignore */ }
+
   const panels = reactive<Record<PanelId, boolean>>({
-    table: true, equations: true, signal: true, params: true, guide: true, stats: true,
-    fft: true, scatter: true, tutor: true, static: true, error: true, report: false, photogate: true,
+    table: true, signal: true, params: true, guide: true,
   })
 
   const maximized = reactive<Record<PanelId, boolean>>({
-    table: false, equations: false, signal: false, params: false, guide: false, stats: false,
-    fft: false, scatter: false, tutor: false, static: false, error: false, report: false, photogate: false,
+    table: false, signal: false, params: false, guide: false,
   })
 
   const panelColumn = reactive<Record<PanelId, ColumnId>>({ ...defaultPanelColumn })
@@ -135,13 +133,12 @@ export function useSpringLayout() {
 
   function panelTitle(id: PanelId) {
     const titles: Record<PanelId, string> = {
-      table: '📋 قراءات', equations: '⚗️ حسابات', static: '📐 إستاتيكي',
-      error: '⚖️ أخطاء', scatter: '📈 Scatter', tutor: '⚖️ تحليل مباشر',
-      report: '📋 تقرير', photogate: '🔴 بوابة ضوئية',
-      signal: '📈 إشارة x(t)', fft: '📊 FFT', params: '⚙️ معاملات',
-      guide: '📋 دليل', stats: '📊 إحصائيات',
+      table: '📋 قراءات',
+      signal: '📈 إشارة x(t)',
+      params: '⚙️ معاملات',
+      guide: '📋 دليل',
     }
-    return titles[id] ?? '📊 إحصائيات'
+    return titles[id] ?? '📊'
   }
 
   return {

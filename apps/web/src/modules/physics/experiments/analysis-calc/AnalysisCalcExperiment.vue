@@ -152,7 +152,7 @@ function sendToTeacher() {
 }
 .main-body { flex: 1; overflow: hidden; display: flex; gap: 0.5rem; padding: 0.5rem; }
 .left-col {
-  width: 35%; min-width: 300px;
+  width: 30%; min-width: 260px;
   display: flex; flex-direction: column; gap: 0.5rem;
   overflow-y: auto; overflow-x: hidden;
 }
@@ -161,10 +161,15 @@ function sendToTeacher() {
   display: flex; flex-direction: column;
   overflow: hidden;
 }
-.chart-area { flex: 1.2; min-height: 0; display: flex; flex-direction: column; }
-.analysis-row { flex: 1; min-height: 0; display: flex; gap: 0.5rem; overflow: hidden; }
-.eq-area { flex: 1.2; min-width: 0; overflow: hidden; display: flex; flex-direction: column; }
-.stats-area { flex: 0.8; min-width: 0; overflow: hidden; display: flex; flex-direction: column; }
+.chart-area { flex: 1.4; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+.analysis-row {
+  flex: 0.9; min-height: 0;
+  display: flex; flex-wrap: wrap;
+  gap: 0.5rem;
+  overflow-y: auto; overflow-x: hidden;
+}
+.eq-area { flex: 1; min-width: 280px; overflow: hidden; display: flex; flex-direction: column; }
+.stats-area { flex: 1; min-width: 280px; overflow: hidden; display: flex; flex-direction: column; }
 .btn-preview {
   flex-shrink: 0; padding: 0.4rem 0.75rem; border: none; border-radius: 0.35rem;
   background: linear-gradient(135deg, #475569, #334155); color: #fff; cursor: pointer;

@@ -66,10 +66,10 @@ function removeRow(index: number) {
             <td class="idx">{{ i + 1 }}</td>
             <td v-for="col in columns" :key="col.key" :class="{ outlier: outlierMap[col.key]?.[i] }">
               <input
-                type="number"
-                step="any"
+                type="text"
+                inputmode="decimal"
                 :value="row[col.key] !== undefined ? Number(row[col.key]).toFixed(3) : ''"
-                @input="onInput(i, col.key, $event)"
+                @change="onInput(i, col.key, $event)"
                 :title="outlierMap[col.key]?.[i] ? 'قيمة شاذة (> 2σ من المتوسط)' : ''"
               />
             </td>

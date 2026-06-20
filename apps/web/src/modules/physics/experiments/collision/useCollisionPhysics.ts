@@ -56,13 +56,13 @@ export function useCollisionPhysics(params: CollisionParams) {
   })
 
   function step(dt: number, speed: number = 1) {
-    if (!sim.running || sim.paused || sim.collided) return
+    if (!sim.running || sim.paused) return
     const sDt = dt * speed
     sim.t += sDt
     sim.x1 += sim.v1 * sDt
     sim.x2 += sim.v2 * sDt
 
-    if (detectCollision(sim.x1, sim.x2, params.r1, params.r2)) {
+    if (!sim.collided && detectCollision(sim.x1, sim.x2, params.r1, params.r2)) {
       const sep = separateBalls(sim.x1, sim.x2, params.r1, params.r2)
       sim.x1 = sep.x1
       sim.x2 = sep.x2

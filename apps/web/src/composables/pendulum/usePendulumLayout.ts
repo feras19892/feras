@@ -3,18 +3,18 @@ import { reactive } from 'vue'
 export type ColumnId = 'data' | 'vis' | 'ctrl'
 export type PanelId = 'table' | 'equations' | 'error' | 'scatter' | 'tutor' | 'signal' | 'fft' | 'phase' | 'params' | 'guide' | 'stats' | 'report'
 
-const layoutStorageKey = 'pendulum:layout:v1'
+const layoutStorageKey = 'pendulum:layout:v2'
 
 const defaultPanelColumn: Record<PanelId, ColumnId> = {
   table: 'data', equations: 'data', error: 'data', scatter: 'data', tutor: 'data', report: 'data',
-  signal: 'vis', fft: 'vis', phase: 'vis',
+  signal: 'data', fft: 'vis', phase: 'vis',
   params: 'ctrl', guide: 'ctrl', stats: 'ctrl',
 }
 
 const defaultColumnOrder: Record<ColumnId, PanelId[]> = {
-  data: ['table', 'scatter', 'equations', 'error', 'tutor'],
-  vis: ['signal', 'fft', 'phase'],
-  ctrl: ['params', 'guide', 'stats'],
+  data: ['table', 'signal'],
+  vis: [],
+  ctrl: ['params', 'guide'],
 }
 
 const allPanelIds: PanelId[] = [
@@ -23,9 +23,11 @@ const allPanelIds: PanelId[] = [
 ]
 
 export function usePendulumLayout() {
+  try { localStorage.removeItem('pendulum:layout:v1') } catch { /* ignore */ }
+
   const panels = reactive<Record<PanelId, boolean>>({
-    table: true, equations: true, signal: true, params: true, guide: true, stats: true,
-    fft: true, phase: true, scatter: true, tutor: true, error: true, report: false,
+    table: true, equations: false, signal: true, params: true, guide: true, stats: false,
+    fft: false, phase: false, scatter: false, tutor: false, error: false, report: false,
   })
 
   const maximized = reactive<Record<PanelId, boolean>>({

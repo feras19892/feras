@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import CollisionPanelBody from './CollisionPanelBody.vue'
 
+import type { CollisionSignalPoint } from '../../../composables/collision/useCollisionLab'
+
 const props = defineProps<{
   maximized: Record<string, boolean>
   panelTitle: (id: string) => string
   params: any
   sim: any
   trials: any[]
-  trialStats: any
-  calcResult: string
+  signalSeries?: CollisionSignalPoint[]
 }>()
 
 const emit = defineEmits<{
@@ -16,11 +17,6 @@ const emit = defineEmits<{
   (e: 'update:params', val: any): void
   (e: 'remove', id: number): void
   (e: 'clear'): void
-  (e: 'calcFinalVelocity'): void
-  (e: 'calcMomentumDiff'): void
-  (e: 'calcEnergyLoss'): void
-  (e: 'close'): void
-  (e: 'openFullReport'): void
 }>()
 </script>
 
@@ -32,10 +28,8 @@ const emit = defineEmits<{
           <span>{{ panelTitle(id) }}</span>
           <button @click="emit('maximize', id)">×</button>
         </div>
-        <CollisionPanelBody :id="id" :params="params" :sim="sim" :trials="trials" :trial-stats="trialStats" :calc-result="calcResult"
+        <CollisionPanelBody :id="id" :params="params" :sim="sim" :trials="trials" :signal-series="signalSeries || []"
           @update:params="emit('update:params', $event)" @remove="emit('remove', $event)" @clear="emit('clear')"
-          @calc-final-velocity="emit('calcFinalVelocity')" @calc-momentum-diff="emit('calcMomentumDiff')" @calc-energy-loss="emit('calcEnergyLoss')"
-          @close="emit('close')" @open-full-report="emit('openFullReport')"
         />
       </div>
     </div>

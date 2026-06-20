@@ -3,18 +3,18 @@ import { reactive } from 'vue'
 export type ColumnId = 'data' | 'vis' | 'ctrl'
 export type PanelId = 'table' | 'equations' | 'stats' | 'scatter' | 'signal' | 'params' | 'guide' | 'report' | 'tutor' | 'error'
 
-const layoutStorageKey = 'freefall:layout:v1'
+const layoutStorageKey = 'freefall:layout:v2'
 
 const defaultPanelColumn: Record<PanelId, ColumnId> = {
   table: 'data', equations: 'data', stats: 'data', scatter: 'data', tutor: 'data', report: 'data', error: 'data',
-  signal: 'vis',
+  signal: 'data',
   params: 'ctrl', guide: 'ctrl',
 }
 
 const defaultColumnOrder: Record<ColumnId, PanelId[]> = {
-  data: ['table', 'equations', 'stats', 'scatter', 'error'],
-  vis: ['signal'],
-  ctrl: ['params', 'guide', 'report'],
+  data: ['table', 'signal'],
+  vis: [],
+  ctrl: ['params', 'guide'],
 }
 
 const allPanelIds: PanelId[] = [
@@ -23,8 +23,10 @@ const allPanelIds: PanelId[] = [
 ]
 
 export function useFreeFallLayout() {
+  try { localStorage.removeItem('freefall:layout:v1') } catch { /* ignore */ }
+
   const panels = reactive<Record<PanelId, boolean>>({
-    table: true, equations: true, stats: true, scatter: true, tutor: false, report: false, error: false,
+    table: true, equations: false, stats: false, scatter: false, tutor: false, report: false, error: false,
     signal: true,
     params: true, guide: true,
   })

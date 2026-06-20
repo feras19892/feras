@@ -1,23 +1,17 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { usePendulumExperiment } from '../../../../composables/pendulum/usePendulumExperiment'
-import { usePendulumReport } from '../../../../composables/pendulum/usePendulumReport'
 import PendulumMenuBar from '../../../../components/experiment/pendulum/PendulumMenuBar.vue'
 import PendulumCanvas from '../../../../components/experiment/pendulum/PendulumCanvas.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 import PendulumPanelBody from '../../../../components/experiment/pendulum/PendulumPanelBody.vue'
 import PendulumOverlayPanels from '../../../../components/experiment/pendulum/PendulumOverlayPanels.vue'
-import PendulumReport from '../../../../components/experiment/pendulum/PendulumReport.vue'
 import PendulumControlBar from '../../../../components/experiment/pendulum/PendulumControlBar.vue'
 import PendulumHelpModal from '../../../../components/experiment/pendulum/PendulumHelpModal.vue'
 
 const ex = usePendulumExperiment()
-const rep = usePendulumReport()
 const helpOpen = ref(false)
-const reportOpen = ref(false)
-const canvasRef = ref<InstanceType<typeof PendulumCanvas> | null>(null)
 
-function openFullReport() { rep.captureSnapshot(canvasRef.value); rep.openFullReport(ex) }
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return
@@ -37,8 +31,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <PendulumMenuBar title="البندول البسيط" icon="🕰️" experiment-route="/physics/mechanics/pendulum" experiment-name="Pendulum"
       @toggle-panel="ex.layout.togglePanel" @show-all-panels="ex.layout.showAllPanels" @export-csv="ex.trials.exportCsv"
       @toggle-pause="ex.lab.togglePause" @reset="ex.resetSim" @record-trial="ex.trials.recordTrial" @run-lab="ex.runPendulumLab"
-      @calc-g="ex.trials.calcG" @calc-t="ex.trials.calcT" @calc-l="ex.trials.calcL" @calc-fit-g="ex.trials.calcFitG"
-      @toggle-help="helpOpen = !helpOpen" @print-report="reportOpen = true"
+      @toggle-help="helpOpen = !helpOpen"
       @analyze-results="ex.exportToAnalysis"
     />
 
@@ -49,49 +42,33 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
         <template v-for="id in ex.getColumnPanels('data')" :key="id">
           <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id)"
             @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
-            <PendulumPanelBody :id="id" :trials="ex.trials.trials.value" :calc-result="ex.trials.calcResult.value" :params="ex.params" :sim="ex.lab.sim"
-              :measured="ex.getMeasured()" :fft-result="ex.fftResult.value" :trial-stats="ex.trials.trialStats.value" :tutor-type="ex.tutorType.value" :tutor-message="ex.tutorMessage.value"
-              @update:trials="ex.trials.trials.value = $event" @update:fft-result="ex.fftResult.value = $event" @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials"
-              @calc-g="ex.trials.calcG" @calc-t="ex.trials.calcT" @calc-l="ex.trials.calcL" @calc-fit-g="ex.trials.calcFitG" @show-calc="html => ex.trials.calcResult.value = html"
+            <PendulumPanelBody :id="id" :trials="ex.trials.trials.value" :params="ex.params" :sim="ex.lab.sim" :measured="ex.getMeasured()"
+              @update:trials="ex.trials.trials.value = $event" @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials"
             />
           </DraggablePanel>
         </template>
       </div>
       <div class="resizer" @mousedown="ex.onResizeStart('data', $event)"></div>
       <div class="lab-col vis-col">
-        <PendulumCanvas ref="canvasRef" :params="ex.params" :sim-state="ex.lab.sim" :oscillation-count="Math.floor(ex.lab.sim.zeroCrossings.length / 2)" @snapshot="rep.onSnapshot($event)" />
-        <div v-if="ex.hasVisibleVisPanels" class="chart-row">
-          <template v-for="id in ex.getColumnPanels('vis')" :key="id">
-            <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="chart-panel lab-card" :id="id" :title="ex.layout.panelTitle(id)"
-              @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
-              <PendulumPanelBody :id="id" :trials="ex.trials.trials.value" :calc-result="ex.trials.calcResult.value" :params="ex.params" :sim="ex.lab.sim"
-                :measured="ex.getMeasured()" :fft-result="ex.fftResult.value" :trial-stats="ex.trials.trialStats.value" :tutor-type="ex.tutorType.value" :tutor-message="ex.tutorMessage.value"
-                @update:trials="ex.trials.trials.value = $event" @update:fft-result="ex.fftResult.value = $event" @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials"
-                @calc-g="ex.trials.calcG" @calc-t="ex.trials.calcT" @calc-l="ex.trials.calcL" @calc-fit-g="ex.trials.calcFitG" @show-calc="html => ex.trials.calcResult.value = html"
-              />
-            </DraggablePanel>
-          </template>
-        </div>
+        <PendulumCanvas :params="ex.params" :sim-state="ex.lab.sim" :oscillation-count="Math.floor(ex.lab.sim.zeroCrossings.length / 2)" />
       </div>
       <div class="resizer" @mousedown="ex.onResizeStart('vis', $event)"></div>
       <div class="lab-col ctrl-col" :style="{ width: ex.colWidths.ctrl + 'px' }">
         <template v-for="id in ex.getColumnPanels('ctrl')" :key="id">
           <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id)"
             @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
-            <PendulumPanelBody :id="id" :trials="ex.trials.trials.value" :calc-result="ex.trials.calcResult.value" :params="ex.params" :sim="ex.lab.sim"
-              :measured="ex.getMeasured()" :fft-result="ex.fftResult.value" :trial-stats="ex.trials.trialStats.value" :tutor-type="ex.tutorType.value" :tutor-message="ex.tutorMessage.value"
-              @update:trials="ex.trials.trials.value = $event" @update:fft-result="ex.fftResult.value = $event" @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials"
-              @calc-g="ex.trials.calcG" @calc-t="ex.trials.calcT" @calc-l="ex.trials.calcL" @calc-fit-g="ex.trials.calcFitG" @show-calc="html => ex.trials.calcResult.value = html"
+            <PendulumPanelBody :id="id" :trials="ex.trials.trials.value" :params="ex.params" :sim="ex.lab.sim" :measured="ex.getMeasured()"
+              @update:trials="ex.trials.trials.value = $event" @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials"
             />
           </DraggablePanel>
         </template>
       </div>
     </div>
 
-    <PendulumOverlayPanels :maximized="ex.layout.maximized" :panel-title="ex.layout.panelTitle" :trials="ex.trials.trials.value" :calc-result="ex.trials.calcResult.value"
-      :params="ex.params" :sim="ex.lab.sim" :measured="ex.getMeasured()" :fft-result="ex.fftResult.value" :trial-stats="ex.trials.trialStats.value" :tutor-type="ex.tutorType.value" :tutor-message="ex.tutorMessage.value"
-      @maximize="ex.layout.maximizePanel" @drop="ex.handleDrop" @update:trials="ex.trials.trials.value = $event" @update:fft-result="ex.fftResult.value = $event" @update:params="Object.assign(ex.params, $event)"
-      @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials" @calc-g="ex.trials.calcG" @calc-t="ex.trials.calcT" @calc-l="ex.trials.calcL" @calc-fit-g="ex.trials.calcFitG" @show-calc="html => ex.trials.calcResult.value = html"
+    <PendulumOverlayPanels :maximized="ex.layout.maximized" :panel-title="ex.layout.panelTitle" :trials="ex.trials.trials.value"
+      :params="ex.params" :sim="ex.lab.sim" :measured="ex.getMeasured()"
+      @maximize="ex.layout.maximizePanel" @drop="ex.handleDrop" @update:trials="ex.trials.trials.value = $event" @update:params="Object.assign(ex.params, $event)"
+      @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials"
     />
 
     <PendulumControlBar
@@ -115,10 +92,6 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <div class="hint-bar" v-if="!ex.lab.sim.running"><span>💡 اضغط "بدء" لبدء الاهتزاز، ثم "تسجيل" لحفظ القراءة</span></div>
     <div class="hint-bar active" v-else-if="ex.lab.sim.measurementPeriod === null"><span>⏳ انتظر استقرار الاهتزاز...</span></div>
     <div class="hint-bar success" v-else><span>✅ القراءة مستقرة — اضغط "تسجيل" لحفظها</span></div>
-
-    <PendulumReport v-if="reportOpen" style="position:fixed;inset:5%;z-index:200;overflow:auto;background:#0d1117;border-radius:12px;border:1px solid #2D3645;box-shadow:0 20px 60px rgba(0,0,0,.5)"
-      :trials="ex.trials.trials.value" :g-theoretical="ex.params.g" @close="reportOpen = false" @open-full-report="openFullReport"
-    />
   </div>
 </template>
 

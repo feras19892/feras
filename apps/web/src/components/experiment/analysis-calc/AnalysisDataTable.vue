@@ -61,7 +61,7 @@ function onInput(row: number, key: string, ev: Event) {
               <input
                 type="text"
                 inputmode="decimal"
-                :value="row[col.key] !== undefined ? Number(row[col.key]).toFixed(3) : ''"
+                :value="row[col.key] !== undefined ? (typeof row[col.key] === 'number' ? Number(row[col.key]).toFixed(3) : String(row[col.key])) : ''"
                 @change="onInput(i, col.key, $event)"
                 :title="outlierMap[col.key]?.[i] ? 'قيمة شاذة (> 2σ من المتوسط)' : ''"
               />

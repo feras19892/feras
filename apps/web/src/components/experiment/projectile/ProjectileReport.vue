@@ -3,8 +3,10 @@ import { computed } from 'vue'
 import ExperimentReport from '../ExperimentReport.vue'
 import DeletableSection from '../DeletableSection.vue'
 
+import type { ProjectileTrial } from '../../../composables/projectile/useProjectileTrials'
+
 const props = defineProps<{
-  trials: any[]
+  trials: ProjectileTrial[]
   params?: { v0: number; angleDeg: number; g: number; dragCoeff: number }
   trialStats?: { range_mean: number; range_std: number; flightTime_mean: number; flightTime_std: number } | null
   fitResult?: { slope: number; intercept: number } | null

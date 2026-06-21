@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 
-const props = defineProps<{ trials: any[] }>()
+import type { FreeFallTrial } from '../../../composables/freefall/useFreeFallTrials'
+
+const props = defineProps<{ trials: FreeFallTrial[] }>()
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const wrapRef = ref<HTMLDivElement | null>(null)
 

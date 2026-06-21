@@ -4,14 +4,17 @@ import type { LabReportTable, LabReportStat } from '../../utils/lab-report'
 export function useSpringReport() {
   const rep = useExperimentReport('spring_report_student')
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function openFullReport(ex: any) {
-    const staticReadings = ex.staticReadings.value
-    const dynamicTrials = ex.dynamicTrials.value
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const staticReadings: any[] = ex.staticReadings.value
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const dynamicTrials: any[] = ex.dynamicTrials.value
 
     const staticTable: LabReportTable = {
       caption: 'الجزء الاستاتيكي — قانون هوك',
       headers: ['#', 'm (g)', 'Δy (cm)', 'F = mg (N)'],
-      rows: staticReadings.map((r: any, i: number) => [
+      rows: staticReadings.map((r, i: number) => [
         i + 1,
         (r.mass * 1000).toFixed(0),
         (r.deltaY ?? 0).toFixed(2),
@@ -22,7 +25,7 @@ export function useSpringReport() {
     const dynamicTable: LabReportTable = {
       caption: 'الجزء الديناميكي — الحركة الاهتزازية',
       headers: ['#', 'm (g)', 't₁ (s)', 't₂ (s)', 't₃ (s)', 't̄ (s)', 'T (s)', 'T² (s²)'],
-      rows: dynamicTrials.map((t: any, i: number) => [
+      rows: dynamicTrials.map((t, i: number) => [
         i + 1,
         (t.mass * 1000).toFixed(0),
         (t.t1 ?? 0).toFixed(2),
@@ -96,7 +99,8 @@ export function useSpringReport() {
         calculationsBlock ? { title: '📐 الحسابات والمعادلات', html: calculationsBlock } : null,
         regressionBlock ? { title: '📈 نتائج الانحدار الخطي', html: regressionBlock } : null,
         { title: '⚠️ مصادر الأخطاء المحتملة', html: '<ul style="margin:0;padding-right:1.2rem;font-size:.85rem"><li>احتكاك الهواء</li><li>دقة ساعة الإيقاف</li><li>خطأ زاوية النظر (parallax)</li><li>تشوه النابض غير الخطي</li><li>اهتزازات الطاولة</li><li>عدم مركزية الكتلة</li></ul>' },
-      ].filter(Boolean) as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ].filter(Boolean) as any[],
       footerNote: 'تم إنشاء هذا التقرير من المحاكاة التفاعلية • فيزياء الميكانيكا',
     })
   }

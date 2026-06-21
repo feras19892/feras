@@ -16,8 +16,6 @@ interface Props {
 const props = defineProps<Props>();
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 
-function toRad(deg: number) { return (deg * Math.PI) / 180; }
-
 function draw() {
   const cvs = canvasRef.value;
   if (!cvs) return;

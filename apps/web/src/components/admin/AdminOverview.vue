@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
+interface RoleStat { role: string; count: number }
+interface UserStats { total: number; byRole: RoleStat[] }
+interface ClassStats { total: number }
+interface ReportStats { total: number; graded: number }
+interface StatsData { users: UserStats; classes: ClassStats; reports: ReportStats }
+
 const props = defineProps<{
-  stats: any;
+  stats: StatsData;
 }>();
 
 function roleColor(role: string) {

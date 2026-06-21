@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 const props = defineProps<{
   calcResult: string
 }>()
@@ -9,6 +10,11 @@ const emit = defineEmits<{
   (e: 'calcVelocity'): void
   (e: 'calcNormal'): void
 }>()
+
+const resultLines = computed(() => {
+  if (!props.calcResult) return []
+  return props.calcResult.split(/<br\s*\/?>/i).map(l => l.replace(/<\/?b>/gi, '').trim()).filter(Boolean)
+})
 </script>
 
 <template>
@@ -19,7 +25,9 @@ const emit = defineEmits<{
       <button @click="emit('calcVelocity')">حساب السرعة النهائية v</button>
       <button @click="emit('calcNormal')">حساب قوة التفاعل N</button>
     </div>
-    <div class="result" v-html="calcResult" />
+    <div class="result">
+      <div v-for="(line, i) in resultLines" :key="i">{{ line }}</div>
+    </div>
     <div class="formulas">
       <h5>المعادلات الأساسية:</h5>
       <ul>

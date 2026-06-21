@@ -4,12 +4,14 @@ import type { LabReportTable, LabReportStat } from '../../utils/lab-report'
 export function useFreeFallReport() {
   const rep = useExperimentReport('freefall_report_student')
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function openFullReport(ex: any) {
-    const trials = ex.trials.trials.value
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const trials: any[] = ex.trials.trials.value
     const table: LabReportTable = {
       caption: 'جدول قراءات السقوط الحر',
       headers: ['#', 'h (m)', 't (s)', 't² (s²)', 'v_impact (m/s)', 'g_calc (m/s²)', 'الخطأ (%)'],
-      rows: trials.map((t: any, i: number) => [
+      rows: trials.map((t, i: number) => [
         i + 1, t.heightMeters.toFixed(2), t.timeSec.toFixed(3),
         t.timeSquaredSec2.toFixed(4), t.impactVelocityMs.toFixed(2),
         t.gCalc.toFixed(2), t.err.toFixed(2) + '%',
@@ -59,7 +61,8 @@ export function useFreeFallReport() {
         calculationsBlock ? { title: '📐 الحسابات والمعادلات', html: calculationsBlock } : null,
         regressionBlock ? { title: '📈 نتائج الانحدار الخطي', html: regressionBlock } : null,
         { title: '⚠️ مصادر الأخطاء المحتملة', html: '<ul style="margin:0;padding-right:1.2rem;font-size:.85rem"><li>دقة المؤقت الرقمي</li><li>دقة قياس الارتفاع</li><li>احتكاك الهواء</li><li>اهتزاز الجهاز عند الاصطدام</li><li>تأثير الجاذبية المحلية</li></ul>' },
-      ].filter(Boolean) as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ].filter(Boolean) as any[],
       footerNote: 'تم إنشاء هذا التقرير من المحاكاة التفاعلية • فيزياء الميكانيكا',
     })
   }

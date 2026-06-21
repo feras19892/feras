@@ -15,6 +15,7 @@ export function useCollisionCanvas(
 
   function playBoom() {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const ctx = new (window.AudioContext || (window as any).webkitAudioContext)()
       const osc = ctx.createOscillator()
       const gain = ctx.createGain()
@@ -92,7 +93,7 @@ export function useCollisionCanvas(
     ctx.restore()
   }
 
-  function drawHUD(ctx: CanvasRenderingContext2D, w: number, st: CollisionState, params: CollisionParams) {
+  function drawHUD(ctx: CanvasRenderingContext2D, w: number, st: CollisionState, _params: CollisionParams) {
     const { collided, v1, v2, v1f, v2f, t } = st
     ctx.save()
     ctx.fillStyle = 'rgba(15,23,42,0.92)'

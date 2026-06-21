@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import { getAdminWarnings, sendAdminWarning } from '../../services/admin.service';
 
 export function useAdminWarnings() {
-  const warnings = ref<any[]>([]);
+  const warnings = ref<Record<string, unknown>[]>([]);
   const loading = ref(false);
   const error = ref('');
 
@@ -12,8 +12,8 @@ export function useAdminWarnings() {
     try {
       const res = await getAdminWarnings();
       if (res.success) warnings.value = res.warnings;
-    } catch (err: any) {
-      error.value = err?.message || 'فشل التحميل';
+    } catch (err: unknown) {
+      error.value = (err instanceof Error ? err.message : '') || 'فشل التحميل';
     } finally {
       loading.value = false;
     }

@@ -11,7 +11,7 @@ import {
 } from '../../services/admin.service';
 
 export function useAdminUsers() {
-  const users = ref<any[]>([]);
+  const users = ref<Record<string, unknown>[]>([]);
   const loading = ref(false);
   const error = ref('');
 
@@ -21,8 +21,8 @@ export function useAdminUsers() {
     try {
       const res = await getAdminUsers();
       if (res.success) users.value = res.users;
-    } catch (err: any) {
-      error.value = err?.message || 'فشل التحميل';
+    } catch (err: unknown) {
+      error.value = (err instanceof Error ? err.message : '') || 'فشل التحميل';
     } finally {
       loading.value = false;
     }

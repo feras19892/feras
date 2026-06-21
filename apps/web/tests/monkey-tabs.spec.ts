@@ -1,10 +1,10 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, type Page } from '@playwright/test'
 
 function randomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-async function monkeyClick(page: any, iterations: number) {
+async function monkeyClick(page: Page, iterations: number) {
   for (let i = 0; i < iterations; i++) {
     const buttons = await page.locator('button, [role="button"], a').all()
     if (buttons.length === 0) break
@@ -16,7 +16,7 @@ async function monkeyClick(page: any, iterations: number) {
   }
 }
 
-async function monkeyType(page: any, iterations: number) {
+async function monkeyType(page: Page, iterations: number) {
   const inputs = await page.locator('input, textarea').all()
   for (let i = 0; i < Math.min(iterations, inputs.length); i++) {
     const input = inputs[i]
@@ -26,14 +26,14 @@ async function monkeyType(page: any, iterations: number) {
   }
 }
 
-async function monkeyScroll(page: any, iterations: number) {
+async function monkeyScroll(page: Page, iterations: number) {
   for (let i = 0; i < iterations; i++) {
     await page.mouse.wheel(0, randomInt(-300, 300))
     await page.waitForTimeout(50)
   }
 }
 
-async function monkeyResize(page: any, iterations: number) {
+async function monkeyResize(page: Page, iterations: number) {
   for (let i = 0; i < iterations; i++) {
     const w = randomInt(800, 1600)
     const h = randomInt(600, 1200)

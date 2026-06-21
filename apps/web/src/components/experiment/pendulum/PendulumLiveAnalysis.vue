@@ -9,30 +9,32 @@ const props = defineProps<{
   theoreticalPeriod?: number | null
 }>()
 
-const liveAnalysis = computed(() => {
+const liveAnalysisLines = computed(() => {
   const th = props.simState.theta, om = props.simState.omega
   const L = props.params.length, m = props.params.mass
-  const v = L * om  // linear velocity
+  const v = L * om
   const ke = 0.5 * m * v * v
-  const h = L * (1 - Math.cos(th))  // height above lowest point
+  const h = L * (1 - Math.cos(th))
   const pe = m * props.params.g * h
   const total = ke + pe
   const lines = [
-    `<b>المعادلات:</b> L=${L.toFixed(3)}m, g=${props.params.g.toFixed(2)}m/s², m=${m.toFixed(3)}kg`,
+    `المعادلات: L=${L.toFixed(3)}m, g=${props.params.g.toFixed(2)}m/s², m=${m.toFixed(3)}kg`,
     String.fromCharCode(0x03B8) + `=${th.toFixed(3)}rad, ω=${om.toFixed(3)}rad/s, v=${v.toFixed(3)}m/s`,
-    `KE=${ke.toFixed(3)}J, PE=${pe.toFixed(3)}J, E<sub>total</sub>=${total.toFixed(3)}J`,
+    `KE=${ke.toFixed(3)}J, PE=${pe.toFixed(3)}J, E_total=${total.toFixed(3)}J`,
   ]
   if (props.theoreticalPeriod) {
-    lines.push(`T<sub>theo</sub> = ${props.theoreticalPeriod.toFixed(4)}s${props.measuredGCalc ? ` | g<sub>calc</sub>=${props.measuredGCalc.toFixed(2)}m/s²` : ''}`)
+    lines.push(`T_theo = ${props.theoreticalPeriod.toFixed(4)}s${props.measuredGCalc ? ` | g_calc=${props.measuredGCalc.toFixed(2)}m/s²` : ''}`)
   }
-  return lines.join('<br>')
+  return lines
 })
 </script>
 
 <template>
   <div class="live-analysis-card">
     <div class="card-header"><h4>&#x2696;&#xFE0F; التحليل المباشر</h4></div>
-    <div class="live-analysis-body" v-html="liveAnalysis" />
+    <div class="live-analysis-body">
+      <div v-for="(line, i) in liveAnalysisLines" :key="i">{{ line }}</div>
+    </div>
   </div>
 </template>
 

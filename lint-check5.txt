@@ -1,0 +1,85 @@
+﻿
+> my-modern-app@ lint C:\Users\feras\Desktop\feras
+> turbo run lint
+
+node.exe : • turbo 2.9.18
+At C:\Users\feras\AppData\Roaming\npm\pnpm.ps1:24 char:5
++     & "node$exe"  "$basedir/node_modules/pnpm/bin/pnpm.mjs" $args
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (• turbo 2.9.18:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+   • Packages in scope: @my-modern-app/api, @my-modern-app/config, @my-modern-app/shared-types, @my-modern-app/ui-kit, @my-modern-app/web, @my-modern-app/worker
+   • Running lint in 6 packages
+   • Remote caching disabled
+
+@my-modern-app/web:lint: cache miss, executing dab089b149d22ae6
+@my-modern-app/api:lint: cache hit, replaying logs 1581054e3228bf4e
+@my-modern-app/api:lint: 
+@my-modern-app/api:lint: > @my-modern-app/api@0.0.1 lint C:\Users\feras\Desktop\feras\apps\api
+@my-modern-app/api:lint: > eslint src/**/*.ts
+@my-modern-app/api:lint: 
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: > @my-modern-app/web@0.0.1 lint C:\Users\feras\Desktop\feras\apps\web
+@my-modern-app/web:lint: > eslint . --ext .vue,.ts,.tsx
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\teacher\TeacherStats.vue
+@my-modern-app/web:lint:   228:43  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\collision\useCollisionReport.ts
+@my-modern-app/web:lint:   15:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   40:42  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\experiment\collision\useCollisionCanvas.ts
+@my-modern-app/web:lint:   18:58  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\experiment\lever\useLeverCanvas.ts
+@my-modern-app/web:lint:   259:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   310:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\freefall\useFreeFallReport.ts
+@my-modern-app/web:lint:   13:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   63:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\inclined\useInclinedExperiment.ts
+@my-modern-app/web:lint:   82:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   82:59  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\pendulum\usePendulumExperiment.ts
+@my-modern-app/web:lint:   60:58  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   93:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   93:59  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\pendulum\usePendulumReport.ts
+@my-modern-app/web:lint:   14:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   52:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\projectile\useProjectileExperiment.ts
+@my-modern-app/web:lint:   43:58  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   76:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   76:59  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\projectile\useProjectileReport.ts
+@my-modern-app/web:lint:   16:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   71:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\spring\useSpringReport.ts
+@my-modern-app/web:lint:    15:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    26:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   100:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\useAdmin.ts
+@my-modern-app/web:lint:   40:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\useExperimentReport.test.ts
+@my-modern-app/web:lint:   66:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: ✖ 25 problems (0 errors, 25 warnings)
+@my-modern-app/web:lint: 
+
+ Tasks:    2 successful, 2 total
+Cached:    1 cached, 2 total
+  Time:    8.841s 
+

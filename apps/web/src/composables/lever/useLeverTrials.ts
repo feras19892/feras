@@ -137,7 +137,7 @@ export function useLeverTrials(_params: LeverParams, sim: LeverState) {
       if (raw) {
         const parsed = JSON.parse(raw)
         if (Array.isArray(parsed)) {
-          trials.value = parsed.filter((t: any) => t && typeof t.id === 'number')
+          trials.value = parsed.filter((t: Record<string, unknown>) => t && typeof t.id === 'number')
           nextTrialId = trials.value.length > 0 ? Math.max(...trials.value.map(t => t.id)) + 1 : 1
         }
       }

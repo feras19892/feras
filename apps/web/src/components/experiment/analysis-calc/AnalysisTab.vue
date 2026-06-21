@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import type { AnalysisColumnMeta, AnalysisEquation, AnalysisPlotConfig } from '../../../types/physics';
 import AnalysisChartWorkspace from './AnalysisChartWorkspace.vue';
 import AnalysisEquationsPanel from './AnalysisEquationsPanel.vue';
@@ -20,7 +20,6 @@ const emit = defineEmits<{
 }>();
 
 const chartRef = ref<InstanceType<typeof AnalysisChartWorkspace> | null>(null);
-const eqCollapsed = ref(false);
 const solvedEquations = ref<{ equationName: string; formula: string; targetVar: string; varValues: Record<string, number>; result: string; timestamp: number }[]>([]);
 const errorCalcData = ref<{ theoretical: number | null; experimental: number | null; errorPercent: number | null } | null>(null);
 
@@ -38,6 +37,7 @@ defineExpose({
 <template>
   <div class="analysis-tab">
     <AnalysisMediumPanel
+      v-if="mediumType"
       :current-medium="mediumType"
       :current-n2="mediumN2"
       @select-medium="emit('select-medium', $event)"

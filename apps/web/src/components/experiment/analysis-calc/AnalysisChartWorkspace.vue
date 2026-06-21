@@ -13,7 +13,6 @@ const {
   yKey,
   containerRef,
   canvasRef,
-  numericKeys,
   regression,
   slopeWarning,
   slopeCalc,

@@ -22,7 +22,7 @@ function updateTrial(i: number, key: keyof FreeFallTrial, raw: string) {
   const n = parseFloat(raw)
   if (Number.isNaN(n)) return
   const t = { ...trialsEdit.value[i] }
-  ;(t as any)[key] = n
+  ;(t as Record<string, unknown>)[key] = n
   if (key === 'timeSec') {
     t.timeSquaredSec2 = n * n
     t.gCalc = (2 * t.heightMeters) / (n * n)

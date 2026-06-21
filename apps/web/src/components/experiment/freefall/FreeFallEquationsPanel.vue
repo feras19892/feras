@@ -1,6 +1,12 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 const props = defineProps<{ calcResult: string }>()
 const emit = defineEmits<{ (e: 'calcG'): void; (e: 'calcT'): void; (e: 'calcV'): void; (e: 'calcFitG'): void }>()
+
+const resultLines = computed(() => {
+  if (!props.calcResult) return []
+  return props.calcResult.split(/<br\s*\/?>/i).map(l => l.replace(/<\/?b>/gi, '').trim()).filter(Boolean)
+})
 </script>
 
 <template>
@@ -12,7 +18,9 @@ const emit = defineEmits<{ (e: 'calcG'): void; (e: 'calcT'): void; (e: 'calcV'):
       <button @click="emit('calcV')">⚡ حساب v</button>
       <button @click="emit('calcFitG')">📈 ملائمة g</button>
     </div>
-    <div v-if="calcResult" class="calc-result" v-html="calcResult"></div>
+    <div v-if="calcResult" class="calc-result">
+      <div v-for="(line, i) in resultLines" :key="i">{{ line }}</div>
+    </div>
   </div>
 </template>
 

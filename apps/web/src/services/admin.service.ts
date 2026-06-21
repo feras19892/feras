@@ -1,7 +1,7 @@
 import { fetchJson } from './http';
 
 export async function getAdminUsers() {
-  return fetchJson<{ success: boolean; users: any[] }>('/api/admin/users');
+  return fetchJson<{ success: boolean; users: Record<string, unknown>[] }>('/api/admin/users');
 }
 
 export async function getAdminStats() {
@@ -13,11 +13,11 @@ export async function getAdminStats() {
 }
 
 export async function getAdminClasses() {
-  return fetchJson<{ success: boolean; classes: any[] }>('/api/admin/classes');
+  return fetchJson<{ success: boolean; classes: Record<string, unknown>[] }>('/api/admin/classes');
 }
 
 export async function getAdminReports() {
-  return fetchJson<{ success: boolean; reports: any[] }>('/api/admin/reports');
+  return fetchJson<{ success: boolean; reports: Record<string, unknown>[] }>('/api/admin/reports');
 }
 
 export async function deleteUser(userId: number) {
@@ -45,19 +45,19 @@ export async function deleteAdminClass(classId: string) {
 }
 
 export async function getAdminActivity() {
-  return fetchJson<{ success: boolean; activities: any[] }>('/api/admin/activity');
+  return fetchJson<{ success: boolean; activities: Record<string, unknown>[] }>('/api/admin/activity');
 }
 
 export async function getAdminActivityStats() {
-  return fetchJson<{ success: boolean; stats: any }>('/api/admin/activity/stats');
+  return fetchJson<{ success: boolean; stats: Record<string, unknown> }>('/api/admin/activity/stats');
 }
 
 export async function getAdminInsights() {
-  return fetchJson<{ success: boolean; insights: any }>('/api/admin/insights');
+  return fetchJson<{ success: boolean; insights: Record<string, unknown> }>('/api/admin/insights');
 }
 
 export async function getAdminFeedback() {
-  return fetchJson<{ success: boolean; feedback: any[]; stats: any }>('/api/admin/feedback');
+  return fetchJson<{ success: boolean; feedback: Record<string, unknown>[]; stats: Record<string, unknown> }>('/api/admin/feedback');
 }
 
 export async function updateFeedbackStatus(id: number, status: string) {
@@ -77,7 +77,7 @@ export async function submitFeedback(type: string, message: string, experimentId
 }
 
 export async function getAdminUserFull(userId: number) {
-  return fetchJson<any>(`/api/admin/users/${userId}/full`);
+  return fetchJson<Record<string, unknown>>(`/api/admin/users/${userId}/full`);
 }
 
 export async function banUser(userId: number, reason: string) {
@@ -101,7 +101,7 @@ export async function sendAdminWarning(userId: number, title: string, message: s
 }
 
 export async function getAdminWarnings() {
-  return fetchJson<{ success: boolean; warnings: any[] }>('/api/admin/warnings');
+  return fetchJson<{ success: boolean; warnings: Record<string, unknown>[] }>('/api/admin/warnings');
 }
 
 export async function addAdminNote(userId: number, note: string) {
@@ -113,7 +113,7 @@ export async function addAdminNote(userId: number, note: string) {
 }
 
 export async function getAdminSystemHealth() {
-  return fetchJson<{ success: boolean; health: any }>('/api/admin/health');
+  return fetchJson<{ success: boolean; health: Record<string, unknown> }>('/api/admin/health');
 }
 
 export async function getAdminExport(type: string) {
@@ -123,7 +123,7 @@ export async function getAdminExport(type: string) {
 }
 
 export async function impersonateUser(userId: number) {
-  return fetchJson<{ success: boolean; token: string; user: any }>(`/api/admin/impersonate/${userId}`, { method: 'POST' });
+  return fetchJson<{ success: boolean; token: string; user: Record<string, unknown> }>(`/api/admin/impersonate/${userId}`, { method: 'POST' });
 }
 
 export async function resetUserPassword(userId: number, password: string) {

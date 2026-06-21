@@ -41,13 +41,18 @@ export function useThinLensLayout() {
     ctrl: [...defaultColumnOrder.ctrl],
   })
 
+  const panelIdSet = new Set<PanelId>(allPanelIds)
+  function isPanelId(key: string): key is PanelId {
+    return panelIdSet.has(key as PanelId)
+  }
+
   function isPanelVisible(id: string) {
-    const pid = id as PanelId
-    return panels[pid] && !maximized[pid]
+    if (!isPanelId(id)) return false
+    return panels[id] && !maximized[id]
   }
 
   function togglePanel(key: string) {
-    if (allPanelIds.includes(key as PanelId)) panels[key as PanelId] = !panels[key as PanelId]
+    if (isPanelId(key)) panels[key] = !panels[key]
   }
 
   function showAllPanels() {
@@ -56,7 +61,7 @@ export function useThinLensLayout() {
   }
 
   function maximizePanel(key: string) {
-    if (allPanelIds.includes(key as PanelId)) maximized[key as PanelId] = !maximized[key as PanelId]
+    if (isPanelId(key)) maximized[key] = !maximized[key]
   }
 
   function persistLayout() {
@@ -96,7 +101,7 @@ export function useThinLensLayout() {
       if (parsed.columnOrder) {
         for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) {
           const arr = parsed.columnOrder[col]
-          if (Array.isArray(arr)) columnOrder[col] = arr.filter((x: any) => allPanelIds.includes(x)) as PanelId[]
+          if (Array.isArray(arr)) columnOrder[col] = arr.filter((x: PanelId) => allPanelIds.includes(x)) as PanelId[]
         }
       }
       normalizeLayout()
@@ -113,8 +118,9 @@ export function useThinLensLayout() {
   }
 
   function movePanel(id: string, targetCol: ColumnId, insertAfterId?: string | null) {
-    const pid = id as PanelId
-    const after = insertAfterId ? (insertAfterId as PanelId) : null
+    if (!isPanelId(id)) return
+    const pid = id
+    const after = insertAfterId && isPanelId(insertAfterId) ? insertAfterId : null
     for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) {
       columnOrder[col] = columnOrder[col].filter(p => p !== pid)
     }

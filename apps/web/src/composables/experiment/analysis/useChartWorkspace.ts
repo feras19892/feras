@@ -70,6 +70,13 @@ export function useChartWorkspace(
   const slopeWarning = computed(() => {
     if (!regression.value || points.value.length < 2) return null
     const slope = regression.value.slope
+    // Thin lens: slope should be ≈ -1 (1/di = -1/do + 1/f)
+    if (xKey.value === 'inv_do' && yKey.value === 'inv_di') {
+      if (Math.abs(slope + 1) > 0.2) {
+        return '⚠️ الميل يجب أن يكون ≈ -1 لمعادلة العدسة. تحقق من البيانات.'
+      }
+      return null
+    }
     if (slope < -0.001) {
       return '⚠️ الميل سالب — قد تشير البيانات إلى قياسات غير متناسقة. تأكد من تشغيل المحاكاة بعد تغيير المعاملات.'
     }

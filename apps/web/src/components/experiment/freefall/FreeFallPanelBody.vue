@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import FreeFallTablePanel from './FreeFallTablePanel.vue'
 import FreeFallScatterPanel from './FreeFallScatterPanel.vue'
 import FreeFallSignalPanel from './FreeFallSignalPanel.vue'
@@ -47,6 +48,11 @@ const emit = defineEmits<{
   (e: 'openFullReport'): void
 }>()
 
+const resultLines = computed(() => {
+  if (!props.calcResult) return []
+  return props.calcResult.split(/<br\s*\/?>/i).map(l => l.replace(/<\/?b>/gi, '').trim()).filter(Boolean)
+})
+
 const errorSources = [
   'دقة المؤقت الرقمي',
   'دقة قياس الارتفاع',
@@ -66,7 +72,9 @@ const errorSources = [
       <button class="btn-calc" @click="emit('calcV')">⚡ حساب v</button>
       <button class="btn-calc" @click="emit('calcFitG')">📈 ملائمة g</button>
     </div>
-    <div class="calc-result" v-html="calcResult" />
+    <div class="calc-result">
+      <div v-for="(line, i) in resultLines" :key="i">{{ line }}</div>
+    </div>
     <div class="equation-list">
       <div class="equation-item"><span class="eq-type">v(t)</span><span class="eq-formula">v = -g·t</span></div>
       <div class="equation-item"><span class="eq-type">y(t)</span><span class="eq-formula">y = y₀ - ½gt²</span></div>

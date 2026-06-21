@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 
+interface AdminUser { id: number; name: string; email: string; role: string; created_at?: string }
+
 const props = defineProps<{
-  users: any[];
+  users: AdminUser[];
 }>();
 
 const emit = defineEmits<{
   (e: 'refresh'): void;
   (e: 'delete', id: number): void;
-  (e: 'changeRole', id: number, role: string): void;
+  (e: 'change-role', id: number, role: string): void;
   (e: 'add', name: string, email: string, password: string, role: string): void;
   (e: 'view', id: number): void;
 }>();
@@ -22,7 +24,7 @@ const addUserError = ref('');
 const filteredUsers = computed(() => {
   const q = searchQuery.value.trim().toLowerCase();
   if (!q) return props.users;
-  return props.users.filter((u: any) =>
+  return props.users.filter((u) =>
     u.name?.toLowerCase().includes(q) ||
     u.email?.toLowerCase().includes(q) ||
     String(u.id).includes(q)
@@ -36,8 +38,8 @@ async function addUser() {
     emit('add', newUser.value.name, newUser.value.email, newUser.value.password, newUser.value.role);
     showAddUser.value = false;
     newUser.value = { name: '', email: '', password: '', role: 'student' };
-  } catch (err: any) {
-    addUserError.value = err?.message || 'فشل الإنشاء';
+  } catch (err: unknown) {
+    addUserError.value = (err instanceof Error ? err.message : '') || 'فشل الإنشاء';
   } finally {
     addUserLoading.value = false;
   }
@@ -98,7 +100,7 @@ async function addUser() {
             <td>{{ u.name }}</td>
             <td>{{ u.email }}</td>
             <td>
-              <select :value="u.role" @change="emit('changeRole', u.id, ($event.target as HTMLSelectElement).value)">
+              <select :value="u.role" @change="emit('change-role', u.id, ($event.target as HTMLSelectElement).value)">
                 <option value="student">طالب</option>
                 <option value="teacher">مدرس</option>
                 <option value="admin">أدمن</option>

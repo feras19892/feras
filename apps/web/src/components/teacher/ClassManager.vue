@@ -10,7 +10,8 @@ const { classes, expandedId, classStudents, showModal, newClassName, createClass
 
 const selectedStudent = ref<ClassStudent | null>(null)
 const detailOpen = ref(false)
-const classStats = ref<Record<string, any>>({})
+interface ClassStatItem { student_count: number; total_reports: number; pending_count: number; class_average: number }
+const classStats = ref<Record<string, ClassStatItem>>({})
 const statsLoading = ref(false)
 
 async function showStudentDetail(s: ClassStudent) {

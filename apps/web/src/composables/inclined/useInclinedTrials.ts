@@ -102,9 +102,9 @@ export function useInclinedTrials(params: InclinedParams, measured: Ref<Inclined
       if (!raw) return
       const parsed = JSON.parse(raw)
       if (Array.isArray(parsed.trials)) {
-        const valid = parsed.trials.filter((t: any) => t && typeof t.thetaDeg === 'number')
+        const valid = parsed.trials.filter((t: Record<string, unknown>) => t && typeof t.thetaDeg === 'number')
         trials.value = valid
-        nextTrialId = parsed.nextId ?? (valid.length > 0 ? Math.max(...valid.map((t: any) => t.id)) + 1 : 1)
+        nextTrialId = parsed.nextId ?? (valid.length > 0 ? Math.max(...valid.map((t: Record<string, unknown>) => Number(t.id))) + 1 : 1)
         history.value = [[...valid]]; historyIndex.value = 0
       }
     } catch { /* ignore */ }

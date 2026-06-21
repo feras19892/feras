@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
-import { drawThinLens } from '../../../../composables/thinlens/useThinLensRenderer'
+import { drawThinLens } from '../../../composables/thinlens/useThinLensRenderer'
 
 interface Props {
   lensType: 'convex' | 'concave'

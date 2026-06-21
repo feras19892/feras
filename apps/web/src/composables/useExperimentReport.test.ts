@@ -63,7 +63,7 @@ describe('useExperimentReport', () => {
 
   it('captureSnapshot handles ref without captureSnapshot method', () => {
     const { captureSnapshot, canvasSnapshot } = useExperimentReport(STORAGE_KEY);
-    captureSnapshot({} as any);
+    captureSnapshot({} as Record<string, unknown>);
     expect(canvasSnapshot.value).toBeNull();
   });
 });

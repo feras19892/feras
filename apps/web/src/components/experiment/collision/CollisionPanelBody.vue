@@ -3,17 +3,19 @@ import CollisionParamsPanel from './CollisionParamsPanel.vue'
 import CollisionDataPanel from './CollisionDataPanel.vue'
 import CollisionSignalPanel from './CollisionSignalPanel.vue'
 import type { CollisionSignalPoint } from '../../../composables/collision/useCollisionLab'
+import type { CollisionParams, CollisionState } from '../../../modules/physics/experiments/collision/useCollisionPhysics'
+import type { CollisionTrial } from '../../../composables/collision/useCollisionTrials'
 
 const props = defineProps<{
   id: string
-  params: any
-  sim: any
-  trials: any[]
+  params: CollisionParams
+  sim: CollisionState
+  trials: CollisionTrial[]
   signalSeries?: CollisionSignalPoint[]
 }>()
 
 const emit = defineEmits<{
-  (e: 'update:params', val: any): void
+  (e: 'update:params', val: Partial<CollisionParams>): void
   (e: 'remove', id: number): void
   (e: 'clear'): void
 }>()

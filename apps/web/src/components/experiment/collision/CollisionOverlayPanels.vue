@@ -2,19 +2,21 @@
 import CollisionPanelBody from './CollisionPanelBody.vue'
 
 import type { CollisionSignalPoint } from '../../../composables/collision/useCollisionLab'
+import type { CollisionParams, CollisionState } from '../../../modules/physics/experiments/collision/useCollisionPhysics'
+import type { CollisionTrial } from '../../../composables/collision/useCollisionTrials'
 
 const props = defineProps<{
   maximized: Record<string, boolean>
   panelTitle: (id: string) => string
-  params: any
-  sim: any
-  trials: any[]
+  params: CollisionParams
+  sim: CollisionState
+  trials: CollisionTrial[]
   signalSeries?: CollisionSignalPoint[]
 }>()
 
 const emit = defineEmits<{
   (e: 'maximize', id: string): void
-  (e: 'update:params', val: any): void
+  (e: 'update:params', val: Partial<CollisionParams>): void
   (e: 'remove', id: number): void
   (e: 'clear'): void
 }>()

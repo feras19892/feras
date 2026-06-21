@@ -21,10 +21,11 @@ const plots = computed(() => safeParse(props.report.plots));
 const stats = computed(() => {
   const r = readings.value;
   if (!Array.isArray(r) || r.length === 0) return null;
-  const numericCols = columns.value.filter((c: any) => c.type === 'number');
+  interface ColumnItem { type: string; key: string }
+  const numericCols = (columns.value as ColumnItem[]).filter((c) => c.type === 'number');
   const avgs: Record<string, number> = {};
-  numericCols.forEach((col: any) => {
-    const vals = r.map((row: any) => Number(row[col.key])).filter((v: number) => !isNaN(v));
+  numericCols.forEach((col) => {
+    const vals = r.map((row: Record<string, unknown>) => Number(row[col.key])).filter((v) => !isNaN(v));
     if (vals.length) avgs[col.key] = vals.reduce((a: number, b: number) => a + b, 0) / vals.length;
   });
   return avgs;

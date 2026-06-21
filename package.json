@@ -10,7 +10,8 @@
     "gen": "node toolbox/generators/index.js"
   },
   "devDependencies": {
-    "turbo": "^2.0.0"
+    "turbo": "^2.0.0",
+    "typescript": "^5.4.0"
   },
   "packageManager": "pnpm@9.0.0"
 }

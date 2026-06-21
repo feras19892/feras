@@ -1,5 +1,4 @@
 import { watch, onMounted, onUnmounted } from 'vue'
-import type { SpringParams } from '../../modules/physics/experiments/spring/useSpringPhysics'
 import { useSpringLab } from './useSpringLab'
 import { useSpringLayout } from './useSpringLayout'
 import { useSpringTrials } from './useSpringTrials'
@@ -40,7 +39,7 @@ export function useSpringExperiment() {
         const parsed = JSON.parse(raw)
         if (parsed.staticK !== undefined) state.staticK.value = parsed.staticK
         if (Array.isArray(parsed.staticReadings)) {
-          state.staticReadings.value = parsed.staticReadings.filter((r: any) =>
+          state.staticReadings.value = parsed.staticReadings.filter((r: Record<string, unknown>) =>
             r && typeof r.mass === 'number' && r.mass >= 0 && r.mass <= 20
           )
         }

@@ -24,6 +24,7 @@ export function useCrossTabSync() {
     } catch { /* ignore */ }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function receive(data: any) {
     if (!data || data.type !== 'update' || !data.payload) return;
     const p = data.payload;

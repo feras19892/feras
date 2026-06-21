@@ -1,4 +1,4 @@
-import { open, type Database } from 'sqlite';
+import { open } from 'sqlite';
 import sqlite3 from 'sqlite3';
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';

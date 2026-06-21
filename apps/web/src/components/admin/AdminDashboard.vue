@@ -2,9 +2,31 @@
 import { ref, onMounted } from 'vue';
 import { getAdminStats, getAdminActivityStats, getAdminInsights } from '../../services/admin.service';
 
-const stats = ref<any>(null);
-const activityStats = ref<any>(null);
-const insights = ref<any>(null);
+interface RoleStat { role: string; count: number }
+interface UserStats { total: number; byRole: RoleStat[] }
+interface ClassStats { total: number }
+interface ReportStats { total: number; graded: number }
+interface StatsData { users: UserStats; classes: ClassStats; reports: ReportStats }
+
+interface ActivityStatsData { today: number; logins: number; signups: number; reports: number }
+
+interface TopUser { id: number; name: string; role: string; report_count: number }
+interface ActivityItem { actor_name: string; action: string; created_at?: string }
+interface InactiveUser { id: number; name: string; role: string }
+interface EmptyClass { id: number; name: string; teacher_name: string }
+interface NoReportsTeacher { id: number; name: string }
+interface InsightsData {
+  topUsers: TopUser[];
+  recentActivity: ActivityItem[];
+  inactiveUsers: InactiveUser[];
+  emptyClasses: EmptyClass[];
+  ungradedCount: number;
+  noReportsTeachers: NoReportsTeacher[];
+}
+
+const stats = ref<StatsData | null>(null);
+const activityStats = ref<ActivityStatsData | null>(null);
+const insights = ref<InsightsData | null>(null);
 const loading = ref(false);
 const error = ref('');
 
@@ -13,11 +35,11 @@ async function load() {
   error.value = '';
   try {
     const [s, a, i] = await Promise.all([getAdminStats(), getAdminActivityStats(), getAdminInsights()]);
-    if (s.success) stats.value = s.stats;
-    if (a.success) activityStats.value = a.stats;
-    if (i.success) insights.value = i.insights;
-  } catch (err: any) {
-    error.value = err?.message || 'فشل التحميل';
+    if (s.success) stats.value = s.stats as StatsData;
+    if (a.success) activityStats.value = a.stats as ActivityStatsData;
+    if (i.success) insights.value = i.insights as InsightsData;
+  } catch (err: unknown) {
+    error.value = (err instanceof Error ? err.message : '') || 'فشل التحميل';
   } finally {
     loading.value = false;
   }

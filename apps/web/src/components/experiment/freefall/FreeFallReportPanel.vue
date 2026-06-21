@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const props = defineProps<{ trials: any[]; trialStats: any; gTheoretical: number }>()
+import type { FreeFallTrial } from '../../../composables/freefall/useFreeFallTrials'
+
+const props = defineProps<{ trials: FreeFallTrial[]; trialStats: Record<string, number> | null; gTheoretical: number }>()
 const emit = defineEmits<{ (e: 'printReport'): void; (e: 'openFullReport'): void }>()
 </script>
 

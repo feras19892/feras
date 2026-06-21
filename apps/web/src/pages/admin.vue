@@ -101,7 +101,7 @@ onMounted(loadAll);
           :users="users"
           @refresh="loadAll"
           @delete="handleRemoveUser"
-          @changeRole="handleChangeRole"
+          @change-role="handleChangeRole"
           @add="handleAddUser"
           @view="openUserDetail"
         />

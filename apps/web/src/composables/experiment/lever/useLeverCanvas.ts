@@ -256,6 +256,7 @@ export function useLeverCanvas(
     const tw = ctx.measureText(text).width
     ctx.fillStyle = 'rgba(15,23,42,0.7)'
     ctx.beginPath()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ;(ctx as any).roundRect(px - tw / 2 - 4, labelY - 7, tw + 8, 14, 4)
     ctx.fill()
     ctx.fillStyle = '#fff'
@@ -307,6 +308,7 @@ export function useLeverCanvas(
     const bw = tw + 24
     const bh = 26
     ctx.beginPath()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ;(ctx as any).roundRect(bx, by, bw, bh, 6)
     ctx.fill()
     ctx.stroke()

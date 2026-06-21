@@ -4,9 +4,29 @@ import { getAdminInsights, getAdminActivity, getAdminActivityStats } from '../..
 
 const loading = ref(false);
 const error = ref('');
-const insights = ref<any>(null);
-const activities = ref<any[]>([]);
-const activityStats = ref<any>(null);
+interface InactiveUser { id: number; name: string; role: string }
+interface EmptyClass { id: number; name: string; teacher_name: string }
+interface NoReportsTeacher { id: number; name: string }
+interface InsightsData {
+  inactiveUsers: InactiveUser[];
+  emptyClasses: EmptyClass[];
+  ungradedCount: number;
+  noReportsTeachers: NoReportsTeacher[];
+}
+interface ActivityItem {
+  id: number;
+  action: string;
+  actor_name: string;
+  actor_role: string;
+  target_type?: string;
+  target_id?: number;
+  created_at?: string;
+}
+interface ActivityStatsData { today: number; logins: number; signups: number; reports: number }
+
+const insights = ref<InsightsData | null>(null);
+const activities = ref<ActivityItem[]>([]);
+const activityStats = ref<ActivityStatsData | null>(null);
 
 async function load() {
   loading.value = true;
@@ -20,14 +40,14 @@ async function load() {
     if (i.success) insights.value = i.insights;
     if (a.success) activities.value = a.activities;
     if (s.success) activityStats.value = s.stats;
-  } catch (err: any) {
-    error.value = err?.message || 'فشل التحميل';
+  } catch (err: unknown) {
+    error.value = (err instanceof Error ? err.message : '') || 'فشل التحميل';
   } finally {
     loading.value = false;
   }
 }
 
-function formatDate(d: string) {
+function formatDate(d: string | undefined) {
   return d ? new Date(d).toLocaleString('ar-SA', { hour12: false }) : '';
 }
 

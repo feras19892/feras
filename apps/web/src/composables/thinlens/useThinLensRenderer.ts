@@ -89,11 +89,10 @@ export function drawThinLens(canvas: HTMLCanvasElement, props: LensRenderProps) 
   ctx.fillText('O', ox - 8, cy - oh - 6)
 
   // ─── IMAGE ───
-  const hasImage = props.imageDistance !== null && props.imageHeight !== null
   let ix = 0, ih = 0
-  if (hasImage) {
-    const di = props.imageDistance!
-    const hi = props.imageHeight!
+  if (props.imageDistance !== null && props.imageHeight !== null) {
+    const di = props.imageDistance
+    const hi = props.imageHeight
     ix = cx + di * scale
     ih = hi * scale
     const isVirtual = di < 0
@@ -124,10 +123,9 @@ export function drawThinLens(canvas: HTMLCanvasElement, props: LensRenderProps) 
     ctx.strokeStyle = 'rgba(251,191,36,0.7)'
     ctx.lineWidth = 1.5
     ctx.beginPath(); ctx.moveTo(ox, cy - oh); ctx.lineTo(cx, cy - oh); ctx.stroke()
-    const fLeft = cx - fPx
     const slope1 = -oh / fPx
     ctx.beginPath(); ctx.moveTo(cx, cy - oh); ctx.lineTo(Math.min(w - 10, cx + 120), cy - oh + slope1 * 120); ctx.stroke()
-    if (hasImage) {
+    if (props.imageDistance !== null && props.imageHeight !== null) {
       ctx.strokeStyle = 'rgba(251,191,36,0.35)'
       ctx.setLineDash([4, 4])
       ctx.beginPath(); ctx.moveTo(cx, cy - oh); ctx.lineTo(ix, cy - ih); ctx.stroke()
@@ -139,7 +137,7 @@ export function drawThinLens(canvas: HTMLCanvasElement, props: LensRenderProps) 
     ctx.beginPath(); ctx.moveTo(ox, cy - oh); ctx.lineTo(cx, cy); ctx.stroke()
     const slope2 = (cy - (cy - oh)) / (cx - ox)
     ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(Math.min(w - 10, cx + 120), cy + slope2 * 120); ctx.stroke()
-    if (hasImage) {
+    if (props.imageDistance !== null && props.imageHeight !== null) {
       ctx.strokeStyle = 'rgba(103,232,249,0.35)'
       ctx.setLineDash([4, 4])
       ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(ix, cy - ih); ctx.stroke()
@@ -150,7 +148,7 @@ export function drawThinLens(canvas: HTMLCanvasElement, props: LensRenderProps) 
 
   } else {
     // CONVEX LENS
-    const isVirtual = hasImage && props.imageDistance! < 0
+    const isVirtual = props.imageDistance !== null && props.imageHeight !== null && props.imageDistance < 0
 
     // Ray 1: Parallel to axis → through F (right)
     ctx.strokeStyle = 'rgba(251,191,36,0.7)'
@@ -165,7 +163,7 @@ export function drawThinLens(canvas: HTMLCanvasElement, props: LensRenderProps) 
       ctx.setLineDash([4, 4])
       ctx.beginPath(); ctx.moveTo(cx, cy - oh); ctx.lineTo(ix, cy - ih); ctx.stroke()
       ctx.setLineDash([])
-    } else if (hasImage) {
+    } else if (props.imageDistance !== null && props.imageHeight !== null) {
       const fRight = cx + fPx
       ctx.beginPath(); ctx.moveTo(cx, cy - oh); ctx.lineTo(fRight, cy); ctx.stroke()
       ctx.beginPath(); ctx.moveTo(fRight, cy); ctx.lineTo(ix, cy - ih); ctx.stroke()
@@ -177,7 +175,7 @@ export function drawThinLens(canvas: HTMLCanvasElement, props: LensRenderProps) 
 
     // Ray 2: Through center → straight
     ctx.strokeStyle = 'rgba(103,232,249,0.7)'
-    if (hasImage) {
+    if (props.imageDistance !== null && props.imageHeight !== null) {
       if (isVirtual) {
         ctx.beginPath(); ctx.moveTo(ox, cy - oh); ctx.lineTo(cx, cy); ctx.stroke()
         const slope = (cy - (cy - oh)) / (cx - ox)
@@ -197,7 +195,7 @@ export function drawThinLens(canvas: HTMLCanvasElement, props: LensRenderProps) 
     // Ray 3: Through F' (left) → refracts parallel
     ctx.strokeStyle = 'rgba(168,85,247,0.6)'
     const fLeft = cx - fPx
-    if (hasImage) {
+    if (props.imageDistance !== null && props.imageHeight !== null) {
       const dx = ox - fLeft
       if (Math.abs(dx) > 0.001) {
         const slope3 = (cy - oh - cy) / dx

@@ -70,7 +70,7 @@ export function useInclinedLayout() {
       if (!raw) return
       const parsed = JSON.parse(raw) as { panelColumn?: Record<string, ColumnId>, columnOrder?: Record<string, PanelId[]> }
       if (parsed.panelColumn) { for (const k of allPanelIds) { const v = parsed.panelColumn[k]; if (v === 'data' || v === 'vis' || v === 'ctrl') panelColumn[k] = v } }
-      if (parsed.columnOrder) { for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) { const arr = parsed.columnOrder[col]; if (Array.isArray(arr)) columnOrder[col] = arr.filter((x: any) => allPanelIds.includes(x)) as PanelId[] } }
+      if (parsed.columnOrder) { for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) { const arr = parsed.columnOrder[col]; if (Array.isArray(arr)) columnOrder[col] = arr.filter((x: PanelId) => allPanelIds.includes(x)) as PanelId[] } }
       normalizeLayout()
     } catch { /* ignore */ }
   }

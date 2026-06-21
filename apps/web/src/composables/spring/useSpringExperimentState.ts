@@ -5,7 +5,7 @@ export interface SpringExperimentState {
   params: SpringParams
   previousMass: { value: number }
   staticK: { value: number | null }
-  staticReadings: { value: any[] }
+  staticReadings: { value: Record<string, unknown>[] }
   fftResult: { value: { freqs: number[]; amplitudes: number[]; dominantFreq: number } | null }
   ignoreParamsWatch: { value: boolean }
   colWidths: { data: number; vis: number; ctrl: number }
@@ -18,7 +18,7 @@ export function useSpringExperimentState(): SpringExperimentState {
   })
   const previousMass = ref(1.0)
   const staticK = ref<number | null>(null)
-  const staticReadings = ref<any[]>([])
+  const staticReadings = ref<Record<string, unknown>[]>([])
   const fftResult = ref<{ freqs: number[]; amplitudes: number[]; dominantFreq: number } | null>(null)
   const ignoreParamsWatch = ref(false)
   const colWidths = reactive({ data: 280, vis: 0, ctrl: 280 })
@@ -28,9 +28,9 @@ export function useSpringExperimentState(): SpringExperimentState {
 
 export function useSpringExperimentComputed(
   state: SpringExperimentState,
-  trials: { trials: { value: any[] }; trialStats: { value: { k_mean: number | null } } },
-  lab: { sim: { running: boolean; paused: boolean }; measured: { value: any }; effectiveMass: { value: number }; running: { value: boolean } },
-  layout: { isPanelVisible: (id: any) => boolean; columnOrder: Record<string, string[]> },
+  trials: { trials: { value: Record<string, unknown>[] }; trialStats: { value: { k_mean: number | null } } },
+  lab: { sim: { running: boolean; paused: boolean }; measured: { value: Record<string, unknown> | null }; effectiveMass: { value: number }; running: { value: boolean } },
+  layout: { isPanelVisible: (id: string) => boolean; columnOrder: Record<string, string[]> },
 ) {
   const stepIndex = computed(() =>
     trials.trials.value.length >= 2 ? 2 : trials.trials.value.length > 0 ? 1 : 0
@@ -47,9 +47,10 @@ export function useSpringExperimentComputed(
   })
 
   const dynamicTrials = computed(() => {
-    return trials.trials.value.map((t: any) => {
-      const tTotal = t.T * 20
-      return { mass: t.mass, t1: tTotal, t2: tTotal, t3: tTotal, tAvg: tTotal, T: t.T, T2: t.T * t.T }
+    return trials.trials.value.map((t: Record<string, unknown>) => {
+      const T = Number(t.T)
+      const tTotal = T * 20
+      return { mass: Number(t.mass), t1: tTotal, t2: tTotal, t3: tTotal, tAvg: tTotal, T, T2: T * T }
     })
   })
   const kDynamic = computed(() =>

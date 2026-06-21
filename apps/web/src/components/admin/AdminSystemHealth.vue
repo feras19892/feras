@@ -2,7 +2,11 @@
 import { ref, onMounted } from 'vue';
 import { getAdminSystemHealth } from '../../services/admin.service';
 
-const health = ref<any>(null);
+interface HealthCounts { users: number; classes: number; reports: number; sessions: number }
+interface HealthToday { logins: number; signups: number; reports: number }
+interface HealthData { counts: HealthCounts; today: HealthToday; dbSize: number; tables: Record<string, number> }
+
+const health = ref<HealthData | null>(null);
 const loading = ref(false);
 const error = ref('');
 
@@ -12,8 +16,8 @@ async function load() {
   try {
     const res = await getAdminSystemHealth();
     if (res.success) health.value = res.health;
-  } catch (err: any) {
-    error.value = err?.message || 'فشل التحميل';
+  } catch (err: unknown) {
+    error.value = (err instanceof Error ? err.message : '') || 'فشل التحميل';
   } finally {
     loading.value = false;
   }

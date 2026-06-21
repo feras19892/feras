@@ -1,21 +1,28 @@
 <script setup lang="ts">
+import type { ProjectileTrial } from '../../../composables/projectile/useProjectileTrials'
+import type { ProjectileParams } from '../../../modules/physics/experiments/projectile/useProjectilePhysics'
+
+interface SimState { t: number; x: number; y: number; vx: number; vy: number; running: boolean; paused: boolean; landed: boolean }
+interface MeasuredState { flightTime: number | null; maxHeight: number | null; range: number | null }
+interface TrialStats { time_mean: number; time_std: number; range_mean: number; range_std: number }
+
 const props = defineProps<{
   maximized: Record<string, boolean>
   panelTitle: (id: string) => string
-  trials: any[]
+  trials: ProjectileTrial[]
   calcResult: string
   fitResult?: { slope: number; intercept: number } | null
-  params: any
-  sim: any
-  measured: any
-  trialStats: any
+  params: ProjectileParams
+  sim: SimState
+  measured: MeasuredState
+  trialStats: TrialStats | null
 }>()
 
 const emit = defineEmits<{
   (e: 'maximize', id: string): void
   (e: 'drop', id: string, x: number, y: number): void
-  (e: 'update:trials', val: any[]): void
-  (e: 'update:params', val: any): void
+  (e: 'update:trials', val: ProjectileTrial[]): void
+  (e: 'update:params', val: Partial<ProjectileParams>): void
   (e: 'remove', id: number): void
   (e: 'clear'): void
   (e: 'calcFlightTime'): void

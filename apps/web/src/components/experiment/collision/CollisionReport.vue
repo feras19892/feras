@@ -1,8 +1,15 @@
 <script setup lang="ts">
+interface CollisionTrialItem {
+  id: number; m1: number; m2: number; v1i: number; v2i: number; e: number; v1f: number; v2f: number; lossPercent: number
+}
+interface CollisionStats {
+  avgV1f: number; avgV2f: number; avgLoss: number
+}
+
 const props = defineProps<{
-  trials: any[]
-  params?: any
-  trialStats?: any
+  trials: CollisionTrialItem[]
+  params?: Record<string, number>
+  trialStats?: CollisionStats
 }>()
 
 const emit = defineEmits<{

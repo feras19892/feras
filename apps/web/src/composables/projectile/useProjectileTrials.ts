@@ -117,9 +117,9 @@ export function useProjectileTrials(params: ProjectileParams, measured: Ref<Proj
       if (!raw) return
       const parsed = JSON.parse(raw)
       if (Array.isArray(parsed.trials)) {
-        const valid = parsed.trials.filter((t: any) => t && typeof t.angleDegrees === 'number' && t.angleDegrees >= 0 && t.angleDegrees <= 90)
+        const valid = parsed.trials.filter((t: Record<string, unknown>) => t && typeof t.angleDegrees === 'number' && t.angleDegrees >= 0 && t.angleDegrees <= 90)
         trials.value = valid
-        nextTrialId = parsed.nextId ?? (valid.length > 0 ? Math.max(...valid.map((t: any) => t.id)) + 1 : 1)
+        nextTrialId = parsed.nextId ?? (valid.length > 0 ? Math.max(...valid.map((t: Record<string, unknown>) => Number(t.id))) + 1 : 1)
         if (parsed.calcResult) calcResult.value = parsed.calcResult
         history.value = [[...valid]]
         historyIndex.value = 0

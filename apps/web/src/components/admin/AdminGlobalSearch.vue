@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 
+interface SearchUser { id: number; name: string; email: string; role: string }
+interface SearchClass { id: string; name: string; code: string; teacher_name?: string }
+interface SearchReport { id: number; student_name: string; experiment_name: string; status: string }
+interface SearchFeedback { id: number; user_name: string; message: string; type: string }
+
 const props = defineProps<{
-  users: any[];
-  classes: any[];
-  reports: any[];
-  feedback: any[];
+  users: SearchUser[];
+  classes: SearchClass[];
+  reports: SearchReport[];
+  feedback: SearchFeedback[];
 }>();
 
 const emit = defineEmits<{
@@ -19,7 +24,7 @@ const results = computed(() => {
   const q = query.value.trim().toLowerCase();
   if (!q || q.length < 2) return [];
 
-  const list: { type: string; title: string; subtitle: string; id: any }[] = [];
+  const list: { type: string; title: string; subtitle: string; id: number | string }[] = [];
 
   // Users
   for (const u of props.users) {
@@ -62,8 +67,8 @@ function iconFor(type: string) {
   }
 }
 
-function onSelect(r: any) {
-  if (r.type === 'user') emit('selectUser', r.id);
+function onSelect(r: { type: string; id: number | string }) {
+  if (r.type === 'user') emit('selectUser', Number(r.id));
   query.value = '';
   showResults.value = false;
 }

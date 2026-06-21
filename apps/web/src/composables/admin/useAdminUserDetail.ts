@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import { getAdminUserFull, addAdminNote, sendAdminWarning, banUser, unbanUser } from '../../services/admin.service';
 
 export function useAdminUserDetail() {
-  const profile = ref<any>(null);
+  const profile = ref<Record<string, unknown> | null>(null);
   const loading = ref(false);
   const error = ref('');
 
@@ -12,8 +12,8 @@ export function useAdminUserDetail() {
     try {
       const res = await getAdminUserFull(userId);
       if (res.success) profile.value = res;
-    } catch (err: any) {
-      error.value = err?.message || 'فشل التحميل';
+    } catch (err: unknown) {
+      error.value = (err instanceof Error ? err.message : '') || 'فشل التحميل';
     } finally {
       loading.value = false;
     }

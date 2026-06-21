@@ -2,8 +2,25 @@
 import { ref, onMounted, computed } from 'vue';
 import { getAdminFeedback, updateFeedbackStatus } from '../../services/admin.service';
 
-const feedbackList = ref<any[]>([]);
-const stats = ref<any>(null);
+interface FeedbackItem {
+  id: number;
+  type: string;
+  user_name: string;
+  experiment_name?: string;
+  rating?: number;
+  message: string;
+  status: string;
+  created_at?: string;
+}
+interface FeedbackStats {
+  total: number;
+  open: number;
+  resolved: number;
+  average: number;
+}
+
+const feedbackList = ref<FeedbackItem[]>([]);
+const stats = ref<FeedbackStats | null>(null);
 const loading = ref(false);
 const error = ref('');
 const searchQuery = ref('');
@@ -28,8 +45,8 @@ async function load() {
       feedbackList.value = res.feedback;
       stats.value = res.stats;
     }
-  } catch (err: any) {
-    error.value = err?.message || 'فشل التحميل';
+  } catch (err: unknown) {
+    error.value = (err instanceof Error ? err.message : '') || 'فشل التحميل';
   } finally {
     loading.value = false;
   }
@@ -46,15 +63,6 @@ function typeLabel(type: string) {
     case 'complaint': return '🚩 شكوى';
     case 'suggestion': return '💡 اقتراح';
     default: return type;
-  }
-}
-
-function statusLabel(status: string) {
-  switch (status) {
-    case 'open': return '🔴 مفتوح';
-    case 'resolved': return '✅ محلول';
-    case 'dismissed': return '🚫 مرفوض';
-    default: return status;
   }
 }
 

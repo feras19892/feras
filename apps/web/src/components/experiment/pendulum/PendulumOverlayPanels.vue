@@ -18,7 +18,7 @@ const emit = defineEmits<{
 }>()
 
 const allIds: PanelId[] = ['table', 'signal', 'params', 'guide']
-function isMaximized(id: string) { return (props.maximized as any)[id] as boolean }
+function isMaximized(id: string) { return (props.maximized as Record<string, boolean>)[id] as boolean }
 function emitMaximize(id: string) { emit('maximize', id) }
 </script>
 

@@ -15,11 +15,11 @@ export function useAdmin() {
   const loading = ref(false);
   const errorMsg = ref('');
 
-  const users = ref<any[]>([]);
-  const classes = ref<any[]>([]);
-  const reports = ref<any[]>([]);
-  const feedback = ref<any[]>([]);
-  const stats = ref<any>(null);
+  const users = ref<Record<string, unknown>[]>([]);
+  const classes = ref<Record<string, unknown>[]>([]);
+  const reports = ref<Record<string, unknown>[]>([]);
+  const feedback = ref<Record<string, unknown>[]>([]);
+  const stats = ref<Record<string, unknown> | null>(null);
 
   async function loadAll() {
     loading.value = true;
@@ -37,9 +37,9 @@ export function useAdmin() {
       if (c.success) classes.value = c.classes;
       if (r.success) reports.value = r.reports;
       if (f.success) feedback.value = f.feedback;
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('admin load failed:', err);
-      errorMsg.value = err?.message || 'فشل تحميل البيانات';
+      errorMsg.value = (err instanceof Error ? err.message : '') || 'فشل تحميل البيانات';
     } finally {
       loading.value = false;
     }

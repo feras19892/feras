@@ -51,6 +51,7 @@ test.describe('Performance & Memory Leak', () => {
       const mem = await page.evaluate(() => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const perf = (performance as any).memory
         return perf ? perf.usedJSHeapSize : 0
       })

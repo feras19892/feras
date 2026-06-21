@@ -94,7 +94,7 @@ export function useSpringLayout() {
         for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) {
           const arr = parsed.columnOrder[col]
           if (Array.isArray(arr)) {
-            columnOrder[col] = arr.filter((x: any) => allPanelIds.includes(x)) as PanelId[]
+            columnOrder[col] = arr.filter((x: PanelId) => allPanelIds.includes(x)) as PanelId[]
           }
         }
       }

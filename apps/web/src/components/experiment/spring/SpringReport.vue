@@ -52,7 +52,7 @@ function updateStatic(i: number, key: keyof StaticReading, raw: string) {
   if (key === 'mass') {
     r.mass = n / 1000  // input shows grams, store in kg
   } else {
-    (r as any)[key] = n
+    (r as Record<string, unknown>)[key] = n
   }
   r.force = r.mass * 9.81
   staticEdit.value[i] = r
@@ -67,13 +67,13 @@ function updateDynamic(i: number, key: keyof DynamicTrial, raw: string) {
   if (key === 'mass') {
     t.mass = n / 1000  // input shows grams, store in kg
   } else if (key.startsWith('t')) {
-    (t as any)[key] = n
+    (t as Record<string, unknown>)[key] = n
     const times = [t.t1, t.t2, t.t3].filter(v => v > 0)
     t.tAvg = times.length ? times.reduce((a, b) => a + b, 0) / times.length : 0
     t.T = t.tAvg / 20
     t.T2 = t.T * t.T
   } else {
-    (t as any)[key] = n
+    (t as Record<string, unknown>)[key] = n
   }
   dynamicEdit.value[i] = t
   dynamicEdit.value = [...dynamicEdit.value]

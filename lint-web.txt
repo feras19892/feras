@@ -1,0 +1,358 @@
+﻿
+C:\Users\feras\Desktop\feras\apps\web\src\components\admin\AdminClassManager.vue
+  3:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\admin\AdminDashboard.vue
+   5:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   6:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   7:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  19:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\admin\AdminFeedbackPanel.vue
+   5:26  warning  Unexpected any. Specify a different type                                               @typescript-eslint/no-explicit-any
+   6:19  warning  Unexpected any. Specify a different type                                               @typescript-eslint/no-explicit-any
+  31:17  warning  Unexpected any. Specify a different type                                               @typescript-eslint/no-explicit-any
+  52:10  error    'statusLabel' is defined but never used. Allowed unused vars must match /^props$|^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\admin\AdminGlobalSearch.vue
+   5:10  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   6:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   7:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   8:13  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  22:68  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  65:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\admin\AdminOverview.vue
+  5:10  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\admin\AdminReportViewer.vue
+  3:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\admin\AdminSmartReports.vue
+   7:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   8:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   9:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  23:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\admin\AdminSystemHealth.vue
+   5:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\admin\AdminUserManager.vue
+   5:10  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  25:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  39:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\SubmitReportModal.vue
+   51:17  warning  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+   70:5   error    Move function declaration to function body root  no-inner-declarations
+  107:17  warning  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\analysis-calc\AnalysisChartWorkspace.vue
+  16:3  error  'numericKeys' is assigned a value but never used. Allowed unused vars must match /^props$|^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\analysis-calc\AnalysisTab.vue
+   2:15  error  'computed' is defined but never used. Allowed unused vars must match /^props$|^_/u              @typescript-eslint/no-unused-vars
+  23:7   error  'eqCollapsed' is assigned a value but never used. Allowed unused vars must match /^props$|^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\collision\CollisionOverlayPanels.vue
+   9:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  10:8   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  11:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  17:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\collision\CollisionPanelBody.vue
+   9:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  10:8   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  11:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  16:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\collision\CollisionReport.vue
+  3:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  4:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  5:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\freefall\FreeFallEquationsPanel.vue
+  15:48  warning  'v-html' directive can lead to XSS attack  vue/no-v-html
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\freefall\FreeFallOverlayPanels.vue
+  50:63  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\freefall\FreeFallPanelBody.vue
+  69:30  warning  'v-html' directive can lead to XSS attack  vue/no-v-html
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\freefall\FreeFallReport.vue
+  25:10  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\freefall\FreeFallReportPanel.vue
+  2:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  2:56  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\freefall\FreeFallScatterPanel.vue
+  4:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\freefall\FreeFallTablePanel.vue
+  2:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\inclined\InclinedEquationsPanel.vue
+  22:25  warning  'v-html' directive can lead to XSS attack  vue/no-v-html
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\lever\LeverOverlayPanels.vue
+  8:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  9:8   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\lightray\LightRayChart.vue
+  19:10  error  'toRad' is defined but never used. Allowed unused vars must match /^props$|^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\pendulum\PendulumLiveAnalysis.vue
+  35:37  warning  'v-html' directive can lead to XSS attack  vue/no-v-html
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\pendulum\PendulumOverlayPanels.vue
+  21:63  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\projectile\ProjectileOverlayPanels.vue
+   5:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   8:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   9:8   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  10:13  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  11:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  17:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  18:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\projectile\ProjectilePanelBody.vue
+    4:11   warning  Unexpected any. Specify a different type   @typescript-eslint/no-explicit-any
+    6:11   warning  Unexpected any. Specify a different type   @typescript-eslint/no-explicit-any
+    7:8    warning  Unexpected any. Specify a different type   @typescript-eslint/no-explicit-any
+    8:13   warning  Unexpected any. Specify a different type   @typescript-eslint/no-explicit-any
+    9:15   warning  Unexpected any. Specify a different type   @typescript-eslint/no-explicit-any
+   16:29   warning  Unexpected any. Specify a different type   @typescript-eslint/no-explicit-any
+   17:29   warning  Unexpected any. Specify a different type   @typescript-eslint/no-explicit-any
+  138:106  warning  Unexpected any. Specify a different type   @typescript-eslint/no-explicit-any
+  139:112  warning  Unexpected any. Specify a different type   @typescript-eslint/no-explicit-any
+  140:112  warning  Unexpected any. Specify a different type   @typescript-eslint/no-explicit-any
+  141:107  warning  Unexpected any. Specify a different type   @typescript-eslint/no-explicit-any
+  181:32   warning  'v-html' directive can lead to XSS attack  vue/no-v-html
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\projectile\ProjectileReport.vue
+  7:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\spring\SpringLiveAnalysis.vue
+  33:37  warning  'v-html' directive can lead to XSS attack  vue/no-v-html
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\spring\SpringOverlayPanels.vue
+  37:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\spring\SpringReport.vue
+  55:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  70:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  76:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\shared\FeedbackModal.vue
+  37:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\shared\ReportViewer.vue
+  12:66  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\teacher\ClassManager.vue
+  13:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\teacher\ReportAIAnalyzer.vue
+  24:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  26:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  27:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\teacher\TeacherStats.vue
+   10:19  warning  Unexpected any. Specify a different type                                                   @typescript-eslint/no-explicit-any
+   40:45  warning  Unexpected any. Specify a different type                                                   @typescript-eslint/no-explicit-any
+   56:38  warning  Unexpected any. Specify a different type                                                   @typescript-eslint/no-explicit-any
+   89:43  error    'startY' is assigned a value but never used. Allowed unused vars must match /^props$|^_/u  @typescript-eslint/no-unused-vars
+  186:44  warning  Unexpected any. Specify a different type                                                   @typescript-eslint/no-explicit-any
+  195:44  warning  Unexpected any. Specify a different type                                                   @typescript-eslint/no-explicit-any
+  197:82  warning  Unexpected any. Specify a different type                                                   @typescript-eslint/no-explicit-any
+  215:43  warning  Unexpected any. Specify a different type                                                   @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\admin\useAdminSystemHealth.ts
+   5:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\admin\useAdminUserDetail.ts
+   5:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\admin\useAdminUsers.ts
+  14:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  24:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\admin\useAdminWarnings.ts
+   5:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\analysis\useCrossTabSync.ts
+  27:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\auth\useAuthActions.ts
+  1:10  error  'ref' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\collision\useCollisionReport.ts
+  15:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  40:42  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\experiment\collision\useCollisionCanvas.ts
+  18:58  warning  Unexpected any. Specify a different type                                  @typescript-eslint/no-explicit-any
+  95:82  error    'params' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\experiment\lever\useLeverCanvas.ts
+  259:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  310:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\freefall\useFreeFallExperiment.ts
+  77:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  77:59  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\freefall\useFreeFallLayout.ts
+  73:187  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\freefall\useFreeFallReport.ts
+   7:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  12:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  62:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\freefall\useFreeFallTrials.ts
+  81:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  83:86  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\inclined\useInclinedExperiment.ts
+  82:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  82:59  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\inclined\useInclinedLayout.ts
+  73:187  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\inclined\useInclinedTrials.ts
+  105:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  107:86  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\lever\useLeverExperiment.ts
+  1:54  error  'ref' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\lever\useLeverTrials.ts
+  140:44  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\lightray\useLightRayLayout.ts
+  99:69  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\pendulum\usePendulumExperiment.ts
+  60:58  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  93:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  93:59  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\pendulum\usePendulumLayout.ts
+  68:187  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\pendulum\usePendulumReport.ts
+   7:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  13:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  51:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\pendulum\usePendulumTrials.ts
+  71:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  73:86  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\projectile\useProjectileExperiment.ts
+  43:58  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  76:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  76:59  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\projectile\useProjectileLayout.ts
+  68:187  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\projectile\useProjectileReport.ts
+   7:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  70:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\projectile\useProjectileTrials.ts
+  120:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  122:86  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\spring\useSpringExperiment.ts
+   2:15  error    'SpringParams' is defined but never used  @typescript-eslint/no-unused-vars
+  43:73  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\spring\useSpringExperimentActions.ts
+   2:15  error    'SpringParams' is defined but never used  @typescript-eslint/no-unused-vars
+  10:99  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  11:63  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  11:73  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  11:87  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  42:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  46:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  90:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\spring\useSpringExperimentState.ts
+   8:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  21:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  31:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  32:73  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  33:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  50:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\spring\useSpringLayout.ts
+  97:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\spring\useSpringReport.ts
+   7:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  14:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  25:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  99:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\spring\useSpringTrials.ts
+  122:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  131:86  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\thinlens\useThinLensExperiment.ts
+  79:13  error  'lensType' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\thinlens\useThinLensLayout.ts
+  99:69  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\thinlens\useThinLensRenderer.ts
+  127:11  error  'fLeft' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\useAdmin.ts
+  18:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  19:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  20:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  21:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  22:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  40:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\useExperimentReport.test.ts
+  66:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiment-loader.ts
+  5:51  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\thinlens\ThinLensExperiment.vue
+  10:8  error  'LightRayOverlayPanels' is defined but never used. Allowed unused vars must match /^props$|^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\feras\Desktop\feras\apps\web\src\pages\admin.vue
+  104:11  warning  v-on event '@changeRole' must be hyphenated  vue/v-on-event-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\services\admin.service.ts
+    4:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   16:49  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   20:49  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   48:52  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   52:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   56:50  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   60:50  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   60:64  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   80:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  104:50  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  116:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  126:61  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 194 problems (15 errors, 179 warnings)
+  0 errors and 1 warning potentially fixable with the `--fix` option.
+

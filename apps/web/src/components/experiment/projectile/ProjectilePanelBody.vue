@@ -1,20 +1,27 @@
 <script setup lang="ts">
+import type { ProjectileTrial } from '../../../composables/projectile/useProjectileTrials'
+import type { ProjectileParams } from '../../../modules/physics/experiments/projectile/useProjectilePhysics'
+
+interface SimState { t: number; x: number; y: number; vx: number; vy: number; running: boolean; paused: boolean; landed: boolean; trail: {x:number;y:number}[]; signalSeries: {t:number;vx:number;vy:number}[] }
+interface MeasuredState { flightTime: number | null; maxHeight: number | null; range: number | null }
+interface TrialStats { time_mean: number; time_std: number; range_mean: number; range_std: number; flightTime_mean: number; flightTime_std: number }
+
 const props = defineProps<{
   id: string
-  trials: any[]
+  trials: ProjectileTrial[]
   calcResult: string
-  params: any
-  sim: any
-  measured: any
-  trialStats: any
+  params: ProjectileParams
+  sim: SimState
+  measured: MeasuredState
+  trialStats: TrialStats | null
   tutorType?: string
   tutorMessage?: string
   fitResult?: { slope: number; intercept: number } | null
 }>()
 
 const emit = defineEmits<{
-  (e: 'update:trials', val: any[]): void
-  (e: 'update:params', val: any): void
+  (e: 'update:trials', val: ProjectileTrial[]): void
+  (e: 'update:params', val: Partial<ProjectileParams>): void
   (e: 'remove', id: number): void
   (e: 'clear'): void
   (e: 'calcFlightTime'): void
@@ -24,7 +31,13 @@ const emit = defineEmits<{
   (e: 'showCalc', html: string): void
 }>()
 
-import { ref, watch, nextTick, onMounted } from 'vue'
+import { computed, ref, watch, nextTick, onMounted } from 'vue'
+
+const resultLines = computed(() => {
+  if (!props.calcResult) return []
+  return props.calcResult.split(/<br\s*\/?>/i).map(l => l.replace(/<\/?b>/gi, '').trim()).filter(Boolean)
+})
+
 const signalCanvas = ref<HTMLCanvasElement | null>(null)
 const vxCanvas = ref<HTMLCanvasElement | null>(null)
 const vyCanvas = ref<HTMLCanvasElement | null>(null)
@@ -135,10 +148,10 @@ function drawScatter(canvas: HTMLCanvasElement | null, data: {x:number,y:number}
 
 function drawCharts() {
   nextTick(() => {
-    if (signalCanvas.value && props.sim?.trail) drawLineChart(signalCanvas.value, props.sim.trail.map((p:any)=>({x:p.x,y:p.y})), '#3b82f6', 'x (m)', 'y (m)')
-    if (vxCanvas.value && props.sim?.signalSeries) drawLineChart(vxCanvas.value, props.sim.signalSeries.map((s:any)=>({x:s.t,y:s.vx})), '#22c55e', 't (s)', 'vx (m/s)')
-    if (vyCanvas.value && props.sim?.signalSeries) drawLineChart(vyCanvas.value, props.sim.signalSeries.map((s:any)=>({x:s.t,y:s.vy})), '#ef4444', 't (s)', 'vy (m/s)')
-    if (scatterCanvas.value && props.trials?.length) drawScatter(scatterCanvas.value, props.trials.map((t:any)=>({x:t.angleDegrees,y:t.rangeMeters})), '#3b82f6', props.fitResult)
+    if (signalCanvas.value && props.sim?.trail) drawLineChart(signalCanvas.value, props.sim.trail.map((p: {x:number;y:number})=>({x:p.x,y:p.y})), '#3b82f6', 'x (m)', 'y (m)')
+    if (vxCanvas.value && props.sim?.signalSeries) drawLineChart(vxCanvas.value, props.sim.signalSeries.map((s: {t:number;vx:number})=>({x:s.t,y:s.vx})), '#22c55e', 't (s)', 'vx (m/s)')
+    if (vyCanvas.value && props.sim?.signalSeries) drawLineChart(vyCanvas.value, props.sim.signalSeries.map((s: {t:number;vy:number})=>({x:s.t,y:s.vy})), '#ef4444', 't (s)', 'vy (m/s)')
+    if (scatterCanvas.value && props.trials?.length) drawScatter(scatterCanvas.value, props.trials.map((t: {angleDegrees:number;rangeMeters:number})=>({x:t.angleDegrees,y:t.rangeMeters})), '#3b82f6', props.fitResult)
   })
 }
 
@@ -178,7 +191,9 @@ onMounted(drawCharts)
         <button @click="emit('calcRange')">حساب المدى</button>
         <button @click="emit('calcFitRange')">ملائمة المدى</button>
       </div>
-      <div class="calc-result" v-html="calcResult"></div>
+      <div class="calc-result">
+        <div v-for="(line, i) in resultLines" :key="i">{{ line }}</div>
+      </div>
     </template>
 
     <!-- guide panel -->

@@ -3,11 +3,24 @@ import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { getMyClasses } from '../../services/class.service';
 import { getClassStats, exportClassReports } from '../../services/report.service';
 import type { ClassItem } from '../../services/class.service';
+import type { Report } from '../../services/report.service';
+
+interface StudentStat { id: number; name: string; reports: number; avg: number; lastSubmitted?: string }
+interface ExperimentStat { name: string; avg: number; count: number; highest: number; lowest: number }
+interface StatsData {
+  students: StudentStat[];
+  experiments: ExperimentStat[];
+  pending: number;
+  distribution: Record<string, number>;
+  total: number;
+  graded: number;
+  average: number;
+}
 
 const classes = ref<ClassItem[]>([]);
 const selectedClassId = ref('');
 const loading = ref(false);
-const stats = ref<any>(null);
+const stats = ref<StatsData | null>(null);
 const comparisonIds = ref<number[]>([]);
 
 async function loadClasses() {
@@ -37,7 +50,7 @@ watch(selectedClassId, loadStats);
 
 function exportCsv() {
   if (!stats.value) return;
-  const rows = stats.value.students.map((s: any) =>
+  const rows = stats.value.students.map((s: StudentStat) =>
     `${s.name},${s.reports},${s.avg},${s.lastSubmitted?.slice(0, 10) || ''}`
   );
   const csv = ['Student,Reports,Average Grade,Last Submitted', ...rows].join('\n');
@@ -53,7 +66,7 @@ function exportFullReports() {
   exportClassReports(selectedClassId.value).then(res => {
     if (!res.success) return;
     const headers = 'ID,Student,Experiment,Status,Grade,Submitted\n';
-    const rows = res.reports.map((r: any) =>
+    const rows = res.reports.map((r: Report) =>
       `${r.id},"${r.student_name}","${r.experiment_name}",${r.status},${r.grade || ''},${r.submitted_at?.slice(0, 10) || ''}`
     );
     const csv = headers + rows.join('\n');
@@ -86,7 +99,7 @@ function drawBarChart() {
   const max = Math.max(...values, 1);
 
   ctx.clearRect(0, 0, w, h);
-  const barW = 50, gap = 30, startX = 40, startY = 30, chartH = h - 60;
+  const barW = 50, gap = 30, startX = 40, chartH = h - 60;
   const colors = ['#f87171', '#fbbf24', '#60a5fa', '#34d399', '#a78bfa'];
 
   labels.forEach((label, i) => {
@@ -183,7 +196,7 @@ const alerts = computed(() => {
   // inactive students (no submission in 7 days)
   const now = Date.now();
   const week = 7 * 24 * 60 * 60 * 1000;
-  const inactive = s.students?.filter((st: any) => {
+  const inactive = s.students?.filter((st: StudentStat) => {
     if (!st.lastSubmitted) return true;
     return now - new Date(st.lastSubmitted).getTime() > week;
   }) || [];
@@ -192,9 +205,9 @@ const alerts = computed(() => {
   }
 
   // high error rate experiments (low avg grade)
-  const lowExp = s.experiments?.filter((e: any) => e.avg > 0 && e.avg < 50) || [];
+  const lowExp = s.experiments?.filter((e: ExperimentStat) => e.avg > 0 && e.avg < 50) || [];
   if (lowExp.length > 0) {
-    list.push({ type: 'warning', msg: `تجارب بمتوسط درجة منخفض: ${lowExp.map((e: any) => e.name).join(', ')}` });
+    list.push({ type: 'warning', msg: `تجارب بمتوسط درجة منخفض: ${lowExp.map((e: ExperimentStat) => e.name).join(', ')}` });
   }
 
   if (s.pending > 0) {
@@ -212,7 +225,7 @@ const alerts = computed(() => {
 /* ─── Comparison ─── */
 const comparedStudents = computed(() => {
   if (!stats.value) return [];
-  return stats.value.students?.filter((s: any) => comparisonIds.value.includes(s.id)) || [];
+  return stats.value.students?.filter((s: StudentStat) => comparisonIds.value.includes(s.id)) || [];
 });
 </script>
 

@@ -1,6 +1,14 @@
 <script setup lang="ts">
+interface AdminClassItem {
+  id: string;
+  name: string;
+  code: string;
+  teacher_name: string;
+  student_count: number;
+  created_at?: string;
+}
 defineProps<{
-  classes: any[];
+  classes: AdminClassItem[];
 }>();
 
 defineEmits<{

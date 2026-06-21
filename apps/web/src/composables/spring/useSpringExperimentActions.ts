@@ -1,5 +1,5 @@
 import type { SpringExperimentState } from './useSpringExperimentState'
-import type { SpringParams } from '../../modules/physics/experiments/spring/useSpringPhysics'
+import type { ColumnId } from './useSpringLayout'
 import { useRouter } from 'vue-router'
 import { sendToAnalysis } from '../analysis/sendToAnalysis'
 import type { AnalysisPayload } from '../../types/physics'
@@ -7,8 +7,8 @@ import type { AnalysisPayload } from '../../types/physics'
 export function useSpringExperimentActions(
   state: SpringExperimentState,
   lab: { resetSim: () => void; sim: { running: boolean; paused: boolean; x: number; v: number }; runSpringLab: (recordTrial: () => void, calcFitK: () => void) => void; cleanup: () => void },
-  trials: { recordTrial: () => void; calcFitK: () => void; autoLoad: () => void; trials: { value: any[] } },
-  layout: { applyPersistedLayout: () => void; movePanel: (id: any, col: any, afterId: any) => void },
+  trials: { recordTrial: () => void; calcFitK: () => void; autoLoad: () => void; trials: { value: Record<string, unknown>[] } },
+  layout: { applyPersistedLayout: () => void; movePanel: (id: string, col: ColumnId, afterId?: string | null) => void },
 ) {
   const router = useRouter()
   function resetSim() { lab.resetSim() }
@@ -39,11 +39,11 @@ export function useSpringExperimentActions(
     setTimeout(() => { state.ignoreParamsWatch.value = false }, 0)
   }
 
-  function onStaticComplete(readings: any[], k: number | null) {
+  function onStaticComplete(readings: Record<string, unknown>[], k: number | null) {
     state.staticReadings.value = readings
     state.staticK.value = k
   }
-  function onDynamicComplete(_t: any[], _k: number | null) { /* no-op */ }
+  function onDynamicComplete(_t: Record<string, unknown>[], _k: number | null) { /* no-op */ }
 
   function onResizeStart(side: 'data' | 'vis', e: MouseEvent) {
     const startX = e.clientX
@@ -87,9 +87,10 @@ export function useSpringExperimentActions(
     const tList = trials.trials.value
     if (tList.length === 0) { console.warn('[exportToAnalysis] no trials recorded'); return }
 
-    const readings = tList.map((t: any) => ({
-      mass: t.mass, T: t.T, T2: t.T * t.T, kCalc: t.kCalc,
-    }))
+    const readings = tList.map((t: Record<string, unknown>) => {
+      const mass = Number(t.mass), T = Number(t.T), kCalc = Number(t.kCalc)
+      return { mass, T, T2: T * T, kCalc }
+    })
 
     const payload: AnalysisPayload = {
       sourceExperiment: 'spring',

@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const props = defineProps<{ trials: any[]; enableNoise?: boolean }>()
+import type { FreeFallTrial } from '../../../composables/freefall/useFreeFallTrials'
+
+const props = defineProps<{ trials: FreeFallTrial[]; enableNoise?: boolean }>()
 const emit = defineEmits<{ (e: 'remove', id: number): void; (e: 'clear'): void }>()
 </script>
 

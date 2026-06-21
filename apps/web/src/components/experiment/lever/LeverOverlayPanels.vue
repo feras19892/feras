@@ -2,11 +2,14 @@
 import DraggablePanel from '../spring/DraggablePanel.vue'
 import LeverPanelBody from './LeverPanelBody.vue'
 
+import type { LeverTrial } from '../../../composables/lever/useLeverTrials'
+import type { LeverState } from '../../../modules/physics/experiments/lever/useLeverPhysics'
+
 const props = defineProps<{
   maximized: Record<string, boolean>
   panelTitle: (id: string) => string
-  trials: any[]
-  sim: any
+  trials: LeverTrial[]
+  sim: LeverState
 }>()
 
 const emit = defineEmits<{

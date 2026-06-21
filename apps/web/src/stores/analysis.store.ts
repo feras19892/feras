@@ -25,7 +25,7 @@ export const useAnalysisStore = defineStore('analysis', () => {
 
   function loadFromExperiment(data: AnalysisPayload) {
     payload.value = data;
-    modifiedReadings.value = data.readings.map(r => ({ ...r }));
+    modifiedReadings.value = data.readings.map(r => ({ ...r })) as Record<string, number>[];
     mediumType.value = data.mediumType ?? '';
     mediumN2.value = data.mediumN2 ?? null;
     calculatedN2.value = data.calculatedN2 ?? null;
@@ -35,7 +35,7 @@ export const useAnalysisStore = defineStore('analysis', () => {
 
   function setPayload(data: AnalysisPayload) {
     payload.value = data;
-    modifiedReadings.value = data.readings.map(r => ({ ...r }));
+    modifiedReadings.value = data.readings.map(r => ({ ...r })) as Record<string, number>[];
     mediumType.value = data.mediumType ?? '';
     mediumN2.value = data.mediumN2 ?? null;
     calculatedN2.value = data.calculatedN2 ?? null;

@@ -48,14 +48,20 @@ async function loadClasses() {
       classes.value = res.classes
       if (res.classes.length > 0) selectedClassId.value = res.classes[0].id
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('load classes failed:', err)
-    if (err?.message?.includes('401') || err?.message?.includes('Unauthorized')) {
+    const msg = err instanceof Error ? err.message : ''
+    if (msg.includes('401') || msg.includes('Unauthorized')) {
       error.value = 'انتهت الجلسة — سجل دخولك مرة أخرى'
     } else {
       error.value = 'تعذر تحميل الفصول'
     }
   }
+}
+
+function safeParse(str: string | undefined) {
+  if (!str) return undefined
+  try { return JSON.parse(str) } catch { return undefined }
 }
 
 async function submit() {
@@ -67,10 +73,6 @@ async function submit() {
   try {
     console.log('[Submit] readings length:', props.readings?.length, 'chartSnapshot length:', props.chartSnapshot?.length);
     const conclusionData = props.conclusion ? JSON.parse(props.conclusion) : { conclusion: '', errors: '', improvements: '' }
-    function safeParse(str: string | undefined) {
-      if (!str) return undefined
-      try { return JSON.parse(str) } catch { return undefined }
-    }
     const extra = {
       solved_equations: safeParse(props.solvedEquations),
       regression_data: safeParse(props.regressionData),
@@ -104,9 +106,9 @@ async function submit() {
     } else {
       error.value = 'فشل الإرسال'
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('[SubmitReport] error:', err)
-    error.value = err?.message || 'فشل الاتصال بالخادم'
+    error.value = (err instanceof Error ? err.message : '') || 'فشل الاتصال بالخادم'
   } finally {
     loading.value = false
   }

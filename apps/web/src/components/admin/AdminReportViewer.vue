@@ -1,6 +1,16 @@
 <script setup lang="ts">
+interface AdminReportItem {
+  id: number;
+  student_name: string;
+  experiment_name: string;
+  class_name: string;
+  teacher_name: string;
+  status: string;
+  grade?: number;
+  submitted_at?: string;
+}
 defineProps<{
-  reports: any[];
+  reports: AdminReportItem[];
 }>();
 
 function statusLabel(status: string) {

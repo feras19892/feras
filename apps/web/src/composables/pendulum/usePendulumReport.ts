@@ -4,13 +4,15 @@ import type { LabReportTable, LabReportStat } from '../../utils/lab-report'
 export function usePendulumReport() {
   const rep = useExperimentReport('pendulum_report_student')
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function openFullReport(ex: any) {
-    const trials = ex.trials.trials.value
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const trials: any[] = ex.trials.trials.value
 
     const table: LabReportTable = {
       caption: 'الجزء الديناميكي — الحركة الاهتزازية للبندول',
       headers: ['#', 'L (m)', 'T (s)', 'f (Hz)', 'g (m/s²)'],
-      rows: trials.map((t: any, i: number) => [i + 1, t.length.toFixed(3), t.T.toFixed(3), t.f.toFixed(3), t.gCalc.toFixed(2)]),
+      rows: trials.map((t, i: number) => [i + 1, t.length.toFixed(3), t.T.toFixed(3), t.f.toFixed(3), t.gCalc.toFixed(2)]),
     }
 
     const statsVal = ex.trials.trialStats.value
@@ -48,7 +50,8 @@ export function usePendulumReport() {
         { title: '⚖️ القوانين الفيزيائية', html: lawsBlock },
         regressionBlock ? { title: '📈 نتائج الانحدار الخطي', html: regressionBlock } : null,
         { title: '⚠️ مصادر الأخطاء المحتملة', html: '<ul style="margin:0;padding-right:1.2rem;font-size:.85rem"><li>احتكاك الهواء مع الثقل</li><li>دقة ساعة الإيقاف البشرية</li><li>خطأ زاوية النظر (البارالكس)</li><li>حركة اليد عند الإطلاق</li><li>كتلة الخيط غير مهملة</li><li>زاوية كبيرة (>10°) تخرج عن التقريب</li></ul>' },
-      ].filter(Boolean) as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ].filter(Boolean) as any[],
       footerNote: 'تم إنشاء هذا التقرير من المحاكاة التفاعلية • فيزياء الميكانيكا',
     })
   }

@@ -9,6 +9,7 @@ function safeJsonParse<T>(str: string | undefined, fallback: T): T {
   try { return str ? JSON.parse(str) : fallback; } catch { return fallback; }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const parsedParams = computed(() => safeJsonParse<Record<string, any>>(props.report.params, {}));
 const parsed = computed(() => ({
   sourceName: props.report.experiment_name,

@@ -34,8 +34,8 @@ async function send() {
       success.value = 'تم الإرسال، شكراً!';
       setTimeout(() => { emit('update:show', false); message.value = ''; }, 1200);
     }
-  } catch (err: any) {
-    error.value = err?.message || 'فشل الإرسال';
+  } catch (err: unknown) {
+    error.value = (err instanceof Error ? err.message : '') || 'فشل الإرسال';
   } finally {
     loading.value = false;
   }

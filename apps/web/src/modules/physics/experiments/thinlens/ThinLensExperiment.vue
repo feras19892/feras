@@ -7,7 +7,6 @@ import LightRayMenuBar from '../../../../components/experiment/lightray/LightRay
 import LightRayStatusBar from '../../../../components/experiment/lightray/LightRayStatusBar.vue'
 import LightRayControlBar from '../../../../components/experiment/lightray/LightRayControlBar.vue'
 import LightRayHelpModal from '../../../../components/experiment/lightray/LightRayHelpModal.vue'
-import LightRayOverlayPanels from '../../../../components/experiment/lightray/LightRayOverlayPanels.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 
 const ex = useThinLensExperiment()

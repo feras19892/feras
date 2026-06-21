@@ -1,0 +1,347 @@
+﻿
+> my-modern-app@ lint C:\Users\feras\Desktop\feras
+> turbo run lint
+
+node.exe : • turbo 2.9.18
+At C:\Users\feras\AppData\Roaming\npm\pnpm.ps1:24 char:5
++     & "node$exe"  "$basedir/node_modules/pnpm/bin/pnpm.mjs" $args
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (• turbo 2.9.18:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+   • Packages in scope: @my-modern-app/api, @my-modern-app/config, @my-modern-app/shared-types, @my-modern-app/ui-kit, @my-modern-app/web, @my-modern-app/worker
+   • Running lint in 6 packages
+   • Remote caching disabled
+
+@my-modern-app/api:lint: cache hit, replaying logs 1581054e3228bf4e
+@my-modern-app/web:lint: cache miss, executing 2f9ffd7838d0f87b
+@my-modern-app/api:lint: 
+@my-modern-app/api:lint: > @my-modern-app/api@0.0.1 lint C:\Users\feras\Desktop\feras\apps\api
+@my-modern-app/api:lint: > eslint src/**/*.ts
+@my-modern-app/api:lint: 
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: > @my-modern-app/web@0.0.1 lint C:\Users\feras\Desktop\feras\apps\web
+@my-modern-app/web:lint: > eslint . --ext .vue,.ts,.tsx
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\admin\AdminClassManager.vue
+@my-modern-app/web:lint:   3:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\admin\AdminDashboard.vue
+@my-modern-app/web:lint:    5:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    6:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    7:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   19:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\admin\AdminFeedbackPanel.vue
+@my-modern-app/web:lint:    5:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    6:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   31:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\admin\AdminGlobalSearch.vue
+@my-modern-app/web:lint:    5:10  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    6:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    7:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    8:13  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   22:68  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   65:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\admin\AdminOverview.vue
+@my-modern-app/web:lint:   5:10  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\admin\AdminReportViewer.vue
+@my-modern-app/web:lint:   3:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\admin\AdminSmartReports.vue
+@my-modern-app/web:lint:    7:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    8:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    9:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   23:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\admin\AdminSystemHealth.vue
+@my-modern-app/web:lint:    5:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   15:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\admin\AdminUserManager.vue
+@my-modern-app/web:lint:    5:10  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   25:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   39:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\SubmitReportModal.vue
+@my-modern-app/web:lint:    51:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   108:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\collision\CollisionOverlayPanels.vue
+@my-modern-app/web:lint:    9:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   10:8   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   11:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   17:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\collision\CollisionPanelBody.vue
+@my-modern-app/web:lint:    9:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   10:8   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   11:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   16:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\collision\CollisionReport.vue
+@my-modern-app/web:lint:   3:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   4:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   5:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\freefall\FreeFallOverlayPanels.vue
+@my-modern-app/web:lint:   50:63  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\freefall\FreeFallReport.vue
+@my-modern-app/web:lint:   25:10  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\freefall\FreeFallReportPanel.vue
+@my-modern-app/web:lint:   2:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   2:56  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\freefall\FreeFallScatterPanel.vue
+@my-modern-app/web:lint:   4:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\freefall\FreeFallTablePanel.vue
+@my-modern-app/web:lint:   2:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\lever\LeverOverlayPanels.vue
+@my-modern-app/web:lint:   8:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   9:8   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\pendulum\PendulumOverlayPanels.vue
+@my-modern-app/web:lint:   21:63  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\projectile\ProjectileOverlayPanels.vue
+@my-modern-app/web:lint:    5:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    8:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    9:8   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   10:13  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   11:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   17:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   18:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\projectile\ProjectilePanelBody.vue
+@my-modern-app/web:lint:     4:11   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:     6:11   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:     7:8    warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:     8:13   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:     9:15   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    16:29   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    17:29   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   144:106  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   145:112  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   146:112  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   147:107  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\projectile\ProjectileReport.vue
+@my-modern-app/web:lint:   7:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\spring\SpringOverlayPanels.vue
+@my-modern-app/web:lint:   37:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\spring\SpringReport.vue
+@my-modern-app/web:lint:   55:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   70:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   76:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\shared\FeedbackModal.vue
+@my-modern-app/web:lint:   37:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\shared\ReportViewer.vue
+@my-modern-app/web:lint:   12:66  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\teacher\ClassManager.vue
+@my-modern-app/web:lint:   13:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\teacher\ReportAIAnalyzer.vue
+@my-modern-app/web:lint:   24:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   26:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   27:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\components\teacher\TeacherStats.vue
+@my-modern-app/web:lint:    10:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    40:45  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    56:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   186:44  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   195:44  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   197:82  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   215:43  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\admin\useAdminSystemHealth.ts
+@my-modern-app/web:lint:    5:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   15:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\admin\useAdminUserDetail.ts
+@my-modern-app/web:lint:    5:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   15:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\admin\useAdminUsers.ts
+@my-modern-app/web:lint:   14:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   24:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\admin\useAdminWarnings.ts
+@my-modern-app/web:lint:    5:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   15:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\analysis\useCrossTabSync.ts
+@my-modern-app/web:lint:   27:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\collision\useCollisionReport.ts
+@my-modern-app/web:lint:   15:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   40:42  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\experiment\collision\useCollisionCanvas.ts
+@my-modern-app/web:lint:   18:58  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\experiment\lever\useLeverCanvas.ts
+@my-modern-app/web:lint:   259:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   310:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\freefall\useFreeFallExperiment.ts
+@my-modern-app/web:lint:   77:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   77:59  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\freefall\useFreeFallLayout.ts
+@my-modern-app/web:lint:   73:187  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\freefall\useFreeFallReport.ts
+@my-modern-app/web:lint:    7:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   12:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   62:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\freefall\useFreeFallTrials.ts
+@my-modern-app/web:lint:   81:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   83:86  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\inclined\useInclinedExperiment.ts
+@my-modern-app/web:lint:   82:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   82:59  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\inclined\useInclinedLayout.ts
+@my-modern-app/web:lint:   73:187  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\inclined\useInclinedTrials.ts
+@my-modern-app/web:lint:   105:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   107:86  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\lever\useLeverTrials.ts
+@my-modern-app/web:lint:   140:44  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\lightray\useLightRayLayout.ts
+@my-modern-app/web:lint:   99:69  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\pendulum\usePendulumExperiment.ts
+@my-modern-app/web:lint:   60:58  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   93:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   93:59  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\pendulum\usePendulumLayout.ts
+@my-modern-app/web:lint:   68:187  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\pendulum\usePendulumReport.ts
+@my-modern-app/web:lint:    7:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   13:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   51:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\pendulum\usePendulumTrials.ts
+@my-modern-app/web:lint:   71:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   73:86  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\projectile\useProjectileExperiment.ts
+@my-modern-app/web:lint:   43:58  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   76:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   76:59  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\projectile\useProjectileLayout.ts
+@my-modern-app/web:lint:   68:187  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\projectile\useProjectileReport.ts
+@my-modern-app/web:lint:    7:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   15:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   70:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\projectile\useProjectileTrials.ts
+@my-modern-app/web:lint:   120:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   122:86  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\spring\useSpringExperiment.ts
+@my-modern-app/web:lint:   42:73  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\spring\useSpringExperimentActions.ts
+@my-modern-app/web:lint:    9:99  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   10:63  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   10:73  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   10:87  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   41:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   45:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   89:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\spring\useSpringExperimentState.ts
+@my-modern-app/web:lint:    8:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   21:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   31:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   32:73  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   33:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   50:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\spring\useSpringLayout.ts
+@my-modern-app/web:lint:   97:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\spring\useSpringReport.ts
+@my-modern-app/web:lint:    7:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   14:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   25:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   99:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\spring\useSpringTrials.ts
+@my-modern-app/web:lint:   122:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   131:86  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\thinlens\useThinLensLayout.ts
+@my-modern-app/web:lint:   99:69  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\useAdmin.ts
+@my-modern-app/web:lint:   18:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   19:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   20:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   21:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   22:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   40:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\composables\useExperimentReport.test.ts
+@my-modern-app/web:lint:   66:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiment-loader.ts
+@my-modern-app/web:lint:   5:51  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\src\services\admin.service.ts
+@my-modern-app/web:lint:     4:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    16:49  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    20:49  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    48:52  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    52:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    56:50  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    60:50  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    60:64  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:    80:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   104:50  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   116:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   126:61  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\tests\monkey-tabs.spec.ts
+@my-modern-app/web:lint:    7:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   19:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   29:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint:   36:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: C:\Users\feras\Desktop\feras\apps\web\tests\performance-leak.spec.ts
+@my-modern-app/web:lint:   54:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+@my-modern-app/web:lint: 
+@my-modern-app/web:lint: ✖ 177 problems (0 errors, 177 warnings)
+@my-modern-app/web:lint: 
+
+ Tasks:    2 successful, 2 total
+Cached:    1 cached, 2 total
+  Time:    9.011s 
+

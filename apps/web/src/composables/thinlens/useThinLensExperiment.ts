@@ -76,7 +76,6 @@ export function useThinLensExperiment() {
   const imageProperties = computed(() => {
     const di = imageDistance.value
     const m = magnification.value
-    const { lensType } = params
     if (di === null || m === null) return { type: '—', orientation: '—', size: '—' }
     // Sign convention:
     // di > 0: real (right of lens), di < 0: virtual (left of lens)
@@ -181,11 +180,11 @@ export function useThinLensExperiment() {
 
     const readings = tList.map((t) => ({
       lens_type: t.lensType,
-      f_cm: t.focalLength,
-      do_cm: t.objectDistance,
-      di_cm: t.imageDistance,
-      ho_cm: t.objectHeight,
-      hi_cm: t.imageHeight,
+      f: t.focalLength,
+      do: t.objectDistance,
+      di: t.imageDistance,
+      ho: t.objectHeight,
+      hi: t.imageHeight,
       inv_do: t.invDo,
       inv_di: t.invDi,
     }))
@@ -196,11 +195,11 @@ export function useThinLensExperiment() {
       readings,
       columns: [
         { key: 'lens_type', label: 'نوع العدسة' },
-        { key: 'f_cm', label: 'البعد البؤري', unit: 'cm' },
-        { key: 'do_cm', label: 'بعد الجسم', unit: 'cm' },
-        { key: 'di_cm', label: 'بعد الصورة', unit: 'cm' },
-        { key: 'ho_cm', label: 'ارتفاع الجسم', unit: 'cm' },
-        { key: 'hi_cm', label: 'ارتفاع الصورة', unit: 'cm' },
+        { key: 'f', label: 'البعد البؤري', unit: 'cm' },
+        { key: 'do', label: 'بعد الجسم', unit: 'cm' },
+        { key: 'di', label: 'بعد الصورة', unit: 'cm' },
+        { key: 'ho', label: 'ارتفاع الجسم', unit: 'cm' },
+        { key: 'hi', label: 'ارتفاع الصورة', unit: 'cm' },
         { key: 'inv_do', label: '1/do', unit: '1/cm' },
         { key: 'inv_di', label: '1/di', unit: '1/cm' },
       ],

@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import { getAdminSystemHealth } from '../../services/admin.service';
 
 export function useAdminSystemHealth() {
-  const health = ref<any>(null);
+  const health = ref<Record<string, unknown> | null>(null);
   const loading = ref(false);
   const error = ref('');
 
@@ -12,8 +12,8 @@ export function useAdminSystemHealth() {
     try {
       const res = await getAdminSystemHealth();
       if (res.success) health.value = res.health;
-    } catch (err: any) {
-      error.value = err?.message || 'فشل التحميل';
+    } catch (err: unknown) {
+      error.value = (err instanceof Error ? err.message : '') || 'فشل التحميل';
     } finally {
       loading.value = false;
     }

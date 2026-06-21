@@ -79,7 +79,7 @@ export function useInclinedExperiment() {
           if (y >= rect.top && y <= rect.bottom) { if (y > rect.top + rect.height / 2) insertAfterId = pid; break }
           if (y > rect.bottom) insertAfterId = pid
         }
-        layout.movePanel(id as any, col, insertAfterId as any)
+        layout.movePanel(id as string, col, insertAfterId as string | null)
         return
       }
     }

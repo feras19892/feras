@@ -12,7 +12,10 @@ export function useCollisionReport() {
     canvasSnapshot.value = dataUrl
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function openFullReport(experiment: any) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const trials: any[] = experiment.trials.trials.value
     const imgTag = canvasSnapshot.value ? `<img src="${canvasSnapshot.value}" style="max-width:100%;border-radius:8px;margin:1rem 0;" />` : ''
     const html = `
 <!DOCTYPE html>
@@ -37,7 +40,7 @@ ${imgTag}
 <h2>📋 البيانات المسجلة</h2>
 <table>
 <tr><th>#</th><th>m₁ (kg)</th><th>m₂ (kg)</th><th>v₁i (m/s)</th><th>v₂i (m/s)</th><th>e</th><th>v₁f (m/s)</th><th>v₂f (m/s)</th><th>Loss %</th></tr>
-${experiment.trials.trials.value.map((t: any, i: number) =>
+${trials.map((t, i: number) =>
   `<tr><td>${i + 1}</td><td>${t.m1}</td><td>${t.m2}</td><td>${t.v1i}</td><td>${t.v2i}</td><td>${t.e}</td><td>${t.v1f}</td><td>${t.v2f}</td><td>${t.lossPercent}%</td></tr>`
 ).join('')}
 </table>

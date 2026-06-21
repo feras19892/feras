@@ -68,9 +68,9 @@ export function usePendulumTrials(params: PendulumParams, measured: Ref<Pendulum
       if (!raw) return
       const parsed = JSON.parse(raw)
       if (Array.isArray(parsed.trials)) {
-        const valid = parsed.trials.filter((t: any) => t && typeof t.length === 'number' && t.length >= 0.05 && t.length <= 3)
+        const valid = parsed.trials.filter((t: Record<string, unknown>) => t && typeof t.length === 'number' && t.length >= 0.05 && t.length <= 3)
         trials.value = valid
-        nextTrialId = parsed.nextId ?? (valid.length > 0 ? Math.max(...valid.map((t: any) => t.id)) + 1 : 1)
+        nextTrialId = parsed.nextId ?? (valid.length > 0 ? Math.max(...valid.map((t: Record<string, unknown>) => Number(t.id))) + 1 : 1)
         if (parsed.calcResult) calcResult.value = parsed.calcResult
         history.value = [[...valid]]; historyIndex.value = 0
       }

@@ -1,4 +1,3 @@
-import { ref } from 'vue'
 import { fetchJson, setAccessToken } from '../../services/http'
 import type { User, ClassInfo } from '@my-modern-app/shared-types'
 

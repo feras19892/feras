@@ -4,15 +4,17 @@ import type { LabReportTable, LabReportStat } from '../../utils/lab-report'
 export function useProjectileReport() {
   const rep = useExperimentReport('projectile_report_student')
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function openFullReport(ex: any) {
-    const trials = ex.trials.trials.value
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const trials: any[] = ex.trials.trials.value
     const trialStats = ex.trials.trialStats.value
     const fitResult = ex.trials.fitResult.value
 
     const table: LabReportTable = {
       caption: 'جدول القراءات — حركة المقذوفات',
       headers: ['#', 'الزاوية (°)', 'v₀ (m/s)', 'زمن التحليق (s)', 'أقصى ارتفاع (m)', 'المدى (m)', 'الخطأ (%)'],
-      rows: trials.map((t: any, i: number) => [
+      rows: trials.map((t, i: number) => [
         i + 1,
         t.angleDegrees.toFixed(1),
         t.initialVelocity.toFixed(2),
@@ -67,7 +69,8 @@ export function useProjectileReport() {
         { title: '⚖️ المعادلات المستخدمة', html: lawsBlock },
         fitBlock ? { title: '📈 ملائمة منحنى المدى', html: fitBlock } : null,
         { title: '⚠️ مصادر الأخطاء المحتملة', html: '<ul style="margin:0;padding-right:1.2rem;font-size:.85rem"><li>احتكاك الهواء</li><li>دقة ساعة الإيقاف</li><li>خطأ زاوية النظر (parallax)</li><li>تأثير دوران الأرض</li><li>اختلاف g مع الارتفاع</li></ul>' },
-      ].filter(Boolean) as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ].filter(Boolean) as any[],
       footerNote: 'تم إنشاء هذا التقرير من المحاكاة التفاعلية • فيزياء الميكانيكا',
     })
   }

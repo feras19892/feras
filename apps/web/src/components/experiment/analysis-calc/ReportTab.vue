@@ -15,6 +15,12 @@ const props = defineProps<{
   equations: AnalysisEquation[];
   plots: AnalysisPlotConfig[];
   hasData: boolean;
+  solvedEquations?: { equationName: string; formula: string; targetVar: string; varValues: Record<string, number>; result: string; timestamp: number }[];
+  regressionData?: { slope: number; intercept: number; r2: number } | null;
+  slopeCalcData?: { label: string; formula: string; value: number; unit: string; expr: string } | null;
+  axesData?: { x: string; y: string; xLabel: string; yLabel: string } | null;
+  errorCalcData?: { theoretical: number | null; experimental: number | null; errorPercent: number | null } | null;
+  chartSnapshot?: string;
 }>();
 
 const emit = defineEmits<{
@@ -22,6 +28,7 @@ const emit = defineEmits<{
   (e: 'exportCsv'): void;
   (e: 'exportPng'): void;
   (e: 'sendToTeacher'): void;
+  (e: 'conclusionUpdate', data: { conclusion: string; errors: string; improvements: string }): void;
 }>();
 
 const conclusionData = ref({ conclusion: '', errors: '', improvements: '' });
@@ -39,6 +46,7 @@ const allReady = computed(() => readyChecks.value.every(c => c.ok));
 
 function onConclusionUpdate(data: { conclusion: string; errors: string; improvements: string }) {
   conclusionData.value = data;
+  emit('conclusionUpdate', data);
 }
 </script>
 
@@ -59,7 +67,7 @@ function onConclusionUpdate(data: { conclusion: string; errors: string; improvem
         <button class="btn-preview" @click="showPreview = !showPreview">
           {{ showPreview ? '✕ إخفاء' : '👁️ معاينة التقرير' }}
         </button>
-        <div v-if="showPreview" class="preview-box">
+        <div v-show="showPreview" class="preview-box">
           <AnalysisReportPreview
             :source-name="sourceName"
             :report-date="reportDate"
@@ -69,6 +77,12 @@ function onConclusionUpdate(data: { conclusion: string; errors: string; improvem
             :equations="equations"
             :plots="plots"
             :conclusion="conclusionData"
+            :solved-equations="solvedEquations"
+            :regression-data="regressionData"
+            :slope-calc-data="slopeCalcData"
+            :axes-data="axesData"
+            :error-calc-data="errorCalcData"
+            :chart-snapshot="chartSnapshot"
           />
         </div>
         <AnalysisReportExport
@@ -86,7 +100,7 @@ function onConclusionUpdate(data: { conclusion: string; errors: string; improvem
 <style scoped>
 .report-tab { flex: 1; overflow: hidden; display: flex; flex-direction: column; padding: 0.5rem; }
 .grid { display: flex; gap: 0.5rem; height: 100%; }
-.left { width: 340px; flex-shrink: 0; display: flex; flex-direction: column; gap: 0.5rem; overflow-y: auto; }
+.left { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 0.5rem; overflow-y: auto; }
 .right { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.5rem; overflow: hidden; }
 .btn-preview { flex-shrink: 0; padding: 0.4rem; border: none; border-radius: 0.35rem; background: linear-gradient(135deg, #475569, #334155); color: #fff; cursor: pointer; font-size: 0.8rem; font-weight: 600; }
 .preview-box { flex: 1; overflow-y: auto; background: #0f172a; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.06); padding: 0.5rem; }

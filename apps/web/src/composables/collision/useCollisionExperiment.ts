@@ -1,12 +1,14 @@
 import { computed, onMounted, onUnmounted, reactive, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { sendToAnalysis } from '../../composables/analysis/sendToAnalysis'
 import type { AnalysisPayload } from '../../types/physics'
 import type { CollisionParams } from '../../modules/physics/experiments/collision/useCollisionPhysics'
 import { useCollisionLab } from './useCollisionLab'
 import { useCollisionTrials } from './useCollisionTrials'
-import { useCollisionLayout } from './useCollisionLayout'
+import { useCollisionLayout, type PanelId, type ColumnId } from './useCollisionLayout'
 
 export function useCollisionExperiment() {
+  const router = useRouter()
 
   const params = reactive<CollisionParams>({ m1: 2, m2: 3, v1i: 3, v2i: -2, r1: 0.2, r2: 0.2, e: 1 })
 
@@ -16,12 +18,11 @@ export function useCollisionExperiment() {
 
   function resetSim() { lab.resetSim() }
 
-  const colClasses: Record<string, string> = { data: 'data-col', vis: 'vis-col', ctrl: 'ctrl-col' }
+  const colClasses: Record<ColumnId, string> = { data: 'data-col', vis: 'vis-col', ctrl: 'ctrl-col' }
   const hasVisibleVisPanels = computed(() => getColumnPanels('vis').some(id => layout.isPanelVisible(id)))
 
-  function getColumnPanels(col: string) {
-    if (col === 'data' || col === 'vis' || col === 'ctrl') return layout.columnOrder[col]
-    return []
+  function getColumnPanels(col: ColumnId): PanelId[] {
+    return layout.columnOrder[col] ?? []
   }
 
   const colWidths = reactive({ data: 280, vis: 0, ctrl: 280 })
@@ -39,7 +40,6 @@ export function useCollisionExperiment() {
   }
 
   function handleDrop(id: string, x: number, y: number) {
-    type ColumnId = 'data' | 'vis' | 'ctrl'
     const cols: ColumnId[] = ['data', 'vis', 'ctrl']
     for (const col of cols) {
       const colEl = document.querySelector(`.${colClasses[col]}`)
@@ -47,15 +47,15 @@ export function useCollisionExperiment() {
       const colRect = colEl.getBoundingClientRect()
       if (x >= colRect.left && x < colRect.right && y >= colRect.top && y < colRect.bottom) {
         const panelEls = Array.from(colEl.querySelectorAll('.draggable-panel[data-id]'))
-        let insertAfterId: string | null = null
+        let insertAfterId: PanelId | null = null
         for (const el of panelEls) {
           const pid = el.getAttribute('data-id')
           if (!pid || pid === id) continue
           const rect = el.getBoundingClientRect()
-          if (y >= rect.top && y <= rect.bottom) { if (y > rect.top + rect.height / 2) insertAfterId = pid; break }
-          if (y > rect.bottom) insertAfterId = pid
+          if (y >= rect.top && y <= rect.bottom) { if (y > rect.top + rect.height / 2) insertAfterId = pid as PanelId; break }
+          if (y > rect.bottom) insertAfterId = pid as PanelId
         }
-        layout.movePanel(id as any, col, insertAfterId as any)
+        layout.movePanel(id, col, insertAfterId)
         return
       }
     }
@@ -63,8 +63,11 @@ export function useCollisionExperiment() {
 
   watch(() => [params.m1, params.m2, params.v1i, params.v2i, params.r1, params.r2, params.e], () => { if (!lab.running.value) resetSim() })
 
+  function updateParams(p: Partial<CollisionParams>) {
+    Object.assign(params, p)
+  }
+
   onMounted(() => {
-    localStorage.removeItem('collision:layout:v1')
     layout.applyPersistedLayout()
     trials.autoLoad()
     resetSim()
@@ -74,7 +77,7 @@ export function useCollisionExperiment() {
   function exportToAnalysis() {
     layout.showPanels(['params', 'data'])
     const tList = trials.trials.value
-    if (tList.length === 0) { alert('لا توجد قراءات مسجلة'); return }
+    if (tList.length === 0) { console.warn('[exportToAnalysis] no trials recorded'); return }
     const readings = tList.map(t => ({
       m1: t.m1, m2: t.m2, v1i: t.v1i, v2i: t.v2i,
       v1f: t.v1f, v2f: t.v2f, Pi: t.Pi, Pf: t.Pf, KEi: t.KEi, KEf: t.KEf, lossPercent: t.lossPercent,
@@ -103,12 +106,12 @@ export function useCollisionExperiment() {
         { xKey: 'KEi', yKey: 'KEf', xLabel: 'KE قبل (J)', yLabel: 'KE بعد (J)', type: 'scatter' },
       ],
     }
-    sendToAnalysis(payload)
+    sendToAnalysis(router, payload)
   }
 
   return {
     params, lab, layout, trials,
-    resetSim,
+    resetSim, updateParams,
     colClasses, hasVisibleVisPanels, getColumnPanels,
     colWidths, onResizeStart, handleDrop,
     exportToAnalysis,

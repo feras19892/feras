@@ -1,4 +1,5 @@
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { sendToAnalysis } from '../../composables/analysis/sendToAnalysis'
 import type { AnalysisPayload } from '../../types/physics'
 import type { InclinedParams } from '../../modules/physics/experiments/inclined/useInclinedPhysics'
@@ -7,6 +8,7 @@ import { useInclinedLayout } from './useInclinedLayout'
 import { useInclinedTrials } from './useInclinedTrials'
 
 export function useInclinedExperiment() {
+  const router = useRouter()
 
   const params = reactive<InclinedParams>({ thetaDeg: 30, length: 2.0, mass: 1.0, g: 9.81, mu: 0.0, airResistance: false, bodyTypeId: 'block', cd: 1.05, area: 0.01 })
 
@@ -85,15 +87,18 @@ export function useInclinedExperiment() {
 
   function exportToAnalysis() {
     const tList = trials.trials.value
-    if (tList.length === 0) { alert('لا توجد قراءات مسجلة'); return }
+    if (tList.length === 0) { console.warn('[exportToAnalysis] no trials recorded'); return }
     const readings = tList.map(t => ({
-      thetaDeg: t.thetaDeg, length: t.length, mass: t.mass,
+      thetaDeg: t.thetaDeg,
+      sinTheta: Math.sin(t.thetaDeg * Math.PI / 180),
+      length: t.length, mass: t.mass,
       acceleration: t.acceleration, timeOfArrival: t.timeOfArrival, finalVelocity: t.finalVelocity,
     }))
     const payload: AnalysisPayload = {
       sourceExperiment: 'inclined', sourceNameAr: 'المنحدر المائل', readings,
       columns: [
         { key: 'thetaDeg', label: 'الزاوية', unit: '°' },
+        { key: 'sinTheta', label: 'sinθ', unit: '' },
         { key: 'length', label: 'الطول', unit: 'm' },
         { key: 'mass', label: 'الكتلة', unit: 'kg' },
         { key: 'acceleration', label: 'التسارع', unit: 'm/s²' },
@@ -109,7 +114,7 @@ export function useInclinedExperiment() {
         { xKey: 'timeOfArrival', yKey: 'length', xLabel: 't (s)', yLabel: 's (m)', type: 'scatter' },
       ],
     }
-    sendToAnalysis(payload)
+    sendToAnalysis(router, payload)
   }
 
   return {

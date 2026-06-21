@@ -87,7 +87,7 @@ export function useAuthActions(
       const data = await fetchJson<{ user: User }>('/api/auth/me')
       user.value = data.user
     } catch {
-      user.value = null
+      // keep cached user; token refresh happens in fetchJson
     }
   }
 

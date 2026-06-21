@@ -13,7 +13,7 @@ function loadJson<T>(key: string, fallback: T): T {
 }
 
 export const useAuthStore = defineStore('auth', () => {
-  const user = ref<User | null>(null);
+  const user = ref<User | null>(loadJson<User | null>('auth_user', null));
   const loading = ref(false);
   const error = ref<string | null>(null);
 
@@ -21,6 +21,10 @@ export const useAuthStore = defineStore('auth', () => {
   const guestRole = ref<'teacher' | 'student' | null>(loadJson('auth_guest_role', null));
   const currentClassId = ref<string | null>(loadJson('auth_current_class_id', null));
   const classes = ref<ClassInfo[]>(loadJson('auth_classes', []));
+
+  watch(user, (u) => {
+    try { localStorage.setItem('auth_user', JSON.stringify(u)); } catch { /* ignore */ }
+  }, { deep: true });
 
   const isLoggedIn = computed(() => !!user.value);
   const role = computed((): UserRole | null => {

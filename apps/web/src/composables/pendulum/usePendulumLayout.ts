@@ -23,7 +23,6 @@ const allPanelIds: PanelId[] = [
 ]
 
 export function usePendulumLayout() {
-  try { localStorage.removeItem('pendulum:layout:v1') } catch { /* ignore */ }
 
   const panels = reactive<Record<PanelId, boolean>>({
     table: true, equations: false, signal: true, params: true, guide: true, stats: false,
@@ -41,7 +40,7 @@ export function usePendulumLayout() {
     data: [...defaultColumnOrder.data], vis: [...defaultColumnOrder.vis], ctrl: [...defaultColumnOrder.ctrl],
   })
 
-  function isPanelVisible(id: PanelId) { return panels[id] && !maximized[id] }
+  function isPanelVisible(id: string) { const pid = id as PanelId; return panels[pid] && !maximized[pid] }
   function togglePanel(key: string) { if (allPanelIds.includes(key as PanelId)) panels[key as PanelId] = !panels[key as PanelId] }
   function showAllPanels() { allPanelIds.forEach((k) => { panels[k] = true; maximized[k] = false }); resetLayout() }
   function maximizePanel(key: string) { if (allPanelIds.includes(key as PanelId)) maximized[key as PanelId] = !maximized[key as PanelId] }
@@ -77,23 +76,26 @@ export function usePendulumLayout() {
     normalizeLayout(); persistLayout()
   }
 
-  function movePanel(id: PanelId, targetCol: ColumnId, insertAfterId?: PanelId | null) {
-    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) { columnOrder[col] = columnOrder[col].filter(pid => pid !== id) }
-    if (insertAfterId && columnOrder[targetCol].includes(insertAfterId)) {
-      const idx = columnOrder[targetCol].indexOf(insertAfterId)
-      columnOrder[targetCol] = [...columnOrder[targetCol].slice(0, idx + 1), id, ...columnOrder[targetCol].slice(idx + 1)]
-    } else { columnOrder[targetCol] = [id, ...columnOrder[targetCol]] }
-    panelColumn[id] = targetCol; normalizeLayout(); persistLayout()
+  function movePanel(id: string, targetCol: ColumnId, insertAfterId?: string | null) {
+    const pid = id as PanelId
+    const after = insertAfterId ? (insertAfterId as PanelId) : null
+    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) { columnOrder[col] = columnOrder[col].filter(p => p !== pid) }
+    if (after && columnOrder[targetCol].includes(after)) {
+      const idx = columnOrder[targetCol].indexOf(after)
+      columnOrder[targetCol] = [...columnOrder[targetCol].slice(0, idx + 1), pid, ...columnOrder[targetCol].slice(idx + 1)]
+    } else { columnOrder[targetCol] = [pid, ...columnOrder[targetCol]] }
+    panelColumn[pid] = targetCol; normalizeLayout(); persistLayout()
   }
 
-  function panelTitle(id: PanelId) {
+  function panelTitle(id: string) {
+    const pid = id as PanelId
     const titles: Record<PanelId, string> = {
       table: '📋 قراءات', equations: '⚗️ حسابات', error: '⚖️ أخطاء',
       scatter: '📈 Scatter', tutor: '⚖️ تحليل مباشر', report: '📋 تقرير',
       signal: '📈 إشارة θ(t)', fft: '📊 FFT', phase: '🔄 فضاء الطور',
       params: '⚙️ معاملات', guide: '📋 دليل', stats: '📊 إحصائيات',
     }
-    return titles[id] ?? '📊 إحصائيات'
+    return titles[pid] ?? '📊 إحصائيات'
   }
 
   return { panels, maximized, panelColumn, columnOrder, isPanelVisible, togglePanel, showAllPanels, maximizePanel, movePanel, applyPersistedLayout, resetLayout, panelTitle }

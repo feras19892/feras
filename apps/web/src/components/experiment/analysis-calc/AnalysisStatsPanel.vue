@@ -8,13 +8,18 @@ const props = defineProps<{
 }>();
 
 const stats = computed(() => {
-  const result: Record<string, { mean: number; std: number; min: number; max: number }> = {};
+  const result: Record<string, { n: number; mean: number; std: number; min: number; max: number; median: number; relErr: number }> = {};
   for (const col of props.columns) {
     const vals = props.readings.map(r => r[col.key]).filter(v => typeof v === 'number' && !isNaN(v));
-    if (vals.length === 0) { result[col.key] = { mean: 0, std: 0, min: 0, max: 0 }; continue; }
-    const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
-    const std = Math.sqrt(vals.reduce((s, v) => s + (v - mean) ** 2, 0) / vals.length);
-    result[col.key] = { mean, std, min: Math.min(...vals), max: Math.max(...vals) };
+    if (vals.length === 0) { result[col.key] = { n: 0, mean: 0, std: 0, min: 0, max: 0, median: 0, relErr: 0 }; continue; }
+    const n = vals.length;
+    const mean = vals.reduce((a, b) => a + b, 0) / n;
+    const std = Math.sqrt(vals.reduce((s, v) => s + (v - mean) ** 2, 0) / n);
+    const sorted = [...vals].sort((a, b) => a - b);
+    const mid = Math.floor(n / 2);
+    const median = n % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+    const relErr = Math.abs(mean) > 1e-9 ? (std / Math.abs(mean)) * 100 : 0;
+    result[col.key] = { n, mean, std, min: Math.min(...vals), max: Math.max(...vals), median, relErr };
   }
   return result;
 });
@@ -22,15 +27,20 @@ const stats = computed(() => {
 
 <template>
   <div class="stats-panel">
-    <div class="panel-header">📊 إحصائيات</div>
+    <div class="panel-header">📊 إحصائيات القراءات</div>
     <div class="stats-body">
-      <div v-for="col in columns" :key="col.key" class="stat-col">
-        <div class="stat-name">{{ col.label }} <span v-if="col.unit" class="unit">({{ col.unit }})</span></div>
-        <div class="stat-grid">
-          <div class="stat-item"><span class="label">μ</span><span class="val">{{ stats[col.key]?.mean.toFixed(3) ?? '-' }}</span></div>
-          <div class="stat-item"><span class="label">σ</span><span class="val">{{ stats[col.key]?.std.toFixed(3) ?? '-' }}</span></div>
-          <div class="stat-item"><span class="label">min</span><span class="val">{{ stats[col.key]?.min.toFixed(3) ?? '-' }}</span></div>
-          <div class="stat-item"><span class="label">max</span><span class="val">{{ stats[col.key]?.max.toFixed(3) ?? '-' }}</span></div>
+      <div v-for="col in columns" :key="col.key" class="stat-card">
+        <div class="col-title">{{ col.label }} <span v-if="col.unit" class="unit">({{ col.unit }})</span></div>
+        <div class="summary-row">
+          <span class="badge">N = {{ stats[col.key]?.n ?? 0 }}</span>
+          <span class="badge badge-err">σ/μ = {{ stats[col.key]?.relErr.toFixed(1) ?? '-' }}%</span>
+        </div>
+        <div class="metrics">
+          <div class="m"><span class="ml">μ</span><span class="mv">{{ stats[col.key]?.mean.toFixed(4) ?? '-' }}</span></div>
+          <div class="m"><span class="ml">σ</span><span class="mv">{{ stats[col.key]?.std.toFixed(4) ?? '-' }}</span></div>
+          <div class="m"><span class="ml">وسيط</span><span class="mv">{{ stats[col.key]?.median.toFixed(4) ?? '-' }}</span></div>
+          <div class="m"><span class="ml">min</span><span class="mv">{{ stats[col.key]?.min.toFixed(4) ?? '-' }}</span></div>
+          <div class="m"><span class="ml">max</span><span class="mv">{{ stats[col.key]?.max.toFixed(4) ?? '-' }}</span></div>
         </div>
       </div>
     </div>
@@ -45,55 +55,64 @@ const stats = computed(() => {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  flex-shrink: 0;
+  flex: 1;
 }
 .panel-header {
   padding: 0.5rem 0.75rem;
   background: rgba(255,255,255,0.04);
   border-bottom: 1px solid rgba(255,255,255,0.06);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: #67e8f9;
   font-weight: 600;
 }
 .stats-body {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 0.25rem;
-  padding: 0.3rem;
+  padding: 0.35rem;
   overflow-y: auto;
 }
-.stat-col {
-  background: rgba(0,0,0,0.15);
-  border-radius: 0.25rem;
-  padding: 0.2rem 0.25rem;
+.stat-card {
+  background: rgba(0,0,0,0.2);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 0.3rem;
+  padding: 0.3rem 0.35rem;
   min-width: 0;
 }
-.stat-name {
-  font-size: 0.68rem;
+.col-title {
+  font-size: 0.7rem;
   color: #e2e8f0;
   font-weight: 700;
-  margin-bottom: 0.1rem;
+  margin-bottom: 0.15rem;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .unit { color: #64748b; font-size: 0.55rem; }
-.stat-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.1rem;
+.summary-row {
+  display: flex;
+  gap: 0.15rem;
+  margin-bottom: 0.15rem;
+  justify-content: center;
 }
-.stat-item {
+.badge {
+  font-size: 0.58rem;
+  padding: 0.08rem 0.25rem;
+  border-radius: 0.2rem;
+  background: rgba(6,182,212,0.15);
+  color: #67e8f9;
+  font-weight: 700;
+}
+.badge-err { background: rgba(251,191,36,0.12); color: #fbbf24; }
+.metrics { display: flex; flex-direction: column; gap: 0.05rem; }
+.m {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.65rem;
-  padding: 0.1rem 0.2rem;
-  border-radius: 0.15rem;
-  background: rgba(255,255,255,0.03);
-  gap: 0.2rem;
+  font-size: 0.62rem;
+  padding: 0.05rem 0.08rem;
 }
-.label { color: #94a3b8; font-weight: 700; flex-shrink: 0; }
-.val { color: #e2e8f0; font-family: 'Courier New', monospace; font-weight: 700; font-size: 0.65rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ml { color: #94a3b8; font-weight: 700; min-width: 24px; }
+.mv { color: #e2e8f0; font-family: 'Courier New', monospace; font-weight: 600; font-size: 0.62rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 </style>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { watch } from 'vue'
 import { useEquationSolver } from '../../../composables/experiment/analysis/useEquationSolver'
 import EquationDetail from './EquationDetail.vue'
 import type { AnalysisEquation } from '../../../types/physics'
@@ -8,6 +9,10 @@ const props = defineProps<{
   readings: Record<string, number>[];
 }>();
 
+const emit = defineEmits<{
+  (e: 'solved-equations', val: { equationName: string; formula: string; targetVar: string; varValues: Record<string, number>; result: string; timestamp: number }[]): void;
+}>();
+
 const {
   selectedIndex,
   varValues,
@@ -15,18 +20,22 @@ const {
   result,
   activeEquation,
   solve,
+  solvedEquations,
 } = useEquationSolver(
   () => props.equations,
   () => props.readings
 );
+
+watch(solvedEquations, (val) => emit('solved-equations', val), { deep: true });
 </script>
 
 <template>
   <div class="equations-panel">
-    <div class="panel-header">⚗️ المعادلات</div>
-
+    <div class="panel-header">
+      <span>⚗️ المعادلات والحسابات</span>
+    </div>
     <div v-if="equations.length" class="body">
-      <div class="eq-list">
+      <div class="eq-tabs-list">
         <button
           v-for="(eq, i) in equations"
           :key="i"
@@ -37,16 +46,17 @@ const {
           {{ eq.name }}
         </button>
       </div>
-
-      <EquationDetail
-        :equation="activeEquation"
-        v-model:var-values="varValues"
-        v-model:target-var="targetVar"
-        :result="result"
-        @solve="solve"
-      />
+      <div class="eq-detail-area">
+        <EquationDetail
+          :equation="activeEquation"
+          v-model:var-values="varValues"
+          v-model:target-var="targetVar"
+          :result="result"
+          @solve="solve"
+        />
+      </div>
     </div>
-    <p v-else class="empty">لا توجد معادلات</p>
+    <p v-else class="empty">لا توجد معادلات لهذه التجربة</p>
   </div>
 </template>
 
@@ -58,80 +68,52 @@ const {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 .panel-header {
-  padding: 0.4rem 0.6rem;
+  padding: 0.4rem 0.75rem;
   background: rgba(255,255,255,0.04);
   border-bottom: 1px solid rgba(255,255,255,0.06);
   font-size: 0.85rem;
   color: #67e8f9;
   font-weight: 700;
+  flex-shrink: 0;
 }
-.body { padding: 0.4rem; display: flex; flex-direction: column; gap: 0.35rem; }
-.eq-list { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+.body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  min-height: 0;
+}
+.eq-tabs-list {
+  width: 150px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.4rem;
+  border-left: 1px solid rgba(255,255,255,0.06);
+  overflow-y: auto;
+}
 .eq-tab {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
   color: #94a3b8;
   border-radius: 0.3rem;
-  padding: 0.2rem 0.4rem;
-  font-size: 0.75rem;
+  padding: 0.3rem 0.45rem;
+  font-size: 0.73rem;
   cursor: pointer;
-}
-.eq-tab.active { background: rgba(6,182,212,0.15); color: #67e8f9; border-color: rgba(6,182,212,0.3); }
-.formula {
-  font-family: 'Courier New', monospace;
-  background: rgba(0,0,0,0.2);
-  padding: 0.35rem 0.5rem;
-  border-radius: 0.25rem;
-  color: #e2e8f0;
-  font-size: 0.85rem;
-  text-align: center;
+  text-align: right;
+  transition: all 0.15s;
   font-weight: 600;
+  line-height: 1.3;
 }
-.vars { display: flex; flex-direction: column; gap: 0.25rem; }
-.var-row { display: flex; align-items: center; gap: 0.4rem; }
-.var-row label { font-size: 0.78rem; color: #94a3b8; min-width: 80px; font-weight: 600; }
-.var-row input {
-  flex: 1;
-  background: #0f172a;
-  border: 1px solid #334155;
-  color: #e2e8f0;
-  border-radius: 0.2rem;
-  padding: 0.25rem 0.35rem;
-  font-size: 0.85rem;
-  width: 0;
-  min-width: 0;
+.eq-tab.active {
+  background: rgba(6,182,212,0.2);
+  color: #67e8f9;
+  border-color: rgba(6,182,212,0.4);
 }
-.solve-row { display: flex; align-items: center; gap: 0.4rem; margin-top: 0.2rem; }
-.solve-row label { font-size: 0.78rem; color: #94a3b8; font-weight: 600; }
-select {
-  background: #0f172a;
-  border: 1px solid #334155;
-  color: #e2e8f0;
-  border-radius: 0.2rem;
-  padding: 0.2rem 0.35rem;
-  font-size: 0.78rem;
-}
-.btn-solve {
-  background: linear-gradient(135deg, #06b6d4, #0891b2);
-  border: none;
-  color: #fff;
-  border-radius: 0.25rem;
-  padding: 0.3rem 0.5rem;
-  font-size: 0.78rem;
-  cursor: pointer;
-  font-weight: 700;
-}
-.result {
-  background: rgba(34,197,94,0.08);
-  border: 1px solid rgba(34,197,94,0.2);
-  border-radius: 0.25rem;
-  padding: 0.35rem 0.5rem;
-  margin-top: 0.2rem;
-  text-align: center;
-}
-.result-label { font-size: 0.75rem; color: #4ade80; margin-bottom: 0.15rem; font-weight: 700; }
-.result-value { color: #e2e8f0; font-size: 0.85rem; font-family: 'Courier New', monospace; font-weight: 700; }
-.empty { color: #64748b; text-align: center; padding: 0.8rem; font-size: 0.85rem; }
+.eq-tab:hover:not(.active) { background: rgba(255,255,255,0.08); color: #e2e8f0; }
+.eq-detail-area { flex: 1; min-width: 0; overflow: hidden; display: flex; flex-direction: column; }
+.empty { color: #64748b; text-align: center; padding: 1rem; font-size: 0.85rem; }
 </style>

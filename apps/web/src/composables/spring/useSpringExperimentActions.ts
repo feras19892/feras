@@ -1,5 +1,6 @@
 import type { SpringExperimentState } from './useSpringExperimentState'
 import type { SpringParams } from '../../modules/physics/experiments/spring/useSpringPhysics'
+import { useRouter } from 'vue-router'
 import { sendToAnalysis } from '../analysis/sendToAnalysis'
 import type { AnalysisPayload } from '../../types/physics'
 
@@ -9,6 +10,7 @@ export function useSpringExperimentActions(
   trials: { recordTrial: () => void; calcFitK: () => void; autoLoad: () => void; trials: { value: any[] } },
   layout: { applyPersistedLayout: () => void; movePanel: (id: any, col: any, afterId: any) => void },
 ) {
+  const router = useRouter()
   function resetSim() { lab.resetSim() }
 
   function toggleMass() {
@@ -83,7 +85,7 @@ export function useSpringExperimentActions(
 
   function exportToAnalysis() {
     const tList = trials.trials.value
-    if (tList.length === 0) { alert('لا توجد قراءات مسجلة'); return }
+    if (tList.length === 0) { console.warn('[exportToAnalysis] no trials recorded'); return }
 
     const readings = tList.map((t: any) => ({
       mass: t.mass, T: t.T, T2: t.T * t.T, kCalc: t.kCalc,
@@ -127,7 +129,7 @@ export function useSpringExperimentActions(
       ],
     }
 
-    sendToAnalysis(payload)
+    sendToAnalysis(router, payload)
   }
 
   return {

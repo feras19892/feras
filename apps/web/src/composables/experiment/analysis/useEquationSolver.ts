@@ -9,6 +9,7 @@ export function useEquationSolver(
   const varValues = ref<Record<string, number>>({})
   const targetVar = ref('')
   const result = ref<string | null>(null)
+  const solvedEquations = ref<{ equationName: string; formula: string; targetVar: string; varValues: Record<string, number>; result: string; timestamp: number }[]>([])
 
   function round3(n: number) { return Math.round(n * 1000) / 1000 }
 
@@ -162,6 +163,26 @@ export function useEquationSolver(
     if (known >= total - 1) solve()
   }, { deep: true })
 
+  // Capture solved results for report
+  watch(result, (r) => {
+    const eq = activeEquation.value
+    if (!r || !eq) return
+    const entry = {
+      equationName: eq.name,
+      formula: eq.formula,
+      targetVar: targetVar.value,
+      varValues: { ...varValues.value },
+      result: r,
+      timestamp: Date.now(),
+    }
+    // Avoid duplicates (same equation + same target)
+    const idx = solvedEquations.value.findIndex(
+      s => s.equationName === entry.equationName && s.targetVar === entry.targetVar
+    )
+    if (idx >= 0) solvedEquations.value[idx] = entry
+    else solvedEquations.value.push(entry)
+  })
+
   return {
     selectedIndex,
     varValues,
@@ -169,5 +190,6 @@ export function useEquationSolver(
     result,
     activeEquation,
     solve,
+    solvedEquations,
   }
 }

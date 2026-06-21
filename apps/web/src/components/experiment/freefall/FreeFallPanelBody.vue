@@ -5,7 +5,6 @@ import FreeFallSignalPanel from './FreeFallSignalPanel.vue'
 import FreeFallParamsPanel from './FreeFallParamsPanel.vue'
 import FreeFallGuidePanel from './FreeFallGuidePanel.vue'
 import FreeFallReportPanel from './FreeFallReportPanel.vue'
-import type { PanelId } from '../../../composables/freefall/useFreeFallLayout'
 import type { FreeFallTrial } from '../../../composables/freefall/useFreeFallTrials'
 import type { FreeFallParams } from '../../../modules/physics/experiments/freefall/useFreeFallPhysics'
 
@@ -26,7 +25,7 @@ interface TrialStats {
 }
 
 const props = defineProps<{
-  id: PanelId
+  id: string
   trials: FreeFallTrial[]
   calcResult: string
   params: FreeFallParams

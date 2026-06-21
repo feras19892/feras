@@ -38,7 +38,6 @@ export const branches: Branch[] = [
       { id: 'inclined', name: 'Inclined Plane', nameAr: 'المنحدر المائل', icon: '📐', difficulty: 'easy', tags: ['kinematics', 'forces', 'friction'], route: '' },
       { id: 'collision', name: '1D Collision', nameAr: 'التصادم في بعد واحد', icon: '💥', difficulty: 'medium', tags: ['momentum', 'energy', 'collision'], route: '' },
       { id: 'lever', name: 'Lever Balance', nameAr: 'توازن العارضة', icon: '⚖️', difficulty: 'easy', tags: ['equilibrium', 'torque', 'lever'], route: '' },
-      { id: 'analysis-calc', name: 'Analysis & Calculation', nameAr: 'التحليل والحساب', icon: '📊', difficulty: 'easy', tags: ['analysis', 'calculation'], route: '' },
     ],
   },
   {

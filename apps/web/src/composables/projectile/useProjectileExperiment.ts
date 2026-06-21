@@ -1,4 +1,5 @@
 import { computed, onMounted, onUnmounted, reactive, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { sendToAnalysis } from '../../composables/analysis/sendToAnalysis'
 import type { AnalysisPayload } from '../../types/physics'
 import type { ProjectileParams } from '../../modules/physics/experiments/projectile/useProjectilePhysics'
@@ -7,6 +8,7 @@ import { useProjectileLayout } from './useProjectileLayout'
 import { useProjectileTrials } from './useProjectileTrials'
 
 export function useProjectileExperiment() {
+  const router = useRouter()
 
   const params = reactive<ProjectileParams>({ v0: 10, angleDeg: 45, g: 9.81, x0: 0, y0: 0, targetX: 30, targetY: 0, targetRadius: 3, targetVisible: false, targetMode: false, dragCoeff: 0 })
 
@@ -79,9 +81,11 @@ export function useProjectileExperiment() {
 
   function exportToAnalysis() {
     const tList = trials.trials.value
-    if (tList.length === 0) { alert('لا توجد قراءات مسجلة'); return }
+    if (tList.length === 0) { console.warn('[exportToAnalysis] no trials recorded'); return }
     const readings = tList.map(t => ({
       angleDegrees: t.angleDegrees, initialVelocity: t.initialVelocity,
+      v0Squared: t.initialVelocity * t.initialVelocity,
+      sin2Theta: Math.sin(2 * t.angleDegrees * Math.PI / 180),
       flightTimeSec: t.flightTimeSec, maxHeightMeters: t.maxHeightMeters, rangeMeters: t.rangeMeters,
     }))
     const payload: AnalysisPayload = {
@@ -89,6 +93,8 @@ export function useProjectileExperiment() {
       columns: [
         { key: 'angleDegrees', label: 'الزاوية', unit: '°' },
         { key: 'initialVelocity', label: 'v₀', unit: 'm/s' },
+        { key: 'v0Squared', label: 'v₀²', unit: 'm²/s²' },
+        { key: 'sin2Theta', label: 'sin(2θ)', unit: '' },
         { key: 'flightTimeSec', label: 'زمن الرحلة', unit: 's' },
         { key: 'maxHeightMeters', label: 'الارتفاع الأقصى', unit: 'm' },
         { key: 'rangeMeters', label: 'المدى', unit: 'm' },
@@ -98,11 +104,12 @@ export function useProjectileExperiment() {
         { name: 'الارتفاع الأقصى', formula: 'H = v₀²·sin²(θ)/(2g)', variables: [{ symbol: 'v0', label: 'v₀' }, { symbol: 'θ', label: 'الزاوية' }, { symbol: 'g', label: 'g' }, { symbol: 'H', label: 'الارتفاع' }], solveFor: ['H'] },
       ],
       suggestedPlots: [
-        { xKey: 'angleDegrees', yKey: 'rangeMeters', xLabel: 'θ (°)', yLabel: 'R (m)', type: 'scatter' },
-        { xKey: 'initialVelocity', yKey: 'rangeMeters', xLabel: 'v₀ (m/s)', yLabel: 'R (m)', type: 'scatter' },
+        { xKey: 'rangeMeters', yKey: 'maxHeightMeters', xLabel: 'R (m)', yLabel: 'H (m)', type: 'scatter' },
+        { xKey: 'v0Squared', yKey: 'rangeMeters', xLabel: 'v₀² (m²/s²)', yLabel: 'R (m)', type: 'scatter' },
+        { xKey: 'sin2Theta', yKey: 'rangeMeters', xLabel: 'sin(2θ)', yLabel: 'R (m)', type: 'scatter' },
       ],
     }
-    sendToAnalysis(payload)
+    sendToAnalysis(router, payload)
   }
 
   return {

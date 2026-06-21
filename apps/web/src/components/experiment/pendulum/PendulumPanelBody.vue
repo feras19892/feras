@@ -2,7 +2,6 @@
 import PendulumDataPanel from './PendulumDataPanel.vue'
 import PendulumParamPanel from './PendulumParamPanel.vue'
 import PendulumSignalChart from './PendulumSignalChart.vue'
-import type { PanelId } from '../../../composables/pendulum/usePendulumLayout'
 import type { PendulumTrial } from '../../../composables/pendulum/usePendulumTrials'
 import type { PendulumParams } from '../../../modules/physics/experiments/pendulum/usePendulumPhysics'
 
@@ -10,7 +9,7 @@ interface Measured { T: number | null; f: number | null; omega: number | null; g
 interface SimState { theta: number; omega: number; t: number; running: boolean; paused: boolean; signalSeries: { t: number; theta: number }[]; measurementPeriod: number | null }
 
 const props = defineProps<{
-  id: PanelId; trials: PendulumTrial[]; params: PendulumParams; sim: SimState; measured: Measured
+  id: string; trials: PendulumTrial[]; params: PendulumParams; sim: SimState; measured: Measured
 }>()
 
 const emit = defineEmits<{
@@ -32,7 +31,7 @@ const emit = defineEmits<{
         <li>انتظر استقرار القراءة</li>
         <li>اضغط "تسجيل" لحفظ القراءة</li>
         <li>غيّر L وكرر للحصول على قياسات متعددة</li>
-        <li>اضغط "تحليل النتائج" للحصول على g</li>
+        <li>اضغط "قسم الرسم والحسابات" للحصول على g</li>
       </ol>
       <p><b>ملاحظة:</b> زمن البندول لا يعتمد على الكتلة.</p>
     </div>

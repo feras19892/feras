@@ -28,12 +28,13 @@ export function useChartWorkspace(
 
   function fmtTick(n: number): string {
     const absN = Math.abs(n)
+    if (absN >= 10000) return n.toExponential(1)
     if (absN >= 1000) return n.toFixed(0)
-    if (absN >= 100) return n.toFixed(1)
-    if (absN >= 10) return n.toFixed(2)
-    if (absN >= 1) return n.toFixed(3)
-    if (absN >= 0.01) return n.toFixed(4)
-    return n.toExponential(2)
+    if (absN >= 100) return n.toFixed(0)
+    if (absN >= 10) return n.toFixed(1)
+    if (absN >= 1) return n.toFixed(2)
+    if (absN >= 0.1) return n.toFixed(3)
+    return n.toPrecision(2)
   }
 
   watch(() => getSuggestedPlots(), (plots) => {
@@ -103,6 +104,33 @@ export function useChartWorkspace(
     if (x === 'Pi' && y === 'Pf') {
       return { label: 'نسبة حفظ الزخم', formula: 'Pf/Pi = ميل', value: s, unit: '', expr: `${s.toFixed(4)}` }
     }
+    // Projectile: H vs R → tanθ = 4×slope → θ = arctan(4s)
+    if ((x === 'rangeMeters' || x === 'R') && (y === 'maxHeightMeters' || y === 'H')) {
+      const tanTheta = 4 * s
+      const thetaDeg = Math.atan(tanTheta) * 180 / Math.PI
+      return {
+        label: 'θ من الانحدار',
+        formula: 'tanθ = 4·ميل(H vs R) → θ = arctan(4s)',
+        value: thetaDeg,
+        unit: '°',
+        expr: `arctan(4×${s.toFixed(4)}) = ${thetaDeg.toFixed(2)}°`
+      }
+    }
+    // Projectile: v0² vs R → slope = sin(2θ)/g → g = sin(2θ)/slope
+    if (x === 'v0Squared' && (y === 'rangeMeters' || y === 'R')) {
+      return { label: 'sin(2θ)/g من الانحدار', formula: 'ميل = sin(2θ)/g', value: s, unit: 's²/m', expr: `${s.toFixed(4)}` }
+    }
+    // Projectile: sin2Theta vs R → slope = v₀²/g
+    if (x === 'sin2Theta' && (y === 'rangeMeters' || y === 'R')) {
+      return { label: 'v₀²/g من الانحدار', formula: 'ميل = v₀²/g', value: s, unit: 'm', expr: `${s.toFixed(4)}` }
+    }
+    // Lever: massLeft vs invXLeft → slope = m₂·d₂
+    if ((x === 'invXLeft' || x === '1/xLeft') && (y === 'massLeft' || y === 'm1')) {
+      return { label: 'm₂·d₂ من الانحدار', formula: 'ميل = m₂·d₂', value: s, unit: 'kg·m', expr: `${s.toFixed(4)}` }
+    }
+    if ((x === 'invXRight' || x === '1/xRight') && (y === 'massRight' || y === 'm2')) {
+      return { label: 'm₁·d₁ من الانحدار', formula: 'ميل = m₁·d₁', value: s, unit: 'kg·m', expr: `${s.toFixed(4)}` }
+    }
     return null
   })
 
@@ -112,11 +140,11 @@ export function useChartWorkspace(
     const dataMinY = Math.min(...ys); const dataMaxY = Math.max(...ys)
     const dataRangeX = dataMaxX === dataMinX ? 1 : dataMaxX - dataMinX
     const dataRangeY = dataMaxY === dataMinY ? 1 : dataMaxY - dataMinY
-    const pad = 48
-    const minX = dataMinX - dataRangeX * 0.12
-    const maxX = dataMaxX + dataRangeX * 0.12
-    const minY = dataMinY - dataRangeY * 0.12
-    const maxY = dataMaxY + dataRangeY * 0.12
+    const pad = 70
+    const minX = dataMinX - dataRangeX * 0.10
+    const maxX = dataMaxX + dataRangeX * 0.10
+    const minY = dataMinY - dataRangeY * 0.10
+    const maxY = dataMaxY + dataRangeY * 0.10
     const rangeX = maxX === minX ? 1 : maxX - minX
     const rangeY = maxY === minY ? 1 : maxY - minY
     return { pad, minX, maxX, minY, maxY, rangeX, rangeY, dataMinX, dataMinY, dataRangeX, dataRangeY }
@@ -157,15 +185,21 @@ export function useChartWorkspace(
       py: h - pad - ((y - minY) / rangeY) * (h - pad * 2),
     })
 
+    // Calculate tick counts based on available space
+    const xTickCount = Math.max(3, Math.min(6, Math.floor((w - pad * 2) / 90)))
+    const yTickCount = Math.max(3, Math.min(6, Math.floor((h - pad * 2) / 50)))
+
     // grid
     ctx.save()
     ctx.strokeStyle = 'rgba(148,163,184,0.18)'
     ctx.lineWidth = 1
     ctx.setLineDash([4, 4])
-    for (let i = 1; i < 5; i++) {
-      const gx = pad + (i / 5) * (w - pad * 2)
-      const gy = pad + (i / 5) * (h - pad * 2)
+    for (let i = 1; i < xTickCount; i++) {
+      const gx = pad + (i / xTickCount) * (w - pad * 2)
       ctx.beginPath(); ctx.moveTo(gx, pad); ctx.lineTo(gx, h - pad); ctx.stroke()
+    }
+    for (let i = 1; i < yTickCount; i++) {
+      const gy = pad + (i / yTickCount) * (h - pad * 2)
       ctx.beginPath(); ctx.moveTo(pad, gy); ctx.lineTo(w - pad, gy); ctx.stroke()
     }
     ctx.setLineDash([])
@@ -181,64 +215,64 @@ export function useChartWorkspace(
 
     // X ticks
     ctx.save()
-    ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 2.5
-    for (let i = 0; i <= 5; i++) {
-      const px = pad + (i / 5) * (w - pad * 2)
-      ctx.beginPath(); ctx.moveTo(px, h - pad); ctx.lineTo(px, h - pad + 8); ctx.stroke()
+    ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 2
+    for (let i = 0; i <= xTickCount; i++) {
+      const px = pad + (i / xTickCount) * (w - pad * 2)
+      ctx.beginPath(); ctx.moveTo(px, h - pad); ctx.lineTo(px, h - pad + 6); ctx.stroke()
     }
     ctx.restore()
 
     // X labels
     ctx.save()
     ctx.fillStyle = '#e2e8f0'
-    ctx.font = 'bold 14px "Segoe UI", sans-serif'
+    ctx.font = 'bold 15px "Segoe UI", sans-serif'
     ctx.textAlign = 'center'
     ctx.textBaseline = 'top'
-    for (let i = 0; i <= 5; i++) {
-      const xv = dataMinX + (i / 5) * dataRangeX
+    for (let i = 0; i <= xTickCount; i++) {
+      const xv = dataMinX + (i / xTickCount) * dataRangeX
       const px = pad + ((xv - minX) / rangeX) * (w - pad * 2)
-      ctx.fillText(fmtTick(xv), px, h - pad + 12)
+      ctx.fillText(fmtTick(xv), px, h - pad + 14)
     }
     ctx.restore()
 
     // Y ticks
     ctx.save()
-    ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 2.5
-    for (let i = 0; i <= 5; i++) {
-      const yv = dataMinY + (i / 5) * dataRangeY
+    ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 2
+    for (let i = 0; i <= yTickCount; i++) {
+      const yv = dataMinY + (i / yTickCount) * dataRangeY
       const py = h - pad - ((yv - minY) / rangeY) * (h - pad * 2)
-      ctx.beginPath(); ctx.moveTo(pad - 8, py); ctx.lineTo(pad, py); ctx.stroke()
+      ctx.beginPath(); ctx.moveTo(pad - 6, py); ctx.lineTo(pad, py); ctx.stroke()
     }
     ctx.restore()
 
     // Y labels
     ctx.save()
     ctx.fillStyle = '#e2e8f0'
-    ctx.font = 'bold 14px "Segoe UI", sans-serif'
+    ctx.font = 'bold 15px "Segoe UI", sans-serif'
     ctx.textAlign = 'right'
     ctx.textBaseline = 'middle'
-    for (let i = 0; i <= 5; i++) {
-      const yv = dataMinY + (i / 5) * dataRangeY
+    for (let i = 0; i <= yTickCount; i++) {
+      const yv = dataMinY + (i / yTickCount) * dataRangeY
       const py = h - pad - ((yv - minY) / rangeY) * (h - pad * 2)
-      ctx.fillText(fmtTick(yv), pad - 12, py)
+      ctx.fillText(fmtTick(yv), pad - 14, py)
     }
     ctx.restore()
 
     // X axis title
     ctx.save()
     ctx.fillStyle = '#38bdf8'
-    ctx.font = 'bold 16px "Segoe UI", sans-serif'
+    ctx.font = 'bold 15px "Segoe UI", sans-serif'
     ctx.textAlign = 'center'
     ctx.textBaseline = 'top'
-    ctx.fillText(xAxisLabel.value, w / 2, h - pad + 38)
+    ctx.fillText(xAxisLabel.value, w / 2, h - pad + 44)
     ctx.restore()
 
     // Y axis title
     ctx.save()
-    ctx.translate(pad - 44, h / 2)
+    ctx.translate(pad - 58, h / 2)
     ctx.rotate(-Math.PI / 2)
     ctx.fillStyle = '#38bdf8'
-    ctx.font = 'bold 16px "Segoe UI", sans-serif'
+    ctx.font = 'bold 15px "Segoe UI", sans-serif'
     ctx.textAlign = 'center'
     ctx.textBaseline = 'top'
     ctx.fillText(yAxisLabel.value, 0, 0)

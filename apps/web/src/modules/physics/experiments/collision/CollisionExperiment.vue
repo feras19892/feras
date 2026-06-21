@@ -47,10 +47,10 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <div class="lab-grid">
       <div class="lab-col data-col" :style="{ width: ex.colWidths.data + 'px' }">
         <template v-for="id in ex.getColumnPanels('data')" :key="id">
-          <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id as any)"
+          <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id)"
             @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
             <CollisionPanelBody :id="id" :params="ex.params" :sim="ex.lab.sim" :trials="ex.trials.trials.value" :signal-series="ex.lab.signalSeries.value"
-              @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials"
+              @update:params="ex.updateParams($event)" @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials"
             />
           </DraggablePanel>
         </template>
@@ -62,10 +62,10 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       <div class="resizer" @mousedown="ex.onResizeStart('vis', $event)"></div>
       <div class="lab-col ctrl-col" :style="{ width: ex.colWidths.ctrl + 'px' }">
         <template v-for="id in ex.getColumnPanels('ctrl')" :key="id">
-          <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id as any)"
+          <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id)"
             @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
             <CollisionPanelBody :id="id" :params="ex.params" :sim="ex.lab.sim" :trials="ex.trials.trials.value" :signal-series="ex.lab.signalSeries.value"
-              @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials"
+              @update:params="ex.updateParams($event)" @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials"
             />
           </DraggablePanel>
         </template>
@@ -79,7 +79,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       :sim="ex.lab.sim"
       :trials="ex.trials.trials.value" :signal-series="ex.lab.signalSeries.value"
       @maximize="ex.layout.maximizePanel"
-      @update:params="Object.assign(ex.params, $event)"
+      @update:params="ex.updateParams($event)"
       @remove="ex.trials.removeTrial"
       @clear="ex.trials.clearTrials"
     />

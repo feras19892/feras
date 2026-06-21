@@ -1,4 +1,5 @@
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { sendToAnalysis } from '../../composables/analysis/sendToAnalysis'
 import type { AnalysisPayload } from '../../types/physics'
 import type { LeverParams } from '../../modules/physics/experiments/lever/useLeverPhysics'
@@ -7,6 +8,7 @@ import { useLeverTrials } from './useLeverTrials'
 import { useLeverLayout } from './useLeverLayout'
 
 export function useLeverExperiment() {
+  const router = useRouter()
   const params = reactive<LeverParams>({ beamLength: 10, g: 9.81, maxTiltDeg: 15, snapStep: 0.5 })
   const lab = useLeverLab(params)
   const layout = useLeverLayout()
@@ -78,7 +80,7 @@ export function useLeverExperiment() {
   function exportToAnalysis() {
     layout.showPanels(['balls', 'table'])
     const tList = trials.trials.value
-    if (tList.length === 0) { alert('لا توجد قراءات مسجلة'); return }
+    if (tList.length === 0) { console.warn('[exportToAnalysis] no trials recorded'); return }
 
     const readings = tList.map(t => {
       const left = t.balls.filter((b: {x: number}) => b.x < 0)
@@ -89,6 +91,8 @@ export function useLeverExperiment() {
         massRight: right.reduce((s: number, b: {mass: number}) => s + b.mass, 0),
         xLeft: left.length > 0 ? Math.min(...left.map((b: {x: number}) => b.x)) : 0,
         xRight: right.length > 0 ? Math.max(...right.map((b: {x: number}) => b.x)) : 0,
+        invXLeft: left.length > 0 ? 1 / Math.abs(Math.min(...left.map((b: {x: number}) => b.x))) : 0,
+        invXRight: right.length > 0 ? 1 / Math.max(...right.map((b: {x: number}) => b.x)) : 0,
         netTorque: t.netTorque,
         tiltDeg: t.tiltDeg,
       }
@@ -104,6 +108,8 @@ export function useLeverExperiment() {
         { key: 'massRight', label: 'الكتلة اليمنى', unit: 'kg' },
         { key: 'xLeft', label: 'ذراع اليسار', unit: 'm' },
         { key: 'xRight', label: 'ذراع اليمين', unit: 'm' },
+        { key: 'invXLeft', label: '1/ذراع اليسار', unit: '1/m' },
+        { key: 'invXRight', label: '1/ذراع اليمين', unit: '1/m' },
         { key: 'netTorque', label: 'العزم الصافي', unit: 'N·m' },
         { key: 'tiltDeg', label: 'زاوية الميلان', unit: '°' },
       ],
@@ -120,12 +126,12 @@ export function useLeverExperiment() {
         },
       ],
       suggestedPlots: [
-        { xKey: 'xLeft', yKey: 'massLeft', xLabel: 'x_يسار (m)', yLabel: 'm_يسار (kg)', type: 'scatter' },
-        { xKey: 'xRight', yKey: 'massRight', xLabel: 'x_يمين (m)', yLabel: 'm_يمين (kg)', type: 'scatter' },
+        { xKey: 'invXLeft', yKey: 'massLeft', xLabel: '1/d_يسار (1/m)', yLabel: 'm_يسار (kg)', type: 'scatter' },
+        { xKey: 'invXRight', yKey: 'massRight', xLabel: '1/d_يمين (1/m)', yLabel: 'm_يمين (kg)', type: 'scatter' },
       ],
     }
 
-    sendToAnalysis(payload)
+    sendToAnalysis(router, payload)
   }
 
   onMounted(() => {

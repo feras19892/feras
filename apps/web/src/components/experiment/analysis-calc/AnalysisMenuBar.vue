@@ -11,7 +11,7 @@ const emit = defineEmits<{
 }>();
 
 const title = computed(() => {
-  return props.sourceName ? `تحليل: ${props.sourceName}` : 'التحليل والحساب';
+  return props.sourceName ? `تحليل: ${props.sourceName}` : 'قسم الرسم والحسابات';
 });
 </script>
 
@@ -32,30 +32,33 @@ const title = computed(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.6rem 1rem;
-  background: #161B22;
-  border-bottom: 1px solid #2D3645;
+  padding: 0.7rem 1.2rem;
+  background: linear-gradient(135deg, #0f172a, #161B22);
+  border-bottom: 1px solid rgba(91,141,184,0.15);
   flex-shrink: 0;
 }
-.left, .right { display: flex; align-items: center; gap: 0.75rem; }
-.title { font-weight: 700; color: #D1D7E0; font-size: 1rem; }
+.left, .right { display: flex; align-items: center; gap: 0.85rem; }
+.title { font-weight: 800; color: #e2e8f0; font-size: 1.05rem; letter-spacing: 0.2px; }
 .btn-back {
-  background: none;
-  border: none;
+  background: rgba(91,141,184,0.1);
+  border: 1px solid rgba(91,141,184,0.2);
   color: #67e8f9;
   cursor: pointer;
-  font-size: 0.85rem;
-  padding: 0;
-}
-.btn-clear {
-  background: rgba(239,68,68,0.12);
-  border: 1px solid rgba(239,68,68,0.3);
-  color: #f87171;
-  border-radius: 0.4rem;
+  font-size: 0.82rem;
   padding: 0.35rem 0.7rem;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: background 0.2s;
+  border-radius: 0.35rem;
+  transition: all 0.15s;
 }
-.btn-clear:hover { background: rgba(239,68,68,0.2); }
+.btn-back:hover { background: rgba(91,141,184,0.18); }
+.btn-clear {
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.25);
+  color: #f87171;
+  border-radius: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-clear:hover { background: rgba(239,68,68,0.18); }
 </style>

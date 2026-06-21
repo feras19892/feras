@@ -1,4 +1,5 @@
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { sendToAnalysis } from '../../composables/analysis/sendToAnalysis'
 import type { AnalysisPayload } from '../../types/physics'
 import type { PendulumParams } from '../../modules/physics/experiments/pendulum/usePendulumPhysics'
@@ -7,6 +8,7 @@ import { usePendulumLayout } from './usePendulumLayout'
 import { usePendulumTrials } from './usePendulumTrials'
 
 export function usePendulumExperiment() {
+  const router = useRouter()
 
   const params = reactive<PendulumParams>({ length: 0.50, g: 9.81, theta0: 10 * Math.PI / 180, theta0Deg: 10, mass: 0.05, damping: 0.02, measureCycles: 20, bobRadius: 0.02, airDensity: 1.225, springK: 10, springRestLength: 0.08 })
 
@@ -96,7 +98,7 @@ export function usePendulumExperiment() {
 
   function exportToAnalysis() {
     const tList = trials.trials.value
-    if (tList.length === 0) { alert('لا توجد قراءات مسجلة'); return }
+    if (tList.length === 0) { console.warn('[exportToAnalysis] no trials recorded'); return }
     const readings = tList.map(t => ({ length: t.length, T: t.T, T2: t.T * t.T, gCalc: t.gCalc }))
     const payload: AnalysisPayload = {
       sourceExperiment: 'pendulum', sourceNameAr: 'البندول البسيط', readings,
@@ -115,7 +117,7 @@ export function usePendulumExperiment() {
         { xKey: 'length', yKey: 'T', xLabel: 'L (m)', yLabel: 'T (s)', type: 'scatter' },
       ],
     }
-    sendToAnalysis(payload)
+    sendToAnalysis(router, payload)
   }
 
   return {

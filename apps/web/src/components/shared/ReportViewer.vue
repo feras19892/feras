@@ -9,6 +9,7 @@ function safeJsonParse<T>(str: string | undefined, fallback: T): T {
   try { return str ? JSON.parse(str) : fallback; } catch { return fallback; }
 }
 
+const parsedParams = computed(() => safeJsonParse<Record<string, any>>(props.report.params, {}));
 const parsed = computed(() => ({
   sourceName: props.report.experiment_name,
   reportDate: props.report.submitted_at?.slice(0, 10) || '',
@@ -22,6 +23,11 @@ const parsed = computed(() => ({
     errors: props.report.conclusion_errors || '',
     improvements: props.report.conclusion_improvements || '',
   },
+  solvedEquations: parsedParams.value.solved_equations ?? undefined,
+  regressionData: parsedParams.value.regression_data ?? undefined,
+  slopeCalcData: parsedParams.value.slope_calc_data ?? undefined,
+  axesData: parsedParams.value.axes_data ?? undefined,
+  errorCalcData: parsedParams.value.error_calc_data ?? undefined,
 }));
 </script>
 
@@ -36,6 +42,11 @@ const parsed = computed(() => ({
       :equations="parsed.equations"
       :plots="parsed.plots"
       :conclusion="parsed.conclusion"
+      :solved-equations="parsed.solvedEquations"
+      :regression-data="parsed.regressionData"
+      :slope-calc-data="parsed.slopeCalcData"
+      :axes-data="parsed.axesData"
+      :error-calc-data="parsed.errorCalcData"
     />
     <div v-if="report.chart_snapshot" class="chart-section">
       <h4>📈 الرسم البياني</h4>

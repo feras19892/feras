@@ -39,8 +39,9 @@ export function useSpringLayout() {
     ctrl: [...defaultColumnOrder.ctrl],
   })
 
-  function isPanelVisible(id: PanelId) {
-    return panels[id] && !maximized[id]
+  function isPanelVisible(id: string) {
+    const pid = id as PanelId
+    return panels[pid] && !maximized[pid]
   }
 
   function togglePanel(key: string) { if (allPanelIds.includes(key as PanelId)) panels[key as PanelId] = !panels[key as PanelId] }
@@ -110,35 +111,38 @@ export function useSpringLayout() {
     persistLayout()
   }
 
-  function movePanel(id: PanelId, targetCol: ColumnId, insertAfterId?: PanelId | null) {
+  function movePanel(id: string, targetCol: ColumnId, insertAfterId?: string | null) {
+    const pid = id as PanelId
+    const after = insertAfterId ? (insertAfterId as PanelId) : null
     // remove from all columns
     for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) {
-      columnOrder[col] = columnOrder[col].filter(pid => pid !== id)
+      columnOrder[col] = columnOrder[col].filter(p => p !== pid)
     }
     // find insert position
-    if (insertAfterId && columnOrder[targetCol].includes(insertAfterId)) {
-      const idx = columnOrder[targetCol].indexOf(insertAfterId)
+    if (after && columnOrder[targetCol].includes(after)) {
+      const idx = columnOrder[targetCol].indexOf(after)
       columnOrder[targetCol] = [
         ...columnOrder[targetCol].slice(0, idx + 1),
-        id,
+        pid,
         ...columnOrder[targetCol].slice(idx + 1)
       ]
     } else {
-      columnOrder[targetCol] = [id, ...columnOrder[targetCol]]
+      columnOrder[targetCol] = [pid, ...columnOrder[targetCol]]
     }
-    panelColumn[id] = targetCol
+    panelColumn[pid] = targetCol
     normalizeLayout()
     persistLayout()
   }
 
-  function panelTitle(id: PanelId) {
+  function panelTitle(id: string) {
+    const pid = id as PanelId
     const titles: Record<PanelId, string> = {
       table: '📋 قراءات',
       signal: '📈 إشارة x(t)',
       params: '⚙️ معاملات',
       guide: '📋 دليل',
     }
-    return titles[id] ?? '📊'
+    return titles[pid] ?? '📊'
   }
 
   return {

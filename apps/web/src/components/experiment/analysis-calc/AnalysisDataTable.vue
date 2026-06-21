@@ -9,6 +9,8 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'update-cell', row: number, key: string, value: number): void;
+  (e: 'add-row'): void;
+  (e: 'remove-row', index: number): void;
 }>();
 
 const rows = computed(() => props.readings);
@@ -33,24 +35,13 @@ function onInput(row: number, key: string, ev: Event) {
   }
 }
 
-function addRow() {
-  const empty: Record<string, number> = {};
-  for (const c of props.columns) { empty[c.key] = 0; }
-  // eslint-disable-next-line vue/no-mutating-props
-  props.readings.push(empty);
-}
-
-function removeRow(index: number) {
-  // eslint-disable-next-line vue/no-mutating-props
-  props.readings.splice(index, 1);
-}
 </script>
 
 <template>
   <div class="table-panel">
     <div class="panel-header">
       <span>📋 جدول القراءات</span>
-      <button class="btn-add" @click="addRow">+ صف</button>
+      <button class="btn-add" @click="emit('add-row')">+ صف</button>
     </div>
     <div class="table-wrap">
       <table v-if="columns.length">
@@ -76,7 +67,7 @@ function removeRow(index: number) {
               />
             </td>
             <td>
-              <button class="btn-del" @click="removeRow(i)">✕</button>
+              <button class="btn-del" @click="emit('remove-row', i)">✕</button>
             </td>
           </tr>
         </tbody>
@@ -94,6 +85,8 @@ function removeRow(index: number) {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-height: 0;
 }
 .panel-header {
   display: flex;
@@ -115,22 +108,30 @@ function removeRow(index: number) {
   font-size: 0.75rem;
   cursor: pointer;
 }
-.table-wrap { overflow: auto; max-height: 260px; }
+.table-wrap { overflow: auto; flex: 1; min-height: 0; }
 table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
-th, td { padding: 0.2rem 0.3rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
-th { color: #94a3b8; font-weight: 700; background: rgba(255,255,255,0.02); position: sticky; top: 0; font-size: 0.85rem; }
+th, td { padding: 0.5rem 0.6rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08); }
+th { color: #94a3b8; font-weight: 700; background: rgba(255,255,255,0.06); position: sticky; top: 0; font-size: 0.92rem; letter-spacing: 0.3px; }
+tbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+tbody tr:hover { background: rgba(91,141,184,0.05); }
 .idx { color: #64748b; width: 24px; font-size: 0.8rem; }
 .unit { color: #64748b; font-size: 0.65rem; }
 input {
   width: 100%;
-  padding: 0.15rem 0.2rem;
-  border-radius: 0.2rem;
+  padding: 0.4rem 0.3rem;
+  border-radius: 0.3rem;
   border: 1px solid #334155;
   background: #0f172a;
   color: #e2e8f0;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   text-align: center;
   font-weight: 600;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+input:focus {
+  outline: none;
+  border-color: #5B8DB8;
+  box-shadow: 0 0 0 2px rgba(91,141,184,0.15);
 }
 .btn-del {
   background: none;
@@ -140,7 +141,7 @@ input {
   font-size: 0.7rem;
   padding: 0.05rem 0.2rem;
 }
-.empty { color: #64748b; text-align: center; padding: 1rem; font-size: 0.85rem; }
+.empty { color: #64748b; text-align: center; padding: 2rem; font-size: 0.9rem; }
 td.outlier input {
   background: rgba(245,158,11,0.15);
   border-color: rgba(245,158,11,0.5);

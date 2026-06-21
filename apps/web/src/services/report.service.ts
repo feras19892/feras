@@ -141,6 +141,22 @@ export async function getStudentStats(studentId: number) {
   } }>(`/api/reports/student/${studentId}/stats`);
 }
 
+export async function getClassStats(classId: string) {
+  return fetchJson<{ success: boolean; stats: {
+    total: number;
+    graded: number;
+    pending: number;
+    average: number;
+    experiments: { name: string; count: number; avg: number; highest: number; lowest: number }[];
+    students: { id: number; name: string; reports: number; avg: number; lastSubmitted?: string }[];
+    distribution: Record<string, number>;
+  } }>(`/api/reports/class/${classId}/stats`);
+}
+
+export async function exportClassReports(classId: string) {
+  return fetchJson<{ success: boolean; reports: Report[] }>(`/api/reports/class/${classId}/export`);
+}
+
 export async function deleteReport(id: number) {
   return fetchJson<{ success: boolean }>(`/api/reports/${id}`, { method: 'DELETE' });
 }

@@ -13,7 +13,7 @@ function goToBranch(id: string) {
   <div class="branches-page">
     <header class="page-header">
       <h1>🔬 فروع الفيزياء</h1>
-      <p>اختر فرعاً لاستعراض التجارب المتاحة</p>
+      <p>اختر فرعاً لبدء التجربة</p>
     </header>
     <div class="grid">
       <div

@@ -1,4 +1,5 @@
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { sendToAnalysis } from '../../composables/analysis/sendToAnalysis'
 import type { AnalysisPayload } from '../../types/physics'
 import type { FreeFallParams } from '../../modules/physics/experiments/freefall/useFreeFallPhysics'
@@ -7,6 +8,7 @@ import { useFreeFallLayout } from './useFreeFallLayout'
 import { useFreeFallTrials } from './useFreeFallTrials'
 
 export function useFreeFallExperiment() {
+  const router = useRouter()
 
   const params = reactive<FreeFallParams>({ h: 0.50, g: 9.81, mass: 1.0, airResistance: false, dragCoeff: 0.1 })
 
@@ -80,7 +82,7 @@ export function useFreeFallExperiment() {
 
   function exportToAnalysis() {
     const tList = trials.trials.value
-    if (tList.length === 0) { alert('لا توجد قراءات مسجلة'); return }
+    if (tList.length === 0) { console.warn('[exportToAnalysis] no trials recorded'); return }
     const readings = tList.map(t => ({ h: t.heightMeters, t: t.timeSec, t2: t.timeSquaredSec2, gCalc: t.gCalc }))
     const payload: AnalysisPayload = {
       sourceExperiment: 'freefall', sourceNameAr: 'السقوط الحر', readings,
@@ -99,7 +101,7 @@ export function useFreeFallExperiment() {
         { xKey: 'h', yKey: 'gCalc', xLabel: 'h (m)', yLabel: 'g (m/s²)', type: 'scatter' },
       ],
     }
-    sendToAnalysis(payload)
+    sendToAnalysis(router, payload)
   }
 
   return {

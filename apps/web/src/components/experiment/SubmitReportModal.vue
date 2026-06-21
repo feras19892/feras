@@ -16,6 +16,11 @@ const props = defineProps<{
   equations?: string
   plots?: string
   chartSnapshot?: string
+  solvedEquations?: string
+  regressionData?: string
+  slopeCalcData?: string
+  axesData?: string
+  errorCalcData?: string
 }>()
 
 const emit = defineEmits<{
@@ -47,12 +52,20 @@ async function submit() {
 
   try {
     const conclusionData = props.conclusion ? JSON.parse(props.conclusion) : { conclusion: '', errors: '', improvements: '' }
-    const res = await createReport({
+    const extra = {
+      solved_equations: props.solvedEquations ? JSON.parse(props.solvedEquations) : undefined,
+      regression_data: props.regressionData ? JSON.parse(props.regressionData) : undefined,
+      slope_calc_data: props.slopeCalcData ? JSON.parse(props.slopeCalcData) : undefined,
+      axes_data: props.axesData ? JSON.parse(props.axesData) : undefined,
+      error_calc_data: props.errorCalcData ? JSON.parse(props.errorCalcData) : undefined,
+    }
+    const mergedParams = { ...(props.params ? JSON.parse(props.params) : {}), ...extra }
+    const payload = {
       class_id: selectedClassId.value,
       experiment_type: props.experimentType,
       experiment_name: props.experimentName,
       readings: props.readings,
-      params: props.params,
+      params: JSON.stringify(mergedParams),
       student_info: props.studentInfo,
       conclusion: conclusionData.conclusion,
       conclusion_errors: conclusionData.errors,
@@ -61,15 +74,18 @@ async function submit() {
       equations: props.equations,
       plots: props.plots,
       chart_snapshot: props.chartSnapshot,
-    })
+    }
+    console.log('[SubmitReport] payload size:', JSON.stringify(payload).length, 'chars')
+    const res = await createReport(payload)
     if (res.success) {
       success.value = 'تم إرسال التقرير بنجاح'
       setTimeout(() => { emit('update:show', false); emit('submitted') }, 1200)
     } else {
       error.value = 'فشل الإرسال'
     }
-  } catch (err) {
-    error.value = 'فشل الاتصال بالخادم'
+  } catch (err: any) {
+    console.error('[SubmitReport] error:', err)
+    error.value = err?.message || 'فشل الاتصال بالخادم'
   } finally {
     loading.value = false
   }

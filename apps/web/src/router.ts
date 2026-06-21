@@ -1,7 +1,8 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 import { useAuthStore } from './modules/auth/stores/auth';
+import './types/router'; // augmentation
 
-const routes = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'Landing',
@@ -55,8 +56,8 @@ router.beforeEach((to, from, next) => {
     return next('/');
   }
 
-  const requiredRoles = to.meta.roles as string[] | undefined;
-  if (requiredRoles && !requiredRoles.includes(auth.role || '')) {
+  const requiredRoles = to.meta.roles;
+  if (requiredRoles && auth.role && !requiredRoles.includes(auth.role)) {
     return next('/');
   }
 

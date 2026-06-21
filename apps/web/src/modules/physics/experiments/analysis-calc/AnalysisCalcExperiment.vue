@@ -1,24 +1,22 @@
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, onMounted, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAnalysisStore } from '../../../../stores/analysis.store';
 import { consumePendingPayload } from '../../../../composables/analysis/sendToAnalysis';
 import AnalysisMenuBar from '../../../../components/experiment/analysis-calc/AnalysisMenuBar.vue';
-import StudentInfoPanel from '../../../../components/experiment/analysis-calc/StudentInfoPanel.vue';
-import AnalysisDataTable from '../../../../components/experiment/analysis-calc/AnalysisDataTable.vue';
-import AnalysisChartWorkspace from '../../../../components/experiment/analysis-calc/AnalysisChartWorkspace.vue';
-import AnalysisEquationsPanel from '../../../../components/experiment/analysis-calc/AnalysisEquationsPanel.vue';
-import AnalysisStatsPanel from '../../../../components/experiment/analysis-calc/AnalysisStatsPanel.vue';
-import AnalysisConclusionPanel from '../../../../components/experiment/analysis-calc/AnalysisConclusionPanel.vue';
-import AnalysisReportPreview from '../../../../components/experiment/analysis-calc/AnalysisReportPreview.vue';
-import AnalysisReportExport from '../../../../components/experiment/analysis-calc/AnalysisReportExport.vue';
+import AnalysisTabs from '../../../../components/experiment/analysis-calc/AnalysisTabs.vue';
+import DataTab from '../../../../components/experiment/analysis-calc/DataTab.vue';
+import AnalysisTab from '../../../../components/experiment/analysis-calc/AnalysisTab.vue';
+import ReportTab from '../../../../components/experiment/analysis-calc/ReportTab.vue';
 import SubmitReportModal from '../../../../components/experiment/SubmitReportModal.vue';
 
 const router = useRouter();
 const store = useAnalysisStore();
-const showPreview = ref(false);
+const activeTab = ref(0);
 const reportOpen = ref(false);
 const conclusionData = ref({ conclusion: '', errors: '', improvements: '' });
+const chartSnapshot = ref('');
+const analysisTabRef = ref<InstanceType<typeof AnalysisTab> | null>(null);
 
 onMounted(() => {
   const pending = consumePendingPayload();
@@ -33,54 +31,84 @@ const equations = computed(() => store.equations);
 const plots = computed(() => store.plots);
 const studentInfo = computed(() => store.studentInfo);
 const reportDate = computed(() => store.reportDate);
+const solvedEquations = computed(() => analysisTabRef.value?.solvedEquations ?? []);
+const regressionData = computed(() => analysisTabRef.value?.getRegression ?? null);
+const slopeCalcData = computed(() => analysisTabRef.value?.getSlopeCalc ?? null);
+const axesData = computed(() => analysisTabRef.value?.getAxes ?? null);
+const errorCalcData = computed(() => analysisTabRef.value?.errorCalcData ?? null);
 
-function goBack() { router.push('/physics/mechanics'); }
-function clearData() { store.clearData(); showPreview.value = false; }
+function goBack() {
+  const referrer = localStorage.getItem('analysis-referrer');
+  if (referrer) { router.push(referrer); }
+  else { router.back(); }
+}
+function clearData() { store.clearData(); activeTab.value = 0; }
 function updateCell(row: number, key: string, value: number) { store.updateCell(row, key, value); }
+function addRow() { store.addRow(); }
+function removeRow(index: number) { store.removeRow(index); }
 function onConclusionUpdate(data: { conclusion: string; errors: string; improvements: string }) { conclusionData.value = data; }
 
-function printReport() {
+async function printReport() {
+  const prevTab = activeTab.value;
+  activeTab.value = 2;
+  await nextTick();
   const style = document.createElement('style');
   style.id = 'print-hide-style';
   style.innerHTML = `@media print {
-    .analysis-calc-page > *:not(.main-body) { display: none !important; }
-    .main-body { display: block !important; }
-    .left-col { display: none !important; }
-    .right-col { width: 100% !important; }
-    .btn-preview, .chart-panel { display: none !important; }
-    .preview-box { display: block !important; overflow: visible !important; height: auto !important; }
+    .analysis-calc-page > *:not(.tab-content) { display: none !important; }
+    .tab-content { display: flex !important; flex-direction: column !important; }
+    .data-tab, .analysis-tab { display: none !important; }
+    .report-tab .btn-preview, .report-tab .readiness, .report-tab .export-panel { display: none !important; }
+    .report-tab .preview-box { display: block !important; }
   }`;
   document.head.appendChild(style);
-  setTimeout(() => { window.print(); setTimeout(() => { const s = document.getElementById('print-hide-style'); if (s) s.remove(); }, 500); }, 100);
+  await new Promise<void>(r => setTimeout(r, 100));
+  window.print();
+  setTimeout(() => {
+    const s = document.getElementById('print-hide-style');
+    if (s) s.remove();
+    activeTab.value = prevTab;
+  }, 500);
 }
+
 function exportCsv() {
   if (!readings.value.length) return;
   const headers = columns.value.map(c => `${c.label}${c.unit ? ` (${c.unit})` : ''}`).join(',');
   const rows = readings.value.map((r, i) => [i + 1, ...columns.value.map(c => r[c.key] ?? '')].join(','));
-  const meta = [`Experiment: ${sourceName.value}`, `Date: ${reportDate.value}`, `Student: ${studentInfo.value.name}`, '',];
+  const meta = [`Experiment: ${sourceName.value}`, `Date: ${reportDate.value}`, `Student: ${studentInfo.value.name}`, ''];
   const csv = [...meta, headers, ...rows].join('\n');
   const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a'); a.href = url; a.download = `${sourceName.value}_report.csv`; a.click(); URL.revokeObjectURL(url);
 }
+
 async function exportPng() {
-  const canvas = document.querySelector('.chart-panel canvas') as HTMLCanvasElement;
-  if (!canvas) { alert('لا يوجد رسم بياني'); return; }
+  const prevTab = activeTab.value;
+  if (prevTab !== 1) { activeTab.value = 1; await nextTick(); await new Promise<void>(r => setTimeout(r, 200)); }
+  const canvas = analysisTabRef.value?.getCanvas;
+  if (!canvas || canvas.width === 0) {
+    if (prevTab !== 1) activeTab.value = prevTab;
+    console.warn('[exportPng] no chart canvas available');
+    return;
+  }
   const link = document.createElement('a');
   link.download = `${sourceName.value}_chart.png`;
   link.href = canvas.toDataURL('image/png');
   link.click();
-}
-const chartSnapshot = ref('');
-
-function captureChart() {
-  const canvas = document.querySelector('.chart-panel canvas') as HTMLCanvasElement;
-  if (canvas) chartSnapshot.value = canvas.toDataURL('image/png');
+  if (prevTab !== 1) activeTab.value = prevTab;
 }
 
-function sendToTeacher() {
+async function captureChart() {
+  const prevTab = activeTab.value;
+  if (prevTab !== 1) { activeTab.value = 1; await nextTick(); await new Promise<void>(r => setTimeout(r, 250)); }
+  const canvas = analysisTabRef.value?.getCanvas;
+  if (canvas && canvas.width > 0) chartSnapshot.value = canvas.toDataURL('image/png');
+  if (prevTab !== 1) activeTab.value = prevTab;
+}
+
+async function sendToTeacher() {
   if (!hasData.value) return;
-  captureChart();
+  await captureChart();
   reportOpen.value = true;
 }
 </script>
@@ -91,42 +119,39 @@ function sendToTeacher() {
 
     <div v-if="!hasData" class="no-data">
       <div class="no-data-box">
-        <h2>📊 التحليل والحساب</h2>
+        <h2>📊 قسم الرسم والحسابات</h2>
         <p>لم تُرسل بيانات من أي تجربة بعد.</p>
-        <p class="hint">اذهب إلى أي تجربة فيزيائية، سجل القراءات، ثم اضغط "تحليل النتائج".</p>
+        <p class="hint">اذهب إلى أي تجربة فيزيائية، سجل القراءات، ثم اضغط "قسم الرسم والحسابات".</p>
         <button class="btn-action" @click="goBack">العودة للتجارب</button>
       </div>
     </div>
 
-    <div v-else class="main-body">
-      <!-- العمود الأيسر: البيانات (35%) -->
-      <div class="left-col">
-        <StudentInfoPanel />
-        <AnalysisDataTable :readings="readings" :columns="columns" @update-cell="updateCell" />
-        <AnalysisConclusionPanel @update="onConclusionUpdate" />
-        <AnalysisReportExport :has-data="hasData" @print="printReport" @export-csv="exportCsv" @export-png="exportPng" @send-to-teacher="sendToTeacher" />
-      </div>
-      <!-- العمود الأيمن: التحليل (65%) -->
-      <div class="right-col">
-        <!-- الرسم يأخذ 55% -->
-        <div class="chart-area">
-          <AnalysisChartWorkspace :readings="readings" :columns="columns" :suggested-plots="plots" />
-        </div>
-        <!-- المعادلات + الإحصائيات بجانب بعض (45%) -->
-        <div class="analysis-row">
-          <div class="eq-area">
-            <AnalysisEquationsPanel :equations="equations" :readings="readings" />
-          </div>
-          <div class="stats-area">
-            <AnalysisStatsPanel :readings="readings" :columns="columns" />
-          </div>
-        </div>
-        <!-- معاينة التقرير -->
-        <button class="btn-preview" @click="showPreview = !showPreview">
-          {{ showPreview ? '✕ إخفاء' : '👁️ معاينة التقرير' }}
-        </button>
-        <div v-if="showPreview" class="preview-box">
-          <AnalysisReportPreview
+    <template v-else>
+      <AnalysisTabs :active="activeTab" @change="activeTab = $event" />
+      <div class="tab-content">
+        <Transition name="tab-fade" mode="out-in">
+          <DataTab
+            v-show="activeTab === 0"
+            :readings="readings"
+            :columns="columns"
+            @update-cell="updateCell"
+            @add-row="addRow"
+            @remove-row="removeRow"
+          />
+        </Transition>
+        <Transition name="tab-fade" mode="out-in">
+          <AnalysisTab
+            ref="analysisTabRef"
+            v-show="activeTab === 1"
+            :readings="readings"
+            :columns="columns"
+            :equations="equations"
+            :plots="plots"
+          />
+        </Transition>
+        <Transition name="tab-fade" mode="out-in">
+          <ReportTab
+            v-show="activeTab === 2"
             :source-name="sourceName"
             :report-date="reportDate"
             :student-info="studentInfo"
@@ -134,11 +159,22 @@ function sendToTeacher() {
             :columns="columns"
             :equations="equations"
             :plots="plots"
-            :conclusion="conclusionData"
+            :has-data="hasData"
+            :solved-equations="solvedEquations"
+            :regression-data="regressionData"
+            :slope-calc-data="slopeCalcData"
+            :axes-data="axesData"
+            :error-calc-data="errorCalcData"
+            :chart-snapshot="chartSnapshot"
+            @print="printReport"
+            @export-csv="exportCsv"
+            @export-png="exportPng"
+            @send-to-teacher="sendToTeacher"
+            @conclusion-update="onConclusionUpdate"
           />
-        </div>
+        </Transition>
       </div>
-    </div>
+    </template>
 
     <SubmitReportModal
       v-model:show="reportOpen"
@@ -152,6 +188,11 @@ function sendToTeacher() {
       :equations="JSON.stringify(equations)"
       :plots="JSON.stringify(plots)"
       :chart-snapshot="chartSnapshot"
+      :solved-equations="JSON.stringify(solvedEquations)"
+      :regression-data="JSON.stringify(regressionData)"
+      :slope-calc-data="JSON.stringify(slopeCalcData)"
+      :axes-data="JSON.stringify(axesData)"
+      :error-calc-data="JSON.stringify(errorCalcData)"
       @submitted="reportOpen = false"
     />
   </div>
@@ -176,33 +217,20 @@ function sendToTeacher() {
   margin-top: 1rem; padding: 0.5rem 1.2rem; border: none; border-radius: 0.5rem;
   background: linear-gradient(135deg, #06b6d4, #0891b2); color: #fff; cursor: pointer; font-weight: 600;
 }
-.main-body { flex: 1; overflow: hidden; display: flex; gap: 0.5rem; padding: 0.5rem; }
-.left-col {
-  width: 30%; min-width: 260px;
-  display: flex; flex-direction: column; gap: 0.5rem;
-  overflow-y: auto; overflow-x: hidden;
-}
-.right-col {
-  flex: 1; min-width: 0;
-  display: flex; flex-direction: column;
+.tab-content {
+  flex: 1;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
-.chart-area { flex: 1.4; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
-.analysis-row {
-  flex: 0.9; min-height: 0;
-  display: flex; flex-wrap: wrap;
-  gap: 0.5rem;
-  overflow-y: auto; overflow-x: hidden;
+
+.tab-fade-enter-active,
+.tab-fade-leave-active {
+  transition: opacity 0.2s ease;
 }
-.eq-area { flex: 1; min-width: 280px; overflow: hidden; display: flex; flex-direction: column; }
-.stats-area { flex: 1; min-width: 280px; overflow: hidden; display: flex; flex-direction: column; }
-.btn-preview {
-  flex-shrink: 0; padding: 0.4rem 0.75rem; border: none; border-radius: 0.35rem;
-  background: linear-gradient(135deg, #475569, #334155); color: #fff; cursor: pointer;
-  font-size: 0.85rem; font-weight: 700; text-align: center;
-}
-.preview-box {
-  flex: 1; overflow-y: auto; background: #0f172a; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.06);
-  padding: 0.5rem;
+
+.tab-fade-enter-from,
+.tab-fade-leave-to {
+  opacity: 0;
 }
 </style>

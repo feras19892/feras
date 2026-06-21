@@ -63,7 +63,7 @@ onUnmounted(() => window.removeEventListener('click', onMenuClick))
         </div>
       </div>
       <div class="menu-group">
-        <button class="menu-btn analyze-btn" @click="emit('analyzeResults')">&#x1F4CA; تحليل النتائج</button>
+        <button class="menu-btn analyze-btn" @click="emit('analyzeResults')">&#x1F4CA; قسم الرسم والحسابات</button>
       </div>
       <div class="menu-group">
         <button class="menu-btn" @click="emit('toggleHelp')">&#x2753; مساعدة</button>

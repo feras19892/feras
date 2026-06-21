@@ -27,7 +27,7 @@ function onSend() {
     <div class="panel-header">📤 إرسال التقرير</div>
     <div class="actions">
       <button class="btn btn-print" :disabled="!hasData" @click="emit('print')">
-        🖨️ طباعة
+        🖨️ طباعة / PDF
       </button>
       <button class="btn btn-csv" :disabled="!hasData" @click="emit('exportCsv')">
         📄 CSV

@@ -2,13 +2,16 @@ import { reactive, ref } from 'vue'
 
 const STORAGE_KEY = 'collision:layout:v2'
 
-const DEFAULT_ORDER = {
+export type PanelId = 'params' | 'data' | 'signal' | 'stats' | 'equations' | 'report'
+export type ColumnId = 'data' | 'vis' | 'ctrl'
+
+const DEFAULT_ORDER: Record<ColumnId, PanelId[]> = {
   data: ['data', 'signal'],
   vis: [],
   ctrl: ['params'],
 }
 
-const PANEL_TITLES: Record<string, string> = {
+const PANEL_TITLES: Record<PanelId, string> = {
   params: '⚙️ المعاملات',
   data: '📊 البيانات',
   signal: '📈 إشارة v(t)',
@@ -18,43 +21,45 @@ const PANEL_TITLES: Record<string, string> = {
 }
 
 export function useCollisionLayout() {
-  try { localStorage.removeItem('collision:layout:v1') } catch { /* ignore */ }
+  const visible = ref<Set<PanelId>>(new Set(['params', 'data', 'signal']))
+  const columnOrder = reactive<Record<ColumnId, PanelId[]>>(JSON.parse(JSON.stringify(DEFAULT_ORDER)))
+  const maximized = reactive<Partial<Record<PanelId, boolean>>>({})
 
-  const visible = ref<Set<string>>(new Set(['params', 'data', 'signal']))
-  const columnOrder = reactive<Record<string, string[]>>(JSON.parse(JSON.stringify(DEFAULT_ORDER)))
-  const maximized = reactive<Record<string, boolean>>({})
-
-  function isPanelVisible(id: string) { return visible.value.has(id) }
+  function isPanelVisible(id: string) { return visible.value.has(id as PanelId) }
   function togglePanel(id: string) {
-    if (visible.value.has(id)) visible.value.delete(id)
-    else visible.value.add(id)
+    const pid = id as PanelId
+    if (visible.value.has(pid)) visible.value.delete(pid)
+    else visible.value.add(pid)
     persist()
   }
   function showAllPanels() {
-    visible.value = new Set(Object.keys(PANEL_TITLES))
+    visible.value = new Set(Object.keys(PANEL_TITLES) as PanelId[])
     persist()
   }
-  function showPanels(ids: string[]) {
+  function showPanels(ids: PanelId[]) {
     for (const id of ids) visible.value.add(id)
     persist()
   }
-  function panelTitle(id: string) { return PANEL_TITLES[id] || id }
+  function panelTitle(id: string) { return PANEL_TITLES[id as PanelId] ?? id }
 
   function maximizePanel(id: string) {
-    maximized[id] = !maximized[id]
+    const pid = id as PanelId
+    maximized[pid] = !maximized[pid]
   }
 
-  function movePanel(id: string, col: string, afterId?: string | null) {
-    for (const c of Object.keys(columnOrder)) {
-      columnOrder[c] = columnOrder[c].filter((pid) => pid !== id)
+  function movePanel(id: string, col: ColumnId, afterId?: string | null) {
+    const pid = id as PanelId
+    const after = afterId ? (afterId as PanelId) : null
+    for (const c of Object.keys(columnOrder) as ColumnId[]) {
+      columnOrder[c] = columnOrder[c].filter((p) => p !== pid)
     }
     if (!columnOrder[col]) columnOrder[col] = []
-    if (afterId) {
-      const idx = columnOrder[col].indexOf(afterId)
-      if (idx >= 0) columnOrder[col].splice(idx + 1, 0, id)
-      else columnOrder[col].push(id)
+    if (after) {
+      const idx = columnOrder[col].indexOf(after)
+      if (idx >= 0) columnOrder[col].splice(idx + 1, 0, pid)
+      else columnOrder[col].push(pid)
     } else {
-      columnOrder[col].push(id)
+      columnOrder[col].push(pid)
     }
     persist()
   }

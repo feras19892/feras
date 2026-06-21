@@ -3,7 +3,6 @@ import SpringDataPanel from './SpringDataPanel.vue'
 import SpringSignalChart from './SpringSignalChart.vue'
 import SpringParamPanel from './SpringParamPanel.vue'
 import SpringGuidePanel from './SpringGuidePanel.vue'
-import type { PanelId } from '../../../composables/spring/useSpringLayout'
 import type { Trial } from '../../../composables/spring/useSpringTrials'
 import type { SpringParams } from '../../../modules/physics/experiments/spring/useSpringPhysics'
 
@@ -17,7 +16,7 @@ interface SimState {
 }
 
 const props = defineProps<{
-  id: PanelId
+  id: string
   trials: Trial[]
   params: SpringParams
   sim: SimState

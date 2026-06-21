@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import type { AnalysisPayload } from '../types/physics';
+import { clearAnalysisStorage } from '../composables/analysis/sendToAnalysis';
 
 export interface StudentInfo {
   name: string;
@@ -38,6 +39,18 @@ export const useAnalysisStore = defineStore('analysis', () => {
     payload.value = null;
     modifiedReadings.value = [];
     studentInfo.value = { name: '', email: '', grade: '', notes: '' };
+    clearAnalysisStorage();
+  }
+
+  function addRow() {
+    if (!payload.value) return;
+    const empty: Record<string, number> = {};
+    for (const col of payload.value.columns) { empty[col.key] = 0; }
+    modifiedReadings.value = [...modifiedReadings.value, empty];
+  }
+
+  function removeRow(index: number) {
+    modifiedReadings.value = modifiedReadings.value.filter((_, i) => i !== index);
   }
 
   function updateStudentInfo(info: Partial<StudentInfo>) {
@@ -63,6 +76,8 @@ export const useAnalysisStore = defineStore('analysis', () => {
     setPayload,
     updateCell,
     clearData,
+    addRow,
+    removeRow,
     updateStudentInfo,
   };
 });

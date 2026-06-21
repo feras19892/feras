@@ -19,32 +19,41 @@ const {
   slopeCalc,
   showSlopeResult,
   showAxisControls,
+  xAxisLabel,
+  yAxisLabel,
 } = useChartWorkspace(
   () => props.readings,
   () => props.columns,
   () => props.suggestedPlots
 );
+
+defineExpose({
+  getCanvas: () => canvasRef.value,
+  getRegression: () => regression.value,
+  getSlopeCalc: () => slopeCalc.value,
+  getAxes: () => ({ x: xKey.value, y: yKey.value, xLabel: xAxisLabel.value, yLabel: yAxisLabel.value }),
+});
 </script>
 
 <template>
   <div class="chart-panel" ref="containerRef">
     <div class="panel-header">
-      <span>📈 رسم بياني</span>
+      <span>📈 {{ xKey && yKey ? `${yAxisLabel} ضد ${xAxisLabel}` : 'رسم بياني' }}</span>
       <button class="btn-toggle" @click="showAxisControls = !showAxisControls">
-        {{ showAxisControls ? '✕' : '⚙️' }} محاور
+        ⚙️ محاور
       </button>
     </div>
     <div v-if="showAxisControls" class="axis-controls">
       <div class="ctrl-row">
         <label>محور X</label>
         <select v-model="xKey">
-          <option v-for="k in numericKeys" :key="k" :value="k">{{ k }}</option>
+          <option v-for="col in columns" :key="col.key" :value="col.key">{{ col.label }}{{ col.unit ? ` (${col.unit})` : '' }}</option>
         </select>
       </div>
       <div class="ctrl-row">
         <label>محور Y</label>
         <select v-model="yKey">
-          <option v-for="k in numericKeys" :key="k" :value="k">{{ k }}</option>
+          <option v-for="col in columns" :key="col.key" :value="col.key">{{ col.label }}{{ col.unit ? ` (${col.unit})` : '' }}</option>
         </select>
       </div>
     </div>

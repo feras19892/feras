@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { getReports } from '../../services/report.service'
 import type { Report } from '../../services/report.service'
 import { useAuthStore } from '../../modules/auth/stores/auth'
@@ -59,6 +59,10 @@ function statusClass(s: string) {
 onMounted(() => {
   load()
 })
+
+watch(() => auth.user, (u) => {
+  if (u) load()
+}, { immediate: false })
 </script>
 
 <template>

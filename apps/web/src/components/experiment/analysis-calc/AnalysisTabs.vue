@@ -21,8 +21,8 @@ const tabs = ['📋 البيانات', '📈 التحليل', '📄 التقري
 <style scoped>
 .tabs-bar {
   display: flex;
-  gap: 0.25rem;
-  padding: 0.35rem 0.5rem;
+  gap: 0.3rem;
+  padding: 0.4rem 0.6rem;
   background: rgba(255,255,255,0.03);
   border-bottom: 1px solid rgba(255,255,255,0.06);
   flex-shrink: 0;
@@ -32,16 +32,27 @@ const tabs = ['📋 البيانات', '📈 التحليل', '📄 التقري
   background: transparent;
   border: none;
   color: #94a3b8;
-  padding: 0.4rem 0.6rem;
-  border-radius: 0.35rem;
-  font-size: 0.8rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: 0.4rem;
+  font-size: 0.82rem;
   cursor: pointer;
   transition: all .15s;
-  font-weight: 600;
+  font-weight: 700;
+  position: relative;
 }
 .tab-btn.active {
-  background: rgba(6,182,212,0.15);
+  background: rgba(6,182,212,0.12);
   color: #67e8f9;
 }
-.tab-btn:hover:not(.active) { color: #e2e8f0; }
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  background: #67e8f9;
+  border-radius: 1px;
+}
+.tab-btn:hover:not(.active) { color: #e2e8f0; background: rgba(255,255,255,0.03); }
 </style>

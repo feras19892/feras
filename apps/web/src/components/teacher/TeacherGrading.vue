@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { getMyClasses, getPendingCount } from '../../services/class.service'
-import { getReports, getGradeHistory, deleteReport } from '../../services/report.service'
+import { getReports, getGradeHistory, deleteReport, markReportSeen } from '../../services/report.service'
 import type { ClassItem } from '../../services/class.service'
 import type { Report, GradeHistoryEntry } from '../../services/report.service'
 import { useAuthStore } from '../../modules/auth/stores/auth'
@@ -33,9 +33,13 @@ const viewReport = ref<Report | null>(null)
 const gradeTarget = ref<Report | null>(null)
 const gradeHistory = ref<GradeHistoryEntry[]>([])
 
-function openView(r: Report) {
+async function openView(r: Report) {
   viewReport.value = r
   viewOpen.value = true
+  if (!r.teacher_seen) {
+    try { await markReportSeen(r.id) } catch { /* ignore */ }
+    r.teacher_seen = true
+  }
   loadHistory(r.id)
 }
 
@@ -98,9 +102,33 @@ async function loadReports() {
   }
 }
 
+let refreshInterval: ReturnType<typeof setInterval> | null = null
+
+function startAutoRefresh(intervalMs = 15000) {
+  stopAutoRefresh()
+  refreshInterval = setInterval(async () => {
+    if (selectedClassId.value) await loadReports()
+    try {
+      const p = await getPendingCount()
+      if (p.success) pendingCount.value = p.pendingCount
+    } catch { /* ignore */ }
+  }, intervalMs)
+}
+
+function stopAutoRefresh() {
+  if (refreshInterval) { clearInterval(refreshInterval); refreshInterval = null }
+}
+
 onMounted(() => {
   loadClasses()
+  startAutoRefresh()
 })
+
+onUnmounted(() => stopAutoRefresh())
+
+watch(() => auth.user, (u) => {
+  if (u) loadClasses()
+}, { immediate: false })
 </script>
 
 <template>

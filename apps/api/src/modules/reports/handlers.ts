@@ -14,7 +14,6 @@ app.use(authMiddleware);
 // POST / — إنشاء
 app.post('/', zValidator('json', createReportSchema), async (c) => {
   const user = c.get('user');
-  if (user.role !== 'student') return c.json({ success: false, message: 'غير مصرح' }, 403);
   const body = c.req.valid('json');
   const result = await svc.createReport({
     student_id: user.id,
@@ -38,7 +37,6 @@ app.post('/', zValidator('json', createReportSchema), async (c) => {
 // POST /:id/resubmit — إعادة إرسال
 app.post('/:id/resubmit', zValidator('json', createReportSchema), async (c) => {
   const user = c.get('user');
-  if (user.role !== 'student') return c.json({ success: false, message: 'غير مصرح' }, 403);
   const id = Number(c.req.param('id'));
   const body = c.req.valid('json');
   const result = await svc.resubmitReport(id, {
@@ -141,6 +139,28 @@ app.get('/student/:student_id/stats', async (c) => {
   }
   const stats = await svc.getStudentStats(studentId);
   return c.json({ success: true, stats });
+});
+
+// GET /class/:class_id/stats — إحصائيات الفصل
+app.get('/class/:class_id/stats', async (c) => {
+  const user = c.get('user');
+  if (user.role !== 'teacher' && user.role !== 'admin') {
+    return c.json({ success: false, message: 'غير مصرح' }, 403);
+  }
+  const classId = c.req.param('class_id');
+  const stats = await svc.getClassStats(classId);
+  return c.json({ success: true, stats });
+});
+
+// GET /class/:class_id/export — تصدير كل التقارير
+app.get('/class/:class_id/export', async (c) => {
+  const user = c.get('user');
+  if (user.role !== 'teacher' && user.role !== 'admin') {
+    return c.json({ success: false, message: 'غير مصرح' }, 403);
+  }
+  const classId = c.req.param('class_id');
+  const reports = await svc.getClassReportsForExport(classId);
+  return c.json({ success: true, reports });
 });
 
 // DELETE /:id

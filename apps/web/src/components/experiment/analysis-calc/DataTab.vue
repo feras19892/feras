@@ -9,7 +9,11 @@ const props = defineProps<{
   readings: Record<string, number>[];
   columns: AnalysisColumnMeta[];
 }>();
-const emit = defineEmits<{ (e: 'update-cell', row: number, key: string, value: number): void }>();
+const emit = defineEmits<{
+  (e: 'update-cell', row: number, key: string, value: number): void;
+  (e: 'add-row'): void;
+  (e: 'remove-row', index: number): void;
+}>();
 
 const checks = computed(() => {
   const c: string[] = [];
@@ -29,9 +33,15 @@ const checks = computed(() => {
 
 <template>
   <div class="data-tab">
-    <div class="grid">
-      <div class="left">
+    <!-- Panels في الأعلى — 3 أعمدة -->
+    <div class="top-panels">
+      <div class="bp-col">
         <StudentInfoPanel />
+      </div>
+      <div class="bp-col">
+        <AnalysisStatsPanel :readings="readings" :columns="columns" />
+      </div>
+      <div class="bp-col">
         <div class="checks">
           <div class="checks-title">🔍 فحص البيانات</div>
           <div v-for="(ch, i) in checks" :key="i" :class="['check-item', ch.includes('✅') ? 'ok' : 'warn']">
@@ -39,22 +49,64 @@ const checks = computed(() => {
           </div>
         </div>
       </div>
-      <div class="right">
-        <AnalysisDataTable :readings="readings" :columns="columns" @update-cell="(r,k,v) => emit('update-cell', r,k,v)" />
-        <AnalysisStatsPanel :readings="readings" :columns="columns" />
-      </div>
+    </div>
+
+    <!-- الجدول في الأسفل — عرض كامل -->
+    <div class="table-section">
+      <AnalysisDataTable
+        :readings="readings"
+        :columns="columns"
+        @update-cell="(r,k,v) => emit('update-cell', r,k,v)"
+        @add-row="emit('add-row')"
+        @remove-row="(i) => emit('remove-row', i)"
+      />
     </div>
   </div>
 </template>
 
 <style scoped>
-.data-tab { flex: 1; overflow: hidden; display: flex; flex-direction: column; padding: 0.5rem; }
-.grid { display: flex; gap: 0.5rem; height: 100%; }
-.left { width: 320px; flex-shrink: 0; display: flex; flex-direction: column; gap: 0.5rem; overflow-y: auto; }
-.right { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.5rem; overflow: hidden; }
-.checks { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.5rem; padding: 0.5rem; }
-.checks-title { font-size: 0.8rem; color: #67e8f9; font-weight: 600; margin-bottom: 0.3rem; }
-.check-item { font-size: 0.75rem; padding: 0.2rem 0; }
+.data-tab {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 0.6rem;
+  gap: 0.6rem;
+}
+.top-panels {
+  display: flex;
+  gap: 0.6rem;
+  flex-shrink: 0;
+  height: 200px;
+}
+.table-section {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.bp-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.bp-col :deep(.student-panel),
+.bp-col :deep(.stats-panel) {
+  flex: 1;
+  overflow: hidden;
+}
+.checks {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 0.4rem;
+  padding: 0.4rem 0.5rem;
+  height: 100%;
+  overflow-y: auto;
+}
+.checks-title { font-size: 0.75rem; color: #67e8f9; font-weight: 700; margin-bottom: 0.2rem; }
+.check-item { font-size: 0.72rem; padding: 0.1rem 0; line-height: 1.4; }
 .check-item.ok { color: #4ade80; }
 .check-item.warn { color: #fbbf24; }
 </style>

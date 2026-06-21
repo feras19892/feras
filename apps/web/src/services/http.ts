@@ -10,10 +10,17 @@ export interface FetchOptions extends RequestInit {
   signal?: AbortSignal;
 }
 
-let accessToken: string | null = null;
+const TOKEN_KEY = 'access-token';
+
+function loadToken(): string | null {
+  try { return localStorage.getItem(TOKEN_KEY); } catch { return null; }
+}
+
+let accessToken: string | null = loadToken();
 
 export function setAccessToken(token: string | null) {
   accessToken = token;
+  try { if (token) localStorage.setItem(TOKEN_KEY, token); else localStorage.removeItem(TOKEN_KEY); } catch { /* ignore */ }
 }
 
 export function getAccessToken(): string | null {
@@ -42,7 +49,7 @@ export async function fetchJson<T>(path: string, options: FetchOptions = {}): Pr
       if (refreshRes.ok) {
         const refreshData = await refreshRes.json();
         if (refreshData.token) {
-          accessToken = refreshData.token;
+          setAccessToken(refreshData.token);
           mergedHeaders.Authorization = `Bearer ${accessToken}`;
           response = await fetch(apiUrl(path), {
             ...options,
@@ -51,15 +58,20 @@ export async function fetchJson<T>(path: string, options: FetchOptions = {}): Pr
           });
         }
       } else {
-        accessToken = null;
+        setAccessToken(null);
       }
     } catch {
-      accessToken = null;
+      setAccessToken(null);
     }
   }
 
   if (!response.ok) {
-    throw new Error(`Request failed: ${response.status} ${response.statusText}`);
+    let msg = `Request failed: ${response.status} ${response.statusText}`;
+    try {
+      const body = await response.json();
+      if (body && body.message) msg = body.message;
+    } catch { /* ignore */ }
+    throw new Error(msg);
   }
   return (await response.json()) as T;
 }

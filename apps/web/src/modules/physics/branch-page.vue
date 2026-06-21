@@ -40,7 +40,6 @@ function difficultyLabel(d: string): string {
     </header>
 
     <div v-if="branch" class="experiments">
-      <h2>التجارب المتاحة</h2>
       <div class="grid">
         <div
           v-for="exp in branch.experiments"

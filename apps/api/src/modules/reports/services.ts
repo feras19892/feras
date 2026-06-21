@@ -173,6 +173,70 @@ export async function getStudentStats(studentId: number) {
   return { total, graded: graded.length, pending: total - graded.length, average: avg };
 }
 
+export async function getClassStats(classId: string) {
+  const reports = await db.all(
+    `SELECT r.*, u.name as student_name FROM experiment_reports r
+     JOIN users u ON r.student_id = u.id WHERE r.class_id = ?`, classId);
+
+  const total = reports.length;
+  const graded = reports.filter((r: any) => r.status === 'graded');
+  const avg = graded.length > 0
+    ? Math.round(graded.reduce((s: number, r: any) => s + (r.grade || 0), 0) / graded.length)
+    : 0;
+
+  // Per-experiment stats
+  const expMap = new Map<string, { count: number; grades: number[] }>();
+  for (const r of reports) {
+    const name = r.experiment_name;
+    const cur = expMap.get(name) || { count: 0, grades: [] };
+    cur.count++;
+    if (r.grade !== undefined && r.grade !== null) cur.grades.push(r.grade);
+    expMap.set(name, cur);
+  }
+  const experiments = Array.from(expMap.entries()).map(([name, data]) => ({
+    name,
+    count: data.count,
+    avg: data.grades.length > 0 ? Math.round(data.grades.reduce((a: number, b: number) => a + b, 0) / data.grades.length) : 0,
+    highest: data.grades.length > 0 ? Math.max(...data.grades) : 0,
+    lowest: data.grades.length > 0 ? Math.min(...data.grades) : 0,
+  }));
+
+  // Per-student stats
+  const studentMap = new Map<number, { name: string; reports: number; grades: number[]; last_submitted?: string }>();
+  for (const r of reports) {
+    const sid = r.student_id;
+    const cur = studentMap.get(sid) || { name: r.student_name, reports: 0, grades: [], last_submitted: r.submitted_at };
+    cur.reports++;
+    if (r.grade !== undefined && r.grade !== null) cur.grades.push(r.grade);
+    if (r.submitted_at && (!cur.last_submitted || r.submitted_at > cur.last_submitted)) cur.last_submitted = r.submitted_at;
+    studentMap.set(sid, cur);
+  }
+  const students = Array.from(studentMap.entries()).map(([id, data]) => ({
+    id, name: data.name, reports: data.reports,
+    avg: data.grades.length > 0 ? Math.round(data.grades.reduce((a: number, b: number) => a + b, 0) / data.grades.length) : 0,
+    lastSubmitted: data.last_submitted,
+  })).sort((a, b) => b.avg - a.avg);
+
+  // Grade distribution
+  const distribution: Record<string, number> = { '0-20': 0, '21-40': 0, '41-60': 0, '61-80': 0, '81-100': 0 };
+  for (const g of graded) {
+    const grade = g.grade || 0;
+    if (grade <= 20) distribution['0-20']++;
+    else if (grade <= 40) distribution['21-40']++;
+    else if (grade <= 60) distribution['41-60']++;
+    else if (grade <= 80) distribution['61-80']++;
+    else distribution['81-100']++;
+  }
+
+  return { total, graded: graded.length, pending: total - graded.length, average: avg, experiments, students, distribution };
+}
+
+export async function getClassReportsForExport(classId: string) {
+  return db.all(
+    `SELECT r.*, u.name as student_name FROM experiment_reports r
+     JOIN users u ON r.student_id = u.id WHERE r.class_id = ? ORDER BY r.submitted_at DESC`, classId);
+}
+
 export async function deleteReport(id: number, studentId?: number) {
   if (studentId !== undefined) {
     const report = await db.get('SELECT student_id, status FROM experiment_reports WHERE id = ?', id);

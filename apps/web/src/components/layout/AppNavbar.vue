@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../modules/auth/stores/auth'
 import { getPendingCount } from '../../services/class.service'
@@ -8,14 +8,23 @@ import NotificationBell from '../shared/NotificationBell.vue'
 const router = useRouter()
 const auth = useAuthStore()
 const pendingCount = ref(0)
+let pendingInterval: ReturnType<typeof setInterval> | null = null
 
-onMounted(async () => {
-  if (auth.isTeacher || auth.isAdmin) {
-    try {
-      const res = await getPendingCount()
-      if (res.success) pendingCount.value = res.pendingCount
-    } catch { /* ignore */ }
-  }
+async function refreshPending() {
+  if (!auth.isTeacher && !auth.isAdmin) return
+  try {
+    const res = await getPendingCount()
+    if (res.success) pendingCount.value = res.pendingCount
+  } catch { /* ignore */ }
+}
+
+onMounted(() => {
+  refreshPending()
+  pendingInterval = setInterval(refreshPending, 15000)
+})
+
+onUnmounted(() => {
+  if (pendingInterval) clearInterval(pendingInterval)
 })
 
 defineProps<{

@@ -47,7 +47,15 @@ async function submit() {
       experiment_type: props.originalReport.experiment_type,
       experiment_name: props.originalReport.experiment_name,
       readings: readings.value,
+      params: props.originalReport.params,
+      student_info: props.originalReport.student_info,
       conclusion: conclusion.value,
+      conclusion_errors: props.originalReport.conclusion_errors,
+      conclusion_improvements: props.originalReport.conclusion_improvements,
+      columns: props.originalReport.columns,
+      equations: props.originalReport.equations,
+      plots: props.originalReport.plots,
+      chart_snapshot: props.originalReport.chart_snapshot,
     });
     if (res.success) {
       success.value = 'تم إعادة الإرسال بنجاح';

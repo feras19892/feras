@@ -87,7 +87,9 @@ export function useAuthActions(
       const data = await fetchJson<{ user: User }>('/api/auth/me')
       user.value = data.user
     } catch {
-      // keep cached user; token refresh happens in fetchJson
+      // auth failed (token expired and refresh failed) — clear user to force re-login
+      user.value = null
+      setAccessToken(null)
     }
   }
 

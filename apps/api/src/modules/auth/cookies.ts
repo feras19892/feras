@@ -4,10 +4,10 @@ import type { Context } from 'hono';
 const isProd = process.env.NODE_ENV === 'production';
 
 const COOKIE_OPTS = {
-  path: '/api/auth',
+  path: '/',
   httpOnly: true,
   secure: isProd,
-  sameSite: 'Strict' as const,
+  sameSite: isProd ? 'Strict' as const : 'Lax' as const,
   maxAge: 7 * 24 * 60 * 60,
 };
 

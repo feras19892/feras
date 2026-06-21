@@ -13,15 +13,19 @@ const props = defineProps<{
 }>();
 
 const chartRef = ref<InstanceType<typeof AnalysisChartWorkspace> | null>(null);
-const getCanvas = computed(() => chartRef.value?.getCanvas() ?? null);
-const getRegression = computed(() => chartRef.value?.getRegression() ?? null);
-const getSlopeCalc = computed(() => chartRef.value?.getSlopeCalc() ?? null);
-const getAxes = computed(() => chartRef.value?.getAxes() ?? null);
 const eqCollapsed = ref(false);
 const solvedEquations = ref<{ equationName: string; formula: string; targetVar: string; varValues: Record<string, number>; result: string; timestamp: number }[]>([]);
 const errorCalcData = ref<{ theoretical: number | null; experimental: number | null; errorPercent: number | null } | null>(null);
 
-defineExpose({ getCanvas, getRegression, getSlopeCalc, getAxes, solvedEquations, errorCalcData });
+defineExpose({
+  getCanvas: () => chartRef.value?.getCanvas() ?? null,
+  getRegression: () => chartRef.value?.getRegression() ?? null,
+  getSlopeCalc: () => chartRef.value?.getSlopeCalc() ?? null,
+  getAxes: () => chartRef.value?.getAxes() ?? null,
+  drawChart: () => chartRef.value?.draw?.(),
+  solvedEquations,
+  errorCalcData,
+});
 </script>
 
 <template>

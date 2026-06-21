@@ -21,6 +21,7 @@ const {
   showAxisControls,
   xAxisLabel,
   yAxisLabel,
+  draw,
 } = useChartWorkspace(
   () => props.readings,
   () => props.columns,
@@ -32,6 +33,7 @@ defineExpose({
   getRegression: () => regression.value,
   getSlopeCalc: () => slopeCalc.value,
   getAxes: () => ({ x: xKey.value, y: yKey.value, xLabel: xAxisLabel.value, yLabel: yAxisLabel.value }),
+  draw: () => draw(),
 });
 </script>
 

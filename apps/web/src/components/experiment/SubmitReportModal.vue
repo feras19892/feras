@@ -2,7 +2,10 @@
 import { ref, watch } from 'vue'
 import { getMyClasses } from '../../services/class.service'
 import { createReport } from '../../services/report.service'
+import { useAuthStore } from '../../modules/auth/stores/auth'
 import type { ClassItem } from '../../services/class.service'
+
+const auth = useAuthStore()
 
 const props = defineProps<{
   show: boolean
@@ -35,29 +38,45 @@ const error = ref('')
 const success = ref('')
 
 async function loadClasses() {
+  if (!auth.isLoggedIn) {
+    error.value = 'يجب تسجيل الدخول أولاً'
+    return
+  }
   try {
     const res = await getMyClasses()
     if (res.success) {
       classes.value = res.classes
       if (res.classes.length > 0) selectedClassId.value = res.classes[0].id
     }
-  } catch (err) {
+  } catch (err: any) {
     console.error('load classes failed:', err)
+    if (err?.message?.includes('401') || err?.message?.includes('Unauthorized')) {
+      error.value = 'انتهت الجلسة — سجل دخولك مرة أخرى'
+    } else {
+      error.value = 'تعذر تحميل الفصول'
+    }
   }
 }
 
 async function submit() {
+  if (!auth.isLoggedIn) { error.value = 'يجب تسجيل الدخول أولاً'; return }
+  console.log('[Submit] clicked, classId:', selectedClassId.value, 'classes:', classes.value.length);
   if (!selectedClassId.value) { error.value = 'اختر فصلاً'; return }
   loading.value = true; error.value = ''; success.value = ''
 
   try {
+    console.log('[Submit] readings length:', props.readings?.length, 'chartSnapshot length:', props.chartSnapshot?.length);
     const conclusionData = props.conclusion ? JSON.parse(props.conclusion) : { conclusion: '', errors: '', improvements: '' }
+    function safeParse(str: string | undefined) {
+      if (!str) return undefined
+      try { return JSON.parse(str) } catch { return undefined }
+    }
     const extra = {
-      solved_equations: props.solvedEquations ? JSON.parse(props.solvedEquations) : undefined,
-      regression_data: props.regressionData ? JSON.parse(props.regressionData) : undefined,
-      slope_calc_data: props.slopeCalcData ? JSON.parse(props.slopeCalcData) : undefined,
-      axes_data: props.axesData ? JSON.parse(props.axesData) : undefined,
-      error_calc_data: props.errorCalcData ? JSON.parse(props.errorCalcData) : undefined,
+      solved_equations: safeParse(props.solvedEquations),
+      regression_data: safeParse(props.regressionData),
+      slope_calc_data: safeParse(props.slopeCalcData),
+      axes_data: safeParse(props.axesData),
+      error_calc_data: safeParse(props.errorCalcData),
     }
     const mergedParams = { ...(props.params ? JSON.parse(props.params) : {}), ...extra }
     const payload = {
@@ -75,8 +94,10 @@ async function submit() {
       plots: props.plots,
       chart_snapshot: props.chartSnapshot,
     }
+    console.log('[SubmitReport] payload keys:', Object.keys(payload).join(', '))
     console.log('[SubmitReport] payload size:', JSON.stringify(payload).length, 'chars')
     const res = await createReport(payload)
+    console.log('[SubmitReport] response:', res)
     if (res.success) {
       success.value = 'تم إرسال التقرير بنجاح'
       setTimeout(() => { emit('update:show', false); emit('submitted') }, 1200)
@@ -101,7 +122,13 @@ watch(() => props.show, (val) => {
     <div class="report-modal">
       <h3>إرسال التقرير للمدرس</h3>
 
-      <div class="form-row">
+      <div v-if="!auth.isLoggedIn" class="form-row">
+        <div class="login-required">
+          🔒 يجب تسجيل الدخول لإرسال التقرير
+        </div>
+      </div>
+
+      <div v-else class="form-row">
         <label>الفصل</label>
         <select v-model="selectedClassId">
           <option v-for="cls in classes" :key="cls.id" :value="cls.id">{{ cls.name }}</option>
@@ -136,7 +163,7 @@ watch(() => props.show, (val) => {
 
       <div class="actions">
         <button class="btn-cancel" @click="$emit('update:show', false)">إلغاء</button>
-        <button class="btn-submit" :disabled="loading || classes.length === 0" @click="submit">
+        <button class="btn-submit" :disabled="loading || !auth.isLoggedIn || classes.length === 0" @click="submit">
           {{ loading ? '...' : 'إرسال' }}
         </button>
       </div>
@@ -183,5 +210,6 @@ watch(() => props.show, (val) => {
 .btn-submit { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none; }
 .tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
 .tag { background: rgba(99, 102, 241, 0.15); color: #a5b4fc; font-size: 0.75rem; padding: 0.25rem 0.5rem; border-radius: 0.35rem; border: 1px solid rgba(99, 102, 241, 0.2); }
+.login-required { background: rgba(239, 68, 68, 0.1); color: #f87171; padding: 0.75rem; border-radius: 0.5rem; text-align: center; font-size: 0.9rem; border: 1px solid rgba(239, 68, 68, 0.2); }
 .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
 </style>

@@ -104,7 +104,7 @@ async function loadReports() {
 
 let refreshInterval: ReturnType<typeof setInterval> | null = null
 
-function startAutoRefresh(intervalMs = 15000) {
+function startAutoRefresh(intervalMs = 30000) {
   stopAutoRefresh()
   refreshInterval = setInterval(async () => {
     if (selectedClassId.value) await loadReports()

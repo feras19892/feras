@@ -1,11 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { useNotifications } from '../../composables/useNotifications';
 
 const { notifications, unreadCount, markAllRead } = useNotifications();
 const open = ref(false);
+const wrapperRef = ref<HTMLElement | null>(null);
 
 function toggle() { open.value = !open.value; }
+
+function onDocumentClick(event: MouseEvent) {
+  if (wrapperRef.value && !wrapperRef.value.contains(event.target as Node)) {
+    open.value = false;
+  }
+}
+
+onMounted(() => document.addEventListener('mousedown', onDocumentClick));
+onUnmounted(() => document.removeEventListener('mousedown', onDocumentClick));
 
 function getIcon(type: string) {
   const map: Record<string, string> = {
@@ -25,7 +35,7 @@ function formatTime(dateStr: string) {
 </script>
 
 <template>
-  <div class="bell-wrapper">
+  <div ref="wrapperRef" class="bell-wrapper">
     <button class="bell-btn" @click="toggle">
       🔔
       <span v-if="unreadCount > 0" class="badge">{{ unreadCount }}</span>

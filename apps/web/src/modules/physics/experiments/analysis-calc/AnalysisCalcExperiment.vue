@@ -31,6 +31,8 @@ const equations = computed(() => store.equations);
 const plots = computed(() => store.plots);
 const studentInfo = computed(() => store.studentInfo);
 const reportDate = computed(() => store.reportDate);
+const mediumType = computed(() => store.mediumType);
+const mediumN2 = computed(() => store.mediumN2);
 const solvedEquations = computed(() => analysisTabRef.value?.solvedEquations ?? []);
 const regressionData = computed(() => analysisTabRef.value?.getRegression() ?? null);
 const slopeCalcData = computed(() => analysisTabRef.value?.getSlopeCalc() ?? null);
@@ -43,6 +45,7 @@ function goBack() {
   else { router.back(); }
 }
 function clearData() { store.clearData(); activeTab.value = 0; }
+function selectMedium(n2: number) { store.generateTheoreticalReadings(n2); }
 function updateCell(row: number, key: string, value: number) { store.updateCell(row, key, value); }
 function addRow() { store.addRow(); }
 function removeRow(index: number) { store.removeRow(index); }
@@ -169,6 +172,9 @@ async function sendToTeacher() {
             :columns="columns"
             :equations="equations"
             :plots="plots"
+            :medium-type="mediumType"
+            :medium-n2="mediumN2"
+            @select-medium="selectMedium"
           />
         </Transition>
         <Transition name="tab-fade" mode="out-in">
@@ -188,6 +194,8 @@ async function sendToTeacher() {
             :axes-data="axesData"
             :error-calc-data="errorCalcData"
             :chart-snapshot="chartSnapshot"
+            :calculated-n2="store.calculatedN2"
+            :expected-n2="store.expectedN2"
             @print="printReport"
             @export-csv="exportCsv"
             @export-png="exportPng"

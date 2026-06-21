@@ -14,7 +14,7 @@ export const createReportSchema = z.object({
   columns: z.string().optional(),
   equations: z.string().optional(),
   plots: z.string().optional(),
-  chart_snapshot: z.string().optional(),
+  chart_snapshot: z.string().max(500_000).optional(),
 });
 
 export const gradeReportSchema = z.object({

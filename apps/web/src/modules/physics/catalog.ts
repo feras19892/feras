@@ -48,8 +48,15 @@ export const branches: Branch[] = [
     color: '#8b5cf6',
     description: 'تجارب الموجات والانعكاس والانكسار',
     experiments: [
-      { id: 'thin-lens', name: 'Thin Lens', nameAr: 'العدسة الرقيقة', icon: '🔍', difficulty: 'medium', tags: ['optics'], route: '' },
-      { id: 'diffraction', name: 'Diffraction', nameAr: 'الحيود', icon: '🔦', difficulty: 'hard', tags: ['waves'], route: '' },
+      { id: 'light-ray', name: 'Light Ray Lab', nameAr: 'شعاع الضوء', icon: '💡', difficulty: 'easy', tags: ['optics', 'reflection', 'refraction'], route: '' },
+      { id: 'thin-lens', name: 'Thin Lens', nameAr: 'العدسة الرقيقة', icon: '🔍', difficulty: 'medium', tags: ['optics', 'lens'], route: '' },
+      { id: 'mirrors', name: 'Spherical Mirrors', nameAr: 'المرايا الكروية', icon: '🪞', difficulty: 'medium', tags: ['optics', 'mirror'], route: '' },
+      { id: 'prism-dispersion', name: 'Prism Dispersion', nameAr: 'تحلل الضوء بالمنشور', icon: '🌈', difficulty: 'easy', tags: ['optics', 'dispersion'], route: '' },
+      { id: 'interference', name: 'Young\'s Interference', nameAr: 'تداخل يونغ', icon: '〰️', difficulty: 'medium', tags: ['waves', 'interference'], route: '' },
+      { id: 'diffraction', name: 'Diffraction', nameAr: 'الحيود', icon: '🔦', difficulty: 'hard', tags: ['waves', 'diffraction'], route: '' },
+      { id: 'polarization', name: 'Light Polarization', nameAr: 'استقطاب الضوء', icon: '🕶️', difficulty: 'hard', tags: ['waves', 'polarization'], route: '' },
+      { id: 'speed-of-sound', name: 'Speed of Sound', nameAr: 'سرعة الصوت', icon: '🔔', difficulty: 'easy', tags: ['sound', 'waves'], route: '' },
+      { id: 'resonance', name: 'Standing Waves', nameAr: 'الموجات القائمة', icon: '🎵', difficulty: 'medium', tags: ['sound', 'resonance'], route: '' },
     ],
   },
   {

@@ -4,10 +4,12 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../modules/auth/stores/auth'
 import { getPendingCount } from '../../services/class.service'
 import NotificationBell from '../shared/NotificationBell.vue'
+import FeedbackModal from '../shared/FeedbackModal.vue'
 
 const router = useRouter()
 const auth = useAuthStore()
 const pendingCount = ref(0)
+const showFeedback = ref(false)
 let pendingInterval: ReturnType<typeof setInterval> | null = null
 
 async function refreshPending() {
@@ -49,22 +51,6 @@ function setTab(tab: string) {
 
     <!-- Admin Tools (center) -->
     <div v-if="auth.isAdmin" class="nav-tools">
-      <button class="tool-btn" :class="{ active: activeTab === 'classes' }" @click="setTab('classes')">
-        <span class="tool-icon">🏫</span>
-        <span class="tool-label">فصولي</span>
-      </button>
-      <button class="tool-btn" :class="{ active: activeTab === 'experiments' }" @click="setTab('experiments')">
-        <span class="tool-icon">📋</span>
-        <span class="tool-label">تجاربي</span>
-      </button>
-      <button class="tool-btn" :class="{ active: activeTab === 'grading' }" @click="setTab('grading')">
-        <span class="tool-icon">✅</span>
-        <span class="tool-label">تصحيح</span>
-      </button>
-      <button class="tool-btn" :class="{ active: activeTab === 'stats' }" @click="setTab('stats')">
-        <span class="tool-icon">📊</span>
-        <span class="tool-label">إحصائيات</span>
-      </button>
       <button class="tool-btn admin-tool" @click="router.push('/admin')">
         <span class="tool-icon">🛡️</span>
         <span class="tool-label">الإدارة</span>
@@ -115,6 +101,8 @@ function setTab(tab: string) {
     <!-- User / Logout -->
     <div class="nav-user">
       <NotificationBell />
+      <button class="rate-btn" @click="showFeedback = true" title="تقييم المشروع">⭐</button>
+      <FeedbackModal v-model:show="showFeedback" />
       <div class="user-badge" v-if="auth.isAdmin">
         <span class="user-icon">🛡️</span>
         <span class="user-role">مشرف</span>
@@ -248,6 +236,19 @@ function setTab(tab: string) {
   transition: all 0.2s;
   font-family: inherit;
 }
+.rate-btn {
+  padding: 0.35rem 0.5rem;
+  border-radius: 0.4rem;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  background: rgba(251, 191, 36, 0.1);
+  color: #fbbf24;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.rate-btn:hover { background: rgba(251, 191, 36, 0.2); }
+
 .logout-btn:hover {
   background: rgba(239, 68, 68, 0.12);
   border-color: rgba(239, 68, 68, 0.25);

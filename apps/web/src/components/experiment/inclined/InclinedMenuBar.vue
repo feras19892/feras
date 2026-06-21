@@ -10,7 +10,6 @@ const emit = defineEmits<{
   (e: 'recordTrial'): void
   (e: 'runLab'): void
   (e: 'toggleHelp'): void
-  (e: 'printReport'): void
   (e: 'analyzeResults'): void
 }>()
 
@@ -65,9 +64,6 @@ onUnmounted(() => window.removeEventListener('click', onMenuClick))
       </div>
       <div class="menu-group">
         <button class="menu-btn analyze-btn" @click="emit('analyzeResults')">📊 قسم الرسم والحسابات</button>
-      </div>
-      <div class="menu-group">
-        <button class="menu-btn" @click="emit('printReport')">&#x1F4C4; طباعة التقرير</button>
       </div>
       <div class="menu-group">
         <button class="menu-btn" @click="emit('toggleHelp')">&#x2753; مساعدة</button>

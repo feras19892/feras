@@ -131,6 +131,30 @@ export function useChartWorkspace(
     if ((x === 'invXRight' || x === '1/xRight') && (y === 'massRight' || y === 'm2')) {
       return { label: 'm₁·d₁ من الانحدار', formula: 'ميل = m₁·d₁', value: s, unit: 'kg·m', expr: `${s.toFixed(4)}` }
     }
+    // Light Ray: sin_t vs sin_i → slope = n₂ (since n₁ = 1)
+    if (x === 'sin_t' && y === 'sin_i') {
+      const n2 = s
+      const speed = 3e8 / n2
+      return {
+        label: 'معامل الانكسار n₂ وسرعة الضوء',
+        formula: 'n₂ = ميل(sin θᵢ vs sin θₜ)    v = c / n₂',
+        value: n2,
+        unit: '',
+        expr: `n₂ = ${n2.toFixed(4)}    v = ${(speed/1e8).toFixed(2)} × 10⁸ m/s`
+      }
+    }
+    // Thin Lens: 1/do vs 1/di → intercept = 1/f
+    if ((x === 'inv_do' || x === '1/do') && (y === 'inv_di' || y === '1/di')) {
+      const intercept = regression.value?.intercept ?? 0
+      const f = intercept !== 0 ? 1 / intercept : 0
+      return {
+        label: 'البعد البؤري f من الانحدار',
+        formula: '1/f = intercept(1/di vs 1/do) → f = 1/intercept',
+        value: f,
+        unit: 'cm',
+        expr: `f = 1 / ${intercept.toFixed(4)} = ${f.toFixed(2)} cm`
+      }
+    }
     return null
   })
 

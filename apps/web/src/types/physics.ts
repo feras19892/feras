@@ -70,8 +70,12 @@ export interface AnalysisPlotConfig {
 export interface AnalysisPayload {
   sourceExperiment: string;
   sourceNameAr: string;
-  readings: Record<string, number>[];
+  readings: Record<string, string | number>[];
   columns: AnalysisColumnMeta[];
   equations: AnalysisEquation[];
   suggestedPlots: AnalysisPlotConfig[];
+  mediumType?: string;
+  mediumN2?: number;
+  calculatedN2?: number;
+  expectedN2?: number;
 }

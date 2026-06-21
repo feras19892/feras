@@ -8,6 +8,8 @@ import { settingsRoutes } from './modules/settings/handlers.js';
 import { classRoutes } from './modules/classes/handlers.js';
 import { reportRoutes } from './modules/reports/handlers.js';
 import { notificationRoutes } from './modules/notifications/handlers.js';
+import { adminRoutes } from './modules/admin/handlers.js';
+import { feedbackRoutes } from './modules/feedback/handlers.js';
 import { runMigrations } from './db/index.js';
 import { loginRateLimit } from './shared/middleware/rate-limit.js';
 
@@ -30,6 +32,8 @@ app.route('/api/settings', settingsRoutes);
 app.route('/api/classes', classRoutes);
 app.route('/api/reports', reportRoutes);
 app.route('/api/notifications', notificationRoutes);
+app.route('/api/admin', adminRoutes);
+app.route('/api/feedback', feedbackRoutes);
 
 app.get('/api/health', (c) => c.json({ status: 'ok' }));
 

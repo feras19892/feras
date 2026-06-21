@@ -4,12 +4,19 @@ import type { AnalysisColumnMeta, AnalysisEquation, AnalysisPlotConfig } from '.
 import AnalysisChartWorkspace from './AnalysisChartWorkspace.vue';
 import AnalysisEquationsPanel from './AnalysisEquationsPanel.vue';
 import AnalysisErrorPanel from './AnalysisErrorPanel.vue';
+import AnalysisMediumPanel from './AnalysisMediumPanel.vue';
 
 const props = defineProps<{
   readings: Record<string, number>[];
   columns: AnalysisColumnMeta[];
   equations: AnalysisEquation[];
   plots: AnalysisPlotConfig[];
+  mediumType?: string;
+  mediumN2?: number | null;
+}>();
+
+const emit = defineEmits<{
+  (e: 'select-medium', n2: number): void;
 }>();
 
 const chartRef = ref<InstanceType<typeof AnalysisChartWorkspace> | null>(null);
@@ -30,6 +37,11 @@ defineExpose({
 
 <template>
   <div class="analysis-tab">
+    <AnalysisMediumPanel
+      :current-medium="mediumType"
+      :current-n2="mediumN2"
+      @select-medium="emit('select-medium', $event)"
+    />
     <div class="chart-section">
       <AnalysisChartWorkspace
         ref="chartRef"

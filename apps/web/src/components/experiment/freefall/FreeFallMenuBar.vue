@@ -21,7 +21,6 @@ const emit = defineEmits<{
   (e: 'calcV'): void
   (e: 'calcFitG'): void
   (e: 'toggleHelp'): void
-  (e: 'printReport'): void
   (e: 'analyzeResults'): void
 }>()
 const activeMenu = ref<string | null>(null)
@@ -76,9 +75,6 @@ onUnmounted(() => window.removeEventListener('click', onMenuClick))
       </div>
       <div class="menu-group">
         <button class="menu-btn analyze-btn" @click="emit('analyzeResults')">📊 قسم الرسم والحسابات</button>
-      </div>
-      <div class="menu-group">
-        <button class="menu-btn" @click="emit('printReport')">&#x1F4C4; طباعة التقرير</button>
       </div>
       <div class="menu-group">
         <button class="menu-btn" :class="{open:activeMenu==='help'}" @click.stop="toggleMenu('help')">&#x2753; مساعدة</button>

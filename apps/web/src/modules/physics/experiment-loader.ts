@@ -10,6 +10,8 @@ const experimentMap: Record<string, () => Promise<any>> = {
   'inclined': () => import('./experiments/inclined/InclinedExperiment.vue'),
   'collision': () => import('./experiments/collision/CollisionExperiment.vue'),
   'lever': () => import('./experiments/lever/LeverExperiment.vue'),
+  'light-ray': () => import('./experiments/lightray/LightRayExperiment.vue'),
+  'thin-lens': () => import('./experiments/thinlens/ThinLensExperiment.vue'),
   'analysis-calc': () => import('./experiments/analysis-calc/AnalysisCalcExperiment.vue'),
 };
 

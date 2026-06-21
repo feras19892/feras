@@ -1,9 +1,12 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { loginSchema, registerSchema } from './schemas.js';
-import { login, register, refreshAccessToken, logout, getUserById, updatePassword } from './services.js';
+import { login, register, refreshAccessToken, logout, updatePassword } from './services.js';
+import * as activitySvc from '../admin/activity-service.js';
+import * as sessionSvc from '../admin/session-service.js';
 import { setRefreshCookie, getRefreshCookie, clearRefreshCookie } from './cookies.js';
 import { verifyAccessToken } from './jwt.js';
+import { authMiddleware } from '../../shared/middleware/auth.js';
 import type { User } from '@my-modern-app/shared-types';
 
 const authRoutes = new Hono();
@@ -25,6 +28,11 @@ authRoutes.post('/login', zValidator('json', loginSchema), async (c) => {
   }
   if (result.refreshToken) {
     setRefreshCookie(c, result.refreshToken);
+  }
+  // Log activity + session
+  if (result.user) {
+    await sessionSvc.logLogin(result.user.id, c.req.header('X-Forwarded-For') || c.req.header('x-real-ip') || 'unknown', c.req.header('user-agent'));
+    await activitySvc.logActivity(result.user.id, result.user.name, result.user.role, 'login');
   }
   return c.json({ success: true, user: result.user, token: result.token });
 });
@@ -48,6 +56,8 @@ authRoutes.post('/logout', async (c) => {
     try {
       const payload = await verifyAccessToken(auth);
       await logout(Number(payload.sub));
+      await sessionSvc.logLogout(Number(payload.sub));
+      await activitySvc.logActivity(Number(payload.sub), '', '', 'logout');
     } catch {
       // ignore invalid token on logout
     }
@@ -56,41 +66,21 @@ authRoutes.post('/logout', async (c) => {
   return c.json({ success: true });
 });
 
-authRoutes.get('/me', async (c) => {
-  const auth = c.req.header('Authorization')?.replace('Bearer ', '');
-  if (!auth) {
-    return c.json({ success: false, message: 'Unauthorized' }, 401);
-  }
-  try {
-    const payload = await verifyAccessToken(auth);
-    const user = await getUserById(Number(payload.sub));
-    if (!user) {
-      return c.json({ success: false, message: 'User not found' }, 401);
-    }
-    return c.json({ success: true, user });
-  } catch {
-    return c.json({ success: false, message: 'Invalid token' }, 401);
-  }
+authRoutes.get('/me', authMiddleware, async (c) => {
+  const user = (c as any).get('user') as User;
+  return c.json({ success: true, user });
 });
 
-authRoutes.patch('/password', async (c) => {
-  const auth = c.req.header('Authorization')?.replace('Bearer ', '');
-  if (!auth) {
-    return c.json({ success: false, message: 'Unauthorized' }, 401);
+authRoutes.patch('/password', authMiddleware, async (c) => {
+  const user = (c as any).get('user') as User;
+  const body = await c.req.json();
+  const userId = Number(body.user_id);
+  if (user.id !== userId && user.role !== 'admin') {
+    return c.json({ success: false, message: 'Forbidden' }, 403);
   }
-  try {
-    const payload = await verifyAccessToken(auth);
-    const body = await c.req.json();
-    const userId = Number(body.user_id);
-    if (Number(payload.sub) !== userId && payload.role !== 'admin') {
-      return c.json({ success: false, message: 'Forbidden' }, 403);
-    }
-    const ok = await updatePassword(userId, body.new_password);
-    if (!ok) return c.json({ success: false, message: 'Update failed' }, 500);
-    return c.json({ success: true });
-  } catch {
-    return c.json({ success: false, message: 'Invalid token' }, 401);
-  }
+  const ok = await updatePassword(userId, body.new_password);
+  if (!ok) return c.json({ success: false, message: 'Update failed' }, 500);
+  return c.json({ success: true });
 });
 
 export { authRoutes };

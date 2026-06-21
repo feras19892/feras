@@ -1,0 +1,66 @@
+import { ref } from 'vue';
+import {
+  getAdminUsers,
+  deleteUser,
+  updateUserRole,
+  createAdminUser,
+  banUser,
+  unbanUser,
+  addAdminNote,
+  sendAdminWarning,
+} from '../../services/admin.service';
+
+export function useAdminUsers() {
+  const users = ref<any[]>([]);
+  const loading = ref(false);
+  const error = ref('');
+
+  async function load() {
+    loading.value = true;
+    error.value = '';
+    try {
+      const res = await getAdminUsers();
+      if (res.success) users.value = res.users;
+    } catch (err: any) {
+      error.value = err?.message || 'فشل التحميل';
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function remove(id: number) {
+    if (!confirm('هل تريد حذف هذا المستخدم؟ لا يمكن التراجع.')) return;
+    const res = await deleteUser(id);
+    if (res.success) load();
+  }
+
+  async function changeRole(id: number, role: string) {
+    const res = await updateUserRole(id, role);
+    if (res.success) load();
+  }
+
+  async function add(name: string, email: string, password: string, role: string) {
+    const res = await createAdminUser(name, email, password, role);
+    if (res.success) load();
+  }
+
+  async function ban(id: number, reason: string) {
+    const res = await banUser(id, reason);
+    if (res.success) load();
+  }
+
+  async function unban(id: number) {
+    const res = await unbanUser(id);
+    if (res.success) load();
+  }
+
+  async function sendWarning(userId: number, title: string, message: string, severity: string) {
+    return sendAdminWarning(userId, title, message, severity);
+  }
+
+  async function addNote(userId: number, note: string) {
+    return addAdminNote(userId, note);
+  }
+
+  return { users, loading, error, load, remove, changeRole, add, ban, unban, sendWarning, addNote };
+}

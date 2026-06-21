@@ -102,20 +102,28 @@ export async function markReportAsSeen(id: number) {
 }
 
 export async function gradeReport(id: number, data: { grade: number; feedback?: string }, teacherId: number, teacherName: string) {
-  const old = await getReportById(id);
-  if (old) {
+  let old: any = null;
+  await db.run('BEGIN');
+  try {
+    old = await db.get(`SELECT * FROM experiment_reports WHERE id = ?`, id);
+    if (old) {
+      await db.run(
+        `INSERT INTO grade_history (report_id, teacher_id, teacher_name, old_grade, new_grade, old_feedback, new_feedback)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        id, teacherId, teacherName, old.grade, data.grade, old.feedback, data.feedback || null
+      );
+    }
     await db.run(
-      `INSERT INTO grade_history (report_id, teacher_id, teacher_name, old_grade, new_grade, old_feedback, new_feedback)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      id, teacherId, teacherName, old.grade, data.grade, old.feedback, data.feedback || null
+      `UPDATE experiment_reports SET grade=?, feedback=?, status='graded', graded_at=CURRENT_TIMESTAMP, graded_by=?, graded_by_name=? WHERE id=?`,
+      data.grade, data.feedback || null, teacherId, teacherName, id
     );
+    await db.run('COMMIT');
+  } catch (err) {
+    await db.run('ROLLBACK');
+    throw err;
   }
-  await db.run(
-    `UPDATE experiment_reports SET grade=?, feedback=?, status='graded', graded_at=CURRENT_TIMESTAMP, graded_by=?, graded_by_name=? WHERE id=?`,
-    data.grade, data.feedback || null, teacherId, teacherName, id
-  );
 
-  // إشعار للطالب
+  // إشعار للطالب (خارج الـ transaction)
   if (old?.student_id) {
     await createNotification({
       user_id: old.student_id,
@@ -178,19 +186,24 @@ export async function getClassStats(classId: string) {
     `SELECT r.*, u.name as student_name FROM experiment_reports r
      JOIN users u ON r.student_id = u.id WHERE r.class_id = ?`, classId);
 
-  const total = reports.length;
+  const statsRow = await db.get(
+    `SELECT COUNT(*) as total,
+            SUM(CASE WHEN status = 'graded' THEN 1 ELSE 0 END) as graded,
+            AVG(CASE WHEN status = 'graded' THEN grade END) as avg
+     FROM experiment_reports WHERE class_id = ?`, classId);
+
+  const total = statsRow?.total || 0;
+  const gradedCount = statsRow?.graded || 0;
+  const avg = statsRow?.avg ? Math.round(statsRow.avg) : 0;
   const graded = reports.filter((r: any) => r.status === 'graded');
-  const avg = graded.length > 0
-    ? Math.round(graded.reduce((s: number, r: any) => s + (r.grade || 0), 0) / graded.length)
-    : 0;
 
   // Per-experiment stats
   const expMap = new Map<string, { count: number; grades: number[] }>();
   for (const r of reports) {
     const name = r.experiment_name;
-    const cur = expMap.get(name) || { count: 0, grades: [] };
+    const cur = expMap.get(name) || { count: 0, grades: [] as number[] };
     cur.count++;
-    if (r.grade !== undefined && r.grade !== null) cur.grades.push(r.grade);
+    if (r.grade !== undefined && r.grade !== null) cur.grades.push(r.grade as number);
     expMap.set(name, cur);
   }
   const experiments = Array.from(expMap.entries()).map(([name, data]) => ({
@@ -205,9 +218,9 @@ export async function getClassStats(classId: string) {
   const studentMap = new Map<number, { name: string; reports: number; grades: number[]; last_submitted?: string }>();
   for (const r of reports) {
     const sid = r.student_id;
-    const cur = studentMap.get(sid) || { name: r.student_name, reports: 0, grades: [], last_submitted: r.submitted_at };
+    const cur = studentMap.get(sid) || { name: r.student_name, reports: 0, grades: [] as number[], last_submitted: r.submitted_at };
     cur.reports++;
-    if (r.grade !== undefined && r.grade !== null) cur.grades.push(r.grade);
+    if (r.grade !== undefined && r.grade !== null) cur.grades.push(r.grade as number);
     if (r.submitted_at && (!cur.last_submitted || r.submitted_at > cur.last_submitted)) cur.last_submitted = r.submitted_at;
     studentMap.set(sid, cur);
   }
@@ -228,7 +241,7 @@ export async function getClassStats(classId: string) {
     else distribution['81-100']++;
   }
 
-  return { total, graded: graded.length, pending: total - graded.length, average: avg, experiments, students, distribution };
+  return { total, graded: gradedCount, pending: total - gradedCount, average: avg, experiments, students, distribution };
 }
 
 export async function getClassReportsForExport(classId: string) {

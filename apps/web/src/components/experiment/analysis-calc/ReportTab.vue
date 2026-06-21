@@ -21,6 +21,8 @@ const props = defineProps<{
   axesData?: { x: string; y: string; xLabel: string; yLabel: string } | null;
   errorCalcData?: { theoretical: number | null; experimental: number | null; errorPercent: number | null } | null;
   chartSnapshot?: string;
+  calculatedN2?: number | null;
+  expectedN2?: number | null;
 }>();
 
 const emit = defineEmits<{
@@ -83,6 +85,8 @@ function onConclusionUpdate(data: { conclusion: string; errors: string; improvem
             :axes-data="axesData"
             :error-calc-data="errorCalcData"
             :chart-snapshot="chartSnapshot"
+            :calculated-n2="calculatedN2"
+            :expected-n2="expectedN2"
           />
         </div>
         <AnalysisReportExport

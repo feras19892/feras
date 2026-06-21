@@ -18,6 +18,8 @@ const props = defineProps<{
   axesData?: { x: string; y: string; xLabel: string; yLabel: string } | null;
   errorCalcData?: { theoretical: number | null; experimental: number | null; errorPercent: number | null } | null;
   chartSnapshot?: string;
+  calculatedN2?: number | null;
+  expectedN2?: number | null;
 }>();
 
 const stats = computed(() => {
@@ -89,6 +91,24 @@ const stats = computed(() => {
         <div class="sc-label">{{ slopeCalcData.label }}</div>
         <div class="sc-formula">{{ slopeCalcData.formula }}</div>
         <div class="sc-result">{{ slopeCalcData.expr }} = <b>{{ slopeCalcData.value.toFixed(4) }} {{ slopeCalcData.unit }}</b></div>
+      </div>
+    </div>
+
+    <div class="section" v-if="calculatedN2 !== null || expectedN2 !== null">
+      <h2>🔬 نتائج تحليل شعاع الضوء</h2>
+      <div class="reg-card">
+        <div class="reg-row"><span>معامل الانكسار n₂ المحسوب:</span> <b class="highlight">{{ calculatedN2?.toFixed(3) ?? '—' }}</b></div>
+        <div class="reg-row"><span>معامل الانكسار n₂ المتوقع:</span> <b>{{ expectedN2?.toFixed(3) ?? '—' }}</b></div>
+        <div class="reg-row" v-if="calculatedN2 != null && expectedN2 != null">
+          <span>نسبة الخطأ:</span>
+          <b :class="{ok: Math.abs((calculatedN2!-expectedN2!)/expectedN2!*100) <= 5, bad: Math.abs((calculatedN2!-expectedN2!)/expectedN2!*100) > 5}">
+            {{ Math.abs((calculatedN2!-expectedN2!)/expectedN2!*100).toFixed(2) }}%
+          </b>
+        </div>
+        <div class="reg-row" v-if="calculatedN2 != null">
+          <span>سرعة الضوء في الوسط:</span>
+          <b>{{ (3e8 / calculatedN2! / 1e8).toFixed(2) }} × 10⁸ m/s</b>
+        </div>
       </div>
     </div>
 

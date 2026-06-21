@@ -115,4 +115,6 @@ onUnmounted(() => window.removeEventListener('click', onMenuClick))
 .menu-row.restore { color:#5B8DB8; font-weight:700; }
 .analyze-btn { color:#4ade80 !important; font-weight:700; }
 .analyze-btn:hover { background:rgba(34,197,94,.12) !important; }
+.submit-btn { color:#67e8f9 !important; font-weight:700; }
+.submit-btn:hover { background:rgba(103,232,249,.12) !important; }
 </style>

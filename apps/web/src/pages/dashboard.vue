@@ -6,6 +6,9 @@ import AppNavbar from '../components/layout/AppNavbar.vue'
 import BranchCard from '../components/ui/BranchCard.vue'
 import ClassManager from '../components/teacher/ClassManager.vue'
 import StudentClasses from '../components/home/StudentClasses.vue'
+import TeacherGrading from '../components/teacher/TeacherGrading.vue'
+import StudentReports from '../components/student/StudentReports.vue'
+import StudentProfile from '../components/student/StudentProfile.vue'
 import { fetchHomeCards } from '../services/home.service'
 import type { HomeCard } from '../types/physics'
 
@@ -59,18 +62,14 @@ onMounted(async () => {
           />
         </div>
       </template>
-      <div v-else-if="(auth.isTeacher || auth.isAdmin) && activeTab === 'grading'" class="teacher-tab">
-        <h2>✅ تصحيح</h2>
-        <p>قريباً — تصحيح التقارير</p>
-      </div>
+      <TeacherGrading v-else-if="(auth.isTeacher || auth.isAdmin) && activeTab === 'grading'" />
       <div v-else-if="(auth.isTeacher || auth.isAdmin) && activeTab === 'stats'" class="teacher-tab">
         <h2>📊 إحصائيات</h2>
         <p>قريباً — إحصائيات الطلاب</p>
       </div>
 
-      <div v-else-if="auth.isStudent && activeTab === 'reports'" class="student-reports">
-        <p>قريباً — تقاريري</p>
-      </div>
+      <StudentReports v-else-if="auth.isStudent && activeTab === 'reports'" />
+      <StudentProfile v-else-if="auth.isStudent && activeTab === 'profile'" />
 
       <div v-else-if="auth.isStudent && activeTab === 'branches'">
         <p v-if="loading" class="loading-text">...</p>

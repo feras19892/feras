@@ -1,9 +1,22 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../modules/auth/stores/auth'
+import { getPendingCount } from '../../services/class.service'
+import NotificationBell from '../shared/NotificationBell.vue'
 
 const router = useRouter()
 const auth = useAuthStore()
+const pendingCount = ref(0)
+
+onMounted(async () => {
+  if (auth.isTeacher || auth.isAdmin) {
+    try {
+      const res = await getPendingCount()
+      if (res.success) pendingCount.value = res.pendingCount
+    } catch { /* ignore */ }
+  }
+})
 
 defineProps<{
   activeTab: string
@@ -62,6 +75,7 @@ function setTab(tab: string) {
       <button class="tool-btn" :class="{ active: activeTab === 'grading' }" @click="setTab('grading')">
         <span class="tool-icon">✅</span>
         <span class="tool-label">تصحيح</span>
+        <span v-if="pendingCount > 0" class="tab-badge">{{ pendingCount }}</span>
       </button>
       <button class="tool-btn" :class="{ active: activeTab === 'stats' }" @click="setTab('stats')">
         <span class="tool-icon">📊</span>
@@ -83,10 +97,15 @@ function setTab(tab: string) {
         <span class="tool-icon">📄</span>
         <span class="tool-label">تقاريري</span>
       </button>
+      <button class="tool-btn" :class="{ active: activeTab === 'profile' }" @click="setTab('profile')">
+        <span class="tool-icon">👤</span>
+        <span class="tool-label">ملفي</span>
+      </button>
     </div>
 
     <!-- User / Logout -->
     <div class="nav-user">
+      <NotificationBell />
       <div class="user-badge" v-if="auth.isAdmin">
         <span class="user-icon">🛡️</span>
         <span class="user-role">مشرف</span>
@@ -179,6 +198,7 @@ function setTab(tab: string) {
 }
 .tool-icon { font-size: 1rem; }
 .tool-label { font-size: 0.82rem; }
+.tab-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 800; margin-right: -4px; margin-left: 2px; }
 
 .nav-user {
   display: flex;

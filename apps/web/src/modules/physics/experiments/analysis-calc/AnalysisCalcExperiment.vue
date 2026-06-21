@@ -12,10 +12,12 @@ import AnalysisStatsPanel from '../../../../components/experiment/analysis-calc/
 import AnalysisConclusionPanel from '../../../../components/experiment/analysis-calc/AnalysisConclusionPanel.vue';
 import AnalysisReportPreview from '../../../../components/experiment/analysis-calc/AnalysisReportPreview.vue';
 import AnalysisReportExport from '../../../../components/experiment/analysis-calc/AnalysisReportExport.vue';
+import SubmitReportModal from '../../../../components/experiment/SubmitReportModal.vue';
 
 const router = useRouter();
 const store = useAnalysisStore();
 const showPreview = ref(false);
+const reportOpen = ref(false);
 const conclusionData = ref({ conclusion: '', errors: '', improvements: '' });
 
 onMounted(() => {
@@ -69,8 +71,17 @@ async function exportPng() {
   link.href = canvas.toDataURL('image/png');
   link.click();
 }
+const chartSnapshot = ref('');
+
+function captureChart() {
+  const canvas = document.querySelector('.chart-panel canvas') as HTMLCanvasElement;
+  if (canvas) chartSnapshot.value = canvas.toDataURL('image/png');
+}
+
 function sendToTeacher() {
-  console.log('📧 Report:', { student: studentInfo.value, experiment: sourceName.value, date: reportDate.value, readings: readings.value, conclusion: conclusionData.value });
+  if (!hasData.value) return;
+  captureChart();
+  reportOpen.value = true;
 }
 </script>
 
@@ -128,6 +139,21 @@ function sendToTeacher() {
         </div>
       </div>
     </div>
+
+    <SubmitReportModal
+      v-model:show="reportOpen"
+      experiment-type="analysis"
+      :experiment-name="sourceName || 'تجربة فيزيائية'"
+      :readings="JSON.stringify(readings)"
+      :params="JSON.stringify(columns.map((c: any) => ({ key: c.key, label: c.label, unit: c.unit })))"
+      :student-info="JSON.stringify(studentInfo)"
+      :conclusion="JSON.stringify(conclusionData)"
+      :columns="JSON.stringify(columns)"
+      :equations="JSON.stringify(equations)"
+      :plots="JSON.stringify(plots)"
+      :chart-snapshot="chartSnapshot"
+      @submitted="reportOpen = false"
+    />
   </div>
 </template>
 

@@ -1,57 +1,69 @@
 import { ref, onMounted } from 'vue'
-import { useAuthStore } from '../../modules/auth/stores/auth'
+import {
+  createClass as apiCreateClass,
+  getMyClasses,
+  getClassDetails,
+  deleteClass as apiDeleteClass,
+} from '../../services/class.service'
+import type { ClassItem, ClassStudent } from '../../services/class.service'
 
-export interface ClassItem {
-  id: string
-  name: string
-  code: string
-}
+export { type ClassItem, type ClassStudent }
 
 export function useClassManager() {
-  const auth = useAuthStore()
   const classes = ref<ClassItem[]>([])
+  const expandedId = ref<string | null>(null)
+  const classStudents = ref<ClassStudent[]>([])
+  const loading = ref(false)
   const showModal = ref(false)
   const newClassName = ref('')
 
-  function generateCode(): string {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-    let code = ''
-    for (let i = 0; i < 6; i++) {
-      code += chars.charAt(Math.floor(Math.random() * chars.length))
-    }
-    return code
-  }
-
-  function loadLocalClasses() {
+  async function loadClasses() {
+    loading.value = true
     try {
-      const raw = localStorage.getItem('physlab_guest_classes')
-      if (raw) classes.value = JSON.parse(raw)
-    } catch {
-      classes.value = []
+      const res = await getMyClasses()
+      if (res.success) classes.value = res.classes
+    } catch (err) {
+      console.error('load classes failed:', err)
+    } finally {
+      loading.value = false
     }
   }
 
-  function saveLocalClasses() {
-    localStorage.setItem('physlab_guest_classes', JSON.stringify(classes.value))
-  }
-
-  function createClass() {
+  async function createClass() {
     if (!newClassName.value.trim()) return
-    const newClass: ClassItem = {
-      id: 'local-' + Date.now(),
-      name: newClassName.value.trim(),
-      code: generateCode(),
+    try {
+      const res = await apiCreateClass(newClassName.value.trim())
+      if (res.success) {
+        classes.value.unshift(res.class)
+        newClassName.value = ''
+        showModal.value = false
+      }
+    } catch (err) {
+      console.error('create class failed:', err)
     }
-    classes.value.push(newClass)
-    saveLocalClasses()
-    newClassName.value = ''
-    showModal.value = false
   }
 
-  function deleteClass(id: string) {
+  async function deleteClass(id: string) {
     if (!confirm('هل أنت متأكد من حذف هذا الفصل؟')) return
-    classes.value = classes.value.filter(c => c.id !== id)
-    saveLocalClasses()
+    try {
+      const res = await apiDeleteClass(id)
+      if (res.success) classes.value = classes.value.filter(c => c.id !== id)
+    } catch (err) {
+      console.error('delete class failed:', err)
+    }
+  }
+
+  async function loadClassDetails(id: string) {
+    if (expandedId.value === id) { expandedId.value = null; return }
+    try {
+      const res = await getClassDetails(id)
+      if (res.success) {
+        classStudents.value = res.students
+        expandedId.value = id
+      }
+    } catch (err) {
+      console.error('load class details failed:', err)
+    }
   }
 
   function copyCode(code: string) {
@@ -59,15 +71,19 @@ export function useClassManager() {
   }
 
   onMounted(() => {
-    if (auth.guestMode) loadLocalClasses()
+    loadClasses()
   })
 
   return {
     classes,
+    expandedId,
+    classStudents,
     showModal,
     newClassName,
+    loading,
     createClass,
     deleteClass,
     copyCode,
+    loadClassDetails,
   }
 }

@@ -1,44 +1,58 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useAuthStore } from '../../modules/auth/stores/auth'
-
-const auth = useAuthStore()
+import { ref, onMounted } from 'vue'
+import { joinClass as apiJoinClass, getMyClasses } from '../../services/class.service'
+import type { ClassItem } from '../../services/class.service'
 
 const showJoinModal = ref(false)
 const joinCode = ref('')
 const joinError = ref('')
 const joinLoading = ref(false)
+const classes = ref<ClassItem[]>([])
+const loading = ref(false)
+
+async function loadClasses() {
+  loading.value = true
+  try {
+    const res = await getMyClasses()
+    if (res.success) classes.value = res.classes
+  } catch (err) {
+    console.error('load classes failed:', err)
+  } finally {
+    loading.value = false
+  }
+}
 
 async function handleJoinClass() {
   const code = joinCode.value.trim().toUpperCase()
   if (!code) { joinError.value = 'أدخل كود الفصل'; return }
   joinLoading.value = true; joinError.value = ''
 
-  if (auth.guestMode) {
-    try {
-      const raw = localStorage.getItem('physlab_guest_classes')
-      const teacherClasses = raw ? JSON.parse(raw) : []
-      const found = teacherClasses.find((c: any) => c.code === code)
-      if (found) {
-        if (!auth.classes.find((c: any) => c.code === code)) {
-          auth.classes.push({ id: found.id, name: found.name, code: found.code, role: 'student' })
-          localStorage.setItem('auth_classes', JSON.stringify(auth.classes))
-        }
-        if (!found.students) found.students = []
-        found.students.push({ name: 'طالب ضيف', joinedAt: new Date().toISOString() })
-        found.studentCount = (found.studentCount || 0) + 1
-        localStorage.setItem('physlab_guest_classes', JSON.stringify(teacherClasses))
-        joinLoading.value = false; showJoinModal.value = false; joinCode.value = ''; return
-      }
-    } catch { /* ignore */ }
-    joinLoading.value = false; joinError.value = 'الكود غير صحيح'; return
+  try {
+    const res = await apiJoinClass(code)
+    joinLoading.value = false
+    if (res.success && res.class_id && res.name) {
+      classes.value.push({
+        id: res.class_id,
+        name: res.name,
+        code: code,
+        is_active: 1,
+        created_at: new Date().toISOString(),
+      })
+      showJoinModal.value = false
+      joinCode.value = ''
+    } else {
+      joinError.value = res.message || 'الكود غير صحيح'
+    }
+  } catch (err) {
+    joinLoading.value = false
+    joinError.value = 'فشل الانضمام'
+    console.error('join class failed:', err)
   }
-
-  const ok = await auth.joinClass(code)
-  joinLoading.value = false
-  if (ok) { showJoinModal.value = false; joinCode.value = '' }
-  else { joinError.value = auth.error || 'الكود غير صحيح' }
 }
+
+onMounted(() => {
+  loadClasses()
+})
 </script>
 
 <template>
@@ -52,12 +66,13 @@ async function handleJoinClass() {
         <span>انضم لفصل</span>
       </button>
     </div>
-    <div v-if="auth.classes.length === 0" class="student-empty">
+    <div v-if="loading" class="student-empty"><p>...</p></div>
+    <div v-else-if="classes.length === 0" class="student-empty">
       <p>لم تنضم لأي فصل بعد</p>
       <p class="sub">اضغط "انضم لفصل" وأدخل كود الفصل</p>
     </div>
     <div v-else class="student-class-list">
-      <div v-for="cls in auth.classes" :key="cls.id" class="student-class-row">
+      <div v-for="cls in classes" :key="cls.id" class="student-class-row">
         <span class="sc-icon">📚</span>
         <span class="sc-name">{{ cls.name }}</span>
         <span class="sc-code">{{ cls.code }}</span>

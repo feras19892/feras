@@ -1,8 +1,41 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useClassManager } from '../../composables/teacher/useClassManager'
+import { getClassStats } from '../../services/class.service'
+import type { ClassStudent } from '../../services/class.service'
 import CreateClassModal from './CreateClassModal.vue'
+import StudentDetailModal from './StudentDetailModal.vue'
 
-const { classes, showModal, newClassName, createClass, deleteClass, copyCode } = useClassManager()
+const { classes, expandedId, classStudents, showModal, newClassName, createClass, deleteClass, copyCode, loadClassDetails, loading } = useClassManager()
+
+const selectedStudent = ref<ClassStudent | null>(null)
+const detailOpen = ref(false)
+const classStats = ref<Record<string, any>>({})
+const statsLoading = ref(false)
+
+async function showStudentDetail(s: ClassStudent) {
+  selectedStudent.value = s
+  detailOpen.value = true
+}
+
+async function loadStats(classId: string) {
+  if (classStats.value[classId]) return
+  statsLoading.value = true
+  try {
+    const res = await getClassStats(classId)
+    if (res.success) classStats.value[classId] = res.stats
+  } catch (err) {
+    console.error('load class stats failed:', err)
+  }
+  statsLoading.value = false
+}
+
+async function toggleClass(id: string) {
+  await loadClassDetails(id)
+  if (expandedId.value === id) {
+    await loadStats(id)
+  }
+}
 </script>
 
 <template>
@@ -25,12 +58,51 @@ const { classes, showModal, newClassName, createClass, deleteClass, copyCode } =
     </div>
 
     <div v-else class="class-list">
-      <div v-for="cls in classes" :key="cls.id" class="class-row">
-        <span class="sc-icon">📚</span>
-        <span class="sc-name">{{ cls.name }}</span>
-        <span class="sc-code">{{ cls.code }}</span>
-        <button class="sc-copy" @click="copyCode(cls.code)">📋</button>
-        <button class="sc-delete" @click="deleteClass(cls.id)">🗑️</button>
+      <div v-for="cls in classes" :key="cls.id" class="class-card">
+        <div class="class-row" @click="toggleClass(cls.id)">
+          <span class="sc-toggle">{{ expandedId === cls.id ? '▼' : '▶' }}</span>
+          <span class="sc-icon">📚</span>
+          <span class="sc-name">{{ cls.name }}</span>
+          <span class="sc-code">{{ cls.code }}</span>
+          <button class="sc-copy" @click.stop="copyCode(cls.code)">📋</button>
+          <button class="sc-delete" @click.stop="deleteClass(cls.id)">🗑️</button>
+        </div>
+        <div v-if="expandedId === cls.id" class="class-details">
+          <!-- Class Stats -->
+          <div v-if="classStats[cls.id]" class="stats-panel">
+            <div class="stat-mini">
+              <span class="val">{{ classStats[cls.id].student_count }}</span>
+              <span class="lab">طلاب</span>
+            </div>
+            <div class="stat-mini">
+              <span class="val">{{ classStats[cls.id].total_reports }}</span>
+              <span class="lab">تقارير</span>
+            </div>
+            <div class="stat-mini">
+              <span class="val">{{ classStats[cls.id].pending_count }}</span>
+              <span class="lab">معلقة</span>
+            </div>
+            <div class="stat-mini highlight">
+              <span class="val">{{ classStats[cls.id].class_average }}%</span>
+              <span class="lab">متوسط</span>
+            </div>
+          </div>
+
+          <div v-if="loading" class="detail-empty">...</div>
+          <div v-else-if="classStudents.length === 0" class="detail-empty">لا يوجد طلاب مسجلين</div>
+          <div v-else class="student-list">
+            <div class="student-header">
+              <span>الطالب</span>
+              <span>البريد</span>
+              <span>تاريخ الانضمام</span>
+            </div>
+            <div v-for="s in classStudents" :key="s.id" class="student-row" @click="showStudentDetail(s)">
+              <span class="stu-name">{{ s.name }}</span>
+              <span class="stu-email">{{ s.email }}</span>
+              <span class="stu-date">{{ s.joined_at?.slice(0, 10) }}</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -38,6 +110,12 @@ const { classes, showModal, newClassName, createClass, deleteClass, copyCode } =
       v-model:show="showModal"
       v-model="newClassName"
       @confirm="createClass"
+    />
+
+    <StudentDetailModal
+      :show="detailOpen"
+      :student="selectedStudent"
+      @close="detailOpen = false"
     />
   </div>
 </template>
@@ -162,6 +240,9 @@ const { classes, showModal, newClassName, createClass, deleteClass, copyCode } =
   border: 1px solid rgba(103, 232, 249, 0.15);
 }
 
+.class-card { display: flex; flex-direction: column; border-radius: 0.6rem; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.07); transition: all 0.2s; }
+.class-card:hover { border-color: rgba(99, 102, 241, 0.25); }
+.sc-toggle { font-size: 0.7rem; color: #64748b; width: 16px; cursor: pointer; }
 .sc-copy, .sc-delete {
   background: none;
   border: none;
@@ -170,7 +251,19 @@ const { classes, showModal, newClassName, createClass, deleteClass, copyCode } =
   opacity: 0.7;
   transition: opacity 0.2s;
 }
-
 .sc-copy:hover, .sc-delete:hover { opacity: 1; }
-
+.class-details { padding: 0 1rem 1rem 1rem; border-top: 1px solid rgba(255,255,255,0.05); }
+.detail-empty { padding: 1rem; text-align: center; color: #64748b; font-size: 0.85rem; }
+.student-list { display: flex; flex-direction: column; gap: 0.3rem; margin-top: 0.5rem; }
+.student-header { display: grid; grid-template-columns: 1.5fr 2fr 1fr; gap: 0.5rem; padding: 0.4rem 0.6rem; font-size: 0.75rem; color: #64748b; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.student-row { display: grid; grid-template-columns: 1.5fr 2fr 1fr; gap: 0.5rem; padding: 0.5rem 0.6rem; font-size: 0.85rem; color: #e2e8f0; border-radius: 0.35rem; transition: background 0.15s; cursor: pointer; }
+.student-row:hover { background: rgba(99,102,241,0.08); }
+.stu-name { font-weight: 600; color: #f1f5f9; }
+.stu-email { color: #94a3b8; font-size: 0.8rem; }
+.stu-date { color: #64748b; font-size: 0.8rem; }
+.stats-panel { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; margin: 0.75rem 0; padding: 0.6rem; background: rgba(0,0,0,0.2); border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.05); }
+.stat-mini { text-align: center; }
+.stat-mini .val { display: block; font-size: 1.1rem; font-weight: 800; color: #67e8f9; }
+.stat-mini.highlight .val { color: #a5b4fc; }
+.stat-mini .lab { font-size: 0.7rem; color: #94a3b8; }
 </style>

@@ -5,6 +5,9 @@ import { serve } from '@hono/node-server';
 import { authRoutes } from './modules/auth/handlers.js';
 import { dashboardRoutes } from './modules/dashboard/handlers.js';
 import { settingsRoutes } from './modules/settings/handlers.js';
+import { classRoutes } from './modules/classes/handlers.js';
+import { reportRoutes } from './modules/reports/handlers.js';
+import { notificationRoutes } from './modules/notifications/handlers.js';
 import { runMigrations } from './db/index.js';
 import { loginRateLimit } from './shared/middleware/rate-limit.js';
 
@@ -24,6 +27,9 @@ app.use('/api/auth/register', loginRateLimit);
 app.route('/api/auth', authRoutes);
 app.route('/api/dashboard', dashboardRoutes);
 app.route('/api/settings', settingsRoutes);
+app.route('/api/classes', classRoutes);
+app.route('/api/reports', reportRoutes);
+app.route('/api/notifications', notificationRoutes);
 
 app.get('/api/health', (c) => c.json({ status: 'ok' }));
 

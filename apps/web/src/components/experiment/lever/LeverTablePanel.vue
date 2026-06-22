@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { LeverTrial } from '../../../composables/lever/useLeverTrials'
+import { useI18n } from '../../../composables/useI18n'
 
+const { t } = useI18n()
 const props = defineProps<{
   trials: LeverTrial[]
 }>()
@@ -14,20 +16,20 @@ const emit = defineEmits<{
 <template>
   <div class="table-panel">
     <table v-if="trials.length">
-      <thead><tr><th>#</th><th>العزم</th><th>الميلان</th><th>كرات</th><th>قوى</th><th>حالة</th><th></th></tr></thead>
+      <thead><tr><th>#</th><th>{{ t('experiments.torque') }}</th><th>{{ t('experiments.tilt') }}</th><th>{{ t('experiments.balls') }}</th><th>{{ t('experiments.forces') }}</th><th>{{ t('experiments.status') }}</th><th></th></tr></thead>
       <tbody>
-        <tr v-for="t in trials" :key="t.id">
-          <td>{{ t.trialNo }}</td>
-          <td>{{ t.netTorque.toFixed(1) }}</td>
-          <td>{{ t.tiltDeg.toFixed(1) }}°</td>
-          <td>{{ t.balls.length }}</td>
-          <td>{{ t.forces.length }}</td>
-          <td><span :class="['badge', t.isBalanced ? 'ok' : 'no']">{{ t.isBalanced ? 'متوازن' : 'غير متوازن' }}</span></td>
-          <td><button class="btn-del" @click="emit('remove', t.id)">&#x2715;</button></td>
+        <tr v-for="tr in trials" :key="tr.id">
+          <td>{{ tr.trialNo }}</td>
+          <td>{{ tr.netTorque.toFixed(1) }}</td>
+          <td>{{ tr.tiltDeg.toFixed(1) }}°</td>
+          <td>{{ tr.balls.length }}</td>
+          <td>{{ tr.forces.length }}</td>
+          <td><span :class="['badge', tr.isBalanced ? 'ok' : 'no']">{{ tr.isBalanced ? t('experiments.balanced') : t('experiments.unbalanced') }}</span></td>
+          <td><button class="btn-del" @click="emit('remove', tr.id)">&#x2715;</button></td>
         </tr>
       </tbody>
     </table>
-    <div v-else class="empty">لا توجد قراءات مسجلة</div>
+    <div v-else class="empty">{{ t('experiments.noTrialsRecorded') }}</div>
   </div>
 </template>
 

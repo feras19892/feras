@@ -1,17 +1,20 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 const steps = [
-  'اضبط الارتفاع h باستخدام شريط التمرير.',
-  'اضغط "إفلات" لبدء السقوط.',
-  'انتظر ارتطام الكرة بلوحة الاصطدام.',
-  'اضغط "تسجيل" لحفظ الزمن.',
-  'غيّر الارتفاع وكرّر التجربة.',
-  'اضغط "حساب g" أو "ملائمة g" للتحليل.',
+  t('experiments.freefallStep1'),
+  t('experiments.freefallStep2'),
+  t('experiments.freefallStep3'),
+  t('experiments.freefallStep4'),
+  t('experiments.freefallStep5'),
+  t('experiments.freefallStep6'),
 ]
 </script>
 
 <template>
   <div>
-    <h5>📋 دليل التجربة</h5>
+    <h5>📋 {{ t('experiments.experimentGuide') }}</h5>
     <ol>
       <li v-for="(s, i) in steps" :key="i">{{ s }}</li>
     </ol>

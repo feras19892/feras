@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useSpringDraw } from '../../../composables/spring/useSpringDraw'
 import type { SpringParams } from '../../../modules/physics/experiments/spring/useSpringPhysics'
@@ -7,6 +8,7 @@ interface SimState {
   x: number; v: number; t: number; running: boolean; paused: boolean;
 }
 
+const { t } = useI18n()
 const props = defineProps<{
   params: SpringParams
   simState: SimState
@@ -84,7 +86,7 @@ defineExpose({ draw, captureSnapshot })
 <template>
   <div ref="wrapRef" class="canvas-wrap">
     <button class="mass-toggle-btn" @click="emit('toggle-mass')">
-      {{ params.mass > 0 ? '🏗️ إزالة الثقل' : '➕ إعادة الثقل' }}
+      {{ params.mass > 0 ? '🏗️ ' + t('experiments.removeWeight') : '➕ ' + t('experiments.restoreWeight') }}
     </button>
     <div class="spring-ctrls"
       @mousedown.prevent
@@ -96,22 +98,22 @@ defineExpose({ draw, captureSnapshot })
         @mouseleave="stopPull"
         @touchstart="startPull"
         @touchend="stopPull"
-        title="سحب لأسفل"
-      >⬇️ سحب</button>
+        :title="t('experiments.pullDown')"
+      >⬇️ {{ t('experiments.pull') }}</button>
       <button class="spring-btn push"
         @mousedown="startPush"
         @mouseup="stopPush"
         @mouseleave="stopPush"
         @touchstart="startPush"
         @touchend="stopPush"
-        title="ضغط لأعلى"
-      >⬆️ ضغط</button>
+        :title="t('experiments.pushUp')"
+      >⬆️ {{ t('experiments.push') }}</button>
     </div>
     <div v-if="simState.running && oscillationCount !== undefined" class="osc-counter">
       <span class="osc-num">{{ oscillationCount }}</span>
-      <span class="osc-label">اهتزاز</span>
+      <span class="osc-label">{{ t('experiments.oscillation') }}</span>
     </div>
-    <button class="snapshot-btn" @click="captureSnapshot()" title="📸 التقاط لقطة">📸</button>
+    <button class="snapshot-btn" @click="captureSnapshot()" :title="'📸 ' + t('experiments.snapshot')">📸</button>
     <canvas ref="canvasRef" width="700" height="420" />
   </div>
 </template>

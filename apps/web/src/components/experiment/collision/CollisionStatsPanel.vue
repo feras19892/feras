@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 const props = defineProps<{
   sim: { Pi: number | null; Pf: number | null; KEi: number | null; KEf: number | null; lossPercent: number | null; collided: boolean }
   trialStats: { count: number; avgV1f: number; avgV2f: number; avgLoss: number; momentumDiff: number }
@@ -7,36 +10,36 @@ const props = defineProps<{
 
 <template>
   <div class="stats-panel">
-    <div v-if="!sim.collided" class="empty">انتظر التصادم لعرض الإحصائيات</div>
+    <div v-if="!sim.collided" class="empty">{{ t('experiments.waitForCollisionStats') }}</div>
     <div v-else class="grid">
       <div class="card">
-        <div class="label">الزخم قبل</div>
+        <div class="label">{{ t('experiments.momentumBefore') }}</div>
         <div class="value">{{ sim.Pi?.toFixed(2) }} <span class="unit">kg·m/s</span></div>
       </div>
       <div class="card">
-        <div class="label">الزخم بعد</div>
+        <div class="label">{{ t('experiments.momentumAfter') }}</div>
         <div class="value">{{ sim.Pf?.toFixed(2) }} <span class="unit">kg·m/s</span></div>
       </div>
       <div class="card">
-        <div class="label">الطاقة قبل</div>
+        <div class="label">{{ t('experiments.energyBefore') }}</div>
         <div class="value">{{ sim.KEi?.toFixed(2) }} <span class="unit">J</span></div>
       </div>
       <div class="card">
-        <div class="label">الطاقة بعد</div>
+        <div class="label">{{ t('experiments.energyAfter') }}</div>
         <div class="value">{{ sim.KEf?.toFixed(2) }} <span class="unit">J</span></div>
       </div>
       <div class="card wide" :class="{ green: (sim.lossPercent ?? 0) === 0, red: (sim.lossPercent ?? 0) > 0 }">
-        <div class="label">فقد الطاقة</div>
+        <div class="label">{{ t('experiments.energyLoss') }}</div>
         <div class="value">{{ sim.lossPercent }}%</div>
         <div class="bar"><div class="fill" :style="{ width: Math.min(100, sim.lossPercent ?? 0) + '%' }"></div></div>
       </div>
     </div>
     <div v-if="trialStats.count > 0" class="summary">
-      <h5>إحصائيات المحاولات ({{ trialStats.count }})</h5>
-      <div class="row"><span>متوسط v₁f:</span><b>{{ trialStats.avgV1f }} m/s</b></div>
-      <div class="row"><span>متوسط v₂f:</span><b>{{ trialStats.avgV2f }} m/s</b></div>
-      <div class="row"><span>متوسط الفقد:</span><b>{{ trialStats.avgLoss }}%</b></div>
-      <div class="row"><span>ΔP متوسط:</span><b>{{ trialStats.momentumDiff }}</b></div>
+      <h5>{{ t('experiments.attemptStatistics') }} ({{ trialStats.count }})</h5>
+      <div class="row"><span>{{ t('experiments.average') }} v₁f:</span><b>{{ trialStats.avgV1f }} m/s</b></div>
+      <div class="row"><span>{{ t('experiments.average') }} v₂f:</span><b>{{ trialStats.avgV2f }} m/s</b></div>
+      <div class="row"><span>{{ t('experiments.averageLoss') }}:</span><b>{{ trialStats.avgLoss }}%</b></div>
+      <div class="row"><span>{{ t('experiments.averageMomentumDiff') }}:</span><b>{{ trialStats.momentumDiff }}</b></div>
     </div>
   </div>
 </template>

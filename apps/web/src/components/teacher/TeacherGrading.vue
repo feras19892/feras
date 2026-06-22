@@ -5,12 +5,14 @@ import { getReports, getGradeHistory, deleteReport, markReportSeen } from '../..
 import type { ClassItem } from '../../services/class.service'
 import type { Report, GradeHistoryEntry } from '../../services/report.service'
 import { useAuthStore } from '../../modules/auth/stores/auth'
+import { useI18n } from '../../composables/useI18n'
 import ReportViewer from '../shared/ReportViewer.vue'
 import ReportCommentThread from '../shared/ReportCommentThread.vue'
 import ReportAIAnalyzer from './ReportAIAnalyzer.vue'
 import GradeModal from './GradeModal.vue'
 
 const auth = useAuthStore()
+const { t } = useI18n()
 
 const classes = ref<ClassItem[]>([])
 const selectedClassId = ref('')
@@ -63,7 +65,7 @@ function onGraded() {
 }
 
 async function confirmDelete(r: Report) {
-  if (!confirm(`هل تريد حذف تقرير "${r.experiment_name}" للطالب ${r.student_name}؟`)) return
+  if (!confirm(t('teacher.deleteConfirm') + ` "${r.experiment_name}" — ${r.student_name}?`)) return
   try {
     const res = await deleteReport(r.id)
     if (res.success) loadReports()
@@ -135,8 +137,8 @@ watch(() => auth.user, (u) => {
   <div class="grading-panel">
     <div class="grading-header">
       <div>
-        <h2>✅ تصحيح التقارير</h2>
-        <span v-if="pendingCount > 0" class="pending-badge">{{ pendingCount }} تقرير جديد</span>
+        <h2>{{ t('teacher.gradingTitle') }}</h2>
+        <span v-if="pendingCount > 0" class="pending-badge">{{ pendingCount }} {{ t('teacher.newReports') }}</span>
       </div>
       <select v-model="selectedClassId" @change="loadReports">
         <option v-for="cls in classes" :key="cls.id" :value="cls.id">{{ cls.name }}</option>
@@ -146,25 +148,25 @@ watch(() => auth.user, (u) => {
     <div class="stats-bar">
       <div class="stat">
         <span class="stat-val">{{ stats.total }}</span>
-        <span class="stat-label">التقارير</span>
+        <span class="stat-label">{{ t('teacher.reportsStat') }}</span>
       </div>
       <div class="stat">
         <span class="stat-val">{{ stats.graded }}</span>
-        <span class="stat-label">مصحح</span>
+        <span class="stat-label">{{ t('teacher.graded') }}</span>
       </div>
       <div class="stat">
         <span class="stat-val">{{ stats.pending }}</span>
-        <span class="stat-label">معلق</span>
+        <span class="stat-label">{{ t('teacher.pendingStat') }}</span>
       </div>
       <div class="stat">
         <span class="stat-val">{{ stats.avg }}%</span>
-        <span class="stat-label">متوسط</span>
+        <span class="stat-label">{{ t('teacher.avgStat') }}</span>
       </div>
     </div>
 
     <div v-if="loading" class="empty">...</div>
     <div v-else-if="reports.length === 0" class="empty">
-      <p>لا توجد تقارير مُرسلة لهذا الفصل</p>
+      <p>{{ t('teacher.noReports') }}</p>
     </div>
     <div v-else class="report-list">
       <div v-for="r in reports" :key="r.id" class="report-row" :class="{ graded: r.status === 'graded' }" @click="openView(r)">
@@ -175,11 +177,11 @@ watch(() => auth.user, (u) => {
         </div>
         <div class="report-status">
           <span v-if="r.status === 'graded'" class="badge graded">{{ r.grade }}/100</span>
-          <span v-else class="badge pending">قيد التصحيح</span>
+          <span v-else class="badge pending">{{ t('teacher.pendingStatus') }}</span>
           <button class="grade-btn" @click.stop="openGrade(r)">
-            {{ r.status === 'graded' ? 'تعديل' : 'تصحيح' }}
+            {{ r.status === 'graded' ? t('teacher.editBtn') : t('teacher.gradeBtn') }}
           </button>
-          <button class="delete-btn" @click.stop="confirmDelete(r)" title="حذف التقرير">
+          <button class="delete-btn" @click.stop="confirmDelete(r)" :title="t('teacher.deleteBtn')">
             🗑️
           </button>
         </div>
@@ -195,7 +197,7 @@ watch(() => auth.user, (u) => {
 
         <!-- Grade History -->
         <div v-if="gradeHistory.length > 0" class="history-section">
-          <h4 class="section-title">📜 سجل التصحيح</h4>
+          <h4 class="section-title">{{ t('teacher.historyTitle') }}</h4>
           <div class="history-list">
             <div v-for="h in gradeHistory" :key="h.id" class="history-item">
               <span class="history-teacher">{{ h.teacher_name }}</span>
@@ -216,8 +218,8 @@ watch(() => auth.user, (u) => {
         />
 
         <div class="actions">
-          <button class="btn-cancel" @click="viewOpen = false">إغلاق</button>
-          <button class="btn-submit" @click="viewOpen = false; openGrade(viewReport)">✏️ تصحيح</button>
+          <button class="btn-cancel" @click="viewOpen = false">{{ t('teacher.closeBtn') }}</button>
+          <button class="btn-submit" @click="viewOpen = false; openGrade(viewReport)">{{ t('teacher.gradeNow') }}</button>
         </div>
       </div>
     </div>

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useI18n } from '../../../composables/useI18n';
 
+const { t } = useI18n();
 const conclusion = ref('');
 const errors = ref('');
 const improvements = ref('');
@@ -16,19 +18,19 @@ function onChange() {
 
 <template>
   <div class="conclusion-panel">
-    <div class="panel-header">📝 الخاتمة والاستنتاجات</div>
+    <div class="panel-header">{{ t('analysis.conclusion') }}</div>
     <div class="form">
       <div class="field">
-        <label>الاستنتاج الرئيسي</label>
-        <textarea v-model="conclusion" @input="onChange" rows="2" placeholder="ما الاستنتاج الرئيسي من التجربة؟"></textarea>
+        <label>{{ t('analysis.mainConclusion') }}</label>
+        <textarea v-model="conclusion" @input="onChange" rows="2" :placeholder="t('analysis.conclusionPlaceholder')"></textarea>
       </div>
       <div class="field">
-        <label>مصادر الأخطاء</label>
-        <textarea v-model="errors" @input="onChange" rows="2" placeholder="ما مصادر الخطأ في القياسات؟"></textarea>
+        <label>{{ t('analysis.errorSources') }}</label>
+        <textarea v-model="errors" @input="onChange" rows="2" :placeholder="t('analysis.errorSourcesPlaceholder')"></textarea>
       </div>
       <div class="field">
-        <label>اقتراحات للتحسين</label>
-        <textarea v-model="improvements" @input="onChange" rows="2" placeholder="كيف يمكن تحسين النتائج؟"></textarea>
+        <label>{{ t('analysis.improvements') }}</label>
+        <textarea v-model="improvements" @input="onChange" rows="2" :placeholder="t('analysis.improvementsPlaceholder')"></textarea>
       </div>
     </div>
   </div>

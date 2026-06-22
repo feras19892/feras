@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '../../composables/useI18n'
+
+const { t } = useI18n()
+
 interface Props {
   mass: number;
   k: number;
@@ -14,11 +18,11 @@ defineProps<Props>();
 
 <template>
   <div class="lab-card guide-card">
-    <div class="card-header"><h4>📖 دليل</h4></div>
+    <div class="card-header"><h4>📖 {{ t('experiments.guide') }}</h4></div>
     <div class="guide-row"><span class="guide-label">m</span><span class="guide-value">{{ mass.toFixed(2) }} kg</span></div>
     <div class="guide-row"><span class="guide-label">k</span><span class="guide-value">{{ k.toFixed(0) }} N/m</span></div>
     <div class="guide-row"><span class="guide-label">A</span><span class="guide-value">{{ amplitude.toFixed(3) }} m</span></div>
-    <div class="guide-row"><span class="guide-label">T<sub>نظري</sub></span><span class="guide-value">{{ theoreticalPeriod?.toFixed(4) ?? '--' }} s</span></div>
+    <div class="guide-row"><span class="guide-label">T<sub>{{ t('experiments.theoretical') }}</sub></span><span class="guide-value">{{ theoreticalPeriod?.toFixed(4) ?? '--' }} s</span></div>
     <div class="guide-row"><span class="guide-label">T</span><span class="guide-value">{{ measuredT?.toFixed(4) ?? '--' }} s</span></div>
     <div class="guide-row"><span class="guide-label">f</span><span class="guide-value">{{ measuredF?.toFixed(3) ?? '--' }} Hz</span></div>
     <div class="guide-row"><span class="guide-label">ω</span><span class="guide-value">{{ measuredOmega?.toFixed(3) ?? '--' }} rad/s</span></div>

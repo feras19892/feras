@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
+
 interface Props {
   running: boolean
   paused: boolean
@@ -13,7 +17,7 @@ defineProps<Props>()
 
 <template>
   <div class="status-bar">
-    <span class="status-item">{{ running ? (paused ? '⏸️ متوقف' : '▶️ يعمل') : '⏹️ متوقف' }}</span>
+    <span class="status-item">{{ running ? (paused ? '⏸️ ' + t('experiments.paused') : '▶️ ' + t('experiments.running')) : '⏹️ ' + t('experiments.paused') }}</span>
     <span class="status-item">A = {{ prismAngle }}°</span>
     <span class="status-item">θᵢ = {{ angleIncidence }}°</span>
     <span class="status-item">n = {{ n.toFixed(3) }}</span>

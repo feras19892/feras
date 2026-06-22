@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../modules/auth/stores/auth';
+import { useI18n } from '../composables/useI18n';
 import { useAdmin } from '../composables/useAdmin';
 import AdminDashboard from '../components/admin/AdminDashboard.vue';
 import AdminUserManager from '../components/admin/AdminUserManager.vue';
@@ -16,6 +17,7 @@ import AdminGlobalSearch from '../components/admin/AdminGlobalSearch.vue';
 
 const router = useRouter();
 const auth = useAuthStore();
+const { t } = useI18n();
 
 if (!auth.isAdmin) { router.push('/home'); }
 
@@ -44,8 +46,8 @@ onMounted(loadAll);
   <div class="admin-page">
     <div class="admin-header">
       <div>
-        <h1>🛡️ لوحة الأدمن</h1>
-        <span class="subtitle">تحكم كامل في النظام</span>
+        <h1>{{ t('admin.title') }}</h1>
+        <span class="subtitle">{{ t('admin.subtitle') }}</span>
       </div>
       <AdminGlobalSearch
         :users="users"
@@ -54,33 +56,33 @@ onMounted(loadAll);
         :feedback="feedback"
         @select-user="openUserDetail"
       />
-      <button class="btn-back" @click="router.push('/home')">⬅️ رجوع</button>
+      <button class="btn-back" @click="router.push('/home')">{{ t('admin.back') }}</button>
     </div>
 
     <div class="admin-nav">
       <button :class="{ active: activeSection === 'overview' }" @click="activeSection = 'overview'">
-        📊 نظرة عامة
+        {{ t('admin.overview') }}
       </button>
       <button :class="{ active: activeSection === 'users' }" @click="activeSection = 'users'">
-        👥 المستخدمين ({{ users.length }})
+        {{ t('admin.users', { count: users.length }) }}
       </button>
       <button :class="{ active: activeSection === 'classes' }" @click="activeSection = 'classes'">
-        🏫 الفصول ({{ classes.length }})
+        {{ t('admin.classes', { count: classes.length }) }}
       </button>
       <button :class="{ active: activeSection === 'reports' }" @click="activeSection = 'reports'">
-        📋 التقارير ({{ reports.length }})
+        {{ t('admin.reports', { count: reports.length }) }}
       </button>
       <button :class="{ active: activeSection === 'smart' }" @click="activeSection = 'smart'">
-        🧠 ذكي
+        {{ t('admin.smart') }}
       </button>
       <button :class="{ active: activeSection === 'feedback' }" @click="activeSection = 'feedback'">
-        💬 تقييمات
+        {{ t('admin.feedback') }}
       </button>
       <button :class="{ active: activeSection === 'health' }" @click="activeSection = 'health'">
-        🖥️ النظام
+        {{ t('admin.health') }}
       </button>
       <button :class="{ active: activeSection === 'export' }" @click="activeSection = 'export'">
-        📤 تصدير
+        {{ t('admin.export') }}
       </button>
     </div>
 

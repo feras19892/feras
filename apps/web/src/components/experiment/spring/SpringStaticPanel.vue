@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useSpringStatic, type StaticReading } from '../../../composables/spring/useSpringStatic'
 import type { SpringParams } from '../../../modules/physics/experiments/spring/useSpringPhysics'
+import { useI18n } from '../../../composables/useI18n'
 
 const props = defineProps<{
   params: SpringParams
@@ -16,10 +17,10 @@ const emit = defineEmits<{
 
 const phaseLabel = computed(() => {
   switch (staticLab.state.phase) {
-    case 'setup': return 'جاهز للبدء'
-    case 'loading': return 'مرحلة التحميل'
-    case 'unloading': return 'مرحلة التفريغ'
-    case 'done': return 'انتهت التجربة'
+    case 'setup': return t('experiments.readyToStart')
+    case 'loading': return t('experiments.loadingPhase')
+    case 'unloading': return t('experiments.unloadingPhase')
+    case 'done': return t('experiments.experimentDone')
     default: return ''
   }
 })
@@ -30,39 +31,39 @@ const phaseLabel = computed(() => {
     <div class="phase-badge">{{ phaseLabel }}</div>
 
     <div class="readout">
-      <div>موضع الاتزان: <b>{{ staticLab.y0.value.toFixed(1) }} cm</b></div>
-      <div>الكتلة الحالية: <b>{{ (props.params.mass * 1000).toFixed(0) }} g</b></div>
-      <div>القراءة الحالية: <b>{{ staticLab.state.currentY.toFixed(2) }} cm</b></div>
-      <div>الاستطالة Δy: <b>{{ (staticLab.state.currentY - staticLab.y0.value).toFixed(2) }} cm</b></div>
-      <div>القوة F: <b>{{ (props.params.mass * 9.81).toFixed(3) }} N</b></div>
+      <div>{{ t('experiments.equilibriumPosition') }}: <b>{{ staticLab.y0.value.toFixed(1) }} cm</b></div>
+      <div>{{ t('experiments.currentMass') }}: <b>{{ (props.params.mass * 1000).toFixed(0) }} g</b></div>
+      <div>{{ t('experiments.currentReading') }}: <b>{{ staticLab.state.currentY.toFixed(2) }} cm</b></div>
+      <div>{{ t('experiments.extension') }} Δy: <b>{{ (staticLab.state.currentY - staticLab.y0.value).toFixed(2) }} cm</b></div>
+      <div>{{ t('experiments.force') }} F: <b>{{ (props.params.mass * 9.81).toFixed(3) }} N</b></div>
     </div>
 
     <div class="actions">
       <template v-if="staticLab.state.phase === 'setup'">
-        <button class="btn primary" @click="staticLab.startLoading">بدء التحميل</button>
+        <button class="btn primary" @click="staticLab.startLoading">{{ t('experiments.startLoading') }}</button>
       </template>
 
       <template v-if="staticLab.state.phase === 'loading'">
         <button class="btn" @click="staticLab.addWeight">+50g</button>
         <button class="btn" @click="staticLab.removeWeight" :disabled="props.params.mass <= 0">-50g</button>
-        <button class="btn primary" @click="staticLab.recordLoad">سجل قراءة</button>
-        <button class="btn secondary" @click="staticLab.startUnloading">انتقل للتفريغ</button>
+        <button class="btn primary" @click="staticLab.recordLoad">{{ t('experiments.recordLoad') }}</button>
+        <button class="btn secondary" @click="staticLab.startUnloading">{{ t('experiments.switchToUnloading') }}</button>
       </template>
 
       <template v-if="staticLab.state.phase === 'unloading'">
-        <button class="btn" @click="staticLab.recordUnload">سجل قراءة</button>
-        <button class="btn secondary" @click="staticLab.finish">إنهاء</button>
+        <button class="btn" @click="staticLab.recordUnload">{{ t('experiments.recordLoad') }}</button>
+        <button class="btn secondary" @click="staticLab.finish">{{ t('experiments.finish') }}</button>
       </template>
 
       <template v-if="staticLab.state.phase === 'done'">
-        <button class="btn primary" @click="emit('update:staticReadings', staticLab.state.readings); emit('update:staticK', staticLab.fit.value?.k ?? null)">تصدير للتقرير</button>
-        <button class="btn danger" @click="staticLab.reset">إعادة التجربة</button>
+        <button class="btn primary" @click="emit('update:staticReadings', staticLab.state.readings); emit('update:staticK', staticLab.fit.value?.k ?? null)">{{ t('experiments.exportToReport') }}</button>
+        <button class="btn danger" @click="staticLab.reset">{{ t('experiments.resetExperiment') }}</button>
       </template>
     </div>
 
     <table class="data-table" v-if="staticLab.state.readings.length">
       <thead>
-        <tr><th>#</th><th>m (g)</th><th>y تحميل</th><th>y تفريغ</th><th>y متوسط</th><th>Δy (cm)</th><th>F (N)</th></tr>
+        <tr><th>#</th><th>m (g)</th><th>{{ t('experiments.yLoad') }}</th><th>{{ t('experiments.yUnload') }}</th><th>{{ t('experiments.yAvg') }}</th><th>Δy (cm)</th><th>F (N)</th></tr>
       </thead>
       <tbody>
         <tr v-for="(r, i) in staticLab.state.readings" :key="r.id">
@@ -78,7 +79,7 @@ const phaseLabel = computed(() => {
     </table>
 
     <div class="result-box" v-if="staticLab.fit.value">
-      <div><b>ثابت النابض (استاتيكي):</b> k = {{ staticLab.fit.value.k.toFixed(2) }} N/m</div>
+      <div><b>{{ t('experiments.springConstantStatic') }}:</b> k = {{ staticLab.fit.value.k.toFixed(2) }} N/m</div>
     </div>
   </div>
 </template>

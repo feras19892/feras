@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
 defineProps<{ open: boolean }>()
+const { t } = useI18n()
 const emit = defineEmits<{ (e: 'close'): void }>()
 </script>
 
@@ -8,69 +11,69 @@ const emit = defineEmits<{ (e: 'close'): void }>()
     <div v-if="open" class="help-overlay" @click.self="emit('close')">
       <div class="help-card">
         <div class="help-header">
-          <h2>&#x2753; دليل التجربة</h2>
+          <h2>&#x2753; {{ t('experiments.springExperimentGuide') }}</h2>
           <button class="close-btn" @click="emit('close')">&#x2715;</button>
         </div>
 
         <div class="help-body">
           <section class="help-section">
-            <h3>&#x1F4DA; تعريف التجربة</h3>
-            <p>تجربة النابض تهدف إلى تحديد ثابت النابض <b>k</b> بطريقتين:</p>
+            <h3>&#x1F4DA; {{ t('experiments.springDefinition') }}</h3>
+            <p>{{ t('experiments.springDefinitionDesc') }}</p>
             <ul>
-              <li><b>الطريقة الاستاتيكية:</b> بتحميل النابض بأوزان معروفة وقياس الاستطالة.</li>
-              <li><b>الطريقة الديناميكية:</b> بإطلاق النابض من موضع مبدئي وقياس فترة الاهتزاز.</li>
+              <li><b>{{ t('experiments.staticMethod') }}:</b> {{ t('experiments.staticMethodDesc') }}</li>
+              <li><b>{{ t('experiments.dynamicMethod') }}:</b> {{ t('experiments.dynamicMethodDesc') }}</li>
             </ul>
           </section>
 
           <section class="help-section">
-            <h3>&#x2696;&#xFE0F; قانون هوك (الاستاتيكي)</h3>
+            <h3>&#x2696;&#xFE0F; {{ t('experiments.hookeLawStatic') }}</h3>
             <div class="eq-box">
               <div class="eq-line"><b>F</b> = k · Δy</div>
               <div class="eq-note">Δy = (m · g) / k</div>
               <div class="eq-note">k = (m · g) / Δy</div>
             </div>
-            <p class="help-hint">استخدم لوحة <b>"إستاتيكي"</b> لإضافة الأوزان وتسجيل القراءات.</p>
+            <p class="help-hint">{{ t('experiments.useStaticPanel') }}</p>
           </section>
 
           <section class="help-section">
-            <h3>&#x1F9EA; الحركة التوافقية البسيطة (الديناميكي)</h3>
+            <h3>&#x1F9EA; {{ t('experiments.simpleHarmonicMotion') }}</h3>
             <div class="eq-box">
               <div class="eq-line"><b>T</b> = 2π √(m / k)</div>
               <div class="eq-line"><b>ω₀</b> = √(k / m)</div>
               <div class="eq-line"><b>E</b> = ½ k A²</div>
             </div>
-            <p class="help-hint">استخدم <b>"بوابة ضوئية"</b> لعد 20 اهتزازة وقياس الفترة بدقة.</p>
+            <p class="help-hint">{{ t('experiments.usePhotogate') }}</p>
           </section>
 
           <section class="help-section">
-            <h3>&#x1F4CA; طريقة العمل</h3>
+            <h3>&#x1F4CA; {{ t('experiments.methodOfWork') }}</h3>
             <ol>
-              <li>افتح لوحة <b>"إستاتيكي"</b> واضغط "بدء التحميل".</li>
-              <li>أضف وزن بـ +50g ثم اضغط "تسجيل" لكل قراءة.</li>
-              <li>بعد الانتهاء، اضغط "حساب k" — ستحصل على k الاستاتيكي.</li>
-              <li>انتقل لـ <b>"بوابة ضوئية"</b> واضغط "بدء العد".</li>
-              <li>عند الوصول لـ 20 اهتزازة، تسجيل القراءة (3 تكرارات).</li>
-              <li>افتح <b>"تقرير"</b> لمقارنة k الاستاتيكي والديناميكي.</li>
+              <li>{{ t('experiments.springWorkStep1') }}</li>
+              <li>{{ t('experiments.springWorkStep2') }}</li>
+              <li>{{ t('experiments.springWorkStep3') }}</li>
+              <li>{{ t('experiments.springWorkStep4') }}</li>
+              <li>{{ t('experiments.springWorkStep5') }}</li>
+              <li>{{ t('experiments.springWorkStep6') }}</li>
             </ol>
           </section>
 
           <section class="help-section">
-            <h3>&#x1F4C9; حساب الميل من الرسم</h3>
-            <p>في لوحة <b>Scatter</b> اختر المحاور (مثلاً m × T²) ثم اضغط <b>"حساب الميل"</b>:</p>
+            <h3>&#x1F4C9; {{ t('experiments.calculateSlopeFromGraph') }}</h3>
+            <p>{{ t('experiments.calculateSlopeDesc') }}</p>
             <div class="eq-box">
               <div class="eq-line">y = m·x + b</div>
-              <div class="eq-note">m = الميل (slope)</div>
-              <div class="eq-note">R² = معامل التحديد</div>
+              <div class="eq-note">m = {{ t('experiments.slopeLabel') }} (slope)</div>
+              <div class="eq-note">R² = {{ t('experiments.rSquaredLabel') }}</div>
             </div>
           </section>
 
           <section class="help-section">
-            <h3>&#x1F4BE; ازرار التحكم</h3>
+            <h3>&#x1F4BE; {{ t('experiments.controlButtons') }}</h3>
             <div class="btn-help-grid">
-              <div class="btn-help-row"><span class="btn-tag primary">▶️ بدء</span><span>تشغيل/إيقاف المحاكاة</span></div>
-              <div class="btn-help-row"><span class="btn-tag">&#x1F504; إعادة</span><span>إعادة تعيين المحاكاة</span></div>
-              <div class="btn-help-row"><span class="btn-tag">&#x1F4CC; تسجيل</span><span>تسجيل قياس حالي</span></div>
-              <div class="btn-help-row"><span class="btn-tag speed">&#x1F40D; ×1.0</span><span>تغيير سرعة المحاكاة</span></div>
+              <div class="btn-help-row"><span class="btn-tag primary">▶️ {{ t('experiments.start') }}</span><span>{{ t('experiments.startSimulation') }}</span></div>
+              <div class="btn-help-row"><span class="btn-tag">&#x1F504; {{ t('experiments.reset') }}</span><span>{{ t('experiments.resetSimulation') }}</span></div>
+              <div class="btn-help-row"><span class="btn-tag">&#x1F4CC; {{ t('experiments.record') }}</span><span>{{ t('experiments.recordCurrentMeasurement') }}</span></div>
+              <div class="btn-help-row"><span class="btn-tag speed">&#x1F40D; ×1.0</span><span>{{ t('experiments.simulationSpeed') }}</span></div>
             </div>
           </section>
         </div>

@@ -5,8 +5,8 @@ export interface PrismTrial {
   prismAngle: number
   angleIncidence: number
   wavelength: number
-  angleEmergence: number
-  deviation: number
+  angleEmergence: number | null
+  deviation: number | null
   n: number
 }
 
@@ -111,10 +111,14 @@ export function usePrismTrials(
     autoSave()
   }
 
+  function fmt(v: number | null, digits = 1): string {
+    return v !== null ? v.toFixed(digits) : 'TIR'
+  }
+
   function exportCsv(): string {
     const headers = ['Trial', 'A(deg)', 'theta_i(deg)', 'lambda(nm)', 'theta_e(deg)', 'delta(deg)', 'n']
     const rows = trials.value.map(t =>
-      `${t.id},${t.prismAngle.toFixed(1)},${t.angleIncidence.toFixed(1)},${t.wavelength},${t.angleEmergence.toFixed(1)},${t.deviation.toFixed(1)},${t.n.toFixed(3)}`
+      `${t.id},${t.prismAngle.toFixed(1)},${t.angleIncidence.toFixed(1)},${t.wavelength},${fmt(t.angleEmergence)},${fmt(t.deviation)},${t.n.toFixed(3)}`
     )
     return [headers.join(','), ...rows].join('\n')
   }

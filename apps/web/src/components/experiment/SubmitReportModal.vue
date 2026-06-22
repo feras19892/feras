@@ -3,9 +3,11 @@ import { ref, watch } from 'vue'
 import { getMyClasses } from '../../services/class.service'
 import { createReport } from '../../services/report.service'
 import { useAuthStore } from '../../modules/auth/stores/auth'
+import { useI18n } from '../../composables/useI18n'
 import type { ClassItem } from '../../services/class.service'
 
 const auth = useAuthStore()
+const { t } = useI18n()
 
 const props = defineProps<{
   show: boolean
@@ -39,7 +41,7 @@ const success = ref('')
 
 async function loadClasses() {
   if (!auth.isLoggedIn) {
-    error.value = 'يجب تسجيل الدخول أولاً'
+    error.value = t('experiments.errorLogin')
     return
   }
   try {
@@ -52,9 +54,9 @@ async function loadClasses() {
     console.error('load classes failed:', err)
     const msg = err instanceof Error ? err.message : ''
     if (msg.includes('401') || msg.includes('Unauthorized')) {
-      error.value = 'انتهت الجلسة — سجل دخولك مرة أخرى'
+      error.value = t('experiments.errorSession')
     } else {
-      error.value = 'تعذر تحميل الفصول'
+      error.value = t('experiments.errorLoadClasses')
     }
   }
 }
@@ -65,9 +67,9 @@ function safeParse(str: string | undefined) {
 }
 
 async function submit() {
-  if (!auth.isLoggedIn) { error.value = 'يجب تسجيل الدخول أولاً'; return }
+  if (!auth.isLoggedIn) { error.value = t('experiments.errorLogin'); return }
   console.log('[Submit] clicked, classId:', selectedClassId.value, 'classes:', classes.value.length);
-  if (!selectedClassId.value) { error.value = 'اختر فصلاً'; return }
+  if (!selectedClassId.value) { error.value = t('experiments.errorSelectClass'); return }
   loading.value = true; error.value = ''; success.value = ''
 
   try {
@@ -101,14 +103,14 @@ async function submit() {
     const res = await createReport(payload)
     console.log('[SubmitReport] response:', res)
     if (res.success) {
-      success.value = 'تم إرسال التقرير بنجاح'
+      success.value = t('experiments.successSubmit')
       setTimeout(() => { emit('update:show', false); emit('submitted') }, 1200)
     } else {
-      error.value = 'فشل الإرسال'
+      error.value = t('experiments.errorSubmit')
     }
   } catch (err: unknown) {
     console.error('[SubmitReport] error:', err)
-    error.value = (err instanceof Error ? err.message : '') || 'فشل الاتصال بالخادم'
+    error.value = (err instanceof Error ? err.message : '') || t('experiments.errorServer')
   } finally {
     loading.value = false
   }
@@ -122,41 +124,41 @@ watch(() => props.show, (val) => {
 <template>
   <div v-if="show" class="modal-overlay" @click.self="$emit('update:show', false)">
     <div class="report-modal">
-      <h3>إرسال التقرير للمدرس</h3>
+      <h3>{{ t('experiments.submitReportTitle') }}</h3>
 
       <div v-if="!auth.isLoggedIn" class="form-row">
         <div class="login-required">
-          🔒 يجب تسجيل الدخول لإرسال التقرير
+          {{ t('experiments.loginRequired') }}
         </div>
       </div>
 
       <div v-else class="form-row">
-        <label>الفصل</label>
+        <label>{{ t('experiments.selectClass') }}</label>
         <select v-model="selectedClassId">
           <option v-for="cls in classes" :key="cls.id" :value="cls.id">{{ cls.name }}</option>
         </select>
-        <p v-if="classes.length === 0" class="hint">لم تنضم لأي فصل بعد</p>
+        <p v-if="classes.length === 0" class="hint">{{ t('experiments.noClassHint') }}</p>
       </div>
 
       <div class="form-row">
-        <label>التجربة</label>
+        <label>{{ t('experiments.experimentLabel') }}</label>
         <p class="readonly">{{ experimentName }}</p>
       </div>
 
       <div class="form-row">
-        <label>عدد القراءات</label>
-        <p class="readonly">{{ JSON.parse(readings || '[]').length }} قراءة</p>
+        <label>{{ t('experiments.readingsCountLabel') }}</label>
+        <p class="readonly">{{ JSON.parse(readings || '[]').length }} {{ t('experiments.readingUnit') }}</p>
       </div>
 
       <div class="form-row">
-        <label>البيانات المُرفقة</label>
+        <label>{{ t('experiments.attachedData') }}</label>
         <div class="tags">
-          <span v-if="studentInfo" class="tag">🎓 معلومات الطالب</span>
-          <span v-if="conclusion" class="tag">📝 خاتمة</span>
-          <span v-if="columns" class="tag">📋 أعمدة</span>
-          <span v-if="equations" class="tag">⚗️ معادلات</span>
-          <span v-if="plots" class="tag">📈 رسومات</span>
-          <span v-if="chartSnapshot" class="tag">📸 رسم بياني</span>
+          <span v-if="studentInfo" class="tag">{{ t('experiments.tagStudentInfo') }}</span>
+          <span v-if="conclusion" class="tag">{{ t('experiments.tagConclusion') }}</span>
+          <span v-if="columns" class="tag">{{ t('experiments.tagColumns') }}</span>
+          <span v-if="equations" class="tag">{{ t('experiments.tagEquations') }}</span>
+          <span v-if="plots" class="tag">{{ t('experiments.tagPlots') }}</span>
+          <span v-if="chartSnapshot" class="tag">{{ t('experiments.tagChartSnapshot') }}</span>
         </div>
       </div>
 
@@ -164,9 +166,9 @@ watch(() => props.show, (val) => {
       <p v-if="success" class="msg success">{{ success }}</p>
 
       <div class="actions">
-        <button class="btn-cancel" @click="$emit('update:show', false)">إلغاء</button>
+        <button class="btn-cancel" @click="$emit('update:show', false)">{{ t('experiments.cancelBtn') }}</button>
         <button class="btn-submit" :disabled="loading || !auth.isLoggedIn || classes.length === 0" @click="submit">
-          {{ loading ? '...' : 'إرسال' }}
+          {{ loading ? '...' : t('experiments.submitBtn') }}
         </button>
       </div>
     </div>

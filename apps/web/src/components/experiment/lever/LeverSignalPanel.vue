@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import type { LeverTrial } from '../../../composables/lever/useLeverTrials'
 
+const { t } = useI18n()
 const props = defineProps<{
   trials: LeverTrial[]
 }>()
@@ -20,7 +22,7 @@ function draw() {
 
   if (props.trials.length === 0) {
     ctx.fillStyle = '#64748b'; ctx.font = '12px sans-serif'; ctx.textAlign = 'center'
-    ctx.fillText('سجل قراءات لرؤية توزيع العزوم', w / 2, h / 2)
+    ctx.fillText(t('experiments.recordReadingsToSeeTorque'), w / 2, h / 2)
     return
   }
 

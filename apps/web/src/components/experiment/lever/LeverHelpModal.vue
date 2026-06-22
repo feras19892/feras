@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 const props = defineProps<{ open: boolean }>()
 const emit = defineEmits<{ (e: 'close'): void }>()
 </script>
@@ -7,27 +10,27 @@ const emit = defineEmits<{ (e: 'close'): void }>()
   <div v-if="open" class="modal-overlay" @click.self="emit('close')">
     <div class="modal-box">
       <div class="modal-header">
-        <span>&#x2753; مساعدة</span>
+        <span>&#x2753; {{ t('experiments.menuHelp') }}</span>
         <button class="modal-close" @click="emit('close')">&#x2715;</button>
       </div>
       <div class="modal-body">
-        <p><strong>اختصارات لوحة المفاتيح:</strong></p>
+        <p><strong>{{ t('experiments.keyboardShortcuts') }}:</strong></p>
         <ul>
-          <li><kbd>Space</kbd> بدء / توقف</li>
-          <li><kbd>R</kbd> إعادة تعيين</li>
-          <li><kbd>S</kbd> تسجيل قراءة</li>
-          <li><kbd>Ctrl+Z</kbd> تراجع</li>
-          <li><kbd>Ctrl+Y</kbd> إعادة</li>
-          <li><kbd>?</kbd> هذه النافذة</li>
+          <li><kbd>Space</kbd> {{ t('experiments.startStop') }}</li>
+          <li><kbd>R</kbd> {{ t('experiments.resetLabel') }}</li>
+          <li><kbd>S</kbd> {{ t('experiments.recordReading') }}</li>
+          <li><kbd>Ctrl+Z</kbd> {{ t('experiments.undoLabel') }}</li>
+          <li><kbd>Ctrl+Y</kbd> {{ t('experiments.redoLabel') }}</li>
+          <li><kbd>?</kbd> {{ t('experiments.thisWindow') }}</li>
         </ul>
-        <p><strong>استخدام الفأرة:</strong></p>
+        <p><strong>{{ t('experiments.mouseUsage') }}:</strong></p>
         <ul>
-          <li>انقر على نقطة فارغة = إضافة ثقل</li>
-          <li>اسحب ثقلاً = نقله</li>
-          <li>انقر مرتين على ثقل = تغيير كتلته</li>
+          <li>{{ t('experiments.clickEmptyPoint') }}</li>
+          <li>{{ t('experiments.dragWeight') }}</li>
+          <li>{{ t('experiments.doubleClickWeight') }}</li>
         </ul>
-        <p><strong>قانون الروافع:</strong></p>
-        <p>τ = m · g · x. عند التوازن: Στ = 0</p>
+        <p><strong>{{ t('experiments.leverLaw') }}:</strong></p>
+        <p>τ = m · g · x. {{ t('experiments.atEquilibrium') }}</p>
       </div>
     </div>
   </div>

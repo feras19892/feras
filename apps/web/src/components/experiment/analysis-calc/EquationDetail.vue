@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
 import type { AnalysisEquation } from '../../../types/physics'
 
 const props = defineProps<{
@@ -14,6 +15,8 @@ const emit = defineEmits<{
   (e: 'solve'): void
 }>()
 
+const { t } = useI18n()
+
 function updateVar(symbol: string, value: number) {
   emit('update:varValues', { ...props.varValues, [symbol]: value })
 }
@@ -23,14 +26,14 @@ function updateVar(symbol: string, value: number) {
   <div v-if="equation" class="eq-detail">
 
     <div class="formula-box">
-      <div class="section-label">الصيغة</div>
+      <div class="section-label">{{ t('analysis.formula') }}</div>
       <div class="formula">{{ equation.formula }}</div>
     </div>
 
     <div class="divider" />
 
     <div class="vars-area">
-      <div class="section-label">المتغيرات</div>
+      <div class="section-label">{{ t('analysis.variables') }}</div>
       <div class="vars-grid">
         <div v-for="v in equation.variables" :key="v.symbol" class="var-item">
           <label>{{ v.label }}<span class="sym"> ({{ v.symbol }})</span></label>
@@ -47,15 +50,15 @@ function updateVar(symbol: string, value: number) {
     <div class="divider" />
 
     <div class="solve-area">
-      <div class="section-label">احسب المجهول</div>
+      <div class="section-label">{{ t('analysis.solveUnknown') }}</div>
       <div class="solve-row">
         <select :value="targetVar" @change="emit('update:targetVar', ($event.target as HTMLSelectElement).value)">
           <option v-for="s in equation.solveFor" :key="s" :value="s">{{ s }}</option>
         </select>
-        <button class="btn-solve" @click="emit('solve')">= احسب</button>
+        <button class="btn-solve" @click="emit('solve')">{{ t('analysis.calc') }}</button>
       </div>
       <div v-if="result" class="result">
-        <div class="result-label">✅ النتيجة</div>
+        <div class="result-label">{{ t('analysis.resultLabel') }}</div>
         <div class="result-value">{{ result }}</div>
       </div>
     </div>

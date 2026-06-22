@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { usePendulumExperiment } from '../../../../composables/pendulum/usePendulumExperiment'
+import { useI18n } from '../../../../composables/useI18n'
 import PendulumMenuBar from '../../../../components/experiment/pendulum/PendulumMenuBar.vue'
 import PendulumCanvas from '../../../../components/experiment/pendulum/PendulumCanvas.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
@@ -10,13 +11,14 @@ import PendulumControlBar from '../../../../components/experiment/pendulum/Pendu
 import PendulumHelpModal from '../../../../components/experiment/pendulum/PendulumHelpModal.vue'
 
 const ex = usePendulumExperiment()
+const { t } = useI18n()
 const helpOpen = ref(false)
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return
   if (e.code === 'Space') { e.preventDefault(); ex.lab.togglePause() }
-  else if (e.key === 'r' || e.key === 'R') { if (confirm('هل تريد إعادة تعيين المحاكاة؟')) ex.resetSim() }
+  else if (e.key === 'r' || e.key === 'R') { if (confirm(t('experiments.resetConfirm'))) ex.resetSim() }
   else if (e.key === 's' || e.key === 'S') { ex.trials.recordTrial() }
   else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); if (e.shiftKey) ex.trials.redo(); else ex.trials.undo() }
   else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ex.trials.redo() }
@@ -28,7 +30,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 
 <template>
   <div class="pendulum-lab">
-    <PendulumMenuBar title="البندول البسيط" icon="🕰️" experiment-route="/physics/mechanics/pendulum" experiment-name="Pendulum"
+    <PendulumMenuBar :title="t('experiments.pendulumTitle')" icon="🕰️" experiment-route="/physics/mechanics/pendulum" experiment-name="Pendulum"
       @toggle-panel="ex.layout.togglePanel" @show-all-panels="ex.layout.showAllPanels" @export-csv="ex.trials.exportCsv"
       @toggle-pause="ex.lab.togglePause" @reset="ex.resetSim" @record-trial="ex.trials.recordTrial" @run-lab="ex.runPendulumLab"
       @toggle-help="helpOpen = !helpOpen"
@@ -72,7 +74,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     />
 
     <PendulumControlBar
-      :launch-label="ex.lab.sim.running && !ex.lab.sim.paused ? '⏸️ توقف' : '▶️ بدء'"
+      :launch-label="ex.lab.sim.running && !ex.lab.sim.paused ? '⏸️ ' + t('experiments.pauseBtn') : '▶️ ' + t('experiments.startBtn')"
       :speed="ex.lab.speed.value"
       :can-undo="ex.trials.canUndo()"
       :can-redo="ex.trials.canRedo()"
@@ -89,9 +91,9 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @update:speed="v => ex.lab.speed.value = v"
     />
 
-    <div class="hint-bar" v-if="!ex.lab.sim.running"><span>💡 اضغط "بدء" لبدء الاهتزاز، ثم "تسجيل" لحفظ القراءة</span></div>
-    <div class="hint-bar active" v-else-if="ex.lab.sim.measurementPeriod === null"><span>⏳ انتظر استقرار الاهتزاز...</span></div>
-    <div class="hint-bar success" v-else><span>✅ القراءة مستقرة — اضغط "تسجيل" لحفظها</span></div>
+    <div class="hint-bar" v-if="!ex.lab.sim.running"><span>💡 {{ t('experiments.hintStart') }}</span></div>
+    <div class="hint-bar active" v-else-if="ex.lab.sim.measurementPeriod === null"><span>⏳ {{ t('experiments.hintWaitStable') }}</span></div>
+    <div class="hint-bar success" v-else><span>✅ {{ t('experiments.hintStable') }}</span></div>
   </div>
 </template>
 

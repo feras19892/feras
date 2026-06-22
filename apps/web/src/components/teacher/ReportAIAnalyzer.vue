@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useI18n } from '../../composables/useI18n';
 import type { Report } from '../../services/report.service';
 
 const props = defineProps<{
   report: Report;
 }>();
 
+const { t } = useI18n();
 const analyzing = ref(false);
 const aiResult = ref<string>('');
 
@@ -51,32 +53,31 @@ function generateAnalysis() {
   analyzing.value = true;
   const lines: string[] = [];
 
-  lines.push(`📊 **تحليل التقرير: ${props.report.experiment_name}**`);
+  lines.push(`📊 **${t('ai.reportAnalysis')}: ${props.report.experiment_name}**`);
   lines.push(``);
-  lines.push(`**الطالب:** ${props.report.student_name}`);
-  lines.push(`**عدد القراءات:** ${readings.value.length}`);
-  lines.push(`**جودة البيانات:** ${dataQuality.value}%`);
+  lines.push(`**${t('ai.studentLabel')}:** ${props.report.student_name}`);
+  lines.push(`**${t('ai.readingsCount')}:** ${readings.value.length}`);
+  lines.push(`**${t('ai.dataQuality')}:** ${dataQuality.value}%`);
   lines.push(``);
 
-  // نقاط القوة
-  lines.push(`✅ **نقاط القوة:**`);
-  if (readings.value.length >= 5) lines.push(`- عدد قراءات جيد (${readings.value.length})`);
-  else if (readings.value.length >= 3) lines.push(`- عدد قراءات مقبول (${readings.value.length})`);
-  else lines.push(`- ⚠️ عدد قراءات قليل (${readings.value.length}) — يحتاج لقراءات إضافية`);
+  lines.push(`✅ **${t('ai.strengths')}:**`);
+  if (readings.value.length >= 5) lines.push(`- ${t('ai.goodReadings')} (${readings.value.length})`);
+  else if (readings.value.length >= 3) lines.push(`- ${t('ai.acceptableReadings')} (${readings.value.length})`);
+  else lines.push(`- ⚠️ ${t('ai.fewReadings')} (${readings.value.length}) — ${t('ai.needMoreReadings')}`);
 
-  if (hasEquations.value) lines.push(`- يتضمن معادلات رياضية`);
-  if (hasPlots.value) lines.push(`- يتضمن رسومات بيانية`);
-  if (hasConclusion.value) lines.push(`- يتضمن خاتمة وتحليل`);
-  if (hasChart.value) lines.push(`- يتضمن رسم بياني فعلي`);
-  if (!hasEquations.value) lines.push(`- ⚠️ لا يوجد معادلات — يُنصح بإضافة المعادلات`);
-  if (!hasConclusion.value) lines.push(`- ⚠️ لا يوجد خاتمة — يُنصح بإضافة تحليل للنتائج`);
+  if (hasEquations.value) lines.push(`- ${t('ai.hasEquations')}`);
+  if (hasPlots.value) lines.push(`- ${t('ai.hasPlots')}`);
+  if (hasConclusion.value) lines.push(`- ${t('ai.hasConclusion')}`);
+  if (hasChart.value) lines.push(`- ${t('ai.hasChart')}`);
+  if (!hasEquations.value) lines.push(`- ⚠️ ${t('ai.noEquations')} — ${t('ai.addEquationsAdvice')}`);
+  if (!hasConclusion.value) lines.push(`- ⚠️ ${t('ai.noConclusion')} — ${t('ai.addAnalysisAdvice')}`);
 
-  lines.push(`**ملاحظات:**`);
+  lines.push(`**${t('ai.notes')}:**`);
   if (stats.value && Object.keys(stats.value).length > 0) {
-    lines.push(`- المتوسطات المحسوبة: ${Object.entries(stats.value).map(([k, v]) => `${k}=${(v as number).toFixed(2)}`).join(', ')}`);
+    lines.push(`- ${t('ai.computedAverages')}: ${Object.entries(stats.value).map(([k, v]) => `${k}=${(v as number).toFixed(2)}`).join(', ')}`);
   }
 
-  lines.push(`**اقتراح الدرجة:** ${Math.round(dataQuality.value)} / 100`);
+  lines.push(`**${t('ai.gradeSuggestion')}:** ${Math.round(dataQuality.value)} / 100`);
 
   aiResult.value = lines.join('\n');
   analyzing.value = false;
@@ -86,17 +87,17 @@ function generateAnalysis() {
 <template>
   <div class="ai-analyzer">
     <div class="ai-header">
-      <h4>🤖 تحليل ذكي</h4>
+      <h4>{{ t('ai.aiAnalysis') }}</h4>
       <button v-if="!aiResult" class="ai-btn" :disabled="analyzing" @click="generateAnalysis">
-        {{ analyzing ? '...' : 'تحليل' }}
+        {{ analyzing ? '...' : t('ai.analyze') }}
       </button>
       <button v-else class="ai-btn secondary" @click="aiResult = ''">
-        إخفاء
+        {{ t('ai.hide') }}
       </button>
     </div>
 
     <div v-if="analyzing" class="ai-loading">
-      يحلل البيانات...
+      {{ t('ai.analyzing') }}
     </div>
 
     <div v-if="aiResult" class="ai-result">
@@ -105,35 +106,35 @@ function generateAnalysis() {
 
     <div v-if="!aiResult && !analyzing" class="ai-preview">
       <div class="preview-item">
-        <span class="label">📋 القراءات:</span>
+        <span class="label">{{ t('ai.readingsLabel') }}:</span>
         <span class="value">{{ readings.length }}</span>
       </div>
       <div class="preview-item">
-        <span class="label">📐 معادلات:</span>
+        <span class="label">{{ t('ai.equationsLabel') }}:</span>
         <span class="value" :class="{ good: hasEquations, warn: !hasEquations }">
           {{ hasEquations ? '✅' : '❌' }}
         </span>
       </div>
       <div class="preview-item">
-        <span class="label">📈 رسومات:</span>
+        <span class="label">{{ t('ai.plotsLabel') }}:</span>
         <span class="value" :class="{ good: hasPlots, warn: !hasPlots }">
           {{ hasPlots ? '✅' : '❌' }}
         </span>
       </div>
       <div class="preview-item">
-        <span class="label">📝 خاتمة:</span>
+        <span class="label">{{ t('ai.conclusionLabel') }}:</span>
         <span class="value" :class="{ good: hasConclusion, warn: !hasConclusion }">
           {{ hasConclusion ? '✅' : '❌' }}
         </span>
       </div>
       <div class="preview-item">
-        <span class="label">📸 رسم بياني:</span>
+        <span class="label">{{ t('ai.chartLabel') }}:</span>
         <span class="value" :class="{ good: hasChart, warn: !hasChart }">
           {{ hasChart ? '✅' : '❌' }}
         </span>
       </div>
       <div class="preview-item total">
-        <span class="label">🎯 جودة البيانات:</span>
+        <span class="label">{{ t('ai.dataQualityLabel') }}:</span>
         <span class="value score">{{ dataQuality }}%</span>
       </div>
     </div>

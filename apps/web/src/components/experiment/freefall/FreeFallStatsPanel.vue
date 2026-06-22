@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 const props = defineProps<{
   trialStats: { time_mean: number; time_std: number; g_mean: number; g_std: number } | null
   gTheoretical: number
@@ -7,15 +10,15 @@ const props = defineProps<{
 
 <template>
   <div>
-    <h5>📊 الإحصائيات</h5>
+    <h5>📊 {{ t('experiments.statisticsLabel') }}</h5>
     <div v-if="trialStats && trialStats.g_mean > 0" class="stats-grid">
-      <div class="stat-card"><span class="stat-label">متوسط الزمن</span><span class="stat-val">{{ trialStats.time_mean.toFixed(3) }} s</span></div>
-      <div class="stat-card"><span class="stat-label">انحراف الزمن</span><span class="stat-val">{{ trialStats.time_std.toFixed(4) }} s</span></div>
-      <div class="stat-card"><span class="stat-label">g المتوسط</span><span class="stat-val">{{ trialStats.g_mean.toFixed(2) }} m/s²</span></div>
-      <div class="stat-card"><span class="stat-label">انحراف g</span><span class="stat-val">{{ trialStats.g_std.toFixed(2) }} m/s²</span></div>
-      <div class="stat-card"><span class="stat-label">g النظري</span><span class="stat-val">{{ gTheoretical.toFixed(2) }} m/s²</span></div>
+      <div class="stat-card"><span class="stat-label">{{ t('experiments.averageTime') }}</span><span class="stat-val">{{ trialStats.time_mean.toFixed(3) }} s</span></div>
+      <div class="stat-card"><span class="stat-label">{{ t('experiments.timeDeviation') }}</span><span class="stat-val">{{ trialStats.time_std.toFixed(4) }} s</span></div>
+      <div class="stat-card"><span class="stat-label">{{ t('experiments.averageG') }}</span><span class="stat-val">{{ trialStats.g_mean.toFixed(2) }} m/s²</span></div>
+      <div class="stat-card"><span class="stat-label">{{ t('experiments.gDeviation') }}</span><span class="stat-val">{{ trialStats.g_std.toFixed(2) }} m/s²</span></div>
+      <div class="stat-card"><span class="stat-label">{{ t('experiments.theoreticalG') }}</span><span class="stat-val">{{ gTheoretical.toFixed(2) }} m/s²</span></div>
     </div>
-    <p v-else class="no-data">لا توجد بيانات كافية</p>
+    <p v-else class="no-data">{{ t('experiments.notEnoughData') }}</p>
   </div>
 </template>
 

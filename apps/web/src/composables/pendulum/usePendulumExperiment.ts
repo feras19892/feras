@@ -57,7 +57,7 @@ export function usePendulumExperiment() {
     if (col === 'data' || col === 'vis' || col === 'ctrl') return layout.columnOrder[col]
     return []
   }
-  function getMeasured() { return (lab.measured.value as Record<string, unknown>) }
+  function getMeasured() { return lab.measured.value }
   function getEffectiveMass() { return params.mass }
 
   const colWidths = reactive({ data: 280, vis: 0, ctrl: 280 })

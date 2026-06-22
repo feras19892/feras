@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from '../../composables/useI18n';
 interface AdminClassItem {
   id: string;
   name: string;
@@ -14,16 +15,18 @@ defineProps<{
 defineEmits<{
   (e: 'delete', id: string): void;
 }>();
+
+const { t } = useI18n();
 </script>
 
 <template>
   <div class="section">
-    <h3>🏫 الفصول ({{ classes.length }})</h3>
+    <h3>{{ t('admin.classes', { count: classes.length }) }}</h3>
     <div class="table-wrapper">
       <table class="data-table">
         <thead>
           <tr>
-            <th>ID</th><th>الاسم</th><th>الكود</th><th>المدرس</th><th>الطلاب</th><th>تاريخ الإنشاء</th><th>إجراءات</th>
+            <th>ID</th><th>{{ t('admin.name') }}</th><th>{{ t('admin.code') }}</th><th>{{ t('admin.teacher') }}</th><th>{{ t('admin.students') }}</th><th>{{ t('admin.createdAt') }}</th><th>{{ t('admin.actions') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -35,12 +38,12 @@ defineEmits<{
             <td>{{ c.student_count }}</td>
             <td>{{ c.created_at?.slice(0, 10) }}</td>
             <td>
-              <button class="btn-danger" @click="$emit('delete', c.id)">🗑️ حذف</button>
+              <button class="btn-danger" @click="$emit('delete', c.id)">{{ t('admin.delete') }}</button>
             </td>
           </tr>
         </tbody>
       </table>
-      <p v-if="classes.length === 0" class="empty">لا توجد فصول</p>
+      <p v-if="classes.length === 0" class="empty">{{ t('admin.noClasses') }}</p>
     </div>
   </div>
 </template>

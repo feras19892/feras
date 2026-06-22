@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { watch } from 'vue'
+import { useI18n } from '../../../composables/useI18n'
 import { useEquationSolver } from '../../../composables/experiment/analysis/useEquationSolver'
 import EquationDetail from './EquationDetail.vue'
 import type { AnalysisEquation } from '../../../types/physics'
@@ -12,6 +13,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'solved-equations', val: { equationName: string; formula: string; targetVar: string; varValues: Record<string, number>; result: string; timestamp: number }[]): void;
 }>();
+
+const { t } = useI18n()
 
 const {
   selectedIndex,
@@ -32,7 +35,7 @@ watch(solvedEquations, (val) => emit('solved-equations', val), { deep: true });
 <template>
   <div class="equations-panel">
     <div class="panel-header">
-      <span>⚗️ المعادلات والحسابات</span>
+      <span>{{ t('analysis.equations') }}</span>
     </div>
     <div v-if="equations.length" class="body">
       <div class="eq-tabs-list">
@@ -56,7 +59,7 @@ watch(solvedEquations, (val) => emit('solved-equations', val), { deep: true });
         />
       </div>
     </div>
-    <p v-else class="empty">لا توجد معادلات لهذه التجربة</p>
+    <p v-else class="empty">{{ t('analysis.noEquations') }}</p>
   </div>
 </template>
 

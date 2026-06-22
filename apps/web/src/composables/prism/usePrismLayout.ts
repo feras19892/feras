@@ -1,6 +1,6 @@
 import { ref, reactive } from 'vue'
 
-const STORAGE_KEY = 'prism_layout'
+const STORAGE_KEY = 'prism_layout_v2'
 
 export const PANEL_TITLES: Record<string, string> = {
   readings: '📊 القراءات', chart: '📈 الرسم البياني', trials: '📋 التجارب المسجلة',
@@ -13,8 +13,8 @@ const defaultState = {
   widths: { data: 320, ctrl: 320 },
   visible: ['readings', 'chart', 'trials', 'params', 'laws', 'results'] as string[],
   columnMap: {
-    data: ['readings', 'chart', 'trials', 'params'],
-    ctrl: ['laws', 'results'],
+    data: ['readings', 'chart', 'trials'],
+    ctrl: ['params', 'laws', 'results'],
   } as Record<string, string[]>,
   maximized: Object.fromEntries(allIds.map(id => [id, false])) as Record<string, boolean>,
 }

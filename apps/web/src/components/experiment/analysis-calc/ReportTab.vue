@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useI18n } from '../../../composables/useI18n';
 import type { AnalysisColumnMeta, AnalysisEquation, AnalysisPlotConfig } from '../../../types/physics';
 import type { StudentInfo } from '../../../stores/analysis.store';
 import AnalysisConclusionPanel from './AnalysisConclusionPanel.vue';
@@ -33,14 +34,16 @@ const emit = defineEmits<{
   (e: 'conclusionUpdate', data: { conclusion: string; errors: string; improvements: string }): void;
 }>();
 
+const { t } = useI18n();
+
 const conclusionData = ref({ conclusion: '', errors: '', improvements: '' });
 const showPreview = ref(false);
 
 const readyChecks = computed(() => {
   const c: { ok: boolean; text: string }[] = [];
-  c.push({ ok: !!props.studentInfo.name, text: 'اسم الطالب' });
-  c.push({ ok: props.readings.length >= 2, text: 'قراءتان على الأقل' });
-  c.push({ ok: conclusionData.value.conclusion.length > 10, text: 'الخاتمة مكتوبة' });
+  c.push({ ok: !!props.studentInfo.name, text: t('analysis.studentName') });
+  c.push({ ok: props.readings.length >= 2, text: t('analysis.minTwoReadings') });
+  c.push({ ok: conclusionData.value.conclusion.length > 10, text: t('analysis.conclusionWritten') });
   return c;
 });
 
@@ -58,16 +61,16 @@ function onConclusionUpdate(data: { conclusion: string; errors: string; improvem
       <div class="left">
         <AnalysisConclusionPanel @update="onConclusionUpdate" />
         <div class="readiness">
-          <div class="readiness-title">📋 جاهزية التقرير</div>
+          <div class="readiness-title">{{ t('analysis.reportReadiness') }}</div>
           <div v-for="(c, i) in readyChecks" :key="i" :class="['r-item', c.ok ? 'ok' : 'no']">
             {{ c.ok ? '✅' : '⬜' }} {{ c.text }}
           </div>
-          <div v-if="allReady" class="all-ready">🎉 التقرير جاهز للإرسال!</div>
+          <div v-if="allReady" class="all-ready">{{ t('analysis.reportReady') }}</div>
         </div>
       </div>
       <div class="right">
         <button class="btn-preview" @click="showPreview = !showPreview">
-          {{ showPreview ? '✕ إخفاء' : '👁️ معاينة التقرير' }}
+          {{ showPreview ? t('analysis.hide') : t('analysis.previewReport') }}
         </button>
         <div v-show="showPreview" class="preview-box">
           <AnalysisReportPreview

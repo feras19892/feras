@@ -4,7 +4,9 @@ import ExperimentReport from '../ExperimentReport.vue'
 import DeletableSection from '../DeletableSection.vue'
 
 import type { ProjectileTrial } from '../../../composables/projectile/useProjectileTrials'
+import { useI18n } from '../../../composables/useI18n'
 
+const { t } = useI18n()
 const props = defineProps<{
   trials: ProjectileTrial[]
   params?: { v0: number; angleDeg: number; g: number; dragCoeff: number }
@@ -22,26 +24,26 @@ const hasData = computed(() => props.trials.length > 0)
   <ExperimentReport student-storage-key="projectile_report_student" :has-data="hasData" @close="emit('close')" @open-full-report="emit('open-full-report')">
     <template #content>
       <DeletableSection v-if="params">
-        <h5>الشروط الأولية</h5>
+        <h5>{{ t('experiments.initialConditions') }}</h5>
         <div class="info-grid">
           <div class="info-field"><label>v₀</label><span>{{ params.v0 }} m/s</span></div>
-          <div class="info-field"><label>الزاوية</label><span>{{ params.angleDeg }}°</span></div>
+          <div class="info-field"><label>{{ t('experiments.angle') }}</label><span>{{ params.angleDeg }}°</span></div>
           <div class="info-field"><label>g</label><span>{{ params.g }} m/s²</span></div>
-          <div class="info-field"><label>مقاومة الهواء</label><span>{{ params.dragCoeff }}</span></div>
+          <div class="info-field"><label>{{ t('experiments.airResistance') }}</label><span>{{ params.dragCoeff }}</span></div>
         </div>
       </DeletableSection>
       <DeletableSection v-if="trials.length">
-        <h5>جدول القراءات ({{ trials.length }})</h5>
+        <h5>{{ t('experiments.readingsTable') }} ({{ trials.length }})</h5>
         <table class="report-table">
           <thead>
             <tr>
               <th>#</th>
-              <th>الزاوية</th>
+              <th>{{ t('experiments.angle') }}</th>
               <th>v₀ (m/s)</th>
-              <th>الزمن (s)</th>
-              <th>أقصى ارتفاع (m)</th>
-              <th>المدى (m)</th>
-              <th>الخطأ (%)</th>
+              <th>{{ t('experiments.timeLabel') }} (s)</th>
+              <th>{{ t('experiments.maxHeight') }} (m)</th>
+              <th>{{ t('experiments.rangeLabel') }} (m)</th>
+              <th>{{ t('experiments.error') }} (%)</th>
             </tr>
           </thead>
           <tbody>
@@ -58,23 +60,23 @@ const hasData = computed(() => props.trials.length > 0)
         </table>
       </DeletableSection>
       <DeletableSection v-if="trials.length && trialStats">
-        <h5>الإحصائيات</h5>
+        <h5>{{ t('experiments.statisticsLabel') }}</h5>
         <div class="info-grid">
-          <div class="info-field"><label>متوسط المدى</label><span>{{ trialStats.range_mean.toFixed(2) }} m</span></div>
-          <div class="info-field"><label>الانحراف المعياري (المدى)</label><span>{{ trialStats.range_std.toFixed(2) }} m</span></div>
-          <div class="info-field"><label>متوسط زمن التحليق</label><span>{{ trialStats.flightTime_mean.toFixed(2) }} s</span></div>
-          <div class="info-field"><label>الانحراف المعياري (الزمن)</label><span>{{ trialStats.flightTime_std.toFixed(2) }} s</span></div>
+          <div class="info-field"><label>{{ t('experiments.averageRange') }}</label><span>{{ trialStats.range_mean.toFixed(2) }} m</span></div>
+          <div class="info-field"><label>{{ t('experiments.stdDeviationRange') }}</label><span>{{ trialStats.range_std.toFixed(2) }} m</span></div>
+          <div class="info-field"><label>{{ t('experiments.averageFlightTime') }}</label><span>{{ trialStats.flightTime_mean.toFixed(2) }} s</span></div>
+          <div class="info-field"><label>{{ t('experiments.stdDeviationTime') }}</label><span>{{ trialStats.flightTime_std.toFixed(2) }} s</span></div>
         </div>
       </DeletableSection>
       <DeletableSection v-if="fitResult && trials.length >= 2">
-        <h5>ملائمة منحنى المدى</h5>
+        <h5>{{ t('experiments.rangeCurveFitting') }}</h5>
         <div class="equation-box">
           <code>R = {{ fitResult.slope.toFixed(4) }} · sin(2θ) {{ fitResult.intercept >= 0 ? '+' : '' }} {{ fitResult.intercept.toFixed(4) }}</code>
         </div>
-        <p class="equation-note">منحنى الانحدار الخطي لـ R مقابل sin(2θ)</p>
+        <p class="equation-note">{{ t('experiments.linearRegressionCurve') }}</p>
       </DeletableSection>
       <DeletableSection>
-        <h5>المعادلات المستخدمة</h5>
+        <h5>{{ t('experiments.usedEquations') }}</h5>
         <div class="equations-list">
           <div class="eq">z = v₀ sin θ / g</div>
           <div class="eq">H = (v₀ sin θ)² / 2g</div>
@@ -82,7 +84,7 @@ const hasData = computed(() => props.trials.length > 0)
         </div>
       </DeletableSection>
       <div class="report-footer" v-if="trials.length">
-        <span>g النظرية: <b>{{ gTheoretical }} m/s²</b></span>
+        <span>{{ t('experiments.theoreticalG') }}: <b>{{ gTheoretical }} m/s²</b></span>
         <span class="date">{{ new Date().toLocaleDateString('ar-SY') }}</span>
       </div>
     </template>

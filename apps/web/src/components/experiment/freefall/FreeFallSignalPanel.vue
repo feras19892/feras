@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 
+const { t } = useI18n()
 const props = defineProps<{ simState: { t: number; y: number; vy: number } }>()
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const wrapRef = ref<HTMLDivElement | null>(null)
@@ -37,7 +39,7 @@ function draw() {
 
   if (!points.length) {
     ctx.fillStyle = '#64748b'; ctx.font = '14px Segoe UI'; ctx.textAlign = 'center'
-    ctx.fillText('الإشارة تظهر هنا بعد بدء السقوط', w / 2, h / 2)
+    ctx.fillText(t('experiments.signalAppearsHere'), w / 2, h / 2)
     ctx.textAlign = 'start'; return
   }
 

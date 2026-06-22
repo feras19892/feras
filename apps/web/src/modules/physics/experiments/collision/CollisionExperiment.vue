@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useCollisionExperiment } from '../../../../composables/collision/useCollisionExperiment'
+import { useI18n } from '../../../../composables/useI18n'
 import CollisionMenuBar from '../../../../components/experiment/collision/CollisionMenuBar.vue'
 import CollisionCanvas from '../../../../components/experiment/collision/CollisionCanvas.vue'
 import CollisionControlBar from '../../../../components/experiment/collision/CollisionControlBar.vue'
@@ -10,6 +11,7 @@ import CollisionPanelBody from '../../../../components/experiment/collision/Coll
 import CollisionOverlayPanels from '../../../../components/experiment/collision/CollisionOverlayPanels.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 
+const { t } = useI18n()
 const ex = useCollisionExperiment()
 const helpOpen = ref(false)
 
@@ -17,7 +19,7 @@ function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return
   if (e.code === 'Space') { e.preventDefault(); ex.lab.togglePause() }
-  else if (e.key === 'r' || e.key === 'R') { if (confirm('هل تريد إعادة تعيين المحاكاة؟')) ex.resetSim() }
+  else if (e.key === 'r' || e.key === 'R') { if (confirm(t('experiments.confirmResetSimulation'))) ex.resetSim() }
   else if (e.key === 's' || e.key === 'S') { ex.trials.recordTrial() }
   else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); if (e.shiftKey) ex.trials.redo(); else ex.trials.undo() }
   else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ex.trials.redo() }
@@ -31,7 +33,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 <template>
   <div class="collision-lab">
     <CollisionMenuBar
-      title="التصادم في بعد واحد"
+      :title="t('experiments.collision1DTitle')"
       icon="💥"
       experiment-route="/physics/mechanics/collision"
       experiment-name="1D Collision"
@@ -84,15 +86,15 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @clear="ex.trials.clearTrials"
     />
 
-    <div class="hint-bar" v-if="!ex.lab.sim.running"><span>💡 اضبط المعاملات واضغط "بدء"</span></div>
-    <div class="hint-bar active" v-else-if="ex.lab.sim.running && !ex.lab.sim.paused && !ex.lab.sim.collided"><span>⏳ الكرتان تتحركان...</span></div>
-    <div class="hint-bar success" v-else-if="ex.lab.sim.collided"><span>💥 تصادم! اضغط "تسجيل"</span></div>
-    <div class="hint-bar" v-else><span>⏸️ متوقف مؤقتاً</span></div>
+    <div class="hint-bar" v-if="!ex.lab.sim.running"><span>💡 {{ t('experiments.setParamsAndStartHint') }}</span></div>
+    <div class="hint-bar active" v-else-if="ex.lab.sim.running && !ex.lab.sim.paused && !ex.lab.sim.collided"><span>⏳ {{ t('experiments.ballsMovingHint') }}</span></div>
+    <div class="hint-bar success" v-else-if="ex.lab.sim.collided"><span>💥 {{ t('experiments.collisionRecordHint') }}</span></div>
+    <div class="hint-bar" v-else><span>⏸️ {{ t('experiments.pausedTemporarily') }}</span></div>
 
     <CollisionStatusBar :running="ex.lab.sim.running" :paused="ex.lab.sim.paused" :collided="ex.lab.sim.collided" />
 
     <CollisionControlBar
-      :launch-label="ex.lab.sim.running && !ex.lab.sim.paused ? '⏸️ توقف' : '▶️ بدء'"
+      :launch-label="ex.lab.sim.running && !ex.lab.sim.paused ? '⏸️ ' + t('experiments.pauseBtn') : '▶️ ' + t('experiments.startBtn')"
       :speed="ex.lab.speed.value"
       :can-undo="ex.trials.canUndo()"
       :can-redo="ex.trials.canRedo()"

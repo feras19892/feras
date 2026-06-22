@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
+import { useI18n } from '../../composables/useI18n';
 import { getAdminFeedback, updateFeedbackStatus } from '../../services/admin.service';
 
 interface FeedbackItem {
@@ -7,7 +8,7 @@ interface FeedbackItem {
   type: string;
   user_name: string;
   experiment_name?: string;
-  rating?: number;
+  rating?: number | null;
   message: string;
   status: string;
   created_at?: string;
@@ -19,6 +20,7 @@ interface FeedbackStats {
   average: number;
 }
 
+const { t } = useI18n();
 const feedbackList = ref<FeedbackItem[]>([]);
 const stats = ref<FeedbackStats | null>(null);
 const loading = ref(false);
@@ -46,7 +48,7 @@ async function load() {
       stats.value = res.stats;
     }
   } catch (err: unknown) {
-    error.value = (err instanceof Error ? err.message : '') || 'فشل التحميل';
+    error.value = (err instanceof Error ? err.message : '') || t('admin.loadError');
   } finally {
     loading.value = false;
   }
@@ -59,9 +61,9 @@ async function changeStatus(id: number, status: string) {
 
 function typeLabel(type: string) {
   switch (type) {
-    case 'rating': return '⭐ تقييم';
-    case 'complaint': return '🚩 شكوى';
-    case 'suggestion': return '💡 اقتراح';
+    case 'rating': return t('admin.feedbackTypeRating');
+    case 'complaint': return t('admin.feedbackTypeComplaint');
+    case 'suggestion': return t('admin.feedbackTypeSuggestion');
     default: return type;
   }
 }
@@ -72,27 +74,27 @@ onMounted(load);
 <template>
   <div class="section">
     <div class="section-header">
-      <h3>💬 التقييمات والشكاوى</h3>
-      <button class="btn-primary" @click="load">🔄 تحديث</button>
+      <h3>{{ t('admin.feedbackTitle') }}</h3>
+      <button class="btn-primary" @click="load">{{ t('admin.refresh') }}</button>
     </div>
 
-    <div v-if="loading" class="loading">جاري التحميل...</div>
+    <div v-if="loading" class="loading">{{ t('admin.loading') }}</div>
     <div v-else-if="error" class="error-box">❌ {{ error }}</div>
     <template v-else>
       <!-- Search + Filters -->
       <div class="filters-row">
-        <input v-model="searchQuery" class="search-input" placeholder="🔍 بحث باسم المستخدم أو الرسالة أو التجربة..." />
+        <input v-model="searchQuery" class="search-input" :placeholder="t('admin.searchPlaceholder')" />
         <select v-model="filterType">
-          <option value="all">كل الأنواع</option>
-          <option value="complaint">🚩 شكاوى</option>
-          <option value="rating">⭐ تقييمات</option>
-          <option value="suggestion">💡 اقتراحات</option>
+          <option value="all">{{ t('admin.allTypes') }}</option>
+          <option value="complaint">{{ t('admin.complaints') }}</option>
+          <option value="rating">{{ t('admin.ratings') }}</option>
+          <option value="suggestion">{{ t('admin.suggestions') }}</option>
         </select>
         <select v-model="filterStatus">
-          <option value="all">كل الحالات</option>
-          <option value="open">🔴 مفتوح</option>
-          <option value="resolved">✅ محلول</option>
-          <option value="dismissed">🚫 مرفوض</option>
+          <option value="all">{{ t('admin.allStatuses') }}</option>
+          <option value="open">{{ t('admin.statusOpen') }}</option>
+          <option value="resolved">{{ t('admin.statusResolved') }}</option>
+          <option value="dismissed">🚫 {{ t('admin.dismissed') }}</option>
         </select>
       </div>
 
@@ -100,19 +102,19 @@ onMounted(load);
       <div v-if="stats" class="stats-row">
         <div class="mini-card">
           <div class="mini-value">{{ stats.total }}</div>
-          <div class="mini-label">الكل</div>
+          <div class="mini-label">{{ t('admin.all') }}</div>
         </div>
         <div class="mini-card">
           <div class="mini-value">{{ stats.open }}</div>
-          <div class="mini-label">مفتوح</div>
+          <div class="mini-label">{{ t('admin.open') }}</div>
         </div>
         <div class="mini-card">
           <div class="mini-value">{{ stats.resolved }}</div>
-          <div class="mini-label">محلول</div>
+          <div class="mini-label">{{ t('admin.resolved') }}</div>
         </div>
         <div class="mini-card">
           <div class="mini-value">{{ stats.average }}</div>
-          <div class="mini-label">متوسط التقييم</div>
+          <div class="mini-label">{{ t('admin.avgRating') }}</div>
         </div>
       </div>
 
@@ -120,7 +122,7 @@ onMounted(load);
         <table class="data-table">
           <thead>
             <tr>
-              <th>ID</th><th>النوع</th><th>المستخدم</th><th>التجربة</th><th>التقييم</th><th>الرسالة</th><th>الحالة</th><th>التاريخ</th>
+              <th>ID</th><th>{{ t('admin.type') }}</th><th>{{ t('admin.user') }}</th><th>{{ t('admin.experiment') }}</th><th>{{ t('admin.ratingCol') }}</th><th>{{ t('admin.message') }}</th><th>{{ t('admin.status') }}</th><th>{{ t('admin.date') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -133,16 +135,16 @@ onMounted(load);
               <td class="msg-cell">{{ f.message }}</td>
               <td>
                 <select :value="f.status" @change="changeStatus(f.id, ($event.target as HTMLSelectElement).value)">
-                  <option value="open">🔴 مفتوح</option>
-                  <option value="resolved">✅ محلول</option>
-                  <option value="dismissed">🚫 مرفوض</option>
+                  <option value="open">{{ t('admin.statusOpen') }}</option>
+                  <option value="resolved">{{ t('admin.statusResolved') }}</option>
+                  <option value="dismissed">🚫 {{ t('admin.dismissed') }}</option>
                 </select>
               </td>
               <td>{{ f.created_at?.slice(0, 10) }}</td>
             </tr>
           </tbody>
         </table>
-        <p v-if="filteredFeedback.length === 0" class="empty">لا توجد نتائج</p>
+        <p v-if="filteredFeedback.length === 0" class="empty">{{ t('admin.noResults') }}</p>
       </div>
     </template>
   </div>

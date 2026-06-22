@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from '../../../composables/useI18n';
 
 const props = defineProps<{
   sourceName: string;
@@ -10,19 +11,21 @@ const emit = defineEmits<{
   (e: 'back'): void;
 }>();
 
+const { t } = useI18n();
+
 const title = computed(() => {
-  return props.sourceName ? `تحليل: ${props.sourceName}` : 'قسم الرسم والحسابات';
+  return props.sourceName ? t('analysis.analysisTitle', { name: props.sourceName }) : t('analysis.defaultTitle');
 });
 </script>
 
 <template>
   <nav class="analysis-menubar">
     <div class="left">
-      <button class="btn-back" @click="emit('back')">← رجوع</button>
+      <button class="btn-back" @click="emit('back')">{{ t('analysis.back') }}</button>
       <span class="title">📊 {{ title }}</span>
     </div>
     <div class="right">
-      <button class="btn-clear" @click="emit('clear')">🗑️ مسح البيانات</button>
+      <button class="btn-clear" @click="emit('clear')">{{ t('analysis.clearData') }}</button>
     </div>
   </nav>
 </template>

@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
+import { useI18n } from '../../composables/useI18n'
 
+const { t } = useI18n()
 const deleted = shallowRef(false)
 function restore() { deleted.value = false }
 </script>
 
 <template>
   <section v-if="!deleted" class="deletable-section">
-    <button class="delete-section-btn" @click="deleted = true" title="إزالة هذا القسم من التقرير">✕</button>
+    <button class="delete-section-btn" @click="deleted = true" :title="t('experiments.removeSection')">✕</button>
     <slot />
   </section>
-  <div v-else class="restored-section" @click="restore" title="استعادة القسم">
-    <span>➕ {{ $slots.default ? '' : '' }}استعادة القسم المحذوف</span>
+  <div v-else class="restored-section" @click="restore" :title="t('experiments.restoreSection')">
+    <span>➕ {{ t('experiments.restoreDeletedSection') }}</span>
   </div>
 </template>
 

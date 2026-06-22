@@ -11,14 +11,14 @@ const emit = defineEmits<{
 
 <template>
   <div class="guest-row">
-    <span>{{ t('auth.or') || 'أو' }}</span>
+    <span>{{ t('auth.or') }}</span>
   </div>
   <div class="guest-btn-row">
     <button type="button" class="btn-guest teacher" @click="emit('enterAsTeacher')">
-      👨‍🏫 دخول كمعلم
+      {{ t('auth.guestTeacher') }}
     </button>
     <button data-testid="guest-login" type="button" class="btn-guest student" @click="emit('enterAsStudent')">
-      🎓 دخول كطالب
+      {{ t('auth.guestStudent') }}
     </button>
   </div>
 </template>

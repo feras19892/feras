@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from '../../../composables/useI18n';
 import type { AnalysisColumnMeta, AnalysisEquation, AnalysisPlotConfig } from '../../../types/physics';
 import type { StudentInfo } from '../../../stores/analysis.store';
 
@@ -22,6 +23,8 @@ const props = defineProps<{
   expectedN2?: number | null;
 }>();
 
+const { t } = useI18n();
+
 const stats = computed(() => {
   const s: Record<string, { mean: number; std: number; min: number; max: number }> = {};
   for (const col of props.columns) {
@@ -38,25 +41,25 @@ const stats = computed(() => {
 <template>
   <div class="report-preview" id="analysis-report">
     <div class="report-header">
-      <h1>📊 تقرير التجربة الفيزيائية</h1>
+      <h1>{{ t('analysis.reportTitle') }}</h1>
       <div class="meta">
-        <span><b>التجربة:</b> {{ sourceName }}</span>
-        <span><b>التاريخ:</b> {{ reportDate }}</span>
+        <span><b>{{ t('analysis.experimentLabel') }}:</b> {{ sourceName }}</span>
+        <span><b>{{ t('analysis.dateLabel') }}:</b> {{ reportDate }}</span>
       </div>
     </div>
 
     <div class="section" v-if="studentInfo.name || studentInfo.email || studentInfo.grade">
-      <h2>🎓 معلومات الطالب</h2>
+      <h2>{{ t('analysis.studentInfo') }}</h2>
       <div class="info-grid">
-        <div v-if="studentInfo.name"><b>الاسم:</b> {{ studentInfo.name }}</div>
-        <div v-if="studentInfo.email"><b>البريد:</b> {{ studentInfo.email }}</div>
-        <div v-if="studentInfo.grade"><b>الصف:</b> {{ studentInfo.grade }}</div>
+        <div v-if="studentInfo.name"><b>{{ t('analysis.name') }}:</b> {{ studentInfo.name }}</div>
+        <div v-if="studentInfo.email"><b>{{ t('analysis.email') }}:</b> {{ studentInfo.email }}</div>
+        <div v-if="studentInfo.grade"><b>{{ t('analysis.grade') }}:</b> {{ studentInfo.grade }}</div>
       </div>
-      <div v-if="studentInfo.notes" class="notes"><b>ملاحظات:</b> {{ studentInfo.notes }}</div>
+      <div v-if="studentInfo.notes" class="notes"><b>{{ t('analysis.notes') }}:</b> {{ studentInfo.notes }}</div>
     </div>
 
     <div class="section">
-      <h2>📋 جدول القراءات</h2>
+      <h2>{{ t('analysis.readingsTable') }}</h2>
       <table class="data-table">
         <thead><tr><th>#</th><th v-for="c in columns" :key="c.key">{{ c.label }} <span v-if="c.unit">({{ c.unit }})</span></th></tr></thead>
         <tbody>
@@ -66,7 +69,7 @@ const stats = computed(() => {
     </div>
 
     <div class="section">
-      <h2>📈 إحصائيات</h2>
+      <h2>{{ t('analysis.statistics') }}</h2>
       <div class="stats-grid">
         <div class="stat-card" v-for="c in columns" :key="c.key">
           <div class="stat-title">{{ c.label }}</div>
@@ -79,13 +82,13 @@ const stats = computed(() => {
     </div>
 
     <div class="section" v-if="regressionData || slopeCalcData">
-      <h2>📈 نتائج الانحدار الخطي</h2>
+      <h2>{{ t('analysis.regressionResults') }}</h2>
       <div v-if="axesData" class="axes-info">
-        <b>المحاور:</b> {{ axesData.yLabel }} (Y) ضد {{ axesData.xLabel }} (X)
+        <b>{{ t('analysis.axes') }}:</b> {{ axesData.yLabel }} (Y) {{ t('analysis.against') }} {{ axesData.xLabel }} (X)
       </div>
       <div v-if="regressionData" class="reg-card">
-        <div class="reg-row"><span>معادلة الميل:</span> <b>y = {{ regressionData.slope.toFixed(4) }}x {{ regressionData.intercept >= 0 ? '+' : '' }} {{ regressionData.intercept.toFixed(4) }}</b></div>
-        <div class="reg-row"><span>معامل التحديد R²:</span> <b>{{ regressionData.r2.toFixed(4) }}</b></div>
+        <div class="reg-row"><span>{{ t('analysis.slope') }}:</span> <b>y = {{ regressionData.slope.toFixed(4) }}x {{ regressionData.intercept >= 0 ? '+' : '' }} {{ regressionData.intercept.toFixed(4) }}</b></div>
+        <div class="reg-row"><span>R²:</span> <b>{{ regressionData.r2.toFixed(4) }}</b></div>
       </div>
       <div v-if="slopeCalcData" class="slope-calc-card">
         <div class="sc-label">{{ slopeCalcData.label }}</div>
@@ -95,25 +98,25 @@ const stats = computed(() => {
     </div>
 
     <div class="section" v-if="calculatedN2 !== null || expectedN2 !== null">
-      <h2>🔬 نتائج تحليل شعاع الضوء</h2>
+      <h2>{{ t('analysis.lightRayResults') }}</h2>
       <div class="reg-card">
-        <div class="reg-row"><span>معامل الانكسار n₂ المحسوب:</span> <b class="highlight">{{ calculatedN2?.toFixed(3) ?? '—' }}</b></div>
-        <div class="reg-row"><span>معامل الانكسار n₂ المتوقع:</span> <b>{{ expectedN2?.toFixed(3) ?? '—' }}</b></div>
+        <div class="reg-row"><span>{{ t('analysis.calculatedN2') }}:</span> <b class="highlight">{{ calculatedN2?.toFixed(3) ?? '—' }}</b></div>
+        <div class="reg-row"><span>{{ t('analysis.expectedN2') }}:</span> <b>{{ expectedN2?.toFixed(3) ?? '—' }}</b></div>
         <div class="reg-row" v-if="calculatedN2 != null && expectedN2 != null">
-          <span>نسبة الخطأ:</span>
+          <span>{{ t('analysis.errorRate') }}:</span>
           <b :class="{ok: Math.abs((calculatedN2!-expectedN2!)/expectedN2!*100) <= 5, bad: Math.abs((calculatedN2!-expectedN2!)/expectedN2!*100) > 5}">
             {{ Math.abs((calculatedN2!-expectedN2!)/expectedN2!*100).toFixed(2) }}%
           </b>
         </div>
         <div class="reg-row" v-if="calculatedN2 != null">
-          <span>سرعة الضوء في الوسط:</span>
+          <span>{{ t('analysis.lightSpeedMedium') }}:</span>
           <b>{{ (3e8 / calculatedN2! / 1e8).toFixed(2) }} × 10⁸ m/s</b>
         </div>
       </div>
     </div>
 
     <div class="section" v-if="equations.length">
-      <h2>⚗️ المعادلات</h2>
+      <h2>{{ t('analysis.equations') }}</h2>
       <div class="eq-list">
         <div class="eq-item" v-for="(eq, i) in equations" :key="i">
           <div class="eq-name">{{ eq.name }}</div>
@@ -123,10 +126,10 @@ const stats = computed(() => {
     </div>
 
     <div class="section" v-if="solvedEquations?.length">
-      <h2>🔢 حساب المجهول</h2>
+      <h2>{{ t('analysis.solvedEquations') }}</h2>
       <div class="eq-list">
         <div class="eq-item" v-for="(s, i) in solvedEquations" :key="i">
-          <div class="eq-name">{{ s.equationName }} — حل {{ s.targetVar }}</div>
+          <div class="eq-name">{{ s.equationName }} — {{ t('analysis.unknownSolve', { var: s.targetVar }) }}</div>
           <div class="eq-formula">{{ s.formula }}</div>
           <div class="solve-values">
             <span v-for="(val, sym) in s.varValues" :key="sym" class="solve-tag">{{ sym }} = {{ val }}</span>
@@ -137,12 +140,12 @@ const stats = computed(() => {
     </div>
 
     <div class="section" v-if="errorCalcData && errorCalcData.errorPercent !== null">
-      <h2>📊 نسبة الخطأ المئوية</h2>
+      <h2>{{ t('analysis.errorPercent') }}</h2>
       <div class="error-calc-card">
-        <div class="ec-row"><span>القيمة النظرية:</span> <b>{{ errorCalcData.theoretical }}</b></div>
-        <div class="ec-row"><span>القيمة التجريبية:</span> <b>{{ errorCalcData.experimental }}</b></div>
+        <div class="ec-row"><span>{{ t('analysis.theoreticalValue') }}:</span> <b>{{ errorCalcData.theoretical }}</b></div>
+        <div class="ec-row"><span>{{ t('analysis.experimentalValue') }}:</span> <b>{{ errorCalcData.experimental }}</b></div>
         <div class="ec-row ec-result">
-          <span>نسبة الخطأ:</span>
+          <span>{{ t('analysis.errorRate') }}:</span>
           <b :class="{ good: errorCalcData.errorPercent < 5, warn: errorCalcData.errorPercent >= 5 && errorCalcData.errorPercent < 15, bad: errorCalcData.errorPercent >= 15 }">
             {{ errorCalcData.errorPercent.toFixed(2) }}%
           </b>
@@ -151,29 +154,29 @@ const stats = computed(() => {
     </div>
 
     <div class="section" v-if="plots.length">
-      <h2>📉 الرسومات المقترحة</h2>
+      <h2>{{ t('analysis.suggestedPlots') }}</h2>
       <div class="plot-list">
         <div class="plot-item" v-for="(p, i) in plots" :key="i">
           <span class="plot-type">{{ p.type === 'scatter' ? '●' : '━' }}</span>
-          <span>{{ p.yLabel }} ضد {{ p.xLabel }}</span>
+          <span>{{ p.yLabel }} {{ t('analysis.against') }} {{ p.xLabel }}</span>
         </div>
       </div>
     </div>
 
     <div class="section" v-if="chartSnapshot">
-      <h2>📈 الرسم البياني</h2>
-      <img :src="chartSnapshot" alt="Chart" class="chart-img" />
+      <h2>{{ t('analysis.chartTitle') }}</h2>
+      <img :src="chartSnapshot" :alt="t('analysis.chartTitle')" class="chart-img" />
     </div>
 
     <div class="section" v-if="conclusion?.conclusion || conclusion?.errors || conclusion?.improvements">
-      <h2>📝 الخاتمة</h2>
-      <div v-if="conclusion.conclusion" class="block"><b>الاستنتاج:</b> {{ conclusion.conclusion }}</div>
-      <div v-if="conclusion.errors" class="block"><b>مصادر الخطأ:</b> {{ conclusion.errors }}</div>
-      <div v-if="conclusion.improvements" class="block"><b>اقتراحات التحسين:</b> {{ conclusion.improvements }}</div>
+      <h2>{{ t('analysis.conclusionSection') }}</h2>
+      <div v-if="conclusion.conclusion" class="block"><b>{{ t('analysis.mainConclusion') }}:</b> {{ conclusion.conclusion }}</div>
+      <div v-if="conclusion.errors" class="block"><b>{{ t('analysis.errorSources') }}:</b> {{ conclusion.errors }}</div>
+      <div v-if="conclusion.improvements" class="block"><b>{{ t('analysis.improvements') }}:</b> {{ conclusion.improvements }}</div>
     </div>
 
     <div class="footer">
-      <span>تم إنشاء هذا التقرير تلقائياً من منصة الفيزياء التفاعلية</span>
+      <span>{{ t('analysis.autoGenerated') }}</span>
     </div>
   </div>
 </template>

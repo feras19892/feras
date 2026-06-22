@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PrismTrial } from '../../../composables/prism/usePrismExperiment'
+import type { PrismTrial } from '../../../composables/prism/usePrismTrials'
 import PrismPanelBody from './PrismPanelBody.vue'
 
 interface Props {
@@ -16,7 +16,8 @@ interface Props {
   slope: number
   intercept: number
   rSquared: number
-  nFromRegression: number | null
+  nValue: number
+  avgN: number | null
   speedInMedium: number | null
 }
 
@@ -53,7 +54,8 @@ const ids = ['readings', 'chart', 'trials', 'params', 'laws', 'results']
           :slope="slope"
           :intercept="intercept"
           :r-squared="rSquared"
-          :n-from-regression="nFromRegression"
+          :n-value="nValue"
+          :avg-n="avgN"
           :speed-in-medium="speedInMedium"
           @remove="emit('remove', $event)"
           @clear="emit('clear')"

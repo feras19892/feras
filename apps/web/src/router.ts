@@ -9,6 +9,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./pages/index.vue'),
   },
   {
+    path: '/language',
+    name: 'Language',
+    component: () => import('./pages/language.vue'),
+  },
+  {
     path: '/login',
     redirect: '/',
   },

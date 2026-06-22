@@ -1,49 +1,51 @@
 <script setup lang="ts">
+import { useI18n } from '../../composables/useI18n'
 import type { SpringParams } from '../../modules/physics/experiments/spring/useSpringPhysics'
 
+const { t } = useI18n()
 const params = defineModel<SpringParams>({ required: true })
 </script>
 
 <template>
   <div class="lab-card params-card">
-    <div class="card-header"><h4>⚙️ معاملات</h4></div>
+    <div class="card-header"><h4>⚙️ {{ t('experiments.params') }}</h4></div>
     <div class="param-row">
-      <label>الكتلة (kg)</label>
+      <label>{{ t('experiments.mass') }} (kg)</label>
       <div class="param-inputs">
         <input type="range" min="0.1" max="2" step="0.01" v-model.number="params.mass" />
         <input type="number" step="0.01" v-model.number="params.mass" />
       </div>
     </div>
     <div class="param-row">
-      <label>ثابت النابض (N/m)</label>
+      <label>{{ t('experiments.springConstant') }} (N/m)</label>
       <div class="param-inputs">
         <input type="range" min="5" max="200" step="1" v-model.number="params.k" />
         <input type="number" step="1" v-model.number="params.k" />
       </div>
     </div>
     <div class="param-row">
-      <label>السعة (m)</label>
+      <label>{{ t('experiments.amplitude') }} (m)</label>
       <div class="param-inputs">
         <input type="range" min="0.05" max="0.5" step="0.01" v-model.number="params.amplitude" />
         <input type="number" step="0.01" v-model.number="params.amplitude" />
       </div>
     </div>
     <div class="param-row">
-      <label>التخميد</label>
+      <label>{{ t('experiments.damping') }}</label>
       <div class="param-inputs">
         <input type="range" min="0" max="5" step="0.05" v-model.number="params.damping" />
         <input type="number" step="0.05" v-model.number="params.damping" />
       </div>
     </div>
     <div class="param-row">
-      <label>نمط التخميد</label>
+      <label>{{ t('experiments.dampingModel') }}</label>
       <select v-model="params.dampingModel">
-        <option value="linear">خطي</option>
-        <option value="quadratic">تربيعي</option>
+        <option value="linear">{{ t('experiments.linear') }}</option>
+        <option value="quadratic">{{ t('experiments.quadratic') }}</option>
       </select>
     </div>
     <div class="param-row">
-      <label>دورات القياس</label>
+      <label>{{ t('experiments.measureCycles') }}</label>
       <input type="number" min="1" max="20" step="1" v-model.number="params.measureCycles" />
     </div>
   </div>

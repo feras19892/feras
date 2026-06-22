@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import type { InclinedTrial } from '../../../composables/inclined/useInclinedTrials'
 import { calculateInclinedSummary } from '../../../composables/inclined/inclinedUtils'
 
+const { t } = useI18n()
 const props = defineProps<{
   trials: InclinedTrial[]
 }>()
@@ -35,7 +37,7 @@ function draw() {
 
   if (props.trials.length < 1) {
     ctx.fillStyle = '#64748b'; ctx.font = '13px Segoe UI'; ctx.textAlign = 'center'
-    ctx.fillText('سجل تجربة على الأقل', W / 2, H / 2)
+    ctx.fillText(t('experiments.recordAtLeastOne'), W / 2, H / 2)
     ctx.textAlign = 'start'; return
   }
 

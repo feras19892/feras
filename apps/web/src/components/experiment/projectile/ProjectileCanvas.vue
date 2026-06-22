@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
 import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { useProjectileDraw } from '../../../composables/projectile/useProjectileDraw'
 import { useProjectileGrid } from '../../../composables/projectile/useProjectileGrid'
@@ -15,6 +16,7 @@ interface SimState {
   landingSpeed: number
 }
 
+const { t } = useI18n()
 const props = defineProps<{
   params: ProjectileParams
   simState: SimState
@@ -156,7 +158,7 @@ defineExpose({ draw, captureSnapshot })
 
 <template>
   <div ref="wrapRef" class="canvas-wrap">
-    <button class="snapshot-btn" @click="captureSnapshot()" title="📸 التقاط لقطة">📸</button>
+    <button class="snapshot-btn" @click="captureSnapshot()" :title="'📸 ' + t('experiments.snapshot')">📸</button>
     <ProjectileHintOverlay :v0="params.v0" :angle-deg="params.angleDeg" :g="params.g" :target-x="params.targetX" :target-mode="params.targetMode" />
     <input v-if="showTargetInput" ref="targetInputRef" v-model="targetInputValue" @keyup.enter="onTargetInputSubmit" @blur="onTargetInputSubmit" class="target-input" :style="{ left: targetInputPos.left, top: targetInputPos.top }" />
     <canvas ref="canvasRef" width="700" height="420" @mousedown="onMouseDown" @mousemove="onMouseMove" @mouseup="onMouseUp" @mouseleave="onMouseUp" @dblclick="onDblClick" :style="{ cursor: draggingTarget ? 'grabbing' : params.targetMode ? 'grab' : 'default' }" />

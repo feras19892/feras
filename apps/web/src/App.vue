@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
+import { useI18nStore } from './stores/i18n.store';
+
+const i18n = useI18nStore();
 </script>
 
 <template>
-  <div class="app">
+  <div class="app" :dir="i18n.direction">
     <RouterView />
   </div>
 </template>

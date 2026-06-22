@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useI18n } from '../../composables/useI18n';
 import { useAdminExport } from '../../composables/admin/useAdminExport';
 
+const { t } = useI18n();
 const { download } = useAdminExport();
 const exporting = ref<string | null>(null);
 
@@ -12,24 +14,24 @@ async function doExport(type: string) {
 }
 
 const types = [
-  { key: 'users', label: '👥 المستخدمين', desc: 'كل المستخدمين مع أدوارهم' },
-  { key: 'reports', label: '📋 التقارير', desc: 'كل التقارير مع درجاتها' },
-  { key: 'classes', label: '🏫 الفصول', desc: 'كل الفصول مع طلابها' },
-  { key: 'feedback', label: '💬 التقييمات', desc: 'كل التقييمات والشكاوى' },
-  { key: 'activity', label: '📜 النشاط', desc: 'سجل النشاط كاملاً' },
+  { key: 'users', label: t('admin.exportUsers'), desc: t('admin.exportUsersDesc') },
+  { key: 'reports', label: t('admin.exportReports'), desc: t('admin.exportReportsDesc') },
+  { key: 'classes', label: t('admin.exportClasses'), desc: t('admin.exportClassesDesc') },
+  { key: 'feedback', label: t('admin.exportFeedback'), desc: t('admin.exportFeedbackDesc') },
+  { key: 'activity', label: t('admin.exportActivity'), desc: t('admin.exportActivityDesc') },
 ];
 </script>
 
 <template>
   <div class="export-section">
-    <h3>📤 تصدير البيانات</h3>
+    <h3>{{ t('admin.exportData') }}</h3>
     <div class="export-grid">
-      <div v-for="t in types" :key="t.key" class="export-card">
-        <div class="export-icon">{{ t.label.split(' ')[0] }}</div>
-        <div class="export-title">{{ t.label }}</div>
-        <div class="export-desc">{{ t.desc }}</div>
-        <button class="btn-export" :disabled="exporting === t.key" @click="doExport(t.key)">
-          {{ exporting === t.key ? '⏳ ...' : '⬇️ تنزيل CSV' }}
+      <div v-for="item in types" :key="item.key" class="export-card">
+        <div class="export-icon">{{ item.label.split(' ')[0] }}</div>
+        <div class="export-title">{{ item.label }}</div>
+        <div class="export-desc">{{ item.desc }}</div>
+        <button class="btn-export" :disabled="exporting === item.key" @click="doExport(item.key)">
+          {{ exporting === item.key ? '⏳ ...' : t('admin.downloadCsv') }}
         </button>
       </div>
     </div>

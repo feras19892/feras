@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 const props = defineProps<{
   count: number
   avgTorque: number
@@ -9,10 +12,10 @@ const props = defineProps<{
 
 <template>
   <div class="stats-panel">
-    <div class="stat-card"><span class="stat-label">المحاولات</span><span class="stat-val">{{ count }}</span></div>
-    <div class="stat-card"><span class="stat-label">متوسط العزم</span><span class="stat-val">{{ avgTorque.toFixed(2) }}</span></div>
-    <div class="stat-card"><span class="stat-label">أقصى ميلان</span><span class="stat-val">{{ maxTilt.toFixed(1) }}°</span></div>
-    <div class="stat-card"><span class="stat-label">مرات التوازن</span><span class="stat-val">{{ balanceCount }}</span></div>
+    <div class="stat-card"><span class="stat-label">{{ t('experiments.attempts') }}</span><span class="stat-val">{{ count }}</span></div>
+    <div class="stat-card"><span class="stat-label">{{ t('experiments.avgTorque') }}</span><span class="stat-val">{{ avgTorque.toFixed(2) }}</span></div>
+    <div class="stat-card"><span class="stat-label">{{ t('experiments.maxTilt') }}</span><span class="stat-val">{{ maxTilt.toFixed(1) }}°</span></div>
+    <div class="stat-card"><span class="stat-label">{{ t('experiments.balanceTimes') }}</span><span class="stat-val">{{ balanceCount }}</span></div>
   </div>
 </template>
 

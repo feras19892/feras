@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
 import { ref, onMounted, onUnmounted } from 'vue'
 
+const { t } = useI18n()
 const props = defineProps<{
   title: string
   icon?: string
@@ -35,38 +37,38 @@ onUnmounted(() => window.removeEventListener('click', onMenuClick))
   <nav class="menu-bar" ref="menuRef">
     <div class="menu-left">
       <div class="menu-group">
-        <button class="menu-btn" :class="{open:activeMenu==='file'}" @click.stop="toggleMenu('file')">ملف</button>
+        <button class="menu-btn" :class="{open:activeMenu==='file'}" @click.stop="toggleMenu('file')">{{ t('experiments.menuFile') }}</button>
         <div v-if="activeMenu==='file'" class="menu-dropdown" @click.stop>
-          <div class="menu-row" @click="emit('exportCsv'); closeMenu()"><span class="mi">&#x1F4BE;</span><span>تصدير CSV</span></div>
+          <div class="menu-row" @click="emit('exportCsv'); closeMenu()"><span class="mi">&#x1F4BE;</span><span>{{ t('experiments.menuExportCsv') }}</span></div>
           <div class="menu-sep" />
-          <div class="menu-row restore" @click="emit('showAllPanels'); closeMenu()"><span class="mi">&#x1F504;</span><span>استعادة الواجهة</span></div>
+          <div class="menu-row restore" @click="emit('showAllPanels'); closeMenu()"><span class="mi">&#x1F504;</span><span>{{ t('experiments.menuRestoreUi') }}</span></div>
         </div>
       </div>
       <div class="menu-group">
-        <button class="menu-btn" :class="{open:activeMenu==='view'}" @click.stop="toggleMenu('view')">عرض</button>
+        <button class="menu-btn" :class="{open:activeMenu==='view'}" @click.stop="toggleMenu('view')">{{ t('experiments.menuView') }}</button>
         <div v-if="activeMenu==='view'" class="menu-dropdown" @click.stop>
-          <div class="menu-row check" @click="emit('togglePanel','table');"><span class="mi">&#x1F4CB;</span><span>جدول</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','signal');"><span class="mi">&#x1F4C8;</span><span>توزيع العزوم</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','equation');"><span class="mi">&#x1F9EA;</span><span>المعادلة</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','report');"><span class="mi">&#x1F4C4;</span><span>تقرير</span></div>
+          <div class="menu-row check" @click="emit('togglePanel','table');"><span class="mi">&#x1F4CB;</span><span>{{ t('experiments.menuTable') }}</span></div>
+          <div class="menu-row check" @click="emit('togglePanel','signal');"><span class="mi">&#x1F4C8;</span><span>{{ t('experiments.torqueDistribution') }}</span></div>
+          <div class="menu-row check" @click="emit('togglePanel','equation');"><span class="mi">&#x1F9EA;</span><span>{{ t('experiments.equation') }}</span></div>
+          <div class="menu-row check" @click="emit('togglePanel','report');"><span class="mi">&#x1F4C4;</span><span>{{ t('experiments.reportLabel') }}</span></div>
         </div>
       </div>
     </div>
     <div class="menu-center">{{ icon || '&#x2696;&#xFE0F;' }} {{ title }}</div>
     <div class="menu-right">
       <div class="menu-group">
-        <button class="menu-btn" :class="{open:activeMenu==='run'}" @click.stop="toggleMenu('run')">تشغيل</button>
+        <button class="menu-btn" :class="{open:activeMenu==='run'}" @click.stop="toggleMenu('run')">{{ t('experiments.menuRun') }}</button>
         <div v-if="activeMenu==='run'" class="menu-dropdown" @click.stop>
-          <div class="menu-row" @click="emit('togglePause'); closeMenu()"><span class="mi">&#x25B6;</span><span>بدء/توقف</span></div>
-          <div class="menu-row" @click="emit('reset'); closeMenu()"><span class="mi">&#x1F504;</span><span>إعادة</span></div>
-          <div class="menu-row" @click="emit('recordTrial'); closeMenu()"><span class="mi">&#x1F4CC;</span><span>تسجيل</span></div>
+          <div class="menu-row" @click="emit('togglePause'); closeMenu()"><span class="mi">&#x25B6;</span><span>{{ t('experiments.menuStartStop') }}</span></div>
+          <div class="menu-row" @click="emit('reset'); closeMenu()"><span class="mi">&#x1F504;</span><span>{{ t('experiments.menuReset') }}</span></div>
+          <div class="menu-row" @click="emit('recordTrial'); closeMenu()"><span class="mi">&#x1F4CC;</span><span>{{ t('experiments.menuRecord') }}</span></div>
         </div>
       </div>
       <div class="menu-group">
-        <button class="menu-btn analyze-btn" @click="emit('analyzeResults')">&#x1F4CA; قسم الرسم والحسابات</button>
+        <button class="menu-btn analyze-btn" @click="emit('analyzeResults')">&#x1F4CA; {{ t('experiments.drawingCalculationsSection') }}</button>
       </div>
       <div class="menu-group">
-        <button class="menu-btn" @click="emit('toggleHelp')">&#x2753; مساعدة</button>
+        <button class="menu-btn" @click="emit('toggleHelp')">&#x2753; {{ t('experiments.menuHelp') }}</button>
       </div>
     </div>
   </nav>

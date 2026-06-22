@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '../../composables/useI18n'
+
+const { t } = useI18n()
+
 interface Trial {
   id: number;
   mass: number;
@@ -20,7 +24,7 @@ defineEmits<{
 
 <template>
   <div class="lab-card">
-    <div class="card-header"><h4>📋 قراءات</h4></div>
+    <div class="card-header"><h4>📋 {{ t('experiments.readings') }}</h4></div>
     <div class="table-wrap">
       <table>
         <thead><tr><th>#</th><th>m</th><th>k</th><th>A</th><th>T</th><th>f</th><th>ω</th><th>k<sub>calc</sub></th><th></th></tr></thead>
@@ -36,7 +40,7 @@ defineEmits<{
             <td>{{ tr.kCalc.toFixed(2) }}</td>
             <td><button class="btn-danger small" @click="$emit('remove', tr.id)">×</button></td>
           </tr>
-          <tr v-if="!trials.length"><td colspan="9" class="empty-msg">لا توجد قياسات</td></tr>
+          <tr v-if="!trials.length"><td colspan="9" class="empty-msg">{{ t('experiments.noMeasurements') }}</td></tr>
         </tbody>
       </table>
     </div>

@@ -1,14 +1,17 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
 interface PendulumTrial { id: number; length: number; g: number; T: number; f: number; omega: number; gCalc: number; err: number }
 const trials = defineModel<PendulumTrial[]>({ required: true })
+const { t } = useI18n()
 const emit = defineEmits<{ (e: 'remove', id: number): void; (e: 'clear'): void }>()
-const tableHeaders = ['#', 'L', 'T', 'f', 'ω', 'gcalc', 'خطأ']
+const tableHeaders = ['#', 'L', 'T', 'f', 'ω', 'gcalc', t('experiments.error')]
 </script>
 
 <template>
   <div class="data-panel">
     <div class="lab-card">
-      <div class="card-header"><h4>&#x1F4CB; قراءات</h4></div>
+      <div class="card-header"><h4>&#x1F4CB; {{ t('experiments.readings') }}</h4></div>
       <div class="table-wrap">
         <table>
           <thead><tr><th v-for="h in tableHeaders" :key="h">{{ h }}</th><th></th></tr></thead>
@@ -18,7 +21,7 @@ const tableHeaders = ['#', 'L', 'T', 'f', 'ω', 'gcalc', 'خطأ']
               <td>{{ tr.f.toFixed(2) }}</td><td>{{ tr.omega.toFixed(2) }}</td><td>{{ tr.gCalc.toFixed(2) }}</td><td>{{ tr.err.toFixed(2) }}%</td>
               <td><button class="btn-danger small" @click="emit('remove', tr.id)">&#xD7;</button></td>
             </tr>
-            <tr v-if="!trials.length"><td colspan="10" class="empty-msg">لا توجد قياسات</td></tr>
+            <tr v-if="!trials.length"><td colspan="10" class="empty-msg">{{ t('experiments.noMeasurements') }}</td></tr>
           </tbody>
         </table>
       </div>

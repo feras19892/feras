@@ -2,7 +2,9 @@
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getBranch } from './catalog';
+import { useI18n } from '../../composables/useI18n';
 
+const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 
@@ -19,9 +21,9 @@ function goToExperiment(expRoute: string) {
 
 function difficultyLabel(d: string): string {
   const map: Record<string, string> = {
-    easy: 'سهل',
-    medium: 'متوسط',
-    hard: 'صعب',
+    easy: t('experiments.easy'),
+    medium: t('experiments.medium'),
+    hard: t('experiments.hard'),
   };
   return map[d] || d;
 }
@@ -30,12 +32,12 @@ function difficultyLabel(d: string): string {
 <template>
   <div class="branch-page">
     <header class="page-header">
-      <button class="back-btn" @click="goBack">← رجوع</button>
+      <button class="back-btn" @click="goBack">← {{ t('experiments.back') }}</button>
       <h1 v-if="branch">
         <span class="icon">{{ branch.icon }}</span>
         {{ branch.nameAr }}
       </h1>
-      <h1 v-else>فرع غير موجود</h1>
+      <h1 v-else>{{ t('experiments.branchNotFound') }}</h1>
       <p v-if="branch">{{ branch.description }}</p>
     </header>
 
@@ -61,8 +63,8 @@ function difficultyLabel(d: string): string {
     </div>
 
     <div v-else class="not-found">
-      <p>الفرع المطلوب غير موجود</p>
-      <button class="btn-action" @click="goBack">العودة للفروع</button>
+      <p>{{ t('experiments.branchNotFound') }}</p>
+      <button class="btn-action" @click="goBack">{{ t('experiments.backToBranches') }}</button>
     </div>
   </div>
 </template>

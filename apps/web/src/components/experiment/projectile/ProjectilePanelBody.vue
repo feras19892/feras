@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import type { ProjectileTrial } from '../../../composables/projectile/useProjectileTrials'
 import type { ProjectileParams } from '../../../modules/physics/experiments/projectile/useProjectilePhysics'
+import { computed, ref, watch, nextTick, onMounted } from 'vue'
+import { useI18n } from '../../../composables/useI18n'
 
 interface SimState { t: number; x: number; y: number; vx: number; vy: number; running: boolean; paused: boolean; landed: boolean; trail: {x:number;y:number}[]; signalSeries: {t:number;vx:number;vy:number}[] }
 interface MeasuredState { flightTime: number | null; maxHeight: number | null; range: number | null }
-interface TrialStats { time_mean: number; time_std: number; range_mean: number; range_std: number; flightTime_mean: number; flightTime_std: number }
+interface TrialStats { range_mean: number; range_std: number; flightTime_mean: number; flightTime_std: number }
 
+const { t } = useI18n()
 const props = defineProps<{
   id: string
   trials: ProjectileTrial[]
@@ -31,8 +34,6 @@ const emit = defineEmits<{
   (e: 'showCalc', html: string): void
 }>()
 
-import { computed, ref, watch, nextTick, onMounted } from 'vue'
-
 const resultLines = computed(() => {
   if (!props.calcResult) return []
   return props.calcResult.split(/<br\s*\/?>/i).map(l => l.replace(/<\/?b>/gi, '').trim()).filter(Boolean)
@@ -49,7 +50,7 @@ function drawLineChart(canvas: HTMLCanvasElement | null, data: {x:number,y:numbe
   if (!ctx) return
   const w = canvas.width, h = canvas.height, pad = 20
   ctx.fillStyle = '#1E2530'; ctx.fillRect(0,0,w,h)
-  if (data.length < 2) { ctx.fillStyle='#64748b'; ctx.font='12px sans-serif'; ctx.textAlign='center'; ctx.fillText('لا توجد بيانات',w/2,h/2); return }
+  if (data.length < 2) { ctx.fillStyle='#64748b'; ctx.font='12px sans-serif'; ctx.textAlign='center'; ctx.fillText(t('experiments.noData'),w/2,h/2); return }
   const xs = data.map(d=>d.x), ys = data.map(d=>d.y)
   const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys)
   const xRange = maxX===minX ? 1 : maxX-minX
@@ -79,7 +80,7 @@ function drawScatter(canvas: HTMLCanvasElement | null, data: {x:number,y:number}
   const padL = 36, padR = 12, padT = 12, padB = 28
   const plotW = w - padL - padR, plotH = h - padT - padB
   ctx.fillStyle = '#1E2530'; ctx.fillRect(0,0,w,h)
-  if (data.length < 1) { ctx.fillStyle='#64748b'; ctx.font='12px sans-serif'; ctx.textAlign='center'; ctx.fillText('سجل قراءات أولاً',w/2,h/2); return }
+  if (data.length < 1) { ctx.fillStyle='#64748b'; ctx.font='12px sans-serif'; ctx.textAlign='center'; ctx.fillText(t('experiments.recordReadingsFirst'),w/2,h/2); return }
 
   const xs = data.map(d=>d.x), ys = data.map(d=>d.y)
   let minX = Math.min(...xs), maxX = Math.max(...xs)
@@ -164,32 +165,32 @@ onMounted(drawCharts)
     <!-- params panel -->
     <template v-if="id === 'params'">
       <div class="param-row"><label>v₀ (m/s)</label><div class="param-inputs"><input type="range" min="1" max="100" step="0.1" :value="params.v0" @input="emit('update:params', { ...params, v0: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.v0" @input="emit('update:params', { ...params, v0: +($event.target as HTMLInputElement).value })"></div></div>
-      <div class="param-row"><label>الزاوية (°)</label><div class="param-inputs"><input type="range" min="0" max="90" step="0.1" :value="params.angleDeg" @input="emit('update:params', { ...params, angleDeg: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.angleDeg" @input="emit('update:params', { ...params, angleDeg: +($event.target as HTMLInputElement).value })"></div></div>
+      <div class="param-row"><label>{{ t('experiments.angle') }} (°)</label><div class="param-inputs"><input type="range" min="0" max="90" step="0.1" :value="params.angleDeg" @input="emit('update:params', { ...params, angleDeg: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.angleDeg" @input="emit('update:params', { ...params, angleDeg: +($event.target as HTMLInputElement).value })"></div></div>
       <div class="param-row"><label>g (m/s²)</label><div class="param-inputs"><input type="range" min="1" max="50" step="0.1" :value="params.g" @input="emit('update:params', { ...params, g: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.g" @input="emit('update:params', { ...params, g: +($event.target as HTMLInputElement).value })"></div></div>
       <div class="param-row"><label>x₀ (m)</label><div class="param-inputs"><input type="range" min="0" max="500" step="0.1" :value="params.x0" @input="emit('update:params', { ...params, x0: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.x0" @input="emit('update:params', { ...params, x0: +($event.target as HTMLInputElement).value })"></div></div>
       <div class="param-row"><label>y₀ (m)</label><div class="param-inputs"><input type="range" min="0" max="200" step="0.1" :value="params.y0" @input="emit('update:params', { ...params, y0: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.y0" @input="emit('update:params', { ...params, y0: +($event.target as HTMLInputElement).value })"></div></div>
-      <div class="param-row"><label>مقاومة الهواء k</label><div class="param-inputs"><input type="range" min="0" max="2" step="0.01" :value="params.dragCoeff" @input="emit('update:params', { ...params, dragCoeff: +($event.target as HTMLInputElement).value })"><input type="number" step="0.01" :value="params.dragCoeff" @input="emit('update:params', { ...params, dragCoeff: +($event.target as HTMLInputElement).value })"></div></div>
+      <div class="param-row"><label>{{ t('experiments.airResistanceK') }}</label><div class="param-inputs"><input type="range" min="0" max="2" step="0.01" :value="params.dragCoeff" @input="emit('update:params', { ...params, dragCoeff: +($event.target as HTMLInputElement).value })"><input type="number" step="0.01" :value="params.dragCoeff" @input="emit('update:params', { ...params, dragCoeff: +($event.target as HTMLInputElement).value })"></div></div>
     </template>
 
     <!-- table panel -->
     <template v-else-if="id === 'table'">
-      <div v-if="!trials.length" class="empty">لا توجد قراءات</div>
+      <div v-if="!trials.length" class="empty">{{ t('experiments.noReadings') }}</div>
       <table v-else>
-        <thead><tr><th>#</th><th>الزاوية</th><th>v₀</th><th>الزمن</th><th>الارتفاع</th><th>المدى</th><th></th></tr></thead>
+        <thead><tr><th>#</th><th>{{ t('experiments.angle') }}</th><th>v₀</th><th>{{ t('experiments.time') }}</th><th>{{ t('experiments.height') }}</th><th>{{ t('experiments.rangeLabel') }}</th><th></th></tr></thead>
         <tbody>
           <tr v-for="t in trials" :key="t.id"><td>{{ t.id }}</td><td>{{ t.angleDegrees }}°</td><td>{{ t.initialVelocity }}</td><td>{{ t.flightTimeSec.toFixed(2) }}</td><td>{{ t.maxHeightMeters.toFixed(2) }}</td><td>{{ t.rangeMeters.toFixed(2) }}</td><td><button @click="emit('remove', t.id)">×</button></td></tr>
         </tbody>
       </table>
-      <button class="btn-clear" @click="emit('clear')">مسح الكل</button>
+      <button class="btn-clear" @click="emit('clear')">{{ t('experiments.clearAll') }}</button>
     </template>
 
     <!-- equations panel -->
     <template v-else-if="id === 'equations'">
       <div class="calc-btns">
-        <button @click="emit('calcFlightTime')">حساب زمن التحليق</button>
-        <button @click="emit('calcMaxHeight')">حساب أقصى ارتفاع</button>
-        <button @click="emit('calcRange')">حساب المدى</button>
-        <button @click="emit('calcFitRange')">ملائمة المدى</button>
+        <button @click="emit('calcFlightTime')">{{ t('experiments.calculateFlightTime') }}</button>
+        <button @click="emit('calcMaxHeight')">{{ t('experiments.calculateMaxHeight') }}</button>
+        <button @click="emit('calcRange')">{{ t('experiments.calculateRange') }}</button>
+        <button @click="emit('calcFitRange')">{{ t('experiments.fitRange') }}</button>
       </div>
       <div class="calc-result">
         <div v-for="(line, i) in resultLines" :key="i">{{ line }}</div>
@@ -199,27 +200,27 @@ onMounted(drawCharts)
     <!-- guide panel -->
     <template v-else-if="id === 'guide'">
       <ol class="guide-list">
-        <li>اضبط v₀ والزاوية θ</li>
-        <li>اضغط "بدء" لإطلاق المقذوف</li>
-        <li>انتظر الهبوط ثم اضغط "تسجيل"</li>
-        <li>غير الزاوية وكرر القياسات</li>
-        <li>حلل العلاقة R-θ</li>
+        <li>{{ t('experiments.projectileGuideStep1') }}</li>
+        <li>{{ t('experiments.projectileGuideStep2') }}</li>
+        <li>{{ t('experiments.projectileGuideStep3') }}</li>
+        <li>{{ t('experiments.projectileGuideStep4') }}</li>
+        <li>{{ t('experiments.projectileGuideStep5') }}</li>
       </ol>
     </template>
 
     <!-- stats panel -->
     <template v-else-if="id === 'stats'">
       <div class="stats-grid">
-        <div class="stat"><span class="label">متوسط المدى</span><span class="val">{{ trialStats?.range_mean?.toFixed(2) ?? '--' }} m</span></div>
-        <div class="stat"><span class="label">انحراف المدى</span><span class="val">{{ trialStats?.range_std?.toFixed(2) ?? '--' }} m</span></div>
-        <div class="stat"><span class="label">متوسط الزمن</span><span class="val">{{ trialStats?.flightTime_mean?.toFixed(2) ?? '--' }} s</span></div>
-        <div class="stat"><span class="label">انحراف الزمن</span><span class="val">{{ trialStats?.flightTime_std?.toFixed(2) ?? '--' }} s</span></div>
+        <div class="stat"><span class="label">{{ t('experiments.averageRange') }}</span><span class="val">{{ trialStats?.range_mean?.toFixed(2) ?? '--' }} m</span></div>
+        <div class="stat"><span class="label">{{ t('experiments.rangeDeviation') }}</span><span class="val">{{ trialStats?.range_std?.toFixed(2) ?? '--' }} m</span></div>
+        <div class="stat"><span class="label">{{ t('experiments.averageTime') }}</span><span class="val">{{ trialStats?.flightTime_mean?.toFixed(2) ?? '--' }} s</span></div>
+        <div class="stat"><span class="label">{{ t('experiments.timeDeviation') }}</span><span class="val">{{ trialStats?.flightTime_std?.toFixed(2) ?? '--' }} s</span></div>
       </div>
     </template>
 
     <!-- tutor panel -->
     <template v-else-if="id === 'tutor'">
-      <div class="tutor" :class="tutorType"><span>{{ tutorMessage ?? 'جاهز' }}</span></div>
+      <div class="tutor" :class="tutorType"><span>{{ tutorMessage ?? t('experiments.ready') }}</span></div>
     </template>
 
     <!-- signal: trajectory y(x) -->

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useI18n } from '../../composables/useI18n';
 import { getAdminStats, getAdminActivityStats, getAdminInsights } from '../../services/admin.service';
 
 interface RoleStat { role: string; count: number }
@@ -24,6 +25,7 @@ interface InsightsData {
   noReportsTeachers: NoReportsTeacher[];
 }
 
+const { t } = useI18n();
 const stats = ref<StatsData | null>(null);
 const activityStats = ref<ActivityStatsData | null>(null);
 const insights = ref<InsightsData | null>(null);
@@ -39,7 +41,7 @@ async function load() {
     if (a.success) activityStats.value = a.stats as ActivityStatsData;
     if (i.success) insights.value = i.insights as InsightsData;
   } catch (err: unknown) {
-    error.value = (err instanceof Error ? err.message : '') || 'فشل التحميل';
+    error.value = (err instanceof Error ? err.message : '') || t('admin.loadError');
   } finally {
     loading.value = false;
   }
@@ -56,9 +58,9 @@ function roleColor(role: string) {
 
 function roleLabel(role: string) {
   switch (role) {
-    case 'admin': return 'أدمن';
-    case 'teacher': return 'مدرس';
-    case 'student': return 'طالب';
+    case 'admin': return t('admin.roleAdmin');
+    case 'teacher': return t('admin.roleTeacher');
+    case 'student': return t('admin.roleStudent');
     default: return role;
   }
 }
@@ -68,7 +70,7 @@ onMounted(load);
 
 <template>
   <div class="dashboard">
-    <div v-if="loading" class="loading">جاري التحميل...</div>
+    <div v-if="loading" class="loading">{{ t('admin.loading') }}</div>
     <div v-else-if="error" class="error">❌ {{ error }}</div>
     <template v-else>
       <!-- Stats Cards -->
@@ -76,22 +78,22 @@ onMounted(load);
         <div class="stat-card">
           <div class="stat-icon">👥</div>
           <div class="stat-value">{{ stats?.users?.total ?? 0 }}</div>
-          <div class="stat-label">إجمالي المستخدمين</div>
+          <div class="stat-label">{{ t('admin.totalUsers') }}</div>
         </div>
         <div class="stat-card">
           <div class="stat-icon">🏫</div>
           <div class="stat-value">{{ stats?.classes?.total ?? 0 }}</div>
-          <div class="stat-label">الفصول</div>
+          <div class="stat-label">{{ t('admin.totalClasses') }}</div>
         </div>
         <div class="stat-card">
           <div class="stat-icon">📋</div>
           <div class="stat-value">{{ stats?.reports?.total ?? 0 }}</div>
-          <div class="stat-label">التقارير</div>
+          <div class="stat-label">{{ t('admin.totalReports') }}</div>
         </div>
         <div class="stat-card">
           <div class="stat-icon">✅</div>
           <div class="stat-value">{{ stats?.reports?.graded ?? 0 }}</div>
-          <div class="stat-label">مصحح</div>
+          <div class="stat-label">{{ t('admin.graded') }}</div>
         </div>
       </div>
 
@@ -99,25 +101,25 @@ onMounted(load);
       <div v-if="activityStats" class="today-row">
         <div class="today-card">
           <div class="today-value">{{ activityStats.today }}</div>
-          <div class="today-label">نشاط اليوم</div>
+          <div class="today-label">{{ t('admin.todayActivity') }}</div>
         </div>
         <div class="today-card">
           <div class="today-value">{{ activityStats.logins }}</div>
-          <div class="today-label">تسجيلات دخول</div>
+          <div class="today-label">{{ t('admin.todayLogins') }}</div>
         </div>
         <div class="today-card">
           <div class="today-value">{{ activityStats.signups }}</div>
-          <div class="today-label">تسجيلات جديدة</div>
+          <div class="today-label">{{ t('admin.todaySignups') }}</div>
         </div>
         <div class="today-card">
           <div class="today-value">{{ activityStats.reports }}</div>
-          <div class="today-label">تقارير اليوم</div>
+          <div class="today-label">{{ t('admin.todayReports') }}</div>
         </div>
       </div>
 
       <!-- Role Distribution -->
       <div v-if="stats?.users?.byRole?.length" class="role-chart">
-        <h3>توزيع المستخدمين</h3>
+        <h3>{{ t('admin.roleDistribution') }}</h3>
         <div class="role-bars">
           <div v-for="r in stats.users.byRole" :key="r.role" class="role-bar">
             <span class="role-name" :style="{ color: roleColor(r.role) }">{{ roleLabel(r.role) }}</span>
@@ -131,25 +133,25 @@ onMounted(load);
 
       <!-- Top Users -->
       <div v-if="insights?.topUsers?.length" class="top-users">
-        <h3>🏆 أكثر المستخدمين نشاطاً</h3>
+        <h3>{{ t('admin.topUsers') }}</h3>
         <div class="top-list">
           <div v-for="u in insights.topUsers" :key="u.id" class="top-item">
             <span class="top-name">{{ u.name }}</span>
             <span class="top-role" :class="u.role">{{ roleLabel(u.role) }}</span>
             <div class="top-bar"><div class="top-fill" :style="{ width: Math.min((u.report_count / Math.max(insights.topUsers[0].report_count, 1)) * 100, 100) + '%' }"></div></div>
-            <span class="top-count">{{ u.report_count }} تقرير</span>
+            <span class="top-count">{{ u.report_count }} {{ t('admin.reportUnit') }}</span>
           </div>
         </div>
       </div>
 
       <!-- Recent Activity -->
       <div v-if="insights?.recentActivity?.length" class="recent-activity">
-        <h3>📜 آخر النشاطات</h3>
+        <h3>{{ t('admin.recentActivity') }}</h3>
         <div class="activity-list">
           <div v-for="(a, i) in insights.recentActivity" :key="i" class="activity-item">
             <span class="activity-dot"></span>
             <span class="activity-name">{{ a.actor_name }}</span>
-            <span class="activity-action">{{ a.action === 'login' ? 'تسجيل دخول' : a.action }}</span>
+            <span class="activity-action">{{ a.action === 'login' ? t('admin.actionLogin') : a.action }}</span>
             <span class="activity-date">{{ a.created_at?.slice(0, 10) }}</span>
           </div>
         </div>
@@ -158,19 +160,19 @@ onMounted(load);
       <!-- Smart Alerts -->
       <div v-if="insights" class="alerts-grid">
         <div class="alert-card warning" v-if="insights.inactiveUsers?.length">
-          <h4>😴 مستخدمون غير نشطين ({{ insights.inactiveUsers.length }})</h4>
+          <h4>{{ t('admin.inactiveUsers') }} ({{ insights.inactiveUsers.length }})</h4>
           <ul><li v-for="u in insights.inactiveUsers" :key="u.id">{{ u.name }} ({{ roleLabel(u.role) }})</li></ul>
         </div>
         <div class="alert-card warning" v-if="insights.emptyClasses?.length">
-          <h4>🏫 فصول بدون طلاب ({{ insights.emptyClasses.length }})</h4>
+          <h4>{{ t('admin.emptyClasses') }} ({{ insights.emptyClasses.length }})</h4>
           <ul><li v-for="c in insights.emptyClasses" :key="c.id">{{ c.name }} — {{ c.teacher_name }}</li></ul>
         </div>
         <div class="alert-card alert" v-if="insights.ungradedCount">
-          <h4>⏳ تقارير معلقة +3 أيام</h4>
-          <p>{{ insights.ungradedCount }} تقرير بحاجة تصحيح</p>
+          <h4>{{ t('admin.pendingReports') }}</h4>
+          <p>{{ insights.ungradedCount }} {{ t('admin.needsGrading') }}</p>
         </div>
         <div class="alert-card info" v-if="insights.noReportsTeachers?.length">
-          <h4>👨‍🏫 مدرسون بدون تقارير ({{ insights.noReportsTeachers.length }})</h4>
+          <h4>{{ t('admin.teachersNoReports') }} ({{ insights.noReportsTeachers.length }})</h4>
           <ul><li v-for="t in insights.noReportsTeachers" :key="t.id">{{ t.name }}</li></ul>
         </div>
       </div>

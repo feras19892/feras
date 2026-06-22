@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from '../composables/useI18n'
 import { useAuthStore } from '../modules/auth/stores/auth'
 import AppNavbar from '../components/layout/AppNavbar.vue'
 import BranchCard from '../components/ui/BranchCard.vue'
@@ -14,11 +15,19 @@ import { fetchHomeCards } from '../services/home.service'
 import type { HomeCard } from '../types/physics'
 
 const router = useRouter()
+const { t } = useI18n()
 const auth = useAuthStore()
 
 const activeTab = ref('branches')
 const cards = ref<HomeCard[]>([])
 const loading = ref(false)
+
+const translatedCards = computed(() => cards.value.map(card => ({
+  ...card,
+  title: t(`dashboard.${card.id}Title`),
+  desc: t(`dashboard.${card.id}Desc`),
+  stats: t(`dashboard.${card.id}Stats`),
+})))
 
 const goToBranch = (branchId: string) => {
   if (branchId === 'physics') router.push('/physics')
@@ -51,7 +60,7 @@ onMounted(async () => {
         <p v-if="loading" class="loading-text">...</p>
         <div v-else class="cards-grid">
           <BranchCard
-            v-for="card in cards"
+            v-for="card in translatedCards"
             :key="card.id"
             :id="card.id"
             :icon="card.icon"
@@ -72,7 +81,7 @@ onMounted(async () => {
         <p v-if="loading" class="loading-text">...</p>
         <div v-else class="cards-grid">
           <BranchCard
-            v-for="card in cards"
+            v-for="card in translatedCards"
             :key="card.id"
             :id="card.id"
             :icon="card.icon"
@@ -89,7 +98,7 @@ onMounted(async () => {
         <p v-if="loading" class="loading-text">...</p>
         <div v-else class="cards-grid">
           <BranchCard
-            v-for="card in cards"
+            v-for="card in translatedCards"
             :key="card.id"
             :id="card.id"
             :icon="card.icon"

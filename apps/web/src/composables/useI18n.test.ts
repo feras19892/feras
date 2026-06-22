@@ -3,11 +3,13 @@ import { setActivePinia, createPinia } from 'pinia';
 import { useI18n } from './useI18n';
 
 describe('useI18n', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     setActivePinia(createPinia());
     localStorage.clear();
     document.documentElement.lang = 'ar';
     document.documentElement.dir = 'rtl';
+    const { bootstrap } = useI18n();
+    await bootstrap();
   });
 
   it('defaults to ar locale', () => {
@@ -20,10 +22,10 @@ describe('useI18n', () => {
     expect(supported.value).toEqual(['ar', 'en', 'es']);
   });
 
-  it('direction is rtl for ar and ltr for en', () => {
+  it('direction is rtl for ar and ltr for en', async () => {
     const { setLocale, direction } = useI18n();
     expect(direction.value).toBe('rtl');
-    setLocale('en');
+    await setLocale('en');
     expect(direction.value).toBe('ltr');
   });
 
@@ -37,16 +39,16 @@ describe('useI18n', () => {
     expect(t('missing.key', 'fallback')).toBe('fallback');
   });
 
-  it('setLocale changes locale and persists to localStorage', () => {
+  it('setLocale changes locale and persists to localStorage', async () => {
     const { locale, setLocale } = useI18n();
-    setLocale('en');
+    await setLocale('en');
     expect(locale.value).toBe('en');
     expect(localStorage.getItem('physicslab.locale')).toBe('en');
   });
 
-  it('setLocale updates html lang and dir attributes', () => {
+  it('setLocale updates html lang and dir attributes', async () => {
     const { setLocale } = useI18n();
-    setLocale('en');
+    await setLocale('en');
     expect(document.documentElement.lang).toBe('en');
     expect(document.documentElement.dir).toBe('ltr');
   });

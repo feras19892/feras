@@ -2,9 +2,11 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../modules/auth/stores/auth';
+import { useI18n } from '../composables/useI18n';
 
 const router = useRouter();
 const auth = useAuthStore();
+const { t } = useI18n();
 
 onMounted(() => {
   localStorage.clear();
@@ -31,24 +33,24 @@ async function handleRegister() {
   const fullName = `${firstName.value.trim()} ${lastName.value.trim()}`.trim();
   const trimmedEmail = email.value.trim();
   if (!fullName || !trimmedEmail || !password.value) {
-    formError.value = 'يرجى ملء جميع الحقول';
+    formError.value = t('auth.errors.fillAll');
     return;
   }
   if (fullName.length < 2) {
-    formError.value = 'الاسم يجب أن يكون حرفين على الأقل';
+    formError.value = t('auth.errors.nameTooShort');
     return;
   }
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(trimmedEmail)) {
-    formError.value = 'البريد الإلكتروني غير صالح';
+    formError.value = t('auth.errors.invalidEmail');
     return;
   }
   if (password.value !== confirmPassword.value) {
-    formError.value = 'كلمتا المرور غير متطابقتين';
+    formError.value = t('auth.errors.passwordsMismatch');
     return;
   }
   if (password.value.length < 6) {
-    formError.value = 'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
+    formError.value = t('auth.errors.passwordTooShort');
     return;
   }
 
@@ -61,7 +63,7 @@ async function handleRegister() {
   if (ok) {
     router.push('/dashboard');
   } else {
-    formError.value = auth.error || 'فشل إنشاء الحساب';
+    formError.value = auth.error || t('auth.errors.registerFailed');
   }
 }
 </script>
@@ -70,24 +72,24 @@ async function handleRegister() {
   <div class="register-page">
     <div class="register-card">
       <div class="app-header">
-        <h1>إنشاء حساب جديد</h1>
+        <h1>{{ t('auth.registerTitle') }}</h1>
         <p class="subtitle">
-          {{ selectedRole === 'teacher' ? '👨‍🏫 مدرس' : selectedRole === 'admin' ? '⚙️ مشرف' : '🎓 طالب' }}
+          {{ selectedRole === 'teacher' ? t('auth.roleTeacher') : selectedRole === 'admin' ? t('auth.roleAdmin') : t('auth.roleStudent') }}
         </p>
       </div>
       <form @submit.prevent="handleRegister">
         <div class="field-row">
           <div class="field half">
-            <label>الاسم</label>
+            <label>{{ t('auth.firstNameLabel', 'First Name') }}</label>
             <input v-model="firstName" type="text" required autocomplete="given-name" name="firstName" />
           </div>
           <div class="field half">
-            <label>اللقب</label>
+            <label>{{ t('auth.lastNameLabel', 'Last Name') }}</label>
             <input v-model="lastName" type="text" required autocomplete="family-name" name="lastName" />
           </div>
         </div>
         <div class="field">
-          <label>نوع الحساب</label>
+          <label>{{ t('auth.roleLabel') }}</label>
           <div class="role-toggle">
             <button
               type="button"
@@ -95,7 +97,7 @@ async function handleRegister() {
               :class="{ active: selectedRole === 'teacher' }"
               @click="selectedRole = 'teacher'"
             >
-              👨‍🏫 مدرس
+              {{ t('auth.roleTeacher') }}
             </button>
             <button
               type="button"
@@ -103,7 +105,7 @@ async function handleRegister() {
               :class="{ active: selectedRole === 'student' }"
               @click="selectedRole = 'student'"
             >
-              🎓 طالب
+              {{ t('auth.roleStudent') }}
             </button>
             <button
               type="button"
@@ -111,16 +113,16 @@ async function handleRegister() {
               :class="{ active: selectedRole === 'admin' }"
               @click="selectedRole = 'admin'"
             >
-              ⚙️ مشرف
+              {{ t('auth.roleAdmin') }}
             </button>
           </div>
         </div>
         <div class="field">
-          <label>البريد الإلكتروني</label>
+          <label>{{ t('auth.emailLabel') }}</label>
           <input v-model="email" type="email" required autocomplete="username" name="email" />
         </div>
         <div class="field">
-          <label>كلمة المرور</label>
+          <label>{{ t('auth.passwordLabel') }}</label>
           <div class="password-wrapper">
             <input
               v-model="password"
@@ -133,14 +135,14 @@ async function handleRegister() {
               type="button"
               class="eye-btn"
               @click="showPassword = !showPassword"
-              :title="showPassword ? 'إخفاء' : 'إظهار'"
+              :title="showPassword ? t('auth.hidePassword') : t('auth.showPassword')"
             >
               {{ showPassword ? '🙈' : '👁️' }}
             </button>
           </div>
         </div>
         <div class="field">
-          <label>تأكيد كلمة المرور</label>
+          <label>{{ t('auth.confirmPasswordLabel') }}</label>
           <div class="password-wrapper">
             <input
               v-model="confirmPassword"
@@ -153,7 +155,7 @@ async function handleRegister() {
               type="button"
               class="eye-btn"
               @click="showConfirmPassword = !showConfirmPassword"
-              :title="showConfirmPassword ? 'إخفاء' : 'إظهار'"
+              :title="showConfirmPassword ? t('auth.hidePassword') : t('auth.showPassword')"
             >
               {{ showConfirmPassword ? '🙈' : '👁️' }}
             </button>
@@ -161,11 +163,11 @@ async function handleRegister() {
         </div>
         <p v-if="formError" class="error">{{ formError }}</p>
         <button type="submit" class="btn-submit" :disabled="auth.loading">
-          {{ auth.loading ? 'جارٍ...' : 'إنشاء الحساب' }}
+          {{ auth.loading ? t('auth.loading') : t('auth.registerBtn') }}
         </button>
       </form>
       <router-link to="/login" class="back-link">
-        ← رجوع للدخول
+        ← {{ t('auth.backToLogin') }}
       </router-link>
     </div>
   </div>

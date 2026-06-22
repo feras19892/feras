@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
 import { ref, computed } from 'vue'
 import { useProjectileHints } from '../../../composables/projectile/useProjectileHints'
 
+const { t } = useI18n()
 const props = defineProps<{
   v0: number
   angleDeg: number
@@ -27,20 +29,20 @@ function onCheck() {
   <div class="hint-overlay" v-if="targetMode">
     <button class="hint-btn" @click="open = !open" :class="{open}">💡</button>
     <div class="hint-panel" v-if="open">
-      <div class="hint-title">📐 المعادلة</div>
+      <div class="hint-title">📐 {{ t('experiments.equationLabel') }}</div>
       <div class="hint-eq">{{ hint.equation }}</div>
       <div class="hint-eq hint-sub">{{ hint.sin2theta }}</div>
-      <div class="hint-tip">🎯 الهدف عند {{ hint.targetX }} متر</div>
+      <div class="hint-tip">🎯 {{ t('experiments.targetAt') }} {{ hint.targetX }} {{ t('experiments.meter') }}</div>
       <div class="hint-msg">{{ hint.message }}</div>
       <div class="hint-tip">{{ hint.tip }}</div>
       <div class="hint-strat">📌 {{ hint.strategy }}</div>
       <hr />
       <div class="hint-guess">
-        <div class="hint-title">🧮 جرب بنفسك</div>
+        <div class="hint-title">🧮 {{ t('experiments.tryItYourself') }}</div>
         <div class="guess-row">
           <label>v₀</label><input type="number" v-model.number="guessV0" step="0.1">
           <label>θ</label><input type="number" v-model.number="guessAngle" step="0.1">
-          <button @click="onCheck">تحقق</button>
+          <button @click="onCheck">{{ t('experiments.verify') }}</button>
         </div>
         <div class="guess-result" v-if="guessResult">{{ guessResult }}</div>
       </div>

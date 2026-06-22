@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import { useI18n } from '../../composables/useI18n'
 
-const { locale, setLocale } = useI18n()
+const { locale, setLocale, t } = useI18n()
+
+async function onChange(ev: Event) {
+  const val = (ev.target as HTMLSelectElement).value
+  await setLocale(val as 'ar' | 'en' | 'es')
+}
 </script>
 
 <template>
   <div class="lang-dropdown">
-    <select data-testid="lang-switcher" v-model="locale" @change="setLocale(locale)" class="lang-select">
-      <option value="ar">🇸🇦 العربية</option>
-      <option value="en">🇬🇧 English</option>
-      <option value="es">🇪🇸 Español</option>
+    <select data-testid="lang-switcher" :value="locale" @change="onChange" class="lang-select">
+      <option value="ar">🇸🇦 {{ t('landing.langArabic') }}</option>
+      <option value="en">🇬🇧 {{ t('landing.langEnglish') }}</option>
+      <option value="es">🇪🇸 {{ t('landing.langSpanish') }}</option>
     </select>
   </div>
 </template>

@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 
 interface SignalPoint { t: number; theta: number }
 
+const { t } = useI18n()
 const props = defineProps<{
   series: SignalPoint[]
   params: { length: number; g: number; theta0: number }
@@ -38,7 +40,7 @@ function draw() {
   const series = props.series
   if (!series.length) {
     ctx.fillStyle = '#64748b'; ctx.font = '14px Segoe UI'; ctx.textAlign = 'center'
-    ctx.fillText('الإشارة تظهر هنا بعد بدء المحاكاة', w / 2, h / 2)
+    ctx.fillText(t('experiments.signalAppearsHereSimulation'), w / 2, h / 2)
     ctx.textAlign = 'start'; return
   }
 

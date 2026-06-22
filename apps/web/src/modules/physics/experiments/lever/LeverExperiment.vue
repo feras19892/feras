@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useLeverExperiment } from '../../../../composables/lever/useLeverExperiment'
+import { useI18n } from '../../../../composables/useI18n'
 import LeverMenuBar from '../../../../components/experiment/lever/LeverMenuBar.vue'
 import LeverCanvas from '../../../../components/experiment/lever/LeverCanvas.vue'
 import LeverControlBar from '../../../../components/experiment/lever/LeverControlBar.vue'
@@ -11,6 +12,7 @@ import LeverPanelBody from '../../../../components/experiment/lever/LeverPanelBo
 import LeverOverlayPanels from '../../../../components/experiment/lever/LeverOverlayPanels.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 
+const { t } = useI18n()
 const ex = useLeverExperiment()
 const helpOpen = ref(false)
 
@@ -18,7 +20,7 @@ function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return
   if (e.code === 'Space') { e.preventDefault(); ex.lab.togglePause() }
-  else if (e.key === 'r' || e.key === 'R') { if (confirm('هل تريد إعادة تعيين المحاكاة؟')) ex.resetSim() }
+  else if (e.key === 'r' || e.key === 'R') { if (confirm(t('experiments.confirmResetSimulation'))) ex.resetSim() }
   else if (e.key === 's' || e.key === 'S') { ex.trials.recordTrial() }
   else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); if (e.shiftKey) ex.trials.redo(); else ex.trials.undo() }
   else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ex.trials.redo() }
@@ -32,7 +34,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 <template>
   <div class="lever-lab">
     <LeverMenuBar
-      title="توازن العارضة"
+      :title="t('experiments.leverBalanceTitle')"
       icon="⚖️"
       experiment-route="/physics/mechanics/lever"
       experiment-name="Lever Balance"
@@ -109,9 +111,9 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @clear="ex.trials.clearTrials"
     />
 
-    <div class="hint-bar" v-if="ex.lab.sim.balls.length === 0 && ex.lab.sim.forces.length === 0"><span>💡 اضغط "+ كرة" أو "+ قوة" لإضافة</span></div>
+    <div class="hint-bar" v-if="ex.lab.sim.balls.length === 0 && ex.lab.sim.forces.length === 0"><span>💡 {{ t('experiments.addBallOrForceHint') }}</span></div>
     <div class="hint-bar active" v-else-if="!ex.lab.sim.isBalanced"><span>{{ ex.tutorMessage.value }}</span></div>
-    <div class="hint-bar success" v-else><span>⚖️ متوازن! اضغط "تسجيل" لحفظ القراءة</span></div>
+    <div class="hint-bar success" v-else><span>⚖️ {{ t('experiments.balancedRecordHint') }}</span></div>
 
     <LeverStatusBar
       :net-torque="ex.lab.sim.netTorque"
@@ -122,7 +124,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     />
 
     <LeverControlBar
-      :launch-label="'▶️ بدء'"
+      :launch-label="'▶️ ' + t('experiments.startBtn')"
       :can-undo="ex.trials.canUndo()"
       :can-redo="ex.trials.canRedo()"
       @toggle-pause="ex.lab.togglePause"

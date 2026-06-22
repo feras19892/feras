@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 const props = defineProps<{
   launchLabel: string
   canUndo?: boolean
@@ -16,18 +19,18 @@ const emit = defineEmits<{
 }>()
 
 function onClear() {
-  if (confirm('هل أنت متأكد من مسح جميع القراءات؟')) emit('clearTrials')
+  if (confirm(t('experiments.confirmClearAll'))) emit('clearTrials')
 }
 </script>
 
 <template>
   <div class="control-bar">
     <button class="btn-primary" @click="$emit('togglePause')">{{ launchLabel }}</button>
-    <button class="btn-secondary" @click="$emit('reset')">&#x1F504; إعادة</button>
-    <button class="btn-secondary" @click="$emit('recordTrial')">&#x1F4CC; تسجيل</button>
-    <button class="btn-undo" :disabled="!canUndo" @click="$emit('undo')" title="تراجع">&#x21A9; تراجع</button>
-    <button class="btn-undo" :disabled="!canRedo" @click="$emit('redo')" title="إعادة">&#x21AA; إعادة</button>
-    <button class="btn-undo" @click="onClear">&#x1F5D1; مسح</button>
+    <button class="btn-secondary" @click="$emit('reset')">&#x1F504; {{ t('experiments.resetBtn') }}</button>
+    <button class="btn-secondary" @click="$emit('recordTrial')">&#x1F4CC; {{ t('experiments.recordBtn') }}</button>
+    <button class="btn-undo" :disabled="!canUndo" @click="$emit('undo')" :title="t('experiments.undoBtn')">&#x21A9; {{ t('experiments.undoBtn') }}</button>
+    <button class="btn-undo" :disabled="!canRedo" @click="$emit('redo')" :title="t('experiments.redoBtn')">&#x21AA; {{ t('experiments.redoBtn') }}</button>
+    <button class="btn-undo" @click="onClear">&#x1F5D1; {{ t('experiments.clearAll') }}</button>
     <button class="btn-undo" @click="$emit('exportCsv')">&#x1F4BE; CSV</button>
   </div>
 </template>

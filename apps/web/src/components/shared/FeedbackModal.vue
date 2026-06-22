@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { submitFeedback } from '../../services/admin.service';
+import { useI18n } from '../../composables/useI18n';
 
 const props = defineProps<{
   show: boolean;
@@ -12,6 +13,7 @@ const emit = defineEmits<{
   (e: 'update:show', val: boolean): void;
 }>();
 
+const { t } = useI18n();
 const type = ref<'complaint' | 'rating' | 'suggestion'>('complaint');
 const message = ref('');
 const rating = ref(5);
@@ -20,7 +22,7 @@ const error = ref('');
 const success = ref('');
 
 async function send() {
-  if (!message.value.trim()) { error.value = 'اكتب رسالة'; return; }
+  if (!message.value.trim()) { error.value = t('common.writeMessage'); return; }
   loading.value = true; error.value = ''; success.value = '';
   try {
     const res = await submitFeedback(
@@ -31,11 +33,11 @@ async function send() {
       type.value === 'rating' ? rating.value : undefined
     );
     if (res.success) {
-      success.value = 'تم الإرسال، شكراً!';
+      success.value = t('common.thanks');
       setTimeout(() => { emit('update:show', false); message.value = ''; }, 1200);
     }
   } catch (err: unknown) {
-    error.value = (err instanceof Error ? err.message : '') || 'فشل الإرسال';
+    error.value = (err instanceof Error ? err.message : '') || t('common.submitFailed');
   } finally {
     loading.value = false;
   }
@@ -45,35 +47,35 @@ async function send() {
 <template>
   <div v-if="show" class="modal-overlay" @click.self="$emit('update:show', false)">
     <div class="modal-content">
-      <h3>💬 إرسال ملاحظة</h3>
+      <h3>{{ t('common.feedbackTitle') }}</h3>
 
       <div class="form-row">
-        <label>النوع</label>
+        <label>{{ t('common.typeLabel') }}</label>
         <div class="type-buttons">
-          <button :class="{ active: type === 'complaint' }" @click="type = 'complaint'">🚩 شكوى</button>
-          <button :class="{ active: type === 'rating' }" @click="type = 'rating'">⭐ تقييم</button>
-          <button :class="{ active: type === 'suggestion' }" @click="type = 'suggestion'">💡 اقتراح</button>
+          <button :class="{ active: type === 'complaint' }" @click="type = 'complaint'">{{ t('common.complaint') }}</button>
+          <button :class="{ active: type === 'rating' }" @click="type = 'rating'">{{ t('common.rating') }}</button>
+          <button :class="{ active: type === 'suggestion' }" @click="type = 'suggestion'">{{ t('common.suggestion') }}</button>
         </div>
       </div>
 
       <div v-if="type === 'rating'" class="form-row">
-        <label>التقييم</label>
+        <label>{{ t('common.ratingLabel') }}</label>
         <div class="stars">
           <button v-for="n in 5" :key="n" @click="rating = n" :class="{ filled: n <= rating }">⭐</button>
         </div>
       </div>
 
       <div class="form-row">
-        <label>الرسالة</label>
-        <textarea v-model="message" rows="4" placeholder="اكتب ملاحظتك هنا..."></textarea>
+        <label>{{ t('common.messageLabel') }}</label>
+        <textarea v-model="message" rows="4" :placeholder="t('common.messagePlaceholder')"></textarea>
       </div>
 
       <p v-if="error" class="msg error">{{ error }}</p>
       <p v-if="success" class="msg success">{{ success }}</p>
 
       <div class="modal-actions">
-        <button class="btn-cancel" @click="$emit('update:show', false)">إلغاء</button>
-        <button class="btn-submit" :disabled="loading" @click="send">{{ loading ? '...' : 'إرسال' }}</button>
+        <button class="btn-cancel" @click="$emit('update:show', false)">{{ t('common.cancel') }}</button>
+        <button class="btn-submit" :disabled="loading" @click="send">{{ loading ? '...' : t('common.submit') }}</button>
       </div>
     </div>
   </div>

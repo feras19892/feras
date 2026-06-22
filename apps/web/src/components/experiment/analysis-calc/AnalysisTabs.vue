@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n';
+
 const props = defineProps<{ active: number }>();
 const emit = defineEmits<(e: 'change', idx: number) => void>();
-const tabs = ['📋 البيانات', '📈 التحليل', '📄 التقرير'];
+const { t } = useI18n();
+const tabs = [t('analysis.dataTab'), t('analysis.analysisTab'), t('analysis.reportTab')];
 </script>
 
 <template>

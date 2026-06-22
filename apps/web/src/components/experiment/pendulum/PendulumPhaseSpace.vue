@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
 import { ref, watch, onMounted } from 'vue'
 
+const { t } = useI18n()
 const props = defineProps<{
   theta: number
   omega: number
@@ -35,7 +37,7 @@ function draw() {
 
   if (data.length < 2) {
     ctx.fillStyle = '#64748b'; ctx.font = '13px sans-serif'
-    ctx.textAlign = 'center'; ctx.fillText('انتظر بدء المحاكاة...', W / 2, H / 2)
+    ctx.textAlign = 'center'; ctx.fillText(t('experiments.waitForSimulationStart'), W / 2, H / 2)
     return
   }
 
@@ -80,11 +82,11 @@ onMounted(draw)
 
 <template>
   <div class="phase-panel">
-    <div class="card-header"><h4>&#x1F500; فضاء الطور (Phase Space)</h4></div>
+    <div class="card-header"><h4>&#x1F500; {{ t('experiments.phaseSpace') }} (Phase Space)</h4></div>
     <canvas ref="canvasRef" width="340" height="200" />
     <div class="phase-legend">
-      <span class="legend-dot" style="background:#3b82f6" /> المسار
-      <span class="legend-dot" style="background:#dc2626" /> النقطة الحالية
+      <span class="legend-dot" style="background:#3b82f6" /> {{ t('experiments.trajectory') }}
+      <span class="legend-dot" style="background:#dc2626" /> {{ t('experiments.currentPoint') }}
     </div>
   </div>
 </template>

@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useI18n } from '../../composables/useI18n'
 import { useClassManager } from '../../composables/teacher/useClassManager'
 import { getClassStats } from '../../services/class.service'
 import type { ClassStudent } from '../../services/class.service'
 import CreateClassModal from './CreateClassModal.vue'
 import StudentDetailModal from './StudentDetailModal.vue'
 
+const { t } = useI18n()
 const { classes, expandedId, classStudents, showModal, newClassName, createClass, deleteClass, copyCode, loadClassDetails, loading } = useClassManager()
 
 const selectedStudent = ref<ClassStudent | null>(null)
@@ -43,19 +45,19 @@ async function toggleClass(id: string) {
   <div class="class-manager">
     <div class="manager-header">
       <div class="header-title">
-        <h2>🏫 فصولي</h2>
-        <span v-if="classes.length" class="class-count">{{ classes.length }} فصل</span>
+        <h2>{{ t('teacher.myClassesTitle') }}</h2>
+        <span v-if="classes.length" class="class-count">{{ classes.length }} {{ t('teacher.classCount') }}</span>
       </div>
       <button class="create-btn" @click="showModal = true">
         <span>+</span>
-        <span>إنشاء فصل جديد</span>
+        <span>{{ t('teacher.createClass') }}</span>
       </button>
     </div>
 
     <div v-if="classes.length === 0" class="empty-state">
       <div class="empty-icon">📚</div>
-      <p>لا توجد فصول بعد</p>
-      <button class="create-btn alt" @click="showModal = true">أنشئ فصلك الأول</button>
+      <p>{{ t('teacher.noClassesYet') }}</p>
+      <button class="create-btn alt" @click="showModal = true">{{ t('teacher.createFirstClass') }}</button>
     </div>
 
     <div v-else class="class-list">
@@ -73,29 +75,29 @@ async function toggleClass(id: string) {
           <div v-if="classStats[cls.id]" class="stats-panel">
             <div class="stat-mini">
               <span class="val">{{ classStats[cls.id].student_count }}</span>
-              <span class="lab">طلاب</span>
+              <span class="lab">{{ t('teacher.studentsLabel') }}</span>
             </div>
             <div class="stat-mini">
               <span class="val">{{ classStats[cls.id].total_reports }}</span>
-              <span class="lab">تقارير</span>
+              <span class="lab">{{ t('teacher.reportsStat') }}</span>
             </div>
             <div class="stat-mini">
               <span class="val">{{ classStats[cls.id].pending_count }}</span>
-              <span class="lab">معلقة</span>
+              <span class="lab">{{ t('teacher.pendingStat') }}</span>
             </div>
             <div class="stat-mini highlight">
               <span class="val">{{ classStats[cls.id].class_average }}%</span>
-              <span class="lab">متوسط</span>
+              <span class="lab">{{ t('teacher.avgStat') }}</span>
             </div>
           </div>
 
           <div v-if="loading" class="detail-empty">...</div>
-          <div v-else-if="classStudents.length === 0" class="detail-empty">لا يوجد طلاب مسجلين</div>
+          <div v-else-if="classStudents.length === 0" class="detail-empty">{{ t('teacher.noStudentsRegistered') }}</div>
           <div v-else class="student-list">
             <div class="student-header">
-              <span>الطالب</span>
-              <span>البريد</span>
-              <span>تاريخ الانضمام</span>
+              <span>{{ t('teacher.studentCol') }}</span>
+              <span>{{ t('teacher.emailCol') }}</span>
+              <span>{{ t('teacher.joinDate') }}</span>
             </div>
             <div v-for="s in classStudents" :key="s.id" class="student-row" @click="showStudentDetail(s)">
               <span class="stu-name">{{ s.name }}</span>

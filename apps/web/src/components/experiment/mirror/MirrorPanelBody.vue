@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { MirrorTrial } from '../../../composables/mirror/useMirrorExperiment'
+import { useI18n } from '../../../composables/useI18n'
 
 interface Props {
   id: string
@@ -16,6 +17,7 @@ interface Props {
   rSquared: number
 }
 
+const { t } = useI18n()
 const props = defineProps<Props>()
 
 const emit = defineEmits<{
@@ -79,15 +81,15 @@ const regLineEnd = computed(() => ({
 <template>
   <div class="panel-body">
     <template v-if="id === 'readings'">
-      <div class="reading-row"><span class="reading-label">البعد البؤري f</span><span class="reading-val">{{ params.focalLength.toFixed(1) }} cm</span></div>
-      <div class="reading-row"><span class="reading-label">بعد الجسم do</span><span class="reading-val">{{ params.objectDistance.toFixed(1) }} cm</span></div>
-      <div class="reading-row"><span class="reading-label">بعد الصورة di</span><span class="reading-val">{{ imageDistance !== null ? imageDistance.toFixed(1) + ' cm' + (imageDistance < 0 ? ' (افتراضي)' : '') : '∞' }}</span></div>
-      <div class="reading-row"><span class="reading-label">ارتفاع الجسم ho</span><span class="reading-val">{{ params.objectHeight.toFixed(1) }} cm</span></div>
-      <div class="reading-row"><span class="reading-label">ارتفاع الصورة hi</span><span class="reading-val">{{ imageHeight !== null ? imageHeight.toFixed(1) + ' cm' : '—' }}</span></div>
-      <div class="reading-row"><span class="reading-label">التكبير m</span><span class="reading-val">{{ magnification !== null ? magnification.toFixed(2) : '—' }}</span></div>
-      <div class="reading-row"><span class="reading-label">نوع الصورة</span><span class="reading-val">{{ imageProperties.type }}</span></div>
-      <div class="reading-row"><span class="reading-label">اتجاه الصورة</span><span class="reading-val">{{ imageProperties.orientation }}</span></div>
-      <div class="reading-row"><span class="reading-label">حجم الصورة</span><span class="reading-val">{{ imageProperties.size }}</span></div>
+      <div class="reading-row"><span class="reading-label">{{ t('lens.focalLength') }}</span><span class="reading-val">{{ params.focalLength.toFixed(1) }} cm</span></div>
+      <div class="reading-row"><span class="reading-label">{{ t('lens.objectDistance') }}</span><span class="reading-val">{{ params.objectDistance.toFixed(1) }} cm</span></div>
+      <div class="reading-row"><span class="reading-label">{{ t('lens.imageDistance') }}</span><span class="reading-val">{{ imageDistance !== null ? imageDistance.toFixed(1) + ' cm' + (imageDistance < 0 ? ' (' + t('experiments.virtual') + ')' : '') : '∞' }}</span></div>
+      <div class="reading-row"><span class="reading-label">{{ t('lens.objectHeight') }}</span><span class="reading-val">{{ params.objectHeight.toFixed(1) }} cm</span></div>
+      <div class="reading-row"><span class="reading-label">{{ t('lens.imageHeight') }}</span><span class="reading-val">{{ imageHeight !== null ? imageHeight.toFixed(1) + ' cm' : '—' }}</span></div>
+      <div class="reading-row"><span class="reading-label">{{ t('lens.magnification') }}</span><span class="reading-val">{{ magnification !== null ? magnification.toFixed(2) : '—' }}</span></div>
+      <div class="reading-row"><span class="reading-label">{{ t('lens.imageType') }}</span><span class="reading-val">{{ imageProperties.type }}</span></div>
+      <div class="reading-row"><span class="reading-label">{{ t('lens.imageOrientation') }}</span><span class="reading-val">{{ imageProperties.orientation }}</span></div>
+      <div class="reading-row"><span class="reading-label">{{ t('lens.imageSize') }}</span><span class="reading-val">{{ imageProperties.size }}</span></div>
     </template>
 
     <template v-if="id === 'chart'">
@@ -108,17 +110,17 @@ const regLineEnd = computed(() => ({
           <line v-if="regressionSlope && chartPoints.length >= 2" :x1="regLineStart.x" :y1="regLineStart.y" :x2="regLineEnd.x" :y2="regLineEnd.y" stroke="#fbbf24" stroke-width="1.5"/>
         </svg>
         <div class="reg-summary">
-          <span class="reg-badge">الميل = {{ regressionSlope.toFixed(3) }}</span>
+          <span class="reg-badge">{{ t('experiments.slopeLabel') }} = {{ regressionSlope.toFixed(3) }}</span>
           <span class="reg-badge">R² = {{ rSquared.toFixed(4) }}</span>
         </div>
       </div>
-      <div v-else class="empty">سجل قراءتين على الأقل</div>
+      <div v-else class="empty">{{ t('experiments.recordAtLeastTwo') }}</div>
     </template>
 
     <template v-if="id === 'trials'">
-      <div v-if="trials.length === 0" class="empty">لا توجد قراءات مسجلة</div>
+      <div v-if="trials.length === 0" class="empty">{{ t('experiments.noTrialsRecorded') }}</div>
       <div v-else class="trial-table">
-        <div class="trial-header"><span>#</span><span>النوع</span><span>do</span><span>di</span><span>m</span></div>
+        <div class="trial-header"><span>#</span><span>{{ t('experiments.type') }}</span><span>do</span><span>di</span><span>m</span></div>
         <div v-for="t in trials" :key="t.id" class="trial-row">
           <span class="trial-num">{{ t.id }}</span>
           <span class="mono" style="font-size:.65rem">{{ t.mirrorType === 'concave' ? '🔭' : '🪞' }}</span>
@@ -128,29 +130,29 @@ const regLineEnd = computed(() => ({
           <button class="trial-del" @click="emit('remove', t.id)">🗑️</button>
         </div>
       </div>
-      <button v-if="trials.length" class="btn-clear" @click="emit('clear')">مسح الكل</button>
+      <button v-if="trials.length" class="btn-clear" @click="emit('clear')">{{ t('experiments.clearAll') }}</button>
     </template>
 
     <template v-if="id === 'params'">
       <div class="param-row">
-        <label>نوع المرآة</label>
+        <label>{{ t('experiments.mirrorType') }}</label>
         <div class="mirror-toggle">
-          <button :class="{ active: params.mirrorType === 'concave' }" @click="emit('update:params', { ...params, mirrorType: 'concave' })">مقعرة 🔭</button>
-          <button :class="{ active: params.mirrorType === 'convex' }" @click="emit('update:params', { ...params, mirrorType: 'convex' })">محدبة 🪞</button>
+          <button :class="{ active: params.mirrorType === 'concave' }" @click="emit('update:params', { ...params, mirrorType: 'concave' })">{{ t('lens.concave') }} 🔭</button>
+          <button :class="{ active: params.mirrorType === 'convex' }" @click="emit('update:params', { ...params, mirrorType: 'convex' })">{{ t('lens.convex') }} 🪞</button>
         </div>
       </div>
       <div class="param-row">
-        <label>البعد البؤري |f|</label>
+        <label>{{ t('experiments.focalLengthAbs') }}</label>
         <input type="range" min="5" max="30" step="1" :value="params.focalLength" @input="emit('update:params', { ...params, focalLength: Number(($event.target as HTMLInputElement).value) })" />
         <span class="param-val">{{ params.focalLength }} cm ({{ params.mirrorType === 'concave' ? '+' : '-' }})</span>
       </div>
       <div class="param-row">
-        <label>بعد الجسم do</label>
+        <label>{{ t('lens.objectDistance') }}</label>
         <input type="range" min="10" max="80" step="1" :value="params.objectDistance" @input="emit('update:params', { ...params, objectDistance: Number(($event.target as HTMLInputElement).value) })" />
         <span class="param-val">{{ params.objectDistance }} cm</span>
       </div>
       <div class="param-row">
-        <label>ارتفاع الجسم ho</label>
+        <label>{{ t('lens.objectHeight') }}</label>
         <input type="range" min="1" max="15" step="0.5" :value="params.objectHeight" @input="emit('update:params', { ...params, objectHeight: Number(($event.target as HTMLInputElement).value) })" />
         <span class="param-val">{{ params.objectHeight }} cm</span>
       </div>
@@ -158,7 +160,7 @@ const regLineEnd = computed(() => ({
 
     <template v-if="id === 'laws'">
       <div class="law-box">
-        <div class="law-title">معادلة المرآة</div>
+        <div class="law-title">{{ t('experiments.mirrorEquation') }}</div>
         <div class="law-formula">1/f = 1/do + 1/di</div>
         <div class="law-calc">
           1/{{ params.mirrorType === 'convex' ? '-' : '' }}{{ params.focalLength.toFixed(1) }} = 1/{{ params.objectDistance.toFixed(1) }} + 1/{{ imageDistance !== null ? imageDistance.toFixed(1) : '∞' }}
@@ -168,7 +170,7 @@ const regLineEnd = computed(() => ({
         </div>
       </div>
       <div class="law-box">
-        <div class="law-title">التكبير</div>
+        <div class="law-title">{{ t('experiments.magnificationLabel') }}</div>
         <div class="law-formula">m = -di/do = hi/ho</div>
         <div class="law-calc">
           m = {{ imageDistance !== null && params.objectDistance !== 0 ? (-imageDistance/params.objectDistance).toFixed(2) : '—' }} = {{ imageHeight !== null && params.objectHeight !== 0 ? (imageHeight/params.objectHeight).toFixed(2) : '—' }}
@@ -177,12 +179,12 @@ const regLineEnd = computed(() => ({
     </template>
 
     <template v-if="id === 'results'">
-      <div v-if="trials.length < 2" class="empty">سجل قراءتين على الأقل</div>
+      <div v-if="trials.length < 2" class="empty">{{ t('experiments.recordAtLeastTwo') }}</div>
       <template v-else>
-        <div class="result-row"><span class="result-label">عدد القراءات</span><span class="result-val">{{ trials.length }}</span></div>
-        <div class="result-row"><span class="result-label">f من الانحدار</span><span class="result-val highlight">{{ focalFromRegression !== null ? focalFromRegression.toFixed(2) + ' cm' : '—' }}</span></div>
-        <div class="result-row"><span class="result-label">معامل التحديد R²</span><span class="result-val">{{ rSquared.toFixed(4) }}</span></div>
-        <div class="result-row"><span class="result-label">f المتوقع</span><span class="result-val">{{ params.focalLength.toFixed(1) }} cm</span></div>
+        <div class="result-row"><span class="result-label">{{ t('experiments.numberOfReadings') }}</span><span class="result-val">{{ trials.length }}</span></div>
+        <div class="result-row"><span class="result-label">{{ t('lens.fFromRegression') }}</span><span class="result-val highlight">{{ focalFromRegression !== null ? focalFromRegression.toFixed(2) + ' cm' : '—' }}</span></div>
+        <div class="result-row"><span class="result-label">{{ t('experiments.rSquaredLabel') }}</span><span class="result-val">{{ rSquared.toFixed(4) }}</span></div>
+        <div class="result-row"><span class="result-label">{{ t('lens.expectedF') }}</span><span class="result-val">{{ params.focalLength.toFixed(1) }} cm</span></div>
       </template>
     </template>
   </div>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useI18n } from '../../../composables/useI18n';
 
 const props = defineProps<{
   hasData: boolean;
@@ -12,6 +13,7 @@ const emit = defineEmits<{
   (e: 'sendToTeacher'): void;
 }>();
 
+const { t } = useI18n();
 const sending = ref(false);
 const sent = ref(false);
 
@@ -24,10 +26,10 @@ function onSend() {
 
 <template>
   <div class="export-panel">
-    <div class="panel-header">📤 إرسال التقرير</div>
+    <div class="panel-header">{{ t('analysis.sendReport') }}</div>
     <div class="actions">
       <button class="btn btn-print" :disabled="!hasData" @click="emit('print')">
-        🖨️ طباعة / PDF
+        {{ t('analysis.printPdf') }}
       </button>
       <button class="btn btn-csv" :disabled="!hasData" @click="emit('exportCsv')">
         📄 CSV
@@ -36,10 +38,10 @@ function onSend() {
         🖼️ PNG
       </button>
       <button class="btn btn-send" :disabled="!hasData || sending" @click="onSend">
-        {{ sending ? '⏳ جاري الإرسال...' : sent ? '✅ تم الإرسال!' : '📧 إرسال للمعلم' }}
+        {{ sending ? t('analysis.sending') : sent ? t('analysis.sent') : t('analysis.sendToTeacher') }}
       </button>
     </div>
-    <p class="hint">املأ معلومات الطالب أولاً ثم اضغط إرسال للمعلم</p>
+    <p class="hint">{{ t('analysis.fillStudentInfo') }}</p>
   </div>
 </template>
 

@@ -1,13 +1,16 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 const props = defineProps<{ running: boolean; paused: boolean }>()
 </script>
 
 <template>
   <div class="status-bar" :class="{ready:!running&&!paused, paused:running&&paused, running:running&&!paused}">
     <span class="status-dot" />
-    <span v-if="!running&&!paused">جاهز</span>
-    <span v-else-if="running&&paused">متوقف مؤقتاً</span>
-    <span v-else>يعمل</span>
+    <span v-if="!running&&!paused">{{ t('experiments.ready') }}</span>
+    <span v-else-if="running&&paused">{{ t('experiments.paused') }}</span>
+    <span v-else>{{ t('experiments.running') }}</span>
   </div>
 </template>
 

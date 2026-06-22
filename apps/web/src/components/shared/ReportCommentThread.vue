@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { addComment, getComments } from '../../services/report.service';
+import { useI18n } from '../../composables/useI18n';
 import type { ReportComment } from '../../services/report.service';
 
 const props = defineProps<{
@@ -9,6 +10,7 @@ const props = defineProps<{
   userName: string;
 }>();
 
+const { t } = useI18n();
 const comments = ref<ReportComment[]>([]);
 const newComment = ref('');
 const loading = ref(false);
@@ -46,9 +48,9 @@ function formatTime(dateStr: string) {
 }
 
 function authorLabel(role: string) {
-  if (role === 'teacher') return '👨‍🏫 المدرس';
-  if (role === 'admin') return '🛡️ المشرف';
-  return '🎓 الطالب';
+  if (role === 'teacher') return t('common.authorTeacher');
+  if (role === 'admin') return t('common.authorAdmin');
+  return t('common.authorStudent');
 }
 
 load();
@@ -56,10 +58,10 @@ load();
 
 <template>
   <div class="comment-thread">
-    <h4 class="title">💬 التعليقات</h4>
+    <h4 class="title">{{ t('common.commentsTitle') }}</h4>
 
     <div v-if="loading" class="status">...</div>
-    <div v-else-if="comments.length === 0" class="status">لا توجد تعليقات</div>
+    <div v-else-if="comments.length === 0" class="status">{{ t('common.noComments') }}</div>
 
     <div class="comments-list">
       <div
@@ -79,11 +81,11 @@ load();
       <input
         v-model="newComment"
         type="text"
-        placeholder="اكتب تعليقًا..."
+        :placeholder="t('common.commentPlaceholder')"
         @keydown.enter.prevent="send"
       />
       <button :disabled="sending || !newComment.trim()" @click="send">
-        {{ sending ? '...' : 'إرسال' }}
+        {{ sending ? '...' : t('common.send') }}
       </button>
     </div>
   </div>

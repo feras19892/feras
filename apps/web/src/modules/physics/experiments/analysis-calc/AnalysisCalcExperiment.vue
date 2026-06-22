@@ -3,6 +3,7 @@ import { computed, ref, onMounted, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAnalysisStore } from '../../../../stores/analysis.store';
 import { consumePendingPayload } from '../../../../composables/analysis/sendToAnalysis';
+import { useI18n } from '../../../../composables/useI18n';
 import AnalysisMenuBar from '../../../../components/experiment/analysis-calc/AnalysisMenuBar.vue';
 import AnalysisTabs from '../../../../components/experiment/analysis-calc/AnalysisTabs.vue';
 import DataTab from '../../../../components/experiment/analysis-calc/DataTab.vue';
@@ -10,6 +11,7 @@ import AnalysisTab from '../../../../components/experiment/analysis-calc/Analysi
 import ReportTab from '../../../../components/experiment/analysis-calc/ReportTab.vue';
 import SubmitReportModal from '../../../../components/experiment/SubmitReportModal.vue';
 
+const { t } = useI18n();
 const router = useRouter();
 const store = useAnalysisStore();
 const activeTab = ref(0);
@@ -144,10 +146,10 @@ async function sendToTeacher() {
 
     <div v-if="!hasData" class="no-data">
       <div class="no-data-box">
-        <h2>📊 قسم الرسم والحسابات</h2>
-        <p>لم تُرسل بيانات من أي تجربة بعد.</p>
-        <p class="hint">اذهب إلى أي تجربة فيزيائية، سجل القراءات، ثم اضغط "قسم الرسم والحسابات".</p>
-        <button class="btn-action" @click="goBack">العودة للتجارب</button>
+        <h2>📊 {{ t('experiments.analysisCalcTitle') }}</h2>
+        <p>{{ t('experiments.noDataSentYet') }}</p>
+        <p class="hint">{{ t('experiments.goToExperimentRecordReadings') }}</p>
+        <button class="btn-action" @click="goBack">{{ t('experiments.backToExperiments') }}</button>
       </div>
     </div>
 
@@ -209,7 +211,7 @@ async function sendToTeacher() {
     <SubmitReportModal
       v-model:show="reportOpen"
       experiment-type="analysis"
-      :experiment-name="sourceName || 'تجربة فيزيائية'"
+      :experiment-name="sourceName || t('experiments.physicsExperiment')"
       :readings="JSON.stringify(readings)"
       :params="JSON.stringify(columns.map((c: any) => ({ key: c.key, label: c.label, unit: c.unit })))"
       :student-info="JSON.stringify(studentInfo)"

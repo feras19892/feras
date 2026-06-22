@@ -1,10 +1,14 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
+
 interface EnvOption { label: string; value: number; icon: string }
 const options: EnvOption[] = [
-  { label: '🌍 الأرض', value: 9.81, icon: '🌍' },
-  { label: '🌑 القمر', value: 1.62, icon: '🌑' },
-  { label: '🪐 المشتري', value: 24.79, icon: '🪐' },
-  { label: '🛰️ الفضاء', value: 0, icon: '🛰️' },
+  { label: '🌍 ' + t('experiments.earth'), value: 9.81, icon: '🌍' },
+  { label: '🌑 ' + t('experiments.moon'), value: 1.62, icon: '🌑' },
+  { label: '🪐 ' + t('experiments.jupiter'), value: 24.79, icon: '🪐' },
+  { label: '🛰️ ' + t('experiments.space'), value: 0, icon: '🛰️' },
 ]
 const model = defineModel<number>({ required: true })
 function onChange(e: Event) {
@@ -15,7 +19,7 @@ function onChange(e: Event) {
 
 <template>
   <div class="env-selector">
-    <label>البيئة</label>
+    <label>{{ t('experiments.environment') }}</label>
     <select :value="model" @change="onChange">
       <option v-for="opt in options" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
     </select>

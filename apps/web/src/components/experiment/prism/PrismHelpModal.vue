@@ -1,30 +1,33 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
 interface Props { open: boolean }
 defineProps<Props>()
+const { t } = useI18n()
 const emit = defineEmits<{ (e: 'close'): void }>()
 </script>
 
 <template>
   <div v-if="open" class="modal-overlay" @click="emit('close')">
     <div class="modal-card" @click.stop>
-      <div class="modal-header">&#x2753; مساعدة — تحلل الضوء بالمنشور</div>
+      <div class="modal-header">&#x2753; {{ t('experiments.prismHelp') }}</div>
       <div class="modal-body">
-        <p><strong>المفاتيح:</strong></p>
+        <p><strong>{{ t('experiments.keys') }}:</strong></p>
         <ul>
-          <li>Space — بدء/توقف المحاكاة</li>
-          <li>S — تسجيل قراءة</li>
-          <li>R — إعادة تعيين</li>
-          <li>Ctrl+Z — تراجع</li>
-          <li>Ctrl+Y — إعادة</li>
-          <li>? — فتح/إغلاق المساعدة</li>
+          <li>Space — {{ t('experiments.shortcutStartStop') }}</li>
+          <li>S — {{ t('experiments.recordReading') }}</li>
+          <li>R — {{ t('experiments.shortcutReset') }}</li>
+          <li>Ctrl+Z — {{ t('experiments.shortcutUndo') }}</li>
+          <li>Ctrl+Y — {{ t('experiments.shortcutRedo') }}</li>
+          <li>? — {{ t('experiments.shortcutToggleHelp') }}</li>
         </ul>
-        <p><strong>المعادلات:</strong></p>
+        <p><strong>{{ t('experiments.equations') }}:</strong></p>
         <ul>
-          <li>قانون سنل: n₁ sin θ₁ = n₂ sin θ₂</li>
-          <li>معادلة المنشور: n = sin((A+D)/2) / sin(A/2)</li>
+          <li>{{ t('experiments.snellsLaw') }}</li>
+          <li>{{ t('experiments.prismEquation') }}: n = sin((A+D)/2) / sin(A/2)</li>
         </ul>
       </div>
-      <button class="modal-close" @click="emit('close')">إغلاق</button>
+      <button class="modal-close" @click="emit('close')">{{ t('experiments.close') }}</button>
     </div>
   </div>
 </template>

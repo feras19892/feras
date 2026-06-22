@@ -1,22 +1,24 @@
 <script setup lang="ts">
 import type { FreeFallTrial } from '../../../composables/freefall/useFreeFallTrials'
+import { useI18n } from '../../../composables/useI18n'
 
-const props = defineProps<{ trials: FreeFallTrial[]; trialStats: Record<string, number> | null; gTheoretical: number }>()
+const { t } = useI18n()
+const props = defineProps<{ trials: FreeFallTrial[]; trialStats: { time_mean: number; time_std: number; g_mean: number; g_std: number } | null; gTheoretical: number }>()
 const emit = defineEmits<{ (e: 'printReport'): void; (e: 'openFullReport'): void }>()
 </script>
 
 <template>
   <div>
-    <h5>📋 تقرير سريع</h5>
+    <h5>📋 {{ t('experiments.quickReport') }}</h5>
     <div v-if="trials.length" class="mini-report">
-      <div>القراءات: {{ trials.length }}</div>
-      <div>g المتوسط: {{ trialStats?.g_mean?.toFixed(2) ?? '--' }} m/s²</div>
-      <div>g النظري: {{ gTheoretical }} m/s²</div>
+      <div>{{ t('experiments.readings') }}: {{ trials.length }}</div>
+      <div>{{ t('experiments.averageG') }}: {{ trialStats?.g_mean?.toFixed(2) ?? '--' }} m/s²</div>
+      <div>{{ t('experiments.theoreticalG') }}: {{ gTheoretical }} m/s²</div>
     </div>
-    <p v-else class="no-data">لا توجد بيانات</p>
+    <p v-else class="no-data">{{ t('experiments.noData') }}</p>
     <div class="report-actions">
-      <button @click="emit('printReport')">🖨️ طباعة</button>
-      <button class="primary" @click="emit('openFullReport')">📋 تقرير كامل</button>
+      <button @click="emit('printReport')">🖨️ {{ t('experiments.print') }}</button>
+      <button class="primary" @click="emit('openFullReport')">📋 {{ t('experiments.fullReport') }}</button>
     </div>
   </div>
 </template>

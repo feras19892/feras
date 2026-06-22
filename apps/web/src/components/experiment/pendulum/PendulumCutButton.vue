@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 const emit = defineEmits<{ (e: 'cut'): void }>()
 </script>
 
 <template>
-  <button class="btn-cut" @click="emit('cut')" title="قطع الخيط">&#x2702;&#xFE0F; قطع</button>
+  <button class="btn-cut" @click="emit('cut')" :title="t('experiments.cutString')">&#x2702;&#xFE0F; {{ t('experiments.cutAction') }}</button>
 </template>
 
 <style scoped>

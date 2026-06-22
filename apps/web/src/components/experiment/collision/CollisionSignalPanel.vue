@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import type { CollisionSignalPoint } from '../../../composables/collision/useCollisionLab'
 
+const { t } = useI18n()
 const props = defineProps<{
   series: CollisionSignalPoint[]
 }>()
@@ -25,7 +27,7 @@ function draw() {
     ctx.fillStyle = '#64748b'
     ctx.font = 'bold 12px "Segoe UI", sans-serif'
     ctx.textAlign = 'center'
-    ctx.fillText('ابدأ المحاكاة لرؤية الإشارة', w / 2, h / 2)
+    ctx.fillText(t('experiments.startSimulationToSeeSignal'), w / 2, h / 2)
     return
   }
 

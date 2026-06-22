@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useSpringExperiment } from '../../../../composables/spring/useSpringExperiment'
+import { useI18n } from '../../../../composables/useI18n'
 import SpringMenuBar from '../../../../components/experiment/spring/SpringMenuBar.vue'
 import SpringCanvas from '../../../../components/experiment/spring/SpringCanvas.vue'
 import SpringStatusBar from '../../../../components/experiment/spring/SpringStatusBar.vue'
@@ -11,6 +12,7 @@ import SpringPanelBody from '../../../../components/experiment/spring/SpringPane
 import SpringOverlayPanels from '../../../../components/experiment/spring/SpringOverlayPanels.vue'
 import SpringHelpModal from '../../../../components/experiment/spring/SpringHelpModal.vue'
 const ex = useSpringExperiment()
+const { t } = useI18n()
 const helpOpen = ref(false)
 const canvasRef = ref<InstanceType<typeof SpringCanvas> | null>(null)
 function onKeyDown(e: KeyboardEvent) {
@@ -21,7 +23,7 @@ function onKeyDown(e: KeyboardEvent) {
     e.preventDefault()
     ex.lab.togglePause()
   } else if (e.key === 'r' || e.key === 'R') {
-    if (confirm('هل تريد إعادة تعيين المحاكاة؟')) ex.resetSim()
+    if (confirm(t('experiments.resetConfirm'))) ex.resetSim()
   } else if (e.key === 's' || e.key === 'S') {
     ex.trials.recordTrial()
   } else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
@@ -43,7 +45,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 <template>
   <div class="spring-lab">
     <SpringMenuBar
-      title="تجربة النابض المتقدمة"
+      :title="t('experiments.springTitle')"
       icon="🍃"
       experiment-route="/physics/mechanics/spring"
       experiment-name="Basic Spring"
@@ -131,18 +133,18 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     />
 
     <div class="hint-bar" v-if="!ex.lab.running.value">
-      <span>💡 اضغط "بدء" لبدء الاهتزاز، ثم "تسجيل" لحفظ القراءة</span>
+      <span>💡 {{ t('experiments.hintStart') }}</span>
     </div>
     <div class="hint-bar active" v-else-if="ex.lab.sim.measurementPeriod === null">
-      <span>⏳ انتظر استقرار الاهتزاز...</span>
+      <span>⏳ {{ t('experiments.hintWaitStable') }}</span>
     </div>
     <div class="hint-bar success" v-else>
-      <span>✅ القراءة مستقرة — اضغط "تسجيل" لحفظها</span>
+      <span>✅ {{ t('experiments.hintStable') }}</span>
     </div>
 
     <SpringStatusBar :running="ex.lab.running.value" :paused="ex.lab.paused.value" />
     <SpringControlBar
-      :launch-label="ex.lab.running.value && !ex.lab.paused.value ? '⏸️ توقف' : '▶️ بدء'"
+      :launch-label="ex.lab.running.value && !ex.lab.paused.value ? '⏸️ ' + t('experiments.pauseBtn') : '▶️ ' + t('experiments.startBtn')"
       :speed="ex.lab.speed.value"
       :can-undo="ex.trials.canUndo()"
       :can-redo="ex.trials.canRedo()"

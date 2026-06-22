@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 const props = defineProps<{
   launchLabel: string
   speed: number
@@ -21,14 +24,14 @@ const emit = defineEmits<{
 <template>
   <div class="control-bar">
     <button class="ctrl-btn primary" @click="emit('togglePause')">{{ launchLabel }}</button>
-    <button class="ctrl-btn" @click="emit('reset')">🔄 إعادة</button>
-    <button class="ctrl-btn" @click="emit('recordTrial')">📌 تسجيل</button>
-    <button class="ctrl-btn" @click="emit('undo')" :disabled="!canUndo">↩️ تراجع</button>
-    <button class="ctrl-btn" @click="emit('redo')" :disabled="!canRedo">↪️ إعادة</button>
-    <button class="ctrl-btn" @click="emit('clearTrials')">🗑️ مسح</button>
-    <button class="ctrl-btn" @click="emit('exportCsv')">📤 تصدير</button>
+    <button class="ctrl-btn" @click="emit('reset')">🔄 {{ t('experiments.resetBtn') }}</button>
+    <button class="ctrl-btn" @click="emit('recordTrial')">📌 {{ t('experiments.recordBtn') }}</button>
+    <button class="ctrl-btn" @click="emit('undo')" :disabled="!canUndo">↩️ {{ t('experiments.undoBtn') }}</button>
+    <button class="ctrl-btn" @click="emit('redo')" :disabled="!canRedo">↪️ {{ t('experiments.redoBtn') }}</button>
+    <button class="ctrl-btn" @click="emit('clearTrials')">🗑️ {{ t('experiments.clearAll') }}</button>
+    <button class="ctrl-btn" @click="emit('exportCsv')">📤 {{ t('experiments.exportBtn') }}</button>
     <div class="speed-control">
-      <label>السرعة:</label>
+      <label>{{ t('experiments.speedLabel') }}:</label>
       <input type="range" min="0.25" max="3" step="0.25" :value="speed" @input="emit('update:speed', +($event.target as HTMLInputElement).value)" />
       <span>{{ speed }}x</span>
     </div>

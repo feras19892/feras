@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '../../composables/useI18n'
+
+const { t } = useI18n()
 const props = defineProps<{
   show: boolean
   modelValue: string
@@ -26,17 +29,17 @@ function onClose() {
 <template>
   <div v-if="show" class="modal-overlay" @click.self="onClose">
     <div class="join-modal">
-      <h3>إنشاء فصل جديد</h3>
+      <h3>{{ t('teacher.createClass') }}</h3>
       <input
         :value="modelValue"
         type="text"
-        placeholder="اسم الفصل"
+        :placeholder="t('teacher.classNamePlaceholder')"
         @input="onInput"
         @keyup.enter="onConfirm"
       />
       <div class="join-actions">
-        <button class="join-cancel" @click="onClose">إلغاء</button>
-        <button class="join-confirm" @click="onConfirm">إنشاء</button>
+        <button class="join-cancel" @click="onClose">{{ t('teacher.cancelBtn') }}</button>
+        <button class="join-confirm" @click="onConfirm">{{ t('teacher.createAction') }}</button>
       </div>
     </div>
   </div>

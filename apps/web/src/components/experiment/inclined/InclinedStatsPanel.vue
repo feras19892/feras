@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 const props = defineProps<{
   trialStats: {
     a_mean: number; a_std: number
@@ -11,21 +14,21 @@ const props = defineProps<{
 
 <template>
   <div class="stats-panel">
-    <h4>الإحصائيات — {{ trialCount }} تجربة</h4>
+    <h4>{{ t('experiments.statisticsLabel') }} — {{ trialCount }} {{ t('experiments.experimentCount') }}</h4>
     <div class="stat-group">
-      <h5>التسارع a (m/s²)</h5>
-      <div class="stat-row"><span>المتوسط</span><b>{{ trialCount ? trialStats.a_mean.toFixed(3) : '--' }}</b></div>
-      <div class="stat-row"><span>الانحراف المعياري</span><b>{{ trialCount ? trialStats.a_std.toFixed(3) : '--' }}</b></div>
+      <h5>{{ t('experiments.acceleration') }} a (m/s²)</h5>
+      <div class="stat-row"><span>{{ t('experiments.avgLabel') }}</span><b>{{ trialCount ? trialStats.a_mean.toFixed(3) : '--' }}</b></div>
+      <div class="stat-row"><span>{{ t('experiments.stdDev') }}</span><b>{{ trialCount ? trialStats.a_std.toFixed(3) : '--' }}</b></div>
     </div>
     <div class="stat-group">
-      <h5>زمن الوصول t (s)</h5>
-      <div class="stat-row"><span>المتوسط</span><b>{{ trialCount ? trialStats.t_mean.toFixed(3) : '--' }}</b></div>
-      <div class="stat-row"><span>الانحراف المعياري</span><b>{{ trialCount ? trialStats.t_std.toFixed(3) : '--' }}</b></div>
+      <h5>{{ t('experiments.arrivalTime') }} t (s)</h5>
+      <div class="stat-row"><span>{{ t('experiments.avgLabel') }}</span><b>{{ trialCount ? trialStats.t_mean.toFixed(3) : '--' }}</b></div>
+      <div class="stat-row"><span>{{ t('experiments.stdDev') }}</span><b>{{ trialCount ? trialStats.t_std.toFixed(3) : '--' }}</b></div>
     </div>
     <div class="stat-group">
-      <h5>السرعة النهائية v (m/s)</h5>
-      <div class="stat-row"><span>المتوسط</span><b>{{ trialCount ? trialStats.v_mean.toFixed(2) : '--' }}</b></div>
-      <div class="stat-row"><span>الانحراف المعياري</span><b>{{ trialCount ? trialStats.v_std.toFixed(2) : '--' }}</b></div>
+      <h5>{{ t('experiments.finalVelocity') }} v (m/s)</h5>
+      <div class="stat-row"><span>{{ t('experiments.avgLabel') }}</span><b>{{ trialCount ? trialStats.v_mean.toFixed(2) : '--' }}</b></div>
+      <div class="stat-row"><span>{{ t('experiments.stdDev') }}</span><b>{{ trialCount ? trialStats.v_std.toFixed(2) : '--' }}</b></div>
     </div>
   </div>
 </template>

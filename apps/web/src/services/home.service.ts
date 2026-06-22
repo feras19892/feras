@@ -4,33 +4,33 @@ const HOME_CARDS: HomeCard[] = [
   {
     id: 'physics',
     icon: '⚛️',
-    title: 'الفيزياء',
-    desc: 'تجارب الميكانيكا، الأمواج، الحرارة، الكهرباء والمغناطيسية',
-    stats: '20+ تجربة',
+    title: 'Physics',
+    desc: 'Mechanics, waves, heat, electricity and magnetism experiments',
+    stats: '20+ experiments',
     branchId: 'physics',
   },
   {
     id: 'chemistry',
     icon: '🧪',
-    title: 'الكيمياء',
-    desc: 'التفاعلات، التحليل الكيميائي، والخصائص الفيزيائية',
-    stats: '15+ تجربة',
+    title: 'Chemistry',
+    desc: 'Reactions, chemical analysis, and physical properties',
+    stats: '15+ experiments',
     branchId: 'chemistry',
   },
   {
     id: 'mathematics',
     icon: '📐',
-    title: 'الرياضيات',
-    desc: 'الدوال، الهندسة التفاضلية، والإحصاء',
-    stats: '10+ تجربة',
+    title: 'Mathematics',
+    desc: 'Functions, differential geometry, and statistics',
+    stats: '10+ experiments',
     branchId: 'mathematics',
   },
   {
     id: 'general',
     icon: '📚',
-    title: 'علوم عامة',
-    desc: 'مواضيع علمية متنوعة وتطبيقات عملية',
-    stats: '8+ تجارب',
+    title: 'General Science',
+    desc: 'Various scientific topics and practical applications',
+    stats: '8+ experiments',
     branchId: 'general',
   },
 ];
@@ -39,7 +39,7 @@ export async function fetchSite(): Promise<SiteInfo> {
   return {
     title: 'PhysLab',
     language: 'ar',
-    description: 'مختبر العلوم التفاعلي',
+    description: 'Interactive Science Lab',
   };
 }
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from '../../composables/useI18n';
 
 interface RoleStat { role: string; count: number }
 interface UserStats { total: number; byRole: RoleStat[] }
@@ -10,6 +11,7 @@ interface StatsData { users: UserStats; classes: ClassStats; reports: ReportStat
 const props = defineProps<{
   stats: StatsData;
 }>();
+const { t } = useI18n();
 
 function roleColor(role: string) {
   switch (role) {
@@ -21,9 +23,9 @@ function roleColor(role: string) {
 }
 
 const roleLabels: Record<string, string> = {
-  admin: 'أدمن',
-  teacher: 'مدرس',
-  student: 'طالب',
+  admin: t('admin.roleAdmin'),
+  teacher: t('admin.roleTeacher'),
+  student: t('admin.roleStudent'),
 };
 
 const totalUsers = computed(() => props.stats?.users?.total || 1);
@@ -35,27 +37,27 @@ const totalUsers = computed(() => props.stats?.users?.total || 1);
       <div class="stat-card">
         <div class="stat-icon">👥</div>
         <div class="stat-value">{{ stats.users.total }}</div>
-        <div class="stat-label">إجمالي المستخدمين</div>
+        <div class="stat-label">{{ t('admin.totalUsers') }}</div>
       </div>
       <div class="stat-card">
         <div class="stat-icon">🏫</div>
         <div class="stat-value">{{ stats.classes.total }}</div>
-        <div class="stat-label">الفصول</div>
+        <div class="stat-label">{{ t('admin.totalClasses') }}</div>
       </div>
       <div class="stat-card">
         <div class="stat-icon">📋</div>
         <div class="stat-value">{{ stats.reports.total }}</div>
-        <div class="stat-label">التقارير</div>
+        <div class="stat-label">{{ t('admin.totalReports') }}</div>
       </div>
       <div class="stat-card">
         <div class="stat-icon">✅</div>
         <div class="stat-value">{{ stats.reports.graded }}</div>
-        <div class="stat-label">مصحح</div>
+        <div class="stat-label">{{ t('admin.graded') }}</div>
       </div>
     </div>
 
     <div class="role-chart">
-      <h3>توزيع المستخدمين</h3>
+      <h3>{{ t('admin.roleDistribution') }}</h3>
       <div class="role-bars">
         <div v-for="r in stats.users.byRole" :key="r.role" class="role-bar">
           <span class="role-name" :style="{ color: roleColor(r.role) }">{{ roleLabels[r.role] || r.role }}</span>

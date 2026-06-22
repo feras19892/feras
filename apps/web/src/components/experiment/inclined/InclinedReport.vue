@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { InclinedTrial } from '../../../composables/inclined/useInclinedTrials'
+import { useI18n } from '../../../composables/useI18n'
 
+const { t } = useI18n()
 const props = defineProps<{
   trials: InclinedTrial[]
   params: { thetaDeg: number; length: number; mass: number; g: number; mu: number }
@@ -14,13 +16,13 @@ const emit = defineEmits<{ (e: 'close'): void }>()
   <div class="report-modal" @click.self="emit('close')">
     <div class="report-content">
       <button class="close-btn" @click="emit('close')">✕</button>
-      <h2>📋 تقرير تجربة المنحدر المائل</h2>
+      <h2>📋 {{ t('experiments.inclinedPlaneReport') }}</h2>
       <div class="report-section">
-        <h4>المعاملات</h4>
+        <h4>{{ t('experiments.parameters') }}</h4>
         <p>θ = {{ params.thetaDeg }}°, L = {{ params.length }} m, m = {{ params.mass }} kg, g = {{ params.g }} m/s², μ = {{ params.mu }}</p>
       </div>
       <div class="report-section" v-if="trials.length">
-        <h4>القراءات ({{ trials.length }})</h4>
+        <h4>{{ t('experiments.readings') }} ({{ trials.length }})</h4>
         <table>
           <thead><tr><th>#</th><th>θ</th><th>a</th><th>t</th><th>v</th><th>err</th></tr></thead>
           <tbody>
@@ -29,7 +31,7 @@ const emit = defineEmits<{ (e: 'close'): void }>()
         </table>
       </div>
       <div class="report-section" v-if="trials.length">
-        <h4>الإحصائيات</h4>
+        <h4>{{ t('experiments.statisticsLabel') }}</h4>
         <p>a_mean = {{ trialStats.a_mean.toFixed(3) }}, a_std = {{ trialStats.a_std.toFixed(3) }}</p>
         <p>t_mean = {{ trialStats.t_mean.toFixed(3) }}, t_std = {{ trialStats.t_std.toFixed(3) }}</p>
         <p>v_mean = {{ trialStats.v_mean.toFixed(2) }}, v_std = {{ trialStats.v_std.toFixed(2) }}</p>

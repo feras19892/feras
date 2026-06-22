@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from '../../composables/useI18n';
 import type { Report } from '../../services/report.service';
 import AnalysisReportPreview from '../experiment/analysis-calc/AnalysisReportPreview.vue';
 
 const props = defineProps<{ report: Report }>();
+const { t } = useI18n();
 
 function safeJsonParse<T>(str: string | undefined, fallback: T): T {
   try { return str ? JSON.parse(str) : fallback; } catch { return fallback; }
@@ -50,7 +52,7 @@ const parsed = computed(() => ({
       :error-calc-data="parsed.errorCalcData"
     />
     <div v-if="report.chart_snapshot" class="chart-section">
-      <h4>📈 الرسم البياني</h4>
+      <h4>{{ t('common.chartTitle') }}</h4>
       <img :src="report.chart_snapshot" alt="Chart" class="chart-img" />
     </div>
   </div>

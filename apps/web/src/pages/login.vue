@@ -2,9 +2,11 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../modules/auth/stores/auth';
+import { useI18n } from '../composables/useI18n';
 
 const router = useRouter();
 const auth = useAuthStore();
+const { t } = useI18n();
 
 const email = ref('');
 const password = ref('');
@@ -16,7 +18,7 @@ async function handleLogin() {
   auth.error = null;
 
   if (!email.value.trim() || !password.value) {
-    formError.value = 'يرجى ملء البريد الإلكتروني وكلمة السر';
+    formError.value = t('auth.errors.fillAll');
     return;
   }
 
@@ -26,7 +28,7 @@ async function handleLogin() {
     return;
   }
 
-  formError.value = 'البريد الإلكتروني أو كلمة السر غير صحيحة';
+  formError.value = t('auth.errors.invalidCredentials');
 }
 
 function enterAsGuest() {
@@ -40,14 +42,14 @@ function enterAsGuest() {
     <div class="login-card">
       <form @submit.prevent="handleLogin">
         <div class="field">
-          <label>البريد الإلكتروني</label>
+          <label>{{ t('auth.emailLabel') }}</label>
           <input v-model="email" type="email" required autocomplete="username" name="email" />
         </div>
         <div class="field">
-          <label>كلمة السر</label>
+          <label>{{ t('auth.passwordLabel') }}</label>
           <div class="password-wrap">
             <input v-model="password" :type="showPassword ? 'text' : 'password'" required autocomplete="current-password" name="password" />
-            <button type="button" class="toggle-pw" @click.prevent="showPassword = !showPassword">
+            <button type="button" class="toggle-pw" @click.prevent="showPassword = !showPassword" :title="showPassword ? t('auth.hidePassword') : t('auth.showPassword')">
               {{ showPassword ? '🙈' : '👁️' }}
             </button>
           </div>
@@ -56,17 +58,17 @@ function enterAsGuest() {
         <p v-else-if="auth.error" class="error">{{ auth.error }}</p>
         <div class="btn-row">
           <button type="submit" class="btn-submit" :disabled="auth.loading">
-            {{ auth.loading ? 'جارٍ...' : 'تسجيل الدخول' }}
+            {{ auth.loading ? t('auth.loading') : t('auth.loginBtn') }}
           </button>
           <router-link to="/register" class="btn-register">
-            إنشاء حساب
+            {{ t('auth.createAccount') }}
           </router-link>
         </div>
       </form>
       <div class="guest-row">
-        <span>أو</span>
+        <span>{{ t('auth.or') }}</span>
         <button type="button" class="link" @click="enterAsGuest">
-          دخول سريع كضيف
+          {{ t('auth.enterAsGuest') }}
         </button>
       </div>
     </div>

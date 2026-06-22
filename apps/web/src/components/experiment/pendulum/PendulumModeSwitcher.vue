@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 const props = defineProps<{ mode: 'pendulum' | 'projectile' | 'coupled' }>()
 const emit = defineEmits<{ (e: 'change', val: 'pendulum' | 'projectile' | 'coupled'): void }>()
 const modes: { key: 'pendulum' | 'projectile' | 'coupled'; label: string; icon: string }[] = [
-  { key: 'pendulum', label: 'بندول', icon: '🕰️' },
-  { key: 'projectile', label: 'مقذوف', icon: '🎯' },
-  { key: 'coupled', label: 'مقترن', icon: '🔗' },
+  { key: 'pendulum', label: t('experiments.pendulumMode'), icon: '🕰️' },
+  { key: 'projectile', label: t('experiments.projectileMode'), icon: '🎯' },
+  { key: 'coupled', label: t('experiments.coupledMode'), icon: '🔗' },
 ]
 </script>
 

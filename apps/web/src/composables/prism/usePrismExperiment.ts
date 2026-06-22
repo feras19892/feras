@@ -1,4 +1,4 @@
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { usePrismLayout } from './usePrismLayout'
 import { usePrismTrials } from './usePrismTrials'
 import { calculatePrismAngles, linearRegression, getMaterialList } from './usePrismCalculations'
@@ -12,6 +12,10 @@ export function usePrismExperiment() {
     wavelength: 580,
     material: 'glass',
   })
+
+  watch(() => params.prismAngle, (v) => { params.prismAngle = Math.max(30, Math.min(90, Math.round(v))) })
+  watch(() => params.angleIncidence, (v) => { params.angleIncidence = Math.max(0, Math.min(89, Math.round(v))) })
+  watch(() => params.wavelength, (v) => { params.wavelength = Math.max(380, Math.min(700, Math.round(v / 5) * 5)) })
 
   const running = ref(false)
   const paused = ref(false)
@@ -45,16 +49,16 @@ export function usePrismExperiment() {
   )
 
   const regression = computed(() => {
-    if (trials.trials.value.length < 2) return { m: 0, b: 0, r2: 0 }
-    const pts = trials.trials.value.map(t => ({ x: t.wavelength, y: t.deviation }))
+    const valid = trials.trials.value.filter(t => t.deviation !== null)
+    if (valid.length < 2) return { m: 0, b: 0, r2: 0 }
+    const pts = valid.map(t => ({ x: t.wavelength, y: t.deviation as number }))
     return linearRegression(pts)
   })
 
-  const nFromRegression = computed(() => {
-    if (!regression.value || trials.trials.value.length < 2) return null
-    const m = regression.value.m
-    if (Math.abs(m) < 1e-12) return null
-    return -regression.value.b / m
+  const avgN = computed(() => {
+    if (trials.trials.value.length === 0) return null
+    const sum = trials.trials.value.reduce((s, t) => s + t.n, 0)
+    return sum / trials.trials.value.length
   })
 
   function togglePause() {
@@ -76,14 +80,20 @@ export function usePrismExperiment() {
     trials.clearTrials()
   }
 
-  function handleDrop(fromId: string, toId: string) {
+  function handleDrop(fromId: string, x?: number, y?: number) {
+    if (x === undefined || y === undefined) return
+    const el = document.elementFromPoint(x, y)
+    const toPanel = el?.closest('.draggable-panel')
+    const toId = toPanel?.getAttribute('data-id')
+    if (!toId || fromId === toId) return
     for (const col of Object.keys(layout.columnMap)) {
       const arr = layout.columnMap[col]
       const fi = arr.indexOf(fromId)
       const ti = arr.indexOf(toId)
       if (fi >= 0 && ti >= 0) {
-        arr.splice(fi, 1)
-        arr.splice(ti, 0, fromId)
+        const temp = arr[fi]
+        arr[fi] = arr[ti]
+        arr[ti] = temp
       }
     }
   }
@@ -93,6 +103,19 @@ export function usePrismExperiment() {
     const payload = { experiment: 'prism', trials: trials.trials.value, regression: regression.value }
     localStorage.setItem('analysis_payload', JSON.stringify(payload))
     window.open('/analysis', '_blank')
+  }
+
+  function downloadCsv() {
+    const csv = trials.exportCsv()
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'prism-trials.csv'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
   }
 
   const materials = getMaterialList()
@@ -122,7 +145,8 @@ export function usePrismExperiment() {
     trials,
     materials,
     regression,
-    nFromRegression,
+    avgN,
+    downloadCsv,
     recordTrial,
     resetSim,
     handleDrop,

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useAuth } from '../composables/useAuth';
+import { useI18n } from '../../../composables/useI18n';
 
+const { t } = useI18n();
 const { login } = useAuth();
 const email = ref('');
 const password = ref('');
@@ -13,8 +15,8 @@ async function handleSubmit() {
 
 <template>
   <form @submit.prevent="handleSubmit">
-    <input v-model="email" type="email" placeholder="البريد الإلكتروني" required />
-    <input v-model="password" type="password" placeholder="كلمة المرور" required />
-    <button type="submit">تسجيل الدخول</button>
+    <input v-model="email" type="email" :placeholder="t('auth.emailLabel')" required />
+    <input v-model="password" type="password" :placeholder="t('auth.passwordLabel')" required />
+    <button type="submit">{{ t('auth.loginBtn') }}</button>
   </form>
 </template>

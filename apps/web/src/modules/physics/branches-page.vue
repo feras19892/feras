@@ -1,19 +1,43 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { branches } from './catalog';
+import { useI18n } from '../../composables/useI18n';
 
+const { t } = useI18n();
 const router = useRouter();
 
 function goToBranch(id: string) {
   router.push(`/physics/${id}`);
+}
+
+function branchNameKey(id: string): string {
+  const map: Record<string, string> = {
+    mechanics: 'experiments.branchMechanics',
+    waves: 'experiments.branchWaves',
+    heat: 'experiments.branchHeat',
+    electricity: 'experiments.branchElectricity',
+    electromagnetism: 'experiments.branchElectromagnetism',
+  };
+  return map[id] || id;
+}
+
+function branchDescKey(id: string): string {
+  const map: Record<string, string> = {
+    mechanics: 'experiments.branchMechanicsDesc',
+    waves: 'experiments.branchWavesDesc',
+    heat: 'experiments.branchHeatDesc',
+    electricity: 'experiments.branchElectricityDesc',
+    electromagnetism: 'experiments.branchElectromagnetismDesc',
+  };
+  return map[id] || id;
 }
 </script>
 
 <template>
   <div class="branches-page">
     <header class="page-header">
-      <h1>🔬 فروع الفيزياء</h1>
-      <p>اختر فرعاً لبدء التجربة</p>
+      <h1>🔬 {{ t('experiments.physicsBranches') }}</h1>
+      <p>{{ t('experiments.chooseBranchToStart') }}</p>
     </header>
     <div class="grid">
       <div
@@ -26,10 +50,10 @@ function goToBranch(id: string) {
         <div class="icon" :style="{ background: branch.color }">
           {{ branch.icon }}
         </div>
-        <h3>{{ branch.nameAr }}</h3>
-        <p class="desc">{{ branch.description }}</p>
+        <h3>{{ t(branchNameKey(branch.id)) }}</h3>
+        <p class="desc">{{ t(branchDescKey(branch.id)) }}</p>
         <div class="meta">
-          <span class="badge">{{ branch.experiments.length }} تجربة</span>
+          <span class="badge">{{ branch.experiments.length }} {{ branch.experiments.length === 1 ? t('experiments.experimentsCount') : t('experiments.experimentsCountPlural') }}</span>
         </div>
       </div>
     </div>

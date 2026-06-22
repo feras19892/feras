@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { bodyTypes } from '../../../composables/inclined/inclinedUtils'
+import { useI18n } from '../../../composables/useI18n'
 
+const { t } = useI18n()
 const props = defineProps<{
   params: {
     thetaDeg: number
@@ -29,21 +31,21 @@ function onBodyTypeChange(e: Event) {
 <template>
   <div class="params-panel">
     <div class="param-row">
-      <label>زاوية المنحدر θ</label>
+      <label>{{ t('experiments.inclinedPlaneAngle') }} θ</label>
       <div class="param-inputs">
         <input type="range" min="1" max="89" step="1" :value="params.thetaDeg" @input="emit('update:params', { thetaDeg: Number(($event.target as HTMLInputElement).value) })" />
         <input type="number" min="1" max="89" step="1" :value="params.thetaDeg" @input="emit('update:params', { thetaDeg: Number(($event.target as HTMLInputElement).value) })" />
       </div>
     </div>
     <div class="param-row">
-      <label>طول المنحدر L (m)</label>
+      <label>{{ t('experiments.inclinedPlaneLength') }} L (m)</label>
       <div class="param-inputs">
         <input type="range" min="0.5" max="10" step="0.1" :value="params.length" @input="emit('update:params', { length: Number(($event.target as HTMLInputElement).value) })" />
         <input type="number" min="0.1" step="0.1" :value="params.length" @input="emit('update:params', { length: Number(($event.target as HTMLInputElement).value) })" />
       </div>
     </div>
     <div class="param-row">
-      <label>الكتلة m (kg)</label>
+      <label>{{ t('experiments.mass') }} m (kg)</label>
       <div class="param-inputs">
         <input type="range" min="0.1" max="10" step="0.1" :value="params.mass" @input="emit('update:params', { mass: Number(($event.target as HTMLInputElement).value) })" />
         <input type="number" min="0.1" max="10" step="0.1" :value="params.mass" @input="emit('update:params', { mass: Number(($event.target as HTMLInputElement).value) })" />
@@ -57,7 +59,7 @@ function onBodyTypeChange(e: Event) {
       </div>
     </div>
     <div class="param-row">
-      <label>معامل الاحتكاك μ</label>
+      <label>{{ t('experiments.frictionCoefficient') }} μ</label>
       <div class="param-inputs">
         <input type="range" min="0" max="1" step="0.01" :value="params.mu" @input="emit('update:params', { mu: Number(($event.target as HTMLInputElement).value) })" />
         <input type="number" min="0" max="1" step="0.01" :value="params.mu" @input="emit('update:params', { mu: Number(($event.target as HTMLInputElement).value) })" />
@@ -67,19 +69,19 @@ function onBodyTypeChange(e: Event) {
     <div class="param-row checkbox-row">
       <label class="toggle-label">
         <input type="checkbox" :checked="params.airResistance" @change="emit('update:params', { airResistance: ($event.target as HTMLInputElement).checked })" />
-        <span class="toggle-text">مقاومة الهواء</span>
+        <span class="toggle-text">{{ t('experiments.airResistance') }}</span>
       </label>
     </div>
 
     <div class="param-row" v-if="params.airResistance">
-      <label>نوع الجسم</label>
+      <label>{{ t('experiments.bodyType') }}</label>
       <select class="body-select" :value="params.bodyTypeId" @change="onBodyTypeChange">
         <option v-for="bt in bodyTypes" :key="bt.id" :value="bt.id">{{ bt.nameAr }} (Cd={{ bt.cd }})</option>
       </select>
     </div>
 
     <div class="param-row" v-if="params.airResistance">
-      <label>Cd (معامل السحب)</label>
+      <label>Cd ({{ t('experiments.dragCoefficient') }})</label>
       <div class="param-inputs">
         <input type="range" min="0" max="2" step="0.01" :value="params.cd" @input="emit('update:params', { cd: Number(($event.target as HTMLInputElement).value) })" />
         <input type="number" min="0" step="0.01" :value="params.cd" @input="emit('update:params', { cd: Number(($event.target as HTMLInputElement).value) })" />
@@ -87,7 +89,7 @@ function onBodyTypeChange(e: Event) {
     </div>
 
     <div class="param-row" v-if="params.airResistance">
-      <label>Area (مساحة m²)</label>
+      <label>Area ({{ t('experiments.areaLabel') }} m²)</label>
       <div class="param-inputs">
         <input type="range" min="0.001" max="0.1" step="0.001" :value="params.area" @input="emit('update:params', { area: Number(($event.target as HTMLInputElement).value) })" />
         <input type="number" min="0.001" step="0.001" :value="params.area" @input="emit('update:params', { area: Number(($event.target as HTMLInputElement).value) })" />

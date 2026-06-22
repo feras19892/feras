@@ -6,7 +6,9 @@ import LeverEquationPanel from './LeverEquationPanel.vue'
 import LeverReportPanel from './LeverReportPanel.vue'
 import type { LeverTrial } from '../../../composables/lever/useLeverTrials'
 import type { LeverState } from '../../../modules/physics/experiments/lever/useLeverPhysics'
+import { useI18n } from '../../../composables/useI18n'
 
+const { t } = useI18n()
 const props = defineProps<{
   id: string
   sim: LeverState
@@ -25,7 +27,7 @@ const emit = defineEmits<{
   <LeverSignalPanel v-else-if="id === 'signal'" :trials="trials" />
   <LeverEquationPanel v-else-if="id === 'equation'" />
   <LeverReportPanel v-else-if="id === 'report'" :trials="trials" />
-  <div v-else class="placeholder">اللوحة {{ id }}</div>
+  <div v-else class="placeholder">{{ t('experiments.panelLabel') }} {{ id }}</div>
 </template>
 
 <style scoped>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useI18n } from '../../composables/useI18n';
 
 interface SearchUser { id: number; name: string; email: string; role: string }
 interface SearchClass { id: string; name: string; code: string; teacher_name?: string }
@@ -17,6 +18,7 @@ const emit = defineEmits<{
   (e: 'selectUser', id: number): void;
 }>();
 
+const { t } = useI18n();
 const query = ref('');
 const showResults = ref(false);
 
@@ -36,14 +38,14 @@ const results = computed(() => {
   // Classes
   for (const c of props.classes) {
     if ((c.name || '').toLowerCase().includes(q) || (c.code || '').toLowerCase().includes(q)) {
-      list.push({ type: 'class', title: c.name, subtitle: `كود: ${c.code} — ${c.teacher_name || ''}`, id: c.id });
+      list.push({ type: 'class', title: c.name, subtitle: `${t('admin.code')}: ${c.code} — ${c.teacher_name || ''}`, id: c.id });
     }
   }
 
   // Reports
   for (const r of props.reports) {
     if ((r.student_name || '').toLowerCase().includes(q) || (r.experiment_name || '').toLowerCase().includes(q)) {
-      list.push({ type: 'report', title: r.experiment_name, subtitle: `طالب: ${r.student_name} — ${r.status}`, id: r.id });
+      list.push({ type: 'report', title: r.experiment_name, subtitle: `${t('admin.student')}: ${r.student_name} — ${r.status}`, id: r.id });
     }
   }
 
@@ -82,12 +84,12 @@ function onBlur() {
   <div class="global-search">
     <input
       v-model="query"
-      placeholder="🔍 بحث سريع عن مستخدم، فصل، تقرير..."
+      :placeholder="t('adminUser.searchQuick')"
       @focus="showResults = true"
       @blur="onBlur"
     />
     <div v-if="showResults && query.trim().length >= 2" class="results-dropdown">
-      <div v-if="results.length === 0" class="no-results">لا توجد نتائج</div>
+      <div v-if="results.length === 0" class="no-results">{{ t('admin.noResults') }}</div>
       <div
         v-for="r in results"
         :key="r.type + r.id"

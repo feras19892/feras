@@ -4,10 +4,12 @@ import PendulumParamPanel from './PendulumParamPanel.vue'
 import PendulumSignalChart from './PendulumSignalChart.vue'
 import type { PendulumTrial } from '../../../composables/pendulum/usePendulumTrials'
 import type { PendulumParams } from '../../../modules/physics/experiments/pendulum/usePendulumPhysics'
+import { useI18n } from '../../../composables/useI18n'
 
 interface Measured { T: number | null; f: number | null; omega: number | null; gCalc: number | null }
 interface SimState { theta: number; omega: number; t: number; running: boolean; paused: boolean; signalSeries: { t: number; theta: number }[]; measurementPeriod: number | null }
 
+const { t } = useI18n()
 const props = defineProps<{
   id: string; trials: PendulumTrial[]; params: PendulumParams; sim: SimState; measured: Measured
 }>()
@@ -23,17 +25,17 @@ const emit = defineEmits<{
   <PendulumParamPanel v-else-if="id === 'params'" :model-value="params" @update:model-value="emit('update:params', $event)" />
   <template v-else-if="id === 'guide'">
     <div class="guide-text">
-      <p><b>خطوات التجربة:</b></p>
+      <p><b>{{ t('experiments.experimentSteps') }}:</b></p>
       <ol>
-        <li>اضبط طول الخيط L (مثلاً 0.50 m)</li>
-        <li>اضبط الزاوية الأولية θ₀ ≤ 10°</li>
-        <li>اضغط "بدء" لبدء الاهتزاز</li>
-        <li>انتظر استقرار القراءة</li>
-        <li>اضغط "تسجيل" لحفظ القراءة</li>
-        <li>غيّر L وكرر للحصول على قياسات متعددة</li>
-        <li>اضغط "قسم الرسم والحسابات" للحصول على g</li>
+        <li>{{ t('experiments.pendulumGuideStep1') }}</li>
+        <li>{{ t('experiments.pendulumGuideStep2') }}</li>
+        <li>{{ t('experiments.pendulumGuideStep3') }}</li>
+        <li>{{ t('experiments.pendulumGuideStep4') }}</li>
+        <li>{{ t('experiments.pendulumGuideStep5') }}</li>
+        <li>{{ t('experiments.pendulumGuideStep6') }}</li>
+        <li>{{ t('experiments.pendulumGuideStep7') }}</li>
       </ol>
-      <p><b>ملاحظة:</b> زمن البندول لا يعتمد على الكتلة.</p>
+      <p><b>{{ t('experiments.note') }}:</b> {{ t('experiments.pendulumNote') }}</p>
     </div>
   </template>
   <PendulumSignalChart v-else-if="id === 'signal'" :series="sim.signalSeries" :params="{ length: params.length, g: params.g, theta0: params.theta0 }" :sim-t="sim.t" />

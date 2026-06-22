@@ -1,23 +1,26 @@
 <script setup lang="ts">
 import type { PendulumParams } from '../../../modules/physics/experiments/pendulum/usePendulumPhysics'
 import PendulumEnvSelector from './PendulumEnvSelector.vue'
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 const params = defineModel<PendulumParams>({ required: true })
 </script>
 
 <template>
   <div class="lab-card params-card">
-    <div class="card-header"><h4>&#x2699;&#xFE0F; معاملات</h4></div>
+    <div class="card-header"><h4>&#x2699;&#xFE0F; {{ t('experiments.parameters') }}</h4></div>
     <PendulumEnvSelector v-model="params.g" />
-    <div class="param-row"><label>طول الخيط L (m)</label><div class="param-inputs"><input type="range" min="0.10" max="2.00" step="0.01" v-model.number="params.length" /><input type="number" step="0.01" v-model.number="params.length" /></div></div>
-    <div class="param-row"><label>الزاوية الأولية θ₀ (°)</label><div class="param-inputs"><input type="range" min="1" max="90" step="1" v-model.number="params.theta0Deg" /><input type="number" step="1" v-model.number="params.theta0Deg" /></div></div>
-    <div v-if="params.theta0Deg > 15" class="angle-warning">⚠️ زاوية كبيرة — الحركة غير توافقية (Anharmonic)</div>
-    <div class="param-row"><label>كتلة الثقل m (kg)</label><div class="param-inputs"><input type="range" min="0.01" max="0.50" step="0.01" v-model.number="params.mass" /><input type="number" step="0.01" v-model.number="params.mass" /></div></div>
-    <div class="param-row"><label>عجلة الجاذبية g (m/s²)</label><div class="param-inputs"><input type="range" min="1.60" max="20.00" step="0.01" v-model.number="params.g" /><input type="number" step="0.01" v-model.number="params.g" /></div></div>
-    <div class="param-row"><label>التخميد</label><div class="param-inputs"><input type="range" min="0" max="0.5" step="0.01" v-model.number="params.damping" /><input type="number" step="0.01" v-model.number="params.damping" /></div></div>
-    <div class="param-row"><label>نصف قطر الكرة (m)</label><div class="param-inputs"><input type="range" min="0.005" max="0.15" step="0.001" v-model.number="params.bobRadius" /><input type="number" step="0.001" v-model.number="params.bobRadius" /></div></div>
-    <div class="param-row"><label>كثافة الهواء (kg/m³)</label><div class="param-inputs"><input type="range" min="0" max="1.3" step="0.01" v-model.number="params.airDensity" /><input type="number" step="0.01" v-model.number="params.airDensity" /></div></div>
-    <div class="param-row"><label>ثابت النابض k (N/m)</label><div class="param-inputs"><input type="range" min="0" max="50" step="0.5" v-model.number="params.springK" /><input type="number" step="0.5" v-model.number="params.springK" /></div></div>
-    <div class="param-row"><label>دورات القياس</label><input type="number" min="5" max="50" step="1" v-model.number="params.measureCycles" /></div>
+    <div class="param-row"><label>{{ t('experiments.stringLength') }} (m)</label><div class="param-inputs"><input type="range" min="0.10" max="2.00" step="0.01" v-model.number="params.length" /><input type="number" step="0.01" v-model.number="params.length" /></div></div>
+    <div class="param-row"><label>{{ t('experiments.initialAngle') }} (°)</label><div class="param-inputs"><input type="range" min="1" max="90" step="1" v-model.number="params.theta0Deg" /><input type="number" step="1" v-model.number="params.theta0Deg" /></div></div>
+    <div v-if="params.theta0Deg > 15" class="angle-warning">⚠️ {{ t('experiments.largeAngleWarning') }}</div>
+    <div class="param-row"><label>{{ t('experiments.bobMass') }} (kg)</label><div class="param-inputs"><input type="range" min="0.01" max="0.50" step="0.01" v-model.number="params.mass" /><input type="number" step="0.01" v-model.number="params.mass" /></div></div>
+    <div class="param-row"><label>{{ t('experiments.gravityAccel') }} (m/s²)</label><div class="param-inputs"><input type="range" min="1.60" max="20.00" step="0.01" v-model.number="params.g" /><input type="number" step="0.01" v-model.number="params.g" /></div></div>
+    <div class="param-row"><label>{{ t('experiments.damping') }}</label><div class="param-inputs"><input type="range" min="0" max="0.5" step="0.01" v-model.number="params.damping" /><input type="number" step="0.01" v-model.number="params.damping" /></div></div>
+    <div class="param-row"><label>{{ t('experiments.ballRadius') }} (m)</label><div class="param-inputs"><input type="range" min="0.005" max="0.15" step="0.001" v-model.number="params.bobRadius" /><input type="number" step="0.001" v-model.number="params.bobRadius" /></div></div>
+    <div class="param-row"><label>{{ t('experiments.airDensity') }} (kg/m³)</label><div class="param-inputs"><input type="range" min="0" max="1.3" step="0.01" v-model.number="params.airDensity" /><input type="number" step="0.01" v-model.number="params.airDensity" /></div></div>
+    <div class="param-row"><label>{{ t('experiments.springConstant') }} k (N/m)</label><div class="param-inputs"><input type="range" min="0" max="50" step="0.5" v-model.number="params.springK" /><input type="number" step="0.5" v-model.number="params.springK" /></div></div>
+    <div class="param-row"><label>{{ t('experiments.measureCycles') }}</label><input type="number" min="5" max="50" step="1" v-model.number="params.measureCycles" /></div>
   </div>
 </template>
 

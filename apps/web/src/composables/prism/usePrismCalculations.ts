@@ -1,11 +1,17 @@
 function toRad(d: number) { return (d * Math.PI) / 180 }
 function toDeg(r: number) { return (r * 180) / Math.PI }
 
+/**
+ * Cauchy's equation: n(λ) = B + C / λ²
+ * where λ is in μm (micrometres).
+ * Approximate coefficients for visible-light dispersion.
+ * @see https://en.wikipedia.org/wiki/Cauchy%27s_equation
+ */
 const MATERIALS: Record<string, { B: number; C: number; nameAr: string }> = {
-  glass: { B: 1.504, C: 0.0042, nameAr: 'زجاج' },
-  water: { B: 1.324, C: 0.0031, nameAr: 'ماء' },
-  diamond: { B: 2.381, C: 0.0104, nameAr: 'ألماس' },
-  flint: { B: 1.728, C: 0.0134, nameAr: 'فلينت' },
+  glass: { B: 1.504, C: 0.0042, nameAr: 'زجاج' },   // BK7-like, n(588nm) ≈ 1.516
+  water: { B: 1.324, C: 0.0031, nameAr: 'ماء' },    // n(588nm) ≈ 1.333
+  diamond: { B: 2.381, C: 0.0104, nameAr: 'ألماس' }, // n(588nm) ≈ 2.411
+  flint: { B: 1.728, C: 0.0134, nameAr: 'فلينت' },   // dense flint, n(588nm) ≈ 1.767
 }
 
 export function getMaterialList() {

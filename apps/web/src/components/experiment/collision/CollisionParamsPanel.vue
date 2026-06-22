@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { CollisionParams } from '../../../modules/physics/experiments/collision/useCollisionPhysics'
+import { useI18n } from '../../../composables/useI18n'
 
+const { t } = useI18n()
 const props = defineProps<{
   params: CollisionParams
 }>()
@@ -14,10 +16,10 @@ function update<K extends keyof CollisionParams>(key: K, value: CollisionParams[
 }
 
 const presets = [
-  { name: 'تبادل', desc: 'e=1, m₁=m₂', params: { m1: 1, m2: 1, v1i: 4, v2i: 0, e: 1 } },
-  { name: 'التحام', desc: 'e=0, مضادان', params: { m1: 2, m2: 1, v1i: 3, v2i: -3, e: 0 } },
-  { name: 'جدار', desc: 'm₂ ضخم', params: { m1: 0.1, m2: 500, v1i: 5, v2i: 0, e: 1 } },
-  { name: 'جزئي', desc: 'e=0.5', params: { m1: 1, m2: 1, v1i: 4, v2i: 0, e: 0.5 } },
+  { name: t('experiments.exchange'), desc: 'e=1, m₁=m₂', params: { m1: 1, m2: 1, v1i: 4, v2i: 0, e: 1 } },
+  { name: t('experiments.merge'), desc: 'e=0, ' + t('experiments.oppositeDirections'), params: { m1: 2, m2: 1, v1i: 3, v2i: -3, e: 0 } },
+  { name: t('experiments.wall'), desc: 'm₂ ' + t('experiments.huge'), params: { m1: 0.1, m2: 500, v1i: 5, v2i: 0, e: 1 } },
+  { name: t('experiments.partial'), desc: 'e=0.5', params: { m1: 1, m2: 1, v1i: 4, v2i: 0, e: 0.5 } },
 ]
 
 function applyPreset(p: Partial<CollisionParams>) {
@@ -28,7 +30,7 @@ function applyPreset(p: Partial<CollisionParams>) {
 <template>
   <div class="params-panel">
     <div class="presets-bar">
-      <div class="presets-label">⚡ قوالب</div>
+      <div class="presets-label">⚡ {{ t('experiments.presets') }}</div>
       <div class="presets-row">
         <button v-for="preset in presets" :key="preset.name" class="preset-btn" :title="preset.desc" @click="applyPreset(preset.params)">
           {{ preset.name }}
@@ -66,11 +68,11 @@ function applyPreset(p: Partial<CollisionParams>) {
       <span>{{ params.r2 }}</span>
     </div>
     <div class="param-row">
-      <label>e (ارتداد)</label>
+      <label>e ({{ t('experiments.restitution') }})</label>
       <input type="range" min="0" max="1" step="0.1" :value="params.e" @input="update('e', +($event.target as HTMLInputElement).value)">
       <span>{{ params.e }}</span>
     </div>
-    <div class="hint">السرعة السالبة = حركة لليسار</div>
+    <div class="hint">{{ t('experiments.negativeSpeedLeft') }}</div>
   </div>
 </template>
 

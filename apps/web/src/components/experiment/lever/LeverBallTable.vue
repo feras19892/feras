@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { uniqueColorPerId } from '../../../composables/lever/leverUtils'
 import type { LeverBall, LeverForce } from '../../../composables/lever/leverUtils'
+import { useI18n } from '../../../composables/useI18n'
 
+const { t } = useI18n()
 const props = defineProps<{
   balls: LeverBall[]
   forces: LeverForce[]
@@ -46,14 +48,14 @@ function onForceXInput(id: number, val: string) {
 <template>
   <div class="ball-table">
     <div class="bt-header">
-      <button class="btn-add ball" @click="emit('addBall')">+ كرة</button>
-      <button class="btn-add force" @click="emit('addForce')">+ قوة</button>
+      <button class="btn-add ball" @click="emit('addBall')">+ {{ t('experiments.ball') }}</button>
+      <button class="btn-add force" @click="emit('addForce')">+ {{ t('experiments.force') }}</button>
     </div>
 
     <!-- Balls section -->
-    <div v-if="balls.length > 0" class="section-title">🔴 كتل</div>
+    <div v-if="balls.length > 0" class="section-title">🔴 {{ t('experiments.masses') }}</div>
     <table v-if="balls.length > 0">
-      <thead><tr><th>#</th><th>الكتلة</th><th>x</th><th>τ</th><th></th></tr></thead>
+      <thead><tr><th>#</th><th>{{ t('experiments.mass') }}</th><th>x</th><th>τ</th><th></th></tr></thead>
       <tbody>
         <tr v-for="b in balls" :key="b.id">
           <td class="col-id"><span class="id-dot" :style="{ background: uniqueColorPerId(b.id) }">{{ b.id }}</span></td>
@@ -76,7 +78,7 @@ function onForceXInput(id: number, val: string) {
     </table>
 
     <!-- Forces section -->
-    <div v-if="forces.length > 0" class="section-title force-title">➡️ قوى</div>
+    <div v-if="forces.length > 0" class="section-title force-title">➡️ {{ t('experiments.forces') }}</div>
     <table v-if="forces.length > 0">
       <thead><tr><th>#</th><th>F (N)</th><th>x (m)</th><th>dir</th><th>τ</th><th></th></tr></thead>
       <tbody>
@@ -101,7 +103,7 @@ function onForceXInput(id: number, val: string) {
       </tbody>
     </table>
 
-    <div v-if="balls.length === 0 && forces.length === 0" class="empty">لا توجد كرات أو قوى</div>
+    <div v-if="balls.length === 0 && forces.length === 0" class="empty">{{ t('experiments.noBallsOrForces') }}</div>
   </div>
 </template>
 

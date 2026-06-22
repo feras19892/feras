@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useI18n } from '../../composables/useI18n';
 import { useAdminUserDetail } from '../../composables/admin/useAdminUserDetail';
 import { impersonateUser, resetUserPassword } from '../../services/admin.service';
 import { setAccessToken } from '../../services/http';
@@ -13,6 +14,7 @@ const emit = defineEmits<{
   (e: 'refresh'): void;
 }>();
 
+const { t } = useI18n();
 const { profile, loading, error, load, ban, unban, sendWarning, addNote } = useAdminUserDetail();
 
 const showWarnModal = ref(false);
@@ -26,20 +28,20 @@ const newPassword = ref('');
 const resetLoading = ref(false);
 
 async function onBan() {
-  const reason = prompt('سبب الحظر:');
+  const reason = prompt(t('adminUser.banReasonPrompt'));
   if (!reason) return;
   await ban(props.userId, reason);
   emit('refresh');
 }
 
 async function onUnban() {
-  if (!confirm('إلغاء الحظر؟')) return;
+  if (!confirm(t('adminUser.unbanConfirm'))) return;
   await unban(props.userId);
   emit('refresh');
 }
 
 async function onImpersonate() {
-  if (!confirm(`هل تريد تسجيل الدخول كـ ${profile.value?.user?.name}؟\nستُخرج من حساب الأدمن.`)) return;
+  if (!confirm(`${t('adminUser.impersonateConfirm')} ${profile.value?.user?.name}?\n${t('adminUser.willLogoutAdmin')}`)) return;
   const res = await impersonateUser(props.userId);
   if (res.success) {
     setAccessToken(res.token);
@@ -48,14 +50,14 @@ async function onImpersonate() {
 }
 
 async function onResetPassword() {
-  if (!newPassword.value || newPassword.value.length < 6) { alert('6 أحرف على الأقل'); return; }
+  if (!newPassword.value || newPassword.value.length < 6) { alert(t('adminUser.passwordMin')); return; }
   resetLoading.value = true;
   const res = await resetUserPassword(props.userId, newPassword.value);
   resetLoading.value = false;
   if (res.success) {
     showResetModal.value = false;
     newPassword.value = '';
-    alert('✅ تم إعادة تعيين كلمة المرور');
+    alert(t('adminUser.passwordResetSuccess'));
   }
 }
 
@@ -74,8 +76,8 @@ async function onAddNote() {
   newNote.value = '';
 }
 
-function formatDate(d: string) {
-  return d ? new Date(d).toLocaleDateString('ar-SA') : '—';
+function formatDate(d: string | null | undefined) {
+  return d ? new Date(d).toLocaleDateString() : '—';
 }
 
 onMounted(() => load(props.userId));
@@ -83,9 +85,9 @@ onMounted(() => load(props.userId));
 
 <template>
   <div class="user-detail">
-    <button class="back-btn" @click="$emit('back')">← رجوع</button>
+    <button class="back-btn" @click="$emit('back')">{{ t('adminUser.back') }}</button>
 
-    <div v-if="loading" class="loading">جاري التحميل...</div>
+    <div v-if="loading" class="loading">{{ t('admin.loading') }}</div>
     <div v-else-if="error" class="error">❌ {{ error }}</div>
     <template v-else-if="profile?.user">
       <!-- Header -->
@@ -94,32 +96,32 @@ onMounted(() => load(props.userId));
           <h2>{{ profile.user.name }}</h2>
           <p class="email">{{ profile.user.email }}</p>
           <span class="role-badge" :class="profile.user.role">{{ profile.user.role }}</span>
-          <span v-if="profile.user.blocked_at" class="banned-badge">🚷 محظور</span>
+          <span v-if="profile.user.blocked_at" class="banned-badge">{{ t('adminUser.banned') }}</span>
         </div>
         <div class="actions">
-          <button class="btn-impersonate" @click="onImpersonate">🖥️ تسجيل دخول كـ</button>
-          <button class="btn-reset" @click="showResetModal = true">🔑 إعادة تعيين كلمة المرور</button>
-          <button v-if="!profile.user.blocked_at" class="btn-ban" @click="onBan">🚷 حظر</button>
-          <button v-else class="btn-unban" @click="onUnban">✅ إلغاء الحظر</button>
-          <button class="btn-warn" @click="showWarnModal = true">🚨 تحذير</button>
+          <button class="btn-impersonate" @click="onImpersonate">{{ t('adminUser.impersonate') }}</button>
+          <button class="btn-reset" @click="showResetModal = true">{{ t('adminUser.resetPassword') }}</button>
+          <button v-if="!profile.user.blocked_at" class="btn-ban" @click="onBan">{{ t('adminUser.ban') }}</button>
+          <button v-else class="btn-unban" @click="onUnban">{{ t('adminUser.unban') }}</button>
+          <button class="btn-warn" @click="showWarnModal = true">{{ t('adminUser.warn') }}</button>
         </div>
       </div>
 
       <!-- Warning Modal -->
       <div v-if="showWarnModal" class="modal-overlay" @click.self="showWarnModal = false">
         <div class="modal">
-          <h4>🚨 إرسال تحذير</h4>
-          <input v-model="warnTitle" placeholder="عنوان التحذير" />
-          <textarea v-model="warnMsg" rows="3" placeholder="الرسالة"></textarea>
+          <h4>{{ t('adminUser.sendWarning') }}</h4>
+          <input v-model="warnTitle" :placeholder="t('adminUser.warningTitle')" />
+          <textarea v-model="warnMsg" rows="3" :placeholder="t('adminUser.warningMessage')"></textarea>
           <select v-model="warnSeverity">
-            <option value="low">منخفض</option>
-            <option value="normal">عادي</option>
-            <option value="high">عالي</option>
-            <option value="critical">حرج</option>
+            <option value="low">{{ t('adminUser.severityLow') }}</option>
+            <option value="normal">{{ t('adminUser.severityNormal') }}</option>
+            <option value="high">{{ t('adminUser.severityHigh') }}</option>
+            <option value="critical">{{ t('adminUser.severityCritical') }}</option>
           </select>
           <div class="modal-actions">
-            <button class="btn-cancel" @click="showWarnModal = false">إلغاء</button>
-            <button class="btn-submit" :disabled="sending" @click="onSendWarning">{{ sending ? '...' : 'إرسال' }}</button>
+            <button class="btn-cancel" @click="showWarnModal = false">{{ t('common.cancel') }}</button>
+            <button class="btn-submit" :disabled="sending" @click="onSendWarning">{{ sending ? '...' : t('common.send') }}</button>
           </div>
         </div>
       </div>
@@ -127,11 +129,11 @@ onMounted(() => load(props.userId));
       <!-- Reset Password Modal -->
       <div v-if="showResetModal" class="modal-overlay" @click.self="showResetModal = false">
         <div class="modal">
-          <h4>🔑 إعادة تعيين كلمة المرور</h4>
-          <input v-model="newPassword" type="password" placeholder="كلمة مرور جديدة (6 أحرف على الأقل)" />
+          <h4>{{ t('adminUser.resetPassword') }}</h4>
+          <input v-model="newPassword" type="password" :placeholder="t('adminUser.newPassword')" />
           <div class="modal-actions">
-            <button class="btn-cancel" @click="showResetModal = false">إلغاء</button>
-            <button class="btn-submit" :disabled="resetLoading" @click="onResetPassword">{{ resetLoading ? '...' : 'تعيين' }}</button>
+            <button class="btn-cancel" @click="showResetModal = false">{{ t('common.cancel') }}</button>
+            <button class="btn-submit" :disabled="resetLoading" @click="onResetPassword">{{ resetLoading ? '...' : t('adminUser.setPassword') }}</button>
           </div>
         </div>
       </div>
@@ -139,66 +141,66 @@ onMounted(() => load(props.userId));
       <!-- Info Grid -->
       <div class="info-grid">
         <div class="info-card">
-          <h4>📝 المعلومات</h4>
-          <p><strong>ID:</strong> {{ profile.user.id }}</p>
-          <p><strong>البريد:</strong> {{ profile.user.email }}</p>
-          <p><strong>الدور:</strong> {{ profile.user.role }}</p>
-          <p><strong>منذ:</strong> {{ formatDate(profile.user.created_at) }}</p>
-          <p><strong>آخر تأكيد بريد:</strong> {{ formatDate(profile.user.email_verified_at) }}</p>
-          <p v-if="profile.user.blocked_at"><strong>محظور منذ:</strong> {{ formatDate(profile.user.blocked_at) }}</p>
-          <p v-if="profile.user.block_reason"><strong>سبب الحظر:</strong> {{ profile.user.block_reason }}</p>
+          <h4>{{ t('adminUser.info') }}</h4>
+          <p><strong>{{ t('adminUser.id') }}:</strong> {{ profile.user.id }}</p>
+          <p><strong>{{ t('adminUser.email') }}:</strong> {{ profile.user.email }}</p>
+          <p><strong>{{ t('adminUser.role') }}:</strong> {{ profile.user.role }}</p>
+          <p><strong>{{ t('adminUser.since') }}:</strong> {{ formatDate(profile.user.created_at) }}</p>
+          <p><strong>{{ t('adminUser.emailVerified') }}:</strong> {{ formatDate(profile.user.email_verified_at) }}</p>
+          <p v-if="profile.user.blocked_at"><strong>{{ t('adminUser.bannedSince') }}:</strong> {{ formatDate(profile.user.blocked_at) }}</p>
+          <p v-if="profile.user.block_reason"><strong>{{ t('adminUser.banReason') }}:</strong> {{ profile.user.block_reason }}</p>
         </div>
 
         <div class="info-card">
-          <h4>🏫 الفصول ({{ profile.classes?.length ?? 0 }})</h4>
+          <h4>{{ t('adminUser.classes') }} ({{ profile.classes?.length ?? 0 }})</h4>
           <ul v-if="profile.classes?.length">
-            <li v-for="c in profile.classes" :key="c.id">{{ c.name }} ({{ c.student_count }} طالب)</li>
+            <li v-for="c in profile.classes" :key="c.id">{{ c.name }} ({{ c.student_count }} {{ t('adminUser.studentUnit') }})</li>
           </ul>
-          <p v-else class="empty">لا توجد فصول</p>
+          <p v-else class="empty">{{ t('adminUser.noClasses') }}</p>
         </div>
 
         <div class="info-card">
-          <h4>📋 التقارير ({{ profile.reports?.length ?? 0 }})</h4>
+          <h4>{{ t('adminUser.reports') }} ({{ profile.reports?.length ?? 0 }})</h4>
           <ul v-if="profile.reports?.length">
             <li v-for="r in profile.reports" :key="r.id">
-              {{ r.experiment_name }} — {{ r.status }} {{ r.grade ? `(درجة: ${r.grade})` : '' }}
+              {{ r.experiment_name }} — {{ r.status }} {{ r.grade ? `(${t('adminUser.grade')}: ${r.grade})` : '' }}
             </li>
           </ul>
-          <p v-else class="empty">لا توجد تقارير</p>
+          <p v-else class="empty">{{ t('adminUser.noReports') }}</p>
         </div>
 
         <div class="info-card">
-          <h4>⚠️ التحذيرات ({{ profile.warnings?.length ?? 0 }})</h4>
+          <h4>{{ t('adminUser.warnings') }} ({{ profile.warnings?.length ?? 0 }})</h4>
           <ul v-if="profile.warnings?.length">
             <li v-for="w in profile.warnings" :key="w.id" :class="w.severity">
               {{ w.title }} ({{ w.severity }}) {{ w.is_read ? '✓' : '●' }}
             </li>
           </ul>
-          <p v-else class="empty">لا توجد تحذيرات</p>
+          <p v-else class="empty">{{ t('adminUser.noWarnings') }}</p>
         </div>
 
         <div class="info-card">
-          <h4>📝 ملاحظات الأدمن</h4>
+          <h4>{{ t('adminUser.adminNotes') }}</h4>
           <ul v-if="profile.notes?.length">
             <li v-for="n in profile.notes" :key="n.id">
               <strong>{{ n.admin_name }}:</strong> {{ n.note }} <small>{{ formatDate(n.created_at) }}</small>
             </li>
           </ul>
-          <p v-else class="empty">لا توجد ملاحظات</p>
+          <p v-else class="empty">{{ t('adminUser.noNotes') }}</p>
           <div class="note-input">
-            <input v-model="newNote" placeholder="إضافة ملاحظة..." @keyup.enter="onAddNote" />
+            <input v-model="newNote" :placeholder="t('adminUser.addNotePlaceholder')" @keyup.enter="onAddNote" />
             <button @click="onAddNote">+</button>
           </div>
         </div>
 
         <div class="info-card full">
-          <h4>📜 النشاط الأخير</h4>
+          <h4>{{ t('adminUser.recentActivity') }}</h4>
           <ul v-if="profile.activity?.length">
             <li v-for="a in profile.activity" :key="a.created_at">
               {{ a.action }} {{ a.details ? `— ${a.details}` : '' }} <small>{{ formatDate(a.created_at) }}</small>
             </li>
           </ul>
-          <p v-else class="empty">لا يوجد نشاط</p>
+          <p v-else class="empty">{{ t('adminUser.noActivity') }}</p>
         </div>
       </div>
     </template>

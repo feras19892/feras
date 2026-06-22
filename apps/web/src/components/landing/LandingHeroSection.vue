@@ -6,10 +6,10 @@ const { t } = useI18n()
 
 <template>
   <div class="hero-section">
-    <h1 class="hero-title">{{ t('landing.tagline') || 'مختبر العلوم التفاعلي' }}</h1>
+    <h1 class="hero-title">{{ t('landing.tagline') }}</h1>
     <p class="hero-desc">
-      {{ t('landing.descLine1') || 'منصة تعليمية متكاملة للتجارب العلمية' }}<br>
-      ⚛️ الفيزياء — 🧪 الكيمياء — 📐 الرياضيات — 🧬 البيولوجيا
+      {{ t('landing.descLine1') }}<br>
+      {{ t('landing.subjects') }}
     </p>
   </div>
 </template>

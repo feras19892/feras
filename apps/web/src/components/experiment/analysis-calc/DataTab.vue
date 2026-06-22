@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from '../../../composables/useI18n';
 import type { AnalysisColumnMeta } from '../../../types/physics';
 import StudentInfoPanel from './StudentInfoPanel.vue';
 import AnalysisDataTable from './AnalysisDataTable.vue';
@@ -15,25 +16,26 @@ const emit = defineEmits<{
   (e: 'remove-row', index: number): void;
 }>();
 
+const { t } = useI18n();
+
 const checks = computed(() => {
   const c: string[] = [];
-  if (!props.readings.length) { c.push('لا توجد بيانات'); return c; }
+  if (!props.readings.length) { c.push(t('analysis.noDataCheck')); return c; }
   for (const col of props.columns) {
     const vals = props.readings.map(r => r[col.key]).filter(v => typeof v === 'number' && !isNaN(v));
-    if (!vals.length) { c.push(`عمود ${col.label} فارغ`); continue; }
+    if (!vals.length) { c.push(t('analysis.emptyColumn', { col: col.label })); continue; }
     const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
     const std = Math.sqrt(vals.reduce((s, v) => s + (v - mean) ** 2, 0) / vals.length);
     const outCount = vals.filter(v => Math.abs(v - mean) > 2 * std).length;
-    if (outCount > 0) c.push(`${outCount} قيمة شاذة في ${col.label}`);
+    if (outCount > 0) c.push(t('analysis.outliersInColumn', { count: outCount, col: col.label }));
   }
-  if (!c.length) c.push('✅ جميع البيانات تبدو سليمة');
+  if (!c.length) c.push(t('analysis.allDataOk'));
   return c;
 });
 </script>
 
 <template>
   <div class="data-tab">
-    <!-- Panels في الأعلى — 3 أعمدة -->
     <div class="top-panels">
       <div class="bp-col">
         <StudentInfoPanel />
@@ -43,7 +45,7 @@ const checks = computed(() => {
       </div>
       <div class="bp-col">
         <div class="checks">
-          <div class="checks-title">🔍 فحص البيانات</div>
+          <div class="checks-title">{{ t('analysis.dataCheck') }}</div>
           <div v-for="(ch, i) in checks" :key="i" :class="['check-item', ch.includes('✅') ? 'ok' : 'warn']">
             {{ ch }}
           </div>
@@ -51,7 +53,7 @@ const checks = computed(() => {
       </div>
     </div>
 
-    <!-- الجدول في الأسفل — عرض كامل -->
+    <!-- Table section -->
     <div class="table-section">
       <AnalysisDataTable
         :readings="readings"

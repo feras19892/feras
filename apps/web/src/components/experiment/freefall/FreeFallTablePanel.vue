@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { FreeFallTrial } from '../../../composables/freefall/useFreeFallTrials'
+import { useI18n } from '../../../composables/useI18n'
 
+const { t } = useI18n()
 const props = defineProps<{ trials: FreeFallTrial[]; enableNoise?: boolean }>()
 const emit = defineEmits<{ (e: 'remove', id: number): void; (e: 'clear'): void }>()
 </script>
@@ -8,8 +10,8 @@ const emit = defineEmits<{ (e: 'remove', id: number): void; (e: 'clear'): void }
 <template>
   <div>
     <div class="table-header">
-      <h5>📋 قراءات التجربة ({{ trials.length }})</h5>
-      <span class="mode-badge" :class="enableNoise ? 'noisy' : 'exact'">{{ enableNoise ? '⚠️ مع خطأ نسبي' : '✅ قياسات دقيقة' }}</span>
+      <h5>📋 {{ t('experiments.experimentReadings') }} ({{ trials.length }})</h5>
+      <span class="mode-badge" :class="enableNoise ? 'noisy' : 'exact'">{{ enableNoise ? '⚠️ ' + t('experiments.withRelativeError') : '✅ ' + t('experiments.exactMeasurements') }}</span>
     </div>
     <table class="report-table" v-if="trials.length">
       <thead><tr><th>#</th><th>h (m)</th><th>t (s)</th><th>t² (s²)</th><th>v (m/s)</th><th>g_calc</th><th></th></tr></thead>
@@ -25,8 +27,8 @@ const emit = defineEmits<{ (e: 'remove', id: number): void; (e: 'clear'): void }
         </tr>
       </tbody>
     </table>
-    <p v-else class="no-data">لا توجد قراءات مسجلة</p>
-    <button class="ctrl-btn" @click="emit('clear')" v-if="trials.length">مسح الكل</button>
+    <p v-else class="no-data">{{ t('experiments.noTrialsRecorded') }}</p>
+    <button class="ctrl-btn" @click="emit('clear')" v-if="trials.length">{{ t('experiments.clearAll') }}</button>
   </div>
 </template>
 

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 const props = defineProps<{ open: boolean }>()
 const emit = defineEmits<{ (e: 'close'): void }>()
 </script>
@@ -7,15 +10,15 @@ const emit = defineEmits<{ (e: 'close'): void }>()
   <div class="help-modal" v-if="open" @click.self="emit('close')">
     <div class="help-content">
       <button class="close-btn" @click="emit('close')">✕</button>
-      <h2>🎓 دليل تجربة المنحدر المائل</h2>
+      <h2>🎓 {{ t('experiments.inclinedGuide') }}</h2>
       <section>
-        <h3>📖 المفهوم الفيزيائي</h3>
-        <p>المنحدر المائل هو سطح مائل بزاوية θ يتحرك عليه جسم كتلته m. التسارع يعتمد على زاوية المنحدر ومعامل الاحتكاك.</p>
-        <p>بدون احتكاك: a = g·sin(θ)</p>
-        <p>مع احتكاك: a = g(sin(θ) − μ·cos(θ))</p>
+        <h3>📖 {{ t('experiments.physicalConcept') }}</h3>
+        <p>{{ t('experiments.inclinedConceptDesc1') }}</p>
+        <p>{{ t('experiments.inclinedConceptDesc2') }}</p>
+        <p>{{ t('experiments.inclinedConceptDesc3') }}</p>
       </section>
       <section>
-        <h3>📐 المعادلات الأساسية</h3>
+        <h3>📐 {{ t('experiments.basicEquations') }}</h3>
         <ul>
           <li>a = g·sin(θ) − μ·g·cos(θ)</li>
           <li>s = ½·a·t²</li>
@@ -28,24 +31,24 @@ const emit = defineEmits<{ (e: 'close'): void }>()
         </ul>
       </section>
       <section>
-        <h3>🖥️ عناصر مساحة العمل</h3>
+        <h3>🖥️ {{ t('experiments.workspaceElements') }}</h3>
         <ul>
-          <li>لوحة الرسم — رسم المنحدر والكتلة وأسهم القوى</li>
-          <li>المعاملات — زاوية المنحدر، الطول، الكتلة، g، μ</li>
-          <li>الجدول — قراءات التجارب المسجلة</li>
-          <li>الرسوم — مسار s(t) وإشارة v(t)</li>
-          <li>الحسابات — أزرار لحساب القيم النظرية</li>
+          <li>{{ t('experiments.canvasPanel') }}</li>
+          <li>{{ t('experiments.parametersPanel') }}</li>
+          <li>{{ t('experiments.tablePanel') }}</li>
+          <li>{{ t('experiments.chartsPanel') }}</li>
+          <li>{{ t('experiments.calculationsPanel') }}</li>
         </ul>
       </section>
       <section>
-        <h3>⌨️ اختصارات لوحة المفاتيح</h3>
+        <h3>⌨️ {{ t('experiments.keyboardShortcuts') }}</h3>
         <ul>
-          <li>Space — بدء/توقف</li>
-          <li>R — إعادة تعيين</li>
-          <li>S — تسجيل قراءة</li>
-          <li>Ctrl+Z — تراجع</li>
-          <li>Ctrl+Shift+Z — إعادة</li>
-          <li>? — فتح/إغلاق المساعدة</li>
+          <li>Space — {{ t('experiments.shortcutStartStop') }}</li>
+          <li>R — {{ t('experiments.shortcutReset') }}</li>
+          <li>S — {{ t('experiments.recordReading') }}</li>
+          <li>Ctrl+Z — {{ t('experiments.shortcutUndo') }}</li>
+          <li>Ctrl+Shift+Z — {{ t('experiments.shortcutRedo') }}</li>
+          <li>? — {{ t('experiments.shortcutToggleHelp') }}</li>
         </ul>
       </section>
     </div>

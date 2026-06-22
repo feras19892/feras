@@ -5,7 +5,7 @@ import type { AnalysisPayload } from '../../types/physics'
 import type { ProjectileParams } from '../../modules/physics/experiments/projectile/useProjectilePhysics'
 import { useProjectileLab } from './useProjectileLab'
 import { useProjectileLayout } from './useProjectileLayout'
-import { useProjectileTrials } from './useProjectileTrials'
+import { useProjectileTrials, type ProjectileMeasured } from './useProjectileTrials'
 
 export function useProjectileExperiment() {
   const router = useRouter()
@@ -40,7 +40,7 @@ export function useProjectileExperiment() {
     if (col === 'data' || col === 'vis' || col === 'ctrl') return layout.columnOrder[col]
     return []
   }
-  function getMeasured() { return (lab.measured.value as Record<string, unknown>) }
+  function getMeasured(): ProjectileMeasured { return lab.measured.value }
 
   const colWidths = reactive({ data: 280, vis: 0, ctrl: 280 })
 

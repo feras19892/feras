@@ -1,8 +1,8 @@
 import { ref } from 'vue';
-import { getAdminUserFull, addAdminNote, sendAdminWarning, banUser, unbanUser } from '../../services/admin.service';
+import { getAdminUserFull, addAdminNote, sendAdminWarning, banUser, unbanUser, type AdminUserFull } from '../../services/admin.service';
 
 export function useAdminUserDetail() {
-  const profile = ref<Record<string, unknown> | null>(null);
+  const profile = ref<AdminUserFull | null>(null);
   const loading = ref(false);
   const error = ref('');
 

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 const props = defineProps<{ open: boolean }>()
 const emit = defineEmits<{ (e: 'close'): void }>()
 </script>
@@ -8,33 +11,33 @@ const emit = defineEmits<{ (e: 'close'): void }>()
     <div v-if="open" class="modal-backdrop" @click="emit('close')">
       <div class="modal" @click.stop>
         <div class="modal-header">
-          <h3>🚀 دليل تجربة المقذوفات</h3>
+          <h3>🚀 {{ t('experiments.projectileGuide') }}</h3>
           <button @click="emit('close')">×</button>
         </div>
         <div class="modal-body">
-          <h4>الهدف</h4>
-          <p>دراسة حركة الجسم المقذوف في بُعدين (X و Y) والتحقق من القوانين النظرية.</p>
-          <h4>المعادلات</h4>
+          <h4>{{ t('experiments.goal') }}</h4>
+          <p>{{ t('experiments.projectileGoalDesc') }}</p>
+          <h4>{{ t('experiments.equationsLabel') }}</h4>
           <ul>
-            <li><b>المدى:</b> R = v₀² sin(2θ) / g</li>
-            <li><b>أقصى ارتفاع:</b> H = (v₀ sinθ)² / 2g</li>
-            <li><b>زمن التحليق:</b> t = 2v₀ sinθ / g</li>
+            <li><b>{{ t('experiments.rangeLabel') }}:</b> R = v₀² sin(2θ) / g</li>
+            <li><b>{{ t('experiments.maxHeight') }}:</b> H = (v₀ sinθ)² / 2g</li>
+            <li><b>{{ t('experiments.flightTimeEquation') }}</b> t = 2v₀ sinθ / g</li>
           </ul>
-          <h4>السيناريو 1: R مقابل θ (ثبوت v₀)</h4>
+          <h4>{{ t('experiments.scenario1') }}</h4>
           <ol>
-            <li>ثبت v₀ = 10 m/s</li>
-            <li>غير الزاوية: 15°, 30°, 45°, 60°, 75°</li>
-            <li>سجل المدى R لكل زاوية</li>
-            <li>لاحظ: أقصى مدى عند 45°</li>
+            <li>{{ t('experiments.scenario1Step1') }}</li>
+            <li>{{ t('experiments.scenario1Step2') }}</li>
+            <li>{{ t('experiments.scenario1Step3') }}</li>
+            <li>{{ t('experiments.scenario1Step4') }}</li>
           </ol>
-          <h4>السيناريو 2: R مقابل v₀ (ثبوت θ)</h4>
+          <h4>{{ t('experiments.scenario2') }}</h4>
           <ol>
-            <li>ثبت الزاوية عند 45°</li>
-            <li>غير السرعة: 5, 10, 15, 20, 25 m/s</li>
-            <li>لاحظ: R ∝ v₀²</li>
+            <li>{{ t('experiments.scenario2Step1') }}</li>
+            <li>{{ t('experiments.scenario2Step2') }}</li>
+            <li>{{ t('experiments.scenario2Step3') }}</li>
           </ol>
-          <h4>اختصارات</h4>
-          <p>مسافة: بدء/إيقاف | R: إعادة | S: تسجيل | Ctrl+Z: تراجع | ?: مساعدة</p>
+          <h4>{{ t('experiments.shortcuts') }}</h4>
+          <p>{{ t('experiments.projectileShortcutsDesc') }}</p>
         </div>
       </div>
     </div>

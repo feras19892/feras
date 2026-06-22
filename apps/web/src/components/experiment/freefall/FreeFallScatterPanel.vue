@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 
 import type { FreeFallTrial } from '../../../composables/freefall/useFreeFallTrials'
 
+const { t } = useI18n()
 const props = defineProps<{ trials: FreeFallTrial[] }>()
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const wrapRef = ref<HTMLDivElement | null>(null)
@@ -32,7 +34,7 @@ function draw() {
 
   if (props.trials.length < 2) {
     ctx.fillStyle = '#64748b'; ctx.font = '13px Segoe UI'; ctx.textAlign = 'center'
-    ctx.fillText('سجل قياستان على الأقل', W / 2, H / 2)
+    ctx.fillText(t('experiments.recordAtLeastTwo'), W / 2, H / 2)
     ctx.textAlign = 'start'; return
   }
 

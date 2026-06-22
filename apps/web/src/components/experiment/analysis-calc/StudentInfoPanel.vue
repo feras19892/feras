@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from '../../../composables/useI18n';
 import { useAnalysisStore } from '../../../stores/analysis.store';
 
+const { t } = useI18n();
 const store = useAnalysisStore();
 const info = computed(() => store.studentInfo);
 
@@ -12,31 +14,31 @@ function update(field: 'name' | 'email' | 'grade' | 'notes', val: string) {
 
 <template>
   <div class="student-panel">
-    <div class="panel-header">🎓 معلومات الطالب</div>
+    <div class="panel-header">{{ t('analysis.studentInfo') }}</div>
     <div class="form">
       <div class="row">
         <div class="field">
-          <label>الاسم الكامل</label>
-          <input type="text" :value="info.name" @input="update('name', ($event.target as HTMLInputElement).value)" placeholder="محمد أحمد" />
+          <label>{{ t('analysis.fullName') }}</label>
+          <input type="text" :value="info.name" @input="update('name', ($event.target as HTMLInputElement).value)" :placeholder="t('analysis.studentNamePlaceholder')" />
         </div>
         <div class="field">
-          <label>البريد الإلكتروني</label>
+          <label>{{ t('analysis.emailLabel') }}</label>
           <input type="email" :value="info.email" @input="update('email', ($event.target as HTMLInputElement).value)" placeholder="student@school.edu" />
         </div>
       </div>
       <div class="row">
         <div class="field">
-          <label>الصف / الشعبة</label>
-          <input type="text" :value="info.grade" @input="update('grade', ($event.target as HTMLInputElement).value)" placeholder="الصف العاشر - أ" />
+          <label>{{ t('analysis.gradeClass') }}</label>
+          <input type="text" :value="info.grade" @input="update('grade', ($event.target as HTMLInputElement).value)" :placeholder="t('analysis.gradePlaceholder')" />
         </div>
         <div class="field">
-          <label>التاريخ</label>
+          <label>{{ t('analysis.dateLabel') }}</label>
           <input type="text" :value="store.reportDate" readonly />
         </div>
       </div>
       <div class="field full">
-        <label>ملاحظات على التجربة</label>
-        <textarea :value="info.notes" @input="update('notes', ($event.target as HTMLTextAreaElement).value)" rows="2" placeholder="اكتب ملاحظاتك عن التجربة..."></textarea>
+        <label>{{ t('analysis.experimentNotes') }}</label>
+        <textarea :value="info.notes" @input="update('notes', ($event.target as HTMLTextAreaElement).value)" rows="2" :placeholder="t('analysis.notesPlaceholder')"></textarea>
       </div>
     </div>
   </div>

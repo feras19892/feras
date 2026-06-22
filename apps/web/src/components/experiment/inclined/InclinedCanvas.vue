@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { toRad, calculateInclinedSummary, calculateDragForce } from '../../../composables/inclined/inclinedUtils'
 
+const { t } = useI18n()
 const props = defineProps<{
   params: { thetaDeg: number; length: number; mass: number; g: number; mu: number; airResistance: boolean; bodyTypeId: string; cd: number; area: number }
   simState: { t: number; s: number; v: number; arrived: boolean; running: boolean }
@@ -180,7 +182,7 @@ function draw() {
   // Title
   c.fillStyle = '#5B8DB8'; c.font = 'bold 13px Segoe UI'
   c.textAlign = 'center'
-  c.fillText('📊 القراءات الحية', W / 2, 20)
+  c.fillText('📊 ' + t('experiments.liveReadings'), W / 2, 20)
   c.textAlign = 'start'
 
   // Data cells layout: 7 columns across the width
@@ -200,21 +202,21 @@ function draw() {
     c.textAlign = 'start'
   }
 
-  drawCell(0, 't (زمن)', `${props.simState.t.toFixed(2)} s`, '#22c55e')
-  drawCell(1, 's (مسافة)', `${props.simState.s.toFixed(2)} m`, '#3b82f6')
-  drawCell(2, 'v (سرعة)', `${props.simState.v.toFixed(2)} m/s`, '#f59e0b')
+  drawCell(0, 't (' + t('experiments.timeShort') + ')', `${props.simState.t.toFixed(2)} s`, '#22c55e')
+  drawCell(1, 's (' + t('experiments.distanceShort') + ')', `${props.simState.s.toFixed(2)} m`, '#3b82f6')
+  drawCell(2, 'v (' + t('experiments.speedShort') + ')', `${props.simState.v.toFixed(2)} m/s`, '#f59e0b')
   // Live acceleration: subtract drag force dynamically
   const fdLive = props.params.airResistance ? calculateDragForce(props.simState.v, props.params.cd, props.params.area) : 0
   const aLive = (summary.parallelForce - summary.frictionForce - fdLive) / props.params.mass
-  drawCell(3, 'a (تسارع)', `${aLive.toFixed(2)}`, '#ef4444')
-  drawCell(4, 'N (تفاعل)', `${summary.normalForce.toFixed(1)} N`, '#06b6d4')
-  drawCell(5, 'F∥ (متوازية)', `${summary.parallelForce.toFixed(1)} N`, '#ec4899')
+  drawCell(3, 'a (' + t('experiments.accelerationShort') + ')', `${aLive.toFixed(2)}`, '#ef4444')
+  drawCell(4, 'N (' + t('experiments.normalForceShort') + ')', `${summary.normalForce.toFixed(1)} N`, '#06b6d4')
+  drawCell(5, 'F∥ (' + t('experiments.parallelForceShort') + ')', `${summary.parallelForce.toFixed(1)} N`, '#ec4899')
   if (props.params.airResistance) {
-    drawCell(6, 'Fd (سحب)', `${summary.dragForce.toFixed(1)} N`, '#a855f7')
+    drawCell(6, 'Fd (' + t('experiments.dragForceShort') + ')', `${summary.dragForce.toFixed(1)} N`, '#a855f7')
   } else if (props.params.mu > 0) {
-    drawCell(6, 'f (احتكاك)', `${summary.frictionForce.toFixed(1)} N`, '#f97316')
+    drawCell(6, 'f (' + t('experiments.frictionShort') + ')', `${summary.frictionForce.toFixed(1)} N`, '#f97316')
   } else {
-    drawCell(6, 'μ (معامل)', `${props.params.mu.toFixed(2)}`, '#a78bfa')
+    drawCell(6, 'μ (' + t('experiments.coefficientShort') + ')', `${props.params.mu.toFixed(2)}`, '#a78bfa')
   }
 
   // Second row: params
@@ -229,11 +231,11 @@ function draw() {
     c.textAlign = 'start'
   }
 
-  drawCell2(0, 'θ (زاوية المنحدر)', `${props.params.thetaDeg}°`, '#a78bfa')
-  drawCell2(1, 'L (طول المنحدر)', `${props.params.length.toFixed(1)} m`, '#a78bfa')
-  drawCell2(2, 'm (الكتلة)', `${props.params.mass.toFixed(1)} kg`, '#a78bfa')
-  drawCell2(3, 'g (الجاذبية)', `${props.params.g.toFixed(2)} m/s²`, '#a78bfa')
-  drawCell2(4, 'μ (الاحتكاك)', `${props.params.mu.toFixed(2)}`, '#a78bfa')
+  drawCell2(0, 'θ (' + t('experiments.angleShort') + ')', `${props.params.thetaDeg}°`, '#a78bfa')
+  drawCell2(1, 'L (' + t('experiments.lengthShort') + ')', `${props.params.length.toFixed(1)} m`, '#a78bfa')
+  drawCell2(2, 'm (' + t('experiments.massShort') + ')', `${props.params.mass.toFixed(1)} kg`, '#a78bfa')
+  drawCell2(3, 'g (' + t('experiments.gravityShort') + ')', `${props.params.g.toFixed(2)} m/s²`, '#a78bfa')
+  drawCell2(4, 'μ (' + t('experiments.frictionCoefficientShort') + ')', `${props.params.mu.toFixed(2)}`, '#a78bfa')
 
   // Angle label at origin (below the bar)
   c.fillStyle = '#8B95A5'; c.font = '12px Segoe UI'

@@ -1,23 +1,26 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
 defineProps<{ open: boolean }>()
+const { t } = useI18n()
 const emit = defineEmits<{ (e: 'close'): void }>()
 </script>
 
 <template>
   <div v-if="open" class="modal-overlay" @click.self="emit('close')">
     <div class="help-modal">
-      <h3>❓ مساعدة — شعاع الضوء</h3>
+      <h3>❓ {{ t('experiments.lightRayHelp') }}</h3>
       <ul>
-        <li><b>Space</b> — بدء/توقف المحاكاة</li>
-        <li><b>R</b> — إعادة تعيين</li>
-        <li><b>S</b> — تسجيل قراءة</li>
-        <li><b>Ctrl+Z</b> — تراجع</li>
-        <li><b>Ctrl+Y</b> — إعادة</li>
-        <li><b>?</b> — فتح/إغلاق المساعدة</li>
+        <li><b>Space</b> — {{ t('experiments.shortcutStartStop') }}</li>
+        <li><b>R</b> — {{ t('experiments.shortcutReset') }}</li>
+        <li><b>S</b> — {{ t('experiments.shortcutRecord') }}</li>
+        <li><b>Ctrl+Z</b> — {{ t('experiments.shortcutUndo') }}</li>
+        <li><b>Ctrl+Y</b> — {{ t('experiments.shortcutRedo') }}</li>
+        <li><b>?</b> — {{ t('experiments.shortcutToggleHelp') }}</li>
       </ul>
-      <p>قانون الانعكاس: θᵣ = θᵢ</p>
-      <p>قانون سنل: n₁ sin θᵢ = n₂ sin θₜ</p>
-      <button class="btn-close" @click="emit('close')">إغلاق</button>
+      <p>{{ t('experiments.lawOfReflection') }}</p>
+      <p>{{ t('experiments.snellsLaw') }}</p>
+      <button class="btn-close" @click="emit('close')">{{ t('experiments.close') }}</button>
     </div>
   </div>
 </template>

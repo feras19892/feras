@@ -7,7 +7,9 @@ import InclinedScatterPanel from './InclinedScatterPanel.vue'
 import InclinedSignalPanel from './InclinedSignalPanel.vue'
 import InclinedEquationsPanel from './InclinedEquationsPanel.vue'
 import InclinedStatsPanel from './InclinedStatsPanel.vue'
+import { useI18n } from '../../../composables/useI18n'
 
+const { t } = useI18n()
 const props = defineProps<{
   id: string
   trials: InclinedTrial[]
@@ -39,19 +41,19 @@ const emit = defineEmits<{
       @calc-acceleration="emit('calcAcceleration')" @calc-time="emit('calcTime')" @calc-velocity="emit('calcVelocity')" @calc-normal="emit('calcNormal')" />
     <InclinedStatsPanel v-else-if="id === 'stats'" :trial-stats="trialStats" :trial-count="trials.length" />
     <div v-else-if="id === 'guide'" class="guide-text">
-      <h5>دليل الاستخدام</h5>
+      <h5>{{ t('experiments.usageGuide') }}</h5>
       <ol>
-        <li>اضبط زاوية المنحدر θ والطول L والكتلة m</li>
-        <li>اضغط "بدء" لبدء النزول</li>
-        <li>انتظر حتى يصل الجسم للقاعدة</li>
-        <li>اضغط "تسجيل" لحفظ القراءة</li>
-        <li>كرر بتغيير الزاوية أو المعاملات</li>
+        <li>{{ t('experiments.inclinedGuideStep1') }}</li>
+        <li>{{ t('experiments.inclinedGuideStep2') }}</li>
+        <li>{{ t('experiments.inclinedGuideStep3') }}</li>
+        <li>{{ t('experiments.inclinedGuideStep4') }}</li>
+        <li>{{ t('experiments.inclinedGuideStep5') }}</li>
       </ol>
     </div>
     <div v-else-if="id === 'error'" class="error-text">
-      <h5>تحليل الأخطاء</h5>
-      <p>نسبة الخطأ تحسب مقارنة بالقيمة النظرية: err = |a_meas − a_theory| / a_theory × 100%</p>
-      <p>تفعيل "الضجئ" يضيف خطأ عشوائي 2% للقياسات.</p>
+      <h5>{{ t('experiments.errorAnalysis') }}</h5>
+      <p>{{ t('experiments.errorAnalysisDesc') }}</p>
+      <p>{{ t('experiments.noiseAddsError') }}</p>
     </div>
   </div>
 </template>

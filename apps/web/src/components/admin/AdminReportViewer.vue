@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from '../../composables/useI18n';
 interface AdminReportItem {
   id: number;
   student_name: string;
@@ -6,18 +7,20 @@ interface AdminReportItem {
   class_name: string;
   teacher_name: string;
   status: string;
-  grade?: number;
+  grade?: number | null;
   submitted_at?: string;
 }
 defineProps<{
   reports: AdminReportItem[];
 }>();
 
+const { t } = useI18n();
+
 function statusLabel(status: string) {
   switch (status) {
-    case 'submitted': return '⏳ معلق';
-    case 'graded': return '✅ مصحح';
-    case 'resubmitted': return '↩️ مُعاد';
+    case 'submitted': return t('adminUser.statusSubmitted');
+    case 'graded': return t('adminUser.statusGraded');
+    case 'resubmitted': return t('adminUser.statusResubmitted');
     default: return status;
   }
 }
@@ -25,12 +28,12 @@ function statusLabel(status: string) {
 
 <template>
   <div class="section">
-    <h3>📋 التقارير ({{ reports.length }})</h3>
+    <h3>{{ t('admin.reports', { count: reports.length }) }}</h3>
     <div class="table-wrapper">
       <table class="data-table">
         <thead>
           <tr>
-            <th>ID</th><th>الطالب</th><th>التجربة</th><th>الفصل</th><th>المدرس</th><th>الحالة</th><th>الدرجة</th><th>التاريخ</th>
+            <th>ID</th><th>{{ t('adminUser.student') }}</th><th>{{ t('adminUser.experiment') }}</th><th>{{ t('adminUser.classLabel') }}</th><th>{{ t('admin.teacher') }}</th><th>{{ t('admin.status') }}</th><th>{{ t('adminUser.grade') }}</th><th>{{ t('admin.date') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -46,7 +49,7 @@ function statusLabel(status: string) {
           </tr>
         </tbody>
       </table>
-      <p v-if="reports.length === 0" class="empty">لا توجد تقارير</p>
+      <p v-if="reports.length === 0" class="empty">{{ t('admin.noResults') }}</p>
     </div>
   </div>
 </template>

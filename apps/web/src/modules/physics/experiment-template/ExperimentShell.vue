@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useI18n } from '../../../composables/useI18n';
 import type { ExperimentConfig, PanelState } from './types';
 
+const { t } = useI18n();
 defineProps<{
   config: ExperimentConfig;
 }>();
@@ -44,15 +46,15 @@ function togglePanel(key: keyof PanelState) {
       <aside class="col data-col" v-if="panels.table || panels.equations">
         <div class="panel" v-if="panels.table">
           <div class="panel-header">
-            <span>📋 قراءات</span>
+            <span>📋 {{ t('experiments.readingsPanel') }}</span>
           </div>
-          <p class="placeholder">ستظهر هنا جدول القراءات</p>
+          <p class="placeholder">{{ t('experiments.readingsPlaceholder') }}</p>
         </div>
         <div class="panel" v-if="panels.equations">
           <div class="panel-header">
-            <span>⚗️ حسابات</span>
+            <span>⚗️ {{ t('experiments.calculationsPanel') }}</span>
           </div>
-          <p class="placeholder">ستظهر هنا المعادلات</p>
+          <p class="placeholder">{{ t('experiments.equationsPlaceholder') }}</p>
         </div>
       </aside>
 
@@ -63,7 +65,7 @@ function togglePanel(key: keyof PanelState) {
         </div>
         <div class="chart-row" v-if="panels.signal">
           <div class="mini-chart">
-            <span>📈 إشارة</span>
+            <span>📈 {{ t('experiments.signalPanel') }}</span>
           </div>
           <div class="mini-chart" v-if="panels.fft">
             <span>📊 FFT</span>
@@ -75,7 +77,7 @@ function togglePanel(key: keyof PanelState) {
       <aside class="col ctrl-col" v-if="panels.params || panels.guide">
         <div class="panel" v-if="panels.params">
           <div class="panel-header">
-            <span>⚙️ معاملات</span>
+            <span>⚙️ {{ t('experiments.paramsPanel') }}</span>
           </div>
           <div class="param-list">
             <div v-for="(val, key) in config.params" :key="key" class="param-row">
@@ -86,18 +88,18 @@ function togglePanel(key: keyof PanelState) {
         </div>
         <div class="panel" v-if="panels.guide">
           <div class="panel-header">
-            <span>📖 دليل</span>
+            <span>📖 {{ t('experiments.guidePanel') }}</span>
           </div>
-          <p class="placeholder">نص إرشادي</p>
+          <p class="placeholder">{{ t('experiments.guidePlaceholder') }}</p>
         </div>
       </aside>
     </div>
 
     <!-- Bottom controls -->
     <div class="shell-footer">
-      <button class="btn-primary">▶️ بدء</button>
-      <button class="btn-secondary">🔄 إعادة</button>
-      <button class="btn-secondary">⏸️ توقف</button>
+      <button class="btn-primary">▶️ {{ t('experiments.startBtn') }}</button>
+      <button class="btn-secondary">🔄 {{ t('experiments.resetBtn') }}</button>
+      <button class="btn-secondary">⏸️ {{ t('experiments.pauseBtn') }}</button>
     </div>
   </div>
 </template>

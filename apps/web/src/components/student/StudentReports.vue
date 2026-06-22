@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
+import { useI18n } from '../../composables/useI18n'
 import { getReports } from '../../services/report.service'
 import type { Report } from '../../services/report.service'
 import { useAuthStore } from '../../modules/auth/stores/auth'
@@ -7,6 +8,7 @@ import ReportViewer from '../shared/ReportViewer.vue'
 import ReportCommentThread from '../shared/ReportCommentThread.vue'
 import ReportResubmitModal from './ReportResubmitModal.vue'
 
+const { t } = useI18n()
 const auth = useAuthStore()
 const reports = ref<Report[]>([])
 const loading = ref(false)
@@ -43,10 +45,10 @@ function onResubmitted() {
 }
 
 function statusLabel(s: string) {
-  if (s === 'graded') return '✅ مصحح'
-  if (s === 'submitted') return '⏳ قيد المراجعة'
-  if (s === 'resubmitted') return '↩️ مُعاد'
-  return '📝 مسودة'
+  if (s === 'graded') return t('dashboard.statusGraded')
+  if (s === 'submitted') return t('dashboard.statusSubmitted')
+  if (s === 'resubmitted') return t('dashboard.statusResubmitted')
+  return t('dashboard.statusDraft')
 }
 
 function statusClass(s: string) {
@@ -68,14 +70,14 @@ watch(() => auth.user, (u) => {
 <template>
   <div class="reports-panel">
     <div class="reports-header">
-      <h2>📋 تقاريري</h2>
-      <span v-if="reports.length" class="count">{{ reports.length }} تقرير</span>
+      <h2>{{ t('dashboard.myReportsTitle') }}</h2>
+      <span v-if="reports.length" class="count">{{ reports.length }} {{ t('dashboard.reportCount') }}</span>
     </div>
 
     <div v-if="loading" class="empty">...</div>
     <div v-else-if="reports.length === 0" class="empty">
-      <p>لم تُرسل أي تقرير بعد</p>
-      <p class="sub">أجرِ تجربة ثم أرسلها للمدرس</p>
+      <p>{{ t('dashboard.noReportsSent') }}</p>
+      <p class="sub">{{ t('dashboard.doExperimentThenSend') }}</p>
     </div>
     <div v-else class="report-list">
       <div v-for="r in reports" :key="r.id" class="report-row" :class="statusClass(r.status)" @click="openReport(r)">
@@ -97,14 +99,14 @@ watch(() => auth.user, (u) => {
         <!-- Grade Banner -->
         <div v-if="selectedReport.status === 'graded'" class="grade-banner">
           <span class="grade-score">⭐ {{ selectedReport.grade }}/100</span>
-          <span v-if="selectedReport.graded_by_name" class="grade-teacher">مصحح: {{ selectedReport.graded_by_name }}</span>
+          <span v-if="selectedReport.graded_by_name" class="grade-teacher">{{ t('dashboard.grader') }}: {{ selectedReport.graded_by_name }}</span>
           <span v-if="selectedReport.feedback" class="grade-feedback">{{ selectedReport.feedback }}</span>
         </div>
         <div v-else-if="selectedReport.status === 'resubmitted'" class="status-banner resubmitted">
-          ↩️ تم إعادة الإرسال — في انتظار التصحيح
+          ↩️ {{ t('dashboard.resubmittedWaiting') }}
         </div>
         <div v-else class="status-banner pending">
-          ⏳ قيد المراجعة
+          ⏳ {{ t('dashboard.underReview') }}
         </div>
 
         <ReportViewer :report="selectedReport" />
@@ -117,13 +119,13 @@ watch(() => auth.user, (u) => {
         />
 
         <div class="actions">
-          <button class="btn-close" @click="viewOpen = false">إغلاق</button>
+          <button class="btn-close" @click="viewOpen = false">{{ t('dashboard.close') }}</button>
           <button
             v-if="selectedReport.status === 'graded'"
             class="btn-resubmit"
             @click="viewOpen = false; openResubmit(selectedReport)"
           >
-            ↩️ إعادة إرسال
+            ↩️ {{ t('dashboard.resubmit') }}
           </button>
         </div>
       </div>

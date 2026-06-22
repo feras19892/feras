@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useI18n } from '../../composables/useI18n'
 import { joinClass as apiJoinClass, getMyClasses } from '../../services/class.service'
 import type { ClassItem } from '../../services/class.service'
 
+const { t } = useI18n()
 const showJoinModal = ref(false)
 const joinCode = ref('')
 const joinError = ref('')
@@ -24,7 +26,7 @@ async function loadClasses() {
 
 async function handleJoinClass() {
   const code = joinCode.value.trim().toUpperCase()
-  if (!code) { joinError.value = 'أدخل كود الفصل'; return }
+  if (!code) { joinError.value = t('dashboard.enterCodeFirst'); return }
   joinLoading.value = true; joinError.value = ''
 
   try {
@@ -41,11 +43,11 @@ async function handleJoinClass() {
       showJoinModal.value = false
       joinCode.value = ''
     } else {
-      joinError.value = res.message || 'الكود غير صحيح'
+      joinError.value = res.message || t('dashboard.invalidCode')
     }
   } catch (err) {
     joinLoading.value = false
-    joinError.value = 'فشل الانضمام'
+    joinError.value = t('dashboard.joinFailed')
     console.error('join class failed:', err)
   }
 }
@@ -58,18 +60,18 @@ onMounted(() => {
 <template>
   <div class="student-classes">
     <div class="student-classes-header">
-      <h2>🏫 فصولي</h2>
+      <h2>{{ t('dashboard.myClassesTitle') }}</h2>
       <button class="join-btn" @click="showJoinModal = true">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
         </svg>
-        <span>انضم لفصل</span>
+        <span>{{ t('dashboard.joinClass') }}</span>
       </button>
     </div>
     <div v-if="loading" class="student-empty"><p>...</p></div>
     <div v-else-if="classes.length === 0" class="student-empty">
-      <p>لم تنضم لأي فصل بعد</p>
-      <p class="sub">اضغط "انضم لفصل" وأدخل كود الفصل</p>
+      <p>{{ t('dashboard.noClassesJoined') }}</p>
+      <p class="sub">{{ t('dashboard.joinClassHint') }}</p>
     </div>
     <div v-else class="student-class-list">
       <div v-for="cls in classes" :key="cls.id" class="student-class-row">
@@ -82,13 +84,13 @@ onMounted(() => {
     <!-- Join Modal -->
     <div v-if="showJoinModal" class="modal-overlay" @click.self="showJoinModal = false">
       <div class="join-modal">
-        <h3>انضم لفصل</h3>
-        <input v-model="joinCode" type="text" placeholder="أدخل كود الفصل (مثال: A1B2C3D4)" maxlength="8" @keyup.enter="handleJoinClass" />
+        <h3>{{ t('dashboard.joinClassModalTitle') }}</h3>
+        <input v-model="joinCode" type="text" :placeholder="t('dashboard.enterClassCode')" maxlength="8" @keyup.enter="handleJoinClass" />
         <p v-if="joinError" class="join-error">{{ joinError }}</p>
         <div class="join-actions">
-          <button class="join-cancel" @click="showJoinModal = false">إلغاء</button>
+          <button class="join-cancel" @click="showJoinModal = false">{{ t('dashboard.close') }}</button>
           <button class="join-confirm" :disabled="joinLoading" @click="handleJoinClass">
-            {{ joinLoading ? '...' : 'انضمام' }}
+            {{ joinLoading ? '...' : t('dashboard.joinAction') }}
           </button>
         </div>
       </div>

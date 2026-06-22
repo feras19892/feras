@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
 import { ref, watch, onMounted } from 'vue';
 
 export interface ChartPoint {
@@ -13,6 +14,7 @@ interface Props {
   intercept?: number;
 }
 
+const { t } = useI18n()
 const props = defineProps<Props>();
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 
@@ -86,7 +88,7 @@ function draw() {
   if (props.points.length === 0) {
     ctx.fillStyle = '#475569';
     ctx.textAlign = 'center';
-    ctx.fillText('سجل قراءات لرسم البيانات', w / 2, h / 2);
+    ctx.fillText(t('experiments.recordReadingsToPlot'), w / 2, h / 2);
     return;
   }
 

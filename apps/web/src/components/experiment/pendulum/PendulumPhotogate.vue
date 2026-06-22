@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
 import { ref, watch } from 'vue'
 
+const { t } = useI18n()
 const props = defineProps<{
   simRunning: boolean
   simTheta: number
@@ -65,12 +67,12 @@ defineExpose({ start, stop, resetAll, count, elapsed, t1, t2, t3 })
 <template>
   <div class="photogate">
     <div class="gate-display">
-      <div class="gate-label">البوابة الضوئية — عدّاد الاهتزازات</div>
+      <div class="gate-label">{{ t('experiments.photogateTitle') }}</div>
       <div class="gate-count" :class="{ active: isCounting }">{{ count }} <span class="gate-target">/ {{ targetCount }}</span></div>
-      <div class="gate-time" v-if="elapsed > 0 || isCounting">الزمن: {{ (elapsed / 1000).toFixed(2) }} s</div>
+      <div class="gate-time" v-if="elapsed > 0 || isCounting">{{ t('experiments.time') }}: {{ (elapsed / 1000).toFixed(2) }} s</div>
     </div>
     <div class="trials-table" v-if="t1 > 0 || t2 > 0 || t3 > 0">
-      <table><thead><tr><th>التكرار</th><th>t (s)</th></tr></thead>
+      <table><thead><tr><th>{{ t('experiments.repetition') }}</th><th>t (s)</th></tr></thead>
         <tbody>
           <tr><td>1</td><td>{{ t1 > 0 ? t1.toFixed(2) : '--' }}</td></tr>
           <tr><td>2</td><td>{{ t2 > 0 ? t2.toFixed(2) : '--' }}</td></tr>
@@ -79,9 +81,9 @@ defineExpose({ start, stop, resetAll, count, elapsed, t1, t2, t3 })
       </table>
     </div>
     <div class="gate-controls">
-      <button class="btn" :disabled="isCounting || currentTrial >= 3" @click="start">ابدأ العد</button>
-      <button class="btn secondary" :disabled="!isCounting" @click="stop">أوقف</button>
-      <button class="btn danger" @click="resetAll">إعادة</button>
+      <button class="btn" :disabled="isCounting || currentTrial >= 3" @click="start">{{ t('experiments.startCounting') }}</button>
+      <button class="btn secondary" :disabled="!isCounting" @click="stop">{{ t('experiments.stopAction') }}</button>
+      <button class="btn danger" @click="resetAll">{{ t('experiments.redoBtn') }}</button>
     </div>
   </div>
 </template>

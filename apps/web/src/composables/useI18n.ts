@@ -12,5 +12,6 @@ export const useI18n = () => {
     messages,
     t: store.t,
     setLocale: store.setLocale,
+    bootstrap: store.bootstrap,
   };
 };

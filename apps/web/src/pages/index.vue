@@ -2,11 +2,13 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../modules/auth/stores/auth'
+import { useI18n } from '../composables/useI18n'
 import LandingLangSwitcher from '../components/landing/LandingLangSwitcher.vue'
 import LandingHeroSection from '../components/landing/LandingHeroSection.vue'
 import LandingLoginForm from '../components/landing/LandingLoginForm.vue'
 import LandingGuestButtons from '../components/landing/LandingGuestButtons.vue'
 
+const { t } = useI18n()
 const router = useRouter()
 const auth = useAuthStore()
 
@@ -19,7 +21,7 @@ async function handleLogin(payload: { email: string; password: string }) {
   if (ok) {
     routeByRole()
   } else {
-    formError.value = 'البريد الإلكتروني أو كلمة السر غير صحيحة'
+    formError.value = t('auth.errors.invalidCredentials')
   }
 }
 

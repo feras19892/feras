@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
 defineProps<{ open: boolean }>()
+const { t } = useI18n()
 const emit = defineEmits<{ (e: 'close'): void }>()
 </script>
 
@@ -8,51 +11,51 @@ const emit = defineEmits<{ (e: 'close'): void }>()
     <div v-if="open" class="help-overlay" @click.self="emit('close')">
       <div class="help-card">
         <div class="help-header">
-          <h2>&#x2753; دليل تجربة البندول</h2>
+          <h2>&#x2753; {{ t('experiments.pendulumExperimentGuide') }}</h2>
           <button class="close-btn" @click="emit('close')">&#x2715;</button>
         </div>
         <div class="help-body">
           <section class="help-section">
-            <h3>&#x1F4DA; تعريف التجربة</h3>
-            <p>تجربة البندول البسيط تهدف إلى تحديد عجلة الجاذبية <b>g</b> بقياس فترة الاهتزاز <b>T</b> لأطوال خيط <b>L</b> مختلفة.</p>
+            <h3>&#x1F4DA; {{ t('experiments.pendulumDefinition') }}</h3>
+            <p>{{ t('experiments.pendulumDefinitionDesc') }}</p>
           </section>
           <section class="help-section">
-            <h3>&#x2696;&#xFE0F; المعادلات الأساسية</h3>
+            <h3>&#x2696;&#xFE0F; {{ t('experiments.basicEquations') }}</h3>
             <div class="eq-box">
               <div class="eq-line"><b>T</b> = 2π √(L / g)</div>
               <div class="eq-line"><b>ω₀</b> = √(g / L)</div>
               <div class="eq-line"><b>g</b> = 4π²L / T²</div>
             </div>
-            <p class="help-hint">المعادلة صالحة لزوايا صغيرة (θ ≤ 10°).</p>
+            <p class="help-hint">{{ t('experiments.validForSmallAngles') }}</p>
           </section>
           <section class="help-section">
-            <h3>&#x1F9EA; طريقة العمل</h3>
+            <h3>&#x1F9EA; {{ t('experiments.methodOfWork') }}</h3>
             <ol>
-              <li>اضبط طول الخيط <b>L</b> (مثلاً 0.20 m).</li>
-              <li>اضبط الزاوية الأولية θ₀ ≤ 10°.</li>
-              <li>اضغط <b>"بدء"</b> لبدء الاهتزاز.</li>
-              <li>انتظر استقرار القراءة — ستظهر ✅.</li>
-              <li>اضغط <b>"تسجيل"</b> لحفظ القراءة.</li>
-              <li>غيّر <b>L</b> وكرر للحصول على قياسات متعددة.</li>
-              <li>اضغط <b>"g من regression"</b> لحساب g من الميل.</li>
+              <li>{{ t('experiments.pendulumGuideStep1') }}</li>
+              <li>{{ t('experiments.pendulumGuideStep2') }}</li>
+              <li>{{ t('experiments.pendulumGuideStep3') }}</li>
+              <li>{{ t('experiments.pendulumGuideStep4') }}</li>
+              <li>{{ t('experiments.pendulumGuideStep5') }}</li>
+              <li>{{ t('experiments.pendulumGuideStep6') }}</li>
+              <li>{{ t('experiments.pendulumGuideStep7') }}</li>
             </ol>
           </section>
           <section class="help-section">
-            <h3>&#x1F4C9; حساب الميل من الرسم</h3>
-            <p>في لوحة <b>Scatter</b> اختر L × T² ثم اضغط <b>"حساب الميل"</b>:</p>
+            <h3>&#x1F4C9; {{ t('experiments.calculateSlopeFromGraph') }}</h3>
+            <p>{{ t('experiments.calculateSlopeDesc') }}</p>
             <div class="eq-box">
               <div class="eq-line">T² = (4π²/g) · L</div>
-              <div class="eq-note">الميل = 4π² / g</div>
-              <div class="eq-note">g = 4π² / الميل</div>
+              <div class="eq-note">{{ t('experiments.slopeEquation') }}</div>
+              <div class="eq-note">{{ t('experiments.gFromSlope') }}</div>
             </div>
           </section>
           <section class="help-section">
-            <h3>&#x1F4BE; ازرار التحكم</h3>
+            <h3>&#x1F4BE; {{ t('experiments.controlButtons') }}</h3>
             <div class="btn-help-grid">
-              <div class="btn-help-row"><span class="btn-tag primary">▶️ بدء</span><span>تشغيل/إيقاف المحاكاة</span></div>
-              <div class="btn-help-row"><span class="btn-tag">&#x1F504; إعادة</span><span>إعادة تعيين المحاكاة</span></div>
-              <div class="btn-help-row"><span class="btn-tag">&#x1F4CC; تسجيل</span><span>تسجيل قياس حالي</span></div>
-              <div class="btn-help-row"><span class="btn-tag speed">&#x1F40D; ×1.0</span><span>تغيير سرعة المحاكاة</span></div>
+              <div class="btn-help-row"><span class="btn-tag primary">▶️ {{ t('experiments.start') }}</span><span>{{ t('experiments.startSimulation') }}</span></div>
+              <div class="btn-help-row"><span class="btn-tag">&#x1F504; {{ t('experiments.reset') }}</span><span>{{ t('experiments.resetSimulation') }}</span></div>
+              <div class="btn-help-row"><span class="btn-tag">&#x1F4CC; {{ t('experiments.record') }}</span><span>{{ t('experiments.recordCurrentMeasurement') }}</span></div>
+              <div class="btn-help-row"><span class="btn-tag speed">&#x1F40D; ×1.0</span><span>{{ t('experiments.simulationSpeed') }}</span></div>
             </div>
           </section>
         </div>

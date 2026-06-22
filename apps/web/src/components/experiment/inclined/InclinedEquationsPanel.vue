@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from '../../../composables/useI18n'
+const { t } = useI18n()
 const props = defineProps<{
   calcResult: string
 }>()
@@ -20,16 +22,16 @@ const resultLines = computed(() => {
 <template>
   <div class="equations-panel">
     <div class="calc-buttons">
-      <button @click="emit('calcAcceleration')">حساب التسارع a</button>
-      <button @click="emit('calcTime')">حساب زمن الوصول t</button>
-      <button @click="emit('calcVelocity')">حساب السرعة النهائية v</button>
-      <button @click="emit('calcNormal')">حساب قوة التفاعل N</button>
+      <button @click="emit('calcAcceleration')">{{ t('experiments.calculateAcceleration') }}</button>
+      <button @click="emit('calcTime')">{{ t('experiments.calculateArrivalTime') }}</button>
+      <button @click="emit('calcVelocity')">{{ t('experiments.calculateFinalVelocity') }}</button>
+      <button @click="emit('calcNormal')">{{ t('experiments.calculateNormalForce') }}</button>
     </div>
     <div class="result">
       <div v-for="(line, i) in resultLines" :key="i">{{ line }}</div>
     </div>
     <div class="formulas">
-      <h5>المعادلات الأساسية:</h5>
+      <h5>{{ t('experiments.basicEquations') }}:</h5>
       <ul>
         <li>a = g·sin(θ) − μ·g·cos(θ)</li>
         <li>s = ½·a·t²</li>

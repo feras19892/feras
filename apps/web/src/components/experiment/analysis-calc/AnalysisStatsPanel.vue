@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from '../../../composables/useI18n';
 import type { AnalysisColumnMeta } from '../../../types/physics';
 
 const props = defineProps<{
   readings: Record<string, number>[];
   columns: AnalysisColumnMeta[];
 }>();
+
+const { t } = useI18n();
 
 const stats = computed(() => {
   const result: Record<string, { n: number; mean: number; std: number; min: number; max: number; median: number; relErr: number }> = {};
@@ -27,7 +30,7 @@ const stats = computed(() => {
 
 <template>
   <div class="stats-panel">
-    <div class="panel-header">📊 إحصائيات القراءات</div>
+    <div class="panel-header">{{ t('analysis.statsTitle') }}</div>
     <div class="stats-body">
       <div v-for="col in columns" :key="col.key" class="stat-card">
         <div class="col-title">{{ col.label }} <span v-if="col.unit" class="unit">({{ col.unit }})</span></div>
@@ -38,7 +41,7 @@ const stats = computed(() => {
         <div class="metrics">
           <div class="m"><span class="ml">μ</span><span class="mv">{{ stats[col.key]?.mean.toFixed(4) ?? '-' }}</span></div>
           <div class="m"><span class="ml">σ</span><span class="mv">{{ stats[col.key]?.std.toFixed(4) ?? '-' }}</span></div>
-          <div class="m"><span class="ml">وسيط</span><span class="mv">{{ stats[col.key]?.median.toFixed(4) ?? '-' }}</span></div>
+          <div class="m"><span class="ml">{{ t('analysis.median') }}</span><span class="mv">{{ stats[col.key]?.median.toFixed(4) ?? '-' }}</span></div>
           <div class="m"><span class="ml">min</span><span class="mv">{{ stats[col.key]?.min.toFixed(4) ?? '-' }}</span></div>
           <div class="m"><span class="ml">max</span><span class="mv">{{ stats[col.key]?.max.toFixed(4) ?? '-' }}</span></div>
         </div>

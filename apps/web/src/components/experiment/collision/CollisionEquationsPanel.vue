@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 const emit = defineEmits<{
   (e: 'calcFinalVelocity'): void
   (e: 'calcMomentumDiff'): void
@@ -9,7 +12,7 @@ const emit = defineEmits<{
 <template>
   <div class="equations-panel">
     <div class="formulas">
-      <h5>المعادلات الأساسية:</h5>
+      <h5>{{ t('experiments.basicEquations') }}:</h5>
       <div class="eq">v₁f = [(m₁ − e·m₂)v₁i + (1+e)m₂·v₂i] / (m₁+m₂)</div>
       <div class="eq">v₂f = [(m₂ − e·m₁)v₂i + (1+e)m₁·v₁i] / (m₁+m₂)</div>
       <div class="eq">P = m·v</div>
@@ -17,9 +20,9 @@ const emit = defineEmits<{
       <div class="eq">Loss% = (KEi − KEf) / KEi × 100</div>
     </div>
     <div class="buttons">
-      <button @click="emit('calcFinalVelocity')">حساب السرعات النهائية</button>
-      <button @click="emit('calcMomentumDiff')">حساب فرق الزخم</button>
-      <button @click="emit('calcEnergyLoss')">حساب فقد الطاقة</button>
+      <button @click="emit('calcFinalVelocity')">{{ t('experiments.calculateFinalVelocities') }}</button>
+      <button @click="emit('calcMomentumDiff')">{{ t('experiments.calculateMomentumDiff') }}</button>
+      <button @click="emit('calcEnergyLoss')">{{ t('experiments.calculateEnergyLoss') }}</button>
     </div>
   </div>
 </template>

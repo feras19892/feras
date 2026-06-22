@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 const props = defineProps<{
   tutorType: 'info' | 'warn' | 'success'
   tutorMessage: string
@@ -11,7 +14,7 @@ const props = defineProps<{
 <template>
   <div class="tutor-card" :class="props.tutorType">
     <div class="tutor-accent" />
-    <div class="tutor-top"><div class="tutor-status-dot" /><span class="tutor-badge">تحليل مباشر</span></div>
+    <div class="tutor-top"><div class="tutor-status-dot" /><span class="tutor-badge">{{ t('experiments.liveAnalysis') }}</span></div>
     <div class="tutor-body">
       <p class="tutor-message">{{ props.tutorMessage }}</p>
       <div class="tutor-metrics">

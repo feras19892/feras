@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
+import { useI18n } from '../../composables/useI18n'
 
+const { t } = useI18n()
 const props = defineProps<{
   studentStorageKey: string
   hasData: boolean
@@ -51,35 +53,35 @@ function printReport() {
     <button class="close-btn" @click="emit('close')">✕</button>
 
     <section class="student-info">
-      <h5>معلومات الطالب</h5>
+      <h5>{{ t('experiments.studentInfo') }}</h5>
       <div class="info-grid">
         <div class="info-field">
-          <label>الاسم:</label>
-          <input v-model="studentName" @change="saveStudentInfo" placeholder="اسم الطالب" />
+          <label>{{ t('experiments.nameLabel') }}:</label>
+          <input v-model="studentName" @change="saveStudentInfo" :placeholder="t('experiments.nameLabel')" />
         </div>
         <div class="info-field">
-          <label>البريد:</label>
+          <label>{{ t('experiments.emailLabel') }}:</label>
           <input v-model="studentEmail" @change="saveStudentInfo" placeholder="email@example.com" />
         </div>
         <div class="info-field">
-          <label>الصف:</label>
-          <input v-model="studentClass" @change="saveStudentInfo" placeholder="الصف / الشعبة" />
+          <label>{{ t('experiments.classLabel') }}:</label>
+          <input v-model="studentClass" @change="saveStudentInfo" :placeholder="t('experiments.classLabel')" />
         </div>
       </div>
       <div class="info-field notes">
-        <label>ملاحظات:</label>
-        <textarea v-model="studentNotes" @change="saveStudentInfo" placeholder="أدخل ملاحظاتك عن التجربة..."></textarea>
+        <label>{{ t('experiments.notesLabel') }}:</label>
+        <textarea v-model="studentNotes" @change="saveStudentInfo" :placeholder="t('experiments.enterExperimentNotes')"></textarea>
       </div>
     </section>
 
     <slot name="content" />
 
     <div class="print-bar" v-if="hasData">
-      <button class="print-btn" @click="printReport">🖨️ طباعة</button>
-      <button class="print-btn primary" @click="emit('open-full-report')">📋 تقرير كامل</button>
+      <button class="print-btn" @click="printReport">🖨️ {{ t('experiments.print') }}</button>
+      <button class="print-btn primary" @click="emit('open-full-report')">📋 {{ t('experiments.fullReport') }}</button>
     </div>
     <div class="no-data" v-if="!hasData">
-      <slot name="no-data">لا توجد بيانات مسجلة. قم بإجراء التجربة أولاً.</slot>
+      <slot name="no-data">{{ t('experiments.noRecordedDataPerformExperiment') }}</slot>
     </div>
   </div>
 </template>

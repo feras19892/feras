@@ -8,10 +8,11 @@ import {
   unbanUser,
   addAdminNote,
   sendAdminWarning,
+  type AdminUser,
 } from '../../services/admin.service';
 
 export function useAdminUsers() {
-  const users = ref<Record<string, unknown>[]>([]);
+  const users = ref<AdminUser[]>([]);
   const loading = ref(false);
   const error = ref('');
 

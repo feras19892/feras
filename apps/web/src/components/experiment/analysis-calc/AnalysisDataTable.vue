@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from '../../../composables/useI18n';
 import type { AnalysisColumnMeta } from '../../../types/physics';
 
 const props = defineProps<{
@@ -13,6 +14,7 @@ const emit = defineEmits<{
   (e: 'remove-row', index: number): void;
 }>();
 
+const { t } = useI18n();
 const rows = computed(() => props.readings);
 
 // Smart outlier detection: highlight values > 2σ from mean
@@ -40,8 +42,8 @@ function onInput(row: number, key: string, ev: Event) {
 <template>
   <div class="table-panel">
     <div class="panel-header">
-      <span>📋 جدول القراءات</span>
-      <button class="btn-add" @click="emit('add-row')">+ صف</button>
+      <span>{{ t('analysis.dataTable') }}</span>
+      <button class="btn-add" @click="emit('add-row')">{{ t('analysis.addRow') }}</button>
     </div>
     <div class="table-wrap">
       <table v-if="columns.length">
@@ -63,7 +65,7 @@ function onInput(row: number, key: string, ev: Event) {
                 inputmode="decimal"
                 :value="row[col.key] !== undefined ? (typeof row[col.key] === 'number' ? Number(row[col.key]).toFixed(3) : String(row[col.key])) : ''"
                 @change="onInput(i, col.key, $event)"
-                :title="outlierMap[col.key]?.[i] ? 'قيمة شاذة (> 2σ من المتوسط)' : ''"
+                :title="outlierMap[col.key]?.[i] ? t('analysis.outlierTooltip') : ''"
               />
             </td>
             <td>
@@ -72,7 +74,7 @@ function onInput(row: number, key: string, ev: Event) {
           </tr>
         </tbody>
       </table>
-      <p v-else class="empty">لا توجد بيانات</p>
+      <p v-else class="empty">{{ t('analysis.noData') }}</p>
     </div>
   </div>
 </template>

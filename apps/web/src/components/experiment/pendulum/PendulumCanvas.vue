@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import type { PendulumParams } from '../../../modules/physics/experiments/pendulum/usePendulumPhysics'
 
 interface SimState { theta: number; omega: number; t: number; running: boolean; paused: boolean }
 
+const { t } = useI18n()
 const props = defineProps<{ params: PendulumParams; simState: SimState; oscillationCount?: number }>()
 const emit = defineEmits<{ (e: 'snapshot', dataUrl: string): void }>()
 
@@ -153,9 +155,9 @@ defineExpose({ draw, captureSnapshot })
 <template>
   <div ref="wrapRef" class="canvas-wrap">
     <div v-if="simState.running && oscillationCount !== undefined" class="osc-counter">
-      <span class="osc-num">{{ oscillationCount }}</span><span class="osc-label">اهتزاز</span>
+      <span class="osc-num">{{ oscillationCount }}</span><span class="osc-label">{{ t('experiments.oscillation') }}</span>
     </div>
-    <button class="snapshot-btn" @click="captureSnapshot()" title="📸 التقاط لقطة">📸</button>
+    <button class="snapshot-btn" @click="captureSnapshot()" :title="'📸 ' + t('experiments.snapshot')">📸</button>
     <canvas ref="canvasRef" width="700" height="420" />
   </div>
 </template>

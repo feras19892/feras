@@ -11,15 +11,60 @@ import {
   deleteAdminClass,
 } from '../services/admin.service';
 
+interface AdminUser {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  created_at?: string;
+}
+
+interface AdminClassItem {
+  id: string;
+  name: string;
+  code: string;
+  teacher_name: string;
+  student_count: number;
+  created_at?: string;
+}
+
+interface AdminReportItem {
+  id: number;
+  student_name: string;
+  experiment_name: string;
+  class_name: string;
+  teacher_name: string;
+  status: string;
+  grade?: number | null;
+  submitted_at?: string;
+}
+
+interface AdminFeedbackItem {
+  id: number;
+  type: string;
+  user_name: string;
+  experiment_name?: string;
+  rating?: number | null;
+  message: string;
+  status: string;
+  created_at?: string;
+}
+
+interface AdminStats {
+  users: { total: number; byRole: { role: string; count: number }[] };
+  classes: { total: number };
+  reports: { total: number; graded: number; pending: number; resubmitted: number; average: number };
+}
+
 export function useAdmin() {
   const loading = ref(false);
   const errorMsg = ref('');
 
-  const users = ref<Record<string, unknown>[]>([]);
-  const classes = ref<Record<string, unknown>[]>([]);
-  const reports = ref<Record<string, unknown>[]>([]);
-  const feedback = ref<Record<string, unknown>[]>([]);
-  const stats = ref<Record<string, unknown> | null>(null);
+  const users = ref<AdminUser[]>([]);
+  const classes = ref<AdminClassItem[]>([]);
+  const reports = ref<AdminReportItem[]>([]);
+  const feedback = ref<AdminFeedbackItem[]>([]);
+  const stats = ref<AdminStats | null>(null);
 
   async function loadAll() {
     loading.value = true;
@@ -32,11 +77,11 @@ export function useAdmin() {
         getAdminReports(),
         getAdminFeedback(),
       ]);
-      if (u.success) users.value = u.users;
-      if (s.success) stats.value = s.stats;
-      if (c.success) classes.value = c.classes;
-      if (r.success) reports.value = r.reports;
-      if (f.success) feedback.value = f.feedback;
+      if (u.success) users.value = u.users as unknown as AdminUser[];
+      if (s.success) stats.value = s.stats as unknown as AdminStats;
+      if (c.success) classes.value = c.classes as unknown as AdminClassItem[];
+      if (r.success) reports.value = r.reports as unknown as AdminReportItem[];
+      if (f.success) feedback.value = f.feedback as unknown as AdminFeedbackItem[];
     } catch (err: unknown) {
       console.error('admin load failed:', err);
       errorMsg.value = (err instanceof Error ? err.message : '') || 'فشل تحميل البيانات';

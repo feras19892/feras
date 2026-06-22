@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useNotifications } from '../../composables/useNotifications';
+import { useI18n } from '../../composables/useI18n';
 
 const { notifications, unreadCount, markAllRead } = useNotifications();
+const { t } = useI18n();
 const open = ref(false);
 const wrapperRef = ref<HTMLElement | null>(null);
 
@@ -42,12 +44,12 @@ function formatTime(dateStr: string) {
     </button>
     <div v-if="open" class="dropdown" @click.stop>
       <div class="header">
-        <span>الإشعارات</span>
+        <span>{{ t('common.notifications') }}</span>
         <button v-if="notifications.length > 0" class="mark-all" @click="markAllRead">
-          تحديد الكل
+          {{ t('common.markAllRead') }}
         </button>
       </div>
-      <div v-if="notifications.length === 0" class="empty">لا توجد إشعارات</div>
+      <div v-if="notifications.length === 0" class="empty">{{ t('common.noNotifications') }}</div>
       <div
         v-for="n in notifications"
         :key="n.id"

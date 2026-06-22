@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from '../../../composables/useI18n'
 
+const { t } = useI18n()
 const props = defineProps<{
   params: { mass: number; k: number; amplitude: number }
   simState: { x: number; v: number; t: number }
@@ -16,7 +18,7 @@ const liveAnalysisLines = computed(() => {
   const total = ke + pe
   const fr = -props.params.k * x
   const lines = [
-    `المعادلات: m=${props.params.mass.toFixed(3)}kg, k=${props.params.k.toFixed(1)}N/m, A=${props.params.amplitude.toFixed(3)}m`,
+    `${t('experiments.equationsLabel')}: m=${props.params.mass.toFixed(3)}kg, k=${props.params.k.toFixed(1)}N/m, A=${props.params.amplitude.toFixed(3)}m`,
     `x=${x.toFixed(3)}m, v=${v.toFixed(3)}m/s, F_r=${fr.toFixed(3)}N`,
     `KE=${ke.toFixed(3)}J, PE=${pe.toFixed(3)}J, E_total=${total.toFixed(3)}J`,
   ]
@@ -29,7 +31,7 @@ const liveAnalysisLines = computed(() => {
 
 <template>
   <div class="live-analysis-card">
-    <div class="card-header"><h4>&#x2696;&#xFE0F; التحليل المباشر</h4></div>
+    <div class="card-header"><h4>&#x2696;&#xFE0F; {{ t('experiments.liveAnalysis') }}</h4></div>
     <div class="live-analysis-body">
       <div v-for="(line, i) in liveAnalysisLines" :key="i">{{ line }}</div>
     </div>

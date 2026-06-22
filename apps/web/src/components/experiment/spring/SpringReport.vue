@@ -2,6 +2,7 @@
 import { computed, shallowRef, watch } from 'vue'
 import ExperimentReport from '../ExperimentReport.vue'
 import DeletableSection from '../DeletableSection.vue'
+import { useI18n } from '../../../composables/useI18n'
 
 interface StaticReading {
   mass: number; yLoad: number; yUnload: number; yAvg: number; deltaY: number; force: number
@@ -11,6 +12,7 @@ interface DynamicTrial {
   mass: number; t1: number; t2: number; t3: number; tAvg: number; T: number; T2: number
 }
 
+const { t } = useI18n()
 const props = defineProps<{
   staticReadings: StaticReading[]
   dynamicTrials: DynamicTrial[]
@@ -91,12 +93,12 @@ const errorPercent = computed(() => {
 })
 
 const sourcesOfError = [
-  'احتكاك الهواء',
-  'دقة ساعة الإيقاف',
-  'خطأ زاوية النظر (parallax)',
-  'تشوه النابض غير الخطي',
-  'اهتزازات الطاولة',
-  'عدم مركزية الكتلة',
+  t('experiments.airFriction'),
+  t('experiments.humanStopwatchAccuracy'),
+  t('experiments.parallaxError'),
+  t('experiments.springNonLinearDeformation'),
+  t('experiments.tableVibrations'),
+  t('experiments.massNonCentrality'),
 ]
 </script>
 
@@ -104,7 +106,7 @@ const sourcesOfError = [
   <ExperimentReport student-storage-key="spring_report_student" :has-data="staticEdit.length > 0 || dynamicEdit.length > 0" @close="emit('close')" @open-full-report="emit('open-full-report')">
     <template #content>
       <DeletableSection v-if="staticEdit.length">
-        <h5>1. الجزء الاستاتيكي (قانون هوك) <span class="edit-hint">✏️ قابل للتعديل</span></h5>
+        <h5>1. {{ t('experiments.staticPart') }} <span class="edit-hint">✏️ {{ t('experiments.editable') }}</span></h5>
         <table class="report-table">
           <thead>
             <tr><th>#</th><th>m (g)</th><th>Δy (cm)</th><th>F (N)</th></tr>
@@ -119,11 +121,11 @@ const sourcesOfError = [
           </tbody>
         </table>
         <div class="result-line" v-if="kStatic">
-          <b>k (استاتيكي):</b> {{ kStatic.toFixed(2) }} N/m
+          <b>{{ t('experiments.kStatic') }}:</b> {{ kStatic.toFixed(2) }} N/m
         </div>
       </DeletableSection>
       <DeletableSection v-if="dynamicEdit.length">
-        <h5>2. الجزء الديناميكي (الحركة الاهتزازية) <span class="edit-hint">✏️ قابل للتعديل</span></h5>
+        <h5>2. {{ t('experiments.dynamicPartOscillatory') }} <span class="edit-hint">✏️ {{ t('experiments.editable') }}</span></h5>
         <table class="report-table">
           <thead>
             <tr><th>#</th><th>m (g)</th><th>t₁ (s)</th><th>t₂ (s)</th><th>t₃ (s)</th><th>T (s)</th><th>T² (s²)</th></tr>
@@ -141,23 +143,23 @@ const sourcesOfError = [
           </tbody>
         </table>
         <div class="result-line" v-if="kDynamic">
-          <b>k (ديناميكي):</b> {{ kDynamic.toFixed(2) }} N/m
+          <b>{{ t('experiments.kDynamic') }}:</b> {{ kDynamic.toFixed(2) }} N/m
         </div>
       </DeletableSection>
       <DeletableSection v-if="kAvg">
-        <h5>3. المقارنة والاستنتاج</h5>
+        <h5>3. {{ t('experiments.comparisonAndConclusion') }}</h5>
         <div class="result-line">
-          <b>k المتوسط:</b> {{ kAvg.toFixed(2) }} N/m
+          <b>{{ t('experiments.kAverage') }}:</b> {{ kAvg.toFixed(2) }} N/m
         </div>
         <div class="result-line">
-          <b>k النظري:</b> {{ theoreticalK.toFixed(2) }} N/m
+          <b>{{ t('experiments.kTheoretical') }}:</b> {{ theoreticalK.toFixed(2) }} N/m
         </div>
         <div class="result-line" v-if="errorPercent !== null">
-          <b>نسبة الخطأ:</b> {{ errorPercent.toFixed(2) }}%
+          <b>{{ t('experiments.errorPercentage') }}:</b> {{ errorPercent.toFixed(2) }}%
         </div>
 
         <div class="error-sources">
-          <h6>مصادر الأخطاء المحتملة:</h6>
+          <h6>{{ t('experiments.potentialErrorSources') }}:</h6>
           <ul>
             <li v-for="err in sourcesOfError" :key="err">{{ err }}</li>
           </ul>

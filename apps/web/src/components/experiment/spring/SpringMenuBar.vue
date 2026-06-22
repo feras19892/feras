@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from '../../../composables/useI18n'
 
 const router = useRouter()
+
+const { t } = useI18n()
 
 const props = defineProps<{
   title: string
@@ -43,27 +46,27 @@ onUnmounted(() => window.removeEventListener('click', onMenuClick))
   <nav class="menu-bar" ref="menuRef">
     <div class="menu-left">
       <div class="menu-group">
-        <button class="menu-btn" :class="{open:activeMenu==='file'}" @click.stop="toggleMenu('file')">ملف</button>
+        <button class="menu-btn" :class="{open:activeMenu==='file'}" @click.stop="toggleMenu('file')">{{ t('experiments.menuFile') }}</button>
         <div v-if="activeMenu==='file'" class="menu-dropdown" @click.stop>
-          <div class="menu-row" @click="emit('exportCsv'); closeMenu()"><span class="mi">&#x1F4BE;</span><span>تصدير CSV</span></div>
+          <div class="menu-row" @click="emit('exportCsv'); closeMenu()"><span class="mi">&#x1F4BE;</span><span>{{ t('experiments.menuExportCsv') }}</span></div>
           <div class="menu-sep" />
-          <div class="menu-row restore" @click="emit('showAllPanels'); closeMenu()"><span class="mi">&#x1F504;</span><span>استعادة الواجهة</span></div>
+          <div class="menu-row restore" @click="emit('showAllPanels'); closeMenu()"><span class="mi">&#x1F504;</span><span>{{ t('experiments.menuRestoreUi') }}</span></div>
         </div>
       </div>
       <div class="menu-group">
-        <button class="menu-btn" :class="{open:activeMenu==='view'}" @click.stop="toggleMenu('view')">عرض</button>
+        <button class="menu-btn" :class="{open:activeMenu==='view'}" @click.stop="toggleMenu('view')">{{ t('experiments.menuView') }}</button>
         <div v-if="activeMenu==='view'" class="menu-dropdown" @click.stop>
-          <div class="menu-row check" @click="emit('togglePanel','table');"><span class="mi">&#x1F4CB;</span><span>جدول</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','equations');"><span class="mi">&#x2697;&#xFE0F;</span><span>حسابات</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','signal');"><span class="mi">&#x1F4C8;</span><span>إشارة</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','params');"><span class="mi">&#x2699;&#xFE0F;</span><span>معاملات</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','guide');"><span class="mi">&#x1F4CB;</span><span>دليل</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','stats');"><span class="mi">&#x1F4CA;</span><span>إحصائيات</span></div>
+          <div class="menu-row check" @click="emit('togglePanel','table');"><span class="mi">&#x1F4CB;</span><span>{{ t('experiments.menuTable') }}</span></div>
+          <div class="menu-row check" @click="emit('togglePanel','equations');"><span class="mi">&#x2697;&#xFE0F;</span><span>{{ t('experiments.menuCalculations') }}</span></div>
+          <div class="menu-row check" @click="emit('togglePanel','signal');"><span class="mi">&#x1F4C8;</span><span>{{ t('experiments.menuSignal') }}</span></div>
+          <div class="menu-row check" @click="emit('togglePanel','params');"><span class="mi">&#x2699;&#xFE0F;</span><span>{{ t('experiments.menuParameters') }}</span></div>
+          <div class="menu-row check" @click="emit('togglePanel','guide');"><span class="mi">&#x1F4CB;</span><span>{{ t('experiments.menuGuide') }}</span></div>
+          <div class="menu-row check" @click="emit('togglePanel','stats');"><span class="mi">&#x1F4CA;</span><span>{{ t('experiments.menuStatistics') }}</span></div>
           <div class="menu-row check" @click="emit('togglePanel','fft');"><span class="mi">&#x1F4CA;</span><span>FFT</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','scatter');"><span class="mi">&#x1F4C8;</span><span>Scatter</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','tutor');"><span class="mi">&#x1F9EA;</span><span>تحليل</span></div>
-          <div v-if="experimentRoute?.includes('spring')" class="menu-row check" @click="emit('togglePanel','static');"><span class="mi">&#x1F4D0;</span><span>إستاتيكي</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','error');"><span class="mi">&#x2696;&#xFE0F;</span><span>أخطاء</span></div>
+          <div class="menu-row check" @click="emit('togglePanel','scatter');"><span class="mi">&#x1F4C8;</span><span>{{ t('experiments.menuScatter') }}</span></div>
+          <div class="menu-row check" @click="emit('togglePanel','tutor');"><span class="mi">&#x1F9EA;</span><span>{{ t('experiments.menuAnalysis') }}</span></div>
+          <div v-if="experimentRoute?.includes('spring')" class="menu-row check" @click="emit('togglePanel','static');"><span class="mi">&#x1F4D0;</span><span>{{ t('experiments.menuStatic') }}</span></div>
+          <div class="menu-row check" @click="emit('togglePanel','error');"><span class="mi">&#x2696;&#xFE0F;</span><span>{{ t('experiments.menuErrors') }}</span></div>
         </div>
       </div>
     </div>
@@ -73,20 +76,20 @@ onUnmounted(() => window.removeEventListener('click', onMenuClick))
         <button v-if="experimentRoute" class="menu-btn" @click="router.push(experimentRoute)">{{ icon || '&#x1F9EA;' }} {{ experimentName || title }}</button>
       </div>
       <div class="menu-group">
-        <button class="menu-btn" :class="{open:activeMenu==='run'}" @click.stop="toggleMenu('run')">تشغيل</button>
+        <button class="menu-btn" :class="{open:activeMenu==='run'}" @click.stop="toggleMenu('run')">{{ t('experiments.menuRun') }}</button>
         <div v-if="activeMenu==='run'" class="menu-dropdown" @click.stop>
-          <div class="menu-row" @click="emit('togglePause'); closeMenu()"><span class="mi">&#x25B6;</span><span>بدء/توقف</span></div>
-          <div class="menu-row" @click="emit('reset'); closeMenu()"><span class="mi">&#x1F504;</span><span>إعادة</span></div>
-          <div class="menu-row" @click="emit('recordTrial'); closeMenu()"><span class="mi">&#x1F4CC;</span><span>تسجيل</span></div>
+          <div class="menu-row" @click="emit('togglePause'); closeMenu()"><span class="mi">&#x25B6;</span><span>{{ t('experiments.menuStartStop') }}</span></div>
+          <div class="menu-row" @click="emit('reset'); closeMenu()"><span class="mi">&#x1F504;</span><span>{{ t('experiments.menuReset') }}</span></div>
+          <div class="menu-row" @click="emit('recordTrial'); closeMenu()"><span class="mi">&#x1F4CC;</span><span>{{ t('experiments.menuRecord') }}</span></div>
           <div class="menu-sep" />
-          <div class="menu-row" @click="emit('runLab'); closeMenu()"><span class="mi">&#x26A1;</span><span>تشغيل تلقائي</span></div>
+          <div class="menu-row" @click="emit('runLab'); closeMenu()"><span class="mi">&#x26A1;</span><span>{{ t('experiments.menuAutoRun') }}</span></div>
         </div>
       </div>
       <div class="menu-group">
-        <button class="menu-btn analyze-btn" @click="emit('analyzeResults')">📊 قسم الرسم والحسابات</button>
+        <button class="menu-btn analyze-btn" @click="emit('analyzeResults')">{{ t('experiments.menuAnalyzeSection') }}</button>
       </div>
       <div class="menu-group">
-        <button class="menu-btn" @click="emit('toggleHelp')">&#x2753; مساعدة</button>
+        <button class="menu-btn" @click="emit('toggleHelp')">&#x2753; {{ t('experiments.menuHelp') }}</button>
       </div>
     </div>
   </nav>

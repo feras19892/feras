@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, watch, onMounted } from 'vue'
 import { linearRegression } from './linearRegression'
+import { useI18n } from '../../../composables/useI18n'
 
 interface Trial { mass: number; k: number; amplitude: number; T: number; f: number; omega: number; kCalc: number }
 
+const { t } = useI18n()
 const props = defineProps<{
   trials: Trial[]
 }>()
@@ -46,7 +48,7 @@ function draw() {
   ctx.fillStyle='#fffef7'; ctx.fillRect(0,0,W,H)
   const padL=52, padR=16, padT=18, padB=36
   const iW=W-padL-padR, iH=H-padT-padB
-  if (props.trials.length<2) { ctx.fillStyle='#64748b'; ctx.font='13px Segoe UI'; ctx.textAlign='center'; ctx.fillText('سجل قياستان على الأقل',W/2,H/2); ctx.textAlign='start'; return }
+  if (props.trials.length<2) { ctx.fillStyle='#64748b'; ctx.font='13px Segoe UI'; ctx.textAlign='center'; ctx.fillText(t('experiments.recordAtLeastTwo'),W/2,H/2); ctx.textAlign='start'; return }
   const xMin=Math.min(...xs.value), xMax=Math.max(...xs.value)
   const yMin=Math.min(...ys.value), yMax=Math.max(...ys.value)
   const xSpan=Math.max(1e-9,xMax-xMin), ySpan=Math.max(1e-9,yMax-yMin)
@@ -79,7 +81,7 @@ onMounted(draw)
     </div>
     <canvas ref="canvasRef" width="340" height="160" />
     <div class="scatter-footer">
-      <button class="btn-slope" @click="calcSlope" :disabled="!fit">&#x1F4C9; حساب الميل</button>
+      <button class="btn-slope" @click="calcSlope" :disabled="!fit">&#x1F4C9; {{ t('experiments.calculateSlope') }}</button>
       <div v-if="fit" class="fit-readout">
         <span>m = {{ fit.slope.toFixed(4) }}</span>
         <span>b = {{ fit.intercept.toFixed(4) }}</span>

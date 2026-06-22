@@ -2,6 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useProjectileExperiment } from '../../../../composables/projectile/useProjectileExperiment'
 import { useProjectileReport } from '../../../../composables/projectile/useProjectileReport'
+import { useI18n } from '../../../../composables/useI18n'
 import ProjectileMenuBar from '../../../../components/experiment/projectile/ProjectileMenuBar.vue'
 import ProjectileCanvas from '../../../../components/experiment/projectile/ProjectileCanvas.vue'
 import ProjectilePanelBody from '../../../../components/experiment/projectile/ProjectilePanelBody.vue'
@@ -15,6 +16,7 @@ import DraggablePanel from '../../../../components/experiment/spring/DraggablePa
 
 const ex = useProjectileExperiment()
 const rep = useProjectileReport()
+const { t } = useI18n()
 const helpOpen = ref(false)
 const reportOpen = ref(false)
 const canvasRef = ref<InstanceType<typeof ProjectileCanvas> | null>(null)
@@ -23,7 +25,7 @@ function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return
   if (e.code === 'Space') { e.preventDefault(); ex.lab.togglePause() }
-  else if (e.key === 'r' || e.key === 'R') { if (confirm('هل تريد إعادة تعيين المحاكاة؟')) ex.resetSim() }
+  else if (e.key === 'r' || e.key === 'R') { if (confirm(t('experiments.resetConfirm'))) ex.resetSim() }
   else if (e.key === 's' || e.key === 'S') { ex.trials.recordTrial() }
   else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); if (e.shiftKey) ex.trials.redo(); else ex.trials.undo() }
   else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ex.trials.redo() }
@@ -36,7 +38,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 <template>
   <div class="projectile-lab">
     <ProjectileMenuBar
-      title="حركة المقذوفات" icon="🚀" experiment-route="/physics/mechanics/projectile" experiment-name="Projectile"
+      :title="t('experiments.projectileTitle')" icon="🚀" experiment-route="/physics/mechanics/projectile" experiment-name="Projectile"
       @toggle-panel="ex.layout.togglePanel" @show-all-panels="ex.layout.showAllPanels" @export-csv="ex.trials.exportCsv"
       @toggle-pause="ex.lab.togglePause" @reset="ex.resetSim" @record-trial="ex.trials.recordTrial" @run-lab="ex.runProjectileLab"
       @calc-flight-time="ex.trials.calcFlightTime" @calc-max-height="ex.trials.calcMaxHeight" @calc-range="ex.trials.calcRange" @calc-fit-range="ex.trials.calcFitRange"
@@ -98,7 +100,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     />
 
     <ProjectileControlBar
-      :launch-label="ex.lab.sim.running && !ex.lab.sim.paused ? '⏸️ توقف' : '▶️ بدء'"
+      :launch-label="ex.lab.sim.running && !ex.lab.sim.paused ? '⏸️ ' + t('experiments.pauseBtn') : '▶️ ' + t('experiments.startBtn')"
       :speed="ex.lab.speed.value"
       :can-undo="ex.trials.canUndo()"
       :can-redo="ex.trials.canRedo()"
@@ -114,10 +116,10 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @toggle-target-mode="ex.params.targetMode = !ex.params.targetMode; ex.params.targetVisible = ex.params.targetMode"
     />
 
-    <div class="hint-bar" v-if="!ex.lab.sim.running"><span>💡 اضبط v₀ والزاوية، ثم اضغط "بدء"</span></div>
-    <div class="hint-bar active" v-else-if="ex.lab.sim.running && !ex.lab.sim.landed && !ex.lab.sim.targetHit"><span>🚀 المقذوف في الجو — انتظر الهبوط...</span></div>
-    <div class="hint-bar target-hit" v-else-if="ex.lab.sim.targetHit"><span>🎯 إصابة! المسافة: {{ ex.lab.sim.distanceToTarget?.toFixed(2) ?? '--' }} m</span></div>
-    <div class="hint-bar success" v-else><span>✅ هبط! اضغط "تسجيل" لحفظ القراءة</span></div>
+    <div class="hint-bar" v-if="!ex.lab.sim.running"><span>💡 {{ t('experiments.hintAdjust') }}</span></div>
+    <div class="hint-bar active" v-else-if="ex.lab.sim.running && !ex.lab.sim.landed && !ex.lab.sim.targetHit"><span>🚀 {{ t('experiments.hintFlying') }}</span></div>
+    <div class="hint-bar target-hit" v-else-if="ex.lab.sim.targetHit"><span>🎯 {{ t('experiments.targetHit') }}: {{ ex.lab.sim.distanceToTarget?.toFixed(2) ?? '--' }} m</span></div>
+    <div class="hint-bar success" v-else><span>✅ {{ t('experiments.hintLanded') }}</span></div>
 
     <ProjectileStatusBar :running="ex.lab.sim.running" :paused="ex.lab.sim.paused" />
     <ProjectileReport v-if="reportOpen" style="position:fixed;inset:5%;z-index:200;overflow:auto;background:#0d1117;border-radius:12px;border:1px solid #2D3645;box-shadow:0 20px 60px rgba(0,0,0,.5)"

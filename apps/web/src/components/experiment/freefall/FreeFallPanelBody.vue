@@ -8,6 +8,7 @@ import FreeFallGuidePanel from './FreeFallGuidePanel.vue'
 import FreeFallReportPanel from './FreeFallReportPanel.vue'
 import type { FreeFallTrial } from '../../../composables/freefall/useFreeFallTrials'
 import type { FreeFallParams } from '../../../modules/physics/experiments/freefall/useFreeFallPhysics'
+import { useI18n } from '../../../composables/useI18n'
 
 interface SimState {
   t: number
@@ -25,6 +26,7 @@ interface TrialStats {
   g_std: number
 }
 
+const { t } = useI18n()
 const props = defineProps<{
   id: string
   trials: FreeFallTrial[]
@@ -54,11 +56,11 @@ const resultLines = computed(() => {
 })
 
 const errorSources = [
-  'دقة المؤقت الرقمي',
-  'دقة قياس الارتفاع',
-  'احتكاك الهواء',
-  'اهتزاز الجهاز عند الاصطدام',
-  'تأثير الجاذبية المحلية',
+  t('experiments.digitalTimerAccuracy'),
+  t('experiments.heightMeasurementAccuracy'),
+  t('experiments.airFriction'),
+  t('experiments.deviceVibration'),
+  t('experiments.localGravityEffect'),
 ]
 </script>
 
@@ -67,10 +69,10 @@ const errorSources = [
 
   <template v-else-if="id === 'equations'">
     <div class="calc-row">
-      <button class="btn-calc" @click="emit('calcG')">📐 حساب g</button>
-      <button class="btn-calc" @click="emit('calcT')">⏱️ حساب t</button>
-      <button class="btn-calc" @click="emit('calcV')">⚡ حساب v</button>
-      <button class="btn-calc" @click="emit('calcFitG')">📈 ملائمة g</button>
+      <button class="btn-calc" @click="emit('calcG')">📐 {{ t('experiments.calculateG') }}</button>
+      <button class="btn-calc" @click="emit('calcT')">⏱️ {{ t('experiments.calculateT') }}</button>
+      <button class="btn-calc" @click="emit('calcV')">⚡ {{ t('experiments.calculateV') }}</button>
+      <button class="btn-calc" @click="emit('calcFitG')">📈 {{ t('experiments.fitG') }}</button>
     </div>
     <div class="calc-result">
       <div v-for="(line, i) in resultLines" :key="i">{{ line }}</div>
@@ -87,11 +89,11 @@ const errorSources = [
   <FreeFallScatterPanel v-else-if="id === 'scatter'" :trials="trials" />
 
   <template v-else-if="id === 'stats'">
-    <div class="stat-section-title">القياسة الحالية</div>
+    <div class="stat-section-title">{{ t('experiments.currentMeasurement') }}</div>
     <div class="stat-row"><span class="stat-label">t</span><span class="stat-value">{{ simState.landed ? (simState.t?.toFixed(4) ?? '--') : '--' }} s</span></div>
     <div class="stat-row"><span class="stat-label">v<sub>impact</sub></span><span class="stat-value">{{ simState.landed ? (Math.abs(simState.vy)?.toFixed(2) ?? '--') : '--' }} m/s</span></div>
     <template v-if="trials.length > 0 && trialStats">
-      <div class="stat-section-title">إحصائيات القياسات ({{ trials.length }})</div>
+      <div class="stat-section-title">{{ t('experiments.measurementStatistics') }} ({{ trials.length }})</div>
       <div class="stat-row"><span class="stat-label">t̄</span><span class="stat-value">{{ trialStats.time_mean.toFixed(4) }} s</span></div>
       <div class="stat-row"><span class="stat-label">σ<sub>t</sub></span><span class="stat-value">{{ trialStats.time_std.toFixed(4) }} s</span></div>
       <div class="stat-row"><span class="stat-label">ḡ<sub>calc</sub></span><span class="stat-value highlight">{{ trialStats.g_mean.toFixed(2) }} m/s²</span></div>
@@ -104,14 +106,14 @@ const errorSources = [
   <FreeFallGuidePanel v-else-if="id === 'guide'" />
 
   <template v-else-if="id === 'error'">
-    <div class="stat-section-title">مصادر الأخطاء المحتملة</div>
+    <div class="stat-section-title">{{ t('experiments.potentialErrorSources') }}</div>
     <ul class="error-list">
       <li v-for="err in errorSources" :key="err">{{ err }}</li>
     </ul>
   </template>
 
   <FreeFallReportPanel v-else-if="id === 'report'" :trials="trials" :trial-stats="trialStats" :g-theoretical="gTheoretical" @print-report="emit('printReport')" @open-full-report="emit('openFullReport')" />
-  <div v-else class="empty">لوحة غير معروفة</div>
+  <div v-else class="empty">{{ t('experiments.unknownPanel') }}</div>
 </template>
 
 <style scoped>

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 const props = defineProps<{ open: boolean }>()
 const emit = defineEmits<{ (e: 'close'): void }>()
 </script>
@@ -8,13 +11,13 @@ const emit = defineEmits<{ (e: 'close'): void }>()
     <div v-if="props.open" class="backdrop" @click="emit('close')">
       <div class="modal" @click.stop>
         <div class="header">
-          <h3>❓ دليل تجربة التصادم</h3>
+          <h3>❓ {{ t('experiments.collisionGuide') }}</h3>
           <button class="close" @click="emit('close')">×</button>
         </div>
         <div class="body">
-          <p><strong>السرعة:</strong> القيم الموجبة = حركة لليمين، السالبة = لليسار.</p>
-          <p><strong>معامل الارتداد (e):</strong> 1 = مرن تماماً، 0 = غير مرن تماماً.</p>
-          <p><strong>الاختصارات:</strong> Space = بدء/توقف، R = إعادة، S = تسجيل، Z = تراجع، Y = إعادة.</p>
+          <p><strong>{{ t('experiments.speed') }}:</strong> {{ t('experiments.speedDesc') }}</p>
+          <p><strong>{{ t('experiments.restitutionCoefficient') }} (e):</strong> {{ t('experiments.restitutionDesc') }}</p>
+          <p><strong>{{ t('experiments.shortcuts') }}:</strong> {{ t('experiments.shortcutsDesc') }}</p>
         </div>
       </div>
     </div>

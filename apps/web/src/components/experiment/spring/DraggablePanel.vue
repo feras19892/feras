@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
 import { ref } from 'vue'
 
 defineOptions({ inheritAttrs: false })
 
+const { t } = useI18n()
 const props = defineProps<{
   id: string
   title: string
@@ -59,8 +61,8 @@ function onDrop(e: MouseEvent) {
     <div class="card-header" @mousedown="onHeaderDown">
       <h4>{{ props.title }}</h4>
       <div class="panel-actions">
-        <button class="pa-btn" draggable="false" @mousedown.stop @click.stop="emit('maximize', props.id)" title="تكبير">&#x26F6;</button>
-        <button class="pa-btn" draggable="false" @mousedown.stop @click.stop="emit('hide', props.id)" title="إخفاء">&#x2715;</button>
+        <button class="pa-btn" draggable="false" @mousedown.stop @click.stop="emit('maximize', props.id)" :title="t('experiments.maximize')">&#x26F6;</button>
+        <button class="pa-btn" draggable="false" @mousedown.stop @click.stop="emit('hide', props.id)" :title="t('experiments.hide')">&#x2715;</button>
       </div>
     </div>
 

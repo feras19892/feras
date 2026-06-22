@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useI18n } from '../../composables/useI18n';
 import { getAdminSystemHealth } from '../../services/admin.service';
 
 interface HealthCounts { users: number; classes: number; reports: number; sessions: number }
 interface HealthToday { logins: number; signups: number; reports: number }
 interface HealthData { counts: HealthCounts; today: HealthToday; dbSize: number; tables: Record<string, number> }
 
+const { t } = useI18n();
 const health = ref<HealthData | null>(null);
 const loading = ref(false);
 const error = ref('');
@@ -17,7 +19,7 @@ async function load() {
     const res = await getAdminSystemHealth();
     if (res.success) health.value = res.health;
   } catch (err: unknown) {
-    error.value = (err instanceof Error ? err.message : '') || 'فشل التحميل';
+    error.value = (err instanceof Error ? err.message : '') || t('admin.loadError');
   } finally {
     loading.value = false;
   }
@@ -37,32 +39,32 @@ onMounted(load);
 <template>
   <div class="health-section">
     <div class="section-header">
-      <h3>🖥️ حالة النظام</h3>
-      <button class="btn-primary" @click="load">🔄 تحديث</button>
+      <h3>{{ t('adminUser.systemHealth') }}</h3>
+      <button class="btn-primary" @click="load">{{ t('admin.refresh') }}</button>
     </div>
 
-    <div v-if="loading" class="loading">جاري التحميل...</div>
+    <div v-if="loading" class="loading">{{ t('admin.loading') }}</div>
     <div v-else-if="error" class="error">❌ {{ error }}</div>
     <template v-else-if="health">
       <div class="stats-row">
-        <div class="mini-card"><div class="mini-value">{{ health.counts.users }}</div><div class="mini-label">مستخدمين</div></div>
-        <div class="mini-card"><div class="mini-value">{{ health.counts.classes }}</div><div class="mini-label">فصول</div></div>
-        <div class="mini-card"><div class="mini-value">{{ health.counts.reports }}</div><div class="mini-label">تقارير</div></div>
-        <div class="mini-card"><div class="mini-value">{{ health.counts.sessions }}</div><div class="mini-label">جلسات نشطة</div></div>
-        <div class="mini-card"><div class="mini-value">{{ formatBytes(health.dbSize) }}</div><div class="mini-label">حجم DB</div></div>
+        <div class="mini-card"><div class="mini-value">{{ health.counts.users }}</div><div class="mini-label">{{ t('adminUser.usersCount') }}</div></div>
+        <div class="mini-card"><div class="mini-value">{{ health.counts.classes }}</div><div class="mini-label">{{ t('adminUser.classesCount') }}</div></div>
+        <div class="mini-card"><div class="mini-value">{{ health.counts.reports }}</div><div class="mini-label">{{ t('adminUser.reportsCount') }}</div></div>
+        <div class="mini-card"><div class="mini-value">{{ health.counts.sessions }}</div><div class="mini-label">{{ t('adminUser.activeSessions') }}</div></div>
+        <div class="mini-card"><div class="mini-value">{{ formatBytes(health.dbSize) }}</div><div class="mini-label">{{ t('adminUser.dbSize') }}</div></div>
       </div>
 
       <div class="today-row">
-        <div class="mini-card"><div class="mini-value">{{ health.today.logins }}</div><div class="mini-label">دخول اليوم</div></div>
-        <div class="mini-card"><div class="mini-value">{{ health.today.signups }}</div><div class="mini-label">تسجيلات اليوم</div></div>
-        <div class="mini-card"><div class="mini-value">{{ health.today.reports }}</div><div class="mini-label">تقارير اليوم</div></div>
+        <div class="mini-card"><div class="mini-value">{{ health.today.logins }}</div><div class="mini-label">{{ t('adminUser.todayLogins') }}</div></div>
+        <div class="mini-card"><div class="mini-value">{{ health.today.signups }}</div><div class="mini-label">{{ t('adminUser.todaySignups') }}</div></div>
+        <div class="mini-card"><div class="mini-value">{{ health.today.reports }}</div><div class="mini-label">{{ t('adminUser.todayReports') }}</div></div>
       </div>
 
       <div class="table-card">
-        <h4>📊 إحصائيات الجداول</h4>
+        <h4>{{ t('adminUser.tableStats') }}</h4>
         <div class="table-wrapper">
           <table class="data-table">
-            <thead><tr><th>الجدول</th><th>الصفوف</th></tr></thead>
+            <thead><tr><th>{{ t('adminUser.table') }}</th><th>{{ t('adminUser.rows') }}</th></tr></thead>
             <tbody>
               <tr v-for="(count, name) in health.tables" :key="name">
                 <td>{{ name }}</td>

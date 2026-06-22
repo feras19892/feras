@@ -3,8 +3,10 @@ import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getExperiment } from './catalog';
 import { loadExperiment } from './experiment-loader';
+import { useI18n } from '../../composables/useI18n';
 import FeedbackModal from '../../components/shared/FeedbackModal.vue';
 
+const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 
@@ -26,10 +28,10 @@ function goBack() {
 <template>
   <div class="experiment-page">
     <header class="page-header" v-if="experiment && !ExperimentComponent">
-      <button class="back-btn" @click="goBack">← رجوع</button>
+      <button class="back-btn" @click="goBack">← {{ t('experiments.back') }}</button>
       <h1><span class="icon">{{ experiment.icon }}</span> {{ experiment.nameAr }}</h1>
       <p class="en">{{ experiment.name }}</p>
-      <button class="feedback-btn" @click="showFeedback = true">🚩 إبلاغ عن مشكلة</button>
+      <button class="feedback-btn" @click="showFeedback = true">🚩 {{ t('experiments.reportProblem') }}</button>
     </header>
 
     <FeedbackModal
@@ -43,13 +45,13 @@ function goBack() {
 
     <!-- Otherwise show stub -->
     <div v-else-if="experiment" class="shell-placeholder">
-      <p>التجربة <strong>{{ experiment.nameAr }}</strong> قيد التطوير.</p>
-      <button class="btn-action" @click="goBack">العودة</button>
+      <p>{{ t('experiments.experiment') }} <strong>{{ experiment.nameAr }}</strong> {{ t('experiments.experimentInDevelopment') }}</p>
+      <button class="btn-action" @click="goBack">{{ t('experiments.goBack') }}</button>
     </div>
 
     <div v-else class="not-found">
-      <p>التجربة المطلوبة غير موجودة</p>
-      <button class="btn-action" @click="goBack">العودة</button>
+      <p>{{ t('experiments.experimentNotFound') }}</p>
+      <button class="btn-action" @click="goBack">{{ t('experiments.goBack') }}</button>
     </div>
   </div>
 </template>

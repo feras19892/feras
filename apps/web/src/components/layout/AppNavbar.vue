@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from '../../composables/useI18n'
 import { useAuthStore } from '../../modules/auth/stores/auth'
 import { getPendingCount } from '../../services/class.service'
 import NotificationBell from '../shared/NotificationBell.vue'
 import FeedbackModal from '../shared/FeedbackModal.vue'
 
 const router = useRouter()
+const { t } = useI18n()
 const auth = useAuthStore()
 const pendingCount = ref(0)
 const showFeedback = ref(false)
@@ -53,7 +55,7 @@ function setTab(tab: string) {
     <div v-if="auth.isAdmin" class="nav-tools">
       <button class="tool-btn admin-tool" @click="router.push('/admin')">
         <span class="tool-icon">🛡️</span>
-        <span class="tool-label">الإدارة</span>
+        <span class="tool-label">{{ t('dashboard.admin') }}</span>
       </button>
     </div>
 
@@ -61,20 +63,20 @@ function setTab(tab: string) {
     <div v-else-if="auth.isTeacher" class="nav-tools">
       <button class="tool-btn" :class="{ active: activeTab === 'classes' }" @click="setTab('classes')">
         <span class="tool-icon">🏫</span>
-        <span class="tool-label">فصولي</span>
+        <span class="tool-label">{{ t('dashboard.myClasses') }}</span>
       </button>
       <button class="tool-btn" :class="{ active: activeTab === 'experiments' }" @click="setTab('experiments')">
         <span class="tool-icon">📋</span>
-        <span class="tool-label">تجاربي</span>
+        <span class="tool-label">{{ t('dashboard.myExperiments') }}</span>
       </button>
       <button class="tool-btn" :class="{ active: activeTab === 'grading' }" @click="setTab('grading')">
         <span class="tool-icon">✅</span>
-        <span class="tool-label">تصحيح</span>
+        <span class="tool-label">{{ t('dashboard.grading') }}</span>
         <span v-if="pendingCount > 0" class="tab-badge">{{ pendingCount }}</span>
       </button>
       <button class="tool-btn" :class="{ active: activeTab === 'stats' }" @click="setTab('stats')">
         <span class="tool-icon">📊</span>
-        <span class="tool-label">إحصائيات</span>
+        <span class="tool-label">{{ t('dashboard.stats') }}</span>
       </button>
     </div>
 
@@ -82,40 +84,40 @@ function setTab(tab: string) {
     <div v-else-if="auth.isStudent" class="nav-tools">
       <button class="tool-btn" :class="{ active: activeTab === 'classes' }" @click="setTab('classes')">
         <span class="tool-icon">🏫</span>
-        <span class="tool-label">فصولي</span>
+        <span class="tool-label">{{ t('dashboard.myClasses') }}</span>
       </button>
       <button class="tool-btn" :class="{ active: activeTab === 'branches' }" @click="setTab('branches')">
         <span class="tool-icon">⚛️</span>
-        <span class="tool-label">الفروع</span>
+        <span class="tool-label">{{ t('dashboard.branches') }}</span>
       </button>
       <button class="tool-btn" :class="{ active: activeTab === 'reports' }" @click="setTab('reports')">
         <span class="tool-icon">📄</span>
-        <span class="tool-label">تقاريري</span>
+        <span class="tool-label">{{ t('dashboard.myReports') }}</span>
       </button>
       <button class="tool-btn" :class="{ active: activeTab === 'profile' }" @click="setTab('profile')">
         <span class="tool-icon">👤</span>
-        <span class="tool-label">ملفي</span>
+        <span class="tool-label">{{ t('dashboard.myProfile') }}</span>
       </button>
     </div>
 
     <!-- User / Logout -->
     <div class="nav-user">
       <NotificationBell />
-      <button class="rate-btn" @click="showFeedback = true" title="تقييم المشروع">⭐</button>
+      <button class="rate-btn" @click="showFeedback = true" :title="t('dashboard.rateProject')">⭐</button>
       <FeedbackModal v-model:show="showFeedback" />
       <div class="user-badge" v-if="auth.isAdmin">
         <span class="user-icon">🛡️</span>
-        <span class="user-role">مشرف</span>
+        <span class="user-role">{{ t('admin.roleAdmin') }}</span>
       </div>
       <div class="user-badge" v-else-if="auth.isTeacher">
         <span class="user-icon">👨‍🏫</span>
-        <span class="user-role">معلم</span>
+        <span class="user-role">{{ t('admin.roleTeacher') }}</span>
       </div>
       <div class="user-badge student" v-else>
         <span class="user-icon">🎓</span>
-        <span class="user-role">طالب</span>
+        <span class="user-role">{{ t('admin.roleStudent') }}</span>
       </div>
-      <button class="logout-btn" @click="auth.logout(); router.push('/')">خروج</button>
+      <button class="logout-btn" @click="auth.logout(); router.push('/')">{{ t('dashboard.logout') }}</button>
     </div>
   </nav>
 </template>

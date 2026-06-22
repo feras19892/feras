@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useI18n } from '../../composables/useI18n';
 
 interface AdminUser { id: number; name: string; email: string; role: string; created_at?: string }
 
@@ -15,6 +16,7 @@ const emit = defineEmits<{
   (e: 'view', id: number): void;
 }>();
 
+const { t } = useI18n();
 const searchQuery = ref('');
 const showAddUser = ref(false);
 const newUser = ref({ name: '', email: '', password: '', role: 'student' as string });
@@ -39,7 +41,7 @@ async function addUser() {
     showAddUser.value = false;
     newUser.value = { name: '', email: '', password: '', role: 'student' };
   } catch (err: unknown) {
-    addUserError.value = (err instanceof Error ? err.message : '') || 'فشل الإنشاء';
+    addUserError.value = (err instanceof Error ? err.message : '') || t('adminUser.createFailed');
   } finally {
     addUserLoading.value = false;
   }
@@ -49,40 +51,40 @@ async function addUser() {
 <template>
   <div class="section">
     <div class="section-header">
-      <h3>👥 المستخدمين ({{ users.length }})</h3>
+      <h3>{{ t('admin.users', { count: users.length }) }}</h3>
       <div class="section-actions">
-        <input v-model="searchQuery" class="search-input" placeholder="🔍 بحث..." />
-        <button class="btn-primary" @click="showAddUser = true">➕ إضافة</button>
+        <input v-model="searchQuery" class="search-input" :placeholder="t('adminUser.search')" />
+        <button class="btn-primary" @click="showAddUser = true">{{ t('adminUser.addUser') }}</button>
       </div>
     </div>
 
     <div v-if="showAddUser" class="modal-overlay" @click.self="showAddUser = false">
       <div class="modal-content">
-        <h4>➕ إضافة مستخدم جديد</h4>
+        <h4>{{ t('adminUser.addUserTitle') }}</h4>
         <div class="form-row">
-          <label>الاسم</label>
-          <input v-model="newUser.name" placeholder="الاسم الكامل" />
+          <label>{{ t('admin.name') }}</label>
+          <input v-model="newUser.name" :placeholder="t('adminUser.fullName')" />
         </div>
         <div class="form-row">
-          <label>البريد</label>
+          <label>{{ t('adminUser.email') }}</label>
           <input v-model="newUser.email" type="email" placeholder="email@example.com" />
         </div>
         <div class="form-row">
-          <label>كلمة المرور</label>
+          <label>{{ t('adminUser.passwordLabel') }}</label>
           <input v-model="newUser.password" type="password" placeholder="********" />
         </div>
         <div class="form-row">
-          <label>الدور</label>
+          <label>{{ t('adminUser.role') }}</label>
           <select v-model="newUser.role">
-            <option value="student">طالب</option>
-            <option value="teacher">مدرس</option>
-            <option value="admin">أدمن</option>
+            <option value="student">{{ t('admin.roleStudent') }}</option>
+            <option value="teacher">{{ t('admin.roleTeacher') }}</option>
+            <option value="admin">{{ t('admin.roleAdmin') }}</option>
           </select>
         </div>
         <p v-if="addUserError" class="msg error">{{ addUserError }}</p>
         <div class="modal-actions">
-          <button class="btn-cancel" @click="showAddUser = false">إلغاء</button>
-          <button class="btn-submit" :disabled="addUserLoading" @click="addUser">{{ addUserLoading ? '...' : 'إنشاء' }}</button>
+          <button class="btn-cancel" @click="showAddUser = false">{{ t('common.cancel') }}</button>
+          <button class="btn-submit" :disabled="addUserLoading" @click="addUser">{{ addUserLoading ? '...' : t('adminUser.create') }}</button>
         </div>
       </div>
     </div>
@@ -91,7 +93,7 @@ async function addUser() {
       <table class="data-table">
         <thead>
           <tr>
-            <th>ID</th><th>الاسم</th><th>البريد</th><th>الدور</th><th>منذ</th><th>إجراءات</th>
+            <th>ID</th><th>{{ t('admin.name') }}</th><th>{{ t('adminUser.email') }}</th><th>{{ t('adminUser.role') }}</th><th>{{ t('adminUser.from') }}</th><th>{{ t('admin.actions') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -101,20 +103,20 @@ async function addUser() {
             <td>{{ u.email }}</td>
             <td>
               <select :value="u.role" @change="emit('change-role', u.id, ($event.target as HTMLSelectElement).value)">
-                <option value="student">طالب</option>
-                <option value="teacher">مدرس</option>
-                <option value="admin">أدمن</option>
+                <option value="student">{{ t('admin.roleStudent') }}</option>
+                <option value="teacher">{{ t('admin.roleTeacher') }}</option>
+                <option value="admin">{{ t('admin.roleAdmin') }}</option>
               </select>
             </td>
             <td>{{ u.created_at?.slice(0, 10) }}</td>
             <td>
-              <button class="btn-view" @click="emit('view', u.id)">👁️ عرض</button>
-              <button class="btn-danger" @click="emit('delete', u.id)">🗑️ حذف</button>
+              <button class="btn-view" @click="emit('view', u.id)">{{ t('adminUser.view') }}</button>
+              <button class="btn-danger" @click="emit('delete', u.id)">{{ t('admin.delete') }}</button>
             </td>
           </tr>
         </tbody>
       </table>
-      <p v-if="filteredUsers.length === 0" class="empty">لا توجد نتائج</p>
+      <p v-if="filteredUsers.length === 0" class="empty">{{ t('admin.noResults') }}</p>
     </div>
   </div>
 </template>

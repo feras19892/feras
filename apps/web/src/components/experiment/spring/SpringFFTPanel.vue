@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { fft, applyHannWindow } from '../../../modules/physics/experiments/spring/fft'
 
 interface FftResult { freqs: number[]; amplitudes: number[]; dominantFreq: number }
 
+const { t } = useI18n()
 const props = defineProps<{
   signalSeries: { t: number; x: number }[]
   params: { mass: number; k: number }
@@ -53,7 +55,7 @@ function draw() {
   const r = fftResult.value
   if (!r) {
     ctx.fillStyle = '#94a3b8'; ctx.font = '13px Segoe UI'; ctx.textAlign = 'center'
-    ctx.fillText('اضغط Run FFT بعد بدء المحاكاة', W/2, H/2)
+    ctx.fillText(t('experiments.pressRunFft'), W/2, H/2)
     ctx.textAlign = 'start'; return
   }
   const padL=52, padR=16, padT=18, padB=36

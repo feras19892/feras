@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 const props = defineProps<{ open: boolean }>()
 const emit = defineEmits<{ (e: 'close'): void }>()
 </script>
@@ -7,101 +10,96 @@ const emit = defineEmits<{ (e: 'close'): void }>()
   <div v-if="open" class="overlay" @click.self="emit('close')">
     <div class="modal">
       <div class="modal-header">
-        <h3>📖 دليل تجربة السقوط الحر — دليل شامل</h3>
+        <h3>📖 {{ t('experiments.freeFallGuide') }}</h3>
         <button class="close-btn" @click="emit('close')">&#x2715;</button>
       </div>
       <div class="modal-body">
         <section>
-          <h4>🔬 مفهوم التجربة</h4>
-          <p>تجربة السقوط الحر تهدف إلى قياس عجلة الجاذبية <b>g</b> بشكل عملي. تُسقط كرة معدنية من ارتفاع معروف <b>h</b> وتُقاس زمن السقوط <b>t</b> باستخدام مؤقت رقمي دقيق. بمعرفة <b>h</b> و <b>t</b> يمكن حساب <b>g</b> من العلاقة:</p>
+          <h4>🔬 {{ t('experiments.experimentConcept') }}</h4>
+          <p>{{ t('experiments.freeFallConceptDesc1') }}</p>
           <div class="formula">h = ½ · g · t²  &nbsp;&nbsp;→&nbsp;&nbsp;  g = 2h / t²</div>
-          <p>عند تكرار التجربة بارتفاعات مختلفة و رسم <b>h</b> مقابل <b>t²</b>، يكون ميل الخط = <b>g/2</b>، ومنه نحصل على <b>g</b> تجريبياً.</p>
+          <p>{{ t('experiments.freeFallConceptDesc2') }}</p>
         </section>
 
         <section>
-          <h4>⚙️ عناصر مساحة العمل</h4>
+          <h4>⚙️ {{ t('experiments.workspaceElementsTitle') }}</h4>
           <div class="element-grid">
-            <div class="element"><b class="tag">🔷 المنطقة المركزية (Canvas)</b> — عرض المحاكاة: المغناطيس الكهربائي، العمود، الكرة، لوحة الاصطدام، والمؤقت الرقمي.</div>
-            <div class="element"><b class="tag">📋 جدول القراءات</b> — يسجل كل قياس: h, t, t², v, g_calc, والخطأ النسبي.</div>
-            <div class="element"><b class="tag">📈 رسم Scatter</b> — رسم بياني لـ h مقابل t² مع خط الانحدار الخطي.</div>
-            <div class="element"><b class="tag">📊 إشارة السقوط</b> — رسم بياني زمني لموقع الكرة y(t) وسرعتها v(t).</div>
-            <div class="element"><b class="tag">⚗️ المعادلات والحسابات</b> — أزرار حساب g, t, v, وملائمة الانحدار + قائمة المعادلات الفيزيائية.</div>
-            <div class="element"><b class="tag">📊 الإحصائيات</b> — متوسط الزمن، الانحراف المعياري، متوسط g_calc، وانحرافه.</div>
-            <div class="element"><b class="tag">⚙️ المعاملات</b> — التحكم في h, g, الكتلة، مقاومة الهواء، ومعامل Drag.</div>
+            <div class="element"><b class="tag">🔷 {{ t('experiments.canvasPanel') }}</b> — {{ t('experiments.canvasPanel') }}</div>
+            <div class="element"><b class="tag">📋 {{ t('experiments.tablePanel') }}</b> — {{ t('experiments.tablePanel') }}</div>
+            <div class="element"><b class="tag">📈 {{ t('experiments.menuScatter') }}</b> — {{ t('experiments.menuScatter') }}</div>
+            <div class="element"><b class="tag">📊 {{ t('experiments.fallSignalLabel') }}</b> — {{ t('experiments.fallSignalLabel') }}</div>
+            <div class="element"><b class="tag">⚗️ {{ t('experiments.equationsLabel') }}</b> — {{ t('experiments.equationsLabel') }}</div>
+            <div class="element"><b class="tag">📊 {{ t('experiments.statisticsLabel') }}</b> — {{ t('experiments.statisticsLabel') }}</div>
+            <div class="element"><b class="tag">⚙️ {{ t('experiments.parametersLabel') }}</b> — {{ t('experiments.parametersLabel') }}</div>
           </div>
         </section>
 
         <section>
-          <h4>🎮 أزرار التحكم (شريط التحكم السفلي)</h4>
+          <h4>🎮 {{ t('experiments.controlButtonsTitle') }}</h4>
           <ul>
-            <li><b>▶️ إفلات / ⏸️ توقف</b> — إفلات الكرة لبدء السقوط، أو إيقاف مؤقت.</li>
-            <li><b>🔄 إعادة</b> — إعادة تعيين المحاكاة (وضع الكرة أعلى العمود).</li>
-            <li><b>📌 تسجيل</b> — حفظ القياس الحالي في جدول القراءات (يظهر بعد الارتطام فقط).</li>
-            <li><b>↩️ تراجع / ↪️ إعادة</b> — التراجع عن آخر تسجيل أو استعادته (Ctrl+Z / Ctrl+Y).</li>
-            <li><b>🗑️ مسح</b> — حذف جميع القراءات المسجلة.</li>
-            <li><b>💾 CSV</b> — تصدير القراءات إلى ملف CSV.</li>
-            <li><b>⚡ خطأ نسبي</b> — تفعيل/إطفاء الضجئ (noise) على القياسات. 🟢 = مع خطأ نسبي 2%، ⚫ = قياسات دقيقة 100%.</li>
-            <li><b>⚡ السرعة ×</b> — تسريع/إبطاء المحاكاة (من 0.25× إلى 3×).</li>
+            <li><b>▶️ {{ t('experiments.releaseStop') }}</b> — {{ t('experiments.releaseStopDesc') }}</li>
+            <li><b>🔄 {{ t('experiments.resetLabel') }}</b> — {{ t('experiments.resetSimulationDesc') }}</li>
+            <li><b>📌 {{ t('experiments.recordMeasurement') }}</b> — {{ t('experiments.recordMeasurementDesc') }}</li>
+            <li><b>↩️ {{ t('experiments.undoRedo') }}</b> — {{ t('experiments.undoRedoDesc') }}</li>
+            <li><b>🗑️ {{ t('experiments.clearAllLabel') }}</b> — {{ t('experiments.clearAllDesc') }}</li>
+            <li><b>💾 {{ t('experiments.csvExport') }}</b> — {{ t('experiments.csvExportDesc') }}</li>
+            <li><b>⚡ {{ t('experiments.relativeError') }}</b> — {{ t('experiments.relativeErrorDesc') }}</li>
+            <li><b>⚡ {{ t('experiments.speedMultiplier') }}</b> — {{ t('experiments.speedMultiplierDesc') }}</li>
           </ul>
         </section>
 
         <section>
-          <h4>📐 خطوات العمل — خطوة بخطوة</h4>
+          <h4>📐 {{ t('experiments.workStepsTitle') }}</h4>
           <ol>
-            <li><b>اضبط المعاملات:</b> افتح لوحة <b>المعاملات</b> وحدد الارتفاع h (مثلاً 0.50 m)، تأكد أن g = 9.81 m/s².</li>
-            <li><b>بدء السقوط:</b> اضغط <b>▶️ إفلات</b> أو مفتاح <b>Space</b>. ستسقط الكرة من المغناطيس.</li>
-            <li><b>انتظر الارتطام:</b> شاهد الكرة تسقط حتى ترتطم باللوحة. المؤقت الرقمي يعرض t بالثواني.</li>
-            <li><b>تسجيل القياس:</b> بعد الارتطام اضغط <b>📌 تسجيل</b> أو مفتاح <b>S</b>. سيُحفظ الزمن في الجدول.</li>
-            <li><b>كرر التجربة:</b> غيّر الارتفاع h (مثلاً 0.20, 0.40, 0.60, 0.80, 1.00 m) وكرر الخطوات 2–4 لكل ارتفاع. <b>تحتاج قياستان على الأقل للانحدار.</b></li>
-            <li><b>حساب g من قياس واحد:</b> اضغط <b>📐 حساب g</b> في لوحة <b>المعادلات</b>. يُظهر التعويض والنتيجة والخطأ النسبي.</li>
-            <li><b>حساب g من الانحدار (أفضل دقة):</b> اضغط <b>📈 ملائمة g</b>. يُحسب معادلة h = slope·t²، ويُظهر الميل، R²، و g = 2×slope.</li>
-            <li><b>راجع الرسم:</b> افتح لوحة <b>Scatter</b> لتشاهد النقاط وخط الانحدار الأحمر. R² القريب من 1 = قياسات دقيقة.</li>
-            <li><b>راجع الإشارة:</b> افتح لوحة <b>إشارة السقوط</b> لتشاهد منحنى y(t) الأزرق و v(t) البرتقالي.</li>
-            <li><b>راجع الإحصائيات:</b> افتح لوحة <b>الإحصائيات</b> لترى متوسط g_calc وانحرافه المعياري.</li>
-            <li><b>اطبع التقرير:</b> اضغط <b>📝 طباعة التقرير</b> لإنشاء تقرير PDF/HTML شامل.</li>
+            <li><b>{{ t('experiments.setParametersStep') }}:</b> {{ t('experiments.setParametersStep') }}</li>
+            <li><b>{{ t('experiments.startFallStep') }}:</b> {{ t('experiments.startFallStep') }}</li>
+            <li><b>{{ t('experiments.waitCollisionStep') }}:</b> {{ t('experiments.waitCollisionStep') }}</li>
+            <li><b>{{ t('experiments.recordMeasurementStep') }}:</b> {{ t('experiments.recordMeasurementStep') }}</li>
+            <li><b>{{ t('experiments.repeatExperimentStep') }}:</b> {{ t('experiments.repeatExperimentStep') }}</li>
+            <li><b>{{ t('experiments.calcGSingleStep') }}:</b> {{ t('experiments.calcGSingleStep') }}</li>
+            <li><b>{{ t('experiments.calcGRegressionStep') }}:</b> {{ t('experiments.calcGRegressionStep') }}</li>
+            <li><b>{{ t('experiments.reviewChartStep') }}:</b> {{ t('experiments.reviewChartStep') }}</li>
+            <li><b>{{ t('experiments.reviewSignalStep') }}:</b> {{ t('experiments.reviewSignalStep') }}</li>
+            <li><b>{{ t('experiments.reviewStatsStep') }}:</b> {{ t('experiments.reviewStatsStep') }}</li>
+            <li><b>{{ t('experiments.printReportStep') }}:</b> {{ t('experiments.printReportStep') }}</li>
           </ol>
         </section>
 
         <section>
-          <h4>📊 كيفية حساب g بثلاث طرق</h4>
-          <div class="method"><b>الطريقة 1 — قياس واحد:</b> g = 2h / t²</div>
-          <div class="method"><b>الطريقة 2 — انحدار خطي (أفضل):</b> رسم h مقابل t² ← الميل = g/2 ← g = 2 × slope</div>
-          <div class="method"><b>الطريقة 3 — متوسط القياسات:</b> متوسط عمود g_calc في الجدول.</div>
+          <h4>📊 {{ t('experiments.calcGThreeMethods') }}</h4>
+          <div class="method"><b>{{ t('experiments.method1Single') }}:</b> g = 2h / t²</div>
+          <div class="method"><b>{{ t('experiments.method2Regression') }}:</b> {{ t('experiments.method2Regression') }}</div>
+          <div class="method"><b>{{ t('experiments.method3Average') }}:</b> {{ t('experiments.method3Average') }}</div>
         </section>
 
         <section>
-          <h4>⌨️ اختصارات لوحة المفاتيح</h4>
+          <h4>⌨️ {{ t('experiments.keyboardShortcutsTitle') }}</h4>
           <div class="kbd-grid">
-            <span><kbd>Space</kbd> إفلات / توقف</span>
-            <span><kbd>S</kbd> تسجيل قياس</span>
-            <span><kbd>R</kbd> إعادة تعيين</span>
-            <span><kbd>Ctrl</kbd>+<kbd>Z</kbd> تراجع</span>
-            <span><kbd>Ctrl</kbd>+<kbd>Y</kbd> إعادة</span>
-            <span><kbd>Shift</kbd>+<kbd>Ctrl</kbd>+<kbd>Z</kbd> إعادة</span>
-            <span><kbd>?</kbd> فتح/إغلاق المساعدة</span>
+            <span><kbd>Space</kbd> {{ t('experiments.shortcutReleaseStop') }}</span>
+            <span><kbd>S</kbd> {{ t('experiments.shortcutRecordMeasurement') }}</span>
+            <span><kbd>R</kbd> {{ t('experiments.shortcutResetLabel') }}</span>
+            <span><kbd>Ctrl</kbd>+<kbd>Z</kbd> {{ t('experiments.shortcutUndoLabel') }}</span>
+            <span><kbd>Ctrl</kbd>+<kbd>Y</kbd> {{ t('experiments.shortcutRedoLabel') }}</span>
+            <span><kbd>Shift</kbd>+<kbd>Ctrl</kbd>+<kbd>Z</kbd> {{ t('experiments.shortcutRedoLabel') }}</span>
+            <span><kbd>?</kbd> {{ t('experiments.shortcutToggleHelpLabel') }}</span>
           </div>
         </section>
 
         <section>
-          <h4>⚠️ نصائح مهمة</h4>
+          <h4>⚠️ {{ t('experiments.importantTips') }}</h4>
           <ul>
-            <li>قم بـ <b>5–7 قياسات</b> على الأقل بارتفاعات مختلفة للحصول على نتائج دقيقة.</li>
-            <li>ابدأ بارتفاعات <b>صغيرة</b> (0.20–0.50 m) ثم زد تدريجياً لتجنب أخطاء التوقيت الكبيرة.</li>
-            <li>عند <b>تفعيل الخطأ النسبي</b> (🟢)، القياسات واقعية مع ضجئ ±2% — استخدمها لتعلم تحليل الأخطاء.</li>
-            <li>عند <b>إطفاء الخطأ النسبي</b> (⚫)، القياسات رياضية دقيقة 100% — مثالية للتحقق من الحسابات.</li>
-            <li>قارن g_calc المتوسط مع g النظري (9.81). الخطأ &lt; 5% = جيد، &lt; 2% = ممتاز.</li>
-            <li>إذا كان <b>R² &lt; 0.95</b>، راجع القياسات — قد يكون هناك خطأ في التوقيت أو الارتفاع.</li>
+            <li>{{ t('experiments.importantTips') }}</li>
           </ul>
         </section>
 
         <section>
-          <h4>🔧 أزرار شريط القائمة العلوي</h4>
+          <h4>🔧 {{ t('experiments.topMenuBarButtons') }}</h4>
           <ul>
-            <li><b>ملف</b> — تصدير CSV + استعادة الواجهة الافتراضية.</li>
-            <li><b>عرض</b> — إظهار/إخفاء اللوحات (جدول، حسابات، إشارة، معاملات، دليل، إحصائيات، Scatter، تحليل، أخطاء).</li>
-            <li><b>تشغيل</b> — بدء، إعادة، تسجيل، تشغيل تلقائي (5 قياسات متتالية).</li>
-            <li><b>📝 طباعة التقرير</b> — إنشاء تقرير شامل قابل للطباعة.</li>
-            <li><b>❓ مساعدة</b> — هذا الدليل الشامل.</li>
+            <li><b>{{ t('experiments.fileMenu') }}</b> — {{ t('experiments.fileMenuDesc') }}</li>
+            <li><b>{{ t('experiments.viewMenu') }}</b> — {{ t('experiments.viewMenuDesc') }}</li>
+            <li><b>{{ t('experiments.menuRun') }}</b> — {{ t('experiments.runMenuDesc') }}</li>
+            <li><b>📝 {{ t('experiments.printReportLabel') }}</b> — {{ t('experiments.printReportDesc') }}</li>
+            <li><b>❓ {{ t('experiments.helpLabel') }}</b> — {{ t('experiments.helpDesc') }}</li>
           </ul>
         </section>
       </div>

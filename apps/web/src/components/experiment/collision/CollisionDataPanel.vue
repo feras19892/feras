@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { CollisionTrial } from '../../../composables/collision/useCollisionTrials'
+import { useI18n } from '../../../composables/useI18n'
 
+const { t } = useI18n()
 const props = defineProps<{
   trials: CollisionTrial[]
 }>()
@@ -13,7 +15,7 @@ const emit = defineEmits<{
 
 <template>
   <div class="data-panel">
-    <div v-if="!props.trials.length" class="empty">لا توجد محاولات مسجلة</div>
+    <div v-if="!props.trials.length" class="empty">{{ t('experiments.noAttemptsRecorded') }}</div>
     <div v-else class="table-wrap">
       <table>
         <thead>
@@ -34,7 +36,7 @@ const emit = defineEmits<{
           </tr>
         </tbody>
       </table>
-      <button class="clear-btn" @click="emit('clear')">مسح الكل</button>
+      <button class="clear-btn" @click="emit('clear')">{{ t('experiments.clearAll') }}</button>
     </div>
   </div>
 </template>

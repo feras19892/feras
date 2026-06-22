@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useInclinedExperiment } from '../../../../composables/inclined/useInclinedExperiment'
+import { useI18n } from '../../../../composables/useI18n'
 import InclinedMenuBar from '../../../../components/experiment/inclined/InclinedMenuBar.vue'
 import InclinedCanvas from '../../../../components/experiment/inclined/InclinedCanvas.vue'
 import InclinedPanelBody from '../../../../components/experiment/inclined/InclinedPanelBody.vue'
@@ -11,6 +12,7 @@ import InclinedReport from '../../../../components/experiment/inclined/InclinedR
 import InclinedStatusBar from '../../../../components/experiment/inclined/InclinedStatusBar.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 
+const { t } = useI18n()
 const ex = useInclinedExperiment()
 const helpOpen = ref(false)
 const reportOpen = ref(false)
@@ -20,7 +22,7 @@ function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return
   if (e.code === 'Space') { e.preventDefault(); ex.lab.togglePause() }
-  else if (e.key === 'r' || e.key === 'R') { if (confirm('هل تريد إعادة تعيين المحاكاة؟')) ex.resetSim() }
+  else if (e.key === 'r' || e.key === 'R') { if (confirm(t('experiments.confirmResetSimulation'))) ex.resetSim() }
   else if (e.key === 's' || e.key === 'S') { ex.trials.recordTrial() }
   else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); if (e.shiftKey) ex.trials.redo(); else ex.trials.undo() }
   else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ex.trials.redo() }
@@ -68,7 +70,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
           </template>
         </div>
         <InclinedControlBar
-          :launch-label="ex.lab.sim.running && !ex.lab.sim.paused ? '⏸️ توقف' : '▶️ بدء'"
+          :launch-label="ex.lab.sim.running && !ex.lab.sim.paused ? '⏸️ ' + t('experiments.pauseBtn') : '▶️ ' + t('experiments.startBtn')"
           :speed="ex.lab.speed.value"
           :can-undo="ex.trials.canUndo()"
           :can-redo="ex.trials.canRedo()"

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import { useI18n } from '../../composables/useI18n';
 import { resubmitReport } from '../../services/report.service';
 import { getMyClasses } from '../../services/class.service';
 import type { Report } from '../../services/report.service';
@@ -15,6 +16,7 @@ const emit = defineEmits<{
   (e: 'submitted'): void;
 }>();
 
+const { t } = useI18n();
 const classes = ref<ClassItem[]>([]);
 const selectedClassId = ref('');
 const readings = ref('');
@@ -58,13 +60,13 @@ async function submit() {
       chart_snapshot: props.originalReport.chart_snapshot,
     });
     if (res.success) {
-      success.value = 'تم إعادة الإرسال بنجاح';
+      success.value = t('dashboard.resubmitSuccess');
       setTimeout(() => { emit('update:show', false); emit('submitted'); }, 1200);
     } else {
-      error.value = 'فشل الإرسال';
+      error.value = t('dashboard.submitFailed');
     }
   } catch (err) {
-    error.value = 'فشل الاتصال بالخادم';
+    error.value = t('dashboard.serverConnFailed');
   } finally {
     loading.value = false;
   }
@@ -74,32 +76,32 @@ async function submit() {
 <template>
   <div v-if="show && originalReport" class="modal-overlay" @click.self="$emit('update:show', false)">
     <div class="resubmit-modal">
-      <h3>↩️ إعادة إرسال — {{ originalReport.experiment_name }}</h3>
+      <h3>{{ t('dashboard.resubmitTitle') }} — {{ originalReport.experiment_name }}</h3>
 
       <div class="form-row">
-        <label>الفصل</label>
+        <label>{{ t('dashboard.classes') }}</label>
         <select v-model="selectedClassId">
           <option v-for="cls in classes" :key="cls.id" :value="cls.id">{{ cls.name }}</option>
         </select>
       </div>
 
       <div class="form-row">
-        <label>القراءات (JSON)</label>
+        <label>{{ t('dashboard.readingsJson') }}</label>
         <textarea v-model="readings" rows="5" />
       </div>
 
       <div class="form-row">
-        <label>الخاتمة / التعديلات</label>
-        <textarea v-model="conclusion" rows="3" placeholder="ما التعديلات التي أجريتها؟" />
+        <label>{{ t('dashboard.conclusionEdits') }}</label>
+        <textarea v-model="conclusion" rows="3" :placeholder="t('dashboard.whatChanges')" />
       </div>
 
       <p v-if="error" class="msg error">{{ error }}</p>
       <p v-if="success" class="msg success">{{ success }}</p>
 
       <div class="actions">
-        <button class="btn-cancel" @click="$emit('update:show', false)">إلغاء</button>
+        <button class="btn-cancel" @click="$emit('update:show', false)">{{ t('dashboard.cancelBtn') }}</button>
         <button class="btn-submit" :disabled="loading" @click="submit">
-          {{ loading ? '...' : '↩️ إعادة إرسال' }}
+          {{ loading ? '...' : '↩️ ' + t('dashboard.resubmit') }}
         </button>
       </div>
     </div>

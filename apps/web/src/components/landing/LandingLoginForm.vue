@@ -17,7 +17,7 @@ const emit = defineEmits<{
 function handleLogin() {
   formError.value = ''
   if (!email.value.trim() || !password.value) {
-    formError.value = 'يرجى ملء البريد الإلكتروني وكلمة السر'
+    formError.value = t('auth.errors.fillAll')
     return
   }
   emit('login', { email: email.value.trim(), password: password.value })
@@ -29,11 +29,11 @@ function handleLogin() {
     <div class="form-step">
       <form @submit.prevent="handleLogin">
         <div class="field">
-          <label>{{ t('auth.email') || 'البريد الإلكتروني' }}</label>
+          <label>{{ t('auth.emailLabel') }}</label>
           <input v-model="email" type="email" required autocomplete="username" name="email" />
         </div>
         <div class="field">
-          <label>{{ t('auth.password') || 'كلمة السر' }}</label>
+          <label>{{ t('auth.passwordLabel') }}</label>
           <div class="password-wrap">
             <input v-model="password" :type="showPassword ? 'text' : 'password'" required autocomplete="current-password" name="password" />
             <button type="button" class="toggle-pw" @click.prevent="showPassword = !showPassword">
@@ -44,10 +44,10 @@ function handleLogin() {
         <p v-if="formError" class="error">{{ formError }}</p>
         <div class="btn-row">
           <button type="submit" class="btn-submit">
-            {{ t('auth.login') || 'دخول' }}
+            {{ t('auth.loginBtn') }}
           </button>
           <router-link to="/register" class="btn-register">
-            {{ t('auth.register') || 'إنشاء حساب' }}
+            {{ t('auth.registerBtn') }}
           </router-link>
         </div>
       </form>

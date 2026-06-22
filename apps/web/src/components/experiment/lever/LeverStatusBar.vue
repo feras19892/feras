@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 const props = defineProps<{
   netTorque: number
   isBalanced: boolean
@@ -11,12 +14,12 @@ const props = defineProps<{
 <template>
   <div class="status-bar">
     <span :class="['status-pill', isBalanced ? 'balanced' : 'unbalanced']">
-      {{ isBalanced ? '⚖️ متوازن' : (netTorque > 0 ? '↻ يمين' : '↺ يسار') }}
+      {{ isBalanced ? '⚖️ ' + t('experiments.balanced') : (netTorque > 0 ? '↻ ' + t('experiments.rightSide') : '↺ ' + t('experiments.leftSide')) }}
     </span>
     <span class="status-pill">τ = {{ netTorque.toFixed(2) }} N·m</span>
     <span class="status-pill">θ = {{ tiltDeg.toFixed(1) }}°</span>
-    <span class="status-pill">كرات: {{ ballCount }}</span>
-    <span class="status-pill">قوى: {{ forceCount }}</span>
+    <span class="status-pill">{{ t('experiments.balls') }}: {{ ballCount }}</span>
+    <span class="status-pill">{{ t('experiments.forces') }}: {{ forceCount }}</span>
   </div>
 </template>
 

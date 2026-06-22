@@ -2,9 +2,9 @@
 import type { ProjectileTrial } from '../../../composables/projectile/useProjectileTrials'
 import type { ProjectileParams } from '../../../modules/physics/experiments/projectile/useProjectilePhysics'
 
-interface SimState { t: number; x: number; y: number; vx: number; vy: number; running: boolean; paused: boolean; landed: boolean }
+interface SimState { t: number; x: number; y: number; vx: number; vy: number; running: boolean; paused: boolean; landed: boolean; trail: {x:number;y:number}[]; signalSeries: {t:number;vx:number;vy:number}[] }
 interface MeasuredState { flightTime: number | null; maxHeight: number | null; range: number | null }
-interface TrialStats { time_mean: number; time_std: number; range_mean: number; range_std: number }
+interface TrialStats { range_mean: number; range_std: number; flightTime_mean: number; flightTime_std: number }
 
 const props = defineProps<{
   maximized: Record<string, boolean>

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 const props = defineProps<{
   params: { h: number; g: number; mass: number; airResistance: boolean; dragCoeff: number }
 }>()
@@ -9,11 +12,11 @@ const emit = defineEmits<{
 
 <template>
   <div class="params-card">
-    <div class="param-row"><label>الارتفاع h (m)</label><div class="param-inputs"><input type="range" min="0.1" max="999" step="0.01" :value="params.h" @input="emit('update:params', { h: Number(($event.target as HTMLInputElement).value) })" /><input type="number" step="0.01" :value="params.h" @input="emit('update:params', { h: Number(($event.target as HTMLInputElement).value) })" /></div></div>
+    <div class="param-row"><label>{{ t('experiments.heightLabel') }} (m)</label><div class="param-inputs"><input type="range" min="0.1" max="999" step="0.01" :value="params.h" @input="emit('update:params', { h: Number(($event.target as HTMLInputElement).value) })" /><input type="number" step="0.01" :value="params.h" @input="emit('update:params', { h: Number(($event.target as HTMLInputElement).value) })" /></div></div>
     <div class="param-row"><label>g (m/s²)</label><div class="param-inputs"><input type="range" min="1" max="50" step="0.1" :value="params.g" @input="emit('update:params', { g: Number(($event.target as HTMLInputElement).value) })" /><input type="number" step="0.1" :value="params.g" @input="emit('update:params', { g: Number(($event.target as HTMLInputElement).value) })" /></div></div>
-    <div class="param-row"><label>الكتلة (kg)</label><div class="param-inputs"><input type="range" min="0.01" max="999" step="0.01" :value="params.mass" @input="emit('update:params', { mass: Number(($event.target as HTMLInputElement).value) })" /><input type="number" step="0.01" :value="params.mass" @input="emit('update:params', { mass: Number(($event.target as HTMLInputElement).value) })" /></div></div>
-    <div class="param-row checkbox"><label><input type="checkbox" :checked="params.airResistance" @change="emit('update:params', { airResistance: ($event.target as HTMLInputElement).checked })" /> مقاومة الهواء</label></div>
-    <div class="param-row" v-if="params.airResistance"><label>معامل Drag</label><div class="param-inputs"><input type="range" min="0" max="2" step="0.01" :value="params.dragCoeff" @input="emit('update:params', { dragCoeff: Number(($event.target as HTMLInputElement).value) })" /><input type="number" step="0.01" :value="params.dragCoeff" @input="emit('update:params', { dragCoeff: Number(($event.target as HTMLInputElement).value) })" /></div></div>
+    <div class="param-row"><label>{{ t('experiments.mass') }} (kg)</label><div class="param-inputs"><input type="range" min="0.01" max="999" step="0.01" :value="params.mass" @input="emit('update:params', { mass: Number(($event.target as HTMLInputElement).value) })" /><input type="number" step="0.01" :value="params.mass" @input="emit('update:params', { mass: Number(($event.target as HTMLInputElement).value) })" /></div></div>
+    <div class="param-row checkbox"><label><input type="checkbox" :checked="params.airResistance" @change="emit('update:params', { airResistance: ($event.target as HTMLInputElement).checked })" /> {{ t('experiments.airResistance') }}</label></div>
+    <div class="param-row" v-if="params.airResistance"><label>{{ t('experiments.drag') }}</label><div class="param-inputs"><input type="range" min="0" max="2" step="0.01" :value="params.dragCoeff" @input="emit('update:params', { dragCoeff: Number(($event.target as HTMLInputElement).value) })" /><input type="number" step="0.01" :value="params.dragCoeff" @input="emit('update:params', { dragCoeff: Number(($event.target as HTMLInputElement).value) })" /></div></div>
   </div>
 </template>
 

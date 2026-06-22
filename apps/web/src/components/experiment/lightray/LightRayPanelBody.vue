@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { LightRayTrial } from '../../../composables/lightray/useLightRayExperiment'
 import LightRayChart from './LightRayChart.vue'
+import { useI18n } from '../../../composables/useI18n'
 
 interface Props {
   id: string
@@ -17,6 +18,7 @@ interface Props {
   speedInMedium: number | null
 }
 
+const { t } = useI18n()
 const props = defineProps<Props>()
 
 const emit = defineEmits<{
@@ -33,19 +35,19 @@ const chartPoints = props.trials.map((t) => ({ sinI: t.sinI, sinT: t.sinT, theta
     <!-- readings panel -->
     <template v-if="id === 'readings'">
       <div class="reading-row">
-        <span class="reading-label">زاوية السقوط θᵢ</span>
+        <span class="reading-label">{{ t('experiments.angleOfIncidence') }}</span>
         <span class="reading-val">{{ params.angleIncidence.toFixed(1) }}°</span>
       </div>
       <div class="reading-row">
-        <span class="reading-label">زاوية الانعكاس θᵣ</span>
+        <span class="reading-label">{{ t('experiments.angleOfReflection') }}</span>
         <span class="reading-val">{{ angleReflection.toFixed(1) }}°</span>
       </div>
       <div class="reading-row">
-        <span class="reading-label">زاوية الانكسار θₜ</span>
+        <span class="reading-label">{{ t('experiments.angleOfRefraction') }}</span>
         <span class="reading-val">{{ angleRefraction !== null ? angleRefraction.toFixed(1) + '°' : 'TIR' }}</span>
       </div>
       <div class="reading-row">
-        <span class="reading-label">الزاوية الحرجة</span>
+        <span class="reading-label">{{ t('experiments.criticalAngle') }}</span>
         <span class="reading-val">{{ criticalAngle !== null ? criticalAngle.toFixed(1) + '°' : '—' }}</span>
       </div>
     </template>
@@ -54,14 +56,14 @@ const chartPoints = props.trials.map((t) => ({ sinI: t.sinI, sinT: t.sinT, theta
     <template v-if="id === 'chart'">
       <LightRayChart :points="chartPoints" :slope="slope" :intercept="intercept" />
       <div v-if="trials.length >= 2" class="reg-summary">
-        <span class="reg-badge">الميل (n₂) = {{ slope.toFixed(3) }}</span>
+        <span class="reg-badge">{{ t('experiments.slopeN2') }} = {{ slope.toFixed(3) }}</span>
         <span class="reg-badge">R² = {{ rSquared.toFixed(4) }}</span>
       </div>
     </template>
 
     <!-- trials panel -->
     <template v-if="id === 'trials'">
-      <div v-if="trials.length === 0" class="empty">لا توجد قراءات مسجلة</div>
+      <div v-if="trials.length === 0" class="empty">{{ t('experiments.noTrialsRecorded') }}</div>
       <div class="trial-table">
         <div class="trial-header">
           <span>#</span><span>θᵢ</span><span>θₜ</span><span>sin θᵢ</span><span>sin θₜ</span>
@@ -75,32 +77,32 @@ const chartPoints = props.trials.map((t) => ({ sinI: t.sinI, sinT: t.sinT, theta
           <button class="trial-del" @click="emit('remove', t.id)">🗑️</button>
         </div>
       </div>
-      <button v-if="trials.length" class="btn-clear" @click="emit('clear')">مسح الكل</button>
+      <button v-if="trials.length" class="btn-clear" @click="emit('clear')">{{ t('experiments.clearAll') }}</button>
     </template>
 
     <!-- params panel -->
     <template v-if="id === 'params'">
       <div class="param-row">
-        <label>زاوية السقوط θᵢ</label>
+        <label>{{ t('experiments.angleOfIncidence') }}</label>
         <input type="range" min="0" max="89" step="1" :value="params.angleIncidence" @input="$emit('update:params', { ...params, angleIncidence: Number(($event.target as HTMLInputElement).value) })" />
         <span class="param-val">{{ params.angleIncidence }}°</span>
       </div>
       <div class="param-row">
-        <label>معامل الانكسار n₁ (أعلى)</label>
+        <label>{{ t('experiments.refractiveIndexN1Top') }}</label>
         <select :value="params.n1" @change="$emit('update:params', { ...params, n1: Number(($event.target as HTMLSelectElement).value) })">
-          <option :value="1.0">هواء (1.00)</option>
-          <option :value="1.33">ماء (1.33)</option>
-          <option :value="1.5">زجاج (1.50)</option>
-          <option :value="2.42">ألماس (2.42)</option>
+          <option :value="1.0">{{ t('experiments.air') }} (1.00)</option>
+          <option :value="1.33">{{ t('experiments.water') }} (1.33)</option>
+          <option :value="1.5">{{ t('experiments.glass') }} (1.50)</option>
+          <option :value="2.42">{{ t('experiments.diamond') }} (2.42)</option>
         </select>
       </div>
       <div class="param-row">
-        <label>معامل الانكسار n₂ (أسفل)</label>
+        <label>{{ t('experiments.refractiveIndexN2Bottom') }}</label>
         <select :value="params.n2" @change="$emit('update:params', { ...params, n2: Number(($event.target as HTMLSelectElement).value) })">
-          <option :value="1.0">هواء (1.00)</option>
-          <option :value="1.33">ماء (1.33)</option>
-          <option :value="1.5">زجاج (1.50)</option>
-          <option :value="2.42">ألماس (2.42)</option>
+          <option :value="1.0">{{ t('experiments.air') }} (1.00)</option>
+          <option :value="1.33">{{ t('experiments.water') }} (1.33)</option>
+          <option :value="1.5">{{ t('experiments.glass') }} (1.50)</option>
+          <option :value="2.42">{{ t('experiments.diamond') }} (2.42)</option>
         </select>
       </div>
     </template>
@@ -108,29 +110,29 @@ const chartPoints = props.trials.map((t) => ({ sinI: t.sinI, sinT: t.sinT, theta
     <!-- laws panel -->
     <template v-if="id === 'laws'">
       <div class="law-box">
-        <div class="law-title">قانون الانعكاس</div>
+        <div class="law-title">{{ t('experiments.lawOfReflection') }}</div>
         <div class="law-formula">θᵣ = θᵢ = {{ params.angleIncidence }}°</div>
       </div>
       <div class="law-box">
-        <div class="law-title">قانون سنل</div>
+        <div class="law-title">{{ t('experiments.snellsLaw') }}</div>
         <div class="law-formula">n₁ sin θᵢ = n₂ sin θₜ</div>
         <div class="law-calc">{{ params.n1.toFixed(2) }} × sin({{ params.angleIncidence }}°) = {{ (params.n1 * Math.sin(params.angleIncidence * Math.PI / 180)).toFixed(3) }}</div>
         <div class="law-calc">{{ params.n2.toFixed(2) }} × sin({{ angleRefraction !== null ? angleRefraction.toFixed(1) : '?' }}°) = {{ angleRefraction !== null ? (params.n2 * Math.sin(angleRefraction * Math.PI / 180)).toFixed(3) : '—' }}</div>
       </div>
       <div v-if="totalInternalReflection" class="tir-warning">
-        ⚠️ انعكاس كلي — θᵢ > الزاوية الحرجة
+        ⚠️ {{ t('experiments.totalInternalReflection') }}
       </div>
     </template>
 
     <!-- results panel -->
     <template v-if="id === 'results'">
-      <div v-if="trials.length < 2" class="empty">سجل قراءتين على الأقل لحساب الانحدار</div>
+      <div v-if="trials.length < 2" class="empty">{{ t('experiments.recordAtLeastTwo') }}</div>
       <template v-else>
-        <div class="result-row"><span class="result-label">عدد القراءات</span><span class="result-val">{{ trials.length }}</span></div>
-        <div class="result-row"><span class="result-label">الميل (m) = n₂</span><span class="result-val highlight">{{ slope.toFixed(3) }}</span></div>
-        <div class="result-row"><span class="result-label">معامل التحديد R²</span><span class="result-val">{{ rSquared.toFixed(4) }}</span></div>
-        <div class="result-row"><span class="result-label">n₂ المستنتج</span><span class="result-val highlight">{{ calculatedN2 !== null ? calculatedN2.toFixed(3) : '—' }}</span></div>
-        <div class="result-row"><span class="result-label">سرعة الضوء في الوسط</span><span class="result-val highlight">{{ speedInMedium !== null ? (speedInMedium / 1e8).toFixed(2) + ' × 10⁸ m/s' : '—' }}</span></div>
+        <div class="result-row"><span class="result-label">{{ t('experiments.numberOfReadings') }}</span><span class="result-val">{{ trials.length }}</span></div>
+        <div class="result-row"><span class="result-label">{{ t('experiments.slopeLabel') }} (m) = n₂</span><span class="result-val highlight">{{ slope.toFixed(3) }}</span></div>
+        <div class="result-row"><span class="result-label">{{ t('experiments.rSquaredLabel') }}</span><span class="result-val">{{ rSquared.toFixed(4) }}</span></div>
+        <div class="result-row"><span class="result-label">{{ t('experiments.deducedN2') }}</span><span class="result-val highlight">{{ calculatedN2 !== null ? calculatedN2.toFixed(3) : '—' }}</span></div>
+        <div class="result-row"><span class="result-label">{{ t('experiments.speedOfLightInMedium') }}</span><span class="result-val highlight">{{ speedInMedium !== null ? (speedInMedium / 1e8).toFixed(2) + ' × 10⁸ m/s' : '—' }}</span></div>
         <div class="formula-note">v = c / n₂ = 3×10⁸ / {{ calculatedN2 !== null ? calculatedN2.toFixed(3) : '?' }}</div>
       </template>
     </template>

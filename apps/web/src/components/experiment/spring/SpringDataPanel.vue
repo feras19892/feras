@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
 
 interface Trial {
   id: number; mass: number; k: number; amplitude: number; T: number; f: number; omega: number; kCalc: number; err: number;
@@ -6,19 +7,20 @@ interface Trial {
 
 const trials = defineModel<Trial[]>({ required: true })
 
+const { t } = useI18n()
 const emit = defineEmits<{
   (e: 'remove', id: number): void
   (e: 'clear'): void
 }>()
 
-const tableHeaders = ['#', 'm', 'k', 'A', 'T', 'f', 'ω', 'kcalc', 'خطأ']
+const tableHeaders = ['#', 'm', 'k', 'A', 'T', 'f', 'ω', 'kcalc', t('experiments.error')]
 </script>
 
 <template>
   <div class="data-panel">
     <!-- Table -->
     <div class="lab-card">
-      <div class="card-header"><h4>&#x1F4CB; قراءات</h4></div>
+      <div class="card-header"><h4>&#x1F4CB; {{ t('experiments.readings') }}</h4></div>
       <div class="table-wrap">
         <table>
           <thead><tr><th v-for="h in tableHeaders" :key="h">{{ h }}</th><th></th></tr></thead>
@@ -29,7 +31,7 @@ const tableHeaders = ['#', 'm', 'k', 'A', 'T', 'f', 'ω', 'kcalc', 'خطأ']
               <td>{{ tr.omega.toFixed(2) }}</td><td>{{ tr.kCalc.toFixed(2) }}</td><td>{{ tr.err.toFixed(2) }}%</td>
               <td><button class="btn-danger small" @click="emit('remove', tr.id)">&#xD7;</button></td>
             </tr>
-            <tr v-if="!trials.length"><td colspan="10" class="empty-msg">لا توجد قياسات</td></tr>
+            <tr v-if="!trials.length"><td colspan="10" class="empty-msg">{{ t('experiments.noMeasurements') }}</td></tr>
           </tbody>
         </table>
       </div>

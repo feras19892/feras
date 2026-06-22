@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { usePrismExperiment } from '../../../../composables/prism/usePrismExperiment'
+import { useI18n } from '../../../../composables/useI18n'
 import PrismMenuBar from '../../../../components/experiment/prism/PrismMenuBar.vue'
 import PrismCanvas from '../../../../components/experiment/prism/PrismCanvas.vue'
 import PrismPanelBody from '../../../../components/experiment/prism/PrismPanelBody.vue'
@@ -11,6 +12,7 @@ import PrismOverlayPanels from '../../../../components/experiment/prism/PrismOve
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 
 const ex = usePrismExperiment()
+const { t } = useI18n()
 const helpOpen = ref(false)
 
 function onKeyDown(e: KeyboardEvent) {
@@ -20,7 +22,7 @@ function onKeyDown(e: KeyboardEvent) {
     e.preventDefault()
     ex.lab.togglePause()
   } else if (e.key === 'r' || e.key === 'R') {
-    if (confirm('هل تريد إعادة تعيين المحاكاة؟')) ex.resetSim()
+    if (confirm(t('prism.resetConfirm'))) ex.resetSim()
   } else if (e.key === 's' || e.key === 'S') {
     ex.trials.recordTrial()
   } else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
@@ -46,13 +48,13 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 <template>
   <div class="prism-lab">
     <PrismMenuBar
-      title="تحلل الضوء بالمنشور"
+      :title="t('prism.title')"
       icon="&#x1F308;"
       experiment-route="/physics/waves/prism"
       experiment-name="Prism Dispersion"
       @toggle-panel="ex.layout.togglePanel"
       @show-all-panels="ex.layout.showAllPanels"
-      @export-csv="ex.trials.exportCsv"
+      @export-csv="ex.downloadCsv"
       @toggle-pause="ex.lab.togglePause"
       @reset="ex.resetSim"
       @record-trial="ex.trials.recordTrial"
@@ -87,7 +89,8 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
               :slope="ex.regression.value.m"
               :intercept="ex.regression.value.b"
               :r-squared="ex.regression.value.r2"
-              :n-from-regression="ex.nFromRegression.value"
+              :n-value="ex.lab.nValue.value"
+              :avg-n="ex.avgN.value"
               :speed-in-medium="ex.lab.speedInMedium.value"
               @remove="ex.trials.removeTrial"
               @clear="ex.trials.clearTrials"
@@ -98,18 +101,32 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       </div>
       <div class="resizer" @mousedown="ex.onResizeStart('data', $event)"></div>
       <div class="lab-col vis-col">
-        <PrismCanvas
-          :prism-angle="ex.params.prismAngle"
-          :angle-incidence="ex.params.angleIncidence"
-          :wavelength="ex.params.wavelength"
-          :material="ex.params.material"
-          :angle-refraction1="ex.lab.angleRefraction1.value"
-          :angle-incidence2="ex.lab.angleIncidence2.value"
-          :angle-emergence="ex.lab.angleEmergence.value"
-          :deviation="ex.lab.deviation.value"
-          :n="ex.lab.nValue.value"
-          :total-internal-reflection="ex.lab.totalInternalReflection.value"
-          :running="ex.lab.running.value"
+        <div class="vis-canvas-wrap">
+          <PrismCanvas
+            :prism-angle="ex.params.prismAngle"
+            :angle-incidence="ex.params.angleIncidence"
+            :wavelength="ex.params.wavelength"
+            :material="ex.params.material"
+            :angle-refraction1="ex.lab.angleRefraction1.value"
+            :angle-incidence2="ex.lab.angleIncidence2.value"
+            :angle-emergence="ex.lab.angleEmergence.value"
+            :deviation="ex.lab.deviation.value"
+            :n="ex.lab.nValue.value"
+            :total-internal-reflection="ex.lab.totalInternalReflection.value"
+            :running="ex.lab.running.value"
+          />
+        </div>
+        <PrismControlBar
+          :launch-label="ex.lab.running.value && !ex.lab.paused.value ? '&#x23F8; ' + t('prism.pauseBtn') : '&#x25B6; ' + t('prism.startBtn')"
+          :can-undo="ex.trials.canUndo()"
+          :can-redo="ex.trials.canRedo()"
+          @toggle-pause="ex.lab.togglePause"
+          @reset="ex.resetSim"
+          @record-trial="ex.trials.recordTrial"
+          @clear-trials="ex.trials.clearTrials"
+          @export-csv="ex.downloadCsv"
+          @undo="ex.trials.undo"
+          @redo="ex.trials.redo"
         />
       </div>
       <div class="resizer" @mousedown="ex.onResizeStart('vis', $event)"></div>
@@ -137,7 +154,8 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
               :slope="ex.regression.value.m"
               :intercept="ex.regression.value.b"
               :r-squared="ex.regression.value.r2"
-              :n-from-regression="ex.nFromRegression.value"
+              :n-value="ex.lab.nValue.value"
+              :avg-n="ex.avgN.value"
               :speed-in-medium="ex.lab.speedInMedium.value"
               @remove="ex.trials.removeTrial"
               @clear="ex.trials.clearTrials"
@@ -162,7 +180,8 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       :slope="ex.regression.value.m"
       :intercept="ex.regression.value.b"
       :r-squared="ex.regression.value.r2"
-      :n-from-regression="ex.nFromRegression.value"
+      :n-value="ex.lab.nValue.value"
+      :avg-n="ex.avgN.value"
       :speed-in-medium="ex.lab.speedInMedium.value"
       @maximize="ex.layout.maximizePanel"
       @remove="ex.trials.removeTrial"
@@ -171,13 +190,13 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     />
 
     <div class="hint-bar" v-if="!ex.lab.running.value">
-      <span>&#x1F4A1; اضغط "بدء" لبدء المحاكاة، ثم "تسجيل" لحفظ القراءة</span>
+      <span>&#x1F4A1; {{ t('prism.hintStart') }}</span>
     </div>
     <div class="hint-bar active" v-else-if="ex.lab.paused.value">
-      <span>&#x23F8; المحاكاة متوقفة — اضغط "استئناف" للمتابعة</span>
+      <span>&#x23F8; {{ t('prism.hintPaused') }}</span>
     </div>
     <div class="hint-bar success" v-else>
-      <span>&#x2705; المحاكاة تعمل — اضغط "تسجيل" لحفظ القراءة</span>
+      <span>&#x2705; {{ t('prism.hintRunning') }}</span>
     </div>
 
     <PrismStatusBar
@@ -188,18 +207,6 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       :n="ex.lab.nValue.value"
       :total-internal-reflection="ex.lab.totalInternalReflection.value"
     />
-    <PrismControlBar
-      :launch-label="ex.lab.running.value && !ex.lab.paused.value ? '&#x23F8; توقف' : '&#x25B6; بدء'"
-      :can-undo="ex.trials.canUndo()"
-      :can-redo="ex.trials.canRedo()"
-      @toggle-pause="ex.lab.togglePause"
-      @reset="ex.resetSim"
-      @record-trial="ex.trials.recordTrial"
-      @clear-trials="ex.trials.clearTrials"
-      @export-csv="ex.trials.exportCsv"
-      @undo="ex.trials.undo"
-      @redo="ex.trials.redo"
-    />
   </div>
 </template>
 
@@ -208,7 +215,8 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 .lab-grid { display: flex; flex-direction: row; flex: 1; min-height: 0; overflow: hidden; }
 .lab-col { display: flex; flex-direction: column; gap: .5rem; overflow-y: auto; min-height: 0; }
 .data-col { background: rgba(255,255,255,0.02); }
-.vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 0; }
+.vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 0; position: relative; }
+.vis-canvas-wrap { flex: 1; min-height: 0; position: relative; width: 100%; }
 .ctrl-col { background: rgba(255,255,255,0.02); }
 .resizer { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0; }
 .resizer:hover, .resizer:active { background: #5B8DB8; }

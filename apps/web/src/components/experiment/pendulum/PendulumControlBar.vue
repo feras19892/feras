@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import PendulumStepTracker from './PendulumStepTracker.vue'
 import PendulumStatusBar from './PendulumStatusBar.vue'
+import { useI18n } from '../../../composables/useI18n'
 
+const { t } = useI18n()
 const props = defineProps<{
   launchLabel: string
   speed: number
@@ -23,7 +25,7 @@ const emit = defineEmits<{
   (e: 'update:speed', val: number): void
 }>()
 
-function onClear() { if (confirm('هل أنت متأكد من مسح جميع القراءات؟')) emit('clearTrials') }
+function onClear() { if (confirm(t('experiments.confirmClearAll'))) emit('clearTrials') }
 
 function incSpeed() { const next = Math.round((props.speed + 0.25) * 100) / 100; emit('update:speed', Math.min(3, next)) }
 function decSpeed() { const next = Math.round((props.speed - 0.25) * 100) / 100; emit('update:speed', Math.max(0.25, next)) }
@@ -36,11 +38,11 @@ function decSpeed() { const next = Math.round((props.speed - 0.25) * 100) / 100;
       <PendulumStatusBar :running="running ?? false" :paused="paused ?? false" />
     </div>
     <button class="btn-primary" @click="$emit('togglePause')">{{ launchLabel }}</button>
-    <button class="btn-secondary" @click="$emit('reset')">&#x1F504; إعادة</button>
-    <button class="btn-secondary" @click="$emit('recordTrial')">&#x1F4CC; تسجيل</button>
-    <button class="btn-undo" :disabled="!canUndo" @click="$emit('undo')" title="تراجع (Ctrl+Z)">&#x21A9; تراجع</button>
-    <button class="btn-undo" :disabled="!canRedo" @click="$emit('redo')" title="إعادة (Ctrl+Y)">&#x21AA; إعادة</button>
-    <button class="btn-undo" @click="onClear">&#x1F5D1; مسح</button>
+    <button class="btn-secondary" @click="$emit('reset')">&#x1F504; {{ t('experiments.resetBtn') }}</button>
+    <button class="btn-secondary" @click="$emit('recordTrial')">&#x1F4CC; {{ t('experiments.recordBtn') }}</button>
+    <button class="btn-undo" :disabled="!canUndo" @click="$emit('undo')" :title="t('experiments.undoBtn') + ' (Ctrl+Z)'">&#x21A9; {{ t('experiments.undoBtn') }}</button>
+    <button class="btn-undo" :disabled="!canRedo" @click="$emit('redo')" :title="t('experiments.redoBtn') + ' (Ctrl+Y)'">&#x21AA; {{ t('experiments.redoBtn') }}</button>
+    <button class="btn-undo" @click="onClear">&#x1F5D1; {{ t('experiments.clearAll') }}</button>
     <button class="btn-undo" @click="$emit('exportCsv')">&#x1F4BE; CSV</button>
     <div class="speed-group">
       <button class="btn-speed" @click="decSpeed">−</button>

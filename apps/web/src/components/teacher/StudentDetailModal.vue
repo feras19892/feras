@@ -3,6 +3,7 @@ import { ref, watch } from 'vue';
 import { getReports, getStudentStats } from '../../services/report.service';
 import type { Report } from '../../services/report.service';
 import type { ClassStudent } from '../../services/class.service';
+import { useI18n } from '../../composables/useI18n';
 
 const props = defineProps<{
   show: boolean;
@@ -12,6 +13,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'close'): void;
 }>();
+
+const { t } = useI18n();
 
 const reports = ref<Report[]>([]);
 const stats = ref({ total: 0, graded: 0, pending: 0, average: 0 });
@@ -35,10 +38,10 @@ watch(() => props.show, async (val) => {
 });
 
 function statusLabel(s: string) {
-  if (s === 'graded') return '✅ مصحح';
-  if (s === 'submitted') return '⏳ معلق';
-  if (s === 'resubmitted') return '↩️ مُعاد';
-  return '📝 مسودة';
+  if (s === 'graded') return t('teacher.statusGraded');
+  if (s === 'submitted') return t('teacher.statusSubmitted');
+  if (s === 'resubmitted') return t('teacher.statusResubmitted');
+  return t('teacher.statusDraft');
 }
 </script>
 
@@ -50,33 +53,33 @@ function statusLabel(s: string) {
         <div>
           <h3>{{ student.name }}</h3>
           <p class="email">{{ student.email }}</p>
-          <p class="joined">منضم من: {{ student.joined_at?.slice(0, 10) }}</p>
+          <p class="joined">{{ t('teacher.joined') }}: {{ student.joined_at?.slice(0, 10) }}</p>
         </div>
       </div>
 
       <div class="stats-bar">
         <div class="stat">
           <span class="val">{{ stats.total }}</span>
-          <span class="lab">تقارير</span>
+          <span class="lab">{{ t('teacher.reportsLabel') }}</span>
         </div>
         <div class="stat">
           <span class="val">{{ stats.graded }}</span>
-          <span class="lab">مصحح</span>
+          <span class="lab">{{ t('teacher.graded') }}</span>
         </div>
         <div class="stat">
           <span class="val">{{ stats.pending }}</span>
-          <span class="lab">معلق</span>
+          <span class="lab">{{ t('teacher.pendingStat') }}</span>
         </div>
         <div class="stat highlight">
           <span class="val">{{ stats.average }}%</span>
-          <span class="lab">متوسط</span>
+          <span class="lab">{{ t('teacher.avgStat') }}</span>
         </div>
       </div>
 
       <div class="reports-section">
-        <h4>📋 تقارير الطالب</h4>
+        <h4>{{ t('teacher.studentReportsTitle') }}</h4>
         <div v-if="loading" class="empty">...</div>
-        <div v-else-if="reports.length === 0" class="empty">لا توجد تقارير</div>
+        <div v-else-if="reports.length === 0" class="empty">{{ t('teacher.noStudentReports') }}</div>
         <div v-else class="list">
           <div v-for="r in reports" :key="r.id" class="row">
             <span class="name">{{ r.experiment_name }}</span>
@@ -88,7 +91,7 @@ function statusLabel(s: string) {
       </div>
 
       <div class="actions">
-        <button class="btn-close" @click="emit('close')">إغلاق</button>
+        <button class="btn-close" @click="emit('close')">{{ t('teacher.closeBtn') }}</button>
       </div>
     </div>
   </div>

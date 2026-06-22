@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue';
 import { gradeReport } from '../../services/report.service';
 import type { Report } from '../../services/report.service';
+import { useI18n } from '../../composables/useI18n';
 
 const props = defineProps<{
   report: Report | null;
@@ -13,6 +14,7 @@ const emit = defineEmits<{
   (e: 'graded'): void;
 }>();
 
+const { t } = useI18n();
 const grade = ref(0);
 const feedback = ref('');
 const loading = ref(false);
@@ -48,10 +50,10 @@ async function submit() {
 <template>
   <div v-if="open && report" class="modal-overlay" @click.self="emit('close')">
     <div class="grade-modal">
-      <h3>✏️ تصحيح — {{ report.student_name }}</h3>
+      <h3>{{ t('teacher.gradeTitle') }} — {{ report.student_name }}</h3>
 
       <div class="form-row">
-        <label>الدرجة (0-100)</label>
+        <label>{{ t('teacher.gradeLabel') }}</label>
         <div class="grade-control">
           <input v-model.number="grade" type="range" min="0" max="100" />
           <span class="grade-display">{{ grade }}/100</span>
@@ -59,18 +61,18 @@ async function submit() {
       </div>
 
       <div class="form-row">
-        <label>ملاحظات للطالب</label>
+        <label>{{ t('teacher.feedbackLabel') }}</label>
         <textarea
           v-model="feedback"
           rows="4"
-          placeholder="اكتب ملاحظاتك للطالب..."
+          :placeholder="t('teacher.feedbackPlaceholder')"
         />
       </div>
 
       <div class="actions">
-        <button class="btn-cancel" @click="emit('close')">إلغاء</button>
+        <button class="btn-cancel" @click="emit('close')">{{ t('teacher.cancelBtn') }}</button>
         <button class="btn-submit" :disabled="loading" @click="submit">
-          {{ loading ? '...' : '💾 حفظ' }}
+          {{ loading ? '...' : t('teacher.saveBtn') }}
         </button>
       </div>
     </div>

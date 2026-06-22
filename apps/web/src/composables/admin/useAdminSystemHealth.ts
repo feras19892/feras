@@ -1,8 +1,8 @@
 import { ref } from 'vue';
-import { getAdminSystemHealth } from '../../services/admin.service';
+import { getAdminSystemHealth, type AdminSystemHealth } from '../../services/admin.service';
 
 export function useAdminSystemHealth() {
-  const health = ref<Record<string, unknown> | null>(null);
+  const health = ref<AdminSystemHealth | null>(null);
   const loading = ref(false);
   const error = ref('');
 

@@ -1,8 +1,8 @@
 import { ref } from 'vue';
-import { getAdminWarnings, sendAdminWarning } from '../../services/admin.service';
+import { getAdminWarnings, sendAdminWarning, type AdminUserWarning } from '../../services/admin.service';
 
 export function useAdminWarnings() {
-  const warnings = ref<Record<string, unknown>[]>([]);
+  const warnings = ref<AdminUserWarning[]>([]);
   const loading = ref(false);
   const error = ref('');
 

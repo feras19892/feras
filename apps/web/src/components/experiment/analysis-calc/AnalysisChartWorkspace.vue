@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
 import { useChartWorkspace } from '../../../composables/experiment/analysis/useChartWorkspace'
 import type { AnalysisColumnMeta, AnalysisPlotConfig } from '../../../types/physics'
 
@@ -7,6 +8,8 @@ const props = defineProps<{
   columns: AnalysisColumnMeta[];
   suggestedPlots: AnalysisPlotConfig[];
 }>();
+
+const { t } = useI18n()
 
 const {
   xKey,
@@ -39,20 +42,20 @@ defineExpose({
 <template>
   <div class="chart-panel" ref="containerRef">
     <div class="panel-header">
-      <span>📈 {{ xKey && yKey ? `${yAxisLabel} ضد ${xAxisLabel}` : 'رسم بياني' }}</span>
+      <span>📈 {{ xKey && yKey ? `${yAxisLabel} ${t('analysis.against')} ${xAxisLabel}` : t('analysis.chartTitle') }}</span>
       <button class="btn-toggle" @click="showAxisControls = !showAxisControls">
-        ⚙️ محاور
+        {{ t('analysis.axes') }}
       </button>
     </div>
     <div v-if="showAxisControls" class="axis-controls">
       <div class="ctrl-row">
-        <label>محور X</label>
+        <label>{{ t('analysis.xAxis') }}</label>
         <select v-model="xKey">
           <option v-for="col in columns" :key="col.key" :value="col.key">{{ col.label }}{{ col.unit ? ` (${col.unit})` : '' }}</option>
         </select>
       </div>
       <div class="ctrl-row">
-        <label>محور Y</label>
+        <label>{{ t('analysis.yAxis') }}</label>
         <select v-model="yKey">
           <option v-for="col in columns" :key="col.key" :value="col.key">{{ col.label }}{{ col.unit ? ` (${col.unit})` : '' }}</option>
         </select>

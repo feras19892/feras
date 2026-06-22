@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useI18n } from '../../composables/useI18n';
 import { getAdminInsights, getAdminActivity, getAdminActivityStats } from '../../services/admin.service';
 
 const loading = ref(false);
@@ -8,10 +9,10 @@ interface InactiveUser { id: number; name: string; role: string }
 interface EmptyClass { id: number; name: string; teacher_name: string }
 interface NoReportsTeacher { id: number; name: string }
 interface InsightsData {
-  inactiveUsers: InactiveUser[];
-  emptyClasses: EmptyClass[];
-  ungradedCount: number;
-  noReportsTeachers: NoReportsTeacher[];
+  inactiveUsers?: InactiveUser[];
+  emptyClasses?: EmptyClass[];
+  ungradedCount?: number;
+  noReportsTeachers?: NoReportsTeacher[];
 }
 interface ActivityItem {
   id: number;
@@ -24,6 +25,7 @@ interface ActivityItem {
 }
 interface ActivityStatsData { today: number; logins: number; signups: number; reports: number }
 
+const { t } = useI18n();
 const insights = ref<InsightsData | null>(null);
 const activities = ref<ActivityItem[]>([]);
 const activityStats = ref<ActivityStatsData | null>(null);
@@ -41,26 +43,26 @@ async function load() {
     if (a.success) activities.value = a.activities;
     if (s.success) activityStats.value = s.stats;
   } catch (err: unknown) {
-    error.value = (err instanceof Error ? err.message : '') || 'فشل التحميل';
+    error.value = (err instanceof Error ? err.message : '') || t('admin.loadError');
   } finally {
     loading.value = false;
   }
 }
 
 function formatDate(d: string | undefined) {
-  return d ? new Date(d).toLocaleString('ar-SA', { hour12: false }) : '';
+  return d ? new Date(d).toLocaleString() : '';
 }
 
 function actionLabel(action: string) {
   const map: Record<string, string> = {
-    login: '🔑 تسجيل دخول',
-    signup: '📝 تسجيل حساب',
-    create_user: '➕ إنشاء مستخدم',
-    delete_user: '🗑️ حذف مستخدم',
-    submit_report: '📋 إرسال تقرير',
-    grade_report: '✅ تصحيح تقرير',
-    create_class: '🏫 إنشاء فصل',
-    delete_class: '🗑️ حذف فصل',
+    login: t('adminUser.actionLogin'),
+    signup: t('adminUser.actionSignup'),
+    create_user: t('adminUser.actionCreateUser'),
+    delete_user: t('adminUser.actionDeleteUser'),
+    submit_report: t('adminUser.actionSubmitReport'),
+    grade_report: t('adminUser.actionGradeReport'),
+    create_class: t('adminUser.actionCreateClass'),
+    delete_class: t('adminUser.actionDeleteClass'),
   };
   return map[action] || action;
 }
@@ -71,53 +73,53 @@ onMounted(load);
 <template>
   <div class="section">
     <div class="section-header">
-      <h3>🧠 التقارير الذكية</h3>
-      <button class="btn-primary" @click="load">🔄 تحديث</button>
+      <h3>{{ t('admin.smart') }}</h3>
+      <button class="btn-primary" @click="load">{{ t('admin.refresh') }}</button>
     </div>
 
-    <div v-if="loading" class="loading">جاري التحميل...</div>
+    <div v-if="loading" class="loading">{{ t('admin.loading') }}</div>
     <div v-else-if="error" class="error-box">❌ {{ error }}</div>
     <template v-else>
       <!-- Activity Stats -->
       <div v-if="activityStats" class="stats-row">
         <div class="mini-card">
           <div class="mini-value">{{ activityStats.today }}</div>
-          <div class="mini-label">نشاط اليوم</div>
+          <div class="mini-label">{{ t('admin.todayActivity') }}</div>
         </div>
         <div class="mini-card">
           <div class="mini-value">{{ activityStats.logins }}</div>
-          <div class="mini-label">تسجيلات دخول</div>
+          <div class="mini-label">{{ t('admin.todayLogins') }}</div>
         </div>
         <div class="mini-card">
           <div class="mini-value">{{ activityStats.signups }}</div>
-          <div class="mini-label">تسجيلات جديدة</div>
+          <div class="mini-label">{{ t('admin.todaySignups') }}</div>
         </div>
         <div class="mini-card">
           <div class="mini-value">{{ activityStats.reports }}</div>
-          <div class="mini-label">تقارير اليوم</div>
+          <div class="mini-label">{{ t('admin.todayReports') }}</div>
         </div>
       </div>
 
       <!-- Insights -->
       <div v-if="insights" class="insights-grid">
         <div class="insight-card warning" v-if="insights.inactiveUsers?.length">
-          <h4>😴 مستخدمون غير نشطين (7 أيام)</h4>
+          <h4>{{ t('adminUser.inactiveUsers7') }}</h4>
           <ul>
             <li v-for="u in insights.inactiveUsers" :key="u.id">{{ u.name }} ({{ u.role }})</li>
           </ul>
         </div>
         <div class="insight-card warning" v-if="insights.emptyClasses?.length">
-          <h4>🏫 فصول بدون طلاب</h4>
+          <h4>{{ t('adminUser.emptyClassesLabel') }}</h4>
           <ul>
             <li v-for="c in insights.emptyClasses" :key="c.id">{{ c.name }} — {{ c.teacher_name }}</li>
           </ul>
         </div>
         <div class="insight-card alert" v-if="insights.ungradedCount">
-          <h4>⏳ تقارير معلقة +3 أيام</h4>
-          <p>{{ insights.ungradedCount }} تقرير بحاجة تصحيح</p>
+          <h4>{{ t('adminUser.pendingReports3') }}</h4>
+          <p>{{ insights.ungradedCount }} {{ t('admin.needsGrading') }}</p>
         </div>
         <div class="insight-card info" v-if="insights.noReportsTeachers?.length">
-          <h4>👨‍🏫 مدرسون بدون تقارير</h4>
+          <h4>{{ t('adminUser.teachersNoReportsLabel') }}</h4>
           <ul>
             <li v-for="t in insights.noReportsTeachers" :key="t.id">{{ t.name }}</li>
           </ul>
@@ -126,7 +128,7 @@ onMounted(load);
 
       <!-- Activity Log -->
       <div class="activity-section">
-        <h4>📜 سجل النشاط</h4>
+        <h4>{{ t('adminUser.activityLog') }}</h4>
         <div class="activity-list">
           <div v-for="a in activities.slice(0, 50)" :key="a.id" class="activity-item">
             <span class="act-action">{{ actionLabel(a.action) }}</span>

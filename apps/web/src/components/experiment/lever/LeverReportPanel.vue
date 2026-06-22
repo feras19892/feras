@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { LeverTrial } from '../../../composables/lever/useLeverTrials'
+import { useI18n } from '../../../composables/useI18n'
 
+const { t } = useI18n()
 const props = defineProps<{
   trials: LeverTrial[]
 }>()
@@ -8,15 +10,15 @@ const props = defineProps<{
 
 <template>
   <div class="report-panel">
-    <div class="report-title">&#x1F4C4; تقرير مختبر الروافع</div>
-    <div v-if="trials.length === 0" class="empty">لا توجد بيانات للتقرير</div>
+    <div class="report-title">&#x1F4C4; {{ t('experiments.leverLabReport') }}</div>
+    <div v-if="trials.length === 0" class="empty">{{ t('experiments.noDataForReport') }}</div>
     <template v-else>
-      <div class="report-row" v-for="t in trials" :key="t.id">
-        <span class="report-no">#{{ t.trialNo }}</span>
-        <span :class="['report-status', t.isBalanced ? 'ok' : 'no']">{{ t.isBalanced ? 'متوازن' : 'غير متوازن' }}</span>
-        <span class="report-torque">τ = {{ t.netTorque.toFixed(1) }} N·m</span>
-        <span class="report-tilt">θ = {{ t.tiltDeg.toFixed(1) }}°</span>
-        <span class="report-count">{{ t.balls.length }} كرات</span>
+      <div class="report-row" v-for="tr in trials" :key="tr.id">
+        <span class="report-no">#{{ tr.trialNo }}</span>
+        <span :class="['report-status', tr.isBalanced ? 'ok' : 'no']">{{ tr.isBalanced ? t('experiments.balanced') : t('experiments.unbalanced') }}</span>
+        <span class="report-torque">τ = {{ tr.netTorque.toFixed(1) }} N·m</span>
+        <span class="report-tilt">θ = {{ tr.tiltDeg.toFixed(1) }}°</span>
+        <span class="report-count">{{ tr.balls.length }} {{ t('experiments.balls') }}</span>
       </div>
     </template>
   </div>

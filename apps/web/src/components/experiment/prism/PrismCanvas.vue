@@ -35,8 +35,20 @@ function resize() {
   draw()
 }
 
-onMounted(() => { resize(); window.addEventListener('resize', resize) })
-onUnmounted(() => window.removeEventListener('resize', resize))
+let ro: ResizeObserver | null = null
+onMounted(() => {
+  resize()
+  window.addEventListener('resize', resize)
+  const parent = canvasRef.value?.parentElement
+  if (parent) {
+    ro = new ResizeObserver(resize)
+    ro.observe(parent)
+  }
+})
+onUnmounted(() => {
+  window.removeEventListener('resize', resize)
+  ro?.disconnect()
+})
 watch(() => [props.prismAngle, props.angleIncidence, props.wavelength, props.material, props.angleRefraction1, props.angleIncidence2, props.angleEmergence, props.deviation, props.n, props.totalInternalReflection, props.running], draw, { deep: true })
 </script>
 

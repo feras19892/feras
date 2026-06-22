@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useMirrorExperiment } from '../../../../composables/mirror/useMirrorExperiment'
+import { useI18n } from '../../../../composables/useI18n'
 import MirrorCanvas from '../../../../components/experiment/mirror/MirrorCanvas.vue'
 import MirrorPanelBody from '../../../../components/experiment/mirror/MirrorPanelBody.vue'
 import LightRayMenuBar from '../../../../components/experiment/lightray/LightRayMenuBar.vue'
@@ -9,6 +10,7 @@ import LightRayControlBar from '../../../../components/experiment/lightray/Light
 import LightRayHelpModal from '../../../../components/experiment/lightray/LightRayHelpModal.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 
+const { t } = useI18n()
 const ex = useMirrorExperiment()
 const helpOpen = ref(false)
 
@@ -19,7 +21,7 @@ function onKeyDown(e: KeyboardEvent) {
     e.preventDefault()
     ex.lab.togglePause()
   } else if (e.key === 'r' || e.key === 'R') {
-    if (confirm('هل تريد إعادة تعيين المحاكاة؟')) ex.resetSim()
+    if (confirm(t('experiments.confirmResetSimulation'))) ex.resetSim()
   } else if (e.key === 's' || e.key === 'S') {
     ex.trials.recordTrial()
   } else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
@@ -45,7 +47,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 <template>
   <div class="mirror-lab">
     <LightRayMenuBar
-      title="المرآة الكروية"
+      :title="t('experiments.sphericalMirrorTitle')"
       icon="🪞"
       experiment-route="/physics/waves/mirrors"
       experiment-name="Spherical Mirrors"
@@ -139,13 +141,13 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     </div>
 
     <div class="hint-bar" v-if="!ex.lab.running.value">
-      <span>💡 اضغط "بدء" لبدء المحاكاة، ثم "تسجيل" لحفظ القراءة</span>
+      <span>💡 {{ t('experiments.pressStartThenRecordHint') }}</span>
     </div>
     <div class="hint-bar active" v-else-if="ex.lab.paused.value">
-      <span>⏸️ المحاكاة متوقفة — اضغط "استئناف" للمتابعة</span>
+      <span>⏸️ {{ t('experiments.simPausedPressResumeHint') }}</span>
     </div>
     <div class="hint-bar success" v-else>
-      <span>✅ المحاكاة تعمل — اضغط "تسجيل" لحفظ القراءة</span>
+      <span>✅ {{ t('experiments.simRunningPressRecordHint') }}</span>
     </div>
 
     <LightRayStatusBar
@@ -156,7 +158,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       :total-internal-reflection="false"
     />
     <LightRayControlBar
-      :launch-label="ex.lab.running.value && !ex.lab.paused.value ? '⏸️ توقف' : '▶️ بدء'"
+      :launch-label="ex.lab.running.value && !ex.lab.paused.value ? '⏸️ ' + t('experiments.pauseBtn') : '▶️ ' + t('experiments.startBtn')"
       :can-undo="ex.trials.canUndo()"
       :can-redo="ex.trials.canRedo()"
       @toggle-pause="ex.lab.togglePause"

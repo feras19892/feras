@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
+import { useI18n } from '../../../composables/useI18n'
 
 const props = defineProps<{
   currentMedium?: string
@@ -15,12 +16,24 @@ interface MediumOption {
   n2: number
 }
 
+const { t } = useI18n()
+
 const mediums: MediumOption[] = [
-  { name: 'هواء', n2: 1.0 },
-  { name: 'ماء', n2: 1.33 },
-  { name: 'زجاج', n2: 1.5 },
-  { name: 'ألماس', n2: 2.42 },
+  { name: 'air', n2: 1.0 },
+  { name: 'water', n2: 1.33 },
+  { name: 'glass', n2: 1.5 },
+  { name: 'diamond', n2: 2.42 },
 ]
+
+function mediumName(key: string) {
+  const map: Record<string, string> = {
+    air: t('analysis.air'),
+    water: t('analysis.water'),
+    glass: t('analysis.glass'),
+    diamond: t('analysis.diamond'),
+  }
+  return map[key] ?? key
+}
 
 const selected = ref<number | null>(props.currentN2 ?? null)
 
@@ -34,9 +47,9 @@ function onSelect(n2: number) {
 
 <template>
   <div class="medium-panel">
-    <div class="medium-title">🧪 الوسط المختبر</div>
+    <div class="medium-title">{{ t('analysis.mediumTitle') }}</div>
     <div class="medium-current" v-if="currentMedium">
-      <span class="medium-label">الوسط الحالي:</span>
+      <span class="medium-label">{{ t('analysis.currentMedium') }}</span>
       <span class="medium-val">{{ currentMedium }} (n₂ = {{ currentN2 }})</span>
     </div>
     <div class="medium-grid">
@@ -47,11 +60,11 @@ function onSelect(n2: number) {
         :class="{ active: selected === m.n2 }"
         @click="onSelect(m.n2)"
       >
-        <span class="medium-name">{{ m.name }}</span>
+        <span class="medium-name">{{ mediumName(m.name) }}</span>
         <span class="medium-n2">n₂ = {{ m.n2 }}</span>
       </button>
     </div>
-    <div class="medium-hint">اختر الوسط لتوليد قراءات نظرية</div>
+    <div class="medium-hint">{{ t('analysis.mediumHint') }}</div>
   </div>
 </template>
 

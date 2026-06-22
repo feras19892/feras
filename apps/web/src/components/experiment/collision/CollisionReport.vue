@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
 interface CollisionTrialItem {
   id: number; m1: number; m2: number; v1i: number; v2i: number; e: number; v1f: number; v2f: number; lossPercent: number
 }
@@ -6,6 +8,7 @@ interface CollisionStats {
   avgV1f: number; avgV2f: number; avgLoss: number
 }
 
+const { t } = useI18n()
 const props = defineProps<{
   trials: CollisionTrialItem[]
   params?: Record<string, number>
@@ -21,11 +24,11 @@ const emit = defineEmits<{
 <template>
   <div class="report-modal">
     <div class="header">
-      <h3>📋 تقرير تجربة التصادم</h3>
+      <h3>📋 {{ t('experiments.collisionReport') }}</h3>
       <button class="close" @click="emit('close')">×</button>
     </div>
     <div class="body">
-      <div v-if="!props.trials.length" class="empty">لا توجد بيانات مسجلة</div>
+      <div v-if="!props.trials.length" class="empty">{{ t('experiments.noRecordedData') }}</div>
       <div v-else>
         <table class="report-table">
           <thead>
@@ -46,11 +49,11 @@ const emit = defineEmits<{
           </tbody>
         </table>
         <div class="stats" v-if="props.trialStats">
-          <div class="row"><b>متوسط v₁f:</b> {{ props.trialStats.avgV1f }} m/s</div>
-          <div class="row"><b>متوسط v₂f:</b> {{ props.trialStats.avgV2f }} m/s</div>
-          <div class="row"><b>متوسط الفقد:</b> {{ props.trialStats.avgLoss }}%</div>
+          <div class="row"><b>{{ t('experiments.average') }} v₁f:</b> {{ props.trialStats.avgV1f }} m/s</div>
+          <div class="row"><b>{{ t('experiments.average') }} v₂f:</b> {{ props.trialStats.avgV2f }} m/s</div>
+          <div class="row"><b>{{ t('experiments.averageLoss') }}:</b> {{ props.trialStats.avgLoss }}%</div>
         </div>
-        <button class="btn" @click="emit('open-full-report')">🖨️ طباعة التقرير الكامل</button>
+        <button class="btn" @click="emit('open-full-report')">🖨️ {{ t('experiments.printFullReport') }}</button>
       </div>
     </div>
   </div>

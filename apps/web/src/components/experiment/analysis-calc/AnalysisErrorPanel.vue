@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import { useI18n } from '../../../composables/useI18n';
 
+const { t } = useI18n();
 const theoretical = ref<number | null>(null);
 const experimental = ref<number | null>(null);
 
@@ -28,26 +30,26 @@ watch([theoretical, experimental, errorPercent], () => {
 <template>
   <div class="error-panel">
     <div class="panel-header">
-      <span>📊 نسبة الخطأ المئوية</span>
+      <span>{{ t('analysis.errorPercent') }}</span>
     </div>
     <div class="body">
       <div class="row">
         <div class="field">
-          <label>القيمة النظرية</label>
-          <input v-model.number="theoretical" type="number" step="any" placeholder="مثلاً 9.81" />
+          <label>{{ t('analysis.theoreticalValue') }}</label>
+          <input v-model.number="theoretical" type="number" step="any" :placeholder="t('analysis.theoreticalPlaceholder')" />
         </div>
         <div class="field">
-          <label>القيمة التجريبية</label>
-          <input v-model.number="experimental" type="number" step="any" placeholder="مثلاً 9.60" />
+          <label>{{ t('analysis.experimentalValue') }}</label>
+          <input v-model.number="experimental" type="number" step="any" :placeholder="t('analysis.experimentalPlaceholder')" />
         </div>
       </div>
       <div v-if="errorPercent !== null" class="result">
-        <span class="label">نسبة الخطأ</span>
+        <span class="label">{{ t('analysis.errorRate') }}</span>
         <span class="value" :class="{ good: errorPercent < 5, warn: errorPercent >= 5 && errorPercent < 15, bad: errorPercent >= 15 }">
           {{ errorPercent.toFixed(2) }}%
         </span>
       </div>
-      <div v-else class="hint">أدخل القيمتين لحساب نسبة الخطأ</div>
+      <div v-else class="hint">{{ t('analysis.enterValuesHint') }}</div>
     </div>
   </div>
 </template>

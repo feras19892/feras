@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useFreeFallExperiment } from '../../../../composables/freefall/useFreeFallExperiment'
+import { useI18n } from '../../../../composables/useI18n'
 import { useFreeFallReport } from '../../../../composables/freefall/useFreeFallReport'
 import FreeFallMenuBar from '../../../../components/experiment/freefall/FreeFallMenuBar.vue'
 import FreeFallCanvas from '../../../../components/experiment/freefall/FreeFallCanvas.vue'
@@ -12,6 +13,7 @@ import FreeFallPanelBody from '../../../../components/experiment/freefall/FreeFa
 import FreeFallOverlayPanels from '../../../../components/experiment/freefall/FreeFallOverlayPanels.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 
+const { t } = useI18n()
 const ex = useFreeFallExperiment()
 const rep = useFreeFallReport()
 const helpOpen = ref(false)
@@ -26,7 +28,7 @@ function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return
   if (e.code === 'Space') { e.preventDefault(); ex.lab.togglePause() }
-  else if (e.key === 'r' || e.key === 'R') { if (confirm('هل تريد إعادة تعيين المحاكاة؟')) ex.resetSim() }
+  else if (e.key === 'r' || e.key === 'R') { if (confirm(t('experiments.confirmResetSimulation'))) ex.resetSim() }
   else if (e.key === 's' || e.key === 'S') { ex.trials.recordTrial() }
   else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); if (e.shiftKey) ex.trials.redo(); else ex.trials.undo() }
   else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ex.trials.redo() }
@@ -39,7 +41,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 <template>
   <div class="freefall-lab">
     <FreeFallMenuBar
-      title="السقوط الحر"
+      :title="t('experiments.freeFallTitle')"
       icon="🍎"
       experiment-route="/physics/mechanics/freefall"
       experiment-name="Free Fall"
@@ -128,14 +130,14 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @open-full-report="openFullReport"
     />
 
-    <div class="hint-bar" v-if="!ex.lab.sim.running"><span>💡 اضبط الارتفاع واضغط "إفلات" لبدء السقوط</span></div>
-    <div class="hint-bar active" v-else-if="ex.lab.sim.running && !ex.lab.sim.paused && !ex.lab.sim.landed"><span>⏳ الكرة في الجو...</span></div>
-    <div class="hint-bar success" v-else><span>✅ الارتطام! اضغط "تسجيل"</span></div>
+    <div class="hint-bar" v-if="!ex.lab.sim.running"><span>💡 {{ t('experiments.setHeightAndReleaseHint') }}</span></div>
+    <div class="hint-bar active" v-else-if="ex.lab.sim.running && !ex.lab.sim.paused && !ex.lab.sim.landed"><span>⏳ {{ t('experiments.ballInAirHint') }}</span></div>
+    <div class="hint-bar success" v-else><span>✅ {{ t('experiments.impactRecordHint') }}</span></div>
 
     <FreeFallStatusBar :running="ex.lab.sim.running" :paused="ex.lab.sim.paused" />
 
     <FreeFallControlBar
-      :launch-label="ex.lab.sim.running && !ex.lab.sim.paused ? '⏸️ توقف' : '▶️ إفلات'"
+      :launch-label="ex.lab.sim.running && !ex.lab.sim.paused ? '⏸️ ' + t('experiments.pauseBtn') : '▶️ ' + t('experiments.release')"
       :speed="ex.lab.speed.value"
       :can-undo="ex.trials.canUndo()"
       :can-redo="ex.trials.canRedo()"

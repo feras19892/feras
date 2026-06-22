@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useLeverCanvas } from '../../../composables/experiment/lever/useLeverCanvas'
 import type { LeverParams, LeverState } from '../../../modules/physics/experiments/lever/useLeverPhysics'
+import { useI18n } from '../../../composables/useI18n'
 
+const { t } = useI18n()
 const props = defineProps<{
   params: LeverParams
   simState: LeverState
@@ -54,7 +56,7 @@ const {
       class="hover-del"
       :style="{ left: (hoverPx - 10) + 'px', top: (hoverPy - 10) + 'px' }"
       @click="deleteHover"
-      title="حذف"
+      :title="t('experiments.deleteBtn')"
     >&#x2715;</button>
   </div>
 </template>

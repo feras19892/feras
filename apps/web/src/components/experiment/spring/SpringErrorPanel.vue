@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useI18n } from '../../../composables/useI18n'
 
+const { t } = useI18n()
 const props = defineProps<{
   kStatic: number | null
   kDynamic: number | null
@@ -49,44 +51,44 @@ const comparison = computed(() => {
 
 <template>
   <div class="error-panel">
-    <h5>🔬 تحليل الأخطاء والارتياب</h5>
+    <h5>🔬 {{ t('experiments.errorAnalysis') }}</h5>
 
     <div class="input-row">
-      <label>Δy (دقة المسطرة)</label>
+      <label>Δy ({{ t('experiments.rulerPrecision') }})</label>
       <input type="number" step="0.0001" v-model.number="deltaY" /> m
     </div>
     <div class="input-row">
-      <label>Δm (دقة الكتلة)</label>
+      <label>Δm ({{ t('experiments.massPrecision') }})</label>
       <input type="number" step="0.0001" v-model.number="deltaM" /> kg
     </div>
     <div class="input-row">
-      <label>ΔT (دقة الزمن)</label>
+      <label>ΔT ({{ t('experiments.timePrecision') }})</label>
       <input type="number" step="0.001" v-model.number="deltaT" /> s
     </div>
 
     <div class="section" v-if="staticError">
-      <div class="sec-title">📐 خطأ k الإستاتيكي</div>
+      <div class="sec-title">📐 {{ t('experiments.staticError') }}</div>
       <div>σₖ / k = {{ staticError.rel.toFixed(2) }}%</div>
       <div>σₖ = ±{{ staticError.abs.toFixed(2) }} N/m</div>
     </div>
 
     <div class="section" v-if="dynamicError">
-      <div class="sec-title">📐 خطأ k الديناميكي</div>
+      <div class="sec-title">📐 {{ t('experiments.dynamicError') }}</div>
       <div>σₖ / k = 2·(ΔT/T) = {{ dynamicError.rel.toFixed(2) }}%</div>
       <div>σₖ = ±{{ dynamicError.abs.toFixed(2) }} N/m</div>
     </div>
 
     <div class="section" v-if="comparison">
-      <div class="sec-title">⚖️ مقارنة Static vs Dynamic</div>
+      <div class="sec-title">⚖️ {{ t('experiments.comparisonStaticDynamic') }}</div>
       <div>k_static = {{ props.kStatic?.toFixed(2) }} N/m</div>
       <div>k_dynamic = {{ props.kDynamic?.toFixed(2) }} N/m</div>
       <div>k_dynamic(eff) = {{ props.kDynamicEff?.toFixed(2) }} N/m</div>
       <div>k_theoretical = {{ props.theoreticalK.toFixed(2) }} N/m</div>
-      <div>الفرق النسبي = {{ comparison.percentDiff.toFixed(2) }}%</div>
+      <div>{{ t('experiments.relativeDifference') }} = {{ comparison.percentDiff.toFixed(2) }}%</div>
     </div>
 
     <div class="section">
-      <div class="sec-title">📊 كتلة النابض الفعالة</div>
+      <div class="sec-title">📊 {{ t('experiments.effectiveSpringMass') }}</div>
       <div>m_spring = {{ props.springMass.toFixed(3) }} kg</div>
       <div>m_eff = m_spring / 3 = {{ mEff.toFixed(4) }} kg</div>
       <div>m_total = m + m_eff = {{ mTotal.toFixed(4) }} kg</div>

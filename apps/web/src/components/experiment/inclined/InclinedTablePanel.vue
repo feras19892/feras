@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { InclinedTrial } from '../../../composables/inclined/useInclinedTrials'
+import { useI18n } from '../../../composables/useI18n'
 
+const { t } = useI18n()
 const props = defineProps<{
   trials: InclinedTrial[]
 }>()
@@ -48,7 +50,7 @@ const emit = defineEmits<{
         </tr>
       </tbody>
     </table>
-    <div v-if="!trials.length" class="empty">لا توجد قراءات مسجلة</div>
+    <div v-if="!trials.length" class="empty">{{ t('experiments.noTrialsRecorded') }}</div>
   </div>
 </template>
 

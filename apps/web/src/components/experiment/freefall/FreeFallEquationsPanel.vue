@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from '../../../composables/useI18n'
+const { t } = useI18n()
 const props = defineProps<{ calcResult: string }>()
 const emit = defineEmits<{ (e: 'calcG'): void; (e: 'calcT'): void; (e: 'calcV'): void; (e: 'calcFitG'): void }>()
 
@@ -11,12 +13,12 @@ const resultLines = computed(() => {
 
 <template>
   <div>
-    <h5>⚗️ حسابات</h5>
+    <h5>⚗️ {{ t('experiments.calculations') }}</h5>
     <div class="calc-actions">
-      <button @click="emit('calcG')">📐 حساب g</button>
-      <button @click="emit('calcT')">⏱️ حساب t</button>
-      <button @click="emit('calcV')">⚡ حساب v</button>
-      <button @click="emit('calcFitG')">📈 ملائمة g</button>
+      <button @click="emit('calcG')">📐 {{ t('experiments.calculateG') }}</button>
+      <button @click="emit('calcT')">⏱️ {{ t('experiments.calculateT') }}</button>
+      <button @click="emit('calcV')">⚡ {{ t('experiments.calculateV') }}</button>
+      <button @click="emit('calcFitG')">📈 {{ t('experiments.fitG') }}</button>
     </div>
     <div v-if="calcResult" class="calc-result">
       <div v-for="(line, i) in resultLines" :key="i">{{ line }}</div>

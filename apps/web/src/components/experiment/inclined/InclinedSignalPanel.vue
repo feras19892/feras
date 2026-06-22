@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 
+const { t } = useI18n()
 const props = defineProps<{
   simState: { t: number; s: number; v: number; arrived: boolean }
   params: { thetaDeg: number; length: number; mass: number; g: number; mu: number }
@@ -31,10 +33,10 @@ function draw() {
   if (!ctx) return
   const w = canvas.width, h = canvas.height
 
-  const { t, v, arrived } = props.simState
-  if (t === 0) points = []
-  if (!arrived && t > 0) {
-    points.push({ t, v })
+  const { t: simT, v, arrived } = props.simState
+  if (simT === 0) points = []
+  if (!arrived && simT > 0) {
+    points.push({ t: simT, v })
     if (points.length > 300) points = points.slice(-300)
   }
 
@@ -44,7 +46,7 @@ function draw() {
 
   if (!points.length) {
     ctx.fillStyle = '#64748b'; ctx.font = '14px Segoe UI'; ctx.textAlign = 'center'
-    ctx.fillText('الإشارة تظهر هنا بعد بدء النزول', w / 2, h / 2)
+    ctx.fillText(t('experiments.signalAppearsHereDescent'), w / 2, h / 2)
     ctx.textAlign = 'start'; return
   }
 

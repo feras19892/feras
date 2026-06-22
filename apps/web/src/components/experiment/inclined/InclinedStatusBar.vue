@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 const props = defineProps<{
   running: boolean
   paused: boolean
@@ -8,9 +11,9 @@ const props = defineProps<{
 
 <template>
   <div class="status-bar">
-    <span v-if="running && !arrived">▶️ الجسم ينزلق...</span>
-    <span v-else-if="arrived">✅ وصل للقاعدة! اضغط "تسجيل"</span>
-    <span v-else>⏸️ جاهز — اضبط المعاملات واضغط "بدء"</span>
+    <span v-if="running && !arrived">▶️ {{ t('experiments.sliding') }}</span>
+    <span v-else-if="arrived">✅ {{ t('experiments.reachedBase') }}</span>
+    <span v-else>⏸️ {{ t('experiments.readySetParams') }}</span>
   </div>
 </template>
 

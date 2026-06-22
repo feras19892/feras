@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '../../composables/useI18n'
+
+const { t } = useI18n()
 const calcResult = defineModel<string>({ required: true })
 
 defineEmits<{
@@ -10,11 +13,11 @@ defineEmits<{
 
 <template>
   <div class="lab-card equations-card">
-    <div class="card-header"><h4>⚗️ حسابات</h4></div>
+    <div class="card-header"><h4>⚗️ {{ t('experiments.calculationsLabel') }}</h4></div>
     <div class="calc-row">
-      <button class="btn-calc" @click="$emit('calcKfromMT')">k من m,T</button>
-      <button class="btn-calc" @click="$emit('calcTfromMK')">T من m,k</button>
-      <button class="btn-calc" @click="$emit('calcMfromTK')">m من T,k</button>
+      <button class="btn-calc" @click="$emit('calcKfromMT')">{{ t('experiments.kFromMT') }}</button>
+      <button class="btn-calc" @click="$emit('calcTfromMK')">{{ t('experiments.TFromMK') }}</button>
+      <button class="btn-calc" @click="$emit('calcMfromTK')">{{ t('experiments.MFromTK') }}</button>
     </div>
     <div class="calc-result">{{ calcResult }}</div>
     <div class="equation-list">

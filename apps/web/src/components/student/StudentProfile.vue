@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
+import { useI18n } from '../../composables/useI18n';
 import { useAuthStore } from '../../modules/auth/stores/auth';
 import { getReports, getStudentStats } from '../../services/report.service';
 import { getMyClasses } from '../../services/class.service';
 import type { Report } from '../../services/report.service';
 
+const { t } = useI18n();
 const auth = useAuthStore();
 const reports = ref<Report[]>([]);
 const stats = ref({ total: 0, graded: 0, pending: 0, average: 0 });
@@ -37,10 +39,10 @@ async function load() {
 }
 
 function statusBadge(s: string) {
-  if (s === 'graded') return { text: '✅ مصحح', color: 'graded' };
-  if (s === 'submitted') return { text: '⏳ قيد المراجعة', color: 'pending' };
-  if (s === 'resubmitted') return { text: '↩️ مُعاد', color: 'resubmitted' };
-  return { text: '📝 مسودة', color: 'draft' };
+  if (s === 'graded') return { text: t('dashboard.statusGraded'), color: 'graded' };
+  if (s === 'submitted') return { text: t('dashboard.statusSubmitted'), color: 'pending' };
+  if (s === 'resubmitted') return { text: t('dashboard.statusResubmitted'), color: 'resubmitted' };
+  return { text: t('dashboard.statusDraft'), color: 'draft' };
 }
 
 onMounted(() => load());
@@ -53,41 +55,41 @@ onMounted(() => load());
       <div class="info">
         <h2>{{ auth.user?.name }}</h2>
         <p class="email">{{ auth.user?.email }}</p>
-        <p class="role">طالب</p>
+        <p class="role">{{ t('dashboard.student') }}</p>
       </div>
     </div>
 
     <div class="stats-grid">
       <div class="stat-card">
         <span class="stat-val">{{ stats.total }}</span>
-        <span class="stat-label">إجمالي التقارير</span>
+        <span class="stat-label">{{ t('dashboard.totalReports') }}</span>
       </div>
       <div class="stat-card">
         <span class="stat-val">{{ stats.graded }}</span>
-        <span class="stat-label">مصحح</span>
+        <span class="stat-label">{{ t('dashboard.graded') }}</span>
       </div>
       <div class="stat-card">
         <span class="stat-val">{{ stats.pending }}</span>
-        <span class="stat-label">معلق</span>
+        <span class="stat-label">{{ t('dashboard.pending') }}</span>
       </div>
       <div class="stat-card highlight">
         <span class="stat-val">{{ stats.average }}%</span>
-        <span class="stat-label">المتوسط</span>
+        <span class="stat-label">{{ t('dashboard.average') }}</span>
       </div>
       <div class="stat-card highlight">
         <span class="stat-val">{{ bestGrade }}%</span>
-        <span class="stat-label">أفضل درجة</span>
+        <span class="stat-label">{{ t('dashboard.bestGrade') }}</span>
       </div>
       <div class="stat-card">
         <span class="stat-val">{{ classes.length }}</span>
-        <span class="stat-label">الفصول</span>
+        <span class="stat-label">{{ t('dashboard.classes') }}</span>
       </div>
     </div>
 
     <div class="recent-section">
-      <h3>📋 أحدث التقارير</h3>
+      <h3>{{ t('dashboard.recentReports') }}</h3>
       <div v-if="loading" class="empty">...</div>
-      <div v-else-if="recentReports.length === 0" class="empty">لا توجد تقارير</div>
+      <div v-else-if="recentReports.length === 0" class="empty">{{ t('dashboard.noReportsMsg') }}</div>
       <div v-else class="report-list">
         <div v-for="r in recentReports" :key="r.id" class="report-row">
           <span class="report-name">{{ r.experiment_name }}</span>

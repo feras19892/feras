@@ -1,4 +1,5 @@
 import { reactive } from 'vue'
+import { useI18n } from '../useI18n'
 
 export type ColumnId = 'data' | 'vis' | 'ctrl'
 export type PanelId = 'table' | 'equations' | 'scatter' | 'tutor' | 'signal' | 'vxSignal' | 'vySignal' | 'params' | 'guide' | 'stats' | 'report'
@@ -23,6 +24,7 @@ const allPanelIds: PanelId[] = [
 ]
 
 export function useProjectileLayout() {
+  const { t } = useI18n()
 
   const panels = reactive<Record<PanelId, boolean>>({
     table: true, equations: false, signal: true, params: true, guide: true, stats: false,
@@ -90,12 +92,19 @@ export function useProjectileLayout() {
   function panelTitle(id: string) {
     const pid = id as PanelId
     const titles: Record<PanelId, string> = {
-      table: '📋 قراءات', equations: '⚗️ حسابات', scatter: '📈 Scatter',
-      tutor: '⚖️ تحليل مباشر', report: '📋 تقرير',
-      signal: '📈 مسار y(x)', vxSignal: '📈 vₓ(t)', vySignal: '📈 vᵧ(t)',
-      params: '⚙️ معاملات', guide: '📋 دليل', stats: '📊 إحصائيات',
+      table: t('experiments.panelTable'),
+      equations: t('experiments.panelEquations'),
+      scatter: t('experiments.panelChart'),
+      tutor: t('experiments.panelResults'),
+      report: t('experiments.panelReport'),
+      signal: t('experiments.panelSignal'),
+      vxSignal: t('experiments.panelSignal'),
+      vySignal: t('experiments.panelSignal'),
+      params: t('experiments.panelParams'),
+      guide: t('experiments.guidePanel'),
+      stats: t('experiments.panelStats'),
     }
-    return titles[pid] ?? '📊 إحصائيات'
+    return titles[pid] ?? t('experiments.panelStats')
   }
 
   return {

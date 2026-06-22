@@ -1,5 +1,6 @@
 import { drawSpringDigital } from './drawSpringDigital'
 import { drawSpringScene } from './useSpringScene'
+import { useI18n } from '../useI18n'
 import type { SpringParams } from '../../modules/physics/experiments/spring/useSpringPhysics'
 
 interface SimState {
@@ -11,6 +12,7 @@ export function useSpringDraw(
   params: SpringParams,
   simState: SimState
 ) {
+  const { t } = useI18n()
   function resizeCanvas() {
     const canvas = canvasRef.value
     if (!canvas) return
@@ -37,7 +39,7 @@ export function useSpringDraw(
     ctx.fillRect(0, 0, w, h)
 
     const { massY, natEqY, staticStretchCm, pxPerCm } = drawSpringScene(ctx, w, h, params, simState)
-    drawSpringDigital(ctx, w, params, simState, massY, natEqY, staticStretchCm, pxPerCm)
+    drawSpringDigital(ctx, w, params, simState, massY, natEqY, staticStretchCm, pxPerCm, t)
   }
 
   return { draw, resizeCanvas }

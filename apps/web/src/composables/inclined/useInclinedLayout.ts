@@ -1,4 +1,5 @@
 import { reactive } from 'vue'
+import { useI18n } from '../useI18n'
 
 export type ColumnId = 'data' | 'vis' | 'ctrl'
 export type PanelId = 'table' | 'equations' | 'stats' | 'scatter' | 'signal' | 'params' | 'guide' | 'error'
@@ -23,6 +24,7 @@ const allPanelIds: PanelId[] = [
 ]
 
 export function useInclinedLayout() {
+  const { t } = useI18n()
 
   const panels = reactive<Record<PanelId, boolean>>({
     table: true, equations: false, stats: false, scatter: false, error: false,
@@ -95,9 +97,14 @@ export function useInclinedLayout() {
   function panelTitle(id: string) {
     const pid = id as PanelId
     const titles: Record<PanelId, string> = {
-      table: '📋 قراءات', equations: '⚗️ حسابات', stats: '📊 إحصائيات',
-      scatter: '📈 مسار s(t)', signal: '📈 إشارة v(t), a(t)', error: '⚠️ أخطاء',
-      params: '⚙️ معاملات', guide: '📋 دليل',
+      table: t('experiments.panelTable'),
+      equations: t('experiments.panelEquations'),
+      stats: t('experiments.panelStats'),
+      scatter: t('experiments.panelChart'),
+      signal: t('experiments.panelSignal'),
+      error: t('experiments.potentialErrorSources'),
+      params: t('experiments.panelParams'),
+      guide: t('experiments.guidePanel'),
     }
     return titles[pid] ?? '📊'
   }

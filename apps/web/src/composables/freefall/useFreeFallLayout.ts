@@ -1,4 +1,5 @@
 import { reactive } from 'vue'
+import { useI18n } from '../useI18n'
 
 export type ColumnId = 'data' | 'vis' | 'ctrl'
 export type PanelId = 'table' | 'equations' | 'stats' | 'scatter' | 'signal' | 'params' | 'guide' | 'report' | 'tutor' | 'error'
@@ -23,6 +24,7 @@ const allPanelIds: PanelId[] = [
 ]
 
 export function useFreeFallLayout() {
+  const { t } = useI18n()
 
   const panels = reactive<Record<PanelId, boolean>>({
     table: true, equations: false, stats: false, scatter: false, tutor: false, report: false, error: false,
@@ -95,11 +97,11 @@ export function useFreeFallLayout() {
   function panelTitle(id: string) {
     const pid = id as PanelId
     const titles: Record<PanelId, string> = {
-      table: '📋 قراءات', equations: '⚗️ حسابات', stats: '📊 إحصائيات',
-      scatter: '📈 Scatter', tutor: '⚖️ تحليل مباشر', report: '📋 تقرير', error: '⚠️ أخطاء',
-      signal: '📈 إشارة y(t)', params: '⚙️ معاملات', guide: '📋 دليل',
+      table: t('experiments.panelTable'), equations: t('experiments.panelEquations'), stats: t('experiments.panelStats'),
+      scatter: t('experiments.panelScatter'), tutor: t('experiments.panelTutor'), report: t('experiments.panelReport'), error: t('experiments.panelError'),
+      signal: t('experiments.panelSignal'), params: t('experiments.panelParams'), guide: t('experiments.panelGuide'),
     }
-    return titles[pid] ?? '📊'
+    return titles[pid] ?? t('experiments.panelStats')
   }
 
   return {

@@ -27,6 +27,55 @@ function difficultyLabel(d: string): string {
   };
   return map[d] || d;
 }
+
+function branchNameKey(id: string): string {
+  const map: Record<string, string> = {
+    mechanics: 'experiments.branchMechanics',
+    waves: 'experiments.branchWaves',
+    heat: 'experiments.branchHeat',
+    electricity: 'experiments.branchElectricity',
+    electromagnetism: 'experiments.branchElectromagnetism',
+  };
+  return map[id] || id;
+}
+
+function branchDescKey(id: string): string {
+  const map: Record<string, string> = {
+    mechanics: 'experiments.branchMechanicsDesc',
+    waves: 'experiments.branchWavesDesc',
+    heat: 'experiments.branchHeatDesc',
+    electricity: 'experiments.branchElectricityDesc',
+    electromagnetism: 'experiments.branchElectromagnetismDesc',
+  };
+  return map[id] || id;
+}
+
+function expNameKey(id: string): string {
+  const map: Record<string, string> = {
+    spring: 'experiments.expSpring',
+    pendulum: 'experiments.expPendulum',
+    projectile: 'experiments.expProjectile',
+    freefall: 'experiments.expFreeFall',
+    inclined: 'experiments.expInclined',
+    collision: 'experiments.expCollision',
+    lever: 'experiments.expLever',
+    'light-ray': 'experiments.expLightRay',
+    'thin-lens': 'experiments.expThinLens',
+    mirrors: 'experiments.expMirrors',
+    'prism-dispersion': 'experiments.expPrism',
+    interference: 'experiments.expInterference',
+    diffraction: 'experiments.expDiffraction',
+    polarization: 'experiments.expPolarization',
+    'speed-of-sound': 'experiments.expSpeedOfSound',
+    resonance: 'experiments.expResonance',
+    'ideal-gas': 'experiments.expIdealGas',
+    calorimetry: 'experiments.expCalorimetry',
+    'rc-circuit': 'experiments.expRcCircuit',
+    'biot-savart': 'experiments.expBiotSavart',
+    faraday: 'experiments.expFaraday',
+  };
+  return map[id] || id;
+}
 </script>
 
 <template>
@@ -35,10 +84,10 @@ function difficultyLabel(d: string): string {
       <button class="back-btn" @click="goBack">← {{ t('experiments.back') }}</button>
       <h1 v-if="branch">
         <span class="icon">{{ branch.icon }}</span>
-        {{ branch.nameAr }}
+        {{ t(branchNameKey(branch.id)) }}
       </h1>
       <h1 v-else>{{ t('experiments.branchNotFound') }}</h1>
-      <p v-if="branch">{{ branch.description }}</p>
+      <p v-if="branch">{{ t(branchDescKey(branch.id)) }}</p>
     </header>
 
     <div v-if="branch" class="experiments">
@@ -50,7 +99,7 @@ function difficultyLabel(d: string): string {
           @click="goToExperiment(exp.route)"
         >
           <div class="card-icon">{{ exp.icon }}</div>
-          <h4>{{ exp.nameAr }}</h4>
+          <h4>{{ t(expNameKey(exp.id)) }}</h4>
           <p class="en">{{ exp.name }}</p>
           <div class="tags">
             <span class="tag difficulty" :class="exp.difficulty">

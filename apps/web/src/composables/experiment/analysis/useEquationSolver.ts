@@ -1,10 +1,12 @@
 import { ref, computed, watch } from 'vue'
+import { useI18n } from '../../../composables/useI18n'
 import type { AnalysisEquation } from '../../../types/physics'
 
 export function useEquationSolver(
   equations: () => AnalysisEquation[],
   readings: () => Record<string, number>[],
 ) {
+  const { t } = useI18n()
   const selectedIndex = ref(0)
   const varValues = ref<Record<string, number>>({})
   const targetVar = ref('')
@@ -65,7 +67,7 @@ export function useEquationSolver(
         result.value = steps('T', `2π√(m/k) = 2π√(${m.toFixed(4)}/${k.toFixed(4)})`, 2 * Math.PI * Math.sqrt(m / k))
       } else if (missing === 'm' && T > 0 && k > 0) {
         result.value = steps('m', `k·T²/(4π²) = ${k.toFixed(4)}·${(T * T).toFixed(4)}/(4π²)`, (k * T * T) / (4 * Math.PI * Math.PI))
-      } else result.value = 'أدخل قيم صحيحة للمتغيرات المعروفة'
+      } else result.value = t('analysis.enterValidKnownValues')
     }
     // === Pendulum ===
     else if (eq.formula.includes('T = 2π√(L/g)')) {
@@ -76,25 +78,25 @@ export function useEquationSolver(
         result.value = steps('T', `2π√(L/g) = 2π√(${L.toFixed(4)}/${g.toFixed(4)})`, 2 * Math.PI * Math.sqrt(L / g))
       } else if (missing === 'L' && T > 0 && g > 0) {
         result.value = steps('L', `g·T²/(4π²) = ${g.toFixed(4)}·${(T * T).toFixed(4)}/(4π²)`, (g * T * T) / (4 * Math.PI * Math.PI))
-      } else result.value = 'أدخل قيم صحيحة للمتغيرات المعروفة'
+      } else result.value = t('analysis.enterValidKnownValues')
     }
     // === Pendulum T² form ===
     else if (eq.formula.includes('T² = (4π²/g)·L')) {
       const L = vals['L'] ?? 0; const T = vals['T'] ?? 0
       if (missing === 'g' && L > 0 && T > 0) {
         result.value = steps('g', `4π²·L/T² = 4π²·${L.toFixed(4)}/${(T * T).toFixed(4)}`, (4 * Math.PI * Math.PI * L) / (T * T))
-      } else result.value = 'أدخل قيم صحيحة'
+      } else result.value = t('analysis.enterValidValues')
     }
     // === Free Fall ===
     else if (eq.formula.includes('h = ½gt²')) {
-      const h = vals['h'] ?? 0; const t = vals['t'] ?? 0; const g = vals['g'] ?? 0
-      if (missing === 'g' && h > 0 && t > 0) {
-        result.value = steps('g', `2h/t² = 2·${h.toFixed(4)}/${(t * t).toFixed(4)}`, (2 * h) / (t * t))
+      const h = vals['h'] ?? 0; const tVal = vals['t'] ?? 0; const g = vals['g'] ?? 0
+      if (missing === 'g' && h > 0 && tVal > 0) {
+        result.value = steps('g', `2h/t² = 2·${h.toFixed(4)}/${(tVal * tVal).toFixed(4)}`, (2 * h) / (tVal * tVal))
       } else if (missing === 't' && h > 0 && g > 0) {
         result.value = steps('t', `√(2h/g) = √(2·${h.toFixed(4)}/${g.toFixed(4)})`, Math.sqrt((2 * h) / g))
-      } else if (missing === 'h' && g > 0 && t > 0) {
-        result.value = steps('h', `½gt² = ½·${g.toFixed(4)}·${(t * t).toFixed(4)}`, 0.5 * g * t * t)
-      } else result.value = 'أدخل قيم صحيحة للمتغيرات المعروفة'
+      } else if (missing === 'h' && g > 0 && tVal > 0) {
+        result.value = steps('h', `½gt² = ½·${g.toFixed(4)}·${(tVal * tVal).toFixed(4)}`, 0.5 * g * tVal * tVal)
+      } else result.value = t('analysis.enterValidKnownValues')
     }
     // === Inclined Plane ===
     else if (eq.formula.includes('a = g·sinθ − μ·g·cosθ')) {
@@ -103,17 +105,17 @@ export function useEquationSolver(
         result.value = steps('a', `g·sinθ−μ·g·cosθ = ${g.toFixed(4)}·${Math.sin(theta).toFixed(4)}−${mu.toFixed(4)}·${g.toFixed(4)}·${Math.cos(theta).toFixed(4)}`, g * Math.sin(theta) - mu * g * Math.cos(theta))
       } else if (missing === 'μ' && g > 0 && Math.cos(theta) > 1e-6) {
         result.value = steps('μ', `(g·sinθ−a)/(g·cosθ)`, (g * Math.sin(theta) - a) / (g * Math.cos(theta)))
-      } else result.value = 'أدخل قيم صحيحة'
+      } else result.value = t('analysis.enterValidValues')
     }
     else if (eq.formula.includes('s = ½at²')) {
-      const s = vals['s'] ?? 0; const a = vals['a'] ?? 0; const t = vals['t'] ?? 0
-      if (missing === 'a' && s > 0 && t > 0) {
-        result.value = steps('a', `2s/t² = 2·${s.toFixed(4)}/${(t * t).toFixed(4)}`, (2 * s) / (t * t))
+      const s = vals['s'] ?? 0; const a = vals['a'] ?? 0; const tVal = vals['t'] ?? 0
+      if (missing === 'a' && s > 0 && tVal > 0) {
+        result.value = steps('a', `2s/t² = 2·${s.toFixed(4)}/${(tVal * tVal).toFixed(4)}`, (2 * s) / (tVal * tVal))
       } else if (missing === 't' && s > 0 && a > 0) {
         result.value = steps('t', `√(2s/a) = √(2·${s.toFixed(4)}/${a.toFixed(4)})`, Math.sqrt((2 * s) / a))
-      } else if (missing === 's' && a > 0 && t > 0) {
-        result.value = steps('s', `½at² = ½·${a.toFixed(4)}·${(t * t).toFixed(4)}`, 0.5 * a * t * t)
-      } else result.value = 'أدخل قيم صحيحة'
+      } else if (missing === 's' && a > 0 && tVal > 0) {
+        result.value = steps('s', `½at² = ½·${a.toFixed(4)}·${(tVal * tVal).toFixed(4)}`, 0.5 * a * tVal * tVal)
+      } else result.value = t('analysis.enterValidValues')
     }
     // === Collision ===
     else if (eq.formula.includes('m₁v₁i + m₂v₂i = m₁v₁f + m₂v₂f')) {
@@ -124,13 +126,13 @@ export function useEquationSolver(
         result.value = steps('v₁f', `(m₁v₁i+m₂v₂i−m₂v₂f)/m₁`, (m1 * v1i + m2 * v2i - m2 * v2f) / m1)
       } else if (missing === 'v2f') {
         result.value = steps('v₂f', `(m₁v₁i+m₂v₂i−m₁v₁f)/m₂`, (m1 * v1i + m2 * v2i - m1 * v1f) / m2)
-      } else result.value = 'أدخل قيم صحيحة'
+      } else result.value = t('analysis.enterValidValues')
     }
     else if (eq.formula.includes('e = (v₂f − v₁f)/(v₁i − v₂i)')) {
       const v1i = vals['v1i'] ?? 0; const v2i = vals['v2i'] ?? 0; const v1f = vals['v1f'] ?? 0; const v2f = vals['v2f'] ?? 0
       if (missing === 'e' && Math.abs(v1i - v2i) > 1e-6) {
         result.value = steps('e', `(v₂f−v₁f)/(v₁i−v₂i)`, (v2f - v1f) / (v1i - v2i))
-      } else result.value = 'أدخل قيم صحيحة'
+      } else result.value = t('analysis.enterValidValues')
     }
     // === Projectile ===
     else if (eq.formula.includes('R = v₀²·sin(2θ)/g')) {
@@ -141,16 +143,16 @@ export function useEquationSolver(
         result.value = steps('v₀', `√(R·g/sin(2θ))`, Math.sqrt((R * g) / Math.sin(2 * theta)))
       } else if (missing === 'θ' && R > 0 && v0 > 0 && g > 0) {
         result.value = steps('θ', `½·arcsin(R·g/v₀²)`, Math.asin((R * g) / (v0 * v0)) / 2 * 180 / Math.PI)
-      } else result.value = 'أدخل قيم صحيحة'
+      } else result.value = t('analysis.enterValidValues')
     }
     else if (eq.formula.includes('H = v₀²·sin²(θ)/(2g)')) {
       const v0 = vals['v0'] ?? 0; const theta = (vals['θ'] ?? 0) * Math.PI / 180; const g = vals['g'] ?? 0
       if (missing === 'H' && v0 > 0 && g > 0) {
         result.value = steps('H', `v₀²·sin²(θ)/(2g)`, (v0 * v0 * Math.sin(theta) * Math.sin(theta)) / (2 * g))
-      } else result.value = 'أدخل قيم صحيحة'
+      } else result.value = t('analysis.enterValidValues')
     }
     else {
-      result.value = `حساب ${missing} من المعادلة ${eq.formula}`
+      result.value = t('analysis.calculateFromEquation', { missing, formula: eq.formula })
     }
   }
 

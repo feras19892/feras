@@ -1,4 +1,5 @@
 import { fetchJson, setAccessToken } from '../../services/http'
+import { useI18n } from '../useI18n'
 import type { User, ClassInfo } from '@my-modern-app/shared-types'
 
 export function useAuthActions(
@@ -7,6 +8,7 @@ export function useAuthActions(
   error: { value: string | null },
   clearGuestState: () => void,
 ) {
+  const { t } = useI18n()
   function extractStatusCode(err: unknown): number | null {
     const msg = err instanceof Error ? err.message : String(err)
     const match = msg.match(/Request failed:\s*(\d{3})\b/)
@@ -33,9 +35,9 @@ export function useAuthActions(
       return true
     } catch (err) {
       const status = extractStatusCode(err)
-      if (status === 401) error.value = 'البريد الإلكتروني أو كلمة المرور غير صحيحة'
-      else if (isNetworkError(err)) error.value = 'تعذر الاتصال بالخادم (تأكد من تشغيل backend)'
-      else error.value = 'Server connection error'
+      if (status === 401) error.value = t('auth.errors.invalidCredentials')
+      else if (isNetworkError(err)) error.value = t('auth.errors.cannotConnectToServer')
+      else error.value = t('auth.errors.serverConnectionError')
       return false
     } finally {
       loading.value = false
@@ -62,10 +64,10 @@ export function useAuthActions(
       return true
     } catch (err) {
       const status = extractStatusCode(err)
-      if (status === 409) error.value = 'هذا البريد الإلكتروني مستخدم مسبقًا'
-      else if (status === 400) error.value = 'بيانات التسجيل غير صحيحة'
-      else if (isNetworkError(err)) error.value = 'تعذر الاتصال بالخادم (تأكد من تشغيل backend)'
-      else error.value = 'فشل إنشاء الحساب'
+      if (status === 409) error.value = t('auth.errors.emailAlreadyUsed')
+      else if (status === 400) error.value = t('auth.errors.invalidRegistrationData')
+      else if (isNetworkError(err)) error.value = t('auth.errors.cannotConnectToServer')
+      else error.value = t('auth.errors.registerFailed')
       return false
     } finally {
       loading.value = false
@@ -138,9 +140,9 @@ export function useAuthActions(
       return true
     } catch (err) {
       const status = extractStatusCode(err)
-      if (status === 404) error.value = 'الكود غير صحيح'
-      else if (isNetworkError(err)) error.value = 'تعذر الاتصال بالخادم'
-      else error.value = 'Server connection error'
+      if (status === 404) error.value = t('auth.errors.invalidCode')
+      else if (isNetworkError(err)) error.value = t('auth.errors.cannotConnectToServer')
+      else error.value = t('auth.errors.serverConnectionError')
       return false
     } finally {
       loading.value = false

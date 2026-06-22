@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function drawSpringDigital(
   ctx: CanvasRenderingContext2D,
   w: number,
@@ -6,7 +7,8 @@ export function drawSpringDigital(
   massY: number,
   natEqY: number,
   staticStretchCm: number,
-  _pxPerCm: number
+  _pxPerCm: number,
+  t?: (key: string, ...args: any[]) => string
 ) {
   const hasMass = params.mass > 1e-6
   const padX = w - 168
@@ -47,7 +49,7 @@ export function drawSpringDigital(
   ctx.font = 'bold 10px Arial'
   ctx.textAlign = 'left'
   ctx.fillStyle = '#8B95A5'
-  ctx.fillText('📟 القراءات الإلكترونية', padX + 8, padY + 15)
+  ctx.fillText(t ? t('experiments.digitalReadings') : '📟 Digital Readings', padX + 8, padY + 15)
 
   // Battery icon
   ctx.fillStyle = '#4a5'

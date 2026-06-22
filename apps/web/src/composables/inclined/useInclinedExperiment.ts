@@ -1,6 +1,7 @@
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { sendToAnalysis } from '../../composables/analysis/sendToAnalysis'
+import { useI18n } from '../../composables/useI18n'
 import type { AnalysisPayload } from '../../types/physics'
 import type { InclinedParams } from '../../modules/physics/experiments/inclined/useInclinedPhysics'
 import { useInclinedLab } from './useInclinedLab'
@@ -8,6 +9,7 @@ import { useInclinedLayout } from './useInclinedLayout'
 import { useInclinedTrials } from './useInclinedTrials'
 
 export function useInclinedExperiment() {
+  const { t } = useI18n()
   const router = useRouter()
 
   const params = reactive<InclinedParams>({ thetaDeg: 30, length: 2.0, mass: 1.0, g: 9.81, mu: 0.0, airResistance: false, bodyTypeId: 'block', cd: 1.05, area: 0.01 })
@@ -23,10 +25,10 @@ export function useInclinedExperiment() {
   const stepIndex = computed(() => trials.trials.value.length >= 2 ? 2 : trials.trials.value.length > 0 ? 1 : 0)
   const tutorType = computed(() => { if (!lab.sim.running) return 'info'; if (lab.sim.paused) return 'warn'; return 'success' })
   const tutorMessage = computed(() => {
-    if (!lab.sim.running) return 'اضبط المعاملات واضغط "بدء"'
-    if (lab.sim.paused) return 'متوقف مؤقتاً'
-    if (lab.sim.arrived) return 'الجسم وصل للقاعدة! اضغط "تسجيل"'
-    return 'الجسم ينزلق...'
+    if (!lab.sim.running) return t('experiments.adjustParamsAndPressStart')
+    if (lab.sim.paused) return t('experiments.pausedTemporarily')
+    if (lab.sim.arrived) return t('experiments.bodyReachedBasePressRecord')
+    return t('experiments.bodyIsSliding')
   })
 
   watch(() => [params.thetaDeg, params.length, params.mass, params.g, params.mu, params.airResistance, params.bodyTypeId, params.cd, params.area], () => { if (!lab.running.value) resetSim() })
@@ -95,19 +97,19 @@ export function useInclinedExperiment() {
       acceleration: t.acceleration, timeOfArrival: t.timeOfArrival, finalVelocity: t.finalVelocity,
     }))
     const payload: AnalysisPayload = {
-      sourceExperiment: 'inclined', sourceNameAr: 'المنحدر المائل', readings,
+      sourceExperiment: 'inclined', sourceNameAr: t('experiments.expInclined'), readings,
       columns: [
-        { key: 'thetaDeg', label: 'الزاوية', unit: '°' },
+        { key: 'thetaDeg', label: t('experiments.colAngle'), unit: '°' },
         { key: 'sinTheta', label: 'sinθ', unit: '' },
-        { key: 'length', label: 'الطول', unit: 'm' },
-        { key: 'mass', label: 'الكتلة', unit: 'kg' },
-        { key: 'acceleration', label: 'التسارع', unit: 'm/s²' },
-        { key: 'timeOfArrival', label: 'الزمن', unit: 's' },
-        { key: 'finalVelocity', label: 'السرعة النهائية', unit: 'm/s' },
+        { key: 'length', label: t('experiments.colLength'), unit: 'm' },
+        { key: 'mass', label: t('experiments.colMass'), unit: 'kg' },
+        { key: 'acceleration', label: t('experiments.colAcceleration'), unit: 'm/s²' },
+        { key: 'timeOfArrival', label: t('experiments.colTime'), unit: 's' },
+        { key: 'finalVelocity', label: t('experiments.colVelocity'), unit: 'm/s' },
       ],
       equations: [
-        { name: 'قانون نيوتن على المنحدر', formula: 'a = g·sinθ − μ·g·cosθ', variables: [{ symbol: 'a', label: 'التسارع' }, { symbol: 'g', label: 'g' }, { symbol: 'θ', label: 'الزاوية' }, { symbol: 'μ', label: 'معامل الاحتكاك' }], solveFor: ['a', 'μ', 'θ'] },
-        { name: 'الحركة المنتظمة', formula: 's = ½at²', variables: [{ symbol: 's', label: 'المسافة' }, { symbol: 'a', label: 'التسارع' }, { symbol: 't', label: 'الزمن' }], solveFor: ['a', 't', 's'] },
+        { name: t('experiments.eqNewtonInclined'), formula: 'a = g·sinθ − μ·g·cosθ', variables: [{ symbol: 'a', label: t('experiments.varAcceleration') }, { symbol: 'g', label: 'g' }, { symbol: 'θ', label: t('experiments.varAngle') }, { symbol: 'μ', label: t('experiments.varMu') }], solveFor: ['a', 'μ', 'θ'] },
+        { name: t('experiments.eqUniformMotion'), formula: 's = ½at²', variables: [{ symbol: 's', label: t('experiments.varDistance') }, { symbol: 'a', label: t('experiments.varAcceleration') }, { symbol: 't', label: t('experiments.varTime') }], solveFor: ['a', 't', 's'] },
       ],
       suggestedPlots: [
         { xKey: 'thetaDeg', yKey: 'acceleration', xLabel: 'θ (°)', yLabel: 'a (m/s²)', type: 'scatter' },

@@ -4,7 +4,7 @@
  * @see https://en.wikipedia.org/wiki/Minimum_deviation
  */
 
-import { computed } from 'vue'
+import { computed, unref, type MaybeRef } from 'vue'
 import { calculatePrismAngles } from './usePrismCalculations'
 
 export interface DeviationPoint {
@@ -13,14 +13,17 @@ export interface DeviationPoint {
 }
 
 export function usePrismMinDeviation(
-  prismAngle: number,
-  wavelength: number,
-  material: string
+  prismAngle: MaybeRef<number>,
+  wavelength: MaybeRef<number>,
+  material: MaybeRef<string>
 ) {
   const points = computed<DeviationPoint[]>(() => {
+    const pa = unref(prismAngle)
+    const wl = unref(wavelength)
+    const mat = unref(material)
     const pts: DeviationPoint[] = []
     for (let theta = 10; theta <= 80; theta += 1) {
-      const r = calculatePrismAngles(prismAngle, theta, wavelength, material)
+      const r = calculatePrismAngles(pa, theta, wl, mat)
       if (!r.tir && r.deviation !== null) {
         pts.push({ theta_i: theta, delta: r.deviation })
       }
@@ -42,7 +45,7 @@ export function usePrismMinDeviation(
   /** n inferred from δ_min via prism equation */
   const nFromMinDeviation = computed(() => {
     if (minDelta.value === null) return null
-    const A = (prismAngle * Math.PI) / 180
+    const A = (unref(prismAngle) * Math.PI) / 180
     const D = (minDelta.value * Math.PI) / 180
     return Math.sin((A + D) / 2) / Math.sin(A / 2)
   })

@@ -1,4 +1,5 @@
-// القيم النظرية لكل تجربة
+import { useI18n } from '../../composables/useI18n'
+
 export interface TheoryResult {
   expected: number;
   unit: string;
@@ -8,7 +9,7 @@ export interface TheoryResult {
 export function getTheoreticalValue(experimentName: string, variable: string, params: Record<string, number>): TheoryResult | null {
   const e = experimentName.toLowerCase();
   // Spring: T = 2π√(m/k)
-  if (e.includes('spring') || e.includes('نابض')) {
+  if (e.includes('spring')) {
     const m = params['m'] ?? params['mass'] ?? 0;
     const k = params['k'] ?? 20;
     if (variable === 'T' && m > 0 && k > 0) {
@@ -20,7 +21,7 @@ export function getTheoreticalValue(experimentName: string, variable: string, pa
     }
   }
   // Pendulum: T = 2π√(L/g)
-  if (e.includes('pendulum') || e.includes('بندول')) {
+  if (e.includes('pendulum')) {
     const L = params['L'] ?? params['length'] ?? 0;
     const g = params['g'] ?? 9.81;
     if (variable === 'T' && L > 0) {
@@ -32,7 +33,7 @@ export function getTheoreticalValue(experimentName: string, variable: string, pa
     }
   }
   // Free Fall: h = ½gt²
-  if (e.includes('free') || e.includes('fall') || e.includes('سقوط')) {
+  if (e.includes('free') || e.includes('fall')) {
     const h = params['h'] ?? params['height'] ?? 0;
     const t = params['t'] ?? params['time'] ?? 0;
     const g = params['g'] ?? 9.81;
@@ -47,6 +48,7 @@ export function getTheoreticalValue(experimentName: string, variable: string, pa
 }
 
 export function compareWithTheory(experimentName: string, variable: string, measured: number, params: Record<string, number>) {
+  const { t } = useI18n()
   const theory = getTheoreticalValue(experimentName, variable, params);
   if (!theory) return null;
   const diff = Math.abs(measured - theory.expected);
@@ -58,7 +60,7 @@ export function compareWithTheory(experimentName: string, variable: string, meas
     percentError: pct,
     unit: theory.unit,
     formula: theory.formula,
-    quality: pct < 1 ? 'ممتاز' : pct < 5 ? 'جيد' : pct < 10 ? 'مقبول' : 'يحتاج مراجعة',
+    quality: pct < 1 ? t('analysis.qualityExcellent') : pct < 5 ? t('analysis.qualityGood') : pct < 10 ? t('analysis.qualityAcceptable') : t('analysis.qualityNeedsReview'),
     qualityColor: pct < 1 ? '#4ade80' : pct < 5 ? '#fbbf24' : '#f87171',
   };
 }

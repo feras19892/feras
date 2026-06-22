@@ -2,6 +2,7 @@ import type { SpringExperimentState } from './useSpringExperimentState'
 import type { ColumnId } from './useSpringLayout'
 import { useRouter } from 'vue-router'
 import { sendToAnalysis } from '../analysis/sendToAnalysis'
+import { useI18n } from '../../composables/useI18n'
 import type { AnalysisPayload } from '../../types/physics'
 
 export function useSpringExperimentActions(
@@ -10,6 +11,7 @@ export function useSpringExperimentActions(
   trials: { recordTrial: () => void; calcFitK: () => void; autoLoad: () => void; trials: { value: Record<string, unknown>[] } },
   layout: { applyPersistedLayout: () => void; movePanel: (id: string, col: ColumnId, afterId?: string | null) => void },
 ) {
+  const { t } = useI18n()
   const router = useRouter()
   function resetSim() { lab.resetSim() }
 
@@ -94,32 +96,32 @@ export function useSpringExperimentActions(
 
     const payload: AnalysisPayload = {
       sourceExperiment: 'spring',
-      sourceNameAr: 'تجربة النابض',
+      sourceNameAr: t('experiments.expSpring'),
       readings,
       columns: [
-        { key: 'mass', label: 'الكتلة', unit: 'kg' },
-        { key: 'T', label: 'الدورة', unit: 's' },
+        { key: 'mass', label: t('experiments.colMass'), unit: 'kg' },
+        { key: 'T', label: t('experiments.colPeriod'), unit: 's' },
         { key: 'T2', label: 'T²', unit: 's²' },
-        { key: 'kCalc', label: 'k المحسوب', unit: 'N/m' },
+        { key: 'kCalc', label: t('experiments.colKCalc'), unit: 'N/m' },
       ],
       equations: [
         {
-          name: 'قانون النابض',
+          name: t('experiments.eqSpringLaw'),
           formula: 'T = 2π√(m/k)',
           variables: [
-            { symbol: 'm', label: 'الكتلة' },
-            { symbol: 'T', label: 'الدورة' },
-            { symbol: 'k', label: 'ثابت النابض' },
+            { symbol: 'm', label: t('experiments.varMass') },
+            { symbol: 'T', label: t('experiments.varPeriod') },
+            { symbol: 'k', label: t('experiments.varK') },
           ],
           solveFor: ['k', 'T', 'm'],
         },
         {
-          name: 'ثابت النابض من الانحدار',
+          name: t('experiments.eqSpringRegression'),
           formula: 'T² = (4π²/k) · m',
           variables: [
-            { symbol: 'm', label: 'الكتلة' },
-            { symbol: 'T', label: 'الدورة' },
-            { symbol: 'k', label: 'ثابت النابض' },
+            { symbol: 'm', label: t('experiments.varMass') },
+            { symbol: 'T', label: t('experiments.varPeriod') },
+            { symbol: 'k', label: t('experiments.varK') },
           ],
           solveFor: ['k'],
         },

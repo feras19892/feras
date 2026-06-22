@@ -1,4 +1,5 @@
 import { ref } from 'vue';
+import { useI18n } from './useI18n';
 import {
   getAdminUsers,
   getAdminStats,
@@ -57,6 +58,7 @@ interface AdminStats {
 }
 
 export function useAdmin() {
+  const { t } = useI18n();
   const loading = ref(false);
   const errorMsg = ref('');
 
@@ -84,14 +86,14 @@ export function useAdmin() {
       if (f.success) feedback.value = f.feedback as unknown as AdminFeedbackItem[];
     } catch (err: unknown) {
       console.error('admin load failed:', err);
-      errorMsg.value = (err instanceof Error ? err.message : '') || 'فشل تحميل البيانات';
+      errorMsg.value = (err instanceof Error ? err.message : '') || t('admin.loadError');
     } finally {
       loading.value = false;
     }
   }
 
   async function handleRemoveUser(id: number) {
-    if (!confirm('هل تريد حذف هذا المستخدم؟ لا يمكن التراجع.')) return;
+    if (!confirm(t('admin.confirmDeleteUser'))) return;
     const res = await deleteUser(id);
     if (res.success) loadAll();
   }
@@ -107,7 +109,7 @@ export function useAdmin() {
   }
 
   async function handleRemoveClass(id: string) {
-    if (!confirm('هل تريد حذف هذا الفصل؟ سيُحذف كل الطلاب والتقارير المرتبطة.')) return;
+    if (!confirm(t('admin.confirmDeleteClass'))) return;
     const res = await deleteAdminClass(id);
     if (res.success) loadAll();
   }

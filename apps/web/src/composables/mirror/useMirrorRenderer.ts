@@ -10,7 +10,8 @@ export interface MirrorRenderProps {
   magnification: number | null
 }
 
-export function drawMirror(canvas: HTMLCanvasElement, props: MirrorRenderProps) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function drawMirror(canvas: HTMLCanvasElement, props: MirrorRenderProps, t?: (key: string, ...args: any[]) => string) {
   const ctx = canvas.getContext('2d')
   if (!ctx) return
 
@@ -156,7 +157,7 @@ export function drawMirror(canvas: HTMLCanvasElement, props: MirrorRenderProps) 
   if (!hasImage) {
     ctx.fillStyle = '#fbbf24'
     ctx.font = 'bold 13px sans-serif'
-    const hintText = isConcave ? 'الجسم عند البؤرة: الأشعة لا تلتقي (di = ∞)' : 'لا توجد صورة حقيقية للمرآة المحدبة'
+    const hintText = t ? (isConcave ? t('experiments.mirrorObjectAtFocalPoint') : t('experiments.mirrorNoRealImageConvex')) : (isConcave ? 'Object at focal point: rays do not meet (di = ∞)' : 'No real image for convex mirror')
     const textW = ctx.measureText(hintText).width
     ctx.fillText(hintText, (w - textW) / 2, cy + 40)
   }

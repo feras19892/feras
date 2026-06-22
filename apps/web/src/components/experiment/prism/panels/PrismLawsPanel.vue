@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { toRef } from 'vue'
 import { usePrismMinDeviation } from '../../../../composables/prism/usePrismMinDeviation'
 import { useI18n } from '../../../../composables/useI18n'
 
@@ -16,7 +17,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const minDev = usePrismMinDeviation(props.prismAngle, props.wavelength, props.material)
+const minDev = usePrismMinDeviation(toRef(props, 'prismAngle'), toRef(props, 'wavelength'), toRef(props, 'material'))
 </script>
 
 <template>

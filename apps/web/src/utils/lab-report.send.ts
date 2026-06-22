@@ -14,19 +14,28 @@ export function buildSendScript(options: OpenLabReportOptions): string {
   }
   const payloadJson = JSON.stringify(payload).replace(/"/g, '&quot;')
 
-  return `<button id="btn-send" class="btn-send-teacher" type="button" onclick="sendToTeacher()">📤 إرسال للمدرس</button>
+  const s = options.strings || {}
+  const btnLabel = s.sendToTeacherBtn ?? '📤 Send to Teacher'
+  const guestStudent = s.guestStudent ?? 'Guest Student'
+  const joinClassMsg = s.joinClassFirst ?? 'You must join a class first'
+  const branchPhysics = s.branchPhysics ?? 'Physics'
+  const sentLabel = s.sentSuccessfully ?? '✅ Sent'
+  const sentSuccessMsg = s.reportSentSuccess ?? 'Report sent to teacher successfully!'
+  const errorLabel = s.errorLabel ?? 'Error: '
+
+  return `<button id="btn-send" class="btn-send-teacher" type="button" onclick="sendToTeacher()">${btnLabel}</button>
 <script>
 function sendToTeacher() {
   const btn = document.getElementById('btn-send');
   if (btn.disabled) return;
   try {
     const data = JSON.parse("${payloadJson}");
-    const studentName = 'طالب ضيف';
+    const studentName = '${guestStudent}';
     const classInfoRaw = localStorage.getItem('auth_classes');
     const classes = classInfoRaw ? JSON.parse(classInfoRaw) : [];
     const classInfo = classes[0] || null;
     if (!classInfo || !classInfo.code) {
-      alert('يجب الانضمام لفصل أولاً');
+      alert('${joinClassMsg}');
       return;
     }
     const report = {
@@ -34,7 +43,7 @@ function sendToTeacher() {
       attemptId: Date.now(),
       experimentId: 0,
       experimentTitle: data.experimentName || data.title,
-      branch: 'فيزياء',
+      branch: '${branchPhysics}',
       studentName: studentName,
       classCode: classInfo.code,
       classId: classInfo.id,
@@ -64,10 +73,10 @@ function sendToTeacher() {
     }
     btn.disabled = true;
     btn.className = 'btn-sent';
-    btn.textContent = '✅ تم الإرسال';
-    alert('تم إرسال التقرير للمدرس بنجاح!');
+    btn.textContent = '${sentLabel}';
+    alert('${sentSuccessMsg}');
   } catch (e) {
-    alert('خطأ: ' + e.message);
+    alert('${errorLabel}' + e.message);
   }
 }
 </script>`

@@ -1,6 +1,8 @@
 import { ref } from 'vue'
+import { useI18n } from '../../composables/useI18n'
 
 export function useCollisionReport() {
+  const { t } = useI18n()
   const canvasSnapshot = ref<string | null>(null)
 
   function captureSnapshot(canvasRef: { captureSnapshot?: () => string } | null) {
@@ -22,7 +24,7 @@ export function useCollisionReport() {
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>تقرير تجربة التصادم</title>
+<title>${t('experiments.collisionReport')}</title>
 <style>
 body { font-family: 'Segoe UI', Arial, sans-serif; background: #f8fafc; padding: 2rem; color: #1e293b; }
 .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
@@ -34,10 +36,10 @@ th { background: #f1f5f9; font-weight: 600; }
 </head>
 <body>
 <div class="container">
-<h1>💥 تقرير تجربة التصادم في بعد واحد</h1>
-<p><strong>التاريخ:</strong> ${new Date().toLocaleString('ar-SA')}</p>
+<h1>${t('experiments.collisionReportTitle')}</h1>
+<p><strong>${t('experiments.dateLabel')}:</strong> ${new Date().toLocaleString('ar-SA')}</p>
 ${imgTag}
-<h2>📋 البيانات المسجلة</h2>
+<h2>${t('experiments.collisionReportData')}</h2>
 <table>
 <tr><th>#</th><th>m₁ (kg)</th><th>m₂ (kg)</th><th>v₁i (m/s)</th><th>v₂i (m/s)</th><th>e</th><th>v₁f (m/s)</th><th>v₂f (m/s)</th><th>Loss %</th></tr>
 ${trials.map((t, i: number) =>

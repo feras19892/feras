@@ -1,4 +1,8 @@
+import { useI18n } from '../../composables/useI18n'
+
 export function useProjectileHints() {
+  const { t } = useI18n()
+
   function getHint(v0: number, angleDeg: number, g: number, targetX: number) {
     const rad = (angleDeg * Math.PI) / 180
     const R = (v0 * v0 * Math.sin(2 * rad)) / g
@@ -10,34 +14,34 @@ export function useProjectileHints() {
     let strategy = ''
 
     if (Math.abs(diff) < 2) {
-      message = '✅ المدى قريب جداً من الهدف!'
-      tip = 'أطلق وشاهد النتيجة.'
-      strategy = 'جاهز للتجربة!'
+      message = t('experiments.projHintRangeClose')
+      tip = t('experiments.projHintLaunchAndSee')
+      strategy = t('experiments.projHintReady')
     } else if (diff > 0) {
       // Reaches too far
-      message = '⚠️ المقذوف سيصل أبعد من الهدف.'
+      message = t('experiments.projHintTooFar')
       if (angleDeg > 45) {
-        tip = '💡 الزاوية > 45°: قلّل الزاوية قليلاً (تقليل sin(2θ) يقلل المدى).'
-        strategy = 'أقرب زاوية إلى 45° = أقصى مدى.'
+        tip = t('experiments.projHintAngleGt45')
+        strategy = t('experiments.projHintCloserTo45')
       } else if (angleDeg < 45) {
-        tip = '💡 الزاوية < 45°: يمكنك قلّل v₀ أو زيادة الزاوية قليلاً نحو 45°.'
-        strategy = 'جرب تقليل السرعة أولاً.'
+        tip = t('experiments.projHintAngleLt45')
+        strategy = t('experiments.projHintTryReduceSpeed')
       } else {
-        tip = '💡 الزاوية = 45° (أقصى مدى): قلّل السرعة فقط.'
-        strategy = 'v₀ مباشرةً تتحكم بالمدى عند 45°.'
+        tip = t('experiments.projHintAngle45ReduceSpeed')
+        strategy = t('experiments.projHintV0ControlsRange')
       }
     } else {
       // Falls short
-      message = '⚠️ المقذوف لن يصل للهدف.'
+      message = t('experiments.projHintWontReach')
       if (angleDeg < 45) {
-        tip = '💡 الزاوية < 45°: زد الزاوية نحو 45° (يزيد sin(2θ) وبالتالي المدى).'
-        strategy = 'كلما اقتربت من 45° → مدى أكبر.'
+        tip = t('experiments.projHintAngleLt45Increase')
+        strategy = t('experiments.projHintCloserTo45MoreRange')
       } else if (angleDeg > 45) {
-        tip = '💡 الزاوية > 45°: قلّل الزاوية نحو 45° أو زِد السرعة.'
-        strategy = '45° تعطي أقصى مدى لمسرعة معينة.'
+        tip = t('experiments.projHintAngleGt45OrSpeed')
+        strategy = t('experiments.projHint45MaxRangeForSpeed')
       } else {
-        tip = '💡 الزاوية = 45° (أقصى مدى): يجب زيادة السرعة فقط.'
-        strategy = 'عند 45°: المدى ∝ v₀² → زيادة بسيطة في v₀ تكفي.'
+        tip = t('experiments.projHintAngle45NeedSpeed')
+        strategy = t('experiments.projHintSmallV0Increase')
       }
     }
 
@@ -55,13 +59,13 @@ export function useProjectileHints() {
     const rad = (studentAngle * Math.PI) / 180
     const R = (studentV0 * studentV0 * Math.sin(2 * rad)) / g
     const diff = R - targetX
-    if (Math.abs(diff) < 2) return '✅ ممتاز! تحقق الآن بالإطلاق.'
+    if (Math.abs(diff) < 2) return t('experiments.projHintExcellent')
     if (diff > 0) {
-      if (studentAngle > 45) return `⚠️ سيصل أبعد. قلّل الزاوية نحو 45°.`
-      return `⚠️ سيصل أبعد. قلّل السرعة.`
+      if (studentAngle > 45) return t('experiments.projHintTooFarReduceAngle')
+      return t('experiments.projHintTooFarReduceSpeed')
     }
-    if (studentAngle < 45) return `⚠️ أقصر. زِد الزاوية نحو 45° أو زِد السرعة.`
-    return `⚠️ أقصر. زِد السرعة.`
+    if (studentAngle < 45) return t('experiments.projHintTooShortIncreaseAngle')
+    return t('experiments.projHintTooShortIncreaseSpeed')
   }
 
   return { getHint, checkStudentGuess }

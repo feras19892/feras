@@ -6,8 +6,8 @@ import { adminUser } from './admin-user'
 import { teacher } from './teacher'
 import { common } from './common'
 import { settings } from './settings'
-import { experiments } from './experiments'
-import { analysis } from './analysis'
+import { experiments } from './experiments/index'
+import { analysis } from './analysis/index'
 import { ai } from './ai'
 
 export default {
@@ -22,4 +22,9 @@ export default {
   experiments: experiments.ar,
   analysis: analysis.ar,
   ai: ai.ar,
+  prism: {
+    ...experiments.ar,
+    title: 'تحلل الضوء بالمنشور',
+    emptyResults: 'سجل قراءتين على الأقل لعرض النتائج',
+  },
 } as const

@@ -14,18 +14,15 @@ export function prismVertices(
   centerY: number
 ) {
   const A = toRad(prismAngleDeg)
-  const baseAngle = (Math.PI - A) / 2
 
-  const topY = centerY - (prismSize * Math.cos(baseAngle)) / 2
-  const bottomY = centerY + (prismSize * Math.cos(baseAngle)) / 2
-  const leftX = centerX - (prismSize * Math.sin(A / 2))
-  const rightX = centerX + (prismSize * Math.sin(A / 2))
+  const halfBase = prismSize * Math.sin(A / 2)
+  const height   = prismSize * Math.cos(A / 2)
 
-  const pA: Point = { x: centerX, y: topY }
-  const pB: Point = { x: leftX, y: bottomY }
-  const pC: Point = { x: rightX, y: bottomY }
+  const pA: Point = { x: centerX,           y: centerY - height  * (2 / 3) }
+  const pB: Point = { x: centerX - halfBase, y: centerY + height  * (1 / 3) }
+  const pC: Point = { x: centerX + halfBase, y: centerY + height  * (1 / 3) }
 
-  return { pA, pB, pC, baseAngle, edgeAB_angle: Math.atan2(pB.y - pA.y, pB.x - pA.x) }
+  return { pA, pB, pC, edgeAB_angle: Math.atan2(pB.y - pA.y, pB.x - pA.x) }
 }
 
 export function lineIntersection(

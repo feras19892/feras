@@ -12,14 +12,14 @@ export function openLabReport(options: OpenLabReportOptions): Window | null {
   const locale = options.dateLocale ?? 'ar'
 
   const strings = {
-    dateLabel: 'التاريخ',
-    experimentLabel: 'التجربة',
-    paramsHeading: 'المعاملات',
-    resultsHeading: 'النتائج',
-    footerHint: 'تم إنشاء هذا التقرير من المحاكاة التفاعلية',
-    printLabel: 'طباعة',
-    closeLabel: 'إغلاق',
-    simulationSnap: 'لقطة من المحاكاة',
+    dateLabel: options.strings?.dateLabel ?? 'Date',
+    experimentLabel: options.strings?.experimentLabel ?? 'Experiment',
+    paramsHeading: options.strings?.paramsHeading ?? 'Parameters',
+    resultsHeading: options.strings?.resultsHeading ?? 'Results',
+    footerHint: options.strings?.footerHint ?? 'This report was generated from the interactive simulation',
+    printLabel: options.strings?.printLabel ?? 'Print',
+    closeLabel: options.strings?.closeLabel ?? 'Close',
+    simulationSnap: options.strings?.simulationSnap ?? 'Simulation snapshot',
   }
 
   const now = new Date().toLocaleString(locale)

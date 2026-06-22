@@ -6,8 +6,8 @@ import { adminUser } from './admin-user'
 import { teacher } from './teacher'
 import { common } from './common'
 import { settings } from './settings'
-import { experiments } from './experiments'
-import { analysis } from './analysis'
+import { experiments } from './experiments/index'
+import { analysis } from './analysis/index'
 import { ai } from './ai'
 
 export default {
@@ -22,4 +22,9 @@ export default {
   experiments: experiments.en,
   analysis: analysis.en,
   ai: ai.en,
+  prism: {
+    ...experiments.en,
+    title: 'Light Dispersion by Prism',
+    emptyResults: 'Record at least 2 trials to see results',
+  },
 } as const

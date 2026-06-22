@@ -1,4 +1,5 @@
 import { computed, reactive, ref } from 'vue'
+import { useI18n } from '../../composables/useI18n'
 import type { SpringParams } from '../../modules/physics/experiments/spring/useSpringPhysics'
 
 export interface SpringExperimentState {
@@ -32,6 +33,7 @@ export function useSpringExperimentComputed(
   lab: { sim: { running: boolean; paused: boolean }; measured: { value: Record<string, unknown> | null }; effectiveMass: { value: number }; running: { value: boolean } },
   layout: { isPanelVisible: (id: string) => boolean; columnOrder: Record<string, string[]> },
 ) {
+  const { t } = useI18n()
   const stepIndex = computed(() =>
     trials.trials.value.length >= 2 ? 2 : trials.trials.value.length > 0 ? 1 : 0
   )
@@ -41,9 +43,9 @@ export function useSpringExperimentComputed(
     return 'success'
   })
   const tutorMessage = computed(() => {
-    if (!lab.sim.running) return 'جاهز للبدء'
-    if (lab.sim.paused) return 'متوقف مؤقتاً'
-    return 'المحاكاة تعمل...'
+    if (!lab.sim.running) return t('experiments.readyToStart')
+    if (lab.sim.paused) return t('experiments.pausedTemporarily')
+    return t('experiments.simulationRunning')
   })
 
   const dynamicTrials = computed(() => {

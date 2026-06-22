@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { drawMirror } from '../../../composables/mirror/useMirrorRenderer'
+import { useI18n } from '../../../composables/useI18n'
 
 interface Props {
   mirrorType: 'concave' | 'convex'
@@ -15,11 +16,12 @@ interface Props {
 
 const props = defineProps<Props>()
 const canvasRef = ref<HTMLCanvasElement | null>(null)
+const { t } = useI18n()
 
 function draw() {
   const canvas = canvasRef.value
   if (!canvas) return
-  drawMirror(canvas, props)
+  drawMirror(canvas, props, t)
 }
 
 function resize() {

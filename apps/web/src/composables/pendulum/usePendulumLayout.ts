@@ -1,4 +1,5 @@
 import { reactive } from 'vue'
+import { useI18n } from '../useI18n'
 
 export type ColumnId = 'data' | 'vis' | 'ctrl'
 export type PanelId = 'table' | 'equations' | 'error' | 'scatter' | 'tutor' | 'signal' | 'fft' | 'phase' | 'params' | 'guide' | 'stats' | 'report'
@@ -23,6 +24,7 @@ const allPanelIds: PanelId[] = [
 ]
 
 export function usePendulumLayout() {
+  const { t } = useI18n()
 
   const panels = reactive<Record<PanelId, boolean>>({
     table: true, equations: false, signal: true, params: true, guide: true, stats: false,
@@ -90,12 +92,12 @@ export function usePendulumLayout() {
   function panelTitle(id: string) {
     const pid = id as PanelId
     const titles: Record<PanelId, string> = {
-      table: '📋 قراءات', equations: '⚗️ حسابات', error: '⚖️ أخطاء',
-      scatter: '📈 Scatter', tutor: '⚖️ تحليل مباشر', report: '📋 تقرير',
-      signal: '📈 إشارة θ(t)', fft: '📊 FFT', phase: '🔄 فضاء الطور',
-      params: '⚙️ معاملات', guide: '📋 دليل', stats: '📊 إحصائيات',
+      table: t('experiments.panelTable'), equations: t('experiments.panelEquations'), error: t('experiments.panelError'),
+      scatter: t('experiments.panelScatter'), tutor: t('experiments.panelTutor'), report: t('experiments.panelReport'),
+      signal: t('experiments.panelSignal'), fft: t('experiments.panelFft'), phase: t('experiments.panelPhase'),
+      params: t('experiments.panelParams'), guide: t('experiments.panelGuide'), stats: t('experiments.panelStats'),
     }
-    return titles[pid] ?? '📊 إحصائيات'
+    return titles[pid] ?? t('experiments.panelStats')
   }
 
   return { panels, maximized, panelColumn, columnOrder, isPanelVisible, togglePanel, showAllPanels, maximizePanel, movePanel, applyPersistedLayout, resetLayout, panelTitle }

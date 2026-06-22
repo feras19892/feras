@@ -1,6 +1,7 @@
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { sendToAnalysis } from '../../composables/analysis/sendToAnalysis'
+import { useI18n } from '../../composables/useI18n'
 import type { AnalysisPayload } from '../../types/physics'
 import type { FreeFallParams } from '../../modules/physics/experiments/freefall/useFreeFallPhysics'
 import { useFreeFallLab } from './useFreeFallLab'
@@ -8,6 +9,7 @@ import { useFreeFallLayout } from './useFreeFallLayout'
 import { useFreeFallTrials } from './useFreeFallTrials'
 
 export function useFreeFallExperiment() {
+  const { t } = useI18n()
   const router = useRouter()
 
   const params = reactive<FreeFallParams>({ h: 0.50, g: 9.81, mass: 1.0, airResistance: false, dragCoeff: 0.1 })
@@ -22,7 +24,7 @@ export function useFreeFallExperiment() {
 
   const stepIndex = computed(() => trials.trials.value.length >= 2 ? 2 : trials.trials.value.length > 0 ? 1 : 0)
   const tutorType = computed(() => { if (!lab.sim.running) return 'info'; if (lab.sim.paused) return 'warn'; return 'success' })
-  const tutorMessage = computed(() => { if (!lab.sim.running) return 'اضغط "إفلات" لبدء السقوط'; if (lab.sim.paused) return 'متوقف مؤقتاً'; if (lab.sim.landed) return 'الكرة ارتطمت! اضغط "تسجيل"'; return 'الكرة في الجو...' })
+  const tutorMessage = computed(() => { if (!lab.sim.running) return t('experiments.pressDropToStartFall'); if (lab.sim.paused) return t('experiments.pausedTemporarily'); if (lab.sim.landed) return t('experiments.impactRecordHint'); return t('experiments.ballInAirHint') })
 
   watch(() => [params.h, params.g, params.mass, params.airResistance, params.dragCoeff], () => { if (!lab.running.value) resetSim() })
 
@@ -85,16 +87,16 @@ export function useFreeFallExperiment() {
     if (tList.length === 0) { console.warn('[exportToAnalysis] no trials recorded'); return }
     const readings = tList.map(t => ({ h: t.heightMeters, t: t.timeSec, t2: t.timeSquaredSec2, gCalc: t.gCalc }))
     const payload: AnalysisPayload = {
-      sourceExperiment: 'freefall', sourceNameAr: 'السقوط الحر', readings,
+      sourceExperiment: 'freefall', sourceNameAr: t('experiments.expFreeFall'), readings,
       columns: [
-        { key: 'h', label: 'الارتفاع', unit: 'm' },
-        { key: 't', label: 'الزمن', unit: 's' },
+        { key: 'h', label: t('experiments.colHeight'), unit: 'm' },
+        { key: 't', label: t('experiments.colTime'), unit: 's' },
         { key: 't2', label: 't²', unit: 's²' },
-        { key: 'gCalc', label: 'g المحسوب', unit: 'm/s²' },
+        { key: 'gCalc', label: t('experiments.colGCalc'), unit: 'm/s²' },
       ],
       equations: [
-        { name: 'السقوط الحر', formula: 'h = ½gt²', variables: [{ symbol: 'h', label: 'الارتفاع' }, { symbol: 't', label: 'الزمن' }, { symbol: 'g', label: 'تسارع الجاذبية' }], solveFor: ['g', 't', 'h'] },
-        { name: 'g من القياس', formula: 'g = 2h/t²', variables: [{ symbol: 'h', label: 'الارتفاع' }, { symbol: 't', label: 'الزمن' }, { symbol: 'g', label: 'تسارع الجاذبية' }], solveFor: ['g'] },
+        { name: t('experiments.eqFreeFall'), formula: 'h = ½gt²', variables: [{ symbol: 'h', label: t('experiments.varHeight') }, { symbol: 't', label: t('experiments.varTime') }, { symbol: 'g', label: t('experiments.varGravity') }], solveFor: ['g', 't', 'h'] },
+        { name: t('experiments.eqGFromMeasurement'), formula: 'g = 2h/t²', variables: [{ symbol: 'h', label: t('experiments.varHeight') }, { symbol: 't', label: t('experiments.varTime') }, { symbol: 'g', label: t('experiments.varGravity') }], solveFor: ['g'] },
       ],
       suggestedPlots: [
         { xKey: 't2', yKey: 'h', xLabel: 't² (s²)', yLabel: 'h (m)', type: 'scatter' },

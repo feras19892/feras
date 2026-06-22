@@ -1,4 +1,5 @@
 import { reactive } from 'vue'
+import { useI18n } from '../useI18n'
 
 export type ColumnId = 'data' | 'vis' | 'ctrl'
 export type PanelId = 'table' | 'signal' | 'params' | 'guide'
@@ -20,6 +21,7 @@ const defaultColumnOrder: Record<ColumnId, PanelId[]> = {
 const allPanelIds: PanelId[] = ['table', 'signal', 'params', 'guide']
 
 export function useSpringLayout() {
+  const { t } = useI18n()
   // Clear old v1 layout to prevent stale analysis panels from appearing
   try { localStorage.removeItem('spring:layout:v1') } catch { /* ignore */ }
 
@@ -137,10 +139,10 @@ export function useSpringLayout() {
   function panelTitle(id: string) {
     const pid = id as PanelId
     const titles: Record<PanelId, string> = {
-      table: '📋 قراءات',
-      signal: '📈 إشارة x(t)',
-      params: '⚙️ معاملات',
-      guide: '📋 دليل',
+      table: t('experiments.panelTable'),
+      signal: t('experiments.panelSignal'),
+      params: t('experiments.panelParams'),
+      guide: t('experiments.panelGuide'),
     }
     return titles[pid] ?? '📊'
   }

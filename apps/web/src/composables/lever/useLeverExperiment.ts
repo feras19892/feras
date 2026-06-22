@@ -1,6 +1,7 @@
 import { computed, onMounted, onUnmounted, reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { sendToAnalysis } from '../../composables/analysis/sendToAnalysis'
+import { useI18n } from '../../composables/useI18n'
 import type { AnalysisPayload } from '../../types/physics'
 import type { LeverParams } from '../../modules/physics/experiments/lever/useLeverPhysics'
 import { useLeverLab } from './useLeverLab'
@@ -8,6 +9,7 @@ import { useLeverTrials } from './useLeverTrials'
 import { useLeverLayout } from './useLeverLayout'
 
 export function useLeverExperiment() {
+  const { t } = useI18n()
   const router = useRouter()
   const params = reactive<LeverParams>({ beamLength: 10, g: 9.81, maxTiltDeg: 15, snapStep: 0.5 })
   const lab = useLeverLab(params)
@@ -23,11 +25,11 @@ export function useLeverExperiment() {
     return 'warn'
   })
   const tutorMessage = computed(() => {
-    if (lab.sim.balls.length === 0 && lab.sim.forces.length === 0) return 'أضف كراتاً أو قوى ثم اضغط "بدء"'
-    if (lab.sim.isBalanced) return '⚖️ متوازن! اضغط "تسجيل"'
+    if (lab.sim.balls.length === 0 && lab.sim.forces.length === 0) return t('experiments.addBallsOrForcesThenPressStart')
+    if (lab.sim.isBalanced) return t('experiments.balancedPressRecord')
     return lab.sim.netTorque > 0
-      ? `↻ العزم لليمين (${lab.sim.netTorque.toFixed(1)} N·m)`
-      : `↺ العزم لليسار (${Math.abs(lab.sim.netTorque).toFixed(1)} N·m)`
+      ? t('experiments.torqueToRight', { torque: lab.sim.netTorque.toFixed(1) })
+      : t('experiments.torqueToLeft', { torque: Math.abs(lab.sim.netTorque).toFixed(1) })
   })
 
   // === Drag & Drop / Resizing ===
@@ -100,34 +102,34 @@ export function useLeverExperiment() {
 
     const payload: AnalysisPayload = {
       sourceExperiment: 'lever',
-      sourceNameAr: 'توازن العارضة',
+      sourceNameAr: t('experiments.expLever'),
       readings,
       columns: [
-        { key: 'trialNo', label: 'رقم المحاولة' },
-        { key: 'massLeft', label: 'الكتلة اليسرى', unit: 'kg' },
-        { key: 'massRight', label: 'الكتلة اليمنى', unit: 'kg' },
-        { key: 'xLeft', label: 'ذراع اليسار', unit: 'm' },
-        { key: 'xRight', label: 'ذراع اليمين', unit: 'm' },
-        { key: 'invXLeft', label: '1/ذراع اليسار', unit: '1/m' },
-        { key: 'invXRight', label: '1/ذراع اليمين', unit: '1/m' },
-        { key: 'netTorque', label: 'العزم الصافي', unit: 'N·m' },
-        { key: 'tiltDeg', label: 'زاوية الميلان', unit: '°' },
+        { key: 'trialNo', label: t('experiments.colTrialNo') },
+        { key: 'massLeft', label: t('experiments.colMassLeft'), unit: 'kg' },
+        { key: 'massRight', label: t('experiments.colMassRight'), unit: 'kg' },
+        { key: 'xLeft', label: t('experiments.colArmLeft'), unit: 'm' },
+        { key: 'xRight', label: t('experiments.colArmRight'), unit: 'm' },
+        { key: 'invXLeft', label: t('experiments.colInvArmLeft'), unit: '1/m' },
+        { key: 'invXRight', label: t('experiments.colInvArmRight'), unit: '1/m' },
+        { key: 'netTorque', label: t('experiments.colNetTorque'), unit: 'N·m' },
+        { key: 'tiltDeg', label: t('experiments.colTiltDeg'), unit: '°' },
       ],
       equations: [
         {
-          name: 'قانون الروافع',
+          name: t('experiments.eqLeverLaw'),
           formula: 'τ = m · g · x',
           variables: [
-            { symbol: 'm', label: 'الكتلة' },
-            { symbol: 'g', label: 'الجاذبية' },
-            { symbol: 'x', label: 'المسافة من الارتكاز' },
+            { symbol: 'm', label: t('experiments.varMass') },
+            { symbol: 'g', label: t('experiments.varG') },
+            { symbol: 'x', label: t('experiments.varLeverDistance') },
           ],
           solveFor: ['m', 'x'],
         },
       ],
       suggestedPlots: [
-        { xKey: 'invXLeft', yKey: 'massLeft', xLabel: '1/d_يسار (1/m)', yLabel: 'm_يسار (kg)', type: 'scatter' },
-        { xKey: 'invXRight', yKey: 'massRight', xLabel: '1/d_يمين (1/m)', yLabel: 'm_يمين (kg)', type: 'scatter' },
+        { xKey: 'invXLeft', yKey: 'massLeft', xLabel: `1/d_${t('experiments.leftSide')} (1/m)`, yLabel: `m_${t('experiments.leftSide')} (kg)`, type: 'scatter' },
+        { xKey: 'invXRight', yKey: 'massRight', xLabel: `1/d_${t('experiments.rightSide')} (1/m)`, yLabel: `m_${t('experiments.rightSide')} (kg)`, type: 'scatter' },
       ],
     }
 

@@ -1,7 +1,9 @@
 import { useExperimentReport } from '../useExperimentReport'
+import { useI18n } from '../useI18n'
 import type { LabReportTable, LabReportStat } from '../../utils/lab-report'
 
 export function useProjectileReport() {
+  const { t } = useI18n()
   const rep = useExperimentReport('projectile_report_student')
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -12,8 +14,8 @@ export function useProjectileReport() {
     const fitResult = ex.trials.fitResult.value
 
     const table: LabReportTable = {
-      caption: 'جدول القراءات — حركة المقذوفات',
-      headers: ['#', 'الزاوية (°)', 'v₀ (m/s)', 'زمن التحليق (s)', 'أقصى ارتفاع (m)', 'المدى (m)', 'الخطأ (%)'],
+      caption: t('experiments.projectileReportCaption'),
+      headers: ['#', t('experiments.angleLabel') + ' (°)', 'v₀ (m/s)', t('experiments.flightTimeLabel') + ' (s)', t('experiments.maxHeight') + ' (m)', t('experiments.rangeLabel') + ' (m)', t('experiments.errorPercentage') + ' (%)'],
       rows: trials.map((t, i: number) => [
         i + 1,
         t.angleDegrees.toFixed(1),
@@ -27,51 +29,51 @@ export function useProjectileReport() {
 
     const stats: LabReportStat[] = []
     if (trialStats) {
-      stats.push({ label: 'متوسط المدى', value: trialStats.range_mean.toFixed(2), unit: 'm', highlight: true })
-      stats.push({ label: 'الانحراف المعياري (المدى)', value: trialStats.range_std.toFixed(2), unit: 'm' })
-      stats.push({ label: 'متوسط زمن التحليق', value: trialStats.flightTime_mean.toFixed(2), unit: 's' })
-      stats.push({ label: 'الانحراف المعياري (الزمن)', value: trialStats.flightTime_std.toFixed(2), unit: 's' })
+      stats.push({ label: t('experiments.averageRange'), value: trialStats.range_mean.toFixed(2), unit: 'm', highlight: true })
+      stats.push({ label: t('experiments.stdDeviationRange'), value: trialStats.range_std.toFixed(2), unit: 'm' })
+      stats.push({ label: t('experiments.averageFlightTime'), value: trialStats.flightTime_mean.toFixed(2), unit: 's' })
+      stats.push({ label: t('experiments.stdDeviationTime'), value: trialStats.flightTime_std.toFixed(2), unit: 's' })
     }
 
     let fitBlock = ''
     if (fitResult && trials.length >= 2) {
       fitBlock = `
 <div style="font-family:monospace;font-size:.85rem;line-height:1.8;color:#1e3a8a">
-  <div><b>معادلة المدى:</b> R = ${fitResult.slope.toFixed(4)} · sin(2θ) ${fitResult.intercept >= 0 ? '+' : ''} ${fitResult.intercept.toFixed(4)}</div>
-  <div>منحنى الانحدار الخطي لـ R مقابل sin(2θ)</div>
+  <div><b>${t('experiments.rangeEquationLabel')}:</b> R = ${fitResult.slope.toFixed(4)} · sin(2θ) ${fitResult.intercept >= 0 ? '+' : ''} ${fitResult.intercept.toFixed(4)}</div>
+  <div>${t('experiments.linearRegressionCurve')}</div>
 </div>`
     }
 
     const lawsBlock = `
 <div style="font:monospace .85rem/1.8 #1e3a8a">
-  <div><b>زمن الوصول لأقصى ارتفاع:</b> z = v₀ sin θ / g</div>
-  <div><b>أقصى ارتفاع:</b> H = (v₀ sin θ)² / 2g</div>
-  <div><b>المدى:</b> R = v₀² sin(2θ) / g</div>
+  <div><b>${t('experiments.timeToMaxHeight')}:</b> z = v₀ sin θ / g</div>
+  <div><b>${t('experiments.maxHeight')}:</b> H = (v₀ sin θ)² / 2g</div>
+  <div><b>${t('experiments.rangeLabel')}:</b> R = v₀² sin(2θ) / g</div>
 </div>`
 
     rep.openFullReport({
-      title: '📋 تقرير تجربة المقذوفات',
+      title: t('experiments.projectileReportTitle'),
       icon: '🚀',
-      experimentName: 'حركة المقذوفات — الميكانيكا',
+      experimentName: t('experiments.expProjectile') + ' — ' + t('experiments.branchMechanics'),
       dir: 'rtl',
       dateLocale: 'ar',
-      meta: { 'الفرع': 'الميكانيكا', 'التجربة': 'حركة المقذوفات', 'g النظري': ex.params.g.toFixed(2) + ' m/s²' },
+      meta: { [t('experiments.branchLabel')]: t('experiments.branchMechanics'), [t('experiments.experimentLabel')]: t('experiments.expProjectile'), [t('experiments.gTheoretical')]: ex.params.g.toFixed(2) + ' m/s²' },
       params: [
         { label: 'v₀', value: ex.params.v0, unit: 'm/s' },
-        { label: 'الزاوية', value: ex.params.angleDeg.toFixed(1), unit: '°' },
+        { label: t('experiments.angleLabel'), value: ex.params.angleDeg.toFixed(1), unit: '°' },
         { label: 'g', value: ex.params.g.toFixed(2), unit: 'm/s²' },
-        { label: 'مقاومة الهواء', value: ex.params.dragCoeff },
-        { label: 'عدد القراءات', value: trials.length },
+        { label: t('experiments.airResistanceLabel'), value: ex.params.dragCoeff },
+        { label: t('experiments.readingsCountLabel'), value: trials.length },
       ],
       summaryStats: stats,
       tables: [table],
       htmlBlocks: [
-        { title: '⚖️ المعادلات المستخدمة', html: lawsBlock },
-        fitBlock ? { title: '📈 ملائمة منحنى المدى', html: fitBlock } : null,
-        { title: '⚠️ مصادر الأخطاء المحتملة', html: '<ul style="margin:0;padding-right:1.2rem;font-size:.85rem"><li>احتكاك الهواء</li><li>دقة ساعة الإيقاف</li><li>خطأ زاوية النظر (parallax)</li><li>تأثير دوران الأرض</li><li>اختلاف g مع الارتفاع</li></ul>' },
+        { title: t('experiments.usedEquations'), html: lawsBlock },
+        fitBlock ? { title: t('experiments.rangeCurveFitting'), html: fitBlock } : null,
+        { title: t('experiments.potentialErrorSources'), html: `<ul style="margin:0;padding-right:1.2rem;font-size:.85rem"><li>${t('experiments.airFriction')}</li><li>${t('experiments.humanStopwatchAccuracy')}</li><li>${t('experiments.parallaxError')}</li><li>${t('experiments.earthRotationEffect')}</li><li>${t('experiments.gVariationWithHeight')}</li></ul>` },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ].filter(Boolean) as any[],
-      footerNote: 'تم إنشاء هذا التقرير من المحاكاة التفاعلية • فيزياء الميكانيكا',
+      footerNote: t('experiments.footerNote') + ' • ' + t('experiments.branchMechanics'),
     })
   }
 

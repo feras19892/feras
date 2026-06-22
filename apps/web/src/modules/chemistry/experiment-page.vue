@@ -1,0 +1,77 @@
+<script setup lang="ts">
+import { computed, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { getChemistryExperiment } from './catalog';
+import { loadChemistryExperiment } from './experiment-loader';
+import { useI18n } from '../../composables/useI18n';
+import FeedbackModal from '../../components/shared/FeedbackModal.vue';
+
+const { t } = useI18n();
+const route = useRoute();
+const router = useRouter();
+
+const expId = computed(() => route.params.experimentId as string);
+const experiment = computed(() => getChemistryExperiment(expId.value));
+const showFeedback = ref(false);
+
+const ExperimentComponent = computed(() => {
+  if (!expId.value) return null;
+  return loadChemistryExperiment(expId.value);
+});
+
+function goBack() {
+  router.push('/chemistry');
+}
+
+const expNameMap: Record<string, string> = {
+  'acid-base-titration': 'experiments.expAcidBase',
+};
+
+function expNameKey(id: string): string {
+  return expNameMap[id] || id;
+}
+</script>
+
+<template>
+  <div class="experiment-page">
+    <header class="page-header" v-if="experiment && !ExperimentComponent">
+      <button class="back-btn" @click="goBack">&#x2190; {{ t('experiments.back') }}</button>
+      <h1><span class="icon">{{ experiment.icon }}</span> {{ experiment ? t(expNameKey(experiment.id)) : '' }}</h1>
+      <p class="en">{{ experiment?.name }}</p>
+      <button class="feedback-btn" @click="showFeedback = true">&#x1F6A9; {{ t('experiments.reportProblem') }}</button>
+    </header>
+
+    <FeedbackModal
+      v-model:show="showFeedback"
+      :experiment-id="expId"
+      :experiment-name="experiment ? t(expNameKey(experiment.id)) : ''"
+    />
+
+    <component v-if="ExperimentComponent" :is="ExperimentComponent" />
+
+    <div v-else-if="experiment" class="shell-placeholder">
+      <p>{{ t('experiments.experiment') }} <strong>{{ experiment ? t(expNameKey(experiment.id)) : '' }}</strong> {{ t('experiments.experimentInDevelopment') }}</p>
+      <button class="btn-action" @click="goBack">{{ t('experiments.goBack') }}</button>
+    </div>
+
+    <div v-else class="not-found">
+      <p>{{ t('experiments.experimentNotFound') }}</p>
+      <button class="btn-action" @click="goBack">{{ t('experiments.goBack') }}</button>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.experiment-page { min-height: 100vh; background: #0b1220; color: #e2e8f0; }
+.page-header { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem 1rem; }
+.back-btn { background: none; border: none; color: #67e8f9; cursor: pointer; font-size: 0.9rem; margin-bottom: 0.5rem; padding: 0; }
+.page-header h1 { margin: 0 0 0.25rem; display: flex; align-items: center; gap: 0.5rem; }
+.icon { font-size: 1.5rem; }
+.en { color: #64748b; font-size: 0.85rem; margin: 0; }
+.shell-placeholder { max-width: 1200px; margin: 0 auto; padding: 2rem; text-align: center; color: #94a3b8; }
+.not-found { text-align: center; padding: 4rem; }
+.not-found p { color: #94a3b8; margin-bottom: 1rem; }
+.btn-action { padding: 0.5rem 1rem; border: none; border-radius: 0.5rem; background: linear-gradient(135deg, #06b6d4, #0891b2); color: #fff; cursor: pointer; }
+.feedback-btn { margin-top: 0.5rem; padding: 0.35rem 0.7rem; border-radius: 0.4rem; border: 1px solid rgba(239,68,68,0.3); background: rgba(239,68,68,0.1); color: #fca5a5; cursor: pointer; font-family: inherit; font-size: 0.8rem; }
+.feedback-btn:hover { background: rgba(239,68,68,0.2); }
+</style>

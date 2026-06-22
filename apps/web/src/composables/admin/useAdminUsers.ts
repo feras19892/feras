@@ -1,4 +1,5 @@
 import { ref } from 'vue';
+import { useI18n } from '../useI18n';
 import {
   getAdminUsers,
   deleteUser,
@@ -12,6 +13,7 @@ import {
 } from '../../services/admin.service';
 
 export function useAdminUsers() {
+  const { t } = useI18n();
   const users = ref<AdminUser[]>([]);
   const loading = ref(false);
   const error = ref('');
@@ -23,14 +25,14 @@ export function useAdminUsers() {
       const res = await getAdminUsers();
       if (res.success) users.value = res.users;
     } catch (err: unknown) {
-      error.value = (err instanceof Error ? err.message : '') || 'فشل التحميل';
+      error.value = (err instanceof Error ? err.message : '') || t('admin.loadError');
     } finally {
       loading.value = false;
     }
   }
 
   async function remove(id: number) {
-    if (!confirm('هل تريد حذف هذا المستخدم؟ لا يمكن التراجع.')) return;
+    if (!confirm(t('admin.confirmDeleteUser'))) return;
     const res = await deleteUser(id);
     if (res.success) load();
   }

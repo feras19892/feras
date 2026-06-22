@@ -1,4 +1,5 @@
 import { ref, computed, type Ref } from 'vue'
+import { useI18n } from '../../composables/useI18n'
 import { downloadCsv } from '../../components/experiment/spring/downloadCsv'
 import { linearRegression } from '../../components/experiment/spring/linearRegression'
 import type { SpringParams } from '../../modules/physics/experiments/spring/useSpringPhysics'
@@ -15,6 +16,7 @@ export interface Measured {
 const SAVE_KEY = 'spring:trials:v1'
 
 export function useSpringTrials(params: SpringParams, measured: Ref<Measured>) {
+  const { t } = useI18n()
   const trials = ref<Trial[]>([])
   let nextTrialId = 1
 
@@ -76,7 +78,7 @@ export function useSpringTrials(params: SpringParams, measured: Ref<Measured>) {
   function recordTrial() {
     if (!measured.value.T) return
     if (params.mass < 0.01 || params.mass > 20) {
-      alert('الكتلة يجب أن تكون بين 0.01 و 20 كجم')
+      alert(t('experiments.massMustBeBetween', { min: '0.01', max: '20' }))
       return
     }
     pushHistory()
@@ -148,36 +150,36 @@ export function useSpringTrials(params: SpringParams, measured: Ref<Measured>) {
     ])
   }
 
-  const calcResult = ref('اضغط على زر لعرض الحساب')
+  const calcResult = ref(t('experiments.clickBtnShowCalc'))
 
   function calcK() {
-    if (!measured.value.T) { calcResult.value = 'يجب قياس الدورة أولاً'; return }
+    if (!measured.value.T) { calcResult.value = t('experiments.measurePeriodFirst'); return }
     const k = (4 * Math.PI * Math.PI * params.mass) / (measured.value.T * measured.value.T)
     const err = Math.abs((k - params.k) / params.k) * 100
-    calcResult.value = `<b>المعادلة:</b> k = 4π² × m / T²<br><b>التعويض:</b> k = 4π² × ${params.mass.toFixed(3)} / (${measured.value.T.toFixed(4)})²<br><b>النتيجة:</b> k = <b>${k.toFixed(2)} N/m</b><br><b>الخطأ:</b> ${err.toFixed(2)}%`
+    calcResult.value = `<b>${t('experiments.equationLabel')}:</b> k = 4π² × m / T²<br><b>${t('experiments.substitutionLabel')}:</b> k = 4π² × ${params.mass.toFixed(3)} / (${measured.value.T.toFixed(4)})²<br><b>${t('experiments.resultLabel')}:</b> k = <b>${k.toFixed(2)} N/m</b><br><b>${t('experiments.errorPercent')}:</b> ${err.toFixed(2)}%`
   }
 
   function calcT() {
     const T = 2 * Math.PI * Math.sqrt(params.mass / params.k)
-    calcResult.value = `<b>المعادلة:</b> T = 2π √(m/k)<br><b>التعويض:</b> T = 2π √(${params.mass.toFixed(3)} / ${params.k.toFixed(1)})<br><b>النتيجة:</b> T = <b>${T.toFixed(4)} s</b>`
+    calcResult.value = `<b>${t('experiments.equationLabel')}:</b> T = 2π √(m/k)<br><b>${t('experiments.substitutionLabel')}:</b> T = 2π √(${params.mass.toFixed(3)} / ${params.k.toFixed(1)})<br><b>${t('experiments.resultLabel')}:</b> T = <b>${T.toFixed(4)} s</b>`
   }
 
   function calcM() {
-    if (!measured.value.T) { calcResult.value = 'يجب قياس الدورة أولاً'; return }
+    if (!measured.value.T) { calcResult.value = t('experiments.measurePeriodFirst'); return }
     const mass = (measured.value.T * measured.value.T * params.k) / (4 * Math.PI * Math.PI)
-    calcResult.value = `<b>المعادلة:</b> m = (T² × k) / (4π²)<br><b>التعويض:</b> m = (${measured.value.T.toFixed(4)}² × ${params.k.toFixed(1)}) / (4π²)<br><b>النتيجة:</b> m = <b>${mass.toFixed(3)} kg</b>`
+    calcResult.value = `<b>${t('experiments.equationLabel')}:</b> m = (T² × k) / (4π²)<br><b>${t('experiments.substitutionLabel')}:</b> m = (${measured.value.T.toFixed(4)}² × ${params.k.toFixed(1)}) / (4π²)<br><b>${t('experiments.resultLabel')}:</b> m = <b>${mass.toFixed(3)} kg</b>`
   }
 
   function calcFitK() {
-    if (trials.value.length < 2) { calcResult.value = 'يجب قياستان على الأقل'; return }
+    if (trials.value.length < 2) { calcResult.value = t('experiments.atLeastTwoTrials'); return }
     const xs = trials.value.map(t => t.mass)
     const ys = trials.value.map(t => t.T * t.T)
     const fit = linearRegression(xs, ys)
-    if (!fit || Math.abs(fit.slope) < 1e-12) { calcResult.value = 'بيانات غير كافية'; return }
+    if (!fit || Math.abs(fit.slope) < 1e-12) { calcResult.value = t('experiments.insufficientData'); return }
     const k = (4 * Math.PI * Math.PI) / fit.slope
     const err = Math.abs((k - params.k) / params.k) * 100
     const quality = fit.r2 > 0.98 ? '✅' : fit.r2 > 0.9 ? '🟡' : '⚠️'
-    calcResult.value = `T² = ${fit.slope.toFixed(5)}·m ${fit.intercept >= 0 ? '+' : ''} ${fit.intercept.toFixed(5)}<br>R² = ${fit.r2.toFixed(4)} ${quality}<br>k = 4π² / slope = <b>${k.toFixed(2)} N/m</b><br>الخطأ = <b>${err.toFixed(2)}%</b>`
+    calcResult.value = `T² = ${fit.slope.toFixed(5)}·m ${fit.intercept >= 0 ? '+' : ''} ${fit.intercept.toFixed(5)}<br>R² = ${fit.r2.toFixed(4)} ${quality}<br>k = 4π² / slope = <b>${k.toFixed(2)} N/m</b><br>${t('experiments.errorPercent')} = <b>${err.toFixed(2)}%</b>`
   }
 
   return {

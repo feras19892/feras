@@ -23,21 +23,48 @@ const ExperimentComponent = computed(() => {
 function goBack() {
   router.push(`/physics/${branchId.value}`);
 }
+
+function expNameKey(id: string): string {
+  const map: Record<string, string> = {
+    spring: 'experiments.expSpring',
+    pendulum: 'experiments.expPendulum',
+    projectile: 'experiments.expProjectile',
+    freefall: 'experiments.expFreeFall',
+    inclined: 'experiments.expInclined',
+    collision: 'experiments.expCollision',
+    lever: 'experiments.expLever',
+    'light-ray': 'experiments.expLightRay',
+    'thin-lens': 'experiments.expThinLens',
+    mirrors: 'experiments.expMirrors',
+    'prism-dispersion': 'experiments.expPrism',
+    interference: 'experiments.expInterference',
+    diffraction: 'experiments.expDiffraction',
+    polarization: 'experiments.expPolarization',
+    'speed-of-sound': 'experiments.expSpeedOfSound',
+    resonance: 'experiments.expResonance',
+    'ideal-gas': 'experiments.expIdealGas',
+    calorimetry: 'experiments.expCalorimetry',
+    'rc-circuit': 'experiments.expRcCircuit',
+    'biot-savart': 'experiments.expBiotSavart',
+    faraday: 'experiments.expFaraday',
+  };
+  return map[id] || id;
+}
 </script>
 
 <template>
   <div class="experiment-page">
     <header class="page-header" v-if="experiment && !ExperimentComponent">
       <button class="back-btn" @click="goBack">← {{ t('experiments.back') }}</button>
-      <h1><span class="icon">{{ experiment.icon }}</span> {{ experiment.nameAr }}</h1>
-      <p class="en">{{ experiment.name }}</p>
+      <h1><span class="icon">{{ experiment.icon }}</span> {{ experiment ? t(expNameKey(experiment.id)) : '' }}</h1>
+      <p class="en">{{ experiment?.name }}</p>
       <button class="feedback-btn" @click="showFeedback = true">🚩 {{ t('experiments.reportProblem') }}</button>
     </header>
 
     <FeedbackModal
       v-model:show="showFeedback"
       :experiment-id="expId"
-      :experiment-name="experiment?.nameAr"
+      :experiment-name="experiment ? t(expNameKey(experiment.id)) : ''"
     />
 
     <!-- If experiment component exists, render it full-screen -->
@@ -45,7 +72,7 @@ function goBack() {
 
     <!-- Otherwise show stub -->
     <div v-else-if="experiment" class="shell-placeholder">
-      <p>{{ t('experiments.experiment') }} <strong>{{ experiment.nameAr }}</strong> {{ t('experiments.experimentInDevelopment') }}</p>
+      <p>{{ t('experiments.experiment') }} <strong>{{ experiment ? t(expNameKey(experiment.id)) : '' }}</strong> {{ t('experiments.experimentInDevelopment') }}</p>
       <button class="btn-action" @click="goBack">{{ t('experiments.goBack') }}</button>
     </div>
 

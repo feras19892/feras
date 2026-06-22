@@ -1,6 +1,7 @@
 import { computed, onMounted, onUnmounted, reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { sendToAnalysis } from '../../composables/analysis/sendToAnalysis'
+import { useI18n } from '../../composables/useI18n'
 import type { AnalysisPayload } from '../../types/physics'
 import type { ProjectileParams } from '../../modules/physics/experiments/projectile/useProjectilePhysics'
 import { useProjectileLab } from './useProjectileLab'
@@ -8,6 +9,7 @@ import { useProjectileLayout } from './useProjectileLayout'
 import { useProjectileTrials, type ProjectileMeasured } from './useProjectileTrials'
 
 export function useProjectileExperiment() {
+  const { t } = useI18n()
   const router = useRouter()
 
   const params = reactive<ProjectileParams>({ v0: 10, angleDeg: 45, g: 9.81, x0: 0, y0: 0, targetX: 30, targetY: 0, targetRadius: 3, targetVisible: false, targetMode: false, dragCoeff: 0 })
@@ -21,7 +23,7 @@ export function useProjectileExperiment() {
 
   const stepIndex = computed(() => trials.trials.value.length >= 2 ? 2 : trials.trials.value.length > 0 ? 1 : 0)
   const tutorType = computed(() => { if (!lab.sim.running) return 'info'; if (lab.sim.paused) return 'warn'; return 'success' })
-  const tutorMessage = computed(() => { if (!lab.sim.running) return 'جاهز للبدء'; if (lab.sim.paused) return 'متوقف مؤقتاً'; if (lab.sim.landed) return 'هبط! اضغط تسجيل'; return 'المقذوف في الجو...' })
+  const tutorMessage = computed(() => { if (!lab.sim.running) return t('experiments.readyToStart'); if (lab.sim.paused) return t('experiments.pausedTemporarily'); if (lab.sim.landed) return t('experiments.projectileLandedPressRecord'); return t('experiments.projectileInAir') })
 
   watch(() => [params.v0, params.angleDeg, params.g, params.x0, params.y0, params.dragCoeff], () => { if (!lab.running.value) lab.resetSim() })
 
@@ -89,19 +91,19 @@ export function useProjectileExperiment() {
       flightTimeSec: t.flightTimeSec, maxHeightMeters: t.maxHeightMeters, rangeMeters: t.rangeMeters,
     }))
     const payload: AnalysisPayload = {
-      sourceExperiment: 'projectile', sourceNameAr: 'حركة المقذوفات', readings,
+      sourceExperiment: 'projectile', sourceNameAr: t('experiments.expProjectile'), readings,
       columns: [
-        { key: 'angleDegrees', label: 'الزاوية', unit: '°' },
-        { key: 'initialVelocity', label: 'v₀', unit: 'm/s' },
-        { key: 'v0Squared', label: 'v₀²', unit: 'm²/s²' },
-        { key: 'sin2Theta', label: 'sin(2θ)', unit: '' },
-        { key: 'flightTimeSec', label: 'زمن الرحلة', unit: 's' },
-        { key: 'maxHeightMeters', label: 'الارتفاع الأقصى', unit: 'm' },
-        { key: 'rangeMeters', label: 'المدى', unit: 'm' },
+        { key: 'angleDegrees', label: t('experiments.colAngle'), unit: '°' },
+        { key: 'initialVelocity', label: t('experiments.colInitialVelocity'), unit: 'm/s' },
+        { key: 'v0Squared', label: t('experiments.colV0Squared'), unit: 'm²/s²' },
+        { key: 'sin2Theta', label: t('experiments.colSin2Theta'), unit: '' },
+        { key: 'flightTimeSec', label: t('experiments.colFlightTime'), unit: 's' },
+        { key: 'maxHeightMeters', label: t('experiments.colMaxHeight'), unit: 'm' },
+        { key: 'rangeMeters', label: t('experiments.colRange'), unit: 'm' },
       ],
       equations: [
-        { name: 'المدى الأقصى', formula: 'R = v₀²·sin(2θ)/g', variables: [{ symbol: 'v0', label: 'v₀' }, { symbol: 'θ', label: 'الزاوية' }, { symbol: 'g', label: 'g' }, { symbol: 'R', label: 'المدى' }], solveFor: ['R', 'v0', 'θ'] },
-        { name: 'الارتفاع الأقصى', formula: 'H = v₀²·sin²(θ)/(2g)', variables: [{ symbol: 'v0', label: 'v₀' }, { symbol: 'θ', label: 'الزاوية' }, { symbol: 'g', label: 'g' }, { symbol: 'H', label: 'الارتفاع' }], solveFor: ['H'] },
+        { name: t('experiments.eqMaxRange'), formula: 'R = v₀²·sin(2θ)/g', variables: [{ symbol: 'v0', label: t('experiments.varInitialVelocity') }, { symbol: 'θ', label: t('experiments.varAngle') }, { symbol: 'g', label: 'g' }, { symbol: 'R', label: t('experiments.varRange') }], solveFor: ['R', 'v0', 'θ'] },
+        { name: t('experiments.eqMaxHeight'), formula: 'H = v₀²·sin²(θ)/(2g)', variables: [{ symbol: 'v0', label: t('experiments.varInitialVelocity') }, { symbol: 'θ', label: t('experiments.varAngle') }, { symbol: 'g', label: 'g' }, { symbol: 'H', label: t('experiments.varHeight') }], solveFor: ['H'] },
       ],
       suggestedPlots: [
         { xKey: 'rangeMeters', yKey: 'maxHeightMeters', xLabel: 'R (m)', yLabel: 'H (m)', type: 'scatter' },

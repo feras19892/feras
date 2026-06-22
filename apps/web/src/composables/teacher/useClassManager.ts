@@ -1,4 +1,5 @@
 import { ref, onMounted } from 'vue'
+import { useI18n } from '../useI18n'
 import {
   createClass as apiCreateClass,
   getMyClasses,
@@ -10,6 +11,7 @@ import type { ClassItem, ClassStudent } from '../../services/class.service'
 export { type ClassItem, type ClassStudent }
 
 export function useClassManager() {
+  const { t } = useI18n()
   const classes = ref<ClassItem[]>([])
   const expandedId = ref<string | null>(null)
   const classStudents = ref<ClassStudent[]>([])
@@ -44,7 +46,7 @@ export function useClassManager() {
   }
 
   async function deleteClass(id: string) {
-    if (!confirm('هل أنت متأكد من حذف هذا الفصل؟')) return
+    if (!confirm(t('admin.confirmDeleteClassShort'))) return
     try {
       const res = await apiDeleteClass(id)
       if (res.success) classes.value = classes.value.filter(c => c.id !== id)

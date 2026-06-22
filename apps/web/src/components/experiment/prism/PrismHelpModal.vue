@@ -27,7 +27,7 @@ const emit = defineEmits<{ (e: 'close'): void }>()
           <li>{{ t('experiments.prismEquation') }}: n = sin((A+D)/2) / sin(A/2)</li>
         </ul>
       </div>
-      <button class="modal-close" @click="emit('close')">{{ t('experiments.close') }}</button>
+      <button class="modal-close" @click="emit('close')">{{ t('experiments.closeLabel') }}</button>
     </div>
   </div>
 </template>

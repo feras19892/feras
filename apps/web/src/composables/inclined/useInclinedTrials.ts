@@ -1,4 +1,5 @@
 import { ref, computed, type Ref } from 'vue'
+import { useI18n } from '../../composables/useI18n'
 import { downloadCsv } from '../../components/experiment/spring/downloadCsv'
 import { calculateInclinedSummary } from './inclinedUtils'
 import type { InclinedParams } from '../../modules/physics/experiments/inclined/useInclinedPhysics'
@@ -30,6 +31,7 @@ export interface InclinedMeasured {
 const SAVE_KEY = 'inclined:trials:v1'
 
 export function useInclinedTrials(params: InclinedParams, measured: Ref<InclinedMeasured>, enableNoise: Ref<boolean> = ref(true)) {
+  const { t } = useI18n()
   const trials = ref<InclinedTrial[]>([])
   let nextTrialId = 1
   const history = ref<InclinedTrial[][]>([])
@@ -118,22 +120,22 @@ export function useInclinedTrials(params: InclinedParams, measured: Ref<Inclined
     ])
   }
 
-  const calcResult = ref('اضغط على زر لعرض الحساب')
+  const calcResult = ref(t('experiments.clickBtnShowCalc'))
   function calcAcceleration() {
     const summary = calculateInclinedSummary(params.thetaDeg, params.length, params.mass, params.g, params.mu, params.airResistance, params.cd, params.area)
-    calcResult.value = `<b>المعادلة:</b> a = g(sinθ − μ·cosθ) − Fd/m<br><b>التعويض:</b> a = ${params.g}×(sin(${params.thetaDeg}°) − ${params.mu}×cos(${params.thetaDeg}°))${params.airResistance ? ' − Fd/' + params.mass : ''}<br><b>النتيجة:</b> a = <b>${summary.acceleration} m/s²</b>`
+    calcResult.value = `<b>${t('experiments.equationLabel')}:</b> a = g(sinθ − μ·cosθ) − Fd/m<br><b>${t('experiments.substitutionLabel')}:</b> a = ${params.g}×(sin(${params.thetaDeg}°) − ${params.mu}×cos(${params.thetaDeg}°))${params.airResistance ? ' − Fd/' + params.mass : ''}<br><b>${t('experiments.resultLabel')}:</b> a = <b>${summary.acceleration} m/s²</b>`
   }
   function calcTime() {
     const summary = calculateInclinedSummary(params.thetaDeg, params.length, params.mass, params.g, params.mu, params.airResistance, params.cd, params.area)
-    calcResult.value = `<b>المعادلة:</b> t = √(2L/a)<br><b>التعويض:</b> t = √(2×${params.length} / ${summary.acceleration})<br><b>النتيجة:</b> t = <b>${summary.timeOfArrival} s</b>`
+    calcResult.value = `<b>${t('experiments.equationLabel')}:</b> t = √(2L/a)<br><b>${t('experiments.substitutionLabel')}:</b> t = √(2×${params.length} / ${summary.acceleration})<br><b>${t('experiments.resultLabel')}:</b> t = <b>${summary.timeOfArrival} s</b>`
   }
   function calcVelocity() {
     const summary = calculateInclinedSummary(params.thetaDeg, params.length, params.mass, params.g, params.mu, params.airResistance, params.cd, params.area)
-    calcResult.value = `<b>المعادلة:</b> v = √(2aL)<br><b>التعويض:</b> v = √(2×${summary.acceleration}×${params.length})<br><b>النتيجة:</b> v = <b>${summary.finalVelocity} m/s</b>`
+    calcResult.value = `<b>${t('experiments.equationLabel')}:</b> v = √(2aL)<br><b>${t('experiments.substitutionLabel')}:</b> v = √(2×${summary.acceleration}×${params.length})<br><b>${t('experiments.resultLabel')}:</b> v = <b>${summary.finalVelocity} m/s</b>`
   }
   function calcNormal() {
     const summary = calculateInclinedSummary(params.thetaDeg, params.length, params.mass, params.g, params.mu, params.airResistance, params.cd, params.area)
-    calcResult.value = `<b>المعادلة:</b> N = m·g·cos(θ)<br><b>التعويض:</b> N = ${params.mass}×${params.g}×cos(${params.thetaDeg}°)<br><b>النتيجة:</b> N = <b>${summary.normalForce} N</b>`
+    calcResult.value = `<b>${t('experiments.equationLabel')}:</b> N = m·g·cos(θ)<br><b>${t('experiments.substitutionLabel')}:</b> N = ${params.mass}×${params.g}×cos(${params.thetaDeg}°)<br><b>${t('experiments.resultLabel')}:</b> N = <b>${summary.normalForce} N</b>`
   }
 
   return {

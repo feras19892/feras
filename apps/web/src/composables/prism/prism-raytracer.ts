@@ -12,6 +12,8 @@ export interface RayTraceResult {
   reflectionAngle: number | null
   refractedRayAngle: number
   internalIncidentAngle: number
+  edgeP: Point
+  edgeQ: Point
 }
 
 function norm(v: Point) {
@@ -118,9 +120,9 @@ export function traceRay(
   if (!D2) {
     const R = reflect(D1, Nout2)
     const reflectionAngle = Math.atan2(R.y, R.x)
-    return { p2, emergentAngle: null, tir: true, reflectionAngle, refractedRayAngle, internalIncidentAngle }
+    return { p2, emergentAngle: null, tir: true, reflectionAngle, refractedRayAngle, internalIncidentAngle, edgeP: eP, edgeQ: eQ }
   }
 
   const emergentAngle = Math.atan2(D2.y, D2.x)
-  return { p2, emergentAngle, tir: false, reflectionAngle: null, refractedRayAngle, internalIncidentAngle }
+  return { p2, emergentAngle, tir: false, reflectionAngle: null, refractedRayAngle, internalIncidentAngle, edgeP: eP, edgeQ: eQ }
 }

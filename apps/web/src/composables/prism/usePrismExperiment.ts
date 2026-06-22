@@ -11,11 +11,13 @@ export function usePrismExperiment() {
     angleIncidence: 45,
     wavelength: 580,
     material: 'glass',
+    hitRatio: 0.5,
   })
 
   watch(() => params.prismAngle, (v) => { params.prismAngle = Math.max(30, Math.min(90, Math.round(v))) })
   watch(() => params.angleIncidence, (v) => { params.angleIncidence = Math.max(0, Math.min(89, Math.round(v))) })
   watch(() => params.wavelength, (v) => { params.wavelength = Math.max(380, Math.min(700, Math.round(v / 5) * 5)) })
+  watch(() => params.hitRatio, (v) => { params.hitRatio = Math.max(0.05, Math.min(0.95, v)) })
 
   const running = ref(false)
   const paused = ref(false)
@@ -33,7 +35,7 @@ export function usePrismExperiment() {
   const speedInMedium = computed(() => {
     const n = nValue.value
     if (!n || n <= 0) return null
-    return Math.round(3e8 / n / 1e4) / 100
+    return 3e8 / n
   })
   const criticalAngle = computed(() => {
     const n = nValue.value
@@ -43,9 +45,9 @@ export function usePrismExperiment() {
 
   const trials = usePrismTrials(
     { get value() { return params } },
-    { get value() { return lab.angleEmergence.value } },
-    { get value() { return lab.deviation.value } },
-    { get value() { return lab.nValue.value } }
+    angleEmergence,
+    deviation,
+    nValue
   )
 
   const regression = computed(() => {

@@ -1,4 +1,5 @@
 import { ref, computed, type Ref } from 'vue'
+import { useI18n } from '../../composables/useI18n'
 import { downloadCsv } from '../../components/experiment/spring/downloadCsv'
 import { linearRegression } from '../../components/experiment/spring/linearRegression'
 import type { PendulumParams } from '../../modules/physics/experiments/pendulum/usePendulumPhysics'
@@ -15,6 +16,7 @@ export interface PendulumMeasured {
 const SAVE_KEY = 'pendulum:trials:v1'
 
 export function usePendulumTrials(params: PendulumParams, measured: Ref<PendulumMeasured>) {
+  const { t } = useI18n()
   const trials = ref<PendulumTrial[]>([])
   let nextTrialId = 1
   const history = ref<PendulumTrial[][]>([])
@@ -46,7 +48,7 @@ export function usePendulumTrials(params: PendulumParams, measured: Ref<Pendulum
 
   function recordTrial() {
     if (!measured.value.T) return
-    if (params.length < 0.05 || params.length > 3) { alert('طول الخيط يجب أن يكون بين 0.05 و 3 أمتار'); return }
+    if (params.length < 0.05 || params.length > 3) { alert(t('experiments.stringLengthMustBeBetween', { min: '0.05', max: '3' })); return }
     pushHistory()
     const noiseLevel = 0.02
     const noisyT = gaussianNoise(measured.value.T, measured.value.T * noiseLevel)
@@ -85,32 +87,32 @@ export function usePendulumTrials(params: PendulumParams, measured: Ref<Pendulum
     ])
   }
 
-  const calcResult = ref('اضغط على زر لعرض الحساب')
+  const calcResult = ref(t('experiments.clickBtnShowCalc'))
   function calcG() {
-    if (!measured.value.T) { calcResult.value = 'يجب قياس الدورة أولاً'; return }
+    if (!measured.value.T) { calcResult.value = t('experiments.measurePeriodFirst'); return }
     const g = (4 * Math.PI * Math.PI * params.length) / (measured.value.T * measured.value.T)
     const err = Math.abs((g - params.g) / params.g) * 100
-    calcResult.value = `<b>المعادلة:</b> g = 4π²L/T²<br><b>التعويض:</b> g = 4π² × ${params.length.toFixed(3)} / (${measured.value.T.toFixed(4)})²<br><b>النتيجة:</b> g = <b>${g.toFixed(2)} m/s²</b><br><b>الخطأ:</b> ${err.toFixed(2)}%`
+    calcResult.value = `<b>${t('experiments.equationLabel')}:</b> g = 4π²L/T²<br><b>${t('experiments.substitutionLabel')}:</b> g = 4π² × ${params.length.toFixed(3)} / (${measured.value.T.toFixed(4)})²<br><b>${t('experiments.resultLabel')}:</b> g = <b>${g.toFixed(2)} m/s²</b><br><b>${t('experiments.errorPercent')}:</b> ${err.toFixed(2)}%`
   }
   function calcT() {
     const T = 2 * Math.PI * Math.sqrt(params.length / params.g)
-    calcResult.value = `<b>المعادلة:</b> T = 2π√(L/g)<br><b>التعويض:</b> T = 2π√(${params.length.toFixed(3)} / ${params.g.toFixed(2)})<br><b>النتيجة:</b> T = <b>${T.toFixed(4)} s</b>`
+    calcResult.value = `<b>${t('experiments.equationLabel')}:</b> T = 2π√(L/g)<br><b>${t('experiments.substitutionLabel')}:</b> T = 2π√(${params.length.toFixed(3)} / ${params.g.toFixed(2)})<br><b>${t('experiments.resultLabel')}:</b> T = <b>${T.toFixed(4)} s</b>`
   }
   function calcL() {
-    if (!measured.value.T) { calcResult.value = 'يجب قياس الدورة أولاً'; return }
+    if (!measured.value.T) { calcResult.value = t('experiments.measurePeriodFirst'); return }
     const L = (measured.value.T * measured.value.T * params.g) / (4 * Math.PI * Math.PI)
-    calcResult.value = `<b>المعادلة:</b> L = (T² × g) / (4π²)<br><b>التعويض:</b> L = (${measured.value.T.toFixed(4)}² × ${params.g.toFixed(2)}) / (4π²)<br><b>النتيجة:</b> L = <b>${L.toFixed(3)} m</b>`
+    calcResult.value = `<b>${t('experiments.equationLabel')}:</b> L = (T² × g) / (4π²)<br><b>${t('experiments.substitutionLabel')}:</b> L = (${measured.value.T.toFixed(4)}² × ${params.g.toFixed(2)}) / (4π²)<br><b>${t('experiments.resultLabel')}:</b> L = <b>${L.toFixed(3)} m</b>`
   }
   function calcFitG() {
-    if (trials.value.length < 2) { calcResult.value = 'يجب قياستان على الأقل'; return }
+    if (trials.value.length < 2) { calcResult.value = t('experiments.atLeastTwoTrials'); return }
     const xs = trials.value.map(t => t.length)
     const ys = trials.value.map(t => t.T * t.T)
     const fit = linearRegression(xs, ys)
-    if (!fit || Math.abs(fit.slope) < 1e-12) { calcResult.value = 'بيانات غير كافية'; return }
+    if (!fit || Math.abs(fit.slope) < 1e-12) { calcResult.value = t('experiments.insufficientData'); return }
     const g = (4 * Math.PI * Math.PI) / fit.slope
     const err = Math.abs((g - params.g) / params.g) * 100
     const quality = fit.r2 > 0.98 ? '✅' : fit.r2 > 0.9 ? '🟡' : '⚠️'
-    calcResult.value = `T² = ${fit.slope.toFixed(5)}·L ${fit.intercept >= 0 ? '+' : ''} ${fit.intercept.toFixed(5)}<br>R² = ${fit.r2.toFixed(4)} ${quality}<br>g = 4π² / slope = <b>${g.toFixed(2)} m/s²</b><br>الخطأ = <b>${err.toFixed(2)}%</b>`
+    calcResult.value = `T² = ${fit.slope.toFixed(5)}·L ${fit.intercept >= 0 ? '+' : ''} ${fit.intercept.toFixed(5)}<br>R² = ${fit.r2.toFixed(4)} ${quality}<br>g = 4π² / slope = <b>${g.toFixed(2)} m/s²</b><br>${t('experiments.errorPercent')} = <b>${err.toFixed(2)}%</b>`
   }
 
   return { trials, trialStats, recordTrial, removeTrial, clearTrials, exportCsv, undo, redo, canUndo, canRedo, autoLoad, calcResult, calcG, calcT, calcL, calcFitG }

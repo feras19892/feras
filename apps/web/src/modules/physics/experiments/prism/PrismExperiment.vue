@@ -107,17 +107,22 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             :angle-incidence="ex.params.angleIncidence"
             :wavelength="ex.params.wavelength"
             :material="ex.params.material"
+            :hit-ratio="ex.params.hitRatio"
             :angle-refraction1="ex.lab.angleRefraction1.value"
             :angle-incidence2="ex.lab.angleIncidence2.value"
             :angle-emergence="ex.lab.angleEmergence.value"
             :deviation="ex.lab.deviation.value"
             :n="ex.lab.nValue.value"
             :total-internal-reflection="ex.lab.totalInternalReflection.value"
+            :critical-angle="ex.lab.criticalAngle.value"
             :running="ex.lab.running.value"
+            @update:angle-incidence="ex.params.angleIncidence = $event"
+            @update:prism-angle="ex.params.prismAngle = $event"
+            @update:hit-ratio="ex.params.hitRatio = $event"
           />
         </div>
         <PrismControlBar
-          :launch-label="ex.lab.running.value && !ex.lab.paused.value ? '&#x23F8; ' + t('prism.pauseBtn') : '&#x25B6; ' + t('prism.startBtn')"
+          :launch-label="ex.lab.running.value && !ex.lab.paused.value ? '&#x23F8; ' + t('prism.pauseBtn') : ex.lab.running.value && ex.lab.paused.value ? '&#x25B6; ' + t('prism.resumeBtn') : '&#x25B6; ' + t('prism.startBtn')"
           :can-undo="ex.trials.canUndo()"
           :can-redo="ex.trials.canRedo()"
           @toggle-pause="ex.lab.togglePause"
@@ -205,6 +210,8 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       :prism-angle="ex.params.prismAngle"
       :angle-incidence="ex.params.angleIncidence"
       :n="ex.lab.nValue.value"
+      :deviation="ex.lab.deviation.value"
+      :critical-angle="ex.lab.criticalAngle.value"
       :total-internal-reflection="ex.lab.totalInternalReflection.value"
     />
   </div>

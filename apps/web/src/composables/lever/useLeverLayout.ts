@@ -1,4 +1,5 @@
 import { reactive, ref } from 'vue'
+import { useI18n } from '../useI18n'
 
 const STORAGE_KEY = 'lever:layout:v4'
 
@@ -7,16 +8,18 @@ const DEFAULT_ORDER = {
   vis: [],
 }
 
-const PANEL_TITLES: Record<string, string> = {
-  balls: '🔴 الكرات',
-  table: '📋 جدول القراءات',
-  signal: '📈 توزيع العزوم',
-  stats: '📊 إحصائيات',
-  equation: '🧮 المعادلة',
-  report: '📝 التقرير',
-}
-
 export function useLeverLayout() {
+  const { t } = useI18n()
+
+  const PANEL_TITLES: Record<string, string> = {
+    balls: t('experiments.panelBalls'),
+    table: t('experiments.panelTable'),
+    signal: t('experiments.panelTorque'),
+    stats: t('experiments.panelStats'),
+    equation: t('experiments.panelEquations'),
+    report: t('experiments.panelReport'),
+  }
+
   const visible = ref<Set<string>>(new Set(['balls', 'table']))
   const columnOrder = reactive<Record<string, string[]>>(JSON.parse(JSON.stringify(DEFAULT_ORDER)))
   const maximized = reactive<Record<string, boolean>>({})

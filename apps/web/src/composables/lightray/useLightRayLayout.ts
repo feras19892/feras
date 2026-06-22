@@ -1,4 +1,5 @@
 import { reactive } from 'vue'
+import { useI18n } from '../useI18n'
 
 export type ColumnId = 'data' | 'vis' | 'ctrl'
 export type PanelId = 'readings' | 'chart' | 'trials' | 'params' | 'laws' | 'results'
@@ -23,6 +24,7 @@ const defaultColumnOrder: Record<ColumnId, PanelId[]> = {
 const allPanelIds: PanelId[] = ['readings', 'chart', 'trials', 'params', 'laws', 'results']
 
 export function useLightRayLayout() {
+  const { t } = useI18n()
   const panels = reactive<Record<PanelId, boolean>>({
     readings: true, chart: true, trials: true,
     params: true, laws: true, results: true,
@@ -132,12 +134,12 @@ export function useLightRayLayout() {
   function panelTitle(id: string) {
     const pid = id as PanelId
     const titles: Record<PanelId, string> = {
-      readings: '📊 القراءات',
-      chart: '📈 الرسم البياني',
-      trials: '📋 التجارب المسجلة',
-      params: '⚙️ المعاملات',
-      laws: '📐 القوانين',
-      results: '📊 نتائج التحليل',
+      readings: t('experiments.panelReadings'),
+      chart: t('experiments.panelChart'),
+      trials: t('experiments.panelTrials'),
+      params: t('experiments.panelParams'),
+      laws: t('experiments.panelLaws'),
+      results: t('experiments.panelResults'),
     }
     return titles[pid] ?? '📊'
   }

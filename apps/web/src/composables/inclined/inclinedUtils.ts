@@ -7,10 +7,10 @@ export interface BodyType {
 }
 
 export const bodyTypes: BodyType[] = [
-  { id: 'block', name: 'Block', nameAr: 'مكعب', cd: 1.05, area: 0.01 },
-  { id: 'sphere', name: 'Sphere', nameAr: 'كرة', cd: 0.47, area: 0.01 },
-  { id: 'streamlined', name: 'Streamlined', nameAr: 'انسيابي', cd: 0.04, area: 0.008 },
-  { id: 'feather', name: 'Feather', nameAr: 'ريشة', cd: 1.5, area: 0.03 },
+  { id: 'block', name: 'Block', nameAr: 'experiments.bodyTypeBlock', cd: 1.05, area: 0.01 },
+  { id: 'sphere', name: 'Sphere', nameAr: 'experiments.bodyTypeSphere', cd: 0.47, area: 0.01 },
+  { id: 'streamlined', name: 'Streamlined', nameAr: 'experiments.bodyTypeStreamlined', cd: 0.04, area: 0.008 },
+  { id: 'feather', name: 'Feather', nameAr: 'experiments.bodyTypeFeather', cd: 1.5, area: 0.03 },
 ]
 
 export interface InclinedSummary {

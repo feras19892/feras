@@ -8,14 +8,24 @@
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.ts,.tsx",
+    "lint:fix": "eslint . --ext .vue,.ts,.tsx --fix",
     "typecheck": "vue-tsc --noEmit",
     "test": "vitest run",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "test:fuzz": "vitest run src/composables/fuzz-physics-engines.test.ts",
+    "test:property": "vitest run src/composables/property-physics.test.ts",
+    "test:e2e": "playwright test",
+    "test:e2e:visual": "playwright test tests/visual-regression.spec.ts --update-snapshots",
+    "test:e2e:perf": "playwright test tests/performance-leak.spec.ts --headed",
+    "test:e2e:monkey": "playwright test tests/monkey-tabs.spec.ts",
+    "test:all": "pnpm run typecheck && pnpm run lint && pnpm run test:fuzz && pnpm run test:property && pnpm run test:e2e"
   },
   "dependencies": {
     "@my-modern-app/shared-types": "workspace:*",
+    "@types/three": "^0.184.1",
     "pinia": "^2.1.0",
     "splitpanes": "^4.1.2",
+    "three": "^0.184.0",
     "vue": "^3.4.0",
     "vue-router": "^4.3.0",
     "zod": "^3.23.8"

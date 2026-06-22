@@ -44,6 +44,7 @@ export interface OpenLabReportOptions {
   canvasSnapshot?: string
   openPrintDialog?: boolean
   sendToTeacher?: boolean
+  strings?: Record<string, string>
 }
 
 export interface ExperimentStateBundle {

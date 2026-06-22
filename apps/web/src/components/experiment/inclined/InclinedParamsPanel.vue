@@ -76,7 +76,7 @@ function onBodyTypeChange(e: Event) {
     <div class="param-row" v-if="params.airResistance">
       <label>{{ t('experiments.bodyType') }}</label>
       <select class="body-select" :value="params.bodyTypeId" @change="onBodyTypeChange">
-        <option v-for="bt in bodyTypes" :key="bt.id" :value="bt.id">{{ bt.nameAr }} (Cd={{ bt.cd }})</option>
+        <option v-for="bt in bodyTypes" :key="bt.id" :value="bt.id">{{ t('experiments.bodyType' + bt.id.charAt(0).toUpperCase() + bt.id.slice(1)) }} (Cd={{ bt.cd }})</option>
       </select>
     </div>
 

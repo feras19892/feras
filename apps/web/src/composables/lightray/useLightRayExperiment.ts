@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router'
 import { useLightRayLayout, type ColumnId } from './useLightRayLayout'
 import { useLightRayTrials } from './useLightRayTrials'
 import { sendToAnalysis } from '../analysis/sendToAnalysis'
+import { useI18n } from '../../composables/useI18n'
 import type { AnalysisPayload } from '../../types/physics'
 
 export interface LightRayTrial {
@@ -26,9 +27,15 @@ const SPEED_OF_LIGHT_C = 3e8
 
 function toRad(deg: number) { return (deg * Math.PI) / 180 }
 
-function getMediumName(n2: number): string {
-  const map: Record<number, string> = { 1.0: 'هواء', 1.33: 'ماء', 1.5: 'زجاج', 2.42: 'ألماس' }
-  return map[n2] ?? `وسط (${n2.toFixed(2)})`
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getMediumName(n2: number, t: (key: string, ...args: any[]) => string): string {
+  const map: Record<number, string> = {
+    1.0: t('experiments.mediumAir'),
+    1.33: t('experiments.mediumWater'),
+    1.5: t('experiments.mediumGlass'),
+    2.42: t('experiments.mediumDiamond'),
+  }
+  return map[n2] ?? t('experiments.mediumUnknown', { n: n2.toFixed(2) })
 }
 
 function linearRegression(points: { x: number; y: number }[]) {
@@ -48,6 +55,7 @@ function linearRegression(points: { x: number; y: number }[]) {
 }
 
 export function useLightRayExperiment() {
+  const { t } = useI18n()
   const params = reactive<LightRayParams>({ angleIncidence: 45, n1: 1.0, n2: 1.5 })
   const running = ref(false)
   const paused = ref(false)
@@ -167,32 +175,32 @@ export function useLightRayExperiment() {
 
     const payload: AnalysisPayload = {
       sourceExperiment: 'light-ray',
-      sourceNameAr: 'شعاع الضوء',
+      sourceNameAr: t('experiments.expLightRay'),
       readings,
       columns: [
-        { key: 'theta_i', label: 'زاوية السقوط', unit: 'deg' },
-        { key: 'theta_t', label: 'زاوية الانكسار', unit: 'deg' },
+        { key: 'theta_i', label: t('experiments.angleOfIncidence'), unit: 'deg' },
+        { key: 'theta_t', label: t('experiments.angleOfRefraction'), unit: 'deg' },
         { key: 'sin_i', label: 'sin θᵢ', unit: '' },
         { key: 'sin_t', label: 'sin θₜ', unit: '' },
       ],
       equations: [
         {
-          name: 'قانون الانعكاس',
+          name: t('experiments.lawOfReflection'),
           formula: 'θᵣ = θᵢ',
           variables: [
-            { symbol: 'θᵢ', label: 'زاوية السقوط' },
-            { symbol: 'θᵣ', label: 'زاوية الانعكاس' },
+            { symbol: 'θᵢ', label: t('experiments.angleOfIncidence') },
+            { symbol: 'θᵣ', label: t('experiments.angleOfReflection') },
           ],
           solveFor: ['θᵣ'],
         },
         {
-          name: 'قانون سنل',
+          name: t('experiments.lawSnell'),
           formula: 'n₁ sin θᵢ = n₂ sin θₜ',
           variables: [
-            { symbol: 'n₁', label: 'معامل الانكسار 1' },
-            { symbol: 'n₂', label: 'معامل الانكسار 2' },
-            { symbol: 'θᵢ', label: 'زاوية السقوط' },
-            { symbol: 'θₜ', label: 'زاوية الانكسار' },
+            { symbol: 'n₁', label: t('experiments.refractiveIndexN1Top') },
+            { symbol: 'n₂', label: t('experiments.refractiveIndexN2Bottom') },
+            { symbol: 'θᵢ', label: t('experiments.angleOfIncidence') },
+            { symbol: 'θₜ', label: t('experiments.angleOfRefraction') },
           ],
           solveFor: ['n₂'],
         },
@@ -200,7 +208,7 @@ export function useLightRayExperiment() {
       suggestedPlots: [
         { xKey: 'sin_t', yKey: 'sin_i', xLabel: 'sin θₜ', yLabel: 'sin θᵢ', type: 'scatter' as const },
       ],
-      mediumType: getMediumName(params.n2),
+      mediumType: getMediumName(params.n2, t),
       mediumN2: params.n2,
       calculatedN2: calculatedN2.value ?? undefined,
       expectedN2: params.n2,

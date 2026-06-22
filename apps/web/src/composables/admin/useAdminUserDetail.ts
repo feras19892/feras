@@ -1,7 +1,9 @@
 import { ref } from 'vue';
+import { useI18n } from '../useI18n';
 import { getAdminUserFull, addAdminNote, sendAdminWarning, banUser, unbanUser, type AdminUserFull } from '../../services/admin.service';
 
 export function useAdminUserDetail() {
+  const { t } = useI18n();
   const profile = ref<AdminUserFull | null>(null);
   const loading = ref(false);
   const error = ref('');
@@ -13,7 +15,7 @@ export function useAdminUserDetail() {
       const res = await getAdminUserFull(userId);
       if (res.success) profile.value = res;
     } catch (err: unknown) {
-      error.value = (err instanceof Error ? err.message : '') || 'فشل التحميل';
+      error.value = (err instanceof Error ? err.message : '') || t('admin.loadError');
     } finally {
       loading.value = false;
     }

@@ -1,7 +1,9 @@
 import { ref } from 'vue';
+import { useI18n } from '../useI18n';
 import { getAdminWarnings, sendAdminWarning, type AdminUserWarning } from '../../services/admin.service';
 
 export function useAdminWarnings() {
+  const { t } = useI18n();
   const warnings = ref<AdminUserWarning[]>([]);
   const loading = ref(false);
   const error = ref('');
@@ -13,7 +15,7 @@ export function useAdminWarnings() {
       const res = await getAdminWarnings();
       if (res.success) warnings.value = res.warnings;
     } catch (err: unknown) {
-      error.value = (err instanceof Error ? err.message : '') || 'فشل التحميل';
+      error.value = (err instanceof Error ? err.message : '') || t('admin.loadError');
     } finally {
       loading.value = false;
     }

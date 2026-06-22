@@ -1,7 +1,9 @@
 import { useExperimentReport } from '../useExperimentReport'
+import { useI18n } from '../useI18n'
 import type { LabReportTable, LabReportStat } from '../../utils/lab-report'
 
 export function useFreeFallReport() {
+  const { t } = useI18n()
   const rep = useExperimentReport('freefall_report_student')
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -9,8 +11,8 @@ export function useFreeFallReport() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const trials: any[] = ex.trials.trials.value
     const table: LabReportTable = {
-      caption: 'جدول قراءات السقوط الحر',
-      headers: ['#', 'h (m)', 't (s)', 't² (s²)', 'v_impact (m/s)', 'g_calc (m/s²)', 'الخطأ (%)'],
+      caption: t('experiments.freeFallReportCaption'),
+      headers: ['#', 'h (m)', 't (s)', 't² (s²)', 'v_impact (m/s)', 'g_calc (m/s²)', t('experiments.errorPercentage') + ' (%)'],
       rows: trials.map((t, i: number) => [
         i + 1, t.heightMeters.toFixed(2), t.timeSec.toFixed(3),
         t.timeSquaredSec2.toFixed(4), t.impactVelocityMs.toFixed(2),
@@ -20,14 +22,14 @@ export function useFreeFallReport() {
 
     const statsVal = ex.trials.trialStats.value
     const stats: LabReportStat[] = []
-    if (statsVal.g_mean > 0) stats.push({ label: 'g المتوسط', value: statsVal.g_mean.toFixed(2), unit: 'm/s²', highlight: true })
-    if (ex.params.g > 0) stats.push({ label: 'g النظري', value: ex.params.g.toFixed(2), unit: 'm/s²' })
+    if (statsVal.g_mean > 0) stats.push({ label: t('experiments.gAverage'), value: statsVal.g_mean.toFixed(2), unit: 'm/s²', highlight: true })
+    if (ex.params.g > 0) stats.push({ label: t('experiments.gTheoretical'), value: ex.params.g.toFixed(2), unit: 'm/s²' })
 
     const lawsBlock = `
 <div style="font:monospace .85rem/1.8 #1e3a8a">
-  <div><b>معادلة الزمن:</b> t = √(2h/g)</div>
-  <div><b>معادلة السرعة:</b> v = √(2gh)</div>
-  <div><b>عجلة الجاذبية:</b> g = 2h/t²</div>
+  <div><b>${t('experiments.timeEquation')}:</b> t = √(2h/g)</div>
+  <div><b>${t('experiments.velocityEquation')}:</b> v = √(2gh)</div>
+  <div><b>${t('experiments.gEquation')}:</b> g = 2h/t²</div>
 </div>`
 
     const calcHtml = ex.trials.calcResult.value || ''
@@ -39,31 +41,31 @@ export function useFreeFallReport() {
     if (statsVal.g_mean > 0) {
       regressionBlock = `
 <div style="font-family:monospace;font-size:.85rem;line-height:1.8;color:#1e3a8a">
-  <div>• الميل (slope) = ${(statsVal.g_mean / 2).toFixed(5)} m/s²</div>
-  <div>• g من الانحدار = ${statsVal.g_mean.toFixed(2)} m/s²</div>
+  <div>• ${t('experiments.slopeLabel')} = ${(statsVal.g_mean / 2).toFixed(5)} m/s²</div>
+  <div>• ${t('experiments.gFromRegression')} = ${statsVal.g_mean.toFixed(2)} m/s²</div>
 </div>`
     }
 
     rep.openFullReport({
-      title: '📋 تقرير تجربة السقوط الحر', icon: '🍎', experimentName: 'السقوط الحر — ميكانيكا الجاذبية',
+      title: t('experiments.freeFallReportTitle'), icon: '🍎', experimentName: t('experiments.expFreeFall') + ' — ' + t('experiments.gravityMechanics'),
       dir: 'rtl', dateLocale: 'ar',
-      meta: { 'الفرع': 'الميكانيكا', 'التجربة': 'السقوط الحر', 'g النظري': ex.params.g.toFixed(2) + ' m/s²' },
+      meta: { [t('experiments.branchLabel')]: t('experiments.branchMechanics'), [t('experiments.experimentLabel')]: t('experiments.expFreeFall'), [t('experiments.gTheoretical')]: ex.params.g.toFixed(2) + ' m/s²' },
       params: [
-        { label: 'الارتفاع (h)', value: ex.params.h.toFixed(2), unit: 'm' },
+        { label: t('experiments.heightLabel'), value: ex.params.h.toFixed(2), unit: 'm' },
         { label: 'g', value: ex.params.g.toFixed(2), unit: 'm/s²' },
-        { label: 'الكتلة', value: ex.params.mass.toFixed(2), unit: 'kg' },
-        { label: 'مقاومة الهواء', value: ex.params.airResistance ? 'مفعلة' : 'غير مفعلة' },
-        { label: 'عدد القراءات', value: trials.length },
+        { label: t('experiments.massLabel'), value: ex.params.mass.toFixed(2), unit: 'kg' },
+        { label: t('experiments.airResistanceLabel'), value: ex.params.airResistance ? t('experiments.airResistanceEnabled') : t('experiments.airResistanceDisabled') },
+        { label: t('experiments.readingsCountLabel'), value: trials.length },
       ],
       summaryStats: stats, tables: [table],
       htmlBlocks: [
-        { title: '⚖️ القوانين الفيزيائية', html: lawsBlock },
-        calculationsBlock ? { title: '📐 الحسابات والمعادلات', html: calculationsBlock } : null,
-        regressionBlock ? { title: '📈 نتائج الانحدار الخطي', html: regressionBlock } : null,
-        { title: '⚠️ مصادر الأخطاء المحتملة', html: '<ul style="margin:0;padding-right:1.2rem;font-size:.85rem"><li>دقة المؤقت الرقمي</li><li>دقة قياس الارتفاع</li><li>احتكاك الهواء</li><li>اهتزاز الجهاز عند الاصطدام</li><li>تأثير الجاذبية المحلية</li></ul>' },
+        { title: t('experiments.lawsTitle'), html: lawsBlock },
+        calculationsBlock ? { title: t('experiments.calculationsTitle'), html: calculationsBlock } : null,
+        regressionBlock ? { title: t('experiments.regressionResultsTitle'), html: regressionBlock } : null,
+        { title: t('experiments.potentialErrorSources'), html: `<ul style="margin:0;padding-right:1.2rem;font-size:.85rem"><li>${t('experiments.digitalTimerAccuracy')}</li><li>${t('experiments.heightMeasurementAccuracy')}</li><li>${t('experiments.airFriction')}</li><li>${t('experiments.deviceVibration')}</li><li>${t('experiments.localGravityEffect')}</li></ul>` },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ].filter(Boolean) as any[],
-      footerNote: 'تم إنشاء هذا التقرير من المحاكاة التفاعلية • فيزياء الميكانيكا',
+      footerNote: t('experiments.footerNote') + ' • ' + t('experiments.branchMechanics'),
     })
   }
 

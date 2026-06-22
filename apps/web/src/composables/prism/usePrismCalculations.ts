@@ -8,10 +8,10 @@ function toDeg(r: number) { return (r * 180) / Math.PI }
  * @see https://en.wikipedia.org/wiki/Cauchy%27s_equation
  */
 const MATERIALS: Record<string, { B: number; C: number; nameAr: string }> = {
-  glass: { B: 1.504, C: 0.0042, nameAr: 'زجاج' },   // BK7-like, n(588nm) ≈ 1.516
-  water: { B: 1.324, C: 0.0031, nameAr: 'ماء' },    // n(588nm) ≈ 1.333
-  diamond: { B: 2.381, C: 0.0104, nameAr: 'ألماس' }, // n(588nm) ≈ 2.411
-  flint: { B: 1.728, C: 0.0134, nameAr: 'فلينت' },   // dense flint, n(588nm) ≈ 1.767
+  glass: { B: 1.504, C: 0.0042, nameAr: 'prism.materials.glass' },   // BK7-like, n(588nm) ≈ 1.516
+  water: { B: 1.324, C: 0.0031, nameAr: 'prism.materials.water' },    // n(588nm) ≈ 1.333
+  diamond: { B: 2.381, C: 0.0104, nameAr: 'prism.materials.diamond' }, // n(588nm) ≈ 2.411
+  flint: { B: 1.728, C: 0.0134, nameAr: 'prism.materials.flint' },   // dense flint, n(588nm) ≈ 1.767
 }
 
 export function getMaterialList() {
@@ -43,6 +43,9 @@ export function calculatePrismAngles(
 
   // Geometry: r1 + r2 = A
   const r2 = A - r1
+  if (r2 < 0) {
+    return { angleRefraction1: toDeg(r1), angleIncidence2: null, angleEmergence: null, deviation: null, n, tir: true }
+  }
 
   // Snell at face 2
   const sinThetaE = n * Math.sin(r2)

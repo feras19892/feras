@@ -1,4 +1,5 @@
 import { ref, computed } from 'vue'
+import { useI18n } from '../../composables/useI18n'
 import type { CollisionParams, CollisionState } from '../../modules/physics/experiments/collision/useCollisionPhysics'
 import { computeCollisionResult } from './collisionUtils'
 
@@ -22,6 +23,7 @@ export interface CollisionTrial {
 const STORAGE_KEY = 'collision:trials:v1'
 
 export function useCollisionTrials(params: CollisionParams, sim: CollisionState) {
+  const { t } = useI18n()
   const trials = ref<CollisionTrial[]>([])
   const history = ref<CollisionTrial[][]>([])
   const historyIndex = ref(-1)
@@ -137,15 +139,15 @@ export function useCollisionTrials(params: CollisionParams, sim: CollisionState)
   })
 
   function calcMomentumDiff() {
-    if (!trials.value.length) { calcResult.value = 'لا توجد محاولات مسجلة'; return }
-    const t = trials.value[trials.value.length - 1]
-    calcResult.value = `ΔP = ${(t.Pf - t.Pi).toFixed(4)} kg·m/s`
+    if (!trials.value.length) { calcResult.value = t('experiments.noTrialsRecorded'); return }
+    const tval = trials.value[trials.value.length - 1]
+    calcResult.value = `ΔP = ${(tval.Pf - tval.Pi).toFixed(4)} kg·m/s`
   }
 
   function calcEnergyLoss() {
-    if (!trials.value.length) { calcResult.value = 'لا توجد محاولات مسجلة'; return }
-    const t = trials.value[trials.value.length - 1]
-    calcResult.value = `فقد الطاقة = ${t.lossPercent}% (KEi=${t.KEi} J, KEf=${t.KEf} J)`
+    if (!trials.value.length) { calcResult.value = t('experiments.noTrialsRecorded'); return }
+    const tval = trials.value[trials.value.length - 1]
+    calcResult.value = `${t('experiments.energyLossLabel')} = ${tval.lossPercent}% (KEi=${tval.KEi} J, KEf=${tval.KEf} J)`
   }
 
   function calcFinalVelocity() {

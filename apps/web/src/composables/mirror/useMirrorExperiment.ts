@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router'
 import { useMirrorLayout, type ColumnId } from './useMirrorLayout'
 import { useMirrorTrials } from './useMirrorTrials'
 import { sendToAnalysis } from '../analysis/sendToAnalysis'
+import { useI18n } from '../../composables/useI18n'
 import type { AnalysisPayload } from '../../types/physics'
 
 export interface MirrorTrial {
@@ -50,6 +51,7 @@ function linearRegression(points: { x: number; y: number }[]) {
 }
 
 export function useMirrorExperiment() {
+  const { t } = useI18n()
   const params = reactive<MirrorParams>({ mirrorType: 'concave', focalLength: 10, objectDistance: 30, objectHeight: 5 })
   const running = ref(false)
   const paused = ref(false)
@@ -79,9 +81,9 @@ export function useMirrorExperiment() {
     const di = imageDistance.value
     const m = magnification.value
     if (di === null || m === null) return { type: '—', orientation: '—', size: '—' }
-    const type = di > 0 ? 'حقيقي' : 'افتراضي'
-    const orientation = m > 0 ? 'مثبت' : 'مقلوب'
-    const size = Math.abs(m) > 1 ? 'مكبّر' : Math.abs(m) < 1 ? 'مصغّر' : 'بحجم الطبيعي'
+    const type = di > 0 ? t('experiments.imageReal') : t('experiments.imageVirtual')
+    const orientation = m > 0 ? t('experiments.imageUpright') : t('experiments.imageInverted')
+    const size = Math.abs(m) > 1 ? t('experiments.imageMagnified') : Math.abs(m) < 1 ? t('experiments.imageReduced') : t('experiments.imageSameSize')
     return { type, orientation, size, diSign: di > 0 ? '+' : '-', mSign: m > 0 ? '+' : '-' }
   })
 
@@ -190,38 +192,38 @@ export function useMirrorExperiment() {
 
     const payload: AnalysisPayload = {
       sourceExperiment: 'mirrors',
-      sourceNameAr: 'المرايا الكروية',
+      sourceNameAr: t('experiments.expMirrors'),
       readings,
       columns: [
-        { key: 'mirror_type', label: 'نوع المرآة' },
-        { key: 'f', label: 'البعد البؤري', unit: 'cm' },
-        { key: 'do', label: 'بعد الجسم', unit: 'cm' },
-        { key: 'di', label: 'بعد الصورة', unit: 'cm' },
-        { key: 'ho', label: 'ارتفاع الجسم', unit: 'cm' },
-        { key: 'hi', label: 'ارتفاع الصورة', unit: 'cm' },
+        { key: 'mirror_type', label: t('experiments.mirrorType') },
+        { key: 'f', label: t('experiments.focalLength'), unit: 'cm' },
+        { key: 'do', label: t('experiments.objectDistance'), unit: 'cm' },
+        { key: 'di', label: t('experiments.imageDistance'), unit: 'cm' },
+        { key: 'ho', label: t('experiments.objectHeight'), unit: 'cm' },
+        { key: 'hi', label: t('experiments.imageHeight'), unit: 'cm' },
         { key: 'inv_do', label: '1/do', unit: '1/cm' },
         { key: 'inv_di', label: '1/di', unit: '1/cm' },
       ],
       equations: [
         {
-          name: 'معادلة المرآة',
+          name: t('experiments.mirrorEquation'),
           formula: '1/f = 1/do + 1/di',
           variables: [
-            { symbol: 'f', label: 'البعد البؤري' },
-            { symbol: 'do', label: 'بعد الجسم' },
-            { symbol: 'di', label: 'بعد الصورة' },
+            { symbol: 'f', label: t('experiments.focalLength') },
+            { symbol: 'do', label: t('experiments.objectDistance') },
+            { symbol: 'di', label: t('experiments.imageDistance') },
           ],
           solveFor: ['f', 'do', 'di'],
         },
         {
-          name: 'التكبير',
+          name: t('experiments.magnificationTitle'),
           formula: 'm = -di/do = hi/ho',
           variables: [
-            { symbol: 'm', label: 'التكبير' },
-            { symbol: 'di', label: 'بعد الصورة' },
-            { symbol: 'do', label: 'بعد الجسم' },
-            { symbol: 'hi', label: 'ارتفاع الصورة' },
-            { symbol: 'ho', label: 'ارتفاع الجسم' },
+            { symbol: 'm', label: t('experiments.magnificationTitle') },
+            { symbol: 'di', label: t('experiments.imageDistance') },
+            { symbol: 'do', label: t('experiments.objectDistance') },
+            { symbol: 'hi', label: t('experiments.imageHeight') },
+            { symbol: 'ho', label: t('experiments.objectHeight') },
           ],
           solveFor: ['m', 'hi'],
         },

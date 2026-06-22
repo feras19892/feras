@@ -1,10 +1,14 @@
 import { ref, watch, onMounted, onUnmounted } from 'vue'
+import { useI18n } from '../../../composables/useI18n'
+import { drawTrail, drawArrow, drawBall, drawWalls } from './collision-drawers'
+import { drawHUD, drawStatus, drawCountdown } from './collision-hud'
 import type { CollisionParams, CollisionState } from '../../../modules/physics/experiments/collision/useCollisionPhysics'
 
 export function useCollisionCanvas(
   getParams: () => CollisionParams,
   getSimState: () => CollisionState,
 ) {
+  const { t } = useI18n()
   const canvasRef = ref<HTMLCanvasElement | null>(null)
 
   const trail1 = ref<{ x: number; t: number }[]>([])
@@ -29,122 +33,6 @@ export function useCollisionCanvas(
     } catch { /* ignore */ }
   }
 
-  function drawTrail(c: CanvasRenderingContext2D, trail: { x: number; t: number }[], cy: number, colorBase: string) {
-    if (trail.length < 2) return
-    c.save()
-    for (let i = 1; i < trail.length; i++) {
-      const alpha = i / trail.length * 0.4
-      c.strokeStyle = colorBase + alpha + ')'
-      c.lineWidth = 2
-      c.beginPath()
-      c.moveTo(trail[i - 1].x, cy)
-      c.lineTo(trail[i].x, cy)
-      c.stroke()
-    }
-    c.restore()
-  }
-
-  function drawArrow(c: CanvasRenderingContext2D, x: number, y: number, v: number, color: string, r: number) {
-    if (Math.abs(v) < 0.3) return
-    const len = Math.min(70, Math.abs(v) * 12)
-    const dir = v > 0 ? 1 : -1
-    const ay = y - r - 14
-    c.save()
-    c.strokeStyle = color; c.lineWidth = 3; c.globalAlpha = 0.85
-    c.beginPath(); c.moveTo(x, ay); c.lineTo(x + len * dir, ay); c.stroke()
-    c.fillStyle = color; c.globalAlpha = 0.85
-    c.beginPath()
-    c.moveTo(x + len * dir, ay)
-    c.lineTo(x + len * dir - 7 * dir, ay - 5)
-    c.lineTo(x + len * dir - 7 * dir, ay + 5)
-    c.closePath(); c.fill()
-    c.fillStyle = color; c.font = 'bold 11px "Segoe UI"'; c.textAlign = 'center'; c.textBaseline = 'bottom'
-    c.fillText(`${v.toFixed(1)}`, x + (len * dir) / 2, ay - 6)
-    c.restore()
-  }
-
-  function drawBall(ctx: CanvasRenderingContext2D, cx: number, cy: number, sr: number, colors: string[], label: string) {
-    ctx.save()
-    const g = ctx.createRadialGradient(cx - sr * 0.3, cy - sr * 0.3, sr * 0.1, cx, cy, sr)
-    colors.forEach((c, i) => g.addColorStop(i / (colors.length - 1), c))
-    ctx.beginPath(); ctx.arc(cx, cy, sr, 0, Math.PI * 2)
-    ctx.fillStyle = g; ctx.fill()
-    ctx.strokeStyle = colors[colors.length - 1]; ctx.lineWidth = 3; ctx.stroke()
-    ctx.fillStyle = 'rgba(255,255,255,0.3)'
-    ctx.beginPath(); ctx.arc(cx - sr * 0.25, cy - sr * 0.25, sr * 0.35, 0, Math.PI * 2)
-    ctx.fill()
-    ctx.fillStyle = '#fff'; ctx.font = `bold ${Math.max(16, sr * 0.35)}px "Segoe UI"`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
-    ctx.fillText(label, cx, cy + 2)
-    ctx.restore()
-  }
-
-  function drawWalls(ctx: CanvasRenderingContext2D, w: number, cy: number) {
-    ctx.save()
-    ctx.fillStyle = 'rgba(71,85,105,0.5)'
-    const wallW = 12
-    ctx.fillRect(0, cy - 60, wallW, 120)
-    ctx.fillRect(w - wallW, cy - 60, wallW, 120)
-    ctx.strokeStyle = '#64748b'; ctx.lineWidth = 2
-    ctx.strokeRect(0, cy - 60, wallW, 120)
-    ctx.strokeRect(w - wallW, cy - 60, wallW, 120)
-    ctx.fillStyle = '#94a3b8'; ctx.font = 'bold 10px "Segoe UI"'; ctx.textAlign = 'center'
-    ctx.save(); ctx.translate(6, cy); ctx.rotate(-Math.PI / 2); ctx.fillText('حاجز', 0, 0); ctx.restore()
-    ctx.save(); ctx.translate(w - 6, cy); ctx.rotate(Math.PI / 2); ctx.fillText('حاجز', 0, 0); ctx.restore()
-    ctx.restore()
-  }
-
-  function drawHUD(ctx: CanvasRenderingContext2D, w: number, st: CollisionState, _params: CollisionParams) {
-    const { collided, v1, v2, v1f, v2f, t } = st
-    ctx.save()
-    ctx.fillStyle = 'rgba(15,23,42,0.92)'
-    ctx.strokeStyle = 'rgba(148,163,184,0.3)'; ctx.lineWidth = 1.5
-    const rx = 12, ry = 10, rw = 200, rh = 148, rr = 8
-    ctx.beginPath(); ctx.moveTo(rx + rr, ry); ctx.lineTo(rx + rw - rr, ry); ctx.arcTo(rx + rw, ry, rx + rw, ry + rr, rr); ctx.lineTo(rx + rw, ry + rh - rr); ctx.arcTo(rx + rw, ry + rh, rx + rw - rr, ry + rh, rr); ctx.lineTo(rx + rr, ry + rh); ctx.arcTo(rx, ry + rh, rx, ry + rh - rr, rr); ctx.lineTo(rx, ry + rr); ctx.arcTo(rx, ry, rx + rr, ry, rr); ctx.closePath(); ctx.fill(); ctx.stroke()
-    ctx.fillStyle = '#e2e8f0'; ctx.font = 'bold 13px "Segoe UI"'; ctx.textAlign = 'left'; ctx.textBaseline = 'top'
-    ctx.fillText(`v₁ = ${(collided ? (v1f ?? v1) : v1).toFixed(2)} m/s`, 22, 16)
-    ctx.fillStyle = '#38bdf8'
-    ctx.fillText(`v₂ = ${(collided ? (v2f ?? v2) : v2).toFixed(2)} m/s`, 22, 36)
-    ctx.fillStyle = '#94a3b8'
-    ctx.fillText(`t = ${t.toFixed(2)} s`, 22, 56)
-    if (st.KEi !== null && st.KEf !== null) {
-      ctx.fillStyle = '#fbbf24'; ctx.font = 'bold 11px "Segoe UI"'
-      ctx.fillText(`Pقبل = ${st.Pi?.toFixed(1)}  |  Pبعد = ${st.Pf?.toFixed(1)}`, 22, 80)
-      ctx.fillStyle = '#34d399'
-      ctx.fillText(`KEقبل = ${st.KEi?.toFixed(1)} J`, 22, 98)
-      ctx.fillStyle = '#f87171'
-      ctx.fillText(`KEبعد = ${st.KEf?.toFixed(1)} J  |  فقدان ${st.lossPercent?.toFixed(0)}%`, 22, 116)
-    }
-    ctx.restore()
-  }
-
-  function drawStatus(ctx: CanvasRenderingContext2D, w: number, h: number, st: CollisionState) {
-    ctx.save()
-    ctx.fillStyle = '#e2e8f0'; ctx.font = 'bold 16px "Segoe UI"'; ctx.textAlign = 'center'; ctx.textBaseline = 'top'
-    let status = ''
-    if (!st.running) status = 'اضغط "بدء" لإطلاق الكرتين'
-    else if (st.paused) status = '⏸️ متوقف مؤقتاً'
-    else if (st.collided) status = '💥 تصادم!'
-    else status = 'الكرتان تتحركان...'
-    ctx.fillText(status, w / 2, h - 32)
-    ctx.restore()
-  }
-
-  function drawCountdown(ctx: CanvasRenderingContext2D, w: number, st: CollisionState, params: CollisionParams) {
-    if (!st.running || st.collided || st.paused) return
-    const dist = Math.abs(st.x2 - st.x1) - (params.r1 + params.r2)
-    const relV = Math.abs(st.v1 - st.v2)
-    if (dist > 0 && relV > 0.1) {
-      const timeToCollide = dist / relV
-      if (timeToCollide < 3) {
-        ctx.save()
-        ctx.fillStyle = 'rgba(251,191,36,0.9)'
-        ctx.font = 'bold 18px "Segoe UI"'; ctx.textAlign = 'center'; ctx.textBaseline = 'top'
-        ctx.fillText(`التصادم خلال ${timeToCollide.toFixed(1)}s`, w / 2, 80)
-        ctx.restore()
-      }
-    }
-  }
-
   function draw() {
     const canvas = canvasRef.value
     if (!canvas) return
@@ -155,7 +43,7 @@ export function useCollisionCanvas(
 
     const st = getSimState()
     const params = getParams()
-    const { x1, x2, v1, v2, v1f, v2f, collided, t, running } = st
+    const { x1, x2, v1, v2, v1f, v2f, collided, t: simTime, running } = st
     const scale = 90
     const cy = h * 0.55
     const cx1 = w / 2 + x1 * scale
@@ -193,8 +81,8 @@ export function useCollisionCanvas(
 
     // Trails
     if (running && !st.paused) {
-      trail1.value.push({ x: cx1, t })
-      trail2.value.push({ x: cx2, t })
+      trail1.value.push({ x: cx1, t: simTime })
+      trail2.value.push({ x: cx2, t: simTime })
       if (trail1.value.length > 80) trail1.value.shift()
       if (trail2.value.length > 80) trail2.value.shift()
     }
@@ -263,16 +151,16 @@ export function useCollisionCanvas(
     drawArrow(ctx, cx2, cy, collided ? (v2f ?? 0) : v2, '#34d399', sr2)
 
     // Walls
-    drawWalls(ctx, w, cy)
+    drawWalls(ctx, w, cy, t('experiments.wallLabel'))
 
     // HUD
-    drawHUD(ctx, w, st, params)
+    drawHUD(ctx, w, st, params, t)
 
     // Countdown
-    drawCountdown(ctx, w, st, params)
+    drawCountdown(ctx, w, st, params, t)
 
     // Status
-    drawStatus(ctx, w, h, st)
+    drawStatus(ctx, w, h, st, t)
   }
 
   function captureSnapshot() {

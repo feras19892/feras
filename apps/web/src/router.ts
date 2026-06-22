@@ -48,6 +48,16 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./modules/physics/experiment-page.vue'),
   },
   {
+    path: '/chemistry',
+    name: 'Chemistry',
+    component: () => import('./modules/chemistry/branches-page.vue'),
+  },
+  {
+    path: '/chemistry/:experimentId',
+    name: 'ChemistryExperiment',
+    component: () => import('./modules/chemistry/experiment-page.vue'),
+  },
+  {
     path: '/admin',
     name: 'Admin',
     meta: { requiresAuth: true, roles: ['admin'] },

@@ -1,7 +1,9 @@
 import { useExperimentReport } from '../useExperimentReport'
+import { useI18n } from '../useI18n'
 import type { LabReportTable, LabReportStat } from '../../utils/lab-report'
 
 export function useSpringReport() {
+  const { t } = useI18n()
   const rep = useExperimentReport('spring_report_student')
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -12,7 +14,7 @@ export function useSpringReport() {
     const dynamicTrials: any[] = ex.dynamicTrials.value
 
     const staticTable: LabReportTable = {
-      caption: 'الجزء الاستاتيكي — قانون هوك',
+      caption: t('experiments.springStaticCaption'),
       headers: ['#', 'm (g)', 'Δy (cm)', 'F = mg (N)'],
       rows: staticReadings.map((r, i: number) => [
         i + 1,
@@ -23,7 +25,7 @@ export function useSpringReport() {
     }
 
     const dynamicTable: LabReportTable = {
-      caption: 'الجزء الديناميكي — الحركة الاهتزازية',
+      caption: t('experiments.springDynamicCaption'),
       headers: ['#', 'm (g)', 't₁ (s)', 't₂ (s)', 't₃ (s)', 't̄ (s)', 'T (s)', 'T² (s²)'],
       rows: dynamicTrials.map((t, i: number) => [
         i + 1,
@@ -45,10 +47,10 @@ export function useSpringReport() {
       : null
 
     const stats: LabReportStat[] = []
-    if (kAvg) stats.push({ label: 'k المتوسط', value: kAvg.toFixed(2), unit: 'N/m', highlight: true })
-    if (ex.staticK.value) stats.push({ label: 'k استاتيكي', value: ex.staticK.value.toFixed(2), unit: 'N/m' })
-    if (ex.kDynamic.value) stats.push({ label: 'k ديناميكي', value: ex.kDynamic.value.toFixed(2), unit: 'N/m' })
-    if (errorPercent !== null) stats.push({ label: 'نسبة الخطأ', value: errorPercent.toFixed(2), unit: '%' })
+    if (kAvg) stats.push({ label: t('experiments.kAverage'), value: kAvg.toFixed(2), unit: 'N/m', highlight: true })
+    if (ex.staticK.value) stats.push({ label: t('experiments.kStatic'), value: ex.staticK.value.toFixed(2), unit: 'N/m' })
+    if (ex.kDynamic.value) stats.push({ label: t('experiments.kDynamic'), value: ex.kDynamic.value.toFixed(2), unit: 'N/m' })
+    if (errorPercent !== null) stats.push({ label: t('experiments.errorPercentage'), value: errorPercent.toFixed(2), unit: '%' })
 
     const calcHtml = ex.trials.calcResult.value || ''
     const calculationsBlock = calcHtml
@@ -57,7 +59,7 @@ export function useSpringReport() {
 
     const lawsBlock = `
 <div style="font:monospace .85rem/1.8 #1e3a8a">
-  <div><b>قانون هوك:</b> k = F/Δy</div>
+  <div><b>${t('experiments.hookesLaw')}:</b> k = F/Δy</div>
   <div><b>SHM:</b> T = 2π√(m/k) → k = 4π²m/T²</div>
   <div><b>f₀</b> = (1/2π)·√(k/m) &nbsp; <b>E</b> = ½kA² &nbsp; <b>vₘₐₓ</b> = A√(k/m)</div>
 </div>`
@@ -67,41 +69,41 @@ export function useSpringReport() {
     if (statsVal.k_mean > 0) {
       regressionBlock = `
 <div style="font-family:monospace;font-size:.85rem;line-height:1.8;color:#1e3a8a">
-  <div>• الميل (slope) = ${statsVal.k_mean.toFixed(2)} N/m</div>
-  <div>• معامل التحديد R² = ${(statsVal.T_std < 0.01 ? '0.999+' : (1 - statsVal.T_std).toFixed(3))}</div>
-  <div>• المعادلة: y = ${statsVal.k_mean.toFixed(2)} · x + b</div>
+  <div>• ${t('experiments.slopeLabel')} = ${statsVal.k_mean.toFixed(2)} N/m</div>
+  <div>• ${t('experiments.rSquaredLabel')} = ${(statsVal.T_std < 0.01 ? '0.999+' : (1 - statsVal.T_std).toFixed(3))}</div>
+  <div>• ${t('experiments.equationLabel')}: y = ${statsVal.k_mean.toFixed(2)} · x + b</div>
 </div>`
     }
 
     rep.openFullReport({
-      title: '📋 تقرير تجربة النابض',
+      title: t('experiments.springReportTitle'),
       icon: '🧪',
-      experimentName: 'الحركة التوافقية البسيطة',
+      experimentName: t('experiments.springShmTitle'),
       dir: 'rtl',
       dateLocale: 'ar',
       meta: {
-        'الفرع': 'الميكانيكا',
-        'التجربة': 'ثابت النابض',
-        'k النظري': ex.params.k.toFixed(2) + ' N/m',
+        [t('experiments.branchLabel')]: t('experiments.branchMechanics'),
+        [t('experiments.experimentLabel')]: t('experiments.springConstant'),
+        [t('experiments.kTheoretical')]: ex.params.k.toFixed(2) + ' N/m',
       },
       params: [
-        { label: 'الكتلة (m)', value: ex.params.mass.toFixed(2), unit: 'kg' },
-        { label: 'ثابت النابض النظري (k)', value: ex.params.k.toFixed(2), unit: 'N/m' },
-        { label: 'السعة (A)', value: ex.params.amplitude.toFixed(3), unit: 'm' },
-        { label: 'عدد الدورات المقاسة', value: ex.params.measureCycles },
-        { label: 'عدد القراءات الاستاتيكية', value: staticReadings.length },
-        { label: 'عدد القراءات الديناميكية', value: dynamicTrials.length },
+        { label: t('experiments.massLabel'), value: ex.params.mass.toFixed(2), unit: 'kg' },
+        { label: t('experiments.springConstantTheoretical'), value: ex.params.k.toFixed(2), unit: 'N/m' },
+        { label: t('experiments.amplitudeLabel'), value: ex.params.amplitude.toFixed(3), unit: 'm' },
+        { label: t('experiments.measuredCyclesLabel'), value: ex.params.measureCycles },
+        { label: t('experiments.staticReadingsCount'), value: staticReadings.length },
+        { label: t('experiments.dynamicReadingsCount'), value: dynamicTrials.length },
       ],
       summaryStats: stats,
       tables: [staticTable, dynamicTable].filter(t => t.rows.length > 0),
       htmlBlocks: [
-        { title: '⚖️ القوانين الفيزيائية', html: lawsBlock },
-        calculationsBlock ? { title: '📐 الحسابات والمعادلات', html: calculationsBlock } : null,
-        regressionBlock ? { title: '📈 نتائج الانحدار الخطي', html: regressionBlock } : null,
-        { title: '⚠️ مصادر الأخطاء المحتملة', html: '<ul style="margin:0;padding-right:1.2rem;font-size:.85rem"><li>احتكاك الهواء</li><li>دقة ساعة الإيقاف</li><li>خطأ زاوية النظر (parallax)</li><li>تشوه النابض غير الخطي</li><li>اهتزازات الطاولة</li><li>عدم مركزية الكتلة</li></ul>' },
+        { title: t('experiments.lawsTitle'), html: lawsBlock },
+        calculationsBlock ? { title: t('experiments.calculationsTitle'), html: calculationsBlock } : null,
+        regressionBlock ? { title: t('experiments.regressionResultsTitle'), html: regressionBlock } : null,
+        { title: t('experiments.potentialErrorSources'), html: `<ul style="margin:0;padding-right:1.2rem;font-size:.85rem"><li>${t('experiments.airFriction')}</li><li>${t('experiments.humanStopwatchAccuracy')}</li><li>${t('experiments.parallaxError')}</li><li>${t('experiments.springNonLinearDeformation')}</li><li>${t('experiments.tableVibrations')}</li><li>${t('experiments.massNonCentrality')}</li></ul>` },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ].filter(Boolean) as any[],
-      footerNote: 'تم إنشاء هذا التقرير من المحاكاة التفاعلية • فيزياء الميكانيكا',
+      footerNote: t('experiments.footerNote') + ' • ' + t('experiments.branchMechanics'),
     })
   }
 

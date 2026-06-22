@@ -1,4 +1,5 @@
 import { ref, computed } from 'vue'
+import { useI18n } from '../../composables/useI18n'
 import { downloadCsv } from '../../components/experiment/spring/downloadCsv'
 import type { LeverParams } from '../../modules/physics/experiments/lever/useLeverPhysics'
 import type { LeverState } from '../../modules/physics/experiments/lever/useLeverPhysics'
@@ -18,6 +19,7 @@ export interface LeverTrial {
 const SAVE_KEY = 'lever:trials:v4'
 
 export function useLeverTrials(_params: LeverParams, sim: LeverState) {
+  const { t } = useI18n()
   const trials = ref<LeverTrial[]>([])
   let nextTrialId = 1
 
@@ -92,7 +94,7 @@ export function useLeverTrials(_params: LeverParams, sim: LeverState) {
   }
 
   function clearTrials() {
-    if (!confirm('هل أنت متأكد من مسح جميع القراءات؟')) return
+    if (!confirm(t('experiments.confirmClearReadings'))) return
     pushHistory()
     trials.value = []
     nextTrialId = 1
@@ -100,26 +102,26 @@ export function useLeverTrials(_params: LeverParams, sim: LeverState) {
   }
 
   function exportCsv() {
-    if (trials.value.length === 0) { alert('لا توجد قراءات'); return }
+    if (trials.value.length === 0) { alert(t('experiments.noReadingsAlert')); return }
     const rows: (string | number)[][] = [
       ['trialNo', 'massLeft', 'massRight', 'forceLeft', 'forceRight', 'xLeft', 'xRight', 'netTorque', 'tiltDeg', 'isBalanced'],
     ]
-    trials.value.forEach(t => {
-      const leftB = t.balls.filter(b => b.x < 0)
-      const rightB = t.balls.filter(b => b.x > 0)
-      const leftF = t.forces.filter(f => f.x < 0)
-      const rightF = t.forces.filter(f => f.x > 0)
+    trials.value.forEach(tr => {
+      const leftB = tr.balls.filter(b => b.x < 0)
+      const rightB = tr.balls.filter(b => b.x > 0)
+      const leftF = tr.forces.filter(f => f.x < 0)
+      const rightF = tr.forces.filter(f => f.x > 0)
       rows.push([
-        t.trialNo,
+        tr.trialNo,
         leftB.reduce((s, b) => s + b.mass, 0),
         rightB.reduce((s, b) => s + b.mass, 0),
         leftF.reduce((s, f) => s + f.force, 0),
         rightF.reduce((s, f) => s + f.force, 0),
         leftB.length > 0 ? Math.min(...leftB.map(b => b.x)) : 0,
         rightB.length > 0 ? Math.max(...rightB.map(b => b.x)) : 0,
-        t.netTorque.toFixed(3),
-        t.tiltDeg.toFixed(2),
-        t.isBalanced ? 'نعم' : 'لا',
+        tr.netTorque.toFixed(3),
+        tr.tiltDeg.toFixed(2),
+        tr.isBalanced ? t('experiments.yesLabel') : t('experiments.noLabel'),
       ])
     })
     downloadCsv('lever_trials.csv', rows)

@@ -1,9 +1,11 @@
 import { ref } from 'vue';
 import { createReport, resubmitReport } from '../services/report.service';
+import { useI18n } from '../composables/useI18n';
 import type { StudentInfo } from '../stores/analysis.store';
 import type { AnalysisColumnMeta, AnalysisEquation, AnalysisPlotConfig } from '../types/physics';
 
 export function useReportSubmission() {
+  const { t } = useI18n();
   const submitting = ref(false);
   const error = ref('');
 
@@ -41,12 +43,12 @@ export function useReportSubmission() {
       });
 
       if (!res.success) {
-        error.value = 'فشل إرسال التقرير';
+        error.value = t('analysis.submitFailed');
         return false;
       }
       return true;
     } catch (err) {
-      error.value = 'فشل الاتصال بالخادم';
+      error.value = t('analysis.serverConnectionFailed');
       return false;
     } finally {
       submitting.value = false;
@@ -75,12 +77,12 @@ export function useReportSubmission() {
       });
 
       if (!res.success) {
-        error.value = 'فشل إعادة إرسال التقرير';
+        error.value = t('analysis.resubmitFailed');
         return false;
       }
       return true;
     } catch (err) {
-      error.value = 'فشل الاتصال بالخادم';
+      error.value = t('analysis.serverConnectionFailed');
       return false;
     } finally {
       submitting.value = false;

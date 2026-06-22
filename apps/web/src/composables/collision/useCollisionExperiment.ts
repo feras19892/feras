@@ -1,6 +1,7 @@
 import { computed, onMounted, onUnmounted, reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { sendToAnalysis } from '../../composables/analysis/sendToAnalysis'
+import { useI18n } from '../../composables/useI18n'
 import type { AnalysisPayload } from '../../types/physics'
 import type { CollisionParams } from '../../modules/physics/experiments/collision/useCollisionPhysics'
 import { useCollisionLab } from './useCollisionLab'
@@ -8,6 +9,7 @@ import { useCollisionTrials } from './useCollisionTrials'
 import { useCollisionLayout, type PanelId, type ColumnId } from './useCollisionLayout'
 
 export function useCollisionExperiment() {
+  const { t } = useI18n()
   const router = useRouter()
 
   const params = reactive<CollisionParams>({ m1: 2, m2: 3, v1i: 3, v2i: -2, r1: 0.2, r2: 0.2, e: 1 })
@@ -83,7 +85,7 @@ export function useCollisionExperiment() {
       v1f: t.v1f, v2f: t.v2f, Pi: t.Pi, Pf: t.Pf, KEi: t.KEi, KEf: t.KEf, lossPercent: t.lossPercent,
     }))
     const payload: AnalysisPayload = {
-      sourceExperiment: 'collision', sourceNameAr: 'التصادم في بعد واحد', readings,
+      sourceExperiment: 'collision', sourceNameAr: t('experiments.expCollision'), readings,
       columns: [
         { key: 'm1', label: 'm₁', unit: 'kg' },
         { key: 'm2', label: 'm₂', unit: 'kg' },
@@ -91,19 +93,19 @@ export function useCollisionExperiment() {
         { key: 'v2i', label: 'v₂i', unit: 'm/s' },
         { key: 'v1f', label: 'v₁f', unit: 'm/s' },
         { key: 'v2f', label: 'v₂f', unit: 'm/s' },
-        { key: 'Pi', label: 'P قبل', unit: 'kg·m/s' },
-        { key: 'Pf', label: 'P بعد', unit: 'kg·m/s' },
-        { key: 'KEi', label: 'KE قبل', unit: 'J' },
-        { key: 'KEf', label: 'KE بعد', unit: 'J' },
-        { key: 'lossPercent', label: 'فقدان الطاقة', unit: '%' },
+        { key: 'Pi', label: `P ${t('experiments.before')}`, unit: 'kg·m/s' },
+        { key: 'Pf', label: `P ${t('experiments.after')}`, unit: 'kg·m/s' },
+        { key: 'KEi', label: `KE ${t('experiments.before')}`, unit: 'J' },
+        { key: 'KEf', label: `KE ${t('experiments.after')}`, unit: 'J' },
+        { key: 'lossPercent', label: t('experiments.colEnergyLoss'), unit: '%' },
       ],
       equations: [
-        { name: 'حفظ الزخم', formula: 'm₁v₁i + m₂v₂i = m₁v₁f + m₂v₂f', variables: [{ symbol: 'm1', label: 'm₁' }, { symbol: 'm2', label: 'm₂' }, { symbol: 'v1i', label: 'v₁i' }, { symbol: 'v2i', label: 'v₂i' }, { symbol: 'v1f', label: 'v₁f' }, { symbol: 'v2f', label: 'v₂f' }], solveFor: ['v1f', 'v2f'] },
-        { name: 'معامل الاستعادة', formula: 'e = (v₂f − v₁f)/(v₁i − v₂i)', variables: [{ symbol: 'e', label: 'e' }, { symbol: 'v1i', label: 'v₁i' }, { symbol: 'v2i', label: 'v₂i' }, { symbol: 'v1f', label: 'v₁f' }, { symbol: 'v2f', label: 'v₂f' }], solveFor: ['e'] },
+        { name: t('experiments.eqMomentumConservation'), formula: 'm₁v₁i + m₂v₂i = m₁v₁f + m₂v₂f', variables: [{ symbol: 'm1', label: 'm₁' }, { symbol: 'm2', label: 'm₂' }, { symbol: 'v1i', label: 'v₁i' }, { symbol: 'v2i', label: 'v₂i' }, { symbol: 'v1f', label: 'v₁f' }, { symbol: 'v2f', label: 'v₂f' }], solveFor: ['v1f', 'v2f'] },
+        { name: t('experiments.eqRestitution'), formula: 'e = (v₂f − v₁f)/(v₁i − v₂i)', variables: [{ symbol: 'e', label: 'e' }, { symbol: 'v1i', label: 'v₁i' }, { symbol: 'v2i', label: 'v₂i' }, { symbol: 'v1f', label: 'v₁f' }, { symbol: 'v2f', label: 'v₂f' }], solveFor: ['e'] },
       ],
       suggestedPlots: [
         { xKey: 'm1', yKey: 'v1f', xLabel: 'm₁ (kg)', yLabel: 'v₁f (m/s)', type: 'scatter' },
-        { xKey: 'KEi', yKey: 'KEf', xLabel: 'KE قبل (J)', yLabel: 'KE بعد (J)', type: 'scatter' },
+        { xKey: 'KEi', yKey: 'KEf', xLabel: `KE ${t('experiments.before')} (J)`, yLabel: `KE ${t('experiments.after')} (J)`, type: 'scatter' },
       ],
     }
     sendToAnalysis(router, payload)

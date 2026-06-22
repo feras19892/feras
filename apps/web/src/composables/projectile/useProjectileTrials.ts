@@ -1,4 +1,5 @@
 import { ref, computed, type Ref } from 'vue'
+import { useI18n } from '../../composables/useI18n'
 import { downloadCsv } from '../../components/experiment/spring/downloadCsv'
 import { linearRegression } from '../../components/experiment/spring/linearRegression'
 import type { ProjectileParams } from '../../modules/physics/experiments/projectile/useProjectilePhysics'
@@ -22,6 +23,7 @@ export interface ProjectileMeasured {
 export const SAVE_KEY = 'projectile:trials:v1'
 
 export function useProjectileTrials(params: ProjectileParams, measured: Ref<ProjectileMeasured>) {
+  const { t } = useI18n()
   const trials = ref<ProjectileTrial[]>([])
   let nextTrialId = 1
 
@@ -139,33 +141,33 @@ export function useProjectileTrials(params: ProjectileParams, measured: Ref<Proj
     ])
   }
 
-  const calcResult = ref('اضغط على زر لعرض الحساب')
+  const calcResult = ref(t('experiments.clickBtnShowCalc'))
   const fitResult = ref<{ slope: number; intercept: number } | null>(null)
 
   function calcFlightTime() {
     const rad = (params.angleDeg * Math.PI) / 180
-    const t = (2 * params.v0 * Math.sin(rad)) / params.g
-    calcResult.value = `<b>المعادلة:</b> t = 2v₀sin(θ) / g<br><b>التعويض:</b> t = 2×${params.v0}×sin(${params.angleDeg}°) / ${params.g}<br><b>النتيجة:</b> t = <b>${t.toFixed(3)} s</b>`
+    const timeVal = (2 * params.v0 * Math.sin(rad)) / params.g
+    calcResult.value = `<b>${t('experiments.equationLabel')}:</b> t = 2v₀sin(θ) / g<br><b>${t('experiments.substitutionLabel')}:</b> t = 2×${params.v0}×sin(${params.angleDeg}°) / ${params.g}<br><b>${t('experiments.resultLabel')}:</b> t = <b>${timeVal.toFixed(3)} s</b>`
   }
 
   function calcMaxHeight() {
     const rad = (params.angleDeg * Math.PI) / 180
     const h = (Math.pow(params.v0 * Math.sin(rad), 2)) / (2 * params.g)
-    calcResult.value = `<b>المعادلة:</b> H = (v₀sinθ)² / 2g<br><b>التعويض:</b> H = (${params.v0}×sin(${params.angleDeg}°))² / (2×${params.g})<br><b>النتيجة:</b> H = <b>${h.toFixed(3)} m</b>`
+    calcResult.value = `<b>${t('experiments.equationLabel')}:</b> H = (v₀sinθ)² / 2g<br><b>${t('experiments.substitutionLabel')}:</b> H = (${params.v0}×sin(${params.angleDeg}°))² / (2×${params.g})<br><b>${t('experiments.resultLabel')}:</b> H = <b>${h.toFixed(3)} m</b>`
   }
 
   function calcRange() {
     const rad = (params.angleDeg * Math.PI) / 180
     const r = (Math.pow(params.v0, 2) * Math.sin(2 * rad)) / params.g
-    calcResult.value = `<b>المعادلة:</b> R = v₀²sin(2θ) / g<br><b>التعويض:</b> R = ${params.v0}²×sin(${2 * params.angleDeg}°) / ${params.g}<br><b>النتيجة:</b> R = <b>${r.toFixed(3)} m</b>`
+    calcResult.value = `<b>${t('experiments.equationLabel')}:</b> R = v₀²sin(2θ) / g<br><b>${t('experiments.substitutionLabel')}:</b> R = ${params.v0}²×sin(${2 * params.angleDeg}°) / ${params.g}<br><b>${t('experiments.resultLabel')}:</b> R = <b>${r.toFixed(3)} m</b>`
   }
 
   function calcFitRange() {
-    if (trials.value.length < 2) { calcResult.value = 'يجب قياستان على الأقل'; return }
+    if (trials.value.length < 2) { calcResult.value = t('experiments.atLeastTwoTrials'); return }
     const xs = trials.value.map(t => Math.sin(2 * (t.angleDegrees * Math.PI) / 180))
     const ys = trials.value.map(t => t.rangeMeters)
     const fit = linearRegression(xs, ys)
-    if (!fit || Math.abs(fit.slope) < 1e-12) { calcResult.value = 'بيانات غير كافية'; fitResult.value = null; return }
+    if (!fit || Math.abs(fit.slope) < 1e-12) { calcResult.value = t('experiments.insufficientData'); fitResult.value = null; return }
     fitResult.value = { slope: fit.slope, intercept: fit.intercept }
     const v0Est = Math.sqrt(Math.abs(fit.slope) * params.g)
     const quality = fit.r2 > 0.98 ? '✅' : fit.r2 > 0.9 ? '🟡' : '⚠️'

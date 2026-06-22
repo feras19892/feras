@@ -1,4 +1,5 @@
 import { reactive, ref } from 'vue'
+import { useI18n } from '../useI18n'
 
 const STORAGE_KEY = 'collision:layout:v2'
 
@@ -11,16 +12,17 @@ const DEFAULT_ORDER: Record<ColumnId, PanelId[]> = {
   ctrl: ['params'],
 }
 
-const PANEL_TITLES: Record<PanelId, string> = {
-  params: '⚙️ المعاملات',
-  data: '📊 البيانات',
-  signal: '📈 إشارة v(t)',
-  stats: '📈 الإحصائيات',
-  equations: '🧮 المعادلات',
-  report: '📝 التقرير',
-}
-
 export function useCollisionLayout() {
+  const { t } = useI18n()
+
+  const PANEL_TITLES: Record<PanelId, string> = {
+    params: t('experiments.panelParams'),
+    data: t('experiments.panelData'),
+    signal: t('experiments.panelSignal'),
+    stats: t('experiments.panelStats'),
+    equations: t('experiments.panelEquations'),
+    report: t('experiments.panelReport'),
+  }
   const visible = ref<Set<PanelId>>(new Set(['params', 'data', 'signal']))
   const columnOrder = reactive<Record<ColumnId, PanelId[]>>(JSON.parse(JSON.stringify(DEFAULT_ORDER)))
   const maximized = reactive<Partial<Record<PanelId, boolean>>>({})

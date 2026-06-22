@@ -1,11 +1,7 @@
 import { ref, reactive } from 'vue'
+import { useI18n } from '../useI18n'
 
 const STORAGE_KEY = 'prism_layout_v2'
-
-export const PANEL_TITLES: Record<string, string> = {
-  readings: '📊 القراءات', chart: '📈 الرسم البياني', trials: '📋 التجارب المسجلة',
-  params: '⚙️ المعاملات', laws: '📐 القوانين', results: '📊 نتائج التحليل',
-}
 
 const allIds = ['readings', 'chart', 'trials', 'params', 'laws', 'results']
 
@@ -20,6 +16,11 @@ const defaultState = {
 }
 
 export function usePrismLayout() {
+  const { t } = useI18n()
+  const PANEL_TITLES: Record<string, string> = {
+    readings: t('experiments.panelReadings'), chart: t('experiments.panelChart'), trials: t('experiments.panelTrials'),
+    params: t('experiments.panelParams'), laws: t('experiments.panelLaws'), results: t('experiments.panelResults'),
+  }
   const widths = reactive({ ...defaultState.widths })
   const visible = ref<string[]>([...defaultState.visible])
   const columnMap = reactive({ ...defaultState.columnMap })

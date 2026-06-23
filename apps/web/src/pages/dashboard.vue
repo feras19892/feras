@@ -31,7 +31,7 @@ const translatedCards = computed(() => cards.value.map(card => ({
 
 const goToBranch = (branchId: string) => {
   if (branchId === 'physics') router.push('/physics')
-  else if (branchId === 'chemistry') router.push('/chemistry')
+  if (branchId === 'chemistry') router.push('/chemistry')
 }
 
 const loadCards = async () => {

@@ -68,4 +68,4 @@
 - SpringAdvancedView.vue → `SpringExperiment.vue` (جارٍ)
 - صفحة فروع الفيزياء (Branches)
 - صفحة Branch التفصيلية
-- صفحة Chemistry
+

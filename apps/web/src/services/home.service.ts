@@ -13,8 +13,8 @@ const HOME_CARDS: HomeCard[] = [
     id: 'chemistry',
     icon: '🧪',
     title: 'Chemistry',
-    desc: 'Reactions, chemical analysis, and physical properties',
-    stats: '15+ experiments',
+    desc: 'pH, titration, electrolysis, and chromatography experiments',
+    stats: '5+ experiments',
     branchId: 'chemistry',
   },
   {

@@ -8,7 +8,7 @@ export const landing = {
     langSpanish: 'Español',
     start: 'ابدأ',
     loginError: 'البريد الإلكتروني أو كلمة السر غير صحيحة',
-    subjects: '⚛️ الفيزياء — 🧪 الكيمياء — 📐 الرياضيات — 🧬 البيولوجيا',
+    subjects: '⚛️ الفيزياء — 📐 الرياضيات — 🧬 البيولوجيا',
   },
   en: {
     tagline: 'Interactive Science Lab',
@@ -18,7 +18,7 @@ export const landing = {
     langEnglish: 'English',
     langSpanish: 'Español',
     start: 'Start',
-    subjects: '⚛️ Physics — 🧪 Chemistry — 📐 Math — 🧬 Biology',
+    subjects: '⚛️ Physics — 📐 Math — 🧬 Biology',
     loginError: 'Invalid email or password',
   },
   es: {
@@ -28,7 +28,7 @@ export const landing = {
     langArabic: 'العربية',
     langEnglish: 'English',
     langSpanish: 'Español',
-    subjects: '⚛️ Física — 🧪 Química — 📐 Matemáticas — 🧬 Biología',
+    subjects: '⚛️ Física — 📐 Matemáticas — 🧬 Biología',
     start: 'Empezar',
     loginError: 'Correo o contraseña incorrectos',
   },

@@ -33,6 +33,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./pages/dashboard.vue'),
   },
   {
+    path: '/chemistry',
+    name: 'Chemistry',
+    component: () => import('./modules/chemistry/ChemistryLanding.vue'),
+  },
+  {
     path: '/physics',
     name: 'Branches',
     component: () => import('./modules/physics/branches-page.vue'),
@@ -46,16 +51,6 @@ const routes: RouteRecordRaw[] = [
     path: '/physics/:branchId/:experimentId',
     name: 'Experiment',
     component: () => import('./modules/physics/experiment-page.vue'),
-  },
-  {
-    path: '/chemistry',
-    name: 'Chemistry',
-    component: () => import('./modules/chemistry/branches-page.vue'),
-  },
-  {
-    path: '/chemistry/:experimentId',
-    name: 'ChemistryExperiment',
-    component: () => import('./modules/chemistry/experiment-page.vue'),
   },
   {
     path: '/admin',

@@ -21,9 +21,15 @@
     "test:all": "pnpm run typecheck && pnpm run lint && pnpm run test:fuzz && pnpm run test:property && pnpm run test:e2e"
   },
   "dependencies": {
+    "@box2d/core": "^0.11.0",
+    "@box2d/particles": "^0.11.0",
     "@my-modern-app/shared-types": "workspace:*",
+    "@types/matter-js": "^0.20.2",
     "@types/three": "^0.184.1",
+    "liquidfun-emscripten": "^1.1.4",
+    "matter-js": "^0.20.0",
     "pinia": "^2.1.0",
+    "pixi.js": "^8.19.0",
     "splitpanes": "^4.1.2",
     "three": "^0.184.0",
     "vue": "^3.4.0",

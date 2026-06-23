@@ -78,14 +78,14 @@ defineProps<Props>();
 .physics .card-glow { background: #3B82F6; }
 .physics:hover { border-color: rgba(59,130,246,0.4); }
 
-.chemistry .card-glow { background: #10B981; }
-.chemistry:hover { border-color: rgba(16,185,129,0.4); }
-
 .mathematics .card-glow { background: #EC4899; }
 .mathematics:hover { border-color: rgba(236,72,153,0.4); }
 
 .general .card-glow { background: #F97316; }
 .general:hover { border-color: rgba(249,115,22,0.4); }
+
+.chemistry .card-glow { background: #10B981; }
+.chemistry:hover { border-color: rgba(16,185,129,0.4); }
 
 .card-icon {
   font-size: 4rem;

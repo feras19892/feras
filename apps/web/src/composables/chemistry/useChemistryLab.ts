@@ -34,6 +34,12 @@ export const itemZoomMap = reactive<Record<string, number>>({});
 export const pourFlowMap = reactive<Record<string, string>>({});
 export const tiltAngleMap = reactive<Record<string, number>>({});
 
+// Global spill particles (rendered in workspace-wide canvas)
+export interface SpillParticle {
+  x: number; y: number; vx: number; vy: number; size: number; color: string; sourceUid: string;
+}
+export const spillParticles = reactive<SpillParticle[]>([]);
+
 // ================== GETTERS ==================
 export function getLiquid(uid: string): LiquidState {
   if (!liquidMap[uid]) {

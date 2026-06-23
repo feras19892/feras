@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import { useSpillDrops } from '../../../composables/chemistry/useSpillDrops';
 
 interface Props {
   volume?: number;     // 0–250 mL
@@ -7,6 +8,10 @@ interface Props {
   liquidColor?: string;
   liquidOpacity?: number;
   isHovered?: boolean;
+  tiltAngle?: number;
+  itemUid?: string;
+  itemX?: number;
+  itemY?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -15,9 +20,35 @@ const props = withDefaults(defineProps<Props>(), {
   liquidColor: '#3b82f6',
   liquidOpacity: 0.35,
   isHovered: false,
+  tiltAngle: 0,
+  itemX: 0,
+  itemY: 0,
 });
 
-const emit = defineEmits<{ click: [] }>();
+const emit = defineEmits<{ click: []; spill: [amount: number]; dropExited: [worldX: number, worldY: number, color: string]; }>();
+
+const canvasRef = ref<HTMLCanvasElement | null>(null);
+
+useSpillDrops({
+  canvasRef,
+  tiltAngle: () => props.tiltAngle,
+  volume: () => props.volume,
+  maxVolume: () => props.maxVolume,
+  liquidColor: () => props.liquidColor,
+  itemX: () => props.itemX,
+  itemY: () => props.itemY,
+  mouthPosition: (tilt) => {
+    const rad = tilt * Math.PI / 180;
+    const cx = 60, cy = 121, mouthDist = 99; // cy=(neckTop22+bulbBottom220)/2
+    return { x: cx + mouthDist * Math.sin(rad), y: cy - mouthDist * Math.cos(rad) };
+  },
+  canvasW: 120,
+  canvasH: 260,
+  mouthBounds: { minX: 10, maxX: 110, minY: 10, maxY: 240 },
+  exitY: 200,
+  onSpill: (amount) => emit('spill', amount),
+  onDropExited: (wx, wy, color) => emit('dropExited', wx, wy, color),
+});
 
 /* Geometry: pear-shaped with long narrow neck */
 const bulbTop = 85;
@@ -120,8 +151,15 @@ const markY = bulbTop;
       <line :x1="centerX - neckW/2 + 3" :y1="neckTop + 5" :x2="centerX - neckW/2 + 3" :y2="bulbTop - 5" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" stroke-linecap="round" />
     </svg>
 
-    <!-- Label -->
-    <div v-if="volume > 0" class="flask-label">{{ volume.toFixed(1) }}mL</div>
+    <!-- Drop canvas -->
+    <canvas
+      v-if="volume > 0"
+      ref="canvasRef"
+      width="120"
+      height="260"
+      class="drop-canvas"
+      :style="{ transform: `rotate(${-tiltAngle}deg)`, transformOrigin: '60px 120px' }"
+    />
   </div>
 </template>
 
@@ -143,15 +181,14 @@ const markY = bulbTop;
   transform: scale(1.05);
   filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
 }
-.flask-label {
+.drop-canvas {
   position: absolute;
-  bottom: -6px;
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: #64748b;
-  background: rgba(255,255,255,0.9);
-  padding: 1px 6px;
-  border-radius: 4px;
+  top: 0;
+  left: 50%;
+  width: 120px;
+  height: 260px;
+  margin-left: -60px;
+  z-index: 2;
   pointer-events: none;
 }
 </style>

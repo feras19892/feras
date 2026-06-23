@@ -21,6 +21,7 @@ import WorkspaceOverlays from './WorkspaceOverlays.vue';
 const emit = defineEmits<{ select: [item: LabItem | null, state: ToolState | null] }>();
 
 const selectedItem = ref<LabItem | null>(null);
+const totalSpilled = ref(0);
 const draggingItem = ref<LabItem | null>(null);
 const dragOffsetX = ref(0);
 const dragOffsetY = ref(0);
@@ -143,7 +144,29 @@ function handleSpill(item: LabItem, amount: number) {
   if (isContainer(item.id)) {
     const s = getLiquid(item.uid);
     s.volume = Math.max(0, s.volume - amount);
+    totalSpilled.value = +(totalSpilled.value + amount).toFixed(2);
     if (selectedItem.value?.uid === item.uid) emit('select', item, buildToolState(item));
+  }
+}
+function handleDropExited(sourceItem: LabItem, wx: number, wy: number, color: string) {
+  // wx, wy are workspace coordinates where drop passed beaker bottom
+  const target = items.value.find((i: LabItem) => {
+    if (i.uid === sourceItem.uid) return false;
+    if (!isContainer(i.id)) return false;
+    // Generous catch: drop must be near beaker horizontally (±65px) and near/above its mouth
+    return Math.abs(wx - (i.x + 70)) < 65 && wy >= i.y - 20 && wy <= i.y + 120;
+  });
+  if (target) {
+    const tLiq = getLiquid(target.uid);
+    if (tLiq.volume < tLiq.maxVolume) {
+      pushHistory();
+      const amount = 0.15;
+      tLiq.volume = Math.min(tLiq.maxVolume, +(tLiq.volume + amount).toFixed(1));
+      tLiq.color = color;
+      receivingMap[target.uid] = true;
+      setTimeout(() => { receivingMap[target.uid] = false; }, 400);
+      if (selectedItem.value?.uid === target.uid) emit('select', target, buildToolState(target));
+    }
   }
 }
 function toggleBuretteValve(item: LabItem) {
@@ -242,6 +265,18 @@ defineExpose({
     @click="onWorkspaceClick"
     @wheel.prevent="onWheel"
   >
+    <!-- Digital Volume Meter -->
+    <div v-if="selectedItem && selectedState?.type === 'beaker'" class="digital-meter">
+      <div class="meter-row">
+        <span class="meter-label">الحجم</span>
+        <span class="meter-value">{{ selectedState.volume.toFixed(1) }}<small>mL</small></span>
+      </div>
+      <div class="meter-row spill">
+        <span class="meter-label">المنسكب</span>
+        <span class="meter-value">{{ totalSpilled.toFixed(2) }}<small>mL</small></span>
+      </div>
+    </div>
+
     <div class="scene">
       <LabItemRenderer
         v-for="item in items"
@@ -256,6 +291,7 @@ defineExpose({
         @mousedown="onItemMouseDown($event, item)"
         @mouth-interact="onMouthInteract(item)"
         @spill="handleSpill"
+        @drop-exited="handleDropExited"
         @toggle-valve="toggleBuretteValve(item)"
         @tip-interact="tipInteract(item)"
         @enter-pipette="enterPipetteMode(item)"
@@ -312,5 +348,47 @@ defineExpose({
   background:
     repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(0,0,0,0.025) 49px, rgba(0,0,0,0.025) 50px),
     repeating-linear-gradient(90deg, transparent, transparent 49px, rgba(0,0,0,0.025) 49px, rgba(0,0,0,0.025) 50px);
+}
+.digital-meter {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  gap: 1.5rem;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  border: 2px solid #475569;
+  border-radius: 0.6rem;
+  padding: 0.5rem 1.2rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.1);
+  font-family: 'Segoe UI', monospace;
+}
+.meter-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+.meter-row.spill .meter-value {
+  color: #f87171;
+}
+.meter-label {
+  font-size: 0.6rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.meter-value {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #34d399;
+  text-shadow: 0 0 8px rgba(52,211,153,0.4);
+}
+.meter-value small {
+  font-size: 0.65rem;
+  font-weight: 600;
+  margin-right: 0.1rem;
+  color: #94a3b8;
 }
 </style>

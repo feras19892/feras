@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import { useSpillDrops } from '../../../composables/chemistry/useSpillDrops';
 
 interface Props {
   volume?: number;
@@ -8,6 +9,10 @@ interface Props {
   liquidOpacity?: number;
   isHovered?: boolean;
   size?: 'sm' | 'md' | 'lg';
+  tiltAngle?: number;
+  itemUid?: string;
+  itemX?: number;
+  itemY?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -17,9 +22,40 @@ const props = withDefaults(defineProps<Props>(), {
   liquidOpacity: 0.35,
   isHovered: false,
   size: 'md',
+  tiltAngle: 0,
+  itemX: 0,
+  itemY: 0,
 });
 
-const emit = defineEmits<{ click: [] }>();
+const emit = defineEmits<{ click: []; spill: [amount: number]; dropExited: [worldX: number, worldY: number, color: string]; }>();
+
+const canvasRef = ref<HTMLCanvasElement | null>(null);
+
+useSpillDrops({
+  canvasRef,
+  tiltAngle: () => props.tiltAngle,
+  volume: () => props.volume,
+  maxVolume: () => props.maxVolume,
+  liquidColor: () => props.liquidColor,
+  itemX: () => props.itemX,
+  itemY: () => props.itemY,
+  mouthPosition: (tilt) => {
+    const rad = tilt * Math.PI / 180;
+    const cx = c.value.w / 2;
+    const cy = (c.value.rimY + c.value.bottomY) / 2;
+    const mouthDist = cy - c.value.rimY;
+    return {
+      x: cx + mouthDist * Math.sin(rad),
+      y: cy - mouthDist * Math.cos(rad),
+    };
+  },
+  canvasW: 60,
+  canvasH: 200,
+  mouthBounds: { minX: 5, maxX: 55, minY: 5, maxY: 180 },
+  exitY: 160,
+  onSpill: (amount) => emit('spill', amount),
+  onDropExited: (wx, wy, color) => emit('dropExited', wx, wy, color),
+});
 
 /* Size configs */
 const configs = {
@@ -134,8 +170,15 @@ const marks = computed<Mark[]>(() => {
       <line :x1="(c.w + c.tubeW)/2 - 4" :y1="c.rimY + 6" :x2="(c.w + c.tubeW)/2 - 4" :y2="c.bottomY - 12" stroke="rgba(255,255,255,0.12)" stroke-width="0.8" stroke-linecap="round" />
     </svg>
 
-    <!-- Label -->
-    <div v-if="volume > 0" class="tube-label">{{ volume.toFixed(1) }}mL</div>
+    <!-- Drop canvas -->
+    <canvas
+      v-if="volume > 0"
+      ref="canvasRef"
+      width="60"
+      height="200"
+      class="drop-canvas"
+      :style="{ transform: `rotate(${-tiltAngle}deg)`, transformOrigin: `${c.w/2}px ${c.h/2+10}px` }"
+    />
   </div>
 </template>
 
@@ -155,15 +198,14 @@ const marks = computed<Mark[]>(() => {
   transform: scale(1.06);
   filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
 }
-.tube-label {
+.drop-canvas {
   position: absolute;
-  bottom: -10px;
-  font-size: 0.6rem;
-  font-weight: 700;
-  color: #64748b;
-  background: rgba(255,255,255,0.9);
-  padding: 1px 5px;
-  border-radius: 4px;
+  top: 0;
+  left: 50%;
+  width: 60px;
+  height: 200px;
+  margin-left: -30px;
+  z-index: 2;
   pointer-events: none;
 }
 </style>

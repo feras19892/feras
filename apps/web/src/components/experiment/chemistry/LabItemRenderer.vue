@@ -38,6 +38,7 @@ const emit = defineEmits<{
   mousedown: [e: MouseEvent, item: LabItem];
   mouthInteract: [item: LabItem];
   spill: [item: LabItem, amount: number];
+  dropExited: [item: LabItem, wx: number, wy: number, color: string];
   toggleValve: [item: LabItem];
   tipInteract: [item: LabItem];
   enterPipette: [item: LabItem];
@@ -71,6 +72,12 @@ const isSel = computed(() => props.selectedUid === props.item.uid);
     :liquid-opacity="liq.opacity"
     :is-hovered="isSel"
     :size="item.id === 'test-tube-sm' ? 'sm' : item.id === 'test-tube-lg' ? 'lg' : 'md'"
+    :tilt-angle="tiltAngleMap[item.uid] || 0"
+    :item-uid="item.uid"
+    :item-x="item.x"
+    :item-y="item.y"
+    @spill="emit('spill', item, $event)"
+    @drop-exited="(wx: number, wy: number, color: string) => emit('dropExited', item, wx, wy, color)"
   />
   <LabErlenmeyer
     v-else-if="isErlenmeyer(item.id)"
@@ -79,6 +86,12 @@ const isSel = computed(() => props.selectedUid === props.item.uid);
     :liquid-color="liq.color"
     :liquid-opacity="liq.opacity"
     :is-hovered="isSel"
+    :tilt-angle="tiltAngleMap[item.uid] || 0"
+    :item-uid="item.uid"
+    :item-x="item.x"
+    :item-y="item.y"
+    @spill="emit('spill', item, $event)"
+    @drop-exited="(wx: number, wy: number, color: string) => emit('dropExited', item, wx, wy, color)"
   />
   <LabVolumetricFlask
     v-else-if="isVolumetricFlask(item.id)"
@@ -87,6 +100,12 @@ const isSel = computed(() => props.selectedUid === props.item.uid);
     :liquid-color="liq.color"
     :liquid-opacity="liq.opacity"
     :is-hovered="isSel"
+    :tilt-angle="tiltAngleMap[item.uid] || 0"
+    :item-uid="item.uid"
+    :item-x="item.x"
+    :item-y="item.y"
+    @spill="emit('spill', item, $event)"
+    @drop-exited="(wx: number, wy: number, color: string) => emit('dropExited', item, wx, wy, color)"
   />
   <LabRoundBottomFlask
     v-else-if="isRoundBottomFlask(item.id)"
@@ -95,6 +114,12 @@ const isSel = computed(() => props.selectedUid === props.item.uid);
     :liquid-color="liq.color"
     :liquid-opacity="liq.opacity"
     :is-hovered="isSel"
+    :tilt-angle="tiltAngleMap[item.uid] || 0"
+    :item-uid="item.uid"
+    :item-x="item.x"
+    :item-y="item.y"
+    @spill="emit('spill', item, $event)"
+    @drop-exited="(wx: number, wy: number, color: string) => emit('dropExited', item, wx, wy, color)"
   />
   <LabSeparatoryFunnel
     v-else-if="isSeparatoryFunnel(item.id)"
@@ -106,7 +131,13 @@ const isSel = computed(() => props.selectedUid === props.item.uid);
     :bottom-layer-volume="getSepFunnelState(item.uid).bottomLayerVolume"
     :is-open="getSepFunnelState(item.uid).valveOpen"
     :is-hovered="isSel"
+    :tilt-angle="tiltAngleMap[item.uid] || 0"
+    :item-uid="item.uid"
+    :item-x="item.x"
+    :item-y="item.y"
     @toggle-stopcock="emit('toggleStopcock', item)"
+    @spill="emit('spill', item, $event)"
+    @drop-exited="(wx: number, wy: number, color: string) => emit('dropExited', item, wx, wy, color)"
   />
   <LabGradCylinder
     v-else-if="isGradCylinder(item.id)"
@@ -115,6 +146,12 @@ const isSel = computed(() => props.selectedUid === props.item.uid);
     :liquid-color="liq.color"
     :liquid-opacity="liq.opacity"
     :is-hovered="isSel"
+    :tilt-angle="tiltAngleMap[item.uid] || 0"
+    :item-uid="item.uid"
+    :item-x="item.x"
+    :item-y="item.y"
+    @spill="emit('spill', item, $event)"
+    @drop-exited="(wx: number, wy: number, color: string) => emit('dropExited', item, wx, wy, color)"
   />
   <LabBeaker
     v-else-if="isBeaker(item.id)"
@@ -127,8 +164,11 @@ const isSel = computed(() => props.selectedUid === props.item.uid);
     :stirred="liq.stirred"
     :tilt-angle="tiltAngleMap[item.uid] || 0"
     :item-uid="item.uid"
+    :item-x="item.x"
+    :item-y="item.y"
     @mouth-interact="emit('mouthInteract', item)"
     @spill="emit('spill', item, $event)"
+    @drop-exited="(wx: number, wy: number, color: string) => emit('dropExited', item, wx, wy, color)"
   />
   <LabBurette
     v-else-if="isBurette(item.id)"

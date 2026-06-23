@@ -11,6 +11,8 @@ interface Props {
   stirred?: number;
   tiltAngle?: number;
   itemUid?: string;
+  itemX?: number;
+  itemY?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -22,6 +24,8 @@ const props = withDefaults(defineProps<Props>(), {
   receiving: false,
   stirred: 0,
   tiltAngle: 0,
+  itemX: 0,
+  itemY: 0,
 });
 
 const showMouthGlow = ref(false);
@@ -58,116 +62,80 @@ const allMarks = computed<Mark[]>(() => {
 function onMouthEnter() { showMouthGlow.value = true; }
 function onMouthLeave() { showMouthGlow.value = false; }
 
-const emit = defineEmits<{
-  mouthInteract: [];
-  spill: [amount: number];
-}>();
+const emit = defineEmits<{ mouthInteract: []; spill: [amount: number]; dropExited: [worldX: number, worldY: number, color: string]; }>();
 
 /* ---- Drop physics ---- */
 const canvasRef = ref<HTMLCanvasElement | null>(null);
-interface Drop { x: number; y: number; vx: number; vy: number; size: number }
-let activeDrops: Drop[] = [];
+let activeDrops: {x:number; y:number; vx:number; vy:number; size:number}[] = [];
 let dropTimer = 0;
-let localVolume = props.volume;
 let animId = 0;
 let running = false;
 
-function hexToRgb(hex: string) {
-  const c = hex.replace('#', '');
-  return {
-    r: parseInt(c.substring(0, 2), 16) || 59,
-    g: parseInt(c.substring(2, 4), 16) || 130,
-    b: parseInt(c.substring(4, 6), 16) || 246,
-  };
-}
-
-function startDropsLoop() {
+function startDrops() {
   if (running) return;
   running = true;
   const ctx = canvasRef.value?.getContext('2d');
-  if (!ctx) { setTimeout(startDropsLoop, 50); return; }
+  if (!ctx) { setTimeout(startDrops, 50); return; }
 
   const loop = () => {
     if (!running) return;
     ctx.clearRect(0, 0, 140, 300);
-
-    const rgb = hexToRgb(props.liquidColor);
     const tilt = props.tiltAngle;
     const absTilt = Math.abs(tilt);
-    const fillH = Math.min(localVolume / props.maxVolume, 1) * 125;
-    const surfaceY = 160 - fillH;
+    const fillH = Math.min(props.volume / props.maxVolume, 1) * 125;
+    const threshold = 55 - (fillH / 125) * 45;
 
-    // Determine spill side and threshold
+    // Mouth in SVG is (70,25), center is (70,100)
+    // In counter-rotated canvas, mouth appears at rotated position
+    const rad = tilt * Math.PI / 180;
+    const mouthX = Math.max(10, Math.min(130, 70 + 75 * Math.sin(rad)));
+    const mouthY = Math.max(10, Math.min(200, 100 - 75 * Math.cos(rad)));
     let isSpilling = false;
-    let spillX = 0;
-    const threshold = 55 - (fillH / 125) * 45; // 55° (empty) → 10° (full)
-
-    if (absTilt > threshold && localVolume > 2) {
-      // In counter-rotated canvas space, liquid surface is horizontal
-      // Beaker appears tilted. Lower rim is where drops spawn.
-      if (tilt > 0) { isSpilling = true; spillX = 102; } // clockwise → right rim lower
-      else { isSpilling = true; spillX = 38; } // counter-clockwise → left rim lower
-    }
+    if (absTilt > threshold && props.volume > 2) isSpilling = true;
 
     if (isSpilling) {
       dropTimer++;
-      let interval = 25;
-      if (absTilt > 20) interval = 12;
-      if (absTilt > 40) interval = 5;
-      if (absTilt > 55) interval = 2;
-
+      let interval = 25; if (absTilt > 20) interval = 12; if (absTilt > 40) interval = 5; if (absTilt > 55) interval = 2;
       if (dropTimer >= interval) {
         activeDrops.push({
-          x: spillX + (tilt > 0 ? 4 : -4),
-          y: 25,
-          vx: tilt > 0 ? 1.5 : -1.5,
-          vy: 1,
-          size: 3.5 + Math.random() * 2,
+          x: mouthX + (Math.random() - 0.5) * 4,
+          y: mouthY + 5 + (Math.random() - 0.5) * 3,
+          vx: (tilt > 0 ? 0.8 : -0.8) + (Math.random() - 0.5) * 0.4,
+          vy: 0.5,
+          size: 3.5 + Math.random() * 2
         });
         dropTimer = 0;
-        const dropAmount = 0.15;
-        localVolume = Math.max(0, +(localVolume - dropAmount).toFixed(1));
-        emit('spill', dropAmount);
+        emit('spill', 0.15);
       }
-    } else {
-      dropTimer = 0;
-    }
+    } else { dropTimer = 0; }
 
-    // Update and draw drops — gravity points screen-down regardless of canvas rotation
-    const tiltRad = props.tiltAngle * (Math.PI / 180);
-    const grav = 0.25;
-    const gravX = Math.sin(tiltRad) * grav;
-    const gravY = Math.cos(tiltRad) * grav;
+    // Gravity: straight down (screen space)
     for (let i = activeDrops.length - 1; i >= 0; i--) {
       const d = activeDrops[i];
-      d.vx += gravX;
-      d.vy += gravY;
+      d.vy += 0.4;
       d.x += d.vx;
       d.y += d.vy;
+      ctx.beginPath(); ctx.arc(d.x, d.y, d.size, 0, Math.PI * 2);
+      ctx.fillStyle = props.liquidColor; ctx.globalAlpha = 0.95; ctx.fill(); ctx.globalAlpha = 1;
+      // Small highlight for 3D effect
+      ctx.beginPath(); ctx.arc(d.x - d.size*0.25, d.y - d.size*0.25, d.size*0.3, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.fill();
 
-      ctx.beginPath();
-      ctx.arc(d.x, d.y, d.size, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.9)`;
-      ctx.fill();
-
-      if (d.y > 300) activeDrops.splice(i, 1);
+      if (d.y > 200) {
+        activeDrops.splice(i, 1);
+        emit('dropExited', props.itemX + d.x, props.itemY + d.y, props.liquidColor);
+      }
     }
-
     animId = requestAnimationFrame(loop);
   };
   loop();
 }
+function stopDrops() { running = false; if (animId) cancelAnimationFrame(animId); }
 
-function stopDropsLoop() {
-  running = false;
-  if (animId) cancelAnimationFrame(animId);
-}
-
-watch(() => props.volume, (v: number) => { localVolume = v; });
-watch(() => props.tiltAngle, () => { if (!running && props.volume > 0) startDropsLoop(); });
-
-onMounted(() => { if (props.volume > 0) startDropsLoop(); });
-onUnmounted(() => { stopDropsLoop(); });
+watch(() => props.tiltAngle, () => { if (!running && props.volume > 0) startDrops(); });
+watch(() => props.volume, () => { if (!running && props.volume > 0 && props.tiltAngle !== 0) startDrops(); });
+onMounted(() => { if (props.volume > 0 && props.tiltAngle !== 0) startDrops(); });
+onUnmounted(() => { stopDrops(); });
 </script>
 
 <template>
@@ -230,66 +198,67 @@ onUnmounted(() => { stopDropsLoop(); });
       </g>
 
       <!-- ========== LIQUID LAYER ========== -->
+      <!-- Clip path applied in UPRIGHT beaker space -->
       <g v-if="volume > 0" clip-path="url(#beakerClip)">
-        <!-- Liquid body -->
-        <path
-          :d="`M 40 ${liquidY} L 40 158 Q 40 170 70 170 Q 100 170 100 158 L 100 ${liquidY} Z`"
-          :fill="liquidColor"
-          :opacity="liquidOpacity"
-        />
-        <!-- Meniscus surface -->
-        <ellipse
-          :cx="70"
-          :cy="liquidY"
-          rx="30"
-          ry="4.5"
-          :fill="liquidColor"
-          :opacity="liquidOpacity + 0.12"
-        />
-        <!-- White highlight on meniscus (reading line) -->
-        <ellipse
-          :cx="70"
-          :cy="liquidY + 0.5"
-          rx="20"
-          ry="2"
-          fill="rgba(255,255,255,0.45)"
-        />
-        <!-- Side reflection inside liquid -->
-        <path
-          :d="`M 44 ${liquidY + 5} L 44 155`"
-          stroke="rgba(255,255,255,0.25)"
-          stroke-width="2"
-          stroke-linecap="round"
-          fill="none"
-        />
-        <!-- Splash / ripple when receiving from burette or pour -->
-        <g v-if="receiving">
-          <ellipse cx="70" :cy="liquidY" rx="8" ry="2" fill="none" :stroke="liquidColor" stroke-width="1" opacity="0.6" class="ripple" />
-          <ellipse cx="70" :cy="liquidY" rx="4" ry="1" fill="none" :stroke="liquidColor" stroke-width="0.8" opacity="0.4" class="ripple-delay" />
-        </g>
-        <!-- Swirl vortex when stirred -->
-        <g v-if="isStirring && volume > 0">
+          <!-- Liquid body -->
           <path
-            d="M 52 155 Q 60 145 70 155 Q 80 165 70 155 Q 60 145 52 155"
-            fill="none"
-            :stroke="liquidColor"
-            stroke-width="1.5"
-            opacity="0.5"
-            class="swirl"
-          >
-            <animateTransform attributeName="transform" type="rotate" from="0 70 155" to="360 70 155" dur="0.4s" repeatCount="indefinite" />
-          </path>
+            :d="`M 40 ${liquidY} L 40 158 Q 40 170 70 170 Q 100 170 100 158 L 100 ${liquidY} Z`"
+            :fill="liquidColor"
+            :opacity="liquidOpacity"
+          />
+          <!-- Meniscus surface -->
+          <ellipse
+            :cx="70"
+            :cy="liquidY"
+            rx="30"
+            ry="4.5"
+            :fill="liquidColor"
+            :opacity="liquidOpacity + 0.12"
+          />
+          <!-- White highlight on meniscus (reading line) -->
+          <ellipse
+            :cx="70"
+            :cy="liquidY + 0.5"
+            rx="20"
+            ry="2"
+            fill="rgba(255,255,255,0.45)"
+          />
+          <!-- Side reflection inside liquid -->
           <path
-            d="M 58 150 Q 65 142 70 150 Q 75 158 70 150 Q 65 142 58 150"
+            :d="`M 44 ${liquidY + 5} L 44 155`"
+            stroke="rgba(255,255,255,0.25)"
+            stroke-width="2"
+            stroke-linecap="round"
             fill="none"
-            :stroke="liquidColor"
-            stroke-width="1"
-            opacity="0.35"
-            class="swirl-inner"
-          >
-            <animateTransform attributeName="transform" type="rotate" from="360 70 150" to="0 70 150" dur="0.3s" repeatCount="indefinite" />
-          </path>
-        </g>
+          />
+          <!-- Splash / ripple when receiving from burette or pour -->
+          <g v-if="receiving">
+            <ellipse cx="70" :cy="liquidY" rx="8" ry="2" fill="none" :stroke="liquidColor" stroke-width="1" opacity="0.6" class="ripple" />
+            <ellipse cx="70" :cy="liquidY" rx="4" ry="1" fill="none" :stroke="liquidColor" stroke-width="0.8" opacity="0.4" class="ripple-delay" />
+          </g>
+          <!-- Swirl vortex when stirred -->
+          <g v-if="isStirring && volume > 0">
+            <path
+              d="M 52 155 Q 60 145 70 155 Q 80 165 70 155 Q 60 145 52 155"
+              fill="none"
+              :stroke="liquidColor"
+              stroke-width="1.5"
+              opacity="0.5"
+              class="swirl"
+            >
+              <animateTransform attributeName="transform" type="rotate" from="0 70 155" to="360 70 155" dur="0.4s" repeatCount="indefinite" />
+            </path>
+            <path
+              d="M 58 150 Q 65 142 70 150 Q 75 158 70 150 Q 65 142 58 150"
+              fill="none"
+              :stroke="liquidColor"
+              stroke-width="1"
+              opacity="0.35"
+              class="swirl-inner"
+            >
+              <animateTransform attributeName="transform" type="rotate" from="360 70 150" to="0 70 150" dur="0.3s" repeatCount="indefinite" />
+            </path>
+          </g>
       </g>
 
       <!-- ========== GLASS HIGHLIGHTS ========== -->
@@ -316,13 +285,13 @@ onUnmounted(() => { stopDropsLoop(); });
       </g>
     </svg>
 
-    <!-- Falling drops canvas -->
     <canvas
       v-if="volume > 0"
       ref="canvasRef"
       width="140"
       height="300"
       class="drop-canvas"
+      :style="{ transform: `rotate(${-tiltAngle}deg)`, transformOrigin: '70px 100px' }"
     />
   </div>
 </template>

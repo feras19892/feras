@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 interface Props {
-  volume?: number;      // 0–10 mL drawn
-  maxVolume?: number;   // 10
+  volume?: number;     // 0–10 mL drawn
+  maxVolume?: number;  // 10
   liquidColor?: string;
   liquidOpacity?: number;
-  isActive?: boolean;
   isHovered?: boolean;
+  isActive?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -15,164 +15,179 @@ const props = withDefaults(defineProps<Props>(), {
   maxVolume: 10,
   liquidColor: '#3b82f6',
   liquidOpacity: 0.35,
-  isActive: false,
   isHovered: false,
+  isActive: false,
 });
 
-const emit = defineEmits<{ click: [] }>();
+const emit = defineEmits<{ click: []; }>();
 
-/* Geometry: long narrow tube with bulb */
-const tubeTop = 12;
-const tubeBottom = 240;
-const tubeH = tubeBottom - tubeTop;
-const tubeW = 10;
-const centerX = 28;
+/* Geometry: long thin tube, small glass bulb in middle, fine tip */
+const tipY = 262;       // bottom of fine tip
+const tubeBottom = 209; // where tube meets tip
+const bulbBottom = 159; // where lower stem meets bulb
+const bulbTop = 142;    // where upper stem meets bulb (calibration ring)
+const tubeH = tubeBottom - bulbTop; // 67px for liquid range = 10mL
 
-/* Bulb position (in upper half) */
-const bulbTop = 65;
-const bulbBottom = 105;
-const bulbW = 22;
-
-/* Liquid fills from bottom tip up through bulb */
+/* Liquid fills from bottom up to calibration ring at bulbTop */
 const liquidH = computed(() => {
   if (props.volume <= 0) return 0;
   return (props.volume / props.maxVolume) * tubeH;
 });
 const liquidY = computed(() => tubeBottom - liquidH.value);
+const liquidTop = computed(() => liquidY.value);
+const liquidBottom = computed(() => tubeBottom);
 
-/* Single calibration ring at the bulb top */
-const calMarkY = bulbTop;
+/* Single calibration ring at bulbTop */
+const calY = bulbTop;
+
+/* Canvas for drop effect when emptying */
+const canvasRef = ref<HTMLCanvasElement | null>(null);
+let drops: { x: number; y: number; vy: number; size: number }[] = [];
+let animId = 0;
+
+function spawnDrop() {
+  const ctx = canvasRef.value?.getContext('2d');
+  if (!ctx) return;
+  drops.push({ x: 20 + (Math.random() - 0.5) * 2, y: tipY - 5, vy: 0.5, size: 1.5 + Math.random() });
+  if (drops.length > 30) drops.shift();
+  if (animId) return;
+
+  function loop() {
+    if (!canvasRef.value) return;
+    const c = canvasRef.value.getContext('2d');
+    if (!c) return;
+    c.clearRect(0, 0, 40, 280);
+    for (let i = drops.length - 1; i >= 0; i--) {
+      const d = drops[i];
+      d.vy += 0.4;
+      d.y += d.vy;
+      c.beginPath(); c.arc(d.x, d.y, d.size, 0, Math.PI * 2);
+      c.fillStyle = props.liquidColor; c.globalAlpha = 0.8; c.fill(); c.globalAlpha = 1;
+      c.beginPath(); c.arc(d.x - 0.3, d.y - 0.3, d.size * 0.3, 0, Math.PI * 2);
+      c.fillStyle = 'rgba(255,255,255,0.5)'; c.fill();
+      if (d.y > 280) drops.splice(i, 1);
+    }
+    if (drops.length > 0) {
+      animId = requestAnimationFrame(loop);
+    } else {
+      animId = 0;
+    }
+  }
+  loop();
+}
 </script>
 
 <template>
-  <div class="vpip-wrapper" @click.stop="emit('click')">
-    <svg viewBox="0 0 56 260" class="vpip-svg" :class="{ hovered: isHovered, active: isActive }">
+  <div class="vpip-wrapper" :class="{ active: isActive }" @click.stop="emit('click')">
+    <svg viewBox="0 0 40 280" class="vpip-svg" :class="{ hovered: isHovered }">
       <!-- Shadow -->
-      <ellipse cx="28" cy="255" rx="8" ry="2" fill="rgba(0,0,0,0.06)" />
+      <ellipse cx="20" cy="275" rx="3" ry="0.8" fill="rgba(0,0,0,0.06)" />
 
-      <!-- Upper narrow stem (above bulb) -->
-      <rect
-        :x="centerX - tubeW/2"
-        :y="tubeTop"
-        :width="tubeW"
-        :height="bulbTop - tubeTop"
-        rx="1"
-        fill="rgba(241,245,249,0.15)"
+      <!-- Upper stem (long thin tube) -->
+      <rect x="17" y="12" width="6" height="130" rx="1"
+        fill="rgba(241,245,249,0.12)"
         stroke="#94a3b8"
-        stroke-width="1"
+        stroke-width="0.6"
       />
 
-      <!-- Bulb (expanded middle) -->
-      <ellipse
-        :cx="centerX"
-        :cy="(bulbTop + bulbBottom) / 2"
-        :rx="bulbW/2"
-        :ry="(bulbBottom - bulbTop) / 2"
-        fill="rgba(241,245,249,0.15)"
+      <!-- Small glass bulb in middle -->
+      <ellipse cx="20" cy="145" rx="9" ry="14"
+        fill="rgba(241,245,249,0.1)"
         stroke="#94a3b8"
-        stroke-width="1"
+        stroke-width="0.8"
       />
 
-      <!-- Lower narrow stem (below bulb) -->
-      <rect
-        :x="centerX - tubeW/2"
-        :y="bulbBottom"
-        :width="tubeW"
-        :height="tubeBottom - bulbBottom"
-        rx="1"
-        fill="rgba(241,245,249,0.15)"
+      <!-- Lower stem -->
+      <rect x="17.5" y="159" width="5" height="50" rx="1"
+        fill="rgba(241,245,249,0.12)"
         stroke="#94a3b8"
-        stroke-width="1"
+        stroke-width="0.6"
+      />
+
+      <!-- Very fine tip (needle-like) -->
+      <path
+        d="M 18.5 209 L 19.5 262 L 20.5 262 L 21.5 209 Z"
+        fill="rgba(241,245,249,0.2)"
+        stroke="#94a3b8"
+        stroke-width="0.5"
       />
 
       <!-- Top rim -->
-      <ellipse :cx="centerX" :cy="tubeTop" :rx="tubeW/2 + 1" ry="2" fill="none" stroke="#94a3b8" stroke-width="1" />
+      <ellipse cx="20" cy="12" rx="4" ry="1.5" fill="none" stroke="#94a3b8" stroke-width="0.6" />
 
-      <!-- Tip -->
-      <ellipse :cx="centerX" :cy="tubeBottom" :rx="tubeW/2 - 1" ry="1.5" fill="none" stroke="#94a3b8" stroke-width="0.8" />
-
-      <!-- Calibration mark (single line at bulb top) -->
-      <line
-        :x1="centerX - bulbW/2 - 3"
-        :y1="calMarkY"
-        :x2="centerX + bulbW/2 + 3"
-        :y2="calMarkY"
-        stroke="#334155"
-        stroke-width="1.5"
+      <!-- Calibration ring (red line around tube at bulb top) -->
+      <ellipse cx="20" cy="142" rx="10" ry="2"
+        fill="none"
+        stroke="#dc2626"
+        stroke-width="1.2"
         opacity="0.9"
       />
       <text
-        :x="centerX + bulbW/2 + 6"
-        :y="calMarkY + 2.5"
-        font-size="7"
-        fill="#334155"
+        x="32"
+        y="144"
+        font-size="5"
+        fill="#dc2626"
         font-weight="800"
-        opacity="0.85"
+        opacity="0.9"
       >{{ maxVolume }}mL</text>
 
-      <!-- LIQUID -->
+      <!-- LIQUID: fills from bottom up to the red ring -->
       <g v-if="volume > 0">
-        <!-- If liquid reaches bulb -->
-        <template v-if="liquidY < bulbBottom">
-          <!-- Lower stem liquid -->
-          <rect
-            :x="centerX - tubeW/2 + 1"
-            :y="Math.max(liquidY, bulbBottom)"
-            :width="tubeW - 2"
-            :height="bulbBottom - Math.max(liquidY, bulbBottom)"
-            rx="1"
-            :fill="liquidColor"
-            :opacity="liquidOpacity"
-          />
-          <!-- Bulb liquid -->
-          <ellipse
-            v-if="liquidY < bulbBottom"
-            :cx="centerX"
-            :cy="(bulbTop + bulbBottom) / 2"
-            :rx="bulbW/2 - 2"
-            :ry="(bulbBottom - bulbTop) / 2 - 1"
-            :fill="liquidColor"
-            :opacity="liquidOpacity"
-          />
-          <!-- Upper stem liquid (if full) -->
-          <rect
-            v-if="liquidY < bulbTop"
-            :x="centerX - tubeW/2 + 1"
-            :y="liquidY"
-            :width="tubeW - 2"
-            :height="bulbTop - liquidY"
-            rx="1"
-            :fill="liquidColor"
-            :opacity="liquidOpacity"
-          />
-        </template>
-        <!-- Only lower stem -->
+        <!-- Lower stem liquid -->
         <rect
-          v-else
-          :x="centerX - tubeW/2 + 1"
+          v-if="liquidY < 159"
+          x="18.5"
           :y="liquidY"
-          :width="tubeW - 2"
-          :height="tubeBottom - liquidY"
+          width="3"
+          :height="159 - liquidY"
           rx="1"
           :fill="liquidColor"
           :opacity="liquidOpacity"
         />
-        <!-- Meniscus -->
+        <!-- Bulb liquid -->
         <ellipse
-          :cx="centerX"
+          v-if="liquidY < 159"
+          cx="20"
+          cy="145"
+          rx="7"
+          ry="12"
+          :fill="liquidColor"
+          :opacity="liquidOpacity"
+        />
+        <!-- Upper stem liquid (if full) -->
+        <rect
+          v-if="liquidY < 142"
+          x="18"
+          :y="liquidY"
+          width="4"
+          :height="142 - liquidY"
+          rx="1"
+          :fill="liquidColor"
+          :opacity="liquidOpacity"
+        />
+        <!-- Meniscus at liquid top -->
+        <ellipse
+          :cx="20"
           :cy="liquidY"
-          :rx="tubeW/2 - 1"
-          ry="1.5"
+          rx="2.5"
+          ry="1"
           :fill="liquidColor"
           :opacity="liquidOpacity + 0.1"
         />
       </g>
 
-      <!-- Glass highlights -->
-      <line :x1="centerX - tubeW/2 + 2" :y1="tubeTop + 4" :x2="centerX - tubeW/2 + 2" :y2="tubeBottom - 4" stroke="rgba(255,255,255,0.3)" stroke-width="1" stroke-linecap="round" />
+      <!-- Glass highlight -->
+      <path d="M 18 20 L 18 135" stroke="rgba(255,255,255,0.2)" stroke-width="0.8" stroke-linecap="round" fill="none" />
+      <path d="M 18 160 L 18 200" stroke="rgba(255,255,255,0.15)" stroke-width="0.6" stroke-linecap="round" fill="none" />
     </svg>
 
-    <div v-if="volume > 0" class="vpip-label">{{ volume.toFixed(2) }}mL</div>
+    <!-- Drop canvas -->
+    <canvas
+      ref="canvasRef"
+      width="40"
+      height="280"
+      class="drop-canvas"
+    />
   </div>
 </template>
 
@@ -184,9 +199,12 @@ const calMarkY = bulbTop;
   position: relative;
   cursor: pointer;
 }
+.vpip-wrapper.active {
+  filter: drop-shadow(0 0 12px rgba(59,130,246,0.4));
+}
 .vpip-svg {
   width: 36px;
-  height: 168px;
+  height: 230px;
   transition: transform 0.2s, filter 0.2s;
   filter: drop-shadow(0 2px 5px rgba(0,0,0,0.06));
 }
@@ -194,18 +212,14 @@ const calMarkY = bulbTop;
   transform: scale(1.08);
   filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
 }
-.vpip-svg.active {
-  filter: drop-shadow(0 0 12px rgba(59,130,246,0.4));
-}
-.vpip-label {
+.drop-canvas {
   position: absolute;
-  bottom: -6px;
-  font-size: 0.6rem;
-  font-weight: 700;
-  color: #64748b;
-  background: rgba(255,255,255,0.9);
-  padding: 1px 5px;
-  border-radius: 4px;
+  top: 0;
+  left: 50%;
+  width: 40px;
+  height: 280px;
+  margin-left: -20px;
+  z-index: 2;
   pointer-events: none;
 }
 </style>

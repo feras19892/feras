@@ -78,11 +78,13 @@ const liquidY = computed(() => c.value.bottomY - liquidH.value);
 interface Mark { y: number; label?: string }
 const marks = computed<Mark[]>(() => {
   const m: Mark[] = [];
-  const steps = props.size === 'sm' ? 3 : props.size === 'md' ? 5 : 10;
+  const stepVal = props.size === 'sm' ? 5 : props.size === 'md' ? 5 : 10;
+  const steps = Math.floor(actualMax.value / stepVal);
   for (let i = 1; i <= steps; i++) {
-    const pct = i / steps;
+    const val = i * stepVal;
+    const pct = val / actualMax.value;
     const y = c.value.bottomY - pct * c.value.liquidMaxH;
-    m.push({ y, label: i === steps ? String(actualMax.value) : undefined });
+    m.push({ y, label: String(val) });
   }
   return m;
 });

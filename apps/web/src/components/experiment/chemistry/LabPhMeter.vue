@@ -1,6 +1,12 @@
 <script setup lang="ts">
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { phProbeTipMap } from '../../../composables/chemistry/useChemistryLab';
+
 interface Props {
-  reading?: number | null; // pH value
+  uid: string;
+  itemX: number;
+  itemY: number;
+  reading?: number | null;
   isHovered?: boolean;
 }
 
@@ -24,25 +30,99 @@ const phColor = (ph: number | null): string => {
   if (ph < 11) return '#3b82f6';
   return '#8b5cf6';
 };
+
+// Probe tip drag state
+const isDraggingProbe = ref(false);
+const dragOffsetX = ref(0);
+const dragOffsetY = ref(0);
+
+// Local SVG coords for tip (SVG units are 2x screen pixels since viewBox=160, width=80px)
+const svgScale = 2;
+
+// Meter body bottom center in SVG coords (where probe exits)
+const probeExitX = 80;
+const probeExitY = 210;
+
+// Current tip position in workspace coords
+const tipPos = computed(() => {
+  const cached = phProbeTipMap[props.uid];
+  if (cached) return cached;
+  // Default: straight down from meter (probeExit is at SVG coords; convert to workspace pixels)
+  return { x: props.itemX + probeExitX / svgScale, y: props.itemY + probeExitY / svgScale + 25 };
+});
+const tipLocal = computed(() => ({
+  x: (tipPos.value.x - props.itemX) * svgScale,
+  y: (tipPos.value.y - props.itemY) * svgScale,
+}));
+
+// Generate cable path from meter bottom to tip
+const cablePath = computed(() => {
+  const tx = tipLocal.value.x;
+  const ty = tipLocal.value.y;
+  const mx = probeExitX;
+  const my = probeExitY;
+  // Quadratic bezier with control point midway
+  const cx = (mx + tx) / 2;
+  const cy = (my + ty) / 2 + Math.abs(tx - mx) * 0.1; // slight sag
+  return `M ${mx} ${my} Q ${cx} ${cy} ${tx} ${ty}`;
+});
+
+function onProbeDown(e: MouseEvent) {
+  e.stopPropagation();
+  e.preventDefault();
+  isDraggingProbe.value = true;
+  dragOffsetX.value = e.clientX;
+  dragOffsetY.value = e.clientY;
+}
+
+function onWindowMove(e: MouseEvent) {
+  if (!isDraggingProbe.value) return;
+  const dx = e.clientX - dragOffsetX.value;
+  const dy = e.clientY - dragOffsetY.value;
+  dragOffsetX.value = e.clientX;
+  dragOffsetY.value = e.clientY;
+  const current = phProbeTipMap[props.uid];
+  if (current) {
+    current.x += dx;
+    current.y += dy;
+  }
+}
+
+function onWindowUp() {
+  isDraggingProbe.value = false;
+}
+
+onMounted(() => {
+  window.addEventListener('mousemove', onWindowMove);
+  window.addEventListener('mouseup', onWindowUp);
+});
+onUnmounted(() => {
+  window.removeEventListener('mousemove', onWindowMove);
+  window.removeEventListener('mouseup', onWindowUp);
+});
 </script>
 
 <template>
   <div class="ph-wrapper" @click.stop="emit('click')">
-    <svg viewBox="0 0 160 240" class="ph-svg" :class="{ hovered: isHovered }">
+    <!-- SVG with expanded viewBox to accommodate probe cable -->
+    <svg :viewBox="`0 0 160 ${Math.max(240, tipLocal.y + 30)}`" class="ph-svg" :class="{ hovered: isHovered }">
       <!-- Shadow -->
       <ellipse cx="80" cy="232" rx="50" ry="3" fill="rgba(0,0,0,0.06)" />
 
-      <!-- Probe cable -->
-      <path d="M 55 95 Q 55 40 80 15" stroke="#334155" stroke-width="3" fill="none" />
-      <path d="M 80 15 L 80 5" stroke="#334155" stroke-width="2.5" fill="none" />
+      <!-- Probe cable (dynamic) -->
+      <path :d="cablePath" stroke="#334155" stroke-width="2.5" fill="none" />
+      <!-- Cable inner highlight -->
+      <path :d="cablePath" stroke="rgba(200,220,240,0.3)" stroke-width="1" fill="none" />
 
-      <!-- Glass probe -->
-      <!-- Probe bulb -->
-      <ellipse cx="80" cy="18" rx="7" ry="10" fill="rgba(200,220,240,0.3)" stroke="#94a3b8" stroke-width="1" />
-      <!-- Probe stem -->
-      <rect x="76" y="5" width="8" height="18" rx="2" fill="rgba(200,220,240,0.25)" stroke="#94a3b8" stroke-width="0.8" />
-      <!-- Probe tip highlight -->
-      <ellipse cx="80" cy="10" rx="3" ry="4" fill="rgba(255,255,255,0.3)" />
+      <!-- Probe tip (draggable) -->
+      <g class="probe-tip" :class="{ dragging: isDraggingProbe }" @mousedown="onProbeDown">
+        <!-- Glass bulb -->
+        <ellipse :cx="tipLocal.x" :cy="tipLocal.y" rx="6" ry="9" fill="rgba(200,220,240,0.4)" stroke="#94a3b8" stroke-width="1" />
+        <!-- Inner fill -->
+        <ellipse :cx="tipLocal.x" :cy="tipLocal.y" rx="4" ry="6" fill="rgba(200,220,240,0.2)" />
+        <!-- Hit area (invisible larger circle) -->
+        <circle :cx="tipLocal.x" :cy="tipLocal.y" r="14" fill="transparent" cursor="grab" />
+      </g>
 
       <!-- Meter body (box) -->
       <rect x="20" y="95" width="120" height="110" rx="10" fill="#1e293b" />
@@ -50,24 +130,15 @@ const phColor = (ph: number | null): string => {
 
       <!-- Screen area -->
       <rect x="32" y="106" width="96" height="42" rx="6" fill="#0f172a" />
-      <!-- Screen border glow -->
       <rect x="33" y="107" width="94" height="40" rx="5" fill="none" stroke="rgba(34,197,94,0.1)" stroke-width="0.5" />
 
       <!-- pH display -->
-      <text
-        x="80"
-        y="135"
-        font-family="'Segoe UI', monospace"
-        font-size="24"
-        font-weight="800"
-        :fill="phColor(reading)"
-        text-anchor="middle"
-      >{{ displayStr() }}</text>
+      <text x="80" y="135" font-family="'Segoe UI', monospace" font-size="24" font-weight="800" :fill="phColor(reading)" text-anchor="middle">{{ displayStr() }}</text>
 
       <!-- pH label -->
       <text x="80" y="155" font-size="8" fill="#64748b" text-anchor="middle" font-weight="700" letter-spacing="2">pH</text>
 
-      <!-- Scale bar (acid to base) -->
+      <!-- Scale bar -->
       <rect x="38" y="165" width="84" height="6" rx="3" fill="#1e293b" />
       <defs>
         <linearGradient id="phGradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -79,16 +150,7 @@ const phColor = (ph: number | null): string => {
         </linearGradient>
       </defs>
       <rect x="38" y="165" width="84" height="6" rx="3" fill="url(#phGradient)" opacity="0.6" />
-      <!-- Indicator dot -->
-      <circle
-        v-if="reading !== null"
-        :cx="38 + Math.min(Math.max((reading / 14) * 84, 4), 80)"
-        cy="168"
-        r="3"
-        fill="#fff"
-        stroke="#1e293b"
-        stroke-width="1"
-      />
+      <circle v-if="reading !== null" :cx="38 + Math.min(Math.max((reading / 14) * 84, 4), 80)" cy="168" r="3" fill="#fff" stroke="#1e293b" stroke-width="1" />
 
       <!-- Buttons -->
       <rect x="38" y="180" width="22" height="10" rx="3" fill="#475569" />
@@ -104,10 +166,6 @@ const phColor = (ph: number | null): string => {
       <!-- Feet -->
       <rect x="28" y="205" width="10" height="4" rx="2" fill="#0f172a" />
       <rect x="122" y="205" width="10" height="4" rx="2" fill="#0f172a" />
-
-      <!-- Connector port -->
-      <ellipse cx="55" cy="95" rx="6" ry="3" fill="#64748b" />
-      <ellipse cx="55" cy="95" rx="4" ry="2" fill="#1e293b" />
     </svg>
 
     <!-- Reading badge -->
@@ -127,14 +185,17 @@ const phColor = (ph: number | null): string => {
 }
 .ph-svg {
   width: 80px;
-  height: 120px;
+  height: auto;
   transition: transform 0.2s, filter 0.2s;
   filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));
+  overflow: visible;
 }
 .ph-svg.hovered {
   transform: scale(1.05);
   filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));
 }
+.probe-tip { cursor: grab; }
+.probe-tip.dragging { cursor: grabbing; }
 .ph-badge {
   position: absolute;
   top: -4px;

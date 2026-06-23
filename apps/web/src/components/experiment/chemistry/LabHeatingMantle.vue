@@ -15,7 +15,7 @@ const emit = defineEmits<{ click: []; intensityChange: [val: number] }>();
 </script>
 
 <template>
-  <div class="mantle-wrapper" @click.stop="emit('click')">
+  <div class="mantle-wrapper">
     <svg viewBox="0 0 120 130" class="mantle-svg" :class="{ hovered: isHovered, on: isOn }">
       <!-- Shadow -->
       <ellipse cx="60" cy="125" rx="52" ry="3" fill="rgba(0,0,0,0.08)" />

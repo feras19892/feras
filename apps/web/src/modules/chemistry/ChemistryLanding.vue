@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, watch, onMounted, onUnmounted } from 'vue';
 import { glasswareSections, chemicalSections } from '../../composables/chemistry/useChemistryTools';
+import { pendingChemicalFill, getLiquid, chemicals, selectedChemical, hasSelectedChemicalMap } from '../../composables/chemistry/useChemistryLab';
 import type { ToolDef, LabItem } from '../../composables/chemistry/useChemistryTools';
 import type { ToolState } from '../../components/experiment/chemistry/InspectorPanel.vue';
 import WorkspaceCanvas from '../../components/experiment/chemistry/WorkspaceCanvas.vue';
 import NotesPanel from '../../components/experiment/chemistry/NotesPanel.vue';
 import GuidePanel from '../../components/experiment/chemistry/GuidePanel.vue';
+import LabStatsPanel from '../../components/experiment/chemistry/LabStatsPanel.vue';
 
 const leftWidth = ref(280);
 const rightWidth = ref(280);
@@ -21,6 +23,35 @@ const canvasRef = ref<InstanceType<typeof WorkspaceCanvas> | null>(null);
 function onSelect(item: LabItem | null, state: ToolState | null) {
   selectedItem.value = item;
   selectedState.value = state;
+}
+
+// Auto-switch to chemical shelf when pending fill is set
+watch(pendingChemicalFill, (val) => {
+  if (val) {
+    activeTab.value = 'chemicals';
+    // Expand all chemical sections
+    expandedSections.value.liquids = true;
+    expandedSections.value.solids = true;
+    expandedSections.value.indicators = true;
+  }
+});
+
+function onChemicalClick(tool: ToolDef) {
+  const chem = chemicals.find(c => c.id === tool.id || (tool.id === 'h2o' && c.id === 'water'));
+  if (!chem) return;
+  selectedChemical.id = chem.id;
+  selectedChemical.nameAr = chem.nameAr;
+  selectedChemical.color = chem.color;
+  selectedChemical.opacity = chem.opacity;
+  if (!pendingChemicalFill.value) return;
+  const { uid, amount } = pendingChemicalFill.value;
+  hasSelectedChemicalMap[uid] = true;
+  const liq = getLiquid(uid);
+  liq.volume = Math.min(liq.maxVolume, liq.volume + amount);
+  liq.color = chem.color;
+  liq.opacity = chem.opacity;
+  liq.label = chem.nameAr;
+  pendingChemicalFill.value = null;
 }
 
 const expandedSections = ref<Record<string, boolean>>({
@@ -98,6 +129,11 @@ onUnmounted(() => {
           {{ tab.icon }} {{ tab.label }}
         </button>
       </div>
+      <!-- Pending fill banner -->
+      <div v-if="pendingChemicalFill" class="pending-banner">
+        <span>⚡ اختر محلول للإضافة من الجدول</span>
+        <button class="cancel-btn" @click="pendingChemicalFill = null">❌ إلغاء</button>
+      </div>
       <div class="sections-list">
         <div v-for="section in (activeTab === 'glassware' ? glasswareSections : chemicalSections)" :key="section.id" class="section">
           <button class="section-header" @click="toggleSection(section.id)">
@@ -109,8 +145,10 @@ onUnmounted(() => {
               v-for="item in section.items"
               :key="item.id"
               class="tool-card"
+              :class="{ clickable: pendingChemicalFill && ['acid','base','solvent','indicator'].includes(item.type) }"
               draggable="true"
               @dragstart="onDragStart($event, item)"
+              @click="onChemicalClick(item)"
             >
               <div class="tool-icon">{{ item.icon }}</div>
               <span class="tool-name">{{ item.name }}</span>
@@ -129,6 +167,7 @@ onUnmounted(() => {
           🔄 تصفير
         </button>
       </div>
+      <LabStatsPanel :item="selectedItem" />
       <NotesPanel />
       <GuidePanel />
     </aside>
@@ -241,8 +280,42 @@ onUnmounted(() => {
   transform: translateY(-2px);
 }
 .tool-card:active { cursor: grabbing; }
+.tool-card.clickable {
+  border-color: #10b981;
+  box-shadow: 0 0 0 2px rgba(16,185,129,0.2);
+  animation: pulse 1.5s infinite;
+}
+.tool-card.clickable:hover {
+  background: #ecfdf5;
+  transform: translateY(-2px);
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(16,185,129,0.2); }
+  50% { box-shadow: 0 0 0 6px rgba(16,185,129,0.1); }
+}
 .tool-icon { font-size: 2rem; line-height: 1; }
 .tool-name { font-size: 0.75rem; color: #475569; text-align: center; }
+.pending-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+  border-bottom: 1px solid #a7f3d0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #065f46;
+}
+.pending-banner .cancel-btn {
+  background: #fff;
+  border: 1px solid #6ee7b7;
+  border-radius: 0.4rem;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.65rem;
+  cursor: pointer;
+  color: #065f46;
+}
 .resizer {
   width: 6px;
   background: #e2e8f0;

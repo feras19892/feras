@@ -3,7 +3,7 @@ import {
   liquidMap, getLiquid,
   buretteMap, getBurette,
   receivingMap, pourFlowMap, tiltAngleMap,
-  burnerMap, getBurnerState, balanceTareMap,
+  burnerMap, getBurnerState, balanceTareMap, containerTareMap, simSpeed, phProbeTipMap, stopperMap,
   isContainer
 } from './useChemistryLab';
 import { items } from './useChemistryLab';
@@ -38,12 +38,13 @@ export function phColor(ph: number | null): string {
 }
 
 export function getPhReading(phMeter: LabItem): number | null {
+  const tip = phProbeTipMap[phMeter.uid];
+  if (!tip) return null;
   const target = items.value.find((i: LabItem) => {
     if (i.uid === phMeter.uid || !isContainer(i.id)) return false;
-    const tipY = phMeter.y + 110;
-    const dx = Math.abs((i.x + 40) - (phMeter.x + 40));
-    const dy = tipY - (i.y + 10);
-    return dx < 50 && dy > -20 && dy < 100;
+    const dx = Math.abs((i.x + 40) - tip.x);
+    const dy = Math.abs((i.y + 10) - tip.y);
+    return dx < 60 && dy < 50; // probe tip is inside or near the container
   });
   if (!target) return null;
   const label = getLiquid(target.uid).label;
@@ -57,24 +58,35 @@ export function getPhReading(phMeter: LabItem): number | null {
 // ================== BALANCE ==================
 export function computeBalanceWeight(balance: LabItem): number {
   const onTop = items.value.filter((i: LabItem) =>
-    i.uid !== balance.uid && Math.abs(i.x - balance.x) < 80 && Math.abs(i.y - balance.y) < 80 && i.y < balance.y
+    i.uid !== balance.uid && Math.abs(i.x - balance.x) < 80 && i.y < balance.y + 50 && i.y > balance.y - 300
   );
   let total = 0;
   for (const item of onTop) {
-    total += 5;
+    total += 5; // container weight
     if (isContainer(item.id)) {
-      total += getLiquid(item.uid).volume;
+      total += getLiquid(item.uid).volume; // liquid volume ≈ weight in grams
     }
   }
   return total;
+}
+
+export function getContainerWeight(balance: LabItem): number {
+  // Weight of empty containers on the balance (used for container tare)
+  const onTop = items.value.filter((i: LabItem) =>
+    i.uid !== balance.uid && Math.abs(i.x - balance.x) < 80 && i.y < balance.y + 50 && i.y > balance.y - 300
+  );
+  return onTop.length * 5;
 }
 
 export function getBalanceReading(uid: string): number | null {
   const balance = items.value.find((i: LabItem) => i.uid === uid && i.id === 'digital-balance');
   if (!balance) return null;
   const gross = computeBalanceWeight(balance);
-  const tare = balanceTareMap[uid] || 0;
-  return +(gross - tare).toFixed(2);
+  const fullTare = balanceTareMap[uid] || 0;
+  const containerTare = containerTareMap[uid] || 0;
+  // If container tare is set, subtract it to show only "liquid" weight
+  const effectiveTare = containerTare > 0 ? containerTare : fullTare;
+  return +(gross - effectiveTare).toFixed(2);
 }
 
 // ================== HEATING ==================
@@ -84,7 +96,7 @@ export function isHeated(item: LabItem): boolean {
     other.uid !== item.uid &&
     (other.id === 'bunsen-burner' || other.id === 'heating-mantle') &&
     getBurnerState(other.uid).on &&
-    Math.abs(other.x - item.x) < 80 && Math.abs(other.y - item.y) < 80 && other.y > item.y
+    Math.abs(other.x - item.x) < 80 && other.y > item.y && other.y < item.y + 250
   );
 }
 
@@ -129,18 +141,30 @@ export function startSimulation(onSync: (item: LabItem | null) => void) {
         other.uid !== item.uid &&
         (other.id === 'bunsen-burner' || other.id === 'heating-mantle') &&
         getBurnerState(other.uid).on &&
-        Math.abs(other.x - item.x) < 80 && Math.abs(other.y - item.y) < 80 && other.y > item.y
+        Math.abs(other.x - item.x) < 80 && other.y > item.y && other.y < item.y + 250
       );
+      const hasStopper = !!stopperMap[item.uid];
       if (nearBurner) {
         liq.heated = true;
-        if (liq.temperature < 100) liq.temperature = Math.min(100, +(liq.temperature + 0.05).toFixed(2));
+        const burner = items.value.find(o => (o.id === 'bunsen-burner' || o.id === 'heating-mantle') && getBurnerState(o.uid).on && Math.abs(o.x - item.x) < 80 && o.y > item.y && o.y < item.y + 250);
+        const intensity = burner ? getBurnerState(burner.uid).intensity : 1;
+        // Realistic heating: proportional to intensity, ~0.6°C/sec max at 1x
+        const rate = 0.01 * intensity * simSpeed.value;
+        if (liq.temperature < 100) liq.temperature = Math.min(100, +(liq.temperature + rate).toFixed(2));
+        // Evaporation: lose ~1.2mL/min when heated, blocked by rubber stopper
+        if (!hasStopper && liq.volume > 0 && liq.temperature > 50) {
+          const evapRate = 0.02 * intensity * simSpeed.value;
+          liq.volume = Math.max(0, +(liq.volume - evapRate).toFixed(2));
+        }
       } else {
         liq.heated = false;
-        if (liq.temperature > 25) liq.temperature = Math.max(25, +(liq.temperature - 0.02).toFixed(2));
+        const coolRate = 0.02 * simSpeed.value;
+        if (liq.temperature > 25) liq.temperature = Math.max(25, +(liq.temperature - coolRate).toFixed(2));
       }
       const phItem = items.value.find((other: LabItem) =>
-        other.id === 'ph-meter' &&
-        Math.abs(other.x - item.x) < 50 && Math.abs(other.y - item.y) < 100
+        other.id === 'ph-meter' && phProbeTipMap[other.uid] &&
+        Math.abs((item.x + 40) - phProbeTipMap[other.uid].x) < 60 &&
+        Math.abs((item.y + 10) - phProbeTipMap[other.uid].y) < 50
       );
       if (phItem) {
         liq.ph = getPhReading(phItem);

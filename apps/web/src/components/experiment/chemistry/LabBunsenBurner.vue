@@ -20,7 +20,7 @@ const flameHeight = computed(() => props.isOn ? 55 * props.intensity : 0);
 </script>
 
 <template>
-  <div class="burner-wrapper" @click.stop="emit('click')">
+  <div class="burner-wrapper">
     <svg viewBox="0 0 80 180" class="burner-svg" :class="{ hovered: isHovered }">
       <!-- Shadow -->
       <ellipse cx="40" cy="172" rx="28" ry="3" fill="rgba(0,0,0,0.08)" />

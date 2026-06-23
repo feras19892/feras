@@ -1,12 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
-import LabPipette from './LabPipette.vue';
 
 const props = defineProps<{
-  cursorPipette: { state: { volume: number; maxVolume: number; color: string; opacity: number } } | null;
-  cursorX: number;
-  cursorY: number;
   pourFlowMap?: Record<string, string>;
   items?: LabItem[];
 }>();
@@ -29,27 +25,6 @@ const streamLines = computed(() => {
 </script>
 
 <template>
-  <!-- Cursor Pipette Mode -->
-  <div v-if="cursorPipette" class="cursor-pipette" :style="{ left: cursorX + 'px', top: cursorY + 'px' }">
-    <LabPipette
-      :volume="cursorPipette.state.volume"
-      :max-volume="cursorPipette.state.maxVolume"
-      :liquid-color="cursorPipette.state.color"
-      :liquid-opacity="cursorPipette.state.opacity"
-      :is-active="true"
-    />
-  </div>
-
-  <!-- Pipette mode hint bar -->
-  <div v-if="cursorPipette" class="pipette-mode-bar">
-    <span class="pipette-mode-text">
-      💉 <b>وضع الماصة:</b>
-      <span v-if="cursorPipette.state.volume <= 0">انقر على حاوية لسحب السائل</span>
-      <span v-else>انقر على حاوية لإفراغ الماصة ({{ cursorPipette.state.volume.toFixed(1) }}mL)</span>
-      | اضغط <b>ESC</b> للخروج
-    </span>
-  </div>
-
   <!-- Pour stream lines -->
   <svg v-if="streamLines.length" class="pour-streams" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:20;">
     <defs>
@@ -85,31 +60,6 @@ const streamLines = computed(() => {
 </template>
 
 <style scoped>
-.cursor-pipette {
-  position: absolute;
-  pointer-events: none;
-  z-index: 200;
-  transform: translate(-50%, -10%);
-  filter: drop-shadow(0 8px 20px rgba(0,0,0,0.15));
-}
-.pipette-mode-bar {
-  position: absolute;
-  top: 0.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 60;
-  pointer-events: none;
-}
-.pipette-mode-text {
-  background: rgba(59,130,246,0.9);
-  color: #fff;
-  padding: 0.4rem 1rem;
-  border-radius: 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  white-space: nowrap;
-  box-shadow: 0 4px 12px rgba(59,130,246,0.3);
-}
 .pour-hint-bar {
   position: absolute;
   top: 0.75rem;

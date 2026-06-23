@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 interface Props {
   volume?: number;     // 0–10 mL drawn
@@ -19,117 +19,186 @@ const props = withDefaults(defineProps<Props>(), {
   isActive: false,
 });
 
-const emit = defineEmits<{ click: [] }>();
+const emit = defineEmits<{ click: []; }>();
 
-/* Bulb area: y=30 to y=80 (50px tall) */
-const bulbTop = 30;
-const bulbBottom = 80;
-const bulbH = bulbBottom - bulbTop;
+/* Geometry: rubber bulb at top, graduated tube, fine tip */
+const tipY = 260;       // bottom of tip
+const tubeBottom = 210; // where tube meets tip
+const tubeTop = 55;     // where tube meets neck
+const tubeH = tubeBottom - tubeTop; // 155px = 10mL
+const bulbY = 22;       // center of rubber bulb
 
+/* Liquid fills tube from bottom up */
 const liquidH = computed(() => {
   if (props.volume <= 0) return 0;
-  return (props.volume / props.maxVolume) * bulbH;
+  return (props.volume / props.maxVolume) * tubeH;
 });
-const liquidY = computed(() => bulbBottom - liquidH.value);
+const liquidY = computed(() => tubeBottom - liquidH.value);
+const liquidTop = computed(() => liquidY.value);
+const liquidBottom = computed(() => tubeBottom);
 
-const pct = computed(() => Math.round((props.volume / props.maxVolume) * 100));
+/* Graduation marks: 0 at tubeBottom, 10 at tubeTop */
+const marks = computed(() => {
+  const m: { y: number; val: number; showLabel: boolean }[] = [];
+  for (let i = 0; i <= 10; i++) {
+    m.push({ y: tubeBottom - (i / 10) * tubeH, val: i, showLabel: i % 5 === 0 });
+  }
+  return m;
+});
+
+/* Canvas for drop effect when emptying */
+const canvasRef = ref<HTMLCanvasElement | null>(null);
+let drops: { x: number; y: number; vy: number; size: number }[] = [];
+let animId = 0;
+
+function spawnDrop() {
+  const ctx = canvasRef.value?.getContext('2d');
+  if (!ctx) return;
+  drops.push({ x: 30 + (Math.random() - 0.5) * 2, y: tipY - 5, vy: 0.5, size: 1.5 + Math.random() });
+  if (drops.length > 30) drops.shift();
+  if (animId) return;
+
+  function loop() {
+    if (!canvasRef.value) return;
+    const c = canvasRef.value.getContext('2d');
+    if (!c) return;
+    c.clearRect(0, 0, 60, 280);
+    for (let i = drops.length - 1; i >= 0; i--) {
+      const d = drops[i];
+      d.vy += 0.4;
+      d.y += d.vy;
+      c.beginPath(); c.arc(d.x, d.y, d.size, 0, Math.PI * 2);
+      c.fillStyle = props.liquidColor; c.globalAlpha = 0.8; c.fill(); c.globalAlpha = 1;
+      c.beginPath(); c.arc(d.x - 0.3, d.y - 0.3, d.size * 0.3, 0, Math.PI * 2);
+      c.fillStyle = 'rgba(255,255,255,0.5)'; c.fill();
+      if (d.y > 280) drops.splice(i, 1);
+    }
+    if (drops.length > 0) {
+      animId = requestAnimationFrame(loop);
+    } else {
+      animId = 0;
+    }
+  }
+  loop();
+}
 </script>
 
 <template>
   <div class="pipette-wrapper" :class="{ active: isActive }" @click.stop="emit('click')">
-    <svg viewBox="0 0 60 220" class="pipette-svg" :class="{ hovered: isHovered }">
-      <!-- Ground shadow -->
-      <ellipse cx="30" cy="212" rx="6" ry="1.5" fill="rgba(0,0,0,0.06)" />
+    <svg viewBox="0 0 60 280" class="pipette-svg" :class="{ hovered: isHovered }">
+      <!-- Shadow -->
+      <ellipse cx="30" cy="275" rx="4" ry="1" fill="rgba(0,0,0,0.06)" />
 
-      <!-- Tip (narrow) -->
+      <!-- Fine tip (tapered cone) -->
       <path
-        d="M 27 180 L 28 210 L 32 210 L 33 180 Z"
-        fill="rgba(241,245,249,0.25)"
+        d="M 27 210 L 29 262 L 31 262 L 33 210 Z"
+        fill="rgba(241,245,249,0.3)"
         stroke="#94a3b8"
-        stroke-width="1"
+        stroke-width="0.8"
       />
 
-      <!-- Body (thin tube) -->
-      <rect x="26" y="80" width="8" height="100" rx="2"
-        fill="rgba(241,245,249,0.2)"
-        stroke="#94a3b8"
-        stroke-width="1"
-      />
-
-      <!-- Bulb (wide) -->
-      <path
-        d="M 22 30 Q 18 55 22 80 L 38 80 Q 42 55 38 30 Q 38 22 30 22 Q 22 22 22 30 Z"
+      <!-- Graduated tube -->
+      <rect x="27" y="55" width="6" height="155" rx="1"
         fill="rgba(241,245,249,0.15)"
         stroke="#94a3b8"
-        stroke-width="1.2"
+        stroke-width="0.8"
       />
 
-      <!-- Top rim -->
-      <ellipse cx="30" cy="22" rx="8" ry="2.5" fill="none" stroke="#94a3b8" stroke-width="1" />
+      <!-- Neck connector -->
+      <rect x="26" y="48" width="8" height="7" rx="1"
+        fill="rgba(241,245,249,0.2)"
+        stroke="#94a3b8"
+        stroke-width="0.8"
+      />
 
-      <!-- Graduation marks on body -->
-      <g>
-        <line x1="30" y1="90" x2="34" y2="90" stroke="#64748b" stroke-width="0.6" opacity="0.5" />
-        <line x1="30" y1="100" x2="34" y2="100" stroke="#64748b" stroke-width="0.6" opacity="0.5" />
-        <line x1="30" y1="110" x2="34" y2="110" stroke="#64748b" stroke-width="0.6" opacity="0.5" />
-        <line x1="30" y1="120" x2="34" y2="120" stroke="#64748b" stroke-width="0.8" opacity="0.7" />
-        <text x="36" y="123" font-size="6" fill="#475569" opacity="0.7" text-anchor="start">5</text>
-        <line x1="30" y1="130" x2="34" y2="130" stroke="#64748b" stroke-width="0.6" opacity="0.5" />
-        <line x1="30" y1="140" x2="34" y2="140" stroke="#64748b" stroke-width="0.6" opacity="0.5" />
-        <line x1="30" y1="150" x2="34" y2="150" stroke="#64748b" stroke-width="0.6" opacity="0.5" />
-        <line x1="30" y1="160" x2="34" y2="160" stroke="#64748b" stroke-width="0.8" opacity="0.7" />
-        <text x="36" y="163" font-size="6" fill="#475569" opacity="0.7" text-anchor="start">10</text>
-        <line x1="30" y1="170" x2="34" y2="170" stroke="#64748b" stroke-width="0.6" opacity="0.5" />
+      <!-- Rubber bulb at top -->
+      <ellipse cx="30" cy="22" rx="13" ry="18"
+        fill="rgba(220,38,38,0.15)"
+        stroke="#dc2626"
+        stroke-width="1"
+      />
+      <!-- Bulb highlight -->
+      <ellipse cx="25" cy="16" rx="5" ry="8"
+        fill="none"
+        stroke="rgba(255,255,255,0.3)"
+        stroke-width="1"
+      />
+
+      <!-- Graduation marks -->
+      <g v-for="(mark, idx) in marks" :key="idx">
+        <line
+          :x1="30"
+          :y1="mark.y"
+          :x2="mark.showLabel ? 36 : 33"
+          :y2="mark.y"
+          :stroke="mark.showLabel ? '#334155' : '#94a3b8'"
+          :stroke-width="mark.showLabel ? 0.8 : 0.5"
+          :opacity="mark.showLabel ? 0.7 : 0.4"
+          stroke-linecap="round"
+        />
+        <text
+          v-if="mark.showLabel"
+          :x="38"
+          :y="mark.y + 2"
+          font-size="5"
+          fill="#334155"
+          font-weight="700"
+          opacity="0.7"
+        >{{ mark.val }}</text>
       </g>
 
-      <!-- LIQUID inside bulb -->
+      <!-- LIQUID in graduated tube -->
       <g v-if="volume > 0">
-        <path
-          :d="`M 23.5 ${liquidY} Q 21 ${(liquidY + bulbBottom)/2} 23.5 ${bulbBottom} L 36.5 ${bulbBottom} Q 39 ${(liquidY + bulbBottom)/2} 36.5 ${liquidY} Q 36.5 ${liquidY - 2} 30 ${liquidY - 3} Q 23.5 ${liquidY - 2} 23.5 ${liquidY} Z`"
+        <rect
+          :x="28"
+          :y="liquidTop"
+          :width="4"
+          :height="liquidH"
           :fill="liquidColor"
           :opacity="liquidOpacity"
+          rx="1"
         />
         <!-- Meniscus -->
         <ellipse
           :cx="30"
-          :cy="liquidY"
-          rx="13"
-          ry="3"
+          :cy="liquidTop"
+          :rx="2.5"
+          ry="1"
           :fill="liquidColor"
-          :opacity="liquidOpacity + 0.1"
+          :opacity="liquidOpacity + 0.15"
         />
-        <!-- Highlight -->
+        <!-- Highlight on liquid surface -->
         <ellipse
           :cx="30"
-          :cy="liquidY + 0.5"
-          rx="8"
-          ry="1.5"
-          fill="rgba(255,255,255,0.4)"
+          :cy="liquidTop + 0.5"
+          :rx="1.5"
+          ry="0.5"
+          fill="rgba(255,255,255,0.5)"
         />
+        <!-- Volume number inside tube -->
+        <text
+          x="30"
+          :y="liquidTop - 6"
+          font-size="7"
+          font-weight="800"
+          :fill="liquidColor"
+          text-anchor="middle"
+          opacity="0.9"
+        >{{ volume.toFixed(1) }}</text>
       </g>
 
       <!-- Glass highlights -->
-      <path d="M 27 85 L 27 170" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-linecap="round" fill="none" />
-      <path d="M 25 35 Q 22 55 25 75" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" stroke-linecap="round" fill="none" />
-
-      <!-- Volume label on bulb -->
-      <text
-        v-if="volume > 0"
-        x="30"
-        y="58"
-        font-size="9"
-        font-weight="800"
-        fill="#1e293b"
-        text-anchor="middle"
-        opacity="0.85"
-      >{{ volume.toFixed(1) }}</text>
+      <path d="M 28 65 L 28 200" stroke="rgba(255,255,255,0.25)" stroke-width="1" stroke-linecap="round" fill="none" />
+      <path d="M 26 15 Q 23 22 26 30" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-linecap="round" fill="none" />
     </svg>
 
-    <!-- Status badge -->
-    <div v-if="volume > 0" class="pipette-badge" :style="{ background: liquidColor }">
-      {{ volume.toFixed(1) }}mL
-    </div>
-    <div v-else class="pipette-badge empty">فارغة</div>
+    <!-- Drop canvas (only when emptying animation active) -->
+    <canvas
+      ref="canvasRef"
+      width="60"
+      height="280"
+      class="drop-canvas"
+    />
   </div>
 </template>
 
@@ -146,7 +215,7 @@ const pct = computed(() => Math.round((props.volume / props.maxVolume) * 100));
 }
 .pipette-svg {
   width: 50px;
-  height: 185px;
+  height: 230px;
   transition: transform 0.2s, filter 0.2s;
   filter: drop-shadow(0 2px 5px rgba(0,0,0,0.06));
 }
@@ -154,19 +223,14 @@ const pct = computed(() => Math.round((props.volume / props.maxVolume) * 100));
   transform: scale(1.05);
   filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
 }
-.pipette-badge {
+.drop-canvas {
   position: absolute;
-  bottom: -6px;
-  font-size: 0.6rem;
-  font-weight: 700;
-  color: #fff;
-  padding: 1px 6px;
-  border-radius: 8px;
-  white-space: nowrap;
+  top: 0;
+  left: 50%;
+  width: 60px;
+  height: 280px;
+  margin-left: -30px;
+  z-index: 2;
   pointer-events: none;
-}
-.pipette-badge.empty {
-  background: #e2e8f0;
-  color: #64748b;
 }
 </style>

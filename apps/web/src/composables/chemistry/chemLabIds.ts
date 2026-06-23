@@ -11,6 +11,9 @@ export function isHeatingMantle(id: string): boolean { return id === 'heating-ma
 export function isBunsenBurner(id: string): boolean { return id === 'bunsen-burner'; }
 export function isBalance(id: string): boolean { return id === 'digital-balance'; }
 export function isPhMeter(id: string): boolean { return id === 'ph-meter'; }
+export function isWatchGlass(id: string): boolean { return id === 'watch-glass'; }
+export function isFilterFunnel(id: string): boolean { return id === 'filter-funnel'; }
+export function isRubberStopper(id: string): boolean { return id === 'rubber-stopper'; }
 
 export function isContainer(id: string): boolean {
   return isBeaker(id) || isTestTube(id) || id === 'erlenmeyer' || id === 'grad-cylinder'

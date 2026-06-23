@@ -1,10 +1,15 @@
 import { ref, reactive, watch } from 'vue';
+
+export const pendingChemicalFill = ref<{ uid: string; amount: number } | null>(null);
+export const hasSelectedChemicalMap = reactive<Record<string, boolean>>({});
+export const simSpeed = ref(1); // heating simulation speed multiplier (1x or 5x)
 import type { LabItem, ToolDef } from './useChemistryTools';
 import type { LiquidState, BuretteState, PipetteState, SepFunnelState, SavedSession } from './chemLabTypes';
 import {
   isBeaker, isTestTube, isBurette, isPipette, isErlenmeyer,
   isVolumetricFlask, isRoundBottomFlask, isSeparatoryFunnel,
   isGradCylinder, isHeatingMantle, isBunsenBurner, isBalance, isPhMeter,
+  isWatchGlass, isFilterFunnel, isRubberStopper,
   isContainer, getMaxVolume
 } from './chemLabIds';
 
@@ -14,6 +19,7 @@ export {
   isBeaker, isTestTube, isBurette, isPipette, isErlenmeyer,
   isVolumetricFlask, isRoundBottomFlask, isSeparatoryFunnel,
   isGradCylinder, isHeatingMantle, isBunsenBurner, isBalance, isPhMeter,
+  isWatchGlass, isFilterFunnel, isRubberStopper,
   isContainer, getMaxVolume
 } from './chemLabIds';
 
@@ -30,9 +36,32 @@ export const pipetteMap = reactive<Record<string, PipetteState>>({});
 export const sepFunnelMap = reactive<Record<string, SepFunnelState>>({});
 export const burnerMap = reactive<Record<string, { on: boolean; intensity: number }>>({});
 export const balanceTareMap = reactive<Record<string, number>>({});
+export const containerTareMap = reactive<Record<string, number>>({});
 export const itemZoomMap = reactive<Record<string, number>>({});
+export const phProbeTipMap = reactive<Record<string, { x: number; y: number }>>({});
+export const solidMap = reactive<Record<string, { amount: number; type: string }>>({});
+export const stopperMap = reactive<Record<string, string>>({}); // containerUid -> stopperUid
 export const pourFlowMap = reactive<Record<string, string>>({});
 export const tiltAngleMap = reactive<Record<string, number>>({});
+
+// Chemical shelf (temporary in-memory, will be expanded later)
+export interface Chemical {
+  id: string;
+  nameAr: string;
+  color: string;
+  opacity: number;
+}
+export const chemicals: Chemical[] = [
+  { id: 'water', nameAr: 'ماء', color: '#3b82f6', opacity: 0.35 },
+  { id: 'hcl', nameAr: 'HCl', color: '#ef4444', opacity: 0.4 },
+  { id: 'naoh', nameAr: 'NaOH', color: '#f59e0b', opacity: 0.4 },
+  { id: 'cuso4', nameAr: 'CuSO₄', color: '#1d4ed8', opacity: 0.5 },
+  { id: 'kmno4', nameAr: 'KMnO₄', color: '#7c2d12', opacity: 0.5 },
+  { id: 'nacl', nameAr: 'NaCl', color: '#e2e8f0', opacity: 0.3 },
+  { id: 'h2so4', nameAr: 'H₂SO₄', color: '#fbbf24', opacity: 0.4 },
+  { id: 'phenol', nameAr: 'فينول', color: '#ec4899', opacity: 0.4 },
+];
+export const selectedChemical = reactive<Chemical>({ ...chemicals[0] });
 
 // Global spill particles (rendered in workspace-wide canvas)
 export interface SpillParticle {
@@ -99,6 +128,9 @@ export function buildToolState(item: LabItem | null) {
 export function getBalanceTare(uid: string): number {
   return balanceTareMap[uid] || 0;
 }
+export function getContainerTare(uid: string): number {
+  return containerTareMap[uid] || 0;
+}
 
 export function getItemZoom(uid: string): number { return itemZoomMap[uid] || 1; }
 
@@ -123,6 +155,9 @@ export function createLabItem(def: ToolDef, x: number, y: number): LabItem {
   }
   if (isBalance(def.id)) {
     balanceTareMap[item.uid] = 0;
+  }
+  if (isPhMeter(def.id)) {
+    phProbeTipMap[item.uid] = { x: x + 40, y: y + 130 }; // probe tip starts below the meter body
   }
   return item;
 }
@@ -176,7 +211,13 @@ export function clearSession() {
   Object.keys(sepFunnelMap).forEach(k => delete sepFunnelMap[k]);
   Object.keys(burnerMap).forEach(k => delete burnerMap[k]);
   Object.keys(balanceTareMap).forEach(k => delete balanceTareMap[k]);
+  Object.keys(containerTareMap).forEach(k => delete containerTareMap[k]);
+  Object.keys(hasSelectedChemicalMap).forEach(k => delete hasSelectedChemicalMap[k]);
+  simSpeed.value = 1;
   Object.keys(itemZoomMap).forEach(k => delete itemZoomMap[k]);
+  Object.keys(phProbeTipMap).forEach(k => delete phProbeTipMap[k]);
+  Object.keys(solidMap).forEach(k => delete solidMap[k]);
+  Object.keys(stopperMap).forEach(k => delete stopperMap[k]);
   Object.keys(pourFlowMap).forEach(k => delete pourFlowMap[k]);
   Object.keys(tiltAngleMap).forEach(k => delete tiltAngleMap[k]);
   uid = 0;
@@ -184,7 +225,7 @@ export function clearSession() {
 }
 
 // ================== WATCHER ==================
-watch([items, liquidMap, buretteMap, pipetteMap, sepFunnelMap, burnerMap, balanceTareMap, itemZoomMap, pourFlowMap, tiltAngleMap], saveSession, { deep: true });
+watch([items, liquidMap, buretteMap, pipetteMap, sepFunnelMap, burnerMap, balanceTareMap, containerTareMap, simSpeed, itemZoomMap, phProbeTipMap, solidMap, stopperMap, pourFlowMap, tiltAngleMap], saveSession, { deep: true });
 
 // ================== EXPORT STATE ==================
 export function useChemistryLab() {
@@ -197,6 +238,7 @@ export function useChemistryLab() {
     sepFunnelMap,
     burnerMap,
     balanceTareMap,
+    containerTareMap,
     itemZoomMap,
     pourFlowMap,
     tiltAngleMap,
@@ -223,6 +265,17 @@ export function useChemistryLab() {
     isBunsenBurner,
     isBalance,
     isPhMeter,
+    isWatchGlass,
+    isFilterFunnel,
+    isRubberStopper,
+    chemicals,
+    selectedChemical,
+    pendingChemicalFill,
+    hasSelectedChemicalMap,
+    simSpeed,
+    phProbeTipMap,
+    solidMap,
+    stopperMap,
     loadSession,
     clearSession,
   };

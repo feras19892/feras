@@ -4,7 +4,8 @@ import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import {
   getLiquid, getBurette, getPipette, getSepFunnelState, getBurnerState, getItemZoom, pourFlowMap, tiltAngleMap,
   isContainer, isBeaker, isTestTube, isBurette, isPipette, isErlenmeyer, isVolumetricFlask, isRoundBottomFlask,
-  isSeparatoryFunnel, isGradCylinder, isBunsenBurner, isHeatingMantle, isBalance, isPhMeter
+  isSeparatoryFunnel, isGradCylinder, isBunsenBurner, isHeatingMantle, isBalance, isPhMeter,
+  isWatchGlass, isFilterFunnel, isRubberStopper
 } from '../../../composables/chemistry/useChemistryLab';
 import { getBalanceReading, getPhReading, isHeated } from '../../../composables/chemistry/useLabSimulation';
 import LabBeaker from './LabBeaker.vue';
@@ -23,12 +24,14 @@ import LabBalance from './LabBalance.vue';
 import LabPhMeter from './LabPhMeter.vue';
 import LabDropper from './LabDropper.vue';
 import LabSpatula from './LabSpatula.vue';
+import LabWatchGlass from './LabWatchGlass.vue';
+import LabFilterFunnel from './LabFilterFunnel.vue';
+import LabRubberStopper from './LabRubberStopper.vue';
 
 const props = defineProps<{
   item: LabItem;
   selectedUid: string | null;
   hoveredUid: string | null;
-  cursorPipetteUid: string | null;
   receiving: boolean;
 }>();
 
@@ -41,9 +44,7 @@ const emit = defineEmits<{
   dropExited: [item: LabItem, wx: number, wy: number, color: string];
   toggleValve: [item: LabItem];
   tipInteract: [item: LabItem];
-  enterPipette: [item: LabItem];
   toggleStopcock: [item: LabItem];
-  toggleBurner: [item: LabItem];
 }>();
 
 const liq = computed(() => getLiquid(props.item.uid));
@@ -181,17 +182,6 @@ const isSel = computed(() => props.selectedUid === props.item.uid);
     @toggle-valve="emit('toggleValve', item)"
     @tip-interact="emit('tipInteract', item)"
   />
-  <LabPipette
-    v-else-if="isPipette(item.id)"
-    :volume="getPipette(item.uid).volume"
-    :max-volume="getPipette(item.uid).maxVolume"
-    :liquid-color="getPipette(item.uid).color"
-    :liquid-opacity="getPipette(item.uid).opacity"
-    :is-hovered="isSel"
-    :is-active="cursorPipetteUid === item.uid"
-    @click="emit('enterPipette', item)"
-    :style="cursorPipetteUid === item.uid ? { opacity: '0.15', pointerEvents: 'none' } : {}"
-  />
   <LabVolumetricPipette
     v-else-if="item.id === 'volumetric-pipette'"
     :volume="getPipette(item.uid).volume"
@@ -200,19 +190,26 @@ const isSel = computed(() => props.selectedUid === props.item.uid);
     :liquid-opacity="getPipette(item.uid).opacity"
     :is-hovered="isSel"
   />
+  <LabPipette
+    v-else-if="isPipette(item.id)"
+    :volume="getPipette(item.uid).volume"
+    :max-volume="getPipette(item.uid).maxVolume"
+    :liquid-color="getPipette(item.uid).color"
+    :liquid-opacity="getPipette(item.uid).opacity"
+    :is-hovered="isSel"
+    :is-active="false"
+  />
   <LabBunsenBurner
     v-else-if="isBunsenBurner(item.id)"
     :is-on="getBurnerState(item.uid).on"
     :intensity="getBurnerState(item.uid).intensity"
     :is-hovered="isSel"
-    @click="emit('toggleBurner', item)"
   />
   <LabHeatingMantle
     v-else-if="isHeatingMantle(item.id)"
     :is-on="getBurnerState(item.uid).on"
     :intensity="getBurnerState(item.uid).intensity"
     :is-hovered="isSel"
-    @click="emit('toggleBurner', item)"
   />
   <LabBalance
     v-else-if="isBalance(item.id)"
@@ -221,6 +218,9 @@ const isSel = computed(() => props.selectedUid === props.item.uid);
   />
   <LabPhMeter
     v-else-if="isPhMeter(item.id)"
+    :uid="item.uid"
+    :item-x="item.x"
+    :item-y="item.y"
     :reading="getPhReading(item)"
     :is-hovered="isSel"
   />
@@ -230,6 +230,18 @@ const isSel = computed(() => props.selectedUid === props.item.uid);
   />
   <LabSpatula
     v-else-if="item.id === 'spatula'"
+    :is-hovered="isSel"
+  />
+  <LabWatchGlass
+    v-else-if="item.id === 'watch-glass'"
+    :is-hovered="isSel"
+  />
+  <LabFilterFunnel
+    v-else-if="item.id === 'filter-funnel'"
+    :is-hovered="isSel"
+  />
+  <LabRubberStopper
+    v-else-if="item.id === 'rubber-stopper'"
     :is-hovered="isSel"
   />
   <template v-else>

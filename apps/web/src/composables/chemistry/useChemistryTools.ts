@@ -67,6 +67,10 @@ export const glasswareSections: Section[] = [
     title: 'أدوات مساعدة',
     icon: '🛠️',
     items: [
+      { id: 'spatula', name: 'ملعقة مخبرية', icon: '🥄', type: 'helper' },
+      { id: 'watch-glass', name: 'زجاجة ساعة', icon: '🔍', type: 'helper' },
+      { id: 'filter-funnel', name: 'قمع ترشيح', icon: '🔽', type: 'helper' },
+      { id: 'rubber-stopper', name: 'سدادة مطاطية', icon: '⬛', type: 'helper' },
     ],
   },
 ];

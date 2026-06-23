@@ -71,6 +71,10 @@ const displayStr = () => {
       <circle cx="142" cy="72" r="4" fill="rgba(255,255,255,0.1)" stroke="#475569" stroke-width="0.5" />
       <circle cx="142" cy="72" r="2" fill="rgba(255,255,255,0.3)" />
 
+      <!-- Weighing zone indicator (subtle dashed area above platform) -->
+      <ellipse cx="80" cy="18" rx="50" ry="14" fill="none" stroke="rgba(16,185,129,0.2)" stroke-width="1" stroke-dasharray="3,3" />
+      <text x="80" y="14" font-size="5" fill="rgba(16,185,129,0.4)" text-anchor="middle" font-weight="600">ضع الأداة هنا</text>
+
       <!-- Feet -->
       <rect x="14" y="90" width="8" height="4" rx="1" fill="#0f172a" />
       <rect x="138" y="90" width="8" height="4" rx="1" fill="#0f172a" />

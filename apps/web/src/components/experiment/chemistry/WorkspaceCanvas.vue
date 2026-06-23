@@ -2,15 +2,17 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import type { LabItem, ToolDef } from '../../../composables/chemistry/useChemistryTools';
 import type { ToolState } from './InspectorPanel.vue';
-import type { PipetteState } from '../../../composables/chemistry/useChemistryLab';
 import {
-  items, receivingMap, balanceTareMap, itemZoomMap, pourFlowMap,
+  items, receivingMap, balanceTareMap, containerTareMap, itemZoomMap, pourFlowMap, phProbeTipMap, stopperMap,
   getLiquid, getBurette, getPipette, getSepFunnelState, getBurnerState, getItemZoom, buildToolState,
   isContainer, isBeaker, isBurette, isPipette, isSeparatoryFunnel,
+  selectedChemical,
+  pendingChemicalFill,
+  hasSelectedChemicalMap,
   createLabItem, loadSession, clearSession
 } from '../../../composables/chemistry/useChemistryLab';
 import {
-  getPhReading, computeBalanceWeight, getBalanceReading,
+  getPhReading, computeBalanceWeight, getBalanceReading, getContainerWeight,
   startSimulation, stopSimulation
 } from '../../../composables/chemistry/useLabSimulation';
 import { pushHistory, undo, redo, canUndo, canRedo, clearHistory } from '../../../composables/chemistry/useChemistryHistory';
@@ -27,9 +29,6 @@ const dragOffsetX = ref(0);
 const dragOffsetY = ref(0);
 const workspaceRef = ref<HTMLDivElement | null>(null);
 const hoveredItem = ref<LabItem | null>(null);
-const cursorPipette = ref<{ item: LabItem; state: PipetteState } | null>(null);
-const cursorX = ref(0);
-const cursorY = ref(0);
 function sceneX(clientX: number): number {
   if (!workspaceRef.value) return clientX;
   return clientX - workspaceRef.value.getBoundingClientRect().left;
@@ -39,44 +38,51 @@ function sceneY(clientY: number): number {
   return clientY - workspaceRef.value.getBoundingClientRect().top;
 }
 
-/* ---- Pipette mode ---- */
-function enterPipetteMode(item: LabItem) {
-  cursorPipette.value = { item, state: getPipette(item.uid) };
-}
-function exitPipetteMode() {
-  cursorPipette.value = null;
-}
-function getHoveredContainer(): LabItem | null {
-  if (!cursorPipette.value || !workspaceRef.value) return null;
-  const mx = cursorX.value;
-  const my = cursorY.value;
-  return items.value.find((i: LabItem) => {
-    if (i.uid === cursorPipette.value!.item.uid) return false;
+/* ---- Pipette actions ---- */
+function getNearestContainer(pipItem: LabItem, filterFn: (liq: any) => boolean): LabItem | null {
+  const candidates = items.value.filter((i: LabItem) => {
+    if (i.uid === pipItem.uid) return false;
     if (!isContainer(i.id)) return false;
-    return Math.abs(mx - (i.x + 42)) < 70 && Math.abs(my - (i.y + 80)) < 100;
-  }) || null;
+    return filterFn(getLiquid(i.uid));
+  });
+  if (candidates.length === 0) return null;
+  // Find closest by Euclidean distance (center point)
+  const px = pipItem.x + 25, py = pipItem.y + 115; // pipette center approx
+  let nearest = candidates[0];
+  let minDist = Infinity;
+  for (const c of candidates) {
+    const cx = c.x + 35, cy = c.y + 60; // container center approx
+    const d = Math.sqrt((px - cx) ** 2 + (py - cy) ** 2);
+    if (d < minDist) { minDist = d; nearest = c; }
+  }
+  return nearest;
 }
-function pipetteAction() {
-  if (!cursorPipette.value) return;
-  const pip = cursorPipette.value.state;
-  const target = getHoveredContainer();
-  if (!target) return;
+function pipetteDraw(pipItem: LabItem) {
+  const pip = getPipette(pipItem.uid);
+  if (pip.volume > 0) return;
+  const target = getNearestContainer(pipItem, (liq) => liq.volume > 0);
+  if (!target) { console.warn('pipetteDraw: no target found'); return; }
   pushHistory();
   const tLiq = getLiquid(target.uid);
-  if (pip.volume <= 0) {
-    if (tLiq.volume <= 0) return;
-    const amount = Math.min(10, tLiq.volume);
-    pip.volume = amount; pip.color = tLiq.color; pip.opacity = tLiq.opacity; pip.label = tLiq.label;
-    tLiq.volume -= amount;
-  } else {
-    if (tLiq.volume >= tLiq.maxVolume) return;
-    const amount = Math.min(pip.volume, tLiq.maxVolume - tLiq.volume);
-    tLiq.volume += amount; tLiq.color = pip.color; tLiq.opacity = pip.opacity;
-    tLiq.label = pip.label || 'محلول من الماصة';
-    pip.volume -= amount;
-    if (pip.volume <= 0.01) { pip.volume = 0; pip.color = '#94a3b8'; pip.label = ''; }
-  }
-  emit('select', cursorPipette.value.item, buildToolState(cursorPipette.value.item));
+  const amount = Math.min(10, tLiq.volume);
+  pip.volume = amount; pip.color = tLiq.color; pip.opacity = tLiq.opacity; pip.label = tLiq.label;
+  tLiq.volume -= amount;
+  emit('select', pipItem, buildToolState(pipItem));
+  if (selectedItem.value?.uid === target.uid) emit('select', target, buildToolState(target));
+}
+function pipetteDispense(pipItem: LabItem) {
+  const pip = getPipette(pipItem.uid);
+  if (pip.volume <= 0) return;
+  const target = getNearestContainer(pipItem, (liq) => liq.volume < liq.maxVolume);
+  if (!target) { console.warn('pipetteDispense: no target found'); return; }
+  pushHistory();
+  const tLiq = getLiquid(target.uid);
+  const amount = Math.min(pip.volume, tLiq.maxVolume - tLiq.volume);
+  tLiq.volume += amount; tLiq.color = pip.color; tLiq.opacity = pip.opacity;
+  tLiq.label = pip.label || 'محلول من الماصة';
+  pip.volume -= amount;
+  if (pip.volume <= 0.01) { pip.volume = 0; pip.color = '#94a3b8'; pip.label = ''; }
+  emit('select', pipItem, buildToolState(pipItem));
   if (selectedItem.value?.uid === target.uid) emit('select', target, buildToolState(target));
 }
 
@@ -110,19 +116,39 @@ function onItemMouseDown(e: MouseEvent, item: LabItem) {
   emit('select', item, buildToolState(item));
 }
 function onDragMove(e: MouseEvent) {
-  cursorX.value = sceneX(e.clientX); cursorY.value = sceneY(e.clientY);
   if (!draggingItem.value) return;
+  const dx = sceneX(e.clientX) - dragOffsetX.value - draggingItem.value.x;
+  const dy = sceneY(e.clientY) - dragOffsetY.value - draggingItem.value.y;
   draggingItem.value.x = sceneX(e.clientX) - dragOffsetX.value;
   draggingItem.value.y = sceneY(e.clientY) - dragOffsetY.value;
+  // Move probe tip along with pH meter
+  if (draggingItem.value.id === 'ph-meter' && phProbeTipMap[draggingItem.value.uid]) {
+    phProbeTipMap[draggingItem.value.uid].x += dx;
+    phProbeTipMap[draggingItem.value.uid].y += dy;
+  }
 }
-function onDragUp() { draggingItem.value = null; }
+function onDragUp() {
+  if (draggingItem.value?.id === 'rubber-stopper') {
+    // Try to attach stopper to nearest container
+    const stopper = draggingItem.value;
+    const nearest = items.value.find(i =>
+      i.uid !== stopper.uid && isContainer(i.id) &&
+      Math.abs(i.x - stopper.x) < 50 && Math.abs(i.y - stopper.y) < 80
+    );
+    if (nearest) {
+      stopperMap[nearest.uid] = stopper.uid;
+      // Snap stopper to container mouth
+      stopper.x = nearest.x + 20;
+      stopper.y = nearest.y - 5;
+    }
+  }
+  draggingItem.value = null;
+}
 function onWorkspaceClick(e: MouseEvent) {
   // Don't deselect if clicking directly on a lab item (handled by item click)
   if ((e.target as HTMLElement).closest('.lab-item')) return;
   // Don't deselect if clicking inside the FloatingInspector panel
   if ((e.target as HTMLElement).closest('.floating-inspector')) return;
-
-  if (cursorPipette.value) { e.stopPropagation(); pipetteAction(); return; }
 
   // Deselect when clicking empty workspace
   selectedItem.value = null;
@@ -137,6 +163,11 @@ function onWorkspaceClick(e: MouseEvent) {
 /* ---- Actions ---- */
 function removeItem(uid: string) {
   items.value = items.value.filter(i => i.uid !== uid);
+  delete hasSelectedChemicalMap[uid];
+  // Clean up stopperMap: remove if container removed, or detach stopper from container
+  for (const [containerUid, stopperUid] of Object.entries(stopperMap)) {
+    if (containerUid === uid || stopperUid === uid) delete stopperMap[containerUid];
+  }
   if (selectedItem.value?.uid === uid) { selectedItem.value = null; emit('select', null, null); }
 }
 function onMouthInteract(item: LabItem) { console.log('Mouth interact:', item.name); }
@@ -181,7 +212,17 @@ function execAction(type: 'refill' | 'empty' | 'toggleValve' | 'fill50' | 'fill1
   if (type === 'refill' && isBurette(item.id)) getBurette(uid).volume = getBurette(uid).maxVolume;
   if (type === 'empty' && isContainer(item.id)) getLiquid(uid).volume = 0;
   if ((type === 'fill50' || type === 'fill100') && isContainer(item.id)) {
-    const s = getLiquid(uid); s.volume = Math.min(s.maxVolume, s.volume + (type === 'fill50' ? 50 : 100));
+    const amount = type === 'fill50' ? 50 : 100;
+    if (hasSelectedChemicalMap[uid]) {
+      const s = getLiquid(uid);
+      s.volume = Math.min(s.maxVolume, s.volume + amount);
+      s.color = selectedChemical.color;
+      s.opacity = selectedChemical.opacity;
+      s.label = selectedChemical.nameAr;
+    } else {
+      pendingChemicalFill.value = { uid, amount };
+      return; // first time: go to shelf
+    }
   }
   if ((type === 'remove50' || type === 'remove100') && isContainer(item.id)) {
     const s = getLiquid(uid); s.volume = Math.max(0, s.volume - (type === 'remove50' ? 50 : 100));
@@ -204,6 +245,12 @@ function toggleBurner(item: LabItem) {
 }
 function tareBalance(item: LabItem) {
   balanceTareMap[item.uid] = computeBalanceWeight(item);
+  containerTareMap[item.uid] = 0; // clear container tare when full tare is used
+  if (selectedItem.value?.uid === item.uid) emit('select', item, buildToolState(item));
+}
+function tareContainer(item: LabItem) {
+  containerTareMap[item.uid] = getContainerWeight(item);
+  balanceTareMap[item.uid] = 0; // clear full tare when container tare is used
   if (selectedItem.value?.uid === item.uid) emit('select', item, buildToolState(item));
 }
 
@@ -216,7 +263,6 @@ const selectedState = computed<ToolState | null>(() => buildToolState(selectedIt
 
 /* ---- Lifecycle ---- */
 function onKeyDown(e: KeyboardEvent) {
-  if (e.key === 'Escape' && cursorPipette.value) { exitPipetteMode(); return; }
   if (e.key === 'z' && (e.ctrlKey || e.metaKey) && !e.shiftKey) { e.preventDefault(); undo(); return; }
   if ((e.key === 'y' && (e.ctrlKey || e.metaKey)) || (e.key === 'z' && e.ctrlKey && e.shiftKey)) { e.preventDefault(); redo(); return; }
 }
@@ -259,7 +305,6 @@ defineExpose({
   <div
     ref="workspaceRef"
     class="workspace"
-    :class="{ 'pipette-mode': cursorPipette }"
     @dragover="onDragOver"
     @drop="onDrop"
     @click="onWorkspaceClick"
@@ -284,7 +329,6 @@ defineExpose({
         :item="item"
         :selected-uid="selectedItem?.uid || null"
         :hovered-uid="hoveredItem?.uid || null"
-        :cursor-pipette-uid="cursorPipette?.item.uid || null"
         :receiving="!!receivingMap[item.uid]"
         @mouseenter="hoveredItem = item"
         @mouseleave="hoveredItem = null"
@@ -294,33 +338,29 @@ defineExpose({
         @drop-exited="handleDropExited"
         @toggle-valve="toggleBuretteValve(item)"
         @tip-interact="tipInteract(item)"
-        @enter-pipette="enterPipetteMode(item)"
         @toggle-stopcock="toggleSepFunnelValve(item)"
-        @toggle-burner="toggleBurner(item)"
       />
     </div>
     <FloatingInspector
       v-if="selectedItem && selectedState"
       :item="selectedItem"
       :state="selectedState"
-      :cursor-pipette="cursorPipette"
       :can-undo="canUndo()"
       :can-redo="canRedo()"
       @action="(type, uid) => execAction(type, uid)"
       @remove="(uid) => removeItem(uid)"
-      @enter-pipette="enterPipetteMode(selectedItem)"
-      @exit-pipette="exitPipetteMode()"
       @toggle-burner="toggleBurner(selectedItem)"
+      @pipette-draw="pipetteDraw(selectedItem!)"
+      @pipette-dispense="pipetteDispense(selectedItem!)"
       @tare="tareBalance(selectedItem)"
+      @tare-container="tareContainer(selectedItem)"
+      @intensity-change="(val) => { if(selectedItem){getBurnerState(selectedItem.uid).intensity = val; emit('select', selectedItem, buildToolState(selectedItem));} }"
       @undo="undo()"
       @redo="redo()"
       @label-change="(label) => { if(selectedItem){getLiquid(selectedItem.uid).label = label; emit('select', selectedItem, buildToolState(selectedItem));} }"
     />
 
     <WorkspaceOverlays
-      :cursor-pipette="cursorPipette"
-      :cursor-x="cursorX"
-      :cursor-y="cursorY"
       :pour-flow-map="pourFlowMap"
       :items="items"
     />
@@ -334,9 +374,6 @@ defineExpose({
   height: 100%;
   background: #ffffff;
   overflow: hidden;
-}
-.workspace.pipette-mode {
-  cursor: none;
 }
 .workspace.pour-mode {
   cursor: crosshair;

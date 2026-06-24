@@ -205,7 +205,7 @@ function toggleBuretteValve(item: LabItem) {
   if (selectedItem.value?.uid === item.uid) emit('select', item, buildToolState(item));
 }
 function tipInteract(item: LabItem) { console.log('Tip interact:', item.name); }
-function execAction(type: 'refill' | 'empty' | 'toggleValve' | 'fill50' | 'fill100' | 'remove50' | 'remove100', uid: string) {
+function execAction(type: 'refill' | 'empty' | 'toggleValve' | 'fill50' | 'fill100' | 'remove50' | 'remove100' | 'addSolid', uid: string) {
   const item = items.value.find(i => i.uid === uid); if (!item) return;
   pushHistory();
   if (type === 'toggleValve' && isBurette(item.id)) { toggleBuretteValve(item); return; }
@@ -290,7 +290,7 @@ function resetLab() {
 }
 
 defineExpose({
-  execAction: execAction as (type: 'refill' | 'empty' | 'toggleValve' | 'fill50' | 'fill100', uid: string) => void,
+  execAction: execAction as (type: 'refill' | 'empty' | 'toggleValve' | 'fill50' | 'fill100' | 'remove50' | 'remove100' | 'addSolid', uid: string) => void,
   removeItem: removeItem as (uid: string) => void,
   resetLab,
   undo,

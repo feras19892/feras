@@ -5,24 +5,30 @@ import {
   selectedChemical, hasSelectedChemicalMap, pendingChemicalFill
 } from './useChemistryLab';
 import { applyIndicator } from './useReactionEngine';
-import { pushHistory } from './useChemistryHistory';
+import { pushMacroHistory } from './useChemistryHistory';
 import { computeBalanceWeight, getContainerWeight } from './useLabSimulation';
 import type { LabItem } from './useChemistryTools';
 import type { ToolState } from '../../components/experiment/chemistry/InspectorPanel.vue';
+
+/** Commit any pending burette consumption to the running total */
+function commitBuretteConsumption(uid: string) {
+  const consumed = buretteConsumedThisRefill[uid] || 0;
+  if (consumed > 0) {
+    buretteTotalConsumedMap[uid] = (buretteTotalConsumedMap[uid] || 0) + consumed;
+    buretteConsumedThisRefill[uid] = 0;
+  }
+}
 
 export type ActionType = 'refill' | 'empty' | 'toggleValve' | 'fill5' | 'fill10' | 'fill50' | 'fill100' | 'remove5' | 'remove10' | 'remove50' | 'remove100' | 'addSolid';
 
 export function execAction(type: ActionType, uid: string, selectedItemRef: { value: LabItem | null }, emit: (name: 'select', item: LabItem | null, state: ToolState | null) => void) {
   const item = items.value.find(i => i.uid === uid); if (!item) return;
-  pushHistory();
+  pushMacroHistory();
   if (type === 'toggleValve' && isBurette(item.id)) { toggleBuretteValve(item, selectedItemRef, emit); return; }
   if (type === 'refill' && isBurette(item.id)) {
     const b = getBurette(uid);
+    commitBuretteConsumption(uid);
     b.volume = b.maxVolume;
-    if (buretteConsumedThisRefill[uid] > 0) {
-      buretteTotalConsumedMap[uid] = (buretteTotalConsumedMap[uid] || 0) + buretteConsumedThisRefill[uid];
-      buretteConsumedThisRefill[uid] = 0;
-    }
     buretteInitialVolumeMap[uid] = b.maxVolume;
   }
   if (type === 'empty' && (isContainer(item.id) || isBurette(item.id))) {
@@ -34,6 +40,7 @@ export function execAction(type: ActionType, uid: string, selectedItemRef: { val
     if (hasSelectedChemicalMap[uid]) {
       if (isBurette(item.id)) {
         const s = getBurette(uid);
+        commitBuretteConsumption(uid);
         s.volume = Math.min(s.maxVolume, s.volume + amount);
         s.color = selectedChemical.color;
         s.opacity = selectedChemical.opacity;
@@ -78,8 +85,9 @@ function toggleBuretteValve(item: LabItem, selectedItemRef: { value: LabItem | n
   const wasOpen = b.valveOpen;
   b.valveOpen = !b.valveOpen;
   if (!wasOpen && b.valveOpen) {
+    // Commit previous consumption before starting a new drip cycle
+    commitBuretteConsumption(item.uid);
     buretteInitialVolumeMap[item.uid] = b.volume;
-    buretteConsumedThisRefill[item.uid] = 0;
   }
   if (selectedItemRef.value?.uid === item.uid) emit('select', item, buildToolState(item));
 }

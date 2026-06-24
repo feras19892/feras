@@ -1,15 +1,20 @@
 import { ref } from 'vue';
 import type { LabItem } from './useChemistryTools';
 import {
-  getLiquid,
-  getBurette,
+  items, getLiquid, getBurette,
   receivingMap, pourFlowMap, tiltAngleMap,
-  getBurnerState, balanceTareMap, containerTareMap, simSpeed, phProbeTipMap, stopperMap,
+  getBurnerState, simSpeed, phProbeTipMap, stopperMap,
   buretteConsumedThisRefill,
   isContainer
 } from './useChemistryLab';
-import { items } from './useChemistryLab';
-import { handleDropMix, calculateTitrationPh, isAcid, isBase, applyIndicatorsToContainer } from './useReactionEngine';
+import { handleDropMixWithRecording } from './useBuretteMixRecorder';
+import { getPhReading } from './usePhMeter';
+import { pushMicroHistory } from './useChemistryHistory';
+
+// Re-export extracted functions for backward compatibility
+export { phColor, getPhReading } from './usePhMeter';
+export { computeBalanceWeight, getContainerWeight, getBalanceReading } from './useBalance';
+export { stepUndo, stepRedo } from './useStepControl';
 
 // ================== BURETTE WARNING ==================
 export type BuretteWarning = 'approaching' | 'equivalence' | 'exceeded' | null;
@@ -38,68 +43,6 @@ export function findContainerBelow(burette: LabItem): LabItem | null {
     const currDy = current.y - buretteTopY;
     return currDy < cDy ? current : closest;
   }, candidates[0]);
-}
-
-// ================== pH ==================
-export function phColor(ph: number | null): string {
-  if (ph === null) return '#94a3b8';
-  if (ph < 3) return '#ef4444';
-  if (ph < 7) return '#f59e0b';
-  if (ph === 7) return '#22c55e';
-  if (ph < 11) return '#3b82f6';
-  return '#8b5cf6';
-}
-
-export function getPhReading(phMeter: LabItem): number | null {
-  const tip = phProbeTipMap[phMeter.uid];
-  if (!tip) return null;
-  const target = items.value.find((i: LabItem) => {
-    if (i.uid === phMeter.uid || !isContainer(i.id)) return false;
-    const dx = Math.abs((i.x + 40) - tip.x);
-    const dy = Math.abs((i.y + 10) - tip.y);
-    return dx < 60 && dy < 50; // probe tip is inside or near the container
-  });
-  if (!target) return null;
-  const label = getLiquid(target.uid).label;
-  if (label.includes('HCl') || label.includes('حمض') || label.includes('acid')) return 1.5 + Math.random() * 0.5;
-  if (label.includes('NaOH') || label.includes('قاعدة') || label.includes('base') || label.includes('هيدروكسيد')) return 12.5 + Math.random() * 0.5;
-  if (label.includes('ماء') || label.includes('water') || label.includes('H₂O')) return 7.0;
-  if (label.includes(' buffer') || label.includes('بفر')) return 7.0;
-  return 7.0;
-}
-
-// ================== BALANCE ==================
-export function computeBalanceWeight(balance: LabItem): number {
-  const onTop = items.value.filter((i: LabItem) =>
-    i.uid !== balance.uid && Math.abs(i.x - balance.x) < 80 && i.y < balance.y + 50 && i.y > balance.y - 300
-  );
-  let total = 0;
-  for (const item of onTop) {
-    total += 5; // container weight
-    if (isContainer(item.id)) {
-      total += getLiquid(item.uid).volume; // liquid volume ≈ weight in grams
-    }
-  }
-  return total;
-}
-
-export function getContainerWeight(balance: LabItem): number {
-  // Weight of empty containers on the balance (used for container tare)
-  const onTop = items.value.filter((i: LabItem) =>
-    i.uid !== balance.uid && Math.abs(i.x - balance.x) < 80 && i.y < balance.y + 50 && i.y > balance.y - 300
-  );
-  return onTop.length * 5;
-}
-
-export function getBalanceReading(uid: string): number | null {
-  const balance = items.value.find((i: LabItem) => i.uid === uid && i.id === 'digital-balance');
-  if (!balance) return null;
-  const gross = computeBalanceWeight(balance);
-  const fullTare = balanceTareMap[uid] || 0;
-  const containerTare = containerTareMap[uid] || 0;
-  // If container tare is set, subtract it to show only "liquid" weight
-  const effectiveTare = containerTare > 0 ? containerTare : fullTare;
-  return +(gross - effectiveTare).toFixed(2);
 }
 
 // ================== HEATING ==================
@@ -131,6 +74,9 @@ export function startSimulation(_onSync: (item: LabItem | null) => void) {
       const bLiquid = getLiquid(container.uid);
       if (bLiquid.volume >= bLiquid.maxVolume) continue;
 
+      // Record micro-history snapshot before each drop
+      pushMicroHistory();
+
       const flowRate = 0.05;
       const transfer = Math.min(flowRate, bState.volume, bLiquid.maxVolume - bLiquid.volume);
 
@@ -144,7 +90,7 @@ export function startSimulation(_onSync: (item: LabItem | null) => void) {
       // Trigger chemical reaction via reaction engine
       if (bState.chemicalId) {
         console.log('[sim] burette dispense:', bState.chemicalId, '→', container.id, 'targetChem:', bLiquid.chemicalId, 'vol:', transfer, 'targetPH:', bLiquid.ph, 'targetIndicators:', bLiquid.indicators);
-        handleDropMix({
+        handleDropMixWithRecording({
           sourceUid: item.uid,
           targetUid: container.uid,
           sourceChemicalId: bState.chemicalId,
@@ -256,88 +202,3 @@ export function stopSimulation() {
   cancelAnimationFrame(simTimer);
 }
 
-// ================== STEP UNDO / STEP REDO ==================
-// For fine-grained control: ±0.05 mL per click (one simulation tick)
-
-export function stepUndo(): boolean {
-  for (const item of items.value) {
-    if (item.id !== 'burette') continue;
-    const bState = getBurette(item.uid);
-    const container = findContainerBelow(item);
-    if (!container) continue;
-    const bLiquid = getLiquid(container.uid);
-    if (bLiquid.volume < 0.05) continue;
-
-    // CRITICAL: Close valve first so simulation doesn't override our change
-    bState.valveOpen = false;
-    buretteWarning.value = null;
-
-    // Reverse volume transfer
-    bState.volume = +(bState.volume + 0.05).toFixed(2);
-    bLiquid.volume = +(bLiquid.volume - 0.05).toFixed(2);
-    buretteConsumedThisRefill[item.uid] = Math.max(0, (buretteConsumedThisRefill[item.uid] || 0) - 0.05);
-
-    // Reverse chemical reaction
-    if (bState.chemicalId && bLiquid.reactants) {
-      bLiquid.reactants[bState.chemicalId] = Math.max(0, (bLiquid.reactants[bState.chemicalId] || 0) - 0.05);
-
-      // Recalculate pH from remaining reactants
-      let acidVol = 0, baseVol = 0;
-      let acidId = '', baseId = '';
-      for (const [chemId, vol] of Object.entries(bLiquid.reactants)) {
-        if (isAcid(chemId)) { acidVol += vol; acidId = chemId; }
-        if (isBase(chemId)) { baseVol += vol; baseId = chemId; }
-      }
-      if (acidVol > 0 && baseVol > 0) {
-        bLiquid.ph = calculateTitrationPh(acidVol, acidId, baseVol, baseId);
-      } else if (acidVol > 0) {
-        bLiquid.ph = 2.0;
-      } else if (baseVol > 0) {
-        bLiquid.ph = 12.0;
-      } else {
-        bLiquid.ph = 7.0;
-      }
-
-      applyIndicatorsToContainer(bLiquid);
-    }
-
-    console.log('[stepUndo] Reverted 0.05 mL. Burette:', bState.volume, 'Beaker:', bLiquid.volume, 'pH:', bLiquid.ph);
-    return true;
-  }
-  return false;
-}
-
-export function stepRedo(): boolean {
-  for (const item of items.value) {
-    if (item.id !== 'burette') continue;
-    const bState = getBurette(item.uid);
-    const container = findContainerBelow(item);
-    if (!container) continue;
-    const bLiquid = getLiquid(container.uid);
-    if (bLiquid.volume >= bLiquid.maxVolume) continue;
-    if (bState.volume < 0.05) continue;
-
-    // Open valve so simulation continues
-    bState.valveOpen = true;
-
-    // Forward volume transfer (same as one simulation tick)
-    bState.volume = +(bState.volume - 0.05).toFixed(2);
-    bLiquid.volume = +(bLiquid.volume + 0.05).toFixed(2);
-    buretteConsumedThisRefill[item.uid] = (buretteConsumedThisRefill[item.uid] || 0) + 0.05;
-
-    // Forward chemical reaction
-    if (bState.chemicalId) {
-      handleDropMix({
-        sourceUid: item.uid,
-        targetUid: container.uid,
-        sourceChemicalId: bState.chemicalId,
-        targetChemicalId: bLiquid.chemicalId || '',
-        dropVolume: 0.05,
-      });
-    }
-
-    console.log('[stepRedo] Forwarded 0.05 mL. Burette:', bState.volume, 'Beaker:', bLiquid.volume, 'pH:', bLiquid.ph);
-    return true;
-  }
-  return false;
-}

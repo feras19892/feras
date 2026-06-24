@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, watch, onMounted, onUnmounted } from 'vue';
+import { computed, ref } from 'vue';
+import { useBeakerDrops } from '../../../composables/chemistry/useBeakerDrops';
+import { useBeakerScale } from '../../../composables/chemistry/useBeakerScale';
 
 interface Props {
   volume?: number;
@@ -43,100 +45,28 @@ const fillHeight = computed(() => {
 });
 
 const liquidY = computed(() => 160 - fillHeight.value);
-
-interface Mark { y: number; value: number; type: 'major' | 'mid' | 'minor'; label?: string }
-
-const allMarks = computed<Mark[]>(() => {
-  const marks: Mark[] = [];
-  const minorStep = props.maxVolume >= 500 ? 10 : props.maxVolume >= 250 ? 5 : 5;
-  const majorStep = props.maxVolume >= 500 ? 50 : props.maxVolume >= 250 ? 25 : 10;
-  for (let v = minorStep; v <= props.maxVolume; v += minorStep) {
-    const pct = v / props.maxVolume;
-    const y = 160 - pct * 125;
-    const isMajor = v % majorStep === 0;
-    const isMid = v % (majorStep / 2) === 0;
-    marks.push({ y, value: v, type: isMajor ? 'major' : isMid ? 'mid' : 'minor', label: isMajor ? String(v) : undefined });
-  }
-  return marks;
-});
+const allMarks = computed(() => useBeakerScale(props.maxVolume));
 
 function onMouthEnter() { showMouthGlow.value = true; }
 function onMouthLeave() { showMouthGlow.value = false; }
 
 const emit = defineEmits<{ mouthInteract: []; spill: [amount: number]; dropExited: [worldX: number, worldY: number, color: string]; }>();
 
-/* ---- Drop physics ---- */
 const canvasRef = ref<HTMLCanvasElement | null>(null);
-const activeDrops: {x:number; y:number; vx:number; vy:number; size:number}[] = [];
-let dropTimer = 0;
-let animId = 0;
-let running = false;
 
-function startDrops() {
-  if (running) return;
-  running = true;
-  const ctx = canvasRef.value?.getContext('2d');
-  if (!ctx) { setTimeout(startDrops, 50); return; }
-
-  const loop = () => {
-    if (!running) return;
-    ctx.clearRect(0, 0, 140, 300);
-    const tilt = props.tiltAngle;
-    const absTilt = Math.abs(tilt);
-    const fillH = Math.min(props.volume / props.maxVolume, 1) * 125;
-    const threshold = 55 - (fillH / 125) * 45;
-
-    // Mouth in SVG is (70,25), center is (70,100)
-    // In counter-rotated canvas, mouth appears at rotated position
-    const rad = tilt * Math.PI / 180;
-    const mouthX = Math.max(10, Math.min(130, 70 + 75 * Math.sin(rad)));
-    const mouthY = Math.max(10, Math.min(200, 100 - 75 * Math.cos(rad)));
-    let isSpilling = false;
-    if (absTilt > threshold && props.volume > 2) isSpilling = true;
-
-    if (isSpilling) {
-      dropTimer++;
-      let interval = 25; if (absTilt > 20) interval = 12; if (absTilt > 40) interval = 5; if (absTilt > 55) interval = 2;
-      if (dropTimer >= interval) {
-        activeDrops.push({
-          x: mouthX + (Math.random() - 0.5) * 4,
-          y: mouthY + 5 + (Math.random() - 0.5) * 3,
-          vx: (tilt > 0 ? 0.8 : -0.8) + (Math.random() - 0.5) * 0.4,
-          vy: 0.5,
-          size: 3.5 + Math.random() * 2
-        });
-        dropTimer = 0;
-        emit('spill', 0.15);
-      }
-    } else { dropTimer = 0; }
-
-    // Gravity: straight down (screen space)
-    for (let i = activeDrops.length - 1; i >= 0; i--) {
-      const d = activeDrops[i];
-      d.vy += 0.4;
-      d.x += d.vx;
-      d.y += d.vy;
-      ctx.beginPath(); ctx.arc(d.x, d.y, d.size, 0, Math.PI * 2);
-      ctx.fillStyle = props.liquidColor; ctx.globalAlpha = 0.95; ctx.fill(); ctx.globalAlpha = 1;
-      // Small highlight for 3D effect
-      ctx.beginPath(); ctx.arc(d.x - d.size*0.25, d.y - d.size*0.25, d.size*0.3, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.fill();
-
-      if (d.y > 200) {
-        activeDrops.splice(i, 1);
-        emit('dropExited', props.itemX + d.x, props.itemY + d.y, props.liquidColor);
-      }
-    }
-    animId = requestAnimationFrame(loop);
-  };
-  loop();
-}
-function stopDrops() { running = false; if (animId) cancelAnimationFrame(animId); }
-
-watch(() => props.tiltAngle, () => { if (!running && props.volume > 0) startDrops(); });
-watch(() => props.volume, () => { if (!running && props.volume > 0 && props.tiltAngle !== 0) startDrops(); });
-onMounted(() => { if (props.volume > 0 && props.tiltAngle !== 0) startDrops(); });
-onUnmounted(() => { stopDrops(); });
+useBeakerDrops(
+  canvasRef,
+  () => props.tiltAngle,
+  () => props.volume,
+  () => props.maxVolume,
+  () => props.liquidColor,
+  () => props.itemX,
+  () => props.itemY,
+  (event, ...args) => {
+    if (event === 'spill') emit('spill', args[0]);
+    else if (event === 'dropExited') emit('dropExited', args[0], args[1], args[2]);
+  }
+);
 </script>
 
 <template>

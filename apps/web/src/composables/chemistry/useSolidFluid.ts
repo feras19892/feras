@@ -1,24 +1,9 @@
-export interface SolidFluidConfig {
-  canvas: HTMLCanvasElement;
-  volume: number;
-  maxVolume: number;
-  color: string;
-  tiltAngle: number;
-  onSpill?: (amount: number) => void;
-}
-
-interface Drop { x: number; y: number; vy: number; }
-
-const W = 140;
-const H = 300; // Extended to show falling drops below beaker
-
-// Beaker geometry (matching SVG)
-const BEAKER_LEFT = 38;
-const BEAKER_RIGHT = 102;
-const BEAKER_BOTTOM_CURVE_Y = 172;
-const BEAKER_TOP_Y = 25;
-const BEAKER_CENTER_X = 70;
-const BEAKER_WIDTH = BEAKER_RIGHT - BEAKER_LEFT; // 64
+import type { SolidFluidConfig, Drop } from './solidFluidTypes';
+import {
+  W, H, BEAKER_LEFT, BEAKER_RIGHT, BEAKER_BOTTOM_CURVE_Y,
+  BEAKER_TOP_Y, BEAKER_CENTER_X, BEAKER_WIDTH
+} from './solidFluidTypes';
+import { hexToRgb } from './chemColorUtils';
 
 export class SolidFluid {
   private ctx: CanvasRenderingContext2D;
@@ -87,7 +72,7 @@ export class SolidFluid {
     ctx.clearRect(0, 0, W, H);
 
     const liquidLevel = this.getLiquidLevel();
-    const rgb = this.hexToRgb(this.color);
+    const rgb = hexToRgb(this.color);
 
     // Draw liquid body only if volume > 0
     if (liquidLevel >= 2) {
@@ -184,15 +169,6 @@ export class SolidFluid {
       ctx.fillStyle = 'rgba(0,0,0,0.15)';
       ctx.fill();
     }
-  }
-
-  private hexToRgb(hex: string) {
-    const c = hex.replace('#', '');
-    return {
-      r: parseInt(c.substring(0, 2), 16) || 59,
-      g: parseInt(c.substring(2, 4), 16) || 130,
-      b: parseInt(c.substring(4, 6), 16) || 246,
-    };
   }
 
   private loop = () => {

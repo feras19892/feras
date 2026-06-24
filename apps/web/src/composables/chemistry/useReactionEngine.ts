@@ -2,7 +2,7 @@ import { liquidMap } from './useChemistryLab';
 import type { LiquidState } from './chemLabTypes';
 import { findEquation } from './chemEquations';
 import { mixColor } from './chemColorUtils';
-
+import { isAcid, isBase, isIndicator } from './chemTypeChecks';
 // ================== ADVANCED REACTION ENGINE ==================
 
 // Calculate pH from acid/base excess
@@ -111,10 +111,6 @@ export interface MixEvent {
   targetChemicalId: string;
   dropVolume: number;
 }
-
-export const isAcid = (id: string) => ['hcl', 'h2so4', 'hno3', 'ch3cooh'].includes(id);
-export const isBase = (id: string) => ['naoh', 'koh', 'nh4oh'].includes(id);
-const isIndicator = (id: string) => ['phenolphthalein', 'methyl-orange', 'bromothymol-blue', 'universal-indicator', 'starch'].includes(id);
 
 export function handleDropMix(event: MixEvent): void {
   const target = liquidMap[event.targetUid];

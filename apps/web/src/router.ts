@@ -38,6 +38,12 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./modules/chemistry/ChemistryLanding.vue'),
   },
   {
+    path: '/chemistry/analysis-calc',
+    name: 'ChemistryAnalysis',
+    meta: { requiresAuth: true },
+    component: () => import('./modules/chemistry/analysis-calc/ChemAnalysisPage.vue'),
+  },
+  {
     path: '/physics',
     name: 'Branches',
     component: () => import('./modules/physics/branches-page.vue'),

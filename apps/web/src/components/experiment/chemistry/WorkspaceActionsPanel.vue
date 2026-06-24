@@ -2,6 +2,8 @@
 const props = defineProps<{
   canUndo: boolean;
   canRedo: boolean;
+  canStepUndo?: boolean;
+  canStepRedo?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -15,8 +17,8 @@ const emit = defineEmits<{
 <template>
   <div class="workspace-actions">
     <button class="action-btn undo" :disabled="!canUndo" @click="emit('undo')" title="تراجع (خطوة كاملة)">↩️ تراجع</button>
-    <button class="action-btn step-undo" @click="emit('stepUndo')" title="تراجع نقطة (0.05 mL)">◀️ نقطة</button>
-    <button class="action-btn step-redo" @click="emit('stepRedo')" title="تقدم نقطة (0.05 mL)">▶️ نقطة</button>
+    <button class="action-btn step-undo" :disabled="canStepUndo === false" @click="emit('stepUndo')" title="تراجع نقطة (0.05 mL)">◀️ نقطة</button>
+    <button class="action-btn step-redo" :disabled="canStepRedo === false" @click="emit('stepRedo')" title="تقدم نقطة (0.05 mL)">▶️ نقطة</button>
     <button class="action-btn redo" :disabled="!canRedo" @click="emit('redo')" title="تقدم (خطوة كاملة)">↪️ تقدم</button>
   </div>
 </template>

@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
-import { glasswareSections } from '../../composables/chemistry/useChemistryTools';
 import { pendingChemicalFill, getLiquid, getBurette, selectedChemical, hasSelectedChemicalMap, items, isBurette, buretteTotalConsumedMap, buretteConsumedThisRefill, buretteInitialVolumeMap } from '../../composables/chemistry/useChemistryLab';
 import type { Chemical } from '../../composables/chemistry/useChemistryLab';
 import type { ToolDef, LabItem } from '../../composables/chemistry/useChemistryTools';
 import type { ToolState } from '../../components/experiment/chemistry/InspectorPanel.vue';
 import WorkspaceCanvas from '../../components/experiment/chemistry/WorkspaceCanvas.vue';
-import ChemicalShelfPanel from '../../components/experiment/chemistry/ChemicalShelfPanel.vue';
+import LeftPanel from '../../components/experiment/chemistry/LeftPanel.vue';
+import RightPanel from '../../components/experiment/chemistry/RightPanel.vue';
 import GuidePanel from '../../components/experiment/chemistry/GuidePanel.vue';
 import ExperimentSelector from '../../components/experiment/chemistry/ExperimentSelector.vue';
 import LabStatsPanel from '../../components/experiment/chemistry/LabStatsPanel.vue';
 import { experiments, type Experiment, validateExperimentSteps } from '../../composables/chemistry/useExperiments';
-import { undo, redo, canUndo, canRedo } from '../../composables/chemistry/useChemistryHistory';
+import { undo, redo, canUndo, canRedo, canMicroUndo, canMicroRedo } from '../../composables/chemistry/useChemistryHistory';
 import { applyIndicator } from '../../composables/chemistry/useReactionEngine';
 import { buretteWarning } from '../../composables/chemistry/useLabSimulation';
 import ExperimentTheoryPanel from '../../components/experiment/chemistry/ExperimentTheoryPanel.vue';
@@ -19,6 +19,7 @@ import LabAssistant from '../../components/experiment/chemistry/LabAssistant.vue
 import BuretteDisplay from '../../components/experiment/chemistry/BuretteDisplay.vue';
 import WorkspaceActionsPanel from '../../components/experiment/chemistry/WorkspaceActionsPanel.vue';
 import ExperimentStepsPanel from '../../components/experiment/chemistry/ExperimentStepsPanel.vue';
+import ChemAnalysisButton from '../../components/experiment/chemistry/ChemAnalysisButton.vue';
 import {
   welcomeMessage, warnDangerousChemical, quickFactAbout,
   encourageStep, tipForStep, warnOnAction,
@@ -98,6 +99,8 @@ const buretteConsumption = computed(() => {
 
 const canUndoNow = computed(() => canUndo());
 const canRedoNow = computed(() => canRedo());
+const canMicroUndoNow = computed(() => canMicroUndo());
+const canMicroRedoNow = computed(() => canMicroRedo());
 const selectedState = ref<ToolState | null>(null);
 const canvasRef = ref<InstanceType<typeof WorkspaceCanvas> | null>(null);
 
@@ -218,48 +221,7 @@ onUnmounted(() => {
 
 <template>
   <div class="chemistry-landing" :style="{ gridTemplateColumns: `${leftWidth}px 6px 1fr 6px ${rightWidth}px`, '--left-width': `${leftWidth}px` }">
-    <aside class="panel panel-left">
-      <div class="tabs">
-        <button
-          v-for="tab in [
-            { id: 'glassware', label: 'الزجاجيات والأدوات', icon: '🧪' },
-            { id: 'chemicals', label: 'الرف الكيميائي', icon: '🧪' },
-          ]"
-          :key="tab.id"
-          :class="['tab-btn', { active: activeTab === tab.id }]"
-          @click="activeTab = tab.id"
-        >
-          {{ tab.icon }} {{ tab.label }}
-        </button>
-      </div>
-      <!-- Pending fill banner -->
-      <!-- Glassware tab: keep original tool sections -->
-      <div v-if="activeTab === 'glassware'" class="sections-list">
-        <div v-for="section in glasswareSections" :key="section.id" class="section">
-          <button class="section-header" @click="toggleSection(section.id)">
-            <span>{{ expandedSections[section.id] ? '▼' : '▶' }}</span>
-            <span>{{ section.icon }} {{ section.title }}</span>
-          </button>
-          <div v-if="expandedSections[section.id]" class="tools-grid">
-            <div
-              v-for="item in section.items"
-              :key="item.id"
-              class="tool-card"
-              draggable="true"
-              @dragstart="onDragStart($event, item)"
-            >
-              <div class="tool-icon">{{ item.icon }}</div>
-              <span class="tool-name">{{ item.name }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Chemicals tab: new Chemical Shelf Panel -->
-      <ChemicalShelfPanel
-        v-else
-        @chemical-click="onChemicalClick"
-      />
-    </aside>
+    <LeftPanel v-model:active-tab="activeTab" @chemical-click="onChemicalClick" />
     <div class="resizer resizer-left" @mousedown="onLeftDown" />
     <!-- Burette Data Display (top-left of workspace) -->
     <BuretteDisplay
@@ -272,6 +234,8 @@ onUnmounted(() => {
     <WorkspaceActionsPanel
       :can-undo="canUndoNow"
       :can-redo="canRedoNow"
+      :can-step-undo="canMicroUndoNow"
+      :can-step-redo="canMicroRedoNow"
       @undo="undo()"
       @redo="redo()"
       @step-undo="canvasRef?.stepUndo()"
@@ -279,18 +243,16 @@ onUnmounted(() => {
     />
     <WorkspaceCanvas ref="canvasRef" @select="onSelect" />
     <div class="resizer resizer-right" @mousedown="onRightDown" />
-    <aside class="panel panel-right">
-      <div class="panel-header">
-        <span>🔬 لوحة المعلومات</span>
-        <button class="reset-btn" @click="canvasRef?.resetLab()" title="تصفير المختبر">
-          🔄 تصفير
-        </button>
-      </div>
-      <LabStatsPanel :item="selectedItem" />
-      <GuidePanel :experiment="activeExperiment" @select-experiment="showExperimentSelector = true" @open-theory="showTheoryPanel = true" />
-      <LabAssistant />
-      <ExperimentStepsPanel :experiment="activeExperiment" :step-completion="stepCompletion" @clear="activeExperiment = null" />
-    </aside>
+    <RightPanel
+      :selected-item="selectedItem"
+      :selected-state="selectedState"
+      :active-experiment="activeExperiment"
+      :step-completion="stepCompletion"
+      @select-experiment="showExperimentSelector = true"
+      @open-theory="showTheoryPanel = true"
+      @clear-experiment="activeExperiment = null"
+      @reset-lab="canvasRef?.resetLab()"
+    />
     <ExperimentSelector
       v-if="showExperimentSelector"
       @select="(exp) => { activeExperiment = exp; showExperimentSelector = false; }"
@@ -301,6 +263,7 @@ onUnmounted(() => {
       :theory="activeExperiment.theory"
       @close="showTheoryPanel = false"
     />
+    <ChemAnalysisButton />
   </div>
 </template>
 
@@ -318,135 +281,6 @@ onUnmounted(() => {
   border: 1px solid #e2e8f0;
   overflow-y: auto;
 }
-.panel-left {
-  border-right: none;
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-}
-.panel-right {
-  border-left: none;
-  padding: 1.5rem;
-}
-.panel-right h2 {
-  margin: 0 0 1rem;
-  font-size: 1.1rem;
-  color: #334155;
-  text-align: center;
-}
-.tabs {
-  display: flex;
-  border-bottom: 1px solid #e2e8f0;
-  background: #f1f5f9;
-}
-.tab-btn {
-  flex: 1;
-  padding: 0.65rem 0.25rem;
-  background: none;
-  border: none;
-  font-size: 0.75rem;
-  color: #64748b;
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
-  font-family: inherit;
-}
-.tab-btn:hover {
-  background: rgba(255,255,255,0.5);
-}
-.tab-btn.active {
-  background: #ffffff;
-  color: #10b981;
-  border-bottom: 2px solid #10b981;
-  font-weight: 700;
-}
-.sections-list {
-  overflow-y: auto;
-  flex: 1;
-}
-.section {
-  border-bottom: 1px solid #e2e8f0;
-}
-.section-header {
-  width: 100%;
-  padding: 0.6rem 0.75rem;
-  background: #f1f5f9;
-  border: none;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #334155;
-  cursor: pointer;
-  text-align: right;
-  font-family: inherit;
-}
-.section-header:hover {
-  background: #e2e8f0;
-}
-.tools-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.6rem;
-  padding: 0.75rem;
-  overflow-y: auto;
-}
-.tool-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.75rem;
-  padding: 0.75rem 0.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-  cursor: grab;
-  transition: all 0.2s;
-  user-select: none;
-}
-.tool-card:hover {
-  border-color: #10b981;
-  box-shadow: 0 4px 12px rgba(16,185,129,0.12);
-  transform: translateY(-2px);
-}
-.tool-card:active { cursor: grabbing; }
-.tool-card.clickable {
-  border-color: #10b981;
-  box-shadow: 0 0 0 2px rgba(16,185,129,0.2);
-  animation: pulse 1.5s infinite;
-}
-.tool-card.clickable:hover {
-  background: #ecfdf5;
-  transform: translateY(-2px);
-}
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 2px rgba(16,185,129,0.2); }
-  50% { box-shadow: 0 0 0 6px rgba(16,185,129,0.1); }
-}
-.tool-icon { font-size: 2rem; line-height: 1; }
-.tool-name { font-size: 0.75rem; color: #475569; text-align: center; }
-.pending-banner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  background: linear-gradient(135deg, #ecfdf5, #d1fae5);
-  border-bottom: 1px solid #a7f3d0;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #065f46;
-}
-.pending-banner .cancel-btn {
-  background: #fff;
-  border: 1px solid #6ee7b7;
-  border-radius: 0.4rem;
-  padding: 0.15rem 0.4rem;
-  font-size: 0.65rem;
-  cursor: pointer;
-  color: #065f46;
-}
 .resizer {
   width: 6px;
   background: #e2e8f0;
@@ -455,31 +289,4 @@ onUnmounted(() => {
   z-index: 10;
 }
 .resizer:hover { background: #94a3b8; }
-.panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #e2e8f0;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #334155;
-}
-.reset-btn {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  color: #fff;
-  border: none;
-  border-radius: 0.4rem;
-  padding: 0.35rem 0.7rem;
-  font-size: 0.7rem;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: inherit;
-  transition: all 0.15s;
-}
-.reset-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(239,68,68,0.25);
-}
 </style>

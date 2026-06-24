@@ -1,26 +1,8 @@
 import Matter from 'matter-js';
 import { getLiquid } from './useChemistryLab';
-
-export interface LiquidSimConfig {
-  canvas: HTMLCanvasElement | null;
-  volume: number;
-  maxVolume: number;
-  color: string;
-  itemUid?: string;
-}
-
-const W = 140;
-const H = 200;
-const NUM_PARTICLES = 100;
-const PARTICLE_RADIUS = 4;
-
-function hexToRgb(hex: string) {
-  const c = hex.replace('#', '');
-  const r = parseInt(c.substring(0, 2), 16);
-  const g = parseInt(c.substring(2, 4), 16);
-  const b = parseInt(c.substring(4, 6), 16);
-  return { r: isNaN(r) ? 59 : r, g: isNaN(g) ? 130 : g, b: isNaN(b) ? 246 : b };
-}
+import type { LiquidSimConfig } from './liquidSimTypes';
+import { W, H, NUM_PARTICLES, PARTICLE_RADIUS } from './liquidSimTypes';
+import { drawParticles } from './liquidSimRenderer';
 
 export class LiquidSimulation {
   private engine: Matter.Engine | null = null;
@@ -114,69 +96,6 @@ export class LiquidSimulation {
     console.log('[LiquidSim] particles created:', this.particles.length);
   }
 
-  private drawParticles() {
-    console.log('[LiquidSim] drawParticles called, particles:', this.particles.length);
-    const canvas = this.config.canvas;
-    if (!canvas || !this.engine) { console.log('[LiquidSim] drawParticles skipped: no canvas/engine'); return; }
-    const ctx = canvas.getContext('2d');
-    if (!ctx) { console.log('[LiquidSim] drawParticles skipped: no ctx'); return; }
-
-    ctx.clearRect(0, 0, W, H);
-
-    // Debug: draw a faint border so we know canvas is alive
-    ctx.strokeStyle = 'rgba(255,0,0,0.1)';
-    ctx.strokeRect(0, 0, W, H);
-
-    ctx.save();
-    // Clip to beaker shape
-    ctx.beginPath();
-    ctx.moveTo(38, 25); ctx.lineTo(38, 158);
-    ctx.quadraticCurveTo(38, 172, 70, 172);
-    ctx.quadraticCurveTo(102, 172, 102, 158);
-    ctx.lineTo(102, 25); ctx.closePath();
-    ctx.clip();
-
-    // Blob background
-    if (this.particles.length > 0) {
-      const rgb = hexToRgb(this.config.color);
-      ctx.beginPath();
-      const avgX = this.particles.reduce((s, p) => s + p.position.x, 0) / this.particles.length;
-      const avgY = this.particles.reduce((s, p) => s + p.position.y, 0) / this.particles.length;
-      ctx.arc(avgX, avgY, 38, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.4)`;
-      ctx.fill();
-    }
-
-    // Particles
-    for (const p of this.particles) {
-      const rgb = hexToRgb(this.config.color);
-      ctx.beginPath();
-      ctx.arc(p.position.x, p.position.y, PARTICLE_RADIUS + 2, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.75)`;
-      ctx.fill();
-      // Highlight
-      ctx.beginPath();
-      ctx.arc(p.position.x - 1, p.position.y - 1, PARTICLE_RADIUS * 0.6, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255,255,255,0.35)';
-      ctx.fill();
-    }
-
-    // Meniscus
-    if (this.particles.length > 0) {
-      const surface = this.particles.filter(p => p.velocity.y < 0.3)
-        .sort((a, b) => a.position.y - b.position.y).slice(0, 8);
-      if (surface.length > 2) {
-        const sX = surface.reduce((s, p) => s + p.position.x, 0) / surface.length;
-        const sY = surface.reduce((s, p) => s + p.position.y, 0) / surface.length;
-        ctx.beginPath(); ctx.moveTo(sX - 20, sY);
-        ctx.quadraticCurveTo(sX, sY - 2, sX + 20, sY);
-        ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 1.2; ctx.stroke();
-      }
-    }
-
-    ctx.restore();
-  }
-
   private applySurfaceTension(strength: number) {
     const attractRange = 12, forceMult = strength * 0.0003;
     for (let i = 0; i < this.particles.length; i++) {
@@ -202,7 +121,10 @@ export class LiquidSimulation {
     const liq = this.config.itemUid ? getLiquid(this.config.itemUid) : null;
     if (liq && liq.surfaceTension > 0) this.applySurfaceTension(liq.surfaceTension);
 
-    this.drawParticles();
+    if (this.config.canvas && this.engine) {
+      const ctx = this.config.canvas.getContext('2d');
+      if (ctx) drawParticles(ctx, this.particles, this.config);
+    }
     this.animId = requestAnimationFrame(this.loop);
   };
 

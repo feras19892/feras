@@ -7,7 +7,8 @@ import {
   buretteInitialVolumeMap, buretteTotalConsumedMap, buretteConsumedThisRefill
 } from './useChemistryLab';
 
-const MAX_HISTORY = 200;
+const MAX_MACRO = 100;
+const MAX_MICRO = 1000;
 
 interface HistorySnapshot {
   items: LabItem[];
@@ -23,8 +24,13 @@ interface HistorySnapshot {
   buretteConsumed: Record<string, number>;
 }
 
-const past = ref<HistorySnapshot[]>([]);
-const future = ref<HistorySnapshot[]>([]);
+/* ── Macro history (big actions: fill, remove, toggle, etc.) ── */
+const macroPast = ref<HistorySnapshot[]>([]);
+const macroFuture = ref<HistorySnapshot[]>([]);
+
+/* ── Micro history (individual drops: 0.05 mL steps) ── */
+const microPast = ref<HistorySnapshot[]>([]);
+const microFuture = ref<HistorySnapshot[]>([]);
 
 function clone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj));
@@ -70,37 +76,90 @@ function restore(snap: HistorySnapshot) {
   Object.assign(buretteConsumedThisRefill, clone(snap.buretteConsumed));
 }
 
-export function pushHistory() {
-  past.value.push(capture());
-  if (past.value.length > MAX_HISTORY) past.value.shift();
-  future.value = []; // clear redo stack on new action
+/* ════════════════════════════════════════════
+   MACRO  (big actions)
+   ════════════════════════════════════════════ */
+
+export function pushMacroHistory() {
+  macroPast.value.push(capture());
+  if (macroPast.value.length > MAX_MACRO) macroPast.value.shift();
+  macroFuture.value = [];
 }
 
 export function canUndo(): boolean {
-  return past.value.length > 0;
+  return macroPast.value.length > 0;
 }
 
 export function canRedo(): boolean {
-  return future.value.length > 0;
+  return macroFuture.value.length > 0;
 }
 
-export function undo() {
-  if (!canUndo()) return;
+export function undo(): boolean {
+  if (!canUndo()) return false;
   const current = capture();
-  const snap = past.value.pop()!;
-  future.value.push(current);
+  const snap = macroPast.value.pop()!;
+  macroFuture.value.push(current);
   restore(snap);
+  return true;
 }
 
-export function redo() {
-  if (!canRedo()) return;
+export function redo(): boolean {
+  if (!canRedo()) return false;
   const current = capture();
-  const snap = future.value.pop()!;
-  past.value.push(current);
+  const snap = macroFuture.value.pop()!;
+  macroPast.value.push(current);
   restore(snap);
+  return true;
+}
+
+/* ════════════════════════════════════════════
+   MICRO  (individual drops)
+   ════════════════════════════════════════════ */
+
+export function pushMicroHistory() {
+  microPast.value.push(capture());
+  if (microPast.value.length > MAX_MICRO) microPast.value.shift();
+  microFuture.value = [];
+}
+
+export function canMicroUndo(): boolean {
+  return microPast.value.length > 0;
+}
+
+export function canMicroRedo(): boolean {
+  return microFuture.value.length > 0;
+}
+
+export function undoMicro(): boolean {
+  if (!canMicroUndo()) return false;
+  const current = capture();
+  const snap = microPast.value.pop()!;
+  microFuture.value.push(current);
+  restore(snap);
+  return true;
+}
+
+export function redoMicro(): boolean {
+  if (!canMicroRedo()) return false;
+  const current = capture();
+  const snap = microFuture.value.pop()!;
+  microPast.value.push(current);
+  restore(snap);
+  return true;
+}
+
+/* ════════════════════════════════════════════
+   BACKWARD COMPAT
+   ════════════════════════════════════════════ */
+
+/** @deprecated Use pushMacroHistory() or pushMicroHistory() explicitly */
+export function pushHistory() {
+  pushMacroHistory();
 }
 
 export function clearHistory() {
-  past.value = [];
-  future.value = [];
+  macroPast.value = [];
+  macroFuture.value = [];
+  microPast.value = [];
+  microFuture.value = [];
 }

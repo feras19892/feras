@@ -1,28 +1,6 @@
-interface Particle {
-  x: number; // 0-140 (beaker width)
-  y: number; // 0-200 (beaker height)
-  vx: number;
-  vy: number;
-  radius: number;
-  color: string;
-  opacity: number;
-}
-
-interface FluidSimConfig {
-  width: number;
-  height: number;
-  wallLeft: number;
-  wallRight: number;
-  bottomY: number;
-  topY: number;
-  tiltAngle: number; // degrees
-  volume: number; // 0-100 percentage
-}
-
-const GRAVITY = 0.3;
-const DAMPING = 0.85;
-const PARTICLE_RADIUS = 2.5;
-const NUM_PARTICLES = 80;
+import type { Particle, FluidSimConfig } from './fluidSimTypes';
+import { GRAVITY, DAMPING, PARTICLE_RADIUS, NUM_PARTICLES } from './fluidSimTypes';
+import { renderFluidSimulation } from './fluidSimRenderer';
 
 export class FluidSimulation {
   private particles: Particle[] = [];
@@ -167,91 +145,9 @@ export class FluidSimulation {
     return true;
   }
 
-  private draw() {
-    const ctx = this.ctx;
-    const w = this.canvas.width;
-    const h = this.canvas.height;
-
-    ctx.clearRect(0, 0, w, h);
-
-    // Clip to beaker shape so particles never leak outside
-    ctx.save();
-    ctx.beginPath();
-    ctx.moveTo(38, 25);
-    ctx.lineTo(38, 158);
-    ctx.quadraticCurveTo(38, 172, 70, 172);
-    ctx.quadraticCurveTo(102, 172, 102, 158);
-    ctx.lineTo(102, 25);
-    ctx.closePath();
-    ctx.clip();
-
-    // Draw liquid body as gradient from particles
-    const { bottomY, volume } = this.config;
-    if (volume > 0) {
-      // Find surface particles
-      const surfaceY = Math.min(...this.particles.map(p => p.y));
-      
-      // Draw liquid body
-      ctx.save();
-      ctx.beginPath();
-      
-      // Build surface path from particle positions
-      const sorted = [...this.particles].sort((a, b) => a.x - b.x);
-      if (sorted.length > 0) {
-        ctx.moveTo(sorted[0].x, sorted[0].y);
-        for (let i = 1; i < sorted.length; i++) {
-          ctx.lineTo(sorted[i].x, sorted[i].y);
-        }
-        ctx.lineTo(sorted[sorted.length - 1].x, bottomY);
-        ctx.lineTo(sorted[0].x, bottomY);
-      }
-      ctx.closePath();
-      
-      // Gradient fill
-      const grad = ctx.createLinearGradient(0, surfaceY, 0, bottomY);
-      grad.addColorStop(0, 'rgba(96, 165, 250, 0.35)');
-      grad.addColorStop(0.5, 'rgba(59, 130, 246, 0.5)');
-      grad.addColorStop(1, 'rgba(37, 99, 235, 0.6)');
-      ctx.fillStyle = grad;
-      ctx.fill();
-      ctx.restore();
-    }
-
-    // Draw particles
-    for (const p of this.particles) {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(147, 197, 253, ${p.opacity})`;
-      ctx.fill();
-      
-      // Highlight
-      ctx.beginPath();
-      ctx.arc(p.x - 0.5, p.y - 0.5, p.radius * 0.4, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity * 0.5})`;
-      ctx.fill();
-    }
-
-    // Draw surface line
-    if (this.particles.length > 0) {
-      const surfaceParticles = this.particles.filter(p => p.y < this.getLiquidLevelAt(p.x) + 10);
-      if (surfaceParticles.length > 0) {
-        ctx.beginPath();
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-        ctx.lineWidth = 1.5;
-        const sorted = surfaceParticles.sort((a, b) => a.x - b.x);
-        ctx.moveTo(sorted[0].x, sorted[0].y);
-        for (let i = 1; i < sorted.length; i++) {
-          ctx.lineTo(sorted[i].x, sorted[i].y);
-        }
-        ctx.stroke();
-      }
-    }
-    ctx.restore(); // close clip
-  }
-
   private loop = () => {
     this.update();
-    this.draw();
+    renderFluidSimulation(this.ctx, this.particles, this.config, (x) => this.getLiquidLevelAt(x));
     this.animId = requestAnimationFrame(this.loop);
   };
 

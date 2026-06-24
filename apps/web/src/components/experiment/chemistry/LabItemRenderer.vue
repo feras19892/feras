@@ -7,16 +7,12 @@ import {
   isSeparatoryFunnel, isGradCylinder, isBunsenBurner, isHeatingMantle, isBalance, isPhMeter
 } from '../../../composables/chemistry/useChemistryLab';
 import { getBalanceReading, getPhReading, isHeated } from '../../../composables/chemistry/useLabSimulation';
+import ContainerRenderers from './ContainerRenderers.vue';
 import LabBeaker from './LabBeaker.vue';
 import LabBurette from './LabBurette.vue';
 import LabPipette from './LabPipette.vue';
 import LabVolumetricPipette from './LabVolumetricPipette.vue';
-import LabTestTube from './LabTestTube.vue';
-import LabErlenmeyer from './LabErlenmeyer.vue';
-import LabVolumetricFlask from './LabVolumetricFlask.vue';
-import LabRoundBottomFlask from './LabRoundBottomFlask.vue';
 import LabSeparatoryFunnel from './LabSeparatoryFunnel.vue';
-import LabGradCylinder from './LabGradCylinder.vue';
 import LabBunsenBurner from './LabBunsenBurner.vue';
 import LabHeatingMantle from './LabHeatingMantle.vue';
 import LabBalance from './LabBalance.vue';
@@ -64,60 +60,10 @@ const isSel = computed(() => props.selectedUid === props.item.uid);
     {{ liq.label }}
   </div>
 
-  <LabTestTube
-    v-if="isTestTube(item.id)"
-    :volume="liq.volume"
-    :max-volume="liq.maxVolume"
-    :liquid-color="liq.color"
-    :liquid-opacity="liq.opacity"
-    :is-hovered="isSel"
-    :size="item.id === 'test-tube-sm' ? 'sm' : item.id === 'test-tube-lg' ? 'lg' : 'md'"
-    :tilt-angle="tiltAngleMap[item.uid] || 0"
-    :item-uid="item.uid"
-    :item-x="item.x"
-    :item-y="item.y"
-    @spill="emit('spill', item, $event)"
-    @drop-exited="(wx: number, wy: number, color: string) => emit('dropExited', item, wx, wy, color)"
-  />
-  <LabErlenmeyer
-    v-else-if="isErlenmeyer(item.id)"
-    :volume="liq.volume"
-    :max-volume="liq.maxVolume"
-    :liquid-color="liq.color"
-    :liquid-opacity="liq.opacity"
-    :is-hovered="isSel"
-    :tilt-angle="tiltAngleMap[item.uid] || 0"
-    :item-uid="item.uid"
-    :item-x="item.x"
-    :item-y="item.y"
-    @spill="emit('spill', item, $event)"
-    @drop-exited="(wx: number, wy: number, color: string) => emit('dropExited', item, wx, wy, color)"
-  />
-  <LabVolumetricFlask
-    v-else-if="isVolumetricFlask(item.id)"
-    :volume="liq.volume"
-    :max-volume="liq.maxVolume"
-    :liquid-color="liq.color"
-    :liquid-opacity="liq.opacity"
-    :is-hovered="isSel"
-    :tilt-angle="tiltAngleMap[item.uid] || 0"
-    :item-uid="item.uid"
-    :item-x="item.x"
-    :item-y="item.y"
-    @spill="emit('spill', item, $event)"
-    @drop-exited="(wx: number, wy: number, color: string) => emit('dropExited', item, wx, wy, color)"
-  />
-  <LabRoundBottomFlask
-    v-else-if="isRoundBottomFlask(item.id)"
-    :volume="liq.volume"
-    :max-volume="liq.maxVolume"
-    :liquid-color="liq.color"
-    :liquid-opacity="liq.opacity"
-    :is-hovered="isSel"
-    :tilt-angle="tiltAngleMap[item.uid] || 0"
-    :item-uid="item.uid"
-    :item-x="item.x"
-    :item-y="item.y"
+  <ContainerRenderers
+    v-if="isTestTube(item.id) || isErlenmeyer(item.id) || isVolumetricFlask(item.id) || isRoundBottomFlask(item.id) || isGradCylinder(item.id)"
+    :item="item"
+    :is-sel="isSel"
     @spill="emit('spill', item, $event)"
     @drop-exited="(wx: number, wy: number, color: string) => emit('dropExited', item, wx, wy, color)"
   />

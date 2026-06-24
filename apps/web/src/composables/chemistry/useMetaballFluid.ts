@@ -1,27 +1,6 @@
-export interface MetaballConfig {
-  canvas: HTMLCanvasElement;
-  volume: number;
-  maxVolume: number;
-  color: string;
-  tiltAngle: number;
-}
-
-interface FluidParticle {
-  x: number; y: number;
-  vx: number; vy: number;
-  density: number;
-}
-
-const W = 140;
-const H = 200;
-const GRAVITY_Y = 0.25;
-const RADIAN_FACTOR = Math.PI / 180;
-
-// Beaker walls (matching SVG beaker)
-const WALL_LEFT = 42;
-const WALL_RIGHT = 98;
-const WALL_BOTTOM = 165;
-const WALL_TOP = 25;
+import type { MetaballConfig, FluidParticle } from './metaballTypes';
+import { W, H, GRAVITY_Y, RADIAN_FACTOR, WALL_LEFT, WALL_RIGHT, WALL_BOTTOM, WALL_TOP } from './metaballTypes';
+import { renderMetaballFluid } from './metaballRenderer';
 
 export class MetaballFluid {
   private ctx: CanvasRenderingContext2D;
@@ -151,55 +130,10 @@ export class MetaballFluid {
     }
   }
 
-  private draw() {
-    this.ctx.clearRect(0, 0, W, H);
-
-    // Clip to beaker shape
-    this.ctx.save();
-    this.ctx.beginPath();
-    this.ctx.moveTo(38, 25); this.ctx.lineTo(38, 158);
-    this.ctx.quadraticCurveTo(38, 172, 70, 172);
-    this.ctx.quadraticCurveTo(102, 172, 102, 158);
-    this.ctx.lineTo(102, 25); this.ctx.closePath();
-    this.ctx.clip();
-
-    // Metaball effect: blur + contrast
-    this.ctx.save();
-    this.ctx.filter = 'blur(5px) contrast(8)';
-    this.ctx.fillStyle = this.color;
-
-    for (const p of this.particles) {
-      this.ctx.beginPath();
-      this.ctx.arc(p.x, p.y, 9, 0, Math.PI * 2);
-      this.ctx.fill();
-    }
-    this.ctx.restore();
-
-    // Highlights on surface particles
-    for (const p of this.particles) {
-      this.ctx.beginPath();
-      this.ctx.arc(p.x - 1, p.y - 1, 2, 0, Math.PI * 2);
-      this.ctx.fillStyle = 'rgba(255,255,255,0.3)';
-      this.ctx.fill();
-    }
-
-    // Meniscus line
-    if (this.particles.length > 0) {
-      const surface = this.particles.slice().sort((a, b) => a.y - b.y).slice(0, 8);
-      const sX = surface.reduce((s, p) => s + p.x, 0) / surface.length;
-      const sY = surface.reduce((s, p) => s + p.y, 0) / surface.length;
-      this.ctx.beginPath(); this.ctx.moveTo(sX - 20, sY);
-      this.ctx.quadraticCurveTo(sX, sY - 2, sX + 20, sY);
-      this.ctx.strokeStyle = 'rgba(255,255,255,0.4)'; this.ctx.lineWidth = 1.2; this.ctx.stroke();
-    }
-
-    this.ctx.restore();
-  }
-
   private loop = () => {
     if (!this.running) return;
     this.update();
-    this.draw();
+    renderMetaballFluid(this.ctx, this.particles, this.color);
     this.animId = requestAnimationFrame(this.loop);
   };
 

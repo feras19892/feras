@@ -1,6 +1,6 @@
 import { ref, reactive, watch } from 'vue';
 import type { LabItem, ToolDef } from './useChemistryTools';
-import type { LiquidState, BuretteState, PipetteState, SepFunnelState, SavedSession } from './chemLabTypes';
+import type { LiquidState, BuretteState, PipetteState, SepFunnelState } from './chemLabTypes';
 import {
   isBeaker, isTestTube, isBurette, isPipette, isErlenmeyer,
   isVolumetricFlask, isRoundBottomFlask, isSeparatoryFunnel,
@@ -10,9 +10,8 @@ import {
 } from './chemLabIds';
 import type { Chemical } from './chemDatabase';
 import { chemicals, selectedChemical } from './chemDatabase';
-
-// Re-export for backward compatibility
-export type { LiquidState, BuretteState, PipetteState, SepFunnelState, SavedSession } from './chemLabTypes';
+import { saveSession, loadSession, clearSession } from './useChemistrySession';
+import { buildToolState } from './useToolStateBuilder';
 export {
   isBeaker, isTestTube, isBurette, isPipette, isErlenmeyer,
   isVolumetricFlask, isRoundBottomFlask, isSeparatoryFunnel,
@@ -22,8 +21,8 @@ export {
 } from './chemLabIds';
 export type { Chemical, ChemicalCategory, HazardLevel, PhysicalState } from './chemDatabase';
 export { chemicals, selectedChemical } from './chemDatabase';
-
-const STORAGE_KEY = 'chem-lab-session-v1';
+export { saveSession, loadSession, clearSession } from './useChemistrySession';
+export { buildToolState } from './useToolStateBuilder';
 
 // ================== STATE ==================
 let uid = 0;
@@ -91,28 +90,6 @@ export function getBurnerState(uid: string) {
   return burnerMap[uid];
 }
 
-export function buildToolState(item: LabItem | null) {
-  if (!item) return null;
-  if (isContainer(item.id)) {
-    const liq = getLiquid(item.uid);
-    return { uid: item.uid, type: 'beaker' as const, volume: liq.volume, maxVolume: liq.maxVolume, color: liq.color, label: liq.label };
-  }
-  if (isBurette(item.id)) {
-    const bur = getBurette(item.uid);
-    return { uid: item.uid, type: 'burette' as const, volume: bur.volume, maxVolume: bur.maxVolume, valveOpen: bur.valveOpen, color: bur.color };
-  }
-  if (isPipette(item.id)) {
-    const pip = getPipette(item.uid);
-    return { uid: item.uid, type: 'pipette' as const, volume: pip.volume, maxVolume: pip.maxVolume, color: pip.color };
-  }
-  if (isSeparatoryFunnel(item.id)) {
-    const liq = getLiquid(item.uid);
-    const sep = getSepFunnelState(item.uid);
-    return { uid: item.uid, type: 'beaker' as const, volume: liq.volume, maxVolume: liq.maxVolume, color: liq.color, label: liq.label, valveOpen: sep.valveOpen };
-  }
-  return { uid: item.uid, type: 'other' as const, volume: 0, maxVolume: 0, color: '#94a3b8' };
-}
-
 export function getBalanceTare(uid: string): number {
   return balanceTareMap[uid] || 0;
 }
@@ -148,71 +125,6 @@ export function createLabItem(def: ToolDef, x: number, y: number): LabItem {
     phProbeTipMap[item.uid] = { x: x + 40, y: y + 130 }; // probe tip starts below the meter body
   }
   return item;
-}
-
-// ================== PERSISTENCE ==================
-export function saveSession() {
-  const data: SavedSession = {
-    items: items.value,
-    liquids: { ...liquidMap },
-    burettes: { ...buretteMap },
-    pipettes: { ...pipetteMap },
-    sepFunnels: { ...sepFunnelMap },
-    burners: { ...burnerMap },
-    tares: { ...balanceTareMap },
-    zoomMap: { ...itemZoomMap },
-    pourFlows: { ...pourFlowMap },
-    tiltAngles: { ...tiltAngleMap },
-  };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
-
-export function loadSession() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return;
-    const data: SavedSession = JSON.parse(raw);
-    items.value = data.items || [];
-    Object.assign(liquidMap, data.liquids || {});
-    Object.assign(buretteMap, data.burettes || {});
-    Object.assign(pipetteMap, data.pipettes || {});
-    Object.assign(sepFunnelMap, data.sepFunnels || {});
-    Object.assign(burnerMap, data.burners || {});
-    Object.assign(balanceTareMap, data.tares || {});
-    Object.assign(itemZoomMap, data.zoomMap || {});
-    Object.assign(pourFlowMap, data.pourFlows || {});
-    Object.assign(tiltAngleMap, data.tiltAngles || {});
-    // Restore uid counter to avoid collisions
-    const maxUid = items.value.reduce((m, it) => {
-      const n = parseInt(it.uid.replace(/^lab-/, ''), 10);
-      return isNaN(n) ? m : Math.max(m, n);
-    }, 0);
-    uid = maxUid;
-  } catch { /* ignore corrupt session */ }
-}
-
-export function clearSession() {
-  items.value = [];
-  Object.keys(liquidMap).forEach(k => delete liquidMap[k]);
-  Object.keys(buretteMap).forEach(k => delete buretteMap[k]);
-  Object.keys(pipetteMap).forEach(k => delete pipetteMap[k]);
-  Object.keys(sepFunnelMap).forEach(k => delete sepFunnelMap[k]);
-  Object.keys(burnerMap).forEach(k => delete burnerMap[k]);
-  Object.keys(balanceTareMap).forEach(k => delete balanceTareMap[k]);
-  Object.keys(containerTareMap).forEach(k => delete containerTareMap[k]);
-  Object.keys(hasSelectedChemicalMap).forEach(k => delete hasSelectedChemicalMap[k]);
-  simSpeed.value = 1;
-  Object.keys(itemZoomMap).forEach(k => delete itemZoomMap[k]);
-  Object.keys(phProbeTipMap).forEach(k => delete phProbeTipMap[k]);
-  Object.keys(solidMap).forEach(k => delete solidMap[k]);
-  Object.keys(stopperMap).forEach(k => delete stopperMap[k]);
-  Object.keys(pourFlowMap).forEach(k => delete pourFlowMap[k]);
-  Object.keys(tiltAngleMap).forEach(k => delete tiltAngleMap[k]);
-  Object.keys(buretteInitialVolumeMap).forEach(k => delete buretteInitialVolumeMap[k]);
-  Object.keys(buretteTotalConsumedMap).forEach(k => delete buretteTotalConsumedMap[k]);
-  Object.keys(buretteConsumedThisRefill).forEach(k => delete buretteConsumedThisRefill[k]);
-  uid = 0;
-  localStorage.removeItem(STORAGE_KEY);
 }
 
 // ================== WATCHER ==================

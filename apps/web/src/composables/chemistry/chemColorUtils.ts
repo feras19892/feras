@@ -1,8 +1,13 @@
 function hex2rgb(hex: string) {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return { r, g, b };
+  const c = hex.replace('#', '');
+  const r = parseInt(c.substring(0, 2), 16);
+  const g = parseInt(c.substring(2, 4), 16);
+  const b = parseInt(c.substring(4, 6), 16);
+  return { r: isNaN(r) ? 59 : r, g: isNaN(g) ? 130 : g, b: isNaN(b) ? 246 : b };
+}
+
+export function hexToRgb(hex: string) {
+  return hex2rgb(hex);
 }
 
 function rgb2hex(r: number, g: number, b: number) {

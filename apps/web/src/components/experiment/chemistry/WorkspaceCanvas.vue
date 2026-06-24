@@ -16,9 +16,11 @@ import {
   startSimulation, stopSimulation, stepUndo, stepRedo
 } from '../../../composables/chemistry/useLabSimulation';
 import { handleDropMix, applyIndicator } from '../../../composables/chemistry/useReactionEngine';
+import { handleDropExited } from '../../../composables/chemistry/useDropPhysics';
 import { pushHistory, undo, redo, canUndo, canRedo, clearHistory } from '../../../composables/chemistry/useChemistryHistory';
 import { pipetteDraw, pipetteDispense } from '../../../composables/chemistry/usePipetteActions';
 import { execAction, toggleSepFunnelValve, toggleBurner, tareBalance, tareContainer } from '../../../composables/chemistry/useExecActions';
+import { useWorkspaceDrag } from '../../../composables/chemistry/useWorkspaceDrag';
 import FloatingInspector from './FloatingInspector.vue';
 import LabItemRenderer from './LabItemRenderer.vue';
 import WorkspaceOverlays from './WorkspaceOverlays.vue';
@@ -27,92 +29,16 @@ const emit = defineEmits<{ select: [item: LabItem | null, state: ToolState | nul
 
 const selectedItem = ref<LabItem | null>(null);
 const totalSpilled = ref(0);
-const draggingItem = ref<LabItem | null>(null);
-const dragOffsetX = ref(0);
-const dragOffsetY = ref(0);
 const workspaceRef = ref<HTMLDivElement | null>(null);
 const hoveredItem = ref<LabItem | null>(null);
-function sceneX(clientX: number): number {
-  if (!workspaceRef.value) return clientX;
-  return clientX - workspaceRef.value.getBoundingClientRect().left;
-}
-function sceneY(clientY: number): number {
-  if (!workspaceRef.value) return clientY;
-  return clientY - workspaceRef.value.getBoundingClientRect().top;
-}
+
+const {
+  onDragOver, onDrop, onItemMouseDown, onDragMove, onDragUp, onWorkspaceClick
+} = useWorkspaceDrag(workspaceRef, selectedItem, emit, buildToolState);
 
 /* ---- Pour flow ---- */
 function stopPourFlow(uid: string) {
   delete pourFlowMap[uid];
-}
-
-/* ---- Drag & Drop ---- */
-function onDragOver(e: DragEvent) { e.preventDefault(); if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy'; }
-function onDrop(e: DragEvent) {
-  e.preventDefault();
-  const data = e.dataTransfer?.getData('application/json');
-  if (!data) return;
-  const def: ToolDef = JSON.parse(data);
-  items.value.push(createLabItem(def, sceneX(e.clientX) - 40, sceneY(e.clientY) - 40));
-}
-
-/* ---- Mouse events ---- */
-function onItemMouseDown(e: MouseEvent, item: LabItem) {
-  e.stopPropagation(); e.preventDefault();
-  // Stop pour flow if clicking the source container
-  if (pourFlowMap[item.uid]) {
-    stopPourFlow(item.uid);
-    return;
-  }
-  draggingItem.value = item;
-  dragOffsetX.value = sceneX(e.clientX) - item.x;
-  dragOffsetY.value = sceneY(e.clientY) - item.y;
-  selectedItem.value = item;
-  emit('select', item, buildToolState(item));
-}
-function onDragMove(e: MouseEvent) {
-  if (!draggingItem.value) return;
-  const dx = sceneX(e.clientX) - dragOffsetX.value - draggingItem.value.x;
-  const dy = sceneY(e.clientY) - dragOffsetY.value - draggingItem.value.y;
-  draggingItem.value.x = sceneX(e.clientX) - dragOffsetX.value;
-  draggingItem.value.y = sceneY(e.clientY) - dragOffsetY.value;
-  // Move probe tip along with pH meter
-  if (draggingItem.value.id === 'ph-meter' && phProbeTipMap[draggingItem.value.uid]) {
-    phProbeTipMap[draggingItem.value.uid].x += dx;
-    phProbeTipMap[draggingItem.value.uid].y += dy;
-  }
-}
-function onDragUp() {
-  if (draggingItem.value?.id === 'rubber-stopper') {
-    // Try to attach stopper to nearest container
-    const stopper = draggingItem.value;
-    const nearest = items.value.find(i =>
-      i.uid !== stopper.uid && isContainer(i.id) &&
-      Math.abs(i.x - stopper.x) < 50 && Math.abs(i.y - stopper.y) < 80
-    );
-    if (nearest) {
-      stopperMap[nearest.uid] = stopper.uid;
-      // Snap stopper to container mouth
-      stopper.x = nearest.x + 20;
-      stopper.y = nearest.y - 5;
-    }
-  }
-  draggingItem.value = null;
-}
-function onWorkspaceClick(e: MouseEvent) {
-  // Don't deselect if clicking directly on a lab item (handled by item click)
-  if ((e.target as HTMLElement).closest('.lab-item')) return;
-  // Don't deselect if clicking inside the FloatingInspector panel
-  if ((e.target as HTMLElement).closest('.floating-inspector')) return;
-
-  // Deselect when clicking empty workspace
-  selectedItem.value = null;
-  emit('select', null, null);
-
-  // Stop all pour flows on workspace click
-  if (Object.keys(pourFlowMap).length > 0) {
-    Object.keys(pourFlowMap).forEach(k => delete pourFlowMap[k]);
-  }
 }
 
 /* ---- Actions ---- */
@@ -125,6 +51,9 @@ function removeItem(uid: string) {
   }
   if (selectedItem.value?.uid === uid) { selectedItem.value = null; emit('select', null, null); }
 }
+function _handleDropExited(sourceItem: LabItem, wx: number, wy: number, color: string) {
+  handleDropExited(sourceItem, wx, wy, color, selectedItem, emit, buildToolState);
+}
 function onMouthInteract(item: LabItem) { console.log('Mouth interact:', item.name); }
 function handleSpill(item: LabItem, amount: number) {
   if (isContainer(item.id)) {
@@ -132,98 +61,6 @@ function handleSpill(item: LabItem, amount: number) {
     s.volume = Math.max(0, s.volume - amount);
     totalSpilled.value = +(totalSpilled.value + amount).toFixed(2);
     if (selectedItem.value?.uid === item.uid) emit('select', item, buildToolState(item));
-  }
-}
-function handleDropExited(sourceItem: LabItem, wx: number, wy: number, color: string) {
-  // wx, wy are workspace coordinates where drop passed beaker bottom
-  const candidates = items.value.filter((i: LabItem) => {
-    if (i.uid === sourceItem.uid) return false;
-    if (!isContainer(i.id)) return false;
-    // Generous catch: drop must be near container horizontally (±65px) and near/above its mouth
-    return Math.abs(wx - (i.x + 70)) < 65 && wy >= i.y - 20 && wy <= i.y + 120;
-  });
-  // Pick the closest container to the drop position (instead of first match)
-  let target: LabItem | undefined;
-  if (candidates.length > 0) {
-    target = candidates.reduce((best, current) => {
-      const bestDx = wx - (best.x + 70);
-      const bestDy = wy - (best.y + 50);
-      const bestDist = bestDx * bestDx + bestDy * bestDy;
-      const currDx = wx - (current.x + 70);
-      const currDy = wy - (current.y + 50);
-      const currDist = currDx * currDx + currDy * currDy;
-      return currDist < bestDist ? current : best;
-    });
-  }
-  if (target) {
-    const tLiq = getLiquid(target.uid);
-    if (tLiq.volume < tLiq.maxVolume) {
-      pushHistory();
-      const amount = 0.15;
-      tLiq.volume = Math.min(tLiq.maxVolume, +(tLiq.volume + amount).toFixed(1));
-
-      // Get source chemical ID for reaction engine
-      const sLiq = liquidMap[sourceItem.uid];
-      const sBur = buretteMap[sourceItem.uid];
-      // If no chemicalId, check indicators array (for indicator-only containers like test tube with phenolphthalein)
-      const sourceChemicalId = sLiq?.chemicalId || sBur?.chemicalId || sLiq?.indicators?.[0] || undefined;
-
-      const indicatorIds = new Set(['phenolphthalein', 'methyl-orange', 'bromothymol-blue', 'universal-indicator', 'starch']);
-      const isIndicatorId = (id: string) => indicatorIds.has(id);
-
-      if (sourceChemicalId && tLiq.chemicalId) {
-        if (isIndicatorId(sourceChemicalId)) {
-          // Indicator dropped into container: add to indicators array, preserve base chemical
-          if (!tLiq.indicators) tLiq.indicators = [];
-          if (!tLiq.indicators.includes(sourceChemicalId)) {
-            tLiq.indicators.push(sourceChemicalId);
-            applyIndicator(sourceChemicalId, target.uid);
-          }
-          // Update label to show indicator is present
-          if (!tLiq.label.includes('فينوفتالين') && !tLiq.label.includes('ميثيل') && !tLiq.label.includes('بروموثيمول') && !tLiq.label.includes('دليل') && !tLiq.label.includes('نشا')) {
-            // Try to get indicator name from chemical data
-            const indNames: Record<string, string> = {
-              'phenolphthalein': 'فينوفتالين',
-              'methyl-orange': 'ميثيل برتقالي',
-              'bromothymol-blue': 'بروموثيمول أزرق',
-              'universal-indicator': 'دليل عالمي',
-              'starch': 'النشا',
-            };
-            const indName = indNames[sourceChemicalId] || sourceChemicalId;
-            if (!tLiq.label.includes('+')) {
-              tLiq.label = tLiq.label + ' + ' + indName;
-            }
-          }
-        } else {
-          // Normal chemical reaction
-          handleDropMix({
-            sourceUid: sourceItem.uid,
-            targetUid: target.uid,
-            sourceChemicalId,
-            targetChemicalId: tLiq.chemicalId,
-            dropVolume: amount,
-          });
-        }
-      } else if (sourceChemicalId) {
-        // First chemical entering empty container
-        tLiq.chemicalId = sourceChemicalId;
-      }
-
-      // Apply color (either from reaction result or from source)
-      if (!tLiq.chemicalId) {
-        tLiq.color = color;
-      }
-
-      // Track burette consumption if source is a burette
-      if (isBurette(sourceItem.id)) {
-        const consumed = buretteConsumedThisRefill[sourceItem.uid] || 0;
-        buretteConsumedThisRefill[sourceItem.uid] = consumed + amount;
-      }
-
-      receivingMap[target.uid] = true;
-      setTimeout(() => { receivingMap[target.uid] = false; }, 400);
-      if (selectedItem.value?.uid === target.uid) emit('select', target, buildToolState(target));
-    }
   }
 }
 function toggleBuretteValve(item: LabItem) {
@@ -342,7 +179,7 @@ defineExpose({
         @mousedown="onItemMouseDown($event, item)"
         @mouth-interact="onMouthInteract(item)"
         @spill="handleSpill"
-        @drop-exited="handleDropExited"
+        @drop-exited="_handleDropExited"
         @toggle-valve="toggleBuretteValve(item)"
         @tip-interact="tipInteract(item)"
         @toggle-stopcock="_toggleSepFunnelValve(item)"

@@ -23,8 +23,10 @@ export type ActionType = 'refill' | 'empty' | 'toggleValve' | 'fill5' | 'fill10'
 
 export function execAction(type: ActionType, uid: string, selectedItemRef: { value: LabItem | null }, emit: (name: 'select', item: LabItem | null, state: ToolState | null) => void) {
   const item = items.value.find(i => i.uid === uid); if (!item) return;
-  pushMacroHistory();
+  // Toggle valve is NOT a macro step — it's part of the drip flow (micro history tracks drops)
   if (type === 'toggleValve' && isBurette(item.id)) { toggleBuretteValve(item, selectedItemRef, emit); return; }
+  // All other actions are macro steps
+  pushMacroHistory();
   if (type === 'refill' && isBurette(item.id)) {
     const b = getBurette(uid);
     commitBuretteConsumption(uid);

@@ -31,9 +31,9 @@ function onClick() {
 <style scoped>
 .analysis-btn {
   position: fixed;
-  bottom: 3.5rem;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 0.5rem;
+  left: calc(var(--left-width, 300px) + 15rem);
+  transform: none;
   padding: 0.5rem 1.2rem;
   border: none;
   border-radius: 0.5rem;
@@ -47,6 +47,7 @@ function onClick() {
   transition: all 0.15s;
 }
 .analysis-btn:hover {
+  transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(6,182,212,0.5);
 }
 .analysis-btn.disabled {

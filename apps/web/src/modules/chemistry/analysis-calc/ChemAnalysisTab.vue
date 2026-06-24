@@ -52,12 +52,22 @@ function solveEquation(eq: ChemAnalysisEquation) {
       }
     }
     try {
-      let formula = eq.formula;
+      // Split formula at '=' and evaluate the RIGHT side (which computes the target)
+      const parts = eq.formula.split('=');
+      if (parts.length !== 2) continue;
+
+      let rightSide = parts[1].trim();
+
+      // Substitute known values into right side
       for (const [sym, val] of Object.entries(values)) {
-        formula = formula.replace(new RegExp(`\\b${sym}\\b`, 'g'), String(val));
+        rightSide = rightSide.replace(new RegExp(`\\b${sym}\\b`, 'g'), String(val));
       }
-      const result = eval(formula.replace(/=/g, '-(') + ')');
-      if (!isNaN(result)) {
+
+      // Replace log10 with Math.log10 for eval
+      rightSide = rightSide.replace(/\blog10\b/g, 'Math.log10');
+
+      const result = eval(rightSide);
+      if (!isNaN(result) && isFinite(result)) {
         solvedEquations.value.push({
           equationName: eq.name,
           formula: eq.formula,
@@ -67,7 +77,9 @@ function solveEquation(eq: ChemAnalysisEquation) {
           timestamp: Date.now(),
         });
       }
-    } catch { /* ignore */ }
+    } catch (e) {
+      console.error('[solveEquation] Error:', e, 'formula:', eq.formula);
+    }
   }
 }
 

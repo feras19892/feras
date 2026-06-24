@@ -68,6 +68,7 @@ test.describe('Monkey Testing: Random UI Interactions', () => {
       '/physics/mechanics/spring',
       '/physics/mechanics/pendulum',
       '/physics/mechanics/analysis-calc',
+      '/chemistry',
     ]
 
     const pageErrors: string[] = []

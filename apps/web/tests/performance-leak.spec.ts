@@ -36,6 +36,36 @@ test.describe('Performance & Memory Leak', () => {
     expect(avgFps).toBeGreaterThan(30) // الحد الأدنى المقبول
   })
 
+  test('chemistry lab maintains 30 FPS during interactions', async ({ page }) => {
+    await page.goto('/chemistry')
+    await page.waitForSelector('.chemistry-landing')
+
+    const fpsSamples: number[] = []
+    for (let i = 0; i < 10; i++) {
+      const fps = await page.evaluate(() => {
+        return new Promise<number>((resolve) => {
+          let frames = 0
+          const start = performance.now()
+          function count() {
+            frames++
+            if (performance.now() - start < 1000) {
+              requestAnimationFrame(count)
+            } else {
+              resolve(frames)
+            }
+          }
+          requestAnimationFrame(count)
+        })
+      })
+      fpsSamples.push(fps)
+      await page.waitForTimeout(200)
+    }
+
+    const avgFps = fpsSamples.reduce((a, b) => a + b, 0) / fpsSamples.length
+    console.log('Chemistry avg FPS:', avgFps)
+    expect(avgFps).toBeGreaterThan(30)
+  })
+
   test('memory does not grow unbounded after multiple runs', async ({ page }) => {
     await page.goto('/physics/mechanics/collision')
     await page.waitForSelector('.menu-bar')

@@ -26,6 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
   tiltAngle: 0,
   itemX: 0,
   itemY: 0,
+  itemUid: '',
 });
 
 const showMouthGlow = ref(false);
@@ -66,7 +67,7 @@ const emit = defineEmits<{ mouthInteract: []; spill: [amount: number]; dropExite
 
 /* ---- Drop physics ---- */
 const canvasRef = ref<HTMLCanvasElement | null>(null);
-let activeDrops: {x:number; y:number; vx:number; vy:number; size:number}[] = [];
+const activeDrops: {x:number; y:number; vx:number; vy:number; size:number}[] = [];
 let dropTimer = 0;
 let animId = 0;
 let running = false;

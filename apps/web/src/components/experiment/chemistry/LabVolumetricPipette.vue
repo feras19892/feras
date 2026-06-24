@@ -22,9 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{ click: []; }>();
 
 /* Geometry: long thin tube, small glass bulb in middle, fine tip */
-const tipY = 262;       // bottom of fine tip
 const tubeBottom = 209; // where tube meets tip
-const bulbBottom = 159; // where lower stem meets bulb
 const bulbTop = 142;    // where upper stem meets bulb (calibration ring)
 const tubeH = tubeBottom - bulbTop; // 67px for liquid range = 10mL
 
@@ -34,47 +32,9 @@ const liquidH = computed(() => {
   return (props.volume / props.maxVolume) * tubeH;
 });
 const liquidY = computed(() => tubeBottom - liquidH.value);
-const liquidTop = computed(() => liquidY.value);
-const liquidBottom = computed(() => tubeBottom);
-
-/* Single calibration ring at bulbTop */
-const calY = bulbTop;
 
 /* Canvas for drop effect when emptying */
 const canvasRef = ref<HTMLCanvasElement | null>(null);
-let drops: { x: number; y: number; vy: number; size: number }[] = [];
-let animId = 0;
-
-function spawnDrop() {
-  const ctx = canvasRef.value?.getContext('2d');
-  if (!ctx) return;
-  drops.push({ x: 20 + (Math.random() - 0.5) * 2, y: tipY - 5, vy: 0.5, size: 1.5 + Math.random() });
-  if (drops.length > 30) drops.shift();
-  if (animId) return;
-
-  function loop() {
-    if (!canvasRef.value) return;
-    const c = canvasRef.value.getContext('2d');
-    if (!c) return;
-    c.clearRect(0, 0, 40, 280);
-    for (let i = drops.length - 1; i >= 0; i--) {
-      const d = drops[i];
-      d.vy += 0.4;
-      d.y += d.vy;
-      c.beginPath(); c.arc(d.x, d.y, d.size, 0, Math.PI * 2);
-      c.fillStyle = props.liquidColor; c.globalAlpha = 0.8; c.fill(); c.globalAlpha = 1;
-      c.beginPath(); c.arc(d.x - 0.3, d.y - 0.3, d.size * 0.3, 0, Math.PI * 2);
-      c.fillStyle = 'rgba(255,255,255,0.5)'; c.fill();
-      if (d.y > 280) drops.splice(i, 1);
-    }
-    if (drops.length > 0) {
-      animId = requestAnimationFrame(loop);
-    } else {
-      animId = 0;
-    }
-  }
-  loop();
-}
 </script>
 
 <template>

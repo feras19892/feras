@@ -186,7 +186,7 @@ export class FluidSimulation {
     ctx.clip();
 
     // Draw liquid body as gradient from particles
-    const { wallLeft, wallRight, bottomY, volume } = this.config;
+    const { bottomY, volume } = this.config;
     if (volume > 0) {
       // Find surface particles
       const surfaceY = Math.min(...this.particles.map(p => p.y));

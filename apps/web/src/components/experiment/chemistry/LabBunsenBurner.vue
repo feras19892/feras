@@ -13,8 +13,6 @@ const props = withDefaults(defineProps<Props>(), {
   isHovered: false,
 });
 
-const emit = defineEmits<{ click: [] }>();
-
 const flameOpacity = computed(() => props.isOn ? 0.85 : 0);
 const flameHeight = computed(() => props.isOn ? 55 * props.intensity : 0);
 </script>

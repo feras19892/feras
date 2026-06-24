@@ -11,7 +11,6 @@ const props = withDefaults(defineProps<Props>(), {
   isHovered: false,
 });
 
-const emit = defineEmits<{ click: []; intensityChange: [val: number] }>();
 </script>
 
 <template>

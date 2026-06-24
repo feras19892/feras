@@ -1,4 +1,4 @@
-import type { LeverParams, LeverState } from '../../../modules/physics/experiments/lever/useLeverPhysics'
+import type { LeverState } from '../../../modules/physics/experiments/lever/useLeverPhysics'
 import { uniqueColorPerId } from '../../lever/leverUtils'
 
 export function drawBackground(ctx: CanvasRenderingContext2D, w: number, h: number) {

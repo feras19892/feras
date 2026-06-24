@@ -1,4 +1,4 @@
-import { ref, watch, onMounted, onUnmounted } from 'vue';
+import { watch, onMounted, onUnmounted } from 'vue';
 import type { Ref } from 'vue';
 
 export interface DropPhysicsOptions {

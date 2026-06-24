@@ -1,9 +1,9 @@
 import type { LabItem } from './useChemistryTools';
 import {
-  liquidMap, getLiquid,
-  buretteMap, getBurette,
+  getLiquid,
+  getBurette,
   receivingMap, pourFlowMap, tiltAngleMap,
-  burnerMap, getBurnerState, balanceTareMap, containerTareMap, simSpeed, phProbeTipMap, stopperMap,
+  getBurnerState, balanceTareMap, containerTareMap, simSpeed, phProbeTipMap, stopperMap,
   isContainer
 } from './useChemistryLab';
 import { items } from './useChemistryLab';
@@ -103,7 +103,7 @@ export function isHeated(item: LabItem): boolean {
 // ================== SIMULATION LOOP ==================
 let simTimer = 0;
 
-export function startSimulation(onSync: (item: LabItem | null) => void) {
+export function startSimulation(_onSync: (item: LabItem | null) => void) {
   function run() {
     // Clear receiving state
     Object.keys(receivingMap).forEach(k => delete receivingMap[k]);

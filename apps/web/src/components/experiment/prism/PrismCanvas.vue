@@ -96,9 +96,7 @@ function onPointerMove(e: PointerEvent) {
     const canvas = canvasRef.value!
     const rect = canvas.getBoundingClientRect()
     const scaleX = canvas.width / rect.width
-    const scaleY = canvas.height / rect.height
     const dx = e.clientX - dragStartClientX
-    const dy = e.clientY - dragStartClientY
     const edgeLen = Math.hypot(g.pB.x - g.pA.x, g.pB.y - g.pA.y)
     const edgeDirX = edgeLen > 0 ? (g.pB.x - g.pA.x) / edgeLen : 1
     const projectedDx = (dx * scaleX) * edgeDirX

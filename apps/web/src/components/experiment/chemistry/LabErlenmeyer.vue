@@ -23,6 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
   tiltAngle: 0,
   itemX: 0,
   itemY: 0,
+  itemUid: '',
 });
 
 const emit = defineEmits<{ click: []; spill: [amount: number]; dropExited: [worldX: number, worldY: number, color: string]; }>();
@@ -61,7 +62,6 @@ const centerX = 70;
 
 /* Liquid fills from bottom of body up into neck */
 const totalH = bodyBottom - shoulderY; // 127
-const neckVolRatio = 0.15; // neck holds ~15% of volume
 
 const liquidH = computed(() => {
   if (props.volume <= 0) return 0;
@@ -87,8 +87,6 @@ const marks = computed<Mark[]>(() => [
   { y: bodyBottom - totalH * 0.75, label: '225' },
   { y: bodyBottom - totalH, label: '300' },
 ]);
-
-const pct = computed(() => Math.round((props.volume / props.maxVolume) * 100));
 </script>
 
 <template>

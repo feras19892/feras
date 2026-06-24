@@ -23,6 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
   tiltAngle: 0,
   itemX: 0,
   itemY: 0,
+  itemUid: '',
 });
 
 const emit = defineEmits<{ click: []; spill: [amount: number]; dropExited: [worldX: number, worldY: number, color: string]; }>();

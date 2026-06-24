@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import {
   getLiquid, getBurette, getPipette, getSepFunnelState, getBurnerState, getItemZoom, pourFlowMap, tiltAngleMap,
   isContainer, isBeaker, isTestTube, isBurette, isPipette, isErlenmeyer, isVolumetricFlask, isRoundBottomFlask,
-  isSeparatoryFunnel, isGradCylinder, isBunsenBurner, isHeatingMantle, isBalance, isPhMeter,
-  isWatchGlass, isFilterFunnel, isRubberStopper
+  isSeparatoryFunnel, isGradCylinder, isBunsenBurner, isHeatingMantle, isBalance, isPhMeter
 } from '../../../composables/chemistry/useChemistryLab';
 import { getBalanceReading, getPhReading, isHeated } from '../../../composables/chemistry/useLabSimulation';
 import LabBeaker from './LabBeaker.vue';

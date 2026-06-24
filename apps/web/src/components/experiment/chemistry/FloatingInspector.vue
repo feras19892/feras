@@ -2,8 +2,8 @@
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import type { ToolState } from './InspectorPanel.vue';
 import {
-  getLiquid, getBurette, getPipette, getSepFunnelState, getBurnerState, getBalanceTare, getContainerTare,
-  isGradCylinder, pourFlowMap, tiltAngleMap,
+  getPipette, getBurnerState, getBalanceTare, getContainerTare,
+  isGradCylinder, tiltAngleMap,
   selectedChemical, hasSelectedChemicalMap, simSpeed
 } from '../../../composables/chemistry/useChemistryLab';
 import { computeBalanceWeight, getBalanceReading, getPhReading } from '../../../composables/chemistry/useLabSimulation';

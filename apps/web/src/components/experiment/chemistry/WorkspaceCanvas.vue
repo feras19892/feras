@@ -5,14 +5,14 @@ import type { ToolState } from './InspectorPanel.vue';
 import {
   items, receivingMap, balanceTareMap, containerTareMap, itemZoomMap, pourFlowMap, phProbeTipMap, stopperMap,
   getLiquid, getBurette, getPipette, getSepFunnelState, getBurnerState, getItemZoom, buildToolState,
-  isContainer, isBeaker, isBurette, isPipette, isSeparatoryFunnel,
+  isContainer, isBurette,
   selectedChemical,
   pendingChemicalFill,
   hasSelectedChemicalMap,
   createLabItem, loadSession, clearSession
 } from '../../../composables/chemistry/useChemistryLab';
 import {
-  getPhReading, computeBalanceWeight, getBalanceReading, getContainerWeight,
+  computeBalanceWeight, getContainerWeight,
   startSimulation, stopSimulation
 } from '../../../composables/chemistry/useLabSimulation';
 import { pushHistory, undo, redo, canUndo, canRedo, clearHistory } from '../../../composables/chemistry/useChemistryHistory';
@@ -255,10 +255,6 @@ function tareContainer(item: LabItem) {
 }
 
 /* ---- Computed ---- */
-const balanceReading = computed(() => {
-  const balance = items.value.find(i => i.id === 'digital-balance');
-  return balance ? getBalanceReading(balance.uid) : null;
-});
 const selectedState = computed<ToolState | null>(() => buildToolState(selectedItem.value));
 
 /* ---- Lifecycle ---- */

@@ -8,6 +8,7 @@ const EXPERIMENT_ROUTES = [
   '/physics/mechanics/projectile',
   '/physics/mechanics/inclined',
   '/physics/mechanics/analysis-calc',
+  '/chemistry',
 ]
 
 test.describe('Visual Regression: Physics Experiments', () => {

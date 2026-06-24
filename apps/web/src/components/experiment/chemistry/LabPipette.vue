@@ -22,11 +22,9 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{ click: []; }>();
 
 /* Geometry: rubber bulb at top, graduated tube, fine tip */
-const tipY = 260;       // bottom of tip
 const tubeBottom = 210; // where tube meets tip
 const tubeTop = 55;     // where tube meets neck
 const tubeH = tubeBottom - tubeTop; // 155px = 10mL
-const bulbY = 22;       // center of rubber bulb
 
 /* Liquid fills tube from bottom up */
 const liquidH = computed(() => {
@@ -35,7 +33,6 @@ const liquidH = computed(() => {
 });
 const liquidY = computed(() => tubeBottom - liquidH.value);
 const liquidTop = computed(() => liquidY.value);
-const liquidBottom = computed(() => tubeBottom);
 
 /* Graduation marks: 0 at tubeBottom, 10 at tubeTop */
 const marks = computed(() => {
@@ -48,39 +45,6 @@ const marks = computed(() => {
 
 /* Canvas for drop effect when emptying */
 const canvasRef = ref<HTMLCanvasElement | null>(null);
-let drops: { x: number; y: number; vy: number; size: number }[] = [];
-let animId = 0;
-
-function spawnDrop() {
-  const ctx = canvasRef.value?.getContext('2d');
-  if (!ctx) return;
-  drops.push({ x: 30 + (Math.random() - 0.5) * 2, y: tipY - 5, vy: 0.5, size: 1.5 + Math.random() });
-  if (drops.length > 30) drops.shift();
-  if (animId) return;
-
-  function loop() {
-    if (!canvasRef.value) return;
-    const c = canvasRef.value.getContext('2d');
-    if (!c) return;
-    c.clearRect(0, 0, 60, 280);
-    for (let i = drops.length - 1; i >= 0; i--) {
-      const d = drops[i];
-      d.vy += 0.4;
-      d.y += d.vy;
-      c.beginPath(); c.arc(d.x, d.y, d.size, 0, Math.PI * 2);
-      c.fillStyle = props.liquidColor; c.globalAlpha = 0.8; c.fill(); c.globalAlpha = 1;
-      c.beginPath(); c.arc(d.x - 0.3, d.y - 0.3, d.size * 0.3, 0, Math.PI * 2);
-      c.fillStyle = 'rgba(255,255,255,0.5)'; c.fill();
-      if (d.y > 280) drops.splice(i, 1);
-    }
-    if (drops.length > 0) {
-      animId = requestAnimationFrame(loop);
-    } else {
-      animId = 0;
-    }
-  }
-  loop();
-}
 </script>
 
 <template>

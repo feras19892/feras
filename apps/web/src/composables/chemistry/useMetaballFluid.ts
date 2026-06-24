@@ -15,7 +15,6 @@ interface FluidParticle {
 const W = 140;
 const H = 200;
 const GRAVITY_Y = 0.25;
-const GRAVITY_X = 0.0;
 const RADIAN_FACTOR = Math.PI / 180;
 
 // Beaker walls (matching SVG beaker)
@@ -130,7 +129,7 @@ export class MetaballFluid {
     }
   }
 
-  private handleBoundaries(p: FluidParticle, rad: number) {
+  private handleBoundaries(p: FluidParticle, _rad: number) {
     // Simple beaker walls (ignoring tilt for wall collision — particles stay inside rotated beaker)
     if (p.x < WALL_LEFT) { p.x = WALL_LEFT; p.vx = Math.abs(p.vx) * 0.2; }
     if (p.x > WALL_RIGHT) { p.x = WALL_RIGHT; p.vx = -Math.abs(p.vx) * 0.2; }

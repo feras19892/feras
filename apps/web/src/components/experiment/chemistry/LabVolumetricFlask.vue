@@ -144,6 +144,18 @@ const markY = bulbTop;
           ry="1"
           fill="rgba(255,255,255,0.4)"
         />
+        <!-- Surface level indicator (red line for transparent liquids) -->
+        <line
+          :x1="centerX - bulbW/2 + 6"
+          :y1="liquidY"
+          :x2="centerX + bulbW/2 - 6"
+          :y2="liquidY"
+          stroke="#ef4444"
+          stroke-width="1.2"
+          opacity="0.65"
+          stroke-linecap="round"
+        />
+        <circle :cx="centerX" :cy="liquidY" r="2.5" fill="#ef4444" opacity="0.3" />
       </g>
 
       <!-- Glass highlights -->

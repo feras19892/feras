@@ -16,7 +16,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  action: [type: 'refill' | 'empty' | 'toggleValve' | 'fill50' | 'fill100' | 'remove50' | 'remove100' | 'addSolid', uid: string];
+  action: [type: 'refill' | 'empty' | 'toggleValve' | 'fill5' | 'fill10' | 'fill50' | 'fill100' | 'remove5' | 'remove10' | 'remove50' | 'remove100' | 'addSolid', uid: string];
   remove: [uid: string];
   pipetteDraw: [];
   pipetteDispense: [];
@@ -114,12 +114,16 @@ function pipetteStatus(): string {
           </span>
         </div>
         <div class="fi-actions">
-          <button @click="emit('action', 'fill50', item.uid)">💧 +50mL</button>
-          <button @click="emit('action', 'fill100', item.uid)">💧 +100mL</button>
+          <button @click="emit('action', 'fill5', item.uid)">💧 +5</button>
+          <button @click="emit('action', 'fill10', item.uid)">💧 +10</button>
+          <button @click="emit('action', 'fill50', item.uid)">💧 +50</button>
+          <button @click="emit('action', 'fill100', item.uid)">💧 +100</button>
         </div>
         <div class="fi-actions">
-          <button class="remove" @click="emit('action', 'remove50', item.uid)">💨 −50mL</button>
-          <button class="remove" @click="emit('action', 'remove100', item.uid)">💨 −100mL</button>
+          <button class="remove" @click="emit('action', 'remove5', item.uid)">💨 −5</button>
+          <button class="remove" @click="emit('action', 'remove10', item.uid)">💨 −10</button>
+          <button class="remove" @click="emit('action', 'remove50', item.uid)">💨 −50</button>
+          <button class="remove" @click="emit('action', 'remove100', item.uid)">💨 −100</button>
         </div>
         <div class="fi-actions">
           <button class="empty" @click="emit('action', 'empty', item.uid)">🗑️ تفريغ</button>
@@ -143,10 +147,23 @@ function pipetteStatus(): string {
         <div class="fi-bar"><div class="fi-fill" :style="{ width: (state.volume/state.maxVolume*100).toFixed(0) + '%', background: state.color }" /></div>
         <div class="fi-row"><span>الصنبور</span><b :class="state.valveOpen ? 'open' : ''">{{ state.valveOpen ? '🔓 مفتوح' : '🔒 مغلق' }}</b></div>
         <div class="fi-actions">
+          <button @click="emit('action', 'fill5', item.uid)">💧 +5</button>
+          <button @click="emit('action', 'fill10', item.uid)">💧 +10</button>
+          <button @click="emit('action', 'fill50', item.uid)">💧 +50</button>
+          <button @click="emit('action', 'fill100', item.uid)">💧 +100</button>
+        </div>
+        <div class="fi-actions">
           <button :class="state.valveOpen ? 'danger' : 'success'" @click="emit('action', 'toggleValve', item.uid)">{{ state.valveOpen ? '🔒 إغلاق' : '🚰 فتح' }}</button>
           <button class="refill" @click="emit('action', 'refill', item.uid)">♻️ تعبئة</button>
         </div>
         <div class="fi-actions">
+          <button class="remove" @click="emit('action', 'remove5', item.uid)">💨 −5</button>
+          <button class="remove" @click="emit('action', 'remove10', item.uid)">💨 −10</button>
+          <button class="remove" @click="emit('action', 'remove50', item.uid)">💨 −50</button>
+          <button class="remove" @click="emit('action', 'remove100', item.uid)">💨 −100</button>
+        </div>
+        <div class="fi-actions">
+          <button class="empty" @click="emit('action', 'empty', item.uid)">🗑️ تفريغ</button>
           <button class="delete" @click="emit('remove', item.uid)">❌ إزالة</button>
         </div>
       </template>

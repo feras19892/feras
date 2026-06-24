@@ -3,10 +3,11 @@ import type { LabItem } from './useChemistryTools';
 import type { LiquidState, BuretteState, PipetteState, SepFunnelState } from './chemLabTypes';
 import {
   items, liquidMap, buretteMap, pipetteMap,
-  sepFunnelMap, burnerMap, balanceTareMap, itemZoomMap
+  sepFunnelMap, burnerMap, balanceTareMap, itemZoomMap,
+  buretteInitialVolumeMap, buretteTotalConsumedMap, buretteConsumedThisRefill
 } from './useChemistryLab';
 
-const MAX_HISTORY = 20;
+const MAX_HISTORY = 200;
 
 interface HistorySnapshot {
   items: LabItem[];
@@ -17,6 +18,9 @@ interface HistorySnapshot {
   burners: Record<string, { on: boolean; intensity: number }>;
   tares: Record<string, number>;
   zoomMap: Record<string, number>;
+  buretteInitial: Record<string, number>;
+  buretteTotal: Record<string, number>;
+  buretteConsumed: Record<string, number>;
 }
 
 const past = ref<HistorySnapshot[]>([]);
@@ -36,6 +40,9 @@ function capture(): HistorySnapshot {
     burners: clone(burnerMap),
     tares: clone(balanceTareMap),
     zoomMap: clone(itemZoomMap),
+    buretteInitial: clone(buretteInitialVolumeMap),
+    buretteTotal: clone(buretteTotalConsumedMap),
+    buretteConsumed: clone(buretteConsumedThisRefill),
   };
 }
 
@@ -48,6 +55,9 @@ function restore(snap: HistorySnapshot) {
   Object.keys(burnerMap).forEach(k => delete burnerMap[k]);
   Object.keys(balanceTareMap).forEach(k => delete balanceTareMap[k]);
   Object.keys(itemZoomMap).forEach(k => delete itemZoomMap[k]);
+  Object.keys(buretteInitialVolumeMap).forEach(k => delete buretteInitialVolumeMap[k]);
+  Object.keys(buretteTotalConsumedMap).forEach(k => delete buretteTotalConsumedMap[k]);
+  Object.keys(buretteConsumedThisRefill).forEach(k => delete buretteConsumedThisRefill[k]);
   Object.assign(liquidMap, clone(snap.liquids));
   Object.assign(buretteMap, clone(snap.burettes));
   Object.assign(pipetteMap, clone(snap.pipettes));
@@ -55,6 +65,9 @@ function restore(snap: HistorySnapshot) {
   Object.assign(burnerMap, clone(snap.burners));
   Object.assign(balanceTareMap, clone(snap.tares));
   Object.assign(itemZoomMap, clone(snap.zoomMap));
+  Object.assign(buretteInitialVolumeMap, clone(snap.buretteInitial));
+  Object.assign(buretteTotalConsumedMap, clone(snap.buretteTotal));
+  Object.assign(buretteConsumedThisRefill, clone(snap.buretteConsumed));
 }
 
 export function pushHistory() {

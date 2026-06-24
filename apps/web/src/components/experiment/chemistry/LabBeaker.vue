@@ -224,6 +224,18 @@ onUnmounted(() => { stopDrops(); });
             ry="2"
             fill="rgba(255,255,255,0.45)"
           />
+          <!-- Surface level indicator (red line for visibility even with transparent liquids) -->
+          <line
+            x1="42"
+            :y1="liquidY"
+            x2="98"
+            :y2="liquidY"
+            stroke="#ef4444"
+            stroke-width="1.2"
+            opacity="0.65"
+            stroke-linecap="round"
+          />
+          <circle :cx="70" :cy="liquidY" r="3" fill="#ef4444" opacity="0.3" />
           <!-- Side reflection inside liquid -->
           <path
             :d="`M 44 ${liquidY + 5} L 44 155`"

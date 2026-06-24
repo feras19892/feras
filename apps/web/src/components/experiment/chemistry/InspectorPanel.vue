@@ -21,7 +21,7 @@ interface Props {
 
 const props = defineProps<Props>();
 const emit = defineEmits<{
-  action: [type: 'refill' | 'empty' | 'toggleValve' | 'fill50' | 'fill100', uid: string];
+  action: [type: 'refill' | 'empty' | 'toggleValve' | 'fill5' | 'fill10' | 'fill50' | 'fill100' | 'remove5' | 'remove10' | 'remove50' | 'remove100', uid: string];
   remove: [uid: string];
 }>();
 
@@ -58,9 +58,17 @@ const pct = computed(() => {
           <span class="prop-label">اللون</span>
           <span class="color-dot" :style="{ background: props.state.color }" />
         </div>
-        <div class="controls-row">
-          <button class="btn fill" @click="emit('action', 'fill50', props.item!.uid)">💧 +50mL</button>
-          <button class="btn fill" @click="emit('action', 'fill100', props.item!.uid)">💧 +100mL</button>
+        <div class="controls-row four">
+          <button class="btn fill" @click="emit('action', 'fill5', props.item!.uid)">💧 +5</button>
+          <button class="btn fill" @click="emit('action', 'fill10', props.item!.uid)">💧 +10</button>
+          <button class="btn fill" @click="emit('action', 'fill50', props.item!.uid)">💧 +50</button>
+          <button class="btn fill" @click="emit('action', 'fill100', props.item!.uid)">💧 +100</button>
+        </div>
+        <div class="controls-row four">
+          <button class="btn remove" @click="emit('action', 'remove5', props.item!.uid)">💨 −5</button>
+          <button class="btn remove" @click="emit('action', 'remove10', props.item!.uid)">💨 −10</button>
+          <button class="btn remove" @click="emit('action', 'remove50', props.item!.uid)">💨 −50</button>
+          <button class="btn remove" @click="emit('action', 'remove100', props.item!.uid)">💨 −100</button>
         </div>
         <div class="controls-row">
           <button class="btn empty" @click="emit('action', 'empty', props.item!.uid)">🗑️ تفريغ</button>
@@ -189,6 +197,15 @@ const pct = computed(() => {
   gap: 0.4rem;
   margin-top: 0.2rem;
 }
+.controls-row.four {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 0.25rem;
+}
+.controls-row.four .btn {
+  font-size: 0.6rem;
+  padding: 0.3rem;
+}
 .btn {
   flex: 1;
   padding: 0.45rem;
@@ -225,8 +242,6 @@ const pct = computed(() => {
 .btn.remove {
   background: #f1f5f9;
   color: #64748b;
-  width: 100%;
-  margin-top: 0.2rem;
 }
 .btn.remove:hover {
   background: #fee2e2;

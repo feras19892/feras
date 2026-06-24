@@ -156,6 +156,18 @@ const marks = computed<Mark[]>(() => {
           ry="1"
           fill="rgba(255,255,255,0.35)"
         />
+        <!-- Surface level indicator (red line for transparent liquids) -->
+        <line
+          :x1="(c.w - c.tubeW)/2 + 3"
+          :y1="liquidY"
+          :x2="(c.w + c.tubeW)/2 - 3"
+          :y2="liquidY"
+          stroke="#ef4444"
+          stroke-width="1"
+          opacity="0.65"
+          stroke-linecap="round"
+        />
+        <circle :cx="c.w/2" :cy="liquidY" r="2" fill="#ef4444" opacity="0.3" />
         <!-- Side reflection -->
         <line
           :x1="(c.w - c.tubeW)/2 + 4"

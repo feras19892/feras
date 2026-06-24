@@ -1,8 +1,4 @@
 import { ref, reactive, watch } from 'vue';
-
-export const pendingChemicalFill = ref<{ uid: string; amount: number } | null>(null);
-export const hasSelectedChemicalMap = reactive<Record<string, boolean>>({});
-export const simSpeed = ref(1); // heating simulation speed multiplier (1x or 5x)
 import type { LabItem, ToolDef } from './useChemistryTools';
 import type { LiquidState, BuretteState, PipetteState, SepFunnelState, SavedSession } from './chemLabTypes';
 import {
@@ -12,6 +8,8 @@ import {
   isWatchGlass, isFilterFunnel, isRubberStopper,
   isContainer, getMaxVolume
 } from './chemLabIds';
+import type { Chemical } from './chemDatabase';
+import { chemicals, selectedChemical } from './chemDatabase';
 
 // Re-export for backward compatibility
 export type { LiquidState, BuretteState, PipetteState, SepFunnelState, SavedSession } from './chemLabTypes';
@@ -22,12 +20,17 @@ export {
   isWatchGlass, isFilterFunnel, isRubberStopper,
   isContainer, getMaxVolume
 } from './chemLabIds';
+export type { Chemical, ChemicalCategory, HazardLevel, PhysicalState } from './chemDatabase';
+export { chemicals, selectedChemical } from './chemDatabase';
 
 const STORAGE_KEY = 'chem-lab-session-v1';
 
 // ================== STATE ==================
 let uid = 0;
 
+export const pendingChemicalFill = ref<{ uid: string; amount: number } | null>(null);
+export const hasSelectedChemicalMap = reactive<Record<string, boolean>>({});
+export const simSpeed = ref(1);
 export const items = ref<LabItem[]>([]);
 export const liquidMap = reactive<Record<string, LiquidState>>({});
 export const buretteMap = reactive<Record<string, BuretteState>>({});
@@ -40,29 +43,14 @@ export const containerTareMap = reactive<Record<string, number>>({});
 export const itemZoomMap = reactive<Record<string, number>>({});
 export const phProbeTipMap = reactive<Record<string, { x: number; y: number }>>({});
 export const solidMap = reactive<Record<string, { amount: number; type: string }>>({});
-export const stopperMap = reactive<Record<string, string>>({}); // containerUid -> stopperUid
+export const stopperMap = reactive<Record<string, string>>({});
 export const pourFlowMap = reactive<Record<string, string>>({});
 export const tiltAngleMap = reactive<Record<string, number>>({});
 
-// Chemical shelf (temporary in-memory, will be expanded later)
-export interface Chemical {
-  id: string;
-  nameAr: string;
-  color: string;
-  opacity: number;
-}
-export const chemicals: Chemical[] = [
-  { id: 'water', nameAr: 'ماء', color: '#3b82f6', opacity: 0.35 },
-  { id: 'hcl', nameAr: 'HCl', color: '#ef4444', opacity: 0.4 },
-  { id: 'naoh', nameAr: 'NaOH', color: '#f59e0b', opacity: 0.4 },
-  { id: 'cuso4', nameAr: 'CuSO₄', color: '#1d4ed8', opacity: 0.5 },
-  { id: 'kmno4', nameAr: 'KMnO₄', color: '#7c2d12', opacity: 0.5 },
-  { id: 'nacl', nameAr: 'NaCl', color: '#e2e8f0', opacity: 0.3 },
-  { id: 'h2so4', nameAr: 'H₂SO₄', color: '#fbbf24', opacity: 0.4 },
-  { id: 'phenol', nameAr: 'فينول', color: '#ec4899', opacity: 0.4 },
-];
-export const selectedChemical = reactive<Chemical>({ ...chemicals[0] });
-
+// Burette consumption tracking for experiments
+export const buretteInitialVolumeMap = reactive<Record<string, number>>({});
+export const buretteTotalConsumedMap = reactive<Record<string, number>>({});
+export const buretteConsumedThisRefill = reactive<Record<string, number>>({});
 // Global spill particles (rendered in workspace-wide canvas)
 export interface SpillParticle {
   x: number; y: number; vx: number; vy: number; size: number; color: string; sourceUid: string;
@@ -72,14 +60,14 @@ export const spillParticles = reactive<SpillParticle[]>([]);
 // ================== GETTERS ==================
 export function getLiquid(uid: string): LiquidState {
   if (!liquidMap[uid]) {
-    liquidMap[uid] = { volume: 0, maxVolume: 250, color: '#3b82f6', opacity: 0.3, label: 'ماء', stirred: 0, temperature: 25, ph: null, heated: false, viscosity: 0.05, density: 1.0, surfaceTension: 0.3 };
+    liquidMap[uid] = { volume: 0, maxVolume: 250, color: '#3b82f6', opacity: 0.3, label: 'ماء', stirred: 0, temperature: 25, ph: null, heated: false, viscosity: 0.05, density: 1.0, surfaceTension: 0.3, chemicalId: undefined, indicators: [], baseColor: '#3b82f6' };
   }
   return liquidMap[uid];
 }
 
 export function getBurette(uid: string): BuretteState {
   if (!buretteMap[uid]) {
-    buretteMap[uid] = { volume: 50, maxVolume: 50, valveOpen: false, color: '#ef4444', opacity: 0.35 };
+    buretteMap[uid] = { volume: 50, maxVolume: 50, valveOpen: false, color: '#ef4444', opacity: 0.35, chemicalId: undefined };
   }
   return buretteMap[uid];
 }
@@ -139,10 +127,10 @@ export function createLabItem(def: ToolDef, x: number, y: number): LabItem {
   uid += 1;
   const item: LabItem = { uid: `lab-${uid}`, id: def.id, name: def.name, icon: def.icon, type: def.type, x, y };
   if (isContainer(def.id)) {
-    liquidMap[item.uid] = { volume: 0, maxVolume: getMaxVolume(def.id), color: '#3b82f6', opacity: 0.3, label: 'ماء', stirred: 0, temperature: 25, ph: null, heated: false, viscosity: 0.05, density: 1.0, surfaceTension: 0.3 };
+    liquidMap[item.uid] = { volume: 0, maxVolume: getMaxVolume(def.id), color: '#3b82f6', opacity: 0.3, label: 'ماء', stirred: 0, temperature: 25, ph: null, heated: false, viscosity: 0.05, density: 1.0, surfaceTension: 0.3, indicators: [], baseColor: '#3b82f6', chemicalId: undefined };
   }
   if (isBurette(def.id)) {
-    buretteMap[item.uid] = { volume: 50, maxVolume: 50, valveOpen: false, color: '#ef4444', opacity: 0.35 };
+    buretteMap[item.uid] = { volume: 50, maxVolume: 50, valveOpen: false, color: '#ef4444', opacity: 0.35, chemicalId: undefined };
   }
   if (isPipette(def.id)) {
     pipetteMap[item.uid] = { volume: 0, maxVolume: 10, color: '#94a3b8', opacity: 0.35, label: '' };
@@ -220,6 +208,9 @@ export function clearSession() {
   Object.keys(stopperMap).forEach(k => delete stopperMap[k]);
   Object.keys(pourFlowMap).forEach(k => delete pourFlowMap[k]);
   Object.keys(tiltAngleMap).forEach(k => delete tiltAngleMap[k]);
+  Object.keys(buretteInitialVolumeMap).forEach(k => delete buretteInitialVolumeMap[k]);
+  Object.keys(buretteTotalConsumedMap).forEach(k => delete buretteTotalConsumedMap[k]);
+  Object.keys(buretteConsumedThisRefill).forEach(k => delete buretteConsumedThisRefill[k]);
   uid = 0;
   localStorage.removeItem(STORAGE_KEY);
 }

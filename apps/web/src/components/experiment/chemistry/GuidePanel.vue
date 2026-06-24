@@ -1,28 +1,50 @@
 <script setup lang="ts">
-const steps = [
-  '1. أضف المحلول القلوي (NaOH) إلى السحاحة.',
-  '2. ضع عينة حمض الهيدروكلوريك (HCl) في الكأس.',
-  '3. أضف 3-4 قطرات من الفينوفتالين.',
-  '4. سخن الموقد إذا لزم الأمر.',
-  '5. أضف NaOH تدريجياً حتى يتغير اللون.',
-];
+import type { Experiment } from '../../../composables/chemistry/useExperiments';
 
-const equation = 'HCl + NaOH → NaCl + H₂O';
+const props = defineProps<{
+  experiment: Experiment | null;
+}>();
+
+const emit = defineEmits<{
+  selectExperiment: [];
+  openTheory: [];
+}>();
 </script>
 
 <template>
   <div class="guide-panel">
-    <h3>📋 التوجيه والمعادلات</h3>
-    <div class="equation-box">
-      <label>المعادلة الحاكمة</label>
-      <code>{{ equation }}</code>
-    </div>
-    <div class="steps">
-      <label>خطوات التجربة</label>
-      <ol>
-        <li v-for="(step, i) in steps" :key="i">{{ step }}</li>
-      </ol>
-    </div>
+    <!-- No experiment selected -->
+    <template v-if="!experiment">
+      <button class="exp-btn" @click="emit('selectExperiment')">
+        <span class="exp-btn-icon">🔬</span>
+        <span class="exp-btn-label">اختر تجربة</span>
+      </button>
+      <div class="guide-hint">
+        <span>💡</span>
+        <p>اختر تجربة كيميائية لتبدأ الرحلة العلمية</p>
+      </div>
+    </template>
+
+    <!-- Experiment selected -->
+    <template v-else>
+      <div class="exp-active-header">
+        <span class="exp-active-icon">{{ experiment.icon }}</span>
+        <div class="exp-active-info">
+          <span class="exp-active-name">{{ experiment.nameAr }}</span>
+          <span class="exp-active-desc">{{ experiment.description }}</span>
+        </div>
+      </div>
+      <div class="exp-active-actions">
+        <button v-if="experiment.theory" class="theory-btn" @click="emit('openTheory')">
+          <span>📖</span>
+          <span>الشرح النظري</span>
+        </button>
+        <button class="change-btn" @click="emit('selectExperiment')">
+          <span>🔄</span>
+          <span>تغيير التجربة</span>
+        </button>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -32,48 +54,102 @@ const equation = 'HCl + NaOH → NaCl + H₂O';
   border: 1px solid #e2e8f0;
   border-radius: 0.75rem;
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
-.guide-panel h3 {
-  margin: 0 0 0.75rem;
-  font-size: 0.9rem;
-  color: #334155;
-}
-.equation-box {
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  border-radius: 0.5rem;
-  padding: 0.75rem;
-  margin-bottom: 0.75rem;
-}
-.equation-box label {
-  display: block;
-  font-size: 0.65rem;
-  color: #10b981;
-  font-weight: 700;
-  margin-bottom: 0.35rem;
-}
-.equation-box code {
-  display: block;
+.exp-btn {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff;
+  border: none;
+  border-radius: 0.6rem;
   font-size: 0.85rem;
-  color: #166534;
-  font-family: 'Courier New', monospace;
-  direction: ltr;
-  text-align: center;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
 }
-.steps label {
-  display: block;
+.exp-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16,185,129,0.35);
+}
+.exp-btn-icon { font-size: 1.2rem; }
+.exp-btn-label { font-size: 0.85rem; }
+
+.guide-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 0.5rem;
+  padding: 0.6rem;
+  font-size: 0.7rem;
+  color: #0369a1;
+}
+.guide-hint p { margin: 0; }
+
+.exp-active-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+.exp-active-icon { font-size: 1.8rem; }
+.exp-active-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1;
+}
+.exp-active-name {
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: #1e293b;
+}
+.exp-active-desc {
   font-size: 0.7rem;
   color: #64748b;
-  margin-bottom: 0.4rem;
+  line-height: 1.4;
 }
-.steps ol {
-  margin: 0;
-  padding-right: 1.2rem;
-  font-size: 0.75rem;
-  color: #475569;
-  line-height: 1.8;
+.exp-active-actions {
+  display: flex;
+  gap: 0.4rem;
 }
-.steps li {
-  margin-bottom: 0.3rem;
+.exp-active-actions button {
+  flex: 1;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 0.45rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  transition: all 0.15s;
+}
+.theory-btn {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #fff;
+}
+.theory-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59,130,246,0.3);
+}
+.change-btn {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+.change-btn:hover {
+  background: #e2e8f0;
 }
 </style>

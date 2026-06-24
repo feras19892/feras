@@ -1,29 +1,42 @@
+import { ref } from 'vue';
 import type { LabItem } from './useChemistryTools';
 import {
   getLiquid,
   getBurette,
   receivingMap, pourFlowMap, tiltAngleMap,
   getBurnerState, balanceTareMap, containerTareMap, simSpeed, phProbeTipMap, stopperMap,
+  buretteConsumedThisRefill,
   isContainer
 } from './useChemistryLab';
 import { items } from './useChemistryLab';
+import { handleDropMix, calculateTitrationPh, isAcid, isBase, applyIndicatorsToContainer } from './useReactionEngine';
+
+// ================== BURETTE WARNING ==================
+export type BuretteWarning = 'approaching' | 'equivalence' | 'exceeded' | null;
+export const buretteWarning = ref<BuretteWarning>(null);
 
 // ================== BURETTE FIND ==================
 export function findContainerBelow(burette: LabItem): LabItem | null {
-  const tipY = burette.y + 239;
+  // Use burette TOP as reference (not bottom) since burette is very tall
+  // and containers visually below it may overlap in Y coordinates
+  const buretteTopY = burette.y;
+  const buretteCenterX = burette.x + 42;
   const candidates = items.value.filter((i: LabItem) => {
     if (i.uid === burette.uid || !isContainer(i.id)) return false;
-    const containerTopY = i.y + 8;
-    const dy = containerTopY - tipY;
-    return dy >= 0 && dy <= 200; // any container below the burette within reasonable range
+    const containerCenterX = i.x + (i.id === 'beaker' ? 70 : i.id === 'test-tube' ? 20 : 40);
+    const containerTopY = i.y;
+    const dx = Math.abs(containerCenterX - buretteCenterX);
+    // Container must be horizontally near burette, and visually below it
+    // (container top should be at least 40px below burette top, within 250px)
+    const dy = containerTopY - buretteTopY;
+    return dx <= 100 && dy >= 40 && dy <= 250;
   });
   if (candidates.length === 0) return null;
-  // Pick the closest one horizontally to the burette tip
-  const tipX = burette.x + 42;
+  // Pick closest to burette (smallest dy among matches)
   return candidates.reduce((closest, current) => {
-    const closestDx = Math.abs(closest.x + 50 - tipX);
-    const currentDx = Math.abs(current.x + 50 - tipX);
-    return currentDx < closestDx ? current : closest;
+    const cDy = closest.y - buretteTopY;
+    const currDy = current.y - buretteTopY;
+    return currDy < cDy ? current : closest;
   }, candidates[0]);
 }
 
@@ -118,17 +131,42 @@ export function startSimulation(_onSync: (item: LabItem | null) => void) {
       const bLiquid = getLiquid(container.uid);
       if (bLiquid.volume >= bLiquid.maxVolume) continue;
 
-      const flowRate = 0.12;
+      const flowRate = 0.05;
       const transfer = Math.min(flowRate, bState.volume, bLiquid.maxVolume - bLiquid.volume);
 
       bState.volume = +(bState.volume - transfer).toFixed(2);
+      // Track burette consumption
+      buretteConsumedThisRefill[item.uid] = (buretteConsumedThisRefill[item.uid] || 0) + transfer;
+
+      // Always add volume to target container
       bLiquid.volume = +(bLiquid.volume + transfer).toFixed(2);
-      bLiquid.color = bState.color;
-      bLiquid.opacity = bState.opacity;
-      if (bLiquid.volume <= transfer + 0.1) {
-        bLiquid.label = 'محلول من السحاحة';
-      } else if (!bLiquid.label.includes('مخلوط')) {
-        bLiquid.label = bLiquid.label + ' + مخلوط';
+
+      // Trigger chemical reaction via reaction engine
+      if (bState.chemicalId) {
+        console.log('[sim] burette dispense:', bState.chemicalId, '→', container.id, 'targetChem:', bLiquid.chemicalId, 'vol:', transfer, 'targetPH:', bLiquid.ph, 'targetIndicators:', bLiquid.indicators);
+        handleDropMix({
+          sourceUid: item.uid,
+          targetUid: container.uid,
+          sourceChemicalId: bState.chemicalId,
+          targetChemicalId: bLiquid.chemicalId || '',
+          dropVolume: transfer,
+        });
+        console.log('[sim] after mix: targetPH:', bLiquid.ph, 'targetColor:', bLiquid.color);
+
+        // Update burette warning based on target pH
+        if (bLiquid.ph !== null && bLiquid.ph !== undefined) {
+          if (bLiquid.ph >= 9.0) {
+            buretteWarning.value = 'exceeded';
+          } else if (bLiquid.ph >= 8.0) {
+            buretteWarning.value = 'equivalence';
+          } else if (bLiquid.ph >= 7.5) {
+            buretteWarning.value = 'approaching';
+          }
+        }
+      } else {
+        // No chemical in burette, just copy color
+        bLiquid.color = bState.color;
+        bLiquid.opacity = bState.opacity;
       }
       receivingMap[container.uid] = true;
     }
@@ -216,4 +254,90 @@ export function startSimulation(_onSync: (item: LabItem | null) => void) {
 
 export function stopSimulation() {
   cancelAnimationFrame(simTimer);
+}
+
+// ================== STEP UNDO / STEP REDO ==================
+// For fine-grained control: ±0.05 mL per click (one simulation tick)
+
+export function stepUndo(): boolean {
+  for (const item of items.value) {
+    if (item.id !== 'burette') continue;
+    const bState = getBurette(item.uid);
+    const container = findContainerBelow(item);
+    if (!container) continue;
+    const bLiquid = getLiquid(container.uid);
+    if (bLiquid.volume < 0.05) continue;
+
+    // CRITICAL: Close valve first so simulation doesn't override our change
+    bState.valveOpen = false;
+    buretteWarning.value = null;
+
+    // Reverse volume transfer
+    bState.volume = +(bState.volume + 0.05).toFixed(2);
+    bLiquid.volume = +(bLiquid.volume - 0.05).toFixed(2);
+    buretteConsumedThisRefill[item.uid] = Math.max(0, (buretteConsumedThisRefill[item.uid] || 0) - 0.05);
+
+    // Reverse chemical reaction
+    if (bState.chemicalId && bLiquid.reactants) {
+      bLiquid.reactants[bState.chemicalId] = Math.max(0, (bLiquid.reactants[bState.chemicalId] || 0) - 0.05);
+
+      // Recalculate pH from remaining reactants
+      let acidVol = 0, baseVol = 0;
+      let acidId = '', baseId = '';
+      for (const [chemId, vol] of Object.entries(bLiquid.reactants)) {
+        if (isAcid(chemId)) { acidVol += vol; acidId = chemId; }
+        if (isBase(chemId)) { baseVol += vol; baseId = chemId; }
+      }
+      if (acidVol > 0 && baseVol > 0) {
+        bLiquid.ph = calculateTitrationPh(acidVol, acidId, baseVol, baseId);
+      } else if (acidVol > 0) {
+        bLiquid.ph = 2.0;
+      } else if (baseVol > 0) {
+        bLiquid.ph = 12.0;
+      } else {
+        bLiquid.ph = 7.0;
+      }
+
+      applyIndicatorsToContainer(bLiquid);
+    }
+
+    console.log('[stepUndo] Reverted 0.05 mL. Burette:', bState.volume, 'Beaker:', bLiquid.volume, 'pH:', bLiquid.ph);
+    return true;
+  }
+  return false;
+}
+
+export function stepRedo(): boolean {
+  for (const item of items.value) {
+    if (item.id !== 'burette') continue;
+    const bState = getBurette(item.uid);
+    const container = findContainerBelow(item);
+    if (!container) continue;
+    const bLiquid = getLiquid(container.uid);
+    if (bLiquid.volume >= bLiquid.maxVolume) continue;
+    if (bState.volume < 0.05) continue;
+
+    // Open valve so simulation continues
+    bState.valveOpen = true;
+
+    // Forward volume transfer (same as one simulation tick)
+    bState.volume = +(bState.volume - 0.05).toFixed(2);
+    bLiquid.volume = +(bLiquid.volume + 0.05).toFixed(2);
+    buretteConsumedThisRefill[item.uid] = (buretteConsumedThisRefill[item.uid] || 0) + 0.05;
+
+    // Forward chemical reaction
+    if (bState.chemicalId) {
+      handleDropMix({
+        sourceUid: item.uid,
+        targetUid: container.uid,
+        sourceChemicalId: bState.chemicalId,
+        targetChemicalId: bLiquid.chemicalId || '',
+        dropVolume: 0.05,
+      });
+    }
+
+    console.log('[stepRedo] Forwarded 0.05 mL. Burette:', bState.volume, 'Beaker:', bLiquid.volume, 'pH:', bLiquid.ph);
+    return true;
+  }
+  return false;
 }

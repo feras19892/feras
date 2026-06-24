@@ -14,6 +14,7 @@ export function isPhMeter(id: string): boolean { return id === 'ph-meter'; }
 export function isWatchGlass(id: string): boolean { return id === 'watch-glass'; }
 export function isFilterFunnel(id: string): boolean { return id === 'filter-funnel'; }
 export function isRubberStopper(id: string): boolean { return id === 'rubber-stopper'; }
+export function isThermometer(id: string): boolean { return id === 'thermometer-mercury' || id === 'thermometer-digital'; }
 
 export function isContainer(id: string): boolean {
   return isBeaker(id) || isTestTube(id) || id === 'erlenmeyer' || id === 'grad-cylinder'

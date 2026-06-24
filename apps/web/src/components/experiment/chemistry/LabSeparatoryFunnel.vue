@@ -82,6 +82,15 @@ const bottomLayerH = computed(() => {
   return (props.bottomLayerVolume / props.maxVolume) * bodyH;
 });
 const bottomLayerY = computed(() => bodyBottom - bottomLayerH.value);
+
+/* Scale marks */
+interface Mark { y: number; label: string }
+const marks = computed<Mark[]>(() => [
+  { y: bodyBottom - bodyH * 0.25, label: '62' },
+  { y: bodyBottom - bodyH * 0.5, label: '125' },
+  { y: bodyBottom - bodyH * 0.75, label: '188' },
+  { y: bodyBottom - bodyH, label: '250' },
+]);
 </script>
 
 <template>
@@ -102,6 +111,28 @@ const bottomLayerY = computed(() => bodyBottom - bottomLayerH.value);
       <rect :x="centerX - 10" :y="10" width="20" height="30" rx="1" fill="rgba(241,245,249,0.15)" stroke="#94a3b8" stroke-width="1.2" />
       <ellipse cx="centerX" cy="10" rx="12" ry="3" fill="none" stroke="#94a3b8" stroke-width="1.2" />
 
+      <!-- Scale marks (etched on body) -->
+      <g v-for="mark in marks" :key="mark.label">
+        <line
+          :x1="centerX - bodyW/2 + 3"
+          :y1="mark.y"
+          :x2="centerX + bodyW/2 - 3"
+          :y2="mark.y"
+          stroke="#64748b"
+          stroke-width="0.7"
+          opacity="0.4"
+          stroke-linecap="round"
+        />
+        <text
+          :x="centerX + bodyW/2 + 1"
+          :y="mark.y + 2"
+          font-size="5"
+          fill="#334155"
+          font-weight="700"
+          opacity="0.7"
+        >{{ mark.label }}</text>
+      </g>
+
       <!-- Stopcock stem -->
       <rect :x="centerX - stemW/2" :y="bodyBottom" :width="stemW" :height="stemH" rx="1" fill="rgba(241,245,249,0.15)" stroke="#94a3b8" stroke-width="1" />
 
@@ -121,6 +152,18 @@ const bottomLayerY = computed(() => bodyBottom - bottomLayerH.value);
           :fill="bottomLayerColor"
           :opacity="liquidOpacity"
         />
+        <!-- Bottom-layer surface indicator -->
+        <line
+          :x1="centerX - bodyW/2 + 6"
+          :y1="bottomLayerY"
+          :x2="centerX + bodyW/2 - 6"
+          :y2="bottomLayerY"
+          stroke="#ef4444"
+          stroke-width="1"
+          opacity="0.6"
+          stroke-linecap="round"
+        />
+        <circle :cx="centerX" :cy="bottomLayerY" r="2" fill="#ef4444" opacity="0.3" />
       </g>
 
       <!-- Top layer (lighter, upper) -->
@@ -130,6 +173,18 @@ const bottomLayerY = computed(() => bodyBottom - bottomLayerH.value);
           :fill="liquidColor"
           :opacity="liquidOpacity"
         />
+        <!-- Top-layer surface indicator -->
+        <line
+          :x1="centerX - bodyW/2 + 6"
+          :y1="topLayerY"
+          :x2="centerX + bodyW/2 - 6"
+          :y2="topLayerY"
+          stroke="#ef4444"
+          stroke-width="1.2"
+          opacity="0.7"
+          stroke-linecap="round"
+        />
+        <circle :cx="centerX" :cy="topLayerY" r="2.5" fill="#ef4444" opacity="0.35" />
         <!-- Interface line -->
         <line
           v-if="bottomLayerVolume > 0"

@@ -13,6 +13,13 @@ export interface LiquidState {
   viscosity: number;      // 0.0–1.0 (0=ماء, 1=عسل كثيف)
   density: number;      // g/cm³ (1.0=ماء, 1.26=حامض الكبريتيك)
   surfaceTension: number; // 0.0–1.0 (قوة التماسك السطحي)
+  chemicalId?: string;  // معرف المادة الأساسية (حمض/قاعدة/ملح)
+  indicators?: string[]; // معرفات الكواشف اللونية المضافة
+  baseColor?: string;     // لون السائل الأساسي بدون كواشف
+  reactants?: Record<string, number>; // المواد الموجودة بالحاوية: {chemicalId: volume}
+  equation?: string;      // المعادلة الكيميائية الحالية
+  precipitate?: boolean;   // هل يوجد ترسيب
+  gasEvolution?: boolean;  // هل يوجد تحرر غاز
 }
 
 export interface BuretteState {
@@ -21,6 +28,7 @@ export interface BuretteState {
   valveOpen: boolean;
   color: string;
   opacity: number;
+  chemicalId?: string;  // معرف المادة الكيميائية الموجودة
 }
 
 export interface PipetteState {
@@ -29,6 +37,7 @@ export interface PipetteState {
   color: string;
   opacity: number;
   label: string;
+  chemicalId?: string;
 }
 
 export interface SepFunnelState {

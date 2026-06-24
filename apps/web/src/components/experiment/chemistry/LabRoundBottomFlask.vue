@@ -66,6 +66,15 @@ const liquidH = computed(() => {
   return (props.volume / props.maxVolume) * bulbH;
 });
 const liquidY = computed(() => bulbBottom - liquidH.value);
+
+/* Scale marks */
+interface Mark { y: number; label: string }
+const marks = computed<Mark[]>(() => [
+  { y: bulbBottom - bulbH * 0.25, label: '62' },
+  { y: bulbBottom - bulbH * 0.5, label: '125' },
+  { y: bulbBottom - bulbH * 0.75, label: '188' },
+  { y: bulbBottom - bulbH, label: '250' },
+]);
 </script>
 
 <template>
@@ -109,6 +118,28 @@ const liquidY = computed(() => bulbBottom - liquidH.value);
       <!-- Rim -->
       <ellipse :cx="centerX" :cy="neckTop" :rx="neckW/2 + 3" ry="3" fill="none" stroke="#94a3b8" stroke-width="1.2" />
 
+      <!-- Scale marks (etched on body) -->
+      <g v-for="mark in marks" :key="mark.label">
+        <line
+          :x1="centerX - bulbW/2 + 4"
+          :y1="mark.y"
+          :x2="centerX + bulbW/2 - 4"
+          :y2="mark.y"
+          stroke="#64748b"
+          stroke-width="0.8"
+          opacity="0.5"
+          stroke-linecap="round"
+        />
+        <text
+          :x="centerX + bulbW/2 + 2"
+          :y="mark.y + 2.5"
+          font-size="6"
+          fill="#334155"
+          font-weight="700"
+          opacity="0.75"
+        >{{ mark.label }}</text>
+      </g>
+
       <!-- LIQUID -->
       <g v-if="volume > 0">
         <path
@@ -133,6 +164,18 @@ const liquidY = computed(() => bulbBottom - liquidH.value);
           ry="1"
           fill="rgba(255,255,255,0.4)"
         />
+        <!-- Surface level indicator (visible even for transparent liquids) -->
+        <line
+          :x1="centerX - bulbW/2 + 8"
+          :y1="liquidY"
+          :x2="centerX + bulbW/2 - 8"
+          :y2="liquidY"
+          stroke="#ef4444"
+          stroke-width="1.2"
+          opacity="0.7"
+          stroke-linecap="round"
+        />
+        <circle :cx="centerX" :cy="liquidY" r="2.5" fill="#ef4444" opacity="0.35" />
       </g>
 
       <!-- Glass highlights -->

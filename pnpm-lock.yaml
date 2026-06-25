@@ -29,6 +29,9 @@ importers:
       bcryptjs:
         specifier: ^2.4.3
         version: 2.4.3
+      dotenv:
+        specifier: ^17.4.2
+        version: 17.4.2
       hono:
         specifier: ^4.3.0
         version: 4.12.25
@@ -78,6 +81,9 @@ importers:
       '@box2d/particles':
         specifier: ^0.11.0
         version: 0.11.0
+      '@my-modern-app/chemistry-engine':
+        specifier: workspace:*
+        version: link:../../packages/chemistry-engine
       '@my-modern-app/shared-types':
         specifier: workspace:*
         version: link:../../packages/shared-types
@@ -178,6 +184,12 @@ importers:
         version: 4.22.4
       typescript:
         specifier: ^5.4.0
+        version: 5.9.3
+
+  packages/chemistry-engine:
+    devDependencies:
+      typescript:
+        specifier: ^5.0.0
         version: 5.9.3
 
   packages/config:
@@ -1260,6 +1272,10 @@ packages:
   doctrine@3.0.0:
     resolution: {integrity: sha512-yS+Q5i3hBf7GBkd4KG8a7eBNNWNGLTaEwwYWUijIYM7zrlYDM0BFXHjjPWlWZ1Rg7UaddZeIDmi9jF3HmqiQ2w==}
     engines: {node: '>=6.0.0'}
+
+  dotenv@17.4.2:
+    resolution: {integrity: sha512-nI4U3TottKAcAD9LLud4Cb7b2QztQMUEfHbvhTH09bqXTxnSie8WnjPALV/WMCrJZ6UV/qHJ6L03OqO3LcdYZw==}
+    engines: {node: '>=12'}
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -3412,6 +3428,8 @@ snapshots:
   doctrine@3.0.0:
     dependencies:
       esutils: 2.0.3
+
+  dotenv@17.4.2: {}
 
   dunder-proto@1.0.1:
     dependencies:

@@ -4,7 +4,7 @@ import {
   items, getLiquid, getBurette,
   receivingMap, pourFlowMap, tiltAngleMap,
   getBurnerState, simSpeed, phProbeTipMap, stopperMap,
-  buretteConsumedThisRefill,
+  buretteConsumedThisRefill, retortStandMap,
   isContainer
 } from './useChemistryLab';
 import { handleDropMixWithRecording } from './useBuretteMixRecorder';
@@ -15,6 +15,16 @@ import { pushMicroHistory } from './useChemistryHistory';
 export { phColor, getPhReading } from './usePhMeter';
 export { computeBalanceWeight, getContainerWeight, getBalanceReading } from './useBalance';
 export { stepUndo, stepRedo } from './useStepControl';
+
+// ================== SMART BURETTE ==================
+function findStandForBurette(buretteUid: string): { uid: string; state: { leftBuretteUid: string | null; rightBuretteUid: string | null; leftContainerUid: string | null; rightContainerUid: string | null; heatingDeviceUid: string | null; topClampY: number; bottomClampY: number } } | null {
+  for (const [standUid, st] of Object.entries(retortStandMap)) {
+    if (st.leftBuretteUid === buretteUid || st.rightBuretteUid === buretteUid) {
+      return { uid: standUid, state: st };
+    }
+  }
+  return null;
+}
 
 // ================== BURETTE WARNING ==================
 export type BuretteWarning = 'approaching' | 'equivalence' | 'exceeded' | null;
@@ -69,7 +79,21 @@ export function startSimulation(_onSync: (item: LabItem | null) => void) {
       if (item.id !== 'burette') continue;
       const bState = getBurette(item.uid);
       if (!bState.valveOpen || bState.volume <= 0) continue;
-      const container = findContainerBelow(item);
+
+      // Smart burette: if attached to a stand, only drip if stand has a container
+      const standInfo = findStandForBurette(item.uid);
+      let container: LabItem | null = null;
+      if (standInfo) {
+        // Left burette drips into left container, right into right
+        if (standInfo.state.leftBuretteUid === item.uid && standInfo.state.leftContainerUid) {
+          container = items.value.find(i => i.uid === standInfo.state.leftContainerUid) || null;
+        } else if (standInfo.state.rightBuretteUid === item.uid && standInfo.state.rightContainerUid) {
+          container = items.value.find(i => i.uid === standInfo.state.rightContainerUid) || null;
+        }
+      }
+      if (!container) {
+        container = findContainerBelow(item);
+      }
       if (!container) continue;
       const bLiquid = getLiquid(container.uid);
       if (bLiquid.volume >= bLiquid.maxVolume) continue;
@@ -89,7 +113,6 @@ export function startSimulation(_onSync: (item: LabItem | null) => void) {
 
       // Trigger chemical reaction via reaction engine
       if (bState.chemicalId) {
-        console.log('[sim] burette dispense:', bState.chemicalId, '→', container.id, 'targetChem:', bLiquid.chemicalId, 'vol:', transfer, 'targetPH:', bLiquid.ph, 'targetIndicators:', bLiquid.indicators);
         handleDropMixWithRecording({
           sourceUid: item.uid,
           targetUid: container.uid,
@@ -97,7 +120,6 @@ export function startSimulation(_onSync: (item: LabItem | null) => void) {
           targetChemicalId: bLiquid.chemicalId || '',
           dropVolume: transfer,
         });
-        console.log('[sim] after mix: targetPH:', bLiquid.ph, 'targetColor:', bLiquid.color);
 
         // Update burette warning based on target pH
         if (bLiquid.ph !== null && bLiquid.ph !== undefined) {
@@ -121,17 +143,16 @@ export function startSimulation(_onSync: (item: LabItem | null) => void) {
     for (const item of items.value) {
       if (!isContainer(item.id)) continue;
       const liq = getLiquid(item.uid);
-      const nearBurner = items.value.some((other: LabItem) =>
-        other.uid !== item.uid &&
-        (other.id === 'bunsen-burner' || other.id === 'heating-mantle') &&
-        getBurnerState(other.uid).on &&
-        Math.abs(other.x - item.x) < 80 && other.y > item.y && other.y < item.y + 250
+      const burner = items.value.find((o: LabItem) =>
+        o.uid !== item.uid &&
+        (o.id === 'bunsen-burner' || o.id === 'heating-mantle') &&
+        getBurnerState(o.uid).on &&
+        Math.abs(o.x - item.x) < 80 && o.y > item.y && o.y < item.y + 250
       );
       const hasStopper = !!stopperMap[item.uid];
-      if (nearBurner) {
+      if (burner) {
         liq.heated = true;
-        const burner = items.value.find(o => (o.id === 'bunsen-burner' || o.id === 'heating-mantle') && getBurnerState(o.uid).on && Math.abs(o.x - item.x) < 80 && o.y > item.y && o.y < item.y + 250);
-        const intensity = burner ? getBurnerState(burner.uid).intensity : 1;
+        const intensity = getBurnerState(burner.uid).intensity;
         // Realistic heating: proportional to intensity, ~0.6°C/sec max at 1x
         const rate = 0.01 * intensity * simSpeed.value;
         if (liq.temperature < 100) liq.temperature = Math.min(100, +(liq.temperature + rate).toFixed(2));

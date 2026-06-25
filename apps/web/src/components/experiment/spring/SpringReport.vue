@@ -131,14 +131,14 @@ const sourcesOfError = [
             <tr><th>#</th><th>m (g)</th><th>t₁ (s)</th><th>t₂ (s)</th><th>t₃ (s)</th><th>T (s)</th><th>T² (s²)</th></tr>
           </thead>
           <tbody>
-            <tr v-for="(t, i) in dynamicEdit" :key="i">
+            <tr v-for="(tr, i) in dynamicEdit" :key="i">
               <td>{{ i + 1 }}</td>
-              <td><input class="edit-input" :value="(t.mass * 1000).toFixed(0)" @change="e => updateDynamic(i, 'mass', (e.target as HTMLInputElement).value)" /></td>
-              <td><input class="edit-input" :value="t.t1.toFixed(2)" @change="e => updateDynamic(i, 't1', (e.target as HTMLInputElement).value)" /></td>
-              <td><input class="edit-input" :value="t.t2.toFixed(2)" @change="e => updateDynamic(i, 't2', (e.target as HTMLInputElement).value)" /></td>
-              <td><input class="edit-input" :value="t.t3.toFixed(2)" @change="e => updateDynamic(i, 't3', (e.target as HTMLInputElement).value)" /></td>
-              <td>{{ t.T.toFixed(3) }}</td>
-              <td>{{ t.T2.toFixed(4) }}</td>
+              <td><input class="edit-input" :value="(tr.mass * 1000).toFixed(0)" @change="e => updateDynamic(i, 'mass', (e.target as HTMLInputElement).value)" /></td>
+              <td><input class="edit-input" :value="tr.t1.toFixed(2)" @change="e => updateDynamic(i, 't1', (e.target as HTMLInputElement).value)" /></td>
+              <td><input class="edit-input" :value="tr.t2.toFixed(2)" @change="e => updateDynamic(i, 't2', (e.target as HTMLInputElement).value)" /></td>
+              <td><input class="edit-input" :value="tr.t3.toFixed(2)" @change="e => updateDynamic(i, 't3', (e.target as HTMLInputElement).value)" /></td>
+              <td>{{ tr.T.toFixed(3) }}</td>
+              <td>{{ tr.T2.toFixed(4) }}</td>
             </tr>
           </tbody>
         </table>

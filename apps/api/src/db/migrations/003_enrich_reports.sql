@@ -55,5 +55,3 @@ CREATE TABLE IF NOT EXISTS grade_history (
 );
 CREATE INDEX IF NOT EXISTS idx_grade_history_report ON grade_history(report_id);
 
--- ─── Register migration ───
-INSERT OR IGNORE INTO __migrations (name) VALUES ('003_enrich_reports.sql');

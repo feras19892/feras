@@ -160,7 +160,7 @@ export function usePrismExperiment() {
       const startW = colWidths[col as keyof typeof colWidths] as number
       function move(ev: MouseEvent) {
         const delta = ev.clientX - startX
-        colWidths[col as keyof typeof colWidths] = Math.max(220, startW + delta) as any
+        colWidths[col as keyof typeof colWidths] = Math.max(220, startW + delta) as number
       }
       function up() {
         window.removeEventListener('mousemove', move)

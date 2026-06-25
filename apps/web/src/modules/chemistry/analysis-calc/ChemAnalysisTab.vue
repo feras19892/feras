@@ -83,15 +83,6 @@ function solveEquation(eq: ChemAnalysisEquation) {
   }
 }
 
-function calculateError() {
-  if (!props.readings.length || !currentPlot.value) return;
-  const yk = currentPlot.value.yKey;
-  const vals = props.readings.map(r => Number(r[yk])).filter(v => !isNaN(v));
-  if (!vals.length) return;
-  const experimental = vals.reduce((a, b) => a + b, 0) / vals.length;
-  errorCalcData.value = { theoretical: null, experimental, errorPercent: null };
-}
-
 function getAxes() {
   if (!currentPlot.value) return null;
   return { x: currentPlot.value.xKey, y: currentPlot.value.yKey, xLabel: currentPlot.value.xLabel, yLabel: currentPlot.value.yLabel };

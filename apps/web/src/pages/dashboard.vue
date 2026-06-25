@@ -40,9 +40,9 @@ const loadCards = async () => {
 }
 
 onMounted(async () => {
+  if (!auth.isGuest) { await auth.fetchMe() }
   if (auth.isTeacher || auth.isAdmin) activeTab.value = 'experiments'
   else if (auth.isStudent) activeTab.value = 'branches'
-  if (!auth.user && !auth.isGuest) { await auth.fetchMe() }
   await loadCards()
 })
 </script>

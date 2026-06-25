@@ -24,3 +24,19 @@ npm-debug.log*
 # OS
 .DS_Store
 Thumbs.db
+
+# Temporary audit / lint output files
+lint-*.txt
+lint-*.json
+typecheck*.txt
+build.txt
+temp_*.txt
+
+# Large data files
+arabic_lines*.csv
+
+# SQLite database
+*.db
+*.db-shm
+*.db-wal
+data/

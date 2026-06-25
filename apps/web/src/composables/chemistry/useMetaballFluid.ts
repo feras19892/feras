@@ -1,5 +1,5 @@
 import type { MetaballConfig, FluidParticle } from './metaballTypes';
-import { W, H, GRAVITY_Y, RADIAN_FACTOR, WALL_LEFT, WALL_RIGHT, WALL_BOTTOM, WALL_TOP } from './metaballTypes';
+import { H, GRAVITY_Y, RADIAN_FACTOR, WALL_LEFT, WALL_RIGHT, WALL_BOTTOM, WALL_TOP } from './metaballTypes';
 import { renderMetaballFluid } from './metaballRenderer';
 
 export class MetaballFluid {

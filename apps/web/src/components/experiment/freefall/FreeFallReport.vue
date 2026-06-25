@@ -69,14 +69,14 @@ const errorPercent = computed(() => {
             <tr><th>#</th><th>h (m)</th><th>t (s)</th><th>t² (s²)</th><th>v_impact (m/s)</th><th>g_calc (m/s²)</th><th>{{ t('experiments.error') }} (%)</th></tr>
           </thead>
           <tbody>
-            <tr v-for="(t, i) in trialsEdit" :key="t.id">
+            <tr v-for="(tr, i) in trialsEdit" :key="tr.id">
               <td>{{ i + 1 }}</td>
-              <td><input class="edit-input" :value="t.heightMeters.toFixed(2)" @change="e => updateTrial(i, 'heightMeters', (e.target as HTMLInputElement).value)" /></td>
-              <td><input class="edit-input" :value="t.timeSec.toFixed(3)" @change="e => updateTrial(i, 'timeSec', (e.target as HTMLInputElement).value)" /></td>
-              <td>{{ t.timeSquaredSec2.toFixed(4) }}</td>
-              <td>{{ t.impactVelocityMs.toFixed(2) }}</td>
-              <td>{{ t.gCalc.toFixed(2) }}</td>
-              <td>{{ t.err.toFixed(2) }}%</td>
+              <td><input class="edit-input" :value="tr.heightMeters.toFixed(2)" @change="e => updateTrial(i, 'heightMeters', (e.target as HTMLInputElement).value)" /></td>
+              <td><input class="edit-input" :value="tr.timeSec.toFixed(3)" @change="e => updateTrial(i, 'timeSec', (e.target as HTMLInputElement).value)" /></td>
+              <td>{{ tr.timeSquaredSec2.toFixed(4) }}</td>
+              <td>{{ tr.impactVelocityMs.toFixed(2) }}</td>
+              <td>{{ tr.gCalc.toFixed(2) }}</td>
+              <td>{{ tr.err.toFixed(2) }}%</td>
             </tr>
           </tbody>
         </table>

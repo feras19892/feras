@@ -1,14 +1,15 @@
 import type { MiddlewareHandler } from 'hono';
+import { getCookie } from 'hono/cookie';
 import { verifyAccessToken } from '../../modules/auth/jwt.js';
 import { getUserById } from '../../modules/auth/services.js';
 
 export const authMiddleware: MiddlewareHandler = async (c, next) => {
-  const auth = c.req.header('Authorization')?.replace('Bearer ', '');
-  if (!auth) {
+  const accessToken = getCookie(c, 'access_token');
+  if (!accessToken) {
     return c.json({ success: false, message: 'Unauthorized' }, 401);
   }
   try {
-    const payload = await verifyAccessToken(auth);
+    const payload = await verifyAccessToken(accessToken);
     const user = await getUserById(Number(payload.sub));
     if (!user) {
       return c.json({ success: false, message: 'User not found' }, 401);

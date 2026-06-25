@@ -1,4 +1,4 @@
-export const API_BASE_URL: string = ((import.meta as unknown as { env?: Record<string, string> }).env?.VITE_API_BASE_URL) || 'http://localhost:3000';
+export const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
 export function apiUrl(path: string): string {
   if (path.startsWith('http')) return path;
@@ -10,28 +10,26 @@ export interface FetchOptions extends RequestInit {
   signal?: AbortSignal;
 }
 
-const TOKEN_KEY = 'access-token';
-
-function loadToken(): string | null {
-  try { return localStorage.getItem(TOKEN_KEY); } catch { return null; }
-}
-
-let accessToken: string | null = loadToken();
-
-export function setAccessToken(token: string | null) {
-  accessToken = token;
-  try { if (token) localStorage.setItem(TOKEN_KEY, token); else localStorage.removeItem(TOKEN_KEY); } catch { /* ignore */ }
-}
-
-export function getAccessToken(): string | null {
-  return accessToken;
+/** Normalize RequestInit headers into a plain Record for merging */
+function normalizeHeaders(headers: RequestInit['headers']): Record<string, string> {
+  if (!headers) return {};
+  if (headers instanceof Headers) {
+    const result: Record<string, string> = {};
+    headers.forEach((value, key) => { result[key] = value; });
+    return result;
+  }
+  if (Array.isArray(headers)) {
+    const result: Record<string, string> = {};
+    for (const [key, value] of headers) { result[key] = value; }
+    return result;
+  }
+  return headers as Record<string, string>;
 }
 
 export async function fetchJson<T>(path: string, options: FetchOptions = {}): Promise<T> {
   const mergedHeaders: Record<string, string> = {
     Accept: 'application/json',
-    ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
-    ...((options.headers as Record<string, string>) ?? {}),
+    ...(options.headers ? normalizeHeaders(options.headers) : {}),
   };
 
   let response = await fetch(apiUrl(path), {
@@ -47,21 +45,15 @@ export async function fetchJson<T>(path: string, options: FetchOptions = {}): Pr
         credentials: 'include',
       });
       if (refreshRes.ok) {
-        const refreshData = await refreshRes.json();
-        if (refreshData.token) {
-          setAccessToken(refreshData.token);
-          mergedHeaders.Authorization = `Bearer ${accessToken}`;
-          response = await fetch(apiUrl(path), {
-            ...options,
-            headers: mergedHeaders,
-            credentials: 'include',
-          });
-        }
-      } else {
-        setAccessToken(null);
+        // Server set a new access_token cookie; retry original request
+        response = await fetch(apiUrl(path), {
+          ...options,
+          headers: mergedHeaders,
+          credentials: 'include',
+        });
       }
     } catch {
-      setAccessToken(null);
+      // ignore refresh failure; the response below will remain 401
     }
   }
 

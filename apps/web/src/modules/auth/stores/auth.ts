@@ -19,8 +19,14 @@ export const useAuthStore = defineStore('auth', () => {
 
   const guestMode = ref<boolean>(loadJson('auth_guest_mode', false));
   const guestRole = ref<'teacher' | 'student' | null>(loadJson('auth_guest_role', null));
+  const guestExpiresAt = ref<number | null>(loadJson('auth_guest_expires_at', null));
   const currentClassId = ref<string | null>(loadJson('auth_current_class_id', null));
   const classes = ref<ClassInfo[]>(loadJson('auth_classes', []));
+
+  // Auto-clear expired guest mode on load
+  if (guestMode.value && guestExpiresAt.value && Date.now() > guestExpiresAt.value) {
+    clearGuestState();
+  }
 
   watch(user, (u) => {
     try { localStorage.setItem('auth_user', JSON.stringify(u)); } catch { /* ignore */ }
@@ -37,11 +43,12 @@ export const useAuthStore = defineStore('auth', () => {
   const isResearcher = computed(() => role.value === 'researcher');
   const isAdmin = computed(() => role.value === 'admin');
 
-  watch([guestMode, guestRole, currentClassId, classes], () => persistGuest(), { deep: true });
+  watch([guestMode, guestRole, guestExpiresAt, currentClassId, classes], () => persistGuest(), { deep: true });
 
   function persistGuest() {
     localStorage.setItem('auth_guest_mode', JSON.stringify(guestMode.value));
     localStorage.setItem('auth_guest_role', JSON.stringify(guestRole.value));
+    localStorage.setItem('auth_guest_expires_at', JSON.stringify(guestExpiresAt.value));
     localStorage.setItem('auth_current_class_id', JSON.stringify(currentClassId.value));
     localStorage.setItem('auth_classes', JSON.stringify(classes.value));
   }
@@ -49,10 +56,12 @@ export const useAuthStore = defineStore('auth', () => {
   function clearGuestState() {
     guestMode.value = false;
     guestRole.value = null;
+    guestExpiresAt.value = null;
     currentClassId.value = null;
     classes.value = [];
     localStorage.removeItem('auth_guest_mode');
     localStorage.removeItem('auth_guest_role');
+    localStorage.removeItem('auth_guest_expires_at');
     localStorage.removeItem('auth_current_class_id');
     localStorage.removeItem('auth_classes');
   }
@@ -63,6 +72,7 @@ export const useAuthStore = defineStore('auth', () => {
     clearGuestState()
     guestMode.value = true
     guestRole.value = role || null
+    guestExpiresAt.value = Date.now() + 24 * 60 * 60 * 1000 // 24 hours
   }
 
   function selectClass(classId: string) {

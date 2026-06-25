@@ -16,14 +16,14 @@ const emit = defineEmits<{ (e: 'remove', id: number): void; (e: 'clear'): void }
     <table class="report-table" v-if="trials.length">
       <thead><tr><th>#</th><th>h (m)</th><th>t (s)</th><th>t² (s²)</th><th>v (m/s)</th><th>g_calc</th><th></th></tr></thead>
       <tbody>
-        <tr v-for="(t, i) in trials" :key="t.id">
+        <tr v-for="(tr, i) in trials" :key="tr.id">
           <td>{{ i + 1 }}</td>
-          <td>{{ t.heightMeters.toFixed(2) }}</td>
-          <td>{{ t.timeSec.toFixed(3) }}</td>
-          <td>{{ t.timeSquaredSec2.toFixed(4) }}</td>
-          <td>{{ t.impactVelocityMs.toFixed(2) }}</td>
-          <td>{{ t.gCalc.toFixed(2) }}</td>
-          <td><button class="del-btn" @click="emit('remove', t.id)">🗑️</button></td>
+          <td>{{ tr.heightMeters.toFixed(2) }}</td>
+          <td>{{ tr.timeSec.toFixed(3) }}</td>
+          <td>{{ tr.timeSquaredSec2.toFixed(4) }}</td>
+          <td>{{ tr.impactVelocityMs.toFixed(2) }}</td>
+          <td>{{ tr.gCalc.toFixed(2) }}</td>
+          <td><button class="del-btn" @click="emit('remove', tr.id)">🗑️</button></td>
         </tr>
       </tbody>
     </table>

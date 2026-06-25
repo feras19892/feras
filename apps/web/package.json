@@ -27,6 +27,7 @@
   "dependencies": {
     "@box2d/core": "^0.11.0",
     "@box2d/particles": "^0.11.0",
+    "@my-modern-app/chemistry-engine": "workspace:*",
     "@my-modern-app/shared-types": "workspace:*",
     "@types/matter-js": "^0.20.2",
     "@types/three": "^0.184.1",

@@ -2,6 +2,7 @@
 import { reactive } from 'vue';
 import { glasswareSections } from '../../../composables/chemistry/useChemistryTools';
 import type { ToolDef } from '../../../composables/chemistry/useChemistryTools';
+import type { Chemical } from '../../../composables/chemistry/useChemistryLab';
 import ChemicalShelfPanel from './ChemicalShelfPanel.vue';
 
 const activeTab = defineModel<string>('activeTab', { default: 'glassware' });
@@ -20,7 +21,7 @@ function onDragStart(e: DragEvent, item: ToolDef) {
 }
 
 const emit = defineEmits<{
-  chemicalClick: [chem: any];
+  chemicalClick: [chem: Chemical];
 }>();
 </script>
 

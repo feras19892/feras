@@ -1,8 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import {
   apiUrl,
-  setAccessToken,
-  getAccessToken,
   fetchJson,
 } from './http';
 
@@ -10,7 +8,6 @@ describe('http service', () => {
   let fetchMock: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
-    setAccessToken(null);
     fetchMock = vi.fn();
     globalThis.fetch = fetchMock;
   });
@@ -30,18 +27,8 @@ describe('http service', () => {
     });
   });
 
-  describe('token helpers', () => {
-    it('sets and gets access token', () => {
-      setAccessToken('abc123');
-      expect(getAccessToken()).toBe('abc123');
-      setAccessToken(null);
-      expect(getAccessToken()).toBeNull();
-    });
-  });
-
   describe('fetchJson', () => {
-    it('sends Bearer token when set', async () => {
-      setAccessToken('tok');
+    it('sends Accept header without Authorization', async () => {
       fetchMock.mockResolvedValueOnce(
         new Response(JSON.stringify({ ok: true }), { status: 200 })
       );
@@ -53,8 +40,8 @@ describe('http service', () => {
       expect(req).toBe('http://localhost:3000/test');
       expect(opts.headers).toMatchObject({
         Accept: 'application/json',
-        Authorization: 'Bearer tok',
       });
+      expect((opts.headers as Record<string, string>)['Authorization']).toBeUndefined();
     });
 
     it('throws on non-ok response', async () => {
@@ -66,8 +53,6 @@ describe('http service', () => {
     });
 
     it('retries after successful refresh on 401', async () => {
-      setAccessToken('old');
-
       // First request fails with 401
       fetchMock.mockResolvedValueOnce(
         new Response('Unauthorized', { status: 401, statusText: 'Unauthorized' })
@@ -75,7 +60,7 @@ describe('http service', () => {
 
       // Refresh succeeds
       fetchMock.mockResolvedValueOnce(
-        new Response(JSON.stringify({ token: 'new' }), { status: 200 })
+        new Response(JSON.stringify({ success: true }), { status: 200 })
       );
 
       // Retry succeeds
@@ -85,19 +70,12 @@ describe('http service', () => {
 
       const result = await fetchJson<{ data: number }>('/protected');
       expect(result).toEqual({ data: 42 });
-      expect(getAccessToken()).toBe('new');
 
       // Calls: /protected, /api/auth/refresh, /protected
       expect(fetchMock).toHaveBeenCalledTimes(3);
-      const secondRetry = fetchMock.mock.calls[2][1] as RequestInit;
-      expect(secondRetry.headers).toMatchObject({
-        Authorization: 'Bearer new',
-      });
     });
 
     it('throws after failed refresh on 401', async () => {
-      setAccessToken('old');
-
       fetchMock.mockResolvedValueOnce(
         new Response('Unauthorized', { status: 401, statusText: 'Unauthorized' })
       );
@@ -107,7 +85,6 @@ describe('http service', () => {
       );
 
       await expect(fetchJson('/protected')).rejects.toThrow('Request failed: 401 Unauthorized');
-      expect(getAccessToken()).toBeNull();
     });
 
     it('returns parsed JSON on success', async () => {

@@ -9,7 +9,7 @@ interface SlotData {
 
 interface Props {
   isHovered?: boolean;
-  slots?: SlotData[];
+  slots?: (SlotData | null)[];
   highlightIndex?: number | null;
 }
 
@@ -72,7 +72,7 @@ function onSlotClick(index: number, e: MouseEvent) {
 
       <!-- Dynamic test tubes from slots -->
       <g v-for="(slot, i) in slots" :key="i" opacity="0.85" @click.stop="onSlotClick(i, $event)">
-        <g :transform="`translate(${20 + i * 38 - 20}, 0)`">
+        <g v-if="slot" :transform="`translate(${20 + i * 38 - 20}, 0)`">
           <!-- Tube body -->
           <path
             d="M 12 17 L 12 82 Q 12 88 20 88 Q 28 88 28 82 L 28 17"
@@ -96,6 +96,16 @@ function onSlotClick(index: number, e: MouseEvent) {
           >
             <animate attributeName="opacity" values="0.7;0.3;0.7" dur="1s" repeatCount="indefinite" />
           </ellipse>
+        </g>
+        <g v-else :transform="`translate(${20 + i * 38 - 20}, 0)`">
+          <!-- Empty slot placeholder -->
+          <path
+            d="M 12 17 L 12 82 Q 12 88 20 88 Q 28 88 28 82 L 28 17"
+            fill="rgba(241,245,249,0.05)"
+            stroke="#94a3b8"
+            stroke-width="0.7"
+          />
+          <ellipse cx="20" cy="17" rx="8" ry="2.5" fill="none" stroke="#94a3b8" stroke-width="0.7" />
         </g>
       </g>
 

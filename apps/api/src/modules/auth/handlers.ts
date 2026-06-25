@@ -1,10 +1,10 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
-import { loginSchema, registerSchema } from './schemas.js';
+import { loginSchema, registerSchema, passwordUpdateSchema } from './schemas.js';
 import { login, register, refreshAccessToken, logout, updatePassword } from './services.js';
 import * as activitySvc from '../admin/activity-service.js';
 import * as sessionSvc from '../admin/session-service.js';
-import { setRefreshCookie, getRefreshCookie, clearRefreshCookie } from './cookies.js';
+import { setRefreshCookie, getRefreshCookie, clearRefreshCookie, setAccessCookie, getAccessCookie, clearAccessCookie } from './cookies.js';
 import { verifyAccessToken } from './jwt.js';
 import { authMiddleware } from '../../shared/middleware/auth.js';
 import type { User } from '@my-modern-app/shared-types';
@@ -26,6 +26,9 @@ authRoutes.post('/login', zValidator('json', loginSchema), async (c) => {
   if (!result.success) {
     return c.json({ success: false, message: result.message }, 401);
   }
+  if (result.token) {
+    setAccessCookie(c, result.token);
+  }
   if (result.refreshToken) {
     setRefreshCookie(c, result.refreshToken);
   }
@@ -34,7 +37,7 @@ authRoutes.post('/login', zValidator('json', loginSchema), async (c) => {
     await sessionSvc.logLogin(result.user.id, c.req.header('X-Forwarded-For') || c.req.header('x-real-ip') || 'unknown', c.req.header('user-agent'));
     await activitySvc.logActivity(result.user.id, result.user.name, result.user.role, 'login');
   }
-  return c.json({ success: true, user: result.user, token: result.token });
+  return c.json({ success: true, user: result.user });
 });
 
 authRoutes.post('/refresh', async (c) => {
@@ -47,14 +50,20 @@ authRoutes.post('/refresh', async (c) => {
     clearRefreshCookie(c);
     return c.json({ success: false, message: result.message }, 401);
   }
-  return c.json({ success: true, token: result.token });
+  if (result.token) {
+    setAccessCookie(c, result.token);
+  }
+  if (result.refreshToken) {
+    setRefreshCookie(c, result.refreshToken);
+  }
+  return c.json({ success: true });
 });
 
 authRoutes.post('/logout', async (c) => {
-  const auth = c.req.header('Authorization')?.replace('Bearer ', '');
-  if (auth) {
+  const accessToken = getAccessCookie(c);
+  if (accessToken) {
     try {
-      const payload = await verifyAccessToken(auth);
+      const payload = await verifyAccessToken(accessToken);
       await logout(Number(payload.sub));
       await sessionSvc.logLogout(Number(payload.sub));
       await activitySvc.logActivity(Number(payload.sub), '', '', 'logout');
@@ -62,6 +71,7 @@ authRoutes.post('/logout', async (c) => {
       // ignore invalid token on logout
     }
   }
+  clearAccessCookie(c);
   clearRefreshCookie(c);
   return c.json({ success: true });
 });
@@ -71,10 +81,10 @@ authRoutes.get('/me', authMiddleware, async (c) => {
   return c.json({ success: true, user });
 });
 
-authRoutes.patch('/password', authMiddleware, async (c) => {
+authRoutes.patch('/password', authMiddleware, zValidator('json', passwordUpdateSchema), async (c) => {
   const user = (c as any).get('user') as User;
-  const body = await c.req.json();
-  const userId = Number(body.user_id);
+  const body = c.req.valid('json');
+  const userId = body.user_id;
   if (user.id !== userId && user.role !== 'admin') {
     return c.json({ success: false, message: 'Forbidden' }, 403);
   }

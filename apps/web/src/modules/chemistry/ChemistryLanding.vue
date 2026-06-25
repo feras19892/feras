@@ -1,25 +1,24 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { pendingChemicalFill, getLiquid, getBurette, selectedChemical, hasSelectedChemicalMap, items, isBurette, buretteTotalConsumedMap, buretteConsumedThisRefill, buretteInitialVolumeMap } from '../../composables/chemistry/useChemistryLab';
+import { isReactionVessel } from '../../composables/chemistry/chemLabIds';
 import type { Chemical } from '../../composables/chemistry/useChemistryLab';
-import type { ToolDef, LabItem } from '../../composables/chemistry/useChemistryTools';
+import type { LabItem } from '../../composables/chemistry/useChemistryTools';
 import type { ToolState } from '../../components/experiment/chemistry/InspectorPanel.vue';
 import WorkspaceCanvas from '../../components/experiment/chemistry/WorkspaceCanvas.vue';
 import LeftPanel from '../../components/experiment/chemistry/LeftPanel.vue';
 import RightPanel from '../../components/experiment/chemistry/RightPanel.vue';
-import GuidePanel from '../../components/experiment/chemistry/GuidePanel.vue';
 import ExperimentSelector from '../../components/experiment/chemistry/ExperimentSelector.vue';
-import LabStatsPanel from '../../components/experiment/chemistry/LabStatsPanel.vue';
-import { experiments, type Experiment, validateExperimentSteps } from '../../composables/chemistry/useExperiments';
+import { type Experiment, type TitrationReading, type ReportData, validateExperimentSteps } from '../../composables/chemistry/useExperiments';
 import { undo, redo, canUndo, canRedo, canMicroUndo, canMicroRedo } from '../../composables/chemistry/useChemistryHistory';
 import { applyIndicator } from '../../composables/chemistry/useReactionEngine';
 import { buretteWarning } from '../../composables/chemistry/useLabSimulation';
 import ExperimentTheoryPanel from '../../components/experiment/chemistry/ExperimentTheoryPanel.vue';
-import LabAssistant from '../../components/experiment/chemistry/LabAssistant.vue';
 import BuretteDisplay from '../../components/experiment/chemistry/BuretteDisplay.vue';
 import WorkspaceActionsPanel from '../../components/experiment/chemistry/WorkspaceActionsPanel.vue';
-import ExperimentStepsPanel from '../../components/experiment/chemistry/ExperimentStepsPanel.vue';
 import ChemAnalysisButton from '../../components/experiment/chemistry/ChemAnalysisButton.vue';
+import TitrationDataTable from '../../components/experiment/chemistry/TitrationDataTable.vue';
+import ChemReportModal from '../../components/experiment/chemistry/ChemReportModal.vue';
 import {
   welcomeMessage, warnDangerousChemical, quickFactAbout,
   encourageStep, tipForStep, warnOnAction,
@@ -37,6 +36,9 @@ const showExperimentSelector = ref(false);
 const activeExperiment = ref<Experiment | null>(null);
 const selectedItem = ref<LabItem | null>(null);
 const showTheoryPanel = ref(false);
+const titrationReadings = ref<TitrationReading[]>([]);
+const showReport = ref(false);
+const reportData = ref<ReportData | null>(null);
 
 // Auto-check experiment steps against workspace state
 const stepCompletion = computed(() => {
@@ -45,7 +47,6 @@ const stepCompletion = computed(() => {
 });
 
 // ── Lab Assistant watchers ──
-let prevStepCompletion: boolean[] = [];
 
 // Watch experiment changes → welcome
 watch(activeExperiment, (exp) => {
@@ -72,17 +73,9 @@ watch(stepCompletion, (newVal, oldVal) => {
       }
     }
   }
-  prevStepCompletion = [...newVal];
 }, { flush: 'post' });
 
-// Watch burette warning → alerts
-watch(buretteWarning, (warn) => {
-  if (warn === 'approaching') warnOnAction('equivalenceApproaching');
-  if (warn === 'equivalence') warnOnAction('equivalenceReached');
-  if (warn === 'exceeded') warnOnAction('equivalenceExceeded');
-});
-
-// Burette consumption tracker for active experiment
+// Burette consumption tracker (must be defined before watchers that use it)
 const buretteConsumption = computed(() => {
   let total = 0;
   let current = 0;
@@ -96,6 +89,71 @@ const buretteConsumption = computed(() => {
   });
   return { total, current, initial, grandTotal: total + current };
 });
+
+// Watch burette warning → alerts
+watch(buretteWarning, (warn) => {
+  if (warn === 'approaching') warnOnAction('equivalenceApproaching');
+  if (warn === 'equivalence') warnOnAction('equivalenceReached');
+  if (warn === 'exceeded') warnOnAction('equivalenceExceeded');
+});
+
+function showReportManual() {
+  if (!activeExperiment.value) return;
+  const consumed = buretteConsumption.value.grandTotal;
+  const target = items.value.find((i) => {
+    if (!isReactionVessel(i.id)) return false;
+    const liq = getLiquid(i.uid);
+    return liq && liq.indicators && liq.indicators.includes('phenolphthalein');
+  });
+  const liq = target ? getLiquid(target.uid) : null;
+  reportData.value = {
+    experimentName: activeExperiment.value.nameAr,
+    consumedVolume: consumed,
+    acidVolume: 50,
+    baseMolarity: 0.1,
+    calculatedAcidMolarity: consumed > 0 ? (0.1 * consumed) / 50 : 0,
+    phAtEquivalence: liq ? liq.ph : null,
+    colorAtEquivalence: liq ? liq.color : '#3b82f6',
+    readingsCount: titrationReadings.value.length,
+  };
+  showReport.value = true;
+}
+
+function addManualReading() {
+  const grandTotal = buretteConsumption.value.grandTotal;
+  const target = items.value.find((i) => {
+    if (!isReactionVessel(i.id)) return false;
+    const liq = getLiquid(i.uid);
+    return liq && liq.indicators && liq.indicators.includes('phenolphthalein');
+  });
+  const liq = target ? getLiquid(target.uid) : null;
+  const last = titrationReadings.value[titrationReadings.value.length - 1];
+  // If last reading is within 0.05 mL, update it instead of adding a duplicate row
+  if (last && Math.abs(last.volume - grandTotal) < 0.05) {
+    last.ph = liq ? liq.ph : null;
+    last.color = liq ? liq.color : '#3b82f6';
+    return;
+  }
+  titrationReadings.value.push({
+    n: titrationReadings.value.length + 1,
+    volume: grandTotal,
+    ph: liq ? liq.ph : null,
+    color: liq ? liq.color : '#3b82f6',
+  });
+}
+
+function onSelectExperiment(exp: Experiment) {
+  activeExperiment.value = exp;
+  titrationReadings.value = [];
+  showExperimentSelector.value = false;
+}
+
+function restartExperiment() {
+  showReport.value = false;
+  reportData.value = null;
+  titrationReadings.value = [];
+  canvasRef.value?.resetLab();
+}
 
 const canUndoNow = computed(() => canUndo());
 const canRedoNow = computed(() => canRedo());
@@ -153,6 +211,8 @@ function onChemicalClick(chem: Chemical) {
       liq.chemicalId = chem.id;
       liq.ph = chem.ph ?? null;
       liq.baseColor = chem.color;
+      if (!liq.reactants) liq.reactants = {};
+      liq.reactants[chem.id] = (liq.reactants[chem.id] || 0) + amount;
     }
   }
   pendingChemicalFill.value = null;
@@ -162,15 +222,6 @@ const expandedSections = ref<Record<string, boolean>>({
   containers: true, measuring: true, devices: true, helpers: true,
   liquids: true, solids: true, indicators: true,
 });
-
-function toggleSection(id: string) { expandedSections.value[id] = !expandedSections.value[id]; }
-
-function onDragStart(e: DragEvent, item: ToolDef) {
-  if (e.dataTransfer) {
-    e.dataTransfer.setData('application/json', JSON.stringify(item));
-    e.dataTransfer.effectAllowed = 'copy';
-  }
-}
 
 function onLeftDown(e: MouseEvent) {
   resizingLeft.value = true;
@@ -252,16 +303,30 @@ onUnmounted(() => {
       @open-theory="showTheoryPanel = true"
       @clear-experiment="activeExperiment = null"
       @reset-lab="canvasRef?.resetLab()"
+      @show-report="showReportManual"
     />
     <ExperimentSelector
       v-if="showExperimentSelector"
-      @select="(exp) => { activeExperiment = exp; showExperimentSelector = false; }"
+      @select="onSelectExperiment"
       @close="showExperimentSelector = false"
     />
     <ExperimentTheoryPanel
       v-if="showTheoryPanel && activeExperiment?.theory"
       :theory="activeExperiment.theory"
       @close="showTheoryPanel = false"
+    />
+    <!-- Titration Data Table (top-right of workspace) -->
+    <TitrationDataTable
+      v-if="activeExperiment && activeExperiment.id.startsWith('neutralization-')"
+      :readings="titrationReadings"
+      @add="addManualReading"
+    />
+    <!-- Final Report Modal -->
+    <ChemReportModal
+      v-if="showReport && reportData"
+      :data="reportData"
+      @close="showReport = false"
+      @restart="restartExperiment"
     />
     <ChemAnalysisButton />
   </div>

@@ -1,6 +1,6 @@
 import type { LiquidSimConfig } from './liquidSimTypes';
 import { W, H, PARTICLE_RADIUS } from './liquidSimTypes';
-import { hexToRgb } from './chemColorUtils';
+import { hexToRgb } from '@my-modern-app/chemistry-engine';
 import type Matter from 'matter-js';
 
 export function drawParticles(

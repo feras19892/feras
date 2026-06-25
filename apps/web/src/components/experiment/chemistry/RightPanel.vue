@@ -19,6 +19,7 @@ const emit = defineEmits<{
   openTheory: [];
   clearExperiment: [];
   resetLab: [];
+  showReport: [];
 }>();
 </script>
 
@@ -33,7 +34,7 @@ const emit = defineEmits<{
     <LabStatsPanel :item="selectedItem" />
     <GuidePanel :experiment="activeExperiment" @select-experiment="emit('selectExperiment')" @open-theory="emit('openTheory')" />
     <LabAssistant />
-    <ExperimentStepsPanel :experiment="activeExperiment" :step-completion="stepCompletion" @clear="emit('clearExperiment')" />
+    <ExperimentStepsPanel :experiment="activeExperiment" :step-completion="stepCompletion" @clear="emit('clearExperiment')" @show-report="emit('showReport')" />
   </aside>
 </template>
 

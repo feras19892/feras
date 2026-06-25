@@ -1,6 +1,12 @@
-import { liquidMap, buretteMap, items, pipetteMap, sepFunnelMap, burnerMap, balanceTareMap, containerTareMap, simSpeed, itemZoomMap, phProbeTipMap, solidMap, stopperMap, pourFlowMap, tiltAngleMap, buretteInitialVolumeMap, buretteTotalConsumedMap, buretteConsumedThisRefill, hasSelectedChemicalMap } from './useChemistryLab';
+import {
+  liquidMap, buretteMap, items, pipetteMap, sepFunnelMap, burnerMap,
+  balanceTareMap, containerTareMap, simSpeed, itemZoomMap, phProbeTipMap,
+  solidMap, stopperMap, pourFlowMap, tiltAngleMap, rackSlotsMap,
+  buretteInitialVolumeMap, buretteTotalConsumedMap, buretteConsumedThisRefill,
+  hasSelectedChemicalMap, retortStandMap, beakerClampMap, hotPlateMap, woodenBaseMap
+} from './useChemistryLab';
 
-const STORAGE_KEY = 'chem-lab-session-v1';
+const STORAGE_KEY = 'chem-lab-session-v19';
 
 export function saveSession(): void {
   try {
@@ -20,14 +26,19 @@ export function saveSession(): void {
       stoppers: { ...stopperMap },
       pourFlows: { ...pourFlowMap },
       tiltAngles: { ...tiltAngleMap },
+      rackSlots: { ...rackSlotsMap },
       buretteInitialVolumes: { ...buretteInitialVolumeMap },
       buretteTotalConsumeds: { ...buretteTotalConsumedMap },
       buretteConsumedThisRefills: { ...buretteConsumedThisRefill },
       hasSelectedChemicals: { ...hasSelectedChemicalMap },
+      retortStands: { ...retortStandMap },
+      beakerClamps: { ...beakerClampMap },
+      hotPlates: { ...hotPlateMap },
+      woodenBases: { ...woodenBaseMap },
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  } catch (e) {
-    console.warn('Failed to save session', e);
+  } catch {
+    /* ignore storage errors */
   }
 }
 
@@ -51,12 +62,17 @@ export function loadSession(): void {
     if (data.stoppers) Object.assign(stopperMap, data.stoppers);
     if (data.pourFlows) Object.assign(pourFlowMap, data.pourFlows);
     if (data.tiltAngles) Object.assign(tiltAngleMap, data.tiltAngles);
+    if (data.rackSlots) Object.assign(rackSlotsMap, data.rackSlots);
     if (data.buretteInitialVolumes) Object.assign(buretteInitialVolumeMap, data.buretteInitialVolumes);
     if (data.buretteTotalConsumeds) Object.assign(buretteTotalConsumedMap, data.buretteTotalConsumeds);
     if (data.buretteConsumedThisRefills) Object.assign(buretteConsumedThisRefill, data.buretteConsumedThisRefills);
     if (data.hasSelectedChemicals) Object.assign(hasSelectedChemicalMap, data.hasSelectedChemicals);
-  } catch (e) {
-    console.warn('Failed to load session', e);
+    if (data.retortStands) Object.assign(retortStandMap, data.retortStands);
+    if (data.beakerClamps) Object.assign(beakerClampMap, data.beakerClamps);
+    if (data.hotPlates) Object.assign(hotPlateMap, data.hotPlates);
+    if (data.woodenBases) Object.assign(woodenBaseMap, data.woodenBases);
+  } catch {
+    /* ignore corrupted session */
   }
 }
 
@@ -77,8 +93,13 @@ export function clearSession(): void {
   Object.keys(stopperMap).forEach(k => delete stopperMap[k]);
   Object.keys(pourFlowMap).forEach(k => delete pourFlowMap[k]);
   Object.keys(tiltAngleMap).forEach(k => delete tiltAngleMap[k]);
+  Object.keys(rackSlotsMap).forEach(k => delete rackSlotsMap[k]);
   Object.keys(buretteInitialVolumeMap).forEach(k => delete buretteInitialVolumeMap[k]);
   Object.keys(buretteTotalConsumedMap).forEach(k => delete buretteTotalConsumedMap[k]);
   Object.keys(buretteConsumedThisRefill).forEach(k => delete buretteConsumedThisRefill[k]);
+  Object.keys(retortStandMap).forEach(k => delete retortStandMap[k]);
+  Object.keys(beakerClampMap).forEach(k => delete beakerClampMap[k]);
+  Object.keys(hotPlateMap).forEach(k => delete hotPlateMap[k]);
+  Object.keys(woodenBaseMap).forEach(k => delete woodenBaseMap[k]);
   localStorage.removeItem(STORAGE_KEY);
 }

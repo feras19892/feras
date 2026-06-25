@@ -1,18 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
-
-export interface ToolState {
-  uid: string;
-  type: 'beaker' | 'burette' | 'pipette' | 'other';
-  volume: number;
-  maxVolume: number;
-  valveOpen?: boolean;
-  color: string;
-  label?: string; // solution name for containers
-  temp?: number;
-  ph?: number;
-}
+import type { ToolState } from '../../../composables/chemistry/chemLabTypes';
+export type { ToolState };
 
 interface Props {
   item: LabItem | null;
@@ -41,7 +31,9 @@ const pct = computed(() => {
         <span class="item-icon">{{ props.item.icon }}</span>
         <div class="item-meta">
           <span class="item-name">{{ props.item.name }}</span>
-          <span class="item-type">{{ props.state.type === 'burette' ? 'سحاحة' : props.state.type === 'beaker' ? 'بيكر' : 'أداة' }}</span>
+          <span class="item-type">
+            {{ props.state.type === 'burette' ? (props.state.buretteNumber ? 'سحاحة ' + props.state.buretteNumber : 'سحاحة') : props.state.type === 'beaker' ? 'بيكر' : 'أداة' }}
+          </span>
         </div>
       </div>
 

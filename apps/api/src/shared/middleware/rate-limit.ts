@@ -12,3 +12,13 @@ export const loginRateLimit = rateLimiter({
     return ip || 'unknown';
   },
 });
+
+export const passwordUpdateRateLimit = rateLimiter({
+  windowMs: 15 * 60 * 1000,
+  limit: isDev ? 1000 : 3,
+  standardHeaders: 'draft-6',
+  keyGenerator: (c: Context) => {
+    const ip = c.req.header('x-forwarded-for') || c.req.header('x-real-ip') || c.req.header('x-client-ip');
+    return ip || 'unknown';
+  },
+});

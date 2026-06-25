@@ -188,7 +188,7 @@ export function useMirrorExperiment() {
       hi: t.imageHeight,
       inv_do: t.invDo,
       inv_di: t.invDi,
-    }))
+    })) as Record<string, string | number>[]
 
     const payload: AnalysisPayload = {
       sourceExperiment: 'mirrors',

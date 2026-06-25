@@ -58,8 +58,17 @@ export const glasswareSections: Section[] = [
     items: [
       { id: 'bunsen-burner', name: 'موقد بنسن', icon: '🔥', type: 'device' },
       { id: 'heating-mantle', name: 'غطاء تسخين', icon: '🧣', type: 'device' },
+      { id: 'hot-plate', name: 'لوحة تسخين كهربائية', icon: '🔘', type: 'device' },
       { id: 'digital-balance', name: 'ميزان رقمي', icon: '⚖️', type: 'device' },
       { id: 'ph-meter', name: 'جهاز pH', icon: '📟', type: 'device' },
+    ],
+  },
+  {
+    id: 'stands',
+    title: 'حوامل ومشابك',
+    icon: '🏗️',
+    items: [
+      { id: 'retort-stand-assembly', name: 'حامل المختبر', icon: '🏗️', type: 'helper' },
     ],
   },
   {
@@ -67,6 +76,7 @@ export const glasswareSections: Section[] = [
     title: 'أدوات مساعدة',
     icon: '🛠️',
     items: [
+      { id: 'test-tube-rack', name: 'حامل أنابيب', icon: '🧮', type: 'helper' },
       { id: 'spatula', name: 'ملعقة مخبرية', icon: '🥄', type: 'helper' },
       { id: 'watch-glass', name: 'زجاجة ساعة', icon: '🔍', type: 'helper' },
       { id: 'filter-funnel', name: 'قمع ترشيح', icon: '🔽', type: 'helper' },

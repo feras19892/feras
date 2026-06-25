@@ -3,7 +3,7 @@ import {
   W, H, BEAKER_LEFT, BEAKER_RIGHT, BEAKER_BOTTOM_CURVE_Y,
   BEAKER_TOP_Y, BEAKER_CENTER_X, BEAKER_WIDTH
 } from './solidFluidTypes';
-import { hexToRgb } from './chemColorUtils';
+import { hexToRgb } from '@my-modern-app/chemistry-engine';
 
 export function renderSolidFluid(
   ctx: CanvasRenderingContext2D,

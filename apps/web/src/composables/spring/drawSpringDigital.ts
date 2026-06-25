@@ -8,7 +8,7 @@ export function drawSpringDigital(
   natEqY: number,
   staticStretchCm: number,
   _pxPerCm: number,
-  t?: (key: string, ...args: any[]) => string
+  t?: (key: string, fallbackOrVars?: string | Record<string, string | number>, vars?: Record<string, string | number>) => string
 ) {
   const hasMass = params.mass > 1e-6
   const padX = w - 168

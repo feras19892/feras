@@ -25,7 +25,7 @@ const confirmPassword = ref('');
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 const formError = ref('');
-const selectedRole = ref<'teacher' | 'student' | 'admin'>('student');
+const selectedRole = ref<'teacher' | 'student'>('student');
 
 async function handleRegister() {
   formError.value = '';
@@ -49,7 +49,7 @@ async function handleRegister() {
     formError.value = t('auth.errors.passwordsMismatch');
     return;
   }
-  if (password.value.length < 6) {
+  if (password.value.length < 8) {
     formError.value = t('auth.errors.passwordTooShort');
     return;
   }
@@ -74,7 +74,7 @@ async function handleRegister() {
       <div class="app-header">
         <h1>{{ t('auth.registerTitle') }}</h1>
         <p class="subtitle">
-          {{ selectedRole === 'teacher' ? t('auth.roleTeacher') : selectedRole === 'admin' ? t('auth.roleAdmin') : t('auth.roleStudent') }}
+          {{ selectedRole === 'teacher' ? t('auth.roleTeacher') : t('auth.roleStudent') }}
         </p>
       </div>
       <form @submit.prevent="handleRegister">
@@ -106,14 +106,6 @@ async function handleRegister() {
               @click="selectedRole = 'student'"
             >
               {{ t('auth.roleStudent') }}
-            </button>
-            <button
-              type="button"
-              class="role-option"
-              :class="{ active: selectedRole === 'admin' }"
-              @click="selectedRole = 'admin'"
-            >
-              {{ t('auth.roleAdmin') }}
             </button>
           </div>
         </div>

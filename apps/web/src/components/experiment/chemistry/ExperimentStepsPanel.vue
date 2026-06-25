@@ -8,6 +8,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   clear: [];
+  showReport: [];
 }>();
 </script>
 
@@ -35,6 +36,13 @@ const emit = defineEmits<{
           <span class="right-exp-text">{{ step.text }}</span>
         </li>
       </ol>
+      <button
+        v-if="stepCompletion.length > 0 && stepCompletion.every(Boolean)"
+        class="show-report-btn"
+        @click="emit('showReport')"
+      >
+        📝 عرض التقرير النهائي
+      </button>
     </div>
     <div v-else class="right-exp-empty">
       <span class="right-exp-empty-icon">📋</span>
@@ -147,5 +155,21 @@ const emit = defineEmits<{
 .right-exp-empty-hint {
   font-size: 0.7rem;
   color: #cbd5e1;
+}
+.show-report-btn {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.show-report-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16,185,129,0.3);
 }
 </style>

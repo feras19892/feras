@@ -3,7 +3,6 @@ import { ref, onMounted } from 'vue';
 import { useI18n } from '../../composables/useI18n';
 import { useAdminUserDetail } from '../../composables/admin/useAdminUserDetail';
 import { impersonateUser, resetUserPassword } from '../../services/admin.service';
-import { setAccessToken } from '../../services/http';
 
 const props = defineProps<{
   userId: number;
@@ -44,7 +43,6 @@ async function onImpersonate() {
   if (!confirm(`${t('adminUser.impersonateConfirm')} ${profile.value?.user?.name}?\n${t('adminUser.willLogoutAdmin')}`)) return;
   const res = await impersonateUser(props.userId);
   if (res.success) {
-    setAccessToken(res.token);
     window.location.href = '/home';
   }
 }

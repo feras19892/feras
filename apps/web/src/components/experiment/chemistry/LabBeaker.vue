@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { useBeakerDrops } from '../../../composables/chemistry/useBeakerDrops';
+import { useSpillDrops } from '../../../composables/chemistry/useSpillDrops';
 import { useBeakerScale } from '../../../composables/chemistry/useBeakerScale';
 
 interface Props {
@@ -54,19 +54,26 @@ const emit = defineEmits<{ mouthInteract: []; spill: [amount: number]; dropExite
 
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 
-useBeakerDrops(
+useSpillDrops({
   canvasRef,
-  () => props.tiltAngle,
-  () => props.volume,
-  () => props.maxVolume,
-  () => props.liquidColor,
-  () => props.itemX,
-  () => props.itemY,
-  (event, ...args) => {
-    if (event === 'spill') emit('spill', args[0]);
-    else if (event === 'dropExited') emit('dropExited', args[0], args[1], args[2]);
-  }
-);
+  tiltAngle: () => props.tiltAngle,
+  volume: () => props.volume,
+  maxVolume: () => props.maxVolume,
+  liquidColor: () => props.liquidColor,
+  itemX: () => props.itemX,
+  itemY: () => props.itemY,
+  mouthPosition: (tilt) => {
+    const rad = tilt * Math.PI / 180;
+    const cx = 70, cy = 100, mouthDist = 75;
+    return { x: cx + mouthDist * Math.sin(rad), y: cy - mouthDist * Math.cos(rad) };
+  },
+  canvasW: 140,
+  canvasH: 300,
+  mouthBounds: { minX: 10, maxX: 130, minY: 10, maxY: 200 },
+  exitY: 200,
+  onSpill: (amount) => emit('spill', amount),
+  onDropExited: (wx, wy, color) => emit('dropExited', wx, wy, color),
+});
 </script>
 
 <template>

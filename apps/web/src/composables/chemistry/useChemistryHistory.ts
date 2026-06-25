@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 import type { LabItem } from './useChemistryTools';
-import type { LiquidState, BuretteState, PipetteState, SepFunnelState } from './chemLabTypes';
+import type { LiquidState, BuretteState, PipetteState, SepFunnelState } from '@my-modern-app/chemistry-engine';
 import {
   items, liquidMap, buretteMap, pipetteMap,
   sepFunnelMap, burnerMap, balanceTareMap, itemZoomMap,
@@ -100,6 +100,8 @@ export function undo(): boolean {
   const snap = macroPast.value.pop()!;
   macroFuture.value.push(current);
   restore(snap);
+  microPast.value = [];
+  microFuture.value = [];
   return true;
 }
 
@@ -109,6 +111,8 @@ export function redo(): boolean {
   const snap = macroFuture.value.pop()!;
   macroPast.value.push(current);
   restore(snap);
+  microPast.value = [];
+  microFuture.value = [];
   return true;
 }
 
@@ -136,6 +140,8 @@ export function undoMicro(): boolean {
   const snap = microPast.value.pop()!;
   microFuture.value.push(current);
   restore(snap);
+  for (const uid of Object.keys(buretteMap)) buretteMap[uid].valveOpen = false;
+  for (const uid of Object.keys(sepFunnelMap)) sepFunnelMap[uid].valveOpen = false;
   return true;
 }
 
@@ -145,6 +151,8 @@ export function redoMicro(): boolean {
   const snap = microFuture.value.pop()!;
   microPast.value.push(current);
   restore(snap);
+  for (const uid of Object.keys(buretteMap)) buretteMap[uid].valveOpen = false;
+  for (const uid of Object.keys(sepFunnelMap)) sepFunnelMap[uid].valveOpen = false;
   return true;
 }
 

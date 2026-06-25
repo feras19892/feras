@@ -1,5 +1,6 @@
 export function isBeaker(id: string): boolean { return id.startsWith('beaker'); }
-export function isTestTube(id: string): boolean { return id.startsWith('test-tube'); }
+export function isTestTube(id: string): boolean { return id.startsWith('test-tube') && id !== 'test-tube-rack'; }
+export function isTestTubeRack(id: string): boolean { return id === 'test-tube-rack'; }
 export function isBurette(id: string): boolean { return id === 'burette'; }
 export function isPipette(id: string): boolean { return id === 'pipette' || id === 'volumetric-pipette'; }
 export function isErlenmeyer(id: string): boolean { return id === 'erlenmeyer'; }
@@ -9,15 +10,26 @@ export function isSeparatoryFunnel(id: string): boolean { return id === 'sep-fun
 export function isGradCylinder(id: string): boolean { return id === 'grad-cylinder'; }
 export function isHeatingMantle(id: string): boolean { return id === 'heating-mantle'; }
 export function isBunsenBurner(id: string): boolean { return id === 'bunsen-burner'; }
+export function isHotPlate(id: string): boolean { return id === 'hot-plate'; }
 export function isBalance(id: string): boolean { return id === 'digital-balance'; }
 export function isPhMeter(id: string): boolean { return id === 'ph-meter'; }
 export function isWatchGlass(id: string): boolean { return id === 'watch-glass'; }
 export function isFilterFunnel(id: string): boolean { return id === 'filter-funnel'; }
 export function isRubberStopper(id: string): boolean { return id === 'rubber-stopper'; }
 export function isThermometer(id: string): boolean { return id === 'thermometer-mercury' || id === 'thermometer-digital'; }
+export function isRetortStand(id: string): boolean { return id === 'retort-stand'; }
+export function isRetortStandAssembly(id: string): boolean { return id === 'retort-stand-assembly'; }
+export function isBeakerClamp(id: string): boolean { return id === 'beaker-clamp'; }
+export function isWoodenBase(id: string): boolean { return id === 'wooden-base'; }
 
 export function isContainer(id: string): boolean {
   return isBeaker(id) || isTestTube(id) || id === 'erlenmeyer' || id === 'grad-cylinder'
+    || id === 'volumetric-flask' || id === 'round-bottom-flask' || id === 'sep-funnel';
+}
+
+// Reaction vessels: containers that can receive titrant drops (exclude test tubes)
+export function isReactionVessel(id: string): boolean {
+  return isBeaker(id) || id === 'erlenmeyer' || id === 'grad-cylinder'
     || id === 'volumetric-flask' || id === 'round-bottom-flask' || id === 'sep-funnel';
 }
 

@@ -22,17 +22,17 @@ const emit = defineEmits<{
           <tr><th>#</th><th>m₁</th><th>m₂</th><th>v₁i</th><th>v₂i</th><th>e</th><th>v₁f</th><th>v₂f</th><th>Loss%</th><th></th></tr>
         </thead>
         <tbody>
-          <tr v-for="(t, i) in props.trials" :key="t.id">
+          <tr v-for="(tr, i) in props.trials" :key="tr.id">
             <td>{{ i + 1 }}</td>
-            <td>{{ t.m1 }}</td>
-            <td>{{ t.m2 }}</td>
-            <td :class="t.v1i < 0 ? 'neg' : ''">{{ t.v1i }}</td>
-            <td :class="t.v2i < 0 ? 'neg' : ''">{{ t.v2i }}</td>
-            <td>{{ t.e }}</td>
-            <td :class="t.v1f < 0 ? 'neg' : ''">{{ t.v1f }}</td>
-            <td :class="t.v2f < 0 ? 'neg' : ''">{{ t.v2f }}</td>
-            <td>{{ t.lossPercent }}%</td>
-            <td><button class="del" @click="emit('remove', t.id)">×</button></td>
+            <td>{{ tr.m1 }}</td>
+            <td>{{ tr.m2 }}</td>
+            <td :class="tr.v1i < 0 ? 'neg' : ''">{{ tr.v1i }}</td>
+            <td :class="tr.v2i < 0 ? 'neg' : ''">{{ tr.v2i }}</td>
+            <td>{{ tr.e }}</td>
+            <td :class="tr.v1f < 0 ? 'neg' : ''">{{ tr.v1f }}</td>
+            <td :class="tr.v2f < 0 ? 'neg' : ''">{{ tr.v2f }}</td>
+            <td>{{ tr.lossPercent }}%</td>
+            <td><button class="del" @click="emit('remove', tr.id)">×</button></td>
           </tr>
         </tbody>
       </table>

@@ -1,5 +1,5 @@
 import type { FluidParticle } from './metaballTypes';
-import { W, H, WALL_LEFT, WALL_RIGHT, WALL_BOTTOM, WALL_TOP } from './metaballTypes';
+import { W, H } from './metaballTypes';
 
 export function renderMetaballFluid(
   ctx: CanvasRenderingContext2D,

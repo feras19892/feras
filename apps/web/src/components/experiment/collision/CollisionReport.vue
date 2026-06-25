@@ -35,16 +35,16 @@ const emit = defineEmits<{
             <tr><th>#</th><th>m₁ (kg)</th><th>m₂ (kg)</th><th>v₁i (m/s)</th><th>v₂i (m/s)</th><th>e</th><th>v₁f (m/s)</th><th>v₂f (m/s)</th><th>Loss %</th></tr>
           </thead>
           <tbody>
-            <tr v-for="(t, i) in props.trials" :key="t.id">
+            <tr v-for="(tr, i) in props.trials" :key="tr.id">
               <td>{{ i + 1 }}</td>
-              <td>{{ t.m1 }}</td>
-              <td>{{ t.m2 }}</td>
-              <td>{{ t.v1i }}</td>
-              <td>{{ t.v2i }}</td>
-              <td>{{ t.e }}</td>
-              <td>{{ t.v1f }}</td>
-              <td>{{ t.v2f }}</td>
-              <td>{{ t.lossPercent }}%</td>
+              <td>{{ tr.m1 }}</td>
+              <td>{{ tr.m2 }}</td>
+              <td>{{ tr.v1i }}</td>
+              <td>{{ tr.v2i }}</td>
+              <td>{{ tr.e }}</td>
+              <td>{{ tr.v1f }}</td>
+              <td>{{ tr.v2f }}</td>
+              <td>{{ tr.lossPercent }}%</td>
             </tr>
           </tbody>
         </table>

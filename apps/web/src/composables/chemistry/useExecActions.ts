@@ -1,7 +1,7 @@
 import {
-  items, buretteMap, buretteInitialVolumeMap, buretteTotalConsumedMap, buretteConsumedThisRefill,
+  items, buretteInitialVolumeMap, buretteTotalConsumedMap, buretteConsumedThisRefill,
   balanceTareMap, containerTareMap, getLiquid, getBurette, getSepFunnelState, getBurnerState, buildToolState,
-  isContainer, isBurette, isBalance, isSeparatoryFunnel, isBunsenBurner, isHeatingMantle,
+  isContainer, isBurette,
   selectedChemical, hasSelectedChemicalMap, pendingChemicalFill
 } from './useChemistryLab';
 import { applyIndicator } from './useReactionEngine';
@@ -25,6 +25,12 @@ export function execAction(type: ActionType, uid: string, selectedItemRef: { val
   const item = items.value.find(i => i.uid === uid); if (!item) return;
   // Toggle valve is NOT a macro step — it's part of the drip flow (micro history tracks drops)
   if (type === 'toggleValve' && isBurette(item.id)) { toggleBuretteValve(item, selectedItemRef, emit); return; }
+  // If fill action and no chemical selected yet, open the picker without recording history
+  if ((type === 'fill5' || type === 'fill10' || type === 'fill50' || type === 'fill100') && (isContainer(item.id) || isBurette(item.id)) && !hasSelectedChemicalMap[uid]) {
+    const amount = type === 'fill5' ? 5 : type === 'fill10' ? 10 : type === 'fill50' ? 50 : 100;
+    pendingChemicalFill.value = { uid, amount };
+    return;
+  }
   // All other actions are macro steps
   pushMacroHistory();
   if (type === 'refill' && isBurette(item.id)) {
@@ -39,8 +45,7 @@ export function execAction(type: ActionType, uid: string, selectedItemRef: { val
   }
   if ((type === 'fill5' || type === 'fill10' || type === 'fill50' || type === 'fill100') && (isContainer(item.id) || isBurette(item.id))) {
     const amount = type === 'fill5' ? 5 : type === 'fill10' ? 10 : type === 'fill50' ? 50 : 100;
-    if (hasSelectedChemicalMap[uid]) {
-      if (isBurette(item.id)) {
+    if (isBurette(item.id)) {
         const s = getBurette(uid);
         commitBuretteConsumption(uid);
         s.volume = Math.min(s.maxVolume, s.volume + amount);
@@ -69,10 +74,6 @@ export function execAction(type: ActionType, uid: string, selectedItemRef: { val
           s.reactants[selectedChemical.id] = (s.reactants[selectedChemical.id] || 0) + amount;
         }
       }
-    } else {
-      pendingChemicalFill.value = { uid, amount };
-      return;
-    }
   }
   if ((type === 'remove5' || type === 'remove10' || type === 'remove50' || type === 'remove100') && (isContainer(item.id) || isBurette(item.id))) {
     const amount = type === 'remove5' ? 5 : type === 'remove10' ? 10 : type === 'remove50' ? 50 : 100;

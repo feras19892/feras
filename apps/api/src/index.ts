@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { Hono } from 'hono';
 import { logger } from 'hono/logger';
 import { cors } from 'hono/cors';
@@ -11,7 +12,7 @@ import { notificationRoutes } from './modules/notifications/handlers.js';
 import { adminRoutes } from './modules/admin/handlers.js';
 import { feedbackRoutes } from './modules/feedback/handlers.js';
 import { runMigrations } from './db/index.js';
-import { loginRateLimit } from './shared/middleware/rate-limit.js';
+import { loginRateLimit, passwordUpdateRateLimit } from './shared/middleware/rate-limit.js';
 
 await runMigrations();
 
@@ -24,8 +25,22 @@ const corsOrigin = process.env.CORS_ORIGIN
 app.use(cors({ origin: corsOrigin, credentials: true }));
 app.use(logger());
 
+app.use(async (c, next) => {
+  await next();
+  c.header('X-Frame-Options', 'DENY');
+  c.header('X-Content-Type-Options', 'nosniff');
+  c.header('X-XSS-Protection', '1; mode=block');
+  c.header('Referrer-Policy', 'strict-origin-when-cross-origin');
+  c.header('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
+  if (process.env.NODE_ENV === 'production') {
+    c.header('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+    c.header('Content-Security-Policy', "default-src 'none'; frame-ancestors 'none'");
+  }
+});
+
 app.use('/api/auth/login', loginRateLimit);
 app.use('/api/auth/register', loginRateLimit);
+app.use('/api/auth/password', passwordUpdateRateLimit);
 app.route('/api/auth', authRoutes);
 app.route('/api/dashboard', dashboardRoutes);
 app.route('/api/settings', settingsRoutes);

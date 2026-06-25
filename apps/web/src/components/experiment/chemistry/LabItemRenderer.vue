@@ -2,11 +2,13 @@
 import { computed } from 'vue';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import {
-  getLiquid, getBurette, getPipette, getSepFunnelState, getBurnerState, getItemZoom, pourFlowMap, tiltAngleMap,
-  isContainer, isBeaker, isTestTube, isBurette, isPipette, isErlenmeyer, isVolumetricFlask, isRoundBottomFlask,
-  isSeparatoryFunnel, isGradCylinder, isBunsenBurner, isHeatingMantle, isBalance, isPhMeter
+  items, getLiquid, getBurette, getPipette, getSepFunnelState, getBurnerState, getItemZoom, getRetortStandState, getBeakerClampState, getHotPlateState, retortStandMap, beakerClampMap, pourFlowMap, tiltAngleMap, rackSlotsMap,
+  isContainer, isBeaker, isTestTube, isTestTubeRack, isBurette, isPipette, isErlenmeyer, isVolumetricFlask, isRoundBottomFlask,
+  isSeparatoryFunnel, isGradCylinder, isBunsenBurner, isHeatingMantle, isBalance, isPhMeter,
+  isRetortStand, isRetortStandAssembly, isBeakerClamp, isWoodenBase, isHotPlate
 } from '../../../composables/chemistry/useChemistryLab';
 import { getBalanceReading, getPhReading, isHeated } from '../../../composables/chemistry/useLabSimulation';
+import LabTestTubeRack from './LabTestTubeRack.vue';
 import ContainerRenderers from './ContainerRenderers.vue';
 import LabBeaker from './LabBeaker.vue';
 import LabBurette from './LabBurette.vue';
@@ -22,6 +24,43 @@ import LabSpatula from './LabSpatula.vue';
 import LabWatchGlass from './LabWatchGlass.vue';
 import LabFilterFunnel from './LabFilterFunnel.vue';
 import LabRubberStopper from './LabRubberStopper.vue';
+import LabWoodenBase from './LabWoodenBase.vue';
+import LabRetortStand from './LabRetortStand.vue';
+import LabRetortStandAssembly from './LabRetortStandAssembly.vue';
+import LabBeakerClamp from './LabBeakerClamp.vue';
+import LabHotPlate from './LabHotPlate.vue';
+
+function isBuretteAttachedToStand(buretteUid: string): boolean {
+  for (const [, st] of Object.entries(retortStandMap)) {
+    const s = st as { leftBuretteUid: string | null; rightBuretteUid: string | null };
+    if (s.leftBuretteUid === buretteUid || s.rightBuretteUid === buretteUid) return true;
+  }
+  return false;
+}
+function buretteLabel(buretteUid: string): string {
+  for (const [, st] of Object.entries(retortStandMap)) {
+    const s = st as { leftBuretteUid: string | null; rightBuretteUid: string | null };
+    if (s.leftBuretteUid === buretteUid) return 'سحاحة 1';
+    if (s.rightBuretteUid === buretteUid) return 'سحاحة 2';
+  }
+  return 'سحاحة';
+}
+function isContainerAttachedToStand(containerUid: string): boolean {
+  for (const [, st] of Object.entries(retortStandMap)) {
+    const s = st as { leftContainerUid: string | null; rightContainerUid: string | null };
+    if (s.leftContainerUid === containerUid || s.rightContainerUid === containerUid) return true;
+  }
+  return false;
+}
+function handleSelectBurette(buretteUid: string) {
+  const burette = items.value.find(i => i.uid === buretteUid);
+  if (burette) {
+    const fakeEvent = new MouseEvent('mousedown', { bubbles: true });
+    Object.defineProperty(fakeEvent, 'clientX', { value: burette.x + 50 });
+    Object.defineProperty(fakeEvent, 'clientY', { value: burette.y + 50 });
+    emit('mousedown', fakeEvent, burette);
+  }
+}
 
 const props = defineProps<{
   item: LabItem;
@@ -40,10 +79,21 @@ const emit = defineEmits<{
   toggleValve: [item: LabItem];
   tipInteract: [item: LabItem];
   toggleStopcock: [item: LabItem];
+  selectBurette: [uid: string];
+  selectContainer: [uid: string];
 }>();
 
 const liq = computed(() => getLiquid(props.item.uid));
 const isSel = computed(() => props.selectedUid === props.item.uid);
+
+const rackSlotData = computed(() => {
+  const uids = rackSlotsMap[props.item.uid] || [];
+  return uids.map(uid => {
+    if (!uid) return null;
+    const slotLiq = getLiquid(uid);
+    return { uid, volume: slotLiq.volume, maxVolume: slotLiq.maxVolume, color: slotLiq.color, opacity: slotLiq.opacity };
+  });
+});
 
 </script>
 
@@ -56,12 +106,12 @@ const isSel = computed(() => props.selectedUid === props.item.uid);
     @mouseleave="emit('mouseleave', item)"
     @mousedown="emit('mousedown', $event, item)"
   >
-  <div v-if="isContainer(item.id)" class="item-solution-label">
+  <div v-if="isContainer(item.id) && !isContainerAttachedToStand(item.uid)" class="item-solution-label">
     {{ liq.label }}
   </div>
 
   <ContainerRenderers
-    v-if="isTestTube(item.id) || isErlenmeyer(item.id) || isVolumetricFlask(item.id) || isRoundBottomFlask(item.id) || isGradCylinder(item.id)"
+    v-if="isTestTube(item.id) || isErlenmeyer(item.id) || isVolumetricFlask(item.id) || isRoundBottomFlask(item.id)"
     :item="item"
     :is-sel="isSel"
     @spill="emit('spill', item, $event)"
@@ -99,34 +149,52 @@ const isSel = computed(() => props.selectedUid === props.item.uid);
     @spill="emit('spill', item, $event)"
     @drop-exited="(wx: number, wy: number, color: string) => emit('dropExited', item, wx, wy, color)"
   />
-  <LabBeaker
-    v-else-if="isBeaker(item.id)"
-    :volume="liq.volume"
-    :max-volume="liq.maxVolume"
-    :liquid-color="liq.color"
-    :liquid-opacity="liq.opacity"
-    :is-hovered="isSel"
-    :receiving="receiving"
-    :stirred="liq.stirred"
-    :tilt-angle="tiltAngleMap[item.uid] || 0"
-    :item-uid="item.uid"
-    :item-x="item.x"
-    :item-y="item.y"
-    @mouth-interact="emit('mouthInteract', item)"
-    @spill="emit('spill', item, $event)"
-    @drop-exited="(wx: number, wy: number, color: string) => emit('dropExited', item, wx, wy, color)"
-  />
-  <LabBurette
-    v-else-if="isBurette(item.id)"
-    :volume="getBurette(item.uid).volume"
-    :max-volume="getBurette(item.uid).maxVolume"
-    :liquid-color="getBurette(item.uid).color"
-    :liquid-opacity="getBurette(item.uid).opacity"
-    :is-open="getBurette(item.uid).valveOpen"
-    :is-hovered="isSel"
-    @toggle-valve="emit('toggleValve', item)"
-    @tip-interact="emit('tipInteract', item)"
-  />
+  <template v-else-if="isBeaker(item.id)">
+    <LabBeaker
+      v-if="!isContainerAttachedToStand(item.uid)"
+      :volume="liq.volume"
+      :max-volume="liq.maxVolume"
+      :liquid-color="liq.color"
+      :liquid-opacity="liq.opacity"
+      :is-hovered="isSel"
+      :receiving="receiving"
+      :stirred="liq.stirred"
+      :tilt-angle="tiltAngleMap[item.uid] || 0"
+      :item-uid="item.uid"
+      :item-x="item.x"
+      :item-y="item.y"
+      @mouth-interact="emit('mouthInteract', item)"
+      @spill="emit('spill', item, $event)"
+      @drop-exited="(wx: number, wy: number, color: string) => emit('dropExited', item, wx, wy, color)"
+    />
+    <!-- When attached to stand, beaker is drawn inside stand SVG; keep invisible click target -->
+    <div
+      v-else
+      class="stand-attached-container-placeholder"
+      :title="item.name"
+      @mousedown.stop="emit('mousedown', $event, item)"
+    />
+  </template>
+  <template v-else-if="isBurette(item.id)">
+    <LabBurette
+      v-if="!isBuretteAttachedToStand(item.uid)"
+      :volume="getBurette(item.uid).volume"
+      :max-volume="getBurette(item.uid).maxVolume"
+      :liquid-color="getBurette(item.uid).color"
+      :liquid-opacity="getBurette(item.uid).opacity"
+      :is-open="getBurette(item.uid).valveOpen"
+      :is-hovered="isSel"
+      @toggle-valve="emit('toggleValve', item)"
+      @tip-interact="emit('tipInteract', item)"
+    />
+    <!-- When attached to stand, burette is drawn inside stand SVG; keep invisible click target over burette area -->
+    <div
+      v-else
+      class="stand-attached-burette-placeholder"
+      :title="buretteLabel(item.uid)"
+      @mousedown.stop="emit('mousedown', $event, item)"
+    />
+  </template>
   <LabVolumetricPipette
     v-else-if="item.id === 'volumetric-pipette'"
     :volume="getPipette(item.uid).volume"
@@ -188,6 +256,69 @@ const isSel = computed(() => props.selectedUid === props.item.uid);
   <LabRubberStopper
     v-else-if="item.id === 'rubber-stopper'"
     :is-hovered="isSel"
+  />
+  <LabHotPlate
+    v-else-if="isHotPlate(item.id)"
+    :is-on="getHotPlateState(item.uid).on"
+    :temperature="getHotPlateState(item.uid).temperature"
+    :is-hovered="isSel"
+    @toggle="emit('toggleValve', item)"
+  />
+  <LabWoodenBase
+    v-else-if="isWoodenBase(item.id)"
+    :is-hovered="isSel"
+  />
+  <LabRetortStandAssembly
+    v-else-if="isRetortStandAssembly(item.id)"
+    :is-hovered="isSel"
+    :top-clamp-y="getRetortStandState(item.uid).topClampY"
+    :bottom-clamp-y="getRetortStandState(item.uid).bottomClampY"
+    :has-left-burette="!!getRetortStandState(item.uid).leftBuretteUid"
+    :has-right-burette="!!getRetortStandState(item.uid).rightBuretteUid"
+    :has-left-container="!!getRetortStandState(item.uid).leftContainerUid"
+    :has-right-container="!!getRetortStandState(item.uid).rightContainerUid"
+    :has-heating-device="!!getRetortStandState(item.uid).heatingDeviceUid"
+    :left-burette-uid="getRetortStandState(item.uid).leftBuretteUid"
+    :right-burette-uid="getRetortStandState(item.uid).rightBuretteUid"
+    :left-container-uid="getRetortStandState(item.uid).leftContainerUid"
+    :right-container-uid="getRetortStandState(item.uid).rightContainerUid"
+    :left-burette-volume="getRetortStandState(item.uid).leftBuretteUid ? getBurette(getRetortStandState(item.uid).leftBuretteUid!).volume : undefined"
+    :left-burette-max="getRetortStandState(item.uid).leftBuretteUid ? getBurette(getRetortStandState(item.uid).leftBuretteUid!).maxVolume : undefined"
+    :left-burette-open="getRetortStandState(item.uid).leftBuretteUid ? getBurette(getRetortStandState(item.uid).leftBuretteUid!).valveOpen : undefined"
+    :left-burette-color="getRetortStandState(item.uid).leftBuretteUid ? getBurette(getRetortStandState(item.uid).leftBuretteUid!).color : undefined"
+    :right-burette-volume="getRetortStandState(item.uid).rightBuretteUid ? getBurette(getRetortStandState(item.uid).rightBuretteUid!).volume : undefined"
+    :right-burette-max="getRetortStandState(item.uid).rightBuretteUid ? getBurette(getRetortStandState(item.uid).rightBuretteUid!).maxVolume : undefined"
+    :right-burette-open="getRetortStandState(item.uid).rightBuretteUid ? getBurette(getRetortStandState(item.uid).rightBuretteUid!).valveOpen : undefined"
+    :right-burette-color="getRetortStandState(item.uid).rightBuretteUid ? getBurette(getRetortStandState(item.uid).rightBuretteUid!).color : undefined"
+    :left-container-volume="getRetortStandState(item.uid).leftContainerUid ? getLiquid(getRetortStandState(item.uid).leftContainerUid!).volume : 0"
+    :left-container-max="getRetortStandState(item.uid).leftContainerUid ? getLiquid(getRetortStandState(item.uid).leftContainerUid!).maxVolume : 250"
+    :left-container-color="getRetortStandState(item.uid).leftContainerUid ? getLiquid(getRetortStandState(item.uid).leftContainerUid!).color : '#3b82f6'"
+    :right-container-volume="getRetortStandState(item.uid).rightContainerUid ? getLiquid(getRetortStandState(item.uid).rightContainerUid!).volume : 0"
+    :right-container-max="getRetortStandState(item.uid).rightContainerUid ? getLiquid(getRetortStandState(item.uid).rightContainerUid!).maxVolume : 250"
+    :right-container-color="getRetortStandState(item.uid).rightContainerUid ? getLiquid(getRetortStandState(item.uid).rightContainerUid!).color : '#3b82f6'"
+    @select-burette="emit('selectBurette', $event)"
+    @select-container="emit('selectContainer', $event)"
+  />
+  <LabRetortStand
+    v-else-if="isRetortStand(item.id)"
+    :clamp-angle="0"
+    :clamp-height="60"
+    :left-burette-uid="getRetortStandState(item.uid).leftBuretteUid"
+    :right-burette-uid="getRetortStandState(item.uid).rightBuretteUid"
+    :is-hovered="isSel"
+  />
+  <LabBeakerClamp
+    v-else-if="isBeakerClamp(item.id)"
+    :clamp-angle="0"
+    :held-container-uid="getBeakerClampState(item.uid).heldContainerUid"
+    :is-hovered="isSel"
+    @rotate-left="beakerClampMap[item.uid].clampAngle -= 45"
+    @rotate-right="beakerClampMap[item.uid].clampAngle += 45"
+  />
+  <LabTestTubeRack
+    v-else-if="isTestTubeRack(item.id)"
+    :is-hovered="isSel"
+    :slots="rackSlotData"
   />
   <template v-else>
     <div class="item-icon" :class="{ heating: isHeated(item) }">{{ item.icon }}</div>
@@ -267,5 +398,24 @@ const isSel = computed(() => props.selectedUid === props.item.uid);
   font-size: 0.7rem;
   color: #64748b;
   white-space: nowrap;
+}
+.stand-attached-burette-placeholder {
+  position: absolute;
+  top: -20px;
+  left: -15px;
+  width: 30px;
+  height: 80px;
+  background: transparent;
+  cursor: pointer;
+}
+.stand-attached-container-placeholder {
+  position: absolute;
+  top: 0px;
+  left: -10px;
+  width: 40px;
+  height: 50px;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: all;
 }
 </style>

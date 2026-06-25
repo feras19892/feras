@@ -24,7 +24,7 @@ const emit = defineEmits<{
           class="theory-section"
         >
           <h3 class="section-heading">{{ section.heading }}</h3>
-          <div class="section-content" v-html="section.content.replace(/\\n/g, '<br>')" />
+          <div class="section-content" style="white-space: pre-line">{{ section.content }}</div>
         </div>
       </div>
     </div>

@@ -34,8 +34,8 @@ export async function login(
   password: string
 ): Promise<{ success: boolean; message?: string; user?: User; token?: string; refreshToken?: string }> {
   try {
-    const rows = await db.all<{ id: number; email: string; name: string; role: string; password_hash: string }[]>(
-      'SELECT id, email, name, role, password_hash FROM users WHERE email = ?',
+    const rows = await db.all<{ id: number; email: string; name: string; role: string; password_hash: string; blocked_at: string | null }[]>(
+      'SELECT id, email, name, role, password_hash, blocked_at FROM users WHERE email = ?',
       email
     );
     if (rows.length === 0) {
@@ -43,6 +43,9 @@ export async function login(
     }
 
     const row = rows[0];
+    if (row.blocked_at) {
+      return { success: false, message: 'Account is suspended' };
+    }
     const valid = await comparePassword(password, row.password_hash);
     if (!valid) {
       return { success: false, message: 'Invalid credentials' };
@@ -79,7 +82,7 @@ export async function login(
 
 export async function refreshAccessToken(
   refreshToken: string
-): Promise<{ success: boolean; message?: string; token?: string }> {
+): Promise<{ success: boolean; message?: string; token?: string; refreshToken?: string }> {
   try {
     const hash = hashRefreshToken(refreshToken);
     const rows = await db.all<{ user_id: number }[]>(
@@ -91,6 +94,10 @@ export async function refreshAccessToken(
     }
 
     const userId = Number(rows[0].user_id);
+
+    // Delete the old refresh token (rotation)
+    await db.run('DELETE FROM refresh_tokens WHERE token_hash = ?', hash);
+
     const userRows = await db.all<{ id: number; email: string; name: string; role: string }[]>(
       'SELECT id, email, name, role FROM users WHERE id = ?',
       userId
@@ -106,7 +113,16 @@ export async function refreshAccessToken(
       role: u.role as User['role'],
     });
 
-    return { success: true, token };
+    // Generate and store new refresh token
+    const newRefreshToken = generateRefreshToken();
+    const newRefreshHash = hashRefreshToken(newRefreshToken);
+    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+    await db.run(
+      'INSERT INTO refresh_tokens (token_hash, user_id, expires_at) VALUES (?, ?, ?)',
+      newRefreshHash, userId, expiresAt
+    );
+
+    return { success: true, token, refreshToken: newRefreshToken };
   } catch (err) {
     console.error('refresh error:', err);
     return { success: false, message: 'Refresh failed' };

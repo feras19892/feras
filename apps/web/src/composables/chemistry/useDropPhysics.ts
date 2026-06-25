@@ -7,6 +7,7 @@ import { applyIndicator } from './useReactionEngine';
 import { handleDropMix } from './useReactionEngine';
 import { pushHistory } from './useChemistryHistory';
 import type { LabItem } from './useChemistryTools';
+import type { ToolState } from './chemLabTypes';
 
 export function handleDropExited(
   sourceItem: LabItem,
@@ -14,8 +15,8 @@ export function handleDropExited(
   wy: number,
   color: string,
   selectedItemRef: { value: LabItem | null },
-  emit: (name: 'select', item: LabItem | null, state: any) => void,
-  buildToolState: (item: LabItem | null) => any
+  emit: (name: 'select', item: LabItem | null, state: ToolState | null) => void,
+  buildToolState: (item: LabItem | null) => ToolState | null
 ): void {
   const candidates = items.value.filter((i: LabItem) => {
     if (i.uid === sourceItem.uid) return false;

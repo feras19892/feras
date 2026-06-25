@@ -1,14 +1,16 @@
 import {
-  items, liquidMap, pipetteMap, selectedChemical,
+  items,
   getLiquid, getPipette, buildToolState,
-  isContainer, isPipette
+  isContainer
 } from './useChemistryLab';
 import { applyIndicator } from './useReactionEngine';
 import { pushHistory } from './useChemistryHistory';
+import { mixColor } from './chemColorUtils';
+import type { LiquidState } from './chemLabTypes';
 import type { LabItem } from './useChemistryTools';
-import type { ToolState } from '../../components/experiment/chemistry/InspectorPanel.vue';
+import type { ToolState } from './chemLabTypes';
 
-function getNearestContainer(pipItem: LabItem, filterFn: (liq: any) => boolean): LabItem | null {
+function getNearestContainer(pipItem: LabItem, filterFn: (liq: LiquidState) => boolean): LabItem | null {
   const candidates = items.value.filter((i: LabItem) => {
     if (i.uid === pipItem.uid) return false;
     if (!isContainer(i.id)) return false;
@@ -30,7 +32,7 @@ export function pipetteDraw(pipItem: LabItem, selectedItemRef: { value: LabItem 
   const pip = getPipette(pipItem.uid);
   if (pip.volume > 0) return;
   const target = getNearestContainer(pipItem, (liq) => liq.volume > 0);
-  if (!target) { console.warn('pipetteDraw: no target found'); return; }
+  if (!target) return;
   pushHistory();
   const tLiq = getLiquid(target.uid);
   const amount = Math.min(10, tLiq.volume);
@@ -45,14 +47,15 @@ export function pipetteDispense(pipItem: LabItem, selectedItemRef: { value: LabI
   const pip = getPipette(pipItem.uid);
   if (pip.volume <= 0) return;
   const target = getNearestContainer(pipItem, (liq) => liq.volume < liq.maxVolume);
-  if (!target) { console.warn('pipetteDispense: no target found'); return; }
+  if (!target) return;
   pushHistory();
   const tLiq = getLiquid(target.uid);
   const amount = Math.min(pip.volume, tLiq.maxVolume - tLiq.volume);
+  const oldVolume = tLiq.volume;
   tLiq.volume += amount;
-  if (tLiq.volume > amount) {
-    tLiq.color = pip.color;
-    tLiq.opacity = Math.min(1, (tLiq.opacity * (tLiq.volume - amount) + pip.opacity * amount) / tLiq.volume);
+  if (oldVolume > 0) {
+    tLiq.color = mixColor(tLiq.color, oldVolume, pip.color, amount);
+    tLiq.opacity = Math.min(1, (tLiq.opacity * oldVolume + pip.opacity * amount) / tLiq.volume);
   } else {
     tLiq.color = pip.color;
     tLiq.opacity = pip.opacity;

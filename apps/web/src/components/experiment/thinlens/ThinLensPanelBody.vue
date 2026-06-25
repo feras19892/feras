@@ -121,13 +121,13 @@ const regLineEnd = computed(() => ({
       <div v-if="trials.length === 0" class="empty">{{ t('experiments.emptyTrials') }}</div>
       <div v-else class="trial-table">
         <div class="trial-header"><span>#</span><span>{{ t('experiments.lensType') }}</span><span>do</span><span>di</span><span>m</span></div>
-        <div v-for="t in trials" :key="t.id" class="trial-row">
-          <span class="trial-num">{{ t.id }}</span>
-          <span class="mono" style="font-size:.65rem">{{ t.lensType === 'convex' ? '🔍' : '🪞' }}</span>
-          <span>{{ t.objectDistance.toFixed(0) }}</span>
-          <span>{{ t.imageDistance.toFixed(1) }}</span>
-          <span class="mono">{{ t.magnification.toFixed(2) }}</span>
-          <button class="trial-del" @click="emit('remove', t.id)">🗑️</button>
+        <div v-for="trial in trials" :key="trial.id" class="trial-row">
+          <span class="trial-num">{{ trial.id }}</span>
+          <span class="mono" style="font-size:.65rem">{{ trial.lensType === 'convex' ? '🔍' : '🪞' }}</span>
+          <span>{{ trial.objectDistance.toFixed(0) }}</span>
+          <span>{{ trial.imageDistance.toFixed(1) }}</span>
+          <span class="mono">{{ trial.magnification.toFixed(2) }}</span>
+          <button class="trial-del" @click="emit('remove', trial.id)">🗑️</button>
         </div>
       </div>
       <button v-if="trials.length" class="btn-clear" @click="emit('clear')">{{ t('experiments.clearAll') }}</button>

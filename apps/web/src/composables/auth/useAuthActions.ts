@@ -1,4 +1,4 @@
-import { fetchJson, setAccessToken } from '../../services/http'
+import { fetchJson } from '../../services/http'
 import { useI18n } from '../useI18n'
 import type { User, ClassInfo } from '@my-modern-app/shared-types'
 
@@ -31,7 +31,6 @@ export function useAuthActions(
       })
       clearGuestState()
       user.value = data.user
-      setAccessToken(data.token)
       return true
     } catch (err) {
       const status = extractStatusCode(err)
@@ -44,7 +43,7 @@ export function useAuthActions(
     }
   }
 
-  async function registerWithRole(email: string, password: string, name: string, roleVal: 'teacher' | 'student' | 'admin') {
+  async function registerWithRole(email: string, password: string, name: string, roleVal: 'teacher' | 'student') {
     loading.value = true
     error.value = null
     try {
@@ -60,7 +59,6 @@ export function useAuthActions(
       })
       clearGuestState()
       user.value = loginData.user
-      setAccessToken(loginData.token)
       return true
     } catch (err) {
       const status = extractStatusCode(err)
@@ -90,7 +88,6 @@ export function useAuthActions(
     } catch {
       // auth failed (token expired and refresh failed) — clear user to force re-login
       user.value = null
-      setAccessToken(null)
     }
   }
 
@@ -186,14 +183,12 @@ export function useAuthActions(
     } catch {
       // ignore
     }
-    setAccessToken(null)
     clearGuestState()
     user.value = null
   }
 
-  function setSession(u: User, t: string) {
+  function setSession(u: User) {
     user.value = u
-    setAccessToken(t)
     clearGuestState()
   }
 

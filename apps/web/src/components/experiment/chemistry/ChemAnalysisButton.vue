@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { sendToAnalysis } from '../../../composables/chemistry/sendToAnalysis';
-import { buildTitrationPayload, hasTitrationData, clearTitrationReadings } from '../../../composables/chemistry/useTitrationRecorder';
+import { buildTitrationPayload, hasTitrationData } from '../../../composables/chemistry/useTitrationRecorder';
 
 const router = useRouter();
 const canAnalyze = computed(() => hasTitrationData());

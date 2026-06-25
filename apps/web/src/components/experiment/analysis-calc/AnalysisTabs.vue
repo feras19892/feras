@@ -10,13 +10,13 @@ const tabs = [t('analysis.dataTab'), t('analysis.analysisTab'), t('analysis.repo
 <template>
   <div class="tabs-bar">
     <button
-      v-for="(t, i) in tabs"
+      v-for="(tabLabel, i) in tabs"
       :key="i"
       class="tab-btn"
       :class="{ active: i === props.active }"
       @click="emit('change', i)"
     >
-      {{ t }}
+      {{ tabLabel }}
     </button>
   </div>
 </template>

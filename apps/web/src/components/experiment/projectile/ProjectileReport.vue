@@ -47,14 +47,14 @@ const hasData = computed(() => props.trials.length > 0)
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(t, i) in trials" :key="t.id">
+            <tr v-for="(tr, i) in trials" :key="tr.id">
               <td class="idx">{{ i + 1 }}</td>
-              <td>{{ t.angleDegrees.toFixed(1) }}°</td>
-              <td>{{ t.initialVelocity.toFixed(2) }}</td>
-              <td>{{ t.flightTimeSec.toFixed(2) }}</td>
-              <td>{{ t.maxHeightMeters.toFixed(2) }}</td>
-              <td class="range">{{ t.rangeMeters.toFixed(2) }}</td>
-              <td class="err">{{ t.err.toFixed(2) }}%</td>
+              <td>{{ tr.angleDegrees.toFixed(1) }}°</td>
+              <td>{{ tr.initialVelocity.toFixed(2) }}</td>
+              <td>{{ tr.flightTimeSec.toFixed(2) }}</td>
+              <td>{{ tr.maxHeightMeters.toFixed(2) }}</td>
+              <td class="range">{{ tr.rangeMeters.toFixed(2) }}</td>
+              <td class="err">{{ tr.err.toFixed(2) }}%</td>
             </tr>
           </tbody>
         </table>

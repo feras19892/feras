@@ -1,8 +1,7 @@
 import { liquidMap } from './useChemistryLab';
-import type { LiquidState } from './chemLabTypes';
-import { findEquation } from './chemEquations';
-import { mixColor } from './chemColorUtils';
-import { isAcid, isBase, isIndicator } from './chemTypeChecks';
+import type { LiquidState } from '@my-modern-app/chemistry-engine';
+import { findEquation, isAcid, isBase, isIndicator } from '@my-modern-app/chemistry-engine';
+import { mixColor } from '@my-modern-app/chemistry-engine';
 // ================== ADVANCED REACTION ENGINE ==================
 
 // Calculate pH from acid/base excess
@@ -13,10 +12,10 @@ export function calculateTitrationPh(
   baseId: string,
 ): number {
   const acidStrengths: Record<string, number> = {
-    hcl: 1.0, h2so4: 2.0, hno3: 1.0, ch3cooh: 0.05,
+    hcl: 1.0, h2so4: 2.0, hno3: 1.0, ch3cooh: 1.0,
   };
   const baseStrengths: Record<string, number> = {
-    naoh: 1.0, koh: 1.0, nh4oh: 0.05,
+    naoh: 1.0, koh: 1.0, nh4oh: 1.0,
   };
 
   const aStr = acidStrengths[acidId] || 1.0;
@@ -73,19 +72,13 @@ export function getIndicatorColor(indicatorId: string, ph: number): string {
 }
 
 export function applyIndicatorsToContainer(liq: LiquidState): void {
-  if (!liq.indicators || liq.indicators.length === 0) {
-    console.log('[applyIndicatorsToContainer] no indicators, skipping');
-    return;
-  }
+  if (!liq.indicators || liq.indicators.length === 0) return;
   const currentPh = liq.ph ?? 7;
   const base = liq.baseColor || liq.color;
-  console.log('[applyIndicatorsToContainer] indicators:', liq.indicators, 'pH:', currentPh, 'baseColor:', base);
   for (const indId of liq.indicators) {
     const indColor = getIndicatorColor(indId, currentPh);
-    console.log('[applyIndicatorsToContainer] indicator:', indId, '→ color:', indColor);
     // Indicators are highly visible even in tiny amounts — give 50% visual weight
     liq.color = mixColor(base, liq.volume, indColor, liq.volume);
-    console.log('[applyIndicatorsToContainer] new color:', liq.color);
   }
 }
 
@@ -93,7 +86,7 @@ export function applyIndicator(indicatorId: string, containerUid: string): void 
   const liq = liquidMap[containerUid];
   if (!liq || liq.volume <= 0) return;
 
-  const currentPh = liq.ph || 7;
+  const currentPh = liq.ph ?? 7;
   const indicatorColor = getIndicatorColor(indicatorId, currentPh);
   const base = liq.baseColor || liq.color;
 
@@ -133,7 +126,10 @@ export function handleDropMix(event: MixEvent): void {
   if ((isBase(src) && isAcid(tgt)) || (isAcid(src) && isBase(tgt))) {
     // Track reactants for stoichiometric calculation
     if (!target.reactants) target.reactants = {};
-    if (!target.reactants[tgt]) target.reactants[tgt] = target.volume - event.dropVolume;
+    if (!target.reactants[tgt]) {
+      const trackedVol = Object.values(target.reactants).reduce((s, v) => s + v, 0);
+      target.reactants[tgt] = Math.max(0, target.volume - event.dropVolume - trackedVol);
+    }
     target.reactants[src] = (target.reactants[src] || 0) + event.dropVolume;
 
     // Calculate pH from excess reagent

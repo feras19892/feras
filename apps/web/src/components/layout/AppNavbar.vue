@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from '../../composables/useI18n'
 import { useAuthStore } from '../../modules/auth/stores/auth'
@@ -23,8 +23,11 @@ async function refreshPending() {
 }
 
 onMounted(() => {
-  refreshPending()
   pendingInterval = setInterval(refreshPending, 15000)
+})
+
+watch(() => auth.user, () => {
+  refreshPending()
 })
 
 onUnmounted(() => {

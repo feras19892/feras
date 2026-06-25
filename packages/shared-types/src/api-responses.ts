@@ -1,7 +1,11 @@
 export interface DashboardStats {
-  users: number;
-  orders: number;
-  revenue: number;
+  totalUsers: number;
+  totalStudents: number;
+  totalTeachers: number;
+  totalClasses: number;
+  totalReports: number;
+  pendingReports: number;
+  gradedReports: number;
 }
 
 export interface ApiResponse<T> {

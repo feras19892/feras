@@ -1,22 +1,22 @@
 import { ref, reactive, watch } from 'vue';
 import type { LabItem, ToolDef } from './useChemistryTools';
-import type { LiquidState, BuretteState, PipetteState, SepFunnelState } from './chemLabTypes';
+import type { LiquidState, BuretteState, PipetteState, SepFunnelState } from '@my-modern-app/chemistry-engine';
 import {
   isBeaker, isTestTube, isBurette, isPipette, isErlenmeyer,
   isVolumetricFlask, isRoundBottomFlask, isSeparatoryFunnel,
   isGradCylinder, isHeatingMantle, isBunsenBurner, isBalance, isPhMeter,
   isWatchGlass, isFilterFunnel, isRubberStopper,
+  isRetortStandAssembly, isBeakerClamp, isWoodenBase, isHotPlate,
   isContainer, getMaxVolume
 } from './chemLabIds';
-import type { Chemical } from './chemDatabase';
-import { chemicals, selectedChemical } from './chemDatabase';
 import { saveSession, loadSession, clearSession } from './useChemistrySession';
-import { buildToolState } from './useToolStateBuilder';
+import { chemicals, selectedChemical } from './chemDatabase';
 export {
-  isBeaker, isTestTube, isBurette, isPipette, isErlenmeyer,
+  isBeaker, isTestTube, isTestTubeRack, isBurette, isPipette, isErlenmeyer,
   isVolumetricFlask, isRoundBottomFlask, isSeparatoryFunnel,
   isGradCylinder, isHeatingMantle, isBunsenBurner, isBalance, isPhMeter,
   isWatchGlass, isFilterFunnel, isRubberStopper,
+  isRetortStand, isRetortStandAssembly, isBeakerClamp, isWoodenBase, isHotPlate,
   isContainer, getMaxVolume
 } from './chemLabIds';
 export type { Chemical, ChemicalCategory, HazardLevel, PhysicalState } from './chemDatabase';
@@ -45,11 +45,33 @@ export const solidMap = reactive<Record<string, { amount: number; type: string }
 export const stopperMap = reactive<Record<string, string>>({});
 export const pourFlowMap = reactive<Record<string, string>>({});
 export const tiltAngleMap = reactive<Record<string, number>>({});
+export const rackSlotsMap = reactive<Record<string, (string | null)[]>>({});
 
 // Burette consumption tracking for experiments
 export const buretteInitialVolumeMap = reactive<Record<string, number>>({});
 export const buretteTotalConsumedMap = reactive<Record<string, number>>({});
 export const buretteConsumedThisRefill = reactive<Record<string, number>>({});
+
+// Retort stand assembly state (integrated stand: base + rod + clamps + heating slot)
+export interface RetortStandState {
+  leftBuretteUid: string | null;   // uid of burette in left jaw
+  rightBuretteUid: string | null;  // uid of burette in right jaw
+  leftContainerUid: string | null;   // uid of beaker/flask in left bottom clamp
+  rightContainerUid: string | null; // uid of beaker/flask in right bottom clamp
+  heatingDeviceUid: string | null;  // uid of burner/hot-plate snapped to base
+  topClampY: number;                // vertical position of top clamp (px from stand top)
+  bottomClampY: number;            // vertical position of bottom clamp (px from stand top)
+}
+export const retortStandMap = reactive<Record<string, RetortStandState>>({});
+
+// Legacy states kept for backward compatibility with old sessions
+export interface BeakerClampState { heldContainerUid: string | null; clampAngle: number; }
+export const beakerClampMap = reactive<Record<string, BeakerClampState>>({});
+export interface HotPlateState { on: boolean; temperature: number; currentTemp: number; }
+export const hotPlateMap = reactive<Record<string, HotPlateState>>({});
+export interface WoodenBaseState { attachedToolUids: string[]; }
+export const woodenBaseMap = reactive<Record<string, WoodenBaseState>>({});
+
 // Global spill particles (rendered in workspace-wide canvas)
 export interface SpillParticle {
   x: number; y: number; vx: number; vy: number; size: number; color: string; sourceUid: string;
@@ -99,6 +121,34 @@ export function getContainerTare(uid: string): number {
 
 export function getItemZoom(uid: string): number { return itemZoomMap[uid] || 1; }
 
+export function getRetortStandState(uid: string): RetortStandState {
+  if (!retortStandMap[uid]) {
+    retortStandMap[uid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160 };
+  }
+  return retortStandMap[uid];
+}
+
+export function getBeakerClampState(uid: string): BeakerClampState {
+  if (!beakerClampMap[uid]) {
+    beakerClampMap[uid] = { heldContainerUid: null, clampAngle: 0 };
+  }
+  return beakerClampMap[uid];
+}
+
+export function getHotPlateState(uid: string): HotPlateState {
+  if (!hotPlateMap[uid]) {
+    hotPlateMap[uid] = { on: false, temperature: 25, currentTemp: 25 };
+  }
+  return hotPlateMap[uid];
+}
+
+export function getWoodenBaseState(uid: string): WoodenBaseState {
+  if (!woodenBaseMap[uid]) {
+    woodenBaseMap[uid] = { attachedToolUids: [] };
+  }
+  return woodenBaseMap[uid];
+}
+
 // ================== CREATE ==================
 export function createLabItem(def: ToolDef, x: number, y: number): LabItem {
   uid += 1;
@@ -124,11 +174,73 @@ export function createLabItem(def: ToolDef, x: number, y: number): LabItem {
   if (isPhMeter(def.id)) {
     phProbeTipMap[item.uid] = { x: x + 40, y: y + 130 }; // probe tip starts below the meter body
   }
+  if (isRetortStandAssembly(def.id)) {
+    retortStandMap[item.uid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160 };
+  }
+  if (isBeakerClamp(def.id)) {
+    beakerClampMap[item.uid] = { heldContainerUid: null, clampAngle: 0 };
+  }
+  if (isHotPlate(def.id)) {
+    hotPlateMap[item.uid] = { on: false, temperature: 25, currentTemp: 25 };
+  }
+  if (isWoodenBase(def.id)) {
+    woodenBaseMap[item.uid] = { attachedToolUids: [] };
+  }
   return item;
 }
 
+// ================== INITIAL LAYOUT ==================
+export function setupInitialLabLayout(): void {
+  const hasStand = items.value.some(i => i.id === 'retort-stand-assembly');
+  if (hasStand) return; // already has stand
+
+  const cx = 200;
+  const cy = 250;
+
+  // 1. Retort stand assembly (base + rod + clamps integrated)
+  const stand = createLabItem(
+    { id: 'retort-stand-assembly', name: 'حامل المختبر', icon: '🏗️', type: 'helper' },
+    cx, cy
+  );
+  items.value.push(stand);
+  retortStandMap[stand.uid] = {
+    leftBuretteUid: null,
+    rightBuretteUid: null,
+    leftContainerUid: null,
+    rightContainerUid: null,
+    heatingDeviceUid: null,
+    topClampY: 60,
+    bottomClampY: 160,
+  };
+
+  // 2. Burette 1 (left side) — attached to stand
+  const burette1 = createLabItem(
+    { id: 'burette', name: 'سحاحة', icon: '🧴', type: 'measuring' },
+    cx + 15, cy - 30
+  );
+  items.value.push(burette1);
+  retortStandMap[stand.uid].leftBuretteUid = burette1.uid;
+
+  // 3. Burette 2 (right side) — attached to stand
+  const burette2 = createLabItem(
+    { id: 'burette', name: 'سحاحة', icon: '🧴', type: 'measuring' },
+    cx + 165, cy - 30
+  );
+  items.value.push(burette2);
+  retortStandMap[stand.uid].rightBuretteUid = burette2.uid;
+
+  // 4. Beaker 250ml in LEFT bottom clamp (matches visual position in SVG)
+  const beaker = createLabItem(
+    { id: 'beaker-250', name: 'بيكر 250مل', icon: '🥣', type: 'container' },
+    cx + 20, cy + (retortStandMap[stand.uid].bottomClampY || 160) + 14
+  );
+  items.value.push(beaker);
+  liquidMap[beaker.uid] = { volume: 0, maxVolume: 250, color: '#3b82f6', opacity: 0.3, label: 'ماء', stirred: 0, temperature: 25, ph: null, heated: false, viscosity: 0.05, density: 1.0, surfaceTension: 0.3, indicators: [], baseColor: '#3b82f6', chemicalId: undefined };
+  retortStandMap[stand.uid].leftContainerUid = beaker.uid;
+}
+
 // ================== WATCHER ==================
-watch([items, liquidMap, buretteMap, pipetteMap, sepFunnelMap, burnerMap, balanceTareMap, containerTareMap, simSpeed, itemZoomMap, phProbeTipMap, solidMap, stopperMap, pourFlowMap, tiltAngleMap], saveSession, { deep: true });
+watch([items, liquidMap, buretteMap, pipetteMap, sepFunnelMap, burnerMap, balanceTareMap, containerTareMap, simSpeed, itemZoomMap, phProbeTipMap, solidMap, stopperMap, pourFlowMap, tiltAngleMap, retortStandMap, beakerClampMap, hotPlateMap, woodenBaseMap], saveSession, { deep: true });
 
 // ================== EXPORT STATE ==================
 export function useChemistryLab() {

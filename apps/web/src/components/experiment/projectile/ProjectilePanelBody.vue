@@ -178,7 +178,7 @@ onMounted(drawCharts)
       <table v-else>
         <thead><tr><th>#</th><th>{{ t('experiments.angle') }}</th><th>v₀</th><th>{{ t('experiments.time') }}</th><th>{{ t('experiments.height') }}</th><th>{{ t('experiments.rangeLabel') }}</th><th></th></tr></thead>
         <tbody>
-          <tr v-for="t in trials" :key="t.id"><td>{{ t.id }}</td><td>{{ t.angleDegrees }}°</td><td>{{ t.initialVelocity }}</td><td>{{ t.flightTimeSec.toFixed(2) }}</td><td>{{ t.maxHeightMeters.toFixed(2) }}</td><td>{{ t.rangeMeters.toFixed(2) }}</td><td><button @click="emit('remove', t.id)">×</button></td></tr>
+          <tr v-for="trial in trials" :key="trial.id"><td>{{ trial.id }}</td><td>{{ trial.angleDegrees }}°</td><td>{{ trial.initialVelocity }}</td><td>{{ trial.flightTimeSec.toFixed(2) }}</td><td>{{ trial.maxHeightMeters.toFixed(2) }}</td><td>{{ trial.rangeMeters.toFixed(2) }}</td><td><button @click="emit('remove', trial.id)">×</button></td></tr>
         </tbody>
       </table>
       <button class="btn-clear" @click="emit('clear')">{{ t('experiments.clearAll') }}</button>

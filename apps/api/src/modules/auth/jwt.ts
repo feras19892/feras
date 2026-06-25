@@ -1,9 +1,13 @@
 import { SignJWT, jwtVerify } from 'jose';
 import type { JWTPayload } from '@my-modern-app/shared-types';
 
-const SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'dev-secret-change-in-production'
-);
+function getSecret(): Uint8Array {
+  const jwtSecret = process.env.JWT_SECRET;
+  if (!jwtSecret) {
+    throw new Error('JWT_SECRET environment variable is required');
+  }
+  return new TextEncoder().encode(jwtSecret);
+}
 
 export async function signAccessToken(
   payload: Omit<JWTPayload, 'iat' | 'exp'>
@@ -12,11 +16,11 @@ export async function signAccessToken(
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('15m')
-    .sign(SECRET);
+    .sign(getSecret());
 }
 
 export async function verifyAccessToken(token: string): Promise<JWTPayload> {
-  const { payload } = await jwtVerify(token, SECRET, { clockTolerance: 60 });
+  const { payload } = await jwtVerify(token, getSecret(), { clockTolerance: 60 });
   return {
     sub: String(payload.sub),
     email: String(payload.email),

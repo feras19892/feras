@@ -20,10 +20,7 @@ export function getPhReading(phMeter: LabItem): number | null {
     return dx < 60 && dy < 50;
   });
   if (!target) return null;
-  const label = getLiquid(target.uid).label;
-  if (label.includes('HCl') || label.includes('حمض') || label.includes('acid')) return 1.5 + Math.random() * 0.5;
-  if (label.includes('NaOH') || label.includes('قاعدة') || label.includes('base') || label.includes('هيدروكسيد')) return 12.5 + Math.random() * 0.5;
-  if (label.includes('ماء') || label.includes('water') || label.includes('H₂O')) return 7.0;
-  if (label.includes(' buffer') || label.includes('بفر')) return 7.0;
+  const liq = getLiquid(target.uid);
+  if (liq.ph !== null && liq.ph !== undefined) return liq.ph;
   return 7.0;
 }

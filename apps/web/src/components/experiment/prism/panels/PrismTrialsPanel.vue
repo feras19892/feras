@@ -21,14 +21,14 @@ const emit = defineEmits<{
     <div v-if="trials.length === 0" class="empty">{{ t('prism.emptyTrials') }}</div>
     <div v-else class="trial-table">
       <div class="trial-header"><span>#</span><span>λ</span><span>θᵢ</span><span>θₑ</span><span>D</span><span>n</span></div>
-      <div v-for="t in trials" :key="t.id" class="trial-row">
-        <span class="trial-num">{{ t.id }}</span>
-        <span class="mono" style="font-size:.65rem">{{ t.wavelength }}</span>
-        <span>{{ t.angleIncidence.toFixed(0) }}</span>
-        <span>{{ t.angleEmergence !== null ? t.angleEmergence.toFixed(1) : 'TIR' }}</span>
-        <span>{{ t.deviation !== null ? t.deviation.toFixed(1) : '—' }}</span>
-        <span class="mono">{{ t.n.toFixed(2) }}</span>
-        <button class="trial-del" @click="emit('remove', t.id)">&#x1F5D1;</button>
+      <div v-for="trial in trials" :key="trial.id" class="trial-row">
+        <span class="trial-num">{{ trial.id }}</span>
+        <span class="mono" style="font-size:.65rem">{{ trial.wavelength }}</span>
+        <span>{{ trial.angleIncidence.toFixed(0) }}</span>
+        <span>{{ trial.angleEmergence !== null ? trial.angleEmergence.toFixed(1) : 'TIR' }}</span>
+        <span>{{ trial.deviation !== null ? trial.deviation.toFixed(1) : '—' }}</span>
+        <span class="mono">{{ trial.n.toFixed(2) }}</span>
+        <button class="trial-del" @click="emit('remove', trial.id)">&#x1F5D1;</button>
       </div>
     </div>
     <button v-if="trials.length" class="btn-clear" @click="emit('clear')">{{ t('prism.clearAll') }}</button>

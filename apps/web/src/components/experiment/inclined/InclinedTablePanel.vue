@@ -33,20 +33,20 @@ const emit = defineEmits<{
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(t, i) in trials" :key="t.id">
+        <tr v-for="(tr, i) in trials" :key="tr.id">
           <td>{{ i + 1 }}</td>
-          <td>{{ t.thetaDeg }}</td>
-          <td>{{ t.length.toFixed(2) }}</td>
-          <td>{{ t.mass.toFixed(2) }}</td>
-          <td>{{ t.mu.toFixed(2) }}</td>
-          <td>{{ t.acceleration.toFixed(3) }}</td>
-          <td>{{ t.timeOfArrival.toFixed(3) }}</td>
-          <td>{{ t.finalVelocity.toFixed(2) }}</td>
-          <td>{{ t.normalForce.toFixed(2) }}</td>
-          <td>{{ t.parallelForce.toFixed(2) }}</td>
-          <td>{{ t.frictionForce.toFixed(2) }}</td>
-          <td :class="{ good: t.err < 5, bad: t.err > 10 }">{{ t.err.toFixed(2) }}</td>
-          <td><button class="del" @click="emit('remove', t.id)">×</button></td>
+          <td>{{ tr.thetaDeg }}</td>
+          <td>{{ tr.length.toFixed(2) }}</td>
+          <td>{{ tr.mass.toFixed(2) }}</td>
+          <td>{{ tr.mu.toFixed(2) }}</td>
+          <td>{{ tr.acceleration.toFixed(3) }}</td>
+          <td>{{ tr.timeOfArrival.toFixed(3) }}</td>
+          <td>{{ tr.finalVelocity.toFixed(2) }}</td>
+          <td>{{ tr.normalForce.toFixed(2) }}</td>
+          <td>{{ tr.parallelForce.toFixed(2) }}</td>
+          <td>{{ tr.frictionForce.toFixed(2) }}</td>
+          <td :class="{ good: tr.err < 5, bad: tr.err > 10 }">{{ tr.err.toFixed(2) }}</td>
+          <td><button class="del" @click="emit('remove', tr.id)">×</button></td>
         </tr>
       </tbody>
     </table>

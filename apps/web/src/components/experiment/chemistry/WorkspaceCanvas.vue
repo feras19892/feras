@@ -1,23 +1,20 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
-import type { LabItem, ToolDef } from '../../../composables/chemistry/useChemistryTools';
+import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import type { ToolState } from './InspectorPanel.vue';
 import {
-  items, liquidMap, buretteMap, receivingMap, balanceTareMap, containerTareMap, itemZoomMap, pourFlowMap, phProbeTipMap, stopperMap,
-  buretteInitialVolumeMap, buretteTotalConsumedMap, buretteConsumedThisRefill,
-  getLiquid, getBurette, getPipette, getSepFunnelState, getBurnerState, getItemZoom, buildToolState,
-  isContainer, isBurette,
-  selectedChemical,
-  pendingChemicalFill,
+  items, receivingMap, itemZoomMap, pourFlowMap, stopperMap,
+  buretteInitialVolumeMap, buretteConsumedThisRefill,
+  getLiquid, getBurette, getBurnerState, getItemZoom, buildToolState,
+  isContainer,
   hasSelectedChemicalMap,
-  createLabItem, loadSession, clearSession
+  loadSession, clearSession, setupInitialLabLayout
 } from '../../../composables/chemistry/useChemistryLab';
 import {
   startSimulation, stopSimulation, stepUndo, stepRedo
 } from '../../../composables/chemistry/useLabSimulation';
-import { handleDropMix, applyIndicator } from '../../../composables/chemistry/useReactionEngine';
 import { handleDropExited } from '../../../composables/chemistry/useDropPhysics';
-import { pushHistory, undo, redo, canUndo, canRedo, clearHistory } from '../../../composables/chemistry/useChemistryHistory';
+import { undo, redo, canUndo, canRedo, clearHistory } from '../../../composables/chemistry/useChemistryHistory';
 import { pipetteDraw, pipetteDispense } from '../../../composables/chemistry/usePipetteActions';
 import { execAction, toggleSepFunnelValve, toggleBurner, tareBalance, tareContainer } from '../../../composables/chemistry/useExecActions';
 import { useWorkspaceDrag } from '../../../composables/chemistry/useWorkspaceDrag';
@@ -36,11 +33,6 @@ const {
   onDragOver, onDrop, onItemMouseDown, onDragMove, onDragUp, onWorkspaceClick
 } = useWorkspaceDrag(workspaceRef, selectedItem, emit, buildToolState);
 
-/* ---- Pour flow ---- */
-function stopPourFlow(uid: string) {
-  delete pourFlowMap[uid];
-}
-
 /* ---- Actions ---- */
 function removeItem(uid: string) {
   items.value = items.value.filter(i => i.uid !== uid);
@@ -54,7 +46,21 @@ function removeItem(uid: string) {
 function _handleDropExited(sourceItem: LabItem, wx: number, wy: number, color: string) {
   handleDropExited(sourceItem, wx, wy, color, selectedItem, emit, buildToolState);
 }
-function onMouthInteract(item: LabItem) { console.log('Mouth interact:', item.name); }
+function onMouthInteract(_item: LabItem) { /* placeholder for future mouth interaction */ }
+function onSelectBurette(buretteUid: string) {
+  const burette = items.value.find(i => i.uid === buretteUid);
+  if (burette) {
+    selectedItem.value = burette;
+    emit('select', burette, buildToolState(burette));
+  }
+}
+function onSelectContainer(containerUid: string) {
+  const container = items.value.find(i => i.uid === containerUid);
+  if (container) {
+    selectedItem.value = container;
+    emit('select', container, buildToolState(container));
+  }
+}
 function handleSpill(item: LabItem, amount: number) {
   if (isContainer(item.id)) {
     const s = getLiquid(item.uid);
@@ -81,7 +87,7 @@ function toggleBuretteValve(item: LabItem) {
 
   if (selectedItem.value?.uid === item.uid) emit('select', item, buildToolState(item));
 }
-function tipInteract(item: LabItem) { console.log('Tip interact:', item.name); }
+function tipInteract(_item: LabItem) { /* placeholder for future tip interaction */ }
 function onWheel(e: WheelEvent) {
   const target = hoveredItem.value || selectedItem.value; if (!target) return;
   const current = getItemZoom(target.uid);
@@ -110,6 +116,7 @@ function onKeyDown(e: KeyboardEvent) {
 }
 onMounted(() => {
   loadSession();
+  setupInitialLabLayout();
   window.addEventListener('mousemove', onDragMove);
   window.addEventListener('mouseup', onDragUp);
   window.addEventListener('keydown', onKeyDown);
@@ -129,6 +136,7 @@ onUnmounted(() => {
 function resetLab() {
   clearSession();
   clearHistory();
+  setupInitialLabLayout();
 }
 
 defineExpose({
@@ -183,6 +191,8 @@ defineExpose({
         @toggle-valve="toggleBuretteValve(item)"
         @tip-interact="tipInteract(item)"
         @toggle-stopcock="_toggleSepFunnelValve(item)"
+        @select-burette="onSelectBurette"
+        @select-container="onSelectContainer"
       />
     </div>
     <FloatingInspector

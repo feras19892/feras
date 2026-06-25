@@ -1,7 +1,10 @@
 import { Hono } from 'hono';
+import { zValidator } from '@hono/zod-validator';
+import { z } from 'zod';
 import { authMiddleware } from '../../shared/middleware/auth.js';
 import { hashPassword } from '../../modules/auth/crypto.js';
 import { signAccessToken } from '../../modules/auth/jwt.js';
+import { setAccessCookie } from '../../modules/auth/cookies.js';
 import { db } from '../../db/index.js';
 import * as svc from './services.js';
 import * as activitySvc from './activity-service.js';
@@ -13,6 +16,21 @@ import * as healthSvc from './system-health-service.js';
 import * as exportSvc from './export-service.js';
 import * as auditSvc from './audit-service.js';
 import type { User } from '@my-modern-app/shared-types';
+
+const updateRoleSchema = z.object({
+  role: z.enum(['student', 'teacher', 'admin']),
+});
+
+const createUserSchema = z.object({
+  name: z.string().min(2).max(100),
+  email: z.string().email(),
+  password: z.string().min(8).max(128),
+  role: z.enum(['student', 'teacher', 'admin']),
+});
+
+const adminResetPasswordSchema = z.object({
+  password: z.string().min(8).max(128),
+});
 
 type Variables = { user: User };
 
@@ -60,16 +78,16 @@ app.delete('/users/:id', async (c) => {
 });
 
 // PATCH /users/:id/role
-app.patch('/users/:id/role', async (c) => {
+app.patch('/users/:id/role', zValidator('json', updateRoleSchema), async (c) => {
   const id = Number(c.req.param('id'));
-  const { role } = await c.req.json();
+  const { role } = c.req.valid('json');
   const result = await svc.updateUserRole(id, role);
   return c.json(result);
 });
 
 // POST /users
-app.post('/users', async (c) => {
-  const { name, email, password, role } = await c.req.json();
+app.post('/users', zValidator('json', createUserSchema), async (c) => {
+  const { name, email, password, role } = c.req.valid('json');
   const passwordHash = await hashPassword(password);
   const result = await svc.createUser(name, email, passwordHash, role);
   return c.json(result, 201);
@@ -212,20 +230,20 @@ app.get('/export/:type', async (c) => {
 
 // POST /impersonate/:id
 app.post('/impersonate/:id', async (c) => {
+  const admin = c.get('user');
   const targetId = Number(c.req.param('id'));
-  const target = await db.get(`SELECT id, email, role FROM users WHERE id = ?`, targetId);
+  const target = await db.get<{ id: number; email: string; name: string; role: string }>(`SELECT id, email, name, role FROM users WHERE id = ?`, targetId);
   if (!target) return c.json({ success: false, message: 'User not found' }, 404);
-  const token = await signAccessToken({ sub: String(target.id), email: target.email, role: target.role });
-  return c.json({ success: true, token, user: target });
+  const token = await signAccessToken({ sub: String(target.id), email: target.email, role: target.role as User['role'] });
+  setAccessCookie(c, token);
+  await activitySvc.logActivity(admin.id, admin.name, admin.role, 'impersonate', 'user', String(targetId), `Admin impersonated ${target.name} (${target.email})`);
+  return c.json({ success: true, user: target });
 });
 
 // POST /users/:id/reset-password
-app.post('/users/:id/reset-password', async (c) => {
+app.post('/users/:id/reset-password', zValidator('json', adminResetPasswordSchema), async (c) => {
   const id = Number(c.req.param('id'));
-  const { password } = await c.req.json();
-  if (!password || password.length < 6) {
-    return c.json({ success: false, message: 'كلمة المرور يجب أن تكون 6 أحرف على الأقل' }, 400);
-  }
+  const { password } = c.req.valid('json');
   const passwordHash = await hashPassword(password);
   await db.run(`UPDATE users SET password_hash = ? WHERE id = ?`, passwordHash, id);
   return c.json({ success: true });

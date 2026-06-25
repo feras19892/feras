@@ -68,13 +68,13 @@ const chartPoints = props.trials.map((t) => ({ sinI: t.sinI, sinT: t.sinT, theta
         <div class="trial-header">
           <span>#</span><span>θᵢ</span><span>θₜ</span><span>sin θᵢ</span><span>sin θₜ</span>
         </div>
-        <div v-for="t in trials" :key="t.id" class="trial-row">
-          <span class="trial-num">{{ t.id }}</span>
-          <span>{{ t.angleIncidence.toFixed(0) }}°</span>
-          <span>{{ t.angleRefraction.toFixed(1) }}°</span>
-          <span class="mono">{{ t.sinI.toFixed(3) }}</span>
-          <span class="mono">{{ t.sinT.toFixed(3) }}</span>
-          <button class="trial-del" @click="emit('remove', t.id)">🗑️</button>
+        <div v-for="trial in trials" :key="trial.id" class="trial-row">
+          <span class="trial-num">{{ trial.id }}</span>
+          <span>{{ trial.angleIncidence.toFixed(0) }}°</span>
+          <span>{{ trial.angleRefraction.toFixed(1) }}°</span>
+          <span class="mono">{{ trial.sinI.toFixed(3) }}</span>
+          <span class="mono">{{ trial.sinT.toFixed(3) }}</span>
+          <button class="trial-del" @click="emit('remove', trial.id)">🗑️</button>
         </div>
       </div>
       <button v-if="trials.length" class="btn-clear" @click="emit('clear')">{{ t('experiments.clearAll') }}</button>

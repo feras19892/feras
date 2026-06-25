@@ -30,8 +30,8 @@ const sourcesOfError = [
         <table class="report-table">
           <thead><tr><th>#</th><th>L (m)</th><th>T (s)</th><th>f (Hz)</th><th>g (m/s²)</th></tr></thead>
           <tbody>
-            <tr v-for="(t, i) in trials" :key="i">
-              <td>{{ i + 1 }}</td><td>{{ t.length.toFixed(3) }}</td><td>{{ t.T.toFixed(3) }}</td><td>{{ t.f.toFixed(3) }}</td><td>{{ t.gCalc.toFixed(2) }}</td>
+            <tr v-for="(tr, i) in trials" :key="i">
+              <td>{{ i + 1 }}</td><td>{{ tr.length.toFixed(3) }}</td><td>{{ tr.T.toFixed(3) }}</td><td>{{ tr.f.toFixed(3) }}</td><td>{{ tr.gCalc.toFixed(2) }}</td>
             </tr>
           </tbody>
         </table>

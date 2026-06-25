@@ -26,7 +26,7 @@ const emit = defineEmits<{ (e: 'close'): void }>()
         <table>
           <thead><tr><th>#</th><th>θ</th><th>a</th><th>t</th><th>v</th><th>err</th></tr></thead>
           <tbody>
-            <tr v-for="(t, i) in trials" :key="t.id"><td>{{ i+1 }}</td><td>{{ t.thetaDeg }}°</td><td>{{ t.acceleration }}</td><td>{{ t.timeOfArrival }}</td><td>{{ t.finalVelocity }}</td><td>{{ t.err }}%</td></tr>
+            <tr v-for="(tr, i) in trials" :key="tr.id"><td>{{ i+1 }}</td><td>{{ tr.thetaDeg }}°</td><td>{{ tr.acceleration }}</td><td>{{ tr.timeOfArrival }}</td><td>{{ tr.finalVelocity }}</td><td>{{ tr.err }}%</td></tr>
           </tbody>
         </table>
       </div>

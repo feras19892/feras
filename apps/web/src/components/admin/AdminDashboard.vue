@@ -173,7 +173,7 @@ onMounted(load);
         </div>
         <div class="alert-card info" v-if="insights.noReportsTeachers?.length">
           <h4>{{ t('admin.teachersNoReports') }} ({{ insights.noReportsTeachers.length }})</h4>
-          <ul><li v-for="t in insights.noReportsTeachers" :key="t.id">{{ t.name }}</li></ul>
+          <ul><li v-for="teacher in insights.noReportsTeachers" :key="teacher.id">{{ teacher.name }}</li></ul>
         </div>
       </div>
     </template>

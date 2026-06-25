@@ -2,7 +2,7 @@ import type { LabItem } from './useChemistryTools';
 import {
   isBurette, isPipette, isSeparatoryFunnel, isContainer
 } from './chemLabIds';
-import { getLiquid, getBurette, getPipette, getSepFunnelState, retortStandMap } from './useChemistryLab';
+import { getLiquid, getBurette, getPipette, getSepFunnelState } from './useChemistryLab';
 
 export function buildToolState(item: LabItem | null) {
   if (!item) return null;
@@ -12,13 +12,7 @@ export function buildToolState(item: LabItem | null) {
   }
   if (isBurette(item.id)) {
     const bur = getBurette(item.uid);
-    let buretteNumber: number | undefined;
-    for (const [, st] of Object.entries(retortStandMap)) {
-      const s = st as { leftBuretteUid: string | null; rightBuretteUid: string | null };
-      if (s.leftBuretteUid === item.uid) { buretteNumber = 1; break; }
-      if (s.rightBuretteUid === item.uid) { buretteNumber = 2; break; }
-    }
-    return { uid: item.uid, type: 'burette' as const, volume: bur.volume, maxVolume: bur.maxVolume, valveOpen: bur.valveOpen, color: bur.color, opacity: bur.opacity, chemicalId: bur.chemicalId, buretteNumber };
+    return { uid: item.uid, type: 'burette' as const, volume: bur.volume, maxVolume: bur.maxVolume, valveOpen: bur.valveOpen, color: bur.color, opacity: bur.opacity, chemicalId: bur.chemicalId };
   }
   if (isPipette(item.id)) {
     const pip = getPipette(item.uid);

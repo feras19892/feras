@@ -1,12 +1,11 @@
 import { ref } from 'vue';
 import type { LabItem } from './useChemistryTools';
 import {
-  items, pourFlowMap, phProbeTipMap, stopperMap, retortStandMap, itemZoomMap,
-  createLabItem, isContainer, isBurette, isPipette, isRetortStandAssembly,
+  items, pourFlowMap, phProbeTipMap, stopperMap, retortStandMap,
+  createLabItem, isContainer, isPipette, isBurette, isRetortStandAssembly,
   getPipette
 } from './useChemistryLab';
 import { pipetteDraw, pipetteDispense } from './usePipetteActions';
-import { findContainerBelow } from './useLabSimulation';
 import type { ToolDef } from './useChemistryTools';
 import type { ToolState } from './chemLabTypes';
 
@@ -65,14 +64,43 @@ export function useWorkspaceDrag(
       phProbeTipMap[draggingItem.value.uid].x += dx;
       phProbeTipMap[draggingItem.value.uid].y += dy;
     }
-    // Sync attached items when dragging retort stand assembly
+    // Move attached burettes/containers with stand
     if (isRetortStandAssembly(draggingItem.value.id)) {
       const st = retortStandMap[draggingItem.value.uid];
       if (st) {
-        const attachedUids = [st.leftBuretteUid, st.rightBuretteUid, st.leftContainerUid, st.rightContainerUid, st.heatingDeviceUid].filter(Boolean) as string[];
-        for (const uid of attachedUids) {
+        for (const uid of [st.leftBuretteUid, st.rightBuretteUid, st.leftContainerUid, st.rightContainerUid, st.heatingDeviceUid].filter(Boolean) as string[]) {
           const attached = items.value.find(i => i.uid === uid);
           if (attached) { attached.x += dx; attached.y += dy; }
+        }
+      }
+    }
+    // Real-time magnetic snap for burette to stand clamp (only for FREE burettes)
+    if (isBurette(draggingItem.value.id)) {
+      const item = draggingItem.value;
+      // Check if already attached to any stand
+      const isAttached = Object.values(retortStandMap).some(st => st.leftBuretteUid === item.uid || st.rightBuretteUid === item.uid);
+      if (!isAttached) {
+        const BURETTE_ATTACH_X = 55;
+        const BURETTE_ATTACH_Y = 190;
+        const CLAMP_CENTER_X = 125;
+        const CLAMP_CENTER_Y = 14;
+        for (const stand of items.value.filter(i => isRetortStandAssembly(i.id))) {
+          if (!retortStandMap[stand.uid]) {
+            retortStandMap[stand.uid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160 };
+          }
+          const st = retortStandMap[stand.uid];
+          const clampWorldX = stand.x + CLAMP_CENTER_X;
+          const clampWorldY = stand.y + st.topClampY + CLAMP_CENTER_Y;
+          const buretteCX = item.x + BURETTE_ATTACH_X;
+          const buretteCY = item.y + BURETTE_ATTACH_Y;
+          const dist = Math.sqrt(Math.pow(buretteCX - clampWorldX, 2) + Math.pow(buretteCY - clampWorldY, 2));
+          if (dist < 120) {
+            item.x = clampWorldX - BURETTE_ATTACH_X;
+            item.y = clampWorldY - BURETTE_ATTACH_Y;
+            if (!st.leftBuretteUid) st.leftBuretteUid = item.uid;
+            else if (!st.rightBuretteUid) st.rightBuretteUid = item.uid;
+            break;
+          }
         }
       }
     }
@@ -95,80 +123,6 @@ export function useWorkspaceDrag(
       }
     }
 
-    // Retort stand assembly: snap burettes and containers
-    const stands = items.value.filter(i => isRetortStandAssembly(i.id));
-
-    // Burette snap to stand top clamp
-    if (isBurette(item.id)) {
-      for (const stand of stands) {
-        const st = retortStandMap[stand.uid];
-        if (!st) continue;
-        // Simple center-based snap: stand center vs burette center
-        const standCX = stand.x + 90;  // half of 180
-        const standCY = stand.y + 146;   // half of 293
-        const buretteCX = item.x + 42;
-        const buretteCY = item.y + 100;
-        const dx = buretteCX - standCX;
-        const dy = buretteCY - standCY;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 150) {
-          // Snap to closest side
-          const snapLeft = dx < 0;
-          if (snapLeft && !st.leftBuretteUid) {
-            st.leftBuretteUid = item.uid;
-            item.x = stand.x + 15;
-            item.y = stand.y - 30;
-            break;
-          }
-          if (!snapLeft && !st.rightBuretteUid) {
-            st.rightBuretteUid = item.uid;
-            item.x = stand.x + 165;
-            item.y = stand.y - 30;
-            break;
-          }
-        }
-        // Detach if dragged far away
-        if (item.uid === st.leftBuretteUid && dist > 150) st.leftBuretteUid = null;
-        if (item.uid === st.rightBuretteUid && dist > 150) st.rightBuretteUid = null;
-      }
-      // Legacy: auto-align above nearest container if not attached
-      const container = findContainerBelow(item);
-      if (container) {
-        item.x = container.x + (container.id === 'beaker' ? 25 : container.id === 'test-tube' ? 5 : 15);
-        item.y = container.y - 220;
-      }
-    }
-
-    // Container snap to stand bottom clamps (left and right)
-    if (isContainer(item.id) && item.id !== 'test-tube-rack') {
-      for (const stand of stands) {
-        const st = retortStandMap[stand.uid];
-        if (!st) continue;
-        const standCX = stand.x + 90;
-        const clampY = stand.y + (st.bottomClampY || 160) + 6;
-        const leftClampX = standCX - 50;
-        const rightClampX = standCX + 50;
-        const itemCX = item.x + 30;
-        const itemCY = item.y + 20;
-        const distLeft = Math.abs(itemCX - leftClampX) + Math.abs(itemCY - clampY);
-        const distRight = Math.abs(itemCX - rightClampX) + Math.abs(itemCY - clampY);
-        if (distLeft < 70 && !st.leftContainerUid) {
-          st.leftContainerUid = item.uid;
-          item.x = stand.x + 20;
-          item.y = stand.y + (st.bottomClampY || 160) + 14;
-          break;
-        }
-        if (distRight < 70 && !st.rightContainerUid) {
-          st.rightContainerUid = item.uid;
-          item.x = stand.x + 140;
-          item.y = stand.y + (st.bottomClampY || 160) + 14;
-          break;
-        }
-        if (item.uid === st.leftContainerUid && distLeft > 100) { st.leftContainerUid = null; delete itemZoomMap[item.uid]; }
-        if (item.uid === st.rightContainerUid && distRight > 100) { st.rightContainerUid = null; delete itemZoomMap[item.uid]; }
-      }
-    }
-
     // Pipette drag-to-draw / drag-to-dispense
     if (isPipette(item.id)) {
       const pip = getPipette(item.uid);
@@ -181,6 +135,54 @@ export function useWorkspaceDrag(
           pipetteDraw(item, selectedItemRef, emit);
         } else {
           pipetteDispense(item, selectedItemRef, emit);
+        }
+      }
+    }
+
+    // Burette snap to / detach from retort stand
+    if (isBurette(item.id)) {
+      const BURETTE_ATTACH_X = 55;  // center of 110px width
+      const BURETTE_ATTACH_Y = 190;   // middle of burette (where clamp holds)
+      const CLAMP_CENTER_X = 125;   // stand.x + 54 + 71
+      const CLAMP_CENTER_Y = 14;    // half of clamp height (28)
+      // Detach if dragged far from current stand
+      for (const [standUid, st] of Object.entries(retortStandMap)) {
+        if (st.leftBuretteUid === item.uid || st.rightBuretteUid === item.uid) {
+          if (!st) continue;
+          const stand = items.value.find(i => i.uid === standUid);
+          if (!stand) {
+            if (st.leftBuretteUid === item.uid) st.leftBuretteUid = null;
+            if (st.rightBuretteUid === item.uid) st.rightBuretteUid = null;
+            continue;
+          }
+          const clampWorldX = stand.x + CLAMP_CENTER_X;
+          const clampWorldY = stand.y + st.topClampY + CLAMP_CENTER_Y;
+          const buretteCX = item.x + BURETTE_ATTACH_X;
+          const buretteCY = item.y + BURETTE_ATTACH_Y;
+          const dist = Math.sqrt(Math.pow(buretteCX - clampWorldX, 2) + Math.pow(buretteCY - clampWorldY, 2));
+          if (dist > 80) {
+            if (st.leftBuretteUid === item.uid) st.leftBuretteUid = null;
+            if (st.rightBuretteUid === item.uid) st.rightBuretteUid = null;
+          }
+        }
+      }
+      // Try snap to nearby stand
+      for (const stand of items.value.filter(i => isRetortStandAssembly(i.id))) {
+        if (!retortStandMap[stand.uid]) {
+          retortStandMap[stand.uid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160 };
+        }
+        const st = retortStandMap[stand.uid];
+        const clampWorldX = stand.x + CLAMP_CENTER_X;
+        const clampWorldY = stand.y + st.topClampY + CLAMP_CENTER_Y;
+        const buretteCX = item.x + BURETTE_ATTACH_X;
+        const buretteCY = item.y + BURETTE_ATTACH_Y;
+        const dist = Math.sqrt(Math.pow(buretteCX - clampWorldX, 2) + Math.pow(buretteCY - clampWorldY, 2));
+        if (dist < 200) {
+          item.x = clampWorldX - BURETTE_ATTACH_X;
+          item.y = clampWorldY - BURETTE_ATTACH_Y;
+          if (!st.leftBuretteUid) st.leftBuretteUid = item.uid;
+          else if (!st.rightBuretteUid) st.rightBuretteUid = item.uid;
+          else st.leftBuretteUid = item.uid; // override left if both full
         }
       }
     }

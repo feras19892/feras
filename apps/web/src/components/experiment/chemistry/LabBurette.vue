@@ -178,7 +178,7 @@ function onValveClick(e: MouseEvent) {
       <path d="M 64 55 L 64 130" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-linecap="round" fill="none" />
 
       <!-- ========== STOPCOCK (T-handle) ========== -->
-      <g class="stopcock" @click.stop="onValveClick" @mousedown.stop>
+      <g class="stopcock" @click.stop="onValveClick">
         <!-- Glass tip cone -->
         <path d="M 48 292 L 50 305 L 60 305 L 62 292 Z" fill="none" stroke="#94a3b8" stroke-width="1" />
         <!-- Valve barrel -->

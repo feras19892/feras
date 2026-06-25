@@ -3,10 +3,10 @@ import {
   balanceTareMap, containerTareMap, simSpeed, itemZoomMap, phProbeTipMap,
   solidMap, stopperMap, pourFlowMap, tiltAngleMap, rackSlotsMap,
   buretteInitialVolumeMap, buretteTotalConsumedMap, buretteConsumedThisRefill,
-  hasSelectedChemicalMap, retortStandMap, beakerClampMap, hotPlateMap, woodenBaseMap
+  hasSelectedChemicalMap, beakerClampMap, hotPlateMap, woodenBaseMap
 } from './useChemistryLab';
 
-const STORAGE_KEY = 'chem-lab-session-v19';
+const STORAGE_KEY = 'chem-lab-session-v20';
 
 export function saveSession(): void {
   try {
@@ -31,7 +31,6 @@ export function saveSession(): void {
       buretteTotalConsumeds: { ...buretteTotalConsumedMap },
       buretteConsumedThisRefills: { ...buretteConsumedThisRefill },
       hasSelectedChemicals: { ...hasSelectedChemicalMap },
-      retortStands: { ...retortStandMap },
       beakerClamps: { ...beakerClampMap },
       hotPlates: { ...hotPlateMap },
       woodenBases: { ...woodenBaseMap },
@@ -67,7 +66,6 @@ export function loadSession(): void {
     if (data.buretteTotalConsumeds) Object.assign(buretteTotalConsumedMap, data.buretteTotalConsumeds);
     if (data.buretteConsumedThisRefills) Object.assign(buretteConsumedThisRefill, data.buretteConsumedThisRefills);
     if (data.hasSelectedChemicals) Object.assign(hasSelectedChemicalMap, data.hasSelectedChemicals);
-    if (data.retortStands) Object.assign(retortStandMap, data.retortStands);
     if (data.beakerClamps) Object.assign(beakerClampMap, data.beakerClamps);
     if (data.hotPlates) Object.assign(hotPlateMap, data.hotPlates);
     if (data.woodenBases) Object.assign(woodenBaseMap, data.woodenBases);
@@ -97,7 +95,6 @@ export function clearSession(): void {
   Object.keys(buretteInitialVolumeMap).forEach(k => delete buretteInitialVolumeMap[k]);
   Object.keys(buretteTotalConsumedMap).forEach(k => delete buretteTotalConsumedMap[k]);
   Object.keys(buretteConsumedThisRefill).forEach(k => delete buretteConsumedThisRefill[k]);
-  Object.keys(retortStandMap).forEach(k => delete retortStandMap[k]);
   Object.keys(beakerClampMap).forEach(k => delete beakerClampMap[k]);
   Object.keys(hotPlateMap).forEach(k => delete hotPlateMap[k]);
   Object.keys(woodenBaseMap).forEach(k => delete woodenBaseMap[k]);

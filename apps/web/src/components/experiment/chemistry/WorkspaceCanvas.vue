@@ -47,20 +47,6 @@ function _handleDropExited(sourceItem: LabItem, wx: number, wy: number, color: s
   handleDropExited(sourceItem, wx, wy, color, selectedItem, emit, buildToolState);
 }
 function onMouthInteract(_item: LabItem) { /* placeholder for future mouth interaction */ }
-function onSelectBurette(buretteUid: string) {
-  const burette = items.value.find(i => i.uid === buretteUid);
-  if (burette) {
-    selectedItem.value = burette;
-    emit('select', burette, buildToolState(burette));
-  }
-}
-function onSelectContainer(containerUid: string) {
-  const container = items.value.find(i => i.uid === containerUid);
-  if (container) {
-    selectedItem.value = container;
-    emit('select', container, buildToolState(container));
-  }
-}
 function handleSpill(item: LabItem, amount: number) {
   if (isContainer(item.id)) {
     const s = getLiquid(item.uid);
@@ -191,8 +177,6 @@ defineExpose({
         @toggle-valve="toggleBuretteValve(item)"
         @tip-interact="tipInteract(item)"
         @toggle-stopcock="_toggleSepFunnelValve(item)"
-        @select-burette="onSelectBurette"
-        @select-container="onSelectContainer"
       />
     </div>
     <FloatingInspector

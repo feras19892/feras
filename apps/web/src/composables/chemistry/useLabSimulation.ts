@@ -4,7 +4,7 @@ import {
   items, getLiquid, getBurette,
   receivingMap, pourFlowMap, tiltAngleMap,
   getBurnerState, simSpeed, phProbeTipMap, stopperMap,
-  buretteConsumedThisRefill, retortStandMap,
+  buretteConsumedThisRefill,
   isContainer
 } from './useChemistryLab';
 import { handleDropMixWithRecording } from './useBuretteMixRecorder';
@@ -15,16 +15,6 @@ import { pushMicroHistory } from './useChemistryHistory';
 export { phColor, getPhReading } from './usePhMeter';
 export { computeBalanceWeight, getContainerWeight, getBalanceReading } from './useBalance';
 export { stepUndo, stepRedo } from './useStepControl';
-
-// ================== SMART BURETTE ==================
-function findStandForBurette(buretteUid: string): { uid: string; state: { leftBuretteUid: string | null; rightBuretteUid: string | null; leftContainerUid: string | null; rightContainerUid: string | null; heatingDeviceUid: string | null; topClampY: number; bottomClampY: number } } | null {
-  for (const [standUid, st] of Object.entries(retortStandMap)) {
-    if (st.leftBuretteUid === buretteUid || st.rightBuretteUid === buretteUid) {
-      return { uid: standUid, state: st };
-    }
-  }
-  return null;
-}
 
 // ================== BURETTE WARNING ==================
 export type BuretteWarning = 'approaching' | 'equivalence' | 'exceeded' | null;
@@ -80,20 +70,7 @@ export function startSimulation(_onSync: (item: LabItem | null) => void) {
       const bState = getBurette(item.uid);
       if (!bState.valveOpen || bState.volume <= 0) continue;
 
-      // Smart burette: if attached to a stand, only drip if stand has a container
-      const standInfo = findStandForBurette(item.uid);
-      let container: LabItem | null = null;
-      if (standInfo) {
-        // Left burette drips into left container, right into right
-        if (standInfo.state.leftBuretteUid === item.uid && standInfo.state.leftContainerUid) {
-          container = items.value.find(i => i.uid === standInfo.state.leftContainerUid) || null;
-        } else if (standInfo.state.rightBuretteUid === item.uid && standInfo.state.rightContainerUid) {
-          container = items.value.find(i => i.uid === standInfo.state.rightContainerUid) || null;
-        }
-      }
-      if (!container) {
-        container = findContainerBelow(item);
-      }
+      const container = findContainerBelow(item);
       if (!container) continue;
       const bLiquid = getLiquid(container.uid);
       if (bLiquid.volume >= bLiquid.maxVolume) continue;

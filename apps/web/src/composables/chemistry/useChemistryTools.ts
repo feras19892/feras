@@ -64,14 +64,6 @@ export const glasswareSections: Section[] = [
     ],
   },
   {
-    id: 'stands',
-    title: 'حوامل ومشابك',
-    icon: '🏗️',
-    items: [
-      { id: 'retort-stand-assembly', name: 'حامل المختبر', icon: '🏗️', type: 'helper' },
-    ],
-  },
-  {
     id: 'helpers',
     title: 'أدوات مساعدة',
     icon: '🛠️',

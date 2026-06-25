@@ -5,7 +5,7 @@ import {
   getLiquid, getBurette, getPipette, getSepFunnelState, getBurnerState, getItemZoom, getBeakerClampState, getHotPlateState, beakerClampMap, pourFlowMap, tiltAngleMap, rackSlotsMap,
   isContainer, isBeaker, isTestTube, isTestTubeRack, isBurette, isPipette, isErlenmeyer, isVolumetricFlask, isRoundBottomFlask,
   isSeparatoryFunnel, isGradCylinder, isBunsenBurner, isHeatingMantle, isBalance, isPhMeter,
-  isRetortStandAssembly, isBeakerClamp, isWoodenBase, isHotPlate
+  isBeakerClamp, isWoodenBase, isHotPlate, isRetortStandAssembly
 } from '../../../composables/chemistry/useChemistryLab';
 import { getBalanceReading, getPhReading, isHeated } from '../../../composables/chemistry/useLabSimulation';
 import LabTestTubeRack from './LabTestTubeRack.vue';
@@ -66,7 +66,7 @@ const rackSlotData = computed(() => {
 <template>
   <div
     class="lab-item"
-    :class="{ selected: isSel, hover: hoveredUid === item.uid, heating: isHeated(item), 'pour-target': !!pourFlowMap[item.uid], tilted: !!pourFlowMap[item.uid] || !!(tiltAngleMap[item.uid]), 'stand-item': item.id === 'retort-stand-assembly' }"
+    :class="{ selected: isSel, hover: hoveredUid === item.uid, heating: isHeated(item), 'pour-target': !!pourFlowMap[item.uid], tilted: !!pourFlowMap[item.uid] || !!(tiltAngleMap[item.uid]) }"
     :style="{ left: item.x + 'px', top: item.y + 'px', transform: `rotate(${tiltAngleMap[item.uid] || 0}deg) translateY(-5px) scale(${getItemZoom(item.uid)})`, transformOrigin: 'center center' }"
     @mouseenter="emit('mouseenter', item)"
     @mouseleave="emit('mouseleave', item)"
@@ -216,12 +216,6 @@ const rackSlotData = computed(() => {
     v-else-if="isWoodenBase(item.id)"
     :is-hovered="isSel"
   />
-  <LabRetortStandAssembly
-    v-else-if="isRetortStandAssembly(item.id)"
-    :is-hovered="isSel"
-    :item-uid="item.uid"
-    @mousedown="emit('mousedown', $event, item)"
-  />
   <LabBeakerClamp
     v-else-if="isBeakerClamp(item.id)"
     :clamp-angle="0"
@@ -229,6 +223,12 @@ const rackSlotData = computed(() => {
     :is-hovered="isSel"
     @rotate-left="beakerClampMap[item.uid].clampAngle -= 45"
     @rotate-right="beakerClampMap[item.uid].clampAngle += 45"
+  />
+  <LabRetortStandAssembly
+    v-else-if="isRetortStandAssembly(item.id)"
+    :item-uid="item.uid"
+    :is-hovered="hoveredUid === item.uid"
+    @mousedown="emit('mousedown', $event, item)"
   />
   <LabTestTubeRack
     v-else-if="isTestTubeRack(item.id)"
@@ -254,11 +254,6 @@ const rackSlotData = computed(() => {
   padding: 0.5rem;
   border-radius: 0.5rem;
   transition: transform 0.1s, filter 0.2s;
-}
-.lab-item.stand-item {
-  padding: 0;
-  gap: 0;
-  pointer-events: none;
 }
 .lab-item.hover {
   filter: drop-shadow(0 0 12px rgba(16,185,129,0.3));
@@ -318,5 +313,15 @@ const rackSlotData = computed(() => {
   font-size: 0.7rem;
   color: #64748b;
   white-space: nowrap;
+}
+/* Retort stand container sizing */
+:deep(.retort-stand) {
+  width: 190px;
+  height: 350px;
+  pointer-events: none;
+}
+:deep(.stand-part) {
+  pointer-events: auto;
+  cursor: pointer;
 }
 </style>

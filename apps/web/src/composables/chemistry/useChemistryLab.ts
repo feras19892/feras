@@ -7,9 +7,9 @@ import {
   isGradCylinder, isHeatingMantle, isBunsenBurner, isBalance, isPhMeter,
   isWatchGlass, isFilterFunnel, isRubberStopper,
   isRetortStandAssembly, isBeakerClamp, isWoodenBase, isHotPlate,
-  isContainer, getMaxVolume
+  isClampAttachable, isContainer, getMaxVolume
 } from './chemLabIds';
-import { saveSession, loadSession, clearSession } from './useChemistrySession';
+import { saveSession, loadSession, clearSession, saveSessionDebounced } from './useChemistrySession';
 import { chemicals, selectedChemical } from './chemDatabase';
 export {
   isBeaker, isTestTube, isTestTubeRack, isBurette, isPipette, isErlenmeyer,
@@ -17,7 +17,7 @@ export {
   isGradCylinder, isHeatingMantle, isBunsenBurner, isBalance, isPhMeter,
   isWatchGlass, isFilterFunnel, isRubberStopper,
   isRetortStandAssembly, isBeakerClamp, isWoodenBase, isHotPlate,
-  isContainer, getMaxVolume
+  isClampAttachable, isContainer, getMaxVolume
 } from './chemLabIds';
 export type { Chemical, ChemicalCategory, HazardLevel, PhysicalState } from './chemDatabase';
 export { chemicals, selectedChemical } from './chemDatabase';
@@ -55,6 +55,10 @@ export interface RetortStandState {
   heatingDeviceUid: string | null;
   topClampY: number;
   bottomClampY: number;
+  bottomClampX: number;
+  slotOffsets: number[];
+  slotOccupants: (string | null)[];
+  bottomSlotOccupant: string | null;
 }
 export const retortStandMap = reactive<Record<string, RetortStandState>>({});
 
@@ -81,7 +85,7 @@ export const spillParticles = reactive<SpillParticle[]>([]);
 // ================== GETTERS ==================
 export function getLiquid(uid: string): LiquidState {
   if (!liquidMap[uid]) {
-    liquidMap[uid] = { volume: 0, maxVolume: 250, color: '#3b82f6', opacity: 0.3, label: 'ماء', stirred: 0, temperature: 25, ph: null, heated: false, viscosity: 0.05, density: 1.0, surfaceTension: 0.3, chemicalId: undefined, indicators: [], baseColor: '#3b82f6' };
+    liquidMap[uid] = { volume: 0, maxVolume: 250, color: '#3b82f6', opacity: 0.3, label: 'water', stirred: 0, temperature: 25, ph: null, heated: false, viscosity: 0.05, density: 1.0, surfaceTension: 0.3, chemicalId: undefined, indicators: [], baseColor: '#3b82f6' };
   }
   return liquidMap[uid];
 }
@@ -144,7 +148,7 @@ export function getWoodenBaseState(uid: string): WoodenBaseState {
 
 export function getRetortStandState(uid: string): RetortStandState {
   if (!retortStandMap[uid]) {
-    retortStandMap[uid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160 };
+    retortStandMap[uid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null };
   }
   return retortStandMap[uid];
 }
@@ -154,7 +158,7 @@ export function createLabItem(def: ToolDef, x: number, y: number): LabItem {
   uid += 1;
   const item: LabItem = { uid: `lab-${uid}`, id: def.id, name: def.name, icon: def.icon, type: def.type, x, y };
   if (isContainer(def.id)) {
-    liquidMap[item.uid] = { volume: 0, maxVolume: getMaxVolume(def.id), color: '#3b82f6', opacity: 0.3, label: 'ماء', stirred: 0, temperature: 25, ph: null, heated: false, viscosity: 0.05, density: 1.0, surfaceTension: 0.3, indicators: [], baseColor: '#3b82f6', chemicalId: undefined };
+    liquidMap[item.uid] = { volume: 0, maxVolume: getMaxVolume(def.id), color: '#3b82f6', opacity: 0.3, label: 'water', stirred: 0, temperature: 25, ph: null, heated: false, viscosity: 0.05, density: 1.0, surfaceTension: 0.3, indicators: [], baseColor: '#3b82f6', chemicalId: undefined };
   }
   if (isBurette(def.id)) {
     buretteMap[item.uid] = { volume: 50, maxVolume: 50, valveOpen: false, color: '#ef4444', opacity: 0.35, chemicalId: undefined };
@@ -184,7 +188,7 @@ export function createLabItem(def: ToolDef, x: number, y: number): LabItem {
     woodenBaseMap[item.uid] = { attachedToolUids: [] };
   }
   if (isRetortStandAssembly(def.id)) {
-    retortStandMap[item.uid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160 };
+    retortStandMap[item.uid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null };
   }
   return item;
 }
@@ -194,8 +198,8 @@ export function setupInitialLabLayout(): void {
   const hasStand = items.value.some(i => isRetortStandAssembly(i.id));
   if (hasStand) return;
 
-  const standDef: ToolDef = { id: 'retort-stand-assembly', name: 'حامل المختبر', icon: '🏗️', type: 'helper' };
-  const stand = createLabItem(standDef, 400, 100);
+  const standDef: ToolDef = { id: 'retort-stand-assembly', name: 'chemistryTools.retortStandAssembly', icon: '🏗️', type: 'helper' };
+  const stand = createLabItem(standDef, 200, 100);
   items.value.push(stand);
 
   retortStandMap[stand.uid] = {
@@ -206,11 +210,15 @@ export function setupInitialLabLayout(): void {
     heatingDeviceUid: null,
     topClampY: 60,
     bottomClampY: 160,
+    bottomClampX: 0,
+    slotOffsets: [30, 79, 128],
+    slotOccupants: [null, null, null],
+    bottomSlotOccupant: null,
   };
 }
 
 // ================== WATCHER ==================
-watch([items, liquidMap, buretteMap, pipetteMap, sepFunnelMap, burnerMap, balanceTareMap, containerTareMap, simSpeed, itemZoomMap, phProbeTipMap, solidMap, stopperMap, pourFlowMap, tiltAngleMap, rackSlotsMap, retortStandMap, beakerClampMap, hotPlateMap, woodenBaseMap], saveSession, { deep: true });
+watch([items, liquidMap, buretteMap, pipetteMap, sepFunnelMap, burnerMap, balanceTareMap, containerTareMap, simSpeed, itemZoomMap, phProbeTipMap, solidMap, stopperMap, pourFlowMap, tiltAngleMap, rackSlotsMap, retortStandMap, beakerClampMap, hotPlateMap, woodenBaseMap], saveSessionDebounced, { deep: true });
 
 // ================== EXPORT STATE ==================
 export function useChemistryLab() {

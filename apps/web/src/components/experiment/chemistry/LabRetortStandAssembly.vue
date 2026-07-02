@@ -291,18 +291,20 @@ onUnmounted(() => {
       <rect x="4" y="2" width="1.5" height="294" rx="0.75" fill="rgba(0,0,0,0.15)" />
     </svg>
 
-    <!-- Top clamp lock + arrows -->
-    <div class="control-group" :style="{ left: '2px', top: (clampY - 2) + 'px' }">
+    <!-- Top clamp lock + vertical D-pad -->
+    <div class="control-group" :style="{ left: '0px', top: (clampY - 4) + 'px' }">
       <button class="lock-btn" :class="{ locked: topClampLocked }" @click.stop="toggleTopClampLock" title="قفل/فتح">
         <svg v-if="topClampLocked" width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#ef4444"/><path d="M3 5V3A3 3 0 0 1 9 3V5" fill="none" stroke="#ef4444" stroke-width="1.5"/></svg>
         <svg v-else width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#10b981"/><path d="M3 5V3A3 3 0 0 1 9 3" fill="none" stroke="#10b981" stroke-width="1.5"/></svg>
       </button>
-      <button class="arrow-btn" @click.stop="moveTopClamp(-FINE_STEP)" title="↑">
-        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 2 L8 7 L2 7 Z" fill="currentColor"/></svg>
-      </button>
-      <button class="arrow-btn" @click.stop="moveTopClamp(FINE_STEP)" title="↓">
-        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 8 L8 3 L2 3 Z" fill="currentColor"/></svg>
-      </button>
+      <div class="dpad dpad-vertical">
+        <button class="dpad-btn dpad-up" @click.stop="moveTopClamp(-FINE_STEP)" title="↑">
+          <svg width="8" height="8" viewBox="0 0 8 8"><path d="M4 1 L7 5.5 L1 5.5 Z" fill="currentColor"/></svg>
+        </button>
+        <button class="dpad-btn dpad-down" @click.stop="moveTopClamp(FINE_STEP)" title="↓">
+          <svg width="8" height="8" viewBox="0 0 8 8"><path d="M4 7 L7 2.5 L1 2.5 Z" fill="currentColor"/></svg>
+        </button>
+      </div>
     </div>
 
     <!-- 3. المشبك العلوي (Top Clamp) — bounding box خاص بها -->
@@ -316,24 +318,26 @@ onUnmounted(() => {
       <circle cx="128" cy="14" r="2.5" fill="#ef4444" stroke="#b91c1c" stroke-width="0.5" />
     </svg>
 
-    <!-- Bottom clamp lock + arrows -->
-    <div class="control-group" :style="{ left: '2px', top: (bottomClampY - 8) + 'px' }">
+    <!-- Bottom clamp lock + cross D-pad -->
+    <div class="control-group" :style="{ left: '0px', top: (bottomClampY - 12) + 'px' }">
       <button class="lock-btn" :class="{ locked: bottomClampLocked }" @click.stop="toggleBottomClampLock" title="قفل/فتح">
         <svg v-if="bottomClampLocked" width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#ef4444"/><path d="M3 5V3A3 3 0 0 1 9 3V5" fill="none" stroke="#ef4444" stroke-width="1.5"/></svg>
         <svg v-else width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#10b981"/><path d="M3 5V3A3 3 0 0 1 9 3" fill="none" stroke="#10b981" stroke-width="1.5"/></svg>
       </button>
-      <button class="arrow-btn" @click.stop="moveBottomClamp(0, -FINE_STEP)" title="↑">
-        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 2 L8 7 L2 7 Z" fill="currentColor"/></svg>
-      </button>
-      <button class="arrow-btn" @click.stop="moveBottomClamp(0, FINE_STEP)" title="↓">
-        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 8 L8 3 L2 3 Z" fill="currentColor"/></svg>
-      </button>
-      <div class="arrow-row">
-        <button class="arrow-btn" @click.stop="moveBottomClamp(-FINE_STEP, 0)" title="←">
-          <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5 L7 2 L7 8 Z" fill="currentColor"/></svg>
+      <div class="dpad">
+        <button class="dpad-btn dpad-up" @click.stop="moveBottomClamp(0, -FINE_STEP)" title="↑">
+          <svg width="8" height="8" viewBox="0 0 8 8"><path d="M4 1 L7 5.5 L1 5.5 Z" fill="currentColor"/></svg>
         </button>
-        <button class="arrow-btn" @click.stop="moveBottomClamp(FINE_STEP, 0)" title="→">
-          <svg width="10" height="10" viewBox="0 0 10 10"><path d="M8 5 L3 2 L3 8 Z" fill="currentColor"/></svg>
+        <div class="dpad-mid">
+          <button class="dpad-btn dpad-left" @click.stop="moveBottomClamp(-FINE_STEP, 0)" title="←">
+            <svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 4 L5.5 1 L5.5 7 Z" fill="currentColor"/></svg>
+          </button>
+          <button class="dpad-btn dpad-right" @click.stop="moveBottomClamp(FINE_STEP, 0)" title="→">
+            <svg width="8" height="8" viewBox="0 0 8 8"><path d="M7 4 L2.5 1 L2.5 7 Z" fill="currentColor"/></svg>
+          </button>
+        </div>
+        <button class="dpad-btn dpad-down" @click.stop="moveBottomClamp(0, FINE_STEP)" title="↓">
+          <svg width="8" height="8" viewBox="0 0 8 8"><path d="M4 7 L7 2.5 L1 2.5 Z" fill="currentColor"/></svg>
         </button>
       </div>
     </div>
@@ -398,24 +402,26 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- Base lock + arrows -->
-    <div class="control-group" style="left: 2px; top: 310px;">
+    <!-- Base lock + cross D-pad -->
+    <div class="control-group" style="left: 0px; top: 308px;">
       <button class="lock-btn" :class="{ locked: baseLocked }" @click.stop="toggleBaseLock" title="قفل/فتح">
         <svg v-if="baseLocked" width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#ef4444"/><path d="M3 5V3A3 3 0 0 1 9 3V5" fill="none" stroke="#ef4444" stroke-width="1.5"/></svg>
         <svg v-else width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#10b981"/><path d="M3 5V3A3 3 0 0 1 9 3" fill="none" stroke="#10b981" stroke-width="1.5"/></svg>
       </button>
-      <button class="arrow-btn" @click.stop="moveBase(0, -FINE_STEP)" title="↑">
-        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 2 L8 7 L2 7 Z" fill="currentColor"/></svg>
-      </button>
-      <button class="arrow-btn" @click.stop="moveBase(0, FINE_STEP)" title="↓">
-        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 8 L8 3 L2 3 Z" fill="currentColor"/></svg>
-      </button>
-      <div class="arrow-row">
-        <button class="arrow-btn" @click.stop="moveBase(-FINE_STEP, 0)" title="←">
-          <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5 L7 2 L7 8 Z" fill="currentColor"/></svg>
+      <div class="dpad">
+        <button class="dpad-btn dpad-up" @click.stop="moveBase(0, -FINE_STEP)" title="↑">
+          <svg width="8" height="8" viewBox="0 0 8 8"><path d="M4 1 L7 5.5 L1 5.5 Z" fill="currentColor"/></svg>
         </button>
-        <button class="arrow-btn" @click.stop="moveBase(FINE_STEP, 0)" title="→">
-          <svg width="10" height="10" viewBox="0 0 10 10"><path d="M8 5 L3 2 L3 8 Z" fill="currentColor"/></svg>
+        <div class="dpad-mid">
+          <button class="dpad-btn dpad-left" @click.stop="moveBase(-FINE_STEP, 0)" title="←">
+            <svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 4 L5.5 1 L5.5 7 Z" fill="currentColor"/></svg>
+          </button>
+          <button class="dpad-btn dpad-right" @click.stop="moveBase(FINE_STEP, 0)" title="→">
+            <svg width="8" height="8" viewBox="0 0 8 8"><path d="M7 4 L2.5 1 L2.5 7 Z" fill="currentColor"/></svg>
+          </button>
+        </div>
+        <button class="dpad-btn dpad-down" @click.stop="moveBase(0, FINE_STEP)" title="↓">
+          <svg width="8" height="8" viewBox="0 0 8 8"><path d="M4 7 L7 2.5 L1 2.5 Z" fill="currentColor"/></svg>
         </button>
       </div>
     </div>
@@ -487,55 +493,88 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
   z-index: 10;
   pointer-events: auto;
+  padding: 4px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(203, 213, 225, 0.4);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 .lock-btn {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   border: none;
-  border-radius: 4px;
-  background: rgba(255,255,255,0.85);
+  border-radius: 6px;
+  background: linear-gradient(145deg, #f8fafc 0%, #e2e8f0 100%);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,0.9),
+    0 2px 3px rgba(0,0,0,0.12),
+    0 1px 1px rgba(0,0,0,0.08);
   transition: transform 0.1s, box-shadow 0.1s;
 }
 .lock-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transform: scale(1.05);
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,0.9),
+    0 3px 6px rgba(0,0,0,0.18),
+    0 1px 2px rgba(0,0,0,0.1);
 }
 .lock-btn.locked {
-  background: rgba(254, 226, 226, 0.9);
+  background: linear-gradient(145deg, #fee2e2 0%, #fca5a5 100%);
 }
-.arrow-btn {
+/* 3D D-Pad Controls */
+.dpad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+.dpad-vertical {
+  gap: 2px;
+}
+.dpad-mid {
+  display: flex;
+  gap: 1px;
+}
+.dpad-btn {
   width: 16px;
   height: 16px;
   border: none;
-  border-radius: 3px;
-  background: rgba(241, 245, 249, 0.85);
+  border-radius: 50%;
+  background: linear-gradient(145deg, #f1f5f9 0%, #cbd5e1 100%);
   color: #475569;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-  transition: background 0.15s, transform 0.1s;
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,0.8),
+    0 2px 3px rgba(0,0,0,0.15),
+    0 1px 1px rgba(0,0,0,0.1);
+  transition: transform 0.1s, box-shadow 0.15s;
 }
-.arrow-btn:hover {
-  background: rgba(226, 232, 240, 0.95);
+.dpad-btn:hover {
+  background: linear-gradient(145deg, #e0f2fe 0%, #7dd3fc 100%);
+  color: #0369a1;
   transform: scale(1.1);
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,0.9),
+    0 3px 5px rgba(59,130,246,0.25),
+    0 1px 2px rgba(0,0,0,0.15);
 }
-.arrow-btn:active {
-  transform: scale(0.95);
-}
-.arrow-row {
-  display: flex;
-  gap: 2px;
+.dpad-btn:active {
+  transform: scale(0.9);
+  box-shadow:
+    inset 0 2px 4px rgba(0,0,0,0.15),
+    0 1px 1px rgba(0,0,0,0.1);
 }
 </style>

@@ -151,7 +151,7 @@ export function getWoodenBaseState(uid: string): WoodenBaseState {
 
 export function getRetortStandState(uid: string): RetortStandState {
   if (!retortStandMap[uid]) {
-    retortStandMap[uid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null, topClampLocked: false, bottomClampLocked: false, baseLocked: false };
+    retortStandMap[uid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null, topClampLocked: true, bottomClampLocked: true, baseLocked: true };
   }
   return retortStandMap[uid];
 }
@@ -191,7 +191,7 @@ export function createLabItem(def: ToolDef, x: number, y: number): LabItem {
     woodenBaseMap[item.uid] = { attachedToolUids: [] };
   }
   if (isRetortStandAssembly(def.id)) {
-    retortStandMap[item.uid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null, topClampLocked: false, bottomClampLocked: false, baseLocked: false };
+    retortStandMap[item.uid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null, topClampLocked: true, bottomClampLocked: true, baseLocked: true };
   }
   return item;
 }
@@ -217,9 +217,9 @@ export function setupInitialLabLayout(): void {
     slotOffsets: [30, 79, 128],
     slotOccupants: [null, null, null],
     bottomSlotOccupant: null,
-    topClampLocked: false,
-    bottomClampLocked: false,
-    baseLocked: false,
+    topClampLocked: true,
+    bottomClampLocked: true,
+    baseLocked: true,
   };
 }
 

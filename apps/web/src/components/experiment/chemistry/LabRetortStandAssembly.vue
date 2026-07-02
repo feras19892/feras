@@ -160,7 +160,7 @@ function onBaseOrRodMouseDown(e: MouseEvent) {
 
 onMounted(() => {
   if (!retortStandMap[props.itemUid]) {
-    retortStandMap[props.itemUid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null, topClampLocked: false, bottomClampLocked: false, baseLocked: false };
+    retortStandMap[props.itemUid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null, topClampLocked: true, bottomClampLocked: true, baseLocked: true };
   }
 });
 
@@ -180,7 +180,7 @@ function onClampMouseDown(e: MouseEvent) {
 function onClampMove(e: MouseEvent) {
   if (!clampDragging.value) return;
   if (!retortStandMap[props.itemUid]) {
-    retortStandMap[props.itemUid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null, topClampLocked: false, bottomClampLocked: false, baseLocked: false };
+    retortStandMap[props.itemUid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null, topClampLocked: true, bottomClampLocked: true, baseLocked: true };
   }
   const dy = e.clientY - clampStartY.value;
   const newY = Math.max(20, Math.min(280, clampStartTop.value + dy));
@@ -221,7 +221,7 @@ function onBottomClampMouseDown(e: MouseEvent) {
 function onBottomClampMove(e: MouseEvent) {
   if (!bottomClampDragging.value) return;
   if (!retortStandMap[props.itemUid]) {
-    retortStandMap[props.itemUid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null, topClampLocked: false, bottomClampLocked: false, baseLocked: false };
+    retortStandMap[props.itemUid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null, topClampLocked: true, bottomClampLocked: true, baseLocked: true };
   }
   // Horizontal move
   const dx = e.clientX - bottomClampStartX.value;
@@ -291,12 +291,14 @@ onUnmounted(() => {
       <rect x="4" y="2" width="1.5" height="294" rx="0.75" fill="rgba(0,0,0,0.15)" />
     </svg>
 
-    <!-- Top clamp lock + vertical D-pad -->
-    <div class="control-group" :style="{ left: '0px', top: (clampY - 4) + 'px' }">
-      <button class="lock-btn" :class="{ locked: topClampLocked }" @click.stop="toggleTopClampLock" title="قفل/فتح">
-        <svg v-if="topClampLocked" width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#ef4444"/><path d="M3 5V3A3 3 0 0 1 9 3V5" fill="none" stroke="#ef4444" stroke-width="1.5"/></svg>
-        <svg v-else width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#10b981"/><path d="M3 5V3A3 3 0 0 1 9 3" fill="none" stroke="#10b981" stroke-width="1.5"/></svg>
-      </button>
+    <!-- Top clamp lock (on sleeve) -->
+    <button class="lock-btn lock-on-part" :class="{ locked: topClampLocked }" :style="{ left: '56px', top: (clampY + 6) + 'px' }" @click.stop="toggleTopClampLock" title="قفل/فتح">
+      <svg v-if="topClampLocked" width="10" height="10" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#ef4444"/><path d="M3 5V3A3 3 0 0 1 9 3V5" fill="none" stroke="#ef4444" stroke-width="1.5"/></svg>
+      <svg v-else width="10" height="10" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#10b981"/><path d="M3 5V3A3 3 0 0 1 9 3" fill="none" stroke="#10b981" stroke-width="1.5"/></svg>
+    </button>
+
+    <!-- Top clamp vertical D-pad -->
+    <div class="control-group" :style="{ left: '0px', top: (clampY - 2) + 'px' }">
       <div class="dpad dpad-vertical">
         <button class="dpad-btn dpad-up" @click.stop="moveTopClamp(-FINE_STEP)" title="↑">
           <svg width="8" height="8" viewBox="0 0 8 8"><path d="M4 1 L7 5.5 L1 5.5 Z" fill="currentColor"/></svg>
@@ -318,12 +320,14 @@ onUnmounted(() => {
       <circle cx="128" cy="14" r="2.5" fill="#ef4444" stroke="#b91c1c" stroke-width="0.5" />
     </svg>
 
-    <!-- Bottom clamp lock + cross D-pad -->
-    <div class="control-group" :style="{ left: '0px', top: (bottomClampY - 12) + 'px' }">
-      <button class="lock-btn" :class="{ locked: bottomClampLocked }" @click.stop="toggleBottomClampLock" title="قفل/فتح">
-        <svg v-if="bottomClampLocked" width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#ef4444"/><path d="M3 5V3A3 3 0 0 1 9 3V5" fill="none" stroke="#ef4444" stroke-width="1.5"/></svg>
-        <svg v-else width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#10b981"/><path d="M3 5V3A3 3 0 0 1 9 3" fill="none" stroke="#10b981" stroke-width="1.5"/></svg>
-      </button>
+    <!-- Bottom clamp lock (on sleeve) -->
+    <button class="lock-btn lock-on-part" :class="{ locked: bottomClampLocked }" :style="{ left: '47px', top: (bottomClampY + 6) + 'px' }" @click.stop="toggleBottomClampLock" title="قفل/فتح">
+      <svg v-if="bottomClampLocked" width="10" height="10" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#ef4444"/><path d="M3 5V3A3 3 0 0 1 9 3V5" fill="none" stroke="#ef4444" stroke-width="1.5"/></svg>
+      <svg v-else width="10" height="10" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#10b981"/><path d="M3 5V3A3 3 0 0 1 9 3" fill="none" stroke="#10b981" stroke-width="1.5"/></svg>
+    </button>
+
+    <!-- Bottom clamp cross D-pad -->
+    <div class="control-group" :style="{ left: '0px', top: (bottomClampY - 10) + 'px' }">
       <div class="dpad">
         <button class="dpad-btn dpad-up" @click.stop="moveBottomClamp(0, -FINE_STEP)" title="↑">
           <svg width="8" height="8" viewBox="0 0 8 8"><path d="M4 1 L7 5.5 L1 5.5 Z" fill="currentColor"/></svg>
@@ -402,12 +406,14 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- Base lock + cross D-pad -->
-    <div class="control-group" style="left: 0px; top: 308px;">
-      <button class="lock-btn" :class="{ locked: baseLocked }" @click.stop="toggleBaseLock" title="قفل/فتح">
-        <svg v-if="baseLocked" width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#ef4444"/><path d="M3 5V3A3 3 0 0 1 9 3V5" fill="none" stroke="#ef4444" stroke-width="1.5"/></svg>
-        <svg v-else width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#10b981"/><path d="M3 5V3A3 3 0 0 1 9 3" fill="none" stroke="#10b981" stroke-width="1.5"/></svg>
-      </button>
+    <!-- Base lock (on rod above base) -->
+    <button class="lock-btn lock-on-part" :class="{ locked: baseLocked }" style="left: 44px; top: 305px;" @click.stop="toggleBaseLock" title="قفل/فتح">
+      <svg v-if="baseLocked" width="10" height="10" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#ef4444"/><path d="M3 5V3A3 3 0 0 1 9 3V5" fill="none" stroke="#ef4444" stroke-width="1.5"/></svg>
+      <svg v-else width="10" height="10" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#10b981"/><path d="M3 5V3A3 3 0 0 1 9 3" fill="none" stroke="#10b981" stroke-width="1.5"/></svg>
+    </button>
+
+    <!-- Base cross D-pad (below base since base is wide) -->
+    <div class="control-group" style="left: 0px; top: 348px;">
       <div class="dpad">
         <button class="dpad-btn dpad-up" @click.stop="moveBase(0, -FINE_STEP)" title="↑">
           <svg width="8" height="8" viewBox="0 0 8 8"><path d="M4 1 L7 5.5 L1 5.5 Z" fill="currentColor"/></svg>
@@ -493,42 +499,33 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  gap: 2px;
   z-index: 10;
   pointer-events: auto;
-  padding: 4px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(203, 213, 225, 0.4);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 .lock-btn {
-  width: 20px;
-  height: 20px;
+  width: 14px;
+  height: 14px;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   background: linear-gradient(145deg, #f8fafc 0%, #e2e8f0 100%);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
-  box-shadow:
-    inset 0 1px 1px rgba(255,255,255,0.9),
-    0 2px 3px rgba(0,0,0,0.12),
-    0 1px 1px rgba(0,0,0,0.08);
-  transition: transform 0.1s, box-shadow 0.1s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+  transition: transform 0.1s;
 }
 .lock-btn:hover {
-  transform: scale(1.05);
-  box-shadow:
-    inset 0 1px 1px rgba(255,255,255,0.9),
-    0 3px 6px rgba(0,0,0,0.18),
-    0 1px 2px rgba(0,0,0,0.1);
+  transform: scale(1.08);
 }
 .lock-btn.locked {
   background: linear-gradient(145deg, #fee2e2 0%, #fca5a5 100%);
+}
+.lock-on-part {
+  position: absolute;
+  z-index: 11;
 }
 /* 3D D-Pad Controls */
 .dpad {
@@ -538,15 +535,15 @@ onUnmounted(() => {
   gap: 1px;
 }
 .dpad-vertical {
-  gap: 2px;
+  gap: 1px;
 }
 .dpad-mid {
   display: flex;
   gap: 1px;
 }
 .dpad-btn {
-  width: 16px;
-  height: 16px;
+  width: 12px;
+  height: 12px;
   border: none;
   border-radius: 50%;
   background: linear-gradient(145deg, #f1f5f9 0%, #cbd5e1 100%);
@@ -558,23 +555,15 @@ onUnmounted(() => {
   padding: 0;
   box-shadow:
     inset 0 1px 1px rgba(255,255,255,0.8),
-    0 2px 3px rgba(0,0,0,0.15),
-    0 1px 1px rgba(0,0,0,0.1);
-  transition: transform 0.1s, box-shadow 0.15s;
+    0 1px 2px rgba(0,0,0,0.12);
+  transition: transform 0.1s;
 }
 .dpad-btn:hover {
   background: linear-gradient(145deg, #e0f2fe 0%, #7dd3fc 100%);
   color: #0369a1;
-  transform: scale(1.1);
-  box-shadow:
-    inset 0 1px 1px rgba(255,255,255,0.9),
-    0 3px 5px rgba(59,130,246,0.25),
-    0 1px 2px rgba(0,0,0,0.15);
+  transform: scale(1.15);
 }
 .dpad-btn:active {
-  transform: scale(0.9);
-  box-shadow:
-    inset 0 2px 4px rgba(0,0,0,0.15),
-    0 1px 1px rgba(0,0,0,0.1);
+  transform: scale(0.88);
 }
 </style>

@@ -36,6 +36,73 @@ const isSnapTarget = computed(() => bottomClampSnapUid.value === props.itemUid);
 
 const st = computed(() => retortStandMap[props.itemUid]);
 
+const topClampLocked = computed(() => retortStandMap[props.itemUid]?.topClampLocked ?? false);
+const bottomClampLocked = computed(() => retortStandMap[props.itemUid]?.bottomClampLocked ?? false);
+const baseLocked = computed(() => retortStandMap[props.itemUid]?.baseLocked ?? false);
+
+const FINE_STEP = 5; // pixels per arrow click
+
+function toggleTopClampLock() {
+  if (!retortStandMap[props.itemUid]) return;
+  retortStandMap[props.itemUid].topClampLocked = !retortStandMap[props.itemUid].topClampLocked;
+}
+function toggleBottomClampLock() {
+  if (!retortStandMap[props.itemUid]) return;
+  retortStandMap[props.itemUid].bottomClampLocked = !retortStandMap[props.itemUid].bottomClampLocked;
+}
+function toggleBaseLock() {
+  if (!retortStandMap[props.itemUid]) return;
+  retortStandMap[props.itemUid].baseLocked = !retortStandMap[props.itemUid].baseLocked;
+}
+
+function moveTopClamp(dy: number) {
+  if (!retortStandMap[props.itemUid]) return;
+  const current = retortStandMap[props.itemUid].topClampY;
+  const newY = Math.max(20, Math.min(280, current + dy));
+  const delta = newY - current;
+  retortStandMap[props.itemUid].topClampY = newY;
+  for (const uid of retortStandMap[props.itemUid].slotOccupants.filter(Boolean) as string[]) {
+    const burette = items.value.find(i => i.uid === uid);
+    if (burette) burette.y += delta;
+  }
+}
+
+function moveBottomClamp(dx: number, dy: number) {
+  if (!retortStandMap[props.itemUid]) return;
+  const currentX = retortStandMap[props.itemUid].bottomClampX;
+  const currentY = retortStandMap[props.itemUid].bottomClampY;
+  const newX = Math.max(-100, Math.min(35, currentX + dx));
+  const newY = Math.max(90, Math.min(300, currentY + dy));
+  const deltaX = newX - currentX;
+  const deltaY = newY - currentY;
+  retortStandMap[props.itemUid].bottomClampX = newX;
+  retortStandMap[props.itemUid].bottomClampY = newY;
+  const beaker = items.value.find(i => i.uid === retortStandMap[props.itemUid].bottomSlotOccupant);
+  if (beaker) {
+    beaker.x += deltaX;
+    beaker.y += deltaY;
+  }
+}
+
+function moveBase(dx: number, dy: number) {
+  const stand = items.value.find(i => i.uid === props.itemUid);
+  if (!stand) return;
+  stand.x += dx;
+  stand.y += dy;
+  // Sync attached items
+  const s = retortStandMap[props.itemUid];
+  if (s) {
+    for (const uid of s.slotOccupants.filter(Boolean) as string[]) {
+      const b = items.value.find(i => i.uid === uid);
+      if (b) { b.x += dx; b.y += dy; }
+    }
+    if (s.bottomSlotOccupant) {
+      const b = items.value.find(i => i.uid === s.bottomSlotOccupant);
+      if (b) { b.x += dx; b.y += dy; }
+    }
+  }
+}
+
 const attachedItems = computed(() => {
   const stand = st.value;
   if (!stand) return [];
@@ -83,13 +150,22 @@ function onAttachedMouseDown(e: MouseEvent, uid: string) {
   emit('buretteClick', e, uid);
 }
 
+function onBaseOrRodMouseDown(e: MouseEvent) {
+  if (baseLocked.value) {
+    e.stopPropagation();
+    return;
+  }
+  emit('mousedown', e);
+}
+
 onMounted(() => {
   if (!retortStandMap[props.itemUid]) {
-    retortStandMap[props.itemUid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null };
+    retortStandMap[props.itemUid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null, topClampLocked: false, bottomClampLocked: false, baseLocked: false };
   }
 });
 
 function onClampMouseDown(e: MouseEvent) {
+  if (topClampLocked.value) return;
   e.stopPropagation();
   e.stopImmediatePropagation();
   e.preventDefault();
@@ -104,7 +180,7 @@ function onClampMouseDown(e: MouseEvent) {
 function onClampMove(e: MouseEvent) {
   if (!clampDragging.value) return;
   if (!retortStandMap[props.itemUid]) {
-    retortStandMap[props.itemUid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null };
+    retortStandMap[props.itemUid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null, topClampLocked: false, bottomClampLocked: false, baseLocked: false };
   }
   const dy = e.clientY - clampStartY.value;
   const newY = Math.max(20, Math.min(280, clampStartTop.value + dy));
@@ -127,6 +203,7 @@ function onClampUp() {
 
 /* ---- Bottom clamp (ring clamp for beaker) ---- */
 function onBottomClampMouseDown(e: MouseEvent) {
+  if (bottomClampLocked.value) return;
   e.stopPropagation();
   e.stopImmediatePropagation();
   e.preventDefault();
@@ -144,7 +221,7 @@ function onBottomClampMouseDown(e: MouseEvent) {
 function onBottomClampMove(e: MouseEvent) {
   if (!bottomClampDragging.value) return;
   if (!retortStandMap[props.itemUid]) {
-    retortStandMap[props.itemUid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null };
+    retortStandMap[props.itemUid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null, topClampLocked: false, bottomClampLocked: false, baseLocked: false };
   }
   // Horizontal move
   const dx = e.clientX - bottomClampStartX.value;
@@ -186,7 +263,7 @@ onUnmounted(() => {
 <template>
   <div class="retort-stand" :class="{ hovered: isHovered }" @mousedown="emit('mousedown', $event)">
     <!-- 1. القاعدة (Base) — bounding box خاص بها -->
-    <svg class="stand-part" width="168" height="35" viewBox="0 0 168 35" style="left: 11px; top: 310px;" @mousedown.stop="emit('mousedown', $event)">
+    <svg class="stand-part" width="168" height="35" viewBox="0 0 168 35" style="left: 11px; top: 310px;" @mousedown.stop="onBaseOrRodMouseDown($event)">
       <defs>
         <linearGradient id="baseDark" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stop-color="#4b5563" />
@@ -199,7 +276,7 @@ onUnmounted(() => {
     </svg>
 
     <!-- 2. الساق (Rod) — bounding box خاص بها -->
-    <svg class="stand-part" width="7" height="298" viewBox="0 0 7 298" style="left: 47px; top: 15px;" @mousedown.stop="emit('mousedown', $event)">
+    <svg class="stand-part" width="7" height="298" viewBox="0 0 7 298" style="left: 47px; top: 15px;" @mousedown.stop="onBaseOrRodMouseDown($event)">
       <defs>
         <linearGradient id="rodMetal" x1="0" y1="0" x2="1" y2="0">
           <stop offset="0%" stop-color="#6b7280" />
@@ -214,6 +291,20 @@ onUnmounted(() => {
       <rect x="4" y="2" width="1.5" height="294" rx="0.75" fill="rgba(0,0,0,0.15)" />
     </svg>
 
+    <!-- Top clamp lock + arrows -->
+    <div class="control-group" :style="{ left: '2px', top: (clampY - 2) + 'px' }">
+      <button class="lock-btn" :class="{ locked: topClampLocked }" @click.stop="toggleTopClampLock" title="قفل/فتح">
+        <svg v-if="topClampLocked" width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#ef4444"/><path d="M3 5V3A3 3 0 0 1 9 3V5" fill="none" stroke="#ef4444" stroke-width="1.5"/></svg>
+        <svg v-else width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#10b981"/><path d="M3 5V3A3 3 0 0 1 9 3" fill="none" stroke="#10b981" stroke-width="1.5"/></svg>
+      </button>
+      <button class="arrow-btn" @click.stop="moveTopClamp(-FINE_STEP)" title="↑">
+        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 2 L8 7 L2 7 Z" fill="currentColor"/></svg>
+      </button>
+      <button class="arrow-btn" @click.stop="moveTopClamp(FINE_STEP)" title="↓">
+        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 8 L8 3 L2 3 Z" fill="currentColor"/></svg>
+      </button>
+    </div>
+
     <!-- 3. المشبك العلوي (Top Clamp) — bounding box خاص بها -->
     <svg class="stand-part clamp-part" width="172" height="28" viewBox="0 0 172 28" :style="{ left: '54px', top: clampY + 'px' }" @mousedown="onClampMouseDown">
       <rect x="0" y="10" width="158" height="8" rx="2" fill="#374151" stroke="#4b5563" stroke-width="0.5" />
@@ -224,6 +315,28 @@ onUnmounted(() => {
       <circle cx="79" cy="14" r="2.5" fill="#ef4444" stroke="#b91c1c" stroke-width="0.5" />
       <circle cx="128" cy="14" r="2.5" fill="#ef4444" stroke="#b91c1c" stroke-width="0.5" />
     </svg>
+
+    <!-- Bottom clamp lock + arrows -->
+    <div class="control-group" :style="{ left: '2px', top: (bottomClampY - 8) + 'px' }">
+      <button class="lock-btn" :class="{ locked: bottomClampLocked }" @click.stop="toggleBottomClampLock" title="قفل/فتح">
+        <svg v-if="bottomClampLocked" width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#ef4444"/><path d="M3 5V3A3 3 0 0 1 9 3V5" fill="none" stroke="#ef4444" stroke-width="1.5"/></svg>
+        <svg v-else width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#10b981"/><path d="M3 5V3A3 3 0 0 1 9 3" fill="none" stroke="#10b981" stroke-width="1.5"/></svg>
+      </button>
+      <button class="arrow-btn" @click.stop="moveBottomClamp(0, -FINE_STEP)" title="↑">
+        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 2 L8 7 L2 7 Z" fill="currentColor"/></svg>
+      </button>
+      <button class="arrow-btn" @click.stop="moveBottomClamp(0, FINE_STEP)" title="↓">
+        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 8 L8 3 L2 3 Z" fill="currentColor"/></svg>
+      </button>
+      <div class="arrow-row">
+        <button class="arrow-btn" @click.stop="moveBottomClamp(-FINE_STEP, 0)" title="←">
+          <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5 L7 2 L7 8 Z" fill="currentColor"/></svg>
+        </button>
+        <button class="arrow-btn" @click.stop="moveBottomClamp(FINE_STEP, 0)" title="→">
+          <svg width="10" height="10" viewBox="0 0 10 10"><path d="M8 5 L3 2 L3 8 Z" fill="currentColor"/></svg>
+        </button>
+      </div>
+    </div>
 
     <!-- 3b. المشبك السفلي (Bottom Ring Clamp) — bounding box خاص بها -->
     <svg class="stand-part clamp-part" :class="{ 'snap-target': isSnapTarget }" width="240" height="50" viewBox="0 0 240 50" :style="{ left: '45px', top: (bottomClampY - 10) + 'px', overflow: 'visible' }" @mousedown="onBottomClampMouseDown">
@@ -282,6 +395,28 @@ onUnmounted(() => {
           :scale="0.67"
           :is-selected="props.selectedBuretteUid === uid"
         />
+      </div>
+    </div>
+
+    <!-- Base lock + arrows -->
+    <div class="control-group" style="left: 2px; top: 310px;">
+      <button class="lock-btn" :class="{ locked: baseLocked }" @click.stop="toggleBaseLock" title="قفل/فتح">
+        <svg v-if="baseLocked" width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#ef4444"/><path d="M3 5V3A3 3 0 0 1 9 3V5" fill="none" stroke="#ef4444" stroke-width="1.5"/></svg>
+        <svg v-else width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#10b981"/><path d="M3 5V3A3 3 0 0 1 9 3" fill="none" stroke="#10b981" stroke-width="1.5"/></svg>
+      </button>
+      <button class="arrow-btn" @click.stop="moveBase(0, -FINE_STEP)" title="↑">
+        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 2 L8 7 L2 7 Z" fill="currentColor"/></svg>
+      </button>
+      <button class="arrow-btn" @click.stop="moveBase(0, FINE_STEP)" title="↓">
+        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 8 L8 3 L2 3 Z" fill="currentColor"/></svg>
+      </button>
+      <div class="arrow-row">
+        <button class="arrow-btn" @click.stop="moveBase(-FINE_STEP, 0)" title="←">
+          <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5 L7 2 L7 8 Z" fill="currentColor"/></svg>
+        </button>
+        <button class="arrow-btn" @click.stop="moveBase(FINE_STEP, 0)" title="→">
+          <svg width="10" height="10" viewBox="0 0 10 10"><path d="M8 5 L3 2 L3 8 Z" fill="currentColor"/></svg>
+        </button>
       </div>
     </div>
 
@@ -344,5 +479,63 @@ onUnmounted(() => {
 .clamp-part.snap-target ellipse[stroke="#1f2937"] {
   stroke: #10b981;
   stroke-width: 3;
+}
+
+/* Lock & Arrow Controls */
+.control-group {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  z-index: 10;
+  pointer-events: auto;
+}
+.lock-btn {
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.85);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+.lock-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.lock-btn.locked {
+  background: rgba(254, 226, 226, 0.9);
+}
+.arrow-btn {
+  width: 16px;
+  height: 16px;
+  border: none;
+  border-radius: 3px;
+  background: rgba(241, 245, 249, 0.85);
+  color: #475569;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  transition: background 0.15s, transform 0.1s;
+}
+.arrow-btn:hover {
+  background: rgba(226, 232, 240, 0.95);
+  transform: scale(1.1);
+}
+.arrow-btn:active {
+  transform: scale(0.95);
+}
+.arrow-row {
+  display: flex;
+  gap: 2px;
 }
 </style>

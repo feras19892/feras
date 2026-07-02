@@ -59,6 +59,9 @@ export interface RetortStandState {
   slotOffsets: number[];
   slotOccupants: (string | null)[];
   bottomSlotOccupant: string | null;
+  topClampLocked: boolean;
+  bottomClampLocked: boolean;
+  baseLocked: boolean;
 }
 export const retortStandMap = reactive<Record<string, RetortStandState>>({});
 
@@ -148,7 +151,7 @@ export function getWoodenBaseState(uid: string): WoodenBaseState {
 
 export function getRetortStandState(uid: string): RetortStandState {
   if (!retortStandMap[uid]) {
-    retortStandMap[uid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null };
+    retortStandMap[uid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null, topClampLocked: false, bottomClampLocked: false, baseLocked: false };
   }
   return retortStandMap[uid];
 }
@@ -188,7 +191,7 @@ export function createLabItem(def: ToolDef, x: number, y: number): LabItem {
     woodenBaseMap[item.uid] = { attachedToolUids: [] };
   }
   if (isRetortStandAssembly(def.id)) {
-    retortStandMap[item.uid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null };
+    retortStandMap[item.uid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null, topClampLocked: false, bottomClampLocked: false, baseLocked: false };
   }
   return item;
 }
@@ -199,7 +202,7 @@ export function setupInitialLabLayout(): void {
   if (hasStand) return;
 
   const standDef: ToolDef = { id: 'retort-stand-assembly', name: 'chemistryTools.retortStandAssembly', icon: '🏗️', type: 'helper' };
-  const stand = createLabItem(standDef, 200, 100);
+  const stand = createLabItem(standDef, 40, 100);
   items.value.push(stand);
 
   retortStandMap[stand.uid] = {
@@ -214,6 +217,9 @@ export function setupInitialLabLayout(): void {
     slotOffsets: [30, 79, 128],
     slotOccupants: [null, null, null],
     bottomSlotOccupant: null,
+    topClampLocked: false,
+    bottomClampLocked: false,
+    baseLocked: false,
   };
 }
 

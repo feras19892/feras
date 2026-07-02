@@ -2,17 +2,20 @@
 import { computed } from 'vue';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import {
-  getLiquid, getBurette, getPipette, getSepFunnelState, getBurnerState, getItemZoom, getBeakerClampState, getHotPlateState, beakerClampMap, pourFlowMap, tiltAngleMap, rackSlotsMap,
-  isContainer, isBeaker, isTestTube, isTestTubeRack, isBurette, isPipette, isErlenmeyer, isVolumetricFlask, isRoundBottomFlask,
+  items, getLiquid, getBurette, getPipette, getSepFunnelState, getBurnerState, getItemZoom, getBeakerClampState, getHotPlateState, beakerClampMap, pourFlowMap, tiltAngleMap, rackSlotsMap, retortStandMap,
+  isContainer, isBeaker, isTestTube, isTestTubeRack, isBurette, isPipette, isErlenmeyer, isVolumetricFlask, isRoundBottomFlask, isClampAttachable,
   isSeparatoryFunnel, isGradCylinder, isBunsenBurner, isHeatingMantle, isBalance, isPhMeter,
   isBeakerClamp, isWoodenBase, isHotPlate, isRetortStandAssembly
 } from '../../../composables/chemistry/useChemistryLab';
 import { getBalanceReading, getPhReading, isHeated } from '../../../composables/chemistry/useLabSimulation';
+import { useChemicalLocale } from '../../../composables/chemistry/useChemicalLocale';
+import { useI18n } from '../../../composables/useI18n';
 import LabTestTubeRack from './LabTestTubeRack.vue';
 import ContainerRenderers from './ContainerRenderers.vue';
 import LabBeaker from './LabBeaker.vue';
 import LabBurette from './LabBurette.vue';
 import LabPipette from './LabPipette.vue';
+import LabGradCylinder from './LabGradCylinder.vue';
 import LabVolumetricPipette from './LabVolumetricPipette.vue';
 import LabSeparatoryFunnel from './LabSeparatoryFunnel.vue';
 import LabBunsenBurner from './LabBunsenBurner.vue';
@@ -34,6 +37,7 @@ const props = defineProps<{
   item: LabItem;
   selectedUid: string | null;
   hoveredUid: string | null;
+  draggingUid: string | null;
   receiving: boolean;
 }>();
 
@@ -41,6 +45,7 @@ const emit = defineEmits<{
   mouseenter: [item: LabItem];
   mouseleave: [item: LabItem];
   mousedown: [e: MouseEvent, item: LabItem];
+  selectBurette: [e: MouseEvent, item: LabItem];
   mouthInteract: [item: LabItem];
   spill: [item: LabItem, amount: number];
   dropExited: [item: LabItem, wx: number, wy: number, color: string];
@@ -52,6 +57,15 @@ const emit = defineEmits<{
 const liq = computed(() => getLiquid(props.item.uid));
 const isSel = computed(() => props.selectedUid === props.item.uid);
 
+
+const isAttachedToStand = computed(() => {
+  for (const st of Object.values(retortStandMap)) {
+    if (isClampAttachable(props.item.id) && st.slotOccupants.includes(props.item.uid)) return true;
+    if (st.bottomSlotOccupant === props.item.uid) return true;
+  }
+  return false;
+});
+
 const rackSlotData = computed(() => {
   const uids = rackSlotsMap[props.item.uid] || [];
   return uids.map(uid => {
@@ -61,19 +75,32 @@ const rackSlotData = computed(() => {
   });
 });
 
+function onBuretteClick(e: MouseEvent, uid: string) {
+  const burette = items.value.find(i => i.uid === uid);
+  if (burette) {
+    emit('selectBurette', e, burette);
+  }
+}
+
+const { resolveLabel } = useChemicalLocale();
+const { t } = useI18n();
+
 </script>
 
 <template>
   <div
+    v-if="!isAttachedToStand"
     class="lab-item"
-    :class="{ selected: isSel, hover: hoveredUid === item.uid, heating: isHeated(item), 'pour-target': !!pourFlowMap[item.uid], tilted: !!pourFlowMap[item.uid] || !!(tiltAngleMap[item.uid]) }"
-    :style="{ left: item.x + 'px', top: item.y + 'px', transform: `rotate(${tiltAngleMap[item.uid] || 0}deg) translateY(-5px) scale(${getItemZoom(item.uid)})`, transformOrigin: 'center center' }"
+    :class="{ selected: isSel, hover: hoveredUid === item.uid && !props.draggingUid, 'drag-blocked': !!props.draggingUid && props.draggingUid !== item.uid, dragging: props.draggingUid === item.uid, heating: isHeated(item), 'pour-target': !!pourFlowMap[item.uid], tilted: !!pourFlowMap[item.uid] || !!(tiltAngleMap[item.uid]) }"
+    :style="props.draggingUid === item.uid
+      ? { left: '0px', top: '0px', transform: `translate3d(${item.x}px, ${item.y}px, 0) rotate(${tiltAngleMap[item.uid] || 0}deg) translateY(-5px) scale(${getItemZoom(item.uid)})`, transformOrigin: 'center center' }
+      : { left: item.x + 'px', top: item.y + 'px', transform: `rotate(${tiltAngleMap[item.uid] || 0}deg) translateY(-5px) scale(${getItemZoom(item.uid)})`, transformOrigin: 'center center' }"
     @mouseenter="emit('mouseenter', item)"
     @mouseleave="emit('mouseleave', item)"
     @mousedown="emit('mousedown', $event, item)"
   >
   <div v-if="isContainer(item.id)" class="item-solution-label">
-    {{ liq.label }}
+    {{ resolveLabel(liq.label) }}
   </div>
 
   <ContainerRenderers
@@ -112,6 +139,8 @@ const rackSlotData = computed(() => {
     :item-uid="item.uid"
     :item-x="item.x"
     :item-y="item.y"
+    :scale="getItemZoom(item.uid)"
+    :is-selected="isSel"
     @spill="emit('spill', item, $event)"
     @drop-exited="(wx: number, wy: number, color: string) => emit('dropExited', item, wx, wy, color)"
   />
@@ -140,6 +169,8 @@ const rackSlotData = computed(() => {
     :liquid-opacity="getBurette(item.uid).opacity"
     :is-open="getBurette(item.uid).valveOpen"
     :is-hovered="isSel"
+    :scale="getItemZoom(item.uid)"
+    :is-selected="isSel"
     @toggle-valve="emit('toggleValve', item)"
     @tip-interact="emit('tipInteract', item)"
   />
@@ -159,6 +190,8 @@ const rackSlotData = computed(() => {
     :liquid-opacity="getPipette(item.uid).opacity"
     :is-hovered="isSel"
     :is-active="false"
+    :scale="getItemZoom(item.uid)"
+    :is-selected="isSel"
   />
   <LabBunsenBurner
     v-else-if="isBunsenBurner(item.id)"
@@ -227,8 +260,10 @@ const rackSlotData = computed(() => {
   <LabRetortStandAssembly
     v-else-if="isRetortStandAssembly(item.id)"
     :item-uid="item.uid"
-    :is-hovered="hoveredUid === item.uid"
+    :is-hovered="hoveredUid === item.uid && props.draggingUid === null"
+    :selected-burette-uid="props.selectedUid || undefined"
     @mousedown="emit('mousedown', $event, item)"
+    @burette-click="onBuretteClick"
   />
   <LabTestTubeRack
     v-else-if="isTestTubeRack(item.id)"
@@ -237,91 +272,9 @@ const rackSlotData = computed(() => {
   />
   <template v-else>
     <div class="item-icon" :class="{ heating: isHeated(item) }">{{ item.icon }}</div>
-    <span class="item-label">{{ item.name }}</span>
+    <span class="item-label">{{ t(item.name) }}</span>
   </template>
   </div>
 </template>
 
-<style scoped>
-.lab-item {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
-  cursor: pointer;
-  user-select: none;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  transition: transform 0.1s, filter 0.2s;
-}
-.lab-item.hover {
-  filter: drop-shadow(0 0 12px rgba(16,185,129,0.3));
-  z-index: 10;
-}
-.lab-item.selected {
-  filter: drop-shadow(0 0 8px rgba(16,185,129,0.4));
-}
-.lab-item.heating {
-  filter: drop-shadow(0 0 15px rgba(239,68,68,0.5));
-  animation: heatPulse 1.5s ease infinite;
-}
-@keyframes heatPulse {
-  0%, 100% { filter: drop-shadow(0 0 12px rgba(239,68,68,0.4)); }
-  50% { filter: drop-shadow(0 0 20px rgba(239,68,68,0.65)); }
-}
-/* Pour mode visual cue on containers */
-.lab-item.pour-target {
-  animation: pourPulse 1s ease infinite;
-}
-@keyframes pourPulse {
-  0%, 100% { filter: drop-shadow(0 0 8px rgba(16,185,129,0.3)); }
-  50% { filter: drop-shadow(0 0 16px rgba(16,185,129,0.6)); }
-}
-.item-solution-label {
-  position: absolute;
-  bottom: -18px;
-  font-size: 0.6rem;
-  font-weight: 700;
-  color: #334155;
-  background: rgba(255,255,255,0.9);
-  padding: 1px 6px;
-  border-radius: 4px;
-  white-space: nowrap;
-  pointer-events: none;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-}
-.item-icon {
-  font-size: 2.5rem;
-  line-height: 1;
-  transition: all 0.3s;
-}
-.item-icon.heating {
-  animation: heatPulseIcon 1s ease infinite;
-  filter: drop-shadow(0 0 8px #ef4444);
-}
-@keyframes heatPulseIcon {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-.lab-item.tilted {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  filter: drop-shadow(0 8px 20px rgba(0,0,0,0.15));
-}
-.item-label {
-  font-size: 0.7rem;
-  color: #64748b;
-  white-space: nowrap;
-}
-/* Retort stand container sizing */
-:deep(.retort-stand) {
-  width: 190px;
-  height: 350px;
-  pointer-events: none;
-}
-:deep(.stand-part) {
-  pointer-events: auto;
-  cursor: pointer;
-}
-</style>
+<style src="./LabItemRenderer.css" scoped></style>

@@ -8,6 +8,8 @@ interface Props {
   liquidOpacity?: number;
   isOpen?: boolean;    // stopcock state
   isHovered?: boolean;
+  scale?: number;
+  isSelected?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -17,12 +19,14 @@ const props = withDefaults(defineProps<Props>(), {
   liquidOpacity: 0.35,
   isOpen: false,
   isHovered: false,
+  scale: 1,
+  isSelected: false,
 });
 
 const emit = defineEmits<{ toggleValve: []; tipInteract: [] }>();
 
 /* Liquid fills from bottom up */
-const tubeTop = 45;
+const tubeTop = 15;
 const tubeBottom = 285;
 const tubeH = tubeBottom - tubeTop;
 
@@ -84,35 +88,47 @@ function onValveClick(e: MouseEvent) {
 
 <template>
   <div class="burette-wrapper">
-    <svg viewBox="0 0 110 380" class="burette-svg" :class="{ hovered: isHovered }">
+    <svg
+      viewBox="0 0 110 380"
+      class="burette-svg"
+      :class="{ hovered: isHovered }"
+      :style="{ width: 85 * props.scale + 'px', height: 295 * props.scale + 'px' }"
+    >
       <!-- Ground shadow -->
       <ellipse cx="55" cy="368" rx="20" ry="2.5" fill="rgba(0,0,0,0.05)" />
 
-      <!-- ========== STAND / CLAMP ========== -->
-      <!-- Rod -->
-      <line x1="55" y1="2" x2="55" y2="38" stroke="#64748b" stroke-width="3" stroke-linecap="round" />
-      <!-- Clamp bracket -->
-      <rect x="42" y="36" width="26" height="8" rx="2" fill="#475569" />
-      <line x1="30" y1="40" x2="42" y2="40" stroke="#64748b" stroke-width="2.5" />
+      <!-- ========== HANGER LOOP (sits on the retort-stand clamp) ========== -->
+      <path d="M 42 8 C 42 0, 68 0, 68 8" fill="none" stroke="#64748b" stroke-width="2.5" stroke-linecap="round" />
+      <line x1="55" y1="0" x2="55" y2="14" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" />
 
       <!-- ========== GLASS TUBE (rounded bottom) ========== -->
       <!-- Body -->
       <path
-        d="M 42 44 L 42 280 Q 42 292 55 292 Q 68 292 68 280 L 68 44"
+        d="M 42 14 L 42 280 Q 42 292 55 292 Q 68 292 68 280 L 68 14"
         fill="rgba(241,245,249,0.2)"
         stroke="#94a3b8"
         stroke-width="1.5"
         stroke-linecap="round"
       />
+      <!-- Selection outline -->
+      <path
+        v-if="isSelected"
+        d="M 42 14 L 42 280 Q 42 292 55 292 Q 68 292 68 280 L 68 14 Q 68 10 55 10 Q 42 10 42 14 Z"
+        fill="none"
+        stroke="#10b981"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        opacity="0.9"
+      />
       <!-- Top rim -->
-      <ellipse cx="55" cy="44" rx="13" ry="3.5" fill="none" stroke="#94a3b8" stroke-width="1.5" />
-      <ellipse cx="55" cy="44" rx="11" ry="2.5" fill="none" stroke="rgba(148,163,184,0.3)" stroke-width="0.5" />
+      <ellipse cx="55" cy="14" rx="13" ry="3.5" fill="none" stroke="#94a3b8" stroke-width="1.5" />
+      <ellipse cx="55" cy="14" rx="11" ry="2.5" fill="none" stroke="rgba(148,163,184,0.3)" stroke-width="0.5" />
 
       <!-- ========== LEFT-SIDE SCALE (etched into glass, 0 at top) ========== -->
       <!-- Scale strip background -->
-      <rect x="26" y="48" width="14" height="232" rx="2" fill="rgba(255,255,255,0.35)" stroke="rgba(148,163,184,0.2)" stroke-width="0.5" />
+      <rect x="26" y="18" width="14" height="262" rx="2" fill="rgba(255,255,255,0.35)" stroke="rgba(148,163,184,0.2)" stroke-width="0.5" />
       <!-- Guide line -->
-      <line x1="38" y1="48" x2="38" y2="280" stroke="#cbd5e1" stroke-width="0.5" opacity="0.5" />
+      <line x1="38" y1="18" x2="38" y2="280" stroke="#cbd5e1" stroke-width="0.5" opacity="0.5" />
       <g v-for="mark in allMarks" :key="mark.value">
         <line
           :x1="38"
@@ -173,7 +189,7 @@ function onValveClick(e: MouseEvent) {
       </g>
 
       <!-- ========== GLASS HIGHLIGHTS ========== -->
-      <path d="M 44 48 L 44 275" stroke="rgba(255,255,255,0.35)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+      <path d="M 44 18 L 44 275" stroke="rgba(255,255,255,0.35)" stroke-width="2.5" stroke-linecap="round" fill="none" />
       <path d="M 48 52 L 48 150" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-linecap="round" fill="none" />
       <path d="M 64 55 L 64 130" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-linecap="round" fill="none" />
 
@@ -238,15 +254,8 @@ function onValveClick(e: MouseEvent) {
   align-items: center;
   position: relative;
 }
-.burette-svg {
-  width: 85px;
-  height: 295px;
-  transition: transform 0.2s, filter 0.2s;
-  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.05));
-}
 .burette-svg.hovered {
-  transform: scale(1.04);
-  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.08));
+  filter: brightness(1.04);
 }
 .stopcock {
   cursor: pointer;

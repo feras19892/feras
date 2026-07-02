@@ -5,8 +5,9 @@ import {
   receivingMap, pourFlowMap, tiltAngleMap,
   getBurnerState, simSpeed, phProbeTipMap, stopperMap,
   buretteConsumedThisRefill,
-  isContainer
+  isContainer, retortStandMap
 } from './useChemistryLab';
+import { isBeaker, isTestTube } from './chemLabIds';
 import { handleDropMixWithRecording } from './useBuretteMixRecorder';
 import { getPhReading } from './usePhMeter';
 import { pushMicroHistory } from './useChemistryHistory';
@@ -22,22 +23,43 @@ export const buretteWarning = ref<BuretteWarning>(null);
 
 // ================== BURETTE FIND ==================
 export function findContainerBelow(burette: LabItem): LabItem | null {
-  // Use burette TOP as reference (not bottom) since burette is very tall
-  // and containers visually below it may overlap in Y coordinates
+  // 1. If burette is attached to a retort stand, check beaker on same stand
+  for (const [standUid, st] of Object.entries(retortStandMap)) {
+    const slotIdx = st.slotOccupants.indexOf(burette.uid);
+    if (slotIdx < 0) continue;
+
+    const beakerItem = items.value.find(i => i.uid === st.bottomSlotOccupant);
+    if (!beakerItem) return null;
+
+    // Burette tip is at center of its bottom (width/2 from left edge)
+    const buretteTipX = burette.x + 28.5;
+    // Beaker center (opening is ~70px wide, center at +35)
+    const beakerCenterX = beakerItem.x + 35;
+    const dx = Math.abs(beakerCenterX - buretteTipX);
+
+    // Vertical check: beaker must be below burette tip
+    const buretteTipY = burette.y + 198;
+    const beakerTopY = beakerItem.y;
+    const dy = beakerTopY - buretteTipY;
+
+    if (dx <= 35 && dy >= 0 && dy <= 200) {
+      return beakerItem;
+    }
+    return null;
+  }
+
+  // 2. Burette is NOT attached to any stand — fall back to global search
   const buretteTopY = burette.y;
   const buretteCenterX = burette.x + 42;
   const candidates = items.value.filter((i: LabItem) => {
     if (i.uid === burette.uid || !isContainer(i.id)) return false;
-    const containerCenterX = i.x + (i.id === 'beaker' ? 70 : i.id === 'test-tube' ? 20 : 40);
+    const containerCenterX = i.x + (isBeaker(i.id) ? 70 : isTestTube(i.id) ? 20 : 40);
     const containerTopY = i.y;
     const dx = Math.abs(containerCenterX - buretteCenterX);
-    // Container must be horizontally near burette, and visually below it
-    // (container top should be at least 40px below burette top, within 250px)
     const dy = containerTopY - buretteTopY;
     return dx <= 100 && dy >= 40 && dy <= 250;
   });
   if (candidates.length === 0) return null;
-  // Pick closest to burette (smallest dy among matches)
   return candidates.reduce((closest, current) => {
     const cDy = closest.y - buretteTopY;
     const currDy = current.y - buretteTopY;
@@ -163,7 +185,7 @@ export function startSimulation(_onSync: (item: LabItem | null) => void) {
         src.volume = +(src.volume - amount).toFixed(2);
         dst.volume = +(dst.volume + amount).toFixed(2);
         dst.color = src.color; dst.opacity = src.opacity;
-        if (!dst.label.includes('مخلوط') && src.label !== dst.label) {
+        if (!dst.label.includes('+') && src.label !== dst.label) {
           dst.label = dst.label + ' + ' + src.label;
         }
         receivingMap[dstUid] = true;

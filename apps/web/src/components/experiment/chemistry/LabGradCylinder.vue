@@ -12,6 +12,8 @@ interface Props {
   itemUid?: string;
   itemX?: number;
   itemY?: number;
+  scale?: number;
+  isSelected?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -24,6 +26,8 @@ const props = withDefaults(defineProps<Props>(), {
   itemX: 0,
   itemY: 0,
   itemUid: '',
+  scale: 1,
+  isSelected: false,
 });
 
 const emit = defineEmits<{ click: []; spill: [amount: number]; dropExited: [worldX: number, worldY: number, color: string]; }>();
@@ -82,7 +86,12 @@ const marks = computed<Mark[]>(() => {
 
 <template>
   <div class="cylinder-wrapper" @click.stop="emit('click')">
-    <svg viewBox="0 0 110 230" class="cylinder-svg" :class="{ hovered: isHovered }">
+    <svg
+      viewBox="0 0 110 230"
+      class="cylinder-svg"
+      :class="{ hovered: isHovered }"
+      :style="{ width: 75 * props.scale + 'px', height: 158 * props.scale + 'px' }"
+    >
       <!-- Ground shadow -->
       <ellipse cx="55" cy="223" rx="22" ry="2.5" fill="rgba(0,0,0,0.06)" />
 
@@ -104,6 +113,19 @@ const marks = computed<Mark[]>(() => {
         fill="rgba(241,245,249,0.15)"
         stroke="#94a3b8"
         stroke-width="1.2"
+      />
+      <!-- Selection outline -->
+      <rect
+        v-if="isSelected"
+        :x="centerX - tubeW/2 - 2"
+        :y="tubeTop - 2"
+        :width="tubeW + 4"
+        :height="tubeH + 4"
+        rx="3"
+        fill="none"
+        stroke="#10b981"
+        stroke-width="2"
+        opacity="0.9"
       />
 
       <!-- Rim (poured lip) -->
@@ -214,15 +236,8 @@ const marks = computed<Mark[]>(() => {
   position: relative;
   cursor: pointer;
 }
-.cylinder-svg {
-  width: 75px;
-  height: 158px;
-  transition: transform 0.2s, filter 0.2s;
-  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.06));
-}
 .cylinder-svg.hovered {
-  transform: scale(1.05);
-  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
+  filter: brightness(1.04);
 }
 .drop-canvas {
   position: absolute;

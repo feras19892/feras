@@ -15,6 +15,7 @@ interface Props {
   itemUid?: string;
   itemX?: number;
   itemY?: number;
+  scale?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -29,6 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
   itemX: 0,
   itemY: 0,
   itemUid: '',
+  scale: 1,
 });
 
 const showMouthGlow = ref(false);
@@ -78,7 +80,12 @@ useSpillDrops({
 
 <template>
   <div class="beaker-wrapper">
-    <svg viewBox="0 0 140 200" class="beaker-svg" :class="{ hovered: isHovered }">
+    <svg
+      viewBox="0 0 140 200"
+      class="beaker-svg"
+      :class="{ hovered: isHovered }"
+      :style="{ width: 140 * props.scale + 'px', height: 200 * props.scale + 'px', transformOrigin: 'top left' }"
+    >
       <defs>
         <clipPath id="beakerClip" clipPathUnits="userSpaceOnUse">
           <path d="M 38 25 L 38 158 Q 38 172 70 172 Q 102 172 102 158 L 102 25 Z" />
@@ -253,12 +260,6 @@ useSpillDrops({
   align-items: center;
   position: relative;
 }
-.beaker-svg {
-  width: 140px;
-  height: 200px;
-  transition: transform 0.2s;
-  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.06));
-}
 .drop-canvas {
   position: absolute;
   top: 0;
@@ -270,8 +271,7 @@ useSpillDrops({
   pointer-events: none;
 }
 .beaker-svg.hovered {
-  transform: scale(1.04);
-  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
+  filter: brightness(1.04);
 }
 .mouth-hitbox {
   cursor: pointer;

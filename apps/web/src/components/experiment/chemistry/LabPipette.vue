@@ -8,6 +8,8 @@ interface Props {
   liquidOpacity?: number;
   isHovered?: boolean;
   isActive?: boolean;  // true when in cursor mode
+  scale?: number;
+  isSelected?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -17,6 +19,8 @@ const props = withDefaults(defineProps<Props>(), {
   liquidOpacity: 0.35,
   isHovered: false,
   isActive: false,
+  scale: 1,
+  isSelected: false,
 });
 
 const emit = defineEmits<{ click: []; }>();
@@ -49,7 +53,12 @@ const canvasRef = ref<HTMLCanvasElement | null>(null);
 
 <template>
   <div class="pipette-wrapper" :class="{ active: isActive }" @click.stop="emit('click')">
-    <svg viewBox="0 0 60 280" class="pipette-svg" :class="{ hovered: isHovered }">
+    <svg
+      viewBox="0 0 60 280"
+      class="pipette-svg"
+      :class="{ hovered: isHovered }"
+      :style="{ width: 50 * props.scale + 'px', height: 230 * props.scale + 'px' }"
+    >
       <!-- Shadow -->
       <ellipse cx="30" cy="275" rx="4" ry="1" fill="rgba(0,0,0,0.06)" />
 
@@ -66,6 +75,19 @@ const canvasRef = ref<HTMLCanvasElement | null>(null);
         fill="rgba(241,245,249,0.15)"
         stroke="#94a3b8"
         stroke-width="0.8"
+      />
+      <!-- Selection outline -->
+      <rect
+        v-if="isSelected"
+        x="25"
+        y="48"
+        width="10"
+        height="167"
+        rx="2"
+        fill="none"
+        stroke="#10b981"
+        stroke-width="1.8"
+        opacity="0.9"
       />
 
       <!-- Neck connector -->
@@ -177,15 +199,8 @@ const canvasRef = ref<HTMLCanvasElement | null>(null);
 .pipette-wrapper.active {
   filter: drop-shadow(0 0 12px rgba(16,185,129,0.4));
 }
-.pipette-svg {
-  width: 50px;
-  height: 230px;
-  transition: transform 0.2s, filter 0.2s;
-  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.06));
-}
 .pipette-svg.hovered {
-  transform: scale(1.05);
-  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
+  filter: brightness(1.04);
 }
 .drop-canvas {
   position: absolute;

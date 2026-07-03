@@ -9,7 +9,14 @@ const route = useRoute();
 const router = useRouter();
 
 const branchId = computed(() => route.params.branchId as string);
-const branch = computed(() => getBranch(branchId.value));
+const branch = computed(() => {
+  const b = getBranch(branchId.value);
+  if (!b) return undefined;
+  return {
+    ...b,
+    experiments: b.experiments.filter((e) => e.enabled),
+  };
+});
 
 function goBack() {
   router.push('/physics');
@@ -70,6 +77,11 @@ function expNameKey(id: string): string {
     resonance: 'experiments.expResonance',
     'ideal-gas': 'experiments.expIdealGas',
     calorimetry: 'experiments.expCalorimetry',
+    'specific-heat': 'experiments.expSpecificHeat',
+    'joule-equivalent': 'experiments.expJouleEquivalent',
+    'boyles-law': 'experiments.expBoylesLaw',
+    'thermal-expansion': 'experiments.expThermalExpansion',
+    'latent-heat': 'experiments.expLatentHeat',
     'rc-circuit': 'experiments.expRcCircuit',
     'biot-savart': 'experiments.expBiotSavart',
     faraday: 'experiments.expFaraday',

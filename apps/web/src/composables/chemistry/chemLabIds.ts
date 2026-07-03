@@ -17,6 +17,9 @@ export function isWatchGlass(id: string): boolean { return id === 'watch-glass';
 export function isFilterFunnel(id: string): boolean { return id === 'filter-funnel'; }
 export function isRubberStopper(id: string): boolean { return id === 'rubber-stopper'; }
 export function isThermometer(id: string): boolean { return id === 'thermometer-mercury' || id === 'thermometer-digital'; }
+export function isClampAttachable(id: string): boolean {
+  return isBurette(id) || isPipette(id) || isGradCylinder(id);
+}
 export function isRetortStand(id: string): boolean { return id === 'retort-stand'; }
 export function isRetortStandAssembly(id: string): boolean { return id === 'retort-stand-assembly'; }
 export function isBeakerClamp(id: string): boolean { return id === 'beaker-clamp'; }

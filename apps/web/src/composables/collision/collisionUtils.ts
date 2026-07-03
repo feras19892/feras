@@ -39,20 +39,25 @@ export function computeFinalVelocities(
 }
 
 export function computeMomentum(m: number, v: number): number {
-  return Number((m * v).toFixed(4))
+  return m * v
 }
 
 export function computeKE(m: number, v: number): number {
-  return Number((0.5 * m * v * v).toFixed(4))
+  return 0.5 * m * v * v
 }
 
 export function computeTotalKE(m1: number, v1: number, m2: number, v2: number): number {
-  return Number((computeKE(m1, v1) + computeKE(m2, v2)).toFixed(4))
+  return computeKE(m1, v1) + computeKE(m2, v2)
 }
 
 export function computeEnergyLoss(KEi: number, KEf: number): number {
   if (KEi <= 0) return 0
-  return Number(((KEi - KEf) / KEi * 100).toFixed(2))
+  const loss = ((KEi - KEf) / KEi) * 100
+  // Clamp floating-point epsilon so physically-zero loss reports as 0
+  if (Math.abs(loss) < 1e-6) return 0
+  // Negative loss is physically impossible (floating-point artefact)
+  if (loss < 0) return 0
+  return loss
 }
 
 export function computeCollisionResult(params: CollisionParams): CollisionResult {

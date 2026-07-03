@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { TitrationReading } from '../../../composables/chemistry/useExperiments';
+import { useI18n } from '../../../composables/useI18n';
+const { t } = useI18n();
 
 const props = defineProps<{
   readings: TitrationReading[];
@@ -13,17 +15,17 @@ const emit = defineEmits<{
 <template>
   <div class="data-table-wrapper">
     <div class="data-table-header">
-      <span class="data-title">📋 دفتر القراءات</span>
-      <button class="add-btn" @click="emit('add')" title="تسجيل قراءة يدوية">+ تسجيل</button>
+      <span class="data-title">{{ t('chemistryLab.readingsBook') }}</span>
+      <button class="add-btn" @click="emit('add')" :title="t('chemistryLab.recordReading')">{{ t('chemistryLab.recordReading') }}</button>
     </div>
-    <div v-if="readings.length === 0" class="data-empty">لا توجد قراءات مسجلة بعد</div>
+    <div v-if="readings.length === 0" class="data-empty">{{ t('chemistryLab.noReadingsYet') }}</div>
     <table v-else class="data-table">
       <thead>
         <tr>
           <th>#</th>
-          <th>حجم NaOH (mL)</th>
+          <th>{{ t('chemistryLab.naohVolume') }}</th>
           <th>pH</th>
-          <th>اللون</th>
+          <th>{{ t('chemistry.color') }}</th>
         </tr>
       </thead>
       <tbody>

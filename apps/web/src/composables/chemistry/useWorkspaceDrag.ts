@@ -11,12 +11,13 @@ import type { ToolDef } from './useChemistryTools';
 import type { ToolState } from './chemLabTypes';
 
 
-const SNAP_DISTANCE = 150;
+const SNAP_DISTANCE = 250;
 export const retortStandSnapUid = ref<string | null>(null);
 export const bottomClampSnapUid = ref<string | null>(null);
 
 function getMagnetOffset(id: string): { x: number; y: number } {
-  if (isBurette(id)) return { x: 42.5, y: 77.6 };
+  // Offsets scaled from original 85×295 burette to current 60×210
+  if (isBurette(id)) return { x: 30, y: 55 };
   if (isPipette(id)) return { x: 25, y: 82.1 };
   if (isGradCylinder(id)) return { x: 37.5, y: 55 };
   return { x: 0, y: 0 };
@@ -203,7 +204,7 @@ export function useWorkspaceDrag(
           if (st.bottomSlotOccupant === item.uid) { st.bottomSlotOccupant = null; break; }
         }
         let nearestStand: string | null = null;
-        let nearestDist = 100;
+        let nearestDist = 180;
         for (const standItem of items.value) {
           if (!isRetortStandAssembly(standItem.id)) continue;
           const st = retortStandMap[standItem.uid];

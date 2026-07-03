@@ -8,7 +8,7 @@ export function eh(s: string): string {
     .replace(/"/g, '&quot;')
 }
 
-export function buildStudentHtml(dir: 'rtl' | 'ltr', studentInfo: Record<string, string>): string {
+export function buildStudentHtml(_dir: 'rtl' | 'ltr', studentInfo: Record<string, string>, heading: string): string {
   const rows = Object.entries(studentInfo).filter(([, v]) => v)
   if (!rows.length) return ''
   const tableRows = rows
@@ -16,7 +16,7 @@ export function buildStudentHtml(dir: 'rtl' | 'ltr', studentInfo: Record<string,
     .join('')
   return `
 <div class="section">
-  <h3 class="section-title">📋 ${dir === 'rtl' ? 'معلومات الطالب' : 'Student Information'}</h3>
+  <h3 class="section-title">📋 ${eh(heading)}</h3>
   <table class="params-table"><tbody>${tableRows}</tbody></table>
 </div>`
 }

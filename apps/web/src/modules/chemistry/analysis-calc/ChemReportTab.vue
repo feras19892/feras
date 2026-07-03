@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useI18n } from '../../../composables/useI18n';
+import { fetchJson } from '../../../services/http';
 import type { ChemAnalysisColumnMeta, ChemAnalysisEquation, ChemAnalysisPlotConfig } from '../../../types/chemistry';
 import type { ChemStudentInfo } from '../../../types/chemistry';
 import ChemAnalysisConclusionPanel from './ChemAnalysisConclusionPanel.vue';
@@ -37,6 +38,40 @@ const { t } = useI18n();
 
 const conclusionData = ref({ conclusion: '', errors: '', improvements: '' });
 const showPreview = ref(false);
+const aiAnalysis = ref('');
+const aiLoading = ref(false);
+const aiError = ref('');
+
+async function runAiAnalysis() {
+  aiLoading.value = true;
+  aiError.value = '';
+  aiAnalysis.value = '';
+  try {
+    const res = await fetchJson<{ success: boolean; analysis?: string; message?: string }>('/api/ai/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        experiment_name: props.sourceName,
+        student_name: props.studentInfo.name || undefined,
+        readings: JSON.stringify(props.readings),
+        columns: JSON.stringify(props.columns),
+        equations: JSON.stringify(props.equations),
+        plots: JSON.stringify(props.plots),
+        conclusion: conclusionData.value.conclusion || undefined,
+        chart_snapshot: props.chartSnapshot || undefined,
+      }),
+    });
+    if (res.success && res.analysis) {
+      aiAnalysis.value = res.analysis;
+    } else {
+      aiError.value = res.message || t('chemistryAnalysis.aiAnalysisFailed');
+    }
+  } catch (err) {
+    aiError.value = err instanceof Error ? err.message : t('chemistryAnalysis.serverConnectionError');
+  } finally {
+    aiLoading.value = false;
+  }
+}
 
 const readyChecks = computed(() => {
   const c: { ok: boolean; text: string }[] = [];
@@ -112,9 +147,19 @@ function onConclusionUpdate(data: { conclusion: string; errors: string; improvem
           @send-to-teacher="emit('sendToTeacher')"
         />
 
-        <!-- جدول التراكيز -->
+        <!-- AI Analysis -->
+        <div class="ai-section">
+          <button class="btn-ai" :disabled="!hasData || aiLoading" @click="runAiAnalysis">
+            {{ aiLoading ? t('chemistryAnalysis.analyzing') : t('chemistryAnalysis.aiAnalysisTitle') }}
+          </button>
+          <div v-if="aiError" class="ai-error">{{ aiError }}</div>
+          <!-- eslint-disable-next-line vue/no-v-html -->
+          <div v-if="aiAnalysis" class="ai-result" v-html="aiAnalysis"></div>
+        </div>
+
+        <!-- Concentration Table -->
         <div v-if="concTable.length" class="conc-table-section">
-          <div class="conc-title">📊 جدول التراكيز</div>
+          <div class="conc-title">{{ t('chemistryAnalysis.concentrationTable') }}</div>
           <div class="table-wrap">
             <table>
               <thead><tr><th>V (mL)</th><th>pH</th><th>[H⁺] (M)</th><th>[OH⁻] (M)</th><th>pOH</th></tr></thead>
@@ -167,4 +212,15 @@ function onConclusionUpdate(data: { conclusion: string; errors: string; improvem
 .conc-table-section th { background: rgba(255,255,255,0.05); color: #94a3b8; font-weight: 700; position: sticky; top: 0; }
 .conc-table-section tbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }
 .conc-table-section tbody tr:hover { background: rgba(91,141,184,0.05); }
+
+.ai-section { flex-shrink: 0; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.5rem; padding: 0.5rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.btn-ai { padding: 0.5rem 1rem; border: none; border-radius: 0.4rem; background: linear-gradient(135deg, #8b5cf6, #6366f1); color: #fff; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.15s; }
+.btn-ai:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(139,92,246,0.4); }
+.btn-ai:disabled { opacity: 0.5; cursor: not-allowed; }
+.ai-error { color: #f87171; font-size: 0.8rem; padding: 0.3rem; background: rgba(239,68,68,0.1); border-radius: 0.3rem; }
+.ai-result { color: #e2e8f0; font-size: 0.82rem; line-height: 1.6; max-height: 300px; overflow-y: auto; padding: 0.5rem; background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.2); border-radius: 0.4rem; }
+.ai-result :deep(h1), .ai-result :deep(h2), .ai-result :deep(h3) { color: #67e8f9; font-size: 0.9rem; margin: 0.3rem 0; }
+.ai-result :deep(ul), .ai-result :deep(ol) { padding-right: 1.2rem; margin: 0.3rem 0; }
+.ai-result :deep(li) { margin: 0.15rem 0; }
+.ai-result :deep(strong) { color: #a5b4fc; }
 </style>

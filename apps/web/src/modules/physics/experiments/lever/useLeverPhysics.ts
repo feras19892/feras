@@ -1,172 +1,65 @@
 import { reactive, computed } from 'vue'
-import {
-  calculateNetTorque,
-  calculateTilt,
-  snapPosition,
-  isBalanced,
-  maxReferenceTorque,
-  ballColor,
-  forceColor,
-  createLeverBall,
-  createLeverForce,
-  resetLeverIdCounter,
-  type LeverBall,
-  type LeverForce,
-} from '../../../../composables/lever/leverUtils'
 
-export interface LeverParams {
-  beamLength: number
-  g: number
-  maxTiltDeg: number
-  snapStep: number
+export interface LeverForce {
+  id: number
+  magnitude: number
+  angleDeg: number
 }
 
 export interface LeverState {
   running: boolean
   paused: boolean
-  tiltDeg: number
-  netTorque: number
-  isBalanced: boolean
-  balls: LeverBall[]
   forces: LeverForce[]
   nextId: number
 }
 
-export function useLeverPhysics(params: LeverParams) {
+export function useLeverPhysics() {
   const state = reactive<LeverState>({
     running: false,
     paused: false,
-    tiltDeg: 0,
-    netTorque: 0,
-    isBalanced: true,
-    balls: [],
     forces: [],
     nextId: 1,
   })
 
-  const maxTorque = computed(() => maxReferenceTorque(params.beamLength, params.g))
+  const sumFx = computed(() => state.forces.reduce((s, f) => s + f.magnitude * Math.cos(f.angleDeg * Math.PI / 180), 0))
+  const sumFy = computed(() => state.forces.reduce((s, f) => s + f.magnitude * Math.sin(f.angleDeg * Math.PI / 180), 0))
 
-  function recalc() {
-    state.netTorque = calculateNetTorque(state.balls, state.forces, params.g)
-    state.tiltDeg = calculateTilt(state.netTorque, maxTorque.value, params.maxTiltDeg)
-    state.isBalanced = isBalanced(state.netTorque)
-  }
+  const resultant = computed(() => {
+    const fx = sumFx.value, fy = sumFy.value
+    const mag = Math.sqrt(fx * fx + fy * fy)
+    const angle = mag < 1e-6 ? 0 : Math.atan2(fy, fx) * 180 / Math.PI
+    return { fx, fy, magnitude: mag, angleDeg: angle }
+  })
 
-  function addBall(mass: number, x: number, isUnknown = false): number {
-    const snapped = snapPosition(x, params.snapStep, params.beamLength)
-    const lb = createLeverBall(mass, snapped, state.nextId++, isUnknown)
-    state.balls.push(lb)
-    recalc()
-    return lb.id
-  }
+  const equilibriumForce = computed(() => {
+    const r = resultant.value
+    if (r.magnitude < 1e-6) return null
+    return { fx: -r.fx, fy: -r.fy, magnitude: r.magnitude, angleDeg: (r.angleDeg + 180) % 360 }
+  })
 
-  function removeBall(id: number) {
-    state.balls = state.balls.filter(b => b.id !== id)
-    recalc()
-  }
+  const isBalanced = computed(() => resultant.value.magnitude < 0.01)
 
-  function moveBall(id: number, x: number) {
-    const b = state.balls.find(ball => ball.id === id)
-    if (!b) return
-    b.x = snapPosition(x, params.snapStep, params.beamLength)
-    recalc()
-  }
-
-  function setBallMass(id: number, mass: number) {
-    const b = state.balls.find(ball => ball.id === id)
-    if (!b) return
-    b.mass = Math.max(0.1, mass)
-    b.color = ballColor(b.mass)
-    recalc()
-  }
-
-  // === Force methods ===
-  function addForce(force: number, x: number, direction: 1 | -1 = 1, isUnknown = false): number {
-    const snapped = snapPosition(x, params.snapStep, params.beamLength)
-    const lf = createLeverForce(force, snapped, direction, state.nextId++, isUnknown)
+  function addForce(magnitude: number, angleDeg: number): number {
+    const lf = { id: state.nextId++, magnitude, angleDeg }
     state.forces.push(lf)
-    recalc()
     return lf.id
   }
 
-  function removeForce(id: number) {
-    state.forces = state.forces.filter(f => f.id !== id)
-    recalc()
-  }
+  function removeForce(id: number) { state.forces = state.forces.filter(f => f.id !== id) }
 
-  function moveForce(id: number, x: number) {
-    const f = state.forces.find(force => force.id === id)
+  function updateForce(id: number, magnitude: number, angleDeg: number) {
+    const f = state.forces.find(x => x.id === id)
     if (!f) return
-    f.x = snapPosition(x, params.snapStep, params.beamLength)
-    recalc()
+    f.magnitude = Math.max(0.1, Math.min(100, magnitude))
+    f.angleDeg = ((angleDeg % 360) + 360) % 360
   }
 
-  function setForceValue(id: number, force: number) {
-    const f = state.forces.find(item => item.id === id)
-    if (!f) return
-    f.force = Math.max(0, Math.min(100, force))
-    f.color = forceColor(f.force)
-    recalc()
-  }
-
-  function setForceDirection(id: number, direction: 1 | -1) {
-    const f = state.forces.find(item => item.id === id)
-    if (!f) return
-    f.direction = direction
-    recalc()
-  }
-
-  function toggleForceDirection(id: number) {
-    const f = state.forces.find(item => item.id === id)
-    if (!f) return
-    f.direction = f.direction === 1 ? -1 : 1
-    recalc()
-  }
-
-  function togglePause() {
-    if (!state.running) {
-      state.running = true
-      state.paused = false
-    } else {
-      state.paused = !state.paused
-    }
-  }
-
-  function stop() {
+  function reset() {
+    state.forces = []
+    state.nextId = 1
     state.running = false
     state.paused = false
   }
 
-  function reset() {
-    stop()
-    state.balls = []
-    state.forces = []
-    state.tiltDeg = 0
-    state.netTorque = 0
-    state.isBalanced = true
-    state.nextId = 1
-    resetLeverIdCounter()
-  }
-
-  function step() {
-    recalc()
-  }
-
-  return {
-    state,
-    addBall,
-    removeBall,
-    moveBall,
-    setBallMass,
-    addForce,
-    removeForce,
-    moveForce,
-    setForceValue,
-    setForceDirection,
-    toggleForceDirection,
-    togglePause,
-    stop,
-    reset,
-    step,
-  }
+  return { state, resultant, equilibriumForce, isBalanced, addForce, removeForce, updateForce, reset }
 }

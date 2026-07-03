@@ -66,15 +66,16 @@ function onDrop(e: MouseEvent) {
       </div>
     </div>
 
-    <slot />
+    <div class="panel-content"><slot /></div>
   </div>
 </template>
 
 <style scoped>
-.draggable-panel { background: rgba(30,37,48,0.7); backdrop-filter:blur(12px); border-radius: 10px; padding: .5rem .55rem; border: 1px solid rgba(91,141,184,0.12); display: flex; flex-direction: column; transition: box-shadow .25s, border-color .25s; box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+.draggable-panel { background: rgba(30,37,48,0.7); backdrop-filter:blur(12px); border-radius: 10px; padding: .5rem .55rem; border: 1px solid rgba(91,141,184,0.12); display: flex; flex-direction: column; transition: box-shadow .25s, border-color .25s; box-shadow: 0 4px 16px rgba(0,0,0,0.15); max-height: 260px; }
 .draggable-panel:hover { border-color: rgba(91,141,184,0.22); box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
 .draggable-panel.dragging { box-shadow: 0 20px 60px rgba(0,0,0,.5); z-index: 9999; border: 2px dashed #5B8DB8; opacity: .92; }
 
+.panel-content { flex: 1; min-height: 0; overflow-y: auto; }
 .chart-panel { flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden; }
 
 .card-header { display: flex; justify-content: space-between; align-items: center; margin: 0 0 .25rem; flex-shrink: 0; cursor: grab; padding-bottom:.25rem; border-bottom:1px solid rgba(91,141,184,0.08); }

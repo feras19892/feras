@@ -1,0 +1,21 @@
+.chemistry-landing {
+  width: 100vw;
+  height: 100vh;
+  background: #ffffff;
+  display: grid;
+  overflow: hidden;
+  position: relative;
+}
+.panel {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  overflow-y: auto;
+}
+.resizer {
+  width: 6px;
+  background: #e2e8f0;
+  cursor: col-resize;
+  transition: background 0.2s;
+  z-index: 10;
+}
+.resizer:hover { background: #94a3b8; }

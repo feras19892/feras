@@ -1,4 +1,5 @@
 import { reactive, ref } from 'vue'
+import { useAnomalyWatcher } from '../../../../composables/experiment/useAnomalyWatcher'
 import { calculateInclinedSummary, inclinedStep, inclinedStepWithDrag, toRad } from '../../../../composables/inclined/inclinedUtils'
 
 export interface InclinedParams {
@@ -33,6 +34,7 @@ export interface InclinedMeasured {
 }
 
 export function useInclinedPhysics(params: InclinedParams) {
+  const watcher = useAnomalyWatcher('inclined')
   const sim = reactive<InclinedState>({
     running: false,
     paused: false,
@@ -52,15 +54,16 @@ export function useInclinedPhysics(params: InclinedParams) {
     dragForce: null,
   })
 
-  let _a = 0
-
   function step(dt: number, speed: number = 1) {
     if (!sim.running || sim.paused || sim.arrived) return
     const sDt = dt * speed
     sim.t += sDt
 
     if (!params.airResistance) {
-      const next = inclinedStep(sim.s, sim.v, sDt, _a)
+      // Recompute a dynamically so parameter changes (theta, mu) are reflected mid-sim
+      const thetaRad = toRad(params.thetaDeg)
+      const a = params.g * (Math.sin(thetaRad) - params.mu * Math.cos(thetaRad))
+      const next = inclinedStep(sim.s, sim.v, sDt, a)
       sim.s = next.s
       sim.v = next.v
     } else {
@@ -87,12 +90,11 @@ export function useInclinedPhysics(params: InclinedParams) {
         dragForce: summary.dragForce,
       }
     }
+
+    watcher.inspect({ t: sim.t, s: sim.s, v: sim.v, mass: params.mass })
   }
 
   function start() {
-    const summary = calculateInclinedSummary(params.thetaDeg, params.length, params.mass, params.g, params.mu, params.airResistance, params.cd, params.area)
-    _a = summary.acceleration
-
     sim.running = true
     sim.paused = false
     sim.t = 0

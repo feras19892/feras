@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 import { useAnalysisStore } from '../../../../stores/analysis.store';
 import { consumePendingPayload } from '../../../../composables/analysis/sendToAnalysis';
 import { useI18n } from '../../../../composables/useI18n';
+import type { AnalysisPayload } from '../../../../types/physics';
 import AnalysisMenuBar from '../../../../components/experiment/analysis-calc/AnalysisMenuBar.vue';
 import AnalysisTabs from '../../../../components/experiment/analysis-calc/AnalysisTabs.vue';
 import DataTab from '../../../../components/experiment/analysis-calc/DataTab.vue';
@@ -22,7 +23,18 @@ const analysisTabRef = ref<InstanceType<typeof AnalysisTab> | null>(null);
 
 onMounted(() => {
   const pending = consumePendingPayload();
-  if (pending) store.setPayload(pending);
+  if (pending) { store.setPayload(pending); return; }
+  // Fallback: read payload from experiments that use /analysis route directly
+  try {
+    const raw = localStorage.getItem('analysis_payload');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed && parsed.sourceExperiment) {
+        store.setPayload(parsed as AnalysisPayload);
+        localStorage.removeItem('analysis_payload');
+      }
+    }
+  } catch { /* ignore */ }
 });
 
 const hasData = computed(() => store.hasData);

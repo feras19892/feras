@@ -7,7 +7,11 @@ import {
   selectedChemical, hasSelectedChemicalMap, simSpeed
 } from '../../../composables/chemistry/useChemistryLab';
 import { computeBalanceWeight, getBalanceReading, getPhReading } from '../../../composables/chemistry/useLabSimulation';
+import { useI18n } from '../../../composables/useI18n';
+import { useChemicalLocale } from '../../../composables/chemistry/useChemicalLocale';
 
+const { t } = useI18n();
+const { getName, resolveLabel } = useChemicalLocale();
 const props = defineProps<{
   item: LabItem | null;
   state: ToolState | null;
@@ -32,11 +36,11 @@ const emit = defineEmits<{
 function balanceReadout(): string {
   if (!props.item) return '--';
   const r = getBalanceReading(props.item.uid);
-  return r !== null ? r.toFixed(2) + ' g' : '--';
+  return r !== null ? r.toFixed(2) + ' ' + t('chemistry.g') : '--';
 }
 function grossWeight(): string {
   if (!props.item) return '--';
-  return computeBalanceWeight(props.item).toFixed(2) + ' g';
+  return computeBalanceWeight(props.item).toFixed(2) + ' ' + t('chemistry.g');
 }
 function phReadout(): string {
   if (!props.item) return '--.--';
@@ -61,7 +65,7 @@ function resetTilt() {
 function pipetteStatus(): string {
   if (!props.item) return '';
   const v = getPipette(props.item.uid).volume;
-  return v > 0 ? 'تحتوي على ' + v.toFixed(1) + 'mL' : 'فارغة';
+  return v > 0 ? t('chemistry.contains') + ' ' + v.toFixed(1) + t('chemistry.mL') : t('chemistry.emptyF');
 }
 </script>
 
@@ -69,18 +73,18 @@ function pipetteStatus(): string {
   <div v-if="item && state" class="floating-inspector">
     <div class="fi-header">
       <span class="fi-icon">{{ item.icon }}</span>
-      <span class="fi-name">{{ item.name }}</span>
+      <span class="fi-name">{{ t(item.name) }}</span>
       <div class="fi-undo-group">
         <button
           class="undo-btn"
           :disabled="!canUndo"
-          title="تراجع (Ctrl+Z)"
+          :title="t('chemistry.undo') + ' (Ctrl+Z)'"
           @click.stop="emit('undo')"
         >↩️</button>
         <button
           class="redo-btn"
           :disabled="!canRedo"
-          title="إعادة (Ctrl+Y)"
+          :title="t('chemistry.redo') + ' (Ctrl+Y)'"
           @click.stop="emit('redo')"
         >↪️</button>
       </div>
@@ -88,29 +92,29 @@ function pipetteStatus(): string {
     <div class="fi-body">
       <!-- Container -->
       <template v-if="state.type === 'beaker'">
-        <div class="fi-row"><span>الحجم</span><b>{{ state.volume.toFixed(1) }} / {{ state.maxVolume }} mL</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.volume') }}</span><b>{{ state.volume.toFixed(1) }} / {{ state.maxVolume }} {{ t('chemistry.mL') }}</b></div>
         <div class="fi-bar"><div class="fi-fill" :style="{ width: (state.volume/state.maxVolume*100).toFixed(0) + '%', background: state.color }" /></div>
-        <div class="fi-row"><span>اللون</span><span class="fi-dot" :style="{ background: state.color }" /></div>
+        <div class="fi-row"><span>{{ t('chemistry.color') }}</span><span class="fi-dot" :style="{ background: state.color }" /></div>
         <div class="fi-row">
-          <span>المحلول</span>
+          <span>{{ t('chemistry.solution') }}</span>
           <input
             v-if="item"
             class="fi-input"
-            :value="state.label || ''"
-            placeholder="اسم المحلول..."
+            :value="resolveLabel(state.label || '')"
+            :placeholder="t('chemistry.solutionPlaceholder')"
             @input="(e: any) => emit('labelChange', e.target.value)"
             @click.stop
           />
         </div>
         <div v-if="item && isGradCylinder(item.id)" class="fi-row hint">
-          <span>⚠️</span><small>المخبار المدرج: أداة قياس دقيقة للحجوم</small>
+          <span>⚠️</span><small>{{ t('chemistry.gradCylinderHint') }}</small>
         </div>
         <!-- Current chemical indicator -->
         <div v-if="item && hasSelectedChemicalMap[item.uid]" class="fi-row fi-chem-row">
-          <span>🧪 المحلول:</span>
+          <span>{{ t('chemistry.selectedSolution') }}</span>
           <span class="fi-chem-name">
             <span class="fi-dot" :style="{ background: selectedChemical.color }" />
-            {{ selectedChemical.nameAr }}
+            {{ getName(selectedChemical.id) }}
           </span>
         </div>
         <div class="fi-actions">
@@ -126,26 +130,26 @@ function pipetteStatus(): string {
           <button class="remove" @click="emit('action', 'remove100', item.uid)">💨 −100</button>
         </div>
         <div class="fi-actions">
-          <button class="empty" @click="emit('action', 'empty', item.uid)">🗑️ تفريغ</button>
-          <button class="delete" @click="emit('remove', item.uid)">❌ إزالة</button>
+          <button class="empty" @click="emit('action', 'empty', item.uid)">🗑️ {{ t('chemistry.drain') }}</button>
+          <button class="delete" @click="emit('remove', item.uid)">❌ {{ t('chemistry.remove') }}</button>
         </div>
         <!-- Tilt controls -->
         <div class="fi-row">
-          <span>🔄 الإمالة</span>
+          <span>🔄 {{ t('chemistry.tilt') }}</span>
           <b v-if="item && tiltAngleMap[item.uid]" class="tilt-value">{{ tiltAngleMap[item.uid] > 0 ? '↻ ' : '↺ ' }}{{ Math.abs(tiltAngleMap[item.uid]).toFixed(0) }}°</b>
-          <b v-else>⬆ مستقيم</b>
+          <b v-else>⬆ {{ t('chemistry.straightUp') }}</b>
         </div>
         <div class="fi-actions tilt-actions">
-          <button class="tilt-left" @click="tiltLeft">↺ يسار</button>
-          <button class="tilt-reset" @click="resetTilt">⬆ توازن</button>
-          <button class="tilt-right" @click="tiltRight">↻ يمين</button>
+          <button class="tilt-left" @click="tiltLeft">↺ {{ t('chemistry.left') }}</button>
+          <button class="tilt-reset" @click="resetTilt">⬆ {{ t('chemistry.tiltReset') }}</button>
+          <button class="tilt-right" @click="tiltRight">↻ {{ t('chemistry.right') }}</button>
         </div>
       </template>
       <!-- Burette -->
       <template v-else-if="state.type === 'burette'">
-        <div class="fi-row"><span>المحلول</span><b>{{ state.volume.toFixed(1) }} / {{ state.maxVolume }} mL</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.solution') }}</span><b>{{ state.volume.toFixed(1) }} / {{ state.maxVolume }} {{ t('chemistry.mL') }}</b></div>
         <div class="fi-bar"><div class="fi-fill" :style="{ width: (state.volume/state.maxVolume*100).toFixed(0) + '%', background: state.color }" /></div>
-        <div class="fi-row"><span>الصنبور</span><b :class="state.valveOpen ? 'open' : ''">{{ state.valveOpen ? '🔓 مفتوح' : '🔒 مغلق' }}</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.valve') }}</span><b :class="state.valveOpen ? 'open' : ''">{{ state.valveOpen ? '🔓 ' + t('chemistry.open') : '🔒 ' + t('chemistry.closed') }}</b></div>
         <div class="fi-actions">
           <button @click="emit('action', 'fill5', item.uid)">💧 +5</button>
           <button @click="emit('action', 'fill10', item.uid)">💧 +10</button>
@@ -153,8 +157,8 @@ function pipetteStatus(): string {
           <button @click="emit('action', 'fill100', item.uid)">💧 +100</button>
         </div>
         <div class="fi-actions">
-          <button :class="state.valveOpen ? 'danger' : 'success'" @click="emit('action', 'toggleValve', item.uid)">{{ state.valveOpen ? '🔒 إغلاق' : '🚰 فتح' }}</button>
-          <button class="refill" @click="emit('action', 'refill', item.uid)">♻️ تعبئة</button>
+          <button :class="state.valveOpen ? 'danger' : 'success'" @click="emit('action', 'toggleValve', item.uid)">{{ state.valveOpen ? '🔒 ' + t('chemistry.closeAction') : '🚰 ' + t('chemistry.openAction') }}</button>
+          <button class="refill" @click="emit('action', 'refill', item.uid)">♻️ {{ t('chemistry.refill') }}</button>
         </div>
         <div class="fi-actions">
           <button class="remove" @click="emit('action', 'remove5', item.uid)">💨 −5</button>
@@ -163,109 +167,109 @@ function pipetteStatus(): string {
           <button class="remove" @click="emit('action', 'remove100', item.uid)">💨 −100</button>
         </div>
         <div class="fi-actions">
-          <button class="empty" @click="emit('action', 'empty', item.uid)">🗑️ تفريغ</button>
-          <button class="delete" @click="emit('remove', item.uid)">❌ إزالة</button>
+          <button class="empty" @click="emit('action', 'empty', item.uid)">🗑️ {{ t('chemistry.drain') }}</button>
+          <button class="delete" @click="emit('remove', item.uid)">❌ {{ t('chemistry.remove') }}</button>
         </div>
       </template>
       <!-- Pipette -->
       <template v-else-if="state.type === 'pipette'">
-        <div class="fi-row"><span>المسحوب</span><b>{{ state.volume.toFixed(1) }} / {{ state.maxVolume }} mL</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.pipette') }}</span><b>{{ state.volume.toFixed(1) }} / {{ state.maxVolume }} {{ t('chemistry.mL') }}</b></div>
         <div class="fi-bar"><div class="fi-fill" :style="{ width: (state.volume/state.maxVolume*100).toFixed(0) + '%', background: state.color }" /></div>
-        <div class="fi-row"><span>اللون</span><span class="fi-dot" :style="{ background: state.color }" /></div>
+        <div class="fi-row"><span>{{ t('chemistry.color') }}</span><span class="fi-dot" :style="{ background: state.color }" /></div>
         <div class="fi-actions">
-          <button v-if="state.volume <= 0" class="success" @click="emit('pipetteDraw')">💉 سحب</button>
-          <button v-else class="success" @click="emit('pipetteDispense')">💉 إفراغ</button>
+          <button v-if="state.volume <= 0" class="success" @click="emit('pipetteDraw')">💉 {{ t('chemistry.draw') }}</button>
+          <button v-else class="success" @click="emit('pipetteDispense')">💉 {{ t('chemistry.dispense') }}</button>
         </div>
         <div class="fi-actions">
-          <button class="delete" @click="emit('remove', item.uid)">❌ إزالة</button>
+          <button class="delete" @click="emit('remove', item.uid)">❌ {{ t('chemistry.remove') }}</button>
         </div>
       </template>
       <!-- Bunsen Burner -->
       <template v-else-if="item.id === 'bunsen-burner'">
-        <div class="fi-row"><span>الحالة</span><b :class="getBurnerState(item.uid).on ? 'open' : ''">{{ getBurnerState(item.uid).on ? '🔥 مشتعل' : '⚫ مطفأ' }}</b></div>
-        <div class="fi-row"><span>الشدة</span><b>{{ Math.round(getBurnerState(item.uid).intensity * 100) }}%</b></div>
-        <div class="fi-row"><span>سرعة التسخين</span><b>{{ simSpeed }}x</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.status') }}</span><b :class="getBurnerState(item.uid).on ? 'open' : ''">{{ getBurnerState(item.uid).on ? '🔥 ' + t('chemistry.on') : '⚫ ' + t('chemistry.off') }}</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.intensity') }}</span><b>{{ Math.round(getBurnerState(item.uid).intensity * 100) }}%</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.heatingSpeed') }}</span><b>{{ simSpeed }}x</b></div>
         <div class="fi-actions">
-          <button :class="getBurnerState(item.uid).on ? 'danger' : 'success'" @click="emit('toggleBurner')">{{ getBurnerState(item.uid).on ? '⏹️ إطفاء' : '🔥 إشعال' }}</button>
+          <button :class="getBurnerState(item.uid).on ? 'danger' : 'success'" @click="emit('toggleBurner')">{{ getBurnerState(item.uid).on ? '⏹️ ' + t('chemistry.heatOff') : '🔥 ' + t('chemistry.heatOn') }}</button>
         </div>
         <div class="fi-actions">
-          <button class="refill" @click="simSpeed = simSpeed === 1 ? 5 : 1">{{ simSpeed === 1 ? '⏩ تسريع ×5' : '⏪ إبطاء ×1' }}</button>
+          <button class="refill" @click="simSpeed = simSpeed === 1 ? 5 : 1">{{ simSpeed === 1 ? '⏩ ' + t('chemistry.fastX5') : '⏪ ' + t('chemistry.slowX1') }}</button>
         </div>
         <div class="fi-actions">
-          <button class="delete" @click="emit('remove', item.uid)">❌ إزالة</button>
+          <button class="delete" @click="emit('remove', item.uid)">❌ {{ t('chemistry.remove') }}</button>
         </div>
       </template>
       <!-- Digital Balance -->
       <template v-else-if="item.id === 'digital-balance'">
-        <div class="fi-row"><span>القراءة</span><b style="color:#22c55e;font-family:monospace">{{ balanceReadout() }}</b></div>
-        <div class="fi-row"><span>الوزن الخام</span><b style="font-family:monospace">{{ grossWeight() }}</b></div>
-        <div class="fi-row"><span>التصفير</span><b style="font-family:monospace">{{ getBalanceTare(item.uid).toFixed(2) }} g</b></div>
-        <div class="fi-row"><span>تصفير الأداة</span><b style="font-family:monospace">{{ getContainerTare(item.uid).toFixed(2) }} g</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.reading') }}</span><b style="color:#22c55e;font-family:monospace">{{ balanceReadout() }}</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.grossWeight') }}</span><b style="font-family:monospace">{{ grossWeight() }}</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.tare') }}</span><b style="font-family:monospace">{{ getBalanceTare(item.uid).toFixed(2) }} {{ t('chemistry.g') }}</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.tareTool') }}</span><b style="font-family:monospace">{{ getContainerTare(item.uid).toFixed(2) }} {{ t('chemistry.g') }}</b></div>
         <div class="fi-actions">
-          <button class="success" @click="emit('tare')">⚖️ تصفير الكل</button>
-          <button class="refill" @click="emit('tareContainer')">🧪 حذف وزن الأداة</button>
+          <button class="success" @click="emit('tare')">⚖️ {{ t('chemistry.tareAll') }}</button>
+          <button class="refill" @click="emit('tareContainer')">🧪 {{ t('chemistry.removeToolWeight') }}</button>
         </div>
         <div class="fi-actions">
-          <button class="delete" @click="emit('remove', item.uid)">❌ إزالة</button>
+          <button class="delete" @click="emit('remove', item.uid)">❌ {{ t('chemistry.remove') }}</button>
         </div>
       </template>
       <!-- Heating Mantle -->
       <template v-else-if="item.id === 'heating-mantle'">
-        <div class="fi-row"><span>الحالة</span><b :class="getBurnerState(item.uid).on ? 'open' : ''">{{ getBurnerState(item.uid).on ? '🔥 يعمل' : '⚫ إيقاف' }}</b></div>
-        <div class="fi-row"><span>الشدة</span><b>{{ Math.round(getBurnerState(item.uid).intensity * 100) }}%</b></div>
-        <div class="fi-row"><span>سرعة التسخين</span><b>{{ simSpeed }}x</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.status') }}</span><b :class="getBurnerState(item.uid).on ? 'open' : ''">{{ getBurnerState(item.uid).on ? '🔥 ' + t('chemistry.on') : '⚫ ' + t('chemistry.off') }}</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.intensity') }}</span><b>{{ Math.round(getBurnerState(item.uid).intensity * 100) }}%</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.heatingSpeed') }}</span><b>{{ simSpeed }}x</b></div>
         <div class="fi-actions">
-          <button :class="getBurnerState(item.uid).on ? 'danger' : 'success'" @click="emit('toggleBurner')">{{ getBurnerState(item.uid).on ? '⏹️ إيقاف' : '🔥 تشغيل' }}</button>
+          <button :class="getBurnerState(item.uid).on ? 'danger' : 'success'" @click="emit('toggleBurner')">{{ getBurnerState(item.uid).on ? '⏹️ ' + t('chemistry.heatingOff') : '🔥 ' + t('chemistry.heatingOn') }}</button>
         </div>
         <div class="fi-actions">
           <input type="range" min="0" max="100" :value="getBurnerState(item.uid).intensity * 100" @input="emit('intensityChange', +($event.target as HTMLInputElement).value / 100)" class="fi-slider" style="width:100%" />
         </div>
         <div class="fi-actions">
-          <button class="refill" @click="simSpeed = simSpeed === 1 ? 5 : 1">{{ simSpeed === 1 ? '⏩ تسريع ×5' : '⏪ إبطاء ×1' }}</button>
+          <button class="refill" @click="simSpeed = simSpeed === 1 ? 5 : 1">{{ simSpeed === 1 ? '⏩ ' + t('chemistry.fastX5') : '⏪ ' + t('chemistry.slowX1') }}</button>
         </div>
         <div class="fi-actions">
-          <button class="delete" @click="emit('remove', item.uid)">❌ إزالة</button>
+          <button class="delete" @click="emit('remove', item.uid)">❌ {{ t('chemistry.remove') }}</button>
         </div>
       </template>
       <!-- pH Meter -->
       <template v-else-if="item.id === 'ph-meter'">
-        <div class="fi-row"><span>القراءة</span><b style="color:#22c55e;font-family:monospace;font-size:1.1rem">{{ phReadout() }}</b></div>
-        <div class="fi-row"><span>الحالة</span><b>{{ getPhReading(item) !== null ? '🟢 قطب مغطس' : '⚪ قطب في الهواء' }}</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.reading') }}</span><b style="color:#22c55e;font-family:monospace;font-size:1.1rem">{{ phReadout() }}</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.status') }}</span><b>{{ getPhReading(item) !== null ? '🟢 ' + t('chemistry.electrodeIn') : '⚪ ' + t('chemistry.electrodeOut') }}</b></div>
         <div class="fi-actions">
-          <button class="delete" @click="emit('remove', item.uid)">❌ إزالة</button>
+          <button class="delete" @click="emit('remove', item.uid)">❌ {{ t('chemistry.remove') }}</button>
         </div>
       </template>
       <!-- Pipette info -->
       <template v-else-if="item.id === 'pipette'">
-        <div class="fi-row"><span>الأداة</span><b>ماصة (Pipette)</b></div>
-        <div class="fi-row"><span>السعة</span><b>10 mL</b></div>
-        <div class="fi-row"><span>الحالة</span><b>{{ pipetteStatus() }}</b></div>
-        <div class="fi-row hint"><span>📖</span><small>انقر نقرًا مزدوجًا على الماصة للسحب أو الإفراغ تلقائيًا</small></div>
+        <div class="fi-row"><span>{{ t('chemistry.tool') }}</span><b>{{ t('chemistry.pipette') }}</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.capacity') }}</span><b>10 {{ t('chemistry.mL') }}</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.status') }}</span><b>{{ pipetteStatus() }}</b></div>
+        <div class="fi-row hint"><span>📖</span><small>{{ t('chemistry.pipetteHint') }}</small></div>
         <div class="fi-actions">
-          <button v-if="state && state.volume <= 0" class="success" @click="emit('pipetteDraw')">💉 سحب</button>
-          <button v-else class="success" @click="emit('pipetteDispense')">💉 إفراغ</button>
+          <button v-if="state && state.volume <= 0" class="success" @click="emit('pipetteDraw')">💉 {{ t('chemistry.draw') }}</button>
+          <button v-else class="success" @click="emit('pipetteDispense')">💉 {{ t('chemistry.dispense') }}</button>
         </div>
         <div class="fi-actions">
-          <button class="delete" @click="emit('remove', item.uid)">❌ إزالة</button>
+          <button class="delete" @click="emit('remove', item.uid)">❌ {{ t('chemistry.remove') }}</button>
         </div>
       </template>
       <!-- Spatula -->
       <template v-else-if="item.id === 'spatula'">
-        <div class="fi-row"><span>الأداة</span><b>ملعقة مخبرية</b></div>
-        <div class="fi-row"><span>الاستخدام</span><b>نقل المواد الصلبة</b></div>
-        <div class="fi-row hint"><span>📖</span><small>ضع زجاجة ساعة على الميزان أولاً، ثم أضف المادة</small></div>
+        <div class="fi-row"><span>{{ t('chemistry.tool') }}</span><b>{{ t('chemistry.spatula') }}</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.usage') }}</span><b>{{ t('chemistry.transferSolids') }}</b></div>
+        <div class="fi-row hint"><span>📖</span><small>{{ t('chemistry.spatulaHint') }}</small></div>
         <div class="fi-actions">
-          <button class="success" @click="emit('action', 'addSolid', item.uid)">🥄 إضافة مادة صلبة</button>
+          <button class="success" @click="emit('action', 'addSolid', item.uid)">🥄 {{ t('chemistry.addSolid') }}</button>
         </div>
         <div class="fi-actions">
-          <button class="delete" @click="emit('remove', item.uid)">❌ إزالة</button>
+          <button class="delete" @click="emit('remove', item.uid)">❌ {{ t('chemistry.remove') }}</button>
         </div>
       </template>
       <!-- Generic -->
       <template v-else>
-        <div class="fi-row"><span>النوع</span><b>{{ item.type }}</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.type') }}</span><b>{{ item.type }}</b></div>
         <div class="fi-actions">
-          <button class="delete" @click="emit('remove', item.uid)">❌ إزالة</button>
+          <button class="delete" @click="emit('remove', item.uid)">❌ {{ t('chemistry.remove') }}</button>
         </div>
       </template>
     </div>

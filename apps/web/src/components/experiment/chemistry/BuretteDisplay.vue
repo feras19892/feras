@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { BuretteWarning } from '../../../composables/chemistry/useLabSimulation';
+import { useI18n } from '../../../composables/useI18n';
+const { t } = useI18n();
 
 const props = defineProps<{
   remaining: number;
@@ -13,17 +15,17 @@ const props = defineProps<{
   <div class="burette-display">
     <div class="burette-display-inner">
       <div class="burette-row">
-        <span class="burette-label">متبقي السحاحة</span>
+        <span class="burette-label">{{ t('chemistryLab.buretteRemaining') }}</span>
         <span class="burette-value">{{ remaining.toFixed(1) }} / {{ initial.toFixed(1) }} mL</span>
       </div>
       <div class="burette-row">
-        <span class="burette-label">الاستهلاك الكلي</span>
+        <span class="burette-label">{{ t('chemistryLab.totalConsumed') }}</span>
         <span class="burette-value total">{{ totalConsumed.toFixed(2) }} mL</span>
       </div>
       <div v-if="warning" class="burette-row warning" :class="warning">
-        <span class="burette-label">تنبيه</span>
+        <span class="burette-label">{{ t('chemistryLab.alert') }}</span>
         <span class="burette-value">
-          {{ warning === 'approaching' ? '⚠️ قارب نقطة التكافؤ' : warning === 'equivalence' ? '✅ نقطة التكافؤ' : '⛔ تجاوزت التكافؤ' }}
+          {{ warning === 'approaching' ? t('chemistryLab.approachingEquivalence') : warning === 'equivalence' ? t('chemistryLab.equivalencePointReached') : t('chemistryLab.exceededEquivalence') }}
         </span>
       </div>
     </div>

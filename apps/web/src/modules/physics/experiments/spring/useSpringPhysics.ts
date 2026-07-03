@@ -1,4 +1,5 @@
 import { computed, reactive } from 'vue';
+import { useAnomalyWatcher } from '../../../../composables/experiment/useAnomalyWatcher';
 
 export interface SpringParams {
   mass: number;
@@ -26,6 +27,7 @@ export interface SpringState {
 }
 
 export function useSpringPhysics(params: SpringParams) {
+  const watcher = useAnomalyWatcher('spring');
   const state = reactive<SpringState>({
     running: false,
     paused: false,
@@ -112,6 +114,8 @@ export function useSpringPhysics(params: SpringParams) {
     if (!stillDriven && params.damping > 0.001 && state.t > 0.3 && fr < 0.01 && Math.abs(state.v) < 0.005) {
       stop();
     }
+
+    watcher.inspect({ t: state.t, x: state.x, v: state.v, mass: params.mass });
   }
 
   function start() {

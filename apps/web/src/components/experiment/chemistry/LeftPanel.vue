@@ -3,7 +3,9 @@ import { reactive } from 'vue';
 import { glasswareSections } from '../../../composables/chemistry/useChemistryTools';
 import type { ToolDef } from '../../../composables/chemistry/useChemistryTools';
 import type { Chemical } from '../../../composables/chemistry/useChemistryLab';
+import { useI18n } from '../../../composables/useI18n';
 import ChemicalShelfPanel from './ChemicalShelfPanel.vue';
+const { t } = useI18n();
 
 const activeTab = defineModel<string>('activeTab', { default: 'glassware' });
 
@@ -30,8 +32,8 @@ const emit = defineEmits<{
     <div class="tabs">
       <button
         v-for="tab in [
-          { id: 'glassware', label: 'الزجاجيات والأدوات', icon: '🧪' },
-          { id: 'chemicals', label: 'الرف الكيميائي', icon: '🧪' },
+          { id: 'glassware', label: t('chemistryLab.glasswareTools'), icon: '🧪' },
+          { id: 'chemicals', label: t('chemistryLab.chemicalShelf'), icon: '🧪' },
         ]"
         :key="tab.id"
         :class="['tab-btn', { active: activeTab === tab.id }]"
@@ -44,7 +46,7 @@ const emit = defineEmits<{
       <div v-for="section in glasswareSections" :key="section.id" class="section">
         <button class="section-header" @click="toggleSection(section.id)">
           <span>{{ expandedSections[section.id] ? '▼' : '▶' }}</span>
-          <span>{{ section.icon }} {{ section.title }}</span>
+          <span>{{ section.icon }} {{ t(section.title) }}</span>
         </button>
         <div v-if="expandedSections[section.id]" class="tools-grid">
           <div
@@ -55,7 +57,7 @@ const emit = defineEmits<{
             @dragstart="onDragStart($event, item)"
           >
             <div class="tool-icon">{{ item.icon }}</div>
-            <span class="tool-name">{{ item.name }}</span>
+            <span class="tool-name">{{ t(item.name) }}</span>
           </div>
         </div>
       </div>

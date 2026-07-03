@@ -3,6 +3,8 @@ import { computed } from 'vue';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import type { ToolState } from '../../../composables/chemistry/chemLabTypes';
 export type { ToolState };
+import { useI18n } from '../../../composables/useI18n';
+const { t } = useI18n();
 
 interface Props {
   item: LabItem | null;
@@ -23,16 +25,16 @@ const pct = computed(() => {
 
 <template>
   <div class="inspector">
-    <h3>🔧 لوحة التحكم</h3>
+    <h3>{{ t('chemistry.inspectorTitle') }}</h3>
 
     <div v-if="props.item && props.state" class="inspector-body">
       <!-- Header -->
       <div class="item-header">
         <span class="item-icon">{{ props.item.icon }}</span>
         <div class="item-meta">
-          <span class="item-name">{{ props.item.name }}</span>
+          <span class="item-name">{{ t(props.item.name) }}</span>
           <span class="item-type">
-            {{ props.state.type === 'burette' ? (props.state.buretteNumber ? 'سحاحة ' + props.state.buretteNumber : 'سحاحة') : props.state.type === 'beaker' ? 'بيكر' : 'أداة' }}
+            {{ props.state.type === 'burette' ? (props.state.buretteNumber ? t('chemistry.burette') + ' ' + props.state.buretteNumber : t('chemistry.burette')) : props.state.type === 'beaker' ? t('chemistry.beaker') : t('chemistry.tool') }}
           </span>
         </div>
       </div>
@@ -40,46 +42,46 @@ const pct = computed(() => {
       <!-- ====== BEAKER ====== -->
       <template v-if="props.state.type === 'beaker'">
         <div class="prop-row">
-          <span class="prop-label">الحجم</span>
-          <span class="prop-value">{{ props.state.volume.toFixed(1) }} / {{ props.state.maxVolume }} mL</span>
+          <span class="prop-label">{{ t('chemistry.volume') }}</span>
+          <span class="prop-value">{{ props.state.volume.toFixed(1) }} / {{ props.state.maxVolume }} {{ t('chemistry.mL') }}</span>
         </div>
         <div class="progress-track">
           <div class="progress-fill" :style="{ width: pct + '%', background: props.state.color }" />
         </div>
         <div class="prop-row">
-          <span class="prop-label">اللون</span>
+          <span class="prop-label">{{ t('chemistry.color') }}</span>
           <span class="color-dot" :style="{ background: props.state.color }" />
         </div>
         <div class="controls-row four">
-          <button class="btn fill" @click="emit('action', 'fill5', props.item!.uid)">💧 +5</button>
-          <button class="btn fill" @click="emit('action', 'fill10', props.item!.uid)">💧 +10</button>
-          <button class="btn fill" @click="emit('action', 'fill50', props.item!.uid)">💧 +50</button>
-          <button class="btn fill" @click="emit('action', 'fill100', props.item!.uid)">💧 +100</button>
+          <button class="btn fill" @click="emit('action', 'fill5', props.item!.uid)">{{ t('chemistry.fill5') }}</button>
+          <button class="btn fill" @click="emit('action', 'fill10', props.item!.uid)">{{ t('chemistry.fill10') }}</button>
+          <button class="btn fill" @click="emit('action', 'fill50', props.item!.uid)">{{ t('chemistry.fill50') }}</button>
+          <button class="btn fill" @click="emit('action', 'fill100', props.item!.uid)">{{ t('chemistry.fill100') }}</button>
         </div>
         <div class="controls-row four">
-          <button class="btn remove" @click="emit('action', 'remove5', props.item!.uid)">💨 −5</button>
-          <button class="btn remove" @click="emit('action', 'remove10', props.item!.uid)">💨 −10</button>
-          <button class="btn remove" @click="emit('action', 'remove50', props.item!.uid)">💨 −50</button>
-          <button class="btn remove" @click="emit('action', 'remove100', props.item!.uid)">💨 −100</button>
+          <button class="btn remove" @click="emit('action', 'remove5', props.item!.uid)">{{ t('chemistry.remove5') }}</button>
+          <button class="btn remove" @click="emit('action', 'remove10', props.item!.uid)">{{ t('chemistry.remove10') }}</button>
+          <button class="btn remove" @click="emit('action', 'remove50', props.item!.uid)">{{ t('chemistry.remove50') }}</button>
+          <button class="btn remove" @click="emit('action', 'remove100', props.item!.uid)">{{ t('chemistry.remove100') }}</button>
         </div>
         <div class="controls-row">
-          <button class="btn empty" @click="emit('action', 'empty', props.item!.uid)">🗑️ تفريغ</button>
+          <button class="btn empty" @click="emit('action', 'empty', props.item!.uid)">🗑️ {{ t('chemistry.drain') }}</button>
         </div>
       </template>
 
       <!-- ====== BURETTE ====== -->
       <template v-else-if="props.state.type === 'burette'">
         <div class="prop-row">
-          <span class="prop-label">المحلول المتبقي</span>
-          <span class="prop-value">{{ props.state.volume.toFixed(1) }} / {{ props.state.maxVolume }} mL</span>
+          <span class="prop-label">{{ t('chemistry.remainingSolution') }}</span>
+          <span class="prop-value">{{ props.state.volume.toFixed(1) }} / {{ props.state.maxVolume }} {{ t('chemistry.mL') }}</span>
         </div>
         <div class="progress-track">
           <div class="progress-fill" :style="{ width: pct + '%', background: props.state.color }" />
         </div>
         <div class="prop-row">
-          <span class="prop-label">حالة الصنبور</span>
+          <span class="prop-label">{{ t('chemistry.valveStatus') }}</span>
           <span class="prop-value" :class="props.state.valveOpen ? 'open' : ''">
-            {{ props.state.valveOpen ? '🔓 مفتوح' : '🔒 مغلق' }}
+            {{ props.state.valveOpen ? '🔓 ' + t('chemistry.open') : '🔒 ' + t('chemistry.closed') }}
           </span>
         </div>
         <div class="controls-row">
@@ -88,32 +90,32 @@ const pct = computed(() => {
             :class="props.state.valveOpen ? 'danger' : 'success'"
             @click="emit('action', 'toggleValve', props.item!.uid)"
           >
-            {{ props.state.valveOpen ? '🔒 إغلاق' : '🚰 فتح' }}
+            {{ props.state.valveOpen ? '🔒 ' + t('chemistry.closeAction') : '🚰 ' + t('chemistry.openAction') }}
           </button>
-          <button class="btn refill" @click="emit('action', 'refill', props.item!.uid)">♻️ تعبئة</button>
+          <button class="btn refill" @click="emit('action', 'refill', props.item!.uid)">♻️ {{ t('chemistry.refill') }}</button>
         </div>
       </template>
 
       <!-- ====== GENERIC ====== -->
       <template v-else>
         <div class="prop-row">
-          <span class="prop-label">النوع</span>
+          <span class="prop-label">{{ t('chemistry.type') }}</span>
           <span class="prop-value">{{ props.item.type }}</span>
         </div>
         <div class="prop-row">
-          <span class="prop-label">المعرف</span>
+          <span class="prop-label">{{ t('chemistry.idLabel') }}</span>
           <span class="prop-value mono">{{ props.item.id }}</span>
         </div>
       </template>
 
       <!-- Common: Remove -->
       <div class="divider" />
-      <button class="btn remove" @click="emit('remove', props.item!.uid)">❌ إزالة من مساحة العمل</button>
+      <button class="btn remove" @click="emit('remove', props.item!.uid)">❌ {{ t('chemistry.removeFromWorkspace') }}</button>
     </div>
 
     <div v-else class="placeholder">
       <div class="empty-icon">🧪</div>
-      <p>اضغط على أداة في مساحة العمل لعرض تحكماتها</p>
+      <p>{{ t('chemistry.clickToolHint') }}</p>
     </div>
   </div>
 </template>

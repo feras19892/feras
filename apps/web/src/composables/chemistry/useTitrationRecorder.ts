@@ -34,40 +34,40 @@ export function hasTitrationData(): boolean {
   return readings.length >= 3;
 }
 
-export function buildTitrationPayload(experimentName: string): ChemAnalysisPayload {
+export function buildTitrationPayload(experimentName: string, t: (key: string) => string): ChemAnalysisPayload {
   const columns: ChemAnalysisColumnMeta[] = [
-    { key: 'vAdded', label: 'حجم القاعدة المضافة', unit: 'mL' },
+    { key: 'vAdded', label: t('chemistryLab.addedBaseVolume'), unit: 'mL' },
     { key: 'ph', label: 'pH', unit: '' },
-    { key: 'temperature', label: 'درجة الحرارة', unit: '°C' },
+    { key: 'temperature', label: t('chemistryLab.temperatureLabel'), unit: '°C' },
   ];
   const rows = readings.map(r => ({ vAdded: +r.vAdded.toFixed(2), ph: +r.ph.toFixed(2), temperature: +r.temperature.toFixed(1) }));
   const equations: ChemAnalysisEquation[] = [
     {
-      name: 'حساب التركيز',
+      name: t('chemistryLab.concentrationCalc'),
       formula: 'M_acid = (M_base * V_eq) / V_acid',
       variables: [
-        { symbol: 'M_base', label: 'تركيز القاعدة المعروف' },
-        { symbol: 'V_eq', label: 'حجم التعادل' },
-        { symbol: 'V_acid', label: 'حجم الحمض' },
+        { symbol: 'M_base', label: t('chemistryLab.baseConcentrationKnown') },
+        { symbol: 'V_eq', label: t('chemistryLab.equivalenceVolume') },
+        { symbol: 'V_acid', label: t('chemistryLab.acidVolume') },
       ],
       solveFor: ['M_acid'],
     },
     {
-      name: 'حساب pH',
+      name: t('chemistryLab.phCalc'),
       formula: 'pH = -log10(H)',
       variables: [
-        { symbol: 'H', label: 'تركيز H+' },
+        { symbol: 'H', label: t('chemistryLab.hPlusLabel') },
       ],
       solveFor: ['pH'],
     },
   ];
   const plots: ChemAnalysisPlotConfig[] = [
-    { xKey: 'vAdded', yKey: 'ph', xLabel: 'حجم القاعدة (mL)', yLabel: 'pH', type: 'scatter' },
-    { xKey: 'vAdded', yKey: 'temperature', xLabel: 'حجم القاعدة (mL)', yLabel: 'درجة الحرارة (°C)', type: 'line' },
+    { xKey: 'vAdded', yKey: 'ph', xLabel: t('chemistryLab.baseVolume'), yLabel: 'pH', type: 'scatter' },
+    { xKey: 'vAdded', yKey: 'temperature', xLabel: t('chemistryLab.baseVolume'), yLabel: t('chemistryLab.temperatureLabel'), type: 'line' },
   ];
   return {
     sourceExperiment: 'titration',
-    sourceNameAr: experimentName || 'تجربة معايرة',
+    sourceNameAr: experimentName || t('chemistryLab.acidBaseTitration'),
     readings: rows,
     columns,
     equations,

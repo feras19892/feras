@@ -3,13 +3,15 @@ import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { sendToAnalysis } from '../../../composables/chemistry/sendToAnalysis';
 import { buildTitrationPayload, hasTitrationData } from '../../../composables/chemistry/useTitrationRecorder';
+import { useI18n } from '../../../composables/useI18n';
+const { t } = useI18n();
 
 const router = useRouter();
 const canAnalyze = computed(() => hasTitrationData());
 
 function onClick() {
   if (canAnalyze.value) {
-    const payload = buildTitrationPayload('معايرة حمض-قاعدة');
+    const payload = buildTitrationPayload(t('chemistryLab.acidBaseTitration'), t);
     sendToAnalysis(router, payload);
   } else {
     router.push('/chemistry/analysis-calc');
@@ -22,9 +24,9 @@ function onClick() {
     class="analysis-btn"
     :class="{ disabled: !canAnalyze }"
     @click="onClick"
-    title="تحليل وقياس"
+    :title="t('chemistryLab.analyzeMeasure')"
   >
-    📊 تحليل وقياس
+    {{ t('chemistryLab.analyzeMeasure') }}
   </button>
 </template>
 

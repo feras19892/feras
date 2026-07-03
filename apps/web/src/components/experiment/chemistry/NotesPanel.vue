@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useI18n } from '../../../composables/useI18n';
+const { t } = useI18n();
 
 const notes = ref('');
 
@@ -10,14 +12,14 @@ function openDataTable() {
 
 <template>
   <div class="notes-panel">
-    <h3>📝 مفكرة النتائج</h3>
+    <h3>{{ t('chemistryLab.notesPanel') }}</h3>
     <textarea
       v-model="notes"
-      placeholder="سجل ملاحظاتك هنا... مثال: اللون تحول للوردي عند حجم 12mL"
+      :placeholder="t('chemistryLab.notesPlaceholder')"
       rows="4"
     />
     <button class="data-table-btn" @click="openDataTable">
-      📊 فتح الجدول الذكي
+      {{ t('chemistryLab.openSmartTable') }}
     </button>
   </div>
 </template>

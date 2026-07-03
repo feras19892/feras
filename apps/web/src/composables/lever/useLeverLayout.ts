@@ -1,93 +1,79 @@
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 import { useI18n } from '../useI18n'
 
-const STORAGE_KEY = 'lever:layout:v4'
+export type ColumnId = 'data' | 'vis' | 'ctrl'
+export type PanelId = 'table' | 'signal' | 'equations' | 'guide' | 'report'
 
-const DEFAULT_ORDER = {
-  data: ['balls', 'table'],
-  vis: [],
+const layoutStorageKey = 'lever:layout:v1'
+
+const defaultPanelColumn: Record<PanelId, ColumnId> = {
+  table: 'data', signal: 'data', equations: 'ctrl', guide: 'ctrl', report: 'ctrl',
 }
+
+const defaultColumnOrder: Record<ColumnId, PanelId[]> = {
+  data: ['table', 'signal'], vis: [], ctrl: ['equations', 'guide', 'report'],
+}
+
+const allPanelIds: PanelId[] = ['table', 'signal', 'equations', 'guide', 'report']
 
 export function useLeverLayout() {
   const { t } = useI18n()
+  const panels = reactive<Record<PanelId, boolean>>({ table: true, signal: true, equations: true, guide: true, report: true })
+  const maximized = reactive<Record<PanelId, boolean>>({ table: false, signal: false, equations: false, guide: false, report: false })
+  const panelColumn = reactive<Record<PanelId, ColumnId>>({ ...defaultPanelColumn })
+  const columnOrder = reactive<Record<ColumnId, PanelId[]>>({ data: [...defaultColumnOrder.data], vis: [...defaultColumnOrder.vis], ctrl: [...defaultColumnOrder.ctrl] })
 
-  const PANEL_TITLES: Record<string, string> = {
-    balls: t('experiments.panelBalls'),
-    table: t('experiments.panelTable'),
-    signal: t('experiments.panelTorque'),
-    stats: t('experiments.panelStats'),
-    equation: t('experiments.panelEquations'),
-    report: t('experiments.panelReport'),
-  }
+  function isPanelVisible(id: string) { const pid = id as PanelId; return panels[pid] && !maximized[pid] }
+  function togglePanel(key: string) { if (allPanelIds.includes(key as PanelId)) panels[key as PanelId] = !panels[key as PanelId] }
+  function showAllPanels() { allPanelIds.forEach(k => { panels[k] = true; maximized[k] = false }); resetLayout() }
+  function maximizePanel(key: string) { if (allPanelIds.includes(key as PanelId)) maximized[key as PanelId] = !maximized[key as PanelId] }
 
-  const visible = ref<Set<string>>(new Set(['balls', 'table']))
-  const columnOrder = reactive<Record<string, string[]>>(JSON.parse(JSON.stringify(DEFAULT_ORDER)))
-  const maximized = reactive<Record<string, boolean>>({})
+  function persistLayout() { try { localStorage.setItem(layoutStorageKey, JSON.stringify({ panelColumn, columnOrder })) } catch {} }
 
-  function isPanelVisible(id: string) { return visible.value.has(id) }
-  function togglePanel(id: string) {
-    if (visible.value.has(id)) visible.value.delete(id)
-    else visible.value.add(id)
-    persist()
-  }
-  function showAllPanels() {
-    visible.value = new Set(Object.keys(PANEL_TITLES))
-    persist()
-  }
-  function showPanels(ids: string[]) {
-    for (const id of ids) visible.value.add(id)
-    persist()
-  }
-  function panelTitle(id: string) { return PANEL_TITLES[id] || id }
-
-  function maximizePanel(id: string) {
-    maximized[id] = !maximized[id]
-  }
-
-  function movePanel(id: string, col: string, afterId?: string | null) {
-    for (const c of Object.keys(columnOrder)) {
-      columnOrder[c] = columnOrder[c].filter((pid) => pid !== id)
+  function normalizeLayout() {
+    for (const id of allPanelIds) { const col = panelColumn[id]; if (col !== 'data' && col !== 'vis' && col !== 'ctrl') panelColumn[id] = 'data' }
+    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) {
+      const seen = new Set<PanelId>()
+      columnOrder[col] = (columnOrder[col] || []).filter((id) => allPanelIds.includes(id) && !seen.has(id) && (seen.add(id), true))
     }
-    if (!columnOrder[col]) columnOrder[col] = []
-    if (afterId) {
-      const idx = columnOrder[col].indexOf(afterId)
-      if (idx >= 0) columnOrder[col].splice(idx + 1, 0, id)
-      else columnOrder[col].push(id)
-    } else {
-      columnOrder[col].push(id)
-    }
-    persist()
-  }
-
-  function persist() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      visible: Array.from(visible.value),
-      columnOrder,
-    }))
+    const placed = new Set<PanelId>([...columnOrder.data, ...columnOrder.vis, ...columnOrder.ctrl])
+    for (const id of allPanelIds) { if (!placed.has(id)) columnOrder[panelColumn[id]] = [...columnOrder[panelColumn[id]], id] }
+    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) { for (const id of columnOrder[col]) panelColumn[id] = col }
   }
 
   function applyPersistedLayout() {
+    allPanelIds.forEach(k => { maximized[k] = false })
     try {
-      const raw = localStorage.getItem(STORAGE_KEY)
-      if (raw) {
-        const parsed = JSON.parse(raw)
-        if (parsed.visible) visible.value = new Set(parsed.visible)
-        if (parsed.columnOrder) Object.assign(columnOrder, parsed.columnOrder)
-      }
-    } catch { /* ignore */ }
+      const raw = localStorage.getItem(layoutStorageKey)
+      if (!raw) return
+      const p = JSON.parse(raw) as { panelColumn?: Record<string, ColumnId>, columnOrder?: Record<string, PanelId[]> }
+      if (p.panelColumn) { for (const k of allPanelIds) { const v = p.panelColumn[k]; if (v === 'data' || v === 'vis' || v === 'ctrl') panelColumn[k] = v } }
+      if (p.columnOrder) { for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) { const arr = p.columnOrder[col]; if (Array.isArray(arr)) columnOrder[col] = arr.filter((x: PanelId) => allPanelIds.includes(x)) as PanelId[] } }
+      normalizeLayout()
+    } catch {}
   }
 
-  return {
-    visible,
-    columnOrder,
-    maximized,
-    isPanelVisible,
-    togglePanel,
-    showAllPanels,
-    showPanels,
-    panelTitle,
-    maximizePanel,
-    movePanel,
-    applyPersistedLayout,
+  function resetLayout() {
+    allPanelIds.forEach(id => { panelColumn[id] = defaultPanelColumn[id] })
+    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) columnOrder[col] = [...defaultColumnOrder[col]]
+    normalizeLayout(); persistLayout()
   }
+
+  function movePanel(id: string, targetCol: ColumnId, insertAfterId?: string | null) {
+    const pid = id as PanelId; const after = insertAfterId ? (insertAfterId as PanelId) : null
+    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) columnOrder[col] = columnOrder[col].filter(p => p !== pid)
+    if (after && columnOrder[targetCol].includes(after)) { const idx = columnOrder[targetCol].indexOf(after); columnOrder[targetCol] = [...columnOrder[targetCol].slice(0, idx + 1), pid, ...columnOrder[targetCol].slice(idx + 1)] }
+    else { columnOrder[targetCol] = [pid, ...columnOrder[targetCol]] }
+    panelColumn[pid] = targetCol; normalizeLayout(); persistLayout()
+  }
+
+  function panelTitle(id: string) {
+    const titles: Record<PanelId, string> = {
+      table: t('experiments.panelTable'), signal: t('experiments.panelSignal'),
+      equations: t('experiments.equation'), guide: t('experiments.panelGuide'), report: t('experiments.reportLabel'),
+    }
+    return titles[id as PanelId] ?? ''
+  }
+
+  return { panels, maximized, panelColumn, columnOrder, isPanelVisible, togglePanel, showAllPanels, maximizePanel, movePanel, applyPersistedLayout, resetLayout, panelTitle }
 }

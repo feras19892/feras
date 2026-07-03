@@ -1,4 +1,5 @@
 import { reactive, ref } from 'vue'
+import { useAnomalyWatcher } from '../../../../composables/experiment/useAnomalyWatcher'
 
 export interface FreeFallParams {
   h: number
@@ -23,6 +24,7 @@ export interface FreeFallMeasured {
 }
 
 export function useFreeFallPhysics(params: FreeFallParams) {
+  const watcher = useAnomalyWatcher('freefall')
   const sim = reactive<FreeFallState>({
     running: false,
     paused: false,
@@ -60,6 +62,8 @@ export function useFreeFallPhysics(params: FreeFallParams) {
         impactVelocity: Math.abs(sim.vy),
       }
     }
+
+    watcher.inspect({ t: sim.t, y: sim.y, vy: sim.vy, mass: params.mass })
   }
 
   function start() {

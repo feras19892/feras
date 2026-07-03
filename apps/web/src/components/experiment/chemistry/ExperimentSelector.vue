@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { experiments, type Experiment } from '../../../composables/chemistry/useExperiments';
+import { useI18n } from '../../../composables/useI18n';
+const { t } = useI18n();
 
 const emit = defineEmits<{ select: [exp: Experiment]; close: [] }>();
 
@@ -15,7 +17,7 @@ function onClose() {
   <div class="modal-overlay" @click.self="onClose">
     <div class="modal-panel">
       <div class="modal-header">
-        <h3>🔬 اختر تجربة</h3>
+        <h3>🔬 {{ t('chemistryLab.chooseExperiment') }}</h3>
         <button class="close-btn" @click="onClose">✕</button>
       </div>
       <div class="experiments-grid">
@@ -26,9 +28,9 @@ function onClose() {
           @click="onSelect(exp)"
         >
           <div class="exp-icon">{{ exp.icon }}</div>
-          <div class="exp-name">{{ exp.nameAr }}</div>
-          <div class="exp-desc">{{ exp.description }}</div>
-          <div class="exp-steps-count">{{ exp.steps.length }} خطوات</div>
+          <div class="exp-name">{{ t(exp.nameAr) }}</div>
+          <div class="exp-desc">{{ t(exp.description) }}</div>
+          <div class="exp-steps-count">{{ exp.steps.length }} {{ t('chemistryLab.steps') }}</div>
         </div>
       </div>
     </div>

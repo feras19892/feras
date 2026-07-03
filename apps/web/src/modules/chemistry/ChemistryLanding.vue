@@ -13,6 +13,8 @@ import { type Experiment, type TitrationReading, type ReportData, validateExperi
 import { undo, redo, canUndo, canRedo, canMicroUndo, canMicroRedo } from '../../composables/chemistry/useChemistryHistory';
 import { applyIndicator } from '../../composables/chemistry/useReactionEngine';
 import { buretteWarning } from '../../composables/chemistry/useLabSimulation';
+import { useI18n } from '../../composables/useI18n';
+import { useChemistryResizing } from '../../composables/chemistry/useChemistryResizing';
 import ExperimentTheoryPanel from '../../components/experiment/chemistry/ExperimentTheoryPanel.vue';
 import BuretteDisplay from '../../components/experiment/chemistry/BuretteDisplay.vue';
 import WorkspaceActionsPanel from '../../components/experiment/chemistry/WorkspaceActionsPanel.vue';
@@ -24,13 +26,10 @@ import {
   encourageStep, tipForStep, warnOnAction,
   startIdleMessages, stopIdleMessages
 } from '../../composables/chemistry/useLabAssistant';
+import { useChemicalLocale } from '../../composables/chemistry/useChemicalLocale';
 
-const leftWidth = ref(280);
-const rightWidth = ref(280);
-const resizingLeft = ref(false);
-const resizingRight = ref(false);
-const startX = ref(0);
-const startWidth = ref(0);
+const { t } = useI18n();
+const { leftWidth, rightWidth, onLeftDown, onRightDown } = useChemistryResizing();
 const activeTab = ref('glassware');
 const showExperimentSelector = ref(false);
 const activeExperiment = ref<Experiment | null>(null);
@@ -50,13 +49,14 @@ const stepCompletion = computed(() => {
 
 // Watch experiment changes → welcome
 watch(activeExperiment, (exp) => {
-  if (exp) welcomeMessage(exp.nameAr);
+  if (exp) welcomeMessage(t(exp.nameAr));
 });
 
 // Watch selected chemical → warnings + facts
 watch(selectedChemical, (chem) => {
   if (chem && activeExperiment.value) {
-    warnDangerousChemical(chem.nameAr, chem.id);
+    const { getName } = useChemicalLocale();
+    warnDangerousChemical(getName(chem.id), chem.id);
     quickFactAbout(chem.id);
   }
 });
@@ -68,7 +68,7 @@ watch(stepCompletion, (newVal, oldVal) => {
     if (newVal[i] && !oldVal?.[i]) {
       const step = activeExperiment.value.steps[i];
       if (step) {
-        encourageStep(step.text);
+        encourageStep(t(step.text));
         tipForStep(i, activeExperiment.value.id);
       }
     }
@@ -107,7 +107,7 @@ function showReportManual() {
   });
   const liq = target ? getLiquid(target.uid) : null;
   reportData.value = {
-    experimentName: activeExperiment.value.nameAr,
+    experimentName: t(activeExperiment.value.nameAr),
     consumedVolume: consumed,
     acidVolume: 50,
     baseMolarity: 0.1,
@@ -197,17 +197,17 @@ function onChemicalClick(chem: Chemical) {
       if (!liq.indicators) liq.indicators = [];
       if (!liq.indicators.includes(chem.id)) liq.indicators.push(chem.id);
       // Update label: if empty/water, show indicator name; if has chemical, append
-      if (!liq.chemicalId || liq.label === 'ماء') {
-        liq.label = chem.nameAr;
-      } else if (!liq.label.includes(chem.nameAr)) {
-        liq.label = liq.label + ' + ' + chem.nameAr;
+      if (!liq.chemicalId) {
+        liq.label = chem.id;
+      } else if (!liq.label.includes(chem.id)) {
+        liq.label = liq.label + ' + ' + chem.id;
       }
       applyIndicator(chem.id, uid);
     } else {
       liq.volume = Math.min(liq.maxVolume, liq.volume + amount);
       liq.color = chem.color;
       liq.opacity = chem.opacity;
-      liq.label = chem.nameAr;
+      liq.label = chem.id;
       liq.chemicalId = chem.id;
       liq.ph = chem.ph ?? null;
       liq.baseColor = chem.color;
@@ -223,51 +223,8 @@ const expandedSections = ref<Record<string, boolean>>({
   liquids: true, solids: true, indicators: true,
 });
 
-function onLeftDown(e: MouseEvent) {
-  resizingLeft.value = true;
-  startX.value = e.clientX;
-  startWidth.value = leftWidth.value;
-  document.body.style.cursor = 'col-resize';
-  document.body.style.userSelect = 'none';
-}
-
-function onRightDown(e: MouseEvent) {
-  resizingRight.value = true;
-  startX.value = e.clientX;
-  startWidth.value = rightWidth.value;
-  document.body.style.cursor = 'col-resize';
-  document.body.style.userSelect = 'none';
-}
-
-function onMove(e: MouseEvent) {
-  if (resizingLeft.value) {
-    const delta = startX.value - e.clientX;
-    leftWidth.value = Math.max(160, Math.min(480, startWidth.value + delta));
-  }
-  if (resizingRight.value) {
-    const delta = e.clientX - startX.value;
-    rightWidth.value = Math.max(160, Math.min(480, startWidth.value + delta));
-  }
-}
-
-function onUp() {
-  resizingLeft.value = false;
-  resizingRight.value = false;
-  document.body.style.cursor = '';
-  document.body.style.userSelect = '';
-}
-
-onMounted(() => {
-  window.addEventListener('mousemove', onMove);
-  window.addEventListener('mouseup', onUp);
-  startIdleMessages();
-});
-
-onUnmounted(() => {
-  window.removeEventListener('mousemove', onMove);
-  window.removeEventListener('mouseup', onUp);
-  stopIdleMessages();
-});
+onMounted(() => startIdleMessages());
+onUnmounted(() => stopIdleMessages());
 </script>
 
 <template>
@@ -332,26 +289,4 @@ onUnmounted(() => {
   </div>
 </template>
 
-<style scoped>
-.chemistry-landing {
-  width: 100vw;
-  height: 100vh;
-  background: #ffffff;
-  display: grid;
-  overflow: hidden;
-  position: relative;
-}
-.panel {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  overflow-y: auto;
-}
-.resizer {
-  width: 6px;
-  background: #e2e8f0;
-  cursor: col-resize;
-  transition: background 0.2s;
-  z-index: 10;
-}
-.resizer:hover { background: #94a3b8; }
-</style>
+<style src="./chemistry-landing.css" scoped></style>

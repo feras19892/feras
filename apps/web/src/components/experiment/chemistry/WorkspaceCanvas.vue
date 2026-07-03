@@ -3,7 +3,7 @@ import { ref, computed, onMounted, onUnmounted } from 'vue';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import type { ToolState } from './InspectorPanel.vue';
 import {
-  items, receivingMap, itemZoomMap, pourFlowMap, stopperMap,
+  items, receivingMap, itemZoomMap, pourFlowMap, stopperMap, retortStandMap,
   buretteInitialVolumeMap, buretteConsumedThisRefill,
   getLiquid, getBurette, getBurnerState, getItemZoom, buildToolState,
   isContainer,
@@ -17,6 +17,8 @@ import { handleDropExited } from '../../../composables/chemistry/useDropPhysics'
 import { undo, redo, canUndo, canRedo, clearHistory } from '../../../composables/chemistry/useChemistryHistory';
 import { pipetteDraw, pipetteDispense } from '../../../composables/chemistry/usePipetteActions';
 import { execAction, toggleSepFunnelValve, toggleBurner, tareBalance, tareContainer } from '../../../composables/chemistry/useExecActions';
+import { useI18n } from '../../../composables/useI18n';
+const { t } = useI18n();
 import { useWorkspaceDrag } from '../../../composables/chemistry/useWorkspaceDrag';
 import FloatingInspector from './FloatingInspector.vue';
 import LabItemRenderer from './LabItemRenderer.vue';
@@ -30,11 +32,17 @@ const workspaceRef = ref<HTMLDivElement | null>(null);
 const hoveredItem = ref<LabItem | null>(null);
 
 const {
-  onDragOver, onDrop, onItemMouseDown, onDragMove, onDragUp, onWorkspaceClick
+  onDragOver, onDrop, onItemMouseDown, onDragMove, onDragUp, onWorkspaceClick,
+  draggingItem
 } = useWorkspaceDrag(workspaceRef, selectedItem, emit, buildToolState);
 
 /* ---- Actions ---- */
 function removeItem(uid: string) {
+  // Clean up retort stand slots: detach burettes if stand removed, or detach this burette
+  for (const st of Object.values(retortStandMap)) {
+    const idx = st.slotOccupants.indexOf(uid);
+    if (idx >= 0) st.slotOccupants[idx] = null;
+  }
   items.value = items.value.filter(i => i.uid !== uid);
   delete hasSelectedChemicalMap[uid];
   // Clean up stopperMap: remove if container removed, or detach stopper from container
@@ -47,6 +55,9 @@ function _handleDropExited(sourceItem: LabItem, wx: number, wy: number, color: s
   handleDropExited(sourceItem, wx, wy, color, selectedItem, emit, buildToolState);
 }
 function onMouthInteract(_item: LabItem) { /* placeholder for future mouth interaction */ }
+function onSelectBurette(e: MouseEvent, burette: LabItem) {
+  onItemMouseDown(e, burette);
+}
 function handleSpill(item: LabItem, amount: number) {
   if (isContainer(item.id)) {
     const s = getLiquid(item.uid);
@@ -75,10 +86,12 @@ function toggleBuretteValve(item: LabItem) {
 }
 function tipInteract(_item: LabItem) { /* placeholder for future tip interaction */ }
 function onWheel(e: WheelEvent) {
-  const target = hoveredItem.value || selectedItem.value; if (!target) return;
+  const target = hoveredItem.value; if (!target) return;
+  e.preventDefault();
   const current = getItemZoom(target.uid);
   const delta = e.deltaY < 0 ? 0.15 : -0.15;
-  itemZoomMap[target.uid] = Math.max(0.6, Math.min(2.2, +(current + delta).toFixed(2)));
+  const newZoom = Math.max(0.6, Math.min(2.2, +(current + delta).toFixed(2)));
+  itemZoomMap[target.uid] = newZoom;
 }
 
 /* ---- Wrappers for external composables ---- */
@@ -151,11 +164,11 @@ defineExpose({
     <!-- Digital Volume Meter -->
     <div v-if="selectedItem && selectedState?.type === 'beaker'" class="digital-meter">
       <div class="meter-row">
-        <span class="meter-label">الحجم</span>
+        <span class="meter-label">{{ t('chemistry.volume') }}</span>
         <span class="meter-value">{{ selectedState.volume.toFixed(1) }}<small>mL</small></span>
       </div>
       <div class="meter-row spill">
-        <span class="meter-label">المنسكب</span>
+        <span class="meter-label">{{ t('chemistryLab.spilled') }}</span>
         <span class="meter-value">{{ totalSpilled.toFixed(2) }}<small>mL</small></span>
       </div>
     </div>
@@ -167,10 +180,12 @@ defineExpose({
         :item="item"
         :selected-uid="selectedItem?.uid || null"
         :hovered-uid="hoveredItem?.uid || null"
+        :dragging-uid="draggingItem?.uid || null"
         :receiving="!!receivingMap[item.uid]"
-        @mouseenter="hoveredItem = item"
-        @mouseleave="hoveredItem = null"
+        @mouseenter="hoveredItem = !draggingItem ? item : hoveredItem"
+        @mouseleave="hoveredItem = !draggingItem ? null : hoveredItem"
         @mousedown="onItemMouseDown($event, item)"
+        @select-burette="onSelectBurette"
         @mouth-interact="onMouthInteract(item)"
         @spill="handleSpill"
         @drop-exited="_handleDropExited"

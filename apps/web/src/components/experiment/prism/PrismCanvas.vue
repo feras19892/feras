@@ -4,6 +4,9 @@ import { drawPrism } from '../../../composables/prism/usePrismRenderer'
 import { usePrismInteraction } from '../../../composables/prism/usePrismInteraction'
 import type { DrawResult } from '../../../composables/prism/usePrismInteraction'
 import { toDeg } from '../../../composables/prism/prism-geometry'
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 
 interface Props {
   prismAngle: number
@@ -173,37 +176,37 @@ watch(options, draw, { deep: true })
 
     <div class="canvas-toolbar">
       <div class="tb-group">
-        <button :class="['tb-btn', { active: activeTool === 'select' }]" title="Select (default)" @click="setTool('select')">⊹</button>
-        <button :class="['tb-btn', { active: activeTool === 'move' }]" title="Move mode" @click="setTool('move')">✥</button>
+        <button :class="['tb-btn', { active: activeTool === 'select' }]" :title="t('prism.selectTool')" @click="setTool('select')">⊹</button>
+        <button :class="['tb-btn', { active: activeTool === 'move' }]" :title="t('prism.moveMode')" @click="setTool('move')">✥</button>
       </div>
       <div class="tb-sep" />
-      <button :class="['tb-btn icon', { active: options.showNormals }]" title="Normal Lines" @click="toggleOption('showNormals')">
+      <button :class="['tb-btn icon', { active: options.showNormals }]" :title="t('prism.normalLines')" @click="toggleOption('showNormals')">
         <span class="icon-label">N</span>
       </button>
-      <button :class="['tb-btn icon', { active: options.showAllWavelengths }]" title="Show Spectrum" @click="toggleOption('showAllWavelengths')">
+      <button :class="['tb-btn icon', { active: options.showAllWavelengths }]" :title="t('prism.showSpectrum')" @click="toggleOption('showAllWavelengths')">
         <span class="icon-label">λ</span>
       </button>
-      <button :class="['tb-btn icon', { active: options.showAngleArcs }]" title="Angle Arcs" @click="toggleOption('showAngleArcs')">
+      <button :class="['tb-btn icon', { active: options.showAngleArcs }]" :title="t('prism.angleArcs')" @click="toggleOption('showAngleArcs')">
         <span class="icon-label">∠</span>
       </button>
-      <button :class="['tb-btn icon', { active: options.showScreen }]" title="Virtual Screen" @click="toggleOption('showScreen')">
+      <button :class="['tb-btn icon', { active: options.showScreen }]" :title="t('prism.virtualScreen')" @click="toggleOption('showScreen')">
         <span class="icon-label">▐</span>
       </button>
-      <button :class="['tb-btn icon', { active: options.showGrid }]" title="Grid" @click="toggleOption('showGrid')">
+      <button :class="['tb-btn icon', { active: options.showGrid }]" :title="t('prism.grid')" @click="toggleOption('showGrid')">
         <span class="icon-label">⊞</span>
       </button>
       <div class="tb-sep" />
-      <button class="tb-btn" title="Reset view" @click="resetOffset(); draw()">⌂</button>
+      <button class="tb-btn" :title="t('prism.resetView')" @click="resetOffset(); draw()">⌂</button>
     </div>
 
     <div class="canvas-hint">
       <template v-if="activeTool === 'select'">
-        <span>⊹ اسحب <b>مصدر الليزر</b> ↕ لتغيير θ₁</span>
+        <span>{{ t('prism.dragLaserSource') }}</span>
         <span class="sep-dot">·</span>
-        <span>اسحب <b>A</b> لتغيير زاوية المنشور</span>
+        <span>{{ t('prism.dragA') }}</span>
       </template>
       <template v-else>
-        <span>✥ اسحب <b>المنشور</b> لتحريكه على الشاشة</span>
+        <span>{{ t('prism.dragPrism') }}</span>
       </template>
     </div>
   </div>

@@ -187,12 +187,9 @@ const markY = bulbTop;
 .flask-svg {
   width: 72px;
   height: 144px;
-  transition: transform 0.2s, filter 0.2s;
-  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.06));
 }
 .flask-svg.hovered {
   transform: scale(1.05);
-  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
 }
 .drop-canvas {
   position: absolute;

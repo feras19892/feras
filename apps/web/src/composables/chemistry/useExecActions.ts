@@ -59,14 +59,14 @@ export function execAction(type: ActionType, uid: string, selectedItemRef: { val
           s.volume = Math.min(s.maxVolume, s.volume + dropAmount);
           if (!s.indicators) s.indicators = [];
           if (!s.indicators.includes(selectedChemical.id)) s.indicators.push(selectedChemical.id);
-          if (!s.chemicalId || s.label === 'ماء') { s.label = selectedChemical.nameAr; }
-          else if (!s.label.includes(selectedChemical.nameAr)) { s.label = s.label + ' + ' + selectedChemical.nameAr; }
+          if (!s.chemicalId) { s.label = selectedChemical.id; }
+          else if (!s.label.includes(selectedChemical.id)) { s.label = s.label + ' + ' + selectedChemical.id; }
           applyIndicator(selectedChemical.id, uid);
         } else {
           s.volume = Math.min(s.maxVolume, s.volume + amount);
           s.color = selectedChemical.color;
           s.opacity = selectedChemical.opacity;
-          s.label = selectedChemical.nameAr;
+          s.label = selectedChemical.id;
           s.chemicalId = selectedChemical.id;
           s.ph = selectedChemical.ph ?? null;
           s.baseColor = selectedChemical.color;

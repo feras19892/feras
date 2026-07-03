@@ -205,13 +205,8 @@ const marks = computed<Mark[]>(() => {
   position: relative;
   cursor: pointer;
 }
-.tube-svg {
-  transition: transform 0.2s, filter 0.2s;
-  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.06));
-}
 .tube-svg.hovered {
   transform: scale(1.06);
-  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
 }
 .drop-canvas {
   position: absolute;

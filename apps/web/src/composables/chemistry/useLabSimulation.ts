@@ -23,48 +23,55 @@ export const buretteWarning = ref<BuretteWarning>(null);
 
 // ================== BURETTE FIND ==================
 export function findContainerBelow(burette: LabItem): LabItem | null {
-  // 1. If burette is attached to a retort stand, check beaker on same stand
+  const buretteTipX = burette.x + 30; // center of burette tip (width=60)
+  const buretteTipY = burette.y + 170; // tip Y position
+
+  // Check if burette is attached to a retort stand
+  let attachedStand: string | null = null;
   for (const [standUid, st] of Object.entries(retortStandMap)) {
-    const slotIdx = st.slotOccupants.indexOf(burette.uid);
-    if (slotIdx < 0) continue;
-
-    const beakerItem = items.value.find(i => i.uid === st.bottomSlotOccupant);
-    if (!beakerItem) return null;
-
-    // Burette tip is at center of its bottom (width/2 from left edge)
-    const buretteTipX = burette.x + 28.5;
-    // Beaker center (opening is ~70px wide, center at +35)
-    const beakerCenterX = beakerItem.x + 35;
-    const dx = Math.abs(beakerCenterX - buretteTipX);
-
-    // Vertical check: beaker must be below burette tip
-    const buretteTipY = burette.y + 198;
-    const beakerTopY = beakerItem.y;
-    const dy = beakerTopY - buretteTipY;
-
-    if (dx <= 35 && dy >= 0 && dy <= 200) {
-      return beakerItem;
+    if (st.slotOccupants.includes(burette.uid)) {
+      attachedStand = standUid;
+      break;
     }
-    return null;
   }
 
-  // 2. Burette is NOT attached to any stand — fall back to global search
-  const buretteTopY = burette.y;
-  const buretteCenterX = burette.x + 42;
+  // Find all containers whose opening horizontally covers the burette tip
   const candidates = items.value.filter((i: LabItem) => {
     if (i.uid === burette.uid || !isContainer(i.id)) return false;
-    const containerCenterX = i.x + (isBeaker(i.id) ? 70 : isTestTube(i.id) ? 20 : 40);
+
+    // Detect if beaker is attached to bottom clamp (scale=0.5, width=70)
+    let isBottomSlot = false;
+    for (const st of Object.values(retortStandMap)) {
+      if (st.bottomSlotOccupant === i.uid) { isBottomSlot = true; break; }
+    }
+
+    // Container opening center and radius
+    const containerCenterX = i.x + (isBeaker(i.id) ? (isBottomSlot ? 35 : 70) : isTestTube(i.id) ? 20 : 40);
+    const dx = Math.abs(containerCenterX - buretteTipX);
+    const openingRadius = isBeaker(i.id) ? (isBottomSlot ? 24 : 35) : isTestTube(i.id) ? 20 : 40;
+
+    // Allow tip slightly above or inside the container
     const containerTopY = i.y;
-    const dx = Math.abs(containerCenterX - buretteCenterX);
-    const dy = containerTopY - buretteTopY;
-    return dx <= 100 && dy >= 40 && dy <= 250;
+    const containerHeight = isBeaker(i.id) ? (isBottomSlot ? 100 : 200) : isTestTube(i.id) ? 80 : 100;
+
+    return dx <= openingRadius && buretteTipY >= containerTopY - 30 && buretteTipY <= containerTopY + containerHeight;
   });
+
   if (candidates.length === 0) return null;
+
+  // If attached to a stand, prefer the beaker on that same stand
+  if (attachedStand) {
+    const st = retortStandMap[attachedStand];
+    const standBeaker = candidates.find(c => c.uid === st?.bottomSlotOccupant);
+    if (standBeaker) return standBeaker;
+  }
+
+  // Return the closest one to the burette tip vertically
   return candidates.reduce((closest, current) => {
-    const cDy = closest.y - buretteTopY;
-    const currDy = current.y - buretteTopY;
-    return currDy < cDy ? current : closest;
-  }, candidates[0]);
+    const closestDy = Math.abs(closest.y - buretteTipY);
+    const currentDy = Math.abs(current.y - buretteTipY);
+    return currentDy < closestDy ? current : closest;
+  });
 }
 
 // ================== HEATING ==================

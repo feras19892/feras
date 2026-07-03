@@ -1,38 +1,26 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
 import { ref, onMounted, onUnmounted } from 'vue'
-
+import { useI18n } from '../../../composables/useI18n'
 const { t } = useI18n()
-const props = defineProps<{
-  title: string
-  icon?: string
-  experimentRoute?: string
-  experimentName?: string
-}>()
-
+const props = defineProps<{ title: string; icon?: string; mode?: string }>()
 const emit = defineEmits<{
   (e: 'togglePanel', id: string): void
   (e: 'showAllPanels'): void
   (e: 'exportCsv'): void
-  (e: 'togglePause'): void
   (e: 'reset'): void
   (e: 'recordTrial'): void
   (e: 'toggleHelp'): void
   (e: 'analyzeResults'): void
+  (e: 'toggleMode'): void
 }>()
-
 const activeMenu = ref<string | null>(null)
 const menuRef = ref<HTMLElement | null>(null)
-
 function toggleMenu(menu: string) { activeMenu.value = activeMenu.value === menu ? null : menu }
 function closeMenu() { activeMenu.value = null }
-function onMenuClick(e: MouseEvent) {
-  if (menuRef.value && !menuRef.value.contains(e.target as Node)) closeMenu()
-}
+function onMenuClick(e: MouseEvent) { if (menuRef.value && !menuRef.value.contains(e.target as Node)) closeMenu() }
 onMounted(() => window.addEventListener('click', onMenuClick))
 onUnmounted(() => window.removeEventListener('click', onMenuClick))
 </script>
-
 <template>
   <nav class="menu-bar" ref="menuRef">
     <div class="menu-left">
@@ -47,25 +35,26 @@ onUnmounted(() => window.removeEventListener('click', onMenuClick))
       <div class="menu-group">
         <button class="menu-btn" :class="{open:activeMenu==='view'}" @click.stop="toggleMenu('view')">{{ t('experiments.menuView') }}</button>
         <div v-if="activeMenu==='view'" class="menu-dropdown" @click.stop>
-          <div class="menu-row check" @click="emit('togglePanel','table');"><span class="mi">&#x1F4CB;</span><span>{{ t('experiments.menuTable') }}</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','signal');"><span class="mi">&#x1F4C8;</span><span>{{ t('experiments.torqueDistribution') }}</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','equation');"><span class="mi">&#x1F9EA;</span><span>{{ t('experiments.equation') }}</span></div>
-          <div class="menu-row check" @click="emit('togglePanel','report');"><span class="mi">&#x1F4C4;</span><span>{{ t('experiments.reportLabel') }}</span></div>
+          <div class="menu-row check" @click="emit('togglePanel','table')"><span class="mi">&#x1F4CB;</span><span>{{ t('experiments.menuTable') }}</span></div>
+          <div class="menu-row check" @click="emit('togglePanel','signal')"><span class="mi">&#x1F4C8;</span><span>{{ t('experiments.panelSignal') }}</span></div>
+          <div class="menu-row check" @click="emit('togglePanel','equations')"><span class="mi">&#x2697;&#xFE0F;</span><span>{{ t('experiments.equation') }}</span></div>
+          <div class="menu-row check" @click="emit('togglePanel','guide')"><span class="mi">&#x1F4CB;</span><span>{{ t('experiments.menuGuide') }}</span></div>
+          <div class="menu-row check" @click="emit('togglePanel','report')"><span class="mi">&#x1F4C4;</span><span>{{ t('experiments.reportLabel') }}</span></div>
         </div>
       </div>
     </div>
+    <button class="mode-toggle" @click="emit('toggleMode')">{{ mode === 'vector' ? '⚡ ' + t('experiments.vectorMode') : '⚖️ ' + t('experiments.beamMode') }}</button>
     <div class="menu-center">{{ icon || '&#x2696;&#xFE0F;' }} {{ title }}</div>
     <div class="menu-right">
       <div class="menu-group">
         <button class="menu-btn" :class="{open:activeMenu==='run'}" @click.stop="toggleMenu('run')">{{ t('experiments.menuRun') }}</button>
         <div v-if="activeMenu==='run'" class="menu-dropdown" @click.stop>
-          <div class="menu-row" @click="emit('togglePause'); closeMenu()"><span class="mi">&#x25B6;</span><span>{{ t('experiments.menuStartStop') }}</span></div>
           <div class="menu-row" @click="emit('reset'); closeMenu()"><span class="mi">&#x1F504;</span><span>{{ t('experiments.menuReset') }}</span></div>
           <div class="menu-row" @click="emit('recordTrial'); closeMenu()"><span class="mi">&#x1F4CC;</span><span>{{ t('experiments.menuRecord') }}</span></div>
         </div>
       </div>
       <div class="menu-group">
-        <button class="menu-btn analyze-btn" @click="emit('analyzeResults')">&#x1F4CA; {{ t('experiments.drawingCalculationsSection') }}</button>
+        <button class="menu-btn analyze-btn" @click="emit('analyzeResults')">{{ t('experiments.menuAnalyzeSection') }}</button>
       </div>
       <div class="menu-group">
         <button class="menu-btn" @click="emit('toggleHelp')">&#x2753; {{ t('experiments.menuHelp') }}</button>
@@ -73,7 +62,6 @@ onUnmounted(() => window.removeEventListener('click', onMenuClick))
     </div>
   </nav>
 </template>
-
 <style scoped>
 .menu-bar { display:flex; align-items:center; justify-content:space-between; padding:0 1.5rem; background:linear-gradient(180deg,#1E2530,#161B22); border-bottom:1px solid #2D3645; flex-shrink:0; user-select:none; height:48px; }
 .menu-left,.menu-right { display:flex; align-items:center; gap:2px; height:100%; }
@@ -93,4 +81,6 @@ onUnmounted(() => window.removeEventListener('click', onMenuClick))
 .menu-row.restore { color:#5B8DB8; font-weight:700; }
 .analyze-btn { color:#4ade80 !important; font-weight:700; }
 .analyze-btn:hover { background:rgba(34,197,94,.12) !important; }
+.mode-toggle { background:rgba(91,141,184,.12); color:#5B8DB8; border:1px solid rgba(91,141,184,.3); border-radius:6px; padding:.2rem .5rem; font-size:.72rem; font-weight:600; cursor:pointer; transition:all .15s; }
+.mode-toggle:hover { background:rgba(91,141,184,.2); }
 </style>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n';
+const { t } = useI18n();
 interface Props {
   isHovered: boolean;
 }
@@ -20,7 +22,7 @@ defineProps<Props>();
       <!-- Highlight -->
       <rect x="2" y="1" width="156" height="2" rx="1" fill="#A67B5B" opacity="0.6" />
     </svg>
-    <span class="tool-label">قاعدة خشبية</span>
+    <span class="tool-label">{{ t('chemistryLab.woodenBase') }}</span>
   </div>
 </template>
 

@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "node ../../node_modules/tsx/dist/cli.mjs watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
     "lint": "eslint src/**/*.ts",
@@ -12,13 +12,14 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.11.0",
-    "@hono/zod-validator": "^0.2.2",
+    "@hono/zod-validator": "^0.8.0",
     "@my-modern-app/shared-types": "workspace:*",
     "bcryptjs": "^2.4.3",
     "dotenv": "^17.4.2",
-    "hono": "^4.3.0",
+    "hono": "^4.12.27",
     "hono-rate-limiter": "^0.4.0",
     "jose": "^5.6.3",
+    "file-uri-to-path": "^2.0.0",
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7",
     "zod": "^3.23.0"

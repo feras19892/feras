@@ -1,4 +1,5 @@
 import { reactive } from 'vue'
+import { useAnomalyWatcher } from '../../../../composables/experiment/useAnomalyWatcher'
 import {
   detectCollision,
   separateBalls,
@@ -37,6 +38,7 @@ export interface CollisionState {
 }
 
 export function useCollisionPhysics(params: CollisionParams) {
+  const watcher = useAnomalyWatcher('collision')
   const sim = reactive<CollisionState>({
     running: false,
     paused: false,
@@ -80,6 +82,15 @@ export function useCollisionPhysics(params: CollisionParams) {
       sim.KEf = computeTotalKE(params.m1, v1f, params.m2, v2f)
       sim.lossPercent = computeEnergyLoss(sim.KEi, sim.KEf)
     }
+
+    watcher.inspect({
+      t: sim.t,
+      x1: sim.x1, x2: sim.x2,
+      v1: sim.v1, v2: sim.v2,
+      KEi: sim.KEi, KEf: sim.KEf,
+      lossPercent: sim.lossPercent,
+      mass: params.m1 + params.m2,
+    })
   }
 
   function start() {

@@ -3,7 +3,8 @@ import {
   balanceTareMap, containerTareMap, simSpeed, itemZoomMap, phProbeTipMap,
   solidMap, stopperMap, pourFlowMap, tiltAngleMap, rackSlotsMap,
   buretteInitialVolumeMap, buretteTotalConsumedMap, buretteConsumedThisRefill,
-  hasSelectedChemicalMap, beakerClampMap, hotPlateMap, woodenBaseMap
+  hasSelectedChemicalMap, beakerClampMap, hotPlateMap, woodenBaseMap,
+  retortStandMap
 } from './useChemistryLab';
 
 const STORAGE_KEY = 'chem-lab-session-v20';
@@ -34,11 +35,20 @@ export function saveSession(): void {
       beakerClamps: { ...beakerClampMap },
       hotPlates: { ...hotPlateMap },
       woodenBases: { ...woodenBaseMap },
+      retortStands: { ...retortStandMap },
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   } catch {
     /* ignore storage errors */
   }
+}
+
+let saveTimer: ReturnType<typeof setTimeout> | null = null;
+
+/** Debounced version of saveSession — waits 500ms of inactivity before saving */
+export function saveSessionDebounced(): void {
+  if (saveTimer) clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => { saveSession(); saveTimer = null; }, 500);
 }
 
 export function loadSession(): void {
@@ -69,6 +79,7 @@ export function loadSession(): void {
     if (data.beakerClamps) Object.assign(beakerClampMap, data.beakerClamps);
     if (data.hotPlates) Object.assign(hotPlateMap, data.hotPlates);
     if (data.woodenBases) Object.assign(woodenBaseMap, data.woodenBases);
+    if (data.retortStands) Object.assign(retortStandMap, data.retortStands);
   } catch {
     /* ignore corrupted session */
   }
@@ -98,5 +109,6 @@ export function clearSession(): void {
   Object.keys(beakerClampMap).forEach(k => delete beakerClampMap[k]);
   Object.keys(hotPlateMap).forEach(k => delete hotPlateMap[k]);
   Object.keys(woodenBaseMap).forEach(k => delete woodenBaseMap[k]);
+  Object.keys(retortStandMap).forEach(k => delete retortStandMap[k]);
   localStorage.removeItem(STORAGE_KEY);
 }

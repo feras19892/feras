@@ -107,9 +107,9 @@ function validateTitration(exp: Experiment, acidId: string, baseId: string): boo
     if (!liq.indicators || !liq.indicators.includes('phenolphthalein')) return false;
     // Require at least 30 mL total consumed to prevent false positive on first drops
     let totalConsumed = 0;
-    for (const item of items.value) {
-      if (isBurette(item.id)) {
-        totalConsumed += buretteTotalConsumedMap[item.uid] || 0;
+    for (const bItem of items.value) {
+      if (isBurette(bItem.id)) {
+        totalConsumed += buretteTotalConsumedMap[bItem.uid] || 0;
       }
     }
     return totalConsumed >= 30;
@@ -131,99 +131,57 @@ export function validateExperimentSteps(experiment: Experiment): boolean[] {
 export const experiments: Experiment[] = [
   {
     id: 'neutralization-hcl-naoh',
-    nameAr: 'تعيير حمض HCl بقاعدة NaOH',
-    description: 'تجربة تعيير حمض-قاعدة باستخدام الفينوفتالين ككاشف',
+    nameAr: 'chemistryExperiments.expTitrationHClNaOH',
+    description: 'chemistryExperiments.descTitrationHClNaOH',
     icon: '🧪',
     steps: [
-      { id: 1, text: 'أضف الأدوات اللازمة: سحاحة (50 مL)، بيكر (250 مL)، أنبوب اختبار (25 مL)، ماصة.', completed: false },
-      { id: 2, text: 'املأ السحاحة بـ 50 مL من المحلول القلوي (NaOH 0.1 M).', completed: false },
-      { id: 3, text: 'أضف 50 مL من حمض الهيدروكلوريك (HCl 0.1 M) إلى البيكر.', completed: false },
-      { id: 4, text: 'أضف 5 مL من الفينوفتالين إلى أنبوب الاختبار.', completed: false },
-      { id: 5, text: 'باستخدام الماصة، انقل 3–5 قطرات من الكاشف إلى البيكر.', completed: false },
-      { id: 6, text: 'افتح صمام السحاحة تدريجياً وأسقط قطرة بقطرة.', completed: false },
-      { id: 7, text: 'راقب تغير اللون إلى الوردي عند نقطة التكافؤ (pH ≈ 8.2).', completed: false },
-      { id: 8, text: 'سجل حجم NaOH المستهلك لحساب التركيز (متوقع ~50 مL).', completed: false },
+      { id: 1, text: 'chemistryExperiments.step1', completed: false },
+      { id: 2, text: 'chemistryExperiments.step2', completed: false },
+      { id: 3, text: 'chemistryExperiments.step3', completed: false },
+      { id: 4, text: 'chemistryExperiments.step4', completed: false },
+      { id: 5, text: 'chemistryExperiments.step5', completed: false },
+      { id: 6, text: 'chemistryExperiments.step6', completed: false },
+      { id: 7, text: 'chemistryExperiments.step7', completed: false },
+      { id: 8, text: 'chemistryExperiments.step8', completed: false },
     ],
     theory: {
-      title: 'التعيير الحمضي-القلوي: HCl مع NaOH',
+      title: 'chemistryExperiments.theory1Title',
       sections: [
-        {
-          heading: '🎯 الهدف من التجربة',
-          content: 'تحديد تركيز حمض الهيدروكلوريك (HCl) بمعايرته بمحلول هيدروكسيد الصوديوم (NaOH) ذي تركيز معلوم (0.1 M) باستخدام الفينوفتالين ككاشف لوني. التعيير (Titration) هو تقنية تحليلية كمية لتحديد تركيز محلول مجهول بإضافة محلول معيار (معروف التركيز) تدريجياً حتى يتم الاستهلاك الكيميائي الكامل (نقطة التكافؤ).'
-        },
-        {
-          heading: '🧪 المكونات والمحاليل',
-          content: '• حمض الهيدروكلوريك (HCl): حمض قوي، يتأين تماماً في الماء ليعطي أيونات H⁺ و Cl⁻. تركيزه مجهول وهو ما نريد حسابه.\n• هيدروكسيد الصوديوم (NaOH): قاعدة قوية، تتأين تماماً لأيونات Na⁺ و OH⁻. تركيزها معلوم (0.1 M) وهي المعيار.\n• الفينوفتالين (C₂₀H₁₄O₄): كاشف لوني عضوي يتغير لونه حسب الـ pH. عديم اللون في الوسط الحمضي (pH < 8.2) ووردي في الوسط القلوي (pH > 8.2).\n• ماء مقطر: وسط التفاعل والمذيب.'
-        },
-        {
-          heading: '⚗️ المعادلة الكيميائية',
-          content: 'HCl + NaOH → NaCl + H₂O\n\nهذا تفاعل حيادية (Neutralization) حيث يتفاعل أيون الهيدروجين H⁺ من الحمض مع أيون الهيدروكسيد OH⁻ من القاعدة لتكوين الماء.\n\nالنسبة المولية: 1 مول HCl يتفاعل مع 1 مول NaOH (تفاعل 1:1).'
-        },
-        {
-          heading: '📐 القانون والحسابات',
-          content: 'في نقطة التكافؤ (Equivalence Point):\n\nمولات الحمض = مولات القاعدة\n\nMₐ × Vₐ = Mᵦ × Vᵦ\n\nحيث:\n• Mₐ = تركيز الحمض (مجهول)\n• Vₐ = حجم الحمض المستخدم (50 mL)\n• Mᵦ = تركيز القاعدة المعيار (0.1 M)\n• Vᵦ = حجم القاعدة المستهلكة (من السحاحة)\n\nمثال: إذا استهلكت 47.5 mL من NaOH 0.1 M:\nMₐ = (0.1 × 47.5) / 50 = 0.095 M'
-        },
-        {
-          heading: '📏 نقطة النهاية ونقطة التكافؤ',
-          content: '• نقطة التكافؤ (Equivalence Point): النقطة التي تتساوى فيها مولات الحمض تماماً مع مولات القاعدة (pH = 7.0 لتفاعل قوي/قوي).\n• نقطة النهاية (End Point): النقطة التي يتغير فيها لون الكاشف (للفينوفتالين عند pH ≈ 8.2–10.0).\n\nالفرق بينهما صغير جداً في تفاعل قوي/قوي، لذا الفينوفتالين كاشف مناسب.'
-        },
-        {
-          heading: '🔬 لماذا نستفيد من هذه التجربة؟',
-          content: '• تحديد تركيز المحاليل: أساسي في الصناعة والمختبرات التحليلية.\n• ضبط الجودة: التحقق من تركيز المواد الكيميائية قبل الاستخدام.\n• الأساس لمعايرة أخرى: بمجمع معرفة تركيز HCl، يمكن معايرة قواعد مجهولة.\n• تطبيقات عملية: تحليل الأحماض في المنتجات الغذائية، ضبط pH المستحضرات الصيدلانية، مراقبة النفايات الصناعية.'
-        },
-        {
-          heading: '⚠️ احتياطات السلامة',
-          content: '• HCl: حمض قوي، يسبب حروقاً جلدية وتهيجاً في العينين. استخدم قفازات ونظارات واقية.\n• NaOH: قاعدة قوية، تسبب تآكلاً في الجلد. تجنب ملامسة الجلد.\n• الفينوفتالين: كحولي، تجنب الابتلاع.\n• التهوية: اعمل تحت شفاط كيميائي أو في مكان جيد التهوية.'
-        }
+        { heading: 'chemistryExperiments.theory1S1Heading', content: 'chemistryExperiments.theory1S1Content' },
+        { heading: 'chemistryExperiments.theory1S2Heading', content: 'chemistryExperiments.theory1S2Content' },
+        { heading: 'chemistryExperiments.theory1S3Heading', content: 'chemistryExperiments.theory1S3Content' },
+        { heading: 'chemistryExperiments.theory1S4Heading', content: 'chemistryExperiments.theory1S4Content' },
+        { heading: 'chemistryExperiments.theory1S5Heading', content: 'chemistryExperiments.theory1S5Content' },
+        { heading: 'chemistryExperiments.theory1S6Heading', content: 'chemistryExperiments.theory1S6Content' },
+        { heading: 'chemistryExperiments.theory1S7Heading', content: 'chemistryExperiments.theory1S7Content' },
       ]
     }
   },
   {
     id: 'neutralization-ch3cooh-naoh',
-    nameAr: 'تعيير حمض الخليك بقاعدة NaOH',
-    description: 'تجربة تعيير حمض ضعيف (CH₃COOH) بقاعدة قوية باستخدام الفينوفتالين',
+    nameAr: 'chemistryExperiments.expTitrationAceticNaOH',
+    description: 'chemistryExperiments.descTitrationAceticNaOH',
     icon: '🍶',
     steps: [
-      { id: 1, text: 'أضف الأدوات اللازمة: سحاحة (50 مL)، بيكر (250 مL)، أنبوب اختبار (25 مL)، ماصة.', completed: false },
-      { id: 2, text: 'املأ السحاحة بـ 50 مL من المحلول القلوي (NaOH 0.1 M).', completed: false },
-      { id: 3, text: 'أضف 50 مL من حمض الخليك (CH₃COOH 0.1 M) إلى البيكر.', completed: false },
-      { id: 4, text: 'أضف 5 مL من الفينوفتالين إلى أنبوب الاختبار.', completed: false },
-      { id: 5, text: 'باستخدام الماصة، انقل 3–5 قطرات من الكاشف إلى البيكر.', completed: false },
-      { id: 6, text: 'افتح صمام السحاحة تدريجياً وأسقط قطرة بقطرة.', completed: false },
-      { id: 7, text: 'راقب تغير اللون إلى الوردي عند نقطة التكافؤ (pH ≈ 8.2).', completed: false },
-      { id: 8, text: 'سجل حجم NaOH المستهلك لحساب التركيز (متوقع ~50 مL).', completed: false },
+      { id: 1, text: 'chemistryExperiments.step1', completed: false },
+      { id: 2, text: 'chemistryExperiments.step2', completed: false },
+      { id: 3, text: 'chemistryExperiments.step3Acetic', completed: false },
+      { id: 4, text: 'chemistryExperiments.step4', completed: false },
+      { id: 5, text: 'chemistryExperiments.step5', completed: false },
+      { id: 6, text: 'chemistryExperiments.step6', completed: false },
+      { id: 7, text: 'chemistryExperiments.step7', completed: false },
+      { id: 8, text: 'chemistryExperiments.step8', completed: false },
     ],
     theory: {
-      title: 'التعيير الحمضي-القلوي: CH₃COOH مع NaOH',
+      title: 'chemistryExperiments.theory2Title',
       sections: [
-        {
-          heading: '🎯 الهدف من التجربة',
-          content: 'تحديد تركيز حمض الخليك (CH₃COOH) بمعايرته بمحلول هيدروكسيد الصوديوم (NaOH) ذي تركيز معلوم (0.1 M) باستخدام الفينوفتالين ككاشف لوني. حمض الخليك حمض ضعيف (pKa ≈ 4.76)، لذا نقطة التكافؤ تكون في وسط قلوي (pH ≈ 8.2) — الفينوفتالين كاشف مناسب.'
-        },
-        {
-          heading: '🧪 المكونات والمحاليل',
-          content: '• حمض الخليك (CH₃COOH): حمض ضعيف، يتأين جزئياً في الماء. تركيزه مجهول.\n• هيدروكسيد الصوديوم (NaOH): قاعدة قوية، تركيزها معلوم (0.1 M).\n• الفينوفتالين: كاشف لوني، عديم اللون في الحمض (pH < 8.2) ووردي في القلوية (pH > 8.2).\n• ماء مقطر: وسط التفاعل.'
-        },
-        {
-          heading: '⚗️ المعادلة الكيميائية',
-          content: 'CH₃COOH + NaOH → CH₃COONa + H₂O\n\nتفاعل حيادية (Neutralization) لحمض ضعيف مع قاعدة قوية.\n\nالنسبة المولية: 1 مول CH₃COOH يتفاعل مع 1 مول NaOH (تفاعل 1:1).'
-        },
-        {
-          heading: '📐 القانون والحسابات',
-          content: 'في نقطة التكافؤ:\n\nمولات الحمض = مولات القاعدة\n\nMₐ × Vₐ = Mᵦ × Vᵦ\n\nحيث:\n• Mₐ = تركيز حمض الخليك (مجهول)\n• Vₐ = حجم الحمض (50 mL)\n• Mᵦ = تركيز NaOH المعيار (0.1 M)\n• Vᵦ = حجم القاعدة المستهلكة (من السحاحة)'
-        },
-        {
-          heading: '📏 لماذا pH التكافؤ ≈ 8.2؟',
-          content: '• في تفاعل حمض ضعيف + قاعدة قوية، يتكون ملح قاعدي (CH₃COONa).\n• أيون CH₃COO⁻ يتفاعل مع الماء (hydrolysis): CH₃COO⁻ + H₂O ⇌ CH₃COOH + OH⁻\n• هذا يرفع pH فوق 7.\n• عند نقطة التكافؤ: pH = 7 + ½(pKa + log C) ≈ 8.2–8.7'
-        },
-        {
-          heading: '🔬 لماذا نستفيد من هذه التجربة؟',
-          content: '• تحديد تركيز الأحماض الضعيفة في الصناعات الغذائية (خل، عصير).\n• ضبط الجودة في مصانع المخللات والصلصات.\n• فهم سلوك الأحماض الضعيفة مقابل القوية.'
-        },
-        {
-          heading: '⚠️ احتياطات السلامة',
-          content: '• CH₃COOH: حمض ضعيف لكنه يسبب تهيجاً. تجنب ملامسة العينين.\n• NaOH: قاعدة قوية، تسبب حروقاً. استخدم قفازات.\n• التهوية الجيدة ضرورية.'
-        }
+        { heading: 'chemistryExperiments.theory2S1Heading', content: 'chemistryExperiments.theory2S1Content' },
+        { heading: 'chemistryExperiments.theory2S2Heading', content: 'chemistryExperiments.theory2S2Content' },
+        { heading: 'chemistryExperiments.theory2S3Heading', content: 'chemistryExperiments.theory2S3Content' },
+        { heading: 'chemistryExperiments.theory2S4Heading', content: 'chemistryExperiments.theory2S4Content' },
+        { heading: 'chemistryExperiments.theory2S5Heading', content: 'chemistryExperiments.theory2S5Content' },
+        { heading: 'chemistryExperiments.theory2S6Heading', content: 'chemistryExperiments.theory2S6Content' },
+        { heading: 'chemistryExperiments.theory2S7Heading', content: 'chemistryExperiments.theory2S7Content' },
       ]
     }
   },

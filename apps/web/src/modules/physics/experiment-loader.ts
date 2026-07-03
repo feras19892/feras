@@ -15,6 +15,22 @@ const experimentMap: Record<string, () => Promise<any>> = {
   'thin-lens': () => import('./experiments/thinlens/ThinLensExperiment.vue'),
   'mirrors': () => import('./experiments/mirror/MirrorExperiment.vue'),
   'prism-dispersion': () => import('./experiments/prism/PrismExperiment.vue'),
+  'interference': () => import('./experiments/interference/InterferenceExperiment.vue'),
+  'diffraction': () => import('./experiments/diffraction/DiffractionExperiment.vue'),
+  'polarization': () => import('./experiments/polarization/PolarizationExperiment.vue'),
+  'faraday': () => import('./experiments/faraday/FaradayExperiment.vue'),
+  'biot-savart': () => import('./experiments/biot-savart/BiotSavartExperiment.vue'),
+  'rc-circuit': () => import('./experiments/rc-circuit/RcCircuitExperiment.vue'),
+  'calorimetry': () => import('./experiments/calorimetry/CalorimetryExperiment.vue'),
+  'ideal-gas': () => import('./experiments/ideal-gas/IdealGasExperiment.vue'),
+  'resonance': () => import('./experiments/resonance/ResonanceExperiment.vue'),
+  'speed-of-sound': () => import('./experiments/speed-of-sound/SpeedOfSoundExperiment.vue'),
+  'wave-interference': () => import('./experiments/wave-interference/WaveInterferenceExperiment.vue'),
+  'specific-heat': () => import('./experiments/specific-heat/SpecificHeatExperiment.vue'),
+  'joule-equivalent': () => import('./experiments/joule-equivalent/JouleEquivalentExperiment.vue'),
+  'boyles-law': () => import('./experiments/boyles-law/BoylesLawExperiment.vue'),
+  'thermal-expansion': () => import('./experiments/thermal-expansion/ThermalExpansionExperiment.vue'),
+  'latent-heat': () => import('./experiments/latent-heat/LatentHeatExperiment.vue'),
   'analysis-calc': () => import('./experiments/analysis-calc/AnalysisCalcExperiment.vue'),
 };
 
@@ -24,6 +40,10 @@ export function loadExperiment(id: string) {
   return defineAsyncComponent({
     loader,
     loadingComponent: () => import('./experiment-template/ExperimentShell.vue'),
+    errorComponent: () => import('./experiment-template/ExperimentShell.vue'),
+    onError(error) {
+      console.error(`Failed to load experiment "${id}":`, error);
+    },
   });
 }
 

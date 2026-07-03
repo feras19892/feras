@@ -92,7 +92,7 @@ export const chemDataExtended: Chemical[] = [
   },
   {
     id: 'h2o2', nameAr: 'بيروكسيد الهيدروجين', formula: 'H₂O₂',
-    category: 'acid', physicalState: 'liquid', concentration: 0.3, ph: 4.5,
+    category: 'solvent', physicalState: 'liquid', concentration: 0.3, ph: 4.5,
     color: '#e0e7ff', opacity: 0.3, density: 1.01, molarMass: 34.01,
     boilingPoint: 150, hazardLevel: 'warning', description: 'مؤكسد قوي، 6%'
   },
@@ -101,6 +101,14 @@ export const chemDataExtended: Chemical[] = [
     category: 'indicator', physicalState: 'liquid', concentration: 0.001, ph: undefined,
     color: '#fefce8', opacity: 0.3, density: 1.02, molarMass: 162.14,
     hazardLevel: 'safe', description: 'كاشف ليود → أزرق داكن'
+  },
+
+  // ========== UNIVERSAL INDICATOR ==========
+  {
+    id: 'universal-indicator', nameAr: 'دليل عالمي', formula: 'C₁₈H₂₀O₅S',
+    category: 'indicator', physicalState: 'liquid', concentration: 0.001, ph: undefined,
+    color: '#22c55e', opacity: 0.35, density: 1.1, molarMass: 316.36,
+    hazardLevel: 'safe', description: 'يتغير لونه عبر طيف pH: أحمر (حمضي) → أخضر (محايد) → بنفسجي (قلوي)'
   },
 
   // ========== GASES ==========

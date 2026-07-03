@@ -32,7 +32,7 @@ function togglePanel(key: keyof PanelState) {
   <div class="shell">
     <!-- Top toolbar -->
     <nav class="shell-toolbar">
-      <span class="title">{{ config.nameAr }}</span>
+      <span class="title">{{ t(config.nameAr) }}</span>
       <div class="actions">
         <button @click="togglePanel('table')">📋</button>
         <button @click="togglePanel('params')">⚙️</button>

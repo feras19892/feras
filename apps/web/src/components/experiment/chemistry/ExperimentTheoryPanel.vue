@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import type { ExperimentTheory } from '../../../composables/chemistry/useExperiments';
+import { useI18n } from '../../../composables/useI18n';
+
+const { t, locale } = useI18n();
 
 const props = defineProps<{
   theory: ExperimentTheory | null;
@@ -8,13 +12,16 @@ const props = defineProps<{
 const emit = defineEmits<{
   close: [];
 }>();
+
+const bodyDir = computed(() => locale.value === 'ar' ? 'rtl' : 'ltr');
+const bodyAlign = computed(() => locale.value === 'ar' ? 'right' : 'left');
 </script>
 
 <template>
   <div v-if="theory" class="theory-overlay" @click.self="emit('close')">
     <div class="theory-panel">
       <div class="theory-header">
-        <h2>{{ theory.title }}</h2>
+        <h2>{{ t(theory.title) }}</h2>
         <button class="close-btn" @click="emit('close')">✕</button>
       </div>
       <div class="theory-body">
@@ -23,8 +30,8 @@ const emit = defineEmits<{
           :key="index"
           class="theory-section"
         >
-          <h3 class="section-heading">{{ section.heading }}</h3>
-          <div class="section-content" style="white-space: pre-line">{{ section.content }}</div>
+          <h3 class="section-heading">{{ t(section.heading) }}</h3>
+          <div class="section-content" style="white-space: pre-line">{{ t(section.content) }}</div>
         </div>
       </div>
     </div>
@@ -90,8 +97,8 @@ const emit = defineEmits<{
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  direction: rtl;
-  text-align: right;
+  direction: v-bind(bodyDir);
+  text-align: v-bind(bodyAlign);
 }
 .theory-section {
   background: #f8fafc;

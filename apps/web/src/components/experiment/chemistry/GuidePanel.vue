@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { Experiment } from '../../../composables/chemistry/useExperiments';
+import { useI18n } from '../../../composables/useI18n';
+const { t } = useI18n();
 
 const props = defineProps<{
   experiment: Experiment | null;
@@ -17,11 +19,11 @@ const emit = defineEmits<{
     <template v-if="!experiment">
       <button class="exp-btn" @click="emit('selectExperiment')">
         <span class="exp-btn-icon">🔬</span>
-        <span class="exp-btn-label">اختر تجربة</span>
+        <span class="exp-btn-label">{{ t('chemistryLab.chooseExperiment') }}</span>
       </button>
       <div class="guide-hint">
         <span>💡</span>
-        <p>اختر تجربة كيميائية لتبدأ الرحلة العلمية</p>
+        <p>{{ t('chemistryLab.startJourney') }}</p>
       </div>
     </template>
 
@@ -30,18 +32,18 @@ const emit = defineEmits<{
       <div class="exp-active-header">
         <span class="exp-active-icon">{{ experiment.icon }}</span>
         <div class="exp-active-info">
-          <span class="exp-active-name">{{ experiment.nameAr }}</span>
-          <span class="exp-active-desc">{{ experiment.description }}</span>
+          <span class="exp-active-name">{{ t(experiment.nameAr) }}</span>
+          <span class="exp-active-desc">{{ t(experiment.description) }}</span>
         </div>
       </div>
       <div class="exp-active-actions">
         <button v-if="experiment.theory" class="theory-btn" @click="emit('openTheory')">
           <span>📖</span>
-          <span>الشرح النظري</span>
+          <span>{{ t('chemistryLab.theory') }}</span>
         </button>
         <button class="change-btn" @click="emit('selectExperiment')">
           <span>🔄</span>
-          <span>تغيير التجربة</span>
+          <span>{{ t('chemistryLab.changeExperiment') }}</span>
         </button>
       </div>
     </template>

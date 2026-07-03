@@ -1,4 +1,7 @@
 import { ref } from 'vue';
+import { useI18n } from '../useI18n';
+
+const { t } = useI18n();
 
 export type AssistantMessageType = 'warning' | 'info' | 'success' | 'tip';
 
@@ -41,16 +44,17 @@ export function toggleAssistant() {
 }
 
 // ── Idle messages pool (rotates when student is inactive) ──
-const idleMessages: { text: string; type: AssistantMessageType }[] = [
-  { text: '💡 اختر الأدوات من اللوحة اليسرى واسحبها إلى مساحة العمل.', type: 'tip' },
-  { text: '🧪 اضغط على "اختر تجربة" لبدء رحلتك الكيميائية.', type: 'info' },
-  { text: '⚗️ حمض + قاعدة → ملح + ماء. المعادلة الأساسية للتعيير!', type: 'tip' },
-  { text: '📐 MₐVₐ = MᵦVᵦ — قانون التعيير. اكتبه في دفترك!', type: 'tip' },
-  { text: '🧪 HCl: حمض قوي pH≈1 | NaOH: قاعدة قوية pH≈13', type: 'tip' },
-  { text: '🎯 الفينوفتالين: عديم اللون في الحمض، وردي في القلوية.', type: 'tip' },
-  { text: '⚠️ السلامة أولاً! القفازات والنظارات واجبة في المختبر.', type: 'warning' },
-  { text: '💡 كل قطرة من السحاحة = 0.05 mL. احسب بدقة!', type: 'tip' },
+const idleKeys = [
+  'chemistryAssistant.idleMsg1',
+  'chemistryAssistant.idleMsg2',
+  'chemistryAssistant.idleMsg3',
+  'chemistryAssistant.idleMsg4',
+  'chemistryAssistant.idleMsg5',
+  'chemistryAssistant.idleMsg6',
+  'chemistryAssistant.idleMsg7',
+  'chemistryAssistant.idleMsg8',
 ];
+const idleTypes: AssistantMessageType[] = ['tip', 'info', 'tip', 'tip', 'tip', 'tip', 'warning', 'tip'];
 
 let idleIndex = 0;
 let idleTimer: ReturnType<typeof setInterval> | null = null;
@@ -59,8 +63,8 @@ export function startIdleMessages() {
   if (idleTimer) clearInterval(idleTimer);
   idleTimer = setInterval(() => {
     if (!currentMessage.value) {
-      const msg = idleMessages[idleIndex % idleMessages.length];
-      showMessage(msg.text, msg.type);
+      const idx = idleIndex % idleKeys.length;
+      showMessage(t(idleKeys[idx]), idleTypes[idx]);
       idleIndex++;
     }
   }, 8000);
@@ -77,62 +81,71 @@ export function warnDangerousChemical(chemicalName: string, chemicalId: string) 
   const baseChemicals = ['naoh', 'koh'];
 
   if (acidChemicals.includes(chemicalId)) {
-    showMessage(`⚠️ ${chemicalName} حمض قوي! قفازات + نظارات واقية.`, 'warning');
+    showMessage(t('chemistryAssistant.strongAcidWarning', { name: chemicalName }), 'warning');
   } else if (baseChemicals.includes(chemicalId)) {
-    showMessage(`⚠️ ${chemicalName} قاعدة قوية! لا تلمسه بيدك.`, 'warning');
+    showMessage(t('chemistryAssistant.strongBaseWarning', { name: chemicalName }), 'warning');
   } else {
-    showMessage(`ℹ️ ${chemicalName}: تجنب الابتلاع والتعرض المباشر.`, 'tip');
+    showMessage(t('chemistryAssistant.chemicalGeneralWarning', { name: chemicalName }), 'tip');
   }
 }
 
 export function encourageStep(stepName: string) {
   const phrases = [
-    `🎉 أحسنت! "${stepName}" مكتمل.`,
-    `✨ رائع! أكملت "${stepName}" بنجاح.`,
-    `👏 ممتاز! "${stepName}" تم. استمر!`,
+    t('chemistryAssistant.stepComplete1', { name: stepName }),
+    t('chemistryAssistant.stepComplete2', { name: stepName }),
+    t('chemistryAssistant.stepComplete3', { name: stepName }),
   ];
   showMessage(phrases[Math.floor(Math.random() * phrases.length)], 'success');
 }
 
 export function tipForStep(stepIndex: number, experimentName: string) {
-  const tips: Record<string, string[]> = {
+  const expKeys: Record<string, string[]> = {
     'neutralization-hcl-naoh': [
-      '💡 ضع السحاحة فوق البيكر مباشرة.',
-      '💡 3-5 قطرات فينوفتالين تكفي.',
-      '💡 أبطئ السحاحة — كل قطرة تحسب!',
-      '💡 الوردي = pH > 8.2. أغلق فوراً!',
-      '💡 MₐVₐ = MᵦVᵦ — اكتب القراءة.',
-      '💡 تجاوزت؟ ارجع بـ ◀️ نقطة.',
+      'chemistryAssistant.tipExp1_1',
+      'chemistryAssistant.tipExp1_2',
+      'chemistryAssistant.tipExp1_3',
+      'chemistryAssistant.tipExp1_4',
+      'chemistryAssistant.tipExp1_5',
+      'chemistryAssistant.tipExp1_6',
+    ],
+    'neutralization-ch3cooh-naoh': [
+      'chemistryAssistant.tipExp2_1',
+      'chemistryAssistant.tipExp2_2',
+      'chemistryAssistant.tipExp2_3',
+      'chemistryAssistant.tipExp2_4',
+      'chemistryAssistant.tipExp2_5',
+      'chemistryAssistant.tipExp2_6',
     ],
   };
-  const expTips = tips[experimentName] || ['💡 استمر بتركيز!'];
-  const tip = expTips[Math.min(stepIndex, expTips.length - 1)];
-  if (tip) showMessage(tip, 'tip');
+  const keys = expKeys[experimentName] || ['chemistryAssistant.defaultTip'];
+  const key = keys[Math.min(stepIndex, keys.length - 1)];
+  if (key) showMessage(t(key), 'tip');
 }
 
 export function warnOnAction(action: string) {
-  const messages: Record<string, { text: string; type: AssistantMessageType }> = {
-    valveOpen: { text: '🔔 الصمام مفتوح! راقب نقطة التكافؤ.', type: 'info' },
-    acidSelected: { text: '⚠️ حمض! ارتدِ معدات الوقاية.', type: 'warning' },
-    baseSelected: { text: '⚠️ قاعدة! احذر السباش.', type: 'warning' },
-    equivalenceApproaching: { text: '🎯 قارب التكافؤ! أبطئ إلى قطرة واحدة.', type: 'warning' },
-    equivalenceReached: { text: '✅ التكافؤ! أغلق الصمام وسجل.', type: 'success' },
-    equivalenceExceeded: { text: '⛔ تجاوزت! ارجع بـ ◀️ نقطة.', type: 'warning' },
+  const map: Record<string, AssistantMessageType> = {
+    valveOpen: 'info',
+    acidSelected: 'warning',
+    baseSelected: 'warning',
+    equivalenceApproaching: 'warning',
+    equivalenceReached: 'success',
+    equivalenceExceeded: 'warning',
   };
-  const msg = messages[action];
-  if (msg) showMessage(msg.text, msg.type);
+  const key = 'chemistryAssistant.' + action;
+  const type = map[action] || 'info';
+  showMessage(t(key), type);
 }
 
 export function welcomeMessage(experimentName: string) {
-  showMessage(`🧪 مساعدك في "${experimentName}". لنبدأ!`, 'info');
+  showMessage(t('chemistryAssistant.welcomeMessage', { name: experimentName }), 'info');
 }
 
 export function quickFactAbout(chemicalId: string) {
-  const facts: Record<string, string> = {
-    hcl: '🔬 HCl: حمض قوي، pH ≈ 1. يذيب المعادن!',
-    naoh: '🔬 NaOH: صودا كاوية، pH ≈ 13. يصنع الصابون!',
-    phenolphthalein: '🔬 فينوفتالين: عديم اللون → وردي عند pH > 8.2',
+  const keyMap: Record<string, string> = {
+    hcl: 'chemistryAssistant.factHCl',
+    naoh: 'chemistryAssistant.factNaOH',
+    phenolphthalein: 'chemistryAssistant.factPhenolphthalein',
   };
-  const fact = facts[chemicalId];
-  if (fact) showMessage(fact, 'tip');
+  const key = keyMap[chemicalId];
+  if (key) showMessage(t(key), 'tip');
 }

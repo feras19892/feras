@@ -47,6 +47,12 @@ function expNameKey(id: string): string {
     'rc-circuit': 'experiments.expRcCircuit',
     'biot-savart': 'experiments.expBiotSavart',
     faraday: 'experiments.expFaraday',
+    'wave-interference': 'experiments.expWaveInterference',
+    'specific-heat': 'experiments.expSpecificHeat',
+    'joule-equivalent': 'experiments.expJouleEquivalent',
+    'boyles-law': 'experiments.expBoylesLaw',
+    'thermal-expansion': 'experiments.expThermalExpansion',
+    'latent-heat': 'experiments.expLatentHeat',
   };
   return map[id] || id;
 }

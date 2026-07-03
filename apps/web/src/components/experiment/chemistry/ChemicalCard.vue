@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { Chemical } from '../../../composables/chemistry/useChemistryLab';
+import { useChemicalLocale } from '../../../composables/chemistry/useChemicalLocale';
 
 const props = defineProps<{ chem: Chemical; selected: boolean; clickable: boolean }>();
 const emit = defineEmits<{ click: [] }>();
+const { getName } = useChemicalLocale();
 
 function hazardDot() {
   const map = { safe: '#22c55e', caution: '#eab308', warning: '#f97316', danger: '#ef4444' };
@@ -61,7 +63,7 @@ function svgIcon() {
         <circle cx="42" cy="6" r="3" :fill="hazardDot()" stroke="#fff" stroke-width="1" />
       </svg>
     </div>
-    <span class="chem-name">{{ chem.nameAr }}</span>
+    <span class="chem-name">{{ getName(chem.id) }}</span>
     <span class="chem-formula">{{ chem.formula }}</span>
     <span class="chem-state">{{ chem.physicalState === 'liquid' ? 'L' : chem.physicalState === 'solid' ? 'S' : 'G' }}</span>
   </div>

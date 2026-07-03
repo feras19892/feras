@@ -3,6 +3,8 @@ import { computed } from 'vue';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import { getLiquid, isContainer, items, phProbeTipMap } from '../../../composables/chemistry/useChemistryLab';
 import { getPhReading, isHeated } from '../../../composables/chemistry/useLabSimulation';
+import { useI18n } from '../../../composables/useI18n';
+const { t } = useI18n();
 
 const props = defineProps<{
   item: LabItem | null;
@@ -25,10 +27,10 @@ const heated = computed(() => props.item ? isHeated(props.item) : false);
 
 <template>
   <div class="stats-panel">
-    <h4>📊 بيانات المحلول</h4>
+    <h4>{{ t('chemistryLab.labStats') }}</h4>
     <div v-if="item && liq" class="stats-table">
       <div class="stat-row">
-        <span class="stat-label">🌡️ الحرارة</span>
+        <span class="stat-label">{{ t('chemistryLab.temperature') }}</span>
         <span class="stat-value" :class="liq.temperature > 30 ? 'hot' : ''">{{ liq.temperature.toFixed(1) }}°C</span>
       </div>
       <div class="stat-row">
@@ -38,16 +40,16 @@ const heated = computed(() => props.item ? isHeated(props.item) : false);
         </span>
       </div>
       <div class="stat-row">
-        <span class="stat-label">🔥 التسخين</span>
-        <span class="stat-value" :class="heated ? 'heating' : ''">{{ heated ? '🟡 نعم' : '⚪ لا' }}</span>
+        <span class="stat-label">{{ t('chemistryLab.heating') }}</span>
+        <span class="stat-value" :class="heated ? 'heating' : ''">{{ heated ? t('chemistryLab.yes') : t('chemistryLab.no') }}</span>
       </div>
       <div class="stat-row">
-        <span class="stat-label">💧 الحجم</span>
+        <span class="stat-label">{{ t('chemistry.volume') }}</span>
         <span class="stat-value">{{ liq.volume.toFixed(1) }} mL</span>
       </div>
     </div>
     <div v-else class="stats-empty">
-      اختر أداة لعرض البيانات
+      {{ t('chemistry.clickToolHint') }}
     </div>
   </div>
 </template>

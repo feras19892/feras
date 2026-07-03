@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from '../../../composables/useI18n';
+const { t } = useI18n();
 
 interface Props {
   clampAngle: number;
@@ -47,11 +49,11 @@ const clampTransform = computed(() => {
     </svg>
 
     <div class="bc-controls">
-      <button class="bc-btn" @click.stop="emit('rotateLeft')" title="لف لليسار">←</button>
-      <button class="bc-btn" @click.stop="emit('rotateRight')" title="لف لليمين">→</button>
+      <button class="bc-btn" @click.stop="emit('rotateLeft')" :title="t('chemistryLab.rotateLeft')">←</button>
+      <button class="bc-btn" @click.stop="emit('rotateRight')" :title="t('chemistryLab.rotateRight')">→</button>
     </div>
     <span class="tool-label">
-      {{ hasContainer ? 'يمسك حاوية' : 'مشبك فارغ' }}
+      {{ hasContainer ? t('chemistryLab.holdingContainer') : t('chemistryLab.emptyClamp') }}
     </span>
   </div>
 </template>

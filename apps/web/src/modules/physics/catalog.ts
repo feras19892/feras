@@ -6,6 +6,7 @@ export interface ExperimentMeta {
   difficulty: 'easy' | 'medium' | 'hard';
   tags: string[];
   route: string;
+  enabled?: boolean;
 }
 
 export interface Branch {
@@ -31,13 +32,13 @@ export const branches: Branch[] = [
     color: '#06b6d4',
     description: 'experiments.branchMechanicsDesc',
     experiments: [
-      { id: 'spring', name: 'Spring Oscillation', nameAr: 'experiments.expSpring', icon: '📐', difficulty: 'easy', tags: ['shm', 'harmonic'], route: '' },
-      { id: 'pendulum', name: 'Pendulum', nameAr: 'experiments.expPendulum', icon: '🕰️', difficulty: 'easy', tags: ['shm', 'gravity'], route: '' },
-      { id: 'projectile', name: 'Projectile Motion', nameAr: 'experiments.expProjectile', icon: '🚀', difficulty: 'medium', tags: ['kinematics', '2d'], route: '' },
-      { id: 'freefall', name: 'Free Fall', nameAr: 'experiments.expFreeFall', icon: '🍎', difficulty: 'easy', tags: ['gravity', 'kinematics'], route: '' },
-      { id: 'inclined', name: 'Inclined Plane', nameAr: 'experiments.expInclined', icon: '📐', difficulty: 'easy', tags: ['kinematics', 'forces', 'friction'], route: '' },
-      { id: 'collision', name: '1D Collision', nameAr: 'experiments.expCollision', icon: '💥', difficulty: 'medium', tags: ['momentum', 'energy', 'collision'], route: '' },
-      { id: 'lever', name: 'Lever Balance', nameAr: 'experiments.expLever', icon: '⚖️', difficulty: 'easy', tags: ['equilibrium', 'torque', 'lever'], route: '' },
+      { id: 'spring', name: 'Spring Oscillation', nameAr: 'experiments.expSpring', icon: '📐', difficulty: 'easy', tags: ['shm', 'harmonic'], route: '', enabled: true },
+      { id: 'pendulum', name: 'Pendulum', nameAr: 'experiments.expPendulum', icon: '🕰️', difficulty: 'easy', tags: ['shm', 'gravity'], route: '', enabled: true },
+      { id: 'projectile', name: 'Projectile Motion', nameAr: 'experiments.expProjectile', icon: '🚀', difficulty: 'medium', tags: ['kinematics', '2d'], route: '', enabled: true },
+      { id: 'freefall', name: 'Free Fall', nameAr: 'experiments.expFreeFall', icon: '🍎', difficulty: 'easy', tags: ['gravity', 'kinematics'], route: '', enabled: true },
+      { id: 'inclined', name: 'Inclined Plane', nameAr: 'experiments.expInclined', icon: '📐', difficulty: 'easy', tags: ['kinematics', 'forces', 'friction'], route: '', enabled: true },
+      { id: 'collision', name: '1D Collision', nameAr: 'experiments.expCollision', icon: '💥', difficulty: 'medium', tags: ['momentum', 'energy', 'collision'], route: '', enabled: true },
+      { id: 'lever', name: 'Force Resultant Balance', nameAr: 'experiments.expLever', icon: '⚖️', difficulty: 'easy', tags: ['equilibrium', 'torque', 'lever'], route: '', enabled: true },
     ],
   },
   {
@@ -48,15 +49,16 @@ export const branches: Branch[] = [
     color: '#8b5cf6',
     description: 'experiments.branchWavesDesc',
     experiments: [
-      { id: 'light-ray', name: 'Light Ray Lab', nameAr: 'experiments.expLightRay', icon: '💡', difficulty: 'easy', tags: ['optics', 'reflection', 'refraction'], route: '' },
-      { id: 'thin-lens', name: 'Thin Lens', nameAr: 'experiments.expThinLens', icon: '🔍', difficulty: 'medium', tags: ['optics', 'lens'], route: '' },
-      { id: 'mirrors', name: 'Spherical Mirrors', nameAr: 'experiments.expMirrors', icon: '🪞', difficulty: 'medium', tags: ['optics', 'mirror'], route: '' },
-      { id: 'prism-dispersion', name: 'Prism Dispersion', nameAr: 'experiments.expPrism', icon: '🌈', difficulty: 'easy', tags: ['optics', 'dispersion'], route: '' },
-      { id: 'interference', name: 'Young\'s Interference', nameAr: 'experiments.expInterference', icon: '〰️', difficulty: 'medium', tags: ['waves', 'interference'], route: '' },
-      { id: 'diffraction', name: 'Diffraction', nameAr: 'experiments.expDiffraction', icon: '🔦', difficulty: 'hard', tags: ['waves', 'diffraction'], route: '' },
-      { id: 'polarization', name: 'Light Polarization', nameAr: 'experiments.expPolarization', icon: '🕶️', difficulty: 'hard', tags: ['waves', 'polarization'], route: '' },
-      { id: 'speed-of-sound', name: 'Speed of Sound', nameAr: 'experiments.expSpeedOfSound', icon: '🔔', difficulty: 'easy', tags: ['sound', 'waves'], route: '' },
-      { id: 'resonance', name: 'Standing Waves', nameAr: 'experiments.expResonance', icon: '🎵', difficulty: 'medium', tags: ['sound', 'resonance'], route: '' },
+      { id: 'light-ray', name: 'Light Ray Lab', nameAr: 'experiments.expLightRay', icon: '💡', difficulty: 'easy', tags: ['optics', 'reflection', 'refraction'], route: '', enabled: true },
+      { id: 'thin-lens', name: 'Thin Lens', nameAr: 'experiments.expThinLens', icon: '🔍', difficulty: 'medium', tags: ['optics', 'lens'], route: '', enabled: true },
+      { id: 'mirrors', name: 'Spherical Mirrors', nameAr: 'experiments.expMirrors', icon: '🪞', difficulty: 'medium', tags: ['optics', 'mirror'], route: '', enabled: true },
+      { id: 'prism-dispersion', name: 'Prism Dispersion', nameAr: 'experiments.expPrism', icon: '🌈', difficulty: 'easy', tags: ['optics', 'dispersion'], route: '', enabled: true },
+      { id: 'interference', name: 'Young\'s Interference', nameAr: 'experiments.expInterference', icon: '〰️', difficulty: 'medium', tags: ['waves', 'interference'], route: '', enabled: true },
+      { id: 'diffraction', name: 'Diffraction', nameAr: 'experiments.expDiffraction', icon: '🔦', difficulty: 'hard', tags: ['waves', 'diffraction'], route: '', enabled: true },
+      { id: 'polarization', name: 'Light Polarization', nameAr: 'experiments.expPolarization', icon: '🕶️', difficulty: 'hard', tags: ['waves', 'polarization'], route: '', enabled: true },
+      { id: 'speed-of-sound', name: 'Speed of Sound', nameAr: 'experiments.expSpeedOfSound', icon: '🔔', difficulty: 'easy', tags: ['sound', 'waves'], route: '', enabled: true },
+      { id: 'resonance', name: 'Standing Waves', nameAr: 'experiments.expResonance', icon: '🎵', difficulty: 'medium', tags: ['sound', 'resonance'], route: '', enabled: true },
+      { id: 'wave-interference', name: 'Wave Interference', nameAr: 'experiments.expWaveInterference', icon: '〰️', difficulty: 'medium', tags: ['waves', 'interference'], route: '', enabled: true },
     ],
   },
   {
@@ -67,8 +69,13 @@ export const branches: Branch[] = [
     color: '#ef4444',
     description: 'experiments.branchHeatDesc',
     experiments: [
-      { id: 'ideal-gas', name: 'Ideal Gas', nameAr: 'experiments.expIdealGas', icon: '💨', difficulty: 'medium', tags: ['thermo'], route: '' },
-      { id: 'calorimetry', name: 'Calorimetry', nameAr: 'experiments.expCalorimetry', icon: '🌡️', difficulty: 'easy', tags: ['heat'], route: '' },
+      { id: 'ideal-gas', name: 'Ideal Gas', nameAr: 'experiments.expIdealGas', icon: '💨', difficulty: 'medium', tags: ['thermo'], route: '', enabled: true },
+      { id: 'calorimetry', name: 'Calorimetry', nameAr: 'experiments.expCalorimetry', icon: '🌡️', difficulty: 'easy', tags: ['heat'], route: '', enabled: true },
+      { id: 'specific-heat', name: 'Specific Heat Capacity', nameAr: 'experiments.expSpecificHeat', icon: '🧪', difficulty: 'medium', tags: ['heat'], route: '', enabled: true },
+      { id: 'joule-equivalent', name: "Joule's Equivalent", nameAr: 'experiments.expJouleEquivalent', icon: '⚙️', difficulty: 'medium', tags: ['thermo'], route: '', enabled: true },
+      { id: 'boyles-law', name: "Boyle's Law", nameAr: 'experiments.expBoylesLaw', icon: '📉', difficulty: 'easy', tags: ['thermo'], route: '', enabled: true },
+      { id: 'thermal-expansion', name: 'Thermal Expansion', nameAr: 'experiments.expThermalExpansion', icon: '📏', difficulty: 'easy', tags: ['heat'], route: '', enabled: true },
+      { id: 'latent-heat', name: 'Latent Heat of Fusion', nameAr: 'experiments.expLatentHeat', icon: '🧊', difficulty: 'medium', tags: ['heat'], route: '', enabled: true },
     ],
   },
   {
@@ -79,7 +86,7 @@ export const branches: Branch[] = [
     color: '#f59e0b',
     description: 'experiments.branchElectricityDesc',
     experiments: [
-      { id: 'rc-circuit', name: 'RC Circuit', nameAr: 'experiments.expRcCircuit', icon: '🔋', difficulty: 'medium', tags: ['circuits'], route: '' },
+      { id: 'rc-circuit', name: 'RC Circuit', nameAr: 'experiments.expRcCircuit', icon: '🔋', difficulty: 'medium', tags: ['circuits'], route: '', enabled: true },
     ],
   },
   {
@@ -90,8 +97,8 @@ export const branches: Branch[] = [
     color: '#22c55e',
     description: 'experiments.branchElectromagnetismDesc',
     experiments: [
-      { id: 'biot-savart', name: 'Biot-Savart', nameAr: 'experiments.expBiotSavart', icon: '🧭', difficulty: 'hard', tags: ['magnetism'], route: '' },
-      { id: 'faraday', name: 'Faraday Induction', nameAr: 'experiments.expFaraday', icon: '⚡', difficulty: 'medium', tags: ['induction'], route: '' },
+      { id: 'biot-savart', name: 'Biot-Savart', nameAr: 'experiments.expBiotSavart', icon: '🧭', difficulty: 'hard', tags: ['magnetism'], route: '', enabled: true },
+      { id: 'faraday', name: 'Faraday Induction', nameAr: 'experiments.expFaraday', icon: '⚡', difficulty: 'medium', tags: ['induction'], route: '', enabled: true },
     ],
   },
 ];

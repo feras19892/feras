@@ -14,6 +14,7 @@ export function openLabReport(options: OpenLabReportOptions): Window | null {
   const strings = {
     dateLabel: options.strings?.dateLabel ?? 'Date',
     experimentLabel: options.strings?.experimentLabel ?? 'Experiment',
+    studentInfoHeading: options.strings?.studentInfoHeading ?? 'Student Information',
     paramsHeading: options.strings?.paramsHeading ?? 'Parameters',
     resultsHeading: options.strings?.resultsHeading ?? 'Results',
     footerHint: options.strings?.footerHint ?? 'This report was generated from the interactive simulation',
@@ -25,7 +26,7 @@ export function openLabReport(options: OpenLabReportOptions): Window | null {
   const now = new Date().toLocaleString(locale)
   const sendToTeacherScript = options.sendToTeacher ? buildSendScript(options) : ''
 
-  const studentHtml = buildStudentHtml(dir, {})
+  const studentHtml = buildStudentHtml(dir, {}, strings.studentInfoHeading)
   const metaRows = buildMetaHtml(options.meta ?? {})
   const paramsHtml = buildParamsHtml(options.params, strings.paramsHeading, dir)
   const statsHtml = buildStatsHtml(options.summaryStats, strings.resultsHeading)

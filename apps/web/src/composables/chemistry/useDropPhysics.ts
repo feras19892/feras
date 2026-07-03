@@ -57,18 +57,8 @@ export function handleDropExited(
         tLiq.indicators.push(sourceChemicalId);
         applyIndicator(sourceChemicalId, target.uid);
       }
-      if (!tLiq.label.includes('فينوفتالين') && !tLiq.label.includes('ميثيل') && !tLiq.label.includes('بروموثيمول') && !tLiq.label.includes('دليل') && !tLiq.label.includes('نشا')) {
-        const indNames: Record<string, string> = {
-          'phenolphthalein': 'فينوفتالين',
-          'methyl-orange': 'ميثيل برتقالي',
-          'bromothymol-blue': 'بروموثيمول أزرق',
-          'universal-indicator': 'دليل عالمي',
-          'starch': 'النشا',
-        };
-        const indName = indNames[sourceChemicalId] || sourceChemicalId;
-        if (!tLiq.label.includes('+')) {
-          tLiq.label = tLiq.label + ' + ' + indName;
-        }
+      if (!tLiq.label.includes(sourceChemicalId)) {
+        tLiq.label = tLiq.label + ' + ' + sourceChemicalId;
       }
     } else {
       handleDropMix({

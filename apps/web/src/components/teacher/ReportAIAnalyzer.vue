@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import { useI18n } from '../../composables/useI18n';
 import type { Report } from '../../services/report.service';
+import { analyzeReport } from '../../services/ai.service';
 
 const props = defineProps<{
   report: Report;
@@ -10,6 +11,7 @@ const props = defineProps<{
 const { t } = useI18n();
 const analyzing = ref(false);
 const aiResult = ref<string>('');
+const aiError = ref<string>('');
 
 function safeParse(str: string | undefined) {
   try { return str ? JSON.parse(str) : []; } catch { return []; }
@@ -20,7 +22,8 @@ const columns = computed(() => safeParse(props.report.columns));
 const equations = computed(() => safeParse(props.report.equations));
 const plots = computed(() => safeParse(props.report.plots));
 
-const stats = computed(() => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const _stats = computed(() => {
   const r = readings.value;
   if (!Array.isArray(r) || r.length === 0) return null;
   interface ColumnItem { type: string; key: string }
@@ -49,38 +52,30 @@ const dataQuality = computed(() => {
   return Math.min(100, score);
 });
 
-function generateAnalysis() {
+async function generateAnalysis() {
   analyzing.value = true;
-  const lines: string[] = [];
-
-  lines.push(`📊 **${t('ai.reportAnalysis')}: ${props.report.experiment_name}**`);
-  lines.push(``);
-  lines.push(`**${t('ai.studentLabel')}:** ${props.report.student_name}`);
-  lines.push(`**${t('ai.readingsCount')}:** ${readings.value.length}`);
-  lines.push(`**${t('ai.dataQuality')}:** ${dataQuality.value}%`);
-  lines.push(``);
-
-  lines.push(`✅ **${t('ai.strengths')}:**`);
-  if (readings.value.length >= 5) lines.push(`- ${t('ai.goodReadings')} (${readings.value.length})`);
-  else if (readings.value.length >= 3) lines.push(`- ${t('ai.acceptableReadings')} (${readings.value.length})`);
-  else lines.push(`- ⚠️ ${t('ai.fewReadings')} (${readings.value.length}) — ${t('ai.needMoreReadings')}`);
-
-  if (hasEquations.value) lines.push(`- ${t('ai.hasEquations')}`);
-  if (hasPlots.value) lines.push(`- ${t('ai.hasPlots')}`);
-  if (hasConclusion.value) lines.push(`- ${t('ai.hasConclusion')}`);
-  if (hasChart.value) lines.push(`- ${t('ai.hasChart')}`);
-  if (!hasEquations.value) lines.push(`- ⚠️ ${t('ai.noEquations')} — ${t('ai.addEquationsAdvice')}`);
-  if (!hasConclusion.value) lines.push(`- ⚠️ ${t('ai.noConclusion')} — ${t('ai.addAnalysisAdvice')}`);
-
-  lines.push(`**${t('ai.notes')}:**`);
-  if (stats.value && Object.keys(stats.value).length > 0) {
-    lines.push(`- ${t('ai.computedAverages')}: ${Object.entries(stats.value).map(([k, v]) => `${k}=${(v as number).toFixed(2)}`).join(', ')}`);
+  aiError.value = '';
+  try {
+    const res = await analyzeReport({
+      experiment_name: props.report.experiment_name,
+      student_name: props.report.student_name,
+      readings: props.report.readings,
+      columns: props.report.columns,
+      equations: props.report.equations,
+      plots: props.report.plots,
+      conclusion: props.report.conclusion,
+      chart_snapshot: props.report.chart_snapshot,
+    });
+    if (res.success) {
+      aiResult.value = res.analysis;
+    } else {
+      aiError.value = res.message || 'Analysis failed';
+    }
+  } catch (err) {
+    aiError.value = err instanceof Error ? err.message : 'Failed to connect to AI';
+  } finally {
+    analyzing.value = false;
   }
-
-  lines.push(`**${t('ai.gradeSuggestion')}:** ${Math.round(dataQuality.value)} / 100`);
-
-  aiResult.value = lines.join('\n');
-  analyzing.value = false;
 }
 </script>
 
@@ -91,13 +86,17 @@ function generateAnalysis() {
       <button v-if="!aiResult" class="ai-btn" :disabled="analyzing" @click="generateAnalysis">
         {{ analyzing ? '...' : t('ai.analyze') }}
       </button>
-      <button v-else class="ai-btn secondary" @click="aiResult = ''">
+      <button v-else class="ai-btn secondary" @click="aiResult = ''; aiError = ''">
         {{ t('ai.hide') }}
       </button>
     </div>
 
     <div v-if="analyzing" class="ai-loading">
       {{ t('ai.analyzing') }}
+    </div>
+
+    <div v-if="aiError" class="ai-error">
+      ⚠️ {{ aiError }}
     </div>
 
     <div v-if="aiResult" class="ai-result">
@@ -182,6 +181,14 @@ function generateAnalysis() {
   color: #94a3b8;
   font-size: 0.85rem;
   padding: 0.5rem;
+}
+.ai-error {
+  color: #f87171;
+  font-size: 0.85rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(248, 113, 113, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.15);
+  border-radius: 0.4rem;
 }
 .ai-result pre {
   background: rgba(0, 0, 0, 0.3);

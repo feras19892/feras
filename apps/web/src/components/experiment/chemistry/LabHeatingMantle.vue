@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n';
+const { t } = useI18n();
+
 interface Props {
   isOn?: boolean;
   intensity?: number;    // 0–1
@@ -86,7 +89,7 @@ const props = withDefaults(defineProps<Props>(), {
 
     <!-- Status label -->
     <div v-if="isOn" class="mantle-label on">🔥 {{ Math.round(intensity * 100) }}%</div>
-    <div v-else class="mantle-label off">⚫ إيقاف</div>
+    <div v-else class="mantle-label off">⚫ {{ t('chemistry.off') }}</div>
   </div>
 </template>
 

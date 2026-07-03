@@ -1,50 +1,9 @@
 import { liquidMap } from './useChemistryLab';
 import type { LiquidState } from '@my-modern-app/chemistry-engine';
-import { findEquation, isAcid, isBase, isIndicator } from '@my-modern-app/chemistry-engine';
-import { mixColor } from '@my-modern-app/chemistry-engine';
-// ================== ADVANCED REACTION ENGINE ==================
+import { findEquation, isAcid, isBase, isIndicator, mixColor, calculateTitrationPh } from '@my-modern-app/chemistry-engine';
 
-// Calculate pH from acid/base excess
-export function calculateTitrationPh(
-  acidVol: number,
-  acidId: string,
-  baseVol: number,
-  baseId: string,
-): number {
-  const acidStrengths: Record<string, number> = {
-    hcl: 1.0, h2so4: 2.0, hno3: 1.0, ch3cooh: 1.0,
-  };
-  const baseStrengths: Record<string, number> = {
-    naoh: 1.0, koh: 1.0, nh4oh: 1.0,
-  };
-
-  const aStr = acidStrengths[acidId] || 1.0;
-  const bStr = baseStrengths[baseId] || 1.0;
-
-  const acidMoles = acidVol * aStr;
-  const baseMoles = baseVol * bStr;
-
-  const excess = baseMoles - acidMoles;
-  const totalVol = acidVol + baseVol;
-
-  if (Math.abs(excess) < 0.001 * totalVol) return 7.0;
-
-  if (excess > 0) {
-    // Base excess
-    const oh = excess / totalVol;
-    if (oh < 0.001) return 7.0 + oh * 2000;
-    if (oh < 0.01) return 9.0 + oh * 300;
-    if (oh < 0.1) return 11.0 + oh * 20;
-    return 13.0;
-  } else {
-    // Acid excess
-    const h = Math.abs(excess) / totalVol;
-    if (h < 0.001) return 7.0 - h * 2000;
-    if (h < 0.01) return 5.0 - h * 300;
-    if (h < 0.1) return 3.0 - h * 20;
-    return 1.0;
-  }
-}
+// Re-export the engine's calculateTitrationPh so existing imports keep working
+export { calculateTitrationPh } from '@my-modern-app/chemistry-engine';
 
 // ================== INDICATOR COLOR SYSTEM ==================
 
@@ -175,7 +134,7 @@ export function handleDropMix(event: MixEvent): void {
     if (eq.resultPh !== undefined) target.ph = eq.resultPh;
     target.color = eq.color;
     target.opacity = eq.opacity;
-    target.label = `محلول متفاعل: ${eq.equation}`;
+    target.label = `REACTION:${eq.equation}`;
     target.temperature = Math.min(100, target.temperature + eq.temperatureRise);
     target.precipitate = eq.precipitate || false;
     target.gasEvolution = eq.gasEvolution || false;

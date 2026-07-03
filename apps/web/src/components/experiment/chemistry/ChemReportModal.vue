@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type { ReportData } from '../../../composables/chemistry/useExperiments';
+import { useI18n } from '../../../composables/useI18n';
+
+const { t } = useI18n();
 
 const props = defineProps<{
   data: ReportData | null;
@@ -15,47 +18,47 @@ const emit = defineEmits<{
   <div v-if="data" class="report-overlay" @click.self="emit('close')">
     <div class="report-panel">
       <div class="report-header">
-        <h2>📝 تقرير التجربة</h2>
+        <h2>{{ t('chemistryReport.reportTitle') }}</h2>
         <button class="close-btn" @click="emit('close')">✕</button>
       </div>
       <div class="report-body">
         <div class="report-section">
           <div class="report-row">
-            <span class="label">التجربة</span>
+            <span class="label">{{ t('chemistryReport.experimentLabel') }}</span>
             <span class="value">{{ data.experimentName }}</span>
           </div>
           <div class="report-row">
-            <span class="label">حجم القاعدة المستهلك</span>
+            <span class="label">{{ t('chemistryReport.consumedBaseVolume') }}</span>
             <span class="value">{{ data.consumedVolume.toFixed(2) }} mL</span>
           </div>
           <div class="report-row">
-            <span class="label">حجم الحمض</span>
+            <span class="label">{{ t('chemistryReport.acidVolume') }}</span>
             <span class="value">{{ data.acidVolume.toFixed(0) }} mL</span>
           </div>
           <div class="report-row">
-            <span class="label">تركيز القاعدة</span>
+            <span class="label">{{ t('chemistryReport.baseMolarity') }}</span>
             <span class="value">{{ data.baseMolarity.toFixed(2) }} M</span>
           </div>
           <div class="report-row highlight">
-            <span class="label">تركيز الحمض المحسوب</span>
+            <span class="label">{{ t('chemistryReport.calculatedAcidMolarity') }}</span>
             <span class="value calc">{{ data.calculatedAcidMolarity.toFixed(4) }} M</span>
           </div>
           <div class="report-row">
-            <span class="label">pH عند التكافؤ</span>
+            <span class="label">{{ t('chemistryReport.phAtEquivalence') }}</span>
             <span class="value">{{ data.phAtEquivalence !== null ? data.phAtEquivalence.toFixed(2) : '--' }}</span>
           </div>
           <div class="report-row">
-            <span class="label">اللون عند التكافؤ</span>
+            <span class="label">{{ t('chemistryReport.colorAtEquivalence') }}</span>
             <span class="value"><span class="color-dot" :style="{ background: data.colorAtEquivalence }" /></span>
           </div>
           <div class="report-row">
-            <span class="label">عدد القراءات</span>
+            <span class="label">{{ t('chemistryReport.readingsCount') }}</span>
             <span class="value">{{ data.readingsCount }}</span>
           </div>
         </div>
         <div class="report-actions">
-          <button class="restart-btn" @click="emit('restart')">🔄 إعادة التجربة</button>
-          <button class="close-btn2" @click="emit('close')">إغلاق</button>
+          <button class="restart-btn" @click="emit('restart')">{{ t('chemistryReport.restartExperiment') }}</button>
+          <button class="close-btn2" @click="emit('close')">{{ t('chemistryReport.close') }}</button>
         </div>
       </div>
     </div>

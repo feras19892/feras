@@ -1,8 +1,10 @@
 {
   "name": "my-modern-app",
   "private": true,
+  "packageManager": "pnpm@9.0.0",
+  "workspaces": ["apps/*", "packages/*"],
   "scripts": {
-    "dev": "turbo run dev",
+    "start": "node node_modules/turbo/bin/turbo run dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
@@ -10,8 +12,10 @@
     "gen": "node toolbox/generators/index.js"
   },
   "devDependencies": {
-    "turbo": "^2.0.0",
+    "turbo": "^2.10.0",
     "typescript": "^5.4.0"
   },
-  "packageManager": "pnpm@9.0.0"
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0"
+  }
 }

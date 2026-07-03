@@ -7,9 +7,9 @@ import {
   isGradCylinder, isHeatingMantle, isBunsenBurner, isBalance, isPhMeter,
   isWatchGlass, isFilterFunnel, isRubberStopper,
   isRetortStandAssembly, isBeakerClamp, isWoodenBase, isHotPlate,
-  isClampAttachable, isContainer, getMaxVolume
+  isContainer, getMaxVolume
 } from './chemLabIds';
-import { saveSession, loadSession, clearSession, saveSessionDebounced } from './useChemistrySession';
+import { loadSession, clearSession, saveSessionDebounced } from './useChemistrySession';
 import { chemicals, selectedChemical } from './chemDatabase';
 export {
   isBeaker, isTestTube, isTestTubeRack, isBurette, isPipette, isErlenmeyer,

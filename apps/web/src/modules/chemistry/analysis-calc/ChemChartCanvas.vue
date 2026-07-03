@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue';
+import { useI18n } from '../../../composables/useI18n';
+const { t } = useI18n();
 
 interface Point { x: number; y: number }
 const props = defineProps<{
@@ -28,7 +30,7 @@ function draw() {
     ctx.fillStyle = '#94a3b8';
     ctx.font = '14px sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('لا توجد بيانات', w / 2, h / 2);
+    ctx.fillText(t('chemistryLab.noData'), w / 2, h / 2);
     return;
   }
 

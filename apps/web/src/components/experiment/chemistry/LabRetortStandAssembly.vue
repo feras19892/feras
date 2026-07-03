@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
+import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import { items, retortStandMap, getBurette, getPipette, getLiquid, isBurette, isPipette, isGradCylinder } from '../../../composables/chemistry/useChemistryLab';
 import { isBeaker } from '../../../composables/chemistry/chemLabIds';
-import { bottomClampSnapUid } from '../../../composables/chemistry/useWorkspaceDrag';
+import { bottomClampSnapUid, retortStandSnapUid } from '../../../composables/chemistry/useWorkspaceDrag';
 import LabBurette from './LabBurette.vue';
 import LabPipette from './LabPipette.vue';
 import LabGradCylinder from './LabGradCylinder.vue';
@@ -34,13 +35,119 @@ const bottomClampX = computed(() => retortStandMap[props.itemUid]?.bottomClampX 
 const bottomClampY = computed(() => retortStandMap[props.itemUid]?.bottomClampY ?? 160);
 const isSnapTarget = computed(() => bottomClampSnapUid.value === props.itemUid);
 
+const isTopSnapTarget = computed(() => {
+  if (!retortStandSnapUid.value) return false;
+  const [standUid] = retortStandSnapUid.value.split('|');
+  return standUid === props.itemUid;
+});
+
+/* ---- Analog stick for top clamp (vertical only) ---- */
+const topAnalogDragging = ref(false);
+const topAnalogOffset = ref(0);
+const topAnalogStartY = ref(0);
+let topAnalogRafId: number | null = null;
+
+function runTopAnalogLoop() {
+  if (!topAnalogDragging.value || !retortStandMap[props.itemUid]) return;
+  const sign = topAnalogOffset.value > 0.5 ? 1 : topAnalogOffset.value < -0.5 ? -1 : 0;
+  if (sign !== 0) {
+    const speed = 0.15;
+    moveTopClamp(sign * speed);
+  }
+  topAnalogRafId = requestAnimationFrame(runTopAnalogLoop);
+}
+
+function onTopAnalogDown(e: MouseEvent) {
+  e.stopPropagation();
+  e.preventDefault();
+  topAnalogDragging.value = true;
+  topAnalogStartY.value = e.clientY;
+  window.addEventListener('mousemove', onTopAnalogMove);
+  window.addEventListener('mouseup', onTopAnalogUp);
+  runTopAnalogLoop();
+}
+
+function onTopAnalogMove(e: MouseEvent) {
+  if (!topAnalogDragging.value) return;
+  const dy = e.clientY - topAnalogStartY.value;
+  const maxTravel = 6;
+  topAnalogOffset.value = Math.max(-maxTravel, Math.min(maxTravel, dy));
+}
+
+function onTopAnalogUp() {
+  topAnalogDragging.value = false;
+  topAnalogOffset.value = 0;
+  if (topAnalogRafId) { cancelAnimationFrame(topAnalogRafId); topAnalogRafId = null; }
+  window.removeEventListener('mousemove', onTopAnalogMove);
+  window.removeEventListener('mouseup', onTopAnalogUp);
+}
+
+/* ---- Analog stick for bottom clamp (2D) ---- */
+const bottomAnalogDragging = ref(false);
+const bottomAnalogOffsetX = ref(0);
+const bottomAnalogOffsetY = ref(0);
+const bottomAnalogStartX = ref(0);
+const bottomAnalogStartY = ref(0);
+let bottomAnalogRafId: number | null = null;
+
+function runBottomAnalogLoop() {
+  if (!bottomAnalogDragging.value || !retortStandMap[props.itemUid]) return;
+  const dead = 2; // pixels before movement starts
+  const signX = bottomAnalogOffsetX.value > dead ? 1 : bottomAnalogOffsetX.value < -dead ? -1 : 0;
+  const signY = bottomAnalogOffsetY.value > dead ? 1 : bottomAnalogOffsetY.value < -dead ? -1 : 0;
+  // Strict single-axis movement: never mix directions
+  let moveX = 0;
+  let moveY = 0;
+  if (signX !== 0 || signY !== 0) {
+    if (Math.abs(bottomAnalogOffsetX.value) > Math.abs(bottomAnalogOffsetY.value)) {
+      moveX = signX;
+    } else {
+      moveY = signY;
+    }
+  }
+  if (moveX !== 0 || moveY !== 0) {
+    const speed = 0.15;
+    moveBottomClamp(moveX * speed, moveY * speed);
+  }
+  bottomAnalogRafId = requestAnimationFrame(runBottomAnalogLoop);
+}
+
+function onBottomAnalogDown(e: MouseEvent) {
+  e.stopPropagation();
+  e.preventDefault();
+  bottomAnalogDragging.value = true;
+  bottomAnalogStartX.value = e.clientX;
+  bottomAnalogStartY.value = e.clientY;
+  window.addEventListener('mousemove', onBottomAnalogMove);
+  window.addEventListener('mouseup', onBottomAnalogUp);
+  runBottomAnalogLoop();
+}
+
+function onBottomAnalogMove(e: MouseEvent) {
+  if (!bottomAnalogDragging.value) return;
+  const dx = e.clientX - bottomAnalogStartX.value;
+  const dy = e.clientY - bottomAnalogStartY.value;
+  const maxTravel = 6;
+  bottomAnalogOffsetX.value = Math.max(-maxTravel, Math.min(maxTravel, dx));
+  bottomAnalogOffsetY.value = Math.max(-maxTravel, Math.min(maxTravel, dy));
+}
+
+function onBottomAnalogUp() {
+  bottomAnalogDragging.value = false;
+  bottomAnalogOffsetX.value = 0;
+  bottomAnalogOffsetY.value = 0;
+  if (bottomAnalogRafId) { cancelAnimationFrame(bottomAnalogRafId); bottomAnalogRafId = null; }
+  window.removeEventListener('mousemove', onBottomAnalogMove);
+  window.removeEventListener('mouseup', onBottomAnalogUp);
+}
+
 const st = computed(() => retortStandMap[props.itemUid]);
 
 const topClampLocked = computed(() => retortStandMap[props.itemUid]?.topClampLocked ?? false);
 const bottomClampLocked = computed(() => retortStandMap[props.itemUid]?.bottomClampLocked ?? false);
 const baseLocked = computed(() => retortStandMap[props.itemUid]?.baseLocked ?? false);
 
-const FINE_STEP = 5; // pixels per arrow click
+// const FINE_STEP = 5; // pixels per arrow click — reserved for future keyboard controls
 
 function toggleTopClampLock() {
   if (!retortStandMap[props.itemUid]) return;
@@ -57,6 +164,7 @@ function toggleBaseLock() {
 
 function moveTopClamp(dy: number) {
   if (!retortStandMap[props.itemUid]) return;
+  if (topClampLocked.value) return;
   const current = retortStandMap[props.itemUid].topClampY;
   const newY = Math.max(20, Math.min(280, current + dy));
   const delta = newY - current;
@@ -69,6 +177,7 @@ function moveTopClamp(dy: number) {
 
 function moveBottomClamp(dx: number, dy: number) {
   if (!retortStandMap[props.itemUid]) return;
+  if (bottomClampLocked.value) return;
   const currentX = retortStandMap[props.itemUid].bottomClampX;
   const currentY = retortStandMap[props.itemUid].bottomClampY;
   const newX = Math.max(-100, Math.min(35, currentX + dx));
@@ -84,7 +193,8 @@ function moveBottomClamp(dx: number, dy: number) {
   }
 }
 
-function moveBase(dx: number, dy: number) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function _moveBase(dx: number, dy: number) {
   const stand = items.value.find(i => i.uid === props.itemUid);
   if (!stand) return;
   stand.x += dx;
@@ -106,7 +216,7 @@ function moveBase(dx: number, dy: number) {
 const attachedItems = computed(() => {
   const stand = st.value;
   if (!stand) return [];
-  const result: { uid: string; slotOffset: number; slotIndex: number; item: any }[] = [];
+  const result: { uid: string; slotOffset: number; slotIndex: number; item: LabItem }[] = [];
   for (let i = 0; i < stand.slotOffsets.length; i++) {
     const uid = stand.slotOccupants[i];
     if (uid) {
@@ -158,6 +268,14 @@ function onBaseOrRodMouseDown(e: MouseEvent) {
   emit('mousedown', e);
 }
 
+function onRetortStandMouseDown(e: MouseEvent) {
+  if (baseLocked.value) {
+    e.stopPropagation();
+    return;
+  }
+  emit('mousedown', e);
+}
+
 onMounted(() => {
   if (!retortStandMap[props.itemUid]) {
     retortStandMap[props.itemUid] = { leftBuretteUid: null, rightBuretteUid: null, leftContainerUid: null, rightContainerUid: null, heatingDeviceUid: null, topClampY: 60, bottomClampY: 160, bottomClampX: 0, slotOffsets: [30, 79, 128], slotOccupants: [null, null, null], bottomSlotOccupant: null, topClampLocked: true, bottomClampLocked: true, baseLocked: false };
@@ -165,10 +283,10 @@ onMounted(() => {
 });
 
 function onClampMouseDown(e: MouseEvent) {
-  if (topClampLocked.value) return;
   e.stopPropagation();
   e.stopImmediatePropagation();
   e.preventDefault();
+  if (topClampLocked.value) return;
   clampDragging.value = true;
   clampStartY.value = e.clientY;
   clampStartTop.value = clampY.value;
@@ -203,10 +321,10 @@ function onClampUp() {
 
 /* ---- Bottom clamp (ring clamp for beaker) ---- */
 function onBottomClampMouseDown(e: MouseEvent) {
-  if (bottomClampLocked.value) return;
   e.stopPropagation();
   e.stopImmediatePropagation();
   e.preventDefault();
+  if (bottomClampLocked.value) return;
   bottomClampDragging.value = true;
   bottomClampStartX.value = e.clientX;
   bottomClampStartLeft.value = bottomClampX.value;
@@ -257,11 +375,17 @@ onUnmounted(() => {
   window.removeEventListener('mouseup', onClampUp);
   window.removeEventListener('mousemove', onBottomClampMove);
   window.removeEventListener('mouseup', onBottomClampUp);
+  window.removeEventListener('mousemove', onTopAnalogMove);
+  window.removeEventListener('mouseup', onTopAnalogUp);
+  window.removeEventListener('mousemove', onBottomAnalogMove);
+  window.removeEventListener('mouseup', onBottomAnalogUp);
+  if (topAnalogRafId) cancelAnimationFrame(topAnalogRafId);
+  if (bottomAnalogRafId) cancelAnimationFrame(bottomAnalogRafId);
 });
 </script>
 
 <template>
-  <div class="retort-stand" :class="{ hovered: isHovered }" @mousedown="emit('mousedown', $event)">
+  <div class="retort-stand" :class="{ hovered: isHovered }" @mousedown="onRetortStandMouseDown">
     <!-- 1. القاعدة (Base) — bounding box خاص بها -->
     <svg class="stand-part" width="168" height="35" viewBox="0 0 168 35" style="left: 11px; top: 310px;" @mousedown.stop="onBaseOrRodMouseDown($event)">
       <defs>
@@ -291,26 +415,33 @@ onUnmounted(() => {
       <rect x="4" y="2" width="1.5" height="294" rx="0.75" fill="rgba(0,0,0,0.15)" />
     </svg>
 
-    <!-- Top clamp lock (on sleeve) -->
-    <button class="lock-btn lock-on-part" :class="{ locked: topClampLocked }" :style="{ left: '56px', top: (clampY + 6) + 'px' }" @click.stop="toggleTopClampLock" title="قفل/فتح">
-      <svg v-if="topClampLocked" width="10" height="10" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#ef4444"/><path d="M3 5V3A3 3 0 0 1 9 3V5" fill="none" stroke="#ef4444" stroke-width="1.5"/></svg>
-      <svg v-else width="10" height="10" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#10b981"/><path d="M3 5V3A3 3 0 0 1 9 3" fill="none" stroke="#10b981" stroke-width="1.5"/></svg>
-    </button>
-
-    <!-- Top clamp vertical D-pad -->
-    <div class="control-group" :style="{ left: '0px', top: (clampY - 2) + 'px' }">
-      <div class="dpad dpad-vertical">
-        <button class="dpad-btn dpad-up" @click.stop="moveTopClamp(-FINE_STEP)" title="↑">
-          <svg width="8" height="8" viewBox="0 0 8 8"><path d="M4 1 L7 5.5 L1 5.5 Z" fill="currentColor"/></svg>
-        </button>
-        <button class="dpad-btn dpad-down" @click.stop="moveTopClamp(FINE_STEP)" title="↓">
-          <svg width="8" height="8" viewBox="0 0 8 8"><path d="M4 7 L7 2.5 L1 2.5 Z" fill="currentColor"/></svg>
-        </button>
+    <!-- Top clamp controls (left side row) -->
+    <div class="control-row" :style="{ left: '2px', top: (clampY + 4) + 'px' }">
+      <div class="analog-wrapper" :class="{ 'analog-active': topAnalogDragging, 'analog-locked': topClampLocked }" @mousedown.stop="onTopAnalogDown($event)">
+        <svg class="analog" width="20" height="20" viewBox="0 0 20 20">
+          <defs>
+            <radialGradient id="ajBase" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0%" stop-color="#374151"/>
+              <stop offset="100%" stop-color="#111827"/>
+            </radialGradient>
+            <radialGradient id="ajKnob" cx="0.3" cy="0.3" r="0.6">
+              <stop offset="0%" stop-color="#d1d5db"/>
+              <stop offset="60%" stop-color="#6b7280"/>
+              <stop offset="100%" stop-color="#374151"/>
+            </radialGradient>
+          </defs>
+          <circle cx="10" cy="10" r="9" fill="url(#ajBase)" stroke="#4b5563" stroke-width="0.5"/>
+          <circle :cx="10" :cy="10 + (topAnalogOffset * 0.6)" r="3.5" fill="url(#ajKnob)"/>
+        </svg>
       </div>
+      <button class="lock-btn" :class="{ locked: topClampLocked }" @click.stop="toggleTopClampLock" title="قفل/فتح">
+        <svg v-if="topClampLocked" width="10" height="10" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#ef4444"/><path d="M3 5V3A3 3 0 0 1 9 3V5" fill="none" stroke="#ef4444" stroke-width="1.5"/></svg>
+        <svg v-else width="10" height="10" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#10b981"/><path d="M3 5V3A3 3 0 0 1 9 3" fill="none" stroke="#10b981" stroke-width="1.5"/></svg>
+      </button>
     </div>
 
     <!-- 3. المشبك العلوي (Top Clamp) — bounding box خاص بها -->
-    <svg class="stand-part clamp-part" width="172" height="28" viewBox="0 0 172 28" :style="{ left: '54px', top: clampY + 'px' }" @mousedown="onClampMouseDown">
+    <svg class="stand-part clamp-part" :class="{ 'snap-target': isTopSnapTarget }" width="172" height="28" viewBox="0 0 172 28" :style="{ left: '54px', top: clampY + 'px' }" @mousedown="onClampMouseDown">
       <rect x="0" y="10" width="158" height="8" rx="2" fill="#374151" stroke="#4b5563" stroke-width="0.5" />
       <rect x="0" y="15" width="158" height="3" rx="1" fill="rgba(0,0,0,0.25)" />
       <rect x="158" y="0" width="14" height="28" rx="3" fill="#1f2937" stroke="#4b5563" stroke-width="1" />
@@ -318,32 +449,32 @@ onUnmounted(() => {
       <circle cx="30" cy="14" r="2.5" fill="#ef4444" stroke="#b91c1c" stroke-width="0.5" />
       <circle cx="79" cy="14" r="2.5" fill="#ef4444" stroke="#b91c1c" stroke-width="0.5" />
       <circle cx="128" cy="14" r="2.5" fill="#ef4444" stroke="#b91c1c" stroke-width="0.5" />
+      <text v-if="isTopSnapTarget" x="86" y="12" fill="#22c55e" font-size="9" font-weight="bold" text-anchor="middle" style="pointer-events:none">Snap!</text>
     </svg>
 
-    <!-- Bottom clamp lock (on sleeve) -->
-    <button class="lock-btn lock-on-part" :class="{ locked: bottomClampLocked }" :style="{ left: '47px', top: (bottomClampY + 6) + 'px' }" @click.stop="toggleBottomClampLock" title="قفل/فتح">
-      <svg v-if="bottomClampLocked" width="10" height="10" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#ef4444"/><path d="M3 5V3A3 3 0 0 1 9 3V5" fill="none" stroke="#ef4444" stroke-width="1.5"/></svg>
-      <svg v-else width="10" height="10" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#10b981"/><path d="M3 5V3A3 3 0 0 1 9 3" fill="none" stroke="#10b981" stroke-width="1.5"/></svg>
-    </button>
-
-    <!-- Bottom clamp cross D-pad -->
-    <div class="control-group" :style="{ left: '0px', top: (bottomClampY - 10) + 'px' }">
-      <div class="dpad">
-        <button class="dpad-btn dpad-up" @click.stop="moveBottomClamp(0, -FINE_STEP)" title="↑">
-          <svg width="8" height="8" viewBox="0 0 8 8"><path d="M4 1 L7 5.5 L1 5.5 Z" fill="currentColor"/></svg>
-        </button>
-        <div class="dpad-mid">
-          <button class="dpad-btn dpad-left" @click.stop="moveBottomClamp(-FINE_STEP, 0)" title="←">
-            <svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 4 L5.5 1 L5.5 7 Z" fill="currentColor"/></svg>
-          </button>
-          <button class="dpad-btn dpad-right" @click.stop="moveBottomClamp(FINE_STEP, 0)" title="→">
-            <svg width="8" height="8" viewBox="0 0 8 8"><path d="M7 4 L2.5 1 L2.5 7 Z" fill="currentColor"/></svg>
-          </button>
-        </div>
-        <button class="dpad-btn dpad-down" @click.stop="moveBottomClamp(0, FINE_STEP)" title="↓">
-          <svg width="8" height="8" viewBox="0 0 8 8"><path d="M4 7 L7 2.5 L1 2.5 Z" fill="currentColor"/></svg>
-        </button>
+    <!-- Bottom clamp controls (left side row) -->
+    <div class="control-row" :style="{ left: '2px', top: (bottomClampY + 4) + 'px' }">
+      <div class="analog-wrapper" :class="{ 'analog-active': bottomAnalogDragging, 'analog-locked': bottomClampLocked }" @mousedown.stop="onBottomAnalogDown($event)">
+        <svg class="analog" width="20" height="20" viewBox="0 0 20 20">
+          <defs>
+            <radialGradient id="ajBase2" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0%" stop-color="#374151"/>
+              <stop offset="100%" stop-color="#111827"/>
+            </radialGradient>
+            <radialGradient id="ajKnob2" cx="0.3" cy="0.3" r="0.6">
+              <stop offset="0%" stop-color="#d1d5db"/>
+              <stop offset="60%" stop-color="#6b7280"/>
+              <stop offset="100%" stop-color="#374151"/>
+            </radialGradient>
+          </defs>
+          <circle cx="10" cy="10" r="9" fill="url(#ajBase2)" stroke="#4b5563" stroke-width="0.5"/>
+          <circle :cx="10 + (bottomAnalogOffsetX * 0.6)" :cy="10 + (bottomAnalogOffsetY * 0.6)" r="3.5" fill="url(#ajKnob2)"/>
+        </svg>
       </div>
+      <button class="lock-btn" :class="{ locked: bottomClampLocked }" @click.stop="toggleBottomClampLock" title="قفل/فتح">
+        <svg v-if="bottomClampLocked" width="10" height="10" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#ef4444"/><path d="M3 5V3A3 3 0 0 1 9 3V5" fill="none" stroke="#ef4444" stroke-width="1.5"/></svg>
+        <svg v-else width="10" height="10" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#10b981"/><path d="M3 5V3A3 3 0 0 1 9 3" fill="none" stroke="#10b981" stroke-width="1.5"/></svg>
+      </button>
     </div>
 
     <!-- 3b. المشبك السفلي (Bottom Ring Clamp) — bounding box خاص بها -->
@@ -406,30 +537,12 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- Base lock (on rod above base) -->
-    <button class="lock-btn lock-on-part" :class="{ locked: baseLocked }" style="left: 44px; top: 305px;" @click.stop="toggleBaseLock" title="قفل/فتح">
-      <svg v-if="baseLocked" width="10" height="10" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#ef4444"/><path d="M3 5V3A3 3 0 0 1 9 3V5" fill="none" stroke="#ef4444" stroke-width="1.5"/></svg>
-      <svg v-else width="10" height="10" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#10b981"/><path d="M3 5V3A3 3 0 0 1 9 3" fill="none" stroke="#10b981" stroke-width="1.5"/></svg>
-    </button>
-
-    <!-- Base cross D-pad (below base since base is wide) -->
-    <div class="control-group" style="left: 0px; top: 348px;">
-      <div class="dpad">
-        <button class="dpad-btn dpad-up" @click.stop="moveBase(0, -FINE_STEP)" title="↑">
-          <svg width="8" height="8" viewBox="0 0 8 8"><path d="M4 1 L7 5.5 L1 5.5 Z" fill="currentColor"/></svg>
-        </button>
-        <div class="dpad-mid">
-          <button class="dpad-btn dpad-left" @click.stop="moveBase(-FINE_STEP, 0)" title="←">
-            <svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 4 L5.5 1 L5.5 7 Z" fill="currentColor"/></svg>
-          </button>
-          <button class="dpad-btn dpad-right" @click.stop="moveBase(FINE_STEP, 0)" title="→">
-            <svg width="8" height="8" viewBox="0 0 8 8"><path d="M7 4 L2.5 1 L2.5 7 Z" fill="currentColor"/></svg>
-          </button>
-        </div>
-        <button class="dpad-btn dpad-down" @click.stop="moveBase(0, FINE_STEP)" title="↓">
-          <svg width="8" height="8" viewBox="0 0 8 8"><path d="M4 7 L7 2.5 L1 2.5 Z" fill="currentColor"/></svg>
-        </button>
-      </div>
+    <!-- Base controls (left side row) -->
+    <div class="control-row" style="left: -2px; top: 320px;">
+      <button class="lock-btn" :class="{ locked: baseLocked }" @click.stop="toggleBaseLock" title="قفل/فتح">
+        <svg v-if="baseLocked" width="10" height="10" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#ef4444"/><path d="M3 5V3A3 3 0 0 1 9 3V5" fill="none" stroke="#ef4444" stroke-width="1.5"/></svg>
+        <svg v-else width="10" height="10" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="6" rx="1" fill="#10b981"/><path d="M3 5V3A3 3 0 0 1 9 3" fill="none" stroke="#10b981" stroke-width="1.5"/></svg>
+      </button>
     </div>
 
     <!-- 5. البيكر الملتصق بالمشبك السفلي -->
@@ -464,6 +577,7 @@ onUnmounted(() => {
   position: relative;
   width: 190px;
   height: 350px;
+  overflow: visible;
 }
 .stand-part {
   position: absolute;
@@ -493,21 +607,20 @@ onUnmounted(() => {
   stroke-width: 3;
 }
 
-/* Lock & Arrow Controls */
-.control-group {
+/* Left-side control rows */
+.control-row {
   position: absolute;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 2px;
-  z-index: 10;
+  gap: 4px;
+  z-index: 20;
   pointer-events: auto;
 }
 .lock-btn {
-  width: 14px;
-  height: 14px;
+  width: 10px;
+  height: 10px;
   border: none;
-  border-radius: 4px;
+  border-radius: 2px;
   background: linear-gradient(145deg, #f8fafc 0%, #e2e8f0 100%);
   cursor: pointer;
   display: flex;
@@ -516,54 +629,35 @@ onUnmounted(() => {
   padding: 0;
   box-shadow: 0 1px 2px rgba(0,0,0,0.12);
   transition: transform 0.1s;
+  flex-shrink: 0;
 }
 .lock-btn:hover {
-  transform: scale(1.08);
+  transform: scale(1.1);
 }
 .lock-btn.locked {
   background: linear-gradient(145deg, #fee2e2 0%, #fca5a5 100%);
 }
-.lock-on-part {
-  position: absolute;
-  z-index: 11;
+/* Analog stick */
+.analog-wrapper {
+  width: 20px;
+  height: 20px;
+  cursor: grab;
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+  transition: opacity 0.15s, transform 0.15s;
 }
-/* 3D D-Pad Controls */
-.dpad {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1px;
+.analog-wrapper:active {
+  cursor: grabbing;
 }
-.dpad-vertical {
-  gap: 1px;
+.analog-wrapper.analog-active {
+  opacity: 0.7;
+  transform: scale(0.92);
 }
-.dpad-mid {
-  display: flex;
-  gap: 1px;
+.analog-wrapper.analog-locked {
+  cursor: not-allowed;
+  opacity: 0.4;
 }
-.dpad-btn {
-  width: 12px;
-  height: 12px;
-  border: none;
-  border-radius: 50%;
-  background: linear-gradient(145deg, #f1f5f9 0%, #cbd5e1 100%);
-  color: #475569;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  box-shadow:
-    inset 0 1px 1px rgba(255,255,255,0.8),
-    0 1px 2px rgba(0,0,0,0.12);
-  transition: transform 0.1s;
-}
-.dpad-btn:hover {
-  background: linear-gradient(145deg, #e0f2fe 0%, #7dd3fc 100%);
-  color: #0369a1;
-  transform: scale(1.15);
-}
-.dpad-btn:active {
-  transform: scale(0.88);
+.analog {
+  display: block;
 }
 </style>

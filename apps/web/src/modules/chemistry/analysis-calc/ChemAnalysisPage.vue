@@ -9,6 +9,7 @@ import ChemAnalysisTabs from './ChemAnalysisTabs.vue';
 import ChemDataTab from './ChemDataTab.vue';
 import ChemAnalysisTab from './ChemAnalysisTab.vue';
 import ChemReportTab from './ChemReportTab.vue';
+import SubmitReportModal from '../../../components/experiment/SubmitReportModal.vue';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -74,7 +75,7 @@ async function printReport() {
 
 function exportCsv() {
   if (!readings.value.length) return;
-  const headers = columns.value.map(c => `${c.label}${c.unit ? ` (${c.unit})` : ''}`).join(',');
+  const headers = ['#', ...columns.value.map(c => `${c.label}${c.unit ? ` (${c.unit})` : ''}`)].join(',');
   const rows = readings.value.map((r, i) => [i + 1, ...columns.value.map(c => r[c.key] ?? '')].join(','));
   const meta = [`Experiment: ${sourceName.value}`, `Date: ${reportDate.value}`, `Student: ${studentInfo.value.name}`, ''];
   const csv = ['\uFEFF' + [...meta, headers, ...rows].join('\n')];
@@ -129,7 +130,7 @@ async function sendToTeacher() {
 function loadDemoData() {
   store.setPayload({
     sourceExperiment: 'titration-demo',
-    sourceNameAr: 'معايرة HCl - NaOH',
+    sourceNameAr: t('chemistryLab.sourceNameAr'),
     readings: [
       { vAdded: 0.0, ph: 1.0, temperature: 25.0 },
       { vAdded: 5.0, ph: 1.3, temperature: 25.2 },
@@ -151,33 +152,33 @@ function loadDemoData() {
       { vAdded: 30.0, ph: 12.8, temperature: 27.5 },
     ],
     columns: [
-      { key: 'vAdded', label: 'حجم القاعدة المضافة', unit: 'mL' },
+      { key: 'vAdded', label: t('chemistryLab.addedBaseVolume'), unit: 'mL' },
       { key: 'ph', label: 'pH', unit: '' },
-      { key: 'temperature', label: 'درجة الحرارة', unit: '°C' },
+      { key: 'temperature', label: t('chemistryLab.temperatureLabel'), unit: '°C' },
     ],
     equations: [
       {
-        name: 'حساب التركيز',
+        name: t('chemistryLab.concentrationCalc'),
         formula: 'M_acid = (M_base * V_eq) / V_acid',
         variables: [
-          { symbol: 'M_base', label: 'تركيز القاعدة المعروف', value: 0.1 },
-          { symbol: 'V_eq', label: 'حجم التعادل', value: 24.1 },
-          { symbol: 'V_acid', label: 'حجم الحمض', value: 25.0 },
+          { symbol: 'M_base', label: t('chemistryLab.baseConcentrationKnown'), value: 0.1 },
+          { symbol: 'V_eq', label: t('chemistryLab.equivalenceVolume'), value: 24.1 },
+          { symbol: 'V_acid', label: t('chemistryLab.acidVolume'), value: 25.0 },
         ],
         solveFor: ['M_acid'],
       },
       {
-        name: 'حساب pH',
+        name: t('chemistryLab.phCalc'),
         formula: 'pH = -log10(H)',
         variables: [
-          { symbol: 'H', label: 'تركيز H+', value: 1e-7 },
+          { symbol: 'H', label: t('chemistryLab.hPlusLabel'), value: 1e-7 },
         ],
         solveFor: ['pH'],
       },
     ],
     suggestedPlots: [
-      { xKey: 'vAdded', yKey: 'ph', xLabel: 'حجم القاعدة (mL)', yLabel: 'pH', type: 'scatter' as const },
-      { xKey: 'vAdded', yKey: 'temperature', xLabel: 'حجم القاعدة (mL)', yLabel: 'درجة الحرارة (°C)', type: 'line' as const },
+      { xKey: 'vAdded', yKey: 'ph', xLabel: t('chemistryLab.baseVolume'), yLabel: 'pH', type: 'scatter' as const },
+      { xKey: 'vAdded', yKey: 'temperature', xLabel: t('chemistryLab.baseVolume'), yLabel: t('chemistryLab.temperatureLabel'), type: 'line' as const },
     ],
   });
 }
@@ -193,7 +194,7 @@ function loadDemoData() {
         <p>{{ t('experiments.noDataSentYet') }}</p>
         <p class="hint">{{ t('experiments.goToExperimentRecordReadings') }}</p>
         <button class="btn-action" @click="goBack">{{ t('experiments.backToExperiments') }}</button>
-        <button class="btn-action demo-btn" @click="loadDemoData">📊 تحميل بيانات تجريبية (معايرة)</button>
+        <button class="btn-action demo-btn" @click="loadDemoData">{{ t('chemistryLab.loadDemo') }}</button>
       </div>
     </div>
 
@@ -246,6 +247,26 @@ function loadDemoData() {
         </Transition>
       </div>
     </template>
+
+    <SubmitReportModal
+      v-model:show="reportOpen"
+      experiment-type="chemistry"
+      :experiment-name="sourceName || t('experiments.chemistryExperiment')"
+      :readings="JSON.stringify(readings)"
+      :params="JSON.stringify(columns.map((c: any) => ({ key: c.key, label: c.label, unit: c.unit })))"
+      :student-info="JSON.stringify(studentInfo)"
+      :conclusion="JSON.stringify(conclusionData)"
+      :columns="JSON.stringify(columns)"
+      :equations="JSON.stringify(equations)"
+      :plots="JSON.stringify(plots)"
+      :chart-snapshot="chartSnapshot"
+      :solved-equations="JSON.stringify(solvedEquations)"
+      :regression-data="JSON.stringify(regressionData)"
+      :slope-calc-data="JSON.stringify(slopeCalcData)"
+      :axes-data="JSON.stringify(axesData)"
+      :error-calc-data="JSON.stringify(errorCalcData)"
+      @submitted="reportOpen = false"
+    />
   </div>
 </template>
 

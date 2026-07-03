@@ -6,6 +6,8 @@ import ExperimentStepsPanel from './ExperimentStepsPanel.vue';
 import type { Experiment } from '../../../composables/chemistry/useExperiments';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import type { ToolState } from './InspectorPanel.vue';
+import { useI18n } from '../../../composables/useI18n';
+const { t } = useI18n();
 
 const props = defineProps<{
   selectedItem: LabItem | null;
@@ -26,9 +28,9 @@ const emit = defineEmits<{
 <template>
   <aside class="panel panel-right">
     <div class="panel-header">
-      <span>🔬 لوحة المعلومات</span>
-      <button class="reset-btn" @click="emit('resetLab')" title="تصفير المختبر">
-        🔄 تصفير
+      <span>{{ t('chemistryLab.infoPanel') }}</span>
+      <button class="reset-btn" @click="emit('resetLab')" :title="t('chemistryLab.resetLab')">
+        {{ t('chemistryLab.reset') }}
       </button>
     </div>
     <LabStatsPanel :item="selectedItem" />

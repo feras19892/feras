@@ -17,7 +17,7 @@ async function monkeyClick(page: Page, iterations: number) {
 }
 
 async function monkeyType(page: Page, iterations: number) {
-  const inputs = await page.locator('input, textarea').all()
+  const inputs = await page.locator('input:not([type="range"]):not([type="checkbox"]):not([type="radio"]), textarea').all()
   for (let i = 0; i < Math.min(iterations, inputs.length); i++) {
     const input = inputs[i]
     await input.click()

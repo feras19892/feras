@@ -1,9 +1,19 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
+import Inspect from 'vite-plugin-inspect';
+import VueDevtools from 'vite-plugin-vue-devtools';
 import { fileURLToPath, URL } from 'node:url';
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    Inspect({
+      enabled: true,
+      build: true,
+      outputDir: '.vite-inspect',
+    }),
+    VueDevtools({ launchEditor: 'code' }),
+  ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

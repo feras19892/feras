@@ -1,4 +1,5 @@
 import { computed, reactive } from 'vue'
+import { useAnomalyWatcher } from '../../../../composables/experiment/useAnomalyWatcher'
 import { computeDragAcceleration } from '../../../../composables/pendulum/usePendulumDrag'
 
 export interface PendulumParams {
@@ -27,6 +28,7 @@ export interface PendulumState {
 }
 
 export function usePendulumPhysics(params: PendulumParams) {
+  const watcher = useAnomalyWatcher('pendulum')
   const state = reactive<PendulumState>({
     running: false, paused: false, t: 0,
     theta: params.theta0, omega: 0,
@@ -86,6 +88,8 @@ export function usePendulumPhysics(params: PendulumParams) {
     }
     state.signalSeries = [...state.signalSeries.slice(-1499), { t: state.t, theta: state.theta }]
     if (params.damping > 0.001 && state.t > 0.3 && Math.abs(state.theta) < 0.01 && Math.abs(state.omega) < 0.005) stop()
+
+    watcher.inspect({ t: state.t, theta: state.theta, omega: state.omega, mass: params.mass })
   }
 
   function start() {

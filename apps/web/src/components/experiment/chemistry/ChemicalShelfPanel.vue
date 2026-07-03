@@ -2,24 +2,32 @@
 import { ref, computed } from 'vue';
 import type { Chemical, ChemicalCategory } from '../../../composables/chemistry/useChemistryLab';
 import { chemicals, selectedChemical, pendingChemicalFill } from '../../../composables/chemistry/useChemistryLab';
+import { useI18n } from '../../../composables/useI18n';
+import { useChemicalLocale } from '../../../composables/chemistry/useChemicalLocale';
 import ChemicalCard from './ChemicalCard.vue';
 
+const { getName, getDesc } = useChemicalLocale();
+
 const emit = defineEmits<{ chemicalClick: [chem: Chemical] }>();
+const { t } = useI18n();
 
 const search = ref('');
 const activeCategory = ref<ChemicalCategory | 'all'>('all');
 
-const categoryLabels: Record<ChemicalCategory, string> = {
-  acid: '● أحماض',
-  base: '● قواعد',
-  salt: '● أملاح',
-  solvent: '● مذيبات',
-  indicator: '● كواشف',
-  solid: '● مواد صلبة',
-  gas: '● غازات',
-};
+function getCategoryLabel(cat: ChemicalCategory): string {
+  const map: Record<ChemicalCategory, string> = {
+    acid: t('chemistryShelf.acid'),
+    base: t('chemistryShelf.base'),
+    salt: t('chemistryShelf.salt'),
+    solvent: t('chemistryShelf.solvent'),
+    indicator: t('chemistryShelf.indicator'),
+    solid: t('chemistryShelf.solid'),
+    gas: t('chemistryShelf.gas'),
+  };
+  return map[cat];
+}
 
-const categories = Object.entries(categoryLabels) as [ChemicalCategory, string][];
+const categories = computed(() => (['acid', 'base', 'salt', 'solvent', 'indicator', 'solid', 'gas'] as ChemicalCategory[]).map(key => [key, getCategoryLabel(key)] as [ChemicalCategory, string]));
 
 const filteredChemicals = computed(() => {
   let list = chemicals;
@@ -29,7 +37,7 @@ const filteredChemicals = computed(() => {
   const q = search.value.trim().toLowerCase();
   if (q) {
     list = list.filter(c =>
-      c.nameAr.includes(q) ||
+      getName(c.id).toLowerCase().includes(q) ||
       c.formula.toLowerCase().includes(q) ||
       c.id.includes(q)
     );
@@ -38,10 +46,7 @@ const filteredChemicals = computed(() => {
 });
 
 function onCardClick(chem: Chemical) {
-  selectedChemical.id = chem.id;
-  selectedChemical.nameAr = chem.nameAr;
-  selectedChemical.color = chem.color;
-  selectedChemical.opacity = chem.opacity;
+  Object.assign(selectedChemical, chem);
   emit('chemicalClick', chem);
 }
 </script>
@@ -53,15 +58,15 @@ function onCardClick(chem: Chemical) {
       <input
         v-model="search"
         type="text"
-        placeholder="🔍 ابحث باسم أو صيغة..."
+        :placeholder="t('chemistryShelf.searchPlaceholder')"
         class="search-input"
       />
     </div>
 
     <!-- Pending fill banner -->
     <div v-if="pendingChemicalFill" class="pending-banner">
-      <span>⚡ اختر محلول للإضافة من الجدول</span>
-      <button class="cancel-btn" @click="pendingChemicalFill = null">❌ إلغاء</button>
+      <span>{{ t('chemistryShelf.selectSolutionFromTable') }}</span>
+      <button class="cancel-btn" @click="pendingChemicalFill = null">{{ t('chemistryShelf.cancel') }}</button>
     </div>
 
     <!-- Category filter -->
@@ -71,7 +76,7 @@ function onCardClick(chem: Chemical) {
         :class="{ active: activeCategory === 'all' }"
         @click="activeCategory = 'all'"
       >
-        الكل
+        {{ t('chemistryShelf.all') }}
       </button>
       <button
         v-for="[key, label] in categories"
@@ -99,19 +104,19 @@ function onCardClick(chem: Chemical) {
     <!-- Selected detail -->
     <div v-if="selectedChemical.id" class="selected-detail">
       <div class="detail-row">
-        <b>{{ selectedChemical.nameAr }}</b>
+        <b>{{ getName(selectedChemical.id) }}</b>
         <span class="detail-formula">{{ selectedChemical.formula }}</span>
       </div>
       <div class="detail-row">
-        <span>الفئة</span>
-        <span>{{ (selectedChemical as Chemical).category ? categoryLabels[(selectedChemical as Chemical).category] : '' }}</span>
+        <span>{{ t('chemistryShelf.category') }}</span>
+        <span>{{ (selectedChemical as Chemical).category ? getCategoryLabel((selectedChemical as Chemical).category) : '' }}</span>
       </div>
       <div class="detail-row">
-        <span>الحالة</span>
-        <span class="state-tag">{{ selectedChemical.physicalState === 'liquid' ? 'سائل' : selectedChemical.physicalState === 'solid' ? 'صلب' : 'غاز' }}</span>
+        <span>{{ t('chemistryShelf.state') }}</span>
+        <span class="state-tag">{{ selectedChemical.physicalState === 'liquid' ? t('chemistryShelf.liquid') : selectedChemical.physicalState === 'solid' ? t('chemistryShelf.solidState') : t('chemistryShelf.gasState') }}</span>
       </div>
       <div v-if="selectedChemical.concentration !== undefined" class="detail-row">
-        <span>التركيز</span>
+        <span>{{ t('chemistryShelf.concentration') }}</span>
         <span>{{ selectedChemical.concentration }} M</span>
       </div>
       <div v-if="selectedChemical.ph !== undefined" class="detail-row">
@@ -119,15 +124,15 @@ function onCardClick(chem: Chemical) {
         <span>{{ selectedChemical.ph }}</span>
       </div>
       <div v-if="selectedChemical.density !== undefined" class="detail-row">
-        <span>الكثافة</span>
+        <span>{{ t('chemistryShelf.density') }}</span>
         <span>{{ selectedChemical.density }} g/mL</span>
       </div>
       <div v-if="selectedChemical.boilingPoint !== undefined" class="detail-row">
-        <span>ن.غليان</span>
+        <span>{{ t('chemistryShelf.boilingPoint') }}</span>
         <span>{{ selectedChemical.boilingPoint }}°C</span>
       </div>
       <div v-if="selectedChemical.description" class="detail-desc">
-        {{ selectedChemical.description }}
+        {{ getDesc(selectedChemical.id) }}
       </div>
     </div>
   </div>

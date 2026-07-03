@@ -7,7 +7,7 @@ export function handleDropMixWithRecording(event: MixEvent): void {
   handleDropMix(event);
   const after = getLiquid(event.targetUid);
   if (after && after.ph !== null && after.ph !== undefined && beforePh !== after.ph) {
-    const totalAdded = Object.values(after.reactants || {}).reduce((a, b) => a + b, 0);
-    recordTitrationStep(event.targetUid, totalAdded);
+    const vAdded = after.reactants?.[event.sourceChemicalId] || 0;
+    recordTitrationStep(event.targetUid, vAdded);
   }
 }

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n';
+const { t } = useI18n();
+
 const props = defineProps<{
   canUndo: boolean;
   canRedo: boolean;
@@ -16,10 +19,10 @@ const emit = defineEmits<{
 
 <template>
   <div class="workspace-actions">
-    <button class="action-btn undo" :disabled="!canUndo" @click="emit('undo')" title="تراجع (خطوة كاملة)">↩️ تراجع</button>
-    <button class="action-btn step-undo" :disabled="!canStepUndo" @click="emit('stepUndo')" title="تراجع نقطة (0.05 mL)">◀️ نقطة</button>
-    <button class="action-btn step-redo" :disabled="!canStepRedo" @click="emit('stepRedo')" title="تقدم نقطة (0.05 mL)">▶️ نقطة</button>
-    <button class="action-btn redo" :disabled="!canRedo" @click="emit('redo')" title="تقدم (خطوة كاملة)">↪️ تقدم</button>
+    <button class="action-btn undo" :disabled="!canUndo" @click="emit('undo')" :title="t('chemistryLab.undoFull')">{{ t('chemistryLab.undoFull') }}</button>
+    <button class="action-btn step-undo" :disabled="!canStepUndo" @click="emit('stepUndo')" :title="t('chemistryLab.undoStep')">{{ t('chemistryLab.undoStep') }}</button>
+    <button class="action-btn step-redo" :disabled="!canStepRedo" @click="emit('stepRedo')" :title="t('chemistryLab.redoStep')">{{ t('chemistryLab.redoStep') }}</button>
+    <button class="action-btn redo" :disabled="!canRedo" @click="emit('redo')" :title="t('chemistryLab.redoFull')">{{ t('chemistryLab.redoFull') }}</button>
   </div>
 </template>
 

@@ -1,9 +1,36 @@
 import { ref, reactive, computed, watch } from 'vue'
+import { useAnomalyWatcher } from '../experiment/useAnomalyWatcher'
 import { usePrismLayout } from './usePrismLayout'
 import { usePrismTrials } from './usePrismTrials'
 import { calculatePrismAngles, linearRegression, getMaterialList } from './usePrismCalculations'
 
 export function usePrismExperiment() {
+  const watcher = useAnomalyWatcher('prism', [
+    {
+      name: 'nan-infinity',
+      check: (s) => Object.values(s).some((v) => typeof v === 'number' && (!Number.isFinite(v))),
+      severity: 'fatal',
+      message: 'NaN or Infinity detected in prism calculation',
+    },
+    {
+      name: 'negative-refractive-index',
+      check: (s) => (s.n !== undefined && typeof s.n === 'number' && s.n < 0),
+      severity: 'error',
+      message: 'Negative refractive index (n < 0)',
+    },
+    {
+      name: 'invalid-prism-angle',
+      check: (s) => (s.prismAngle !== undefined && typeof s.prismAngle === 'number' && (s.prismAngle <= 0 || s.prismAngle >= 180)),
+      severity: 'error',
+      message: 'Prism angle outside valid range (0°, 180°)',
+    },
+    {
+      name: 'impossible-deviation',
+      check: (s) => (s.deviation !== undefined && typeof s.deviation === 'number' && Math.abs(s.deviation) > 180),
+      severity: 'warn',
+      message: 'Deviation angle exceeds 180° — check incidence angle',
+    },
+  ])
   const layout = usePrismLayout()
 
   const params = reactive({
@@ -24,6 +51,19 @@ export function usePrismExperiment() {
   const colWidths = reactive({ data: 280, ctrl: 280 })
 
   const angles = computed(() => calculatePrismAngles(params.prismAngle, params.angleIncidence, params.wavelength, params.material))
+
+  // Anomaly check after every angle recalculation
+  watcher.inspect({
+    prismAngle: params.prismAngle,
+    angleIncidence: params.angleIncidence,
+    wavelength: params.wavelength,
+    n: angles.value.n,
+    angleRefraction1: angles.value.angleRefraction1,
+    angleIncidence2: angles.value.angleIncidence2,
+    angleEmergence: angles.value.angleEmergence,
+    deviation: angles.value.deviation,
+    tir: angles.value.tir,
+  })
 
   const angleRefraction1 = computed(() => angles.value.angleRefraction1)
   const angleIncidence2 = computed(() => angles.value.angleIncidence2)

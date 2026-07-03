@@ -74,9 +74,8 @@ test.describe('Performance & Memory Leak', () => {
 
     for (let run = 0; run < 5; run++) {
       await page.click('text=بدء')
-      await page.waitForTimeout(1000)
-      await page.click('text=توقف')
-      await page.waitForTimeout(200)
+      // انتظر الاصطدام التلقائي ثم توقف المحاكاة
+      await page.waitForTimeout(2000)
 
       const mem = await page.evaluate(() => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment

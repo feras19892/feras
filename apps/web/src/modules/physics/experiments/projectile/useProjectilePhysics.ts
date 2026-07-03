@@ -1,4 +1,5 @@
 import { computed, reactive } from 'vue'
+import { useAnomalyWatcher } from '../../../../composables/experiment/useAnomalyWatcher'
 import { calcFlightTime, calcMaxHeight, calcRange } from './projectileTheoretical'
 
 export interface ProjectileParams {
@@ -38,6 +39,7 @@ export interface ProjectileState {
 }
 
 export function useProjectilePhysics(params: ProjectileParams) {
+  const watcher = useAnomalyWatcher('projectile')
   const state = reactive<ProjectileState>({
     running: false,
     paused: false,
@@ -109,6 +111,8 @@ export function useProjectilePhysics(params: ProjectileParams) {
     if (state.trail.length > 2000) state.trail.shift()
 
     state.signalSeries = [...state.signalSeries.slice(-1499), { t: state.t, vx: state.vx, vy: state.vy }]
+
+    watcher.inspect({ t: state.t, x: state.x, y: state.y, vx: state.vx, vy: state.vy })
   }
 
   function start() {

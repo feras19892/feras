@@ -45,7 +45,7 @@ function decSpeed() {
     <button class="btn-undo" :disabled="!canUndo" @click="$emit('undo')" :title="t('experiments.undoBtn') + ' (Ctrl+Z)'">&#x21A9; {{ t('experiments.undoBtn') }}</button>
     <button class="btn-undo" :disabled="!canRedo" @click="$emit('redo')" :title="t('experiments.redoBtn') + ' (Ctrl+Y)'">&#x21AA; {{ t('experiments.redoBtn') }}</button>
     <button class="btn-undo" @click="onClear">&#x1F5D1; {{ t('experiments.clearAll') }}</button>
-    <button class="btn-undo" @click="$emit('exportCsv')">&#x1F4BE; CSV</button>
+    <button class="btn-undo" @click="$emit('exportCsv')">&#x1F4BE; {{ t('experiments.csvExport') }}</button>
     <div class="speed-group">
       <button class="btn-speed" @click="decSpeed">−</button>
       <span class="speed-val">×{{ speed.toFixed(2) }}</span>

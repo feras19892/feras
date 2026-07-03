@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useI18n } from '../../../composables/useI18n';
+const { t } = useI18n();
+
 interface Props {
   isOn: boolean;
   temperature: number;
@@ -8,8 +12,6 @@ const props = defineProps<Props>();
 const emit = defineEmits<{ toggle: [] }>();
 
 const ledColor = computed(() => props.isOn ? '#ef4444' : '#374151');
-
-import { computed } from 'vue';
 </script>
 
 <template>
@@ -36,7 +38,7 @@ import { computed } from 'vue';
       <text x="60" y="82" text-anchor="middle" fill="#9ca3af" font-size="7" font-family="sans-serif">HOT PLATE</text>
     </svg>
     <span class="tool-label">
-      {{ isOn ? temperature + '°C' : 'إيقاف' }}
+      {{ isOn ? temperature + '°C' : t('chemistryLab.off') }}
     </span>
   </div>
 </template>

@@ -240,12 +240,9 @@ const marks = computed<Mark[]>(() => [
 .flask-svg {
   width: 110px;
   height: 180px;
-  transition: transform 0.2s, filter 0.2s;
-  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.06));
 }
 .flask-svg.hovered {
   transform: scale(1.05);
-  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
 }
 .drop-canvas {
   position: absolute;

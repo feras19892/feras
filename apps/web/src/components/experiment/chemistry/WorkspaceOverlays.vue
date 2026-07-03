@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
+import { useI18n } from '../../../composables/useI18n';
+const { t } = useI18n();
 
 const props = defineProps<{
   pourFlowMap?: Record<string, string>;
@@ -55,7 +57,7 @@ const streamLines = computed(() => {
 
   <!-- Zoom hint -->
   <div class="zoom-hint">
-    <span>🖱️ عجلة الماوس على الأداة للتكبير</span>
+    <span>{{ t('chemistryLab.mouseWheelZoom') }}</span>
   </div>
 </template>
 

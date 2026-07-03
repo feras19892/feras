@@ -9,6 +9,7 @@
     ".": "./src/index.ts"
   },
   "devDependencies": {
+    "@my-modern-app/config": "workspace:*",
     "typescript": "^5.0.0"
   }
 }

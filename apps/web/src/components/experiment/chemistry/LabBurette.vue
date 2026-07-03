@@ -92,7 +92,7 @@ function onValveClick(e: MouseEvent) {
       viewBox="0 0 110 380"
       class="burette-svg"
       :class="{ hovered: isHovered }"
-      :style="{ width: 85 * props.scale + 'px', height: 295 * props.scale + 'px' }"
+      :style="{ width: 60 * props.scale + 'px', height: 210 * props.scale + 'px' }"
     >
       <!-- Ground shadow -->
       <ellipse cx="55" cy="368" rx="20" ry="2.5" fill="rgba(0,0,0,0.05)" />

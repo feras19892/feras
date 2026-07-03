@@ -1,31 +1,36 @@
 <script setup lang="ts">
 import { useI18n } from '../../../composables/useI18n'
-
 const { t } = useI18n()
 const props = defineProps<{
-  netTorque: number
-  isBalanced: boolean
-  tiltDeg: number
-  ballCount: number
+  mode: 'vector' | 'beam'
   forceCount: number
+  sumFx: number
+  sumFy: number
+  resultantMag: number
+  isBalanced: boolean
+  massCount?: number
+  netTorque?: number
+  tiltDeg?: number
 }>()
 </script>
-
 <template>
   <div class="status-bar">
-    <span :class="['status-pill', isBalanced ? 'balanced' : 'unbalanced']">
-      {{ isBalanced ? '⚖️ ' + t('experiments.balanced') : (netTorque > 0 ? '↻ ' + t('experiments.rightSide') : '↺ ' + t('experiments.leftSide')) }}
-    </span>
-    <span class="status-pill">τ = {{ netTorque.toFixed(2) }} N·m</span>
-    <span class="status-pill">θ = {{ tiltDeg.toFixed(1) }}°</span>
-    <span class="status-pill">{{ t('experiments.balls') }}: {{ ballCount }}</span>
-    <span class="status-pill">{{ t('experiments.forces') }}: {{ forceCount }}</span>
+    <template v-if="mode === 'vector'">
+      <span class="status-item">{{ t('experiments.forces') }}: <b>{{ forceCount }}</b></span>
+      <span class="status-item">∑Fx: <b>{{ sumFx.toFixed(2) }}</b> N</span>
+      <span class="status-item">∑Fy: <b>{{ sumFy.toFixed(2) }}</b> N</span>
+      <span class="status-item">|R|: <b>{{ resultantMag.toFixed(2) }}</b> N</span>
+    </template>
+    <template v-else>
+      <span class="status-item">{{ t('experiments.masses') }}: <b>{{ massCount }}</b></span>
+      <span class="status-item">τ: <b>{{ (netTorque ?? 0).toFixed(2) }}</b> N·m</span>
+      <span class="status-item">θ: <b>{{ (tiltDeg ?? 0).toFixed(1) }}</b>°</span>
+    </template>
+    <span class="status-item" :class="{ balanced: isBalanced || Math.abs(netTorque ?? 1) < 0.01 }">{{ (isBalanced || Math.abs(netTorque ?? 1) < 0.01) ? '✅ ' + t('experiments.balanced') : '❌ ' + t('experiments.unbalanced') }}</span>
   </div>
 </template>
-
 <style scoped>
-.status-bar { display:flex; justify-content:center; gap:.35rem; padding:.25rem .5rem; background:#1E2530; border-radius:5px; border:1px solid #2D3645; flex-shrink:0; }
-.status-pill { font-size:.7rem; padding:.2rem .45rem; border-radius:3px; background:#252D3A; color:#8B95A5; font-weight:600; }
-.status-pill.balanced { background:rgba(34,197,94,.12); color:#22c55e; }
-.status-pill.unbalanced { background:rgba(239,68,68,.12); color:#f87171; }
+.status-bar { display:flex; justify-content:center; gap:1.5rem; padding:.3rem .6rem; background:#161B22; border-top:1px solid #2D3645; font-size:.72rem; color:#8B95A5; flex-shrink:0; }
+.status-item b { color:#5B8DB8; }
+.status-item.balanced { color:#22c55e; }
 </style>

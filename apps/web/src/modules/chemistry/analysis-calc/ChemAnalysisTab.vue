@@ -2,7 +2,10 @@
 import { ref, computed, watch } from 'vue';
 import type { ChemAnalysisColumnMeta, ChemAnalysisEquation, ChemAnalysisPlotConfig } from '../../../types/chemistry';
 import { useChemCalculations } from '../../../composables/chemistry/useChemCalculations';
+import { useI18n } from '../../../composables/useI18n';
 import ChemChartCanvas from './ChemChartCanvas.vue';
+
+const { t } = useI18n();
 
 const props = defineProps<{
   readings: Record<string, number>[];
@@ -63,10 +66,13 @@ function solveEquation(eq: ChemAnalysisEquation) {
         rightSide = rightSide.replace(new RegExp(`\\b${sym}\\b`, 'g'), String(val));
       }
 
-      // Replace log10 with Math.log10 for eval
+      // Replace log10 with Math.log10 for safe evaluation
       rightSide = rightSide.replace(/\blog10\b/g, 'Math.log10');
 
-      const result = eval(rightSide);
+      // Use Function constructor with restricted scope instead of eval()
+      // Only Math functions are accessible; no access to window, document, etc.
+      const safeFn = new Function('Math', `"use strict"; return (${rightSide});`) as (math: typeof Math) => number;
+      const result: number = safeFn(Math);
       if (!isNaN(result) && isFinite(result)) {
         solvedEquations.value.push({
           equationName: eq.name,
@@ -109,7 +115,7 @@ function getRegression() {
 function getSlopeCalc() {
   const reg = getRegression();
   if (!reg) return null;
-  return { label: 'الميل', formula: 'y = mx + b', value: reg.slope, unit: '', expr: `m = ${reg.slope.toFixed(4)}` };
+  return { label: t('chemistryAnalysis.slope'), formula: 'y = mx + b', value: reg.slope, unit: '', expr: `m = ${reg.slope.toFixed(4)}` };
 }
 
 defineExpose({
@@ -139,22 +145,22 @@ defineExpose({
     <div class="calc-section">
       <!-- Equivalence Point -->
       <div class="calc-col">
-        <div class="panel-title">🧪 نقطة التعادل</div>
+        <div class="panel-title">{{ t('chemistryAnalysis.equivalencePoint') }}</div>
         <div class="calc-inputs">
           <div class="input-row"><label>M<sub>base</sub></label><input type="number" step="0.001" v-model.number="mBase" /></div>
           <div class="input-row"><label>V<sub>acid</sub> (mL)</label><input type="number" step="0.1" v-model.number="vAcid" /></div>
         </div>
-        <button class="calc-btn" @click="calcEquivalencePoint">حساب V<sub>eq</sub> & M<sub>acid</sub></button>
+        <button class="calc-btn" @click="calcEquivalencePoint">{{ t('chemistryAnalysis.calculateVeqAcid') }}</button>
         <div v-if="eqPoint !== null" class="calc-results">
           <div class="res-row"><span class="res-label">V<sub>eq</sub>:</span><span class="res-value">{{ eqPoint.toFixed(2) }} mL</span></div>
           <div class="res-row"><span class="res-label">M<sub>acid</sub>:</span><span class="res-value">{{ mAcidResult?.toFixed(4) }} M</span></div>
         </div>
-        <div v-else-if="equivalencePointData" class="calc-hint">قفزة: pH {{ equivalencePointData.phEq.toFixed(1) }} عند V={{ equivalencePointData.vEq.toFixed(1) }}mL</div>
+        <div v-else-if="equivalencePointData" class="calc-hint">{{ t('chemistryAnalysis.jumpPrefix') }} {{ equivalencePointData.phEq.toFixed(1) }} {{ t('chemistryAnalysis.jumpAt') }}{{ equivalencePointData.vEq.toFixed(1) }}{{ t('chemistryAnalysis.mL') }}</div>
       </div>
 
       <!-- pH Calculator -->
       <div class="calc-col">
-        <div class="panel-title">🧮 حاسبة pH / pOH</div>
+        <div class="panel-title">{{ t('chemistryAnalysis.phCalculator') }}</div>
         <div class="calc-inputs">
           <div class="input-row"><label>[H⁺]</label><input type="number" step="any" v-model.number="hConc" /><button class="mini-btn" @click="calcPH">pH</button></div>
           <div class="input-row"><label>[OH⁻]</label><input type="number" step="any" v-model.number="ohConc" /><button class="mini-btn" @click="calcPOH">pOH</button></div>
@@ -168,11 +174,11 @@ defineExpose({
 
       <!-- Equations -->
       <div class="calc-col">
-        <div class="panel-title">📐 المعادلات</div>
+        <div class="panel-title">{{ t('chemistryAnalysis.equations') }}</div>
         <div v-for="eq in equations" :key="eq.name" class="eq-row">
           <div class="eq-name">{{ eq.name }}</div>
           <div class="eq-formula">{{ eq.formula }}</div>
-          <button class="solve-btn" @click="solveEquation(eq)">حل</button>
+          <button class="solve-btn" @click="solveEquation(eq)">{{ t('chemistryAnalysis.solve') }}</button>
         </div>
         <div v-if="solvedEquations.length" class="solved-list">
           <div v-for="(sol, i) in solvedEquations.slice(-3)" :key="i" class="sol-item">{{ sol.equationName }} → {{ sol.targetVar }} = {{ sol.result }}</div>

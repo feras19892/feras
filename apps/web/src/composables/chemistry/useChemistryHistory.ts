@@ -3,8 +3,10 @@ import type { LabItem } from './useChemistryTools';
 import type { LiquidState, BuretteState, PipetteState, SepFunnelState } from '@my-modern-app/chemistry-engine';
 import {
   items, liquidMap, buretteMap, pipetteMap,
-  sepFunnelMap, burnerMap, balanceTareMap, itemZoomMap,
-  buretteInitialVolumeMap, buretteTotalConsumedMap, buretteConsumedThisRefill
+  sepFunnelMap, burnerMap, balanceTareMap, containerTareMap, itemZoomMap,
+  buretteInitialVolumeMap, buretteTotalConsumedMap, buretteConsumedThisRefill,
+  retortStandMap, phProbeTipMap, solidMap, stopperMap, rackSlotsMap,
+  beakerClampMap, hotPlateMap, woodenBaseMap, hasSelectedChemicalMap
 } from './useChemistryLab';
 
 const MAX_MACRO = 100;
@@ -18,10 +20,20 @@ interface HistorySnapshot {
   sepFunnels: Record<string, SepFunnelState>;
   burners: Record<string, { on: boolean; intensity: number }>;
   tares: Record<string, number>;
+  containerTares: Record<string, number>;
   zoomMap: Record<string, number>;
   buretteInitial: Record<string, number>;
   buretteTotal: Record<string, number>;
   buretteConsumed: Record<string, number>;
+  retortStands: Record<string, { leftBuretteUid: string | null; rightBuretteUid: string | null; leftContainerUid: string | null; rightContainerUid: string | null; heatingDeviceUid: string | null; topClampY: number; bottomClampY: number; slotOffsets: number[]; slotOccupants: (string | null)[] }>;
+  phProbeTips: Record<string, { x: number; y: number }>;
+  solids: Record<string, { amount: number; type: string }>;
+  stoppers: Record<string, string>;
+  rackSlots: Record<string, (string | null)[]>;
+  beakerClamps: Record<string, { heldContainerUid: string | null; clampAngle: number }>;
+  hotPlates: Record<string, { on: boolean; temperature: number; currentTemp: number }>;
+  woodenBases: Record<string, { attachedToolUids: string[] }>;
+  hasSelectedChemicals: Record<string, boolean>;
 }
 
 /* ── Macro history (big actions: fill, remove, toggle, etc.) ── */
@@ -45,10 +57,20 @@ function capture(): HistorySnapshot {
     sepFunnels: clone(sepFunnelMap),
     burners: clone(burnerMap),
     tares: clone(balanceTareMap),
+    containerTares: clone(containerTareMap),
     zoomMap: clone(itemZoomMap),
     buretteInitial: clone(buretteInitialVolumeMap),
     buretteTotal: clone(buretteTotalConsumedMap),
     buretteConsumed: clone(buretteConsumedThisRefill),
+    retortStands: clone(retortStandMap),
+    phProbeTips: clone(phProbeTipMap),
+    solids: clone(solidMap),
+    stoppers: clone(stopperMap),
+    rackSlots: clone(rackSlotsMap),
+    beakerClamps: clone(beakerClampMap),
+    hotPlates: clone(hotPlateMap),
+    woodenBases: clone(woodenBaseMap),
+    hasSelectedChemicals: clone(hasSelectedChemicalMap),
   };
 }
 
@@ -70,10 +92,30 @@ function restore(snap: HistorySnapshot) {
   Object.assign(sepFunnelMap, clone(snap.sepFunnels));
   Object.assign(burnerMap, clone(snap.burners));
   Object.assign(balanceTareMap, clone(snap.tares));
+  Object.keys(containerTareMap).forEach(k => delete containerTareMap[k]);
+  Object.assign(containerTareMap, clone(snap.containerTares));
   Object.assign(itemZoomMap, clone(snap.zoomMap));
   Object.assign(buretteInitialVolumeMap, clone(snap.buretteInitial));
   Object.assign(buretteTotalConsumedMap, clone(snap.buretteTotal));
   Object.assign(buretteConsumedThisRefill, clone(snap.buretteConsumed));
+  Object.keys(retortStandMap).forEach(k => delete retortStandMap[k]);
+  Object.assign(retortStandMap, clone(snap.retortStands));
+  Object.keys(phProbeTipMap).forEach(k => delete phProbeTipMap[k]);
+  Object.assign(phProbeTipMap, clone(snap.phProbeTips));
+  Object.keys(solidMap).forEach(k => delete solidMap[k]);
+  Object.assign(solidMap, clone(snap.solids));
+  Object.keys(stopperMap).forEach(k => delete stopperMap[k]);
+  Object.assign(stopperMap, clone(snap.stoppers));
+  Object.keys(rackSlotsMap).forEach(k => delete rackSlotsMap[k]);
+  Object.assign(rackSlotsMap, clone(snap.rackSlots));
+  Object.keys(beakerClampMap).forEach(k => delete beakerClampMap[k]);
+  Object.assign(beakerClampMap, clone(snap.beakerClamps));
+  Object.keys(hotPlateMap).forEach(k => delete hotPlateMap[k]);
+  Object.assign(hotPlateMap, clone(snap.hotPlates));
+  Object.keys(woodenBaseMap).forEach(k => delete woodenBaseMap[k]);
+  Object.assign(woodenBaseMap, clone(snap.woodenBases));
+  Object.keys(hasSelectedChemicalMap).forEach(k => delete hasSelectedChemicalMap[k]);
+  Object.assign(hasSelectedChemicalMap, clone(snap.hasSelectedChemicals));
 }
 
 /* ════════════════════════════════════════════

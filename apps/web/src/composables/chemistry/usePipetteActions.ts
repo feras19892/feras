@@ -71,7 +71,7 @@ export function pipetteDispense(pipItem: LabItem, selectedItemRef: { value: LabI
     if (!tLiq.label) { tLiq.label = pip.label; }
     else if (!tLiq.label.includes(pip.label)) { tLiq.label = tLiq.label + ' + ' + pip.label; }
   } else {
-    if (!tLiq.label) { tLiq.label = pip.label || 'محلول من الماصة'; }
+    if (!tLiq.label) { tLiq.label = pip.label || 'PIPETTE_SOLUTION'; }
     else if (pip.label && !tLiq.label.includes(pip.label)) { tLiq.label = tLiq.label + ' + ' + pip.label; }
   }
   pip.volume -= amount;

@@ -1,77 +1,37 @@
 import { ref } from 'vue'
-import { useLeverPhysics, type LeverParams } from '../../modules/physics/experiments/lever/useLeverPhysics'
+import { useLeverPhysics } from '../../modules/physics/experiments/lever/useLeverPhysics'
+import { useLeverBeamPhysics } from '../../modules/physics/experiments/lever/useLeverBeamPhysics'
 
-export function useLeverLab(params: LeverParams, onTick?: () => void) {
-  const physics = useLeverPhysics(params)
-  const running = ref(false)
-  const paused = ref(false)
-  const speed = ref(1)
+export type LeverMode = 'vector' | 'beam'
 
-  let rafId: number | null = null
-
-  function tickFrame() {
-    if (!physics.state.running || physics.state.paused) return
-    physics.step()
-    onTick?.()
-    rafId = requestAnimationFrame(tickFrame)
-  }
-
-  function start() {
-    if (rafId) cancelAnimationFrame(rafId)
-    physics.state.running = true
-    physics.state.paused = false
-    running.value = true
-    paused.value = false
-    rafId = requestAnimationFrame(tickFrame)
-  }
+export function useLeverLab() {
+  const mode = ref<LeverMode>('vector')
+  const vector = useLeverPhysics()
+  const beam = useLeverBeamPhysics()
 
   function togglePause() {
-    if (!physics.state.running) { start(); return }
-    physics.togglePause()
-    running.value = physics.state.running
-    paused.value = physics.state.paused
-    if (!physics.state.paused) rafId = requestAnimationFrame(tickFrame)
-  }
-
-  function stopSim() {
-    if (rafId) cancelAnimationFrame(rafId)
-    rafId = null
-    physics.stop()
-    running.value = false
-    paused.value = false
+    if (mode.value === 'vector') {
+      vector.state.running = !vector.state.running
+      vector.state.paused = false
+    }
   }
 
   function resetSim() {
-    stopSim()
-    physics.reset()
-    running.value = false
-    paused.value = false
+    if (mode.value === 'vector') vector.reset()
+    else beam.reset()
   }
+  function cleanup() {}
 
-  function cleanup() {
-    if (rafId) cancelAnimationFrame(rafId)
-    rafId = null
-  }
+  function setMode(m: LeverMode) { mode.value = m; resetSim() }
 
   return {
-    sim: physics.state,
-    running,
-    paused,
-    speed,
-    addBall: physics.addBall,
-    removeBall: physics.removeBall,
-    moveBall: physics.moveBall,
-    setBallMass: physics.setBallMass,
-    addForce: physics.addForce,
-    removeForce: physics.removeForce,
-    moveForce: physics.moveForce,
-    setForceValue: physics.setForceValue,
-    setForceDirection: physics.setForceDirection,
-    toggleForceDirection: physics.toggleForceDirection,
-    start,
-    stopSim,
-    togglePause,
-    resetSim,
-    cleanup,
+    mode, setMode,
+    vector, beam,
+    running: ref(false), paused: ref(false),
+    addForce: vector.addForce, removeForce: vector.removeForce, updateForce: vector.updateForce,
+    addMass: beam.addMass, removeMass: beam.removeMass, updateMass: beam.updateMass,
+    resetSim, togglePause, cleanup,
+    resultant: vector.resultant, equilibriumForce: vector.equilibriumForce, isBalanced: vector.isBalanced,
+    netTorque: beam.netTorque, tiltDeg: beam.tiltDeg, leftTorque: beam.leftTorque, rightTorque: beam.rightTorque,
   }
 }

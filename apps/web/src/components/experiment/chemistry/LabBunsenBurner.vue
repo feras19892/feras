@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from '../../../composables/useI18n';
+const { t } = useI18n();
 
 interface Props {
   isOn?: boolean;
@@ -101,8 +103,8 @@ const flameHeight = computed(() => props.isOn ? 55 * props.intensity : 0);
     </svg>
 
     <!-- Status label -->
-    <div v-if="isOn" class="burner-label on">🔥 مشتعل</div>
-    <div v-else class="burner-label off">⚫ مطفأ</div>
+    <div v-if="isOn" class="burner-label on">🔥 {{ t('chemistry.burning') }}</div>
+    <div v-else class="burner-label off">⚫ {{ t('chemistry.extinguished') }}</div>
   </div>
 </template>
 

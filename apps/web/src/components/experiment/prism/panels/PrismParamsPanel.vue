@@ -50,7 +50,7 @@ function set(key: string, val: number | string) {
 
     <div class="param-row">
       <div class="param-header">
-        <span class="param-label">{{ t('prism.incidentAngle') }} <span class="hint-drag">↕ قابل للسحب</span></span>
+        <span class="param-label">{{ t('prism.incidentAngle') }} <span class="hint-drag">↕ {{ t('chemistryLab.dragHint') }}</span></span>
         <span class="param-val cyan">{{ params.angleIncidence }}°</span>
       </div>
       <input class="slider" type="range" min="0" max="89" step="1"

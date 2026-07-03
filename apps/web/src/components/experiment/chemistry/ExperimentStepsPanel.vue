@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { Experiment } from '../../../composables/chemistry/useExperiments';
+import { useI18n } from '../../../composables/useI18n';
+const { t } = useI18n();
 
 const props = defineProps<{
   experiment: Experiment | null;
@@ -16,7 +18,7 @@ const emit = defineEmits<{
   <div class="right-exp-panel">
     <div v-if="experiment" class="right-exp-content">
       <div class="right-exp-header">
-        <span class="right-exp-title">📋 {{ experiment.nameAr }}</span>
+        <span class="right-exp-title">📋 {{ t(experiment.nameAr) }}</span>
         <button class="right-exp-reset" @click="emit('clear')">❌</button>
       </div>
       <ol class="right-exp-list">
@@ -33,7 +35,7 @@ const emit = defineEmits<{
             <span v-if="stepCompletion[idx]">✓</span>
             <span v-else>{{ step.id }}</span>
           </span>
-          <span class="right-exp-text">{{ step.text }}</span>
+          <span class="right-exp-text">{{ t(step.text) }}</span>
         </li>
       </ol>
       <button
@@ -41,13 +43,13 @@ const emit = defineEmits<{
         class="show-report-btn"
         @click="emit('showReport')"
       >
-        📝 عرض التقرير النهائي
+        {{ t('chemistryLab.showFinalReport') }}
       </button>
     </div>
     <div v-else class="right-exp-empty">
       <span class="right-exp-empty-icon">📋</span>
-      <span>لم تختر تجربة</span>
-      <span class="right-exp-empty-hint">اضغط "اختر تجربة" أعلاه</span>
+      <span>{{ t('chemistryLab.noExperimentChosen') }}</span>
+      <span class="right-exp-empty-hint">{{ t('chemistryLab.clickChooseExperiment') }}</span>
     </div>
   </div>
 </template>

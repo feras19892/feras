@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { currentMessage, assistantOpen, toggleAssistant } from '../../../composables/chemistry/useLabAssistant';
+import { useI18n } from '../../../composables/useI18n';
+const { t } = useI18n();
 
 const typeIcons: Record<string, string> = {
   warning: '⚠️',
@@ -23,7 +25,7 @@ const typeClasses: Record<string, string> = {
         <span>🤖</span>
       </div>
       <div class="assistant-title">
-        <span class="title-text">مساعد المختبر الذكي</span>
+        <span class="title-text">{{ t('chemistryLab.labAssistant') }}</span>
         <span v-if="currentMessage && !assistantOpen" class="badge">1</span>
       </div>
       <button class="toggle-btn">
@@ -34,7 +36,7 @@ const typeClasses: Record<string, string> = {
     <div v-if="assistantOpen" class="assistant-body">
       <div v-if="!currentMessage" class="assistant-empty">
         <span class="empty-icon">🧪</span>
-        <p>أنا هنا لمساعدتك!<br>سأحذرك وأشجعك.</p>
+        <p>{{ t('chemistryLab.assistantWelcome') }}</p>
       </div>
       <div v-else class="assistant-single" :class="typeClasses[currentMessage.type]">
         <span class="msg-icon">{{ typeIcons[currentMessage.type] }}</span>

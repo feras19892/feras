@@ -61,6 +61,7 @@ export function useExperimentReport(studentStorageKey: string) {
       strings: {
         dateLabel: t('experiments.dateLabel'),
         experimentLabel: t('experiments.experimentLabel'),
+        studentInfoHeading: t('experiments.studentInfo'),
         paramsHeading: t('experiments.paramsHeading'),
         resultsHeading: t('experiments.resultsHeading'),
         footerHint: t('experiments.footerHint'),

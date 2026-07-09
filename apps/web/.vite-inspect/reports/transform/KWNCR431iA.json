@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabWoodenBase.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n';\nconst { t } = useI18n();\ninterface Props {\n  isHovered: boolean;\n}\ndefineProps<Props>();\n</script>\n\n<template>\n  <div class=\"lab-wooden-base\" :class=\"{ hovered: isHovered }\">\n    <svg width=\"160\" height=\"20\" viewBox=\"0 0 160 20\">\n      <!-- Wood grain top surface -->\n      <rect x=\"0\" y=\"0\" width=\"160\" height=\"18\" rx=\"3\" fill=\"#8B5A2B\" />\n      <rect x=\"0\" y=\"14\" width=\"160\" height=\"4\" rx=\"1\" fill=\"#6B4226\" />\n      <!-- Wood grain lines -->\n      <line x1=\"20\" y1=\"2\" x2=\"20\" y2=\"14\" stroke=\"#7A4E1F\" stroke-width=\"1\" opacity=\"0.5\" />\n      <line x1=\"50\" y1=\"2\" x2=\"50\" y2=\"14\" stroke=\"#7A4E1F\" stroke-width=\"1\" opacity=\"0.5\" />\n      <line x1=\"80\" y1=\"2\" x2=\"80\" y2=\"14\" stroke=\"#7A4E1F\" stroke-width=\"1\" opacity=\"0.5\" />\n      <line x1=\"110\" y1=\"2\" x2=\"110\" y2=\"14\" stroke=\"#7A4E1F\" stroke-width=\"1\" opacity=\"0.5\" />\n      <line x1=\"140\" y1=\"2\" x2=\"140\" y2=\"14\" stroke=\"#7A4E1F\" stroke-width=\"1\" opacity=\"0.5\" />\n      <!-- Highlight -->\n      <rect x=\"2\" y=\"1\" width=\"156\" height=\"2\" rx=\"1\" fill=\"#A67B5B\" opacity=\"0.6\" />\n    </svg>\n    <span class=\"tool-label\">{{ t('chemistryLab.woodenBase') }}</span>\n  </div>\n</template>\n\n<style scoped>\n.lab-wooden-base {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 2px;\n  padding: 2px;\n}\n.lab-wooden-base.hovered {\n  filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.3));\n}\n.tool-label {\n  font-size: 0.65rem;\n  color: #64748b;\n  white-space: nowrap;\n}\n</style>\n",
+      "start": 1783634641064,
+      "end": 1783634641617,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641617,
+      "end": 1783634641617,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641617,
+      "end": 1783634641617,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641617,
+      "end": 1783634641617,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641617,
+      "end": 1783634641617,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabWoodenBase.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabWoodenBase.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabWoodenBase.vue?vue&type=style&index=0&scoped=811e4cac&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-811e4cac\"]]);\n",
+      "start": 1783634641617,
+      "end": 1783634641665,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641665,
+      "end": 1783634641665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641665,
+      "end": 1783634641665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641665,
+      "end": 1783634641665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    }
+  ]
+}

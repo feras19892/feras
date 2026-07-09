@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { useI18n } from '../../../composables/useI18n'
 import type { LeverTrial } from '../../../composables/lever/useLeverTrials'
 import type { LeverForce } from '../../../modules/physics/experiments/lever/useLeverPhysics'
@@ -37,10 +37,10 @@ function onDistInput(id: number, val: string) { const n = parseFloat(val); if (!
     <table class="data-table" v-if="trials.length">
       <thead><tr><th>#</th><th>{{ t('experiments.colForces') }}</th><th>∑Fx</th><th>∑Fy</th><th>|R|</th><th>F_eq</th><th>{{ t('experiments.status') }}</th></tr></thead>
       <tbody>
-        <tr v-for="t in trials" :key="t.id">
-          <td>{{ t.trialNo }}</td><td>{{ t.forceCount }}</td><td>{{ t.sumFx.toFixed(2) }}</td><td>{{ t.sumFy.toFixed(2) }}</td>
-          <td>{{ t.resultantMag.toFixed(2) }}</td><td>{{ t.eqForceMag.toFixed(2) }}@{{ t.eqForceAngle.toFixed(0) }}°</td>
-          <td>{{ t.isBalanced ? '✅' : '❌' }}</td>
+        <tr v-for="trial in trials" :key="trial.id">
+          <td>{{ trial.trialNo }}</td><td>{{ trial.forceCount }}</td><td>{{ trial.sumFx.toFixed(2) }}</td><td>{{ trial.sumFy.toFixed(2) }}</td>
+          <td>{{ trial.resultantMag.toFixed(2) }}</td><td>{{ trial.eqForceMag.toFixed(2) }}@{{ trial.eqForceAngle.toFixed(0) }}°</td>
+          <td>{{ trial.isBalanced ? '✅' : '❌' }}</td>
         </tr>
       </tbody>
     </table>
@@ -125,7 +125,7 @@ function onDistInput(id: number, val: string) { const n = parseFloat(val); if (!
   <!-- REPORT -->
   <div v-else-if="id === 'report'" class="panel-body">
     <p><b>{{ t('experiments.trialCount') }}:</b> {{ trials.length }}</p>
-    <p><b>{{ t('experiments.balancedTrials') }}:</b> {{ trials.filter(t => t.isBalanced).length }}</p>
+    <p><b>{{ t('experiments.balancedTrials') }}:</b> {{ trials.filter(trial => trial.isBalanced).length }}</p>
     <p v-if="isBalanced" class="success">✅ {{ t('experiments.currentBalanced') }}</p>
     <p v-else class="warn">❌ {{ t('experiments.currentUnbalanced') }}</p>
   </div>

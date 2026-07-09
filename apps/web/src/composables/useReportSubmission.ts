@@ -13,6 +13,7 @@ export function useReportSubmission() {
     classId: string;
     experimentType: string;
     experimentName: string;
+    experimentId?: string;
     readings: Record<string, unknown>[];
     params?: Record<string, unknown>;
     studentInfo: StudentInfo;
@@ -30,6 +31,7 @@ export function useReportSubmission() {
         class_id: data.classId,
         experiment_type: data.experimentType,
         experiment_name: data.experimentName,
+        experiment_id: data.experimentId,
         readings: JSON.stringify(data.readings),
         params: data.params ? JSON.stringify(data.params) : undefined,
         student_info: JSON.stringify(data.studentInfo),
@@ -64,6 +66,7 @@ export function useReportSubmission() {
         class_id: data.classId,
         experiment_type: data.experimentType,
         experiment_name: data.experimentName,
+        experiment_id: data.experimentId,
         readings: JSON.stringify(data.readings),
         params: data.params ? JSON.stringify(data.params) : undefined,
         student_info: JSON.stringify(data.studentInfo),

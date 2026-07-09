@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/RCReferencePanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nconst NOTES = [\n  '🔌 المكثف يخزن الطاقة في شكل شحنة كهربائية Q = C×V',\n  '⚡ عند الشحن: Vc يرتفع، I يتناقص (منحنى أسي)',\n  '📉 عند التفريغ: Vc يتناقص، I يتناقص (منحنى أسي تنازلي)',\n  '⏱️ τ = R×C — ثابت الزمن يحدد سرعة العملية',\n  '✅ بعد 5τ: المكثف مشحون/مفرغ تقريباً تماماً (99.3%)',\n  '🔄 المكثف لا يمرر تياراً مستمراً (بعد الشحن الكامل I=0)',\n  '📊 الرسم: Vc مقابل t → منحنى أسي، الميل عند t=0 = V₀/τ',\n]\n\nconst COMPONENTS = [\n  { name: 'مكثف', icon: '🔌', desc: 'يخزن الشحنة — C بالفاراد (F)', color: '#fbbf24' },\n  { name: 'مفتاح', icon: '🔘', desc: 'يتحكم في فتح/إغلاق الدائرة', color: '#4ade80' },\n  { name: 'مصباح', icon: '💡', desc: 'يحوّل الكهرباء إلى ضوء', color: '#f59e0b' },\n  { name: 'جلفانوميتر', icon: '📐', desc: 'يقيس تيارات صغيرة جداً (µA)', color: '#67e8f9' },\n]\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <div class=\"ref-title\">🔌 دائرة RC</div>\n\n    <div class=\"ref-section\">\n      <div class=\"section-title\">المكونات الجديدة</div>\n      <div v-for=\"c in COMPONENTS\" :key=\"c.name\" class=\"comp-row\">\n        <span class=\"comp-icon\">{{ c.icon }}</span>\n        <div class=\"comp-info\">\n          <span class=\"comp-name\" :style=\"{ color: c.color }\">{{ c.name }}</span>\n          <span class=\"comp-desc\">{{ c.desc }}</span>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"ref-section\">\n      <div class=\"section-title\">القوانين الأساسية</div>\n      <div class=\"formula-box\" style=\"color:#fbbf24\">τ = R × C</div>\n      <div class=\"formula-box\" style=\"color:#4ade80\">شحن: Vc = V₀(1 - e^(-t/τ))</div>\n      <div class=\"formula-box\" style=\"color:#f87171\">تفريغ: Vc = V₀ × e^(-t/τ)</div>\n      <div class=\"formula-box\" style=\"color:#67e8f9\">Q = C × V</div>\n    </div>\n\n    <div v-for=\"(note, i) in NOTES\" :key=\"i\" class=\"ref-note\">{{ note }}</div>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { padding: 1rem; display: flex; flex-direction: column; gap: .5rem; overflow-y: auto; }\n.ref-title { font-size: .9rem; font-weight: 700; color: #fbbf24; text-align: center; padding-bottom: .3rem; border-bottom: 1px solid #1e2530; }\n.ref-section { margin-top: .4rem; padding: .5rem; background: rgba(255,255,255,.02); border-radius: 4px; }\n.section-title { font-size: .78rem; font-weight: 700; color: #67e8f9; margin-bottom: .3rem; }\n.comp-row { display: flex; align-items: center; gap: .5rem; padding: .25rem 0; border-bottom: 1px solid rgba(255,255,255,.04); }\n.comp-row:last-child { border-bottom: none; }\n.comp-icon { font-size: 1.2rem; }\n.comp-info { display: flex; flex-direction: column; gap: .1rem; }\n.comp-name { font-weight: 700; font-size: .8rem; }\n.comp-desc { font-size: .7rem; color: #64748b; }\n.formula-box { font-family: 'Courier New', monospace; font-size: .78rem; text-align: center; padding: .3rem; background: rgba(255,255,255,.03); border-radius: 3px; margin-bottom: .2rem; font-weight: 700; }\n.ref-note { font-size: .72rem; color: #64748b; margin-top: .3rem; line-height: 1.5; }\n</style>\n",
+      "start": 1783634639360,
+      "end": 1783634639810,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639810,
+      "end": 1783634639810,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639810,
+      "end": 1783634639810,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639810,
+      "end": 1783634639810,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639810,
+      "end": 1783634639810,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/RCReferencePanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/RCReferencePanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/RCReferencePanel.vue?vue&type=style&index=0&scoped=2fd2a22b&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-2fd2a22b\"]]);\n",
+      "start": 1783634639810,
+      "end": 1783634640098,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640098,
+      "end": 1783634640099,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640099,
+      "end": 1783634640099,
+      "order": "normal"
+    }
+  ]
+}

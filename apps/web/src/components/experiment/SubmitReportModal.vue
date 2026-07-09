@@ -13,6 +13,7 @@ const props = defineProps<{
   show: boolean
   experimentType: string
   experimentName: string
+  experimentId?: string
   readings: string
   params?: string
   studentInfo?: string
@@ -87,6 +88,7 @@ async function submit() {
       class_id: selectedClassId.value,
       experiment_type: props.experimentType,
       experiment_name: props.experimentName,
+      experiment_id: props.experimentId,
       readings: props.readings,
       params: JSON.stringify(mergedParams),
       student_info: props.studentInfo,

@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/MagneticFluxReadingsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\nconst { t } = useI18n()\n\ndefineProps<{\n  B: number\n  A: number\n  theta: number\n  flux: number\n  cosTheta: number\n  angleDeg: number\n  fluxMax: number\n  running: boolean\n  hasProbe?: boolean\n}>()\n</script>\n\n<template>\n  <div class=\"readings-panel\">\n    <div class=\"readings-title\">{{ t('experiments.emLiveReadings') }}</div>\n    <div class=\"readings-grid\">\n      <div class=\"reading-box field\">\n        <span class=\"r-label\">B</span>\n        <span class=\"r-value\">{{ B.toFixed(2) }}</span>\n        <span class=\"r-unit\">T</span>\n      </div>\n      <div class=\"reading-box area\">\n        <span class=\"r-label\">A</span>\n        <span class=\"r-value\">{{ (A * 10000).toFixed(0) }}</span>\n        <span class=\"r-unit\">cm²</span>\n      </div>\n      <div class=\"reading-box angle\">\n        <span class=\"r-label\">θ</span>\n        <span class=\"r-value\">{{ angleDeg.toFixed(0) }}</span>\n        <span class=\"r-unit\">°</span>\n      </div>\n    </div>\n\n    <div class=\"force-grid\">\n      <div class=\"force-box flux\">\n        <span class=\"f-label\">{{ t('experiments.fluxReadingsFlux') }}</span>\n        <span class=\"f-value\">{{ flux.toExponential(3) }}</span>\n        <span class=\"f-unit\">Wb</span>\n      </div>\n      <div class=\"force-box cos\">\n        <span class=\"f-label\">cos θ</span>\n        <span class=\"f-value\">{{ cosTheta.toFixed(3) }}</span>\n        <span class=\"f-unit\"></span>\n      </div>\n      <div class=\"force-box maxflux\">\n        <span class=\"f-label\">{{ t('experiments.fluxReadingsFluxMax') }}</span>\n        <span class=\"f-value\">{{ fluxMax.toExponential(3) }}</span>\n        <span class=\"f-unit\">Wb</span>\n      </div>\n      <div class=\"force-box ratio\">\n        <span class=\"f-label\">{{ t('experiments.fluxReadingsRatio') }}</span>\n        <span class=\"f-value\">{{ (flux / Math.max(fluxMax, 1e-12)).toFixed(3) }}</span>\n        <span class=\"f-unit\"></span>\n      </div>\n    </div>\n\n    <div v-if=\"hasProbe\" class=\"probe-indicator\">📐 {{ t('experiments.fluxProbeMeasure') }}</div>\n    <div v-else class=\"probe-indicator idle\">{{ t('experiments.emProbeIdle') }}</div>\n  </div>\n</template>\n\n<style scoped>\n.readings-panel { padding: .75rem; display: flex; flex-direction: column; gap: .5rem; }\n.readings-title { font-size: .85rem; font-weight: 700; color: #67e8f9; padding-bottom: .3rem; border-bottom: 1px solid #1e2530; }\n.readings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .4rem; }\n.reading-box { background: rgba(45,54,69,.4); border-radius: 6px; padding: .35rem; text-align: center; display: flex; flex-direction: column; }\n.r-label { font-size: .65rem; color: #94a3b8; }\n.r-value { font-size: .8rem; font-weight: 700; color: #D1D7E0; font-family: 'Courier New', monospace; }\n.r-unit { font-size: .6rem; color: #64748b; }\n.reading-box.field { background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.15); }\n.reading-box.area { background: rgba(168,85,247,.08); border: 1px solid rgba(168,85,247,.15); }\n.reading-box.angle { background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.15); }\n.force-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .4rem; margin-top: .3rem; }\n.force-box { border-radius: 6px; padding: .35rem; text-align: center; display: flex; flex-direction: column; }\n.force-box.flux { background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.15); }\n.force-box.cos { background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.15); }\n.force-box.maxflux { background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.15); }\n.force-box.ratio { background: rgba(168,85,247,.08); border: 1px solid rgba(168,85,247,.15); }\n.f-label { font-size: .6rem; color: #94a3b8; }\n.f-value { font-size: .8rem; font-weight: 700; font-family: 'Courier New', monospace; }\n.force-box.flux .f-value { color: #3b82f6; }\n.force-box.cos .f-value { color: #f59e0b; }\n.force-box.maxflux .f-value { color: #22c55e; }\n.force-box.ratio .f-value { color: #a855f7; }\n.f-unit { font-size: .6rem; color: #64748b; }\n.probe-indicator { font-size: .7rem; color: #a855f7; text-align: center; padding: .3rem; background: rgba(168,85,247,.08); border-radius: 6px; }\n.probe-indicator.idle { color: #64748b; background: rgba(100,116,139,.08); }\n</style>\n",
+      "start": 1783634640886,
+      "end": 1783634641192,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641192,
+      "end": 1783634641192,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641192,
+      "end": 1783634641192,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641192,
+      "end": 1783634641192,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641192,
+      "end": 1783634641192,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/MagneticFluxReadingsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/MagneticFluxReadingsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/MagneticFluxReadingsPanel.vue?vue&type=style&index=0&scoped=cd54116d&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-cd54116d\"]]);\n",
+      "start": 1783634641192,
+      "end": 1783634641663,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641663,
+      "end": 1783634641664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641664,
+      "end": 1783634641664,
+      "order": "normal"
+    }
+  ]
+}

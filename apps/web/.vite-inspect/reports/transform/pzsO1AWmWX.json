@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/shared/ReportViewer.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createVNode as _createVNode, unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"report-viewer-wrapper\" }\nconst _hoisted_2 = {\n  key: 0,\n  class: \"chart-section\"\n}\nconst _hoisted_3 = [\"src\"]\n\nimport { computed } from 'vue';\nimport { useI18n } from '../../composables/useI18n';\nimport type { Report } from '../../services/report.service';\nimport AnalysisReportPreview from '../experiment/analysis-calc/AnalysisReportPreview.vue';\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ReportViewer',\n  props: {\n    report: {}\n  },\n  setup(__props: any) {\n\nconst props = __props;\nconst { t } = useI18n();\n\nfunction safeJsonParse<T>(str: string | undefined, fallback: T): T {\n  try { return str ? JSON.parse(str) : fallback; } catch { return fallback; }\n}\n\n// eslint-disable-next-line @typescript-eslint/no-explicit-any\nconst parsedParams = computed(() => safeJsonParse<Record<string, any>>(props.report.params, {}));\nconst parsed = computed(() => ({\n  sourceName: props.report.experiment_name,\n  reportDate: props.report.submitted_at?.slice(0, 10) || '',\n  studentInfo: safeJsonParse(props.report.student_info, { name: props.report.student_name || '', email: '', grade: '', notes: '' }),\n  readings: safeJsonParse(props.report.readings, []),\n  columns: safeJsonParse(props.report.columns, []),\n  equations: safeJsonParse(props.report.equations, []),\n  plots: safeJsonParse(props.report.plots, []),\n  conclusion: {\n    conclusion: props.report.conclusion || '',\n    errors: props.report.conclusion_errors || '',\n    improvements: props.report.conclusion_improvements || '',\n  },\n  solvedEquations: parsedParams.value.solved_equations ?? undefined,\n  regressionData: parsedParams.value.regression_data ?? undefined,\n  slopeCalcData: parsedParams.value.slope_calc_data ?? undefined,\n  axesData: parsedParams.value.axes_data ?? undefined,\n  errorCalcData: parsedParams.value.error_calc_data ?? undefined,\n}));\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createVNode(AnalysisReportPreview, {\n      \"source-name\": parsed.value.sourceName,\n      \"report-date\": parsed.value.reportDate,\n      \"student-info\": parsed.value.studentInfo,\n      readings: parsed.value.readings,\n      columns: parsed.value.columns,\n      equations: parsed.value.equations,\n      plots: parsed.value.plots,\n      conclusion: parsed.value.conclusion,\n      \"solved-equations\": parsed.value.solvedEquations,\n      \"regression-data\": parsed.value.regressionData,\n      \"slope-calc-data\": parsed.value.slopeCalcData,\n      \"axes-data\": parsed.value.axesData,\n      \"error-calc-data\": parsed.value.errorCalcData\n    }, null, 8, [\"source-name\", \"report-date\", \"student-info\", \"readings\", \"columns\", \"equations\", \"plots\", \"conclusion\", \"solved-equations\", \"regression-data\", \"slope-calc-data\", \"axes-data\", \"error-calc-data\"]),\n    (__props.report.chart_snapshot)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_2, [\n          _createElementVNode(\"h4\", null, _toDisplayString(_unref(t)('common.chartTitle')), 1),\n          _createElementVNode(\"img\", {\n            src: __props.report.chart_snapshot,\n            alt: \"Chart\",\n            class: \"chart-img\"\n          }, null, 8, _hoisted_3)\n        ]))\n      : _createCommentVNode(\"\", true)\n  ]))\n}\n}\n\n})",
+      "start": 1783634640904,
+      "end": 1783634640904
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640904,
+      "end": 1783634640904,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createVNode as _createVNode, unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\";\nconst _hoisted_1 = { class: \"report-viewer-wrapper\" };\nconst _hoisted_2 = {\n  key: 0,\n  class: \"chart-section\"\n};\nconst _hoisted_3 = [\"src\"];\nimport { computed } from \"vue\";\nimport { useI18n } from \"../../composables/useI18n\";\nimport AnalysisReportPreview from \"../experiment/analysis-calc/AnalysisReportPreview.vue\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"ReportViewer\",\n  props: {\n    report: {}\n  },\n  setup(__props) {\n    const props = __props;\n    const { t } = useI18n();\n    function safeJsonParse(str, fallback) {\n      try {\n        return str ? JSON.parse(str) : fallback;\n      } catch {\n        return fallback;\n      }\n    }\n    const parsedParams = computed(() => safeJsonParse(props.report.params, {}));\n    const parsed = computed(() => ({\n      sourceName: props.report.experiment_name,\n      reportDate: props.report.submitted_at?.slice(0, 10) || \"\",\n      studentInfo: safeJsonParse(props.report.student_info, { name: props.report.student_name || \"\", email: \"\", grade: \"\", notes: \"\" }),\n      readings: safeJsonParse(props.report.readings, []),\n      columns: safeJsonParse(props.report.columns, []),\n      equations: safeJsonParse(props.report.equations, []),\n      plots: safeJsonParse(props.report.plots, []),\n      conclusion: {\n        conclusion: props.report.conclusion || \"\",\n        errors: props.report.conclusion_errors || \"\",\n        improvements: props.report.conclusion_improvements || \"\"\n      },\n      solvedEquations: parsedParams.value.solved_equations ?? void 0,\n      regressionData: parsedParams.value.regression_data ?? void 0,\n      slopeCalcData: parsedParams.value.slope_calc_data ?? void 0,\n      axesData: parsedParams.value.axes_data ?? void 0,\n      errorCalcData: parsedParams.value.error_calc_data ?? void 0\n    }));\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createVNode(AnalysisReportPreview, {\n          \"source-name\": parsed.value.sourceName,\n          \"report-date\": parsed.value.reportDate,\n          \"student-info\": parsed.value.studentInfo,\n          readings: parsed.value.readings,\n          columns: parsed.value.columns,\n          equations: parsed.value.equations,\n          plots: parsed.value.plots,\n          conclusion: parsed.value.conclusion,\n          \"solved-equations\": parsed.value.solvedEquations,\n          \"regression-data\": parsed.value.regressionData,\n          \"slope-calc-data\": parsed.value.slopeCalcData,\n          \"axes-data\": parsed.value.axesData,\n          \"error-calc-data\": parsed.value.errorCalcData\n        }, null, 8, [\"source-name\", \"report-date\", \"student-info\", \"readings\", \"columns\", \"equations\", \"plots\", \"conclusion\", \"solved-equations\", \"regression-data\", \"slope-calc-data\", \"axes-data\", \"error-calc-data\"]),\n        __props.report.chart_snapshot ? (_openBlock(), _createElementBlock(\"div\", _hoisted_2, [\n          _createElementVNode(\"h4\", null, _toDisplayString(_unref(t)(\"common.chartTitle\")), 1),\n          _createElementVNode(\"img\", {\n            src: __props.report.chart_snapshot,\n            alt: \"Chart\",\n            class: \"chart-img\"\n          }, null, 8, _hoisted_3)\n        ])) : _createCommentVNode(\"\", true)\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634640904,
+      "end": 1783634641016,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/shared/ReportViewer.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createVNode as _createVNode, unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"report-viewer-wrapper\" }\nconst _hoisted_2 = {\n  key: 0,\n  class: \"chart-section\"\n}\nconst _hoisted_3 = [\"src\"]\n\nimport { computed } from 'vue';\nimport { useI18n } from '../../composables/useI18n';\nimport type { Report } from '../../services/report.service';\nimport AnalysisReportPreview from '../experiment/analysis-calc/AnalysisReportPreview.vue';\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ReportViewer',\n  props: {\n    report: {}\n  },\n  setup(__props: any) {\n\nconst props = __props;\nconst { t } = useI18n();\n\nfunction safeJsonParse<T>(str: string | undefined, fallback: T): T {\n  try { return str ? JSON.parse(str) : fallback; } catch { return fallback; }\n}\n\n// eslint-disable-next-line @typescript-eslint/no-explicit-any\nconst parsedParams = computed(() => safeJsonParse<Record<string, any>>(props.report.params, {}));\nconst parsed = computed(() => ({\n  sourceName: props.report.experiment_name,\n  reportDate: props.report.submitted_at?.slice(0, 10) || '',\n  studentInfo: safeJsonParse(props.report.student_info, { name: props.report.student_name || '', email: '', grade: '', notes: '' }),\n  readings: safeJsonParse(props.report.readings, []),\n  columns: safeJsonParse(props.report.columns, []),\n  equations: safeJsonParse(props.report.equations, []),\n  plots: safeJsonParse(props.report.plots, []),\n  conclusion: {\n    conclusion: props.report.conclusion || '',\n    errors: props.report.conclusion_errors || '',\n    improvements: props.report.conclusion_improvements || '',\n  },\n  solvedEquations: parsedParams.value.solved_equations ?? undefined,\n  regressionData: parsedParams.value.regression_data ?? undefined,\n  slopeCalcData: parsedParams.value.slope_calc_data ?? undefined,\n  axesData: parsedParams.value.axes_data ?? undefined,\n  errorCalcData: parsedParams.value.error_calc_data ?? undefined,\n}));\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createVNode(AnalysisReportPreview, {\n      \"source-name\": parsed.value.sourceName,\n      \"report-date\": parsed.value.reportDate,\n      \"student-info\": parsed.value.studentInfo,\n      readings: parsed.value.readings,\n      columns: parsed.value.columns,\n      equations: parsed.value.equations,\n      plots: parsed.value.plots,\n      conclusion: parsed.value.conclusion,\n      \"solved-equations\": parsed.value.solvedEquations,\n      \"regression-data\": parsed.value.regressionData,\n      \"slope-calc-data\": parsed.value.slopeCalcData,\n      \"axes-data\": parsed.value.axesData,\n      \"error-calc-data\": parsed.value.errorCalcData\n    }, null, 8, [\"source-name\", \"report-date\", \"student-info\", \"readings\", \"columns\", \"equations\", \"plots\", \"conclusion\", \"solved-equations\", \"regression-data\", \"slope-calc-data\", \"axes-data\", \"error-calc-data\"]),\n    (__props.report.chart_snapshot)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_2, [\n          _createElementVNode(\"h4\", null, _toDisplayString(_unref(t)('common.chartTitle')), 1),\n          _createElementVNode(\"img\", {\n            src: __props.report.chart_snapshot,\n            alt: \"Chart\",\n            class: \"chart-img\"\n          }, null, 8, _hoisted_3)\n        ]))\n      : _createCommentVNode(\"\", true)\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641016,
+      "end": 1783634641016,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641016,
+      "end": 1783634641016,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634641016,
+      "end": 1783634641016,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641016,
+      "end": 1783634641016,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641016,
+      "end": 1783634641016,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641016,
+      "end": 1783634641016,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641016,
+      "end": 1783634641016,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641016,
+      "end": 1783634641016,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641016,
+      "end": 1783634641016,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641016,
+      "end": 1783634641016,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641016,
+      "end": 1783634641016,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641016,
+      "end": 1783634641017,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641017,
+      "end": 1783634641017,
+      "order": "normal"
+    }
+  ]
+}

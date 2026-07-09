@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemAnalysisMenuBar.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"analysis-menubar\" }\nconst _hoisted_2 = { class: \"left\" }\nconst _hoisted_3 = { class: \"title\" }\nconst _hoisted_4 = { class: \"right\" }\n\nimport { computed } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ChemAnalysisMenuBar',\n  props: {\n    sourceName: {}\n  },\n  emits: [\"clear\", \"back\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst props = __props;\n\nconst emit = __emit;\n\nconst { t } = useI18n();\n\nconst title = computed(() => {\n  return props.sourceName ? t('analysis.analysisTitle', { name: props.sourceName }) : t('analysis.defaultTitle');\n});\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"nav\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"button\", {\n        class: \"btn-back\",\n        onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('back')))\n      }, _toDisplayString(_unref(t)('analysis.back')), 1),\n      _createElementVNode(\"span\", _hoisted_3, \"📊 \" + _toDisplayString(title.value), 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_4, [\n      _createElementVNode(\"button\", {\n        class: \"btn-clear\",\n        onClick: _cache[1] || (_cache[1] = ($event: any) => (emit('clear')))\n      }, _toDisplayString(_unref(t)('analysis.clearData')), 1)\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783634639909,
+      "end": 1783634639909
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639909,
+      "end": 1783634639909,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"analysis-menubar\" };\nconst _hoisted_2 = { class: \"left\" };\nconst _hoisted_3 = { class: \"title\" };\nconst _hoisted_4 = { class: \"right\" };\nimport { computed } from \"vue\";\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"ChemAnalysisMenuBar\",\n  props: {\n    sourceName: {}\n  },\n  emits: [\"clear\", \"back\"],\n  setup(__props, { emit: __emit }) {\n    const props = __props;\n    const emit = __emit;\n    const { t } = useI18n();\n    const title = computed(() => {\n      return props.sourceName ? t(\"analysis.analysisTitle\", { name: props.sourceName }) : t(\"analysis.defaultTitle\");\n    });\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"nav\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _createElementVNode(\"button\", {\n            class: \"btn-back\",\n            onClick: _cache[0] || (_cache[0] = ($event) => emit(\"back\"))\n          }, _toDisplayString(_unref(t)(\"analysis.back\")), 1),\n          _createElementVNode(\"span\", _hoisted_3, \"📊 \" + _toDisplayString(title.value), 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_4, [\n          _createElementVNode(\"button\", {\n            class: \"btn-clear\",\n            onClick: _cache[1] || (_cache[1] = ($event) => emit(\"clear\"))\n          }, _toDisplayString(_unref(t)(\"analysis.clearData\")), 1)\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634639909,
+      "end": 1783634640089,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemAnalysisMenuBar.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"analysis-menubar\" }\nconst _hoisted_2 = { class: \"left\" }\nconst _hoisted_3 = { class: \"title\" }\nconst _hoisted_4 = { class: \"right\" }\n\nimport { computed } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ChemAnalysisMenuBar',\n  props: {\n    sourceName: {}\n  },\n  emits: [\"clear\", \"back\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst props = __props;\n\nconst emit = __emit;\n\nconst { t } = useI18n();\n\nconst title = computed(() => {\n  return props.sourceName ? t('analysis.analysisTitle', { name: props.sourceName }) : t('analysis.defaultTitle');\n});\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"nav\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"button\", {\n        class: \"btn-back\",\n        onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('back')))\n      }, _toDisplayString(_unref(t)('analysis.back')), 1),\n      _createElementVNode(\"span\", _hoisted_3, \"📊 \" + _toDisplayString(title.value), 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_4, [\n      _createElementVNode(\"button\", {\n        class: \"btn-clear\",\n        onClick: _cache[1] || (_cache[1] = ($event: any) => (emit('clear')))\n      }, _toDisplayString(_unref(t)('analysis.clearData')), 1)\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,SAAS,QAAQ,mBAAmB,kBAAkB,sBAAsB,qBAAqB,aAAa,YAAY,sBAAsB,2BAA2B;AAEpL,MAAM,aAAa,EAAE,OAAO,mBAAmB;AAC/C,MAAM,aAAa,EAAE,OAAO,OAAO;AACnC,MAAM,aAAa,EAAE,OAAO,QAAQ;AACpC,MAAM,aAAa,EAAE,OAAO,QAAQ;AAEpC,SAAS,gBAAgB;AACzB,SAAS,eAAe;AAGxB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,YAAY,CAAC;AAAA,EACf;AAAA,EACA,OAAO,CAAC,SAAS,MAAM;AAAA,EACvB,MAAM,SAAc,EAAE,MAAM,OAAO,GAAG;AAExC,UAAM,QAAQ;AAEd,UAAM,OAAO;AAEb,UAAM,EAAE,EAAE,IAAI,QAAQ;AAEtB,UAAM,QAAQ,SAAS,MAAM;AAC3B,aAAO,MAAM,aAAa,EAAE,0BAA0B,EAAE,MAAM,MAAM,WAAW,CAAC,IAAI,EAAE,uBAAuB;AAAA,IAC/G,CAAC;AAED,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,oBAAoB,OAAO,YAAY;AAAA,UACrC,oBAAoB,UAAU;AAAA,YAC5B,OAAO;AAAA,YACP,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,MAAM;AAAA,UAClE,GAAG,iBAAiB,OAAO,CAAC,EAAE,eAAe,CAAC,GAAG,CAAC;AAAA,UAClD,oBAAoB,QAAQ,YAAY,QAAQ,iBAAiB,MAAM,KAAK,GAAG,CAAC;AAAA,QAClF,CAAC;AAAA,QACD,oBAAoB,OAAO,YAAY;AAAA,UACrC,oBAAoB,UAAU;AAAA,YAC5B,OAAO;AAAA,YACP,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,OAAO;AAAA,UACnE,GAAG,iBAAiB,OAAO,CAAC,EAAE,oBAAoB,CAAC,GAAG,CAAC;AAAA,QACzD,CAAC;AAAA,MACH,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640089,
+      "end": 1783634640089,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640091,
+      "end": 1783634640093,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640094,
+      "end": 1783634640094,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640094,
+      "end": 1783634640096,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640096,
+      "end": 1783634640097,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640097,
+      "end": 1783634640097,
+      "order": "normal"
+    }
+  ]
+}

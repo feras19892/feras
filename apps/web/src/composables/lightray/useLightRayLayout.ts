@@ -18,7 +18,7 @@ const defaultPanelColumn: Record<PanelId, ColumnId> = {
 const defaultColumnOrder: Record<ColumnId, PanelId[]> = {
   data: ['readings', 'chart', 'trials'],
   vis: [],
-  ctrl: ['params', 'laws', 'results'],
+  ctrl: ['params'],
 }
 
 const allPanelIds: PanelId[] = ['readings', 'chart', 'trials', 'params', 'laws', 'results']
@@ -27,7 +27,7 @@ export function useLightRayLayout() {
   const { t } = useI18n()
   const panels = reactive<Record<PanelId, boolean>>({
     readings: true, chart: true, trials: true,
-    params: true, laws: true, results: true,
+    params: true, laws: false, results: false,
   })
 
   const maximized = reactive<Record<PanelId, boolean>>({

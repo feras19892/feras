@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/GradeModal.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, watch } from 'vue';\nimport { gradeReport } from '../../services/report.service';\nimport type { Report } from '../../services/report.service';\nimport { useI18n } from '../../composables/useI18n';\n\nconst props = defineProps<{\n  report: Report | null;\n  open: boolean;\n}>();\n\nconst emit = defineEmits<{\n  (e: 'close'): void;\n  (e: 'graded'): void;\n}>();\n\nconst { t } = useI18n();\nconst grade = ref(0);\nconst feedback = ref('');\nconst loading = ref(false);\n\nwatch(\n  () => props.report,\n  (r) => {\n    if (r) {\n      grade.value = r.grade ?? 0;\n      feedback.value = r.feedback ?? '';\n    }\n  },\n  { immediate: true }\n);\n\nasync function submit() {\n  if (!props.report) return;\n  loading.value = true;\n  try {\n    const res = await gradeReport(props.report.id, { grade: grade.value, feedback: feedback.value });\n    if (res.success) {\n      emit('graded');\n      emit('close');\n    }\n  } catch (err) {\n    console.error('grade failed:', err);\n  } finally {\n    loading.value = false;\n  }\n}\n</script>\n\n<template>\n  <div v-if=\"open && report\" class=\"modal-overlay\" @click.self=\"emit('close')\">\n    <div class=\"grade-modal\">\n      <h3>{{ t('teacher.gradeTitle') }} — {{ report.student_name }}</h3>\n\n      <div class=\"form-row\">\n        <label>{{ t('teacher.gradeLabel') }}</label>\n        <div class=\"grade-control\">\n          <input v-model.number=\"grade\" type=\"range\" min=\"0\" max=\"100\" />\n          <span class=\"grade-display\">{{ grade }}/100</span>\n        </div>\n      </div>\n\n      <div class=\"form-row\">\n        <label>{{ t('teacher.feedbackLabel') }}</label>\n        <textarea\n          v-model=\"feedback\"\n          rows=\"4\"\n          :placeholder=\"t('teacher.feedbackPlaceholder')\"\n        />\n      </div>\n\n      <div class=\"actions\">\n        <button class=\"btn-cancel\" @click=\"emit('close')\">{{ t('teacher.cancelBtn') }}</button>\n        <button class=\"btn-submit\" :disabled=\"loading\" @click=\"submit\">\n          {{ loading ? '...' : t('teacher.saveBtn') }}\n        </button>\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.modal-overlay {\n  position: fixed;\n  inset: 0;\n  background: rgba(0, 0, 0, 0.6);\n  backdrop-filter: blur(8px);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  z-index: 300;\n}\n.grade-modal {\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  border-radius: 1rem;\n  padding: 1.5rem;\n  width: 90%;\n  max-width: 400px;\n  display: flex;\n  flex-direction: column;\n  gap: 1rem;\n}\n.grade-modal h3 {\n  margin: 0;\n  font-size: 1.1rem;\n  color: #f1f5f9;\n  text-align: center;\n}\n.form-row {\n  display: flex;\n  flex-direction: column;\n  gap: 0.3rem;\n}\n.form-row label {\n  font-size: 0.8rem;\n  color: #94a3b8;\n  font-weight: 600;\n}\n.grade-control {\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n}\n.grade-control input[type='range'] {\n  flex: 1;\n  accent-color: #4f46e5;\n}\n.grade-display {\n  font-size: 1.1rem;\n  font-weight: 700;\n  color: #67e8f9;\n  min-width: 60px;\n  text-align: center;\n}\n.form-row textarea {\n  padding: 0.6rem 0.8rem;\n  border-radius: 0.5rem;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  background: rgba(0, 0, 0, 0.3);\n  color: #e2e8f0;\n  font-size: 0.9rem;\n  font-family: inherit;\n  resize: vertical;\n}\n.actions {\n  display: flex;\n  gap: 0.5rem;\n  margin-top: 0.5rem;\n}\n.btn-cancel,\n.btn-submit {\n  flex: 1;\n  padding: 0.55rem;\n  border-radius: 0.55rem;\n  font-size: 0.85rem;\n  font-weight: 700;\n  cursor: pointer;\n  font-family: inherit;\n  transition: all 0.2s;\n}\n.btn-cancel {\n  background: rgba(255, 255, 255, 0.05);\n  color: #94a3b8;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n}\n.btn-submit {\n  background: linear-gradient(135deg, #4f46e5, #7c3aed);\n  color: #fff;\n  border: none;\n}\n.btn-submit:disabled {\n  opacity: 0.5;\n  cursor: not-allowed;\n}\n</style>\n",
+      "start": 1783634640321,
+      "end": 1783634640595,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640595,
+      "end": 1783634640595,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640595,
+      "end": 1783634640595,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640595,
+      "end": 1783634640595,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640595,
+      "end": 1783634640595,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/GradeModal.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/GradeModal.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/GradeModal.vue?vue&type=style&index=0&scoped=b35ed2b1&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-b35ed2b1\"]]);\n",
+      "start": 1783634640595,
+      "end": 1783634640829,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640829,
+      "end": 1783634640829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640829,
+      "end": 1783634640829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640829,
+      "end": 1783634640829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640829,
+      "end": 1783634640829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640829,
+      "end": 1783634640829,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640829,
+      "end": 1783634640829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640829,
+      "end": 1783634640829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640829,
+      "end": 1783634640829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640829,
+      "end": 1783634640829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640829,
+      "end": 1783634640829,
+      "order": "normal"
+    }
+  ]
+}

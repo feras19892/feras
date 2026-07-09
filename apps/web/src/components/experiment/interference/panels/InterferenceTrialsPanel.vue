@@ -17,11 +17,12 @@ const emit = defineEmits<{
 <template>
   <div class="panel-body">
     <table class="trial-table" v-if="trials.length">
-      <thead><tr><th>#</th><th>d</th><th>D</th><th>λ</th><th>Δy</th><th></th></tr></thead>
+      <thead><tr><th>#</th><th>d (mm)</th><th>1/d</th><th>D</th><th>λ</th><th>Δy</th><th></th></tr></thead>
       <tbody>
         <tr v-for="tr in trials" :key="tr.id">
           <td>{{ tr.id }}</td>
-          <td>{{ tr.slitDistance }}</td>
+          <td>{{ tr.slitDistance.toFixed(2) }}</td>
+          <td>{{ (1 / tr.slitDistance).toFixed(1) }}</td>
           <td>{{ tr.screenDistance }}</td>
           <td>{{ tr.wavelength }}</td>
           <td>{{ tr.fringeSpacing.toFixed(3) }}</td>

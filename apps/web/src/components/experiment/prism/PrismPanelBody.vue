@@ -82,6 +82,8 @@ const emit = defineEmits<{
       :material="params.material"
       :avg-n="avgN"
       :r-squared="rSquared"
+      :slope="slope"
+      :intercept="intercept"
     />
   </div>
 </template>

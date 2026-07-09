@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/polarization/PolarizationStatusBar.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { normalizeClass as _normalizeClass, createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, createTextVNode as _createTextVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"st-item\" }\nconst _hoisted_2 = { class: \"cyan\" }\nconst _hoisted_3 = { class: \"st-item\" }\nconst _hoisted_4 = { class: \"amber\" }\nconst _hoisted_5 = { class: \"st-item\" }\nconst _hoisted_6 = { class: \"green\" }\nconst _hoisted_7 = { class: \"st-item\" }\nconst _hoisted_8 = { class: \"green\" }\n\nimport { computed } from 'vue'\nimport { useI18n } from '../../../composables/useI18n'\n\ninterface Props {\n  running: boolean\n  paused: boolean\n  polarizerAngle: number\n  analyzerAngle: number\n  outputIntensity: number\n  transmissionPercent: number\n}\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'PolarizationStatusBar',\n  props: {\n    running: { type: Boolean },\n    paused: { type: Boolean },\n    polarizerAngle: {},\n    analyzerAngle: {},\n    outputIntensity: {},\n    transmissionPercent: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\n\nconst props = __props\n\nconst stateClass = computed(() => props.running && !props.paused ? 'running' : 'idle')\nconst stateLabel = computed(() => {\n  if (!props.running) return t('experiments.statusReady')\n  if (props.paused) return t('experiments.statusPaused')\n  return t('experiments.statusRunning')\n})\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    class: _normalizeClass([\"status-bar\", stateClass.value])\n  }, [\n    _createElementVNode(\"span\", {\n      class: _normalizeClass([\"pulse-dot\", stateClass.value])\n    }, null, 2),\n    _createElementVNode(\"span\", {\n      class: _normalizeClass([\"st-chip\", stateClass.value])\n    }, _toDisplayString(stateLabel.value), 3),\n    _cache[7] || (_cache[7] = _createElementVNode(\"span\", { class: \"sep\" }, null, -1)),\n    _createElementVNode(\"span\", _hoisted_1, [\n      _cache[0] || (_cache[0] = _createTextVNode(\"θ₁ = \", -1)),\n      _createElementVNode(\"b\", _hoisted_2, _toDisplayString(__props.polarizerAngle), 1),\n      _cache[1] || (_cache[1] = _createTextVNode(\"°\", -1))\n    ]),\n    _createElementVNode(\"span\", _hoisted_3, [\n      _cache[2] || (_cache[2] = _createTextVNode(\"θ₂ = \", -1)),\n      _createElementVNode(\"b\", _hoisted_4, _toDisplayString(__props.analyzerAngle), 1),\n      _cache[3] || (_cache[3] = _createTextVNode(\"°\", -1))\n    ]),\n    _createElementVNode(\"span\", _hoisted_5, [\n      _cache[4] || (_cache[4] = _createTextVNode(\"I = \", -1)),\n      _createElementVNode(\"b\", _hoisted_6, _toDisplayString(__props.outputIntensity.toFixed(1)), 1)\n    ]),\n    _createElementVNode(\"span\", _hoisted_7, [\n      _cache[5] || (_cache[5] = _createTextVNode(\"T = \", -1)),\n      _createElementVNode(\"b\", _hoisted_8, _toDisplayString(__props.transmissionPercent.toFixed(1)), 1),\n      _cache[6] || (_cache[6] = _createTextVNode(\"%\", -1))\n    ])\n  ], 2))\n}\n}\n\n})",
+      "start": 1783634642057,
+      "end": 1783634642057
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642057,
+      "end": 1783634642057,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { normalizeClass as _normalizeClass, createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, createTextVNode as _createTextVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"st-item\" };\nconst _hoisted_2 = { class: \"cyan\" };\nconst _hoisted_3 = { class: \"st-item\" };\nconst _hoisted_4 = { class: \"amber\" };\nconst _hoisted_5 = { class: \"st-item\" };\nconst _hoisted_6 = { class: \"green\" };\nconst _hoisted_7 = { class: \"st-item\" };\nconst _hoisted_8 = { class: \"green\" };\nimport { computed } from \"vue\";\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"PolarizationStatusBar\",\n  props: {\n    running: { type: Boolean },\n    paused: { type: Boolean },\n    polarizerAngle: {},\n    analyzerAngle: {},\n    outputIntensity: {},\n    transmissionPercent: {}\n  },\n  setup(__props) {\n    const { t } = useI18n();\n    const props = __props;\n    const stateClass = computed(() => props.running && !props.paused ? \"running\" : \"idle\");\n    const stateLabel = computed(() => {\n      if (!props.running) return t(\"experiments.statusReady\");\n      if (props.paused) return t(\"experiments.statusPaused\");\n      return t(\"experiments.statusRunning\");\n    });\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", {\n        class: _normalizeClass([\"status-bar\", stateClass.value])\n      }, [\n        _createElementVNode(\"span\", {\n          class: _normalizeClass([\"pulse-dot\", stateClass.value])\n        }, null, 2),\n        _createElementVNode(\"span\", {\n          class: _normalizeClass([\"st-chip\", stateClass.value])\n        }, _toDisplayString(stateLabel.value), 3),\n        _cache[7] || (_cache[7] = _createElementVNode(\"span\", { class: \"sep\" }, null, -1)),\n        _createElementVNode(\"span\", _hoisted_1, [\n          _cache[0] || (_cache[0] = _createTextVNode(\"θ₁ = \", -1)),\n          _createElementVNode(\"b\", _hoisted_2, _toDisplayString(__props.polarizerAngle), 1),\n          _cache[1] || (_cache[1] = _createTextVNode(\"°\", -1))\n        ]),\n        _createElementVNode(\"span\", _hoisted_3, [\n          _cache[2] || (_cache[2] = _createTextVNode(\"θ₂ = \", -1)),\n          _createElementVNode(\"b\", _hoisted_4, _toDisplayString(__props.analyzerAngle), 1),\n          _cache[3] || (_cache[3] = _createTextVNode(\"°\", -1))\n        ]),\n        _createElementVNode(\"span\", _hoisted_5, [\n          _cache[4] || (_cache[4] = _createTextVNode(\"I = \", -1)),\n          _createElementVNode(\"b\", _hoisted_6, _toDisplayString(__props.outputIntensity.toFixed(1)), 1)\n        ]),\n        _createElementVNode(\"span\", _hoisted_7, [\n          _cache[5] || (_cache[5] = _createTextVNode(\"T = \", -1)),\n          _createElementVNode(\"b\", _hoisted_8, _toDisplayString(__props.transmissionPercent.toFixed(1)), 1),\n          _cache[6] || (_cache[6] = _createTextVNode(\"%\", -1))\n        ])\n      ], 2);\n    };\n  }\n});\n",
+      "start": 1783634642057,
+      "end": 1783634642227,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/polarization/PolarizationStatusBar.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { normalizeClass as _normalizeClass, createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, createTextVNode as _createTextVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"st-item\" }\nconst _hoisted_2 = { class: \"cyan\" }\nconst _hoisted_3 = { class: \"st-item\" }\nconst _hoisted_4 = { class: \"amber\" }\nconst _hoisted_5 = { class: \"st-item\" }\nconst _hoisted_6 = { class: \"green\" }\nconst _hoisted_7 = { class: \"st-item\" }\nconst _hoisted_8 = { class: \"green\" }\n\nimport { computed } from 'vue'\nimport { useI18n } from '../../../composables/useI18n'\n\ninterface Props {\n  running: boolean\n  paused: boolean\n  polarizerAngle: number\n  analyzerAngle: number\n  outputIntensity: number\n  transmissionPercent: number\n}\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'PolarizationStatusBar',\n  props: {\n    running: { type: Boolean },\n    paused: { type: Boolean },\n    polarizerAngle: {},\n    analyzerAngle: {},\n    outputIntensity: {},\n    transmissionPercent: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\n\nconst props = __props\n\nconst stateClass = computed(() => props.running && !props.paused ? 'running' : 'idle')\nconst stateLabel = computed(() => {\n  if (!props.running) return t('experiments.statusReady')\n  if (props.paused) return t('experiments.statusPaused')\n  return t('experiments.statusRunning')\n})\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    class: _normalizeClass([\"status-bar\", stateClass.value])\n  }, [\n    _createElementVNode(\"span\", {\n      class: _normalizeClass([\"pulse-dot\", stateClass.value])\n    }, null, 2),\n    _createElementVNode(\"span\", {\n      class: _normalizeClass([\"st-chip\", stateClass.value])\n    }, _toDisplayString(stateLabel.value), 3),\n    _cache[7] || (_cache[7] = _createElementVNode(\"span\", { class: \"sep\" }, null, -1)),\n    _createElementVNode(\"span\", _hoisted_1, [\n      _cache[0] || (_cache[0] = _createTextVNode(\"θ₁ = \", -1)),\n      _createElementVNode(\"b\", _hoisted_2, _toDisplayString(__props.polarizerAngle), 1),\n      _cache[1] || (_cache[1] = _createTextVNode(\"°\", -1))\n    ]),\n    _createElementVNode(\"span\", _hoisted_3, [\n      _cache[2] || (_cache[2] = _createTextVNode(\"θ₂ = \", -1)),\n      _createElementVNode(\"b\", _hoisted_4, _toDisplayString(__props.analyzerAngle), 1),\n      _cache[3] || (_cache[3] = _createTextVNode(\"°\", -1))\n    ]),\n    _createElementVNode(\"span\", _hoisted_5, [\n      _cache[4] || (_cache[4] = _createTextVNode(\"I = \", -1)),\n      _createElementVNode(\"b\", _hoisted_6, _toDisplayString(__props.outputIntensity.toFixed(1)), 1)\n    ]),\n    _createElementVNode(\"span\", _hoisted_7, [\n      _cache[5] || (_cache[5] = _createTextVNode(\"T = \", -1)),\n      _createElementVNode(\"b\", _hoisted_8, _toDisplayString(__props.transmissionPercent.toFixed(1)), 1),\n      _cache[6] || (_cache[6] = _createTextVNode(\"%\", -1))\n    ])\n  ], 2))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642227,
+      "end": 1783634642227,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642227,
+      "end": 1783634642227,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634642228,
+      "end": 1783634642228,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642228,
+      "end": 1783634642228,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642228,
+      "end": 1783634642228,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642228,
+      "end": 1783634642228,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642228,
+      "end": 1783634642228,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642228,
+      "end": 1783634642228,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642228,
+      "end": 1783634642228,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642228,
+      "end": 1783634642228,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642228,
+      "end": 1783634642228,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642228,
+      "end": 1783634642228,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642228,
+      "end": 1783634642228,
+      "order": "normal"
+    }
+  ]
+}

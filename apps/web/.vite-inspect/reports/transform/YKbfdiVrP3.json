@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/LampReferencePanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeStyle as _normalizeStyle, createStaticVNode as _createStaticVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"ref-section\" }\nconst _hoisted_3 = { class: \"eff-table\" }\nconst _hoisted_4 = { class: \"eff-bar-area\" }\nconst _hoisted_5 = { class: \"eff-val\" }\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'LampReferencePanel',\n  setup(__props) {\n\nconst LAMP_TYPES = [\n  { type: 'تنجستن (مصباح تقليدي)', efficiency: 5, color: '#fbbf24' },\n  { type: 'هالوجين', efficiency: 10, color: '#f59e0b' },\n  { type: 'فلورسنت', efficiency: 25, color: '#4ade80' },\n  { type: 'LED', efficiency: 40, color: '#67e8f9' },\n]\n\nconst NOTES = [\n  '💡 المصباح التقليدي يحوّل 5% فقط إلى ضوء والباقي حرارة',\n  '🔥 المصباح الساخن = طاقة مهدورة (P_heat = 95% من P)',\n  '📊 P ∝ V² — مضاعفة الجهد = 4× القدرة (و4× الإضاءة)',\n  '⚡ LED أكثر كفاءة بـ 8× من التنجستن',\n  '🔧 مقاومة المصباح تزيد مع الحرارة (تأثير حراري)',\n  '📏 العمر الافتراضي يقل مع زيادة الجهد',\n]\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _cache[2] || (_cache[2] = _createStaticVNode(\"<div class=\\\"ref-title\\\" data-v-196c66b5>💡 المصباح والكفاءة</div><div class=\\\"ref-section\\\" data-v-196c66b5><div class=\\\"section-title\\\" data-v-196c66b5>القوانين</div><div class=\\\"formula-box\\\" style=\\\"color:#fbbf24;\\\" data-v-196c66b5>P = V × I</div><div class=\\\"formula-box\\\" style=\\\"color:#fde047;\\\" data-v-196c66b5>P_light = P × η</div><div class=\\\"formula-box\\\" style=\\\"color:#f87171;\\\" data-v-196c66b5>P_heat = P × (1 - η)</div><div class=\\\"formula-box\\\" style=\\\"color:#4ade80;\\\" data-v-196c66b5>η = P_light / P × 100%</div></div>\", 2)),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"section-title\" }, \"مقارنة أنواع المصابيح\", -1)),\n      _createElementVNode(\"div\", _hoisted_3, [\n        _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"eff-header\" }, [\n          _createElementVNode(\"span\", null, \"النوع\"),\n          _createElementVNode(\"span\", null, \"الكفاءة\")\n        ], -1)),\n        (_openBlock(), _createElementBlock(_Fragment, null, _renderList(LAMP_TYPES, (l) => {\n          return _createElementVNode(\"div\", {\n            key: l.type,\n            class: \"eff-row\"\n          }, [\n            _createElementVNode(\"span\", {\n              style: _normalizeStyle({ color: l.color })\n            }, _toDisplayString(l.type), 5),\n            _createElementVNode(\"div\", _hoisted_4, [\n              _createElementVNode(\"div\", {\n                class: \"eff-bar\",\n                style: _normalizeStyle({ width: l.efficiency * 2 + '%', background: l.color })\n              }, null, 4),\n              _createElementVNode(\"span\", _hoisted_5, _toDisplayString(l.efficiency) + \"%\", 1)\n            ])\n          ])\n        }), 64))\n      ])\n    ]),\n    (_openBlock(), _createElementBlock(_Fragment, null, _renderList(NOTES, (note, i) => {\n      return _createElementVNode(\"div\", {\n        key: i,\n        class: \"ref-note\"\n      }, _toDisplayString(note), 1)\n    }), 64))\n  ]))\n}\n}\n\n})",
+      "start": 1783634640167,
+      "end": 1783634640167
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640167,
+      "end": 1783634640167,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeStyle as _normalizeStyle, createStaticVNode as _createStaticVNode } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nconst _hoisted_2 = { class: \"ref-section\" };\nconst _hoisted_3 = { class: \"eff-table\" };\nconst _hoisted_4 = { class: \"eff-bar-area\" };\nconst _hoisted_5 = { class: \"eff-val\" };\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"LampReferencePanel\",\n  setup(__props) {\n    const LAMP_TYPES = [\n      { type: \"تنجستن (مصباح تقليدي)\", efficiency: 5, color: \"#fbbf24\" },\n      { type: \"هالوجين\", efficiency: 10, color: \"#f59e0b\" },\n      { type: \"فلورسنت\", efficiency: 25, color: \"#4ade80\" },\n      { type: \"LED\", efficiency: 40, color: \"#67e8f9\" }\n    ];\n    const NOTES = [\n      \"💡 المصباح التقليدي يحوّل 5% فقط إلى ضوء والباقي حرارة\",\n      \"🔥 المصباح الساخن = طاقة مهدورة (P_heat = 95% من P)\",\n      \"📊 P ∝ V² — مضاعفة الجهد = 4× القدرة (و4× الإضاءة)\",\n      \"⚡ LED أكثر كفاءة بـ 8× من التنجستن\",\n      \"🔧 مقاومة المصباح تزيد مع الحرارة (تأثير حراري)\",\n      \"📏 العمر الافتراضي يقل مع زيادة الجهد\"\n    ];\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _cache[2] || (_cache[2] = _createStaticVNode('<div class=\"ref-title\" data-v-196c66b5>💡 المصباح والكفاءة</div><div class=\"ref-section\" data-v-196c66b5><div class=\"section-title\" data-v-196c66b5>القوانين</div><div class=\"formula-box\" style=\"color:#fbbf24;\" data-v-196c66b5>P = V × I</div><div class=\"formula-box\" style=\"color:#fde047;\" data-v-196c66b5>P_light = P × η</div><div class=\"formula-box\" style=\"color:#f87171;\" data-v-196c66b5>P_heat = P × (1 - η)</div><div class=\"formula-box\" style=\"color:#4ade80;\" data-v-196c66b5>η = P_light / P × 100%</div></div>', 2)),\n        _createElementVNode(\"div\", _hoisted_2, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"section-title\" }, \"مقارنة أنواع المصابيح\", -1)),\n          _createElementVNode(\"div\", _hoisted_3, [\n            _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"eff-header\" }, [\n              _createElementVNode(\"span\", null, \"النوع\"),\n              _createElementVNode(\"span\", null, \"الكفاءة\")\n            ], -1)),\n            (_openBlock(), _createElementBlock(_Fragment, null, _renderList(LAMP_TYPES, (l) => {\n              return _createElementVNode(\"div\", {\n                key: l.type,\n                class: \"eff-row\"\n              }, [\n                _createElementVNode(\"span\", {\n                  style: _normalizeStyle({ color: l.color })\n                }, _toDisplayString(l.type), 5),\n                _createElementVNode(\"div\", _hoisted_4, [\n                  _createElementVNode(\"div\", {\n                    class: \"eff-bar\",\n                    style: _normalizeStyle({ width: l.efficiency * 2 + \"%\", background: l.color })\n                  }, null, 4),\n                  _createElementVNode(\"span\", _hoisted_5, _toDisplayString(l.efficiency) + \"%\", 1)\n                ])\n              ]);\n            }), 64))\n          ])\n        ]),\n        (_openBlock(), _createElementBlock(_Fragment, null, _renderList(NOTES, (note, i) => {\n          return _createElementVNode(\"div\", {\n            key: i,\n            class: \"ref-note\"\n          }, _toDisplayString(note), 1);\n        }), 64))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634640167,
+      "end": 1783634640509,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/LampReferencePanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeStyle as _normalizeStyle, createStaticVNode as _createStaticVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"ref-section\" }\nconst _hoisted_3 = { class: \"eff-table\" }\nconst _hoisted_4 = { class: \"eff-bar-area\" }\nconst _hoisted_5 = { class: \"eff-val\" }\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'LampReferencePanel',\n  setup(__props) {\n\nconst LAMP_TYPES = [\n  { type: 'تنجستن (مصباح تقليدي)', efficiency: 5, color: '#fbbf24' },\n  { type: 'هالوجين', efficiency: 10, color: '#f59e0b' },\n  { type: 'فلورسنت', efficiency: 25, color: '#4ade80' },\n  { type: 'LED', efficiency: 40, color: '#67e8f9' },\n]\n\nconst NOTES = [\n  '💡 المصباح التقليدي يحوّل 5% فقط إلى ضوء والباقي حرارة',\n  '🔥 المصباح الساخن = طاقة مهدورة (P_heat = 95% من P)',\n  '📊 P ∝ V² — مضاعفة الجهد = 4× القدرة (و4× الإضاءة)',\n  '⚡ LED أكثر كفاءة بـ 8× من التنجستن',\n  '🔧 مقاومة المصباح تزيد مع الحرارة (تأثير حراري)',\n  '📏 العمر الافتراضي يقل مع زيادة الجهد',\n]\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _cache[2] || (_cache[2] = _createStaticVNode(\"<div class=\\\"ref-title\\\" data-v-196c66b5>💡 المصباح والكفاءة</div><div class=\\\"ref-section\\\" data-v-196c66b5><div class=\\\"section-title\\\" data-v-196c66b5>القوانين</div><div class=\\\"formula-box\\\" style=\\\"color:#fbbf24;\\\" data-v-196c66b5>P = V × I</div><div class=\\\"formula-box\\\" style=\\\"color:#fde047;\\\" data-v-196c66b5>P_light = P × η</div><div class=\\\"formula-box\\\" style=\\\"color:#f87171;\\\" data-v-196c66b5>P_heat = P × (1 - η)</div><div class=\\\"formula-box\\\" style=\\\"color:#4ade80;\\\" data-v-196c66b5>η = P_light / P × 100%</div></div>\", 2)),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"section-title\" }, \"مقارنة أنواع المصابيح\", -1)),\n      _createElementVNode(\"div\", _hoisted_3, [\n        _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"eff-header\" }, [\n          _createElementVNode(\"span\", null, \"النوع\"),\n          _createElementVNode(\"span\", null, \"الكفاءة\")\n        ], -1)),\n        (_openBlock(), _createElementBlock(_Fragment, null, _renderList(LAMP_TYPES, (l) => {\n          return _createElementVNode(\"div\", {\n            key: l.type,\n            class: \"eff-row\"\n          }, [\n            _createElementVNode(\"span\", {\n              style: _normalizeStyle({ color: l.color })\n            }, _toDisplayString(l.type), 5),\n            _createElementVNode(\"div\", _hoisted_4, [\n              _createElementVNode(\"div\", {\n                class: \"eff-bar\",\n                style: _normalizeStyle({ width: l.efficiency * 2 + '%', background: l.color })\n              }, null, 4),\n              _createElementVNode(\"span\", _hoisted_5, _toDisplayString(l.efficiency) + \"%\", 1)\n            ])\n          ])\n        }), 64))\n      ])\n    ]),\n    (_openBlock(), _createElementBlock(_Fragment, null, _renderList(NOTES, (note, i) => {\n      return _createElementVNode(\"div\", {\n        key: i,\n        class: \"ref-note\"\n      }, _toDisplayString(note), 1)\n    }), 64))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,sBAAsB,qBAAqB,cAAc,aAAa,YAAY,WAAW,aAAa,YAAY,sBAAsB,qBAAqB,mBAAmB,kBAAkB,kBAAkB,iBAAiB,qBAAqB,0BAA0B;AAEjS,MAAM,aAAa,EAAE,OAAO,aAAa;AACzC,MAAM,aAAa,EAAE,OAAO,cAAc;AAC1C,MAAM,aAAa,EAAE,OAAO,YAAY;AACxC,MAAM,aAAa,EAAE,OAAO,eAAe;AAC3C,MAAM,aAAa,EAAE,OAAO,UAAU;AAGtC,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,MAAM,SAAS;AAEjB,UAAM,aAAa;AAAA,MACjB,EAAE,MAAM,yBAAyB,YAAY,GAAG,OAAO,UAAU;AAAA,MACjE,EAAE,MAAM,WAAW,YAAY,IAAI,OAAO,UAAU;AAAA,MACpD,EAAE,MAAM,WAAW,YAAY,IAAI,OAAO,UAAU;AAAA,MACpD,EAAE,MAAM,OAAO,YAAY,IAAI,OAAO,UAAU;AAAA,IAClD;AAEA,UAAM,QAAQ;AAAA,MACZ;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,IACF;AAEA,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,mBAAmB,sgBAA4hB,CAAC;AAAA,QAC1kB,oBAAoB,OAAO,YAAY;AAAA,UACrC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,gBAAgB,GAAG,yBAAyB,EAAE;AAAA,UAC5G,oBAAoB,OAAO,YAAY;AAAA,YACrC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,aAAa,GAAG;AAAA,cAC5E,oBAAoB,QAAQ,MAAM,OAAO;AAAA,cACzC,oBAAoB,QAAQ,MAAM,SAAS;AAAA,YAC7C,GAAG,EAAE;AAAA,aACJ,WAAW,GAAG,oBAAoB,WAAW,MAAM,YAAY,YAAY,CAAC,MAAM;AACjF,qBAAO,oBAAoB,OAAO;AAAA,gBAChC,KAAK,EAAE;AAAA,gBACP,OAAO;AAAA,cACT,GAAG;AAAA,gBACD,oBAAoB,QAAQ;AAAA,kBAC1B,OAAO,gBAAgB,EAAE,OAAO,EAAE,MAAM,CAAC;AAAA,gBAC3C,GAAG,iBAAiB,EAAE,IAAI,GAAG,CAAC;AAAA,gBAC9B,oBAAoB,OAAO,YAAY;AAAA,kBACrC,oBAAoB,OAAO;AAAA,oBACzB,OAAO;AAAA,oBACP,OAAO,gBAAgB,EAAE,OAAO,EAAE,aAAa,IAAI,KAAK,YAAY,EAAE,MAAM,CAAC;AAAA,kBAC/E,GAAG,MAAM,CAAC;AAAA,kBACV,oBAAoB,QAAQ,YAAY,iBAAiB,EAAE,UAAU,IAAI,KAAK,CAAC;AAAA,gBACjF,CAAC;AAAA,cACH,CAAC;AAAA,YACH,CAAC,GAAG,EAAE;AAAA,UACR,CAAC;AAAA,QACH,CAAC;AAAA,SACA,WAAW,GAAG,oBAAoB,WAAW,MAAM,YAAY,OAAO,CAAC,MAAM,MAAM;AAClF,iBAAO,oBAAoB,OAAO;AAAA,YAChC,KAAK;AAAA,YACL,OAAO;AAAA,UACT,GAAG,iBAAiB,IAAI,GAAG,CAAC;AAAA,QAC9B,CAAC,GAAG,EAAE;AAAA,MACR,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640510,
+      "end": 1783634640510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640510,
+      "end": 1783634640510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634640510,
+      "end": 1783634640510,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640510,
+      "end": 1783634640510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640510,
+      "end": 1783634640510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640510,
+      "end": 1783634640510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640510,
+      "end": 1783634640510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640510,
+      "end": 1783634640510,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640510,
+      "end": 1783634640510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640510,
+      "end": 1783634640510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640510,
+      "end": 1783634640510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640510,
+      "end": 1783634640510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640510,
+      "end": 1783634640510,
+      "order": "normal"
+    }
+  ]
+}

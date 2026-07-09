@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingLoginForm.vue?vue&type=style&index=0&scoped=aac45017&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.login-card {\n  width: 100%;\n  padding: 1.5rem;\n  border-radius: 1rem;\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.08);\n  backdrop-filter: blur(12px);\n}\n.field {\n  margin-bottom: 1rem;\n  text-align: right;\n}\n:global(html[dir='ltr']) .field {\n  text-align: left;\n}\n.field label {\n  display: block;\n  font-size: 0.82rem;\n  margin-bottom: 0.35rem;\n  color: #cbd5e1;\n}\n.field input {\n  width: 100%;\n  padding: 0.65rem 0.9rem;\n  border-radius: 0.5rem;\n  border: 1px solid #334155;\n  background: #0f172a;\n  color: #e2e8f0;\n  font-size: 0.9rem;\n  box-sizing: border-box;\n}\n.field input:focus {\n  outline: none;\n  border-color: #06b6d4;\n}\n.password-wrap {\n  position: relative;\n}\n.toggle-pw {\n  position: absolute;\n  left: 0.6rem;\n  top: 50%;\n  transform: translateY(-50%);\n  background: none;\n  border: none;\n  cursor: pointer;\n  font-size: 1rem;\n  opacity: 0.6;\n}\n.toggle-pw:hover { opacity: 1; }\n.error {\n  color: #fca5a5;\n  font-size: 0.8rem;\n  margin: 0.5rem 0;\n}\n.btn-row {\n  display: flex;\n  gap: 0.6rem;\n  margin-top: 0.5rem;\n}\n.btn-submit {\n  flex: 1;\n  padding: 0.8rem;\n  border: none;\n  border-radius: 0.5rem;\n  background: linear-gradient(135deg, #06b6d4, #0891b2);\n  color: #fff;\n  font-weight: 700;\n  cursor: pointer;\n  font-size: 0.95rem;\n}\n.btn-register {\n  flex: 1;\n  padding: 0.8rem;\n  border: 1px solid rgba(255,255,255,0.15);\n  border-radius: 0.5rem;\n  background: rgba(255,255,255,0.06);\n  color: #e2e8f0;\n  font-weight: 700;\n  cursor: pointer;\n  font-size: 0.95rem;\n}\n.btn-register:hover {\n  background: rgba(255,255,255,0.1);\n}\n",
+      "start": 1783634639974,
+      "end": 1783634639974
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.login-card {\n  width: 100%;\n  padding: 1.5rem;\n  border-radius: 1rem;\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.08);\n  backdrop-filter: blur(12px);\n}\n.field {\n  margin-bottom: 1rem;\n  text-align: right;\n}\n:global(html[dir='ltr']) .field {\n  text-align: left;\n}\n.field label {\n  display: block;\n  font-size: 0.82rem;\n  margin-bottom: 0.35rem;\n  color: #cbd5e1;\n}\n.field input {\n  width: 100%;\n  padding: 0.65rem 0.9rem;\n  border-radius: 0.5rem;\n  border: 1px solid #334155;\n  background: #0f172a;\n  color: #e2e8f0;\n  font-size: 0.9rem;\n  box-sizing: border-box;\n}\n.field input:focus {\n  outline: none;\n  border-color: #06b6d4;\n}\n.password-wrap {\n  position: relative;\n}\n.toggle-pw {\n  position: absolute;\n  left: 0.6rem;\n  top: 50%;\n  transform: translateY(-50%);\n  background: none;\n  border: none;\n  cursor: pointer;\n  font-size: 1rem;\n  opacity: 0.6;\n}\n.toggle-pw:hover { opacity: 1; }\n.error {\n  color: #fca5a5;\n  font-size: 0.8rem;\n  margin: 0.5rem 0;\n}\n.btn-row {\n  display: flex;\n  gap: 0.6rem;\n  margin-top: 0.5rem;\n}\n.btn-submit {\n  flex: 1;\n  padding: 0.8rem;\n  border: none;\n  border-radius: 0.5rem;\n  background: linear-gradient(135deg, #06b6d4, #0891b2);\n  color: #fff;\n  font-weight: 700;\n  cursor: pointer;\n  font-size: 0.95rem;\n}\n.btn-register {\n  flex: 1;\n  padding: 0.8rem;\n  border: 1px solid rgba(255,255,255,0.15);\n  border-radius: 0.5rem;\n  background: rgba(255,255,255,0.06);\n  color: #e2e8f0;\n  font-weight: 700;\n  cursor: pointer;\n  font-size: 0.95rem;\n}\n.btn-register:hover {\n  background: rgba(255,255,255,0.1);\n}\n",
+      "start": 1783634639974,
+      "end": 1783634639974,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639974,
+      "end": 1783634639974,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639975,
+      "end": 1783634639975,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639975,
+      "end": 1783634639975,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.login-card[data-v-aac45017] {\n  width: 100%;\n  padding: 1.5rem;\n  border-radius: 1rem;\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.08);\n  backdrop-filter: blur(12px);\n}\n.field[data-v-aac45017] {\n  margin-bottom: 1rem;\n  text-align: right;\n}\nhtml[dir='ltr'] {\n  text-align: left;\n}\n.field label[data-v-aac45017] {\n  display: block;\n  font-size: 0.82rem;\n  margin-bottom: 0.35rem;\n  color: #cbd5e1;\n}\n.field input[data-v-aac45017] {\n  width: 100%;\n  padding: 0.65rem 0.9rem;\n  border-radius: 0.5rem;\n  border: 1px solid #334155;\n  background: #0f172a;\n  color: #e2e8f0;\n  font-size: 0.9rem;\n  box-sizing: border-box;\n}\n.field input[data-v-aac45017]:focus {\n  outline: none;\n  border-color: #06b6d4;\n}\n.password-wrap[data-v-aac45017] {\n  position: relative;\n}\n.toggle-pw[data-v-aac45017] {\n  position: absolute;\n  left: 0.6rem;\n  top: 50%;\n  transform: translateY(-50%);\n  background: none;\n  border: none;\n  cursor: pointer;\n  font-size: 1rem;\n  opacity: 0.6;\n}\n.toggle-pw[data-v-aac45017]:hover { opacity: 1;\n}\n.error[data-v-aac45017] {\n  color: #fca5a5;\n  font-size: 0.8rem;\n  margin: 0.5rem 0;\n}\n.btn-row[data-v-aac45017] {\n  display: flex;\n  gap: 0.6rem;\n  margin-top: 0.5rem;\n}\n.btn-submit[data-v-aac45017] {\n  flex: 1;\n  padding: 0.8rem;\n  border: none;\n  border-radius: 0.5rem;\n  background: linear-gradient(135deg, #06b6d4, #0891b2);\n  color: #fff;\n  font-weight: 700;\n  cursor: pointer;\n  font-size: 0.95rem;\n}\n.btn-register[data-v-aac45017] {\n  flex: 1;\n  padding: 0.8rem;\n  border: 1px solid rgba(255,255,255,0.15);\n  border-radius: 0.5rem;\n  background: rgba(255,255,255,0.06);\n  color: #e2e8f0;\n  font-weight: 700;\n  cursor: pointer;\n  font-size: 0.95rem;\n}\n.btn-register[data-v-aac45017]:hover {\n  background: rgba(255,255,255,0.1);\n}\n",
+      "start": 1783634639975,
+      "end": 1783634639976,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639976,
+      "end": 1783634639976,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634639976,
+      "end": 1783634639976,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639976,
+      "end": 1783634639976,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639976,
+      "end": 1783634639976,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639976,
+      "end": 1783634639976,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639976,
+      "end": 1783634639976,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639976,
+      "end": 1783634639976,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639976,
+      "end": 1783634639976,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639976,
+      "end": 1783634639976,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639976,
+      "end": 1783634639976,
+      "order": "normal"
+    }
+  ]
+}

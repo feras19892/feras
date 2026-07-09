@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import { getStats } from './services.js';
-import { authMiddleware } from '../../shared/middleware/auth.js';
+import { authMiddleware } from '../auth/middleware.js';
 
 const dashboardRoutes = new Hono();
 

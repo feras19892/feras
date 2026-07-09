@@ -10,6 +10,7 @@ import FreeFallStatusBar from '../../../../components/experiment/freefall/FreeFa
 import FreeFallHelpModal from '../../../../components/experiment/freefall/FreeFallHelpModal.vue'
 import FreeFallReport from '../../../../components/experiment/freefall/FreeFallReport.vue'
 import FreeFallPanelBody from '../../../../components/experiment/freefall/FreeFallPanelBody.vue'
+import FreeFallParamsPanel from '../../../../components/experiment/freefall/FreeFallParamsPanel.vue'
 import FreeFallOverlayPanels from '../../../../components/experiment/freefall/FreeFallOverlayPanels.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 
@@ -59,7 +60,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <div class="lab-grid">
       <div class="lab-col data-col" :style="{ width: ex.colWidths.data + 'px' }">
         <template v-for="id in ex.getColumnPanels('data')" :key="id">
-          <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id as any)"
+          <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(String(id))"
             @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
             <FreeFallPanelBody :id="id" :trials="ex.trials.trials.value" :calc-result="ex.trials.calcResult.value"
               :params="ex.params" :sim-state="ex.lab.sim" :trial-stats="ex.trials.trialStats.value" :g-theoretical="ex.params.g"
@@ -76,7 +77,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
         <FreeFallCanvas ref="canvasRef" :params="ex.params" :sim-state="ex.lab.sim" @snapshot="rep.onSnapshot($event)" />
         <div v-if="ex.hasVisibleVisPanels" class="chart-row">
           <template v-for="id in ex.getColumnPanels('vis')" :key="id">
-            <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="chart-panel lab-card" :id="id" :title="ex.layout.panelTitle(id as any)"
+            <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="chart-panel lab-card" :id="id" :title="ex.layout.panelTitle(String(id))"
               @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
               <FreeFallPanelBody :id="id" :trials="ex.trials.trials.value" :calc-result="ex.trials.calcResult.value"
                 :params="ex.params" :sim-state="ex.lab.sim" :trial-stats="ex.trials.trialStats.value" :g-theoretical="ex.params.g"
@@ -92,7 +93,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       <div class="resizer" @mousedown="ex.onResizeStart('vis', $event)"></div>
       <div class="lab-col ctrl-col" :style="{ width: ex.colWidths.ctrl + 'px' }">
         <template v-for="id in ex.getColumnPanels('ctrl')" :key="id">
-          <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id as any)"
+          <DraggablePanel v-if="id !== 'params' && ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(String(id))"
             @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
             <FreeFallPanelBody :id="id" :trials="ex.trials.trials.value" :calc-result="ex.trials.calcResult.value"
               :params="ex.params" :sim-state="ex.lab.sim" :trial-stats="ex.trials.trialStats.value" :g-theoretical="ex.params.g"
@@ -102,6 +103,9 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
               @print-report="reportOpen = true" @open-full-report="rep.openFullReport(ex)"
             />
           </DraggablePanel>
+          <div v-else-if="id === 'params'" class="params-embedded">
+            <FreeFallParamsPanel :params="ex.params" @update:params="Object.assign(ex.params, $event)" />
+          </div>
         </template>
       </div>
     </div>
@@ -167,6 +171,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 .data-col { background: rgba(255,255,255,0.02); }
 .vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 0; }
 .ctrl-col { background: rgba(255,255,255,0.02); }
+.params-embedded { padding: .6rem; }
 .resizer { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0; }
 .resizer:hover, .resizer:active { background: #5B8DB8; }
 .chart-row { display: flex; gap: .5rem; width: 100%; margin-top: .3rem; flex: 0 0 180px; min-height: 0; align-items: stretch; }

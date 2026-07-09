@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/packages/chemistry-engine/src/index.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "export type { LiquidState, BuretteState, PipetteState, SepFunnelState } from './types.js';\nexport type { ChemicalEquation } from './equations.js';\nexport { findEquation, canReact } from './equations.js';\nexport { mixColor, hexToRgb } from './color.js';\nexport { isAcid, isBase, isIndicator } from './type-checks.js';\nexport { calculateTitrationPh, getIndicatorColor, applyIndicatorsToContainer } from './reactions.js';\n",
+      "start": 1783634640043,
+      "end": 1783634640498,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640498,
+      "end": 1783634640498,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "export { findEquation, canReact } from \"./equations.js\";\nexport { mixColor, hexToRgb } from \"./color.js\";\nexport { isAcid, isBase, isIndicator } from \"./type-checks.js\";\nexport { calculateTitrationPh, getIndicatorColor, applyIndicatorsToContainer } from \"./reactions.js\";\n",
+      "start": 1783634640498,
+      "end": 1783634641628,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/packages/chemistry-engine/src/index.ts"
+        ],
+        "sourcesContent": [
+          "export type { LiquidState, BuretteState, PipetteState, SepFunnelState } from './types.js';\nexport type { ChemicalEquation } from './equations.js';\nexport { findEquation, canReact } from './equations.js';\nexport { mixColor, hexToRgb } from './color.js';\nexport { isAcid, isBase, isIndicator } from './type-checks.js';\nexport { calculateTitrationPh, getIndicatorColor, applyIndicatorsToContainer } from './reactions.js';\n"
+        ],
+        "mappings": "AAEA,SAAS,cAAc,gBAAgB;AACvC,SAAS,UAAU,gBAAgB;AACnC,SAAS,QAAQ,QAAQ,mBAAmB;AAC5C,SAAS,sBAAsB,mBAAmB,kCAAkC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641628,
+      "end": 1783634641628,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641631,
+      "end": 1783634641631,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641631,
+      "end": 1783634641631,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641633,
+      "end": 1783634641633,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641633,
+      "end": 1783634641633,
+      "order": "normal"
+    }
+  ]
+}

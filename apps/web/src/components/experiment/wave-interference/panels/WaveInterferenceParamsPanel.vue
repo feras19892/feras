@@ -1,6 +1,4 @@
-<script setup lang="ts">
-import { useI18n } from '../../../../composables/useI18n'
-const { t } = useI18n()
+﻿<script setup lang="ts">
 interface Props { params: { sourceDistance: number; wavelength: number; frequency: number; screenDistance: number } }
 const props = defineProps<Props>()
 const emit = defineEmits<{ (e: 'update:params', p: { sourceDistance: number; wavelength: number; frequency: number; screenDistance: number }): void }>()

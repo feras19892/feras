@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryChartPanel.vue?vue&type=style&index=0&scoped=527ae667&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.chart-panel { display:flex; align-items:center; justify-content:center; padding:.3rem; }\n.empty { color:#64748b; font-size:.75rem; text-align:center; }\n",
+      "start": 1783634643059,
+      "end": 1783634643059
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.chart-panel { display:flex; align-items:center; justify-content:center; padding:.3rem; }\n.empty { color:#64748b; font-size:.75rem; text-align:center; }\n",
+      "start": 1783634643059,
+      "end": 1783634643059,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634643059,
+      "end": 1783634643059,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634643059,
+      "end": 1783634643059,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634643059,
+      "end": 1783634643059,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.chart-panel[data-v-527ae667] { display:flex; align-items:center; justify-content:center; padding:.3rem;\n}\n.empty[data-v-527ae667] { color:#64748b; font-size:.75rem; text-align:center;\n}\n",
+      "start": 1783634643059,
+      "end": 1783634643059,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634643059,
+      "end": 1783634643059,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634643059,
+      "end": 1783634643059,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634643059,
+      "end": 1783634643059,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634643059,
+      "end": 1783634643059,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634643059,
+      "end": 1783634643059,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634643059,
+      "end": 1783634643059,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634643059,
+      "end": 1783634643059,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634643059,
+      "end": 1783634643059,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634643059,
+      "end": 1783634643059,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634643059,
+      "end": 1783634643059,
+      "order": "normal"
+    }
+  ]
+}

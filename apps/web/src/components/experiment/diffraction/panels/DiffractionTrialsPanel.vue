@@ -21,11 +21,11 @@ const emit = defineEmits<{
         <tr>
           <th>#</th>
           <th>Mode</th>
-          <th>{{ trials[0]?.mode === 'grating' ? 'N' : 'a' }}</th>
+          <th>a (mm)</th>
+          <th>1/a</th>
           <th>D</th>
           <th>λ</th>
-          <th>{{ trials[0]?.mode === 'grating' ? 'θ₁' : 'w' }}</th>
-          <th>{{ trials[0]?.mode === 'grating' ? 'y₁' : 'y₁' }}</th>
+          <th>y₁</th>
           <th></th>
         </tr>
       </thead>
@@ -33,10 +33,10 @@ const emit = defineEmits<{
         <tr v-for="tr in trials" :key="tr.id">
           <td>{{ tr.id }}</td>
           <td>{{ tr.mode }}</td>
-          <td>{{ tr.mode === 'grating' ? tr.linesPerMm : tr.slitWidth }}</td>
+          <td>{{ tr.mode === 'grating' ? '—' : tr.slitWidth.toFixed(2) }}</td>
+          <td>{{ tr.mode === 'grating' ? '—' : (1 / tr.slitWidth).toFixed(1) }}</td>
           <td>{{ tr.screenDistance }}</td>
           <td>{{ tr.wavelength }}</td>
-          <td>{{ tr.mode === 'grating' ? tr.firstOrderAngle.toFixed(3) : tr.centralWidth.toFixed(3) }}</td>
           <td>{{ tr.mode === 'grating' ? tr.firstOrderY.toFixed(3) : tr.darkFringe1.toFixed(3) }}</td>
           <td><button class="rm" @click="emit('remove', tr.id)">x</button></td>
         </tr>

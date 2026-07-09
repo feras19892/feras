@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/KirchhoffReferencePanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nconst LAWS = [\n  { law: 'KCL', name: 'قانون العقدة', desc: 'مجموع التيارات الداخلة = مجموع التيارات الخارجة', color: '#4ade80', formula: 'ΣI(in) = ΣI(out)' },\n  { law: 'KVL', name: 'قانون الحلقة', desc: 'مجموع فروق الجهد في حلقة مغلقة = صفر', color: '#fbbf24', formula: 'ΣV = 0' },\n]\n\nconst STEPS = [\n  { n: 1, text: 'حدد العقد والحلقات في الدائرة' },\n  { n: 2, text: 'افترض اتجاه التيارات في كل فرع' },\n  { n: 3, text: 'اكتب معادلة KCL عند كل عقدة' },\n  { n: 4, text: 'اكتب معادلة KVL لكل حلقة مستقلة' },\n  { n: 5, text: 'حل المعادلات لإيجاد التيارات المجهولة' },\n  { n: 6, text: 'تحقق من صحة الحل بالتعويض' },\n]\n\nconst SIGNS = [\n  { sign: '+', desc: 'البطارية: من القطب السالب إلى الموجب', color: '#22c55e' },\n  { sign: '−', desc: 'المقاومة: في اتجاه التيار (هبوط جهد)', color: '#ef4444' },\n]\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <div class=\"ref-title\">📊 قانونا كيرشوف</div>\n\n    <div class=\"ref-table\">\n      <div class=\"ref-header\">\n        <span>القانون</span>\n        <span>المعادلة</span>\n      </div>\n      <div v-for=\"law in LAWS\" :key=\"law.law\" class=\"ref-row\">\n        <div class=\"law-info\">\n          <span :style=\"{ color: law.color, fontWeight: 700 }\">{{ law.law }}</span>\n          <span class=\"law-name\">{{ law.name }}</span>\n        </div>\n        <span class=\"law-formula\" :style=\"{ color: law.color }\">{{ law.formula }}</span>\n      </div>\n      <div v-for=\"law in LAWS\" :key=\"law.law + '-desc'\" class=\"ref-desc\">\n        {{ law.desc }}\n      </div>\n    </div>\n\n    <div class=\"ref-section\">\n      <div class=\"section-title\">إشارات الجهد في KVL</div>\n      <div v-for=\"s in SIGNS\" :key=\"s.sign\" class=\"sign-row\">\n        <span class=\"sign\" :style=\"{ color: s.color }\">{{ s.sign }}</span>\n        <span>{{ s.desc }}</span>\n      </div>\n    </div>\n\n    <div class=\"ref-section\">\n      <div class=\"section-title\">خطوات الحل</div>\n      <ol class=\"steps-list\">\n        <li v-for=\"s in STEPS\" :key=\"s.n\">{{ s.text }}</li>\n      </ol>\n    </div>\n\n    <div class=\"ref-note\">\n      💡 عدد المعادلات = عدد الحلقات المستقلة + (عدد العقد − 1)\n    </div>\n    <div class=\"ref-note\">\n      ⚡ في دائرتين بحلقتين: معادلة KCL واحدة + معادلتا KVL = 3 معادلات لـ 3 مجاهيل\n    </div>\n    <div class=\"ref-note\">\n      🔄 إذا كانت قيمة التيار سالبة، فإن الاتجاه الفعلي عكس المفترض\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { padding: 1rem; display: flex; flex-direction: column; gap: .5rem; overflow-y: auto; }\n.ref-title { font-size: .9rem; font-weight: 700; color: #f59e0b; text-align: center; padding-bottom: .3rem; border-bottom: 1px solid #1e2530; }\n.ref-table { display: flex; flex-direction: column; gap: .15rem; }\n.ref-header { display: flex; justify-content: space-between; padding: .4rem .6rem; background: #1E2530; border-radius: 4px; font-weight: 700; font-size: .78rem; color: #94a3b8; }\n.ref-row { display: flex; justify-content: space-between; align-items: center; padding: .35rem .6rem; border-bottom: 1px solid #1e2530; font-size: .78rem; gap: .5rem; }\n.law-info { display: flex; flex-direction: column; gap: .1rem; }\n.law-name { font-size: .72rem; color: #64748b; }\n.law-formula { font-family: 'Courier New', monospace; font-weight: 700; font-size: .8rem; }\n.ref-desc { font-size: .72rem; color: #94a3b8; padding: .2rem .6rem; }\n.ref-section { margin-top: .4rem; padding: .5rem; background: rgba(255,255,255,.02); border-radius: 4px; }\n.section-title { font-size: .78rem; font-weight: 700; color: #67e8f9; margin-bottom: .3rem; }\n.sign-row { display: flex; align-items: center; gap: .4rem; font-size: .75rem; color: #cbd5e1; padding: .15rem 0; }\n.sign { font-size: 1rem; font-weight: 700; width: 1.2rem; text-align: center; }\n.steps-list { margin: 0; padding-right: 1.2rem; padding-left: 0; }\n.steps-list li { font-size: .75rem; color: #cbd5e1; line-height: 1.6; margin-bottom: .15rem; }\n.ref-note { font-size: .72rem; color: #64748b; margin-top: .3rem; line-height: 1.5; }\n</style>\n",
+      "start": 1783634639360,
+      "end": 1783634639789,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639789,
+      "end": 1783634639789,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639789,
+      "end": 1783634639789,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639789,
+      "end": 1783634639789,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639789,
+      "end": 1783634639789,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/KirchhoffReferencePanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/KirchhoffReferencePanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/KirchhoffReferencePanel.vue?vue&type=style&index=0&scoped=99f332bf&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-99f332bf\"]]);\n",
+      "start": 1783634639789,
+      "end": 1783634640089,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640089,
+      "end": 1783634640089,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640091,
+      "end": 1783634640093,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640094,
+      "end": 1783634640094,
+      "order": "normal"
+    }
+  ]
+}

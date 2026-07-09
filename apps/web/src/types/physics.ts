@@ -78,4 +78,5 @@ export interface AnalysisPayload {
   mediumN2?: number;
   calculatedN2?: number;
   expectedN2?: number;
+  hasCalcTab?: boolean;
 }

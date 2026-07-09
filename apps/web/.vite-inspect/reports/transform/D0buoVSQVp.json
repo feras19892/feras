@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ideal-gas/panels/IdealGasResultsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed } from 'vue'\nimport { useI18n } from '../../../../composables/useI18n'\nimport type { IdealGasTrial } from '../../../../composables/ideal-gas/useIdealGasTrials'\nconst { t } = useI18n()\nconst props = defineProps<{ trials: IdealGasTrial[] }>()\n\nconst avgP = computed(() => props.trials.length ? props.trials.reduce((s, t) => s + t.P, 0) / props.trials.length : 0)\nconst avgT = computed(() => props.trials.length ? props.trials.reduce((s, t) => s + t.T, 0) / props.trials.length : 0)\nconst avgV = computed(() => props.trials.length ? props.trials.reduce((s, t) => s + t.V, 0) / props.trials.length : 0)\n</script>\n\n<template>\n  <div class=\"results-panel\">\n    <div class=\"stat\"><span class=\"label\">{{ t('experiments.trialsCount') }}</span><span class=\"val\">{{ trials.length }}</span></div>\n    <div class=\"stat\"><span class=\"label\">P̄</span><span class=\"val\">{{ (avgP/1000).toFixed(1) }} kPa</span></div>\n    <div class=\"stat\"><span class=\"label\">T̄</span><span class=\"val\">{{ avgT.toFixed(1) }} K</span></div>\n    <div class=\"stat\"><span class=\"label\">V̄</span><span class=\"val\">{{ (avgV*1000).toFixed(2) }} L</span></div>\n  </div>\n</template>\n\n<style scoped>\n.results-panel { display:flex; flex-direction:column; gap:.35rem; }\n.stat { display:flex; justify-content:space-between; font-size:.78rem; padding:.25rem .35rem; border-radius:4px; background:rgba(255,255,255,.03); }\n.label { color:#8B95A5; }\n.val { color:#D1D7E0; font-weight:600; }\n</style>\n",
+      "start": 1783634642245,
+      "end": 1783634642634,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642634,
+      "end": 1783634642634,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642634,
+      "end": 1783634642634,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642634,
+      "end": 1783634642634,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642634,
+      "end": 1783634642634,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ideal-gas/panels/IdealGasResultsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ideal-gas/panels/IdealGasResultsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ideal-gas/panels/IdealGasResultsPanel.vue?vue&type=style&index=0&scoped=3dcf2970&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-3dcf2970\"]]);\n",
+      "start": 1783634642634,
+      "end": 1783634642829,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642829,
+      "end": 1783634642830,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642830,
+      "end": 1783634642830,
+      "order": "normal"
+    }
+  ]
+}

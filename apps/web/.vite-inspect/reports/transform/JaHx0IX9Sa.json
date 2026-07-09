@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/BuretteDisplay.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport type { BuretteWarning } from '../../../composables/chemistry/useLabSimulation';\nimport { useI18n } from '../../../composables/useI18n';\nconst { t } = useI18n();\n\nconst props = defineProps<{\n  remaining: number;\n  initial: number;\n  totalConsumed: number;\n  warning: BuretteWarning;\n}>();\n</script>\n\n<template>\n  <div class=\"burette-display\">\n    <div class=\"burette-display-inner\">\n      <div class=\"burette-row\">\n        <span class=\"burette-label\">{{ t('chemistryLab.buretteRemaining') }}</span>\n        <span class=\"burette-value\">{{ remaining.toFixed(1) }} / {{ initial.toFixed(1) }} mL</span>\n      </div>\n      <div class=\"burette-row\">\n        <span class=\"burette-label\">{{ t('chemistryLab.totalConsumed') }}</span>\n        <span class=\"burette-value total\">{{ totalConsumed.toFixed(2) }} mL</span>\n      </div>\n      <div v-if=\"warning\" class=\"burette-row warning\" :class=\"warning\">\n        <span class=\"burette-label\">{{ t('chemistryLab.alert') }}</span>\n        <span class=\"burette-value\">\n          {{ warning === 'approaching' ? t('chemistryLab.approachingEquivalence') : warning === 'equivalence' ? t('chemistryLab.equivalencePointReached') : t('chemistryLab.exceededEquivalence') }}\n        </span>\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.burette-display {\n  position: absolute;\n  top: 0.5rem;\n  left: calc(var(--left-width, 300px) + 1rem);\n  z-index: 20;\n}\n.burette-display-inner {\n  background: rgba(255, 255, 255, 0.95);\n  backdrop-filter: blur(8px);\n  border: 1px solid #e2e8f0;\n  border-radius: 0.75rem;\n  padding: 0.6rem 0.9rem;\n  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);\n  display: flex;\n  flex-direction: column;\n  gap: 0.3rem;\n  min-width: 220px;\n}\n.burette-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 0.75rem;\n}\n.burette-label {\n  font-size: 0.68rem;\n  color: #64748b;\n  font-weight: 600;\n}\n.burette-value {\n  font-size: 0.78rem;\n  font-weight: 700;\n  color: #1e293b;\n  font-variant-numeric: tabular-nums;\n}\n.burette-value.total {\n  color: #2563eb;\n}\n.burette-row.warning.approaching {\n  background: #fef3c7;\n  border-radius: 0.35rem;\n  padding: 0.2rem 0.4rem;\n  margin-top: 0.2rem;\n}\n.burette-row.warning.approaching .burette-value {\n  color: #d97706;\n}\n.burette-row.warning.equivalence {\n  background: #d1fae5;\n  border-radius: 0.35rem;\n  padding: 0.2rem 0.4rem;\n  margin-top: 0.2rem;\n}\n.burette-row.warning.equivalence .burette-value {\n  color: #059669;\n}\n.burette-row.warning.exceeded {\n  background: #fee2e2;\n  border-radius: 0.35rem;\n  padding: 0.2rem 0.4rem;\n  margin-top: 0.2rem;\n}\n.burette-row.warning.exceeded .burette-value {\n  color: #dc2626;\n}\n</style>\n",
+      "start": 1783634639326,
+      "end": 1783634639596,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639596,
+      "end": 1783634639596,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639596,
+      "end": 1783634639596,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639596,
+      "end": 1783634639596,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639596,
+      "end": 1783634639596,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/BuretteDisplay.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/BuretteDisplay.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/BuretteDisplay.vue?vue&type=style&index=0&scoped=1e2afb6f&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-1e2afb6f\"]]);\n",
+      "start": 1783634639596,
+      "end": 1783634639938,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639938,
+      "end": 1783634639939,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639939,
+      "end": 1783634639939,
+      "order": "normal"
+    }
+  ]
+}

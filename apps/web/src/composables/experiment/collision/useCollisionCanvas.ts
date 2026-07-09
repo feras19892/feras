@@ -20,7 +20,8 @@ export function useCollisionCanvas(
   function playBoom() {
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const ctx = new (window.AudioContext || (window as any).webkitAudioContext)()
+      const w = window as Window & { webkitAudioContext?: typeof AudioContext }
+      const ctx = new (window.AudioContext || w.webkitAudioContext)()
       const osc = ctx.createOscillator()
       const gain = ctx.createGain()
       osc.type = 'sine'

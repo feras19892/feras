@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/CircularCoilGuidePanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\nconst { t } = useI18n()\ndefineProps<{\n  visible: boolean\n}>()\nconst emit = defineEmits<{\n  (e: 'close'): void\n}>()\n</script>\n\n<template>\n  <div class=\"guide-panel\" v-if=\"visible\">\n    <div class=\"guide-header\">\n      <span class=\"guide-title\">{{ t('experiments.emGuideTitle') }}</span>\n      <button class=\"close-btn\" @click=\"emit('close')\">✕</button>\n    </div>\n    <div class=\"guide-body\">\n        <div class=\"step\">\n          <span class=\"step-num\">1</span>\n          <div class=\"step-text\">\n            {{ t('experiments.ccGuideS1') }}\n          </div>\n        </div>\n\n        <div class=\"step\">\n          <span class=\"step-num\">2</span>\n          <div class=\"step-text\">\n            {{ t('experiments.ccGuideS2') }}\n          </div>\n        </div>\n\n        <div class=\"step\">\n          <span class=\"step-num\">3</span>\n          <div class=\"step-text\">\n            {{ t('experiments.ccGuideS3') }}\n          </div>\n        </div>\n\n        <div class=\"step\">\n          <span class=\"step-num\">4</span>\n          <div class=\"step-text\">\n            {{ t('experiments.ccGuideS4') }}\n          </div>\n        </div>\n\n        <div class=\"step\">\n          <span class=\"step-num\">5</span>\n          <div class=\"step-text\">\n            {{ t('experiments.ccGuideS5') }}\n          </div>\n        </div>\n\n        <div class=\"step\">\n          <span class=\"step-num\">6</span>\n          <div class=\"step-text\">\n            {{ t('experiments.ccGuideS6') }}\n          </div>\n        </div>\n\n        <div class=\"step\">\n          <span class=\"step-num\">7</span>\n          <div class=\"step-text\">\n            {{ t('experiments.ccGuideS7') }}\n          </div>\n        </div>\n\n        <div class=\"step\">\n          <span class=\"step-num\">8</span>\n          <div class=\"step-text\">\n            {{ t('experiments.ccGuideS8') }}\n          </div>\n        </div>\n\n        <div class=\"step\">\n          <span class=\"step-num\">9</span>\n          <div class=\"step-text\">\n            {{ t('experiments.ccGuideS9') }}\n          </div>\n        </div>\n\n        <div class=\"step\">\n          <span class=\"step-num\">10</span>\n          <div class=\"step-text\">\n            {{ t('experiments.ccGuideS9') }}\n          </div>\n        </div>\n\n        <div class=\"formula-hint\">\n          <div class=\"formula\">B = μ₀NI / (2R)</div>\n          <div class=\"formula-desc\">{{ t('experiments.ccGuideNote') }}</div>\n        </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.guide-panel { background: #161B22; border: 1px solid #2D3645; border-radius: 8px; display: flex; flex-direction: column; max-height: 100%; overflow: hidden; }\n.guide-header { display: flex; justify-content: space-between; align-items: center; padding: .6rem .75rem; border-bottom: 1px solid #2D3645; }\n.guide-title { font-size: .85rem; font-weight: 700; color: #67e8f9; }\n.close-btn { background: none; border: none; color: #64748b; cursor: pointer; font-size: .9rem; }\n.close-btn:hover { color: #ef4444; }\n.guide-body { padding: .6rem .75rem; overflow-y: auto; display: flex; flex-direction: column; gap: .5rem; }\n.step { display: flex; gap: .5rem; align-items: flex-start; }\n.step-num { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: rgba(103,232,249,.15); color: #67e8f9; font-size: .7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }\n.step-text { font-size: .75rem; color: #94a3b8; line-height: 1.5; }\n.step-text strong { color: #D1D7E0; }\n.badge { background: rgba(34,197,94,.15); color: #22c55e; padding: .1rem .4rem; border-radius: 4px; font-size: .7rem; }\n.badge.green { background: rgba(34,197,94,.15); color: #22c55e; }\n.key { background: rgba(245,158,11,.12); color: #f59e0b; padding: .05rem .3rem; border-radius: 3px; font-size: .7rem; font-family: monospace; }\n.formula-hint { margin-top: .5rem; padding: .6rem; background: rgba(103,232,249,.06); border-radius: 6px; border: 1px solid rgba(103,232,249,.12); }\n.formula { font-family: 'Courier New', monospace; font-size: .9rem; color: #67e8f9; text-align: center; }\n.formula-desc { font-size: .65rem; color: #64748b; text-align: center; margin-top: .25rem; }\n</style>\n",
+      "start": 1783634640878,
+      "end": 1783634641168,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641168,
+      "end": 1783634641168,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641168,
+      "end": 1783634641168,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641168,
+      "end": 1783634641168,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641168,
+      "end": 1783634641168,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/CircularCoilGuidePanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/CircularCoilGuidePanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/CircularCoilGuidePanel.vue?vue&type=style&index=0&scoped=2f54cdbb&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-2f54cdbb\"]]);\n",
+      "start": 1783634641168,
+      "end": 1783634641628,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641628,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641629,
+      "end": 1783634641631,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641631,
+      "end": 1783634641631,
+      "order": "normal"
+    }
+  ]
+}

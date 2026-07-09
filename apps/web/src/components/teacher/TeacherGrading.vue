@@ -19,6 +19,7 @@ const selectedClassId = ref('')
 const reports = ref<Report[]>([])
 const loading = ref(false)
 const pendingCount = ref(0)
+const statusFilter = ref<'all' | 'pending' | 'graded' | 'resubmitted'>('all')
 
 const stats = computed(() => {
   const total = reports.value.length
@@ -27,6 +28,11 @@ const stats = computed(() => {
     ? Math.round(reports.value.filter(r => r.grade !== undefined).reduce((s, r) => s + (r.grade || 0), 0) / graded)
     : 0
   return { total, graded, pending: total - graded, avg }
+})
+
+const filteredReports = computed(() => {
+  if (statusFilter.value === 'all') return reports.value
+  return reports.value.filter(r => r.status === statusFilter.value)
 })
 
 const gradeOpen = ref(false)
@@ -168,22 +174,40 @@ watch(() => auth.user, (u) => {
     <div v-else-if="reports.length === 0" class="empty">
       <p>{{ t('teacher.noReports') }}</p>
     </div>
-    <div v-else class="report-list">
-      <div v-for="r in reports" :key="r.id" class="report-row" :class="{ graded: r.status === 'graded' }" @click="openView(r)">
-        <div class="report-info">
-          <span class="report-student">{{ r.student_name }}</span>
-          <span class="report-exp">{{ r.experiment_name }}</span>
-          <span class="report-date">{{ r.submitted_at?.slice(0, 10) }}</span>
-        </div>
-        <div class="report-status">
-          <span v-if="r.status === 'graded'" class="badge graded">{{ r.grade }}/100</span>
-          <span v-else class="badge pending">{{ t('teacher.pendingStatus') }}</span>
-          <button class="grade-btn" @click.stop="openGrade(r)">
-            {{ r.status === 'graded' ? t('teacher.editBtn') : t('teacher.gradeBtn') }}
-          </button>
-          <button class="delete-btn" @click.stop="confirmDelete(r)" :title="t('teacher.deleteBtn')">
-            🗑️
-          </button>
+    <div v-else>
+      <div class="filter-row">
+        <button
+          v-for="f in ['all','pending','graded','resubmitted']"
+          :key="f"
+          :class="['pill', { active: statusFilter === f }]"
+          @click="statusFilter = f as 'all' | 'pending' | 'graded' | 'resubmitted'"
+        >
+          {{
+            f === 'all' ? t('teacher.filterAll') :
+            f === 'pending' ? t('teacher.filterPending') :
+            f === 'graded' ? t('teacher.filterGraded') :
+            t('teacher.filterResubmitted')
+          }}
+        </button>
+      </div>
+
+      <div class="report-list">
+        <div v-for="r in filteredReports" :key="r.id" class="report-row" :class="{ graded: r.status === 'graded' }" @click="openView(r)">
+          <div class="report-info">
+            <span class="report-student">{{ r.student_name }}</span>
+            <span class="report-exp">{{ r.experiment_name }}</span>
+            <span class="report-date">{{ r.submitted_at?.slice(0, 10) }}</span>
+          </div>
+          <div class="report-status">
+            <span v-if="r.status === 'graded'" class="badge graded">{{ r.grade }}/100</span>
+            <span v-else class="badge pending">{{ t('teacher.pendingStatus') }}</span>
+            <button class="grade-btn" @click.stop="openGrade(r)">
+              {{ r.status === 'graded' ? t('teacher.editBtn') : t('teacher.gradeBtn') }}
+            </button>
+            <button class="delete-btn" @click.stop="confirmDelete(r)" :title="t('teacher.deleteBtn')">
+              🗑️
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -243,6 +267,9 @@ watch(() => auth.user, (u) => {
 .stat { text-align: center; padding: 0.6rem; border-radius: 0.5rem; background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.05); }
 .stat-val { display: block; font-size: 1.3rem; font-weight: 800; color: #67e8f9; }
 .stat-label { font-size: 0.75rem; color: #94a3b8; }
+.filter-row { display: flex; gap: 0.4rem; margin-bottom: 0.8rem; }
+.pill { padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: #94a3b8; cursor: pointer; font-size: 0.8rem; font-weight: 700; }
+.pill.active { background: rgba(99,102,241,0.15); color: #c7d2fe; border-color: rgba(99,102,241,0.25); }
 .empty { text-align: center; padding: 3rem 1rem; color: #64748b; }
 .report-list { display: flex; flex-direction: column; gap: 0.5rem; }
 .report-row { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1rem; border-radius: 0.6rem; background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.07); transition: all 0.2s; }

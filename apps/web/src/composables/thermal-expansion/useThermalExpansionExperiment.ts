@@ -1,5 +1,7 @@
 import { ref, reactive, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import type { AnalysisPayload } from '../../types/physics'
+import { sendToAnalysis } from '../analysis/sendToAnalysis'
 import { useThermalExpansionLayout } from './useThermalExpansionLayout'
 import { useThermalExpansionTrials } from './useThermalExpansionTrials'
 import { ALPHA, deltaL, finalLength } from './useThermalExpansionCalculations'
@@ -50,8 +52,6 @@ export function useThermalExpansionExperiment() {
   function resetSim() {
     running.value = false; paused.value = false; simTime.value = 0; phase.value = 'ready'
     currentT.value = params.t0
-    params.material = 'copper'; params.L0 = 1.0; params.t0 = 20; params.t1 = 100
-    trials.clearTrials()
   }
 
   const layout = useThermalExpansionLayout()
@@ -59,10 +59,12 @@ export function useThermalExpansionExperiment() {
     { get value() { return { material: params.material, L0: params.L0, t0: params.t0, t1: params.t1, deltaL: dL.value, alpha: alpha.value } } }
   )
 
+  const router = useRouter()
   function exportToAnalysis() {
     if (trials.trials.value.length < 2) return
     const payload: AnalysisPayload = {
       sourceExperiment: 'thermal-expansion', sourceNameAr: 'التمدد الحراري',
+      hasCalcTab: true,
       readings: trials.trials.value.map(t => ({ material: t.material, L0: t.L0, t0: t.t0, t1: t.t1, deltaL: t.deltaL, alpha: t.alpha })),
       columns: [
         { key: 'material', label: 'Material', unit: '' },
@@ -77,8 +79,7 @@ export function useThermalExpansionExperiment() {
       ],
       suggestedPlots: [{ xKey: 't1', yKey: 'deltaL', xLabel: 't1 (°C)', yLabel: 'ΔL (m)', type: 'scatter' }],
     }
-    localStorage.setItem('analysis_payload', JSON.stringify(payload))
-    window.open('/analysis', '_blank')
+    sendToAnalysis(router, payload)
   }
   function handleDrop(fromId: string, x?: number, y?: number) {
     if (x === undefined || y === undefined) return
@@ -94,8 +95,8 @@ export function useThermalExpansionExperiment() {
   }
   function onResizeStart(col: string, e: MouseEvent) {
     if (!(col in layout.widths)) return
-    const startX = e.clientX, startW = (layout.widths as any)[col] as number
-    function move(ev: MouseEvent) { (layout.widths as any)[col] = Math.max(220, startW + (ev.clientX - startX)) }
+    const startX = e.clientX, startW = (layout.widths as Record<string, number>)[col] as number
+    function move(ev: MouseEvent) { (layout.widths as Record<string, number>)[col] = Math.max(220, startW + (ev.clientX - startX)) }
     function up() { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up) }
     window.addEventListener('mousemove', move); window.addEventListener('mouseup', up)
   }

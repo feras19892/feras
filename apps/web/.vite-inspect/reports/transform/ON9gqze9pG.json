@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/InternalResistanceReferencePanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createStaticVNode as _createStaticVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'InternalResistanceReferencePanel',\n  setup(__props) {\n\nconst NOTES = [\n  '🔋 كل بطارية حقيقية لها مقاومة داخلية r صغيرة',\n  '⚡ Vt = ε - I×r — الجهد الطرفي أقل من EMF عند مرور التيار',\n  '📉 كلما زاد التيار، زاد الهبوط على المقاومة الداخلية',\n  '🔌 عند R = r: أقصى نقل للقدرة (Maximum Power Transfer)',\n  '📖 المقاومة الداخلية سبب سخونة البطارية تحت الحمل',\n]\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _cache[0] || (_cache[0] = _createStaticVNode(\"<div class=\\\"ref-title\\\" data-v-c63b464d>🔋 المقاومة الداخلية</div><div class=\\\"ref-section\\\" data-v-c63b464d><div class=\\\"section-title\\\" data-v-c63b464d>القوانين الأساسية</div><div class=\\\"formula-box\\\" style=\\\"color:#f59e0b;\\\" data-v-c63b464d>Vt = ε - I × r</div><div class=\\\"formula-box\\\" style=\\\"color:#4ade80;\\\" data-v-c63b464d>I = ε / (R + r)</div><div class=\\\"formula-box\\\" style=\\\"color:#67e8f9;\\\" data-v-c63b464d>P_load = Vt² / R</div></div><div class=\\\"ref-section\\\" data-v-c63b464d><div class=\\\"section-title\\\" data-v-c63b464d>تطبيقات</div><div class=\\\"app-row\\\" data-v-c63b464d><span data-v-c63b464d>🔋 بطاريات السيارة (r صغيرة جداً)</span></div><div class=\\\"app-row\\\" data-v-c63b464d><span data-v-c63b464d>📱 بطاريات الهاتف (r تزداد مع العمر)</span></div><div class=\\\"app-row\\\" data-v-c63b464d><span data-v-c63b464d>🔌 مصادر الطاقة المخبرية</span></div></div>\", 3)),\n    (_openBlock(), _createElementBlock(_Fragment, null, _renderList(NOTES, (note, i) => {\n      return _createElementVNode(\"div\", {\n        key: i,\n        class: \"ref-note\"\n      }, _toDisplayString(note), 1)\n    }), 64))\n  ]))\n}\n}\n\n})",
+      "start": 1783634640236,
+      "end": 1783634640236
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640236,
+      "end": 1783634640236,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createStaticVNode as _createStaticVNode } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"InternalResistanceReferencePanel\",\n  setup(__props) {\n    const NOTES = [\n      \"🔋 كل بطارية حقيقية لها مقاومة داخلية r صغيرة\",\n      \"⚡ Vt = ε - I×r — الجهد الطرفي أقل من EMF عند مرور التيار\",\n      \"📉 كلما زاد التيار، زاد الهبوط على المقاومة الداخلية\",\n      \"🔌 عند R = r: أقصى نقل للقدرة (Maximum Power Transfer)\",\n      \"📖 المقاومة الداخلية سبب سخونة البطارية تحت الحمل\"\n    ];\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _cache[0] || (_cache[0] = _createStaticVNode('<div class=\"ref-title\" data-v-c63b464d>🔋 المقاومة الداخلية</div><div class=\"ref-section\" data-v-c63b464d><div class=\"section-title\" data-v-c63b464d>القوانين الأساسية</div><div class=\"formula-box\" style=\"color:#f59e0b;\" data-v-c63b464d>Vt = ε - I × r</div><div class=\"formula-box\" style=\"color:#4ade80;\" data-v-c63b464d>I = ε / (R + r)</div><div class=\"formula-box\" style=\"color:#67e8f9;\" data-v-c63b464d>P_load = Vt² / R</div></div><div class=\"ref-section\" data-v-c63b464d><div class=\"section-title\" data-v-c63b464d>تطبيقات</div><div class=\"app-row\" data-v-c63b464d><span data-v-c63b464d>🔋 بطاريات السيارة (r صغيرة جداً)</span></div><div class=\"app-row\" data-v-c63b464d><span data-v-c63b464d>📱 بطاريات الهاتف (r تزداد مع العمر)</span></div><div class=\"app-row\" data-v-c63b464d><span data-v-c63b464d>🔌 مصادر الطاقة المخبرية</span></div></div>', 3)),\n        (_openBlock(), _createElementBlock(_Fragment, null, _renderList(NOTES, (note, i) => {\n          return _createElementVNode(\"div\", {\n            key: i,\n            class: \"ref-note\"\n          }, _toDisplayString(note), 1);\n        }), 64))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634640236,
+      "end": 1783634640501,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/InternalResistanceReferencePanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createStaticVNode as _createStaticVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'InternalResistanceReferencePanel',\n  setup(__props) {\n\nconst NOTES = [\n  '🔋 كل بطارية حقيقية لها مقاومة داخلية r صغيرة',\n  '⚡ Vt = ε - I×r — الجهد الطرفي أقل من EMF عند مرور التيار',\n  '📉 كلما زاد التيار، زاد الهبوط على المقاومة الداخلية',\n  '🔌 عند R = r: أقصى نقل للقدرة (Maximum Power Transfer)',\n  '📖 المقاومة الداخلية سبب سخونة البطارية تحت الحمل',\n]\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _cache[0] || (_cache[0] = _createStaticVNode(\"<div class=\\\"ref-title\\\" data-v-c63b464d>🔋 المقاومة الداخلية</div><div class=\\\"ref-section\\\" data-v-c63b464d><div class=\\\"section-title\\\" data-v-c63b464d>القوانين الأساسية</div><div class=\\\"formula-box\\\" style=\\\"color:#f59e0b;\\\" data-v-c63b464d>Vt = ε - I × r</div><div class=\\\"formula-box\\\" style=\\\"color:#4ade80;\\\" data-v-c63b464d>I = ε / (R + r)</div><div class=\\\"formula-box\\\" style=\\\"color:#67e8f9;\\\" data-v-c63b464d>P_load = Vt² / R</div></div><div class=\\\"ref-section\\\" data-v-c63b464d><div class=\\\"section-title\\\" data-v-c63b464d>تطبيقات</div><div class=\\\"app-row\\\" data-v-c63b464d><span data-v-c63b464d>🔋 بطاريات السيارة (r صغيرة جداً)</span></div><div class=\\\"app-row\\\" data-v-c63b464d><span data-v-c63b464d>📱 بطاريات الهاتف (r تزداد مع العمر)</span></div><div class=\\\"app-row\\\" data-v-c63b464d><span data-v-c63b464d>🔌 مصادر الطاقة المخبرية</span></div></div>\", 3)),\n    (_openBlock(), _createElementBlock(_Fragment, null, _renderList(NOTES, (note, i) => {\n      return _createElementVNode(\"div\", {\n        key: i,\n        class: \"ref-note\"\n      }, _toDisplayString(note), 1)\n    }), 64))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,sBAAsB,qBAAqB,cAAc,aAAa,YAAY,WAAW,aAAa,YAAY,sBAAsB,qBAAqB,mBAAmB,kBAAkB,qBAAqB,0BAA0B;AAE9P,MAAM,aAAa,EAAE,OAAO,aAAa;AAGzC,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,MAAM,SAAS;AAEjB,UAAM,QAAQ;AAAA,MACZ;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,IACF;AAEA,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,mBAAmB,i1BAA62B,CAAC;AAAA,SAC15B,WAAW,GAAG,oBAAoB,WAAW,MAAM,YAAY,OAAO,CAAC,MAAM,MAAM;AAClF,iBAAO,oBAAoB,OAAO;AAAA,YAChC,KAAK;AAAA,YACL,OAAO;AAAA,UACT,GAAG,iBAAiB,IAAI,GAAG,CAAC;AAAA,QAC9B,CAAC,GAAG,EAAE;AAAA,MACR,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    }
+  ]
+}

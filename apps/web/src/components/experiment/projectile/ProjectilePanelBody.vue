@@ -106,7 +106,7 @@ function drawScatter(canvas: HTMLCanvasElement | null, data: {x:number,y:number}
     const x = padL + plotW*t
     const xVal = minX + (maxX-minX)*t
     ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, h-padB); ctx.stroke()
-    ctx.fillText(xVal.toFixed(0), x, h-padB+4)
+    ctx.fillText(xVal.toFixed(2), x, h-padB+4)
   }
   ctx.textAlign='right'; ctx.textBaseline='middle'
   for (let i=0;i<=4;i++){
@@ -120,15 +120,14 @@ function drawScatter(canvas: HTMLCanvasElement | null, data: {x:number,y:number}
   // Points
   ctx.fillStyle=color; data.forEach(p=>{ ctx.beginPath();ctx.arc(sx(p.x),sy(p.y),4,0,Math.PI*2);ctx.fill() })
 
-  // Fit curve: R = slope·sin(2θ) + intercept
+  // Fit line: R = slope·x + intercept  (where x = sin(2θ))
   if (fit) {
     ctx.strokeStyle = '#f97316'; ctx.lineWidth = 2
     ctx.beginPath()
     for (let i = 0; i <= 80; i++) {
-      const theta = minX + (maxX - minX) * (i / 80)
-      const rad = theta * Math.PI / 180
-      const yFit = fit.slope * Math.sin(2 * rad) + fit.intercept
-      const px = sx(theta)
+      const xFit = minX + (maxX - minX) * (i / 80)
+      const yFit = fit.slope * xFit + fit.intercept
+      const px = sx(xFit)
       const py = sy(yFit)
       if (i === 0) ctx.moveTo(px, py)
       else ctx.lineTo(px, py)
@@ -143,7 +142,7 @@ function drawScatter(canvas: HTMLCanvasElement | null, data: {x:number,y:number}
 
   // Labels
   ctx.fillStyle='#94a3b8'; ctx.font='bold 10px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='top'
-  ctx.fillText('θ (°)', w/2, h-12)
+  ctx.fillText('sin(2θ)', w/2, h-12)
   ctx.save(); ctx.translate(10, h/2); ctx.rotate(-Math.PI/2); ctx.textAlign='center'; ctx.fillText('R (m)', 0, 0); ctx.restore()
 }
 
@@ -152,7 +151,7 @@ function drawCharts() {
     if (signalCanvas.value && props.sim?.trail) drawLineChart(signalCanvas.value, props.sim.trail.map((p: {x:number;y:number})=>({x:p.x,y:p.y})), '#3b82f6', 'x (m)', 'y (m)')
     if (vxCanvas.value && props.sim?.signalSeries) drawLineChart(vxCanvas.value, props.sim.signalSeries.map((s: {t:number;vx:number})=>({x:s.t,y:s.vx})), '#22c55e', 't (s)', 'vx (m/s)')
     if (vyCanvas.value && props.sim?.signalSeries) drawLineChart(vyCanvas.value, props.sim.signalSeries.map((s: {t:number;vy:number})=>({x:s.t,y:s.vy})), '#ef4444', 't (s)', 'vy (m/s)')
-    if (scatterCanvas.value && props.trials?.length) drawScatter(scatterCanvas.value, props.trials.map((t: {angleDegrees:number;rangeMeters:number})=>({x:t.angleDegrees,y:t.rangeMeters})), '#3b82f6', props.fitResult)
+    if (scatterCanvas.value && props.trials?.length) drawScatter(scatterCanvas.value, props.trials.map((t: {angleDegrees:number;rangeMeters:number})=>({x:Math.sin(2*t.angleDegrees*Math.PI/180),y:t.rangeMeters})), '#3b82f6', props.fitResult)
   })
 }
 
@@ -235,7 +234,7 @@ onMounted(drawCharts)
     <template v-else-if="id === 'vySignal'">
       <canvas ref="vyCanvas" class="chart-canvas" width="300" height="140" />
     </template>
-    <!-- scatter: R vs theta -->
+    <!-- scatter: R vs sin(2θ) -->
     <template v-else-if="id === 'scatter'">
       <canvas ref="scatterCanvas" class="chart-canvas" width="300" height="140" />
     </template>

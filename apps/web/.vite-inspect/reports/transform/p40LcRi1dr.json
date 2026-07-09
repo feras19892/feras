@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/useExperimentReport.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { ref } from 'vue'\nimport { openLabReport } from '../utils/lab-report'\nimport { useI18n } from '../composables/useI18n'\nimport type { OpenLabReportOptions, LabReportHtmlBlock } from '../utils/lab-report'\n\nexport function useExperimentReport(studentStorageKey: string) {\n  const { t } = useI18n()\n  const canvasSnapshot = ref<string | null>(null)\n\n  function captureSnapshot(canvasRef: { captureSnapshot?: () => string | void | undefined } | null) {\n    if (!canvasRef) return\n    try {\n      const dataUrl = canvasRef.captureSnapshot?.()\n      if (dataUrl) canvasSnapshot.value = dataUrl\n    } catch { /* ignore */ }\n  }\n\n  function onSnapshot(dataUrl: string) {\n    canvasSnapshot.value = dataUrl\n  }\n\n  function buildStudentHtmlBlock(): LabReportHtmlBlock | null {\n    const studentInfo: Record<string, string> = {}\n    try {\n      const raw = localStorage.getItem(studentStorageKey)\n      if (raw) {\n        const d = JSON.parse(raw)\n        if (d.name) studentInfo[t('experiments.nameLabel')] = d.name\n        if (d.email) studentInfo[t('experiments.emailLabel')] = d.email\n        if (d.class) studentInfo[t('experiments.classLabel')] = d.class\n        if (d.notes) studentInfo[t('experiments.notesLabel')] = d.notes\n      }\n    } catch { /* ignore */ }\n\n    const rows = Object.entries(studentInfo)\n      .filter(([, v]) => v)\n      .map(([k, v]) => `<tr><td style=\"font-weight:600;color:#334155;background:#f8fafc;width:30%\">${k}</td><td style=\"font-family:monospace;color:#1e3a8a\">${v}</td></tr>`)\n      .join('')\n\n    if (!rows) return null\n\n    const title = t('experiments.studentInfo')\n    return {\n      title: `📋 ${title}`,\n      html: `<section class=\"sec\"><h2 class=\"sec-heading params-heading\">📋 ${title}</h2><table class=\"params-table\"><tbody>${rows}</tbody></table></section>`,\n    }\n  }\n\n  function openFullReport(options: Omit<OpenLabReportOptions, 'canvasSnapshot'>) {\n    const studentBlock = buildStudentHtmlBlock()\n    const blocks: LabReportHtmlBlock[] = []\n    if (studentBlock) blocks.push(studentBlock)\n    if (options.htmlBlocks) blocks.push(...options.htmlBlocks)\n\n    openLabReport({\n      ...options,\n      htmlBlocks: blocks,\n      canvasSnapshot: canvasSnapshot.value || undefined,\n      openPrintDialog: options.openPrintDialog ?? true,\n      sendToTeacher: options.sendToTeacher ?? true,\n      strings: {\n        dateLabel: t('experiments.dateLabel'),\n        experimentLabel: t('experiments.experimentLabel'),\n        studentInfoHeading: t('experiments.studentInfo'),\n        paramsHeading: t('experiments.paramsHeading'),\n        resultsHeading: t('experiments.resultsHeading'),\n        footerHint: t('experiments.footerHint'),\n        printLabel: t('experiments.printLabel'),\n        closeLabel: t('experiments.closeLabel'),\n        simulationSnap: t('experiments.simulationSnap'),\n        sendToTeacherBtn: t('experiments.sendToTeacherBtn'),\n        guestStudent: t('experiments.guestStudent'),\n        joinClassFirst: t('experiments.joinClassFirst'),\n        branchPhysics: t('experiments.branchPhysics'),\n        sentSuccessfully: t('experiments.sentSuccessfully'),\n        reportSentSuccess: t('experiments.reportSentSuccess'),\n        errorLabel: t('experiments.errorLabel'),\n      },\n    })\n  }\n\n  return {\n    canvasSnapshot,\n    captureSnapshot,\n    onSnapshot,\n    openFullReport,\n    buildStudentHtmlBlock,\n  }\n}\n",
+      "start": 1783634642065,
+      "end": 1783634642183,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642183,
+      "end": 1783634642183,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { ref } from \"vue\";\nimport { openLabReport } from \"../utils/lab-report\";\nimport { useI18n } from \"../composables/useI18n\";\nexport function useExperimentReport(studentStorageKey) {\n  const { t } = useI18n();\n  const canvasSnapshot = ref(null);\n  function captureSnapshot(canvasRef) {\n    if (!canvasRef) return;\n    try {\n      const dataUrl = canvasRef.captureSnapshot?.();\n      if (dataUrl) canvasSnapshot.value = dataUrl;\n    } catch {\n    }\n  }\n  function onSnapshot(dataUrl) {\n    canvasSnapshot.value = dataUrl;\n  }\n  function buildStudentHtmlBlock() {\n    const studentInfo = {};\n    try {\n      const raw = localStorage.getItem(studentStorageKey);\n      if (raw) {\n        const d = JSON.parse(raw);\n        if (d.name) studentInfo[t(\"experiments.nameLabel\")] = d.name;\n        if (d.email) studentInfo[t(\"experiments.emailLabel\")] = d.email;\n        if (d.class) studentInfo[t(\"experiments.classLabel\")] = d.class;\n        if (d.notes) studentInfo[t(\"experiments.notesLabel\")] = d.notes;\n      }\n    } catch {\n    }\n    const rows = Object.entries(studentInfo).filter(([, v]) => v).map(([k, v]) => `<tr><td style=\"font-weight:600;color:#334155;background:#f8fafc;width:30%\">${k}</td><td style=\"font-family:monospace;color:#1e3a8a\">${v}</td></tr>`).join(\"\");\n    if (!rows) return null;\n    const title = t(\"experiments.studentInfo\");\n    return {\n      title: `📋 ${title}`,\n      html: `<section class=\"sec\"><h2 class=\"sec-heading params-heading\">📋 ${title}</h2><table class=\"params-table\"><tbody>${rows}</tbody></table></section>`\n    };\n  }\n  function openFullReport(options) {\n    const studentBlock = buildStudentHtmlBlock();\n    const blocks = [];\n    if (studentBlock) blocks.push(studentBlock);\n    if (options.htmlBlocks) blocks.push(...options.htmlBlocks);\n    openLabReport({\n      ...options,\n      htmlBlocks: blocks,\n      canvasSnapshot: canvasSnapshot.value || void 0,\n      openPrintDialog: options.openPrintDialog ?? true,\n      sendToTeacher: options.sendToTeacher ?? true,\n      strings: {\n        dateLabel: t(\"experiments.dateLabel\"),\n        experimentLabel: t(\"experiments.experimentLabel\"),\n        studentInfoHeading: t(\"experiments.studentInfo\"),\n        paramsHeading: t(\"experiments.paramsHeading\"),\n        resultsHeading: t(\"experiments.resultsHeading\"),\n        footerHint: t(\"experiments.footerHint\"),\n        printLabel: t(\"experiments.printLabel\"),\n        closeLabel: t(\"experiments.closeLabel\"),\n        simulationSnap: t(\"experiments.simulationSnap\"),\n        sendToTeacherBtn: t(\"experiments.sendToTeacherBtn\"),\n        guestStudent: t(\"experiments.guestStudent\"),\n        joinClassFirst: t(\"experiments.joinClassFirst\"),\n        branchPhysics: t(\"experiments.branchPhysics\"),\n        sentSuccessfully: t(\"experiments.sentSuccessfully\"),\n        reportSentSuccess: t(\"experiments.reportSentSuccess\"),\n        errorLabel: t(\"experiments.errorLabel\")\n      }\n    });\n  }\n  return {\n    canvasSnapshot,\n    captureSnapshot,\n    onSnapshot,\n    openFullReport,\n    buildStudentHtmlBlock\n  };\n}\n",
+      "start": 1783634642183,
+      "end": 1783634642326,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/useExperimentReport.ts"
+        ],
+        "sourcesContent": [
+          "import { ref } from 'vue'\nimport { openLabReport } from '../utils/lab-report'\nimport { useI18n } from '../composables/useI18n'\nimport type { OpenLabReportOptions, LabReportHtmlBlock } from '../utils/lab-report'\n\nexport function useExperimentReport(studentStorageKey: string) {\n  const { t } = useI18n()\n  const canvasSnapshot = ref<string | null>(null)\n\n  function captureSnapshot(canvasRef: { captureSnapshot?: () => string | void | undefined } | null) {\n    if (!canvasRef) return\n    try {\n      const dataUrl = canvasRef.captureSnapshot?.()\n      if (dataUrl) canvasSnapshot.value = dataUrl\n    } catch { /* ignore */ }\n  }\n\n  function onSnapshot(dataUrl: string) {\n    canvasSnapshot.value = dataUrl\n  }\n\n  function buildStudentHtmlBlock(): LabReportHtmlBlock | null {\n    const studentInfo: Record<string, string> = {}\n    try {\n      const raw = localStorage.getItem(studentStorageKey)\n      if (raw) {\n        const d = JSON.parse(raw)\n        if (d.name) studentInfo[t('experiments.nameLabel')] = d.name\n        if (d.email) studentInfo[t('experiments.emailLabel')] = d.email\n        if (d.class) studentInfo[t('experiments.classLabel')] = d.class\n        if (d.notes) studentInfo[t('experiments.notesLabel')] = d.notes\n      }\n    } catch { /* ignore */ }\n\n    const rows = Object.entries(studentInfo)\n      .filter(([, v]) => v)\n      .map(([k, v]) => `<tr><td style=\"font-weight:600;color:#334155;background:#f8fafc;width:30%\">${k}</td><td style=\"font-family:monospace;color:#1e3a8a\">${v}</td></tr>`)\n      .join('')\n\n    if (!rows) return null\n\n    const title = t('experiments.studentInfo')\n    return {\n      title: `📋 ${title}`,\n      html: `<section class=\"sec\"><h2 class=\"sec-heading params-heading\">📋 ${title}</h2><table class=\"params-table\"><tbody>${rows}</tbody></table></section>`,\n    }\n  }\n\n  function openFullReport(options: Omit<OpenLabReportOptions, 'canvasSnapshot'>) {\n    const studentBlock = buildStudentHtmlBlock()\n    const blocks: LabReportHtmlBlock[] = []\n    if (studentBlock) blocks.push(studentBlock)\n    if (options.htmlBlocks) blocks.push(...options.htmlBlocks)\n\n    openLabReport({\n      ...options,\n      htmlBlocks: blocks,\n      canvasSnapshot: canvasSnapshot.value || undefined,\n      openPrintDialog: options.openPrintDialog ?? true,\n      sendToTeacher: options.sendToTeacher ?? true,\n      strings: {\n        dateLabel: t('experiments.dateLabel'),\n        experimentLabel: t('experiments.experimentLabel'),\n        studentInfoHeading: t('experiments.studentInfo'),\n        paramsHeading: t('experiments.paramsHeading'),\n        resultsHeading: t('experiments.resultsHeading'),\n        footerHint: t('experiments.footerHint'),\n        printLabel: t('experiments.printLabel'),\n        closeLabel: t('experiments.closeLabel'),\n        simulationSnap: t('experiments.simulationSnap'),\n        sendToTeacherBtn: t('experiments.sendToTeacherBtn'),\n        guestStudent: t('experiments.guestStudent'),\n        joinClassFirst: t('experiments.joinClassFirst'),\n        branchPhysics: t('experiments.branchPhysics'),\n        sentSuccessfully: t('experiments.sentSuccessfully'),\n        reportSentSuccess: t('experiments.reportSentSuccess'),\n        errorLabel: t('experiments.errorLabel'),\n      },\n    })\n  }\n\n  return {\n    canvasSnapshot,\n    captureSnapshot,\n    onSnapshot,\n    openFullReport,\n    buildStudentHtmlBlock,\n  }\n}\n"
+        ],
+        "mappings": "AAAA,SAAS,WAAW;AACpB,SAAS,qBAAqB;AAC9B,SAAS,eAAe;AAGjB,gBAAS,oBAAoB,mBAA2B;AAC7D,QAAM,EAAE,EAAE,IAAI,QAAQ;AACtB,QAAM,iBAAiB,IAAmB,IAAI;AAE9C,WAAS,gBAAgB,WAAyE;AAChG,QAAI,CAAC,UAAW;AAChB,QAAI;AACF,YAAM,UAAU,UAAU,kBAAkB;AAC5C,UAAI,QAAS,gBAAe,QAAQ;AAAA,IACtC,QAAQ;AAAA,IAAe;AAAA,EACzB;AAEA,WAAS,WAAW,SAAiB;AACnC,mBAAe,QAAQ;AAAA,EACzB;AAEA,WAAS,wBAAmD;AAC1D,UAAM,cAAsC,CAAC;AAC7C,QAAI;AACF,YAAM,MAAM,aAAa,QAAQ,iBAAiB;AAClD,UAAI,KAAK;AACP,cAAM,IAAI,KAAK,MAAM,GAAG;AACxB,YAAI,EAAE,KAAM,aAAY,EAAE,uBAAuB,CAAC,IAAI,EAAE;AACxD,YAAI,EAAE,MAAO,aAAY,EAAE,wBAAwB,CAAC,IAAI,EAAE;AAC1D,YAAI,EAAE,MAAO,aAAY,EAAE,wBAAwB,CAAC,IAAI,EAAE;AAC1D,YAAI,EAAE,MAAO,aAAY,EAAE,wBAAwB,CAAC,IAAI,EAAE;AAAA,MAC5D;AAAA,IACF,QAAQ;AAAA,IAAe;AAEvB,UAAM,OAAO,OAAO,QAAQ,WAAW,EACpC,OAAO,CAAC,CAAC,EAAE,CAAC,MAAM,CAAC,EACnB,IAAI,CAAC,CAAC,GAAG,CAAC,MAAM,8EAA8E,CAAC,wDAAwD,CAAC,YAAY,EACpK,KAAK,EAAE;AAEV,QAAI,CAAC,KAAM,QAAO;AAElB,UAAM,QAAQ,EAAE,yBAAyB;AACzC,WAAO;AAAA,MACL,OAAO,MAAM,KAAK;AAAA,MAClB,MAAM,kEAAkE,KAAK,2CAA2C,IAAI;AAAA,IAC9H;AAAA,EACF;AAEA,WAAS,eAAe,SAAuD;AAC7E,UAAM,eAAe,sBAAsB;AAC3C,UAAM,SAA+B,CAAC;AACtC,QAAI,aAAc,QAAO,KAAK,YAAY;AAC1C,QAAI,QAAQ,WAAY,QAAO,KAAK,GAAG,QAAQ,UAAU;AAEzD,kBAAc;AAAA,MACZ,GAAG;AAAA,MACH,YAAY;AAAA,MACZ,gBAAgB,eAAe,SAAS;AAAA,MACxC,iBAAiB,QAAQ,mBAAmB;AAAA,MAC5C,eAAe,QAAQ,iBAAiB;AAAA,MACxC,SAAS;AAAA,QACP,WAAW,EAAE,uBAAuB;AAAA,QACpC,iBAAiB,EAAE,6BAA6B;AAAA,QAChD,oBAAoB,EAAE,yBAAyB;AAAA,QAC/C,eAAe,EAAE,2BAA2B;AAAA,QAC5C,gBAAgB,EAAE,4BAA4B;AAAA,QAC9C,YAAY,EAAE,wBAAwB;AAAA,QACtC,YAAY,EAAE,wBAAwB;AAAA,QACtC,YAAY,EAAE,wBAAwB;AAAA,QACtC,gBAAgB,EAAE,4BAA4B;AAAA,QAC9C,kBAAkB,EAAE,8BAA8B;AAAA,QAClD,cAAc,EAAE,0BAA0B;AAAA,QAC1C,gBAAgB,EAAE,4BAA4B;AAAA,QAC9C,eAAe,EAAE,2BAA2B;AAAA,QAC5C,kBAAkB,EAAE,8BAA8B;AAAA,QAClD,mBAAmB,EAAE,+BAA+B;AAAA,QACpD,YAAY,EAAE,wBAAwB;AAAA,MACxC;AAAA,IACF,CAAC;AAAA,EACH;AAEA,SAAO;AAAA,IACL;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,EACF;AACF;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642326,
+      "end": 1783634642326,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642326,
+      "end": 1783634642326,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642326,
+      "end": 1783634642326,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642326,
+      "end": 1783634642326,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642326,
+      "end": 1783634642326,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642326,
+      "end": 1783634642326,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642326,
+      "end": 1783634642326,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642326,
+      "end": 1783634642326,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642326,
+      "end": 1783634642326,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642326,
+      "end": 1783634642326,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642326,
+      "end": 1783634642327,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642327,
+      "end": 1783634642327,
+      "order": "normal"
+    }
+  ]
+}

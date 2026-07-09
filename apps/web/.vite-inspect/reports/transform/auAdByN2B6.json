@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/panels/PrismReferencePanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeStyle as _normalizeStyle } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"ref-table\" }\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'PrismReferencePanel',\n  setup(__props) {\n\nconst MATERIALS = [\n  { name: 'زجاج Crown', n: 1.52, color: '#22c55e' },\n  { name: 'زجاج Flint', n: 1.66, color: '#5B8DB8' },\n  { name: 'ماء', n: 1.33, color: '#f59e0b' },\n  { name: 'ألماس', n: 2.42, color: '#8b5cf6' },\n]\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"ref-title\" }, \"📊 معاملات الانكسار لمواد شائعة\", -1)),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"ref-header\" }, [\n        _createElementVNode(\"span\", null, \"المادة\"),\n        _createElementVNode(\"span\", null, \"n\")\n      ], -1)),\n      (_openBlock(), _createElementBlock(_Fragment, null, _renderList(MATERIALS, (ref) => {\n        return _createElementVNode(\"div\", {\n          key: ref.name,\n          class: \"ref-row\"\n        }, [\n          _createElementVNode(\"span\", {\n            style: _normalizeStyle({ color: ref.color })\n          }, _toDisplayString(ref.name), 5),\n          _createElementVNode(\"span\", null, _toDisplayString(ref.n.toFixed(2)), 1)\n        ])\n      }), 64))\n    ]),\n    _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"ref-note\" }, \" 💡 n يعتمد على الطول الموجي (التشتت). القيم لـ λ ≈ 589 nm. \", -1))\n  ]))\n}\n}\n\n})",
+      "start": 1783634640213,
+      "end": 1783634640213
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640213,
+      "end": 1783634640213,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeStyle as _normalizeStyle } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nconst _hoisted_2 = { class: \"ref-table\" };\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"PrismReferencePanel\",\n  setup(__props) {\n    const MATERIALS = [\n      { name: \"زجاج Crown\", n: 1.52, color: \"#22c55e\" },\n      { name: \"زجاج Flint\", n: 1.66, color: \"#5B8DB8\" },\n      { name: \"ماء\", n: 1.33, color: \"#f59e0b\" },\n      { name: \"ألماس\", n: 2.42, color: \"#8b5cf6\" }\n    ];\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"ref-title\" }, \"📊 معاملات الانكسار لمواد شائعة\", -1)),\n        _createElementVNode(\"div\", _hoisted_2, [\n          _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"ref-header\" }, [\n            _createElementVNode(\"span\", null, \"المادة\"),\n            _createElementVNode(\"span\", null, \"n\")\n          ], -1)),\n          (_openBlock(), _createElementBlock(_Fragment, null, _renderList(MATERIALS, (ref) => {\n            return _createElementVNode(\"div\", {\n              key: ref.name,\n              class: \"ref-row\"\n            }, [\n              _createElementVNode(\"span\", {\n                style: _normalizeStyle({ color: ref.color })\n              }, _toDisplayString(ref.name), 5),\n              _createElementVNode(\"span\", null, _toDisplayString(ref.n.toFixed(2)), 1)\n            ]);\n          }), 64))\n        ]),\n        _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"ref-note\" }, \" 💡 n يعتمد على الطول الموجي (التشتت). القيم لـ λ ≈ 589 nm. \", -1))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634640213,
+      "end": 1783634640501,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/panels/PrismReferencePanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeStyle as _normalizeStyle } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"ref-table\" }\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'PrismReferencePanel',\n  setup(__props) {\n\nconst MATERIALS = [\n  { name: 'زجاج Crown', n: 1.52, color: '#22c55e' },\n  { name: 'زجاج Flint', n: 1.66, color: '#5B8DB8' },\n  { name: 'ماء', n: 1.33, color: '#f59e0b' },\n  { name: 'ألماس', n: 2.42, color: '#8b5cf6' },\n]\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"ref-title\" }, \"📊 معاملات الانكسار لمواد شائعة\", -1)),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"ref-header\" }, [\n        _createElementVNode(\"span\", null, \"المادة\"),\n        _createElementVNode(\"span\", null, \"n\")\n      ], -1)),\n      (_openBlock(), _createElementBlock(_Fragment, null, _renderList(MATERIALS, (ref) => {\n        return _createElementVNode(\"div\", {\n          key: ref.name,\n          class: \"ref-row\"\n        }, [\n          _createElementVNode(\"span\", {\n            style: _normalizeStyle({ color: ref.color })\n          }, _toDisplayString(ref.name), 5),\n          _createElementVNode(\"span\", null, _toDisplayString(ref.n.toFixed(2)), 1)\n        ])\n      }), 64))\n    ]),\n    _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"ref-note\" }, \" 💡 n يعتمد على الطول الموجي (التشتت). القيم لـ λ ≈ 589 nm. \", -1))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,sBAAsB,qBAAqB,cAAc,aAAa,YAAY,WAAW,aAAa,YAAY,sBAAsB,qBAAqB,mBAAmB,kBAAkB,kBAAkB,uBAAuB;AAExP,MAAM,aAAa,EAAE,OAAO,aAAa;AACzC,MAAM,aAAa,EAAE,OAAO,YAAY;AAGxC,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,MAAM,SAAS;AAEjB,UAAM,YAAY;AAAA,MAChB,EAAE,MAAM,cAAc,GAAG,MAAM,OAAO,UAAU;AAAA,MAChD,EAAE,MAAM,cAAc,GAAG,MAAM,OAAO,UAAU;AAAA,MAChD,EAAE,MAAM,OAAO,GAAG,MAAM,OAAO,UAAU;AAAA,MACzC,EAAE,MAAM,SAAS,GAAG,MAAM,OAAO,UAAU;AAAA,IAC7C;AAEA,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,YAAY,GAAG,mCAAmC,EAAE;AAAA,QAClH,oBAAoB,OAAO,YAAY;AAAA,UACrC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,aAAa,GAAG;AAAA,YAC5E,oBAAoB,QAAQ,MAAM,QAAQ;AAAA,YAC1C,oBAAoB,QAAQ,MAAM,GAAG;AAAA,UACvC,GAAG,EAAE;AAAA,WACJ,WAAW,GAAG,oBAAoB,WAAW,MAAM,YAAY,WAAW,CAAC,QAAQ;AAClF,mBAAO,oBAAoB,OAAO;AAAA,cAChC,KAAK,IAAI;AAAA,cACT,OAAO;AAAA,YACT,GAAG;AAAA,cACD,oBAAoB,QAAQ;AAAA,gBAC1B,OAAO,gBAAgB,EAAE,OAAO,IAAI,MAAM,CAAC;AAAA,cAC7C,GAAG,iBAAiB,IAAI,IAAI,GAAG,CAAC;AAAA,cAChC,oBAAoB,QAAQ,MAAM,iBAAiB,IAAI,EAAE,QAAQ,CAAC,CAAC,GAAG,CAAC;AAAA,YACzE,CAAC;AAAA,UACH,CAAC,GAAG,EAAE;AAAA,QACR,CAAC;AAAA,QACD,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,WAAW,GAAG,gEAAgE,EAAE;AAAA,MAChJ,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640501,
+      "end": 1783634640502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640502,
+      "end": 1783634640502,
+      "order": "normal"
+    }
+  ]
+}

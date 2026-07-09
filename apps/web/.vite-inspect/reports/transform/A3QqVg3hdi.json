@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/types/router.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import 'vue-router';\nimport type { UserRole } from '@my-modern-app/shared-types';\n\ndeclare module 'vue-router' {\n  interface RouteMeta {\n    requiresAuth?: boolean;\n    roles?: UserRole[];\n  }\n}\n\nexport {};\n",
+      "start": 1783634639007,
+      "end": 1783634639043,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639043,
+      "end": 1783634639043,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import \"vue-router\";\nexport {};\n",
+      "start": 1783634639043,
+      "end": 1783634639164,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/types/router.ts"
+        ],
+        "sourcesContent": [
+          "import 'vue-router';\nimport type { UserRole } from '@my-modern-app/shared-types';\n\ndeclare module 'vue-router' {\n  interface RouteMeta {\n    requiresAuth?: boolean;\n    roles?: UserRole[];\n  }\n}\n\nexport {};\n"
+        ],
+        "mappings": "AAAA,OAAO;AAUP;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639164,
+      "end": 1783634639164,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639170,
+      "end": 1783634639170,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639170,
+      "end": 1783634639170,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639170,
+      "end": 1783634639170,
+      "order": "normal"
+    }
+  ]
+}

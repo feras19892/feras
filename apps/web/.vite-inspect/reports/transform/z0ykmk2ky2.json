@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabStatsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\r\nimport { computed } from 'vue';\r\nimport type { LabItem } from '../../../composables/chemistry/useChemistryTools';\r\nimport { getLiquid, isContainer, items, phProbeTipMap } from '../../../composables/chemistry/useChemistryLab';\r\nimport { getPhReading, isHeated } from '../../../composables/chemistry/useLabSimulation';\r\nimport { useI18n } from '../../../composables/useI18n';\r\nconst { t } = useI18n();\r\n\r\nconst props = defineProps<{\r\n  item: LabItem | null;\r\n}>();\r\n\r\nconst liq = computed(() => props.item && isContainer(props.item.id) ? getLiquid(props.item.uid) : null);\r\nconst ph = computed(() => {\r\n  if (!props.item) return null;\r\n  // Find a pH meter whose probe tip is inside this item\r\n  const phMeter = items.value.find(i =>\r\n    i.id === 'ph-meter' &&\r\n    phProbeTipMap[i.uid] &&\r\n    Math.abs((props.item!.x + 40) - phProbeTipMap[i.uid].x) < 60 &&\r\n    Math.abs((props.item!.y + 10) - phProbeTipMap[i.uid].y) < 50\r\n  );\r\n  return phMeter ? getPhReading(phMeter) : null;\r\n});\r\nconst heated = computed(() => props.item ? isHeated(props.item) : false);\r\n</script>\r\n\r\n<template>\r\n  <div class=\"stats-panel\">\r\n    <h4>{{ t('chemistryLab.labStats') }}</h4>\r\n    <div v-if=\"item && liq\" class=\"stats-table\">\r\n      <div class=\"stat-row\">\r\n        <span class=\"stat-label\">{{ t('chemistryLab.temperature') }}</span>\r\n        <span class=\"stat-value\" :class=\"liq.temperature > 30 ? 'hot' : ''\">{{ liq.temperature.toFixed(1) }}°C</span>\r\n      </div>\r\n      <div class=\"stat-row\">\r\n        <span class=\"stat-label\">📟 pH</span>\r\n        <span class=\"stat-value\" :class=\"ph !== null ? (ph < 7 ? 'acid' : ph > 7 ? 'base' : 'neutral') : ''\">\r\n          {{ ph !== null ? ph.toFixed(2) : '--.--' }}\r\n        </span>\r\n      </div>\r\n      <div class=\"stat-row\">\r\n        <span class=\"stat-label\">{{ t('chemistryLab.heating') }}</span>\r\n        <span class=\"stat-value\" :class=\"heated ? 'heating' : ''\">{{ heated ? t('chemistryLab.yes') : t('chemistryLab.no') }}</span>\r\n      </div>\r\n      <div class=\"stat-row\">\r\n        <span class=\"stat-label\">{{ t('chemistry.volume') }}</span>\r\n        <span class=\"stat-value\">{{ liq.volume.toFixed(1) }} mL</span>\r\n      </div>\r\n    </div>\r\n    <div v-else class=\"stats-empty\">\r\n      {{ t('chemistry.clickToolHint') }}\r\n    </div>\r\n  </div>\r\n</template>\r\n\r\n<style scoped>\r\n.stats-panel {\r\n  background: #ffffff;\r\n  border: 1px solid #e2e8f0;\r\n  border-radius: 0.75rem;\r\n  padding: 0.75rem;\r\n  margin-bottom: 1rem;\r\n}\r\n.stats-panel h4 {\r\n  margin: 0 0 0.6rem;\r\n  font-size: 0.8rem;\r\n  color: #334155;\r\n  text-align: center;\r\n}\r\n.stats-table {\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 0.4rem;\r\n}\r\n.stat-row {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n  padding: 0.35rem 0.5rem;\r\n  background: #f8fafc;\r\n  border-radius: 0.4rem;\r\n  font-size: 0.72rem;\r\n}\r\n.stat-label {\r\n  color: #64748b;\r\n}\r\n.stat-value {\r\n  font-weight: 700;\r\n  color: #334155;\r\n  font-family: monospace;\r\n}\r\n.stat-value.hot { color: #ef4444; }\r\n.stat-value.acid { color: #ef4444; }\r\n.stat-value.base { color: #8b5cf6; }\r\n.stat-value.neutral { color: #22c55e; }\r\n.stat-value.heating { color: #f59e0b; }\r\n.stats-empty {\r\n  text-align: center;\r\n  font-size: 0.7rem;\r\n  color: #94a3b8;\r\n  padding: 1rem 0;\r\n}\r\n</style>\r\n",
+      "start": 1783634640323,
+      "end": 1783634640604,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640604,
+      "end": 1783634640604,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640604,
+      "end": 1783634640604,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640604,
+      "end": 1783634640604,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640604,
+      "end": 1783634640604,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabStatsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabStatsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabStatsPanel.vue?vue&type=style&index=0&scoped=8a26cfb8&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-8a26cfb8\"]]);\n",
+      "start": 1783634640604,
+      "end": 1783634640814,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640814,
+      "end": 1783634640815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640815,
+      "end": 1783634640815,
+      "order": "normal"
+    }
+  ]
+}

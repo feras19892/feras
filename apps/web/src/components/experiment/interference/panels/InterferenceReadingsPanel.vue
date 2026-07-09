@@ -23,6 +23,10 @@ defineProps<Props>()
         <span class="reading-val cyan">{{ slitDistance.toFixed(2) }} mm</span>
       </div>
       <div class="reading-row">
+        <span class="reading-label">1/d</span>
+        <span class="reading-val amber">{{ (1 / slitDistance).toFixed(1) }} 1/mm</span>
+      </div>
+      <div class="reading-row">
         <span class="reading-label">D — {{ t('experiments.screenDistance') }}</span>
         <span class="reading-val cyan">{{ screenDistance.toFixed(2) }} m</span>
       </div>

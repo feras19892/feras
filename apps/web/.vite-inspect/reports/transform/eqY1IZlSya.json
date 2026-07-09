@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/SpecificHeatControlBar.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createTextVNode as _createTextVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, unref as _unref, normalizeClass as _normalizeClass } from \"vue\"\n\nconst _hoisted_1 = { class: \"ctrl-bar\" }\nconst _hoisted_2 = [\"disabled\"]\nconst _hoisted_3 = [\"disabled\"]\n\nimport { useI18n } from '../../../composables/useI18n'\ninterface Props { launchLabel: string; canTransfer: boolean; canUndo: boolean; canRedo: boolean; unknownMode?: boolean }\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'SpecificHeatControlBar',\n  props: {\n    launchLabel: {},\n    canTransfer: { type: Boolean },\n    canUndo: { type: Boolean },\n    canRedo: { type: Boolean },\n    unknownMode: { type: Boolean }\n  },\n  emits: [\"togglePause\", \"transfer\", \"reset\", \"recordTrial\", \"clearTrials\", \"exportCsv\", \"undo\", \"redo\", \"toggleUnknown\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn primary\",\n      onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('togglePause')))\n    }, [\n      _createTextVNode(_toDisplayString(__props.launchLabel), 1),\n      _cache[9] || (_cache[9] = _createElementVNode(\"kbd\", null, \"Space\", -1))\n    ]),\n    (__props.canTransfer)\n      ? (_openBlock(), _createElementBlock(\"button\", {\n          key: 0,\n          class: \"ctrl-btn transfer\",\n          onClick: _cache[1] || (_cache[1] = ($event: any) => (emit('transfer')))\n        }, \"🔄 نقل القطعة\"))\n      : _createCommentVNode(\"\", true),\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn record\",\n      onClick: _cache[2] || (_cache[2] = ($event: any) => (emit('recordTrial')))\n    }, [\n      _createTextVNode(\"📌 \" + _toDisplayString(_unref(t)('experiments.recordBtn')), 1),\n      _cache[10] || (_cache[10] = _createElementVNode(\"kbd\", null, \"S\", -1))\n    ]),\n    _cache[14] || (_cache[14] = _createElementVNode(\"div\", { class: \"ctrl-sep\" }, null, -1)),\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn\",\n      disabled: !__props.canUndo,\n      onClick: _cache[3] || (_cache[3] = ($event: any) => (emit('undo')))\n    }, [...(_cache[11] || (_cache[11] = [\n      _createTextVNode(\"↩️\", -1),\n      _createElementVNode(\"kbd\", null, \"Ctrl+Z\", -1)\n    ]))], 8, _hoisted_2),\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn\",\n      disabled: !__props.canRedo,\n      onClick: _cache[4] || (_cache[4] = ($event: any) => (emit('redo')))\n    }, [...(_cache[12] || (_cache[12] = [\n      _createTextVNode(\"↪️\", -1),\n      _createElementVNode(\"kbd\", null, \"Ctrl+Y\", -1)\n    ]))], 8, _hoisted_3),\n    _cache[15] || (_cache[15] = _createElementVNode(\"div\", { class: \"ctrl-sep\" }, null, -1)),\n    _createElementVNode(\"button\", {\n      class: _normalizeClass([\"ctrl-btn unknown\", {active: __props.unknownMode}]),\n      onClick: _cache[5] || (_cache[5] = ($event: any) => (emit('toggleUnknown')))\n    }, \"❓ وضع مجهول\", 2),\n    _cache[16] || (_cache[16] = _createElementVNode(\"div\", { class: \"ctrl-sep\" }, null, -1)),\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn danger\",\n      onClick: _cache[6] || (_cache[6] = ($event: any) => (emit('clearTrials')))\n    }, \"🗑️ \" + _toDisplayString(_unref(t)('experiments.clearAll')), 1),\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn\",\n      onClick: _cache[7] || (_cache[7] = ($event: any) => (emit('exportCsv')))\n    }, \"💾 CSV\"),\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn\",\n      onClick: _cache[8] || (_cache[8] = ($event: any) => (emit('reset')))\n    }, [\n      _createTextVNode(\"🔄 \" + _toDisplayString(_unref(t)('experiments.resetBtn')), 1),\n      _cache[13] || (_cache[13] = _createElementVNode(\"kbd\", null, \"R\", -1))\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783634642019,
+      "end": 1783634642019
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642019,
+      "end": 1783634642019,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createTextVNode as _createTextVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, unref as _unref, normalizeClass as _normalizeClass } from \"vue\";\nconst _hoisted_1 = { class: \"ctrl-bar\" };\nconst _hoisted_2 = [\"disabled\"];\nconst _hoisted_3 = [\"disabled\"];\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"SpecificHeatControlBar\",\n  props: {\n    launchLabel: {},\n    canTransfer: { type: Boolean },\n    canUndo: { type: Boolean },\n    canRedo: { type: Boolean },\n    unknownMode: { type: Boolean }\n  },\n  emits: [\"togglePause\", \"transfer\", \"reset\", \"recordTrial\", \"clearTrials\", \"exportCsv\", \"undo\", \"redo\", \"toggleUnknown\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const emit = __emit;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"button\", {\n          class: \"ctrl-btn primary\",\n          onClick: _cache[0] || (_cache[0] = ($event) => emit(\"togglePause\"))\n        }, [\n          _createTextVNode(_toDisplayString(__props.launchLabel), 1),\n          _cache[9] || (_cache[9] = _createElementVNode(\"kbd\", null, \"Space\", -1))\n        ]),\n        __props.canTransfer ? (_openBlock(), _createElementBlock(\"button\", {\n          key: 0,\n          class: \"ctrl-btn transfer\",\n          onClick: _cache[1] || (_cache[1] = ($event) => emit(\"transfer\"))\n        }, \"🔄 نقل القطعة\")) : _createCommentVNode(\"\", true),\n        _createElementVNode(\"button\", {\n          class: \"ctrl-btn record\",\n          onClick: _cache[2] || (_cache[2] = ($event) => emit(\"recordTrial\"))\n        }, [\n          _createTextVNode(\"📌 \" + _toDisplayString(_unref(t)(\"experiments.recordBtn\")), 1),\n          _cache[10] || (_cache[10] = _createElementVNode(\"kbd\", null, \"S\", -1))\n        ]),\n        _cache[14] || (_cache[14] = _createElementVNode(\"div\", { class: \"ctrl-sep\" }, null, -1)),\n        _createElementVNode(\"button\", {\n          class: \"ctrl-btn\",\n          disabled: !__props.canUndo,\n          onClick: _cache[3] || (_cache[3] = ($event) => emit(\"undo\"))\n        }, [..._cache[11] || (_cache[11] = [\n          _createTextVNode(\"↩️\", -1),\n          _createElementVNode(\"kbd\", null, \"Ctrl+Z\", -1)\n        ])], 8, _hoisted_2),\n        _createElementVNode(\"button\", {\n          class: \"ctrl-btn\",\n          disabled: !__props.canRedo,\n          onClick: _cache[4] || (_cache[4] = ($event) => emit(\"redo\"))\n        }, [..._cache[12] || (_cache[12] = [\n          _createTextVNode(\"↪️\", -1),\n          _createElementVNode(\"kbd\", null, \"Ctrl+Y\", -1)\n        ])], 8, _hoisted_3),\n        _cache[15] || (_cache[15] = _createElementVNode(\"div\", { class: \"ctrl-sep\" }, null, -1)),\n        _createElementVNode(\"button\", {\n          class: _normalizeClass([\"ctrl-btn unknown\", { active: __props.unknownMode }]),\n          onClick: _cache[5] || (_cache[5] = ($event) => emit(\"toggleUnknown\"))\n        }, \"❓ وضع مجهول\", 2),\n        _cache[16] || (_cache[16] = _createElementVNode(\"div\", { class: \"ctrl-sep\" }, null, -1)),\n        _createElementVNode(\"button\", {\n          class: \"ctrl-btn danger\",\n          onClick: _cache[6] || (_cache[6] = ($event) => emit(\"clearTrials\"))\n        }, \"🗑️ \" + _toDisplayString(_unref(t)(\"experiments.clearAll\")), 1),\n        _createElementVNode(\"button\", {\n          class: \"ctrl-btn\",\n          onClick: _cache[7] || (_cache[7] = ($event) => emit(\"exportCsv\"))\n        }, \"💾 CSV\"),\n        _createElementVNode(\"button\", {\n          class: \"ctrl-btn\",\n          onClick: _cache[8] || (_cache[8] = ($event) => emit(\"reset\"))\n        }, [\n          _createTextVNode(\"🔄 \" + _toDisplayString(_unref(t)(\"experiments.resetBtn\")), 1),\n          _cache[13] || (_cache[13] = _createElementVNode(\"kbd\", null, \"R\", -1))\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634642019,
+      "end": 1783634642294,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/SpecificHeatControlBar.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createTextVNode as _createTextVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, unref as _unref, normalizeClass as _normalizeClass } from \"vue\"\n\nconst _hoisted_1 = { class: \"ctrl-bar\" }\nconst _hoisted_2 = [\"disabled\"]\nconst _hoisted_3 = [\"disabled\"]\n\nimport { useI18n } from '../../../composables/useI18n'\ninterface Props { launchLabel: string; canTransfer: boolean; canUndo: boolean; canRedo: boolean; unknownMode?: boolean }\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'SpecificHeatControlBar',\n  props: {\n    launchLabel: {},\n    canTransfer: { type: Boolean },\n    canUndo: { type: Boolean },\n    canRedo: { type: Boolean },\n    unknownMode: { type: Boolean }\n  },\n  emits: [\"togglePause\", \"transfer\", \"reset\", \"recordTrial\", \"clearTrials\", \"exportCsv\", \"undo\", \"redo\", \"toggleUnknown\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn primary\",\n      onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('togglePause')))\n    }, [\n      _createTextVNode(_toDisplayString(__props.launchLabel), 1),\n      _cache[9] || (_cache[9] = _createElementVNode(\"kbd\", null, \"Space\", -1))\n    ]),\n    (__props.canTransfer)\n      ? (_openBlock(), _createElementBlock(\"button\", {\n          key: 0,\n          class: \"ctrl-btn transfer\",\n          onClick: _cache[1] || (_cache[1] = ($event: any) => (emit('transfer')))\n        }, \"🔄 نقل القطعة\"))\n      : _createCommentVNode(\"\", true),\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn record\",\n      onClick: _cache[2] || (_cache[2] = ($event: any) => (emit('recordTrial')))\n    }, [\n      _createTextVNode(\"📌 \" + _toDisplayString(_unref(t)('experiments.recordBtn')), 1),\n      _cache[10] || (_cache[10] = _createElementVNode(\"kbd\", null, \"S\", -1))\n    ]),\n    _cache[14] || (_cache[14] = _createElementVNode(\"div\", { class: \"ctrl-sep\" }, null, -1)),\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn\",\n      disabled: !__props.canUndo,\n      onClick: _cache[3] || (_cache[3] = ($event: any) => (emit('undo')))\n    }, [...(_cache[11] || (_cache[11] = [\n      _createTextVNode(\"↩️\", -1),\n      _createElementVNode(\"kbd\", null, \"Ctrl+Z\", -1)\n    ]))], 8, _hoisted_2),\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn\",\n      disabled: !__props.canRedo,\n      onClick: _cache[4] || (_cache[4] = ($event: any) => (emit('redo')))\n    }, [...(_cache[12] || (_cache[12] = [\n      _createTextVNode(\"↪️\", -1),\n      _createElementVNode(\"kbd\", null, \"Ctrl+Y\", -1)\n    ]))], 8, _hoisted_3),\n    _cache[15] || (_cache[15] = _createElementVNode(\"div\", { class: \"ctrl-sep\" }, null, -1)),\n    _createElementVNode(\"button\", {\n      class: _normalizeClass([\"ctrl-btn unknown\", {active: __props.unknownMode}]),\n      onClick: _cache[5] || (_cache[5] = ($event: any) => (emit('toggleUnknown')))\n    }, \"❓ وضع مجهول\", 2),\n    _cache[16] || (_cache[16] = _createElementVNode(\"div\", { class: \"ctrl-sep\" }, null, -1)),\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn danger\",\n      onClick: _cache[6] || (_cache[6] = ($event: any) => (emit('clearTrials')))\n    }, \"🗑️ \" + _toDisplayString(_unref(t)('experiments.clearAll')), 1),\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn\",\n      onClick: _cache[7] || (_cache[7] = ($event: any) => (emit('exportCsv')))\n    }, \"💾 CSV\"),\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn\",\n      onClick: _cache[8] || (_cache[8] = ($event: any) => (emit('reset')))\n    }, [\n      _createTextVNode(\"🔄 \" + _toDisplayString(_unref(t)('experiments.resetBtn')), 1),\n      _cache[13] || (_cache[13] = _createElementVNode(\"kbd\", null, \"R\", -1))\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642294,
+      "end": 1783634642294,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642294,
+      "end": 1783634642294,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634642294,
+      "end": 1783634642294,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642294,
+      "end": 1783634642294,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642294,
+      "end": 1783634642294,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642294,
+      "end": 1783634642294,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642294,
+      "end": 1783634642294,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642294,
+      "end": 1783634642294,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642294,
+      "end": 1783634642294,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642294,
+      "end": 1783634642294,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642294,
+      "end": 1783634642294,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642294,
+      "end": 1783634642294,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642294,
+      "end": 1783634642294,
+      "order": "normal"
+    }
+  ]
+}

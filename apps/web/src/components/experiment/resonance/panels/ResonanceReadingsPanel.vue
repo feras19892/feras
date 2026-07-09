@@ -1,6 +1,4 @@
-<script setup lang="ts">
-import { useI18n } from '../../../../composables/useI18n'
-const { t } = useI18n()
+﻿<script setup lang="ts">
 interface Props { stringLength: number; tension: number; harmonic: number; frequency: number; wavelength: number; waveSpeed: number }
 defineProps<Props>()
 </script>

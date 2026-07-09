@@ -14,6 +14,10 @@ interface Props {
   fringeSpacing: number
   angularSeparation: number
   intensityPattern: { xMm: number; intensity: number }[]
+  regressionSlope: number
+  regressionIntercept: number
+  rSquared: number
+  lambdaFromRegression: number | null
 }
 defineProps<Props>()
 const emit = defineEmits<{
@@ -36,6 +40,10 @@ const emit = defineEmits<{
     />
     <InterferenceChartPanel
       v-else-if="id === 'chart'"
+      :trials="trials"
+      :regression-slope="regressionSlope"
+      :regression-intercept="regressionIntercept"
+      :r-squared="rSquared"
       :intensity-pattern="intensityPattern"
     />
     <InterferenceTrialsPanel
@@ -59,6 +67,12 @@ const emit = defineEmits<{
     <InterferenceResultsPanel
       v-else-if="id === 'results'"
       :trials="trials"
+      :regression-slope="regressionSlope"
+      :regression-intercept="regressionIntercept"
+      :r-squared="rSquared"
+      :lambda-from-regression="lambdaFromRegression"
+      :theoretical-lambda="params.wavelength"
+      :screen-distance="params.screenDistance"
     />
   </div>
 </template>

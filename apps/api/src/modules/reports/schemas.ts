@@ -4,6 +4,7 @@ export const createReportSchema = z.object({
   class_id: z.string().min(1),
   experiment_type: z.string().min(1).max(50),
   experiment_name: z.string().min(1).max(100),
+  experiment_id: z.string().optional(),
   readings: z.string(),
   params: z.string().optional(),
   // جديد:

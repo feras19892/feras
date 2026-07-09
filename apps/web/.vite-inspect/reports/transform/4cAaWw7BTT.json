@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/wave-interference/panels/WaveInterferenceLawsPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, createStaticVNode as _createStaticVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"eq-block\" }\nconst _hoisted_3 = { class: \"eq-values\" }\n\ninterface Props { sourceDistance: number; wavelength: number; frequency: number; screenDistance: number; vWave: number }\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'WaveInterferenceLawsPanel',\n  props: {\n    sourceDistance: {},\n    wavelength: {},\n    frequency: {},\n    screenDistance: {},\n    vWave: {}\n  },\n  setup(__props: any) {\n\n\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"eq-title\" }, \"Wave Speed\", -1)),\n      _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"eq\" }, \"v = f * lambda\", -1)),\n      _createElementVNode(\"div\", _hoisted_3, \"v = \" + _toDisplayString(__props.vWave.toFixed(1)) + \" m/s, f = \" + _toDisplayString(__props.frequency) + \" Hz, lambda = \" + _toDisplayString((__props.wavelength * 1000).toFixed(1)) + \" mm\", 1)\n    ]),\n    _cache[2] || (_cache[2] = _createStaticVNode(\"<div class=\\\"eq-block\\\" data-v-30a496e0><div class=\\\"eq-title\\\" data-v-30a496e0>Constructive Interference</div><div class=\\\"eq\\\" data-v-30a496e0>delta_r = m * lambda</div><div class=\\\"eq-values\\\" data-v-30a496e0>Path difference equals integer wavelength</div></div><div class=\\\"eq-block\\\" data-v-30a496e0><div class=\\\"eq-title\\\" data-v-30a496e0>Destructive Interference</div><div class=\\\"eq\\\" data-v-30a496e0>delta_r = (m + 1/2) * lambda</div><div class=\\\"eq-values\\\" data-v-30a496e0>Path difference equals half-integer wavelength</div></div>\", 2))\n  ]))\n}\n}\n\n})",
+      "start": 1783634642919,
+      "end": 1783634642919
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642919,
+      "end": 1783634642919,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, createStaticVNode as _createStaticVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nconst _hoisted_2 = { class: \"eq-block\" };\nconst _hoisted_3 = { class: \"eq-values\" };\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"WaveInterferenceLawsPanel\",\n  props: {\n    sourceDistance: {},\n    wavelength: {},\n    frequency: {},\n    screenDistance: {},\n    vWave: {}\n  },\n  setup(__props) {\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"eq-title\" }, \"Wave Speed\", -1)),\n          _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"eq\" }, \"v = f * lambda\", -1)),\n          _createElementVNode(\"div\", _hoisted_3, \"v = \" + _toDisplayString(__props.vWave.toFixed(1)) + \" m/s, f = \" + _toDisplayString(__props.frequency) + \" Hz, lambda = \" + _toDisplayString((__props.wavelength * 1e3).toFixed(1)) + \" mm\", 1)\n        ]),\n        _cache[2] || (_cache[2] = _createStaticVNode('<div class=\"eq-block\" data-v-30a496e0><div class=\"eq-title\" data-v-30a496e0>Constructive Interference</div><div class=\"eq\" data-v-30a496e0>delta_r = m * lambda</div><div class=\"eq-values\" data-v-30a496e0>Path difference equals integer wavelength</div></div><div class=\"eq-block\" data-v-30a496e0><div class=\"eq-title\" data-v-30a496e0>Destructive Interference</div><div class=\"eq\" data-v-30a496e0>delta_r = (m + 1/2) * lambda</div><div class=\"eq-values\" data-v-30a496e0>Path difference equals half-integer wavelength</div></div>', 2))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634642919,
+      "end": 1783634643188,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/wave-interference/panels/WaveInterferenceLawsPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, createStaticVNode as _createStaticVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"eq-block\" }\nconst _hoisted_3 = { class: \"eq-values\" }\n\ninterface Props { sourceDistance: number; wavelength: number; frequency: number; screenDistance: number; vWave: number }\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'WaveInterferenceLawsPanel',\n  props: {\n    sourceDistance: {},\n    wavelength: {},\n    frequency: {},\n    screenDistance: {},\n    vWave: {}\n  },\n  setup(__props: any) {\n\n\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"eq-title\" }, \"Wave Speed\", -1)),\n      _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"eq\" }, \"v = f * lambda\", -1)),\n      _createElementVNode(\"div\", _hoisted_3, \"v = \" + _toDisplayString(__props.vWave.toFixed(1)) + \" m/s, f = \" + _toDisplayString(__props.frequency) + \" Hz, lambda = \" + _toDisplayString((__props.wavelength * 1000).toFixed(1)) + \" mm\", 1)\n    ]),\n    _cache[2] || (_cache[2] = _createStaticVNode(\"<div class=\\\"eq-block\\\" data-v-30a496e0><div class=\\\"eq-title\\\" data-v-30a496e0>Constructive Interference</div><div class=\\\"eq\\\" data-v-30a496e0>delta_r = m * lambda</div><div class=\\\"eq-values\\\" data-v-30a496e0>Path difference equals integer wavelength</div></div><div class=\\\"eq-block\\\" data-v-30a496e0><div class=\\\"eq-title\\\" data-v-30a496e0>Destructive Interference</div><div class=\\\"eq\\\" data-v-30a496e0>delta_r = (m + 1/2) * lambda</div><div class=\\\"eq-values\\\" data-v-30a496e0>Path difference equals half-integer wavelength</div></div>\", 2))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,sBAAsB,qBAAqB,mBAAmB,kBAAkB,qBAAqB,oBAAoB,aAAa,YAAY,sBAAsB,2BAA2B;AAE5M,MAAM,aAAa,EAAE,OAAO,aAAa;AACzC,MAAM,aAAa,EAAE,OAAO,WAAW;AACvC,MAAM,aAAa,EAAE,OAAO,YAAY;AAIxC,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,gBAAgB,CAAC;AAAA,IACjB,YAAY,CAAC;AAAA,IACb,WAAW,CAAC;AAAA,IACZ,gBAAgB,CAAC;AAAA,IACjB,OAAO,CAAC;AAAA,EACV;AAAA,EACA,MAAM,SAAc;AAItB,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,oBAAoB,OAAO,YAAY;AAAA,UACrC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,WAAW,GAAG,cAAc,EAAE;AAAA,UAC5F,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,KAAK,GAAG,kBAAkB,EAAE;AAAA,UAC1F,oBAAoB,OAAO,YAAY,SAAS,iBAAiB,QAAQ,MAAM,QAAQ,CAAC,CAAC,IAAI,eAAe,iBAAiB,QAAQ,SAAS,IAAI,mBAAmB,kBAAkB,QAAQ,aAAa,KAAM,QAAQ,CAAC,CAAC,IAAI,OAAO,CAAC;AAAA,QAC1O,CAAC;AAAA,QACD,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,mBAAmB,khBAAkiB,CAAC;AAAA,MACllB,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634643188,
+      "end": 1783634643188,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634643188,
+      "end": 1783634643188,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634643188,
+      "end": 1783634643188,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634643188,
+      "end": 1783634643188,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634643188,
+      "end": 1783634643188,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634643188,
+      "end": 1783634643188,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634643188,
+      "end": 1783634643188,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634643188,
+      "end": 1783634643188,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634643188,
+      "end": 1783634643188,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634643188,
+      "end": 1783634643188,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634643188,
+      "end": 1783634643188,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634643189,
+      "end": 1783634643189,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634643189,
+      "end": 1783634643189,
+      "order": "normal"
+    }
+  ]
+}

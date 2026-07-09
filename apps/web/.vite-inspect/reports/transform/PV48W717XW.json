@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/boyles-law/panels/BoylesLawResultsPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, normalizeClass as _normalizeClass } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"stat-box\" }\nconst _hoisted_3 = { class: \"stat-value\" }\nconst _hoisted_4 = {\n  key: 0,\n  class: \"stat-box\"\n}\nconst _hoisted_5 = { class: \"stat-value highlight\" }\nconst _hoisted_6 = {\n  key: 1,\n  class: \"stat-box\"\n}\nconst _hoisted_7 = { class: \"stat-value\" }\nconst _hoisted_8 = {\n  key: 2,\n  class: \"stat-box\"\n}\nconst _hoisted_9 = {\n  key: 3,\n  class: \"stat-box\"\n}\nconst _hoisted_10 = {\n  key: 4,\n  class: \"no-results\"\n}\n\nimport { computed } from 'vue'\nimport type { BoylesLawTrial } from '../../../../composables/boyles-law/useBoylesLawTrials'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'BoylesLawResultsPanel',\n  props: {\n    trials: {}\n  },\n  setup(__props: any) {\n\nconst props = __props\n\nconst avgPv = computed(() => props.trials.length ? (props.trials.reduce((s, t) => s + t.pv, 0) / props.trials.length) : 0)\nconst stdDev = computed(() => {\n  if (props.trials.length < 2) return 0\n  const mean = avgPv.value\n  const sq = props.trials.reduce((s, t) => s + Math.pow(t.pv - mean, 2), 0)\n  return Math.sqrt(sq / (props.trials.length - 1))\n})\nconst cv = computed(() => avgPv.value > 0 ? (stdDev.value / avgPv.value * 100) : 0)\nconst constancy = computed(() => {\n  if (props.trials.length < 2) return { label: '', color: '' }\n  if (cv.value < 2) return { label: 'ممتاز ✅', color: 'green' }\n  if (cv.value < 5) return { label: 'جيد', color: 'amber' }\n  return { label: 'يحتاج مزيداً', color: 'red' }\n})\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"عدد التجارب\", -1)),\n      _createElementVNode(\"div\", _hoisted_3, _toDisplayString(__props.trials.length), 1)\n    ]),\n    (__props.trials.length)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_4, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"متوسط P·V\", -1)),\n          _createElementVNode(\"div\", _hoisted_5, _toDisplayString(avgPv.value.toFixed(2)) + \" atm·L\", 1)\n        ]))\n      : _createCommentVNode(\"\", true),\n    (__props.trials.length >= 2)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_6, [\n          _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"الانحراف المعياري σ\", -1)),\n          _createElementVNode(\"div\", _hoisted_7, \"±\" + _toDisplayString(stdDev.value.toFixed(3)), 1)\n        ]))\n      : _createCommentVNode(\"\", true),\n    (__props.trials.length >= 2)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_8, [\n          _cache[3] || (_cache[3] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"معامل التباين CV\", -1)),\n          _createElementVNode(\"div\", {\n            class: _normalizeClass([\"stat-value\", constancy.value.color])\n          }, _toDisplayString(cv.value.toFixed(1)) + \"%\", 3)\n        ]))\n      : _createCommentVNode(\"\", true),\n    (__props.trials.length >= 2)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_9, [\n          _cache[4] || (_cache[4] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"ثبات P·V\", -1)),\n          _createElementVNode(\"div\", {\n            class: _normalizeClass([\"stat-value\", constancy.value.color])\n          }, _toDisplayString(constancy.value.label), 3)\n        ]))\n      : _createCommentVNode(\"\", true),\n    (!__props.trials.length)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_10, [...(_cache[5] || (_cache[5] = [\n          _createElementVNode(\"div\", { class: \"no-icon\" }, \"📊\", -1),\n          _createElementVNode(\"div\", { class: \"no-title\" }, \"لا توجد تجارب مسجلة\", -1),\n          _createElementVNode(\"div\", { class: \"no-hint\" }, \"اضغط Start ثم Record بعد كل ضغط لتسجيل قيم P و V\", -1)\n        ]))]))\n      : _createCommentVNode(\"\", true)\n  ]))\n}\n}\n\n})",
+      "start": 1783634643063,
+      "end": 1783634643063
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634643063,
+      "end": 1783634643063,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, normalizeClass as _normalizeClass } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nconst _hoisted_2 = { class: \"stat-box\" };\nconst _hoisted_3 = { class: \"stat-value\" };\nconst _hoisted_4 = {\n  key: 0,\n  class: \"stat-box\"\n};\nconst _hoisted_5 = { class: \"stat-value highlight\" };\nconst _hoisted_6 = {\n  key: 1,\n  class: \"stat-box\"\n};\nconst _hoisted_7 = { class: \"stat-value\" };\nconst _hoisted_8 = {\n  key: 2,\n  class: \"stat-box\"\n};\nconst _hoisted_9 = {\n  key: 3,\n  class: \"stat-box\"\n};\nconst _hoisted_10 = {\n  key: 4,\n  class: \"no-results\"\n};\nimport { computed } from \"vue\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"BoylesLawResultsPanel\",\n  props: {\n    trials: {}\n  },\n  setup(__props) {\n    const props = __props;\n    const avgPv = computed(() => props.trials.length ? props.trials.reduce((s, t) => s + t.pv, 0) / props.trials.length : 0);\n    const stdDev = computed(() => {\n      if (props.trials.length < 2) return 0;\n      const mean = avgPv.value;\n      const sq = props.trials.reduce((s, t) => s + Math.pow(t.pv - mean, 2), 0);\n      return Math.sqrt(sq / (props.trials.length - 1));\n    });\n    const cv = computed(() => avgPv.value > 0 ? stdDev.value / avgPv.value * 100 : 0);\n    const constancy = computed(() => {\n      if (props.trials.length < 2) return { label: \"\", color: \"\" };\n      if (cv.value < 2) return { label: \"ممتاز ✅\", color: \"green\" };\n      if (cv.value < 5) return { label: \"جيد\", color: \"amber\" };\n      return { label: \"يحتاج مزيداً\", color: \"red\" };\n    });\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"عدد التجارب\", -1)),\n          _createElementVNode(\"div\", _hoisted_3, _toDisplayString(__props.trials.length), 1)\n        ]),\n        __props.trials.length ? (_openBlock(), _createElementBlock(\"div\", _hoisted_4, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"متوسط P·V\", -1)),\n          _createElementVNode(\"div\", _hoisted_5, _toDisplayString(avgPv.value.toFixed(2)) + \" atm·L\", 1)\n        ])) : _createCommentVNode(\"\", true),\n        __props.trials.length >= 2 ? (_openBlock(), _createElementBlock(\"div\", _hoisted_6, [\n          _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"الانحراف المعياري σ\", -1)),\n          _createElementVNode(\"div\", _hoisted_7, \"±\" + _toDisplayString(stdDev.value.toFixed(3)), 1)\n        ])) : _createCommentVNode(\"\", true),\n        __props.trials.length >= 2 ? (_openBlock(), _createElementBlock(\"div\", _hoisted_8, [\n          _cache[3] || (_cache[3] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"معامل التباين CV\", -1)),\n          _createElementVNode(\"div\", {\n            class: _normalizeClass([\"stat-value\", constancy.value.color])\n          }, _toDisplayString(cv.value.toFixed(1)) + \"%\", 3)\n        ])) : _createCommentVNode(\"\", true),\n        __props.trials.length >= 2 ? (_openBlock(), _createElementBlock(\"div\", _hoisted_9, [\n          _cache[4] || (_cache[4] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"ثبات P·V\", -1)),\n          _createElementVNode(\"div\", {\n            class: _normalizeClass([\"stat-value\", constancy.value.color])\n          }, _toDisplayString(constancy.value.label), 3)\n        ])) : _createCommentVNode(\"\", true),\n        !__props.trials.length ? (_openBlock(), _createElementBlock(\"div\", _hoisted_10, [..._cache[5] || (_cache[5] = [\n          _createElementVNode(\"div\", { class: \"no-icon\" }, \"📊\", -1),\n          _createElementVNode(\"div\", { class: \"no-title\" }, \"لا توجد تجارب مسجلة\", -1),\n          _createElementVNode(\"div\", { class: \"no-hint\" }, \"اضغط Start ثم Record بعد كل ضغط لتسجيل قيم P و V\", -1)\n        ])])) : _createCommentVNode(\"\", true)\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634643063,
+      "end": 1783634643187,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/boyles-law/panels/BoylesLawResultsPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, normalizeClass as _normalizeClass } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"stat-box\" }\nconst _hoisted_3 = { class: \"stat-value\" }\nconst _hoisted_4 = {\n  key: 0,\n  class: \"stat-box\"\n}\nconst _hoisted_5 = { class: \"stat-value highlight\" }\nconst _hoisted_6 = {\n  key: 1,\n  class: \"stat-box\"\n}\nconst _hoisted_7 = { class: \"stat-value\" }\nconst _hoisted_8 = {\n  key: 2,\n  class: \"stat-box\"\n}\nconst _hoisted_9 = {\n  key: 3,\n  class: \"stat-box\"\n}\nconst _hoisted_10 = {\n  key: 4,\n  class: \"no-results\"\n}\n\nimport { computed } from 'vue'\nimport type { BoylesLawTrial } from '../../../../composables/boyles-law/useBoylesLawTrials'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'BoylesLawResultsPanel',\n  props: {\n    trials: {}\n  },\n  setup(__props: any) {\n\nconst props = __props\n\nconst avgPv = computed(() => props.trials.length ? (props.trials.reduce((s, t) => s + t.pv, 0) / props.trials.length) : 0)\nconst stdDev = computed(() => {\n  if (props.trials.length < 2) return 0\n  const mean = avgPv.value\n  const sq = props.trials.reduce((s, t) => s + Math.pow(t.pv - mean, 2), 0)\n  return Math.sqrt(sq / (props.trials.length - 1))\n})\nconst cv = computed(() => avgPv.value > 0 ? (stdDev.value / avgPv.value * 100) : 0)\nconst constancy = computed(() => {\n  if (props.trials.length < 2) return { label: '', color: '' }\n  if (cv.value < 2) return { label: 'ممتاز ✅', color: 'green' }\n  if (cv.value < 5) return { label: 'جيد', color: 'amber' }\n  return { label: 'يحتاج مزيداً', color: 'red' }\n})\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"عدد التجارب\", -1)),\n      _createElementVNode(\"div\", _hoisted_3, _toDisplayString(__props.trials.length), 1)\n    ]),\n    (__props.trials.length)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_4, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"متوسط P·V\", -1)),\n          _createElementVNode(\"div\", _hoisted_5, _toDisplayString(avgPv.value.toFixed(2)) + \" atm·L\", 1)\n        ]))\n      : _createCommentVNode(\"\", true),\n    (__props.trials.length >= 2)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_6, [\n          _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"الانحراف المعياري σ\", -1)),\n          _createElementVNode(\"div\", _hoisted_7, \"±\" + _toDisplayString(stdDev.value.toFixed(3)), 1)\n        ]))\n      : _createCommentVNode(\"\", true),\n    (__props.trials.length >= 2)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_8, [\n          _cache[3] || (_cache[3] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"معامل التباين CV\", -1)),\n          _createElementVNode(\"div\", {\n            class: _normalizeClass([\"stat-value\", constancy.value.color])\n          }, _toDisplayString(cv.value.toFixed(1)) + \"%\", 3)\n        ]))\n      : _createCommentVNode(\"\", true),\n    (__props.trials.length >= 2)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_9, [\n          _cache[4] || (_cache[4] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"ثبات P·V\", -1)),\n          _createElementVNode(\"div\", {\n            class: _normalizeClass([\"stat-value\", constancy.value.color])\n          }, _toDisplayString(constancy.value.label), 3)\n        ]))\n      : _createCommentVNode(\"\", true),\n    (!__props.trials.length)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_10, [...(_cache[5] || (_cache[5] = [\n          _createElementVNode(\"div\", { class: \"no-icon\" }, \"📊\", -1),\n          _createElementVNode(\"div\", { class: \"no-title\" }, \"لا توجد تجارب مسجلة\", -1),\n          _createElementVNode(\"div\", { class: \"no-hint\" }, \"اضغط Start ثم Record بعد كل ضغط لتسجيل قيم P و V\", -1)\n        ]))]))\n      : _createCommentVNode(\"\", true)\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,sBAAsB,qBAAqB,mBAAmB,kBAAkB,aAAa,YAAY,sBAAsB,qBAAqB,sBAAsB,qBAAqB,kBAAkB,uBAAuB;AAEjP,MAAM,aAAa,EAAE,OAAO,aAAa;AACzC,MAAM,aAAa,EAAE,OAAO,WAAW;AACvC,MAAM,aAAa,EAAE,OAAO,aAAa;AACzC,MAAM,aAAa;AAAA,EACjB,KAAK;AAAA,EACL,OAAO;AACT;AACA,MAAM,aAAa,EAAE,OAAO,uBAAuB;AACnD,MAAM,aAAa;AAAA,EACjB,KAAK;AAAA,EACL,OAAO;AACT;AACA,MAAM,aAAa,EAAE,OAAO,aAAa;AACzC,MAAM,aAAa;AAAA,EACjB,KAAK;AAAA,EACL,OAAO;AACT;AACA,MAAM,aAAa;AAAA,EACjB,KAAK;AAAA,EACL,OAAO;AACT;AACA,MAAM,cAAc;AAAA,EAClB,KAAK;AAAA,EACL,OAAO;AACT;AAEA,SAAS,gBAAgB;AAIzB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,QAAQ,CAAC;AAAA,EACX;AAAA,EACA,MAAM,SAAc;AAEtB,UAAM,QAAQ;AAEd,UAAM,QAAQ,SAAS,MAAM,MAAM,OAAO,SAAU,MAAM,OAAO,OAAO,CAAC,GAAG,MAAM,IAAI,EAAE,IAAI,CAAC,IAAI,MAAM,OAAO,SAAU,CAAC;AACzH,UAAM,SAAS,SAAS,MAAM;AAC5B,UAAI,MAAM,OAAO,SAAS,EAAG,QAAO;AACpC,YAAM,OAAO,MAAM;AACnB,YAAM,KAAK,MAAM,OAAO,OAAO,CAAC,GAAG,MAAM,IAAI,KAAK,IAAI,EAAE,KAAK,MAAM,CAAC,GAAG,CAAC;AACxE,aAAO,KAAK,KAAK,MAAM,MAAM,OAAO,SAAS,EAAE;AAAA,IACjD,CAAC;AACD,UAAM,KAAK,SAAS,MAAM,MAAM,QAAQ,IAAK,OAAO,QAAQ,MAAM,QAAQ,MAAO,CAAC;AAClF,UAAM,YAAY,SAAS,MAAM;AAC/B,UAAI,MAAM,OAAO,SAAS,EAAG,QAAO,EAAE,OAAO,IAAI,OAAO,GAAG;AAC3D,UAAI,GAAG,QAAQ,EAAG,QAAO,EAAE,OAAO,WAAW,OAAO,QAAQ;AAC5D,UAAI,GAAG,QAAQ,EAAG,QAAO,EAAE,OAAO,OAAO,OAAO,QAAQ;AACxD,aAAO,EAAE,OAAO,gBAAgB,OAAO,MAAM;AAAA,IAC/C,CAAC;AAED,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,oBAAoB,OAAO,YAAY;AAAA,UACrC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,aAAa,GAAG,eAAe,EAAE;AAAA,UAC/F,oBAAoB,OAAO,YAAY,iBAAiB,QAAQ,OAAO,MAAM,GAAG,CAAC;AAAA,QACnF,CAAC;AAAA,QACA,QAAQ,OAAO,UACX,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,UACpD,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,aAAa,GAAG,aAAa,EAAE;AAAA,UAC7F,oBAAoB,OAAO,YAAY,iBAAiB,MAAM,MAAM,QAAQ,CAAC,CAAC,IAAI,UAAU,CAAC;AAAA,QAC/F,CAAC,KACD,oBAAoB,IAAI,IAAI;AAAA,QAC/B,QAAQ,OAAO,UAAU,KACrB,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,UACpD,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,aAAa,GAAG,uBAAuB,EAAE;AAAA,UACvG,oBAAoB,OAAO,YAAY,MAAM,iBAAiB,OAAO,MAAM,QAAQ,CAAC,CAAC,GAAG,CAAC;AAAA,QAC3F,CAAC,KACD,oBAAoB,IAAI,IAAI;AAAA,QAC/B,QAAQ,OAAO,UAAU,KACrB,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,UACpD,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,aAAa,GAAG,oBAAoB,EAAE;AAAA,UACpG,oBAAoB,OAAO;AAAA,YACzB,OAAO,gBAAgB,CAAC,cAAc,UAAU,MAAM,KAAK,CAAC;AAAA,UAC9D,GAAG,iBAAiB,GAAG,MAAM,QAAQ,CAAC,CAAC,IAAI,KAAK,CAAC;AAAA,QACnD,CAAC,KACD,oBAAoB,IAAI,IAAI;AAAA,QAC/B,QAAQ,OAAO,UAAU,KACrB,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,UACpD,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,aAAa,GAAG,YAAY,EAAE;AAAA,UAC5F,oBAAoB,OAAO;AAAA,YACzB,OAAO,gBAAgB,CAAC,cAAc,UAAU,MAAM,KAAK,CAAC;AAAA,UAC9D,GAAG,iBAAiB,UAAU,MAAM,KAAK,GAAG,CAAC;AAAA,QAC/C,CAAC,KACD,oBAAoB,IAAI,IAAI;AAAA,QAC/B,CAAC,QAAQ,OAAO,UACZ,WAAW,GAAG,oBAAoB,OAAO,aAAa,CAAC,GAAI,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI;AAAA,UACpF,oBAAoB,OAAO,EAAE,OAAO,UAAU,GAAG,MAAM,EAAE;AAAA,UACzD,oBAAoB,OAAO,EAAE,OAAO,WAAW,GAAG,uBAAuB,EAAE;AAAA,UAC3E,oBAAoB,OAAO,EAAE,OAAO,UAAU,GAAG,oDAAoD,EAAE;AAAA,QACzG,EAAG,CAAC,KACJ,oBAAoB,IAAI,IAAI;AAAA,MAClC,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634643187,
+      "end": 1783634643187,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634643187,
+      "end": 1783634643187,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634643187,
+      "end": 1783634643187,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634643187,
+      "end": 1783634643187,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634643187,
+      "end": 1783634643187,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634643187,
+      "end": 1783634643187,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634643187,
+      "end": 1783634643187,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634643187,
+      "end": 1783634643187,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634643187,
+      "end": 1783634643187,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634643187,
+      "end": 1783634643187,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634643187,
+      "end": 1783634643187,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634643187,
+      "end": 1783634643187,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634643187,
+      "end": 1783634643187,
+      "order": "normal"
+    }
+  ]
+}

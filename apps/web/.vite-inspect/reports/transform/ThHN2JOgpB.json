@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileCanvas.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\nimport { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'\nimport { useProjectileDraw } from '../../../composables/projectile/useProjectileDraw'\nimport { useProjectileGrid } from '../../../composables/projectile/useProjectileGrid'\nimport ProjectileHintOverlay from './ProjectileHintOverlay.vue'\nimport type { ProjectileParams, ProjectilePoint } from '../../../modules/physics/experiments/projectile/useProjectilePhysics'\n\ninterface SimState {\n  x: number; y: number; vx: number; vy: number; t: number\n  running: boolean; paused: boolean; landed: boolean\n  trail: ProjectilePoint[]\n  targetHit: boolean\n  distanceToTarget: number | null\n  maxHeightReached: number\n  landingSpeed: number\n}\n\nconst { t } = useI18n()\nconst props = defineProps<{\n  params: ProjectileParams\n  simState: SimState\n}>()\n\nconst emit = defineEmits<{\n  (e: 'snapshot', dataUrl: string): void\n  (e: 'update:targetX', val: number): void\n  (e: 'update:targetY', val: number): void\n}>()\n\nconst canvasRef = ref<HTMLCanvasElement | null>(null)\nconst wrapRef = ref<HTMLDivElement | null>(null)\nconst { draw } = useProjectileDraw(canvasRef, props.params, props.simState)\nconst { toScreen } = useProjectileGrid(props.params)\nconst draggingTarget = ref(false)\nconst dragStart = ref({ mx: 0, my: 0, tx: 0, ty: 0, scale: 1 })\nconst showTargetInput = ref(false)\nconst targetInputValue = ref('')\nconst targetInputRef = ref<HTMLInputElement | null>(null)\nconst targetInputPos = ref({ left: '0px', top: '0px' })\n\nfunction captureSnapshot() {\n  const canvas = canvasRef.value\n  if (!canvas) return\n  try {\n    const dataUrl = canvas.toDataURL('image/png')\n    emit('snapshot', dataUrl)\n    // Auto-download the image\n    const link = document.createElement('a')\n    link.href = dataUrl\n    link.download = `projectile_${Date.now()}.png`\n    document.body.appendChild(link)\n    link.click()\n    document.body.removeChild(link)\n  } catch { /* ignore */ }\n}\n\nfunction resizeCanvas() {\n  const canvas = canvasRef.value, wrap = wrapRef.value\n  if (!canvas || !wrap) return\n  const rect = wrap.getBoundingClientRect()\n  canvas.width = rect.width\n  canvas.height = Math.max(rect.height, 300)\n}\n\nfunction getCanvasPos(e: MouseEvent) {\n  const canvas = canvasRef.value\n  if (!canvas) return { x: 0, y: 0 }\n  const rect = canvas.getBoundingClientRect()\n  return { x: e.clientX - rect.left, y: e.clientY - rect.top }\n}\n\nfunction onMouseDown(e: MouseEvent) {\n  if (!props.params.targetMode || !props.params.targetVisible) return\n  if (props.simState.running) return\n  const pos = getCanvasPos(e)\n  const w = canvasRef.value?.width ?? 0\n  const h = canvasRef.value?.height ?? 0\n  const ts = toScreen(w, h, 0, 0)\n  const tx = ts.margin + props.params.targetX * ts.scale\n  const ty = ts.groundY - props.params.targetY * ts.scale\n  const dx = pos.x - tx\n  const dy = pos.y - ty\n  const dist = Math.sqrt(dx * dx + dy * dy)\n  if (dist < 40) {\n    draggingTarget.value = true\n    dragStart.value = {\n      mx: pos.x, my: pos.y,\n      tx: props.params.targetX, ty: props.params.targetY,\n      scale: ts.scale\n    }\n    e.preventDefault()\n  }\n}\n\nfunction onMouseMove(e: MouseEvent) {\n  if (!draggingTarget.value) return\n  const pos = getCanvasPos(e)\n  const worldDx = (pos.x - dragStart.value.mx) / dragStart.value.scale\n  const worldDy = (pos.y - dragStart.value.my) / dragStart.value.scale\n  emit('update:targetX', Math.max(0, dragStart.value.tx + worldDx))\n  emit('update:targetY', Math.max(0, dragStart.value.ty - worldDy))\n}\n\nfunction onMouseUp() {\n  draggingTarget.value = false\n}\n\nfunction onDblClick(e: MouseEvent) {\n  if (!props.params.targetMode || !props.params.targetVisible || props.simState.running) return\n  const pos = getCanvasPos(e)\n  const w = canvasRef.value?.width ?? 0\n  const h = canvasRef.value?.height ?? 0\n  const ts = toScreen(w, h, 0, 0)\n  const tx = ts.margin + props.params.targetX * ts.scale\n  const ty = ts.groundY - props.params.targetY * ts.scale\n  const dx = pos.x - tx\n  const dy = pos.y - ty\n  const dist = Math.sqrt(dx * dx + dy * dy)\n  if (dist < 40) {\n    targetInputValue.value = props.params.targetX.toFixed(1)\n    showTargetInput.value = true\n    targetInputPos.value = { left: (tx - 35) + 'px', top: (ty - 50) + 'px' }\n    nextTick(() => {\n      const el = targetInputRef.value\n      if (el) { el.focus(); el.select() }\n    })\n    e.preventDefault()\n  }\n}\n\nfunction onTargetInputSubmit() {\n  const val = parseFloat(targetInputValue.value)\n  if (!isNaN(val) && val >= 0) {\n    emit('update:targetX', val)\n  }\n  showTargetInput.value = false\n}\n\nwatch(() => [\n  props.params.v0, props.params.angleDeg, props.params.g, props.params.dragCoeff, props.params.targetMode, props.params.targetVisible, props.params.targetX, props.params.targetY, props.params.targetRadius,\n  props.simState.x, props.simState.y, props.simState.vx, props.simState.vy, props.simState.t, props.simState.landed, props.simState.targetHit,\n], draw, { flush: 'post' })\n\nlet resizeObs: ResizeObserver | null = null\nonMounted(() => {\n  if (wrapRef.value) {\n    resizeObs = new ResizeObserver(() => { resizeCanvas(); draw() })\n    resizeObs.observe(wrapRef.value)\n  }\n  resizeCanvas()\n  draw()\n})\nonUnmounted(() => { if (resizeObs) resizeObs.disconnect() })\n\ndefineExpose({ draw, captureSnapshot })\n</script>\n\n<template>\n  <div ref=\"wrapRef\" class=\"canvas-wrap\">\n    <button class=\"snapshot-btn\" @click=\"captureSnapshot()\" :title=\"'📸 ' + t('experiments.snapshot')\">📸</button>\n    <ProjectileHintOverlay :v0=\"params.v0\" :angle-deg=\"params.angleDeg\" :g=\"params.g\" :target-x=\"params.targetX\" :target-mode=\"params.targetMode\" />\n    <input v-if=\"showTargetInput\" ref=\"targetInputRef\" v-model=\"targetInputValue\" @keyup.enter=\"onTargetInputSubmit\" @blur=\"onTargetInputSubmit\" class=\"target-input\" :style=\"{ left: targetInputPos.left, top: targetInputPos.top }\" />\n    <canvas ref=\"canvasRef\" width=\"700\" height=\"420\" @mousedown=\"onMouseDown\" @mousemove=\"onMouseMove\" @mouseup=\"onMouseUp\" @mouseleave=\"onMouseUp\" @dblclick=\"onDblClick\" :style=\"{ cursor: draggingTarget ? 'grabbing' : params.targetMode ? 'grab' : 'default' }\" />\n  </div>\n</template>\n\n<style scoped>\n.canvas-wrap { flex: 1; min-height: 0; width: 100%; display: flex; flex-direction: column; position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,.3); border: 1px solid rgba(71,85,105,0.3); }\n.canvas-wrap canvas { display: block; width: 100%; flex: 1; min-height: 0; }\n.snapshot-btn { position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(15,23,42,0.85); border: 1px solid rgba(71,85,105,0.5); border-radius: 8px; padding: .3rem .5rem; font-size: .85rem; color: #e2e8f0; cursor: pointer; backdrop-filter: blur(8px); transition: background .2s; }\n.snapshot-btn:hover { background: rgba(30,41,59,0.95); }\n.target-input { position: absolute; z-index: 30; width: 70px; padding: .2rem .4rem; border-radius: 6px; border: 1px solid #5B8DB8; background: rgba(15,23,42,0.95); color: #e2e8f0; font-size: .8rem; text-align: center; outline: none; }\n</style>\n",
+      "start": 1783634640977,
+      "end": 1783634641411,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641411,
+      "end": 1783634641411,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641411,
+      "end": 1783634641411,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641411,
+      "end": 1783634641411,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641411,
+      "end": 1783634641411,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileCanvas.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileCanvas.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileCanvas.vue?vue&type=style&index=0&scoped=11755c67&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-11755c67\"]]);\n",
+      "start": 1783634641411,
+      "end": 1783634641641,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    }
+  ]
+}

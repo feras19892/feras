@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/SpeedOfSoundPanelBody.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport type { SpeedOfSoundTrial } from '../../../composables/speed-of-sound/useSpeedOfSoundTrials'\nimport SpeedOfSoundReadingsPanel from './panels/SpeedOfSoundReadingsPanel.vue'\nimport SpeedOfSoundChartPanel from './panels/SpeedOfSoundChartPanel.vue'\nimport SpeedOfSoundTrialsPanel from './panels/SpeedOfSoundTrialsPanel.vue'\nimport SpeedOfSoundParamsPanel from './panels/SpeedOfSoundParamsPanel.vue'\nimport SpeedOfSoundLawsPanel from './panels/SpeedOfSoundLawsPanel.vue'\nimport SpeedOfSoundResultsPanel from './panels/SpeedOfSoundResultsPanel.vue'\n\ninterface Props {\n  id: string\n  trials: SpeedOfSoundTrial[]\n  params: { tubeLength: number; frequency: number; temperature: number; harmonic: 1 | 3 }\n  wavelength: number\n  vMeasured: number\n  vTheory: number\n  percentError: number\n  waveformData: { x: number; y: number }[]\n  regressionSlope: number\n  regressionIntercept: number\n  rSquared: number\n  vFromRegression: number | null\n  endCorrection: number | null\n}\ndefineProps<Props>()\nconst emit = defineEmits<{\n  (e: 'remove', id: number): void\n  (e: 'clear'): void\n  (e: 'update:params', p: { tubeLength: number; frequency: number; temperature: number; harmonic: 1 | 3 }): void\n}>()\n</script>\n\n<template>\n  <div>\n    <SpeedOfSoundReadingsPanel\n      v-if=\"id === 'readings'\"\n      :tube-length=\"params.tubeLength\"\n      :frequency=\"params.frequency\"\n      :temperature=\"params.temperature\"\n      :harmonic=\"params.harmonic\"\n      :wavelength=\"wavelength\"\n      :v-measured=\"vMeasured\"\n      :v-theory=\"vTheory\"\n      :percent-error=\"percentError\"\n    />\n    <SpeedOfSoundChartPanel\n      v-else-if=\"id === 'chart'\"\n      :trials=\"trials\"\n      :regression-slope=\"regressionSlope\"\n      :regression-intercept=\"regressionIntercept\"\n      :r-squared=\"rSquared\"\n      :waveform-data=\"waveformData\"\n    />\n    <SpeedOfSoundTrialsPanel v-else-if=\"id === 'trials'\" :trials=\"trials\" @remove=\"emit('remove', $event)\" @clear=\"emit('clear')\" />\n    <SpeedOfSoundParamsPanel v-else-if=\"id === 'params'\" :params=\"params\" @update:params=\"emit('update:params', $event)\" />\n    <SpeedOfSoundLawsPanel v-else-if=\"id === 'laws'\" :tube-length=\"params.tubeLength\" :frequency=\"params.frequency\" :temperature=\"params.temperature\" :harmonic=\"params.harmonic\" :wavelength=\"wavelength\" :v-measured=\"vMeasured\" :v-theory=\"vTheory\" />\n    <SpeedOfSoundResultsPanel\n      v-else-if=\"id === 'results'\"\n      :trials=\"trials\"\n      :regression-slope=\"regressionSlope\"\n      :regression-intercept=\"regressionIntercept\"\n      :r-squared=\"rSquared\"\n      :v-from-regression=\"vFromRegression\"\n      :end-correction=\"endCorrection\"\n    />\n  </div>\n</template>\n",
+      "start": 1783634640986,
+      "end": 1783634641450,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641450,
+      "end": 1783634641450,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641450,
+      "end": 1783634641450,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641450,
+      "end": 1783634641450,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641450,
+      "end": 1783634641450,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/SpeedOfSoundPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/SpeedOfSoundPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nexport default _sfc_main;\n",
+      "start": 1783634641450,
+      "end": 1783634641637,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    }
+  ]
+}

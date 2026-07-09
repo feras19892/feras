@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed, ref } from 'vue'\nimport type { SpecificHeatTrial } from '../../../../composables/specific-heat/useSpecificHeatTrials'\nimport { METAL_CATALOG } from '../../../../composables/specific-heat/useSpecificHeatCalculations'\n\nconst props = defineProps<{\n  trials: SpecificHeatTrial[]\n  regressionSlope: number\n  rSquared: number\n  cFromSlope: number\n  unknownMode?: boolean\n}>()\n\nconst lastTrial = computed(() => props.trials.length ? props.trials[props.trials.length - 1] : null)\nconst errorPercent = computed(() => {\n  if (!lastTrial.value || lastTrial.value.cTrue === 0) return null\n  return Math.abs(lastTrial.value.cExtracted - lastTrial.value.cTrue) / lastTrial.value.cTrue * 100\n})\n\nconst revealed = ref(false)\nfunction guessMetal(cGuess: number) {\n  let bestKey = ''\n  let bestDiff = Infinity\n  for (const [key, info] of Object.entries(METAL_CATALOG)) {\n    const diff = Math.abs(info.c - cGuess)\n    if (diff < bestDiff) { bestDiff = diff; bestKey = key }\n  }\n  return { key: bestKey, info: METAL_CATALOG[bestKey], diff: bestDiff }\n}\nconst guess = computed(() => lastTrial.value ? guessMetal(lastTrial.value.cExtracted) : null)\n</script>\n<template>\n  <div class=\"panel-body\">\n    <div class=\"stat-box\"><div class=\"stat-label\">عدد التجارب</div><div class=\"stat-value\">{{ trials.length }}</div></div>\n    <div v-if=\"trials.length >= 2\" class=\"stat-box\">\n      <div class=\"stat-label\">c_m (من الميل)</div>\n      <div class=\"stat-value highlight\">{{ cFromSlope.toFixed(1) }} J/kg·°C</div>\n    </div>\n    <div v-if=\"trials.length >= 2\" class=\"formula-badge\">\n      c_m = c_w·avg(T_f−T_w) / (m_m·Slope)\n    </div>\n    <div v-if=\"trials.length >= 2\" class=\"stat-box\">\n      <div class=\"stat-label\">R²</div>\n      <div class=\"stat-value\">{{ rSquared.toFixed(4) }}</div>\n    </div>\n    <div v-if=\"lastTrial\" class=\"stat-box\">\n      <div class=\"stat-label\">c_m (آخر تجربة)</div>\n      <div class=\"stat-value green\">{{ lastTrial.cExtracted.toFixed(1) }}</div>\n    </div>\n    <div v-if=\"lastTrial\" class=\"stat-box\">\n      <div class=\"stat-label\">c_m (الحقيقي)</div>\n      <div class=\"stat-value\">{{ lastTrial.cTrue.toFixed(1) }}</div>\n    </div>\n    <div v-if=\"errorPercent !== null\" class=\"stat-box\">\n      <div class=\"stat-label\">نسبة الخطأ</div>\n      <div class=\"stat-value\" :class=\"errorPercent < 5 ? 'green' : errorPercent < 15 ? 'amber' : 'red'\">\n        {{ errorPercent.toFixed(1) }}%\n      </div>\n    </div>\n    <div v-if=\"lastTrial\" class=\"stat-box\">\n      <div class=\"stat-label\">نوع المعدن (تخمين)</div>\n      <div class=\"stat-value blue\">{{ lastTrial.cExtracted < 500 ? 'نحاس/حديد' : lastTrial.cExtracted < 1000 ? 'ألومنيوم' : 'غير معروف' }}</div>\n    </div>\n    <div v-if=\"unknownMode && guess && lastTrial\" class=\"guess-box\">\n      <button v-if=\"!revealed\" class=\"guess-btn\" @click=\"revealed = true\">🔍 كشف النوع</button>\n      <template v-else>\n        <div class=\"stat-box\">\n          <div class=\"stat-label\">التخمين</div>\n          <div class=\"stat-value\">{{ guess.info.nameAr }}</div>\n        </div>\n        <div class=\"stat-box\">\n          <div class=\"stat-label\">النوع الحقيقي</div>\n          <div class=\"stat-value green\">{{ METAL_CATALOG[lastTrial.metalType]?.nameAr ?? lastTrial.metalType }}</div>\n        </div>\n        <div class=\"stat-box\">\n          <div class=\"stat-label\">دقة التخمين</div>\n          <div class=\"stat-value\" :class=\"guess.diff < 50 ? 'green' : guess.diff < 200 ? 'amber' : 'red'\">\n            {{ guess.diff < 50 ? 'ممتاز' : guess.diff < 200 ? 'جيد' : 'ضعيف' }}\n          </div>\n        </div>\n      </template>\n    </div>\n  </div>\n</template>\n<style scoped>\n.panel-body { padding:.45rem; display:flex; flex-direction:column; gap:.35rem; }\n.stat-box { background:rgba(255,255,255,0.02); border:1px solid #1e2530; border-radius:6px; padding:.45rem .55rem; display:flex; justify-content:space-between; align-items:center; }\n.stat-label { color:#8B95A5; font-size:.72rem; }\n.stat-value { color:#D1D7E0; font-weight:700; font-size:.85rem; }\n.stat-value.highlight { color:#fbbf24; }\n.stat-value.green { color:#4ade80; }\n.stat-value.amber { color:#fbbf24; }\n.stat-value.red { color:#f87171; }\n.stat-value.blue { color:#5B8DB8; }\n.formula-badge { background:rgba(91,141,184,.08); border:1px solid rgba(91,141,184,.2); border-radius:5px; padding:.35rem .5rem; font-size:.7rem; color:#5B8DB8; font-family:monospace; text-align:center; }\n.guess-box { display:flex; flex-direction:column; gap:.35rem; }\n.guess-btn { width:100%; padding:.4rem; border-radius:6px; border:1px solid rgba(245,158,11,.4); background:rgba(245,158,11,.12); color:#fbbf24; font-size:.78rem; font-weight:700; cursor:pointer; transition:all .15s; }\n.guess-btn:hover { background:rgba(245,158,11,.2); }\n</style>\n",
+      "start": 1783634642380,
+      "end": 1783634642663,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642663,
+      "end": 1783634642663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642663,
+      "end": 1783634642663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642663,
+      "end": 1783634642663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642663,
+      "end": 1783634642663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue?vue&type=style&index=0&scoped=8bb20a74&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-8bb20a74\"]]);\n",
+      "start": 1783634642663,
+      "end": 1783634642872,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642873,
+      "end": 1783634642873,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642873,
+      "end": 1783634642873,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642873,
+      "end": 1783634642873,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642873,
+      "end": 1783634642873,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642873,
+      "end": 1783634642873,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642873,
+      "end": 1783634642873,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642873,
+      "end": 1783634642873,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642873,
+      "end": 1783634642873,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642873,
+      "end": 1783634642873,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642873,
+      "end": 1783634642873,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/FloatingInspector.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\r\nimport type { LabItem } from '../../../composables/chemistry/useChemistryTools';\r\nimport type { ToolState } from './InspectorPanel.vue';\r\nimport {\r\n  getPipette, getBurnerState, getBalanceTare, getContainerTare,\r\n  isGradCylinder, tiltAngleMap,\r\n  selectedChemical, hasSelectedChemicalMap, simSpeed\r\n} from '../../../composables/chemistry/useChemistryLab';\r\nimport { computeBalanceWeight, getBalanceReading, getPhReading } from '../../../composables/chemistry/useLabSimulation';\r\nimport { useI18n } from '../../../composables/useI18n';\r\nimport { useChemicalLocale } from '../../../composables/chemistry/useChemicalLocale';\r\n\r\nconst { t } = useI18n();\r\nconst { getName, resolveLabel } = useChemicalLocale();\r\nconst props = defineProps<{\r\n  item: LabItem | null;\r\n  state: ToolState | null;\r\n  canUndo?: boolean;\r\n  canRedo?: boolean;\r\n}>();\r\n\r\nconst emit = defineEmits<{\r\n  action: [type: 'refill' | 'empty' | 'toggleValve' | 'fill5' | 'fill10' | 'fill50' | 'fill100' | 'remove5' | 'remove10' | 'remove50' | 'remove100' | 'addSolid', uid: string];\r\n  remove: [uid: string];\r\n  pipetteDraw: [];\r\n  pipetteDispense: [];\r\n  toggleBurner: [];\r\n  tare: [];\r\n  tareContainer: [];\r\n  intensityChange: [val: number];\r\n  labelChange: [label: string];\r\n  undo: [];\r\n  redo: [];\r\n}>();\r\n\r\nfunction balanceReadout(): string {\r\n  if (!props.item) return '--';\r\n  const r = getBalanceReading(props.item.uid);\r\n  return r !== null ? r.toFixed(2) + ' ' + t('chemistry.g') : '--';\r\n}\r\nfunction grossWeight(): string {\r\n  if (!props.item) return '--';\r\n  return computeBalanceWeight(props.item).toFixed(2) + ' ' + t('chemistry.g');\r\n}\r\nfunction phReadout(): string {\r\n  if (!props.item) return '--.--';\r\n  const r = getPhReading(props.item);\r\n  return r !== null ? r.toFixed(2) : '--.--';\r\n}\r\nfunction tiltLeft() {\r\n  if (!props.item) return;\r\n  const current = tiltAngleMap[props.item.uid] || 0;\r\n  tiltAngleMap[props.item.uid] = Math.max(-180, current - 15);\r\n}\r\nfunction tiltRight() {\r\n  if (!props.item) return;\r\n  const current = tiltAngleMap[props.item.uid] || 0;\r\n  tiltAngleMap[props.item.uid] = Math.min(180, current + 15);\r\n}\r\nfunction resetTilt() {\r\n  if (!props.item) return;\r\n  delete tiltAngleMap[props.item.uid];\r\n}\r\n\r\nfunction pipetteStatus(): string {\r\n  if (!props.item) return '';\r\n  const v = getPipette(props.item.uid).volume;\r\n  return v > 0 ? t('chemistry.contains') + ' ' + v.toFixed(1) + t('chemistry.mL') : t('chemistry.emptyF');\r\n}\r\n</script>\r\n\r\n<template>\r\n  <div v-if=\"item && state\" class=\"floating-inspector\">\r\n    <div class=\"fi-header\">\r\n      <span class=\"fi-icon\">{{ item.icon }}</span>\r\n      <span class=\"fi-name\">{{ t(item.name) }}</span>\r\n      <div class=\"fi-undo-group\">\r\n        <button\r\n          class=\"undo-btn\"\r\n          :disabled=\"!canUndo\"\r\n          :title=\"t('chemistry.undo') + ' (Ctrl+Z)'\"\r\n          @click.stop=\"emit('undo')\"\r\n        >↩️</button>\r\n        <button\r\n          class=\"redo-btn\"\r\n          :disabled=\"!canRedo\"\r\n          :title=\"t('chemistry.redo') + ' (Ctrl+Y)'\"\r\n          @click.stop=\"emit('redo')\"\r\n        >↪️</button>\r\n      </div>\r\n    </div>\r\n    <div class=\"fi-body\">\r\n      <!-- Container -->\r\n      <template v-if=\"state.type === 'beaker'\">\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.volume') }}</span><b>{{ state.volume.toFixed(1) }} / {{ state.maxVolume }} {{ t('chemistry.mL') }}</b></div>\r\n        <div class=\"fi-bar\"><div class=\"fi-fill\" :style=\"{ width: (state.volume/state.maxVolume*100).toFixed(0) + '%', background: state.color }\" /></div>\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.color') }}</span><span class=\"fi-dot\" :style=\"{ background: state.color }\" /></div>\r\n        <div class=\"fi-row\">\r\n          <span>{{ t('chemistry.solution') }}</span>\r\n          <input\r\n            v-if=\"item\"\r\n            class=\"fi-input\"\r\n            :value=\"resolveLabel(state.label || '')\"\r\n            :placeholder=\"t('chemistry.solutionPlaceholder')\"\r\n            @input=\"(e: Event) => emit('labelChange', (e.target as HTMLInputElement).value)\"\r\n            @click.stop\r\n          />\r\n        </div>\r\n        <div v-if=\"item && isGradCylinder(item.id)\" class=\"fi-row hint\">\r\n          <span>⚠️</span><small>{{ t('chemistry.gradCylinderHint') }}</small>\r\n        </div>\r\n        <!-- Current chemical indicator -->\r\n        <div v-if=\"item && hasSelectedChemicalMap[item.uid]\" class=\"fi-row fi-chem-row\">\r\n          <span>{{ t('chemistry.selectedSolution') }}</span>\r\n          <span class=\"fi-chem-name\">\r\n            <span class=\"fi-dot\" :style=\"{ background: selectedChemical.color }\" />\r\n            {{ getName(selectedChemical.id) }}\r\n          </span>\r\n        </div>\r\n        <div class=\"fi-actions\">\r\n          <button @click=\"emit('action', 'fill5', item.uid)\">💧 +5</button>\r\n          <button @click=\"emit('action', 'fill10', item.uid)\">💧 +10</button>\r\n          <button @click=\"emit('action', 'fill50', item.uid)\">💧 +50</button>\r\n          <button @click=\"emit('action', 'fill100', item.uid)\">💧 +100</button>\r\n        </div>\r\n        <div class=\"fi-actions\">\r\n          <button class=\"remove\" @click=\"emit('action', 'remove5', item.uid)\">💨 −5</button>\r\n          <button class=\"remove\" @click=\"emit('action', 'remove10', item.uid)\">💨 −10</button>\r\n          <button class=\"remove\" @click=\"emit('action', 'remove50', item.uid)\">💨 −50</button>\r\n          <button class=\"remove\" @click=\"emit('action', 'remove100', item.uid)\">💨 −100</button>\r\n        </div>\r\n        <div class=\"fi-actions\">\r\n          <button class=\"empty\" @click=\"emit('action', 'empty', item.uid)\">🗑️ {{ t('chemistry.drain') }}</button>\r\n          <button class=\"delete\" @click=\"emit('remove', item.uid)\">❌ {{ t('chemistry.remove') }}</button>\r\n        </div>\r\n        <!-- Tilt controls -->\r\n        <div class=\"fi-row\">\r\n          <span>🔄 {{ t('chemistry.tilt') }}</span>\r\n          <b v-if=\"item && tiltAngleMap[item.uid]\" class=\"tilt-value\">{{ tiltAngleMap[item.uid] > 0 ? '↻ ' : '↺ ' }}{{ Math.abs(tiltAngleMap[item.uid]).toFixed(0) }}°</b>\r\n          <b v-else>⬆ {{ t('chemistry.straightUp') }}</b>\r\n        </div>\r\n        <div class=\"fi-actions tilt-actions\">\r\n          <button class=\"tilt-left\" @click=\"tiltLeft\">↺ {{ t('chemistry.left') }}</button>\r\n          <button class=\"tilt-reset\" @click=\"resetTilt\">⬆ {{ t('chemistry.tiltReset') }}</button>\r\n          <button class=\"tilt-right\" @click=\"tiltRight\">↻ {{ t('chemistry.right') }}</button>\r\n        </div>\r\n      </template>\r\n      <!-- Burette -->\r\n      <template v-else-if=\"state.type === 'burette'\">\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.solution') }}</span><b>{{ state.volume.toFixed(1) }} / {{ state.maxVolume }} {{ t('chemistry.mL') }}</b></div>\r\n        <div class=\"fi-bar\"><div class=\"fi-fill\" :style=\"{ width: (state.volume/state.maxVolume*100).toFixed(0) + '%', background: state.color }\" /></div>\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.valve') }}</span><b :class=\"state.valveOpen ? 'open' : ''\">{{ state.valveOpen ? '🔓 ' + t('chemistry.open') : '🔒 ' + t('chemistry.closed') }}</b></div>\r\n        <div class=\"fi-actions\">\r\n          <button @click=\"emit('action', 'fill5', item.uid)\">💧 +5</button>\r\n          <button @click=\"emit('action', 'fill10', item.uid)\">💧 +10</button>\r\n          <button @click=\"emit('action', 'fill50', item.uid)\">💧 +50</button>\r\n          <button @click=\"emit('action', 'fill100', item.uid)\">💧 +100</button>\r\n        </div>\r\n        <div class=\"fi-actions\">\r\n          <button :class=\"state.valveOpen ? 'danger' : 'success'\" @click=\"emit('action', 'toggleValve', item.uid)\">{{ state.valveOpen ? '🔒 ' + t('chemistry.closeAction') : '🚰 ' + t('chemistry.openAction') }}</button>\r\n          <button class=\"refill\" @click=\"emit('action', 'refill', item.uid)\">♻️ {{ t('chemistry.refill') }}</button>\r\n        </div>\r\n        <div class=\"fi-actions\">\r\n          <button class=\"remove\" @click=\"emit('action', 'remove5', item.uid)\">💨 −5</button>\r\n          <button class=\"remove\" @click=\"emit('action', 'remove10', item.uid)\">💨 −10</button>\r\n          <button class=\"remove\" @click=\"emit('action', 'remove50', item.uid)\">💨 −50</button>\r\n          <button class=\"remove\" @click=\"emit('action', 'remove100', item.uid)\">💨 −100</button>\r\n        </div>\r\n        <div class=\"fi-actions\">\r\n          <button class=\"empty\" @click=\"emit('action', 'empty', item.uid)\">🗑️ {{ t('chemistry.drain') }}</button>\r\n          <button class=\"delete\" @click=\"emit('remove', item.uid)\">❌ {{ t('chemistry.remove') }}</button>\r\n        </div>\r\n      </template>\r\n      <!-- Pipette -->\r\n      <template v-else-if=\"state.type === 'pipette'\">\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.pipette') }}</span><b>{{ state.volume.toFixed(1) }} / {{ state.maxVolume }} {{ t('chemistry.mL') }}</b></div>\r\n        <div class=\"fi-bar\"><div class=\"fi-fill\" :style=\"{ width: (state.volume/state.maxVolume*100).toFixed(0) + '%', background: state.color }\" /></div>\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.color') }}</span><span class=\"fi-dot\" :style=\"{ background: state.color }\" /></div>\r\n        <div class=\"fi-actions\">\r\n          <button v-if=\"state.volume <= 0\" class=\"success\" @click=\"emit('pipetteDraw')\">💉 {{ t('chemistry.draw') }}</button>\r\n          <button v-else class=\"success\" @click=\"emit('pipetteDispense')\">💉 {{ t('chemistry.dispense') }}</button>\r\n        </div>\r\n        <div class=\"fi-actions\">\r\n          <button class=\"delete\" @click=\"emit('remove', item.uid)\">❌ {{ t('chemistry.remove') }}</button>\r\n        </div>\r\n      </template>\r\n      <!-- Bunsen Burner -->\r\n      <template v-else-if=\"item.id === 'bunsen-burner'\">\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.status') }}</span><b :class=\"getBurnerState(item.uid).on ? 'open' : ''\">{{ getBurnerState(item.uid).on ? '🔥 ' + t('chemistry.on') : '⚫ ' + t('chemistry.off') }}</b></div>\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.intensity') }}</span><b>{{ Math.round(getBurnerState(item.uid).intensity * 100) }}%</b></div>\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.heatingSpeed') }}</span><b>{{ simSpeed }}x</b></div>\r\n        <div class=\"fi-actions\">\r\n          <button :class=\"getBurnerState(item.uid).on ? 'danger' : 'success'\" @click=\"emit('toggleBurner')\">{{ getBurnerState(item.uid).on ? '⏹️ ' + t('chemistry.heatOff') : '🔥 ' + t('chemistry.heatOn') }}</button>\r\n        </div>\r\n        <div class=\"fi-actions\">\r\n          <button class=\"refill\" @click=\"simSpeed = simSpeed === 1 ? 5 : 1\">{{ simSpeed === 1 ? '⏩ ' + t('chemistry.fastX5') : '⏪ ' + t('chemistry.slowX1') }}</button>\r\n        </div>\r\n        <div class=\"fi-actions\">\r\n          <button class=\"delete\" @click=\"emit('remove', item.uid)\">❌ {{ t('chemistry.remove') }}</button>\r\n        </div>\r\n      </template>\r\n      <!-- Digital Balance -->\r\n      <template v-else-if=\"item.id === 'digital-balance'\">\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.reading') }}</span><b style=\"color:#22c55e;font-family:monospace\">{{ balanceReadout() }}</b></div>\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.grossWeight') }}</span><b style=\"font-family:monospace\">{{ grossWeight() }}</b></div>\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.tare') }}</span><b style=\"font-family:monospace\">{{ getBalanceTare(item.uid).toFixed(2) }} {{ t('chemistry.g') }}</b></div>\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.tareTool') }}</span><b style=\"font-family:monospace\">{{ getContainerTare(item.uid).toFixed(2) }} {{ t('chemistry.g') }}</b></div>\r\n        <div class=\"fi-actions\">\r\n          <button class=\"success\" @click=\"emit('tare')\">⚖️ {{ t('chemistry.tareAll') }}</button>\r\n          <button class=\"refill\" @click=\"emit('tareContainer')\">🧪 {{ t('chemistry.removeToolWeight') }}</button>\r\n        </div>\r\n        <div class=\"fi-actions\">\r\n          <button class=\"delete\" @click=\"emit('remove', item.uid)\">❌ {{ t('chemistry.remove') }}</button>\r\n        </div>\r\n      </template>\r\n      <!-- Heating Mantle -->\r\n      <template v-else-if=\"item.id === 'heating-mantle'\">\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.status') }}</span><b :class=\"getBurnerState(item.uid).on ? 'open' : ''\">{{ getBurnerState(item.uid).on ? '🔥 ' + t('chemistry.on') : '⚫ ' + t('chemistry.off') }}</b></div>\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.intensity') }}</span><b>{{ Math.round(getBurnerState(item.uid).intensity * 100) }}%</b></div>\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.heatingSpeed') }}</span><b>{{ simSpeed }}x</b></div>\r\n        <div class=\"fi-actions\">\r\n          <button :class=\"getBurnerState(item.uid).on ? 'danger' : 'success'\" @click=\"emit('toggleBurner')\">{{ getBurnerState(item.uid).on ? '⏹️ ' + t('chemistry.heatingOff') : '🔥 ' + t('chemistry.heatingOn') }}</button>\r\n        </div>\r\n        <div class=\"fi-actions\">\r\n          <input type=\"range\" min=\"0\" max=\"100\" :value=\"getBurnerState(item.uid).intensity * 100\" @input=\"emit('intensityChange', +($event.target as HTMLInputElement).value / 100)\" class=\"fi-slider\" style=\"width:100%\" />\r\n        </div>\r\n        <div class=\"fi-actions\">\r\n          <button class=\"refill\" @click=\"simSpeed = simSpeed === 1 ? 5 : 1\">{{ simSpeed === 1 ? '⏩ ' + t('chemistry.fastX5') : '⏪ ' + t('chemistry.slowX1') }}</button>\r\n        </div>\r\n        <div class=\"fi-actions\">\r\n          <button class=\"delete\" @click=\"emit('remove', item.uid)\">❌ {{ t('chemistry.remove') }}</button>\r\n        </div>\r\n      </template>\r\n      <!-- pH Meter -->\r\n      <template v-else-if=\"item.id === 'ph-meter'\">\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.reading') }}</span><b style=\"color:#22c55e;font-family:monospace;font-size:1.1rem\">{{ phReadout() }}</b></div>\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.status') }}</span><b>{{ getPhReading(item) !== null ? '🟢 ' + t('chemistry.electrodeIn') : '⚪ ' + t('chemistry.electrodeOut') }}</b></div>\r\n        <div class=\"fi-actions\">\r\n          <button class=\"delete\" @click=\"emit('remove', item.uid)\">❌ {{ t('chemistry.remove') }}</button>\r\n        </div>\r\n      </template>\r\n      <!-- Pipette info -->\r\n      <template v-else-if=\"item.id === 'pipette'\">\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.tool') }}</span><b>{{ t('chemistry.pipette') }}</b></div>\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.capacity') }}</span><b>10 {{ t('chemistry.mL') }}</b></div>\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.status') }}</span><b>{{ pipetteStatus() }}</b></div>\r\n        <div class=\"fi-row hint\"><span>📖</span><small>{{ t('chemistry.pipetteHint') }}</small></div>\r\n        <div class=\"fi-actions\">\r\n          <button v-if=\"state && state.volume <= 0\" class=\"success\" @click=\"emit('pipetteDraw')\">💉 {{ t('chemistry.draw') }}</button>\r\n          <button v-else class=\"success\" @click=\"emit('pipetteDispense')\">💉 {{ t('chemistry.dispense') }}</button>\r\n        </div>\r\n        <div class=\"fi-actions\">\r\n          <button class=\"delete\" @click=\"emit('remove', item.uid)\">❌ {{ t('chemistry.remove') }}</button>\r\n        </div>\r\n      </template>\r\n      <!-- Spatula -->\r\n      <template v-else-if=\"item.id === 'spatula'\">\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.tool') }}</span><b>{{ t('chemistry.spatula') }}</b></div>\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.usage') }}</span><b>{{ t('chemistry.transferSolids') }}</b></div>\r\n        <div class=\"fi-row hint\"><span>📖</span><small>{{ t('chemistry.spatulaHint') }}</small></div>\r\n        <div class=\"fi-actions\">\r\n          <button class=\"success\" @click=\"emit('action', 'addSolid', item.uid)\">🥄 {{ t('chemistry.addSolid') }}</button>\r\n        </div>\r\n        <div class=\"fi-actions\">\r\n          <button class=\"delete\" @click=\"emit('remove', item.uid)\">❌ {{ t('chemistry.remove') }}</button>\r\n        </div>\r\n      </template>\r\n      <!-- Generic -->\r\n      <template v-else>\r\n        <div class=\"fi-row\"><span>{{ t('chemistry.type') }}</span><b>{{ item.type }}</b></div>\r\n        <div class=\"fi-actions\">\r\n          <button class=\"delete\" @click=\"emit('remove', item.uid)\">❌ {{ t('chemistry.remove') }}</button>\r\n        </div>\r\n      </template>\r\n    </div>\r\n  </div>\r\n</template>\r\n<style src=\"./floating-inspector.css\" scoped></style>\r\n",
+      "start": 1783634640299,
+      "end": 1783634640596,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640596,
+      "end": 1783634640596,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640596,
+      "end": 1783634640596,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640596,
+      "end": 1783634640596,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640596,
+      "end": 1783634640596,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/FloatingInspector.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/FloatingInspector.vue?vue&type=script&setup=true&lang.ts\";\nimport \"./floating-inspector.css?vue&type=style&index=0&src=aad111e8&scoped=aad111e8&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-aad111e8\"]]);\n",
+      "start": 1783634640596,
+      "end": 1783634640814,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640814,
+      "end": 1783634640815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640815,
+      "end": 1783634640815,
+      "order": "normal"
+    }
+  ]
+}

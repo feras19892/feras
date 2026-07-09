@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabRubberStopper.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\r\ninterface Props {\r\n  isHovered?: boolean;\r\n}\r\nconst props = withDefaults(defineProps<Props>(), {\r\n  isHovered: false,\r\n});\r\nconst emit = defineEmits<{ click: [] }>();\r\n</script>\r\n\r\n<template>\r\n  <div class=\"stopper-wrapper\" @click.stop=\"emit('click')\">\r\n    <svg viewBox=\"0 0 60 80\" class=\"stopper-svg\" :class=\"{ hovered: isHovered }\">\r\n      <!-- Shadow -->\r\n      <ellipse cx=\"30\" cy=\"76\" rx=\"16\" ry=\"2\" fill=\"rgba(0,0,0,0.06)\" />\r\n\r\n      <!-- Top handle (knob) -->\r\n      <ellipse cx=\"30\" cy=\"10\" rx=\"12\" ry=\"6\" fill=\"#0f172a\" />\r\n      <ellipse cx=\"30\" cy=\"9\" rx=\"10\" ry=\"4.5\" fill=\"#1e293b\" />\r\n\r\n      <!-- Upper cone (tapering into tube) -->\r\n      <path d=\"M 18 14 Q 16 28 14 38 Q 12 52 14 58 Q 16 64 30 64 Q 44 64 46 58 Q 48 52 46 38 Q 44 28 42 14 Z\" fill=\"#1e293b\" />\r\n      <path d=\"M 20 16 Q 18 28 16 38 Q 14 50 16 56 Q 18 60 30 60 Q 42 60 44 56 Q 46 50 44 38 Q 42 28 40 16 Z\" fill=\"#334155\" />\r\n\r\n      <!-- Ribs (grip rings) -->\r\n      <ellipse cx=\"30\" cy=\"24\" rx=\"20\" ry=\"2.5\" fill=\"none\" stroke=\"#0f172a\" stroke-width=\"1.5\" />\r\n      <ellipse cx=\"30\" cy=\"24\" rx=\"18\" ry=\"1.8\" fill=\"none\" stroke=\"#475569\" stroke-width=\"0.8\" />\r\n      <ellipse cx=\"30\" cy=\"34\" rx=\"19\" ry=\"2.2\" fill=\"none\" stroke=\"#0f172a\" stroke-width=\"1.5\" />\r\n      <ellipse cx=\"30\" cy=\"34\" rx=\"17\" ry=\"1.6\" fill=\"none\" stroke=\"#475569\" stroke-width=\"0.8\" />\r\n      <ellipse cx=\"30\" cy=\"44\" rx=\"18\" ry=\"2\" fill=\"none\" stroke=\"#0f172a\" stroke-width=\"1.5\" />\r\n      <ellipse cx=\"30\" cy=\"44\" rx=\"16\" ry=\"1.4\" fill=\"none\" stroke=\"#475569\" stroke-width=\"0.8\" />\r\n\r\n      <!-- Bottom tip -->\r\n      <ellipse cx=\"30\" cy=\"62\" rx=\"14\" ry=\"3\" fill=\"#0f172a\" />\r\n\r\n      <!-- Highlight on knob -->\r\n      <ellipse cx=\"27\" cy=\"8\" rx=\"4\" ry=\"2\" fill=\"rgba(255,255,255,0.1)\" />\r\n    </svg>\r\n  </div>\r\n</template>\r\n\r\n<style scoped>\r\n.stopper-wrapper {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  position: relative;\r\n  cursor: pointer;\r\n}\r\n.stopper-svg {\r\n  width: 30px;\r\n  height: 40px;\r\n  transition: transform 0.2s, filter 0.2s;\r\n  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.06));\r\n}\r\n.stopper-svg.hovered {\r\n  transform: scale(1.1);\r\n  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.1));\r\n}\r\n</style>\r\n",
+      "start": 1783634641064,
+      "end": 1783634641601,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641601,
+      "end": 1783634641601,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641601,
+      "end": 1783634641601,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641601,
+      "end": 1783634641601,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641601,
+      "end": 1783634641601,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabRubberStopper.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabRubberStopper.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabRubberStopper.vue?vue&type=style&index=0&scoped=135c095e&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-135c095e\"]]);\n",
+      "start": 1783634641601,
+      "end": 1783634641665,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641665,
+      "end": 1783634641665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641665,
+      "end": 1783634641665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641665,
+      "end": 1783634641665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    }
+  ]
+}

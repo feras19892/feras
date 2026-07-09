@@ -7,7 +7,7 @@ import ThinLensPanelBody from '../../../../components/experiment/thinlens/ThinLe
 import LightRayMenuBar from '../../../../components/experiment/lightray/LightRayMenuBar.vue'
 import LightRayStatusBar from '../../../../components/experiment/lightray/LightRayStatusBar.vue'
 import LightRayControlBar from '../../../../components/experiment/lightray/LightRayControlBar.vue'
-import LightRayHelpModal from '../../../../components/experiment/lightray/LightRayHelpModal.vue'
+import ThinLensHelpModal from '../../../../components/experiment/thinlens/ThinLensHelpModal.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 
 const ex = useThinLensExperiment()
@@ -61,7 +61,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @analyze-results="ex.exportToAnalysis"
     />
 
-    <LightRayHelpModal :open="helpOpen" @close="helpOpen = false" />
+    <ThinLensHelpModal :open="helpOpen" @close="helpOpen = false" />
 
     <div class="lab-grid">
       <div class="lab-col data-col" :style="{ width: ex.colWidths.data + 'px' }">
@@ -111,7 +111,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       <div class="lab-col ctrl-col" :style="{ width: ex.colWidths.ctrl + 'px' }">
         <template v-for="id in ex.getColumnPanels('ctrl')" :key="id">
           <DraggablePanel
-            v-if="ex.layout.isPanelVisible(id)"
+            v-if="id !== 'params' && ex.layout.isPanelVisible(id)"
             class="lab-card"
             :id="id"
             :title="ex.layout.panelTitle(id)"
@@ -136,6 +136,22 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
               @update:params="Object.assign(ex.params, $event)"
             />
           </DraggablePanel>
+          <div v-else-if="id === 'params'" class="params-embedded">
+            <ThinLensPanelBody
+              id="params"
+              :trials="ex.trials.trials.value"
+              :params="ex.params"
+              :image-distance="ex.lab.imageDistance.value"
+              :image-height="ex.lab.imageHeight.value"
+              :magnification="ex.lab.magnification.value"
+              :image-properties="ex.lab.imageProperties.value"
+              :focal-from-regression="ex.focalFromRegression.value"
+              :regression-slope="ex.regression.value.m"
+              :regression-intercept="ex.regression.value.b"
+              :r-squared="ex.regression.value.r2"
+              @update:params="Object.assign(ex.params, $event)"
+            />
+          </div>
         </template>
       </div>
     </div>
@@ -179,6 +195,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 .data-col { background: rgba(255,255,255,0.02); }
 .vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 0; }
 .ctrl-col { background: rgba(255,255,255,0.02); }
+.params-embedded { padding: .6rem; }
 .resizer { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0; }
 .resizer:hover, .resizer:active { background: #5B8DB8; }
 .hint-bar { background: #252D3A; border: 1px solid #2D3645; border-radius: 6px; padding: .35rem .7rem; font-size: .75rem; color: #8B95A5; text-align: center; flex-shrink: 0; }

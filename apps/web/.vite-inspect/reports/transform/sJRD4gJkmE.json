@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/lever/useLeverBeamPhysics.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { reactive, computed } from 'vue'\n\nexport interface BeamMass {\n  id: number\n  mass: number       // kg\n  distance: number  // m from fulcrum, positive = right, negative = left\n}\n\nexport interface BeamState {\n  running: boolean\n  paused: boolean\n  beamLength: number   // total beam length (m), default 2\n  masses: BeamMass[]\n  nextId: number\n}\n\nexport function useLeverBeamPhysics() {\n  const state = reactive<BeamState>({\n    running: false,\n    paused: false,\n    beamLength: 2,\n    masses: [],\n    nextId: 1,\n  })\n\n  const g = 9.81 // m/s²\n\n  // Torque = m * g * d (positive = counter-clockwise / right side down)\n  const torques = computed(() => state.masses.map(m => m.mass * g * m.distance))\n  const netTorque = computed(() => torques.value.reduce((s, t) => s + t, 0))\n\n  // Tilt angle (simplified): proportional to net torque\n  const maxTilt = 15 // degrees max\n  const tiltDeg = computed(() => {\n    const limit = 500 // N·m for max tilt\n    const raw = (netTorque.value / limit) * maxTilt\n    return Math.max(-maxTilt, Math.min(maxTilt, raw))\n  })\n\n  const isBalanced = computed(() => Math.abs(netTorque.value) < 0.01)\n\n  // Left / Right sums\n  const leftTorque = computed(() => state.masses.filter(m => m.distance < 0).reduce((s, m) => s + m.mass * g * Math.abs(m.distance), 0))\n  const rightTorque = computed(() => state.masses.filter(m => m.distance > 0).reduce((s, m) => s + m.mass * g * m.distance, 0))\n\n  function addMass(mass: number, distance: number): number {\n    const bm = { id: state.nextId++, mass, distance }\n    state.masses.push(bm)\n    return bm.id\n  }\n\n  function removeMass(id: number) { state.masses = state.masses.filter(m => m.id !== id) }\n\n  function updateMass(id: number, mass: number, distance: number) {\n    const m = state.masses.find(x => x.id === id)\n    if (!m) return\n    m.mass = Math.max(0.1, Math.min(50, mass))\n    m.distance = Math.max(-state.beamLength / 2, Math.min(state.beamLength / 2, distance))\n  }\n\n  function reset() {\n    state.masses = []\n    state.nextId = 1\n    state.running = false\n    state.paused = false\n  }\n\n  return { state, netTorque, tiltDeg, isBalanced, leftTorque, rightTorque, torques, addMass, removeMass, updateMass, reset }\n}\n",
+      "start": 1783634642616,
+      "end": 1783634642824,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642824,
+      "end": 1783634642824,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { reactive, computed } from \"vue\";\nexport function useLeverBeamPhysics() {\n  const state = reactive({\n    running: false,\n    paused: false,\n    beamLength: 2,\n    masses: [],\n    nextId: 1\n  });\n  const g = 9.81;\n  const torques = computed(() => state.masses.map((m) => m.mass * g * m.distance));\n  const netTorque = computed(() => torques.value.reduce((s, t) => s + t, 0));\n  const maxTilt = 15;\n  const tiltDeg = computed(() => {\n    const limit = 500;\n    const raw = netTorque.value / limit * maxTilt;\n    return Math.max(-maxTilt, Math.min(maxTilt, raw));\n  });\n  const isBalanced = computed(() => Math.abs(netTorque.value) < 0.01);\n  const leftTorque = computed(() => state.masses.filter((m) => m.distance < 0).reduce((s, m) => s + m.mass * g * Math.abs(m.distance), 0));\n  const rightTorque = computed(() => state.masses.filter((m) => m.distance > 0).reduce((s, m) => s + m.mass * g * m.distance, 0));\n  function addMass(mass, distance) {\n    const bm = { id: state.nextId++, mass, distance };\n    state.masses.push(bm);\n    return bm.id;\n  }\n  function removeMass(id) {\n    state.masses = state.masses.filter((m) => m.id !== id);\n  }\n  function updateMass(id, mass, distance) {\n    const m = state.masses.find((x) => x.id === id);\n    if (!m) return;\n    m.mass = Math.max(0.1, Math.min(50, mass));\n    m.distance = Math.max(-state.beamLength / 2, Math.min(state.beamLength / 2, distance));\n  }\n  function reset() {\n    state.masses = [];\n    state.nextId = 1;\n    state.running = false;\n    state.paused = false;\n  }\n  return { state, netTorque, tiltDeg, isBalanced, leftTorque, rightTorque, torques, addMass, removeMass, updateMass, reset };\n}\n",
+      "start": 1783634642824,
+      "end": 1783634642875,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/lever/useLeverBeamPhysics.ts"
+        ],
+        "sourcesContent": [
+          "import { reactive, computed } from 'vue'\n\nexport interface BeamMass {\n  id: number\n  mass: number       // kg\n  distance: number  // m from fulcrum, positive = right, negative = left\n}\n\nexport interface BeamState {\n  running: boolean\n  paused: boolean\n  beamLength: number   // total beam length (m), default 2\n  masses: BeamMass[]\n  nextId: number\n}\n\nexport function useLeverBeamPhysics() {\n  const state = reactive<BeamState>({\n    running: false,\n    paused: false,\n    beamLength: 2,\n    masses: [],\n    nextId: 1,\n  })\n\n  const g = 9.81 // m/s²\n\n  // Torque = m * g * d (positive = counter-clockwise / right side down)\n  const torques = computed(() => state.masses.map(m => m.mass * g * m.distance))\n  const netTorque = computed(() => torques.value.reduce((s, t) => s + t, 0))\n\n  // Tilt angle (simplified): proportional to net torque\n  const maxTilt = 15 // degrees max\n  const tiltDeg = computed(() => {\n    const limit = 500 // N·m for max tilt\n    const raw = (netTorque.value / limit) * maxTilt\n    return Math.max(-maxTilt, Math.min(maxTilt, raw))\n  })\n\n  const isBalanced = computed(() => Math.abs(netTorque.value) < 0.01)\n\n  // Left / Right sums\n  const leftTorque = computed(() => state.masses.filter(m => m.distance < 0).reduce((s, m) => s + m.mass * g * Math.abs(m.distance), 0))\n  const rightTorque = computed(() => state.masses.filter(m => m.distance > 0).reduce((s, m) => s + m.mass * g * m.distance, 0))\n\n  function addMass(mass: number, distance: number): number {\n    const bm = { id: state.nextId++, mass, distance }\n    state.masses.push(bm)\n    return bm.id\n  }\n\n  function removeMass(id: number) { state.masses = state.masses.filter(m => m.id !== id) }\n\n  function updateMass(id: number, mass: number, distance: number) {\n    const m = state.masses.find(x => x.id === id)\n    if (!m) return\n    m.mass = Math.max(0.1, Math.min(50, mass))\n    m.distance = Math.max(-state.beamLength / 2, Math.min(state.beamLength / 2, distance))\n  }\n\n  function reset() {\n    state.masses = []\n    state.nextId = 1\n    state.running = false\n    state.paused = false\n  }\n\n  return { state, netTorque, tiltDeg, isBalanced, leftTorque, rightTorque, torques, addMass, removeMass, updateMass, reset }\n}\n"
+        ],
+        "mappings": "AAAA,SAAS,UAAU,gBAAgB;AAgB5B,gBAAS,sBAAsB;AACpC,QAAM,QAAQ,SAAoB;AAAA,IAChC,SAAS;AAAA,IACT,QAAQ;AAAA,IACR,YAAY;AAAA,IACZ,QAAQ,CAAC;AAAA,IACT,QAAQ;AAAA,EACV,CAAC;AAED,QAAM,IAAI;AAGV,QAAM,UAAU,SAAS,MAAM,MAAM,OAAO,IAAI,OAAK,EAAE,OAAO,IAAI,EAAE,QAAQ,CAAC;AAC7E,QAAM,YAAY,SAAS,MAAM,QAAQ,MAAM,OAAO,CAAC,GAAG,MAAM,IAAI,GAAG,CAAC,CAAC;AAGzE,QAAM,UAAU;AAChB,QAAM,UAAU,SAAS,MAAM;AAC7B,UAAM,QAAQ;AACd,UAAM,MAAO,UAAU,QAAQ,QAAS;AACxC,WAAO,KAAK,IAAI,CAAC,SAAS,KAAK,IAAI,SAAS,GAAG,CAAC;AAAA,EAClD,CAAC;AAED,QAAM,aAAa,SAAS,MAAM,KAAK,IAAI,UAAU,KAAK,IAAI,IAAI;AAGlE,QAAM,aAAa,SAAS,MAAM,MAAM,OAAO,OAAO,OAAK,EAAE,WAAW,CAAC,EAAE,OAAO,CAAC,GAAG,MAAM,IAAI,EAAE,OAAO,IAAI,KAAK,IAAI,EAAE,QAAQ,GAAG,CAAC,CAAC;AACrI,QAAM,cAAc,SAAS,MAAM,MAAM,OAAO,OAAO,OAAK,EAAE,WAAW,CAAC,EAAE,OAAO,CAAC,GAAG,MAAM,IAAI,EAAE,OAAO,IAAI,EAAE,UAAU,CAAC,CAAC;AAE5H,WAAS,QAAQ,MAAc,UAA0B;AACvD,UAAM,KAAK,EAAE,IAAI,MAAM,UAAU,MAAM,SAAS;AAChD,UAAM,OAAO,KAAK,EAAE;AACpB,WAAO,GAAG;AAAA,EACZ;AAEA,WAAS,WAAW,IAAY;AAAE,UAAM,SAAS,MAAM,OAAO,OAAO,OAAK,EAAE,OAAO,EAAE;AAAA,EAAE;AAEvF,WAAS,WAAW,IAAY,MAAc,UAAkB;AAC9D,UAAM,IAAI,MAAM,OAAO,KAAK,OAAK,EAAE,OAAO,EAAE;AAC5C,QAAI,CAAC,EAAG;AACR,MAAE,OAAO,KAAK,IAAI,KAAK,KAAK,IAAI,IAAI,IAAI,CAAC;AACzC,MAAE,WAAW,KAAK,IAAI,CAAC,MAAM,aAAa,GAAG,KAAK,IAAI,MAAM,aAAa,GAAG,QAAQ,CAAC;AAAA,EACvF;AAEA,WAAS,QAAQ;AACf,UAAM,SAAS,CAAC;AAChB,UAAM,SAAS;AACf,UAAM,UAAU;AAChB,UAAM,SAAS;AAAA,EACjB;AAEA,SAAO,EAAE,OAAO,WAAW,SAAS,YAAY,YAAY,aAAa,SAAS,SAAS,YAAY,YAAY,MAAM;AAC3H;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642875,
+      "end": 1783634642875,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642875,
+      "end": 1783634642875,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642875,
+      "end": 1783634642875,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642875,
+      "end": 1783634642875,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642875,
+      "end": 1783634642875,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642875,
+      "end": 1783634642875,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642875,
+      "end": 1783634642875,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642875,
+      "end": 1783634642875,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642875,
+      "end": 1783634642875,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642875,
+      "end": 1783634642875,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642875,
+      "end": 1783634642876,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642876,
+      "end": 1783634642876,
+      "order": "normal"
+    }
+  ]
+}

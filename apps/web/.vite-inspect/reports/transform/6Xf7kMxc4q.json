@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/TorqueCoilGuidePanel.vue?vue&type=style&index=0&scoped=cd6456d0&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.guide-panel { background: #161B22; border: 1px solid #2D3645; border-radius: 8px; display: flex; flex-direction: column; max-height: 100%; overflow: hidden; }\n.guide-header { display: flex; justify-content: space-between; align-items: center; padding: .6rem .75rem; border-bottom: 1px solid #2D3645; }\n.guide-title { font-size: .85rem; font-weight: 700; color: #67e8f9; }\n.close-btn { background: none; border: none; color: #64748b; cursor: pointer; font-size: .9rem; }\n.close-btn:hover { color: #ef4444; }\n.guide-body { padding: .6rem .75rem; overflow-y: auto; display: flex; flex-direction: column; gap: .5rem; }\n.step { display: flex; gap: .5rem; align-items: flex-start; }\n.step-num { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: rgba(103,232,249,.15); color: #67e8f9; font-size: .7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }\n.step-text { font-size: .75rem; color: #94a3b8; line-height: 1.5; }\n.step-text strong { color: #D1D7E0; }\n.badge { background: rgba(34,197,94,.15); color: #22c55e; padding: .1rem .4rem; border-radius: 4px; font-size: .7rem; }\n.badge.green { background: rgba(34,197,94,.15); color: #22c55e; }\n.key { background: rgba(245,158,11,.12); color: #f59e0b; padding: .05rem .3rem; border-radius: 3px; font-size: .7rem; font-family: monospace; }\n.formula-hint { margin-top: .5rem; padding: .6rem; background: rgba(103,232,249,.06); border-radius: 6px; border: 1px solid rgba(103,232,249,.12); }\n.formula { font-family: 'Courier New', monospace; font-size: .85rem; color: #67e8f9; text-align: center; }\n.formula-desc { font-size: .65rem; color: #64748b; text-align: center; margin-top: .25rem; }\n",
+      "start": 1783634641849,
+      "end": 1783634641849
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.guide-panel { background: #161B22; border: 1px solid #2D3645; border-radius: 8px; display: flex; flex-direction: column; max-height: 100%; overflow: hidden; }\n.guide-header { display: flex; justify-content: space-between; align-items: center; padding: .6rem .75rem; border-bottom: 1px solid #2D3645; }\n.guide-title { font-size: .85rem; font-weight: 700; color: #67e8f9; }\n.close-btn { background: none; border: none; color: #64748b; cursor: pointer; font-size: .9rem; }\n.close-btn:hover { color: #ef4444; }\n.guide-body { padding: .6rem .75rem; overflow-y: auto; display: flex; flex-direction: column; gap: .5rem; }\n.step { display: flex; gap: .5rem; align-items: flex-start; }\n.step-num { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: rgba(103,232,249,.15); color: #67e8f9; font-size: .7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }\n.step-text { font-size: .75rem; color: #94a3b8; line-height: 1.5; }\n.step-text strong { color: #D1D7E0; }\n.badge { background: rgba(34,197,94,.15); color: #22c55e; padding: .1rem .4rem; border-radius: 4px; font-size: .7rem; }\n.badge.green { background: rgba(34,197,94,.15); color: #22c55e; }\n.key { background: rgba(245,158,11,.12); color: #f59e0b; padding: .05rem .3rem; border-radius: 3px; font-size: .7rem; font-family: monospace; }\n.formula-hint { margin-top: .5rem; padding: .6rem; background: rgba(103,232,249,.06); border-radius: 6px; border: 1px solid rgba(103,232,249,.12); }\n.formula { font-family: 'Courier New', monospace; font-size: .85rem; color: #67e8f9; text-align: center; }\n.formula-desc { font-size: .65rem; color: #64748b; text-align: center; margin-top: .25rem; }\n",
+      "start": 1783634641849,
+      "end": 1783634641849,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641849,
+      "end": 1783634641849,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641849,
+      "end": 1783634641849,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641849,
+      "end": 1783634641849,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.guide-panel[data-v-cd6456d0] { background: #161B22; border: 1px solid #2D3645; border-radius: 8px; display: flex; flex-direction: column; max-height: 100%; overflow: hidden;\n}\n.guide-header[data-v-cd6456d0] { display: flex; justify-content: space-between; align-items: center; padding: .6rem .75rem; border-bottom: 1px solid #2D3645;\n}\n.guide-title[data-v-cd6456d0] { font-size: .85rem; font-weight: 700; color: #67e8f9;\n}\n.close-btn[data-v-cd6456d0] { background: none; border: none; color: #64748b; cursor: pointer; font-size: .9rem;\n}\n.close-btn[data-v-cd6456d0]:hover { color: #ef4444;\n}\n.guide-body[data-v-cd6456d0] { padding: .6rem .75rem; overflow-y: auto; display: flex; flex-direction: column; gap: .5rem;\n}\n.step[data-v-cd6456d0] { display: flex; gap: .5rem; align-items: flex-start;\n}\n.step-num[data-v-cd6456d0] { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: rgba(103,232,249,.15); color: #67e8f9; font-size: .7rem; font-weight: 700; display: flex; align-items: center; justify-content: center;\n}\n.step-text[data-v-cd6456d0] { font-size: .75rem; color: #94a3b8; line-height: 1.5;\n}\n.step-text strong[data-v-cd6456d0] { color: #D1D7E0;\n}\n.badge[data-v-cd6456d0] { background: rgba(34,197,94,.15); color: #22c55e; padding: .1rem .4rem; border-radius: 4px; font-size: .7rem;\n}\n.badge.green[data-v-cd6456d0] { background: rgba(34,197,94,.15); color: #22c55e;\n}\n.key[data-v-cd6456d0] { background: rgba(245,158,11,.12); color: #f59e0b; padding: .05rem .3rem; border-radius: 3px; font-size: .7rem; font-family: monospace;\n}\n.formula-hint[data-v-cd6456d0] { margin-top: .5rem; padding: .6rem; background: rgba(103,232,249,.06); border-radius: 6px; border: 1px solid rgba(103,232,249,.12);\n}\n.formula[data-v-cd6456d0] { font-family: 'Courier New', monospace; font-size: .85rem; color: #67e8f9; text-align: center;\n}\n.formula-desc[data-v-cd6456d0] { font-size: .65rem; color: #64748b; text-align: center; margin-top: .25rem;\n}\n",
+      "start": 1783634641849,
+      "end": 1783634641850,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641850,
+      "end": 1783634641850,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634641850,
+      "end": 1783634641850,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641850,
+      "end": 1783634641850,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641850,
+      "end": 1783634641850,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641850,
+      "end": 1783634641850,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641850,
+      "end": 1783634641850,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641850,
+      "end": 1783634641850,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641850,
+      "end": 1783634641850,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641850,
+      "end": 1783634641850,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641850,
+      "end": 1783634641850,
+      "order": "normal"
+    }
+  ]
+}

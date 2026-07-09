@@ -11,6 +11,8 @@ interface Props {
   material: string
   avgN: number | null
   rSquared: number
+  slope: number
+  intercept: number
 }
 
 const props = defineProps<Props>()
@@ -21,9 +23,11 @@ const props = defineProps<Props>()
     <div v-if="trials.length < 2" class="empty">{{ t('prism.emptyResults') }}</div>
     <template v-else>
       <div class="result-row"><span class="result-label">{{ t('prism.readingsCount') }}</span><span class="result-val">{{ trials.length }}</span></div>
-      <div class="result-row"><span class="result-label">{{ t('prism.avgN') }}</span><span class="result-val highlight">{{ avgN !== null ? avgN.toFixed(3) : '—' }}</span></div>
-      <div class="result-row"><span class="result-label">{{ t('prism.rSquared') }}</span><span class="result-val">{{ rSquared.toFixed(4) }}</span></div>
-      <div class="result-row"><span class="result-label">{{ t('prism.expectedN') }}</span><span class="result-val">{{ materialName(props.material) }}</span></div>
+      <div class="result-row"><span class="result-label">A (Y-intercept)</span><span class="result-val highlight">{{ intercept.toFixed(4) }}</span></div>
+      <div class="result-row"><span class="result-label">B (Slope)</span><span class="result-val highlight">{{ slope.toExponential(3) }}</span></div>
+      <div class="result-row"><span class="result-label">R²</span><span class="result-val">{{ rSquared.toFixed(4) }}</span></div>
+      <div class="result-row"><span class="result-label">n = A + B/λ²</span><span class="result-val">{{ intercept.toFixed(3) }} + {{ slope.toExponential(2) }}/λ²</span></div>
+      <div class="result-row"><span class="result-label">{{ t('prism.material') }}</span><span class="result-val">{{ materialName(props.material) }}</span></div>
     </template>
   </div>
 </template>

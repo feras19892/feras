@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/ControlBar.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, unref as _unref, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"control-bar\" }\n\nimport { useI18n } from '../../../composables/useI18n'\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ControlBar',\n  props: {\n    launchLabel: {},\n    canUndo: { type: Boolean },\n    canRedo: { type: Boolean }\n  },\n  emits: [\"toggle-pause\", \"reset\", \"record-trial\", \"clear-trials\", \"export-csv\", \"analyze\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\n\n\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn launch\",\n      onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('toggle-pause')))\n    }, _toDisplayString(__props.launchLabel), 1),\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn\",\n      onClick: _cache[1] || (_cache[1] = ($event: any) => (emit('reset')))\n    }, \"🔄 \" + _toDisplayString(_unref(t)('experiments.emReset')), 1),\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn record\",\n      onClick: _cache[2] || (_cache[2] = ($event: any) => (emit('record-trial')))\n    }, \"📌 \" + _toDisplayString(_unref(t)('experiments.emRecordTrial')), 1),\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn\",\n      onClick: _cache[3] || (_cache[3] = ($event: any) => (emit('clear-trials')))\n    }, _toDisplayString(_unref(t)('experiments.emClear')), 1),\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn\",\n      onClick: _cache[4] || (_cache[4] = ($event: any) => (emit('export-csv')))\n    }, _toDisplayString(_unref(t)('experiments.emCsv')), 1),\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn analyze\",\n      onClick: _cache[5] || (_cache[5] = ($event: any) => (emit('analyze')))\n    }, _toDisplayString(_unref(t)('experiments.emAnalyze')), 1)\n  ]))\n}\n}\n\n})",
+      "start": 1783634642034,
+      "end": 1783634642034
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642034,
+      "end": 1783634642034,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, unref as _unref, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"control-bar\" };\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"ControlBar\",\n  props: {\n    launchLabel: {},\n    canUndo: { type: Boolean },\n    canRedo: { type: Boolean }\n  },\n  emits: [\"toggle-pause\", \"reset\", \"record-trial\", \"clear-trials\", \"export-csv\", \"analyze\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const emit = __emit;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"button\", {\n          class: \"ctrl-btn launch\",\n          onClick: _cache[0] || (_cache[0] = ($event) => emit(\"toggle-pause\"))\n        }, _toDisplayString(__props.launchLabel), 1),\n        _createElementVNode(\"button\", {\n          class: \"ctrl-btn\",\n          onClick: _cache[1] || (_cache[1] = ($event) => emit(\"reset\"))\n        }, \"🔄 \" + _toDisplayString(_unref(t)(\"experiments.emReset\")), 1),\n        _createElementVNode(\"button\", {\n          class: \"ctrl-btn record\",\n          onClick: _cache[2] || (_cache[2] = ($event) => emit(\"record-trial\"))\n        }, \"📌 \" + _toDisplayString(_unref(t)(\"experiments.emRecordTrial\")), 1),\n        _createElementVNode(\"button\", {\n          class: \"ctrl-btn\",\n          onClick: _cache[3] || (_cache[3] = ($event) => emit(\"clear-trials\"))\n        }, _toDisplayString(_unref(t)(\"experiments.emClear\")), 1),\n        _createElementVNode(\"button\", {\n          class: \"ctrl-btn\",\n          onClick: _cache[4] || (_cache[4] = ($event) => emit(\"export-csv\"))\n        }, _toDisplayString(_unref(t)(\"experiments.emCsv\")), 1),\n        _createElementVNode(\"button\", {\n          class: \"ctrl-btn analyze\",\n          onClick: _cache[5] || (_cache[5] = ($event) => emit(\"analyze\"))\n        }, _toDisplayString(_unref(t)(\"experiments.emAnalyze\")), 1)\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634642034,
+      "end": 1783634642269,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/ControlBar.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, unref as _unref, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"control-bar\" }\n\nimport { useI18n } from '../../../composables/useI18n'\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ControlBar',\n  props: {\n    launchLabel: {},\n    canUndo: { type: Boolean },\n    canRedo: { type: Boolean }\n  },\n  emits: [\"toggle-pause\", \"reset\", \"record-trial\", \"clear-trials\", \"export-csv\", \"analyze\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\n\n\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn launch\",\n      onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('toggle-pause')))\n    }, _toDisplayString(__props.launchLabel), 1),\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn\",\n      onClick: _cache[1] || (_cache[1] = ($event: any) => (emit('reset')))\n    }, \"🔄 \" + _toDisplayString(_unref(t)('experiments.emReset')), 1),\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn record\",\n      onClick: _cache[2] || (_cache[2] = ($event: any) => (emit('record-trial')))\n    }, \"📌 \" + _toDisplayString(_unref(t)('experiments.emRecordTrial')), 1),\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn\",\n      onClick: _cache[3] || (_cache[3] = ($event: any) => (emit('clear-trials')))\n    }, _toDisplayString(_unref(t)('experiments.emClear')), 1),\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn\",\n      onClick: _cache[4] || (_cache[4] = ($event: any) => (emit('export-csv')))\n    }, _toDisplayString(_unref(t)('experiments.emCsv')), 1),\n    _createElementVNode(\"button\", {\n      class: \"ctrl-btn analyze\",\n      onClick: _cache[5] || (_cache[5] = ($event: any) => (emit('analyze')))\n    }, _toDisplayString(_unref(t)('experiments.emAnalyze')), 1)\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,mBAAmB,kBAAkB,sBAAsB,qBAAqB,SAAS,QAAQ,aAAa,YAAY,sBAAsB,2BAA2B;AAEpL,MAAM,aAAa,EAAE,OAAO,cAAc;AAE1C,SAAS,eAAe;AAExB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,aAAa,CAAC;AAAA,IACd,SAAS,EAAE,MAAM,QAAQ;AAAA,IACzB,SAAS,EAAE,MAAM,QAAQ;AAAA,EAC3B;AAAA,EACA,OAAO,CAAC,gBAAgB,SAAS,gBAAgB,gBAAgB,cAAc,SAAS;AAAA,EACxF,MAAM,SAAc,EAAE,MAAM,OAAO,GAAG;AAExC,UAAM,EAAE,EAAE,IAAI,QAAQ;AAItB,UAAM,OAAO;AAEb,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,oBAAoB,UAAU;AAAA,UAC5B,OAAO;AAAA,UACP,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,cAAc;AAAA,QAC1E,GAAG,iBAAiB,QAAQ,WAAW,GAAG,CAAC;AAAA,QAC3C,oBAAoB,UAAU;AAAA,UAC5B,OAAO;AAAA,UACP,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,OAAO;AAAA,QACnE,GAAG,QAAQ,iBAAiB,OAAO,CAAC,EAAE,qBAAqB,CAAC,GAAG,CAAC;AAAA,QAChE,oBAAoB,UAAU;AAAA,UAC5B,OAAO;AAAA,UACP,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,cAAc;AAAA,QAC1E,GAAG,QAAQ,iBAAiB,OAAO,CAAC,EAAE,2BAA2B,CAAC,GAAG,CAAC;AAAA,QACtE,oBAAoB,UAAU;AAAA,UAC5B,OAAO;AAAA,UACP,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,cAAc;AAAA,QAC1E,GAAG,iBAAiB,OAAO,CAAC,EAAE,qBAAqB,CAAC,GAAG,CAAC;AAAA,QACxD,oBAAoB,UAAU;AAAA,UAC5B,OAAO;AAAA,UACP,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,YAAY;AAAA,QACxE,GAAG,iBAAiB,OAAO,CAAC,EAAE,mBAAmB,CAAC,GAAG,CAAC;AAAA,QACtD,oBAAoB,UAAU;AAAA,UAC5B,OAAO;AAAA,UACP,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,SAAS;AAAA,QACrE,GAAG,iBAAiB,OAAO,CAAC,EAAE,uBAAuB,CAAC,GAAG,CAAC;AAAA,MAC5D,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642269,
+      "end": 1783634642269,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642269,
+      "end": 1783634642269,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634642269,
+      "end": 1783634642269,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642269,
+      "end": 1783634642269,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642269,
+      "end": 1783634642269,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642269,
+      "end": 1783634642269,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642269,
+      "end": 1783634642269,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642269,
+      "end": 1783634642269,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642269,
+      "end": 1783634642269,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642269,
+      "end": 1783634642269,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642269,
+      "end": 1783634642269,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642269,
+      "end": 1783634642269,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642269,
+      "end": 1783634642269,
+      "order": "normal"
+    }
+  ]
+}

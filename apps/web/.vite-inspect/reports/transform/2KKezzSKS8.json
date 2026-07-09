@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/diffraction/DiffractionCanvas.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, onMounted, onUnmounted, watch, computed } from 'vue'\n\nconst props = defineProps<{\n  mode: 'single' | 'grating'\n  slitWidth: number\n  linesPerMm: number\n  screenDistance: number\n  wavelength: number\n  intensityPattern: { yMm: number; intensity: number }[]\n  darkFringes: { m: number; yMm: number }[]\n  orderPositions: { m: number; yMm: number; intensity: number }[]\n  lightColor: string\n  running: boolean\n}>()\n\nconst canvasRef = ref<HTMLCanvasElement | null>(null)\nconst W = 800, H = 400\n\n/* dynamic scale so everything fits */\nconst scaleY = computed(() => {\n  let maxY = 1\n  if (props.mode === 'single' && props.intensityPattern.length) {\n    maxY = Math.max(...props.intensityPattern.map(p => Math.abs(p.yMm)), 1)\n  } else if (props.mode === 'grating' && props.orderPositions.length) {\n    maxY = Math.max(...props.orderPositions.map(p => Math.abs(p.yMm)), 1)\n  }\n  return Math.min(3.5, (H / 2 - 40) / Math.max(maxY, 1))\n})\n\nfunction draw() {\n  const c = canvasRef.value; if (!c) return\n  const ctx = c.getContext('2d'); if (!ctx) return\n  ctx.clearRect(0, 0, W, H)\n  const midY = H / 2\n  const screenX = W - 80\n  const slitX = 80\n  const sy = scaleY.value\n\n  ctx.save()\n  ctx.beginPath(); ctx.rect(0, 0, W, H); ctx.clip()\n\n  ctx.fillStyle = '#0d1117'; ctx.fillRect(0, 0, W, H)\n\n  /* laser */\n  ctx.fillStyle = props.lightColor; ctx.globalAlpha = 0.25\n  ctx.fillRect(10, midY - 18, 60, 36)\n  ctx.globalAlpha = 1\n  ctx.fillStyle = '#8B95A5'; ctx.font = '10px sans-serif'\n  ctx.fillText('Laser', 24, midY - 28)\n\n  if (props.mode === 'single') {\n    const barW = 12\n    const gapH = Math.max(6, Math.min(props.slitWidth * 40, H - 60))\n\n    /* single slit: two blocks with gap */\n    ctx.fillStyle = '#161B22'\n    ctx.fillRect(slitX - barW / 2, 20, barW, midY - gapH / 2 - 20)\n    ctx.fillRect(slitX - barW / 2, midY + gapH / 2, barW, midY - gapH / 2 - 20)\n    ctx.strokeStyle = props.lightColor; ctx.lineWidth = 2\n    ctx.strokeRect(slitX - barW / 2 - 2, 20, barW + 4, H - 40)\n\n    /* animated wavefronts */\n    if (props.running) {\n      ctx.strokeStyle = props.lightColor; ctx.globalAlpha = 0.12\n      const t = Date.now() / 400\n      for (let i = 0; i < 10; i++) {\n        const r = ((t + i) % 10) * 28\n        ctx.beginPath(); ctx.arc(slitX, midY, r, -Math.PI / 3, Math.PI / 3); ctx.stroke()\n        ctx.beginPath(); ctx.arc(slitX, midY - gapH / 2, r * 0.5, -0.5, 0.5); ctx.stroke()\n        ctx.beginPath(); ctx.arc(slitX, midY + gapH / 2, r * 0.5, -0.5, 0.5); ctx.stroke()\n      }\n      ctx.globalAlpha = 1\n    }\n  } else {\n    /* grating: multiple slits */\n    const gratingW = 6\n    const nSlits = Math.min(12, Math.max(3, Math.floor(props.linesPerMm / 100)))\n    const spacing = 20\n    ctx.fillStyle = '#161B22'\n    for (let i = 0; i < nSlits; i++) {\n      const y = midY - ((nSlits - 1) * spacing) / 2 + i * spacing\n      ctx.fillRect(slitX - gratingW / 2, y - 1, gratingW, 2)\n    }\n    ctx.strokeStyle = props.lightColor; ctx.lineWidth = 1.5\n    ctx.strokeRect(slitX - gratingW / 2 - 2, midY - ((nSlits - 1) * spacing) / 2 - 6, gratingW + 4, (nSlits - 1) * spacing + 12)\n\n    if (props.running) {\n      ctx.strokeStyle = props.lightColor; ctx.globalAlpha = 0.1\n      const t = Date.now() / 400\n      for (let i = 0; i < nSlits; i++) {\n        const sy_ = midY - ((nSlits - 1) * spacing) / 2 + i * spacing\n        for (let j = 0; j < 8; j++) {\n          const r = ((t + j) % 10) * 28\n          ctx.beginPath(); ctx.arc(slitX, sy_, r, -Math.PI / 4, Math.PI / 4); ctx.stroke()\n        }\n      }\n      ctx.globalAlpha = 1\n    }\n  }\n\n  /* screen line */\n  ctx.fillStyle = '#e2e8f0'; ctx.fillRect(screenX - 2, 30, 4, H - 60)\n\n  if (props.mode === 'single') {\n    /* intensity pattern on screen */\n    if (props.intensityPattern.length > 0) {\n      const maxI = Math.max(...props.intensityPattern.map(p => p.intensity))\n      const maxBarH = (H - 80) / 2\n      for (const p of props.intensityPattern) {\n        const yPx = midY - p.yMm * sy\n        if (yPx < 30 || yPx > H - 30) continue\n        const br = maxI > 0 ? p.intensity / maxI : 0\n        const h = br * maxBarH\n        ctx.fillStyle = props.lightColor; ctx.globalAlpha = 0.25 + br * 0.75\n        ctx.fillRect(screenX - 1, yPx - h / 2, 3, h)\n      }\n      ctx.globalAlpha = 1\n\n      /* intensity curve to the right of screen */\n      ctx.strokeStyle = props.lightColor; ctx.lineWidth = 1.5; ctx.beginPath()\n      for (let i = 0; i < props.intensityPattern.length; i++) {\n        const p = props.intensityPattern[i]\n        const yPx = midY - p.yMm * sy\n        const xOff = Math.min(screenX + 12 + p.intensity * 70, W - 10)\n        if (i === 0) ctx.moveTo(xOff, yPx); else ctx.lineTo(xOff, yPx)\n      }\n      ctx.stroke()\n    }\n\n    /* dark fringe labels */\n    for (const f of props.darkFringes.slice(0, 8)) {\n      const yPx = midY - f.yMm * sy\n      if (yPx < 40 || yPx > H - 40) continue\n      const lbl = `m=${f.m}`\n      const tw = ctx.measureText(lbl).width\n      const tx = screenX - 48\n      ctx.fillStyle = 'rgba(255,255,255,0.08)'\n      ctx.beginPath(); ctx.roundRect(tx - 3, yPx - 7, tw + 6, 14, 4); ctx.fill()\n      ctx.fillStyle = f.m === 0 ? '#fff' : '#8B95A5'\n      ctx.font = f.m === 0 ? 'bold 11px sans-serif' : '10px sans-serif'\n      ctx.fillText(lbl, tx, yPx + 3)\n    }\n  } else {\n    /* grating: sharp peaks on screen */\n    if (props.orderPositions.length > 0) {\n      for (const p of props.orderPositions) {\n        const yPx = midY - p.yMm * sy\n        if (yPx < 30 || yPx > H - 30) continue\n        const br = p.intensity\n        ctx.fillStyle = props.lightColor; ctx.globalAlpha = 0.4 + br * 0.6\n        ctx.beginPath(); ctx.arc(screenX, yPx, 3 + br * 5, 0, Math.PI * 2); ctx.fill()\n        ctx.strokeStyle = props.lightColor; ctx.globalAlpha = 0.15\n        ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(screenX, yPx); ctx.lineTo(Math.min(screenX + 15, W - 10), yPx); ctx.stroke()\n      }\n      ctx.globalAlpha = 1\n\n      /* order labels */\n      for (const p of props.orderPositions) {\n        const yPx = midY - p.yMm * sy\n        if (yPx < 30 || yPx > H - 30) continue\n        const lbl = `m=${p.m}`\n        const tw = ctx.measureText(lbl).width\n        const tx = screenX - 40\n        ctx.fillStyle = 'rgba(255,255,255,0.08)'\n        ctx.beginPath(); ctx.roundRect(tx - 3, yPx - 7, tw + 6, 14, 4); ctx.fill()\n        ctx.fillStyle = p.m === 0 ? '#fff' : '#8B95A5'\n        ctx.font = p.m === 0 ? 'bold 11px sans-serif' : '10px sans-serif'\n        ctx.fillText(lbl, tx, yPx + 3)\n      }\n    }\n  }\n\n  /* bottom labels */\n  ctx.fillStyle = '#8B95A5'; ctx.font = '12px sans-serif'\n  const label = props.mode === 'single' ? 'Single Slit' : `Grating (${props.linesPerMm}/mm)`\n  ctx.fillText(label, slitX - (props.mode === 'single' ? 28 : 45), H - 10)\n  ctx.fillText('Screen', screenX - 18, H - 10)\n\n  ctx.restore()\n}\n\nlet animId = 0\nfunction animate() { draw(); if (props.running) animId = requestAnimationFrame(animate) }\n\nwatch(() => props.running, (v) => { cancelAnimationFrame(animId); v ? animate() : draw() })\nwatch(() => [props.mode, props.slitWidth, props.linesPerMm, props.screenDistance, props.wavelength, props.intensityPattern.length, props.orderPositions.length, props.lightColor], draw, { deep: true })\nonMounted(() => draw()); onUnmounted(() => cancelAnimationFrame(animId))\n</script>\n\n<template>\n  <canvas ref=\"canvasRef\" :width=\"W\" :height=\"H\" style=\"width: 100%; height: 100%;\" />\n</template>\n",
+      "start": 1783634640974,
+      "end": 1783634641381,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641381,
+      "end": 1783634641381,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641381,
+      "end": 1783634641381,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641381,
+      "end": 1783634641381,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641381,
+      "end": 1783634641381,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/diffraction/DiffractionCanvas.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/diffraction/DiffractionCanvas.vue?vue&type=script&setup=true&lang.ts\";\nexport default _sfc_main;\n",
+      "start": 1783634641381,
+      "end": 1783634641655,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641655,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641656,
+      "end": 1783634641657,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641657,
+      "end": 1783634641657,
+      "order": "normal"
+    }
+  ]
+}

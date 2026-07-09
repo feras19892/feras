@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/pages/language.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useRouter } from 'vue-router'\nimport { useI18nStore } from '../stores/i18n.store'\nimport { localeNames } from '../locales'\nimport type { Locale } from '../locales/types'\n\nconst router = useRouter()\nconst i18n = useI18nStore()\n\nasync function pick(lang: Locale) {\n  await i18n.setLocale(lang)\n  router.replace('/')\n}\n</script>\n\n<template>\n  <div class=\"lang-page\">\n    <div class=\"lang-card\">\n      <h1 class=\"title\">{{ i18n.t('landing.chooseLang', 'Choose Language') }}</h1>\n      <div class=\"options\">\n        <button\n          v-for=\"loc in i18n.supported\"\n          :key=\"loc\"\n          class=\"option-btn\"\n          @click=\"pick(loc)\"\n        >\n          <span class=\"flag\">{{ loc === 'ar' ? '🇸🇦' : loc === 'en' ? '🇬🇧' : '🇪🇸' }}</span>\n          <span class=\"name\">{{ localeNames[loc] }}</span>\n        </button>\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.lang-page {\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: linear-gradient(135deg, #0a0f1c 0%, #111827 40%, #0f172a 100%);\n  padding: 1rem;\n}\n.lang-card {\n  background: rgba(255, 255, 255, 0.05);\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  border-radius: 1rem;\n  padding: 2rem;\n  width: 100%;\n  max-width: 360px;\n  display: flex;\n  flex-direction: column;\n  gap: 1.25rem;\n}\n.title {\n  color: #e2e8f0;\n  font-size: 1.25rem;\n  text-align: center;\n  font-weight: 600;\n}\n.options {\n  display: flex;\n  flex-direction: column;\n  gap: 0.75rem;\n}\n.option-btn {\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n  padding: 0.85rem 1rem;\n  border-radius: 0.75rem;\n  background: rgba(255, 255, 255, 0.06);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  color: #e2e8f0;\n  font-size: 1rem;\n  cursor: pointer;\n  transition: background 0.2s, transform 0.1s;\n}\n.option-btn:hover {\n  background: rgba(255, 255, 255, 0.12);\n}\n.option-btn:active {\n  transform: scale(0.98);\n}\n.flag {\n  font-size: 1.3rem;\n  line-height: 1;\n}\n.name {\n  font-weight: 500;\n}\n</style>\n",
+      "start": 1783634639007,
+      "end": 1783634639043,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639043,
+      "end": 1783634639043,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639043,
+      "end": 1783634639043,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639043,
+      "end": 1783634639043,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639043,
+      "end": 1783634639043,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/pages/language.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/pages/language.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/pages/language.vue?vue&type=style&index=0&scoped=73b3d405&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-73b3d405\"]]);\n",
+      "start": 1783634639043,
+      "end": 1783634639164,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639164,
+      "end": 1783634639164,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639170,
+      "end": 1783634639170,
+      "order": "normal"
+    }
+  ]
+}

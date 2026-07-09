@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/student/StudentProfile.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, onMounted, computed } from 'vue';\nimport { useI18n } from '../../composables/useI18n';\nimport { useAuthStore } from '../../modules/auth/stores/auth';\nimport { getReports, getStudentStats } from '../../services/report.service';\nimport { getMyClasses } from '../../services/class.service';\nimport type { Report } from '../../services/report.service';\n\nconst { t } = useI18n();\nconst auth = useAuthStore();\nconst reports = ref<Report[]>([]);\nconst stats = ref({ total: 0, graded: 0, pending: 0, average: 0 });\nconst classes = ref<{ id: string; name: string }[]>([]);\nconst loading = ref(false);\n\nconst bestGrade = computed(() => {\n  const graded = reports.value.filter(r => r.grade !== undefined);\n  if (!graded.length) return 0;\n  return Math.max(...graded.map(r => r.grade!));\n});\n\nconst recentReports = computed(() => reports.value.slice(0, 5));\n\nasync function load() {\n  loading.value = true;\n  try {\n    const [rRes, sRes, cRes] = await Promise.all([\n      getReports(),\n      getStudentStats(auth.user!.id),\n      getMyClasses(),\n    ]);\n    if (rRes.success) reports.value = rRes.reports;\n    if (sRes.success) stats.value = sRes.stats;\n    if (cRes.success) classes.value = cRes.classes;\n  } catch (err) {\n    console.error('load profile failed:', err);\n  }\n  loading.value = false;\n}\n\nfunction statusBadge(s: string) {\n  if (s === 'graded') return { text: t('dashboard.statusGraded'), color: 'graded' };\n  if (s === 'submitted') return { text: t('dashboard.statusSubmitted'), color: 'pending' };\n  if (s === 'resubmitted') return { text: t('dashboard.statusResubmitted'), color: 'resubmitted' };\n  return { text: t('dashboard.statusDraft'), color: 'draft' };\n}\n\nonMounted(() => load());\n</script>\n\n<template>\n  <div class=\"profile-panel\">\n    <div class=\"profile-header\">\n      <div class=\"avatar\">🎓</div>\n      <div class=\"info\">\n        <h2>{{ auth.user?.name }}</h2>\n        <p class=\"email\">{{ auth.user?.email }}</p>\n        <p class=\"role\">{{ t('dashboard.student') }}</p>\n      </div>\n    </div>\n\n    <div class=\"stats-grid\">\n      <div class=\"stat-card\">\n        <span class=\"stat-val\">{{ stats.total }}</span>\n        <span class=\"stat-label\">{{ t('dashboard.totalReports') }}</span>\n      </div>\n      <div class=\"stat-card\">\n        <span class=\"stat-val\">{{ stats.graded }}</span>\n        <span class=\"stat-label\">{{ t('dashboard.graded') }}</span>\n      </div>\n      <div class=\"stat-card\">\n        <span class=\"stat-val\">{{ stats.pending }}</span>\n        <span class=\"stat-label\">{{ t('dashboard.pending') }}</span>\n      </div>\n      <div class=\"stat-card highlight\">\n        <span class=\"stat-val\">{{ stats.average }}%</span>\n        <span class=\"stat-label\">{{ t('dashboard.average') }}</span>\n      </div>\n      <div class=\"stat-card highlight\">\n        <span class=\"stat-val\">{{ bestGrade }}%</span>\n        <span class=\"stat-label\">{{ t('dashboard.bestGrade') }}</span>\n      </div>\n      <div class=\"stat-card\">\n        <span class=\"stat-val\">{{ classes.length }}</span>\n        <span class=\"stat-label\">{{ t('dashboard.classes') }}</span>\n      </div>\n    </div>\n\n    <div class=\"recent-section\">\n      <h3>{{ t('dashboard.recentReports') }}</h3>\n      <div v-if=\"loading\" class=\"empty\">...</div>\n      <div v-else-if=\"recentReports.length === 0\" class=\"empty\">{{ t('dashboard.noReportsMsg') }}</div>\n      <div v-else class=\"report-list\">\n        <div v-for=\"r in recentReports\" :key=\"r.id\" class=\"report-row\">\n          <span class=\"report-name\">{{ r.experiment_name }}</span>\n          <span :class=\"['badge', statusBadge(r.status).color]\">{{ statusBadge(r.status).text }}</span>\n          <span v-if=\"r.grade !== undefined\" class=\"grade\">{{ r.grade }}%</span>\n          <span class=\"date\">{{ r.submitted_at?.slice(0, 10) }}</span>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.profile-panel { width: 100%; padding: 1rem 1.5rem; }\n.profile-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); }\n.avatar { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #4f46e5, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }\n.info h2 { margin: 0; font-size: 1.3rem; color: #f1f5f9; }\n.email { margin: 0.2rem 0 0; font-size: 0.85rem; color: #94a3b8; }\n.role { margin: 0; font-size: 0.75rem; color: #67e8f9; background: rgba(99,102,241,0.1); padding: 0.15rem 0.5rem; border-radius: 999px; display: inline-block; margin-top: 0.3rem; }\n.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-bottom: 1.5rem; }\n.stat-card { text-align: center; padding: 0.8rem; border-radius: 0.5rem; background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.05); }\n.stat-card.highlight { background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.15); }\n.stat-val { display: block; font-size: 1.4rem; font-weight: 800; color: #67e8f9; }\n.stat-card.highlight .stat-val { color: #a5b4fc; }\n.stat-label { font-size: 0.75rem; color: #94a3b8; }\n.recent-section h3 { margin: 0 0 0.75rem; font-size: 1rem; color: #e2e8f0; }\n.empty { text-align: center; padding: 1rem; color: #64748b; font-size: 0.85rem; }\n.report-list { display: flex; flex-direction: column; gap: 0.4rem; }\n.report-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.8rem; border-radius: 0.4rem; background: rgba(15,23,42,0.4); border: 1px solid rgba(255,255,255,0.05); }\n.report-name { flex: 1; font-weight: 600; color: #f1f5f9; font-size: 0.85rem; }\n.badge { padding: 0.15rem 0.5rem; border-radius: 999px; font-size: 0.7rem; font-weight: 700; }\n.badge.graded { background: rgba(34,197,94,0.15); color: #22c55e; }\n.badge.pending { background: rgba(245,158,11,0.15); color: #fbbf24; }\n.badge.resubmitted { background: rgba(99,102,241,0.15); color: #a5b4fc; }\n.badge.draft { background: rgba(148,163,184,0.15); color: #94a3b8; }\n.grade { color: #67e8f9; font-weight: 700; font-family: monospace; font-size: 0.85rem; }\n.date { color: #475569; font-size: 0.75rem; margin-right: auto; }\n</style>\n",
+      "start": 1783634639336,
+      "end": 1783634639640,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639640,
+      "end": 1783634639640,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639640,
+      "end": 1783634639640,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639640,
+      "end": 1783634639640,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639640,
+      "end": 1783634639640,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/student/StudentProfile.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/student/StudentProfile.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/student/StudentProfile.vue?vue&type=style&index=0&scoped=63dd7fd9&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-63dd7fd9\"]]);\n",
+      "start": 1783634639640,
+      "end": 1783634639940,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639940,
+      "end": 1783634639940,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639940,
+      "end": 1783634639940,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639940,
+      "end": 1783634639940,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639940,
+      "end": 1783634639940,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639940,
+      "end": 1783634639940,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639940,
+      "end": 1783634639940,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639940,
+      "end": 1783634639940,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639940,
+      "end": 1783634639940,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639940,
+      "end": 1783634639941,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639941,
+      "end": 1783634639941,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/pages/admin.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, onMounted } from 'vue';\nimport { useRouter } from 'vue-router';\nimport { useAuthStore } from '../modules/auth/stores/auth';\nimport { useI18n } from '../composables/useI18n';\nimport { useAdmin } from '../composables/useAdmin';\nimport AdminDashboard from '../components/admin/AdminDashboard.vue';\nimport AdminUserManager from '../components/admin/AdminUserManager.vue';\nimport AdminUserDetail from '../components/admin/AdminUserDetail.vue';\nimport AdminClassManager from '../components/admin/AdminClassManager.vue';\nimport AdminReportViewer from '../components/admin/AdminReportViewer.vue';\nimport AdminSmartReports from '../components/admin/AdminSmartReports.vue';\nimport AdminFeedbackPanel from '../components/admin/AdminFeedbackPanel.vue';\nimport AdminSystemHealth from '../components/admin/AdminSystemHealth.vue';\nimport AdminExportPanel from '../components/admin/AdminExportPanel.vue';\nimport AdminGlobalSearch from '../components/admin/AdminGlobalSearch.vue';\n\nconst router = useRouter();\nconst auth = useAuthStore();\nconst { t } = useI18n();\n\nif (!auth.isAdmin) { router.push('/home'); }\n\nconst activeSection = ref<'overview' | 'users' | 'classes' | 'reports' | 'smart' | 'feedback' | 'health' | 'export'>('overview');\nconst selectedUserId = ref<number | null>(null);\n\nconst {\n  loading, errorMsg,\n  users, classes, reports, feedback, stats,\n  loadAll,\n  handleRemoveUser, handleChangeRole, handleAddUser, handleRemoveClass,\n} = useAdmin();\n\nfunction openUserDetail(id: number) {\n  selectedUserId.value = id;\n}\n\nfunction closeUserDetail() {\n  selectedUserId.value = null;\n}\n\nonMounted(loadAll);\n</script>\n\n<template>\n  <div class=\"admin-page\">\n    <div class=\"admin-header\">\n      <div>\n        <h1>{{ t('admin.title') }}</h1>\n        <span class=\"subtitle\">{{ t('admin.subtitle') }}</span>\n      </div>\n      <AdminGlobalSearch\n        :users=\"users\"\n        :classes=\"classes\"\n        :reports=\"reports\"\n        :feedback=\"feedback\"\n        @select-user=\"openUserDetail\"\n      />\n      <button class=\"btn-back\" @click=\"router.push('/home')\">{{ t('admin.back') }}</button>\n    </div>\n\n    <div class=\"admin-nav\">\n      <button :class=\"{ active: activeSection === 'overview' }\" @click=\"activeSection = 'overview'\">\n        {{ t('admin.overview') }}\n      </button>\n      <button :class=\"{ active: activeSection === 'users' }\" @click=\"activeSection = 'users'\">\n        {{ t('admin.users', { count: users.length }) }}\n      </button>\n      <button :class=\"{ active: activeSection === 'classes' }\" @click=\"activeSection = 'classes'\">\n        {{ t('admin.classes', { count: classes.length }) }}\n      </button>\n      <button :class=\"{ active: activeSection === 'reports' }\" @click=\"activeSection = 'reports'\">\n        {{ t('admin.reports', { count: reports.length }) }}\n      </button>\n      <button :class=\"{ active: activeSection === 'smart' }\" @click=\"activeSection = 'smart'\">\n        {{ t('admin.smart') }}\n      </button>\n      <button :class=\"{ active: activeSection === 'feedback' }\" @click=\"activeSection = 'feedback'\">\n        {{ t('admin.feedback') }}\n      </button>\n      <button :class=\"{ active: activeSection === 'health' }\" @click=\"activeSection = 'health'\">\n        {{ t('admin.health') }}\n      </button>\n      <button :class=\"{ active: activeSection === 'export' }\" @click=\"activeSection = 'export'\">\n        {{ t('admin.export') }}\n      </button>\n    </div>\n\n    <div v-if=\"loading\" class=\"loading\">...</div>\n    <div v-else-if=\"errorMsg\" class=\"error-box\">❌ {{ errorMsg }}</div>\n\n    <template v-else-if=\"stats\">\n      <AdminDashboard v-if=\"activeSection === 'overview'\" />\n      <template v-else-if=\"activeSection === 'users'\">\n        <AdminUserDetail\n          v-if=\"selectedUserId\"\n          :user-id=\"selectedUserId\"\n          @back=\"closeUserDetail\"\n          @refresh=\"loadAll\"\n        />\n        <AdminUserManager\n          v-else\n          :users=\"users\"\n          @refresh=\"loadAll\"\n          @delete=\"handleRemoveUser\"\n          @change-role=\"handleChangeRole\"\n          @add=\"handleAddUser\"\n          @view=\"openUserDetail\"\n        />\n      </template>\n      <AdminClassManager\n        v-else-if=\"activeSection === 'classes'\"\n        :classes=\"classes\"\n        @delete=\"handleRemoveClass\"\n      />\n      <AdminReportViewer\n        v-else-if=\"activeSection === 'reports'\"\n        :reports=\"reports\"\n      />\n      <AdminSmartReports v-else-if=\"activeSection === 'smart'\" />\n      <AdminFeedbackPanel v-else-if=\"activeSection === 'feedback'\" />\n      <AdminSystemHealth v-else-if=\"activeSection === 'health'\" />\n      <AdminExportPanel v-else-if=\"activeSection === 'export'\" />\n    </template>\n  </div>\n</template>\n\n<style scoped>\n.admin-page {\n  min-height: 100vh;\n  background: linear-gradient(135deg, #0a0f1c 0%, #111827 40%, #0f172a 100%);\n  color: #e2e8f0;\n  padding: 1.5rem;\n}\n.admin-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 1.5rem;\n  padding-bottom: 1rem;\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n  gap: 1rem;\n  flex-wrap: wrap;\n}\n.admin-header h1 {\n  font-size: 1.5rem;\n  font-weight: 800;\n  margin: 0;\n  background: linear-gradient(135deg, #f87171, #fbbf24);\n  -webkit-background-clip: text;\n  -webkit-text-fill-color: transparent;\n  background-clip: text;\n}\n.subtitle { font-size: 0.8rem; color: #64748b; }\n.btn-back {\n  padding: 0.4rem 0.8rem;\n  border-radius: 0.5rem;\n  border: 1px solid rgba(255,255,255,0.1);\n  background: rgba(0,0,0,0.3);\n  color: #94a3b8;\n  cursor: pointer;\n  font-family: inherit;\n}\n\n.admin-nav {\n  display: flex;\n  gap: 0.5rem;\n  margin-bottom: 1.5rem;\n  flex-wrap: wrap;\n}\n.admin-nav button {\n  padding: 0.5rem 1rem;\n  border-radius: 0.5rem;\n  border: 1px solid rgba(255,255,255,0.08);\n  background: rgba(15,23,42,0.6);\n  color: #94a3b8;\n  cursor: pointer;\n  font-family: inherit;\n  font-weight: 600;\n  transition: all 0.2s;\n}\n.admin-nav button.active {\n  background: rgba(99,102,241,0.2);\n  color: #a5b4fc;\n  border-color: rgba(99,102,241,0.3);\n}\n.admin-nav button:hover:not(.active) { border-color: rgba(255,255,255,0.15); }\n\n.loading { text-align: center; padding: 3rem; color: #64748b; }\n.error-box { background: rgba(239,68,68,0.1); color: #f87171; padding: 1rem; border-radius: 0.5rem; border: 1px solid rgba(239,68,68,0.2); text-align: center; margin-bottom: 1rem; }\n</style>\n",
+      "start": 1783634639007,
+      "end": 1783634639109,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639109,
+      "end": 1783634639109,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639109,
+      "end": 1783634639109,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639109,
+      "end": 1783634639109,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639109,
+      "end": 1783634639109,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/pages/admin.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/pages/admin.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/pages/admin.vue?vue&type=style&index=0&scoped=b8046ed6&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-b8046ed6\"]]);\n",
+      "start": 1783634639109,
+      "end": 1783634639164,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639164,
+      "end": 1783634639164,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639170,
+      "end": 1783634639170,
+      "order": "normal"
+    }
+  ]
+}

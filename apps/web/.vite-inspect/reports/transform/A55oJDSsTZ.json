@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/interference/panels/InterferenceLawsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../../composables/useI18n'\n\nconst { t } = useI18n()\n\ninterface Props {\n  slitDistance: number\n  screenDistance: number\n  wavelength: number\n  fringeSpacing: number\n}\ndefineProps<Props>()\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <div class=\"eq-block\">\n      <div class=\"eq-title\">{{ t('experiments.interferenceFringeSpacing') }}</div>\n      <div class=\"eq\">Δy = λD / d</div>\n      <div class=\"eq-values\">\n        Δy = {{ fringeSpacing.toFixed(3) }} mm<br>\n        λ = {{ wavelength }} nm<br>\n        D = {{ screenDistance }} m<br>\n        d = {{ slitDistance }} mm\n      </div>\n    </div>\n    <div class=\"eq-block\">\n      <div class=\"eq-title\">{{ t('experiments.interferenceConstructive') }}</div>\n      <div class=\"eq\">d·sinθ = mλ</div>\n      <div class=\"eq-values\">\n        Central bright fringe: m = 0 (max intensity)<br>\n        First bright fringe: m = ±1\n      </div>\n    </div>\n    <div class=\"eq-block\">\n      <div class=\"eq-title\">{{ t('experiments.interferenceDestructive') }}</div>\n      <div class=\"eq\">d·sinθ = (m + ½)λ</div>\n      <div class=\"eq-values\">\n        First dark fringe between m=0 and m=1\n      </div>\n    </div>\n    <div class=\"eq-block\">\n      <div class=\"eq-title\">{{ t('experiments.interferenceIntensity') }}</div>\n      <div class=\"eq\">I = I₀ cos²(πd·sinθ/λ)</div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { display: flex; flex-direction: column; gap: .5rem; font-size: .82rem; }\n.eq-block { margin-bottom: .3rem; }\n.eq-title { color: #5B8DB8; font-size: .75rem; margin-bottom: .2rem; }\n.eq { font-family: 'Courier New', monospace; background: #0d1117; padding: .3rem .5rem; border-radius: 4px; font-size: .9rem; color: #7ee787; }\n.eq-values { font-size: .8rem; color: #8B95A5; margin-top: .2rem; }\n</style>\n",
+      "start": 1783634642417,
+      "end": 1783634642726,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642727,
+      "end": 1783634642727,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642727,
+      "end": 1783634642727,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642727,
+      "end": 1783634642727,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642727,
+      "end": 1783634642727,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/interference/panels/InterferenceLawsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/interference/panels/InterferenceLawsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/interference/panels/InterferenceLawsPanel.vue?vue&type=style&index=0&scoped=40da4c2e&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-40da4c2e\"]]);\n",
+      "start": 1783634642727,
+      "end": 1783634642880,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642880,
+      "end": 1783634642880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642880,
+      "end": 1783634642880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642880,
+      "end": 1783634642880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642880,
+      "end": 1783634642880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642880,
+      "end": 1783634642880,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642880,
+      "end": 1783634642880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642880,
+      "end": 1783634642880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642880,
+      "end": 1783634642880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642880,
+      "end": 1783634642880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642880,
+      "end": 1783634642880,
+      "order": "normal"
+    }
+  ]
+}

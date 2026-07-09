@@ -11,6 +11,10 @@ interface Props {
   relativeAngle: number
   transmissionPercent: number
   intensityCurve: { theta: number; intensity: number }[]
+  regressionSlope: number
+  regressionIntercept: number
+  rSquared: number
+  i0FromRegression: number | null
 }
 
 const props = defineProps<Props>()
@@ -40,6 +44,10 @@ const ids = ['readings', 'chart', 'trials', 'params', 'laws', 'results']
           :relative-angle="relativeAngle"
           :transmission-percent="transmissionPercent"
           :intensity-curve="intensityCurve"
+          :regression-slope="regressionSlope"
+          :regression-intercept="regressionIntercept"
+          :r-squared="rSquared"
+          :i0-from-regression="i0FromRegression"
           @remove="emit('remove', $event)"
           @clear="emit('clear')"
           @update:params="emit('update:params', $event)"

@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/resonance/useResonanceCalculations.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "const MU = 0.01\n\nexport function waveSpeedFromTension(tension: number): number {\n  return Math.sqrt(tension / MU)\n}\n\nexport function standingWaveFreq(length: number, harmonic: number, tension: number): number {\n  const v = waveSpeedFromTension(tension)\n  return (harmonic * v) / (2 * length)\n}\nexport function wavelengthOpenString(length: number, harmonic: number): number {\n  return (2 * length) / harmonic\n}\n",
+      "start": 1783634642003,
+      "end": 1783634642182,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642182,
+      "end": 1783634642182,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "const MU = 0.01;\nexport function waveSpeedFromTension(tension) {\n  return Math.sqrt(tension / MU);\n}\nexport function standingWaveFreq(length, harmonic, tension) {\n  const v = waveSpeedFromTension(tension);\n  return harmonic * v / (2 * length);\n}\nexport function wavelengthOpenString(length, harmonic) {\n  return 2 * length / harmonic;\n}\n",
+      "start": 1783634642182,
+      "end": 1783634642302,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/resonance/useResonanceCalculations.ts"
+        ],
+        "sourcesContent": [
+          "const MU = 0.01\n\nexport function waveSpeedFromTension(tension: number): number {\n  return Math.sqrt(tension / MU)\n}\n\nexport function standingWaveFreq(length: number, harmonic: number, tension: number): number {\n  const v = waveSpeedFromTension(tension)\n  return (harmonic * v) / (2 * length)\n}\nexport function wavelengthOpenString(length: number, harmonic: number): number {\n  return (2 * length) / harmonic\n}\n"
+        ],
+        "mappings": "AAAA,MAAM,KAAK;AAEJ,gBAAS,qBAAqB,SAAyB;AAC5D,SAAO,KAAK,KAAK,UAAU,EAAE;AAC/B;AAEO,gBAAS,iBAAiB,QAAgB,UAAkB,SAAyB;AAC1F,QAAM,IAAI,qBAAqB,OAAO;AACtC,SAAQ,WAAW,KAAM,IAAI;AAC/B;AACO,gBAAS,qBAAqB,QAAgB,UAA0B;AAC7E,SAAQ,IAAI,SAAU;AACxB;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642303,
+      "end": 1783634642303,
+      "order": "normal"
+    }
+  ]
+}

@@ -81,6 +81,10 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
           <ResonanceCanvas
             :string-length="ex.params.stringLength"
             :harmonic="ex.params.harmonic"
+            :tension="ex.params.tension"
+            :frequency="ex.lab.frequency.value"
+            :wavelength="ex.lab.wavelength.value"
+            :damping="ex.params.damping"
             :running="ex.lab.running.value"
           />
         </div>
@@ -101,7 +105,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       <div class="lab-col ctrl-col" :style="{ width: ex.layout.widths.ctrl + 'px' }">
         <template v-for="id in ex.layout.columnMap.ctrl" :key="id">
           <DraggablePanel
-            v-if="ex.layout.isPanelVisible(id)"
+            v-if="id !== 'params' && ex.layout.isPanelVisible(id)"
             class="lab-card"
             :id="id"
             :title="ex.layout.panelTitle(id)"
@@ -122,6 +126,18 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
               @update:params="Object.assign(ex.params, $event)"
             />
           </DraggablePanel>
+          <div v-else-if="id === 'params'" class="params-embedded">
+            <ResonancePanelBody
+              id="params"
+              :trials="ex.trials.trials.value"
+              :params="ex.params"
+              :frequency="ex.lab.frequency.value"
+              :wavelength="ex.lab.wavelength.value"
+              :wave-speed="ex.lab.waveSpeed.value"
+              :waveform-data="ex.lab.waveformData.value"
+              @update:params="Object.assign(ex.params, $event)"
+            />
+          </div>
         </template>
       </div>
     </div>
@@ -150,6 +166,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       :paused="ex.lab.paused.value"
       :string-length="ex.params.stringLength"
       :harmonic="ex.params.harmonic"
+      :tension="ex.params.tension"
       :frequency="ex.lab.frequency.value"
       :wavelength="ex.lab.wavelength.value"
     />
@@ -164,6 +181,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 .vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 0; position: relative; }
 .vis-canvas-wrap { flex: 1; min-height: 0; position: relative; width: 100%; }
 .ctrl-col { background: rgba(255,255,255,0.02); }
+.params-embedded { padding: .6rem; }
 .resizer { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0; }
 .resizer:hover, .resizer:active { background: #5B8DB8; }
 .hint-bar { background: #252D3A; border: 1px solid #2D3645; border-radius: 6px; padding: .35rem .7rem; font-size: .75rem; color: #8B95A5; text-align: center; flex-shrink: 0; }

@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileStatusBar.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\n\nconst { t } = useI18n()\nconst props = defineProps<{\n  running: boolean; paused: boolean\n}>()\n</script>\n\n<template>\n  <div class=\"status-bar\" :class=\"{ready:!running&&!paused, paused:running&&paused, running:running&&!paused}\">\n    <span class=\"status-dot\" />\n    <span v-if=\"!running&&!paused\">{{ t('experiments.ready') }}</span>\n    <span v-else-if=\"running&&paused\">{{ t('experiments.paused') }}</span>\n    <span v-else>{{ t('experiments.running') }}</span>\n  </div>\n</template>\n\n<style scoped>\n.status-bar { display:flex; align-items:center; justify-content:center; gap:.4rem; padding:.35rem; border-radius:6px; font-size:.72rem; font-weight:700; margin:.2rem 0; flex-shrink:0; }\n.status-bar.ready { background:rgba(91,141,184,.12); color:#5B8DB8; border:1px solid rgba(91,141,184,.2); }\n.status-bar.paused { background:rgba(196,162,101,.12); color:#c4a265; border:1px solid rgba(196,162,101,.2); }\n.status-bar.running { background:rgba(122,158,126,.12); color:#7a9e7e; border:1px solid rgba(122,158,126,.2); }\n.status-dot { width:8px; height:8px; border-radius:50%; background:currentColor; animation:dotPulse 2s ease-in-out infinite; }\n@keyframes dotPulse { 0%,100%{opacity:.7;transform:scale(1)} 50%{opacity:1;transform:scale(1.15)} }\n</style>\n",
+      "start": 1783634640977,
+      "end": 1783634641417,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641417,
+      "end": 1783634641417,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641417,
+      "end": 1783634641417,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641417,
+      "end": 1783634641417,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641417,
+      "end": 1783634641417,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileStatusBar.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileStatusBar.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileStatusBar.vue?vue&type=style&index=0&scoped=1c63517c&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-1c63517c\"]]);\n",
+      "start": 1783634641417,
+      "end": 1783634641628,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641628,
+      "end": 1783634641628,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641629,
+      "end": 1783634641631,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641631,
+      "end": 1783634641631,
+      "order": "normal"
+    }
+  ]
+}

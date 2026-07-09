@@ -22,6 +22,7 @@ export function useSpillDrops(opts: DropPhysicsOptions) {
   let activeDrops: { x: number; y: number; vx: number; vy: number; size: number; born: number }[] = [];
   let dropTimer = 0;
   let animId = 0;
+  let retryTimeout = 0;
   let running = false;
 
   const getVal = <T>(v: Ref<T> | (() => T)): T => (typeof v === 'function' ? (v as () => T)() : v.value);
@@ -30,7 +31,7 @@ export function useSpillDrops(opts: DropPhysicsOptions) {
     if (running) return;
     running = true;
     const ctx = opts.canvasRef.value?.getContext('2d');
-    if (!ctx) { setTimeout(startDrops, 50); return; }
+    if (!ctx) { retryTimeout = window.setTimeout(startDrops, 50); return; }
 
     const loop = () => {
       if (!running) return;
@@ -126,6 +127,7 @@ export function useSpillDrops(opts: DropPhysicsOptions) {
   function stopDrops() {
     running = false;
     if (animId) cancelAnimationFrame(animId);
+    if (retryTimeout) clearTimeout(retryTimeout);
     activeDrops = [];
     dropTimer = 0;
   }

@@ -61,6 +61,9 @@ export function useChartRegression(
     if (x === 'Pi' && y === 'Pf') {
       return { label: t('analysis.regressionMomentumRatio'), formula: `Pf/Pi = ${t('analysis.slope')}`, value: s, unit: '', expr: `${s.toFixed(4)}` }
     }
+    if (x === 'Pi' && (y === 'v1f' || y === 'v_f')) {
+      return { label: t('analysis.regressionTotalMass'), formula: `slope = m₁ + m₂`, value: s, unit: 'kg', expr: `${s.toFixed(4)}` }
+    }
     if ((x === 'rangeMeters' || x === 'R') && (y === 'maxHeightMeters' || y === 'H')) {
       const tanTheta = 4 * s
       const thetaDeg = Math.atan(tanTheta) * 180 / Math.PI

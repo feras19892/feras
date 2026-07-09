@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/spring/useSpringExperiment.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { watch, onMounted, onUnmounted } from 'vue'\nimport { useSpringLab } from './useSpringLab'\nimport { useSpringLayout } from './useSpringLayout'\nimport { useSpringTrials } from './useSpringTrials'\nimport { useSpringExperimentState, useSpringExperimentComputed } from './useSpringExperimentState'\nimport { useSpringExperimentActions } from './useSpringExperimentActions'\n\nexport function useSpringExperiment() {\n  const state = useSpringExperimentState()\n  const lab = useSpringLab(state.params)\n  const layout = useSpringLayout()\n  const trials = useSpringTrials(state.params, lab.measured)\n\n  const computedVals = useSpringExperimentComputed(state, trials, lab, layout)\n  const actions = useSpringExperimentActions(state, lab, trials, layout)\n\n  watch(() => [state.params.mass, state.params.k, state.params.amplitude, state.params.damping], () => {\n    if (state.ignoreParamsWatch.value) return\n    if (!lab.running.value) actions.resetSim()\n  })\n\n  watch([state.staticK, state.staticReadings], () => {\n    try {\n      localStorage.setItem('spring:experiment:v1', JSON.stringify({\n        staticK: state.staticK.value,\n        staticReadings: state.staticReadings.value,\n        kDynamic: computedVals.kDynamic.value,\n      }))\n    } catch { /* ignore */ }\n  }, { deep: true })\n\n  onMounted(() => {\n    localStorage.removeItem('spring:layout:v1')\n    layout.applyPersistedLayout()\n    trials.autoLoad()\n    try {\n      const raw = localStorage.getItem('spring:experiment:v1')\n      if (raw) {\n        const parsed = JSON.parse(raw)\n        if (parsed.staticK !== undefined) state.staticK.value = parsed.staticK\n        if (Array.isArray(parsed.staticReadings)) {\n          state.staticReadings.value = parsed.staticReadings.filter((r: Record<string, unknown>) =>\n            r && typeof r.mass === 'number' && r.mass >= 0 && r.mass <= 20\n          )\n        }\n      }\n    } catch { /* ignore */ }\n    actions.resetSim()\n  })\n  onUnmounted(() => lab.cleanup())\n\n  return {\n    params: state.params,\n    previousMass: state.previousMass,\n    lab, layout, trials,\n    resetSim: actions.resetSim,\n    toggleMass: actions.toggleMass,\n    runSpringLab: actions.runSpringLab,\n    pullDown: actions.pullDown,\n    pushUp: actions.pushUp,\n    stepIndex: computedVals.stepIndex,\n    tutorType: computedVals.tutorType,\n    tutorMessage: computedVals.tutorMessage,\n    staticK: state.staticK,\n    staticReadings: state.staticReadings,\n    dynamicTrials: computedVals.dynamicTrials,\n    kDynamic: computedVals.kDynamic,\n    fftResult: state.fftResult,\n    onStaticComplete: actions.onStaticComplete,\n    onDynamicComplete: actions.onDynamicComplete,\n    colClasses: computedVals.colClasses,\n    hasVisibleVisPanels: computedVals.hasVisibleVisPanels,\n    getColumnPanels: computedVals.getColumnPanels,\n    getMeasured: () => lab.measured.value,\n    getEffectiveMass: () => lab.effectiveMass.value,\n    colWidths: state.colWidths,\n    onResizeStart: actions.onResizeStart,\n    handleDrop: actions.handleDrop,\n    exportToAnalysis: actions.exportToAnalysis,\n  }\n}\n",
+      "start": 1783634640996,
+      "end": 1783634641472,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641472,
+      "end": 1783634641472,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { watch, onMounted, onUnmounted } from \"vue\";\nimport { useSpringLab } from \"./useSpringLab\";\nimport { useSpringLayout } from \"./useSpringLayout\";\nimport { useSpringTrials } from \"./useSpringTrials\";\nimport { useSpringExperimentState, useSpringExperimentComputed } from \"./useSpringExperimentState\";\nimport { useSpringExperimentActions } from \"./useSpringExperimentActions\";\nexport function useSpringExperiment() {\n  const state = useSpringExperimentState();\n  const lab = useSpringLab(state.params);\n  const layout = useSpringLayout();\n  const trials = useSpringTrials(state.params, lab.measured);\n  const computedVals = useSpringExperimentComputed(state, trials, lab, layout);\n  const actions = useSpringExperimentActions(state, lab, trials, layout);\n  watch(() => [state.params.mass, state.params.k, state.params.amplitude, state.params.damping], () => {\n    if (state.ignoreParamsWatch.value) return;\n    if (!lab.running.value) actions.resetSim();\n  });\n  watch([state.staticK, state.staticReadings], () => {\n    try {\n      localStorage.setItem(\"spring:experiment:v1\", JSON.stringify({\n        staticK: state.staticK.value,\n        staticReadings: state.staticReadings.value,\n        kDynamic: computedVals.kDynamic.value\n      }));\n    } catch {\n    }\n  }, { deep: true });\n  onMounted(() => {\n    localStorage.removeItem(\"spring:layout:v1\");\n    layout.applyPersistedLayout();\n    trials.autoLoad();\n    try {\n      const raw = localStorage.getItem(\"spring:experiment:v1\");\n      if (raw) {\n        const parsed = JSON.parse(raw);\n        if (parsed.staticK !== void 0) state.staticK.value = parsed.staticK;\n        if (Array.isArray(parsed.staticReadings)) {\n          state.staticReadings.value = parsed.staticReadings.filter(\n            (r) => r && typeof r.mass === \"number\" && r.mass >= 0 && r.mass <= 20\n          );\n        }\n      }\n    } catch {\n    }\n    actions.resetSim();\n  });\n  onUnmounted(() => lab.cleanup());\n  return {\n    params: state.params,\n    previousMass: state.previousMass,\n    lab,\n    layout,\n    trials,\n    resetSim: actions.resetSim,\n    toggleMass: actions.toggleMass,\n    runSpringLab: actions.runSpringLab,\n    pullDown: actions.pullDown,\n    pushUp: actions.pushUp,\n    stepIndex: computedVals.stepIndex,\n    tutorType: computedVals.tutorType,\n    tutorMessage: computedVals.tutorMessage,\n    staticK: state.staticK,\n    staticReadings: state.staticReadings,\n    dynamicTrials: computedVals.dynamicTrials,\n    kDynamic: computedVals.kDynamic,\n    fftResult: state.fftResult,\n    onStaticComplete: actions.onStaticComplete,\n    onDynamicComplete: actions.onDynamicComplete,\n    colClasses: computedVals.colClasses,\n    hasVisibleVisPanels: computedVals.hasVisibleVisPanels,\n    getColumnPanels: computedVals.getColumnPanels,\n    getMeasured: () => lab.measured.value,\n    getEffectiveMass: () => lab.effectiveMass.value,\n    colWidths: state.colWidths,\n    onResizeStart: actions.onResizeStart,\n    handleDrop: actions.handleDrop,\n    exportToAnalysis: actions.exportToAnalysis\n  };\n}\n",
+      "start": 1783634641472,
+      "end": 1783634641628,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/spring/useSpringExperiment.ts"
+        ],
+        "sourcesContent": [
+          "import { watch, onMounted, onUnmounted } from 'vue'\nimport { useSpringLab } from './useSpringLab'\nimport { useSpringLayout } from './useSpringLayout'\nimport { useSpringTrials } from './useSpringTrials'\nimport { useSpringExperimentState, useSpringExperimentComputed } from './useSpringExperimentState'\nimport { useSpringExperimentActions } from './useSpringExperimentActions'\n\nexport function useSpringExperiment() {\n  const state = useSpringExperimentState()\n  const lab = useSpringLab(state.params)\n  const layout = useSpringLayout()\n  const trials = useSpringTrials(state.params, lab.measured)\n\n  const computedVals = useSpringExperimentComputed(state, trials, lab, layout)\n  const actions = useSpringExperimentActions(state, lab, trials, layout)\n\n  watch(() => [state.params.mass, state.params.k, state.params.amplitude, state.params.damping], () => {\n    if (state.ignoreParamsWatch.value) return\n    if (!lab.running.value) actions.resetSim()\n  })\n\n  watch([state.staticK, state.staticReadings], () => {\n    try {\n      localStorage.setItem('spring:experiment:v1', JSON.stringify({\n        staticK: state.staticK.value,\n        staticReadings: state.staticReadings.value,\n        kDynamic: computedVals.kDynamic.value,\n      }))\n    } catch { /* ignore */ }\n  }, { deep: true })\n\n  onMounted(() => {\n    localStorage.removeItem('spring:layout:v1')\n    layout.applyPersistedLayout()\n    trials.autoLoad()\n    try {\n      const raw = localStorage.getItem('spring:experiment:v1')\n      if (raw) {\n        const parsed = JSON.parse(raw)\n        if (parsed.staticK !== undefined) state.staticK.value = parsed.staticK\n        if (Array.isArray(parsed.staticReadings)) {\n          state.staticReadings.value = parsed.staticReadings.filter((r: Record<string, unknown>) =>\n            r && typeof r.mass === 'number' && r.mass >= 0 && r.mass <= 20\n          )\n        }\n      }\n    } catch { /* ignore */ }\n    actions.resetSim()\n  })\n  onUnmounted(() => lab.cleanup())\n\n  return {\n    params: state.params,\n    previousMass: state.previousMass,\n    lab, layout, trials,\n    resetSim: actions.resetSim,\n    toggleMass: actions.toggleMass,\n    runSpringLab: actions.runSpringLab,\n    pullDown: actions.pullDown,\n    pushUp: actions.pushUp,\n    stepIndex: computedVals.stepIndex,\n    tutorType: computedVals.tutorType,\n    tutorMessage: computedVals.tutorMessage,\n    staticK: state.staticK,\n    staticReadings: state.staticReadings,\n    dynamicTrials: computedVals.dynamicTrials,\n    kDynamic: computedVals.kDynamic,\n    fftResult: state.fftResult,\n    onStaticComplete: actions.onStaticComplete,\n    onDynamicComplete: actions.onDynamicComplete,\n    colClasses: computedVals.colClasses,\n    hasVisibleVisPanels: computedVals.hasVisibleVisPanels,\n    getColumnPanels: computedVals.getColumnPanels,\n    getMeasured: () => lab.measured.value,\n    getEffectiveMass: () => lab.effectiveMass.value,\n    colWidths: state.colWidths,\n    onResizeStart: actions.onResizeStart,\n    handleDrop: actions.handleDrop,\n    exportToAnalysis: actions.exportToAnalysis,\n  }\n}\n"
+        ],
+        "mappings": "AAAA,SAAS,OAAO,WAAW,mBAAmB;AAC9C,SAAS,oBAAoB;AAC7B,SAAS,uBAAuB;AAChC,SAAS,uBAAuB;AAChC,SAAS,0BAA0B,mCAAmC;AACtE,SAAS,kCAAkC;AAEpC,gBAAS,sBAAsB;AACpC,QAAM,QAAQ,yBAAyB;AACvC,QAAM,MAAM,aAAa,MAAM,MAAM;AACrC,QAAM,SAAS,gBAAgB;AAC/B,QAAM,SAAS,gBAAgB,MAAM,QAAQ,IAAI,QAAQ;AAEzD,QAAM,eAAe,4BAA4B,OAAO,QAAQ,KAAK,MAAM;AAC3E,QAAM,UAAU,2BAA2B,OAAO,KAAK,QAAQ,MAAM;AAErE,QAAM,MAAM,CAAC,MAAM,OAAO,MAAM,MAAM,OAAO,GAAG,MAAM,OAAO,WAAW,MAAM,OAAO,OAAO,GAAG,MAAM;AACnG,QAAI,MAAM,kBAAkB,MAAO;AACnC,QAAI,CAAC,IAAI,QAAQ,MAAO,SAAQ,SAAS;AAAA,EAC3C,CAAC;AAED,QAAM,CAAC,MAAM,SAAS,MAAM,cAAc,GAAG,MAAM;AACjD,QAAI;AACF,mBAAa,QAAQ,wBAAwB,KAAK,UAAU;AAAA,QAC1D,SAAS,MAAM,QAAQ;AAAA,QACvB,gBAAgB,MAAM,eAAe;AAAA,QACrC,UAAU,aAAa,SAAS;AAAA,MAClC,CAAC,CAAC;AAAA,IACJ,QAAQ;AAAA,IAAe;AAAA,EACzB,GAAG,EAAE,MAAM,KAAK,CAAC;AAEjB,YAAU,MAAM;AACd,iBAAa,WAAW,kBAAkB;AAC1C,WAAO,qBAAqB;AAC5B,WAAO,SAAS;AAChB,QAAI;AACF,YAAM,MAAM,aAAa,QAAQ,sBAAsB;AACvD,UAAI,KAAK;AACP,cAAM,SAAS,KAAK,MAAM,GAAG;AAC7B,YAAI,OAAO,YAAY,OAAW,OAAM,QAAQ,QAAQ,OAAO;AAC/D,YAAI,MAAM,QAAQ,OAAO,cAAc,GAAG;AACxC,gBAAM,eAAe,QAAQ,OAAO,eAAe;AAAA,YAAO,CAAC,MACzD,KAAK,OAAO,EAAE,SAAS,YAAY,EAAE,QAAQ,KAAK,EAAE,QAAQ;AAAA,UAC9D;AAAA,QACF;AAAA,MACF;AAAA,IACF,QAAQ;AAAA,IAAe;AACvB,YAAQ,SAAS;AAAA,EACnB,CAAC;AACD,cAAY,MAAM,IAAI,QAAQ,CAAC;AAE/B,SAAO;AAAA,IACL,QAAQ,MAAM;AAAA,IACd,cAAc,MAAM;AAAA,IACpB;AAAA,IAAK;AAAA,IAAQ;AAAA,IACb,UAAU,QAAQ;AAAA,IAClB,YAAY,QAAQ;AAAA,IACpB,cAAc,QAAQ;AAAA,IACtB,UAAU,QAAQ;AAAA,IAClB,QAAQ,QAAQ;AAAA,IAChB,WAAW,aAAa;AAAA,IACxB,WAAW,aAAa;AAAA,IACxB,cAAc,aAAa;AAAA,IAC3B,SAAS,MAAM;AAAA,IACf,gBAAgB,MAAM;AAAA,IACtB,eAAe,aAAa;AAAA,IAC5B,UAAU,aAAa;AAAA,IACvB,WAAW,MAAM;AAAA,IACjB,kBAAkB,QAAQ;AAAA,IAC1B,mBAAmB,QAAQ;AAAA,IAC3B,YAAY,aAAa;AAAA,IACzB,qBAAqB,aAAa;AAAA,IAClC,iBAAiB,aAAa;AAAA,IAC9B,aAAa,MAAM,IAAI,SAAS;AAAA,IAChC,kBAAkB,MAAM,IAAI,cAAc;AAAA,IAC1C,WAAW,MAAM;AAAA,IACjB,eAAe,QAAQ;AAAA,IACvB,YAAY,QAAQ;AAAA,IACpB,kBAAkB,QAAQ;AAAA,EAC5B;AACF;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641628,
+      "end": 1783634641628,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641631,
+      "end": 1783634641631,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641631,
+      "end": 1783634641631,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641633,
+      "end": 1783634641633,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641633,
+      "end": 1783634641633,
+      "order": "normal"
+    }
+  ]
+}

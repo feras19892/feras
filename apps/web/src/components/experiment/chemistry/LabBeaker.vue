@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue';
 import { useSpillDrops } from '../../../composables/chemistry/useSpillDrops';
 import { useBeakerScale } from '../../../composables/chemistry/useBeakerScale';
+import './LabBeaker.css';
 
 interface Props {
   volume?: number;
@@ -253,48 +254,3 @@ useSpillDrops({
   </div>
 </template>
 
-<style scoped>
-.beaker-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-}
-.drop-canvas {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 140px;
-  height: 300px;
-  margin-left: -70px;
-  z-index: 2;
-  pointer-events: none;
-}
-.beaker-svg.hovered {
-  filter: brightness(1.04);
-}
-.mouth-hitbox {
-  cursor: pointer;
-}
-.mouth-glow {
-  animation: pulse 1.5s ease infinite;
-}
-.mouth-glow-outer {
-  animation: pulse 1.5s ease infinite 0.2s;
-}
-@keyframes pulse {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 0.2; }
-}
-.ripple {
-  animation: rippleExpand 0.6s ease infinite;
-}
-.ripple-delay {
-  animation: rippleExpand 0.6s ease 0.3s infinite;
-}
-@keyframes rippleExpand {
-  0% { rx: 8; opacity: 0.6; }
-  50% { rx: 22; opacity: 0; }
-  100% { rx: 8; opacity: 0.6; }
-}
-</style>

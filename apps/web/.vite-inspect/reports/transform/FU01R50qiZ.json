@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/PrismStatusBar.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed } from 'vue'\nimport { useI18n } from '../../../composables/useI18n'\n\nconst { t } = useI18n()\n\ninterface Props {\n  running: boolean\n  paused: boolean\n  prismAngle: number\n  angleIncidence: number\n  n: number\n  deviation: number | null\n  criticalAngle: number | null\n  totalInternalReflection: boolean\n}\n\nconst props = defineProps<Props>()\n\nconst stateClass = computed(() => props.totalInternalReflection ? 'tir' : props.running && !props.paused ? 'running' : 'idle')\nconst stateLabel = computed(() => {\n  if (!props.running) return t('experiments.statusReady')\n  if (props.paused) return t('experiments.statusPaused')\n  if (props.totalInternalReflection) return '⚠ TIR'\n  return t('experiments.statusRunning')\n})\n</script>\n\n<template>\n  <div class=\"status-bar\" :class=\"stateClass\">\n    <span class=\"pulse-dot\" :class=\"stateClass\" />\n    <span class=\"st-chip\" :class=\"stateClass\">{{ stateLabel }}</span>\n    <span class=\"sep\" />\n    <span class=\"st-item\">A = <b>{{ prismAngle }}°</b></span>\n    <span class=\"st-item\">θ₁ = <b class=\"cyan\">{{ angleIncidence }}°</b></span>\n    <span class=\"st-item\">n = <b class=\"amber\">{{ n.toFixed(3) }}</b></span>\n    <span v-if=\"deviation !== null\" class=\"st-item\">δ = <b class=\"green\">{{ deviation.toFixed(1) }}°</b></span>\n    <span v-if=\"criticalAngle !== null\" class=\"st-item\">θc = <b class=\"amber\">{{ criticalAngle.toFixed(1) }}°</b></span>\n    <span v-if=\"totalInternalReflection\" class=\"tir-badge\">⚠ TIR</span>\n  </div>\n</template>\n\n<style scoped>\n.status-bar { display: flex; align-items: center; gap: .6rem; padding: .28rem .75rem; background: #161B22; border-top: 1px solid #2D3645; font-size: .72rem; color: #8B95A5; flex-shrink: 0; transition: border-color .3s; }\n.status-bar.tir { border-top-color: rgba(248,113,113,0.5); }\n.status-bar.running { border-top-color: rgba(74,222,128,0.25); }\n.sep { width: 1px; height: 14px; background: #2D3645; flex-shrink: 0; }\n.st-chip { padding: .12rem .45rem; border-radius: 999px; font-size: .68rem; font-weight: 700; }\n.st-chip.running { background: rgba(74,222,128,.12); color: #4ade80; }\n.st-chip.idle    { background: rgba(148,163,184,.1); color: #64748b; }\n.st-chip.tir     { background: rgba(248,113,113,.12); color: #f87171; }\n.st-item { font-family: monospace; white-space: nowrap; }\n.cyan  { color: #67e8f9; }\n.green { color: #4ade80; }\n.amber { color: #fbbf24; }\n.tir-badge { margin-left: auto; padding: .1rem .4rem; border-radius: 4px; background: rgba(248,113,113,.15); color: #f87171; font-weight: 700; border: 1px solid rgba(248,113,113,.3); animation: blink 1s ease-in-out infinite; }\n.pulse-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }\n.pulse-dot.running { background: #4ade80; animation: pulse 1.4s ease-in-out infinite; }\n.pulse-dot.tir     { background: #f87171; animation: pulse .7s ease-in-out infinite; }\n.pulse-dot.idle    { background: #475569; }\n@keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:.4; transform:scale(0.7); } }\n@keyframes blink  { 0%,100% { opacity:1; } 50% { opacity:.4; } }\n</style>\n",
+      "start": 1783634641004,
+      "end": 1783634641513,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641513,
+      "end": 1783634641513,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641513,
+      "end": 1783634641513,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641513,
+      "end": 1783634641513,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641513,
+      "end": 1783634641513,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/PrismStatusBar.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/PrismStatusBar.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/PrismStatusBar.vue?vue&type=style&index=0&scoped=89e51b56&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-89e51b56\"]]);\n",
+      "start": 1783634641513,
+      "end": 1783634641641,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    }
+  ]
+}

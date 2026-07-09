@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/experiment/analysis/useChartWorkspace.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { computed, ref, watch, onMounted, onUnmounted } from 'vue'\nimport { useI18n } from '../../../composables/useI18n'\nimport { useChartRegression } from './chart-regression'\nimport { useChartDrawer } from './chart-drawer'\nimport type { AnalysisColumnMeta, AnalysisPlotConfig } from '../../../types/physics'\n\nexport function useChartWorkspace(\n  getReadings: () => Record<string, number>[],\n  getColumns: () => AnalysisColumnMeta[],\n  getSuggestedPlots: () => AnalysisPlotConfig[],\n) {\n  const { t } = useI18n()\n  const xKey = ref('')\n  const yKey = ref('')\n  const containerRef = ref<HTMLDivElement | null>(null)\n  const canvasRef = ref<HTMLCanvasElement | null>(null)\n  const hoverPoint = ref<{ x: number; y: number; px: number; py: number } | null>(null)\n  const tooltip = ref('')\n  const showSlopeResult = ref(false)\n  const showAxisControls = ref(false)\n\n  const numericKeys = computed(() => getColumns().map(c => c.key))\n\n  const xAxisLabel = computed(() => {\n    const col = getColumns().find(c => c.key === xKey.value)\n    return col ? `${col.label}${col.unit ? ` (${col.unit})` : ''}` : (xKey.value || 'X')\n  })\n  const yAxisLabel = computed(() => {\n    const col = getColumns().find(c => c.key === yKey.value)\n    return col ? `${col.label}${col.unit ? ` (${col.unit})` : ''}` : (yKey.value || 'Y')\n  })\n\n  watch(() => getSuggestedPlots(), (plots) => {\n    if (plots.length) { xKey.value = plots[0].xKey; yKey.value = plots[0].yKey }\n    else if (getColumns().length >= 2) { xKey.value = getColumns()[0].key; yKey.value = getColumns()[1].key }\n  }, { immediate: true })\n\n  const points = computed(() => {\n    if (!xKey.value || !yKey.value) return []\n    return getReadings()\n      .map(r => ({ x: r[xKey.value], y: r[yKey.value] }))\n      .filter(p => typeof p.x === 'number' && typeof p.y === 'number' && !isNaN(p.x) && !isNaN(p.y))\n  })\n\n  const { regression, slopeWarning, slopeCalc } = useChartRegression(points, xKey, yKey, t)\n  const { draw, onMouseMove } = useChartDrawer(\n    canvasRef, containerRef, points, xKey, yKey,\n    regression, xAxisLabel, yAxisLabel, t, hoverPoint, tooltip\n  )\n\n  let ro: ResizeObserver | null = null\n  onMounted(() => {\n    setTimeout(() => draw(), 100)\n    if (containerRef.value) {\n      ro = new ResizeObserver(() => draw())\n      ro.observe(containerRef.value)\n    }\n    const canvas = canvasRef.value\n    if (canvas) {\n      canvas.addEventListener('mousemove', onMouseMove)\n      canvas.addEventListener('mouseleave', () => { hoverPoint.value = null; tooltip.value = ''; draw() })\n    }\n  })\n  onUnmounted(() => {\n    if (ro) ro.disconnect()\n    const canvas = canvasRef.value\n    if (canvas) { canvas.removeEventListener('mousemove', onMouseMove) }\n  })\n\n  return {\n    xKey,\n    yKey,\n    containerRef,\n    canvasRef,\n    numericKeys,\n    regression,\n    slopeWarning,\n    slopeCalc,\n    showSlopeResult,\n    showAxisControls,\n    xAxisLabel,\n    yAxisLabel,\n    draw,\n  }\n}\n",
+      "start": 1783634641050,
+      "end": 1783634641551,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641551,
+      "end": 1783634641551,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { computed, ref, watch, onMounted, onUnmounted } from \"vue\";\nimport { useI18n } from \"../../../composables/useI18n\";\nimport { useChartRegression } from \"./chart-regression\";\nimport { useChartDrawer } from \"./chart-drawer\";\nexport function useChartWorkspace(getReadings, getColumns, getSuggestedPlots) {\n  const { t } = useI18n();\n  const xKey = ref(\"\");\n  const yKey = ref(\"\");\n  const containerRef = ref(null);\n  const canvasRef = ref(null);\n  const hoverPoint = ref(null);\n  const tooltip = ref(\"\");\n  const showSlopeResult = ref(false);\n  const showAxisControls = ref(false);\n  const numericKeys = computed(() => getColumns().map((c) => c.key));\n  const xAxisLabel = computed(() => {\n    const col = getColumns().find((c) => c.key === xKey.value);\n    return col ? `${col.label}${col.unit ? ` (${col.unit})` : \"\"}` : xKey.value || \"X\";\n  });\n  const yAxisLabel = computed(() => {\n    const col = getColumns().find((c) => c.key === yKey.value);\n    return col ? `${col.label}${col.unit ? ` (${col.unit})` : \"\"}` : yKey.value || \"Y\";\n  });\n  watch(() => getSuggestedPlots(), (plots) => {\n    if (plots.length) {\n      xKey.value = plots[0].xKey;\n      yKey.value = plots[0].yKey;\n    } else if (getColumns().length >= 2) {\n      xKey.value = getColumns()[0].key;\n      yKey.value = getColumns()[1].key;\n    }\n  }, { immediate: true });\n  const points = computed(() => {\n    if (!xKey.value || !yKey.value) return [];\n    return getReadings().map((r) => ({ x: r[xKey.value], y: r[yKey.value] })).filter((p) => typeof p.x === \"number\" && typeof p.y === \"number\" && !isNaN(p.x) && !isNaN(p.y));\n  });\n  const { regression, slopeWarning, slopeCalc } = useChartRegression(points, xKey, yKey, t);\n  const { draw, onMouseMove } = useChartDrawer(\n    canvasRef,\n    containerRef,\n    points,\n    xKey,\n    yKey,\n    regression,\n    xAxisLabel,\n    yAxisLabel,\n    t,\n    hoverPoint,\n    tooltip\n  );\n  let ro = null;\n  onMounted(() => {\n    setTimeout(() => draw(), 100);\n    if (containerRef.value) {\n      ro = new ResizeObserver(() => draw());\n      ro.observe(containerRef.value);\n    }\n    const canvas = canvasRef.value;\n    if (canvas) {\n      canvas.addEventListener(\"mousemove\", onMouseMove);\n      canvas.addEventListener(\"mouseleave\", () => {\n        hoverPoint.value = null;\n        tooltip.value = \"\";\n        draw();\n      });\n    }\n  });\n  onUnmounted(() => {\n    if (ro) ro.disconnect();\n    const canvas = canvasRef.value;\n    if (canvas) {\n      canvas.removeEventListener(\"mousemove\", onMouseMove);\n    }\n  });\n  return {\n    xKey,\n    yKey,\n    containerRef,\n    canvasRef,\n    numericKeys,\n    regression,\n    slopeWarning,\n    slopeCalc,\n    showSlopeResult,\n    showAxisControls,\n    xAxisLabel,\n    yAxisLabel,\n    draw\n  };\n}\n",
+      "start": 1783634641551,
+      "end": 1783634641665,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/experiment/analysis/useChartWorkspace.ts"
+        ],
+        "sourcesContent": [
+          "import { computed, ref, watch, onMounted, onUnmounted } from 'vue'\nimport { useI18n } from '../../../composables/useI18n'\nimport { useChartRegression } from './chart-regression'\nimport { useChartDrawer } from './chart-drawer'\nimport type { AnalysisColumnMeta, AnalysisPlotConfig } from '../../../types/physics'\n\nexport function useChartWorkspace(\n  getReadings: () => Record<string, number>[],\n  getColumns: () => AnalysisColumnMeta[],\n  getSuggestedPlots: () => AnalysisPlotConfig[],\n) {\n  const { t } = useI18n()\n  const xKey = ref('')\n  const yKey = ref('')\n  const containerRef = ref<HTMLDivElement | null>(null)\n  const canvasRef = ref<HTMLCanvasElement | null>(null)\n  const hoverPoint = ref<{ x: number; y: number; px: number; py: number } | null>(null)\n  const tooltip = ref('')\n  const showSlopeResult = ref(false)\n  const showAxisControls = ref(false)\n\n  const numericKeys = computed(() => getColumns().map(c => c.key))\n\n  const xAxisLabel = computed(() => {\n    const col = getColumns().find(c => c.key === xKey.value)\n    return col ? `${col.label}${col.unit ? ` (${col.unit})` : ''}` : (xKey.value || 'X')\n  })\n  const yAxisLabel = computed(() => {\n    const col = getColumns().find(c => c.key === yKey.value)\n    return col ? `${col.label}${col.unit ? ` (${col.unit})` : ''}` : (yKey.value || 'Y')\n  })\n\n  watch(() => getSuggestedPlots(), (plots) => {\n    if (plots.length) { xKey.value = plots[0].xKey; yKey.value = plots[0].yKey }\n    else if (getColumns().length >= 2) { xKey.value = getColumns()[0].key; yKey.value = getColumns()[1].key }\n  }, { immediate: true })\n\n  const points = computed(() => {\n    if (!xKey.value || !yKey.value) return []\n    return getReadings()\n      .map(r => ({ x: r[xKey.value], y: r[yKey.value] }))\n      .filter(p => typeof p.x === 'number' && typeof p.y === 'number' && !isNaN(p.x) && !isNaN(p.y))\n  })\n\n  const { regression, slopeWarning, slopeCalc } = useChartRegression(points, xKey, yKey, t)\n  const { draw, onMouseMove } = useChartDrawer(\n    canvasRef, containerRef, points, xKey, yKey,\n    regression, xAxisLabel, yAxisLabel, t, hoverPoint, tooltip\n  )\n\n  let ro: ResizeObserver | null = null\n  onMounted(() => {\n    setTimeout(() => draw(), 100)\n    if (containerRef.value) {\n      ro = new ResizeObserver(() => draw())\n      ro.observe(containerRef.value)\n    }\n    const canvas = canvasRef.value\n    if (canvas) {\n      canvas.addEventListener('mousemove', onMouseMove)\n      canvas.addEventListener('mouseleave', () => { hoverPoint.value = null; tooltip.value = ''; draw() })\n    }\n  })\n  onUnmounted(() => {\n    if (ro) ro.disconnect()\n    const canvas = canvasRef.value\n    if (canvas) { canvas.removeEventListener('mousemove', onMouseMove) }\n  })\n\n  return {\n    xKey,\n    yKey,\n    containerRef,\n    canvasRef,\n    numericKeys,\n    regression,\n    slopeWarning,\n    slopeCalc,\n    showSlopeResult,\n    showAxisControls,\n    xAxisLabel,\n    yAxisLabel,\n    draw,\n  }\n}\n"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641665,
+      "end": 1783634641665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641665,
+      "end": 1783634641665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641667,
+      "end": 1783634641667,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641667,
+      "end": 1783634641667,
+      "order": "normal"
+    }
+  ]
+}

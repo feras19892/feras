@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ideal-gas/IdealGasHelpModal.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, withModifiers as _withModifiers, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"help-modal\" }\nconst _hoisted_2 = { class: \"help-grid\" }\n\nimport { useI18n } from '../../../composables/useI18n'\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'IdealGasHelpModal',\n  props: {\n    open: { type: Boolean }\n  },\n  emits: [\"close\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (__props.open)\n    ? (_openBlock(), _createElementBlock(\"div\", {\n        key: 0,\n        class: \"help-overlay\",\n        onClick: _cache[1] || (_cache[1] = _withModifiers(($event: any) => (emit('close')), [\"self\"]))\n      }, [\n        _createElementVNode(\"div\", _hoisted_1, [\n          _createElementVNode(\"h3\", null, _toDisplayString(_unref(t)('experiments.helpTitle')), 1),\n          _createElementVNode(\"div\", _hoisted_2, [\n            _createElementVNode(\"div\", null, [\n              _cache[2] || (_cache[2] = _createElementVNode(\"kbd\", null, \"Space\", -1)),\n              _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.helpStartStop')), 1)\n            ]),\n            _createElementVNode(\"div\", null, [\n              _cache[3] || (_cache[3] = _createElementVNode(\"kbd\", null, \"R\", -1)),\n              _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.helpReset')), 1)\n            ]),\n            _createElementVNode(\"div\", null, [\n              _cache[4] || (_cache[4] = _createElementVNode(\"kbd\", null, \"S\", -1)),\n              _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.helpRecord')), 1)\n            ]),\n            _createElementVNode(\"div\", null, [\n              _cache[5] || (_cache[5] = _createElementVNode(\"kbd\", null, \"Ctrl+Z\", -1)),\n              _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.helpUndo')), 1)\n            ]),\n            _createElementVNode(\"div\", null, [\n              _cache[6] || (_cache[6] = _createElementVNode(\"kbd\", null, \"Ctrl+Y\", -1)),\n              _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.helpRedo')), 1)\n            ]),\n            _createElementVNode(\"div\", null, [\n              _cache[7] || (_cache[7] = _createElementVNode(\"kbd\", null, \"?\", -1)),\n              _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.helpHelp')), 1)\n            ])\n          ]),\n          _createElementVNode(\"button\", {\n            class: \"close-btn\",\n            onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('close')))\n          }, _toDisplayString(_unref(t)('experiments.close')), 1)\n        ])\n      ]))\n    : _createCommentVNode(\"\", true)\n}\n}\n\n})",
+      "start": 1783634641816,
+      "end": 1783634641816
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641816,
+      "end": 1783634641816,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, withModifiers as _withModifiers, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\";\nconst _hoisted_1 = { class: \"help-modal\" };\nconst _hoisted_2 = { class: \"help-grid\" };\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"IdealGasHelpModal\",\n  props: {\n    open: { type: Boolean }\n  },\n  emits: [\"close\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const emit = __emit;\n    return (_ctx, _cache) => {\n      return __props.open ? (_openBlock(), _createElementBlock(\"div\", {\n        key: 0,\n        class: \"help-overlay\",\n        onClick: _cache[1] || (_cache[1] = _withModifiers(($event) => emit(\"close\"), [\"self\"]))\n      }, [\n        _createElementVNode(\"div\", _hoisted_1, [\n          _createElementVNode(\"h3\", null, _toDisplayString(_unref(t)(\"experiments.helpTitle\")), 1),\n          _createElementVNode(\"div\", _hoisted_2, [\n            _createElementVNode(\"div\", null, [\n              _cache[2] || (_cache[2] = _createElementVNode(\"kbd\", null, \"Space\", -1)),\n              _createElementVNode(\"span\", null, _toDisplayString(_unref(t)(\"experiments.helpStartStop\")), 1)\n            ]),\n            _createElementVNode(\"div\", null, [\n              _cache[3] || (_cache[3] = _createElementVNode(\"kbd\", null, \"R\", -1)),\n              _createElementVNode(\"span\", null, _toDisplayString(_unref(t)(\"experiments.helpReset\")), 1)\n            ]),\n            _createElementVNode(\"div\", null, [\n              _cache[4] || (_cache[4] = _createElementVNode(\"kbd\", null, \"S\", -1)),\n              _createElementVNode(\"span\", null, _toDisplayString(_unref(t)(\"experiments.helpRecord\")), 1)\n            ]),\n            _createElementVNode(\"div\", null, [\n              _cache[5] || (_cache[5] = _createElementVNode(\"kbd\", null, \"Ctrl+Z\", -1)),\n              _createElementVNode(\"span\", null, _toDisplayString(_unref(t)(\"experiments.helpUndo\")), 1)\n            ]),\n            _createElementVNode(\"div\", null, [\n              _cache[6] || (_cache[6] = _createElementVNode(\"kbd\", null, \"Ctrl+Y\", -1)),\n              _createElementVNode(\"span\", null, _toDisplayString(_unref(t)(\"experiments.helpRedo\")), 1)\n            ]),\n            _createElementVNode(\"div\", null, [\n              _cache[7] || (_cache[7] = _createElementVNode(\"kbd\", null, \"?\", -1)),\n              _createElementVNode(\"span\", null, _toDisplayString(_unref(t)(\"experiments.helpHelp\")), 1)\n            ])\n          ]),\n          _createElementVNode(\"button\", {\n            class: \"close-btn\",\n            onClick: _cache[0] || (_cache[0] = ($event) => emit(\"close\"))\n          }, _toDisplayString(_unref(t)(\"experiments.close\")), 1)\n        ])\n      ])) : _createCommentVNode(\"\", true);\n    };\n  }\n});\n",
+      "start": 1783634641816,
+      "end": 1783634642267,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ideal-gas/IdealGasHelpModal.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, withModifiers as _withModifiers, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"help-modal\" }\nconst _hoisted_2 = { class: \"help-grid\" }\n\nimport { useI18n } from '../../../composables/useI18n'\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'IdealGasHelpModal',\n  props: {\n    open: { type: Boolean }\n  },\n  emits: [\"close\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (__props.open)\n    ? (_openBlock(), _createElementBlock(\"div\", {\n        key: 0,\n        class: \"help-overlay\",\n        onClick: _cache[1] || (_cache[1] = _withModifiers(($event: any) => (emit('close')), [\"self\"]))\n      }, [\n        _createElementVNode(\"div\", _hoisted_1, [\n          _createElementVNode(\"h3\", null, _toDisplayString(_unref(t)('experiments.helpTitle')), 1),\n          _createElementVNode(\"div\", _hoisted_2, [\n            _createElementVNode(\"div\", null, [\n              _cache[2] || (_cache[2] = _createElementVNode(\"kbd\", null, \"Space\", -1)),\n              _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.helpStartStop')), 1)\n            ]),\n            _createElementVNode(\"div\", null, [\n              _cache[3] || (_cache[3] = _createElementVNode(\"kbd\", null, \"R\", -1)),\n              _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.helpReset')), 1)\n            ]),\n            _createElementVNode(\"div\", null, [\n              _cache[4] || (_cache[4] = _createElementVNode(\"kbd\", null, \"S\", -1)),\n              _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.helpRecord')), 1)\n            ]),\n            _createElementVNode(\"div\", null, [\n              _cache[5] || (_cache[5] = _createElementVNode(\"kbd\", null, \"Ctrl+Z\", -1)),\n              _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.helpUndo')), 1)\n            ]),\n            _createElementVNode(\"div\", null, [\n              _cache[6] || (_cache[6] = _createElementVNode(\"kbd\", null, \"Ctrl+Y\", -1)),\n              _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.helpRedo')), 1)\n            ]),\n            _createElementVNode(\"div\", null, [\n              _cache[7] || (_cache[7] = _createElementVNode(\"kbd\", null, \"?\", -1)),\n              _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.helpHelp')), 1)\n            ])\n          ]),\n          _createElementVNode(\"button\", {\n            class: \"close-btn\",\n            onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('close')))\n          }, _toDisplayString(_unref(t)('experiments.close')), 1)\n        ])\n      ]))\n    : _createCommentVNode(\"\", true)\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642267,
+      "end": 1783634642267,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642267,
+      "end": 1783634642267,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634642267,
+      "end": 1783634642267,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642267,
+      "end": 1783634642267,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642267,
+      "end": 1783634642267,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642267,
+      "end": 1783634642267,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642267,
+      "end": 1783634642267,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642267,
+      "end": 1783634642267,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642267,
+      "end": 1783634642267,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642267,
+      "end": 1783634642267,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642267,
+      "end": 1783634642267,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642267,
+      "end": 1783634642267,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642267,
+      "end": 1783634642267,
+      "order": "normal"
+    }
+  ]
+}

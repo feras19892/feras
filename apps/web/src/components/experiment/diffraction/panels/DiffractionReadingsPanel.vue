@@ -1,8 +1,6 @@
-<script setup lang="ts">
-import { useI18n } from '../../../../composables/useI18n'
+﻿<script setup lang="ts">
 import { wavelengthToColor } from '../../../../composables/diffraction/useDiffractionCalculations'
 
-const { t } = useI18n()
 
 interface Props {
   mode: 'single' | 'grating'
@@ -29,6 +27,10 @@ defineProps<Props>()
       <div v-else class="reading-row">
         <span class="reading-label">N — Lines per mm</span>
         <span class="reading-val cyan">{{ linesPerMm }}</span>
+      </div>
+      <div v-if="mode === 'single'" class="reading-row">
+        <span class="reading-label">1/a</span>
+        <span class="reading-val amber">{{ (1 / slitWidth).toFixed(1) }} 1/mm</span>
       </div>
       <div class="reading-row">
         <span class="reading-label">D — Screen distance</span>
@@ -85,4 +87,5 @@ defineProps<Props>()
 .reading-val.bold { font-weight: 800; }
 .cyan  { color: #67e8f9; }
 .green { color: #4ade80; }
+.amber { color: #fbbf24; }
 </style>

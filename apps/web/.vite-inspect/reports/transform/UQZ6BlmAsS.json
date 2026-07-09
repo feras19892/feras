@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/RightPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport LabStatsPanel from './LabStatsPanel.vue';\nimport GuidePanel from './GuidePanel.vue';\nimport LabAssistant from './LabAssistant.vue';\nimport ExperimentStepsPanel from './ExperimentStepsPanel.vue';\nimport type { Experiment } from '../../../composables/chemistry/useExperiments';\nimport type { LabItem } from '../../../composables/chemistry/useChemistryTools';\nimport type { ToolState } from './InspectorPanel.vue';\nimport { useI18n } from '../../../composables/useI18n';\nconst { t } = useI18n();\n\nconst props = defineProps<{\n  selectedItem: LabItem | null;\n  selectedState: ToolState | null;\n  activeExperiment: Experiment | null;\n  stepCompletion: boolean[];\n}>();\n\nconst emit = defineEmits<{\n  selectExperiment: [];\n  openTheory: [];\n  clearExperiment: [];\n  resetLab: [];\n  showReport: [];\n}>();\n</script>\n\n<template>\n  <aside class=\"panel panel-right\">\n    <div class=\"panel-header\">\n      <span>{{ t('chemistryLab.infoPanel') }}</span>\n      <button class=\"reset-btn\" @click=\"emit('resetLab')\" :title=\"t('chemistryLab.resetLab')\">\n        {{ t('chemistryLab.reset') }}\n      </button>\n    </div>\n    <LabStatsPanel :item=\"selectedItem\" />\n    <GuidePanel :experiment=\"activeExperiment\" @select-experiment=\"emit('selectExperiment')\" @open-theory=\"emit('openTheory')\" />\n    <LabAssistant />\n    <ExperimentStepsPanel :experiment=\"activeExperiment\" :step-completion=\"stepCompletion\" @clear=\"emit('clearExperiment')\" @show-report=\"emit('showReport')\" />\n  </aside>\n</template>\n\n<style scoped>\n.panel-right {\n  display: flex;\n  flex-direction: column;\n  padding: 0.75rem;\n  gap: 0.75rem;\n}\n.panel-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 1rem;\n  padding-bottom: 0.5rem;\n  border-bottom: 1px solid #e2e8f0;\n  font-size: 0.85rem;\n  font-weight: 700;\n  color: #334155;\n}\n.reset-btn {\n  background: linear-gradient(135deg, #ef4444, #dc2626);\n  color: #fff;\n  border: none;\n  border-radius: 0.4rem;\n  padding: 0.35rem 0.7rem;\n  font-size: 0.7rem;\n  font-weight: 700;\n  cursor: pointer;\n  font-family: inherit;\n  transition: all 0.15s;\n}\n.reset-btn:hover {\n  transform: translateY(-1px);\n  box-shadow: 0 4px 12px rgba(239,68,68,0.25);\n}\n</style>\n",
+      "start": 1783634639326,
+      "end": 1783634639572,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639572,
+      "end": 1783634639572,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639572,
+      "end": 1783634639572,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639572,
+      "end": 1783634639572,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639572,
+      "end": 1783634639572,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/RightPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/RightPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/RightPanel.vue?vue&type=style&index=0&scoped=c5cbbadb&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-c5cbbadb\"]]);\n",
+      "start": 1783634639572,
+      "end": 1783634639938,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639938,
+      "end": 1783634639939,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639939,
+      "end": 1783634639939,
+      "order": "normal"
+    }
+  ]
+}

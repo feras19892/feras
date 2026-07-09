@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/projectile/projectileTheoretical.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "export function calcFlightTime(v0: number, angleRad: number, g: number) {\n  return (2 * v0 * Math.sin(angleRad)) / g\n}\n\nexport function calcMaxHeight(v0: number, angleRad: number, g: number) {\n  return (Math.pow(v0 * Math.sin(angleRad), 2)) / (2 * g)\n}\n\nexport function calcRange(v0: number, angleRad: number, g: number) {\n  return (Math.pow(v0, 2) * Math.sin(2 * angleRad)) / g\n}\n",
+      "start": 1783634643049,
+      "end": 1783634643081,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634643081,
+      "end": 1783634643081,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "export function calcFlightTime(v0, angleRad, g) {\n  return 2 * v0 * Math.sin(angleRad) / g;\n}\nexport function calcMaxHeight(v0, angleRad, g) {\n  return Math.pow(v0 * Math.sin(angleRad), 2) / (2 * g);\n}\nexport function calcRange(v0, angleRad, g) {\n  return Math.pow(v0, 2) * Math.sin(2 * angleRad) / g;\n}\n",
+      "start": 1783634643081,
+      "end": 1783634643123,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/projectile/projectileTheoretical.ts"
+        ],
+        "sourcesContent": [
+          "export function calcFlightTime(v0: number, angleRad: number, g: number) {\n  return (2 * v0 * Math.sin(angleRad)) / g\n}\n\nexport function calcMaxHeight(v0: number, angleRad: number, g: number) {\n  return (Math.pow(v0 * Math.sin(angleRad), 2)) / (2 * g)\n}\n\nexport function calcRange(v0: number, angleRad: number, g: number) {\n  return (Math.pow(v0, 2) * Math.sin(2 * angleRad)) / g\n}\n"
+        ],
+        "mappings": "AAAO,gBAAS,eAAe,IAAY,UAAkB,GAAW;AACtE,SAAQ,IAAI,KAAK,KAAK,IAAI,QAAQ,IAAK;AACzC;AAEO,gBAAS,cAAc,IAAY,UAAkB,GAAW;AACrE,SAAQ,KAAK,IAAI,KAAK,KAAK,IAAI,QAAQ,GAAG,CAAC,KAAM,IAAI;AACvD;AAEO,gBAAS,UAAU,IAAY,UAAkB,GAAW;AACjE,SAAQ,KAAK,IAAI,IAAI,CAAC,IAAI,KAAK,IAAI,IAAI,QAAQ,IAAK;AACtD;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634643124,
+      "end": 1783634643124,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634643124,
+      "end": 1783634643124,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634643124,
+      "end": 1783634643124,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634643124,
+      "end": 1783634643124,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634643124,
+      "end": 1783634643124,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634643124,
+      "end": 1783634643124,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634643124,
+      "end": 1783634643124,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634643124,
+      "end": 1783634643124,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634643124,
+      "end": 1783634643124,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634643124,
+      "end": 1783634643124,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634643124,
+      "end": 1783634643124,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634643124,
+      "end": 1783634643124,
+      "order": "normal"
+    }
+  ]
+}

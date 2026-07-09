@@ -27,6 +27,10 @@ onMounted(() => {
 
 const hasData = computed(() => store.hasData);
 const sourceName = computed(() => store.sourceName);
+const experimentId = computed(() => {
+  const source = store.payload?.sourceExperiment;
+  return source ? `chemistry-${source}` : undefined;
+});
 const readings = computed(() => store.readings);
 const columns = computed(() => store.columns);
 const equations = computed(() => store.equations);
@@ -251,9 +255,10 @@ function loadDemoData() {
     <SubmitReportModal
       v-model:show="reportOpen"
       experiment-type="chemistry"
+      :experiment-id="experimentId"
       :experiment-name="sourceName || t('experiments.chemistryExperiment')"
       :readings="JSON.stringify(readings)"
-      :params="JSON.stringify(columns.map((c: any) => ({ key: c.key, label: c.label, unit: c.unit })))"
+      :params="JSON.stringify(columns.map((c) => ({ key: c.key, label: c.label, unit: c.unit })))"
       :student-info="JSON.stringify(studentInfo)"
       :conclusion="JSON.stringify(conclusionData)"
       :columns="JSON.stringify(columns)"

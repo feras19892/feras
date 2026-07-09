@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/interference/InterferenceCanvas.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nimport { ref, onMounted, onUnmounted, watch } from 'vue'\n\nconst width = 800\nconst height = 400\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'InterferenceCanvas',\n  props: {\n    slitDistance: {},\n    screenDistance: {},\n    wavelength: {},\n    slitWidth: {},\n    intensityPattern: {},\n    orderPositions: {},\n    lightColor: {},\n    running: { type: Boolean }\n  },\n  setup(__props: any) {\n\nconst props = __props\n\nconst canvasRef = ref<HTMLCanvasElement | null>(null)\nfunction draw() {\n  const canvas = canvasRef.value\n  if (!canvas) return\n  const ctx = canvas.getContext('2d')\n  if (!ctx) return\n\n  ctx.clearRect(0, 0, width, height)\n  const midY = height / 2\n  const screenX = width - 80\n  const slitX = 80\n  const scaleY = 5\n\n  ctx.fillStyle = '#0d1117'\n  ctx.fillRect(0, 0, width, height)\n\n  // Laser source\n  ctx.fillStyle = props.lightColor\n  ctx.globalAlpha = 0.3\n  ctx.fillRect(10, midY - 20, 60, 40)\n  ctx.globalAlpha = 1\n  ctx.fillStyle = '#8B95A5'\n  ctx.font = '10px sans-serif'\n  ctx.fillText('Laser (coherent)', 20, midY - 28)\n\n  const slitGapPx = Math.max(10, props.slitDistance * 60)\n  ctx.fillStyle = '#161B22'\n  ctx.fillRect(slitX - 4, midY - slitGapPx / 2 - 2, 8, 2)\n  ctx.fillRect(slitX - 4, midY + slitGapPx / 2, 8, 2)\n  ctx.strokeStyle = props.lightColor\n  ctx.lineWidth = 2\n  ctx.strokeRect(slitX - 4, midY - slitGapPx / 2 - 2, 8, slitGapPx + 4)\n\n  if (props.running) {\n    ctx.strokeStyle = props.lightColor\n    ctx.globalAlpha = 0.15\n    const time = Date.now() / 500\n    for (let i = 0; i < 8; i++) {\n      const r = ((time + i) % 8) * 25\n      ctx.beginPath()\n      ctx.arc(slitX, midY - slitGapPx / 2, r, -Math.PI / 3, Math.PI / 3)\n      ctx.stroke()\n      ctx.beginPath()\n      ctx.arc(slitX, midY + slitGapPx / 2, r, -Math.PI / 3, Math.PI / 3)\n      ctx.stroke()\n    }\n    ctx.globalAlpha = 1\n  }\n\n  ctx.fillStyle = '#e2e8f0'\n  ctx.fillRect(screenX - 2, 40, 4, height - 80)\n\n  if (props.intensityPattern.length > 0) {\n    const maxI = Math.max(...props.intensityPattern.map(p => p.intensity))\n    const centerY = height / 2\n    for (const p of props.intensityPattern) {\n      const yPx = centerY - p.xMm * scaleY\n      const brightness = maxI > 0 ? p.intensity / maxI : 0\n      const r = 2 + brightness * 3\n      ctx.fillStyle = props.lightColor\n      ctx.globalAlpha = 0.3 + brightness * 0.7\n      ctx.beginPath()\n      ctx.arc(screenX, yPx, r, 0, Math.PI * 2)\n      ctx.fill()\n    }\n    ctx.globalAlpha = 1\n\n    ctx.strokeStyle = props.lightColor\n    ctx.lineWidth = 1.5\n    ctx.beginPath()\n    for (let i = 0; i < props.intensityPattern.length; i++) {\n      const p = props.intensityPattern[i]\n      const yPx = centerY - p.xMm * scaleY\n      const xOff = screenX + 10 + p.intensity * 60\n      if (i === 0) ctx.moveTo(xOff, yPx)\n      else ctx.lineTo(xOff, yPx)\n    }\n    ctx.stroke()\n  }\n\n  ctx.fillStyle = '#8B95A5'\n  ctx.font = '12px sans-serif'\n  ctx.fillText('Double Slit', slitX - 25, height - 15)\n  ctx.fillText('Screen', screenX - 15, height - 15)\n\n  // Order labels (left of screen so they don't get clipped)\n  for (let i = 0; i < props.orderPositions.length && i < 7; i++) {\n    const pos = props.orderPositions[i]\n    const yPx = midY - pos * scaleY\n    if (yPx > 30 && yPx < height - 30) {\n      const m = i - 3\n      const label = `m=${m}`\n      // Bright color for central fringe, slightly dimmer for others\n      const isCentral = m === 0\n      ctx.fillStyle = isCentral ? '#ffffff' : '#8B95A5'\n      ctx.font = isCentral ? 'bold 12px sans-serif' : '11px sans-serif'\n      // Draw small background pill for readability\n      const textX = screenX - 40\n      const textWidth = ctx.measureText(label).width\n      if (isCentral) {\n        ctx.fillStyle = 'rgba(255,255,255,0.1)'\n        ctx.beginPath()\n        ctx.roundRect(textX - 4, yPx - 8, textWidth + 8, 16, 4)\n        ctx.fill()\n      }\n      ctx.fillStyle = isCentral ? '#ffffff' : '#8B95A5'\n      ctx.fillText(label, textX, yPx + 3)\n    }\n  }\n}\n\nlet animId: number\nfunction animate() {\n  draw()\n  if (props.running) {\n    animId = requestAnimationFrame(animate)\n  }\n}\n\nwatch(() => props.running, (val) => {\n  if (val) { cancelAnimationFrame(animId); animate() }\n  else { cancelAnimationFrame(animId); draw() }\n})\n\nwatch(() => [\n  props.slitDistance, props.screenDistance, props.wavelength,\n  props.slitWidth, props.intensityPattern.length, props.lightColor\n], draw, { deep: true })\n\nonMounted(() => { draw() })\nonUnmounted(() => { cancelAnimationFrame(animId) })\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"canvas\", {\n    ref_key: \"canvasRef\",\n    ref: canvasRef,\n    width: width,\n    height: height,\n    style: {\"width\":\"100%\",\"height\":\"100%\"}\n  }, null, 512))\n}\n}\n\n})",
+      "start": 1783634641954,
+      "end": 1783634641954
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641954,
+      "end": 1783634641954,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nimport { ref, onMounted, onUnmounted, watch } from \"vue\";\nconst width = 800;\nconst height = 400;\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"InterferenceCanvas\",\n  props: {\n    slitDistance: {},\n    screenDistance: {},\n    wavelength: {},\n    slitWidth: {},\n    intensityPattern: {},\n    orderPositions: {},\n    lightColor: {},\n    running: { type: Boolean }\n  },\n  setup(__props) {\n    const props = __props;\n    const canvasRef = ref(null);\n    function draw() {\n      const canvas = canvasRef.value;\n      if (!canvas) return;\n      const ctx = canvas.getContext(\"2d\");\n      if (!ctx) return;\n      ctx.clearRect(0, 0, width, height);\n      const midY = height / 2;\n      const screenX = width - 80;\n      const slitX = 80;\n      const scaleY = 5;\n      ctx.fillStyle = \"#0d1117\";\n      ctx.fillRect(0, 0, width, height);\n      ctx.fillStyle = props.lightColor;\n      ctx.globalAlpha = 0.3;\n      ctx.fillRect(10, midY - 20, 60, 40);\n      ctx.globalAlpha = 1;\n      ctx.fillStyle = \"#8B95A5\";\n      ctx.font = \"10px sans-serif\";\n      ctx.fillText(\"Laser (coherent)\", 20, midY - 28);\n      const slitGapPx = Math.max(10, props.slitDistance * 60);\n      ctx.fillStyle = \"#161B22\";\n      ctx.fillRect(slitX - 4, midY - slitGapPx / 2 - 2, 8, 2);\n      ctx.fillRect(slitX - 4, midY + slitGapPx / 2, 8, 2);\n      ctx.strokeStyle = props.lightColor;\n      ctx.lineWidth = 2;\n      ctx.strokeRect(slitX - 4, midY - slitGapPx / 2 - 2, 8, slitGapPx + 4);\n      if (props.running) {\n        ctx.strokeStyle = props.lightColor;\n        ctx.globalAlpha = 0.15;\n        const time = Date.now() / 500;\n        for (let i = 0; i < 8; i++) {\n          const r = (time + i) % 8 * 25;\n          ctx.beginPath();\n          ctx.arc(slitX, midY - slitGapPx / 2, r, -Math.PI / 3, Math.PI / 3);\n          ctx.stroke();\n          ctx.beginPath();\n          ctx.arc(slitX, midY + slitGapPx / 2, r, -Math.PI / 3, Math.PI / 3);\n          ctx.stroke();\n        }\n        ctx.globalAlpha = 1;\n      }\n      ctx.fillStyle = \"#e2e8f0\";\n      ctx.fillRect(screenX - 2, 40, 4, height - 80);\n      if (props.intensityPattern.length > 0) {\n        const maxI = Math.max(...props.intensityPattern.map((p) => p.intensity));\n        const centerY = height / 2;\n        for (const p of props.intensityPattern) {\n          const yPx = centerY - p.xMm * scaleY;\n          const brightness = maxI > 0 ? p.intensity / maxI : 0;\n          const r = 2 + brightness * 3;\n          ctx.fillStyle = props.lightColor;\n          ctx.globalAlpha = 0.3 + brightness * 0.7;\n          ctx.beginPath();\n          ctx.arc(screenX, yPx, r, 0, Math.PI * 2);\n          ctx.fill();\n        }\n        ctx.globalAlpha = 1;\n        ctx.strokeStyle = props.lightColor;\n        ctx.lineWidth = 1.5;\n        ctx.beginPath();\n        for (let i = 0; i < props.intensityPattern.length; i++) {\n          const p = props.intensityPattern[i];\n          const yPx = centerY - p.xMm * scaleY;\n          const xOff = screenX + 10 + p.intensity * 60;\n          if (i === 0) ctx.moveTo(xOff, yPx);\n          else ctx.lineTo(xOff, yPx);\n        }\n        ctx.stroke();\n      }\n      ctx.fillStyle = \"#8B95A5\";\n      ctx.font = \"12px sans-serif\";\n      ctx.fillText(\"Double Slit\", slitX - 25, height - 15);\n      ctx.fillText(\"Screen\", screenX - 15, height - 15);\n      for (let i = 0; i < props.orderPositions.length && i < 7; i++) {\n        const pos = props.orderPositions[i];\n        const yPx = midY - pos * scaleY;\n        if (yPx > 30 && yPx < height - 30) {\n          const m = i - 3;\n          const label = `m=${m}`;\n          const isCentral = m === 0;\n          ctx.fillStyle = isCentral ? \"#ffffff\" : \"#8B95A5\";\n          ctx.font = isCentral ? \"bold 12px sans-serif\" : \"11px sans-serif\";\n          const textX = screenX - 40;\n          const textWidth = ctx.measureText(label).width;\n          if (isCentral) {\n            ctx.fillStyle = \"rgba(255,255,255,0.1)\";\n            ctx.beginPath();\n            ctx.roundRect(textX - 4, yPx - 8, textWidth + 8, 16, 4);\n            ctx.fill();\n          }\n          ctx.fillStyle = isCentral ? \"#ffffff\" : \"#8B95A5\";\n          ctx.fillText(label, textX, yPx + 3);\n        }\n      }\n    }\n    let animId;\n    function animate() {\n      draw();\n      if (props.running) {\n        animId = requestAnimationFrame(animate);\n      }\n    }\n    watch(() => props.running, (val) => {\n      if (val) {\n        cancelAnimationFrame(animId);\n        animate();\n      } else {\n        cancelAnimationFrame(animId);\n        draw();\n      }\n    });\n    watch(() => [\n      props.slitDistance,\n      props.screenDistance,\n      props.wavelength,\n      props.slitWidth,\n      props.intensityPattern.length,\n      props.lightColor\n    ], draw, { deep: true });\n    onMounted(() => {\n      draw();\n    });\n    onUnmounted(() => {\n      cancelAnimationFrame(animId);\n    });\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"canvas\", {\n        ref_key: \"canvasRef\",\n        ref: canvasRef,\n        width,\n        height,\n        style: { \"width\": \"100%\", \"height\": \"100%\" }\n      }, null, 512);\n    };\n  }\n});\n",
+      "start": 1783634641954,
+      "end": 1783634642261,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/interference/InterferenceCanvas.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nimport { ref, onMounted, onUnmounted, watch } from 'vue'\n\nconst width = 800\nconst height = 400\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'InterferenceCanvas',\n  props: {\n    slitDistance: {},\n    screenDistance: {},\n    wavelength: {},\n    slitWidth: {},\n    intensityPattern: {},\n    orderPositions: {},\n    lightColor: {},\n    running: { type: Boolean }\n  },\n  setup(__props: any) {\n\nconst props = __props\n\nconst canvasRef = ref<HTMLCanvasElement | null>(null)\nfunction draw() {\n  const canvas = canvasRef.value\n  if (!canvas) return\n  const ctx = canvas.getContext('2d')\n  if (!ctx) return\n\n  ctx.clearRect(0, 0, width, height)\n  const midY = height / 2\n  const screenX = width - 80\n  const slitX = 80\n  const scaleY = 5\n\n  ctx.fillStyle = '#0d1117'\n  ctx.fillRect(0, 0, width, height)\n\n  // Laser source\n  ctx.fillStyle = props.lightColor\n  ctx.globalAlpha = 0.3\n  ctx.fillRect(10, midY - 20, 60, 40)\n  ctx.globalAlpha = 1\n  ctx.fillStyle = '#8B95A5'\n  ctx.font = '10px sans-serif'\n  ctx.fillText('Laser (coherent)', 20, midY - 28)\n\n  const slitGapPx = Math.max(10, props.slitDistance * 60)\n  ctx.fillStyle = '#161B22'\n  ctx.fillRect(slitX - 4, midY - slitGapPx / 2 - 2, 8, 2)\n  ctx.fillRect(slitX - 4, midY + slitGapPx / 2, 8, 2)\n  ctx.strokeStyle = props.lightColor\n  ctx.lineWidth = 2\n  ctx.strokeRect(slitX - 4, midY - slitGapPx / 2 - 2, 8, slitGapPx + 4)\n\n  if (props.running) {\n    ctx.strokeStyle = props.lightColor\n    ctx.globalAlpha = 0.15\n    const time = Date.now() / 500\n    for (let i = 0; i < 8; i++) {\n      const r = ((time + i) % 8) * 25\n      ctx.beginPath()\n      ctx.arc(slitX, midY - slitGapPx / 2, r, -Math.PI / 3, Math.PI / 3)\n      ctx.stroke()\n      ctx.beginPath()\n      ctx.arc(slitX, midY + slitGapPx / 2, r, -Math.PI / 3, Math.PI / 3)\n      ctx.stroke()\n    }\n    ctx.globalAlpha = 1\n  }\n\n  ctx.fillStyle = '#e2e8f0'\n  ctx.fillRect(screenX - 2, 40, 4, height - 80)\n\n  if (props.intensityPattern.length > 0) {\n    const maxI = Math.max(...props.intensityPattern.map(p => p.intensity))\n    const centerY = height / 2\n    for (const p of props.intensityPattern) {\n      const yPx = centerY - p.xMm * scaleY\n      const brightness = maxI > 0 ? p.intensity / maxI : 0\n      const r = 2 + brightness * 3\n      ctx.fillStyle = props.lightColor\n      ctx.globalAlpha = 0.3 + brightness * 0.7\n      ctx.beginPath()\n      ctx.arc(screenX, yPx, r, 0, Math.PI * 2)\n      ctx.fill()\n    }\n    ctx.globalAlpha = 1\n\n    ctx.strokeStyle = props.lightColor\n    ctx.lineWidth = 1.5\n    ctx.beginPath()\n    for (let i = 0; i < props.intensityPattern.length; i++) {\n      const p = props.intensityPattern[i]\n      const yPx = centerY - p.xMm * scaleY\n      const xOff = screenX + 10 + p.intensity * 60\n      if (i === 0) ctx.moveTo(xOff, yPx)\n      else ctx.lineTo(xOff, yPx)\n    }\n    ctx.stroke()\n  }\n\n  ctx.fillStyle = '#8B95A5'\n  ctx.font = '12px sans-serif'\n  ctx.fillText('Double Slit', slitX - 25, height - 15)\n  ctx.fillText('Screen', screenX - 15, height - 15)\n\n  // Order labels (left of screen so they don't get clipped)\n  for (let i = 0; i < props.orderPositions.length && i < 7; i++) {\n    const pos = props.orderPositions[i]\n    const yPx = midY - pos * scaleY\n    if (yPx > 30 && yPx < height - 30) {\n      const m = i - 3\n      const label = `m=${m}`\n      // Bright color for central fringe, slightly dimmer for others\n      const isCentral = m === 0\n      ctx.fillStyle = isCentral ? '#ffffff' : '#8B95A5'\n      ctx.font = isCentral ? 'bold 12px sans-serif' : '11px sans-serif'\n      // Draw small background pill for readability\n      const textX = screenX - 40\n      const textWidth = ctx.measureText(label).width\n      if (isCentral) {\n        ctx.fillStyle = 'rgba(255,255,255,0.1)'\n        ctx.beginPath()\n        ctx.roundRect(textX - 4, yPx - 8, textWidth + 8, 16, 4)\n        ctx.fill()\n      }\n      ctx.fillStyle = isCentral ? '#ffffff' : '#8B95A5'\n      ctx.fillText(label, textX, yPx + 3)\n    }\n  }\n}\n\nlet animId: number\nfunction animate() {\n  draw()\n  if (props.running) {\n    animId = requestAnimationFrame(animate)\n  }\n}\n\nwatch(() => props.running, (val) => {\n  if (val) { cancelAnimationFrame(animId); animate() }\n  else { cancelAnimationFrame(animId); draw() }\n})\n\nwatch(() => [\n  props.slitDistance, props.screenDistance, props.wavelength,\n  props.slitWidth, props.intensityPattern.length, props.lightColor\n], draw, { deep: true })\n\nonMounted(() => { draw() })\nonUnmounted(() => { cancelAnimationFrame(animId) })\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"canvas\", {\n    ref_key: \"canvasRef\",\n    ref: canvasRef,\n    width: width,\n    height: height,\n    style: {\"width\":\"100%\",\"height\":\"100%\"}\n  }, null, 512))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642261,
+      "end": 1783634642261,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642261,
+      "end": 1783634642261,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634642261,
+      "end": 1783634642261,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642261,
+      "end": 1783634642261,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642261,
+      "end": 1783634642261,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642261,
+      "end": 1783634642261,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642261,
+      "end": 1783634642261,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642261,
+      "end": 1783634642261,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642261,
+      "end": 1783634642261,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642261,
+      "end": 1783634642261,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642261,
+      "end": 1783634642261,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642261,
+      "end": 1783634642261,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642261,
+      "end": 1783634642261,
+      "order": "normal"
+    }
+  ]
+}

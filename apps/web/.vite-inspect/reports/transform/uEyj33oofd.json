@@ -1,0 +1,112 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/locales/index.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import type { Locale, TranslationDict } from './types'\n\nexport type { Locale, TranslationDict }\n\nexport const supportedLocales: Locale[] = ['ar', 'en', 'es']\n\nexport const localeNames: Record<Locale, string> = {\n  ar: 'العربية',\n  en: 'English',\n  es: 'Español',\n}\n\nexport async function loadLocaleMessages(locale: Locale): Promise<TranslationDict> {\n  const module = await import(`./${locale}.ts`)\n  return module.default as TranslationDict\n}\n",
+      "start": 1783634639025,
+      "end": 1783634639143,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639143,
+      "end": 1783634639143,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "export const supportedLocales = [\"ar\", \"en\", \"es\"];\nexport const localeNames = {\n  ar: \"العربية\",\n  en: \"English\",\n  es: \"Español\"\n};\nexport async function loadLocaleMessages(locale) {\n  const module = await import(`./${locale}.ts`);\n  return module.default;\n}\n",
+      "start": 1783634639143,
+      "end": 1783634639164,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/locales/index.ts"
+        ],
+        "sourcesContent": [
+          "import type { Locale, TranslationDict } from './types'\n\nexport type { Locale, TranslationDict }\n\nexport const supportedLocales: Locale[] = ['ar', 'en', 'es']\n\nexport const localeNames: Record<Locale, string> = {\n  ar: 'العربية',\n  en: 'English',\n  es: 'Español',\n}\n\nexport async function loadLocaleMessages(locale: Locale): Promise<TranslationDict> {\n  const module = await import(`./${locale}.ts`)\n  return module.default as TranslationDict\n}\n"
+        ],
+        "mappings": "AAIO,aAAM,mBAA6B,CAAC,MAAM,MAAM,IAAI;AAEpD,aAAM,cAAsC;AAAA,EACjD,IAAI;AAAA,EACJ,IAAI;AAAA,EACJ,IAAI;AACN;AAEA,sBAAsB,mBAAmB,QAA0C;AACjF,QAAM,SAAS,MAAM,OAAO,KAAK,MAAM;AACvC,SAAO,OAAO;AAChB;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639164,
+      "end": 1783634639164,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "result": "export const supportedLocales = [\"ar\", \"en\", \"es\"];\nexport const localeNames = {\n  ar: \"العربية\",\n  en: \"English\",\n  es: \"Español\"\n};\nexport async function loadLocaleMessages(locale) {\n  const module = await import(`./${locale}.ts`);\n  return module.default;\n}\n",
+      "start": 1783634639165,
+      "end": 1783634639170,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639170,
+      "end": 1783634639170,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "result": "import { __vitePreload } from \"\u0000vite/preload-helper.js\";export const supportedLocales = [\"ar\", \"en\", \"es\"];\nexport const localeNames = {\n  ar: \"العربية\",\n  en: \"English\",\n  es: \"Español\"\n};\nexport async function loadLocaleMessages(locale) {\n  const module = await __vitePreload(() => import(`./${locale}.ts`),__VITE_IS_MODERN__?__VITE_PRELOAD__:void 0);\n  return module.default;\n}\n",
+      "start": 1783634639170,
+      "end": 1783634639170,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639170,
+      "end": 1783634639170,
+      "order": "normal"
+    }
+  ]
+}

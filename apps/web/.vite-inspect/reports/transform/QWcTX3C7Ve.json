@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/chemDatabase.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { reactive } from 'vue';\n\nexport type ChemicalCategory = 'acid' | 'base' | 'salt' | 'solvent' | 'indicator' | 'solid' | 'gas';\nexport type HazardLevel = 'safe' | 'caution' | 'warning' | 'danger';\nexport type PhysicalState = 'liquid' | 'solid' | 'gas';\n\nexport interface Chemical {\n  id: string;\n  nameAr: string;\n  formula: string;\n  category: ChemicalCategory;\n  physicalState: PhysicalState;\n  concentration?: number;\n  ph?: number;\n  color: string;\n  opacity: number;\n  density?: number;\n  molarMass?: number;\n  boilingPoint?: number;\n  hazardLevel: HazardLevel;\n  description?: string;\n}\n\nimport { chemDataCore } from './chemDataCore';\nimport { chemDataExtended } from './chemDataExtended';\n\nexport const chemicals: Chemical[] = [...chemDataCore, ...chemDataExtended];\n\nexport const selectedChemical = reactive<Chemical>({ ...chemicals[0] });\n",
+      "start": 1783634640041,
+      "end": 1783634640498,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640498,
+      "end": 1783634640498,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { reactive } from \"vue\";\nimport { chemDataCore } from \"./chemDataCore\";\nimport { chemDataExtended } from \"./chemDataExtended\";\nexport const chemicals = [...chemDataCore, ...chemDataExtended];\nexport const selectedChemical = reactive({ ...chemicals[0] });\n",
+      "start": 1783634640498,
+      "end": 1783634640664,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/chemDatabase.ts"
+        ],
+        "sourcesContent": [
+          "import { reactive } from 'vue';\n\nexport type ChemicalCategory = 'acid' | 'base' | 'salt' | 'solvent' | 'indicator' | 'solid' | 'gas';\nexport type HazardLevel = 'safe' | 'caution' | 'warning' | 'danger';\nexport type PhysicalState = 'liquid' | 'solid' | 'gas';\n\nexport interface Chemical {\n  id: string;\n  nameAr: string;\n  formula: string;\n  category: ChemicalCategory;\n  physicalState: PhysicalState;\n  concentration?: number;\n  ph?: number;\n  color: string;\n  opacity: number;\n  density?: number;\n  molarMass?: number;\n  boilingPoint?: number;\n  hazardLevel: HazardLevel;\n  description?: string;\n}\n\nimport { chemDataCore } from './chemDataCore';\nimport { chemDataExtended } from './chemDataExtended';\n\nexport const chemicals: Chemical[] = [...chemDataCore, ...chemDataExtended];\n\nexport const selectedChemical = reactive<Chemical>({ ...chemicals[0] });\n"
+        ],
+        "mappings": "AAAA,SAAS,gBAAgB;AAuBzB,SAAS,oBAAoB;AAC7B,SAAS,wBAAwB;AAE1B,aAAM,YAAwB,CAAC,GAAG,cAAc,GAAG,gBAAgB;AAEnE,aAAM,mBAAmB,SAAmB,EAAE,GAAG,UAAU,CAAC,EAAE,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640664,
+      "end": 1783634640665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640665,
+      "end": 1783634640665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640665,
+      "end": 1783634640665,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640665,
+      "end": 1783634640665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640667,
+      "end": 1783634640667,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640668,
+      "end": 1783634640668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640669,
+      "end": 1783634640669,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640669,
+      "end": 1783634640669,
+      "order": "normal"
+    }
+  ]
+}

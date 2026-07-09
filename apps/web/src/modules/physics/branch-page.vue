@@ -78,13 +78,13 @@ function expNameKey(id: string): string {
     'ideal-gas': 'experiments.expIdealGas',
     calorimetry: 'experiments.expCalorimetry',
     'specific-heat': 'experiments.expSpecificHeat',
-    'joule-equivalent': 'experiments.expJouleEquivalent',
     'boyles-law': 'experiments.expBoylesLaw',
     'thermal-expansion': 'experiments.expThermalExpansion',
     'latent-heat': 'experiments.expLatentHeat',
     'rc-circuit': 'experiments.expRcCircuit',
     'biot-savart': 'experiments.expBiotSavart',
     faraday: 'experiments.expFaraday',
+    'electric-lab': 'experiments.expElectricLab',
   };
   return map[id] || id;
 }

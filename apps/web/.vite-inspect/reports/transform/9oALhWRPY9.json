@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/shared/FeedbackModal.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref } from 'vue';\nimport { submitFeedback } from '../../services/admin.service';\nimport { useI18n } from '../../composables/useI18n';\n\nconst props = defineProps<{\n  show: boolean;\n  experimentId?: string;\n  experimentName?: string;\n}>();\n\nconst emit = defineEmits<{\n  (e: 'update:show', val: boolean): void;\n}>();\n\nconst { t } = useI18n();\nconst type = ref<'complaint' | 'rating' | 'suggestion'>('complaint');\nconst message = ref('');\nconst rating = ref(5);\nconst loading = ref(false);\nconst error = ref('');\nconst success = ref('');\n\nasync function send() {\n  if (!message.value.trim()) { error.value = t('common.writeMessage'); return; }\n  loading.value = true; error.value = ''; success.value = '';\n  try {\n    const res = await submitFeedback(\n      type.value,\n      message.value,\n      props.experimentId,\n      props.experimentName,\n      type.value === 'rating' ? rating.value : undefined\n    );\n    if (res.success) {\n      success.value = t('common.thanks');\n      setTimeout(() => { emit('update:show', false); message.value = ''; }, 1200);\n    }\n  } catch (err: unknown) {\n    error.value = (err instanceof Error ? err.message : '') || t('common.submitFailed');\n  } finally {\n    loading.value = false;\n  }\n}\n</script>\n\n<template>\n  <div v-if=\"show\" class=\"modal-overlay\" @click.self=\"$emit('update:show', false)\">\n    <div class=\"modal-content\">\n      <h3>{{ t('common.feedbackTitle') }}</h3>\n\n      <div class=\"form-row\">\n        <label>{{ t('common.typeLabel') }}</label>\n        <div class=\"type-buttons\">\n          <button :class=\"{ active: type === 'complaint' }\" @click=\"type = 'complaint'\">{{ t('common.complaint') }}</button>\n          <button :class=\"{ active: type === 'rating' }\" @click=\"type = 'rating'\">{{ t('common.rating') }}</button>\n          <button :class=\"{ active: type === 'suggestion' }\" @click=\"type = 'suggestion'\">{{ t('common.suggestion') }}</button>\n        </div>\n      </div>\n\n      <div v-if=\"type === 'rating'\" class=\"form-row\">\n        <label>{{ t('common.ratingLabel') }}</label>\n        <div class=\"stars\">\n          <button v-for=\"n in 5\" :key=\"n\" @click=\"rating = n\" :class=\"{ filled: n <= rating }\">⭐</button>\n        </div>\n      </div>\n\n      <div class=\"form-row\">\n        <label>{{ t('common.messageLabel') }}</label>\n        <textarea v-model=\"message\" rows=\"4\" :placeholder=\"t('common.messagePlaceholder')\"></textarea>\n      </div>\n\n      <p v-if=\"error\" class=\"msg error\">{{ error }}</p>\n      <p v-if=\"success\" class=\"msg success\">{{ success }}</p>\n\n      <div class=\"modal-actions\">\n        <button class=\"btn-cancel\" @click=\"$emit('update:show', false)\">{{ t('common.cancel') }}</button>\n        <button class=\"btn-submit\" :disabled=\"loading\" @click=\"send\">{{ loading ? '...' : t('common.submit') }}</button>\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 200; }\n.modal-content { background: #111827; border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; padding: 1.5rem; width: 100%; max-width: 420px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }\n.modal-content h3 { margin: 0 0 1rem; color: #e2e8f0; font-size: 1.1rem; }\n.form-row { margin-bottom: 0.8rem; }\n.form-row label { display: block; font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.3rem; }\n.type-buttons { display: flex; gap: 0.4rem; }\n.type-buttons button { flex: 1; padding: 0.4rem; border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #94a3b8; cursor: pointer; font-family: inherit; font-size: 0.8rem; }\n.type-buttons button.active { background: rgba(99,102,241,0.2); color: #a5b4fc; border-color: rgba(99,102,241,0.3); }\n.stars { display: flex; gap: 0.3rem; }\n.stars button { background: none; border: none; font-size: 1.3rem; cursor: pointer; filter: grayscale(1); opacity: 0.4; transition: all 0.2s; }\n.stars button.filled { filter: grayscale(0); opacity: 1; }\ntextarea { width: 100%; padding: 0.5rem; border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; font-size: 0.85rem; resize: vertical; box-sizing: border-box; }\n.modal-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }\n.modal-actions button { flex: 1; padding: 0.55rem; border-radius: 0.5rem; font-family: inherit; font-weight: 700; cursor: pointer; }\n.btn-cancel { background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); }\n.btn-submit { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none; }\n.msg.error { color: #f87171; font-size: 0.85rem; margin: 0.5rem 0; }\n.msg.success { color: #4ade80; font-size: 0.85rem; margin: 0.5rem 0; }\n</style>\n",
+      "start": 1783634639341,
+      "end": 1783634639679,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639679,
+      "end": 1783634639679,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639679,
+      "end": 1783634639679,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639679,
+      "end": 1783634639679,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639679,
+      "end": 1783634639679,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/shared/FeedbackModal.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/shared/FeedbackModal.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/shared/FeedbackModal.vue?vue&type=style&index=0&scoped=2f6a9131&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-2f6a9131\"]]);\n",
+      "start": 1783634639679,
+      "end": 1783634639938,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639938,
+      "end": 1783634639939,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639939,
+      "end": 1783634639939,
+      "order": "normal"
+    }
+  ]
+}

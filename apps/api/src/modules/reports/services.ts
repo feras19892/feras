@@ -8,6 +8,7 @@ async function getTeacherId(classId: string): Promise<number | null> {
 
 interface CreateReportData {
   student_id: number; class_id: string; experiment_type: string; experiment_name: string;
+  experiment_id?: string;
   readings: string; params?: string;
   student_info?: string; conclusion?: string; conclusion_errors?: string;
   conclusion_improvements?: string; columns?: string; equations?: string;
@@ -17,11 +18,11 @@ interface CreateReportData {
 export async function createReport(data: CreateReportData) {
   const result = await db.run(
     `INSERT INTO experiment_reports
-     (student_id, class_id, experiment_type, experiment_name, readings, params,
+     (student_id, class_id, experiment_type, experiment_name, experiment_id, readings, params,
       student_info, conclusion, conclusion_errors, conclusion_improvements,
       columns, equations, plots, chart_snapshot, status, submitted_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'submitted', CURRENT_TIMESTAMP)`,
-    data.student_id, data.class_id, data.experiment_type, data.experiment_name,
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'submitted', CURRENT_TIMESTAMP)`,
+    data.student_id, data.class_id, data.experiment_type, data.experiment_name, data.experiment_id || null,
     data.readings, data.params || null,
     data.student_info || null, data.conclusion || null,
     data.conclusion_errors || null, data.conclusion_improvements || null,
@@ -51,11 +52,11 @@ export async function resubmitReport(reportId: number, data: CreateReportData) {
   if (!old) return { success: false, message: 'التقرير غير موجود' };
   const result = await db.run(
     `INSERT INTO experiment_reports
-     (student_id, class_id, experiment_type, experiment_name, readings, params,
+     (student_id, class_id, experiment_type, experiment_name, experiment_id, readings, params,
       student_info, conclusion, conclusion_errors, conclusion_improvements,
       columns, equations, plots, chart_snapshot, status, submitted_at, parent_id, version)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'resubmitted', CURRENT_TIMESTAMP, ?, ?)`,
-    data.student_id, data.class_id, data.experiment_type, data.experiment_name,
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'resubmitted', CURRENT_TIMESTAMP, ?, ?)`,
+    data.student_id, data.class_id, data.experiment_type, data.experiment_name, data.experiment_id || null,
     data.readings, data.params || null,
     data.student_info || null, data.conclusion || null,
     data.conclusion_errors || null, data.conclusion_improvements || null,

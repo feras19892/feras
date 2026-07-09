@@ -10,8 +10,7 @@ export interface MirrorRenderProps {
   magnification: number | null
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function drawMirror(canvas: HTMLCanvasElement, props: MirrorRenderProps, t?: (key: string, ...args: any[]) => string) {
+export function drawMirror(canvas: HTMLCanvasElement, props: MirrorRenderProps, t?: (key: string, fallbackOrVars?: string | Record<string, string | number>, vars?: Record<string, string | number>) => string) {
   const ctx = canvas.getContext('2d')
   if (!ctx) return
 

@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/ResistivityReferencePanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeStyle as _normalizeStyle, createStaticVNode as _createStaticVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"ref-section\" }\nconst _hoisted_3 = { class: \"mat-table\" }\nconst _hoisted_4 = { class: \"rho-val\" }\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ResistivityReferencePanel',\n  setup(__props) {\n\nconst MATERIALS = [\n  { name: 'فضة (Silver)',   rho: 1.59e-8,  color: '#c0c0c0' },\n  { name: 'نحاس (Copper)',   rho: 1.68e-8,  color: '#b87333' },\n  { name: 'ذهب (Gold)',     rho: 2.44e-8,  color: '#ffd700' },\n  { name: 'ألمنيوم (Aluminum)', rho: 2.82e-8,  color: '#a0a0a0' },\n  { name: 'تنجستن (Tungsten)', rho: 5.6e-8,  color: '#4a4a4a' },\n  { name: 'نيكل (Nickel)',   rho: 6.99e-8,   color: '#c0c0c0' },\n  { name: 'حديد (Iron)',     rho: 9.71e-8,   color: '#8b4513' },\n  { name: 'جرافيت (Graphite)', rho: 3.5e-5,  color: '#333333' },\n  { name: 'سيليكون (Silicon)', rho: 640,     color: '#4169e1' },\n  { name: 'زجاج (Glass)',    rho: 1e12,      color: '#87ceeb' },\n  { name: 'مطاط (Rubber)',   rho: 1e13,      color: '#2d2d2d' },\n]\n\nconst NOTES = [\n  '💡 ρ ثابتة لكل مادة — لا تتغير بتغيير شكل السلك',\n  '⚡ الموصلات الجيدة (معادن) لها ρ صغيرة جداً (~10⁻⁸)',\n  '🔥 العوازل (زجاج، مطاط) لها ρ ضخمة جداً (>10¹⁰)',\n  '📊 الرسم: R مقابل L → خط مستقيم، الميل = ρ/A',\n  '📏 مضاعف الطول = مضاعف المقاومة (R ∝ L)',\n  '📏 مضاعف المساحة = نصف المقاومة (R ∝ 1/A)',\n]\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _cache[2] || (_cache[2] = _createStaticVNode(\"<div class=\\\"ref-title\\\" data-v-71437ad4>🔬 المقاومية ρ</div><div class=\\\"ref-section\\\" data-v-71437ad4><div class=\\\"section-title\\\" data-v-71437ad4>القانون الأساسي</div><div class=\\\"formula-box\\\" style=\\\"color:#c084fc;\\\" data-v-71437ad4>R = ρ × L / A</div><div class=\\\"formula-box\\\" style=\\\"color:#c084fc;\\\" data-v-71437ad4>ρ = R × A / L</div></div>\", 2)),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"section-title\" }, \"جدول المقاومية للمواد\", -1)),\n      _createElementVNode(\"div\", _hoisted_3, [\n        _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"mat-header\" }, [\n          _createElementVNode(\"span\", null, \"المادة\"),\n          _createElementVNode(\"span\", null, \"ρ (Ω·m)\")\n        ], -1)),\n        (_openBlock(), _createElementBlock(_Fragment, null, _renderList(MATERIALS, (m) => {\n          return _createElementVNode(\"div\", {\n            key: m.name,\n            class: \"mat-row\"\n          }, [\n            _createElementVNode(\"span\", {\n              style: _normalizeStyle({ color: m.color })\n            }, _toDisplayString(m.name), 5),\n            _createElementVNode(\"span\", _hoisted_4, _toDisplayString(m.rho.toExponential(2)), 1)\n          ])\n        }), 64))\n      ])\n    ]),\n    (_openBlock(), _createElementBlock(_Fragment, null, _renderList(NOTES, (note, i) => {\n      return _createElementVNode(\"div\", {\n        key: i,\n        class: \"ref-note\"\n      }, _toDisplayString(note), 1)\n    }), 64))\n  ]))\n}\n}\n\n})",
+      "start": 1783634640268,
+      "end": 1783634640268
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640268,
+      "end": 1783634640268,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeStyle as _normalizeStyle, createStaticVNode as _createStaticVNode } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nconst _hoisted_2 = { class: \"ref-section\" };\nconst _hoisted_3 = { class: \"mat-table\" };\nconst _hoisted_4 = { class: \"rho-val\" };\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"ResistivityReferencePanel\",\n  setup(__props) {\n    const MATERIALS = [\n      { name: \"فضة (Silver)\", rho: 159e-10, color: \"#c0c0c0\" },\n      { name: \"نحاس (Copper)\", rho: 168e-10, color: \"#b87333\" },\n      { name: \"ذهب (Gold)\", rho: 244e-10, color: \"#ffd700\" },\n      { name: \"ألمنيوم (Aluminum)\", rho: 282e-10, color: \"#a0a0a0\" },\n      { name: \"تنجستن (Tungsten)\", rho: 56e-9, color: \"#4a4a4a\" },\n      { name: \"نيكل (Nickel)\", rho: 699e-10, color: \"#c0c0c0\" },\n      { name: \"حديد (Iron)\", rho: 971e-10, color: \"#8b4513\" },\n      { name: \"جرافيت (Graphite)\", rho: 35e-6, color: \"#333333\" },\n      { name: \"سيليكون (Silicon)\", rho: 640, color: \"#4169e1\" },\n      { name: \"زجاج (Glass)\", rho: 1e12, color: \"#87ceeb\" },\n      { name: \"مطاط (Rubber)\", rho: 1e13, color: \"#2d2d2d\" }\n    ];\n    const NOTES = [\n      \"💡 ρ ثابتة لكل مادة — لا تتغير بتغيير شكل السلك\",\n      \"⚡ الموصلات الجيدة (معادن) لها ρ صغيرة جداً (~10⁻⁸)\",\n      \"🔥 العوازل (زجاج، مطاط) لها ρ ضخمة جداً (>10¹⁰)\",\n      \"📊 الرسم: R مقابل L → خط مستقيم، الميل = ρ/A\",\n      \"📏 مضاعف الطول = مضاعف المقاومة (R ∝ L)\",\n      \"📏 مضاعف المساحة = نصف المقاومة (R ∝ 1/A)\"\n    ];\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _cache[2] || (_cache[2] = _createStaticVNode('<div class=\"ref-title\" data-v-71437ad4>🔬 المقاومية ρ</div><div class=\"ref-section\" data-v-71437ad4><div class=\"section-title\" data-v-71437ad4>القانون الأساسي</div><div class=\"formula-box\" style=\"color:#c084fc;\" data-v-71437ad4>R = ρ × L / A</div><div class=\"formula-box\" style=\"color:#c084fc;\" data-v-71437ad4>ρ = R × A / L</div></div>', 2)),\n        _createElementVNode(\"div\", _hoisted_2, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"section-title\" }, \"جدول المقاومية للمواد\", -1)),\n          _createElementVNode(\"div\", _hoisted_3, [\n            _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"mat-header\" }, [\n              _createElementVNode(\"span\", null, \"المادة\"),\n              _createElementVNode(\"span\", null, \"ρ (Ω·m)\")\n            ], -1)),\n            (_openBlock(), _createElementBlock(_Fragment, null, _renderList(MATERIALS, (m) => {\n              return _createElementVNode(\"div\", {\n                key: m.name,\n                class: \"mat-row\"\n              }, [\n                _createElementVNode(\"span\", {\n                  style: _normalizeStyle({ color: m.color })\n                }, _toDisplayString(m.name), 5),\n                _createElementVNode(\"span\", _hoisted_4, _toDisplayString(m.rho.toExponential(2)), 1)\n              ]);\n            }), 64))\n          ])\n        ]),\n        (_openBlock(), _createElementBlock(_Fragment, null, _renderList(NOTES, (note, i) => {\n          return _createElementVNode(\"div\", {\n            key: i,\n            class: \"ref-note\"\n          }, _toDisplayString(note), 1);\n        }), 64))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634640268,
+      "end": 1783634640508,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/ResistivityReferencePanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeStyle as _normalizeStyle, createStaticVNode as _createStaticVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"ref-section\" }\nconst _hoisted_3 = { class: \"mat-table\" }\nconst _hoisted_4 = { class: \"rho-val\" }\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ResistivityReferencePanel',\n  setup(__props) {\n\nconst MATERIALS = [\n  { name: 'فضة (Silver)',   rho: 1.59e-8,  color: '#c0c0c0' },\n  { name: 'نحاس (Copper)',   rho: 1.68e-8,  color: '#b87333' },\n  { name: 'ذهب (Gold)',     rho: 2.44e-8,  color: '#ffd700' },\n  { name: 'ألمنيوم (Aluminum)', rho: 2.82e-8,  color: '#a0a0a0' },\n  { name: 'تنجستن (Tungsten)', rho: 5.6e-8,  color: '#4a4a4a' },\n  { name: 'نيكل (Nickel)',   rho: 6.99e-8,   color: '#c0c0c0' },\n  { name: 'حديد (Iron)',     rho: 9.71e-8,   color: '#8b4513' },\n  { name: 'جرافيت (Graphite)', rho: 3.5e-5,  color: '#333333' },\n  { name: 'سيليكون (Silicon)', rho: 640,     color: '#4169e1' },\n  { name: 'زجاج (Glass)',    rho: 1e12,      color: '#87ceeb' },\n  { name: 'مطاط (Rubber)',   rho: 1e13,      color: '#2d2d2d' },\n]\n\nconst NOTES = [\n  '💡 ρ ثابتة لكل مادة — لا تتغير بتغيير شكل السلك',\n  '⚡ الموصلات الجيدة (معادن) لها ρ صغيرة جداً (~10⁻⁸)',\n  '🔥 العوازل (زجاج، مطاط) لها ρ ضخمة جداً (>10¹⁰)',\n  '📊 الرسم: R مقابل L → خط مستقيم، الميل = ρ/A',\n  '📏 مضاعف الطول = مضاعف المقاومة (R ∝ L)',\n  '📏 مضاعف المساحة = نصف المقاومة (R ∝ 1/A)',\n]\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _cache[2] || (_cache[2] = _createStaticVNode(\"<div class=\\\"ref-title\\\" data-v-71437ad4>🔬 المقاومية ρ</div><div class=\\\"ref-section\\\" data-v-71437ad4><div class=\\\"section-title\\\" data-v-71437ad4>القانون الأساسي</div><div class=\\\"formula-box\\\" style=\\\"color:#c084fc;\\\" data-v-71437ad4>R = ρ × L / A</div><div class=\\\"formula-box\\\" style=\\\"color:#c084fc;\\\" data-v-71437ad4>ρ = R × A / L</div></div>\", 2)),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"section-title\" }, \"جدول المقاومية للمواد\", -1)),\n      _createElementVNode(\"div\", _hoisted_3, [\n        _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"mat-header\" }, [\n          _createElementVNode(\"span\", null, \"المادة\"),\n          _createElementVNode(\"span\", null, \"ρ (Ω·m)\")\n        ], -1)),\n        (_openBlock(), _createElementBlock(_Fragment, null, _renderList(MATERIALS, (m) => {\n          return _createElementVNode(\"div\", {\n            key: m.name,\n            class: \"mat-row\"\n          }, [\n            _createElementVNode(\"span\", {\n              style: _normalizeStyle({ color: m.color })\n            }, _toDisplayString(m.name), 5),\n            _createElementVNode(\"span\", _hoisted_4, _toDisplayString(m.rho.toExponential(2)), 1)\n          ])\n        }), 64))\n      ])\n    ]),\n    (_openBlock(), _createElementBlock(_Fragment, null, _renderList(NOTES, (note, i) => {\n      return _createElementVNode(\"div\", {\n        key: i,\n        class: \"ref-note\"\n      }, _toDisplayString(note), 1)\n    }), 64))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,sBAAsB,qBAAqB,cAAc,aAAa,YAAY,WAAW,aAAa,YAAY,sBAAsB,qBAAqB,mBAAmB,kBAAkB,kBAAkB,iBAAiB,qBAAqB,0BAA0B;AAEjS,MAAM,aAAa,EAAE,OAAO,aAAa;AACzC,MAAM,aAAa,EAAE,OAAO,cAAc;AAC1C,MAAM,aAAa,EAAE,OAAO,YAAY;AACxC,MAAM,aAAa,EAAE,OAAO,UAAU;AAGtC,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,MAAM,SAAS;AAEjB,UAAM,YAAY;AAAA,MAChB,EAAE,MAAM,gBAAkB,KAAK,SAAU,OAAO,UAAU;AAAA,MAC1D,EAAE,MAAM,iBAAmB,KAAK,SAAU,OAAO,UAAU;AAAA,MAC3D,EAAE,MAAM,cAAkB,KAAK,SAAU,OAAO,UAAU;AAAA,MAC1D,EAAE,MAAM,sBAAsB,KAAK,SAAU,OAAO,UAAU;AAAA,MAC9D,EAAE,MAAM,qBAAqB,KAAK,OAAS,OAAO,UAAU;AAAA,MAC5D,EAAE,MAAM,iBAAmB,KAAK,SAAW,OAAO,UAAU;AAAA,MAC5D,EAAE,MAAM,eAAmB,KAAK,SAAW,OAAO,UAAU;AAAA,MAC5D,EAAE,MAAM,qBAAqB,KAAK,OAAS,OAAO,UAAU;AAAA,MAC5D,EAAE,MAAM,qBAAqB,KAAK,KAAS,OAAO,UAAU;AAAA,MAC5D,EAAE,MAAM,gBAAmB,KAAK,MAAW,OAAO,UAAU;AAAA,MAC5D,EAAE,MAAM,iBAAmB,KAAK,MAAW,OAAO,UAAU;AAAA,IAC9D;AAEA,UAAM,QAAQ;AAAA,MACZ;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,IACF;AAEA,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,mBAAmB,oVAAkW,CAAC;AAAA,QAChZ,oBAAoB,OAAO,YAAY;AAAA,UACrC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,gBAAgB,GAAG,yBAAyB,EAAE;AAAA,UAC5G,oBAAoB,OAAO,YAAY;AAAA,YACrC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,aAAa,GAAG;AAAA,cAC5E,oBAAoB,QAAQ,MAAM,QAAQ;AAAA,cAC1C,oBAAoB,QAAQ,MAAM,SAAS;AAAA,YAC7C,GAAG,EAAE;AAAA,aACJ,WAAW,GAAG,oBAAoB,WAAW,MAAM,YAAY,WAAW,CAAC,MAAM;AAChF,qBAAO,oBAAoB,OAAO;AAAA,gBAChC,KAAK,EAAE;AAAA,gBACP,OAAO;AAAA,cACT,GAAG;AAAA,gBACD,oBAAoB,QAAQ;AAAA,kBAC1B,OAAO,gBAAgB,EAAE,OAAO,EAAE,MAAM,CAAC;AAAA,gBAC3C,GAAG,iBAAiB,EAAE,IAAI,GAAG,CAAC;AAAA,gBAC9B,oBAAoB,QAAQ,YAAY,iBAAiB,EAAE,IAAI,cAAc,CAAC,CAAC,GAAG,CAAC;AAAA,cACrF,CAAC;AAAA,YACH,CAAC,GAAG,EAAE;AAAA,UACR,CAAC;AAAA,QACH,CAAC;AAAA,SACA,WAAW,GAAG,oBAAoB,WAAW,MAAM,YAAY,OAAO,CAAC,MAAM,MAAM;AAClF,iBAAO,oBAAoB,OAAO;AAAA,YAChC,KAAK;AAAA,YACL,OAAO;AAAA,UACT,GAAG,iBAAiB,IAAI,GAAG,CAAC;AAAA,QAC9B,CAAC,GAAG,EAAE;AAAA,MACR,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640508,
+      "end": 1783634640508,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640508,
+      "end": 1783634640508,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634640508,
+      "end": 1783634640508,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640508,
+      "end": 1783634640508,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640508,
+      "end": 1783634640508,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640508,
+      "end": 1783634640508,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640508,
+      "end": 1783634640508,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640508,
+      "end": 1783634640508,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640508,
+      "end": 1783634640508,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640508,
+      "end": 1783634640508,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640508,
+      "end": 1783634640508,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640508,
+      "end": 1783634640509,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640509,
+      "end": 1783634640509,
+      "order": "normal"
+    }
+  ]
+}

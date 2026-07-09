@@ -1,8 +1,11 @@
 import { ref, reactive, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { useAnomalyWatcher } from '../experiment/useAnomalyWatcher'
+import { sendToAnalysis } from '../analysis/sendToAnalysis'
 import { usePrismLayout } from './usePrismLayout'
 import { usePrismTrials } from './usePrismTrials'
 import { calculatePrismAngles, linearRegression, getMaterialList } from './usePrismCalculations'
+import type { AnalysisPayload } from '../../types/physics'
 
 export function usePrismExperiment() {
   const watcher = useAnomalyWatcher('prism', [
@@ -93,7 +96,7 @@ export function usePrismExperiment() {
   const regression = computed(() => {
     const valid = trials.trials.value.filter(t => t.deviation !== null)
     if (valid.length < 2) return { m: 0, b: 0, r2: 0 }
-    const pts = valid.map(t => ({ x: t.wavelength, y: t.deviation as number }))
+    const pts = valid.map(t => ({ x: 1 / (t.wavelength * t.wavelength), y: t.n }))
     return linearRegression(pts)
   })
 
@@ -115,11 +118,6 @@ export function usePrismExperiment() {
   function resetSim() {
     running.value = false
     paused.value = false
-    params.prismAngle = 60
-    params.angleIncidence = 45
-    params.wavelength = 580
-    params.material = 'glass'
-    trials.clearTrials()
   }
 
   function handleDrop(fromId: string, x?: number, y?: number) {
@@ -140,11 +138,37 @@ export function usePrismExperiment() {
     }
   }
 
+  const router = useRouter()
   function exportToAnalysis() {
     if (trials.trials.value.length < 2) return
-    const payload = { experiment: 'prism', trials: trials.trials.value, regression: regression.value }
-    localStorage.setItem('analysis_payload', JSON.stringify(payload))
-    window.open('/analysis', '_blank')
+    const tList = trials.trials.value
+    const readings = tList.map(t => ({
+      angleIncidence: t.angleIncidence,
+      prismAngle: t.prismAngle,
+      wavelength: t.wavelength,
+      deviation: t.deviation ?? 0,
+      n: t.n,
+    }))
+    const payload: AnalysisPayload = {
+      sourceExperiment: 'prism',
+      sourceNameAr: 'تجربة المنشور',
+      hasCalcTab: true,
+      readings,
+      columns: [
+        { key: 'angleIncidence', label: 'زاوية السقوط', unit: '°' },
+        { key: 'prismAngle', label: 'زاوية المنشور', unit: '°' },
+        { key: 'wavelength', label: 'الطول الموجي', unit: 'nm' },
+        { key: 'deviation', label: 'انحراف', unit: '°' },
+        { key: 'n', label: 'n', unit: '' },
+      ],
+      equations: [
+        { name: 'قانون سنل', formula: 'n₁ sin θ₁ = n₂ sin θ₂', variables: [{ symbol: 'n₁', label: 'n الأول' }, { symbol: 'n₂', label: 'n الثاني' }, { symbol: 'θ₁', label: 'زاوية السقوط' }, { symbol: 'θ₂', label: 'زاوية الانكسار' }], solveFor: ['n₂'] },
+      ],
+      suggestedPlots: [
+        { xKey: 'wavelength', yKey: 'deviation', xLabel: 'λ (nm)', yLabel: 'δ (°)', type: 'scatter' },
+      ],
+    }
+    sendToAnalysis(router, payload)
   }
 
   function downloadCsv() {

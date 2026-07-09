@@ -21,6 +21,22 @@ export default defineConfig({
       '@modules': fileURLToPath(new URL('./src/modules', import.meta.url)),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id: string) {
+          if (id.includes('node_modules')) {
+            if (id.includes('vue') || id.includes('vue-router') || id.includes('pinia')) return 'vendor-framework';
+            if (id.includes('chart') || id.includes('d3') || id.includes('echarts')) return 'vendor-charts';
+            return 'vendor';
+          }
+          if (id.includes('/modules/chemistry/')) return 'chemistry';
+          if (id.includes('/modules/physics/')) return 'physics';
+          if (id.includes('/pages/admin')) return 'admin';
+        },
+      },
+    },
+  },
   server: {
     port: 5173,
     proxy: {

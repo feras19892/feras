@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/ui/BranchCard.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\ninterface Props {\n  id: string;\n  icon: string;\n  title: string;\n  desc: string;\n  stats: string;\n  action?: () => void;\n}\n\ndefineProps<Props>();\n</script>\n\n<template>\n  <div :class=\"['card', id]\" @click=\"action\">\n    <div class=\"card-glow\"></div>\n    <div class=\"card-icon\">{{ icon }}</div>\n    <h3 class=\"card-title\">{{ title }}</h3>\n    <p v-if=\"desc\" class=\"card-desc\">{{ desc }}</p>\n    <div v-if=\"stats\" class=\"card-stats\">\n      <span>📊</span>\n      <span>{{ stats }}</span>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.card {\n  width: 220px;\n  height: 260px;\n  background: rgba(255, 255, 255, 0.04);\n  -webkit-backdrop-filter: blur(20px);\n  backdrop-filter: blur(20px);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 28px;\n  box-shadow:\n    0 8px 32px rgba(0, 0, 0, 0.3),\n    inset 0 1px 0 rgba(255, 255, 255, 0.05);\n  padding: 2rem 1.5rem;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  text-align: center;\n  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);\n  cursor: pointer;\n  position: relative;\n  overflow: hidden;\n  text-decoration: none;\n  color: inherit;\n  opacity: 0;\n  animation: fadeInUp 0.7s ease-out forwards;\n}\n\n.card-glow {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  width: 120px;\n  height: 120px;\n  border-radius: 50%;\n  filter: blur(50px);\n  opacity: 0;\n  transform: translate(-50%, -50%);\n  transition: opacity 0.4s ease;\n  pointer-events: none;\n}\n\n.card:hover {\n  transform: translateY(-12px) scale(1.03);\n  border-color: rgba(255, 255, 255, 0.2);\n  box-shadow:\n    0 25px 50px -12px rgba(0, 0, 0, 0.5),\n    0 0 60px rgba(255, 255, 255, 0.03);\n}\n.card:hover .card-glow { opacity: 0.25; }\n\n.physics .card-glow { background: #3B82F6; }\n.physics:hover { border-color: rgba(59,130,246,0.4); }\n\n.mathematics .card-glow { background: #EC4899; }\n.mathematics:hover { border-color: rgba(236,72,153,0.4); }\n\n.general .card-glow { background: #F97316; }\n.general:hover { border-color: rgba(249,115,22,0.4); }\n\n.chemistry .card-glow { background: #10B981; }\n.chemistry:hover { border-color: rgba(16,185,129,0.4); }\n\n.card-icon {\n  font-size: 4rem;\n  line-height: 1;\n  margin-bottom: 1rem;\n  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));\n  transition: all 0.35s ease;\n}\n\n.card:hover .card-icon {\n  transform: scale(1.15) rotate(-5deg);\n}\n\n.card-title { font-size: 1.3rem; font-weight: 700; margin: 0; color: #f1f5f9; }\n.card-desc { font-size: 0.9rem; color: rgba(255,255,255,0.6); margin-top: 0.6rem; line-height: 1.5; }\n.card-stats {\n  display: flex;\n  align-items: center;\n  gap: 0.4rem;\n  margin-top: 0.8rem;\n  color: rgba(255,255,255,0.5);\n  font-size: 0.82rem;\n}\n\n@keyframes fadeInUp {\n  from { opacity: 0; transform: translateY(40px) scale(0.95); }\n  to { opacity: 1; transform: translateY(0) scale(1); }\n}\n\n@media (max-width: 768px) {\n  .card { width: 100%; max-width: 280px; height: 240px; }\n  .card-icon { font-size: 2.4rem; }\n}\n</style>\n",
+      "start": 1783634639336,
+      "end": 1783634639622,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639622,
+      "end": 1783634639622,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639622,
+      "end": 1783634639622,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639622,
+      "end": 1783634639622,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639622,
+      "end": 1783634639622,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/ui/BranchCard.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/ui/BranchCard.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/ui/BranchCard.vue?vue&type=style&index=0&scoped=e0ecdd3e&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-e0ecdd3e\"]]);\n",
+      "start": 1783634639622,
+      "end": 1783634639942,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639943,
+      "end": 1783634639943,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639943,
+      "end": 1783634639943,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639943,
+      "end": 1783634639943,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639943,
+      "end": 1783634639943,
+      "order": "normal"
+    }
+  ]
+}

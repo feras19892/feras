@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/StraightWireReadingsPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"readings-panel\" }\nconst _hoisted_2 = { class: \"readings-title\" }\nconst _hoisted_3 = { class: \"readings-grid\" }\nconst _hoisted_4 = { class: \"reading-box current\" }\nconst _hoisted_5 = { class: \"r-value\" }\nconst _hoisted_6 = { class: \"reading-box distance\" }\nconst _hoisted_7 = { class: \"r-value\" }\nconst _hoisted_8 = { class: \"reading-box field\" }\nconst _hoisted_9 = { class: \"r-value\" }\nconst _hoisted_10 = { class: \"reading-box field-exp\" }\nconst _hoisted_11 = { class: \"r-label\" }\nconst _hoisted_12 = { class: \"r-value\" }\nconst _hoisted_13 = {\n  key: 0,\n  class: \"probe-indicator\"\n}\nconst _hoisted_14 = {\n  key: 1,\n  class: \"probe-indicator idle\"\n}\n\nimport { useI18n } from '../../../composables/useI18n'\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'StraightWireReadingsPanel',\n  props: {\n    I: {},\n    r: {},\n    B: {},\n    running: { type: Boolean },\n    hasProbe: { type: Boolean }\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\n\n\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, _toDisplayString(_unref(t)('experiments.emLiveReadings')), 1),\n    _createElementVNode(\"div\", _hoisted_3, [\n      _createElementVNode(\"div\", _hoisted_4, [\n        _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"r-label\" }, \"I\", -1)),\n        _createElementVNode(\"span\", _hoisted_5, _toDisplayString(__props.I.toFixed(1)), 1),\n        _cache[1] || (_cache[1] = _createElementVNode(\"span\", { class: \"r-unit\" }, \"A\", -1))\n      ]),\n      _createElementVNode(\"div\", _hoisted_6, [\n        _cache[2] || (_cache[2] = _createElementVNode(\"span\", { class: \"r-label\" }, \"r\", -1)),\n        _createElementVNode(\"span\", _hoisted_7, _toDisplayString((__props.r * 100).toFixed(1)), 1),\n        _cache[3] || (_cache[3] = _createElementVNode(\"span\", { class: \"r-unit\" }, \"cm\", -1))\n      ]),\n      _createElementVNode(\"div\", _hoisted_8, [\n        _cache[4] || (_cache[4] = _createElementVNode(\"span\", { class: \"r-label\" }, \"B\", -1)),\n        _createElementVNode(\"span\", _hoisted_9, _toDisplayString((__props.B * 1e6).toFixed(2)), 1),\n        _cache[5] || (_cache[5] = _createElementVNode(\"span\", { class: \"r-unit\" }, \"μT\", -1))\n      ]),\n      _createElementVNode(\"div\", _hoisted_10, [\n        _createElementVNode(\"span\", _hoisted_11, _toDisplayString(_unref(t)('experiments.emReadingsBExp')), 1),\n        _createElementVNode(\"span\", _hoisted_12, _toDisplayString(__props.B.toExponential(2)), 1),\n        _cache[6] || (_cache[6] = _createElementVNode(\"span\", { class: \"r-unit\" }, \"T\", -1))\n      ])\n    ]),\n    (__props.hasProbe)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_13, _toDisplayString(_unref(t)('experiments.emProbeHall')), 1))\n      : (_openBlock(), _createElementBlock(\"div\", _hoisted_14, _toDisplayString(_unref(t)('experiments.emProbeIdleR')), 1))\n  ]))\n}\n}\n\n})",
+      "start": 1783634642086,
+      "end": 1783634642086
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642086,
+      "end": 1783634642086,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"readings-panel\" };\nconst _hoisted_2 = { class: \"readings-title\" };\nconst _hoisted_3 = { class: \"readings-grid\" };\nconst _hoisted_4 = { class: \"reading-box current\" };\nconst _hoisted_5 = { class: \"r-value\" };\nconst _hoisted_6 = { class: \"reading-box distance\" };\nconst _hoisted_7 = { class: \"r-value\" };\nconst _hoisted_8 = { class: \"reading-box field\" };\nconst _hoisted_9 = { class: \"r-value\" };\nconst _hoisted_10 = { class: \"reading-box field-exp\" };\nconst _hoisted_11 = { class: \"r-label\" };\nconst _hoisted_12 = { class: \"r-value\" };\nconst _hoisted_13 = {\n  key: 0,\n  class: \"probe-indicator\"\n};\nconst _hoisted_14 = {\n  key: 1,\n  class: \"probe-indicator idle\"\n};\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"StraightWireReadingsPanel\",\n  props: {\n    I: {},\n    r: {},\n    B: {},\n    running: { type: Boolean },\n    hasProbe: { type: Boolean }\n  },\n  setup(__props) {\n    const { t } = useI18n();\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, _toDisplayString(_unref(t)(\"experiments.emLiveReadings\")), 1),\n        _createElementVNode(\"div\", _hoisted_3, [\n          _createElementVNode(\"div\", _hoisted_4, [\n            _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"r-label\" }, \"I\", -1)),\n            _createElementVNode(\"span\", _hoisted_5, _toDisplayString(__props.I.toFixed(1)), 1),\n            _cache[1] || (_cache[1] = _createElementVNode(\"span\", { class: \"r-unit\" }, \"A\", -1))\n          ]),\n          _createElementVNode(\"div\", _hoisted_6, [\n            _cache[2] || (_cache[2] = _createElementVNode(\"span\", { class: \"r-label\" }, \"r\", -1)),\n            _createElementVNode(\"span\", _hoisted_7, _toDisplayString((__props.r * 100).toFixed(1)), 1),\n            _cache[3] || (_cache[3] = _createElementVNode(\"span\", { class: \"r-unit\" }, \"cm\", -1))\n          ]),\n          _createElementVNode(\"div\", _hoisted_8, [\n            _cache[4] || (_cache[4] = _createElementVNode(\"span\", { class: \"r-label\" }, \"B\", -1)),\n            _createElementVNode(\"span\", _hoisted_9, _toDisplayString((__props.B * 1e6).toFixed(2)), 1),\n            _cache[5] || (_cache[5] = _createElementVNode(\"span\", { class: \"r-unit\" }, \"μT\", -1))\n          ]),\n          _createElementVNode(\"div\", _hoisted_10, [\n            _createElementVNode(\"span\", _hoisted_11, _toDisplayString(_unref(t)(\"experiments.emReadingsBExp\")), 1),\n            _createElementVNode(\"span\", _hoisted_12, _toDisplayString(__props.B.toExponential(2)), 1),\n            _cache[6] || (_cache[6] = _createElementVNode(\"span\", { class: \"r-unit\" }, \"T\", -1))\n          ])\n        ]),\n        __props.hasProbe ? (_openBlock(), _createElementBlock(\"div\", _hoisted_13, _toDisplayString(_unref(t)(\"experiments.emProbeHall\")), 1)) : (_openBlock(), _createElementBlock(\"div\", _hoisted_14, _toDisplayString(_unref(t)(\"experiments.emProbeIdleR\")), 1))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634642086,
+      "end": 1783634642281,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/StraightWireReadingsPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"readings-panel\" }\nconst _hoisted_2 = { class: \"readings-title\" }\nconst _hoisted_3 = { class: \"readings-grid\" }\nconst _hoisted_4 = { class: \"reading-box current\" }\nconst _hoisted_5 = { class: \"r-value\" }\nconst _hoisted_6 = { class: \"reading-box distance\" }\nconst _hoisted_7 = { class: \"r-value\" }\nconst _hoisted_8 = { class: \"reading-box field\" }\nconst _hoisted_9 = { class: \"r-value\" }\nconst _hoisted_10 = { class: \"reading-box field-exp\" }\nconst _hoisted_11 = { class: \"r-label\" }\nconst _hoisted_12 = { class: \"r-value\" }\nconst _hoisted_13 = {\n  key: 0,\n  class: \"probe-indicator\"\n}\nconst _hoisted_14 = {\n  key: 1,\n  class: \"probe-indicator idle\"\n}\n\nimport { useI18n } from '../../../composables/useI18n'\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'StraightWireReadingsPanel',\n  props: {\n    I: {},\n    r: {},\n    B: {},\n    running: { type: Boolean },\n    hasProbe: { type: Boolean }\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\n\n\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, _toDisplayString(_unref(t)('experiments.emLiveReadings')), 1),\n    _createElementVNode(\"div\", _hoisted_3, [\n      _createElementVNode(\"div\", _hoisted_4, [\n        _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"r-label\" }, \"I\", -1)),\n        _createElementVNode(\"span\", _hoisted_5, _toDisplayString(__props.I.toFixed(1)), 1),\n        _cache[1] || (_cache[1] = _createElementVNode(\"span\", { class: \"r-unit\" }, \"A\", -1))\n      ]),\n      _createElementVNode(\"div\", _hoisted_6, [\n        _cache[2] || (_cache[2] = _createElementVNode(\"span\", { class: \"r-label\" }, \"r\", -1)),\n        _createElementVNode(\"span\", _hoisted_7, _toDisplayString((__props.r * 100).toFixed(1)), 1),\n        _cache[3] || (_cache[3] = _createElementVNode(\"span\", { class: \"r-unit\" }, \"cm\", -1))\n      ]),\n      _createElementVNode(\"div\", _hoisted_8, [\n        _cache[4] || (_cache[4] = _createElementVNode(\"span\", { class: \"r-label\" }, \"B\", -1)),\n        _createElementVNode(\"span\", _hoisted_9, _toDisplayString((__props.B * 1e6).toFixed(2)), 1),\n        _cache[5] || (_cache[5] = _createElementVNode(\"span\", { class: \"r-unit\" }, \"μT\", -1))\n      ]),\n      _createElementVNode(\"div\", _hoisted_10, [\n        _createElementVNode(\"span\", _hoisted_11, _toDisplayString(_unref(t)('experiments.emReadingsBExp')), 1),\n        _createElementVNode(\"span\", _hoisted_12, _toDisplayString(__props.B.toExponential(2)), 1),\n        _cache[6] || (_cache[6] = _createElementVNode(\"span\", { class: \"r-unit\" }, \"T\", -1))\n      ])\n    ]),\n    (__props.hasProbe)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_13, _toDisplayString(_unref(t)('experiments.emProbeHall')), 1))\n      : (_openBlock(), _createElementBlock(\"div\", _hoisted_14, _toDisplayString(_unref(t)('experiments.emProbeIdleR')), 1))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642281,
+      "end": 1783634642281,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642281,
+      "end": 1783634642281,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634642281,
+      "end": 1783634642281,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642281,
+      "end": 1783634642281,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642281,
+      "end": 1783634642281,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642281,
+      "end": 1783634642281,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642281,
+      "end": 1783634642281,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642281,
+      "end": 1783634642281,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642281,
+      "end": 1783634642281,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642281,
+      "end": 1783634642281,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642281,
+      "end": 1783634642281,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642281,
+      "end": 1783634642281,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642281,
+      "end": 1783634642281,
+      "order": "normal"
+    }
+  ]
+}

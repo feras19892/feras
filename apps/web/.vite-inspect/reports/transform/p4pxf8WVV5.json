@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/specific-heat/useSpecificHeatCalculations.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "// Water specific heat (J/kg·°C)\nexport const C_WATER = 4186\n\n// Metal catalog (hidden from user in \"unknown\" mode)\nexport const METAL_CATALOG: Record<string, { c: number; nameAr: string; nameEn: string }> = {\n  metalA: { c: 900, nameAr: 'ألمنيوم', nameEn: 'Aluminum' },\n  metalB: { c: 385, nameAr: 'نحاس', nameEn: 'Copper' },\n  metalC: { c: 450, nameAr: 'حديد', nameEn: 'Iron' },\n  metalD: { c: 130, nameAr: 'رصاص', nameEn: 'Lead' },\n  metalE: { c: 235, nameAr: 'زنك', nameEn: 'Zinc' },\n}\n\n/** Equilibrium temperature from mixing\n *  m_m·c_m·(T_m - Tf) = m_w·c_w·(Tf - T_w)\n *  Tf = (m_m·c_m·T_m + m_w·c_w·T_w) / (m_m·c_m + m_w·c_w)\n */\nexport function equilibriumTemp(\n  metalMassKg: number, metalC: number, metalTemp: number,\n  waterMassKg: number, waterTemp: number\n): number {\n  const num = metalMassKg * metalC * metalTemp + waterMassKg * C_WATER * waterTemp\n  const den = metalMassKg * metalC + waterMassKg * C_WATER\n  if (den === 0) return waterTemp\n  return num / den\n}\n\n/** Extract c_m from measured Tf using method of mixtures:\n *  c_m = m_w·c_w·(Tf - T_w) / (m_m·(T_m - Tf))\n */\nexport function findMetalSpecificHeat(\n  metalMassKg: number, metalTemp: number,\n  waterMassKg: number, waterTemp: number,\n  finalTemp: number\n): number {\n  const num = waterMassKg * C_WATER * (finalTemp - waterTemp)\n  const den = metalMassKg * (metalTemp - finalTemp)\n  if (den === 0 || num <= 0) return 0\n  return num / den\n}\n\nexport function linearRegression(pts: { x: number; y: number }[]) {\n  const n = pts.length\n  if (n < 2) return { m: 0, b: 0, r2: 0 }\n  let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumY2 = 0\n  for (const p of pts) { sumX += p.x; sumY += p.y; sumXY += p.x * p.y; sumX2 += p.x * p.x; sumY2 += p.y * p.y }\n  const m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX)\n  const b = (sumY - m * sumX) / n\n  const ssTot = sumY2 - (sumY * sumY) / n\n  const ssRes = sumY2 - 2 * m * sumXY - 2 * b * sumY + m * m * sumX2 + 2 * m * b * sumX + n * b * b\n  const r2 = ssTot === 0 ? 1 : 1 - ssRes / ssTot\n  return { m, b, r2 }\n}\n",
+      "start": 1783634640543,
+      "end": 1783634640805,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640805,
+      "end": 1783634640805,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "export const C_WATER = 4186;\nexport const METAL_CATALOG = {\n  metalA: { c: 900, nameAr: \"ألمنيوم\", nameEn: \"Aluminum\" },\n  metalB: { c: 385, nameAr: \"نحاس\", nameEn: \"Copper\" },\n  metalC: { c: 450, nameAr: \"حديد\", nameEn: \"Iron\" },\n  metalD: { c: 130, nameAr: \"رصاص\", nameEn: \"Lead\" },\n  metalE: { c: 235, nameAr: \"زنك\", nameEn: \"Zinc\" }\n};\nexport function equilibriumTemp(metalMassKg, metalC, metalTemp, waterMassKg, waterTemp) {\n  const num = metalMassKg * metalC * metalTemp + waterMassKg * C_WATER * waterTemp;\n  const den = metalMassKg * metalC + waterMassKg * C_WATER;\n  if (den === 0) return waterTemp;\n  return num / den;\n}\nexport function findMetalSpecificHeat(metalMassKg, metalTemp, waterMassKg, waterTemp, finalTemp) {\n  const num = waterMassKg * C_WATER * (finalTemp - waterTemp);\n  const den = metalMassKg * (metalTemp - finalTemp);\n  if (den === 0 || num <= 0) return 0;\n  return num / den;\n}\nexport function linearRegression(pts) {\n  const n = pts.length;\n  if (n < 2) return { m: 0, b: 0, r2: 0 };\n  let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumY2 = 0;\n  for (const p of pts) {\n    sumX += p.x;\n    sumY += p.y;\n    sumXY += p.x * p.y;\n    sumX2 += p.x * p.x;\n    sumY2 += p.y * p.y;\n  }\n  const m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);\n  const b = (sumY - m * sumX) / n;\n  const ssTot = sumY2 - sumY * sumY / n;\n  const ssRes = sumY2 - 2 * m * sumXY - 2 * b * sumY + m * m * sumX2 + 2 * m * b * sumX + n * b * b;\n  const r2 = ssTot === 0 ? 1 : 1 - ssRes / ssTot;\n  return { m, b, r2 };\n}\n",
+      "start": 1783634640805,
+      "end": 1783634641014,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/specific-heat/useSpecificHeatCalculations.ts"
+        ],
+        "sourcesContent": [
+          "// Water specific heat (J/kg·°C)\nexport const C_WATER = 4186\n\n// Metal catalog (hidden from user in \"unknown\" mode)\nexport const METAL_CATALOG: Record<string, { c: number; nameAr: string; nameEn: string }> = {\n  metalA: { c: 900, nameAr: 'ألمنيوم', nameEn: 'Aluminum' },\n  metalB: { c: 385, nameAr: 'نحاس', nameEn: 'Copper' },\n  metalC: { c: 450, nameAr: 'حديد', nameEn: 'Iron' },\n  metalD: { c: 130, nameAr: 'رصاص', nameEn: 'Lead' },\n  metalE: { c: 235, nameAr: 'زنك', nameEn: 'Zinc' },\n}\n\n/** Equilibrium temperature from mixing\n *  m_m·c_m·(T_m - Tf) = m_w·c_w·(Tf - T_w)\n *  Tf = (m_m·c_m·T_m + m_w·c_w·T_w) / (m_m·c_m + m_w·c_w)\n */\nexport function equilibriumTemp(\n  metalMassKg: number, metalC: number, metalTemp: number,\n  waterMassKg: number, waterTemp: number\n): number {\n  const num = metalMassKg * metalC * metalTemp + waterMassKg * C_WATER * waterTemp\n  const den = metalMassKg * metalC + waterMassKg * C_WATER\n  if (den === 0) return waterTemp\n  return num / den\n}\n\n/** Extract c_m from measured Tf using method of mixtures:\n *  c_m = m_w·c_w·(Tf - T_w) / (m_m·(T_m - Tf))\n */\nexport function findMetalSpecificHeat(\n  metalMassKg: number, metalTemp: number,\n  waterMassKg: number, waterTemp: number,\n  finalTemp: number\n): number {\n  const num = waterMassKg * C_WATER * (finalTemp - waterTemp)\n  const den = metalMassKg * (metalTemp - finalTemp)\n  if (den === 0 || num <= 0) return 0\n  return num / den\n}\n\nexport function linearRegression(pts: { x: number; y: number }[]) {\n  const n = pts.length\n  if (n < 2) return { m: 0, b: 0, r2: 0 }\n  let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumY2 = 0\n  for (const p of pts) { sumX += p.x; sumY += p.y; sumXY += p.x * p.y; sumX2 += p.x * p.x; sumY2 += p.y * p.y }\n  const m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX)\n  const b = (sumY - m * sumX) / n\n  const ssTot = sumY2 - (sumY * sumY) / n\n  const ssRes = sumY2 - 2 * m * sumXY - 2 * b * sumY + m * m * sumX2 + 2 * m * b * sumX + n * b * b\n  const r2 = ssTot === 0 ? 1 : 1 - ssRes / ssTot\n  return { m, b, r2 }\n}\n"
+        ],
+        "mappings": "AACO,aAAM,UAAU;AAGhB,aAAM,gBAA+E;AAAA,EAC1F,QAAQ,EAAE,GAAG,KAAK,QAAQ,WAAW,QAAQ,WAAW;AAAA,EACxD,QAAQ,EAAE,GAAG,KAAK,QAAQ,QAAQ,QAAQ,SAAS;AAAA,EACnD,QAAQ,EAAE,GAAG,KAAK,QAAQ,QAAQ,QAAQ,OAAO;AAAA,EACjD,QAAQ,EAAE,GAAG,KAAK,QAAQ,QAAQ,QAAQ,OAAO;AAAA,EACjD,QAAQ,EAAE,GAAG,KAAK,QAAQ,OAAO,QAAQ,OAAO;AAClD;AAMO,gBAAS,gBACd,aAAqB,QAAgB,WACrC,aAAqB,WACb;AACR,QAAM,MAAM,cAAc,SAAS,YAAY,cAAc,UAAU;AACvE,QAAM,MAAM,cAAc,SAAS,cAAc;AACjD,MAAI,QAAQ,EAAG,QAAO;AACtB,SAAO,MAAM;AACf;AAKO,gBAAS,sBACd,aAAqB,WACrB,aAAqB,WACrB,WACQ;AACR,QAAM,MAAM,cAAc,WAAW,YAAY;AACjD,QAAM,MAAM,eAAe,YAAY;AACvC,MAAI,QAAQ,KAAK,OAAO,EAAG,QAAO;AAClC,SAAO,MAAM;AACf;AAEO,gBAAS,iBAAiB,KAAiC;AAChE,QAAM,IAAI,IAAI;AACd,MAAI,IAAI,EAAG,QAAO,EAAE,GAAG,GAAG,GAAG,GAAG,IAAI,EAAE;AACtC,MAAI,OAAO,GAAG,OAAO,GAAG,QAAQ,GAAG,QAAQ,GAAG,QAAQ;AACtD,aAAW,KAAK,KAAK;AAAE,YAAQ,EAAE;AAAG,YAAQ,EAAE;AAAG,aAAS,EAAE,IAAI,EAAE;AAAG,aAAS,EAAE,IAAI,EAAE;AAAG,aAAS,EAAE,IAAI,EAAE;AAAA,EAAE;AAC5G,QAAM,KAAK,IAAI,QAAQ,OAAO,SAAS,IAAI,QAAQ,OAAO;AAC1D,QAAM,KAAK,OAAO,IAAI,QAAQ;AAC9B,QAAM,QAAQ,QAAS,OAAO,OAAQ;AACtC,QAAM,QAAQ,QAAQ,IAAI,IAAI,QAAQ,IAAI,IAAI,OAAO,IAAI,IAAI,QAAQ,IAAI,IAAI,IAAI,OAAO,IAAI,IAAI;AAChG,QAAM,KAAK,UAAU,IAAI,IAAI,IAAI,QAAQ;AACzC,SAAO,EAAE,GAAG,GAAG,GAAG;AACpB;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641014,
+      "end": 1783634641014,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641014,
+      "end": 1783634641014,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641014,
+      "end": 1783634641014,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641014,
+      "end": 1783634641014,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641014,
+      "end": 1783634641014,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641014,
+      "end": 1783634641014,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641014,
+      "end": 1783634641014,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641014,
+      "end": 1783634641014,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641014,
+      "end": 1783634641014,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641014,
+      "end": 1783634641014,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641014,
+      "end": 1783634641014,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641015,
+      "end": 1783634641015,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/shared/ReportCommentThread.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref } from 'vue';\nimport { addComment, getComments } from '../../services/report.service';\nimport { useI18n } from '../../composables/useI18n';\nimport type { ReportComment } from '../../services/report.service';\n\nconst props = defineProps<{\n  reportId: number;\n  userRole: string;\n  userName: string;\n}>();\n\nconst { t } = useI18n();\nconst comments = ref<ReportComment[]>([]);\nconst newComment = ref('');\nconst loading = ref(false);\nconst sending = ref(false);\n\nasync function load() {\n  loading.value = true;\n  try {\n    const res = await getComments(props.reportId);\n    if (res.success) comments.value = res.comments;\n  } catch (err) {\n    console.error('load comments failed:', err);\n  }\n  loading.value = false;\n}\n\nasync function send() {\n  if (!newComment.value.trim()) return;\n  sending.value = true;\n  try {\n    const res = await addComment(props.reportId, newComment.value.trim());\n    if (res.success) {\n      newComment.value = '';\n      await load();\n    }\n  } catch (err) {\n    console.error('send comment failed:', err);\n  }\n  sending.value = false;\n}\n\nfunction formatTime(dateStr: string) {\n  const d = new Date(dateStr);\n  return d.toLocaleString('ar-SA', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });\n}\n\nfunction authorLabel(role: string) {\n  if (role === 'teacher') return t('common.authorTeacher');\n  if (role === 'admin') return t('common.authorAdmin');\n  return t('common.authorStudent');\n}\n\nload();\n</script>\n\n<template>\n  <div class=\"comment-thread\">\n    <h4 class=\"title\">{{ t('common.commentsTitle') }}</h4>\n\n    <div v-if=\"loading\" class=\"status\">...</div>\n    <div v-else-if=\"comments.length === 0\" class=\"status\">{{ t('common.noComments') }}</div>\n\n    <div class=\"comments-list\">\n      <div\n        v-for=\"c in comments\"\n        :key=\"c.id\"\n        :class=\"['comment', { me: c.author_role === userRole }]\"\n      >\n        <div class=\"comment-header\">\n          <span class=\"author\">{{ authorLabel(c.author_role) }} — {{ c.author_name }}</span>\n          <span class=\"time\">{{ formatTime(c.created_at) }}</span>\n        </div>\n        <p class=\"comment-body\">{{ c.content }}</p>\n      </div>\n    </div>\n\n    <div class=\"input-row\">\n      <input\n        v-model=\"newComment\"\n        type=\"text\"\n        :placeholder=\"t('common.commentPlaceholder')\"\n        @keydown.enter.prevent=\"send\"\n      />\n      <button :disabled=\"sending || !newComment.trim()\" @click=\"send\">\n        {{ sending ? '...' : t('common.send') }}\n      </button>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.comment-thread {\n  border-top: 1px solid rgba(255, 255, 255, 0.06);\n  padding-top: 1rem;\n  display: flex;\n  flex-direction: column;\n  gap: 0.75rem;\n}\n.title { margin: 0; font-size: 0.9rem; color: #67e8f9; }\n.status { text-align: center; color: #64748b; font-size: 0.8rem; padding: 0.5rem; }\n.comments-list { display: flex; flex-direction: column; gap: 0.5rem; max-height: 300px; overflow-y: auto; padding-right: 0.25rem; }\n.comment { padding: 0.6rem 0.8rem; border-radius: 0.45rem; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); }\n.comment.me { background: rgba(99, 102, 241, 0.08); border-color: rgba(99, 102, 241, 0.15); }\n.comment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem; }\n.author { font-size: 0.75rem; color: #94a3b8; font-weight: 600; }\n.time { font-size: 0.7rem; color: #475569; }\n.comment-body { margin: 0; font-size: 0.85rem; color: #e2e8f0; line-height: 1.45; }\n.input-row { display: flex; gap: 0.4rem; margin-top: 0.25rem; }\n.input-row input { flex: 1; padding: 0.5rem 0.7rem; border-radius: 0.4rem; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(0, 0, 0, 0.3); color: #e2e8f0; font-size: 0.85rem; font-family: inherit; }\n.input-row button { padding: 0.5rem 1rem; border-radius: 0.4rem; border: none; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; font-size: 0.8rem; font-weight: 700; cursor: pointer; }\n.input-row button:disabled { opacity: 0.4; cursor: not-allowed; }\n</style>\n",
+      "start": 1783634640321,
+      "end": 1783634640590,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640590,
+      "end": 1783634640590,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640590,
+      "end": 1783634640590,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640590,
+      "end": 1783634640590,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640590,
+      "end": 1783634640590,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/shared/ReportCommentThread.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/shared/ReportCommentThread.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/shared/ReportCommentThread.vue?vue&type=style&index=0&scoped=35766cd3&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-35766cd3\"]]);\n",
+      "start": 1783634640590,
+      "end": 1783634640823,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    }
+  ]
+}

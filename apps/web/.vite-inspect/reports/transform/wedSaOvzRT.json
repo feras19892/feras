@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/freefall/FreeFallOverlayPanels.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createVNode as _createVNode, withModifiers as _withModifiers, createCommentVNode as _createCommentVNode, Teleport as _Teleport, createBlock as _createBlock } from \"vue\"\n\nconst _hoisted_1 = [\"onClick\"]\nconst _hoisted_2 = { class: \"overlay-card\" }\nconst _hoisted_3 = { class: \"card-header\" }\nconst _hoisted_4 = [\"onClick\"]\n\nimport FreeFallPanelBody from './FreeFallPanelBody.vue'\nimport type { PanelId } from '../../../composables/freefall/useFreeFallLayout'\nimport type { FreeFallTrial } from '../../../composables/freefall/useFreeFallTrials'\nimport type { FreeFallParams } from '../../../modules/physics/experiments/freefall/useFreeFallPhysics'\n\ninterface Measured {\n  flightTime: number | null\n  impactVelocity: number | null\n}\n\ninterface SimState {\n  t: number\n  y: number\n  vy: number\n  running: boolean\n  paused: boolean\n  landed: boolean\n}\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'FreeFallOverlayPanels',\n  props: {\n    maximized: {},\n    panelTitle: { type: Function },\n    trials: {},\n    calcResult: {},\n    params: {},\n    sim: {},\n    measured: {},\n    trialStats: {},\n    tutorType: {},\n    tutorMessage: {},\n    canvasSnapshot: {},\n    enableNoise: { type: Boolean }\n  },\n  emits: [\"maximize\", \"update:params\", \"remove\", \"clear\", \"calcG\", \"calcT\", \"calcV\", \"calcFitG\", \"printReport\", \"openFullReport\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst props = __props\n\nconst emit = __emit\n\nconst allIds: PanelId[] = ['table', 'equations', 'scatter', 'tutor', 'signal', 'params', 'stats', 'error', 'report']\nfunction isMaximized(id: string) { return (props.maximized as Record<string, boolean>)[id] as boolean }\nfunction emitMaximize(id: string) { emit('maximize', id) }\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createBlock(_Teleport, { to: \"body\" }, [\n    (_openBlock(), _createElementBlock(_Fragment, null, _renderList(allIds, (id) => {\n      return (_openBlock(), _createElementBlock(_Fragment, { key: id }, [\n        (isMaximized(id))\n          ? (_openBlock(), _createElementBlock(\"div\", {\n              key: 0,\n              class: \"panel-overlay\",\n              onClick: _withModifiers(($event: any) => (emitMaximize(id)), [\"self\"])\n            }, [\n              _createElementVNode(\"div\", _hoisted_2, [\n                _createElementVNode(\"div\", _hoisted_3, [\n                  _createElementVNode(\"h4\", null, _toDisplayString(__props.panelTitle(id)), 1),\n                  _createElementVNode(\"button\", {\n                    class: \"pa-btn\",\n                    onClick: ($event: any) => (emitMaximize(id))\n                  }, \"✕\", 8, _hoisted_4)\n                ]),\n                _createVNode(FreeFallPanelBody, {\n                  id: id,\n                  trials: __props.trials,\n                  \"calc-result\": __props.calcResult,\n                  params: __props.params,\n                  \"sim-state\": __props.sim,\n                  \"trial-stats\": __props.trialStats,\n                  \"g-theoretical\": __props.params.g,\n                  \"enable-noise\": __props.enableNoise,\n                  \"onUpdate:params\": _cache[0] || (_cache[0] = ($event: any) => (emit('update:params', $event))),\n                  onRemove: _cache[1] || (_cache[1] = ($event: any) => (emit('remove', $event))),\n                  onClear: _cache[2] || (_cache[2] = ($event: any) => (emit('clear'))),\n                  onCalcG: _cache[3] || (_cache[3] = ($event: any) => (emit('calcG'))),\n                  onCalcT: _cache[4] || (_cache[4] = ($event: any) => (emit('calcT'))),\n                  onCalcV: _cache[5] || (_cache[5] = ($event: any) => (emit('calcV'))),\n                  onCalcFitG: _cache[6] || (_cache[6] = ($event: any) => (emit('calcFitG'))),\n                  onPrintReport: _cache[7] || (_cache[7] = ($event: any) => (emit('printReport'))),\n                  onOpenFullReport: _cache[8] || (_cache[8] = ($event: any) => (emit('openFullReport')))\n                }, null, 8, [\"id\", \"trials\", \"calc-result\", \"params\", \"sim-state\", \"trial-stats\", \"g-theoretical\", \"enable-noise\"])\n              ])\n            ], 8, _hoisted_1))\n          : _createCommentVNode(\"\", true)\n      ], 64))\n    }), 64))\n  ]))\n}\n}\n\n})",
+      "start": 1783634641877,
+      "end": 1783634641877
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641877,
+      "end": 1783634641877,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createVNode as _createVNode, withModifiers as _withModifiers, createCommentVNode as _createCommentVNode, Teleport as _Teleport, createBlock as _createBlock } from \"vue\";\nconst _hoisted_1 = [\"onClick\"];\nconst _hoisted_2 = { class: \"overlay-card\" };\nconst _hoisted_3 = { class: \"card-header\" };\nconst _hoisted_4 = [\"onClick\"];\nimport FreeFallPanelBody from \"./FreeFallPanelBody.vue\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"FreeFallOverlayPanels\",\n  props: {\n    maximized: {},\n    panelTitle: { type: Function },\n    trials: {},\n    calcResult: {},\n    params: {},\n    sim: {},\n    measured: {},\n    trialStats: {},\n    tutorType: {},\n    tutorMessage: {},\n    canvasSnapshot: {},\n    enableNoise: { type: Boolean }\n  },\n  emits: [\"maximize\", \"update:params\", \"remove\", \"clear\", \"calcG\", \"calcT\", \"calcV\", \"calcFitG\", \"printReport\", \"openFullReport\"],\n  setup(__props, { emit: __emit }) {\n    const props = __props;\n    const emit = __emit;\n    const allIds = [\"table\", \"equations\", \"scatter\", \"tutor\", \"signal\", \"params\", \"stats\", \"error\", \"report\"];\n    function isMaximized(id) {\n      return props.maximized[id];\n    }\n    function emitMaximize(id) {\n      emit(\"maximize\", id);\n    }\n    return (_ctx, _cache) => {\n      return _openBlock(), _createBlock(_Teleport, { to: \"body\" }, [\n        (_openBlock(), _createElementBlock(_Fragment, null, _renderList(allIds, (id) => {\n          return _openBlock(), _createElementBlock(_Fragment, { key: id }, [\n            isMaximized(id) ? (_openBlock(), _createElementBlock(\"div\", {\n              key: 0,\n              class: \"panel-overlay\",\n              onClick: _withModifiers(($event) => emitMaximize(id), [\"self\"])\n            }, [\n              _createElementVNode(\"div\", _hoisted_2, [\n                _createElementVNode(\"div\", _hoisted_3, [\n                  _createElementVNode(\"h4\", null, _toDisplayString(__props.panelTitle(id)), 1),\n                  _createElementVNode(\"button\", {\n                    class: \"pa-btn\",\n                    onClick: ($event) => emitMaximize(id)\n                  }, \"✕\", 8, _hoisted_4)\n                ]),\n                _createVNode(FreeFallPanelBody, {\n                  id,\n                  trials: __props.trials,\n                  \"calc-result\": __props.calcResult,\n                  params: __props.params,\n                  \"sim-state\": __props.sim,\n                  \"trial-stats\": __props.trialStats,\n                  \"g-theoretical\": __props.params.g,\n                  \"enable-noise\": __props.enableNoise,\n                  \"onUpdate:params\": _cache[0] || (_cache[0] = ($event) => emit(\"update:params\", $event)),\n                  onRemove: _cache[1] || (_cache[1] = ($event) => emit(\"remove\", $event)),\n                  onClear: _cache[2] || (_cache[2] = ($event) => emit(\"clear\")),\n                  onCalcG: _cache[3] || (_cache[3] = ($event) => emit(\"calcG\")),\n                  onCalcT: _cache[4] || (_cache[4] = ($event) => emit(\"calcT\")),\n                  onCalcV: _cache[5] || (_cache[5] = ($event) => emit(\"calcV\")),\n                  onCalcFitG: _cache[6] || (_cache[6] = ($event) => emit(\"calcFitG\")),\n                  onPrintReport: _cache[7] || (_cache[7] = ($event) => emit(\"printReport\")),\n                  onOpenFullReport: _cache[8] || (_cache[8] = ($event) => emit(\"openFullReport\"))\n                }, null, 8, [\"id\", \"trials\", \"calc-result\", \"params\", \"sim-state\", \"trial-stats\", \"g-theoretical\", \"enable-noise\"])\n              ])\n            ], 8, _hoisted_1)) : _createCommentVNode(\"\", true)\n          ], 64);\n        }), 64))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634641877,
+      "end": 1783634642286,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/freefall/FreeFallOverlayPanels.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createVNode as _createVNode, withModifiers as _withModifiers, createCommentVNode as _createCommentVNode, Teleport as _Teleport, createBlock as _createBlock } from \"vue\"\n\nconst _hoisted_1 = [\"onClick\"]\nconst _hoisted_2 = { class: \"overlay-card\" }\nconst _hoisted_3 = { class: \"card-header\" }\nconst _hoisted_4 = [\"onClick\"]\n\nimport FreeFallPanelBody from './FreeFallPanelBody.vue'\nimport type { PanelId } from '../../../composables/freefall/useFreeFallLayout'\nimport type { FreeFallTrial } from '../../../composables/freefall/useFreeFallTrials'\nimport type { FreeFallParams } from '../../../modules/physics/experiments/freefall/useFreeFallPhysics'\n\ninterface Measured {\n  flightTime: number | null\n  impactVelocity: number | null\n}\n\ninterface SimState {\n  t: number\n  y: number\n  vy: number\n  running: boolean\n  paused: boolean\n  landed: boolean\n}\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'FreeFallOverlayPanels',\n  props: {\n    maximized: {},\n    panelTitle: { type: Function },\n    trials: {},\n    calcResult: {},\n    params: {},\n    sim: {},\n    measured: {},\n    trialStats: {},\n    tutorType: {},\n    tutorMessage: {},\n    canvasSnapshot: {},\n    enableNoise: { type: Boolean }\n  },\n  emits: [\"maximize\", \"update:params\", \"remove\", \"clear\", \"calcG\", \"calcT\", \"calcV\", \"calcFitG\", \"printReport\", \"openFullReport\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst props = __props\n\nconst emit = __emit\n\nconst allIds: PanelId[] = ['table', 'equations', 'scatter', 'tutor', 'signal', 'params', 'stats', 'error', 'report']\nfunction isMaximized(id: string) { return (props.maximized as Record<string, boolean>)[id] as boolean }\nfunction emitMaximize(id: string) { emit('maximize', id) }\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createBlock(_Teleport, { to: \"body\" }, [\n    (_openBlock(), _createElementBlock(_Fragment, null, _renderList(allIds, (id) => {\n      return (_openBlock(), _createElementBlock(_Fragment, { key: id }, [\n        (isMaximized(id))\n          ? (_openBlock(), _createElementBlock(\"div\", {\n              key: 0,\n              class: \"panel-overlay\",\n              onClick: _withModifiers(($event: any) => (emitMaximize(id)), [\"self\"])\n            }, [\n              _createElementVNode(\"div\", _hoisted_2, [\n                _createElementVNode(\"div\", _hoisted_3, [\n                  _createElementVNode(\"h4\", null, _toDisplayString(__props.panelTitle(id)), 1),\n                  _createElementVNode(\"button\", {\n                    class: \"pa-btn\",\n                    onClick: ($event: any) => (emitMaximize(id))\n                  }, \"✕\", 8, _hoisted_4)\n                ]),\n                _createVNode(FreeFallPanelBody, {\n                  id: id,\n                  trials: __props.trials,\n                  \"calc-result\": __props.calcResult,\n                  params: __props.params,\n                  \"sim-state\": __props.sim,\n                  \"trial-stats\": __props.trialStats,\n                  \"g-theoretical\": __props.params.g,\n                  \"enable-noise\": __props.enableNoise,\n                  \"onUpdate:params\": _cache[0] || (_cache[0] = ($event: any) => (emit('update:params', $event))),\n                  onRemove: _cache[1] || (_cache[1] = ($event: any) => (emit('remove', $event))),\n                  onClear: _cache[2] || (_cache[2] = ($event: any) => (emit('clear'))),\n                  onCalcG: _cache[3] || (_cache[3] = ($event: any) => (emit('calcG'))),\n                  onCalcT: _cache[4] || (_cache[4] = ($event: any) => (emit('calcT'))),\n                  onCalcV: _cache[5] || (_cache[5] = ($event: any) => (emit('calcV'))),\n                  onCalcFitG: _cache[6] || (_cache[6] = ($event: any) => (emit('calcFitG'))),\n                  onPrintReport: _cache[7] || (_cache[7] = ($event: any) => (emit('printReport'))),\n                  onOpenFullReport: _cache[8] || (_cache[8] = ($event: any) => (emit('openFullReport')))\n                }, null, 8, [\"id\", \"trials\", \"calc-result\", \"params\", \"sim-state\", \"trial-stats\", \"g-theoretical\", \"enable-noise\"])\n              ])\n            ], 8, _hoisted_1))\n          : _createCommentVNode(\"\", true)\n      ], 64))\n    }), 64))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642286,
+      "end": 1783634642286,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642286,
+      "end": 1783634642286,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634642286,
+      "end": 1783634642286,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642286,
+      "end": 1783634642286,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642286,
+      "end": 1783634642286,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642286,
+      "end": 1783634642286,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642286,
+      "end": 1783634642286,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642286,
+      "end": 1783634642286,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642286,
+      "end": 1783634642286,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642286,
+      "end": 1783634642286,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642286,
+      "end": 1783634642286,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642286,
+      "end": 1783634642286,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642286,
+      "end": 1783634642286,
+      "order": "normal"
+    }
+  ]
+}

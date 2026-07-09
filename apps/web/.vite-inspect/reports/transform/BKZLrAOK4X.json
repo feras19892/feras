@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/FaradayLawCanvas.vue?vue&type=style&index=0&scoped=3d1ab367&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.faraday-canvas { width: 100%; height: 100%; display: block; cursor: grab; }\n",
+      "start": 1783634641790,
+      "end": 1783634641790
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.faraday-canvas { width: 100%; height: 100%; display: block; cursor: grab; }\n",
+      "start": 1783634641790,
+      "end": 1783634641790,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641790,
+      "end": 1783634641790,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641790,
+      "end": 1783634641790,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641790,
+      "end": 1783634641790,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.faraday-canvas[data-v-3d1ab367] { width: 100%; height: 100%; display: block; cursor: grab;\n}\n",
+      "start": 1783634641790,
+      "end": 1783634641791,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641791,
+      "end": 1783634641791,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634641791,
+      "end": 1783634641791,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641791,
+      "end": 1783634641791,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641791,
+      "end": 1783634641791,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641791,
+      "end": 1783634641791,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641791,
+      "end": 1783634641791,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641791,
+      "end": 1783634641791,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641791,
+      "end": 1783634641791,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641791,
+      "end": 1783634641791,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641791,
+      "end": 1783634641791,
+      "order": "normal"
+    }
+  ]
+}

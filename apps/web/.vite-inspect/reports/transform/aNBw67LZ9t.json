@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/services/class.service.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { fetchJson } from './http';\n\nexport interface ClassItem {\n  id: string;\n  name: string;\n  code: string;\n  is_active: number;\n  created_at: string;\n}\n\nexport interface ClassStudent {\n  id: number;\n  name: string;\n  email: string;\n  joined_at: string;\n}\n\nexport async function createClass(name: string) {\n  return fetchJson<{ success: boolean; class: ClassItem }>('/api/classes', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ name }),\n  });\n}\n\nexport async function getMyClasses() {\n  return fetchJson<{ success: boolean; classes: ClassItem[] }>('/api/classes');\n}\n\nexport async function getClassDetails(id: string) {\n  return fetchJson<{ success: boolean; class: ClassItem; students: ClassStudent[] }>(`/api/classes/${id}`);\n}\n\nexport async function joinClass(code: string) {\n  return fetchJson<{ success: boolean; class_id?: string; name?: string; message?: string }>('/api/classes/join', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ code }),\n  });\n}\n\nexport async function deleteClass(id: string) {\n  return fetchJson<{ success: boolean }>(`/api/classes/${id}`, { method: 'DELETE' });\n}\n\nexport async function getPendingCount() {\n  return fetchJson<{ success: boolean; pendingCount: number }>('/api/classes/stats/pending');\n}\n\nexport async function getClassStats(id: string) {\n  return fetchJson<{ success: boolean; stats: {\n    student_count: number;\n    total_reports: number;\n    graded_count: number;\n    pending_count: number;\n    class_average: number;\n    top_students: { student_id: number; avg: number; report_count: number }[];\n  } }>(`/api/classes/${id}/stats`);\n}\n\nexport async function updateClass(id: string, data: { name?: string; is_active?: boolean }) {\n  return fetchJson<{ success: boolean }>(`/api/classes/${id}`, {\n    method: 'PATCH',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify(data),\n  });\n}\n",
+      "start": 1783634640315,
+      "end": 1783634640590,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640590,
+      "end": 1783634640590,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { fetchJson } from \"./http\";\nexport async function createClass(name) {\n  return fetchJson(\"/api/classes\", {\n    method: \"POST\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify({ name })\n  });\n}\nexport async function getMyClasses() {\n  return fetchJson(\"/api/classes\");\n}\nexport async function getClassDetails(id) {\n  return fetchJson(`/api/classes/${id}`);\n}\nexport async function joinClass(code) {\n  return fetchJson(\"/api/classes/join\", {\n    method: \"POST\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify({ code })\n  });\n}\nexport async function deleteClass(id) {\n  return fetchJson(`/api/classes/${id}`, { method: \"DELETE\" });\n}\nexport async function getPendingCount() {\n  return fetchJson(\"/api/classes/stats/pending\");\n}\nexport async function getClassStats(id) {\n  return fetchJson(`/api/classes/${id}/stats`);\n}\nexport async function updateClass(id, data) {\n  return fetchJson(`/api/classes/${id}`, {\n    method: \"PATCH\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify(data)\n  });\n}\n",
+      "start": 1783634640590,
+      "end": 1783634640814,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/services/class.service.ts"
+        ],
+        "sourcesContent": [
+          "import { fetchJson } from './http';\n\nexport interface ClassItem {\n  id: string;\n  name: string;\n  code: string;\n  is_active: number;\n  created_at: string;\n}\n\nexport interface ClassStudent {\n  id: number;\n  name: string;\n  email: string;\n  joined_at: string;\n}\n\nexport async function createClass(name: string) {\n  return fetchJson<{ success: boolean; class: ClassItem }>('/api/classes', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ name }),\n  });\n}\n\nexport async function getMyClasses() {\n  return fetchJson<{ success: boolean; classes: ClassItem[] }>('/api/classes');\n}\n\nexport async function getClassDetails(id: string) {\n  return fetchJson<{ success: boolean; class: ClassItem; students: ClassStudent[] }>(`/api/classes/${id}`);\n}\n\nexport async function joinClass(code: string) {\n  return fetchJson<{ success: boolean; class_id?: string; name?: string; message?: string }>('/api/classes/join', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ code }),\n  });\n}\n\nexport async function deleteClass(id: string) {\n  return fetchJson<{ success: boolean }>(`/api/classes/${id}`, { method: 'DELETE' });\n}\n\nexport async function getPendingCount() {\n  return fetchJson<{ success: boolean; pendingCount: number }>('/api/classes/stats/pending');\n}\n\nexport async function getClassStats(id: string) {\n  return fetchJson<{ success: boolean; stats: {\n    student_count: number;\n    total_reports: number;\n    graded_count: number;\n    pending_count: number;\n    class_average: number;\n    top_students: { student_id: number; avg: number; report_count: number }[];\n  } }>(`/api/classes/${id}/stats`);\n}\n\nexport async function updateClass(id: string, data: { name?: string; is_active?: boolean }) {\n  return fetchJson<{ success: boolean }>(`/api/classes/${id}`, {\n    method: 'PATCH',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify(data),\n  });\n}\n"
+        ],
+        "mappings": "AAAA,SAAS,iBAAiB;AAiB1B,sBAAsB,YAAY,MAAc;AAC9C,SAAO,UAAkD,gBAAgB;AAAA,IACvE,QAAQ;AAAA,IACR,SAAS,EAAE,gBAAgB,mBAAmB;AAAA,IAC9C,MAAM,KAAK,UAAU,EAAE,KAAK,CAAC;AAAA,EAC/B,CAAC;AACH;AAEA,sBAAsB,eAAe;AACnC,SAAO,UAAsD,cAAc;AAC7E;AAEA,sBAAsB,gBAAgB,IAAY;AAChD,SAAO,UAA4E,gBAAgB,EAAE,EAAE;AACzG;AAEA,sBAAsB,UAAU,MAAc;AAC5C,SAAO,UAAoF,qBAAqB;AAAA,IAC9G,QAAQ;AAAA,IACR,SAAS,EAAE,gBAAgB,mBAAmB;AAAA,IAC9C,MAAM,KAAK,UAAU,EAAE,KAAK,CAAC;AAAA,EAC/B,CAAC;AACH;AAEA,sBAAsB,YAAY,IAAY;AAC5C,SAAO,UAAgC,gBAAgB,EAAE,IAAI,EAAE,QAAQ,SAAS,CAAC;AACnF;AAEA,sBAAsB,kBAAkB;AACtC,SAAO,UAAsD,4BAA4B;AAC3F;AAEA,sBAAsB,cAAc,IAAY;AAC9C,SAAO,UAOF,gBAAgB,EAAE,QAAQ;AACjC;AAEA,sBAAsB,YAAY,IAAY,MAA8C;AAC1F,SAAO,UAAgC,gBAAgB,EAAE,IAAI;AAAA,IAC3D,QAAQ;AAAA,IACR,SAAS,EAAE,gBAAgB,mBAAmB;AAAA,IAC9C,MAAM,KAAK,UAAU,IAAI;AAAA,EAC3B,CAAC;AACH;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640815,
+      "end": 1783634640815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640815,
+      "end": 1783634640815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640815,
+      "end": 1783634640816,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640816,
+      "end": 1783634640816,
+      "order": "normal"
+    }
+  ]
+}

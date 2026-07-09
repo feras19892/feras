@@ -4,24 +4,24 @@ import { downloadCsv } from '../../components/experiment/spring/downloadCsv'
 import { linearRegression } from '../../components/experiment/spring/linearRegression'
 import type { SpringParams } from '../../modules/physics/experiments/spring/useSpringPhysics'
 
-export interface Trial {
+export interface SpringTrial {
   id: number; mass: number; k: number; amplitude: number
   T: number; f: number; omega: number; kCalc: number; err: number
 }
 
-export interface Measured {
+export interface SpringMeasured {
   T: number | null; f: number | null; omega: number | null; kCalc: number | null; kCalcEff: number | null
 }
 
 const SAVE_KEY = 'spring:trials:v1'
 
-export function useSpringTrials(params: SpringParams, measured: Ref<Measured>) {
+export function useSpringTrials(params: SpringParams, measured: Ref<SpringMeasured>) {
   const { t } = useI18n()
-  const trials = ref<Trial[]>([])
+  const trials = ref<SpringTrial[]>([])
   let nextTrialId = 1
 
   // Undo/Redo history
-  const history = ref<Trial[][]>([])
+  const history = ref<SpringTrial[][]>([])
   const historyIndex = ref(-1)
 
   function pushHistory() {

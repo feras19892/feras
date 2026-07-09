@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabTestTube.vue?vue&type=style&index=0&scoped=a3d00e73&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.tube-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.tube-svg.hovered {\n  transform: scale(1.06);\n}\n.drop-canvas {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  width: 60px;\n  height: 200px;\n  margin-left: -30px;\n  z-index: 2;\n  pointer-events: none;\n}\n",
+      "start": 1783634643014,
+      "end": 1783634643014
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.tube-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.tube-svg.hovered {\n  transform: scale(1.06);\n}\n.drop-canvas {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  width: 60px;\n  height: 200px;\n  margin-left: -30px;\n  z-index: 2;\n  pointer-events: none;\n}\n",
+      "start": 1783634643015,
+      "end": 1783634643015,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634643015,
+      "end": 1783634643015,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634643015,
+      "end": 1783634643015,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634643015,
+      "end": 1783634643015,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.tube-wrapper[data-v-a3d00e73] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.tube-svg.hovered[data-v-a3d00e73] {\n  transform: scale(1.06);\n}\n.drop-canvas[data-v-a3d00e73] {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  width: 60px;\n  height: 200px;\n  margin-left: -30px;\n  z-index: 2;\n  pointer-events: none;\n}\n",
+      "start": 1783634643015,
+      "end": 1783634643015,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634643015,
+      "end": 1783634643015,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634643015,
+      "end": 1783634643015,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634643015,
+      "end": 1783634643015,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634643015,
+      "end": 1783634643015,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634643015,
+      "end": 1783634643015,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634643015,
+      "end": 1783634643015,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634643015,
+      "end": 1783634643015,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634643015,
+      "end": 1783634643015,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634643015,
+      "end": 1783634643015,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634643015,
+      "end": 1783634643015,
+      "order": "normal"
+    }
+  ]
+}

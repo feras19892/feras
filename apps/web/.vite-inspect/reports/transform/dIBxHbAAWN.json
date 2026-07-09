@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/panels/PrismTrialsPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = {\n  key: 0,\n  class: \"empty\"\n}\nconst _hoisted_3 = {\n  key: 1,\n  class: \"trial-table\"\n}\nconst _hoisted_4 = { class: \"trial-num\" }\nconst _hoisted_5 = {\n  class: \"mono\",\n  style: {\"font-size\":\".65rem\"}\n}\nconst _hoisted_6 = { class: \"mono\" }\nconst _hoisted_7 = [\"onClick\"]\n\nimport type { PrismTrial } from '../../../../composables/prism/usePrismTrials'\nimport { useI18n } from '../../../../composables/useI18n'\n\ninterface Props {\n  trials: PrismTrial[]\n}\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'PrismTrialsPanel',\n  props: {\n    trials: {}\n  },\n  emits: [\"remove\", \"clear\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\n\nconst props = __props\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (__props.trials.length === 0)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_2, _toDisplayString(_unref(t)('prism.emptyTrials')), 1))\n      : (_openBlock(), _createElementBlock(\"div\", _hoisted_3, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"trial-header\" }, [\n            _createElementVNode(\"span\", null, \"#\"),\n            _createElementVNode(\"span\", null, \"λ\"),\n            _createElementVNode(\"span\", null, \"θᵢ\"),\n            _createElementVNode(\"span\", null, \"θₑ\"),\n            _createElementVNode(\"span\", null, \"D\"),\n            _createElementVNode(\"span\", null, \"n\")\n          ], -1)),\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.trials, (trial) => {\n            return (_openBlock(), _createElementBlock(\"div\", {\n              key: trial.id,\n              class: \"trial-row\"\n            }, [\n              _createElementVNode(\"span\", _hoisted_4, _toDisplayString(trial.id), 1),\n              _createElementVNode(\"span\", _hoisted_5, _toDisplayString(trial.wavelength), 1),\n              _createElementVNode(\"span\", null, _toDisplayString(trial.angleIncidence.toFixed(0)), 1),\n              _createElementVNode(\"span\", null, _toDisplayString(trial.angleEmergence !== null ? trial.angleEmergence.toFixed(1) : 'TIR'), 1),\n              _createElementVNode(\"span\", null, _toDisplayString(trial.deviation !== null ? trial.deviation.toFixed(1) : '—'), 1),\n              _createElementVNode(\"span\", _hoisted_6, _toDisplayString(trial.n.toFixed(2)), 1),\n              _createElementVNode(\"button\", {\n                class: \"trial-del\",\n                onClick: ($event: any) => (emit('remove', trial.id))\n              }, \"🗑\", 8, _hoisted_7)\n            ]))\n          }), 128))\n        ])),\n    (__props.trials.length)\n      ? (_openBlock(), _createElementBlock(\"button\", {\n          key: 2,\n          class: \"btn-clear\",\n          onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('clear')))\n        }, _toDisplayString(_unref(t)('prism.clearAll')), 1))\n      : _createCommentVNode(\"\", true)\n  ]))\n}\n}\n\n})",
+      "start": 1783634643064,
+      "end": 1783634643064
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634643064,
+      "end": 1783634643064,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nconst _hoisted_2 = {\n  key: 0,\n  class: \"empty\"\n};\nconst _hoisted_3 = {\n  key: 1,\n  class: \"trial-table\"\n};\nconst _hoisted_4 = { class: \"trial-num\" };\nconst _hoisted_5 = {\n  class: \"mono\",\n  style: { \"font-size\": \".65rem\" }\n};\nconst _hoisted_6 = { class: \"mono\" };\nconst _hoisted_7 = [\"onClick\"];\nimport { useI18n } from \"../../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"PrismTrialsPanel\",\n  props: {\n    trials: {}\n  },\n  emits: [\"remove\", \"clear\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const props = __props;\n    const emit = __emit;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        __props.trials.length === 0 ? (_openBlock(), _createElementBlock(\"div\", _hoisted_2, _toDisplayString(_unref(t)(\"prism.emptyTrials\")), 1)) : (_openBlock(), _createElementBlock(\"div\", _hoisted_3, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"trial-header\" }, [\n            _createElementVNode(\"span\", null, \"#\"),\n            _createElementVNode(\"span\", null, \"λ\"),\n            _createElementVNode(\"span\", null, \"θᵢ\"),\n            _createElementVNode(\"span\", null, \"θₑ\"),\n            _createElementVNode(\"span\", null, \"D\"),\n            _createElementVNode(\"span\", null, \"n\")\n          ], -1)),\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.trials, (trial) => {\n            return _openBlock(), _createElementBlock(\"div\", {\n              key: trial.id,\n              class: \"trial-row\"\n            }, [\n              _createElementVNode(\"span\", _hoisted_4, _toDisplayString(trial.id), 1),\n              _createElementVNode(\"span\", _hoisted_5, _toDisplayString(trial.wavelength), 1),\n              _createElementVNode(\"span\", null, _toDisplayString(trial.angleIncidence.toFixed(0)), 1),\n              _createElementVNode(\"span\", null, _toDisplayString(trial.angleEmergence !== null ? trial.angleEmergence.toFixed(1) : \"TIR\"), 1),\n              _createElementVNode(\"span\", null, _toDisplayString(trial.deviation !== null ? trial.deviation.toFixed(1) : \"—\"), 1),\n              _createElementVNode(\"span\", _hoisted_6, _toDisplayString(trial.n.toFixed(2)), 1),\n              _createElementVNode(\"button\", {\n                class: \"trial-del\",\n                onClick: ($event) => emit(\"remove\", trial.id)\n              }, \"🗑\", 8, _hoisted_7)\n            ]);\n          }), 128))\n        ])),\n        __props.trials.length ? (_openBlock(), _createElementBlock(\"button\", {\n          key: 2,\n          class: \"btn-clear\",\n          onClick: _cache[0] || (_cache[0] = ($event) => emit(\"clear\"))\n        }, _toDisplayString(_unref(t)(\"prism.clearAll\")), 1)) : _createCommentVNode(\"\", true)\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634643064,
+      "end": 1783634643191,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/panels/PrismTrialsPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = {\n  key: 0,\n  class: \"empty\"\n}\nconst _hoisted_3 = {\n  key: 1,\n  class: \"trial-table\"\n}\nconst _hoisted_4 = { class: \"trial-num\" }\nconst _hoisted_5 = {\n  class: \"mono\",\n  style: {\"font-size\":\".65rem\"}\n}\nconst _hoisted_6 = { class: \"mono\" }\nconst _hoisted_7 = [\"onClick\"]\n\nimport type { PrismTrial } from '../../../../composables/prism/usePrismTrials'\nimport { useI18n } from '../../../../composables/useI18n'\n\ninterface Props {\n  trials: PrismTrial[]\n}\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'PrismTrialsPanel',\n  props: {\n    trials: {}\n  },\n  emits: [\"remove\", \"clear\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\n\nconst props = __props\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (__props.trials.length === 0)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_2, _toDisplayString(_unref(t)('prism.emptyTrials')), 1))\n      : (_openBlock(), _createElementBlock(\"div\", _hoisted_3, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"trial-header\" }, [\n            _createElementVNode(\"span\", null, \"#\"),\n            _createElementVNode(\"span\", null, \"λ\"),\n            _createElementVNode(\"span\", null, \"θᵢ\"),\n            _createElementVNode(\"span\", null, \"θₑ\"),\n            _createElementVNode(\"span\", null, \"D\"),\n            _createElementVNode(\"span\", null, \"n\")\n          ], -1)),\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.trials, (trial) => {\n            return (_openBlock(), _createElementBlock(\"div\", {\n              key: trial.id,\n              class: \"trial-row\"\n            }, [\n              _createElementVNode(\"span\", _hoisted_4, _toDisplayString(trial.id), 1),\n              _createElementVNode(\"span\", _hoisted_5, _toDisplayString(trial.wavelength), 1),\n              _createElementVNode(\"span\", null, _toDisplayString(trial.angleIncidence.toFixed(0)), 1),\n              _createElementVNode(\"span\", null, _toDisplayString(trial.angleEmergence !== null ? trial.angleEmergence.toFixed(1) : 'TIR'), 1),\n              _createElementVNode(\"span\", null, _toDisplayString(trial.deviation !== null ? trial.deviation.toFixed(1) : '—'), 1),\n              _createElementVNode(\"span\", _hoisted_6, _toDisplayString(trial.n.toFixed(2)), 1),\n              _createElementVNode(\"button\", {\n                class: \"trial-del\",\n                onClick: ($event: any) => (emit('remove', trial.id))\n              }, \"🗑\", 8, _hoisted_7)\n            ]))\n          }), 128))\n        ])),\n    (__props.trials.length)\n      ? (_openBlock(), _createElementBlock(\"button\", {\n          key: 2,\n          class: \"btn-clear\",\n          onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('clear')))\n        }, _toDisplayString(_unref(t)('prism.clearAll')), 1))\n      : _createCommentVNode(\"\", true)\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634643191,
+      "end": 1783634643191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634643191,
+      "end": 1783634643191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634643191,
+      "end": 1783634643191,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634643191,
+      "end": 1783634643191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634643191,
+      "end": 1783634643191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634643191,
+      "end": 1783634643191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634643191,
+      "end": 1783634643191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634643191,
+      "end": 1783634643191,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634643191,
+      "end": 1783634643191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634643191,
+      "end": 1783634643191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634643191,
+      "end": 1783634643191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634643191,
+      "end": 1783634643191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634643191,
+      "end": 1783634643191,
+      "order": "normal"
+    }
+  ]
+}

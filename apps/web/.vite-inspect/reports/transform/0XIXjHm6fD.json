@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemAnalysisTabs.vue?vue&type=style&index=0&scoped=3509d4e7&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.chem-tabs {\n  display: flex;\n  gap: 0.3rem;\n  padding: 0.4rem 0.6rem;\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n  flex-shrink: 0;\n}\n.tab-btn {\n  flex: 1;\n  padding: 0.35rem;\n  border: none;\n  border-radius: 0.3rem;\n  background: rgba(255,255,255,0.04);\n  color: #94a3b8;\n  cursor: pointer;\n  font-size: 0.78rem;\n  font-weight: 600;\n  transition: all 0.15s;\n}\n.tab-btn:hover { background: rgba(255,255,255,0.08); color: #e2e8f0; }\n.tab-btn.active { background: linear-gradient(135deg, #06b6d4, #0891b2); color: #fff; }\n",
+      "start": 1783634639919,
+      "end": 1783634639919
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.chem-tabs {\n  display: flex;\n  gap: 0.3rem;\n  padding: 0.4rem 0.6rem;\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n  flex-shrink: 0;\n}\n.tab-btn {\n  flex: 1;\n  padding: 0.35rem;\n  border: none;\n  border-radius: 0.3rem;\n  background: rgba(255,255,255,0.04);\n  color: #94a3b8;\n  cursor: pointer;\n  font-size: 0.78rem;\n  font-weight: 600;\n  transition: all 0.15s;\n}\n.tab-btn:hover { background: rgba(255,255,255,0.08); color: #e2e8f0; }\n.tab-btn.active { background: linear-gradient(135deg, #06b6d4, #0891b2); color: #fff; }\n",
+      "start": 1783634639919,
+      "end": 1783634639919,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639919,
+      "end": 1783634639919,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639919,
+      "end": 1783634639919,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639919,
+      "end": 1783634639919,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.chem-tabs[data-v-3509d4e7] {\n  display: flex;\n  gap: 0.3rem;\n  padding: 0.4rem 0.6rem;\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n  flex-shrink: 0;\n}\n.tab-btn[data-v-3509d4e7] {\n  flex: 1;\n  padding: 0.35rem;\n  border: none;\n  border-radius: 0.3rem;\n  background: rgba(255,255,255,0.04);\n  color: #94a3b8;\n  cursor: pointer;\n  font-size: 0.78rem;\n  font-weight: 600;\n  transition: all 0.15s;\n}\n.tab-btn[data-v-3509d4e7]:hover { background: rgba(255,255,255,0.08); color: #e2e8f0;\n}\n.tab-btn.active[data-v-3509d4e7] { background: linear-gradient(135deg, #06b6d4, #0891b2); color: #fff;\n}\n",
+      "start": 1783634639919,
+      "end": 1783634639920,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639920,
+      "end": 1783634639920,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634639920,
+      "end": 1783634639920,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639920,
+      "end": 1783634639920,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639920,
+      "end": 1783634639920,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639920,
+      "end": 1783634639920,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639920,
+      "end": 1783634639920,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639920,
+      "end": 1783634639920,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639920,
+      "end": 1783634639920,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639920,
+      "end": 1783634639920,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639920,
+      "end": 1783634639920,
+      "order": "normal"
+    }
+  ]
+}

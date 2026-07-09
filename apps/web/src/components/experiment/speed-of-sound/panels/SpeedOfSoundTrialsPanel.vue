@@ -16,12 +16,13 @@ const emit = defineEmits<{
 <template>
   <div class="panel-body">
     <table class="trial-table" v-if="trials.length">
-      <thead><tr><th>#</th><th>L</th><th>f</th><th>T</th><th>λ</th><th>v</th><th></th></tr></thead>
+      <thead><tr><th>#</th><th>L</th><th>f</th><th>1/f</th><th>T</th><th>λ</th><th>v</th><th></th></tr></thead>
       <tbody>
         <tr v-for="tr in trials" :key="tr.id">
           <td>{{ tr.id }}</td>
           <td>{{ tr.tubeLength.toFixed(3) }}</td>
           <td>{{ tr.frequency }}</td>
+          <td>{{ (1 / tr.frequency).toExponential(3) }}</td>
           <td>{{ tr.temperature }}</td>
           <td>{{ tr.wavelength.toFixed(3) }}</td>
           <td>{{ tr.vMeasured.toFixed(1) }}</td>

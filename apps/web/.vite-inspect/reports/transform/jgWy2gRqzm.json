@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/latent-heat/panels/LatentHeatParamsPanel.vue?vue&type=style&index=0&scoped=5dcc9d6a&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.panel-body { padding:.45rem; display:flex; flex-direction:column; gap:.6rem; }\n.param-row { display:flex; flex-direction:column; gap:.25rem; }\n.param-row label { color:#8B95A5; font-size:.72rem; }\n.param-row input[type=range] { width:100%; accent-color:#5B8DB8; }\n.param-row select { background:#0d1117; border:1px solid #1e2530; color:#D1D7E0; padding:.3rem .45rem; border-radius:4px; font-size:.72rem; }\n.param-row span { color:#5B8DB8; font-weight:600; font-size:.72rem; text-align:right; }\n",
+      "start": 1783634642935,
+      "end": 1783634642935
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.panel-body { padding:.45rem; display:flex; flex-direction:column; gap:.6rem; }\n.param-row { display:flex; flex-direction:column; gap:.25rem; }\n.param-row label { color:#8B95A5; font-size:.72rem; }\n.param-row input[type=range] { width:100%; accent-color:#5B8DB8; }\n.param-row select { background:#0d1117; border:1px solid #1e2530; color:#D1D7E0; padding:.3rem .45rem; border-radius:4px; font-size:.72rem; }\n.param-row span { color:#5B8DB8; font-weight:600; font-size:.72rem; text-align:right; }\n",
+      "start": 1783634642935,
+      "end": 1783634642935,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642935,
+      "end": 1783634642935,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642935,
+      "end": 1783634642935,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642935,
+      "end": 1783634642935,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.panel-body[data-v-5dcc9d6a] { padding:.45rem; display:flex; flex-direction:column; gap:.6rem;\n}\n.param-row[data-v-5dcc9d6a] { display:flex; flex-direction:column; gap:.25rem;\n}\n.param-row label[data-v-5dcc9d6a] { color:#8B95A5; font-size:.72rem;\n}\n.param-row input[type=range][data-v-5dcc9d6a] { width:100%; accent-color:#5B8DB8;\n}\n.param-row select[data-v-5dcc9d6a] { background:#0d1117; border:1px solid #1e2530; color:#D1D7E0; padding:.3rem .45rem; border-radius:4px; font-size:.72rem;\n}\n.param-row span[data-v-5dcc9d6a] { color:#5B8DB8; font-weight:600; font-size:.72rem; text-align:right;\n}\n",
+      "start": 1783634642935,
+      "end": 1783634642935,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642935,
+      "end": 1783634642935,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634642935,
+      "end": 1783634642935,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642935,
+      "end": 1783634642935,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642935,
+      "end": 1783634642935,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642935,
+      "end": 1783634642935,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642935,
+      "end": 1783634642935,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642935,
+      "end": 1783634642935,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642935,
+      "end": 1783634642935,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642935,
+      "end": 1783634642935,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642935,
+      "end": 1783634642935,
+      "order": "normal"
+    }
+  ]
+}

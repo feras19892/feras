@@ -1,7 +1,7 @@
 import { ref, reactive } from 'vue'
 import { useI18n } from '../useI18n'
 
-const STORAGE_KEY = 'calorimetry_layout_v2'
+const STORAGE_KEY = 'calorimetry_layout_v3'
 const allIds = ['readings', 'chart', 'trials', 'params', 'laws', 'results']
 
 const defaultState = {
@@ -17,7 +17,7 @@ export function useCalorimetryLayout() {
     readings: t('experiments.panelReadings'), chart: t('experiments.panelChart'), trials: t('experiments.panelTrials'),
     params: t('experiments.panelParams'), laws: t('experiments.panelLaws'), results: t('experiments.panelResults'),
   }
-  const widths = reactive({ ...defaultState.widths })
+  const widths = reactive<Record<string, number>>({ ...defaultState.widths })
   const visible = ref<string[]>([...defaultState.visible])
   const columnMap = reactive({ ...defaultState.columnMap })
   const maximized = reactive<Record<string, boolean>>({ ...defaultState.maximized })

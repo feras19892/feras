@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabPresetsNew5.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { makeComp, type PresetDef } from './electricLabPresetHelpers'\n\nexport const newPresets5: PresetDef[] = [\n  {\n    id: 'thermistor-ntc',\n    name: 'Thermistor (NTC)',\n    nameAr: 'الثيرميستور (NTC)',\n    level: 'college',\n    instructions: [\n      '١. الدائرة: بطارية ← أميتر ← ثيرميستور ← فولتميتر',\n      '٢. R = R₀×e^(β×(1/T − 1/T₀))، β ≈ 3950K',\n      '٣. كلما زادت الحرارة قلّت المقاومة (NTC)',\n      '٤. اضغط ▶ تشغيل وغيّر درجة الحرارة',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      components.push(makeComp('battery', 80, 220, 'بطارية', 9, 'V'))\n      components.push(makeComp('ammeter', 220, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 380, 220, 'ثيرميستور', 25, '°C'))\n      components.push(makeComp('voltmeter', 380, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'magnetic-force',\n    name: 'Magnetic Force on Wire',\n    nameAr: 'القوة المغناطيسية على سلك',\n    level: 'advanced',\n    instructions: [\n      '١. الدائرة: بطارية ← أميتر ← سلك في مجال مغناطيسي',\n      '٢. F = B×I×L×sin(θ)',\n      '٣. B = المجال المغناطيسي (T)، L = طول السلك (m)',\n      '٤. اضغط ▶ تشغيل وغيّر التيار وزاوية المجال',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      components.push(makeComp('battery', 80, 220, 'بطارية', 12, 'V'))\n      components.push(makeComp('ammeter', 220, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 380, 220, 'R حد', 5, 'Ω'))\n      components.push(makeComp('voltmeter', 380, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'lc-oscillation',\n    name: 'LC Oscillation',\n    nameAr: 'دائرة LC المتذبذبة',\n    level: 'college',\n    instructions: [\n      '١. الدائرة: بطارية ← ملف L ← مكثف C',\n      '٢. f = 1/(2π√(LC))، ω = 1/√(LC)',\n      '٣. الطاقة تتبادل بين المجال الكهربائي والمغناطيسي',\n      '٤. E_total = ½CV² + ½LI² = ثابت',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      components.push(makeComp('battery', 80, 220, 'بطارية', 10, 'V'))\n      components.push(makeComp('ammeter', 220, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 380, 220, 'R', 10, 'Ω'))\n      components.push(makeComp('voltmeter', 380, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n]\n",
+      "start": 1783634642588,
+      "end": 1783634642823,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642823,
+      "end": 1783634642823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { makeComp } from \"./electricLabPresetHelpers\";\nexport const newPresets5 = [\n  {\n    id: \"thermistor-ntc\",\n    name: \"Thermistor (NTC)\",\n    nameAr: \"الثيرميستور (NTC)\",\n    level: \"college\",\n    instructions: [\n      \"١. الدائرة: بطارية ← أميتر ← ثيرميستور ← فولتميتر\",\n      \"٢. R = R₀×e^(β×(1/T − 1/T₀))، β ≈ 3950K\",\n      \"٣. كلما زادت الحرارة قلّت المقاومة (NTC)\",\n      \"٤. اضغط ▶ تشغيل وغيّر درجة الحرارة\",\n      \"٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج\"\n    ],\n    build: (components, reset) => {\n      reset();\n      components.push(makeComp(\"battery\", 80, 220, \"بطارية\", 9, \"V\"));\n      components.push(makeComp(\"ammeter\", 220, 220, \"أميتر\", 0, \"A\"));\n      components.push(makeComp(\"resistor\", 380, 220, \"ثيرميستور\", 25, \"°C\"));\n      components.push(makeComp(\"voltmeter\", 380, 100, \"فولتميتر\", 0, \"V\"));\n    }\n  },\n  {\n    id: \"magnetic-force\",\n    name: \"Magnetic Force on Wire\",\n    nameAr: \"القوة المغناطيسية على سلك\",\n    level: \"advanced\",\n    instructions: [\n      \"١. الدائرة: بطارية ← أميتر ← سلك في مجال مغناطيسي\",\n      \"٢. F = B×I×L×sin(θ)\",\n      \"٣. B = المجال المغناطيسي (T)، L = طول السلك (m)\",\n      \"٤. اضغط ▶ تشغيل وغيّر التيار وزاوية المجال\",\n      \"٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج\"\n    ],\n    build: (components, reset) => {\n      reset();\n      components.push(makeComp(\"battery\", 80, 220, \"بطارية\", 12, \"V\"));\n      components.push(makeComp(\"ammeter\", 220, 220, \"أميتر\", 0, \"A\"));\n      components.push(makeComp(\"resistor\", 380, 220, \"R حد\", 5, \"Ω\"));\n      components.push(makeComp(\"voltmeter\", 380, 100, \"فولتميتر\", 0, \"V\"));\n    }\n  },\n  {\n    id: \"lc-oscillation\",\n    name: \"LC Oscillation\",\n    nameAr: \"دائرة LC المتذبذبة\",\n    level: \"college\",\n    instructions: [\n      \"١. الدائرة: بطارية ← ملف L ← مكثف C\",\n      \"٢. f = 1/(2π√(LC))، ω = 1/√(LC)\",\n      \"٣. الطاقة تتبادل بين المجال الكهربائي والمغناطيسي\",\n      \"٤. E_total = ½CV² + ½LI² = ثابت\",\n      \"٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج\"\n    ],\n    build: (components, reset) => {\n      reset();\n      components.push(makeComp(\"battery\", 80, 220, \"بطارية\", 10, \"V\"));\n      components.push(makeComp(\"ammeter\", 220, 220, \"أميتر\", 0, \"A\"));\n      components.push(makeComp(\"resistor\", 380, 220, \"R\", 10, \"Ω\"));\n      components.push(makeComp(\"voltmeter\", 380, 100, \"فولتميتر\", 0, \"V\"));\n    }\n  }\n];\n",
+      "start": 1783634642823,
+      "end": 1783634642872,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabPresetsNew5.ts"
+        ],
+        "sourcesContent": [
+          "import { makeComp, type PresetDef } from './electricLabPresetHelpers'\n\nexport const newPresets5: PresetDef[] = [\n  {\n    id: 'thermistor-ntc',\n    name: 'Thermistor (NTC)',\n    nameAr: 'الثيرميستور (NTC)',\n    level: 'college',\n    instructions: [\n      '١. الدائرة: بطارية ← أميتر ← ثيرميستور ← فولتميتر',\n      '٢. R = R₀×e^(β×(1/T − 1/T₀))، β ≈ 3950K',\n      '٣. كلما زادت الحرارة قلّت المقاومة (NTC)',\n      '٤. اضغط ▶ تشغيل وغيّر درجة الحرارة',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      components.push(makeComp('battery', 80, 220, 'بطارية', 9, 'V'))\n      components.push(makeComp('ammeter', 220, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 380, 220, 'ثيرميستور', 25, '°C'))\n      components.push(makeComp('voltmeter', 380, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'magnetic-force',\n    name: 'Magnetic Force on Wire',\n    nameAr: 'القوة المغناطيسية على سلك',\n    level: 'advanced',\n    instructions: [\n      '١. الدائرة: بطارية ← أميتر ← سلك في مجال مغناطيسي',\n      '٢. F = B×I×L×sin(θ)',\n      '٣. B = المجال المغناطيسي (T)، L = طول السلك (m)',\n      '٤. اضغط ▶ تشغيل وغيّر التيار وزاوية المجال',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      components.push(makeComp('battery', 80, 220, 'بطارية', 12, 'V'))\n      components.push(makeComp('ammeter', 220, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 380, 220, 'R حد', 5, 'Ω'))\n      components.push(makeComp('voltmeter', 380, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'lc-oscillation',\n    name: 'LC Oscillation',\n    nameAr: 'دائرة LC المتذبذبة',\n    level: 'college',\n    instructions: [\n      '١. الدائرة: بطارية ← ملف L ← مكثف C',\n      '٢. f = 1/(2π√(LC))، ω = 1/√(LC)',\n      '٣. الطاقة تتبادل بين المجال الكهربائي والمغناطيسي',\n      '٤. E_total = ½CV² + ½LI² = ثابت',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      components.push(makeComp('battery', 80, 220, 'بطارية', 10, 'V'))\n      components.push(makeComp('ammeter', 220, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 380, 220, 'R', 10, 'Ω'))\n      components.push(makeComp('voltmeter', 380, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n]\n"
+        ],
+        "mappings": "AAAA,SAAS,gBAAgC;AAElC,aAAM,cAA2B;AAAA,EACtC;AAAA,IACE,IAAI;AAAA,IACJ,MAAM;AAAA,IACN,QAAQ;AAAA,IACR,OAAO;AAAA,IACP,cAAc;AAAA,MACZ;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,IACF;AAAA,IACA,OAAO,CAAC,YAAY,UAAU;AAC5B,YAAM;AACN,iBAAW,KAAK,SAAS,WAAW,IAAI,KAAK,UAAU,GAAG,GAAG,CAAC;AAC9D,iBAAW,KAAK,SAAS,WAAW,KAAK,KAAK,SAAS,GAAG,GAAG,CAAC;AAC9D,iBAAW,KAAK,SAAS,YAAY,KAAK,KAAK,aAAa,IAAI,IAAI,CAAC;AACrE,iBAAW,KAAK,SAAS,aAAa,KAAK,KAAK,YAAY,GAAG,GAAG,CAAC;AAAA,IACrE;AAAA,EACF;AAAA,EACA;AAAA,IACE,IAAI;AAAA,IACJ,MAAM;AAAA,IACN,QAAQ;AAAA,IACR,OAAO;AAAA,IACP,cAAc;AAAA,MACZ;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,IACF;AAAA,IACA,OAAO,CAAC,YAAY,UAAU;AAC5B,YAAM;AACN,iBAAW,KAAK,SAAS,WAAW,IAAI,KAAK,UAAU,IAAI,GAAG,CAAC;AAC/D,iBAAW,KAAK,SAAS,WAAW,KAAK,KAAK,SAAS,GAAG,GAAG,CAAC;AAC9D,iBAAW,KAAK,SAAS,YAAY,KAAK,KAAK,QAAQ,GAAG,GAAG,CAAC;AAC9D,iBAAW,KAAK,SAAS,aAAa,KAAK,KAAK,YAAY,GAAG,GAAG,CAAC;AAAA,IACrE;AAAA,EACF;AAAA,EACA;AAAA,IACE,IAAI;AAAA,IACJ,MAAM;AAAA,IACN,QAAQ;AAAA,IACR,OAAO;AAAA,IACP,cAAc;AAAA,MACZ;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,IACF;AAAA,IACA,OAAO,CAAC,YAAY,UAAU;AAC5B,YAAM;AACN,iBAAW,KAAK,SAAS,WAAW,IAAI,KAAK,UAAU,IAAI,GAAG,CAAC;AAC/D,iBAAW,KAAK,SAAS,WAAW,KAAK,KAAK,SAAS,GAAG,GAAG,CAAC;AAC9D,iBAAW,KAAK,SAAS,YAAY,KAAK,KAAK,KAAK,IAAI,GAAG,CAAC;AAC5D,iBAAW,KAAK,SAAS,aAAa,KAAK,KAAK,YAAY,GAAG,GAAG,CAAC;AAAA,IACrE;AAAA,EACF;AACF;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642873,
+      "end": 1783634642873,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642873,
+      "end": 1783634642873,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642873,
+      "end": 1783634642873,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642873,
+      "end": 1783634642873,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642873,
+      "end": 1783634642873,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642873,
+      "end": 1783634642873,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642873,
+      "end": 1783634642873,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642873,
+      "end": 1783634642873,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642873,
+      "end": 1783634642873,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642873,
+      "end": 1783634642873,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642874,
+      "end": 1783634642874,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642874,
+      "end": 1783634642874,
+      "order": "normal"
+    }
+  ]
+}

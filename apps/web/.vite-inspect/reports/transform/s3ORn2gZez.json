@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/electromagnetism/useCircularCoilExperiment.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { ref, reactive, computed } from 'vue'\nimport { useRouter } from 'vue-router'\nimport { sendToAnalysis } from '../analysis/sendToAnalysis'\nimport type { AnalysisPayload } from '../../types/physics'\n\nexport interface CircularCoilParams {\n  I: number\n  N: number\n  R: number\n}\n\nexport interface CircularCoilTrial {\n  id: number\n  I: number\n  N: number\n  R: number\n  B: number\n}\n\nconst MU0 = 4 * Math.PI * 1e-7\n\nconst _state = {\n  running: ref(false),\n  paused: ref(false),\n  trials: ref<CircularCoilTrial[]>([]),\n  nextId: 1,\n  params: reactive<CircularCoilParams>({ I: 5, N: 10, R: 0.05 }),\n  probeData: ref<{ R: number; B: number } | null>(null),\n}\n\nexport function useCircularCoilExperiment() {\n  const router = useRouter()\n  const { running, paused, trials, params, probeData } = _state\n\n  const B = computed(() => (MU0 * params.N * params.I) / (2 * Math.max(params.R, 1e-6)))\n\n  function setProbeData(R: number, measuredB: number) {\n    probeData.value = { R, B: measuredB }\n    params.R = R\n  }\n\n  function togglePause() {\n    if (!running.value) { running.value = true; paused.value = false }\n    else paused.value = !paused.value\n  }\n\n  function resetSim() {\n    running.value = false\n    paused.value = false\n    probeData.value = null\n  }\n\n  function recordTrial() {\n    const R = probeData.value ? probeData.value.R : params.R\n    const measuredB = probeData.value ? probeData.value.B : B.value\n    trials.value.push({\n      id: _state.nextId++,\n      I: params.I,\n      N: params.N,\n      R,\n      B: measuredB,\n    })\n  }\n\n  function removeTrial(id: number) {\n    trials.value = trials.value.filter(t => t.id !== id)\n  }\n\n  function clearTrials() {\n    trials.value = []\n    _state.nextId = 1\n  }\n\n  function exportCsv() {\n    if (!trials.value.length) return\n    const headers = 'I (A),N,R (m),B (T)'\n    const rows = trials.value.map(t => `${t.I},${t.N},${t.R.toFixed(4)},${t.B.toExponential(4)}`)\n    const csv = [headers, ...rows].join('\\n')\n    const blob = new Blob(['\\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' })\n    const url = URL.createObjectURL(blob)\n    const a = document.createElement('a')\n    a.href = url\n    a.download = 'circular-coil-results.csv'\n    a.click()\n    URL.revokeObjectURL(url)\n  }\n\n  function exportToAnalysis() {\n    if (trials.value.length < 2) return\n    const readings = trials.value.map(t => ({\n      I: t.I,\n      N: t.N,\n      R: t.R,\n      B: t.B,\n      'N*I': t.N * t.I,\n    }))\n    const payload: AnalysisPayload = {\n      sourceExperiment: 'electromagnetism-circular-coil',\n      sourceNameAr: 'المجال المغناطيسي لملف دائري',\n      hasCalcTab: true,\n      readings,\n      columns: [\n        { key: 'I', label: 'I', unit: 'A' },\n        { key: 'N', label: 'N', unit: '' },\n        { key: 'R', label: 'R', unit: 'm' },\n        { key: 'B', label: 'B', unit: 'T' },\n        { key: 'N*I', label: 'NI', unit: 'A' },\n      ],\n      equations: [\n        {\n          name: 'Circular Coil (Biot-Savart)',\n          formula: 'B = μ₀NI / (2R)',\n          variables: [\n            { symbol: 'B', label: 'Magnetic Field' },\n            { symbol: 'I', label: 'Current' },\n            { symbol: 'N', label: 'Turns' },\n            { symbol: 'R', label: 'Radius' },\n            { symbol: 'μ₀', label: 'Permeability' },\n          ],\n          solveFor: ['B', 'I', 'N', 'R', 'μ₀'],\n        },\n      ],\n      suggestedPlots: [\n        { xKey: 'N*I', yKey: 'B', xLabel: 'NI (A)', yLabel: 'B (T)', type: 'scatter' as const },\n        { xKey: 'R', yKey: 'B', xLabel: 'R (m)', yLabel: 'B (T)', type: 'scatter' as const },\n      ],\n    }\n    sendToAnalysis(router, payload)\n  }\n\n  return {\n    params, running, paused, B, trials, probeData,\n    togglePause, resetSim, recordTrial, removeTrial, clearTrials,\n    exportCsv, exportToAnalysis, setProbeData,\n  }\n}\n",
+      "start": 1783634640878,
+      "end": 1783634641150,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641150,
+      "end": 1783634641150,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { ref, reactive, computed } from \"vue\";\nimport { useRouter } from \"vue-router\";\nimport { sendToAnalysis } from \"../analysis/sendToAnalysis\";\nconst MU0 = 4 * Math.PI * 1e-7;\nconst _state = {\n  running: ref(false),\n  paused: ref(false),\n  trials: ref([]),\n  nextId: 1,\n  params: reactive({ I: 5, N: 10, R: 0.05 }),\n  probeData: ref(null)\n};\nexport function useCircularCoilExperiment() {\n  const router = useRouter();\n  const { running, paused, trials, params, probeData } = _state;\n  const B = computed(() => MU0 * params.N * params.I / (2 * Math.max(params.R, 1e-6)));\n  function setProbeData(R, measuredB) {\n    probeData.value = { R, B: measuredB };\n    params.R = R;\n  }\n  function togglePause() {\n    if (!running.value) {\n      running.value = true;\n      paused.value = false;\n    } else paused.value = !paused.value;\n  }\n  function resetSim() {\n    running.value = false;\n    paused.value = false;\n    probeData.value = null;\n  }\n  function recordTrial() {\n    const R = probeData.value ? probeData.value.R : params.R;\n    const measuredB = probeData.value ? probeData.value.B : B.value;\n    trials.value.push({\n      id: _state.nextId++,\n      I: params.I,\n      N: params.N,\n      R,\n      B: measuredB\n    });\n  }\n  function removeTrial(id) {\n    trials.value = trials.value.filter((t) => t.id !== id);\n  }\n  function clearTrials() {\n    trials.value = [];\n    _state.nextId = 1;\n  }\n  function exportCsv() {\n    if (!trials.value.length) return;\n    const headers = \"I (A),N,R (m),B (T)\";\n    const rows = trials.value.map((t) => `${t.I},${t.N},${t.R.toFixed(4)},${t.B.toExponential(4)}`);\n    const csv = [headers, ...rows].join(\"\\n\");\n    const blob = new Blob([\"\\uFEFF\" + csv], { type: \"text/csv;charset=utf-8;\" });\n    const url = URL.createObjectURL(blob);\n    const a = document.createElement(\"a\");\n    a.href = url;\n    a.download = \"circular-coil-results.csv\";\n    a.click();\n    URL.revokeObjectURL(url);\n  }\n  function exportToAnalysis() {\n    if (trials.value.length < 2) return;\n    const readings = trials.value.map((t) => ({\n      I: t.I,\n      N: t.N,\n      R: t.R,\n      B: t.B,\n      \"N*I\": t.N * t.I\n    }));\n    const payload = {\n      sourceExperiment: \"electromagnetism-circular-coil\",\n      sourceNameAr: \"المجال المغناطيسي لملف دائري\",\n      hasCalcTab: true,\n      readings,\n      columns: [\n        { key: \"I\", label: \"I\", unit: \"A\" },\n        { key: \"N\", label: \"N\", unit: \"\" },\n        { key: \"R\", label: \"R\", unit: \"m\" },\n        { key: \"B\", label: \"B\", unit: \"T\" },\n        { key: \"N*I\", label: \"NI\", unit: \"A\" }\n      ],\n      equations: [\n        {\n          name: \"Circular Coil (Biot-Savart)\",\n          formula: \"B = μ₀NI / (2R)\",\n          variables: [\n            { symbol: \"B\", label: \"Magnetic Field\" },\n            { symbol: \"I\", label: \"Current\" },\n            { symbol: \"N\", label: \"Turns\" },\n            { symbol: \"R\", label: \"Radius\" },\n            { symbol: \"μ₀\", label: \"Permeability\" }\n          ],\n          solveFor: [\"B\", \"I\", \"N\", \"R\", \"μ₀\"]\n        }\n      ],\n      suggestedPlots: [\n        { xKey: \"N*I\", yKey: \"B\", xLabel: \"NI (A)\", yLabel: \"B (T)\", type: \"scatter\" },\n        { xKey: \"R\", yKey: \"B\", xLabel: \"R (m)\", yLabel: \"B (T)\", type: \"scatter\" }\n      ]\n    };\n    sendToAnalysis(router, payload);\n  }\n  return {\n    params,\n    running,\n    paused,\n    B,\n    trials,\n    probeData,\n    togglePause,\n    resetSim,\n    recordTrial,\n    removeTrial,\n    clearTrials,\n    exportCsv,\n    exportToAnalysis,\n    setProbeData\n  };\n}\n",
+      "start": 1783634641150,
+      "end": 1783634641637,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/electromagnetism/useCircularCoilExperiment.ts"
+        ],
+        "sourcesContent": [
+          "import { ref, reactive, computed } from 'vue'\nimport { useRouter } from 'vue-router'\nimport { sendToAnalysis } from '../analysis/sendToAnalysis'\nimport type { AnalysisPayload } from '../../types/physics'\n\nexport interface CircularCoilParams {\n  I: number\n  N: number\n  R: number\n}\n\nexport interface CircularCoilTrial {\n  id: number\n  I: number\n  N: number\n  R: number\n  B: number\n}\n\nconst MU0 = 4 * Math.PI * 1e-7\n\nconst _state = {\n  running: ref(false),\n  paused: ref(false),\n  trials: ref<CircularCoilTrial[]>([]),\n  nextId: 1,\n  params: reactive<CircularCoilParams>({ I: 5, N: 10, R: 0.05 }),\n  probeData: ref<{ R: number; B: number } | null>(null),\n}\n\nexport function useCircularCoilExperiment() {\n  const router = useRouter()\n  const { running, paused, trials, params, probeData } = _state\n\n  const B = computed(() => (MU0 * params.N * params.I) / (2 * Math.max(params.R, 1e-6)))\n\n  function setProbeData(R: number, measuredB: number) {\n    probeData.value = { R, B: measuredB }\n    params.R = R\n  }\n\n  function togglePause() {\n    if (!running.value) { running.value = true; paused.value = false }\n    else paused.value = !paused.value\n  }\n\n  function resetSim() {\n    running.value = false\n    paused.value = false\n    probeData.value = null\n  }\n\n  function recordTrial() {\n    const R = probeData.value ? probeData.value.R : params.R\n    const measuredB = probeData.value ? probeData.value.B : B.value\n    trials.value.push({\n      id: _state.nextId++,\n      I: params.I,\n      N: params.N,\n      R,\n      B: measuredB,\n    })\n  }\n\n  function removeTrial(id: number) {\n    trials.value = trials.value.filter(t => t.id !== id)\n  }\n\n  function clearTrials() {\n    trials.value = []\n    _state.nextId = 1\n  }\n\n  function exportCsv() {\n    if (!trials.value.length) return\n    const headers = 'I (A),N,R (m),B (T)'\n    const rows = trials.value.map(t => `${t.I},${t.N},${t.R.toFixed(4)},${t.B.toExponential(4)}`)\n    const csv = [headers, ...rows].join('\\n')\n    const blob = new Blob(['\\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' })\n    const url = URL.createObjectURL(blob)\n    const a = document.createElement('a')\n    a.href = url\n    a.download = 'circular-coil-results.csv'\n    a.click()\n    URL.revokeObjectURL(url)\n  }\n\n  function exportToAnalysis() {\n    if (trials.value.length < 2) return\n    const readings = trials.value.map(t => ({\n      I: t.I,\n      N: t.N,\n      R: t.R,\n      B: t.B,\n      'N*I': t.N * t.I,\n    }))\n    const payload: AnalysisPayload = {\n      sourceExperiment: 'electromagnetism-circular-coil',\n      sourceNameAr: 'المجال المغناطيسي لملف دائري',\n      hasCalcTab: true,\n      readings,\n      columns: [\n        { key: 'I', label: 'I', unit: 'A' },\n        { key: 'N', label: 'N', unit: '' },\n        { key: 'R', label: 'R', unit: 'm' },\n        { key: 'B', label: 'B', unit: 'T' },\n        { key: 'N*I', label: 'NI', unit: 'A' },\n      ],\n      equations: [\n        {\n          name: 'Circular Coil (Biot-Savart)',\n          formula: 'B = μ₀NI / (2R)',\n          variables: [\n            { symbol: 'B', label: 'Magnetic Field' },\n            { symbol: 'I', label: 'Current' },\n            { symbol: 'N', label: 'Turns' },\n            { symbol: 'R', label: 'Radius' },\n            { symbol: 'μ₀', label: 'Permeability' },\n          ],\n          solveFor: ['B', 'I', 'N', 'R', 'μ₀'],\n        },\n      ],\n      suggestedPlots: [\n        { xKey: 'N*I', yKey: 'B', xLabel: 'NI (A)', yLabel: 'B (T)', type: 'scatter' as const },\n        { xKey: 'R', yKey: 'B', xLabel: 'R (m)', yLabel: 'B (T)', type: 'scatter' as const },\n      ],\n    }\n    sendToAnalysis(router, payload)\n  }\n\n  return {\n    params, running, paused, B, trials, probeData,\n    togglePause, resetSim, recordTrial, removeTrial, clearTrials,\n    exportCsv, exportToAnalysis, setProbeData,\n  }\n}\n"
+        ],
+        "mappings": "AAAA,SAAS,KAAK,UAAU,gBAAgB;AACxC,SAAS,iBAAiB;AAC1B,SAAS,sBAAsB;AAiB/B,MAAM,MAAM,IAAI,KAAK,KAAK;AAE1B,MAAM,SAAS;AAAA,EACb,SAAS,IAAI,KAAK;AAAA,EAClB,QAAQ,IAAI,KAAK;AAAA,EACjB,QAAQ,IAAyB,CAAC,CAAC;AAAA,EACnC,QAAQ;AAAA,EACR,QAAQ,SAA6B,EAAE,GAAG,GAAG,GAAG,IAAI,GAAG,KAAK,CAAC;AAAA,EAC7D,WAAW,IAAqC,IAAI;AACtD;AAEO,gBAAS,4BAA4B;AAC1C,QAAM,SAAS,UAAU;AACzB,QAAM,EAAE,SAAS,QAAQ,QAAQ,QAAQ,UAAU,IAAI;AAEvD,QAAM,IAAI,SAAS,MAAO,MAAM,OAAO,IAAI,OAAO,KAAM,IAAI,KAAK,IAAI,OAAO,GAAG,IAAI,EAAE;AAErF,WAAS,aAAa,GAAW,WAAmB;AAClD,cAAU,QAAQ,EAAE,GAAG,GAAG,UAAU;AACpC,WAAO,IAAI;AAAA,EACb;AAEA,WAAS,cAAc;AACrB,QAAI,CAAC,QAAQ,OAAO;AAAE,cAAQ,QAAQ;AAAM,aAAO,QAAQ;AAAA,IAAM,MAC5D,QAAO,QAAQ,CAAC,OAAO;AAAA,EAC9B;AAEA,WAAS,WAAW;AAClB,YAAQ,QAAQ;AAChB,WAAO,QAAQ;AACf,cAAU,QAAQ;AAAA,EACpB;AAEA,WAAS,cAAc;AACrB,UAAM,IAAI,UAAU,QAAQ,UAAU,MAAM,IAAI,OAAO;AACvD,UAAM,YAAY,UAAU,QAAQ,UAAU,MAAM,IAAI,EAAE;AAC1D,WAAO,MAAM,KAAK;AAAA,MAChB,IAAI,OAAO;AAAA,MACX,GAAG,OAAO;AAAA,MACV,GAAG,OAAO;AAAA,MACV;AAAA,MACA,GAAG;AAAA,IACL,CAAC;AAAA,EACH;AAEA,WAAS,YAAY,IAAY;AAC/B,WAAO,QAAQ,OAAO,MAAM,OAAO,OAAK,EAAE,OAAO,EAAE;AAAA,EACrD;AAEA,WAAS,cAAc;AACrB,WAAO,QAAQ,CAAC;AAChB,WAAO,SAAS;AAAA,EAClB;AAEA,WAAS,YAAY;AACnB,QAAI,CAAC,OAAO,MAAM,OAAQ;AAC1B,UAAM,UAAU;AAChB,UAAM,OAAO,OAAO,MAAM,IAAI,OAAK,GAAG,EAAE,CAAC,IAAI,EAAE,CAAC,IAAI,EAAE,EAAE,QAAQ,CAAC,CAAC,IAAI,EAAE,EAAE,cAAc,CAAC,CAAC,EAAE;AAC5F,UAAM,MAAM,CAAC,SAAS,GAAG,IAAI,EAAE,KAAK,IAAI;AACxC,UAAM,OAAO,IAAI,KAAK,CAAC,WAAW,GAAG,GAAG,EAAE,MAAM,0BAA0B,CAAC;AAC3E,UAAM,MAAM,IAAI,gBAAgB,IAAI;AACpC,UAAM,IAAI,SAAS,cAAc,GAAG;AACpC,MAAE,OAAO;AACT,MAAE,WAAW;AACb,MAAE,MAAM;AACR,QAAI,gBAAgB,GAAG;AAAA,EACzB;AAEA,WAAS,mBAAmB;AAC1B,QAAI,OAAO,MAAM,SAAS,EAAG;AAC7B,UAAM,WAAW,OAAO,MAAM,IAAI,QAAM;AAAA,MACtC,GAAG,EAAE;AAAA,MACL,GAAG,EAAE;AAAA,MACL,GAAG,EAAE;AAAA,MACL,GAAG,EAAE;AAAA,MACL,OAAO,EAAE,IAAI,EAAE;AAAA,IACjB,EAAE;AACF,UAAM,UAA2B;AAAA,MAC/B,kBAAkB;AAAA,MAClB,cAAc;AAAA,MACd,YAAY;AAAA,MACZ;AAAA,MACA,SAAS;AAAA,QACP,EAAE,KAAK,KAAK,OAAO,KAAK,MAAM,IAAI;AAAA,QAClC,EAAE,KAAK,KAAK,OAAO,KAAK,MAAM,GAAG;AAAA,QACjC,EAAE,KAAK,KAAK,OAAO,KAAK,MAAM,IAAI;AAAA,QAClC,EAAE,KAAK,KAAK,OAAO,KAAK,MAAM,IAAI;AAAA,QAClC,EAAE,KAAK,OAAO,OAAO,MAAM,MAAM,IAAI;AAAA,MACvC;AAAA,MACA,WAAW;AAAA,QACT;AAAA,UACE,MAAM;AAAA,UACN,SAAS;AAAA,UACT,WAAW;AAAA,YACT,EAAE,QAAQ,KAAK,OAAO,iBAAiB;AAAA,YACvC,EAAE,QAAQ,KAAK,OAAO,UAAU;AAAA,YAChC,EAAE,QAAQ,KAAK,OAAO,QAAQ;AAAA,YAC9B,EAAE,QAAQ,KAAK,OAAO,SAAS;AAAA,YAC/B,EAAE,QAAQ,MAAM,OAAO,eAAe;AAAA,UACxC;AAAA,UACA,UAAU,CAAC,KAAK,KAAK,KAAK,KAAK,IAAI;AAAA,QACrC;AAAA,MACF;AAAA,MACA,gBAAgB;AAAA,QACd,EAAE,MAAM,OAAO,MAAM,KAAK,QAAQ,UAAU,QAAQ,SAAS,MAAM,UAAmB;AAAA,QACtF,EAAE,MAAM,KAAK,MAAM,KAAK,QAAQ,SAAS,QAAQ,SAAS,MAAM,UAAmB;AAAA,MACrF;AAAA,IACF;AACA,mBAAe,QAAQ,OAAO;AAAA,EAChC;AAEA,SAAO;AAAA,IACL;AAAA,IAAQ;AAAA,IAAS;AAAA,IAAQ;AAAA,IAAG;AAAA,IAAQ;AAAA,IACpC;AAAA,IAAa;AAAA,IAAU;AAAA,IAAa;AAAA,IAAa;AAAA,IACjD;AAAA,IAAW;AAAA,IAAkB;AAAA,EAC/B;AACF;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641638,
+      "end": 1783634641638,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641638,
+      "end": 1783634641638,
+      "order": "normal"
+    }
+  ]
+}

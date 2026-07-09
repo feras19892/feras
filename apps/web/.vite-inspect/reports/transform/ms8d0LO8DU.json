@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabBunsenBurner.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\nconst { t } = useI18n();\n\ninterface Props {\n  isOn?: boolean;\n  intensity?: number; // 0–1 flame intensity\n  isHovered?: boolean;\n}\n\nconst props = withDefaults(defineProps<Props>(), {\n  isOn: false,\n  intensity: 0.7,\n  isHovered: false,\n});\n\nconst flameOpacity = computed(() => props.isOn ? 0.85 : 0);\nconst flameHeight = computed(() => props.isOn ? 55 * props.intensity : 0);\n</script>\n\n<template>\n  <div class=\"burner-wrapper\">\n    <svg viewBox=\"0 0 80 180\" class=\"burner-svg\" :class=\"{ hovered: isHovered }\">\n      <!-- Shadow -->\n      <ellipse cx=\"40\" cy=\"172\" rx=\"28\" ry=\"3\" fill=\"rgba(0,0,0,0.08)\" />\n\n      <!-- Base (rubber foot) -->\n      <ellipse cx=\"40\" cy=\"168\" rx=\"26\" ry=\"5\" fill=\"#334155\" />\n      <ellipse cx=\"40\" cy=\"166\" rx=\"24\" ry=\"4\" fill=\"#475569\" />\n\n      <!-- Base tube (metal) -->\n      <rect x=\"32\" y=\"130\" width=\"16\" height=\"36\" rx=\"2\" fill=\"#64748b\" />\n      <rect x=\"33\" y=\"131\" width=\"14\" height=\"34\" rx=\"1\" fill=\"#94a3b8\" />\n      <!-- Tube highlight -->\n      <line x1=\"34\" y1=\"132\" x2=\"34\" y2=\"164\" stroke=\"rgba(255,255,255,0.3)\" stroke-width=\"1\" />\n\n      <!-- Collar (air regulator) -->\n      <rect x=\"30\" y=\"120\" width=\"20\" height=\"12\" rx=\"3\" fill=\"#475569\" />\n      <rect x=\"32\" y=\"122\" width=\"16\" height=\"8\" rx=\"1\" fill=\"#64748b\" />\n      <!-- Collar holes -->\n      <circle cx=\"36\" cy=\"126\" r=\"1.5\" fill=\"#1e293b\" />\n      <circle cx=\"44\" cy=\"126\" r=\"1.5\" fill=\"#1e293b\" />\n      <line x1=\"36\" y1=\"126\" x2=\"44\" y2=\"126\" stroke=\"#1e293b\" stroke-width=\"0.8\" />\n\n      <!-- Burner tube -->\n      <rect x=\"34\" y=\"60\" width=\"12\" height=\"60\" rx=\"1\" fill=\"#cbd5e1\" />\n      <rect x=\"35\" y=\"61\" width=\"10\" height=\"58\" rx=\"0.5\" fill=\"#e2e8f0\" />\n      <!-- Tube highlight -->\n      <line x1=\"36\" y1=\"62\" x2=\"36\" y2=\"118\" stroke=\"rgba(255,255,255,0.4)\" stroke-width=\"1.5\" />\n\n      <!-- Top rim -->\n      <ellipse cx=\"40\" cy=\"60\" rx=\"8\" ry=\"2.5\" fill=\"#94a3b8\" />\n      <ellipse cx=\"40\" cy=\"60\" rx=\"7\" ry=\"1.8\" fill=\"#cbd5e1\" />\n\n      <!-- Flame (3 layers) -->\n      <g v-if=\"isOn\" class=\"flame-group\">\n        <!-- Outer (pale blue) -->\n        <ellipse\n          cx=\"40\"\n          :cy=\"60 - flameHeight * 0.3\"\n          :rx=\"10 * intensity\"\n          :ry=\"flameHeight\"\n          fill=\"#60a5fa\"\n          :opacity=\"flameOpacity * 0.3\"\n          class=\"flame-outer\"\n        />\n        <!-- Middle (bright blue) -->\n        <ellipse\n          cx=\"40\"\n          :cy=\"60 - flameHeight * 0.35\"\n          :rx=\"7 * intensity\"\n          :ry=\"flameHeight * 0.75\"\n          fill=\"#3b82f6\"\n          :opacity=\"flameOpacity * 0.5\"\n          class=\"flame-mid\"\n        />\n        <!-- Inner (white/bright core) -->\n        <ellipse\n          cx=\"40\"\n          :cy=\"60 - flameHeight * 0.4\"\n          :rx=\"4 * intensity\"\n          :ry=\"flameHeight * 0.5\"\n          fill=\"#dbeafe\"\n          :opacity=\"flameOpacity * 0.7\"\n          class=\"flame-inner\"\n        />\n        <!-- Tip (yellow) -->\n        <ellipse\n          cx=\"40\"\n          :cy=\"60 - flameHeight * 0.9\"\n          :rx=\"3 * intensity\"\n          :ry=\"flameHeight * 0.15\"\n          fill=\"#fbbf24\"\n          :opacity=\"flameOpacity * 0.6\"\n          class=\"flame-tip\"\n        />\n      </g>\n\n      <!-- Gas tube connector (bottom side) -->\n      <path d=\"M 46 150 Q 55 150 55 158\" stroke=\"#334155\" stroke-width=\"3\" fill=\"none\" />\n      <circle cx=\"55\" cy=\"158\" r=\"3\" fill=\"#1e293b\" />\n    </svg>\n\n    <!-- Status label -->\n    <div v-if=\"isOn\" class=\"burner-label on\">🔥 {{ t('chemistry.burning') }}</div>\n    <div v-else class=\"burner-label off\">⚫ {{ t('chemistry.extinguished') }}</div>\n  </div>\n</template>\n\n<style scoped>\n.burner-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.burner-svg {\n  width: 55px;\n  height: 125px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));\n}\n.burner-svg.hovered {\n  transform: scale(1.06);\n  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));\n}\n.burner-label {\n  position: absolute;\n  bottom: -4px;\n  font-size: 0.6rem;\n  font-weight: 700;\n  padding: 1px 6px;\n  border-radius: 6px;\n  white-space: nowrap;\n  pointer-events: none;\n}\n.burner-label.on {\n  color: #ea580c;\n  background: rgba(254,243,199,0.9);\n}\n.burner-label.off {\n  color: #64748b;\n  background: rgba(241,245,249,0.9);\n}\n\n/* Flame flicker animation */\n.flame-outer { animation: flicker 0.12s ease-in-out infinite alternate; }\n.flame-mid { animation: flicker 0.1s ease-in-out infinite alternate-reverse; }\n.flame-inner { animation: flicker 0.08s ease-in-out infinite alternate; }\n.flame-tip { animation: flicker 0.15s ease-in-out infinite alternate; }\n\n@keyframes flicker {\n  0% { transform: scale(1); opacity: var(--o, 0.6); }\n  100% { transform: scale(1.05) translateX(0.5px); opacity: calc(var(--o, 0.6) * 0.9); }\n}\n</style>\n",
+      "start": 1783634641064,
+      "end": 1783634641594,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641594,
+      "end": 1783634641594,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641594,
+      "end": 1783634641594,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641594,
+      "end": 1783634641594,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641594,
+      "end": 1783634641594,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabBunsenBurner.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabBunsenBurner.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabBunsenBurner.vue?vue&type=style&index=0&scoped=9c20cd5c&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-9c20cd5c\"]]);\n",
+      "start": 1783634641594,
+      "end": 1783634641667,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641667,
+      "end": 1783634641667,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641667,
+      "end": 1783634641667,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641667,
+      "end": 1783634641667,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    }
+  ]
+}

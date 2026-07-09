@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryResultsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed } from 'vue'\nimport { useI18n } from '../../../../composables/useI18n'\nimport type { CalorimetryTrial } from '../../../../composables/calorimetry/useCalorimetryTrials'\nconst { t } = useI18n()\nconst props = defineProps<{ trials: CalorimetryTrial[] }>()\nconst avgTf = computed(() => props.trials.length ? props.trials.reduce((s, t) => s + t.tf, 0) / props.trials.length : 0)\nconst avgC = computed(() => props.trials.length ? props.trials.reduce((s, t) => s + t.cMetal, 0) / props.trials.length : 0)\nconst stdDev = computed(() => {\n  if (props.trials.length < 2) return 0\n  const mean = avgC.value\n  const sq = props.trials.reduce((s, t) => s + Math.pow(t.cMetal - mean, 2), 0)\n  return Math.sqrt(sq / (props.trials.length - 1))\n})\nconst cv = computed(() => avgC.value > 0 ? (stdDev.value / avgC.value * 100) : 0)\nconst constancy = computed(() => {\n  if (props.trials.length < 2) return { label: '', color: '' }\n  if (cv.value < 2) return { label: 'ممتاز ✅', color: 'green' }\n  if (cv.value < 5) return { label: 'جيد', color: 'amber' }\n  return { label: 'يحتاج مزيداً', color: 'red' }\n})\nconst lastTrial = computed(() => props.trials.length ? props.trials[props.trials.length - 1] : null)\nconst errorPercent = computed(() => {\n  if (!lastTrial.value || !lastTrial.value.cTrue || lastTrial.value.cTrue <= 0) return null\n  return Math.abs(lastTrial.value.cMetal - lastTrial.value.cTrue) / lastTrial.value.cTrue * 100\n})\n</script>\n<template>\n  <div class=\"results-panel\">\n    <div class=\"stat\"><span class=\"label\">{{ t('experiments.trialsCount') }}</span><span class=\"val\">{{ trials.length }}</span></div>\n    <div class=\"stat\"><span class=\"label\">T̄f</span><span class=\"val\">{{ avgTf.toFixed(1) }} °C</span></div>\n    <div class=\"stat\"><span class=\"label\">c̄</span><span class=\"val highlight\">{{ avgC.toFixed(0) }} J/kg·K</span></div>\n    <div v-if=\"trials.length >= 2\" class=\"stat\"><span class=\"label\">σ(c)</span><span class=\"val\">±{{ stdDev.toFixed(0) }}</span></div>\n    <div v-if=\"trials.length >= 2\" class=\"stat\"><span class=\"label\">CV</span><span class=\"val\" :class=\"constancy.color\">{{ cv.toFixed(1) }}%</span></div>\n    <div v-if=\"trials.length >= 2\" class=\"stat\"><span class=\"label\">ثبات c</span><span class=\"val\" :class=\"constancy.color\">{{ constancy.label }}</span></div>\n    <div v-if=\"lastTrial && errorPercent !== null\" class=\"stat\"><span class=\"label\">خطأ آخر تجربة</span><span class=\"val\" :class=\"errorPercent < 5 ? 'green' : errorPercent < 15 ? 'amber' : 'red'\">{{ errorPercent.toFixed(1) }}%</span></div>\n    <div v-if=\"lastTrial && lastTrial.cTrue\" class=\"stat\"><span class=\"label\">c الحقيقي</span><span class=\"val green\">{{ lastTrial.cTrue }} J/kg·K</span></div>\n  </div>\n</template>\n<style scoped>\n.results-panel { display:flex; flex-direction:column; gap:.35rem; }\n.stat { display:flex; justify-content:space-between; font-size:.78rem; padding:.25rem .35rem; border-radius:4px; background:rgba(255,255,255,.03); }\n.label { color:#8B95A5; }\n.val { color:#D1D7E0; font-weight:600; }\n.val.highlight { color:#fbbf24; }\n.val.green { color:#4ade80; }\n.val.amber { color:#fbbf24; }\n.val.red { color:#f87171; }\n</style>\n",
+      "start": 1783634642437,
+      "end": 1783634642744,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642744,
+      "end": 1783634642744,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642744,
+      "end": 1783634642744,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642744,
+      "end": 1783634642744,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642744,
+      "end": 1783634642744,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryResultsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryResultsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryResultsPanel.vue?vue&type=style&index=0&scoped=45f262a9&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-45f262a9\"]]);\n",
+      "start": 1783634642744,
+      "end": 1783634642867,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642867,
+      "end": 1783634642868,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642868,
+      "end": 1783634642868,
+      "order": "normal"
+    }
+  ]
+}

@@ -10,6 +10,10 @@ interface Props {
   fringeSpacing: number
   angularSeparation: number
   intensityPattern: { xMm: number; intensity: number }[]
+  regressionSlope: number
+  regressionIntercept: number
+  rSquared: number
+  lambdaFromRegression: number | null
 }
 
 const props = defineProps<Props>()
@@ -38,6 +42,10 @@ const ids = ['readings', 'chart', 'trials', 'params', 'laws', 'results']
           :fringe-spacing="fringeSpacing"
           :angular-separation="angularSeparation"
           :intensity-pattern="intensityPattern"
+          :regression-slope="regressionSlope"
+          :regression-intercept="regressionIntercept"
+          :r-squared="rSquared"
+          :lambda-from-regression="lambdaFromRegression"
           @remove="emit('remove', $event)"
           @clear="emit('clear')"
           @update:params="emit('update:params', $event)"

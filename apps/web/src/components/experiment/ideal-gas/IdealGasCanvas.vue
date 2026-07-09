@@ -67,7 +67,7 @@ const layout = computed(() => {
 function draw() {
   const ctx = getCtx()
   if (!ctx) return
-  const { w, h, dpr } = getSize()
+  const { dpr } = getSize()
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
   const L = layout.value
   const { s, cx, bottom, cylW, cylH, left, right, top, pistonY } = L

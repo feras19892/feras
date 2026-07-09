@@ -70,6 +70,11 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
               :v-theory="ex.lab.vTheory.value"
               :percent-error="ex.lab.percentError.value"
               :waveform-data="ex.lab.waveformData.value"
+              :regression-slope="ex.lab.regression.value.m"
+              :regression-intercept="ex.lab.regression.value.b"
+              :r-squared="ex.lab.regression.value.r2"
+              :v-from-regression="ex.lab.vFromRegression.value"
+              :end-correction="ex.lab.endCorrection.value"
               @remove="ex.trials.removeTrial"
               @clear="ex.trials.clearTrials"
               @update:params="Object.assign(ex.params, $event)"
@@ -105,7 +110,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       <div class="lab-col ctrl-col" :style="{ width: ex.layout.widths.ctrl + 'px' }">
         <template v-for="id in ex.layout.columnMap.ctrl" :key="id">
           <DraggablePanel
-            v-if="ex.layout.isPanelVisible(id)"
+            v-if="id !== 'params' && ex.layout.isPanelVisible(id)"
             class="lab-card"
             :id="id"
             :title="ex.layout.panelTitle(id)"
@@ -122,11 +127,34 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
               :v-theory="ex.lab.vTheory.value"
               :percent-error="ex.lab.percentError.value"
               :waveform-data="ex.lab.waveformData.value"
+              :regression-slope="ex.lab.regression.value.m"
+              :regression-intercept="ex.lab.regression.value.b"
+              :r-squared="ex.lab.regression.value.r2"
+              :v-from-regression="ex.lab.vFromRegression.value"
+              :end-correction="ex.lab.endCorrection.value"
               @remove="ex.trials.removeTrial"
               @clear="ex.trials.clearTrials"
               @update:params="Object.assign(ex.params, $event)"
             />
           </DraggablePanel>
+          <div v-else-if="id === 'params'" class="params-embedded">
+            <SpeedOfSoundPanelBody
+              id="params"
+              :trials="ex.trials.trials.value"
+              :params="ex.params"
+              :wavelength="ex.lab.wavelength.value"
+              :v-measured="ex.lab.vMeasured.value"
+              :v-theory="ex.lab.vTheory.value"
+              :percent-error="ex.lab.percentError.value"
+              :waveform-data="ex.lab.waveformData.value"
+              :regression-slope="ex.lab.regression.value.m"
+              :regression-intercept="ex.lab.regression.value.b"
+              :r-squared="ex.lab.regression.value.r2"
+              :v-from-regression="ex.lab.vFromRegression.value"
+              :end-correction="ex.lab.endCorrection.value"
+              @update:params="Object.assign(ex.params, $event)"
+            />
+          </div>
         </template>
       </div>
     </div>
@@ -141,6 +169,11 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       :v-theory="ex.lab.vTheory.value"
       :percent-error="ex.lab.percentError.value"
       :waveform-data="ex.lab.waveformData.value"
+      :regression-slope="ex.lab.regression.value.m"
+      :regression-intercept="ex.lab.regression.value.b"
+      :r-squared="ex.lab.regression.value.r2"
+      :v-from-regression="ex.lab.vFromRegression.value"
+      :end-correction="ex.lab.endCorrection.value"
       @maximize="ex.layout.maximizePanel"
       @remove="ex.trials.removeTrial"
       @clear="ex.trials.clearTrials"
@@ -171,6 +204,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 .vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 0; position: relative; }
 .vis-canvas-wrap { flex: 1; min-height: 0; position: relative; width: 100%; }
 .ctrl-col { background: rgba(255,255,255,0.02); }
+.params-embedded { padding: .6rem; }
 .resizer { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0; }
 .resizer:hover, .resizer:active { background: #5B8DB8; }
 .hint-bar { background: #252D3A; border: 1px solid #2D3645; border-radius: 6px; padding: .35rem .7rem; font-size: .75rem; color: #8B95A5; text-align: center; flex-shrink: 0; }

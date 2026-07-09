@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/SpringCanvas.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\nimport { ref, watch, onMounted, onUnmounted } from 'vue'\nimport { useSpringDraw } from '../../../composables/spring/useSpringDraw'\nimport type { SpringParams } from '../../../modules/physics/experiments/spring/useSpringPhysics'\n\ninterface SimState {\n  x: number; v: number; t: number; running: boolean; paused: boolean;\n}\n\nconst { t } = useI18n()\nconst props = defineProps<{\n  params: SpringParams\n  simState: SimState\n  oscillationCount?: number\n}>()\n\nconst emit = defineEmits<{\n  (e: 'toggle-mass'): void\n  (e: 'pull-down'): void\n  (e: 'push-up'): void\n  (e: 'snapshot', dataUrl: string): void\n}>()\n\nfunction captureSnapshot() {\n  const canvas = canvasRef.value\n  if (!canvas) return\n  try {\n    const dataUrl = canvas.toDataURL('image/png')\n    emit('snapshot', dataUrl)\n    const link = document.createElement('a')\n    link.href = dataUrl\n    link.download = `spring_${Date.now()}.png`\n    document.body.appendChild(link)\n    link.click()\n    document.body.removeChild(link)\n  } catch { /* ignore */ }\n}\n\nconst canvasRef = ref<HTMLCanvasElement | null>(null)\nconst wrapRef = ref<HTMLDivElement | null>(null)\n\nconst { draw, resizeCanvas } = useSpringDraw(canvasRef, props.params, props.simState)\n\nwatch(() => [\n  props.params.mass, props.params.k, props.params.amplitude, props.params.damping,\n  props.simState.x, props.simState.v, props.simState.t\n], draw, { flush: 'post' })\n\nlet resizeObs: ResizeObserver | null = null\nlet pullInterval: ReturnType<typeof setInterval> | null = null\nlet pushInterval: ReturnType<typeof setInterval> | null = null\nconst REPEAT_DELAY = 100  // ms between repeats\n\nfunction startPull() {\n  emit('pull-down')\n  pullInterval = setInterval(() => emit('pull-down'), REPEAT_DELAY)\n}\nfunction stopPull() {\n  if (pullInterval) { clearInterval(pullInterval); pullInterval = null }\n}\nfunction startPush() {\n  emit('push-up')\n  pushInterval = setInterval(() => emit('push-up'), REPEAT_DELAY)\n}\nfunction stopPush() {\n  if (pushInterval) { clearInterval(pushInterval); pushInterval = null }\n}\n\nonMounted(() => {\n  if (wrapRef.value) {\n    resizeObs = new ResizeObserver(() => { resizeCanvas(); draw() })\n    resizeObs.observe(wrapRef.value)\n  }\n  draw()\n})\nonUnmounted(() => {\n  if (resizeObs) resizeObs.disconnect()\n  stopPull()\n  stopPush()\n})\n\ndefineExpose({ draw, captureSnapshot })\n</script>\n\n<template>\n  <div ref=\"wrapRef\" class=\"canvas-wrap\">\n    <button class=\"mass-toggle-btn\" @click=\"emit('toggle-mass')\">\n      {{ params.mass > 0 ? '🏗️ ' + t('experiments.removeWeight') : '➕ ' + t('experiments.restoreWeight') }}\n    </button>\n    <div class=\"spring-ctrls\"\n      @mousedown.prevent\n      @touchstart.prevent\n    >\n      <button class=\"spring-btn pull\"\n        @mousedown=\"startPull\"\n        @mouseup=\"stopPull\"\n        @mouseleave=\"stopPull\"\n        @touchstart=\"startPull\"\n        @touchend=\"stopPull\"\n        :title=\"t('experiments.pullDown')\"\n      >⬇️ {{ t('experiments.pull') }}</button>\n      <button class=\"spring-btn push\"\n        @mousedown=\"startPush\"\n        @mouseup=\"stopPush\"\n        @mouseleave=\"stopPush\"\n        @touchstart=\"startPush\"\n        @touchend=\"stopPush\"\n        :title=\"t('experiments.pushUp')\"\n      >⬆️ {{ t('experiments.push') }}</button>\n    </div>\n    <div v-if=\"simState.running && oscillationCount !== undefined\" class=\"osc-counter\">\n      <span class=\"osc-num\">{{ oscillationCount }}</span>\n      <span class=\"osc-label\">{{ t('experiments.oscillation') }}</span>\n    </div>\n    <button class=\"snapshot-btn\" @click=\"captureSnapshot()\" :title=\"'📸 ' + t('experiments.snapshot')\">📸</button>\n    <canvas ref=\"canvasRef\" width=\"700\" height=\"420\" />\n  </div>\n</template>\n\n<style scoped>\n.canvas-wrap { flex: 1; min-height: 0; width: 100%; display: flex; flex-direction: column; position: relative; }\n.canvas-wrap canvas { display: block; width: 100%; flex: 1; min-height: 0; border-radius: 8px; background: linear-gradient(180deg, #fffef7, #fff8ea); border: 1px solid #2D3645; }\n.mass-toggle-btn { position: absolute; top: 8px; left: 8px; z-index: 10; background: #1E2530; border: 1px solid #2D3645; color: #D1D7E0; border-radius: 6px; padding: .3rem .6rem; font-size: .72rem; cursor: pointer; transition: all .15s; }\n.mass-toggle-btn:hover { background: #252D3A; border-color: #5B8DB8; color: #5B8DB8; }\n.spring-ctrls { position: absolute; bottom: 12px; left: 12px; z-index: 10; display: flex; flex-direction: column; gap: .4rem; }\n.spring-btn { background: #1E2530; border: 1px solid #2D3645; color: #D1D7E0; border-radius: 6px; padding: .4rem .6rem; font-size: .75rem; cursor: pointer; transition: all .15s; font-weight: 600; }\n.spring-btn:hover { background: #252D3A; }\n.spring-btn.pull:hover { border-color: #22c55e; color: #22c55e; }\n.spring-btn.push:hover { border-color: #ef4444; color: #ef4444; }\n.osc-counter { position: absolute; top: 8px; right: 8px; z-index: 10; background: #1E2530; border: 1px solid #2D3645; border-radius: 6px; padding: .3rem .6rem; font-size: .72rem; display: flex; align-items: center; gap: .3rem; color: #D1D7E0; }\n.osc-num { color: #5B8DB8; font-weight: 700; font-size: .9rem; }\n.snapshot-btn { position: absolute; top: 8px; right: 100px; z-index: 10; background: #1E2530; border: 1px solid #2D3645; border-radius: 6px; padding: .25rem .4rem; font-size: .75rem; cursor: pointer; transition: all .15s; }\n.snapshot-btn:hover { background: #252D3A; border-color: #5B8DB8; }\n</style>\n",
+      "start": 1783634640996,
+      "end": 1783634641469,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641469,
+      "end": 1783634641469,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641469,
+      "end": 1783634641469,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641469,
+      "end": 1783634641469,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641469,
+      "end": 1783634641469,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/SpringCanvas.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/SpringCanvas.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/SpringCanvas.vue?vue&type=style&index=0&scoped=5fffc76a&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-5fffc76a\"]]);\n",
+      "start": 1783634641469,
+      "end": 1783634641658,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641658,
+      "end": 1783634641658,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641658,
+      "end": 1783634641658,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641658,
+      "end": 1783634641658,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641658,
+      "end": 1783634641658,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641658,
+      "end": 1783634641658,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641658,
+      "end": 1783634641658,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641659,
+      "end": 1783634641659,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641659,
+      "end": 1783634641659,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641659,
+      "end": 1783634641659,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641659,
+      "end": 1783634641659,
+      "order": "normal"
+    }
+  ]
+}

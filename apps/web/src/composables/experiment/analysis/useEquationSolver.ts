@@ -151,6 +151,41 @@ export function useEquationSolver(
         result.value = steps('H', `v₀²·sin²(θ)/(2g)`, (v0 * v0 * Math.sin(theta) * Math.sin(theta)) / (2 * g))
       } else result.value = t('analysis.enterValidValues')
     }
+    // === Straight Wire (Biot-Savart) ===
+    else if (eq.formula.includes('B = μ₀I / (2πr)')) {
+      const B_val = vals['B'] ?? 0; const I_val = vals['I'] ?? 0; const r_val = vals['r'] ?? 0; const mu0 = vals['μ₀'] ?? 0
+      if (missing === 'B' && I_val > 0 && r_val > 0) {
+        const mu = mu0 > 0 ? mu0 : (4 * Math.PI * 1e-7)
+        result.value = steps('B', `μ₀I/(2πr) = ${mu.toExponential(4)}·${I_val.toFixed(4)}/(2π·${r_val.toFixed(4)})`, (mu * I_val) / (2 * Math.PI * r_val))
+      } else if (missing === 'I' && B_val > 0 && r_val > 0) {
+        const mu = mu0 > 0 ? mu0 : (4 * Math.PI * 1e-7)
+        result.value = steps('I', `B·2πr/μ₀ = ${B_val.toExponential(4)}·2π·${r_val.toFixed(4)}/${mu.toExponential(4)}`, (B_val * 2 * Math.PI * r_val) / mu)
+      } else if (missing === 'r' && B_val > 0 && I_val > 0) {
+        const mu = mu0 > 0 ? mu0 : (4 * Math.PI * 1e-7)
+        result.value = steps('r', `μ₀I/(2πB) = ${mu.toExponential(4)}·${I_val.toFixed(4)}/(2π·${B_val.toExponential(4)})`, (mu * I_val) / (2 * Math.PI * B_val))
+      } else if (missing === 'μ₀' && B_val > 0 && I_val > 0 && r_val > 0) {
+        result.value = steps('μ₀', `B·2πr/I = ${B_val.toExponential(4)}·2π·${r_val.toFixed(4)}/${I_val.toFixed(4)}`, (B_val * 2 * Math.PI * r_val) / I_val)
+      } else result.value = t('analysis.enterValidKnownValues')
+    }
+    // === Circular Coil (Biot-Savart) ===
+    else if (eq.formula.includes('B = μ₀NI / (2R)')) {
+      const B_val = vals['B'] ?? 0; const I_val = vals['I'] ?? 0; const N_val = vals['N'] ?? 0; const R_val = vals['R'] ?? 0; const mu0 = vals['μ₀'] ?? 0
+      if (missing === 'B' && I_val > 0 && N_val > 0 && R_val > 0) {
+        const mu = mu0 > 0 ? mu0 : (4 * Math.PI * 1e-7)
+        result.value = steps('B', `μ₀NI/(2R) = ${mu.toExponential(4)}·${N_val}·${I_val.toFixed(4)}/(2·${R_val.toFixed(4)})`, (mu * N_val * I_val) / (2 * R_val))
+      } else if (missing === 'I' && B_val > 0 && N_val > 0 && R_val > 0) {
+        const mu = mu0 > 0 ? mu0 : (4 * Math.PI * 1e-7)
+        result.value = steps('I', `B·2R/(μ₀N) = ${B_val.toExponential(4)}·2·${R_val.toFixed(4)}/(${mu.toExponential(4)}·${N_val})`, (B_val * 2 * R_val) / (mu * N_val))
+      } else if (missing === 'N' && B_val > 0 && I_val > 0 && R_val > 0) {
+        const mu = mu0 > 0 ? mu0 : (4 * Math.PI * 1e-7)
+        result.value = steps('N', `B·2R/(μ₀I) = ${B_val.toExponential(4)}·2·${R_val.toFixed(4)}/(${mu.toExponential(4)}·${I_val.toFixed(4)})`, Math.round((B_val * 2 * R_val) / (mu * I_val)))
+      } else if (missing === 'R' && B_val > 0 && I_val > 0 && N_val > 0) {
+        const mu = mu0 > 0 ? mu0 : (4 * Math.PI * 1e-7)
+        result.value = steps('R', `μ₀NI/(2B) = ${mu.toExponential(4)}·${N_val}·${I_val.toFixed(4)}/(2·${B_val.toExponential(4)})`, (mu * N_val * I_val) / (2 * B_val))
+      } else if (missing === 'μ₀' && B_val > 0 && I_val > 0 && N_val > 0 && R_val > 0) {
+        result.value = steps('μ₀', `B·2R/(NI) = ${B_val.toExponential(4)}·2·${R_val.toFixed(4)}/(${N_val}·${I_val.toFixed(4)})`, (B_val * 2 * R_val) / (N_val * I_val))
+      } else result.value = t('analysis.enterValidKnownValues')
+    }
     else {
       result.value = t('analysis.calculateFromEquation', { missing, formula: eq.formula })
     }

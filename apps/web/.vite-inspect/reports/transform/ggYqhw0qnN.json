@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ExperimentReport.vue?vue&type=style&index=1&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n@media print {\n  body * { visibility: hidden !important; }\n  #printable-report, #printable-report * { visibility: visible !important; }\n  #printable-report {\n    position: absolute !important;\n    left: 0 !important; top: 0 !important;\n    width: 100% !important; height: auto !important;\n    max-width: 100% !important; max-height: none !important;\n    overflow: visible !important;\n    background: #fff !important; color: #000 !important;\n    border: none !important; border-radius: 0 !important;\n    box-shadow: none !important;\n    padding: 1rem !important; margin: 0 !important;\n    gap: .6rem !important;\n  }\n  #printable-report .print-bar,\n  #printable-report .close-btn,\n  #printable-report .no-data { display: none !important; }\n  #printable-report section {\n    background: #fff !important;\n    border: 1px solid #ccc !important;\n    box-shadow: none !important;\n    break-inside: avoid;\n    page-break-inside: avoid;\n  }\n  #printable-report h5 { color: #000 !important; }\n  #printable-report .report-table th { background: #f0f0f0 !important; color: #000 !important; }\n  #printable-report .report-table td { color: #000 !important; border-color: #ccc !important; }\n  #printable-report .result-line { color: #000 !important; }\n  #printable-report .error-sources ul { color: #333 !important; }\n}\n",
+      "start": 1783634642909,
+      "end": 1783634642909
+    },
+    {
+      "name": "vite:css",
+      "result": "\n@media print {\n  body * { visibility: hidden !important; }\n  #printable-report, #printable-report * { visibility: visible !important; }\n  #printable-report {\n    position: absolute !important;\n    left: 0 !important; top: 0 !important;\n    width: 100% !important; height: auto !important;\n    max-width: 100% !important; max-height: none !important;\n    overflow: visible !important;\n    background: #fff !important; color: #000 !important;\n    border: none !important; border-radius: 0 !important;\n    box-shadow: none !important;\n    padding: 1rem !important; margin: 0 !important;\n    gap: .6rem !important;\n  }\n  #printable-report .print-bar,\n  #printable-report .close-btn,\n  #printable-report .no-data { display: none !important; }\n  #printable-report section {\n    background: #fff !important;\n    border: 1px solid #ccc !important;\n    box-shadow: none !important;\n    break-inside: avoid;\n    page-break-inside: avoid;\n  }\n  #printable-report h5 { color: #000 !important; }\n  #printable-report .report-table th { background: #f0f0f0 !important; color: #000 !important; }\n  #printable-report .report-table td { color: #000 !important; border-color: #ccc !important; }\n  #printable-report .result-line { color: #000 !important; }\n  #printable-report .error-sources ul { color: #333 !important; }\n}\n",
+      "start": 1783634642909,
+      "end": 1783634642909,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642909,
+      "end": 1783634642909,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642909,
+      "end": 1783634642909,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642909,
+      "end": 1783634642909,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n@media print {\nbody * { visibility: hidden !important;\n}\n#printable-report, #printable-report * { visibility: visible !important;\n}\n#printable-report {\n    position: absolute !important;\n    left: 0 !important; top: 0 !important;\n    width: 100% !important; height: auto !important;\n    max-width: 100% !important; max-height: none !important;\n    overflow: visible !important;\n    background: #fff !important; color: #000 !important;\n    border: none !important; border-radius: 0 !important;\n    box-shadow: none !important;\n    padding: 1rem !important; margin: 0 !important;\n    gap: .6rem !important;\n}\n#printable-report .print-bar,\n  #printable-report .close-btn,\n  #printable-report .no-data { display: none !important;\n}\n#printable-report section {\n    background: #fff !important;\n    border: 1px solid #ccc !important;\n    box-shadow: none !important;\n    break-inside: avoid;\n    page-break-inside: avoid;\n}\n#printable-report h5 { color: #000 !important;\n}\n#printable-report .report-table th { background: #f0f0f0 !important; color: #000 !important;\n}\n#printable-report .report-table td { color: #000 !important; border-color: #ccc !important;\n}\n#printable-report .result-line { color: #000 !important;\n}\n#printable-report .error-sources ul { color: #333 !important;\n}\n}\n",
+      "start": 1783634642911,
+      "end": 1783634642911,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642911,
+      "end": 1783634642911,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634642911,
+      "end": 1783634642911,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642911,
+      "end": 1783634642911,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642911,
+      "end": 1783634642911,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642911,
+      "end": 1783634642911,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642911,
+      "end": 1783634642911,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642911,
+      "end": 1783634642911,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642911,
+      "end": 1783634642911,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642911,
+      "end": 1783634642911,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642911,
+      "end": 1783634642911,
+      "order": "normal"
+    }
+  ]
+}

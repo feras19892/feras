@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/useElectricLabRC.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { ref, computed, type Reactive, type Ref } from 'vue'\nimport type { CircuitComponent } from './types'\n\nexport function useElectricLabRC(\n  components: Reactive<CircuitComponent[]>,\n  running: Ref<boolean>,\n  activePresetId: Ref<string | null>,\n) {\n  const isRC = computed(() => activePresetId.value === 'rc-circuit')\n  const rcTime = ref(0)\n  const rcVoltage = ref(0)\n  const rcCurrent = ref(0)\n  const rcCharging = ref(true)\n  const rcHistory = ref<{ t: number; V: number; I: number }[]>([])\n  let rcInterval: ReturnType<typeof setInterval> | null = null\n\n  const rcData = computed(() => {\n    if (!isRC.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    const cap = components.find(c => c.type === 'capacitor')\n    const sw = components.find(c => c.type === 'switch')\n    if (!batt || !res || !cap) return null\n    const V0 = batt.value, R = res.value, Cval = cap.value * 1e-6\n    if (R === 0 || Cval === 0) return null\n    const tau = R * Cval\n    const closed = sw?._closed ?? true\n    return { V0, R, C: Cval, tau, closed, sw }\n  })\n\n  const rcReading = computed(() => {\n    if (!isRC.value || !running.value) return { V: 0, I: 0, t: 0, tau: 0, charging: true }\n    const d = rcData.value\n    if (!d) return { V: 0, I: 0, t: 0, tau: 0, charging: true }\n    return { V: rcVoltage.value, I: rcCurrent.value, t: rcTime.value, tau: d.tau, charging: rcCharging.value }\n  })\n\n  function startRC() {\n    stopRC()\n    rcTime.value = 0; rcVoltage.value = 0; rcCurrent.value = 0; rcCharging.value = true; rcHistory.value = []\n    const d = rcData.value\n    if (!d) return\n    const dt = d.tau / 50\n    rcInterval = setInterval(() => {\n      const data = rcData.value\n      if (!data) return\n      if (data.closed) {\n        rcCharging.value = true\n        rcVoltage.value = data.V0 * (1 - Math.exp(-rcTime.value / data.tau))\n        rcCurrent.value = (data.V0 / data.R) * Math.exp(-rcTime.value / data.tau)\n      } else {\n        rcCharging.value = false\n        rcVoltage.value = rcVoltage.value * Math.exp(-dt / data.tau)\n        rcCurrent.value = rcCurrent.value * Math.exp(-dt / data.tau)\n      }\n      rcHistory.value.push({ t: rcTime.value, V: rcVoltage.value, I: rcCurrent.value })\n      if (rcHistory.value.length > 300) rcHistory.value.shift()\n      rcTime.value += dt\n    }, 50)\n  }\n\n  function stopRC() {\n    if (rcInterval) { clearInterval(rcInterval); rcInterval = null }\n  }\n\n  function toggleSwitch() {\n    const sw = components.find(c => c.type === 'switch')\n    if (sw) { sw._closed = !sw._closed; rcTime.value = 0 }\n  }\n\n  return { isRC, rcTime, rcVoltage, rcCurrent, rcCharging, rcHistory, rcData, rcReading, startRC, stopRC, toggleSwitch }\n}\n",
+      "start": 1783634641887,
+      "end": 1783634642180,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642180,
+      "end": 1783634642180,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { ref, computed } from \"vue\";\nexport function useElectricLabRC(components, running, activePresetId) {\n  const isRC = computed(() => activePresetId.value === \"rc-circuit\");\n  const rcTime = ref(0);\n  const rcVoltage = ref(0);\n  const rcCurrent = ref(0);\n  const rcCharging = ref(true);\n  const rcHistory = ref([]);\n  let rcInterval = null;\n  const rcData = computed(() => {\n    if (!isRC.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    const cap = components.find((c) => c.type === \"capacitor\");\n    const sw = components.find((c) => c.type === \"switch\");\n    if (!batt || !res || !cap) return null;\n    const V0 = batt.value, R = res.value, Cval = cap.value * 1e-6;\n    if (R === 0 || Cval === 0) return null;\n    const tau = R * Cval;\n    const closed = sw?._closed ?? true;\n    return { V0, R, C: Cval, tau, closed, sw };\n  });\n  const rcReading = computed(() => {\n    if (!isRC.value || !running.value) return { V: 0, I: 0, t: 0, tau: 0, charging: true };\n    const d = rcData.value;\n    if (!d) return { V: 0, I: 0, t: 0, tau: 0, charging: true };\n    return { V: rcVoltage.value, I: rcCurrent.value, t: rcTime.value, tau: d.tau, charging: rcCharging.value };\n  });\n  function startRC() {\n    stopRC();\n    rcTime.value = 0;\n    rcVoltage.value = 0;\n    rcCurrent.value = 0;\n    rcCharging.value = true;\n    rcHistory.value = [];\n    const d = rcData.value;\n    if (!d) return;\n    const dt = d.tau / 50;\n    rcInterval = setInterval(() => {\n      const data = rcData.value;\n      if (!data) return;\n      if (data.closed) {\n        rcCharging.value = true;\n        rcVoltage.value = data.V0 * (1 - Math.exp(-rcTime.value / data.tau));\n        rcCurrent.value = data.V0 / data.R * Math.exp(-rcTime.value / data.tau);\n      } else {\n        rcCharging.value = false;\n        rcVoltage.value = rcVoltage.value * Math.exp(-dt / data.tau);\n        rcCurrent.value = rcCurrent.value * Math.exp(-dt / data.tau);\n      }\n      rcHistory.value.push({ t: rcTime.value, V: rcVoltage.value, I: rcCurrent.value });\n      if (rcHistory.value.length > 300) rcHistory.value.shift();\n      rcTime.value += dt;\n    }, 50);\n  }\n  function stopRC() {\n    if (rcInterval) {\n      clearInterval(rcInterval);\n      rcInterval = null;\n    }\n  }\n  function toggleSwitch() {\n    const sw = components.find((c) => c.type === \"switch\");\n    if (sw) {\n      sw._closed = !sw._closed;\n      rcTime.value = 0;\n    }\n  }\n  return { isRC, rcTime, rcVoltage, rcCurrent, rcCharging, rcHistory, rcData, rcReading, startRC, stopRC, toggleSwitch };\n}\n",
+      "start": 1783634642180,
+      "end": 1783634642322,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/useElectricLabRC.ts"
+        ],
+        "sourcesContent": [
+          "import { ref, computed, type Reactive, type Ref } from 'vue'\nimport type { CircuitComponent } from './types'\n\nexport function useElectricLabRC(\n  components: Reactive<CircuitComponent[]>,\n  running: Ref<boolean>,\n  activePresetId: Ref<string | null>,\n) {\n  const isRC = computed(() => activePresetId.value === 'rc-circuit')\n  const rcTime = ref(0)\n  const rcVoltage = ref(0)\n  const rcCurrent = ref(0)\n  const rcCharging = ref(true)\n  const rcHistory = ref<{ t: number; V: number; I: number }[]>([])\n  let rcInterval: ReturnType<typeof setInterval> | null = null\n\n  const rcData = computed(() => {\n    if (!isRC.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    const cap = components.find(c => c.type === 'capacitor')\n    const sw = components.find(c => c.type === 'switch')\n    if (!batt || !res || !cap) return null\n    const V0 = batt.value, R = res.value, Cval = cap.value * 1e-6\n    if (R === 0 || Cval === 0) return null\n    const tau = R * Cval\n    const closed = sw?._closed ?? true\n    return { V0, R, C: Cval, tau, closed, sw }\n  })\n\n  const rcReading = computed(() => {\n    if (!isRC.value || !running.value) return { V: 0, I: 0, t: 0, tau: 0, charging: true }\n    const d = rcData.value\n    if (!d) return { V: 0, I: 0, t: 0, tau: 0, charging: true }\n    return { V: rcVoltage.value, I: rcCurrent.value, t: rcTime.value, tau: d.tau, charging: rcCharging.value }\n  })\n\n  function startRC() {\n    stopRC()\n    rcTime.value = 0; rcVoltage.value = 0; rcCurrent.value = 0; rcCharging.value = true; rcHistory.value = []\n    const d = rcData.value\n    if (!d) return\n    const dt = d.tau / 50\n    rcInterval = setInterval(() => {\n      const data = rcData.value\n      if (!data) return\n      if (data.closed) {\n        rcCharging.value = true\n        rcVoltage.value = data.V0 * (1 - Math.exp(-rcTime.value / data.tau))\n        rcCurrent.value = (data.V0 / data.R) * Math.exp(-rcTime.value / data.tau)\n      } else {\n        rcCharging.value = false\n        rcVoltage.value = rcVoltage.value * Math.exp(-dt / data.tau)\n        rcCurrent.value = rcCurrent.value * Math.exp(-dt / data.tau)\n      }\n      rcHistory.value.push({ t: rcTime.value, V: rcVoltage.value, I: rcCurrent.value })\n      if (rcHistory.value.length > 300) rcHistory.value.shift()\n      rcTime.value += dt\n    }, 50)\n  }\n\n  function stopRC() {\n    if (rcInterval) { clearInterval(rcInterval); rcInterval = null }\n  }\n\n  function toggleSwitch() {\n    const sw = components.find(c => c.type === 'switch')\n    if (sw) { sw._closed = !sw._closed; rcTime.value = 0 }\n  }\n\n  return { isRC, rcTime, rcVoltage, rcCurrent, rcCharging, rcHistory, rcData, rcReading, startRC, stopRC, toggleSwitch }\n}\n"
+        ],
+        "mappings": "AAAA,SAAS,KAAK,gBAAyC;AAGhD,gBAAS,iBACd,YACA,SACA,gBACA;AACA,QAAM,OAAO,SAAS,MAAM,eAAe,UAAU,YAAY;AACjE,QAAM,SAAS,IAAI,CAAC;AACpB,QAAM,YAAY,IAAI,CAAC;AACvB,QAAM,YAAY,IAAI,CAAC;AACvB,QAAM,aAAa,IAAI,IAAI;AAC3B,QAAM,YAAY,IAA2C,CAAC,CAAC;AAC/D,MAAI,aAAoD;AAExD,QAAM,SAAS,SAAS,MAAM;AAC5B,QAAI,CAAC,KAAK,MAAO,QAAO;AACxB,UAAM,OAAO,WAAW,KAAK,OAAK,EAAE,SAAS,SAAS;AACtD,UAAM,MAAM,WAAW,KAAK,OAAK,EAAE,SAAS,UAAU;AACtD,UAAM,MAAM,WAAW,KAAK,OAAK,EAAE,SAAS,WAAW;AACvD,UAAM,KAAK,WAAW,KAAK,OAAK,EAAE,SAAS,QAAQ;AACnD,QAAI,CAAC,QAAQ,CAAC,OAAO,CAAC,IAAK,QAAO;AAClC,UAAM,KAAK,KAAK,OAAO,IAAI,IAAI,OAAO,OAAO,IAAI,QAAQ;AACzD,QAAI,MAAM,KAAK,SAAS,EAAG,QAAO;AAClC,UAAM,MAAM,IAAI;AAChB,UAAM,SAAS,IAAI,WAAW;AAC9B,WAAO,EAAE,IAAI,GAAG,GAAG,MAAM,KAAK,QAAQ,GAAG;AAAA,EAC3C,CAAC;AAED,QAAM,YAAY,SAAS,MAAM;AAC/B,QAAI,CAAC,KAAK,SAAS,CAAC,QAAQ,MAAO,QAAO,EAAE,GAAG,GAAG,GAAG,GAAG,GAAG,GAAG,KAAK,GAAG,UAAU,KAAK;AACrF,UAAM,IAAI,OAAO;AACjB,QAAI,CAAC,EAAG,QAAO,EAAE,GAAG,GAAG,GAAG,GAAG,GAAG,GAAG,KAAK,GAAG,UAAU,KAAK;AAC1D,WAAO,EAAE,GAAG,UAAU,OAAO,GAAG,UAAU,OAAO,GAAG,OAAO,OAAO,KAAK,EAAE,KAAK,UAAU,WAAW,MAAM;AAAA,EAC3G,CAAC;AAED,WAAS,UAAU;AACjB,WAAO;AACP,WAAO,QAAQ;AAAG,cAAU,QAAQ;AAAG,cAAU,QAAQ;AAAG,eAAW,QAAQ;AAAM,cAAU,QAAQ,CAAC;AACxG,UAAM,IAAI,OAAO;AACjB,QAAI,CAAC,EAAG;AACR,UAAM,KAAK,EAAE,MAAM;AACnB,iBAAa,YAAY,MAAM;AAC7B,YAAM,OAAO,OAAO;AACpB,UAAI,CAAC,KAAM;AACX,UAAI,KAAK,QAAQ;AACf,mBAAW,QAAQ;AACnB,kBAAU,QAAQ,KAAK,MAAM,IAAI,KAAK,IAAI,CAAC,OAAO,QAAQ,KAAK,GAAG;AAClE,kBAAU,QAAS,KAAK,KAAK,KAAK,IAAK,KAAK,IAAI,CAAC,OAAO,QAAQ,KAAK,GAAG;AAAA,MAC1E,OAAO;AACL,mBAAW,QAAQ;AACnB,kBAAU,QAAQ,UAAU,QAAQ,KAAK,IAAI,CAAC,KAAK,KAAK,GAAG;AAC3D,kBAAU,QAAQ,UAAU,QAAQ,KAAK,IAAI,CAAC,KAAK,KAAK,GAAG;AAAA,MAC7D;AACA,gBAAU,MAAM,KAAK,EAAE,GAAG,OAAO,OAAO,GAAG,UAAU,OAAO,GAAG,UAAU,MAAM,CAAC;AAChF,UAAI,UAAU,MAAM,SAAS,IAAK,WAAU,MAAM,MAAM;AACxD,aAAO,SAAS;AAAA,IAClB,GAAG,EAAE;AAAA,EACP;AAEA,WAAS,SAAS;AAChB,QAAI,YAAY;AAAE,oBAAc,UAAU;AAAG,mBAAa;AAAA,IAAK;AAAA,EACjE;AAEA,WAAS,eAAe;AACtB,UAAM,KAAK,WAAW,KAAK,OAAK,EAAE,SAAS,QAAQ;AACnD,QAAI,IAAI;AAAE,SAAG,UAAU,CAAC,GAAG;AAAS,aAAO,QAAQ;AAAA,IAAE;AAAA,EACvD;AAEA,SAAO,EAAE,MAAM,QAAQ,WAAW,WAAW,YAAY,WAAW,QAAQ,WAAW,SAAS,QAAQ,aAAa;AACvH;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642322,
+      "end": 1783634642322,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642322,
+      "end": 1783634642322,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642322,
+      "end": 1783634642322,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642322,
+      "end": 1783634642322,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642322,
+      "end": 1783634642322,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642322,
+      "end": 1783634642322,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642322,
+      "end": 1783634642322,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642322,
+      "end": 1783634642322,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642322,
+      "end": 1783634642322,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642322,
+      "end": 1783634642322,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642322,
+      "end": 1783634642323,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642323,
+      "end": 1783634642323,
+      "order": "normal"
+    }
+  ]
+}

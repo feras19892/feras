@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabBurette.vue?vue&type=style&index=0&scoped=1433db41&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.burette-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n}\n.burette-svg.hovered {\n  filter: brightness(1.04);\n}\n.stopcock {\n  cursor: pointer;\n}\n.stopcock:hover {\n  filter: brightness(1.1);\n}\n.tip-hitbox {\n  cursor: crosshair;\n}\n.tip-glow {\n  animation: tipPulse 1.2s ease infinite;\n}\n@keyframes tipPulse {\n  0%, 100% { opacity: 0.4; }\n  50% { opacity: 0.15; }\n}\n",
+      "start": 1783634642151,
+      "end": 1783634642151
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.burette-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n}\n.burette-svg.hovered {\n  filter: brightness(1.04);\n}\n.stopcock {\n  cursor: pointer;\n}\n.stopcock:hover {\n  filter: brightness(1.1);\n}\n.tip-hitbox {\n  cursor: crosshair;\n}\n.tip-glow {\n  animation: tipPulse 1.2s ease infinite;\n}\n@keyframes tipPulse {\n  0%, 100% { opacity: 0.4; }\n  50% { opacity: 0.15; }\n}\n",
+      "start": 1783634642151,
+      "end": 1783634642151,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642151,
+      "end": 1783634642151,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642151,
+      "end": 1783634642151,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642151,
+      "end": 1783634642151,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.burette-wrapper[data-v-1433db41] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n}\n.burette-svg.hovered[data-v-1433db41] {\n  filter: brightness(1.04);\n}\n.stopcock[data-v-1433db41] {\n  cursor: pointer;\n}\n.stopcock[data-v-1433db41]:hover {\n  filter: brightness(1.1);\n}\n.tip-hitbox[data-v-1433db41] {\n  cursor: crosshair;\n}\n.tip-glow[data-v-1433db41] {\n  animation: tipPulse-1433db41 1.2s ease infinite;\n}\n@keyframes tipPulse-1433db41 {\n0%, 100% { opacity: 0.4;\n}\n50% { opacity: 0.15;\n}\n}\n",
+      "start": 1783634642151,
+      "end": 1783634642151,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642152,
+      "end": 1783634642152,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634642152,
+      "end": 1783634642152,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642152,
+      "end": 1783634642152,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642152,
+      "end": 1783634642152,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642152,
+      "end": 1783634642152,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642152,
+      "end": 1783634642152,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642152,
+      "end": 1783634642152,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642152,
+      "end": 1783634642152,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642152,
+      "end": 1783634642152,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642152,
+      "end": 1783634642152,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/StudentInfoPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\nimport { useAnalysisStore } from '../../../stores/analysis.store';\n\nconst { t } = useI18n();\nconst store = useAnalysisStore();\nconst info = computed(() => store.studentInfo);\n\nfunction update(field: 'name' | 'email' | 'grade' | 'notes', val: string) {\n  store.updateStudentInfo({ [field]: val });\n}\n</script>\n\n<template>\n  <div class=\"student-panel\">\n    <div class=\"panel-header\">{{ t('analysis.studentInfo') }}</div>\n    <div class=\"form\">\n      <div class=\"row\">\n        <div class=\"field\">\n          <label>{{ t('analysis.fullName') }}</label>\n          <input type=\"text\" :value=\"info.name\" @input=\"update('name', ($event.target as HTMLInputElement).value)\" :placeholder=\"t('analysis.studentNamePlaceholder')\" />\n        </div>\n        <div class=\"field\">\n          <label>{{ t('analysis.emailLabel') }}</label>\n          <input type=\"email\" :value=\"info.email\" @input=\"update('email', ($event.target as HTMLInputElement).value)\" placeholder=\"student@school.edu\" />\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"field\">\n          <label>{{ t('analysis.gradeClass') }}</label>\n          <input type=\"text\" :value=\"info.grade\" @input=\"update('grade', ($event.target as HTMLInputElement).value)\" :placeholder=\"t('analysis.gradePlaceholder')\" />\n        </div>\n        <div class=\"field\">\n          <label>{{ t('analysis.dateLabel') }}</label>\n          <input type=\"text\" :value=\"store.reportDate\" readonly />\n        </div>\n      </div>\n      <div class=\"field full\">\n        <label>{{ t('analysis.experimentNotes') }}</label>\n        <textarea :value=\"info.notes\" @input=\"update('notes', ($event.target as HTMLTextAreaElement).value)\" rows=\"2\" :placeholder=\"t('analysis.notesPlaceholder')\"></textarea>\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.student-panel {\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.5rem;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n}\n.panel-header {\n  padding: 0.45rem 0.7rem;\n  background: rgba(255,255,255,0.04);\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n  font-size: 0.85rem;\n  color: #67e8f9;\n  font-weight: 700;\n}\n.form { padding: 0.45rem; display: flex; flex-direction: column; gap: 0.35rem; }\n.row { display: flex; gap: 0.35rem; }\n.field { flex: 1; display: flex; flex-direction: column; gap: 0.15rem; }\n.field.full { width: 100%; }\nlabel { font-size: 0.72rem; color: #94a3b8; font-weight: 600; }\ninput, textarea {\n  background: #0f172a;\n  border: 1px solid #334155;\n  color: #e2e8f0;\n  border-radius: 0.25rem;\n  padding: 0.3rem 0.4rem;\n  font-size: 0.82rem;\n  font-family: inherit;\n}\ninput[readonly] { color: #64748b; }\ntextarea { resize: vertical; }\n</style>\n",
+      "start": 1783634640359,
+      "end": 1783634640678,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640678,
+      "end": 1783634640678,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640678,
+      "end": 1783634640678,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640678,
+      "end": 1783634640678,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640678,
+      "end": 1783634640678,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/StudentInfoPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/StudentInfoPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/StudentInfoPanel.vue?vue&type=style&index=0&scoped=37a35ec4&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-37a35ec4\"]]);\n",
+      "start": 1783634640678,
+      "end": 1783634640804,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640804,
+      "end": 1783634640804,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640804,
+      "end": 1783634640804,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640804,
+      "end": 1783634640804,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640804,
+      "end": 1783634640804,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640804,
+      "end": 1783634640804,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640804,
+      "end": 1783634640804,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640804,
+      "end": 1783634640804,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640804,
+      "end": 1783634640804,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640804,
+      "end": 1783634640805,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640805,
+      "end": 1783634640805,
+      "order": "normal"
+    }
+  ]
+}

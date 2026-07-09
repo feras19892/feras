@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useI18n } from '../../../composables/useI18n'
 const { t } = useI18n()
-interface Props { running: boolean; paused: boolean; stringLength: number; harmonic: number; frequency: number; wavelength: number }
+interface Props { running: boolean; paused: boolean; stringLength: number; harmonic: number; tension: number; frequency: number; wavelength: number }
 const props = defineProps<Props>()
 const stateClass = computed(() => props.running && !props.paused ? 'running' : 'idle')
 const stateLabel = computed(() => {
@@ -18,6 +18,7 @@ const stateLabel = computed(() => {
     <span class="st-chip" :class="stateClass">{{ stateLabel }}</span>
     <span class="sep" />
     <span class="st-item">L = <b class="cyan">{{ stringLength.toFixed(2) }}</b> m</span>
+    <span class="st-item">T = <b class="amber">{{ tension }}</b> N</span>
     <span class="st-item">n = <b class="amber">{{ harmonic }}</b></span>
     <span class="st-item">f = <b class="green">{{ frequency.toFixed(1) }}</b> Hz</span>
     <span class="st-item">lambda = <b>{{ wavelength.toFixed(3) }}</b> m</span>

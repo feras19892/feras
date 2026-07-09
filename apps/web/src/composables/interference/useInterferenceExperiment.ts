@@ -1,8 +1,10 @@
 import { ref, reactive, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { useAnomalyWatcher } from '../experiment/useAnomalyWatcher'
+import { sendToAnalysis } from '../analysis/sendToAnalysis'
 import { useInterferenceLayout } from './useInterferenceLayout'
 import { useInterferenceTrials } from './useInterferenceTrials'
-import { calculateInterference, wavelengthToColor } from './useInterferenceCalculations'
+import { calculateInterference, wavelengthToColor, linearRegression } from './useInterferenceCalculations'
 import type { AnalysisPayload } from '../../types/physics'
 
 export function useInterferenceExperiment() {
@@ -73,11 +75,6 @@ export function useInterferenceExperiment() {
   function resetSim() {
     running.value = false
     paused.value = false
-    params.slitDistance = 0.5
-    params.slitWidth = 0.05
-    params.screenDistance = 1.0
-    params.wavelength = 580
-    trials.clearTrials()
   }
 
   function handleDrop(fromId: string, x?: number, y?: number) {
@@ -98,11 +95,13 @@ export function useInterferenceExperiment() {
     }
   }
 
+  const router = useRouter()
   function exportToAnalysis() {
     if (trials.trials.value.length < 2) return
     const payload: AnalysisPayload = {
       sourceExperiment: 'interference',
       sourceNameAr: 'تداخل يونغ',
+      hasCalcTab: true,
       readings: trials.trials.value.map(t => ({
         d: t.slitDistance,
         D: t.screenDistance,
@@ -132,11 +131,26 @@ export function useInterferenceExperiment() {
         { xKey: 'd', yKey: 'delta_y', xLabel: 'd (mm)', yLabel: 'Δy (mm)', type: 'scatter' },
       ],
     }
-    localStorage.setItem('analysis_payload', JSON.stringify(payload))
-    window.open('/analysis', '_blank')
+    sendToAnalysis(router, payload)
   }
 
   const lightColor = computed(() => wavelengthToColor(params.wavelength))
+
+  // Regression: Δy vs 1/d  →  Δy = (λD/1000) · (1/d)
+  // slope = λD/1000,  λ(nm) = slope · 1000 / D
+  const regression = computed(() => {
+    const valid = trials.trials.value.filter((t) => t.fringeSpacing > 0)
+    if (valid.length < 2) return { m: 0, b: 0, r2: 0 }
+    const pts = valid.map((t) => ({ x: 1 / t.slitDistance, y: t.fringeSpacing }))
+    return linearRegression(pts)
+  })
+
+  const lambdaFromRegression = computed(() => {
+    const m = regression.value.m
+    const D = params.screenDistance
+    if (!isFinite(m) || m <= 0 || D <= 0) return null
+    return (m * 1000) / D
+  })
 
   const lab = {
     running,
@@ -148,6 +162,8 @@ export function useInterferenceExperiment() {
     constructiveOrders,
     destructiveOrders,
     lightColor,
+    regression,
+    lambdaFromRegression,
     togglePause,
   }
 

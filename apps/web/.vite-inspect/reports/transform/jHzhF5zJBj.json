@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/SolenoidDataPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, renderList as _renderList, Fragment as _Fragment } from \"vue\"\n\nconst _hoisted_1 = { class: \"data-panel\" }\nconst _hoisted_2 = { class: \"data-header\" }\nconst _hoisted_3 = { class: \"data-title\" }\nconst _hoisted_4 = {\n  key: 0,\n  class: \"empty\"\n}\nconst _hoisted_5 = {\n  key: 1,\n  class: \"trial-table\"\n}\nconst _hoisted_6 = [\"onClick\"]\n\nimport type { SolenoidTrial } from '../../../composables/electromagnetism/useSolenoidExperiment'\nimport { useI18n } from '../../../composables/useI18n'\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'SolenoidDataPanel',\n  props: {\n    trials: {}\n  },\n  emits: [\"remove\", \"clear\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\n\n\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"span\", _hoisted_3, _toDisplayString(_unref(t)('experiments.emRecordedTrials')), 1),\n      (__props.trials.length)\n        ? (_openBlock(), _createElementBlock(\"button\", {\n            key: 0,\n            class: \"clear-btn\",\n            onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('clear')))\n          }, _toDisplayString(_unref(t)('experiments.emClearAll')), 1))\n        : _createCommentVNode(\"\", true)\n    ]),\n    (!__props.trials.length)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_4, _toDisplayString(_unref(t)('experiments.emNoTrials')), 1))\n      : (_openBlock(), _createElementBlock(\"table\", _hoisted_5, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"thead\", null, [\n            _createElementVNode(\"tr\", null, [\n              _createElementVNode(\"th\", null, \"#\"),\n              _createElementVNode(\"th\", null, \"I (A)\"),\n              _createElementVNode(\"th\", null, \"N\"),\n              _createElementVNode(\"th\", null, \"L (cm)\"),\n              _createElementVNode(\"th\", null, \"B (μT)\"),\n              _createElementVNode(\"th\")\n            ])\n          ], -1)),\n          _createElementVNode(\"tbody\", null, [\n            (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.trials, (trial) => {\n              return (_openBlock(), _createElementBlock(\"tr\", {\n                key: trial.id\n              }, [\n                _createElementVNode(\"td\", null, _toDisplayString(trial.id), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(trial.I.toFixed(1)), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(trial.N), 1),\n                _createElementVNode(\"td\", null, _toDisplayString((trial.L * 100).toFixed(1)), 1),\n                _createElementVNode(\"td\", null, _toDisplayString((trial.B * 1e6).toFixed(2)), 1),\n                _createElementVNode(\"td\", null, [\n                  _createElementVNode(\"button\", {\n                    class: \"del-btn\",\n                    onClick: ($event: any) => (emit('remove', trial.id))\n                  }, \"✕\", 8, _hoisted_6)\n                ])\n              ]))\n            }), 128))\n          ])\n        ]))\n  ]))\n}\n}\n\n})",
+      "start": 1783634641696,
+      "end": 1783634641696
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641696,
+      "end": 1783634641696,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, renderList as _renderList, Fragment as _Fragment } from \"vue\";\nconst _hoisted_1 = { class: \"data-panel\" };\nconst _hoisted_2 = { class: \"data-header\" };\nconst _hoisted_3 = { class: \"data-title\" };\nconst _hoisted_4 = {\n  key: 0,\n  class: \"empty\"\n};\nconst _hoisted_5 = {\n  key: 1,\n  class: \"trial-table\"\n};\nconst _hoisted_6 = [\"onClick\"];\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"SolenoidDataPanel\",\n  props: {\n    trials: {}\n  },\n  emits: [\"remove\", \"clear\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const emit = __emit;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _createElementVNode(\"span\", _hoisted_3, _toDisplayString(_unref(t)(\"experiments.emRecordedTrials\")), 1),\n          __props.trials.length ? (_openBlock(), _createElementBlock(\"button\", {\n            key: 0,\n            class: \"clear-btn\",\n            onClick: _cache[0] || (_cache[0] = ($event) => emit(\"clear\"))\n          }, _toDisplayString(_unref(t)(\"experiments.emClearAll\")), 1)) : _createCommentVNode(\"\", true)\n        ]),\n        !__props.trials.length ? (_openBlock(), _createElementBlock(\"div\", _hoisted_4, _toDisplayString(_unref(t)(\"experiments.emNoTrials\")), 1)) : (_openBlock(), _createElementBlock(\"table\", _hoisted_5, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"thead\", null, [\n            _createElementVNode(\"tr\", null, [\n              _createElementVNode(\"th\", null, \"#\"),\n              _createElementVNode(\"th\", null, \"I (A)\"),\n              _createElementVNode(\"th\", null, \"N\"),\n              _createElementVNode(\"th\", null, \"L (cm)\"),\n              _createElementVNode(\"th\", null, \"B (μT)\"),\n              _createElementVNode(\"th\")\n            ])\n          ], -1)),\n          _createElementVNode(\"tbody\", null, [\n            (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.trials, (trial) => {\n              return _openBlock(), _createElementBlock(\"tr\", {\n                key: trial.id\n              }, [\n                _createElementVNode(\"td\", null, _toDisplayString(trial.id), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(trial.I.toFixed(1)), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(trial.N), 1),\n                _createElementVNode(\"td\", null, _toDisplayString((trial.L * 100).toFixed(1)), 1),\n                _createElementVNode(\"td\", null, _toDisplayString((trial.B * 1e6).toFixed(2)), 1),\n                _createElementVNode(\"td\", null, [\n                  _createElementVNode(\"button\", {\n                    class: \"del-btn\",\n                    onClick: ($event) => emit(\"remove\", trial.id)\n                  }, \"✕\", 8, _hoisted_6)\n                ])\n              ]);\n            }), 128))\n          ])\n        ]))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634641696,
+      "end": 1783634642229,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/SolenoidDataPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, renderList as _renderList, Fragment as _Fragment } from \"vue\"\n\nconst _hoisted_1 = { class: \"data-panel\" }\nconst _hoisted_2 = { class: \"data-header\" }\nconst _hoisted_3 = { class: \"data-title\" }\nconst _hoisted_4 = {\n  key: 0,\n  class: \"empty\"\n}\nconst _hoisted_5 = {\n  key: 1,\n  class: \"trial-table\"\n}\nconst _hoisted_6 = [\"onClick\"]\n\nimport type { SolenoidTrial } from '../../../composables/electromagnetism/useSolenoidExperiment'\nimport { useI18n } from '../../../composables/useI18n'\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'SolenoidDataPanel',\n  props: {\n    trials: {}\n  },\n  emits: [\"remove\", \"clear\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\n\n\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"span\", _hoisted_3, _toDisplayString(_unref(t)('experiments.emRecordedTrials')), 1),\n      (__props.trials.length)\n        ? (_openBlock(), _createElementBlock(\"button\", {\n            key: 0,\n            class: \"clear-btn\",\n            onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('clear')))\n          }, _toDisplayString(_unref(t)('experiments.emClearAll')), 1))\n        : _createCommentVNode(\"\", true)\n    ]),\n    (!__props.trials.length)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_4, _toDisplayString(_unref(t)('experiments.emNoTrials')), 1))\n      : (_openBlock(), _createElementBlock(\"table\", _hoisted_5, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"thead\", null, [\n            _createElementVNode(\"tr\", null, [\n              _createElementVNode(\"th\", null, \"#\"),\n              _createElementVNode(\"th\", null, \"I (A)\"),\n              _createElementVNode(\"th\", null, \"N\"),\n              _createElementVNode(\"th\", null, \"L (cm)\"),\n              _createElementVNode(\"th\", null, \"B (μT)\"),\n              _createElementVNode(\"th\")\n            ])\n          ], -1)),\n          _createElementVNode(\"tbody\", null, [\n            (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.trials, (trial) => {\n              return (_openBlock(), _createElementBlock(\"tr\", {\n                key: trial.id\n              }, [\n                _createElementVNode(\"td\", null, _toDisplayString(trial.id), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(trial.I.toFixed(1)), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(trial.N), 1),\n                _createElementVNode(\"td\", null, _toDisplayString((trial.L * 100).toFixed(1)), 1),\n                _createElementVNode(\"td\", null, _toDisplayString((trial.B * 1e6).toFixed(2)), 1),\n                _createElementVNode(\"td\", null, [\n                  _createElementVNode(\"button\", {\n                    class: \"del-btn\",\n                    onClick: ($event: any) => (emit('remove', trial.id))\n                  }, \"✕\", 8, _hoisted_6)\n                ])\n              ]))\n            }), 128))\n          ])\n        ]))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642229,
+      "end": 1783634642229,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642229,
+      "end": 1783634642229,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634642229,
+      "end": 1783634642229,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642229,
+      "end": 1783634642229,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642229,
+      "end": 1783634642229,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642229,
+      "end": 1783634642229,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642229,
+      "end": 1783634642229,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642229,
+      "end": 1783634642229,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642229,
+      "end": 1783634642229,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642229,
+      "end": 1783634642229,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642229,
+      "end": 1783634642229,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642229,
+      "end": 1783634642230,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642230,
+      "end": 1783634642230,
+      "order": "normal"
+    }
+  ]
+}

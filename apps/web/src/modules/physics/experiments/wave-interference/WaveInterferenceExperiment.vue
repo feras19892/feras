@@ -112,7 +112,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       <div class="lab-col ctrl-col" :style="{ width: ex.layout.widths.ctrl + 'px' }">
         <template v-for="id in ex.layout.columnMap.ctrl" :key="id">
           <DraggablePanel
-            v-if="ex.layout.isPanelVisible(id)"
+            v-if="id !== 'params' && ex.layout.isPanelVisible(id)"
             class="lab-card"
             :id="id"
             :title="ex.layout.panelTitle(id)"
@@ -133,6 +133,18 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
               @update:params="Object.assign(ex.params, $event)"
             />
           </DraggablePanel>
+          <div v-else-if="id === 'params'" class="params-embedded">
+            <WaveInterferencePanelBody
+              id="params"
+              :trials="ex.trials.trials.value"
+              :params="ex.params"
+              :v-wave="ex.lab.vWave.value"
+              :constructive="ex.lab.constructive.value"
+              :destructive="ex.lab.destructive.value"
+              :amplitude-map="ex.lab.amplitudeMap.value"
+              @update:params="Object.assign(ex.params, $event)"
+            />
+          </div>
         </template>
       </div>
     </div>
@@ -175,6 +187,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 .vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 0; position: relative; }
 .vis-canvas-wrap { flex: 1; min-height: 0; position: relative; width: 100%; }
 .ctrl-col { background: rgba(255,255,255,0.02); }
+.params-embedded { padding: .6rem; }
 .resizer { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0; }
 .resizer:hover, .resizer:active { background: #5B8DB8; }
 .mode-bar { display: flex; justify-content: center; gap: .4rem; padding: .3rem; background: #0d1117; border-top: 1px solid #1e2530; flex-shrink: 0; }

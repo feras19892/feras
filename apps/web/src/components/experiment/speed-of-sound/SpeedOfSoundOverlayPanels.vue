@@ -12,6 +12,11 @@ interface Props {
   vTheory: number
   percentError: number
   waveformData: { x: number; y: number }[]
+  regressionSlope: number
+  regressionIntercept: number
+  rSquared: number
+  vFromRegression: number | null
+  endCorrection: number | null
 }
 const props = defineProps<Props>()
 const emit = defineEmits<{
@@ -40,6 +45,11 @@ const ids = ['readings', 'chart', 'trials', 'params', 'laws', 'results']
           :v-theory="vTheory"
           :percent-error="percentError"
           :waveform-data="waveformData"
+          :regression-slope="regressionSlope"
+          :regression-intercept="regressionIntercept"
+          :r-squared="rSquared"
+          :v-from-regression="vFromRegression"
+          :end-correction="endCorrection"
           @remove="emit('remove', $event)"
           @clear="emit('clear')"
           @update:params="emit('update:params', $event)"

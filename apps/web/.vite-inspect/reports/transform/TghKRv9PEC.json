@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/ToolPalette.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport type { ComponentType } from '../types'\n\nconst emit = defineEmits<{ (e: 'add', type: ComponentType): void }>()\n\nconst tools: { type: ComponentType; icon: string; label: string; desc: string }[] = [\n  { type: 'battery',      icon: '🔋', label: 'بطارية',      desc: 'مصدر جهد DC' },\n  { type: 'resistor',     icon: '🔲', label: 'مقاومة',      desc: 'مقاومة ثابتة' },\n  { type: 'capacitor',    icon: '🔌', label: 'مكثف',        desc: 'يخزن الشحنة الكهربائية' },\n  { type: 'switch',       icon: '🔘', label: 'مفتاح',       desc: 'فتح/إغلاق الدائرة' },\n  { type: 'lamp',         icon: '💡', label: 'مصباح',       desc: 'تحويل كهرباء لضوء' },\n  { type: 'ammeter',      icon: '📊', label: 'أميتر',       desc: 'قياس التيار' },\n  { type: 'voltmeter',    icon: '📈', label: 'فولتميتر',    desc: 'قياس الجهد' },\n  { type: 'galvanometer', icon: '📐', label: 'جلفانوميتر',  desc: 'قياس تيارات صغيرة (µA)' },\n]\n</script>\n\n<template>\n  <div class=\"tool-palette\">\n    <h3 class=\"panel-title\">🧰 الأدوات</h3>\n    <div class=\"tool-list\">\n      <button\n        v-for=\"tool in tools\"\n        :key=\"tool.type\"\n        class=\"tool-btn\"\n        @click=\"emit('add', tool.type)\"\n      >\n        <span class=\"tool-icon\">{{ tool.icon }}</span>\n        <span class=\"tool-info\">\n          <span class=\"tool-label\">{{ tool.label }}</span>\n          <span class=\"tool-desc\">{{ tool.desc }}</span>\n        </span>\n      </button>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.tool-palette {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.75rem;\n  overflow: hidden;\n}\n.panel-title {\n  margin: 0;\n  padding: 0.75rem 1rem;\n  font-size: 0.85rem;\n  color: #f59e0b;\n  background: rgba(245,158,11,0.08);\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n}\n.tool-list {\n  flex: 1;\n  overflow-y: auto;\n  padding: 0.5rem;\n  display: flex;\n  flex-direction: column;\n  gap: 0.5rem;\n}\n.tool-btn {\n  display: flex;\n  align-items: center;\n  gap: 0.6rem;\n  padding: 0.6rem 0.75rem;\n  background: rgba(255,255,255,0.04);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.5rem;\n  cursor: pointer;\n  transition: all 0.15s;\n  text-align: right;\n}\n.tool-btn:hover {\n  background: rgba(245,158,11,0.12);\n  border-color: rgba(245,158,11,0.3);\n  transform: translateX(-2px);\n}\n.tool-icon {\n  font-size: 1.3rem;\n  flex-shrink: 0;\n}\n.tool-info {\n  display: flex;\n  flex-direction: column;\n}\n.tool-label {\n  font-size: 0.82rem;\n  color: #e2e8f0;\n  font-weight: 600;\n}\n.tool-desc {\n  font-size: 0.68rem;\n  color: #64748b;\n}\n</style>\n",
+      "start": 1783634640971,
+      "end": 1783634641376,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641376,
+      "end": 1783634641376,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641376,
+      "end": 1783634641376,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641376,
+      "end": 1783634641376,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641376,
+      "end": 1783634641376,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/ToolPalette.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/ToolPalette.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/ToolPalette.vue?vue&type=style&index=0&scoped=929c223d&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-929c223d\"]]);\n",
+      "start": 1783634641376,
+      "end": 1783634641655,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641655,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641656,
+      "end": 1783634641657,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641657,
+      "end": 1783634641657,
+      "order": "normal"
+    }
+  ]
+}

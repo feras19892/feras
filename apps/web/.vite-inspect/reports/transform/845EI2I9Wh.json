@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ideal-gas/IdealGasStatusBar.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\nconst { t } = useI18n()\ndefineProps<{\n  running: boolean\n  paused: boolean\n  n: number\n  T: number\n  V: number\n  P: number\n}>()\n</script>\n\n<template>\n  <div class=\"status-bar\">\n    <span class=\"dot\" :class=\"running ? (paused ? 'paused' : 'run') : 'off'\" />\n    <span>{{ running ? (paused ? t('experiments.statusPaused') : t('experiments.statusRunning')) : t('experiments.statusIdle') }}</span>\n    <span class=\"sep\">|</span>\n    <span>n={{ n.toFixed(2) }} mol</span>\n    <span class=\"sep\">|</span>\n    <span>T={{ T }} K</span>\n    <span class=\"sep\">|</span>\n    <span>V={{ (V*1000).toFixed(2) }} L</span>\n    <span class=\"sep\">|</span>\n    <span>P={{ (P/1000).toFixed(1) }} kPa</span>\n  </div>\n</template>\n\n<style scoped>\n.status-bar { display:flex; align-items:center; gap:.6rem; padding:.25rem .7rem; background:#0d1117; border-top:1px solid #1e2530; font-size:.72rem; color:#8B95A5; flex-shrink:0; }\n.dot { width:7px; height:7px; border-radius:50%; background:#475569; }\n.dot.run { background:#22c55e; }\n.dot.paused { background:#f59e0b; }\n.sep { color:#2D3645; }\n</style>\n",
+      "start": 1783634640881,
+      "end": 1783634641170,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641170,
+      "end": 1783634641170,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641170,
+      "end": 1783634641170,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641170,
+      "end": 1783634641170,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641170,
+      "end": 1783634641170,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ideal-gas/IdealGasStatusBar.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ideal-gas/IdealGasStatusBar.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ideal-gas/IdealGasStatusBar.vue?vue&type=style&index=0&scoped=67d084b2&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-67d084b2\"]]);\n",
+      "start": 1783634641170,
+      "end": 1783634641637,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    }
+  ]
+}

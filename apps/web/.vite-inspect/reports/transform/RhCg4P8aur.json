@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/workspaceDragSnap.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { ref } from 'vue';\nimport { items, retortStandMap } from './useChemistryLab';\nimport { isBurette, isPipette, isGradCylinder, isRetortStandAssembly } from './chemLabIds';\n\nexport const retortStandSnapUid = ref<string | null>(null);\nexport const bottomClampSnapUid = ref<string | null>(null);\n\nconst SNAP_DISTANCE = 250;\nconst BOTTOM_CLAMP_DISTANCE = 180;\n\nexport function getMagnetOffset(id: string): { x: number; y: number } {\n  if (isBurette(id)) return { x: 30, y: 55 };\n  if (isPipette(id)) return { x: 25, y: 82.1 };\n  if (isGradCylinder(id)) return { x: 37.5, y: 55 };\n  return { x: 0, y: 0 };\n}\n\nexport function isClampAttachable(id: string): boolean {\n  return isBurette(id) || isPipette(id) || isGradCylinder(id);\n}\n\nexport function findNearestSlot(itemUid: string, itemX: number, itemY: number, itemId: string): { standUid: string; slotIdx: number } | null {\n  let nearestStand: string | null = null;\n  let nearestSlot = -1;\n  let nearestDist = SNAP_DISTANCE;\n  const off = getMagnetOffset(itemId);\n  for (const standItem of items.value) {\n    if (standItem.uid === itemUid) continue;\n    if (!isRetortStandAssembly(standItem.id)) continue;\n    const st = retortStandMap[standItem.uid];\n    if (!st) continue;\n    const clampY = st.topClampY;\n    for (let i = 0; i < st.slotOffsets.length; i++) {\n      if (st.slotOccupants[i]) continue;\n      const slotWorldX = standItem.x + 54 + st.slotOffsets[i];\n      const slotWorldY = standItem.y + clampY + 14;\n      const dist = Math.hypot(itemX + off.x - slotWorldX, itemY + off.y - slotWorldY);\n      if (dist < nearestDist) {\n        nearestDist = dist;\n        nearestStand = standItem.uid;\n        nearestSlot = i;\n      }\n    }\n  }\n  return nearestStand !== null && nearestSlot >= 0 ? { standUid: nearestStand, slotIdx: nearestSlot } : null;\n}\n\nexport function findNearestBottomClamp(itemUid: string, itemX: number, itemY: number): string | null {\n  let nearestStand: string | null = null;\n  let nearestDist = BOTTOM_CLAMP_DISTANCE;\n  for (const standItem of items.value) {\n    if (!isRetortStandAssembly(standItem.id)) continue;\n    const st = retortStandMap[standItem.uid];\n    if (!st || st.bottomSlotOccupant) continue;\n    const clampWorldX = standItem.x + 45 + 132 + st.bottomClampX;\n    const clampWorldY = standItem.y + st.bottomClampY + 14;\n    const dist = Math.hypot(itemX + 35 - clampWorldX, itemY + 50 - clampWorldY);\n    if (dist < nearestDist) {\n      nearestDist = dist;\n      nearestStand = standItem.uid;\n    }\n  }\n  return nearestStand;\n}\n\nexport function applyTopSlotSnap(itemUid: string, itemX: number, itemY: number, itemId: string): void {\n  const result = findNearestSlot(itemUid, itemX, itemY, itemId);\n  retortStandSnapUid.value = result ? result.standUid + '|' + result.slotIdx : null;\n}\n\nexport function applyBottomClampSnap(itemUid: string, itemX: number, itemY: number): void {\n  bottomClampSnapUid.value = findNearestBottomClamp(itemUid, itemX, itemY);\n}\n\nexport function finalizeTopSlotSnap(itemUid: string): void {\n  if (!retortStandSnapUid.value) return;\n  const [standUid, slotIdxStr] = retortStandSnapUid.value.split('|');\n  const slotIdx = parseInt(slotIdxStr, 10);\n  const stand = items.value.find(i => i.uid === standUid);\n  const st = retortStandMap[standUid];\n  const item = items.value.find(i => i.uid === itemUid);\n  if (!stand || !st || !item || st.slotOccupants[slotIdx]) return;\n  const slotWorldX = stand.x + 54 + st.slotOffsets[slotIdx];\n  const slotWorldY = stand.y + st.topClampY + 14;\n  const off = getMagnetOffset(item.id);\n  item.x = slotWorldX - off.x;\n  item.y = slotWorldY - off.y;\n  st.slotOccupants[slotIdx] = item.uid;\n  retortStandSnapUid.value = null;\n}\n\nexport function finalizeBottomClampSnap(itemUid: string): void {\n  if (!bottomClampSnapUid.value) return;\n  const stand = items.value.find(i => i.uid === bottomClampSnapUid.value);\n  const st = retortStandMap[bottomClampSnapUid.value];\n  const item = items.value.find(i => i.uid === itemUid);\n  if (!stand || !st || !item || st.bottomSlotOccupant) return;\n  const clampWorldX = stand.x + 45 + 132 + st.bottomClampX;\n  const clampWorldY = stand.y + st.bottomClampY + 14;\n  item.x = clampWorldX - 35;\n  item.y = clampWorldY - 50;\n  st.bottomSlotOccupant = item.uid;\n  bottomClampSnapUid.value = null;\n}\n\nexport function detachFromTopSlots(itemUid: string): void {\n  for (const st of Object.values(retortStandMap)) {\n    const slotIdx = st.slotOccupants.indexOf(itemUid);\n    if (slotIdx >= 0) { st.slotOccupants[slotIdx] = null; break; }\n  }\n}\n\nexport function detachFromBottomClamp(itemUid: string): void {\n  for (const st of Object.values(retortStandMap)) {\n    if (st.bottomSlotOccupant === itemUid) { st.bottomSlotOccupant = null; break; }\n  }\n}\n",
+      "start": 1783634640884,
+      "end": 1783634641188,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641188,
+      "end": 1783634641188,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { ref } from \"vue\";\nimport { items, retortStandMap } from \"./useChemistryLab\";\nimport { isBurette, isPipette, isGradCylinder, isRetortStandAssembly } from \"./chemLabIds\";\nexport const retortStandSnapUid = ref(null);\nexport const bottomClampSnapUid = ref(null);\nconst SNAP_DISTANCE = 250;\nconst BOTTOM_CLAMP_DISTANCE = 180;\nexport function getMagnetOffset(id) {\n  if (isBurette(id)) return { x: 30, y: 55 };\n  if (isPipette(id)) return { x: 25, y: 82.1 };\n  if (isGradCylinder(id)) return { x: 37.5, y: 55 };\n  return { x: 0, y: 0 };\n}\nexport function isClampAttachable(id) {\n  return isBurette(id) || isPipette(id) || isGradCylinder(id);\n}\nexport function findNearestSlot(itemUid, itemX, itemY, itemId) {\n  let nearestStand = null;\n  let nearestSlot = -1;\n  let nearestDist = SNAP_DISTANCE;\n  const off = getMagnetOffset(itemId);\n  for (const standItem of items.value) {\n    if (standItem.uid === itemUid) continue;\n    if (!isRetortStandAssembly(standItem.id)) continue;\n    const st = retortStandMap[standItem.uid];\n    if (!st) continue;\n    const clampY = st.topClampY;\n    for (let i = 0; i < st.slotOffsets.length; i++) {\n      if (st.slotOccupants[i]) continue;\n      const slotWorldX = standItem.x + 54 + st.slotOffsets[i];\n      const slotWorldY = standItem.y + clampY + 14;\n      const dist = Math.hypot(itemX + off.x - slotWorldX, itemY + off.y - slotWorldY);\n      if (dist < nearestDist) {\n        nearestDist = dist;\n        nearestStand = standItem.uid;\n        nearestSlot = i;\n      }\n    }\n  }\n  return nearestStand !== null && nearestSlot >= 0 ? { standUid: nearestStand, slotIdx: nearestSlot } : null;\n}\nexport function findNearestBottomClamp(itemUid, itemX, itemY) {\n  let nearestStand = null;\n  let nearestDist = BOTTOM_CLAMP_DISTANCE;\n  for (const standItem of items.value) {\n    if (!isRetortStandAssembly(standItem.id)) continue;\n    const st = retortStandMap[standItem.uid];\n    if (!st || st.bottomSlotOccupant) continue;\n    const clampWorldX = standItem.x + 45 + 132 + st.bottomClampX;\n    const clampWorldY = standItem.y + st.bottomClampY + 14;\n    const dist = Math.hypot(itemX + 35 - clampWorldX, itemY + 50 - clampWorldY);\n    if (dist < nearestDist) {\n      nearestDist = dist;\n      nearestStand = standItem.uid;\n    }\n  }\n  return nearestStand;\n}\nexport function applyTopSlotSnap(itemUid, itemX, itemY, itemId) {\n  const result = findNearestSlot(itemUid, itemX, itemY, itemId);\n  retortStandSnapUid.value = result ? result.standUid + \"|\" + result.slotIdx : null;\n}\nexport function applyBottomClampSnap(itemUid, itemX, itemY) {\n  bottomClampSnapUid.value = findNearestBottomClamp(itemUid, itemX, itemY);\n}\nexport function finalizeTopSlotSnap(itemUid) {\n  if (!retortStandSnapUid.value) return;\n  const [standUid, slotIdxStr] = retortStandSnapUid.value.split(\"|\");\n  const slotIdx = parseInt(slotIdxStr, 10);\n  const stand = items.value.find((i) => i.uid === standUid);\n  const st = retortStandMap[standUid];\n  const item = items.value.find((i) => i.uid === itemUid);\n  if (!stand || !st || !item || st.slotOccupants[slotIdx]) return;\n  const slotWorldX = stand.x + 54 + st.slotOffsets[slotIdx];\n  const slotWorldY = stand.y + st.topClampY + 14;\n  const off = getMagnetOffset(item.id);\n  item.x = slotWorldX - off.x;\n  item.y = slotWorldY - off.y;\n  st.slotOccupants[slotIdx] = item.uid;\n  retortStandSnapUid.value = null;\n}\nexport function finalizeBottomClampSnap(itemUid) {\n  if (!bottomClampSnapUid.value) return;\n  const stand = items.value.find((i) => i.uid === bottomClampSnapUid.value);\n  const st = retortStandMap[bottomClampSnapUid.value];\n  const item = items.value.find((i) => i.uid === itemUid);\n  if (!stand || !st || !item || st.bottomSlotOccupant) return;\n  const clampWorldX = stand.x + 45 + 132 + st.bottomClampX;\n  const clampWorldY = stand.y + st.bottomClampY + 14;\n  item.x = clampWorldX - 35;\n  item.y = clampWorldY - 50;\n  st.bottomSlotOccupant = item.uid;\n  bottomClampSnapUid.value = null;\n}\nexport function detachFromTopSlots(itemUid) {\n  for (const st of Object.values(retortStandMap)) {\n    const slotIdx = st.slotOccupants.indexOf(itemUid);\n    if (slotIdx >= 0) {\n      st.slotOccupants[slotIdx] = null;\n      break;\n    }\n  }\n}\nexport function detachFromBottomClamp(itemUid) {\n  for (const st of Object.values(retortStandMap)) {\n    if (st.bottomSlotOccupant === itemUid) {\n      st.bottomSlotOccupant = null;\n      break;\n    }\n  }\n}\n",
+      "start": 1783634641188,
+      "end": 1783634641655,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/workspaceDragSnap.ts"
+        ],
+        "sourcesContent": [
+          "import { ref } from 'vue';\nimport { items, retortStandMap } from './useChemistryLab';\nimport { isBurette, isPipette, isGradCylinder, isRetortStandAssembly } from './chemLabIds';\n\nexport const retortStandSnapUid = ref<string | null>(null);\nexport const bottomClampSnapUid = ref<string | null>(null);\n\nconst SNAP_DISTANCE = 250;\nconst BOTTOM_CLAMP_DISTANCE = 180;\n\nexport function getMagnetOffset(id: string): { x: number; y: number } {\n  if (isBurette(id)) return { x: 30, y: 55 };\n  if (isPipette(id)) return { x: 25, y: 82.1 };\n  if (isGradCylinder(id)) return { x: 37.5, y: 55 };\n  return { x: 0, y: 0 };\n}\n\nexport function isClampAttachable(id: string): boolean {\n  return isBurette(id) || isPipette(id) || isGradCylinder(id);\n}\n\nexport function findNearestSlot(itemUid: string, itemX: number, itemY: number, itemId: string): { standUid: string; slotIdx: number } | null {\n  let nearestStand: string | null = null;\n  let nearestSlot = -1;\n  let nearestDist = SNAP_DISTANCE;\n  const off = getMagnetOffset(itemId);\n  for (const standItem of items.value) {\n    if (standItem.uid === itemUid) continue;\n    if (!isRetortStandAssembly(standItem.id)) continue;\n    const st = retortStandMap[standItem.uid];\n    if (!st) continue;\n    const clampY = st.topClampY;\n    for (let i = 0; i < st.slotOffsets.length; i++) {\n      if (st.slotOccupants[i]) continue;\n      const slotWorldX = standItem.x + 54 + st.slotOffsets[i];\n      const slotWorldY = standItem.y + clampY + 14;\n      const dist = Math.hypot(itemX + off.x - slotWorldX, itemY + off.y - slotWorldY);\n      if (dist < nearestDist) {\n        nearestDist = dist;\n        nearestStand = standItem.uid;\n        nearestSlot = i;\n      }\n    }\n  }\n  return nearestStand !== null && nearestSlot >= 0 ? { standUid: nearestStand, slotIdx: nearestSlot } : null;\n}\n\nexport function findNearestBottomClamp(itemUid: string, itemX: number, itemY: number): string | null {\n  let nearestStand: string | null = null;\n  let nearestDist = BOTTOM_CLAMP_DISTANCE;\n  for (const standItem of items.value) {\n    if (!isRetortStandAssembly(standItem.id)) continue;\n    const st = retortStandMap[standItem.uid];\n    if (!st || st.bottomSlotOccupant) continue;\n    const clampWorldX = standItem.x + 45 + 132 + st.bottomClampX;\n    const clampWorldY = standItem.y + st.bottomClampY + 14;\n    const dist = Math.hypot(itemX + 35 - clampWorldX, itemY + 50 - clampWorldY);\n    if (dist < nearestDist) {\n      nearestDist = dist;\n      nearestStand = standItem.uid;\n    }\n  }\n  return nearestStand;\n}\n\nexport function applyTopSlotSnap(itemUid: string, itemX: number, itemY: number, itemId: string): void {\n  const result = findNearestSlot(itemUid, itemX, itemY, itemId);\n  retortStandSnapUid.value = result ? result.standUid + '|' + result.slotIdx : null;\n}\n\nexport function applyBottomClampSnap(itemUid: string, itemX: number, itemY: number): void {\n  bottomClampSnapUid.value = findNearestBottomClamp(itemUid, itemX, itemY);\n}\n\nexport function finalizeTopSlotSnap(itemUid: string): void {\n  if (!retortStandSnapUid.value) return;\n  const [standUid, slotIdxStr] = retortStandSnapUid.value.split('|');\n  const slotIdx = parseInt(slotIdxStr, 10);\n  const stand = items.value.find(i => i.uid === standUid);\n  const st = retortStandMap[standUid];\n  const item = items.value.find(i => i.uid === itemUid);\n  if (!stand || !st || !item || st.slotOccupants[slotIdx]) return;\n  const slotWorldX = stand.x + 54 + st.slotOffsets[slotIdx];\n  const slotWorldY = stand.y + st.topClampY + 14;\n  const off = getMagnetOffset(item.id);\n  item.x = slotWorldX - off.x;\n  item.y = slotWorldY - off.y;\n  st.slotOccupants[slotIdx] = item.uid;\n  retortStandSnapUid.value = null;\n}\n\nexport function finalizeBottomClampSnap(itemUid: string): void {\n  if (!bottomClampSnapUid.value) return;\n  const stand = items.value.find(i => i.uid === bottomClampSnapUid.value);\n  const st = retortStandMap[bottomClampSnapUid.value];\n  const item = items.value.find(i => i.uid === itemUid);\n  if (!stand || !st || !item || st.bottomSlotOccupant) return;\n  const clampWorldX = stand.x + 45 + 132 + st.bottomClampX;\n  const clampWorldY = stand.y + st.bottomClampY + 14;\n  item.x = clampWorldX - 35;\n  item.y = clampWorldY - 50;\n  st.bottomSlotOccupant = item.uid;\n  bottomClampSnapUid.value = null;\n}\n\nexport function detachFromTopSlots(itemUid: string): void {\n  for (const st of Object.values(retortStandMap)) {\n    const slotIdx = st.slotOccupants.indexOf(itemUid);\n    if (slotIdx >= 0) { st.slotOccupants[slotIdx] = null; break; }\n  }\n}\n\nexport function detachFromBottomClamp(itemUid: string): void {\n  for (const st of Object.values(retortStandMap)) {\n    if (st.bottomSlotOccupant === itemUid) { st.bottomSlotOccupant = null; break; }\n  }\n}\n"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641655,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641657,
+      "end": 1783634641657,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641657,
+      "end": 1783634641657,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641657,
+      "end": 1783634641658,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641658,
+      "end": 1783634641658,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/App.vue?vue&type=style&index=0&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\n.app {\n  min-height: 100vh;\n  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n}\n\n.skeleton-loader {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  min-height: 100vh;\n  gap: 1rem;\n}\n\n.skeleton-spinner {\n  width: 40px;\n  height: 40px;\n  border: 4px solid #e5e7eb;\n  border-top-color: #3b82f6;\n  border-radius: 50%;\n  animation: spin 1s linear infinite;\n}\n\n@keyframes spin {\n  to { transform: rotate(360deg); }\n}\n",
+      "start": 1783634639009,
+      "end": 1783634639009
+    },
+    {
+      "name": "vite:css",
+      "result": "\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\n.app {\n  min-height: 100vh;\n  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n}\n\n.skeleton-loader {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  min-height: 100vh;\n  gap: 1rem;\n}\n\n.skeleton-spinner {\n  width: 40px;\n  height: 40px;\n  border: 4px solid #e5e7eb;\n  border-top-color: #3b82f6;\n  border-radius: 50%;\n  animation: spin 1s linear infinite;\n}\n\n@keyframes spin {\n  to { transform: rotate(360deg); }\n}\n",
+      "start": 1783634639009,
+      "end": 1783634639010,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639010,
+      "end": 1783634639010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639011,
+      "end": 1783634639011,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639011,
+      "end": 1783634639011,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n.app {\n  min-height: 100vh;\n  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n}\n.skeleton-loader {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  min-height: 100vh;\n  gap: 1rem;\n}\n.skeleton-spinner {\n  width: 40px;\n  height: 40px;\n  border: 4px solid #e5e7eb;\n  border-top-color: #3b82f6;\n  border-radius: 50%;\n  animation: spin 1s linear infinite;\n}\n@keyframes spin {\nto { transform: rotate(360deg);\n}\n}\n",
+      "start": 1783634639011,
+      "end": 1783634639015,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639015,
+      "end": 1783634639015,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634639015,
+      "end": 1783634639015,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639015,
+      "end": 1783634639015,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639015,
+      "end": 1783634639015,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639015,
+      "end": 1783634639015,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639015,
+      "end": 1783634639015,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639015,
+      "end": 1783634639015,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639015,
+      "end": 1783634639015,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639015,
+      "end": 1783634639015,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639015,
+      "end": 1783634639015,
+      "order": "normal"
+    }
+  ]
+}

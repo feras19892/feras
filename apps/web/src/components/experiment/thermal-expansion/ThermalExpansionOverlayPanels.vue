@@ -26,7 +26,7 @@ const ids = ['readings', 'chart', 'trials', 'params', 'laws', 'results']
           <span>{{ panelTitle(id) }}</span>
           <button class="overlay-close" @click.stop="emit('maximize', id)">&#x2715;</button>
         </div>
-        <ThermalExpansionPanelBody :id="id" :trials="trials" :params="params" :alpha="alpha" :dL="dL" :L1="L1" @remove="emit('remove', $event)" @clear="emit('clear')" @update:params="emit('update:params', $event)" />
+        <ThermalExpansionPanelBody :id="id" :trials="trials" :params="params" :alpha="alpha" :d-l="dL" :L1="L1" @remove="emit('remove', $event)" @clear="emit('clear')" @update:params="emit('update:params', $event)" />
       </div>
     </template>
   </div>

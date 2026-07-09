@@ -2,23 +2,23 @@ import { reactive } from 'vue'
 import { useI18n } from '../useI18n'
 
 export type ColumnId = 'data' | 'vis' | 'ctrl'
-export type PanelId = 'table' | 'signal' | 'params' | 'guide'
+export type PanelId = 'table' | 'signal' | 'params'
 
 const layoutStorageKey = 'spring:layout:v2'
 
 const defaultPanelColumn: Record<PanelId, ColumnId> = {
   table: 'data',
   signal: 'data',
-  params: 'ctrl', guide: 'ctrl',
+  params: 'ctrl',
 }
 
 const defaultColumnOrder: Record<ColumnId, PanelId[]> = {
   data: ['table', 'signal'],
   vis: [],
-  ctrl: ['params', 'guide'],
+  ctrl: ['params'],
 }
 
-const allPanelIds: PanelId[] = ['table', 'signal', 'params', 'guide']
+const allPanelIds: PanelId[] = ['table', 'signal', 'params']
 
 export function useSpringLayout() {
   const { t } = useI18n()
@@ -26,11 +26,11 @@ export function useSpringLayout() {
   try { localStorage.removeItem('spring:layout:v1') } catch { /* ignore */ }
 
   const panels = reactive<Record<PanelId, boolean>>({
-    table: true, signal: true, params: true, guide: true,
+    table: true, signal: true, params: true,
   })
 
   const maximized = reactive<Record<PanelId, boolean>>({
-    table: false, signal: false, params: false, guide: false,
+    table: false, signal: false, params: false,
   })
 
   const panelColumn = reactive<Record<PanelId, ColumnId>>({ ...defaultPanelColumn })
@@ -142,7 +142,6 @@ export function useSpringLayout() {
       table: t('experiments.panelTable'),
       signal: t('experiments.panelSignal'),
       params: t('experiments.panelParams'),
-      guide: t('experiments.panelGuide'),
     }
     return titles[pid] ?? '📊'
   }

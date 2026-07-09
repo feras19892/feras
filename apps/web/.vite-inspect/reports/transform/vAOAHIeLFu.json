@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/torque-coil/TorqueCoilExperiment.vue?vue&type=style&index=0&scoped=7cad6816&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.em-lab { background: #161B22; color: #D1D7E0; padding: .6rem .8rem; height: 100vh; display: flex; flex-direction: column; gap: .5rem; overflow: hidden; }\n.lab-grid { display: flex; flex-direction: row; flex: 1; min-height: 0; overflow: hidden; gap: .5rem; }\n.lab-col { display: flex; flex-direction: column; gap: .5rem; overflow-y: auto; min-height: 0; }\n.data-col { width: 280px; flex-shrink: 0; }\n.vis-col { flex: 1; min-width: 0; align-items: stretch; }\n.vis-canvas-wrap { flex: 1; min-height: 0; position: relative; background: #0b1220; border-radius: 8px; overflow: hidden; }\n.ctrl-col { width: 280px; flex-shrink: 0; }\n.hint-bar { background: #252D3A; border: 1px solid #2D3645; border-radius: 6px; padding: .35rem .7rem; font-size: .75rem; color: #8B95A5; text-align: center; flex-shrink: 0; }\n.hint-bar.active { border-color: #f59e0b; color: #f59e0b; background: rgba(245,158,11,.08); }\n.hint-bar.success { border-color: #22c55e; color: #22c55e; background: rgba(34,197,94,.08); }\n@media (max-width: 900px) {\n  .lab-grid { flex-direction: column; }\n  .data-col, .ctrl-col { width: 100%; }\n}\n",
+      "start": 1783634640716,
+      "end": 1783634640716
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.em-lab { background: #161B22; color: #D1D7E0; padding: .6rem .8rem; height: 100vh; display: flex; flex-direction: column; gap: .5rem; overflow: hidden; }\n.lab-grid { display: flex; flex-direction: row; flex: 1; min-height: 0; overflow: hidden; gap: .5rem; }\n.lab-col { display: flex; flex-direction: column; gap: .5rem; overflow-y: auto; min-height: 0; }\n.data-col { width: 280px; flex-shrink: 0; }\n.vis-col { flex: 1; min-width: 0; align-items: stretch; }\n.vis-canvas-wrap { flex: 1; min-height: 0; position: relative; background: #0b1220; border-radius: 8px; overflow: hidden; }\n.ctrl-col { width: 280px; flex-shrink: 0; }\n.hint-bar { background: #252D3A; border: 1px solid #2D3645; border-radius: 6px; padding: .35rem .7rem; font-size: .75rem; color: #8B95A5; text-align: center; flex-shrink: 0; }\n.hint-bar.active { border-color: #f59e0b; color: #f59e0b; background: rgba(245,158,11,.08); }\n.hint-bar.success { border-color: #22c55e; color: #22c55e; background: rgba(34,197,94,.08); }\n@media (max-width: 900px) {\n  .lab-grid { flex-direction: column; }\n  .data-col, .ctrl-col { width: 100%; }\n}\n",
+      "start": 1783634640716,
+      "end": 1783634640716,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640716,
+      "end": 1783634640716,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640716,
+      "end": 1783634640716,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640716,
+      "end": 1783634640716,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.em-lab[data-v-7cad6816] { background: #161B22; color: #D1D7E0; padding: .6rem .8rem; height: 100vh; display: flex; flex-direction: column; gap: .5rem; overflow: hidden;\n}\n.lab-grid[data-v-7cad6816] { display: flex; flex-direction: row; flex: 1; min-height: 0; overflow: hidden; gap: .5rem;\n}\n.lab-col[data-v-7cad6816] { display: flex; flex-direction: column; gap: .5rem; overflow-y: auto; min-height: 0;\n}\n.data-col[data-v-7cad6816] { width: 280px; flex-shrink: 0;\n}\n.vis-col[data-v-7cad6816] { flex: 1; min-width: 0; align-items: stretch;\n}\n.vis-canvas-wrap[data-v-7cad6816] { flex: 1; min-height: 0; position: relative; background: #0b1220; border-radius: 8px; overflow: hidden;\n}\n.ctrl-col[data-v-7cad6816] { width: 280px; flex-shrink: 0;\n}\n.hint-bar[data-v-7cad6816] { background: #252D3A; border: 1px solid #2D3645; border-radius: 6px; padding: .35rem .7rem; font-size: .75rem; color: #8B95A5; text-align: center; flex-shrink: 0;\n}\n.hint-bar.active[data-v-7cad6816] { border-color: #f59e0b; color: #f59e0b; background: rgba(245,158,11,.08);\n}\n.hint-bar.success[data-v-7cad6816] { border-color: #22c55e; color: #22c55e; background: rgba(34,197,94,.08);\n}\n@media (max-width: 900px) {\n.lab-grid[data-v-7cad6816] { flex-direction: column;\n}\n.data-col[data-v-7cad6816], .ctrl-col[data-v-7cad6816] { width: 100%;\n}\n}\n",
+      "start": 1783634640716,
+      "end": 1783634640717,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640717,
+      "end": 1783634640717,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634640717,
+      "end": 1783634640717,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640717,
+      "end": 1783634640717,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640717,
+      "end": 1783634640717,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640717,
+      "end": 1783634640717,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640717,
+      "end": 1783634640717,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640717,
+      "end": 1783634640717,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640717,
+      "end": 1783634640717,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640717,
+      "end": 1783634640717,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640717,
+      "end": 1783634640717,
+      "order": "normal"
+    }
+  ]
+}

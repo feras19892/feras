@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { authMiddleware } from '../../shared/middleware/auth.js';
+import { authMiddleware } from '../auth/middleware.js';
 import * as svc from '../admin/feedback-service.js';
 import type { User } from '@my-modern-app/shared-types';
 

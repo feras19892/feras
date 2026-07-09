@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/DraggablePanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, unref as _unref, withModifiers as _withModifiers, renderSlot as _renderSlot, mergeProps as _mergeProps, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = [\"data-id\"]\nconst _hoisted_2 = { class: \"panel-actions\" }\nconst _hoisted_3 = [\"title\"]\nconst _hoisted_4 = [\"title\"]\nconst _hoisted_5 = { class: \"panel-content\" }\n\nimport { useI18n } from '../../../composables/useI18n'\nimport { ref } from 'vue'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  ...{ inheritAttrs: false },\n  __name: 'DraggablePanel',\n  props: {\n    id: {},\n    title: {}\n  },\n  emits: [\"maximize\", \"hide\", \"drop\"],\n  setup(__props: any, { emit: __emit }) {\n\n\n\nconst { t } = useI18n()\nconst props = __props\n\nconst emit = __emit\n\nconst dragging = ref(false)\nconst pos = ref({ x: 0, y: 0 })\nconst startMouse = ref({ x: 0, y: 0 })\nconst startPos = ref({ x: 0, y: 0 })\n\nfunction onHeaderDown(e: MouseEvent) {\n  const target = e.target as HTMLElement\n  if (target.closest('.panel-actions')) return\n  e.preventDefault()\n  dragging.value = true\n  startMouse.value = { x: e.clientX, y: e.clientY }\n  startPos.value = { ...pos.value }\n  window.addEventListener('mousemove', onDrag)\n  window.addEventListener('mouseup', onDrop)\n}\n\nfunction onDrag(e: MouseEvent) {\n  if (!dragging.value) return\n  e.preventDefault()\n  pos.value = {\n    x: startPos.value.x + (e.clientX - startMouse.value.x),\n    y: startPos.value.y + (e.clientY - startMouse.value.y),\n  }\n}\n\nfunction onDrop(e: MouseEvent) {\n  dragging.value = false\n  window.removeEventListener('mousemove', onDrag)\n  window.removeEventListener('mouseup', onDrop)\n  emit('drop', props.id, e.clientX, e.clientY)\n  pos.value = { x: 0, y: 0 }\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _mergeProps(_ctx.$attrs, {\n    class: [\"draggable-panel\", { dragging: dragging.value }],\n    \"data-id\": props.id,\n    style: dragging.value ? { transform: `translate(${pos.value.x}px, ${pos.value.y}px)`, zIndex: 9999, opacity: 0.9 } : undefined\n  }), [\n    _createElementVNode(\"div\", {\n      class: \"card-header\",\n      onMousedown: onHeaderDown\n    }, [\n      _createElementVNode(\"h4\", null, _toDisplayString(props.title), 1),\n      _createElementVNode(\"div\", _hoisted_2, [\n        _createElementVNode(\"button\", {\n          class: \"pa-btn\",\n          draggable: \"false\",\n          onMousedown: _cache[0] || (_cache[0] = _withModifiers(() => {}, [\"stop\"])),\n          onClick: _cache[1] || (_cache[1] = _withModifiers(($event: any) => (emit('maximize', props.id)), [\"stop\"])),\n          title: _unref(t)('experiments.maximize')\n        }, \"⛶\", 40, _hoisted_3),\n        _createElementVNode(\"button\", {\n          class: \"pa-btn\",\n          draggable: \"false\",\n          onMousedown: _cache[2] || (_cache[2] = _withModifiers(() => {}, [\"stop\"])),\n          onClick: _cache[3] || (_cache[3] = _withModifiers(($event: any) => (emit('hide', props.id)), [\"stop\"])),\n          title: _unref(t)('experiments.hide')\n        }, \"✕\", 40, _hoisted_4)\n      ])\n    ], 32),\n    _createElementVNode(\"div\", _hoisted_5, [\n      _renderSlot(_ctx.$slots, \"default\", {}, undefined, true)\n    ])\n  ], 16, _hoisted_1))\n}\n}\n\n})",
+      "start": 1783634641625,
+      "end": 1783634641625
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641625,
+      "end": 1783634641625,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, unref as _unref, withModifiers as _withModifiers, renderSlot as _renderSlot, mergeProps as _mergeProps, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = [\"data-id\"];\nconst _hoisted_2 = { class: \"panel-actions\" };\nconst _hoisted_3 = [\"title\"];\nconst _hoisted_4 = [\"title\"];\nconst _hoisted_5 = { class: \"panel-content\" };\nimport { useI18n } from \"../../../composables/useI18n\";\nimport { ref } from \"vue\";\nexport default /* @__PURE__ */ _defineComponent({\n  ...{ inheritAttrs: false },\n  __name: \"DraggablePanel\",\n  props: {\n    id: {},\n    title: {}\n  },\n  emits: [\"maximize\", \"hide\", \"drop\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const props = __props;\n    const emit = __emit;\n    const dragging = ref(false);\n    const pos = ref({ x: 0, y: 0 });\n    const startMouse = ref({ x: 0, y: 0 });\n    const startPos = ref({ x: 0, y: 0 });\n    function onHeaderDown(e) {\n      const target = e.target;\n      if (target.closest(\".panel-actions\")) return;\n      e.preventDefault();\n      dragging.value = true;\n      startMouse.value = { x: e.clientX, y: e.clientY };\n      startPos.value = { ...pos.value };\n      window.addEventListener(\"mousemove\", onDrag);\n      window.addEventListener(\"mouseup\", onDrop);\n    }\n    function onDrag(e) {\n      if (!dragging.value) return;\n      e.preventDefault();\n      pos.value = {\n        x: startPos.value.x + (e.clientX - startMouse.value.x),\n        y: startPos.value.y + (e.clientY - startMouse.value.y)\n      };\n    }\n    function onDrop(e) {\n      dragging.value = false;\n      window.removeEventListener(\"mousemove\", onDrag);\n      window.removeEventListener(\"mouseup\", onDrop);\n      emit(\"drop\", props.id, e.clientX, e.clientY);\n      pos.value = { x: 0, y: 0 };\n    }\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _mergeProps(_ctx.$attrs, {\n        class: [\"draggable-panel\", { dragging: dragging.value }],\n        \"data-id\": props.id,\n        style: dragging.value ? { transform: `translate(${pos.value.x}px, ${pos.value.y}px)`, zIndex: 9999, opacity: 0.9 } : void 0\n      }), [\n        _createElementVNode(\"div\", {\n          class: \"card-header\",\n          onMousedown: onHeaderDown\n        }, [\n          _createElementVNode(\"h4\", null, _toDisplayString(props.title), 1),\n          _createElementVNode(\"div\", _hoisted_2, [\n            _createElementVNode(\"button\", {\n              class: \"pa-btn\",\n              draggable: \"false\",\n              onMousedown: _cache[0] || (_cache[0] = _withModifiers(() => {\n              }, [\"stop\"])),\n              onClick: _cache[1] || (_cache[1] = _withModifiers(($event) => emit(\"maximize\", props.id), [\"stop\"])),\n              title: _unref(t)(\"experiments.maximize\")\n            }, \"⛶\", 40, _hoisted_3),\n            _createElementVNode(\"button\", {\n              class: \"pa-btn\",\n              draggable: \"false\",\n              onMousedown: _cache[2] || (_cache[2] = _withModifiers(() => {\n              }, [\"stop\"])),\n              onClick: _cache[3] || (_cache[3] = _withModifiers(($event) => emit(\"hide\", props.id), [\"stop\"])),\n              title: _unref(t)(\"experiments.hide\")\n            }, \"✕\", 40, _hoisted_4)\n          ])\n        ], 32),\n        _createElementVNode(\"div\", _hoisted_5, [\n          _renderSlot(_ctx.$slots, \"default\", {}, void 0, true)\n        ])\n      ], 16, _hoisted_1);\n    };\n  }\n});\n",
+      "start": 1783634641625,
+      "end": 1783634641667,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/DraggablePanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, unref as _unref, withModifiers as _withModifiers, renderSlot as _renderSlot, mergeProps as _mergeProps, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = [\"data-id\"]\nconst _hoisted_2 = { class: \"panel-actions\" }\nconst _hoisted_3 = [\"title\"]\nconst _hoisted_4 = [\"title\"]\nconst _hoisted_5 = { class: \"panel-content\" }\n\nimport { useI18n } from '../../../composables/useI18n'\nimport { ref } from 'vue'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  ...{ inheritAttrs: false },\n  __name: 'DraggablePanel',\n  props: {\n    id: {},\n    title: {}\n  },\n  emits: [\"maximize\", \"hide\", \"drop\"],\n  setup(__props: any, { emit: __emit }) {\n\n\n\nconst { t } = useI18n()\nconst props = __props\n\nconst emit = __emit\n\nconst dragging = ref(false)\nconst pos = ref({ x: 0, y: 0 })\nconst startMouse = ref({ x: 0, y: 0 })\nconst startPos = ref({ x: 0, y: 0 })\n\nfunction onHeaderDown(e: MouseEvent) {\n  const target = e.target as HTMLElement\n  if (target.closest('.panel-actions')) return\n  e.preventDefault()\n  dragging.value = true\n  startMouse.value = { x: e.clientX, y: e.clientY }\n  startPos.value = { ...pos.value }\n  window.addEventListener('mousemove', onDrag)\n  window.addEventListener('mouseup', onDrop)\n}\n\nfunction onDrag(e: MouseEvent) {\n  if (!dragging.value) return\n  e.preventDefault()\n  pos.value = {\n    x: startPos.value.x + (e.clientX - startMouse.value.x),\n    y: startPos.value.y + (e.clientY - startMouse.value.y),\n  }\n}\n\nfunction onDrop(e: MouseEvent) {\n  dragging.value = false\n  window.removeEventListener('mousemove', onDrag)\n  window.removeEventListener('mouseup', onDrop)\n  emit('drop', props.id, e.clientX, e.clientY)\n  pos.value = { x: 0, y: 0 }\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _mergeProps(_ctx.$attrs, {\n    class: [\"draggable-panel\", { dragging: dragging.value }],\n    \"data-id\": props.id,\n    style: dragging.value ? { transform: `translate(${pos.value.x}px, ${pos.value.y}px)`, zIndex: 9999, opacity: 0.9 } : undefined\n  }), [\n    _createElementVNode(\"div\", {\n      class: \"card-header\",\n      onMousedown: onHeaderDown\n    }, [\n      _createElementVNode(\"h4\", null, _toDisplayString(props.title), 1),\n      _createElementVNode(\"div\", _hoisted_2, [\n        _createElementVNode(\"button\", {\n          class: \"pa-btn\",\n          draggable: \"false\",\n          onMousedown: _cache[0] || (_cache[0] = _withModifiers(() => {}, [\"stop\"])),\n          onClick: _cache[1] || (_cache[1] = _withModifiers(($event: any) => (emit('maximize', props.id)), [\"stop\"])),\n          title: _unref(t)('experiments.maximize')\n        }, \"⛶\", 40, _hoisted_3),\n        _createElementVNode(\"button\", {\n          class: \"pa-btn\",\n          draggable: \"false\",\n          onMousedown: _cache[2] || (_cache[2] = _withModifiers(() => {}, [\"stop\"])),\n          onClick: _cache[3] || (_cache[3] = _withModifiers(($event: any) => (emit('hide', props.id)), [\"stop\"])),\n          title: _unref(t)('experiments.hide')\n        }, \"✕\", 40, _hoisted_4)\n      ])\n    ], 32),\n    _createElementVNode(\"div\", _hoisted_5, [\n      _renderSlot(_ctx.$slots, \"default\", {}, undefined, true)\n    ])\n  ], 16, _hoisted_1))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641667,
+      "end": 1783634641667,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641667,
+      "end": 1783634641667,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634641667,
+      "end": 1783634641667,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    }
+  ]
+}

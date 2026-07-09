@@ -2,6 +2,7 @@ import { ref, computed, type Ref } from 'vue'
 import { useI18n } from '../../composables/useI18n'
 import { downloadCsv } from '../../components/experiment/spring/downloadCsv'
 import { calculateInclinedSummary } from './inclinedUtils'
+import { linearRegression } from '../../components/experiment/spring/linearRegression'
 import type { InclinedParams } from '../../modules/physics/experiments/inclined/useInclinedPhysics'
 
 export interface InclinedTrial {
@@ -138,9 +139,22 @@ export function useInclinedTrials(params: InclinedParams, measured: Ref<Inclined
     calcResult.value = `<b>${t('experiments.equationLabel')}:</b> N = m·g·cos(θ)<br><b>${t('experiments.substitutionLabel')}:</b> N = ${params.mass}×${params.g}×cos(${params.thetaDeg}°)<br><b>${t('experiments.resultLabel')}:</b> N = <b>${summary.normalForce} N</b>`
   }
 
+  function calcGFromSlope() {
+    const smooth = trials.value.filter(t => t.mu < 0.05)
+    if (smooth.length < 2) { calcResult.value = t('experiments.needTwoSmoothTrials'); return }
+    const xs = smooth.map(t => Math.sin(t.thetaDeg * Math.PI / 180))
+    const ys = smooth.map(t => t.acceleration)
+    const fit = linearRegression(xs, ys)
+    if (!fit || Math.abs(fit.slope) < 1e-12) { calcResult.value = t('experiments.insufficientData'); return }
+    const gCalc = fit.slope
+    const err = Math.abs((gCalc - params.g) / params.g) * 100
+    const quality = fit.r2 > 0.98 ? '✅' : fit.r2 > 0.9 ? '🟡' : '⚠️'
+    calcResult.value = `a = ${fit.slope.toFixed(4)}·sin(θ) ${fit.intercept >= 0 ? '+' : ''} ${fit.intercept.toFixed(4)}<br>R² = ${fit.r2.toFixed(4)} ${quality}<br>a = g·sin(θ) → g = slope = <b>${gCalc.toFixed(2)} m/s²</b><br>${t('experiments.errorPercent')} = <b>${err.toFixed(2)}%</b>`
+  }
+
   return {
     trials, trialStats, recordTrial, removeTrial, clearTrials, exportCsv,
     undo, redo, canUndo, canRedo, autoLoad,
-    calcResult, calcAcceleration, calcTime, calcVelocity, calcNormal,
+    calcResult, calcAcceleration, calcTime, calcVelocity, calcNormal, calcGFromSlope,
   }
 }

@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectilePanelBody.vue?vue&type=style&index=0&scoped=75d32328&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.panel-body { padding: .4rem; font-size: .78rem; }\n.param-row { display: flex; flex-direction: column; gap: .1rem; margin-bottom: .25rem; }\n.param-row label { font-size: .68rem; color: #8B95A5; font-weight: 600; }\n.param-inputs { display: flex; gap: .3rem; align-items: center; }\n.param-inputs input[type=\"range\"] { flex: 1; }\n.param-inputs input[type=\"number\"] { width: 60px; padding: .35rem .4rem; border-radius: 4px; border: 1px solid #2D3645; background: #252D3A; color: #D1D7E0; font-size: .75rem; text-align: center; }\n.empty { text-align: center; color: #8B95A5; padding: 1rem; }\ntable { width: 100%; border-collapse: collapse; font-size: .7rem; }\nth, td { padding: .25rem .3rem; text-align: center; border-bottom: 1px solid #2D3645; }\nth { color: #8B95A5; background: #1E2530; }\n.btn-clear { margin-top: .4rem; width: 100%; padding: .3rem; background: #ef4444; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: .72rem; }\n.calc-btns { display: flex; flex-direction: column; gap: .25rem; }\n.calc-btns button { padding: .3rem .5rem; background: #252D3A; color: #D1D7E0; border: 1px solid #2D3645; border-radius: 6px; cursor: pointer; font-size: .72rem; }\n.calc-btns button:hover { background: #2D3645; }\n.calc-result { margin-top: .4rem; padding: .4rem; background: #1E2530; border-radius: 6px; font-size: .72rem; line-height: 1.5; }\n.guide-list { padding-right: 1.2rem; margin: 0; color: #8B95A5; font-size: .75rem; }\n.guide-list li { margin-bottom: .3rem; }\n.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem; }\n.stat { background: #1E2530; padding: .3rem .5rem; border-radius: 6px; display: flex; flex-direction: column; }\n.stat .label { font-size: .65rem; color: #8B95A5; }\n.stat .val { font-size: .8rem; color: #5B8DB8; font-family: monospace; }\n.tutor { padding: .4rem .6rem; border-radius: 6px; font-size: .75rem; }\n.tutor.info { background: rgba(91,141,184,.1); color: #5B8DB8; }\n.tutor.warn { background: rgba(245,158,11,.1); color: #f59e0b; }\n.tutor.success { background: rgba(34,197,94,.1); color: #22c55e; }\n.placeholder { text-align: center; color: #8B95A5; padding: 2rem; }\n.chart-canvas { width: 100%; height: 140px; background: #1E2530; border-radius: 6px; border: 1px solid #2D3645; }\n",
+      "start": 1783634641685,
+      "end": 1783634641685
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.panel-body { padding: .4rem; font-size: .78rem; }\n.param-row { display: flex; flex-direction: column; gap: .1rem; margin-bottom: .25rem; }\n.param-row label { font-size: .68rem; color: #8B95A5; font-weight: 600; }\n.param-inputs { display: flex; gap: .3rem; align-items: center; }\n.param-inputs input[type=\"range\"] { flex: 1; }\n.param-inputs input[type=\"number\"] { width: 60px; padding: .35rem .4rem; border-radius: 4px; border: 1px solid #2D3645; background: #252D3A; color: #D1D7E0; font-size: .75rem; text-align: center; }\n.empty { text-align: center; color: #8B95A5; padding: 1rem; }\ntable { width: 100%; border-collapse: collapse; font-size: .7rem; }\nth, td { padding: .25rem .3rem; text-align: center; border-bottom: 1px solid #2D3645; }\nth { color: #8B95A5; background: #1E2530; }\n.btn-clear { margin-top: .4rem; width: 100%; padding: .3rem; background: #ef4444; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: .72rem; }\n.calc-btns { display: flex; flex-direction: column; gap: .25rem; }\n.calc-btns button { padding: .3rem .5rem; background: #252D3A; color: #D1D7E0; border: 1px solid #2D3645; border-radius: 6px; cursor: pointer; font-size: .72rem; }\n.calc-btns button:hover { background: #2D3645; }\n.calc-result { margin-top: .4rem; padding: .4rem; background: #1E2530; border-radius: 6px; font-size: .72rem; line-height: 1.5; }\n.guide-list { padding-right: 1.2rem; margin: 0; color: #8B95A5; font-size: .75rem; }\n.guide-list li { margin-bottom: .3rem; }\n.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem; }\n.stat { background: #1E2530; padding: .3rem .5rem; border-radius: 6px; display: flex; flex-direction: column; }\n.stat .label { font-size: .65rem; color: #8B95A5; }\n.stat .val { font-size: .8rem; color: #5B8DB8; font-family: monospace; }\n.tutor { padding: .4rem .6rem; border-radius: 6px; font-size: .75rem; }\n.tutor.info { background: rgba(91,141,184,.1); color: #5B8DB8; }\n.tutor.warn { background: rgba(245,158,11,.1); color: #f59e0b; }\n.tutor.success { background: rgba(34,197,94,.1); color: #22c55e; }\n.placeholder { text-align: center; color: #8B95A5; padding: 2rem; }\n.chart-canvas { width: 100%; height: 140px; background: #1E2530; border-radius: 6px; border: 1px solid #2D3645; }\n",
+      "start": 1783634641685,
+      "end": 1783634641685,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641686,
+      "end": 1783634641686,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641686,
+      "end": 1783634641686,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641686,
+      "end": 1783634641686,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.panel-body[data-v-75d32328] { padding: .4rem; font-size: .78rem;\n}\n.param-row[data-v-75d32328] { display: flex; flex-direction: column; gap: .1rem; margin-bottom: .25rem;\n}\n.param-row label[data-v-75d32328] { font-size: .68rem; color: #8B95A5; font-weight: 600;\n}\n.param-inputs[data-v-75d32328] { display: flex; gap: .3rem; align-items: center;\n}\n.param-inputs input[type=\"range\"][data-v-75d32328] { flex: 1;\n}\n.param-inputs input[type=\"number\"][data-v-75d32328] { width: 60px; padding: .35rem .4rem; border-radius: 4px; border: 1px solid #2D3645; background: #252D3A; color: #D1D7E0; font-size: .75rem; text-align: center;\n}\n.empty[data-v-75d32328] { text-align: center; color: #8B95A5; padding: 1rem;\n}\ntable[data-v-75d32328] { width: 100%; border-collapse: collapse; font-size: .7rem;\n}\nth[data-v-75d32328], td[data-v-75d32328] { padding: .25rem .3rem; text-align: center; border-bottom: 1px solid #2D3645;\n}\nth[data-v-75d32328] { color: #8B95A5; background: #1E2530;\n}\n.btn-clear[data-v-75d32328] { margin-top: .4rem; width: 100%; padding: .3rem; background: #ef4444; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: .72rem;\n}\n.calc-btns[data-v-75d32328] { display: flex; flex-direction: column; gap: .25rem;\n}\n.calc-btns button[data-v-75d32328] { padding: .3rem .5rem; background: #252D3A; color: #D1D7E0; border: 1px solid #2D3645; border-radius: 6px; cursor: pointer; font-size: .72rem;\n}\n.calc-btns button[data-v-75d32328]:hover { background: #2D3645;\n}\n.calc-result[data-v-75d32328] { margin-top: .4rem; padding: .4rem; background: #1E2530; border-radius: 6px; font-size: .72rem; line-height: 1.5;\n}\n.guide-list[data-v-75d32328] { padding-right: 1.2rem; margin: 0; color: #8B95A5; font-size: .75rem;\n}\n.guide-list li[data-v-75d32328] { margin-bottom: .3rem;\n}\n.stats-grid[data-v-75d32328] { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem;\n}\n.stat[data-v-75d32328] { background: #1E2530; padding: .3rem .5rem; border-radius: 6px; display: flex; flex-direction: column;\n}\n.stat .label[data-v-75d32328] { font-size: .65rem; color: #8B95A5;\n}\n.stat .val[data-v-75d32328] { font-size: .8rem; color: #5B8DB8; font-family: monospace;\n}\n.tutor[data-v-75d32328] { padding: .4rem .6rem; border-radius: 6px; font-size: .75rem;\n}\n.tutor.info[data-v-75d32328] { background: rgba(91,141,184,.1); color: #5B8DB8;\n}\n.tutor.warn[data-v-75d32328] { background: rgba(245,158,11,.1); color: #f59e0b;\n}\n.tutor.success[data-v-75d32328] { background: rgba(34,197,94,.1); color: #22c55e;\n}\n.placeholder[data-v-75d32328] { text-align: center; color: #8B95A5; padding: 2rem;\n}\n.chart-canvas[data-v-75d32328] { width: 100%; height: 140px; background: #1E2530; border-radius: 6px; border: 1px solid #2D3645;\n}\n",
+      "start": 1783634641686,
+      "end": 1783634641688,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641688,
+      "end": 1783634641688,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634641688,
+      "end": 1783634641688,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641688,
+      "end": 1783634641688,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641688,
+      "end": 1783634641688,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641688,
+      "end": 1783634641688,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641688,
+      "end": 1783634641688,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641688,
+      "end": 1783634641688,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641688,
+      "end": 1783634641688,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641688,
+      "end": 1783634641688,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641688,
+      "end": 1783634641688,
+      "order": "normal"
+    }
+  ]
+}

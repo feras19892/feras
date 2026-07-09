@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/wave-interference/WaveInterferenceHelpModal.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\nconst { t } = useI18n()\ndefineProps<{ open: boolean }>()\nconst emit = defineEmits<{ (e: 'close'): void }>()\n</script>\n\n<template>\n  <div v-if=\"open\" class=\"modal-overlay\" @click.self=\"emit('close')\">\n    <div class=\"modal\">\n      <div class=\"modal-header\">\n        <h3>{{ t('experiments.helpTitle') }}</h3>\n        <button class=\"modal-close\" @click=\"emit('close')\">&#x2715;</button>\n      </div>\n      <div class=\"modal-body\">\n        <p><strong>Space</strong> - {{ t('experiments.helpSpace') }}</p>\n        <p><strong>R</strong> - {{ t('experiments.helpR') }}</p>\n        <p><strong>S</strong> - {{ t('experiments.helpS') }}</p>\n        <p><strong>Ctrl+Z</strong> - {{ t('experiments.helpUndo') }}</p>\n        <p><strong>Ctrl+Y</strong> - {{ t('experiments.helpRedo') }}</p>\n        <p><strong>?</strong> - {{ t('experiments.helpQuestion') }}</p>\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 9999; display: flex; align-items: center; justify-content: center; }\n.modal { background: #1A1F27; border: 1px solid #2D3645; border-radius: 10px; width: 480px; max-width: 90vw; }\n.modal-header { display: flex; justify-content: space-between; align-items: center; padding: .8rem 1rem; border-bottom: 1px solid #2D3645; }\n.modal-header h3 { margin: 0; font-size: .95rem; color: #D1D7E0; }\n.modal-close { background: none; border: none; color: #8B95A5; cursor: pointer; font-size: 1rem; }\n.modal-body { padding: 1rem; font-size: .82rem; color: #8B95A5; line-height: 1.7; }\n.modal-body p { margin: .2rem 0; }\n.modal-body strong { color: #5B8DB8; }\n</style>\n",
+      "start": 1783634640999,
+      "end": 1783634641488,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641488,
+      "end": 1783634641488,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641488,
+      "end": 1783634641488,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641488,
+      "end": 1783634641488,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641488,
+      "end": 1783634641488,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/wave-interference/WaveInterferenceHelpModal.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/wave-interference/WaveInterferenceHelpModal.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/wave-interference/WaveInterferenceHelpModal.vue?vue&type=style&index=0&scoped=2cfbf44b&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-2cfbf44b\"]]);\n",
+      "start": 1783634641488,
+      "end": 1783634641634,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641634,
+      "end": 1783634641634,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641634,
+      "end": 1783634641634,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641634,
+      "end": 1783634641634,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641635,
+      "end": 1783634641635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641635,
+      "end": 1783634641635,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641635,
+      "end": 1783634641635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641635,
+      "end": 1783634641635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641635,
+      "end": 1783634641635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641635,
+      "end": 1783634641635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641635,
+      "end": 1783634641635,
+      "order": "normal"
+    }
+  ]
+}

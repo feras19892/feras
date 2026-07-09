@@ -1,0 +1,110 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/pendulum/usePendulumPhysics.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { computed, reactive } from 'vue'\nimport { useAnomalyWatcher } from '../../../../composables/experiment/useAnomalyWatcher'\nimport { computeDragAcceleration } from '../../../../composables/pendulum/usePendulumDrag'\n\nexport interface PendulumParams {\n  length: number\n  g: number\n  theta0: number\n  theta0Deg: number\n  mass: number\n  damping: number\n  measureCycles: number\n  bobRadius: number\n  airDensity: number\n  springK: number\n  springRestLength: number\n}\n\nexport interface PendulumState {\n  running: boolean\n  paused: boolean\n  t: number\n  theta: number\n  omega: number\n  zeroCrossings: number[]\n  measurementPeriod: number | null\n  signalSeries: { t: number; theta: number }[]\n}\n\nexport function usePendulumPhysics(params: PendulumParams) {\n  const watcher = useAnomalyWatcher('pendulum')\n  const state = reactive<PendulumState>({\n    running: false, paused: false, t: 0,\n    theta: params.theta0, omega: 0,\n    zeroCrossings: [], measurementPeriod: null, signalSeries: [],\n  })\n\n  function deriv(theta: number, omega: number) {\n    const v = omega * params.length\n    const dragAlpha = computeDragAcceleration(v, params.mass, params.length, { bobRadius: params.bobRadius, airDensity: params.airDensity })\n    return {\n      dtheta: omega,\n      domega: -(params.g / params.length) * Math.sin(theta) - params.damping * omega + dragAlpha,\n    }\n  }\n\n  function rk4Step(theta: number, omega: number, dt: number) {\n    const k1 = deriv(theta, omega)\n    const k2 = deriv(theta + 0.5 * dt * k1.dtheta, omega + 0.5 * dt * k1.domega)\n    const k3 = deriv(theta + 0.5 * dt * k2.dtheta, omega + 0.5 * dt * k2.domega)\n    const k4 = deriv(theta + dt * k3.dtheta, omega + dt * k3.domega)\n    return {\n      theta: theta + (dt / 6) * (k1.dtheta + 2 * k2.dtheta + 2 * k3.dtheta + k4.dtheta),\n      omega: omega + (dt / 6) * (k1.domega + 2 * k2.domega + 2 * k3.domega + k4.domega),\n    }\n  }\n\n  function trackCrossings(prevTheta: number, newTheta: number, prevTime: number, newTime: number) {\n    if ((prevTheta > 0 && newTheta <= 0) || (prevTheta < 0 && newTheta >= 0)) {\n      const ratio = Math.abs(prevTheta - newTheta) < 1e-12 ? 0.5 : prevTheta / (prevTheta - newTheta)\n      const ct = prevTime + (newTime - prevTime) * ratio\n      state.zeroCrossings.push(ct)\n      if (state.zeroCrossings.length > 30) state.zeroCrossings.shift()\n      const cycles = Math.min(20, Math.max(1, params.measureCycles || 5))\n      if (state.zeroCrossings.length >= cycles + 2) {\n        const start = Math.max(0, state.zeroCrossings.length - (cycles + 2))\n        const periods: number[] = []\n        for (let i = start; i < state.zeroCrossings.length - 2; i++) {\n          periods.push(state.zeroCrossings[i + 2] - state.zeroCrossings[i])\n        }\n        state.measurementPeriod = periods.reduce((a, b) => a + b, 0) / periods.length\n      }\n    }\n  }\n\n  function step(dt: number, speedMultiplier: number = 1) {\n    const omega0 = Math.sqrt(params.g / Math.max(params.length, 1e-9))\n    const safeDt = Math.min(1 / 240, 0.15 / omega0)\n    let accum = dt, steps = 0\n    while (accum > 1e-12 && steps < 300) {\n      steps++\n      const sdt = Math.min(safeDt, accum)\n      const prevTheta = state.theta, prevTime = state.t\n      const next = rk4Step(state.theta, state.omega, sdt * speedMultiplier)\n      state.theta = next.theta; state.omega = next.omega; state.t += sdt * speedMultiplier\n      trackCrossings(prevTheta, state.theta, prevTime, state.t)\n      accum -= sdt\n    }\n    state.signalSeries = [...state.signalSeries.slice(-1499), { t: state.t, theta: state.theta }]\n    if (params.damping > 0.001 && state.t > 0.3 && Math.abs(state.theta) < 0.01 && Math.abs(state.omega) < 0.005) stop()\n\n    watcher.inspect({ t: state.t, theta: state.theta, omega: state.omega, mass: params.mass })\n  }\n\n  function start() {\n    state.running = true; state.paused = false\n    state.theta = params.theta0; state.omega = 0; state.t = 0\n    state.zeroCrossings = []; state.measurementPeriod = null; state.signalSeries = []\n  }\n\n  function togglePause() { if (!state.running) return start(); state.paused = !state.paused }\n  function stop() { state.running = false; state.paused = false }\n  function reset() { stop(); state.t = 0; state.theta = params.theta0; state.omega = 0; state.zeroCrossings = []; state.measurementPeriod = null; state.signalSeries = [] }\n\n  const theoreticalPeriod = computed(() => {\n    if (params.length <= 1e-9 || params.g <= 1e-9) return null\n    return 2 * Math.PI * Math.sqrt(params.length / params.g)\n  })\n\n  const measured = computed(() => {\n    const T = state.measurementPeriod\n    if (!T) return { T: null as number|null, f: null as number|null, omega: null as number|null, gCalc: null as number|null }\n    return { T, f: 1 / T, omega: (2 * Math.PI) / T, gCalc: (4 * Math.PI * Math.PI * params.length) / (T * T) }\n  })\n\n  function getCutState() {\n    const L = params.length\n    const theta = state.theta\n    const omega = state.omega\n    const px = L * Math.sin(theta)\n    const py = -L * Math.cos(theta)\n    const vx = L * omega * Math.cos(theta)\n    const vy = L * omega * Math.sin(theta)\n    return { x: px, y: py, vx, vy }\n  }\n\n  return { state, step, start, stop, togglePause, reset, theoreticalPeriod, measured, getCutState }\n}\n",
+      "start": 1783634642566,
+      "end": 1783634642821,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642821,
+      "end": 1783634642821,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { computed, reactive } from \"vue\";\nimport { useAnomalyWatcher } from \"../../../../composables/experiment/useAnomalyWatcher\";\nimport { computeDragAcceleration } from \"../../../../composables/pendulum/usePendulumDrag\";\nexport function usePendulumPhysics(params) {\n  const watcher = useAnomalyWatcher(\"pendulum\");\n  const state = reactive({\n    running: false,\n    paused: false,\n    t: 0,\n    theta: params.theta0,\n    omega: 0,\n    zeroCrossings: [],\n    measurementPeriod: null,\n    signalSeries: []\n  });\n  function deriv(theta, omega) {\n    const v = omega * params.length;\n    const dragAlpha = computeDragAcceleration(v, params.mass, params.length, { bobRadius: params.bobRadius, airDensity: params.airDensity });\n    return {\n      dtheta: omega,\n      domega: -(params.g / params.length) * Math.sin(theta) - params.damping * omega + dragAlpha\n    };\n  }\n  function rk4Step(theta, omega, dt) {\n    const k1 = deriv(theta, omega);\n    const k2 = deriv(theta + 0.5 * dt * k1.dtheta, omega + 0.5 * dt * k1.domega);\n    const k3 = deriv(theta + 0.5 * dt * k2.dtheta, omega + 0.5 * dt * k2.domega);\n    const k4 = deriv(theta + dt * k3.dtheta, omega + dt * k3.domega);\n    return {\n      theta: theta + dt / 6 * (k1.dtheta + 2 * k2.dtheta + 2 * k3.dtheta + k4.dtheta),\n      omega: omega + dt / 6 * (k1.domega + 2 * k2.domega + 2 * k3.domega + k4.domega)\n    };\n  }\n  function trackCrossings(prevTheta, newTheta, prevTime, newTime) {\n    if (prevTheta > 0 && newTheta <= 0 || prevTheta < 0 && newTheta >= 0) {\n      const ratio = Math.abs(prevTheta - newTheta) < 1e-12 ? 0.5 : prevTheta / (prevTheta - newTheta);\n      const ct = prevTime + (newTime - prevTime) * ratio;\n      state.zeroCrossings.push(ct);\n      if (state.zeroCrossings.length > 30) state.zeroCrossings.shift();\n      const cycles = Math.min(20, Math.max(1, params.measureCycles || 5));\n      if (state.zeroCrossings.length >= cycles + 2) {\n        const start2 = Math.max(0, state.zeroCrossings.length - (cycles + 2));\n        const periods = [];\n        for (let i = start2; i < state.zeroCrossings.length - 2; i++) {\n          periods.push(state.zeroCrossings[i + 2] - state.zeroCrossings[i]);\n        }\n        state.measurementPeriod = periods.reduce((a, b) => a + b, 0) / periods.length;\n      }\n    }\n  }\n  function step(dt, speedMultiplier = 1) {\n    const omega0 = Math.sqrt(params.g / Math.max(params.length, 1e-9));\n    const safeDt = Math.min(1 / 240, 0.15 / omega0);\n    let accum = dt, steps = 0;\n    while (accum > 1e-12 && steps < 300) {\n      steps++;\n      const sdt = Math.min(safeDt, accum);\n      const prevTheta = state.theta, prevTime = state.t;\n      const next = rk4Step(state.theta, state.omega, sdt * speedMultiplier);\n      state.theta = next.theta;\n      state.omega = next.omega;\n      state.t += sdt * speedMultiplier;\n      trackCrossings(prevTheta, state.theta, prevTime, state.t);\n      accum -= sdt;\n    }\n    state.signalSeries = [...state.signalSeries.slice(-1499), { t: state.t, theta: state.theta }];\n    if (params.damping > 1e-3 && state.t > 0.3 && Math.abs(state.theta) < 0.01 && Math.abs(state.omega) < 5e-3) stop();\n    watcher.inspect({ t: state.t, theta: state.theta, omega: state.omega, mass: params.mass });\n  }\n  function start() {\n    state.running = true;\n    state.paused = false;\n    state.theta = params.theta0;\n    state.omega = 0;\n    state.t = 0;\n    state.zeroCrossings = [];\n    state.measurementPeriod = null;\n    state.signalSeries = [];\n  }\n  function togglePause() {\n    if (!state.running) return start();\n    state.paused = !state.paused;\n  }\n  function stop() {\n    state.running = false;\n    state.paused = false;\n  }\n  function reset() {\n    stop();\n    state.t = 0;\n    state.theta = params.theta0;\n    state.omega = 0;\n    state.zeroCrossings = [];\n    state.measurementPeriod = null;\n    state.signalSeries = [];\n  }\n  const theoreticalPeriod = computed(() => {\n    if (params.length <= 1e-9 || params.g <= 1e-9) return null;\n    return 2 * Math.PI * Math.sqrt(params.length / params.g);\n  });\n  const measured = computed(() => {\n    const T = state.measurementPeriod;\n    if (!T) return { T: null, f: null, omega: null, gCalc: null };\n    return { T, f: 1 / T, omega: 2 * Math.PI / T, gCalc: 4 * Math.PI * Math.PI * params.length / (T * T) };\n  });\n  function getCutState() {\n    const L = params.length;\n    const theta = state.theta;\n    const omega = state.omega;\n    const px = L * Math.sin(theta);\n    const py = -L * Math.cos(theta);\n    const vx = L * omega * Math.cos(theta);\n    const vy = L * omega * Math.sin(theta);\n    return { x: px, y: py, vx, vy };\n  }\n  return { state, step, start, stop, togglePause, reset, theoreticalPeriod, measured, getCutState };\n}\n",
+      "start": 1783634642821,
+      "end": 1783634642883,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/pendulum/usePendulumPhysics.ts"
+        ],
+        "sourcesContent": [
+          "import { computed, reactive } from 'vue'\nimport { useAnomalyWatcher } from '../../../../composables/experiment/useAnomalyWatcher'\nimport { computeDragAcceleration } from '../../../../composables/pendulum/usePendulumDrag'\n\nexport interface PendulumParams {\n  length: number\n  g: number\n  theta0: number\n  theta0Deg: number\n  mass: number\n  damping: number\n  measureCycles: number\n  bobRadius: number\n  airDensity: number\n  springK: number\n  springRestLength: number\n}\n\nexport interface PendulumState {\n  running: boolean\n  paused: boolean\n  t: number\n  theta: number\n  omega: number\n  zeroCrossings: number[]\n  measurementPeriod: number | null\n  signalSeries: { t: number; theta: number }[]\n}\n\nexport function usePendulumPhysics(params: PendulumParams) {\n  const watcher = useAnomalyWatcher('pendulum')\n  const state = reactive<PendulumState>({\n    running: false, paused: false, t: 0,\n    theta: params.theta0, omega: 0,\n    zeroCrossings: [], measurementPeriod: null, signalSeries: [],\n  })\n\n  function deriv(theta: number, omega: number) {\n    const v = omega * params.length\n    const dragAlpha = computeDragAcceleration(v, params.mass, params.length, { bobRadius: params.bobRadius, airDensity: params.airDensity })\n    return {\n      dtheta: omega,\n      domega: -(params.g / params.length) * Math.sin(theta) - params.damping * omega + dragAlpha,\n    }\n  }\n\n  function rk4Step(theta: number, omega: number, dt: number) {\n    const k1 = deriv(theta, omega)\n    const k2 = deriv(theta + 0.5 * dt * k1.dtheta, omega + 0.5 * dt * k1.domega)\n    const k3 = deriv(theta + 0.5 * dt * k2.dtheta, omega + 0.5 * dt * k2.domega)\n    const k4 = deriv(theta + dt * k3.dtheta, omega + dt * k3.domega)\n    return {\n      theta: theta + (dt / 6) * (k1.dtheta + 2 * k2.dtheta + 2 * k3.dtheta + k4.dtheta),\n      omega: omega + (dt / 6) * (k1.domega + 2 * k2.domega + 2 * k3.domega + k4.domega),\n    }\n  }\n\n  function trackCrossings(prevTheta: number, newTheta: number, prevTime: number, newTime: number) {\n    if ((prevTheta > 0 && newTheta <= 0) || (prevTheta < 0 && newTheta >= 0)) {\n      const ratio = Math.abs(prevTheta - newTheta) < 1e-12 ? 0.5 : prevTheta / (prevTheta - newTheta)\n      const ct = prevTime + (newTime - prevTime) * ratio\n      state.zeroCrossings.push(ct)\n      if (state.zeroCrossings.length > 30) state.zeroCrossings.shift()\n      const cycles = Math.min(20, Math.max(1, params.measureCycles || 5))\n      if (state.zeroCrossings.length >= cycles + 2) {\n        const start = Math.max(0, state.zeroCrossings.length - (cycles + 2))\n        const periods: number[] = []\n        for (let i = start; i < state.zeroCrossings.length - 2; i++) {\n          periods.push(state.zeroCrossings[i + 2] - state.zeroCrossings[i])\n        }\n        state.measurementPeriod = periods.reduce((a, b) => a + b, 0) / periods.length\n      }\n    }\n  }\n\n  function step(dt: number, speedMultiplier: number = 1) {\n    const omega0 = Math.sqrt(params.g / Math.max(params.length, 1e-9))\n    const safeDt = Math.min(1 / 240, 0.15 / omega0)\n    let accum = dt, steps = 0\n    while (accum > 1e-12 && steps < 300) {\n      steps++\n      const sdt = Math.min(safeDt, accum)\n      const prevTheta = state.theta, prevTime = state.t\n      const next = rk4Step(state.theta, state.omega, sdt * speedMultiplier)\n      state.theta = next.theta; state.omega = next.omega; state.t += sdt * speedMultiplier\n      trackCrossings(prevTheta, state.theta, prevTime, state.t)\n      accum -= sdt\n    }\n    state.signalSeries = [...state.signalSeries.slice(-1499), { t: state.t, theta: state.theta }]\n    if (params.damping > 0.001 && state.t > 0.3 && Math.abs(state.theta) < 0.01 && Math.abs(state.omega) < 0.005) stop()\n\n    watcher.inspect({ t: state.t, theta: state.theta, omega: state.omega, mass: params.mass })\n  }\n\n  function start() {\n    state.running = true; state.paused = false\n    state.theta = params.theta0; state.omega = 0; state.t = 0\n    state.zeroCrossings = []; state.measurementPeriod = null; state.signalSeries = []\n  }\n\n  function togglePause() { if (!state.running) return start(); state.paused = !state.paused }\n  function stop() { state.running = false; state.paused = false }\n  function reset() { stop(); state.t = 0; state.theta = params.theta0; state.omega = 0; state.zeroCrossings = []; state.measurementPeriod = null; state.signalSeries = [] }\n\n  const theoreticalPeriod = computed(() => {\n    if (params.length <= 1e-9 || params.g <= 1e-9) return null\n    return 2 * Math.PI * Math.sqrt(params.length / params.g)\n  })\n\n  const measured = computed(() => {\n    const T = state.measurementPeriod\n    if (!T) return { T: null as number|null, f: null as number|null, omega: null as number|null, gCalc: null as number|null }\n    return { T, f: 1 / T, omega: (2 * Math.PI) / T, gCalc: (4 * Math.PI * Math.PI * params.length) / (T * T) }\n  })\n\n  function getCutState() {\n    const L = params.length\n    const theta = state.theta\n    const omega = state.omega\n    const px = L * Math.sin(theta)\n    const py = -L * Math.cos(theta)\n    const vx = L * omega * Math.cos(theta)\n    const vy = L * omega * Math.sin(theta)\n    return { x: px, y: py, vx, vy }\n  }\n\n  return { state, step, start, stop, togglePause, reset, theoreticalPeriod, measured, getCutState }\n}\n"
+        ],
+        "mappings": "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",
+        "names": [
+          "start"
+        ]
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642884,
+      "end": 1783634642884,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642884,
+      "end": 1783634642884,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642884,
+      "end": 1783634642884,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642884,
+      "end": 1783634642884,
+      "order": "normal"
+    }
+  ]
+}

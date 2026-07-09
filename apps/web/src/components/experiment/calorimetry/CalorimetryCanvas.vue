@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 const props = defineProps<{
   mWater: number
@@ -42,10 +42,6 @@ function tempColor(t: number): string {
   return `rgba(${red},${gr},${bl},1)`
 }
 
-/* small random generator with seed for stable particles */
-let seed = 42
-function rand() { seed = (seed * 16807 + 0) % 2147483647; return (seed - 1) / 2147483646 }
-
 function draw() {
   const ctx = getCtx()
   if (!ctx) return
@@ -85,24 +81,31 @@ function draw() {
     ctx.strokeRect(cupLeft - s(4), cupTop - s(4), cupW + s(8), s(8))
   }
 
+  // Use parameter temps directly when ready, otherwise current temps from sim
+  const displayWaterTemp = props.phase === 'ready' ? props.tWater : props.currentWaterTemp
+  const displayMetalTemp = props.phase === 'ready' ? props.tMetal : props.currentMetalTemp
+
   // water
   const waterH = (props.mWater / 0.5) * cupH * 0.85
   const waterTop = bottom - waterH
-  const wColor = tempColor(props.currentWaterTemp)
+  const wColor = tempColor(displayWaterTemp)
   const wGrad = ctx.createLinearGradient(cupLeft, waterTop, cupLeft + cupW, bottom)
   wGrad.addColorStop(0, wColor.replace('1)', '0.35)'))
   wGrad.addColorStop(1, wColor.replace('1)', '0.65)'))
   ctx.fillStyle = wGrad
   ctx.fillRect(cupLeft + s(4), waterTop, cupW - s(8), waterH - s(4))
 
-  // water motion dots
-  seed = 42
+  // water motion dots — gently animated (more active when mixing)
+  const time = Date.now() / 1000
+  const agitation = props.phase === 'mixing' ? 1.5 : 0.3
   const nDots = Math.round(props.mWater * 50)
   for (let i = 0; i < nDots; i++) {
-    const dx = cupLeft + s(8) + rand() * (cupW - s(16))
-    const dy = waterTop + s(6) + rand() * (waterH - s(12))
+    const baseX = cupLeft + s(8) + ((i * 17 + i * i * 3) % 1000) / 1000 * (cupW - s(16))
+    const baseY = waterTop + s(6) + ((i * 23 + i * i * 5) % 1000) / 1000 * (waterH - s(12))
+    const animX = baseX + Math.sin(time * 1.5 + i * 0.7) * s(2 * agitation)
+    const animY = baseY + Math.cos(time * 1.2 + i * 0.5) * s(1.5 * agitation)
     ctx.fillStyle = wColor.replace('1)', '0.5)')
-    ctx.beginPath(); ctx.arc(dx, dy, s(1.8), 0, Math.PI * 2); ctx.fill()
+    ctx.beginPath(); ctx.arc(animX, animY, s(1.8), 0, Math.PI * 2); ctx.fill()
   }
 
   // thermometer
@@ -112,9 +115,9 @@ function draw() {
   ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(tx, ty + th); ctx.stroke()
   ctx.beginPath(); ctx.arc(tx, ty + th + s(10), s(9), 0, Math.PI * 2); ctx.stroke()
   ctx.fillStyle = '#0B1220'; ctx.beginPath(); ctx.arc(tx, ty + th + s(10), s(7), 0, Math.PI * 2); ctx.fill()
-  const tFrac = Math.max(0, Math.min(1, (props.currentWaterTemp - 20) / 100))
+  const tFrac = Math.max(0, Math.min(1, (displayWaterTemp - 20) / 100))
   const mh = tFrac * th
-  ctx.fillStyle = tempColor(props.currentWaterTemp)
+  ctx.fillStyle = tempColor(displayWaterTemp)
   ctx.fillRect(tx - s(3), ty + th - mh, s(6), mh)
   ctx.beginPath(); ctx.arc(tx, ty + th + s(10), s(5), 0, Math.PI * 2); ctx.fill()
   // ticks
@@ -125,7 +128,7 @@ function draw() {
     ctx.fillText(`${20 + i * 25}°`, tx + s(10), y + s(3))
   }
   ctx.fillStyle = '#D1D7E0'; ctx.font = `bold ${s(10)}px sans-serif`
-  ctx.fillText(`${Math.round(props.currentWaterTemp)}°C`, tx + s(10), ty + th + s(22))
+  ctx.fillText(`${Math.round(displayWaterTemp)}°C`, tx + s(10), ty + th + s(22))
 
   // === METAL BLOCK with tweezers ===
   const blockW = s(48), blockH = s(36)
@@ -149,7 +152,7 @@ function draw() {
   }
 
   // metal block
-  const mColor = tempColor(props.currentMetalTemp)
+  const mColor = tempColor(displayMetalTemp)
   ctx.fillStyle = mColor
   ctx.fillRect(blockX, blockY, blockW, blockH)
   ctx.strokeStyle = '#8B95A5'; ctx.lineWidth = s(1.5)
@@ -162,40 +165,40 @@ function draw() {
   }
   // temp label on block
   ctx.fillStyle = '#fff'; ctx.font = `bold ${s(9)}px sans-serif`; ctx.textAlign = 'center'
-  ctx.fillText(`${Math.round(props.currentMetalTemp)}°C`, blockX + blockW / 2, blockY + blockH / 2 + s(3))
+  ctx.fillText(`${Math.round(displayMetalTemp)}°C`, blockX + blockW / 2, blockY + blockH / 2 + s(3))
   ctx.textAlign = 'start'
 
-  // === HEAT FLOW PARTICLES (during mixing) ===
+  // === HEAT FLOW PARTICLES (during mixing) — proportional to temp diff ===
   if (props.phase === 'mixing') {
-    seed = 123
-    const heatCount = 15
+    const tempDiff = Math.max(1, props.tMetal - props.tWater)
+    const heatCount = Math.round(5 + tempDiff * 0.2) // more particles when bigger diff
     for (let i = 0; i < heatCount; i++) {
-      const t = (props.simTime * 2 + i * 0.7) % 3
-      const hx = blockX + rand() * blockW
+      const t = (props.simTime * (1 + tempDiff * 0.02) + i * 0.7) % 3
+      const hx = blockX + ((i * 13 + i * i * 7) % 1000) / 1000 * blockW
       const hy = blockY + blockH - t * (blockY + blockH - waterTop) * 0.6
       const alpha = t < 0.5 ? t * 2 : (3 - t) / 2.5
-      ctx.fillStyle = `rgba(255,120,60,${Math.max(0, alpha)})`
-      ctx.beginPath(); ctx.arc(hx, hy, s(2.5), 0, Math.PI * 2); ctx.fill()
+      ctx.fillStyle = `rgba(255,${Math.round(120 - tempDiff)},${Math.round(60 - tempDiff * 0.3)},${Math.max(0, alpha)})`
+      ctx.beginPath(); ctx.arc(hx, hy, s(2 + tempDiff * 0.01), 0, Math.PI * 2); ctx.fill()
     }
   }
 
   // === PHASE LABEL (top center) ===
   ctx.textAlign = 'center'
   const phaseLabels: Record<string, { text: string; color: string }> = {
-    ready: { text: '🔥 Ready — Press Start', color: '#64748b' },
-    dropping: { text: '⬇️ Dropping metal...', color: '#fbbf24' },
-    mixing: { text: '🔥 Mixing — Heat transfer', color: '#22c55e' },
-    done: { text: '✅ Equilibrium reached', color: '#5B8DB8' },
+    ready: { text: '🔥 جاهز — اضغط Start', color: '#64748b' },
+    dropping: { text: '⬇️ إسقاط المعدن...', color: '#fbbf24' },
+    mixing: { text: '🔥 خلط — انتقال الحرارة', color: '#22c55e' },
+    done: { text: '✅ اكتمل التوازن الحراري', color: '#5B8DB8' },
   }
   const pl = phaseLabels[props.phase]
   ctx.fillStyle = pl.color; ctx.font = `bold ${s(12)}px sans-serif`
   ctx.fillText(pl.text, cx, s(20))
   ctx.textAlign = 'start'
 
-  // bottom info
+  // bottom info (Arabic)
   ctx.fillStyle = '#8B95A5'; ctx.font = `${s(8)}px sans-serif`
-  ctx.fillText(`💧 ${props.mWater.toFixed(3)}kg @ ${props.tWater}°C → ${Math.round(props.currentWaterTemp)}°C`, s(10), H - s(10))
-  ctx.fillText(`🔩 ${props.mMetal.toFixed(3)}kg @ ${props.tMetal}°C → ${Math.round(props.currentMetalTemp)}°C`, s(200), H - s(10))
+  ctx.fillText(`💧 ماء ${props.mWater.toFixed(3)}kg من ${props.tWater}°C → ${Math.round(displayWaterTemp)}°C`, s(10), H - s(10))
+  ctx.fillText(`🔩 معدن ${props.mMetal.toFixed(3)}kg من ${props.tMetal}°C → ${Math.round(displayMetalTemp)}°C`, s(200), H - s(10))
   ctx.fillText(`Tf = ${props.tf.toFixed(1)}°C`, s(390), H - s(10))
 }
 

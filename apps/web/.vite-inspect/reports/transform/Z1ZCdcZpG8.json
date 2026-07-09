@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/WheatstoneWorksheetPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, computed } from 'vue'\n\nconst props = defineProps<{\n  R1: number\n  R2: number\n  R3: number\n  Rx: number\n  Vg: number\n  Ig: number\n}>()\n\nconst showSteps = ref<Record<string, boolean>>({\n  intro: false,\n  step1: false,\n  step2: false,\n  step3: false,\n  step4: false,\n})\n\nconst balanced = computed(() => Math.abs(props.Vg) < 0.01)\nconst calculatedRx = computed(() => balanced.value ? (props.R2 * props.R3 / props.R1) : 0)\nconst ratioA = computed(() => props.R2 / (props.R1 + props.R2))\nconst ratioB = computed(() => props.Rx / (props.R3 + props.Rx))\n\nfunction toggleStep(step: string) {\n  showSteps.value[step] = !showSteps.value[step]\n}\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <div class=\"ws-title\">⚖️ جسر ويستون — حل مفصّل</div>\n\n    <div class=\"step-row\">\n      <button class=\"step-toggle\" @click=\"toggleStep('intro')\">\n        {{ showSteps.intro ? '▼' : '▶' }} مقدمة: ما هو جسر ويستون؟\n      </button>\n      <div v-if=\"showSteps.intro\" class=\"step-content\">\n        <p class=\"explain\"><b>جسر ويستون</b> دائرة لقياس المقاومة المجهولة (Rx) بدقة عالية جداً.</p>\n        <p class=\"explain\">يتكون من 4 مقاومات + جلفانوميتر + بطارية.</p>\n        <p class=\"explain\">عند <b>التوازن</b>: الجلفانوميتر يقرأ صفراً → Rx = R2 × R3 / R1</p>\n        <div class=\"circuit-desc\">\n          <div class=\"branch\"><span class=\"branch-label\" style=\"color:#3b82f6\">R1:</span> {{ R1 }}Ω</div>\n          <div class=\"branch\"><span class=\"branch-label\" style=\"color:#f59e0b\">R2:</span> {{ R2 }}Ω</div>\n          <div class=\"branch\"><span class=\"branch-label\" style=\"color:#4ade80\">R3 (ضبط):</span> {{ R3 }}Ω</div>\n          <div class=\"branch\"><span class=\"branch-label\" style=\"color:#c084fc\">Rx (مجهولة):</span> {{ Rx }}Ω</div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"step-row\">\n      <button class=\"step-toggle\" @click=\"toggleStep('step1')\">\n        {{ showSteps.step1 ? '▼' : '▶' }} الخطوة 1: نسبة الجهد في الفرعين\n      </button>\n      <div v-if=\"showSteps.step1\" class=\"step-content\">\n        <p class=\"explain\">الفرع العلوي (R1, R2):</p>\n        <div class=\"formula\">V_B = V × R2/(R1+R2)</div>\n        <div class=\"calc\">\n          <div class=\"calc-line\">V_B = V × {{ R2 }}/({{ R1 }}+{{ R2 }})</div>\n          <div class=\"calc-line\">V_B = V × {{ ratioA.toFixed(4) }}</div>\n        </div>\n        <p class=\"explain\">الفرع السفلي (R3, Rx):</p>\n        <div class=\"formula\">V_D = V × Rx/(R3+Rx)</div>\n        <div class=\"calc\">\n          <div class=\"calc-line\">V_D = V × {{ Rx }}/({{ R3 }}+{{ Rx }})</div>\n          <div class=\"calc-line\">V_D = V × {{ ratioB.toFixed(4) }}</div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"step-row\">\n      <button class=\"step-toggle\" @click=\"toggleStep('step2')\">\n        {{ showSteps.step2 ? '▼' : '▶' }} الخطوة 2: جهد الجلفانوميتر\n      </button>\n      <div v-if=\"showSteps.step2\" class=\"step-content\">\n        <div class=\"formula\">Vg = V_B - V_D</div>\n        <div class=\"calc\">\n          <div class=\"calc-line\">Vg = V × ({{ ratioA.toFixed(4) }} - {{ ratioB.toFixed(4) }})</div>\n          <div class=\"calc-line result\">Vg = {{ Vg.toFixed(4) }} V</div>\n        </div>\n        <p class=\"explain\">إذا Vg ≈ 0 → الجسر متوازن!</p>\n      </div>\n    </div>\n\n    <div class=\"step-row\">\n      <button class=\"step-toggle\" @click=\"toggleStep('step3')\">\n        {{ showSteps.step3 ? '▼' : '▶' }} الخطوة 3: شرط التوازن\n      </button>\n      <div v-if=\"showSteps.step3\" class=\"step-content\">\n        <p class=\"explain\">عند التوازن: R1/R2 = R3/Rx</p>\n        <div class=\"formula\">Rx = R2 × R3 / R1</div>\n        <div class=\"calc\">\n          <div class=\"calc-line\">Rx = {{ R2 }} × {{ R3 }} / {{ R1 }}</div>\n          <div class=\"calc-line result\">Rx = {{ (R2 * R3 / R1).toFixed(1) }} Ω</div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"step-row\">\n      <button class=\"step-toggle\" @click=\"toggleStep('step4')\">\n        {{ showSteps.step4 ? '▼' : '▶' }} الخطوة 4: الحالة الحالية\n      </button>\n      <div v-if=\"showSteps.step4\" class=\"step-content\">\n        <div class=\"calc\">\n          <div class=\"calc-line\">Vg = {{ Vg.toFixed(4) }} V</div>\n          <div class=\"calc-line\">Ig = {{ Ig.toFixed(3) }} mA</div>\n          <div :class=\"balanced ? 'result' : 'warn'\">\n            {{ balanced ? '✅ الجسر متوازن! Rx = ' + calculatedRx.toFixed(1) + 'Ω' : '⚖️ غير متوازن — عدّل R3' }}\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { padding: 1rem; display: flex; flex-direction: column; gap: .75rem; overflow-y: auto; }\n.ws-title { font-size: 1rem; font-weight: 700; color: #4ade80; text-align: center; padding: .5rem; border-bottom: 1px solid #1e2530; margin-bottom: .25rem; }\n.step-row { display: flex; flex-direction: column; gap: .25rem; }\n.step-toggle { background: #1E2530; border: 1px solid #2D3645; color: #D1D7E0; padding: .5rem .75rem; border-radius: 6px; cursor: pointer; text-align: right; font-size: .85rem; }\n.step-toggle:hover { background: #252D3A; }\n.step-content { background: #0d1117; border: 1px solid #1e2530; border-radius: 6px; padding: .75rem; font-size: .85rem; }\n.explain { color: #94a3b8; margin: .3rem 0; line-height: 1.6; font-size: .82rem; }\n.explain b { color: #e2e8f0; }\n.circuit-desc { display: flex; flex-direction: column; gap: .3rem; margin: .5rem 0; padding: .5rem; background: rgba(255,255,255,.02); border-radius: 4px; }\n.branch { font-size: .78rem; color: #cbd5e1; display: flex; gap: .4rem; align-items: baseline; }\n.branch-label { font-weight: 700; white-space: nowrap; }\n.formula { font-family: 'Courier New', monospace; font-size: .9rem; color: #4ade80; text-align: center; padding: .4rem; background: rgba(74,222,128,.08); border-radius: 4px; margin: .3rem 0; }\n.calc { display: flex; flex-direction: column; gap: .2rem; color: #D1D7E0; }\n.calc-line { font-family: 'Courier New', monospace; font-size: .82rem; padding: .15rem 0; }\n.result { color: #22c55e; font-weight: 700; }\n.warn { color: #fbbf24; font-weight: 700; }\n</style>\n",
+      "start": 1783634639360,
+      "end": 1783634639820,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639820,
+      "end": 1783634639820,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639820,
+      "end": 1783634639820,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639820,
+      "end": 1783634639820,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639820,
+      "end": 1783634639820,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/WheatstoneWorksheetPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/WheatstoneWorksheetPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/WheatstoneWorksheetPanel.vue?vue&type=style&index=0&scoped=104aaf25&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-104aaf25\"]]);\n",
+      "start": 1783634639820,
+      "end": 1783634640089,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640089,
+      "end": 1783634640089,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640091,
+      "end": 1783634640093,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640094,
+      "end": 1783634640094,
+      "order": "normal"
+    }
+  ]
+}

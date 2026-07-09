@@ -15,7 +15,7 @@ const defaultPanelColumn: Record<PanelId, ColumnId> = {
 const defaultColumnOrder: Record<ColumnId, PanelId[]> = {
   data: ['table'],
   vis: [],
-  ctrl: ['params', 'guide'],
+  ctrl: ['params'],
 }
 
 const allPanelIds: PanelId[] = [
@@ -29,7 +29,7 @@ export function useInclinedLayout() {
   const panels = reactive<Record<PanelId, boolean>>({
     table: true, equations: false, stats: false, scatter: false, error: false,
     signal: true,
-    params: true, guide: true,
+    params: true, guide: false,
   })
 
   const maximized = reactive<Record<PanelId, boolean>>({

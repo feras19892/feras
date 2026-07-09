@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedPanelBody.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createBlock as _createBlock, createCommentVNode as _createCommentVNode, unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = {\n  key: 6,\n  class: \"guide-text\"\n}\nconst _hoisted_3 = {\n  key: 7,\n  class: \"error-text\"\n}\n\nimport type { InclinedTrial } from '../../../composables/inclined/useInclinedTrials'\nimport type { InclinedParams } from '../../../modules/physics/experiments/inclined/useInclinedPhysics'\nimport InclinedParamsPanel from './InclinedParamsPanel.vue'\nimport InclinedTablePanel from './InclinedTablePanel.vue'\nimport InclinedScatterPanel from './InclinedScatterPanel.vue'\nimport InclinedSignalPanel from './InclinedSignalPanel.vue'\nimport InclinedEquationsPanel from './InclinedEquationsPanel.vue'\nimport InclinedStatsPanel from './InclinedStatsPanel.vue'\nimport { useI18n } from '../../../composables/useI18n'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'InclinedPanelBody',\n  props: {\n    id: {},\n    trials: {},\n    params: {},\n    sim: {},\n    measured: {},\n    trialStats: {},\n    calcResult: {}\n  },\n  emits: [\"update:params\", \"remove\", \"clear\", \"calcAcceleration\", \"calcTime\", \"calcVelocity\", \"calcNormal\", \"calcGFromSlope\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\nconst props = __props\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (__props.id === 'params')\n      ? (_openBlock(), _createBlock(InclinedParamsPanel, {\n          key: 0,\n          params: __props.params,\n          \"onUpdate:params\": _cache[0] || (_cache[0] = ($event: any) => (emit('update:params', $event)))\n        }, null, 8, [\"params\"]))\n      : (__props.id === 'table')\n        ? (_openBlock(), _createBlock(InclinedTablePanel, {\n            key: 1,\n            trials: __props.trials,\n            onRemove: _cache[1] || (_cache[1] = ($event: any) => (emit('remove', $event)))\n          }, null, 8, [\"trials\"]))\n        : (__props.id === 'scatter')\n          ? (_openBlock(), _createBlock(InclinedScatterPanel, {\n              key: 2,\n              trials: __props.trials\n            }, null, 8, [\"trials\"]))\n          : (__props.id === 'signal')\n            ? (_openBlock(), _createBlock(InclinedSignalPanel, {\n                key: 3,\n                \"sim-state\": __props.sim,\n                params: __props.params\n              }, null, 8, [\"sim-state\", \"params\"]))\n            : (__props.id === 'equations')\n              ? (_openBlock(), _createBlock(InclinedEquationsPanel, {\n                  key: 4,\n                  \"calc-result\": __props.calcResult,\n                  onCalcAcceleration: _cache[2] || (_cache[2] = ($event: any) => (emit('calcAcceleration'))),\n                  onCalcTime: _cache[3] || (_cache[3] = ($event: any) => (emit('calcTime'))),\n                  onCalcVelocity: _cache[4] || (_cache[4] = ($event: any) => (emit('calcVelocity'))),\n                  onCalcNormal: _cache[5] || (_cache[5] = ($event: any) => (emit('calcNormal'))),\n                  onCalcGFromSlope: _cache[6] || (_cache[6] = ($event: any) => (emit('calcGFromSlope')))\n                }, null, 8, [\"calc-result\"]))\n              : (__props.id === 'stats')\n                ? (_openBlock(), _createBlock(InclinedStatsPanel, {\n                    key: 5,\n                    \"trial-stats\": __props.trialStats,\n                    \"trial-count\": __props.trials.length\n                  }, null, 8, [\"trial-stats\", \"trial-count\"]))\n                : (__props.id === 'guide')\n                  ? (_openBlock(), _createElementBlock(\"div\", _hoisted_2, [\n                      _createElementVNode(\"h5\", null, _toDisplayString(_unref(t)('experiments.usageGuide')), 1),\n                      _createElementVNode(\"ol\", null, [\n                        _createElementVNode(\"li\", null, _toDisplayString(_unref(t)('experiments.inclinedGuideStep1')), 1),\n                        _createElementVNode(\"li\", null, _toDisplayString(_unref(t)('experiments.inclinedGuideStep2')), 1),\n                        _createElementVNode(\"li\", null, _toDisplayString(_unref(t)('experiments.inclinedGuideStep3')), 1),\n                        _createElementVNode(\"li\", null, _toDisplayString(_unref(t)('experiments.inclinedGuideStep4')), 1),\n                        _createElementVNode(\"li\", null, _toDisplayString(_unref(t)('experiments.inclinedGuideStep5')), 1)\n                      ])\n                    ]))\n                  : (__props.id === 'error')\n                    ? (_openBlock(), _createElementBlock(\"div\", _hoisted_3, [\n                        _createElementVNode(\"h5\", null, _toDisplayString(_unref(t)('experiments.errorAnalysis')), 1),\n                        _createElementVNode(\"p\", null, _toDisplayString(_unref(t)('experiments.errorAnalysisDesc')), 1),\n                        _createElementVNode(\"p\", null, _toDisplayString(_unref(t)('experiments.noiseAddsError')), 1)\n                      ]))\n                    : _createCommentVNode(\"\", true)\n  ]))\n}\n}\n\n})",
+      "start": 1783634641875,
+      "end": 1783634641875
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641875,
+      "end": 1783634641875,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { openBlock as _openBlock, createBlock as _createBlock, createCommentVNode as _createCommentVNode, unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nconst _hoisted_2 = {\n  key: 6,\n  class: \"guide-text\"\n};\nconst _hoisted_3 = {\n  key: 7,\n  class: \"error-text\"\n};\nimport InclinedParamsPanel from \"./InclinedParamsPanel.vue\";\nimport InclinedTablePanel from \"./InclinedTablePanel.vue\";\nimport InclinedScatterPanel from \"./InclinedScatterPanel.vue\";\nimport InclinedSignalPanel from \"./InclinedSignalPanel.vue\";\nimport InclinedEquationsPanel from \"./InclinedEquationsPanel.vue\";\nimport InclinedStatsPanel from \"./InclinedStatsPanel.vue\";\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"InclinedPanelBody\",\n  props: {\n    id: {},\n    trials: {},\n    params: {},\n    sim: {},\n    measured: {},\n    trialStats: {},\n    calcResult: {}\n  },\n  emits: [\"update:params\", \"remove\", \"clear\", \"calcAcceleration\", \"calcTime\", \"calcVelocity\", \"calcNormal\", \"calcGFromSlope\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const props = __props;\n    const emit = __emit;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        __props.id === \"params\" ? (_openBlock(), _createBlock(InclinedParamsPanel, {\n          key: 0,\n          params: __props.params,\n          \"onUpdate:params\": _cache[0] || (_cache[0] = ($event) => emit(\"update:params\", $event))\n        }, null, 8, [\"params\"])) : __props.id === \"table\" ? (_openBlock(), _createBlock(InclinedTablePanel, {\n          key: 1,\n          trials: __props.trials,\n          onRemove: _cache[1] || (_cache[1] = ($event) => emit(\"remove\", $event))\n        }, null, 8, [\"trials\"])) : __props.id === \"scatter\" ? (_openBlock(), _createBlock(InclinedScatterPanel, {\n          key: 2,\n          trials: __props.trials\n        }, null, 8, [\"trials\"])) : __props.id === \"signal\" ? (_openBlock(), _createBlock(InclinedSignalPanel, {\n          key: 3,\n          \"sim-state\": __props.sim,\n          params: __props.params\n        }, null, 8, [\"sim-state\", \"params\"])) : __props.id === \"equations\" ? (_openBlock(), _createBlock(InclinedEquationsPanel, {\n          key: 4,\n          \"calc-result\": __props.calcResult,\n          onCalcAcceleration: _cache[2] || (_cache[2] = ($event) => emit(\"calcAcceleration\")),\n          onCalcTime: _cache[3] || (_cache[3] = ($event) => emit(\"calcTime\")),\n          onCalcVelocity: _cache[4] || (_cache[4] = ($event) => emit(\"calcVelocity\")),\n          onCalcNormal: _cache[5] || (_cache[5] = ($event) => emit(\"calcNormal\")),\n          onCalcGFromSlope: _cache[6] || (_cache[6] = ($event) => emit(\"calcGFromSlope\"))\n        }, null, 8, [\"calc-result\"])) : __props.id === \"stats\" ? (_openBlock(), _createBlock(InclinedStatsPanel, {\n          key: 5,\n          \"trial-stats\": __props.trialStats,\n          \"trial-count\": __props.trials.length\n        }, null, 8, [\"trial-stats\", \"trial-count\"])) : __props.id === \"guide\" ? (_openBlock(), _createElementBlock(\"div\", _hoisted_2, [\n          _createElementVNode(\"h5\", null, _toDisplayString(_unref(t)(\"experiments.usageGuide\")), 1),\n          _createElementVNode(\"ol\", null, [\n            _createElementVNode(\"li\", null, _toDisplayString(_unref(t)(\"experiments.inclinedGuideStep1\")), 1),\n            _createElementVNode(\"li\", null, _toDisplayString(_unref(t)(\"experiments.inclinedGuideStep2\")), 1),\n            _createElementVNode(\"li\", null, _toDisplayString(_unref(t)(\"experiments.inclinedGuideStep3\")), 1),\n            _createElementVNode(\"li\", null, _toDisplayString(_unref(t)(\"experiments.inclinedGuideStep4\")), 1),\n            _createElementVNode(\"li\", null, _toDisplayString(_unref(t)(\"experiments.inclinedGuideStep5\")), 1)\n          ])\n        ])) : __props.id === \"error\" ? (_openBlock(), _createElementBlock(\"div\", _hoisted_3, [\n          _createElementVNode(\"h5\", null, _toDisplayString(_unref(t)(\"experiments.errorAnalysis\")), 1),\n          _createElementVNode(\"p\", null, _toDisplayString(_unref(t)(\"experiments.errorAnalysisDesc\")), 1),\n          _createElementVNode(\"p\", null, _toDisplayString(_unref(t)(\"experiments.noiseAddsError\")), 1)\n        ])) : _createCommentVNode(\"\", true)\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634641875,
+      "end": 1783634642290,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedPanelBody.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createBlock as _createBlock, createCommentVNode as _createCommentVNode, unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = {\n  key: 6,\n  class: \"guide-text\"\n}\nconst _hoisted_3 = {\n  key: 7,\n  class: \"error-text\"\n}\n\nimport type { InclinedTrial } from '../../../composables/inclined/useInclinedTrials'\nimport type { InclinedParams } from '../../../modules/physics/experiments/inclined/useInclinedPhysics'\nimport InclinedParamsPanel from './InclinedParamsPanel.vue'\nimport InclinedTablePanel from './InclinedTablePanel.vue'\nimport InclinedScatterPanel from './InclinedScatterPanel.vue'\nimport InclinedSignalPanel from './InclinedSignalPanel.vue'\nimport InclinedEquationsPanel from './InclinedEquationsPanel.vue'\nimport InclinedStatsPanel from './InclinedStatsPanel.vue'\nimport { useI18n } from '../../../composables/useI18n'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'InclinedPanelBody',\n  props: {\n    id: {},\n    trials: {},\n    params: {},\n    sim: {},\n    measured: {},\n    trialStats: {},\n    calcResult: {}\n  },\n  emits: [\"update:params\", \"remove\", \"clear\", \"calcAcceleration\", \"calcTime\", \"calcVelocity\", \"calcNormal\", \"calcGFromSlope\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\nconst props = __props\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (__props.id === 'params')\n      ? (_openBlock(), _createBlock(InclinedParamsPanel, {\n          key: 0,\n          params: __props.params,\n          \"onUpdate:params\": _cache[0] || (_cache[0] = ($event: any) => (emit('update:params', $event)))\n        }, null, 8, [\"params\"]))\n      : (__props.id === 'table')\n        ? (_openBlock(), _createBlock(InclinedTablePanel, {\n            key: 1,\n            trials: __props.trials,\n            onRemove: _cache[1] || (_cache[1] = ($event: any) => (emit('remove', $event)))\n          }, null, 8, [\"trials\"]))\n        : (__props.id === 'scatter')\n          ? (_openBlock(), _createBlock(InclinedScatterPanel, {\n              key: 2,\n              trials: __props.trials\n            }, null, 8, [\"trials\"]))\n          : (__props.id === 'signal')\n            ? (_openBlock(), _createBlock(InclinedSignalPanel, {\n                key: 3,\n                \"sim-state\": __props.sim,\n                params: __props.params\n              }, null, 8, [\"sim-state\", \"params\"]))\n            : (__props.id === 'equations')\n              ? (_openBlock(), _createBlock(InclinedEquationsPanel, {\n                  key: 4,\n                  \"calc-result\": __props.calcResult,\n                  onCalcAcceleration: _cache[2] || (_cache[2] = ($event: any) => (emit('calcAcceleration'))),\n                  onCalcTime: _cache[3] || (_cache[3] = ($event: any) => (emit('calcTime'))),\n                  onCalcVelocity: _cache[4] || (_cache[4] = ($event: any) => (emit('calcVelocity'))),\n                  onCalcNormal: _cache[5] || (_cache[5] = ($event: any) => (emit('calcNormal'))),\n                  onCalcGFromSlope: _cache[6] || (_cache[6] = ($event: any) => (emit('calcGFromSlope')))\n                }, null, 8, [\"calc-result\"]))\n              : (__props.id === 'stats')\n                ? (_openBlock(), _createBlock(InclinedStatsPanel, {\n                    key: 5,\n                    \"trial-stats\": __props.trialStats,\n                    \"trial-count\": __props.trials.length\n                  }, null, 8, [\"trial-stats\", \"trial-count\"]))\n                : (__props.id === 'guide')\n                  ? (_openBlock(), _createElementBlock(\"div\", _hoisted_2, [\n                      _createElementVNode(\"h5\", null, _toDisplayString(_unref(t)('experiments.usageGuide')), 1),\n                      _createElementVNode(\"ol\", null, [\n                        _createElementVNode(\"li\", null, _toDisplayString(_unref(t)('experiments.inclinedGuideStep1')), 1),\n                        _createElementVNode(\"li\", null, _toDisplayString(_unref(t)('experiments.inclinedGuideStep2')), 1),\n                        _createElementVNode(\"li\", null, _toDisplayString(_unref(t)('experiments.inclinedGuideStep3')), 1),\n                        _createElementVNode(\"li\", null, _toDisplayString(_unref(t)('experiments.inclinedGuideStep4')), 1),\n                        _createElementVNode(\"li\", null, _toDisplayString(_unref(t)('experiments.inclinedGuideStep5')), 1)\n                      ])\n                    ]))\n                  : (__props.id === 'error')\n                    ? (_openBlock(), _createElementBlock(\"div\", _hoisted_3, [\n                        _createElementVNode(\"h5\", null, _toDisplayString(_unref(t)('experiments.errorAnalysis')), 1),\n                        _createElementVNode(\"p\", null, _toDisplayString(_unref(t)('experiments.errorAnalysisDesc')), 1),\n                        _createElementVNode(\"p\", null, _toDisplayString(_unref(t)('experiments.noiseAddsError')), 1)\n                      ]))\n                    : _createCommentVNode(\"\", true)\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642290,
+      "end": 1783634642290,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642290,
+      "end": 1783634642290,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634642290,
+      "end": 1783634642290,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642290,
+      "end": 1783634642290,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642290,
+      "end": 1783634642290,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642290,
+      "end": 1783634642290,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642290,
+      "end": 1783634642290,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642290,
+      "end": 1783634642290,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642290,
+      "end": 1783634642290,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642290,
+      "end": 1783634642290,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642290,
+      "end": 1783634642290,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642290,
+      "end": 1783634642290,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642290,
+      "end": 1783634642290,
+      "order": "normal"
+    }
+  ]
+}

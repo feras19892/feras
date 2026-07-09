@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedStatusBar.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\n\nconst { t } = useI18n()\nconst props = defineProps<{\n  running: boolean\n  paused: boolean\n  arrived: boolean\n}>()\n</script>\n\n<template>\n  <div class=\"status-bar\">\n    <span v-if=\"running && !arrived\">▶️ {{ t('experiments.sliding') }}</span>\n    <span v-else-if=\"arrived\">✅ {{ t('experiments.reachedBase') }}</span>\n    <span v-else>⏸️ {{ t('experiments.readySetParams') }}</span>\n  </div>\n</template>\n\n<style scoped>\n.status-bar { font-size: .72rem; color: #8B95A5; text-align: center; padding: .25rem; }\n</style>\n",
+      "start": 1783634640942,
+      "end": 1783634641312,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641312,
+      "end": 1783634641312,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641312,
+      "end": 1783634641312,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641312,
+      "end": 1783634641312,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641312,
+      "end": 1783634641312,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedStatusBar.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedStatusBar.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedStatusBar.vue?vue&type=style&index=0&scoped=384d1b46&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-384d1b46\"]]);\n",
+      "start": 1783634641312,
+      "end": 1783634641643,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641644,
+      "end": 1783634641645,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641645,
+      "end": 1783634641645,
+      "order": "normal"
+    }
+  ]
+}

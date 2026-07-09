@@ -15,7 +15,7 @@ const defaultPanelColumn: Record<PanelId, ColumnId> = {
 const defaultColumnOrder: Record<ColumnId, PanelId[]> = {
   data: ['table', 'signal'],
   vis: [],
-  ctrl: ['params', 'guide'],
+  ctrl: ['params'],
 }
 
 const allPanelIds: PanelId[] = [
@@ -27,7 +27,7 @@ export function usePendulumLayout() {
   const { t } = useI18n()
 
   const panels = reactive<Record<PanelId, boolean>>({
-    table: true, equations: false, signal: true, params: true, guide: true, stats: false,
+    table: true, equations: false, signal: true, params: true, guide: false, stats: false,
     fft: false, phase: false, scatter: false, tutor: false, error: false, report: false,
   })
 

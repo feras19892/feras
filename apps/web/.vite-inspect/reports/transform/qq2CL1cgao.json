@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/diffraction/panels/DiffractionLawsPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, createTextVNode as _createTextVNode, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, createStaticVNode as _createStaticVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"eq-block\" }\nconst _hoisted_3 = { class: \"eq-values\" }\nconst _hoisted_4 = { class: \"eq-block\" }\nconst _hoisted_5 = { class: \"eq-values\" }\nconst _hoisted_6 = { class: \"eq-block\" }\nconst _hoisted_7 = { class: \"eq-values\" }\n\ninterface Props {\n  mode: 'single' | 'grating'\n  slitWidth: number\n  linesPerMm: number\n  screenDistance: number\n  wavelength: number\n  centralWidth: number\n  firstOrderAngle: number\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'DiffractionLawsPanel',\n  props: {\n    mode: {},\n    slitWidth: {},\n    linesPerMm: {},\n    screenDistance: {},\n    wavelength: {},\n    centralWidth: {},\n    firstOrderAngle: {}\n  },\n  setup(__props: any) {\n\n\n\n\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (__props.mode === 'single')\n      ? (_openBlock(), _createElementBlock(_Fragment, { key: 0 }, [\n          _createElementVNode(\"div\", _hoisted_2, [\n            _cache[3] || (_cache[3] = _createElementVNode(\"div\", { class: \"eq-title\" }, \"Central Width\", -1)),\n            _cache[4] || (_cache[4] = _createElementVNode(\"div\", { class: \"eq\" }, \"w = 2λD / a\", -1)),\n            _createElementVNode(\"div\", _hoisted_3, [\n              _createTextVNode(\" w = \" + _toDisplayString(__props.centralWidth.toFixed(3)) + \" mm\", 1),\n              _cache[0] || (_cache[0] = _createElementVNode(\"br\", null, null, -1)),\n              _createTextVNode(\" λ = \" + _toDisplayString(__props.wavelength) + \" nm\", 1),\n              _cache[1] || (_cache[1] = _createElementVNode(\"br\", null, null, -1)),\n              _createTextVNode(\" D = \" + _toDisplayString(__props.screenDistance) + \" m\", 1),\n              _cache[2] || (_cache[2] = _createElementVNode(\"br\", null, null, -1)),\n              _createTextVNode(\" a = \" + _toDisplayString(__props.slitWidth) + \" mm \", 1)\n            ])\n          ]),\n          _cache[5] || (_cache[5] = _createStaticVNode(\"<div class=\\\"eq-block\\\" data-v-d3248b83><div class=\\\"eq-title\\\" data-v-d3248b83>Dark Fringes</div><div class=\\\"eq\\\" data-v-d3248b83>a·sinθ = mλ</div></div><div class=\\\"eq-block\\\" data-v-d3248b83><div class=\\\"eq-title\\\" data-v-d3248b83>Intensity</div><div class=\\\"eq\\\" data-v-d3248b83>I = I₀ sinc²(πa·sinθ/λ)</div></div>\", 2))\n        ], 64))\n      : (_openBlock(), _createElementBlock(_Fragment, { key: 1 }, [\n          _createElementVNode(\"div\", _hoisted_4, [\n            _cache[8] || (_cache[8] = _createElementVNode(\"div\", { class: \"eq-title\" }, \"Grating Equation\", -1)),\n            _cache[9] || (_cache[9] = _createElementVNode(\"div\", { class: \"eq\" }, \"d·sinθ = m·λ\", -1)),\n            _createElementVNode(\"div\", _hoisted_5, [\n              _createTextVNode(\" d = \" + _toDisplayString((1/__props.linesPerMm).toFixed(4)) + \" mm\", 1),\n              _cache[6] || (_cache[6] = _createElementVNode(\"br\", null, null, -1)),\n              _createTextVNode(\" λ = \" + _toDisplayString(__props.wavelength) + \" nm\", 1),\n              _cache[7] || (_cache[7] = _createElementVNode(\"br\", null, null, -1)),\n              _createTextVNode(\" D = \" + _toDisplayString(__props.screenDistance) + \" m \", 1)\n            ])\n          ]),\n          _createElementVNode(\"div\", _hoisted_6, [\n            _cache[10] || (_cache[10] = _createElementVNode(\"div\", { class: \"eq-title\" }, \"First Order Angle\", -1)),\n            _cache[11] || (_cache[11] = _createElementVNode(\"div\", { class: \"eq\" }, \"θ₁ = arcsin(λ/d)\", -1)),\n            _createElementVNode(\"div\", _hoisted_7, \"θ₁ = \" + _toDisplayString(__props.firstOrderAngle.toFixed(3)) + \"°\", 1)\n          ]),\n          _cache[12] || (_cache[12] = _createElementVNode(\"div\", { class: \"eq-block\" }, [\n            _createElementVNode(\"div\", { class: \"eq-title\" }, \"Position on Screen\"),\n            _createElementVNode(\"div\", { class: \"eq\" }, \"y = D·tanθ\")\n          ], -1))\n        ], 64))\n  ]))\n}\n}\n\n})",
+      "start": 1783634643010,
+      "end": 1783634643010
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634643010,
+      "end": 1783634643010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, createTextVNode as _createTextVNode, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createStaticVNode as _createStaticVNode } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nconst _hoisted_2 = { class: \"eq-block\" };\nconst _hoisted_3 = { class: \"eq-values\" };\nconst _hoisted_4 = { class: \"eq-block\" };\nconst _hoisted_5 = { class: \"eq-values\" };\nconst _hoisted_6 = { class: \"eq-block\" };\nconst _hoisted_7 = { class: \"eq-values\" };\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"DiffractionLawsPanel\",\n  props: {\n    mode: {},\n    slitWidth: {},\n    linesPerMm: {},\n    screenDistance: {},\n    wavelength: {},\n    centralWidth: {},\n    firstOrderAngle: {}\n  },\n  setup(__props) {\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        __props.mode === \"single\" ? (_openBlock(), _createElementBlock(_Fragment, { key: 0 }, [\n          _createElementVNode(\"div\", _hoisted_2, [\n            _cache[3] || (_cache[3] = _createElementVNode(\"div\", { class: \"eq-title\" }, \"Central Width\", -1)),\n            _cache[4] || (_cache[4] = _createElementVNode(\"div\", { class: \"eq\" }, \"w = 2λD / a\", -1)),\n            _createElementVNode(\"div\", _hoisted_3, [\n              _createTextVNode(\" w = \" + _toDisplayString(__props.centralWidth.toFixed(3)) + \" mm\", 1),\n              _cache[0] || (_cache[0] = _createElementVNode(\"br\", null, null, -1)),\n              _createTextVNode(\" λ = \" + _toDisplayString(__props.wavelength) + \" nm\", 1),\n              _cache[1] || (_cache[1] = _createElementVNode(\"br\", null, null, -1)),\n              _createTextVNode(\" D = \" + _toDisplayString(__props.screenDistance) + \" m\", 1),\n              _cache[2] || (_cache[2] = _createElementVNode(\"br\", null, null, -1)),\n              _createTextVNode(\" a = \" + _toDisplayString(__props.slitWidth) + \" mm \", 1)\n            ])\n          ]),\n          _cache[5] || (_cache[5] = _createStaticVNode('<div class=\"eq-block\" data-v-d3248b83><div class=\"eq-title\" data-v-d3248b83>Dark Fringes</div><div class=\"eq\" data-v-d3248b83>a·sinθ = mλ</div></div><div class=\"eq-block\" data-v-d3248b83><div class=\"eq-title\" data-v-d3248b83>Intensity</div><div class=\"eq\" data-v-d3248b83>I = I₀ sinc²(πa·sinθ/λ)</div></div>', 2))\n        ], 64)) : (_openBlock(), _createElementBlock(_Fragment, { key: 1 }, [\n          _createElementVNode(\"div\", _hoisted_4, [\n            _cache[8] || (_cache[8] = _createElementVNode(\"div\", { class: \"eq-title\" }, \"Grating Equation\", -1)),\n            _cache[9] || (_cache[9] = _createElementVNode(\"div\", { class: \"eq\" }, \"d·sinθ = m·λ\", -1)),\n            _createElementVNode(\"div\", _hoisted_5, [\n              _createTextVNode(\" d = \" + _toDisplayString((1 / __props.linesPerMm).toFixed(4)) + \" mm\", 1),\n              _cache[6] || (_cache[6] = _createElementVNode(\"br\", null, null, -1)),\n              _createTextVNode(\" λ = \" + _toDisplayString(__props.wavelength) + \" nm\", 1),\n              _cache[7] || (_cache[7] = _createElementVNode(\"br\", null, null, -1)),\n              _createTextVNode(\" D = \" + _toDisplayString(__props.screenDistance) + \" m \", 1)\n            ])\n          ]),\n          _createElementVNode(\"div\", _hoisted_6, [\n            _cache[10] || (_cache[10] = _createElementVNode(\"div\", { class: \"eq-title\" }, \"First Order Angle\", -1)),\n            _cache[11] || (_cache[11] = _createElementVNode(\"div\", { class: \"eq\" }, \"θ₁ = arcsin(λ/d)\", -1)),\n            _createElementVNode(\"div\", _hoisted_7, \"θ₁ = \" + _toDisplayString(__props.firstOrderAngle.toFixed(3)) + \"°\", 1)\n          ]),\n          _cache[12] || (_cache[12] = _createElementVNode(\"div\", { class: \"eq-block\" }, [\n            _createElementVNode(\"div\", { class: \"eq-title\" }, \"Position on Screen\"),\n            _createElementVNode(\"div\", { class: \"eq\" }, \"y = D·tanθ\")\n          ], -1))\n        ], 64))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634643010,
+      "end": 1783634643190,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/diffraction/panels/DiffractionLawsPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, createTextVNode as _createTextVNode, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, createStaticVNode as _createStaticVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"eq-block\" }\nconst _hoisted_3 = { class: \"eq-values\" }\nconst _hoisted_4 = { class: \"eq-block\" }\nconst _hoisted_5 = { class: \"eq-values\" }\nconst _hoisted_6 = { class: \"eq-block\" }\nconst _hoisted_7 = { class: \"eq-values\" }\n\ninterface Props {\n  mode: 'single' | 'grating'\n  slitWidth: number\n  linesPerMm: number\n  screenDistance: number\n  wavelength: number\n  centralWidth: number\n  firstOrderAngle: number\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'DiffractionLawsPanel',\n  props: {\n    mode: {},\n    slitWidth: {},\n    linesPerMm: {},\n    screenDistance: {},\n    wavelength: {},\n    centralWidth: {},\n    firstOrderAngle: {}\n  },\n  setup(__props: any) {\n\n\n\n\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (__props.mode === 'single')\n      ? (_openBlock(), _createElementBlock(_Fragment, { key: 0 }, [\n          _createElementVNode(\"div\", _hoisted_2, [\n            _cache[3] || (_cache[3] = _createElementVNode(\"div\", { class: \"eq-title\" }, \"Central Width\", -1)),\n            _cache[4] || (_cache[4] = _createElementVNode(\"div\", { class: \"eq\" }, \"w = 2λD / a\", -1)),\n            _createElementVNode(\"div\", _hoisted_3, [\n              _createTextVNode(\" w = \" + _toDisplayString(__props.centralWidth.toFixed(3)) + \" mm\", 1),\n              _cache[0] || (_cache[0] = _createElementVNode(\"br\", null, null, -1)),\n              _createTextVNode(\" λ = \" + _toDisplayString(__props.wavelength) + \" nm\", 1),\n              _cache[1] || (_cache[1] = _createElementVNode(\"br\", null, null, -1)),\n              _createTextVNode(\" D = \" + _toDisplayString(__props.screenDistance) + \" m\", 1),\n              _cache[2] || (_cache[2] = _createElementVNode(\"br\", null, null, -1)),\n              _createTextVNode(\" a = \" + _toDisplayString(__props.slitWidth) + \" mm \", 1)\n            ])\n          ]),\n          _cache[5] || (_cache[5] = _createStaticVNode(\"<div class=\\\"eq-block\\\" data-v-d3248b83><div class=\\\"eq-title\\\" data-v-d3248b83>Dark Fringes</div><div class=\\\"eq\\\" data-v-d3248b83>a·sinθ = mλ</div></div><div class=\\\"eq-block\\\" data-v-d3248b83><div class=\\\"eq-title\\\" data-v-d3248b83>Intensity</div><div class=\\\"eq\\\" data-v-d3248b83>I = I₀ sinc²(πa·sinθ/λ)</div></div>\", 2))\n        ], 64))\n      : (_openBlock(), _createElementBlock(_Fragment, { key: 1 }, [\n          _createElementVNode(\"div\", _hoisted_4, [\n            _cache[8] || (_cache[8] = _createElementVNode(\"div\", { class: \"eq-title\" }, \"Grating Equation\", -1)),\n            _cache[9] || (_cache[9] = _createElementVNode(\"div\", { class: \"eq\" }, \"d·sinθ = m·λ\", -1)),\n            _createElementVNode(\"div\", _hoisted_5, [\n              _createTextVNode(\" d = \" + _toDisplayString((1/__props.linesPerMm).toFixed(4)) + \" mm\", 1),\n              _cache[6] || (_cache[6] = _createElementVNode(\"br\", null, null, -1)),\n              _createTextVNode(\" λ = \" + _toDisplayString(__props.wavelength) + \" nm\", 1),\n              _cache[7] || (_cache[7] = _createElementVNode(\"br\", null, null, -1)),\n              _createTextVNode(\" D = \" + _toDisplayString(__props.screenDistance) + \" m \", 1)\n            ])\n          ]),\n          _createElementVNode(\"div\", _hoisted_6, [\n            _cache[10] || (_cache[10] = _createElementVNode(\"div\", { class: \"eq-title\" }, \"First Order Angle\", -1)),\n            _cache[11] || (_cache[11] = _createElementVNode(\"div\", { class: \"eq\" }, \"θ₁ = arcsin(λ/d)\", -1)),\n            _createElementVNode(\"div\", _hoisted_7, \"θ₁ = \" + _toDisplayString(__props.firstOrderAngle.toFixed(3)) + \"°\", 1)\n          ]),\n          _cache[12] || (_cache[12] = _createElementVNode(\"div\", { class: \"eq-block\" }, [\n            _createElementVNode(\"div\", { class: \"eq-title\" }, \"Position on Screen\"),\n            _createElementVNode(\"div\", { class: \"eq\" }, \"y = D·tanθ\")\n          ], -1))\n        ], 64))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634643190,
+      "end": 1783634643190,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634643190,
+      "end": 1783634643190,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634643190,
+      "end": 1783634643190,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634643190,
+      "end": 1783634643190,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634643190,
+      "end": 1783634643190,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634643190,
+      "end": 1783634643190,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634643190,
+      "end": 1783634643190,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634643190,
+      "end": 1783634643190,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634643190,
+      "end": 1783634643190,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634643190,
+      "end": 1783634643190,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634643190,
+      "end": 1783634643190,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634643190,
+      "end": 1783634643191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634643191,
+      "end": 1783634643191,
+      "order": "normal"
+    }
+  ]
+}

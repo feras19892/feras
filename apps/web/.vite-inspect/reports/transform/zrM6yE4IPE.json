@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/shared/ReportViewer.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed } from 'vue';\nimport { useI18n } from '../../composables/useI18n';\nimport type { Report } from '../../services/report.service';\nimport AnalysisReportPreview from '../experiment/analysis-calc/AnalysisReportPreview.vue';\n\nconst props = defineProps<{ report: Report }>();\nconst { t } = useI18n();\n\nfunction safeJsonParse<T>(str: string | undefined, fallback: T): T {\n  try { return str ? JSON.parse(str) : fallback; } catch { return fallback; }\n}\n\n// eslint-disable-next-line @typescript-eslint/no-explicit-any\nconst parsedParams = computed(() => safeJsonParse<Record<string, any>>(props.report.params, {}));\nconst parsed = computed(() => ({\n  sourceName: props.report.experiment_name,\n  reportDate: props.report.submitted_at?.slice(0, 10) || '',\n  studentInfo: safeJsonParse(props.report.student_info, { name: props.report.student_name || '', email: '', grade: '', notes: '' }),\n  readings: safeJsonParse(props.report.readings, []),\n  columns: safeJsonParse(props.report.columns, []),\n  equations: safeJsonParse(props.report.equations, []),\n  plots: safeJsonParse(props.report.plots, []),\n  conclusion: {\n    conclusion: props.report.conclusion || '',\n    errors: props.report.conclusion_errors || '',\n    improvements: props.report.conclusion_improvements || '',\n  },\n  solvedEquations: parsedParams.value.solved_equations ?? undefined,\n  regressionData: parsedParams.value.regression_data ?? undefined,\n  slopeCalcData: parsedParams.value.slope_calc_data ?? undefined,\n  axesData: parsedParams.value.axes_data ?? undefined,\n  errorCalcData: parsedParams.value.error_calc_data ?? undefined,\n}));\n</script>\n\n<template>\n  <div class=\"report-viewer-wrapper\">\n    <AnalysisReportPreview\n      :source-name=\"parsed.sourceName\"\n      :report-date=\"parsed.reportDate\"\n      :student-info=\"parsed.studentInfo\"\n      :readings=\"parsed.readings\"\n      :columns=\"parsed.columns\"\n      :equations=\"parsed.equations\"\n      :plots=\"parsed.plots\"\n      :conclusion=\"parsed.conclusion\"\n      :solved-equations=\"parsed.solvedEquations\"\n      :regression-data=\"parsed.regressionData\"\n      :slope-calc-data=\"parsed.slopeCalcData\"\n      :axes-data=\"parsed.axesData\"\n      :error-calc-data=\"parsed.errorCalcData\"\n    />\n    <div v-if=\"report.chart_snapshot\" class=\"chart-section\">\n      <h4>{{ t('common.chartTitle') }}</h4>\n      <img :src=\"report.chart_snapshot\" alt=\"Chart\" class=\"chart-img\" />\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.report-viewer-wrapper {\n  max-height: 70vh;\n  overflow-y: auto;\n  padding-right: 0.5rem;\n}\n.chart-section {\n  margin-top: 1rem;\n  padding: 1rem;\n  background: rgba(15, 23, 42, 0.5);\n  border-radius: 0.5rem;\n  border: 1px solid rgba(255, 255, 255, 0.06);\n}\n.chart-section h4 {\n  margin: 0 0 0.5rem;\n  color: #67e8f9;\n  font-size: 0.9rem;\n}\n.chart-img {\n  max-width: 100%;\n  border-radius: 0.35rem;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n}\n</style>\n",
+      "start": 1783634640321,
+      "end": 1783634640592,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640592,
+      "end": 1783634640592,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640592,
+      "end": 1783634640592,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640592,
+      "end": 1783634640592,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640592,
+      "end": 1783634640592,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/shared/ReportViewer.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/shared/ReportViewer.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/shared/ReportViewer.vue?vue&type=style&index=0&scoped=28900533&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-28900533\"]]);\n",
+      "start": 1783634640592,
+      "end": 1783634640823,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    }
+  ]
+}

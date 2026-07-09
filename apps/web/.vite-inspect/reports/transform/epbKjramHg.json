@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryParamsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../../composables/useI18n'\nconst { t } = useI18n()\nconst props = defineProps<{\n  params: { mWater: number; tWater: number; mMetal: number; tMetal: number; cMetal: number; mCup: number; metalType: string }\n  metalOptions?: Record<string, { c: number; nameAr: string; nameEn: string }>\n}>()\nconst emit = defineEmits<{ (e: 'update:params', p: typeof props.params): void }>()\n\nfunction onMetalSelect(e: Event) {\n  const type = (e.target as HTMLSelectElement).value\n  emit('update:params', { ...props.params, metalType: type })\n}\n</script>\n<template>\n  <div class=\"params-panel\">\n    <table class=\"params-table\">\n      <tr>\n        <td class=\"label\">{{ t('experiments.calorimetryMetalType') }}</td>\n        <td colspan=\"2\">\n          <select :value=\"params.metalType\" @change=\"onMetalSelect\">\n            <option v-for=\"(opt, key) in metalOptions\" :key=\"key\" :value=\"key\">{{ opt.nameAr }}</option>\n          </select>\n        </td>\n      </tr>\n      <tr>\n        <td class=\"label\">{{ t('experiments.calorimetryMetalMass') }}</td>\n        <td><input type=\"range\" min=\"0.01\" max=\"0.2\" step=\"0.005\" :value=\"params.mMetal\" @input=\"emit('update:params', { ...params, mMetal: Number(($event.target as HTMLInputElement).value) })\" /></td>\n        <td class=\"val\">{{ params.mMetal.toFixed(3) }} kg</td>\n      </tr>\n      <tr>\n        <td class=\"label\">{{ t('experiments.calorimetryMetalTemp') }}</td>\n        <td><input type=\"range\" min=\"50\" max=\"200\" step=\"5\" :value=\"params.tMetal\" @input=\"emit('update:params', { ...params, tMetal: Number(($event.target as HTMLInputElement).value) })\" /></td>\n        <td class=\"val\">{{ params.tMetal }} °C</td>\n      </tr>\n      <tr>\n        <td class=\"label\">{{ t('experiments.calorimetryWaterMass') }}</td>\n        <td><input type=\"range\" min=\"0.05\" max=\"0.5\" step=\"0.01\" :value=\"params.mWater\" @input=\"emit('update:params', { ...params, mWater: Number(($event.target as HTMLInputElement).value) })\" /></td>\n        <td class=\"val\">{{ params.mWater.toFixed(3) }} kg</td>\n      </tr>\n      <tr>\n        <td class=\"label\">{{ t('experiments.calorimetryWaterTemp') }}</td>\n        <td><input type=\"range\" min=\"10\" max=\"35\" step=\"1\" :value=\"params.tWater\" @input=\"emit('update:params', { ...params, tWater: Number(($event.target as HTMLInputElement).value) })\" /></td>\n        <td class=\"val\">{{ params.tWater }} °C</td>\n      </tr>\n      <tr>\n        <td class=\"label\">{{ t('experiments.calorimetryCupMass') }}</td>\n        <td><input type=\"range\" min=\"0.01\" max=\"0.1\" step=\"0.005\" :value=\"params.mCup\" @input=\"emit('update:params', { ...params, mCup: Number(($event.target as HTMLInputElement).value) })\" /></td>\n        <td class=\"val\">{{ params.mCup.toFixed(3) }} kg</td>\n      </tr>\n      <tr>\n        <td class=\"label\">{{ t('experiments.calorimetrySpecificHeat') }}</td>\n        <td colspan=\"2\">\n          <span class=\"val read-only\">{{ params.cMetal }} J/kg·K</span>\n          <span class=\"hint\">(القيمة الحقيقية المعروفة)</span>\n        </td>\n      </tr>\n    </table>\n  </div>\n</template>\n<style scoped>\n.params-panel { padding: .25rem 0; }\n.params-table { width: 100%; border-collapse: collapse; font-size: .75rem; }\n.params-table td { padding: .25rem .3rem; vertical-align: middle; border-bottom: 1px solid rgba(255,255,255,.04); }\n.params-table td.label { color: #8B95A5; white-space: nowrap; font-size: .72rem; width: 1%; }\n.params-table td.val { color: #5B8DB8; font-weight: 700; text-align: right; white-space: nowrap; }\n.params-table td.val.read-only { color: #fbbf24; }\n.params-table td .hint { color: #475569; font-size: .6rem; margin-right: .3rem; }\n.params-table input[type=range] { width: 100%; min-width: 60px; }\n.params-table select { width: 100%; padding: .2rem .3rem; border-radius: 4px; border: 1px solid #1e2530; background: #0d1117; color: #D1D7E0; font-size: .72rem; }\n</style>\n",
+      "start": 1783634642437,
+      "end": 1783634642748,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642748,
+      "end": 1783634642748,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642748,
+      "end": 1783634642748,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642748,
+      "end": 1783634642748,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642748,
+      "end": 1783634642748,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryParamsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryParamsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryParamsPanel.vue?vue&type=style&index=0&scoped=7b4377b7&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-7b4377b7\"]]);\n",
+      "start": 1783634642748,
+      "end": 1783634642885,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642885,
+      "end": 1783634642885,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642885,
+      "end": 1783634642885,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642885,
+      "end": 1783634642885,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642885,
+      "end": 1783634642885,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642885,
+      "end": 1783634642885,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642885,
+      "end": 1783634642885,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642885,
+      "end": 1783634642885,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642885,
+      "end": 1783634642885,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642885,
+      "end": 1783634642885,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642885,
+      "end": 1783634642885,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedCanvas.vue?vue&type=style&index=0&scoped=f8a20f03&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.canvas-wrap { width: 100%; flex: 1; min-height: 0; position: relative; }\n.canvas-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; }\n",
+      "start": 1783634641766,
+      "end": 1783634641766
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.canvas-wrap { width: 100%; flex: 1; min-height: 0; position: relative; }\n.canvas-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; }\n",
+      "start": 1783634641766,
+      "end": 1783634641766,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641767,
+      "end": 1783634641767,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641767,
+      "end": 1783634641767,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641767,
+      "end": 1783634641767,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.canvas-wrap[data-v-f8a20f03] { width: 100%; flex: 1; min-height: 0; position: relative;\n}\n.canvas-wrap canvas[data-v-f8a20f03] { position: absolute; inset: 0; width: 100%; height: 100%;\n}\n",
+      "start": 1783634641767,
+      "end": 1783634641767,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641767,
+      "end": 1783634641767,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634641767,
+      "end": 1783634641767,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641767,
+      "end": 1783634641767,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641767,
+      "end": 1783634641767,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641767,
+      "end": 1783634641767,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641767,
+      "end": 1783634641767,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641767,
+      "end": 1783634641767,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641767,
+      "end": 1783634641767,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641767,
+      "end": 1783634641767,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641767,
+      "end": 1783634641767,
+      "order": "normal"
+    }
+  ]
+}

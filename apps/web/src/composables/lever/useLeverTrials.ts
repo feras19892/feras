@@ -49,9 +49,9 @@ export function useLeverTrials(sim: LeverState, resultant: { value: { fx: number
   function removeTrial(id: number) { pushHistory(); trials.value = trials.value.filter(t => t.id !== id); autoSave() }
   function clearTrials() { pushHistory(); trials.value = []; autoSave() }
 
-  function autoSave() { try { localStorage.setItem(SAVE_KEY, JSON.stringify({ trials: trials.value, nextId: nextTrialId })) } catch {} }
+  function autoSave() { try { localStorage.setItem(SAVE_KEY, JSON.stringify({ trials: trials.value, nextId: nextTrialId })) } catch { /* storage unavailable */ } }
   function autoLoad() {
-    try { const raw = localStorage.getItem(SAVE_KEY); if (!raw) return; const p = JSON.parse(raw); if (Array.isArray(p.trials)) { trials.value = p.trials; nextTrialId = p.nextId ?? 1; history.value = [[...p.trials]]; historyIndex.value = 0 } } catch {}
+    try { const raw = localStorage.getItem(SAVE_KEY); if (!raw) return; const p = JSON.parse(raw); if (Array.isArray(p.trials)) { trials.value = p.trials; nextTrialId = p.nextId ?? 1; history.value = [[...p.trials]]; historyIndex.value = 0 } } catch { /* storage unavailable */ }
   }
 
   function exportCsv() {

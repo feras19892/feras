@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/FaradayLawReadingsPanel.vue?vue&type=style&index=0&scoped=d9a30cd0&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.readings-panel { padding: .75rem; display: flex; flex-direction: column; gap: .5rem; }\n.readings-title { font-size: .85rem; font-weight: 700; color: #67e8f9; padding-bottom: .3rem; border-bottom: 1px solid #1e2530; }\n.readings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .4rem; }\n.reading-box { background: rgba(45,54,69,.4); border-radius: 6px; padding: .35rem; text-align: center; display: flex; flex-direction: column; }\n.r-label { font-size: .65rem; color: #94a3b8; }\n.r-value { font-size: .8rem; font-weight: 700; color: #D1D7E0; font-family: 'Courier New', monospace; }\n.r-unit { font-size: .6rem; color: #64748b; }\n.reading-box.field { background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.15); }\n.reading-box.turns { background: rgba(168,85,247,.08); border: 1px solid rgba(168,85,247,.15); }\n.reading-box.velocity { background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.15); }\n.force-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .4rem; margin-top: .3rem; }\n.force-box { border-radius: 6px; padding: .35rem; text-align: center; display: flex; flex-direction: column; }\n.force-box.flux { background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.15); }\n.force-box.emf { background: rgba(239,68,68,.08); border: 1px solid rgba(239,68,68,.15); }\n.force-box.current { background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.15); }\n.force-box.resistance { background: rgba(168,85,247,.08); border: 1px solid rgba(168,85,247,.15); }\n.f-label { font-size: .6rem; color: #94a3b8; }\n.f-value { font-size: .8rem; font-weight: 700; font-family: 'Courier New', monospace; }\n.force-box.flux .f-value { color: #3b82f6; }\n.force-box.emf .f-value { color: #ef4444; }\n.force-box.current .f-value { color: #f59e0b; }\n.force-box.resistance .f-value { color: #a855f7; }\n.f-unit { font-size: .6rem; color: #64748b; }\n.probe-indicator { font-size: .7rem; color: #a855f7; text-align: center; padding: .3rem; background: rgba(168,85,247,.08); border-radius: 6px; }\n.probe-indicator.idle { color: #64748b; background: rgba(100,116,139,.08); }\n.direction-box { display: flex; align-items: center; gap: .4rem; padding: .35rem; border-radius: 6px; font-size: .75rem; font-weight: 700; }\n.direction-box.opposing { background: rgba(239,68,68,.1); color: #ef4444; border: 1px solid rgba(239,68,68,.2); }\n.direction-box.assisting { background: rgba(34,197,94,.1); color: #22c55e; border: 1px solid rgba(34,197,94,.2); }\n.dir-icon { font-size: 1rem; }\n",
+      "start": 1783634641726,
+      "end": 1783634641726
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.readings-panel { padding: .75rem; display: flex; flex-direction: column; gap: .5rem; }\n.readings-title { font-size: .85rem; font-weight: 700; color: #67e8f9; padding-bottom: .3rem; border-bottom: 1px solid #1e2530; }\n.readings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .4rem; }\n.reading-box { background: rgba(45,54,69,.4); border-radius: 6px; padding: .35rem; text-align: center; display: flex; flex-direction: column; }\n.r-label { font-size: .65rem; color: #94a3b8; }\n.r-value { font-size: .8rem; font-weight: 700; color: #D1D7E0; font-family: 'Courier New', monospace; }\n.r-unit { font-size: .6rem; color: #64748b; }\n.reading-box.field { background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.15); }\n.reading-box.turns { background: rgba(168,85,247,.08); border: 1px solid rgba(168,85,247,.15); }\n.reading-box.velocity { background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.15); }\n.force-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .4rem; margin-top: .3rem; }\n.force-box { border-radius: 6px; padding: .35rem; text-align: center; display: flex; flex-direction: column; }\n.force-box.flux { background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.15); }\n.force-box.emf { background: rgba(239,68,68,.08); border: 1px solid rgba(239,68,68,.15); }\n.force-box.current { background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.15); }\n.force-box.resistance { background: rgba(168,85,247,.08); border: 1px solid rgba(168,85,247,.15); }\n.f-label { font-size: .6rem; color: #94a3b8; }\n.f-value { font-size: .8rem; font-weight: 700; font-family: 'Courier New', monospace; }\n.force-box.flux .f-value { color: #3b82f6; }\n.force-box.emf .f-value { color: #ef4444; }\n.force-box.current .f-value { color: #f59e0b; }\n.force-box.resistance .f-value { color: #a855f7; }\n.f-unit { font-size: .6rem; color: #64748b; }\n.probe-indicator { font-size: .7rem; color: #a855f7; text-align: center; padding: .3rem; background: rgba(168,85,247,.08); border-radius: 6px; }\n.probe-indicator.idle { color: #64748b; background: rgba(100,116,139,.08); }\n.direction-box { display: flex; align-items: center; gap: .4rem; padding: .35rem; border-radius: 6px; font-size: .75rem; font-weight: 700; }\n.direction-box.opposing { background: rgba(239,68,68,.1); color: #ef4444; border: 1px solid rgba(239,68,68,.2); }\n.direction-box.assisting { background: rgba(34,197,94,.1); color: #22c55e; border: 1px solid rgba(34,197,94,.2); }\n.dir-icon { font-size: 1rem; }\n",
+      "start": 1783634641726,
+      "end": 1783634641726,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641726,
+      "end": 1783634641726,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641726,
+      "end": 1783634641726,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641726,
+      "end": 1783634641726,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.readings-panel[data-v-d9a30cd0] { padding: .75rem; display: flex; flex-direction: column; gap: .5rem;\n}\n.readings-title[data-v-d9a30cd0] { font-size: .85rem; font-weight: 700; color: #67e8f9; padding-bottom: .3rem; border-bottom: 1px solid #1e2530;\n}\n.readings-grid[data-v-d9a30cd0] { display: grid; grid-template-columns: repeat(3, 1fr); gap: .4rem;\n}\n.reading-box[data-v-d9a30cd0] { background: rgba(45,54,69,.4); border-radius: 6px; padding: .35rem; text-align: center; display: flex; flex-direction: column;\n}\n.r-label[data-v-d9a30cd0] { font-size: .65rem; color: #94a3b8;\n}\n.r-value[data-v-d9a30cd0] { font-size: .8rem; font-weight: 700; color: #D1D7E0; font-family: 'Courier New', monospace;\n}\n.r-unit[data-v-d9a30cd0] { font-size: .6rem; color: #64748b;\n}\n.reading-box.field[data-v-d9a30cd0] { background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.15);\n}\n.reading-box.turns[data-v-d9a30cd0] { background: rgba(168,85,247,.08); border: 1px solid rgba(168,85,247,.15);\n}\n.reading-box.velocity[data-v-d9a30cd0] { background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.15);\n}\n.force-grid[data-v-d9a30cd0] { display: grid; grid-template-columns: repeat(2, 1fr); gap: .4rem; margin-top: .3rem;\n}\n.force-box[data-v-d9a30cd0] { border-radius: 6px; padding: .35rem; text-align: center; display: flex; flex-direction: column;\n}\n.force-box.flux[data-v-d9a30cd0] { background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.15);\n}\n.force-box.emf[data-v-d9a30cd0] { background: rgba(239,68,68,.08); border: 1px solid rgba(239,68,68,.15);\n}\n.force-box.current[data-v-d9a30cd0] { background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.15);\n}\n.force-box.resistance[data-v-d9a30cd0] { background: rgba(168,85,247,.08); border: 1px solid rgba(168,85,247,.15);\n}\n.f-label[data-v-d9a30cd0] { font-size: .6rem; color: #94a3b8;\n}\n.f-value[data-v-d9a30cd0] { font-size: .8rem; font-weight: 700; font-family: 'Courier New', monospace;\n}\n.force-box.flux .f-value[data-v-d9a30cd0] { color: #3b82f6;\n}\n.force-box.emf .f-value[data-v-d9a30cd0] { color: #ef4444;\n}\n.force-box.current .f-value[data-v-d9a30cd0] { color: #f59e0b;\n}\n.force-box.resistance .f-value[data-v-d9a30cd0] { color: #a855f7;\n}\n.f-unit[data-v-d9a30cd0] { font-size: .6rem; color: #64748b;\n}\n.probe-indicator[data-v-d9a30cd0] { font-size: .7rem; color: #a855f7; text-align: center; padding: .3rem; background: rgba(168,85,247,.08); border-radius: 6px;\n}\n.probe-indicator.idle[data-v-d9a30cd0] { color: #64748b; background: rgba(100,116,139,.08);\n}\n.direction-box[data-v-d9a30cd0] { display: flex; align-items: center; gap: .4rem; padding: .35rem; border-radius: 6px; font-size: .75rem; font-weight: 700;\n}\n.direction-box.opposing[data-v-d9a30cd0] { background: rgba(239,68,68,.1); color: #ef4444; border: 1px solid rgba(239,68,68,.2);\n}\n.direction-box.assisting[data-v-d9a30cd0] { background: rgba(34,197,94,.1); color: #22c55e; border: 1px solid rgba(34,197,94,.2);\n}\n.dir-icon[data-v-d9a30cd0] { font-size: 1rem;\n}\n",
+      "start": 1783634641726,
+      "end": 1783634641727,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641727,
+      "end": 1783634641727,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634641727,
+      "end": 1783634641727,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641727,
+      "end": 1783634641727,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641727,
+      "end": 1783634641727,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641727,
+      "end": 1783634641727,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641727,
+      "end": 1783634641727,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641727,
+      "end": 1783634641727,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641727,
+      "end": 1783634641727,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641727,
+      "end": 1783634641727,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641727,
+      "end": 1783634641727,
+      "order": "normal"
+    }
+  ]
+}

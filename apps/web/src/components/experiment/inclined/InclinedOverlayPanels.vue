@@ -24,6 +24,7 @@ const emit = defineEmits<{
   (e: 'calcTime'): void
   (e: 'calcVelocity'): void
   (e: 'calcNormal'): void
+  (e: 'calcGFromSlope'): void
 }>()
 
 const allPanelIds: PanelId[] = ['table', 'equations', 'stats', 'scatter', 'signal', 'params', 'guide', 'error']
@@ -39,7 +40,7 @@ const allPanelIds: PanelId[] = ['table', 'equations', 'stats', 'scatter', 'signa
         </div>
         <div class="overlay-body">
           <InclinedPanelBody :id="id" :trials="trials" :params="params" :sim="sim" :measured="measured" :trial-stats="trialStats" :calc-result="calcResult"
-            @update:params="emit('update:params', $event)" @remove="emit('remove', $event)" @calc-acceleration="emit('calcAcceleration')" @calc-time="emit('calcTime')" @calc-velocity="emit('calcVelocity')" @calc-normal="emit('calcNormal')" />
+            @update:params="emit('update:params', $event)" @remove="emit('remove', $event)" @calc-acceleration="emit('calcAcceleration')" @calc-time="emit('calcTime')" @calc-velocity="emit('calcVelocity')" @calc-normal="emit('calcNormal')" @calc-g-from-slope="emit('calcGFromSlope')" />
         </div>
       </div>
     </template>

@@ -1,5 +1,7 @@
 import { ref, reactive, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import type { AnalysisPayload } from '../../types/physics'
+import { sendToAnalysis } from '../analysis/sendToAnalysis'
 import { useIdealGasLayout } from './useIdealGasLayout'
 import { useIdealGasTrials } from './useIdealGasTrials'
 import { pressure, particleSpeed } from './useIdealGasCalculations'
@@ -35,7 +37,7 @@ export function useIdealGasExperiment() {
       params.V = constValue.value.V
     }
   })
-  watch(() => params.T, (t) => {
+  watch(() => params.T, (_t) => {
     if (mode.value === 'isothermal' && constValue.value.T !== undefined) {
       params.T = constValue.value.T
     } else if (mode.value === 'isochoric' && constValue.value.V !== undefined) {
@@ -80,15 +82,15 @@ export function useIdealGasExperiment() {
   }
   function resetSim() {
     running.value = false; paused.value = false
-    params.n = 1.0; params.T = 300; params.V = 0.0224
     initParticles()
-    trials.clearTrials()
   }
+  const router = useRouter()
   function exportToAnalysis() {
     if (trials.trials.value.length < 2) return
     const payload: AnalysisPayload = {
       sourceExperiment: 'ideal-gas',
       sourceNameAr: 'الغاز المثالي',
+      hasCalcTab: true,
       readings: trials.trials.value.map(t => ({ n: t.n, T: t.T, V: t.V, P: t.P })),
       columns: [
         { key: 'n', label: 'n (mol)', unit: 'mol' },
@@ -101,8 +103,7 @@ export function useIdealGasExperiment() {
       ],
       suggestedPlots: [{ xKey: 'V', yKey: 'P', xLabel: 'V (m³)', yLabel: 'P (Pa)', type: 'scatter' }],
     }
-    localStorage.setItem('analysis_payload', JSON.stringify(payload))
-    window.open('/analysis', '_blank')
+    sendToAnalysis(router, payload)
   }
   function handleDrop(fromId: string, x?: number, y?: number) {
     if (x === undefined || y === undefined) return
@@ -119,8 +120,8 @@ export function useIdealGasExperiment() {
   }
   function onResizeStart(col: string, e: MouseEvent) {
     if (!(col in layout.widths)) return
-    const startX = e.clientX, startW = (layout.widths as any)[col] as number
-    function move(ev: MouseEvent) { (layout.widths as any)[col] = Math.max(220, startW + (ev.clientX - startX)) }
+    const startX = e.clientX, startW = (layout.widths as Record<string, number>)[col] as number
+    function move(ev: MouseEvent) { (layout.widths as Record<string, number>)[col] = Math.max(220, startW + (ev.clientX - startX)) }
     function up() { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up) }
     window.addEventListener('mousemove', move); window.addEventListener('mouseup', up)
   }

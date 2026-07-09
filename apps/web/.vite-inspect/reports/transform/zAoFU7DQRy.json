@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemAnalysisMenuBar.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\n\nconst props = defineProps<{\n  sourceName: string;\n}>();\n\nconst emit = defineEmits<{\n  (e: 'clear'): void;\n  (e: 'back'): void;\n}>();\n\nconst { t } = useI18n();\n\nconst title = computed(() => {\n  return props.sourceName ? t('analysis.analysisTitle', { name: props.sourceName }) : t('analysis.defaultTitle');\n});\n</script>\n\n<template>\n  <nav class=\"analysis-menubar\">\n    <div class=\"left\">\n      <button class=\"btn-back\" @click=\"emit('back')\">{{ t('analysis.back') }}</button>\n      <span class=\"title\">📊 {{ title }}</span>\n    </div>\n    <div class=\"right\">\n      <button class=\"btn-clear\" @click=\"emit('clear')\">{{ t('analysis.clearData') }}</button>\n    </div>\n  </nav>\n</template>\n\n<style scoped>\n.analysis-menubar {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 0.7rem 1.2rem;\n  background: linear-gradient(135deg, #0f172a, #161B22);\n  border-bottom: 1px solid rgba(91,141,184,0.15);\n  flex-shrink: 0;\n}\n.left, .right { display: flex; align-items: center; gap: 0.85rem; }\n.title { font-weight: 800; color: #e2e8f0; font-size: 1.05rem; letter-spacing: 0.2px; }\n.btn-back {\n  background: rgba(91,141,184,0.1);\n  border: 1px solid rgba(91,141,184,0.2);\n  color: #67e8f9;\n  cursor: pointer;\n  font-size: 0.82rem;\n  padding: 0.35rem 0.7rem;\n  border-radius: 0.35rem;\n  transition: all 0.15s;\n}\n.btn-back:hover { background: rgba(91,141,184,0.18); }\n.btn-clear {\n  background: rgba(239,68,68,0.1);\n  border: 1px solid rgba(239,68,68,0.25);\n  color: #f87171;\n  border-radius: 0.35rem;\n  padding: 0.35rem 0.75rem;\n  font-size: 0.82rem;\n  cursor: pointer;\n  transition: all 0.15s;\n}\n.btn-clear:hover { background: rgba(239,68,68,0.18); }\n</style>\n",
+      "start": 1783634639312,
+      "end": 1783634639394,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639394,
+      "end": 1783634639394,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639394,
+      "end": 1783634639394,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639394,
+      "end": 1783634639394,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639394,
+      "end": 1783634639394,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemAnalysisMenuBar.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemAnalysisMenuBar.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemAnalysisMenuBar.vue?vue&type=style&index=0&scoped=2ef8cd11&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-2ef8cd11\"]]);\n",
+      "start": 1783634639394,
+      "end": 1783634639883,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639883,
+      "end": 1783634639883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639883,
+      "end": 1783634639883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639883,
+      "end": 1783634639883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639883,
+      "end": 1783634639883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639883,
+      "end": 1783634639884,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639884,
+      "end": 1783634639884,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639884,
+      "end": 1783634639884,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639884,
+      "end": 1783634639884,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639884,
+      "end": 1783634639884,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639885,
+      "end": 1783634639885,
+      "order": "normal"
+    }
+  ]
+}

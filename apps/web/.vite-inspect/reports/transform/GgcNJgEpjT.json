@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useBuretteMixRecorder.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { handleDropMix, type MixEvent } from './useReactionEngine';\nimport { getLiquid } from './useChemistryLab';\nimport { recordTitrationStep } from './useTitrationRecorder';\n\nexport function handleDropMixWithRecording(event: MixEvent): void {\n  const beforePh = getLiquid(event.targetUid)?.ph ?? null;\n  handleDropMix(event);\n  const after = getLiquid(event.targetUid);\n  if (after && after.ph !== null && after.ph !== undefined && beforePh !== after.ph) {\n    const vAdded = after.reactants?.[event.sourceChemicalId] || 0;\n    recordTitrationStep(event.targetUid, vAdded);\n  }\n}\n",
+      "start": 1783634640047,
+      "end": 1783634640498,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640498,
+      "end": 1783634640498,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { handleDropMix } from \"./useReactionEngine\";\nimport { getLiquid } from \"./useChemistryLab\";\nimport { recordTitrationStep } from \"./useTitrationRecorder\";\nexport function handleDropMixWithRecording(event) {\n  const beforePh = getLiquid(event.targetUid)?.ph ?? null;\n  handleDropMix(event);\n  const after = getLiquid(event.targetUid);\n  if (after && after.ph !== null && after.ph !== void 0 && beforePh !== after.ph) {\n    const vAdded = after.reactants?.[event.sourceChemicalId] || 0;\n    recordTitrationStep(event.targetUid, vAdded);\n  }\n}\n",
+      "start": 1783634640498,
+      "end": 1783634640664,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useBuretteMixRecorder.ts"
+        ],
+        "sourcesContent": [
+          "import { handleDropMix, type MixEvent } from './useReactionEngine';\nimport { getLiquid } from './useChemistryLab';\nimport { recordTitrationStep } from './useTitrationRecorder';\n\nexport function handleDropMixWithRecording(event: MixEvent): void {\n  const beforePh = getLiquid(event.targetUid)?.ph ?? null;\n  handleDropMix(event);\n  const after = getLiquid(event.targetUid);\n  if (after && after.ph !== null && after.ph !== undefined && beforePh !== after.ph) {\n    const vAdded = after.reactants?.[event.sourceChemicalId] || 0;\n    recordTitrationStep(event.targetUid, vAdded);\n  }\n}\n"
+        ],
+        "mappings": "AAAA,SAAS,qBAAoC;AAC7C,SAAS,iBAAiB;AAC1B,SAAS,2BAA2B;AAE7B,gBAAS,2BAA2B,OAAuB;AAChE,QAAM,WAAW,UAAU,MAAM,SAAS,GAAG,MAAM;AACnD,gBAAc,KAAK;AACnB,QAAM,QAAQ,UAAU,MAAM,SAAS;AACvC,MAAI,SAAS,MAAM,OAAO,QAAQ,MAAM,OAAO,UAAa,aAAa,MAAM,IAAI;AACjF,UAAM,SAAS,MAAM,YAAY,MAAM,gBAAgB,KAAK;AAC5D,wBAAoB,MAAM,WAAW,MAAM;AAAA,EAC7C;AACF;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640664,
+      "end": 1783634640665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640665,
+      "end": 1783634640665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640665,
+      "end": 1783634640665,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640665,
+      "end": 1783634640665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640667,
+      "end": 1783634640667,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640668,
+      "end": 1783634640668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640669,
+      "end": 1783634640669,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640669,
+      "end": 1783634640669,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lightray/LightRayOverlayPanels.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport type { LightRayTrial } from '../../../composables/lightray/useLightRayExperiment'\nimport LightRayPanelBody from './LightRayPanelBody.vue'\n\ninterface Props {\n  maximized: Record<string, boolean>\n  panelTitle: (id: string) => string\n  trials: LightRayTrial[]\n  params: { angleIncidence: number; n1: number; n2: number }\n  angleReflection: number\n  angleRefraction: number | null\n  totalInternalReflection: boolean\n  criticalAngle: number | null\n  slope: number\n  intercept: number\n  rSquared: number\n  calculatedN2: number | null\n  speedInMedium: number | null\n}\n\ndefineProps<Props>()\n\nconst emit = defineEmits<{\n  (e: 'maximize', id: string): void\n  (e: 'remove', id: number): void\n  (e: 'clear'): void\n  (e: 'update:params', params: { angleIncidence: number; n1: number; n2: number }): void\n}>()\n\nconst panelIds = ['readings', 'chart', 'trials', 'params', 'laws', 'results']\n</script>\n\n<template>\n  <template v-for=\"id in panelIds\" :key=\"id\">\n    <div v-if=\"maximized[id]\" class=\"overlay-panel\" @click.self=\"emit('maximize', id)\">\n      <div class=\"overlay-card\">\n        <div class=\"overlay-header\">\n          <span>{{ panelTitle(id) }}</span>\n          <button class=\"overlay-close\" @click=\"emit('maximize', id)\">✕</button>\n        </div>\n        <LightRayPanelBody\n          :id=\"id\"\n          :trials=\"trials\"\n          :params=\"params\"\n          :angle-reflection=\"angleReflection\"\n          :angle-refraction=\"angleRefraction\"\n          :total-internal-reflection=\"totalInternalReflection\"\n          :critical-angle=\"criticalAngle\"\n          :slope=\"slope\"\n          :intercept=\"intercept\"\n          :r-squared=\"rSquared\"\n          :calculated-n2=\"calculatedN2\"\n          :speed-in-medium=\"speedInMedium\"\n          @remove=\"emit('remove', $event)\"\n          @clear=\"emit('clear')\"\n          @update:params=\"emit('update:params', $event)\"\n        />\n      </div>\n    </div>\n  </template>\n</template>\n\n<style scoped>\n.overlay-panel { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 2rem; }\n.overlay-card { background: #1e2530; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; display: flex; flex-direction: column; }\n.overlay-header { display: flex; justify-content: space-between; align-items: center; padding: .7rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); font-weight: 700; color: #67e8f9; }\n.overlay-close { background: none; border: none; color: #8B95A5; cursor: pointer; font-size: 1rem; }\n.overlay-close:hover { color: #fff; }\n</style>\n",
+      "start": 1783634640993,
+      "end": 1783634641464,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641464,
+      "end": 1783634641464,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641464,
+      "end": 1783634641464,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641464,
+      "end": 1783634641464,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641464,
+      "end": 1783634641464,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lightray/LightRayOverlayPanels.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lightray/LightRayOverlayPanels.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lightray/LightRayOverlayPanels.vue?vue&type=style&index=0&scoped=bb09e9eb&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-bb09e9eb\"]]);\n",
+      "start": 1783634641464,
+      "end": 1783634641639,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    }
+  ]
+}

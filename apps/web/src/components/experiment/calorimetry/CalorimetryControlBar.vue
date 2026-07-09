@@ -15,15 +15,15 @@ const emit = defineEmits<{
 </script>
 <template>
   <div class="ctrl-bar">
-    <button class="ctrl-btn primary" @click="emit('togglePause')">{{ launchLabel }}</button>
-    <button class="ctrl-btn record" @click="emit('recordTrial')">📌 {{ t('experiments.recordBtn') }}</button>
+    <button class="ctrl-btn primary" @click="emit('togglePause')">{{ launchLabel }}<kbd>Space</kbd></button>
+    <button class="ctrl-btn record" @click="emit('recordTrial')">📌 {{ t('experiments.recordBtn') }}<kbd>S</kbd></button>
     <div class="ctrl-sep" />
-    <button class="ctrl-btn" :disabled="!canUndo" @click="emit('undo')">↩️</button>
-    <button class="ctrl-btn" :disabled="!canRedo" @click="emit('redo')">↪️</button>
+    <button class="ctrl-btn" :disabled="!canUndo" @click="emit('undo')">↩️<kbd>Ctrl+Z</kbd></button>
+    <button class="ctrl-btn" :disabled="!canRedo" @click="emit('redo')">↪️<kbd>Ctrl+Y</kbd></button>
     <div class="ctrl-sep" />
     <button class="ctrl-btn danger" @click="emit('clearTrials')">🗑️ {{ t('experiments.clearAll') }}</button>
     <button class="ctrl-btn" @click="emit('exportCsv')">💾 CSV</button>
-    <button class="ctrl-btn" @click="emit('reset')">🔄 {{ t('experiments.resetBtn') }}</button>
+    <button class="ctrl-btn" @click="emit('reset')">🔄 {{ t('experiments.resetBtn') }}<kbd>R</kbd></button>
   </div>
 </template>
 <style scoped>
@@ -37,4 +37,5 @@ const emit = defineEmits<{
 .ctrl-btn.record { background: rgba(91,141,184,.1); border-color: rgba(91,141,184,.3); color: #5B8DB8; font-weight: 600; }
 .ctrl-btn.record:hover { background: rgba(91,141,184,.18); }
 .ctrl-btn.danger:hover:not(:disabled) { color: #f87171; border-color: rgba(248,113,113,.3); background: rgba(248,113,113,.08); }
+kbd { display:inline-block; padding:.05rem .25rem; border-radius:3px; border:1px solid #2D3645; background:#0d1117; color:#475569; font-size:.62rem; font-family:monospace; line-height:1.4; }
 </style>

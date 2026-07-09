@@ -3,11 +3,11 @@ import { useI18n } from '../useI18n'
 
 const STORAGE_KEY = 'collision:layout:v2'
 
-export type PanelId = 'params' | 'data' | 'signal' | 'stats' | 'equations' | 'report'
+export type PanelId = 'params' | 'data' | 'signal' | 'scatter' | 'stats' | 'equations' | 'report'
 export type ColumnId = 'data' | 'vis' | 'ctrl'
 
 const DEFAULT_ORDER: Record<ColumnId, PanelId[]> = {
-  data: ['data', 'signal'],
+  data: ['data', 'signal', 'scatter'],
   vis: [],
   ctrl: ['params'],
 }
@@ -19,6 +19,7 @@ export function useCollisionLayout() {
     params: t('experiments.panelParams'),
     data: t('experiments.panelData'),
     signal: t('experiments.panelSignal'),
+    scatter: t('experiments.panelScatter'),
     stats: t('experiments.panelStats'),
     equations: t('experiments.panelEquations'),
     report: t('experiments.panelReport'),

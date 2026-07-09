@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thinlens/ThinLensCanvas.vue?vue&type=style&index=0&scoped=a762f16d&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\r\n.lens-canvas { width: 100%; height: 100%; border-radius: 8px; }\r\n",
+      "start": 1783634642068,
+      "end": 1783634642068
+    },
+    {
+      "name": "vite:css",
+      "result": "\r\n.lens-canvas { width: 100%; height: 100%; border-radius: 8px; }\r\n",
+      "start": 1783634642068,
+      "end": 1783634642068,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642068,
+      "end": 1783634642068,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642068,
+      "end": 1783634642068,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642068,
+      "end": 1783634642068,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.lens-canvas[data-v-a762f16d] { width: 100%; height: 100%; border-radius: 8px;\n}\r\n",
+      "start": 1783634642068,
+      "end": 1783634642068,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642068,
+      "end": 1783634642068,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634642068,
+      "end": 1783634642068,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642068,
+      "end": 1783634642068,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642068,
+      "end": 1783634642068,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642068,
+      "end": 1783634642068,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642068,
+      "end": 1783634642068,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642068,
+      "end": 1783634642068,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642068,
+      "end": 1783634642068,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642068,
+      "end": 1783634642068,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642068,
+      "end": 1783634642068,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryLawsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "﻿<script setup lang=\"ts\">\nimport { computed } from 'vue'\nimport { SPECIFIC_HEAT_WATER, SPECIFIC_HEAT_ALUMINUM } from '../../../../composables/calorimetry/useCalorimetryCalculations'\nconst props = defineProps<{\n  mWater: number\n  tWater: number\n  mMetal: number\n  tMetal: number\n  tf: number\n  cMetal: number\n}>()\n\nconst qLost = computed(() => props.mMetal * props.cMetal * (props.tMetal - props.tf))\nconst qGained = computed(() => (props.mWater * SPECIFIC_HEAT_WATER + 0.05 * SPECIFIC_HEAT_ALUMINUM) * (props.tf - props.tWater))\nconst balance = computed(() => Math.abs(qLost.value - qGained.value))\n</script>\n<template>\n  <div class=\"panel-body\">\n    <div class=\"law-box balance\">\n      <div class=\"law-title\">موازنة الطاقة الحرارية</div>\n      <div class=\"formula\">Q_{مفقود} = Q_{مكتسب}</div>\n      <div class=\"data-grid\">\n        <div class=\"data-item\"><span class=\"data-label\">Q_{مفقود}</span><span class=\"data-val\">{{ qLost.toFixed(1) }} J</span></div>\n        <div class=\"data-item\"><span class=\"data-label\">Q_{مكتسب}</span><span class=\"data-val\">{{ qGained.toFixed(1) }} J</span></div>\n        <div class=\"data-item\"><span class=\"data-label\">ΔQ</span><span class=\"data-val\" :class=\"balance < 1 ? 'green' : 'red'\">{{ balance.toFixed(2) }} J</span></div>\n        <div class=\"data-item\"><span class=\"data-label\">الحالة</span><span class=\"data-val\" :class=\"balance < 1 ? 'green' : 'red'\">{{ balance < 1 ? 'متوازن ✅' : 'غير متوازن' }}</span></div>\n      </div>\n    </div>\n    <div class=\"law-box calc\">\n      <div class=\"law-title\">حساب السعة الحرائية</div>\n      <div class=\"formula\">c = Q / (m · ΔT)</div>\n      <div class=\"data-grid\">\n        <div class=\"data-item\"><span class=\"data-label\">Q</span><span class=\"data-val\">{{ qGained.toFixed(1) }} J</span></div>\n        <div class=\"data-item\"><span class=\"data-label\">m</span><span class=\"data-val\">{{ mMetal.toFixed(3) }} kg</span></div>\n        <div class=\"data-item\"><span class=\"data-label\">ΔT</span><span class=\"data-val\">{{ (tMetal - tf).toFixed(1) }} °C</span></div>\n        <div class=\"data-item highlight\"><span class=\"data-label\">c_{مقاس}</span><span class=\"data-val green\">{{ (qGained / (mMetal * (tMetal - tf))).toFixed(0) }} J/kg·K</span></div>\n      </div>\n    </div>\n  </div>\n</template>\n<style scoped>\n.panel-body { padding:.5rem; display:flex; flex-direction:column; gap:.45rem; }\n.law-box { border-radius:8px; padding:.6rem .7rem; }\n.law-box.balance { background:rgba(91,141,184,.06); border:1px solid rgba(91,141,184,.18); }\n.law-box.calc { background:rgba(245,158,11,.06); border:1px solid rgba(245,158,11,.18); }\n.law-title { font-weight:800; font-size:.8rem; margin-bottom:.4rem; }\n.law-box.balance .law-title { color:#5B8DB8; }\n.law-box.calc .law-title { color:#fbbf24; }\n.formula { font-family:'Courier New', monospace; font-size:.9rem; color:#D1D7E0; text-align:center; margin:.25rem 0 .15rem; letter-spacing:.5px; }\n.data-grid { display:flex; flex-direction:column; gap:.2rem; }\n.data-item { display:flex; justify-content:space-between; padding:.25rem .35rem; border-radius:4px; background:rgba(255,255,255,.02); font-size:.74rem; }\n.data-item.highlight { background:rgba(74,222,128,.08); border:1px solid rgba(74,222,128,.2); }\n.data-label { color:#8B95A5; }\n.data-val { color:#D1D7E0; font-weight:700; }\n.data-val.green { color:#4ade80; }\n.data-val.red { color:#f87171; }\n</style>\n",
+      "start": 1783634642437,
+      "end": 1783634642741,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642741,
+      "end": 1783634642741,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642741,
+      "end": 1783634642741,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642741,
+      "end": 1783634642741,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642741,
+      "end": 1783634642741,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryLawsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryLawsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryLawsPanel.vue?vue&type=style&index=0&scoped=727931cf&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-727931cf\"]]);\n",
+      "start": 1783634642741,
+      "end": 1783634642875,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642875,
+      "end": 1783634642875,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642875,
+      "end": 1783634642875,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642875,
+      "end": 1783634642875,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642875,
+      "end": 1783634642875,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642875,
+      "end": 1783634642875,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642875,
+      "end": 1783634642875,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642875,
+      "end": 1783634642875,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642875,
+      "end": 1783634642875,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642875,
+      "end": 1783634642875,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642875,
+      "end": 1783634642875,
+      "order": "normal"
+    }
+  ]
+}

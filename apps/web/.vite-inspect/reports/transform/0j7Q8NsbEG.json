@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/latent-heat/panels/LatentHeatReadingsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nconst props = defineProps<{\n  mass: number\n  phaseType: 'fusion' | 'vaporization'\n  currentQ: number\n  totalQ: number\n  meltedMass: number\n  remainingMass: number\n  currentTemp: number\n}>()\nconst phaseLabel = { fusion: 'انصهار', vaporization: 'تبخر' }\nconst emit = defineEmits<{ (e: 'hoverField', field: string): void }>()\nconst onHover = (f: string) => emit('hoverField', f)\n</script>\n<template>\n  <div class=\"readings-panel\">\n    <div class=\"row\" @mouseenter=\"onHover('mass')\" @mouseleave=\"onHover('')\"><span class=\"label\"><span class=\"dot blue\"></span>الكتلة</span><span class=\"val\">{{ mass.toFixed(2) }} kg</span></div>\n    <div class=\"row\" @mouseenter=\"onHover('phaseType')\" @mouseleave=\"onHover('')\"><span class=\"label\"><span class=\"dot amber\"></span>نوع التحول</span><span class=\"val\">{{ phaseLabel[phaseType] }}</span></div>\n    <div class=\"sep\"></div>\n    <div class=\"row\" @mouseenter=\"onHover('currentQ')\" @mouseleave=\"onHover('')\"><span class=\"label\"><span class=\"dot blue\"></span>الحرارة المضافة</span><span class=\"val\">{{ (currentQ/1000).toFixed(1) }} kJ</span></div>\n    <div class=\"row\" @mouseenter=\"onHover('totalQ')\" @mouseleave=\"onHover('')\"><span class=\"label\"><span class=\"dot blue\"></span>الحرارة الكلية</span><span class=\"val\">{{ (totalQ/1000).toFixed(1) }} kJ</span></div>\n    <div class=\"row\" @mouseenter=\"onHover('currentTemp')\" @mouseleave=\"onHover('')\"><span class=\"label\"><span class=\"dot amber\"></span>درجة الحرارة</span><span class=\"val\">{{ currentTemp }}°C</span></div>\n    <div class=\"sep\"></div>\n    <div class=\"row highlight\" @mouseenter=\"onHover('meltedMass')\" @mouseleave=\"onHover('')\"><span class=\"label\"><span class=\"dot green\"></span>الكتلة المتحولة</span><span :class=\"meltedMass > 0.001 ? 'val green' : 'val dim'\">{{ meltedMass.toFixed(3) }} kg</span></div>\n    <div class=\"row highlight\" @mouseenter=\"onHover('remainingMass')\" @mouseleave=\"onHover('')\"><span class=\"label\"><span class=\"dot green\"></span>الكتلة المتبقية</span><span :class=\"meltedMass > 0.001 ? 'val green' : 'val dim'\">{{ remainingMass.toFixed(3) }} kg</span></div>\n    <div class=\"row\" @mouseenter=\"onHover('ratio')\" @mouseleave=\"onHover('')\"><span class=\"label\"><span class=\"dot green\"></span>نسبة التحول</span><span :class=\"meltedMass > 0.001 ? 'val green' : 'val dim'\">{{ (meltedMass/mass*100).toFixed(1) }}%</span></div>\n  </div>\n</template>\n<style scoped>\n.readings-panel { display:flex; flex-direction:column; gap:.35rem; padding:.3rem; }\n.row { display:flex; justify-content:space-between; align-items:center; font-size:.76rem; padding:.3rem .4rem; border-radius:5px; background:rgba(255,255,255,.03); transition:background .15s; }\n.row:hover { background:rgba(255,255,255,.05); }\n.row.highlight { background:rgba(74,222,128,.08); border:1px solid rgba(74,222,128,.22); }\n.label { color:#8B95A5; display:flex; align-items:center; gap:.35rem; }\n.val { color:#D1D7E0; font-weight:700; }\n.val.green { color:#4ade80; }\n.val.dim { color:#475569; }\n.sep { height:1px; background:rgba(30,37,48,.6); margin:.15rem 0; }\n.dot { width:6px; height:6px; border-radius:50%; display:inline-block; }\n.dot.blue { background:#5B8DB8; }\n.dot.amber { background:#fbbf24; }\n.dot.green { background:#4ade80; }\n</style>\n",
+      "start": 1783634642409,
+      "end": 1783634642690,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642690,
+      "end": 1783634642690,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642690,
+      "end": 1783634642690,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642690,
+      "end": 1783634642690,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642690,
+      "end": 1783634642690,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/latent-heat/panels/LatentHeatReadingsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/latent-heat/panels/LatentHeatReadingsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/latent-heat/panels/LatentHeatReadingsPanel.vue?vue&type=style&index=0&scoped=21976346&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-21976346\"]]);\n",
+      "start": 1783634642690,
+      "end": 1783634642870,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642870,
+      "end": 1783634642871,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642871,
+      "end": 1783634642871,
+      "order": "normal"
+    }
+  ]
+}

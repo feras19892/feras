@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed } from 'vue'\nimport { useI18n } from '../../../../composables/useI18n'\nconst { t } = useI18n()\nconst props = defineProps<{\n  mWater: number\n  tWater: number\n  mMetal: number\n  tMetal: number\n  tf: number\n  cMetal: number\n  metalType?: string\n  metalOptions?: Record<string, { c: number; nameAr: string; nameEn: string }>\n}>()\n\nconst metalName = computed(() => {\n  if (!props.metalType || !props.metalOptions) return ''\n  return props.metalOptions[props.metalType]?.nameAr ?? props.metalType\n})\n</script>\n<template>\n  <div class=\"panel-body\">\n    <div class=\"read-row\"><span class=\"label\"><span class=\"dot blue\"></span>{{ t('experiments.calorimetryWaterMass') }}</span><span class=\"value\">{{ mWater.toFixed(3) }} kg</span></div>\n    <div class=\"read-row\"><span class=\"label\"><span class=\"dot blue\"></span>{{ t('experiments.calorimetryWaterTemp') }}</span><span class=\"value\">{{ tWater }} °C</span></div>\n    <div class=\"sep\"></div>\n    <div class=\"read-row\"><span class=\"label\"><span class=\"dot amber\"></span>{{ t('experiments.calorimetryMetalMass') }}</span><span class=\"value\">{{ mMetal.toFixed(3) }} kg</span></div>\n    <div class=\"read-row\"><span class=\"label\"><span class=\"dot amber\"></span>{{ t('experiments.calorimetryMetalTemp') }}</span><span class=\"value\">{{ tMetal }} °C</span></div>\n    <div class=\"read-row\"><span class=\"label\"><span class=\"dot amber\"></span>نوع المعدن</span><span class=\"value\">{{ metalName || '—' }}</span></div>\n    <div class=\"sep\"></div>\n    <div class=\"read-row highlight\"><span class=\"label\"><span class=\"dot green\"></span>{{ t('experiments.calorimetryFinalTemp') }}</span><span class=\"value green\">{{ tf.toFixed(1) }} °C</span></div>\n    <div class=\"read-row highlight\"><span class=\"label\"><span class=\"dot green\"></span>{{ t('experiments.calorimetrySpecificHeat') }}</span><span class=\"value green\">{{ cMetal.toFixed(0) }} J/kg·K</span></div>\n  </div>\n</template>\n<style scoped>\n.panel-body { padding:.5rem; display:flex; flex-direction:column; gap:.3rem; }\n.read-row { display:flex; justify-content:space-between; align-items:center; padding:.3rem .4rem; border-radius:5px; background:rgba(255,255,255,0.02); transition:background .15s; }\n.read-row:hover { background:rgba(255,255,255,0.04); }\n.read-row.highlight { background:rgba(74,222,128,.08); border:1px solid rgba(74,222,128,.22); }\n.label { color:#8B95A5; font-size:.74rem; display:flex; align-items:center; gap:.35rem; }\n.value { color:#D1D7E0; font-weight:700; font-size:.76rem; }\n.green { color:#4ade80; }\n.sep { height:1px; background:rgba(30,37,48,.6); margin:.15rem 0; }\n.dot { width:6px; height:6px; border-radius:50%; display:inline-block; }\n.dot.blue { background:#5B8DB8; }\n.dot.amber { background:#fbbf24; }\n.dot.green { background:#4ade80; }\n</style>\n",
+      "start": 1783634642437,
+      "end": 1783634642743,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642743,
+      "end": 1783634642743,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642743,
+      "end": 1783634642743,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642743,
+      "end": 1783634642743,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642743,
+      "end": 1783634642743,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue?vue&type=style&index=0&scoped=ff3458a7&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-ff3458a7\"]]);\n",
+      "start": 1783634642743,
+      "end": 1783634642867,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642867,
+      "end": 1783634642868,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642868,
+      "end": 1783634642868,
+      "order": "normal"
+    }
+  ]
+}

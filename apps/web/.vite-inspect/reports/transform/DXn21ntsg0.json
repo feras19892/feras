@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ideal-gas/IdealGasPanelBody.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createBlock as _createBlock, createCommentVNode as _createCommentVNode, createElementBlock as _createElementBlock } from \"vue\"\n\nimport type { IdealGasTrial } from '../../../composables/ideal-gas/useIdealGasTrials'\nimport IdealGasReadingsPanel from './panels/IdealGasReadingsPanel.vue'\nimport IdealGasChartPanel from './panels/IdealGasChartPanel.vue'\nimport IdealGasTrialsPanel from './panels/IdealGasTrialsPanel.vue'\nimport IdealGasParamsPanel from './panels/IdealGasParamsPanel.vue'\nimport IdealGasLawsPanel from './panels/IdealGasLawsPanel.vue'\nimport IdealGasResultsPanel from './panels/IdealGasResultsPanel.vue'\n\ninterface Props {\n  id: string\n  trials: IdealGasTrial[]\n  params: { n: number; T: number; V: number }\n  p: number\n  vRms: number\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'IdealGasPanelBody',\n  props: {\n    id: {},\n    trials: {},\n    params: {},\n    p: {},\n    vRms: {}\n  },\n  emits: [\"remove\", \"clear\", \"update:params\"],\n  setup(__props: any, { emit: __emit }) {\n\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", null, [\n    (__props.id === 'readings')\n      ? (_openBlock(), _createBlock(IdealGasReadingsPanel, {\n          key: 0,\n          n: __props.params.n,\n          temp: __props.params.T,\n          vol: __props.params.V,\n          press: __props.p,\n          \"v-rms\": __props.vRms\n        }, null, 8, [\"n\", \"temp\", \"vol\", \"press\", \"v-rms\"]))\n      : (__props.id === 'chart')\n        ? (_openBlock(), _createBlock(IdealGasChartPanel, {\n            key: 1,\n            trials: __props.trials\n          }, null, 8, [\"trials\"]))\n        : (__props.id === 'trials')\n          ? (_openBlock(), _createBlock(IdealGasTrialsPanel, {\n              key: 2,\n              trials: __props.trials,\n              onRemove: _cache[0] || (_cache[0] = ($event: any) => (emit('remove', $event))),\n              onClear: _cache[1] || (_cache[1] = ($event: any) => (emit('clear')))\n            }, null, 8, [\"trials\"]))\n          : (__props.id === 'params')\n            ? (_openBlock(), _createBlock(IdealGasParamsPanel, {\n                key: 3,\n                params: __props.params,\n                \"onUpdate:params\": _cache[2] || (_cache[2] = ($event: any) => (emit('update:params', $event)))\n              }, null, 8, [\"params\"]))\n            : (__props.id === 'laws')\n              ? (_openBlock(), _createBlock(IdealGasLawsPanel, {\n                  key: 4,\n                  n: __props.params.n,\n                  temp: __props.params.T,\n                  vol: __props.params.V,\n                  press: __props.p\n                }, null, 8, [\"n\", \"temp\", \"vol\", \"press\"]))\n              : (__props.id === 'results')\n                ? (_openBlock(), _createBlock(IdealGasResultsPanel, {\n                    key: 5,\n                    trials: __props.trials\n                  }, null, 8, [\"trials\"]))\n                : _createCommentVNode(\"\", true)\n  ]))\n}\n}\n\n})",
+      "start": 1783634641843,
+      "end": 1783634641843
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641844,
+      "end": 1783634641844,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { openBlock as _openBlock, createBlock as _createBlock, createCommentVNode as _createCommentVNode, createElementBlock as _createElementBlock } from \"vue\";\nimport IdealGasReadingsPanel from \"./panels/IdealGasReadingsPanel.vue\";\nimport IdealGasChartPanel from \"./panels/IdealGasChartPanel.vue\";\nimport IdealGasTrialsPanel from \"./panels/IdealGasTrialsPanel.vue\";\nimport IdealGasParamsPanel from \"./panels/IdealGasParamsPanel.vue\";\nimport IdealGasLawsPanel from \"./panels/IdealGasLawsPanel.vue\";\nimport IdealGasResultsPanel from \"./panels/IdealGasResultsPanel.vue\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"IdealGasPanelBody\",\n  props: {\n    id: {},\n    trials: {},\n    params: {},\n    p: {},\n    vRms: {}\n  },\n  emits: [\"remove\", \"clear\", \"update:params\"],\n  setup(__props, { emit: __emit }) {\n    const emit = __emit;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", null, [\n        __props.id === \"readings\" ? (_openBlock(), _createBlock(IdealGasReadingsPanel, {\n          key: 0,\n          n: __props.params.n,\n          temp: __props.params.T,\n          vol: __props.params.V,\n          press: __props.p,\n          \"v-rms\": __props.vRms\n        }, null, 8, [\"n\", \"temp\", \"vol\", \"press\", \"v-rms\"])) : __props.id === \"chart\" ? (_openBlock(), _createBlock(IdealGasChartPanel, {\n          key: 1,\n          trials: __props.trials\n        }, null, 8, [\"trials\"])) : __props.id === \"trials\" ? (_openBlock(), _createBlock(IdealGasTrialsPanel, {\n          key: 2,\n          trials: __props.trials,\n          onRemove: _cache[0] || (_cache[0] = ($event) => emit(\"remove\", $event)),\n          onClear: _cache[1] || (_cache[1] = ($event) => emit(\"clear\"))\n        }, null, 8, [\"trials\"])) : __props.id === \"params\" ? (_openBlock(), _createBlock(IdealGasParamsPanel, {\n          key: 3,\n          params: __props.params,\n          \"onUpdate:params\": _cache[2] || (_cache[2] = ($event) => emit(\"update:params\", $event))\n        }, null, 8, [\"params\"])) : __props.id === \"laws\" ? (_openBlock(), _createBlock(IdealGasLawsPanel, {\n          key: 4,\n          n: __props.params.n,\n          temp: __props.params.T,\n          vol: __props.params.V,\n          press: __props.p\n        }, null, 8, [\"n\", \"temp\", \"vol\", \"press\"])) : __props.id === \"results\" ? (_openBlock(), _createBlock(IdealGasResultsPanel, {\n          key: 5,\n          trials: __props.trials\n        }, null, 8, [\"trials\"])) : _createCommentVNode(\"\", true)\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634641844,
+      "end": 1783634642227,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ideal-gas/IdealGasPanelBody.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createBlock as _createBlock, createCommentVNode as _createCommentVNode, createElementBlock as _createElementBlock } from \"vue\"\n\nimport type { IdealGasTrial } from '../../../composables/ideal-gas/useIdealGasTrials'\nimport IdealGasReadingsPanel from './panels/IdealGasReadingsPanel.vue'\nimport IdealGasChartPanel from './panels/IdealGasChartPanel.vue'\nimport IdealGasTrialsPanel from './panels/IdealGasTrialsPanel.vue'\nimport IdealGasParamsPanel from './panels/IdealGasParamsPanel.vue'\nimport IdealGasLawsPanel from './panels/IdealGasLawsPanel.vue'\nimport IdealGasResultsPanel from './panels/IdealGasResultsPanel.vue'\n\ninterface Props {\n  id: string\n  trials: IdealGasTrial[]\n  params: { n: number; T: number; V: number }\n  p: number\n  vRms: number\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'IdealGasPanelBody',\n  props: {\n    id: {},\n    trials: {},\n    params: {},\n    p: {},\n    vRms: {}\n  },\n  emits: [\"remove\", \"clear\", \"update:params\"],\n  setup(__props: any, { emit: __emit }) {\n\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", null, [\n    (__props.id === 'readings')\n      ? (_openBlock(), _createBlock(IdealGasReadingsPanel, {\n          key: 0,\n          n: __props.params.n,\n          temp: __props.params.T,\n          vol: __props.params.V,\n          press: __props.p,\n          \"v-rms\": __props.vRms\n        }, null, 8, [\"n\", \"temp\", \"vol\", \"press\", \"v-rms\"]))\n      : (__props.id === 'chart')\n        ? (_openBlock(), _createBlock(IdealGasChartPanel, {\n            key: 1,\n            trials: __props.trials\n          }, null, 8, [\"trials\"]))\n        : (__props.id === 'trials')\n          ? (_openBlock(), _createBlock(IdealGasTrialsPanel, {\n              key: 2,\n              trials: __props.trials,\n              onRemove: _cache[0] || (_cache[0] = ($event: any) => (emit('remove', $event))),\n              onClear: _cache[1] || (_cache[1] = ($event: any) => (emit('clear')))\n            }, null, 8, [\"trials\"]))\n          : (__props.id === 'params')\n            ? (_openBlock(), _createBlock(IdealGasParamsPanel, {\n                key: 3,\n                params: __props.params,\n                \"onUpdate:params\": _cache[2] || (_cache[2] = ($event: any) => (emit('update:params', $event)))\n              }, null, 8, [\"params\"]))\n            : (__props.id === 'laws')\n              ? (_openBlock(), _createBlock(IdealGasLawsPanel, {\n                  key: 4,\n                  n: __props.params.n,\n                  temp: __props.params.T,\n                  vol: __props.params.V,\n                  press: __props.p\n                }, null, 8, [\"n\", \"temp\", \"vol\", \"press\"]))\n              : (__props.id === 'results')\n                ? (_openBlock(), _createBlock(IdealGasResultsPanel, {\n                    key: 5,\n                    trials: __props.trials\n                  }, null, 8, [\"trials\"]))\n                : _createCommentVNode(\"\", true)\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,aAAa,YAAY,eAAe,cAAc,sBAAsB,qBAAqB,sBAAsB,2BAA2B;AAG3J,OAAO,2BAA2B;AAClC,OAAO,wBAAwB;AAC/B,OAAO,yBAAyB;AAChC,OAAO,yBAAyB;AAChC,OAAO,uBAAuB;AAC9B,OAAO,0BAA0B;AAUjC,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,IAAI,CAAC;AAAA,IACL,QAAQ,CAAC;AAAA,IACT,QAAQ,CAAC;AAAA,IACT,GAAG,CAAC;AAAA,IACJ,MAAM,CAAC;AAAA,EACT;AAAA,EACA,OAAO,CAAC,UAAU,SAAS,eAAe;AAAA,EAC1C,MAAM,SAAc,EAAE,MAAM,OAAO,GAAG;AAGxC,UAAM,OAAO;AAEb,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,MAAM;AAAA,QACpD,QAAQ,OAAO,cACX,WAAW,GAAG,aAAa,uBAAuB;AAAA,UACjD,KAAK;AAAA,UACL,GAAG,QAAQ,OAAO;AAAA,UAClB,MAAM,QAAQ,OAAO;AAAA,UACrB,KAAK,QAAQ,OAAO;AAAA,UACpB,OAAO,QAAQ;AAAA,UACf,SAAS,QAAQ;AAAA,QACnB,GAAG,MAAM,GAAG,CAAC,KAAK,QAAQ,OAAO,SAAS,OAAO,CAAC,KACjD,QAAQ,OAAO,WACb,WAAW,GAAG,aAAa,oBAAoB;AAAA,UAC9C,KAAK;AAAA,UACL,QAAQ,QAAQ;AAAA,QAClB,GAAG,MAAM,GAAG,CAAC,QAAQ,CAAC,KACrB,QAAQ,OAAO,YACb,WAAW,GAAG,aAAa,qBAAqB;AAAA,UAC/C,KAAK;AAAA,UACL,QAAQ,QAAQ;AAAA,UAChB,UAAU,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,UAAU,MAAM;AAAA,UAC3E,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,OAAO;AAAA,QACnE,GAAG,MAAM,GAAG,CAAC,QAAQ,CAAC,KACrB,QAAQ,OAAO,YACb,WAAW,GAAG,aAAa,qBAAqB;AAAA,UAC/C,KAAK;AAAA,UACL,QAAQ,QAAQ;AAAA,UAChB,mBAAmB,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,iBAAiB,MAAM;AAAA,QAC7F,GAAG,MAAM,GAAG,CAAC,QAAQ,CAAC,KACrB,QAAQ,OAAO,UACb,WAAW,GAAG,aAAa,mBAAmB;AAAA,UAC7C,KAAK;AAAA,UACL,GAAG,QAAQ,OAAO;AAAA,UAClB,MAAM,QAAQ,OAAO;AAAA,UACrB,KAAK,QAAQ,OAAO;AAAA,UACpB,OAAO,QAAQ;AAAA,QACjB,GAAG,MAAM,GAAG,CAAC,KAAK,QAAQ,OAAO,OAAO,CAAC,KACxC,QAAQ,OAAO,aACb,WAAW,GAAG,aAAa,sBAAsB;AAAA,UAChD,KAAK;AAAA,UACL,QAAQ,QAAQ;AAAA,QAClB,GAAG,MAAM,GAAG,CAAC,QAAQ,CAAC,KACtB,oBAAoB,IAAI,IAAI;AAAA,MAC5C,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642227,
+      "end": 1783634642227,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642227,
+      "end": 1783634642227,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634642228,
+      "end": 1783634642228,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642228,
+      "end": 1783634642228,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642228,
+      "end": 1783634642228,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642228,
+      "end": 1783634642228,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642228,
+      "end": 1783634642228,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642228,
+      "end": 1783634642228,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642228,
+      "end": 1783634642228,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642228,
+      "end": 1783634642228,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642228,
+      "end": 1783634642228,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642228,
+      "end": 1783634642228,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642228,
+      "end": 1783634642228,
+      "order": "normal"
+    }
+  ]
+}

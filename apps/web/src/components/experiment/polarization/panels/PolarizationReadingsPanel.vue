@@ -1,7 +1,5 @@
-<script setup lang="ts">
-import { useI18n } from '../../../../composables/useI18n'
+﻿<script setup lang="ts">
 
-const { t } = useI18n()
 
 interface Props {
   polarizerAngle: number
@@ -29,6 +27,10 @@ defineProps<Props>()
     <div class="reading-row highlight-row">
       <span class="reading-label bold">Δθ = θ₂ − θ₁</span>
       <span class="reading-val green bold">{{ relativeAngle }}°</span>
+    </div>
+    <div class="reading-row highlight-row" style="background: rgba(251,191,36,0.06); border-color: rgba(251,191,36,0.2);">
+      <span class="reading-label bold">cos²(Δθ)</span>
+      <span class="reading-val amber bold">{{ Math.pow(Math.cos(relativeAngle * Math.PI / 180), 2).toFixed(4) }}</span>
     </div>
     <div class="reading-group">
       <div class="reading-row">

@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/pendulum/PendulumStepTracker.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, normalizeClass as _normalizeClass } from \"vue\"\n\nconst _hoisted_1 = { class: \"step-tracker\" }\nconst _hoisted_2 = { class: \"step-num\" }\n\nimport { useI18n } from '../../../composables/useI18n'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'PendulumStepTracker',\n  props: {\n    stepIndex: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\nconst props = __props\nconst steps = [t('experiments.setupStep'), t('experiments.measurementStep'), t('experiments.analysisStep')]\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (_openBlock(), _createElementBlock(_Fragment, null, _renderList(steps, (s, i) => {\n      return _createElementVNode(\"div\", {\n        key: i,\n        class: _normalizeClass([\"step\", {active:props.stepIndex===i,done:props.stepIndex>i}])\n      }, [\n        _createElementVNode(\"div\", _hoisted_2, _toDisplayString(props.stepIndex>i?'✓':i+1), 1),\n        _createElementVNode(\"span\", null, _toDisplayString(s), 1)\n      ], 2)\n    }), 64))\n  ]))\n}\n}\n\n})",
+      "start": 1783634642638,
+      "end": 1783634642638
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642639,
+      "end": 1783634642639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, normalizeClass as _normalizeClass } from \"vue\";\nconst _hoisted_1 = { class: \"step-tracker\" };\nconst _hoisted_2 = { class: \"step-num\" };\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"PendulumStepTracker\",\n  props: {\n    stepIndex: {}\n  },\n  setup(__props) {\n    const { t } = useI18n();\n    const props = __props;\n    const steps = [t(\"experiments.setupStep\"), t(\"experiments.measurementStep\"), t(\"experiments.analysisStep\")];\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        (_openBlock(), _createElementBlock(_Fragment, null, _renderList(steps, (s, i) => {\n          return _createElementVNode(\"div\", {\n            key: i,\n            class: _normalizeClass([\"step\", { active: props.stepIndex === i, done: props.stepIndex > i }])\n          }, [\n            _createElementVNode(\"div\", _hoisted_2, _toDisplayString(props.stepIndex > i ? \"✓\" : i + 1), 1),\n            _createElementVNode(\"span\", null, _toDisplayString(s), 1)\n          ], 2);\n        }), 64))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634642639,
+      "end": 1783634642829,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/pendulum/PendulumStepTracker.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, normalizeClass as _normalizeClass } from \"vue\"\n\nconst _hoisted_1 = { class: \"step-tracker\" }\nconst _hoisted_2 = { class: \"step-num\" }\n\nimport { useI18n } from '../../../composables/useI18n'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'PendulumStepTracker',\n  props: {\n    stepIndex: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\nconst props = __props\nconst steps = [t('experiments.setupStep'), t('experiments.measurementStep'), t('experiments.analysisStep')]\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (_openBlock(), _createElementBlock(_Fragment, null, _renderList(steps, (s, i) => {\n      return _createElementVNode(\"div\", {\n        key: i,\n        class: _normalizeClass([\"step\", {active:props.stepIndex===i,done:props.stepIndex>i}])\n      }, [\n        _createElementVNode(\"div\", _hoisted_2, _toDisplayString(props.stepIndex>i?'✓':i+1), 1),\n        _createElementVNode(\"span\", null, _toDisplayString(s), 1)\n      ], 2)\n    }), 64))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,cAAc,aAAa,YAAY,WAAW,aAAa,YAAY,sBAAsB,qBAAqB,mBAAmB,kBAAkB,sBAAsB,qBAAqB,kBAAkB,uBAAuB;AAExP,MAAM,aAAa,EAAE,OAAO,eAAe;AAC3C,MAAM,aAAa,EAAE,OAAO,WAAW;AAEvC,SAAS,eAAe;AAGxB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,WAAW,CAAC;AAAA,EACd;AAAA,EACA,MAAM,SAAc;AAEtB,UAAM,EAAE,EAAE,IAAI,QAAQ;AACtB,UAAM,QAAQ;AACd,UAAM,QAAQ,CAAC,EAAE,uBAAuB,GAAG,EAAE,6BAA6B,GAAG,EAAE,0BAA0B,CAAC;AAE1G,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,SAC1D,WAAW,GAAG,oBAAoB,WAAW,MAAM,YAAY,OAAO,CAAC,GAAG,MAAM;AAC/E,iBAAO,oBAAoB,OAAO;AAAA,YAChC,KAAK;AAAA,YACL,OAAO,gBAAgB,CAAC,QAAQ,EAAC,QAAO,MAAM,cAAY,GAAE,MAAK,MAAM,YAAU,EAAC,CAAC,CAAC;AAAA,UACtF,GAAG;AAAA,YACD,oBAAoB,OAAO,YAAY,iBAAiB,MAAM,YAAU,IAAE,MAAI,IAAE,CAAC,GAAG,CAAC;AAAA,YACrF,oBAAoB,QAAQ,MAAM,iBAAiB,CAAC,GAAG,CAAC;AAAA,UAC1D,GAAG,CAAC;AAAA,QACN,CAAC,GAAG,EAAE;AAAA,MACR,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642829,
+      "end": 1783634642830,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642830,
+      "end": 1783634642830,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642830,
+      "end": 1783634642831,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642831,
+      "end": 1783634642831,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642831,
+      "end": 1783634642831,
+      "order": "normal"
+    }
+  ]
+}

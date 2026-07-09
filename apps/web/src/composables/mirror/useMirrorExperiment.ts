@@ -129,10 +129,6 @@ export function useMirrorExperiment() {
   function resetSim() {
     running.value = false
     paused.value = false
-    params.focalLength = 10
-    params.objectDistance = 30
-    params.objectHeight = 5
-    trials.clearTrials()
   }
 
   function onResizeStart(side: 'data' | 'vis', e: MouseEvent) {
@@ -193,6 +189,7 @@ export function useMirrorExperiment() {
     const payload: AnalysisPayload = {
       sourceExperiment: 'mirrors',
       sourceNameAr: t('experiments.expMirrors'),
+      hasCalcTab: true,
       readings,
       columns: [
         { key: 'mirror_type', label: t('experiments.mirrorType') },

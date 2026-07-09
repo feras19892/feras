@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileReport.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed } from 'vue'\nimport ExperimentReport from '../ExperimentReport.vue'\nimport DeletableSection from '../DeletableSection.vue'\n\nimport type { ProjectileTrial } from '../../../composables/projectile/useProjectileTrials'\nimport { useI18n } from '../../../composables/useI18n'\n\nconst { t } = useI18n()\nconst props = defineProps<{\n  trials: ProjectileTrial[]\n  params?: { v0: number; angleDeg: number; g: number; dragCoeff: number }\n  trialStats?: { range_mean: number; range_std: number; flightTime_mean: number; flightTime_std: number } | null\n  fitResult?: { slope: number; intercept: number } | null\n  gTheoretical: number\n}>()\n\nconst emit = defineEmits<{ (e: 'close'): void; (e: 'open-full-report'): void }>()\n\nconst hasData = computed(() => props.trials.length > 0)\n</script>\n\n<template>\n  <ExperimentReport student-storage-key=\"projectile_report_student\" :has-data=\"hasData\" @close=\"emit('close')\" @open-full-report=\"emit('open-full-report')\">\n    <template #content>\n      <DeletableSection v-if=\"params\">\n        <h5>{{ t('experiments.initialConditions') }}</h5>\n        <div class=\"info-grid\">\n          <div class=\"info-field\"><label>v₀</label><span>{{ params.v0 }} m/s</span></div>\n          <div class=\"info-field\"><label>{{ t('experiments.angle') }}</label><span>{{ params.angleDeg }}°</span></div>\n          <div class=\"info-field\"><label>g</label><span>{{ params.g }} m/s²</span></div>\n          <div class=\"info-field\"><label>{{ t('experiments.airResistance') }}</label><span>{{ params.dragCoeff }}</span></div>\n        </div>\n      </DeletableSection>\n      <DeletableSection v-if=\"trials.length\">\n        <h5>{{ t('experiments.readingsTable') }} ({{ trials.length }})</h5>\n        <table class=\"report-table\">\n          <thead>\n            <tr>\n              <th>#</th>\n              <th>{{ t('experiments.angle') }}</th>\n              <th>v₀ (m/s)</th>\n              <th>{{ t('experiments.timeLabel') }} (s)</th>\n              <th>{{ t('experiments.maxHeight') }} (m)</th>\n              <th>{{ t('experiments.rangeLabel') }} (m)</th>\n              <th>{{ t('experiments.error') }} (%)</th>\n            </tr>\n          </thead>\n          <tbody>\n            <tr v-for=\"(tr, i) in trials\" :key=\"tr.id\">\n              <td class=\"idx\">{{ i + 1 }}</td>\n              <td>{{ tr.angleDegrees.toFixed(1) }}°</td>\n              <td>{{ tr.initialVelocity.toFixed(2) }}</td>\n              <td>{{ tr.flightTimeSec.toFixed(2) }}</td>\n              <td>{{ tr.maxHeightMeters.toFixed(2) }}</td>\n              <td class=\"range\">{{ tr.rangeMeters.toFixed(2) }}</td>\n              <td class=\"err\">{{ tr.err.toFixed(2) }}%</td>\n            </tr>\n          </tbody>\n        </table>\n      </DeletableSection>\n      <DeletableSection v-if=\"trials.length && trialStats\">\n        <h5>{{ t('experiments.statisticsLabel') }}</h5>\n        <div class=\"info-grid\">\n          <div class=\"info-field\"><label>{{ t('experiments.averageRange') }}</label><span>{{ trialStats.range_mean.toFixed(2) }} m</span></div>\n          <div class=\"info-field\"><label>{{ t('experiments.stdDeviationRange') }}</label><span>{{ trialStats.range_std.toFixed(2) }} m</span></div>\n          <div class=\"info-field\"><label>{{ t('experiments.averageFlightTime') }}</label><span>{{ trialStats.flightTime_mean.toFixed(2) }} s</span></div>\n          <div class=\"info-field\"><label>{{ t('experiments.stdDeviationTime') }}</label><span>{{ trialStats.flightTime_std.toFixed(2) }} s</span></div>\n        </div>\n      </DeletableSection>\n      <DeletableSection v-if=\"fitResult && trials.length >= 2\">\n        <h5>{{ t('experiments.rangeCurveFitting') }}</h5>\n        <div class=\"equation-box\">\n          <code>R = {{ fitResult.slope.toFixed(4) }} · sin(2θ) {{ fitResult.intercept >= 0 ? '+' : '' }} {{ fitResult.intercept.toFixed(4) }}</code>\n        </div>\n        <p class=\"equation-note\">{{ t('experiments.linearRegressionCurve') }}</p>\n      </DeletableSection>\n      <DeletableSection>\n        <h5>{{ t('experiments.usedEquations') }}</h5>\n        <div class=\"equations-list\">\n          <div class=\"eq\">z = v₀ sin θ / g</div>\n          <div class=\"eq\">H = (v₀ sin θ)² / 2g</div>\n          <div class=\"eq\">R = v₀² sin(2θ) / g</div>\n        </div>\n      </DeletableSection>\n      <div class=\"report-footer\" v-if=\"trials.length\">\n        <span>{{ t('experiments.theoreticalG') }}: <b>{{ gTheoretical }} m/s²</b></span>\n        <span class=\"date\">{{ new Date().toLocaleDateString('ar-SY') }}</span>\n      </div>\n    </template>\n  </ExperimentReport>\n</template>\n\n<style scoped>\n.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: .5rem; }\n.info-field { background: #111827; border: 1px solid #1e293b; border-radius: 8px; padding: .5rem .7rem; display: flex; justify-content: space-between; align-items: center; }\n.info-field label { font-size: .75rem; color: #64748b; }\n.info-field span { font-size: .82rem; color: #e2e8f0; font-weight: 600; font-family: monospace; }\n\n.equation-box { background: #111827; border: 1px solid #1e293b; border-radius: 10px; padding: .8rem 1rem; text-align: center; }\n.equation-box code { color: #f97316; font-size: .95rem; font-family: 'Courier New', monospace; }\n.equation-note { margin: .3rem 0 0; font-size: .72rem; color: #64748b; text-align: center; }\n\n.equations-list { display: flex; flex-wrap: wrap; gap: .5rem; }\n.eq { background: #111827; border: 1px solid #1e293b; border-radius: 8px; padding: .4rem .8rem; font-size: .82rem; color: #94a3b8; font-family: 'Courier New', monospace; }\n\n.idx { color: #64748b; font-weight: 600; }\n.range { color: #5B8DB8; font-weight: 600; }\n.err { color: #fbbf24; }\n\n.report-footer { display: flex; justify-content: space-between; align-items: center; padding-top: .8rem; border-top: 1px solid #1e293b; font-size: .75rem; color: #475569; }\n.report-footer b { color: #5B8DB8; }\n\n@media print {\n  .info-field, .equation-box, .eq { background: #f8fafc; border: 1px solid #e2e8f0; }\n  .info-field label, .equation-note { color: #475569; }\n  .info-field span { color: #000; }\n  .report-footer { color: #475569; border-top: 1px solid #e2e8f0; }\n  .report-footer b { color: #0369a1; }\n}\n</style>\n",
+      "start": 1783634640977,
+      "end": 1783634641407,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641407,
+      "end": 1783634641407,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641407,
+      "end": 1783634641407,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641407,
+      "end": 1783634641407,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641407,
+      "end": 1783634641407,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileReport.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileReport.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileReport.vue?vue&type=style&index=0&scoped=6804511f&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-6804511f\"]]);\n",
+      "start": 1783634641407,
+      "end": 1783634641663,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641663,
+      "end": 1783634641664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641664,
+      "end": 1783634641664,
+      "order": "normal"
+    }
+  ]
+}

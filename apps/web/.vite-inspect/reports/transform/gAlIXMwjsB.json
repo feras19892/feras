@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/WorkspaceActionsPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"workspace-actions\" }\nconst _hoisted_2 = [\"disabled\", \"title\"]\nconst _hoisted_3 = [\"disabled\", \"title\"]\nconst _hoisted_4 = [\"disabled\", \"title\"]\nconst _hoisted_5 = [\"disabled\", \"title\"]\n\nimport { useI18n } from '../../../composables/useI18n';\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'WorkspaceActionsPanel',\n  props: {\n    canUndo: { type: Boolean },\n    canRedo: { type: Boolean },\n    canStepUndo: { type: Boolean },\n    canStepRedo: { type: Boolean }\n  },\n  emits: [\"undo\", \"redo\", \"stepUndo\", \"stepRedo\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n();\n\nconst props = __props;\n\nconst emit = __emit;\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"button\", {\n      class: \"action-btn undo\",\n      disabled: !__props.canUndo,\n      onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('undo'))),\n      title: _unref(t)('chemistryLab.undoFull')\n    }, _toDisplayString(_unref(t)('chemistryLab.undoFull')), 9, _hoisted_2),\n    _createElementVNode(\"button\", {\n      class: \"action-btn step-undo\",\n      disabled: !__props.canStepUndo,\n      onClick: _cache[1] || (_cache[1] = ($event: any) => (emit('stepUndo'))),\n      title: _unref(t)('chemistryLab.undoStep')\n    }, _toDisplayString(_unref(t)('chemistryLab.undoStep')), 9, _hoisted_3),\n    _createElementVNode(\"button\", {\n      class: \"action-btn step-redo\",\n      disabled: !__props.canStepRedo,\n      onClick: _cache[2] || (_cache[2] = ($event: any) => (emit('stepRedo'))),\n      title: _unref(t)('chemistryLab.redoStep')\n    }, _toDisplayString(_unref(t)('chemistryLab.redoStep')), 9, _hoisted_4),\n    _createElementVNode(\"button\", {\n      class: \"action-btn redo\",\n      disabled: !__props.canRedo,\n      onClick: _cache[3] || (_cache[3] = ($event: any) => (emit('redo'))),\n      title: _unref(t)('chemistryLab.redoFull')\n    }, _toDisplayString(_unref(t)('chemistryLab.redoFull')), 9, _hoisted_5)\n  ]))\n}\n}\n\n})",
+      "start": 1783634640027,
+      "end": 1783634640027
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640027,
+      "end": 1783634640027,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"workspace-actions\" };\nconst _hoisted_2 = [\"disabled\", \"title\"];\nconst _hoisted_3 = [\"disabled\", \"title\"];\nconst _hoisted_4 = [\"disabled\", \"title\"];\nconst _hoisted_5 = [\"disabled\", \"title\"];\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"WorkspaceActionsPanel\",\n  props: {\n    canUndo: { type: Boolean },\n    canRedo: { type: Boolean },\n    canStepUndo: { type: Boolean },\n    canStepRedo: { type: Boolean }\n  },\n  emits: [\"undo\", \"redo\", \"stepUndo\", \"stepRedo\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const props = __props;\n    const emit = __emit;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"button\", {\n          class: \"action-btn undo\",\n          disabled: !__props.canUndo,\n          onClick: _cache[0] || (_cache[0] = ($event) => emit(\"undo\")),\n          title: _unref(t)(\"chemistryLab.undoFull\")\n        }, _toDisplayString(_unref(t)(\"chemistryLab.undoFull\")), 9, _hoisted_2),\n        _createElementVNode(\"button\", {\n          class: \"action-btn step-undo\",\n          disabled: !__props.canStepUndo,\n          onClick: _cache[1] || (_cache[1] = ($event) => emit(\"stepUndo\")),\n          title: _unref(t)(\"chemistryLab.undoStep\")\n        }, _toDisplayString(_unref(t)(\"chemistryLab.undoStep\")), 9, _hoisted_3),\n        _createElementVNode(\"button\", {\n          class: \"action-btn step-redo\",\n          disabled: !__props.canStepRedo,\n          onClick: _cache[2] || (_cache[2] = ($event) => emit(\"stepRedo\")),\n          title: _unref(t)(\"chemistryLab.redoStep\")\n        }, _toDisplayString(_unref(t)(\"chemistryLab.redoStep\")), 9, _hoisted_4),\n        _createElementVNode(\"button\", {\n          class: \"action-btn redo\",\n          disabled: !__props.canRedo,\n          onClick: _cache[3] || (_cache[3] = ($event) => emit(\"redo\")),\n          title: _unref(t)(\"chemistryLab.redoFull\")\n        }, _toDisplayString(_unref(t)(\"chemistryLab.redoFull\")), 9, _hoisted_5)\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634640027,
+      "end": 1783634640106,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/WorkspaceActionsPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"workspace-actions\" }\nconst _hoisted_2 = [\"disabled\", \"title\"]\nconst _hoisted_3 = [\"disabled\", \"title\"]\nconst _hoisted_4 = [\"disabled\", \"title\"]\nconst _hoisted_5 = [\"disabled\", \"title\"]\n\nimport { useI18n } from '../../../composables/useI18n';\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'WorkspaceActionsPanel',\n  props: {\n    canUndo: { type: Boolean },\n    canRedo: { type: Boolean },\n    canStepUndo: { type: Boolean },\n    canStepRedo: { type: Boolean }\n  },\n  emits: [\"undo\", \"redo\", \"stepUndo\", \"stepRedo\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n();\n\nconst props = __props;\n\nconst emit = __emit;\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"button\", {\n      class: \"action-btn undo\",\n      disabled: !__props.canUndo,\n      onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('undo'))),\n      title: _unref(t)('chemistryLab.undoFull')\n    }, _toDisplayString(_unref(t)('chemistryLab.undoFull')), 9, _hoisted_2),\n    _createElementVNode(\"button\", {\n      class: \"action-btn step-undo\",\n      disabled: !__props.canStepUndo,\n      onClick: _cache[1] || (_cache[1] = ($event: any) => (emit('stepUndo'))),\n      title: _unref(t)('chemistryLab.undoStep')\n    }, _toDisplayString(_unref(t)('chemistryLab.undoStep')), 9, _hoisted_3),\n    _createElementVNode(\"button\", {\n      class: \"action-btn step-redo\",\n      disabled: !__props.canStepRedo,\n      onClick: _cache[2] || (_cache[2] = ($event: any) => (emit('stepRedo'))),\n      title: _unref(t)('chemistryLab.redoStep')\n    }, _toDisplayString(_unref(t)('chemistryLab.redoStep')), 9, _hoisted_4),\n    _createElementVNode(\"button\", {\n      class: \"action-btn redo\",\n      disabled: !__props.canRedo,\n      onClick: _cache[3] || (_cache[3] = ($event: any) => (emit('redo'))),\n      title: _unref(t)('chemistryLab.redoFull')\n    }, _toDisplayString(_unref(t)('chemistryLab.redoFull')), 9, _hoisted_5)\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,SAAS,QAAQ,mBAAmB,kBAAkB,sBAAsB,qBAAqB,aAAa,YAAY,sBAAsB,2BAA2B;AAEpL,MAAM,aAAa,EAAE,OAAO,oBAAoB;AAChD,MAAM,aAAa,CAAC,YAAY,OAAO;AACvC,MAAM,aAAa,CAAC,YAAY,OAAO;AACvC,MAAM,aAAa,CAAC,YAAY,OAAO;AACvC,MAAM,aAAa,CAAC,YAAY,OAAO;AAEvC,SAAS,eAAe;AAExB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,SAAS,EAAE,MAAM,QAAQ;AAAA,IACzB,SAAS,EAAE,MAAM,QAAQ;AAAA,IACzB,aAAa,EAAE,MAAM,QAAQ;AAAA,IAC7B,aAAa,EAAE,MAAM,QAAQ;AAAA,EAC/B;AAAA,EACA,OAAO,CAAC,QAAQ,QAAQ,YAAY,UAAU;AAAA,EAC9C,MAAM,SAAc,EAAE,MAAM,OAAO,GAAG;AAExC,UAAM,EAAE,EAAE,IAAI,QAAQ;AAEtB,UAAM,QAAQ;AAEd,UAAM,OAAO;AAEb,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,oBAAoB,UAAU;AAAA,UAC5B,OAAO;AAAA,UACP,UAAU,CAAC,QAAQ;AAAA,UACnB,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,MAAM;AAAA,UAChE,OAAO,OAAO,CAAC,EAAE,uBAAuB;AAAA,QAC1C,GAAG,iBAAiB,OAAO,CAAC,EAAE,uBAAuB,CAAC,GAAG,GAAG,UAAU;AAAA,QACtE,oBAAoB,UAAU;AAAA,UAC5B,OAAO;AAAA,UACP,UAAU,CAAC,QAAQ;AAAA,UACnB,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,UAAU;AAAA,UACpE,OAAO,OAAO,CAAC,EAAE,uBAAuB;AAAA,QAC1C,GAAG,iBAAiB,OAAO,CAAC,EAAE,uBAAuB,CAAC,GAAG,GAAG,UAAU;AAAA,QACtE,oBAAoB,UAAU;AAAA,UAC5B,OAAO;AAAA,UACP,UAAU,CAAC,QAAQ;AAAA,UACnB,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,UAAU;AAAA,UACpE,OAAO,OAAO,CAAC,EAAE,uBAAuB;AAAA,QAC1C,GAAG,iBAAiB,OAAO,CAAC,EAAE,uBAAuB,CAAC,GAAG,GAAG,UAAU;AAAA,QACtE,oBAAoB,UAAU;AAAA,UAC5B,OAAO;AAAA,UACP,UAAU,CAAC,QAAQ;AAAA,UACnB,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,MAAM;AAAA,UAChE,OAAO,OAAO,CAAC,EAAE,uBAAuB;AAAA,QAC1C,GAAG,iBAAiB,OAAO,CAAC,EAAE,uBAAuB,CAAC,GAAG,GAAG,UAAU;AAAA,MACxE,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640106,
+      "end": 1783634640106,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640106,
+      "end": 1783634640106,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634640106,
+      "end": 1783634640106,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640106,
+      "end": 1783634640106,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640106,
+      "end": 1783634640106,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640106,
+      "end": 1783634640106,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640107,
+      "end": 1783634640107,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640107,
+      "end": 1783634640107,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640107,
+      "end": 1783634640107,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640107,
+      "end": 1783634640107,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640107,
+      "end": 1783634640107,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640107,
+      "end": 1783634640107,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640107,
+      "end": 1783634640107,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/freefall/useFreeFallReport.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { useExperimentReport } from '../useExperimentReport'\nimport { useI18n } from '../useI18n'\nimport type { FreeFallTrial } from './useFreeFallTrials'\nimport type { LabReportTable, LabReportStat } from '../../utils/lab-report'\n\ninterface FreeFallReportInput { params: { h: number; g: number; mass: number; airResistance: boolean }; trials: { trials: { value: FreeFallTrial[] }; trialStats: { value: { g_mean: number } }; calcResult: { value: string } } }\n\nexport function useFreeFallReport() {\n  const { t } = useI18n()\n  const rep = useExperimentReport('freefall_report_student')\n\n  function openFullReport(ex: FreeFallReportInput) {\n    const trials = ex.trials.trials.value\n    const table: LabReportTable = {\n      caption: t('experiments.freeFallReportCaption'),\n      headers: ['#', 'h (m)', 't (s)', 't² (s²)', 'v_impact (m/s)', 'g_calc (m/s²)', t('experiments.errorPercentage') + ' (%)'],\n      rows: trials.map((t, i: number) => [\n        i + 1, t.heightMeters.toFixed(2), t.timeSec.toFixed(3),\n        t.timeSquaredSec2.toFixed(4), t.impactVelocityMs.toFixed(2),\n        t.gCalc.toFixed(2), t.err.toFixed(2) + '%',\n      ]),\n    }\n\n    const statsVal = ex.trials.trialStats.value\n    const stats: LabReportStat[] = []\n    if (statsVal.g_mean > 0) stats.push({ label: t('experiments.gAverage'), value: statsVal.g_mean.toFixed(2), unit: 'm/s²', highlight: true })\n    if (ex.params.g > 0) stats.push({ label: t('experiments.gTheoretical'), value: ex.params.g.toFixed(2), unit: 'm/s²' })\n\n    const lawsBlock = `\n<div style=\"font:monospace .85rem/1.8 #1e3a8a\">\n  <div><b>${t('experiments.timeEquation')}:</b> t = √(2h/g)</div>\n  <div><b>${t('experiments.velocityEquation')}:</b> v = √(2gh)</div>\n  <div><b>${t('experiments.gEquation')}:</b> g = 2h/t²</div>\n</div>`\n\n    const calcHtml = ex.trials.calcResult.value || ''\n    const calculationsBlock = calcHtml\n      ? `<div style=\"font-family:monospace;font-size:.85rem;line-height:1.8;color:#1e3a8a\">${calcHtml}</div>`\n      : ''\n\n    let regressionBlock = ''\n    if (statsVal.g_mean > 0) {\n      regressionBlock = `\n<div style=\"font-family:monospace;font-size:.85rem;line-height:1.8;color:#1e3a8a\">\n  <div>• ${t('experiments.slopeLabel')} = ${(statsVal.g_mean / 2).toFixed(5)} m/s²</div>\n  <div>• ${t('experiments.gFromRegression')} = ${statsVal.g_mean.toFixed(2)} m/s²</div>\n</div>`\n    }\n\n    rep.openFullReport({\n      title: t('experiments.freeFallReportTitle'), icon: '🍎', experimentName: t('experiments.expFreeFall') + ' — ' + t('experiments.gravityMechanics'),\n      dir: 'rtl', dateLocale: 'ar',\n      meta: { [t('experiments.branchLabel')]: t('experiments.branchMechanics'), [t('experiments.experimentLabel')]: t('experiments.expFreeFall'), [t('experiments.gTheoretical')]: ex.params.g.toFixed(2) + ' m/s²' },\n      params: [\n        { label: t('experiments.heightLabel'), value: ex.params.h.toFixed(2), unit: 'm' },\n        { label: 'g', value: ex.params.g.toFixed(2), unit: 'm/s²' },\n        { label: t('experiments.massLabel'), value: ex.params.mass.toFixed(2), unit: 'kg' },\n        { label: t('experiments.airResistanceLabel'), value: ex.params.airResistance ? t('experiments.airResistanceEnabled') : t('experiments.airResistanceDisabled') },\n        { label: t('experiments.readingsCountLabel'), value: trials.length },\n      ],\n      summaryStats: stats, tables: [table],\n      htmlBlocks: [\n        { title: t('experiments.lawsTitle'), html: lawsBlock },\n        calculationsBlock ? { title: t('experiments.calculationsTitle'), html: calculationsBlock } : null,\n        regressionBlock ? { title: t('experiments.regressionResultsTitle'), html: regressionBlock } : null,\n        { title: t('experiments.potentialErrorSources'), html: `<ul style=\"margin:0;padding-right:1.2rem;font-size:.85rem\"><li>${t('experiments.digitalTimerAccuracy')}</li><li>${t('experiments.heightMeasurementAccuracy')}</li><li>${t('experiments.airFriction')}</li><li>${t('experiments.deviceVibration')}</li><li>${t('experiments.localGravityEffect')}</li></ul>` },\n      // eslint-disable-next-line @typescript-eslint/no-explicit-any\n      ].filter((x): x is { title: string; html: string } => x !== null),\n      footerNote: t('experiments.footerNote') + ' • ' + t('experiments.branchMechanics'),\n    })\n  }\n\n  return { ...rep, openFullReport }\n}\n",
+      "start": 1783634641009,
+      "end": 1783634641518,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641518,
+      "end": 1783634641518,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { useExperimentReport } from \"../useExperimentReport\";\nimport { useI18n } from \"../useI18n\";\nexport function useFreeFallReport() {\n  const { t } = useI18n();\n  const rep = useExperimentReport(\"freefall_report_student\");\n  function openFullReport(ex) {\n    const trials = ex.trials.trials.value;\n    const table = {\n      caption: t(\"experiments.freeFallReportCaption\"),\n      headers: [\"#\", \"h (m)\", \"t (s)\", \"t² (s²)\", \"v_impact (m/s)\", \"g_calc (m/s²)\", t(\"experiments.errorPercentage\") + \" (%)\"],\n      rows: trials.map((t2, i) => [\n        i + 1,\n        t2.heightMeters.toFixed(2),\n        t2.timeSec.toFixed(3),\n        t2.timeSquaredSec2.toFixed(4),\n        t2.impactVelocityMs.toFixed(2),\n        t2.gCalc.toFixed(2),\n        t2.err.toFixed(2) + \"%\"\n      ])\n    };\n    const statsVal = ex.trials.trialStats.value;\n    const stats = [];\n    if (statsVal.g_mean > 0) stats.push({ label: t(\"experiments.gAverage\"), value: statsVal.g_mean.toFixed(2), unit: \"m/s²\", highlight: true });\n    if (ex.params.g > 0) stats.push({ label: t(\"experiments.gTheoretical\"), value: ex.params.g.toFixed(2), unit: \"m/s²\" });\n    const lawsBlock = `\n<div style=\"font:monospace .85rem/1.8 #1e3a8a\">\n  <div><b>${t(\"experiments.timeEquation\")}:</b> t = √(2h/g)</div>\n  <div><b>${t(\"experiments.velocityEquation\")}:</b> v = √(2gh)</div>\n  <div><b>${t(\"experiments.gEquation\")}:</b> g = 2h/t²</div>\n</div>`;\n    const calcHtml = ex.trials.calcResult.value || \"\";\n    const calculationsBlock = calcHtml ? `<div style=\"font-family:monospace;font-size:.85rem;line-height:1.8;color:#1e3a8a\">${calcHtml}</div>` : \"\";\n    let regressionBlock = \"\";\n    if (statsVal.g_mean > 0) {\n      regressionBlock = `\n<div style=\"font-family:monospace;font-size:.85rem;line-height:1.8;color:#1e3a8a\">\n  <div>• ${t(\"experiments.slopeLabel\")} = ${(statsVal.g_mean / 2).toFixed(5)} m/s²</div>\n  <div>• ${t(\"experiments.gFromRegression\")} = ${statsVal.g_mean.toFixed(2)} m/s²</div>\n</div>`;\n    }\n    rep.openFullReport({\n      title: t(\"experiments.freeFallReportTitle\"),\n      icon: \"🍎\",\n      experimentName: t(\"experiments.expFreeFall\") + \" — \" + t(\"experiments.gravityMechanics\"),\n      dir: \"rtl\",\n      dateLocale: \"ar\",\n      meta: { [t(\"experiments.branchLabel\")]: t(\"experiments.branchMechanics\"), [t(\"experiments.experimentLabel\")]: t(\"experiments.expFreeFall\"), [t(\"experiments.gTheoretical\")]: ex.params.g.toFixed(2) + \" m/s²\" },\n      params: [\n        { label: t(\"experiments.heightLabel\"), value: ex.params.h.toFixed(2), unit: \"m\" },\n        { label: \"g\", value: ex.params.g.toFixed(2), unit: \"m/s²\" },\n        { label: t(\"experiments.massLabel\"), value: ex.params.mass.toFixed(2), unit: \"kg\" },\n        { label: t(\"experiments.airResistanceLabel\"), value: ex.params.airResistance ? t(\"experiments.airResistanceEnabled\") : t(\"experiments.airResistanceDisabled\") },\n        { label: t(\"experiments.readingsCountLabel\"), value: trials.length }\n      ],\n      summaryStats: stats,\n      tables: [table],\n      htmlBlocks: [\n        { title: t(\"experiments.lawsTitle\"), html: lawsBlock },\n        calculationsBlock ? { title: t(\"experiments.calculationsTitle\"), html: calculationsBlock } : null,\n        regressionBlock ? { title: t(\"experiments.regressionResultsTitle\"), html: regressionBlock } : null,\n        { title: t(\"experiments.potentialErrorSources\"), html: `<ul style=\"margin:0;padding-right:1.2rem;font-size:.85rem\"><li>${t(\"experiments.digitalTimerAccuracy\")}</li><li>${t(\"experiments.heightMeasurementAccuracy\")}</li><li>${t(\"experiments.airFriction\")}</li><li>${t(\"experiments.deviceVibration\")}</li><li>${t(\"experiments.localGravityEffect\")}</li></ul>` }\n        // eslint-disable-next-line @typescript-eslint/no-explicit-any\n      ].filter((x) => x !== null),\n      footerNote: t(\"experiments.footerNote\") + \" • \" + t(\"experiments.branchMechanics\")\n    });\n  }\n  return { ...rep, openFullReport };\n}\n",
+      "start": 1783634641518,
+      "end": 1783634641667,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/freefall/useFreeFallReport.ts"
+        ],
+        "sourcesContent": [
+          "import { useExperimentReport } from '../useExperimentReport'\nimport { useI18n } from '../useI18n'\nimport type { FreeFallTrial } from './useFreeFallTrials'\nimport type { LabReportTable, LabReportStat } from '../../utils/lab-report'\n\ninterface FreeFallReportInput { params: { h: number; g: number; mass: number; airResistance: boolean }; trials: { trials: { value: FreeFallTrial[] }; trialStats: { value: { g_mean: number } }; calcResult: { value: string } } }\n\nexport function useFreeFallReport() {\n  const { t } = useI18n()\n  const rep = useExperimentReport('freefall_report_student')\n\n  function openFullReport(ex: FreeFallReportInput) {\n    const trials = ex.trials.trials.value\n    const table: LabReportTable = {\n      caption: t('experiments.freeFallReportCaption'),\n      headers: ['#', 'h (m)', 't (s)', 't² (s²)', 'v_impact (m/s)', 'g_calc (m/s²)', t('experiments.errorPercentage') + ' (%)'],\n      rows: trials.map((t, i: number) => [\n        i + 1, t.heightMeters.toFixed(2), t.timeSec.toFixed(3),\n        t.timeSquaredSec2.toFixed(4), t.impactVelocityMs.toFixed(2),\n        t.gCalc.toFixed(2), t.err.toFixed(2) + '%',\n      ]),\n    }\n\n    const statsVal = ex.trials.trialStats.value\n    const stats: LabReportStat[] = []\n    if (statsVal.g_mean > 0) stats.push({ label: t('experiments.gAverage'), value: statsVal.g_mean.toFixed(2), unit: 'm/s²', highlight: true })\n    if (ex.params.g > 0) stats.push({ label: t('experiments.gTheoretical'), value: ex.params.g.toFixed(2), unit: 'm/s²' })\n\n    const lawsBlock = `\n<div style=\"font:monospace .85rem/1.8 #1e3a8a\">\n  <div><b>${t('experiments.timeEquation')}:</b> t = √(2h/g)</div>\n  <div><b>${t('experiments.velocityEquation')}:</b> v = √(2gh)</div>\n  <div><b>${t('experiments.gEquation')}:</b> g = 2h/t²</div>\n</div>`\n\n    const calcHtml = ex.trials.calcResult.value || ''\n    const calculationsBlock = calcHtml\n      ? `<div style=\"font-family:monospace;font-size:.85rem;line-height:1.8;color:#1e3a8a\">${calcHtml}</div>`\n      : ''\n\n    let regressionBlock = ''\n    if (statsVal.g_mean > 0) {\n      regressionBlock = `\n<div style=\"font-family:monospace;font-size:.85rem;line-height:1.8;color:#1e3a8a\">\n  <div>• ${t('experiments.slopeLabel')} = ${(statsVal.g_mean / 2).toFixed(5)} m/s²</div>\n  <div>• ${t('experiments.gFromRegression')} = ${statsVal.g_mean.toFixed(2)} m/s²</div>\n</div>`\n    }\n\n    rep.openFullReport({\n      title: t('experiments.freeFallReportTitle'), icon: '🍎', experimentName: t('experiments.expFreeFall') + ' — ' + t('experiments.gravityMechanics'),\n      dir: 'rtl', dateLocale: 'ar',\n      meta: { [t('experiments.branchLabel')]: t('experiments.branchMechanics'), [t('experiments.experimentLabel')]: t('experiments.expFreeFall'), [t('experiments.gTheoretical')]: ex.params.g.toFixed(2) + ' m/s²' },\n      params: [\n        { label: t('experiments.heightLabel'), value: ex.params.h.toFixed(2), unit: 'm' },\n        { label: 'g', value: ex.params.g.toFixed(2), unit: 'm/s²' },\n        { label: t('experiments.massLabel'), value: ex.params.mass.toFixed(2), unit: 'kg' },\n        { label: t('experiments.airResistanceLabel'), value: ex.params.airResistance ? t('experiments.airResistanceEnabled') : t('experiments.airResistanceDisabled') },\n        { label: t('experiments.readingsCountLabel'), value: trials.length },\n      ],\n      summaryStats: stats, tables: [table],\n      htmlBlocks: [\n        { title: t('experiments.lawsTitle'), html: lawsBlock },\n        calculationsBlock ? { title: t('experiments.calculationsTitle'), html: calculationsBlock } : null,\n        regressionBlock ? { title: t('experiments.regressionResultsTitle'), html: regressionBlock } : null,\n        { title: t('experiments.potentialErrorSources'), html: `<ul style=\"margin:0;padding-right:1.2rem;font-size:.85rem\"><li>${t('experiments.digitalTimerAccuracy')}</li><li>${t('experiments.heightMeasurementAccuracy')}</li><li>${t('experiments.airFriction')}</li><li>${t('experiments.deviceVibration')}</li><li>${t('experiments.localGravityEffect')}</li></ul>` },\n      // eslint-disable-next-line @typescript-eslint/no-explicit-any\n      ].filter((x): x is { title: string; html: string } => x !== null),\n      footerNote: t('experiments.footerNote') + ' • ' + t('experiments.branchMechanics'),\n    })\n  }\n\n  return { ...rep, openFullReport }\n}\n"
+        ],
+        "mappings": "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",
+        "names": [
+          "t"
+        ]
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641667,
+      "end": 1783634641667,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641667,
+      "end": 1783634641667,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641667,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/CalorimetryOverlayPanels.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport type { CalorimetryTrial } from '../../../composables/calorimetry/useCalorimetryTrials'\nimport CalorimetryPanelBody from './CalorimetryPanelBody.vue'\n\ninterface Props {\n  maximized: Record<string, boolean>\n  panelTitle: (id: string) => string\n  trials: CalorimetryTrial[]\n  params: { mWater: number; tWater: number; mMetal: number; tMetal: number; cMetal: number; mCup: number; metalType: string }\n  metalOptions?: Record<string, { c: number; nameAr: string; nameEn: string }>\n  tf: number\n  cMetal: number\n}\nconst props = defineProps<Props>()\nconst emit = defineEmits<{\n  (e: 'maximize', id: string): void\n  (e: 'remove', id: number): void\n  (e: 'clear'): void\n  (e: 'update:params', p: { mWater: number; tWater: number; mMetal: number; tMetal: number; cMetal: number; mCup: number; metalType: string }): void\n}>()\nconst ids = ['readings', 'chart', 'trials', 'params', 'laws', 'results']\n</script>\n<template>\n  <div class=\"overlay-panels\">\n    <template v-for=\"id in ids\" :key=\"id\">\n      <div v-if=\"props.maximized[id]\" class=\"overlay-panel\" @click=\"emit('maximize', id)\">\n        <div class=\"overlay-header\">\n          <span>{{ panelTitle(id) }}</span>\n          <button class=\"overlay-close\" @click.stop=\"emit('maximize', id)\">&#x2715;</button>\n        </div>\n        <CalorimetryPanelBody :id=\"id\" :trials=\"trials\" :params=\"params\" :metal-options=\"metalOptions\" :tf=\"tf\" :c-metal=\"cMetal\" @remove=\"emit('remove', $event)\" @clear=\"emit('clear')\" @update:params=\"emit('update:params', $event)\" />\n      </div>\n    </template>\n  </div>\n</template>\n<style scoped>\n.overlay-panels { position: fixed; inset: 0; z-index: 9998; pointer-events: none; }\n.overlay-panel { position: absolute; inset: 2rem; background: #1A1F27; border: 1px solid #2D3645; border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; pointer-events: auto; }\n.overlay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: .5rem; font-weight: 700; color: #5B8DB8; }\n.overlay-close { background: none; border: none; color: #8B95A5; cursor: pointer; font-size: 1rem; }\n</style>\n",
+      "start": 1783634640925,
+      "end": 1783634641272,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641272,
+      "end": 1783634641272,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641272,
+      "end": 1783634641272,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641272,
+      "end": 1783634641272,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641272,
+      "end": 1783634641272,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/CalorimetryOverlayPanels.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/CalorimetryOverlayPanels.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/CalorimetryOverlayPanels.vue?vue&type=style&index=0&scoped=37a7f04b&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-37a7f04b\"]]);\n",
+      "start": 1783634641272,
+      "end": 1783634641628,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641628,
+      "end": 1783634641628,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641629,
+      "end": 1783634641631,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641631,
+      "end": 1783634641631,
+      "order": "normal"
+    }
+  ]
+}

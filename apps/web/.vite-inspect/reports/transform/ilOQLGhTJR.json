@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionOverlayPanels.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport CollisionPanelBody from './CollisionPanelBody.vue'\n\nimport type { CollisionSignalPoint } from '../../../composables/collision/useCollisionLab'\nimport type { CollisionParams, CollisionState } from '../../../modules/physics/experiments/collision/useCollisionPhysics'\nimport type { CollisionTrial } from '../../../composables/collision/useCollisionTrials'\n\nconst props = defineProps<{\n  maximized: Record<string, boolean>\n  panelTitle: (id: string) => string\n  params: CollisionParams\n  sim: CollisionState\n  trials: CollisionTrial[]\n  signalSeries?: CollisionSignalPoint[]\n}>()\n\nconst emit = defineEmits<{\n  (e: 'maximize', id: string): void\n  (e: 'update:params', val: Partial<CollisionParams>): void\n  (e: 'remove', id: number): void\n  (e: 'clear'): void\n}>()\n</script>\n\n<template>\n  <Teleport to=\"body\">\n    <div v-for=\"[id, active] in Object.entries(maximized).filter(([,a]) => a)\" :key=\"id\" class=\"overlay-backdrop\" @click=\"emit('maximize', id)\">\n      <div class=\"overlay-panel\" @click.stop>\n        <div class=\"overlay-header\">\n          <span>{{ panelTitle(id) }}</span>\n          <button @click=\"emit('maximize', id)\">×</button>\n        </div>\n        <CollisionPanelBody :id=\"id\" :params=\"params\" :sim=\"sim\" :trials=\"trials\" :signal-series=\"signalSeries || []\"\n          @update:params=\"emit('update:params', $event)\" @remove=\"emit('remove', $event)\" @clear=\"emit('clear')\"\n        />\n      </div>\n    </div>\n  </Teleport>\n</template>\n\n<style scoped>\n.overlay-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 150; display: flex; align-items: center; justify-content: center; }\n.overlay-panel { background: #161B22; border: 1px solid #2D3645; border-radius: 10px; width: 90vw; max-width: 800px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden; }\n.overlay-header { display: flex; justify-content: space-between; align-items: center; padding: .6rem .8rem; border-bottom: 1px solid #2D3645; }\n.overlay-header span { color: #D1D7E0; font-size: .82rem; font-weight: 600; }\n.overlay-header button { background: none; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer; }\n</style>\n",
+      "start": 1783634640980,
+      "end": 1783634641425,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641425,
+      "end": 1783634641425,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641425,
+      "end": 1783634641425,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641425,
+      "end": 1783634641425,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641425,
+      "end": 1783634641425,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionOverlayPanels.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionOverlayPanels.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionOverlayPanels.vue?vue&type=style&index=0&scoped=6418bf54&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-6418bf54\"]]);\n",
+      "start": 1783634641425,
+      "end": 1783634641628,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641628,
+      "end": 1783634641628,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641629,
+      "end": 1783634641631,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641631,
+      "end": 1783634641631,
+      "order": "normal"
+    }
+  ]
+}

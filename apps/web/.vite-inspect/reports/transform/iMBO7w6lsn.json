@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileStepTracker.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\n\nconst { t } = useI18n()\nconst props = defineProps<{\n  stepIndex: number\n}>()\nconst steps = [t('experiments.setupStep'), t('experiments.measurementStep'), t('experiments.analysisStep')]\n</script>\n\n<template>\n  <div class=\"step-tracker\">\n    <div v-for=\"(s,i) in steps\" :key=\"i\" class=\"step\" :class=\"{active:props.stepIndex===i,done:props.stepIndex>i}\">\n      <div class=\"step-num\">{{ props.stepIndex>i?'&#x2713;':i+1 }}</div>\n      <span>{{ s }}</span>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.step-tracker { display:flex; gap:1.5rem; background:#1E2530; padding:.5rem 1.2rem; border-radius:8px; border:1px solid #2D3645; flex-shrink:0; }\n.step { display:flex; align-items:center; gap:.3rem; font-size:.72rem; opacity:.5; transition:.2s; }\n.step.active, .step.done { opacity:1; font-weight:700; }\n.step-num { width:24px; height:24px; border-radius:50%; background:#252D3A; border:2px solid #2D3645; display:flex; align-items:center; justify-content:center; font-size:.7rem; font-weight:700; }\n.step.active .step-num { border-color:#5B8DB8; color:#5B8DB8; }\n.step.done .step-num { background:#5B8DB8; border-color:#5B8DB8; color:#fff; }\n</style>\n",
+      "start": 1783634640977,
+      "end": 1783634641418,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641418,
+      "end": 1783634641418,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641418,
+      "end": 1783634641418,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641418,
+      "end": 1783634641418,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641418,
+      "end": 1783634641418,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileStepTracker.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileStepTracker.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileStepTracker.vue?vue&type=style&index=0&scoped=16971841&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-16971841\"]]);\n",
+      "start": 1783634641418,
+      "end": 1783634641639,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    }
+  ]
+}

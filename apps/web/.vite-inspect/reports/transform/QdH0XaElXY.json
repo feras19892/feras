@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/student/StudentReports.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, onMounted, watch } from 'vue'\nimport { useI18n } from '../../composables/useI18n'\nimport { getReports } from '../../services/report.service'\nimport type { Report } from '../../services/report.service'\nimport { useAuthStore } from '../../modules/auth/stores/auth'\nimport ReportViewer from '../shared/ReportViewer.vue'\nimport ReportCommentThread from '../shared/ReportCommentThread.vue'\nimport ReportResubmitModal from './ReportResubmitModal.vue'\n\nconst { t } = useI18n()\nconst auth = useAuthStore()\nconst reports = ref<Report[]>([])\nconst loading = ref(false)\nconst viewOpen = ref(false)\nconst selectedReport = ref<Report | null>(null)\nconst resubmitOpen = ref(false)\nconst resubmitTarget = ref<Report | null>(null)\n\nasync function load() {\n  loading.value = true\n  try {\n    const res = await getReports()\n    if (res.success) reports.value = res.reports\n  } catch (err) {\n    console.error('load reports failed:', err)\n  } finally {\n    loading.value = false\n  }\n}\n\nfunction openReport(r: Report) {\n  selectedReport.value = r\n  viewOpen.value = true\n}\n\nfunction openResubmit(r: Report) {\n  resubmitTarget.value = r\n  resubmitOpen.value = true\n}\n\nfunction onResubmitted() {\n  load()\n  resubmitOpen.value = false\n}\n\nfunction statusLabel(s: string) {\n  if (s === 'graded') return t('dashboard.statusGraded')\n  if (s === 'submitted') return t('dashboard.statusSubmitted')\n  if (s === 'resubmitted') return t('dashboard.statusResubmitted')\n  return t('dashboard.statusDraft')\n}\n\nfunction statusClass(s: string) {\n  if (s === 'graded') return 'graded'\n  if (s === 'submitted') return 'pending'\n  if (s === 'resubmitted') return 'resubmitted'\n  return 'draft'\n}\n\nonMounted(() => {\n  load()\n})\n\nwatch(() => auth.user, (u) => {\n  if (u) load()\n}, { immediate: false })\n</script>\n\n<template>\n  <div class=\"reports-panel\">\n    <div class=\"reports-header\">\n      <h2>{{ t('dashboard.myReportsTitle') }}</h2>\n      <span v-if=\"reports.length\" class=\"count\">{{ reports.length }} {{ t('dashboard.reportCount') }}</span>\n    </div>\n\n    <div v-if=\"loading\" class=\"empty\">...</div>\n    <div v-else-if=\"reports.length === 0\" class=\"empty\">\n      <p>{{ t('dashboard.noReportsSent') }}</p>\n      <p class=\"sub\">{{ t('dashboard.doExperimentThenSend') }}</p>\n    </div>\n    <div v-else class=\"report-list\">\n      <div v-for=\"r in reports\" :key=\"r.id\" class=\"report-card\" :class=\"statusClass(r.status)\">\n        <div class=\"card-header\">\n          <div class=\"title-block\">\n            <span class=\"exp-name\">🧪 {{ r.experiment_name }}</span>\n            <span class=\"class-name\">🏫 {{ r.class_id }}</span>\n          </div>\n          <div class=\"meta\">\n            <span class=\"date\">📅 {{ r.submitted_at?.slice(0, 10) || r.created_at?.slice(0, 10) }}</span>\n            <span class=\"badge\" :class=\"statusClass(r.status)\">{{ statusLabel(r.status) }}</span>\n            <span v-if=\"r.grade !== undefined\" class=\"grade\">⭐ {{ r.grade }}/100</span>\n          </div>\n        </div>\n\n        <div class=\"card-actions\">\n          <button class=\"btn-view\" @click=\"openReport(r)\">\n            📄 {{ t('dashboard.viewReport') }}\n          </button>\n          <button\n            v-if=\"r.status === 'graded'\"\n            class=\"btn-resubmit\"\n            @click=\"openResubmit(r)\"\n          >\n            ↩️ {{ t('dashboard.resubmit') }}\n          </button>\n        </div>\n      </div>\n    </div>\n\n    <!-- View Report Modal -->\n    <div v-if=\"viewOpen && selectedReport\" class=\"modal-overlay\" @click.self=\"viewOpen = false\">\n      <div class=\"view-modal\">\n        <!-- Grade Banner -->\n        <div v-if=\"selectedReport.status === 'graded'\" class=\"grade-banner\">\n          <span class=\"grade-score\">⭐ {{ selectedReport.grade }}/100</span>\n          <span v-if=\"selectedReport.graded_by_name\" class=\"grade-teacher\">{{ t('dashboard.grader') }}: {{ selectedReport.graded_by_name }}</span>\n          <span v-if=\"selectedReport.feedback\" class=\"grade-feedback\">{{ selectedReport.feedback }}</span>\n        </div>\n        <div v-else-if=\"selectedReport.status === 'resubmitted'\" class=\"status-banner resubmitted\">\n          ↩️ {{ t('dashboard.resubmittedWaiting') }}\n        </div>\n        <div v-else class=\"status-banner pending\">\n          ⏳ {{ t('dashboard.underReview') }}\n        </div>\n\n        <ReportViewer :report=\"selectedReport\" />\n\n        <ReportCommentThread\n          v-if=\"selectedReport\"\n          :report-id=\"selectedReport.id\"\n          :user-role=\"auth.user?.role || ''\"\n          :user-name=\"auth.user?.name || ''\"\n        />\n\n        <div class=\"actions\">\n          <button class=\"btn-close\" @click=\"viewOpen = false\">{{ t('dashboard.close') }}</button>\n          <button\n            v-if=\"selectedReport.status === 'graded'\"\n            class=\"btn-resubmit\"\n            @click=\"viewOpen = false; openResubmit(selectedReport)\"\n          >\n            ↩️ {{ t('dashboard.resubmit') }}\n          </button>\n        </div>\n      </div>\n    </div>\n\n    <ReportResubmitModal\n      v-model:show=\"resubmitOpen\"\n      :original-report=\"resubmitTarget\"\n      @submitted=\"onResubmitted\"\n    />\n  </div>\n</template>\n\n<style scoped>\n.reports-panel { width: 100%; padding: 1rem 1.5rem; }\n.reports-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.06); }\n.reports-header h2 { font-size: 1.5rem; font-weight: 800; margin: 0; background: linear-gradient(135deg, #67e8f9, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }\n.count { font-size: 0.75rem; color: #64748b; background: rgba(255,255,255,0.05); padding: 0.2rem 0.6rem; border-radius: 999px; }\n.empty { text-align: center; padding: 3rem 1rem; color: #64748b; }\n.empty .sub { font-size: 0.85rem; color: #475569; margin-top: 0.3rem; }\n.report-list { display: flex; flex-direction: column; gap: 0.6rem; }\n.report-card { padding: 1rem 1.1rem; border-radius: 0.75rem; background: rgba(15,23,42,0.65); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s; display: flex; flex-direction: column; gap: 0.65rem; }\n.report-card:hover { border-color: rgba(99,102,241,0.25); box-shadow: 0 10px 30px rgba(0,0,0,0.35); }\n.report-card.graded { border-color: rgba(34,197,94,0.25); }\n.report-card.resubmitted { border-color: rgba(99,102,241,0.25); }\n.card-header { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }\n.title-block { display: flex; flex-direction: column; gap: 0.2rem; }\n.exp-name { font-weight: 800; color: #f1f5f9; }\n.class-name { color: #94a3b8; font-size: 0.85rem; }\n.meta { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }\n.date { color: #94a3b8; font-size: 0.8rem; }\n.badge { padding: 0.25rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; }\n.badge.graded { background: rgba(34,197,94,0.15); color: #22c55e; }\n.badge.pending { background: rgba(245,158,11,0.15); color: #fbbf24; }\n.badge.draft { background: rgba(148,163,184,0.15); color: #94a3b8; }\n.badge.resubmitted { background: rgba(99,102,241,0.15); color: #a5b4fc; }\n.grade { font-size: 0.9rem; font-weight: 800; color: #67e8f9; font-family: monospace; }\n.card-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }\n.btn-view, .btn-resubmit { padding: 0.55rem 0.9rem; border-radius: 0.55rem; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); color: #e2e8f0; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.2s; }\n.btn-view:hover, .btn-resubmit:hover { border-color: rgba(99,102,241,0.25); color: #c7d2fe; }\n.btn-resubmit { background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none; color: #fff; }\n\n.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 300; }\n.view-modal { background: rgba(15,23,42,0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 1.5rem; width: 90%; max-width: 800px; max-height: 85vh; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; }\n.grade-banner { background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.05)); border: 1px solid rgba(34,197,94,0.2); border-radius: 0.5rem; padding: 1rem; display: flex; flex-direction: column; gap: 0.3rem; }\n.grade-score { font-size: 1.3rem; font-weight: 800; color: #22c55e; }\n.grade-teacher { font-size: 0.8rem; color: #94a3b8; }\n.grade-feedback { font-size: 0.85rem; color: #e2e8f0; margin-top: 0.3rem; padding-top: 0.3rem; border-top: 1px solid rgba(255,255,255,0.06); }\n.status-banner { border-radius: 0.5rem; padding: 0.75rem 1rem; text-align: center; font-size: 0.85rem; font-weight: 600; }\n.status-banner.pending { background: rgba(245,158,11,0.1); color: #fbbf24; border: 1px solid rgba(245,158,11,0.2); }\n.status-banner.resubmitted { background: rgba(99,102,241,0.1); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.2); }\n.actions { display: flex; gap: 0.5rem; justify-content: center; margin-top: 0.5rem; }\n.btn-close { padding: 0.55rem 1.5rem; border-radius: 0.55rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); }\n.btn-resubmit { padding: 0.55rem 1.5rem; border-radius: 0.55rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none; }\n</style>\n",
+      "start": 1783634639336,
+      "end": 1783634639637,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639637,
+      "end": 1783634639637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639637,
+      "end": 1783634639637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639637,
+      "end": 1783634639637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639637,
+      "end": 1783634639637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/student/StudentReports.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/student/StudentReports.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/student/StudentReports.vue?vue&type=style&index=0&scoped=a69e0b48&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-a69e0b48\"]]);\n",
+      "start": 1783634639637,
+      "end": 1783634639942,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639943,
+      "end": 1783634639943,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639943,
+      "end": 1783634639943,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639943,
+      "end": 1783634639943,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639943,
+      "end": 1783634639943,
+      "order": "normal"
+    }
+  ]
+}

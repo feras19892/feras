@@ -14,7 +14,15 @@ onMounted(() => {
 
 <template>
   <div class="app" :dir="i18n.direction">
-    <RouterView />
+    <Suspense>
+      <RouterView />
+      <template #fallback>
+        <div class="skeleton-loader">
+          <div class="skeleton-spinner" />
+          <p>جاري التحميل...</p>
+        </div>
+      </template>
+    </Suspense>
     <ExperimentMonitorWidget />
   </div>
 </template>
@@ -29,5 +37,27 @@ onMounted(() => {
 .app {
   min-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.skeleton-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 1rem;
+}
+
+.skeleton-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e5e7eb;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 </style>

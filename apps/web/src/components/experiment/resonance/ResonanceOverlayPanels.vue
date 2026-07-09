@@ -6,7 +6,7 @@ interface Props {
   maximized: Record<string, boolean>
   panelTitle: (id: string) => string
   trials: ResonanceTrial[]
-  params: { stringLength: number; tension: number; harmonic: number }
+  params: { stringLength: number; tension: number; harmonic: number; damping: number }
   frequency: number
   wavelength: number
   waveSpeed: number
@@ -17,7 +17,7 @@ const emit = defineEmits<{
   (e: 'maximize', id: string): void
   (e: 'remove', id: number): void
   (e: 'clear'): void
-  (e: 'update:params', p: { stringLength: number; tension: number; harmonic: number }): void
+  (e: 'update:params', p: { stringLength: number; tension: number; harmonic: number; damping: number }): void
 }>()
 const ids = ['readings', 'chart', 'trials', 'params', 'laws', 'results']
 </script>

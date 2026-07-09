@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabHotPlate.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, unref as _unref, toDisplayString as _toDisplayString, withModifiers as _withModifiers, normalizeClass as _normalizeClass } from \"vue\"\n\nconst _hoisted_1 = {\n  width: \"120\",\n  height: \"90\",\n  viewBox: \"0 0 120 90\"\n}\nconst _hoisted_2 = {\n  key: 0,\n  cx: \"60\",\n  cy: \"22\",\n  rx: \"42\",\n  ry: \"10\",\n  fill: \"#ef4444\",\n  opacity: \"0.15\"\n}\nconst _hoisted_3 = {\n  key: 1,\n  cx: \"60\",\n  cy: \"22\",\n  rx: \"30\",\n  ry: \"6\",\n  fill: \"#fca5a5\",\n  opacity: \"0.3\"\n}\nconst _hoisted_4 = [\"fill\"]\nconst _hoisted_5 = { class: \"tool-label\" }\n\nimport { computed } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\ninterface Props {\n  isOn: boolean;\n  temperature: number;\n  isHovered: boolean;\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'LabHotPlate',\n  props: {\n    isOn: { type: Boolean },\n    temperature: {},\n    isHovered: { type: Boolean }\n  },\n  emits: [\"toggle\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n();\n\nconst props = __props;\nconst emit = __emit;\n\nconst ledColor = computed(() => props.isOn ? '#ef4444' : '#374151');\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    class: _normalizeClass([\"lab-hot-plate\", { hovered: __props.isHovered, on: __props.isOn }]),\n    onClick: _cache[0] || (_cache[0] = _withModifiers(($event: any) => (emit('toggle')), [\"stop\"]))\n  }, [\n    (_openBlock(), _createElementBlock(\"svg\", _hoisted_1, [\n      _cache[1] || (_cache[1] = _createElementVNode(\"rect\", {\n        x: \"5\",\n        y: \"20\",\n        width: \"110\",\n        height: \"60\",\n        rx: \"6\",\n        fill: \"#4b5563\",\n        stroke: \"#374151\",\n        \"stroke-width\": \"2\"\n      }, null, -1)),\n      _cache[2] || (_cache[2] = _createElementVNode(\"ellipse\", {\n        cx: \"60\",\n        cy: \"22\",\n        rx: \"48\",\n        ry: \"14\",\n        fill: \"#1f2937\",\n        stroke: \"#111827\",\n        \"stroke-width\": \"2\"\n      }, null, -1)),\n      _cache[3] || (_cache[3] = _createElementVNode(\"ellipse\", {\n        cx: \"60\",\n        cy: \"22\",\n        rx: \"42\",\n        ry: \"10\",\n        fill: \"#111827\"\n      }, null, -1)),\n      (__props.isOn)\n        ? (_openBlock(), _createElementBlock(\"ellipse\", _hoisted_2))\n        : _createCommentVNode(\"\", true),\n      (__props.isOn)\n        ? (_openBlock(), _createElementBlock(\"ellipse\", _hoisted_3))\n        : _createCommentVNode(\"\", true),\n      _cache[4] || (_cache[4] = _createElementVNode(\"circle\", {\n        cx: \"28\",\n        cy: \"65\",\n        r: \"10\",\n        fill: \"#1f2937\",\n        stroke: \"#374151\",\n        \"stroke-width\": \"1\"\n      }, null, -1)),\n      _cache[5] || (_cache[5] = _createElementVNode(\"line\", {\n        x1: \"28\",\n        y1: \"65\",\n        x2: \"22\",\n        y2: \"65\",\n        stroke: \"#9ca3af\",\n        \"stroke-width\": \"2\",\n        \"stroke-linecap\": \"round\"\n      }, null, -1)),\n      _cache[6] || (_cache[6] = _createElementVNode(\"circle\", {\n        cx: \"92\",\n        cy: \"65\",\n        r: \"10\",\n        fill: \"#1f2937\",\n        stroke: \"#374151\",\n        \"stroke-width\": \"1\"\n      }, null, -1)),\n      _cache[7] || (_cache[7] = _createElementVNode(\"line\", {\n        x1: \"92\",\n        y1: \"65\",\n        x2: \"98\",\n        y2: \"65\",\n        stroke: \"#9ca3af\",\n        \"stroke-width\": \"2\",\n        \"stroke-linecap\": \"round\"\n      }, null, -1)),\n      _createElementVNode(\"circle\", {\n        cx: \"60\",\n        cy: \"65\",\n        r: \"5\",\n        fill: ledColor.value\n      }, null, 8, _hoisted_4),\n      _cache[8] || (_cache[8] = _createElementVNode(\"circle\", {\n        cx: \"60\",\n        cy: \"63\",\n        r: \"2\",\n        fill: \"white\",\n        opacity: \"0.3\"\n      }, null, -1)),\n      _cache[9] || (_cache[9] = _createElementVNode(\"text\", {\n        x: \"60\",\n        y: \"82\",\n        \"text-anchor\": \"middle\",\n        fill: \"#9ca3af\",\n        \"font-size\": \"7\",\n        \"font-family\": \"sans-serif\"\n      }, \"HOT PLATE\", -1))\n    ])),\n    _createElementVNode(\"span\", _hoisted_5, _toDisplayString(__props.isOn ? __props.temperature + '°C' : _unref(t)('chemistryLab.off')), 1)\n  ], 2))\n}\n}\n\n})",
+      "start": 1783634642132,
+      "end": 1783634642132
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642132,
+      "end": 1783634642132,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, unref as _unref, toDisplayString as _toDisplayString, withModifiers as _withModifiers, normalizeClass as _normalizeClass } from \"vue\";\nconst _hoisted_1 = {\n  width: \"120\",\n  height: \"90\",\n  viewBox: \"0 0 120 90\"\n};\nconst _hoisted_2 = {\n  key: 0,\n  cx: \"60\",\n  cy: \"22\",\n  rx: \"42\",\n  ry: \"10\",\n  fill: \"#ef4444\",\n  opacity: \"0.15\"\n};\nconst _hoisted_3 = {\n  key: 1,\n  cx: \"60\",\n  cy: \"22\",\n  rx: \"30\",\n  ry: \"6\",\n  fill: \"#fca5a5\",\n  opacity: \"0.3\"\n};\nconst _hoisted_4 = [\"fill\"];\nconst _hoisted_5 = { class: \"tool-label\" };\nimport { computed } from \"vue\";\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"LabHotPlate\",\n  props: {\n    isOn: { type: Boolean },\n    temperature: {},\n    isHovered: { type: Boolean }\n  },\n  emits: [\"toggle\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const props = __props;\n    const emit = __emit;\n    const ledColor = computed(() => props.isOn ? \"#ef4444\" : \"#374151\");\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", {\n        class: _normalizeClass([\"lab-hot-plate\", { hovered: __props.isHovered, on: __props.isOn }]),\n        onClick: _cache[0] || (_cache[0] = _withModifiers(($event) => emit(\"toggle\"), [\"stop\"]))\n      }, [\n        (_openBlock(), _createElementBlock(\"svg\", _hoisted_1, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"rect\", {\n            x: \"5\",\n            y: \"20\",\n            width: \"110\",\n            height: \"60\",\n            rx: \"6\",\n            fill: \"#4b5563\",\n            stroke: \"#374151\",\n            \"stroke-width\": \"2\"\n          }, null, -1)),\n          _cache[2] || (_cache[2] = _createElementVNode(\"ellipse\", {\n            cx: \"60\",\n            cy: \"22\",\n            rx: \"48\",\n            ry: \"14\",\n            fill: \"#1f2937\",\n            stroke: \"#111827\",\n            \"stroke-width\": \"2\"\n          }, null, -1)),\n          _cache[3] || (_cache[3] = _createElementVNode(\"ellipse\", {\n            cx: \"60\",\n            cy: \"22\",\n            rx: \"42\",\n            ry: \"10\",\n            fill: \"#111827\"\n          }, null, -1)),\n          __props.isOn ? (_openBlock(), _createElementBlock(\"ellipse\", _hoisted_2)) : _createCommentVNode(\"\", true),\n          __props.isOn ? (_openBlock(), _createElementBlock(\"ellipse\", _hoisted_3)) : _createCommentVNode(\"\", true),\n          _cache[4] || (_cache[4] = _createElementVNode(\"circle\", {\n            cx: \"28\",\n            cy: \"65\",\n            r: \"10\",\n            fill: \"#1f2937\",\n            stroke: \"#374151\",\n            \"stroke-width\": \"1\"\n          }, null, -1)),\n          _cache[5] || (_cache[5] = _createElementVNode(\"line\", {\n            x1: \"28\",\n            y1: \"65\",\n            x2: \"22\",\n            y2: \"65\",\n            stroke: \"#9ca3af\",\n            \"stroke-width\": \"2\",\n            \"stroke-linecap\": \"round\"\n          }, null, -1)),\n          _cache[6] || (_cache[6] = _createElementVNode(\"circle\", {\n            cx: \"92\",\n            cy: \"65\",\n            r: \"10\",\n            fill: \"#1f2937\",\n            stroke: \"#374151\",\n            \"stroke-width\": \"1\"\n          }, null, -1)),\n          _cache[7] || (_cache[7] = _createElementVNode(\"line\", {\n            x1: \"92\",\n            y1: \"65\",\n            x2: \"98\",\n            y2: \"65\",\n            stroke: \"#9ca3af\",\n            \"stroke-width\": \"2\",\n            \"stroke-linecap\": \"round\"\n          }, null, -1)),\n          _createElementVNode(\"circle\", {\n            cx: \"60\",\n            cy: \"65\",\n            r: \"5\",\n            fill: ledColor.value\n          }, null, 8, _hoisted_4),\n          _cache[8] || (_cache[8] = _createElementVNode(\"circle\", {\n            cx: \"60\",\n            cy: \"63\",\n            r: \"2\",\n            fill: \"white\",\n            opacity: \"0.3\"\n          }, null, -1)),\n          _cache[9] || (_cache[9] = _createElementVNode(\"text\", {\n            x: \"60\",\n            y: \"82\",\n            \"text-anchor\": \"middle\",\n            fill: \"#9ca3af\",\n            \"font-size\": \"7\",\n            \"font-family\": \"sans-serif\"\n          }, \"HOT PLATE\", -1))\n        ])),\n        _createElementVNode(\"span\", _hoisted_5, _toDisplayString(__props.isOn ? __props.temperature + \"°C\" : _unref(t)(\"chemistryLab.off\")), 1)\n      ], 2);\n    };\n  }\n});\n",
+      "start": 1783634642132,
+      "end": 1783634642260,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabHotPlate.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, unref as _unref, toDisplayString as _toDisplayString, withModifiers as _withModifiers, normalizeClass as _normalizeClass } from \"vue\"\n\nconst _hoisted_1 = {\n  width: \"120\",\n  height: \"90\",\n  viewBox: \"0 0 120 90\"\n}\nconst _hoisted_2 = {\n  key: 0,\n  cx: \"60\",\n  cy: \"22\",\n  rx: \"42\",\n  ry: \"10\",\n  fill: \"#ef4444\",\n  opacity: \"0.15\"\n}\nconst _hoisted_3 = {\n  key: 1,\n  cx: \"60\",\n  cy: \"22\",\n  rx: \"30\",\n  ry: \"6\",\n  fill: \"#fca5a5\",\n  opacity: \"0.3\"\n}\nconst _hoisted_4 = [\"fill\"]\nconst _hoisted_5 = { class: \"tool-label\" }\n\nimport { computed } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\ninterface Props {\n  isOn: boolean;\n  temperature: number;\n  isHovered: boolean;\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'LabHotPlate',\n  props: {\n    isOn: { type: Boolean },\n    temperature: {},\n    isHovered: { type: Boolean }\n  },\n  emits: [\"toggle\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n();\n\nconst props = __props;\nconst emit = __emit;\n\nconst ledColor = computed(() => props.isOn ? '#ef4444' : '#374151');\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    class: _normalizeClass([\"lab-hot-plate\", { hovered: __props.isHovered, on: __props.isOn }]),\n    onClick: _cache[0] || (_cache[0] = _withModifiers(($event: any) => (emit('toggle')), [\"stop\"]))\n  }, [\n    (_openBlock(), _createElementBlock(\"svg\", _hoisted_1, [\n      _cache[1] || (_cache[1] = _createElementVNode(\"rect\", {\n        x: \"5\",\n        y: \"20\",\n        width: \"110\",\n        height: \"60\",\n        rx: \"6\",\n        fill: \"#4b5563\",\n        stroke: \"#374151\",\n        \"stroke-width\": \"2\"\n      }, null, -1)),\n      _cache[2] || (_cache[2] = _createElementVNode(\"ellipse\", {\n        cx: \"60\",\n        cy: \"22\",\n        rx: \"48\",\n        ry: \"14\",\n        fill: \"#1f2937\",\n        stroke: \"#111827\",\n        \"stroke-width\": \"2\"\n      }, null, -1)),\n      _cache[3] || (_cache[3] = _createElementVNode(\"ellipse\", {\n        cx: \"60\",\n        cy: \"22\",\n        rx: \"42\",\n        ry: \"10\",\n        fill: \"#111827\"\n      }, null, -1)),\n      (__props.isOn)\n        ? (_openBlock(), _createElementBlock(\"ellipse\", _hoisted_2))\n        : _createCommentVNode(\"\", true),\n      (__props.isOn)\n        ? (_openBlock(), _createElementBlock(\"ellipse\", _hoisted_3))\n        : _createCommentVNode(\"\", true),\n      _cache[4] || (_cache[4] = _createElementVNode(\"circle\", {\n        cx: \"28\",\n        cy: \"65\",\n        r: \"10\",\n        fill: \"#1f2937\",\n        stroke: \"#374151\",\n        \"stroke-width\": \"1\"\n      }, null, -1)),\n      _cache[5] || (_cache[5] = _createElementVNode(\"line\", {\n        x1: \"28\",\n        y1: \"65\",\n        x2: \"22\",\n        y2: \"65\",\n        stroke: \"#9ca3af\",\n        \"stroke-width\": \"2\",\n        \"stroke-linecap\": \"round\"\n      }, null, -1)),\n      _cache[6] || (_cache[6] = _createElementVNode(\"circle\", {\n        cx: \"92\",\n        cy: \"65\",\n        r: \"10\",\n        fill: \"#1f2937\",\n        stroke: \"#374151\",\n        \"stroke-width\": \"1\"\n      }, null, -1)),\n      _cache[7] || (_cache[7] = _createElementVNode(\"line\", {\n        x1: \"92\",\n        y1: \"65\",\n        x2: \"98\",\n        y2: \"65\",\n        stroke: \"#9ca3af\",\n        \"stroke-width\": \"2\",\n        \"stroke-linecap\": \"round\"\n      }, null, -1)),\n      _createElementVNode(\"circle\", {\n        cx: \"60\",\n        cy: \"65\",\n        r: \"5\",\n        fill: ledColor.value\n      }, null, 8, _hoisted_4),\n      _cache[8] || (_cache[8] = _createElementVNode(\"circle\", {\n        cx: \"60\",\n        cy: \"63\",\n        r: \"2\",\n        fill: \"white\",\n        opacity: \"0.3\"\n      }, null, -1)),\n      _cache[9] || (_cache[9] = _createElementVNode(\"text\", {\n        x: \"60\",\n        y: \"82\",\n        \"text-anchor\": \"middle\",\n        fill: \"#9ca3af\",\n        \"font-size\": \"7\",\n        \"font-family\": \"sans-serif\"\n      }, \"HOT PLATE\", -1))\n    ])),\n    _createElementVNode(\"span\", _hoisted_5, _toDisplayString(__props.isOn ? __props.temperature + '°C' : _unref(t)('chemistryLab.off')), 1)\n  ], 2))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642260,
+      "end": 1783634642260,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642260,
+      "end": 1783634642260,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634642260,
+      "end": 1783634642260,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642260,
+      "end": 1783634642260,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642260,
+      "end": 1783634642260,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642260,
+      "end": 1783634642260,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642260,
+      "end": 1783634642260,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642260,
+      "end": 1783634642260,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642260,
+      "end": 1783634642260,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642260,
+      "end": 1783634642260,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642260,
+      "end": 1783634642260,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642260,
+      "end": 1783634642260,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642260,
+      "end": 1783634642260,
+      "order": "normal"
+    }
+  ]
+}

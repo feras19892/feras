@@ -17,7 +17,7 @@ const emit = defineEmits<{
   (e: 'update:params', val: PendulumParams): void; (e: 'remove', id: number): void; (e: 'clear'): void
 }>()
 
-const allIds: PanelId[] = ['table', 'signal', 'params', 'guide']
+const allIds: PanelId[] = ['table', 'signal', 'params']
 function isMaximized(id: string) { return (props.maximized as Record<string, boolean>)[id] as boolean }
 function emitMaximize(id: string) { emit('maximize', id) }
 </script>

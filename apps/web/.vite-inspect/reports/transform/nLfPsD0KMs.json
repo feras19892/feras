@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/latent-heat/useLatentHeatCalculations.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "export const LATENT_HEAT = {\n  fusion: 334000,    // J/kg (ice → water at 0°C)\n  vaporization: 2260000, // J/kg (water → steam at 100°C)\n}\n\nexport function meltedMass(Q: number, L: number, totalM: number): number {\n  return Math.min(totalM, Q / L)\n}\n\nexport function remainingIce(Q: number, L: number, totalM: number): number {\n  return Math.max(0, totalM - Q / L)\n}\n\nexport function phaseRatio(Q: number, L: number, totalM: number): number {\n  return Math.min(1, Q / (totalM * L))\n}\n\nexport function tempForPhase(phaseType: 'fusion' | 'vaporization'): number {\n  return phaseType === 'fusion' ? 0 : 100\n}\n\nexport function totalEnergyNeeded(m: number, L: number): number {\n  return m * L\n}\n",
+      "start": 1783634642043,
+      "end": 1783634642182,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642182,
+      "end": 1783634642182,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "export const LATENT_HEAT = {\n  fusion: 334e3,\n  // J/kg (ice → water at 0°C)\n  vaporization: 226e4\n  // J/kg (water → steam at 100°C)\n};\nexport function meltedMass(Q, L, totalM) {\n  return Math.min(totalM, Q / L);\n}\nexport function remainingIce(Q, L, totalM) {\n  return Math.max(0, totalM - Q / L);\n}\nexport function phaseRatio(Q, L, totalM) {\n  return Math.min(1, Q / (totalM * L));\n}\nexport function tempForPhase(phaseType) {\n  return phaseType === \"fusion\" ? 0 : 100;\n}\nexport function totalEnergyNeeded(m, L) {\n  return m * L;\n}\n",
+      "start": 1783634642182,
+      "end": 1783634642302,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/latent-heat/useLatentHeatCalculations.ts"
+        ],
+        "sourcesContent": [
+          "export const LATENT_HEAT = {\n  fusion: 334000,    // J/kg (ice → water at 0°C)\n  vaporization: 2260000, // J/kg (water → steam at 100°C)\n}\n\nexport function meltedMass(Q: number, L: number, totalM: number): number {\n  return Math.min(totalM, Q / L)\n}\n\nexport function remainingIce(Q: number, L: number, totalM: number): number {\n  return Math.max(0, totalM - Q / L)\n}\n\nexport function phaseRatio(Q: number, L: number, totalM: number): number {\n  return Math.min(1, Q / (totalM * L))\n}\n\nexport function tempForPhase(phaseType: 'fusion' | 'vaporization'): number {\n  return phaseType === 'fusion' ? 0 : 100\n}\n\nexport function totalEnergyNeeded(m: number, L: number): number {\n  return m * L\n}\n"
+        ],
+        "mappings": "AAAO,aAAM,cAAc;AAAA,EACzB,QAAQ;AAAA;AAAA,EACR,cAAc;AAAA;AAChB;AAEO,gBAAS,WAAW,GAAW,GAAW,QAAwB;AACvE,SAAO,KAAK,IAAI,QAAQ,IAAI,CAAC;AAC/B;AAEO,gBAAS,aAAa,GAAW,GAAW,QAAwB;AACzE,SAAO,KAAK,IAAI,GAAG,SAAS,IAAI,CAAC;AACnC;AAEO,gBAAS,WAAW,GAAW,GAAW,QAAwB;AACvE,SAAO,KAAK,IAAI,GAAG,KAAK,SAAS,EAAE;AACrC;AAEO,gBAAS,aAAa,WAA8C;AACzE,SAAO,cAAc,WAAW,IAAI;AACtC;AAEO,gBAAS,kBAAkB,GAAW,GAAmB;AAC9D,SAAO,IAAI;AACb;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642303,
+      "end": 1783634642303,
+      "order": "normal"
+    }
+  ]
+}

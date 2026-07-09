@@ -1,17 +1,16 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
-import { authMiddleware } from '../../shared/middleware/auth.js';
+import { authMiddleware } from '../auth/middleware.js';
 import { hashPassword } from '../../modules/auth/crypto.js';
-import { signAccessToken } from '../../modules/auth/jwt.js';
 import { setAccessCookie } from '../../modules/auth/cookies.js';
-import { db } from '../../db/index.js';
+import { impersonateUser, updatePassword } from '../../modules/auth/services.js';
 import * as svc from './services.js';
-import * as activitySvc from './activity-service.js';
+import * as activitySvc from '../activity/service.js';
 import * as feedbackSvc from './feedback-service.js';
 import * as warnSvc from './warning-service.js';
 import * as detailSvc from './user-detail-service.js';
-import * as sessionSvc from './session-service.js';
+import * as sessionSvc from '../sessions/service.js';
 import * as healthSvc from './system-health-service.js';
 import * as exportSvc from './export-service.js';
 import * as auditSvc from './audit-service.js';
@@ -232,20 +231,19 @@ app.get('/export/:type', async (c) => {
 app.post('/impersonate/:id', async (c) => {
   const admin = c.get('user');
   const targetId = Number(c.req.param('id'));
-  const target = await db.get<{ id: number; email: string; name: string; role: string }>(`SELECT id, email, name, role FROM users WHERE id = ?`, targetId);
-  if (!target) return c.json({ success: false, message: 'User not found' }, 404);
-  const token = await signAccessToken({ sub: String(target.id), email: target.email, role: target.role as User['role'] });
-  setAccessCookie(c, token);
-  await activitySvc.logActivity(admin.id, admin.name, admin.role, 'impersonate', 'user', String(targetId), `Admin impersonated ${target.name} (${target.email})`);
-  return c.json({ success: true, user: target });
+  const result = await impersonateUser(targetId);
+  if (!result) return c.json({ success: false, message: 'User not found' }, 404);
+  setAccessCookie(c, result.token);
+  await activitySvc.logActivity(admin.id, admin.name, admin.role, 'impersonate', 'user', String(targetId), `Admin impersonated ${result.user.name} (${result.user.email})`);
+  return c.json({ success: true, user: result.user });
 });
 
 // POST /users/:id/reset-password
 app.post('/users/:id/reset-password', zValidator('json', adminResetPasswordSchema), async (c) => {
   const id = Number(c.req.param('id'));
   const { password } = c.req.valid('json');
-  const passwordHash = await hashPassword(password);
-  await db.run(`UPDATE users SET password_hash = ? WHERE id = ?`, passwordHash, id);
+  const ok = await updatePassword(id, password);
+  if (!ok) return c.json({ success: false, message: 'Update failed' }, 500);
   return c.json({ success: true });
 });
 

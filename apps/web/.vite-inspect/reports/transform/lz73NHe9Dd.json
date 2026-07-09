@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/SpecificHeatPanelBody.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createBlock as _createBlock, createCommentVNode as _createCommentVNode, createElementBlock as _createElementBlock } from \"vue\"\n\nimport type { SpecificHeatTrial } from '../../../composables/specific-heat/useSpecificHeatTrials'\nimport SpecificHeatReadingsPanel from './panels/SpecificHeatReadingsPanel.vue'\nimport SpecificHeatChartPanel from './panels/SpecificHeatChartPanel.vue'\nimport SpecificHeatTrialsPanel from './panels/SpecificHeatTrialsPanel.vue'\nimport SpecificHeatParamsPanel from './panels/SpecificHeatParamsPanel.vue'\nimport SpecificHeatLawsPanel from './panels/SpecificHeatLawsPanel.vue'\nimport SpecificHeatResultsPanel from './panels/SpecificHeatResultsPanel.vue'\n\ninterface Props {\n  id: string\n  trials: SpecificHeatTrial[]\n  params: { metalType: string; metalMass: number; waterMass: number; waterTemp: number }\n  metalTemp: number\n  displayT: number\n  finalTemp: number\n  cExtracted: number\n  cTrue: number\n  regressionSlope?: number\n  regressionIntercept?: number\n  rSquared?: number\n  cFromSlope?: number\n  unknownMode?: boolean\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'SpecificHeatPanelBody',\n  props: {\n    id: {},\n    trials: {},\n    params: {},\n    metalTemp: {},\n    displayT: {},\n    finalTemp: {},\n    cExtracted: {},\n    cTrue: {},\n    regressionSlope: {},\n    regressionIntercept: {},\n    rSquared: {},\n    cFromSlope: {},\n    unknownMode: { type: Boolean }\n  },\n  emits: [\"remove\", \"clear\", \"update:params\"],\n  setup(__props: any, { emit: __emit }) {\n\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", null, [\n    (__props.id === 'readings')\n      ? (_openBlock(), _createBlock(SpecificHeatReadingsPanel, {\n          key: 0,\n          \"metal-type\": __props.params.metalType,\n          \"metal-mass\": __props.params.metalMass,\n          \"water-mass\": __props.params.waterMass,\n          \"water-temp\": __props.params.waterTemp,\n          \"metal-temp\": __props.metalTemp,\n          \"display-t\": __props.displayT,\n          \"unknown-mode\": __props.unknownMode\n        }, null, 8, [\"metal-type\", \"metal-mass\", \"water-mass\", \"water-temp\", \"metal-temp\", \"display-t\", \"unknown-mode\"]))\n      : (__props.id === 'chart')\n        ? (_openBlock(), _createBlock(SpecificHeatChartPanel, {\n            key: 1,\n            trials: __props.trials,\n            \"regression-slope\": __props.regressionSlope ?? 0,\n            \"regression-intercept\": __props.regressionIntercept ?? 0,\n            \"r-squared\": __props.rSquared ?? 0\n          }, null, 8, [\"trials\", \"regression-slope\", \"regression-intercept\", \"r-squared\"]))\n        : (__props.id === 'trials')\n          ? (_openBlock(), _createBlock(SpecificHeatTrialsPanel, {\n              key: 2,\n              trials: __props.trials,\n              \"unknown-mode\": __props.unknownMode,\n              onRemove: _cache[0] || (_cache[0] = ($event: any) => (emit('remove', $event))),\n              onClear: _cache[1] || (_cache[1] = ($event: any) => (emit('clear')))\n            }, null, 8, [\"trials\", \"unknown-mode\"]))\n          : (__props.id === 'params')\n            ? (_openBlock(), _createBlock(SpecificHeatParamsPanel, {\n                key: 3,\n                params: __props.params,\n                \"unknown-mode\": __props.unknownMode,\n                \"onUpdate:params\": _cache[2] || (_cache[2] = ($event: any) => (emit('update:params', $event)))\n              }, null, 8, [\"params\", \"unknown-mode\"]))\n            : (__props.id === 'laws')\n              ? (_openBlock(), _createBlock(SpecificHeatLawsPanel, {\n                  key: 4,\n                  \"metal-mass\": __props.params.metalMass,\n                  \"water-mass\": __props.params.waterMass,\n                  \"metal-temp\": __props.metalTemp,\n                  \"water-temp\": __props.params.waterTemp,\n                  \"final-temp\": __props.displayT,\n                  \"c-extracted\": __props.cExtracted,\n                  \"c-true\": __props.cTrue\n                }, null, 8, [\"metal-mass\", \"water-mass\", \"metal-temp\", \"water-temp\", \"final-temp\", \"c-extracted\", \"c-true\"]))\n              : (__props.id === 'results')\n                ? (_openBlock(), _createBlock(SpecificHeatResultsPanel, {\n                    key: 5,\n                    trials: __props.trials,\n                    \"regression-slope\": __props.regressionSlope ?? 0,\n                    \"r-squared\": __props.rSquared ?? 0,\n                    \"c-from-slope\": __props.cFromSlope ?? 0,\n                    \"unknown-mode\": __props.unknownMode\n                  }, null, 8, [\"trials\", \"regression-slope\", \"r-squared\", \"c-from-slope\", \"unknown-mode\"]))\n                : _createCommentVNode(\"\", true)\n  ]))\n}\n}\n\n})",
+      "start": 1783634641724,
+      "end": 1783634641724
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641724,
+      "end": 1783634641724,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { openBlock as _openBlock, createBlock as _createBlock, createCommentVNode as _createCommentVNode, createElementBlock as _createElementBlock } from \"vue\";\nimport SpecificHeatReadingsPanel from \"./panels/SpecificHeatReadingsPanel.vue\";\nimport SpecificHeatChartPanel from \"./panels/SpecificHeatChartPanel.vue\";\nimport SpecificHeatTrialsPanel from \"./panels/SpecificHeatTrialsPanel.vue\";\nimport SpecificHeatParamsPanel from \"./panels/SpecificHeatParamsPanel.vue\";\nimport SpecificHeatLawsPanel from \"./panels/SpecificHeatLawsPanel.vue\";\nimport SpecificHeatResultsPanel from \"./panels/SpecificHeatResultsPanel.vue\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"SpecificHeatPanelBody\",\n  props: {\n    id: {},\n    trials: {},\n    params: {},\n    metalTemp: {},\n    displayT: {},\n    finalTemp: {},\n    cExtracted: {},\n    cTrue: {},\n    regressionSlope: {},\n    regressionIntercept: {},\n    rSquared: {},\n    cFromSlope: {},\n    unknownMode: { type: Boolean }\n  },\n  emits: [\"remove\", \"clear\", \"update:params\"],\n  setup(__props, { emit: __emit }) {\n    const emit = __emit;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", null, [\n        __props.id === \"readings\" ? (_openBlock(), _createBlock(SpecificHeatReadingsPanel, {\n          key: 0,\n          \"metal-type\": __props.params.metalType,\n          \"metal-mass\": __props.params.metalMass,\n          \"water-mass\": __props.params.waterMass,\n          \"water-temp\": __props.params.waterTemp,\n          \"metal-temp\": __props.metalTemp,\n          \"display-t\": __props.displayT,\n          \"unknown-mode\": __props.unknownMode\n        }, null, 8, [\"metal-type\", \"metal-mass\", \"water-mass\", \"water-temp\", \"metal-temp\", \"display-t\", \"unknown-mode\"])) : __props.id === \"chart\" ? (_openBlock(), _createBlock(SpecificHeatChartPanel, {\n          key: 1,\n          trials: __props.trials,\n          \"regression-slope\": __props.regressionSlope ?? 0,\n          \"regression-intercept\": __props.regressionIntercept ?? 0,\n          \"r-squared\": __props.rSquared ?? 0\n        }, null, 8, [\"trials\", \"regression-slope\", \"regression-intercept\", \"r-squared\"])) : __props.id === \"trials\" ? (_openBlock(), _createBlock(SpecificHeatTrialsPanel, {\n          key: 2,\n          trials: __props.trials,\n          \"unknown-mode\": __props.unknownMode,\n          onRemove: _cache[0] || (_cache[0] = ($event) => emit(\"remove\", $event)),\n          onClear: _cache[1] || (_cache[1] = ($event) => emit(\"clear\"))\n        }, null, 8, [\"trials\", \"unknown-mode\"])) : __props.id === \"params\" ? (_openBlock(), _createBlock(SpecificHeatParamsPanel, {\n          key: 3,\n          params: __props.params,\n          \"unknown-mode\": __props.unknownMode,\n          \"onUpdate:params\": _cache[2] || (_cache[2] = ($event) => emit(\"update:params\", $event))\n        }, null, 8, [\"params\", \"unknown-mode\"])) : __props.id === \"laws\" ? (_openBlock(), _createBlock(SpecificHeatLawsPanel, {\n          key: 4,\n          \"metal-mass\": __props.params.metalMass,\n          \"water-mass\": __props.params.waterMass,\n          \"metal-temp\": __props.metalTemp,\n          \"water-temp\": __props.params.waterTemp,\n          \"final-temp\": __props.displayT,\n          \"c-extracted\": __props.cExtracted,\n          \"c-true\": __props.cTrue\n        }, null, 8, [\"metal-mass\", \"water-mass\", \"metal-temp\", \"water-temp\", \"final-temp\", \"c-extracted\", \"c-true\"])) : __props.id === \"results\" ? (_openBlock(), _createBlock(SpecificHeatResultsPanel, {\n          key: 5,\n          trials: __props.trials,\n          \"regression-slope\": __props.regressionSlope ?? 0,\n          \"r-squared\": __props.rSquared ?? 0,\n          \"c-from-slope\": __props.cFromSlope ?? 0,\n          \"unknown-mode\": __props.unknownMode\n        }, null, 8, [\"trials\", \"regression-slope\", \"r-squared\", \"c-from-slope\", \"unknown-mode\"])) : _createCommentVNode(\"\", true)\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634641724,
+      "end": 1783634642265,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/SpecificHeatPanelBody.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createBlock as _createBlock, createCommentVNode as _createCommentVNode, createElementBlock as _createElementBlock } from \"vue\"\n\nimport type { SpecificHeatTrial } from '../../../composables/specific-heat/useSpecificHeatTrials'\nimport SpecificHeatReadingsPanel from './panels/SpecificHeatReadingsPanel.vue'\nimport SpecificHeatChartPanel from './panels/SpecificHeatChartPanel.vue'\nimport SpecificHeatTrialsPanel from './panels/SpecificHeatTrialsPanel.vue'\nimport SpecificHeatParamsPanel from './panels/SpecificHeatParamsPanel.vue'\nimport SpecificHeatLawsPanel from './panels/SpecificHeatLawsPanel.vue'\nimport SpecificHeatResultsPanel from './panels/SpecificHeatResultsPanel.vue'\n\ninterface Props {\n  id: string\n  trials: SpecificHeatTrial[]\n  params: { metalType: string; metalMass: number; waterMass: number; waterTemp: number }\n  metalTemp: number\n  displayT: number\n  finalTemp: number\n  cExtracted: number\n  cTrue: number\n  regressionSlope?: number\n  regressionIntercept?: number\n  rSquared?: number\n  cFromSlope?: number\n  unknownMode?: boolean\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'SpecificHeatPanelBody',\n  props: {\n    id: {},\n    trials: {},\n    params: {},\n    metalTemp: {},\n    displayT: {},\n    finalTemp: {},\n    cExtracted: {},\n    cTrue: {},\n    regressionSlope: {},\n    regressionIntercept: {},\n    rSquared: {},\n    cFromSlope: {},\n    unknownMode: { type: Boolean }\n  },\n  emits: [\"remove\", \"clear\", \"update:params\"],\n  setup(__props: any, { emit: __emit }) {\n\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", null, [\n    (__props.id === 'readings')\n      ? (_openBlock(), _createBlock(SpecificHeatReadingsPanel, {\n          key: 0,\n          \"metal-type\": __props.params.metalType,\n          \"metal-mass\": __props.params.metalMass,\n          \"water-mass\": __props.params.waterMass,\n          \"water-temp\": __props.params.waterTemp,\n          \"metal-temp\": __props.metalTemp,\n          \"display-t\": __props.displayT,\n          \"unknown-mode\": __props.unknownMode\n        }, null, 8, [\"metal-type\", \"metal-mass\", \"water-mass\", \"water-temp\", \"metal-temp\", \"display-t\", \"unknown-mode\"]))\n      : (__props.id === 'chart')\n        ? (_openBlock(), _createBlock(SpecificHeatChartPanel, {\n            key: 1,\n            trials: __props.trials,\n            \"regression-slope\": __props.regressionSlope ?? 0,\n            \"regression-intercept\": __props.regressionIntercept ?? 0,\n            \"r-squared\": __props.rSquared ?? 0\n          }, null, 8, [\"trials\", \"regression-slope\", \"regression-intercept\", \"r-squared\"]))\n        : (__props.id === 'trials')\n          ? (_openBlock(), _createBlock(SpecificHeatTrialsPanel, {\n              key: 2,\n              trials: __props.trials,\n              \"unknown-mode\": __props.unknownMode,\n              onRemove: _cache[0] || (_cache[0] = ($event: any) => (emit('remove', $event))),\n              onClear: _cache[1] || (_cache[1] = ($event: any) => (emit('clear')))\n            }, null, 8, [\"trials\", \"unknown-mode\"]))\n          : (__props.id === 'params')\n            ? (_openBlock(), _createBlock(SpecificHeatParamsPanel, {\n                key: 3,\n                params: __props.params,\n                \"unknown-mode\": __props.unknownMode,\n                \"onUpdate:params\": _cache[2] || (_cache[2] = ($event: any) => (emit('update:params', $event)))\n              }, null, 8, [\"params\", \"unknown-mode\"]))\n            : (__props.id === 'laws')\n              ? (_openBlock(), _createBlock(SpecificHeatLawsPanel, {\n                  key: 4,\n                  \"metal-mass\": __props.params.metalMass,\n                  \"water-mass\": __props.params.waterMass,\n                  \"metal-temp\": __props.metalTemp,\n                  \"water-temp\": __props.params.waterTemp,\n                  \"final-temp\": __props.displayT,\n                  \"c-extracted\": __props.cExtracted,\n                  \"c-true\": __props.cTrue\n                }, null, 8, [\"metal-mass\", \"water-mass\", \"metal-temp\", \"water-temp\", \"final-temp\", \"c-extracted\", \"c-true\"]))\n              : (__props.id === 'results')\n                ? (_openBlock(), _createBlock(SpecificHeatResultsPanel, {\n                    key: 5,\n                    trials: __props.trials,\n                    \"regression-slope\": __props.regressionSlope ?? 0,\n                    \"r-squared\": __props.rSquared ?? 0,\n                    \"c-from-slope\": __props.cFromSlope ?? 0,\n                    \"unknown-mode\": __props.unknownMode\n                  }, null, 8, [\"trials\", \"regression-slope\", \"r-squared\", \"c-from-slope\", \"unknown-mode\"]))\n                : _createCommentVNode(\"\", true)\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642265,
+      "end": 1783634642265,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642265,
+      "end": 1783634642265,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634642265,
+      "end": 1783634642265,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642265,
+      "end": 1783634642265,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642265,
+      "end": 1783634642265,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642265,
+      "end": 1783634642265,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642265,
+      "end": 1783634642265,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642265,
+      "end": 1783634642265,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642265,
+      "end": 1783634642265,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642265,
+      "end": 1783634642265,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642265,
+      "end": 1783634642265,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642265,
+      "end": 1783634642265,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642265,
+      "end": 1783634642265,
+      "order": "normal"
+    }
+  ]
+}

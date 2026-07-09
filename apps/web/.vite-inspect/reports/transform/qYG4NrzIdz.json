@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/TeacherStatsCharts.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, watch } from 'vue'\nimport { useTeacherStatsCharts } from '../../composables/teacher/useTeacherStatsCharts'\nimport { useI18n } from '../../composables/useI18n'\n\ninterface Props {\n  stats: { distribution?: Record<string, number>; total?: number } | null\n}\nconst props = defineProps<Props>()\n\nconst { t } = useI18n()\nconst statsRef = ref(props.stats)\nwatch(() => props.stats, (v) => { statsRef.value = v })\nconst { barCanvas, pieCanvas } = useTeacherStatsCharts(statsRef, t('teacher.reportsLabel'))\n</script>\n\n<template>\n  <div class=\"charts-row\">\n    <div class=\"chart-box\">\n      <h4>{{ t('teacher.distribution') }}</h4>\n      <canvas ref=\"barCanvas\" class=\"chart-canvas\"></canvas>\n    </div>\n    <div class=\"chart-box\">\n      <h4>{{ t('teacher.reportRatio') }}</h4>\n      <canvas ref=\"pieCanvas\" class=\"chart-canvas\"></canvas>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.charts-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem; }\n.chart-box { background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.75rem; padding: 1rem; }\n.chart-box h4 { margin: 0 0 0.8rem; color: #e2e8f0; font-size: 0.95rem; }\n.chart-canvas { display: block; width: 100%; max-width: 500px; }\n</style>\n",
+      "start": 1783634640340,
+      "end": 1783634640632,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640632,
+      "end": 1783634640632,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640632,
+      "end": 1783634640632,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640632,
+      "end": 1783634640632,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640632,
+      "end": 1783634640632,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/TeacherStatsCharts.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/TeacherStatsCharts.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/TeacherStatsCharts.vue?vue&type=style&index=0&scoped=0d7f9ab4&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-0d7f9ab4\"]]);\n",
+      "start": 1783634640632,
+      "end": 1783634640817,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640817,
+      "end": 1783634640817,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640817,
+      "end": 1783634640817,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640817,
+      "end": 1783634640817,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640817,
+      "end": 1783634640817,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640817,
+      "end": 1783634640817,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640817,
+      "end": 1783634640817,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640817,
+      "end": 1783634640817,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640817,
+      "end": 1783634640817,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640817,
+      "end": 1783634640817,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640817,
+      "end": 1783634640817,
+      "order": "normal"
+    }
+  ]
+}

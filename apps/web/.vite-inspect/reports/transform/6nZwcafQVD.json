@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatLawsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { C_WATER } from '../../../../composables/specific-heat/useSpecificHeatCalculations'\nconst props = defineProps<{\n  metalMass: number\n  waterMass: number\n  metalTemp: number\n  waterTemp: number\n  finalTemp: number\n  cExtracted: number\n  cTrue: number\n}>()\nconst qLost = () => props.metalMass * props.cExtracted * (props.metalTemp - props.finalTemp)\nconst qGained = () => props.waterMass * C_WATER * (props.finalTemp - props.waterTemp)\n</script>\n<template>\n  <div class=\"panel-body\">\n    <div class=\"law-box\">\n      <div class=\"law-title\">اتزان الحرارة</div>\n      <div class=\"formula\">m_m·c_m·(T_m − T_f) = m_w·c_w·(T_f − T_w)</div>\n      <div class=\"values\">m_m={{ (props.metalMass*1000).toFixed(0) }}g &nbsp; m_w={{ (props.waterMass*1000).toFixed(0) }}g</div>\n      <div class=\"values\">T_m={{ props.metalTemp.toFixed(1) }}°C &nbsp; T_f={{ props.finalTemp.toFixed(1) }}°C &nbsp; T_w={{ props.waterTemp }}°C</div>\n    </div>\n    <div class=\"law-box\">\n      <div class=\"law-title\">استخراج c_m</div>\n      <div class=\"formula\">c_m = m_w·c_w·(T_f − T_w) / (m_m·(T_m − T_f))</div>\n      <div class=\"values\">c_m ≈ {{ props.cExtracted.toFixed(1) }} J/kg·°C &nbsp; (c_true={{ props.cTrue.toFixed(1) }})</div>\n    </div>\n    <div class=\"law-box\">\n      <div class=\"law-title\">الطاقة المفقودة</div>\n      <div class=\"formula\">Q_lost = m_m·c_m·(T_m − T_f)</div>\n      <div class=\"values\">Q_lost ≈ {{ qLost().toFixed(2) }} J</div>\n    </div>\n    <div class=\"law-box\">\n      <div class=\"law-title\">الطاقة المكتسبة</div>\n      <div class=\"formula\">Q_gained = m_w·c_w·(T_f − T_w)</div>\n      <div class=\"values\">Q_gained ≈ {{ qGained().toFixed(2) }} J</div>\n    </div>\n    <div class=\"law-box\">\n      <div class=\"law-title\">ثوابت</div>\n      <div class=\"value-row\"><span>c_w (ماء)</span><span>{{ C_WATER }} J/kg·°C</span></div>\n    </div>\n  </div>\n</template>\n<style scoped>\n.panel-body { padding:.45rem; display:flex; flex-direction:column; gap:.35rem; }\n.law-box { background:rgba(91,141,184,.05); border:1px solid rgba(91,141,184,.15); border-radius:6px; padding:.5rem .6rem; margin-bottom:.4rem; }\n.law-title { color:#5B8DB8; font-weight:700; font-size:.78rem; margin-bottom:.35rem; }\n.formula { font-family:'Courier New', monospace; font-size:.85rem; color:#D1D7E0; text-align:center; margin:.3rem 0; }\n.values { color:#8B95A5; font-size:.72rem; margin:.15rem 0; text-align:center; }\n.value-row { display:flex; justify-content:space-between; padding:.2rem 0; border-bottom:1px solid rgba(30,37,48,.4); font-size:.72rem; }\n.value-row:last-child { border:none; }\n.value-row span:first-child { color:#8B95A5; }\n.value-row span:last-child { color:#D1D7E0; font-weight:600; }\n</style>\n",
+      "start": 1783634642380,
+      "end": 1783634642668,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642668,
+      "end": 1783634642668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642668,
+      "end": 1783634642668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642668,
+      "end": 1783634642668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642668,
+      "end": 1783634642668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatLawsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatLawsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatLawsPanel.vue?vue&type=style&index=0&scoped=e8ffad5e&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-e8ffad5e\"]]);\n",
+      "start": 1783634642668,
+      "end": 1783634642867,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642867,
+      "end": 1783634642868,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642868,
+      "end": 1783634642868,
+      "order": "normal"
+    }
+  ]
+}

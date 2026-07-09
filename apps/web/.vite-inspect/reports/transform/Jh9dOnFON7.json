@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/freefall/panels/FreeFallReferencePanel.vue?vue&type=style&index=0&scoped=96c3b9a6&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.panel-body { padding: 1rem; display: flex; flex-direction: column; gap: .5rem; }\n.ref-title { font-size: .9rem; font-weight: 700; color: #5B8DB8; text-align: center; padding-bottom: .3rem; border-bottom: 1px solid #1e2530; }\n.ref-table { display: flex; flex-direction: column; gap: .25rem; }\n.ref-header { display: flex; justify-content: space-between; padding: .4rem .6rem; background: #1E2530; border-radius: 4px; font-weight: 700; font-size: .8rem; color: #94a3b8; }\n.ref-row { display: flex; justify-content: space-between; padding: .35rem .6rem; border-bottom: 1px solid #1e2530; font-size: .8rem; }\n.ref-row:last-child { border-bottom: none; }\n.ref-note { font-size: .75rem; color: #64748b; margin-top: .5rem; }\n",
+      "start": 1783634640182,
+      "end": 1783634640182
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.panel-body { padding: 1rem; display: flex; flex-direction: column; gap: .5rem; }\n.ref-title { font-size: .9rem; font-weight: 700; color: #5B8DB8; text-align: center; padding-bottom: .3rem; border-bottom: 1px solid #1e2530; }\n.ref-table { display: flex; flex-direction: column; gap: .25rem; }\n.ref-header { display: flex; justify-content: space-between; padding: .4rem .6rem; background: #1E2530; border-radius: 4px; font-weight: 700; font-size: .8rem; color: #94a3b8; }\n.ref-row { display: flex; justify-content: space-between; padding: .35rem .6rem; border-bottom: 1px solid #1e2530; font-size: .8rem; }\n.ref-row:last-child { border-bottom: none; }\n.ref-note { font-size: .75rem; color: #64748b; margin-top: .5rem; }\n",
+      "start": 1783634640182,
+      "end": 1783634640182,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640182,
+      "end": 1783634640182,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640182,
+      "end": 1783634640182,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640183,
+      "end": 1783634640183,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.panel-body[data-v-96c3b9a6] { padding: 1rem; display: flex; flex-direction: column; gap: .5rem;\n}\n.ref-title[data-v-96c3b9a6] { font-size: .9rem; font-weight: 700; color: #5B8DB8; text-align: center; padding-bottom: .3rem; border-bottom: 1px solid #1e2530;\n}\n.ref-table[data-v-96c3b9a6] { display: flex; flex-direction: column; gap: .25rem;\n}\n.ref-header[data-v-96c3b9a6] { display: flex; justify-content: space-between; padding: .4rem .6rem; background: #1E2530; border-radius: 4px; font-weight: 700; font-size: .8rem; color: #94a3b8;\n}\n.ref-row[data-v-96c3b9a6] { display: flex; justify-content: space-between; padding: .35rem .6rem; border-bottom: 1px solid #1e2530; font-size: .8rem;\n}\n.ref-row[data-v-96c3b9a6]:last-child { border-bottom: none;\n}\n.ref-note[data-v-96c3b9a6] { font-size: .75rem; color: #64748b; margin-top: .5rem;\n}\n",
+      "start": 1783634640183,
+      "end": 1783634640183,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640183,
+      "end": 1783634640183,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634640183,
+      "end": 1783634640183,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640183,
+      "end": 1783634640183,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640183,
+      "end": 1783634640183,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640183,
+      "end": 1783634640183,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640183,
+      "end": 1783634640183,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640183,
+      "end": 1783634640183,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640183,
+      "end": 1783634640183,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640183,
+      "end": 1783634640183,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640183,
+      "end": 1783634640183,
+      "order": "normal"
+    }
+  ]
+}

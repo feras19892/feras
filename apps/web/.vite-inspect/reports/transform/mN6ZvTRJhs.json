@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/KirchhoffReferencePanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeStyle as _normalizeStyle } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"ref-table\" }\nconst _hoisted_3 = { class: \"law-info\" }\nconst _hoisted_4 = { class: \"law-name\" }\nconst _hoisted_5 = { class: \"ref-section\" }\nconst _hoisted_6 = { class: \"ref-section\" }\nconst _hoisted_7 = { class: \"steps-list\" }\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'KirchhoffReferencePanel',\n  setup(__props) {\n\nconst LAWS = [\n  { law: 'KCL', name: 'قانون العقدة', desc: 'مجموع التيارات الداخلة = مجموع التيارات الخارجة', color: '#4ade80', formula: 'ΣI(in) = ΣI(out)' },\n  { law: 'KVL', name: 'قانون الحلقة', desc: 'مجموع فروق الجهد في حلقة مغلقة = صفر', color: '#fbbf24', formula: 'ΣV = 0' },\n]\n\nconst STEPS = [\n  { n: 1, text: 'حدد العقد والحلقات في الدائرة' },\n  { n: 2, text: 'افترض اتجاه التيارات في كل فرع' },\n  { n: 3, text: 'اكتب معادلة KCL عند كل عقدة' },\n  { n: 4, text: 'اكتب معادلة KVL لكل حلقة مستقلة' },\n  { n: 5, text: 'حل المعادلات لإيجاد التيارات المجهولة' },\n  { n: 6, text: 'تحقق من صحة الحل بالتعويض' },\n]\n\nconst SIGNS = [\n  { sign: '+', desc: 'البطارية: من القطب السالب إلى الموجب', color: '#22c55e' },\n  { sign: '−', desc: 'المقاومة: في اتجاه التيار (هبوط جهد)', color: '#ef4444' },\n]\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _cache[3] || (_cache[3] = _createElementVNode(\"div\", { class: \"ref-title\" }, \"📊 قانونا كيرشوف\", -1)),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"ref-header\" }, [\n        _createElementVNode(\"span\", null, \"القانون\"),\n        _createElementVNode(\"span\", null, \"المعادلة\")\n      ], -1)),\n      (_openBlock(), _createElementBlock(_Fragment, null, _renderList(LAWS, (law) => {\n        return _createElementVNode(\"div\", {\n          key: law.law,\n          class: \"ref-row\"\n        }, [\n          _createElementVNode(\"div\", _hoisted_3, [\n            _createElementVNode(\"span\", {\n              style: _normalizeStyle({ color: law.color, fontWeight: 700 })\n            }, _toDisplayString(law.law), 5),\n            _createElementVNode(\"span\", _hoisted_4, _toDisplayString(law.name), 1)\n          ]),\n          _createElementVNode(\"span\", {\n            class: \"law-formula\",\n            style: _normalizeStyle({ color: law.color })\n          }, _toDisplayString(law.formula), 5)\n        ])\n      }), 64)),\n      (_openBlock(), _createElementBlock(_Fragment, null, _renderList(LAWS, (law) => {\n        return _createElementVNode(\"div\", {\n          key: law.law + '-desc',\n          class: \"ref-desc\"\n        }, _toDisplayString(law.desc), 1)\n      }), 64))\n    ]),\n    _createElementVNode(\"div\", _hoisted_5, [\n      _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"section-title\" }, \"إشارات الجهد في KVL\", -1)),\n      (_openBlock(), _createElementBlock(_Fragment, null, _renderList(SIGNS, (s) => {\n        return _createElementVNode(\"div\", {\n          key: s.sign,\n          class: \"sign-row\"\n        }, [\n          _createElementVNode(\"span\", {\n            class: \"sign\",\n            style: _normalizeStyle({ color: s.color })\n          }, _toDisplayString(s.sign), 5),\n          _createElementVNode(\"span\", null, _toDisplayString(s.desc), 1)\n        ])\n      }), 64))\n    ]),\n    _createElementVNode(\"div\", _hoisted_6, [\n      _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"section-title\" }, \"خطوات الحل\", -1)),\n      _createElementVNode(\"ol\", _hoisted_7, [\n        (_openBlock(), _createElementBlock(_Fragment, null, _renderList(STEPS, (s) => {\n          return _createElementVNode(\"li\", {\n            key: s.n\n          }, _toDisplayString(s.text), 1)\n        }), 64))\n      ])\n    ]),\n    _cache[4] || (_cache[4] = _createElementVNode(\"div\", { class: \"ref-note\" }, \" 💡 عدد المعادلات = عدد الحلقات المستقلة + (عدد العقد − 1) \", -1)),\n    _cache[5] || (_cache[5] = _createElementVNode(\"div\", { class: \"ref-note\" }, \" ⚡ في دائرتين بحلقتين: معادلة KCL واحدة + معادلتا KVL = 3 معادلات لـ 3 مجاهيل \", -1)),\n    _cache[6] || (_cache[6] = _createElementVNode(\"div\", { class: \"ref-note\" }, \" 🔄 إذا كانت قيمة التيار سالبة، فإن الاتجاه الفعلي عكس المفترض \", -1))\n  ]))\n}\n}\n\n})",
+      "start": 1783634640214,
+      "end": 1783634640214
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640214,
+      "end": 1783634640214,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeStyle as _normalizeStyle } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nconst _hoisted_2 = { class: \"ref-table\" };\nconst _hoisted_3 = { class: \"law-info\" };\nconst _hoisted_4 = { class: \"law-name\" };\nconst _hoisted_5 = { class: \"ref-section\" };\nconst _hoisted_6 = { class: \"ref-section\" };\nconst _hoisted_7 = { class: \"steps-list\" };\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"KirchhoffReferencePanel\",\n  setup(__props) {\n    const LAWS = [\n      { law: \"KCL\", name: \"قانون العقدة\", desc: \"مجموع التيارات الداخلة = مجموع التيارات الخارجة\", color: \"#4ade80\", formula: \"ΣI(in) = ΣI(out)\" },\n      { law: \"KVL\", name: \"قانون الحلقة\", desc: \"مجموع فروق الجهد في حلقة مغلقة = صفر\", color: \"#fbbf24\", formula: \"ΣV = 0\" }\n    ];\n    const STEPS = [\n      { n: 1, text: \"حدد العقد والحلقات في الدائرة\" },\n      { n: 2, text: \"افترض اتجاه التيارات في كل فرع\" },\n      { n: 3, text: \"اكتب معادلة KCL عند كل عقدة\" },\n      { n: 4, text: \"اكتب معادلة KVL لكل حلقة مستقلة\" },\n      { n: 5, text: \"حل المعادلات لإيجاد التيارات المجهولة\" },\n      { n: 6, text: \"تحقق من صحة الحل بالتعويض\" }\n    ];\n    const SIGNS = [\n      { sign: \"+\", desc: \"البطارية: من القطب السالب إلى الموجب\", color: \"#22c55e\" },\n      { sign: \"−\", desc: \"المقاومة: في اتجاه التيار (هبوط جهد)\", color: \"#ef4444\" }\n    ];\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _cache[3] || (_cache[3] = _createElementVNode(\"div\", { class: \"ref-title\" }, \"📊 قانونا كيرشوف\", -1)),\n        _createElementVNode(\"div\", _hoisted_2, [\n          _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"ref-header\" }, [\n            _createElementVNode(\"span\", null, \"القانون\"),\n            _createElementVNode(\"span\", null, \"المعادلة\")\n          ], -1)),\n          (_openBlock(), _createElementBlock(_Fragment, null, _renderList(LAWS, (law) => {\n            return _createElementVNode(\"div\", {\n              key: law.law,\n              class: \"ref-row\"\n            }, [\n              _createElementVNode(\"div\", _hoisted_3, [\n                _createElementVNode(\"span\", {\n                  style: _normalizeStyle({ color: law.color, fontWeight: 700 })\n                }, _toDisplayString(law.law), 5),\n                _createElementVNode(\"span\", _hoisted_4, _toDisplayString(law.name), 1)\n              ]),\n              _createElementVNode(\"span\", {\n                class: \"law-formula\",\n                style: _normalizeStyle({ color: law.color })\n              }, _toDisplayString(law.formula), 5)\n            ]);\n          }), 64)),\n          (_openBlock(), _createElementBlock(_Fragment, null, _renderList(LAWS, (law) => {\n            return _createElementVNode(\"div\", {\n              key: law.law + \"-desc\",\n              class: \"ref-desc\"\n            }, _toDisplayString(law.desc), 1);\n          }), 64))\n        ]),\n        _createElementVNode(\"div\", _hoisted_5, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"section-title\" }, \"إشارات الجهد في KVL\", -1)),\n          (_openBlock(), _createElementBlock(_Fragment, null, _renderList(SIGNS, (s) => {\n            return _createElementVNode(\"div\", {\n              key: s.sign,\n              class: \"sign-row\"\n            }, [\n              _createElementVNode(\"span\", {\n                class: \"sign\",\n                style: _normalizeStyle({ color: s.color })\n              }, _toDisplayString(s.sign), 5),\n              _createElementVNode(\"span\", null, _toDisplayString(s.desc), 1)\n            ]);\n          }), 64))\n        ]),\n        _createElementVNode(\"div\", _hoisted_6, [\n          _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"section-title\" }, \"خطوات الحل\", -1)),\n          _createElementVNode(\"ol\", _hoisted_7, [\n            (_openBlock(), _createElementBlock(_Fragment, null, _renderList(STEPS, (s) => {\n              return _createElementVNode(\"li\", {\n                key: s.n\n              }, _toDisplayString(s.text), 1);\n            }), 64))\n          ])\n        ]),\n        _cache[4] || (_cache[4] = _createElementVNode(\"div\", { class: \"ref-note\" }, \" 💡 عدد المعادلات = عدد الحلقات المستقلة + (عدد العقد − 1) \", -1)),\n        _cache[5] || (_cache[5] = _createElementVNode(\"div\", { class: \"ref-note\" }, \" ⚡ في دائرتين بحلقتين: معادلة KCL واحدة + معادلتا KVL = 3 معادلات لـ 3 مجاهيل \", -1)),\n        _cache[6] || (_cache[6] = _createElementVNode(\"div\", { class: \"ref-note\" }, \" 🔄 إذا كانت قيمة التيار سالبة، فإن الاتجاه الفعلي عكس المفترض \", -1))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634640214,
+      "end": 1783634640517,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/KirchhoffReferencePanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeStyle as _normalizeStyle } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"ref-table\" }\nconst _hoisted_3 = { class: \"law-info\" }\nconst _hoisted_4 = { class: \"law-name\" }\nconst _hoisted_5 = { class: \"ref-section\" }\nconst _hoisted_6 = { class: \"ref-section\" }\nconst _hoisted_7 = { class: \"steps-list\" }\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'KirchhoffReferencePanel',\n  setup(__props) {\n\nconst LAWS = [\n  { law: 'KCL', name: 'قانون العقدة', desc: 'مجموع التيارات الداخلة = مجموع التيارات الخارجة', color: '#4ade80', formula: 'ΣI(in) = ΣI(out)' },\n  { law: 'KVL', name: 'قانون الحلقة', desc: 'مجموع فروق الجهد في حلقة مغلقة = صفر', color: '#fbbf24', formula: 'ΣV = 0' },\n]\n\nconst STEPS = [\n  { n: 1, text: 'حدد العقد والحلقات في الدائرة' },\n  { n: 2, text: 'افترض اتجاه التيارات في كل فرع' },\n  { n: 3, text: 'اكتب معادلة KCL عند كل عقدة' },\n  { n: 4, text: 'اكتب معادلة KVL لكل حلقة مستقلة' },\n  { n: 5, text: 'حل المعادلات لإيجاد التيارات المجهولة' },\n  { n: 6, text: 'تحقق من صحة الحل بالتعويض' },\n]\n\nconst SIGNS = [\n  { sign: '+', desc: 'البطارية: من القطب السالب إلى الموجب', color: '#22c55e' },\n  { sign: '−', desc: 'المقاومة: في اتجاه التيار (هبوط جهد)', color: '#ef4444' },\n]\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _cache[3] || (_cache[3] = _createElementVNode(\"div\", { class: \"ref-title\" }, \"📊 قانونا كيرشوف\", -1)),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"ref-header\" }, [\n        _createElementVNode(\"span\", null, \"القانون\"),\n        _createElementVNode(\"span\", null, \"المعادلة\")\n      ], -1)),\n      (_openBlock(), _createElementBlock(_Fragment, null, _renderList(LAWS, (law) => {\n        return _createElementVNode(\"div\", {\n          key: law.law,\n          class: \"ref-row\"\n        }, [\n          _createElementVNode(\"div\", _hoisted_3, [\n            _createElementVNode(\"span\", {\n              style: _normalizeStyle({ color: law.color, fontWeight: 700 })\n            }, _toDisplayString(law.law), 5),\n            _createElementVNode(\"span\", _hoisted_4, _toDisplayString(law.name), 1)\n          ]),\n          _createElementVNode(\"span\", {\n            class: \"law-formula\",\n            style: _normalizeStyle({ color: law.color })\n          }, _toDisplayString(law.formula), 5)\n        ])\n      }), 64)),\n      (_openBlock(), _createElementBlock(_Fragment, null, _renderList(LAWS, (law) => {\n        return _createElementVNode(\"div\", {\n          key: law.law + '-desc',\n          class: \"ref-desc\"\n        }, _toDisplayString(law.desc), 1)\n      }), 64))\n    ]),\n    _createElementVNode(\"div\", _hoisted_5, [\n      _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"section-title\" }, \"إشارات الجهد في KVL\", -1)),\n      (_openBlock(), _createElementBlock(_Fragment, null, _renderList(SIGNS, (s) => {\n        return _createElementVNode(\"div\", {\n          key: s.sign,\n          class: \"sign-row\"\n        }, [\n          _createElementVNode(\"span\", {\n            class: \"sign\",\n            style: _normalizeStyle({ color: s.color })\n          }, _toDisplayString(s.sign), 5),\n          _createElementVNode(\"span\", null, _toDisplayString(s.desc), 1)\n        ])\n      }), 64))\n    ]),\n    _createElementVNode(\"div\", _hoisted_6, [\n      _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"section-title\" }, \"خطوات الحل\", -1)),\n      _createElementVNode(\"ol\", _hoisted_7, [\n        (_openBlock(), _createElementBlock(_Fragment, null, _renderList(STEPS, (s) => {\n          return _createElementVNode(\"li\", {\n            key: s.n\n          }, _toDisplayString(s.text), 1)\n        }), 64))\n      ])\n    ]),\n    _cache[4] || (_cache[4] = _createElementVNode(\"div\", { class: \"ref-note\" }, \" 💡 عدد المعادلات = عدد الحلقات المستقلة + (عدد العقد − 1) \", -1)),\n    _cache[5] || (_cache[5] = _createElementVNode(\"div\", { class: \"ref-note\" }, \" ⚡ في دائرتين بحلقتين: معادلة KCL واحدة + معادلتا KVL = 3 معادلات لـ 3 مجاهيل \", -1)),\n    _cache[6] || (_cache[6] = _createElementVNode(\"div\", { class: \"ref-note\" }, \" 🔄 إذا كانت قيمة التيار سالبة، فإن الاتجاه الفعلي عكس المفترض \", -1))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640517,
+      "end": 1783634640517,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640517,
+      "end": 1783634640517,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634640517,
+      "end": 1783634640517,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640517,
+      "end": 1783634640517,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640517,
+      "end": 1783634640517,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640517,
+      "end": 1783634640517,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640517,
+      "end": 1783634640517,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640517,
+      "end": 1783634640517,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640517,
+      "end": 1783634640517,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640517,
+      "end": 1783634640517,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640517,
+      "end": 1783634640517,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640517,
+      "end": 1783634640518,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640518,
+      "end": 1783634640518,
+      "order": "normal"
+    }
+  ]
+}

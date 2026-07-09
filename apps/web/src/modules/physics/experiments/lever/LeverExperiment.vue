@@ -55,10 +55,10 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
           <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id)"
             @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
             <LeverPanelBody :id="id" :trials="ex.trials.trials.value" :forces="ex.lab.vector.state.forces" :resultant="ex.lab.resultant.value"
-              :equilibriumForce="ex.lab.equilibriumForce.value" :isBalanced="ex.lab.isBalanced.value" :mode="ex.lab.mode.value"
-              :masses="ex.lab.beam.state.masses" :tiltDeg="ex.lab.tiltDeg.value" :netTorque="ex.lab.netTorque.value"
-              @removeTrial="ex.trials.removeTrial" @clearTrials="ex.trials.clearTrials" @removeForce="ex.lab.removeForce" @updateForce="ex.lab.updateForce"
-              @removeMass="ex.lab.removeMass" @updateMass="ex.lab.updateMass" />
+              :equilibrium-force="ex.lab.equilibriumForce.value" :is-balanced="ex.lab.isBalanced.value" :mode="ex.lab.mode.value"
+              :masses="ex.lab.beam.state.masses" :tilt-deg="ex.lab.tiltDeg.value" :net-torque="ex.lab.netTorque.value"
+              @remove-trial="ex.trials.removeTrial" @clear-trials="ex.trials.clearTrials" @remove-force="ex.lab.removeForce" @update-force="ex.lab.updateForce"
+              @remove-mass="ex.lab.removeMass" @update-mass="ex.lab.updateMass" />
           </DraggablePanel>
         </template>
       </div>
@@ -66,10 +66,10 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       <div class="lab-col vis-col">
         <LeverCanvas
           :mode="ex.lab.mode.value"
-          :forces="ex.lab.vector.state.forces" :resultant="ex.lab.resultant.value" :equilibriumForce="ex.lab.equilibriumForce.value" :isBalanced="ex.lab.isBalanced.value"
-          :masses="ex.lab.beam.state.masses" :tiltDeg="ex.lab.tiltDeg.value" :netTorque="ex.lab.netTorque.value" :beamLength="ex.lab.beam.state.beamLength"
-          @addForce="addForce" @updateForce="ex.lab.updateForce" @removeForce="ex.lab.removeForce"
-          @addMass="addMass" @updateMass="ex.lab.updateMass" @removeMass="ex.lab.removeMass"
+          :forces="ex.lab.vector.state.forces" :resultant="ex.lab.resultant.value" :equilibrium-force="ex.lab.equilibriumForce.value" :is-balanced="ex.lab.isBalanced.value"
+          :masses="ex.lab.beam.state.masses" :tilt-deg="ex.lab.tiltDeg.value" :net-torque="ex.lab.netTorque.value" :beam-length="ex.lab.beam.state.beamLength"
+          @add-force="addForce" @update-force="ex.lab.updateForce" @remove-force="ex.lab.removeForce"
+          @add-mass="addMass" @update-mass="ex.lab.updateMass" @remove-mass="ex.lab.removeMass"
         />
       </div>
       <div class="resizer" @mousedown="ex.onResizeStart('vis', $event)"></div>
@@ -78,21 +78,21 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
           <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id)"
             @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
             <LeverPanelBody :id="id" :trials="ex.trials.trials.value" :forces="ex.lab.vector.state.forces" :resultant="ex.lab.resultant.value"
-              :equilibriumForce="ex.lab.equilibriumForce.value" :isBalanced="ex.lab.isBalanced.value" :mode="ex.lab.mode.value"
-              :masses="ex.lab.beam.state.masses" :tiltDeg="ex.lab.tiltDeg.value" :netTorque="ex.lab.netTorque.value"
-              @removeTrial="ex.trials.removeTrial" @clearTrials="ex.trials.clearTrials" @removeForce="ex.lab.removeForce" @updateForce="ex.lab.updateForce"
-              @removeMass="ex.lab.removeMass" @updateMass="ex.lab.updateMass" />
+              :equilibrium-force="ex.lab.equilibriumForce.value" :is-balanced="ex.lab.isBalanced.value" :mode="ex.lab.mode.value"
+              :masses="ex.lab.beam.state.masses" :tilt-deg="ex.lab.tiltDeg.value" :net-torque="ex.lab.netTorque.value"
+              @remove-trial="ex.trials.removeTrial" @clear-trials="ex.trials.clearTrials" @remove-force="ex.lab.removeForce" @update-force="ex.lab.updateForce"
+              @remove-mass="ex.lab.removeMass" @update-mass="ex.lab.updateMass" />
           </DraggablePanel>
         </template>
       </div>
     </div>
 
     <LeverOverlayPanels
-      :maximized="ex.layout.maximized" :panelTitle="ex.layout.panelTitle" :trials="ex.trials.trials.value" :forces="ex.lab.vector.state.forces"
-      :resultant="ex.lab.resultant.value" :equilibriumForce="ex.lab.equilibriumForce.value" :isBalanced="ex.lab.isBalanced.value"
-      :mode="ex.lab.mode.value" :masses="ex.lab.beam.state.masses" :tiltDeg="ex.lab.tiltDeg.value" :netTorque="ex.lab.netTorque.value"
-      @maximize="ex.layout.maximizePanel" @drop="ex.handleDrop" @removeTrial="ex.trials.removeTrial" @clearTrials="ex.trials.clearTrials"
-      @removeForce="ex.lab.removeForce" @updateForce="ex.lab.updateForce" @removeMass="ex.lab.removeMass" @updateMass="ex.lab.updateMass"
+      :maximized="ex.layout.maximized" :panel-title="ex.layout.panelTitle" :trials="ex.trials.trials.value" :forces="ex.lab.vector.state.forces"
+      :resultant="ex.lab.resultant.value" :equilibrium-force="ex.lab.equilibriumForce.value" :is-balanced="ex.lab.isBalanced.value"
+      :mode="ex.lab.mode.value" :masses="ex.lab.beam.state.masses" :tilt-deg="ex.lab.tiltDeg.value" :net-torque="ex.lab.netTorque.value"
+      @maximize="ex.layout.maximizePanel" @drop="ex.handleDrop" @remove-trial="ex.trials.removeTrial" @clear-trials="ex.trials.clearTrials"
+      @remove-force="ex.lab.removeForce" @update-force="ex.lab.updateForce" @remove-mass="ex.lab.removeMass" @update-mass="ex.lab.updateMass"
     />
 
     <div class="hint-bar" v-if="ex.lab.mode.value === 'vector' && ex.lab.vector.state.forces.length === 0"><span>💡 {{ t('experiments.addForceHint') }}</span></div>
@@ -102,11 +102,11 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <div class="hint-bar success" v-else><span>✅ {{ t('experiments.balancedHint') }}</span></div>
 
     <LeverStatusBar
-      :forceCount="ex.lab.vector.state.forces.length"
-      :sumFx="ex.lab.resultant.value.fx" :sumFy="ex.lab.resultant.value.fy"
-      :resultantMag="ex.lab.resultant.value.magnitude" :isBalanced="ex.lab.isBalanced.value"
-      :mode="ex.lab.mode.value" :massCount="ex.lab.beam.state.masses.length"
-      :netTorque="ex.lab.netTorque.value" :tiltDeg="ex.lab.tiltDeg.value"
+      :force-count="ex.lab.vector.state.forces.length"
+      :sum-fx="ex.lab.resultant.value.fx" :sum-fy="ex.lab.resultant.value.fy"
+      :resultant-mag="ex.lab.resultant.value.magnitude" :is-balanced="ex.lab.isBalanced.value"
+      :mode="ex.lab.mode.value" :mass-count="ex.lab.beam.state.masses.length"
+      :net-torque="ex.lab.netTorque.value" :tilt-deg="ex.lab.tiltDeg.value"
     />
     <LeverControlBar :can-undo="ex.trials.canUndo()" :can-redo="ex.trials.canRedo()"
       @reset="ex.resetSim" @record-trial="ex.trials.recordTrial" @clear-trials="ex.trials.clearTrials" @export-csv="ex.trials.exportCsv"

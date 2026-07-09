@@ -20,7 +20,7 @@ export function useGratingLayout() {
     readings: t('experiments.panelReadings'), chart: t('experiments.panelChart'), trials: t('experiments.panelTrials'),
     params: t('experiments.panelParams'), laws: t('experiments.panelLaws'), results: t('experiments.panelResults'),
   }
-  const widths = reactive({ ...defaultState.widths })
+  const widths = reactive<Record<string, number>>({ ...defaultState.widths })
   const visible = ref<string[]>([...defaultState.visible])
   const columnMap = reactive({ ...defaultState.columnMap })
   const maximized = reactive<Record<string, boolean>>({ ...defaultState.maximized })

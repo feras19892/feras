@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabBeakerClamp.vue?vue&type=style&index=0&scoped=dfd912dc&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.lab-beaker-clamp {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 2px;\n  padding: 2px;\n  position: relative;\n}\n.lab-beaker-clamp.hovered {\n  filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.3));\n}\n.bc-controls {\n  display: flex;\n  gap: 4px;\n  margin-top: -4px;\n}\n.bc-btn {\n  width: 22px;\n  height: 22px;\n  border: none;\n  border-radius: 4px;\n  background: #e2e8f0;\n  color: #334155;\n  font-size: 0.7rem;\n  cursor: pointer;\n  transition: background 0.15s;\n}\n.bc-btn:hover {\n  background: #cbd5e1;\n}\n.tool-label {\n  font-size: 0.65rem;\n  color: #64748b;\n  white-space: nowrap;\n}\n",
+      "start": 1783634642147,
+      "end": 1783634642147
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.lab-beaker-clamp {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 2px;\n  padding: 2px;\n  position: relative;\n}\n.lab-beaker-clamp.hovered {\n  filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.3));\n}\n.bc-controls {\n  display: flex;\n  gap: 4px;\n  margin-top: -4px;\n}\n.bc-btn {\n  width: 22px;\n  height: 22px;\n  border: none;\n  border-radius: 4px;\n  background: #e2e8f0;\n  color: #334155;\n  font-size: 0.7rem;\n  cursor: pointer;\n  transition: background 0.15s;\n}\n.bc-btn:hover {\n  background: #cbd5e1;\n}\n.tool-label {\n  font-size: 0.65rem;\n  color: #64748b;\n  white-space: nowrap;\n}\n",
+      "start": 1783634642147,
+      "end": 1783634642147,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642147,
+      "end": 1783634642147,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642147,
+      "end": 1783634642147,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642147,
+      "end": 1783634642147,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.lab-beaker-clamp[data-v-dfd912dc] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 2px;\n  padding: 2px;\n  position: relative;\n}\n.lab-beaker-clamp.hovered[data-v-dfd912dc] {\n  filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.3));\n}\n.bc-controls[data-v-dfd912dc] {\n  display: flex;\n  gap: 4px;\n  margin-top: -4px;\n}\n.bc-btn[data-v-dfd912dc] {\n  width: 22px;\n  height: 22px;\n  border: none;\n  border-radius: 4px;\n  background: #e2e8f0;\n  color: #334155;\n  font-size: 0.7rem;\n  cursor: pointer;\n  transition: background 0.15s;\n}\n.bc-btn[data-v-dfd912dc]:hover {\n  background: #cbd5e1;\n}\n.tool-label[data-v-dfd912dc] {\n  font-size: 0.65rem;\n  color: #64748b;\n  white-space: nowrap;\n}\n",
+      "start": 1783634642147,
+      "end": 1783634642147,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642147,
+      "end": 1783634642147,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634642147,
+      "end": 1783634642147,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642147,
+      "end": 1783634642147,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642147,
+      "end": 1783634642147,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642147,
+      "end": 1783634642147,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642147,
+      "end": 1783634642147,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642147,
+      "end": 1783634642147,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642147,
+      "end": 1783634642147,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642147,
+      "end": 1783634642147,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642147,
+      "end": 1783634642147,
+      "order": "normal"
+    }
+  ]
+}

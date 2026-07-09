@@ -7,10 +7,10 @@ const allIds = ['readings', 'chart', 'trials', 'params', 'laws', 'results']
 
 const defaultState = {
   widths: { data: 320, ctrl: 320 },
-  visible: ['readings', 'chart', 'trials', 'params', 'laws', 'results'] as string[],
+  visible: ['readings', 'chart', 'trials', 'params'] as string[],
   columnMap: {
     data: ['readings', 'chart', 'trials'],
-    ctrl: ['params', 'laws', 'results'],
+    ctrl: ['params'],
   } as Record<string, string[]>,
   maximized: Object.fromEntries(allIds.map(id => [id, false])) as Record<string, boolean>,
 }

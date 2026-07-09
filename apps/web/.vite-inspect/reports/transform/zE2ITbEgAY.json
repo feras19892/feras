@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/projectile/useProjectileHints.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { useI18n } from '../../composables/useI18n'\n\nexport function useProjectileHints() {\n  const { t } = useI18n()\n\n  function getHint(v0: number, angleDeg: number, g: number, targetX: number) {\n    const rad = (angleDeg * Math.PI) / 180\n    const R = (v0 * v0 * Math.sin(2 * rad)) / g\n    const diff = R - targetX\n    const sin2 = Math.sin(2 * rad)\n\n    let message = ''\n    let tip = ''\n    let strategy = ''\n\n    if (Math.abs(diff) < 2) {\n      message = t('experiments.projHintRangeClose')\n      tip = t('experiments.projHintLaunchAndSee')\n      strategy = t('experiments.projHintReady')\n    } else if (diff > 0) {\n      // Reaches too far\n      message = t('experiments.projHintTooFar')\n      if (angleDeg > 45) {\n        tip = t('experiments.projHintAngleGt45')\n        strategy = t('experiments.projHintCloserTo45')\n      } else if (angleDeg < 45) {\n        tip = t('experiments.projHintAngleLt45')\n        strategy = t('experiments.projHintTryReduceSpeed')\n      } else {\n        tip = t('experiments.projHintAngle45ReduceSpeed')\n        strategy = t('experiments.projHintV0ControlsRange')\n      }\n    } else {\n      // Falls short\n      message = t('experiments.projHintWontReach')\n      if (angleDeg < 45) {\n        tip = t('experiments.projHintAngleLt45Increase')\n        strategy = t('experiments.projHintCloserTo45MoreRange')\n      } else if (angleDeg > 45) {\n        tip = t('experiments.projHintAngleGt45OrSpeed')\n        strategy = t('experiments.projHint45MaxRangeForSpeed')\n      } else {\n        tip = t('experiments.projHintAngle45NeedSpeed')\n        strategy = t('experiments.projHintSmallV0Increase')\n      }\n    }\n\n    return {\n      equation: `R = v₀² · sin(2×${angleDeg}°) / g = ${R.toFixed(1)}m`,\n      targetX: targetX.toFixed(1),\n      sin2theta: `sin(2×${angleDeg}°) = ${sin2.toFixed(3)}`,\n      message,\n      tip,\n      strategy,\n    }\n  }\n\n  function checkStudentGuess(studentV0: number, studentAngle: number, g: number, targetX: number) {\n    const rad = (studentAngle * Math.PI) / 180\n    const R = (studentV0 * studentV0 * Math.sin(2 * rad)) / g\n    const diff = R - targetX\n    if (Math.abs(diff) < 2) return t('experiments.projHintExcellent')\n    if (diff > 0) {\n      if (studentAngle > 45) return t('experiments.projHintTooFarReduceAngle')\n      return t('experiments.projHintTooFarReduceSpeed')\n    }\n    if (studentAngle < 45) return t('experiments.projHintTooShortIncreaseAngle')\n    return t('experiments.projHintTooShortIncreaseSpeed')\n  }\n\n  return { getHint, checkStudentGuess }\n}\n",
+      "start": 1783634643076,
+      "end": 1783634643082,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634643082,
+      "end": 1783634643082,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { useI18n } from \"../../composables/useI18n\";\nexport function useProjectileHints() {\n  const { t } = useI18n();\n  function getHint(v0, angleDeg, g, targetX) {\n    const rad = angleDeg * Math.PI / 180;\n    const R = v0 * v0 * Math.sin(2 * rad) / g;\n    const diff = R - targetX;\n    const sin2 = Math.sin(2 * rad);\n    let message = \"\";\n    let tip = \"\";\n    let strategy = \"\";\n    if (Math.abs(diff) < 2) {\n      message = t(\"experiments.projHintRangeClose\");\n      tip = t(\"experiments.projHintLaunchAndSee\");\n      strategy = t(\"experiments.projHintReady\");\n    } else if (diff > 0) {\n      message = t(\"experiments.projHintTooFar\");\n      if (angleDeg > 45) {\n        tip = t(\"experiments.projHintAngleGt45\");\n        strategy = t(\"experiments.projHintCloserTo45\");\n      } else if (angleDeg < 45) {\n        tip = t(\"experiments.projHintAngleLt45\");\n        strategy = t(\"experiments.projHintTryReduceSpeed\");\n      } else {\n        tip = t(\"experiments.projHintAngle45ReduceSpeed\");\n        strategy = t(\"experiments.projHintV0ControlsRange\");\n      }\n    } else {\n      message = t(\"experiments.projHintWontReach\");\n      if (angleDeg < 45) {\n        tip = t(\"experiments.projHintAngleLt45Increase\");\n        strategy = t(\"experiments.projHintCloserTo45MoreRange\");\n      } else if (angleDeg > 45) {\n        tip = t(\"experiments.projHintAngleGt45OrSpeed\");\n        strategy = t(\"experiments.projHint45MaxRangeForSpeed\");\n      } else {\n        tip = t(\"experiments.projHintAngle45NeedSpeed\");\n        strategy = t(\"experiments.projHintSmallV0Increase\");\n      }\n    }\n    return {\n      equation: `R = v₀² · sin(2×${angleDeg}°) / g = ${R.toFixed(1)}m`,\n      targetX: targetX.toFixed(1),\n      sin2theta: `sin(2×${angleDeg}°) = ${sin2.toFixed(3)}`,\n      message,\n      tip,\n      strategy\n    };\n  }\n  function checkStudentGuess(studentV0, studentAngle, g, targetX) {\n    const rad = studentAngle * Math.PI / 180;\n    const R = studentV0 * studentV0 * Math.sin(2 * rad) / g;\n    const diff = R - targetX;\n    if (Math.abs(diff) < 2) return t(\"experiments.projHintExcellent\");\n    if (diff > 0) {\n      if (studentAngle > 45) return t(\"experiments.projHintTooFarReduceAngle\");\n      return t(\"experiments.projHintTooFarReduceSpeed\");\n    }\n    if (studentAngle < 45) return t(\"experiments.projHintTooShortIncreaseAngle\");\n    return t(\"experiments.projHintTooShortIncreaseSpeed\");\n  }\n  return { getHint, checkStudentGuess };\n}\n",
+      "start": 1783634643082,
+      "end": 1783634643131,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/projectile/useProjectileHints.ts"
+        ],
+        "sourcesContent": [
+          "import { useI18n } from '../../composables/useI18n'\n\nexport function useProjectileHints() {\n  const { t } = useI18n()\n\n  function getHint(v0: number, angleDeg: number, g: number, targetX: number) {\n    const rad = (angleDeg * Math.PI) / 180\n    const R = (v0 * v0 * Math.sin(2 * rad)) / g\n    const diff = R - targetX\n    const sin2 = Math.sin(2 * rad)\n\n    let message = ''\n    let tip = ''\n    let strategy = ''\n\n    if (Math.abs(diff) < 2) {\n      message = t('experiments.projHintRangeClose')\n      tip = t('experiments.projHintLaunchAndSee')\n      strategy = t('experiments.projHintReady')\n    } else if (diff > 0) {\n      // Reaches too far\n      message = t('experiments.projHintTooFar')\n      if (angleDeg > 45) {\n        tip = t('experiments.projHintAngleGt45')\n        strategy = t('experiments.projHintCloserTo45')\n      } else if (angleDeg < 45) {\n        tip = t('experiments.projHintAngleLt45')\n        strategy = t('experiments.projHintTryReduceSpeed')\n      } else {\n        tip = t('experiments.projHintAngle45ReduceSpeed')\n        strategy = t('experiments.projHintV0ControlsRange')\n      }\n    } else {\n      // Falls short\n      message = t('experiments.projHintWontReach')\n      if (angleDeg < 45) {\n        tip = t('experiments.projHintAngleLt45Increase')\n        strategy = t('experiments.projHintCloserTo45MoreRange')\n      } else if (angleDeg > 45) {\n        tip = t('experiments.projHintAngleGt45OrSpeed')\n        strategy = t('experiments.projHint45MaxRangeForSpeed')\n      } else {\n        tip = t('experiments.projHintAngle45NeedSpeed')\n        strategy = t('experiments.projHintSmallV0Increase')\n      }\n    }\n\n    return {\n      equation: `R = v₀² · sin(2×${angleDeg}°) / g = ${R.toFixed(1)}m`,\n      targetX: targetX.toFixed(1),\n      sin2theta: `sin(2×${angleDeg}°) = ${sin2.toFixed(3)}`,\n      message,\n      tip,\n      strategy,\n    }\n  }\n\n  function checkStudentGuess(studentV0: number, studentAngle: number, g: number, targetX: number) {\n    const rad = (studentAngle * Math.PI) / 180\n    const R = (studentV0 * studentV0 * Math.sin(2 * rad)) / g\n    const diff = R - targetX\n    if (Math.abs(diff) < 2) return t('experiments.projHintExcellent')\n    if (diff > 0) {\n      if (studentAngle > 45) return t('experiments.projHintTooFarReduceAngle')\n      return t('experiments.projHintTooFarReduceSpeed')\n    }\n    if (studentAngle < 45) return t('experiments.projHintTooShortIncreaseAngle')\n    return t('experiments.projHintTooShortIncreaseSpeed')\n  }\n\n  return { getHint, checkStudentGuess }\n}\n"
+        ],
+        "mappings": "AAAA,SAAS,eAAe;AAEjB,gBAAS,qBAAqB;AACnC,QAAM,EAAE,EAAE,IAAI,QAAQ;AAEtB,WAAS,QAAQ,IAAY,UAAkB,GAAW,SAAiB;AACzE,UAAM,MAAO,WAAW,KAAK,KAAM;AACnC,UAAM,IAAK,KAAK,KAAK,KAAK,IAAI,IAAI,GAAG,IAAK;AAC1C,UAAM,OAAO,IAAI;AACjB,UAAM,OAAO,KAAK,IAAI,IAAI,GAAG;AAE7B,QAAI,UAAU;AACd,QAAI,MAAM;AACV,QAAI,WAAW;AAEf,QAAI,KAAK,IAAI,IAAI,IAAI,GAAG;AACtB,gBAAU,EAAE,gCAAgC;AAC5C,YAAM,EAAE,kCAAkC;AAC1C,iBAAW,EAAE,2BAA2B;AAAA,IAC1C,WAAW,OAAO,GAAG;AAEnB,gBAAU,EAAE,4BAA4B;AACxC,UAAI,WAAW,IAAI;AACjB,cAAM,EAAE,+BAA+B;AACvC,mBAAW,EAAE,gCAAgC;AAAA,MAC/C,WAAW,WAAW,IAAI;AACxB,cAAM,EAAE,+BAA+B;AACvC,mBAAW,EAAE,oCAAoC;AAAA,MACnD,OAAO;AACL,cAAM,EAAE,wCAAwC;AAChD,mBAAW,EAAE,qCAAqC;AAAA,MACpD;AAAA,IACF,OAAO;AAEL,gBAAU,EAAE,+BAA+B;AAC3C,UAAI,WAAW,IAAI;AACjB,cAAM,EAAE,uCAAuC;AAC/C,mBAAW,EAAE,yCAAyC;AAAA,MACxD,WAAW,WAAW,IAAI;AACxB,cAAM,EAAE,sCAAsC;AAC9C,mBAAW,EAAE,wCAAwC;AAAA,MACvD,OAAO;AACL,cAAM,EAAE,sCAAsC;AAC9C,mBAAW,EAAE,qCAAqC;AAAA,MACpD;AAAA,IACF;AAEA,WAAO;AAAA,MACL,UAAU,mBAAmB,QAAQ,YAAY,EAAE,QAAQ,CAAC,CAAC;AAAA,MAC7D,SAAS,QAAQ,QAAQ,CAAC;AAAA,MAC1B,WAAW,SAAS,QAAQ,QAAQ,KAAK,QAAQ,CAAC,CAAC;AAAA,MACnD;AAAA,MACA;AAAA,MACA;AAAA,IACF;AAAA,EACF;AAEA,WAAS,kBAAkB,WAAmB,cAAsB,GAAW,SAAiB;AAC9F,UAAM,MAAO,eAAe,KAAK,KAAM;AACvC,UAAM,IAAK,YAAY,YAAY,KAAK,IAAI,IAAI,GAAG,IAAK;AACxD,UAAM,OAAO,IAAI;AACjB,QAAI,KAAK,IAAI,IAAI,IAAI,EAAG,QAAO,EAAE,+BAA+B;AAChE,QAAI,OAAO,GAAG;AACZ,UAAI,eAAe,GAAI,QAAO,EAAE,uCAAuC;AACvE,aAAO,EAAE,uCAAuC;AAAA,IAClD;AACA,QAAI,eAAe,GAAI,QAAO,EAAE,2CAA2C;AAC3E,WAAO,EAAE,2CAA2C;AAAA,EACtD;AAEA,SAAO,EAAE,SAAS,kBAAkB;AACtC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634643131,
+      "end": 1783634643131,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634643131,
+      "end": 1783634643131,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634643132,
+      "end": 1783634643132,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634643132,
+      "end": 1783634643132,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634643132,
+      "end": 1783634643132,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634643132,
+      "end": 1783634643132,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634643132,
+      "end": 1783634643132,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634643132,
+      "end": 1783634643132,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634643132,
+      "end": 1783634643132,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634643132,
+      "end": 1783634643132,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634643132,
+      "end": 1783634643132,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634643132,
+      "end": 1783634643132,
+      "order": "normal"
+    }
+  ]
+}

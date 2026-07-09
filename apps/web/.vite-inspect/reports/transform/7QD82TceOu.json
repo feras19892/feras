@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/TorqueCoilReadingsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\nconst { t } = useI18n()\n\ndefineProps<{\n  I: number\n  N: number\n  a: number\n  b: number\n  bField: number\n  theta: number\n  areaVal: number\n  mu: number\n  tau: number\n  running: boolean\n  hasProbe?: boolean\n}>()\n</script>\n\n<template>\n  <div class=\"readings-panel\">\n    <div class=\"readings-title\">{{ t('experiments.emLiveReadings') }}</div>\n    <div class=\"readings-grid\">\n      <div class=\"reading-box current\">\n        <span class=\"r-label\">I</span>\n        <span class=\"r-value\">{{ I.toFixed(1) }}</span>\n        <span class=\"r-unit\">A</span>\n      </div>\n      <div class=\"reading-box turns\">\n        <span class=\"r-label\">N</span>\n        <span class=\"r-value\">{{ N }}</span>\n        <span class=\"r-unit\">{{ t('experiments.genTurns') }}</span>\n      </div>\n      <div class=\"reading-box field\">\n        <span class=\"r-label\">B</span>\n        <span class=\"r-value\">{{ bField.toFixed(3) }}</span>\n        <span class=\"r-unit\">T</span>\n      </div>\n    </div>\n\n    <div class=\"force-grid\">\n      <div class=\"force-box area\">\n        <span class=\"f-label\">{{ t('experiments.tcReadingsA') }}</span>\n        <span class=\"f-value\">{{ areaVal.toExponential(2) }}</span>\n        <span class=\"f-unit\">m²</span>\n      </div>\n      <div class=\"force-box moment\">\n        <span class=\"f-label\">{{ t('experiments.tcReadingsMu') }}</span>\n        <span class=\"f-value\">{{ mu.toExponential(2) }}</span>\n        <span class=\"f-unit\">A·m²</span>\n      </div>\n      <div class=\"force-box angle\">\n        <span class=\"f-label\">{{ t('experiments.tcReadingsTheta') }}</span>\n        <span class=\"f-value\">{{ theta.toFixed(0) }}</span>\n        <span class=\"f-unit\">°</span>\n      </div>\n      <div class=\"force-box torque\">\n        <span class=\"f-label\">{{ t('experiments.tcReadingsTau') }}</span>\n        <span class=\"f-value\">{{ tau.toExponential(2) }}</span>\n        <span class=\"f-unit\">N·m</span>\n      </div>\n    </div>\n\n    <div v-if=\"hasProbe\" class=\"probe-indicator\">{{ t('experiments.tcProbeAngle') }}</div>\n    <div v-else class=\"probe-indicator idle\">{{ t('experiments.tcProbeIdle') }}</div>\n  </div>\n</template>\n\n<style scoped>\n.readings-panel { padding: .75rem; display: flex; flex-direction: column; gap: .5rem; }\n.readings-title { font-size: .85rem; font-weight: 700; color: #67e8f9; padding-bottom: .3rem; border-bottom: 1px solid #1e2530; }\n.readings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .4rem; }\n.reading-box { background: rgba(45,54,69,.4); border-radius: 6px; padding: .35rem; text-align: center; display: flex; flex-direction: column; }\n.r-label { font-size: .65rem; color: #94a3b8; }\n.r-value { font-size: .8rem; font-weight: 700; color: #D1D7E0; font-family: 'Courier New', monospace; }\n.r-unit { font-size: .6rem; color: #64748b; }\n.reading-box.current { background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.15); }\n.reading-box.turns { background: rgba(168,85,247,.08); border: 1px solid rgba(168,85,247,.15); }\n.reading-box.field { background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.15); }\n.force-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .4rem; margin-top: .3rem; }\n.force-box { border-radius: 6px; padding: .35rem; text-align: center; display: flex; flex-direction: column; }\n.force-box.area { background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.15); }\n.force-box.moment { background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.15); }\n.force-box.angle { background: rgba(168,85,247,.08); border: 1px solid rgba(168,85,247,.15); }\n.force-box.torque { background: rgba(239,68,68,.08); border: 1px solid rgba(239,68,68,.15); }\n.f-label { font-size: .6rem; color: #94a3b8; }\n.f-value { font-size: .8rem; font-weight: 700; font-family: 'Courier New', monospace; }\n.force-box.area .f-value { color: #22c55e; }\n.force-box.moment .f-value { color: #f59e0b; }\n.force-box.angle .f-value { color: #a855f7; }\n.force-box.torque .f-value { color: #ef4444; }\n.f-unit { font-size: .6rem; color: #64748b; }\n.probe-indicator { font-size: .7rem; color: #a855f7; text-align: center; padding: .3rem; background: rgba(168,85,247,.08); border-radius: 6px; }\n.probe-indicator.idle { color: #64748b; background: rgba(100,116,139,.08); }\n</style>\n",
+      "start": 1783634640938,
+      "end": 1783634641288,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641288,
+      "end": 1783634641288,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641288,
+      "end": 1783634641288,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641288,
+      "end": 1783634641288,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641288,
+      "end": 1783634641288,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/TorqueCoilReadingsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/TorqueCoilReadingsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/TorqueCoilReadingsPanel.vue?vue&type=style&index=0&scoped=ad1881b8&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-ad1881b8\"]]);\n",
+      "start": 1783634641288,
+      "end": 1783634641655,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641655,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641656,
+      "end": 1783634641657,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641657,
+      "end": 1783634641657,
+      "order": "normal"
+    }
+  ]
+}

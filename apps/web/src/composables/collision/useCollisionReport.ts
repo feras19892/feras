@@ -1,5 +1,8 @@
 import { ref } from 'vue'
 import { useI18n } from '../../composables/useI18n'
+import type { CollisionTrial } from './useCollisionTrials'
+
+interface CollisionReportInput { params: { m1: number; m2: number; v1: number; v2: number }; trials: { trials: { value: CollisionTrial[] }; trialStats: { value: { e_mean: number } }; calcResult: { value: string } } }
 
 export function useCollisionReport() {
   const { t } = useI18n()
@@ -14,10 +17,8 @@ export function useCollisionReport() {
     canvasSnapshot.value = dataUrl
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function openFullReport(experiment: any) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const trials: any[] = experiment.trials.trials.value
+  function openFullReport(experiment: CollisionReportInput) {
+    const trials = experiment.trials.trials.value
     const imgTag = canvasSnapshot.value ? `<img src="${canvasSnapshot.value}" style="max-width:100%;border-radius:8px;margin:1rem 0;" />` : ''
     const html = `
 <!DOCTYPE html>

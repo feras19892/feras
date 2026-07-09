@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryChartPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed } from 'vue'\nimport { useI18n } from '../../../../composables/useI18n'\nimport type { CalorimetryTrial } from '../../../../composables/calorimetry/useCalorimetryTrials'\nconst { t } = useI18n()\nconst props = defineProps<{ trials: CalorimetryTrial[] }>()\n\nconst pts = computed(() => props.trials.map(t => ({ x: t.tMetal, y: t.tf, label: `#${t.id}` })))\nconst xMin = computed(() => pts.value.length ? Math.min(...pts.value.map(p => p.x)) - 10 : 80)\nconst xMax = computed(() => pts.value.length ? Math.max(...pts.value.map(p => p.x)) + 10 : 120)\nconst yMin = computed(() => pts.value.length ? Math.min(...pts.value.map(p => p.y)) - 2 : 20)\nconst yMax = computed(() => pts.value.length ? Math.max(...pts.value.map(p => p.y)) + 2 : 40)\n\nfunction mapX(v: number, W: number) { return 40 + (v - xMin.value) / (xMax.value - xMin.value) * (W - 60) }\nfunction mapY(v: number, H: number) { return H - 30 - (v - yMin.value) / (yMax.value - yMin.value) * (H - 50) }\n</script>\n<template>\n  <div class=\"chart-panel\">\n    <svg v-if=\"trials.length >= 2\" viewBox=\"0 0 300 200\" style=\"width:100%;height:200px;background:#0d1117;border-radius:5px;border:1px solid #2D3645;\">\n      <text x=\"150\" y=\"12\" text-anchor=\"middle\" fill=\"#8B95A5\" font-size=\"10\">Tf vs T_metal</text>\n      <template v-for=\"i in 5\" :key=\"'xg'+i\">\n        <line :x1=\"30 + (i-1)*62.5\" y1=\"20\" :x2=\"30 + (i-1)*62.5\" y2=\"180\" stroke=\"rgba(255,255,255,0.06)\" stroke-width=\"1\"/>\n        <text :x=\"30 + (i-1)*62.5\" y=\"192\" text-anchor=\"middle\" fill=\"rgba(255,255,255,0.3)\" font-size=\"8\">{{ Math.round(xMin + (xMax-xMin)*(i-1)/4) }}</text>\n      </template>\n      <template v-for=\"i in 5\" :key=\"'yg'+i\">\n        <line x1=\"30\" :y1=\"180 - (i-1)*40\" x2=\"280\" :y2=\"180 - (i-1)*40\" stroke=\"rgba(255,255,255,0.06)\" stroke-width=\"1\"/>\n        <text x=\"26\" :y=\"180 - (i-1)*40 + 3\" text-anchor=\"end\" fill=\"rgba(255,255,255,0.3)\" font-size=\"8\">{{ (yMin + (yMax-yMin)*(i-1)/4).toFixed(0) }}</text>\n      </template>\n      <line x1=\"30\" y1=\"180\" x2=\"280\" y2=\"180\" stroke=\"rgba(255,255,255,0.3)\" stroke-width=\"1\" />\n      <line x1=\"30\" y1=\"20\" x2=\"30\" y2=\"180\" stroke=\"rgba(255,255,255,0.3)\" stroke-width=\"1\" />\n      <text x=\"150\" y=\"198\" text-anchor=\"middle\" fill=\"#64748b\" font-size=\"9\">T_metal (°C)</text>\n      <text x=\"8\" y=\"100\" text-anchor=\"middle\" fill=\"#64748b\" font-size=\"9\" transform=\"rotate(-90, 8, 100)\">Tf (°C)</text>\n      <g v-for=\"p in pts\" :key=\"p.label\">\n        <circle :cx=\"mapX(p.x, 300)\" :cy=\"mapY(p.y, 200)\" r=\"4\" fill=\"#5B8DB8\" />\n        <title>{{ `T_metal=${p.x.toFixed(1)}°C, Tf=${p.y.toFixed(1)}°C` }}</title>\n      </g>\n      <text v-for=\"p in pts\" :key=\"p.label + 'l'\" :x=\"mapX(p.x, 300)\" :y=\"mapY(p.y, 200) - 8\" text-anchor=\"middle\" fill=\"#8B95A5\" font-size=\"8\">{{ p.label }}</text>\n    </svg>\n    <p v-else class=\"empty\">{{ t('experiments.chartNeedTrials') }}</p>\n  </div>\n</template>\n<style scoped>\n.chart-panel { display:flex; align-items:center; justify-content:center; padding:.3rem; }\n.empty { color:#64748b; font-size:.75rem; text-align:center; }\n</style>\n",
+      "start": 1783634642437,
+      "end": 1783634642738,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642738,
+      "end": 1783634642738,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642738,
+      "end": 1783634642738,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642738,
+      "end": 1783634642738,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642738,
+      "end": 1783634642738,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryChartPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryChartPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryChartPanel.vue?vue&type=style&index=0&scoped=527ae667&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-527ae667\"]]);\n",
+      "start": 1783634642738,
+      "end": 1783634642883,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642883,
+      "end": 1783634642884,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642884,
+      "end": 1783634642884,
+      "order": "normal"
+    }
+  ]
+}

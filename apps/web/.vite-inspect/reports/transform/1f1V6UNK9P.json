@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabPipette.vue?vue&type=style&index=0&scoped=55942e75&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\r\n.pipette-wrapper {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  position: relative;\r\n  cursor: pointer;\r\n}\r\n.pipette-wrapper.active {\r\n  filter: drop-shadow(0 0 12px rgba(16,185,129,0.4));\r\n}\r\n.pipette-svg.hovered {\r\n  filter: brightness(1.04);\r\n}\r\n.drop-canvas {\r\n  position: absolute;\r\n  top: 0;\r\n  left: 50%;\r\n  width: 60px;\r\n  height: 280px;\r\n  margin-left: -30px;\r\n  z-index: 2;\r\n  pointer-events: none;\r\n}\r\n",
+      "start": 1783634642154,
+      "end": 1783634642154
+    },
+    {
+      "name": "vite:css",
+      "result": "\r\n.pipette-wrapper {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  position: relative;\r\n  cursor: pointer;\r\n}\r\n.pipette-wrapper.active {\r\n  filter: drop-shadow(0 0 12px rgba(16,185,129,0.4));\r\n}\r\n.pipette-svg.hovered {\r\n  filter: brightness(1.04);\r\n}\r\n.drop-canvas {\r\n  position: absolute;\r\n  top: 0;\r\n  left: 50%;\r\n  width: 60px;\r\n  height: 280px;\r\n  margin-left: -30px;\r\n  z-index: 2;\r\n  pointer-events: none;\r\n}\r\n",
+      "start": 1783634642155,
+      "end": 1783634642155,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642155,
+      "end": 1783634642155,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642155,
+      "end": 1783634642155,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642155,
+      "end": 1783634642155,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.pipette-wrapper[data-v-55942e75] {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  position: relative;\r\n  cursor: pointer;\n}\n.pipette-wrapper.active[data-v-55942e75] {\r\n  filter: drop-shadow(0 0 12px rgba(16,185,129,0.4));\n}\n.pipette-svg.hovered[data-v-55942e75] {\r\n  filter: brightness(1.04);\n}\n.drop-canvas[data-v-55942e75] {\r\n  position: absolute;\r\n  top: 0;\r\n  left: 50%;\r\n  width: 60px;\r\n  height: 280px;\r\n  margin-left: -30px;\r\n  z-index: 2;\r\n  pointer-events: none;\n}\r\n",
+      "start": 1783634642155,
+      "end": 1783634642155,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642155,
+      "end": 1783634642155,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634642155,
+      "end": 1783634642155,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642155,
+      "end": 1783634642155,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642155,
+      "end": 1783634642155,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642155,
+      "end": 1783634642155,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642155,
+      "end": 1783634642155,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642155,
+      "end": 1783634642155,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642155,
+      "end": 1783634642155,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642155,
+      "end": 1783634642155,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642155,
+      "end": 1783634642155,
+      "order": "normal"
+    }
+  ]
+}

@@ -5,23 +5,19 @@ import {
   createLabItem, isContainer,
   getPipette, retortStandMap,
 } from './useChemistryLab';
-import { isClampAttachable, isBurette, isPipette, isGradCylinder, isRetortStandAssembly } from './chemLabIds';
+import { isPipette, isRetortStandAssembly } from './chemLabIds';
+import {
+  getMagnetOffset, isClampAttachable,
+  retortStandSnapUid, bottomClampSnapUid,
+  findNearestSlot, findNearestBottomClamp,
+  finalizeTopSlotSnap, finalizeBottomClampSnap,
+  detachFromTopSlots, detachFromBottomClamp,
+} from './workspaceDragSnap';
 import { pipetteDraw, pipetteDispense } from './usePipetteActions';
 import type { ToolDef } from './useChemistryTools';
 import type { ToolState } from './chemLabTypes';
 
 
-const SNAP_DISTANCE = 250;
-export const retortStandSnapUid = ref<string | null>(null);
-export const bottomClampSnapUid = ref<string | null>(null);
-
-function getMagnetOffset(id: string): { x: number; y: number } {
-  // Offsets scaled from original 85×295 burette to current 60×210
-  if (isBurette(id)) return { x: 30, y: 55 };
-  if (isPipette(id)) return { x: 25, y: 82.1 };
-  if (isGradCylinder(id)) return { x: 37.5, y: 55 };
-  return { x: 0, y: 0 };
-}
 
 export function useWorkspaceDrag(
   workspaceRef: { value: HTMLDivElement | null },
@@ -63,38 +59,17 @@ export function useWorkspaceDrag(
     items.value.push(item);
     // --- Clamp-attached tool snap on drop to nearest stand slot ---
     if (isClampAttachable(item.id)) {
-      let nearestStand: string | null = null;
-      let nearestSlot = -1;
-      let nearestDist = SNAP_DISTANCE;
-      for (const standItem of items.value) {
-        if (standItem.uid === item.uid) continue;
-        if (!isRetortStandAssembly(standItem.id)) continue;
-        const st = retortStandMap[standItem.uid];
-        if (!st) continue;
-        const clampY = st.topClampY;
-        for (let i = 0; i < st.slotOffsets.length; i++) {
-          if (st.slotOccupants[i]) continue;
-          const slotWorldX = standItem.x + 54 + st.slotOffsets[i];
-          const slotWorldY = standItem.y + clampY + 14;
-          const off = getMagnetOffset(item.id);
-          const dist = Math.hypot(item.x + off.x - slotWorldX, item.y + off.y - slotWorldY);
-          if (dist < nearestDist) {
-            nearestDist = dist;
-            nearestStand = standItem.uid;
-            nearestSlot = i;
-          }
-        }
-      }
-      if (nearestStand && nearestSlot >= 0) {
-        const st = retortStandMap[nearestStand];
-        const stand = items.value.find(i => i.uid === nearestStand);
+      const result = findNearestSlot(item.uid, item.x, item.y, item.id);
+      if (result) {
+        const st = retortStandMap[result.standUid];
+        const stand = items.value.find(i => i.uid === result.standUid);
         if (!stand || !st) return;
-        const slotWorldX = stand.x + 54 + st.slotOffsets[nearestSlot];
+        const slotWorldX = stand.x + 54 + st.slotOffsets[result.slotIdx];
         const slotWorldY = stand.y + st.topClampY + 14;
         const off = getMagnetOffset(item.id);
         item.x = slotWorldX - off.x;
         item.y = slotWorldY - off.y;
-        st.slotOccupants[nearestSlot] = item.uid;
+        st.slotOccupants[result.slotIdx] = item.uid;
       }
     }
   }
@@ -162,33 +137,9 @@ export function useWorkspaceDrag(
       const now = performance.now();
       if (now - lastSnapTime > 50) {
         lastSnapTime = now;
-        // Detach from stand on first drag move
-        for (const st of Object.values(retortStandMap)) {
-          const slotIdx = st.slotOccupants.indexOf(item.uid);
-          if (slotIdx >= 0) { st.slotOccupants[slotIdx] = null; break; }
-        }
-        let nearestStand: string | null = null;
-        let nearestSlot = -1;
-        let nearestDist = SNAP_DISTANCE;
-        for (const standItem of items.value) {
-          if (!isRetortStandAssembly(standItem.id)) continue;
-          const st = retortStandMap[standItem.uid];
-          if (!st) continue;
-          const clampY = st.topClampY;
-          for (let i = 0; i < st.slotOffsets.length; i++) {
-            if (st.slotOccupants[i]) continue;
-            const slotWorldX = standItem.x + 54 + st.slotOffsets[i];
-            const slotWorldY = standItem.y + clampY + 14;
-            const off = getMagnetOffset(item.id);
-            const dist = Math.hypot(item.x + off.x - slotWorldX, item.y + off.y - slotWorldY);
-            if (dist < nearestDist) {
-              nearestDist = dist;
-              nearestStand = standItem.uid;
-              nearestSlot = i;
-            }
-          }
-        }
-        retortStandSnapUid.value = nearestStand ? nearestStand + '|' + nearestSlot : null;
+        detachFromTopSlots(item.uid);
+        const result = findNearestSlot(item.uid, item.x, item.y, item.id);
+        retortStandSnapUid.value = result ? result.standUid + '|' + result.slotIdx : null;
       }
     } else {
       retortStandSnapUid.value = null;
@@ -199,25 +150,8 @@ export function useWorkspaceDrag(
       const now = performance.now();
       if (now - lastSnapTime > 50) {
         lastSnapTime = now;
-        // Detach from bottom clamp on first drag move
-        for (const st of Object.values(retortStandMap)) {
-          if (st.bottomSlotOccupant === item.uid) { st.bottomSlotOccupant = null; break; }
-        }
-        let nearestStand: string | null = null;
-        let nearestDist = 180;
-        for (const standItem of items.value) {
-          if (!isRetortStandAssembly(standItem.id)) continue;
-          const st = retortStandMap[standItem.uid];
-          if (!st || st.bottomSlotOccupant) continue; // occupied
-          const clampWorldX = standItem.x + 45 + 132 + st.bottomClampX;
-          const clampWorldY = standItem.y + st.bottomClampY + 14;
-          const dist = Math.hypot(item.x + 35 - clampWorldX, item.y + 50 - clampWorldY);
-          if (dist < nearestDist) {
-            nearestDist = dist;
-            nearestStand = standItem.uid;
-          }
-        }
-        bottomClampSnapUid.value = nearestStand || null;
+        detachFromBottomClamp(item.uid);
+        bottomClampSnapUid.value = findNearestBottomClamp(item.uid, item.x, item.y);
       }
     } else {
       bottomClampSnapUid.value = null;
@@ -241,34 +175,13 @@ export function useWorkspaceDrag(
     const item = draggingItem.value;
 
     // --- Clamp-attached tool snap to retort stand slot ---
-    if (isClampAttachable(item.id) && retortStandSnapUid.value) {
-      const [standUid, slotIdxStr] = retortStandSnapUid.value.split('|');
-      const slotIdx = parseInt(slotIdxStr);
-      const stand = items.value.find(i => i.uid === standUid);
-      const st = retortStandMap[standUid];
-      if (stand && st && !st.slotOccupants[slotIdx]) {
-        const slotWorldX = stand.x + 54 + st.slotOffsets[slotIdx];
-        const slotWorldY = stand.y + st.topClampY + 14;
-        const off = getMagnetOffset(item.id);
-        item.x = slotWorldX - off.x;
-        item.y = slotWorldY - off.y;
-        st.slotOccupants[slotIdx] = item.uid;
-      }
-      retortStandSnapUid.value = null;
+    if (isClampAttachable(item.id)) {
+      finalizeTopSlotSnap(item.uid);
     }
 
     // --- Bottom clamp beaker snap ---
-    if ((item.id === 'beaker-100' || item.id === 'beaker-250' || item.id === 'beaker-500') && bottomClampSnapUid.value) {
-      const stand = items.value.find(i => i.uid === bottomClampSnapUid.value);
-      const st = retortStandMap[bottomClampSnapUid.value];
-      if (stand && st && !st.bottomSlotOccupant) {
-        const clampWorldX = stand.x + 45 + 132 + st.bottomClampX;
-        const clampWorldY = stand.y + st.bottomClampY + 14;
-        item.x = clampWorldX - 35;
-        item.y = clampWorldY - 50;
-        st.bottomSlotOccupant = item.uid;
-      }
-      bottomClampSnapUid.value = null;
+    if (item.id === 'beaker-100' || item.id === 'beaker-250' || item.id === 'beaker-500') {
+      finalizeBottomClampSnap(item.uid);
     }
 
     // Rubber stopper snap

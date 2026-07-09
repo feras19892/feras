@@ -1,15 +1,16 @@
 import { useExperimentReport } from '../useExperimentReport'
 import { useI18n } from '../useI18n'
+import type { PendulumTrial } from './usePendulumTrials'
 import type { LabReportTable, LabReportStat } from '../../utils/lab-report'
+
+interface PendulumReportInput { params: { length: number; angle: number; mass: number; g: number; theta0: number }; trials: { trials: { value: PendulumTrial[] }; trialStats: { value: { t_mean: number; g_mean: number } }; calcResult: { value: string } } }
 
 export function usePendulumReport() {
   const { t } = useI18n()
   const rep = useExperimentReport('pendulum_report_student')
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function openFullReport(ex: any) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const trials: any[] = ex.trials.trials.value
+  function openFullReport(ex: PendulumReportInput) {
+    const trials = ex.trials.trials.value
 
     const table: LabReportTable = {
       caption: t('experiments.pendulumReportCaption'),
@@ -53,7 +54,7 @@ export function usePendulumReport() {
         regressionBlock ? { title: t('experiments.regressionResultsTitle'), html: regressionBlock } : null,
         { title: t('experiments.potentialErrorSources'), html: `<ul style="margin:0;padding-right:1.2rem;font-size:.85rem"><li>${t('experiments.airFrictionWithWeight')}</li><li>${t('experiments.humanStopwatchAccuracy')}</li><li>${t('experiments.parallaxError')}</li><li>${t('experiments.handMovementAtLaunch')}</li><li>${t('experiments.stringMassNotNegligible')}</li><li>${t('experiments.largeAngleApproximation')}</li></ul>` },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ].filter(Boolean) as any[],
+      ].filter((x): x is { title: string; html: string } => x !== null),
       footerNote: t('experiments.footerNote') + ' • ' + t('experiments.branchMechanics'),
     })
   }

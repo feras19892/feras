@@ -70,8 +70,6 @@ export function useGratingExperiment() {
 
   function resetSim() {
     running.value = false; paused.value = false
-    params.linesPerMm = 500; params.screenDistance = 1.0; params.wavelength = 580
-    trials.clearTrials()
   }
 
   function exportToAnalysis() {
@@ -115,8 +113,8 @@ export function useGratingExperiment() {
 
   function onResizeStart(col: string, e: MouseEvent) {
     if (!(col in layout.widths)) return
-    const startX = e.clientX, startW = (layout.widths as any)[col] as number
-    function move(ev: MouseEvent) { (layout.widths as any)[col] = Math.max(220, startW + (ev.clientX - startX)) }
+    const startX = e.clientX, startW = (layout.widths as Record<string, number>)[col] as number
+    function move(ev: MouseEvent) { (layout.widths as Record<string, number>)[col] = Math.max(220, startW + (ev.clientX - startX)) }
     function up() { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up) }
     window.addEventListener('mousemove', move); window.addEventListener('mouseup', up)
   }

@@ -1,0 +1,97 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/index.html",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<!DOCTYPE html>\n<html lang=\"ar\" dir=\"rtl\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/vite.svg\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>My Modern App</title>\n  </head>\n  <body>\n    <div id=\"app\"></div>\n    <script type=\"module\" src=\"/src/main.ts\"></script>\n  </body>\n</html>\n",
+      "start": 1783634638908,
+      "end": 1783634638914,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634638915,
+      "end": 1783634638915,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634638915,
+      "end": 1783634638916,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634638916,
+      "end": 1783634638916,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634638916,
+      "end": 1783634638916,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634638916,
+      "end": 1783634638917,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634638917,
+      "end": 1783634638917,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "result": "import \"vite/modulepreload-polyfill\";\n\nimport \"/src/main.ts\"",
+      "start": 1783634638917,
+      "end": 1783634638936,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634638936,
+      "end": 1783634638936,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634638936,
+      "end": 1783634638937,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634638937,
+      "end": 1783634638937,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634638937,
+      "end": 1783634638937,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634638937,
+      "end": 1783634638937,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634638937,
+      "end": 1783634638938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634638938,
+      "end": 1783634638938,
+      "order": "normal"
+    }
+  ]
+}

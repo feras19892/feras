@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/chemColorUtils.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "function hex2rgb(hex: string) {\n  const c = hex.replace('#', '');\n  const r = parseInt(c.substring(0, 2), 16);\n  const g = parseInt(c.substring(2, 4), 16);\n  const b = parseInt(c.substring(4, 6), 16);\n  return { r: isNaN(r) ? 59 : r, g: isNaN(g) ? 130 : g, b: isNaN(b) ? 246 : b };\n}\n\nexport function hexToRgb(hex: string) {\n  return hex2rgb(hex);\n}\n\nfunction rgb2hex(r: number, g: number, b: number) {\n  const toHex = (n: number) => Math.round(n).toString(16).padStart(2, '0');\n  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;\n}\n\nexport function mixColor(c1: string, vol1: number, c2: string, vol2: number): string {\n  const rgb1 = hex2rgb(c1);\n  const rgb2 = hex2rgb(c2);\n  const total = vol1 + vol2;\n  const r = (rgb1.r * vol1 + rgb2.r * vol2) / total;\n  const g = (rgb1.g * vol1 + rgb2.g * vol2) / total;\n  const b = (rgb1.b * vol1 + rgb2.b * vol2) / total;\n  return rgb2hex(r, g, b);\n}\n",
+      "start": 1783634640906,
+      "end": 1783634641204,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641204,
+      "end": 1783634641204,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "function hex2rgb(hex) {\n  const c = hex.replace(\"#\", \"\");\n  const r = parseInt(c.substring(0, 2), 16);\n  const g = parseInt(c.substring(2, 4), 16);\n  const b = parseInt(c.substring(4, 6), 16);\n  return { r: isNaN(r) ? 59 : r, g: isNaN(g) ? 130 : g, b: isNaN(b) ? 246 : b };\n}\nexport function hexToRgb(hex) {\n  return hex2rgb(hex);\n}\nfunction rgb2hex(r, g, b) {\n  const toHex = (n) => Math.round(n).toString(16).padStart(2, \"0\");\n  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;\n}\nexport function mixColor(c1, vol1, c2, vol2) {\n  const rgb1 = hex2rgb(c1);\n  const rgb2 = hex2rgb(c2);\n  const total = vol1 + vol2;\n  const r = (rgb1.r * vol1 + rgb2.r * vol2) / total;\n  const g = (rgb1.g * vol1 + rgb2.g * vol2) / total;\n  const b = (rgb1.b * vol1 + rgb2.b * vol2) / total;\n  return rgb2hex(r, g, b);\n}\n",
+      "start": 1783634641204,
+      "end": 1783634641643,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/chemColorUtils.ts"
+        ],
+        "sourcesContent": [
+          "function hex2rgb(hex: string) {\n  const c = hex.replace('#', '');\n  const r = parseInt(c.substring(0, 2), 16);\n  const g = parseInt(c.substring(2, 4), 16);\n  const b = parseInt(c.substring(4, 6), 16);\n  return { r: isNaN(r) ? 59 : r, g: isNaN(g) ? 130 : g, b: isNaN(b) ? 246 : b };\n}\n\nexport function hexToRgb(hex: string) {\n  return hex2rgb(hex);\n}\n\nfunction rgb2hex(r: number, g: number, b: number) {\n  const toHex = (n: number) => Math.round(n).toString(16).padStart(2, '0');\n  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;\n}\n\nexport function mixColor(c1: string, vol1: number, c2: string, vol2: number): string {\n  const rgb1 = hex2rgb(c1);\n  const rgb2 = hex2rgb(c2);\n  const total = vol1 + vol2;\n  const r = (rgb1.r * vol1 + rgb2.r * vol2) / total;\n  const g = (rgb1.g * vol1 + rgb2.g * vol2) / total;\n  const b = (rgb1.b * vol1 + rgb2.b * vol2) / total;\n  return rgb2hex(r, g, b);\n}\n"
+        ],
+        "mappings": "AAAA,SAAS,QAAQ,KAAa;AAC5B,QAAM,IAAI,IAAI,QAAQ,KAAK,EAAE;AAC7B,QAAM,IAAI,SAAS,EAAE,UAAU,GAAG,CAAC,GAAG,EAAE;AACxC,QAAM,IAAI,SAAS,EAAE,UAAU,GAAG,CAAC,GAAG,EAAE;AACxC,QAAM,IAAI,SAAS,EAAE,UAAU,GAAG,CAAC,GAAG,EAAE;AACxC,SAAO,EAAE,GAAG,MAAM,CAAC,IAAI,KAAK,GAAG,GAAG,MAAM,CAAC,IAAI,MAAM,GAAG,GAAG,MAAM,CAAC,IAAI,MAAM,EAAE;AAC9E;AAEO,gBAAS,SAAS,KAAa;AACpC,SAAO,QAAQ,GAAG;AACpB;AAEA,SAAS,QAAQ,GAAW,GAAW,GAAW;AAChD,QAAM,QAAQ,CAAC,MAAc,KAAK,MAAM,CAAC,EAAE,SAAS,EAAE,EAAE,SAAS,GAAG,GAAG;AACvE,SAAO,IAAI,MAAM,CAAC,CAAC,GAAG,MAAM,CAAC,CAAC,GAAG,MAAM,CAAC,CAAC;AAC3C;AAEO,gBAAS,SAAS,IAAY,MAAc,IAAY,MAAsB;AACnF,QAAM,OAAO,QAAQ,EAAE;AACvB,QAAM,OAAO,QAAQ,EAAE;AACvB,QAAM,QAAQ,OAAO;AACrB,QAAM,KAAK,KAAK,IAAI,OAAO,KAAK,IAAI,QAAQ;AAC5C,QAAM,KAAK,KAAK,IAAI,OAAO,KAAK,IAAI,QAAQ;AAC5C,QAAM,KAAK,KAAK,IAAI,OAAO,KAAK,IAAI,QAAQ;AAC5C,SAAO,QAAQ,GAAG,GAAG,CAAC;AACxB;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641645,
+      "end": 1783634641645,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641645,
+      "end": 1783634641645,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641646,
+      "end": 1783634641646,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641646,
+      "end": 1783634641646,
+      "order": "normal"
+    }
+  ]
+}

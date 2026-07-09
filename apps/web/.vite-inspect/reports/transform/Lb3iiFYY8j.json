@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/packages/chemistry-engine/src/reactions.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { mixColor } from './color.js';\nimport { isAcid, isBase, isIndicator } from './type-checks.js';\nimport type { LiquidState } from './types.js';\n\n// Calculate pH from acid/base excess\nexport function calculateTitrationPh(\n  acidVol: number,\n  acidId: string,\n  baseVol: number,\n  baseId: string,\n): number {\n  const acidStrengths: Record<string, number> = {\n    hcl: 1.0, h2so4: 2.0, hno3: 1.0, ch3cooh: 0.05,\n  };\n  const baseStrengths: Record<string, number> = {\n    naoh: 1.0, koh: 1.0, nh4oh: 0.05,\n  };\n\n  const aStr = acidStrengths[acidId] || 1.0;\n  const bStr = baseStrengths[baseId] || 1.0;\n\n  const acidMoles = acidVol * aStr;\n  const baseMoles = baseVol * bStr;\n\n  const excess = baseMoles - acidMoles;\n  const totalVol = acidVol + baseVol;\n\n  if (Math.abs(excess) < 0.001 * totalVol) return 7.0;\n\n  if (excess > 0) {\n    const oh = excess / totalVol;\n    if (oh < 0.001) return 7.0 + oh * 2000;\n    if (oh < 0.01) return 9.0 + oh * 300;\n    if (oh < 0.1) return 11.0 + oh * 20;\n    return 13.0;\n  } else {\n    const h = Math.abs(excess) / totalVol;\n    if (h < 0.001) return 7.0 - h * 2000;\n    if (h < 0.01) return 5.0 - h * 300;\n    if (h < 0.1) return 3.0 - h * 20;\n    return 1.0;\n  }\n}\n\nexport function getIndicatorColor(indicatorId: string, ph: number): string {\n  switch (indicatorId) {\n    case 'phenolphthalein':\n      return ph > 8.2 ? '#ec4899' : '#fdf4ff';\n    case 'methyl-orange':\n      return ph < 3.1 ? '#ef4444' : ph > 4.4 ? '#fbbf24' : '#fb923c';\n    case 'bromothymol-blue':\n      return ph > 7.6 ? '#3b82f6' : ph < 6.0 ? '#facc15' : '#22c55e';\n    case 'universal-indicator': {\n      if (ph < 3) return '#ef4444';\n      if (ph < 6) return '#fb923c';\n      if (ph < 7) return '#facc15';\n      if (ph < 8) return '#22c55e';\n      if (ph < 10) return '#3b82f6';\n      return '#7c3aed';\n    }\n    case 'starch':\n      return ph > 6 ? '#1e3a8a' : '#fefce8';\n    default:\n      return '#e0f2fe';\n  }\n}\n\nexport function applyIndicatorsToContainer(liq: LiquidState): void {\n  if (!liq.indicators || liq.indicators.length === 0) {\n    return;\n  }\n  const currentPh = liq.ph ?? 7;\n  const base = liq.baseColor || liq.color;\n  for (const indId of liq.indicators) {\n    const indColor = getIndicatorColor(indId, currentPh);\n    liq.color = mixColor(base, liq.volume, indColor, liq.volume);\n  }\n}\n",
+      "start": 1783634641760,
+      "end": 1783634642175,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642175,
+      "end": 1783634642175,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { mixColor } from \"./color.js\";\nexport function calculateTitrationPh(acidVol, acidId, baseVol, baseId) {\n  const acidStrengths = {\n    hcl: 1,\n    h2so4: 2,\n    hno3: 1,\n    ch3cooh: 0.05\n  };\n  const baseStrengths = {\n    naoh: 1,\n    koh: 1,\n    nh4oh: 0.05\n  };\n  const aStr = acidStrengths[acidId] || 1;\n  const bStr = baseStrengths[baseId] || 1;\n  const acidMoles = acidVol * aStr;\n  const baseMoles = baseVol * bStr;\n  const excess = baseMoles - acidMoles;\n  const totalVol = acidVol + baseVol;\n  if (Math.abs(excess) < 1e-3 * totalVol) return 7;\n  if (excess > 0) {\n    const oh = excess / totalVol;\n    if (oh < 1e-3) return 7 + oh * 2e3;\n    if (oh < 0.01) return 9 + oh * 300;\n    if (oh < 0.1) return 11 + oh * 20;\n    return 13;\n  } else {\n    const h = Math.abs(excess) / totalVol;\n    if (h < 1e-3) return 7 - h * 2e3;\n    if (h < 0.01) return 5 - h * 300;\n    if (h < 0.1) return 3 - h * 20;\n    return 1;\n  }\n}\nexport function getIndicatorColor(indicatorId, ph) {\n  switch (indicatorId) {\n    case \"phenolphthalein\":\n      return ph > 8.2 ? \"#ec4899\" : \"#fdf4ff\";\n    case \"methyl-orange\":\n      return ph < 3.1 ? \"#ef4444\" : ph > 4.4 ? \"#fbbf24\" : \"#fb923c\";\n    case \"bromothymol-blue\":\n      return ph > 7.6 ? \"#3b82f6\" : ph < 6 ? \"#facc15\" : \"#22c55e\";\n    case \"universal-indicator\": {\n      if (ph < 3) return \"#ef4444\";\n      if (ph < 6) return \"#fb923c\";\n      if (ph < 7) return \"#facc15\";\n      if (ph < 8) return \"#22c55e\";\n      if (ph < 10) return \"#3b82f6\";\n      return \"#7c3aed\";\n    }\n    case \"starch\":\n      return ph > 6 ? \"#1e3a8a\" : \"#fefce8\";\n    default:\n      return \"#e0f2fe\";\n  }\n}\nexport function applyIndicatorsToContainer(liq) {\n  if (!liq.indicators || liq.indicators.length === 0) {\n    return;\n  }\n  const currentPh = liq.ph ?? 7;\n  const base = liq.baseColor || liq.color;\n  for (const indId of liq.indicators) {\n    const indColor = getIndicatorColor(indId, currentPh);\n    liq.color = mixColor(base, liq.volume, indColor, liq.volume);\n  }\n}\n",
+      "start": 1783634642175,
+      "end": 1783634642313,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/packages/chemistry-engine/src/reactions.ts"
+        ],
+        "sourcesContent": [
+          "import { mixColor } from './color.js';\nimport { isAcid, isBase, isIndicator } from './type-checks.js';\nimport type { LiquidState } from './types.js';\n\n// Calculate pH from acid/base excess\nexport function calculateTitrationPh(\n  acidVol: number,\n  acidId: string,\n  baseVol: number,\n  baseId: string,\n): number {\n  const acidStrengths: Record<string, number> = {\n    hcl: 1.0, h2so4: 2.0, hno3: 1.0, ch3cooh: 0.05,\n  };\n  const baseStrengths: Record<string, number> = {\n    naoh: 1.0, koh: 1.0, nh4oh: 0.05,\n  };\n\n  const aStr = acidStrengths[acidId] || 1.0;\n  const bStr = baseStrengths[baseId] || 1.0;\n\n  const acidMoles = acidVol * aStr;\n  const baseMoles = baseVol * bStr;\n\n  const excess = baseMoles - acidMoles;\n  const totalVol = acidVol + baseVol;\n\n  if (Math.abs(excess) < 0.001 * totalVol) return 7.0;\n\n  if (excess > 0) {\n    const oh = excess / totalVol;\n    if (oh < 0.001) return 7.0 + oh * 2000;\n    if (oh < 0.01) return 9.0 + oh * 300;\n    if (oh < 0.1) return 11.0 + oh * 20;\n    return 13.0;\n  } else {\n    const h = Math.abs(excess) / totalVol;\n    if (h < 0.001) return 7.0 - h * 2000;\n    if (h < 0.01) return 5.0 - h * 300;\n    if (h < 0.1) return 3.0 - h * 20;\n    return 1.0;\n  }\n}\n\nexport function getIndicatorColor(indicatorId: string, ph: number): string {\n  switch (indicatorId) {\n    case 'phenolphthalein':\n      return ph > 8.2 ? '#ec4899' : '#fdf4ff';\n    case 'methyl-orange':\n      return ph < 3.1 ? '#ef4444' : ph > 4.4 ? '#fbbf24' : '#fb923c';\n    case 'bromothymol-blue':\n      return ph > 7.6 ? '#3b82f6' : ph < 6.0 ? '#facc15' : '#22c55e';\n    case 'universal-indicator': {\n      if (ph < 3) return '#ef4444';\n      if (ph < 6) return '#fb923c';\n      if (ph < 7) return '#facc15';\n      if (ph < 8) return '#22c55e';\n      if (ph < 10) return '#3b82f6';\n      return '#7c3aed';\n    }\n    case 'starch':\n      return ph > 6 ? '#1e3a8a' : '#fefce8';\n    default:\n      return '#e0f2fe';\n  }\n}\n\nexport function applyIndicatorsToContainer(liq: LiquidState): void {\n  if (!liq.indicators || liq.indicators.length === 0) {\n    return;\n  }\n  const currentPh = liq.ph ?? 7;\n  const base = liq.baseColor || liq.color;\n  for (const indId of liq.indicators) {\n    const indColor = getIndicatorColor(indId, currentPh);\n    liq.color = mixColor(base, liq.volume, indColor, liq.volume);\n  }\n}\n"
+        ],
+        "mappings": "AAAA,SAAS,gBAAgB;AAKlB,gBAAS,qBACd,SACA,QACA,SACA,QACQ;AACR,QAAM,gBAAwC;AAAA,IAC5C,KAAK;AAAA,IAAK,OAAO;AAAA,IAAK,MAAM;AAAA,IAAK,SAAS;AAAA,EAC5C;AACA,QAAM,gBAAwC;AAAA,IAC5C,MAAM;AAAA,IAAK,KAAK;AAAA,IAAK,OAAO;AAAA,EAC9B;AAEA,QAAM,OAAO,cAAc,MAAM,KAAK;AACtC,QAAM,OAAO,cAAc,MAAM,KAAK;AAEtC,QAAM,YAAY,UAAU;AAC5B,QAAM,YAAY,UAAU;AAE5B,QAAM,SAAS,YAAY;AAC3B,QAAM,WAAW,UAAU;AAE3B,MAAI,KAAK,IAAI,MAAM,IAAI,OAAQ,SAAU,QAAO;AAEhD,MAAI,SAAS,GAAG;AACd,UAAM,KAAK,SAAS;AACpB,QAAI,KAAK,KAAO,QAAO,IAAM,KAAK;AAClC,QAAI,KAAK,KAAM,QAAO,IAAM,KAAK;AACjC,QAAI,KAAK,IAAK,QAAO,KAAO,KAAK;AACjC,WAAO;AAAA,EACT,OAAO;AACL,UAAM,IAAI,KAAK,IAAI,MAAM,IAAI;AAC7B,QAAI,IAAI,KAAO,QAAO,IAAM,IAAI;AAChC,QAAI,IAAI,KAAM,QAAO,IAAM,IAAI;AAC/B,QAAI,IAAI,IAAK,QAAO,IAAM,IAAI;AAC9B,WAAO;AAAA,EACT;AACF;AAEO,gBAAS,kBAAkB,aAAqB,IAAoB;AACzE,UAAQ,aAAa;AAAA,IACnB,KAAK;AACH,aAAO,KAAK,MAAM,YAAY;AAAA,IAChC,KAAK;AACH,aAAO,KAAK,MAAM,YAAY,KAAK,MAAM,YAAY;AAAA,IACvD,KAAK;AACH,aAAO,KAAK,MAAM,YAAY,KAAK,IAAM,YAAY;AAAA,IACvD,KAAK,uBAAuB;AAC1B,UAAI,KAAK,EAAG,QAAO;AACnB,UAAI,KAAK,EAAG,QAAO;AACnB,UAAI,KAAK,EAAG,QAAO;AACnB,UAAI,KAAK,EAAG,QAAO;AACnB,UAAI,KAAK,GAAI,QAAO;AACpB,aAAO;AAAA,IACT;AAAA,IACA,KAAK;AACH,aAAO,KAAK,IAAI,YAAY;AAAA,IAC9B;AACE,aAAO;AAAA,EACX;AACF;AAEO,gBAAS,2BAA2B,KAAwB;AACjE,MAAI,CAAC,IAAI,cAAc,IAAI,WAAW,WAAW,GAAG;AAClD;AAAA,EACF;AACA,QAAM,YAAY,IAAI,MAAM;AAC5B,QAAM,OAAO,IAAI,aAAa,IAAI;AAClC,aAAW,SAAS,IAAI,YAAY;AAClC,UAAM,WAAW,kBAAkB,OAAO,SAAS;AACnD,QAAI,QAAQ,SAAS,MAAM,IAAI,QAAQ,UAAU,IAAI,MAAM;AAAA,EAC7D;AACF;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642313,
+      "end": 1783634642313,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642313,
+      "end": 1783634642313,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642313,
+      "end": 1783634642313,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642313,
+      "end": 1783634642313,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642313,
+      "end": 1783634642313,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642313,
+      "end": 1783634642313,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642313,
+      "end": 1783634642313,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642313,
+      "end": 1783634642313,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642313,
+      "end": 1783634642313,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642313,
+      "end": 1783634642313,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642314,
+      "end": 1783634642314,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642314,
+      "end": 1783634642314,
+      "order": "normal"
+    }
+  ]
+}

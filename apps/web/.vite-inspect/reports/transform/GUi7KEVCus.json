@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/GenericReferencePanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\ndefineProps<{\n  sourceExperiment: string\n}>()\n\nconst refs: Record<string, { title: string; relations: { rel: string; desc: string; color: string }[]; notes: string[] }> = {\n  'electric-lab-compound': {\n    title: '📊 علاقات الدائرة المختلطة',\n    relations: [\n      { rel: 'Req = R₁ + R₂R₃/(R₂+R₃)', desc: 'مقاومة السلسلة + التوازي', color: '#fbbf24' },\n      { rel: 'V = I × Req', desc: 'الجهد الكلي = التيار × المقاومة المكافئة', color: '#67e8f9' },\n    ],\n    notes: ['💡 احسب المقاومة المكافئة للتوازي أولاً، ثم أضفها للمقاومة التسلسلية.', '⚡ ميل خط V vs I يساوي Req.'],\n  },\n  'electric-lab-emf': {\n    title: '📊 علاقات القوة الدافعة',\n    relations: [\n      { rel: 'EMF = Vt + I×r', desc: 'القوة الدافعة = جهد الأطراف + هبوط الجهد الداخلي', color: '#fbbf24' },\n      { rel: 'r = (EMF−Vt)/I', desc: 'المقاومة الداخلية من فرق الجهد والتيار', color: '#67e8f9' },\n    ],\n    notes: ['💡 عند فتح الدائرة I=0، Vt = EMF.', '⚡ كلما زاد التيار، زاد هبوط الجهد الداخلي.'],\n  },\n  'electric-lab-temp-r': {\n    title: '📊 تأثير الحرارة على المقاومة',\n    relations: [\n      { rel: 'R = R₀(1+αΔT)', desc: 'المقاومة تزداد مع الحرارة للمعادن', color: '#fbbf24' },\n      { rel: 'α = (R−R₀)/(R₀×ΔT)', desc: 'معامل الحرارة من القياس', color: '#67e8f9' },\n    ],\n    notes: ['💡 α للنحاس ≈ 0.00393/°C.', '⚡ الرسم البياني R vs T خط مستقيم.'],\n  },\n  'electric-lab-cells-series': {\n    title: '📊 الخلايا على التوالي',\n    relations: [\n      { rel: 'EMF_total = EMF₁+EMF₂', desc: 'القوى الدافعة تُجمع', color: '#fbbf24' },\n      { rel: 'r_total = r₁+r₂', desc: 'المقاومات الداخلية تُجمع', color: '#67e8f9' },\n    ],\n    notes: ['💡 I = EMF_total / (R + r_total).', '⚡ جهد الأطراف Vt = I × R.'],\n  },\n  'electric-lab-cells-parallel': {\n    title: '📊 الخلايا على التوازي',\n    relations: [\n      { rel: 'EMF_eq = EMF (متساوية)', desc: 'القوة الدافعة تبقى كما هي', color: '#fbbf24' },\n      { rel: 'r_eq = r/n', desc: 'المقاومة الداخلية تُقسم', color: '#67e8f9' },\n    ],\n    notes: ['💡 الخلايا المتوازية تقلل المقاومة الداخلية.', '⚡ التيار الكلي = n × تيار الخلية الواحدة.'],\n  },\n  'electric-lab-rheostat': {\n    title: '📊 الريوستات',\n    relations: [\n      { rel: 'R = V/I', desc: 'المقاومة المتغيرة من قانون أوم', color: '#fbbf24' },\n      { rel: 'I ∝ 1/R', desc: 'عند ثبوت V، التيار يتناسب عكسياً', color: '#67e8f9' },\n    ],\n    notes: ['💡 الريوستات يتحكم في التيار بتغيير المقاومة.', '⚡ عند R = 0، التيار يكون أقصى ما يمكن.'],\n  },\n  'electric-lab-current-divider': {\n    title: '📊 مقسم التيار',\n    relations: [\n      { rel: 'I₁ = It×R₂/(R₁+R₂)', desc: 'تيار الفرع الأول', color: '#fbbf24' },\n      { rel: 'I₂ = It×R₁/(R₁+R₂)', desc: 'تيار الفرع الثاني', color: '#67e8f9' },\n    ],\n    notes: ['💡 التيار يزداد في المسار الأقل مقاومة.', '⚡ I₁ + I₂ = It دائماً.'],\n  },\n  'electric-lab-source-eff': {\n    title: '📊 كفاءة المصدر',\n    relations: [\n      { rel: 'η = R/(R+r)', desc: 'الكفاءة تزداد مع زيادة R', color: '#fbbf24' },\n      { rel: 'P_load = I²R', desc: 'القدرة المستهلكة في الحمل', color: '#67e8f9' },\n    ],\n    notes: ['💡 عند R = r، الكفاءة = 50% والقدرة قصوى.', '⚡ η تقترب من 100% عندما R >> r.'],\n  },\n  'electric-lab-two-sources': {\n    title: '📊 مصدران متضادان',\n    relations: [\n      { rel: 'I = (EMF₁−EMF₂)/(R+r₁+r₂)', desc: 'صافي التيار من فرق القوى', color: '#fbbf24' },\n      { rel: 'Vt = I × R', desc: 'جهد الأطراف عبر الحمل', color: '#67e8f9' },\n    ],\n    notes: ['💡 اتجاه التيار يحدده المصدر الأقوى.', '⚡ عند EMF₁ = EMF₂، التيار = صفر.'],\n  },\n  'electric-lab-diode-iv': {\n    title: '📊 خصائص الدايود',\n    relations: [\n      { rel: 'I = Is(e^(V/ηVt)−1)', desc: 'معادلة شوكلي للدايود', color: '#fbbf24' },\n      { rel: 'V_barrier ≈ 0.7V', desc: 'جهد الحاجز للسيليكون', color: '#67e8f9' },\n    ],\n    notes: ['💡 قبل V_barrier، التيار ≈ صفر.', '⚡ بعد V_barrier، التيار يزداد أُسياً.'],\n  },\n  'electric-lab-transformer': {\n    title: '📊 نسبة المحوّل',\n    relations: [\n      { rel: 'Vs/Vp = Ns/Np', desc: 'نسبة الجهد = نسبة اللفات', color: '#fbbf24' },\n      { rel: 'Is/Ip = Np/Ns', desc: 'نسبة التيار عكسية', color: '#67e8f9' },\n    ],\n    notes: ['💡 P_primary = P_ideal (حفظ الطاقة).', '⚡ المحوّل الخافض: Vs < Vp، Is > Ip.'],\n  },\n  'electric-lab-self-inductance': {\n    title: '📊 التحريض الذاتي',\n    relations: [\n      { rel: 'V = −L(dI/dt)', desc: 'الجهد المستحث يعارض التغير', color: '#fbbf24' },\n      { rel: 'E = ½LI²', desc: 'الطاقة المخزنة في الملف', color: '#67e8f9' },\n    ],\n    notes: ['💡 τ = L/R ثابت الزمن للملف.', '⚡ الطاقة تتبادل بين المجال المغناطيسي والدائرة.'],\n  },\n  'electric-lab-thermistor': {\n    title: '📊 الثيرميستور (NTC)',\n    relations: [\n      { rel: 'R = R₀×e^(β(1/T−1/T₀))', desc: 'المقاومة تقل مع الحرارة', color: '#fbbf24' },\n      { rel: 'β ≈ 3950K', desc: 'ثابت المادة', color: '#67e8f9' },\n    ],\n    notes: ['💡 NTC: معامل حرارة سالب.', '⚡ الرسم البياني ln(R) vs 1/T خط مستقيم.'],\n  },\n  'electric-lab-magnetic-force': {\n    title: '📊 القوة المغناطيسية',\n    relations: [\n      { rel: 'F = BIL sin(θ)', desc: 'قوة لورنتز على سلك يحمل تيار', color: '#fbbf24' },\n      { rel: 'F ∝ I', desc: 'القوة تتناسب طردياً مع التيار', color: '#67e8f9' },\n    ],\n    notes: ['💡 عند θ = 90°، القوة قصوى.', '⚡ عند θ = 0°، القوة = صفر.'],\n  },\n  'electric-lab-lc-oscillation': {\n    title: '📊 دائرة LC المتذبذبة',\n    relations: [\n      { rel: 'f = 1/(2π√(LC))', desc: 'تردد التذبذب الطبيعي', color: '#fbbf24' },\n      { rel: 'E = ½CV² + ½LI²', desc: 'الطاقة الكلية ثابتة', color: '#67e8f9' },\n    ],\n    notes: ['💡 الطاقة تتبادل بين المكثف والملف.', '⚡ ω = 1/√(LC) التردد الزاوي.'],\n  },\n  'electromagnetism-straight-wire': {\n    title: '📊 المجال المغناطيسي لسلك مستقيم',\n    relations: [\n      { rel: 'B = μ₀I / (2πr)', desc: 'قانون بيو-سافار لسلك لا نهائي', color: '#fbbf24' },\n      { rel: 'B ∝ I/r', desc: 'المجال يتناسب طردياً مع التيار وعكسياً مع المسافة', color: '#67e8f9' },\n      { rel: 'μ₀ = 4π×10⁻⁷ T·m/A', desc: 'نفاذية الفراغ', color: '#22c55e' },\n    ],\n    notes: ['💡 خطوط المجال عبارة عن دوائر مركزية حول السلك.', '⚡ رسم B vs 1/r يعطي خط مستقيم، ميله = μ₀I/2π.', '🔬 استخدم الميل لحساب μ₀ تجريبياً.'],\n  },\n  'electromagnetism-circular-coil': {\n    title: '📊 المجال المغناطيسي لملف دائري',\n    relations: [\n      { rel: 'B = μ₀NI / (2R)', desc: 'المجال في مركز ملف دائري', color: '#fbbf24' },\n      { rel: 'B ∝ NI/R', desc: 'المجال يتناسب طردياً مع NI وعكسياً مع R', color: '#67e8f9' },\n      { rel: 'μ₀ = 4π×10⁻⁷ T·m/A', desc: 'نفاذية الفراغ', color: '#22c55e' },\n    ],\n    notes: ['💡 المجال أقصى ما يكون في مركز الملف.', '⚡ رسم B vs NI يعطي خط مستقيم، ميله = μ₀/2R.', '🔬 رسم B vs 1/R يعطي خط مستقيم، ميله = μ₀NI/2.'],\n  },\n}\n</script>\n\n<script lang=\"ts\">\nexport default { inheritAttrs: false }\n</script>\n\n<template>\n  <div class=\"panel-body\" v-if=\"refs[sourceExperiment]\">\n    <div class=\"ref-title\">{{ refs[sourceExperiment].title }}</div>\n    <div class=\"ref-table\">\n      <div class=\"ref-header\">\n        <span>العلاقة</span>\n        <span>الشرح</span>\n      </div>\n      <div v-for=\"ref in refs[sourceExperiment].relations\" :key=\"ref.rel\" class=\"ref-row\">\n        <span :style=\"{ color: ref.color, fontFamily: 'Courier New, monospace', fontWeight: 700 }\">{{ ref.rel }}</span>\n        <span>{{ ref.desc }}</span>\n      </div>\n    </div>\n    <div v-for=\"(note, i) in refs[sourceExperiment].notes\" :key=\"i\" class=\"ref-note\">{{ note }}</div>\n  </div>\n  <div v-else class=\"panel-body\">\n    <div class=\"ref-title\">📊 مرجع التجربة</div>\n    <div class=\"ref-note\">لا توجد معلومات مرجعية متاحة.</div>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { padding: 1rem; display: flex; flex-direction: column; gap: .5rem; }\n.ref-title { font-size: .9rem; font-weight: 700; color: #f59e0b; text-align: center; padding-bottom: .3rem; border-bottom: 1px solid #1e2530; }\n.ref-table { display: flex; flex-direction: column; gap: .25rem; }\n.ref-header { display: flex; justify-content: space-between; padding: .4rem .6rem; background: #1E2530; border-radius: 4px; font-weight: 700; font-size: .8rem; color: #94a3b8; }\n.ref-row { display: flex; justify-content: space-between; padding: .35rem .6rem; border-bottom: 1px solid #1e2530; font-size: .78rem; gap: .5rem; }\n.ref-row:last-child { border-bottom: none; }\n.ref-note { font-size: .75rem; color: #64748b; margin-top: .5rem; }\n</style>\n",
+      "start": 1783634639360,
+      "end": 1783634639848,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639848,
+      "end": 1783634639848,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639848,
+      "end": 1783634639848,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639848,
+      "end": 1783634639848,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639848,
+      "end": 1783634639848,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/GenericReferencePanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/GenericReferencePanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/GenericReferencePanel.vue?vue&type=style&index=0&scoped=d326cde4&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-d326cde4\"]]);\n",
+      "start": 1783634639848,
+      "end": 1783634640089,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640089,
+      "end": 1783634640089,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640091,
+      "end": 1783634640093,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640094,
+      "end": 1783634640094,
+      "order": "normal"
+    }
+  ]
+}

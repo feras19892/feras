@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionPanelBody.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport CollisionParamsPanel from './CollisionParamsPanel.vue'\nimport CollisionDataPanel from './CollisionDataPanel.vue'\nimport CollisionSignalPanel from './CollisionSignalPanel.vue'\nimport CollisionScatterChart from './CollisionScatterChart.vue'\nimport type { CollisionSignalPoint } from '../../../composables/collision/useCollisionLab'\nimport type { CollisionParams, CollisionState } from '../../../modules/physics/experiments/collision/useCollisionPhysics'\nimport type { CollisionTrial } from '../../../composables/collision/useCollisionTrials'\nimport { useI18n } from '../../../composables/useI18n'\n\nconst { t } = useI18n()\nconst props = defineProps<{\n  id: string\n  params: CollisionParams\n  sim: CollisionState\n  trials: CollisionTrial[]\n  signalSeries?: CollisionSignalPoint[]\n}>()\n\nconst emit = defineEmits<{\n  (e: 'update:params', val: Partial<CollisionParams>): void\n  (e: 'remove', id: number): void\n  (e: 'clear'): void\n}>()\n</script>\n\n<template>\n  <CollisionParamsPanel v-if=\"props.id === 'params'\" :params=\"props.params\" @update:params=\"emit('update:params', $event)\" />\n  <CollisionDataPanel v-else-if=\"props.id === 'data'\" :trials=\"props.trials\" @remove=\"emit('remove', $event)\" @clear=\"emit('clear')\" />\n  <CollisionSignalPanel v-else-if=\"props.id === 'signal'\" :series=\"props.signalSeries || []\" />\n  <CollisionScatterChart v-else-if=\"props.id === 'scatter'\" :trials=\"props.trials\" />\n  <div v-else class=\"placeholder\">{{ t('experiments.panelLabel') }} {{ props.id }}</div>\n</template>\n\n<style scoped>\n.placeholder { color: #94a3b8; text-align: center; padding: 2rem; font-size: .75rem; }\n</style>\n",
+      "start": 1783634640980,
+      "end": 1783634641427,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641427,
+      "end": 1783634641427,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641427,
+      "end": 1783634641427,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641427,
+      "end": 1783634641427,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641427,
+      "end": 1783634641427,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionPanelBody.vue?vue&type=style&index=0&scoped=cd395a99&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-cd395a99\"]]);\n",
+      "start": 1783634641427,
+      "end": 1783634641634,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641634,
+      "end": 1783634641634,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641634,
+      "end": 1783634641634,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641634,
+      "end": 1783634641634,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641634,
+      "end": 1783634641635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641635,
+      "end": 1783634641635,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641635,
+      "end": 1783634641635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641635,
+      "end": 1783634641635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641635,
+      "end": 1783634641635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641635,
+      "end": 1783634641635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641635,
+      "end": 1783634641635,
+      "order": "normal"
+    }
+  ]
+}

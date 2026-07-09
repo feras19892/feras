@@ -41,6 +41,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @toggle-help="helpOpen = !helpOpen"
       @export-csv="ex.trials.exportCsv" @toggle-panel="ex.layout.togglePanel"
       @show-all-panels="ex.layout.showAllPanels"
+      @run-lab="ex.runCollisionLab"
       @analyze-results="ex.exportToAnalysis"
     />
 
@@ -64,12 +65,17 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       <div class="resizer" @mousedown="ex.onResizeStart('vis', $event)"></div>
       <div class="lab-col ctrl-col" :style="{ width: ex.colWidths.ctrl + 'px' }">
         <template v-for="id in ex.getColumnPanels('ctrl')" :key="id">
-          <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id)"
+          <DraggablePanel v-if="id !== 'params' && ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id)"
             @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
             <CollisionPanelBody :id="id" :params="ex.params" :sim="ex.lab.sim" :trials="ex.trials.trials.value" :signal-series="ex.lab.signalSeries.value"
               @update:params="ex.updateParams($event)" @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials"
             />
           </DraggablePanel>
+          <div v-else-if="id === 'params'" class="params-embedded">
+            <CollisionPanelBody id="params" :params="ex.params" :sim="ex.lab.sim" :trials="ex.trials.trials.value" :signal-series="ex.lab.signalSeries.value"
+              @update:params="ex.updateParams($event)"
+            />
+          </div>
         </template>
       </div>
     </div>
@@ -117,6 +123,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 .data-col { background: rgba(255,255,255,0.02); }
 .vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 0; }
 .ctrl-col { background: rgba(255,255,255,0.02); }
+.params-embedded { padding: .6rem; }
 .resizer { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0; }
 .resizer:hover, .resizer:active { background: #5B8DB8; }
 .chart-row { display: flex; gap: .5rem; width: 100%; margin-top: .3rem; flex: 0 0 180px; min-height: 0; align-items: stretch; }

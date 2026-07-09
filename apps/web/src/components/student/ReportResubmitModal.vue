@@ -48,6 +48,7 @@ async function submit() {
       class_id: selectedClassId.value,
       experiment_type: props.originalReport.experiment_type,
       experiment_name: props.originalReport.experiment_name,
+      experiment_id: props.originalReport.experiment_id,
       readings: readings.value,
       params: props.originalReport.params,
       student_info: props.originalReport.student_info,

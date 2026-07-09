@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/boyles-law/BoylesLawStatusBar.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { normalizeClass as _normalizeClass, createElementVNode as _createElementVNode, unref as _unref, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"status-bar\" }\nconst _hoisted_2 = { class: \"badge phase\" }\nconst _hoisted_3 = { class: \"badge pv\" }\n\nimport { useI18n } from '../../../composables/useI18n'\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'BoylesLawStatusBar',\n  props: {\n    running: { type: Boolean },\n    paused: { type: Boolean },\n    p: {},\n    v: {},\n    pv: {},\n    phase: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\n\nconst phaseAr = (p?: string) => {\n  const map: Record<string, string> = { ready: 'جاهز', compressing: 'ضغط', done: 'اكتمل' }\n  return map[p ?? ''] ?? p ?? ''\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"span\", {\n      class: _normalizeClass([\"dot\", __props.running ? (__props.paused ? 'paused' : 'run') : 'off'])\n    }, null, 2),\n    _createElementVNode(\"span\", null, _toDisplayString(__props.running ? (__props.paused ? _unref(t)('experiments.statusPaused') : _unref(t)('experiments.statusRunning')) : _unref(t)('experiments.statusIdle')), 1),\n    _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"sep\" }, \"|\", -1)),\n    _createElementVNode(\"span\", _hoisted_2, _toDisplayString(phaseAr(__props.phase)), 1),\n    _cache[1] || (_cache[1] = _createElementVNode(\"span\", { class: \"sep\" }, \"|\", -1)),\n    _createElementVNode(\"span\", null, \"P=\" + _toDisplayString(__props.p.toFixed(2)) + \" atm\", 1),\n    _cache[2] || (_cache[2] = _createElementVNode(\"span\", { class: \"sep\" }, \"|\", -1)),\n    _createElementVNode(\"span\", null, \"V=\" + _toDisplayString(__props.v.toFixed(2)) + \" L\", 1),\n    _cache[3] || (_cache[3] = _createElementVNode(\"span\", { class: \"sep\" }, \"|\", -1)),\n    _createElementVNode(\"span\", _hoisted_3, \"P·V=\" + _toDisplayString(__props.pv.toFixed(2)), 1)\n  ]))\n}\n}\n\n})",
+      "start": 1783634641910,
+      "end": 1783634641910
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641910,
+      "end": 1783634641910,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { normalizeClass as _normalizeClass, createElementVNode as _createElementVNode, unref as _unref, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"status-bar\" };\nconst _hoisted_2 = { class: \"badge phase\" };\nconst _hoisted_3 = { class: \"badge pv\" };\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"BoylesLawStatusBar\",\n  props: {\n    running: { type: Boolean },\n    paused: { type: Boolean },\n    p: {},\n    v: {},\n    pv: {},\n    phase: {}\n  },\n  setup(__props) {\n    const { t } = useI18n();\n    const phaseAr = (p) => {\n      const map = { ready: \"جاهز\", compressing: \"ضغط\", done: \"اكتمل\" };\n      return map[p ?? \"\"] ?? p ?? \"\";\n    };\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"span\", {\n          class: _normalizeClass([\"dot\", __props.running ? __props.paused ? \"paused\" : \"run\" : \"off\"])\n        }, null, 2),\n        _createElementVNode(\"span\", null, _toDisplayString(__props.running ? __props.paused ? _unref(t)(\"experiments.statusPaused\") : _unref(t)(\"experiments.statusRunning\") : _unref(t)(\"experiments.statusIdle\")), 1),\n        _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"sep\" }, \"|\", -1)),\n        _createElementVNode(\"span\", _hoisted_2, _toDisplayString(phaseAr(__props.phase)), 1),\n        _cache[1] || (_cache[1] = _createElementVNode(\"span\", { class: \"sep\" }, \"|\", -1)),\n        _createElementVNode(\"span\", null, \"P=\" + _toDisplayString(__props.p.toFixed(2)) + \" atm\", 1),\n        _cache[2] || (_cache[2] = _createElementVNode(\"span\", { class: \"sep\" }, \"|\", -1)),\n        _createElementVNode(\"span\", null, \"V=\" + _toDisplayString(__props.v.toFixed(2)) + \" L\", 1),\n        _cache[3] || (_cache[3] = _createElementVNode(\"span\", { class: \"sep\" }, \"|\", -1)),\n        _createElementVNode(\"span\", _hoisted_3, \"P·V=\" + _toDisplayString(__props.pv.toFixed(2)), 1)\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634641910,
+      "end": 1783634642297,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/boyles-law/BoylesLawStatusBar.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { normalizeClass as _normalizeClass, createElementVNode as _createElementVNode, unref as _unref, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"status-bar\" }\nconst _hoisted_2 = { class: \"badge phase\" }\nconst _hoisted_3 = { class: \"badge pv\" }\n\nimport { useI18n } from '../../../composables/useI18n'\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'BoylesLawStatusBar',\n  props: {\n    running: { type: Boolean },\n    paused: { type: Boolean },\n    p: {},\n    v: {},\n    pv: {},\n    phase: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\n\nconst phaseAr = (p?: string) => {\n  const map: Record<string, string> = { ready: 'جاهز', compressing: 'ضغط', done: 'اكتمل' }\n  return map[p ?? ''] ?? p ?? ''\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"span\", {\n      class: _normalizeClass([\"dot\", __props.running ? (__props.paused ? 'paused' : 'run') : 'off'])\n    }, null, 2),\n    _createElementVNode(\"span\", null, _toDisplayString(__props.running ? (__props.paused ? _unref(t)('experiments.statusPaused') : _unref(t)('experiments.statusRunning')) : _unref(t)('experiments.statusIdle')), 1),\n    _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"sep\" }, \"|\", -1)),\n    _createElementVNode(\"span\", _hoisted_2, _toDisplayString(phaseAr(__props.phase)), 1),\n    _cache[1] || (_cache[1] = _createElementVNode(\"span\", { class: \"sep\" }, \"|\", -1)),\n    _createElementVNode(\"span\", null, \"P=\" + _toDisplayString(__props.p.toFixed(2)) + \" atm\", 1),\n    _cache[2] || (_cache[2] = _createElementVNode(\"span\", { class: \"sep\" }, \"|\", -1)),\n    _createElementVNode(\"span\", null, \"V=\" + _toDisplayString(__props.v.toFixed(2)) + \" L\", 1),\n    _cache[3] || (_cache[3] = _createElementVNode(\"span\", { class: \"sep\" }, \"|\", -1)),\n    _createElementVNode(\"span\", _hoisted_3, \"P·V=\" + _toDisplayString(__props.pv.toFixed(2)), 1)\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,kBAAkB,iBAAiB,sBAAsB,qBAAqB,SAAS,QAAQ,mBAAmB,kBAAkB,aAAa,YAAY,sBAAsB,2BAA2B;AAEvN,MAAM,aAAa,EAAE,OAAO,aAAa;AACzC,MAAM,aAAa,EAAE,OAAO,cAAc;AAC1C,MAAM,aAAa,EAAE,OAAO,WAAW;AAEvC,SAAS,eAAe;AAExB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,SAAS,EAAE,MAAM,QAAQ;AAAA,IACzB,QAAQ,EAAE,MAAM,QAAQ;AAAA,IACxB,GAAG,CAAC;AAAA,IACJ,GAAG,CAAC;AAAA,IACJ,IAAI,CAAC;AAAA,IACL,OAAO,CAAC;AAAA,EACV;AAAA,EACA,MAAM,SAAc;AAEtB,UAAM,EAAE,EAAE,IAAI,QAAQ;AAEtB,UAAM,UAAU,CAAC,MAAe;AAC9B,YAAM,MAA8B,EAAE,OAAO,QAAQ,aAAa,OAAO,MAAM,QAAQ;AACvF,aAAO,IAAI,KAAK,EAAE,KAAK,KAAK;AAAA,IAC9B;AAEA,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,oBAAoB,QAAQ;AAAA,UAC1B,OAAO,gBAAgB,CAAC,OAAO,QAAQ,UAAW,QAAQ,SAAS,WAAW,QAAS,KAAK,CAAC;AAAA,QAC/F,GAAG,MAAM,CAAC;AAAA,QACV,oBAAoB,QAAQ,MAAM,iBAAiB,QAAQ,UAAW,QAAQ,SAAS,OAAO,CAAC,EAAE,0BAA0B,IAAI,OAAO,CAAC,EAAE,2BAA2B,IAAK,OAAO,CAAC,EAAE,wBAAwB,CAAC,GAAG,CAAC;AAAA,QAChN,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,QAAQ,EAAE,OAAO,MAAM,GAAG,KAAK,EAAE;AAAA,QAC/E,oBAAoB,QAAQ,YAAY,iBAAiB,QAAQ,QAAQ,KAAK,CAAC,GAAG,CAAC;AAAA,QACnF,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,QAAQ,EAAE,OAAO,MAAM,GAAG,KAAK,EAAE;AAAA,QAC/E,oBAAoB,QAAQ,MAAM,OAAO,iBAAiB,QAAQ,EAAE,QAAQ,CAAC,CAAC,IAAI,QAAQ,CAAC;AAAA,QAC3F,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,QAAQ,EAAE,OAAO,MAAM,GAAG,KAAK,EAAE;AAAA,QAC/E,oBAAoB,QAAQ,MAAM,OAAO,iBAAiB,QAAQ,EAAE,QAAQ,CAAC,CAAC,IAAI,MAAM,CAAC;AAAA,QACzF,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,QAAQ,EAAE,OAAO,MAAM,GAAG,KAAK,EAAE;AAAA,QAC/E,oBAAoB,QAAQ,YAAY,SAAS,iBAAiB,QAAQ,GAAG,QAAQ,CAAC,CAAC,GAAG,CAAC;AAAA,MAC7F,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642297,
+      "end": 1783634642297,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642297,
+      "end": 1783634642297,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634642297,
+      "end": 1783634642297,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642297,
+      "end": 1783634642297,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642297,
+      "end": 1783634642297,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642297,
+      "end": 1783634642297,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642297,
+      "end": 1783634642297,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642297,
+      "end": 1783634642297,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642297,
+      "end": 1783634642297,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642297,
+      "end": 1783634642297,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642297,
+      "end": 1783634642297,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642297,
+      "end": 1783634642297,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642297,
+      "end": 1783634642297,
+      "order": "normal"
+    }
+  ]
+}

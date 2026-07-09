@@ -49,15 +49,6 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown) })
 
     <CalorimetryHelpModal :open="helpOpen" @close="helpOpen = false" />
 
-    <CalorimetryStatusBar
-      :m-water="ex.params.mWater"
-      :t-water="ex.params.tWater"
-      :m-metal="ex.params.mMetal"
-      :t-metal="ex.params.tMetal"
-      :tf="ex.lab.tf.value"
-      :c-metal="ex.lab.cMetalMeasured.value"
-    />
-
     <div class="lab-grid">
       <div class="lab-col data-col" :style="{ width: ex.layout.widths.data + 'px' }">
         <template v-for="id in ex.layout.columnMap.data" :key="id">
@@ -119,7 +110,7 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown) })
       <div class="lab-col ctrl-col" :style="{ width: ex.layout.widths.ctrl + 'px' }">
         <template v-for="id in ex.layout.columnMap.ctrl" :key="id">
           <DraggablePanel
-            v-if="ex.layout.isPanelVisible(id)"
+            v-if="id !== 'params' && ex.layout.isPanelVisible(id)"
             class="lab-card"
             :id="id"
             :title="ex.layout.panelTitle(id)"
@@ -139,6 +130,17 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown) })
               @update:params="Object.assign(ex.params, $event)"
             />
           </DraggablePanel>
+          <div v-else-if="id === 'params'" class="params-embedded">
+            <CalorimetryPanelBody
+              id="params"
+              :trials="ex.trials.trials.value"
+              :params="ex.params"
+              :metal-options="ex.lab.METAL_OPTIONS"
+              :tf="ex.lab.tf.value"
+              :c-metal="ex.lab.cMetalMeasured.value"
+              @update:params="Object.assign(ex.params, $event)"
+            />
+          </div>
         </template>
       </div>
     </div>
@@ -156,6 +158,21 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown) })
       @clear="ex.trials.clearTrials"
       @update:params="Object.assign(ex.params, $event)"
     />
+
+    <div class="hint-bar" v-if="!ex.lab.running.value"><span>&#x1F4A1; {{ t('experiments.hintStart') }}</span></div>
+    <div class="hint-bar active" v-else-if="ex.lab.paused.value"><span>&#x23F8; {{ t('experiments.hintPaused') }}</span></div>
+    <div class="hint-bar success" v-else><span>&#x2705; {{ t('experiments.hintRunning') }}</span></div>
+
+    <CalorimetryStatusBar
+      :running="ex.lab.running.value"
+      :paused="ex.lab.paused.value"
+      :m-water="ex.params.mWater"
+      :t-water="ex.params.tWater"
+      :m-metal="ex.params.mMetal"
+      :t-metal="ex.params.tMetal"
+      :tf="ex.lab.tf.value"
+      :phase="ex.lab.phase.value"
+    />
   </div>
 </template>
 
@@ -167,8 +184,12 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown) })
 .vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 360px; position: relative; }
 .vis-canvas-wrap { flex: 1; min-height: 0; position: relative; width: 100%; }
 .ctrl-col { background: rgba(255,255,255,0.02); }
+.params-embedded { padding: .6rem; }
 .lab-card { min-height: 0; }
 .lab-card :deep(.draggable-panel) { max-height: 100%; }
 .resizer { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0; }
 .resizer:hover, .resizer:active { background: #5B8DB8; }
+.hint-bar { background: #252D3A; border: 1px solid #2D3645; border-radius: 6px; padding: .35rem .7rem; font-size: .75rem; color: #8B95A5; text-align: center; flex-shrink: 0; }
+.hint-bar.active { border-color: #5B8DB8; color: #5B8DB8; background: rgba(91,141,184,.08); }
+.hint-bar.success { border-color: #22c55e; color: #22c55e; background: rgba(34,197,94,.08); }
 </style>

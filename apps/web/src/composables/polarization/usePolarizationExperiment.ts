@@ -1,8 +1,10 @@
 import { ref, reactive, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import type { AnalysisPayload } from '../../types/physics'
+import { sendToAnalysis } from '../analysis/sendToAnalysis'
 import { usePolarizationLayout } from './usePolarizationLayout'
 import { usePolarizationTrials } from './usePolarizationTrials'
-import { malusLaw, degToRad } from './usePolarizationCalculations'
+import { malusLaw, degToRad, linearRegression } from './usePolarizationCalculations'
 
 export function usePolarizationExperiment() {
   const params = reactive({
@@ -34,6 +36,24 @@ export function usePolarizationExperiment() {
     return pts
   })
 
+  // Regression: I vs cos²θ  →  I = I₀ · cos²θ
+  // slope = I₀, intercept ≈ 0
+  const regression = computed(() => {
+    const valid = trials.trials.value.filter((t) => t.outputIntensity >= 0)
+    if (valid.length < 2) return { m: 0, b: 0, r2: 0 }
+    const pts = valid.map((t) => ({
+      x: Math.pow(Math.cos(degToRad(t.relativeAngle)), 2),
+      y: t.outputIntensity,
+    }))
+    return linearRegression(pts)
+  })
+
+  const i0FromRegression = computed(() => {
+    const m = regression.value.m
+    if (!isFinite(m) || m <= 0) return null
+    return m
+  })
+
   const layout = usePolarizationLayout()
 
   const trials = usePolarizationTrials(
@@ -48,14 +68,14 @@ export function usePolarizationExperiment() {
   }
   function resetSim() {
     running.value = false; paused.value = false
-    params.polarizerAngle = 0; params.analyzerAngle = 45; params.I0 = 100
-    trials.clearTrials()
   }
+  const router = useRouter()
   function exportToAnalysis() {
     if (trials.trials.value.length < 2) return
     const payload: AnalysisPayload = {
       sourceExperiment: 'polarization',
       sourceNameAr: 'استقطاب الضوء',
+      hasCalcTab: true,
       readings: trials.trials.value.map(t => ({
         theta1: t.polarizerAngle, theta2: t.analyzerAngle, I0: t.I0, Iout: t.outputIntensity, delta: t.relativeAngle,
       })),
@@ -71,8 +91,7 @@ export function usePolarizationExperiment() {
       ],
       suggestedPlots: [{ xKey: 'delta', yKey: 'Iout', xLabel: 'Δθ (°)', yLabel: 'I_out', type: 'scatter' }],
     }
-    localStorage.setItem('analysis_payload', JSON.stringify(payload))
-    window.open('/analysis', '_blank')
+    sendToAnalysis(router, payload)
   }
   function handleDrop(fromId: string, x?: number, y?: number) {
     if (x === undefined || y === undefined) return
@@ -89,12 +108,12 @@ export function usePolarizationExperiment() {
   }
   function onResizeStart(col: string, e: MouseEvent) {
     if (!(col in layout.widths)) return
-    const startX = e.clientX, startW = (layout.widths as any)[col] as number
-    function move(ev: MouseEvent) { (layout.widths as any)[col] = Math.max(220, startW + (ev.clientX - startX)) }
+    const startX = e.clientX, startW = (layout.widths as Record<string, number>)[col] as number
+    function move(ev: MouseEvent) { (layout.widths as Record<string, number>)[col] = Math.max(220, startW + (ev.clientX - startX)) }
     function up() { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up) }
     window.addEventListener('mousemove', move); window.addEventListener('mouseup', up)
   }
 
-  const lab = { running, paused, outputIntensity, relativeAngle, transmissionPercent, intensityCurve, togglePause }
+  const lab = { running, paused, outputIntensity, relativeAngle, transmissionPercent, intensityCurve, regression, i0FromRegression, togglePause }
   return { params, lab, layout, trials, resetSim, exportToAnalysis, onResizeStart, handleDrop }
 }

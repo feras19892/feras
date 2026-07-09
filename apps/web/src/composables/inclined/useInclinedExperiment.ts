@@ -97,7 +97,7 @@ export function useInclinedExperiment() {
       acceleration: t.acceleration, timeOfArrival: t.timeOfArrival, finalVelocity: t.finalVelocity,
     }))
     const payload: AnalysisPayload = {
-      sourceExperiment: 'inclined', sourceNameAr: t('experiments.expInclined'), readings,
+      sourceExperiment: 'inclined', sourceNameAr: t('experiments.expInclined'), hasCalcTab: true, readings,
       columns: [
         { key: 'thetaDeg', label: t('experiments.colAngle'), unit: '°' },
         { key: 'sinTheta', label: 'sinθ', unit: '' },
@@ -112,6 +112,7 @@ export function useInclinedExperiment() {
         { name: t('experiments.eqUniformMotion'), formula: 's = ½at²', variables: [{ symbol: 's', label: t('experiments.varDistance') }, { symbol: 'a', label: t('experiments.varAcceleration') }, { symbol: 't', label: t('experiments.varTime') }], solveFor: ['a', 't', 's'] },
       ],
       suggestedPlots: [
+        { xKey: 'sinTheta', yKey: 'acceleration', xLabel: 'sin(θ)', yLabel: 'a (m/s²)', type: 'scatter' },
         { xKey: 'thetaDeg', yKey: 'acceleration', xLabel: 'θ (°)', yLabel: 'a (m/s²)', type: 'scatter' },
         { xKey: 'timeOfArrival', yKey: 'length', xLabel: 't (s)', yLabel: 's (m)', type: 'scatter' },
       ],

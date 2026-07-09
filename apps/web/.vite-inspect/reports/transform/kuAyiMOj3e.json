@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabBeaker.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\r\nimport { computed, ref } from 'vue';\r\nimport { useSpillDrops } from '../../../composables/chemistry/useSpillDrops';\r\nimport { useBeakerScale } from '../../../composables/chemistry/useBeakerScale';\r\nimport './LabBeaker.css';\r\n\r\ninterface Props {\r\n  volume?: number;\r\n  maxVolume?: number;\r\n  liquidColor?: string;\r\n  liquidOpacity?: number;\r\n  isHovered?: boolean;\r\n  receiving?: boolean;\r\n  stirred?: number;\r\n  tiltAngle?: number;\r\n  itemUid?: string;\r\n  itemX?: number;\r\n  itemY?: number;\r\n  scale?: number;\r\n}\r\n\r\nconst props = withDefaults(defineProps<Props>(), {\r\n  volume: 0,\r\n  maxVolume: 250,\r\n  liquidColor: '#3b82f6',\r\n  liquidOpacity: 0.3,\r\n  isHovered: false,\r\n  receiving: false,\r\n  stirred: 0,\r\n  tiltAngle: 0,\r\n  itemX: 0,\r\n  itemY: 0,\r\n  itemUid: '',\r\n  scale: 1,\r\n});\r\n\r\nconst showMouthGlow = ref(false);\r\n\r\nconst isStirring = computed(() => {\r\n  if (props.stirred <= 0) return false;\r\n  return (performance.now() - props.stirred) < 2000;\r\n});\r\n\r\nconst fillHeight = computed(() => {\r\n  if (props.volume <= 0) return 0;\r\n  const pct = Math.min(props.volume / props.maxVolume, 1);\r\n  return pct * 125;\r\n});\r\n\r\nconst liquidY = computed(() => 160 - fillHeight.value);\r\nconst allMarks = computed(() => useBeakerScale(props.maxVolume));\r\n\r\nfunction onMouthEnter() { showMouthGlow.value = true; }\r\nfunction onMouthLeave() { showMouthGlow.value = false; }\r\n\r\nconst emit = defineEmits<{ mouthInteract: []; spill: [amount: number]; dropExited: [worldX: number, worldY: number, color: string]; }>();\r\n\r\nconst canvasRef = ref<HTMLCanvasElement | null>(null);\r\n\r\nuseSpillDrops({\r\n  canvasRef,\r\n  tiltAngle: () => props.tiltAngle,\r\n  volume: () => props.volume,\r\n  maxVolume: () => props.maxVolume,\r\n  liquidColor: () => props.liquidColor,\r\n  itemX: () => props.itemX,\r\n  itemY: () => props.itemY,\r\n  mouthPosition: (tilt) => {\r\n    const rad = tilt * Math.PI / 180;\r\n    const cx = 70, cy = 100, mouthDist = 75;\r\n    return { x: cx + mouthDist * Math.sin(rad), y: cy - mouthDist * Math.cos(rad) };\r\n  },\r\n  canvasW: 140,\r\n  canvasH: 300,\r\n  mouthBounds: { minX: 10, maxX: 130, minY: 10, maxY: 200 },\r\n  exitY: 200,\r\n  onSpill: (amount) => emit('spill', amount),\r\n  onDropExited: (wx, wy, color) => emit('dropExited', wx, wy, color),\r\n});\r\n</script>\r\n\r\n<template>\r\n  <div class=\"beaker-wrapper\">\r\n    <svg\r\n      viewBox=\"0 0 140 200\"\r\n      class=\"beaker-svg\"\r\n      :class=\"{ hovered: isHovered }\"\r\n      :style=\"{ width: 140 * props.scale + 'px', height: 200 * props.scale + 'px', transformOrigin: 'top left' }\"\r\n    >\r\n      <defs>\r\n        <clipPath id=\"beakerClip\" clipPathUnits=\"userSpaceOnUse\">\r\n          <path d=\"M 38 25 L 38 158 Q 38 172 70 172 Q 102 172 102 158 L 102 25 Z\" />\r\n        </clipPath>\r\n      </defs>\r\n      <!-- Ground shadow -->\r\n      <ellipse cx=\"70\" cy=\"188\" rx=\"32\" ry=\"3.5\" fill=\"rgba(0,0,0,0.06)\" />\r\n\r\n      <!-- Main glass body -->\r\n      <path\r\n        d=\"M 38 25 L 38 158 Q 38 172 70 172 Q 102 172 102 158 L 102 25\"\r\n        fill=\"rgba(241,245,249,0.25)\"\r\n        stroke=\"#94a3b8\"\r\n        stroke-width=\"1.5\"\r\n        stroke-linecap=\"round\"\r\n      />\r\n      <!-- Rim (top opening) -->\r\n      <ellipse cx=\"70\" cy=\"25\" rx=\"32\" ry=\"5\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"1.5\" />\r\n      <!-- Inner rim -->\r\n      <ellipse cx=\"70\" cy=\"25\" rx=\"29\" ry=\"4\" fill=\"none\" stroke=\"rgba(148,163,184,0.35)\" stroke-width=\"0.5\" />\r\n\r\n      <!-- Spout -->\r\n      <path d=\"M 100 23 Q 106 21 110 18\" stroke=\"#94a3b8\" stroke-width=\"1.2\" fill=\"none\" stroke-linecap=\"round\" />\r\n\r\n      <!-- ========== RIGHT-SIDE GRADUATED SCALE ========== -->\r\n      <!-- Scale background strip -->\r\n      <rect x=\"100\" y=\"30\" width=\"14\" height=\"130\" rx=\"2\" fill=\"rgba(255,255,255,0.4)\" stroke=\"rgba(148,163,184,0.25)\" stroke-width=\"0.5\" />\r\n      <!-- Vertical guide line -->\r\n      <line x1=\"102\" y1=\"158\" x2=\"102\" y2=\"32\" stroke=\"#cbd5e1\" stroke-width=\"0.5\" opacity=\"0.5\" />\r\n      <!-- Tick marks (pointing left into glass) -->\r\n      <g v-for=\"mark in allMarks\" :key=\"mark.value\">\r\n        <!-- Major marks extend farther into the body -->\r\n        <line\r\n          :x1=\"102\"\r\n          :y1=\"mark.y\"\r\n          :x2=\"mark.type === 'major' ? 86 : mark.type === 'mid' ? 94 : 98\"\r\n          :y2=\"mark.y\"\r\n          :stroke=\"mark.type === 'major' ? '#334155' : '#94a3b8'\"\r\n          :stroke-width=\"mark.type === 'major' ? 1.3 : mark.type === 'mid' ? 0.8 : 0.5\"\r\n          :opacity=\"mark.type === 'major' ? 0.9 : 0.4\"\r\n          stroke-linecap=\"round\"\r\n        />\r\n        <!-- Number labels on the right -->\r\n        <text\r\n          v-if=\"mark.label\"\r\n          :x=\"108\"\r\n          :y=\"mark.y + 3.5\"\r\n          fill=\"#1e293b\"\r\n          font-size=\"9\"\r\n          font-weight=\"800\"\r\n          font-family=\"'Segoe UI', Arial, sans-serif\"\r\n          opacity=\"0.95\"\r\n          text-anchor=\"middle\"\r\n        >{{ mark.label }}</text>\r\n      </g>\r\n\r\n      <!-- ========== LIQUID LAYER ========== -->\r\n      <!-- Clip path applied in UPRIGHT beaker space -->\r\n      <g v-if=\"volume > 0\" clip-path=\"url(#beakerClip)\">\r\n          <!-- Liquid body -->\r\n          <path\r\n            :d=\"`M 40 ${liquidY} L 40 158 Q 40 170 70 170 Q 100 170 100 158 L 100 ${liquidY} Z`\"\r\n            :fill=\"liquidColor\"\r\n            :opacity=\"liquidOpacity\"\r\n          />\r\n          <!-- Meniscus surface -->\r\n          <ellipse\r\n            :cx=\"70\"\r\n            :cy=\"liquidY\"\r\n            rx=\"30\"\r\n            ry=\"4.5\"\r\n            :fill=\"liquidColor\"\r\n            :opacity=\"liquidOpacity + 0.12\"\r\n          />\r\n          <!-- White highlight on meniscus (reading line) -->\r\n          <ellipse\r\n            :cx=\"70\"\r\n            :cy=\"liquidY + 0.5\"\r\n            rx=\"20\"\r\n            ry=\"2\"\r\n            fill=\"rgba(255,255,255,0.45)\"\r\n          />\r\n          <!-- Surface level indicator (red line for visibility even with transparent liquids) -->\r\n          <line\r\n            x1=\"42\"\r\n            :y1=\"liquidY\"\r\n            x2=\"98\"\r\n            :y2=\"liquidY\"\r\n            stroke=\"#ef4444\"\r\n            stroke-width=\"1.2\"\r\n            opacity=\"0.65\"\r\n            stroke-linecap=\"round\"\r\n          />\r\n          <circle :cx=\"70\" :cy=\"liquidY\" r=\"3\" fill=\"#ef4444\" opacity=\"0.3\" />\r\n          <!-- Side reflection inside liquid -->\r\n          <path\r\n            :d=\"`M 44 ${liquidY + 5} L 44 155`\"\r\n            stroke=\"rgba(255,255,255,0.25)\"\r\n            stroke-width=\"2\"\r\n            stroke-linecap=\"round\"\r\n            fill=\"none\"\r\n          />\r\n          <!-- Splash / ripple when receiving from burette or pour -->\r\n          <g v-if=\"receiving\">\r\n            <ellipse cx=\"70\" :cy=\"liquidY\" rx=\"8\" ry=\"2\" fill=\"none\" :stroke=\"liquidColor\" stroke-width=\"1\" opacity=\"0.6\" class=\"ripple\" />\r\n            <ellipse cx=\"70\" :cy=\"liquidY\" rx=\"4\" ry=\"1\" fill=\"none\" :stroke=\"liquidColor\" stroke-width=\"0.8\" opacity=\"0.4\" class=\"ripple-delay\" />\r\n          </g>\r\n          <!-- Swirl vortex when stirred -->\r\n          <g v-if=\"isStirring && volume > 0\">\r\n            <path\r\n              d=\"M 52 155 Q 60 145 70 155 Q 80 165 70 155 Q 60 145 52 155\"\r\n              fill=\"none\"\r\n              :stroke=\"liquidColor\"\r\n              stroke-width=\"1.5\"\r\n              opacity=\"0.5\"\r\n              class=\"swirl\"\r\n            >\r\n              <animateTransform attributeName=\"transform\" type=\"rotate\" from=\"0 70 155\" to=\"360 70 155\" dur=\"0.4s\" repeatCount=\"indefinite\" />\r\n            </path>\r\n            <path\r\n              d=\"M 58 150 Q 65 142 70 150 Q 75 158 70 150 Q 65 142 58 150\"\r\n              fill=\"none\"\r\n              :stroke=\"liquidColor\"\r\n              stroke-width=\"1\"\r\n              opacity=\"0.35\"\r\n              class=\"swirl-inner\"\r\n            >\r\n              <animateTransform attributeName=\"transform\" type=\"rotate\" from=\"360 70 150\" to=\"0 70 150\" dur=\"0.3s\" repeatCount=\"indefinite\" />\r\n            </path>\r\n          </g>\r\n      </g>\r\n\r\n      <!-- ========== GLASS HIGHLIGHTS ========== -->\r\n      <!-- Left bright reflection -->\r\n      <path d=\"M 42 28 L 42 155\" stroke=\"rgba(255,255,255,0.4)\" stroke-width=\"3\" stroke-linecap=\"round\" fill=\"none\" />\r\n      <!-- Subtle right reflection -->\r\n      <path d=\"M 98 35 L 98 120\" stroke=\"rgba(255,255,255,0.12)\" stroke-width=\"1.5\" stroke-linecap=\"round\" fill=\"none\" />\r\n      <!-- Bottom curve highlight -->\r\n      <path d=\"M 45 165 Q 70 168 95 165\" stroke=\"rgba(255,255,255,0.2)\" stroke-width=\"1\" fill=\"none\" />\r\n\r\n      <!-- ========== MOUTH INTERACTION HITBOX ========== -->\r\n      <ellipse\r\n        cx=\"70\" cy=\"20\" rx=\"34\" ry=\"8\"\r\n        fill=\"transparent\"\r\n        class=\"mouth-hitbox\"\r\n        @mouseenter=\"onMouthEnter\"\r\n        @mouseleave=\"onMouthLeave\"\r\n        @click.stop=\"emit('mouthInteract')\"\r\n      />\r\n      <!-- Mouth glow -->\r\n      <g v-if=\"showMouthGlow || isHovered\">\r\n        <ellipse cx=\"70\" cy=\"23\" rx=\"30\" ry=\"6\" fill=\"none\" stroke=\"#10b981\" stroke-width=\"2\" opacity=\"0.5\" class=\"mouth-glow\" />\r\n        <ellipse cx=\"70\" cy=\"23\" rx=\"34\" ry=\"8\" fill=\"none\" stroke=\"#10b981\" stroke-width=\"0.5\" opacity=\"0.2\" class=\"mouth-glow-outer\" />\r\n      </g>\r\n    </svg>\r\n\r\n    <canvas\r\n      v-if=\"volume > 0\"\r\n      ref=\"canvasRef\"\r\n      width=\"140\"\r\n      height=\"300\"\r\n      class=\"drop-canvas\"\r\n      :style=\"{ transform: `rotate(${-tiltAngle}deg)`, transformOrigin: '70px 100px' }\"\r\n    />\r\n  </div>\r\n</template>\r\n\r\n",
+      "start": 1783634641064,
+      "end": 1783634641571,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641571,
+      "end": 1783634641571,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641571,
+      "end": 1783634641571,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641571,
+      "end": 1783634641571,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641571,
+      "end": 1783634641571,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabBeaker.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabBeaker.vue?vue&type=script&setup=true&lang.ts\";\nexport default _sfc_main;\n",
+      "start": 1783634641571,
+      "end": 1783634641667,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641667,
+      "end": 1783634641667,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641667,
+      "end": 1783634641667,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641667,
+      "end": 1783634641667,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641668,
+      "end": 1783634641668,
+      "order": "normal"
+    }
+  ]
+}

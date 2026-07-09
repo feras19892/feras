@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabDropper.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\ninterface Props {\n  isHovered?: boolean;\n}\n\nconst props = withDefaults(defineProps<Props>(), {\n  isHovered: false,\n});\n\nconst emit = defineEmits<{ click: [] }>();\n</script>\n\n<template>\n  <div class=\"dropper-wrapper\" @click.stop=\"emit('click')\">\n    <svg viewBox=\"0 0 50 160\" class=\"dropper-svg\" :class=\"{ hovered: isHovered }\">\n      <!-- Shadow -->\n      <ellipse cx=\"25\" cy=\"155\" rx=\"10\" ry=\"2\" fill=\"rgba(0,0,0,0.06)\" />\n\n      <!-- Rubber bulb -->\n      <ellipse cx=\"25\" cy=\"20\" rx=\"14\" ry=\"16\" fill=\"#ef4444\" opacity=\"0.8\" />\n      <ellipse cx=\"25\" cy=\"17\" rx=\"10\" ry=\"10\" fill=\"#f87171\" opacity=\"0.5\" />\n\n      <!-- Bulb highlight -->\n      <ellipse cx=\"21\" cy=\"14\" rx=\"5\" ry=\"6\" fill=\"rgba(255,255,255,0.25)\" />\n\n      <!-- Connector -->\n      <rect x=\"20\" y=\"32\" width=\"10\" height=\"6\" rx=\"1\" fill=\"#cbd5e1\" />\n\n      <!-- Glass tube -->\n      <rect x=\"21\" y=\"36\" width=\"8\" height=\"100\" rx=\"2\" fill=\"rgba(241,245,249,0.3)\" stroke=\"#94a3b8\" stroke-width=\"0.8\" />\n      <rect x=\"22\" y=\"37\" width=\"6\" height=\"98\" rx=\"1\" fill=\"rgba(255,255,255,0.2)\" />\n\n      <!-- Tube highlight -->\n      <line x1=\"23\" y1=\"38\" x2=\"23\" y2=\"134\" stroke=\"rgba(255,255,255,0.4)\" stroke-width=\"1\" stroke-linecap=\"round\" />\n\n      <!-- Tip -->\n      <path d=\"M 22 136 L 23 148 L 27 148 L 28 136 Z\" fill=\"rgba(241,245,249,0.4)\" stroke=\"#94a3b8\" stroke-width=\"0.6\" />\n\n      <!-- Tip highlight -->\n      <line x1=\"24\" y1=\"138\" x2=\"25\" y2=\"146\" stroke=\"rgba(255,255,255,0.3)\" stroke-width=\"0.5\" />\n    </svg>\n  </div>\n</template>\n\n<style scoped>\n.dropper-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.dropper-svg {\n  width: 30px;\n  height: 96px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.06));\n}\n.dropper-svg.hovered {\n  transform: scale(1.08);\n  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));\n}\n</style>\n",
+      "start": 1783634641064,
+      "end": 1783634641596,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641596,
+      "end": 1783634641596,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641596,
+      "end": 1783634641596,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641596,
+      "end": 1783634641596,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641596,
+      "end": 1783634641596,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabDropper.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabDropper.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabDropper.vue?vue&type=style&index=0&scoped=ca1c89e2&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-ca1c89e2\"]]);\n",
+      "start": 1783634641596,
+      "end": 1783634641665,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641665,
+      "end": 1783634641665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641665,
+      "end": 1783634641665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641665,
+      "end": 1783634641665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    }
+  ]
+}

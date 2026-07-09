@@ -72,7 +72,6 @@ export const branches: Branch[] = [
       { id: 'ideal-gas', name: 'Ideal Gas', nameAr: 'experiments.expIdealGas', icon: '💨', difficulty: 'medium', tags: ['thermo'], route: '', enabled: true },
       { id: 'calorimetry', name: 'Calorimetry', nameAr: 'experiments.expCalorimetry', icon: '🌡️', difficulty: 'easy', tags: ['heat'], route: '', enabled: true },
       { id: 'specific-heat', name: 'Specific Heat Capacity', nameAr: 'experiments.expSpecificHeat', icon: '🧪', difficulty: 'medium', tags: ['heat'], route: '', enabled: true },
-      { id: 'joule-equivalent', name: "Joule's Equivalent", nameAr: 'experiments.expJouleEquivalent', icon: '⚙️', difficulty: 'medium', tags: ['thermo'], route: '', enabled: true },
       { id: 'boyles-law', name: "Boyle's Law", nameAr: 'experiments.expBoylesLaw', icon: '📉', difficulty: 'easy', tags: ['thermo'], route: '', enabled: true },
       { id: 'thermal-expansion', name: 'Thermal Expansion', nameAr: 'experiments.expThermalExpansion', icon: '📏', difficulty: 'easy', tags: ['heat'], route: '', enabled: true },
       { id: 'latent-heat', name: 'Latent Heat of Fusion', nameAr: 'experiments.expLatentHeat', icon: '🧊', difficulty: 'medium', tags: ['heat'], route: '', enabled: true },
@@ -86,7 +85,7 @@ export const branches: Branch[] = [
     color: '#f59e0b',
     description: 'experiments.branchElectricityDesc',
     experiments: [
-      { id: 'rc-circuit', name: 'RC Circuit', nameAr: 'experiments.expRcCircuit', icon: '🔋', difficulty: 'medium', tags: ['circuits'], route: '', enabled: true },
+      { id: 'electric-lab', name: 'Electric Lab', nameAr: 'experiments.expElectricLab', icon: '🔌', difficulty: 'medium', tags: ['circuits', 'DC'], route: '', enabled: true },
     ],
   },
   {
@@ -97,8 +96,14 @@ export const branches: Branch[] = [
     color: '#22c55e',
     description: 'experiments.branchElectromagnetismDesc',
     experiments: [
-      { id: 'biot-savart', name: 'Biot-Savart', nameAr: 'experiments.expBiotSavart', icon: '🧭', difficulty: 'hard', tags: ['magnetism'], route: '', enabled: true },
-      { id: 'faraday', name: 'Faraday Induction', nameAr: 'experiments.expFaraday', icon: '⚡', difficulty: 'medium', tags: ['induction'], route: '', enabled: true },
+      { id: 'straight-wire', name: 'Straight Wire Field', nameAr: 'experiments.expStraightWire', icon: '📏', difficulty: 'medium', tags: ['magnetism', 'field'], route: '', enabled: true },
+      { id: 'circular-coil', name: 'Circular Coil Field', nameAr: 'experiments.expCircularCoil', icon: '⭕', difficulty: 'medium', tags: ['magnetism', 'field'], route: '', enabled: true },
+      { id: 'solenoid', name: 'Solenoid Field', nameAr: 'experiments.expSolenoid', icon: '🌀', difficulty: 'medium', tags: ['magnetism', 'field'], route: '', enabled: true },
+      { id: 'lorentz-force', name: 'Lorentz Force', nameAr: 'experiments.expLorentzForce', icon: '⚡', difficulty: 'hard', tags: ['force', 'charge'], route: '', enabled: true },
+      { id: 'torque-coil', name: 'Torque on Coil', nameAr: 'experiments.expTorqueCoil', icon: '🔄', difficulty: 'hard', tags: ['torque', 'motor'], route: '', enabled: true },
+      { id: 'faraday-law', name: 'Faraday & Lenz Law', nameAr: 'experiments.expFaradayLaw', icon: '🔋', difficulty: 'medium', tags: ['induction', 'emf', 'lenz'], route: '', enabled: true },
+      { id: 'generator', name: 'Electric Generator', nameAr: 'experiments.expGenerator', icon: '⚙️', difficulty: 'hard', tags: ['induction', 'generator'], route: '', enabled: true },
+      { id: 'magnetic-flux', name: 'Magnetic Flux', nameAr: 'experiments.expMagneticFlux', icon: '🌐', difficulty: 'medium', tags: ['flux', 'field'], route: '', enabled: true },
     ],
   },
 ];

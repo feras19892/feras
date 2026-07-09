@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lightray/LightRayPanelBody.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport type { LightRayTrial } from '../../../composables/lightray/useLightRayExperiment'\nimport LightRayChart from './LightRayChart.vue'\nimport { useI18n } from '../../../composables/useI18n'\n\ninterface Props {\n  id: string\n  trials: LightRayTrial[]\n  params: { angleIncidence: number; n1: number; n2: number }\n  angleReflection: number\n  angleRefraction: number | null\n  totalInternalReflection: boolean\n  criticalAngle: number | null\n  slope: number\n  intercept: number\n  rSquared: number\n  calculatedN2: number | null\n  speedInMedium: number | null\n}\n\nconst { t } = useI18n()\nconst props = defineProps<Props>()\n\nconst emit = defineEmits<{\n  (e: 'remove', id: number): void\n  (e: 'clear'): void\n  (e: 'update:params', params: { angleIncidence: number; n1: number; n2: number }): void\n}>()\n\nconst chartPoints = props.trials.map((t) => ({ sinI: t.sinI, sinT: t.sinT, thetaI: t.angleIncidence }))\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <!-- readings panel -->\n    <template v-if=\"id === 'readings'\">\n      <div class=\"reading-row\">\n        <span class=\"reading-label\">{{ t('experiments.angleOfIncidence') }}</span>\n        <span class=\"reading-val\">{{ params.angleIncidence.toFixed(1) }}°</span>\n      </div>\n      <div class=\"reading-row\">\n        <span class=\"reading-label\">{{ t('experiments.angleOfReflection') }}</span>\n        <span class=\"reading-val\">{{ angleReflection.toFixed(1) }}°</span>\n      </div>\n      <div class=\"reading-row\">\n        <span class=\"reading-label\">{{ t('experiments.angleOfRefraction') }}</span>\n        <span class=\"reading-val\">{{ angleRefraction !== null ? angleRefraction.toFixed(1) + '°' : 'TIR' }}</span>\n      </div>\n      <div class=\"reading-row\">\n        <span class=\"reading-label\">{{ t('experiments.criticalAngle') }}</span>\n        <span class=\"reading-val\">{{ criticalAngle !== null ? criticalAngle.toFixed(1) + '°' : '—' }}</span>\n      </div>\n    </template>\n\n    <!-- chart panel -->\n    <template v-if=\"id === 'chart'\">\n      <LightRayChart :points=\"chartPoints\" :slope=\"slope\" :intercept=\"intercept\" />\n      <div v-if=\"trials.length >= 2\" class=\"reg-summary\">\n        <span class=\"reg-badge\">{{ t('experiments.slopeN2') }} = {{ slope.toFixed(3) }}</span>\n        <span class=\"reg-badge\">R² = {{ rSquared.toFixed(4) }}</span>\n      </div>\n    </template>\n\n    <!-- trials panel -->\n    <template v-if=\"id === 'trials'\">\n      <div v-if=\"trials.length === 0\" class=\"empty\">{{ t('experiments.noTrialsRecorded') }}</div>\n      <div class=\"trial-table\">\n        <div class=\"trial-header\">\n          <span>#</span><span>θᵢ</span><span>θₜ</span><span>sin θᵢ</span><span>sin θₜ</span>\n        </div>\n        <div v-for=\"trial in trials\" :key=\"trial.id\" class=\"trial-row\">\n          <span class=\"trial-num\">{{ trial.id }}</span>\n          <span>{{ trial.angleIncidence.toFixed(0) }}°</span>\n          <span>{{ trial.angleRefraction.toFixed(1) }}°</span>\n          <span class=\"mono\">{{ trial.sinI.toFixed(3) }}</span>\n          <span class=\"mono\">{{ trial.sinT.toFixed(3) }}</span>\n          <button class=\"trial-del\" @click=\"emit('remove', trial.id)\">🗑️</button>\n        </div>\n      </div>\n      <button v-if=\"trials.length\" class=\"btn-clear\" @click=\"emit('clear')\">{{ t('experiments.clearAll') }}</button>\n    </template>\n\n    <!-- params panel -->\n    <template v-if=\"id === 'params'\">\n      <div class=\"param-row\">\n        <label>{{ t('experiments.angleOfIncidence') }}</label>\n        <input type=\"range\" min=\"0\" max=\"89\" step=\"1\" :value=\"params.angleIncidence\" @input=\"$emit('update:params', { ...params, angleIncidence: Number(($event.target as HTMLInputElement).value) })\" />\n        <span class=\"param-val\">{{ params.angleIncidence }}°</span>\n      </div>\n      <div class=\"param-row\">\n        <label>{{ t('experiments.refractiveIndexN1Top') }}</label>\n        <select :value=\"params.n1\" @change=\"$emit('update:params', { ...params, n1: Number(($event.target as HTMLSelectElement).value) })\">\n          <option :value=\"1.0\">{{ t('experiments.air') }} (1.00)</option>\n          <option :value=\"1.33\">{{ t('experiments.water') }} (1.33)</option>\n          <option :value=\"1.5\">{{ t('experiments.glass') }} (1.50)</option>\n          <option :value=\"2.42\">{{ t('experiments.diamond') }} (2.42)</option>\n        </select>\n      </div>\n      <div class=\"param-row\">\n        <label>{{ t('experiments.refractiveIndexN2Bottom') }}</label>\n        <select :value=\"params.n2\" @change=\"$emit('update:params', { ...params, n2: Number(($event.target as HTMLSelectElement).value) })\">\n          <option :value=\"1.0\">{{ t('experiments.air') }} (1.00)</option>\n          <option :value=\"1.33\">{{ t('experiments.water') }} (1.33)</option>\n          <option :value=\"1.5\">{{ t('experiments.glass') }} (1.50)</option>\n          <option :value=\"2.42\">{{ t('experiments.diamond') }} (2.42)</option>\n        </select>\n      </div>\n    </template>\n\n    <!-- laws panel -->\n    <template v-if=\"id === 'laws'\">\n      <div class=\"law-box\">\n        <div class=\"law-title\">{{ t('experiments.lawOfReflection') }}</div>\n        <div class=\"law-formula\">θᵣ = θᵢ = {{ params.angleIncidence }}°</div>\n      </div>\n      <div class=\"law-box\">\n        <div class=\"law-title\">{{ t('experiments.snellsLaw') }}</div>\n        <div class=\"law-formula\">n₁ sin θᵢ = n₂ sin θₜ</div>\n        <div class=\"law-calc\">{{ params.n1.toFixed(2) }} × sin({{ params.angleIncidence }}°) = {{ (params.n1 * Math.sin(params.angleIncidence * Math.PI / 180)).toFixed(3) }}</div>\n        <div class=\"law-calc\">{{ params.n2.toFixed(2) }} × sin({{ angleRefraction !== null ? angleRefraction.toFixed(1) : '?' }}°) = {{ angleRefraction !== null ? (params.n2 * Math.sin(angleRefraction * Math.PI / 180)).toFixed(3) : '—' }}</div>\n      </div>\n      <div v-if=\"totalInternalReflection\" class=\"tir-warning\">\n        ⚠️ {{ t('experiments.totalInternalReflection') }}\n      </div>\n    </template>\n\n    <!-- results panel -->\n    <template v-if=\"id === 'results'\">\n      <div v-if=\"trials.length < 2\" class=\"empty\">{{ t('experiments.recordAtLeastTwo') }}</div>\n      <template v-else>\n        <div class=\"result-row\"><span class=\"result-label\">{{ t('experiments.numberOfReadings') }}</span><span class=\"result-val\">{{ trials.length }}</span></div>\n        <div class=\"result-row\"><span class=\"result-label\">{{ t('experiments.slopeLabel') }} (m) = n₂</span><span class=\"result-val highlight\">{{ slope.toFixed(3) }}</span></div>\n        <div class=\"result-row\"><span class=\"result-label\">{{ t('experiments.rSquaredLabel') }}</span><span class=\"result-val\">{{ rSquared.toFixed(4) }}</span></div>\n        <div class=\"result-row\"><span class=\"result-label\">{{ t('experiments.deducedN2') }}</span><span class=\"result-val highlight\">{{ calculatedN2 !== null ? calculatedN2.toFixed(3) : '—' }}</span></div>\n        <div class=\"result-row\"><span class=\"result-label\">{{ t('experiments.speedOfLightInMedium') }}</span><span class=\"result-val highlight\">{{ speedInMedium !== null ? (speedInMedium / 1e8).toFixed(2) + ' × 10⁸ m/s' : '—' }}</span></div>\n        <div class=\"formula-note\">v = c / n₂ = 3×10⁸ / {{ calculatedN2 !== null ? calculatedN2.toFixed(3) : '?' }}</div>\n      </template>\n    </template>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { display: flex; flex-direction: column; gap: .4rem; font-size: .82rem; }\n.reading-row { display: flex; justify-content: space-between; align-items: center; }\n.reading-label { color: #8B95A5; }\n.reading-val { font-family: monospace; color: #fbbf24; font-weight: 700; }\n.empty { text-align: center; color: #475569; font-size: .8rem; padding: .5rem; }\n.trial-table { display: flex; flex-direction: column; gap: .2rem; font-size: .7rem; }\n.trial-header { display: grid; grid-template-columns: 24px 36px 42px 52px 52px 20px; gap: .2rem; padding: .15rem .3rem; color: #8B95A5; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,0.06); }\n.trial-row { display: grid; grid-template-columns: 24px 36px 42px 52px 52px 20px; gap: .2rem; padding: .15rem .3rem; align-items: center; }\n.trial-row:nth-child(even) { background: rgba(255,255,255,0.02); }\n.mono { font-family: monospace; color: #67e8f9; }\n.trial-del { background: none; border: none; cursor: pointer; font-size: .65rem; opacity: .5; }\n.trial-del:hover { opacity: 1; }\n.btn-clear { padding: .3rem; border-radius: 4px; border: 1px solid rgba(239,68,68,0.2); background: rgba(239,68,68,0.05); color: #f87171; font-size: .75rem; cursor: pointer; font-family: inherit; margin-top: .3rem; }\n.param-row { display: flex; flex-direction: column; gap: .25rem; }\n.param-row label { font-size: .75rem; color: #8B95A5; }\n.param-row input[type='range'] { accent-color: #67e8f9; }\n.param-row select { padding: .3rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #D1D7E0; font-family: inherit; font-size: .8rem; }\n.param-val { font-family: monospace; color: #67e8f9; font-size: .8rem; text-align: center; }\n.law-box { background: rgba(255,255,255,0.02); border-radius: 6px; padding: .5rem; }\n.law-title { font-size: .75rem; color: #8B95A5; margin-bottom: .2rem; }\n.law-formula { font-family: monospace; font-size: .9rem; color: #fbbf24; }\n.law-calc { font-family: monospace; font-size: .75rem; color: #67e8f9; margin-top: .2rem; }\n.tir-warning { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); border-radius: 6px; padding: .5rem; color: #f87171; font-size: .8rem; text-align: center; }\n.results { gap: .35rem; }\n.result-row { display: flex; justify-content: space-between; align-items: center; }\n.result-label { color: #8B95A5; font-size: .78rem; }\n.result-val { font-family: monospace; color: #D1D7E0; font-size: .82rem; }\n.result-val.highlight { color: #22c55e; font-weight: 700; }\n.formula-note { font-family: monospace; font-size: .72rem; color: #475569; text-align: center; margin-top: .3rem; padding-top: .3rem; border-top: 1px solid rgba(255,255,255,0.04); }\n.reg-summary { display: flex; gap: .4rem; margin-top: .4rem; flex-wrap: wrap; }\n.reg-badge { padding: .15rem .4rem; border-radius: 999px; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2); color: #22c55e; font-size: .7rem; font-weight: 700; font-family: monospace; }\n</style>\n",
+      "start": 1783634640993,
+      "end": 1783634641467,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641467,
+      "end": 1783634641467,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641467,
+      "end": 1783634641467,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641467,
+      "end": 1783634641467,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641467,
+      "end": 1783634641467,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lightray/LightRayPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lightray/LightRayPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lightray/LightRayPanelBody.vue?vue&type=style&index=0&scoped=83c75933&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-83c75933\"]]);\n",
+      "start": 1783634641467,
+      "end": 1783634641643,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641644,
+      "end": 1783634641645,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641645,
+      "end": 1783634641645,
+      "order": "normal"
+    }
+  ]
+}

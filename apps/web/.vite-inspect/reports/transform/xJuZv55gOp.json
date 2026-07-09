@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/StraightWireReadingsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\nconst { t } = useI18n()\n\ndefineProps<{\n  I: number\n  r: number\n  B: number\n  running: boolean\n  hasProbe?: boolean\n}>()\n</script>\n\n<template>\n  <div class=\"readings-panel\">\n    <div class=\"readings-title\">{{ t('experiments.emLiveReadings') }}</div>\n    <div class=\"readings-grid\">\n      <div class=\"reading-box current\">\n        <span class=\"r-label\">I</span>\n        <span class=\"r-value\">{{ I.toFixed(1) }}</span>\n        <span class=\"r-unit\">A</span>\n      </div>\n      <div class=\"reading-box distance\">\n        <span class=\"r-label\">r</span>\n        <span class=\"r-value\">{{ (r * 100).toFixed(1) }}</span>\n        <span class=\"r-unit\">cm</span>\n      </div>\n      <div class=\"reading-box field\">\n        <span class=\"r-label\">B</span>\n        <span class=\"r-value\">{{ (B * 1e6).toFixed(2) }}</span>\n        <span class=\"r-unit\">μT</span>\n      </div>\n      <div class=\"reading-box field-exp\">\n        <span class=\"r-label\">{{ t('experiments.emReadingsBExp') }}</span>\n        <span class=\"r-value\">{{ B.toExponential(2) }}</span>\n        <span class=\"r-unit\">T</span>\n      </div>\n    </div>\n    <div v-if=\"hasProbe\" class=\"probe-indicator\">{{ t('experiments.emProbeHall') }}</div>\n    <div v-else class=\"probe-indicator idle\">{{ t('experiments.emProbeIdleR') }}</div>\n  </div>\n</template>\n\n<style scoped>\n.readings-panel { padding: .75rem; display: flex; flex-direction: column; gap: .5rem; }\n.readings-title { font-size: .85rem; font-weight: 700; color: #f59e0b; text-align: center; padding-bottom: .3rem; border-bottom: 1px solid #1e2530; }\n.readings-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .5rem; }\n.reading-box { display: flex; flex-direction: column; align-items: center; padding: .5rem; background: rgba(255,255,255,.03); border-radius: 6px; border: 1px solid rgba(255,255,255,.06); }\n.reading-box.current { border-color: rgba(245,158,11,.2); }\n.reading-box.distance { border-color: rgba(59,130,246,.2); }\n.reading-box.field { border-color: rgba(34,197,94,.2); }\n.reading-box.field-exp { border-color: rgba(34,197,94,.2); }\n.r-label { font-size: .7rem; color: #64748b; margin-bottom: .15rem; }\n.r-value { font-size: 1.1rem; font-weight: 700; color: #D1D7E0; font-family: 'Courier New', monospace; }\n.reading-box.current .r-value { color: #f59e0b; }\n.reading-box.distance .r-value { color: #3b82f6; }\n.reading-box.field .r-value { color: #22c55e; }\n.reading-box.field-exp .r-value { color: #22c55e; font-size: .9rem; }\n.r-unit { font-size: .65rem; color: #475569; margin-top: .1rem; }\n.probe-indicator { font-size: .7rem; color: #a855f7; text-align: center; padding: .3rem; background: rgba(168,85,247,.08); border-radius: 4px; border: 1px solid rgba(168,85,247,.15); }\n.probe-indicator.idle { color: #64748b; background: rgba(100,116,139,.06); border-color: rgba(100,116,139,.1); }\n</style>\n",
+      "start": 1783634640922,
+      "end": 1783634641253,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641253,
+      "end": 1783634641253,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641253,
+      "end": 1783634641253,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641253,
+      "end": 1783634641253,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641253,
+      "end": 1783634641253,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/StraightWireReadingsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/StraightWireReadingsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/StraightWireReadingsPanel.vue?vue&type=style&index=0&scoped=06338662&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-06338662\"]]);\n",
+      "start": 1783634641253,
+      "end": 1783634641663,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641663,
+      "end": 1783634641664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641664,
+      "end": 1783634641664,
+      "order": "normal"
+    }
+  ]
+}

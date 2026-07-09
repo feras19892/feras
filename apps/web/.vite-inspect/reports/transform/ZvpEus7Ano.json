@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/ExperimentSelector.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { experiments, type Experiment } from '../../../composables/chemistry/useExperiments';\nimport { useI18n } from '../../../composables/useI18n';\nconst { t } = useI18n();\n\nconst emit = defineEmits<{ select: [exp: Experiment]; close: [] }>();\n\nfunction onSelect(exp: Experiment) {\n  emit('select', exp);\n}\nfunction onClose() {\n  emit('close');\n}\n</script>\n\n<template>\n  <div class=\"modal-overlay\" @click.self=\"onClose\">\n    <div class=\"modal-panel\">\n      <div class=\"modal-header\">\n        <h3>🔬 {{ t('chemistryLab.chooseExperiment') }}</h3>\n        <button class=\"close-btn\" @click=\"onClose\">✕</button>\n      </div>\n      <div class=\"experiments-grid\">\n        <div\n          v-for=\"exp in experiments\"\n          :key=\"exp.id\"\n          class=\"exp-card\"\n          @click=\"onSelect(exp)\"\n        >\n          <div class=\"exp-icon\">{{ exp.icon }}</div>\n          <div class=\"exp-name\">{{ t(exp.nameAr) }}</div>\n          <div class=\"exp-desc\">{{ t(exp.description) }}</div>\n          <div class=\"exp-steps-count\">{{ exp.steps.length }} {{ t('chemistryLab.steps') }}</div>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.modal-overlay {\n  position: fixed;\n  inset: 0;\n  background: rgba(0,0,0,0.35);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  z-index: 200;\n}\n.modal-panel {\n  background: #fff;\n  border-radius: 1rem;\n  box-shadow: 0 20px 60px rgba(0,0,0,0.2);\n  width: 520px;\n  max-width: 90vw;\n  max-height: 80vh;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n}\n.modal-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 1rem 1.25rem;\n  border-bottom: 1px solid #e2e8f0;\n}\n.modal-header h3 {\n  margin: 0;\n  font-size: 1rem;\n  color: #334155;\n}\n.close-btn {\n  background: #f1f5f9;\n  border: none;\n  width: 32px;\n  height: 32px;\n  border-radius: 0.5rem;\n  font-size: 1rem;\n  color: #64748b;\n  cursor: pointer;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.close-btn:hover { background: #e2e8f0; }\n.experiments-grid {\n  padding: 1.25rem;\n  overflow-y: auto;\n}\n.exp-card {\n  background: #f8fafc;\n  border: 1px solid #e2e8f0;\n  border-radius: 0.75rem;\n  padding: 1rem;\n  cursor: pointer;\n  transition: all 0.2s;\n  display: flex;\n  flex-direction: column;\n  gap: 0.35rem;\n}\n.exp-card:hover {\n  border-color: #10b981;\n  box-shadow: 0 4px 16px rgba(16,185,129,0.12);\n  transform: translateY(-2px);\n}\n.exp-icon { font-size: 2rem; line-height: 1; }\n.exp-name { font-size: 0.85rem; font-weight: 700; color: #1e293b; }\n.exp-desc { font-size: 0.72rem; color: #64748b; line-height: 1.5; }\n.exp-steps-count {\n  font-size: 0.65rem;\n  color: #10b981;\n  font-weight: 700;\n  background: #ecfdf5;\n  padding: 0.2rem 0.5rem;\n  border-radius: 0.3rem;\n  align-self: flex-start;\n}\n</style>\n",
+      "start": 1783634639326,
+      "end": 1783634639594,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639594,
+      "end": 1783634639594,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639594,
+      "end": 1783634639594,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639594,
+      "end": 1783634639594,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639594,
+      "end": 1783634639594,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/ExperimentSelector.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/ExperimentSelector.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/ExperimentSelector.vue?vue&type=style&index=0&scoped=cb65b6ff&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-cb65b6ff\"]]);\n",
+      "start": 1783634639594,
+      "end": 1783634639938,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639938,
+      "end": 1783634639939,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639939,
+      "end": 1783634639939,
+      "order": "normal"
+    }
+  ]
+}

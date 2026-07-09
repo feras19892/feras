@@ -1,0 +1,115 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ideal-gas/panels/IdealGasChartPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, unref as _unref, toDisplayString as _toDisplayString, createStaticVNode as _createStaticVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"chart-panel\" }\nconst _hoisted_2 = {\n  key: 0,\n  viewBox: \"0 0 300 200\",\n  class: \"chart-svg\"\n}\nconst _hoisted_3 = [\"points\"]\nconst _hoisted_4 = [\"cx\", \"cy\"]\nconst _hoisted_5 = {\n  key: 1,\n  class: \"empty\"\n}\n\nimport { computed } from 'vue'\nimport { useI18n } from '../../../../composables/useI18n'\nimport type { IdealGasTrial } from '../../../../composables/ideal-gas/useIdealGasTrials'\n\ninterface PlotData { minX: number; maxX: number; minY: number; maxY: number; data: IdealGasTrial[] }\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'IdealGasChartPanel',\n  props: {\n    trials: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\nconst props = __props\n\nconst pts = computed<PlotData | null>(() => {\n  if (props.trials.length < 2) return null\n  const xs = props.trials.map(t => t.V)\n  const ys = props.trials.map(t => t.P)\n  const minX = Math.min(...xs), maxX = Math.max(...xs)\n  const minY = Math.min(...ys), maxY = Math.max(...ys)\n  const padX = (maxX - minX) * 0.1 || 1, padY = (maxY - minY) * 0.1 || 1\n  return { minX: minX - padX, maxX: maxX + padX, minY: minY - padY, maxY: maxY + padY, data: props.trials }\n})\n\nfunction toSvg(trial: IdealGasTrial) {\n  const p = pts.value!\n  const x = ((trial.V - p.minX) / (p.maxX - p.minX)) * 280 + 10\n  const y = 180 - ((trial.P - p.minY) / (p.maxY - p.minY)) * 160\n  return `${x},${y}`\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (pts.value)\n      ? (_openBlock(), _createElementBlock(\"svg\", _hoisted_2, [\n          _cache[0] || (_cache[0] = _createStaticVNode(\"<text x=\\\"150\\\" y=\\\"15\\\" text-anchor=\\\"middle\\\" fill=\\\"#8B95A5\\\" font-size=\\\"10\\\" data-v-9624b72b>P-V Diagram</text><line x1=\\\"30\\\" y1=\\\"180\\\" x2=\\\"290\\\" y2=\\\"180\\\" stroke=\\\"#2D3645\\\" stroke-width=\\\"1\\\" data-v-9624b72b></line><line x1=\\\"30\\\" y1=\\\"20\\\" x2=\\\"30\\\" y2=\\\"180\\\" stroke=\\\"#2D3645\\\" stroke-width=\\\"1\\\" data-v-9624b72b></line><text x=\\\"160\\\" y=\\\"195\\\" text-anchor=\\\"middle\\\" fill=\\\"#64748b\\\" font-size=\\\"8\\\" data-v-9624b72b>V (m³)</text><text x=\\\"10\\\" y=\\\"100\\\" text-anchor=\\\"middle\\\" fill=\\\"#64748b\\\" font-size=\\\"8\\\" transform=\\\"rotate(-90 10 100)\\\" data-v-9624b72b>P (Pa)</text>\", 5)),\n          _createElementVNode(\"polyline\", {\n            points: pts.value.data.map(toSvg).join(' '),\n            fill: \"none\",\n            stroke: \"#5B8DB8\",\n            \"stroke-width\": \"2\"\n          }, null, 8, _hoisted_3),\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(pts.value.data, (trial, i) => {\n            return (_openBlock(), _createElementBlock(\"circle\", {\n              key: i,\n              cx: toSvg(trial).split(',')[0],\n              cy: toSvg(trial).split(',')[1],\n              r: \"3\",\n              fill: \"#fbbf24\"\n            }, null, 8, _hoisted_4))\n          }), 128))\n        ]))\n      : (_openBlock(), _createElementBlock(\"p\", _hoisted_5, _toDisplayString(_unref(t)('experiments.chartNeedTrials')), 1))\n  ]))\n}\n}\n\n})",
+      "start": 1783634642861,
+      "end": 1783634642861
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642861,
+      "end": 1783634642861,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, unref as _unref, toDisplayString as _toDisplayString, createStaticVNode as _createStaticVNode } from \"vue\";\nconst _hoisted_1 = { class: \"chart-panel\" };\nconst _hoisted_2 = {\n  key: 0,\n  viewBox: \"0 0 300 200\",\n  class: \"chart-svg\"\n};\nconst _hoisted_3 = [\"points\"];\nconst _hoisted_4 = [\"cx\", \"cy\"];\nconst _hoisted_5 = {\n  key: 1,\n  class: \"empty\"\n};\nimport { computed } from \"vue\";\nimport { useI18n } from \"../../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"IdealGasChartPanel\",\n  props: {\n    trials: {}\n  },\n  setup(__props) {\n    const { t } = useI18n();\n    const props = __props;\n    const pts = computed(() => {\n      if (props.trials.length < 2) return null;\n      const xs = props.trials.map((t2) => t2.V);\n      const ys = props.trials.map((t2) => t2.P);\n      const minX = Math.min(...xs), maxX = Math.max(...xs);\n      const minY = Math.min(...ys), maxY = Math.max(...ys);\n      const padX = (maxX - minX) * 0.1 || 1, padY = (maxY - minY) * 0.1 || 1;\n      return { minX: minX - padX, maxX: maxX + padX, minY: minY - padY, maxY: maxY + padY, data: props.trials };\n    });\n    function toSvg(trial) {\n      const p = pts.value;\n      const x = (trial.V - p.minX) / (p.maxX - p.minX) * 280 + 10;\n      const y = 180 - (trial.P - p.minY) / (p.maxY - p.minY) * 160;\n      return `${x},${y}`;\n    }\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        pts.value ? (_openBlock(), _createElementBlock(\"svg\", _hoisted_2, [\n          _cache[0] || (_cache[0] = _createStaticVNode('<text x=\"150\" y=\"15\" text-anchor=\"middle\" fill=\"#8B95A5\" font-size=\"10\" data-v-9624b72b>P-V Diagram</text><line x1=\"30\" y1=\"180\" x2=\"290\" y2=\"180\" stroke=\"#2D3645\" stroke-width=\"1\" data-v-9624b72b></line><line x1=\"30\" y1=\"20\" x2=\"30\" y2=\"180\" stroke=\"#2D3645\" stroke-width=\"1\" data-v-9624b72b></line><text x=\"160\" y=\"195\" text-anchor=\"middle\" fill=\"#64748b\" font-size=\"8\" data-v-9624b72b>V (m³)</text><text x=\"10\" y=\"100\" text-anchor=\"middle\" fill=\"#64748b\" font-size=\"8\" transform=\"rotate(-90 10 100)\" data-v-9624b72b>P (Pa)</text>', 5)),\n          _createElementVNode(\"polyline\", {\n            points: pts.value.data.map(toSvg).join(\" \"),\n            fill: \"none\",\n            stroke: \"#5B8DB8\",\n            \"stroke-width\": \"2\"\n          }, null, 8, _hoisted_3),\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(pts.value.data, (trial, i) => {\n            return _openBlock(), _createElementBlock(\"circle\", {\n              key: i,\n              cx: toSvg(trial).split(\",\")[0],\n              cy: toSvg(trial).split(\",\")[1],\n              r: \"3\",\n              fill: \"#fbbf24\"\n            }, null, 8, _hoisted_4);\n          }), 128))\n        ])) : (_openBlock(), _createElementBlock(\"p\", _hoisted_5, _toDisplayString(_unref(t)(\"experiments.chartNeedTrials\")), 1))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634642861,
+      "end": 1783634642886,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ideal-gas/panels/IdealGasChartPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, unref as _unref, toDisplayString as _toDisplayString, createStaticVNode as _createStaticVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"chart-panel\" }\nconst _hoisted_2 = {\n  key: 0,\n  viewBox: \"0 0 300 200\",\n  class: \"chart-svg\"\n}\nconst _hoisted_3 = [\"points\"]\nconst _hoisted_4 = [\"cx\", \"cy\"]\nconst _hoisted_5 = {\n  key: 1,\n  class: \"empty\"\n}\n\nimport { computed } from 'vue'\nimport { useI18n } from '../../../../composables/useI18n'\nimport type { IdealGasTrial } from '../../../../composables/ideal-gas/useIdealGasTrials'\n\ninterface PlotData { minX: number; maxX: number; minY: number; maxY: number; data: IdealGasTrial[] }\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'IdealGasChartPanel',\n  props: {\n    trials: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\nconst props = __props\n\nconst pts = computed<PlotData | null>(() => {\n  if (props.trials.length < 2) return null\n  const xs = props.trials.map(t => t.V)\n  const ys = props.trials.map(t => t.P)\n  const minX = Math.min(...xs), maxX = Math.max(...xs)\n  const minY = Math.min(...ys), maxY = Math.max(...ys)\n  const padX = (maxX - minX) * 0.1 || 1, padY = (maxY - minY) * 0.1 || 1\n  return { minX: minX - padX, maxX: maxX + padX, minY: minY - padY, maxY: maxY + padY, data: props.trials }\n})\n\nfunction toSvg(trial: IdealGasTrial) {\n  const p = pts.value!\n  const x = ((trial.V - p.minX) / (p.maxX - p.minX)) * 280 + 10\n  const y = 180 - ((trial.P - p.minY) / (p.maxY - p.minY)) * 160\n  return `${x},${y}`\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (pts.value)\n      ? (_openBlock(), _createElementBlock(\"svg\", _hoisted_2, [\n          _cache[0] || (_cache[0] = _createStaticVNode(\"<text x=\\\"150\\\" y=\\\"15\\\" text-anchor=\\\"middle\\\" fill=\\\"#8B95A5\\\" font-size=\\\"10\\\" data-v-9624b72b>P-V Diagram</text><line x1=\\\"30\\\" y1=\\\"180\\\" x2=\\\"290\\\" y2=\\\"180\\\" stroke=\\\"#2D3645\\\" stroke-width=\\\"1\\\" data-v-9624b72b></line><line x1=\\\"30\\\" y1=\\\"20\\\" x2=\\\"30\\\" y2=\\\"180\\\" stroke=\\\"#2D3645\\\" stroke-width=\\\"1\\\" data-v-9624b72b></line><text x=\\\"160\\\" y=\\\"195\\\" text-anchor=\\\"middle\\\" fill=\\\"#64748b\\\" font-size=\\\"8\\\" data-v-9624b72b>V (m³)</text><text x=\\\"10\\\" y=\\\"100\\\" text-anchor=\\\"middle\\\" fill=\\\"#64748b\\\" font-size=\\\"8\\\" transform=\\\"rotate(-90 10 100)\\\" data-v-9624b72b>P (Pa)</text>\", 5)),\n          _createElementVNode(\"polyline\", {\n            points: pts.value.data.map(toSvg).join(' '),\n            fill: \"none\",\n            stroke: \"#5B8DB8\",\n            \"stroke-width\": \"2\"\n          }, null, 8, _hoisted_3),\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(pts.value.data, (trial, i) => {\n            return (_openBlock(), _createElementBlock(\"circle\", {\n              key: i,\n              cx: toSvg(trial).split(',')[0],\n              cy: toSvg(trial).split(',')[1],\n              r: \"3\",\n              fill: \"#fbbf24\"\n            }, null, 8, _hoisted_4))\n          }), 128))\n        ]))\n      : (_openBlock(), _createElementBlock(\"p\", _hoisted_5, _toDisplayString(_unref(t)('experiments.chartNeedTrials')), 1))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,sBAAsB,qBAAqB,cAAc,aAAa,YAAY,WAAW,aAAa,YAAY,sBAAsB,qBAAgE,SAAS,QAAQ,mBAAmB,kBAAkB,qBAAqB,0BAA0B;AAE1T,MAAM,aAAa,EAAE,OAAO,cAAc;AAC1C,MAAM,aAAa;AAAA,EACjB,KAAK;AAAA,EACL,SAAS;AAAA,EACT,OAAO;AACT;AACA,MAAM,aAAa,CAAC,QAAQ;AAC5B,MAAM,aAAa,CAAC,MAAM,IAAI;AAC9B,MAAM,aAAa;AAAA,EACjB,KAAK;AAAA,EACL,OAAO;AACT;AAEA,SAAS,gBAAgB;AACzB,SAAS,eAAe;AAKxB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,QAAQ,CAAC;AAAA,EACX;AAAA,EACA,MAAM,SAAc;AAEtB,UAAM,EAAE,EAAE,IAAI,QAAQ;AACtB,UAAM,QAAQ;AAEd,UAAM,MAAM,SAA0B,MAAM;AAC1C,UAAI,MAAM,OAAO,SAAS,EAAG,QAAO;AACpC,YAAM,KAAK,MAAM,OAAO,IAAI,CAAAA,OAAKA,GAAE,CAAC;AACpC,YAAM,KAAK,MAAM,OAAO,IAAI,CAAAA,OAAKA,GAAE,CAAC;AACpC,YAAM,OAAO,KAAK,IAAI,GAAG,EAAE,GAAG,OAAO,KAAK,IAAI,GAAG,EAAE;AACnD,YAAM,OAAO,KAAK,IAAI,GAAG,EAAE,GAAG,OAAO,KAAK,IAAI,GAAG,EAAE;AACnD,YAAM,QAAQ,OAAO,QAAQ,OAAO,GAAG,QAAQ,OAAO,QAAQ,OAAO;AACrE,aAAO,EAAE,MAAM,OAAO,MAAM,MAAM,OAAO,MAAM,MAAM,OAAO,MAAM,MAAM,OAAO,MAAM,MAAM,MAAM,OAAO;AAAA,IAC1G,CAAC;AAED,aAAS,MAAM,OAAsB;AACnC,YAAM,IAAI,IAAI;AACd,YAAM,KAAM,MAAM,IAAI,EAAE,SAAS,EAAE,OAAO,EAAE,QAAS,MAAM;AAC3D,YAAM,IAAI,OAAQ,MAAM,IAAI,EAAE,SAAS,EAAE,OAAO,EAAE,QAAS;AAC3D,aAAO,GAAG,CAAC,IAAI,CAAC;AAAA,IAClB;AAEA,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC1D,IAAI,SACA,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,UACpD,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,mBAAmB,whBAAglB,CAAC;AAAA,UAC9nB,oBAAoB,YAAY;AAAA,YAC9B,QAAQ,IAAI,MAAM,KAAK,IAAI,KAAK,EAAE,KAAK,GAAG;AAAA,YAC1C,MAAM;AAAA,YACN,QAAQ;AAAA,YACR,gBAAgB;AAAA,UAClB,GAAG,MAAM,GAAG,UAAU;AAAA,WACrB,WAAW,IAAI,GAAG,oBAAoB,WAAW,MAAM,YAAY,IAAI,MAAM,MAAM,CAAC,OAAO,MAAM;AAChG,mBAAQ,WAAW,GAAG,oBAAoB,UAAU;AAAA,cAClD,KAAK;AAAA,cACL,IAAI,MAAM,KAAK,EAAE,MAAM,GAAG,EAAE,CAAC;AAAA,cAC7B,IAAI,MAAM,KAAK,EAAE,MAAM,GAAG,EAAE,CAAC;AAAA,cAC7B,GAAG;AAAA,cACH,MAAM;AAAA,YACR,GAAG,MAAM,GAAG,UAAU;AAAA,UACxB,CAAC,GAAG,GAAG;AAAA,QACT,CAAC,MACA,WAAW,GAAG,oBAAoB,KAAK,YAAY,iBAAiB,OAAO,CAAC,EAAE,6BAA6B,CAAC,GAAG,CAAC;AAAA,MACvH,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": [
+          "t"
+        ]
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642886,
+      "end": 1783634642886,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642886,
+      "end": 1783634642886,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634642886,
+      "end": 1783634642886,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642886,
+      "end": 1783634642886,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642886,
+      "end": 1783634642886,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642886,
+      "end": 1783634642886,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642886,
+      "end": 1783634642886,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642886,
+      "end": 1783634642886,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642886,
+      "end": 1783634642886,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642886,
+      "end": 1783634642886,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642886,
+      "end": 1783634642886,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642886,
+      "end": 1783634642886,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642886,
+      "end": 1783634642886,
+      "order": "normal"
+    }
+  ]
+}

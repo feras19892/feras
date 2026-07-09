@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisTab.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createBlock as _createBlock, createCommentVNode as _createCommentVNode, createVNode as _createVNode, createElementVNode as _createElementVNode, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"analysis-tab\" }\nconst _hoisted_2 = { class: \"chart-section\" }\nconst _hoisted_3 = {\n  key: 1,\n  class: \"bottom-section\"\n}\nconst _hoisted_4 = { class: \"bottom-col\" }\nconst _hoisted_5 = { class: \"bottom-col\" }\n\nimport { ref } from 'vue';\nimport type { AnalysisColumnMeta, AnalysisEquation, AnalysisPlotConfig } from '../../../types/physics';\nimport AnalysisChartWorkspace from './AnalysisChartWorkspace.vue';\nimport AnalysisEquationsPanel from './AnalysisEquationsPanel.vue';\nimport AnalysisErrorPanel from './AnalysisErrorPanel.vue';\nimport AnalysisMediumPanel from './AnalysisMediumPanel.vue';\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'AnalysisTab',\n  props: {\n    readings: {},\n    columns: {},\n    equations: {},\n    plots: {},\n    mediumType: {},\n    mediumN2: {}\n  },\n  emits: [\"select-medium\"],\n  setup(__props: any, { expose: __expose, emit: __emit }) {\n\nconst props = __props;\n\nconst emit = __emit;\n\nconst chartRef = ref<InstanceType<typeof AnalysisChartWorkspace> | null>(null);\nconst solvedEquations = ref<{ equationName: string; formula: string; targetVar: string; varValues: Record<string, number>; result: string; timestamp: number }[]>([]);\nconst errorCalcData = ref<{ theoretical: number | null; experimental: number | null; errorPercent: number | null } | null>(null);\n\n__expose({\n  getCanvas: () => chartRef.value?.getCanvas() ?? null,\n  getRegression: () => chartRef.value?.getRegression() ?? null,\n  getSlopeCalc: () => chartRef.value?.getSlopeCalc() ?? null,\n  getAxes: () => chartRef.value?.getAxes() ?? null,\n  drawChart: () => chartRef.value?.draw?.(),\n  solvedEquations,\n  errorCalcData,\n});\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (__props.mediumType)\n      ? (_openBlock(), _createBlock(AnalysisMediumPanel, {\n          key: 0,\n          \"current-medium\": __props.mediumType,\n          \"current-n2\": __props.mediumN2,\n          onSelectMedium: _cache[0] || (_cache[0] = ($event: any) => (emit('select-medium', $event)))\n        }, null, 8, [\"current-medium\", \"current-n2\"]))\n      : _createCommentVNode(\"\", true),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createVNode(AnalysisChartWorkspace, {\n        ref_key: \"chartRef\",\n        ref: chartRef,\n        readings: __props.readings,\n        columns: __props.columns,\n        \"suggested-plots\": __props.plots\n      }, null, 8, [\"readings\", \"columns\", \"suggested-plots\"])\n    ]),\n    (__props.equations.length)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_3, [\n          _createElementVNode(\"div\", _hoisted_4, [\n            _createVNode(AnalysisEquationsPanel, {\n              equations: __props.equations,\n              readings: __props.readings,\n              onSolvedEquations: _cache[1] || (_cache[1] = ($event: any) => (solvedEquations.value = $event))\n            }, null, 8, [\"equations\", \"readings\"])\n          ]),\n          _createElementVNode(\"div\", _hoisted_5, [\n            _createVNode(AnalysisErrorPanel, {\n              onErrorCalc: _cache[2] || (_cache[2] = ($event: any) => (errorCalcData.value = $event))\n            })\n          ])\n        ]))\n      : _createCommentVNode(\"\", true)\n  ]))\n}\n}\n\n})",
+      "start": 1783634640074,
+      "end": 1783634640074
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640074,
+      "end": 1783634640074,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { openBlock as _openBlock, createBlock as _createBlock, createCommentVNode as _createCommentVNode, createVNode as _createVNode, createElementVNode as _createElementVNode, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"analysis-tab\" };\nconst _hoisted_2 = { class: \"chart-section\" };\nconst _hoisted_3 = {\n  key: 1,\n  class: \"bottom-section\"\n};\nconst _hoisted_4 = { class: \"bottom-col\" };\nconst _hoisted_5 = { class: \"bottom-col\" };\nimport { ref } from \"vue\";\nimport AnalysisChartWorkspace from \"./AnalysisChartWorkspace.vue\";\nimport AnalysisEquationsPanel from \"./AnalysisEquationsPanel.vue\";\nimport AnalysisErrorPanel from \"./AnalysisErrorPanel.vue\";\nimport AnalysisMediumPanel from \"./AnalysisMediumPanel.vue\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"AnalysisTab\",\n  props: {\n    readings: {},\n    columns: {},\n    equations: {},\n    plots: {},\n    mediumType: {},\n    mediumN2: {}\n  },\n  emits: [\"select-medium\"],\n  setup(__props, { expose: __expose, emit: __emit }) {\n    const props = __props;\n    const emit = __emit;\n    const chartRef = ref(null);\n    const solvedEquations = ref([]);\n    const errorCalcData = ref(null);\n    __expose({\n      getCanvas: () => chartRef.value?.getCanvas() ?? null,\n      getRegression: () => chartRef.value?.getRegression() ?? null,\n      getSlopeCalc: () => chartRef.value?.getSlopeCalc() ?? null,\n      getAxes: () => chartRef.value?.getAxes() ?? null,\n      drawChart: () => chartRef.value?.draw?.(),\n      solvedEquations,\n      errorCalcData\n    });\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        __props.mediumType ? (_openBlock(), _createBlock(AnalysisMediumPanel, {\n          key: 0,\n          \"current-medium\": __props.mediumType,\n          \"current-n2\": __props.mediumN2,\n          onSelectMedium: _cache[0] || (_cache[0] = ($event) => emit(\"select-medium\", $event))\n        }, null, 8, [\"current-medium\", \"current-n2\"])) : _createCommentVNode(\"\", true),\n        _createElementVNode(\"div\", _hoisted_2, [\n          _createVNode(AnalysisChartWorkspace, {\n            ref_key: \"chartRef\",\n            ref: chartRef,\n            readings: __props.readings,\n            columns: __props.columns,\n            \"suggested-plots\": __props.plots\n          }, null, 8, [\"readings\", \"columns\", \"suggested-plots\"])\n        ]),\n        __props.equations.length ? (_openBlock(), _createElementBlock(\"div\", _hoisted_3, [\n          _createElementVNode(\"div\", _hoisted_4, [\n            _createVNode(AnalysisEquationsPanel, {\n              equations: __props.equations,\n              readings: __props.readings,\n              onSolvedEquations: _cache[1] || (_cache[1] = ($event) => solvedEquations.value = $event)\n            }, null, 8, [\"equations\", \"readings\"])\n          ]),\n          _createElementVNode(\"div\", _hoisted_5, [\n            _createVNode(AnalysisErrorPanel, {\n              onErrorCalc: _cache[2] || (_cache[2] = ($event) => errorCalcData.value = $event)\n            })\n          ])\n        ])) : _createCommentVNode(\"\", true)\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634640074,
+      "end": 1783634640115,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisTab.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createBlock as _createBlock, createCommentVNode as _createCommentVNode, createVNode as _createVNode, createElementVNode as _createElementVNode, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"analysis-tab\" }\nconst _hoisted_2 = { class: \"chart-section\" }\nconst _hoisted_3 = {\n  key: 1,\n  class: \"bottom-section\"\n}\nconst _hoisted_4 = { class: \"bottom-col\" }\nconst _hoisted_5 = { class: \"bottom-col\" }\n\nimport { ref } from 'vue';\nimport type { AnalysisColumnMeta, AnalysisEquation, AnalysisPlotConfig } from '../../../types/physics';\nimport AnalysisChartWorkspace from './AnalysisChartWorkspace.vue';\nimport AnalysisEquationsPanel from './AnalysisEquationsPanel.vue';\nimport AnalysisErrorPanel from './AnalysisErrorPanel.vue';\nimport AnalysisMediumPanel from './AnalysisMediumPanel.vue';\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'AnalysisTab',\n  props: {\n    readings: {},\n    columns: {},\n    equations: {},\n    plots: {},\n    mediumType: {},\n    mediumN2: {}\n  },\n  emits: [\"select-medium\"],\n  setup(__props: any, { expose: __expose, emit: __emit }) {\n\nconst props = __props;\n\nconst emit = __emit;\n\nconst chartRef = ref<InstanceType<typeof AnalysisChartWorkspace> | null>(null);\nconst solvedEquations = ref<{ equationName: string; formula: string; targetVar: string; varValues: Record<string, number>; result: string; timestamp: number }[]>([]);\nconst errorCalcData = ref<{ theoretical: number | null; experimental: number | null; errorPercent: number | null } | null>(null);\n\n__expose({\n  getCanvas: () => chartRef.value?.getCanvas() ?? null,\n  getRegression: () => chartRef.value?.getRegression() ?? null,\n  getSlopeCalc: () => chartRef.value?.getSlopeCalc() ?? null,\n  getAxes: () => chartRef.value?.getAxes() ?? null,\n  drawChart: () => chartRef.value?.draw?.(),\n  solvedEquations,\n  errorCalcData,\n});\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (__props.mediumType)\n      ? (_openBlock(), _createBlock(AnalysisMediumPanel, {\n          key: 0,\n          \"current-medium\": __props.mediumType,\n          \"current-n2\": __props.mediumN2,\n          onSelectMedium: _cache[0] || (_cache[0] = ($event: any) => (emit('select-medium', $event)))\n        }, null, 8, [\"current-medium\", \"current-n2\"]))\n      : _createCommentVNode(\"\", true),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createVNode(AnalysisChartWorkspace, {\n        ref_key: \"chartRef\",\n        ref: chartRef,\n        readings: __props.readings,\n        columns: __props.columns,\n        \"suggested-plots\": __props.plots\n      }, null, 8, [\"readings\", \"columns\", \"suggested-plots\"])\n    ]),\n    (__props.equations.length)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_3, [\n          _createElementVNode(\"div\", _hoisted_4, [\n            _createVNode(AnalysisEquationsPanel, {\n              equations: __props.equations,\n              readings: __props.readings,\n              onSolvedEquations: _cache[1] || (_cache[1] = ($event: any) => (solvedEquations.value = $event))\n            }, null, 8, [\"equations\", \"readings\"])\n          ]),\n          _createElementVNode(\"div\", _hoisted_5, [\n            _createVNode(AnalysisErrorPanel, {\n              onErrorCalc: _cache[2] || (_cache[2] = ($event: any) => (errorCalcData.value = $event))\n            })\n          ])\n        ]))\n      : _createCommentVNode(\"\", true)\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/TeacherStatsComparison.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, normalizeStyle as _normalizeStyle } from \"vue\"\n\nconst _hoisted_1 = { class: \"section comparison\" }\nconst _hoisted_2 = { class: \"compare-cards\" }\nconst _hoisted_3 = { class: \"compare-name\" }\nconst _hoisted_4 = { class: \"compare-avg\" }\nconst _hoisted_5 = { class: \"compare-reports\" }\nconst _hoisted_6 = { class: \"compare-bar\" }\n\nimport { useI18n } from '../../composables/useI18n'\n\ninterface StudentStat { id: number; name: string; reports: number; avg: number }\n\ninterface Props {\n  students: StudentStat[]\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'TeacherStatsComparison',\n  props: {\n    students: {}\n  },\n  setup(__props: any) {\n\n\n\nconst { t } = useI18n()\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"h3\", null, _toDisplayString(_unref(t)('teacher.comparisonTitle')), 1),\n    _createElementVNode(\"div\", _hoisted_2, [\n      (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.students, (s) => {\n        return (_openBlock(), _createElementBlock(\"div\", {\n          key: s.id,\n          class: \"compare-card\"\n        }, [\n          _createElementVNode(\"div\", _hoisted_3, _toDisplayString(s.name), 1),\n          _createElementVNode(\"div\", _hoisted_4, _toDisplayString(s.avg) + \"%\", 1),\n          _createElementVNode(\"div\", _hoisted_5, _toDisplayString(s.reports) + \" \" + _toDisplayString(_unref(t)('teacher.reportsLabel')), 1),\n          _createElementVNode(\"div\", _hoisted_6, [\n            _createElementVNode(\"div\", {\n              class: \"compare-fill\",\n              style: _normalizeStyle({ width: s.avg + '%', background: s.avg >= 80 ? '#34d399' : s.avg >= 50 ? '#fbbf24' : '#f87171' })\n            }, null, 4)\n          ])\n        ]))\n      }), 128))\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783634640945,
+      "end": 1783634640945
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640945,
+      "end": 1783634640945,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, normalizeStyle as _normalizeStyle } from \"vue\";\nconst _hoisted_1 = { class: \"section comparison\" };\nconst _hoisted_2 = { class: \"compare-cards\" };\nconst _hoisted_3 = { class: \"compare-name\" };\nconst _hoisted_4 = { class: \"compare-avg\" };\nconst _hoisted_5 = { class: \"compare-reports\" };\nconst _hoisted_6 = { class: \"compare-bar\" };\nimport { useI18n } from \"../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"TeacherStatsComparison\",\n  props: {\n    students: {}\n  },\n  setup(__props) {\n    const { t } = useI18n();\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"h3\", null, _toDisplayString(_unref(t)(\"teacher.comparisonTitle\")), 1),\n        _createElementVNode(\"div\", _hoisted_2, [\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.students, (s) => {\n            return _openBlock(), _createElementBlock(\"div\", {\n              key: s.id,\n              class: \"compare-card\"\n            }, [\n              _createElementVNode(\"div\", _hoisted_3, _toDisplayString(s.name), 1),\n              _createElementVNode(\"div\", _hoisted_4, _toDisplayString(s.avg) + \"%\", 1),\n              _createElementVNode(\"div\", _hoisted_5, _toDisplayString(s.reports) + \" \" + _toDisplayString(_unref(t)(\"teacher.reportsLabel\")), 1),\n              _createElementVNode(\"div\", _hoisted_6, [\n                _createElementVNode(\"div\", {\n                  class: \"compare-fill\",\n                  style: _normalizeStyle({ width: s.avg + \"%\", background: s.avg >= 80 ? \"#34d399\" : s.avg >= 50 ? \"#fbbf24\" : \"#f87171\" })\n                }, null, 4)\n              ])\n            ]);\n          }), 128))\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634640945,
+      "end": 1783634641022,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/TeacherStatsComparison.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, normalizeStyle as _normalizeStyle } from \"vue\"\n\nconst _hoisted_1 = { class: \"section comparison\" }\nconst _hoisted_2 = { class: \"compare-cards\" }\nconst _hoisted_3 = { class: \"compare-name\" }\nconst _hoisted_4 = { class: \"compare-avg\" }\nconst _hoisted_5 = { class: \"compare-reports\" }\nconst _hoisted_6 = { class: \"compare-bar\" }\n\nimport { useI18n } from '../../composables/useI18n'\n\ninterface StudentStat { id: number; name: string; reports: number; avg: number }\n\ninterface Props {\n  students: StudentStat[]\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'TeacherStatsComparison',\n  props: {\n    students: {}\n  },\n  setup(__props: any) {\n\n\n\nconst { t } = useI18n()\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"h3\", null, _toDisplayString(_unref(t)('teacher.comparisonTitle')), 1),\n    _createElementVNode(\"div\", _hoisted_2, [\n      (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.students, (s) => {\n        return (_openBlock(), _createElementBlock(\"div\", {\n          key: s.id,\n          class: \"compare-card\"\n        }, [\n          _createElementVNode(\"div\", _hoisted_3, _toDisplayString(s.name), 1),\n          _createElementVNode(\"div\", _hoisted_4, _toDisplayString(s.avg) + \"%\", 1),\n          _createElementVNode(\"div\", _hoisted_5, _toDisplayString(s.reports) + \" \" + _toDisplayString(_unref(t)('teacher.reportsLabel')), 1),\n          _createElementVNode(\"div\", _hoisted_6, [\n            _createElementVNode(\"div\", {\n              class: \"compare-fill\",\n              style: _normalizeStyle({ width: s.avg + '%', background: s.avg >= 80 ? '#34d399' : s.avg >= 50 ? '#fbbf24' : '#f87171' })\n            }, null, 4)\n          ])\n        ]))\n      }), 128))\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,SAAS,QAAQ,mBAAmB,kBAAkB,sBAAsB,qBAAqB,cAAc,aAAa,YAAY,WAAW,aAAa,YAAY,sBAAsB,qBAAqB,kBAAkB,uBAAuB;AAEzQ,MAAM,aAAa,EAAE,OAAO,qBAAqB;AACjD,MAAM,aAAa,EAAE,OAAO,gBAAgB;AAC5C,MAAM,aAAa,EAAE,OAAO,eAAe;AAC3C,MAAM,aAAa,EAAE,OAAO,cAAc;AAC1C,MAAM,aAAa,EAAE,OAAO,kBAAkB;AAC9C,MAAM,aAAa,EAAE,OAAO,cAAc;AAE1C,SAAS,eAAe;AAQxB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,UAAU,CAAC;AAAA,EACb;AAAA,EACA,MAAM,SAAc;AAItB,UAAM,EAAE,EAAE,IAAI,QAAQ;AAEtB,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,oBAAoB,MAAM,MAAM,iBAAiB,OAAO,CAAC,EAAE,yBAAyB,CAAC,GAAG,CAAC;AAAA,QACzF,oBAAoB,OAAO,YAAY;AAAA,WACpC,WAAW,IAAI,GAAG,oBAAoB,WAAW,MAAM,YAAY,QAAQ,UAAU,CAAC,MAAM;AAC3F,mBAAQ,WAAW,GAAG,oBAAoB,OAAO;AAAA,cAC/C,KAAK,EAAE;AAAA,cACP,OAAO;AAAA,YACT,GAAG;AAAA,cACD,oBAAoB,OAAO,YAAY,iBAAiB,EAAE,IAAI,GAAG,CAAC;AAAA,cAClE,oBAAoB,OAAO,YAAY,iBAAiB,EAAE,GAAG,IAAI,KAAK,CAAC;AAAA,cACvE,oBAAoB,OAAO,YAAY,iBAAiB,EAAE,OAAO,IAAI,MAAM,iBAAiB,OAAO,CAAC,EAAE,sBAAsB,CAAC,GAAG,CAAC;AAAA,cACjI,oBAAoB,OAAO,YAAY;AAAA,gBACrC,oBAAoB,OAAO;AAAA,kBACzB,OAAO;AAAA,kBACP,OAAO,gBAAgB,EAAE,OAAO,EAAE,MAAM,KAAK,YAAY,EAAE,OAAO,KAAK,YAAY,EAAE,OAAO,KAAK,YAAY,UAAU,CAAC;AAAA,gBAC1H,GAAG,MAAM,CAAC;AAAA,cACZ,CAAC;AAAA,YACH,CAAC;AAAA,UACH,CAAC,GAAG,GAAG;AAAA,QACT,CAAC;AAAA,MACH,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641022,
+      "end": 1783634641022,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641022,
+      "end": 1783634641022,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634641022,
+      "end": 1783634641022,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641022,
+      "end": 1783634641022,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641022,
+      "end": 1783634641022,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641022,
+      "end": 1783634641022,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641022,
+      "end": 1783634641022,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641022,
+      "end": 1783634641022,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641022,
+      "end": 1783634641022,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641022,
+      "end": 1783634641022,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641023,
+      "end": 1783634641023,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641023,
+      "end": 1783634641023,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641023,
+      "end": 1783634641023,
+      "order": "normal"
+    }
+  ]
+}

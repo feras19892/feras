@@ -11,6 +11,7 @@ const emit = defineEmits<{
   (e: 'calcTime'): void
   (e: 'calcVelocity'): void
   (e: 'calcNormal'): void
+  (e: 'calcGFromSlope'): void
 }>()
 
 const resultLines = computed(() => {
@@ -26,6 +27,7 @@ const resultLines = computed(() => {
       <button @click="emit('calcTime')">{{ t('experiments.calculateArrivalTime') }}</button>
       <button @click="emit('calcVelocity')">{{ t('experiments.calculateFinalVelocity') }}</button>
       <button @click="emit('calcNormal')">{{ t('experiments.calculateNormalForce') }}</button>
+      <button @click="emit('calcGFromSlope')">{{ t('experiments.calculateGFromSlope') }}</button>
     </div>
     <div class="result">
       <div v-for="(line, i) in resultLines" :key="i">{{ line }}</div>

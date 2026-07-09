@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/admin/AdminClassManager.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../composables/useI18n';\ninterface AdminClassItem {\n  id: string;\n  name: string;\n  code: string;\n  teacher_name: string;\n  student_count: number;\n  created_at?: string;\n}\ndefineProps<{\n  classes: AdminClassItem[];\n}>();\n\ndefineEmits<{\n  (e: 'delete', id: string): void;\n}>();\n\nconst { t } = useI18n();\n</script>\n\n<template>\n  <div class=\"section\">\n    <h3>{{ t('admin.classes', { count: classes.length }) }}</h3>\n    <div class=\"table-wrapper\">\n      <table class=\"data-table\">\n        <thead>\n          <tr>\n            <th>ID</th><th>{{ t('admin.name') }}</th><th>{{ t('admin.code') }}</th><th>{{ t('admin.teacher') }}</th><th>{{ t('admin.students') }}</th><th>{{ t('admin.createdAt') }}</th><th>{{ t('admin.actions') }}</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for=\"c in classes\" :key=\"c.id\">\n            <td>{{ c.id }}</td>\n            <td>{{ c.name }}</td>\n            <td><code>{{ c.code }}</code></td>\n            <td>{{ c.teacher_name }}</td>\n            <td>{{ c.student_count }}</td>\n            <td>{{ c.created_at?.slice(0, 10) }}</td>\n            <td>\n              <button class=\"btn-danger\" @click=\"$emit('delete', c.id)\">{{ t('admin.delete') }}</button>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n      <p v-if=\"classes.length === 0\" class=\"empty\">{{ t('admin.noClasses') }}</p>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.section { color: #e2e8f0; }\n.section h3 { font-size: 1.1rem; margin: 0 0 1rem; }\n.table-wrapper { overflow-x: auto; }\n.data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }\n.data-table th { text-align: right; padding: 0.6rem 0.75rem; color: #94a3b8; border-bottom: 1px solid rgba(255,255,255,0.08); font-weight: 600; }\n.data-table td { padding: 0.6rem 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.04); color: #e2e8f0; }\n.data-table tr:hover { background: rgba(255,255,255,0.02); }\n.data-table code { background: rgba(255,255,255,0.05); padding: 0.15rem 0.35rem; border-radius: 0.3rem; font-size: 0.8rem; }\n.btn-danger { padding: 0.3rem 0.6rem; border-radius: 0.35rem; border: none; background: rgba(239,68,68,0.15); color: #f87171; cursor: pointer; font-family: inherit; font-size: 0.8rem; }\n.btn-danger:hover { background: rgba(239,68,68,0.25); }\n.empty { text-align: center; color: #64748b; padding: 2rem; }\n</style>\n",
+      "start": 1783634639339,
+      "end": 1783634639651,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639651,
+      "end": 1783634639651,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639651,
+      "end": 1783634639651,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639651,
+      "end": 1783634639651,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639651,
+      "end": 1783634639651,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/admin/AdminClassManager.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/admin/AdminClassManager.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/admin/AdminClassManager.vue?vue&type=style&index=0&scoped=7464abeb&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-7464abeb\"]]);\n",
+      "start": 1783634639651,
+      "end": 1783634639938,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639938,
+      "end": 1783634639939,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639939,
+      "end": 1783634639939,
+      "order": "normal"
+    }
+  ]
+}

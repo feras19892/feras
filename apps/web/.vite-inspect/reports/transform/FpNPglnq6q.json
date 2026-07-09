@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/magnetic-flux/MagneticFluxExperiment.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { onMounted, onUnmounted, ref } from 'vue'\nimport { useMagneticFluxExperiment } from '../../../../composables/electromagnetism/useMagneticFluxExperiment'\nimport { useI18n } from '../../../../composables/useI18n'\nimport MenuBar from '../../../../components/experiment/electromagnetism/MenuBar.vue'\nimport ControlBar from '../../../../components/experiment/electromagnetism/ControlBar.vue'\nimport MagneticFluxCanvas from '../../../../components/experiment/electromagnetism/MagneticFluxCanvas.vue'\nimport MagneticFluxParamPanel from '../../../../components/experiment/electromagnetism/MagneticFluxParamPanel.vue'\nimport MagneticFluxReadingsPanel from '../../../../components/experiment/electromagnetism/MagneticFluxReadingsPanel.vue'\nimport MagneticFluxDataPanel from '../../../../components/experiment/electromagnetism/MagneticFluxDataPanel.vue'\nimport MagneticFluxGuidePanel from '../../../../components/experiment/electromagnetism/MagneticFluxGuidePanel.vue'\nimport DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'\n\nconst ex = useMagneticFluxExperiment()\nconst { t } = useI18n()\nconst showGuide = ref(true)\n\nfunction onKeyDown(e: KeyboardEvent) {\n  const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()\n  if (tag === 'input' || tag === 'textarea' || tag === 'select') return\n  if (e.code === 'Space') { e.preventDefault(); ex.togglePause() }\n  else if (e.key === 's' || e.key === 'S') { ex.recordTrial() }\n}\n\nonMounted(() => window.addEventListener('keydown', onKeyDown))\nonUnmounted(() => window.removeEventListener('keydown', onKeyDown))\n</script>\n\n<template>\n  <div class=\"flux-lab\">\n    <MenuBar\n      :title=\"t('experiments.fluxTitle')\"\n      icon=\"🌐\"\n      experiment-route=\"/physics/electromagnetism/magnetic-flux\"\n      :experiment-name=\"t('experiments.fluxTitle')\"\n      @export-csv=\"ex.exportCsv\"\n      @toggle-pause=\"ex.togglePause\"\n      @reset=\"ex.resetSim\"\n      @record-trial=\"ex.recordTrial\"\n      @analyze-results=\"ex.exportToAnalysis\"\n    />\n\n    <div class=\"lab-grid\">\n      <div class=\"lab-col data-col\">\n        <DraggablePanel id=\"readings\" :title=\"t('experiments.emLiveReadings')\" @maximize=\"() => {}\" @hide=\"() => {}\" @drop=\"() => {}\">\n          <MagneticFluxReadingsPanel\n            :B=\"ex.params.B\"\n            :A=\"ex.params.A\"\n            :theta=\"ex.params.theta\"\n            :flux=\"ex.probeData.value ? ex.probeData.value.flux : ex.fluxNow.value\"\n            :cos-theta=\"Math.cos(ex.probeData.value ? ex.probeData.value.angle : ex.params.theta)\"\n            :angle-deg=\"(ex.probeData.value ? ex.probeData.value.angle : ex.params.theta) * 180 / Math.PI\"\n            :flux-max=\"ex.fluxMax.value\"\n            :running=\"ex.running.value\"\n            :has-probe=\"!!ex.probeData.value\"\n          />\n        </DraggablePanel>\n        <DraggablePanel id=\"data\" :title=\"t('experiments.emRecordedTrials')\" @maximize=\"() => {}\" @hide=\"() => {}\" @drop=\"() => {}\">\n          <MagneticFluxDataPanel\n            :trials=\"ex.trials.value\"\n            @remove=\"ex.removeTrial\"\n            @clear=\"ex.clearTrials\"\n          />\n        </DraggablePanel>\n      </div>\n\n      <div class=\"lab-col vis-col\">\n        <div class=\"vis-canvas-wrap\">\n          <MagneticFluxCanvas\n            :B=\"ex.params.B\"\n            :A=\"ex.params.A\"\n            :theta=\"ex.params.theta\"\n            :running=\"ex.running.value\"\n            :paused=\"ex.paused.value\"\n            @probe-placed=\"ex.setProbeData\"\n          />\n        </div>\n        <ControlBar\n          :launch-label=\"ex.running.value && !ex.paused.value ? t('experiments.emPause') : t('experiments.emPlay')\"\n          :can-undo=\"false\"\n          :can-redo=\"false\"\n          @toggle-pause=\"ex.togglePause\"\n          @reset=\"ex.resetSim\"\n          @record-trial=\"ex.recordTrial\"\n          @clear-trials=\"ex.clearTrials\"\n          @export-csv=\"ex.exportCsv\"\n          @analyze=\"ex.exportToAnalysis\"\n        />\n      </div>\n\n      <div class=\"lab-col ctrl-col\">\n        <MagneticFluxParamPanel\n          :B=\"ex.params.B\"\n          :A=\"ex.params.A\"\n          :theta=\"ex.params.theta\"\n          @update:b=\"ex.params.B = $event\"\n          @update:a=\"ex.params.A = $event\"\n          @update:theta=\"ex.params.theta = $event\"\n        />\n        <MagneticFluxGuidePanel :visible=\"showGuide\" @close=\"showGuide = false\" />\n      </div>\n    </div>\n\n    <div class=\"hint-bar\" v-if=\"!ex.running.value\">\n      <span>{{ t('experiments.fluxHintIdle') }}</span>\n    </div>\n    <div class=\"hint-bar success\" v-else-if=\"!ex.paused.value\">\n      <span>{{ t('experiments.fluxHintRunning') }}</span>\n    </div>\n    <div class=\"hint-bar active\" v-else>\n      <span>{{ t('experiments.fluxHintPaused') }}</span>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.flux-lab { background: #161B22; color: #D1D7E0; padding: .6rem .8rem; height: 100vh; display: flex; flex-direction: column; gap: .5rem; overflow: hidden; }\n.lab-grid { display: flex; flex-direction: row; flex: 1; min-height: 0; overflow: hidden; gap: .5rem; }\n.lab-col { display: flex; flex-direction: column; gap: .5rem; overflow-y: auto; min-height: 0; }\n.data-col { width: 280px; flex-shrink: 0; }\n.vis-col { flex: 1; min-width: 0; align-items: stretch; }\n.vis-canvas-wrap { flex: 1; min-height: 0; position: relative; background: #0b1220; border-radius: 8px; overflow: hidden; }\n.ctrl-col { width: 280px; flex-shrink: 0; }\n.hint-bar { background: #252D3A; border: 1px solid #2D3645; border-radius: 6px; padding: .35rem .7rem; font-size: .75rem; color: #8B95A5; text-align: center; flex-shrink: 0; }\n.hint-bar.active { border-color: #f59e0b; color: #f59e0b; background: rgba(245,158,11,.08); }\n.hint-bar.success { border-color: #22c55e; color: #22c55e; background: rgba(34,197,94,.08); }\n@media (max-width: 900px) {\n  .lab-grid { flex-direction: column; }\n  .data-col, .ctrl-col { width: 100%; }\n}\n</style>\n",
+      "start": 1783634639936,
+      "end": 1783634640451,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640451,
+      "end": 1783634640451,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640451,
+      "end": 1783634640451,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640451,
+      "end": 1783634640451,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640451,
+      "end": 1783634640451,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/magnetic-flux/MagneticFluxExperiment.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/magnetic-flux/MagneticFluxExperiment.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/magnetic-flux/MagneticFluxExperiment.vue?vue&type=style&index=0&scoped=1211da0b&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-1211da0b\"]]);\n",
+      "start": 1783634640451,
+      "end": 1783634640664,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640665,
+      "end": 1783634640665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640665,
+      "end": 1783634640665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640665,
+      "end": 1783634640665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640665,
+      "end": 1783634640667,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640667,
+      "end": 1783634640667,
+      "order": "normal"
+    }
+  ]
+}

@@ -50,7 +50,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
             <InclinedPanelBody :id="id" :trials="ex.trials.trials.value" :params="ex.params" :sim="ex.lab.sim"
               :measured="ex.getMeasured()" :trial-stats="ex.trials.trialStats.value" :calc-result="ex.trials.calcResult.value"
-              @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @calc-acceleration="ex.trials.calcAcceleration" @calc-time="ex.trials.calcTime" @calc-velocity="ex.trials.calcVelocity" @calc-normal="ex.trials.calcNormal"
+              @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @calc-acceleration="ex.trials.calcAcceleration" @calc-time="ex.trials.calcTime" @calc-velocity="ex.trials.calcVelocity" @calc-normal="ex.trials.calcNormal" @calc-g-from-slope="ex.trials.calcGFromSlope"
             />
           </DraggablePanel>
         </template>
@@ -64,7 +64,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
               @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
               <InclinedPanelBody :id="id" :trials="ex.trials.trials.value" :params="ex.params" :sim="ex.lab.sim"
                 :measured="ex.getMeasured()" :trial-stats="ex.trials.trialStats.value" :calc-result="ex.trials.calcResult.value"
-                @remove="ex.trials.removeTrial" @calc-acceleration="ex.trials.calcAcceleration" @calc-time="ex.trials.calcTime" @calc-velocity="ex.trials.calcVelocity" @calc-normal="ex.trials.calcNormal"
+                @remove="ex.trials.removeTrial" @calc-acceleration="ex.trials.calcAcceleration" @calc-time="ex.trials.calcTime" @calc-velocity="ex.trials.calcVelocity" @calc-normal="ex.trials.calcNormal" @calc-g-from-slope="ex.trials.calcGFromSlope"
               />
             </DraggablePanel>
           </template>
@@ -87,21 +87,27 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       <div class="resizer" @mousedown="ex.onResizeStart('vis', $event)"></div>
       <div class="lab-col ctrl-col" :style="{ width: ex.colWidths.ctrl + 'px' }">
         <template v-for="id in ex.getColumnPanels('ctrl')" :key="id">
-          <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id)"
+          <DraggablePanel v-if="id !== 'params' && ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id)"
             @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
             <InclinedPanelBody :id="id" :trials="ex.trials.trials.value" :params="ex.params" :sim="ex.lab.sim"
               :measured="ex.getMeasured()" :trial-stats="ex.trials.trialStats.value" :calc-result="ex.trials.calcResult.value"
-              @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @calc-acceleration="ex.trials.calcAcceleration" @calc-time="ex.trials.calcTime" @calc-velocity="ex.trials.calcVelocity" @calc-normal="ex.trials.calcNormal"
+              @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @calc-acceleration="ex.trials.calcAcceleration" @calc-time="ex.trials.calcTime" @calc-velocity="ex.trials.calcVelocity" @calc-normal="ex.trials.calcNormal" @calc-g-from-slope="ex.trials.calcGFromSlope"
             />
           </DraggablePanel>
+          <div v-else-if="id === 'params'" class="params-embedded">
+            <InclinedPanelBody id="params" :trials="ex.trials.trials.value" :params="ex.params" :sim="ex.lab.sim"
+              :measured="ex.getMeasured()" :trial-stats="ex.trials.trialStats.value" :calc-result="ex.trials.calcResult.value"
+              @update:params="Object.assign(ex.params, $event)"
+            />
+          </div>
         </template>
       </div>
     </div>
 
-    <InclinedOverlayPanels :maximized="ex.layout.maximized" :panel-title="(id: string) => ex.layout.panelTitle(id as any)" :trials="ex.trials.trials.value"
+    <InclinedOverlayPanels :maximized="ex.layout.maximized" :panel-title="(id: string) => ex.layout.panelTitle(String(id))" :trials="ex.trials.trials.value"
       :params="ex.params" :sim="ex.lab.sim" :measured="ex.getMeasured()" :trial-stats="ex.trials.trialStats.value" :calc-result="ex.trials.calcResult.value"
       @maximize="ex.layout.maximizePanel" @drop="ex.handleDrop" @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial"
-      @calc-acceleration="ex.trials.calcAcceleration" @calc-time="ex.trials.calcTime" @calc-velocity="ex.trials.calcVelocity" @calc-normal="ex.trials.calcNormal"
+      @calc-acceleration="ex.trials.calcAcceleration" @calc-time="ex.trials.calcTime" @calc-velocity="ex.trials.calcVelocity" @calc-normal="ex.trials.calcNormal" @calc-g-from-slope="ex.trials.calcGFromSlope"
     />
 
     <InclinedStatusBar :running="ex.lab.sim.running" :paused="ex.lab.sim.paused" :arrived="ex.lab.sim.arrived" />
@@ -119,6 +125,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 .data-col { background: rgba(255,255,255,0.02); }
 .vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 0; }
 .ctrl-col { background: rgba(255,255,255,0.02); }
+.params-embedded { padding: .6rem; }
 .resizer { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0; }
 .resizer:hover, .resizer:active { background: #5B8DB8; }
 .chart-row { display: flex; gap: .5rem; width: 100%; margin-top: .3rem; flex: 0 0 220px; min-height: 0; align-items: stretch; }

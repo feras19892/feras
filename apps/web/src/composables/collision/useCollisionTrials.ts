@@ -2,6 +2,7 @@ import { ref, computed } from 'vue'
 import { useI18n } from '../../composables/useI18n'
 import type { CollisionParams, CollisionState } from '../../modules/physics/experiments/collision/useCollisionPhysics'
 import { computeCollisionResult } from './collisionUtils'
+import { linearRegression } from '../../components/experiment/spring/linearRegression'
 
 export interface CollisionTrial {
   id: number
@@ -155,6 +156,21 @@ export function useCollisionTrials(params: CollisionParams, sim: CollisionState)
     calcResult.value = `v₁f = ${result.v1f.toFixed(3)} m/s, v₂f = ${result.v2f.toFixed(3)} m/s`
   }
 
+  function calcM2FromSlope() {
+    const valid = trials.value.filter(t => t.e < 0.15 && Math.abs(t.v2i) < 0.15)
+    if (valid.length < 2) { calcResult.value = t('experiments.needTwoInelasticTrials'); return }
+    const xs = valid.map(t => t.v1f)
+    const ys = valid.map(t => t.Pi)
+    const fit = linearRegression(xs, ys)
+    if (!fit || Math.abs(fit.slope) < 1e-12) { calcResult.value = t('experiments.insufficientData'); return }
+    const avgM1 = valid.reduce((s, t) => s + t.m1, 0) / valid.length
+    const m2 = fit.slope - avgM1
+    const actualM2 = valid[0].m2
+    const err = Math.abs((m2 - actualM2) / actualM2) * 100
+    const quality = fit.r2 > 0.98 ? '✅' : fit.r2 > 0.9 ? '🟡' : '⚠️'
+    calcResult.value = `pᵢ = ${fit.slope.toFixed(4)}·v_f ${fit.intercept >= 0 ? '+' : ''} ${fit.intercept.toFixed(4)}<br>R² = ${fit.r2.toFixed(4)} ${quality}<br>slope ≈ m₁ + m₂ → m₂ = slope − m̄₁ = <b>${m2.toFixed(2)} kg</b><br>${t('experiments.errorPercent')} = <b>${err.toFixed(2)}%</b>`
+  }
+
   return {
     trials,
     calcResult,
@@ -171,5 +187,6 @@ export function useCollisionTrials(params: CollisionParams, sim: CollisionState)
     calcMomentumDiff,
     calcEnergyLoss,
     calcFinalVelocity,
+    calcM2FromSlope,
   }
 }

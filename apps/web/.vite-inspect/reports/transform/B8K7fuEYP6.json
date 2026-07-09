@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/SpringPanelBody.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport SpringDataPanel from './SpringDataPanel.vue'\nimport SpringSignalChart from './SpringSignalChart.vue'\nimport SpringParamPanel from './SpringParamPanel.vue'\nimport type { SpringTrial } from '../../../composables/spring/useSpringTrials'\nimport type { SpringParams } from '../../../modules/physics/experiments/spring/useSpringPhysics'\n\ninterface Measured {\n  T: number | null; f: number | null; omega: number | null; kCalc: number | null; kCalcEff: number | null\n}\n\ninterface SimState {\n  x: number; v: number; t: number; running: boolean; paused: boolean\n  signalSeries: { t: number; x: number }[]; measurementPeriod: number | null\n}\n\nconst props = defineProps<{\n  id: string\n  trials: SpringTrial[]\n  params: SpringParams\n  sim: SimState\n  measured: Measured\n  effectiveMass: number\n}>()\n\nconst emit = defineEmits<{\n  (e: 'update:trials', val: SpringTrial[]): void\n  (e: 'update:params', val: SpringParams): void\n  (e: 'remove', id: number): void\n  (e: 'clear'): void\n}>()\n</script>\n\n<template>\n  <SpringDataPanel\n    v-if=\"id === 'table'\"\n    :model-value=\"trials\"\n    @update:model-value=\"emit('update:trials', $event)\"\n    @remove=\"emit('remove', $event)\"\n    @clear=\"emit('clear')\"\n  />\n\n  <SpringSignalChart\n    v-else-if=\"id === 'signal'\"\n    :series=\"sim.signalSeries\"\n    :params=\"{ mass: params.mass, k: params.k, amplitude: params.amplitude }\"\n    :sim-t=\"sim.t\"\n  />\n  <SpringParamPanel\n    v-else-if=\"id === 'params'\"\n    :model-value=\"params\"\n    @update:model-value=\"emit('update:params', $event)\"\n  />\n</template>\n",
+      "start": 1783634640996,
+      "end": 1783634641476,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641476,
+      "end": 1783634641476,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641476,
+      "end": 1783634641476,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641476,
+      "end": 1783634641476,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641476,
+      "end": 1783634641476,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/SpringPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/SpringPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nexport default _sfc_main;\n",
+      "start": 1783634641476,
+      "end": 1783634641643,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641644,
+      "end": 1783634641645,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641645,
+      "end": 1783634641645,
+      "order": "normal"
+    }
+  ]
+}

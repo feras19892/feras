@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/shared/ReportCommentThread.vue?vue&type=style&index=0&scoped=35766cd3&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.comment-thread {\n  border-top: 1px solid rgba(255, 255, 255, 0.06);\n  padding-top: 1rem;\n  display: flex;\n  flex-direction: column;\n  gap: 0.75rem;\n}\n.title { margin: 0; font-size: 0.9rem; color: #67e8f9; }\n.status { text-align: center; color: #64748b; font-size: 0.8rem; padding: 0.5rem; }\n.comments-list { display: flex; flex-direction: column; gap: 0.5rem; max-height: 300px; overflow-y: auto; padding-right: 0.25rem; }\n.comment { padding: 0.6rem 0.8rem; border-radius: 0.45rem; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); }\n.comment.me { background: rgba(99, 102, 241, 0.08); border-color: rgba(99, 102, 241, 0.15); }\n.comment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem; }\n.author { font-size: 0.75rem; color: #94a3b8; font-weight: 600; }\n.time { font-size: 0.7rem; color: #475569; }\n.comment-body { margin: 0; font-size: 0.85rem; color: #e2e8f0; line-height: 1.45; }\n.input-row { display: flex; gap: 0.4rem; margin-top: 0.25rem; }\n.input-row input { flex: 1; padding: 0.5rem 0.7rem; border-radius: 0.4rem; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(0, 0, 0, 0.3); color: #e2e8f0; font-size: 0.85rem; font-family: inherit; }\n.input-row button { padding: 0.5rem 1rem; border-radius: 0.4rem; border: none; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; font-size: 0.8rem; font-weight: 700; cursor: pointer; }\n.input-row button:disabled { opacity: 0.4; cursor: not-allowed; }\n",
+      "start": 1783634640890,
+      "end": 1783634640890
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.comment-thread {\n  border-top: 1px solid rgba(255, 255, 255, 0.06);\n  padding-top: 1rem;\n  display: flex;\n  flex-direction: column;\n  gap: 0.75rem;\n}\n.title { margin: 0; font-size: 0.9rem; color: #67e8f9; }\n.status { text-align: center; color: #64748b; font-size: 0.8rem; padding: 0.5rem; }\n.comments-list { display: flex; flex-direction: column; gap: 0.5rem; max-height: 300px; overflow-y: auto; padding-right: 0.25rem; }\n.comment { padding: 0.6rem 0.8rem; border-radius: 0.45rem; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); }\n.comment.me { background: rgba(99, 102, 241, 0.08); border-color: rgba(99, 102, 241, 0.15); }\n.comment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem; }\n.author { font-size: 0.75rem; color: #94a3b8; font-weight: 600; }\n.time { font-size: 0.7rem; color: #475569; }\n.comment-body { margin: 0; font-size: 0.85rem; color: #e2e8f0; line-height: 1.45; }\n.input-row { display: flex; gap: 0.4rem; margin-top: 0.25rem; }\n.input-row input { flex: 1; padding: 0.5rem 0.7rem; border-radius: 0.4rem; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(0, 0, 0, 0.3); color: #e2e8f0; font-size: 0.85rem; font-family: inherit; }\n.input-row button { padding: 0.5rem 1rem; border-radius: 0.4rem; border: none; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; font-size: 0.8rem; font-weight: 700; cursor: pointer; }\n.input-row button:disabled { opacity: 0.4; cursor: not-allowed; }\n",
+      "start": 1783634640890,
+      "end": 1783634640890,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640890,
+      "end": 1783634640890,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640890,
+      "end": 1783634640890,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640890,
+      "end": 1783634640890,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.comment-thread[data-v-35766cd3] {\n  border-top: 1px solid rgba(255, 255, 255, 0.06);\n  padding-top: 1rem;\n  display: flex;\n  flex-direction: column;\n  gap: 0.75rem;\n}\n.title[data-v-35766cd3] { margin: 0; font-size: 0.9rem; color: #67e8f9;\n}\n.status[data-v-35766cd3] { text-align: center; color: #64748b; font-size: 0.8rem; padding: 0.5rem;\n}\n.comments-list[data-v-35766cd3] { display: flex; flex-direction: column; gap: 0.5rem; max-height: 300px; overflow-y: auto; padding-right: 0.25rem;\n}\n.comment[data-v-35766cd3] { padding: 0.6rem 0.8rem; border-radius: 0.45rem; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);\n}\n.comment.me[data-v-35766cd3] { background: rgba(99, 102, 241, 0.08); border-color: rgba(99, 102, 241, 0.15);\n}\n.comment-header[data-v-35766cd3] { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;\n}\n.author[data-v-35766cd3] { font-size: 0.75rem; color: #94a3b8; font-weight: 600;\n}\n.time[data-v-35766cd3] { font-size: 0.7rem; color: #475569;\n}\n.comment-body[data-v-35766cd3] { margin: 0; font-size: 0.85rem; color: #e2e8f0; line-height: 1.45;\n}\n.input-row[data-v-35766cd3] { display: flex; gap: 0.4rem; margin-top: 0.25rem;\n}\n.input-row input[data-v-35766cd3] { flex: 1; padding: 0.5rem 0.7rem; border-radius: 0.4rem; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(0, 0, 0, 0.3); color: #e2e8f0; font-size: 0.85rem; font-family: inherit;\n}\n.input-row button[data-v-35766cd3] { padding: 0.5rem 1rem; border-radius: 0.4rem; border: none; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; font-size: 0.8rem; font-weight: 700; cursor: pointer;\n}\n.input-row button[data-v-35766cd3]:disabled { opacity: 0.4; cursor: not-allowed;\n}\n",
+      "start": 1783634640890,
+      "end": 1783634640891,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640891,
+      "end": 1783634640891,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634640891,
+      "end": 1783634640891,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640891,
+      "end": 1783634640891,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640891,
+      "end": 1783634640891,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640891,
+      "end": 1783634640891,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640891,
+      "end": 1783634640891,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640891,
+      "end": 1783634640891,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640891,
+      "end": 1783634640891,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640891,
+      "end": 1783634640891,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640891,
+      "end": 1783634640891,
+      "order": "normal"
+    }
+  ]
+}

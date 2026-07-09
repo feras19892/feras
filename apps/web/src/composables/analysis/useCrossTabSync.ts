@@ -1,5 +1,7 @@
 import { onMounted, onUnmounted } from 'vue';
 import { useAnalysisStore } from '../../stores/analysis.store';
+import type { AnalysisPayload } from '../../types/physics';
+import type { StudentInfo } from '../../stores/analysis.store';
 
 const CHANNEL_NAME = 'analysis-sync';
 
@@ -24,20 +26,19 @@ export function useCrossTabSync() {
     } catch { /* ignore */ }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function receive(data: any) {
-    if (!data || data.type !== 'update' || !data.payload) return;
-    const p = data.payload;
+  function receive(data: unknown) {
+    if (!data || typeof data !== 'object' || (data as Record<string, unknown>).type !== 'update' || !(data as Record<string, unknown>).payload) return;
+    const p = (data as Record<string, unknown>).payload as Record<string, unknown>;
     store.setPayload({
-      sourceExperiment: p.sourceExperiment ?? '',
-      sourceNameAr: p.sourceNameAr ?? '',
-      readings: p.readings ?? [],
-      columns: p.columns ?? [],
-      equations: p.equations ?? [],
-      suggestedPlots: p.suggestedPlots ?? [],
+      sourceExperiment: (p.sourceExperiment as string) ?? '',
+      sourceNameAr: (p.sourceNameAr as string) ?? '',
+      readings: (p.readings as AnalysisPayload['readings']) ?? [],
+      columns: (p.columns as AnalysisPayload['columns']) ?? [],
+      equations: (p.equations as AnalysisPayload['equations']) ?? [],
+      suggestedPlots: (p.suggestedPlots as AnalysisPayload['suggestedPlots']) ?? [],
     });
-    if (p.studentInfo) store.updateStudentInfo(p.studentInfo);
-    store.reportDate = p.reportDate ?? store.reportDate;
+    if (p.studentInfo) store.updateStudentInfo(p.studentInfo as Partial<StudentInfo>);
+    store.reportDate = (p.reportDate as string) ?? store.reportDate;
   }
 
   onMounted(() => {

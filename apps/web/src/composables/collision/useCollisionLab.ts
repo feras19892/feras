@@ -79,8 +79,43 @@ export function useCollisionLab(params: CollisionParams, onTick?: () => void) {
     reset()
   }
 
+  const sleep = (ms: number) => new Promise<void>(r => setTimeout(r, ms))
+
+  const waitForCollision = (timeoutMs = 15000): Promise<boolean> => new Promise((resolve) => {
+    const t0 = performance.now()
+    const tick = () => {
+      if (sim.collided) { resolve(true); return }
+      if (!sim.running || performance.now() - t0 > timeoutMs) { resolve(false); return }
+      requestAnimationFrame(tick)
+    }
+    tick()
+  })
+
+  async function runCollisionLab(recordTrial: () => void, calcM2FromSlope: () => void) {
+    if (running.value) return
+    try {
+      // Inelastic collision scenario: v2i = 0, e = 0, vary m1
+      params.v2i = 0
+      params.e = 0
+      for (const m1 of [1.0, 1.5, 2.0, 2.5, 3.0]) {
+        params.m1 = m1
+        resetSim()
+        start()
+        const ok = await waitForCollision()
+        stopSim()
+        if (!ok) break
+        recordTrial()
+        await sleep(300)
+      }
+      calcM2FromSlope()
+    } finally {
+      resetSim()
+    }
+  }
+
   return {
     sim, running, paused, speed, signalSeries,
     start, stopSim, togglePause, resetSim, cleanup,
+    runCollisionLab,
   }
 }

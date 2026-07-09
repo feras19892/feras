@@ -82,14 +82,14 @@ export async function runStartupDiagnostics(): Promise<DiagnosticReport> {
 
   // ── 4. Environment variables ──
   const envChecks = [
-    { key: 'VITE_API_URL', name: 'API URL', required: false },
+    { key: 'VITE_API_BASE_URL', name: 'API Base URL', required: false },
   ]
   for (const { key, name, required } of envChecks) {
     const value = import.meta.env[key]
     if (!value && required) {
       logIssue(issues, 'error', 'env', `Missing required env: ${key} (${name})`, `Add ${key} to .env`)
     } else if (!value) {
-      logIssue(issues, 'warn', 'env', `Missing optional env: ${key} (${name})`)
+      logIssue(issues, 'info', 'env', `${key} using default: http://localhost:3000`)
     } else {
       logIssue(issues, 'info', 'env', `${key} = ${value}`)
     }
@@ -106,7 +106,7 @@ export async function runStartupDiagnostics(): Promise<DiagnosticReport> {
   // ── 6. Sentry configuration ──
   const sentryDsn = import.meta.env.VITE_SENTRY_DSN
   if (!sentryDsn) {
-    logIssue(issues, 'warn', 'sentry', 'Sentry DSN not configured — error tracking disabled', 'Add VITE_SENTRY_DSN to .env to enable')
+    logIssue(issues, 'info', 'sentry', 'Sentry DSN not configured — error tracking disabled (optional)')
   } else {
     logIssue(issues, 'info', 'sentry', 'Sentry DSN configured')
   }

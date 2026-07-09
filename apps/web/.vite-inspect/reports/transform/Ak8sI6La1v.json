@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/TeacherStats.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, computed, watch, onMounted } from 'vue';\nimport { getMyClasses } from '../../services/class.service';\nimport { getClassStats, exportClassReports } from '../../services/report.service';\nimport type { ClassItem } from '../../services/class.service';\nimport type { Report } from '../../services/report.service';\nimport { useI18n } from '../../composables/useI18n';\nimport TeacherStatsSummary from './TeacherStatsSummary.vue';\nimport TeacherStatsCharts from './TeacherStatsCharts.vue';\nimport TeacherStatsExpTable from './TeacherStatsExpTable.vue';\nimport TeacherStatsStudentTable from './TeacherStatsStudentTable.vue';\nimport TeacherStatsComparison from './TeacherStatsComparison.vue';\nimport TeacherStatsExport from './TeacherStatsExport.vue';\n\ninterface StudentStat { id: number; name: string; reports: number; avg: number; lastSubmitted?: string }\ninterface ExperimentStat { name: string; avg: number; count: number; highest: number; lowest: number }\ninterface StatsData {\n  students: StudentStat[];\n  experiments: ExperimentStat[];\n  pending: number;\n  distribution: Record<string, number>;\n  total: number;\n  graded: number;\n  average: number;\n}\n\nconst { t } = useI18n();\nconst classes = ref<ClassItem[]>([]);\nconst selectedClassId = ref('');\nconst loading = ref(false);\nconst stats = ref<StatsData | null>(null);\nconst comparisonIds = ref<number[]>([]);\n\nasync function loadClasses() {\n  const res = await getMyClasses();\n  if (res.success) {\n    classes.value = res.classes;\n    if (res.classes.length > 0 && !selectedClassId.value) {\n      selectedClassId.value = res.classes[0].id;\n    }\n  }\n}\n\nasync function loadStats() {\n  if (!selectedClassId.value) return;\n  loading.value = true;\n  try {\n    const res = await getClassStats(selectedClassId.value);\n    if (res.success) stats.value = res.stats;\n  } catch (err) {\n    console.error('load stats failed:', err);\n  } finally {\n    loading.value = false;\n  }\n}\n\nwatch(selectedClassId, loadStats);\n\nfunction exportCsv() {\n  if (!stats.value) return;\n  const rows = stats.value.students.map((s: StudentStat) =>\n    `${s.name},${s.reports},${s.avg},${s.lastSubmitted?.slice(0, 10) || ''}`\n  );\n  const csv = ['Student,Reports,Average Grade,Last Submitted', ...rows].join('\\n');\n  const blob = new Blob(['\\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });\n  const url = URL.createObjectURL(blob);\n  const a = document.createElement('a');\n  a.href = url; a.download = `class_${selectedClassId.value}_stats.csv`; a.click();\n  URL.revokeObjectURL(url);\n}\n\nfunction exportFullReports() {\n  if (!selectedClassId.value) return;\n  exportClassReports(selectedClassId.value).then(res => {\n    if (!res.success) return;\n    const headers = 'ID,Student,Experiment,Status,Grade,Submitted\\n';\n    const rows = res.reports.map((r: Report) =>\n      `${r.id},\"${r.student_name}\",\"${r.experiment_name}\",${r.status},${r.grade || ''},${r.submitted_at?.slice(0, 10) || ''}`\n    );\n    const csv = headers + rows.join('\\n');\n    const blob = new Blob(['\\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });\n    const url = URL.createObjectURL(blob);\n    const a = document.createElement('a');\n    a.href = url; a.download = `class_${selectedClassId.value}_reports.csv`; a.click();\n    URL.revokeObjectURL(url);\n  });\n}\n\n/* ─── Alerts ─── */\nconst alerts = computed(() => {\n  const list: { type: 'warning' | 'info' | 'success'; msg: string }[] = [];\n  if (!stats.value) return list;\n  const s = stats.value;\n\n  const now = Date.now();\n  const week = 7 * 24 * 60 * 60 * 1000;\n  const inactive = s.students?.filter((st: StudentStat) => {\n    if (!st.lastSubmitted) return true;\n    return now - new Date(st.lastSubmitted).getTime() > week;\n  }) || [];\n  if (inactive.length > 0) {\n    list.push({ type: 'warning', msg: `${inactive.length} ${t('teacher.alerts.noReportsWeek')}` });\n  }\n\n  const lowExp = s.experiments?.filter((e: ExperimentStat) => e.avg > 0 && e.avg < 50) || [];\n  if (lowExp.length > 0) {\n    list.push({ type: 'warning', msg: `${t('teacher.alerts.lowGrade')}: ${lowExp.map((e: ExperimentStat) => e.name).join(', ')}` });\n  }\n\n  if (s.pending > 0) {\n    list.push({ type: 'info', msg: `${s.pending} ${t('teacher.alerts.pending')}` });\n  }\n\n  const top = s.students?.[0];\n  if (top && top.avg >= 90) {\n    list.push({ type: 'success', msg: `🎉 ${t('teacher.alerts.topStudent')}: ${top.name} (${top.avg}%)` });\n  }\n\n  return list;\n});\n\n/* ─── Comparison ─── */\nconst comparedStudents = computed(() => {\n  if (!stats.value) return [];\n  return stats.value.students?.filter((s: StudentStat) => comparisonIds.value.includes(s.id)) || [];\n});\n\nfunction toggleCompare(id: number) {\n  comparisonIds.value = comparisonIds.value.includes(id)\n    ? comparisonIds.value.filter(x => x !== id)\n    : [...comparisonIds.value, id];\n}\n\nonMounted(() => { loadClasses().then(loadStats); });\n</script>\n\n<template>\n  <div class=\"stats-panel\">\n    <div class=\"stats-header\">\n      <div>\n        <h2>{{ t('teacher.statsTitle') }}</h2>\n        <span v-if=\"stats\" class=\"subtitle\">{{ stats.total }} {{ t('teacher.reportsLabel') }} — {{ stats.students?.length || 0 }} {{ t('teacher.studentsLabel') }}</span>\n      </div>\n      <select v-model=\"selectedClassId\" @change=\"loadStats\">\n        <option v-for=\"cls in classes\" :key=\"cls.id\" :value=\"cls.id\">{{ cls.name }}</option>\n      </select>\n    </div>\n\n    <div v-if=\"loading\" class=\"empty\">...</div>\n    <template v-else-if=\"stats\">\n      <div v-if=\"alerts.length\" class=\"alerts-bar\">\n        <div v-for=\"(a, i) in alerts\" :key=\"i\" :class=\"['alert-chip', a.type]\">\n          {{ a.msg }}\n        </div>\n      </div>\n\n      <TeacherStatsSummary\n        :total=\"stats.total\"\n        :average=\"stats.average\"\n        :pending=\"stats.pending\"\n        :graded=\"stats.graded\"\n      />\n      <TeacherStatsCharts :stats=\"stats\" />\n      <TeacherStatsExpTable :experiments=\"stats.experiments\" />\n      <TeacherStatsStudentTable\n        :students=\"stats.students\"\n        :comparison-ids=\"comparisonIds\"\n        @toggle-compare=\"toggleCompare\"\n      />\n      <TeacherStatsComparison\n        v-if=\"comparedStudents.length >= 2\"\n        :students=\"comparedStudents\"\n      />\n      <TeacherStatsExport @export-csv=\"exportCsv\" @export-full=\"exportFullReports\" />\n    </template>\n  </div>\n</template>\n\n<style scoped>\n.stats-panel { width: 100%; padding: 1rem 1.5rem; }\n.stats-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.06); }\n.stats-header h2 { font-size: 1.5rem; font-weight: 800; margin: 0; background: linear-gradient(135deg, #67e8f9, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }\n.subtitle { font-size: 0.8rem; color: #64748b; margin-top: 0.2rem; display: block; }\n.stats-header select { padding: 0.4rem 0.8rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; }\n.empty { text-align: center; padding: 3rem; color: #64748b; }\n\n.alerts-bar { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.2rem; }\n.alert-chip { padding: 0.4rem 0.8rem; border-radius: 999px; font-size: 0.8rem; font-weight: 600; }\n.alert-chip.warning { background: rgba(239,68,68,0.12); color: #f87171; }\n.alert-chip.info { background: rgba(59,130,246,0.12); color: #60a5fa; }\n.alert-chip.success { background: rgba(34,197,94,0.12); color: #4ade80; }\n</style>\n",
+      "start": 1783634639336,
+      "end": 1783634639624,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639624,
+      "end": 1783634639624,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639624,
+      "end": 1783634639624,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639624,
+      "end": 1783634639624,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639624,
+      "end": 1783634639624,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/TeacherStats.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/TeacherStats.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/TeacherStats.vue?vue&type=style&index=0&scoped=e1e0632a&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-e1e0632a\"]]);\n",
+      "start": 1783634639624,
+      "end": 1783634639938,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639938,
+      "end": 1783634639938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639938,
+      "end": 1783634639939,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639939,
+      "end": 1783634639939,
+      "order": "normal"
+    }
+  ]
+}

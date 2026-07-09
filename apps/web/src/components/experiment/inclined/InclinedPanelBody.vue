@@ -28,6 +28,7 @@ const emit = defineEmits<{
   (e: 'calcTime'): void
   (e: 'calcVelocity'): void
   (e: 'calcNormal'): void
+  (e: 'calcGFromSlope'): void
 }>()
 </script>
 
@@ -38,7 +39,7 @@ const emit = defineEmits<{
     <InclinedScatterPanel v-else-if="id === 'scatter'" :trials="trials" />
     <InclinedSignalPanel v-else-if="id === 'signal'" :sim-state="sim" :params="params" />
     <InclinedEquationsPanel v-else-if="id === 'equations'" :calc-result="calcResult"
-      @calc-acceleration="emit('calcAcceleration')" @calc-time="emit('calcTime')" @calc-velocity="emit('calcVelocity')" @calc-normal="emit('calcNormal')" />
+      @calc-acceleration="emit('calcAcceleration')" @calc-time="emit('calcTime')" @calc-velocity="emit('calcVelocity')" @calc-normal="emit('calcNormal')" @calc-g-from-slope="emit('calcGFromSlope')" />
     <InclinedStatsPanel v-else-if="id === 'stats'" :trial-stats="trialStats" :trial-count="trials.length" />
     <div v-else-if="id === 'guide'" class="guide-text">
       <h5>{{ t('experiments.usageGuide') }}</h5>

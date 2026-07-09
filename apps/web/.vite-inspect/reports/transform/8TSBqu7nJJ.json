@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationBell.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, onMounted, onUnmounted } from 'vue';\nimport { useNotifications } from '../../composables/useNotifications';\nimport { useI18n } from '../../composables/useI18n';\n\nconst { notifications, unreadCount, markAllRead } = useNotifications();\nconst { t } = useI18n();\nconst open = ref(false);\nconst wrapperRef = ref<HTMLElement | null>(null);\n\nfunction toggle() { open.value = !open.value; }\n\nfunction onDocumentClick(event: MouseEvent) {\n  if (wrapperRef.value && !wrapperRef.value.contains(event.target as Node)) {\n    open.value = false;\n  }\n}\n\nonMounted(() => document.addEventListener('mousedown', onDocumentClick));\nonUnmounted(() => document.removeEventListener('mousedown', onDocumentClick));\n\nfunction getIcon(type: string) {\n  const map: Record<string, string> = {\n    report_submitted: '📤',\n    report_graded: '⭐',\n    report_resubmitted: '↩️',\n    comment_added: '💬',\n    class_joined: '🏫',\n  };\n  return map[type] || '🔔';\n}\n\nfunction formatTime(dateStr: string) {\n  const d = new Date(dateStr);\n  return d.toLocaleString('ar-SA', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });\n}\n</script>\n\n<template>\n  <div ref=\"wrapperRef\" class=\"bell-wrapper\">\n    <button class=\"bell-btn\" @click=\"toggle\">\n      🔔\n      <span v-if=\"unreadCount > 0\" class=\"badge\">{{ unreadCount }}</span>\n    </button>\n    <div v-if=\"open\" class=\"dropdown\" @click.stop>\n      <div class=\"header\">\n        <span>{{ t('common.notifications') }}</span>\n        <button v-if=\"notifications.length > 0\" class=\"mark-all\" @click=\"markAllRead\">\n          {{ t('common.markAllRead') }}\n        </button>\n      </div>\n      <div v-if=\"notifications.length === 0\" class=\"empty\">{{ t('common.noNotifications') }}</div>\n      <div\n        v-for=\"n in notifications\"\n        :key=\"n.id\"\n        :class=\"['item', { unread: !n.is_read }]\"\n      >\n        <span class=\"icon\">{{ getIcon(n.type) }}</span>\n        <div class=\"content\">\n          <div class=\"title\">{{ n.title }}</div>\n          <div v-if=\"n.message\" class=\"msg\">{{ n.message }}</div>\n          <div class=\"time\">{{ formatTime(n.created_at) }}</div>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.bell-wrapper { position: relative; }\n.bell-btn {\n  background: none; border: none; cursor: pointer; font-size: 1.1rem;\n  position: relative; padding: 0.3rem;\n}\n.badge {\n  position: absolute; top: -2px; right: -4px;\n  background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 700;\n  padding: 0.1rem 0.35rem; border-radius: 999px;\n}\n.dropdown {\n  position: absolute; top: calc(100% + 0.5rem); right: 0;\n  width: 320px; max-height: 400px; overflow-y: auto;\n  background: rgba(15, 23, 42, 0.98); border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 0.6rem; z-index: 400; padding: 0.75rem;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);\n}\n.header {\n  display: flex; justify-content: space-between; align-items: center;\n  margin-bottom: 0.5rem; padding-bottom: 0.4rem;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.06);\n  font-weight: 700; color: #e2e8f0; font-size: 0.85rem;\n}\n.mark-all {\n  background: none; border: none; color: #67e8f9; font-size: 0.7rem;\n  cursor: pointer; padding: 0;\n}\n.empty { text-align: center; padding: 1rem; color: #64748b; font-size: 0.8rem; }\n.item {\n  display: flex; gap: 0.5rem; padding: 0.5rem; border-radius: 0.35rem;\n  transition: background 0.15s; cursor: pointer;\n}\n.item:hover { background: rgba(255, 255, 255, 0.03); }\n.item.unread { background: rgba(99, 102, 241, 0.08); }\n.icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.1rem; }\n.content { display: flex; flex-direction: column; gap: 0.15rem; flex: 1; }\n.title { color: #e2e8f0; font-size: 0.8rem; font-weight: 600; }\n.msg { color: #94a3b8; font-size: 0.75rem; }\n.time { color: #64748b; font-size: 0.7rem; }\n</style>\n",
+      "start": 1783634640353,
+      "end": 1783634640658,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640658,
+      "end": 1783634640658,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640658,
+      "end": 1783634640658,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640659,
+      "end": 1783634640659,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640659,
+      "end": 1783634640659,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationBell.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationBell.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationBell.vue?vue&type=style&index=0&scoped=ff1ef79c&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-ff1ef79c\"]]);\n",
+      "start": 1783634640659,
+      "end": 1783634640817,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640817,
+      "end": 1783634640817,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640817,
+      "end": 1783634640817,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640817,
+      "end": 1783634640817,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640817,
+      "end": 1783634640817,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640817,
+      "end": 1783634640817,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640817,
+      "end": 1783634640817,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640817,
+      "end": 1783634640817,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640817,
+      "end": 1783634640817,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640817,
+      "end": 1783634640817,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640817,
+      "end": 1783634640817,
+      "order": "normal"
+    }
+  ]
+}

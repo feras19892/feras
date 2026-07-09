@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisTab.vue?vue&type=style&index=0&scoped=08057433&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.analysis-tab {\n  flex: 1;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n  gap: 0.5rem;\n  padding: 0.5rem;\n}\n.chart-section {\n  flex: 0.70;\n  min-height: 0;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n}\n.bottom-section {\n  flex: 0.28;\n  min-height: 0;\n  display: flex;\n  gap: 0.5rem;\n  overflow: hidden;\n}\n.bottom-col {\n  flex: 1;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n}\n",
+      "start": 1783634640074,
+      "end": 1783634640074
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.analysis-tab {\n  flex: 1;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n  gap: 0.5rem;\n  padding: 0.5rem;\n}\n.chart-section {\n  flex: 0.70;\n  min-height: 0;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n}\n.bottom-section {\n  flex: 0.28;\n  min-height: 0;\n  display: flex;\n  gap: 0.5rem;\n  overflow: hidden;\n}\n.bottom-col {\n  flex: 1;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n}\n",
+      "start": 1783634640074,
+      "end": 1783634640074,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640074,
+      "end": 1783634640075,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640075,
+      "end": 1783634640075,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640075,
+      "end": 1783634640075,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.analysis-tab[data-v-08057433] {\n  flex: 1;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n  gap: 0.5rem;\n  padding: 0.5rem;\n}\n.chart-section[data-v-08057433] {\n  flex: 0.70;\n  min-height: 0;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n}\n.bottom-section[data-v-08057433] {\n  flex: 0.28;\n  min-height: 0;\n  display: flex;\n  gap: 0.5rem;\n  overflow: hidden;\n}\n.bottom-col[data-v-08057433] {\n  flex: 1;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n}\n",
+      "start": 1783634640075,
+      "end": 1783634640075,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640075,
+      "end": 1783634640075,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634640075,
+      "end": 1783634640075,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640075,
+      "end": 1783634640075,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640075,
+      "end": 1783634640075,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640075,
+      "end": 1783634640075,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640075,
+      "end": 1783634640075,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640075,
+      "end": 1783634640075,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640075,
+      "end": 1783634640075,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640075,
+      "end": 1783634640075,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640075,
+      "end": 1783634640075,
+      "order": "normal"
+    }
+  ]
+}

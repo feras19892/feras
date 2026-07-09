@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/useAdmin.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { ref } from 'vue';\nimport { useI18n } from './useI18n';\nimport {\n  getAdminUsers,\n  getAdminStats,\n  getAdminClasses,\n  getAdminReports,\n  getAdminFeedback,\n  deleteUser,\n  updateUserRole,\n  createAdminUser,\n  deleteAdminClass,\n} from '../services/admin.service';\n\ninterface AdminUser {\n  id: number;\n  name: string;\n  email: string;\n  role: string;\n  created_at?: string;\n}\n\ninterface AdminClassItem {\n  id: string;\n  name: string;\n  code: string;\n  teacher_name: string;\n  student_count: number;\n  created_at?: string;\n}\n\ninterface AdminReportItem {\n  id: number;\n  student_name: string;\n  experiment_name: string;\n  class_name: string;\n  teacher_name: string;\n  status: string;\n  grade?: number | null;\n  submitted_at?: string;\n}\n\ninterface AdminFeedbackItem {\n  id: number;\n  type: string;\n  user_name: string;\n  experiment_name?: string;\n  rating?: number | null;\n  message: string;\n  status: string;\n  created_at?: string;\n}\n\ninterface AdminStats {\n  users: { total: number; byRole: { role: string; count: number }[] };\n  classes: { total: number };\n  reports: { total: number; graded: number; pending: number; resubmitted: number; average: number };\n}\n\nexport function useAdmin() {\n  const { t } = useI18n();\n  const loading = ref(false);\n  const errorMsg = ref('');\n\n  const users = ref<AdminUser[]>([]);\n  const classes = ref<AdminClassItem[]>([]);\n  const reports = ref<AdminReportItem[]>([]);\n  const feedback = ref<AdminFeedbackItem[]>([]);\n  const stats = ref<AdminStats | null>(null);\n\n  async function loadAll() {\n    loading.value = true;\n    errorMsg.value = '';\n    try {\n      const [u, s, c, r, f] = await Promise.all([\n        getAdminUsers(),\n        getAdminStats(),\n        getAdminClasses(),\n        getAdminReports(),\n        getAdminFeedback(),\n      ]);\n      if (u.success) users.value = u.users as unknown as AdminUser[];\n      if (s.success) stats.value = s.stats as unknown as AdminStats;\n      if (c.success) classes.value = c.classes as unknown as AdminClassItem[];\n      if (r.success) reports.value = r.reports as unknown as AdminReportItem[];\n      if (f.success) feedback.value = f.feedback as unknown as AdminFeedbackItem[];\n    } catch (err: unknown) {\n      console.error('admin load failed:', err);\n      errorMsg.value = (err instanceof Error ? err.message : '') || t('admin.loadError');\n    } finally {\n      loading.value = false;\n    }\n  }\n\n  async function handleRemoveUser(id: number) {\n    if (!confirm(t('admin.confirmDeleteUser'))) return;\n    const res = await deleteUser(id);\n    if (res.success) loadAll();\n  }\n\n  async function handleChangeRole(id: number, role: string) {\n    const res = await updateUserRole(id, role);\n    if (res.success) loadAll();\n  }\n\n  async function handleAddUser(name: string, email: string, password: string, role: string) {\n    const res = await createAdminUser(name, email, password, role);\n    if (res.success) loadAll();\n  }\n\n  async function handleRemoveClass(id: string) {\n    if (!confirm(t('admin.confirmDeleteClass'))) return;\n    const res = await deleteAdminClass(id);\n    if (res.success) loadAll();\n  }\n\n  return {\n    loading,\n    errorMsg,\n    users,\n    classes,\n    reports,\n    feedback,\n    stats,\n    loadAll,\n    handleRemoveUser,\n    handleChangeRole,\n    handleAddUser,\n    handleRemoveClass,\n  };\n}\n",
+      "start": 1783634639339,
+      "end": 1783634639643,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639643,
+      "end": 1783634639643,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { ref } from \"vue\";\nimport { useI18n } from \"./useI18n\";\nimport {\n  getAdminUsers,\n  getAdminStats,\n  getAdminClasses,\n  getAdminReports,\n  getAdminFeedback,\n  deleteUser,\n  updateUserRole,\n  createAdminUser,\n  deleteAdminClass\n} from \"../services/admin.service\";\nexport function useAdmin() {\n  const { t } = useI18n();\n  const loading = ref(false);\n  const errorMsg = ref(\"\");\n  const users = ref([]);\n  const classes = ref([]);\n  const reports = ref([]);\n  const feedback = ref([]);\n  const stats = ref(null);\n  async function loadAll() {\n    loading.value = true;\n    errorMsg.value = \"\";\n    try {\n      const [u, s, c, r, f] = await Promise.all([\n        getAdminUsers(),\n        getAdminStats(),\n        getAdminClasses(),\n        getAdminReports(),\n        getAdminFeedback()\n      ]);\n      if (u.success) users.value = u.users;\n      if (s.success) stats.value = s.stats;\n      if (c.success) classes.value = c.classes;\n      if (r.success) reports.value = r.reports;\n      if (f.success) feedback.value = f.feedback;\n    } catch (err) {\n      console.error(\"admin load failed:\", err);\n      errorMsg.value = (err instanceof Error ? err.message : \"\") || t(\"admin.loadError\");\n    } finally {\n      loading.value = false;\n    }\n  }\n  async function handleRemoveUser(id) {\n    if (!confirm(t(\"admin.confirmDeleteUser\"))) return;\n    const res = await deleteUser(id);\n    if (res.success) loadAll();\n  }\n  async function handleChangeRole(id, role) {\n    const res = await updateUserRole(id, role);\n    if (res.success) loadAll();\n  }\n  async function handleAddUser(name, email, password, role) {\n    const res = await createAdminUser(name, email, password, role);\n    if (res.success) loadAll();\n  }\n  async function handleRemoveClass(id) {\n    if (!confirm(t(\"admin.confirmDeleteClass\"))) return;\n    const res = await deleteAdminClass(id);\n    if (res.success) loadAll();\n  }\n  return {\n    loading,\n    errorMsg,\n    users,\n    classes,\n    reports,\n    feedback,\n    stats,\n    loadAll,\n    handleRemoveUser,\n    handleChangeRole,\n    handleAddUser,\n    handleRemoveClass\n  };\n}\n",
+      "start": 1783634639643,
+      "end": 1783634639883,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/useAdmin.ts"
+        ],
+        "sourcesContent": [
+          "import { ref } from 'vue';\nimport { useI18n } from './useI18n';\nimport {\n  getAdminUsers,\n  getAdminStats,\n  getAdminClasses,\n  getAdminReports,\n  getAdminFeedback,\n  deleteUser,\n  updateUserRole,\n  createAdminUser,\n  deleteAdminClass,\n} from '../services/admin.service';\n\ninterface AdminUser {\n  id: number;\n  name: string;\n  email: string;\n  role: string;\n  created_at?: string;\n}\n\ninterface AdminClassItem {\n  id: string;\n  name: string;\n  code: string;\n  teacher_name: string;\n  student_count: number;\n  created_at?: string;\n}\n\ninterface AdminReportItem {\n  id: number;\n  student_name: string;\n  experiment_name: string;\n  class_name: string;\n  teacher_name: string;\n  status: string;\n  grade?: number | null;\n  submitted_at?: string;\n}\n\ninterface AdminFeedbackItem {\n  id: number;\n  type: string;\n  user_name: string;\n  experiment_name?: string;\n  rating?: number | null;\n  message: string;\n  status: string;\n  created_at?: string;\n}\n\ninterface AdminStats {\n  users: { total: number; byRole: { role: string; count: number }[] };\n  classes: { total: number };\n  reports: { total: number; graded: number; pending: number; resubmitted: number; average: number };\n}\n\nexport function useAdmin() {\n  const { t } = useI18n();\n  const loading = ref(false);\n  const errorMsg = ref('');\n\n  const users = ref<AdminUser[]>([]);\n  const classes = ref<AdminClassItem[]>([]);\n  const reports = ref<AdminReportItem[]>([]);\n  const feedback = ref<AdminFeedbackItem[]>([]);\n  const stats = ref<AdminStats | null>(null);\n\n  async function loadAll() {\n    loading.value = true;\n    errorMsg.value = '';\n    try {\n      const [u, s, c, r, f] = await Promise.all([\n        getAdminUsers(),\n        getAdminStats(),\n        getAdminClasses(),\n        getAdminReports(),\n        getAdminFeedback(),\n      ]);\n      if (u.success) users.value = u.users as unknown as AdminUser[];\n      if (s.success) stats.value = s.stats as unknown as AdminStats;\n      if (c.success) classes.value = c.classes as unknown as AdminClassItem[];\n      if (r.success) reports.value = r.reports as unknown as AdminReportItem[];\n      if (f.success) feedback.value = f.feedback as unknown as AdminFeedbackItem[];\n    } catch (err: unknown) {\n      console.error('admin load failed:', err);\n      errorMsg.value = (err instanceof Error ? err.message : '') || t('admin.loadError');\n    } finally {\n      loading.value = false;\n    }\n  }\n\n  async function handleRemoveUser(id: number) {\n    if (!confirm(t('admin.confirmDeleteUser'))) return;\n    const res = await deleteUser(id);\n    if (res.success) loadAll();\n  }\n\n  async function handleChangeRole(id: number, role: string) {\n    const res = await updateUserRole(id, role);\n    if (res.success) loadAll();\n  }\n\n  async function handleAddUser(name: string, email: string, password: string, role: string) {\n    const res = await createAdminUser(name, email, password, role);\n    if (res.success) loadAll();\n  }\n\n  async function handleRemoveClass(id: string) {\n    if (!confirm(t('admin.confirmDeleteClass'))) return;\n    const res = await deleteAdminClass(id);\n    if (res.success) loadAll();\n  }\n\n  return {\n    loading,\n    errorMsg,\n    users,\n    classes,\n    reports,\n    feedback,\n    stats,\n    loadAll,\n    handleRemoveUser,\n    handleChangeRole,\n    handleAddUser,\n    handleRemoveClass,\n  };\n}\n"
+        ],
+        "mappings": "AAAA,SAAS,WAAW;AACpB,SAAS,eAAe;AACxB;AAAA,EACE;AAAA,EACA;AAAA,EACA;AAAA,EACA;AAAA,EACA;AAAA,EACA;AAAA,EACA;AAAA,EACA;AAAA,EACA;AAAA,OACK;AA+CA,gBAAS,WAAW;AACzB,QAAM,EAAE,EAAE,IAAI,QAAQ;AACtB,QAAM,UAAU,IAAI,KAAK;AACzB,QAAM,WAAW,IAAI,EAAE;AAEvB,QAAM,QAAQ,IAAiB,CAAC,CAAC;AACjC,QAAM,UAAU,IAAsB,CAAC,CAAC;AACxC,QAAM,UAAU,IAAuB,CAAC,CAAC;AACzC,QAAM,WAAW,IAAyB,CAAC,CAAC;AAC5C,QAAM,QAAQ,IAAuB,IAAI;AAEzC,iBAAe,UAAU;AACvB,YAAQ,QAAQ;AAChB,aAAS,QAAQ;AACjB,QAAI;AACF,YAAM,CAAC,GAAG,GAAG,GAAG,GAAG,CAAC,IAAI,MAAM,QAAQ,IAAI;AAAA,QACxC,cAAc;AAAA,QACd,cAAc;AAAA,QACd,gBAAgB;AAAA,QAChB,gBAAgB;AAAA,QAChB,iBAAiB;AAAA,MACnB,CAAC;AACD,UAAI,EAAE,QAAS,OAAM,QAAQ,EAAE;AAC/B,UAAI,EAAE,QAAS,OAAM,QAAQ,EAAE;AAC/B,UAAI,EAAE,QAAS,SAAQ,QAAQ,EAAE;AACjC,UAAI,EAAE,QAAS,SAAQ,QAAQ,EAAE;AACjC,UAAI,EAAE,QAAS,UAAS,QAAQ,EAAE;AAAA,IACpC,SAAS,KAAc;AACrB,cAAQ,MAAM,sBAAsB,GAAG;AACvC,eAAS,SAAS,eAAe,QAAQ,IAAI,UAAU,OAAO,EAAE,iBAAiB;AAAA,IACnF,UAAE;AACA,cAAQ,QAAQ;AAAA,IAClB;AAAA,EACF;AAEA,iBAAe,iBAAiB,IAAY;AAC1C,QAAI,CAAC,QAAQ,EAAE,yBAAyB,CAAC,EAAG;AAC5C,UAAM,MAAM,MAAM,WAAW,EAAE;AAC/B,QAAI,IAAI,QAAS,SAAQ;AAAA,EAC3B;AAEA,iBAAe,iBAAiB,IAAY,MAAc;AACxD,UAAM,MAAM,MAAM,eAAe,IAAI,IAAI;AACzC,QAAI,IAAI,QAAS,SAAQ;AAAA,EAC3B;AAEA,iBAAe,cAAc,MAAc,OAAe,UAAkB,MAAc;AACxF,UAAM,MAAM,MAAM,gBAAgB,MAAM,OAAO,UAAU,IAAI;AAC7D,QAAI,IAAI,QAAS,SAAQ;AAAA,EAC3B;AAEA,iBAAe,kBAAkB,IAAY;AAC3C,QAAI,CAAC,QAAQ,EAAE,0BAA0B,CAAC,EAAG;AAC7C,UAAM,MAAM,MAAM,iBAAiB,EAAE;AACrC,QAAI,IAAI,QAAS,SAAQ;AAAA,EAC3B;AAEA,SAAO;AAAA,IACL;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,EACF;AACF;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639883,
+      "end": 1783634639883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639883,
+      "end": 1783634639883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639883,
+      "end": 1783634639883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639883,
+      "end": 1783634639883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639884,
+      "end": 1783634639884,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639884,
+      "end": 1783634639884,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639884,
+      "end": 1783634639884,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639884,
+      "end": 1783634639884,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639884,
+      "end": 1783634639884,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639885,
+      "end": 1783634639885,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639885,
+      "end": 1783634639885,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639886,
+      "end": 1783634639886,
+      "order": "normal"
+    }
+  ]
+}

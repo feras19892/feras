@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/pages/index.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref } from 'vue'\nimport { useRouter } from 'vue-router'\nimport { useAuthStore } from '../modules/auth/stores/auth'\nimport { useI18n } from '../composables/useI18n'\nimport LandingLangSwitcher from '../components/landing/LandingLangSwitcher.vue'\nimport LandingHeroSection from '../components/landing/LandingHeroSection.vue'\nimport LandingLoginForm from '../components/landing/LandingLoginForm.vue'\nimport LandingGuestButtons from '../components/landing/LandingGuestButtons.vue'\n\nconst { t } = useI18n()\nconst router = useRouter()\nconst auth = useAuthStore()\n\nconst formError = ref('')\n\nasync function handleLogin(payload: { email: string; password: string }) {\n  formError.value = ''\n  auth.error = null\n  const ok = await auth.login(payload.email, payload.password)\n  if (ok) {\n    routeByRole()\n  } else {\n    formError.value = t('auth.errors.invalidCredentials')\n  }\n}\n\nfunction handleJoin() {\n  router.push('/register')\n}\n\nfunction routeByRole() {\n  router.push('/home')\n}\n\nfunction enterAsTeacher() {\n  auth.loginAsGuest('teacher')\n  router.push('/home')\n}\n\nfunction enterAsStudent() {\n  auth.loginAsGuest('student')\n  router.push('/home')\n}\n</script>\n\n<template>\n  <div class=\"landing-page\">\n    <LandingLangSwitcher />\n\n    <div class=\"landing-inner\">\n      <LandingHeroSection />\n\n      <div class=\"login-section\">\n        <LandingLoginForm @login=\"handleLogin\" @register=\"handleJoin\" />\n        <p v-if=\"formError\" class=\"error\">{{ formError }}</p>\n        <p v-else-if=\"auth.error\" class=\"error\">{{ auth.error }}</p>\n        <LandingGuestButtons @enter-as-teacher=\"enterAsTeacher\" @enter-as-student=\"enterAsStudent\" />\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.landing-page {\n  min-height: 100vh;\n  background: linear-gradient(135deg, #0a0f1c 0%, #111827 40%, #0f172a 100%);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 2rem 1rem;\n}\n.landing-inner {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 1.5rem;\n  max-width: 380px;\n  width: 100%;\n}\n.login-section {\n  width: 100%;\n}\n.error {\n  color: #fca5a5;\n  font-size: 0.8rem;\n  margin: 0.5rem 0;\n  text-align: center;\n}\n</style>\n",
+      "start": 1783634639007,
+      "end": 1783634639050,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639051,
+      "end": 1783634639051,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639051,
+      "end": 1783634639051,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639051,
+      "end": 1783634639051,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639051,
+      "end": 1783634639051,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/pages/index.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/pages/index.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/pages/index.vue?vue&type=style&index=0&scoped=be151e32&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-be151e32\"]]);\n",
+      "start": 1783634639051,
+      "end": 1783634639164,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639164,
+      "end": 1783634639164,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639170,
+      "end": 1783634639170,
+      "order": "normal"
+    }
+  ]
+}

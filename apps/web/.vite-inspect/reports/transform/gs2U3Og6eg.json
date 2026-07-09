@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/ExperimentSelector.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, withModifiers as _withModifiers } from \"vue\"\n\nconst _hoisted_1 = { class: \"modal-panel\" }\nconst _hoisted_2 = { class: \"modal-header\" }\nconst _hoisted_3 = { class: \"experiments-grid\" }\nconst _hoisted_4 = [\"onClick\"]\nconst _hoisted_5 = { class: \"exp-icon\" }\nconst _hoisted_6 = { class: \"exp-name\" }\nconst _hoisted_7 = { class: \"exp-desc\" }\nconst _hoisted_8 = { class: \"exp-steps-count\" }\n\nimport { experiments, type Experiment } from '../../../composables/chemistry/useExperiments';\nimport { useI18n } from '../../../composables/useI18n';\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ExperimentSelector',\n  emits: [\"select\", \"close\"],\n  setup(__props, { emit: __emit }) {\n\nconst { t } = useI18n();\n\nconst emit = __emit;\n\nfunction onSelect(exp: Experiment) {\n  emit('select', exp);\n}\nfunction onClose() {\n  emit('close');\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    class: \"modal-overlay\",\n    onClick: _withModifiers(onClose, [\"self\"])\n  }, [\n    _createElementVNode(\"div\", _hoisted_1, [\n      _createElementVNode(\"div\", _hoisted_2, [\n        _createElementVNode(\"h3\", null, \"🔬 \" + _toDisplayString(_unref(t)('chemistryLab.chooseExperiment')), 1),\n        _createElementVNode(\"button\", {\n          class: \"close-btn\",\n          onClick: onClose\n        }, \"✕\")\n      ]),\n      _createElementVNode(\"div\", _hoisted_3, [\n        (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(_unref(experiments), (exp) => {\n          return (_openBlock(), _createElementBlock(\"div\", {\n            key: exp.id,\n            class: \"exp-card\",\n            onClick: ($event: any) => (onSelect(exp))\n          }, [\n            _createElementVNode(\"div\", _hoisted_5, _toDisplayString(exp.icon), 1),\n            _createElementVNode(\"div\", _hoisted_6, _toDisplayString(_unref(t)(exp.nameAr)), 1),\n            _createElementVNode(\"div\", _hoisted_7, _toDisplayString(_unref(t)(exp.description)), 1),\n            _createElementVNode(\"div\", _hoisted_8, _toDisplayString(exp.steps.length) + \" \" + _toDisplayString(_unref(t)('chemistryLab.steps')), 1)\n          ], 8, _hoisted_4))\n        }), 128))\n      ])\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783634639994,
+      "end": 1783634639994
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639994,
+      "end": 1783634639994,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, withModifiers as _withModifiers } from \"vue\";\nconst _hoisted_1 = { class: \"modal-panel\" };\nconst _hoisted_2 = { class: \"modal-header\" };\nconst _hoisted_3 = { class: \"experiments-grid\" };\nconst _hoisted_4 = [\"onClick\"];\nconst _hoisted_5 = { class: \"exp-icon\" };\nconst _hoisted_6 = { class: \"exp-name\" };\nconst _hoisted_7 = { class: \"exp-desc\" };\nconst _hoisted_8 = { class: \"exp-steps-count\" };\nimport { experiments } from \"../../../composables/chemistry/useExperiments\";\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"ExperimentSelector\",\n  emits: [\"select\", \"close\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const emit = __emit;\n    function onSelect(exp) {\n      emit(\"select\", exp);\n    }\n    function onClose() {\n      emit(\"close\");\n    }\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", {\n        class: \"modal-overlay\",\n        onClick: _withModifiers(onClose, [\"self\"])\n      }, [\n        _createElementVNode(\"div\", _hoisted_1, [\n          _createElementVNode(\"div\", _hoisted_2, [\n            _createElementVNode(\"h3\", null, \"🔬 \" + _toDisplayString(_unref(t)(\"chemistryLab.chooseExperiment\")), 1),\n            _createElementVNode(\"button\", {\n              class: \"close-btn\",\n              onClick: onClose\n            }, \"✕\")\n          ]),\n          _createElementVNode(\"div\", _hoisted_3, [\n            (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(_unref(experiments), (exp) => {\n              return _openBlock(), _createElementBlock(\"div\", {\n                key: exp.id,\n                class: \"exp-card\",\n                onClick: ($event) => onSelect(exp)\n              }, [\n                _createElementVNode(\"div\", _hoisted_5, _toDisplayString(exp.icon), 1),\n                _createElementVNode(\"div\", _hoisted_6, _toDisplayString(_unref(t)(exp.nameAr)), 1),\n                _createElementVNode(\"div\", _hoisted_7, _toDisplayString(_unref(t)(exp.description)), 1),\n                _createElementVNode(\"div\", _hoisted_8, _toDisplayString(exp.steps.length) + \" \" + _toDisplayString(_unref(t)(\"chemistryLab.steps\")), 1)\n              ], 8, _hoisted_4);\n            }), 128))\n          ])\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634639994,
+      "end": 1783634640116,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/ExperimentSelector.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, withModifiers as _withModifiers } from \"vue\"\n\nconst _hoisted_1 = { class: \"modal-panel\" }\nconst _hoisted_2 = { class: \"modal-header\" }\nconst _hoisted_3 = { class: \"experiments-grid\" }\nconst _hoisted_4 = [\"onClick\"]\nconst _hoisted_5 = { class: \"exp-icon\" }\nconst _hoisted_6 = { class: \"exp-name\" }\nconst _hoisted_7 = { class: \"exp-desc\" }\nconst _hoisted_8 = { class: \"exp-steps-count\" }\n\nimport { experiments, type Experiment } from '../../../composables/chemistry/useExperiments';\nimport { useI18n } from '../../../composables/useI18n';\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ExperimentSelector',\n  emits: [\"select\", \"close\"],\n  setup(__props, { emit: __emit }) {\n\nconst { t } = useI18n();\n\nconst emit = __emit;\n\nfunction onSelect(exp: Experiment) {\n  emit('select', exp);\n}\nfunction onClose() {\n  emit('close');\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    class: \"modal-overlay\",\n    onClick: _withModifiers(onClose, [\"self\"])\n  }, [\n    _createElementVNode(\"div\", _hoisted_1, [\n      _createElementVNode(\"div\", _hoisted_2, [\n        _createElementVNode(\"h3\", null, \"🔬 \" + _toDisplayString(_unref(t)('chemistryLab.chooseExperiment')), 1),\n        _createElementVNode(\"button\", {\n          class: \"close-btn\",\n          onClick: onClose\n        }, \"✕\")\n      ]),\n      _createElementVNode(\"div\", _hoisted_3, [\n        (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(_unref(experiments), (exp) => {\n          return (_openBlock(), _createElementBlock(\"div\", {\n            key: exp.id,\n            class: \"exp-card\",\n            onClick: ($event: any) => (onSelect(exp))\n          }, [\n            _createElementVNode(\"div\", _hoisted_5, _toDisplayString(exp.icon), 1),\n            _createElementVNode(\"div\", _hoisted_6, _toDisplayString(_unref(t)(exp.nameAr)), 1),\n            _createElementVNode(\"div\", _hoisted_7, _toDisplayString(_unref(t)(exp.description)), 1),\n            _createElementVNode(\"div\", _hoisted_8, _toDisplayString(exp.steps.length) + \" \" + _toDisplayString(_unref(t)('chemistryLab.steps')), 1)\n          ], 8, _hoisted_4))\n        }), 128))\n      ])\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,SAAS,QAAQ,mBAAmB,kBAAkB,sBAAsB,qBAAqB,cAAc,aAAa,YAAY,WAAW,aAAa,YAAY,sBAAsB,qBAAqB,iBAAiB,sBAAsB;AAEvQ,MAAM,aAAa,EAAE,OAAO,cAAc;AAC1C,MAAM,aAAa,EAAE,OAAO,eAAe;AAC3C,MAAM,aAAa,EAAE,OAAO,mBAAmB;AAC/C,MAAM,aAAa,CAAC,SAAS;AAC7B,MAAM,aAAa,EAAE,OAAO,WAAW;AACvC,MAAM,aAAa,EAAE,OAAO,WAAW;AACvC,MAAM,aAAa,EAAE,OAAO,WAAW;AACvC,MAAM,aAAa,EAAE,OAAO,kBAAkB;AAE9C,SAAS,mBAAoC;AAC7C,SAAS,eAAe;AAExB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO,CAAC,UAAU,OAAO;AAAA,EACzB,MAAM,SAAS,EAAE,MAAM,OAAO,GAAG;AAEnC,UAAM,EAAE,EAAE,IAAI,QAAQ;AAEtB,UAAM,OAAO;AAEb,aAAS,SAAS,KAAiB;AACjC,WAAK,UAAU,GAAG;AAAA,IACpB;AACA,aAAS,UAAU;AACjB,WAAK,OAAO;AAAA,IACd;AAEA,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO;AAAA,QAC/C,OAAO;AAAA,QACP,SAAS,eAAe,SAAS,CAAC,MAAM,CAAC;AAAA,MAC3C,GAAG;AAAA,QACD,oBAAoB,OAAO,YAAY;AAAA,UACrC,oBAAoB,OAAO,YAAY;AAAA,YACrC,oBAAoB,MAAM,MAAM,QAAQ,iBAAiB,OAAO,CAAC,EAAE,+BAA+B,CAAC,GAAG,CAAC;AAAA,YACvG,oBAAoB,UAAU;AAAA,cAC5B,OAAO;AAAA,cACP,SAAS;AAAA,YACX,GAAG,GAAG;AAAA,UACR,CAAC;AAAA,UACD,oBAAoB,OAAO,YAAY;AAAA,aACpC,WAAW,IAAI,GAAG,oBAAoB,WAAW,MAAM,YAAY,OAAO,WAAW,GAAG,CAAC,QAAQ;AAChG,qBAAQ,WAAW,GAAG,oBAAoB,OAAO;AAAA,gBAC/C,KAAK,IAAI;AAAA,gBACT,OAAO;AAAA,gBACP,SAAS,CAAC,WAAiB,SAAS,GAAG;AAAA,cACzC,GAAG;AAAA,gBACD,oBAAoB,OAAO,YAAY,iBAAiB,IAAI,IAAI,GAAG,CAAC;AAAA,gBACpE,oBAAoB,OAAO,YAAY,iBAAiB,OAAO,CAAC,EAAE,IAAI,MAAM,CAAC,GAAG,CAAC;AAAA,gBACjF,oBAAoB,OAAO,YAAY,iBAAiB,OAAO,CAAC,EAAE,IAAI,WAAW,CAAC,GAAG,CAAC;AAAA,gBACtF,oBAAoB,OAAO,YAAY,iBAAiB,IAAI,MAAM,MAAM,IAAI,MAAM,iBAAiB,OAAO,CAAC,EAAE,oBAAoB,CAAC,GAAG,CAAC;AAAA,cACxI,GAAG,GAAG,UAAU;AAAA,YAClB,CAAC,GAAG,GAAG;AAAA,UACT,CAAC;AAAA,QACH,CAAC;AAAA,MACH,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640116,
+      "end": 1783634640116,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640116,
+      "end": 1783634640116,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634640116,
+      "end": 1783634640116,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640116,
+      "end": 1783634640116,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640117,
+      "end": 1783634640117,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640117,
+      "end": 1783634640117,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640117,
+      "end": 1783634640117,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640117,
+      "end": 1783634640117,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640117,
+      "end": 1783634640117,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640117,
+      "end": 1783634640117,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640117,
+      "end": 1783634640117,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640117,
+      "end": 1783634640117,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640117,
+      "end": 1783634640117,
+      "order": "normal"
+    }
+  ]
+}

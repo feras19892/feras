@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/ChemicalShelfPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, computed } from 'vue';\nimport type { Chemical, ChemicalCategory } from '../../../composables/chemistry/useChemistryLab';\nimport { chemicals, selectedChemical, pendingChemicalFill } from '../../../composables/chemistry/useChemistryLab';\nimport { useI18n } from '../../../composables/useI18n';\nimport { useChemicalLocale } from '../../../composables/chemistry/useChemicalLocale';\nimport ChemicalCard from './ChemicalCard.vue';\n\nconst { getName, getDesc } = useChemicalLocale();\n\nconst emit = defineEmits<{ chemicalClick: [chem: Chemical] }>();\nconst { t } = useI18n();\n\nconst search = ref('');\nconst activeCategory = ref<ChemicalCategory | 'all'>('all');\n\nfunction getCategoryLabel(cat: ChemicalCategory): string {\n  const map: Record<ChemicalCategory, string> = {\n    acid: t('chemistryShelf.acid'),\n    base: t('chemistryShelf.base'),\n    salt: t('chemistryShelf.salt'),\n    solvent: t('chemistryShelf.solvent'),\n    indicator: t('chemistryShelf.indicator'),\n    solid: t('chemistryShelf.solid'),\n    gas: t('chemistryShelf.gas'),\n  };\n  return map[cat];\n}\n\nconst categories = computed(() => (['acid', 'base', 'salt', 'solvent', 'indicator', 'solid', 'gas'] as ChemicalCategory[]).map(key => [key, getCategoryLabel(key)] as [ChemicalCategory, string]));\n\nconst filteredChemicals = computed(() => {\n  let list = chemicals;\n  if (activeCategory.value !== 'all') {\n    list = list.filter(c => c.category === activeCategory.value);\n  }\n  const q = search.value.trim().toLowerCase();\n  if (q) {\n    list = list.filter(c =>\n      getName(c.id).toLowerCase().includes(q) ||\n      c.formula.toLowerCase().includes(q) ||\n      c.id.includes(q)\n    );\n  }\n  return list;\n});\n\nfunction onCardClick(chem: Chemical) {\n  Object.assign(selectedChemical, chem);\n  emit('chemicalClick', chem);\n}\n</script>\n\n<template>\n  <div class=\"shelf-panel\">\n    <!-- Search -->\n    <div class=\"shelf-search\">\n      <input\n        v-model=\"search\"\n        type=\"text\"\n        :placeholder=\"t('chemistryShelf.searchPlaceholder')\"\n        class=\"search-input\"\n      />\n    </div>\n\n    <!-- Pending fill banner -->\n    <div v-if=\"pendingChemicalFill\" class=\"pending-banner\">\n      <span>{{ t('chemistryShelf.selectSolutionFromTable') }}</span>\n      <button class=\"cancel-btn\" @click=\"pendingChemicalFill = null\">{{ t('chemistryShelf.cancel') }}</button>\n    </div>\n\n    <!-- Category filter -->\n    <div class=\"category-tabs\">\n      <button\n        class=\"cat-btn\"\n        :class=\"{ active: activeCategory === 'all' }\"\n        @click=\"activeCategory = 'all'\"\n      >\n        {{ t('chemistryShelf.all') }}\n      </button>\n      <button\n        v-for=\"[key, label] in categories\"\n        :key=\"key\"\n        class=\"cat-btn\"\n        :class=\"{ active: activeCategory === key }\"\n        @click=\"activeCategory = key\"\n      >\n        {{ label }}\n      </button>\n    </div>\n\n    <!-- Grid -->\n    <div class=\"shelf-grid\">\n      <ChemicalCard\n        v-for=\"chem in filteredChemicals\"\n        :key=\"chem.id\"\n        :chem=\"chem\"\n        :selected=\"selectedChemical.id === chem.id\"\n        :clickable=\"!!pendingChemicalFill && (chem.category === 'acid' || chem.category === 'base' || chem.category === 'solvent' || chem.category === 'salt' || chem.category === 'indicator')\"\n        @click=\"onCardClick(chem)\"\n      />\n    </div>\n\n    <!-- Selected detail -->\n    <div v-if=\"selectedChemical.id\" class=\"selected-detail\">\n      <div class=\"detail-row\">\n        <b>{{ getName(selectedChemical.id) }}</b>\n        <span class=\"detail-formula\">{{ selectedChemical.formula }}</span>\n      </div>\n      <div class=\"detail-row\">\n        <span>{{ t('chemistryShelf.category') }}</span>\n        <span>{{ (selectedChemical as Chemical).category ? getCategoryLabel((selectedChemical as Chemical).category) : '' }}</span>\n      </div>\n      <div class=\"detail-row\">\n        <span>{{ t('chemistryShelf.state') }}</span>\n        <span class=\"state-tag\">{{ selectedChemical.physicalState === 'liquid' ? t('chemistryShelf.liquid') : selectedChemical.physicalState === 'solid' ? t('chemistryShelf.solidState') : t('chemistryShelf.gasState') }}</span>\n      </div>\n      <div v-if=\"selectedChemical.concentration !== undefined\" class=\"detail-row\">\n        <span>{{ t('chemistryShelf.concentration') }}</span>\n        <span>{{ selectedChemical.concentration }} M</span>\n      </div>\n      <div v-if=\"selectedChemical.ph !== undefined\" class=\"detail-row\">\n        <span>pH</span>\n        <span>{{ selectedChemical.ph }}</span>\n      </div>\n      <div v-if=\"selectedChemical.density !== undefined\" class=\"detail-row\">\n        <span>{{ t('chemistryShelf.density') }}</span>\n        <span>{{ selectedChemical.density }} g/mL</span>\n      </div>\n      <div v-if=\"selectedChemical.boilingPoint !== undefined\" class=\"detail-row\">\n        <span>{{ t('chemistryShelf.boilingPoint') }}</span>\n        <span>{{ selectedChemical.boilingPoint }}°C</span>\n      </div>\n      <div v-if=\"selectedChemical.description\" class=\"detail-desc\">\n        {{ getDesc(selectedChemical.id) }}\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.shelf-panel {\n  display: flex;\n  flex-direction: column;\n  gap: 0.6rem;\n  padding: 0.75rem;\n}\n.shelf-search {\n  position: sticky;\n  top: 0;\n  z-index: 5;\n}\n.search-input {\n  width: 100%;\n  padding: 0.5rem 0.75rem;\n  border: 1px solid #e2e8f0;\n  border-radius: 0.5rem;\n  font-size: 0.75rem;\n  font-family: inherit;\n  background: #fff;\n  color: #334155;\n  outline: none;\n}\n.search-input:focus { border-color: #10b981; }\n.pending-banner {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 0.5rem;\n  padding: 0.5rem 0.75rem;\n  background: linear-gradient(135deg, #ecfdf5, #d1fae5);\n  border: 1px solid #a7f3d0;\n  border-radius: 0.5rem;\n  font-size: 0.72rem;\n  font-weight: 700;\n  color: #065f46;\n}\n.cancel-btn {\n  background: #fff;\n  border: 1px solid #6ee7b7;\n  border-radius: 0.35rem;\n  padding: 0.15rem 0.4rem;\n  font-size: 0.65rem;\n  cursor: pointer;\n  color: #065f46;\n}\n.category-tabs {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.35rem;\n}\n.cat-btn {\n  padding: 0.35rem 0.6rem;\n  border: 1px solid #e2e8f0;\n  border-radius: 0.4rem;\n  background: #fff;\n  font-size: 0.65rem;\n  font-weight: 600;\n  color: #475569;\n  cursor: pointer;\n  font-family: inherit;\n  white-space: nowrap;\n  transition: all 0.15s;\n}\n.cat-btn:hover { background: #f1f5f9; }\n.cat-btn.active {\n  background: #10b981;\n  color: #fff;\n  border-color: #10b981;\n}\n.shelf-grid {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  gap: 0.5rem;\n}\n.selected-detail {\n  background: #fff;\n  border: 1px solid #e2e8f0;\n  border-radius: 0.5rem;\n  padding: 0.6rem;\n  display: flex;\n  flex-direction: column;\n  gap: 0.3rem;\n  font-size: 0.72rem;\n}\n.detail-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n.detail-row span:first-child { color: #64748b; }\n.detail-row span:last-child, .detail-row b { color: #334155; font-weight: 700; }\n.detail-formula {\n  font-family: monospace;\n  font-size: 0.65rem;\n  color: #64748b;\n  font-weight: 400;\n}\n.state-tag {\n  font-size: 0.6rem;\n  padding: 0.1rem 0.35rem;\n  background: #f1f5f9;\n  border-radius: 0.25rem;\n  color: #475569;\n}\n.detail-desc {\n  font-size: 0.65rem;\n  color: #475569;\n  background: #f8fafc;\n  padding: 0.35rem 0.5rem;\n  border-radius: 0.3rem;\n  margin-top: 0.2rem;\n}\n</style>\n",
+      "start": 1783634640345,
+      "end": 1783634640650,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640650,
+      "end": 1783634640650,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640650,
+      "end": 1783634640650,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640650,
+      "end": 1783634640650,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640650,
+      "end": 1783634640650,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/ChemicalShelfPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/ChemicalShelfPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/ChemicalShelfPanel.vue?vue&type=style&index=0&scoped=aad9e0db&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-aad9e0db\"]]);\n",
+      "start": 1783634640650,
+      "end": 1783634640814,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640814,
+      "end": 1783634640815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640815,
+      "end": 1783634640815,
+      "order": "normal"
+    }
+  ]
+}

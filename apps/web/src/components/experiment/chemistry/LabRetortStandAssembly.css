@@ -1,0 +1,87 @@
+.retort-stand {
+  position: relative;
+  width: 190px;
+  height: 350px;
+  overflow: visible;
+}
+.stand-part {
+  position: absolute;
+  pointer-events: visiblePainted;
+  cursor: pointer;
+}
+.attached-item {
+  position: absolute;
+  pointer-events: none;
+  overflow: visible;
+}
+.attached-inner {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+  cursor: grab;
+}
+.attached-inner:active {
+  cursor: grabbing;
+}
+.clamp-part.snap-target {
+  filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.6));
+}
+.clamp-part.snap-target ellipse[stroke="#1f2937"] {
+  stroke: #10b981;
+  stroke-width: 3;
+}
+
+/* Left-side control rows */
+.control-row {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  z-index: 20;
+  pointer-events: auto;
+}
+.lock-btn {
+  width: 10px;
+  height: 10px;
+  border: none;
+  border-radius: 2px;
+  background: linear-gradient(145deg, #f8fafc 0%, #e2e8f0 100%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+  transition: transform 0.1s;
+  flex-shrink: 0;
+}
+.lock-btn:hover {
+  transform: scale(1.1);
+}
+.lock-btn.locked {
+  background: linear-gradient(145deg, #fee2e2 0%, #fca5a5 100%);
+}
+/* Analog stick */
+.analog-wrapper {
+  width: 20px;
+  height: 20px;
+  cursor: grab;
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+  transition: opacity 0.15s, transform 0.15s;
+}
+.analog-wrapper:active {
+  cursor: grabbing;
+}
+.analog-wrapper.analog-active {
+  opacity: 0.7;
+  transform: scale(0.92);
+}
+.analog-wrapper.analog-locked {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+.analog {
+  display: block;
+}

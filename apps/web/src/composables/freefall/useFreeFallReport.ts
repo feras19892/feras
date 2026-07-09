@@ -1,15 +1,16 @@
 import { useExperimentReport } from '../useExperimentReport'
 import { useI18n } from '../useI18n'
+import type { FreeFallTrial } from './useFreeFallTrials'
 import type { LabReportTable, LabReportStat } from '../../utils/lab-report'
+
+interface FreeFallReportInput { params: { h: number; g: number; mass: number; airResistance: boolean }; trials: { trials: { value: FreeFallTrial[] }; trialStats: { value: { g_mean: number } }; calcResult: { value: string } } }
 
 export function useFreeFallReport() {
   const { t } = useI18n()
   const rep = useExperimentReport('freefall_report_student')
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function openFullReport(ex: any) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const trials: any[] = ex.trials.trials.value
+  function openFullReport(ex: FreeFallReportInput) {
+    const trials = ex.trials.trials.value
     const table: LabReportTable = {
       caption: t('experiments.freeFallReportCaption'),
       headers: ['#', 'h (m)', 't (s)', 't² (s²)', 'v_impact (m/s)', 'g_calc (m/s²)', t('experiments.errorPercentage') + ' (%)'],
@@ -64,7 +65,7 @@ export function useFreeFallReport() {
         regressionBlock ? { title: t('experiments.regressionResultsTitle'), html: regressionBlock } : null,
         { title: t('experiments.potentialErrorSources'), html: `<ul style="margin:0;padding-right:1.2rem;font-size:.85rem"><li>${t('experiments.digitalTimerAccuracy')}</li><li>${t('experiments.heightMeasurementAccuracy')}</li><li>${t('experiments.airFriction')}</li><li>${t('experiments.deviceVibration')}</li><li>${t('experiments.localGravityEffect')}</li></ul>` },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ].filter(Boolean) as any[],
+      ].filter((x): x is { title: string; html: string } => x !== null),
       footerNote: t('experiments.footerNote') + ' • ' + t('experiments.branchMechanics'),
     })
   }

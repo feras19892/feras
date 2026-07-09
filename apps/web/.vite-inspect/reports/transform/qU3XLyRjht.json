@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/analysis/sendToAnalysis.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import type { AnalysisPayload } from '../../types/physics';\nimport type { Router } from 'vue-router';\n\nconst KEY = 'analysis-pending';\nconst LAST_KEY = 'analysis-last';\nconst REFERRER_KEY = 'analysis-referrer';\n\nexport function sendToAnalysis(router: Router, payload: AnalysisPayload) {\n  const data = JSON.stringify({ ts: Date.now(), payload });\n  try {\n    localStorage.setItem(KEY, data);\n    localStorage.setItem(LAST_KEY, data);\n    localStorage.setItem(REFERRER_KEY, window.location.pathname);\n  } catch { /* ignore */ }\n  router.push('/physics/mechanics/analysis-calc');\n}\n\nexport function consumePendingPayload(): AnalysisPayload | null {\n  try {\n    const raw = localStorage.getItem(KEY);\n    if (raw) {\n      localStorage.removeItem(KEY);\n      const parsed = JSON.parse(raw);\n      if (parsed && parsed.payload) return parsed.payload as AnalysisPayload;\n    }\n    // fallback: استخدم last analysis إذا لم يكن هناك pending\n    const last = localStorage.getItem(LAST_KEY);\n    if (last) {\n      const parsed = JSON.parse(last);\n      if (parsed && parsed.payload) return parsed.payload as AnalysisPayload;\n    }\n  } catch { /* ignore */ }\n  return null;\n}\n\nexport function clearAnalysisStorage() {\n  try {\n    localStorage.removeItem(KEY);\n    localStorage.removeItem(LAST_KEY);\n    localStorage.removeItem(REFERRER_KEY);\n  } catch { /* ignore */ }\n}\n",
+      "start": 1783634639359,
+      "end": 1783634639690,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639690,
+      "end": 1783634639690,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "const KEY = \"analysis-pending\";\nconst LAST_KEY = \"analysis-last\";\nconst REFERRER_KEY = \"analysis-referrer\";\nexport function sendToAnalysis(router, payload) {\n  const data = JSON.stringify({ ts: Date.now(), payload });\n  try {\n    localStorage.setItem(KEY, data);\n    localStorage.setItem(LAST_KEY, data);\n    localStorage.setItem(REFERRER_KEY, window.location.pathname);\n  } catch {\n  }\n  router.push(\"/physics/mechanics/analysis-calc\");\n}\nexport function consumePendingPayload() {\n  try {\n    const raw = localStorage.getItem(KEY);\n    if (raw) {\n      localStorage.removeItem(KEY);\n      const parsed = JSON.parse(raw);\n      if (parsed && parsed.payload) return parsed.payload;\n    }\n    const last = localStorage.getItem(LAST_KEY);\n    if (last) {\n      const parsed = JSON.parse(last);\n      if (parsed && parsed.payload) return parsed.payload;\n    }\n  } catch {\n  }\n  return null;\n}\nexport function clearAnalysisStorage() {\n  try {\n    localStorage.removeItem(KEY);\n    localStorage.removeItem(LAST_KEY);\n    localStorage.removeItem(REFERRER_KEY);\n  } catch {\n  }\n}\n",
+      "start": 1783634639690,
+      "end": 1783634639942,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/analysis/sendToAnalysis.ts"
+        ],
+        "sourcesContent": [
+          "import type { AnalysisPayload } from '../../types/physics';\nimport type { Router } from 'vue-router';\n\nconst KEY = 'analysis-pending';\nconst LAST_KEY = 'analysis-last';\nconst REFERRER_KEY = 'analysis-referrer';\n\nexport function sendToAnalysis(router: Router, payload: AnalysisPayload) {\n  const data = JSON.stringify({ ts: Date.now(), payload });\n  try {\n    localStorage.setItem(KEY, data);\n    localStorage.setItem(LAST_KEY, data);\n    localStorage.setItem(REFERRER_KEY, window.location.pathname);\n  } catch { /* ignore */ }\n  router.push('/physics/mechanics/analysis-calc');\n}\n\nexport function consumePendingPayload(): AnalysisPayload | null {\n  try {\n    const raw = localStorage.getItem(KEY);\n    if (raw) {\n      localStorage.removeItem(KEY);\n      const parsed = JSON.parse(raw);\n      if (parsed && parsed.payload) return parsed.payload as AnalysisPayload;\n    }\n    // fallback: استخدم last analysis إذا لم يكن هناك pending\n    const last = localStorage.getItem(LAST_KEY);\n    if (last) {\n      const parsed = JSON.parse(last);\n      if (parsed && parsed.payload) return parsed.payload as AnalysisPayload;\n    }\n  } catch { /* ignore */ }\n  return null;\n}\n\nexport function clearAnalysisStorage() {\n  try {\n    localStorage.removeItem(KEY);\n    localStorage.removeItem(LAST_KEY);\n    localStorage.removeItem(REFERRER_KEY);\n  } catch { /* ignore */ }\n}\n"
+        ],
+        "mappings": "AAGA,MAAM,MAAM;AACZ,MAAM,WAAW;AACjB,MAAM,eAAe;AAEd,gBAAS,eAAe,QAAgB,SAA0B;AACvE,QAAM,OAAO,KAAK,UAAU,EAAE,IAAI,KAAK,IAAI,GAAG,QAAQ,CAAC;AACvD,MAAI;AACF,iBAAa,QAAQ,KAAK,IAAI;AAC9B,iBAAa,QAAQ,UAAU,IAAI;AACnC,iBAAa,QAAQ,cAAc,OAAO,SAAS,QAAQ;AAAA,EAC7D,QAAQ;AAAA,EAAe;AACvB,SAAO,KAAK,kCAAkC;AAChD;AAEO,gBAAS,wBAAgD;AAC9D,MAAI;AACF,UAAM,MAAM,aAAa,QAAQ,GAAG;AACpC,QAAI,KAAK;AACP,mBAAa,WAAW,GAAG;AAC3B,YAAM,SAAS,KAAK,MAAM,GAAG;AAC7B,UAAI,UAAU,OAAO,QAAS,QAAO,OAAO;AAAA,IAC9C;AAEA,UAAM,OAAO,aAAa,QAAQ,QAAQ;AAC1C,QAAI,MAAM;AACR,YAAM,SAAS,KAAK,MAAM,IAAI;AAC9B,UAAI,UAAU,OAAO,QAAS,QAAO,OAAO;AAAA,IAC9C;AAAA,EACF,QAAQ;AAAA,EAAe;AACvB,SAAO;AACT;AAEO,gBAAS,uBAAuB;AACrC,MAAI;AACF,iBAAa,WAAW,GAAG;AAC3B,iBAAa,WAAW,QAAQ;AAChC,iBAAa,WAAW,YAAY;AAAA,EACtC,QAAQ;AAAA,EAAe;AACzB;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639943,
+      "end": 1783634639943,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639943,
+      "end": 1783634639943,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639943,
+      "end": 1783634639943,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639943,
+      "end": 1783634639943,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639943,
+      "end": 1783634639943,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639943,
+      "end": 1783634639943,
+      "order": "normal"
+    }
+  ]
+}

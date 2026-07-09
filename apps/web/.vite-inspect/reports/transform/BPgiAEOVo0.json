@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/GradeModal.vue?vue&type=style&index=0&scoped=b35ed2b1&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.modal-overlay {\n  position: fixed;\n  inset: 0;\n  background: rgba(0, 0, 0, 0.6);\n  backdrop-filter: blur(8px);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  z-index: 300;\n}\n.grade-modal {\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  border-radius: 1rem;\n  padding: 1.5rem;\n  width: 90%;\n  max-width: 400px;\n  display: flex;\n  flex-direction: column;\n  gap: 1rem;\n}\n.grade-modal h3 {\n  margin: 0;\n  font-size: 1.1rem;\n  color: #f1f5f9;\n  text-align: center;\n}\n.form-row {\n  display: flex;\n  flex-direction: column;\n  gap: 0.3rem;\n}\n.form-row label {\n  font-size: 0.8rem;\n  color: #94a3b8;\n  font-weight: 600;\n}\n.grade-control {\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n}\n.grade-control input[type='range'] {\n  flex: 1;\n  accent-color: #4f46e5;\n}\n.grade-display {\n  font-size: 1.1rem;\n  font-weight: 700;\n  color: #67e8f9;\n  min-width: 60px;\n  text-align: center;\n}\n.form-row textarea {\n  padding: 0.6rem 0.8rem;\n  border-radius: 0.5rem;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  background: rgba(0, 0, 0, 0.3);\n  color: #e2e8f0;\n  font-size: 0.9rem;\n  font-family: inherit;\n  resize: vertical;\n}\n.actions {\n  display: flex;\n  gap: 0.5rem;\n  margin-top: 0.5rem;\n}\n.btn-cancel,\n.btn-submit {\n  flex: 1;\n  padding: 0.55rem;\n  border-radius: 0.55rem;\n  font-size: 0.85rem;\n  font-weight: 700;\n  cursor: pointer;\n  font-family: inherit;\n  transition: all 0.2s;\n}\n.btn-cancel {\n  background: rgba(255, 255, 255, 0.05);\n  color: #94a3b8;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n}\n.btn-submit {\n  background: linear-gradient(135deg, #4f46e5, #7c3aed);\n  color: #fff;\n  border: none;\n}\n.btn-submit:disabled {\n  opacity: 0.5;\n  cursor: not-allowed;\n}\n",
+      "start": 1783634640943,
+      "end": 1783634640943
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.modal-overlay {\n  position: fixed;\n  inset: 0;\n  background: rgba(0, 0, 0, 0.6);\n  backdrop-filter: blur(8px);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  z-index: 300;\n}\n.grade-modal {\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  border-radius: 1rem;\n  padding: 1.5rem;\n  width: 90%;\n  max-width: 400px;\n  display: flex;\n  flex-direction: column;\n  gap: 1rem;\n}\n.grade-modal h3 {\n  margin: 0;\n  font-size: 1.1rem;\n  color: #f1f5f9;\n  text-align: center;\n}\n.form-row {\n  display: flex;\n  flex-direction: column;\n  gap: 0.3rem;\n}\n.form-row label {\n  font-size: 0.8rem;\n  color: #94a3b8;\n  font-weight: 600;\n}\n.grade-control {\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n}\n.grade-control input[type='range'] {\n  flex: 1;\n  accent-color: #4f46e5;\n}\n.grade-display {\n  font-size: 1.1rem;\n  font-weight: 700;\n  color: #67e8f9;\n  min-width: 60px;\n  text-align: center;\n}\n.form-row textarea {\n  padding: 0.6rem 0.8rem;\n  border-radius: 0.5rem;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  background: rgba(0, 0, 0, 0.3);\n  color: #e2e8f0;\n  font-size: 0.9rem;\n  font-family: inherit;\n  resize: vertical;\n}\n.actions {\n  display: flex;\n  gap: 0.5rem;\n  margin-top: 0.5rem;\n}\n.btn-cancel,\n.btn-submit {\n  flex: 1;\n  padding: 0.55rem;\n  border-radius: 0.55rem;\n  font-size: 0.85rem;\n  font-weight: 700;\n  cursor: pointer;\n  font-family: inherit;\n  transition: all 0.2s;\n}\n.btn-cancel {\n  background: rgba(255, 255, 255, 0.05);\n  color: #94a3b8;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n}\n.btn-submit {\n  background: linear-gradient(135deg, #4f46e5, #7c3aed);\n  color: #fff;\n  border: none;\n}\n.btn-submit:disabled {\n  opacity: 0.5;\n  cursor: not-allowed;\n}\n",
+      "start": 1783634640943,
+      "end": 1783634640943,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640943,
+      "end": 1783634640943,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640943,
+      "end": 1783634640943,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640943,
+      "end": 1783634640943,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.modal-overlay[data-v-b35ed2b1] {\n  position: fixed;\n  inset: 0;\n  background: rgba(0, 0, 0, 0.6);\n  backdrop-filter: blur(8px);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  z-index: 300;\n}\n.grade-modal[data-v-b35ed2b1] {\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  border-radius: 1rem;\n  padding: 1.5rem;\n  width: 90%;\n  max-width: 400px;\n  display: flex;\n  flex-direction: column;\n  gap: 1rem;\n}\n.grade-modal h3[data-v-b35ed2b1] {\n  margin: 0;\n  font-size: 1.1rem;\n  color: #f1f5f9;\n  text-align: center;\n}\n.form-row[data-v-b35ed2b1] {\n  display: flex;\n  flex-direction: column;\n  gap: 0.3rem;\n}\n.form-row label[data-v-b35ed2b1] {\n  font-size: 0.8rem;\n  color: #94a3b8;\n  font-weight: 600;\n}\n.grade-control[data-v-b35ed2b1] {\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n}\n.grade-control input[type='range'][data-v-b35ed2b1] {\n  flex: 1;\n  accent-color: #4f46e5;\n}\n.grade-display[data-v-b35ed2b1] {\n  font-size: 1.1rem;\n  font-weight: 700;\n  color: #67e8f9;\n  min-width: 60px;\n  text-align: center;\n}\n.form-row textarea[data-v-b35ed2b1] {\n  padding: 0.6rem 0.8rem;\n  border-radius: 0.5rem;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  background: rgba(0, 0, 0, 0.3);\n  color: #e2e8f0;\n  font-size: 0.9rem;\n  font-family: inherit;\n  resize: vertical;\n}\n.actions[data-v-b35ed2b1] {\n  display: flex;\n  gap: 0.5rem;\n  margin-top: 0.5rem;\n}\n.btn-cancel[data-v-b35ed2b1],\n.btn-submit[data-v-b35ed2b1] {\n  flex: 1;\n  padding: 0.55rem;\n  border-radius: 0.55rem;\n  font-size: 0.85rem;\n  font-weight: 700;\n  cursor: pointer;\n  font-family: inherit;\n  transition: all 0.2s;\n}\n.btn-cancel[data-v-b35ed2b1] {\n  background: rgba(255, 255, 255, 0.05);\n  color: #94a3b8;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n}\n.btn-submit[data-v-b35ed2b1] {\n  background: linear-gradient(135deg, #4f46e5, #7c3aed);\n  color: #fff;\n  border: none;\n}\n.btn-submit[data-v-b35ed2b1]:disabled {\n  opacity: 0.5;\n  cursor: not-allowed;\n}\n",
+      "start": 1783634640943,
+      "end": 1783634640944,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640944,
+      "end": 1783634640944,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634640944,
+      "end": 1783634640944,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640944,
+      "end": 1783634640944,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640944,
+      "end": 1783634640944,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640944,
+      "end": 1783634640944,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640944,
+      "end": 1783634640944,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640944,
+      "end": 1783634640944,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640944,
+      "end": 1783634640944,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640944,
+      "end": 1783634640944,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640944,
+      "end": 1783634640944,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/mirror/MirrorCanvas.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, onMounted, onUnmounted, watch } from 'vue'\nimport { drawMirror } from '../../../composables/mirror/useMirrorRenderer'\nimport { useI18n } from '../../../composables/useI18n'\n\ninterface Props {\n  mirrorType: 'concave' | 'convex'\n  focalLength: number\n  objectDistance: number\n  objectHeight: number\n  imageDistance: number | null\n  imageHeight: number | null\n  magnification: number | null\n  running: boolean\n}\n\nconst props = defineProps<Props>()\nconst canvasRef = ref<HTMLCanvasElement | null>(null)\nconst { t } = useI18n()\n\nfunction draw() {\n  const canvas = canvasRef.value\n  if (!canvas) return\n  drawMirror(canvas, props, t)\n}\n\nfunction resize() {\n  const canvas = canvasRef.value\n  if (!canvas) return\n  const parent = canvas.parentElement\n  if (!parent) return\n  canvas.width = parent.clientWidth\n  canvas.height = parent.clientHeight\n  draw()\n}\n\nonMounted(() => { resize(); window.addEventListener('resize', resize) })\nonUnmounted(() => window.removeEventListener('resize', resize))\nwatch(() => [props.mirrorType, props.focalLength, props.objectDistance, props.objectHeight, props.imageDistance, props.imageHeight, props.running], draw, { deep: true })\n</script>\n\n<template>\n  <canvas ref=\"canvasRef\" class=\"mirror-canvas\" />\n</template>\n\n<style scoped>\n.mirror-canvas { width: 100%; height: 100%; border-radius: 8px; }\n</style>\n",
+      "start": 1783634640871,
+      "end": 1783634641108,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641108,
+      "end": 1783634641108,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641108,
+      "end": 1783634641108,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641108,
+      "end": 1783634641108,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641108,
+      "end": 1783634641108,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/mirror/MirrorCanvas.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/mirror/MirrorCanvas.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/mirror/MirrorCanvas.vue?vue&type=style&index=0&scoped=fab3992f&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-fab3992f\"]]);\n",
+      "start": 1783634641108,
+      "end": 1783634641628,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641628,
+      "end": 1783634641628,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641629,
+      "end": 1783634641631,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641631,
+      "end": 1783634641631,
+      "order": "normal"
+    }
+  ]
+}

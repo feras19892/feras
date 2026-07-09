@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/resonance/ResonancePanelBody.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport type { ResonanceTrial } from '../../../composables/resonance/useResonanceTrials'\nimport ResonanceReadingsPanel from './panels/ResonanceReadingsPanel.vue'\nimport ResonanceChartPanel from './panels/ResonanceChartPanel.vue'\nimport ResonanceTrialsPanel from './panels/ResonanceTrialsPanel.vue'\nimport ResonanceParamsPanel from './panels/ResonanceParamsPanel.vue'\nimport ResonanceLawsPanel from './panels/ResonanceLawsPanel.vue'\nimport ResonanceResultsPanel from './panels/ResonanceResultsPanel.vue'\n\ninterface Props {\n  id: string\n  trials: ResonanceTrial[]\n  params: { stringLength: number; tension: number; harmonic: number; damping: number }\n  frequency: number\n  wavelength: number\n  waveSpeed: number\n  waveformData: { x: number; y: number }[]\n}\ndefineProps<Props>()\nconst emit = defineEmits<{\n  (e: 'remove', id: number): void\n  (e: 'clear'): void\n  (e: 'update:params', p: { stringLength: number; tension: number; harmonic: number; damping: number }): void\n}>()\n</script>\n\n<template>\n  <div>\n    <ResonanceReadingsPanel v-if=\"id === 'readings'\" :string-length=\"params.stringLength\" :tension=\"params.tension\" :harmonic=\"params.harmonic\" :frequency=\"frequency\" :wavelength=\"wavelength\" :wave-speed=\"waveSpeed\" />\n    <ResonanceChartPanel v-else-if=\"id === 'chart'\" :waveform-data=\"waveformData\" />\n    <ResonanceTrialsPanel v-else-if=\"id === 'trials'\" :trials=\"trials\" @remove=\"emit('remove', $event)\" @clear=\"emit('clear')\" />\n    <ResonanceParamsPanel v-else-if=\"id === 'params'\" :params=\"params\" @update:params=\"emit('update:params', $event)\" />\n    <ResonanceLawsPanel v-else-if=\"id === 'laws'\" :string-length=\"params.stringLength\" :tension=\"params.tension\" :harmonic=\"params.harmonic\" :frequency=\"frequency\" :wavelength=\"wavelength\" :wave-speed=\"waveSpeed\" />\n    <ResonanceResultsPanel v-else-if=\"id === 'results'\" :trials=\"trials\" />\n  </div>\n</template>\n",
+      "start": 1783634641001,
+      "end": 1783634641503,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641503,
+      "end": 1783634641503,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641503,
+      "end": 1783634641503,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641503,
+      "end": 1783634641503,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641503,
+      "end": 1783634641503,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/resonance/ResonancePanelBody.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/resonance/ResonancePanelBody.vue?vue&type=script&setup=true&lang.ts\";\nexport default _sfc_main;\n",
+      "start": 1783634641503,
+      "end": 1783634641660,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641661,
+      "end": 1783634641661,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641661,
+      "end": 1783634641661,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641661,
+      "end": 1783634641661,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641661,
+      "end": 1783634641661,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641661,
+      "end": 1783634641661,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641661,
+      "end": 1783634641661,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641661,
+      "end": 1783634641661,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641661,
+      "end": 1783634641661,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641661,
+      "end": 1783634641661,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641661,
+      "end": 1783634641661,
+      "order": "normal"
+    }
+  ]
+}

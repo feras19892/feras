@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/specific-heat/SpecificHeatExperiment.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, onMounted, onUnmounted } from 'vue'\nimport { useSpecificHeatExperiment } from '../../../../composables/specific-heat/useSpecificHeatExperiment'\nimport { useI18n } from '../../../../composables/useI18n'\nimport SpecificHeatMenuBar from '../../../../components/experiment/specific-heat/SpecificHeatMenuBar.vue'\nimport SpecificHeatLab from '../../../../components/experiment/specific-heat/SpecificHeatLab.vue'\nimport SpecificHeatPanelBody from '../../../../components/experiment/specific-heat/SpecificHeatPanelBody.vue'\nimport SpecificHeatStatusBar from '../../../../components/experiment/specific-heat/SpecificHeatStatusBar.vue'\nimport SpecificHeatControlBar from '../../../../components/experiment/specific-heat/SpecificHeatControlBar.vue'\nimport SpecificHeatHelpModal from '../../../../components/experiment/specific-heat/SpecificHeatHelpModal.vue'\nimport SpecificHeatParamsPanel from '../../../../components/experiment/specific-heat/panels/SpecificHeatParamsPanel.vue'\nimport SpecificHeatOverlayPanels from '../../../../components/experiment/specific-heat/SpecificHeatOverlayPanels.vue'\nimport DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'\n\nconst ex = useSpecificHeatExperiment()\nconst { t } = useI18n()\nconst helpOpen = ref(false)\n\nfunction onKeyDown(e: KeyboardEvent) {\n  const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()\n  if (tag === 'input' || tag === 'textarea' || tag === 'select') return\n  if (e.code === 'Space') { e.preventDefault(); ex.lab.togglePause() }\n  else if (e.key === 'r' || e.key === 'R') { if (confirm(t('experiments.resetConfirm'))) ex.resetSim() }\n  else if (e.key === 's' || e.key === 'S') ex.trials.recordTrial()\n  else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); if (e.shiftKey) ex.trials.redo(); else ex.trials.undo() }\n  else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ex.trials.redo() }\n  else if (e.key === '?') { helpOpen.value = !helpOpen.value }\n}\n\nonMounted(() => { window.addEventListener('keydown', onKeyDown); ex.layout.applyPersistedLayout(); ex.trials.autoLoad() })\nonUnmounted(() => { window.removeEventListener('keydown', onKeyDown) })\n</script>\n\n<template>\n  <div class=\"specific-heat-lab\">\n    <SpecificHeatMenuBar\n      :title=\"t('experiments.expSpecificHeat')\"\n      icon=\"🌡️\"\n      experiment-route=\"/physics/heat/specific-heat\"\n      experiment-name=\"Specific Heat\"\n      @toggle-panel=\"ex.layout.togglePanel\"\n      @show-all-panels=\"ex.layout.showAllPanels\"\n      @export-csv=\"ex.trials.exportCsv\"\n      @toggle-pause=\"ex.lab.togglePause\"\n      @reset=\"ex.resetSim\"\n      @record-trial=\"ex.trials.recordTrial\"\n      @toggle-help=\"helpOpen = !helpOpen\"\n      @analyze-results=\"ex.exportToAnalysis\"\n    />\n\n    <SpecificHeatHelpModal :open=\"helpOpen\" @close=\"helpOpen = false\" />\n\n    <div class=\"lab-grid\">\n      <div class=\"lab-col data-col\" :style=\"{ width: ex.layout.widths.data + 'px' }\">\n        <template v-for=\"id in ex.layout.columnMap.data\" :key=\"id\">\n          <DraggablePanel\n            v-if=\"ex.layout.isPanelVisible(id)\"\n            class=\"lab-card\"\n            :id=\"id\"\n            :title=\"ex.layout.panelTitle(id)\"\n            @maximize=\"ex.layout.maximizePanel\"\n            @hide=\"ex.layout.togglePanel\"\n            @drop=\"ex.handleDrop\"\n          >\n            <SpecificHeatPanelBody\n              :id=\"id\"\n              :trials=\"ex.trials.trials.value\"\n              :params=\"ex.params\"\n              :metal-temp=\"ex.lab.metalTemp.value\"\n              :display-t=\"ex.lab.displayT.value\"\n              :final-temp=\"ex.lab.finalTemp.value\"\n              :c-extracted=\"ex.lab.cExtracted.value\"\n              :c-true=\"ex.lab.cTrue.value\"\n              :regression-slope=\"ex.regression.value.m\"\n              :regression-intercept=\"ex.regression.value.b\"\n              :r-squared=\"ex.regression.value.r2\"\n              :c-from-slope=\"ex.cFromSlope.value\"\n              :unknown-mode=\"ex.lab.unknownMode.value\"\n              @remove=\"ex.trials.removeTrial\"\n              @clear=\"ex.trials.clearTrials\"\n              @update:params=\"Object.assign(ex.params, $event)\"\n            />\n          </DraggablePanel>\n        </template>\n      </div>\n      <div class=\"resizer\" @mousedown=\"ex.onResizeStart('data', $event)\"></div>\n      <div class=\"lab-col vis-col\">\n        <div class=\"vis-canvas-wrap\">\n          <SpecificHeatLab\n            :metal-type=\"ex.params.metalType\"\n            :metal-mass=\"ex.params.metalMass\"\n            :water-mass=\"ex.params.waterMass\"\n            :water-temp=\"ex.params.waterTemp\"\n            :metal-temp=\"ex.lab.metalTemp.value\"\n            :display-t=\"ex.lab.displayT.value\"\n            :final-t=\"ex.lab.finalTemp.value\"\n            :phase=\"ex.lab.phase.value\"\n            :running=\"ex.lab.running.value\"\n            :paused=\"ex.lab.paused.value\"\n            :unknown-mode=\"ex.lab.unknownMode.value\"\n            @update-sim=\"ex.lab.updateSim\"\n            @transfer=\"ex.lab.transferMetal\"\n            @toggle-pause=\"ex.lab.togglePause\"\n            @record-trial=\"ex.trials.recordTrial\"\n          />\n        </div>\n        <SpecificHeatControlBar\n          :launch-label=\"ex.lab.running.value && !ex.lab.paused.value ? '⏸️ ' + t('experiments.pauseBtn') : '▶️ ' + t('experiments.startBtn')\"\n          :can-transfer=\"ex.lab.phase.value === 'transfer'\"\n          :can-undo=\"ex.trials.canUndo()\"\n          :can-redo=\"ex.trials.canRedo()\"\n          :unknown-mode=\"ex.lab.unknownMode.value\"\n          @toggle-pause=\"ex.lab.togglePause\"\n          @transfer=\"ex.lab.transferMetal\"\n          @reset=\"ex.resetSim\"\n          @record-trial=\"ex.trials.recordTrial\"\n          @clear-trials=\"ex.trials.clearTrials\"\n          @export-csv=\"ex.trials.exportCsv\"\n          @undo=\"ex.trials.undo\"\n          @redo=\"ex.trials.redo\"\n          @toggle-unknown=\"ex.lab.unknownMode.value = !ex.lab.unknownMode.value\"\n        />\n      </div>\n      <div class=\"resizer\" @mousedown=\"ex.onResizeStart('ctrl', $event)\"></div>\n      <div class=\"lab-col ctrl-col\" :style=\"{ width: ex.layout.widths.ctrl + 'px' }\">\n        <template v-for=\"id in ex.layout.columnMap.ctrl\" :key=\"id\">\n          <DraggablePanel\n            v-if=\"id !== 'params' && ex.layout.isPanelVisible(id)\"\n            class=\"lab-card\"\n            :id=\"id\"\n            :title=\"ex.layout.panelTitle(id)\"\n            @maximize=\"ex.layout.maximizePanel\"\n            @hide=\"ex.layout.togglePanel\"\n            @drop=\"ex.handleDrop\"\n          >\n            <SpecificHeatPanelBody\n              :id=\"id\"\n              :trials=\"ex.trials.trials.value\"\n              :params=\"ex.params\"\n              :metal-temp=\"ex.lab.metalTemp.value\"\n              :display-t=\"ex.lab.displayT.value\"\n              :final-temp=\"ex.lab.finalTemp.value\"\n              :c-extracted=\"ex.lab.cExtracted.value\"\n              :c-true=\"ex.lab.cTrue.value\"\n              :regression-slope=\"ex.regression.value.m\"\n              :regression-intercept=\"ex.regression.value.b\"\n              :r-squared=\"ex.regression.value.r2\"\n              :c-from-slope=\"ex.cFromSlope.value\"\n              :unknown-mode=\"ex.lab.unknownMode.value\"\n              @remove=\"ex.trials.removeTrial\"\n              @clear=\"ex.trials.clearTrials\"\n              @update:params=\"Object.assign(ex.params, $event)\"\n            />\n          </DraggablePanel>\n          <div v-else-if=\"id === 'params'\" class=\"params-embedded\">\n            <SpecificHeatParamsPanel\n              :params=\"ex.params\"\n              :unknown-mode=\"ex.lab.unknownMode.value\"\n              @update:params=\"Object.assign(ex.params, $event)\"\n            />\n          </div>\n        </template>\n      </div>\n    </div>\n\n    <SpecificHeatOverlayPanels\n      :maximized=\"ex.layout.maximized\"\n      :panel-title=\"ex.layout.panelTitle\"\n      :trials=\"ex.trials.trials.value\"\n      :params=\"ex.params\"\n      :metal-temp=\"ex.lab.metalTemp.value\"\n      :display-t=\"ex.lab.displayT.value\"\n      :final-temp=\"ex.lab.finalTemp.value\"\n      :c-extracted=\"ex.lab.cExtracted.value\"\n      :c-true=\"ex.lab.cTrue.value\"\n      :regression-slope=\"ex.regression.value.m\"\n      :regression-intercept=\"ex.regression.value.b\"\n      :r-squared=\"ex.regression.value.r2\"\n      :c-from-slope=\"ex.cFromSlope.value\"\n      :unknown-mode=\"ex.lab.unknownMode.value\"\n      @maximize=\"ex.layout.maximizePanel\"\n      @remove=\"ex.trials.removeTrial\"\n      @clear=\"ex.trials.clearTrials\"\n      @update:params=\"Object.assign(ex.params, $event)\"\n    />\n\n    <div class=\"hint-bar\" v-if=\"!ex.lab.running.value\"><span>💡 {{ t('experiments.hintStart') }}</span></div>\n    <div class=\"hint-bar active\" v-else-if=\"ex.lab.paused.value\"><span>⏸️ {{ t('experiments.hintPaused') }}</span></div>\n    <div class=\"hint-bar success\" v-else><span>✅ {{ t('experiments.hintRunning') }}</span></div>\n\n    <SpecificHeatStatusBar\n      :running=\"ex.lab.running.value\"\n      :paused=\"ex.lab.paused.value\"\n      :metal-type=\"ex.params.metalType\"\n      :metal-mass=\"ex.params.metalMass\"\n      :water-mass=\"ex.params.waterMass\"\n      :water-temp=\"ex.params.waterTemp\"\n      :display-t=\"ex.lab.displayT.value\"\n      :phase=\"ex.lab.phase.value\"\n      :c-extracted=\"ex.lab.cExtracted.value\"\n      :unknown-mode=\"ex.lab.unknownMode.value\"\n    />\n  </div>\n</template>\n\n<style scoped>\n.specific-heat-lab { background: #161B22; color: #D1D7E0; padding: .6rem .8rem; height: 100vh; display: flex; flex-direction: column; gap: .5rem; overflow: hidden; }\n.lab-grid { display: flex; flex-direction: row; flex: 1; min-height: 0; overflow: hidden; }\n.lab-col { display: flex; flex-direction: column; gap: .5rem; overflow-y: auto; min-height: 0; }\n.data-col { background: rgba(255,255,255,0.02); }\n.vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 360px; position: relative; }\n.vis-canvas-wrap { flex: 1; min-height: 0; position: relative; width: 100%; }\n.ctrl-col { background: rgba(255,255,255,0.02); }\n.lab-card { min-height: 0; }\n.params-embedded { padding: .6rem; }\n.resizer { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0; }\n.resizer:hover, .resizer:active { background: #5B8DB8; }\n.hint-bar { background: #252D3A; border: 1px solid #2D3645; border-radius: 6px; padding: .35rem .7rem; font-size: .75rem; color: #8B95A5; text-align: center; flex-shrink: 0; }\n.hint-bar.active { border-color: #5B8DB8; color: #5B8DB8; background: rgba(91,141,184,.08); }\n.hint-bar.success { border-color: #22c55e; color: #22c55e; background: rgba(34,197,94,.08); }\n</style>\n",
+      "start": 1783634639936,
+      "end": 1783634640487,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640487,
+      "end": 1783634640487,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640487,
+      "end": 1783634640488,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640488,
+      "end": 1783634640488,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640488,
+      "end": 1783634640488,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/specific-heat/SpecificHeatExperiment.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/specific-heat/SpecificHeatExperiment.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/specific-heat/SpecificHeatExperiment.vue?vue&type=style&index=0&scoped=f1f8eedf&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-f1f8eedf\"]]);\n",
+      "start": 1783634640488,
+      "end": 1783634640664,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640665,
+      "end": 1783634640665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640665,
+      "end": 1783634640665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640665,
+      "end": 1783634640665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640665,
+      "end": 1783634640667,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640667,
+      "end": 1783634640668,
+      "order": "normal"
+    }
+  ]
+}

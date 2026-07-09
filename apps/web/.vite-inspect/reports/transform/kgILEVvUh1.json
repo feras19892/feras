@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/ComponentControls.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, watch } from 'vue'\nimport type { CircuitComponent } from '../types'\n\nconst props = defineProps<{\n  selectedId: number | null\n  components: CircuitComponent[]\n}>()\n\nconst emit = defineEmits<{\n  (e: 'update-comp', id: number, value: number): void\n  (e: 'remove-comp', id: number): void\n  (e: 'toggle-switch', id: number): void\n}>()\n\nconst selectedComp = ref<CircuitComponent | null>(null)\n\nwatch(() => [props.selectedId, props.components], () => {\n  if (props.selectedId !== null) {\n    selectedComp.value = props.components.find(c => c.id === props.selectedId) ?? null\n  } else {\n    selectedComp.value = null\n  }\n}, { deep: true })\n</script>\n\n<template>\n  <div v-if=\"selectedComp\" class=\"comp-controls\">\n    <div class=\"comp-header\">\n      <span class=\"comp-name\">{{ selectedComp.label }} #{{ selectedComp.id }}</span>\n      <button class=\"btn-remove\" @click=\"emit('remove-comp', selectedComp.id)\">✕</button>\n    </div>\n    <div v-if=\"selectedComp.type === 'battery'\" class=\"slider-row\">\n      <label>الجهد: <b>{{ selectedComp.value }}V</b></label>\n      <input type=\"range\" min=\"1\" max=\"12\" step=\"0.5\" :value=\"selectedComp.value\"\n        @input=\"emit('update-comp', selectedComp.id, Number(($event.target as HTMLInputElement).value))\" />\n    </div>\n    <div v-else-if=\"selectedComp.type === 'resistor'\" class=\"slider-row\">\n      <label>المقاومة: <b>{{ selectedComp.value }}Ω</b></label>\n      <input type=\"range\" min=\"10\" max=\"1000\" step=\"10\" :value=\"selectedComp.value\"\n        @input=\"emit('update-comp', selectedComp.id, Number(($event.target as HTMLInputElement).value))\" />\n    </div>\n    <div v-else-if=\"selectedComp.type === 'switch'\" class=\"switch-controls\">\n      <div class=\"switch-status\" :class=\"selectedComp._closed ? 'closed' : 'open'\">\n        <span class=\"switch-icon\">{{ selectedComp._closed ? '🔒' : '🔓' }}</span>\n        <span class=\"switch-state\">{{ selectedComp._closed ? 'مغلق (ON)' : 'مفتوح (OFF)' }}</span>\n      </div>\n      <button class=\"switch-toggle-btn\" @click=\"emit('toggle-switch', selectedComp.id)\">\n        {{ selectedComp._closed ? '🔓 فتح المفتاح' : '🔒 إغلاق المفتاح' }}\n      </button>\n    </div>\n    <div v-else-if=\"selectedComp.type === 'capacitor'\" class=\"slider-row\">\n      <label>السعة: <b>{{ selectedComp.value }}µF</b></label>\n      <input type=\"range\" min=\"10\" max=\"1000\" step=\"10\" :value=\"selectedComp.value\"\n        @input=\"emit('update-comp', selectedComp.id, Number(($event.target as HTMLInputElement).value))\" />\n    </div>\n    <div v-else-if=\"selectedComp.type === 'lamp'\" class=\"slider-row\">\n      <label>جهد المصباح: <b>{{ selectedComp.value }}V</b></label>\n      <input type=\"range\" min=\"1\" max=\"12\" step=\"0.5\" :value=\"selectedComp.value\"\n        @input=\"emit('update-comp', selectedComp.id, Number(($event.target as HTMLInputElement).value))\" />\n    </div>\n    <div v-else-if=\"selectedComp.type === 'galvanometer'\" class=\"comp-info\">\n      <p>📐 جلفانوميتر — يقيس تيارات صغيرة (µA)</p>\n      <p class=\"comp-detail\">الحساسية: عالية جداً</p>\n    </div>\n    <div v-else class=\"comp-info\">\n      <p>{{ selectedComp.label }} — أداة قياس</p>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.comp-controls {\n  background: rgba(255,255,255,0.04);\n  border: 1px solid rgba(255,255,255,0.08);\n  border-radius: 0.5rem;\n  padding: 0.6rem;\n}\n.comp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }\n.comp-name { font-size: 0.78rem; color: #e2e8f0; font-weight: 600; }\n.btn-remove {\n  background: rgba(239,68,68,0.15);\n  border: 1px solid rgba(239,68,68,0.3);\n  color: #f87171;\n  border-radius: 0.25rem;\n  width: 22px; height: 22px;\n  cursor: pointer;\n  font-size: 0.7rem;\n}\n.slider-row { display: flex; flex-direction: column; gap: 0.3rem; }\n.slider-row label { font-size: 0.75rem; color: #94a3b8; }\n.slider-row input[type=\"range\"] { width: 100%; accent-color: #f59e0b; }\n.switch-controls { display: flex; flex-direction: column; gap: .5rem; }\n.switch-status { display: flex; align-items: center; gap: .5rem; padding: .5rem; border-radius: 6px; font-size: .85rem; font-weight: 600; }\n.switch-status.closed { background: rgba(34,197,94,.12); color: #4ade80; border: 1px solid rgba(34,197,94,.25); }\n.switch-status.open { background: rgba(239,68,68,.12); color: #f87171; border: 1px solid rgba(239,68,68,.25); }\n.switch-icon { font-size: 1.2rem; }\n.switch-state { font-size: .82rem; }\n.switch-toggle-btn {\n  background: rgba(245,158,11,.12);\n  border: 1px solid rgba(245,158,11,.3);\n  color: #fbbf24;\n  padding: .5rem;\n  border-radius: 6px;\n  cursor: pointer;\n  font-size: .82rem;\n  font-weight: 600;\n  transition: all .15s;\n}\n.switch-toggle-btn:hover { background: rgba(245,158,11,.2); border-color: rgba(245,158,11,.5); }\n.comp-info p { margin: 0; font-size: 0.75rem; color: #64748b; }\n.comp-detail { font-size: .72rem; color: #64748b; margin-top: .2rem; }\n</style>\n",
+      "start": 1783634642563,
+      "end": 1783634642818,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642818,
+      "end": 1783634642818,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642818,
+      "end": 1783634642818,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642818,
+      "end": 1783634642818,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642818,
+      "end": 1783634642818,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/ComponentControls.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/ComponentControls.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/ComponentControls.vue?vue&type=style&index=0&scoped=b56db0b6&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-b56db0b6\"]]);\n",
+      "start": 1783634642818,
+      "end": 1783634642867,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642867,
+      "end": 1783634642868,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642868,
+      "end": 1783634642868,
+      "order": "normal"
+    }
+  ]
+}

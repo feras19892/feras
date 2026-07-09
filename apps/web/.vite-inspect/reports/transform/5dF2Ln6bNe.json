@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabStatsPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, normalizeClass as _normalizeClass, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"stats-panel\" }\nconst _hoisted_2 = {\n  key: 0,\n  class: \"stats-table\"\n}\nconst _hoisted_3 = { class: \"stat-row\" }\nconst _hoisted_4 = { class: \"stat-label\" }\nconst _hoisted_5 = { class: \"stat-row\" }\nconst _hoisted_6 = { class: \"stat-row\" }\nconst _hoisted_7 = { class: \"stat-label\" }\nconst _hoisted_8 = { class: \"stat-row\" }\nconst _hoisted_9 = { class: \"stat-label\" }\nconst _hoisted_10 = { class: \"stat-value\" }\nconst _hoisted_11 = {\n  key: 1,\n  class: \"stats-empty\"\n}\n\nimport { computed } from 'vue';\r\nimport type { LabItem } from '../../../composables/chemistry/useChemistryTools';\r\nimport { getLiquid, isContainer, items, phProbeTipMap } from '../../../composables/chemistry/useChemistryLab';\r\nimport { getPhReading, isHeated } from '../../../composables/chemistry/useLabSimulation';\r\nimport { useI18n } from '../../../composables/useI18n';\r\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'LabStatsPanel',\n  props: {\n    item: {}\n  },\n  setup(__props: any) {\n\r\nconst { t } = useI18n();\r\n\r\nconst props = __props;\r\n\r\nconst liq = computed(() => props.item && isContainer(props.item.id) ? getLiquid(props.item.uid) : null);\r\nconst ph = computed(() => {\r\n  if (!props.item) return null;\r\n  // Find a pH meter whose probe tip is inside this item\r\n  const phMeter = items.value.find(i =>\r\n    i.id === 'ph-meter' &&\r\n    phProbeTipMap[i.uid] &&\r\n    Math.abs((props.item!.x + 40) - phProbeTipMap[i.uid].x) < 60 &&\r\n    Math.abs((props.item!.y + 10) - phProbeTipMap[i.uid].y) < 50\r\n  );\r\n  return phMeter ? getPhReading(phMeter) : null;\r\n});\r\nconst heated = computed(() => props.item ? isHeated(props.item) : false);\r\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"h4\", null, _toDisplayString(_unref(t)('chemistryLab.labStats')), 1),\n    (__props.item && liq.value)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_2, [\n          _createElementVNode(\"div\", _hoisted_3, [\n            _createElementVNode(\"span\", _hoisted_4, _toDisplayString(_unref(t)('chemistryLab.temperature')), 1),\n            _createElementVNode(\"span\", {\n              class: _normalizeClass([\"stat-value\", liq.value.temperature > 30 ? 'hot' : ''])\n            }, _toDisplayString(liq.value.temperature.toFixed(1)) + \"°C\", 3)\n          ]),\n          _createElementVNode(\"div\", _hoisted_5, [\n            _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"stat-label\" }, \"📟 pH\", -1)),\n            _createElementVNode(\"span\", {\n              class: _normalizeClass([\"stat-value\", ph.value !== null ? (ph.value < 7 ? 'acid' : ph.value > 7 ? 'base' : 'neutral') : ''])\n            }, _toDisplayString(ph.value !== null ? ph.value.toFixed(2) : '--.--'), 3)\n          ]),\n          _createElementVNode(\"div\", _hoisted_6, [\n            _createElementVNode(\"span\", _hoisted_7, _toDisplayString(_unref(t)('chemistryLab.heating')), 1),\n            _createElementVNode(\"span\", {\n              class: _normalizeClass([\"stat-value\", heated.value ? 'heating' : ''])\n            }, _toDisplayString(heated.value ? _unref(t)('chemistryLab.yes') : _unref(t)('chemistryLab.no')), 3)\n          ]),\n          _createElementVNode(\"div\", _hoisted_8, [\n            _createElementVNode(\"span\", _hoisted_9, _toDisplayString(_unref(t)('chemistry.volume')), 1),\n            _createElementVNode(\"span\", _hoisted_10, _toDisplayString(liq.value.volume.toFixed(1)) + \" mL\", 1)\n          ])\n        ]))\n      : (_openBlock(), _createElementBlock(\"div\", _hoisted_11, _toDisplayString(_unref(t)('chemistry.clickToolHint')), 1))\n  ]))\n}\n}\n\n})",
+      "start": 1783634640844,
+      "end": 1783634640844
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640844,
+      "end": 1783634640844,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, normalizeClass as _normalizeClass, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"stats-panel\" };\nconst _hoisted_2 = {\n  key: 0,\n  class: \"stats-table\"\n};\nconst _hoisted_3 = { class: \"stat-row\" };\nconst _hoisted_4 = { class: \"stat-label\" };\nconst _hoisted_5 = { class: \"stat-row\" };\nconst _hoisted_6 = { class: \"stat-row\" };\nconst _hoisted_7 = { class: \"stat-label\" };\nconst _hoisted_8 = { class: \"stat-row\" };\nconst _hoisted_9 = { class: \"stat-label\" };\nconst _hoisted_10 = { class: \"stat-value\" };\nconst _hoisted_11 = {\n  key: 1,\n  class: \"stats-empty\"\n};\nimport { computed } from \"vue\";\nimport { getLiquid, isContainer, items, phProbeTipMap } from \"../../../composables/chemistry/useChemistryLab\";\nimport { getPhReading, isHeated } from \"../../../composables/chemistry/useLabSimulation\";\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"LabStatsPanel\",\n  props: {\n    item: {}\n  },\n  setup(__props) {\n    const { t } = useI18n();\n    const props = __props;\n    const liq = computed(() => props.item && isContainer(props.item.id) ? getLiquid(props.item.uid) : null);\n    const ph = computed(() => {\n      if (!props.item) return null;\n      const phMeter = items.value.find(\n        (i) => i.id === \"ph-meter\" && phProbeTipMap[i.uid] && Math.abs(props.item.x + 40 - phProbeTipMap[i.uid].x) < 60 && Math.abs(props.item.y + 10 - phProbeTipMap[i.uid].y) < 50\n      );\n      return phMeter ? getPhReading(phMeter) : null;\n    });\n    const heated = computed(() => props.item ? isHeated(props.item) : false);\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"h4\", null, _toDisplayString(_unref(t)(\"chemistryLab.labStats\")), 1),\n        __props.item && liq.value ? (_openBlock(), _createElementBlock(\"div\", _hoisted_2, [\n          _createElementVNode(\"div\", _hoisted_3, [\n            _createElementVNode(\"span\", _hoisted_4, _toDisplayString(_unref(t)(\"chemistryLab.temperature\")), 1),\n            _createElementVNode(\"span\", {\n              class: _normalizeClass([\"stat-value\", liq.value.temperature > 30 ? \"hot\" : \"\"])\n            }, _toDisplayString(liq.value.temperature.toFixed(1)) + \"°C\", 3)\n          ]),\n          _createElementVNode(\"div\", _hoisted_5, [\n            _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"stat-label\" }, \"📟 pH\", -1)),\n            _createElementVNode(\"span\", {\n              class: _normalizeClass([\"stat-value\", ph.value !== null ? ph.value < 7 ? \"acid\" : ph.value > 7 ? \"base\" : \"neutral\" : \"\"])\n            }, _toDisplayString(ph.value !== null ? ph.value.toFixed(2) : \"--.--\"), 3)\n          ]),\n          _createElementVNode(\"div\", _hoisted_6, [\n            _createElementVNode(\"span\", _hoisted_7, _toDisplayString(_unref(t)(\"chemistryLab.heating\")), 1),\n            _createElementVNode(\"span\", {\n              class: _normalizeClass([\"stat-value\", heated.value ? \"heating\" : \"\"])\n            }, _toDisplayString(heated.value ? _unref(t)(\"chemistryLab.yes\") : _unref(t)(\"chemistryLab.no\")), 3)\n          ]),\n          _createElementVNode(\"div\", _hoisted_8, [\n            _createElementVNode(\"span\", _hoisted_9, _toDisplayString(_unref(t)(\"chemistry.volume\")), 1),\n            _createElementVNode(\"span\", _hoisted_10, _toDisplayString(liq.value.volume.toFixed(1)) + \" mL\", 1)\n          ])\n        ])) : (_openBlock(), _createElementBlock(\"div\", _hoisted_11, _toDisplayString(_unref(t)(\"chemistry.clickToolHint\")), 1))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634640844,
+      "end": 1783634641018,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabStatsPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, normalizeClass as _normalizeClass, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"stats-panel\" }\nconst _hoisted_2 = {\n  key: 0,\n  class: \"stats-table\"\n}\nconst _hoisted_3 = { class: \"stat-row\" }\nconst _hoisted_4 = { class: \"stat-label\" }\nconst _hoisted_5 = { class: \"stat-row\" }\nconst _hoisted_6 = { class: \"stat-row\" }\nconst _hoisted_7 = { class: \"stat-label\" }\nconst _hoisted_8 = { class: \"stat-row\" }\nconst _hoisted_9 = { class: \"stat-label\" }\nconst _hoisted_10 = { class: \"stat-value\" }\nconst _hoisted_11 = {\n  key: 1,\n  class: \"stats-empty\"\n}\n\nimport { computed } from 'vue';\r\nimport type { LabItem } from '../../../composables/chemistry/useChemistryTools';\r\nimport { getLiquid, isContainer, items, phProbeTipMap } from '../../../composables/chemistry/useChemistryLab';\r\nimport { getPhReading, isHeated } from '../../../composables/chemistry/useLabSimulation';\r\nimport { useI18n } from '../../../composables/useI18n';\r\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'LabStatsPanel',\n  props: {\n    item: {}\n  },\n  setup(__props: any) {\n\r\nconst { t } = useI18n();\r\n\r\nconst props = __props;\r\n\r\nconst liq = computed(() => props.item && isContainer(props.item.id) ? getLiquid(props.item.uid) : null);\r\nconst ph = computed(() => {\r\n  if (!props.item) return null;\r\n  // Find a pH meter whose probe tip is inside this item\r\n  const phMeter = items.value.find(i =>\r\n    i.id === 'ph-meter' &&\r\n    phProbeTipMap[i.uid] &&\r\n    Math.abs((props.item!.x + 40) - phProbeTipMap[i.uid].x) < 60 &&\r\n    Math.abs((props.item!.y + 10) - phProbeTipMap[i.uid].y) < 50\r\n  );\r\n  return phMeter ? getPhReading(phMeter) : null;\r\n});\r\nconst heated = computed(() => props.item ? isHeated(props.item) : false);\r\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"h4\", null, _toDisplayString(_unref(t)('chemistryLab.labStats')), 1),\n    (__props.item && liq.value)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_2, [\n          _createElementVNode(\"div\", _hoisted_3, [\n            _createElementVNode(\"span\", _hoisted_4, _toDisplayString(_unref(t)('chemistryLab.temperature')), 1),\n            _createElementVNode(\"span\", {\n              class: _normalizeClass([\"stat-value\", liq.value.temperature > 30 ? 'hot' : ''])\n            }, _toDisplayString(liq.value.temperature.toFixed(1)) + \"°C\", 3)\n          ]),\n          _createElementVNode(\"div\", _hoisted_5, [\n            _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"stat-label\" }, \"📟 pH\", -1)),\n            _createElementVNode(\"span\", {\n              class: _normalizeClass([\"stat-value\", ph.value !== null ? (ph.value < 7 ? 'acid' : ph.value > 7 ? 'base' : 'neutral') : ''])\n            }, _toDisplayString(ph.value !== null ? ph.value.toFixed(2) : '--.--'), 3)\n          ]),\n          _createElementVNode(\"div\", _hoisted_6, [\n            _createElementVNode(\"span\", _hoisted_7, _toDisplayString(_unref(t)('chemistryLab.heating')), 1),\n            _createElementVNode(\"span\", {\n              class: _normalizeClass([\"stat-value\", heated.value ? 'heating' : ''])\n            }, _toDisplayString(heated.value ? _unref(t)('chemistryLab.yes') : _unref(t)('chemistryLab.no')), 3)\n          ]),\n          _createElementVNode(\"div\", _hoisted_8, [\n            _createElementVNode(\"span\", _hoisted_9, _toDisplayString(_unref(t)('chemistry.volume')), 1),\n            _createElementVNode(\"span\", _hoisted_10, _toDisplayString(liq.value.volume.toFixed(1)) + \" mL\", 1)\n          ])\n        ]))\n      : (_openBlock(), _createElementBlock(\"div\", _hoisted_11, _toDisplayString(_unref(t)('chemistry.clickToolHint')), 1))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641018,
+      "end": 1783634641019,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641019,
+      "end": 1783634641019,
+      "order": "normal"
+    }
+  ]
+}

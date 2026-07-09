@@ -1,8 +1,10 @@
 import { ref, reactive, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import type { AnalysisPayload } from '../../types/physics'
+import { sendToAnalysis } from '../analysis/sendToAnalysis'
 import { useSpeedOfSoundLayout } from './useSpeedOfSoundLayout'
 import { useSpeedOfSoundTrials } from './useSpeedOfSoundTrials'
-import { speedOfSoundAir, wavelengthClosedEnd, speedFromResonance } from './useSpeedOfSoundCalculations'
+import { speedOfSoundAir, wavelengthClosedEnd, speedFromResonance, linearRegression } from './useSpeedOfSoundCalculations'
 
 export function useSpeedOfSoundExperiment() {
   const params = reactive({
@@ -38,6 +40,27 @@ export function useSpeedOfSoundExperiment() {
     return pts
   })
 
+  // Regression: L vs 1/f  →  L = (v/4)·(1/f) − e
+  // slope = v/4, intercept = −e
+  const regression = computed(() => {
+    const valid = trials.trials.value.filter((t) => t.frequency > 0)
+    if (valid.length < 2) return { m: 0, b: 0, r2: 0 }
+    const pts = valid.map((t) => ({ x: 1 / t.frequency, y: t.tubeLength }))
+    return linearRegression(pts)
+  })
+
+  const vFromRegression = computed(() => {
+    const m = regression.value.m
+    if (!isFinite(m) || m <= 0) return null
+    return 4 * m
+  })
+
+  const endCorrection = computed(() => {
+    const b = regression.value.b
+    if (!isFinite(b)) return null
+    return -b
+  })
+
   const layout = useSpeedOfSoundLayout()
 
   const trials = useSpeedOfSoundTrials(
@@ -53,14 +76,14 @@ export function useSpeedOfSoundExperiment() {
   }
   function resetSim() {
     running.value = false; paused.value = false
-    params.tubeLength = 0.25; params.frequency = 343; params.temperature = 20; params.harmonic = 1
-    trials.clearTrials()
   }
+  const router = useRouter()
   function exportToAnalysis() {
     if (trials.trials.value.length < 2) return
     const payload: AnalysisPayload = {
       sourceExperiment: 'speed-of-sound',
       sourceNameAr: 'سرعة الصوت',
+      hasCalcTab: true,
       readings: trials.trials.value.map(t => ({ L: t.tubeLength, f: t.frequency, T: t.temperature, lambda: t.wavelength, v: t.vMeasured })),
       columns: [
         { key: 'L', label: 'L (m)', unit: 'm' },
@@ -74,8 +97,7 @@ export function useSpeedOfSoundExperiment() {
       ],
       suggestedPlots: [{ xKey: 'L', yKey: 'v', xLabel: 'L (m)', yLabel: 'v (m/s)', type: 'scatter' }],
     }
-    localStorage.setItem('analysis_payload', JSON.stringify(payload))
-    window.open('/analysis', '_blank')
+    sendToAnalysis(router, payload)
   }
   function handleDrop(fromId: string, x?: number, y?: number) {
     if (x === undefined || y === undefined) return
@@ -92,12 +114,12 @@ export function useSpeedOfSoundExperiment() {
   }
   function onResizeStart(col: string, e: MouseEvent) {
     if (!(col in layout.widths)) return
-    const startX = e.clientX, startW = (layout.widths as any)[col] as number
-    function move(ev: MouseEvent) { (layout.widths as any)[col] = Math.max(220, startW + (ev.clientX - startX)) }
+    const startX = e.clientX, startW = (layout.widths as Record<string, number>)[col] as number
+    function move(ev: MouseEvent) { (layout.widths as Record<string, number>)[col] = Math.max(220, startW + (ev.clientX - startX)) }
     function up() { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up) }
     window.addEventListener('mousemove', move); window.addEventListener('mouseup', up)
   }
 
-  const lab = { running, paused, wavelength, vMeasured, vTheory, percentError, waveformData, togglePause }
+  const lab = { running, paused, wavelength, vMeasured, vTheory, percentError, waveformData, regression, vFromRegression, endCorrection, togglePause }
   return { params, lab, layout, trials, resetSim, exportToAnalysis, onResizeStart, handleDrop }
 }

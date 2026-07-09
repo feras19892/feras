@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useToolStateBuilder.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import type { LabItem } from './useChemistryTools';\nimport {\n  isBurette, isPipette, isSeparatoryFunnel, isContainer\n} from './chemLabIds';\nimport { getLiquid, getBurette, getPipette, getSepFunnelState } from './useChemistryLab';\n\nexport function buildToolState(item: LabItem | null) {\n  if (!item) return null;\n  if (isContainer(item.id)) {\n    const liq = getLiquid(item.uid);\n    return { uid: item.uid, type: 'beaker' as const, volume: liq.volume, maxVolume: liq.maxVolume, color: liq.color, opacity: liq.opacity, label: liq.label, stirred: liq.stirred, temperature: liq.temperature, ph: liq.ph ?? undefined, heated: liq.heated, viscosity: liq.viscosity, density: liq.density, surfaceTension: liq.surfaceTension, chemicalId: liq.chemicalId, indicators: liq.indicators, baseColor: liq.baseColor };\n  }\n  if (isBurette(item.id)) {\n    const bur = getBurette(item.uid);\n    return { uid: item.uid, type: 'burette' as const, volume: bur.volume, maxVolume: bur.maxVolume, valveOpen: bur.valveOpen, color: bur.color, opacity: bur.opacity, chemicalId: bur.chemicalId };\n  }\n  if (isPipette(item.id)) {\n    const pip = getPipette(item.uid);\n    return { uid: item.uid, type: 'pipette' as const, volume: pip.volume, maxVolume: pip.maxVolume, color: pip.color };\n  }\n  if (isSeparatoryFunnel(item.id)) {\n    const liq = getLiquid(item.uid);\n    const sep = getSepFunnelState(item.uid);\n    return { uid: item.uid, type: 'beaker' as const, volume: liq.volume, maxVolume: liq.maxVolume, color: liq.color, label: liq.label, valveOpen: sep.valveOpen };\n  }\n  return { uid: item.uid, type: 'other' as const, volume: 0, maxVolume: 0, color: '#94a3b8' };\n}\n",
+      "start": 1783634640041,
+      "end": 1783634640498,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640498,
+      "end": 1783634640498,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import {\n  isBurette,\n  isPipette,\n  isSeparatoryFunnel,\n  isContainer\n} from \"./chemLabIds\";\nimport { getLiquid, getBurette, getPipette, getSepFunnelState } from \"./useChemistryLab\";\nexport function buildToolState(item) {\n  if (!item) return null;\n  if (isContainer(item.id)) {\n    const liq = getLiquid(item.uid);\n    return { uid: item.uid, type: \"beaker\", volume: liq.volume, maxVolume: liq.maxVolume, color: liq.color, opacity: liq.opacity, label: liq.label, stirred: liq.stirred, temperature: liq.temperature, ph: liq.ph ?? void 0, heated: liq.heated, viscosity: liq.viscosity, density: liq.density, surfaceTension: liq.surfaceTension, chemicalId: liq.chemicalId, indicators: liq.indicators, baseColor: liq.baseColor };\n  }\n  if (isBurette(item.id)) {\n    const bur = getBurette(item.uid);\n    return { uid: item.uid, type: \"burette\", volume: bur.volume, maxVolume: bur.maxVolume, valveOpen: bur.valveOpen, color: bur.color, opacity: bur.opacity, chemicalId: bur.chemicalId };\n  }\n  if (isPipette(item.id)) {\n    const pip = getPipette(item.uid);\n    return { uid: item.uid, type: \"pipette\", volume: pip.volume, maxVolume: pip.maxVolume, color: pip.color };\n  }\n  if (isSeparatoryFunnel(item.id)) {\n    const liq = getLiquid(item.uid);\n    const sep = getSepFunnelState(item.uid);\n    return { uid: item.uid, type: \"beaker\", volume: liq.volume, maxVolume: liq.maxVolume, color: liq.color, label: liq.label, valveOpen: sep.valveOpen };\n  }\n  return { uid: item.uid, type: \"other\", volume: 0, maxVolume: 0, color: \"#94a3b8\" };\n}\n",
+      "start": 1783634640498,
+      "end": 1783634640664,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useToolStateBuilder.ts"
+        ],
+        "sourcesContent": [
+          "import type { LabItem } from './useChemistryTools';\nimport {\n  isBurette, isPipette, isSeparatoryFunnel, isContainer\n} from './chemLabIds';\nimport { getLiquid, getBurette, getPipette, getSepFunnelState } from './useChemistryLab';\n\nexport function buildToolState(item: LabItem | null) {\n  if (!item) return null;\n  if (isContainer(item.id)) {\n    const liq = getLiquid(item.uid);\n    return { uid: item.uid, type: 'beaker' as const, volume: liq.volume, maxVolume: liq.maxVolume, color: liq.color, opacity: liq.opacity, label: liq.label, stirred: liq.stirred, temperature: liq.temperature, ph: liq.ph ?? undefined, heated: liq.heated, viscosity: liq.viscosity, density: liq.density, surfaceTension: liq.surfaceTension, chemicalId: liq.chemicalId, indicators: liq.indicators, baseColor: liq.baseColor };\n  }\n  if (isBurette(item.id)) {\n    const bur = getBurette(item.uid);\n    return { uid: item.uid, type: 'burette' as const, volume: bur.volume, maxVolume: bur.maxVolume, valveOpen: bur.valveOpen, color: bur.color, opacity: bur.opacity, chemicalId: bur.chemicalId };\n  }\n  if (isPipette(item.id)) {\n    const pip = getPipette(item.uid);\n    return { uid: item.uid, type: 'pipette' as const, volume: pip.volume, maxVolume: pip.maxVolume, color: pip.color };\n  }\n  if (isSeparatoryFunnel(item.id)) {\n    const liq = getLiquid(item.uid);\n    const sep = getSepFunnelState(item.uid);\n    return { uid: item.uid, type: 'beaker' as const, volume: liq.volume, maxVolume: liq.maxVolume, color: liq.color, label: liq.label, valveOpen: sep.valveOpen };\n  }\n  return { uid: item.uid, type: 'other' as const, volume: 0, maxVolume: 0, color: '#94a3b8' };\n}\n"
+        ],
+        "mappings": "AACA;AAAA,EACE;AAAA,EAAW;AAAA,EAAW;AAAA,EAAoB;AAAA,OACrC;AACP,SAAS,WAAW,YAAY,YAAY,yBAAyB;AAE9D,gBAAS,eAAe,MAAsB;AACnD,MAAI,CAAC,KAAM,QAAO;AAClB,MAAI,YAAY,KAAK,EAAE,GAAG;AACxB,UAAM,MAAM,UAAU,KAAK,GAAG;AAC9B,WAAO,EAAE,KAAK,KAAK,KAAK,MAAM,UAAmB,QAAQ,IAAI,QAAQ,WAAW,IAAI,WAAW,OAAO,IAAI,OAAO,SAAS,IAAI,SAAS,OAAO,IAAI,OAAO,SAAS,IAAI,SAAS,aAAa,IAAI,aAAa,IAAI,IAAI,MAAM,QAAW,QAAQ,IAAI,QAAQ,WAAW,IAAI,WAAW,SAAS,IAAI,SAAS,gBAAgB,IAAI,gBAAgB,YAAY,IAAI,YAAY,YAAY,IAAI,YAAY,WAAW,IAAI,UAAU;AAAA,EACja;AACA,MAAI,UAAU,KAAK,EAAE,GAAG;AACtB,UAAM,MAAM,WAAW,KAAK,GAAG;AAC/B,WAAO,EAAE,KAAK,KAAK,KAAK,MAAM,WAAoB,QAAQ,IAAI,QAAQ,WAAW,IAAI,WAAW,WAAW,IAAI,WAAW,OAAO,IAAI,OAAO,SAAS,IAAI,SAAS,YAAY,IAAI,WAAW;AAAA,EAC/L;AACA,MAAI,UAAU,KAAK,EAAE,GAAG;AACtB,UAAM,MAAM,WAAW,KAAK,GAAG;AAC/B,WAAO,EAAE,KAAK,KAAK,KAAK,MAAM,WAAoB,QAAQ,IAAI,QAAQ,WAAW,IAAI,WAAW,OAAO,IAAI,MAAM;AAAA,EACnH;AACA,MAAI,mBAAmB,KAAK,EAAE,GAAG;AAC/B,UAAM,MAAM,UAAU,KAAK,GAAG;AAC9B,UAAM,MAAM,kBAAkB,KAAK,GAAG;AACtC,WAAO,EAAE,KAAK,KAAK,KAAK,MAAM,UAAmB,QAAQ,IAAI,QAAQ,WAAW,IAAI,WAAW,OAAO,IAAI,OAAO,OAAO,IAAI,OAAO,WAAW,IAAI,UAAU;AAAA,EAC9J;AACA,SAAO,EAAE,KAAK,KAAK,KAAK,MAAM,SAAkB,QAAQ,GAAG,WAAW,GAAG,OAAO,UAAU;AAC5F;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640664,
+      "end": 1783634640665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640665,
+      "end": 1783634640665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640665,
+      "end": 1783634640665,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640665,
+      "end": 1783634640665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640667,
+      "end": 1783634640667,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640668,
+      "end": 1783634640668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640669,
+      "end": 1783634640669,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640669,
+      "end": 1783634640669,
+      "order": "normal"
+    }
+  ]
+}

@@ -6,10 +6,9 @@ import SpringMenuBar from '../../../../components/experiment/spring/SpringMenuBa
 import SpringCanvas from '../../../../components/experiment/spring/SpringCanvas.vue'
 import SpringStatusBar from '../../../../components/experiment/spring/SpringStatusBar.vue'
 import SpringControlBar from '../../../../components/experiment/spring/SpringControlBar.vue'
-import SpringStepTracker from '../../../../components/experiment/spring/SpringStepTracker.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 import SpringPanelBody from '../../../../components/experiment/spring/SpringPanelBody.vue'
-import SpringOverlayPanels from '../../../../components/experiment/spring/SpringOverlayPanels.vue'
+import SpringParamPanel from '../../../../components/experiment/spring/SpringParamPanel.vue'
 import SpringHelpModal from '../../../../components/experiment/spring/SpringHelpModal.vue'
 const ex = useSpringExperiment()
 const { t } = useI18n()
@@ -62,8 +61,6 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 
     <SpringHelpModal :open="helpOpen" @close="helpOpen = false" />
 
-    <SpringStepTracker :step-index="ex.stepIndex.value" />
-
     <div class="lab-grid">
       <div class="lab-col data-col" :style="{ width: ex.colWidths.data + 'px' }">
         <template v-for="id in ex.getColumnPanels('data')" :key="id">
@@ -95,7 +92,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       <div class="lab-col ctrl-col" :style="{ width: ex.colWidths.ctrl + 'px' }">
         <template v-for="id in ex.getColumnPanels('ctrl')" :key="id">
           <DraggablePanel
-            v-if="ex.layout.isPanelVisible(id)"
+            v-if="id !== 'params' && ex.layout.isPanelVisible(id)"
             class="lab-card"
             :id="id"
             :title="ex.layout.panelTitle(id)"
@@ -112,25 +109,15 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
               :effective-mass="ex.getEffectiveMass()"
             />
           </DraggablePanel>
+          <div v-else-if="id === 'params'" class="params-embedded">
+            <SpringParamPanel
+              :model-value="ex.params"
+              @update:model-value="Object.assign(ex.params, $event)"
+            />
+          </div>
         </template>
       </div>
     </div>
-
-    <SpringOverlayPanels
-      :maximized="ex.layout.maximized"
-      :panel-title="ex.layout.panelTitle"
-      :trials="ex.trials.trials.value"
-      :params="ex.params"
-      :sim="ex.lab.sim"
-      :measured="ex.getMeasured()"
-      :effective-mass="ex.getEffectiveMass()"
-      @maximize="ex.layout.maximizePanel"
-      @drop="ex.handleDrop"
-      @update:trials="ex.trials.trials.value = $event"
-      @update:params="Object.assign(ex.params, $event)"
-      @remove="ex.trials.removeTrial"
-      @clear="ex.trials.clearTrials"
-    />
 
     <div class="hint-bar" v-if="!ex.lab.running.value">
       <span>💡 {{ t('experiments.hintStart') }}</span>
@@ -169,6 +156,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 .data-col { background: rgba(255,255,255,0.02); }
 .vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 0; }
 .ctrl-col { background: rgba(255,255,255,0.02); }
+.params-embedded { padding: .6rem; }
 .resizer { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0; }
 .resizer:hover, .resizer:active { background: #5B8DB8; }
 .chart-row { display: flex; gap: .5rem; width: 100%; margin-top: .3rem; flex: 0 0 180px; min-height: 0; align-items: stretch; }

@@ -16,6 +16,11 @@ interface Props {
   vTheory: number
   percentError: number
   waveformData: { x: number; y: number }[]
+  regressionSlope: number
+  regressionIntercept: number
+  rSquared: number
+  vFromRegression: number | null
+  endCorrection: number | null
 }
 defineProps<Props>()
 const emit = defineEmits<{
@@ -38,10 +43,25 @@ const emit = defineEmits<{
       :v-theory="vTheory"
       :percent-error="percentError"
     />
-    <SpeedOfSoundChartPanel v-else-if="id === 'chart'" :waveform-data="waveformData" />
+    <SpeedOfSoundChartPanel
+      v-else-if="id === 'chart'"
+      :trials="trials"
+      :regression-slope="regressionSlope"
+      :regression-intercept="regressionIntercept"
+      :r-squared="rSquared"
+      :waveform-data="waveformData"
+    />
     <SpeedOfSoundTrialsPanel v-else-if="id === 'trials'" :trials="trials" @remove="emit('remove', $event)" @clear="emit('clear')" />
     <SpeedOfSoundParamsPanel v-else-if="id === 'params'" :params="params" @update:params="emit('update:params', $event)" />
     <SpeedOfSoundLawsPanel v-else-if="id === 'laws'" :tube-length="params.tubeLength" :frequency="params.frequency" :temperature="params.temperature" :harmonic="params.harmonic" :wavelength="wavelength" :v-measured="vMeasured" :v-theory="vTheory" />
-    <SpeedOfSoundResultsPanel v-else-if="id === 'results'" :trials="trials" />
+    <SpeedOfSoundResultsPanel
+      v-else-if="id === 'results'"
+      :trials="trials"
+      :regression-slope="regressionSlope"
+      :regression-intercept="regressionIntercept"
+      :r-squared="rSquared"
+      :v-from-regression="vFromRegression"
+      :end-correction="endCorrection"
+    />
   </div>
 </template>

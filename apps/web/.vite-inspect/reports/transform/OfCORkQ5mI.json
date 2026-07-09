@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionCanvas.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useCollisionCanvas } from '../../../composables/experiment/collision/useCollisionCanvas'\nimport type { CollisionParams, CollisionState } from '../../../modules/physics/experiments/collision/useCollisionPhysics'\n\nconst props = defineProps<{\n  params: CollisionParams\n  simState: CollisionState\n}>()\n\nconst { canvasRef, captureSnapshot } = useCollisionCanvas(\n  () => props.params,\n  () => props.simState\n)\ndefineExpose({ captureSnapshot })\n</script>\n\n<template>\n  <div class=\"collision-canvas-wrap\">\n    <canvas ref=\"canvasRef\" />\n  </div>\n</template>\n\n<style scoped>\n.collision-canvas-wrap { flex: 1; min-height: 0; position: relative; background: #0f172a; border-radius: 10px; border: 2px solid #2D3645; overflow: hidden; }\n.collision-canvas-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; }\n</style>\n",
+      "start": 1783634640980,
+      "end": 1783634641424,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641424,
+      "end": 1783634641424,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641424,
+      "end": 1783634641424,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641424,
+      "end": 1783634641424,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641424,
+      "end": 1783634641424,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionCanvas.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionCanvas.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionCanvas.vue?vue&type=style&index=0&scoped=cab0e87c&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-cab0e87c\"]]);\n",
+      "start": 1783634641424,
+      "end": 1783634641643,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641644,
+      "end": 1783634641645,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641645,
+      "end": 1783634641645,
+      "order": "normal"
+    }
+  ]
+}

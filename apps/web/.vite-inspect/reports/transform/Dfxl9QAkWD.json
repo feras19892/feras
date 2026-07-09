@@ -1,0 +1,115 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/panels/ThermalExpansionChartPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, unref as _unref, toDisplayString as _toDisplayString, createStaticVNode as _createStaticVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"chart-panel\" }\nconst _hoisted_2 = {\n  key: 0,\n  viewBox: \"0 0 300 200\",\n  style: {\"width\":\"100%\",\"height\":\"200px\"}\n}\nconst _hoisted_3 = [\"cx\", \"cy\"]\nconst _hoisted_4 = {\n  key: 1,\n  class: \"empty\"\n}\n\nimport { computed } from 'vue'\nimport { useI18n } from '../../../../composables/useI18n'\nimport type { ThermalExpansionTrial } from '../../../../composables/thermal-expansion/useThermalExpansionTrials'\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ThermalExpansionChartPanel',\n  props: {\n    trials: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\nconst props = __props\n\nconst pts = computed(() => props.trials.map(t => ({ x: t.t1, y: t.deltaL * 1000, label: `#${t.id}` })))\nconst xMin = computed(() => pts.value.length ? Math.min(...pts.value.map(p => p.x)) - 10 : 50)\nconst xMax = computed(() => pts.value.length ? Math.max(...pts.value.map(p => p.x)) + 10 : 120)\nconst yMin = computed(() => pts.value.length ? Math.min(...pts.value.map(p => p.y)) - 0.05 : 0)\nconst yMax = computed(() => pts.value.length ? Math.max(...pts.value.map(p => p.y)) + 0.05 : 0.5)\n\nfunction mapX(v: number, W: number) { return 40 + (v - xMin.value) / (xMax.value - xMin.value) * (W - 60) }\nfunction mapY(v: number, H: number) { return H - 30 - (v - yMin.value) / (yMax.value - yMin.value) * (H - 50) }\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (__props.trials.length >= 2)\n      ? (_openBlock(), _createElementBlock(\"svg\", _hoisted_2, [\n          _cache[0] || (_cache[0] = _createStaticVNode(\"<text x=\\\"150\\\" y=\\\"12\\\" text-anchor=\\\"middle\\\" fill=\\\"#8B95A5\\\" font-size=\\\"10\\\" data-v-155bb6fa>ΔL vs t₁</text><line x1=\\\"30\\\" y1=\\\"180\\\" x2=\\\"280\\\" y2=\\\"180\\\" stroke=\\\"#2D3645\\\" stroke-width=\\\"1\\\" data-v-155bb6fa></line><line x1=\\\"30\\\" y1=\\\"20\\\" x2=\\\"30\\\" y2=\\\"180\\\" stroke=\\\"#2D3645\\\" stroke-width=\\\"1\\\" data-v-155bb6fa></line><text x=\\\"150\\\" y=\\\"198\\\" text-anchor=\\\"middle\\\" fill=\\\"#64748b\\\" font-size=\\\"9\\\" data-v-155bb6fa>t₁ (°C)</text><text x=\\\"8\\\" y=\\\"100\\\" text-anchor=\\\"middle\\\" fill=\\\"#64748b\\\" font-size=\\\"9\\\" transform=\\\"rotate(-90, 8, 100)\\\" data-v-155bb6fa>ΔL (mm)</text>\", 5)),\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(pts.value, (p) => {\n            return (_openBlock(), _createElementBlock(\"circle\", {\n              key: p.label,\n              cx: mapX(p.x, 300),\n              cy: mapY(p.y, 200),\n              r: \"4\",\n              fill: \"#5B8DB8\"\n            }, null, 8, _hoisted_3))\n          }), 128))\n        ]))\n      : (_openBlock(), _createElementBlock(\"p\", _hoisted_4, _toDisplayString(_unref(t)('experiments.chartNeedTrials')), 1))\n  ]))\n}\n}\n\n})",
+      "start": 1783634642894,
+      "end": 1783634642894
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642894,
+      "end": 1783634642894,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, unref as _unref, toDisplayString as _toDisplayString, createStaticVNode as _createStaticVNode } from \"vue\";\nconst _hoisted_1 = { class: \"chart-panel\" };\nconst _hoisted_2 = {\n  key: 0,\n  viewBox: \"0 0 300 200\",\n  style: { \"width\": \"100%\", \"height\": \"200px\" }\n};\nconst _hoisted_3 = [\"cx\", \"cy\"];\nconst _hoisted_4 = {\n  key: 1,\n  class: \"empty\"\n};\nimport { computed } from \"vue\";\nimport { useI18n } from \"../../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"ThermalExpansionChartPanel\",\n  props: {\n    trials: {}\n  },\n  setup(__props) {\n    const { t } = useI18n();\n    const props = __props;\n    const pts = computed(() => props.trials.map((t2) => ({ x: t2.t1, y: t2.deltaL * 1e3, label: `#${t2.id}` })));\n    const xMin = computed(() => pts.value.length ? Math.min(...pts.value.map((p) => p.x)) - 10 : 50);\n    const xMax = computed(() => pts.value.length ? Math.max(...pts.value.map((p) => p.x)) + 10 : 120);\n    const yMin = computed(() => pts.value.length ? Math.min(...pts.value.map((p) => p.y)) - 0.05 : 0);\n    const yMax = computed(() => pts.value.length ? Math.max(...pts.value.map((p) => p.y)) + 0.05 : 0.5);\n    function mapX(v, W) {\n      return 40 + (v - xMin.value) / (xMax.value - xMin.value) * (W - 60);\n    }\n    function mapY(v, H) {\n      return H - 30 - (v - yMin.value) / (yMax.value - yMin.value) * (H - 50);\n    }\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        __props.trials.length >= 2 ? (_openBlock(), _createElementBlock(\"svg\", _hoisted_2, [\n          _cache[0] || (_cache[0] = _createStaticVNode('<text x=\"150\" y=\"12\" text-anchor=\"middle\" fill=\"#8B95A5\" font-size=\"10\" data-v-155bb6fa>ΔL vs t₁</text><line x1=\"30\" y1=\"180\" x2=\"280\" y2=\"180\" stroke=\"#2D3645\" stroke-width=\"1\" data-v-155bb6fa></line><line x1=\"30\" y1=\"20\" x2=\"30\" y2=\"180\" stroke=\"#2D3645\" stroke-width=\"1\" data-v-155bb6fa></line><text x=\"150\" y=\"198\" text-anchor=\"middle\" fill=\"#64748b\" font-size=\"9\" data-v-155bb6fa>t₁ (°C)</text><text x=\"8\" y=\"100\" text-anchor=\"middle\" fill=\"#64748b\" font-size=\"9\" transform=\"rotate(-90, 8, 100)\" data-v-155bb6fa>ΔL (mm)</text>', 5)),\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(pts.value, (p) => {\n            return _openBlock(), _createElementBlock(\"circle\", {\n              key: p.label,\n              cx: mapX(p.x, 300),\n              cy: mapY(p.y, 200),\n              r: \"4\",\n              fill: \"#5B8DB8\"\n            }, null, 8, _hoisted_3);\n          }), 128))\n        ])) : (_openBlock(), _createElementBlock(\"p\", _hoisted_4, _toDisplayString(_unref(t)(\"experiments.chartNeedTrials\")), 1))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634642894,
+      "end": 1783634643125,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/panels/ThermalExpansionChartPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, unref as _unref, toDisplayString as _toDisplayString, createStaticVNode as _createStaticVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"chart-panel\" }\nconst _hoisted_2 = {\n  key: 0,\n  viewBox: \"0 0 300 200\",\n  style: {\"width\":\"100%\",\"height\":\"200px\"}\n}\nconst _hoisted_3 = [\"cx\", \"cy\"]\nconst _hoisted_4 = {\n  key: 1,\n  class: \"empty\"\n}\n\nimport { computed } from 'vue'\nimport { useI18n } from '../../../../composables/useI18n'\nimport type { ThermalExpansionTrial } from '../../../../composables/thermal-expansion/useThermalExpansionTrials'\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ThermalExpansionChartPanel',\n  props: {\n    trials: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\nconst props = __props\n\nconst pts = computed(() => props.trials.map(t => ({ x: t.t1, y: t.deltaL * 1000, label: `#${t.id}` })))\nconst xMin = computed(() => pts.value.length ? Math.min(...pts.value.map(p => p.x)) - 10 : 50)\nconst xMax = computed(() => pts.value.length ? Math.max(...pts.value.map(p => p.x)) + 10 : 120)\nconst yMin = computed(() => pts.value.length ? Math.min(...pts.value.map(p => p.y)) - 0.05 : 0)\nconst yMax = computed(() => pts.value.length ? Math.max(...pts.value.map(p => p.y)) + 0.05 : 0.5)\n\nfunction mapX(v: number, W: number) { return 40 + (v - xMin.value) / (xMax.value - xMin.value) * (W - 60) }\nfunction mapY(v: number, H: number) { return H - 30 - (v - yMin.value) / (yMax.value - yMin.value) * (H - 50) }\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (__props.trials.length >= 2)\n      ? (_openBlock(), _createElementBlock(\"svg\", _hoisted_2, [\n          _cache[0] || (_cache[0] = _createStaticVNode(\"<text x=\\\"150\\\" y=\\\"12\\\" text-anchor=\\\"middle\\\" fill=\\\"#8B95A5\\\" font-size=\\\"10\\\" data-v-155bb6fa>ΔL vs t₁</text><line x1=\\\"30\\\" y1=\\\"180\\\" x2=\\\"280\\\" y2=\\\"180\\\" stroke=\\\"#2D3645\\\" stroke-width=\\\"1\\\" data-v-155bb6fa></line><line x1=\\\"30\\\" y1=\\\"20\\\" x2=\\\"30\\\" y2=\\\"180\\\" stroke=\\\"#2D3645\\\" stroke-width=\\\"1\\\" data-v-155bb6fa></line><text x=\\\"150\\\" y=\\\"198\\\" text-anchor=\\\"middle\\\" fill=\\\"#64748b\\\" font-size=\\\"9\\\" data-v-155bb6fa>t₁ (°C)</text><text x=\\\"8\\\" y=\\\"100\\\" text-anchor=\\\"middle\\\" fill=\\\"#64748b\\\" font-size=\\\"9\\\" transform=\\\"rotate(-90, 8, 100)\\\" data-v-155bb6fa>ΔL (mm)</text>\", 5)),\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(pts.value, (p) => {\n            return (_openBlock(), _createElementBlock(\"circle\", {\n              key: p.label,\n              cx: mapX(p.x, 300),\n              cy: mapY(p.y, 200),\n              r: \"4\",\n              fill: \"#5B8DB8\"\n            }, null, 8, _hoisted_3))\n          }), 128))\n        ]))\n      : (_openBlock(), _createElementBlock(\"p\", _hoisted_4, _toDisplayString(_unref(t)('experiments.chartNeedTrials')), 1))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAoD,cAAc,aAAa,YAAY,WAAW,aAAa,YAAY,sBAAsB,qBAAgE,SAAS,QAAQ,mBAAmB,kBAAkB,qBAAqB,0BAA0B;AAE1T,MAAM,aAAa,EAAE,OAAO,cAAc;AAC1C,MAAM,aAAa;AAAA,EACjB,KAAK;AAAA,EACL,SAAS;AAAA,EACT,OAAO,EAAC,SAAQ,QAAO,UAAS,QAAO;AACzC;AACA,MAAM,aAAa,CAAC,MAAM,IAAI;AAC9B,MAAM,aAAa;AAAA,EACjB,KAAK;AAAA,EACL,OAAO;AACT;AAEA,SAAS,gBAAgB;AACzB,SAAS,eAAe;AAGxB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,QAAQ,CAAC;AAAA,EACX;AAAA,EACA,MAAM,SAAc;AAEtB,UAAM,EAAE,EAAE,IAAI,QAAQ;AACtB,UAAM,QAAQ;AAEd,UAAM,MAAM,SAAS,MAAM,MAAM,OAAO,IAAI,CAAAA,QAAM,EAAE,GAAGA,GAAE,IAAI,GAAGA,GAAE,SAAS,KAAM,OAAO,IAAIA,GAAE,EAAE,GAAG,EAAE,CAAC;AACtG,UAAM,OAAO,SAAS,MAAM,IAAI,MAAM,SAAS,KAAK,IAAI,GAAG,IAAI,MAAM,IAAI,OAAK,EAAE,CAAC,CAAC,IAAI,KAAK,EAAE;AAC7F,UAAM,OAAO,SAAS,MAAM,IAAI,MAAM,SAAS,KAAK,IAAI,GAAG,IAAI,MAAM,IAAI,OAAK,EAAE,CAAC,CAAC,IAAI,KAAK,GAAG;AAC9F,UAAM,OAAO,SAAS,MAAM,IAAI,MAAM,SAAS,KAAK,IAAI,GAAG,IAAI,MAAM,IAAI,OAAK,EAAE,CAAC,CAAC,IAAI,OAAO,CAAC;AAC9F,UAAM,OAAO,SAAS,MAAM,IAAI,MAAM,SAAS,KAAK,IAAI,GAAG,IAAI,MAAM,IAAI,OAAK,EAAE,CAAC,CAAC,IAAI,OAAO,GAAG;AAEhG,aAAS,KAAK,GAAW,GAAW;AAAE,aAAO,MAAM,IAAI,KAAK,UAAU,KAAK,QAAQ,KAAK,UAAU,IAAI;AAAA,IAAI;AAC1G,aAAS,KAAK,GAAW,GAAW;AAAE,aAAO,IAAI,MAAM,IAAI,KAAK,UAAU,KAAK,QAAQ,KAAK,UAAU,IAAI;AAAA,IAAI;AAE9G,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC1D,QAAQ,OAAO,UAAU,KACrB,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,UACpD,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,mBAAmB,uhBAA+kB,CAAC;AAAA,WAC5nB,WAAW,IAAI,GAAG,oBAAoB,WAAW,MAAM,YAAY,IAAI,OAAO,CAAC,MAAM;AACpF,mBAAQ,WAAW,GAAG,oBAAoB,UAAU;AAAA,cAClD,KAAK,EAAE;AAAA,cACP,IAAI,KAAK,EAAE,GAAG,GAAG;AAAA,cACjB,IAAI,KAAK,EAAE,GAAG,GAAG;AAAA,cACjB,GAAG;AAAA,cACH,MAAM;AAAA,YACR,GAAG,MAAM,GAAG,UAAU;AAAA,UACxB,CAAC,GAAG,GAAG;AAAA,QACT,CAAC,MACA,WAAW,GAAG,oBAAoB,KAAK,YAAY,iBAAiB,OAAO,CAAC,EAAE,6BAA6B,CAAC,GAAG,CAAC;AAAA,MACvH,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": [
+          "t"
+        ]
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634643125,
+      "end": 1783634643125,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634643125,
+      "end": 1783634643125,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634643125,
+      "end": 1783634643125,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634643125,
+      "end": 1783634643125,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634643125,
+      "end": 1783634643125,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634643125,
+      "end": 1783634643125,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634643125,
+      "end": 1783634643125,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634643125,
+      "end": 1783634643125,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634643125,
+      "end": 1783634643125,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634643125,
+      "end": 1783634643125,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634643125,
+      "end": 1783634643125,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634643125,
+      "end": 1783634643125,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634643125,
+      "end": 1783634643125,
+      "order": "normal"
+    }
+  ]
+}

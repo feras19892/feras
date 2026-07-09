@@ -19,6 +19,10 @@ interface Props {
   firstOrderY: number
   maxOrder: number
   orderPositions: { m: number; yMm: number; intensity: number }[]
+  regressionSlope: number
+  regressionIntercept: number
+  rSquared: number
+  lambdaFromRegression: number | null
 }
 
 defineProps<Props>()
@@ -47,6 +51,10 @@ const emit = defineEmits<{
     <DiffractionChartPanel
       v-else-if="id === 'chart'"
       :mode="mode"
+      :trials="trials"
+      :regression-slope="regressionSlope"
+      :regression-intercept="regressionIntercept"
+      :r-squared="rSquared"
       :intensity-pattern="intensityPattern"
       :order-positions="orderPositions"
     />
@@ -75,6 +83,12 @@ const emit = defineEmits<{
     <DiffractionResultsPanel
       v-else-if="id === 'results'"
       :trials="trials"
+      :regression-slope="regressionSlope"
+      :regression-intercept="regressionIntercept"
+      :r-squared="rSquared"
+      :lambda-from-regression="lambdaFromRegression"
+      :theoretical-lambda="params.wavelength"
+      :screen-distance="params.screenDistance"
     />
   </div>
 </template>

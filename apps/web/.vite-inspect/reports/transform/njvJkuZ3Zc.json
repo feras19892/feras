@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/branches-page.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useRouter } from 'vue-router';\nimport { branches } from './catalog';\nimport { useI18n } from '../../composables/useI18n';\n\nconst { t } = useI18n();\nconst router = useRouter();\n\nfunction goToBranch(id: string) {\n  const branch = branches.find(b => b.id === id)\n  if (branch && branch.experiments.filter(e => e.enabled).length === 1) {\n    router.push(`/physics/${id}/${branch.experiments[0].id}`)\n  } else {\n    router.push(`/physics/${id}`)\n  }\n}\n\nfunction branchNameKey(id: string): string {\n  const map: Record<string, string> = {\n    mechanics: 'experiments.branchMechanics',\n    waves: 'experiments.branchWaves',\n    heat: 'experiments.branchHeat',\n    electricity: 'experiments.branchElectricity',\n    electromagnetism: 'experiments.branchElectromagnetism',\n  };\n  return map[id] || id;\n}\n\nfunction branchDescKey(id: string): string {\n  const map: Record<string, string> = {\n    mechanics: 'experiments.branchMechanicsDesc',\n    waves: 'experiments.branchWavesDesc',\n    heat: 'experiments.branchHeatDesc',\n    electricity: 'experiments.branchElectricityDesc',\n    electromagnetism: 'experiments.branchElectromagnetismDesc',\n  };\n  return map[id] || id;\n}\n</script>\n\n<template>\n  <div class=\"branches-page\">\n    <header class=\"page-header\">\n      <h1>🔬 {{ t('experiments.physicsBranches') }}</h1>\n      <p>{{ t('experiments.chooseBranchToStart') }}</p>\n    </header>\n    <div class=\"grid\">\n      <div\n        v-for=\"branch in branches\"\n        :key=\"branch.id\"\n        class=\"card\"\n        :style=\"{ borderColor: branch.color }\"\n        @click=\"goToBranch(branch.id)\"\n      >\n        <div class=\"icon\" :style=\"{ background: branch.color }\">\n          {{ branch.icon }}\n        </div>\n        <h3>{{ t(branchNameKey(branch.id)) }}</h3>\n        <p class=\"desc\">{{ t(branchDescKey(branch.id)) }}</p>\n        <div class=\"meta\">\n          <span class=\"badge\">{{ branch.experiments.length }} {{ branch.experiments.length === 1 ? t('experiments.experimentsCount') : t('experiments.experimentsCountPlural') }}</span>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.branches-page {\n  min-height: 100vh;\n  background: #0b1220;\n  color: #e2e8f0;\n  padding: 2rem 1rem;\n}\n.page-header { text-align: center; margin-bottom: 2rem; }\n.page-header h1 { color: #67e8f9; margin: 0 0 0.5rem; }\n.page-header p { color: #94a3b8; margin: 0; }\n.grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));\n  gap: 1.5rem;\n  max-width: 1200px;\n  margin: 0 auto;\n}\n.card {\n  background: rgba(255,255,255,0.04);\n  border: 1px solid rgba(255,255,255,0.08);\n  border-radius: 1rem;\n  padding: 1.5rem;\n  cursor: pointer;\n  transition: transform 0.2s, background 0.2s;\n  border-left: 4px solid;\n}\n.card:hover {\n  transform: translateY(-4px);\n  background: rgba(255,255,255,0.07);\n}\n.icon {\n  width: 48px;\n  height: 48px;\n  border-radius: 0.75rem;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 1.5rem;\n  margin-bottom: 0.75rem;\n}\n.card h3 { margin: 0 0 0.5rem; font-size: 1.1rem; }\n.desc { color: #94a3b8; font-size: 0.85rem; margin: 0 0 0.75rem; line-height: 1.5; }\n.meta { display: flex; gap: 0.5rem; }\n.badge {\n  background: rgba(255,255,255,0.08);\n  padding: 2px 10px;\n  border-radius: 999px;\n  font-size: 0.75rem;\n  color: #cbd5e1;\n}\n</style>\n",
+      "start": 1783634639007,
+      "end": 1783634639067,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639067,
+      "end": 1783634639067,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639067,
+      "end": 1783634639067,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639067,
+      "end": 1783634639067,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639067,
+      "end": 1783634639067,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/branches-page.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/branches-page.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/branches-page.vue?vue&type=style&index=0&scoped=0261557c&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-0261557c\"]]);\n",
+      "start": 1783634639067,
+      "end": 1783634639164,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639164,
+      "end": 1783634639164,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639170,
+      "end": 1783634639170,
+      "order": "normal"
+    }
+  ]
+}

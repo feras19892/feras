@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingGuestButtons.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../composables/useI18n'\n\nconst { t } = useI18n()\n\nconst emit = defineEmits<{\n  (e: 'enterAsTeacher'): void\n  (e: 'enterAsStudent'): void\n}>()\n</script>\n\n<template>\n  <div class=\"guest-row\">\n    <span>{{ t('auth.or') }}</span>\n  </div>\n  <div class=\"guest-btn-row\">\n    <button type=\"button\" class=\"btn-guest teacher\" @click=\"emit('enterAsTeacher')\">\n      {{ t('auth.guestTeacher') }}\n    </button>\n    <button data-testid=\"guest-login\" type=\"button\" class=\"btn-guest student\" @click=\"emit('enterAsStudent')\">\n      {{ t('auth.guestStudent') }}\n    </button>\n  </div>\n</template>\n\n<style scoped>\n.guest-row {\n  text-align: center;\n  margin-top: 1rem;\n  font-size: 0.8rem;\n  color: #64748b;\n}\n.guest-row span { margin: 0 0.4rem; }\n\n.guest-btn-row {\n  display: flex;\n  gap: 0.5rem;\n  margin-top: 0.8rem;\n}\n.btn-guest {\n  flex: 1;\n  padding: 0.6rem;\n  border: 1px solid rgba(255,255,255,0.12);\n  border-radius: 0.5rem;\n  background: rgba(255,255,255,0.04);\n  color: #94a3b8;\n  font-size: 0.8rem;\n  cursor: pointer;\n  transition: all 0.2s;\n  font-family: inherit;\n}\n.btn-guest:hover {\n  background: rgba(255,255,255,0.08);\n  color: #e2e8f0;\n}\n.btn-guest.teacher:hover {\n  border-color: rgba(59,130,246,0.4);\n  background: rgba(59,130,246,0.1);\n  color: #93c5fd;\n}\n.btn-guest.student:hover {\n  border-color: rgba(16,185,129,0.4);\n  background: rgba(16,185,129,0.1);\n  color: #86efac;\n}\n</style>\n",
+      "start": 1783634639333,
+      "end": 1783634639613,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639613,
+      "end": 1783634639613,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639613,
+      "end": 1783634639613,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639613,
+      "end": 1783634639613,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639613,
+      "end": 1783634639613,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingGuestButtons.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingGuestButtons.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingGuestButtons.vue?vue&type=style&index=0&scoped=6450d91d&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-6450d91d\"]]);\n",
+      "start": 1783634639613,
+      "end": 1783634639940,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639940,
+      "end": 1783634639940,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639940,
+      "end": 1783634639940,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639940,
+      "end": 1783634639940,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639940,
+      "end": 1783634639940,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639940,
+      "end": 1783634639940,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639940,
+      "end": 1783634639940,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639940,
+      "end": 1783634639940,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639940,
+      "end": 1783634639940,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639940,
+      "end": 1783634639941,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639941,
+      "end": 1783634639941,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/DeletableSection.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { shallowRef } from 'vue'\nimport { useI18n } from '../../composables/useI18n'\n\nconst { t } = useI18n()\nconst deleted = shallowRef(false)\nfunction restore() { deleted.value = false }\n</script>\n\n<template>\n  <section v-if=\"!deleted\" class=\"deletable-section\">\n    <button class=\"delete-section-btn\" @click=\"deleted = true\" :title=\"t('experiments.removeSection')\">✕</button>\n    <slot />\n  </section>\n  <div v-else class=\"restored-section\" @click=\"restore\" :title=\"t('experiments.restoreSection')\">\n    <span>➕ {{ t('experiments.restoreDeletedSection') }}</span>\n  </div>\n</template>\n\n<style scoped>\n.deletable-section { position: relative; }\n.delete-section-btn {\n  position: absolute;\n  top: 6px;\n  left: 6px;\n  z-index: 5;\n  background: #3a1f1f;\n  border: 1px solid #5c2a2a;\n  color: #ff6b6b;\n  border-radius: 4px;\n  padding: .15rem .4rem;\n  font-size: .7rem;\n  cursor: pointer;\n  opacity: 0;\n  transition: opacity .2s;\n}\n.deletable-section:hover .delete-section-btn { opacity: 1; }\n.delete-section-btn:hover { background: #5c2a2a; color: #fff; }\n.restored-section {\n  background: #1a2634;\n  border: 1px dashed #2D3645;\n  border-radius: 8px;\n  padding: .5rem;\n  text-align: center;\n  color: #5B8DB8;\n  font-size: .75rem;\n  cursor: pointer;\n  transition: background .2s;\n}\n.restored-section:hover { background: #1e3344; }\n@media print {\n  .delete-section-btn { display: none !important; }\n  .restored-section { display: none !important; }\n}\n</style>\n",
+      "start": 1783634642373,
+      "end": 1783634642661,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642661,
+      "end": 1783634642661,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642661,
+      "end": 1783634642661,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642661,
+      "end": 1783634642661,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642661,
+      "end": 1783634642661,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/DeletableSection.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/DeletableSection.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/DeletableSection.vue?vue&type=style&index=0&scoped=cdb4af3e&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-cdb4af3e\"]]);\n",
+      "start": 1783634642661,
+      "end": 1783634642870,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642870,
+      "end": 1783634642871,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642871,
+      "end": 1783634642871,
+      "order": "normal"
+    }
+  ]
+}

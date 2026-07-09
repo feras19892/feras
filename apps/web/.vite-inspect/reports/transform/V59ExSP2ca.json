@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/FaradayLawParamPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\nconst { t } = useI18n()\n\nconst props = defineProps<{\n  B: number\n  N: number\n  A: number\n  v: number\n  R: number\n  d: number\n  mode: 'faraday' | 'lenz'\n}>()\n\nconst emit = defineEmits<{\n  (e: 'update:B', v: number): void\n  (e: 'update:N', v: number): void\n  (e: 'update:A', v: number): void\n  (e: 'update:v', v: number): void\n  (e: 'update:R', v: number): void\n  (e: 'update:d', v: number): void\n}>()\n</script>\n\n<template>\n  <div class=\"param-panel\">\n    <div class=\"param-title\">{{ t('experiments.emParams') }}</div>\n\n    <div class=\"param-row\">\n      <label>{{ t('experiments.faradayParamB') }}</label>\n      <input type=\"range\" min=\"0.1\" max=\"2\" step=\"0.05\" :value=\"props.B\"\n        @input=\"emit('update:B', +($event.target as HTMLInputElement).value)\" />\n      <span class=\"param-val\">{{ props.B.toFixed(2) }} T</span>\n    </div>\n\n    <div class=\"param-row\">\n      <label>{{ t('experiments.faradayParamN') }}</label>\n      <input type=\"range\" min=\"1\" max=\"500\" step=\"1\" :value=\"props.N\"\n        @input=\"emit('update:N', +($event.target as HTMLInputElement).value)\" />\n      <span class=\"param-val\">{{ props.N }} {{ t('experiments.genTurns') }}</span>\n    </div>\n\n    <div class=\"param-row\">\n      <label>{{ t('experiments.faradayParamA') }}</label>\n      <input type=\"range\" min=\"10\" max=\"500\" step=\"5\" :value=\"props.A * 10000\"\n        @input=\"emit('update:A', +($event.target as HTMLInputElement).value / 10000)\" />\n      <span class=\"param-val\">{{ (props.A * 10000).toFixed(0) }} cm²</span>\n    </div>\n\n    <div class=\"param-row\">\n      <label>{{ t('experiments.faradayParamV') }}</label>\n      <input type=\"range\" min=\"0.1\" max=\"5\" step=\"0.1\" :value=\"props.v\"\n        @input=\"emit('update:v', +($event.target as HTMLInputElement).value)\" />\n      <span class=\"param-val\">{{ props.v.toFixed(1) }} m/s</span>\n    </div>\n\n    <div class=\"param-row\">\n      <label>{{ t('experiments.faradayParamR') }}</label>\n      <input type=\"range\" min=\"1\" max=\"100\" step=\"1\" :value=\"props.R\"\n        @input=\"emit('update:R', +($event.target as HTMLInputElement).value)\" />\n      <span class=\"param-val\">{{ props.R.toFixed(0) }} Ω</span>\n    </div>\n\n    <div class=\"param-row\">\n      <label>{{ t('experiments.faradayParamD') }}</label>\n      <input type=\"range\" min=\"2\" max=\"15\" step=\"0.5\" :value=\"props.d * 100\"\n        @input=\"emit('update:d', +($event.target as HTMLInputElement).value / 100)\" />\n      <span class=\"param-val\">{{ (props.d * 100).toFixed(1) }} cm</span>\n    </div>\n\n    <div class=\"formula-box\">\n      <div class=\"formula\">EMF = -N · dΦ/dt</div>\n      <div class=\"const\">Φ = B·A &nbsp;|&nbsp; I = EMF / R</div>\n      <div v-if=\"props.mode === 'lenz'\" class=\"const\" style=\"color:#ef4444\">{{ t('experiments.flParamLenz') }}</div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.param-panel { padding: .75rem; display: flex; flex-direction: column; gap: .6rem; }\n.param-title { font-size: .85rem; font-weight: 700; color: #f59e0b; text-align: center; padding-bottom: .3rem; border-bottom: 1px solid #1e2530; }\n.param-row { display: flex; flex-direction: column; gap: .25rem; }\n.param-row label { font-size: .75rem; color: #94a3b8; }\n.param-row input[type=range] { width: 100%; accent-color: #22c55e; }\n.param-val { font-size: .8rem; color: #22c55e; font-weight: 700; font-family: 'Courier New', monospace; }\n.formula-box { margin-top: .25rem; padding: .5rem; background: rgba(245,158,11,.08); border-radius: 6px; border: 1px solid rgba(245,158,11,.15); }\n.formula { font-family: 'Courier New', monospace; font-size: .85rem; color: #f59e0b; text-align: center; }\n.const { font-size: .7rem; color: #a855f7; text-align: center; margin-top: .25rem; }\n</style>\n",
+      "start": 1783634640909,
+      "end": 1783634641205,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641205,
+      "end": 1783634641205,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641205,
+      "end": 1783634641205,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641205,
+      "end": 1783634641205,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641205,
+      "end": 1783634641205,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/FaradayLawParamPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/FaradayLawParamPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/FaradayLawParamPanel.vue?vue&type=style&index=0&scoped=4be94e49&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-4be94e49\"]]);\n",
+      "start": 1783634641205,
+      "end": 1783634641634,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641634,
+      "end": 1783634641634,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641634,
+      "end": 1783634641634,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641634,
+      "end": 1783634641634,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641634,
+      "end": 1783634641635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641635,
+      "end": 1783634641635,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641635,
+      "end": 1783634641635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641635,
+      "end": 1783634641635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641635,
+      "end": 1783634641635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641635,
+      "end": 1783634641635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641635,
+      "end": 1783634641635,
+      "order": "normal"
+    }
+  ]
+}

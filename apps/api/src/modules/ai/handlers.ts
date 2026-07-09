@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
-import { authMiddleware } from '../../shared/middleware/auth.js';
+import { authMiddleware } from '../auth/middleware.js';
 import { ollamaChat, ollamaTags, type ChatMessage } from './services.js';
 import type { User } from '@my-modern-app/shared-types';
 

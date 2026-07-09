@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/collision/useCollisionLayout.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { reactive, ref } from 'vue'\nimport { useI18n } from '../useI18n'\n\nconst STORAGE_KEY = 'collision:layout:v2'\n\nexport type PanelId = 'params' | 'data' | 'signal' | 'scatter' | 'stats' | 'equations' | 'report'\nexport type ColumnId = 'data' | 'vis' | 'ctrl'\n\nconst DEFAULT_ORDER: Record<ColumnId, PanelId[]> = {\n  data: ['data', 'signal', 'scatter'],\n  vis: [],\n  ctrl: ['params'],\n}\n\nexport function useCollisionLayout() {\n  const { t } = useI18n()\n\n  const PANEL_TITLES: Record<PanelId, string> = {\n    params: t('experiments.panelParams'),\n    data: t('experiments.panelData'),\n    signal: t('experiments.panelSignal'),\n    scatter: t('experiments.panelScatter'),\n    stats: t('experiments.panelStats'),\n    equations: t('experiments.panelEquations'),\n    report: t('experiments.panelReport'),\n  }\n  const visible = ref<Set<PanelId>>(new Set(['params', 'data', 'signal']))\n  const columnOrder = reactive<Record<ColumnId, PanelId[]>>(JSON.parse(JSON.stringify(DEFAULT_ORDER)))\n  const maximized = reactive<Partial<Record<PanelId, boolean>>>({})\n\n  function isPanelVisible(id: string) { return visible.value.has(id as PanelId) }\n  function togglePanel(id: string) {\n    const pid = id as PanelId\n    if (visible.value.has(pid)) visible.value.delete(pid)\n    else visible.value.add(pid)\n    persist()\n  }\n  function showAllPanels() {\n    visible.value = new Set(Object.keys(PANEL_TITLES) as PanelId[])\n    persist()\n  }\n  function showPanels(ids: PanelId[]) {\n    for (const id of ids) visible.value.add(id)\n    persist()\n  }\n  function panelTitle(id: string) { return PANEL_TITLES[id as PanelId] ?? id }\n\n  function maximizePanel(id: string) {\n    const pid = id as PanelId\n    maximized[pid] = !maximized[pid]\n  }\n\n  function movePanel(id: string, col: ColumnId, afterId?: string | null) {\n    const pid = id as PanelId\n    const after = afterId ? (afterId as PanelId) : null\n    for (const c of Object.keys(columnOrder) as ColumnId[]) {\n      columnOrder[c] = columnOrder[c].filter((p) => p !== pid)\n    }\n    if (!columnOrder[col]) columnOrder[col] = []\n    if (after) {\n      const idx = columnOrder[col].indexOf(after)\n      if (idx >= 0) columnOrder[col].splice(idx + 1, 0, pid)\n      else columnOrder[col].push(pid)\n    } else {\n      columnOrder[col].push(pid)\n    }\n    persist()\n  }\n\n  function persist() {\n    localStorage.setItem(STORAGE_KEY, JSON.stringify({\n      visible: Array.from(visible.value),\n      columnOrder,\n    }))\n  }\n\n  function applyPersistedLayout() {\n    try {\n      const raw = localStorage.getItem(STORAGE_KEY)\n      if (raw) {\n        const parsed = JSON.parse(raw)\n        if (parsed.visible) visible.value = new Set(parsed.visible)\n        if (parsed.columnOrder) Object.assign(columnOrder, parsed.columnOrder)\n      }\n    } catch { /* ignore */ }\n  }\n\n  return {\n    visible,\n    columnOrder,\n    maximized,\n    isPanelVisible,\n    togglePanel,\n    showAllPanels,\n    showPanels,\n    panelTitle,\n    maximizePanel,\n    movePanel,\n    applyPersistedLayout,\n  }\n}\n",
+      "start": 1783634641934,
+      "end": 1783634642181,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642181,
+      "end": 1783634642181,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { reactive, ref } from \"vue\";\nimport { useI18n } from \"../useI18n\";\nconst STORAGE_KEY = \"collision:layout:v2\";\nconst DEFAULT_ORDER = {\n  data: [\"data\", \"signal\", \"scatter\"],\n  vis: [],\n  ctrl: [\"params\"]\n};\nexport function useCollisionLayout() {\n  const { t } = useI18n();\n  const PANEL_TITLES = {\n    params: t(\"experiments.panelParams\"),\n    data: t(\"experiments.panelData\"),\n    signal: t(\"experiments.panelSignal\"),\n    scatter: t(\"experiments.panelScatter\"),\n    stats: t(\"experiments.panelStats\"),\n    equations: t(\"experiments.panelEquations\"),\n    report: t(\"experiments.panelReport\")\n  };\n  const visible = ref(/* @__PURE__ */ new Set([\"params\", \"data\", \"signal\"]));\n  const columnOrder = reactive(JSON.parse(JSON.stringify(DEFAULT_ORDER)));\n  const maximized = reactive({});\n  function isPanelVisible(id) {\n    return visible.value.has(id);\n  }\n  function togglePanel(id) {\n    const pid = id;\n    if (visible.value.has(pid)) visible.value.delete(pid);\n    else visible.value.add(pid);\n    persist();\n  }\n  function showAllPanels() {\n    visible.value = new Set(Object.keys(PANEL_TITLES));\n    persist();\n  }\n  function showPanels(ids) {\n    for (const id of ids) visible.value.add(id);\n    persist();\n  }\n  function panelTitle(id) {\n    return PANEL_TITLES[id] ?? id;\n  }\n  function maximizePanel(id) {\n    const pid = id;\n    maximized[pid] = !maximized[pid];\n  }\n  function movePanel(id, col, afterId) {\n    const pid = id;\n    const after = afterId ? afterId : null;\n    for (const c of Object.keys(columnOrder)) {\n      columnOrder[c] = columnOrder[c].filter((p) => p !== pid);\n    }\n    if (!columnOrder[col]) columnOrder[col] = [];\n    if (after) {\n      const idx = columnOrder[col].indexOf(after);\n      if (idx >= 0) columnOrder[col].splice(idx + 1, 0, pid);\n      else columnOrder[col].push(pid);\n    } else {\n      columnOrder[col].push(pid);\n    }\n    persist();\n  }\n  function persist() {\n    localStorage.setItem(STORAGE_KEY, JSON.stringify({\n      visible: Array.from(visible.value),\n      columnOrder\n    }));\n  }\n  function applyPersistedLayout() {\n    try {\n      const raw = localStorage.getItem(STORAGE_KEY);\n      if (raw) {\n        const parsed = JSON.parse(raw);\n        if (parsed.visible) visible.value = new Set(parsed.visible);\n        if (parsed.columnOrder) Object.assign(columnOrder, parsed.columnOrder);\n      }\n    } catch {\n    }\n  }\n  return {\n    visible,\n    columnOrder,\n    maximized,\n    isPanelVisible,\n    togglePanel,\n    showAllPanels,\n    showPanels,\n    panelTitle,\n    maximizePanel,\n    movePanel,\n    applyPersistedLayout\n  };\n}\n",
+      "start": 1783634642181,
+      "end": 1783634642316,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/collision/useCollisionLayout.ts"
+        ],
+        "sourcesContent": [
+          "import { reactive, ref } from 'vue'\nimport { useI18n } from '../useI18n'\n\nconst STORAGE_KEY = 'collision:layout:v2'\n\nexport type PanelId = 'params' | 'data' | 'signal' | 'scatter' | 'stats' | 'equations' | 'report'\nexport type ColumnId = 'data' | 'vis' | 'ctrl'\n\nconst DEFAULT_ORDER: Record<ColumnId, PanelId[]> = {\n  data: ['data', 'signal', 'scatter'],\n  vis: [],\n  ctrl: ['params'],\n}\n\nexport function useCollisionLayout() {\n  const { t } = useI18n()\n\n  const PANEL_TITLES: Record<PanelId, string> = {\n    params: t('experiments.panelParams'),\n    data: t('experiments.panelData'),\n    signal: t('experiments.panelSignal'),\n    scatter: t('experiments.panelScatter'),\n    stats: t('experiments.panelStats'),\n    equations: t('experiments.panelEquations'),\n    report: t('experiments.panelReport'),\n  }\n  const visible = ref<Set<PanelId>>(new Set(['params', 'data', 'signal']))\n  const columnOrder = reactive<Record<ColumnId, PanelId[]>>(JSON.parse(JSON.stringify(DEFAULT_ORDER)))\n  const maximized = reactive<Partial<Record<PanelId, boolean>>>({})\n\n  function isPanelVisible(id: string) { return visible.value.has(id as PanelId) }\n  function togglePanel(id: string) {\n    const pid = id as PanelId\n    if (visible.value.has(pid)) visible.value.delete(pid)\n    else visible.value.add(pid)\n    persist()\n  }\n  function showAllPanels() {\n    visible.value = new Set(Object.keys(PANEL_TITLES) as PanelId[])\n    persist()\n  }\n  function showPanels(ids: PanelId[]) {\n    for (const id of ids) visible.value.add(id)\n    persist()\n  }\n  function panelTitle(id: string) { return PANEL_TITLES[id as PanelId] ?? id }\n\n  function maximizePanel(id: string) {\n    const pid = id as PanelId\n    maximized[pid] = !maximized[pid]\n  }\n\n  function movePanel(id: string, col: ColumnId, afterId?: string | null) {\n    const pid = id as PanelId\n    const after = afterId ? (afterId as PanelId) : null\n    for (const c of Object.keys(columnOrder) as ColumnId[]) {\n      columnOrder[c] = columnOrder[c].filter((p) => p !== pid)\n    }\n    if (!columnOrder[col]) columnOrder[col] = []\n    if (after) {\n      const idx = columnOrder[col].indexOf(after)\n      if (idx >= 0) columnOrder[col].splice(idx + 1, 0, pid)\n      else columnOrder[col].push(pid)\n    } else {\n      columnOrder[col].push(pid)\n    }\n    persist()\n  }\n\n  function persist() {\n    localStorage.setItem(STORAGE_KEY, JSON.stringify({\n      visible: Array.from(visible.value),\n      columnOrder,\n    }))\n  }\n\n  function applyPersistedLayout() {\n    try {\n      const raw = localStorage.getItem(STORAGE_KEY)\n      if (raw) {\n        const parsed = JSON.parse(raw)\n        if (parsed.visible) visible.value = new Set(parsed.visible)\n        if (parsed.columnOrder) Object.assign(columnOrder, parsed.columnOrder)\n      }\n    } catch { /* ignore */ }\n  }\n\n  return {\n    visible,\n    columnOrder,\n    maximized,\n    isPanelVisible,\n    togglePanel,\n    showAllPanels,\n    showPanels,\n    panelTitle,\n    maximizePanel,\n    movePanel,\n    applyPersistedLayout,\n  }\n}\n"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642316,
+      "end": 1783634642316,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642316,
+      "end": 1783634642316,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642316,
+      "end": 1783634642316,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642316,
+      "end": 1783634642316,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642316,
+      "end": 1783634642316,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642316,
+      "end": 1783634642316,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642316,
+      "end": 1783634642316,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642316,
+      "end": 1783634642316,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642316,
+      "end": 1783634642316,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642316,
+      "end": 1783634642316,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642316,
+      "end": 1783634642316,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642316,
+      "end": 1783634642316,
+      "order": "normal"
+    }
+  ]
+}

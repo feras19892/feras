@@ -8,6 +8,7 @@ export interface CalorimetryTrial {
   tMetal: number
   tf: number
   cMetal: number
+  cTrue?: number
 }
 
 export interface TrialState {
@@ -18,7 +19,7 @@ export interface TrialState {
 const SAVE_KEY = 'calorimetry:trials:v1'
 
 export function useCalorimetryTrials(
-  params: { value: { mWater: number; tWater: number; mMetal: number; tMetal: number; tf: number; cMetal: number } }
+  params: { value: { mWater: number; tWater: number; mMetal: number; tMetal: number; tf: number; cMetal: number; cTrue?: number } }
 ) {
   const trials = ref<CalorimetryTrial[]>([])
   const nextId = ref(1)
@@ -49,8 +50,8 @@ export function useCalorimetryTrials(
   }
   function recordTrial() {
     pushState()
-    const { mWater, tWater, mMetal, tMetal, tf, cMetal } = params.value
-    trials.value.push({ id: nextId.value++, mWater, tWater, mMetal, tMetal, tf, cMetal })
+    const { mWater, tWater, mMetal, tMetal, tf, cMetal, cTrue } = params.value
+    trials.value.push({ id: nextId.value++, mWater, tWater, mMetal, tMetal, tf, cMetal, cTrue })
   }
   function undo() {
     if (undoStack.value.length === 0) return

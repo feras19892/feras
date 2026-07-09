@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/pendulum/PendulumPanelBody.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport PendulumDataPanel from './PendulumDataPanel.vue'\nimport PendulumParamPanel from './PendulumParamPanel.vue'\nimport PendulumSignalChart from './PendulumSignalChart.vue'\nimport type { PendulumTrial } from '../../../composables/pendulum/usePendulumTrials'\nimport type { PendulumParams } from '../../../modules/physics/experiments/pendulum/usePendulumPhysics'\nimport { useI18n } from '../../../composables/useI18n'\n\ninterface Measured { T: number | null; f: number | null; omega: number | null; gCalc: number | null }\ninterface SimState { theta: number; omega: number; t: number; running: boolean; paused: boolean; signalSeries: { t: number; theta: number }[]; measurementPeriod: number | null }\n\nconst { t } = useI18n()\nconst props = defineProps<{\n  id: string; trials: PendulumTrial[]; params: PendulumParams; sim: SimState; measured: Measured\n}>()\n\nconst emit = defineEmits<{\n  (e: 'update:trials', val: PendulumTrial[]): void; (e: 'update:params', val: PendulumParams): void\n  (e: 'remove', id: number): void; (e: 'clear'): void\n}>()\n</script>\n\n<template>\n  <PendulumDataPanel v-if=\"id === 'table'\" :model-value=\"trials\" @update:model-value=\"emit('update:trials', $event)\" @remove=\"emit('remove', $event)\" @clear=\"emit('clear')\" />\n  <PendulumParamPanel v-else-if=\"id === 'params'\" :model-value=\"params\" @update:model-value=\"emit('update:params', $event)\" />\n  <template v-else-if=\"id === 'guide'\">\n    <div class=\"guide-text\">\n      <p><b>{{ t('experiments.experimentSteps') }}:</b></p>\n      <ol>\n        <li>{{ t('experiments.pendulumGuideStep1') }}</li>\n        <li>{{ t('experiments.pendulumGuideStep2') }}</li>\n        <li>{{ t('experiments.pendulumGuideStep3') }}</li>\n        <li>{{ t('experiments.pendulumGuideStep4') }}</li>\n        <li>{{ t('experiments.pendulumGuideStep5') }}</li>\n        <li>{{ t('experiments.pendulumGuideStep6') }}</li>\n        <li>{{ t('experiments.pendulumGuideStep7') }}</li>\n      </ol>\n      <p><b>{{ t('experiments.note') }}:</b> {{ t('experiments.pendulumNote') }}</p>\n      <div class=\"mass-independence-note\">\n        <p><b>🔬 ملاحظة علمية مهمة:</b></p>\n        <p>في المعادلة <code>T = 2π√(L/g)</code> لا يوجد متغير الكتلة (<code>m</code>)، مما يعني أن <strong>الزمن الدوري (T) لا يعتمد على كتلة الجسم المعلق</strong>.</p>\n        <p>جرب تغيير كتلة البندول من لوحة المتغيرات — ستجد أن T ثابت تقريباً رغم تغيّر الكتلة!</p>\n      </div>\n    </div>\n  </template>\n  <PendulumSignalChart v-else-if=\"id === 'signal'\" :series=\"sim.signalSeries\" :params=\"{ length: params.length, g: params.g, theta0: params.theta0 }\" :sim-t=\"sim.t\" />\n</template>\n\n<style scoped>\n.guide-text { font-size: .75rem; color: #D1D7E0; line-height: 1.6; }\n.guide-text ol { padding-right: 1.2rem; margin: .3rem 0; }\n.guide-text li { margin-bottom: .2rem; }\n.mass-independence-note { background: #1a2332; border: 1px solid #2D3645; border-radius: 6px; padding: .5rem .6rem; margin-top: .5rem; direction: rtl; text-align: right; }\n.mass-independence-note p { margin: .2rem 0; }\n.mass-independence-note code { background: #252D3A; padding: .05rem .25rem; border-radius: 3px; font-family: monospace; font-size: .75rem; }\n</style>\n",
+      "start": 1783634640917,
+      "end": 1783634641233,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641233,
+      "end": 1783634641233,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641233,
+      "end": 1783634641233,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641233,
+      "end": 1783634641233,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641233,
+      "end": 1783634641233,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/pendulum/PendulumPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/pendulum/PendulumPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/pendulum/PendulumPanelBody.vue?vue&type=style&index=0&scoped=f441e1f7&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-f441e1f7\"]]);\n",
+      "start": 1783634641233,
+      "end": 1783634641655,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641656,
+      "end": 1783634641657,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641657,
+      "end": 1783634641657,
+      "order": "normal"
+    }
+  ]
+}

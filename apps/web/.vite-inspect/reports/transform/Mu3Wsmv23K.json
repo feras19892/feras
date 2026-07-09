@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/ThermalExpansionStatusBar.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed } from 'vue'\nimport { useI18n } from '../../../composables/useI18n'\nimport { ALPHA } from '../../../composables/thermal-expansion/useThermalExpansionCalculations'\nconst { t } = useI18n()\nconst props = defineProps<{\n  running: boolean\n  paused: boolean\n  material: string\n  L0: number\n  t0: number\n  t1: number\n  currentT: number\n  dL: number\n  phase?: string\n}>()\nconst alpha = computed(() => ALPHA[props.material] ?? 16.5)\nconst phaseAr = (p?: string) => {\n  const map: Record<string, string> = { ready: 'جاهز', heating: 'تسخين', done: 'توازن' }\n  return map[p ?? ''] ?? p ?? ''\n}\n</script>\n<template>\n  <div class=\"status-bar\">\n    <span class=\"dot\" :class=\"running ? (paused ? 'paused' : 'run') : 'off'\" />\n    <span>{{ running ? (paused ? t('experiments.statusPaused') : t('experiments.statusRunning')) : t('experiments.statusIdle') }}</span>\n    <span class=\"sep\">|</span>\n    <span class=\"badge phase\">{{ phaseAr(phase) }}</span>\n    <span class=\"sep\">|</span>\n    <span>{{ material }} α={{ alpha.toFixed(1) }}×10⁻⁶/K</span>\n    <span class=\"sep\">|</span>\n    <span>L₀={{ L0.toFixed(2) }} m</span>\n    <span class=\"sep\">|</span>\n    <span class=\"badge temp\">t={{ currentT.toFixed(1) }}°C</span>\n    <span class=\"sep\">|</span>\n    <span>ΔL={{ (dL * 1000).toFixed(2) }} mm</span>\n  </div>\n</template>\n<style scoped>\n.status-bar { display:flex; align-items:center; gap:.5rem; padding:.25rem .7rem; background:#0d1117; border-top:1px solid #1e2530; font-size:.72rem; color:#8B95A5; flex-shrink:0; }\n.dot { width:7px; height:7px; border-radius:50%; background:#475569; }\n.dot.run { background:#22c55e; }\n.dot.paused { background:#f59e0b; }\n.sep { color:#2D3645; }\n.badge { border-radius:4px; padding:.06rem .3rem; font-weight:600; font-size:.68rem; }\n.badge.phase { background:rgba(91,141,184,.1); color:#5B8DB8; border:1px solid rgba(91,141,184,.2); }\n.badge.temp { background:rgba(245,158,11,.1); color:#fbbf24; border:1px solid rgba(245,158,11,.2); }\n</style>\n",
+      "start": 1783634640990,
+      "end": 1783634641456,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641456,
+      "end": 1783634641456,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641456,
+      "end": 1783634641456,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641456,
+      "end": 1783634641456,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641456,
+      "end": 1783634641456,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/ThermalExpansionStatusBar.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/ThermalExpansionStatusBar.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/ThermalExpansionStatusBar.vue?vue&type=style&index=0&scoped=4c6f2da7&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-4c6f2da7\"]]);\n",
+      "start": 1783634641456,
+      "end": 1783634641655,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641655,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641656,
+      "end": 1783634641657,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641657,
+      "end": 1783634641657,
+      "order": "normal"
+    }
+  ]
+}

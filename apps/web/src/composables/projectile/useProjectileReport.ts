@@ -1,15 +1,16 @@
 import { useExperimentReport } from '../useExperimentReport'
 import { useI18n } from '../useI18n'
+import type { ProjectileTrial } from './useProjectileTrials'
 import type { LabReportTable, LabReportStat } from '../../utils/lab-report'
+
+interface ProjectileReportInput { params: { v0: number; angleDeg: number; g: number; dragCoeff: number }; trials: { trials: { value: ProjectileTrial[] }; trialStats: { value: { range_mean: number; range_std: number; flightTime_mean: number; flightTime_std: number } }; fitResult: { value: { slope: number; intercept: number } | null }; calcResult: { value: string } } }
 
 export function useProjectileReport() {
   const { t } = useI18n()
   const rep = useExperimentReport('projectile_report_student')
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function openFullReport(ex: any) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const trials: any[] = ex.trials.trials.value
+  function openFullReport(ex: ProjectileReportInput) {
+    const trials = ex.trials.trials.value
     const trialStats = ex.trials.trialStats.value
     const fitResult = ex.trials.fitResult.value
 
@@ -71,8 +72,7 @@ export function useProjectileReport() {
         { title: t('experiments.usedEquations'), html: lawsBlock },
         fitBlock ? { title: t('experiments.rangeCurveFitting'), html: fitBlock } : null,
         { title: t('experiments.potentialErrorSources'), html: `<ul style="margin:0;padding-right:1.2rem;font-size:.85rem"><li>${t('experiments.airFriction')}</li><li>${t('experiments.humanStopwatchAccuracy')}</li><li>${t('experiments.parallaxError')}</li><li>${t('experiments.earthRotationEffect')}</li><li>${t('experiments.gVariationWithHeight')}</li></ul>` },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ].filter(Boolean) as any[],
+      ].filter((x): x is { title: string; html: string } => x !== null),
       footerNote: t('experiments.footerNote') + ' • ' + t('experiments.branchMechanics'),
     })
   }

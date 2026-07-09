@@ -19,6 +19,7 @@ export function useCollisionExperiment() {
   const trials = useCollisionTrials(params, lab.sim)
 
   function resetSim() { lab.resetSim() }
+  function runCollisionLab() { lab.runCollisionLab(trials.recordTrial, trials.calcM2FromSlope) }
 
   const colClasses: Record<ColumnId, string> = { data: 'data-col', vis: 'vis-col', ctrl: 'ctrl-col' }
   const hasVisibleVisPanels = computed(() => getColumnPanels('vis').some(id => layout.isPanelVisible(id)))
@@ -85,7 +86,7 @@ export function useCollisionExperiment() {
       v1f: t.v1f, v2f: t.v2f, Pi: t.Pi, Pf: t.Pf, KEi: t.KEi, KEf: t.KEf, lossPercent: t.lossPercent,
     }))
     const payload: AnalysisPayload = {
-      sourceExperiment: 'collision', sourceNameAr: t('experiments.expCollision'), readings,
+      sourceExperiment: 'collision', sourceNameAr: t('experiments.expCollision'), hasCalcTab: true, readings,
       columns: [
         { key: 'm1', label: 'm₁', unit: 'kg' },
         { key: 'm2', label: 'm₂', unit: 'kg' },
@@ -104,6 +105,7 @@ export function useCollisionExperiment() {
         { name: t('experiments.eqRestitution'), formula: 'e = (v₂f − v₁f)/(v₁i − v₂i)', variables: [{ symbol: 'e', label: 'e' }, { symbol: 'v1i', label: 'v₁i' }, { symbol: 'v2i', label: 'v₂i' }, { symbol: 'v1f', label: 'v₁f' }, { symbol: 'v2f', label: 'v₂f' }], solveFor: ['e'] },
       ],
       suggestedPlots: [
+        { xKey: 'Pi', yKey: 'v1f', xLabel: `P ${t('experiments.before')} (kg·m/s)`, yLabel: 'v₁f (m/s)', type: 'scatter' },
         { xKey: 'm1', yKey: 'v1f', xLabel: 'm₁ (kg)', yLabel: 'v₁f (m/s)', type: 'scatter' },
         { xKey: 'KEi', yKey: 'KEf', xLabel: `KE ${t('experiments.before')} (J)`, yLabel: `KE ${t('experiments.after')} (J)`, type: 'scatter' },
       ],
@@ -113,7 +115,7 @@ export function useCollisionExperiment() {
 
   return {
     params, lab, layout, trials,
-    resetSim, updateParams,
+    resetSim, runCollisionLab, updateParams,
     colClasses, hasVisibleVisPanels, getColumnPanels,
     colWidths, onResizeStart, handleDrop,
     exportToAnalysis,

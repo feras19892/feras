@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingGuestButtons.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"guest-row\" }\nconst _hoisted_2 = { class: \"guest-btn-row\" }\n\nimport { useI18n } from '../../composables/useI18n'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'LandingGuestButtons',\n  emits: [\"enterAsTeacher\", \"enterAsStudent\"],\n  setup(__props, { emit: __emit }) {\n\nconst { t } = useI18n()\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(_Fragment, null, [\n    _createElementVNode(\"div\", _hoisted_1, [\n      _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('auth.or')), 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"button\", {\n        type: \"button\",\n        class: \"btn-guest teacher\",\n        onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('enterAsTeacher')))\n      }, _toDisplayString(_unref(t)('auth.guestTeacher')), 1),\n      _createElementVNode(\"button\", {\n        \"data-testid\": \"guest-login\",\n        type: \"button\",\n        class: \"btn-guest student\",\n        onClick: _cache[1] || (_cache[1] = ($event: any) => (emit('enterAsStudent')))\n      }, _toDisplayString(_unref(t)('auth.guestStudent')), 1)\n    ])\n  ], 64))\n}\n}\n\n})",
+      "start": 1783634640005,
+      "end": 1783634640005
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640005,
+      "end": 1783634640005,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"guest-row\" };\nconst _hoisted_2 = { class: \"guest-btn-row\" };\nimport { useI18n } from \"../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"LandingGuestButtons\",\n  emits: [\"enterAsTeacher\", \"enterAsStudent\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const emit = __emit;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(_Fragment, null, [\n        _createElementVNode(\"div\", _hoisted_1, [\n          _createElementVNode(\"span\", null, _toDisplayString(_unref(t)(\"auth.or\")), 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_2, [\n          _createElementVNode(\"button\", {\n            type: \"button\",\n            class: \"btn-guest teacher\",\n            onClick: _cache[0] || (_cache[0] = ($event) => emit(\"enterAsTeacher\"))\n          }, _toDisplayString(_unref(t)(\"auth.guestTeacher\")), 1),\n          _createElementVNode(\"button\", {\n            \"data-testid\": \"guest-login\",\n            type: \"button\",\n            class: \"btn-guest student\",\n            onClick: _cache[1] || (_cache[1] = ($event) => emit(\"enterAsStudent\"))\n          }, _toDisplayString(_unref(t)(\"auth.guestStudent\")), 1)\n        ])\n      ], 64);\n    };\n  }\n});\n",
+      "start": 1783634640005,
+      "end": 1783634640104,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingGuestButtons.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"guest-row\" }\nconst _hoisted_2 = { class: \"guest-btn-row\" }\n\nimport { useI18n } from '../../composables/useI18n'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'LandingGuestButtons',\n  emits: [\"enterAsTeacher\", \"enterAsStudent\"],\n  setup(__props, { emit: __emit }) {\n\nconst { t } = useI18n()\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(_Fragment, null, [\n    _createElementVNode(\"div\", _hoisted_1, [\n      _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('auth.or')), 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"button\", {\n        type: \"button\",\n        class: \"btn-guest teacher\",\n        onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('enterAsTeacher')))\n      }, _toDisplayString(_unref(t)('auth.guestTeacher')), 1),\n      _createElementVNode(\"button\", {\n        \"data-testid\": \"guest-login\",\n        type: \"button\",\n        class: \"btn-guest student\",\n        onClick: _cache[1] || (_cache[1] = ($event: any) => (emit('enterAsStudent')))\n      }, _toDisplayString(_unref(t)('auth.guestStudent')), 1)\n    ])\n  ], 64))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,SAAS,QAAQ,mBAAmB,kBAAkB,sBAAsB,qBAAqB,YAAY,WAAW,aAAa,YAAY,sBAAsB,2BAA2B;AAE3M,MAAM,aAAa,EAAE,OAAO,YAAY;AACxC,MAAM,aAAa,EAAE,OAAO,gBAAgB;AAE5C,SAAS,eAAe;AAGxB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO,CAAC,kBAAkB,gBAAgB;AAAA,EAC1C,MAAM,SAAS,EAAE,MAAM,OAAO,GAAG;AAEnC,UAAM,EAAE,EAAE,IAAI,QAAQ;AAEtB,UAAM,OAAO;AAEb,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,WAAW,MAAM;AAAA,QACzD,oBAAoB,OAAO,YAAY;AAAA,UACrC,oBAAoB,QAAQ,MAAM,iBAAiB,OAAO,CAAC,EAAE,SAAS,CAAC,GAAG,CAAC;AAAA,QAC7E,CAAC;AAAA,QACD,oBAAoB,OAAO,YAAY;AAAA,UACrC,oBAAoB,UAAU;AAAA,YAC5B,MAAM;AAAA,YACN,OAAO;AAAA,YACP,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,gBAAgB;AAAA,UAC5E,GAAG,iBAAiB,OAAO,CAAC,EAAE,mBAAmB,CAAC,GAAG,CAAC;AAAA,UACtD,oBAAoB,UAAU;AAAA,YAC5B,eAAe;AAAA,YACf,MAAM;AAAA,YACN,OAAO;AAAA,YACP,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,gBAAgB;AAAA,UAC5E,GAAG,iBAAiB,OAAO,CAAC,EAAE,mBAAmB,CAAC,GAAG,CAAC;AAAA,QACxD,CAAC;AAAA,MACH,GAAG,EAAE;AAAA,IACP;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640104,
+      "end": 1783634640104,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640104,
+      "end": 1783634640104,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634640104,
+      "end": 1783634640104,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640104,
+      "end": 1783634640104,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640104,
+      "end": 1783634640104,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640104,
+      "end": 1783634640104,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640104,
+      "end": 1783634640104,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640104,
+      "end": 1783634640104,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640104,
+      "end": 1783634640104,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640104,
+      "end": 1783634640104,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640104,
+      "end": 1783634640104,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640104,
+      "end": 1783634640105,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640105,
+      "end": 1783634640105,
+      "order": "normal"
+    }
+  ]
+}

@@ -15,6 +15,10 @@ interface Props {
   firstOrderY: number
   maxOrder: number
   orderPositions: { m: number; yMm: number; intensity: number }[]
+  regressionSlope: number
+  regressionIntercept: number
+  rSquared: number
+  lambdaFromRegression: number | null
 }
 
 const props = defineProps<Props>()
@@ -48,6 +52,10 @@ const ids = ['readings', 'chart', 'trials', 'params', 'laws', 'results']
           :first-order-y="firstOrderY"
           :max-order="maxOrder"
           :order-positions="orderPositions"
+          :regression-slope="regressionSlope"
+          :regression-intercept="regressionIntercept"
+          :r-squared="rSquared"
+          :lambda-from-regression="lambdaFromRegression"
           @remove="emit('remove', $event)"
           @clear="emit('clear')"
           @update:params="emit('update:params', $event)"

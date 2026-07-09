@@ -47,6 +47,9 @@ export class FluidSimulation {
     const tiltRad = (tiltAngle * Math.PI) / 180;
     const gravityX = Math.sin(tiltRad) * GRAVITY;
     const gravityY = Math.cos(tiltRad) * GRAVITY;
+    // Precompute tan once per frame instead of per-particle
+    this.tanTilt = Math.tan(tiltRad);
+    this.liquidBase = this.getLiquidBase();
 
     for (const p of this.particles) {
       // Apply gravity based on tilt
@@ -77,7 +80,7 @@ export class FluidSimulation {
       }
 
       // Surface collision (keep particles below liquid level)
-      const liquidLevel = this.getLiquidLevelAt(p.x);
+      const liquidLevel = this.liquidBase + this.tanTilt * (p.x - 70);
       if (p.y - p.radius < liquidLevel) {
         p.y = liquidLevel + p.radius;
         p.vy *= -DAMPING;
@@ -122,14 +125,19 @@ export class FluidSimulation {
     }
   }
 
-  private getLiquidLevelAt(x: number): number {
-    const { topY, volume, tiltAngle } = this.config;
+  private liquidBase = 172;
+  private tanTilt = 0;
+
+  private getLiquidBase(): number {
+    const { topY, volume } = this.config;
     const bottomY = 172;
     if (volume <= 0) return bottomY;
     const fillHeight = (volume / 100) * (bottomY - topY - 30);
-    const baseLevel = bottomY - fillHeight;
-    const tiltOffset = Math.tan((tiltAngle * Math.PI) / 180) * (x - 70);
-    return baseLevel + tiltOffset;
+    return bottomY - fillHeight;
+  }
+
+  private getLiquidLevelAt(x: number): number {
+    return this.liquidBase + this.tanTilt * (x - 70);
   }
 
   private isInsideBeaker(x: number, y: number): boolean {

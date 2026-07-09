@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/wave-interference/WaveInterferenceCanvas.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, onMounted, onUnmounted, watch } from 'vue'\n\nconst props = defineProps<{\n  mode?: 'ripple' | 'young' | 'sources'\n  sourceDistance: number\n  wavelength: number\n  frequency: number\n  screenDistance: number\n  amplitudeMap: { yMm: number; amplitude: number }[]\n  constructive: { m: number; yMm: number }[]\n  destructive: { m: number; yMm: number }[]\n  running: boolean\n}>()\n\nconst canvasRef = ref<HTMLCanvasElement | null>(null)\nconst W = 800, H = 400\nlet time = 0\nlet animId = 0\nlet lastTs = 0\n\nfunction getCtx() {\n  const c = canvasRef.value\n  return c ? c.getContext('2d') : null\n}\n\nfunction draw() {\n  const ctx = getCtx()\n  if (!ctx) return\n\n  ctx.fillStyle = '#0B1220'\n  ctx.fillRect(0, 0, W, H)\n\n  const s1x = W / 2 - props.sourceDistance * 500\n  const s2x = W / 2 + props.sourceDistance * 500\n  const sY = H - 50\n  const lambdaPx = Math.max(15, props.wavelength * 1200)\n\n  /* === ANIMATED WAVE RINGS === */\n  const numRings = 7\n  const spacing = lambdaPx\n  const speed = props.frequency * 1.5\n\n  for (let i = 0; i < numRings; i++) {\n    const radius = ((i * spacing + time * speed) % (numRings * spacing))\n    if (radius < 3) continue\n    const alpha = Math.max(0.08, 0.7 - (radius / (numRings * spacing)) * 0.6)\n\n    ctx.strokeStyle = `rgba(91,141,184,${alpha})`\n    ctx.lineWidth = 2.5\n    ctx.beginPath(); ctx.arc(s1x, sY, radius, 0, Math.PI * 2); ctx.stroke()\n\n    ctx.strokeStyle = `rgba(103,232,249,${alpha})`\n    ctx.lineWidth = 2.5\n    ctx.beginPath(); ctx.arc(s2x, sY, radius, 0, Math.PI * 2); ctx.stroke()\n  }\n\n  /* === SCREEN === */\n  const screenX = 60\n  ctx.fillStyle = '#161B22'; ctx.fillRect(screenX - 4, 30, 8, H - 60)\n  ctx.strokeStyle = '#2D3645'; ctx.lineWidth = 2\n  ctx.strokeRect(screenX - 4, 30, 8, H - 60)\n  ctx.fillStyle = '#8B95A5'; ctx.font = 'bold 11px sans-serif'\n  ctx.fillText('Screen', screenX - 18, 22)\n\n  /* === FRINGE PATTERN === */\n  if (props.constructive.length) {\n    const centerY = H / 2\n    for (const c of props.constructive) {\n      const yPx = centerY - c.yMm * 2.5\n      if (yPx > 40 && yPx < H - 40) {\n        const isCentral = c.m === 0\n        ctx.fillStyle = isCentral ? '#fbbf24' : '#5B8DB8'\n        ctx.beginPath(); ctx.arc(screenX, yPx, isCentral ? 7 : 4.5, 0, Math.PI * 2); ctx.fill()\n        ctx.fillStyle = '#8B95A5'; ctx.font = isCentral ? 'bold 10px sans-serif' : '9px sans-serif'\n        ctx.fillText(isCentral ? 'm=0' : `+${c.m}`, screenX + 14, yPx + 3)\n      }\n    }\n    for (const d of props.destructive) {\n      const yPx = centerY - d.yMm * 2.5\n      if (yPx > 40 && yPx < H - 40) {\n        ctx.fillStyle = '#1e2530'\n        ctx.beginPath(); ctx.arc(screenX, yPx, 3, 0, Math.PI * 2); ctx.fill()\n        ctx.strokeStyle = '#475569'; ctx.lineWidth = 1\n        ctx.beginPath(); ctx.arc(screenX, yPx, 3, 0, Math.PI * 2); ctx.stroke()\n      }\n    }\n  }\n\n  /* === SOURCE DOTS === */\n  ctx.fillStyle = '#fbbf24'; ctx.beginPath(); ctx.arc(s1x, sY, 9, 0, Math.PI * 2); ctx.fill()\n  ctx.beginPath(); ctx.arc(s2x, sY, 9, 0, Math.PI * 2); ctx.fill()\n  ctx.fillStyle = '#fff'; ctx.font = 'bold 13px sans-serif'\n  ctx.fillText('S₁', s1x - 9, sY + 24); ctx.fillText('S₂', s2x - 9, sY + 24)\n\n  /* === PATH DIFFERENCE LINES === */\n  const targetY = H / 2 - 60\n  if (targetY > 50 && targetY < H - 50) {\n    ctx.strokeStyle = 'rgba(251,191,36,0.2)'; ctx.lineWidth = 1; ctx.setLineDash([4, 4])\n    ctx.beginPath(); ctx.moveTo(s1x, sY); ctx.lineTo(screenX, targetY); ctx.stroke()\n    ctx.beginPath(); ctx.moveTo(s2x, sY); ctx.lineTo(screenX, targetY); ctx.stroke()\n    ctx.setLineDash([])\n  }\n\n  /* === LEGEND === */\n  ctx.fillStyle = '#8B95A5'; ctx.font = '11px sans-serif'\n  ctx.fillText('●  Constructive (bright)', W - 200, 30)\n  ctx.fillStyle = '#475569'; ctx.fillText('●  Destructive (dark)', W - 200, 48)\n\n  /* === MODE LABEL === */\n  const modeLabel = props.mode === 'ripple' ? 'Ripple Tank' : props.mode === 'young' ? \"Young's Double Slit\" : 'Two Wave Sources'\n  ctx.fillStyle = '#5B8DB8'; ctx.font = 'bold 12px sans-serif'\n  ctx.fillText(modeLabel, 15, H - 10)\n}\n\nfunction loop(ts: number) {\n  const dt = lastTs ? (ts - lastTs) / 1000 : 0\n  lastTs = ts\n  if (props.running) time += dt\n  draw()\n  animId = requestAnimationFrame(loop)\n}\n\nwatch(() => props.running, (running) => {\n  if (!running) { time = 0; lastTs = 0; draw() }\n})\n\nwatch(() => [props.mode, props.sourceDistance, props.wavelength, props.frequency, props.amplitudeMap.length], draw, { deep: true })\n\nonMounted(() => { draw(); animId = requestAnimationFrame(loop) })\nonUnmounted(() => cancelAnimationFrame(animId))\n</script>\n\n<template>\n  <canvas ref=\"canvasRef\" :width=\"W\" :height=\"H\" style=\"width: 100%; height: 100%;\" />\n</template>\n",
+      "start": 1783634640999,
+      "end": 1783634641483,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641483,
+      "end": 1783634641483,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641483,
+      "end": 1783634641483,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641483,
+      "end": 1783634641483,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641483,
+      "end": 1783634641483,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/wave-interference/WaveInterferenceCanvas.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/wave-interference/WaveInterferenceCanvas.vue?vue&type=script&setup=true&lang.ts\";\nexport default _sfc_main;\n",
+      "start": 1783634641483,
+      "end": 1783634641660,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641661,
+      "end": 1783634641661,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641661,
+      "end": 1783634641661,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641661,
+      "end": 1783634641661,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641661,
+      "end": 1783634641661,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641661,
+      "end": 1783634641661,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641661,
+      "end": 1783634641661,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641661,
+      "end": 1783634641661,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641661,
+      "end": 1783634641661,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641661,
+      "end": 1783634641661,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641661,
+      "end": 1783634641661,
+      "order": "normal"
+    }
+  ]
+}

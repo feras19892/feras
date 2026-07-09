@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingLangSwitcher.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../composables/useI18n'\n\nconst { locale, setLocale, t } = useI18n()\n\nasync function onChange(ev: Event) {\n  const val = (ev.target as HTMLSelectElement).value\n  await setLocale(val as 'ar' | 'en' | 'es')\n}\n</script>\n\n<template>\n  <div class=\"lang-dropdown\">\n    <select data-testid=\"lang-switcher\" :value=\"locale\" @change=\"onChange\" class=\"lang-select\">\n      <option value=\"ar\">🇸🇦 {{ t('landing.langArabic') }}</option>\n      <option value=\"en\">🇬🇧 {{ t('landing.langEnglish') }}</option>\n      <option value=\"es\">🇪🇸 {{ t('landing.langSpanish') }}</option>\n    </select>\n  </div>\n</template>\n\n<style scoped>\n.lang-dropdown {\n  position: absolute;\n  top: 1.5rem;\n  right: 1.5rem;\n  z-index: 10;\n}\n:global(html[dir='rtl']) .lang-dropdown {\n  right: auto;\n  left: 1.5rem;\n}\n.lang-select {\n  padding: 0.5rem 1rem;\n  border-radius: 0.6rem;\n  border: 1px solid rgba(255,255,255,0.12);\n  background: rgba(255,255,255,0.05);\n  color: #e2e8f0;\n  font-size: 0.85rem;\n  cursor: pointer;\n  outline: none;\n  min-width: 120px;\n}\n.lang-select option {\n  background: #1e293b;\n  color: #e2e8f0;\n}\n.lang-select:focus {\n  border-color: rgba(99,102,241,0.4);\n}\n</style>\n",
+      "start": 1783634639333,
+      "end": 1783634639611,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639611,
+      "end": 1783634639611,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639611,
+      "end": 1783634639611,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639611,
+      "end": 1783634639611,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639611,
+      "end": 1783634639611,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingLangSwitcher.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingLangSwitcher.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingLangSwitcher.vue?vue&type=style&index=0&scoped=0062d014&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-0062d014\"]]);\n",
+      "start": 1783634639611,
+      "end": 1783634639942,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639943,
+      "end": 1783634639943,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639943,
+      "end": 1783634639943,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639943,
+      "end": 1783634639943,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639943,
+      "end": 1783634639943,
+      "order": "normal"
+    }
+  ]
+}

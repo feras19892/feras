@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatParamsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { METAL_CATALOG } from '../../../../composables/specific-heat/useSpecificHeatCalculations'\nconst props = defineProps<{\n  params: { metalType: string; metalMass: number; waterMass: number; waterTemp: number }\n  unknownMode?: boolean\n}>()\nconst emit = defineEmits<{\n  (e: 'update:params', p: { metalType: string; metalMass: number; waterMass: number; waterTemp: number }): void\n}>()\n</script>\n<template>\n  <div class=\"panel-body\">\n    <div class=\"param-row\"><label>المعدن المجهول</label>\n      <select v-if=\"!unknownMode\" :value=\"params.metalType\" @change=\"emit('update:params', { ...params, metalType: ($event.target as HTMLSelectElement).value })\">\n        <option v-for=\"(m, key) in METAL_CATALOG\" :key=\"key\" :value=\"key\">{{ m.nameAr }}</option>\n      </select>\n      <div v-else class=\"unknown-badge\">❓ مجهول</div>\n    </div>\n    <div class=\"param-row\"><label>كتلة المعدن m_m (g)</label>\n      <input type=\"range\" :value=\"params.metalMass*1000\" min=\"50\" max=\"200\" step=\"10\"\n             @input=\"emit('update:params', { ...params, metalMass: +($event.target as HTMLInputElement).value/1000 })\" />\n      <span>{{ (params.metalMass*1000).toFixed(0) }} g</span>\n    </div>\n    <div class=\"param-row\"><label>كتلة الماء m_w (g)</label>\n      <input type=\"range\" :value=\"params.waterMass*1000\" min=\"100\" max=\"300\" step=\"10\"\n             @input=\"emit('update:params', { ...params, waterMass: +($event.target as HTMLInputElement).value/1000 })\" />\n      <span>{{ (params.waterMass*1000).toFixed(0) }} g</span>\n    </div>\n    <div class=\"param-row\"><label>حرارة الماء البارد T_w (°C)</label>\n      <input type=\"range\" :value=\"params.waterTemp\" min=\"5\" max=\"35\" step=\"1\"\n             @input=\"emit('update:params', { ...params, waterTemp: +($event.target as HTMLInputElement).value })\" />\n      <span>{{ params.waterTemp }}°C</span>\n    </div>\n  </div>\n</template>\n<style scoped>\n.panel-body { padding:.45rem; display:flex; flex-direction:column; gap:.35rem; }\n.param-row { display:flex; flex-direction:column; gap:.25rem; margin-bottom:.4rem; }\n.param-row label { color:#8B95A5; font-size:.72rem; }\n.param-row input[type=range] { width:100%; accent-color:#5B8DB8; }\n.param-row select { background:#0d1117; border:1px solid #1e2530; color:#D1D7E0; padding:.3rem .45rem; border-radius:4px; font-size:.72rem; }\n.param-row span { color:#5B8DB8; font-weight:600; font-size:.72rem; text-align:right; }\n.unknown-badge { background:rgba(245,158,11,.12); border:1px solid rgba(245,158,11,.3); color:#fbbf24; font-size:.72rem; font-weight:700; padding:.35rem .45rem; border-radius:4px; text-align:center; }\n</style>\n",
+      "start": 1783634640960,
+      "end": 1783634641349,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641349,
+      "end": 1783634641349,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641349,
+      "end": 1783634641349,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641349,
+      "end": 1783634641349,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641349,
+      "end": 1783634641349,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatParamsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatParamsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatParamsPanel.vue?vue&type=style&index=0&scoped=61fed443&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-61fed443\"]]);\n",
+      "start": 1783634641349,
+      "end": 1783634641643,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641644,
+      "end": 1783634641645,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641645,
+      "end": 1783634641645,
+      "order": "normal"
+    }
+  ]
+}

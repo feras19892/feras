@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabItemRenderer.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\r\nimport { computed } from 'vue';\r\nimport type { LabItem } from '../../../composables/chemistry/useChemistryTools';\r\nimport {\r\n  items, getLiquid, getBurette, getPipette, getSepFunnelState, getBurnerState, getItemZoom, getBeakerClampState, getHotPlateState, beakerClampMap, pourFlowMap, tiltAngleMap, rackSlotsMap, retortStandMap,\r\n  isContainer, isBeaker, isTestTube, isTestTubeRack, isBurette, isPipette, isErlenmeyer, isVolumetricFlask, isRoundBottomFlask, isClampAttachable,\r\n  isSeparatoryFunnel, isGradCylinder, isBunsenBurner, isHeatingMantle, isBalance, isPhMeter,\r\n  isBeakerClamp, isWoodenBase, isHotPlate, isRetortStandAssembly\r\n} from '../../../composables/chemistry/useChemistryLab';\r\nimport { getBalanceReading, getPhReading, isHeated } from '../../../composables/chemistry/useLabSimulation';\r\nimport { useChemicalLocale } from '../../../composables/chemistry/useChemicalLocale';\r\nimport { useI18n } from '../../../composables/useI18n';\r\nimport LabTestTubeRack from './LabTestTubeRack.vue';\r\nimport ContainerRenderers from './ContainerRenderers.vue';\r\nimport LabBeaker from './LabBeaker.vue';\r\nimport LabBurette from './LabBurette.vue';\r\nimport LabPipette from './LabPipette.vue';\r\nimport LabGradCylinder from './LabGradCylinder.vue';\r\nimport LabVolumetricPipette from './LabVolumetricPipette.vue';\r\nimport LabSeparatoryFunnel from './LabSeparatoryFunnel.vue';\r\nimport LabBunsenBurner from './LabBunsenBurner.vue';\r\nimport LabHeatingMantle from './LabHeatingMantle.vue';\r\nimport LabBalance from './LabBalance.vue';\r\nimport LabPhMeter from './LabPhMeter.vue';\r\nimport LabDropper from './LabDropper.vue';\r\nimport LabSpatula from './LabSpatula.vue';\r\nimport LabWatchGlass from './LabWatchGlass.vue';\r\nimport LabFilterFunnel from './LabFilterFunnel.vue';\r\nimport LabRubberStopper from './LabRubberStopper.vue';\r\nimport LabWoodenBase from './LabWoodenBase.vue';\r\nimport LabBeakerClamp from './LabBeakerClamp.vue';\r\nimport LabHotPlate from './LabHotPlate.vue';\r\nimport LabRetortStandAssembly from './LabRetortStandAssembly.vue';\r\n\r\n\r\nconst props = defineProps<{\r\n  item: LabItem;\r\n  selectedUid: string | null;\r\n  hoveredUid: string | null;\r\n  draggingUid: string | null;\r\n  receiving: boolean;\r\n}>();\r\n\r\nconst emit = defineEmits<{\r\n  mouseenter: [item: LabItem];\r\n  mouseleave: [item: LabItem];\r\n  mousedown: [e: MouseEvent, item: LabItem];\r\n  selectBurette: [e: MouseEvent, item: LabItem];\r\n  mouthInteract: [item: LabItem];\r\n  spill: [item: LabItem, amount: number];\r\n  dropExited: [item: LabItem, wx: number, wy: number, color: string];\r\n  toggleValve: [item: LabItem];\r\n  tipInteract: [item: LabItem];\r\n  toggleStopcock: [item: LabItem];\r\n}>();\r\n\r\nconst liq = computed(() => getLiquid(props.item.uid));\r\nconst isSel = computed(() => props.selectedUid === props.item.uid);\r\n\r\n\r\nconst isAttachedToStand = computed(() => {\r\n  for (const st of Object.values(retortStandMap)) {\r\n    if (isClampAttachable(props.item.id) && st.slotOccupants.includes(props.item.uid)) return true;\r\n    if (st.bottomSlotOccupant === props.item.uid) return true;\r\n  }\r\n  return false;\r\n});\r\n\r\nconst rackSlotData = computed(() => {\r\n  const uids = rackSlotsMap[props.item.uid] || [];\r\n  return uids.map(uid => {\r\n    if (!uid) return null;\r\n    const slotLiq = getLiquid(uid);\r\n    return { uid, volume: slotLiq.volume, maxVolume: slotLiq.maxVolume, color: slotLiq.color, opacity: slotLiq.opacity };\r\n  });\r\n});\r\n\r\nfunction onBuretteClick(e: MouseEvent, uid: string) {\r\n  const burette = items.value.find(i => i.uid === uid);\r\n  if (burette) {\r\n    emit('selectBurette', e, burette);\r\n  }\r\n}\r\n\r\nconst { resolveLabel } = useChemicalLocale();\r\nconst { t } = useI18n();\r\n\r\n</script>\r\n\r\n<template>\r\n  <div\r\n    v-if=\"!isAttachedToStand\"\r\n    class=\"lab-item\"\r\n    :class=\"{ selected: isSel, hover: hoveredUid === item.uid && !props.draggingUid, 'drag-blocked': !!props.draggingUid && props.draggingUid !== item.uid, dragging: props.draggingUid === item.uid, heating: isHeated(item), 'pour-target': !!pourFlowMap[item.uid], tilted: !!pourFlowMap[item.uid] || !!(tiltAngleMap[item.uid]) }\"\r\n    :style=\"props.draggingUid === item.uid\r\n      ? { left: '0px', top: '0px', transform: `translate3d(${item.x}px, ${item.y}px, 0) rotate(${tiltAngleMap[item.uid] || 0}deg) translateY(-5px) scale(${getItemZoom(item.uid)})`, transformOrigin: 'center center' }\r\n      : { left: item.x + 'px', top: item.y + 'px', transform: `rotate(${tiltAngleMap[item.uid] || 0}deg) translateY(-5px) scale(${getItemZoom(item.uid)})`, transformOrigin: 'center center' }\"\r\n    @mouseenter=\"emit('mouseenter', item)\"\r\n    @mouseleave=\"emit('mouseleave', item)\"\r\n    @mousedown=\"emit('mousedown', $event, item)\"\r\n  >\r\n  <div v-if=\"isContainer(item.id)\" class=\"item-solution-label\">\r\n    {{ resolveLabel(liq.label) }}\r\n  </div>\r\n\r\n  <ContainerRenderers\r\n    v-if=\"isTestTube(item.id) || isErlenmeyer(item.id) || isVolumetricFlask(item.id) || isRoundBottomFlask(item.id)\"\r\n    :item=\"item\"\r\n    :is-sel=\"isSel\"\r\n    @spill=\"emit('spill', item, $event)\"\r\n    @drop-exited=\"(wx: number, wy: number, color: string) => emit('dropExited', item, wx, wy, color)\"\r\n  />\r\n  <LabSeparatoryFunnel\r\n    v-else-if=\"isSeparatoryFunnel(item.id)\"\r\n    :volume=\"liq.volume\"\r\n    :max-volume=\"liq.maxVolume\"\r\n    :liquid-color=\"liq.color\"\r\n    :liquid-opacity=\"liq.opacity\"\r\n    :bottom-layer-color=\"getSepFunnelState(item.uid).bottomLayerColor\"\r\n    :bottom-layer-volume=\"getSepFunnelState(item.uid).bottomLayerVolume\"\r\n    :is-open=\"getSepFunnelState(item.uid).valveOpen\"\r\n    :is-hovered=\"isSel\"\r\n    :tilt-angle=\"tiltAngleMap[item.uid] || 0\"\r\n    :item-uid=\"item.uid\"\r\n    :item-x=\"item.x\"\r\n    :item-y=\"item.y\"\r\n    @toggle-stopcock=\"emit('toggleStopcock', item)\"\r\n    @spill=\"emit('spill', item, $event)\"\r\n    @drop-exited=\"(wx: number, wy: number, color: string) => emit('dropExited', item, wx, wy, color)\"\r\n  />\r\n  <LabGradCylinder\r\n    v-else-if=\"isGradCylinder(item.id)\"\r\n    :volume=\"liq.volume\"\r\n    :max-volume=\"liq.maxVolume\"\r\n    :liquid-color=\"liq.color\"\r\n    :liquid-opacity=\"liq.opacity\"\r\n    :is-hovered=\"isSel\"\r\n    :tilt-angle=\"tiltAngleMap[item.uid] || 0\"\r\n    :item-uid=\"item.uid\"\r\n    :item-x=\"item.x\"\r\n    :item-y=\"item.y\"\r\n    :scale=\"getItemZoom(item.uid)\"\r\n    :is-selected=\"isSel\"\r\n    @spill=\"emit('spill', item, $event)\"\r\n    @drop-exited=\"(wx: number, wy: number, color: string) => emit('dropExited', item, wx, wy, color)\"\r\n  />\r\n  <LabBeaker\r\n    v-else-if=\"isBeaker(item.id)\"\r\n    :volume=\"liq.volume\"\r\n    :max-volume=\"liq.maxVolume\"\r\n    :liquid-color=\"liq.color\"\r\n    :liquid-opacity=\"liq.opacity\"\r\n    :is-hovered=\"isSel\"\r\n    :receiving=\"receiving\"\r\n    :stirred=\"liq.stirred\"\r\n    :tilt-angle=\"tiltAngleMap[item.uid] || 0\"\r\n    :item-uid=\"item.uid\"\r\n    :item-x=\"item.x\"\r\n    :item-y=\"item.y\"\r\n    @mouth-interact=\"emit('mouthInteract', item)\"\r\n    @spill=\"emit('spill', item, $event)\"\r\n    @drop-exited=\"(wx: number, wy: number, color: string) => emit('dropExited', item, wx, wy, color)\"\r\n  />\r\n  <LabBurette\r\n    v-else-if=\"isBurette(item.id)\"\r\n    :volume=\"getBurette(item.uid).volume\"\r\n    :max-volume=\"getBurette(item.uid).maxVolume\"\r\n    :liquid-color=\"getBurette(item.uid).color\"\r\n    :liquid-opacity=\"getBurette(item.uid).opacity\"\r\n    :is-open=\"getBurette(item.uid).valveOpen\"\r\n    :is-hovered=\"isSel\"\r\n    :scale=\"getItemZoom(item.uid)\"\r\n    :is-selected=\"isSel\"\r\n    @toggle-valve=\"emit('toggleValve', item)\"\r\n    @tip-interact=\"emit('tipInteract', item)\"\r\n  />\r\n  <LabVolumetricPipette\r\n    v-else-if=\"item.id === 'volumetric-pipette'\"\r\n    :volume=\"getPipette(item.uid).volume\"\r\n    :max-volume=\"10\"\r\n    :liquid-color=\"getPipette(item.uid).color\"\r\n    :liquid-opacity=\"getPipette(item.uid).opacity\"\r\n    :is-hovered=\"isSel\"\r\n  />\r\n  <LabPipette\r\n    v-else-if=\"isPipette(item.id)\"\r\n    :volume=\"getPipette(item.uid).volume\"\r\n    :max-volume=\"getPipette(item.uid).maxVolume\"\r\n    :liquid-color=\"getPipette(item.uid).color\"\r\n    :liquid-opacity=\"getPipette(item.uid).opacity\"\r\n    :is-hovered=\"isSel\"\r\n    :is-active=\"false\"\r\n    :scale=\"getItemZoom(item.uid)\"\r\n    :is-selected=\"isSel\"\r\n  />\r\n  <LabBunsenBurner\r\n    v-else-if=\"isBunsenBurner(item.id)\"\r\n    :is-on=\"getBurnerState(item.uid).on\"\r\n    :intensity=\"getBurnerState(item.uid).intensity\"\r\n    :is-hovered=\"isSel\"\r\n  />\r\n  <LabHeatingMantle\r\n    v-else-if=\"isHeatingMantle(item.id)\"\r\n    :is-on=\"getBurnerState(item.uid).on\"\r\n    :intensity=\"getBurnerState(item.uid).intensity\"\r\n    :is-hovered=\"isSel\"\r\n  />\r\n  <LabBalance\r\n    v-else-if=\"isBalance(item.id)\"\r\n    :reading=\"getBalanceReading(item.uid)\"\r\n    :is-hovered=\"isSel\"\r\n  />\r\n  <LabPhMeter\r\n    v-else-if=\"isPhMeter(item.id)\"\r\n    :uid=\"item.uid\"\r\n    :item-x=\"item.x\"\r\n    :item-y=\"item.y\"\r\n    :reading=\"getPhReading(item)\"\r\n    :is-hovered=\"isSel\"\r\n  />\r\n  <LabDropper\r\n    v-else-if=\"item.id === 'dropper'\"\r\n    :is-hovered=\"isSel\"\r\n  />\r\n  <LabSpatula\r\n    v-else-if=\"item.id === 'spatula'\"\r\n    :is-hovered=\"isSel\"\r\n  />\r\n  <LabWatchGlass\r\n    v-else-if=\"item.id === 'watch-glass'\"\r\n    :is-hovered=\"isSel\"\r\n  />\r\n  <LabFilterFunnel\r\n    v-else-if=\"item.id === 'filter-funnel'\"\r\n    :is-hovered=\"isSel\"\r\n  />\r\n  <LabRubberStopper\r\n    v-else-if=\"item.id === 'rubber-stopper'\"\r\n    :is-hovered=\"isSel\"\r\n  />\r\n  <LabHotPlate\r\n    v-else-if=\"isHotPlate(item.id)\"\r\n    :is-on=\"getHotPlateState(item.uid).on\"\r\n    :temperature=\"getHotPlateState(item.uid).temperature\"\r\n    :is-hovered=\"isSel\"\r\n    @toggle=\"emit('toggleValve', item)\"\r\n  />\r\n  <LabWoodenBase\r\n    v-else-if=\"isWoodenBase(item.id)\"\r\n    :is-hovered=\"isSel\"\r\n  />\r\n  <LabBeakerClamp\r\n    v-else-if=\"isBeakerClamp(item.id)\"\r\n    :clamp-angle=\"0\"\r\n    :held-container-uid=\"getBeakerClampState(item.uid).heldContainerUid\"\r\n    :is-hovered=\"isSel\"\r\n    @rotate-left=\"beakerClampMap[item.uid].clampAngle -= 45\"\r\n    @rotate-right=\"beakerClampMap[item.uid].clampAngle += 45\"\r\n  />\r\n  <LabRetortStandAssembly\r\n    v-else-if=\"isRetortStandAssembly(item.id)\"\r\n    :item-uid=\"item.uid\"\r\n    :is-hovered=\"hoveredUid === item.uid && props.draggingUid === null\"\r\n    :selected-burette-uid=\"props.selectedUid || undefined\"\r\n    @mousedown=\"emit('mousedown', $event, item)\"\r\n    @burette-click=\"onBuretteClick\"\r\n  />\r\n  <LabTestTubeRack\r\n    v-else-if=\"isTestTubeRack(item.id)\"\r\n    :is-hovered=\"isSel\"\r\n    :slots=\"rackSlotData\"\r\n  />\r\n  <template v-else>\r\n    <div class=\"item-icon\" :class=\"{ heating: isHeated(item) }\">{{ item.icon }}</div>\r\n    <span class=\"item-label\">{{ t(item.name) }}</span>\r\n  </template>\r\n  </div>\r\n</template>\r\n\r\n<style src=\"./LabItemRenderer.css\" scoped></style>\r\n",
+      "start": 1783634640299,
+      "end": 1783634640568,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640568,
+      "end": 1783634640568,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640568,
+      "end": 1783634640568,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640568,
+      "end": 1783634640568,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640568,
+      "end": 1783634640568,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabItemRenderer.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabItemRenderer.vue?vue&type=script&setup=true&lang.ts\";\nimport \"./LabItemRenderer.css?vue&type=style&index=0&src=a12de615&scoped=a12de615&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-a12de615\"]]);\n",
+      "start": 1783634640568,
+      "end": 1783634640814,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640814,
+      "end": 1783634640815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640815,
+      "end": 1783634640815,
+      "order": "normal"
+    }
+  ]
+}

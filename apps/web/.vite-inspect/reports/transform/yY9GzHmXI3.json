@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/NonOhmicWorksheetPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref } from 'vue'\n\nconst props = defineProps<{ V: number; I_ohmic: number; I_lamp: number; R_dyn: number }>()\n\nconst showSteps = ref<Record<string, boolean>>({ intro: false, step1: false, step2: false, step3: false })\n\nfunction toggleStep(step: string) { showSteps.value[step] = !showSteps.value[step] }\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <div class=\"ws-title\">💡 المواد اللاأومية — حل مفصّل</div>\n\n    <div class=\"step-row\">\n      <button class=\"step-toggle\" @click=\"toggleStep('intro')\">\n        {{ showSteps.intro ? '▼' : '▶' }} مقدمة: أومي vs لا أومي\n      </button>\n      <div v-if=\"showSteps.intro\" class=\"step-content\">\n        <p class=\"explain\"><b>مادة أومية</b>: V = I×R (علاقة خطية)، R ثابتة (مثل المقاومة المعدنية).</p>\n        <p class=\"explain\"><b>مادة لا أومية</b>: V ≠ I×R، R تتغير مع التيار/الحرارة (مثل المصباح، الصمام).</p>\n        <div class=\"formula\">أومي: V = I × R (خط مستقيم)</div>\n        <div class=\"formula\">لا أومي: V ≠ I × R (منحنى)</div>\n      </div>\n    </div>\n\n    <div class=\"step-row\">\n      <button class=\"step-toggle\" @click=\"toggleStep('step1')\">\n        {{ showSteps.step1 ? '▼' : '▶' }} الخطوة 1: التيار في المقاومة الأومية\n      </button>\n      <div v-if=\"showSteps.step1\" class=\"step-content\">\n        <div class=\"formula\">I = V / R</div>\n        <div class=\"calc\">\n          <div class=\"calc-line\">V = {{ V.toFixed(2) }} V</div>\n          <div class=\"calc-line result\">I_ohmic = {{ I_ohmic.toFixed(4) }} A</div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"step-row\">\n      <button class=\"step-toggle\" @click=\"toggleStep('step2')\">\n        {{ showSteps.step2 ? '▼' : '▶' }} الخطوة 2: التيار في المصباح (لا أومي)\n      </button>\n      <div v-if=\"showSteps.step2\" class=\"step-content\">\n        <p class=\"explain\">المصباح: R يزيد مع الحرارة → R_eff = R × (1 + 0.05×V)</p>\n        <div class=\"calc\">\n          <div class=\"calc-line result\">I_lamp = {{ I_lamp.toFixed(4) }} A</div>\n        </div>\n        <p class=\"explain\">الفرق: I_lamp &lt; I_ohmic (لأن R_effective أكبر بسبب الحرارة).</p>\n      </div>\n    </div>\n\n    <div class=\"step-row\">\n      <button class=\"step-toggle\" @click=\"toggleStep('step3')\">\n        {{ showSteps.step3 ? '▼' : '▶' }} الخطوة 3: المقاومة الديناميكية\n      </button>\n      <div v-if=\"showSteps.step3\" class=\"step-content\">\n        <div class=\"formula\">R_dyn = dV / dI</div>\n        <div class=\"calc\">\n          <div class=\"calc-line result\">R_dyn = {{ R_dyn.toFixed(2) }} Ω</div>\n        </div>\n        <p class=\"explain\">R_dyn تتغير من نقطة لأخرى على المنحنى — ليست ثابتة.</p>\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { padding: 1rem; display: flex; flex-direction: column; gap: .75rem; overflow-y: auto; }\n.ws-title { font-size: 1rem; font-weight: 700; color: #fbbf24; text-align: center; padding: .5rem; border-bottom: 1px solid #1e2530; margin-bottom: .25rem; }\n.step-row { display: flex; flex-direction: column; gap: .25rem; }\n.step-toggle { background: #1E2530; border: 1px solid #2D3645; color: #D1D7E0; padding: .5rem .75rem; border-radius: 6px; cursor: pointer; text-align: right; font-size: .85rem; }\n.step-toggle:hover { background: #252D3A; }\n.step-content { background: #0d1117; border: 1px solid #1e2530; border-radius: 6px; padding: .75rem; font-size: .85rem; }\n.explain { color: #94a3b8; margin: .3rem 0; line-height: 1.6; font-size: .82rem; }\n.explain b { color: #e2e8f0; }\n.formula { font-family: 'Courier New', monospace; font-size: .9rem; color: #fbbf24; text-align: center; padding: .4rem; background: rgba(251,191,36,.08); border-radius: 4px; margin: .3rem 0; }\n.calc { display: flex; flex-direction: column; gap: .2rem; color: #D1D7E0; }\n.calc-line { font-family: 'Courier New', monospace; font-size: .82rem; padding: .15rem 0; }\n.result { color: #22c55e; font-weight: 700; }\n</style>\n",
+      "start": 1783634639360,
+      "end": 1783634639836,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639836,
+      "end": 1783634639836,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639836,
+      "end": 1783634639836,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639836,
+      "end": 1783634639836,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639836,
+      "end": 1783634639836,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/NonOhmicWorksheetPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/NonOhmicWorksheetPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/NonOhmicWorksheetPanel.vue?vue&type=style&index=0&scoped=5f8cf025&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-5f8cf025\"]]);\n",
+      "start": 1783634639836,
+      "end": 1783634640098,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640098,
+      "end": 1783634640099,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640099,
+      "end": 1783634640099,
+      "order": "normal"
+    }
+  ]
+}

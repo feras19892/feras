@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabBunsenBurner.vue?vue&type=style&index=0&scoped=9c20cd5c&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.burner-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.burner-svg {\n  width: 55px;\n  height: 125px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));\n}\n.burner-svg.hovered {\n  transform: scale(1.06);\n  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));\n}\n.burner-label {\n  position: absolute;\n  bottom: -4px;\n  font-size: 0.6rem;\n  font-weight: 700;\n  padding: 1px 6px;\n  border-radius: 6px;\n  white-space: nowrap;\n  pointer-events: none;\n}\n.burner-label.on {\n  color: #ea580c;\n  background: rgba(254,243,199,0.9);\n}\n.burner-label.off {\n  color: #64748b;\n  background: rgba(241,245,249,0.9);\n}\n\n/* Flame flicker animation */\n.flame-outer { animation: flicker 0.12s ease-in-out infinite alternate; }\n.flame-mid { animation: flicker 0.1s ease-in-out infinite alternate-reverse; }\n.flame-inner { animation: flicker 0.08s ease-in-out infinite alternate; }\n.flame-tip { animation: flicker 0.15s ease-in-out infinite alternate; }\n\n@keyframes flicker {\n  0% { transform: scale(1); opacity: var(--o, 0.6); }\n  100% { transform: scale(1.05) translateX(0.5px); opacity: calc(var(--o, 0.6) * 0.9); }\n}\n",
+      "start": 1783634642152,
+      "end": 1783634642152
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.burner-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.burner-svg {\n  width: 55px;\n  height: 125px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));\n}\n.burner-svg.hovered {\n  transform: scale(1.06);\n  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));\n}\n.burner-label {\n  position: absolute;\n  bottom: -4px;\n  font-size: 0.6rem;\n  font-weight: 700;\n  padding: 1px 6px;\n  border-radius: 6px;\n  white-space: nowrap;\n  pointer-events: none;\n}\n.burner-label.on {\n  color: #ea580c;\n  background: rgba(254,243,199,0.9);\n}\n.burner-label.off {\n  color: #64748b;\n  background: rgba(241,245,249,0.9);\n}\n\n/* Flame flicker animation */\n.flame-outer { animation: flicker 0.12s ease-in-out infinite alternate; }\n.flame-mid { animation: flicker 0.1s ease-in-out infinite alternate-reverse; }\n.flame-inner { animation: flicker 0.08s ease-in-out infinite alternate; }\n.flame-tip { animation: flicker 0.15s ease-in-out infinite alternate; }\n\n@keyframes flicker {\n  0% { transform: scale(1); opacity: var(--o, 0.6); }\n  100% { transform: scale(1.05) translateX(0.5px); opacity: calc(var(--o, 0.6) * 0.9); }\n}\n",
+      "start": 1783634642152,
+      "end": 1783634642152,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642152,
+      "end": 1783634642152,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642152,
+      "end": 1783634642152,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642152,
+      "end": 1783634642152,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.burner-wrapper[data-v-9c20cd5c] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.burner-svg[data-v-9c20cd5c] {\n  width: 55px;\n  height: 125px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));\n}\n.burner-svg.hovered[data-v-9c20cd5c] {\n  transform: scale(1.06);\n  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));\n}\n.burner-label[data-v-9c20cd5c] {\n  position: absolute;\n  bottom: -4px;\n  font-size: 0.6rem;\n  font-weight: 700;\n  padding: 1px 6px;\n  border-radius: 6px;\n  white-space: nowrap;\n  pointer-events: none;\n}\n.burner-label.on[data-v-9c20cd5c] {\n  color: #ea580c;\n  background: rgba(254,243,199,0.9);\n}\n.burner-label.off[data-v-9c20cd5c] {\n  color: #64748b;\n  background: rgba(241,245,249,0.9);\n}\n\n/* Flame flicker animation */\n.flame-outer[data-v-9c20cd5c] { animation: flicker-9c20cd5c 0.12s ease-in-out infinite alternate;\n}\n.flame-mid[data-v-9c20cd5c] { animation: flicker-9c20cd5c 0.1s ease-in-out infinite alternate-reverse;\n}\n.flame-inner[data-v-9c20cd5c] { animation: flicker-9c20cd5c 0.08s ease-in-out infinite alternate;\n}\n.flame-tip[data-v-9c20cd5c] { animation: flicker-9c20cd5c 0.15s ease-in-out infinite alternate;\n}\n@keyframes flicker-9c20cd5c {\n0% { transform: scale(1); opacity: var(--o, 0.6);\n}\n100% { transform: scale(1.05) translateX(0.5px); opacity: calc(var(--o, 0.6) * 0.9);\n}\n}\n",
+      "start": 1783634642152,
+      "end": 1783634642153,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642153,
+      "end": 1783634642153,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634642153,
+      "end": 1783634642153,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642153,
+      "end": 1783634642153,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642153,
+      "end": 1783634642153,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642153,
+      "end": 1783634642153,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642153,
+      "end": 1783634642153,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642153,
+      "end": 1783634642153,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642153,
+      "end": 1783634642153,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642153,
+      "end": 1783634642153,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642153,
+      "end": 1783634642153,
+      "order": "normal"
+    }
+  ]
+}

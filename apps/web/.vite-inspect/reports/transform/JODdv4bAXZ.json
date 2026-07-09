@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/admin/AdminDashboard.vue?vue&type=style&index=0&scoped=c94bace1&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.dashboard { color: #e2e8f0; }\n.loading { text-align: center; padding: 2rem; color: #64748b; }\n.error { background: rgba(239,68,68,0.1); color: #f87171; padding: 1rem; border-radius: 0.5rem; text-align: center; }\n\n.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }\n.stat-card { background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.07); border-radius: 0.75rem; padding: 1.2rem; text-align: center; }\n.stat-icon { font-size: 1.5rem; margin-bottom: 0.3rem; }\n.stat-value { font-size: 1.8rem; font-weight: 800; color: #67e8f9; }\n.stat-label { font-size: 0.8rem; color: #94a3b8; margin-top: 0.2rem; }\n\n.today-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem; }\n.today-card { background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.5rem; padding: 0.8rem; text-align: center; }\n.today-value { font-size: 1.4rem; font-weight: 800; color: #67e8f9; }\n.today-label { font-size: 0.75rem; color: #94a3b8; }\n\n.role-chart { background: rgba(15,23,42,0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.75rem; padding: 1rem; margin-bottom: 1.5rem; }\n.role-chart h3 { margin: 0 0 1rem; font-size: 1rem; }\n.role-bars { display: flex; flex-direction: column; gap: 0.6rem; }\n.role-bar { display: flex; align-items: center; gap: 0.8rem; }\n.role-name { width: 80px; font-weight: 700; font-size: 0.85rem; text-align: right; }\n.role-track { flex: 1; height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }\n.role-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }\n.role-count { width: 30px; text-align: left; font-size: 0.85rem; font-weight: 700; }\n\n.alerts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }\n.alert-card { border-radius: 0.6rem; padding: 1rem; border: 1px solid rgba(255,255,255,0.06); }\n.alert-card.warning { background: rgba(251,191,36,0.08); border-color: rgba(251,191,36,0.15); }\n.alert-card.alert { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.15); }\n.alert-card.info { background: rgba(59,130,246,0.08); border-color: rgba(59,130,246,0.15); }\n.alert-card h4 { margin: 0 0 0.5rem; font-size: 0.9rem; }\n.alert-card ul { margin: 0; padding-right: 1.2rem; font-size: 0.85rem; color: #cbd5e1; }\n.alert-card li { margin-bottom: 0.2rem; }\n.alert-card p { margin: 0; font-size: 0.85rem; }\n\n.top-users { background: rgba(15,23,42,0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.75rem; padding: 1rem; margin-bottom: 1.5rem; }\n.top-users h3 { margin: 0 0 1rem; font-size: 1rem; }\n.top-item { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.6rem; }\n.top-name { width: 120px; font-size: 0.85rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }\n.top-role { width: 60px; font-size: 0.7rem; padding: 0.1rem 0.3rem; border-radius: 0.2rem; text-align: center; }\n.top-role.admin { background: rgba(248,113,113,0.2); color: #f87171; }\n.top-role.teacher { background: rgba(96,165,250,0.2); color: #60a5fa; }\n.top-role.student { background: rgba(52,211,153,0.2); color: #34d399; }\n.top-bar { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }\n.top-fill { height: 100%; background: linear-gradient(90deg, #4f46e5, #67e8f9); border-radius: 3px; transition: width 0.5s; }\n.top-count { width: 80px; font-size: 0.8rem; color: #94a3b8; text-align: left; }\n\n.recent-activity { background: rgba(15,23,42,0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.75rem; padding: 1rem; margin-bottom: 1.5rem; }\n.recent-activity h3 { margin: 0 0 1rem; font-size: 1rem; }\n.activity-item { display: flex; align-items: center; gap: 0.8rem; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }\n.activity-dot { width: 8px; height: 8px; background: #34d399; border-radius: 50%; flex-shrink: 0; }\n.activity-name { font-weight: 700; font-size: 0.85rem; width: 120px; }\n.activity-action { flex: 1; font-size: 0.8rem; color: #94a3b8; }\n.activity-date { font-size: 0.75rem; color: #64748b; }\n",
+      "start": 1783634640034,
+      "end": 1783634640034
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.dashboard { color: #e2e8f0; }\n.loading { text-align: center; padding: 2rem; color: #64748b; }\n.error { background: rgba(239,68,68,0.1); color: #f87171; padding: 1rem; border-radius: 0.5rem; text-align: center; }\n\n.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }\n.stat-card { background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.07); border-radius: 0.75rem; padding: 1.2rem; text-align: center; }\n.stat-icon { font-size: 1.5rem; margin-bottom: 0.3rem; }\n.stat-value { font-size: 1.8rem; font-weight: 800; color: #67e8f9; }\n.stat-label { font-size: 0.8rem; color: #94a3b8; margin-top: 0.2rem; }\n\n.today-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem; }\n.today-card { background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.5rem; padding: 0.8rem; text-align: center; }\n.today-value { font-size: 1.4rem; font-weight: 800; color: #67e8f9; }\n.today-label { font-size: 0.75rem; color: #94a3b8; }\n\n.role-chart { background: rgba(15,23,42,0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.75rem; padding: 1rem; margin-bottom: 1.5rem; }\n.role-chart h3 { margin: 0 0 1rem; font-size: 1rem; }\n.role-bars { display: flex; flex-direction: column; gap: 0.6rem; }\n.role-bar { display: flex; align-items: center; gap: 0.8rem; }\n.role-name { width: 80px; font-weight: 700; font-size: 0.85rem; text-align: right; }\n.role-track { flex: 1; height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }\n.role-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }\n.role-count { width: 30px; text-align: left; font-size: 0.85rem; font-weight: 700; }\n\n.alerts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }\n.alert-card { border-radius: 0.6rem; padding: 1rem; border: 1px solid rgba(255,255,255,0.06); }\n.alert-card.warning { background: rgba(251,191,36,0.08); border-color: rgba(251,191,36,0.15); }\n.alert-card.alert { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.15); }\n.alert-card.info { background: rgba(59,130,246,0.08); border-color: rgba(59,130,246,0.15); }\n.alert-card h4 { margin: 0 0 0.5rem; font-size: 0.9rem; }\n.alert-card ul { margin: 0; padding-right: 1.2rem; font-size: 0.85rem; color: #cbd5e1; }\n.alert-card li { margin-bottom: 0.2rem; }\n.alert-card p { margin: 0; font-size: 0.85rem; }\n\n.top-users { background: rgba(15,23,42,0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.75rem; padding: 1rem; margin-bottom: 1.5rem; }\n.top-users h3 { margin: 0 0 1rem; font-size: 1rem; }\n.top-item { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.6rem; }\n.top-name { width: 120px; font-size: 0.85rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }\n.top-role { width: 60px; font-size: 0.7rem; padding: 0.1rem 0.3rem; border-radius: 0.2rem; text-align: center; }\n.top-role.admin { background: rgba(248,113,113,0.2); color: #f87171; }\n.top-role.teacher { background: rgba(96,165,250,0.2); color: #60a5fa; }\n.top-role.student { background: rgba(52,211,153,0.2); color: #34d399; }\n.top-bar { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }\n.top-fill { height: 100%; background: linear-gradient(90deg, #4f46e5, #67e8f9); border-radius: 3px; transition: width 0.5s; }\n.top-count { width: 80px; font-size: 0.8rem; color: #94a3b8; text-align: left; }\n\n.recent-activity { background: rgba(15,23,42,0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.75rem; padding: 1rem; margin-bottom: 1.5rem; }\n.recent-activity h3 { margin: 0 0 1rem; font-size: 1rem; }\n.activity-item { display: flex; align-items: center; gap: 0.8rem; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }\n.activity-dot { width: 8px; height: 8px; background: #34d399; border-radius: 50%; flex-shrink: 0; }\n.activity-name { font-weight: 700; font-size: 0.85rem; width: 120px; }\n.activity-action { flex: 1; font-size: 0.8rem; color: #94a3b8; }\n.activity-date { font-size: 0.75rem; color: #64748b; }\n",
+      "start": 1783634640035,
+      "end": 1783634640035,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640035,
+      "end": 1783634640035,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640035,
+      "end": 1783634640035,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640035,
+      "end": 1783634640035,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.dashboard[data-v-c94bace1] { color: #e2e8f0;\n}\n.loading[data-v-c94bace1] { text-align: center; padding: 2rem; color: #64748b;\n}\n.error[data-v-c94bace1] { background: rgba(239,68,68,0.1); color: #f87171; padding: 1rem; border-radius: 0.5rem; text-align: center;\n}\n.stats-grid[data-v-c94bace1] { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;\n}\n.stat-card[data-v-c94bace1] { background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.07); border-radius: 0.75rem; padding: 1.2rem; text-align: center;\n}\n.stat-icon[data-v-c94bace1] { font-size: 1.5rem; margin-bottom: 0.3rem;\n}\n.stat-value[data-v-c94bace1] { font-size: 1.8rem; font-weight: 800; color: #67e8f9;\n}\n.stat-label[data-v-c94bace1] { font-size: 0.8rem; color: #94a3b8; margin-top: 0.2rem;\n}\n.today-row[data-v-c94bace1] { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem;\n}\n.today-card[data-v-c94bace1] { background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.5rem; padding: 0.8rem; text-align: center;\n}\n.today-value[data-v-c94bace1] { font-size: 1.4rem; font-weight: 800; color: #67e8f9;\n}\n.today-label[data-v-c94bace1] { font-size: 0.75rem; color: #94a3b8;\n}\n.role-chart[data-v-c94bace1] { background: rgba(15,23,42,0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.75rem; padding: 1rem; margin-bottom: 1.5rem;\n}\n.role-chart h3[data-v-c94bace1] { margin: 0 0 1rem; font-size: 1rem;\n}\n.role-bars[data-v-c94bace1] { display: flex; flex-direction: column; gap: 0.6rem;\n}\n.role-bar[data-v-c94bace1] { display: flex; align-items: center; gap: 0.8rem;\n}\n.role-name[data-v-c94bace1] { width: 80px; font-weight: 700; font-size: 0.85rem; text-align: right;\n}\n.role-track[data-v-c94bace1] { flex: 1; height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden;\n}\n.role-fill[data-v-c94bace1] { height: 100%; border-radius: 4px; transition: width 0.5s;\n}\n.role-count[data-v-c94bace1] { width: 30px; text-align: left; font-size: 0.85rem; font-weight: 700;\n}\n.alerts-grid[data-v-c94bace1] { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;\n}\n.alert-card[data-v-c94bace1] { border-radius: 0.6rem; padding: 1rem; border: 1px solid rgba(255,255,255,0.06);\n}\n.alert-card.warning[data-v-c94bace1] { background: rgba(251,191,36,0.08); border-color: rgba(251,191,36,0.15);\n}\n.alert-card.alert[data-v-c94bace1] { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.15);\n}\n.alert-card.info[data-v-c94bace1] { background: rgba(59,130,246,0.08); border-color: rgba(59,130,246,0.15);\n}\n.alert-card h4[data-v-c94bace1] { margin: 0 0 0.5rem; font-size: 0.9rem;\n}\n.alert-card ul[data-v-c94bace1] { margin: 0; padding-right: 1.2rem; font-size: 0.85rem; color: #cbd5e1;\n}\n.alert-card li[data-v-c94bace1] { margin-bottom: 0.2rem;\n}\n.alert-card p[data-v-c94bace1] { margin: 0; font-size: 0.85rem;\n}\n.top-users[data-v-c94bace1] { background: rgba(15,23,42,0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.75rem; padding: 1rem; margin-bottom: 1.5rem;\n}\n.top-users h3[data-v-c94bace1] { margin: 0 0 1rem; font-size: 1rem;\n}\n.top-item[data-v-c94bace1] { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.6rem;\n}\n.top-name[data-v-c94bace1] { width: 120px; font-size: 0.85rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;\n}\n.top-role[data-v-c94bace1] { width: 60px; font-size: 0.7rem; padding: 0.1rem 0.3rem; border-radius: 0.2rem; text-align: center;\n}\n.top-role.admin[data-v-c94bace1] { background: rgba(248,113,113,0.2); color: #f87171;\n}\n.top-role.teacher[data-v-c94bace1] { background: rgba(96,165,250,0.2); color: #60a5fa;\n}\n.top-role.student[data-v-c94bace1] { background: rgba(52,211,153,0.2); color: #34d399;\n}\n.top-bar[data-v-c94bace1] { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden;\n}\n.top-fill[data-v-c94bace1] { height: 100%; background: linear-gradient(90deg, #4f46e5, #67e8f9); border-radius: 3px; transition: width 0.5s;\n}\n.top-count[data-v-c94bace1] { width: 80px; font-size: 0.8rem; color: #94a3b8; text-align: left;\n}\n.recent-activity[data-v-c94bace1] { background: rgba(15,23,42,0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.75rem; padding: 1rem; margin-bottom: 1.5rem;\n}\n.recent-activity h3[data-v-c94bace1] { margin: 0 0 1rem; font-size: 1rem;\n}\n.activity-item[data-v-c94bace1] { display: flex; align-items: center; gap: 0.8rem; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.04);\n}\n.activity-dot[data-v-c94bace1] { width: 8px; height: 8px; background: #34d399; border-radius: 50%; flex-shrink: 0;\n}\n.activity-name[data-v-c94bace1] { font-weight: 700; font-size: 0.85rem; width: 120px;\n}\n.activity-action[data-v-c94bace1] { flex: 1; font-size: 0.8rem; color: #94a3b8;\n}\n.activity-date[data-v-c94bace1] { font-size: 0.75rem; color: #64748b;\n}\n",
+      "start": 1783634640035,
+      "end": 1783634640038,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640038,
+      "end": 1783634640038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634640038,
+      "end": 1783634640038,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640038,
+      "end": 1783634640038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640038,
+      "end": 1783634640038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640038,
+      "end": 1783634640038,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640038,
+      "end": 1783634640038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640038,
+      "end": 1783634640038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640038,
+      "end": 1783634640038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640038,
+      "end": 1783634640038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640038,
+      "end": 1783634640038,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/TeacherStatsStudentTable.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, normalizeClass as _normalizeClass } from \"vue\"\n\nconst _hoisted_1 = { class: \"section\" }\nconst _hoisted_2 = { class: \"student-table-wrapper\" }\nconst _hoisted_3 = { class: \"data-table\" }\nconst _hoisted_4 = [\"checked\", \"onChange\"]\n\nimport { useI18n } from '../../composables/useI18n'\n\ninterface StudentStat { id: number; name: string; reports: number; avg: number; lastSubmitted?: string }\n\ninterface Props {\n  students: StudentStat[]\n  comparisonIds: number[]\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'TeacherStatsStudentTable',\n  props: {\n    students: {},\n    comparisonIds: {}\n  },\n  emits: [\"toggleCompare\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst props = __props\n\nconst emit = __emit\n\nconst { t } = useI18n()\n\nfunction isChecked(id: number) {\n  return props.comparisonIds.includes(id)\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"h3\", null, _toDisplayString(_unref(t)('teacher.studentRanking')), 1),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"table\", _hoisted_3, [\n        _createElementVNode(\"thead\", null, [\n          _createElementVNode(\"tr\", null, [\n            _cache[0] || (_cache[0] = _createElementVNode(\"th\", null, \"#\", -1)),\n            _createElementVNode(\"th\", null, _toDisplayString(_unref(t)('teacher.studentCol')), 1),\n            _createElementVNode(\"th\", null, _toDisplayString(_unref(t)('teacher.reportsCol')), 1),\n            _createElementVNode(\"th\", null, _toDisplayString(_unref(t)('teacher.avgCol')), 1),\n            _createElementVNode(\"th\", null, _toDisplayString(_unref(t)('teacher.lastSubmit')), 1),\n            _createElementVNode(\"th\", null, _toDisplayString(_unref(t)('teacher.compare')), 1)\n          ])\n        ]),\n        _createElementVNode(\"tbody\", null, [\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.students, (s, i) => {\n            return (_openBlock(), _createElementBlock(\"tr\", {\n              key: s.id,\n              class: _normalizeClass({ top3: i < 3 })\n            }, [\n              _createElementVNode(\"td\", null, _toDisplayString(i + 1), 1),\n              _createElementVNode(\"td\", null, _toDisplayString(s.name), 1),\n              _createElementVNode(\"td\", null, _toDisplayString(s.reports), 1),\n              _createElementVNode(\"td\", {\n                class: _normalizeClass({ low: s.avg < 50, high: s.avg >= 80 })\n              }, _toDisplayString(s.avg) + \"%\", 3),\n              _createElementVNode(\"td\", null, _toDisplayString(s.lastSubmitted?.slice(0, 10) || '—'), 1),\n              _createElementVNode(\"td\", null, [\n                _createElementVNode(\"input\", {\n                  type: \"checkbox\",\n                  checked: isChecked(s.id),\n                  onChange: ($event: any) => (emit('toggleCompare', s.id))\n                }, null, 40, _hoisted_4)\n              ])\n            ], 2))\n          }), 128))\n        ])\n      ])\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783634640966,
+      "end": 1783634640966
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640966,
+      "end": 1783634640966,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, normalizeClass as _normalizeClass } from \"vue\";\nconst _hoisted_1 = { class: \"section\" };\nconst _hoisted_2 = { class: \"student-table-wrapper\" };\nconst _hoisted_3 = { class: \"data-table\" };\nconst _hoisted_4 = [\"checked\", \"onChange\"];\nimport { useI18n } from \"../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"TeacherStatsStudentTable\",\n  props: {\n    students: {},\n    comparisonIds: {}\n  },\n  emits: [\"toggleCompare\"],\n  setup(__props, { emit: __emit }) {\n    const props = __props;\n    const emit = __emit;\n    const { t } = useI18n();\n    function isChecked(id) {\n      return props.comparisonIds.includes(id);\n    }\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"h3\", null, _toDisplayString(_unref(t)(\"teacher.studentRanking\")), 1),\n        _createElementVNode(\"div\", _hoisted_2, [\n          _createElementVNode(\"table\", _hoisted_3, [\n            _createElementVNode(\"thead\", null, [\n              _createElementVNode(\"tr\", null, [\n                _cache[0] || (_cache[0] = _createElementVNode(\"th\", null, \"#\", -1)),\n                _createElementVNode(\"th\", null, _toDisplayString(_unref(t)(\"teacher.studentCol\")), 1),\n                _createElementVNode(\"th\", null, _toDisplayString(_unref(t)(\"teacher.reportsCol\")), 1),\n                _createElementVNode(\"th\", null, _toDisplayString(_unref(t)(\"teacher.avgCol\")), 1),\n                _createElementVNode(\"th\", null, _toDisplayString(_unref(t)(\"teacher.lastSubmit\")), 1),\n                _createElementVNode(\"th\", null, _toDisplayString(_unref(t)(\"teacher.compare\")), 1)\n              ])\n            ]),\n            _createElementVNode(\"tbody\", null, [\n              (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.students, (s, i) => {\n                return _openBlock(), _createElementBlock(\"tr\", {\n                  key: s.id,\n                  class: _normalizeClass({ top3: i < 3 })\n                }, [\n                  _createElementVNode(\"td\", null, _toDisplayString(i + 1), 1),\n                  _createElementVNode(\"td\", null, _toDisplayString(s.name), 1),\n                  _createElementVNode(\"td\", null, _toDisplayString(s.reports), 1),\n                  _createElementVNode(\"td\", {\n                    class: _normalizeClass({ low: s.avg < 50, high: s.avg >= 80 })\n                  }, _toDisplayString(s.avg) + \"%\", 3),\n                  _createElementVNode(\"td\", null, _toDisplayString(s.lastSubmitted?.slice(0, 10) || \"—\"), 1),\n                  _createElementVNode(\"td\", null, [\n                    _createElementVNode(\"input\", {\n                      type: \"checkbox\",\n                      checked: isChecked(s.id),\n                      onChange: ($event) => emit(\"toggleCompare\", s.id)\n                    }, null, 40, _hoisted_4)\n                  ])\n                ], 2);\n              }), 128))\n            ])\n          ])\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634640966,
+      "end": 1783634641018,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/TeacherStatsStudentTable.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, normalizeClass as _normalizeClass } from \"vue\"\n\nconst _hoisted_1 = { class: \"section\" }\nconst _hoisted_2 = { class: \"student-table-wrapper\" }\nconst _hoisted_3 = { class: \"data-table\" }\nconst _hoisted_4 = [\"checked\", \"onChange\"]\n\nimport { useI18n } from '../../composables/useI18n'\n\ninterface StudentStat { id: number; name: string; reports: number; avg: number; lastSubmitted?: string }\n\ninterface Props {\n  students: StudentStat[]\n  comparisonIds: number[]\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'TeacherStatsStudentTable',\n  props: {\n    students: {},\n    comparisonIds: {}\n  },\n  emits: [\"toggleCompare\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst props = __props\n\nconst emit = __emit\n\nconst { t } = useI18n()\n\nfunction isChecked(id: number) {\n  return props.comparisonIds.includes(id)\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"h3\", null, _toDisplayString(_unref(t)('teacher.studentRanking')), 1),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"table\", _hoisted_3, [\n        _createElementVNode(\"thead\", null, [\n          _createElementVNode(\"tr\", null, [\n            _cache[0] || (_cache[0] = _createElementVNode(\"th\", null, \"#\", -1)),\n            _createElementVNode(\"th\", null, _toDisplayString(_unref(t)('teacher.studentCol')), 1),\n            _createElementVNode(\"th\", null, _toDisplayString(_unref(t)('teacher.reportsCol')), 1),\n            _createElementVNode(\"th\", null, _toDisplayString(_unref(t)('teacher.avgCol')), 1),\n            _createElementVNode(\"th\", null, _toDisplayString(_unref(t)('teacher.lastSubmit')), 1),\n            _createElementVNode(\"th\", null, _toDisplayString(_unref(t)('teacher.compare')), 1)\n          ])\n        ]),\n        _createElementVNode(\"tbody\", null, [\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.students, (s, i) => {\n            return (_openBlock(), _createElementBlock(\"tr\", {\n              key: s.id,\n              class: _normalizeClass({ top3: i < 3 })\n            }, [\n              _createElementVNode(\"td\", null, _toDisplayString(i + 1), 1),\n              _createElementVNode(\"td\", null, _toDisplayString(s.name), 1),\n              _createElementVNode(\"td\", null, _toDisplayString(s.reports), 1),\n              _createElementVNode(\"td\", {\n                class: _normalizeClass({ low: s.avg < 50, high: s.avg >= 80 })\n              }, _toDisplayString(s.avg) + \"%\", 3),\n              _createElementVNode(\"td\", null, _toDisplayString(s.lastSubmitted?.slice(0, 10) || '—'), 1),\n              _createElementVNode(\"td\", null, [\n                _createElementVNode(\"input\", {\n                  type: \"checkbox\",\n                  checked: isChecked(s.id),\n                  onChange: ($event: any) => (emit('toggleCompare', s.id))\n                }, null, 40, _hoisted_4)\n              ])\n            ], 2))\n          }), 128))\n        ])\n      ])\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641018,
+      "end": 1783634641019,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641019,
+      "end": 1783634641019,
+      "order": "normal"
+    }
+  ]
+}

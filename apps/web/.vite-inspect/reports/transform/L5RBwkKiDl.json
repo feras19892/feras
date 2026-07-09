@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/TeacherStatsExpTable.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../composables/useI18n'\n\ninterface Props {\n  experiments: { name: string; avg: number; count: number; highest: number; lowest: number }[]\n}\ndefineProps<Props>()\n\nconst { t } = useI18n()\n</script>\n\n<template>\n  <div class=\"section\">\n    <h3>{{ t('teacher.expPerformance') }}</h3>\n    <div class=\"exp-table-wrapper\">\n      <table class=\"data-table\">\n        <thead>\n          <tr>\n            <th>{{ t('teacher.expName') }}</th>\n            <th>{{ t('teacher.reportsCol') }}</th>\n            <th>{{ t('teacher.avgCol') }}</th>\n            <th>{{ t('teacher.highest') }}</th>\n            <th>{{ t('teacher.lowest') }}</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for=\"e in experiments\" :key=\"e.name\">\n            <td>{{ e.name }}</td>\n            <td>{{ e.count }}</td>\n            <td :class=\"{ low: e.avg < 50, high: e.avg >= 80 }\">{{ e.avg }}%</td>\n            <td class=\"high\">{{ e.highest }}%</td>\n            <td class=\"low\">{{ e.lowest }}%</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.section { margin-bottom: 1.5rem; }\n.section h3 { font-size: 1.1rem; color: #e2e8f0; margin: 0 0 0.8rem; }\n.data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }\n.data-table th { text-align: right; padding: 0.5rem 0.75rem; color: #94a3b8; border-bottom: 1px solid rgba(255,255,255,0.08); font-weight: 600; }\n.data-table td { padding: 0.5rem 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.04); color: #e2e8f0; }\n.data-table tr:hover { background: rgba(255,255,255,0.02); }\n.low { color: #f87171; }\n.high { color: #4ade80; }\n.exp-table-wrapper { overflow-x: auto; }\n</style>\n",
+      "start": 1783634640340,
+      "end": 1783634640640,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640640,
+      "end": 1783634640640,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640640,
+      "end": 1783634640640,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640640,
+      "end": 1783634640640,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640640,
+      "end": 1783634640640,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/TeacherStatsExpTable.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/TeacherStatsExpTable.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/TeacherStatsExpTable.vue?vue&type=style&index=0&scoped=dcf053ee&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-dcf053ee\"]]);\n",
+      "start": 1783634640640,
+      "end": 1783634640819,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640819,
+      "end": 1783634640819,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640819,
+      "end": 1783634640819,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640819,
+      "end": 1783634640819,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640819,
+      "end": 1783634640819,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640819,
+      "end": 1783634640819,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640819,
+      "end": 1783634640819,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640819,
+      "end": 1783634640819,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640819,
+      "end": 1783634640819,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640819,
+      "end": 1783634640819,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640819,
+      "end": 1783634640819,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/PowerReferencePanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeStyle as _normalizeStyle } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"ref-section\" }\nconst _hoisted_3 = { class: \"formula-desc\" }\nconst _hoisted_4 = { class: \"ref-section\" }\nconst _hoisted_5 = { class: \"units-table\" }\nconst _hoisted_6 = {\n  class: \"unit-symbol\",\n  style: {\"color\":\"#f87171\"}\n}\nconst _hoisted_7 = { class: \"unit-name\" }\nconst _hoisted_8 = { class: \"unit-desc\" }\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'PowerReferencePanel',\n  setup(__props) {\n\nconst FORMULAS = [\n  { formula: 'P = V × I', desc: 'الصيغة الأساسية', color: '#f87171' },\n  { formula: 'P = I² × R', desc: 'باستخدام التيار والمقاومة', color: '#fbbf24' },\n  { formula: 'P = V² / R', desc: 'باستخدام الجهد والمقاومة', color: '#67e8f9' },\n  { formula: 'E = P × t', desc: 'الطاقة = القدرة × الزمن', color: '#a78bfa' },\n]\n\nconst UNITS = [\n  { unit: 'W', name: 'واط', desc: '1 W = 1 J/s' },\n  { unit: 'kW', name: 'كيلوواط', desc: '1 kW = 1000 W' },\n  { unit: 'kWh', name: 'كيلوواط·ساعة', desc: 'وحدة طاقة للعدّاد' },\n  { unit: 'J', name: 'جول', desc: '1 J = 1 W × 1s' },\n]\n\nconst NOTES = [\n  '💡 القدرة تزداد مع مربع الجهد: P ∝ V² (عند ثبوت R)',\n  '⚡ المقاومة الصغيرة = قدرة كبيرة (عند ثبوت V)',\n  '🔥 كل القدرة في المقاومة تتحول إلى حرارة (Joule heating)',\n  '📊 الرسم: P vs V → قطع مكافئ (P = V²/R)',\n  '📊 الرسم: P vs I → قطع مكافئ (P = I²×R)',\n]\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"ref-title\" }, \"⚡ القدرة الكهربائية\", -1)),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"section-title\" }, \"الصيغ الأساسية\", -1)),\n      (_openBlock(), _createElementBlock(_Fragment, null, _renderList(FORMULAS, (f) => {\n        return _createElementVNode(\"div\", {\n          key: f.formula,\n          class: \"formula-row\"\n        }, [\n          _createElementVNode(\"span\", {\n            class: \"formula-text\",\n            style: _normalizeStyle({ color: f.color })\n          }, _toDisplayString(f.formula), 5),\n          _createElementVNode(\"span\", _hoisted_3, _toDisplayString(f.desc), 1)\n        ])\n      }), 64))\n    ]),\n    _createElementVNode(\"div\", _hoisted_4, [\n      _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"section-title\" }, \"الوحدات\", -1)),\n      _createElementVNode(\"div\", _hoisted_5, [\n        (_openBlock(), _createElementBlock(_Fragment, null, _renderList(UNITS, (u) => {\n          return _createElementVNode(\"div\", {\n            key: u.unit,\n            class: \"unit-row\"\n          }, [\n            _createElementVNode(\"span\", _hoisted_6, _toDisplayString(u.unit), 1),\n            _createElementVNode(\"span\", _hoisted_7, _toDisplayString(u.name), 1),\n            _createElementVNode(\"span\", _hoisted_8, _toDisplayString(u.desc), 1)\n          ])\n        }), 64))\n      ])\n    ]),\n    (_openBlock(), _createElementBlock(_Fragment, null, _renderList(NOTES, (note, i) => {\n      return _createElementVNode(\"div\", {\n        key: i,\n        class: \"ref-note\"\n      }, _toDisplayString(note), 1)\n    }), 64))\n  ]))\n}\n}\n\n})",
+      "start": 1783634640138,
+      "end": 1783634640138
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640138,
+      "end": 1783634640138,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeStyle as _normalizeStyle } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nconst _hoisted_2 = { class: \"ref-section\" };\nconst _hoisted_3 = { class: \"formula-desc\" };\nconst _hoisted_4 = { class: \"ref-section\" };\nconst _hoisted_5 = { class: \"units-table\" };\nconst _hoisted_6 = {\n  class: \"unit-symbol\",\n  style: { \"color\": \"#f87171\" }\n};\nconst _hoisted_7 = { class: \"unit-name\" };\nconst _hoisted_8 = { class: \"unit-desc\" };\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"PowerReferencePanel\",\n  setup(__props) {\n    const FORMULAS = [\n      { formula: \"P = V × I\", desc: \"الصيغة الأساسية\", color: \"#f87171\" },\n      { formula: \"P = I² × R\", desc: \"باستخدام التيار والمقاومة\", color: \"#fbbf24\" },\n      { formula: \"P = V² / R\", desc: \"باستخدام الجهد والمقاومة\", color: \"#67e8f9\" },\n      { formula: \"E = P × t\", desc: \"الطاقة = القدرة × الزمن\", color: \"#a78bfa\" }\n    ];\n    const UNITS = [\n      { unit: \"W\", name: \"واط\", desc: \"1 W = 1 J/s\" },\n      { unit: \"kW\", name: \"كيلوواط\", desc: \"1 kW = 1000 W\" },\n      { unit: \"kWh\", name: \"كيلوواط·ساعة\", desc: \"وحدة طاقة للعدّاد\" },\n      { unit: \"J\", name: \"جول\", desc: \"1 J = 1 W × 1s\" }\n    ];\n    const NOTES = [\n      \"💡 القدرة تزداد مع مربع الجهد: P ∝ V² (عند ثبوت R)\",\n      \"⚡ المقاومة الصغيرة = قدرة كبيرة (عند ثبوت V)\",\n      \"🔥 كل القدرة في المقاومة تتحول إلى حرارة (Joule heating)\",\n      \"📊 الرسم: P vs V → قطع مكافئ (P = V²/R)\",\n      \"📊 الرسم: P vs I → قطع مكافئ (P = I²×R)\"\n    ];\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"ref-title\" }, \"⚡ القدرة الكهربائية\", -1)),\n        _createElementVNode(\"div\", _hoisted_2, [\n          _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"section-title\" }, \"الصيغ الأساسية\", -1)),\n          (_openBlock(), _createElementBlock(_Fragment, null, _renderList(FORMULAS, (f) => {\n            return _createElementVNode(\"div\", {\n              key: f.formula,\n              class: \"formula-row\"\n            }, [\n              _createElementVNode(\"span\", {\n                class: \"formula-text\",\n                style: _normalizeStyle({ color: f.color })\n              }, _toDisplayString(f.formula), 5),\n              _createElementVNode(\"span\", _hoisted_3, _toDisplayString(f.desc), 1)\n            ]);\n          }), 64))\n        ]),\n        _createElementVNode(\"div\", _hoisted_4, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"section-title\" }, \"الوحدات\", -1)),\n          _createElementVNode(\"div\", _hoisted_5, [\n            (_openBlock(), _createElementBlock(_Fragment, null, _renderList(UNITS, (u) => {\n              return _createElementVNode(\"div\", {\n                key: u.unit,\n                class: \"unit-row\"\n              }, [\n                _createElementVNode(\"span\", _hoisted_6, _toDisplayString(u.unit), 1),\n                _createElementVNode(\"span\", _hoisted_7, _toDisplayString(u.name), 1),\n                _createElementVNode(\"span\", _hoisted_8, _toDisplayString(u.desc), 1)\n              ]);\n            }), 64))\n          ])\n        ]),\n        (_openBlock(), _createElementBlock(_Fragment, null, _renderList(NOTES, (note, i) => {\n          return _createElementVNode(\"div\", {\n            key: i,\n            class: \"ref-note\"\n          }, _toDisplayString(note), 1);\n        }), 64))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634640138,
+      "end": 1783634640515,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/PowerReferencePanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeStyle as _normalizeStyle } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"ref-section\" }\nconst _hoisted_3 = { class: \"formula-desc\" }\nconst _hoisted_4 = { class: \"ref-section\" }\nconst _hoisted_5 = { class: \"units-table\" }\nconst _hoisted_6 = {\n  class: \"unit-symbol\",\n  style: {\"color\":\"#f87171\"}\n}\nconst _hoisted_7 = { class: \"unit-name\" }\nconst _hoisted_8 = { class: \"unit-desc\" }\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'PowerReferencePanel',\n  setup(__props) {\n\nconst FORMULAS = [\n  { formula: 'P = V × I', desc: 'الصيغة الأساسية', color: '#f87171' },\n  { formula: 'P = I² × R', desc: 'باستخدام التيار والمقاومة', color: '#fbbf24' },\n  { formula: 'P = V² / R', desc: 'باستخدام الجهد والمقاومة', color: '#67e8f9' },\n  { formula: 'E = P × t', desc: 'الطاقة = القدرة × الزمن', color: '#a78bfa' },\n]\n\nconst UNITS = [\n  { unit: 'W', name: 'واط', desc: '1 W = 1 J/s' },\n  { unit: 'kW', name: 'كيلوواط', desc: '1 kW = 1000 W' },\n  { unit: 'kWh', name: 'كيلوواط·ساعة', desc: 'وحدة طاقة للعدّاد' },\n  { unit: 'J', name: 'جول', desc: '1 J = 1 W × 1s' },\n]\n\nconst NOTES = [\n  '💡 القدرة تزداد مع مربع الجهد: P ∝ V² (عند ثبوت R)',\n  '⚡ المقاومة الصغيرة = قدرة كبيرة (عند ثبوت V)',\n  '🔥 كل القدرة في المقاومة تتحول إلى حرارة (Joule heating)',\n  '📊 الرسم: P vs V → قطع مكافئ (P = V²/R)',\n  '📊 الرسم: P vs I → قطع مكافئ (P = I²×R)',\n]\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"ref-title\" }, \"⚡ القدرة الكهربائية\", -1)),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"section-title\" }, \"الصيغ الأساسية\", -1)),\n      (_openBlock(), _createElementBlock(_Fragment, null, _renderList(FORMULAS, (f) => {\n        return _createElementVNode(\"div\", {\n          key: f.formula,\n          class: \"formula-row\"\n        }, [\n          _createElementVNode(\"span\", {\n            class: \"formula-text\",\n            style: _normalizeStyle({ color: f.color })\n          }, _toDisplayString(f.formula), 5),\n          _createElementVNode(\"span\", _hoisted_3, _toDisplayString(f.desc), 1)\n        ])\n      }), 64))\n    ]),\n    _createElementVNode(\"div\", _hoisted_4, [\n      _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"section-title\" }, \"الوحدات\", -1)),\n      _createElementVNode(\"div\", _hoisted_5, [\n        (_openBlock(), _createElementBlock(_Fragment, null, _renderList(UNITS, (u) => {\n          return _createElementVNode(\"div\", {\n            key: u.unit,\n            class: \"unit-row\"\n          }, [\n            _createElementVNode(\"span\", _hoisted_6, _toDisplayString(u.unit), 1),\n            _createElementVNode(\"span\", _hoisted_7, _toDisplayString(u.name), 1),\n            _createElementVNode(\"span\", _hoisted_8, _toDisplayString(u.desc), 1)\n          ])\n        }), 64))\n      ])\n    ]),\n    (_openBlock(), _createElementBlock(_Fragment, null, _renderList(NOTES, (note, i) => {\n      return _createElementVNode(\"div\", {\n        key: i,\n        class: \"ref-note\"\n      }, _toDisplayString(note), 1)\n    }), 64))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640515,
+      "end": 1783634640515,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640515,
+      "end": 1783634640515,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634640516,
+      "end": 1783634640516,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640516,
+      "end": 1783634640516,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640516,
+      "end": 1783634640516,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640516,
+      "end": 1783634640516,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640516,
+      "end": 1783634640516,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640516,
+      "end": 1783634640516,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640516,
+      "end": 1783634640516,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640516,
+      "end": 1783634640516,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640516,
+      "end": 1783634640516,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640516,
+      "end": 1783634640516,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640516,
+      "end": 1783634640516,
+      "order": "normal"
+    }
+  ]
+}

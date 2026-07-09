@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisReportPreview.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\nimport type { AnalysisColumnMeta, AnalysisEquation, AnalysisPlotConfig } from '../../../types/physics';\nimport type { StudentInfo } from '../../../stores/analysis.store';\n\nconst props = defineProps<{\n  sourceName: string;\n  reportDate: string;\n  studentInfo: StudentInfo;\n  readings: Record<string, number>[];\n  columns: AnalysisColumnMeta[];\n  equations: AnalysisEquation[];\n  plots: AnalysisPlotConfig[];\n  conclusion?: { conclusion: string; errors: string; improvements: string };\n  solvedEquations?: { equationName: string; formula: string; targetVar: string; varValues: Record<string, number>; result: string; timestamp: number }[];\n  regressionData?: { slope: number; intercept: number; r2: number } | null;\n  slopeCalcData?: { label: string; formula: string; value: number; unit: string; expr: string } | null;\n  axesData?: { x: string; y: string; xLabel: string; yLabel: string } | null;\n  errorCalcData?: { theoretical: number | null; experimental: number | null; errorPercent: number | null } | null;\n  chartSnapshot?: string;\n  calculatedN2?: number | null;\n  expectedN2?: number | null;\n}>();\n\nconst { t } = useI18n();\n\nconst stats = computed(() => {\n  const s: Record<string, { mean: number; std: number; min: number; max: number }> = {};\n  for (const col of props.columns) {\n    const vals = props.readings.map(r => r[col.key]).filter(v => typeof v === 'number' && !isNaN(v));\n    if (!vals.length) { s[col.key] = { mean: 0, std: 0, min: 0, max: 0 }; continue; }\n    const mean = vals.reduce((a, b) => a + b, 0) / vals.length;\n    const std = Math.sqrt(vals.reduce((sum, v) => sum + (v - mean) ** 2, 0) / vals.length);\n    s[col.key] = { mean, std, min: Math.min(...vals), max: Math.max(...vals) };\n  }\n  return s;\n});\n</script>\n\n<template>\n  <div class=\"report-preview\" id=\"analysis-report\">\n    <div class=\"report-header\">\n      <h1>{{ t('analysis.reportTitle') }}</h1>\n      <div class=\"meta\">\n        <span><b>{{ t('analysis.experimentLabel') }}:</b> {{ sourceName }}</span>\n        <span><b>{{ t('analysis.dateLabel') }}:</b> {{ reportDate }}</span>\n      </div>\n    </div>\n\n    <div class=\"section\" v-if=\"studentInfo.name || studentInfo.email || studentInfo.grade\">\n      <h2>{{ t('analysis.studentInfo') }}</h2>\n      <div class=\"info-grid\">\n        <div v-if=\"studentInfo.name\"><b>{{ t('analysis.name') }}:</b> {{ studentInfo.name }}</div>\n        <div v-if=\"studentInfo.email\"><b>{{ t('analysis.email') }}:</b> {{ studentInfo.email }}</div>\n        <div v-if=\"studentInfo.grade\"><b>{{ t('analysis.grade') }}:</b> {{ studentInfo.grade }}</div>\n      </div>\n      <div v-if=\"studentInfo.notes\" class=\"notes\"><b>{{ t('analysis.notes') }}:</b> {{ studentInfo.notes }}</div>\n    </div>\n\n    <div class=\"section\">\n      <h2>{{ t('analysis.readingsTable') }}</h2>\n      <table class=\"data-table\">\n        <thead><tr><th>#</th><th v-for=\"c in columns\" :key=\"c.key\">{{ c.label }} <span v-if=\"c.unit\">({{ c.unit }})</span></th></tr></thead>\n        <tbody>\n          <tr v-for=\"(row, i) in readings\" :key=\"i\"><td>{{ i + 1 }}</td><td v-for=\"c in columns\" :key=\"c.key\">{{ row[c.key]?.toFixed?.(4) ?? row[c.key] ?? '-' }}</td></tr>\n        </tbody>\n      </table>\n    </div>\n\n    <div class=\"section\">\n      <h2>{{ t('analysis.statistics') }}</h2>\n      <div class=\"stats-grid\">\n        <div class=\"stat-card\" v-for=\"c in columns\" :key=\"c.key\">\n          <div class=\"stat-title\">{{ c.label }}</div>\n          <div class=\"stat-row\"><span>μ</span><b>{{ stats[c.key]?.mean.toFixed(3) }}</b></div>\n          <div class=\"stat-row\"><span>σ</span><b>{{ stats[c.key]?.std.toFixed(3) }}</b></div>\n          <div class=\"stat-row\"><span>min</span><b>{{ stats[c.key]?.min.toFixed(3) }}</b></div>\n          <div class=\"stat-row\"><span>max</span><b>{{ stats[c.key]?.max.toFixed(3) }}</b></div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"section\" v-if=\"regressionData || slopeCalcData\">\n      <h2>{{ t('analysis.regressionResults') }}</h2>\n      <div v-if=\"axesData\" class=\"axes-info\">\n        <b>{{ t('analysis.axes') }}:</b> {{ axesData.yLabel }} (Y) {{ t('analysis.against') }} {{ axesData.xLabel }} (X)\n      </div>\n      <div v-if=\"regressionData\" class=\"reg-card\">\n        <div class=\"reg-row\"><span>{{ t('analysis.slope') }}:</span> <b>y = {{ regressionData.slope.toFixed(4) }}x {{ regressionData.intercept >= 0 ? '+' : '' }} {{ regressionData.intercept.toFixed(4) }}</b></div>\n        <div class=\"reg-row\"><span>R²:</span> <b>{{ regressionData.r2.toFixed(4) }}</b></div>\n      </div>\n      <div v-if=\"slopeCalcData\" class=\"slope-calc-card\">\n        <div class=\"sc-label\">{{ slopeCalcData.label }}</div>\n        <div class=\"sc-formula\">{{ slopeCalcData.formula }}</div>\n        <div class=\"sc-result\">{{ slopeCalcData.expr }} = <b>{{ slopeCalcData.value.toFixed(4) }} {{ slopeCalcData.unit }}</b></div>\n      </div>\n    </div>\n\n    <div class=\"section\" v-if=\"calculatedN2 !== null || expectedN2 !== null\">\n      <h2>{{ t('analysis.lightRayResults') }}</h2>\n      <div class=\"reg-card\">\n        <div class=\"reg-row\"><span>{{ t('analysis.calculatedN2') }}:</span> <b class=\"highlight\">{{ calculatedN2?.toFixed(3) ?? '—' }}</b></div>\n        <div class=\"reg-row\"><span>{{ t('analysis.expectedN2') }}:</span> <b>{{ expectedN2?.toFixed(3) ?? '—' }}</b></div>\n        <div class=\"reg-row\" v-if=\"calculatedN2 != null && expectedN2 != null\">\n          <span>{{ t('analysis.errorRate') }}:</span>\n          <b :class=\"{ok: Math.abs((calculatedN2!-expectedN2!)/expectedN2!*100) <= 5, bad: Math.abs((calculatedN2!-expectedN2!)/expectedN2!*100) > 5}\">\n            {{ Math.abs((calculatedN2!-expectedN2!)/expectedN2!*100).toFixed(2) }}%\n          </b>\n        </div>\n        <div class=\"reg-row\" v-if=\"calculatedN2 != null\">\n          <span>{{ t('analysis.lightSpeedMedium') }}:</span>\n          <b>{{ (3e8 / calculatedN2! / 1e8).toFixed(2) }} × 10⁸ m/s</b>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"section\" v-if=\"equations.length\">\n      <h2>{{ t('analysis.equations') }}</h2>\n      <div class=\"eq-list\">\n        <div class=\"eq-item\" v-for=\"(eq, i) in equations\" :key=\"i\">\n          <div class=\"eq-name\">{{ eq.name }}</div>\n          <div class=\"eq-formula\">{{ eq.formula }}</div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"section\" v-if=\"solvedEquations?.length\">\n      <h2>{{ t('analysis.solvedEquations') }}</h2>\n      <div class=\"eq-list\">\n        <div class=\"eq-item\" v-for=\"(s, i) in solvedEquations\" :key=\"i\">\n          <div class=\"eq-name\">{{ s.equationName }} — {{ t('analysis.unknownSolve', { var: s.targetVar }) }}</div>\n          <div class=\"eq-formula\">{{ s.formula }}</div>\n          <div class=\"solve-values\">\n            <span v-for=\"(val, sym) in s.varValues\" :key=\"sym\" class=\"solve-tag\">{{ sym }} = {{ val }}</span>\n          </div>\n          <div class=\"solve-result\">{{ s.result }}</div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"section\" v-if=\"errorCalcData && errorCalcData.errorPercent !== null\">\n      <h2>{{ t('analysis.errorPercent') }}</h2>\n      <div class=\"error-calc-card\">\n        <div class=\"ec-row\"><span>{{ t('analysis.theoreticalValue') }}:</span> <b>{{ errorCalcData.theoretical }}</b></div>\n        <div class=\"ec-row\"><span>{{ t('analysis.experimentalValue') }}:</span> <b>{{ errorCalcData.experimental }}</b></div>\n        <div class=\"ec-row ec-result\">\n          <span>{{ t('analysis.errorRate') }}:</span>\n          <b :class=\"{ good: errorCalcData.errorPercent < 5, warn: errorCalcData.errorPercent >= 5 && errorCalcData.errorPercent < 15, bad: errorCalcData.errorPercent >= 15 }\">\n            {{ errorCalcData.errorPercent.toFixed(2) }}%\n          </b>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"section\" v-if=\"plots.length\">\n      <h2>{{ t('analysis.suggestedPlots') }}</h2>\n      <div class=\"plot-list\">\n        <div class=\"plot-item\" v-for=\"(p, i) in plots\" :key=\"i\">\n          <span class=\"plot-type\">{{ p.type === 'scatter' ? '●' : '━' }}</span>\n          <span>{{ p.yLabel }} {{ t('analysis.against') }} {{ p.xLabel }}</span>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"section\" v-if=\"chartSnapshot\">\n      <h2>{{ t('analysis.chartTitle') }}</h2>\n      <img :src=\"chartSnapshot\" :alt=\"t('analysis.chartTitle')\" class=\"chart-img\" />\n    </div>\n\n    <div class=\"section\" v-if=\"conclusion?.conclusion || conclusion?.errors || conclusion?.improvements\">\n      <h2>{{ t('analysis.conclusionSection') }}</h2>\n      <div v-if=\"conclusion.conclusion\" class=\"block\"><b>{{ t('analysis.mainConclusion') }}:</b> {{ conclusion.conclusion }}</div>\n      <div v-if=\"conclusion.errors\" class=\"block\"><b>{{ t('analysis.errorSources') }}:</b> {{ conclusion.errors }}</div>\n      <div v-if=\"conclusion.improvements\" class=\"block\"><b>{{ t('analysis.improvements') }}:</b> {{ conclusion.improvements }}</div>\n    </div>\n\n    <div class=\"footer\">\n      <span>{{ t('analysis.autoGenerated') }}</span>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.report-preview {\n  background: #fff;\n  color: #1a1a1a;\n  padding: 2rem;\n  border-radius: 0.5rem;\n  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n  line-height: 1.6;\n}\n.report-header {\n  text-align: center;\n  border-bottom: 2px solid #0f172a;\n  padding-bottom: 1rem;\n  margin-bottom: 1.5rem;\n}\n.report-header h1 { color: #0f172a; margin: 0 0 0.5rem; font-size: 1.5rem; }\n.meta { display: flex; justify-content: center; gap: 1.5rem; font-size: 0.9rem; color: #444; }\n.section { margin-bottom: 1.5rem; }\n.section h2 { color: #0f172a; font-size: 1.1rem; border-bottom: 1px solid #ddd; padding-bottom: 0.3rem; margin-bottom: 0.75rem; }\n.info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; font-size: 0.9rem; }\n.notes { margin-top: 0.5rem; padding: 0.5rem; background: #f8f9fa; border-radius: 0.3rem; font-size: 0.9rem; }\n.data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }\n.data-table th, .data-table td { border: 1px solid #ddd; padding: 0.4rem 0.6rem; text-align: center; }\n.data-table th { background: #0f172a; color: #fff; }\n.data-table tr:nth-child(even) { background: #f8f9fa; }\n.stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.5rem; }\n.stat-card { background: #f8f9fa; border: 1px solid #e5e7eb; border-radius: 0.35rem; padding: 0.5rem; text-align: center; }\n.stat-title { font-weight: 700; color: #0f172a; margin-bottom: 0.3rem; font-size: 0.8rem; }\n.stat-row { display: flex; justify-content: space-between; font-size: 0.8rem; padding: 0.1rem 0; }\n.stat-row span { color: #64748b; }\n.eq-list { display: flex; flex-direction: column; gap: 0.5rem; }\n.eq-item { background: #f8f9fa; padding: 0.5rem 0.75rem; border-radius: 0.3rem; }\n.eq-name { font-weight: 700; color: #0f172a; font-size: 0.85rem; }\n.eq-formula { font-family: 'Courier New', monospace; color: #374151; font-size: 0.85rem; margin-top: 0.2rem; }\n.solve-values { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.3rem; }\n.solve-tag { background: #e0f2fe; color: #0369a1; font-size: 0.75rem; padding: 0.15rem 0.4rem; border-radius: 0.25rem; font-family: 'Courier New', monospace; }\n.solve-result { margin-top: 0.3rem; padding: 0.35rem 0.5rem; background: #dcfce7; color: #15803d; border-radius: 0.25rem; font-size: 0.85rem; font-family: 'Courier New', monospace; font-weight: 700; }\n.axes-info { margin-bottom: 0.5rem; font-size: 0.9rem; color: #374151; }\n.reg-card { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 0.35rem; padding: 0.5rem 0.75rem; margin-bottom: 0.5rem; }\n.reg-row { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.15rem 0; }\n.reg-row span { color: #475569; }\n.reg-row b { font-family: 'Courier New', monospace; color: #0369a1; }\n.slope-calc-card { background: #fef3c7; border: 1px solid #fde68a; border-radius: 0.35rem; padding: 0.5rem 0.75rem; }\n.sc-label { font-weight: 700; color: #92400e; font-size: 0.85rem; }\n.sc-formula { font-family: 'Courier New', monospace; color: #78350f; font-size: 0.82rem; margin-top: 0.15rem; }\n.sc-result { margin-top: 0.3rem; font-size: 0.9rem; font-family: 'Courier New', monospace; color: #92400e; }\n.sc-result b { color: #b45309; }\n.error-calc-card { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 0.35rem; padding: 0.5rem 0.75rem; }\n.ec-row { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.15rem 0; }\n.ec-row span { color: #475569; }\n.ec-row b { font-family: 'Courier New', monospace; color: #c2410c; }\n.ec-result b { font-size: 1.1rem; font-weight: 800; }\n.ec-result b.good { color: #15803d; }\n.ec-result b.warn { color: #a16207; }\n.ec-result b.bad { color: #dc2626; }\n.chart-img { max-width: 100%; border-radius: 0.35rem; border: 1px solid #e5e7eb; }\n.plot-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }\n.plot-item { background: #f8f9fa; padding: 0.35rem 0.6rem; border-radius: 0.3rem; font-size: 0.85rem; }\n.plot-type { color: #22c55e; margin-left: 0.3rem; }\n.block { margin-bottom: 0.4rem; font-size: 0.9rem; }\n.footer { text-align: center; font-size: 0.75rem; color: #888; border-top: 1px solid #ddd; padding-top: 1rem; margin-top: 1rem; }\n\n@media print {\n  .report-preview {\n    padding: 0;\n    background: #fff;\n    color: #000;\n    font-size: 12pt;\n    line-height: 1.5;\n  }\n  .report-header h1 { font-size: 18pt; }\n  .section h2 { font-size: 14pt; page-break-after: avoid; }\n  .data-table { page-break-inside: auto; }\n  .data-table tr { page-break-inside: avoid; }\n  .stats-grid { page-break-inside: avoid; }\n  .eq-list { page-break-inside: avoid; }\n  .chart-img { max-width: 100%; page-break-inside: avoid; }\n  .footer { page-break-before: avoid; }\n}\n</style>\n",
+      "start": 1783634640308,
+      "end": 1783634640576,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640576,
+      "end": 1783634640576,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640576,
+      "end": 1783634640576,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640576,
+      "end": 1783634640576,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640576,
+      "end": 1783634640576,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisReportPreview.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisReportPreview.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisReportPreview.vue?vue&type=style&index=0&scoped=f3c0bc69&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-f3c0bc69\"]]);\n",
+      "start": 1783634640576,
+      "end": 1783634640833,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640833,
+      "end": 1783634640833,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640833,
+      "end": 1783634640833,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640833,
+      "end": 1783634640833,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640833,
+      "end": 1783634640833,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640833,
+      "end": 1783634640833,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640833,
+      "end": 1783634640833,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640833,
+      "end": 1783634640833,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640833,
+      "end": 1783634640833,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640833,
+      "end": 1783634640833,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640833,
+      "end": 1783634640833,
+      "order": "normal"
+    }
+  ]
+}

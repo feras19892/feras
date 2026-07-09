@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/diffraction/useDiffractionTrials.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { ref } from 'vue'\n\nexport interface DiffractionTrial {\n  id: number\n  mode: 'single' | 'grating'\n  slitWidth: number\n  linesPerMm: number\n  screenDistance: number\n  wavelength: number\n  centralWidth: number\n  darkFringe1: number\n  firstOrderAngle: number\n  firstOrderY: number\n}\n\nexport interface TrialState {\n  trials: DiffractionTrial[]\n  nextId: number\n}\n\nconst SAVE_KEY = 'diffraction:trials:v1'\n\nexport function useDiffractionTrials(\n  params: { value: { slitWidth: number; linesPerMm: number; screenDistance: number; wavelength: number } },\n  mode: { value: 'single' | 'grating' },\n  centralWidth: { value: number },\n  darkFringe1: { value: number },\n  firstOrderAngle: { value: number },\n  firstOrderY: { value: number }\n) {\n  const trials = ref<DiffractionTrial[]>([])\n  const nextId = ref(1)\n  const undoStack = ref<TrialState[]>([])\n  const redoStack = ref<TrialState[]>([])\n\n  function autoSave() {\n    try {\n      localStorage.setItem(SAVE_KEY, JSON.stringify({\n        trials: trials.value,\n        nextId: nextId.value,\n        undoStack: undoStack.value.slice(-10),\n        redoStack: redoStack.value.slice(-10),\n      }))\n    } catch { /* ignore */ }\n  }\n\n  function autoLoad() {\n    try {\n      const raw = localStorage.getItem(SAVE_KEY)\n      if (!raw) return\n      const parsed = JSON.parse(raw)\n      if (Array.isArray(parsed.trials)) {\n        trials.value = parsed.trials\n        nextId.value = typeof parsed.nextId === 'number' ? parsed.nextId : (trials.value.length > 0 ? Math.max(...trials.value.map(t => t.id)) + 1 : 1)\n        if (Array.isArray(parsed.undoStack)) undoStack.value = parsed.undoStack\n        if (Array.isArray(parsed.redoStack)) redoStack.value = parsed.redoStack\n      }\n    } catch { /* ignore */ }\n  }\n\n  function pushState() {\n    undoStack.value.push({ trials: [...trials.value], nextId: nextId.value })\n    redoStack.value = []\n    if (undoStack.value.length > 50) undoStack.value.shift()\n    autoSave()\n  }\n\n  function recordTrial() {\n    pushState()\n    const { slitWidth, linesPerMm, screenDistance, wavelength } = params.value\n    trials.value.push({\n      id: nextId.value++,\n      mode: mode.value,\n      slitWidth,\n      linesPerMm,\n      screenDistance,\n      wavelength,\n      centralWidth: centralWidth.value,\n      darkFringe1: darkFringe1.value,\n      firstOrderAngle: firstOrderAngle.value,\n      firstOrderY: firstOrderY.value,\n    })\n  }\n\n  function undo() {\n    if (undoStack.value.length === 0) return\n    const current = { trials: [...trials.value], nextId: nextId.value }\n    redoStack.value.push(current)\n    const prev = undoStack.value.pop()!\n    trials.value = prev.trials\n    nextId.value = prev.nextId\n  }\n\n  function redo() {\n    if (redoStack.value.length === 0) return\n    const current = { trials: [...trials.value], nextId: nextId.value }\n    undoStack.value.push(current)\n    const next = redoStack.value.pop()!\n    trials.value = next.trials\n    nextId.value = next.nextId\n  }\n\n  function canUndo() { return undoStack.value.length > 0 }\n  function canRedo() { return redoStack.value.length > 0 }\n\n  function removeTrial(id: number) {\n    pushState()\n    trials.value = trials.value.filter(t => t.id !== id)\n    autoSave()\n  }\n\n  function clearTrials() {\n    pushState()\n    trials.value = []\n    nextId.value = 1\n    autoSave()\n  }\n\n  function exportCsv(): string {\n    const headers = ['Trial', 'Mode', 'a(mm)', 'N(lines/mm)', 'D(m)', 'lambda(nm)', 'w(mm)', 'y1(mm)', 'theta1(deg)', 'y1_grating(mm)']\n    const rows = trials.value.map(t =>\n      `${t.id},${t.mode},${t.slitWidth.toFixed(2)},${t.linesPerMm},${t.screenDistance.toFixed(2)},${t.wavelength},${t.centralWidth.toFixed(2)},${t.darkFringe1.toFixed(2)},${t.firstOrderAngle.toFixed(3)},${t.firstOrderY.toFixed(3)}`\n    )\n    return [headers.join(','), ...rows].join('\\n')\n  }\n\n  return { trials, recordTrial, undo, redo, canUndo, canRedo, removeTrial, clearTrials, exportCsv, autoLoad }\n}\n",
+      "start": 1783634641885,
+      "end": 1783634642179,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642179,
+      "end": 1783634642179,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { ref } from \"vue\";\nconst SAVE_KEY = \"diffraction:trials:v1\";\nexport function useDiffractionTrials(params, mode, centralWidth, darkFringe1, firstOrderAngle, firstOrderY) {\n  const trials = ref([]);\n  const nextId = ref(1);\n  const undoStack = ref([]);\n  const redoStack = ref([]);\n  function autoSave() {\n    try {\n      localStorage.setItem(SAVE_KEY, JSON.stringify({\n        trials: trials.value,\n        nextId: nextId.value,\n        undoStack: undoStack.value.slice(-10),\n        redoStack: redoStack.value.slice(-10)\n      }));\n    } catch {\n    }\n  }\n  function autoLoad() {\n    try {\n      const raw = localStorage.getItem(SAVE_KEY);\n      if (!raw) return;\n      const parsed = JSON.parse(raw);\n      if (Array.isArray(parsed.trials)) {\n        trials.value = parsed.trials;\n        nextId.value = typeof parsed.nextId === \"number\" ? parsed.nextId : trials.value.length > 0 ? Math.max(...trials.value.map((t) => t.id)) + 1 : 1;\n        if (Array.isArray(parsed.undoStack)) undoStack.value = parsed.undoStack;\n        if (Array.isArray(parsed.redoStack)) redoStack.value = parsed.redoStack;\n      }\n    } catch {\n    }\n  }\n  function pushState() {\n    undoStack.value.push({ trials: [...trials.value], nextId: nextId.value });\n    redoStack.value = [];\n    if (undoStack.value.length > 50) undoStack.value.shift();\n    autoSave();\n  }\n  function recordTrial() {\n    pushState();\n    const { slitWidth, linesPerMm, screenDistance, wavelength } = params.value;\n    trials.value.push({\n      id: nextId.value++,\n      mode: mode.value,\n      slitWidth,\n      linesPerMm,\n      screenDistance,\n      wavelength,\n      centralWidth: centralWidth.value,\n      darkFringe1: darkFringe1.value,\n      firstOrderAngle: firstOrderAngle.value,\n      firstOrderY: firstOrderY.value\n    });\n  }\n  function undo() {\n    if (undoStack.value.length === 0) return;\n    const current = { trials: [...trials.value], nextId: nextId.value };\n    redoStack.value.push(current);\n    const prev = undoStack.value.pop();\n    trials.value = prev.trials;\n    nextId.value = prev.nextId;\n  }\n  function redo() {\n    if (redoStack.value.length === 0) return;\n    const current = { trials: [...trials.value], nextId: nextId.value };\n    undoStack.value.push(current);\n    const next = redoStack.value.pop();\n    trials.value = next.trials;\n    nextId.value = next.nextId;\n  }\n  function canUndo() {\n    return undoStack.value.length > 0;\n  }\n  function canRedo() {\n    return redoStack.value.length > 0;\n  }\n  function removeTrial(id) {\n    pushState();\n    trials.value = trials.value.filter((t) => t.id !== id);\n    autoSave();\n  }\n  function clearTrials() {\n    pushState();\n    trials.value = [];\n    nextId.value = 1;\n    autoSave();\n  }\n  function exportCsv() {\n    const headers = [\"Trial\", \"Mode\", \"a(mm)\", \"N(lines/mm)\", \"D(m)\", \"lambda(nm)\", \"w(mm)\", \"y1(mm)\", \"theta1(deg)\", \"y1_grating(mm)\"];\n    const rows = trials.value.map(\n      (t) => `${t.id},${t.mode},${t.slitWidth.toFixed(2)},${t.linesPerMm},${t.screenDistance.toFixed(2)},${t.wavelength},${t.centralWidth.toFixed(2)},${t.darkFringe1.toFixed(2)},${t.firstOrderAngle.toFixed(3)},${t.firstOrderY.toFixed(3)}`\n    );\n    return [headers.join(\",\"), ...rows].join(\"\\n\");\n  }\n  return { trials, recordTrial, undo, redo, canUndo, canRedo, removeTrial, clearTrials, exportCsv, autoLoad };\n}\n",
+      "start": 1783634642179,
+      "end": 1783634642322,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/diffraction/useDiffractionTrials.ts"
+        ],
+        "sourcesContent": [
+          "import { ref } from 'vue'\n\nexport interface DiffractionTrial {\n  id: number\n  mode: 'single' | 'grating'\n  slitWidth: number\n  linesPerMm: number\n  screenDistance: number\n  wavelength: number\n  centralWidth: number\n  darkFringe1: number\n  firstOrderAngle: number\n  firstOrderY: number\n}\n\nexport interface TrialState {\n  trials: DiffractionTrial[]\n  nextId: number\n}\n\nconst SAVE_KEY = 'diffraction:trials:v1'\n\nexport function useDiffractionTrials(\n  params: { value: { slitWidth: number; linesPerMm: number; screenDistance: number; wavelength: number } },\n  mode: { value: 'single' | 'grating' },\n  centralWidth: { value: number },\n  darkFringe1: { value: number },\n  firstOrderAngle: { value: number },\n  firstOrderY: { value: number }\n) {\n  const trials = ref<DiffractionTrial[]>([])\n  const nextId = ref(1)\n  const undoStack = ref<TrialState[]>([])\n  const redoStack = ref<TrialState[]>([])\n\n  function autoSave() {\n    try {\n      localStorage.setItem(SAVE_KEY, JSON.stringify({\n        trials: trials.value,\n        nextId: nextId.value,\n        undoStack: undoStack.value.slice(-10),\n        redoStack: redoStack.value.slice(-10),\n      }))\n    } catch { /* ignore */ }\n  }\n\n  function autoLoad() {\n    try {\n      const raw = localStorage.getItem(SAVE_KEY)\n      if (!raw) return\n      const parsed = JSON.parse(raw)\n      if (Array.isArray(parsed.trials)) {\n        trials.value = parsed.trials\n        nextId.value = typeof parsed.nextId === 'number' ? parsed.nextId : (trials.value.length > 0 ? Math.max(...trials.value.map(t => t.id)) + 1 : 1)\n        if (Array.isArray(parsed.undoStack)) undoStack.value = parsed.undoStack\n        if (Array.isArray(parsed.redoStack)) redoStack.value = parsed.redoStack\n      }\n    } catch { /* ignore */ }\n  }\n\n  function pushState() {\n    undoStack.value.push({ trials: [...trials.value], nextId: nextId.value })\n    redoStack.value = []\n    if (undoStack.value.length > 50) undoStack.value.shift()\n    autoSave()\n  }\n\n  function recordTrial() {\n    pushState()\n    const { slitWidth, linesPerMm, screenDistance, wavelength } = params.value\n    trials.value.push({\n      id: nextId.value++,\n      mode: mode.value,\n      slitWidth,\n      linesPerMm,\n      screenDistance,\n      wavelength,\n      centralWidth: centralWidth.value,\n      darkFringe1: darkFringe1.value,\n      firstOrderAngle: firstOrderAngle.value,\n      firstOrderY: firstOrderY.value,\n    })\n  }\n\n  function undo() {\n    if (undoStack.value.length === 0) return\n    const current = { trials: [...trials.value], nextId: nextId.value }\n    redoStack.value.push(current)\n    const prev = undoStack.value.pop()!\n    trials.value = prev.trials\n    nextId.value = prev.nextId\n  }\n\n  function redo() {\n    if (redoStack.value.length === 0) return\n    const current = { trials: [...trials.value], nextId: nextId.value }\n    undoStack.value.push(current)\n    const next = redoStack.value.pop()!\n    trials.value = next.trials\n    nextId.value = next.nextId\n  }\n\n  function canUndo() { return undoStack.value.length > 0 }\n  function canRedo() { return redoStack.value.length > 0 }\n\n  function removeTrial(id: number) {\n    pushState()\n    trials.value = trials.value.filter(t => t.id !== id)\n    autoSave()\n  }\n\n  function clearTrials() {\n    pushState()\n    trials.value = []\n    nextId.value = 1\n    autoSave()\n  }\n\n  function exportCsv(): string {\n    const headers = ['Trial', 'Mode', 'a(mm)', 'N(lines/mm)', 'D(m)', 'lambda(nm)', 'w(mm)', 'y1(mm)', 'theta1(deg)', 'y1_grating(mm)']\n    const rows = trials.value.map(t =>\n      `${t.id},${t.mode},${t.slitWidth.toFixed(2)},${t.linesPerMm},${t.screenDistance.toFixed(2)},${t.wavelength},${t.centralWidth.toFixed(2)},${t.darkFringe1.toFixed(2)},${t.firstOrderAngle.toFixed(3)},${t.firstOrderY.toFixed(3)}`\n    )\n    return [headers.join(','), ...rows].join('\\n')\n  }\n\n  return { trials, recordTrial, undo, redo, canUndo, canRedo, removeTrial, clearTrials, exportCsv, autoLoad }\n}\n"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642322,
+      "end": 1783634642322,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642322,
+      "end": 1783634642322,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642322,
+      "end": 1783634642322,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642322,
+      "end": 1783634642322,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642322,
+      "end": 1783634642322,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642322,
+      "end": 1783634642322,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642322,
+      "end": 1783634642322,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642322,
+      "end": 1783634642322,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642322,
+      "end": 1783634642322,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642322,
+      "end": 1783634642322,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642322,
+      "end": 1783634642323,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642323,
+      "end": 1783634642323,
+      "order": "normal"
+    }
+  ]
+}

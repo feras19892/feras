@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileOverlayPanels.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createVNode as _createVNode, withModifiers as _withModifiers, Teleport as _Teleport, createBlock as _createBlock } from \"vue\"\n\nconst _hoisted_1 = [\"onClick\"]\nconst _hoisted_2 = [\"onDrop\"]\nconst _hoisted_3 = { class: \"overlay-header\" }\nconst _hoisted_4 = [\"onClick\"]\n\nimport type { ProjectileTrial } from '../../../composables/projectile/useProjectileTrials'\nimport type { ProjectileParams } from '../../../modules/physics/experiments/projectile/useProjectilePhysics'\n\nimport ProjectilePanelBody from './ProjectilePanelBody.vue'\ninterface SimState { t: number; x: number; y: number; vx: number; vy: number; running: boolean; paused: boolean; landed: boolean; trail: {x:number;y:number}[]; signalSeries: {t:number;vx:number;vy:number}[] }\ninterface MeasuredState { flightTime: number | null; maxHeight: number | null; range: number | null }\ninterface TrialStats { range_mean: number; range_std: number; flightTime_mean: number; flightTime_std: number }\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ProjectileOverlayPanels',\n  props: {\n    maximized: {},\n    panelTitle: { type: Function },\n    trials: {},\n    calcResult: {},\n    fitResult: {},\n    params: {},\n    sim: {},\n    measured: {},\n    trialStats: {}\n  },\n  emits: [\"maximize\", \"drop\", \"update:trials\", \"update:params\", \"remove\", \"clear\", \"calcFlightTime\", \"calcMaxHeight\", \"calcRange\", \"calcFitRange\", \"showCalc\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst props = __props\n\nconst emit = __emit\n\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createBlock(_Teleport, { to: \"body\" }, [\n    (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(Object.entries(__props.maximized).filter(([,a]) => a), ([id, _active]) => {\n      return (_openBlock(), _createElementBlock(\"div\", {\n        key: id,\n        class: \"overlay-backdrop\",\n        onClick: ($event: any) => (emit('maximize', id))\n      }, [\n        _createElementVNode(\"div\", {\n          class: \"overlay-panel\",\n          onClick: _cache[9] || (_cache[9] = _withModifiers(() => {}, [\"stop\"])),\n          onDrop: _withModifiers(($event: any) => (emit('drop', id, $event.clientX, $event.clientY)), [\"prevent\"]),\n          onDragover: _cache[10] || (_cache[10] = _withModifiers(() => {}, [\"prevent\"]))\n        }, [\n          _createElementVNode(\"div\", _hoisted_3, [\n            _createElementVNode(\"span\", null, _toDisplayString(__props.panelTitle(id)), 1),\n            _createElementVNode(\"button\", {\n              onClick: ($event: any) => (emit('maximize', id))\n            }, \"×\", 8, _hoisted_4)\n          ]),\n          _createVNode(ProjectilePanelBody, {\n            id: id,\n            trials: __props.trials,\n            \"calc-result\": __props.calcResult,\n            params: __props.params,\n            sim: __props.sim,\n            measured: __props.measured,\n            \"trial-stats\": __props.trialStats,\n            \"fit-result\": __props.fitResult,\n            \"onUpdate:trials\": _cache[0] || (_cache[0] = ($event: any) => (emit('update:trials', $event))),\n            \"onUpdate:params\": _cache[1] || (_cache[1] = ($event: any) => (emit('update:params', $event))),\n            onRemove: _cache[2] || (_cache[2] = ($event: any) => (emit('remove', $event))),\n            onClear: _cache[3] || (_cache[3] = ($event: any) => (emit('clear'))),\n            onCalcFlightTime: _cache[4] || (_cache[4] = ($event: any) => (emit('calcFlightTime'))),\n            onCalcMaxHeight: _cache[5] || (_cache[5] = ($event: any) => (emit('calcMaxHeight'))),\n            onCalcRange: _cache[6] || (_cache[6] = ($event: any) => (emit('calcRange'))),\n            onCalcFitRange: _cache[7] || (_cache[7] = ($event: any) => (emit('calcFitRange'))),\n            onShowCalc: _cache[8] || (_cache[8] = ($event: any) => (emit('showCalc', $event)))\n          }, null, 8, [\"id\", \"trials\", \"calc-result\", \"params\", \"sim\", \"measured\", \"trial-stats\", \"fit-result\"])\n        ], 40, _hoisted_2)\n      ], 8, _hoisted_1))\n    }), 128))\n  ]))\n}\n}\n\n})",
+      "start": 1783634641747,
+      "end": 1783634641747
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641747,
+      "end": 1783634641747,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createVNode as _createVNode, withModifiers as _withModifiers, Teleport as _Teleport, createBlock as _createBlock } from \"vue\";\nconst _hoisted_1 = [\"onClick\"];\nconst _hoisted_2 = [\"onDrop\"];\nconst _hoisted_3 = { class: \"overlay-header\" };\nconst _hoisted_4 = [\"onClick\"];\nimport ProjectilePanelBody from \"./ProjectilePanelBody.vue\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"ProjectileOverlayPanels\",\n  props: {\n    maximized: {},\n    panelTitle: { type: Function },\n    trials: {},\n    calcResult: {},\n    fitResult: {},\n    params: {},\n    sim: {},\n    measured: {},\n    trialStats: {}\n  },\n  emits: [\"maximize\", \"drop\", \"update:trials\", \"update:params\", \"remove\", \"clear\", \"calcFlightTime\", \"calcMaxHeight\", \"calcRange\", \"calcFitRange\", \"showCalc\"],\n  setup(__props, { emit: __emit }) {\n    const props = __props;\n    const emit = __emit;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createBlock(_Teleport, { to: \"body\" }, [\n        (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(Object.entries(__props.maximized).filter(([, a]) => a), ([id, _active]) => {\n          return _openBlock(), _createElementBlock(\"div\", {\n            key: id,\n            class: \"overlay-backdrop\",\n            onClick: ($event) => emit(\"maximize\", id)\n          }, [\n            _createElementVNode(\"div\", {\n              class: \"overlay-panel\",\n              onClick: _cache[9] || (_cache[9] = _withModifiers(() => {\n              }, [\"stop\"])),\n              onDrop: _withModifiers(($event) => emit(\"drop\", id, $event.clientX, $event.clientY), [\"prevent\"]),\n              onDragover: _cache[10] || (_cache[10] = _withModifiers(() => {\n              }, [\"prevent\"]))\n            }, [\n              _createElementVNode(\"div\", _hoisted_3, [\n                _createElementVNode(\"span\", null, _toDisplayString(__props.panelTitle(id)), 1),\n                _createElementVNode(\"button\", {\n                  onClick: ($event) => emit(\"maximize\", id)\n                }, \"×\", 8, _hoisted_4)\n              ]),\n              _createVNode(ProjectilePanelBody, {\n                id,\n                trials: __props.trials,\n                \"calc-result\": __props.calcResult,\n                params: __props.params,\n                sim: __props.sim,\n                measured: __props.measured,\n                \"trial-stats\": __props.trialStats,\n                \"fit-result\": __props.fitResult,\n                \"onUpdate:trials\": _cache[0] || (_cache[0] = ($event) => emit(\"update:trials\", $event)),\n                \"onUpdate:params\": _cache[1] || (_cache[1] = ($event) => emit(\"update:params\", $event)),\n                onRemove: _cache[2] || (_cache[2] = ($event) => emit(\"remove\", $event)),\n                onClear: _cache[3] || (_cache[3] = ($event) => emit(\"clear\")),\n                onCalcFlightTime: _cache[4] || (_cache[4] = ($event) => emit(\"calcFlightTime\")),\n                onCalcMaxHeight: _cache[5] || (_cache[5] = ($event) => emit(\"calcMaxHeight\")),\n                onCalcRange: _cache[6] || (_cache[6] = ($event) => emit(\"calcRange\")),\n                onCalcFitRange: _cache[7] || (_cache[7] = ($event) => emit(\"calcFitRange\")),\n                onShowCalc: _cache[8] || (_cache[8] = ($event) => emit(\"showCalc\", $event))\n              }, null, 8, [\"id\", \"trials\", \"calc-result\", \"params\", \"sim\", \"measured\", \"trial-stats\", \"fit-result\"])\n            ], 40, _hoisted_2)\n          ], 8, _hoisted_1);\n        }), 128))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634641747,
+      "end": 1783634642306,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileOverlayPanels.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createVNode as _createVNode, withModifiers as _withModifiers, Teleport as _Teleport, createBlock as _createBlock } from \"vue\"\n\nconst _hoisted_1 = [\"onClick\"]\nconst _hoisted_2 = [\"onDrop\"]\nconst _hoisted_3 = { class: \"overlay-header\" }\nconst _hoisted_4 = [\"onClick\"]\n\nimport type { ProjectileTrial } from '../../../composables/projectile/useProjectileTrials'\nimport type { ProjectileParams } from '../../../modules/physics/experiments/projectile/useProjectilePhysics'\n\nimport ProjectilePanelBody from './ProjectilePanelBody.vue'\ninterface SimState { t: number; x: number; y: number; vx: number; vy: number; running: boolean; paused: boolean; landed: boolean; trail: {x:number;y:number}[]; signalSeries: {t:number;vx:number;vy:number}[] }\ninterface MeasuredState { flightTime: number | null; maxHeight: number | null; range: number | null }\ninterface TrialStats { range_mean: number; range_std: number; flightTime_mean: number; flightTime_std: number }\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ProjectileOverlayPanels',\n  props: {\n    maximized: {},\n    panelTitle: { type: Function },\n    trials: {},\n    calcResult: {},\n    fitResult: {},\n    params: {},\n    sim: {},\n    measured: {},\n    trialStats: {}\n  },\n  emits: [\"maximize\", \"drop\", \"update:trials\", \"update:params\", \"remove\", \"clear\", \"calcFlightTime\", \"calcMaxHeight\", \"calcRange\", \"calcFitRange\", \"showCalc\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst props = __props\n\nconst emit = __emit\n\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createBlock(_Teleport, { to: \"body\" }, [\n    (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(Object.entries(__props.maximized).filter(([,a]) => a), ([id, _active]) => {\n      return (_openBlock(), _createElementBlock(\"div\", {\n        key: id,\n        class: \"overlay-backdrop\",\n        onClick: ($event: any) => (emit('maximize', id))\n      }, [\n        _createElementVNode(\"div\", {\n          class: \"overlay-panel\",\n          onClick: _cache[9] || (_cache[9] = _withModifiers(() => {}, [\"stop\"])),\n          onDrop: _withModifiers(($event: any) => (emit('drop', id, $event.clientX, $event.clientY)), [\"prevent\"]),\n          onDragover: _cache[10] || (_cache[10] = _withModifiers(() => {}, [\"prevent\"]))\n        }, [\n          _createElementVNode(\"div\", _hoisted_3, [\n            _createElementVNode(\"span\", null, _toDisplayString(__props.panelTitle(id)), 1),\n            _createElementVNode(\"button\", {\n              onClick: ($event: any) => (emit('maximize', id))\n            }, \"×\", 8, _hoisted_4)\n          ]),\n          _createVNode(ProjectilePanelBody, {\n            id: id,\n            trials: __props.trials,\n            \"calc-result\": __props.calcResult,\n            params: __props.params,\n            sim: __props.sim,\n            measured: __props.measured,\n            \"trial-stats\": __props.trialStats,\n            \"fit-result\": __props.fitResult,\n            \"onUpdate:trials\": _cache[0] || (_cache[0] = ($event: any) => (emit('update:trials', $event))),\n            \"onUpdate:params\": _cache[1] || (_cache[1] = ($event: any) => (emit('update:params', $event))),\n            onRemove: _cache[2] || (_cache[2] = ($event: any) => (emit('remove', $event))),\n            onClear: _cache[3] || (_cache[3] = ($event: any) => (emit('clear'))),\n            onCalcFlightTime: _cache[4] || (_cache[4] = ($event: any) => (emit('calcFlightTime'))),\n            onCalcMaxHeight: _cache[5] || (_cache[5] = ($event: any) => (emit('calcMaxHeight'))),\n            onCalcRange: _cache[6] || (_cache[6] = ($event: any) => (emit('calcRange'))),\n            onCalcFitRange: _cache[7] || (_cache[7] = ($event: any) => (emit('calcFitRange'))),\n            onShowCalc: _cache[8] || (_cache[8] = ($event: any) => (emit('showCalc', $event)))\n          }, null, 8, [\"id\", \"trials\", \"calc-result\", \"params\", \"sim\", \"measured\", \"trial-stats\", \"fit-result\"])\n        ], 40, _hoisted_2)\n      ], 8, _hoisted_1))\n    }), 128))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642306,
+      "end": 1783634642306,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642306,
+      "end": 1783634642306,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634642306,
+      "end": 1783634642306,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642306,
+      "end": 1783634642307,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642307,
+      "end": 1783634642307,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642307,
+      "end": 1783634642307,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642307,
+      "end": 1783634642307,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642307,
+      "end": 1783634642307,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642307,
+      "end": 1783634642307,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642307,
+      "end": 1783634642307,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642307,
+      "end": 1783634642307,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642307,
+      "end": 1783634642307,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642307,
+      "end": 1783634642307,
+      "order": "normal"
+    }
+  ]
+}

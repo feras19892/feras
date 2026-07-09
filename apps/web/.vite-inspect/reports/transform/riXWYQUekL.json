@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/TitrationDataTable.vue?vue&type=style&index=0&scoped=05e78ead&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.data-table-wrapper {\n  position: absolute;\n  top: 0.5rem;\n  left: 0;\n  right: 0;\n  margin: 0 auto;\n  width: fit-content;\n  z-index: 20;\n  background: rgba(255, 255, 255, 0.95);\n  backdrop-filter: blur(8px);\n  border: 1px solid #e2e8f0;\n  border-radius: 0.75rem;\n  padding: 0.6rem 0.9rem;\n  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);\n  min-width: 220px;\n  max-width: 320px;\n  max-height: 280px;\n  overflow-y: auto;\n}\n.data-table-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 0.4rem;\n}\n.data-title {\n  font-size: 0.72rem;\n  font-weight: 700;\n  color: #1e293b;\n}\n.add-btn {\n  font-size: 0.65rem;\n  padding: 0.2rem 0.45rem;\n  border: 1px solid #10b981;\n  border-radius: 0.35rem;\n  background: #ecfdf5;\n  color: #059669;\n  font-weight: 700;\n  cursor: pointer;\n}\n.add-btn:hover {\n  background: #d1fae5;\n}\n.data-empty {\n  font-size: 0.7rem;\n  color: #94a3b8;\n  text-align: center;\n  padding: 0.5rem 0;\n}\n.data-table {\n  width: 100%;\n  border-collapse: collapse;\n  font-size: 0.7rem;\n}\n.data-table th {\n  text-align: center;\n  color: #64748b;\n  font-weight: 600;\n  padding: 0.25rem 0.3rem;\n  border-bottom: 1px solid #e2e8f0;\n}\n.data-table td {\n  text-align: center;\n  padding: 0.3rem 0.3rem;\n  color: #334155;\n  font-variant-numeric: tabular-nums;\n}\n.data-table tbody tr:nth-child(even) {\n  background: #f8fafc;\n}\n.color-dot {\n  display: inline-block;\n  width: 10px;\n  height: 10px;\n  border-radius: 50%;\n}\n",
+      "start": 1783634639989,
+      "end": 1783634639989
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.data-table-wrapper {\n  position: absolute;\n  top: 0.5rem;\n  left: 0;\n  right: 0;\n  margin: 0 auto;\n  width: fit-content;\n  z-index: 20;\n  background: rgba(255, 255, 255, 0.95);\n  backdrop-filter: blur(8px);\n  border: 1px solid #e2e8f0;\n  border-radius: 0.75rem;\n  padding: 0.6rem 0.9rem;\n  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);\n  min-width: 220px;\n  max-width: 320px;\n  max-height: 280px;\n  overflow-y: auto;\n}\n.data-table-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 0.4rem;\n}\n.data-title {\n  font-size: 0.72rem;\n  font-weight: 700;\n  color: #1e293b;\n}\n.add-btn {\n  font-size: 0.65rem;\n  padding: 0.2rem 0.45rem;\n  border: 1px solid #10b981;\n  border-radius: 0.35rem;\n  background: #ecfdf5;\n  color: #059669;\n  font-weight: 700;\n  cursor: pointer;\n}\n.add-btn:hover {\n  background: #d1fae5;\n}\n.data-empty {\n  font-size: 0.7rem;\n  color: #94a3b8;\n  text-align: center;\n  padding: 0.5rem 0;\n}\n.data-table {\n  width: 100%;\n  border-collapse: collapse;\n  font-size: 0.7rem;\n}\n.data-table th {\n  text-align: center;\n  color: #64748b;\n  font-weight: 600;\n  padding: 0.25rem 0.3rem;\n  border-bottom: 1px solid #e2e8f0;\n}\n.data-table td {\n  text-align: center;\n  padding: 0.3rem 0.3rem;\n  color: #334155;\n  font-variant-numeric: tabular-nums;\n}\n.data-table tbody tr:nth-child(even) {\n  background: #f8fafc;\n}\n.color-dot {\n  display: inline-block;\n  width: 10px;\n  height: 10px;\n  border-radius: 50%;\n}\n",
+      "start": 1783634639989,
+      "end": 1783634639989,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639989,
+      "end": 1783634639989,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639989,
+      "end": 1783634639989,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639989,
+      "end": 1783634639989,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.data-table-wrapper[data-v-05e78ead] {\n  position: absolute;\n  top: 0.5rem;\n  left: 0;\n  right: 0;\n  margin: 0 auto;\n  width: fit-content;\n  z-index: 20;\n  background: rgba(255, 255, 255, 0.95);\n  backdrop-filter: blur(8px);\n  border: 1px solid #e2e8f0;\n  border-radius: 0.75rem;\n  padding: 0.6rem 0.9rem;\n  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);\n  min-width: 220px;\n  max-width: 320px;\n  max-height: 280px;\n  overflow-y: auto;\n}\n.data-table-header[data-v-05e78ead] {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 0.4rem;\n}\n.data-title[data-v-05e78ead] {\n  font-size: 0.72rem;\n  font-weight: 700;\n  color: #1e293b;\n}\n.add-btn[data-v-05e78ead] {\n  font-size: 0.65rem;\n  padding: 0.2rem 0.45rem;\n  border: 1px solid #10b981;\n  border-radius: 0.35rem;\n  background: #ecfdf5;\n  color: #059669;\n  font-weight: 700;\n  cursor: pointer;\n}\n.add-btn[data-v-05e78ead]:hover {\n  background: #d1fae5;\n}\n.data-empty[data-v-05e78ead] {\n  font-size: 0.7rem;\n  color: #94a3b8;\n  text-align: center;\n  padding: 0.5rem 0;\n}\n.data-table[data-v-05e78ead] {\n  width: 100%;\n  border-collapse: collapse;\n  font-size: 0.7rem;\n}\n.data-table th[data-v-05e78ead] {\n  text-align: center;\n  color: #64748b;\n  font-weight: 600;\n  padding: 0.25rem 0.3rem;\n  border-bottom: 1px solid #e2e8f0;\n}\n.data-table td[data-v-05e78ead] {\n  text-align: center;\n  padding: 0.3rem 0.3rem;\n  color: #334155;\n  font-variant-numeric: tabular-nums;\n}\n.data-table tbody tr[data-v-05e78ead]:nth-child(even) {\n  background: #f8fafc;\n}\n.color-dot[data-v-05e78ead] {\n  display: inline-block;\n  width: 10px;\n  height: 10px;\n  border-radius: 50%;\n}\n",
+      "start": 1783634639989,
+      "end": 1783634639990,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639990,
+      "end": 1783634639990,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634639990,
+      "end": 1783634639990,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639990,
+      "end": 1783634639990,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639990,
+      "end": 1783634639990,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639990,
+      "end": 1783634639990,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639990,
+      "end": 1783634639990,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639990,
+      "end": 1783634639990,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639990,
+      "end": 1783634639990,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639990,
+      "end": 1783634639990,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639990,
+      "end": 1783634639990,
+      "order": "normal"
+    }
+  ]
+}

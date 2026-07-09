@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisReportPreview.vue?vue&type=style&index=0&scoped=f3c0bc69&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.report-preview {\n  background: #fff;\n  color: #1a1a1a;\n  padding: 2rem;\n  border-radius: 0.5rem;\n  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n  line-height: 1.6;\n}\n.report-header {\n  text-align: center;\n  border-bottom: 2px solid #0f172a;\n  padding-bottom: 1rem;\n  margin-bottom: 1.5rem;\n}\n.report-header h1 { color: #0f172a; margin: 0 0 0.5rem; font-size: 1.5rem; }\n.meta { display: flex; justify-content: center; gap: 1.5rem; font-size: 0.9rem; color: #444; }\n.section { margin-bottom: 1.5rem; }\n.section h2 { color: #0f172a; font-size: 1.1rem; border-bottom: 1px solid #ddd; padding-bottom: 0.3rem; margin-bottom: 0.75rem; }\n.info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; font-size: 0.9rem; }\n.notes { margin-top: 0.5rem; padding: 0.5rem; background: #f8f9fa; border-radius: 0.3rem; font-size: 0.9rem; }\n.data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }\n.data-table th, .data-table td { border: 1px solid #ddd; padding: 0.4rem 0.6rem; text-align: center; }\n.data-table th { background: #0f172a; color: #fff; }\n.data-table tr:nth-child(even) { background: #f8f9fa; }\n.stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.5rem; }\n.stat-card { background: #f8f9fa; border: 1px solid #e5e7eb; border-radius: 0.35rem; padding: 0.5rem; text-align: center; }\n.stat-title { font-weight: 700; color: #0f172a; margin-bottom: 0.3rem; font-size: 0.8rem; }\n.stat-row { display: flex; justify-content: space-between; font-size: 0.8rem; padding: 0.1rem 0; }\n.stat-row span { color: #64748b; }\n.eq-list { display: flex; flex-direction: column; gap: 0.5rem; }\n.eq-item { background: #f8f9fa; padding: 0.5rem 0.75rem; border-radius: 0.3rem; }\n.eq-name { font-weight: 700; color: #0f172a; font-size: 0.85rem; }\n.eq-formula { font-family: 'Courier New', monospace; color: #374151; font-size: 0.85rem; margin-top: 0.2rem; }\n.solve-values { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.3rem; }\n.solve-tag { background: #e0f2fe; color: #0369a1; font-size: 0.75rem; padding: 0.15rem 0.4rem; border-radius: 0.25rem; font-family: 'Courier New', monospace; }\n.solve-result { margin-top: 0.3rem; padding: 0.35rem 0.5rem; background: #dcfce7; color: #15803d; border-radius: 0.25rem; font-size: 0.85rem; font-family: 'Courier New', monospace; font-weight: 700; }\n.axes-info { margin-bottom: 0.5rem; font-size: 0.9rem; color: #374151; }\n.reg-card { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 0.35rem; padding: 0.5rem 0.75rem; margin-bottom: 0.5rem; }\n.reg-row { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.15rem 0; }\n.reg-row span { color: #475569; }\n.reg-row b { font-family: 'Courier New', monospace; color: #0369a1; }\n.slope-calc-card { background: #fef3c7; border: 1px solid #fde68a; border-radius: 0.35rem; padding: 0.5rem 0.75rem; }\n.sc-label { font-weight: 700; color: #92400e; font-size: 0.85rem; }\n.sc-formula { font-family: 'Courier New', monospace; color: #78350f; font-size: 0.82rem; margin-top: 0.15rem; }\n.sc-result { margin-top: 0.3rem; font-size: 0.9rem; font-family: 'Courier New', monospace; color: #92400e; }\n.sc-result b { color: #b45309; }\n.error-calc-card { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 0.35rem; padding: 0.5rem 0.75rem; }\n.ec-row { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.15rem 0; }\n.ec-row span { color: #475569; }\n.ec-row b { font-family: 'Courier New', monospace; color: #c2410c; }\n.ec-result b { font-size: 1.1rem; font-weight: 800; }\n.ec-result b.good { color: #15803d; }\n.ec-result b.warn { color: #a16207; }\n.ec-result b.bad { color: #dc2626; }\n.chart-img { max-width: 100%; border-radius: 0.35rem; border: 1px solid #e5e7eb; }\n.plot-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }\n.plot-item { background: #f8f9fa; padding: 0.35rem 0.6rem; border-radius: 0.3rem; font-size: 0.85rem; }\n.plot-type { color: #22c55e; margin-left: 0.3rem; }\n.block { margin-bottom: 0.4rem; font-size: 0.9rem; }\n.footer { text-align: center; font-size: 0.75rem; color: #888; border-top: 1px solid #ddd; padding-top: 1rem; margin-top: 1rem; }\n\n@media print {\n  .report-preview {\n    padding: 0;\n    background: #fff;\n    color: #000;\n    font-size: 12pt;\n    line-height: 1.5;\n  }\n  .report-header h1 { font-size: 18pt; }\n  .section h2 { font-size: 14pt; page-break-after: avoid; }\n  .data-table { page-break-inside: auto; }\n  .data-table tr { page-break-inside: avoid; }\n  .stats-grid { page-break-inside: avoid; }\n  .eq-list { page-break-inside: avoid; }\n  .chart-img { max-width: 100%; page-break-inside: avoid; }\n  .footer { page-break-before: avoid; }\n}\n",
+      "start": 1783634640967,
+      "end": 1783634640967
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.report-preview {\n  background: #fff;\n  color: #1a1a1a;\n  padding: 2rem;\n  border-radius: 0.5rem;\n  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n  line-height: 1.6;\n}\n.report-header {\n  text-align: center;\n  border-bottom: 2px solid #0f172a;\n  padding-bottom: 1rem;\n  margin-bottom: 1.5rem;\n}\n.report-header h1 { color: #0f172a; margin: 0 0 0.5rem; font-size: 1.5rem; }\n.meta { display: flex; justify-content: center; gap: 1.5rem; font-size: 0.9rem; color: #444; }\n.section { margin-bottom: 1.5rem; }\n.section h2 { color: #0f172a; font-size: 1.1rem; border-bottom: 1px solid #ddd; padding-bottom: 0.3rem; margin-bottom: 0.75rem; }\n.info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; font-size: 0.9rem; }\n.notes { margin-top: 0.5rem; padding: 0.5rem; background: #f8f9fa; border-radius: 0.3rem; font-size: 0.9rem; }\n.data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }\n.data-table th, .data-table td { border: 1px solid #ddd; padding: 0.4rem 0.6rem; text-align: center; }\n.data-table th { background: #0f172a; color: #fff; }\n.data-table tr:nth-child(even) { background: #f8f9fa; }\n.stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.5rem; }\n.stat-card { background: #f8f9fa; border: 1px solid #e5e7eb; border-radius: 0.35rem; padding: 0.5rem; text-align: center; }\n.stat-title { font-weight: 700; color: #0f172a; margin-bottom: 0.3rem; font-size: 0.8rem; }\n.stat-row { display: flex; justify-content: space-between; font-size: 0.8rem; padding: 0.1rem 0; }\n.stat-row span { color: #64748b; }\n.eq-list { display: flex; flex-direction: column; gap: 0.5rem; }\n.eq-item { background: #f8f9fa; padding: 0.5rem 0.75rem; border-radius: 0.3rem; }\n.eq-name { font-weight: 700; color: #0f172a; font-size: 0.85rem; }\n.eq-formula { font-family: 'Courier New', monospace; color: #374151; font-size: 0.85rem; margin-top: 0.2rem; }\n.solve-values { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.3rem; }\n.solve-tag { background: #e0f2fe; color: #0369a1; font-size: 0.75rem; padding: 0.15rem 0.4rem; border-radius: 0.25rem; font-family: 'Courier New', monospace; }\n.solve-result { margin-top: 0.3rem; padding: 0.35rem 0.5rem; background: #dcfce7; color: #15803d; border-radius: 0.25rem; font-size: 0.85rem; font-family: 'Courier New', monospace; font-weight: 700; }\n.axes-info { margin-bottom: 0.5rem; font-size: 0.9rem; color: #374151; }\n.reg-card { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 0.35rem; padding: 0.5rem 0.75rem; margin-bottom: 0.5rem; }\n.reg-row { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.15rem 0; }\n.reg-row span { color: #475569; }\n.reg-row b { font-family: 'Courier New', monospace; color: #0369a1; }\n.slope-calc-card { background: #fef3c7; border: 1px solid #fde68a; border-radius: 0.35rem; padding: 0.5rem 0.75rem; }\n.sc-label { font-weight: 700; color: #92400e; font-size: 0.85rem; }\n.sc-formula { font-family: 'Courier New', monospace; color: #78350f; font-size: 0.82rem; margin-top: 0.15rem; }\n.sc-result { margin-top: 0.3rem; font-size: 0.9rem; font-family: 'Courier New', monospace; color: #92400e; }\n.sc-result b { color: #b45309; }\n.error-calc-card { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 0.35rem; padding: 0.5rem 0.75rem; }\n.ec-row { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.15rem 0; }\n.ec-row span { color: #475569; }\n.ec-row b { font-family: 'Courier New', monospace; color: #c2410c; }\n.ec-result b { font-size: 1.1rem; font-weight: 800; }\n.ec-result b.good { color: #15803d; }\n.ec-result b.warn { color: #a16207; }\n.ec-result b.bad { color: #dc2626; }\n.chart-img { max-width: 100%; border-radius: 0.35rem; border: 1px solid #e5e7eb; }\n.plot-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }\n.plot-item { background: #f8f9fa; padding: 0.35rem 0.6rem; border-radius: 0.3rem; font-size: 0.85rem; }\n.plot-type { color: #22c55e; margin-left: 0.3rem; }\n.block { margin-bottom: 0.4rem; font-size: 0.9rem; }\n.footer { text-align: center; font-size: 0.75rem; color: #888; border-top: 1px solid #ddd; padding-top: 1rem; margin-top: 1rem; }\n\n@media print {\n  .report-preview {\n    padding: 0;\n    background: #fff;\n    color: #000;\n    font-size: 12pt;\n    line-height: 1.5;\n  }\n  .report-header h1 { font-size: 18pt; }\n  .section h2 { font-size: 14pt; page-break-after: avoid; }\n  .data-table { page-break-inside: auto; }\n  .data-table tr { page-break-inside: avoid; }\n  .stats-grid { page-break-inside: avoid; }\n  .eq-list { page-break-inside: avoid; }\n  .chart-img { max-width: 100%; page-break-inside: avoid; }\n  .footer { page-break-before: avoid; }\n}\n",
+      "start": 1783634640968,
+      "end": 1783634640968,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640968,
+      "end": 1783634640968,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640968,
+      "end": 1783634640968,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640968,
+      "end": 1783634640968,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.report-preview[data-v-f3c0bc69] {\n  background: #fff;\n  color: #1a1a1a;\n  padding: 2rem;\n  border-radius: 0.5rem;\n  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n  line-height: 1.6;\n}\n.report-header[data-v-f3c0bc69] {\n  text-align: center;\n  border-bottom: 2px solid #0f172a;\n  padding-bottom: 1rem;\n  margin-bottom: 1.5rem;\n}\n.report-header h1[data-v-f3c0bc69] { color: #0f172a; margin: 0 0 0.5rem; font-size: 1.5rem;\n}\n.meta[data-v-f3c0bc69] { display: flex; justify-content: center; gap: 1.5rem; font-size: 0.9rem; color: #444;\n}\n.section[data-v-f3c0bc69] { margin-bottom: 1.5rem;\n}\n.section h2[data-v-f3c0bc69] { color: #0f172a; font-size: 1.1rem; border-bottom: 1px solid #ddd; padding-bottom: 0.3rem; margin-bottom: 0.75rem;\n}\n.info-grid[data-v-f3c0bc69] { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; font-size: 0.9rem;\n}\n.notes[data-v-f3c0bc69] { margin-top: 0.5rem; padding: 0.5rem; background: #f8f9fa; border-radius: 0.3rem; font-size: 0.9rem;\n}\n.data-table[data-v-f3c0bc69] { width: 100%; border-collapse: collapse; font-size: 0.85rem;\n}\n.data-table th[data-v-f3c0bc69], .data-table td[data-v-f3c0bc69] { border: 1px solid #ddd; padding: 0.4rem 0.6rem; text-align: center;\n}\n.data-table th[data-v-f3c0bc69] { background: #0f172a; color: #fff;\n}\n.data-table tr[data-v-f3c0bc69]:nth-child(even) { background: #f8f9fa;\n}\n.stats-grid[data-v-f3c0bc69] { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.5rem;\n}\n.stat-card[data-v-f3c0bc69] { background: #f8f9fa; border: 1px solid #e5e7eb; border-radius: 0.35rem; padding: 0.5rem; text-align: center;\n}\n.stat-title[data-v-f3c0bc69] { font-weight: 700; color: #0f172a; margin-bottom: 0.3rem; font-size: 0.8rem;\n}\n.stat-row[data-v-f3c0bc69] { display: flex; justify-content: space-between; font-size: 0.8rem; padding: 0.1rem 0;\n}\n.stat-row span[data-v-f3c0bc69] { color: #64748b;\n}\n.eq-list[data-v-f3c0bc69] { display: flex; flex-direction: column; gap: 0.5rem;\n}\n.eq-item[data-v-f3c0bc69] { background: #f8f9fa; padding: 0.5rem 0.75rem; border-radius: 0.3rem;\n}\n.eq-name[data-v-f3c0bc69] { font-weight: 700; color: #0f172a; font-size: 0.85rem;\n}\n.eq-formula[data-v-f3c0bc69] { font-family: 'Courier New', monospace; color: #374151; font-size: 0.85rem; margin-top: 0.2rem;\n}\n.solve-values[data-v-f3c0bc69] { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.3rem;\n}\n.solve-tag[data-v-f3c0bc69] { background: #e0f2fe; color: #0369a1; font-size: 0.75rem; padding: 0.15rem 0.4rem; border-radius: 0.25rem; font-family: 'Courier New', monospace;\n}\n.solve-result[data-v-f3c0bc69] { margin-top: 0.3rem; padding: 0.35rem 0.5rem; background: #dcfce7; color: #15803d; border-radius: 0.25rem; font-size: 0.85rem; font-family: 'Courier New', monospace; font-weight: 700;\n}\n.axes-info[data-v-f3c0bc69] { margin-bottom: 0.5rem; font-size: 0.9rem; color: #374151;\n}\n.reg-card[data-v-f3c0bc69] { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 0.35rem; padding: 0.5rem 0.75rem; margin-bottom: 0.5rem;\n}\n.reg-row[data-v-f3c0bc69] { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.15rem 0;\n}\n.reg-row span[data-v-f3c0bc69] { color: #475569;\n}\n.reg-row b[data-v-f3c0bc69] { font-family: 'Courier New', monospace; color: #0369a1;\n}\n.slope-calc-card[data-v-f3c0bc69] { background: #fef3c7; border: 1px solid #fde68a; border-radius: 0.35rem; padding: 0.5rem 0.75rem;\n}\n.sc-label[data-v-f3c0bc69] { font-weight: 700; color: #92400e; font-size: 0.85rem;\n}\n.sc-formula[data-v-f3c0bc69] { font-family: 'Courier New', monospace; color: #78350f; font-size: 0.82rem; margin-top: 0.15rem;\n}\n.sc-result[data-v-f3c0bc69] { margin-top: 0.3rem; font-size: 0.9rem; font-family: 'Courier New', monospace; color: #92400e;\n}\n.sc-result b[data-v-f3c0bc69] { color: #b45309;\n}\n.error-calc-card[data-v-f3c0bc69] { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 0.35rem; padding: 0.5rem 0.75rem;\n}\n.ec-row[data-v-f3c0bc69] { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.15rem 0;\n}\n.ec-row span[data-v-f3c0bc69] { color: #475569;\n}\n.ec-row b[data-v-f3c0bc69] { font-family: 'Courier New', monospace; color: #c2410c;\n}\n.ec-result b[data-v-f3c0bc69] { font-size: 1.1rem; font-weight: 800;\n}\n.ec-result b.good[data-v-f3c0bc69] { color: #15803d;\n}\n.ec-result b.warn[data-v-f3c0bc69] { color: #a16207;\n}\n.ec-result b.bad[data-v-f3c0bc69] { color: #dc2626;\n}\n.chart-img[data-v-f3c0bc69] { max-width: 100%; border-radius: 0.35rem; border: 1px solid #e5e7eb;\n}\n.plot-list[data-v-f3c0bc69] { display: flex; flex-wrap: wrap; gap: 0.5rem;\n}\n.plot-item[data-v-f3c0bc69] { background: #f8f9fa; padding: 0.35rem 0.6rem; border-radius: 0.3rem; font-size: 0.85rem;\n}\n.plot-type[data-v-f3c0bc69] { color: #22c55e; margin-left: 0.3rem;\n}\n.block[data-v-f3c0bc69] { margin-bottom: 0.4rem; font-size: 0.9rem;\n}\n.footer[data-v-f3c0bc69] { text-align: center; font-size: 0.75rem; color: #888; border-top: 1px solid #ddd; padding-top: 1rem; margin-top: 1rem;\n}\n@media print {\n.report-preview[data-v-f3c0bc69] {\n    padding: 0;\n    background: #fff;\n    color: #000;\n    font-size: 12pt;\n    line-height: 1.5;\n}\n.report-header h1[data-v-f3c0bc69] { font-size: 18pt;\n}\n.section h2[data-v-f3c0bc69] { font-size: 14pt; page-break-after: avoid;\n}\n.data-table[data-v-f3c0bc69] { page-break-inside: auto;\n}\n.data-table tr[data-v-f3c0bc69] { page-break-inside: avoid;\n}\n.stats-grid[data-v-f3c0bc69] { page-break-inside: avoid;\n}\n.eq-list[data-v-f3c0bc69] { page-break-inside: avoid;\n}\n.chart-img[data-v-f3c0bc69] { max-width: 100%; page-break-inside: avoid;\n}\n.footer[data-v-f3c0bc69] { page-break-before: avoid;\n}\n}\n",
+      "start": 1783634640968,
+      "end": 1783634640969,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640969,
+      "end": 1783634640969,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634640969,
+      "end": 1783634640969,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640969,
+      "end": 1783634640969,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640969,
+      "end": 1783634640969,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640969,
+      "end": 1783634640969,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640969,
+      "end": 1783634640969,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640969,
+      "end": 1783634640969,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640969,
+      "end": 1783634640969,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640969,
+      "end": 1783634640969,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640969,
+      "end": 1783634640969,
+      "order": "normal"
+    }
+  ]
+}

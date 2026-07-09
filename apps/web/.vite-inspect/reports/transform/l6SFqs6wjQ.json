@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/PresetPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, computed } from 'vue'\n\ninterface Preset {\n  id: string\n  nameAr: string\n  level: string\n  instructions: string[]\n}\n\nconst props = defineProps<{\n  presets: Preset[]\n  activeInstructions: string[]\n}>()\n\nconst emit = defineEmits<{\n  (e: 'load', id: string): void\n}>()\n\nconst presetSearch = ref('')\n\nconst LEVELS = [\n  { key: 'beginner',     label: 'مبتدئ',       icon: '🟢', color: '#22c55e' },\n  { key: 'intermediate', label: 'متوسط',       icon: '🟡', color: '#fbbf24' },\n  { key: 'college',      label: 'جامعي',       icon: '🔵', color: '#3b82f6' },\n  { key: 'advanced',     label: 'متقدم',       icon: '🔴', color: '#ef4444' },\n]\n\nconst filteredPresets = computed(() => {\n  const q = presetSearch.value.trim().toLowerCase()\n  if (!q) return props.presets\n  return props.presets.filter(p =>\n    p.nameAr.toLowerCase().includes(q) ||\n    p.id.toLowerCase().includes(q)\n  )\n})\n\nconst groupedPresets = computed(() => {\n  return LEVELS.map(l => ({\n    ...l,\n    items: filteredPresets.value.filter(p => p.level === l.key),\n  })).filter(g => g.items.length > 0)\n})\n\nconst activePresetId = computed(() => {\n  return props.presets.find(p => p.instructions === props.activeInstructions)?.id ?? ''\n})\n\nconst PRESET_ICONS: Record<string, string> = {\n  'ohms-law': '📐', 'kirchhoff': '🔀', 'ohms-law-parallel': '∥',\n  'power': '⚡', 'resistivity': '📏', 'rc-circuit': '🔌',\n  'lamp-circuit': '💡', 'galvanometer': '📐', 'wheatstone': '⚖️',\n  'voltage-divider': '📊',\n}\n\nfunction presetIcon(id: string): string {\n  return PRESET_ICONS[id] || '⚡'\n}\n\nfunction onLoad(id: string) {\n  emit('load', id)\n  presetSearch.value = ''\n}\n</script>\n\n<template>\n  <div class=\"preset-panel\">\n    <h3 class=\"preset-panel-title\">📋 التجارب</h3>\n    <div class=\"preset-search-wrap\">\n      <input v-model=\"presetSearch\" class=\"preset-search\" type=\"text\" placeholder=\"🔍 ابحث عن تجربة...\" />\n    </div>\n    <div class=\"preset-list\">\n      <template v-for=\"group in groupedPresets\" :key=\"group.key\">\n        <div class=\"level-header\" :style=\"{ color: group.color }\">\n          <span>{{ group.icon }}</span>\n          <span class=\"level-label\">{{ group.label }}</span>\n          <span class=\"level-count\">({{ group.items.length }})</span>\n        </div>\n        <div\n          v-for=\"p in group.items\" :key=\"p.id\"\n          class=\"preset-item\" :class=\"{ active: activePresetId === p.id }\"\n          @click=\"onLoad(p.id)\"\n        >\n          <span class=\"preset-icon\">{{ presetIcon(p.id) }}</span>\n          <span class=\"preset-name\">{{ p.nameAr }}</span>\n          <span class=\"preset-level-badge\" :style=\"{ background: group.color }\">{{ group.label }}</span>\n        </div>\n      </template>\n      <div v-if=\"groupedPresets.length === 0\" class=\"preset-empty\">لا توجد نتائج</div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.preset-panel {\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.75rem;\n  overflow: hidden;\n  flex-shrink: 0;\n  margin-bottom: 0.75rem;\n}\n.preset-panel-title {\n  margin: 0; padding: 0.6rem 0.8rem; font-size: 0.8rem; color: #f59e0b;\n  background: rgba(245,158,11,0.08); border-bottom: 1px solid rgba(255,255,255,0.06);\n}\n.preset-search-wrap { padding: 0.4rem; border-bottom: 1px solid rgba(255,255,255,0.06); }\n.preset-search {\n  width: 100%; background: #0d1117; border: 1px solid rgba(255,255,255,0.1);\n  border-radius: 6px; color: #e2e8f0; padding: 0.4rem 0.6rem; font-size: 0.78rem;\n  outline: none; text-align: right;\n}\n.preset-search:focus { border-color: rgba(245,158,11,0.5); }\n.preset-search::placeholder { color: #475569; }\n.preset-list { max-height: 280px; overflow-y: auto; }\n.level-header {\n  display: flex; align-items: center; gap: .3rem; padding: .4rem .6rem;\n  font-size: .72rem; font-weight: 700; background: rgba(255,255,255,.03);\n  position: sticky; top: 0; z-index: 1;\n}\n.level-label { flex: 1; }\n.level-count { font-size: .65rem; opacity: .6; }\n.preset-level-badge {\n  font-size: .58rem; color: #fff; padding: .1rem .35rem; border-radius: 3px;\n  font-weight: 700; white-space: nowrap; flex-shrink: 0;\n}\n.preset-empty { padding: 1rem; text-align: center; color: #64748b; font-size: 0.78rem; }\n.preset-item {\n  display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.7rem;\n  cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.15s;\n}\n.preset-item.active { background: rgba(245,158,11,0.15); border-right: 3px solid #f59e0b; }\n.preset-item:last-child { border-bottom: none; }\n.preset-item:hover { background: rgba(245,158,11,0.1); }\n.preset-icon { font-size: 1rem; }\n.preset-name { font-size: 0.8rem; color: #e2e8f0; }\n</style>\n",
+      "start": 1783634640971,
+      "end": 1783634641379,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641379,
+      "end": 1783634641379,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641379,
+      "end": 1783634641379,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641379,
+      "end": 1783634641379,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641379,
+      "end": 1783634641379,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/PresetPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/PresetPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/PresetPanel.vue?vue&type=style&index=0&scoped=e97e735b&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-e97e735b\"]]);\n",
+      "start": 1783634641379,
+      "end": 1783634641643,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641644,
+      "end": 1783634641645,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641645,
+      "end": 1783634641645,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,14 +1,20 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 
-const props = defineProps<{
-  stringLength: number
-  harmonic: number
-  running: boolean
-}>()
+const props = defineProps({
+  stringLength: { type: Number, required: true },
+  harmonic: { type: Number, required: true },
+  tension: { type: Number, required: true },
+  frequency: { type: Number, required: true },
+  wavelength: { type: Number, required: true },
+  damping: { type: Number, required: true },
+  running: { type: Boolean, required: true },
+})
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const W = 800, H = 400
+let elapsed = 0
+let lastFrame = 0
 
 function draw() {
   const c = canvasRef.value; if (!c) return
@@ -18,8 +24,10 @@ function draw() {
   const topY = 80
   const bottomY = H - 80
   const leftX = 100
-  const rightX = W - 100
-  const scaleX = (rightX - leftX) / props.stringLength
+  const maxLen = 3.0
+  const visualWidth = ((W - 200) * props.stringLength / maxLen)
+  const rightX = leftX + visualWidth
+  const scaleX = visualWidth / props.stringLength
 
   ctx.fillStyle = '#0d1117'; ctx.fillRect(0, 0, W, H)
 
@@ -32,12 +40,14 @@ function draw() {
 
   /* standing wave */
   const amp = 50
-  const t = props.running ? Date.now() / 300 : 0
+  const omega = 2 * Math.PI * props.frequency
+  const t = elapsed
+  const dampingFactor = Math.exp(-props.damping * t)
   ctx.strokeStyle = '#5B8DB8'; ctx.lineWidth = 2.5; ctx.beginPath()
   for (let px = leftX; px <= rightX; px++) {
     const x = (px - leftX) / scaleX
     const k = (Math.PI * props.harmonic) / props.stringLength
-    const y = topY + amp * Math.sin(k * x) * Math.cos(t)
+    const y = topY + amp * dampingFactor * Math.sin(k * x) * Math.cos(omega * t)
     if (px === leftX) ctx.moveTo(px, y); else ctx.lineTo(px, y)
   }
   ctx.stroke()
@@ -62,13 +72,27 @@ function draw() {
   /* labels */
   ctx.fillStyle = '#8B95A5'; ctx.font = '12px sans-serif'; ctx.fillText(`L = ${props.stringLength.toFixed(2)} m`, leftX, bottomY + 20)
   ctx.fillStyle = '#fbbf24'; ctx.font = 'bold 11px sans-serif'; ctx.fillText(`n = ${props.harmonic}`, rightX - 40, bottomY + 20)
+  ctx.fillStyle = '#67e8f9'; ctx.font = 'bold 11px sans-serif'; ctx.fillText(`f = ${props.frequency.toFixed(1)} Hz`, leftX, bottomY + 40)
+  ctx.fillStyle = '#a78bfa'; ctx.font = 'bold 11px sans-serif'; ctx.fillText(`lambda = ${props.wavelength.toFixed(2)} m`, leftX + 120, bottomY + 40)
+  ctx.fillStyle = '#fbbf24'; ctx.font = 'bold 11px sans-serif'; ctx.fillText(`T = ${props.tension} N`, leftX + 240, bottomY + 40)
+  ctx.fillStyle = '#f87171'; ctx.font = 'bold 11px sans-serif'; ctx.fillText(`gamma = ${props.damping.toFixed(2)}`, leftX + 340, bottomY + 40)
 }
 
 let animId = 0
-function animate() { draw(); if (props.running) animId = requestAnimationFrame(animate) }
+function animate() {
+  const now = performance.now()
+  if (lastFrame > 0) elapsed += (now - lastFrame) / 1000
+  lastFrame = now
+  draw()
+  if (props.running) animId = requestAnimationFrame(animate)
+}
 
-watch(() => props.running, (v) => { cancelAnimationFrame(animId); v ? animate() : draw() })
-watch(() => [props.stringLength, props.harmonic], draw, { deep: true })
+watch(() => props.running, (v) => {
+  cancelAnimationFrame(animId)
+  if (v) { lastFrame = 0; animate() }
+  else { lastFrame = 0; elapsed = 0; draw() }
+})
+watch(() => [props.stringLength, props.harmonic, props.tension, props.frequency, props.wavelength, props.damping], draw, { deep: true })
 onMounted(() => draw()); onUnmounted(() => cancelAnimationFrame(animId))
 </script>
 

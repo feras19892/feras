@@ -1,8 +1,6 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { computed } from 'vue'
-import { useI18n } from '../../../../composables/useI18n'
 import { SPECIFIC_HEAT_WATER, SPECIFIC_HEAT_ALUMINUM } from '../../../../composables/calorimetry/useCalorimetryCalculations'
-const { t } = useI18n()
 const props = defineProps<{
   mWater: number
   tWater: number
@@ -17,29 +15,43 @@ const qGained = computed(() => (props.mWater * SPECIFIC_HEAT_WATER + 0.05 * SPEC
 const balance = computed(() => Math.abs(qLost.value - qGained.value))
 </script>
 <template>
-  <div class="laws-panel">
-    <div class="law">
-      <h4>{{ t('experiments.calorimetryHeatBalance') }}</h4>
-      <p class="formula">Q_lost = Q_gained</p>
-      <p class="values">Q_lost = {{ mMetal.toFixed(3) }} × {{ cMetal }} × ({{ tMetal }} - {{ tf.toFixed(1) }})</p>
-      <p class="values">Q_lost = {{ qLost.toFixed(1) }} J</p>
-      <p class="values">Q_gained = {{ qGained.toFixed(1) }} J</p>
-      <p class="values" :class="{ ok: balance < 1, bad: balance >= 1 }">ΔQ = {{ balance.toFixed(2) }} J</p>
+  <div class="panel-body">
+    <div class="law-box balance">
+      <div class="law-title">موازنة الطاقة الحرارية</div>
+      <div class="formula">Q_{مفقود} = Q_{مكتسب}</div>
+      <div class="data-grid">
+        <div class="data-item"><span class="data-label">Q_{مفقود}</span><span class="data-val">{{ qLost.toFixed(1) }} J</span></div>
+        <div class="data-item"><span class="data-label">Q_{مكتسب}</span><span class="data-val">{{ qGained.toFixed(1) }} J</span></div>
+        <div class="data-item"><span class="data-label">ΔQ</span><span class="data-val" :class="balance < 1 ? 'green' : 'red'">{{ balance.toFixed(2) }} J</span></div>
+        <div class="data-item"><span class="data-label">الحالة</span><span class="data-val" :class="balance < 1 ? 'green' : 'red'">{{ balance < 1 ? 'متوازن ✅' : 'غير متوازن' }}</span></div>
+      </div>
     </div>
-    <div class="law">
-      <h4>{{ t('experiments.calorimetryFindC') }}</h4>
-      <p class="formula">c = Q / (m · ΔT)</p>
-      <p class="values">c = {{ qGained.toFixed(1) }} / ({{ mMetal.toFixed(3) }} × {{ (tMetal - tf).toFixed(1) }})</p>
-      <p class="values">c = {{ (qGained / (mMetal * (tMetal - tf))).toFixed(0) }} J/kg·K</p>
+    <div class="law-box calc">
+      <div class="law-title">حساب السعة الحرائية</div>
+      <div class="formula">c = Q / (m · ΔT)</div>
+      <div class="data-grid">
+        <div class="data-item"><span class="data-label">Q</span><span class="data-val">{{ qGained.toFixed(1) }} J</span></div>
+        <div class="data-item"><span class="data-label">m</span><span class="data-val">{{ mMetal.toFixed(3) }} kg</span></div>
+        <div class="data-item"><span class="data-label">ΔT</span><span class="data-val">{{ (tMetal - tf).toFixed(1) }} °C</span></div>
+        <div class="data-item highlight"><span class="data-label">c_{مقاس}</span><span class="data-val green">{{ (qGained / (mMetal * (tMetal - tf))).toFixed(0) }} J/kg·K</span></div>
+      </div>
     </div>
   </div>
 </template>
 <style scoped>
-.laws-panel { display:flex; flex-direction:column; gap:.6rem; }
-.law { background:rgba(255,255,255,.03); border-radius:6px; padding:.5rem; }
-.law h4 { margin:0 0 .3rem; color:#5B8DB8; font-size:.8rem; }
-.formula { font-family:monospace; color:#fbbf24; font-size:.85rem; margin:.2rem 0; }
-.values { color:#8B95A5; font-size:.72rem; margin:.1rem 0; }
-.ok { color:#22c55e; }
-.bad { color:#ef4444; }
+.panel-body { padding:.5rem; display:flex; flex-direction:column; gap:.45rem; }
+.law-box { border-radius:8px; padding:.6rem .7rem; }
+.law-box.balance { background:rgba(91,141,184,.06); border:1px solid rgba(91,141,184,.18); }
+.law-box.calc { background:rgba(245,158,11,.06); border:1px solid rgba(245,158,11,.18); }
+.law-title { font-weight:800; font-size:.8rem; margin-bottom:.4rem; }
+.law-box.balance .law-title { color:#5B8DB8; }
+.law-box.calc .law-title { color:#fbbf24; }
+.formula { font-family:'Courier New', monospace; font-size:.9rem; color:#D1D7E0; text-align:center; margin:.25rem 0 .15rem; letter-spacing:.5px; }
+.data-grid { display:flex; flex-direction:column; gap:.2rem; }
+.data-item { display:flex; justify-content:space-between; padding:.25rem .35rem; border-radius:4px; background:rgba(255,255,255,.02); font-size:.74rem; }
+.data-item.highlight { background:rgba(74,222,128,.08); border:1px solid rgba(74,222,128,.2); }
+.data-label { color:#8B95A5; }
+.data-val { color:#D1D7E0; font-weight:700; }
+.data-val.green { color:#4ade80; }
+.data-val.red { color:#f87171; }
 </style>

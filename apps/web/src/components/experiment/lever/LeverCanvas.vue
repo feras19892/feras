@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted, computed } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useI18n } from '../../../composables/useI18n'
 import type { LeverForce } from '../../../modules/physics/experiments/lever/useLeverPhysics'
 import type { BeamMass } from '../../../modules/physics/experiments/lever/useLeverBeamPhysics'

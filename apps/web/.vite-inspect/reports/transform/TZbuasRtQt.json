@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thinlens/ThinLensCanvas.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nimport { ref, onMounted, onUnmounted, watch } from 'vue'\r\nimport { drawThinLens } from '../../../composables/thinlens/useThinLensRenderer'\r\n\r\ninterface Props {\r\n  lensType: 'convex' | 'concave'\r\n  focalLength: number\r\n  objectDistance: number\r\n  objectHeight: number\r\n  imageDistance: number | null\r\n  imageHeight: number | null\r\n  magnification: number | null\r\n  running: boolean\r\n}\r\n\r\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ThinLensCanvas',\n  props: {\n    lensType: {},\n    focalLength: {},\n    objectDistance: {},\n    objectHeight: {},\n    imageDistance: {},\n    imageHeight: {},\n    magnification: {},\n    running: { type: Boolean }\n  },\n  setup(__props: any) {\n\r\nconst props = __props\r\nconst canvasRef = ref<HTMLCanvasElement | null>(null)\r\n\r\nfunction draw() {\r\n  const canvas = canvasRef.value\r\n  if (!canvas) return\r\n  drawThinLens(canvas, props)\r\n}\r\n\r\nfunction resize() {\r\n  const canvas = canvasRef.value\r\n  if (!canvas) return\r\n  const parent = canvas.parentElement\r\n  if (!parent) return\r\n  canvas.width = parent.clientWidth\r\n  canvas.height = parent.clientHeight\r\n  draw()\r\n}\r\n\r\nonMounted(() => { resize(); window.addEventListener('resize', resize) })\r\nonUnmounted(() => window.removeEventListener('resize', resize))\r\nwatch(() => [props.lensType, props.focalLength, props.objectDistance, props.objectHeight, props.imageDistance, props.imageHeight, props.running], draw, { deep: true })\r\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"canvas\", {\n    ref_key: \"canvasRef\",\n    ref: canvasRef,\n    class: \"lens-canvas\"\n  }, null, 512))\n}\n}\n\n})",
+      "start": 1783634642068,
+      "end": 1783634642068
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642068,
+      "end": 1783634642068,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nimport { ref, onMounted, onUnmounted, watch } from \"vue\";\nimport { drawThinLens } from \"../../../composables/thinlens/useThinLensRenderer\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"ThinLensCanvas\",\n  props: {\n    lensType: {},\n    focalLength: {},\n    objectDistance: {},\n    objectHeight: {},\n    imageDistance: {},\n    imageHeight: {},\n    magnification: {},\n    running: { type: Boolean }\n  },\n  setup(__props) {\n    const props = __props;\n    const canvasRef = ref(null);\n    function draw() {\n      const canvas = canvasRef.value;\n      if (!canvas) return;\n      drawThinLens(canvas, props);\n    }\n    function resize() {\n      const canvas = canvasRef.value;\n      if (!canvas) return;\n      const parent = canvas.parentElement;\n      if (!parent) return;\n      canvas.width = parent.clientWidth;\n      canvas.height = parent.clientHeight;\n      draw();\n    }\n    onMounted(() => {\n      resize();\n      window.addEventListener(\"resize\", resize);\n    });\n    onUnmounted(() => window.removeEventListener(\"resize\", resize));\n    watch(() => [props.lensType, props.focalLength, props.objectDistance, props.objectHeight, props.imageDistance, props.imageHeight, props.running], draw, { deep: true });\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"canvas\", {\n        ref_key: \"canvasRef\",\n        ref: canvasRef,\n        class: \"lens-canvas\"\n      }, null, 512);\n    };\n  }\n});\n",
+      "start": 1783634642068,
+      "end": 1783634642291,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thinlens/ThinLensCanvas.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nimport { ref, onMounted, onUnmounted, watch } from 'vue'\r\nimport { drawThinLens } from '../../../composables/thinlens/useThinLensRenderer'\r\n\r\ninterface Props {\r\n  lensType: 'convex' | 'concave'\r\n  focalLength: number\r\n  objectDistance: number\r\n  objectHeight: number\r\n  imageDistance: number | null\r\n  imageHeight: number | null\r\n  magnification: number | null\r\n  running: boolean\r\n}\r\n\r\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ThinLensCanvas',\n  props: {\n    lensType: {},\n    focalLength: {},\n    objectDistance: {},\n    objectHeight: {},\n    imageDistance: {},\n    imageHeight: {},\n    magnification: {},\n    running: { type: Boolean }\n  },\n  setup(__props: any) {\n\r\nconst props = __props\r\nconst canvasRef = ref<HTMLCanvasElement | null>(null)\r\n\r\nfunction draw() {\r\n  const canvas = canvasRef.value\r\n  if (!canvas) return\r\n  drawThinLens(canvas, props)\r\n}\r\n\r\nfunction resize() {\r\n  const canvas = canvasRef.value\r\n  if (!canvas) return\r\n  const parent = canvas.parentElement\r\n  if (!parent) return\r\n  canvas.width = parent.clientWidth\r\n  canvas.height = parent.clientHeight\r\n  draw()\r\n}\r\n\r\nonMounted(() => { resize(); window.addEventListener('resize', resize) })\r\nonUnmounted(() => window.removeEventListener('resize', resize))\r\nwatch(() => [props.lensType, props.focalLength, props.objectDistance, props.objectHeight, props.imageDistance, props.imageHeight, props.running], draw, { deep: true })\r\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"canvas\", {\n    ref_key: \"canvasRef\",\n    ref: canvasRef,\n    class: \"lens-canvas\"\n  }, null, 512))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,aAAa,YAAY,sBAAsB,2BAA2B;AAEnF,SAAS,KAAK,WAAW,aAAa,aAAa;AACnD,SAAS,oBAAoB;AAc7B,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,UAAU,CAAC;AAAA,IACX,aAAa,CAAC;AAAA,IACd,gBAAgB,CAAC;AAAA,IACjB,cAAc,CAAC;AAAA,IACf,eAAe,CAAC;AAAA,IAChB,aAAa,CAAC;AAAA,IACd,eAAe,CAAC;AAAA,IAChB,SAAS,EAAE,MAAM,QAAQ;AAAA,EAC3B;AAAA,EACA,MAAM,SAAc;AAEtB,UAAM,QAAQ;AACd,UAAM,YAAY,IAA8B,IAAI;AAEpD,aAAS,OAAO;AACd,YAAM,SAAS,UAAU;AACzB,UAAI,CAAC,OAAQ;AACb,mBAAa,QAAQ,KAAK;AAAA,IAC5B;AAEA,aAAS,SAAS;AAChB,YAAM,SAAS,UAAU;AACzB,UAAI,CAAC,OAAQ;AACb,YAAM,SAAS,OAAO;AACtB,UAAI,CAAC,OAAQ;AACb,aAAO,QAAQ,OAAO;AACtB,aAAO,SAAS,OAAO;AACvB,WAAK;AAAA,IACP;AAEA,cAAU,MAAM;AAAE,aAAO;AAAG,aAAO,iBAAiB,UAAU,MAAM;AAAA,IAAE,CAAC;AACvE,gBAAY,MAAM,OAAO,oBAAoB,UAAU,MAAM,CAAC;AAC9D,UAAM,MAAM,CAAC,MAAM,UAAU,MAAM,aAAa,MAAM,gBAAgB,MAAM,cAAc,MAAM,eAAe,MAAM,aAAa,MAAM,OAAO,GAAG,MAAM,EAAE,MAAM,KAAK,CAAC;AAEtK,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,UAAU;AAAA,QAClD,SAAS;AAAA,QACT,KAAK;AAAA,QACL,OAAO;AAAA,MACT,GAAG,MAAM,GAAG;AAAA,IACd;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642291,
+      "end": 1783634642291,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642291,
+      "end": 1783634642291,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634642291,
+      "end": 1783634642291,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642291,
+      "end": 1783634642291,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642291,
+      "end": 1783634642291,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642291,
+      "end": 1783634642291,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642291,
+      "end": 1783634642291,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642291,
+      "end": 1783634642291,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642291,
+      "end": 1783634642291,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642291,
+      "end": 1783634642291,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642291,
+      "end": 1783634642291,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642291,
+      "end": 1783634642291,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642291,
+      "end": 1783634642291,
+      "order": "normal"
+    }
+  ]
+}

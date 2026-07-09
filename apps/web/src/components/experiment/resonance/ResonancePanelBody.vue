@@ -10,7 +10,7 @@ import ResonanceResultsPanel from './panels/ResonanceResultsPanel.vue'
 interface Props {
   id: string
   trials: ResonanceTrial[]
-  params: { stringLength: number; tension: number; harmonic: number }
+  params: { stringLength: number; tension: number; harmonic: number; damping: number }
   frequency: number
   wavelength: number
   waveSpeed: number
@@ -20,7 +20,7 @@ defineProps<Props>()
 const emit = defineEmits<{
   (e: 'remove', id: number): void
   (e: 'clear'): void
-  (e: 'update:params', p: { stringLength: number; tension: number; harmonic: number }): void
+  (e: 'update:params', p: { stringLength: number; tension: number; harmonic: number; damping: number }): void
 }>()
 </script>
 

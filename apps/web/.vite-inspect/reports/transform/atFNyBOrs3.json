@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/branches-page.vue?vue&type=style&index=0&scoped=0261557c&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.branches-page {\n  min-height: 100vh;\n  background: #0b1220;\n  color: #e2e8f0;\n  padding: 2rem 1rem;\n}\n.page-header { text-align: center; margin-bottom: 2rem; }\n.page-header h1 { color: #67e8f9; margin: 0 0 0.5rem; }\n.page-header p { color: #94a3b8; margin: 0; }\n.grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));\n  gap: 1.5rem;\n  max-width: 1200px;\n  margin: 0 auto;\n}\n.card {\n  background: rgba(255,255,255,0.04);\n  border: 1px solid rgba(255,255,255,0.08);\n  border-radius: 1rem;\n  padding: 1.5rem;\n  cursor: pointer;\n  transition: transform 0.2s, background 0.2s;\n  border-left: 4px solid;\n}\n.card:hover {\n  transform: translateY(-4px);\n  background: rgba(255,255,255,0.07);\n}\n.icon {\n  width: 48px;\n  height: 48px;\n  border-radius: 0.75rem;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 1.5rem;\n  margin-bottom: 0.75rem;\n}\n.card h3 { margin: 0 0 0.5rem; font-size: 1.1rem; }\n.desc { color: #94a3b8; font-size: 0.85rem; margin: 0 0 0.75rem; line-height: 1.5; }\n.meta { display: flex; gap: 0.5rem; }\n.badge {\n  background: rgba(255,255,255,0.08);\n  padding: 2px 10px;\n  border-radius: 999px;\n  font-size: 0.75rem;\n  color: #cbd5e1;\n}\n",
+      "start": 1783634639230,
+      "end": 1783634639230
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.branches-page {\n  min-height: 100vh;\n  background: #0b1220;\n  color: #e2e8f0;\n  padding: 2rem 1rem;\n}\n.page-header { text-align: center; margin-bottom: 2rem; }\n.page-header h1 { color: #67e8f9; margin: 0 0 0.5rem; }\n.page-header p { color: #94a3b8; margin: 0; }\n.grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));\n  gap: 1.5rem;\n  max-width: 1200px;\n  margin: 0 auto;\n}\n.card {\n  background: rgba(255,255,255,0.04);\n  border: 1px solid rgba(255,255,255,0.08);\n  border-radius: 1rem;\n  padding: 1.5rem;\n  cursor: pointer;\n  transition: transform 0.2s, background 0.2s;\n  border-left: 4px solid;\n}\n.card:hover {\n  transform: translateY(-4px);\n  background: rgba(255,255,255,0.07);\n}\n.icon {\n  width: 48px;\n  height: 48px;\n  border-radius: 0.75rem;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 1.5rem;\n  margin-bottom: 0.75rem;\n}\n.card h3 { margin: 0 0 0.5rem; font-size: 1.1rem; }\n.desc { color: #94a3b8; font-size: 0.85rem; margin: 0 0 0.75rem; line-height: 1.5; }\n.meta { display: flex; gap: 0.5rem; }\n.badge {\n  background: rgba(255,255,255,0.08);\n  padding: 2px 10px;\n  border-radius: 999px;\n  font-size: 0.75rem;\n  color: #cbd5e1;\n}\n",
+      "start": 1783634639230,
+      "end": 1783634639231,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639231,
+      "end": 1783634639231,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639231,
+      "end": 1783634639231,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639231,
+      "end": 1783634639231,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.branches-page[data-v-0261557c] {\n  min-height: 100vh;\n  background: #0b1220;\n  color: #e2e8f0;\n  padding: 2rem 1rem;\n}\n.page-header[data-v-0261557c] { text-align: center; margin-bottom: 2rem;\n}\n.page-header h1[data-v-0261557c] { color: #67e8f9; margin: 0 0 0.5rem;\n}\n.page-header p[data-v-0261557c] { color: #94a3b8; margin: 0;\n}\n.grid[data-v-0261557c] {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));\n  gap: 1.5rem;\n  max-width: 1200px;\n  margin: 0 auto;\n}\n.card[data-v-0261557c] {\n  background: rgba(255,255,255,0.04);\n  border: 1px solid rgba(255,255,255,0.08);\n  border-radius: 1rem;\n  padding: 1.5rem;\n  cursor: pointer;\n  transition: transform 0.2s, background 0.2s;\n  border-left: 4px solid;\n}\n.card[data-v-0261557c]:hover {\n  transform: translateY(-4px);\n  background: rgba(255,255,255,0.07);\n}\n.icon[data-v-0261557c] {\n  width: 48px;\n  height: 48px;\n  border-radius: 0.75rem;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 1.5rem;\n  margin-bottom: 0.75rem;\n}\n.card h3[data-v-0261557c] { margin: 0 0 0.5rem; font-size: 1.1rem;\n}\n.desc[data-v-0261557c] { color: #94a3b8; font-size: 0.85rem; margin: 0 0 0.75rem; line-height: 1.5;\n}\n.meta[data-v-0261557c] { display: flex; gap: 0.5rem;\n}\n.badge[data-v-0261557c] {\n  background: rgba(255,255,255,0.08);\n  padding: 2px 10px;\n  border-radius: 999px;\n  font-size: 0.75rem;\n  color: #cbd5e1;\n}\n",
+      "start": 1783634639231,
+      "end": 1783634639232,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639232,
+      "end": 1783634639232,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634639232,
+      "end": 1783634639232,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639232,
+      "end": 1783634639232,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639232,
+      "end": 1783634639232,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639232,
+      "end": 1783634639232,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639232,
+      "end": 1783634639232,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639232,
+      "end": 1783634639232,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639232,
+      "end": 1783634639232,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639233,
+      "end": 1783634639233,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639233,
+      "end": 1783634639233,
+      "order": "normal"
+    }
+  ]
+}

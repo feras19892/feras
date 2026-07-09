@@ -97,6 +97,7 @@ export function useSpringExperimentActions(
     const payload: AnalysisPayload = {
       sourceExperiment: 'spring',
       sourceNameAr: t('experiments.expSpring'),
+      hasCalcTab: true,
       readings,
       columns: [
         { key: 'mass', label: t('experiments.colMass'), unit: 'kg' },

@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { authMiddleware } from '../../shared/middleware/auth.js';
+import { authMiddleware } from '../auth/middleware.js';
 
 const settingsRoutes = new Hono();
 

@@ -27,8 +27,7 @@ const SPEED_OF_LIGHT_C = 3e8
 
 function toRad(deg: number) { return (deg * Math.PI) / 180 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function getMediumName(n2: number, t: (key: string, ...args: any[]) => string): string {
+function getMediumName(n2: number, t: (key: string, fallbackOrVars?: string | Record<string, string | number>, vars?: Record<string, string | number>) => string): string {
   const map: Record<number, string> = {
     1.0: t('experiments.mediumAir'),
     1.33: t('experiments.mediumWater'),
@@ -116,10 +115,6 @@ export function useLightRayExperiment() {
   function resetSim() {
     running.value = false
     paused.value = false
-    params.angleIncidence = 45
-    params.n1 = 1.0
-    params.n2 = 1.5
-    trials.clearTrials()
   }
 
   function onResizeStart(side: 'data' | 'vis', e: MouseEvent) {
@@ -176,6 +171,7 @@ export function useLightRayExperiment() {
     const payload: AnalysisPayload = {
       sourceExperiment: 'light-ray',
       sourceNameAr: t('experiments.expLightRay'),
+      hasCalcTab: true,
       readings,
       columns: [
         { key: 'theta_i', label: t('experiments.angleOfIncidence'), unit: 'deg' },

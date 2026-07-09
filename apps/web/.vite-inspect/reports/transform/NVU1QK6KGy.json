@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileOverlayPanels.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport type { ProjectileTrial } from '../../../composables/projectile/useProjectileTrials'\nimport type { ProjectileParams } from '../../../modules/physics/experiments/projectile/useProjectilePhysics'\n\ninterface SimState { t: number; x: number; y: number; vx: number; vy: number; running: boolean; paused: boolean; landed: boolean; trail: {x:number;y:number}[]; signalSeries: {t:number;vx:number;vy:number}[] }\ninterface MeasuredState { flightTime: number | null; maxHeight: number | null; range: number | null }\ninterface TrialStats { range_mean: number; range_std: number; flightTime_mean: number; flightTime_std: number }\n\nconst props = defineProps<{\n  maximized: Record<string, boolean>\n  panelTitle: (id: string) => string\n  trials: ProjectileTrial[]\n  calcResult: string\n  fitResult?: { slope: number; intercept: number } | null\n  params: ProjectileParams\n  sim: SimState\n  measured: MeasuredState\n  trialStats: TrialStats | null\n}>()\n\nconst emit = defineEmits<{\n  (e: 'maximize', id: string): void\n  (e: 'drop', id: string, x: number, y: number): void\n  (e: 'update:trials', val: ProjectileTrial[]): void\n  (e: 'update:params', val: Partial<ProjectileParams>): void\n  (e: 'remove', id: number): void\n  (e: 'clear'): void\n  (e: 'calcFlightTime'): void\n  (e: 'calcMaxHeight'): void\n  (e: 'calcRange'): void\n  (e: 'calcFitRange'): void\n  (e: 'showCalc', html: string): void\n}>()\n\nimport ProjectilePanelBody from './ProjectilePanelBody.vue'\n</script>\n\n<template>\n  <Teleport to=\"body\">\n    <div v-for=\"[id, _active] in Object.entries(maximized).filter(([,a]) => a)\" :key=\"id\" class=\"overlay-backdrop\" @click=\"emit('maximize', id)\">\n      <div class=\"overlay-panel\" @click.stop @drop.prevent=\"emit('drop', id, $event.clientX, $event.clientY)\" @dragover.prevent>\n        <div class=\"overlay-header\">\n          <span>{{ panelTitle(id) }}</span>\n          <button @click=\"emit('maximize', id)\">×</button>\n        </div>\n        <ProjectilePanelBody\n          :id=\"id\" :trials=\"trials\" :calc-result=\"calcResult\" :params=\"params\" :sim=\"sim\"\n          :measured=\"measured\" :trial-stats=\"trialStats\" :fit-result=\"fitResult\"\n          @update:trials=\"emit('update:trials', $event)\" @update:params=\"emit('update:params', $event)\"\n          @remove=\"emit('remove', $event)\" @clear=\"emit('clear')\"\n          @calc-flight-time=\"emit('calcFlightTime')\" @calc-max-height=\"emit('calcMaxHeight')\"\n          @calc-range=\"emit('calcRange')\" @calc-fit-range=\"emit('calcFitRange')\"\n          @show-calc=\"emit('showCalc', $event)\"\n        />\n      </div>\n    </div>\n  </Teleport>\n</template>\n\n<style scoped>\n.overlay-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 150; display: flex; align-items: center; justify-content: center; padding: 2rem; }\n.overlay-panel { background: #1A1F27; border: 1px solid #2D3645; border-radius: 12px; width: 80%; max-width: 800px; max-height: 80vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.5); }\n.overlay-header { display: flex; justify-content: space-between; align-items: center; padding: .5rem .8rem; border-bottom: 1px solid #2D3645; font-size: .85rem; font-weight: 700; color: #5B8DB8; }\n.overlay-header button { background: none; border: none; color: #8B95A5; font-size: 1.2rem; cursor: pointer; }\n.overlay-header button:hover { color: #ef4444; }\n</style>\n",
+      "start": 1783634640977,
+      "end": 1783634641392,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641392,
+      "end": 1783634641392,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641392,
+      "end": 1783634641392,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641392,
+      "end": 1783634641392,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641392,
+      "end": 1783634641392,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileOverlayPanels.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileOverlayPanels.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileOverlayPanels.vue?vue&type=style&index=0&scoped=76604646&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-76604646\"]]);\n",
+      "start": 1783634641392,
+      "end": 1783634641628,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641628,
+      "end": 1783634641628,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641629,
+      "end": 1783634641629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641629,
+      "end": 1783634641631,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641631,
+      "end": 1783634641631,
+      "order": "normal"
+    }
+  ]
+}

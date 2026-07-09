@@ -6,6 +6,8 @@ import { useAuthStore } from '../../modules/auth/stores/auth'
 import { getPendingCount } from '../../services/class.service'
 import NotificationBell from '../shared/NotificationBell.vue'
 import FeedbackModal from '../shared/FeedbackModal.vue'
+import NotificationToast from '../shared/NotificationToast.vue'
+import { useNotifications } from '../../composables/useNotifications'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -13,6 +15,23 @@ const auth = useAuthStore()
 const pendingCount = ref(0)
 const showFeedback = ref(false)
 let pendingInterval: ReturnType<typeof setInterval> | null = null
+
+// Notifications toast
+const { notifications, unreadCount } = useNotifications()
+const toastShow = ref(false)
+const toastTitle = ref('')
+const toastMessage = ref('')
+const toastType = ref<'info' | 'success' | 'warning' | 'error'>('info')
+
+watch(notifications, (val, old) => {
+  if (val.length > (old?.length || 0)) {
+    const latest = val[0]
+    toastTitle.value = latest?.title || t('common.notifications')
+    toastMessage.value = latest?.message || ''
+    toastType.value = 'info'
+    toastShow.value = true
+  }
+}, { deep: false })
 
 async function refreshPending() {
   if (!auth.isTeacher && !auth.isAdmin) return
@@ -105,7 +124,10 @@ function setTab(tab: string) {
 
     <!-- User / Logout -->
     <div class="nav-user">
-      <NotificationBell />
+      <div class="notif-wrapper">
+        <NotificationBell />
+        <span v-if="unreadCount > 0" class="notif-count">{{ unreadCount }}</span>
+      </div>
       <button class="rate-btn" @click="showFeedback = true" :title="t('dashboard.rateProject')">⭐</button>
       <FeedbackModal v-model:show="showFeedback" />
       <div class="user-badge" v-if="auth.isAdmin">
@@ -123,6 +145,16 @@ function setTab(tab: string) {
       <button class="logout-btn" @click="auth.logout(); router.push('/')">{{ t('dashboard.logout') }}</button>
     </div>
   </nav>
+  <div class="toast-container">
+    <NotificationToast
+      :show="toastShow"
+      :title="toastTitle"
+      :message="toastMessage"
+      :type="toastType"
+      :timeout-ms="4500"
+      @close="toastShow = false"
+    />
+  </div>
 </template>
 
 <style scoped>
@@ -207,6 +239,18 @@ function setTab(tab: string) {
   align-items: center;
   gap: 0.8rem;
 }
+.notif-wrapper { position: relative; display: inline-flex; }
+.notif-count {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: #ef4444;
+  color: #fff;
+  border-radius: 999px;
+  padding: 0 6px;
+  font-size: 0.65rem;
+  font-weight: 800;
+}
 .user-badge {
   display: flex;
   align-items: center;
@@ -258,6 +302,12 @@ function setTab(tab: string) {
   background: rgba(239, 68, 68, 0.12);
   border-color: rgba(239, 68, 68, 0.25);
   color: #fca5a5;
+}
+.toast-container {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  z-index: 500;
 }
 
 @media (max-width: 768px) {

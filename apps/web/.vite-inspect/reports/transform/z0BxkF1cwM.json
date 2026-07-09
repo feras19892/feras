@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/panels/ThermalExpansionLawsPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"laws-panel\" }\nconst _hoisted_2 = { class: \"law-box expansion\" }\nconst _hoisted_3 = { class: \"data-grid\" }\nconst _hoisted_4 = { class: \"data-item\" }\nconst _hoisted_5 = { class: \"data-val\" }\nconst _hoisted_6 = { class: \"data-item\" }\nconst _hoisted_7 = { class: \"data-val\" }\nconst _hoisted_8 = { class: \"data-item\" }\nconst _hoisted_9 = { class: \"data-val\" }\nconst _hoisted_10 = { class: \"data-item highlight\" }\nconst _hoisted_11 = { class: \"data-val green\" }\nconst _hoisted_12 = { class: \"law-box calc\" }\nconst _hoisted_13 = { class: \"data-grid\" }\nconst _hoisted_14 = { class: \"data-item\" }\nconst _hoisted_15 = { class: \"data-val\" }\nconst _hoisted_16 = { class: \"data-item\" }\nconst _hoisted_17 = { class: \"data-val\" }\nconst _hoisted_18 = { class: \"data-item highlight\" }\nconst _hoisted_19 = { class: \"data-val green\" }\nconst _hoisted_20 = { class: \"data-item\" }\nconst _hoisted_21 = { class: \"data-val blue\" }\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ThermalExpansionLawsPanel',\n  props: {\n    L0: {},\n    t0: {},\n    t1: {},\n    alpha: {},\n    dL: {},\n    material: {}\n  },\n  setup(__props: any) {\n\nconst props = __props\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[4] || (_cache[4] = _createElementVNode(\"div\", { class: \"law-title\" }, \"قانون التمدد الخطي\", -1)),\n      _cache[5] || (_cache[5] = _createElementVNode(\"div\", { class: \"formula\" }, \"ΔL = α × L₀ × ΔT\", -1)),\n      _createElementVNode(\"div\", _hoisted_3, [\n        _createElementVNode(\"div\", _hoisted_4, [\n          _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"data-label\" }, \"L₀\", -1)),\n          _createElementVNode(\"span\", _hoisted_5, _toDisplayString(__props.L0.toFixed(2)) + \" m\", 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_6, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"span\", { class: \"data-label\" }, \"ΔT\", -1)),\n          _createElementVNode(\"span\", _hoisted_7, _toDisplayString((__props.t1 - __props.t0)) + \" °C\", 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_8, [\n          _cache[2] || (_cache[2] = _createElementVNode(\"span\", { class: \"data-label\" }, \"α\", -1)),\n          _createElementVNode(\"span\", _hoisted_9, _toDisplayString(__props.alpha.toFixed(1)) + \" × 10⁻⁶/K\", 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_10, [\n          _cache[3] || (_cache[3] = _createElementVNode(\"span\", { class: \"data-label\" }, \"ΔL\", -1)),\n          _createElementVNode(\"span\", _hoisted_11, _toDisplayString((__props.dL * 1000).toFixed(3)) + \" mm\", 1)\n        ])\n      ])\n    ]),\n    _createElementVNode(\"div\", _hoisted_12, [\n      _cache[10] || (_cache[10] = _createElementVNode(\"div\", { class: \"law-title\" }, \"حساب معامل التمدد α\", -1)),\n      _cache[11] || (_cache[11] = _createElementVNode(\"div\", { class: \"formula\" }, \"α = ΔL / (L₀ × ΔT)\", -1)),\n      _createElementVNode(\"div\", _hoisted_13, [\n        _createElementVNode(\"div\", _hoisted_14, [\n          _cache[6] || (_cache[6] = _createElementVNode(\"span\", { class: \"data-label\" }, \"ΔL\", -1)),\n          _createElementVNode(\"span\", _hoisted_15, _toDisplayString((__props.dL * 1000).toFixed(3)) + \" mm\", 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_16, [\n          _cache[7] || (_cache[7] = _createElementVNode(\"span\", { class: \"data-label\" }, \"L₀ × ΔT\", -1)),\n          _createElementVNode(\"span\", _hoisted_17, _toDisplayString((__props.L0 * (__props.t1 - __props.t0)).toFixed(2)) + \" m·°C\", 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_18, [\n          _cache[8] || (_cache[8] = _createElementVNode(\"span\", { class: \"data-label\" }, \"α (محسوب)\", -1)),\n          _createElementVNode(\"span\", _hoisted_19, _toDisplayString((__props.dL / (__props.L0 * (__props.t1 - __props.t0)) * 1e6).toFixed(1)) + \" × 10⁻⁶/K\", 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_20, [\n          _cache[9] || (_cache[9] = _createElementVNode(\"span\", { class: \"data-label\" }, \"α (حقيقي)\", -1)),\n          _createElementVNode(\"span\", _hoisted_21, _toDisplayString(__props.alpha.toFixed(1)) + \" × 10⁻⁶/K\", 1)\n        ])\n      ])\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783634642971,
+      "end": 1783634642971
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642971,
+      "end": 1783634642971,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"laws-panel\" };\nconst _hoisted_2 = { class: \"law-box expansion\" };\nconst _hoisted_3 = { class: \"data-grid\" };\nconst _hoisted_4 = { class: \"data-item\" };\nconst _hoisted_5 = { class: \"data-val\" };\nconst _hoisted_6 = { class: \"data-item\" };\nconst _hoisted_7 = { class: \"data-val\" };\nconst _hoisted_8 = { class: \"data-item\" };\nconst _hoisted_9 = { class: \"data-val\" };\nconst _hoisted_10 = { class: \"data-item highlight\" };\nconst _hoisted_11 = { class: \"data-val green\" };\nconst _hoisted_12 = { class: \"law-box calc\" };\nconst _hoisted_13 = { class: \"data-grid\" };\nconst _hoisted_14 = { class: \"data-item\" };\nconst _hoisted_15 = { class: \"data-val\" };\nconst _hoisted_16 = { class: \"data-item\" };\nconst _hoisted_17 = { class: \"data-val\" };\nconst _hoisted_18 = { class: \"data-item highlight\" };\nconst _hoisted_19 = { class: \"data-val green\" };\nconst _hoisted_20 = { class: \"data-item\" };\nconst _hoisted_21 = { class: \"data-val blue\" };\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"ThermalExpansionLawsPanel\",\n  props: {\n    L0: {},\n    t0: {},\n    t1: {},\n    alpha: {},\n    dL: {},\n    material: {}\n  },\n  setup(__props) {\n    const props = __props;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _cache[4] || (_cache[4] = _createElementVNode(\"div\", { class: \"law-title\" }, \"قانون التمدد الخطي\", -1)),\n          _cache[5] || (_cache[5] = _createElementVNode(\"div\", { class: \"formula\" }, \"ΔL = α × L₀ × ΔT\", -1)),\n          _createElementVNode(\"div\", _hoisted_3, [\n            _createElementVNode(\"div\", _hoisted_4, [\n              _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"data-label\" }, \"L₀\", -1)),\n              _createElementVNode(\"span\", _hoisted_5, _toDisplayString(__props.L0.toFixed(2)) + \" m\", 1)\n            ]),\n            _createElementVNode(\"div\", _hoisted_6, [\n              _cache[1] || (_cache[1] = _createElementVNode(\"span\", { class: \"data-label\" }, \"ΔT\", -1)),\n              _createElementVNode(\"span\", _hoisted_7, _toDisplayString(__props.t1 - __props.t0) + \" °C\", 1)\n            ]),\n            _createElementVNode(\"div\", _hoisted_8, [\n              _cache[2] || (_cache[2] = _createElementVNode(\"span\", { class: \"data-label\" }, \"α\", -1)),\n              _createElementVNode(\"span\", _hoisted_9, _toDisplayString(__props.alpha.toFixed(1)) + \" × 10⁻⁶/K\", 1)\n            ]),\n            _createElementVNode(\"div\", _hoisted_10, [\n              _cache[3] || (_cache[3] = _createElementVNode(\"span\", { class: \"data-label\" }, \"ΔL\", -1)),\n              _createElementVNode(\"span\", _hoisted_11, _toDisplayString((__props.dL * 1e3).toFixed(3)) + \" mm\", 1)\n            ])\n          ])\n        ]),\n        _createElementVNode(\"div\", _hoisted_12, [\n          _cache[10] || (_cache[10] = _createElementVNode(\"div\", { class: \"law-title\" }, \"حساب معامل التمدد α\", -1)),\n          _cache[11] || (_cache[11] = _createElementVNode(\"div\", { class: \"formula\" }, \"α = ΔL / (L₀ × ΔT)\", -1)),\n          _createElementVNode(\"div\", _hoisted_13, [\n            _createElementVNode(\"div\", _hoisted_14, [\n              _cache[6] || (_cache[6] = _createElementVNode(\"span\", { class: \"data-label\" }, \"ΔL\", -1)),\n              _createElementVNode(\"span\", _hoisted_15, _toDisplayString((__props.dL * 1e3).toFixed(3)) + \" mm\", 1)\n            ]),\n            _createElementVNode(\"div\", _hoisted_16, [\n              _cache[7] || (_cache[7] = _createElementVNode(\"span\", { class: \"data-label\" }, \"L₀ × ΔT\", -1)),\n              _createElementVNode(\"span\", _hoisted_17, _toDisplayString((__props.L0 * (__props.t1 - __props.t0)).toFixed(2)) + \" m·°C\", 1)\n            ]),\n            _createElementVNode(\"div\", _hoisted_18, [\n              _cache[8] || (_cache[8] = _createElementVNode(\"span\", { class: \"data-label\" }, \"α (محسوب)\", -1)),\n              _createElementVNode(\"span\", _hoisted_19, _toDisplayString((__props.dL / (__props.L0 * (__props.t1 - __props.t0)) * 1e6).toFixed(1)) + \" × 10⁻⁶/K\", 1)\n            ]),\n            _createElementVNode(\"div\", _hoisted_20, [\n              _cache[9] || (_cache[9] = _createElementVNode(\"span\", { class: \"data-label\" }, \"α (حقيقي)\", -1)),\n              _createElementVNode(\"span\", _hoisted_21, _toDisplayString(__props.alpha.toFixed(1)) + \" × 10⁻⁶/K\", 1)\n            ])\n          ])\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634642971,
+      "end": 1783634643131,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/panels/ThermalExpansionLawsPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"laws-panel\" }\nconst _hoisted_2 = { class: \"law-box expansion\" }\nconst _hoisted_3 = { class: \"data-grid\" }\nconst _hoisted_4 = { class: \"data-item\" }\nconst _hoisted_5 = { class: \"data-val\" }\nconst _hoisted_6 = { class: \"data-item\" }\nconst _hoisted_7 = { class: \"data-val\" }\nconst _hoisted_8 = { class: \"data-item\" }\nconst _hoisted_9 = { class: \"data-val\" }\nconst _hoisted_10 = { class: \"data-item highlight\" }\nconst _hoisted_11 = { class: \"data-val green\" }\nconst _hoisted_12 = { class: \"law-box calc\" }\nconst _hoisted_13 = { class: \"data-grid\" }\nconst _hoisted_14 = { class: \"data-item\" }\nconst _hoisted_15 = { class: \"data-val\" }\nconst _hoisted_16 = { class: \"data-item\" }\nconst _hoisted_17 = { class: \"data-val\" }\nconst _hoisted_18 = { class: \"data-item highlight\" }\nconst _hoisted_19 = { class: \"data-val green\" }\nconst _hoisted_20 = { class: \"data-item\" }\nconst _hoisted_21 = { class: \"data-val blue\" }\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ThermalExpansionLawsPanel',\n  props: {\n    L0: {},\n    t0: {},\n    t1: {},\n    alpha: {},\n    dL: {},\n    material: {}\n  },\n  setup(__props: any) {\n\nconst props = __props\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[4] || (_cache[4] = _createElementVNode(\"div\", { class: \"law-title\" }, \"قانون التمدد الخطي\", -1)),\n      _cache[5] || (_cache[5] = _createElementVNode(\"div\", { class: \"formula\" }, \"ΔL = α × L₀ × ΔT\", -1)),\n      _createElementVNode(\"div\", _hoisted_3, [\n        _createElementVNode(\"div\", _hoisted_4, [\n          _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"data-label\" }, \"L₀\", -1)),\n          _createElementVNode(\"span\", _hoisted_5, _toDisplayString(__props.L0.toFixed(2)) + \" m\", 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_6, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"span\", { class: \"data-label\" }, \"ΔT\", -1)),\n          _createElementVNode(\"span\", _hoisted_7, _toDisplayString((__props.t1 - __props.t0)) + \" °C\", 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_8, [\n          _cache[2] || (_cache[2] = _createElementVNode(\"span\", { class: \"data-label\" }, \"α\", -1)),\n          _createElementVNode(\"span\", _hoisted_9, _toDisplayString(__props.alpha.toFixed(1)) + \" × 10⁻⁶/K\", 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_10, [\n          _cache[3] || (_cache[3] = _createElementVNode(\"span\", { class: \"data-label\" }, \"ΔL\", -1)),\n          _createElementVNode(\"span\", _hoisted_11, _toDisplayString((__props.dL * 1000).toFixed(3)) + \" mm\", 1)\n        ])\n      ])\n    ]),\n    _createElementVNode(\"div\", _hoisted_12, [\n      _cache[10] || (_cache[10] = _createElementVNode(\"div\", { class: \"law-title\" }, \"حساب معامل التمدد α\", -1)),\n      _cache[11] || (_cache[11] = _createElementVNode(\"div\", { class: \"formula\" }, \"α = ΔL / (L₀ × ΔT)\", -1)),\n      _createElementVNode(\"div\", _hoisted_13, [\n        _createElementVNode(\"div\", _hoisted_14, [\n          _cache[6] || (_cache[6] = _createElementVNode(\"span\", { class: \"data-label\" }, \"ΔL\", -1)),\n          _createElementVNode(\"span\", _hoisted_15, _toDisplayString((__props.dL * 1000).toFixed(3)) + \" mm\", 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_16, [\n          _cache[7] || (_cache[7] = _createElementVNode(\"span\", { class: \"data-label\" }, \"L₀ × ΔT\", -1)),\n          _createElementVNode(\"span\", _hoisted_17, _toDisplayString((__props.L0 * (__props.t1 - __props.t0)).toFixed(2)) + \" m·°C\", 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_18, [\n          _cache[8] || (_cache[8] = _createElementVNode(\"span\", { class: \"data-label\" }, \"α (محسوب)\", -1)),\n          _createElementVNode(\"span\", _hoisted_19, _toDisplayString((__props.dL / (__props.L0 * (__props.t1 - __props.t0)) * 1e6).toFixed(1)) + \" × 10⁻⁶/K\", 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_20, [\n          _cache[9] || (_cache[9] = _createElementVNode(\"span\", { class: \"data-label\" }, \"α (حقيقي)\", -1)),\n          _createElementVNode(\"span\", _hoisted_21, _toDisplayString(__props.alpha.toFixed(1)) + \" × 10⁻⁶/K\", 1)\n        ])\n      ])\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634643131,
+      "end": 1783634643131,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634643131,
+      "end": 1783634643131,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634643131,
+      "end": 1783634643132,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634643132,
+      "end": 1783634643132,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634643132,
+      "end": 1783634643132,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634643132,
+      "end": 1783634643132,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634643132,
+      "end": 1783634643132,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634643132,
+      "end": 1783634643132,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634643132,
+      "end": 1783634643132,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634643132,
+      "end": 1783634643132,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634643132,
+      "end": 1783634643132,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634643132,
+      "end": 1783634643132,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634643132,
+      "end": 1783634643132,
+      "order": "normal"
+    }
+  ]
+}

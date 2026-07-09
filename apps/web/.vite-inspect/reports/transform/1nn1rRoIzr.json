@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabBeakerClamp.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, unref as _unref, withModifiers as _withModifiers, toDisplayString as _toDisplayString, normalizeClass as _normalizeClass } from \"vue\"\n\nconst _hoisted_1 = {\n  width: \"140\",\n  height: \"90\",\n  viewBox: \"0 0 140 90\"\n}\nconst _hoisted_2 = [\"transform\"]\nconst _hoisted_3 = { transform: \"translate(70, 30)\" }\nconst _hoisted_4 = {\n  key: 0,\n  x: \"-18\",\n  y: \"-20\",\n  width: \"36\",\n  height: \"28\",\n  rx: \"3\",\n  fill: \"#3b82f6\",\n  opacity: \"0.3\",\n  stroke: \"#3b82f6\",\n  \"stroke-width\": \"1\"\n}\nconst _hoisted_5 = {\n  key: 1,\n  x: \"-14\",\n  y: \"-16\",\n  width: \"28\",\n  height: \"22\",\n  rx: \"2\",\n  fill: \"#d1d5db\",\n  opacity: \"0.2\",\n  stroke: \"#9ca3af\",\n  \"stroke-dasharray\": \"3,2\"\n}\nconst _hoisted_6 = { class: \"bc-controls\" }\nconst _hoisted_7 = [\"title\"]\nconst _hoisted_8 = [\"title\"]\nconst _hoisted_9 = { class: \"tool-label\" }\n\nimport { computed } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\ninterface Props {\n  clampAngle: number;\n  heldContainerUid: string | null;\n  isHovered: boolean;\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'LabBeakerClamp',\n  props: {\n    clampAngle: {},\n    heldContainerUid: {},\n    isHovered: { type: Boolean }\n  },\n  emits: [\"rotateLeft\", \"rotateRight\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n();\n\nconst props = __props;\nconst emit = __emit;\n\nconst hasContainer = computed(() => !!props.heldContainerUid);\nconst clampTransform = computed(() => {\n  return `rotate(${props.clampAngle}, 70, 30)`;\n});\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    class: _normalizeClass([\"lab-beaker-clamp\", { hovered: __props.isHovered }])\n  }, [\n    (_openBlock(), _createElementBlock(\"svg\", _hoisted_1, [\n      _cache[6] || (_cache[6] = _createElementVNode(\"rect\", {\n        x: \"64\",\n        y: \"0\",\n        width: \"12\",\n        height: \"20\",\n        rx: \"2\",\n        fill: \"#374151\"\n      }, null, -1)),\n      _cache[7] || (_cache[7] = _createElementVNode(\"rect\", {\n        x: \"67\",\n        y: \"2\",\n        width: \"6\",\n        height: \"4\",\n        rx: \"1\",\n        fill: \"#6b7280\"\n      }, null, -1)),\n      _createElementVNode(\"g\", { transform: clampTransform.value }, [\n        _cache[4] || (_cache[4] = _createElementVNode(\"rect\", {\n          x: \"15\",\n          y: \"26\",\n          width: \"110\",\n          height: \"6\",\n          rx: \"2\",\n          fill: \"#4b5563\"\n        }, null, -1)),\n        _cache[5] || (_cache[5] = _createElementVNode(\"rect\", {\n          x: \"15\",\n          y: \"26\",\n          width: \"110\",\n          height: \"2\",\n          rx: \"1\",\n          fill: \"#6b7280\",\n          opacity: \"0.4\"\n        }, null, -1)),\n        _createElementVNode(\"g\", _hoisted_3, [\n          _cache[2] || (_cache[2] = _createElementVNode(\"path\", {\n            d: \"M -25,-10 Q -15,-10 -10,0 Q -15,10 -25,10 L -30,8 L -30,-8 Z\",\n            fill: \"#1f2937\"\n          }, null, -1)),\n          _cache[3] || (_cache[3] = _createElementVNode(\"path\", {\n            d: \"M 25,-10 Q 15,-10 10,0 Q 15,10 25,10 L 30,8 L 30,-8 Z\",\n            fill: \"#1f2937\"\n          }, null, -1)),\n          (hasContainer.value)\n            ? (_openBlock(), _createElementBlock(\"rect\", _hoisted_4))\n            : (_openBlock(), _createElementBlock(\"rect\", _hoisted_5))\n        ])\n      ], 8, _hoisted_2),\n      _cache[8] || (_cache[8] = _createElementVNode(\"circle\", {\n        cx: \"70\",\n        cy: \"78\",\n        r: \"5\",\n        fill: \"#10b981\",\n        opacity: \"0.15\"\n      }, null, -1)),\n      _cache[9] || (_cache[9] = _createElementVNode(\"text\", {\n        x: \"70\",\n        y: \"80\",\n        \"text-anchor\": \"middle\",\n        fill: \"#10b981\",\n        \"font-size\": \"5\",\n        opacity: \"0.6\"\n      }, \"↔\", -1))\n    ])),\n    _createElementVNode(\"div\", _hoisted_6, [\n      _createElementVNode(\"button\", {\n        class: \"bc-btn\",\n        onClick: _cache[0] || (_cache[0] = _withModifiers(($event: any) => (emit('rotateLeft')), [\"stop\"])),\n        title: _unref(t)('chemistryLab.rotateLeft')\n      }, \"←\", 8, _hoisted_7),\n      _createElementVNode(\"button\", {\n        class: \"bc-btn\",\n        onClick: _cache[1] || (_cache[1] = _withModifiers(($event: any) => (emit('rotateRight')), [\"stop\"])),\n        title: _unref(t)('chemistryLab.rotateRight')\n      }, \"→\", 8, _hoisted_8)\n    ]),\n    _createElementVNode(\"span\", _hoisted_9, _toDisplayString(hasContainer.value ? _unref(t)('chemistryLab.holdingContainer') : _unref(t)('chemistryLab.emptyClamp')), 1)\n  ], 2))\n}\n}\n\n})",
+      "start": 1783634642147,
+      "end": 1783634642147
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642147,
+      "end": 1783634642147,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, unref as _unref, withModifiers as _withModifiers, toDisplayString as _toDisplayString, normalizeClass as _normalizeClass } from \"vue\";\nconst _hoisted_1 = {\n  width: \"140\",\n  height: \"90\",\n  viewBox: \"0 0 140 90\"\n};\nconst _hoisted_2 = [\"transform\"];\nconst _hoisted_3 = { transform: \"translate(70, 30)\" };\nconst _hoisted_4 = {\n  key: 0,\n  x: \"-18\",\n  y: \"-20\",\n  width: \"36\",\n  height: \"28\",\n  rx: \"3\",\n  fill: \"#3b82f6\",\n  opacity: \"0.3\",\n  stroke: \"#3b82f6\",\n  \"stroke-width\": \"1\"\n};\nconst _hoisted_5 = {\n  key: 1,\n  x: \"-14\",\n  y: \"-16\",\n  width: \"28\",\n  height: \"22\",\n  rx: \"2\",\n  fill: \"#d1d5db\",\n  opacity: \"0.2\",\n  stroke: \"#9ca3af\",\n  \"stroke-dasharray\": \"3,2\"\n};\nconst _hoisted_6 = { class: \"bc-controls\" };\nconst _hoisted_7 = [\"title\"];\nconst _hoisted_8 = [\"title\"];\nconst _hoisted_9 = { class: \"tool-label\" };\nimport { computed } from \"vue\";\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"LabBeakerClamp\",\n  props: {\n    clampAngle: {},\n    heldContainerUid: {},\n    isHovered: { type: Boolean }\n  },\n  emits: [\"rotateLeft\", \"rotateRight\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const props = __props;\n    const emit = __emit;\n    const hasContainer = computed(() => !!props.heldContainerUid);\n    const clampTransform = computed(() => {\n      return `rotate(${props.clampAngle}, 70, 30)`;\n    });\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", {\n        class: _normalizeClass([\"lab-beaker-clamp\", { hovered: __props.isHovered }])\n      }, [\n        (_openBlock(), _createElementBlock(\"svg\", _hoisted_1, [\n          _cache[6] || (_cache[6] = _createElementVNode(\"rect\", {\n            x: \"64\",\n            y: \"0\",\n            width: \"12\",\n            height: \"20\",\n            rx: \"2\",\n            fill: \"#374151\"\n          }, null, -1)),\n          _cache[7] || (_cache[7] = _createElementVNode(\"rect\", {\n            x: \"67\",\n            y: \"2\",\n            width: \"6\",\n            height: \"4\",\n            rx: \"1\",\n            fill: \"#6b7280\"\n          }, null, -1)),\n          _createElementVNode(\"g\", { transform: clampTransform.value }, [\n            _cache[4] || (_cache[4] = _createElementVNode(\"rect\", {\n              x: \"15\",\n              y: \"26\",\n              width: \"110\",\n              height: \"6\",\n              rx: \"2\",\n              fill: \"#4b5563\"\n            }, null, -1)),\n            _cache[5] || (_cache[5] = _createElementVNode(\"rect\", {\n              x: \"15\",\n              y: \"26\",\n              width: \"110\",\n              height: \"2\",\n              rx: \"1\",\n              fill: \"#6b7280\",\n              opacity: \"0.4\"\n            }, null, -1)),\n            _createElementVNode(\"g\", _hoisted_3, [\n              _cache[2] || (_cache[2] = _createElementVNode(\"path\", {\n                d: \"M -25,-10 Q -15,-10 -10,0 Q -15,10 -25,10 L -30,8 L -30,-8 Z\",\n                fill: \"#1f2937\"\n              }, null, -1)),\n              _cache[3] || (_cache[3] = _createElementVNode(\"path\", {\n                d: \"M 25,-10 Q 15,-10 10,0 Q 15,10 25,10 L 30,8 L 30,-8 Z\",\n                fill: \"#1f2937\"\n              }, null, -1)),\n              hasContainer.value ? (_openBlock(), _createElementBlock(\"rect\", _hoisted_4)) : (_openBlock(), _createElementBlock(\"rect\", _hoisted_5))\n            ])\n          ], 8, _hoisted_2),\n          _cache[8] || (_cache[8] = _createElementVNode(\"circle\", {\n            cx: \"70\",\n            cy: \"78\",\n            r: \"5\",\n            fill: \"#10b981\",\n            opacity: \"0.15\"\n          }, null, -1)),\n          _cache[9] || (_cache[9] = _createElementVNode(\"text\", {\n            x: \"70\",\n            y: \"80\",\n            \"text-anchor\": \"middle\",\n            fill: \"#10b981\",\n            \"font-size\": \"5\",\n            opacity: \"0.6\"\n          }, \"↔\", -1))\n        ])),\n        _createElementVNode(\"div\", _hoisted_6, [\n          _createElementVNode(\"button\", {\n            class: \"bc-btn\",\n            onClick: _cache[0] || (_cache[0] = _withModifiers(($event) => emit(\"rotateLeft\"), [\"stop\"])),\n            title: _unref(t)(\"chemistryLab.rotateLeft\")\n          }, \"←\", 8, _hoisted_7),\n          _createElementVNode(\"button\", {\n            class: \"bc-btn\",\n            onClick: _cache[1] || (_cache[1] = _withModifiers(($event) => emit(\"rotateRight\"), [\"stop\"])),\n            title: _unref(t)(\"chemistryLab.rotateRight\")\n          }, \"→\", 8, _hoisted_8)\n        ]),\n        _createElementVNode(\"span\", _hoisted_9, _toDisplayString(hasContainer.value ? _unref(t)(\"chemistryLab.holdingContainer\") : _unref(t)(\"chemistryLab.emptyClamp\")), 1)\n      ], 2);\n    };\n  }\n});\n",
+      "start": 1783634642147,
+      "end": 1783634642268,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabBeakerClamp.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, unref as _unref, withModifiers as _withModifiers, toDisplayString as _toDisplayString, normalizeClass as _normalizeClass } from \"vue\"\n\nconst _hoisted_1 = {\n  width: \"140\",\n  height: \"90\",\n  viewBox: \"0 0 140 90\"\n}\nconst _hoisted_2 = [\"transform\"]\nconst _hoisted_3 = { transform: \"translate(70, 30)\" }\nconst _hoisted_4 = {\n  key: 0,\n  x: \"-18\",\n  y: \"-20\",\n  width: \"36\",\n  height: \"28\",\n  rx: \"3\",\n  fill: \"#3b82f6\",\n  opacity: \"0.3\",\n  stroke: \"#3b82f6\",\n  \"stroke-width\": \"1\"\n}\nconst _hoisted_5 = {\n  key: 1,\n  x: \"-14\",\n  y: \"-16\",\n  width: \"28\",\n  height: \"22\",\n  rx: \"2\",\n  fill: \"#d1d5db\",\n  opacity: \"0.2\",\n  stroke: \"#9ca3af\",\n  \"stroke-dasharray\": \"3,2\"\n}\nconst _hoisted_6 = { class: \"bc-controls\" }\nconst _hoisted_7 = [\"title\"]\nconst _hoisted_8 = [\"title\"]\nconst _hoisted_9 = { class: \"tool-label\" }\n\nimport { computed } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\ninterface Props {\n  clampAngle: number;\n  heldContainerUid: string | null;\n  isHovered: boolean;\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'LabBeakerClamp',\n  props: {\n    clampAngle: {},\n    heldContainerUid: {},\n    isHovered: { type: Boolean }\n  },\n  emits: [\"rotateLeft\", \"rotateRight\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n();\n\nconst props = __props;\nconst emit = __emit;\n\nconst hasContainer = computed(() => !!props.heldContainerUid);\nconst clampTransform = computed(() => {\n  return `rotate(${props.clampAngle}, 70, 30)`;\n});\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    class: _normalizeClass([\"lab-beaker-clamp\", { hovered: __props.isHovered }])\n  }, [\n    (_openBlock(), _createElementBlock(\"svg\", _hoisted_1, [\n      _cache[6] || (_cache[6] = _createElementVNode(\"rect\", {\n        x: \"64\",\n        y: \"0\",\n        width: \"12\",\n        height: \"20\",\n        rx: \"2\",\n        fill: \"#374151\"\n      }, null, -1)),\n      _cache[7] || (_cache[7] = _createElementVNode(\"rect\", {\n        x: \"67\",\n        y: \"2\",\n        width: \"6\",\n        height: \"4\",\n        rx: \"1\",\n        fill: \"#6b7280\"\n      }, null, -1)),\n      _createElementVNode(\"g\", { transform: clampTransform.value }, [\n        _cache[4] || (_cache[4] = _createElementVNode(\"rect\", {\n          x: \"15\",\n          y: \"26\",\n          width: \"110\",\n          height: \"6\",\n          rx: \"2\",\n          fill: \"#4b5563\"\n        }, null, -1)),\n        _cache[5] || (_cache[5] = _createElementVNode(\"rect\", {\n          x: \"15\",\n          y: \"26\",\n          width: \"110\",\n          height: \"2\",\n          rx: \"1\",\n          fill: \"#6b7280\",\n          opacity: \"0.4\"\n        }, null, -1)),\n        _createElementVNode(\"g\", _hoisted_3, [\n          _cache[2] || (_cache[2] = _createElementVNode(\"path\", {\n            d: \"M -25,-10 Q -15,-10 -10,0 Q -15,10 -25,10 L -30,8 L -30,-8 Z\",\n            fill: \"#1f2937\"\n          }, null, -1)),\n          _cache[3] || (_cache[3] = _createElementVNode(\"path\", {\n            d: \"M 25,-10 Q 15,-10 10,0 Q 15,10 25,10 L 30,8 L 30,-8 Z\",\n            fill: \"#1f2937\"\n          }, null, -1)),\n          (hasContainer.value)\n            ? (_openBlock(), _createElementBlock(\"rect\", _hoisted_4))\n            : (_openBlock(), _createElementBlock(\"rect\", _hoisted_5))\n        ])\n      ], 8, _hoisted_2),\n      _cache[8] || (_cache[8] = _createElementVNode(\"circle\", {\n        cx: \"70\",\n        cy: \"78\",\n        r: \"5\",\n        fill: \"#10b981\",\n        opacity: \"0.15\"\n      }, null, -1)),\n      _cache[9] || (_cache[9] = _createElementVNode(\"text\", {\n        x: \"70\",\n        y: \"80\",\n        \"text-anchor\": \"middle\",\n        fill: \"#10b981\",\n        \"font-size\": \"5\",\n        opacity: \"0.6\"\n      }, \"↔\", -1))\n    ])),\n    _createElementVNode(\"div\", _hoisted_6, [\n      _createElementVNode(\"button\", {\n        class: \"bc-btn\",\n        onClick: _cache[0] || (_cache[0] = _withModifiers(($event: any) => (emit('rotateLeft')), [\"stop\"])),\n        title: _unref(t)('chemistryLab.rotateLeft')\n      }, \"←\", 8, _hoisted_7),\n      _createElementVNode(\"button\", {\n        class: \"bc-btn\",\n        onClick: _cache[1] || (_cache[1] = _withModifiers(($event: any) => (emit('rotateRight')), [\"stop\"])),\n        title: _unref(t)('chemistryLab.rotateRight')\n      }, \"→\", 8, _hoisted_8)\n    ]),\n    _createElementVNode(\"span\", _hoisted_9, _toDisplayString(hasContainer.value ? _unref(t)('chemistryLab.holdingContainer') : _unref(t)('chemistryLab.emptyClamp')), 1)\n  ], 2))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    }
+  ]
+}

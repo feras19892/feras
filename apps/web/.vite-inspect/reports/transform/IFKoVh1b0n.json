@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/freefall/FreeFallTablePanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport type { FreeFallTrial } from '../../../composables/freefall/useFreeFallTrials'\nimport { useI18n } from '../../../composables/useI18n'\n\nconst { t } = useI18n()\nconst props = defineProps<{ trials: FreeFallTrial[]; enableNoise?: boolean }>()\nconst emit = defineEmits<{ (e: 'remove', id: number): void; (e: 'clear'): void }>()\n</script>\n\n<template>\n  <div>\n    <div class=\"table-header\">\n      <h5>📋 {{ t('experiments.experimentReadings') }} ({{ trials.length }})</h5>\n      <span class=\"mode-badge\" :class=\"enableNoise ? 'noisy' : 'exact'\">{{ enableNoise ? '⚠️ ' + t('experiments.withRelativeError') : '✅ ' + t('experiments.exactMeasurements') }}</span>\n    </div>\n    <table class=\"report-table\" v-if=\"trials.length\">\n      <thead><tr><th>#</th><th>h (m)</th><th>t (s)</th><th>t² (s²)</th><th>v (m/s)</th><th>g_calc</th><th></th></tr></thead>\n      <tbody>\n        <tr v-for=\"(tr, i) in trials\" :key=\"tr.id\">\n          <td>{{ i + 1 }}</td>\n          <td>{{ tr.heightMeters.toFixed(2) }}</td>\n          <td>{{ tr.timeSec.toFixed(3) }}</td>\n          <td>{{ tr.timeSquaredSec2.toFixed(4) }}</td>\n          <td>{{ tr.impactVelocityMs.toFixed(2) }}</td>\n          <td>{{ tr.gCalc.toFixed(2) }}</td>\n          <td><button class=\"del-btn\" @click=\"emit('remove', tr.id)\">🗑️</button></td>\n        </tr>\n      </tbody>\n    </table>\n    <p v-else class=\"no-data\">{{ t('experiments.noTrialsRecorded') }}</p>\n    <button class=\"ctrl-btn\" @click=\"emit('clear')\" v-if=\"trials.length\">{{ t('experiments.clearAll') }}</button>\n  </div>\n</template>\n\n<style scoped>\n.table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: .3rem; }\nh5 { margin: 0; font-size: .82rem; color: #5B8DB8; }\n.mode-badge { font-size: .65rem; font-weight: 600; padding: .15rem .35rem; border-radius: 4px; }\n.mode-badge.noisy { background: rgba(251,191,36,.1); color: #fbbf24; border: 1px solid rgba(251,191,36,.3); }\n.mode-badge.exact { background: rgba(34,197,94,.1); color: #22c55e; border: 1px solid rgba(34,197,94,.3); }\n.report-table { width: 100%; border-collapse: collapse; font-size: .72rem; }\n.report-table th, .report-table td { border: 1px solid #2D3645; padding: .2rem .3rem; text-align: center; color: #D1D7E0; }\n.report-table th { background: #252D3A; }\n.del-btn { background: transparent; border: none; color: #ff6b6b; cursor: pointer; font-size: .7rem; }\n.no-data { text-align: center; color: #64748b; font-size: .75rem; padding: .5rem; }\n.ctrl-btn { margin-top: .3rem; background: #252D3A; border: 1px solid #2D3645; color: #94a3b8; border-radius: 4px; padding: .2rem .5rem; font-size: .7rem; cursor: pointer; }\n</style>\n",
+      "start": 1783634642339,
+      "end": 1783634642642,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642642,
+      "end": 1783634642642,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642642,
+      "end": 1783634642642,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642642,
+      "end": 1783634642642,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642642,
+      "end": 1783634642642,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/freefall/FreeFallTablePanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/freefall/FreeFallTablePanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/freefall/FreeFallTablePanel.vue?vue&type=style&index=0&scoped=978afc65&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-978afc65\"]]);\n",
+      "start": 1783634642642,
+      "end": 1783634642870,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642870,
+      "end": 1783634642871,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642871,
+      "end": 1783634642871,
+      "order": "normal"
+    }
+  ]
+}

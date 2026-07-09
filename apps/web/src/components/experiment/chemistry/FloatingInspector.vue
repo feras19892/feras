@@ -102,7 +102,7 @@ function pipetteStatus(): string {
             class="fi-input"
             :value="resolveLabel(state.label || '')"
             :placeholder="t('chemistry.solutionPlaceholder')"
-            @input="(e: any) => emit('labelChange', e.target.value)"
+            @input="(e: Event) => emit('labelChange', (e.target as HTMLInputElement).value)"
             @click.stop
           />
         </div>

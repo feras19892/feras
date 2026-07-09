@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/useI18n.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { storeToRefs } from 'pinia';\nimport { useI18nStore } from '../stores/i18n.store';\n\nexport const useI18n = () => {\n  const store = useI18nStore();\n  const { locale, supported, direction, loading, messages } = storeToRefs(store);\n  return {\n    locale,\n    supported,\n    direction,\n    loading,\n    messages,\n    t: store.t,\n    setLocale: store.setLocale,\n    bootstrap: store.bootstrap,\n  };\n};\n",
+      "start": 1783634639307,
+      "end": 1783634639387,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639387,
+      "end": 1783634639387,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { storeToRefs } from \"pinia\";\nimport { useI18nStore } from \"../stores/i18n.store\";\nexport const useI18n = () => {\n  const store = useI18nStore();\n  const { locale, supported, direction, loading, messages } = storeToRefs(store);\n  return {\n    locale,\n    supported,\n    direction,\n    loading,\n    messages,\n    t: store.t,\n    setLocale: store.setLocale,\n    bootstrap: store.bootstrap\n  };\n};\n",
+      "start": 1783634639387,
+      "end": 1783634639883,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/useI18n.ts"
+        ],
+        "sourcesContent": [
+          "import { storeToRefs } from 'pinia';\nimport { useI18nStore } from '../stores/i18n.store';\n\nexport const useI18n = () => {\n  const store = useI18nStore();\n  const { locale, supported, direction, loading, messages } = storeToRefs(store);\n  return {\n    locale,\n    supported,\n    direction,\n    loading,\n    messages,\n    t: store.t,\n    setLocale: store.setLocale,\n    bootstrap: store.bootstrap,\n  };\n};\n"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB;AAC5B,SAAS,oBAAoB;AAEtB,aAAM,UAAU,MAAM;AAC3B,QAAM,QAAQ,aAAa;AAC3B,QAAM,EAAE,QAAQ,WAAW,WAAW,SAAS,SAAS,IAAI,YAAY,KAAK;AAC7E,SAAO;AAAA,IACL;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA,GAAG,MAAM;AAAA,IACT,WAAW,MAAM;AAAA,IACjB,WAAW,MAAM;AAAA,EACnB;AACF;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639883,
+      "end": 1783634639883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639883,
+      "end": 1783634639883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639883,
+      "end": 1783634639883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639883,
+      "end": 1783634639883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639884,
+      "end": 1783634639884,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639884,
+      "end": 1783634639884,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639884,
+      "end": 1783634639884,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639884,
+      "end": 1783634639884,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639884,
+      "end": 1783634639884,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639885,
+      "end": 1783634639885,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639885,
+      "end": 1783634639885,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639886,
+      "end": 1783634639886,
+      "order": "normal"
+    }
+  ]
+}

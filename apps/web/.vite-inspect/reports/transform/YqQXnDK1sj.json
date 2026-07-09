@@ -1,0 +1,110 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/spring/useSpringExperimentState.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { computed, reactive, ref } from 'vue'\nimport { useI18n } from '../../composables/useI18n'\nimport type { SpringParams } from '../../modules/physics/experiments/spring/useSpringPhysics'\n\nexport interface SpringExperimentState {\n  params: SpringParams\n  previousMass: { value: number }\n  staticK: { value: number | null }\n  staticReadings: { value: Record<string, unknown>[] }\n  fftResult: { value: { freqs: number[]; amplitudes: number[]; dominantFreq: number } | null }\n  ignoreParamsWatch: { value: boolean }\n  colWidths: { data: number; vis: number; ctrl: number }\n}\n\nexport function useSpringExperimentState(): SpringExperimentState {\n  const params = reactive<SpringParams>({\n    mass: 1.0, k: 50, amplitude: 0.03, damping: 0.5, measureCycles: 5,\n    dampingModel: 'linear', springMass: 0.15\n  })\n  const previousMass = ref(1.0)\n  const staticK = ref<number | null>(null)\n  const staticReadings = ref<Record<string, unknown>[]>([])\n  const fftResult = ref<{ freqs: number[]; amplitudes: number[]; dominantFreq: number } | null>(null)\n  const ignoreParamsWatch = ref(false)\n  const colWidths = reactive({ data: 280, vis: 0, ctrl: 280 })\n\n  return { params, previousMass, staticK, staticReadings, fftResult, ignoreParamsWatch, colWidths }\n}\n\nexport function useSpringExperimentComputed(\n  state: SpringExperimentState,\n  trials: { trials: { value: Record<string, unknown>[] }; trialStats: { value: { k_mean: number | null } } },\n  lab: { sim: { running: boolean; paused: boolean }; measured: { value: Record<string, unknown> | null }; effectiveMass: { value: number }; running: { value: boolean } },\n  layout: { isPanelVisible: (id: string) => boolean; columnOrder: Record<string, string[]> },\n) {\n  const { t } = useI18n()\n  const stepIndex = computed(() =>\n    trials.trials.value.length >= 2 ? 2 : trials.trials.value.length > 0 ? 1 : 0\n  )\n  const tutorType = computed(() => {\n    if (!lab.sim.running) return 'info'\n    if (lab.sim.paused) return 'warn'\n    return 'success'\n  })\n  const tutorMessage = computed(() => {\n    if (!lab.sim.running) return t('experiments.readyToStart')\n    if (lab.sim.paused) return t('experiments.pausedTemporarily')\n    return t('experiments.simulationRunning')\n  })\n\n  const dynamicTrials = computed(() => {\n    return trials.trials.value.map((t: Record<string, unknown>) => {\n      const T = Number(t.T)\n      const tTotal = T * 20\n      return { mass: Number(t.mass), t1: tTotal, t2: tTotal, t3: tTotal, tAvg: tTotal, T, T2: T * T }\n    })\n  })\n  const kDynamic = computed(() =>\n    trials.trials.value.length > 0 ? trials.trialStats.value.k_mean : null\n  )\n\n  const colClasses: Record<string, string> = { data: 'data-col', vis: 'vis-col', ctrl: 'ctrl-col' }\n  const hasVisibleVisPanels = computed(() =>\n    getColumnPanels('vis').some(id => layout.isPanelVisible(id))\n  )\n\n  function getColumnPanels(col: string) {\n    if (col === 'data' || col === 'vis' || col === 'ctrl') return layout.columnOrder[col]\n    return []\n  }\n\n  return {\n    stepIndex, tutorType, tutorMessage, dynamicTrials, kDynamic,\n    colClasses, hasVisibleVisPanels, getColumnPanels,\n  }\n}\n",
+      "start": 1783634641762,
+      "end": 1783634642175,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642175,
+      "end": 1783634642175,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { computed, reactive, ref } from \"vue\";\nimport { useI18n } from \"../../composables/useI18n\";\nexport function useSpringExperimentState() {\n  const params = reactive({\n    mass: 1,\n    k: 50,\n    amplitude: 0.03,\n    damping: 0.5,\n    measureCycles: 5,\n    dampingModel: \"linear\",\n    springMass: 0.15\n  });\n  const previousMass = ref(1);\n  const staticK = ref(null);\n  const staticReadings = ref([]);\n  const fftResult = ref(null);\n  const ignoreParamsWatch = ref(false);\n  const colWidths = reactive({ data: 280, vis: 0, ctrl: 280 });\n  return { params, previousMass, staticK, staticReadings, fftResult, ignoreParamsWatch, colWidths };\n}\nexport function useSpringExperimentComputed(state, trials, lab, layout) {\n  const { t } = useI18n();\n  const stepIndex = computed(\n    () => trials.trials.value.length >= 2 ? 2 : trials.trials.value.length > 0 ? 1 : 0\n  );\n  const tutorType = computed(() => {\n    if (!lab.sim.running) return \"info\";\n    if (lab.sim.paused) return \"warn\";\n    return \"success\";\n  });\n  const tutorMessage = computed(() => {\n    if (!lab.sim.running) return t(\"experiments.readyToStart\");\n    if (lab.sim.paused) return t(\"experiments.pausedTemporarily\");\n    return t(\"experiments.simulationRunning\");\n  });\n  const dynamicTrials = computed(() => {\n    return trials.trials.value.map((t2) => {\n      const T = Number(t2.T);\n      const tTotal = T * 20;\n      return { mass: Number(t2.mass), t1: tTotal, t2: tTotal, t3: tTotal, tAvg: tTotal, T, T2: T * T };\n    });\n  });\n  const kDynamic = computed(\n    () => trials.trials.value.length > 0 ? trials.trialStats.value.k_mean : null\n  );\n  const colClasses = { data: \"data-col\", vis: \"vis-col\", ctrl: \"ctrl-col\" };\n  const hasVisibleVisPanels = computed(\n    () => getColumnPanels(\"vis\").some((id) => layout.isPanelVisible(id))\n  );\n  function getColumnPanels(col) {\n    if (col === \"data\" || col === \"vis\" || col === \"ctrl\") return layout.columnOrder[col];\n    return [];\n  }\n  return {\n    stepIndex,\n    tutorType,\n    tutorMessage,\n    dynamicTrials,\n    kDynamic,\n    colClasses,\n    hasVisibleVisPanels,\n    getColumnPanels\n  };\n}\n",
+      "start": 1783634642175,
+      "end": 1783634642311,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/spring/useSpringExperimentState.ts"
+        ],
+        "sourcesContent": [
+          "import { computed, reactive, ref } from 'vue'\nimport { useI18n } from '../../composables/useI18n'\nimport type { SpringParams } from '../../modules/physics/experiments/spring/useSpringPhysics'\n\nexport interface SpringExperimentState {\n  params: SpringParams\n  previousMass: { value: number }\n  staticK: { value: number | null }\n  staticReadings: { value: Record<string, unknown>[] }\n  fftResult: { value: { freqs: number[]; amplitudes: number[]; dominantFreq: number } | null }\n  ignoreParamsWatch: { value: boolean }\n  colWidths: { data: number; vis: number; ctrl: number }\n}\n\nexport function useSpringExperimentState(): SpringExperimentState {\n  const params = reactive<SpringParams>({\n    mass: 1.0, k: 50, amplitude: 0.03, damping: 0.5, measureCycles: 5,\n    dampingModel: 'linear', springMass: 0.15\n  })\n  const previousMass = ref(1.0)\n  const staticK = ref<number | null>(null)\n  const staticReadings = ref<Record<string, unknown>[]>([])\n  const fftResult = ref<{ freqs: number[]; amplitudes: number[]; dominantFreq: number } | null>(null)\n  const ignoreParamsWatch = ref(false)\n  const colWidths = reactive({ data: 280, vis: 0, ctrl: 280 })\n\n  return { params, previousMass, staticK, staticReadings, fftResult, ignoreParamsWatch, colWidths }\n}\n\nexport function useSpringExperimentComputed(\n  state: SpringExperimentState,\n  trials: { trials: { value: Record<string, unknown>[] }; trialStats: { value: { k_mean: number | null } } },\n  lab: { sim: { running: boolean; paused: boolean }; measured: { value: Record<string, unknown> | null }; effectiveMass: { value: number }; running: { value: boolean } },\n  layout: { isPanelVisible: (id: string) => boolean; columnOrder: Record<string, string[]> },\n) {\n  const { t } = useI18n()\n  const stepIndex = computed(() =>\n    trials.trials.value.length >= 2 ? 2 : trials.trials.value.length > 0 ? 1 : 0\n  )\n  const tutorType = computed(() => {\n    if (!lab.sim.running) return 'info'\n    if (lab.sim.paused) return 'warn'\n    return 'success'\n  })\n  const tutorMessage = computed(() => {\n    if (!lab.sim.running) return t('experiments.readyToStart')\n    if (lab.sim.paused) return t('experiments.pausedTemporarily')\n    return t('experiments.simulationRunning')\n  })\n\n  const dynamicTrials = computed(() => {\n    return trials.trials.value.map((t: Record<string, unknown>) => {\n      const T = Number(t.T)\n      const tTotal = T * 20\n      return { mass: Number(t.mass), t1: tTotal, t2: tTotal, t3: tTotal, tAvg: tTotal, T, T2: T * T }\n    })\n  })\n  const kDynamic = computed(() =>\n    trials.trials.value.length > 0 ? trials.trialStats.value.k_mean : null\n  )\n\n  const colClasses: Record<string, string> = { data: 'data-col', vis: 'vis-col', ctrl: 'ctrl-col' }\n  const hasVisibleVisPanels = computed(() =>\n    getColumnPanels('vis').some(id => layout.isPanelVisible(id))\n  )\n\n  function getColumnPanels(col: string) {\n    if (col === 'data' || col === 'vis' || col === 'ctrl') return layout.columnOrder[col]\n    return []\n  }\n\n  return {\n    stepIndex, tutorType, tutorMessage, dynamicTrials, kDynamic,\n    colClasses, hasVisibleVisPanels, getColumnPanels,\n  }\n}\n"
+        ],
+        "mappings": "AAAA,SAAS,UAAU,UAAU,WAAW;AACxC,SAAS,eAAe;AAajB,gBAAS,2BAAkD;AAChE,QAAM,SAAS,SAAuB;AAAA,IACpC,MAAM;AAAA,IAAK,GAAG;AAAA,IAAI,WAAW;AAAA,IAAM,SAAS;AAAA,IAAK,eAAe;AAAA,IAChE,cAAc;AAAA,IAAU,YAAY;AAAA,EACtC,CAAC;AACD,QAAM,eAAe,IAAI,CAAG;AAC5B,QAAM,UAAU,IAAmB,IAAI;AACvC,QAAM,iBAAiB,IAA+B,CAAC,CAAC;AACxD,QAAM,YAAY,IAA4E,IAAI;AAClG,QAAM,oBAAoB,IAAI,KAAK;AACnC,QAAM,YAAY,SAAS,EAAE,MAAM,KAAK,KAAK,GAAG,MAAM,IAAI,CAAC;AAE3D,SAAO,EAAE,QAAQ,cAAc,SAAS,gBAAgB,WAAW,mBAAmB,UAAU;AAClG;AAEO,gBAAS,4BACd,OACA,QACA,KACA,QACA;AACA,QAAM,EAAE,EAAE,IAAI,QAAQ;AACtB,QAAM,YAAY;AAAA,IAAS,MACzB,OAAO,OAAO,MAAM,UAAU,IAAI,IAAI,OAAO,OAAO,MAAM,SAAS,IAAI,IAAI;AAAA,EAC7E;AACA,QAAM,YAAY,SAAS,MAAM;AAC/B,QAAI,CAAC,IAAI,IAAI,QAAS,QAAO;AAC7B,QAAI,IAAI,IAAI,OAAQ,QAAO;AAC3B,WAAO;AAAA,EACT,CAAC;AACD,QAAM,eAAe,SAAS,MAAM;AAClC,QAAI,CAAC,IAAI,IAAI,QAAS,QAAO,EAAE,0BAA0B;AACzD,QAAI,IAAI,IAAI,OAAQ,QAAO,EAAE,+BAA+B;AAC5D,WAAO,EAAE,+BAA+B;AAAA,EAC1C,CAAC;AAED,QAAM,gBAAgB,SAAS,MAAM;AACnC,WAAO,OAAO,OAAO,MAAM,IAAI,CAACA,OAA+B;AAC7D,YAAM,IAAI,OAAOA,GAAE,CAAC;AACpB,YAAM,SAAS,IAAI;AACnB,aAAO,EAAE,MAAM,OAAOA,GAAE,IAAI,GAAG,IAAI,QAAQ,IAAI,QAAQ,IAAI,QAAQ,MAAM,QAAQ,GAAG,IAAI,IAAI,EAAE;AAAA,IAChG,CAAC;AAAA,EACH,CAAC;AACD,QAAM,WAAW;AAAA,IAAS,MACxB,OAAO,OAAO,MAAM,SAAS,IAAI,OAAO,WAAW,MAAM,SAAS;AAAA,EACpE;AAEA,QAAM,aAAqC,EAAE,MAAM,YAAY,KAAK,WAAW,MAAM,WAAW;AAChG,QAAM,sBAAsB;AAAA,IAAS,MACnC,gBAAgB,KAAK,EAAE,KAAK,QAAM,OAAO,eAAe,EAAE,CAAC;AAAA,EAC7D;AAEA,WAAS,gBAAgB,KAAa;AACpC,QAAI,QAAQ,UAAU,QAAQ,SAAS,QAAQ,OAAQ,QAAO,OAAO,YAAY,GAAG;AACpF,WAAO,CAAC;AAAA,EACV;AAEA,SAAO;AAAA,IACL;AAAA,IAAW;AAAA,IAAW;AAAA,IAAc;AAAA,IAAe;AAAA,IACnD;AAAA,IAAY;AAAA,IAAqB;AAAA,EACnC;AACF;",
+        "names": [
+          "t"
+        ]
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642311,
+      "end": 1783634642311,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642311,
+      "end": 1783634642311,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642311,
+      "end": 1783634642311,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642311,
+      "end": 1783634642311,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642311,
+      "end": 1783634642311,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642311,
+      "end": 1783634642311,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642311,
+      "end": 1783634642311,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642311,
+      "end": 1783634642311,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642311,
+      "end": 1783634642311,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642311,
+      "end": 1783634642311,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642311,
+      "end": 1783634642311,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642311,
+      "end": 1783634642311,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/useNotifications.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { ref, onMounted, onUnmounted } from 'vue';\nimport { getNotifications, getUnreadCount, markAllAsRead } from '../services/notification.service';\nimport type { Notification } from '../services/notification.service';\n\nexport function useNotifications() {\n  const notifications = ref<Notification[]>([]);\n  const unreadCount = ref(0);\n  const loading = ref(false);\n  let intervalId: ReturnType<typeof setInterval> | null = null;\n\n  function isAuthError(err: unknown): boolean {\n    return err instanceof Error && (err.message.includes('401') || err.message.includes('Unauthorized'))\n  }\n\n  async function loadNotifications() {\n    loading.value = true;\n    try {\n      const res = await getNotifications();\n      if (res.success) notifications.value = res.notifications;\n    } catch (err) {\n      if (!isAuthError(err)) console.error('load notifications failed:', err);\n    }\n    loading.value = false;\n  }\n\n  async function refreshUnread() {\n    try {\n      const res = await getUnreadCount();\n      if (res.success) unreadCount.value = res.count;\n    } catch (err) {\n      if (!isAuthError(err)) console.error('refresh unread count failed:', err);\n    }\n  }\n\n  async function markAllRead() {\n    try {\n      await markAllAsRead();\n      notifications.value = notifications.value.map(n => ({ ...n, is_read: true }));\n      unreadCount.value = 0;\n    } catch (err) {\n      console.error('mark all read failed:', err);\n    }\n  }\n\n  function startPolling(intervalMs = 30000) {\n    refreshUnread();\n    loadNotifications();\n    intervalId = setInterval(() => {\n      refreshUnread();\n      loadNotifications();\n    }, intervalMs);\n  }\n\n  function stopPolling() {\n    if (intervalId) {\n      clearInterval(intervalId);\n      intervalId = null;\n    }\n  }\n\n  onMounted(() => {\n    loadNotifications();\n    startPolling();\n  });\n\n  onUnmounted(() => stopPolling());\n\n  return { notifications, unreadCount, loading, loadNotifications, markAllRead };\n}\n",
+      "start": 1783634640353,
+      "end": 1783634640650,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640650,
+      "end": 1783634640650,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { ref, onMounted, onUnmounted } from \"vue\";\nimport { getNotifications, getUnreadCount, markAllAsRead } from \"../services/notification.service\";\nexport function useNotifications() {\n  const notifications = ref([]);\n  const unreadCount = ref(0);\n  const loading = ref(false);\n  let intervalId = null;\n  function isAuthError(err) {\n    return err instanceof Error && (err.message.includes(\"401\") || err.message.includes(\"Unauthorized\"));\n  }\n  async function loadNotifications() {\n    loading.value = true;\n    try {\n      const res = await getNotifications();\n      if (res.success) notifications.value = res.notifications;\n    } catch (err) {\n      if (!isAuthError(err)) console.error(\"load notifications failed:\", err);\n    }\n    loading.value = false;\n  }\n  async function refreshUnread() {\n    try {\n      const res = await getUnreadCount();\n      if (res.success) unreadCount.value = res.count;\n    } catch (err) {\n      if (!isAuthError(err)) console.error(\"refresh unread count failed:\", err);\n    }\n  }\n  async function markAllRead() {\n    try {\n      await markAllAsRead();\n      notifications.value = notifications.value.map((n) => ({ ...n, is_read: true }));\n      unreadCount.value = 0;\n    } catch (err) {\n      console.error(\"mark all read failed:\", err);\n    }\n  }\n  function startPolling(intervalMs = 3e4) {\n    refreshUnread();\n    loadNotifications();\n    intervalId = setInterval(() => {\n      refreshUnread();\n      loadNotifications();\n    }, intervalMs);\n  }\n  function stopPolling() {\n    if (intervalId) {\n      clearInterval(intervalId);\n      intervalId = null;\n    }\n  }\n  onMounted(() => {\n    loadNotifications();\n    startPolling();\n  });\n  onUnmounted(() => stopPolling());\n  return { notifications, unreadCount, loading, loadNotifications, markAllRead };\n}\n",
+      "start": 1783634640650,
+      "end": 1783634640823,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/useNotifications.ts"
+        ],
+        "sourcesContent": [
+          "import { ref, onMounted, onUnmounted } from 'vue';\nimport { getNotifications, getUnreadCount, markAllAsRead } from '../services/notification.service';\nimport type { Notification } from '../services/notification.service';\n\nexport function useNotifications() {\n  const notifications = ref<Notification[]>([]);\n  const unreadCount = ref(0);\n  const loading = ref(false);\n  let intervalId: ReturnType<typeof setInterval> | null = null;\n\n  function isAuthError(err: unknown): boolean {\n    return err instanceof Error && (err.message.includes('401') || err.message.includes('Unauthorized'))\n  }\n\n  async function loadNotifications() {\n    loading.value = true;\n    try {\n      const res = await getNotifications();\n      if (res.success) notifications.value = res.notifications;\n    } catch (err) {\n      if (!isAuthError(err)) console.error('load notifications failed:', err);\n    }\n    loading.value = false;\n  }\n\n  async function refreshUnread() {\n    try {\n      const res = await getUnreadCount();\n      if (res.success) unreadCount.value = res.count;\n    } catch (err) {\n      if (!isAuthError(err)) console.error('refresh unread count failed:', err);\n    }\n  }\n\n  async function markAllRead() {\n    try {\n      await markAllAsRead();\n      notifications.value = notifications.value.map(n => ({ ...n, is_read: true }));\n      unreadCount.value = 0;\n    } catch (err) {\n      console.error('mark all read failed:', err);\n    }\n  }\n\n  function startPolling(intervalMs = 30000) {\n    refreshUnread();\n    loadNotifications();\n    intervalId = setInterval(() => {\n      refreshUnread();\n      loadNotifications();\n    }, intervalMs);\n  }\n\n  function stopPolling() {\n    if (intervalId) {\n      clearInterval(intervalId);\n      intervalId = null;\n    }\n  }\n\n  onMounted(() => {\n    loadNotifications();\n    startPolling();\n  });\n\n  onUnmounted(() => stopPolling());\n\n  return { notifications, unreadCount, loading, loadNotifications, markAllRead };\n}\n"
+        ],
+        "mappings": "AAAA,SAAS,KAAK,WAAW,mBAAmB;AAC5C,SAAS,kBAAkB,gBAAgB,qBAAqB;AAGzD,gBAAS,mBAAmB;AACjC,QAAM,gBAAgB,IAAoB,CAAC,CAAC;AAC5C,QAAM,cAAc,IAAI,CAAC;AACzB,QAAM,UAAU,IAAI,KAAK;AACzB,MAAI,aAAoD;AAExD,WAAS,YAAY,KAAuB;AAC1C,WAAO,eAAe,UAAU,IAAI,QAAQ,SAAS,KAAK,KAAK,IAAI,QAAQ,SAAS,cAAc;AAAA,EACpG;AAEA,iBAAe,oBAAoB;AACjC,YAAQ,QAAQ;AAChB,QAAI;AACF,YAAM,MAAM,MAAM,iBAAiB;AACnC,UAAI,IAAI,QAAS,eAAc,QAAQ,IAAI;AAAA,IAC7C,SAAS,KAAK;AACZ,UAAI,CAAC,YAAY,GAAG,EAAG,SAAQ,MAAM,8BAA8B,GAAG;AAAA,IACxE;AACA,YAAQ,QAAQ;AAAA,EAClB;AAEA,iBAAe,gBAAgB;AAC7B,QAAI;AACF,YAAM,MAAM,MAAM,eAAe;AACjC,UAAI,IAAI,QAAS,aAAY,QAAQ,IAAI;AAAA,IAC3C,SAAS,KAAK;AACZ,UAAI,CAAC,YAAY,GAAG,EAAG,SAAQ,MAAM,gCAAgC,GAAG;AAAA,IAC1E;AAAA,EACF;AAEA,iBAAe,cAAc;AAC3B,QAAI;AACF,YAAM,cAAc;AACpB,oBAAc,QAAQ,cAAc,MAAM,IAAI,QAAM,EAAE,GAAG,GAAG,SAAS,KAAK,EAAE;AAC5E,kBAAY,QAAQ;AAAA,IACtB,SAAS,KAAK;AACZ,cAAQ,MAAM,yBAAyB,GAAG;AAAA,IAC5C;AAAA,EACF;AAEA,WAAS,aAAa,aAAa,KAAO;AACxC,kBAAc;AACd,sBAAkB;AAClB,iBAAa,YAAY,MAAM;AAC7B,oBAAc;AACd,wBAAkB;AAAA,IACpB,GAAG,UAAU;AAAA,EACf;AAEA,WAAS,cAAc;AACrB,QAAI,YAAY;AACd,oBAAc,UAAU;AACxB,mBAAa;AAAA,IACf;AAAA,EACF;AAEA,YAAU,MAAM;AACd,sBAAkB;AAClB,iBAAa;AAAA,EACf,CAAC;AAED,cAAY,MAAM,YAAY,CAAC;AAE/B,SAAO,EAAE,eAAe,aAAa,SAAS,mBAAmB,YAAY;AAC/E;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640823,
+      "end": 1783634640823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640824,
+      "end": 1783634640824,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640824,
+      "end": 1783634640824,
+      "order": "normal"
+    }
+  ]
+}

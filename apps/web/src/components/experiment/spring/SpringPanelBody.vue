@@ -2,8 +2,7 @@
 import SpringDataPanel from './SpringDataPanel.vue'
 import SpringSignalChart from './SpringSignalChart.vue'
 import SpringParamPanel from './SpringParamPanel.vue'
-import SpringGuidePanel from './SpringGuidePanel.vue'
-import type { Trial } from '../../../composables/spring/useSpringTrials'
+import type { SpringTrial } from '../../../composables/spring/useSpringTrials'
 import type { SpringParams } from '../../../modules/physics/experiments/spring/useSpringPhysics'
 
 interface Measured {
@@ -17,7 +16,7 @@ interface SimState {
 
 const props = defineProps<{
   id: string
-  trials: Trial[]
+  trials: SpringTrial[]
   params: SpringParams
   sim: SimState
   measured: Measured
@@ -25,7 +24,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'update:trials', val: Trial[]): void
+  (e: 'update:trials', val: SpringTrial[]): void
   (e: 'update:params', val: SpringParams): void
   (e: 'remove', id: number): void
   (e: 'clear'): void
@@ -51,17 +50,5 @@ const emit = defineEmits<{
     v-else-if="id === 'params'"
     :model-value="params"
     @update:model-value="emit('update:params', $event)"
-  />
-  <SpringGuidePanel
-    v-else-if="id === 'guide'"
-    :mass="params.mass"
-    :k="params.k"
-    :amplitude="params.amplitude"
-    :damping="params.damping"
-    :running="sim.running"
-    :measured-t="measured.T"
-    :measured-f="measured.f"
-    :measured-omega="measured.omega"
-    :measured-k-calc="measured.kCalc"
   />
 </template>

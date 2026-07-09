@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/usePhMeter.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import type { LabItem } from './useChemistryTools';\nimport { items, isContainer, getLiquid, phProbeTipMap } from './useChemistryLab';\n\nexport function phColor(ph: number | null): string {\n  if (ph === null) return '#94a3b8';\n  if (ph < 3) return '#ef4444';\n  if (ph < 7) return '#f59e0b';\n  if (ph === 7) return '#22c55e';\n  if (ph < 11) return '#3b82f6';\n  return '#8b5cf6';\n}\n\nexport function getPhReading(phMeter: LabItem): number | null {\n  const tip = phProbeTipMap[phMeter.uid];\n  if (!tip) return null;\n  const target = items.value.find((i: LabItem) => {\n    if (i.uid === phMeter.uid || !isContainer(i.id)) return false;\n    const dx = Math.abs((i.x + 40) - tip.x);\n    const dy = Math.abs((i.y + 10) - tip.y);\n    return dx < 60 && dy < 50;\n  });\n  if (!target) return null;\n  const liq = getLiquid(target.uid);\n  if (liq.ph !== null && liq.ph !== undefined) return liq.ph;\n  return 7.0;\n}\n",
+      "start": 1783634640048,
+      "end": 1783634640498,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640498,
+      "end": 1783634640498,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { items, isContainer, getLiquid, phProbeTipMap } from \"./useChemistryLab\";\nexport function phColor(ph) {\n  if (ph === null) return \"#94a3b8\";\n  if (ph < 3) return \"#ef4444\";\n  if (ph < 7) return \"#f59e0b\";\n  if (ph === 7) return \"#22c55e\";\n  if (ph < 11) return \"#3b82f6\";\n  return \"#8b5cf6\";\n}\nexport function getPhReading(phMeter) {\n  const tip = phProbeTipMap[phMeter.uid];\n  if (!tip) return null;\n  const target = items.value.find((i) => {\n    if (i.uid === phMeter.uid || !isContainer(i.id)) return false;\n    const dx = Math.abs(i.x + 40 - tip.x);\n    const dy = Math.abs(i.y + 10 - tip.y);\n    return dx < 60 && dy < 50;\n  });\n  if (!target) return null;\n  const liq = getLiquid(target.uid);\n  if (liq.ph !== null && liq.ph !== void 0) return liq.ph;\n  return 7;\n}\n",
+      "start": 1783634640498,
+      "end": 1783634640664,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/usePhMeter.ts"
+        ],
+        "sourcesContent": [
+          "import type { LabItem } from './useChemistryTools';\nimport { items, isContainer, getLiquid, phProbeTipMap } from './useChemistryLab';\n\nexport function phColor(ph: number | null): string {\n  if (ph === null) return '#94a3b8';\n  if (ph < 3) return '#ef4444';\n  if (ph < 7) return '#f59e0b';\n  if (ph === 7) return '#22c55e';\n  if (ph < 11) return '#3b82f6';\n  return '#8b5cf6';\n}\n\nexport function getPhReading(phMeter: LabItem): number | null {\n  const tip = phProbeTipMap[phMeter.uid];\n  if (!tip) return null;\n  const target = items.value.find((i: LabItem) => {\n    if (i.uid === phMeter.uid || !isContainer(i.id)) return false;\n    const dx = Math.abs((i.x + 40) - tip.x);\n    const dy = Math.abs((i.y + 10) - tip.y);\n    return dx < 60 && dy < 50;\n  });\n  if (!target) return null;\n  const liq = getLiquid(target.uid);\n  if (liq.ph !== null && liq.ph !== undefined) return liq.ph;\n  return 7.0;\n}\n"
+        ],
+        "mappings": "AACA,SAAS,OAAO,aAAa,WAAW,qBAAqB;AAEtD,gBAAS,QAAQ,IAA2B;AACjD,MAAI,OAAO,KAAM,QAAO;AACxB,MAAI,KAAK,EAAG,QAAO;AACnB,MAAI,KAAK,EAAG,QAAO;AACnB,MAAI,OAAO,EAAG,QAAO;AACrB,MAAI,KAAK,GAAI,QAAO;AACpB,SAAO;AACT;AAEO,gBAAS,aAAa,SAAiC;AAC5D,QAAM,MAAM,cAAc,QAAQ,GAAG;AACrC,MAAI,CAAC,IAAK,QAAO;AACjB,QAAM,SAAS,MAAM,MAAM,KAAK,CAAC,MAAe;AAC9C,QAAI,EAAE,QAAQ,QAAQ,OAAO,CAAC,YAAY,EAAE,EAAE,EAAG,QAAO;AACxD,UAAM,KAAK,KAAK,IAAK,EAAE,IAAI,KAAM,IAAI,CAAC;AACtC,UAAM,KAAK,KAAK,IAAK,EAAE,IAAI,KAAM,IAAI,CAAC;AACtC,WAAO,KAAK,MAAM,KAAK;AAAA,EACzB,CAAC;AACD,MAAI,CAAC,OAAQ,QAAO;AACpB,QAAM,MAAM,UAAU,OAAO,GAAG;AAChC,MAAI,IAAI,OAAO,QAAQ,IAAI,OAAO,OAAW,QAAO,IAAI;AACxD,SAAO;AACT;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640664,
+      "end": 1783634640664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640664,
+      "end": 1783634640665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640665,
+      "end": 1783634640665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640665,
+      "end": 1783634640665,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640665,
+      "end": 1783634640665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640667,
+      "end": 1783634640667,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640668,
+      "end": 1783634640668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640669,
+      "end": 1783634640669,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640669,
+      "end": 1783634640669,
+      "order": "normal"
+    }
+  ]
+}

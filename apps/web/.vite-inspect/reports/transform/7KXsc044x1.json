@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lever/LeverControlBar.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\nconst { t } = useI18n()\nconst props = defineProps<{\n  canUndo?: boolean\n  canRedo?: boolean\n}>()\nconst emit = defineEmits<{\n  (e: 'reset'): void\n  (e: 'recordTrial'): void\n  (e: 'clearTrials'): void\n  (e: 'exportCsv'): void\n  (e: 'undo'): void\n  (e: 'redo'): void\n}>()\nfunction onClear() { if (confirm(t('experiments.confirmClearAll'))) emit('clearTrials') }\n</script>\n<template>\n  <div class=\"control-bar\">\n    <button class=\"btn-secondary\" @click=\"$emit('reset')\">&#x1F504; {{ t('experiments.resetBtn') }}</button>\n    <button class=\"btn-secondary\" @click=\"$emit('recordTrial')\">&#x1F4CC; {{ t('experiments.recordBtn') }}</button>\n    <button class=\"btn-undo\" :disabled=\"!canUndo\" @click=\"$emit('undo')\" :title=\"t('experiments.undoBtn')\">&#x21A9; {{ t('experiments.undoBtn') }}</button>\n    <button class=\"btn-undo\" :disabled=\"!canRedo\" @click=\"$emit('redo')\" :title=\"t('experiments.redoBtn')\">&#x21AA; {{ t('experiments.redoBtn') }}</button>\n    <button class=\"btn-undo\" @click=\"onClear\">&#x1F5D1; {{ t('experiments.clearAll') }}</button>\n    <button class=\"btn-undo\" @click=\"$emit('exportCsv')\">&#x1F4BE; {{ t('experiments.csvExport') }}</button>\n  </div>\n</template>\n<style scoped>\n.control-bar { display:flex; justify-content:center; gap:.3rem; padding:.3rem; background:#1E2530; border-radius:6px; border:1px solid #2D3645; margin-top:.15rem; flex-shrink:0; }\n.control-bar button { font-size:.72rem; padding:.3rem .6rem; border-radius:4px; cursor:pointer; font-weight:600; transition:.2s; }\n.btn-secondary { background:#252D3A; color:#8B95A5; border:1px solid #2D3645; }\n.btn-secondary:hover { background:#2D3645; color:#D1D7E0; }\n.btn-undo { background:#252D3A; color:#8B95A5; border:1px solid #2D3645; }\n.btn-undo:disabled { opacity:.4; cursor:not-allowed; }\n</style>\n",
+      "start": 1783634640983,
+      "end": 1783634641444,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641444,
+      "end": 1783634641444,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641444,
+      "end": 1783634641444,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641444,
+      "end": 1783634641444,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641444,
+      "end": 1783634641444,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lever/LeverControlBar.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lever/LeverControlBar.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lever/LeverControlBar.vue?vue&type=style&index=0&scoped=410a106d&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-410a106d\"]]);\n",
+      "start": 1783634641444,
+      "end": 1783634641639,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641639,
+      "end": 1783634641639,
+      "order": "normal"
+    }
+  ]
+}

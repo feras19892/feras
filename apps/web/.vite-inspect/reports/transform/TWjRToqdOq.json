@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemChartCanvas.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, watch, onMounted } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\nconst { t } = useI18n();\n\ninterface Point { x: number; y: number }\nconst props = defineProps<{\n  data: Point[];\n  xLabel: string;\n  yLabel: string;\n  type: 'scatter' | 'line';\n}>();\n\nconst canvasRef = ref<HTMLCanvasElement | null>(null);\n\nfunction draw() {\n  const canvas = canvasRef.value;\n  if (!canvas) return;\n  const ctx = canvas.getContext('2d');\n  if (!ctx) return;\n\n  const w = canvas.width;\n  const h = canvas.height;\n  const pad = { top: 30, right: 30, bottom: 50, left: 60 };\n  const gw = w - pad.left - pad.right;\n  const gh = h - pad.top - pad.bottom;\n\n  ctx.clearRect(0, 0, w, h);\n  if (!props.data.length) {\n    ctx.fillStyle = '#94a3b8';\n    ctx.font = '14px sans-serif';\n    ctx.textAlign = 'center';\n    ctx.fillText(t('chemistryLab.noData'), w / 2, h / 2);\n    return;\n  }\n\n  const xs = props.data.map(p => p.x);\n  const ys = props.data.map(p => p.y);\n  const minX = Math.min(...xs);\n  const maxX = Math.max(...xs);\n  const minY = Math.min(...ys);\n  const maxY = Math.max(...ys);\n  const dx = maxX - minX || 1;\n  const dy = maxY - minY || 1;\n\n  function tx(x: number) { return pad.left + ((x - minX) / dx) * gw; }\n  function ty(y: number) { return pad.top + gh - ((y - minY) / dy) * gh; }\n\n  // Grid\n  ctx.strokeStyle = 'rgba(255,255,255,0.05)';\n  ctx.lineWidth = 1;\n  for (let i = 0; i <= 5; i++) {\n    const gx = pad.left + (gw / 5) * i;\n    const gy = pad.top + (gh / 5) * i;\n    ctx.beginPath(); ctx.moveTo(gx, pad.top); ctx.lineTo(gx, pad.top + gh); ctx.stroke();\n    ctx.beginPath(); ctx.moveTo(pad.left, gy); ctx.lineTo(pad.left + gw, gy); ctx.stroke();\n  }\n\n  // Axes\n  ctx.strokeStyle = 'rgba(255,255,255,0.3)';\n  ctx.lineWidth = 1.5;\n  ctx.beginPath(); ctx.moveTo(pad.left, pad.top); ctx.lineTo(pad.left, pad.top + gh); ctx.lineTo(pad.left + gw, pad.top + gh); ctx.stroke();\n\n  // Labels\n  ctx.fillStyle = '#94a3b8';\n  ctx.font = '12px sans-serif';\n  ctx.textAlign = 'center';\n  ctx.fillText(props.xLabel, pad.left + gw / 2, h - 10);\n  ctx.save();\n  ctx.translate(15, pad.top + gh / 2);\n  ctx.rotate(-Math.PI / 2);\n  ctx.fillText(props.yLabel, 0, 0);\n  ctx.restore();\n\n  // Ticks\n  ctx.fillStyle = '#64748b';\n  ctx.font = '10px sans-serif';\n  for (let i = 0; i <= 5; i++) {\n    const xv = minX + (dx / 5) * i;\n    const yv = minY + (dy / 5) * i;\n    ctx.textAlign = 'center';\n    ctx.fillText(xv.toFixed(1), pad.left + (gw / 5) * i, pad.top + gh + 15);\n    ctx.textAlign = 'right';\n    ctx.fillText(yv.toFixed(1), pad.left - 8, pad.top + gh - (gh / 5) * i + 4);\n  }\n\n  // Data\n  if (props.type === 'line' && props.data.length > 1) {\n    ctx.strokeStyle = '#06b6d4';\n    ctx.lineWidth = 2;\n    ctx.beginPath();\n    ctx.moveTo(tx(props.data[0].x), ty(props.data[0].y));\n    for (let i = 1; i < props.data.length; i++) ctx.lineTo(tx(props.data[i].x), ty(props.data[i].y));\n    ctx.stroke();\n  }\n\n  for (const p of props.data) {\n    ctx.beginPath();\n    ctx.arc(tx(p.x), ty(p.y), 4, 0, Math.PI * 2);\n    ctx.fillStyle = '#06b6d4';\n    ctx.fill();\n    ctx.strokeStyle = '#fff';\n    ctx.lineWidth = 1;\n    ctx.stroke();\n  }\n}\n\nwatch(() => props.data, draw, { deep: true });\nonMounted(draw);\n\ndefineExpose({ getCanvas: () => canvasRef.value, draw });\n</script>\n\n<template>\n  <canvas ref=\"canvasRef\" width=\"700\" height=\"400\" class=\"chart-canvas\" />\n</template>\n\n<style scoped>\n.chart-canvas { width: 100%; height: 100%; background: rgba(255,255,255,0.02); border-radius: 0.4rem; }\n</style>\n",
+      "start": 1783634640283,
+      "end": 1783634640563,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640563,
+      "end": 1783634640563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640563,
+      "end": 1783634640563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640563,
+      "end": 1783634640563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640563,
+      "end": 1783634640563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemChartCanvas.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemChartCanvas.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemChartCanvas.vue?vue&type=style&index=0&scoped=69fb8f52&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-69fb8f52\"]]);\n",
+      "start": 1783634640563,
+      "end": 1783634640819,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640819,
+      "end": 1783634640819,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640819,
+      "end": 1783634640819,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640819,
+      "end": 1783634640819,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640819,
+      "end": 1783634640819,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640819,
+      "end": 1783634640819,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640819,
+      "end": 1783634640819,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640819,
+      "end": 1783634640819,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640819,
+      "end": 1783634640819,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640819,
+      "end": 1783634640819,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640819,
+      "end": 1783634640819,
+      "order": "normal"
+    }
+  ]
+}

@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { createReportSchema, gradeReportSchema, addCommentSchema } from './schemas.js';
 import * as svc from './services.js';
-import { authMiddleware } from '../../shared/middleware/auth.js';
+import { authMiddleware } from '../auth/middleware.js';
 import type { User } from '@my-modern-app/shared-types';
 
 type Variables = { user: User };
@@ -20,6 +20,7 @@ app.post('/', zValidator('json', createReportSchema), async (c) => {
     class_id: body.class_id,
     experiment_type: body.experiment_type,
     experiment_name: body.experiment_name,
+    experiment_id: body.experiment_id,
     readings: body.readings,
     params: body.params,
     student_info: body.student_info,
@@ -44,6 +45,7 @@ app.post('/:id/resubmit', zValidator('json', createReportSchema), async (c) => {
     class_id: body.class_id,
     experiment_type: body.experiment_type,
     experiment_name: body.experiment_name,
+    experiment_id: body.experiment_id,
     readings: body.readings,
     params: body.params,
     student_info: body.student_info,

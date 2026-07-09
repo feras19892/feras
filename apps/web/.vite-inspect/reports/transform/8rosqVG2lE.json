@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/RCChart.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nimport { ref, watch, onMounted } from 'vue'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'RCChart',\n  props: {\n    running: { type: Boolean },\n    rcHistory: {}\n  },\n  setup(__props: any) {\n\nconst props = __props\n\nconst rcChartRef = ref<HTMLCanvasElement | null>(null)\n\nfunction drawRCChart() {\n  const canvas = rcChartRef.value\n  if (!canvas || !props.rcHistory) return\n  const ctx = canvas.getContext('2d')\n  if (!ctx) return\n  const w = canvas.width\n  const h = canvas.height\n  ctx.fillStyle = '#0d1117'\n  ctx.fillRect(0, 0, w, h)\n\n  ctx.strokeStyle = '#1e2530'\n  ctx.lineWidth = 1\n  for (let i = 0; i <= 4; i++) {\n    const y = (h / 4) * i\n    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke()\n  }\n\n  const hist = props.rcHistory\n  if (hist.length < 2) return\n\n  const tMax = hist[hist.length - 1].t\n  const tMin = hist[0].t\n  const vMax = Math.max(...hist.map(p => p.V), 0.1)\n\n  ctx.strokeStyle = '#fbbf24'\n  ctx.lineWidth = 2\n  ctx.beginPath()\n  hist.forEach((p, i) => {\n    const x = ((p.t - tMin) / (tMax - tMin || 1)) * w\n    const y = h - (p.V / vMax) * (h - 10) - 5\n    if (i === 0) ctx.moveTo(x, y)\n    else ctx.lineTo(x, y)\n  })\n  ctx.stroke()\n\n  const iMax = Math.max(...hist.map(p => Math.abs(p.I)), 0.0001)\n  ctx.strokeStyle = '#4ade80'\n  ctx.lineWidth = 1.5\n  ctx.beginPath()\n  hist.forEach((p, i) => {\n    const x = ((p.t - tMin) / (tMax - tMin || 1)) * w\n    const y = h - (Math.abs(p.I) / iMax) * (h - 10) - 5\n    if (i === 0) ctx.moveTo(x, y)\n    else ctx.lineTo(x, y)\n  })\n  ctx.stroke()\n\n  ctx.fillStyle = '#fbbf24'\n  ctx.font = '10px sans-serif'\n  ctx.fillText('Vc', 5, 12)\n  ctx.fillStyle = '#4ade80'\n  ctx.fillText('I', 25, 12)\n}\n\nwatch(() => props.rcHistory, () => drawRCChart(), { deep: true })\nonMounted(() => drawRCChart())\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"canvas\", {\n    ref_key: \"rcChartRef\",\n    ref: rcChartRef,\n    class: \"rc-chart\",\n    width: \"280\",\n    height: \"120\"\n  }, null, 512))\n}\n}\n\n})",
+      "start": 1783634643222,
+      "end": 1783634643222
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634643222,
+      "end": 1783634643222,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nimport { ref, watch, onMounted } from \"vue\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"RCChart\",\n  props: {\n    running: { type: Boolean },\n    rcHistory: {}\n  },\n  setup(__props) {\n    const props = __props;\n    const rcChartRef = ref(null);\n    function drawRCChart() {\n      const canvas = rcChartRef.value;\n      if (!canvas || !props.rcHistory) return;\n      const ctx = canvas.getContext(\"2d\");\n      if (!ctx) return;\n      const w = canvas.width;\n      const h = canvas.height;\n      ctx.fillStyle = \"#0d1117\";\n      ctx.fillRect(0, 0, w, h);\n      ctx.strokeStyle = \"#1e2530\";\n      ctx.lineWidth = 1;\n      for (let i = 0; i <= 4; i++) {\n        const y = h / 4 * i;\n        ctx.beginPath();\n        ctx.moveTo(0, y);\n        ctx.lineTo(w, y);\n        ctx.stroke();\n      }\n      const hist = props.rcHistory;\n      if (hist.length < 2) return;\n      const tMax = hist[hist.length - 1].t;\n      const tMin = hist[0].t;\n      const vMax = Math.max(...hist.map((p) => p.V), 0.1);\n      ctx.strokeStyle = \"#fbbf24\";\n      ctx.lineWidth = 2;\n      ctx.beginPath();\n      hist.forEach((p, i) => {\n        const x = (p.t - tMin) / (tMax - tMin || 1) * w;\n        const y = h - p.V / vMax * (h - 10) - 5;\n        if (i === 0) ctx.moveTo(x, y);\n        else ctx.lineTo(x, y);\n      });\n      ctx.stroke();\n      const iMax = Math.max(...hist.map((p) => Math.abs(p.I)), 1e-4);\n      ctx.strokeStyle = \"#4ade80\";\n      ctx.lineWidth = 1.5;\n      ctx.beginPath();\n      hist.forEach((p, i) => {\n        const x = (p.t - tMin) / (tMax - tMin || 1) * w;\n        const y = h - Math.abs(p.I) / iMax * (h - 10) - 5;\n        if (i === 0) ctx.moveTo(x, y);\n        else ctx.lineTo(x, y);\n      });\n      ctx.stroke();\n      ctx.fillStyle = \"#fbbf24\";\n      ctx.font = \"10px sans-serif\";\n      ctx.fillText(\"Vc\", 5, 12);\n      ctx.fillStyle = \"#4ade80\";\n      ctx.fillText(\"I\", 25, 12);\n    }\n    watch(() => props.rcHistory, () => drawRCChart(), { deep: true });\n    onMounted(() => drawRCChart());\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"canvas\", {\n        ref_key: \"rcChartRef\",\n        ref: rcChartRef,\n        class: \"rc-chart\",\n        width: \"280\",\n        height: \"120\"\n      }, null, 512);\n    };\n  }\n});\n",
+      "start": 1783634643222,
+      "end": 1783634643225,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/RCChart.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nimport { ref, watch, onMounted } from 'vue'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'RCChart',\n  props: {\n    running: { type: Boolean },\n    rcHistory: {}\n  },\n  setup(__props: any) {\n\nconst props = __props\n\nconst rcChartRef = ref<HTMLCanvasElement | null>(null)\n\nfunction drawRCChart() {\n  const canvas = rcChartRef.value\n  if (!canvas || !props.rcHistory) return\n  const ctx = canvas.getContext('2d')\n  if (!ctx) return\n  const w = canvas.width\n  const h = canvas.height\n  ctx.fillStyle = '#0d1117'\n  ctx.fillRect(0, 0, w, h)\n\n  ctx.strokeStyle = '#1e2530'\n  ctx.lineWidth = 1\n  for (let i = 0; i <= 4; i++) {\n    const y = (h / 4) * i\n    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke()\n  }\n\n  const hist = props.rcHistory\n  if (hist.length < 2) return\n\n  const tMax = hist[hist.length - 1].t\n  const tMin = hist[0].t\n  const vMax = Math.max(...hist.map(p => p.V), 0.1)\n\n  ctx.strokeStyle = '#fbbf24'\n  ctx.lineWidth = 2\n  ctx.beginPath()\n  hist.forEach((p, i) => {\n    const x = ((p.t - tMin) / (tMax - tMin || 1)) * w\n    const y = h - (p.V / vMax) * (h - 10) - 5\n    if (i === 0) ctx.moveTo(x, y)\n    else ctx.lineTo(x, y)\n  })\n  ctx.stroke()\n\n  const iMax = Math.max(...hist.map(p => Math.abs(p.I)), 0.0001)\n  ctx.strokeStyle = '#4ade80'\n  ctx.lineWidth = 1.5\n  ctx.beginPath()\n  hist.forEach((p, i) => {\n    const x = ((p.t - tMin) / (tMax - tMin || 1)) * w\n    const y = h - (Math.abs(p.I) / iMax) * (h - 10) - 5\n    if (i === 0) ctx.moveTo(x, y)\n    else ctx.lineTo(x, y)\n  })\n  ctx.stroke()\n\n  ctx.fillStyle = '#fbbf24'\n  ctx.font = '10px sans-serif'\n  ctx.fillText('Vc', 5, 12)\n  ctx.fillStyle = '#4ade80'\n  ctx.fillText('I', 25, 12)\n}\n\nwatch(() => props.rcHistory, () => drawRCChart(), { deep: true })\nonMounted(() => drawRCChart())\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"canvas\", {\n    ref_key: \"rcChartRef\",\n    ref: rcChartRef,\n    class: \"rc-chart\",\n    width: \"280\",\n    height: \"120\"\n  }, null, 512))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,aAAa,YAAY,sBAAsB,2BAA2B;AAEnF,SAAS,KAAK,OAAO,iBAAiB;AAGtC,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,SAAS,EAAE,MAAM,QAAQ;AAAA,IACzB,WAAW,CAAC;AAAA,EACd;AAAA,EACA,MAAM,SAAc;AAEtB,UAAM,QAAQ;AAEd,UAAM,aAAa,IAA8B,IAAI;AAErD,aAAS,cAAc;AACrB,YAAM,SAAS,WAAW;AAC1B,UAAI,CAAC,UAAU,CAAC,MAAM,UAAW;AACjC,YAAM,MAAM,OAAO,WAAW,IAAI;AAClC,UAAI,CAAC,IAAK;AACV,YAAM,IAAI,OAAO;AACjB,YAAM,IAAI,OAAO;AACjB,UAAI,YAAY;AAChB,UAAI,SAAS,GAAG,GAAG,GAAG,CAAC;AAEvB,UAAI,cAAc;AAClB,UAAI,YAAY;AAChB,eAAS,IAAI,GAAG,KAAK,GAAG,KAAK;AAC3B,cAAM,IAAK,IAAI,IAAK;AACpB,YAAI,UAAU;AAAG,YAAI,OAAO,GAAG,CAAC;AAAG,YAAI,OAAO,GAAG,CAAC;AAAG,YAAI,OAAO;AAAA,MAClE;AAEA,YAAM,OAAO,MAAM;AACnB,UAAI,KAAK,SAAS,EAAG;AAErB,YAAM,OAAO,KAAK,KAAK,SAAS,CAAC,EAAE;AACnC,YAAM,OAAO,KAAK,CAAC,EAAE;AACrB,YAAM,OAAO,KAAK,IAAI,GAAG,KAAK,IAAI,OAAK,EAAE,CAAC,GAAG,GAAG;AAEhD,UAAI,cAAc;AAClB,UAAI,YAAY;AAChB,UAAI,UAAU;AACd,WAAK,QAAQ,CAAC,GAAG,MAAM;AACrB,cAAM,KAAM,EAAE,IAAI,SAAS,OAAO,QAAQ,KAAM;AAChD,cAAM,IAAI,IAAK,EAAE,IAAI,QAAS,IAAI,MAAM;AACxC,YAAI,MAAM,EAAG,KAAI,OAAO,GAAG,CAAC;AAAA,YACvB,KAAI,OAAO,GAAG,CAAC;AAAA,MACtB,CAAC;AACD,UAAI,OAAO;AAEX,YAAM,OAAO,KAAK,IAAI,GAAG,KAAK,IAAI,OAAK,KAAK,IAAI,EAAE,CAAC,CAAC,GAAG,IAAM;AAC7D,UAAI,cAAc;AAClB,UAAI,YAAY;AAChB,UAAI,UAAU;AACd,WAAK,QAAQ,CAAC,GAAG,MAAM;AACrB,cAAM,KAAM,EAAE,IAAI,SAAS,OAAO,QAAQ,KAAM;AAChD,cAAM,IAAI,IAAK,KAAK,IAAI,EAAE,CAAC,IAAI,QAAS,IAAI,MAAM;AAClD,YAAI,MAAM,EAAG,KAAI,OAAO,GAAG,CAAC;AAAA,YACvB,KAAI,OAAO,GAAG,CAAC;AAAA,MACtB,CAAC;AACD,UAAI,OAAO;AAEX,UAAI,YAAY;AAChB,UAAI,OAAO;AACX,UAAI,SAAS,MAAM,GAAG,EAAE;AACxB,UAAI,YAAY;AAChB,UAAI,SAAS,KAAK,IAAI,EAAE;AAAA,IAC1B;AAEA,UAAM,MAAM,MAAM,WAAW,MAAM,YAAY,GAAG,EAAE,MAAM,KAAK,CAAC;AAChE,cAAU,MAAM,YAAY,CAAC;AAE7B,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,UAAU;AAAA,QAClD,SAAS;AAAA,QACT,KAAK;AAAA,QACL,OAAO;AAAA,QACP,OAAO;AAAA,QACP,QAAQ;AAAA,MACV,GAAG,MAAM,GAAG;AAAA,IACd;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634643225,
+      "end": 1783634643225,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634643225,
+      "end": 1783634643225,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634643225,
+      "end": 1783634643225,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634643225,
+      "end": 1783634643225,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634643225,
+      "end": 1783634643225,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634643225,
+      "end": 1783634643225,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634643225,
+      "end": 1783634643225,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634643225,
+      "end": 1783634643225,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634643225,
+      "end": 1783634643225,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634643225,
+      "end": 1783634643225,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634643225,
+      "end": 1783634643225,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634643225,
+      "end": 1783634643225,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634643225,
+      "end": 1783634643225,
+      "order": "normal"
+    }
+  ]
+}

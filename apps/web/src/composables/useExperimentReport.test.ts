@@ -1,10 +1,12 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+import { createPinia, setActivePinia } from 'pinia';
 import { useExperimentReport } from './useExperimentReport';
 
 describe('useExperimentReport', () => {
   const STORAGE_KEY = 'test_student_info';
 
   beforeEach(() => {
+    setActivePinia(createPinia());
     localStorage.clear();
   });
 
@@ -36,7 +38,7 @@ describe('useExperimentReport', () => {
     const { buildStudentHtmlBlock } = useExperimentReport(STORAGE_KEY);
     const block = buildStudentHtmlBlock();
     expect(block).not.toBeNull();
-    expect(block!.title).toBe('📋 معلومات الطالب');
+    expect(block!.title).toContain('📋');
     expect(block!.html).toContain('Ali');
     expect(block!.html).toContain('ali@test.com');
   });

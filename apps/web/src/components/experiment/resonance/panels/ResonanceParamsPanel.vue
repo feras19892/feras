@@ -1,9 +1,7 @@
-<script setup lang="ts">
-import { useI18n } from '../../../../composables/useI18n'
-const { t } = useI18n()
-interface Props { params: { stringLength: number; tension: number; harmonic: number } }
+﻿<script setup lang="ts">
+interface Props { params: { stringLength: number; tension: number; harmonic: number; damping: number } }
 const props = defineProps<Props>()
-const emit = defineEmits<{ (e: 'update:params', p: { stringLength: number; tension: number; harmonic: number }): void }>()
+const emit = defineEmits<{ (e: 'update:params', p: { stringLength: number; tension: number; harmonic: number; damping: number }): void }>()
 function set(key: string, val: number) { emit('update:params', { ...props.params, [key]: val }) }
 </script>
 
@@ -21,6 +19,10 @@ function set(key: string, val: number) { emit('update:params', { ...props.params
       <div class="param-header"><span class="param-label">n - Harmonic</span><span class="param-val green">{{ params.harmonic }}</span></div>
       <input class="slider" type="range" min="1" max="10" step="1" :value="params.harmonic" @input="set('harmonic', Number(($event.target as HTMLInputElement).value))" />
     </div>
+    <div class="param-row">
+      <div class="param-header"><span class="param-label">gamma - Damping</span><span class="param-val red">{{ params.damping.toFixed(2) }}</span></div>
+      <input class="slider" type="range" min="0" max="2" step="0.01" :value="params.damping" @input="set('damping', Number(($event.target as HTMLInputElement).value))" />
+    </div>
   </div>
 </template>
 
@@ -30,5 +32,6 @@ function set(key: string, val: number) { emit('update:params', { ...props.params
 .param-header { display: flex; justify-content: space-between; align-items: center; }
 .param-label { font-size: .75rem; color: #8B95A5; }
 .param-val { font-family: monospace; color: #67e8f9; font-size: .8rem; font-weight: 700; }
+.red { color: #f87171; }
 .slider { width: 100%; accent-color: #67e8f9; height: 3px; }
 </style>

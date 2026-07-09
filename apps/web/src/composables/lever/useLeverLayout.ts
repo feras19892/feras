@@ -11,14 +11,14 @@ const defaultPanelColumn: Record<PanelId, ColumnId> = {
 }
 
 const defaultColumnOrder: Record<ColumnId, PanelId[]> = {
-  data: ['table', 'signal'], vis: [], ctrl: ['equations', 'guide', 'report'],
+  data: ['table', 'signal'], vis: [], ctrl: [],
 }
 
 const allPanelIds: PanelId[] = ['table', 'signal', 'equations', 'guide', 'report']
 
 export function useLeverLayout() {
   const { t } = useI18n()
-  const panels = reactive<Record<PanelId, boolean>>({ table: true, signal: true, equations: true, guide: true, report: true })
+  const panels = reactive<Record<PanelId, boolean>>({ table: true, signal: true, equations: false, guide: false, report: false })
   const maximized = reactive<Record<PanelId, boolean>>({ table: false, signal: false, equations: false, guide: false, report: false })
   const panelColumn = reactive<Record<PanelId, ColumnId>>({ ...defaultPanelColumn })
   const columnOrder = reactive<Record<ColumnId, PanelId[]>>({ data: [...defaultColumnOrder.data], vis: [...defaultColumnOrder.vis], ctrl: [...defaultColumnOrder.ctrl] })
@@ -28,7 +28,7 @@ export function useLeverLayout() {
   function showAllPanels() { allPanelIds.forEach(k => { panels[k] = true; maximized[k] = false }); resetLayout() }
   function maximizePanel(key: string) { if (allPanelIds.includes(key as PanelId)) maximized[key as PanelId] = !maximized[key as PanelId] }
 
-  function persistLayout() { try { localStorage.setItem(layoutStorageKey, JSON.stringify({ panelColumn, columnOrder })) } catch {} }
+  function persistLayout() { try { localStorage.setItem(layoutStorageKey, JSON.stringify({ panelColumn, columnOrder })) } catch { /* storage unavailable */ } }
 
   function normalizeLayout() {
     for (const id of allPanelIds) { const col = panelColumn[id]; if (col !== 'data' && col !== 'vis' && col !== 'ctrl') panelColumn[id] = 'data' }
@@ -50,7 +50,7 @@ export function useLeverLayout() {
       if (p.panelColumn) { for (const k of allPanelIds) { const v = p.panelColumn[k]; if (v === 'data' || v === 'vis' || v === 'ctrl') panelColumn[k] = v } }
       if (p.columnOrder) { for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) { const arr = p.columnOrder[col]; if (Array.isArray(arr)) columnOrder[col] = arr.filter((x: PanelId) => allPanelIds.includes(x)) as PanelId[] } }
       normalizeLayout()
-    } catch {}
+    } catch { /* storage unavailable */ }
   }
 
   function resetLayout() {

@@ -1,43 +1,132 @@
 <script setup lang="ts">
 import { useI18n } from '../../../composables/useI18n'
 
-interface Props { open: boolean }
-defineProps<Props>()
 const { t } = useI18n()
+defineProps<{ open: boolean }>()
 const emit = defineEmits<{ (e: 'close'): void }>()
 </script>
 
 <template>
-  <div v-if="open" class="modal-overlay" @click="emit('close')">
-    <div class="modal-card" @click.stop>
-      <div class="modal-header">&#x2753; {{ t('experiments.prismHelp') }}</div>
-      <div class="modal-body">
-        <p><strong>{{ t('experiments.keys') }}:</strong></p>
-        <ul>
-          <li>Space — {{ t('experiments.shortcutStartStop') }}</li>
-          <li>S — {{ t('experiments.recordReading') }}</li>
-          <li>R — {{ t('experiments.shortcutReset') }}</li>
-          <li>Ctrl+Z — {{ t('experiments.shortcutUndo') }}</li>
-          <li>Ctrl+Y — {{ t('experiments.shortcutRedo') }}</li>
-          <li>? — {{ t('experiments.shortcutToggleHelp') }}</li>
-        </ul>
-        <p><strong>{{ t('experiments.equations') }}:</strong></p>
-        <ul>
-          <li>{{ t('experiments.snellsLaw') }}</li>
-          <li>{{ t('experiments.prismEquation') }}: n = sin((A+D)/2) / sin(A/2)</li>
-        </ul>
+  <Teleport to="body">
+    <div v-if="open" class="overlay" @click.self="emit('close')">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>{{ t('experiments.prHelpTitle') }}</h3>
+          <button class="close-btn" @click="emit('close')">&#x2715;</button>
+        </div>
+        <div class="modal-body">
+
+          <!-- 1. Theoretical Background -->
+          <section>
+            <h4>{{ t('experiments.prHelpS1Title') }}</h4>
+            <p>{{ t('experiments.prHelpS1P1') }}</p>
+            <p>{{ t('experiments.prHelpS1P2') }}</p>
+            <div class="formula">n(λ) = A + B / λ²</div>
+            <p>{{ t('experiments.prHelpS1P3') }}</p>
+            <ul>
+              <li>{{ t('experiments.prHelpS1L1') }}</li>
+              <li>{{ t('experiments.prHelpS1L2') }}</li>
+            </ul>
+            <p>{{ t('experiments.prHelpS1P4') }}</p>
+          </section>
+
+          <!-- 2. Mathematical Equations -->
+          <section>
+            <h4>{{ t('experiments.prHelpS2Title') }}</h4>
+            <p>{{ t('experiments.prHelpS2P1') }}</p>
+            <div class="formula">n₁ · sin(θ₁) = n₂ · sin(θ₂)</div>
+            <p>{{ t('experiments.prHelpS2P2') }}</p>
+            <div class="formula">n = sin((A + δₘ)/2) / sin(A/2)</div>
+            <p>{{ t('experiments.prHelpS2P3') }}</p>
+          </section>
+
+          <!-- 3. Laboratory Procedure -->
+          <section>
+            <h4>{{ t('experiments.prHelpS3Title') }}</h4>
+            <ol>
+              <li>{{ t('experiments.prHelpS3L1') }}</li>
+              <li>{{ t('experiments.prHelpS3L2') }}</li>
+              <li>{{ t('experiments.prHelpS3L3') }}</li>
+              <li>{{ t('experiments.prHelpS3L4') }}</li>
+              <li>{{ t('experiments.prHelpS3L5') }}</li>
+            </ol>
+          </section>
+
+          <!-- 4. Graphical Analysis -->
+          <section>
+            <h4>{{ t('experiments.prHelpS4Title') }}</h4>
+            <p>{{ t('experiments.prHelpS4P1') }}</p>
+            <ul>
+              <li>{{ t('experiments.prHelpS4L1') }}</li>
+              <li>
+                {{ t('experiments.prHelpS4L2') }}
+                <div class="formula">Slope = Δn / Δ(1/λ²) = B</div>
+              </li>
+              <li>
+                {{ t('experiments.prHelpS4L3') }}
+                <div class="formula">B = Slope</div>
+                <div class="formula">A = Y-intercept</div>
+              </li>
+            </ul>
+          </section>
+
+          <!-- 5. Variables & Constants -->
+          <section>
+            <h4>{{ t('experiments.prHelpS5Title') }}</h4>
+            <div class="element-grid">
+              <div class="element">{{ t('experiments.prHelpS5E1') }}</div>
+              <div class="element">{{ t('experiments.prHelpS5E2') }}</div>
+              <div class="element">{{ t('experiments.prHelpS5E3') }}</div>
+            </div>
+          </section>
+
+          <!-- 6. Scientific Importance -->
+          <section>
+            <h4>{{ t('experiments.prHelpS6Title') }}</h4>
+            <ul>
+              <li>{{ t('experiments.prHelpS6L1') }}</li>
+              <li>{{ t('experiments.prHelpS6L2') }}</li>
+              <li>{{ t('experiments.prHelpS6L3') }}</li>
+            </ul>
+          </section>
+
+          <!-- Keyboard shortcuts -->
+          <section>
+            <h4>{{ t('experiments.helpKbdTitle') }}</h4>
+            <div class="kbd-grid">
+              <span><kbd>Space</kbd> {{ t('experiments.helpKbdSpace') }}</span>
+              <span><kbd>S</kbd> {{ t('experiments.helpKbdS') }}</span>
+              <span><kbd>R</kbd> {{ t('experiments.helpKbdR') }}</span>
+              <span><kbd>Ctrl</kbd>+<kbd>Z</kbd> {{ t('experiments.helpKbdUndo') }}</span>
+              <span><kbd>Ctrl</kbd>+<kbd>Y</kbd> {{ t('experiments.helpKbdRedo') }}</span>
+              <span><kbd>?</kbd> {{ t('experiments.helpKbdHelp') }}</span>
+            </div>
+          </section>
+
+        </div>
       </div>
-      <button class="modal-close" @click="emit('close')">{{ t('experiments.closeLabel') }}</button>
     </div>
-  </div>
+  </Teleport>
 </template>
 
 <style scoped>
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; z-index: 10000; }
-.modal-card { background: #1A1F27; border: 1px solid #2D3645; border-radius: 10px; padding: 1.2rem; width: 420px; max-width: 90vw; }
-.modal-header { font-weight: 700; color: #5B8DB8; margin-bottom: .6rem; font-size: .95rem; }
-.modal-body { color: #B8C0CC; font-size: .82rem; line-height: 1.5; }
-.modal-body ul { padding-right: 1.2rem; margin: .3rem 0; }
-.modal-body li { margin-bottom: .15rem; }
-.modal-close { margin-top: .8rem; padding: .35rem .9rem; border-radius: 6px; border: 1px solid #2D3645; background: #252D3A; color: #D1D7E0; cursor: pointer; font-family: inherit; }
+.overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+.modal { background: #131a25; border: 1px solid #2D3645; border-radius: 12px; max-width: 720px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+.modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.2rem; border-bottom: 1px solid #2D3645; flex-shrink: 0; }
+.modal-header h3 { margin: 0; font-size: 1rem; color: #e2e8f0; }
+.close-btn { background: transparent; border: 1px solid #2D3645; color: #8B95A5; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; padding: 0; }
+.close-btn:hover { background: rgba(91,141,184,.1); color: #5B8DB8; }
+.modal-body { overflow-y: auto; padding: 1.2rem; font-size: .82rem; color: #cbd5e1; line-height: 1.8; direction: rtl; text-align: right; }
+.modal-body section { margin-bottom: 1.4rem; }
+.modal-body h4 { margin: 0 0 .5rem; font-size: .9rem; color: #5B8DB8; border-bottom: 1px solid #2D3645; padding-bottom: .3rem; }
+.modal-body p { margin: .4rem 0; }
+.modal-body ol, .modal-body ul { margin: .4rem 0; padding-right: 1.2rem; }
+.modal-body li { margin-bottom: .25rem; }
+.formula { background: #1a2332; border: 1px solid #2D3645; border-radius: 6px; padding: .6rem .8rem; font-family: monospace; font-size: .9rem; color: #5B8DB8; text-align: center; margin: .6rem 0; direction: ltr; }
+.element-grid { display: flex; flex-direction: column; gap: .35rem; }
+.element { background: #1a2332; border-radius: 6px; padding: .4rem .6rem; font-size: .78rem; }
+.tag { color: #5B8DB8; }
+.kbd-grid { display: flex; flex-wrap: wrap; gap: .4rem; }
+.kbd-grid span { background: #1a2332; border: 1px solid #2D3645; border-radius: 5px; padding: .3rem .5rem; font-size: .75rem; }
+kbd { background: #252D3A; border: 1px solid #475569; border-radius: 4px; padding: .05rem .3rem; font-family: monospace; font-size: .7rem; color: #D1D7E0; }
 </style>

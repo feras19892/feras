@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/chemDataCore.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import type { Chemical } from './chemDatabase';\n\nexport const chemDataCore: Chemical[] = [\n  // ========== ACIDS ==========\n  {\n    id: 'hcl', nameAr: 'حمض كلور الماء', formula: 'HCl',\n    category: 'acid', physicalState: 'liquid', concentration: 0.1, ph: 1.0,\n    color: '#e0f2fe', opacity: 0.35, density: 1.02, molarMass: 36.46,\n    boilingPoint: 110, hazardLevel: 'warning', description: 'حمض قوي، شفاف عديم اللون'\n  },\n  {\n    id: 'h2so4', nameAr: 'حمض الكبريتيك', formula: 'H₂SO₄',\n    category: 'acid', physicalState: 'liquid', concentration: 0.5, ph: 0.3,\n    color: '#fef9c3', opacity: 0.4, density: 1.84, molarMass: 98.08,\n    boilingPoint: 337, hazardLevel: 'danger', description: 'حمض قوي جداً، قابل للتآكل'\n  },\n  {\n    id: 'hno3', nameAr: 'حمض النتريك', formula: 'HNO₃',\n    category: 'acid', physicalState: 'liquid', concentration: 0.1, ph: 1.0,\n    color: '#ffedd5', opacity: 0.35, density: 1.41, molarMass: 63.01,\n    boilingPoint: 83, hazardLevel: 'danger', description: 'حمض أكسدة قوي'\n  },\n  {\n    id: 'ch3cooh', nameAr: 'حمض الخليك', formula: 'CH₃COOH',\n    category: 'acid', physicalState: 'liquid', concentration: 0.1, ph: 2.9,\n    color: '#ecfccb', opacity: 0.3, density: 1.05, molarMass: 60.05,\n    boilingPoint: 118, hazardLevel: 'caution', description: 'حمض ضعيف (الخل)'\n  },\n\n  // ========== BASES ==========\n  {\n    id: 'naoh', nameAr: 'هيدروكسيد الصوديوم', formula: 'NaOH',\n    category: 'base', physicalState: 'liquid', concentration: 0.1, ph: 13.0,\n    color: '#fef08a', opacity: 0.35, density: 1.04, molarMass: 40.00,\n    boilingPoint: 1390, hazardLevel: 'warning', description: 'قاعدة قوية، شفافة عديمة اللون'\n  },\n  {\n    id: 'koh', nameAr: 'هيدروكسيد البوتاسيوم', formula: 'KOH',\n    category: 'base', physicalState: 'liquid', concentration: 0.1, ph: 13.0,\n    color: '#fef9c3', opacity: 0.35, density: 1.05, molarMass: 56.11,\n    boilingPoint: 1327, hazardLevel: 'warning', description: 'قاعدة قوية'\n  },\n  {\n    id: 'nh4oh', nameAr: 'محلول الأمونيا', formula: 'NH₄OH',\n    category: 'base', physicalState: 'liquid', concentration: 0.1, ph: 11.1,\n    color: '#ecfccb', opacity: 0.3, density: 0.98, molarMass: 35.05,\n    boilingPoint: 37, hazardLevel: 'caution', description: 'قاعدة ضعيفة'\n  },\n\n  // ========== SOLVENTS ==========\n  {\n    id: 'water', nameAr: 'ماء مقطر', formula: 'H₂O',\n    category: 'solvent', physicalState: 'liquid', concentration: undefined, ph: 7.0,\n    color: '#e0f2fe', opacity: 0.35, density: 1.0, molarMass: 18.02,\n    boilingPoint: 100, hazardLevel: 'safe', description: 'مذيب عالمي محايد'\n  },\n  {\n    id: 'ethanol', nameAr: 'إيثانول', formula: 'C₂H₅OH',\n    category: 'solvent', physicalState: 'liquid', concentration: undefined, ph: 7.0,\n    color: '#f0fdf4', opacity: 0.3, density: 0.79, molarMass: 46.07,\n    boilingPoint: 78, hazardLevel: 'caution', description: 'مذيب عضوي، قابل للاشتعال'\n  },\n\n  // ========== SALTS ==========\n  {\n    id: 'nacl', nameAr: 'كلوريد الصوديوم', formula: 'NaCl',\n    category: 'salt', physicalState: 'solid', concentration: 0.1, ph: 7.0,\n    color: '#f1f5f9', opacity: 0.3, density: 2.16, molarMass: 58.44,\n    boilingPoint: 1413, hazardLevel: 'safe', description: 'ملح الطعام، محايد'\n  },\n  {\n    id: 'cuso4', nameAr: 'كبريتات النحاس', formula: 'CuSO₄',\n    category: 'salt', physicalState: 'liquid', concentration: 0.1, ph: 4.5,\n    color: '#3b82f6', opacity: 0.5, density: 1.12, molarMass: 159.61,\n    boilingPoint: 650, hazardLevel: 'caution', description: 'محلول أزرق فاتح'\n  },\n  {\n    id: 'kmno4', nameAr: 'برمنغنات البوتاسيوم', formula: 'KMnO₄',\n    category: 'salt', physicalState: 'liquid', concentration: 0.02, ph: 7.0,\n    color: '#7c1d1d', opacity: 0.55, density: 1.03, molarMass: 158.04,\n    boilingPoint: 240, hazardLevel: 'warning', description: 'محلول بنفسجي غامق، مؤكسد قوي'\n  },\n  {\n    id: 'na2co3', nameAr: 'كربونات الصوديوم', formula: 'Na₂CO₃',\n    category: 'salt', physicalState: 'solid', concentration: 0.1, ph: 11.6,\n    color: '#f8fafc', opacity: 0.3, density: 2.53, molarMass: 105.99,\n    boilingPoint: 1600, hazardLevel: 'caution', description: 'قاعدي، أبيض'\n  },\n];\n",
+      "start": 1783634640789,
+      "end": 1783634641009,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641009,
+      "end": 1783634641009,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "export const chemDataCore = [\n  // ========== ACIDS ==========\n  {\n    id: \"hcl\",\n    nameAr: \"حمض كلور الماء\",\n    formula: \"HCl\",\n    category: \"acid\",\n    physicalState: \"liquid\",\n    concentration: 0.1,\n    ph: 1,\n    color: \"#e0f2fe\",\n    opacity: 0.35,\n    density: 1.02,\n    molarMass: 36.46,\n    boilingPoint: 110,\n    hazardLevel: \"warning\",\n    description: \"حمض قوي، شفاف عديم اللون\"\n  },\n  {\n    id: \"h2so4\",\n    nameAr: \"حمض الكبريتيك\",\n    formula: \"H₂SO₄\",\n    category: \"acid\",\n    physicalState: \"liquid\",\n    concentration: 0.5,\n    ph: 0.3,\n    color: \"#fef9c3\",\n    opacity: 0.4,\n    density: 1.84,\n    molarMass: 98.08,\n    boilingPoint: 337,\n    hazardLevel: \"danger\",\n    description: \"حمض قوي جداً، قابل للتآكل\"\n  },\n  {\n    id: \"hno3\",\n    nameAr: \"حمض النتريك\",\n    formula: \"HNO₃\",\n    category: \"acid\",\n    physicalState: \"liquid\",\n    concentration: 0.1,\n    ph: 1,\n    color: \"#ffedd5\",\n    opacity: 0.35,\n    density: 1.41,\n    molarMass: 63.01,\n    boilingPoint: 83,\n    hazardLevel: \"danger\",\n    description: \"حمض أكسدة قوي\"\n  },\n  {\n    id: \"ch3cooh\",\n    nameAr: \"حمض الخليك\",\n    formula: \"CH₃COOH\",\n    category: \"acid\",\n    physicalState: \"liquid\",\n    concentration: 0.1,\n    ph: 2.9,\n    color: \"#ecfccb\",\n    opacity: 0.3,\n    density: 1.05,\n    molarMass: 60.05,\n    boilingPoint: 118,\n    hazardLevel: \"caution\",\n    description: \"حمض ضعيف (الخل)\"\n  },\n  // ========== BASES ==========\n  {\n    id: \"naoh\",\n    nameAr: \"هيدروكسيد الصوديوم\",\n    formula: \"NaOH\",\n    category: \"base\",\n    physicalState: \"liquid\",\n    concentration: 0.1,\n    ph: 13,\n    color: \"#fef08a\",\n    opacity: 0.35,\n    density: 1.04,\n    molarMass: 40,\n    boilingPoint: 1390,\n    hazardLevel: \"warning\",\n    description: \"قاعدة قوية، شفافة عديمة اللون\"\n  },\n  {\n    id: \"koh\",\n    nameAr: \"هيدروكسيد البوتاسيوم\",\n    formula: \"KOH\",\n    category: \"base\",\n    physicalState: \"liquid\",\n    concentration: 0.1,\n    ph: 13,\n    color: \"#fef9c3\",\n    opacity: 0.35,\n    density: 1.05,\n    molarMass: 56.11,\n    boilingPoint: 1327,\n    hazardLevel: \"warning\",\n    description: \"قاعدة قوية\"\n  },\n  {\n    id: \"nh4oh\",\n    nameAr: \"محلول الأمونيا\",\n    formula: \"NH₄OH\",\n    category: \"base\",\n    physicalState: \"liquid\",\n    concentration: 0.1,\n    ph: 11.1,\n    color: \"#ecfccb\",\n    opacity: 0.3,\n    density: 0.98,\n    molarMass: 35.05,\n    boilingPoint: 37,\n    hazardLevel: \"caution\",\n    description: \"قاعدة ضعيفة\"\n  },\n  // ========== SOLVENTS ==========\n  {\n    id: \"water\",\n    nameAr: \"ماء مقطر\",\n    formula: \"H₂O\",\n    category: \"solvent\",\n    physicalState: \"liquid\",\n    concentration: void 0,\n    ph: 7,\n    color: \"#e0f2fe\",\n    opacity: 0.35,\n    density: 1,\n    molarMass: 18.02,\n    boilingPoint: 100,\n    hazardLevel: \"safe\",\n    description: \"مذيب عالمي محايد\"\n  },\n  {\n    id: \"ethanol\",\n    nameAr: \"إيثانول\",\n    formula: \"C₂H₅OH\",\n    category: \"solvent\",\n    physicalState: \"liquid\",\n    concentration: void 0,\n    ph: 7,\n    color: \"#f0fdf4\",\n    opacity: 0.3,\n    density: 0.79,\n    molarMass: 46.07,\n    boilingPoint: 78,\n    hazardLevel: \"caution\",\n    description: \"مذيب عضوي، قابل للاشتعال\"\n  },\n  // ========== SALTS ==========\n  {\n    id: \"nacl\",\n    nameAr: \"كلوريد الصوديوم\",\n    formula: \"NaCl\",\n    category: \"salt\",\n    physicalState: \"solid\",\n    concentration: 0.1,\n    ph: 7,\n    color: \"#f1f5f9\",\n    opacity: 0.3,\n    density: 2.16,\n    molarMass: 58.44,\n    boilingPoint: 1413,\n    hazardLevel: \"safe\",\n    description: \"ملح الطعام، محايد\"\n  },\n  {\n    id: \"cuso4\",\n    nameAr: \"كبريتات النحاس\",\n    formula: \"CuSO₄\",\n    category: \"salt\",\n    physicalState: \"liquid\",\n    concentration: 0.1,\n    ph: 4.5,\n    color: \"#3b82f6\",\n    opacity: 0.5,\n    density: 1.12,\n    molarMass: 159.61,\n    boilingPoint: 650,\n    hazardLevel: \"caution\",\n    description: \"محلول أزرق فاتح\"\n  },\n  {\n    id: \"kmno4\",\n    nameAr: \"برمنغنات البوتاسيوم\",\n    formula: \"KMnO₄\",\n    category: \"salt\",\n    physicalState: \"liquid\",\n    concentration: 0.02,\n    ph: 7,\n    color: \"#7c1d1d\",\n    opacity: 0.55,\n    density: 1.03,\n    molarMass: 158.04,\n    boilingPoint: 240,\n    hazardLevel: \"warning\",\n    description: \"محلول بنفسجي غامق، مؤكسد قوي\"\n  },\n  {\n    id: \"na2co3\",\n    nameAr: \"كربونات الصوديوم\",\n    formula: \"Na₂CO₃\",\n    category: \"salt\",\n    physicalState: \"solid\",\n    concentration: 0.1,\n    ph: 11.6,\n    color: \"#f8fafc\",\n    opacity: 0.3,\n    density: 2.53,\n    molarMass: 105.99,\n    boilingPoint: 1600,\n    hazardLevel: \"caution\",\n    description: \"قاعدي، أبيض\"\n  }\n];\n",
+      "start": 1783634641009,
+      "end": 1783634641020,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/chemDataCore.ts"
+        ],
+        "sourcesContent": [
+          "import type { Chemical } from './chemDatabase';\n\nexport const chemDataCore: Chemical[] = [\n  // ========== ACIDS ==========\n  {\n    id: 'hcl', nameAr: 'حمض كلور الماء', formula: 'HCl',\n    category: 'acid', physicalState: 'liquid', concentration: 0.1, ph: 1.0,\n    color: '#e0f2fe', opacity: 0.35, density: 1.02, molarMass: 36.46,\n    boilingPoint: 110, hazardLevel: 'warning', description: 'حمض قوي، شفاف عديم اللون'\n  },\n  {\n    id: 'h2so4', nameAr: 'حمض الكبريتيك', formula: 'H₂SO₄',\n    category: 'acid', physicalState: 'liquid', concentration: 0.5, ph: 0.3,\n    color: '#fef9c3', opacity: 0.4, density: 1.84, molarMass: 98.08,\n    boilingPoint: 337, hazardLevel: 'danger', description: 'حمض قوي جداً، قابل للتآكل'\n  },\n  {\n    id: 'hno3', nameAr: 'حمض النتريك', formula: 'HNO₃',\n    category: 'acid', physicalState: 'liquid', concentration: 0.1, ph: 1.0,\n    color: '#ffedd5', opacity: 0.35, density: 1.41, molarMass: 63.01,\n    boilingPoint: 83, hazardLevel: 'danger', description: 'حمض أكسدة قوي'\n  },\n  {\n    id: 'ch3cooh', nameAr: 'حمض الخليك', formula: 'CH₃COOH',\n    category: 'acid', physicalState: 'liquid', concentration: 0.1, ph: 2.9,\n    color: '#ecfccb', opacity: 0.3, density: 1.05, molarMass: 60.05,\n    boilingPoint: 118, hazardLevel: 'caution', description: 'حمض ضعيف (الخل)'\n  },\n\n  // ========== BASES ==========\n  {\n    id: 'naoh', nameAr: 'هيدروكسيد الصوديوم', formula: 'NaOH',\n    category: 'base', physicalState: 'liquid', concentration: 0.1, ph: 13.0,\n    color: '#fef08a', opacity: 0.35, density: 1.04, molarMass: 40.00,\n    boilingPoint: 1390, hazardLevel: 'warning', description: 'قاعدة قوية، شفافة عديمة اللون'\n  },\n  {\n    id: 'koh', nameAr: 'هيدروكسيد البوتاسيوم', formula: 'KOH',\n    category: 'base', physicalState: 'liquid', concentration: 0.1, ph: 13.0,\n    color: '#fef9c3', opacity: 0.35, density: 1.05, molarMass: 56.11,\n    boilingPoint: 1327, hazardLevel: 'warning', description: 'قاعدة قوية'\n  },\n  {\n    id: 'nh4oh', nameAr: 'محلول الأمونيا', formula: 'NH₄OH',\n    category: 'base', physicalState: 'liquid', concentration: 0.1, ph: 11.1,\n    color: '#ecfccb', opacity: 0.3, density: 0.98, molarMass: 35.05,\n    boilingPoint: 37, hazardLevel: 'caution', description: 'قاعدة ضعيفة'\n  },\n\n  // ========== SOLVENTS ==========\n  {\n    id: 'water', nameAr: 'ماء مقطر', formula: 'H₂O',\n    category: 'solvent', physicalState: 'liquid', concentration: undefined, ph: 7.0,\n    color: '#e0f2fe', opacity: 0.35, density: 1.0, molarMass: 18.02,\n    boilingPoint: 100, hazardLevel: 'safe', description: 'مذيب عالمي محايد'\n  },\n  {\n    id: 'ethanol', nameAr: 'إيثانول', formula: 'C₂H₅OH',\n    category: 'solvent', physicalState: 'liquid', concentration: undefined, ph: 7.0,\n    color: '#f0fdf4', opacity: 0.3, density: 0.79, molarMass: 46.07,\n    boilingPoint: 78, hazardLevel: 'caution', description: 'مذيب عضوي، قابل للاشتعال'\n  },\n\n  // ========== SALTS ==========\n  {\n    id: 'nacl', nameAr: 'كلوريد الصوديوم', formula: 'NaCl',\n    category: 'salt', physicalState: 'solid', concentration: 0.1, ph: 7.0,\n    color: '#f1f5f9', opacity: 0.3, density: 2.16, molarMass: 58.44,\n    boilingPoint: 1413, hazardLevel: 'safe', description: 'ملح الطعام، محايد'\n  },\n  {\n    id: 'cuso4', nameAr: 'كبريتات النحاس', formula: 'CuSO₄',\n    category: 'salt', physicalState: 'liquid', concentration: 0.1, ph: 4.5,\n    color: '#3b82f6', opacity: 0.5, density: 1.12, molarMass: 159.61,\n    boilingPoint: 650, hazardLevel: 'caution', description: 'محلول أزرق فاتح'\n  },\n  {\n    id: 'kmno4', nameAr: 'برمنغنات البوتاسيوم', formula: 'KMnO₄',\n    category: 'salt', physicalState: 'liquid', concentration: 0.02, ph: 7.0,\n    color: '#7c1d1d', opacity: 0.55, density: 1.03, molarMass: 158.04,\n    boilingPoint: 240, hazardLevel: 'warning', description: 'محلول بنفسجي غامق، مؤكسد قوي'\n  },\n  {\n    id: 'na2co3', nameAr: 'كربونات الصوديوم', formula: 'Na₂CO₃',\n    category: 'salt', physicalState: 'solid', concentration: 0.1, ph: 11.6,\n    color: '#f8fafc', opacity: 0.3, density: 2.53, molarMass: 105.99,\n    boilingPoint: 1600, hazardLevel: 'caution', description: 'قاعدي، أبيض'\n  },\n];\n"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641020,
+      "end": 1783634641020,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641020,
+      "end": 1783634641020,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641020,
+      "end": 1783634641020,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641020,
+      "end": 1783634641020,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641020,
+      "end": 1783634641020,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641020,
+      "end": 1783634641020,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641020,
+      "end": 1783634641020,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641020,
+      "end": 1783634641020,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641020,
+      "end": 1783634641020,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641020,
+      "end": 1783634641020,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641020,
+      "end": 1783634641020,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641020,
+      "end": 1783634641020,
+      "order": "normal"
+    }
+  ]
+}

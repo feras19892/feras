@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/projectile/ProjectileExperiment.vue?vue&type=style&index=0&scoped=cdedc7b4&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.projectile-lab { background: #161B22; color: #D1D7E0; padding: .6rem .8rem; height: 100vh; display: flex; flex-direction: column; gap: .5rem; overflow: hidden; }\n.lab-grid { display: flex; flex-direction: row; flex: 1; min-height: 0; overflow: hidden; gap: .3rem; }\n.lab-col { display: flex; flex-direction: column; gap: .5rem; overflow-y: auto; min-height: 0; padding: .3rem; border-radius: 10px; }\n.data-col { background: rgba(255,255,255,0.02); }\n.vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 0; }\n.ctrl-col { background: rgba(255,255,255,0.02); }\n.params-embedded { padding: .6rem; }\n.resizer { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0; }\n.resizer:hover, .resizer:active { background: #5B8DB8; }\n.chart-row { display: flex; gap: .5rem; width: 100%; margin-top: .3rem; flex: 0 0 180px; min-height: 0; align-items: stretch; }\n.chart-row:empty { display: none; }\n.chart-panel { flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden; }\n.hint-bar { background: #252D3A; border: 1px solid #2D3645; border-radius: 6px; padding: .35rem .7rem; font-size: .75rem; color: #8B95A5; text-align: center; flex-shrink: 0; }\n.hint-bar.active { border-color: #5B8DB8; color: #5B8DB8; background: rgba(91,141,184,.08); }\n.hint-bar.success { border-color: #22c55e; color: #22c55e; background: rgba(34,197,94,.08); }\n.hint-bar.target-hit { border-color: #ef4444; color: #ef4444; background: rgba(239,68,68,.08); }\n",
+      "start": 1783634640738,
+      "end": 1783634640738
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.projectile-lab { background: #161B22; color: #D1D7E0; padding: .6rem .8rem; height: 100vh; display: flex; flex-direction: column; gap: .5rem; overflow: hidden; }\n.lab-grid { display: flex; flex-direction: row; flex: 1; min-height: 0; overflow: hidden; gap: .3rem; }\n.lab-col { display: flex; flex-direction: column; gap: .5rem; overflow-y: auto; min-height: 0; padding: .3rem; border-radius: 10px; }\n.data-col { background: rgba(255,255,255,0.02); }\n.vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 0; }\n.ctrl-col { background: rgba(255,255,255,0.02); }\n.params-embedded { padding: .6rem; }\n.resizer { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0; }\n.resizer:hover, .resizer:active { background: #5B8DB8; }\n.chart-row { display: flex; gap: .5rem; width: 100%; margin-top: .3rem; flex: 0 0 180px; min-height: 0; align-items: stretch; }\n.chart-row:empty { display: none; }\n.chart-panel { flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden; }\n.hint-bar { background: #252D3A; border: 1px solid #2D3645; border-radius: 6px; padding: .35rem .7rem; font-size: .75rem; color: #8B95A5; text-align: center; flex-shrink: 0; }\n.hint-bar.active { border-color: #5B8DB8; color: #5B8DB8; background: rgba(91,141,184,.08); }\n.hint-bar.success { border-color: #22c55e; color: #22c55e; background: rgba(34,197,94,.08); }\n.hint-bar.target-hit { border-color: #ef4444; color: #ef4444; background: rgba(239,68,68,.08); }\n",
+      "start": 1783634640739,
+      "end": 1783634640739,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640739,
+      "end": 1783634640739,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640739,
+      "end": 1783634640739,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640739,
+      "end": 1783634640739,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.projectile-lab[data-v-cdedc7b4] { background: #161B22; color: #D1D7E0; padding: .6rem .8rem; height: 100vh; display: flex; flex-direction: column; gap: .5rem; overflow: hidden;\n}\n.lab-grid[data-v-cdedc7b4] { display: flex; flex-direction: row; flex: 1; min-height: 0; overflow: hidden; gap: .3rem;\n}\n.lab-col[data-v-cdedc7b4] { display: flex; flex-direction: column; gap: .5rem; overflow-y: auto; min-height: 0; padding: .3rem; border-radius: 10px;\n}\n.data-col[data-v-cdedc7b4] { background: rgba(255,255,255,0.02);\n}\n.vis-col[data-v-cdedc7b4] { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 0;\n}\n.ctrl-col[data-v-cdedc7b4] { background: rgba(255,255,255,0.02);\n}\n.params-embedded[data-v-cdedc7b4] { padding: .6rem;\n}\n.resizer[data-v-cdedc7b4] { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0;\n}\n.resizer[data-v-cdedc7b4]:hover, .resizer[data-v-cdedc7b4]:active { background: #5B8DB8;\n}\n.chart-row[data-v-cdedc7b4] { display: flex; gap: .5rem; width: 100%; margin-top: .3rem; flex: 0 0 180px; min-height: 0; align-items: stretch;\n}\n.chart-row[data-v-cdedc7b4]:empty { display: none;\n}\n.chart-panel[data-v-cdedc7b4] { flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden;\n}\n.hint-bar[data-v-cdedc7b4] { background: #252D3A; border: 1px solid #2D3645; border-radius: 6px; padding: .35rem .7rem; font-size: .75rem; color: #8B95A5; text-align: center; flex-shrink: 0;\n}\n.hint-bar.active[data-v-cdedc7b4] { border-color: #5B8DB8; color: #5B8DB8; background: rgba(91,141,184,.08);\n}\n.hint-bar.success[data-v-cdedc7b4] { border-color: #22c55e; color: #22c55e; background: rgba(34,197,94,.08);\n}\n.hint-bar.target-hit[data-v-cdedc7b4] { border-color: #ef4444; color: #ef4444; background: rgba(239,68,68,.08);\n}\n",
+      "start": 1783634640739,
+      "end": 1783634640740,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640740,
+      "end": 1783634640740,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634640740,
+      "end": 1783634640740,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640740,
+      "end": 1783634640740,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640740,
+      "end": 1783634640740,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640740,
+      "end": 1783634640740,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640740,
+      "end": 1783634640740,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640740,
+      "end": 1783634640740,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640740,
+      "end": 1783634640740,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640740,
+      "end": 1783634640740,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640740,
+      "end": 1783634640740,
+      "order": "normal"
+    }
+  ]
+}

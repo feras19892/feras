@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/thinlens/useThinLensTrials.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { ref } from 'vue'\nimport type { ThinLensTrial, ThinLensParams } from './useThinLensExperiment'\n\nexport interface TrialState {\n  trials: ThinLensTrial[]\n  nextId: number\n}\n\nconst SAVE_KEY = 'thinlens:trials:v1'\n\nexport function useThinLensTrials(\n  params: { value: ThinLensParams },\n  imageDistance: { value: number | null },\n  imageHeight: { value: number | null },\n  magnification: { value: number | null }\n) {\n  const trials = ref<ThinLensTrial[]>([])\n  const nextId = ref(1)\n\n  const undoStack = ref<TrialState[]>([])\n  const redoStack = ref<TrialState[]>([])\n\n  function autoSave() {\n    try {\n      localStorage.setItem(SAVE_KEY, JSON.stringify({\n        trials: trials.value,\n        nextId: nextId.value,\n        undoStack: undoStack.value.slice(-10),\n        redoStack: redoStack.value.slice(-10),\n      }))\n    } catch { /* ignore */ }\n  }\n\n  function autoLoad() {\n    try {\n      const raw = localStorage.getItem(SAVE_KEY)\n      if (!raw) return\n      const parsed = JSON.parse(raw)\n      if (Array.isArray(parsed.trials)) {\n        trials.value = parsed.trials\n        nextId.value = typeof parsed.nextId === 'number' ? parsed.nextId : (trials.value.length > 0 ? Math.max(...trials.value.map(t => t.id)) + 1 : 1)\n        if (Array.isArray(parsed.undoStack)) undoStack.value = parsed.undoStack\n        if (Array.isArray(parsed.redoStack)) redoStack.value = parsed.redoStack\n      }\n    } catch { /* ignore */ }\n  }\n\n  function pushState() {\n    undoStack.value.push({ trials: [...trials.value], nextId: nextId.value })\n    redoStack.value = []\n    if (undoStack.value.length > 50) undoStack.value.shift()\n    autoSave()\n  }\n\n  function recordTrial() {\n    pushState()\n    const { lensType, focalLength, objectDistance, objectHeight } = params.value\n    const di = imageDistance.value ?? 0\n    const hi = imageHeight.value ?? 0\n    const m = magnification.value ?? 0\n    trials.value.push({\n      id: nextId.value++,\n      lensType,\n      focalLength,\n      objectDistance,\n      objectHeight,\n      imageDistance: di,\n      imageHeight: hi,\n      magnification: m,\n      invDo: 1 / objectDistance,\n      invDi: di !== 0 ? 1 / di : 0,\n    })\n  }\n\n  function undo() {\n    if (undoStack.value.length === 0) return\n    const current = { trials: [...trials.value], nextId: nextId.value }\n    redoStack.value.push(current)\n    const prev = undoStack.value.pop()!\n    trials.value = prev.trials\n    nextId.value = prev.nextId\n  }\n\n  function redo() {\n    if (redoStack.value.length === 0) return\n    const current = { trials: [...trials.value], nextId: nextId.value }\n    undoStack.value.push(current)\n    const next = redoStack.value.pop()!\n    trials.value = next.trials\n    nextId.value = next.nextId\n  }\n\n  function canUndo() { return undoStack.value.length > 0 }\n  function canRedo() { return redoStack.value.length > 0 }\n\n  function removeTrial(id: number) {\n    pushState()\n    trials.value = trials.value.filter((t) => t.id !== id)\n    autoSave()\n  }\n\n  function clearTrials() {\n    pushState()\n    trials.value = []\n    nextId.value = 1\n    autoSave()\n  }\n\n  function exportCsv(): string {\n    const headers = ['Trial', 'Type', 'f(cm)', 'do(cm)', 'ho(cm)', 'di(cm)', 'hi(cm)', 'm', '1/do', '1/di']\n    const rows = trials.value.map(\n      (t) => `${t.id},${t.lensType},${t.focalLength.toFixed(1)},${t.objectDistance.toFixed(1)},${t.objectHeight.toFixed(1)},${t.imageDistance.toFixed(1)},${t.imageHeight.toFixed(1)},${t.magnification.toFixed(3)},${t.invDo.toFixed(4)},${t.invDi.toFixed(4)}`\n    )\n    return [headers.join(','), ...rows].join('\\n')\n  }\n\n  return {\n    trials,\n    recordTrial,\n    undo,\n    redo,\n    canUndo,\n    canRedo,\n    removeTrial,\n    clearTrials,\n    exportCsv,\n    autoLoad,\n  }\n}\n",
+      "start": 1783634642111,
+      "end": 1783634642183,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642183,
+      "end": 1783634642183,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { ref } from \"vue\";\nconst SAVE_KEY = \"thinlens:trials:v1\";\nexport function useThinLensTrials(params, imageDistance, imageHeight, magnification) {\n  const trials = ref([]);\n  const nextId = ref(1);\n  const undoStack = ref([]);\n  const redoStack = ref([]);\n  function autoSave() {\n    try {\n      localStorage.setItem(SAVE_KEY, JSON.stringify({\n        trials: trials.value,\n        nextId: nextId.value,\n        undoStack: undoStack.value.slice(-10),\n        redoStack: redoStack.value.slice(-10)\n      }));\n    } catch {\n    }\n  }\n  function autoLoad() {\n    try {\n      const raw = localStorage.getItem(SAVE_KEY);\n      if (!raw) return;\n      const parsed = JSON.parse(raw);\n      if (Array.isArray(parsed.trials)) {\n        trials.value = parsed.trials;\n        nextId.value = typeof parsed.nextId === \"number\" ? parsed.nextId : trials.value.length > 0 ? Math.max(...trials.value.map((t) => t.id)) + 1 : 1;\n        if (Array.isArray(parsed.undoStack)) undoStack.value = parsed.undoStack;\n        if (Array.isArray(parsed.redoStack)) redoStack.value = parsed.redoStack;\n      }\n    } catch {\n    }\n  }\n  function pushState() {\n    undoStack.value.push({ trials: [...trials.value], nextId: nextId.value });\n    redoStack.value = [];\n    if (undoStack.value.length > 50) undoStack.value.shift();\n    autoSave();\n  }\n  function recordTrial() {\n    pushState();\n    const { lensType, focalLength, objectDistance, objectHeight } = params.value;\n    const di = imageDistance.value ?? 0;\n    const hi = imageHeight.value ?? 0;\n    const m = magnification.value ?? 0;\n    trials.value.push({\n      id: nextId.value++,\n      lensType,\n      focalLength,\n      objectDistance,\n      objectHeight,\n      imageDistance: di,\n      imageHeight: hi,\n      magnification: m,\n      invDo: 1 / objectDistance,\n      invDi: di !== 0 ? 1 / di : 0\n    });\n  }\n  function undo() {\n    if (undoStack.value.length === 0) return;\n    const current = { trials: [...trials.value], nextId: nextId.value };\n    redoStack.value.push(current);\n    const prev = undoStack.value.pop();\n    trials.value = prev.trials;\n    nextId.value = prev.nextId;\n  }\n  function redo() {\n    if (redoStack.value.length === 0) return;\n    const current = { trials: [...trials.value], nextId: nextId.value };\n    undoStack.value.push(current);\n    const next = redoStack.value.pop();\n    trials.value = next.trials;\n    nextId.value = next.nextId;\n  }\n  function canUndo() {\n    return undoStack.value.length > 0;\n  }\n  function canRedo() {\n    return redoStack.value.length > 0;\n  }\n  function removeTrial(id) {\n    pushState();\n    trials.value = trials.value.filter((t) => t.id !== id);\n    autoSave();\n  }\n  function clearTrials() {\n    pushState();\n    trials.value = [];\n    nextId.value = 1;\n    autoSave();\n  }\n  function exportCsv() {\n    const headers = [\"Trial\", \"Type\", \"f(cm)\", \"do(cm)\", \"ho(cm)\", \"di(cm)\", \"hi(cm)\", \"m\", \"1/do\", \"1/di\"];\n    const rows = trials.value.map(\n      (t) => `${t.id},${t.lensType},${t.focalLength.toFixed(1)},${t.objectDistance.toFixed(1)},${t.objectHeight.toFixed(1)},${t.imageDistance.toFixed(1)},${t.imageHeight.toFixed(1)},${t.magnification.toFixed(3)},${t.invDo.toFixed(4)},${t.invDi.toFixed(4)}`\n    );\n    return [headers.join(\",\"), ...rows].join(\"\\n\");\n  }\n  return {\n    trials,\n    recordTrial,\n    undo,\n    redo,\n    canUndo,\n    canRedo,\n    removeTrial,\n    clearTrials,\n    exportCsv,\n    autoLoad\n  };\n}\n",
+      "start": 1783634642183,
+      "end": 1783634642319,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/thinlens/useThinLensTrials.ts"
+        ],
+        "sourcesContent": [
+          "import { ref } from 'vue'\nimport type { ThinLensTrial, ThinLensParams } from './useThinLensExperiment'\n\nexport interface TrialState {\n  trials: ThinLensTrial[]\n  nextId: number\n}\n\nconst SAVE_KEY = 'thinlens:trials:v1'\n\nexport function useThinLensTrials(\n  params: { value: ThinLensParams },\n  imageDistance: { value: number | null },\n  imageHeight: { value: number | null },\n  magnification: { value: number | null }\n) {\n  const trials = ref<ThinLensTrial[]>([])\n  const nextId = ref(1)\n\n  const undoStack = ref<TrialState[]>([])\n  const redoStack = ref<TrialState[]>([])\n\n  function autoSave() {\n    try {\n      localStorage.setItem(SAVE_KEY, JSON.stringify({\n        trials: trials.value,\n        nextId: nextId.value,\n        undoStack: undoStack.value.slice(-10),\n        redoStack: redoStack.value.slice(-10),\n      }))\n    } catch { /* ignore */ }\n  }\n\n  function autoLoad() {\n    try {\n      const raw = localStorage.getItem(SAVE_KEY)\n      if (!raw) return\n      const parsed = JSON.parse(raw)\n      if (Array.isArray(parsed.trials)) {\n        trials.value = parsed.trials\n        nextId.value = typeof parsed.nextId === 'number' ? parsed.nextId : (trials.value.length > 0 ? Math.max(...trials.value.map(t => t.id)) + 1 : 1)\n        if (Array.isArray(parsed.undoStack)) undoStack.value = parsed.undoStack\n        if (Array.isArray(parsed.redoStack)) redoStack.value = parsed.redoStack\n      }\n    } catch { /* ignore */ }\n  }\n\n  function pushState() {\n    undoStack.value.push({ trials: [...trials.value], nextId: nextId.value })\n    redoStack.value = []\n    if (undoStack.value.length > 50) undoStack.value.shift()\n    autoSave()\n  }\n\n  function recordTrial() {\n    pushState()\n    const { lensType, focalLength, objectDistance, objectHeight } = params.value\n    const di = imageDistance.value ?? 0\n    const hi = imageHeight.value ?? 0\n    const m = magnification.value ?? 0\n    trials.value.push({\n      id: nextId.value++,\n      lensType,\n      focalLength,\n      objectDistance,\n      objectHeight,\n      imageDistance: di,\n      imageHeight: hi,\n      magnification: m,\n      invDo: 1 / objectDistance,\n      invDi: di !== 0 ? 1 / di : 0,\n    })\n  }\n\n  function undo() {\n    if (undoStack.value.length === 0) return\n    const current = { trials: [...trials.value], nextId: nextId.value }\n    redoStack.value.push(current)\n    const prev = undoStack.value.pop()!\n    trials.value = prev.trials\n    nextId.value = prev.nextId\n  }\n\n  function redo() {\n    if (redoStack.value.length === 0) return\n    const current = { trials: [...trials.value], nextId: nextId.value }\n    undoStack.value.push(current)\n    const next = redoStack.value.pop()!\n    trials.value = next.trials\n    nextId.value = next.nextId\n  }\n\n  function canUndo() { return undoStack.value.length > 0 }\n  function canRedo() { return redoStack.value.length > 0 }\n\n  function removeTrial(id: number) {\n    pushState()\n    trials.value = trials.value.filter((t) => t.id !== id)\n    autoSave()\n  }\n\n  function clearTrials() {\n    pushState()\n    trials.value = []\n    nextId.value = 1\n    autoSave()\n  }\n\n  function exportCsv(): string {\n    const headers = ['Trial', 'Type', 'f(cm)', 'do(cm)', 'ho(cm)', 'di(cm)', 'hi(cm)', 'm', '1/do', '1/di']\n    const rows = trials.value.map(\n      (t) => `${t.id},${t.lensType},${t.focalLength.toFixed(1)},${t.objectDistance.toFixed(1)},${t.objectHeight.toFixed(1)},${t.imageDistance.toFixed(1)},${t.imageHeight.toFixed(1)},${t.magnification.toFixed(3)},${t.invDo.toFixed(4)},${t.invDi.toFixed(4)}`\n    )\n    return [headers.join(','), ...rows].join('\\n')\n  }\n\n  return {\n    trials,\n    recordTrial,\n    undo,\n    redo,\n    canUndo,\n    canRedo,\n    removeTrial,\n    clearTrials,\n    exportCsv,\n    autoLoad,\n  }\n}\n"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642319,
+      "end": 1783634642319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642319,
+      "end": 1783634642319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642319,
+      "end": 1783634642319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642319,
+      "end": 1783634642319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642319,
+      "end": 1783634642319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642320,
+      "end": 1783634642320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642320,
+      "end": 1783634642320,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642320,
+      "end": 1783634642320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642320,
+      "end": 1783634642320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642320,
+      "end": 1783634642320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642320,
+      "end": 1783634642320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642320,
+      "end": 1783634642320,
+      "order": "normal"
+    }
+  ]
+}

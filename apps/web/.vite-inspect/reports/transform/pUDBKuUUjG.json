@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/panels/PrismTrialsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport type { PrismTrial } from '../../../../composables/prism/usePrismTrials'\nimport { useI18n } from '../../../../composables/useI18n'\n\nconst { t } = useI18n()\n\ninterface Props {\n  trials: PrismTrial[]\n}\n\nconst props = defineProps<Props>()\n\nconst emit = defineEmits<{\n  (e: 'remove', id: number): void\n  (e: 'clear'): void\n}>()\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <div v-if=\"trials.length === 0\" class=\"empty\">{{ t('prism.emptyTrials') }}</div>\n    <div v-else class=\"trial-table\">\n      <div class=\"trial-header\"><span>#</span><span>λ</span><span>θᵢ</span><span>θₑ</span><span>D</span><span>n</span></div>\n      <div v-for=\"trial in trials\" :key=\"trial.id\" class=\"trial-row\">\n        <span class=\"trial-num\">{{ trial.id }}</span>\n        <span class=\"mono\" style=\"font-size:.65rem\">{{ trial.wavelength }}</span>\n        <span>{{ trial.angleIncidence.toFixed(0) }}</span>\n        <span>{{ trial.angleEmergence !== null ? trial.angleEmergence.toFixed(1) : 'TIR' }}</span>\n        <span>{{ trial.deviation !== null ? trial.deviation.toFixed(1) : '—' }}</span>\n        <span class=\"mono\">{{ trial.n.toFixed(2) }}</span>\n        <button class=\"trial-del\" @click=\"emit('remove', trial.id)\">&#x1F5D1;</button>\n      </div>\n    </div>\n    <button v-if=\"trials.length\" class=\"btn-clear\" @click=\"emit('clear')\">{{ t('prism.clearAll') }}</button>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { display: flex; flex-direction: column; gap: .4rem; font-size: .82rem; }\n.empty { text-align: center; color: #475569; font-size: .8rem; padding: .5rem; }\n.trial-table { display: flex; flex-direction: column; gap: .2rem; font-size: .7rem; }\n.trial-header { display: grid; grid-template-columns: 22px 32px 32px 38px 32px 38px 20px; gap: .2rem; padding: .15rem .3rem; color: #8B95A5; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,0.06); }\n.trial-row { display: grid; grid-template-columns: 22px 32px 32px 38px 32px 38px 20px; gap: .2rem; padding: .15rem .3rem; align-items: center; }\n.trial-row:nth-child(even) { background: rgba(255,255,255,0.02); }\n.mono { font-family: monospace; color: #67e8f9; }\n.trial-del { background: none; border: none; cursor: pointer; font-size: .65rem; opacity: .5; }\n.trial-del:hover { opacity: 1; }\n.btn-clear { padding: .3rem; border-radius: 4px; border: 1px solid rgba(239,68,68,0.2); background: rgba(239,68,68,0.05); color: #f87171; font-size: .75rem; cursor: pointer; font-family: inherit; margin-top: .3rem; }\n</style>\n",
+      "start": 1783634642397,
+      "end": 1783634642682,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642682,
+      "end": 1783634642682,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642682,
+      "end": 1783634642682,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642682,
+      "end": 1783634642682,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642682,
+      "end": 1783634642682,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/panels/PrismTrialsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/panels/PrismTrialsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/panels/PrismTrialsPanel.vue?vue&type=style&index=0&scoped=da9162c5&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-da9162c5\"]]);\n",
+      "start": 1783634642682,
+      "end": 1783634642883,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642883,
+      "end": 1783634642883,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642883,
+      "end": 1783634642884,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642884,
+      "end": 1783634642884,
+      "order": "normal"
+    }
+  ]
+}

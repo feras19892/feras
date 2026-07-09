@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationToast.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { onMounted, onUnmounted, watch } from 'vue'\n\nconst props = defineProps<{\n  show: boolean\n  title: string\n  message?: string\n  icon?: string\n  type?: 'info' | 'success' | 'warning' | 'error'\n  timeoutMs?: number\n}>()\n\nconst emit = defineEmits<{ (e: 'close'): void }>()\n\nlet timer: ReturnType<typeof setTimeout> | null = null\n\nfunction startTimer() {\n  clearTimer()\n  if (props.timeoutMs && props.timeoutMs > 0) {\n    timer = setTimeout(() => emit('close'), props.timeoutMs)\n  }\n}\n\nfunction clearTimer() {\n  if (timer) {\n    clearTimeout(timer)\n    timer = null\n  }\n}\n\nonMounted(startTimer)\nonUnmounted(clearTimer)\n\nwatch(() => props.show, (v) => {\n  if (v) startTimer()\n  else clearTimer()\n})\n</script>\n\n<template>\n  <transition name=\"toast-slide\">\n    <div v-if=\"show\" class=\"toast\" :class=\"type\">\n      <div class=\"left\">\n        <span class=\"icon\">{{ icon || '🔔' }}</span>\n        <div class=\"content\">\n          <div class=\"title\">{{ title }}</div>\n          <div v-if=\"message\" class=\"message\">{{ message }}</div>\n        </div>\n      </div>\n      <button class=\"close\" @click=\"emit('close')\">✕</button>\n    </div>\n  </transition>\n</template>\n\n<style scoped>\n.toast {\n  min-width: 280px;\n  max-width: 380px;\n  padding: 0.75rem 0.9rem;\n  border-radius: 0.75rem;\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);\n  color: #e2e8f0;\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n}\n.toast.info { border-color: rgba(59,130,246,0.25); }\n.toast.success { border-color: rgba(34,197,94,0.25); }\n.toast.warning { border-color: rgba(234,179,8,0.35); }\n.toast.error { border-color: rgba(239,68,68,0.35); }\n\n.left { display: flex; align-items: center; gap: 0.6rem; flex: 1; }\n.icon { font-size: 1.2rem; }\n.content { display: flex; flex-direction: column; gap: 0.2rem; }\n.title { font-weight: 700; font-size: 0.95rem; }\n.message { font-size: 0.85rem; color: #cbd5e1; }\n.close {\n  background: none;\n  border: none;\n  color: #94a3b8;\n  font-size: 0.95rem;\n  cursor: pointer;\n  padding: 0.2rem;\n}\n.close:hover { color: #e2e8f0; }\n\n.toast-slide-enter-active,\n.toast-slide-leave-active { transition: all 0.2s ease; }\n.toast-slide-enter-from { opacity: 0; transform: translateX(12px) translateY(8px); }\n.toast-slide-leave-to { opacity: 0; transform: translateX(12px) translateY(8px); }\n</style>\n",
+      "start": 1783634640353,
+      "end": 1783634640655,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640655,
+      "end": 1783634640655,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640655,
+      "end": 1783634640655,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640655,
+      "end": 1783634640655,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640655,
+      "end": 1783634640655,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationToast.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationToast.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationToast.vue?vue&type=style&index=0&scoped=f7e422ec&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-f7e422ec\"]]);\n",
+      "start": 1783634640655,
+      "end": 1783634640814,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640814,
+      "end": 1783634640815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640815,
+      "end": 1783634640815,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/InternalResistanceReferencePanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nconst NOTES = [\n  '🔋 كل بطارية حقيقية لها مقاومة داخلية r صغيرة',\n  '⚡ Vt = ε - I×r — الجهد الطرفي أقل من EMF عند مرور التيار',\n  '📉 كلما زاد التيار، زاد الهبوط على المقاومة الداخلية',\n  '🔌 عند R = r: أقصى نقل للقدرة (Maximum Power Transfer)',\n  '📖 المقاومة الداخلية سبب سخونة البطارية تحت الحمل',\n]\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <div class=\"ref-title\">🔋 المقاومة الداخلية</div>\n    <div class=\"ref-section\">\n      <div class=\"section-title\">القوانين الأساسية</div>\n      <div class=\"formula-box\" style=\"color:#f59e0b\">Vt = ε - I × r</div>\n      <div class=\"formula-box\" style=\"color:#4ade80\">I = ε / (R + r)</div>\n      <div class=\"formula-box\" style=\"color:#67e8f9\">P_load = Vt² / R</div>\n    </div>\n    <div class=\"ref-section\">\n      <div class=\"section-title\">تطبيقات</div>\n      <div class=\"app-row\"><span>🔋 بطاريات السيارة (r صغيرة جداً)</span></div>\n      <div class=\"app-row\"><span>📱 بطاريات الهاتف (r تزداد مع العمر)</span></div>\n      <div class=\"app-row\"><span>🔌 مصادر الطاقة المخبرية</span></div>\n    </div>\n    <div v-for=\"(note, i) in NOTES\" :key=\"i\" class=\"ref-note\">{{ note }}</div>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { padding: 1rem; display: flex; flex-direction: column; gap: .5rem; overflow-y: auto; }\n.ref-title { font-size: .9rem; font-weight: 700; color: #f59e0b; text-align: center; padding-bottom: .3rem; border-bottom: 1px solid #1e2530; }\n.ref-section { margin-top: .4rem; padding: .5rem; background: rgba(255,255,255,.02); border-radius: 4px; }\n.section-title { font-size: .78rem; font-weight: 700; color: #67e8f9; margin-bottom: .3rem; }\n.formula-box { font-family: 'Courier New', monospace; font-size: .78rem; text-align: center; padding: .3rem; background: rgba(255,255,255,.03); border-radius: 3px; margin-bottom: .2rem; font-weight: 700; }\n.app-row { display: flex; gap: .5rem; padding: .25rem 0; border-bottom: 1px solid rgba(255,255,255,.04); font-size: .75rem; color: #cbd5e1; }\n.app-row:last-child { border-bottom: none; }\n.ref-note { font-size: .72rem; color: #64748b; margin-top: .3rem; line-height: 1.5; }\n</style>\n",
+      "start": 1783634639360,
+      "end": 1783634639826,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639826,
+      "end": 1783634639826,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639826,
+      "end": 1783634639826,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639826,
+      "end": 1783634639826,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639826,
+      "end": 1783634639826,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/InternalResistanceReferencePanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/InternalResistanceReferencePanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/InternalResistanceReferencePanel.vue?vue&type=style&index=0&scoped=c63b464d&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-c63b464d\"]]);\n",
+      "start": 1783634639826,
+      "end": 1783634640089,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640089,
+      "end": 1783634640089,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640091,
+      "end": 1783634640093,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640094,
+      "end": 1783634640094,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/admin/useAdminUserDetail.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { ref } from 'vue';\nimport { useI18n } from '../useI18n';\nimport { getAdminUserFull, addAdminNote, sendAdminWarning, banUser, unbanUser, type AdminUserFull } from '../../services/admin.service';\n\nexport function useAdminUserDetail() {\n  const { t } = useI18n();\n  const profile = ref<AdminUserFull | null>(null);\n  const loading = ref(false);\n  const error = ref('');\n\n  async function load(userId: number) {\n    loading.value = true;\n    error.value = '';\n    try {\n      const res = await getAdminUserFull(userId);\n      if (res.success) profile.value = res;\n    } catch (err: unknown) {\n      error.value = (err instanceof Error ? err.message : '') || t('admin.loadError');\n    } finally {\n      loading.value = false;\n    }\n  }\n\n  async function ban(userId: number, reason: string) {\n    const res = await banUser(userId, reason);\n    if (res.success) load(userId);\n  }\n\n  async function unban(userId: number) {\n    const res = await unbanUser(userId);\n    if (res.success) load(userId);\n  }\n\n  async function sendWarning(userId: number, title: string, message: string, severity: string) {\n    const res = await sendAdminWarning(userId, title, message, severity);\n    if (res.success) load(userId);\n  }\n\n  async function addNote(userId: number, note: string) {\n    const res = await addAdminNote(userId, note);\n    if (res.success) load(userId);\n  }\n\n  return { profile, loading, error, load, ban, unban, sendWarning, addNote };\n}\n",
+      "start": 1783634640365,
+      "end": 1783634640692,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640692,
+      "end": 1783634640692,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { ref } from \"vue\";\nimport { useI18n } from \"../useI18n\";\nimport { getAdminUserFull, addAdminNote, sendAdminWarning, banUser, unbanUser } from \"../../services/admin.service\";\nexport function useAdminUserDetail() {\n  const { t } = useI18n();\n  const profile = ref(null);\n  const loading = ref(false);\n  const error = ref(\"\");\n  async function load(userId) {\n    loading.value = true;\n    error.value = \"\";\n    try {\n      const res = await getAdminUserFull(userId);\n      if (res.success) profile.value = res;\n    } catch (err) {\n      error.value = (err instanceof Error ? err.message : \"\") || t(\"admin.loadError\");\n    } finally {\n      loading.value = false;\n    }\n  }\n  async function ban(userId, reason) {\n    const res = await banUser(userId, reason);\n    if (res.success) load(userId);\n  }\n  async function unban(userId) {\n    const res = await unbanUser(userId);\n    if (res.success) load(userId);\n  }\n  async function sendWarning(userId, title, message, severity) {\n    const res = await sendAdminWarning(userId, title, message, severity);\n    if (res.success) load(userId);\n  }\n  async function addNote(userId, note) {\n    const res = await addAdminNote(userId, note);\n    if (res.success) load(userId);\n  }\n  return { profile, loading, error, load, ban, unban, sendWarning, addNote };\n}\n",
+      "start": 1783634640692,
+      "end": 1783634640832,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/admin/useAdminUserDetail.ts"
+        ],
+        "sourcesContent": [
+          "import { ref } from 'vue';\nimport { useI18n } from '../useI18n';\nimport { getAdminUserFull, addAdminNote, sendAdminWarning, banUser, unbanUser, type AdminUserFull } from '../../services/admin.service';\n\nexport function useAdminUserDetail() {\n  const { t } = useI18n();\n  const profile = ref<AdminUserFull | null>(null);\n  const loading = ref(false);\n  const error = ref('');\n\n  async function load(userId: number) {\n    loading.value = true;\n    error.value = '';\n    try {\n      const res = await getAdminUserFull(userId);\n      if (res.success) profile.value = res;\n    } catch (err: unknown) {\n      error.value = (err instanceof Error ? err.message : '') || t('admin.loadError');\n    } finally {\n      loading.value = false;\n    }\n  }\n\n  async function ban(userId: number, reason: string) {\n    const res = await banUser(userId, reason);\n    if (res.success) load(userId);\n  }\n\n  async function unban(userId: number) {\n    const res = await unbanUser(userId);\n    if (res.success) load(userId);\n  }\n\n  async function sendWarning(userId: number, title: string, message: string, severity: string) {\n    const res = await sendAdminWarning(userId, title, message, severity);\n    if (res.success) load(userId);\n  }\n\n  async function addNote(userId: number, note: string) {\n    const res = await addAdminNote(userId, note);\n    if (res.success) load(userId);\n  }\n\n  return { profile, loading, error, load, ban, unban, sendWarning, addNote };\n}\n"
+        ],
+        "mappings": "AAAA,SAAS,WAAW;AACpB,SAAS,eAAe;AACxB,SAAS,kBAAkB,cAAc,kBAAkB,SAAS,iBAAqC;AAElG,gBAAS,qBAAqB;AACnC,QAAM,EAAE,EAAE,IAAI,QAAQ;AACtB,QAAM,UAAU,IAA0B,IAAI;AAC9C,QAAM,UAAU,IAAI,KAAK;AACzB,QAAM,QAAQ,IAAI,EAAE;AAEpB,iBAAe,KAAK,QAAgB;AAClC,YAAQ,QAAQ;AAChB,UAAM,QAAQ;AACd,QAAI;AACF,YAAM,MAAM,MAAM,iBAAiB,MAAM;AACzC,UAAI,IAAI,QAAS,SAAQ,QAAQ;AAAA,IACnC,SAAS,KAAc;AACrB,YAAM,SAAS,eAAe,QAAQ,IAAI,UAAU,OAAO,EAAE,iBAAiB;AAAA,IAChF,UAAE;AACA,cAAQ,QAAQ;AAAA,IAClB;AAAA,EACF;AAEA,iBAAe,IAAI,QAAgB,QAAgB;AACjD,UAAM,MAAM,MAAM,QAAQ,QAAQ,MAAM;AACxC,QAAI,IAAI,QAAS,MAAK,MAAM;AAAA,EAC9B;AAEA,iBAAe,MAAM,QAAgB;AACnC,UAAM,MAAM,MAAM,UAAU,MAAM;AAClC,QAAI,IAAI,QAAS,MAAK,MAAM;AAAA,EAC9B;AAEA,iBAAe,YAAY,QAAgB,OAAe,SAAiB,UAAkB;AAC3F,UAAM,MAAM,MAAM,iBAAiB,QAAQ,OAAO,SAAS,QAAQ;AACnE,QAAI,IAAI,QAAS,MAAK,MAAM;AAAA,EAC9B;AAEA,iBAAe,QAAQ,QAAgB,MAAc;AACnD,UAAM,MAAM,MAAM,aAAa,QAAQ,IAAI;AAC3C,QAAI,IAAI,QAAS,MAAK,MAAM;AAAA,EAC9B;AAEA,SAAO,EAAE,SAAS,SAAS,OAAO,MAAM,KAAK,OAAO,aAAa,QAAQ;AAC3E;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640832,
+      "end": 1783634640832,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640832,
+      "end": 1783634640832,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640832,
+      "end": 1783634640832,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640832,
+      "end": 1783634640832,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640832,
+      "end": 1783634640832,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640832,
+      "end": 1783634640832,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640832,
+      "end": 1783634640832,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640832,
+      "end": 1783634640832,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640832,
+      "end": 1783634640832,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640832,
+      "end": 1783634640832,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640832,
+      "end": 1783634640832,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640832,
+      "end": 1783634640832,
+      "order": "normal"
+    }
+  ]
+}

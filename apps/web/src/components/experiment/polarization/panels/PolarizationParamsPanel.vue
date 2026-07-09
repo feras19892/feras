@@ -1,7 +1,5 @@
-<script setup lang="ts">
-import { useI18n } from '../../../../composables/useI18n'
+﻿<script setup lang="ts">
 
-const { t } = useI18n()
 
 interface Props {
   params: { polarizerAngle: number; analyzerAngle: number; I0: number }

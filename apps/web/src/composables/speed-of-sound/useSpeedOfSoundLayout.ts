@@ -6,8 +6,8 @@ const allIds = ['readings', 'chart', 'trials', 'params', 'laws', 'results']
 
 const defaultState = {
   widths: { data: 320, ctrl: 320 },
-  visible: ['readings', 'chart', 'trials', 'params', 'laws', 'results'] as string[],
-  columnMap: { data: ['readings', 'chart', 'trials'], ctrl: ['params', 'laws', 'results'] } as Record<string, string[]>,
+  visible: ['readings', 'chart', 'trials', 'params'] as string[],
+  columnMap: { data: ['readings', 'chart', 'trials'], ctrl: ['params'] } as Record<string, string[]>,
   maximized: Object.fromEntries(allIds.map(id => [id, false])) as Record<string, boolean>,
 }
 
@@ -17,7 +17,7 @@ export function useSpeedOfSoundLayout() {
     readings: t('experiments.panelReadings'), chart: t('experiments.panelChart'), trials: t('experiments.panelTrials'),
     params: t('experiments.panelParams'), laws: t('experiments.panelLaws'), results: t('experiments.panelResults'),
   }
-  const widths = reactive({ ...defaultState.widths })
+  const widths = reactive<Record<string, number>>({ ...defaultState.widths })
   const visible = ref<string[]>([...defaultState.visible])
   const columnMap = reactive({ ...defaultState.columnMap })
   const maximized = reactive<Record<string, boolean>>({ ...defaultState.maximized })

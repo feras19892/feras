@@ -13,15 +13,16 @@ const emit = defineEmits<{
   (e: 'remove', id: number): void
   (e: 'clear'): void
   (e: 'update:params', p: { material: string; L0: number; t0: number; t1: number }): void
+  (e: 'hoverField', field: string): void
 }>()
 </script>
 <template>
   <div>
-    <ThermalExpansionReadingsPanel v-if="id === 'readings'" :material="params.material" :L0="params.L0" :t0="params.t0" :t1="params.t1" :dL="dL" :L1="L1" :alpha="alpha" />
+    <ThermalExpansionReadingsPanel v-if="id === 'readings'" :material="params.material" :L0="params.L0" :t0="params.t0" :t1="params.t1" :d-l="dL" :L1="L1" :alpha="alpha" @hover-field="emit('hoverField', $event)" />
     <ThermalExpansionChartPanel v-else-if="id === 'chart'" :trials="trials" />
     <ThermalExpansionTrialsPanel v-else-if="id === 'trials'" :trials="trials" @remove="emit('remove', $event)" @clear="emit('clear')" />
     <ThermalExpansionParamsPanel v-else-if="id === 'params'" :params="params" @update:params="emit('update:params', $event)" />
-    <ThermalExpansionLawsPanel v-else-if="id === 'laws'" :L0="params.L0" :t0="params.t0" :t1="params.t1" :alpha="alpha" :dL="dL" />
+    <ThermalExpansionLawsPanel v-else-if="id === 'laws'" :L0="params.L0" :t0="params.t0" :t1="params.t1" :alpha="alpha" :d-l="dL" :material="params.material" />
     <ThermalExpansionResultsPanel v-else-if="id === 'results'" :trials="trials" />
   </div>
 </template>

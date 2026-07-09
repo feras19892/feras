@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/ChemistryLanding.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\r\nimport { ref, computed, watch, onMounted, onUnmounted } from 'vue';\r\nimport { pendingChemicalFill, getLiquid, getBurette, selectedChemical, hasSelectedChemicalMap, items, isBurette, buretteTotalConsumedMap, buretteConsumedThisRefill, buretteInitialVolumeMap } from '../../composables/chemistry/useChemistryLab';\r\nimport { isReactionVessel } from '../../composables/chemistry/chemLabIds';\r\nimport type { Chemical } from '../../composables/chemistry/useChemistryLab';\r\nimport type { LabItem } from '../../composables/chemistry/useChemistryTools';\r\nimport type { ToolState } from '../../components/experiment/chemistry/InspectorPanel.vue';\r\nimport WorkspaceCanvas from '../../components/experiment/chemistry/WorkspaceCanvas.vue';\r\nimport LeftPanel from '../../components/experiment/chemistry/LeftPanel.vue';\r\nimport RightPanel from '../../components/experiment/chemistry/RightPanel.vue';\r\nimport ExperimentSelector from '../../components/experiment/chemistry/ExperimentSelector.vue';\r\nimport { type Experiment, type TitrationReading, type ReportData, validateExperimentSteps } from '../../composables/chemistry/useExperiments';\r\nimport { undo, redo, canUndo, canRedo, canMicroUndo, canMicroRedo } from '../../composables/chemistry/useChemistryHistory';\r\nimport { applyIndicator } from '../../composables/chemistry/useReactionEngine';\r\nimport { buretteWarning } from '../../composables/chemistry/useLabSimulation';\r\nimport { useI18n } from '../../composables/useI18n';\r\nimport { useChemistryResizing } from '../../composables/chemistry/useChemistryResizing';\r\nimport ExperimentTheoryPanel from '../../components/experiment/chemistry/ExperimentTheoryPanel.vue';\r\nimport BuretteDisplay from '../../components/experiment/chemistry/BuretteDisplay.vue';\r\nimport WorkspaceActionsPanel from '../../components/experiment/chemistry/WorkspaceActionsPanel.vue';\r\nimport ChemAnalysisButton from '../../components/experiment/chemistry/ChemAnalysisButton.vue';\r\nimport TitrationDataTable from '../../components/experiment/chemistry/TitrationDataTable.vue';\r\nimport ChemReportModal from '../../components/experiment/chemistry/ChemReportModal.vue';\r\nimport {\r\n  welcomeMessage, warnDangerousChemical, quickFactAbout,\r\n  encourageStep, tipForStep, warnOnAction,\r\n  startIdleMessages, stopIdleMessages\r\n} from '../../composables/chemistry/useLabAssistant';\r\nimport { useChemicalLocale } from '../../composables/chemistry/useChemicalLocale';\r\n\r\nconst { t } = useI18n();\r\nconst { leftWidth, rightWidth, onLeftDown, onRightDown } = useChemistryResizing();\r\nconst activeTab = ref('glassware');\r\nconst showExperimentSelector = ref(false);\r\nconst activeExperiment = ref<Experiment | null>(null);\r\nconst selectedItem = ref<LabItem | null>(null);\r\nconst showTheoryPanel = ref(false);\r\nconst titrationReadings = ref<TitrationReading[]>([]);\r\nconst showReport = ref(false);\r\nconst reportData = ref<ReportData | null>(null);\r\n\r\n// Auto-check experiment steps against workspace state\r\nconst stepCompletion = computed(() => {\r\n  if (!activeExperiment.value) return [];\r\n  return validateExperimentSteps(activeExperiment.value);\r\n});\r\n\r\n// ── Lab Assistant watchers ──\r\n\r\n// Watch experiment changes → welcome\r\nwatch(activeExperiment, (exp) => {\r\n  if (exp) welcomeMessage(t(exp.nameAr));\r\n});\r\n\r\n// Watch selected chemical → warnings + facts\r\nwatch(selectedChemical, (chem) => {\r\n  if (chem && activeExperiment.value) {\r\n    const { getName } = useChemicalLocale();\r\n    warnDangerousChemical(getName(chem.id), chem.id);\r\n    quickFactAbout(chem.id);\r\n  }\r\n});\r\n\r\n// Watch step completion → encouragement + tips\r\nwatch(stepCompletion, (newVal, oldVal) => {\r\n  if (!activeExperiment.value) return;\r\n  for (let i = 0; i < newVal.length; i++) {\r\n    if (newVal[i] && !oldVal?.[i]) {\r\n      const step = activeExperiment.value.steps[i];\r\n      if (step) {\r\n        encourageStep(t(step.text));\r\n        tipForStep(i, activeExperiment.value.id);\r\n      }\r\n    }\r\n  }\r\n}, { flush: 'post' });\r\n\r\n// Burette consumption tracker (must be defined before watchers that use it)\r\nconst buretteConsumption = computed(() => {\r\n  let total = 0;\r\n  let current = 0;\r\n  let initial = 0;\r\n  items.value.forEach((item) => {\r\n    if (isBurette(item.id)) {\r\n      total += buretteTotalConsumedMap[item.uid] || 0;\r\n      current += buretteConsumedThisRefill[item.uid] || 0;\r\n      initial = buretteInitialVolumeMap[item.uid] || getBurette(item.uid).maxVolume;\r\n    }\r\n  });\r\n  return { total, current, initial, grandTotal: total + current };\r\n});\r\n\r\n// Watch burette warning → alerts\r\nwatch(buretteWarning, (warn) => {\r\n  if (warn === 'approaching') warnOnAction('equivalenceApproaching');\r\n  if (warn === 'equivalence') warnOnAction('equivalenceReached');\r\n  if (warn === 'exceeded') warnOnAction('equivalenceExceeded');\r\n});\r\n\r\nfunction showReportManual() {\r\n  if (!activeExperiment.value) return;\r\n  const consumed = buretteConsumption.value.grandTotal;\r\n  const target = items.value.find((i) => {\r\n    if (!isReactionVessel(i.id)) return false;\r\n    const liq = getLiquid(i.uid);\r\n    return liq && liq.indicators && liq.indicators.includes('phenolphthalein');\r\n  });\r\n  const liq = target ? getLiquid(target.uid) : null;\r\n  reportData.value = {\r\n    experimentName: t(activeExperiment.value.nameAr),\r\n    consumedVolume: consumed,\r\n    acidVolume: 50,\r\n    baseMolarity: 0.1,\r\n    calculatedAcidMolarity: consumed > 0 ? (0.1 * consumed) / 50 : 0,\r\n    phAtEquivalence: liq ? liq.ph : null,\r\n    colorAtEquivalence: liq ? liq.color : '#3b82f6',\r\n    readingsCount: titrationReadings.value.length,\r\n  };\r\n  showReport.value = true;\r\n}\r\n\r\nfunction addManualReading() {\r\n  const grandTotal = buretteConsumption.value.grandTotal;\r\n  const target = items.value.find((i) => {\r\n    if (!isReactionVessel(i.id)) return false;\r\n    const liq = getLiquid(i.uid);\r\n    return liq && liq.indicators && liq.indicators.includes('phenolphthalein');\r\n  });\r\n  const liq = target ? getLiquid(target.uid) : null;\r\n  const last = titrationReadings.value[titrationReadings.value.length - 1];\r\n  // If last reading is within 0.05 mL, update it instead of adding a duplicate row\r\n  if (last && Math.abs(last.volume - grandTotal) < 0.05) {\r\n    last.ph = liq ? liq.ph : null;\r\n    last.color = liq ? liq.color : '#3b82f6';\r\n    return;\r\n  }\r\n  titrationReadings.value.push({\r\n    n: titrationReadings.value.length + 1,\r\n    volume: grandTotal,\r\n    ph: liq ? liq.ph : null,\r\n    color: liq ? liq.color : '#3b82f6',\r\n  });\r\n}\r\n\r\nfunction onSelectExperiment(exp: Experiment) {\r\n  activeExperiment.value = exp;\r\n  titrationReadings.value = [];\r\n  showExperimentSelector.value = false;\r\n}\r\n\r\nfunction restartExperiment() {\r\n  showReport.value = false;\r\n  reportData.value = null;\r\n  titrationReadings.value = [];\r\n  canvasRef.value?.resetLab();\r\n}\r\n\r\nconst canUndoNow = computed(() => canUndo());\r\nconst canRedoNow = computed(() => canRedo());\r\nconst canMicroUndoNow = computed(() => canMicroUndo());\r\nconst canMicroRedoNow = computed(() => canMicroRedo());\r\nconst selectedState = ref<ToolState | null>(null);\r\nconst canvasRef = ref<InstanceType<typeof WorkspaceCanvas> | null>(null);\r\n\r\nfunction onSelect(item: LabItem | null, state: ToolState | null) {\r\n  selectedItem.value = item;\r\n  selectedState.value = state;\r\n}\r\n\r\n// Auto-switch to chemical shelf when pending fill is set\r\nwatch(pendingChemicalFill, (val) => {\r\n  if (val) {\r\n    activeTab.value = 'chemicals';\r\n    // Expand all chemical sections\r\n    expandedSections.value.liquids = true;\r\n    expandedSections.value.solids = true;\r\n    expandedSections.value.indicators = true;\r\n  }\r\n});\r\n\r\nfunction onChemicalClick(chem: Chemical) {\r\n  if (!pendingChemicalFill.value) return;\r\n  const { uid, amount } = pendingChemicalFill.value;\r\n  hasSelectedChemicalMap[uid] = true;\r\n  const targetItem = items.value.find((i: LabItem) => i.uid === uid);\r\n  if (targetItem && isBurette(targetItem.id)) {\r\n    const s = getBurette(uid);\r\n    s.volume = Math.min(s.maxVolume, s.volume + amount);\r\n    s.color = chem.color;\r\n    s.opacity = chem.opacity;\r\n    s.chemicalId = chem.id;\r\n  } else {\r\n    const liq = getLiquid(uid);\r\n    if (chem.category === 'indicator') {\r\n      const dropAmount = 5;\r\n      liq.volume = Math.min(liq.maxVolume, liq.volume + dropAmount);\r\n      if (!liq.indicators) liq.indicators = [];\r\n      if (!liq.indicators.includes(chem.id)) liq.indicators.push(chem.id);\r\n      // Update label: if empty/water, show indicator name; if has chemical, append\r\n      if (!liq.chemicalId) {\r\n        liq.label = chem.id;\r\n      } else if (!liq.label.includes(chem.id)) {\r\n        liq.label = liq.label + ' + ' + chem.id;\r\n      }\r\n      applyIndicator(chem.id, uid);\r\n    } else {\r\n      liq.volume = Math.min(liq.maxVolume, liq.volume + amount);\r\n      liq.color = chem.color;\r\n      liq.opacity = chem.opacity;\r\n      liq.label = chem.id;\r\n      liq.chemicalId = chem.id;\r\n      liq.ph = chem.ph ?? null;\r\n      liq.baseColor = chem.color;\r\n      if (!liq.reactants) liq.reactants = {};\r\n      liq.reactants[chem.id] = (liq.reactants[chem.id] || 0) + amount;\r\n    }\r\n  }\r\n  pendingChemicalFill.value = null;\r\n}\r\n\r\nconst expandedSections = ref<Record<string, boolean>>({\r\n  containers: true, measuring: true, devices: true, helpers: true,\r\n  liquids: true, solids: true, indicators: true,\r\n});\r\n\r\nonMounted(() => startIdleMessages());\r\nonUnmounted(() => stopIdleMessages());\r\n</script>\r\n\r\n<template>\r\n  <div class=\"chemistry-landing\" :style=\"{ gridTemplateColumns: `${leftWidth}px 6px 1fr 6px ${rightWidth}px`, '--left-width': `${leftWidth}px` }\">\r\n    <LeftPanel v-model:active-tab=\"activeTab\" @chemical-click=\"onChemicalClick\" />\r\n    <div class=\"resizer resizer-left\" @mousedown=\"onLeftDown\" />\r\n    <!-- Burette Data Display (top-left of workspace) -->\r\n    <BuretteDisplay\r\n      :remaining=\"buretteConsumption.initial - buretteConsumption.current\"\r\n      :initial=\"buretteConsumption.initial\"\r\n      :total-consumed=\"buretteConsumption.grandTotal\"\r\n      :warning=\"buretteWarning\"\r\n    />\r\n    <!-- Undo/Redo buttons (bottom-left of workspace) -->\r\n    <WorkspaceActionsPanel\r\n      :can-undo=\"canUndoNow\"\r\n      :can-redo=\"canRedoNow\"\r\n      :can-step-undo=\"canMicroUndoNow\"\r\n      :can-step-redo=\"canMicroRedoNow\"\r\n      @undo=\"undo()\"\r\n      @redo=\"redo()\"\r\n      @step-undo=\"canvasRef?.stepUndo()\"\r\n      @step-redo=\"canvasRef?.stepRedo()\"\r\n    />\r\n    <WorkspaceCanvas ref=\"canvasRef\" @select=\"onSelect\" />\r\n    <div class=\"resizer resizer-right\" @mousedown=\"onRightDown\" />\r\n    <RightPanel\r\n      :selected-item=\"selectedItem\"\r\n      :selected-state=\"selectedState\"\r\n      :active-experiment=\"activeExperiment\"\r\n      :step-completion=\"stepCompletion\"\r\n      @select-experiment=\"showExperimentSelector = true\"\r\n      @open-theory=\"showTheoryPanel = true\"\r\n      @clear-experiment=\"activeExperiment = null\"\r\n      @reset-lab=\"canvasRef?.resetLab()\"\r\n      @show-report=\"showReportManual\"\r\n    />\r\n    <ExperimentSelector\r\n      v-if=\"showExperimentSelector\"\r\n      @select=\"onSelectExperiment\"\r\n      @close=\"showExperimentSelector = false\"\r\n    />\r\n    <ExperimentTheoryPanel\r\n      v-if=\"showTheoryPanel && activeExperiment?.theory\"\r\n      :theory=\"activeExperiment.theory\"\r\n      @close=\"showTheoryPanel = false\"\r\n    />\r\n    <!-- Titration Data Table (top-right of workspace) -->\r\n    <TitrationDataTable\r\n      v-if=\"activeExperiment && activeExperiment.id.startsWith('neutralization-')\"\r\n      :readings=\"titrationReadings\"\r\n      @add=\"addManualReading\"\r\n    />\r\n    <!-- Final Report Modal -->\r\n    <ChemReportModal\r\n      v-if=\"showReport && reportData\"\r\n      :data=\"reportData\"\r\n      @close=\"showReport = false\"\r\n      @restart=\"restartExperiment\"\r\n    />\r\n    <ChemAnalysisButton />\r\n  </div>\r\n</template>\r\n\r\n<style src=\"./chemistry-landing.css\" scoped></style>\r\n",
+      "start": 1783634639007,
+      "end": 1783634639101,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639101,
+      "end": 1783634639101,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639101,
+      "end": 1783634639101,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639101,
+      "end": 1783634639101,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639101,
+      "end": 1783634639101,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/ChemistryLanding.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/ChemistryLanding.vue?vue&type=script&setup=true&lang.ts\";\nimport \"./chemistry-landing.css?vue&type=style&index=0&src=afe06a72&scoped=afe06a72&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-afe06a72\"]]);\n",
+      "start": 1783634639101,
+      "end": 1783634639164,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639164,
+      "end": 1783634639164,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639170,
+      "end": 1783634639170,
+      "order": "normal"
+    }
+  ]
+}

@@ -6,6 +6,7 @@ export interface Report {
   class_id: string;
   experiment_type: string;
   experiment_name: string;
+  experiment_id?: string;
   readings: string;
   params?: string;
   student_info?: string;
@@ -55,6 +56,7 @@ export async function createReport(data: {
   class_id: string;
   experiment_type: string;
   experiment_name: string;
+  experiment_id?: string;
   readings: string;
   params?: string;
   student_info?: string;
@@ -77,6 +79,7 @@ export async function resubmitReport(reportId: number, data: {
   class_id: string;
   experiment_type: string;
   experiment_name: string;
+  experiment_id?: string;
   readings: string;
   params?: string;
   student_info?: string;

@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationBell.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, createTextVNode as _createTextVNode, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, normalizeClass as _normalizeClass, withModifiers as _withModifiers } from \"vue\"\n\nconst _hoisted_1 = {\n  key: 0,\n  class: \"badge\"\n}\nconst _hoisted_2 = { class: \"header\" }\nconst _hoisted_3 = {\n  key: 0,\n  class: \"empty\"\n}\nconst _hoisted_4 = { class: \"icon\" }\nconst _hoisted_5 = { class: \"content\" }\nconst _hoisted_6 = { class: \"title\" }\nconst _hoisted_7 = {\n  key: 0,\n  class: \"msg\"\n}\nconst _hoisted_8 = { class: \"time\" }\n\nimport { ref, onMounted, onUnmounted } from 'vue';\nimport { useNotifications } from '../../composables/useNotifications';\nimport { useI18n } from '../../composables/useI18n';\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'NotificationBell',\n  setup(__props) {\n\nconst { notifications, unreadCount, markAllRead } = useNotifications();\nconst { t } = useI18n();\nconst open = ref(false);\nconst wrapperRef = ref<HTMLElement | null>(null);\n\nfunction toggle() { open.value = !open.value; }\n\nfunction onDocumentClick(event: MouseEvent) {\n  if (wrapperRef.value && !wrapperRef.value.contains(event.target as Node)) {\n    open.value = false;\n  }\n}\n\nonMounted(() => document.addEventListener('mousedown', onDocumentClick));\nonUnmounted(() => document.removeEventListener('mousedown', onDocumentClick));\n\nfunction getIcon(type: string) {\n  const map: Record<string, string> = {\n    report_submitted: '📤',\n    report_graded: '⭐',\n    report_resubmitted: '↩️',\n    comment_added: '💬',\n    class_joined: '🏫',\n  };\n  return map[type] || '🔔';\n}\n\nfunction formatTime(dateStr: string) {\n  const d = new Date(dateStr);\n  return d.toLocaleString('ar-SA', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    ref_key: \"wrapperRef\",\n    ref: wrapperRef,\n    class: \"bell-wrapper\"\n  }, [\n    _createElementVNode(\"button\", {\n      class: \"bell-btn\",\n      onClick: toggle\n    }, [\n      _cache[2] || (_cache[2] = _createTextVNode(\" 🔔 \", -1)),\n      (_unref(unreadCount) > 0)\n        ? (_openBlock(), _createElementBlock(\"span\", _hoisted_1, _toDisplayString(_unref(unreadCount)), 1))\n        : _createCommentVNode(\"\", true)\n    ]),\n    (open.value)\n      ? (_openBlock(), _createElementBlock(\"div\", {\n          key: 0,\n          class: \"dropdown\",\n          onClick: _cache[1] || (_cache[1] = _withModifiers(() => {}, [\"stop\"]))\n        }, [\n          _createElementVNode(\"div\", _hoisted_2, [\n            _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('common.notifications')), 1),\n            (_unref(notifications).length > 0)\n              ? (_openBlock(), _createElementBlock(\"button\", {\n                  key: 0,\n                  class: \"mark-all\",\n                  onClick: _cache[0] || (_cache[0] = \n//@ts-ignore\n(...args) => (_unref(markAllRead) && _unref(markAllRead)(...args)))\n                }, _toDisplayString(_unref(t)('common.markAllRead')), 1))\n              : _createCommentVNode(\"\", true)\n          ]),\n          (_unref(notifications).length === 0)\n            ? (_openBlock(), _createElementBlock(\"div\", _hoisted_3, _toDisplayString(_unref(t)('common.noNotifications')), 1))\n            : _createCommentVNode(\"\", true),\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(_unref(notifications), (n) => {\n            return (_openBlock(), _createElementBlock(\"div\", {\n              key: n.id,\n              class: _normalizeClass(['item', { unread: !n.is_read }])\n            }, [\n              _createElementVNode(\"span\", _hoisted_4, _toDisplayString(getIcon(n.type)), 1),\n              _createElementVNode(\"div\", _hoisted_5, [\n                _createElementVNode(\"div\", _hoisted_6, _toDisplayString(n.title), 1),\n                (n.message)\n                  ? (_openBlock(), _createElementBlock(\"div\", _hoisted_7, _toDisplayString(n.message), 1))\n                  : _createCommentVNode(\"\", true),\n                _createElementVNode(\"div\", _hoisted_8, _toDisplayString(formatTime(n.created_at)), 1)\n              ])\n            ], 2))\n          }), 128))\n        ]))\n      : _createCommentVNode(\"\", true)\n  ], 512))\n}\n}\n\n})",
+      "start": 1783634640867,
+      "end": 1783634640867
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640867,
+      "end": 1783634640867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, createTextVNode as _createTextVNode, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, normalizeClass as _normalizeClass, withModifiers as _withModifiers } from \"vue\";\nconst _hoisted_1 = {\n  key: 0,\n  class: \"badge\"\n};\nconst _hoisted_2 = { class: \"header\" };\nconst _hoisted_3 = {\n  key: 0,\n  class: \"empty\"\n};\nconst _hoisted_4 = { class: \"icon\" };\nconst _hoisted_5 = { class: \"content\" };\nconst _hoisted_6 = { class: \"title\" };\nconst _hoisted_7 = {\n  key: 0,\n  class: \"msg\"\n};\nconst _hoisted_8 = { class: \"time\" };\nimport { ref, onMounted, onUnmounted } from \"vue\";\nimport { useNotifications } from \"../../composables/useNotifications\";\nimport { useI18n } from \"../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"NotificationBell\",\n  setup(__props) {\n    const { notifications, unreadCount, markAllRead } = useNotifications();\n    const { t } = useI18n();\n    const open = ref(false);\n    const wrapperRef = ref(null);\n    function toggle() {\n      open.value = !open.value;\n    }\n    function onDocumentClick(event) {\n      if (wrapperRef.value && !wrapperRef.value.contains(event.target)) {\n        open.value = false;\n      }\n    }\n    onMounted(() => document.addEventListener(\"mousedown\", onDocumentClick));\n    onUnmounted(() => document.removeEventListener(\"mousedown\", onDocumentClick));\n    function getIcon(type) {\n      const map = {\n        report_submitted: \"📤\",\n        report_graded: \"⭐\",\n        report_resubmitted: \"↩️\",\n        comment_added: \"💬\",\n        class_joined: \"🏫\"\n      };\n      return map[type] || \"🔔\";\n    }\n    function formatTime(dateStr) {\n      const d = new Date(dateStr);\n      return d.toLocaleString(\"ar-SA\", { month: \"short\", day: \"numeric\", hour: \"2-digit\", minute: \"2-digit\" });\n    }\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", {\n        ref_key: \"wrapperRef\",\n        ref: wrapperRef,\n        class: \"bell-wrapper\"\n      }, [\n        _createElementVNode(\"button\", {\n          class: \"bell-btn\",\n          onClick: toggle\n        }, [\n          _cache[2] || (_cache[2] = _createTextVNode(\" 🔔 \", -1)),\n          _unref(unreadCount) > 0 ? (_openBlock(), _createElementBlock(\"span\", _hoisted_1, _toDisplayString(_unref(unreadCount)), 1)) : _createCommentVNode(\"\", true)\n        ]),\n        open.value ? (_openBlock(), _createElementBlock(\"div\", {\n          key: 0,\n          class: \"dropdown\",\n          onClick: _cache[1] || (_cache[1] = _withModifiers(() => {\n          }, [\"stop\"]))\n        }, [\n          _createElementVNode(\"div\", _hoisted_2, [\n            _createElementVNode(\"span\", null, _toDisplayString(_unref(t)(\"common.notifications\")), 1),\n            _unref(notifications).length > 0 ? (_openBlock(), _createElementBlock(\"button\", {\n              key: 0,\n              class: \"mark-all\",\n              onClick: _cache[0] || (_cache[0] = //@ts-ignore\n              (...args) => _unref(markAllRead) && _unref(markAllRead)(...args))\n            }, _toDisplayString(_unref(t)(\"common.markAllRead\")), 1)) : _createCommentVNode(\"\", true)\n          ]),\n          _unref(notifications).length === 0 ? (_openBlock(), _createElementBlock(\"div\", _hoisted_3, _toDisplayString(_unref(t)(\"common.noNotifications\")), 1)) : _createCommentVNode(\"\", true),\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(_unref(notifications), (n) => {\n            return _openBlock(), _createElementBlock(\"div\", {\n              key: n.id,\n              class: _normalizeClass([\"item\", { unread: !n.is_read }])\n            }, [\n              _createElementVNode(\"span\", _hoisted_4, _toDisplayString(getIcon(n.type)), 1),\n              _createElementVNode(\"div\", _hoisted_5, [\n                _createElementVNode(\"div\", _hoisted_6, _toDisplayString(n.title), 1),\n                n.message ? (_openBlock(), _createElementBlock(\"div\", _hoisted_7, _toDisplayString(n.message), 1)) : _createCommentVNode(\"\", true),\n                _createElementVNode(\"div\", _hoisted_8, _toDisplayString(formatTime(n.created_at)), 1)\n              ])\n            ], 2);\n          }), 128))\n        ])) : _createCommentVNode(\"\", true)\n      ], 512);\n    };\n  }\n});\n",
+      "start": 1783634640867,
+      "end": 1783634641021,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationBell.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, createTextVNode as _createTextVNode, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, normalizeClass as _normalizeClass, withModifiers as _withModifiers } from \"vue\"\n\nconst _hoisted_1 = {\n  key: 0,\n  class: \"badge\"\n}\nconst _hoisted_2 = { class: \"header\" }\nconst _hoisted_3 = {\n  key: 0,\n  class: \"empty\"\n}\nconst _hoisted_4 = { class: \"icon\" }\nconst _hoisted_5 = { class: \"content\" }\nconst _hoisted_6 = { class: \"title\" }\nconst _hoisted_7 = {\n  key: 0,\n  class: \"msg\"\n}\nconst _hoisted_8 = { class: \"time\" }\n\nimport { ref, onMounted, onUnmounted } from 'vue';\nimport { useNotifications } from '../../composables/useNotifications';\nimport { useI18n } from '../../composables/useI18n';\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'NotificationBell',\n  setup(__props) {\n\nconst { notifications, unreadCount, markAllRead } = useNotifications();\nconst { t } = useI18n();\nconst open = ref(false);\nconst wrapperRef = ref<HTMLElement | null>(null);\n\nfunction toggle() { open.value = !open.value; }\n\nfunction onDocumentClick(event: MouseEvent) {\n  if (wrapperRef.value && !wrapperRef.value.contains(event.target as Node)) {\n    open.value = false;\n  }\n}\n\nonMounted(() => document.addEventListener('mousedown', onDocumentClick));\nonUnmounted(() => document.removeEventListener('mousedown', onDocumentClick));\n\nfunction getIcon(type: string) {\n  const map: Record<string, string> = {\n    report_submitted: '📤',\n    report_graded: '⭐',\n    report_resubmitted: '↩️',\n    comment_added: '💬',\n    class_joined: '🏫',\n  };\n  return map[type] || '🔔';\n}\n\nfunction formatTime(dateStr: string) {\n  const d = new Date(dateStr);\n  return d.toLocaleString('ar-SA', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    ref_key: \"wrapperRef\",\n    ref: wrapperRef,\n    class: \"bell-wrapper\"\n  }, [\n    _createElementVNode(\"button\", {\n      class: \"bell-btn\",\n      onClick: toggle\n    }, [\n      _cache[2] || (_cache[2] = _createTextVNode(\" 🔔 \", -1)),\n      (_unref(unreadCount) > 0)\n        ? (_openBlock(), _createElementBlock(\"span\", _hoisted_1, _toDisplayString(_unref(unreadCount)), 1))\n        : _createCommentVNode(\"\", true)\n    ]),\n    (open.value)\n      ? (_openBlock(), _createElementBlock(\"div\", {\n          key: 0,\n          class: \"dropdown\",\n          onClick: _cache[1] || (_cache[1] = _withModifiers(() => {}, [\"stop\"]))\n        }, [\n          _createElementVNode(\"div\", _hoisted_2, [\n            _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('common.notifications')), 1),\n            (_unref(notifications).length > 0)\n              ? (_openBlock(), _createElementBlock(\"button\", {\n                  key: 0,\n                  class: \"mark-all\",\n                  onClick: _cache[0] || (_cache[0] = \n//@ts-ignore\n(...args) => (_unref(markAllRead) && _unref(markAllRead)(...args)))\n                }, _toDisplayString(_unref(t)('common.markAllRead')), 1))\n              : _createCommentVNode(\"\", true)\n          ]),\n          (_unref(notifications).length === 0)\n            ? (_openBlock(), _createElementBlock(\"div\", _hoisted_3, _toDisplayString(_unref(t)('common.noNotifications')), 1))\n            : _createCommentVNode(\"\", true),\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(_unref(notifications), (n) => {\n            return (_openBlock(), _createElementBlock(\"div\", {\n              key: n.id,\n              class: _normalizeClass(['item', { unread: !n.is_read }])\n            }, [\n              _createElementVNode(\"span\", _hoisted_4, _toDisplayString(getIcon(n.type)), 1),\n              _createElementVNode(\"div\", _hoisted_5, [\n                _createElementVNode(\"div\", _hoisted_6, _toDisplayString(n.title), 1),\n                (n.message)\n                  ? (_openBlock(), _createElementBlock(\"div\", _hoisted_7, _toDisplayString(n.message), 1))\n                  : _createCommentVNode(\"\", true),\n                _createElementVNode(\"div\", _hoisted_8, _toDisplayString(formatTime(n.created_at)), 1)\n              ])\n            ], 2))\n          }), 128))\n        ]))\n      : _createCommentVNode(\"\", true)\n  ], 512))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641021,
+      "end": 1783634641021,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641021,
+      "end": 1783634641021,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634641021,
+      "end": 1783634641021,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641021,
+      "end": 1783634641021,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641021,
+      "end": 1783634641021,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641021,
+      "end": 1783634641021,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641021,
+      "end": 1783634641021,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641021,
+      "end": 1783634641021,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641021,
+      "end": 1783634641021,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641021,
+      "end": 1783634641021,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641021,
+      "end": 1783634641021,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641021,
+      "end": 1783634641022,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641022,
+      "end": 1783634641022,
+      "order": "normal"
+    }
+  ]
+}

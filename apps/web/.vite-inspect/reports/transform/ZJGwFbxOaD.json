@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useChemistryTools.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "export interface LabItem {\n  uid: string;\n  id: string;\n  name: string;\n  icon: string;\n  type: string;\n  x: number;\n  y: number;\n}\n\nexport interface ToolDef {\n  id: string;\n  name: string;\n  icon: string;\n  type: string;\n}\n\nexport interface Section {\n  id: string;\n  title: string;\n  icon: string;\n  items: ToolDef[];\n}\n\nexport const glasswareSections: Section[] = [\n  {\n    id: 'containers',\n    title: 'chemistryTools.sectionContainers',\n    icon: '🧪',\n    items: [\n      { id: 'test-tube-sm', name: 'chemistryTools.testTubeSm', icon: '🧪', type: 'container' },\n      { id: 'test-tube-md', name: 'chemistryTools.testTubeMd', icon: '🧪', type: 'container' },\n      { id: 'test-tube-lg', name: 'chemistryTools.testTubeLg', icon: '🧪', type: 'container' },\n      { id: 'beaker-100', name: 'chemistryTools.beaker100', icon: '🥣', type: 'container' },\n      { id: 'beaker-250', name: 'chemistryTools.beaker250', icon: '🥣', type: 'container' },\n      { id: 'beaker-500', name: 'chemistryTools.beaker500', icon: '🥣', type: 'container' },\n      { id: 'erlenmeyer', name: 'chemistryTools.erlenmeyer', icon: '⚗️', type: 'container' },\n      { id: 'volumetric-flask', name: 'chemistryTools.volumetricFlask', icon: '🏺', type: 'container' },\n      { id: 'round-bottom-flask', name: 'chemistryTools.roundBottomFlask', icon: '⚗️', type: 'container' },\n      { id: 'sep-funnel', name: 'chemistryTools.sepFunnel', icon: '🫗', type: 'container' },\n    ],\n  },\n  {\n    id: 'measuring',\n    title: 'chemistryTools.sectionMeasuring',\n    icon: '📏',\n    items: [\n      { id: 'burette', name: 'chemistryTools.burette', icon: '🧴', type: 'measuring' },\n      { id: 'pipette', name: 'chemistryTools.pipette', icon: '💉', type: 'measuring' },\n      { id: 'volumetric-pipette', name: 'chemistryTools.volumetricPipette', icon: '📐', type: 'measuring' },\n      { id: 'grad-cylinder', name: 'chemistryTools.gradCylinder', icon: '📏', type: 'measuring' },\n    ],\n  },\n  {\n    id: 'devices',\n    title: 'chemistryTools.sectionDevices',\n    icon: '📟',\n    items: [\n      { id: 'bunsen-burner', name: 'chemistryTools.bunsenBurner', icon: '🔥', type: 'device' },\n      { id: 'heating-mantle', name: 'chemistryTools.heatingMantle', icon: '🧣', type: 'device' },\n      { id: 'hot-plate', name: 'chemistryTools.hotPlate', icon: '🔘', type: 'device' },\n      { id: 'digital-balance', name: 'chemistryTools.digitalBalance', icon: '⚖️', type: 'device' },\n      { id: 'ph-meter', name: 'chemistryTools.phMeter', icon: '📟', type: 'device' },\n    ],\n  },\n  {\n    id: 'helpers',\n    title: 'chemistryTools.sectionHelpers',\n    icon: '🛠️',\n    items: [\n      { id: 'retort-stand-assembly', name: 'chemistryTools.retortStandAssembly', icon: '🏗️', type: 'helper' },\n      { id: 'test-tube-rack', name: 'chemistryTools.testTubeRack', icon: '🧮', type: 'helper' },\n      { id: 'spatula', name: 'chemistryTools.spatula', icon: '🥄', type: 'helper' },\n      { id: 'watch-glass', name: 'chemistryTools.watchGlass', icon: '🔍', type: 'helper' },\n      { id: 'filter-funnel', name: 'chemistryTools.filterFunnel', icon: '🔽', type: 'helper' },\n      { id: 'rubber-stopper', name: 'chemistryTools.rubberStopper', icon: '⬛', type: 'helper' },\n    ],\n  },\n  {\n    id: 'thermometers',\n    title: 'chemistryTools.sectionThermometers',\n    icon: '🌡️',\n    items: [\n      { id: 'thermometer-mercury', name: 'chemistryTools.thermometerMercury', icon: '🌡️', type: 'device' },\n      { id: 'thermometer-digital', name: 'chemistryTools.thermometerDigital', icon: '📟', type: 'device' },\n    ],\n  },\n];\n\n",
+      "start": 1783634640345,
+      "end": 1783634640646,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640646,
+      "end": 1783634640646,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "export const glasswareSections = [\n  {\n    id: \"containers\",\n    title: \"chemistryTools.sectionContainers\",\n    icon: \"🧪\",\n    items: [\n      { id: \"test-tube-sm\", name: \"chemistryTools.testTubeSm\", icon: \"🧪\", type: \"container\" },\n      { id: \"test-tube-md\", name: \"chemistryTools.testTubeMd\", icon: \"🧪\", type: \"container\" },\n      { id: \"test-tube-lg\", name: \"chemistryTools.testTubeLg\", icon: \"🧪\", type: \"container\" },\n      { id: \"beaker-100\", name: \"chemistryTools.beaker100\", icon: \"🥣\", type: \"container\" },\n      { id: \"beaker-250\", name: \"chemistryTools.beaker250\", icon: \"🥣\", type: \"container\" },\n      { id: \"beaker-500\", name: \"chemistryTools.beaker500\", icon: \"🥣\", type: \"container\" },\n      { id: \"erlenmeyer\", name: \"chemistryTools.erlenmeyer\", icon: \"⚗️\", type: \"container\" },\n      { id: \"volumetric-flask\", name: \"chemistryTools.volumetricFlask\", icon: \"🏺\", type: \"container\" },\n      { id: \"round-bottom-flask\", name: \"chemistryTools.roundBottomFlask\", icon: \"⚗️\", type: \"container\" },\n      { id: \"sep-funnel\", name: \"chemistryTools.sepFunnel\", icon: \"🫗\", type: \"container\" }\n    ]\n  },\n  {\n    id: \"measuring\",\n    title: \"chemistryTools.sectionMeasuring\",\n    icon: \"📏\",\n    items: [\n      { id: \"burette\", name: \"chemistryTools.burette\", icon: \"🧴\", type: \"measuring\" },\n      { id: \"pipette\", name: \"chemistryTools.pipette\", icon: \"💉\", type: \"measuring\" },\n      { id: \"volumetric-pipette\", name: \"chemistryTools.volumetricPipette\", icon: \"📐\", type: \"measuring\" },\n      { id: \"grad-cylinder\", name: \"chemistryTools.gradCylinder\", icon: \"📏\", type: \"measuring\" }\n    ]\n  },\n  {\n    id: \"devices\",\n    title: \"chemistryTools.sectionDevices\",\n    icon: \"📟\",\n    items: [\n      { id: \"bunsen-burner\", name: \"chemistryTools.bunsenBurner\", icon: \"🔥\", type: \"device\" },\n      { id: \"heating-mantle\", name: \"chemistryTools.heatingMantle\", icon: \"🧣\", type: \"device\" },\n      { id: \"hot-plate\", name: \"chemistryTools.hotPlate\", icon: \"🔘\", type: \"device\" },\n      { id: \"digital-balance\", name: \"chemistryTools.digitalBalance\", icon: \"⚖️\", type: \"device\" },\n      { id: \"ph-meter\", name: \"chemistryTools.phMeter\", icon: \"📟\", type: \"device\" }\n    ]\n  },\n  {\n    id: \"helpers\",\n    title: \"chemistryTools.sectionHelpers\",\n    icon: \"🛠️\",\n    items: [\n      { id: \"retort-stand-assembly\", name: \"chemistryTools.retortStandAssembly\", icon: \"🏗️\", type: \"helper\" },\n      { id: \"test-tube-rack\", name: \"chemistryTools.testTubeRack\", icon: \"🧮\", type: \"helper\" },\n      { id: \"spatula\", name: \"chemistryTools.spatula\", icon: \"🥄\", type: \"helper\" },\n      { id: \"watch-glass\", name: \"chemistryTools.watchGlass\", icon: \"🔍\", type: \"helper\" },\n      { id: \"filter-funnel\", name: \"chemistryTools.filterFunnel\", icon: \"🔽\", type: \"helper\" },\n      { id: \"rubber-stopper\", name: \"chemistryTools.rubberStopper\", icon: \"⬛\", type: \"helper\" }\n    ]\n  },\n  {\n    id: \"thermometers\",\n    title: \"chemistryTools.sectionThermometers\",\n    icon: \"🌡️\",\n    items: [\n      { id: \"thermometer-mercury\", name: \"chemistryTools.thermometerMercury\", icon: \"🌡️\", type: \"device\" },\n      { id: \"thermometer-digital\", name: \"chemistryTools.thermometerDigital\", icon: \"📟\", type: \"device\" }\n    ]\n  }\n];\n",
+      "start": 1783634640646,
+      "end": 1783634640814,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useChemistryTools.ts"
+        ],
+        "sourcesContent": [
+          "export interface LabItem {\n  uid: string;\n  id: string;\n  name: string;\n  icon: string;\n  type: string;\n  x: number;\n  y: number;\n}\n\nexport interface ToolDef {\n  id: string;\n  name: string;\n  icon: string;\n  type: string;\n}\n\nexport interface Section {\n  id: string;\n  title: string;\n  icon: string;\n  items: ToolDef[];\n}\n\nexport const glasswareSections: Section[] = [\n  {\n    id: 'containers',\n    title: 'chemistryTools.sectionContainers',\n    icon: '🧪',\n    items: [\n      { id: 'test-tube-sm', name: 'chemistryTools.testTubeSm', icon: '🧪', type: 'container' },\n      { id: 'test-tube-md', name: 'chemistryTools.testTubeMd', icon: '🧪', type: 'container' },\n      { id: 'test-tube-lg', name: 'chemistryTools.testTubeLg', icon: '🧪', type: 'container' },\n      { id: 'beaker-100', name: 'chemistryTools.beaker100', icon: '🥣', type: 'container' },\n      { id: 'beaker-250', name: 'chemistryTools.beaker250', icon: '🥣', type: 'container' },\n      { id: 'beaker-500', name: 'chemistryTools.beaker500', icon: '🥣', type: 'container' },\n      { id: 'erlenmeyer', name: 'chemistryTools.erlenmeyer', icon: '⚗️', type: 'container' },\n      { id: 'volumetric-flask', name: 'chemistryTools.volumetricFlask', icon: '🏺', type: 'container' },\n      { id: 'round-bottom-flask', name: 'chemistryTools.roundBottomFlask', icon: '⚗️', type: 'container' },\n      { id: 'sep-funnel', name: 'chemistryTools.sepFunnel', icon: '🫗', type: 'container' },\n    ],\n  },\n  {\n    id: 'measuring',\n    title: 'chemistryTools.sectionMeasuring',\n    icon: '📏',\n    items: [\n      { id: 'burette', name: 'chemistryTools.burette', icon: '🧴', type: 'measuring' },\n      { id: 'pipette', name: 'chemistryTools.pipette', icon: '💉', type: 'measuring' },\n      { id: 'volumetric-pipette', name: 'chemistryTools.volumetricPipette', icon: '📐', type: 'measuring' },\n      { id: 'grad-cylinder', name: 'chemistryTools.gradCylinder', icon: '📏', type: 'measuring' },\n    ],\n  },\n  {\n    id: 'devices',\n    title: 'chemistryTools.sectionDevices',\n    icon: '📟',\n    items: [\n      { id: 'bunsen-burner', name: 'chemistryTools.bunsenBurner', icon: '🔥', type: 'device' },\n      { id: 'heating-mantle', name: 'chemistryTools.heatingMantle', icon: '🧣', type: 'device' },\n      { id: 'hot-plate', name: 'chemistryTools.hotPlate', icon: '🔘', type: 'device' },\n      { id: 'digital-balance', name: 'chemistryTools.digitalBalance', icon: '⚖️', type: 'device' },\n      { id: 'ph-meter', name: 'chemistryTools.phMeter', icon: '📟', type: 'device' },\n    ],\n  },\n  {\n    id: 'helpers',\n    title: 'chemistryTools.sectionHelpers',\n    icon: '🛠️',\n    items: [\n      { id: 'retort-stand-assembly', name: 'chemistryTools.retortStandAssembly', icon: '🏗️', type: 'helper' },\n      { id: 'test-tube-rack', name: 'chemistryTools.testTubeRack', icon: '🧮', type: 'helper' },\n      { id: 'spatula', name: 'chemistryTools.spatula', icon: '🥄', type: 'helper' },\n      { id: 'watch-glass', name: 'chemistryTools.watchGlass', icon: '🔍', type: 'helper' },\n      { id: 'filter-funnel', name: 'chemistryTools.filterFunnel', icon: '🔽', type: 'helper' },\n      { id: 'rubber-stopper', name: 'chemistryTools.rubberStopper', icon: '⬛', type: 'helper' },\n    ],\n  },\n  {\n    id: 'thermometers',\n    title: 'chemistryTools.sectionThermometers',\n    icon: '🌡️',\n    items: [\n      { id: 'thermometer-mercury', name: 'chemistryTools.thermometerMercury', icon: '🌡️', type: 'device' },\n      { id: 'thermometer-digital', name: 'chemistryTools.thermometerDigital', icon: '📟', type: 'device' },\n    ],\n  },\n];\n\n"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640815,
+      "end": 1783634640815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640815,
+      "end": 1783634640815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640815,
+      "end": 1783634640816,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640816,
+      "end": 1783634640816,
+      "order": "normal"
+    }
+  ]
+}

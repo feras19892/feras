@@ -130,10 +130,6 @@ export function useThinLensExperiment() {
   function resetSim() {
     running.value = false
     paused.value = false
-    params.focalLength = 10
-    params.objectDistance = 30
-    params.objectHeight = 5
-    trials.clearTrials()
   }
 
   function onResizeStart(side: 'data' | 'vis', e: MouseEvent) {
@@ -194,6 +190,7 @@ export function useThinLensExperiment() {
     const payload: AnalysisPayload = {
       sourceExperiment: 'thin-lens',
       sourceNameAr: t('experiments.expThinLens'),
+      hasCalcTab: true,
       readings,
       columns: [
         { key: 'lens_type', label: t('experiments.lensType') },

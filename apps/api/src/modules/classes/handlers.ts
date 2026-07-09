@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { createClassSchema, joinClassSchema, updateClassSchema } from './schemas.js';
 import * as svc from './services.js';
-import { authMiddleware } from '../../shared/middleware/auth.js';
+import { authMiddleware } from '../auth/middleware.js';
 import type { User } from '@my-modern-app/shared-types';
 
 type Variables = { user: User };

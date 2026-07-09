@@ -70,12 +70,11 @@ function onWindowError(e: ErrorEvent) {
 /* ── hook Canvas & WebGL ── */
 function hookCanvas() {
   const origGetContext = HTMLCanvasElement.prototype.getContext;
-  (HTMLCanvasElement.prototype.getContext as any) = function (
-    this: HTMLCanvasElement,
+  (HTMLCanvasElement.prototype as any).getContext = function (
     contextId: string,
     options?: unknown
   ) {
-    const ctx = (origGetContext as Function).call(this, contextId, options);
+    const ctx = (origGetContext as any).call(this, contextId, options);
     if (!ctx) return null;
     if (contextId === '2d') {
       const c2d = ctx as CanvasRenderingContext2D;
@@ -112,7 +111,7 @@ function tick() {
 
 /* ── memory ── */
 function readMemory() {
-  const p = performance as any;
+  const p = performance as Performance & { memory?: { usedJSHeapSize: number; jsHeapSizeLimit: number } }
   if (p.memory) {
     memoryUsed.value = Math.round(p.memory.usedJSHeapSize / 1024 / 1024);
     memoryLimit.value = Math.round(p.memory.jsHeapSizeLimit / 1024 / 1024);
@@ -121,9 +120,9 @@ function readMemory() {
 
 /* ── physics sanity checks ── */
 function checkPhysicsHealth() {
-  const w = window as any;
+  const w = window as Window & { __PHYSICS_VALUES__?: number[] }
   if (w.__PHYSICS_VALUES__) {
-    const vals = w.__PHYSICS_VALUES__ as number[];
+    const vals = w.__PHYSICS_VALUES__;
     const hasNaN = vals.some((v) => Number.isNaN(v));
     const hasInf = vals.some((v) => !Number.isFinite(v));
     if (hasNaN || hasInf) {
@@ -187,5 +186,5 @@ export function useExperimentMonitor() {
 
 /* ── helper for experiment code to push values ── */
 export function pushPhysicsValues(values: number[]) {
-  (window as any).__PHYSICS_VALUES__ = values;
+  (window as Window & { __PHYSICS_VALUES__?: number[] }).__PHYSICS_VALUES__ = values;
 }

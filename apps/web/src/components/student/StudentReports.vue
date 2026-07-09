@@ -80,15 +80,30 @@ watch(() => auth.user, (u) => {
       <p class="sub">{{ t('dashboard.doExperimentThenSend') }}</p>
     </div>
     <div v-else class="report-list">
-      <div v-for="r in reports" :key="r.id" class="report-row" :class="statusClass(r.status)" @click="openReport(r)">
-        <div class="report-info">
-          <span class="exp-name">{{ r.experiment_name }}</span>
-          <span class="class-name">{{ r.class_id }}</span>
-          <span class="date">{{ r.submitted_at?.slice(0, 10) || r.created_at?.slice(0, 10) }}</span>
+      <div v-for="r in reports" :key="r.id" class="report-card" :class="statusClass(r.status)">
+        <div class="card-header">
+          <div class="title-block">
+            <span class="exp-name">🧪 {{ r.experiment_name }}</span>
+            <span class="class-name">🏫 {{ r.class_id }}</span>
+          </div>
+          <div class="meta">
+            <span class="date">📅 {{ r.submitted_at?.slice(0, 10) || r.created_at?.slice(0, 10) }}</span>
+            <span class="badge" :class="statusClass(r.status)">{{ statusLabel(r.status) }}</span>
+            <span v-if="r.grade !== undefined" class="grade">⭐ {{ r.grade }}/100</span>
+          </div>
         </div>
-        <div class="report-result">
-          <span class="badge" :class="statusClass(r.status)">{{ statusLabel(r.status) }}</span>
-          <span v-if="r.grade !== undefined" class="grade">{{ r.grade }}%</span>
+
+        <div class="card-actions">
+          <button class="btn-view" @click="openReport(r)">
+            📄 {{ t('dashboard.viewReport') }}
+          </button>
+          <button
+            v-if="r.status === 'graded'"
+            class="btn-resubmit"
+            @click="openResubmit(r)"
+          >
+            ↩️ {{ t('dashboard.resubmit') }}
+          </button>
         </div>
       </div>
     </div>
@@ -146,21 +161,27 @@ watch(() => auth.user, (u) => {
 .count { font-size: 0.75rem; color: #64748b; background: rgba(255,255,255,0.05); padding: 0.2rem 0.6rem; border-radius: 999px; }
 .empty { text-align: center; padding: 3rem 1rem; color: #64748b; }
 .empty .sub { font-size: 0.85rem; color: #475569; margin-top: 0.3rem; }
-.report-list { display: flex; flex-direction: column; gap: 0.5rem; }
-.report-row { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1rem; border-radius: 0.6rem; background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.07); transition: all 0.2s; }
-.report-row:hover { border-color: rgba(99,102,241,0.25); }
-.report-row.graded { border-color: rgba(34,197,94,0.2); }
-.report-info { display: flex; align-items: center; gap: 1rem; }
-.exp-name { font-weight: 700; color: #f1f5f9; }
+.report-list { display: flex; flex-direction: column; gap: 0.6rem; }
+.report-card { padding: 1rem 1.1rem; border-radius: 0.75rem; background: rgba(15,23,42,0.65); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s; display: flex; flex-direction: column; gap: 0.65rem; }
+.report-card:hover { border-color: rgba(99,102,241,0.25); box-shadow: 0 10px 30px rgba(0,0,0,0.35); }
+.report-card.graded { border-color: rgba(34,197,94,0.25); }
+.report-card.resubmitted { border-color: rgba(99,102,241,0.25); }
+.card-header { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.title-block { display: flex; flex-direction: column; gap: 0.2rem; }
+.exp-name { font-weight: 800; color: #f1f5f9; }
 .class-name { color: #94a3b8; font-size: 0.85rem; }
-.date { color: #64748b; font-size: 0.8rem; }
-.report-result { display: flex; align-items: center; gap: 0.6rem; }
-.badge { padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; }
+.meta { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.date { color: #94a3b8; font-size: 0.8rem; }
+.badge { padding: 0.25rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; }
 .badge.graded { background: rgba(34,197,94,0.15); color: #22c55e; }
 .badge.pending { background: rgba(245,158,11,0.15); color: #fbbf24; }
 .badge.draft { background: rgba(148,163,184,0.15); color: #94a3b8; }
 .badge.resubmitted { background: rgba(99,102,241,0.15); color: #a5b4fc; }
-.grade { font-size: 0.9rem; font-weight: 700; color: #67e8f9; font-family: monospace; }
+.grade { font-size: 0.9rem; font-weight: 800; color: #67e8f9; font-family: monospace; }
+.card-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.btn-view, .btn-resubmit { padding: 0.55rem 0.9rem; border-radius: 0.55rem; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); color: #e2e8f0; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+.btn-view:hover, .btn-resubmit:hover { border-color: rgba(99,102,241,0.25); color: #c7d2fe; }
+.btn-resubmit { background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none; color: #fff; }
 
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 300; }
 .view-modal { background: rgba(15,23,42,0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 1.5rem; width: 90%; max-width: 800px; max-height: 85vh; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; }

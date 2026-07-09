@@ -103,7 +103,7 @@ export function usePendulumExperiment() {
     if (tList.length === 0) { console.warn('[exportToAnalysis] no trials recorded'); return }
     const readings = tList.map(t => ({ length: t.length, T: t.T, T2: t.T * t.T, gCalc: t.gCalc }))
     const payload: AnalysisPayload = {
-      sourceExperiment: 'pendulum', sourceNameAr: t('experiments.expPendulum'), readings,
+      sourceExperiment: 'pendulum', sourceNameAr: t('experiments.expPendulum'), hasCalcTab: true, readings,
       columns: [
         { key: 'length', label: t('experiments.varStringLength'), unit: 'm' },
         { key: 'T', label: t('experiments.colPeriod'), unit: 's' },

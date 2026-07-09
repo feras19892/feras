@@ -7,7 +7,12 @@ const { t } = useI18n();
 const router = useRouter();
 
 function goToBranch(id: string) {
-  router.push(`/physics/${id}`);
+  const branch = branches.find(b => b.id === id)
+  if (branch && branch.experiments.filter(e => e.enabled).length === 1) {
+    router.push(`/physics/${id}/${branch.experiments[0].id}`)
+  } else {
+    router.push(`/physics/${id}`)
+  }
 }
 
 function branchNameKey(id: string): string {

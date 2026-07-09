@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatWorksheetPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, computed } from 'vue'\nimport { C_WATER } from '../../../../composables/specific-heat/useSpecificHeatCalculations'\n\nconst props = defineProps<{\n  metalMass: number\n  waterMass: number\n  waterTemp: number\n  metalTemp: number\n  displayT: number\n}>()\n\n// Which steps are revealed?\nconst showQGained = ref(false)\nconst showQLost = ref(false)\nconst showCm = ref(false)\nconst showMetal = ref(false)\n\nconst qGainedVal = computed(() => props.waterMass * C_WATER * (props.displayT - props.waterTemp))\nconst qLostVal = computed(() => qGainedVal.value)\nconst cmVal = computed(() => {\n  const num = props.waterMass * C_WATER * (props.displayT - props.waterTemp)\n  const den = props.metalMass * (props.metalTemp - props.displayT)\n  if (den === 0) return 0\n  return num / den\n})\n\nconst METAL_REFERENCE = [\n  { name: 'ألمنيوم', c: 900, range: [850, 950] },\n  { name: 'نحاس', c: 385, range: [350, 420] },\n  { name: 'حديد', c: 450, range: [420, 480] },\n  { name: 'رصاص', c: 130, range: [120, 140] },\n  { name: 'زنك', c: 390, range: [370, 410] },\n  { name: 'فضة', c: 235, range: [220, 250] },\n  { name: 'ذهب', c: 129, range: [120, 140] },\n  { name: 'نيكل', c: 440, range: [420, 460] },\n  { name: 'نحاس أصفر', c: 380, range: [360, 400] },\n  { name: 'برونز', c: 435, range: [410, 460] },\n  { name: 'قصدير', c: 227, range: [210, 240] },\n  { name: 'مغنيسيوم', c: 1020, range: [980, 1060] },\n  { name: 'تيتانيوم', c: 523, range: [500, 550] },\n]\n\nconst matchedMetal = computed(() => {\n  const cm = cmVal.value\n  return METAL_REFERENCE.find(m => cm >= m.range[0] && cm <= m.range[1])?.name || 'غير معروف'\n})\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <div class=\"ws-title\">📐 خطوات الحساب</div>\n\n    <!-- Step 1: Q_gained -->\n    <div class=\"calc-box\">\n      <div class=\"calc-header\">\n        <span class=\"calc-num\">①</span>\n        <span class=\"calc-label\">الطاقة المكتسبة للماء</span>\n      </div>\n      <div class=\"formula\">Q<sub>gained</sub> = m<sub>w</sub> × c<sub>w</sub> × (T<sub>f</sub> − T<sub>w</sub>)</div>\n      <div class=\"values\">= {{ (waterMass*1000).toFixed(0) }}g × {{ C_WATER }} × ({{ displayT.toFixed(1) }} − {{ waterTemp }})</div>\n      <button v-if=\"!showQGained\" class=\"calc-btn\" @click=\"showQGained = true\">\n        ▶ احسب Q<sub>gained</sub>\n      </button>\n      <div v-else class=\"result\">\n        <span class=\"result-val\">= {{ qGainedVal.toFixed(1) }} J</span>\n        <span class=\"result-note\">الطاقة التي امتصها الماء من المعدن الساخن</span>\n      </div>\n    </div>\n\n    <!-- Step 2: Q_lost -->\n    <div class=\"calc-box\">\n      <div class=\"calc-header\">\n        <span class=\"calc-num\">②</span>\n        <span class=\"calc-label\">الطاقة المفقودة من المعدن</span>\n      </div>\n      <div class=\"formula\">Q<sub>lost</sub> = Q<sub>gained</sub></div>\n      <div class=\"values\">(اتزان حراري — ما يفقده المعدن = ما يكتسبه الماء)</div>\n      <button v-if=\"!showQLost && showQGained\" class=\"calc-btn\" @click=\"showQLost = true\">\n        ▶ احسب Q<sub>lost</sub>\n      </button>\n      <button v-else-if=\"!showQGained\" class=\"calc-btn disabled\" disabled>\n        أكمل الخطوة ① أولاً\n      </button>\n      <div v-else class=\"result\">\n        <span class=\"result-val\">= {{ qLostVal.toFixed(1) }} J</span>\n        <span class=\"result-note\">الطاقة التي فقدها المعدن لتسخين الماء</span>\n      </div>\n    </div>\n\n    <!-- Step 3: c_m -->\n    <div class=\"calc-box\">\n      <div class=\"calc-header\">\n        <span class=\"calc-num\">③</span>\n        <span class=\"calc-label\">السعة الحرارية النوعية للمعدن</span>\n      </div>\n      <div class=\"formula\">c<sub>m</sub> = Q<sub>lost</sub> / [m<sub>m</sub> × (T<sub>m</sub> − T<sub>f</sub>)]</div>\n      <div class=\"values\">= {{ qLostVal.toFixed(1) }} / [{{ (metalMass*1000).toFixed(0) }}g × ({{ metalTemp.toFixed(0) }} − {{ displayT.toFixed(1) }})]</div>\n      <button v-if=\"!showCm && showQLost\" class=\"calc-btn\" @click=\"showCm = true\">\n        ▶ احسب c<sub>m</sub>\n      </button>\n      <button v-else-if=\"!showQLost\" class=\"calc-btn disabled\" disabled>\n        أكمل الخطوة ② أولاً\n      </button>\n      <div v-else class=\"result\">\n        <span class=\"result-val\">= {{ cmVal.toFixed(1) }} J/kg·°C</span>\n        <span class=\"result-note\">السعة الحرارية النوعية للمعدن المجهول</span>\n      </div>\n    </div>\n\n    <!-- Step 4: Identify metal -->\n    <div class=\"calc-box\">\n      <div class=\"calc-header\">\n        <span class=\"calc-num\">④</span>\n        <span class=\"calc-label\">تحديد نوع المعدن</span>\n      </div>\n      <div class=\"formula\">قارن c<sub>m</sub> مع الجدول المرجعي</div>\n      <div class=\"values\">c<sub>m</sub> = {{ cmVal.toFixed(1) }} J/kg·°C</div>\n      <button v-if=\"!showMetal && showCm\" class=\"calc-btn\" @click=\"showMetal = true\">\n        ▶ حدد نوع المعدن\n      </button>\n      <button v-else-if=\"!showCm\" class=\"calc-btn disabled\" disabled>\n        أكمل الخطوة ③ أولاً\n      </button>\n      <div v-else class=\"result\">\n        <span class=\"result-val\">المعدن هو: {{ matchedMetal }}</span>\n        <span class=\"result-note\" v-if=\"matchedMetal !== 'غير معروف'\">✓ تم التعرف على المعدن</span>\n        <span class=\"result-note err\" v-else>✗ غير موجود في الجدول المرجعي</span>\n      </div>\n    </div>\n\n    <!-- Reset -->\n    <button v-if=\"showMetal\" class=\"reset-btn\" @click=\"showQGained = showQLost = showCm = showMetal = false\">\n      🔄 إعادة الحساب\n    </button>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { padding:1rem; display:flex; flex-direction:column; gap:.75rem; }\n.ws-title { font-size:1rem; font-weight:700; color:#5B8DB8; text-align:center; padding:.5rem; border-bottom:1px solid #1e2530; margin-bottom:.25rem; }\n\n.step-box { display:flex; gap:.5rem; align-items:flex-start; background:rgba(255,255,255,0.02); border:1px solid #1e2530; border-radius:6px; padding:.5rem; }\n.step-num { width:22px; height:22px; border-radius:50%; background:#5B8DB8; color:#0B1220; font-weight:700; font-size:.75rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; }\n.step-content { display:flex; flex-direction:column; gap:.35rem; flex:1; }\n.step-label { font-size:.72rem; font-weight:600; color:#D1D7E0; }\n.formula-small { font-size:.65rem; color:#8B95A5; font-family:'Courier New',monospace; }\n.step-values { font-size:.65rem; color:#64748b; }\n\n.calc-box { background:rgba(255,255,255,0.02); border:1px solid #1e2530; border-radius:8px; padding:.55rem; display:flex; flex-direction:column; gap:.4rem; }\n.calc-header { display:flex; align-items:center; gap:.4rem; }\n.calc-num { width:22px; height:22px; border-radius:50%; background:#5B8DB8; color:#0B1220; font-weight:700; font-size:.75rem; display:flex; align-items:center; justify-content:center; }\n.calc-label { font-size:.75rem; font-weight:600; color:#D1D7E0; }\n.formula { font-family:'Courier New',monospace; font-size:.72rem; color:#8B95A5; text-align:center; padding:.25rem 0; background:rgba(91,141,184,.05); border-radius:4px; }\n.values { font-size:.65rem; color:#64748b; text-align:center; }\n\n.calc-btn { padding:.35rem .7rem; border-radius:6px; border:1px solid #5B8DB8; background:rgba(91,141,184,.12); color:#5B8DB8; font-size:.72rem; font-weight:600; cursor:pointer; transition:all .2s; align-self:center; }\n.calc-btn:hover { background:rgba(91,141,184,.2); }\n.calc-btn.disabled { border-color:#2D3645; background:rgba(255,255,255,0.03); color:#475569; cursor:not-allowed; }\n\n.result { display:flex; flex-direction:column; align-items:center; gap:.2rem; padding:.4rem; background:rgba(34,197,94,.06); border:1px solid rgba(34,197,94,.2); border-radius:6px; }\n.result-val { font-size:.85rem; font-weight:700; color:#4ade80; }\n.result-note { font-size:.65rem; color:#8B95A5; }\n.result-note.err { color:#ef4444; }\n\n.reset-btn { padding:.35rem .7rem; border-radius:6px; border:1px solid rgba(245,158,11,.3); background:rgba(245,158,11,.1); color:#f59e0b; font-size:.72rem; font-weight:600; cursor:pointer; transition:all .2s; }\n.reset-btn:hover { background:rgba(245,158,11,.18); }\n</style>\n",
+      "start": 1783634639359,
+      "end": 1783634639690,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639690,
+      "end": 1783634639690,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639690,
+      "end": 1783634639690,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639690,
+      "end": 1783634639690,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639690,
+      "end": 1783634639690,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatWorksheetPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatWorksheetPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatWorksheetPanel.vue?vue&type=style&index=0&scoped=3341de17&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-3341de17\"]]);\n",
+      "start": 1783634639690,
+      "end": 1783634640089,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640089,
+      "end": 1783634640089,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640091,
+      "end": 1783634640093,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640094,
+      "end": 1783634640094,
+      "order": "normal"
+    }
+  ]
+}

@@ -83,7 +83,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             :P="ex.lab.P.value"
             :particles="ex.lab.particles.value"
             :running="ex.lab.running.value"
-            @update:V="ex.params.V = $event"
+            @update:v="ex.params.V = $event"
           />
         </div>
         <div class="mode-bar">
@@ -109,7 +109,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       <div class="lab-col ctrl-col" :style="{ width: ex.layout.widths.ctrl + 'px' }">
         <template v-for="id in ex.layout.columnMap.ctrl" :key="id">
           <DraggablePanel
-            v-if="ex.layout.isPanelVisible(id)"
+            v-if="id !== 'params' && ex.layout.isPanelVisible(id)"
             class="lab-card"
             :id="id"
             :title="ex.layout.panelTitle(id)"
@@ -128,6 +128,16 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
               @update:params="Object.assign(ex.params, $event)"
             />
           </DraggablePanel>
+          <div v-else-if="id === 'params'" class="params-embedded">
+            <IdealGasPanelBody
+              id="params"
+              :trials="ex.trials.trials.value"
+              :params="ex.params"
+              :p="ex.lab.P.value"
+              :v-rms="ex.lab.vRms.value"
+              @update:params="Object.assign(ex.params, $event)"
+            />
+          </div>
         </template>
       </div>
     </div>
@@ -168,6 +178,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 .vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 360px; position: relative; }
 .vis-canvas-wrap { flex: 1; min-height: 0; position: relative; width: 100%; }
 .ctrl-col { background: rgba(255,255,255,0.02); }
+.params-embedded { padding: .6rem; }
 .lab-card { min-height: 0; }
 .lab-card :deep(.draggable-panel) { max-height: 100%; }
 .resizer { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0; }

@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/admin/useAdminExport.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { getAdminExport } from '../../services/admin.service';\n\nexport function useAdminExport() {\n  async function download(type: string) {\n    const res = await getAdminExport(type);\n    if (!res) return;\n    const blob = new Blob([res], { type: 'text/csv;charset=utf-8;' });\n    const url = URL.createObjectURL(blob);\n    const a = document.createElement('a');\n    a.href = url;\n    a.download = `${type}.csv`;\n    document.body.appendChild(a);\n    a.click();\n    document.body.removeChild(a);\n    URL.revokeObjectURL(url);\n  }\n  return { download };\n}\n",
+      "start": 1783634640356,
+      "end": 1783634640658,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640658,
+      "end": 1783634640658,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { getAdminExport } from \"../../services/admin.service\";\nexport function useAdminExport() {\n  async function download(type) {\n    const res = await getAdminExport(type);\n    if (!res) return;\n    const blob = new Blob([res], { type: \"text/csv;charset=utf-8;\" });\n    const url = URL.createObjectURL(blob);\n    const a = document.createElement(\"a\");\n    a.href = url;\n    a.download = `${type}.csv`;\n    document.body.appendChild(a);\n    a.click();\n    document.body.removeChild(a);\n    URL.revokeObjectURL(url);\n  }\n  return { download };\n}\n",
+      "start": 1783634640658,
+      "end": 1783634640814,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/admin/useAdminExport.ts"
+        ],
+        "sourcesContent": [
+          "import { getAdminExport } from '../../services/admin.service';\n\nexport function useAdminExport() {\n  async function download(type: string) {\n    const res = await getAdminExport(type);\n    if (!res) return;\n    const blob = new Blob([res], { type: 'text/csv;charset=utf-8;' });\n    const url = URL.createObjectURL(blob);\n    const a = document.createElement('a');\n    a.href = url;\n    a.download = `${type}.csv`;\n    document.body.appendChild(a);\n    a.click();\n    document.body.removeChild(a);\n    URL.revokeObjectURL(url);\n  }\n  return { download };\n}\n"
+        ],
+        "mappings": "AAAA,SAAS,sBAAsB;AAExB,gBAAS,iBAAiB;AAC/B,iBAAe,SAAS,MAAc;AACpC,UAAM,MAAM,MAAM,eAAe,IAAI;AACrC,QAAI,CAAC,IAAK;AACV,UAAM,OAAO,IAAI,KAAK,CAAC,GAAG,GAAG,EAAE,MAAM,0BAA0B,CAAC;AAChE,UAAM,MAAM,IAAI,gBAAgB,IAAI;AACpC,UAAM,IAAI,SAAS,cAAc,GAAG;AACpC,MAAE,OAAO;AACT,MAAE,WAAW,GAAG,IAAI;AACpB,aAAS,KAAK,YAAY,CAAC;AAC3B,MAAE,MAAM;AACR,aAAS,KAAK,YAAY,CAAC;AAC3B,QAAI,gBAAgB,GAAG;AAAA,EACzB;AACA,SAAO,EAAE,SAAS;AACpB;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640815,
+      "end": 1783634640815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640815,
+      "end": 1783634640815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640815,
+      "end": 1783634640816,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640816,
+      "end": 1783634640816,
+      "order": "normal"
+    }
+  ]
+}

@@ -158,3 +158,20 @@ export async function updatePassword(userId: number, newPassword: string): Promi
     return false;
   }
 }
+
+export async function impersonateUser(targetId: number): Promise<{ user: User; token: string } | null> {
+  const rows = await db.all<{ id: number; email: string; name: string; role: string }[]>(
+    'SELECT id, email, name, role FROM users WHERE id = ?', targetId
+  );
+  if (rows.length === 0) return null;
+  const target = rows[0];
+  const token = await signAccessToken({
+    sub: String(target.id),
+    email: target.email,
+    role: target.role as User['role'],
+  });
+  return {
+    user: { id: Number(target.id), email: target.email, name: target.name, role: target.role as User['role'] },
+    token,
+  };
+}

@@ -2,65 +2,135 @@
 import { useI18n } from '../../../composables/useI18n'
 
 const { t } = useI18n()
-const props = defineProps<{ open: boolean }>()
+defineProps<{ open: boolean }>()
 const emit = defineEmits<{ (e: 'close'): void }>()
 </script>
 
 <template>
-  <div class="help-modal" v-if="open" @click.self="emit('close')">
-    <div class="help-content">
-      <button class="close-btn" @click="emit('close')">✕</button>
-      <h2>🎓 {{ t('experiments.inclinedGuide') }}</h2>
-      <section>
-        <h3>📖 {{ t('experiments.physicalConcept') }}</h3>
-        <p>{{ t('experiments.inclinedConceptDesc1') }}</p>
-        <p>{{ t('experiments.inclinedConceptDesc2') }}</p>
-        <p>{{ t('experiments.inclinedConceptDesc3') }}</p>
-      </section>
-      <section>
-        <h3>📐 {{ t('experiments.basicEquations') }}</h3>
-        <ul>
-          <li>a = g·sin(θ) − μ·g·cos(θ)</li>
-          <li>s = ½·a·t²</li>
-          <li>v = a·t</li>
-          <li>t = √(2L/a)</li>
-          <li>v = √(2aL)</li>
-          <li>N = m·g·cos(θ)</li>
-          <li>F∥ = m·g·sin(θ)</li>
-          <li>f = μ·N = μ·m·g·cos(θ)</li>
-        </ul>
-      </section>
-      <section>
-        <h3>🖥️ {{ t('experiments.workspaceElements') }}</h3>
-        <ul>
-          <li>{{ t('experiments.canvasPanel') }}</li>
-          <li>{{ t('experiments.parametersPanel') }}</li>
-          <li>{{ t('experiments.tablePanel') }}</li>
-          <li>{{ t('experiments.chartsPanel') }}</li>
-          <li>{{ t('experiments.calculationsPanel') }}</li>
-        </ul>
-      </section>
-      <section>
-        <h3>⌨️ {{ t('experiments.keyboardShortcuts') }}</h3>
-        <ul>
-          <li>Space — {{ t('experiments.shortcutStartStop') }}</li>
-          <li>R — {{ t('experiments.shortcutReset') }}</li>
-          <li>S — {{ t('experiments.recordReading') }}</li>
-          <li>Ctrl+Z — {{ t('experiments.shortcutUndo') }}</li>
-          <li>Ctrl+Shift+Z — {{ t('experiments.shortcutRedo') }}</li>
-          <li>? — {{ t('experiments.shortcutToggleHelp') }}</li>
-        </ul>
-      </section>
+  <Teleport to="body">
+    <div v-if="open" class="overlay" @click.self="emit('close')">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>{{ t('experiments.inHelpTitle') }}</h3>
+          <button class="close-btn" @click="emit('close')">&#x2715;</button>
+        </div>
+        <div class="modal-body">
+
+          <!-- 1. Theoretical Background -->
+          <section>
+            <h4>{{ t('experiments.inHelpS1Title') }}</h4>
+            <p>{{ t('experiments.inHelpS1P1') }}</p>
+            <ul>
+              <li>{{ t('experiments.inHelpS1L1') }}</li>
+              <li>{{ t('experiments.inHelpS1L2') }}</li>
+            </ul>
+            <p>{{ t('experiments.inHelpS1P2') }}</p>
+            <div class="formula">f_k = μ_k · N = μ_k · m · g · cos(θ)</div>
+            <p>{{ t('experiments.inHelpS1P3') }}</p>
+            <p>{{ t('experiments.inHelpS1P4') }}</p>
+            <div class="formula">
+              m·g·sinθ − f_k = m·a<br>
+              m·g·sinθ − μ_k·m·g·cosθ = m·a<br>
+              <b>a = g (sinθ − μ_k·cosθ)</b>
+            </div>
+          </section>
+
+          <!-- 2. Mathematical Equations -->
+          <section>
+            <h4>{{ t('experiments.inHelpS2Title') }}</h4>
+            <div class="method">{{ t('experiments.inHelpS2M1') }}</div>
+            <div class="method">{{ t('experiments.inHelpS2M2') }}</div>
+            <div class="method">{{ t('experiments.inHelpS2M3') }}</div>
+          </section>
+
+          <!-- 3. Laboratory Procedure -->
+          <section>
+            <h4>{{ t('experiments.inHelpS3Title') }}</h4>
+            <p>{{ t('experiments.inHelpS3P1') }}</p>
+            <ol>
+              <li>{{ t('experiments.inHelpS3L1') }}</li>
+              <li>{{ t('experiments.inHelpS3L2') }}</li>
+              <li>{{ t('experiments.inHelpS3L3') }}</li>
+              <li>{{ t('experiments.inHelpS3L4') }}</li>
+              <li>{{ t('experiments.inHelpS3L5') }}</li>
+            </ol>
+          </section>
+
+          <!-- 4. Graphical Analysis -->
+          <section>
+            <h4>{{ t('experiments.inHelpS4Title') }}</h4>
+            <p>{{ t('experiments.inHelpS4P1') }}</p>
+            <ul>
+              <li>{{ t('experiments.inHelpS4L1') }}</li>
+              <li>
+                {{ t('experiments.inHelpS4L2') }}
+                <div class="formula">Slope = Δa / Δsin(θ)</div>
+              </li>
+              <li>
+                {{ t('experiments.inHelpS4L3') }}
+                <div class="formula">Slope = g</div>
+              </li>
+            </ul>
+          </section>
+
+          <!-- 5. Variables & Constants -->
+          <section>
+            <h4>{{ t('experiments.inHelpS5Title') }}</h4>
+            <div class="element-grid">
+              <div class="element">{{ t('experiments.inHelpS5E1') }}</div>
+              <div class="element">{{ t('experiments.inHelpS5E2') }}</div>
+              <div class="element">{{ t('experiments.inHelpS5E3') }}</div>
+            </div>
+          </section>
+
+          <!-- 6. Scientific Importance -->
+          <section>
+            <h4>{{ t('experiments.inHelpS6Title') }}</h4>
+            <ul>
+              <li>{{ t('experiments.inHelpS6L1') }}</li>
+              <li>{{ t('experiments.inHelpS6L2') }}</li>
+              <li>{{ t('experiments.inHelpS6L3') }}</li>
+            </ul>
+          </section>
+
+          <!-- Keyboard shortcuts -->
+          <section>
+            <h4>{{ t('experiments.helpKbdTitle') }}</h4>
+            <div class="kbd-grid">
+              <span><kbd>Space</kbd> {{ t('experiments.helpKbdSpace') }}</span>
+              <span><kbd>S</kbd> {{ t('experiments.helpKbdS') }}</span>
+              <span><kbd>R</kbd> {{ t('experiments.helpKbdR') }}</span>
+              <span><kbd>Ctrl</kbd>+<kbd>Z</kbd> {{ t('experiments.helpKbdUndo') }}</span>
+              <span><kbd>Ctrl</kbd>+<kbd>Y</kbd> {{ t('experiments.helpKbdRedo') }}</span>
+              <span><kbd>?</kbd> {{ t('experiments.helpKbdHelp') }}</span>
+            </div>
+          </section>
+
+        </div>
+      </div>
     </div>
-  </div>
+  </Teleport>
 </template>
 
 <style scoped>
-.help-modal { position:fixed; inset:0; z-index:300; background:rgba(0,0,0,.6); display:flex; align-items:center; justify-content:center; }
-.help-content { background:#161B22; border:1px solid #2D3645; border-radius:12px; padding:1.5rem; max-width:560px; width:90%; max-height:80vh; overflow:auto; position:relative; }
-.close-btn { position:absolute; top:.6rem; left:.6rem; background:none; border:none; color:#8B95A5; cursor:pointer; font-size:1.1rem; }
-.help-content h2 { color:#5B8DB8; margin:0 0 1rem; font-size:1.1rem; }
-.help-content h3 { color:#D1D7E0; margin:1rem 0 .4rem; font-size:.85rem; }
-.help-content p { color:#B8C0CC; font-size:.74rem; line-height:1.6; margin:.2rem 0; }
-.help-content ul { color:#B8C0CC; font-size:.72rem; line-height:1.7; padding-right:1.2rem; margin:0; }
+.overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+.modal { background: #131a25; border: 1px solid #2D3645; border-radius: 12px; max-width: 720px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+.modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.2rem; border-bottom: 1px solid #2D3645; flex-shrink: 0; }
+.modal-header h3 { margin: 0; font-size: 1rem; color: #e2e8f0; }
+.close-btn { background: transparent; border: 1px solid #2D3645; color: #8B95A5; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; padding: 0; }
+.close-btn:hover { background: rgba(91,141,184,.1); color: #5B8DB8; }
+.modal-body { overflow-y: auto; padding: 1.2rem; font-size: .82rem; color: #cbd5e1; line-height: 1.8; direction: rtl; text-align: right; }
+.modal-body section { margin-bottom: 1.4rem; }
+.modal-body h4 { margin: 0 0 .5rem; font-size: .9rem; color: #5B8DB8; border-bottom: 1px solid #2D3645; padding-bottom: .3rem; }
+.modal-body p { margin: .4rem 0; }
+.modal-body ol, .modal-body ul { margin: .4rem 0; padding-right: 1.2rem; }
+.modal-body li { margin-bottom: .25rem; }
+.formula { background: #1a2332; border: 1px solid #2D3645; border-radius: 6px; padding: .6rem .8rem; font-family: monospace; font-size: .9rem; color: #5B8DB8; text-align: center; margin: .6rem 0; direction: ltr; }
+.element-grid { display: flex; flex-direction: column; gap: .35rem; }
+.element { background: #1a2332; border-radius: 6px; padding: .4rem .6rem; font-size: .78rem; }
+.tag { color: #5B8DB8; }
+.method { background: #1a2332; border-radius: 6px; padding: .5rem .7rem; margin-bottom: .35rem; font-size: .78rem; direction: ltr; text-align: left; }
+.kbd-grid { display: flex; flex-wrap: wrap; gap: .4rem; }
+.kbd-grid span { background: #1a2332; border: 1px solid #2D3645; border-radius: 5px; padding: .3rem .5rem; font-size: .75rem; }
+kbd { background: #252D3A; border: 1px solid #475569; border-radius: 4px; padding: .05rem .3rem; font-family: monospace; font-size: .7rem; color: #D1D7E0; }
 </style>

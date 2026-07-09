@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileHintOverlay.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\nimport { ref, computed } from 'vue'\nimport { useProjectileHints } from '../../../composables/projectile/useProjectileHints'\n\nconst { t } = useI18n()\nconst props = defineProps<{\n  v0: number\n  angleDeg: number\n  g: number\n  targetX: number\n  targetMode: boolean\n}>()\n\nconst open = ref(false)\nconst guessV0 = ref(20)\nconst guessAngle = ref(45)\nconst guessResult = ref('')\n\nconst { getHint, checkStudentGuess } = useProjectileHints()\nconst hint = computed(() => getHint(props.v0, props.angleDeg, props.g, props.targetX))\n\nfunction onCheck() {\n  guessResult.value = checkStudentGuess(guessV0.value, guessAngle.value, props.g, props.targetX)\n}\n</script>\n\n<template>\n  <div class=\"hint-overlay\" v-if=\"targetMode\">\n    <button class=\"hint-btn\" @click=\"open = !open\" :class=\"{open}\">💡</button>\n    <div class=\"hint-panel\" v-if=\"open\">\n      <div class=\"hint-title\">📐 {{ t('experiments.equationLabel') }}</div>\n      <div class=\"hint-eq\">{{ hint.equation }}</div>\n      <div class=\"hint-eq hint-sub\">{{ hint.sin2theta }}</div>\n      <div class=\"hint-tip\">🎯 {{ t('experiments.targetAt') }} {{ hint.targetX }} {{ t('experiments.meter') }}</div>\n      <div class=\"hint-msg\">{{ hint.message }}</div>\n      <div class=\"hint-tip\">{{ hint.tip }}</div>\n      <div class=\"hint-strat\">📌 {{ hint.strategy }}</div>\n      <hr />\n      <div class=\"hint-guess\">\n        <div class=\"hint-title\">🧮 {{ t('experiments.tryItYourself') }}</div>\n        <div class=\"guess-row\">\n          <label>v₀</label><input type=\"number\" v-model.number=\"guessV0\" step=\"0.1\">\n          <label>θ</label><input type=\"number\" v-model.number=\"guessAngle\" step=\"0.1\">\n          <button @click=\"onCheck\">{{ t('experiments.verify') }}</button>\n        </div>\n        <div class=\"guess-result\" v-if=\"guessResult\">{{ guessResult }}</div>\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.hint-overlay { position: absolute; top: 42px; right: 10px; z-index: 20; }\n.hint-btn { background: rgba(15,23,42,0.9); border: 1px solid rgba(71,85,105,0.5); border-radius: 8px; padding: .35rem .6rem; font-size: 1rem; cursor: pointer; transition: .2s; }\n.hint-btn:hover, .hint-btn.open { background: rgba(91,141,184,.2); border-color: #5B8DB8; }\n.hint-panel { position: absolute; top: 40px; right: 0; width: 260px; background: rgba(15,23,42,0.95); border: 1px solid #2D3645; border-radius: 10px; padding: .8rem; backdrop-filter: blur(10px); }\n.hint-title { font-size: .8rem; font-weight: 700; color: #5B8DB8; margin-bottom: .3rem; }\n.hint-eq { font-family: monospace; font-size: .75rem; color: #D1D7E0; background: #1E2530; padding: .3rem .5rem; border-radius: 4px; margin-bottom: .5rem; text-align: center; }\n.hint-row { display: flex; justify-content: space-between; font-size: .72rem; color: #8B95A5; margin-bottom: .15rem; }\n.hint-row b { color: #D1D7E0; }\n.hint-msg { margin-top: .4rem; font-size: .75rem; color: #f59e0b; background: rgba(245,158,11,.08); padding: .3rem .5rem; border-radius: 4px; }\n.hint-tip { margin-top: .3rem; font-size: .72rem; color: #22c55e; }\n.hint-strat { margin-top: .3rem; font-size: .72rem; color: #fbbf24; background: rgba(251,191,36,.08); padding: .3rem .5rem; border-radius: 4px; }\n.hint-sub { font-size: .7rem; color: #8B95A5; background: transparent; margin-top: -.3rem; }\nhr { border: none; border-top: 1px solid #2D3645; margin: .5rem 0; }\n.hint-guess .guess-row { display: flex; gap: .3rem; align-items: center; margin-top: .3rem; }\n.hint-guess input { width: 50px; padding: .2rem; border-radius: 4px; border: 1px solid #2D3645; background: #252D3A; color: #D1D7E0; font-size: .72rem; text-align: center; }\n.hint-guess button { background: #5B8DB8; color: #fff; border: none; border-radius: 4px; padding: .25rem .5rem; font-size: .7rem; cursor: pointer; }\n.guess-result { margin-top: .3rem; font-size: .75rem; color: #D1D7E0; }\n</style>\n",
+      "start": 1783634642248,
+      "end": 1783634642635,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642635,
+      "end": 1783634642635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642635,
+      "end": 1783634642635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642635,
+      "end": 1783634642635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642635,
+      "end": 1783634642635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileHintOverlay.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileHintOverlay.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileHintOverlay.vue?vue&type=style&index=0&scoped=d9714cfc&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-d9714cfc\"]]);\n",
+      "start": 1783634642635,
+      "end": 1783634642829,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642829,
+      "end": 1783634642830,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642830,
+      "end": 1783634642830,
+      "order": "normal"
+    }
+  ]
+}

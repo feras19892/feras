@@ -1,8 +1,10 @@
 import { ref, reactive, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import type { AnalysisPayload } from '../../types/physics'
+import { sendToAnalysis } from '../analysis/sendToAnalysis'
 import { useDiffractionLayout } from './useDiffractionLayout'
 import { useDiffractionTrials } from './useDiffractionTrials'
-import { sincSq, wavelengthToColor } from './useDiffractionCalculations'
+import { sincSq, wavelengthToColor, linearRegression } from './useDiffractionCalculations'
 
 export function useDiffractionExperiment() {
   const mode = ref<'single' | 'grating'>('single')
@@ -80,6 +82,22 @@ export function useDiffractionExperiment() {
 
   const lightColor = computed(() => wavelengthToColor(lam.value))
 
+  // Regression for single slit: y (dark fringe 1) vs 1/a
+  // Theory: y = (λD/1000) · (1/a)  →  slope = λD/1000,  λ(nm) = slope·1000/D
+  const regression = computed(() => {
+    const singleTrials = trials.trials.value.filter((t) => t.mode === 'single' && t.darkFringe1 > 0)
+    if (singleTrials.length < 2) return { m: 0, b: 0, r2: 0 }
+    const pts = singleTrials.map((t) => ({ x: 1 / t.slitWidth, y: t.darkFringe1 }))
+    return linearRegression(pts)
+  })
+
+  const lambdaFromRegression = computed(() => {
+    const m = regression.value.m
+    const D = params.screenDistance
+    if (!isFinite(m) || m <= 0 || D <= 0) return null
+    return (m * 1000) / D
+  })
+
   const layout = useDiffractionLayout()
 
   const trials = useDiffractionTrials(
@@ -98,17 +116,16 @@ export function useDiffractionExperiment() {
 
   function resetSim() {
     running.value = false; paused.value = false
-    mode.value = 'single'
-    params.slitWidth = 0.10; params.screenDistance = 1.0; params.wavelength = 580; params.linesPerMm = 500
-    trials.clearTrials()
   }
 
+  const router = useRouter()
   function exportToAnalysis() {
     if (trials.trials.value.length < 2) return
     const isGrating = mode.value === 'grating'
     const payload: AnalysisPayload = {
       sourceExperiment: 'diffraction',
       sourceNameAr: isGrating ? 'محبز الحيود' : 'حيود الشق الواحد',
+      hasCalcTab: true,
       readings: trials.trials.value.map(t => ({
         a: isGrating ? t.linesPerMm : t.slitWidth,
         D: t.screenDistance, lambda: t.wavelength,
@@ -127,8 +144,7 @@ export function useDiffractionExperiment() {
       ],
       suggestedPlots: [{ xKey: 'a', yKey: 'w', xLabel: isGrating ? 'N (lines/mm)' : 'a (mm)', yLabel: isGrating ? 'θ₁ (°)' : 'w (mm)', type: 'scatter' }],
     }
-    localStorage.setItem('analysis_payload', JSON.stringify(payload))
-    window.open('/analysis', '_blank')
+    sendToAnalysis(router, payload)
   }
 
   function handleDrop(fromId: string, x?: number, y?: number) {
@@ -147,13 +163,13 @@ export function useDiffractionExperiment() {
 
   function onResizeStart(col: string, e: MouseEvent) {
     if (!(col in layout.widths)) return
-    const startX = e.clientX, startW = (layout.widths as any)[col] as number
-    function move(ev: MouseEvent) { (layout.widths as any)[col] = Math.max(220, startW + (ev.clientX - startX)) }
+    const startX = e.clientX, startW = (layout.widths as Record<string, number>)[col] as number
+    function move(ev: MouseEvent) { (layout.widths as Record<string, number>)[col] = Math.max(220, startW + (ev.clientX - startX)) }
     function up() { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up) }
     window.addEventListener('mousemove', move); window.addEventListener('mouseup', up)
   }
 
-  const lab = { running, paused, intensityPattern, darkFringes, centralWidth, lightColor, orderPositions, maxOrder, firstOrderAngle, firstOrderY, togglePause }
+  const lab = { running, paused, intensityPattern, darkFringes, centralWidth, lightColor, orderPositions, maxOrder, firstOrderAngle, firstOrderY, regression, lambdaFromRegression, togglePause }
 
   return {
     mode, params, lab, layout, trials,

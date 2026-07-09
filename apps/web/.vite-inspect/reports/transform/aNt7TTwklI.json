@@ -1,0 +1,96 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/node_modules/@vue/devtools-api/lib/esm/api/util.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "export {};\n",
+      "start": 1783634639365,
+      "end": 1783634639882,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639882,
+      "end": 1783634639882,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639882,
+      "end": 1783634639882,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639882,
+      "end": 1783634639882,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639882,
+      "end": 1783634639882,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639882,
+      "end": 1783634639882,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639882,
+      "end": 1783634639882,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639882,
+      "end": 1783634639882,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639882,
+      "end": 1783634639882,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639882,
+      "end": 1783634639882,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639882,
+      "end": 1783634639882,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639882,
+      "end": 1783634639882,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639882,
+      "end": 1783634639882,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639882,
+      "end": 1783634639882,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639882,
+      "end": 1783634639882,
+      "order": "normal"
+    }
+  ]
+}

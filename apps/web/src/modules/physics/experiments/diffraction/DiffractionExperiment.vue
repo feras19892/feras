@@ -93,6 +93,10 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
               :first-order-y="ex.lab.firstOrderY.value"
               :max-order="ex.lab.maxOrder.value"
               :order-positions="ex.lab.orderPositions.value"
+              :regression-slope="ex.lab.regression.value.m"
+              :regression-intercept="ex.lab.regression.value.b"
+              :r-squared="ex.lab.regression.value.r2"
+              :lambda-from-regression="ex.lab.lambdaFromRegression.value"
               @remove="ex.trials.removeTrial"
               @clear="ex.trials.clearTrials"
               @update:params="Object.assign(ex.params, $event)"
@@ -133,7 +137,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       <div class="lab-col ctrl-col" :style="{ width: ex.layout.widths.ctrl + 'px' }">
         <template v-for="id in ex.layout.columnMap.ctrl" :key="id">
           <DraggablePanel
-            v-if="ex.layout.isPanelVisible(id)"
+            v-if="id !== 'params' && ex.layout.isPanelVisible(id)"
             class="lab-card"
             :id="id"
             :title="ex.layout.panelTitle(id)"
@@ -153,11 +157,35 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
               :first-order-y="ex.lab.firstOrderY.value"
               :max-order="ex.lab.maxOrder.value"
               :order-positions="ex.lab.orderPositions.value"
+              :regression-slope="ex.lab.regression.value.m"
+              :regression-intercept="ex.lab.regression.value.b"
+              :r-squared="ex.lab.regression.value.r2"
+              :lambda-from-regression="ex.lab.lambdaFromRegression.value"
               @remove="ex.trials.removeTrial"
               @clear="ex.trials.clearTrials"
               @update:params="Object.assign(ex.params, $event)"
             />
           </DraggablePanel>
+          <div v-else-if="id === 'params'" class="params-embedded">
+            <DiffractionPanelBody
+              id="params"
+              :mode="ex.mode.value"
+              :trials="ex.trials.trials.value"
+              :params="ex.params"
+              :central-width="ex.lab.centralWidth.value"
+              :dark-fringes="ex.lab.darkFringes.value"
+              :intensity-pattern="ex.lab.intensityPattern.value"
+              :first-order-angle="ex.lab.firstOrderAngle.value"
+              :first-order-y="ex.lab.firstOrderY.value"
+              :max-order="ex.lab.maxOrder.value"
+              :order-positions="ex.lab.orderPositions.value"
+              :regression-slope="ex.lab.regression.value.m"
+              :regression-intercept="ex.lab.regression.value.b"
+              :r-squared="ex.lab.regression.value.r2"
+              :lambda-from-regression="ex.lab.lambdaFromRegression.value"
+              @update:params="Object.assign(ex.params, $event)"
+            />
+          </div>
         </template>
       </div>
     </div>
@@ -175,6 +203,10 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       :first-order-y="ex.lab.firstOrderY.value"
       :max-order="ex.lab.maxOrder.value"
       :order-positions="ex.lab.orderPositions.value"
+      :regression-slope="ex.lab.regression.value.m"
+      :regression-intercept="ex.lab.regression.value.b"
+      :r-squared="ex.lab.regression.value.r2"
+      :lambda-from-regression="ex.lab.lambdaFromRegression.value"
       @maximize="ex.layout.maximizePanel"
       @remove="ex.trials.removeTrial"
       @clear="ex.trials.clearTrials"
@@ -213,6 +245,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 .vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 0; position: relative; }
 .vis-canvas-wrap { flex: 1; min-height: 0; position: relative; width: 100%; }
 .ctrl-col { background: rgba(255,255,255,0.02); }
+.params-embedded { padding: .6rem; }
 .resizer { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0; }
 .resizer:hover, .resizer:active { background: #5B8DB8; }
 .hint-bar { background: #252D3A; border: 1px solid #2D3645; border-radius: 6px; padding: .35rem .7rem; font-size: .75rem; color: #8B95A5; text-align: center; flex-shrink: 0; }

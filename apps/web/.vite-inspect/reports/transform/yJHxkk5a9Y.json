@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useDropPhysics.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import {\n  items, liquidMap, buretteMap, receivingMap,\n  buretteConsumedThisRefill,\n  getLiquid, isContainer, isBurette\n} from './useChemistryLab';\nimport { applyIndicator } from './useReactionEngine';\nimport { handleDropMix } from './useReactionEngine';\nimport { pushHistory } from './useChemistryHistory';\nimport type { LabItem } from './useChemistryTools';\nimport type { ToolState } from './chemLabTypes';\n\nexport function handleDropExited(\n  sourceItem: LabItem,\n  wx: number,\n  wy: number,\n  color: string,\n  selectedItemRef: { value: LabItem | null },\n  emit: (name: 'select', item: LabItem | null, state: ToolState | null) => void,\n  buildToolState: (item: LabItem | null) => ToolState | null\n): void {\n  const candidates = items.value.filter((i: LabItem) => {\n    if (i.uid === sourceItem.uid) return false;\n    if (!isContainer(i.id)) return false;\n    return Math.abs(wx - (i.x + 70)) < 65 && wy >= i.y - 20 && wy <= i.y + 120;\n  });\n  let target: LabItem | undefined;\n  if (candidates.length > 0) {\n    target = candidates.reduce((best, current) => {\n      const bestDx = wx - (best.x + 70);\n      const bestDy = wy - (best.y + 50);\n      const bestDist = bestDx * bestDx + bestDy * bestDy;\n      const currDx = wx - (current.x + 70);\n      const currDy = wy - (current.y + 50);\n      const currDist = currDx * currDx + currDy * currDy;\n      return currDist < bestDist ? current : best;\n    });\n  }\n  if (!target) return;\n  const tLiq = getLiquid(target.uid);\n  if (tLiq.volume >= tLiq.maxVolume) return;\n\n  pushHistory();\n  const amount = 0.15;\n  tLiq.volume = Math.min(tLiq.maxVolume, +(tLiq.volume + amount).toFixed(1));\n\n  const sLiq = liquidMap[sourceItem.uid];\n  const sBur = buretteMap[sourceItem.uid];\n  const sourceChemicalId = sLiq?.chemicalId || sBur?.chemicalId || sLiq?.indicators?.[0] || undefined;\n\n  const indicatorIds = new Set(['phenolphthalein', 'methyl-orange', 'bromothymol-blue', 'universal-indicator', 'starch']);\n  const isIndicatorId = (id: string) => indicatorIds.has(id);\n\n  if (sourceChemicalId && tLiq.chemicalId) {\n    if (isIndicatorId(sourceChemicalId)) {\n      if (!tLiq.indicators) tLiq.indicators = [];\n      if (!tLiq.indicators.includes(sourceChemicalId)) {\n        tLiq.indicators.push(sourceChemicalId);\n        applyIndicator(sourceChemicalId, target.uid);\n      }\n      if (!tLiq.label.includes(sourceChemicalId)) {\n        tLiq.label = tLiq.label + ' + ' + sourceChemicalId;\n      }\n    } else {\n      handleDropMix({\n        sourceUid: sourceItem.uid,\n        targetUid: target.uid,\n        sourceChemicalId,\n        targetChemicalId: tLiq.chemicalId,\n        dropVolume: amount,\n      });\n    }\n  } else if (sourceChemicalId) {\n    tLiq.chemicalId = sourceChemicalId;\n  }\n\n  if (!tLiq.chemicalId) {\n    tLiq.color = color;\n  }\n\n  if (isBurette(sourceItem.id)) {\n    const consumed = buretteConsumedThisRefill[sourceItem.uid] || 0;\n    buretteConsumedThisRefill[sourceItem.uid] = consumed + amount;\n  }\n\n  receivingMap[target.uid] = true;\n  setTimeout(() => { receivingMap[target.uid] = false; }, 400);\n  if (selectedItemRef.value?.uid === target.uid) emit('select', target, buildToolState(target));\n}\n",
+      "start": 1783634640299,
+      "end": 1783634640566,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640566,
+      "end": 1783634640566,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import {\n  items,\n  liquidMap,\n  buretteMap,\n  receivingMap,\n  buretteConsumedThisRefill,\n  getLiquid,\n  isContainer,\n  isBurette\n} from \"./useChemistryLab\";\nimport { applyIndicator } from \"./useReactionEngine\";\nimport { handleDropMix } from \"./useReactionEngine\";\nimport { pushHistory } from \"./useChemistryHistory\";\nexport function handleDropExited(sourceItem, wx, wy, color, selectedItemRef, emit, buildToolState) {\n  const candidates = items.value.filter((i) => {\n    if (i.uid === sourceItem.uid) return false;\n    if (!isContainer(i.id)) return false;\n    return Math.abs(wx - (i.x + 70)) < 65 && wy >= i.y - 20 && wy <= i.y + 120;\n  });\n  let target;\n  if (candidates.length > 0) {\n    target = candidates.reduce((best, current) => {\n      const bestDx = wx - (best.x + 70);\n      const bestDy = wy - (best.y + 50);\n      const bestDist = bestDx * bestDx + bestDy * bestDy;\n      const currDx = wx - (current.x + 70);\n      const currDy = wy - (current.y + 50);\n      const currDist = currDx * currDx + currDy * currDy;\n      return currDist < bestDist ? current : best;\n    });\n  }\n  if (!target) return;\n  const tLiq = getLiquid(target.uid);\n  if (tLiq.volume >= tLiq.maxVolume) return;\n  pushHistory();\n  const amount = 0.15;\n  tLiq.volume = Math.min(tLiq.maxVolume, +(tLiq.volume + amount).toFixed(1));\n  const sLiq = liquidMap[sourceItem.uid];\n  const sBur = buretteMap[sourceItem.uid];\n  const sourceChemicalId = sLiq?.chemicalId || sBur?.chemicalId || sLiq?.indicators?.[0] || void 0;\n  const indicatorIds = /* @__PURE__ */ new Set([\"phenolphthalein\", \"methyl-orange\", \"bromothymol-blue\", \"universal-indicator\", \"starch\"]);\n  const isIndicatorId = (id) => indicatorIds.has(id);\n  if (sourceChemicalId && tLiq.chemicalId) {\n    if (isIndicatorId(sourceChemicalId)) {\n      if (!tLiq.indicators) tLiq.indicators = [];\n      if (!tLiq.indicators.includes(sourceChemicalId)) {\n        tLiq.indicators.push(sourceChemicalId);\n        applyIndicator(sourceChemicalId, target.uid);\n      }\n      if (!tLiq.label.includes(sourceChemicalId)) {\n        tLiq.label = tLiq.label + \" + \" + sourceChemicalId;\n      }\n    } else {\n      handleDropMix({\n        sourceUid: sourceItem.uid,\n        targetUid: target.uid,\n        sourceChemicalId,\n        targetChemicalId: tLiq.chemicalId,\n        dropVolume: amount\n      });\n    }\n  } else if (sourceChemicalId) {\n    tLiq.chemicalId = sourceChemicalId;\n  }\n  if (!tLiq.chemicalId) {\n    tLiq.color = color;\n  }\n  if (isBurette(sourceItem.id)) {\n    const consumed = buretteConsumedThisRefill[sourceItem.uid] || 0;\n    buretteConsumedThisRefill[sourceItem.uid] = consumed + amount;\n  }\n  receivingMap[target.uid] = true;\n  setTimeout(() => {\n    receivingMap[target.uid] = false;\n  }, 400);\n  if (selectedItemRef.value?.uid === target.uid) emit(\"select\", target, buildToolState(target));\n}\n",
+      "start": 1783634640566,
+      "end": 1783634640814,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useDropPhysics.ts"
+        ],
+        "sourcesContent": [
+          "import {\n  items, liquidMap, buretteMap, receivingMap,\n  buretteConsumedThisRefill,\n  getLiquid, isContainer, isBurette\n} from './useChemistryLab';\nimport { applyIndicator } from './useReactionEngine';\nimport { handleDropMix } from './useReactionEngine';\nimport { pushHistory } from './useChemistryHistory';\nimport type { LabItem } from './useChemistryTools';\nimport type { ToolState } from './chemLabTypes';\n\nexport function handleDropExited(\n  sourceItem: LabItem,\n  wx: number,\n  wy: number,\n  color: string,\n  selectedItemRef: { value: LabItem | null },\n  emit: (name: 'select', item: LabItem | null, state: ToolState | null) => void,\n  buildToolState: (item: LabItem | null) => ToolState | null\n): void {\n  const candidates = items.value.filter((i: LabItem) => {\n    if (i.uid === sourceItem.uid) return false;\n    if (!isContainer(i.id)) return false;\n    return Math.abs(wx - (i.x + 70)) < 65 && wy >= i.y - 20 && wy <= i.y + 120;\n  });\n  let target: LabItem | undefined;\n  if (candidates.length > 0) {\n    target = candidates.reduce((best, current) => {\n      const bestDx = wx - (best.x + 70);\n      const bestDy = wy - (best.y + 50);\n      const bestDist = bestDx * bestDx + bestDy * bestDy;\n      const currDx = wx - (current.x + 70);\n      const currDy = wy - (current.y + 50);\n      const currDist = currDx * currDx + currDy * currDy;\n      return currDist < bestDist ? current : best;\n    });\n  }\n  if (!target) return;\n  const tLiq = getLiquid(target.uid);\n  if (tLiq.volume >= tLiq.maxVolume) return;\n\n  pushHistory();\n  const amount = 0.15;\n  tLiq.volume = Math.min(tLiq.maxVolume, +(tLiq.volume + amount).toFixed(1));\n\n  const sLiq = liquidMap[sourceItem.uid];\n  const sBur = buretteMap[sourceItem.uid];\n  const sourceChemicalId = sLiq?.chemicalId || sBur?.chemicalId || sLiq?.indicators?.[0] || undefined;\n\n  const indicatorIds = new Set(['phenolphthalein', 'methyl-orange', 'bromothymol-blue', 'universal-indicator', 'starch']);\n  const isIndicatorId = (id: string) => indicatorIds.has(id);\n\n  if (sourceChemicalId && tLiq.chemicalId) {\n    if (isIndicatorId(sourceChemicalId)) {\n      if (!tLiq.indicators) tLiq.indicators = [];\n      if (!tLiq.indicators.includes(sourceChemicalId)) {\n        tLiq.indicators.push(sourceChemicalId);\n        applyIndicator(sourceChemicalId, target.uid);\n      }\n      if (!tLiq.label.includes(sourceChemicalId)) {\n        tLiq.label = tLiq.label + ' + ' + sourceChemicalId;\n      }\n    } else {\n      handleDropMix({\n        sourceUid: sourceItem.uid,\n        targetUid: target.uid,\n        sourceChemicalId,\n        targetChemicalId: tLiq.chemicalId,\n        dropVolume: amount,\n      });\n    }\n  } else if (sourceChemicalId) {\n    tLiq.chemicalId = sourceChemicalId;\n  }\n\n  if (!tLiq.chemicalId) {\n    tLiq.color = color;\n  }\n\n  if (isBurette(sourceItem.id)) {\n    const consumed = buretteConsumedThisRefill[sourceItem.uid] || 0;\n    buretteConsumedThisRefill[sourceItem.uid] = consumed + amount;\n  }\n\n  receivingMap[target.uid] = true;\n  setTimeout(() => { receivingMap[target.uid] = false; }, 400);\n  if (selectedItemRef.value?.uid === target.uid) emit('select', target, buildToolState(target));\n}\n"
+        ],
+        "mappings": "AAAA;AAAA,EACE;AAAA,EAAO;AAAA,EAAW;AAAA,EAAY;AAAA,EAC9B;AAAA,EACA;AAAA,EAAW;AAAA,EAAa;AAAA,OACnB;AACP,SAAS,sBAAsB;AAC/B,SAAS,qBAAqB;AAC9B,SAAS,mBAAmB;AAIrB,gBAAS,iBACd,YACA,IACA,IACA,OACA,iBACA,MACA,gBACM;AACN,QAAM,aAAa,MAAM,MAAM,OAAO,CAAC,MAAe;AACpD,QAAI,EAAE,QAAQ,WAAW,IAAK,QAAO;AACrC,QAAI,CAAC,YAAY,EAAE,EAAE,EAAG,QAAO;AAC/B,WAAO,KAAK,IAAI,MAAM,EAAE,IAAI,GAAG,IAAI,MAAM,MAAM,EAAE,IAAI,MAAM,MAAM,EAAE,IAAI;AAAA,EACzE,CAAC;AACD,MAAI;AACJ,MAAI,WAAW,SAAS,GAAG;AACzB,aAAS,WAAW,OAAO,CAAC,MAAM,YAAY;AAC5C,YAAM,SAAS,MAAM,KAAK,IAAI;AAC9B,YAAM,SAAS,MAAM,KAAK,IAAI;AAC9B,YAAM,WAAW,SAAS,SAAS,SAAS;AAC5C,YAAM,SAAS,MAAM,QAAQ,IAAI;AACjC,YAAM,SAAS,MAAM,QAAQ,IAAI;AACjC,YAAM,WAAW,SAAS,SAAS,SAAS;AAC5C,aAAO,WAAW,WAAW,UAAU;AAAA,IACzC,CAAC;AAAA,EACH;AACA,MAAI,CAAC,OAAQ;AACb,QAAM,OAAO,UAAU,OAAO,GAAG;AACjC,MAAI,KAAK,UAAU,KAAK,UAAW;AAEnC,cAAY;AACZ,QAAM,SAAS;AACf,OAAK,SAAS,KAAK,IAAI,KAAK,WAAW,EAAE,KAAK,SAAS,QAAQ,QAAQ,CAAC,CAAC;AAEzE,QAAM,OAAO,UAAU,WAAW,GAAG;AACrC,QAAM,OAAO,WAAW,WAAW,GAAG;AACtC,QAAM,mBAAmB,MAAM,cAAc,MAAM,cAAc,MAAM,aAAa,CAAC,KAAK;AAE1F,QAAM,eAAe,oBAAI,IAAI,CAAC,mBAAmB,iBAAiB,oBAAoB,uBAAuB,QAAQ,CAAC;AACtH,QAAM,gBAAgB,CAAC,OAAe,aAAa,IAAI,EAAE;AAEzD,MAAI,oBAAoB,KAAK,YAAY;AACvC,QAAI,cAAc,gBAAgB,GAAG;AACnC,UAAI,CAAC,KAAK,WAAY,MAAK,aAAa,CAAC;AACzC,UAAI,CAAC,KAAK,WAAW,SAAS,gBAAgB,GAAG;AAC/C,aAAK,WAAW,KAAK,gBAAgB;AACrC,uBAAe,kBAAkB,OAAO,GAAG;AAAA,MAC7C;AACA,UAAI,CAAC,KAAK,MAAM,SAAS,gBAAgB,GAAG;AAC1C,aAAK,QAAQ,KAAK,QAAQ,QAAQ;AAAA,MACpC;AAAA,IACF,OAAO;AACL,oBAAc;AAAA,QACZ,WAAW,WAAW;AAAA,QACtB,WAAW,OAAO;AAAA,QAClB;AAAA,QACA,kBAAkB,KAAK;AAAA,QACvB,YAAY;AAAA,MACd,CAAC;AAAA,IACH;AAAA,EACF,WAAW,kBAAkB;AAC3B,SAAK,aAAa;AAAA,EACpB;AAEA,MAAI,CAAC,KAAK,YAAY;AACpB,SAAK,QAAQ;AAAA,EACf;AAEA,MAAI,UAAU,WAAW,EAAE,GAAG;AAC5B,UAAM,WAAW,0BAA0B,WAAW,GAAG,KAAK;AAC9D,8BAA0B,WAAW,GAAG,IAAI,WAAW;AAAA,EACzD;AAEA,eAAa,OAAO,GAAG,IAAI;AAC3B,aAAW,MAAM;AAAE,iBAAa,OAAO,GAAG,IAAI;AAAA,EAAO,GAAG,GAAG;AAC3D,MAAI,gBAAgB,OAAO,QAAQ,OAAO,IAAK,MAAK,UAAU,QAAQ,eAAe,MAAM,CAAC;AAC9F;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640815,
+      "end": 1783634640815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640815,
+      "end": 1783634640815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640815,
+      "end": 1783634640816,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640816,
+      "end": 1783634640816,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisErrorPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, vModelText as _vModelText, withDirectives as _withDirectives, normalizeClass as _normalizeClass, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"error-panel\" }\nconst _hoisted_2 = { class: \"panel-header\" }\nconst _hoisted_3 = { class: \"body\" }\nconst _hoisted_4 = { class: \"row\" }\nconst _hoisted_5 = { class: \"field\" }\nconst _hoisted_6 = [\"placeholder\"]\nconst _hoisted_7 = { class: \"field\" }\nconst _hoisted_8 = [\"placeholder\"]\nconst _hoisted_9 = {\n  key: 0,\n  class: \"result\"\n}\nconst _hoisted_10 = { class: \"label\" }\nconst _hoisted_11 = {\n  key: 1,\n  class: \"hint\"\n}\n\nimport { computed, ref, watch } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'AnalysisErrorPanel',\n  emits: [\"error-calc\"],\n  setup(__props, { emit: __emit }) {\n\nconst { t } = useI18n();\nconst theoretical = ref<number | null>(null);\nconst experimental = ref<number | null>(null);\n\nconst emit = __emit;\n\nconst errorPercent = computed(() => {\n  if (theoretical.value === null || experimental.value === null) return null;\n  const t = theoretical.value;\n  const e = experimental.value;\n  if (t === 0) return null;\n  return Math.abs((t - e) / t) * 100;\n});\n\nwatch([theoretical, experimental, errorPercent], () => {\n  emit('error-calc', {\n    theoretical: theoretical.value,\n    experimental: experimental.value,\n    errorPercent: errorPercent.value,\n  });\n}, { immediate: true });\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('analysis.errorPercent')), 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_3, [\n      _createElementVNode(\"div\", _hoisted_4, [\n        _createElementVNode(\"div\", _hoisted_5, [\n          _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('analysis.theoreticalValue')), 1),\n          _withDirectives(_createElementVNode(\"input\", {\n            \"onUpdate:modelValue\": _cache[0] || (_cache[0] = ($event: any) => ((theoretical).value = $event)),\n            type: \"number\",\n            step: \"any\",\n            placeholder: _unref(t)('analysis.theoreticalPlaceholder')\n          }, null, 8, _hoisted_6), [\n            [\n              _vModelText,\n              theoretical.value,\n              void 0,\n              { number: true }\n            ]\n          ])\n        ]),\n        _createElementVNode(\"div\", _hoisted_7, [\n          _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('analysis.experimentalValue')), 1),\n          _withDirectives(_createElementVNode(\"input\", {\n            \"onUpdate:modelValue\": _cache[1] || (_cache[1] = ($event: any) => ((experimental).value = $event)),\n            type: \"number\",\n            step: \"any\",\n            placeholder: _unref(t)('analysis.experimentalPlaceholder')\n          }, null, 8, _hoisted_8), [\n            [\n              _vModelText,\n              experimental.value,\n              void 0,\n              { number: true }\n            ]\n          ])\n        ])\n      ]),\n      (errorPercent.value !== null)\n        ? (_openBlock(), _createElementBlock(\"div\", _hoisted_9, [\n            _createElementVNode(\"span\", _hoisted_10, _toDisplayString(_unref(t)('analysis.errorRate')), 1),\n            _createElementVNode(\"span\", {\n              class: _normalizeClass([\"value\", { good: errorPercent.value < 5, warn: errorPercent.value >= 5 && errorPercent.value < 15, bad: errorPercent.value >= 15 }])\n            }, _toDisplayString(errorPercent.value.toFixed(2)) + \"% \", 3)\n          ]))\n        : (_openBlock(), _createElementBlock(\"div\", _hoisted_11, _toDisplayString(_unref(t)('analysis.enterValuesHint')), 1))\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783634640899,
+      "end": 1783634640899
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640899,
+      "end": 1783634640899,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, vModelText as _vModelText, withDirectives as _withDirectives, normalizeClass as _normalizeClass, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"error-panel\" };\nconst _hoisted_2 = { class: \"panel-header\" };\nconst _hoisted_3 = { class: \"body\" };\nconst _hoisted_4 = { class: \"row\" };\nconst _hoisted_5 = { class: \"field\" };\nconst _hoisted_6 = [\"placeholder\"];\nconst _hoisted_7 = { class: \"field\" };\nconst _hoisted_8 = [\"placeholder\"];\nconst _hoisted_9 = {\n  key: 0,\n  class: \"result\"\n};\nconst _hoisted_10 = { class: \"label\" };\nconst _hoisted_11 = {\n  key: 1,\n  class: \"hint\"\n};\nimport { computed, ref, watch } from \"vue\";\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"AnalysisErrorPanel\",\n  emits: [\"error-calc\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const theoretical = ref(null);\n    const experimental = ref(null);\n    const emit = __emit;\n    const errorPercent = computed(() => {\n      if (theoretical.value === null || experimental.value === null) return null;\n      const t2 = theoretical.value;\n      const e = experimental.value;\n      if (t2 === 0) return null;\n      return Math.abs((t2 - e) / t2) * 100;\n    });\n    watch([theoretical, experimental, errorPercent], () => {\n      emit(\"error-calc\", {\n        theoretical: theoretical.value,\n        experimental: experimental.value,\n        errorPercent: errorPercent.value\n      });\n    }, { immediate: true });\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _createElementVNode(\"span\", null, _toDisplayString(_unref(t)(\"analysis.errorPercent\")), 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_3, [\n          _createElementVNode(\"div\", _hoisted_4, [\n            _createElementVNode(\"div\", _hoisted_5, [\n              _createElementVNode(\"label\", null, _toDisplayString(_unref(t)(\"analysis.theoreticalValue\")), 1),\n              _withDirectives(_createElementVNode(\"input\", {\n                \"onUpdate:modelValue\": _cache[0] || (_cache[0] = ($event) => theoretical.value = $event),\n                type: \"number\",\n                step: \"any\",\n                placeholder: _unref(t)(\"analysis.theoreticalPlaceholder\")\n              }, null, 8, _hoisted_6), [\n                [\n                  _vModelText,\n                  theoretical.value,\n                  void 0,\n                  { number: true }\n                ]\n              ])\n            ]),\n            _createElementVNode(\"div\", _hoisted_7, [\n              _createElementVNode(\"label\", null, _toDisplayString(_unref(t)(\"analysis.experimentalValue\")), 1),\n              _withDirectives(_createElementVNode(\"input\", {\n                \"onUpdate:modelValue\": _cache[1] || (_cache[1] = ($event) => experimental.value = $event),\n                type: \"number\",\n                step: \"any\",\n                placeholder: _unref(t)(\"analysis.experimentalPlaceholder\")\n              }, null, 8, _hoisted_8), [\n                [\n                  _vModelText,\n                  experimental.value,\n                  void 0,\n                  { number: true }\n                ]\n              ])\n            ])\n          ]),\n          errorPercent.value !== null ? (_openBlock(), _createElementBlock(\"div\", _hoisted_9, [\n            _createElementVNode(\"span\", _hoisted_10, _toDisplayString(_unref(t)(\"analysis.errorRate\")), 1),\n            _createElementVNode(\"span\", {\n              class: _normalizeClass([\"value\", { good: errorPercent.value < 5, warn: errorPercent.value >= 5 && errorPercent.value < 15, bad: errorPercent.value >= 15 }])\n            }, _toDisplayString(errorPercent.value.toFixed(2)) + \"% \", 3)\n          ])) : (_openBlock(), _createElementBlock(\"div\", _hoisted_11, _toDisplayString(_unref(t)(\"analysis.enterValuesHint\")), 1))\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634640899,
+      "end": 1783634641018,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisErrorPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, vModelText as _vModelText, withDirectives as _withDirectives, normalizeClass as _normalizeClass, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"error-panel\" }\nconst _hoisted_2 = { class: \"panel-header\" }\nconst _hoisted_3 = { class: \"body\" }\nconst _hoisted_4 = { class: \"row\" }\nconst _hoisted_5 = { class: \"field\" }\nconst _hoisted_6 = [\"placeholder\"]\nconst _hoisted_7 = { class: \"field\" }\nconst _hoisted_8 = [\"placeholder\"]\nconst _hoisted_9 = {\n  key: 0,\n  class: \"result\"\n}\nconst _hoisted_10 = { class: \"label\" }\nconst _hoisted_11 = {\n  key: 1,\n  class: \"hint\"\n}\n\nimport { computed, ref, watch } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'AnalysisErrorPanel',\n  emits: [\"error-calc\"],\n  setup(__props, { emit: __emit }) {\n\nconst { t } = useI18n();\nconst theoretical = ref<number | null>(null);\nconst experimental = ref<number | null>(null);\n\nconst emit = __emit;\n\nconst errorPercent = computed(() => {\n  if (theoretical.value === null || experimental.value === null) return null;\n  const t = theoretical.value;\n  const e = experimental.value;\n  if (t === 0) return null;\n  return Math.abs((t - e) / t) * 100;\n});\n\nwatch([theoretical, experimental, errorPercent], () => {\n  emit('error-calc', {\n    theoretical: theoretical.value,\n    experimental: experimental.value,\n    errorPercent: errorPercent.value,\n  });\n}, { immediate: true });\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('analysis.errorPercent')), 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_3, [\n      _createElementVNode(\"div\", _hoisted_4, [\n        _createElementVNode(\"div\", _hoisted_5, [\n          _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('analysis.theoreticalValue')), 1),\n          _withDirectives(_createElementVNode(\"input\", {\n            \"onUpdate:modelValue\": _cache[0] || (_cache[0] = ($event: any) => ((theoretical).value = $event)),\n            type: \"number\",\n            step: \"any\",\n            placeholder: _unref(t)('analysis.theoreticalPlaceholder')\n          }, null, 8, _hoisted_6), [\n            [\n              _vModelText,\n              theoretical.value,\n              void 0,\n              { number: true }\n            ]\n          ])\n        ]),\n        _createElementVNode(\"div\", _hoisted_7, [\n          _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('analysis.experimentalValue')), 1),\n          _withDirectives(_createElementVNode(\"input\", {\n            \"onUpdate:modelValue\": _cache[1] || (_cache[1] = ($event: any) => ((experimental).value = $event)),\n            type: \"number\",\n            step: \"any\",\n            placeholder: _unref(t)('analysis.experimentalPlaceholder')\n          }, null, 8, _hoisted_8), [\n            [\n              _vModelText,\n              experimental.value,\n              void 0,\n              { number: true }\n            ]\n          ])\n        ])\n      ]),\n      (errorPercent.value !== null)\n        ? (_openBlock(), _createElementBlock(\"div\", _hoisted_9, [\n            _createElementVNode(\"span\", _hoisted_10, _toDisplayString(_unref(t)('analysis.errorRate')), 1),\n            _createElementVNode(\"span\", {\n              class: _normalizeClass([\"value\", { good: errorPercent.value < 5, warn: errorPercent.value >= 5 && errorPercent.value < 15, bad: errorPercent.value >= 15 }])\n            }, _toDisplayString(errorPercent.value.toFixed(2)) + \"% \", 3)\n          ]))\n        : (_openBlock(), _createElementBlock(\"div\", _hoisted_11, _toDisplayString(_unref(t)('analysis.enterValuesHint')), 1))\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": [
+          "t"
+        ]
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641018,
+      "end": 1783634641018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641018,
+      "end": 1783634641019,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641019,
+      "end": 1783634641019,
+      "order": "normal"
+    }
+  ]
+}

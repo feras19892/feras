@@ -2,3 +2,5 @@ export * from './user.js';
 export * from './api-responses.js';
 export * from './auth.js';
 export * from './class.js';
+export * from './experiment.js';
+export * from './experiment-result.js';

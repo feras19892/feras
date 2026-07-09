@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/spring/useSpringLayout.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { reactive } from 'vue'\nimport { useI18n } from '../useI18n'\n\nexport type ColumnId = 'data' | 'vis' | 'ctrl'\nexport type PanelId = 'table' | 'signal' | 'params'\n\nconst layoutStorageKey = 'spring:layout:v2'\n\nconst defaultPanelColumn: Record<PanelId, ColumnId> = {\n  table: 'data',\n  signal: 'data',\n  params: 'ctrl',\n}\n\nconst defaultColumnOrder: Record<ColumnId, PanelId[]> = {\n  data: ['table', 'signal'],\n  vis: [],\n  ctrl: ['params'],\n}\n\nconst allPanelIds: PanelId[] = ['table', 'signal', 'params']\n\nexport function useSpringLayout() {\n  const { t } = useI18n()\n  // Clear old v1 layout to prevent stale analysis panels from appearing\n  try { localStorage.removeItem('spring:layout:v1') } catch { /* ignore */ }\n\n  const panels = reactive<Record<PanelId, boolean>>({\n    table: true, signal: true, params: true,\n  })\n\n  const maximized = reactive<Record<PanelId, boolean>>({\n    table: false, signal: false, params: false,\n  })\n\n  const panelColumn = reactive<Record<PanelId, ColumnId>>({ ...defaultPanelColumn })\n\n  const columnOrder = reactive<Record<ColumnId, PanelId[]>>({\n    data: [...defaultColumnOrder.data],\n    vis: [...defaultColumnOrder.vis],\n    ctrl: [...defaultColumnOrder.ctrl],\n  })\n\n  function isPanelVisible(id: string) {\n    const pid = id as PanelId\n    return panels[pid] && !maximized[pid]\n  }\n\n  function togglePanel(key: string) { if (allPanelIds.includes(key as PanelId)) panels[key as PanelId] = !panels[key as PanelId] }\n\n  function showAllPanels() {\n    allPanelIds.forEach((k) => { panels[k] = true; maximized[k] = false })\n    resetLayout()\n  }\n\n  function maximizePanel(key: string) { if (allPanelIds.includes(key as PanelId)) maximized[key as PanelId] = !maximized[key as PanelId] }\n\n  function persistLayout() {\n    try { localStorage.setItem(layoutStorageKey, JSON.stringify({ panelColumn, columnOrder })) } catch { /* ignore */ }\n  }\n\n  function normalizeLayout() {\n    for (const id of allPanelIds) {\n      const col = panelColumn[id]\n      if (col !== 'data' && col !== 'vis' && col !== 'ctrl') panelColumn[id] = 'data'\n    }\n    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) {\n      const seen = new Set<PanelId>()\n      columnOrder[col] = (columnOrder[col] || []).filter((id) => allPanelIds.includes(id) && !seen.has(id) && (seen.add(id), true))\n    }\n    const placed = new Set<PanelId>([...columnOrder.data, ...columnOrder.vis, ...columnOrder.ctrl])\n    for (const id of allPanelIds) {\n      if (!placed.has(id)) {\n        columnOrder[panelColumn[id]] = [...columnOrder[panelColumn[id]], id]\n      }\n    }\n    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) {\n      for (const id of columnOrder[col]) panelColumn[id] = col\n    }\n  }\n\n  function applyPersistedLayout() {\n    // clear any stale maximized state\n    allPanelIds.forEach((k) => { maximized[k] = false })\n    try {\n      const raw = localStorage.getItem(layoutStorageKey)\n      if (!raw) return\n      const parsed = JSON.parse(raw) as { panelColumn?: Record<string, ColumnId>, columnOrder?: Record<string, PanelId[]> }\n      if (parsed.panelColumn) {\n        for (const k of allPanelIds) {\n          const v = parsed.panelColumn[k]\n          if (v === 'data' || v === 'vis' || v === 'ctrl') panelColumn[k] = v\n        }\n      }\n      if (parsed.columnOrder) {\n        for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) {\n          const arr = parsed.columnOrder[col]\n          if (Array.isArray(arr)) {\n            columnOrder[col] = arr.filter((x: PanelId) => allPanelIds.includes(x)) as PanelId[]\n          }\n        }\n      }\n      normalizeLayout()\n    } catch { /* ignore */ }\n  }\n\n  function resetLayout() {\n    allPanelIds.forEach((id) => { panelColumn[id] = defaultPanelColumn[id] })\n    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) {\n      columnOrder[col] = [...defaultColumnOrder[col]]\n    }\n    normalizeLayout()\n    persistLayout()\n  }\n\n  function movePanel(id: string, targetCol: ColumnId, insertAfterId?: string | null) {\n    const pid = id as PanelId\n    const after = insertAfterId ? (insertAfterId as PanelId) : null\n    // remove from all columns\n    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) {\n      columnOrder[col] = columnOrder[col].filter(p => p !== pid)\n    }\n    // find insert position\n    if (after && columnOrder[targetCol].includes(after)) {\n      const idx = columnOrder[targetCol].indexOf(after)\n      columnOrder[targetCol] = [\n        ...columnOrder[targetCol].slice(0, idx + 1),\n        pid,\n        ...columnOrder[targetCol].slice(idx + 1)\n      ]\n    } else {\n      columnOrder[targetCol] = [pid, ...columnOrder[targetCol]]\n    }\n    panelColumn[pid] = targetCol\n    normalizeLayout()\n    persistLayout()\n  }\n\n  function panelTitle(id: string) {\n    const pid = id as PanelId\n    const titles: Record<PanelId, string> = {\n      table: t('experiments.panelTable'),\n      signal: t('experiments.panelSignal'),\n      params: t('experiments.panelParams'),\n    }\n    return titles[pid] ?? '📊'\n  }\n\n  return {\n    panels, maximized, panelColumn, columnOrder,\n    isPanelVisible, togglePanel, showAllPanels, maximizePanel, movePanel,\n    applyPersistedLayout, resetLayout, panelTitle,\n  }\n}\n",
+      "start": 1783634641762,
+      "end": 1783634642175,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642175,
+      "end": 1783634642175,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { reactive } from \"vue\";\nimport { useI18n } from \"../useI18n\";\nconst layoutStorageKey = \"spring:layout:v2\";\nconst defaultPanelColumn = {\n  table: \"data\",\n  signal: \"data\",\n  params: \"ctrl\"\n};\nconst defaultColumnOrder = {\n  data: [\"table\", \"signal\"],\n  vis: [],\n  ctrl: [\"params\"]\n};\nconst allPanelIds = [\"table\", \"signal\", \"params\"];\nexport function useSpringLayout() {\n  const { t } = useI18n();\n  try {\n    localStorage.removeItem(\"spring:layout:v1\");\n  } catch {\n  }\n  const panels = reactive({\n    table: true,\n    signal: true,\n    params: true\n  });\n  const maximized = reactive({\n    table: false,\n    signal: false,\n    params: false\n  });\n  const panelColumn = reactive({ ...defaultPanelColumn });\n  const columnOrder = reactive({\n    data: [...defaultColumnOrder.data],\n    vis: [...defaultColumnOrder.vis],\n    ctrl: [...defaultColumnOrder.ctrl]\n  });\n  function isPanelVisible(id) {\n    const pid = id;\n    return panels[pid] && !maximized[pid];\n  }\n  function togglePanel(key) {\n    if (allPanelIds.includes(key)) panels[key] = !panels[key];\n  }\n  function showAllPanels() {\n    allPanelIds.forEach((k) => {\n      panels[k] = true;\n      maximized[k] = false;\n    });\n    resetLayout();\n  }\n  function maximizePanel(key) {\n    if (allPanelIds.includes(key)) maximized[key] = !maximized[key];\n  }\n  function persistLayout() {\n    try {\n      localStorage.setItem(layoutStorageKey, JSON.stringify({ panelColumn, columnOrder }));\n    } catch {\n    }\n  }\n  function normalizeLayout() {\n    for (const id of allPanelIds) {\n      const col = panelColumn[id];\n      if (col !== \"data\" && col !== \"vis\" && col !== \"ctrl\") panelColumn[id] = \"data\";\n    }\n    for (const col of [\"data\", \"vis\", \"ctrl\"]) {\n      const seen = /* @__PURE__ */ new Set();\n      columnOrder[col] = (columnOrder[col] || []).filter((id) => allPanelIds.includes(id) && !seen.has(id) && (seen.add(id), true));\n    }\n    const placed = /* @__PURE__ */ new Set([...columnOrder.data, ...columnOrder.vis, ...columnOrder.ctrl]);\n    for (const id of allPanelIds) {\n      if (!placed.has(id)) {\n        columnOrder[panelColumn[id]] = [...columnOrder[panelColumn[id]], id];\n      }\n    }\n    for (const col of [\"data\", \"vis\", \"ctrl\"]) {\n      for (const id of columnOrder[col]) panelColumn[id] = col;\n    }\n  }\n  function applyPersistedLayout() {\n    allPanelIds.forEach((k) => {\n      maximized[k] = false;\n    });\n    try {\n      const raw = localStorage.getItem(layoutStorageKey);\n      if (!raw) return;\n      const parsed = JSON.parse(raw);\n      if (parsed.panelColumn) {\n        for (const k of allPanelIds) {\n          const v = parsed.panelColumn[k];\n          if (v === \"data\" || v === \"vis\" || v === \"ctrl\") panelColumn[k] = v;\n        }\n      }\n      if (parsed.columnOrder) {\n        for (const col of [\"data\", \"vis\", \"ctrl\"]) {\n          const arr = parsed.columnOrder[col];\n          if (Array.isArray(arr)) {\n            columnOrder[col] = arr.filter((x) => allPanelIds.includes(x));\n          }\n        }\n      }\n      normalizeLayout();\n    } catch {\n    }\n  }\n  function resetLayout() {\n    allPanelIds.forEach((id) => {\n      panelColumn[id] = defaultPanelColumn[id];\n    });\n    for (const col of [\"data\", \"vis\", \"ctrl\"]) {\n      columnOrder[col] = [...defaultColumnOrder[col]];\n    }\n    normalizeLayout();\n    persistLayout();\n  }\n  function movePanel(id, targetCol, insertAfterId) {\n    const pid = id;\n    const after = insertAfterId ? insertAfterId : null;\n    for (const col of [\"data\", \"vis\", \"ctrl\"]) {\n      columnOrder[col] = columnOrder[col].filter((p) => p !== pid);\n    }\n    if (after && columnOrder[targetCol].includes(after)) {\n      const idx = columnOrder[targetCol].indexOf(after);\n      columnOrder[targetCol] = [\n        ...columnOrder[targetCol].slice(0, idx + 1),\n        pid,\n        ...columnOrder[targetCol].slice(idx + 1)\n      ];\n    } else {\n      columnOrder[targetCol] = [pid, ...columnOrder[targetCol]];\n    }\n    panelColumn[pid] = targetCol;\n    normalizeLayout();\n    persistLayout();\n  }\n  function panelTitle(id) {\n    const pid = id;\n    const titles = {\n      table: t(\"experiments.panelTable\"),\n      signal: t(\"experiments.panelSignal\"),\n      params: t(\"experiments.panelParams\")\n    };\n    return titles[pid] ?? \"📊\";\n  }\n  return {\n    panels,\n    maximized,\n    panelColumn,\n    columnOrder,\n    isPanelVisible,\n    togglePanel,\n    showAllPanels,\n    maximizePanel,\n    movePanel,\n    applyPersistedLayout,\n    resetLayout,\n    panelTitle\n  };\n}\n",
+      "start": 1783634642175,
+      "end": 1783634642301,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/spring/useSpringLayout.ts"
+        ],
+        "sourcesContent": [
+          "import { reactive } from 'vue'\nimport { useI18n } from '../useI18n'\n\nexport type ColumnId = 'data' | 'vis' | 'ctrl'\nexport type PanelId = 'table' | 'signal' | 'params'\n\nconst layoutStorageKey = 'spring:layout:v2'\n\nconst defaultPanelColumn: Record<PanelId, ColumnId> = {\n  table: 'data',\n  signal: 'data',\n  params: 'ctrl',\n}\n\nconst defaultColumnOrder: Record<ColumnId, PanelId[]> = {\n  data: ['table', 'signal'],\n  vis: [],\n  ctrl: ['params'],\n}\n\nconst allPanelIds: PanelId[] = ['table', 'signal', 'params']\n\nexport function useSpringLayout() {\n  const { t } = useI18n()\n  // Clear old v1 layout to prevent stale analysis panels from appearing\n  try { localStorage.removeItem('spring:layout:v1') } catch { /* ignore */ }\n\n  const panels = reactive<Record<PanelId, boolean>>({\n    table: true, signal: true, params: true,\n  })\n\n  const maximized = reactive<Record<PanelId, boolean>>({\n    table: false, signal: false, params: false,\n  })\n\n  const panelColumn = reactive<Record<PanelId, ColumnId>>({ ...defaultPanelColumn })\n\n  const columnOrder = reactive<Record<ColumnId, PanelId[]>>({\n    data: [...defaultColumnOrder.data],\n    vis: [...defaultColumnOrder.vis],\n    ctrl: [...defaultColumnOrder.ctrl],\n  })\n\n  function isPanelVisible(id: string) {\n    const pid = id as PanelId\n    return panels[pid] && !maximized[pid]\n  }\n\n  function togglePanel(key: string) { if (allPanelIds.includes(key as PanelId)) panels[key as PanelId] = !panels[key as PanelId] }\n\n  function showAllPanels() {\n    allPanelIds.forEach((k) => { panels[k] = true; maximized[k] = false })\n    resetLayout()\n  }\n\n  function maximizePanel(key: string) { if (allPanelIds.includes(key as PanelId)) maximized[key as PanelId] = !maximized[key as PanelId] }\n\n  function persistLayout() {\n    try { localStorage.setItem(layoutStorageKey, JSON.stringify({ panelColumn, columnOrder })) } catch { /* ignore */ }\n  }\n\n  function normalizeLayout() {\n    for (const id of allPanelIds) {\n      const col = panelColumn[id]\n      if (col !== 'data' && col !== 'vis' && col !== 'ctrl') panelColumn[id] = 'data'\n    }\n    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) {\n      const seen = new Set<PanelId>()\n      columnOrder[col] = (columnOrder[col] || []).filter((id) => allPanelIds.includes(id) && !seen.has(id) && (seen.add(id), true))\n    }\n    const placed = new Set<PanelId>([...columnOrder.data, ...columnOrder.vis, ...columnOrder.ctrl])\n    for (const id of allPanelIds) {\n      if (!placed.has(id)) {\n        columnOrder[panelColumn[id]] = [...columnOrder[panelColumn[id]], id]\n      }\n    }\n    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) {\n      for (const id of columnOrder[col]) panelColumn[id] = col\n    }\n  }\n\n  function applyPersistedLayout() {\n    // clear any stale maximized state\n    allPanelIds.forEach((k) => { maximized[k] = false })\n    try {\n      const raw = localStorage.getItem(layoutStorageKey)\n      if (!raw) return\n      const parsed = JSON.parse(raw) as { panelColumn?: Record<string, ColumnId>, columnOrder?: Record<string, PanelId[]> }\n      if (parsed.panelColumn) {\n        for (const k of allPanelIds) {\n          const v = parsed.panelColumn[k]\n          if (v === 'data' || v === 'vis' || v === 'ctrl') panelColumn[k] = v\n        }\n      }\n      if (parsed.columnOrder) {\n        for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) {\n          const arr = parsed.columnOrder[col]\n          if (Array.isArray(arr)) {\n            columnOrder[col] = arr.filter((x: PanelId) => allPanelIds.includes(x)) as PanelId[]\n          }\n        }\n      }\n      normalizeLayout()\n    } catch { /* ignore */ }\n  }\n\n  function resetLayout() {\n    allPanelIds.forEach((id) => { panelColumn[id] = defaultPanelColumn[id] })\n    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) {\n      columnOrder[col] = [...defaultColumnOrder[col]]\n    }\n    normalizeLayout()\n    persistLayout()\n  }\n\n  function movePanel(id: string, targetCol: ColumnId, insertAfterId?: string | null) {\n    const pid = id as PanelId\n    const after = insertAfterId ? (insertAfterId as PanelId) : null\n    // remove from all columns\n    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) {\n      columnOrder[col] = columnOrder[col].filter(p => p !== pid)\n    }\n    // find insert position\n    if (after && columnOrder[targetCol].includes(after)) {\n      const idx = columnOrder[targetCol].indexOf(after)\n      columnOrder[targetCol] = [\n        ...columnOrder[targetCol].slice(0, idx + 1),\n        pid,\n        ...columnOrder[targetCol].slice(idx + 1)\n      ]\n    } else {\n      columnOrder[targetCol] = [pid, ...columnOrder[targetCol]]\n    }\n    panelColumn[pid] = targetCol\n    normalizeLayout()\n    persistLayout()\n  }\n\n  function panelTitle(id: string) {\n    const pid = id as PanelId\n    const titles: Record<PanelId, string> = {\n      table: t('experiments.panelTable'),\n      signal: t('experiments.panelSignal'),\n      params: t('experiments.panelParams'),\n    }\n    return titles[pid] ?? '📊'\n  }\n\n  return {\n    panels, maximized, panelColumn, columnOrder,\n    isPanelVisible, togglePanel, showAllPanels, maximizePanel, movePanel,\n    applyPersistedLayout, resetLayout, panelTitle,\n  }\n}\n"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642301,
+      "end": 1783634642301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642301,
+      "end": 1783634642301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642301,
+      "end": 1783634642301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642301,
+      "end": 1783634642301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642301,
+      "end": 1783634642301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642301,
+      "end": 1783634642301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642301,
+      "end": 1783634642301,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642301,
+      "end": 1783634642301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642301,
+      "end": 1783634642301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642301,
+      "end": 1783634642301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642301,
+      "end": 1783634642301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642301,
+      "end": 1783634642301,
+      "order": "normal"
+    }
+  ]
+}

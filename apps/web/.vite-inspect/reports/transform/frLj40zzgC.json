@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationToast.vue?vue&type=style&index=0&scoped=f7e422ec&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.toast {\n  min-width: 280px;\n  max-width: 380px;\n  padding: 0.75rem 0.9rem;\n  border-radius: 0.75rem;\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);\n  color: #e2e8f0;\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n}\n.toast.info { border-color: rgba(59,130,246,0.25); }\n.toast.success { border-color: rgba(34,197,94,0.25); }\n.toast.warning { border-color: rgba(234,179,8,0.35); }\n.toast.error { border-color: rgba(239,68,68,0.35); }\n\n.left { display: flex; align-items: center; gap: 0.6rem; flex: 1; }\n.icon { font-size: 1.2rem; }\n.content { display: flex; flex-direction: column; gap: 0.2rem; }\n.title { font-weight: 700; font-size: 0.95rem; }\n.message { font-size: 0.85rem; color: #cbd5e1; }\n.close {\n  background: none;\n  border: none;\n  color: #94a3b8;\n  font-size: 0.95rem;\n  cursor: pointer;\n  padding: 0.2rem;\n}\n.close:hover { color: #e2e8f0; }\n\n.toast-slide-enter-active,\n.toast-slide-leave-active { transition: all 0.2s ease; }\n.toast-slide-enter-from { opacity: 0; transform: translateX(12px) translateY(8px); }\n.toast-slide-leave-to { opacity: 0; transform: translateX(12px) translateY(8px); }\n",
+      "start": 1783634640850,
+      "end": 1783634640850
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.toast {\n  min-width: 280px;\n  max-width: 380px;\n  padding: 0.75rem 0.9rem;\n  border-radius: 0.75rem;\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);\n  color: #e2e8f0;\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n}\n.toast.info { border-color: rgba(59,130,246,0.25); }\n.toast.success { border-color: rgba(34,197,94,0.25); }\n.toast.warning { border-color: rgba(234,179,8,0.35); }\n.toast.error { border-color: rgba(239,68,68,0.35); }\n\n.left { display: flex; align-items: center; gap: 0.6rem; flex: 1; }\n.icon { font-size: 1.2rem; }\n.content { display: flex; flex-direction: column; gap: 0.2rem; }\n.title { font-weight: 700; font-size: 0.95rem; }\n.message { font-size: 0.85rem; color: #cbd5e1; }\n.close {\n  background: none;\n  border: none;\n  color: #94a3b8;\n  font-size: 0.95rem;\n  cursor: pointer;\n  padding: 0.2rem;\n}\n.close:hover { color: #e2e8f0; }\n\n.toast-slide-enter-active,\n.toast-slide-leave-active { transition: all 0.2s ease; }\n.toast-slide-enter-from { opacity: 0; transform: translateX(12px) translateY(8px); }\n.toast-slide-leave-to { opacity: 0; transform: translateX(12px) translateY(8px); }\n",
+      "start": 1783634640850,
+      "end": 1783634640850,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640850,
+      "end": 1783634640850,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640850,
+      "end": 1783634640850,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640850,
+      "end": 1783634640850,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.toast[data-v-f7e422ec] {\n  min-width: 280px;\n  max-width: 380px;\n  padding: 0.75rem 0.9rem;\n  border-radius: 0.75rem;\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);\n  color: #e2e8f0;\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n}\n.toast.info[data-v-f7e422ec] { border-color: rgba(59,130,246,0.25);\n}\n.toast.success[data-v-f7e422ec] { border-color: rgba(34,197,94,0.25);\n}\n.toast.warning[data-v-f7e422ec] { border-color: rgba(234,179,8,0.35);\n}\n.toast.error[data-v-f7e422ec] { border-color: rgba(239,68,68,0.35);\n}\n.left[data-v-f7e422ec] { display: flex; align-items: center; gap: 0.6rem; flex: 1;\n}\n.icon[data-v-f7e422ec] { font-size: 1.2rem;\n}\n.content[data-v-f7e422ec] { display: flex; flex-direction: column; gap: 0.2rem;\n}\n.title[data-v-f7e422ec] { font-weight: 700; font-size: 0.95rem;\n}\n.message[data-v-f7e422ec] { font-size: 0.85rem; color: #cbd5e1;\n}\n.close[data-v-f7e422ec] {\n  background: none;\n  border: none;\n  color: #94a3b8;\n  font-size: 0.95rem;\n  cursor: pointer;\n  padding: 0.2rem;\n}\n.close[data-v-f7e422ec]:hover { color: #e2e8f0;\n}\n.toast-slide-enter-active[data-v-f7e422ec],\n.toast-slide-leave-active[data-v-f7e422ec] { transition: all 0.2s ease;\n}\n.toast-slide-enter-from[data-v-f7e422ec] { opacity: 0; transform: translateX(12px) translateY(8px);\n}\n.toast-slide-leave-to[data-v-f7e422ec] { opacity: 0; transform: translateX(12px) translateY(8px);\n}\n",
+      "start": 1783634640850,
+      "end": 1783634640851,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640851,
+      "end": 1783634640851,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634640851,
+      "end": 1783634640851,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640851,
+      "end": 1783634640851,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640851,
+      "end": 1783634640851,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640851,
+      "end": 1783634640851,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640851,
+      "end": 1783634640851,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640851,
+      "end": 1783634640851,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640851,
+      "end": 1783634640851,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640851,
+      "end": 1783634640851,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640851,
+      "end": 1783634640851,
+      "order": "normal"
+    }
+  ]
+}

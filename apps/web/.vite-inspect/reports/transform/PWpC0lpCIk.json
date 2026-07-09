@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/polarization/panels/PolarizationParamsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "﻿<script setup lang=\"ts\">\n\n\ninterface Props {\n  params: { polarizerAngle: number; analyzerAngle: number; I0: number }\n}\nconst props = defineProps<Props>()\nconst emit = defineEmits<{\n  (e: 'update:params', p: { polarizerAngle: number; analyzerAngle: number; I0: number }): void\n}>()\n\nfunction set(key: string, val: number) {\n  emit('update:params', { ...props.params, [key]: val })\n}\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <div class=\"param-row\">\n      <div class=\"param-header\">\n        <span class=\"param-label\">θ₁ — Polarizer angle</span>\n        <span class=\"param-val cyan\">{{ params.polarizerAngle }}°</span>\n      </div>\n      <input class=\"slider\" type=\"range\" min=\"0\" max=\"180\" step=\"1\"\n        :value=\"params.polarizerAngle\"\n        @input=\"set('polarizerAngle', Number(($event.target as HTMLInputElement).value))\" />\n    </div>\n    <div class=\"param-row\">\n      <div class=\"param-header\">\n        <span class=\"param-label\">θ₂ — Analyzer angle</span>\n        <span class=\"param-val amber\">{{ params.analyzerAngle }}°</span>\n      </div>\n      <input class=\"slider\" type=\"range\" min=\"0\" max=\"180\" step=\"1\"\n        :value=\"params.analyzerAngle\"\n        @input=\"set('analyzerAngle', Number(($event.target as HTMLInputElement).value))\" />\n    </div>\n    <div class=\"param-row\">\n      <div class=\"param-header\">\n        <span class=\"param-label\">I₀ — Input intensity</span>\n        <span class=\"param-val green\">{{ params.I0 }}</span>\n      </div>\n      <input class=\"slider\" type=\"range\" min=\"10\" max=\"200\" step=\"5\"\n        :value=\"params.I0\"\n        @input=\"set('I0', Number(($event.target as HTMLInputElement).value))\" />\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { display: flex; flex-direction: column; gap: .55rem; font-size: .82rem; padding: .1rem 0; }\n.param-row { display: flex; flex-direction: column; gap: .3rem; }\n.param-header { display: flex; justify-content: space-between; align-items: center; }\n.param-label { font-size: .75rem; color: #8B95A5; }\n.param-val { font-family: monospace; color: #67e8f9; font-size: .8rem; font-weight: 700; }\n.slider { width: 100%; accent-color: #67e8f9; height: 3px; }\n</style>\n",
+      "start": 1783634642383,
+      "end": 1783634642670,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642670,
+      "end": 1783634642670,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642670,
+      "end": 1783634642670,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642670,
+      "end": 1783634642670,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642670,
+      "end": 1783634642670,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/polarization/panels/PolarizationParamsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/polarization/panels/PolarizationParamsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/polarization/panels/PolarizationParamsPanel.vue?vue&type=style&index=0&scoped=f5c151c5&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-f5c151c5\"]]);\n",
+      "start": 1783634642670,
+      "end": 1783634642870,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642870,
+      "end": 1783634642870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642870,
+      "end": 1783634642871,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642871,
+      "end": 1783634642871,
+      "order": "normal"
+    }
+  ]
+}

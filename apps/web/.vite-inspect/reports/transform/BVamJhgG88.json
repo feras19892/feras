@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/diffraction/useDiffractionCalculations.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "export function wavelengthToColor(nm: number): string {\n  if (nm < 400) return '#8B00FF'\n  if (nm < 450) return '#4B0082'\n  if (nm < 490) return '#0000FF'\n  if (nm < 520) return '#00FF00'\n  if (nm < 570) return '#FFFF00'\n  if (nm < 590) return '#FF7F00'\n  if (nm < 620) return '#FF0000'\n  return '#8B0000'\n}\n\nexport function sincSq(beta: number): number {\n  if (Math.abs(beta) < 1e-6) return 1\n  const s = Math.sin(beta)\n  return (s / beta) ** 2\n}\n\nexport function linearRegression(pts: { x: number; y: number }[]) {\n  const n = pts.length\n  if (n < 2) return { m: 0, b: 0, r2: 0 }\n  let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumY2 = 0\n  for (const p of pts) {\n    sumX += p.x; sumY += p.y; sumXY += p.x * p.y\n    sumX2 += p.x * p.x; sumY2 += p.y * p.y\n  }\n  const m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX)\n  const b = (sumY - m * sumX) / n\n  const ssTot = sumY2 - (sumY * sumY) / n\n  const ssRes = sumY2 - 2 * m * sumXY - 2 * b * sumY + m * m * sumX2 + 2 * m * b * sumX + n * b * b\n  const r2 = ssTot === 0 ? 1 : 1 - ssRes / ssTot\n  return { m, b, r2 }\n}\n",
+      "start": 1783634641885,
+      "end": 1783634642180,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642180,
+      "end": 1783634642180,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "export function wavelengthToColor(nm) {\n  if (nm < 400) return \"#8B00FF\";\n  if (nm < 450) return \"#4B0082\";\n  if (nm < 490) return \"#0000FF\";\n  if (nm < 520) return \"#00FF00\";\n  if (nm < 570) return \"#FFFF00\";\n  if (nm < 590) return \"#FF7F00\";\n  if (nm < 620) return \"#FF0000\";\n  return \"#8B0000\";\n}\nexport function sincSq(beta) {\n  if (Math.abs(beta) < 1e-6) return 1;\n  const s = Math.sin(beta);\n  return (s / beta) ** 2;\n}\nexport function linearRegression(pts) {\n  const n = pts.length;\n  if (n < 2) return { m: 0, b: 0, r2: 0 };\n  let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumY2 = 0;\n  for (const p of pts) {\n    sumX += p.x;\n    sumY += p.y;\n    sumXY += p.x * p.y;\n    sumX2 += p.x * p.x;\n    sumY2 += p.y * p.y;\n  }\n  const m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);\n  const b = (sumY - m * sumX) / n;\n  const ssTot = sumY2 - sumY * sumY / n;\n  const ssRes = sumY2 - 2 * m * sumXY - 2 * b * sumY + m * m * sumX2 + 2 * m * b * sumX + n * b * b;\n  const r2 = ssTot === 0 ? 1 : 1 - ssRes / ssTot;\n  return { m, b, r2 };\n}\n",
+      "start": 1783634642180,
+      "end": 1783634642321,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/diffraction/useDiffractionCalculations.ts"
+        ],
+        "sourcesContent": [
+          "export function wavelengthToColor(nm: number): string {\n  if (nm < 400) return '#8B00FF'\n  if (nm < 450) return '#4B0082'\n  if (nm < 490) return '#0000FF'\n  if (nm < 520) return '#00FF00'\n  if (nm < 570) return '#FFFF00'\n  if (nm < 590) return '#FF7F00'\n  if (nm < 620) return '#FF0000'\n  return '#8B0000'\n}\n\nexport function sincSq(beta: number): number {\n  if (Math.abs(beta) < 1e-6) return 1\n  const s = Math.sin(beta)\n  return (s / beta) ** 2\n}\n\nexport function linearRegression(pts: { x: number; y: number }[]) {\n  const n = pts.length\n  if (n < 2) return { m: 0, b: 0, r2: 0 }\n  let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumY2 = 0\n  for (const p of pts) {\n    sumX += p.x; sumY += p.y; sumXY += p.x * p.y\n    sumX2 += p.x * p.x; sumY2 += p.y * p.y\n  }\n  const m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX)\n  const b = (sumY - m * sumX) / n\n  const ssTot = sumY2 - (sumY * sumY) / n\n  const ssRes = sumY2 - 2 * m * sumXY - 2 * b * sumY + m * m * sumX2 + 2 * m * b * sumX + n * b * b\n  const r2 = ssTot === 0 ? 1 : 1 - ssRes / ssTot\n  return { m, b, r2 }\n}\n"
+        ],
+        "mappings": "AAAO,gBAAS,kBAAkB,IAAoB;AACpD,MAAI,KAAK,IAAK,QAAO;AACrB,MAAI,KAAK,IAAK,QAAO;AACrB,MAAI,KAAK,IAAK,QAAO;AACrB,MAAI,KAAK,IAAK,QAAO;AACrB,MAAI,KAAK,IAAK,QAAO;AACrB,MAAI,KAAK,IAAK,QAAO;AACrB,MAAI,KAAK,IAAK,QAAO;AACrB,SAAO;AACT;AAEO,gBAAS,OAAO,MAAsB;AAC3C,MAAI,KAAK,IAAI,IAAI,IAAI,KAAM,QAAO;AAClC,QAAM,IAAI,KAAK,IAAI,IAAI;AACvB,UAAQ,IAAI,SAAS;AACvB;AAEO,gBAAS,iBAAiB,KAAiC;AAChE,QAAM,IAAI,IAAI;AACd,MAAI,IAAI,EAAG,QAAO,EAAE,GAAG,GAAG,GAAG,GAAG,IAAI,EAAE;AACtC,MAAI,OAAO,GAAG,OAAO,GAAG,QAAQ,GAAG,QAAQ,GAAG,QAAQ;AACtD,aAAW,KAAK,KAAK;AACnB,YAAQ,EAAE;AAAG,YAAQ,EAAE;AAAG,aAAS,EAAE,IAAI,EAAE;AAC3C,aAAS,EAAE,IAAI,EAAE;AAAG,aAAS,EAAE,IAAI,EAAE;AAAA,EACvC;AACA,QAAM,KAAK,IAAI,QAAQ,OAAO,SAAS,IAAI,QAAQ,OAAO;AAC1D,QAAM,KAAK,OAAO,IAAI,QAAQ;AAC9B,QAAM,QAAQ,QAAS,OAAO,OAAQ;AACtC,QAAM,QAAQ,QAAQ,IAAI,IAAI,QAAQ,IAAI,IAAI,OAAO,IAAI,IAAI,QAAQ,IAAI,IAAI,IAAI,OAAO,IAAI,IAAI;AAChG,QAAM,KAAK,UAAU,IAAI,IAAI,IAAI,QAAQ;AACzC,SAAO,EAAE,GAAG,GAAG,GAAG;AACpB;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642321,
+      "end": 1783634642321,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642321,
+      "end": 1783634642321,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642321,
+      "end": 1783634642321,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642321,
+      "end": 1783634642321,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642321,
+      "end": 1783634642321,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642321,
+      "end": 1783634642321,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642321,
+      "end": 1783634642321,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642321,
+      "end": 1783634642321,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642321,
+      "end": 1783634642321,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642321,
+      "end": 1783634642321,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642321,
+      "end": 1783634642321,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642321,
+      "end": 1783634642321,
+      "order": "normal"
+    }
+  ]
+}

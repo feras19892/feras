@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/CreateClassModal.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../composables/useI18n'\n\nconst { t } = useI18n()\nconst props = defineProps<{\n  show: boolean\n  modelValue: string\n}>()\n\nconst emit = defineEmits<{\n  (e: 'update:show', val: boolean): void\n  (e: 'update:modelValue', val: string): void\n  (e: 'confirm'): void\n}>()\n\nfunction onInput(e: Event) {\n  emit('update:modelValue', (e.target as HTMLInputElement).value)\n}\n\nfunction onConfirm() {\n  emit('confirm')\n}\n\nfunction onClose() {\n  emit('update:show', false)\n}\n</script>\n\n<template>\n  <div v-if=\"show\" class=\"modal-overlay\" @click.self=\"onClose\">\n    <div class=\"join-modal\">\n      <h3>{{ t('teacher.createClass') }}</h3>\n      <input\n        :value=\"modelValue\"\n        type=\"text\"\n        :placeholder=\"t('teacher.classNamePlaceholder')\"\n        @input=\"onInput\"\n        @keyup.enter=\"onConfirm\"\n      />\n      <div class=\"join-actions\">\n        <button class=\"join-cancel\" @click=\"onClose\">{{ t('teacher.cancelBtn') }}</button>\n        <button class=\"join-confirm\" @click=\"onConfirm\">{{ t('teacher.createAction') }}</button>\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.modal-overlay {\n  position: fixed;\n  inset: 0;\n  background: rgba(0, 0, 0, 0.6);\n  backdrop-filter: blur(8px);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  z-index: 200;\n}\n\n.join-modal {\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  border-radius: 1rem;\n  padding: 1.5rem;\n  width: 90%;\n  max-width: 360px;\n  display: flex;\n  flex-direction: column;\n  gap: 1rem;\n}\n\n.join-modal h3 {\n  margin: 0;\n  font-size: 1.1rem;\n  color: #f1f5f9;\n  text-align: center;\n}\n\n.join-modal input {\n  padding: 0.7rem 1rem;\n  border-radius: 0.6rem;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  background: rgba(0, 0, 0, 0.3);\n  color: #e2e8f0;\n  font-size: 0.9rem;\n  font-family: inherit;\n}\n\n.join-actions {\n  display: flex;\n  gap: 0.5rem;\n}\n\n.join-cancel,\n.join-confirm {\n  flex: 1;\n  padding: 0.55rem;\n  border-radius: 0.55rem;\n  font-size: 0.85rem;\n  font-weight: 700;\n  cursor: pointer;\n  font-family: inherit;\n  transition: all 0.2s;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n}\n\n.join-cancel {\n  background: rgba(255, 255, 255, 0.05);\n  color: #94a3b8;\n}\n\n.join-confirm {\n  background: linear-gradient(135deg, #4f46e5, #7c3aed);\n  color: #fff;\n  border: none;\n}\n</style>\n",
+      "start": 1783634640335,
+      "end": 1783634640614,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640614,
+      "end": 1783634640614,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640614,
+      "end": 1783634640614,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640614,
+      "end": 1783634640614,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640614,
+      "end": 1783634640614,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/CreateClassModal.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/CreateClassModal.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/CreateClassModal.vue?vue&type=style&index=0&scoped=21c3d37e&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-21c3d37e\"]]);\n",
+      "start": 1783634640614,
+      "end": 1783634640814,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640814,
+      "end": 1783634640814,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640814,
+      "end": 1783634640815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640815,
+      "end": 1783634640815,
+      "order": "normal"
+    }
+  ]
+}

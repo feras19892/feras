@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationToast.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, normalizeClass as _normalizeClass, Transition as _Transition, withCtx as _withCtx, createBlock as _createBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"left\" }\nconst _hoisted_2 = { class: \"icon\" }\nconst _hoisted_3 = { class: \"content\" }\nconst _hoisted_4 = { class: \"title\" }\nconst _hoisted_5 = {\n  key: 0,\n  class: \"message\"\n}\n\nimport { onMounted, onUnmounted, watch } from 'vue'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'NotificationToast',\n  props: {\n    show: { type: Boolean },\n    title: {},\n    message: {},\n    icon: {},\n    type: {},\n    timeoutMs: {}\n  },\n  emits: [\"close\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst props = __props\n\nconst emit = __emit\n\nlet timer: ReturnType<typeof setTimeout> | null = null\n\nfunction startTimer() {\n  clearTimer()\n  if (props.timeoutMs && props.timeoutMs > 0) {\n    timer = setTimeout(() => emit('close'), props.timeoutMs)\n  }\n}\n\nfunction clearTimer() {\n  if (timer) {\n    clearTimeout(timer)\n    timer = null\n  }\n}\n\nonMounted(startTimer)\nonUnmounted(clearTimer)\n\nwatch(() => props.show, (v) => {\n  if (v) startTimer()\n  else clearTimer()\n})\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createBlock(_Transition, { name: \"toast-slide\" }, {\n    default: _withCtx(() => [\n      (__props.show)\n        ? (_openBlock(), _createElementBlock(\"div\", {\n            key: 0,\n            class: _normalizeClass([\"toast\", __props.type])\n          }, [\n            _createElementVNode(\"div\", _hoisted_1, [\n              _createElementVNode(\"span\", _hoisted_2, _toDisplayString(__props.icon || '🔔'), 1),\n              _createElementVNode(\"div\", _hoisted_3, [\n                _createElementVNode(\"div\", _hoisted_4, _toDisplayString(__props.title), 1),\n                (__props.message)\n                  ? (_openBlock(), _createElementBlock(\"div\", _hoisted_5, _toDisplayString(__props.message), 1))\n                  : _createCommentVNode(\"\", true)\n              ])\n            ]),\n            _createElementVNode(\"button\", {\n              class: \"close\",\n              onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('close')))\n            }, \"✕\")\n          ], 2))\n        : _createCommentVNode(\"\", true)\n    ]),\n    _: 1\n  }))\n}\n}\n\n})",
+      "start": 1783634640850,
+      "end": 1783634640850
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640850,
+      "end": 1783634640850,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, normalizeClass as _normalizeClass, Transition as _Transition, withCtx as _withCtx, createBlock as _createBlock } from \"vue\";\nconst _hoisted_1 = { class: \"left\" };\nconst _hoisted_2 = { class: \"icon\" };\nconst _hoisted_3 = { class: \"content\" };\nconst _hoisted_4 = { class: \"title\" };\nconst _hoisted_5 = {\n  key: 0,\n  class: \"message\"\n};\nimport { onMounted, onUnmounted, watch } from \"vue\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"NotificationToast\",\n  props: {\n    show: { type: Boolean },\n    title: {},\n    message: {},\n    icon: {},\n    type: {},\n    timeoutMs: {}\n  },\n  emits: [\"close\"],\n  setup(__props, { emit: __emit }) {\n    const props = __props;\n    const emit = __emit;\n    let timer = null;\n    function startTimer() {\n      clearTimer();\n      if (props.timeoutMs && props.timeoutMs > 0) {\n        timer = setTimeout(() => emit(\"close\"), props.timeoutMs);\n      }\n    }\n    function clearTimer() {\n      if (timer) {\n        clearTimeout(timer);\n        timer = null;\n      }\n    }\n    onMounted(startTimer);\n    onUnmounted(clearTimer);\n    watch(() => props.show, (v) => {\n      if (v) startTimer();\n      else clearTimer();\n    });\n    return (_ctx, _cache) => {\n      return _openBlock(), _createBlock(_Transition, { name: \"toast-slide\" }, {\n        default: _withCtx(() => [\n          __props.show ? (_openBlock(), _createElementBlock(\"div\", {\n            key: 0,\n            class: _normalizeClass([\"toast\", __props.type])\n          }, [\n            _createElementVNode(\"div\", _hoisted_1, [\n              _createElementVNode(\"span\", _hoisted_2, _toDisplayString(__props.icon || \"🔔\"), 1),\n              _createElementVNode(\"div\", _hoisted_3, [\n                _createElementVNode(\"div\", _hoisted_4, _toDisplayString(__props.title), 1),\n                __props.message ? (_openBlock(), _createElementBlock(\"div\", _hoisted_5, _toDisplayString(__props.message), 1)) : _createCommentVNode(\"\", true)\n              ])\n            ]),\n            _createElementVNode(\"button\", {\n              class: \"close\",\n              onClick: _cache[0] || (_cache[0] = ($event) => emit(\"close\"))\n            }, \"✕\")\n          ], 2)) : _createCommentVNode(\"\", true)\n        ]),\n        _: 1\n      });\n    };\n  }\n});\n",
+      "start": 1783634640850,
+      "end": 1783634641016,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationToast.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, normalizeClass as _normalizeClass, Transition as _Transition, withCtx as _withCtx, createBlock as _createBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"left\" }\nconst _hoisted_2 = { class: \"icon\" }\nconst _hoisted_3 = { class: \"content\" }\nconst _hoisted_4 = { class: \"title\" }\nconst _hoisted_5 = {\n  key: 0,\n  class: \"message\"\n}\n\nimport { onMounted, onUnmounted, watch } from 'vue'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'NotificationToast',\n  props: {\n    show: { type: Boolean },\n    title: {},\n    message: {},\n    icon: {},\n    type: {},\n    timeoutMs: {}\n  },\n  emits: [\"close\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst props = __props\n\nconst emit = __emit\n\nlet timer: ReturnType<typeof setTimeout> | null = null\n\nfunction startTimer() {\n  clearTimer()\n  if (props.timeoutMs && props.timeoutMs > 0) {\n    timer = setTimeout(() => emit('close'), props.timeoutMs)\n  }\n}\n\nfunction clearTimer() {\n  if (timer) {\n    clearTimeout(timer)\n    timer = null\n  }\n}\n\nonMounted(startTimer)\nonUnmounted(clearTimer)\n\nwatch(() => props.show, (v) => {\n  if (v) startTimer()\n  else clearTimer()\n})\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createBlock(_Transition, { name: \"toast-slide\" }, {\n    default: _withCtx(() => [\n      (__props.show)\n        ? (_openBlock(), _createElementBlock(\"div\", {\n            key: 0,\n            class: _normalizeClass([\"toast\", __props.type])\n          }, [\n            _createElementVNode(\"div\", _hoisted_1, [\n              _createElementVNode(\"span\", _hoisted_2, _toDisplayString(__props.icon || '🔔'), 1),\n              _createElementVNode(\"div\", _hoisted_3, [\n                _createElementVNode(\"div\", _hoisted_4, _toDisplayString(__props.title), 1),\n                (__props.message)\n                  ? (_openBlock(), _createElementBlock(\"div\", _hoisted_5, _toDisplayString(__props.message), 1))\n                  : _createCommentVNode(\"\", true)\n              ])\n            ]),\n            _createElementVNode(\"button\", {\n              class: \"close\",\n              onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('close')))\n            }, \"✕\")\n          ], 2))\n        : _createCommentVNode(\"\", true)\n    ]),\n    _: 1\n  }))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,mBAAmB,kBAAkB,sBAAsB,qBAAqB,aAAa,YAAY,sBAAsB,qBAAqB,sBAAsB,qBAAqB,kBAAkB,iBAAiB,cAAc,aAAa,WAAW,UAAU,eAAe,oBAAoB;AAE9T,MAAM,aAAa,EAAE,OAAO,OAAO;AACnC,MAAM,aAAa,EAAE,OAAO,OAAO;AACnC,MAAM,aAAa,EAAE,OAAO,UAAU;AACtC,MAAM,aAAa,EAAE,OAAO,QAAQ;AACpC,MAAM,aAAa;AAAA,EACjB,KAAK;AAAA,EACL,OAAO;AACT;AAEA,SAAS,WAAW,aAAa,aAAa;AAG9C,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,MAAM,EAAE,MAAM,QAAQ;AAAA,IACtB,OAAO,CAAC;AAAA,IACR,SAAS,CAAC;AAAA,IACV,MAAM,CAAC;AAAA,IACP,MAAM,CAAC;AAAA,IACP,WAAW,CAAC;AAAA,EACd;AAAA,EACA,OAAO,CAAC,OAAO;AAAA,EACf,MAAM,SAAc,EAAE,MAAM,OAAO,GAAG;AAExC,UAAM,QAAQ;AAEd,UAAM,OAAO;AAEb,QAAI,QAA8C;AAElD,aAAS,aAAa;AACpB,iBAAW;AACX,UAAI,MAAM,aAAa,MAAM,YAAY,GAAG;AAC1C,gBAAQ,WAAW,MAAM,KAAK,OAAO,GAAG,MAAM,SAAS;AAAA,MACzD;AAAA,IACF;AAEA,aAAS,aAAa;AACpB,UAAI,OAAO;AACT,qBAAa,KAAK;AAClB,gBAAQ;AAAA,MACV;AAAA,IACF;AAEA,cAAU,UAAU;AACpB,gBAAY,UAAU;AAEtB,UAAM,MAAM,MAAM,MAAM,CAAC,MAAM;AAC7B,UAAI,EAAG,YAAW;AAAA,UACb,YAAW;AAAA,IAClB,CAAC;AAED,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,aAAa,aAAa,EAAE,MAAM,cAAc,GAAG;AAAA,QACvE,SAAS,SAAS,MAAM;AAAA,UACrB,QAAQ,QACJ,WAAW,GAAG,oBAAoB,OAAO;AAAA,YACxC,KAAK;AAAA,YACL,OAAO,gBAAgB,CAAC,SAAS,QAAQ,IAAI,CAAC;AAAA,UAChD,GAAG;AAAA,YACD,oBAAoB,OAAO,YAAY;AAAA,cACrC,oBAAoB,QAAQ,YAAY,iBAAiB,QAAQ,QAAQ,IAAI,GAAG,CAAC;AAAA,cACjF,oBAAoB,OAAO,YAAY;AAAA,gBACrC,oBAAoB,OAAO,YAAY,iBAAiB,QAAQ,KAAK,GAAG,CAAC;AAAA,gBACxE,QAAQ,WACJ,WAAW,GAAG,oBAAoB,OAAO,YAAY,iBAAiB,QAAQ,OAAO,GAAG,CAAC,KAC1F,oBAAoB,IAAI,IAAI;AAAA,cAClC,CAAC;AAAA,YACH,CAAC;AAAA,YACD,oBAAoB,UAAU;AAAA,cAC5B,OAAO;AAAA,cACP,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,OAAO;AAAA,YACnE,GAAG,GAAG;AAAA,UACR,GAAG,CAAC,KACJ,oBAAoB,IAAI,IAAI;AAAA,QAClC,CAAC;AAAA,QACD,GAAG;AAAA,MACL,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641016,
+      "end": 1783634641016,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641016,
+      "end": 1783634641016,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634641016,
+      "end": 1783634641016,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641016,
+      "end": 1783634641016,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641016,
+      "end": 1783634641016,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641016,
+      "end": 1783634641016,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641016,
+      "end": 1783634641016,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641016,
+      "end": 1783634641016,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641016,
+      "end": 1783634641016,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641016,
+      "end": 1783634641016,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641016,
+      "end": 1783634641016,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641016,
+      "end": 1783634641017,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641017,
+      "end": 1783634641017,
+      "order": "normal"
+    }
+  ]
+}

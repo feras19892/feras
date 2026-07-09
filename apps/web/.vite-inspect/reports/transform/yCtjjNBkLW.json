@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/VoltageDividerReferencePanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createStaticVNode as _createStaticVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'VoltageDividerReferencePanel',\n  setup(__props) {\n\nconst NOTES = [\n  '📊 مقسم الجهد أساس إلكترونيات كثير — من البوتشيومتر للـ ADC',\n  '⚖️ V_out = V × R2/(R1+R2) — الجهد يتناسب مع نسبة المقاومة',\n  '🔄 البوتشيومتر (Potentiometer) = مقسم جهد قابل للتعديل',\n  '⚡ إذا R1 = R2 → V_out = V/2 (نصف الجهد)',\n  '📉 كلما زادت R2 → زاد V_out (حتى يصل إلى V)',\n  '🔧 يستخدم في تحديد مستوى الصوت، الإضاءة، الحساسات',\n  '⚠️ مع حمل (load) متصل: R2 يجب أن تكون أصغر بكثير من R_load',\n]\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _cache[0] || (_cache[0] = _createStaticVNode(\"<div class=\\\"ref-title\\\" data-v-98c99c25>📊 مقسم الجهد</div><div class=\\\"ref-section\\\" data-v-98c99c25><div class=\\\"section-title\\\" data-v-98c99c25>القوانين</div><div class=\\\"formula-box\\\" style=\\\"color:#fbbf24;\\\" data-v-98c99c25>V_out = V × R2/(R1+R2)</div><div class=\\\"formula-box\\\" style=\\\"color:#3b82f6;\\\" data-v-98c99c25>V1 = V × R1/(R1+R2)</div><div class=\\\"formula-box\\\" style=\\\"color:#4ade80;\\\" data-v-98c99c25>I = V / (R1+R2)</div></div><div class=\\\"ref-section\\\" data-v-98c99c25><div class=\\\"section-title\\\" data-v-98c99c25>حالات خاصة</div><div class=\\\"case-row\\\" data-v-98c99c25><span class=\\\"case-cond\\\" data-v-98c99c25>R1 = R2</span><span class=\\\"case-result\\\" data-v-98c99c25>V_out = V/2</span></div><div class=\\\"case-row\\\" data-v-98c99c25><span class=\\\"case-cond\\\" data-v-98c99c25>R2 = 2×R1</span><span class=\\\"case-result\\\" data-v-98c99c25>V_out = 2V/3</span></div><div class=\\\"case-row\\\" data-v-98c99c25><span class=\\\"case-cond\\\" data-v-98c99c25>R2 = 3×R1</span><span class=\\\"case-result\\\" data-v-98c99c25>V_out = 3V/4</span></div><div class=\\\"case-row\\\" data-v-98c99c25><span class=\\\"case-cond\\\" data-v-98c99c25>R2 ≫ R1</span><span class=\\\"case-result\\\" data-v-98c99c25>V_out ≈ V</span></div><div class=\\\"case-row\\\" data-v-98c99c25><span class=\\\"case-cond\\\" data-v-98c99c25>R2 ≪ R1</span><span class=\\\"case-result\\\" data-v-98c99c25>V_out ≈ 0</span></div></div><div class=\\\"ref-section\\\" data-v-98c99c25><div class=\\\"section-title\\\" data-v-98c99c25>التطبيقات</div><div class=\\\"app-row\\\" data-v-98c99c25><span class=\\\"app-icon\\\" data-v-98c99c25>🔊</span><span data-v-98c99c25>التحكم في مستوى الصوت</span></div><div class=\\\"app-row\\\" data-v-98c99c25><span class=\\\"app-icon\\\" data-v-98c99c25>💡</span><span data-v-98c99c25>تحكم في سطوع LED</span></div><div class=\\\"app-row\\\" data-v-98c99c25><span class=\\\"app-icon\\\" data-v-98c99c25>🌡️</span><span data-v-98c99c25>قراءة الحساسات (thermistor)</span></div><div class=\\\"app-row\\\" data-v-98c99c25><span class=\\\"app-icon\\\" data-v-98c99c25>🎚️</span><span data-v-98c99c25>البوتشيومتر (Potentiometer)</span></div></div>\", 4)),\n    (_openBlock(), _createElementBlock(_Fragment, null, _renderList(NOTES, (note, i) => {\n      return _createElementVNode(\"div\", {\n        key: i,\n        class: \"ref-note\"\n      }, _toDisplayString(note), 1)\n    }), 64))\n  ]))\n}\n}\n\n})",
+      "start": 1783634640244,
+      "end": 1783634640244
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640244,
+      "end": 1783634640244,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createStaticVNode as _createStaticVNode } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"VoltageDividerReferencePanel\",\n  setup(__props) {\n    const NOTES = [\n      \"📊 مقسم الجهد أساس إلكترونيات كثير — من البوتشيومتر للـ ADC\",\n      \"⚖️ V_out = V × R2/(R1+R2) — الجهد يتناسب مع نسبة المقاومة\",\n      \"🔄 البوتشيومتر (Potentiometer) = مقسم جهد قابل للتعديل\",\n      \"⚡ إذا R1 = R2 → V_out = V/2 (نصف الجهد)\",\n      \"📉 كلما زادت R2 → زاد V_out (حتى يصل إلى V)\",\n      \"🔧 يستخدم في تحديد مستوى الصوت، الإضاءة، الحساسات\",\n      \"⚠️ مع حمل (load) متصل: R2 يجب أن تكون أصغر بكثير من R_load\"\n    ];\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _cache[0] || (_cache[0] = _createStaticVNode('<div class=\"ref-title\" data-v-98c99c25>📊 مقسم الجهد</div><div class=\"ref-section\" data-v-98c99c25><div class=\"section-title\" data-v-98c99c25>القوانين</div><div class=\"formula-box\" style=\"color:#fbbf24;\" data-v-98c99c25>V_out = V × R2/(R1+R2)</div><div class=\"formula-box\" style=\"color:#3b82f6;\" data-v-98c99c25>V1 = V × R1/(R1+R2)</div><div class=\"formula-box\" style=\"color:#4ade80;\" data-v-98c99c25>I = V / (R1+R2)</div></div><div class=\"ref-section\" data-v-98c99c25><div class=\"section-title\" data-v-98c99c25>حالات خاصة</div><div class=\"case-row\" data-v-98c99c25><span class=\"case-cond\" data-v-98c99c25>R1 = R2</span><span class=\"case-result\" data-v-98c99c25>V_out = V/2</span></div><div class=\"case-row\" data-v-98c99c25><span class=\"case-cond\" data-v-98c99c25>R2 = 2×R1</span><span class=\"case-result\" data-v-98c99c25>V_out = 2V/3</span></div><div class=\"case-row\" data-v-98c99c25><span class=\"case-cond\" data-v-98c99c25>R2 = 3×R1</span><span class=\"case-result\" data-v-98c99c25>V_out = 3V/4</span></div><div class=\"case-row\" data-v-98c99c25><span class=\"case-cond\" data-v-98c99c25>R2 ≫ R1</span><span class=\"case-result\" data-v-98c99c25>V_out ≈ V</span></div><div class=\"case-row\" data-v-98c99c25><span class=\"case-cond\" data-v-98c99c25>R2 ≪ R1</span><span class=\"case-result\" data-v-98c99c25>V_out ≈ 0</span></div></div><div class=\"ref-section\" data-v-98c99c25><div class=\"section-title\" data-v-98c99c25>التطبيقات</div><div class=\"app-row\" data-v-98c99c25><span class=\"app-icon\" data-v-98c99c25>🔊</span><span data-v-98c99c25>التحكم في مستوى الصوت</span></div><div class=\"app-row\" data-v-98c99c25><span class=\"app-icon\" data-v-98c99c25>💡</span><span data-v-98c99c25>تحكم في سطوع LED</span></div><div class=\"app-row\" data-v-98c99c25><span class=\"app-icon\" data-v-98c99c25>🌡️</span><span data-v-98c99c25>قراءة الحساسات (thermistor)</span></div><div class=\"app-row\" data-v-98c99c25><span class=\"app-icon\" data-v-98c99c25>🎚️</span><span data-v-98c99c25>البوتشيومتر (Potentiometer)</span></div></div>', 4)),\n        (_openBlock(), _createElementBlock(_Fragment, null, _renderList(NOTES, (note, i) => {\n          return _createElementVNode(\"div\", {\n            key: i,\n            class: \"ref-note\"\n          }, _toDisplayString(note), 1);\n        }), 64))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634640244,
+      "end": 1783634640508,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/VoltageDividerReferencePanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createStaticVNode as _createStaticVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'VoltageDividerReferencePanel',\n  setup(__props) {\n\nconst NOTES = [\n  '📊 مقسم الجهد أساس إلكترونيات كثير — من البوتشيومتر للـ ADC',\n  '⚖️ V_out = V × R2/(R1+R2) — الجهد يتناسب مع نسبة المقاومة',\n  '🔄 البوتشيومتر (Potentiometer) = مقسم جهد قابل للتعديل',\n  '⚡ إذا R1 = R2 → V_out = V/2 (نصف الجهد)',\n  '📉 كلما زادت R2 → زاد V_out (حتى يصل إلى V)',\n  '🔧 يستخدم في تحديد مستوى الصوت، الإضاءة، الحساسات',\n  '⚠️ مع حمل (load) متصل: R2 يجب أن تكون أصغر بكثير من R_load',\n]\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _cache[0] || (_cache[0] = _createStaticVNode(\"<div class=\\\"ref-title\\\" data-v-98c99c25>📊 مقسم الجهد</div><div class=\\\"ref-section\\\" data-v-98c99c25><div class=\\\"section-title\\\" data-v-98c99c25>القوانين</div><div class=\\\"formula-box\\\" style=\\\"color:#fbbf24;\\\" data-v-98c99c25>V_out = V × R2/(R1+R2)</div><div class=\\\"formula-box\\\" style=\\\"color:#3b82f6;\\\" data-v-98c99c25>V1 = V × R1/(R1+R2)</div><div class=\\\"formula-box\\\" style=\\\"color:#4ade80;\\\" data-v-98c99c25>I = V / (R1+R2)</div></div><div class=\\\"ref-section\\\" data-v-98c99c25><div class=\\\"section-title\\\" data-v-98c99c25>حالات خاصة</div><div class=\\\"case-row\\\" data-v-98c99c25><span class=\\\"case-cond\\\" data-v-98c99c25>R1 = R2</span><span class=\\\"case-result\\\" data-v-98c99c25>V_out = V/2</span></div><div class=\\\"case-row\\\" data-v-98c99c25><span class=\\\"case-cond\\\" data-v-98c99c25>R2 = 2×R1</span><span class=\\\"case-result\\\" data-v-98c99c25>V_out = 2V/3</span></div><div class=\\\"case-row\\\" data-v-98c99c25><span class=\\\"case-cond\\\" data-v-98c99c25>R2 = 3×R1</span><span class=\\\"case-result\\\" data-v-98c99c25>V_out = 3V/4</span></div><div class=\\\"case-row\\\" data-v-98c99c25><span class=\\\"case-cond\\\" data-v-98c99c25>R2 ≫ R1</span><span class=\\\"case-result\\\" data-v-98c99c25>V_out ≈ V</span></div><div class=\\\"case-row\\\" data-v-98c99c25><span class=\\\"case-cond\\\" data-v-98c99c25>R2 ≪ R1</span><span class=\\\"case-result\\\" data-v-98c99c25>V_out ≈ 0</span></div></div><div class=\\\"ref-section\\\" data-v-98c99c25><div class=\\\"section-title\\\" data-v-98c99c25>التطبيقات</div><div class=\\\"app-row\\\" data-v-98c99c25><span class=\\\"app-icon\\\" data-v-98c99c25>🔊</span><span data-v-98c99c25>التحكم في مستوى الصوت</span></div><div class=\\\"app-row\\\" data-v-98c99c25><span class=\\\"app-icon\\\" data-v-98c99c25>💡</span><span data-v-98c99c25>تحكم في سطوع LED</span></div><div class=\\\"app-row\\\" data-v-98c99c25><span class=\\\"app-icon\\\" data-v-98c99c25>🌡️</span><span data-v-98c99c25>قراءة الحساسات (thermistor)</span></div><div class=\\\"app-row\\\" data-v-98c99c25><span class=\\\"app-icon\\\" data-v-98c99c25>🎚️</span><span data-v-98c99c25>البوتشيومتر (Potentiometer)</span></div></div>\", 4)),\n    (_openBlock(), _createElementBlock(_Fragment, null, _renderList(NOTES, (note, i) => {\n      return _createElementVNode(\"div\", {\n        key: i,\n        class: \"ref-note\"\n      }, _toDisplayString(note), 1)\n    }), 64))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,sBAAsB,qBAAqB,cAAc,aAAa,YAAY,WAAW,aAAa,YAAY,sBAAsB,qBAAqB,mBAAmB,kBAAkB,qBAAqB,0BAA0B;AAE9P,MAAM,aAAa,EAAE,OAAO,aAAa;AAGzC,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,MAAM,SAAS;AAEjB,UAAM,QAAQ;AAAA,MACZ;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,IACF;AAEA,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,mBAAmB,w9DAAgiE,CAAC;AAAA,SAC7kE,WAAW,GAAG,oBAAoB,WAAW,MAAM,YAAY,OAAO,CAAC,MAAM,MAAM;AAClF,iBAAO,oBAAoB,OAAO;AAAA,YAChC,KAAK;AAAA,YACL,OAAO;AAAA,UACT,GAAG,iBAAiB,IAAI,GAAG,CAAC;AAAA,QAC9B,CAAC,GAAG,EAAE;AAAA,MACR,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640508,
+      "end": 1783634640508,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640508,
+      "end": 1783634640508,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634640508,
+      "end": 1783634640508,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640508,
+      "end": 1783634640508,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640508,
+      "end": 1783634640508,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640508,
+      "end": 1783634640508,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640508,
+      "end": 1783634640508,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640508,
+      "end": 1783634640508,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640508,
+      "end": 1783634640508,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640508,
+      "end": 1783634640508,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640508,
+      "end": 1783634640508,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640508,
+      "end": 1783634640509,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640509,
+      "end": 1783634640509,
+      "order": "normal"
+    }
+  ]
+}

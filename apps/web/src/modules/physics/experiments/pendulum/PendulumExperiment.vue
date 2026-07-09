@@ -6,6 +6,7 @@ import PendulumMenuBar from '../../../../components/experiment/pendulum/Pendulum
 import PendulumCanvas from '../../../../components/experiment/pendulum/PendulumCanvas.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 import PendulumPanelBody from '../../../../components/experiment/pendulum/PendulumPanelBody.vue'
+import PendulumParamPanel from '../../../../components/experiment/pendulum/PendulumParamPanel.vue'
 import PendulumOverlayPanels from '../../../../components/experiment/pendulum/PendulumOverlayPanels.vue'
 import PendulumControlBar from '../../../../components/experiment/pendulum/PendulumControlBar.vue'
 import PendulumHelpModal from '../../../../components/experiment/pendulum/PendulumHelpModal.vue'
@@ -57,12 +58,15 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       <div class="resizer" @mousedown="ex.onResizeStart('vis', $event)"></div>
       <div class="lab-col ctrl-col" :style="{ width: ex.colWidths.ctrl + 'px' }">
         <template v-for="id in ex.getColumnPanels('ctrl')" :key="id">
-          <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id)"
+          <DraggablePanel v-if="id !== 'params' && ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id)"
             @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
             <PendulumPanelBody :id="id" :trials="ex.trials.trials.value" :params="ex.params" :sim="ex.lab.sim" :measured="ex.getMeasured()"
               @update:trials="ex.trials.trials.value = $event" @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials"
             />
           </DraggablePanel>
+          <div v-else-if="id === 'params'" class="params-embedded">
+            <PendulumParamPanel :model-value="ex.params" @update:model-value="Object.assign(ex.params, $event)" />
+          </div>
         </template>
       </div>
     </div>
@@ -104,6 +108,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 .data-col { background: rgba(30,41,59,0.5); border: 1px solid rgba(71,85,105,0.3); backdrop-filter: blur(4px); }
 .vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 0; }
 .ctrl-col { background: rgba(30,41,59,0.5); border: 1px solid rgba(71,85,105,0.3); backdrop-filter: blur(4px); }
+.params-embedded { padding: .6rem; }
 .resizer { width: 5px; cursor: col-resize; background: #334155; transition: background .2s; flex-shrink: 0; border-radius: 3px; }
 .resizer:hover, .resizer:active { background: #60a5fa; box-shadow: 0 0 6px rgba(96,165,250,0.4); }
 .chart-row { display: flex; gap: .5rem; width: 100%; margin-top: .3rem; flex: 0 0 200px; min-height: 0; align-items: stretch; }

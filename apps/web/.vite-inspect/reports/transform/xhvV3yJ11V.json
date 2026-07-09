@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/polarization/panels/PolarizationLawsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "﻿<script setup lang=\"ts\">\n\n\ninterface Props {\n  polarizerAngle: number\n  analyzerAngle: number\n  I0: number\n  outputIntensity: number\n  relativeAngle: number\n}\ndefineProps<Props>()\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <div class=\"eq-block\">\n      <div class=\"eq-title\">Malus's Law</div>\n      <div class=\"eq\">I = I₀ cos²(θ₂ − θ₁)</div>\n      <div class=\"eq-values\">\n        I₀ = {{ I0 }}<br>\n        θ₁ = {{ polarizerAngle }}°<br>\n        θ₂ = {{ analyzerAngle }}°<br>\n        Δθ = {{ relativeAngle }}°<br>\n        I = {{ outputIntensity.toFixed(2) }}\n      </div>\n    </div>\n    <div class=\"eq-block\">\n      <div class=\"eq-title\">Maximum Transmission</div>\n      <div class=\"eq\">I_max = I₀  (when Δθ = 0°)</div>\n    </div>\n    <div class=\"eq-block\">\n      <div class=\"eq-title\">Complete Extinction</div>\n      <div class=\"eq\">I = 0  (when Δθ = 90°)</div>\n    </div>\n    <div class=\"eq-block\">\n      <div class=\"eq-title\">Transmission Ratio</div>\n      <div class=\"eq\">T = cos²(Δθ) × 100%</div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { display: flex; flex-direction: column; gap: .5rem; font-size: .82rem; }\n.eq-block { margin-bottom: .3rem; }\n.eq-title { color: #5B8DB8; font-size: .75rem; margin-bottom: .2rem; }\n.eq { font-family: 'Courier New', monospace; background: #0d1117; padding: .3rem .5rem; border-radius: 4px; font-size: .9rem; color: #7ee787; }\n.eq-values { font-size: .8rem; color: #8B95A5; margin-top: .2rem; }\n</style>\n",
+      "start": 1783634642383,
+      "end": 1783634642677,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642677,
+      "end": 1783634642677,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642677,
+      "end": 1783634642677,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642677,
+      "end": 1783634642677,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642677,
+      "end": 1783634642677,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/polarization/panels/PolarizationLawsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/polarization/panels/PolarizationLawsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/polarization/panels/PolarizationLawsPanel.vue?vue&type=style&index=0&scoped=187d22f7&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-187d22f7\"]]);\n",
+      "start": 1783634642677,
+      "end": 1783634642876,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642876,
+      "end": 1783634642876,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642876,
+      "end": 1783634642876,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642876,
+      "end": 1783634642876,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642877,
+      "end": 1783634642877,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642877,
+      "end": 1783634642877,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642877,
+      "end": 1783634642877,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642877,
+      "end": 1783634642877,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642877,
+      "end": 1783634642877,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642877,
+      "end": 1783634642877,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642877,
+      "end": 1783634642877,
+      "order": "normal"
+    }
+  ]
+}

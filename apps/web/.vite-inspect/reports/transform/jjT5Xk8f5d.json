@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabSpatula.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\ninterface Props {\n  isHovered?: boolean;\n}\n\nconst props = withDefaults(defineProps<Props>(), {\n  isHovered: false,\n});\n\nconst emit = defineEmits<{ click: [] }>();\n</script>\n\n<template>\n  <div class=\"spatula-wrapper\" @click.stop=\"emit('click')\">\n    <svg viewBox=\"0 0 140 30\" class=\"spatula-svg\" :class=\"{ hovered: isHovered }\">\n      <!-- Shadow -->\n      <ellipse cx=\"70\" cy=\"26\" rx=\"62\" ry=\"2\" fill=\"rgba(0,0,0,0.06)\" />\n\n      <!-- Handle (wood/plastic) -->\n      <rect x=\"65\" y=\"10\" width=\"68\" height=\"8\" rx=\"3\" fill=\"#92400e\" />\n      <rect x=\"67\" y=\"11\" width=\"64\" height=\"6\" rx=\"2\" fill=\"#b45309\" />\n      <!-- Handle highlight -->\n      <line x1=\"70\" y1=\"12\" x2=\"130\" y2=\"12\" stroke=\"rgba(255,255,255,0.2)\" stroke-width=\"1\" stroke-linecap=\"round\" />\n\n      <!-- Metal shaft -->\n      <rect x=\"28\" y=\"11\" width=\"38\" height=\"6\" rx=\"2\" fill=\"#cbd5e1\" />\n      <rect x=\"29\" y=\"12\" width=\"36\" height=\"4\" rx=\"1\" fill=\"#e2e8f0\" />\n\n      <!-- Shaft highlight -->\n      <line x1=\"30\" y1=\"13\" x2=\"65\" y2=\"13\" stroke=\"rgba(255,255,255,0.5)\" stroke-width=\"1\" stroke-linecap=\"round\" />\n\n      <!-- Blade (spoon shaped) -->\n      <path\n        d=\"M 4 11 Q 2 11 2 14 Q 2 19 8 19 L 24 19 Q 28 19 28 14 L 28 11 Q 28 8 24 8 L 8 8 Q 4 8 4 11 Z\"\n        fill=\"#94a3b8\"\n        stroke=\"#64748b\"\n        stroke-width=\"0.8\"\n      />\n      <!-- Blade inner -->\n      <path\n        d=\"M 5 12 Q 4 12 4 14 Q 4 17 8 17 L 23 17 Q 26 17 26 14 L 26 12 Q 26 10 23 10 L 8 10 Q 5 10 5 12 Z\"\n        fill=\"#cbd5e1\"\n      />\n      <!-- Blade highlight -->\n      <path\n        d=\"M 6 13 Q 5 13 5 14 Q 5 16 8 16\"\n        fill=\"none\"\n        stroke=\"rgba(255,255,255,0.4)\"\n        stroke-width=\"1\"\n        stroke-linecap=\"round\"\n      />\n    </svg>\n  </div>\n</template>\n\n<style scoped>\n.spatula-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.spatula-svg {\n  width: 90px;\n  height: 19px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.06));\n}\n.spatula-svg.hovered {\n  transform: scale(1.06) rotate(3deg);\n  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.1));\n}\n</style>\n",
+      "start": 1783634641064,
+      "end": 1783634641605,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641605,
+      "end": 1783634641605,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641605,
+      "end": 1783634641605,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641605,
+      "end": 1783634641605,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641605,
+      "end": 1783634641605,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabSpatula.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabSpatula.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabSpatula.vue?vue&type=style&index=0&scoped=b9446acf&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-b9446acf\"]]);\n",
+      "start": 1783634641605,
+      "end": 1783634641665,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641665,
+      "end": 1783634641665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641665,
+      "end": 1783634641665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641665,
+      "end": 1783634641665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    }
+  ]
+}

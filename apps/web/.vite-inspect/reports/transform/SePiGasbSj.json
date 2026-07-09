@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/ResistivityWorksheetPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, computed } from 'vue'\n\nconst props = defineProps<{\n  V: number\n  I: number\n  R: number\n  rho: number\n  L: number\n  A: number\n}>()\n\nconst showSteps = ref<Record<string, boolean>>({\n  intro: false,\n  step1: false,\n  step2: false,\n  step3: false,\n  step4: false,\n  verify1: false,\n})\n\nconst rCalc = computed(() => props.I === 0 ? 0 : props.V / props.I)\nconst rhoCalc = computed(() => props.R * props.A / props.L)\nconst rFromRho = computed(() => props.rho * props.L / props.A)\n\nconst MATERIALS = [\n  { name: 'نحاس',   rho: 1.68e-8,  color: '#b87333' },\n  { name: 'ألمنيوم', rho: 2.82e-8,  color: '#a0a0a0' },\n  { name: 'تنجستن', rho: 5.6e-8,   color: '#4a4a4a' },\n  { name: 'حديد',   rho: 9.71e-8,  color: '#8b4513' },\n  { name: 'نيكل',   rho: 6.99e-8,  color: '#c0c0c0' },\n]\n\nconst matchedMaterial = computed(() => {\n  const r = props.rho\n  if (r === 0) return null\n  let best = MATERIALS[0]\n  let bestDiff = Math.abs(Math.log(r / best.rho))\n  for (const m of MATERIALS) {\n    const diff = Math.abs(Math.log(r / m.rho))\n    if (diff < bestDiff) { best = m; bestDiff = diff }\n  }\n  return bestDiff < 1 ? best : null\n})\n\nfunction toggleStep(step: string) {\n  showSteps.value[step] = !showSteps.value[step]\n}\n\nfunction formatRho(r: number) {\n  if (r === 0) return '0'\n  return r.toExponential(2)\n}\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <div class=\"ws-title\">🔬 مقاومية الموصل — حل مفصّل</div>\n\n    <div class=\"step-row\">\n      <button class=\"step-toggle\" @click=\"toggleStep('intro')\">\n        {{ showSteps.intro ? '▼' : '▶' }} مقدمة: ما هي المقاومية؟\n      </button>\n      <div v-if=\"showSteps.intro\" class=\"step-content\">\n        <p class=\"explain\"><b>المقاومية ρ</b> هي خاصية فيزيائية للمادة تحدد مدى مقاومتها لمرور التيار.</p>\n        <p class=\"explain\">كل مادة لها مقاومية ثابتة لا تعتمد على شكل السلك أو طوله.</p>\n        <div class=\"circuit-desc\">\n          <div class=\"branch\"><span class=\"branch-label\" style=\"color:#fbbf24\">الجهد:</span> V = {{ V.toFixed(1) }}V</div>\n          <div class=\"branch\"><span class=\"branch-label\" style=\"color:#4ade80\">التيار:</span> I = {{ I.toFixed(4) }}A</div>\n          <div class=\"branch\"><span class=\"branch-label\" style=\"color:#67e8f9\">المقاومة:</span> R = {{ R.toFixed(1) }}Ω</div>\n          <div class=\"branch\"><span class=\"branch-label\" style=\"color:#c084fc\">الطول:</span> L = {{ L.toFixed(2) }}m</div>\n          <div class=\"branch\"><span class=\"branch-label\" style=\"color:#c084fc\">المساحة:</span> A = {{ A.toExponential(1) }}m²</div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"step-row\">\n      <button class=\"step-toggle\" @click=\"toggleStep('step1')\">\n        {{ showSteps.step1 ? '▼' : '▶' }} الخطوة 1: حساب المقاومة R\n      </button>\n      <div v-if=\"showSteps.step1\" class=\"step-content\">\n        <p class=\"explain\">من قانون أوم: R = V / I</p>\n        <div class=\"formula\">R = V / I</div>\n        <div class=\"calc\">\n          <div class=\"calc-line\">R = {{ V.toFixed(1) }} / {{ I.toFixed(4) }}</div>\n          <div class=\"calc-line result\">R = {{ rCalc.toFixed(2) }} Ω</div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"step-row\">\n      <button class=\"step-toggle\" @click=\"toggleStep('step2')\">\n        {{ showSteps.step2 ? '▼' : '▶' }} الخطوة 2: قانون المقاومية\n      </button>\n      <div v-if=\"showSteps.step2\" class=\"step-content\">\n        <p class=\"explain\">المقاومة تعتمد على المادة والأبعاد:</p>\n        <div class=\"formula\">R = ρ × L / A</div>\n        <p class=\"explain\">حيث:</p>\n        <div class=\"calc\">\n          <div class=\"calc-line\">ρ = المقاومية (Ω·m) — خاصية المادة</div>\n          <div class=\"calc-line\">L = طول السلك (m)</div>\n          <div class=\"calc-line\">A = مساحة المقطع (m²)</div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"step-row\">\n      <button class=\"step-toggle\" @click=\"toggleStep('step3')\">\n        {{ showSteps.step3 ? '▼' : '▶' }} الخطوة 3: حساب المقاومية ρ\n      </button>\n      <div v-if=\"showSteps.step3\" class=\"step-content\">\n        <p class=\"explain\">بإعادة ترتيب القانون: ρ = R × A / L</p>\n        <div class=\"formula\">ρ = R × A / L</div>\n        <div class=\"calc\">\n          <div class=\"calc-line\">ρ = {{ R.toFixed(2) }} × {{ A.toExponential(1) }} / {{ L.toFixed(2) }}</div>\n          <div class=\"calc-line\">ρ = {{ (R * A).toExponential(2) }} / {{ L.toFixed(2) }}</div>\n          <div class=\"calc-line result\">ρ = {{ formatRho(rhoCalc) }} Ω·m</div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"step-row\">\n      <button class=\"step-toggle\" @click=\"toggleStep('step4')\">\n        {{ showSteps.step4 ? '▼' : '▶' }} الخطوة 4: تحديد نوع المادة\n      </button>\n      <div v-if=\"showSteps.step4\" class=\"step-content\">\n        <p class=\"explain\">بمقارنة ρ المحسوبة مع القيم المعروفة:</p>\n        <div class=\"materials-table\">\n          <div class=\"mat-header\"><span>المادة</span><span>ρ (Ω·m)</span></div>\n          <div v-for=\"m in MATERIALS\" :key=\"m.name\" class=\"mat-row\" :class=\"{ matched: matchedMaterial?.name === m.name }\">\n            <span :style=\"{ color: m.color }\">{{ m.name }}</span>\n            <span>{{ m.rho.toExponential(2) }}</span>\n          </div>\n        </div>\n        <div v-if=\"matchedMaterial\" class=\"calc\" style=\"margin-top:.5rem\">\n          <div class=\"calc-line result\">✓ المادة الأقرب: {{ matchedMaterial.name }} (ρ = {{ matchedMaterial.rho.toExponential(2) }} Ω·m)</div>\n        </div>\n        <div v-else class=\"calc\" style=\"margin-top:.5rem\">\n          <div class=\"calc-line warn\">⚠ لا توجد مادة مطابقة بشكل وثيق</div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"verify-section\">\n      <div class=\"verify-title\">✓ التحقق</div>\n\n      <div class=\"step-row\">\n        <button class=\"step-toggle verify\" @click=\"toggleStep('verify1')\">\n          {{ showSteps.verify1 ? '▼' : '▶' }} تحقق: R = ρ × L / A\n        </button>\n        <div v-if=\"showSteps.verify1\" class=\"step-content\">\n          <div class=\"formula\">R ≟ ρ × L / A</div>\n          <div class=\"calc\">\n            <div class=\"calc-line\">R المقاس = {{ R.toFixed(2) }} Ω</div>\n            <div class=\"calc-line\">ρ × L / A = {{ formatRho(rho) }} × {{ L.toFixed(2) }} / {{ A.toExponential(1) }}</div>\n            <div class=\"calc-line\">= {{ rFromRho.toFixed(2) }} Ω</div>\n            <div :class=\"Math.abs(rFromRho - R) / R < 0.01 ? 'result' : 'warn'\">\n              {{ Math.abs(rFromRho - R) / R < 0.01 ? '✓ متطابق' : '✗ هناك فرق' }}\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { padding: 1rem; display: flex; flex-direction: column; gap: .75rem; overflow-y: auto; }\n.ws-title { font-size: 1rem; font-weight: 700; color: #c084fc; text-align: center; padding: .5rem; border-bottom: 1px solid #1e2530; margin-bottom: .25rem; }\n.step-row { display: flex; flex-direction: column; gap: .25rem; }\n.step-toggle { background: #1E2530; border: 1px solid #2D3645; color: #D1D7E0; padding: .5rem .75rem; border-radius: 6px; cursor: pointer; text-align: right; font-size: .85rem; }\n.step-toggle:hover { background: #252D3A; }\n.step-toggle.verify { background: rgba(34,197,94,.08); border-color: rgba(34,197,94,.2); color: #4ade80; }\n.step-content { background: #0d1117; border: 1px solid #1e2530; border-radius: 6px; padding: .75rem; font-size: .85rem; }\n.explain { color: #94a3b8; margin: .3rem 0; line-height: 1.6; font-size: .82rem; }\n.explain b { color: #e2e8f0; }\n.circuit-desc { display: flex; flex-direction: column; gap: .3rem; margin: .5rem 0; padding: .5rem; background: rgba(255,255,255,.02); border-radius: 4px; }\n.branch { font-size: .78rem; color: #cbd5e1; display: flex; gap: .4rem; align-items: baseline; }\n.branch-label { font-weight: 700; white-space: nowrap; }\n.formula { font-family: 'Courier New', monospace; font-size: .95rem; color: #c084fc; text-align: center; padding: .5rem; background: rgba(192,132,252,.08); border-radius: 4px; margin: .4rem 0; }\n.calc { display: flex; flex-direction: column; gap: .2rem; color: #D1D7E0; }\n.calc-line { font-family: 'Courier New', monospace; font-size: .82rem; padding: .15rem 0; }\n.result { color: #22c55e; font-weight: 700; }\n.warn { color: #ef4444; font-weight: 700; }\n.verify-section { margin-top: .5rem; padding-top: .5rem; border-top: 2px solid rgba(34,197,94,.15); }\n.verify-title { font-size: .9rem; font-weight: 700; color: #4ade80; text-align: center; margin-bottom: .5rem; }\n.materials-table { display: flex; flex-direction: column; gap: .1rem; margin-top: .3rem; }\n.mat-header { display: flex; justify-content: space-between; padding: .3rem .5rem; background: #1E2530; border-radius: 4px; font-weight: 700; font-size: .75rem; color: #94a3b8; }\n.mat-row { display: flex; justify-content: space-between; padding: .25rem .5rem; border-bottom: 1px solid rgba(255,255,255,.04); font-size: .75rem; }\n.mat-row.matched { background: rgba(34,197,94,.08); border-radius: 4px; }\n</style>\n",
+      "start": 1783634639360,
+      "end": 1783634639792,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639792,
+      "end": 1783634639792,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639792,
+      "end": 1783634639792,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639792,
+      "end": 1783634639792,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639792,
+      "end": 1783634639792,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/ResistivityWorksheetPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/ResistivityWorksheetPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/ResistivityWorksheetPanel.vue?vue&type=style&index=0&scoped=65da8d54&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-65da8d54\"]]);\n",
+      "start": 1783634639792,
+      "end": 1783634640089,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640089,
+      "end": 1783634640089,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640091,
+      "end": 1783634640093,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640094,
+      "end": 1783634640094,
+      "order": "normal"
+    }
+  ]
+}

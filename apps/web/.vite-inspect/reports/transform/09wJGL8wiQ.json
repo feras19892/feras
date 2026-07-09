@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabPresetsNew4.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { makeComp, type PresetDef } from './electricLabPresetHelpers'\n\nexport const newPresets4: PresetDef[] = [\n  {\n    id: 'diode-iv',\n    name: 'Diode I-V Characteristic',\n    nameAr: 'خصائص الدايود',\n    level: 'college',\n    instructions: [\n      '١. الدائرة: بطارية ← أميتر ← دايود ← فولتميتر',\n      '٢. I = Is×(e^(V/ηVt) − 1)، Vt ≈ 25.85mV عند 300K',\n      '٣. الجهد الحاجز ≈ 0.7V للسيليكون، 0.3V للجرمانيوم',\n      '٤. اضغط ▶ تشغيل وغيّر جهد البطارية',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      components.push(makeComp('battery', 80, 220, 'بطارية', 5, 'V'))\n      components.push(makeComp('ammeter', 220, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 380, 220, 'R حد', 1000, 'Ω'))\n      components.push(makeComp('voltmeter', 380, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'transformer-ratio',\n    name: 'Transformer Ratio',\n    nameAr: 'نسبة المحوّل الكهربائي',\n    level: 'advanced',\n    instructions: [\n      '١. المحوّل: ملف ابتدائي Np وملف ثانوي Ns',\n      '٢. Vs/Vp = Ns/Np، Is/Ip = Np/Ns',\n      '٣. P_primary = P_ideal = Vp×Ip = Vs×Is',\n      '٤. اضغط ▶ تشغيل وغيّر Np و Ns',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      const b = makeComp('battery', 80, 220, 'Vp مصدر', 120, 'V')\n      b._internalR = 0\n      components.push(b)\n      components.push(makeComp('ammeter', 220, 220, 'Ip أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 400, 220, 'R حمل', 50, 'Ω'))\n      components.push(makeComp('voltmeter', 400, 100, 'Vs فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'self-inductance',\n    name: 'Self-Inductance',\n    nameAr: 'التحريض الذاتي',\n    level: 'college',\n    instructions: [\n      '١. الدائرة: بطارية ← ملف L ← أميتر ← مفتاح',\n      '٢. V = −L×(dI/dt)، الطاقة E = ½×L×I²',\n      '٣. τ = L/R ثابت الزمن للملف',\n      '٤. اضغط ▶ تشغيل وغيّر L و R',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      components.push(makeComp('battery', 80, 220, 'بطارية', 12, 'V'))\n      components.push(makeComp('ammeter', 220, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 380, 220, 'R', 100, 'Ω'))\n      components.push(makeComp('voltmeter', 380, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n]\n",
+      "start": 1783634642588,
+      "end": 1783634642823,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642823,
+      "end": 1783634642823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { makeComp } from \"./electricLabPresetHelpers\";\nexport const newPresets4 = [\n  {\n    id: \"diode-iv\",\n    name: \"Diode I-V Characteristic\",\n    nameAr: \"خصائص الدايود\",\n    level: \"college\",\n    instructions: [\n      \"١. الدائرة: بطارية ← أميتر ← دايود ← فولتميتر\",\n      \"٢. I = Is×(e^(V/ηVt) − 1)، Vt ≈ 25.85mV عند 300K\",\n      \"٣. الجهد الحاجز ≈ 0.7V للسيليكون، 0.3V للجرمانيوم\",\n      \"٤. اضغط ▶ تشغيل وغيّر جهد البطارية\",\n      \"٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج\"\n    ],\n    build: (components, reset) => {\n      reset();\n      components.push(makeComp(\"battery\", 80, 220, \"بطارية\", 5, \"V\"));\n      components.push(makeComp(\"ammeter\", 220, 220, \"أميتر\", 0, \"A\"));\n      components.push(makeComp(\"resistor\", 380, 220, \"R حد\", 1e3, \"Ω\"));\n      components.push(makeComp(\"voltmeter\", 380, 100, \"فولتميتر\", 0, \"V\"));\n    }\n  },\n  {\n    id: \"transformer-ratio\",\n    name: \"Transformer Ratio\",\n    nameAr: \"نسبة المحوّل الكهربائي\",\n    level: \"advanced\",\n    instructions: [\n      \"١. المحوّل: ملف ابتدائي Np وملف ثانوي Ns\",\n      \"٢. Vs/Vp = Ns/Np، Is/Ip = Np/Ns\",\n      \"٣. P_primary = P_ideal = Vp×Ip = Vs×Is\",\n      \"٤. اضغط ▶ تشغيل وغيّر Np و Ns\",\n      \"٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج\"\n    ],\n    build: (components, reset) => {\n      reset();\n      const b = makeComp(\"battery\", 80, 220, \"Vp مصدر\", 120, \"V\");\n      b._internalR = 0;\n      components.push(b);\n      components.push(makeComp(\"ammeter\", 220, 220, \"Ip أميتر\", 0, \"A\"));\n      components.push(makeComp(\"resistor\", 400, 220, \"R حمل\", 50, \"Ω\"));\n      components.push(makeComp(\"voltmeter\", 400, 100, \"Vs فولتميتر\", 0, \"V\"));\n    }\n  },\n  {\n    id: \"self-inductance\",\n    name: \"Self-Inductance\",\n    nameAr: \"التحريض الذاتي\",\n    level: \"college\",\n    instructions: [\n      \"١. الدائرة: بطارية ← ملف L ← أميتر ← مفتاح\",\n      \"٢. V = −L×(dI/dt)، الطاقة E = ½×L×I²\",\n      \"٣. τ = L/R ثابت الزمن للملف\",\n      \"٤. اضغط ▶ تشغيل وغيّر L و R\",\n      \"٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج\"\n    ],\n    build: (components, reset) => {\n      reset();\n      components.push(makeComp(\"battery\", 80, 220, \"بطارية\", 12, \"V\"));\n      components.push(makeComp(\"ammeter\", 220, 220, \"أميتر\", 0, \"A\"));\n      components.push(makeComp(\"resistor\", 380, 220, \"R\", 100, \"Ω\"));\n      components.push(makeComp(\"voltmeter\", 380, 100, \"فولتميتر\", 0, \"V\"));\n    }\n  }\n];\n",
+      "start": 1783634642823,
+      "end": 1783634642867,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabPresetsNew4.ts"
+        ],
+        "sourcesContent": [
+          "import { makeComp, type PresetDef } from './electricLabPresetHelpers'\n\nexport const newPresets4: PresetDef[] = [\n  {\n    id: 'diode-iv',\n    name: 'Diode I-V Characteristic',\n    nameAr: 'خصائص الدايود',\n    level: 'college',\n    instructions: [\n      '١. الدائرة: بطارية ← أميتر ← دايود ← فولتميتر',\n      '٢. I = Is×(e^(V/ηVt) − 1)، Vt ≈ 25.85mV عند 300K',\n      '٣. الجهد الحاجز ≈ 0.7V للسيليكون، 0.3V للجرمانيوم',\n      '٤. اضغط ▶ تشغيل وغيّر جهد البطارية',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      components.push(makeComp('battery', 80, 220, 'بطارية', 5, 'V'))\n      components.push(makeComp('ammeter', 220, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 380, 220, 'R حد', 1000, 'Ω'))\n      components.push(makeComp('voltmeter', 380, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'transformer-ratio',\n    name: 'Transformer Ratio',\n    nameAr: 'نسبة المحوّل الكهربائي',\n    level: 'advanced',\n    instructions: [\n      '١. المحوّل: ملف ابتدائي Np وملف ثانوي Ns',\n      '٢. Vs/Vp = Ns/Np، Is/Ip = Np/Ns',\n      '٣. P_primary = P_ideal = Vp×Ip = Vs×Is',\n      '٤. اضغط ▶ تشغيل وغيّر Np و Ns',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      const b = makeComp('battery', 80, 220, 'Vp مصدر', 120, 'V')\n      b._internalR = 0\n      components.push(b)\n      components.push(makeComp('ammeter', 220, 220, 'Ip أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 400, 220, 'R حمل', 50, 'Ω'))\n      components.push(makeComp('voltmeter', 400, 100, 'Vs فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'self-inductance',\n    name: 'Self-Inductance',\n    nameAr: 'التحريض الذاتي',\n    level: 'college',\n    instructions: [\n      '١. الدائرة: بطارية ← ملف L ← أميتر ← مفتاح',\n      '٢. V = −L×(dI/dt)، الطاقة E = ½×L×I²',\n      '٣. τ = L/R ثابت الزمن للملف',\n      '٤. اضغط ▶ تشغيل وغيّر L و R',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      components.push(makeComp('battery', 80, 220, 'بطارية', 12, 'V'))\n      components.push(makeComp('ammeter', 220, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 380, 220, 'R', 100, 'Ω'))\n      components.push(makeComp('voltmeter', 380, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n]\n"
+        ],
+        "mappings": "AAAA,SAAS,gBAAgC;AAElC,aAAM,cAA2B;AAAA,EACtC;AAAA,IACE,IAAI;AAAA,IACJ,MAAM;AAAA,IACN,QAAQ;AAAA,IACR,OAAO;AAAA,IACP,cAAc;AAAA,MACZ;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,IACF;AAAA,IACA,OAAO,CAAC,YAAY,UAAU;AAC5B,YAAM;AACN,iBAAW,KAAK,SAAS,WAAW,IAAI,KAAK,UAAU,GAAG,GAAG,CAAC;AAC9D,iBAAW,KAAK,SAAS,WAAW,KAAK,KAAK,SAAS,GAAG,GAAG,CAAC;AAC9D,iBAAW,KAAK,SAAS,YAAY,KAAK,KAAK,QAAQ,KAAM,GAAG,CAAC;AACjE,iBAAW,KAAK,SAAS,aAAa,KAAK,KAAK,YAAY,GAAG,GAAG,CAAC;AAAA,IACrE;AAAA,EACF;AAAA,EACA;AAAA,IACE,IAAI;AAAA,IACJ,MAAM;AAAA,IACN,QAAQ;AAAA,IACR,OAAO;AAAA,IACP,cAAc;AAAA,MACZ;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,IACF;AAAA,IACA,OAAO,CAAC,YAAY,UAAU;AAC5B,YAAM;AACN,YAAM,IAAI,SAAS,WAAW,IAAI,KAAK,WAAW,KAAK,GAAG;AAC1D,QAAE,aAAa;AACf,iBAAW,KAAK,CAAC;AACjB,iBAAW,KAAK,SAAS,WAAW,KAAK,KAAK,YAAY,GAAG,GAAG,CAAC;AACjE,iBAAW,KAAK,SAAS,YAAY,KAAK,KAAK,SAAS,IAAI,GAAG,CAAC;AAChE,iBAAW,KAAK,SAAS,aAAa,KAAK,KAAK,eAAe,GAAG,GAAG,CAAC;AAAA,IACxE;AAAA,EACF;AAAA,EACA;AAAA,IACE,IAAI;AAAA,IACJ,MAAM;AAAA,IACN,QAAQ;AAAA,IACR,OAAO;AAAA,IACP,cAAc;AAAA,MACZ;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,IACF;AAAA,IACA,OAAO,CAAC,YAAY,UAAU;AAC5B,YAAM;AACN,iBAAW,KAAK,SAAS,WAAW,IAAI,KAAK,UAAU,IAAI,GAAG,CAAC;AAC/D,iBAAW,KAAK,SAAS,WAAW,KAAK,KAAK,SAAS,GAAG,GAAG,CAAC;AAC9D,iBAAW,KAAK,SAAS,YAAY,KAAK,KAAK,KAAK,KAAK,GAAG,CAAC;AAC7D,iBAAW,KAAK,SAAS,aAAa,KAAK,KAAK,YAAY,GAAG,GAAG,CAAC;AAAA,IACrE;AAAA,EACF;AACF;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642867,
+      "end": 1783634642867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642868,
+      "end": 1783634642868,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642868,
+      "end": 1783634642868,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642869,
+      "end": 1783634642869,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642869,
+      "end": 1783634642869,
+      "order": "normal"
+    }
+  ]
+}

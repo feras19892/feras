@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/pages/dashboard.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { onMounted, ref, computed } from 'vue'\nimport { useRouter } from 'vue-router'\nimport { useI18n } from '../composables/useI18n'\nimport { useAuthStore } from '../modules/auth/stores/auth'\nimport AppNavbar from '../components/layout/AppNavbar.vue'\nimport BranchCard from '../components/ui/BranchCard.vue'\nimport ClassManager from '../components/teacher/ClassManager.vue'\nimport StudentClasses from '../components/home/StudentClasses.vue'\nimport TeacherGrading from '../components/teacher/TeacherGrading.vue'\nimport TeacherStats from '../components/teacher/TeacherStats.vue'\nimport StudentReports from '../components/student/StudentReports.vue'\nimport StudentProfile from '../components/student/StudentProfile.vue'\nimport { fetchHomeCards } from '../services/home.service'\nimport type { HomeCard } from '../types/physics'\n\nconst router = useRouter()\nconst { t } = useI18n()\nconst auth = useAuthStore()\n\nconst activeTab = ref('branches')\nconst cards = ref<HomeCard[]>([])\nconst loading = ref(false)\n\nconst translatedCards = computed(() => cards.value.map(card => ({\n  ...card,\n  title: t(`dashboard.${card.id}Title`),\n  desc: t(`dashboard.${card.id}Desc`),\n  stats: t(`dashboard.${card.id}Stats`),\n})))\n\nconst goToBranch = (branchId: string) => {\n  if (branchId === 'physics') router.push('/physics')\n  if (branchId === 'chemistry') router.push('/chemistry')\n}\n\nconst loadCards = async () => {\n  loading.value = true\n  try { cards.value = await fetchHomeCards() } catch { /* ignore */ } finally { loading.value = false }\n}\n\nonMounted(async () => {\n  if (!auth.isGuest) { await auth.fetchMe() }\n  if (auth.isTeacher || auth.isAdmin) activeTab.value = 'experiments'\n  else if (auth.isStudent) activeTab.value = 'branches'\n  await loadCards()\n})\n</script>\n\n<template>\n  <div class=\"home-page\">\n    <AppNavbar v-model:active-tab=\"activeTab\" />\n\n    <main class=\"main-content\">\n      <ClassManager v-if=\"(auth.isTeacher || auth.isAdmin) && activeTab === 'classes'\" />\n      <StudentClasses v-else-if=\"auth.isStudent && activeTab === 'classes'\" />\n\n      <!-- Teacher & Admin tabs -->\n      <template v-else-if=\"(auth.isTeacher || auth.isAdmin) && activeTab === 'experiments'\">\n        <p v-if=\"loading\" class=\"loading-text\">...</p>\n        <div v-else class=\"cards-grid\">\n          <BranchCard\n            v-for=\"card in translatedCards\"\n            :key=\"card.id\"\n            :id=\"card.id\"\n            :icon=\"card.icon\"\n            :title=\"card.title\"\n            :desc=\"card.desc\"\n            :stats=\"card.stats\"\n            :action=\"() => goToBranch(card.branchId)\"\n          />\n        </div>\n      </template>\n      <TeacherGrading v-else-if=\"(auth.isTeacher || auth.isAdmin) && activeTab === 'grading'\" />\n      <TeacherStats v-else-if=\"(auth.isTeacher || auth.isAdmin) && activeTab === 'stats'\" />\n\n      <StudentReports v-else-if=\"auth.isStudent && activeTab === 'reports'\" />\n      <StudentProfile v-else-if=\"auth.isStudent && activeTab === 'profile'\" />\n\n      <div v-else-if=\"auth.isStudent && activeTab === 'branches'\">\n        <p v-if=\"loading\" class=\"loading-text\">...</p>\n        <div v-else class=\"cards-grid\">\n          <BranchCard\n            v-for=\"card in translatedCards\"\n            :key=\"card.id\"\n            :id=\"card.id\"\n            :icon=\"card.icon\"\n            :title=\"card.title\"\n            :desc=\"card.desc\"\n            :stats=\"card.stats\"\n            :action=\"() => goToBranch(card.branchId)\"\n          />\n        </div>\n      </div>\n\n      <!-- Default for teacher/admin when on branches or other tabs -->\n      <template v-else-if=\"auth.isTeacher || auth.isAdmin\">\n        <p v-if=\"loading\" class=\"loading-text\">...</p>\n        <div v-else class=\"cards-grid\">\n          <BranchCard\n            v-for=\"card in translatedCards\"\n            :key=\"card.id\"\n            :id=\"card.id\"\n            :icon=\"card.icon\"\n            :title=\"card.title\"\n            :desc=\"card.desc\"\n            :stats=\"card.stats\"\n            :action=\"() => goToBranch(card.branchId)\"\n          />\n        </div>\n      </template>\n    </main>\n  </div>\n</template>\n\n<style scoped>\n.home-page {\n  min-height: 100vh;\n  background: linear-gradient(135deg, #0a0f1c 0%, #111827 40%, #0f172a 100%);\n  color: #e2e8f0;\n}\n\n.main-content {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  min-height: calc(100vh - 72px);\n  padding: 2rem;\n}\n.loading-text {\n  text-align: center;\n  color: #94a3b8;\n  font-size: 1.1rem;\n}\n.cards-grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));\n  gap: 1.5rem;\n  justify-items: center;\n  max-width: 1000px;\n  width: 100%;\n}\n.student-reports, .teacher-tab {\n  text-align: center;\n  color: #64748b;\n  padding: 3rem;\n}\n.teacher-tab h2 { margin: 0 0 1rem; color: #e2e8f0; }\n</style>\n",
+      "start": 1783634639007,
+      "end": 1783634639056,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639056,
+      "end": 1783634639056,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639056,
+      "end": 1783634639056,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639056,
+      "end": 1783634639056,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639056,
+      "end": 1783634639056,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/pages/dashboard.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/pages/dashboard.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/pages/dashboard.vue?vue&type=style&index=0&scoped=150283f1&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-150283f1\"]]);\n",
+      "start": 1783634639056,
+      "end": 1783634639164,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639164,
+      "end": 1783634639164,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639170,
+      "end": 1783634639170,
+      "order": "normal"
+    }
+  ]
+}

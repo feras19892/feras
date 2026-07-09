@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/MagneticFluxReadingsPanel.vue?vue&type=style&index=0&scoped=cd54116d&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.readings-panel { padding: .75rem; display: flex; flex-direction: column; gap: .5rem; }\n.readings-title { font-size: .85rem; font-weight: 700; color: #67e8f9; padding-bottom: .3rem; border-bottom: 1px solid #1e2530; }\n.readings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .4rem; }\n.reading-box { background: rgba(45,54,69,.4); border-radius: 6px; padding: .35rem; text-align: center; display: flex; flex-direction: column; }\n.r-label { font-size: .65rem; color: #94a3b8; }\n.r-value { font-size: .8rem; font-weight: 700; color: #D1D7E0; font-family: 'Courier New', monospace; }\n.r-unit { font-size: .6rem; color: #64748b; }\n.reading-box.field { background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.15); }\n.reading-box.area { background: rgba(168,85,247,.08); border: 1px solid rgba(168,85,247,.15); }\n.reading-box.angle { background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.15); }\n.force-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .4rem; margin-top: .3rem; }\n.force-box { border-radius: 6px; padding: .35rem; text-align: center; display: flex; flex-direction: column; }\n.force-box.flux { background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.15); }\n.force-box.cos { background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.15); }\n.force-box.maxflux { background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.15); }\n.force-box.ratio { background: rgba(168,85,247,.08); border: 1px solid rgba(168,85,247,.15); }\n.f-label { font-size: .6rem; color: #94a3b8; }\n.f-value { font-size: .8rem; font-weight: 700; font-family: 'Courier New', monospace; }\n.force-box.flux .f-value { color: #3b82f6; }\n.force-box.cos .f-value { color: #f59e0b; }\n.force-box.maxflux .f-value { color: #22c55e; }\n.force-box.ratio .f-value { color: #a855f7; }\n.f-unit { font-size: .6rem; color: #64748b; }\n.probe-indicator { font-size: .7rem; color: #a855f7; text-align: center; padding: .3rem; background: rgba(168,85,247,.08); border-radius: 6px; }\n.probe-indicator.idle { color: #64748b; background: rgba(100,116,139,.08); }\n",
+      "start": 1783634642078,
+      "end": 1783634642078
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.readings-panel { padding: .75rem; display: flex; flex-direction: column; gap: .5rem; }\n.readings-title { font-size: .85rem; font-weight: 700; color: #67e8f9; padding-bottom: .3rem; border-bottom: 1px solid #1e2530; }\n.readings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .4rem; }\n.reading-box { background: rgba(45,54,69,.4); border-radius: 6px; padding: .35rem; text-align: center; display: flex; flex-direction: column; }\n.r-label { font-size: .65rem; color: #94a3b8; }\n.r-value { font-size: .8rem; font-weight: 700; color: #D1D7E0; font-family: 'Courier New', monospace; }\n.r-unit { font-size: .6rem; color: #64748b; }\n.reading-box.field { background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.15); }\n.reading-box.area { background: rgba(168,85,247,.08); border: 1px solid rgba(168,85,247,.15); }\n.reading-box.angle { background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.15); }\n.force-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .4rem; margin-top: .3rem; }\n.force-box { border-radius: 6px; padding: .35rem; text-align: center; display: flex; flex-direction: column; }\n.force-box.flux { background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.15); }\n.force-box.cos { background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.15); }\n.force-box.maxflux { background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.15); }\n.force-box.ratio { background: rgba(168,85,247,.08); border: 1px solid rgba(168,85,247,.15); }\n.f-label { font-size: .6rem; color: #94a3b8; }\n.f-value { font-size: .8rem; font-weight: 700; font-family: 'Courier New', monospace; }\n.force-box.flux .f-value { color: #3b82f6; }\n.force-box.cos .f-value { color: #f59e0b; }\n.force-box.maxflux .f-value { color: #22c55e; }\n.force-box.ratio .f-value { color: #a855f7; }\n.f-unit { font-size: .6rem; color: #64748b; }\n.probe-indicator { font-size: .7rem; color: #a855f7; text-align: center; padding: .3rem; background: rgba(168,85,247,.08); border-radius: 6px; }\n.probe-indicator.idle { color: #64748b; background: rgba(100,116,139,.08); }\n",
+      "start": 1783634642078,
+      "end": 1783634642078,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642078,
+      "end": 1783634642078,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642078,
+      "end": 1783634642078,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642078,
+      "end": 1783634642078,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.readings-panel[data-v-cd54116d] { padding: .75rem; display: flex; flex-direction: column; gap: .5rem;\n}\n.readings-title[data-v-cd54116d] { font-size: .85rem; font-weight: 700; color: #67e8f9; padding-bottom: .3rem; border-bottom: 1px solid #1e2530;\n}\n.readings-grid[data-v-cd54116d] { display: grid; grid-template-columns: repeat(3, 1fr); gap: .4rem;\n}\n.reading-box[data-v-cd54116d] { background: rgba(45,54,69,.4); border-radius: 6px; padding: .35rem; text-align: center; display: flex; flex-direction: column;\n}\n.r-label[data-v-cd54116d] { font-size: .65rem; color: #94a3b8;\n}\n.r-value[data-v-cd54116d] { font-size: .8rem; font-weight: 700; color: #D1D7E0; font-family: 'Courier New', monospace;\n}\n.r-unit[data-v-cd54116d] { font-size: .6rem; color: #64748b;\n}\n.reading-box.field[data-v-cd54116d] { background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.15);\n}\n.reading-box.area[data-v-cd54116d] { background: rgba(168,85,247,.08); border: 1px solid rgba(168,85,247,.15);\n}\n.reading-box.angle[data-v-cd54116d] { background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.15);\n}\n.force-grid[data-v-cd54116d] { display: grid; grid-template-columns: repeat(2, 1fr); gap: .4rem; margin-top: .3rem;\n}\n.force-box[data-v-cd54116d] { border-radius: 6px; padding: .35rem; text-align: center; display: flex; flex-direction: column;\n}\n.force-box.flux[data-v-cd54116d] { background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.15);\n}\n.force-box.cos[data-v-cd54116d] { background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.15);\n}\n.force-box.maxflux[data-v-cd54116d] { background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.15);\n}\n.force-box.ratio[data-v-cd54116d] { background: rgba(168,85,247,.08); border: 1px solid rgba(168,85,247,.15);\n}\n.f-label[data-v-cd54116d] { font-size: .6rem; color: #94a3b8;\n}\n.f-value[data-v-cd54116d] { font-size: .8rem; font-weight: 700; font-family: 'Courier New', monospace;\n}\n.force-box.flux .f-value[data-v-cd54116d] { color: #3b82f6;\n}\n.force-box.cos .f-value[data-v-cd54116d] { color: #f59e0b;\n}\n.force-box.maxflux .f-value[data-v-cd54116d] { color: #22c55e;\n}\n.force-box.ratio .f-value[data-v-cd54116d] { color: #a855f7;\n}\n.f-unit[data-v-cd54116d] { font-size: .6rem; color: #64748b;\n}\n.probe-indicator[data-v-cd54116d] { font-size: .7rem; color: #a855f7; text-align: center; padding: .3rem; background: rgba(168,85,247,.08); border-radius: 6px;\n}\n.probe-indicator.idle[data-v-cd54116d] { color: #64748b; background: rgba(100,116,139,.08);\n}\n",
+      "start": 1783634642078,
+      "end": 1783634642079,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642079,
+      "end": 1783634642079,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634642079,
+      "end": 1783634642079,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642079,
+      "end": 1783634642079,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642079,
+      "end": 1783634642079,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642079,
+      "end": 1783634642079,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642079,
+      "end": 1783634642079,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642079,
+      "end": 1783634642079,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642079,
+      "end": 1783634642079,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642079,
+      "end": 1783634642079,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642079,
+      "end": 1783634642079,
+      "order": "normal"
+    }
+  ]
+}

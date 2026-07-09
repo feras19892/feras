@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/ParallelReferencePanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeStyle as _normalizeStyle, createTextVNode as _createTextVNode, createStaticVNode as _createStaticVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"ref-table\" }\nconst _hoisted_3 = { class: \"prop\" }\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ParallelReferencePanel',\n  setup(__props) {\n\nconst COMPARISON = [\n  { prop: 'الجهد V', series: 'نفس V على كل R', parallel: 'نفس V على كل R', colorS: '#fbbf24', colorP: '#67e8f9' },\n  { prop: 'التيار I', series: 'نفس I في كل R', parallel: 'I يتوزع: Itotal = I₁ + I₂', colorS: '#fbbf24', colorP: '#67e8f9' },\n  { prop: 'R_eq', series: 'R₁ + R₂ + ...', parallel: '1/R₁ + 1/R₂ + ...', colorS: '#fbbf24', colorP: '#67e8f9' },\n  { prop: 'R_eq vs R_min', series: 'أكبر من أكبر R', parallel: 'أصغر من أصغر R', colorS: '#fbbf24', colorP: '#67e8f9' },\n]\n\nconst NOTES = [\n  '💡 في التوازي: إضافة مقاومة جديدة تقلل R_eq (مسار إضافي للتيار)',\n  '⚡ التيار يختار المسار الأسهل (أقل مقاومة = تيار أكبر)',\n  '🔄 الفولتميتر موصول على التوازي دائماً مع المقاومة',\n  '📊 الرسم: V vs Itotal → خط مستقيم، الميل = 1/Req',\n]\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"ref-title\" }, \"📊 مقارنة: توالي vs توازي\", -1)),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"ref-header\" }, [\n        _createElementVNode(\"span\", null, \"الخاصية\"),\n        _createElementVNode(\"span\", null, \"توالي\"),\n        _createElementVNode(\"span\", null, \"توازي\")\n      ], -1)),\n      (_openBlock(), _createElementBlock(_Fragment, null, _renderList(COMPARISON, (row) => {\n        return _createElementVNode(\"div\", {\n          key: row.prop,\n          class: \"ref-row\"\n        }, [\n          _createElementVNode(\"span\", _hoisted_3, _toDisplayString(row.prop), 1),\n          _createElementVNode(\"span\", {\n            style: _normalizeStyle({ color: row.colorS })\n          }, _toDisplayString(row.series), 5),\n          _createElementVNode(\"span\", {\n            style: _normalizeStyle({ color: row.colorP })\n          }, _toDisplayString(row.parallel), 5)\n        ])\n      }), 64))\n    ]),\n    _cache[2] || (_cache[2] = _createStaticVNode(\"<div class=\\\"ref-section\\\" data-v-6abde829><div class=\\\"section-title\\\" data-v-6abde829>قوانين التوازي</div><div class=\\\"formula-box\\\" data-v-6abde829>V = V₁ = V₂ = ...</div><div class=\\\"formula-box\\\" data-v-6abde829>I<sub data-v-6abde829>total</sub> = I₁ + I₂ + ...</div><div class=\\\"formula-box\\\" data-v-6abde829>1/R<sub data-v-6abde829>eq</sub> = 1/R₁ + 1/R₂ + ...</div><div class=\\\"formula-box\\\" data-v-6abde829>لاثنتين: R<sub data-v-6abde829>eq</sub> = R₁·R₂ / (R₁+R₂)</div></div>\", 1)),\n    (_openBlock(), _createElementBlock(_Fragment, null, _renderList(NOTES, (note, i) => {\n      return _createElementVNode(\"div\", {\n        key: i,\n        class: \"ref-note\"\n      }, _toDisplayString(note), 1)\n    }), 64))\n  ]))\n}\n}\n\n})",
+      "start": 1783634640190,
+      "end": 1783634640190
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640190,
+      "end": 1783634640190,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeStyle as _normalizeStyle, createStaticVNode as _createStaticVNode } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nconst _hoisted_2 = { class: \"ref-table\" };\nconst _hoisted_3 = { class: \"prop\" };\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"ParallelReferencePanel\",\n  setup(__props) {\n    const COMPARISON = [\n      { prop: \"الجهد V\", series: \"نفس V على كل R\", parallel: \"نفس V على كل R\", colorS: \"#fbbf24\", colorP: \"#67e8f9\" },\n      { prop: \"التيار I\", series: \"نفس I في كل R\", parallel: \"I يتوزع: Itotal = I₁ + I₂\", colorS: \"#fbbf24\", colorP: \"#67e8f9\" },\n      { prop: \"R_eq\", series: \"R₁ + R₂ + ...\", parallel: \"1/R₁ + 1/R₂ + ...\", colorS: \"#fbbf24\", colorP: \"#67e8f9\" },\n      { prop: \"R_eq vs R_min\", series: \"أكبر من أكبر R\", parallel: \"أصغر من أصغر R\", colorS: \"#fbbf24\", colorP: \"#67e8f9\" }\n    ];\n    const NOTES = [\n      \"💡 في التوازي: إضافة مقاومة جديدة تقلل R_eq (مسار إضافي للتيار)\",\n      \"⚡ التيار يختار المسار الأسهل (أقل مقاومة = تيار أكبر)\",\n      \"🔄 الفولتميتر موصول على التوازي دائماً مع المقاومة\",\n      \"📊 الرسم: V vs Itotal → خط مستقيم، الميل = 1/Req\"\n    ];\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"ref-title\" }, \"📊 مقارنة: توالي vs توازي\", -1)),\n        _createElementVNode(\"div\", _hoisted_2, [\n          _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"ref-header\" }, [\n            _createElementVNode(\"span\", null, \"الخاصية\"),\n            _createElementVNode(\"span\", null, \"توالي\"),\n            _createElementVNode(\"span\", null, \"توازي\")\n          ], -1)),\n          (_openBlock(), _createElementBlock(_Fragment, null, _renderList(COMPARISON, (row) => {\n            return _createElementVNode(\"div\", {\n              key: row.prop,\n              class: \"ref-row\"\n            }, [\n              _createElementVNode(\"span\", _hoisted_3, _toDisplayString(row.prop), 1),\n              _createElementVNode(\"span\", {\n                style: _normalizeStyle({ color: row.colorS })\n              }, _toDisplayString(row.series), 5),\n              _createElementVNode(\"span\", {\n                style: _normalizeStyle({ color: row.colorP })\n              }, _toDisplayString(row.parallel), 5)\n            ]);\n          }), 64))\n        ]),\n        _cache[2] || (_cache[2] = _createStaticVNode('<div class=\"ref-section\" data-v-6abde829><div class=\"section-title\" data-v-6abde829>قوانين التوازي</div><div class=\"formula-box\" data-v-6abde829>V = V₁ = V₂ = ...</div><div class=\"formula-box\" data-v-6abde829>I<sub data-v-6abde829>total</sub> = I₁ + I₂ + ...</div><div class=\"formula-box\" data-v-6abde829>1/R<sub data-v-6abde829>eq</sub> = 1/R₁ + 1/R₂ + ...</div><div class=\"formula-box\" data-v-6abde829>لاثنتين: R<sub data-v-6abde829>eq</sub> = R₁·R₂ / (R₁+R₂)</div></div>', 1)),\n        (_openBlock(), _createElementBlock(_Fragment, null, _renderList(NOTES, (note, i) => {\n          return _createElementVNode(\"div\", {\n            key: i,\n            class: \"ref-note\"\n          }, _toDisplayString(note), 1);\n        }), 64))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634640190,
+      "end": 1783634640513,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/ParallelReferencePanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeStyle as _normalizeStyle, createTextVNode as _createTextVNode, createStaticVNode as _createStaticVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"ref-table\" }\nconst _hoisted_3 = { class: \"prop\" }\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ParallelReferencePanel',\n  setup(__props) {\n\nconst COMPARISON = [\n  { prop: 'الجهد V', series: 'نفس V على كل R', parallel: 'نفس V على كل R', colorS: '#fbbf24', colorP: '#67e8f9' },\n  { prop: 'التيار I', series: 'نفس I في كل R', parallel: 'I يتوزع: Itotal = I₁ + I₂', colorS: '#fbbf24', colorP: '#67e8f9' },\n  { prop: 'R_eq', series: 'R₁ + R₂ + ...', parallel: '1/R₁ + 1/R₂ + ...', colorS: '#fbbf24', colorP: '#67e8f9' },\n  { prop: 'R_eq vs R_min', series: 'أكبر من أكبر R', parallel: 'أصغر من أصغر R', colorS: '#fbbf24', colorP: '#67e8f9' },\n]\n\nconst NOTES = [\n  '💡 في التوازي: إضافة مقاومة جديدة تقلل R_eq (مسار إضافي للتيار)',\n  '⚡ التيار يختار المسار الأسهل (أقل مقاومة = تيار أكبر)',\n  '🔄 الفولتميتر موصول على التوازي دائماً مع المقاومة',\n  '📊 الرسم: V vs Itotal → خط مستقيم، الميل = 1/Req',\n]\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"ref-title\" }, \"📊 مقارنة: توالي vs توازي\", -1)),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"ref-header\" }, [\n        _createElementVNode(\"span\", null, \"الخاصية\"),\n        _createElementVNode(\"span\", null, \"توالي\"),\n        _createElementVNode(\"span\", null, \"توازي\")\n      ], -1)),\n      (_openBlock(), _createElementBlock(_Fragment, null, _renderList(COMPARISON, (row) => {\n        return _createElementVNode(\"div\", {\n          key: row.prop,\n          class: \"ref-row\"\n        }, [\n          _createElementVNode(\"span\", _hoisted_3, _toDisplayString(row.prop), 1),\n          _createElementVNode(\"span\", {\n            style: _normalizeStyle({ color: row.colorS })\n          }, _toDisplayString(row.series), 5),\n          _createElementVNode(\"span\", {\n            style: _normalizeStyle({ color: row.colorP })\n          }, _toDisplayString(row.parallel), 5)\n        ])\n      }), 64))\n    ]),\n    _cache[2] || (_cache[2] = _createStaticVNode(\"<div class=\\\"ref-section\\\" data-v-6abde829><div class=\\\"section-title\\\" data-v-6abde829>قوانين التوازي</div><div class=\\\"formula-box\\\" data-v-6abde829>V = V₁ = V₂ = ...</div><div class=\\\"formula-box\\\" data-v-6abde829>I<sub data-v-6abde829>total</sub> = I₁ + I₂ + ...</div><div class=\\\"formula-box\\\" data-v-6abde829>1/R<sub data-v-6abde829>eq</sub> = 1/R₁ + 1/R₂ + ...</div><div class=\\\"formula-box\\\" data-v-6abde829>لاثنتين: R<sub data-v-6abde829>eq</sub> = R₁·R₂ / (R₁+R₂)</div></div>\", 1)),\n    (_openBlock(), _createElementBlock(_Fragment, null, _renderList(NOTES, (note, i) => {\n      return _createElementVNode(\"div\", {\n        key: i,\n        class: \"ref-note\"\n      }, _toDisplayString(note), 1)\n    }), 64))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,sBAAsB,qBAAqB,cAAc,aAAa,YAAY,WAAW,aAAa,YAAY,sBAAsB,qBAAqB,mBAAmB,kBAAkB,kBAAkB,iBAAsD,qBAAqB,0BAA0B;AAEtU,MAAM,aAAa,EAAE,OAAO,aAAa;AACzC,MAAM,aAAa,EAAE,OAAO,YAAY;AACxC,MAAM,aAAa,EAAE,OAAO,OAAO;AAGnC,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,MAAM,SAAS;AAEjB,UAAM,aAAa;AAAA,MACjB,EAAE,MAAM,WAAW,QAAQ,kBAAkB,UAAU,kBAAkB,QAAQ,WAAW,QAAQ,UAAU;AAAA,MAC9G,EAAE,MAAM,YAAY,QAAQ,iBAAiB,UAAU,6BAA6B,QAAQ,WAAW,QAAQ,UAAU;AAAA,MACzH,EAAE,MAAM,QAAQ,QAAQ,iBAAiB,UAAU,qBAAqB,QAAQ,WAAW,QAAQ,UAAU;AAAA,MAC7G,EAAE,MAAM,iBAAiB,QAAQ,kBAAkB,UAAU,kBAAkB,QAAQ,WAAW,QAAQ,UAAU;AAAA,IACtH;AAEA,UAAM,QAAQ;AAAA,MACZ;AAAA,MACA;AAAA,MACA;AAAA,MACA;AAAA,IACF;AAEA,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,YAAY,GAAG,6BAA6B,EAAE;AAAA,QAC5G,oBAAoB,OAAO,YAAY;AAAA,UACrC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,aAAa,GAAG;AAAA,YAC5E,oBAAoB,QAAQ,MAAM,SAAS;AAAA,YAC3C,oBAAoB,QAAQ,MAAM,OAAO;AAAA,YACzC,oBAAoB,QAAQ,MAAM,OAAO;AAAA,UAC3C,GAAG,EAAE;AAAA,WACJ,WAAW,GAAG,oBAAoB,WAAW,MAAM,YAAY,YAAY,CAAC,QAAQ;AACnF,mBAAO,oBAAoB,OAAO;AAAA,cAChC,KAAK,IAAI;AAAA,cACT,OAAO;AAAA,YACT,GAAG;AAAA,cACD,oBAAoB,QAAQ,YAAY,iBAAiB,IAAI,IAAI,GAAG,CAAC;AAAA,cACrE,oBAAoB,QAAQ;AAAA,gBAC1B,OAAO,gBAAgB,EAAE,OAAO,IAAI,OAAO,CAAC;AAAA,cAC9C,GAAG,iBAAiB,IAAI,MAAM,GAAG,CAAC;AAAA,cAClC,oBAAoB,QAAQ;AAAA,gBAC1B,OAAO,gBAAgB,EAAE,OAAO,IAAI,OAAO,CAAC;AAAA,cAC9C,GAAG,iBAAiB,IAAI,QAAQ,GAAG,CAAC;AAAA,YACtC,CAAC;AAAA,UACH,CAAC,GAAG,EAAE;AAAA,QACR,CAAC;AAAA,QACD,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,mBAAmB,6dAAye,CAAC;AAAA,SACthB,WAAW,GAAG,oBAAoB,WAAW,MAAM,YAAY,OAAO,CAAC,MAAM,MAAM;AAClF,iBAAO,oBAAoB,OAAO;AAAA,YAChC,KAAK;AAAA,YACL,OAAO;AAAA,UACT,GAAG,iBAAiB,IAAI,GAAG,CAAC;AAAA,QAC9B,CAAC,GAAG,EAAE;AAAA,MACR,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640513,
+      "end": 1783634640513,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640513,
+      "end": 1783634640513,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634640514,
+      "end": 1783634640514,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640514,
+      "end": 1783634640514,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640514,
+      "end": 1783634640514,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640514,
+      "end": 1783634640514,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640514,
+      "end": 1783634640514,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640514,
+      "end": 1783634640514,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640514,
+      "end": 1783634640514,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640514,
+      "end": 1783634640514,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640514,
+      "end": 1783634640514,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640514,
+      "end": 1783634640514,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640514,
+      "end": 1783634640514,
+      "order": "normal"
+    }
+  ]
+}

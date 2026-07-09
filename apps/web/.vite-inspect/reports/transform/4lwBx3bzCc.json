@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/diffraction/DiffractionPanelBody.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport type { DiffractionTrial } from '../../../composables/diffraction/useDiffractionTrials'\nimport DiffractionReadingsPanel from './panels/DiffractionReadingsPanel.vue'\nimport DiffractionChartPanel from './panels/DiffractionChartPanel.vue'\nimport DiffractionTrialsPanel from './panels/DiffractionTrialsPanel.vue'\nimport DiffractionParamsPanel from './panels/DiffractionParamsPanel.vue'\nimport DiffractionLawsPanel from './panels/DiffractionLawsPanel.vue'\nimport DiffractionResultsPanel from './panels/DiffractionResultsPanel.vue'\n\ninterface Props {\n  id: string\n  mode: 'single' | 'grating'\n  trials: DiffractionTrial[]\n  params: { slitWidth: number; linesPerMm: number; screenDistance: number; wavelength: number }\n  centralWidth: number\n  darkFringes: { m: number; yMm: number }[]\n  intensityPattern: { yMm: number; intensity: number }[]\n  firstOrderAngle: number\n  firstOrderY: number\n  maxOrder: number\n  orderPositions: { m: number; yMm: number; intensity: number }[]\n  regressionSlope: number\n  regressionIntercept: number\n  rSquared: number\n  lambdaFromRegression: number | null\n}\n\ndefineProps<Props>()\nconst emit = defineEmits<{\n  (e: 'remove', id: number): void\n  (e: 'clear'): void\n  (e: 'update:params', p: { slitWidth: number; linesPerMm: number; screenDistance: number; wavelength: number }): void\n}>()\n</script>\n\n<template>\n  <div>\n    <DiffractionReadingsPanel\n      v-if=\"id === 'readings'\"\n      :mode=\"mode\"\n      :slit-width=\"params.slitWidth\"\n      :lines-per-mm=\"params.linesPerMm\"\n      :screen-distance=\"params.screenDistance\"\n      :wavelength=\"params.wavelength\"\n      :central-width=\"centralWidth\"\n      :dark-fringes=\"darkFringes\"\n      :first-order-angle=\"firstOrderAngle\"\n      :first-order-y=\"firstOrderY\"\n      :max-order=\"maxOrder\"\n    />\n    <DiffractionChartPanel\n      v-else-if=\"id === 'chart'\"\n      :mode=\"mode\"\n      :trials=\"trials\"\n      :regression-slope=\"regressionSlope\"\n      :regression-intercept=\"regressionIntercept\"\n      :r-squared=\"rSquared\"\n      :intensity-pattern=\"intensityPattern\"\n      :order-positions=\"orderPositions\"\n    />\n    <DiffractionTrialsPanel\n      v-else-if=\"id === 'trials'\"\n      :trials=\"trials\"\n      @remove=\"emit('remove', $event)\"\n      @clear=\"emit('clear')\"\n    />\n    <DiffractionParamsPanel\n      v-else-if=\"id === 'params'\"\n      :mode=\"mode\"\n      :params=\"params\"\n      @update:params=\"emit('update:params', $event)\"\n    />\n    <DiffractionLawsPanel\n      v-else-if=\"id === 'laws'\"\n      :mode=\"mode\"\n      :slit-width=\"params.slitWidth\"\n      :lines-per-mm=\"params.linesPerMm\"\n      :screen-distance=\"params.screenDistance\"\n      :wavelength=\"params.wavelength\"\n      :central-width=\"centralWidth\"\n      :first-order-angle=\"firstOrderAngle\"\n    />\n    <DiffractionResultsPanel\n      v-else-if=\"id === 'results'\"\n      :trials=\"trials\"\n      :regression-slope=\"regressionSlope\"\n      :regression-intercept=\"regressionIntercept\"\n      :r-squared=\"rSquared\"\n      :lambda-from-regression=\"lambdaFromRegression\"\n      :theoretical-lambda=\"params.wavelength\"\n      :screen-distance=\"params.screenDistance\"\n    />\n  </div>\n</template>\n",
+      "start": 1783634640974,
+      "end": 1783634641384,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641384,
+      "end": 1783634641384,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641384,
+      "end": 1783634641384,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641384,
+      "end": 1783634641384,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641384,
+      "end": 1783634641384,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/diffraction/DiffractionPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/diffraction/DiffractionPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nexport default _sfc_main;\n",
+      "start": 1783634641384,
+      "end": 1783634641643,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641644,
+      "end": 1783634641644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641644,
+      "end": 1783634641645,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641645,
+      "end": 1783634641645,
+      "order": "normal"
+    }
+  ]
+}

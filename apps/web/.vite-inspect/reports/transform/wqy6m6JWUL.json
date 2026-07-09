@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/freefall/FreeFallReportPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = {\n  key: 0,\n  class: \"mini-report\"\n}\nconst _hoisted_2 = {\n  key: 1,\n  class: \"no-data\"\n}\nconst _hoisted_3 = { class: \"report-actions\" }\n\nimport type { FreeFallTrial } from '../../../composables/freefall/useFreeFallTrials'\nimport { useI18n } from '../../../composables/useI18n'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'FreeFallReportPanel',\n  props: {\n    trials: {},\n    trialStats: {},\n    gTheoretical: {}\n  },\n  emits: [\"printReport\", \"openFullReport\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\nconst props = __props\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", null, [\n    _createElementVNode(\"h5\", null, \"📋 \" + _toDisplayString(_unref(t)('experiments.quickReport')), 1),\n    (__props.trials.length)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n          _createElementVNode(\"div\", null, _toDisplayString(_unref(t)('experiments.readings')) + \": \" + _toDisplayString(__props.trials.length), 1),\n          _createElementVNode(\"div\", null, _toDisplayString(_unref(t)('experiments.averageG')) + \": \" + _toDisplayString(__props.trialStats?.g_mean?.toFixed(2) ?? '--') + \" m/s²\", 1),\n          _createElementVNode(\"div\", null, _toDisplayString(_unref(t)('experiments.theoreticalG')) + \": \" + _toDisplayString(__props.gTheoretical) + \" m/s²\", 1)\n        ]))\n      : (_openBlock(), _createElementBlock(\"p\", _hoisted_2, _toDisplayString(_unref(t)('experiments.noData')), 1)),\n    _createElementVNode(\"div\", _hoisted_3, [\n      _createElementVNode(\"button\", {\n        onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('printReport')))\n      }, \"🖨️ \" + _toDisplayString(_unref(t)('experiments.print')), 1),\n      _createElementVNode(\"button\", {\n        class: \"primary\",\n        onClick: _cache[1] || (_cache[1] = ($event: any) => (emit('openFullReport')))\n      }, \"📋 \" + _toDisplayString(_unref(t)('experiments.fullReport')), 1)\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783634643061,
+      "end": 1783634643061
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634643061,
+      "end": 1783634643061,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = {\n  key: 0,\n  class: \"mini-report\"\n};\nconst _hoisted_2 = {\n  key: 1,\n  class: \"no-data\"\n};\nconst _hoisted_3 = { class: \"report-actions\" };\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"FreeFallReportPanel\",\n  props: {\n    trials: {},\n    trialStats: {},\n    gTheoretical: {}\n  },\n  emits: [\"printReport\", \"openFullReport\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const props = __props;\n    const emit = __emit;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", null, [\n        _createElementVNode(\"h5\", null, \"📋 \" + _toDisplayString(_unref(t)(\"experiments.quickReport\")), 1),\n        __props.trials.length ? (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n          _createElementVNode(\"div\", null, _toDisplayString(_unref(t)(\"experiments.readings\")) + \": \" + _toDisplayString(__props.trials.length), 1),\n          _createElementVNode(\"div\", null, _toDisplayString(_unref(t)(\"experiments.averageG\")) + \": \" + _toDisplayString(__props.trialStats?.g_mean?.toFixed(2) ?? \"--\") + \" m/s²\", 1),\n          _createElementVNode(\"div\", null, _toDisplayString(_unref(t)(\"experiments.theoreticalG\")) + \": \" + _toDisplayString(__props.gTheoretical) + \" m/s²\", 1)\n        ])) : (_openBlock(), _createElementBlock(\"p\", _hoisted_2, _toDisplayString(_unref(t)(\"experiments.noData\")), 1)),\n        _createElementVNode(\"div\", _hoisted_3, [\n          _createElementVNode(\"button\", {\n            onClick: _cache[0] || (_cache[0] = ($event) => emit(\"printReport\"))\n          }, \"🖨️ \" + _toDisplayString(_unref(t)(\"experiments.print\")), 1),\n          _createElementVNode(\"button\", {\n            class: \"primary\",\n            onClick: _cache[1] || (_cache[1] = ($event) => emit(\"openFullReport\"))\n          }, \"📋 \" + _toDisplayString(_unref(t)(\"experiments.fullReport\")), 1)\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634643061,
+      "end": 1783634643101,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/freefall/FreeFallReportPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = {\n  key: 0,\n  class: \"mini-report\"\n}\nconst _hoisted_2 = {\n  key: 1,\n  class: \"no-data\"\n}\nconst _hoisted_3 = { class: \"report-actions\" }\n\nimport type { FreeFallTrial } from '../../../composables/freefall/useFreeFallTrials'\nimport { useI18n } from '../../../composables/useI18n'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'FreeFallReportPanel',\n  props: {\n    trials: {},\n    trialStats: {},\n    gTheoretical: {}\n  },\n  emits: [\"printReport\", \"openFullReport\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\nconst props = __props\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", null, [\n    _createElementVNode(\"h5\", null, \"📋 \" + _toDisplayString(_unref(t)('experiments.quickReport')), 1),\n    (__props.trials.length)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n          _createElementVNode(\"div\", null, _toDisplayString(_unref(t)('experiments.readings')) + \": \" + _toDisplayString(__props.trials.length), 1),\n          _createElementVNode(\"div\", null, _toDisplayString(_unref(t)('experiments.averageG')) + \": \" + _toDisplayString(__props.trialStats?.g_mean?.toFixed(2) ?? '--') + \" m/s²\", 1),\n          _createElementVNode(\"div\", null, _toDisplayString(_unref(t)('experiments.theoreticalG')) + \": \" + _toDisplayString(__props.gTheoretical) + \" m/s²\", 1)\n        ]))\n      : (_openBlock(), _createElementBlock(\"p\", _hoisted_2, _toDisplayString(_unref(t)('experiments.noData')), 1)),\n    _createElementVNode(\"div\", _hoisted_3, [\n      _createElementVNode(\"button\", {\n        onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('printReport')))\n      }, \"🖨️ \" + _toDisplayString(_unref(t)('experiments.print')), 1),\n      _createElementVNode(\"button\", {\n        class: \"primary\",\n        onClick: _cache[1] || (_cache[1] = ($event: any) => (emit('openFullReport')))\n      }, \"📋 \" + _toDisplayString(_unref(t)('experiments.fullReport')), 1)\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,SAAS,QAAQ,mBAAmB,kBAAkB,sBAAsB,qBAAqB,aAAa,YAAY,sBAAsB,2BAAsE;AAE/N,MAAM,aAAa;AAAA,EACjB,KAAK;AAAA,EACL,OAAO;AACT;AACA,MAAM,aAAa;AAAA,EACjB,KAAK;AAAA,EACL,OAAO;AACT;AACA,MAAM,aAAa,EAAE,OAAO,iBAAiB;AAG7C,SAAS,eAAe;AAGxB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,QAAQ,CAAC;AAAA,IACT,YAAY,CAAC;AAAA,IACb,cAAc,CAAC;AAAA,EACjB;AAAA,EACA,OAAO,CAAC,eAAe,gBAAgB;AAAA,EACvC,MAAM,SAAc,EAAE,MAAM,OAAO,GAAG;AAExC,UAAM,EAAE,EAAE,IAAI,QAAQ;AACtB,UAAM,QAAQ;AACd,UAAM,OAAO;AAEb,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,MAAM;AAAA,QACrD,oBAAoB,MAAM,MAAM,QAAQ,iBAAiB,OAAO,CAAC,EAAE,yBAAyB,CAAC,GAAG,CAAC;AAAA,QAChG,QAAQ,OAAO,UACX,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,UACpD,oBAAoB,OAAO,MAAM,iBAAiB,OAAO,CAAC,EAAE,sBAAsB,CAAC,IAAI,OAAO,iBAAiB,QAAQ,OAAO,MAAM,GAAG,CAAC;AAAA,UACxI,oBAAoB,OAAO,MAAM,iBAAiB,OAAO,CAAC,EAAE,sBAAsB,CAAC,IAAI,OAAO,iBAAiB,QAAQ,YAAY,QAAQ,QAAQ,CAAC,KAAK,IAAI,IAAI,SAAS,CAAC;AAAA,UAC3K,oBAAoB,OAAO,MAAM,iBAAiB,OAAO,CAAC,EAAE,0BAA0B,CAAC,IAAI,OAAO,iBAAiB,QAAQ,YAAY,IAAI,SAAS,CAAC;AAAA,QACvJ,CAAC,MACA,WAAW,GAAG,oBAAoB,KAAK,YAAY,iBAAiB,OAAO,CAAC,EAAE,oBAAoB,CAAC,GAAG,CAAC;AAAA,QAC5G,oBAAoB,OAAO,YAAY;AAAA,UACrC,oBAAoB,UAAU;AAAA,YAC5B,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,aAAa;AAAA,UACzE,GAAG,SAAS,iBAAiB,OAAO,CAAC,EAAE,mBAAmB,CAAC,GAAG,CAAC;AAAA,UAC/D,oBAAoB,UAAU;AAAA,YAC5B,OAAO;AAAA,YACP,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,gBAAgB;AAAA,UAC5E,GAAG,QAAQ,iBAAiB,OAAO,CAAC,EAAE,wBAAwB,CAAC,GAAG,CAAC;AAAA,QACrE,CAAC;AAAA,MACH,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634643101,
+      "end": 1783634643101,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634643101,
+      "end": 1783634643101,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634643101,
+      "end": 1783634643101,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634643101,
+      "end": 1783634643101,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634643101,
+      "end": 1783634643101,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634643101,
+      "end": 1783634643102,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634643102,
+      "end": 1783634643102,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634643102,
+      "end": 1783634643102,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634643102,
+      "end": 1783634643102,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634643102,
+      "end": 1783634643102,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634643102,
+      "end": 1783634643102,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634643102,
+      "end": 1783634643102,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634643102,
+      "end": 1783634643102,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabBalance.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n';\nconst { t } = useI18n();\n\ninterface Props {\n  reading?: number | null; // grams\n  isHovered?: boolean;\n}\n\nconst props = withDefaults(defineProps<Props>(), {\n  reading: null,\n  isHovered: false,\n});\n\nconst emit = defineEmits<{ click: [] }>();\n\nconst displayStr = () => {\n  if (props.reading === null) return '0.00';\n  return props.reading.toFixed(2);\n};\n</script>\n\n<template>\n  <div class=\"balance-wrapper\" @click.stop=\"emit('click')\">\n    <svg viewBox=\"0 0 160 100\" class=\"balance-svg\" :class=\"{ hovered: isHovered }\">\n      <!-- Shadow -->\n      <ellipse cx=\"80\" cy=\"95\" rx=\"72\" ry=\"3\" fill=\"rgba(0,0,0,0.08)\" />\n\n      <!-- Base body -->\n      <rect x=\"8\" y=\"48\" width=\"144\" height=\"42\" rx=\"6\" fill=\"#1e293b\" />\n      <rect x=\"10\" y=\"50\" width=\"140\" height=\"38\" rx=\"5\" fill=\"#334155\" />\n\n      <!-- Side panel line -->\n      <line x1=\"12\" y1=\"85\" x2=\"148\" y2=\"85\" stroke=\"#475569\" stroke-width=\"1\" />\n\n      <!-- LCD Screen -->\n      <rect x=\"22\" y=\"56\" width=\"80\" height=\"22\" rx=\"3\" fill=\"#0f172a\" />\n      <!-- Screen inner glow -->\n      <rect x=\"23\" y=\"57\" width=\"78\" height=\"20\" rx=\"2\" fill=\"none\" stroke=\"rgba(34,197,94,0.15)\" stroke-width=\"0.5\" />\n      <!-- Digits -->\n      <text\n        x=\"62\"\n        y=\"72\"\n        font-family=\"'Segoe UI', monospace\"\n        font-size=\"16\"\n        font-weight=\"800\"\n        fill=\"#22c55e\"\n        text-anchor=\"middle\"\n        letter-spacing=\"2\"\n      >{{ displayStr() }}</text>\n      <!-- Unit -->\n      <text x=\"108\" y=\"72\" font-family=\"Arial\" font-size=\"8\" fill=\"#64748b\" font-weight=\"700\">g</text>\n\n      <!-- Buttons -->\n      <rect x=\"110\" y=\"58\" width=\"14\" height=\"8\" rx=\"2\" fill=\"#475569\" />\n      <text x=\"117\" y=\"64\" font-size=\"4\" fill=\"#94a3b8\" text-anchor=\"middle\" font-weight=\"700\">TARE</text>\n      <rect x=\"128\" y=\"58\" width=\"14\" height=\"8\" rx=\"2\" fill=\"#475569\" />\n      <text x=\"135\" y=\"64\" font-size=\"4\" fill=\"#94a3b8\" text-anchor=\"middle\" font-weight=\"700\">MODE</text>\n\n      <!-- Brand label -->\n      <text x=\"80\" y=\"89\" font-size=\"5\" fill=\"#64748b\" text-anchor=\"middle\" font-weight=\"700\" letter-spacing=\"1\">LAB-SCALE</text>\n\n      <!-- Platform pillar -->\n      <rect x=\"72\" y=\"38\" width=\"16\" height=\"10\" rx=\"1\" fill=\"#64748b\" />\n      <rect x=\"73\" y=\"39\" width=\"14\" height=\"8\" rx=\"0.5\" fill=\"#94a3b8\" />\n\n      <!-- Platform (stainless steel dish) -->\n      <ellipse cx=\"80\" cy=\"38\" rx=\"44\" ry=\"7\" fill=\"#cbd5e1\" />\n      <ellipse cx=\"80\" cy=\"37\" rx=\"42\" ry=\"5.5\" fill=\"#e2e8f0\" />\n      <!-- Platform rim highlight -->\n      <ellipse cx=\"80\" cy=\"36.5\" rx=\"40\" ry=\"4\" fill=\"none\" stroke=\"rgba(255,255,255,0.5)\" stroke-width=\"0.8\" />\n\n      <!-- Level indicator bubble -->\n      <circle cx=\"142\" cy=\"72\" r=\"4\" fill=\"rgba(255,255,255,0.1)\" stroke=\"#475569\" stroke-width=\"0.5\" />\n      <circle cx=\"142\" cy=\"72\" r=\"2\" fill=\"rgba(255,255,255,0.3)\" />\n\n      <!-- Weighing zone indicator (subtle dashed area above platform) -->\n      <ellipse cx=\"80\" cy=\"18\" rx=\"50\" ry=\"14\" fill=\"none\" stroke=\"rgba(16,185,129,0.2)\" stroke-width=\"1\" stroke-dasharray=\"3,3\" />\n      <text x=\"80\" y=\"14\" font-size=\"5\" fill=\"rgba(16,185,129,0.4)\" text-anchor=\"middle\" font-weight=\"600\">{{ t('chemistryLab.placeToolHere') }}</text>\n\n      <!-- Feet -->\n      <rect x=\"14\" y=\"90\" width=\"8\" height=\"4\" rx=\"1\" fill=\"#0f172a\" />\n      <rect x=\"138\" y=\"90\" width=\"8\" height=\"4\" rx=\"1\" fill=\"#0f172a\" />\n    </svg>\n\n    <!-- Reading badge -->\n    <div v-if=\"reading !== null\" class=\"balance-badge\">{{ reading.toFixed(2) }}g</div>\n  </div>\n</template>\n\n<style scoped>\n.balance-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.balance-svg {\n  width: 140px;\n  height: 88px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));\n}\n.balance-svg.hovered {\n  transform: scale(1.04);\n  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));\n}\n.balance-badge {\n  position: absolute;\n  top: -4px;\n  right: 8px;\n  font-size: 0.65rem;\n  font-weight: 800;\n  color: #22c55e;\n  background: rgba(15,23,42,0.9);\n  padding: 2px 8px;\n  border-radius: 6px;\n  font-family: monospace;\n  pointer-events: none;\n}\n</style>\n",
+      "start": 1783634641064,
+      "end": 1783634641587,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641588,
+      "end": 1783634641588,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641588,
+      "end": 1783634641588,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641588,
+      "end": 1783634641588,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641588,
+      "end": 1783634641588,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabBalance.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabBalance.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabBalance.vue?vue&type=style&index=0&scoped=bbd692ed&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-bbd692ed\"]]);\n",
+      "start": 1783634641588,
+      "end": 1783634641665,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641665,
+      "end": 1783634641665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641665,
+      "end": 1783634641665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641665,
+      "end": 1783634641665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    }
+  ]
+}

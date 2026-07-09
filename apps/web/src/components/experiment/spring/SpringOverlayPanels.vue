@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import SpringPanelBody from './SpringPanelBody.vue'
 import type { PanelId } from '../../../composables/spring/useSpringLayout'
-import type { Trial } from '../../../composables/spring/useSpringTrials'
+import type { SpringTrial } from '../../../composables/spring/useSpringTrials'
 import type { SpringParams } from '../../../modules/physics/experiments/spring/useSpringPhysics'
 
 interface Measured {
@@ -16,7 +16,7 @@ interface SimState {
 const props = defineProps<{
   maximized: Record<PanelId, boolean>
   panelTitle: (id: PanelId) => string
-  trials: Trial[]
+  trials: SpringTrial[]
   params: SpringParams
   sim: SimState
   measured: Measured
@@ -25,13 +25,14 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'maximize', id: string): void
-  (e: 'update:trials', val: Trial[]): void
+  (e: 'update:trials', val: SpringTrial[]): void
   (e: 'update:params', val: SpringParams): void
   (e: 'remove', id: number): void
   (e: 'clear'): void
+  (e: 'drop', id: string, x: number, y: number): void
 }>()
 
-const allIds: PanelId[] = ['table', 'signal', 'params', 'guide']
+const allIds: PanelId[] = ['table', 'signal', 'params']
 
 function isMaximized(id: string) {
   return (props.maximized as Record<string, boolean>)[id] as boolean

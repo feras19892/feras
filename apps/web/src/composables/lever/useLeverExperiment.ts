@@ -88,7 +88,7 @@ export function useLeverExperiment() {
     if (tList.length === 0) { console.warn('[exportToAnalysis] no trials'); return }
     const readings = tList.map(t => ({ trialNo: t.trialNo, forceCount: t.forceCount, sumFx: t.sumFx, sumFy: t.sumFy, resultantMag: t.resultantMag, resultantAngle: t.resultantAngle, eqForceMag: t.eqForceMag, eqForceAngle: t.eqForceAngle, isBalanced: t.isBalanced ? 1 : 0 }))
     const payload: AnalysisPayload = {
-      sourceExperiment: 'lever', sourceNameAr: t('experiments.expLever'), readings,
+      sourceExperiment: 'lever', sourceNameAr: t('experiments.expLever'), hasCalcTab: true, readings,
       columns: [
         { key: 'trialNo', label: t('experiments.colTrialNo') },
         { key: 'forceCount', label: t('experiments.colForceCount') },

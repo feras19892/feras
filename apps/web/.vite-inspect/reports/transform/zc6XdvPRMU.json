@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/CalorimetryCanvas.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, onMounted, onUnmounted } from 'vue'\n\nconst props = defineProps<{\n  mWater: number\n  tWater: number\n  mMetal: number\n  tMetal: number\n  tf: number\n  simTime: number\n  phase: 'ready' | 'dropping' | 'mixing' | 'done'\n  currentWaterTemp: number\n  currentMetalTemp: number\n  running: boolean\n  paused: boolean\n}>()\n\nconst canvasRef = ref<HTMLCanvasElement | null>(null)\nlet animId = 0\nlet lastTs = 0\n\nconst emit = defineEmits<{ (e: 'updateSim', dt: number): void }>()\n\nfunction getCtx() { const c = canvasRef.value; return c ? c.getContext('2d') : null }\nfunction getSize(): { w: number; h: number; dpr: number } {\n  const c = canvasRef.value\n  if (!c) return { w: 600, h: 400, dpr: 1 }\n  const rect = c.getBoundingClientRect()\n  const dpr = window.devicePixelRatio || 1\n  c.width = Math.round(rect.width * dpr)\n  c.height = Math.round(rect.height * dpr)\n  return { w: c.width, h: c.height, dpr }\n}\nfunction rectWidth() { return canvasRef.value ? canvasRef.value.getBoundingClientRect().width : 600 }\nfunction rectHeight() { return canvasRef.value ? canvasRef.value.getBoundingClientRect().height : 400 }\n\nfunction tempColor(t: number): string {\n  const r = Math.max(0, Math.min(1, (t - 20) / 100))\n  const red = Math.round(60 + r * 195)\n  const gr = Math.round(160 - r * 140)\n  const bl = Math.round(220 - r * 180)\n  return `rgba(${red},${gr},${bl},1)`\n}\n\nfunction draw() {\n  const ctx = getCtx()\n  if (!ctx) return\n  const { dpr } = getSize()\n  ctx.setTransform(dpr, 0, 0, dpr, 0, 0)\n  const W = rectWidth(), H = rectHeight()\n\n  ctx.fillStyle = '#0B1220'\n  ctx.fillRect(0, 0, W, H)\n\n  const scale = Math.min(W / 520, H / 380)\n  const s = (v: number) => v * scale\n  const cx = W / 2\n  const bottom = H - s(30)\n\n  // === CALORIMETER CUP ===\n  const cupW = s(130), cupH = s(170)\n  const cupLeft = cx - s(130)\n  const cupTop = bottom - cupH\n\n  // cup glass body\n  ctx.fillStyle = 'rgba(40,55,75,0.25)'\n  ctx.fillRect(cupLeft, cupTop, cupW, cupH)\n  // walls\n  ctx.strokeStyle = '#4A5D75'; ctx.lineWidth = s(3)\n  ctx.beginPath(); ctx.moveTo(cupLeft, cupTop); ctx.lineTo(cupLeft, bottom); ctx.stroke()\n  ctx.beginPath(); ctx.moveTo(cupLeft + cupW, cupTop); ctx.lineTo(cupLeft + cupW, bottom); ctx.stroke()\n  ctx.beginPath(); ctx.moveTo(cupLeft, bottom); ctx.lineTo(cupLeft + cupW, bottom); ctx.stroke()\n  // rim\n  ctx.strokeStyle = '#5B8DB8'; ctx.lineWidth = s(2)\n  ctx.beginPath(); ctx.ellipse(cupLeft + cupW / 2, cupTop, cupW / 2, s(10), 0, 0, Math.PI * 2); ctx.stroke()\n  // lid (closed during mixing/done)\n  if (props.phase === 'mixing' || props.phase === 'done') {\n    ctx.fillStyle = 'rgba(91,141,184,0.15)'\n    ctx.fillRect(cupLeft - s(4), cupTop - s(4), cupW + s(8), s(8))\n    ctx.strokeStyle = '#5B8DB8'; ctx.lineWidth = s(1.5)\n    ctx.strokeRect(cupLeft - s(4), cupTop - s(4), cupW + s(8), s(8))\n  }\n\n  // Use parameter temps directly when ready, otherwise current temps from sim\n  const displayWaterTemp = props.phase === 'ready' ? props.tWater : props.currentWaterTemp\n  const displayMetalTemp = props.phase === 'ready' ? props.tMetal : props.currentMetalTemp\n\n  // water\n  const waterH = (props.mWater / 0.5) * cupH * 0.85\n  const waterTop = bottom - waterH\n  const wColor = tempColor(displayWaterTemp)\n  const wGrad = ctx.createLinearGradient(cupLeft, waterTop, cupLeft + cupW, bottom)\n  wGrad.addColorStop(0, wColor.replace('1)', '0.35)'))\n  wGrad.addColorStop(1, wColor.replace('1)', '0.65)'))\n  ctx.fillStyle = wGrad\n  ctx.fillRect(cupLeft + s(4), waterTop, cupW - s(8), waterH - s(4))\n\n  // water motion dots — gently animated (more active when mixing)\n  const time = Date.now() / 1000\n  const agitation = props.phase === 'mixing' ? 1.5 : 0.3\n  const nDots = Math.round(props.mWater * 50)\n  for (let i = 0; i < nDots; i++) {\n    const baseX = cupLeft + s(8) + ((i * 17 + i * i * 3) % 1000) / 1000 * (cupW - s(16))\n    const baseY = waterTop + s(6) + ((i * 23 + i * i * 5) % 1000) / 1000 * (waterH - s(12))\n    const animX = baseX + Math.sin(time * 1.5 + i * 0.7) * s(2 * agitation)\n    const animY = baseY + Math.cos(time * 1.2 + i * 0.5) * s(1.5 * agitation)\n    ctx.fillStyle = wColor.replace('1)', '0.5)')\n    ctx.beginPath(); ctx.arc(animX, animY, s(1.8), 0, Math.PI * 2); ctx.fill()\n  }\n\n  // thermometer\n  const tx = cupLeft + cupW + s(18), ty = cupTop + s(25)\n  const th = s(130)\n  ctx.strokeStyle = '#3D4A5C'; ctx.lineWidth = s(2)\n  ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(tx, ty + th); ctx.stroke()\n  ctx.beginPath(); ctx.arc(tx, ty + th + s(10), s(9), 0, Math.PI * 2); ctx.stroke()\n  ctx.fillStyle = '#0B1220'; ctx.beginPath(); ctx.arc(tx, ty + th + s(10), s(7), 0, Math.PI * 2); ctx.fill()\n  const tFrac = Math.max(0, Math.min(1, (displayWaterTemp - 20) / 100))\n  const mh = tFrac * th\n  ctx.fillStyle = tempColor(displayWaterTemp)\n  ctx.fillRect(tx - s(3), ty + th - mh, s(6), mh)\n  ctx.beginPath(); ctx.arc(tx, ty + th + s(10), s(5), 0, Math.PI * 2); ctx.fill()\n  // ticks\n  ctx.fillStyle = '#5A6E82'; ctx.font = `${s(7)}px sans-serif`\n  for (let i = 0; i <= 4; i++) {\n    const y = ty + th - (i / 4) * th\n    ctx.fillRect(tx - s(6), y, s(4), 1)\n    ctx.fillText(`${20 + i * 25}°`, tx + s(10), y + s(3))\n  }\n  ctx.fillStyle = '#D1D7E0'; ctx.font = `bold ${s(10)}px sans-serif`\n  ctx.fillText(`${Math.round(displayWaterTemp)}°C`, tx + s(10), ty + th + s(22))\n\n  // === METAL BLOCK with tweezers ===\n  const blockW = s(48), blockH = s(36)\n  const blockStartY = cupTop - s(80)\n  const blockEndY = waterTop + s(10)\n  const blockX = cupLeft + cupW / 2 - blockW / 2\n\n  let blockY = blockStartY\n  if (props.phase === 'dropping') {\n    const dropRatio = Math.min(props.simTime / 2, 1)\n    blockY = blockStartY + (blockEndY - blockStartY) * dropRatio\n  } else if (props.phase === 'mixing' || props.phase === 'done') {\n    blockY = blockEndY\n  }\n\n  // tweezers arm\n  if (props.phase !== 'done') {\n    ctx.strokeStyle = '#8B95A5'; ctx.lineWidth = s(2)\n    ctx.beginPath(); ctx.moveTo(blockX + blockW / 2, blockY - s(5)); ctx.lineTo(blockX + blockW / 2, blockY - s(40)); ctx.stroke()\n    ctx.beginPath(); ctx.moveTo(blockX + blockW / 2 - s(4), blockY - s(8)); ctx.lineTo(blockX + blockW / 2, blockY - s(3)); ctx.lineTo(blockX + blockW / 2 + s(4), blockY - s(8)); ctx.stroke()\n  }\n\n  // metal block\n  const mColor = tempColor(displayMetalTemp)\n  ctx.fillStyle = mColor\n  ctx.fillRect(blockX, blockY, blockW, blockH)\n  ctx.strokeStyle = '#8B95A5'; ctx.lineWidth = s(1.5)\n  ctx.strokeRect(blockX, blockY, blockW, blockH)\n  // hatch\n  ctx.strokeStyle = 'rgba(255,255,255,0.2)'; ctx.lineWidth = s(0.5)\n  for (let i = 1; i < 4; i++) {\n    ctx.beginPath(); ctx.moveTo(blockX, blockY + i * blockH / 4); ctx.lineTo(blockX + blockW, blockY + i * blockH / 4); ctx.stroke()\n    ctx.beginPath(); ctx.moveTo(blockX + i * blockW / 4, blockY); ctx.lineTo(blockX + i * blockW / 4, blockY + blockH); ctx.stroke()\n  }\n  // temp label on block\n  ctx.fillStyle = '#fff'; ctx.font = `bold ${s(9)}px sans-serif`; ctx.textAlign = 'center'\n  ctx.fillText(`${Math.round(displayMetalTemp)}°C`, blockX + blockW / 2, blockY + blockH / 2 + s(3))\n  ctx.textAlign = 'start'\n\n  // === HEAT FLOW PARTICLES (during mixing) — proportional to temp diff ===\n  if (props.phase === 'mixing') {\n    const tempDiff = Math.max(1, props.tMetal - props.tWater)\n    const heatCount = Math.round(5 + tempDiff * 0.2) // more particles when bigger diff\n    for (let i = 0; i < heatCount; i++) {\n      const t = (props.simTime * (1 + tempDiff * 0.02) + i * 0.7) % 3\n      const hx = blockX + ((i * 13 + i * i * 7) % 1000) / 1000 * blockW\n      const hy = blockY + blockH - t * (blockY + blockH - waterTop) * 0.6\n      const alpha = t < 0.5 ? t * 2 : (3 - t) / 2.5\n      ctx.fillStyle = `rgba(255,${Math.round(120 - tempDiff)},${Math.round(60 - tempDiff * 0.3)},${Math.max(0, alpha)})`\n      ctx.beginPath(); ctx.arc(hx, hy, s(2 + tempDiff * 0.01), 0, Math.PI * 2); ctx.fill()\n    }\n  }\n\n  // === PHASE LABEL (top center) ===\n  ctx.textAlign = 'center'\n  const phaseLabels: Record<string, { text: string; color: string }> = {\n    ready: { text: '🔥 جاهز — اضغط Start', color: '#64748b' },\n    dropping: { text: '⬇️ إسقاط المعدن...', color: '#fbbf24' },\n    mixing: { text: '🔥 خلط — انتقال الحرارة', color: '#22c55e' },\n    done: { text: '✅ اكتمل التوازن الحراري', color: '#5B8DB8' },\n  }\n  const pl = phaseLabels[props.phase]\n  ctx.fillStyle = pl.color; ctx.font = `bold ${s(12)}px sans-serif`\n  ctx.fillText(pl.text, cx, s(20))\n  ctx.textAlign = 'start'\n\n  // bottom info (Arabic)\n  ctx.fillStyle = '#8B95A5'; ctx.font = `${s(8)}px sans-serif`\n  ctx.fillText(`💧 ماء ${props.mWater.toFixed(3)}kg من ${props.tWater}°C → ${Math.round(displayWaterTemp)}°C`, s(10), H - s(10))\n  ctx.fillText(`🔩 معدن ${props.mMetal.toFixed(3)}kg من ${props.tMetal}°C → ${Math.round(displayMetalTemp)}°C`, s(200), H - s(10))\n  ctx.fillText(`Tf = ${props.tf.toFixed(1)}°C`, s(390), H - s(10))\n}\n\nfunction loop(ts: number) {\n  const dt = lastTs ? Math.min((ts - lastTs) / 1000, 0.05) : 0\n  lastTs = ts\n  emit('updateSim', dt)\n  draw()\n  animId = requestAnimationFrame(loop)\n}\n\nonMounted(() => { draw(); animId = requestAnimationFrame(loop) })\nonUnmounted(() => cancelAnimationFrame(animId))\n</script>\n<template>\n  <canvas ref=\"canvasRef\" style=\"width: 100%; height: 100%; display: block;\" />\n</template>\n",
+      "start": 1783634640925,
+      "end": 1783634641267,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641267,
+      "end": 1783634641267,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641267,
+      "end": 1783634641267,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641267,
+      "end": 1783634641267,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641267,
+      "end": 1783634641267,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/CalorimetryCanvas.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/CalorimetryCanvas.vue?vue&type=script&setup=true&lang.ts\";\nexport default _sfc_main;\n",
+      "start": 1783634641267,
+      "end": 1783634641663,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641663,
+      "end": 1783634641663,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641663,
+      "end": 1783634641664,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641664,
+      "end": 1783634641664,
+      "order": "normal"
+    }
+  ]
+}

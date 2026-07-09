@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/projectile/useProjectileGrid.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import type { ProjectileParams } from '../../modules/physics/experiments/projectile/useProjectilePhysics'\n\ninterface ScreenTransform {\n  margin: number\n  groundY: number\n  scale: number\n}\n\nexport function useProjectileGrid(params: ProjectileParams) {\n  function toScreen(w: number, h: number, x: number, y: number) {\n    const margin = 50\n    const groundY = h - margin\n    const rad = (params.angleDeg * Math.PI) / 180\n    const v0 = params.v0\n    const g = params.g\n    const R = (v0 * v0 * Math.sin(2 * rad)) / g\n    const H = (Math.pow(v0 * Math.sin(rad), 2)) / (2 * g)\n    const maxX = params.targetMode && params.targetVisible ? Math.max(params.targetX * 1.5, R * 1.6, 80) : Math.max(R * 1.6, 50)\n    const maxY = params.targetMode && params.targetVisible ? Math.max(H * 1.6, params.targetX * 0.3, 30) : Math.max(H * 1.6, 30)\n    const scaleX = (w - margin * 2) / maxX\n    const scaleY = (groundY - margin * 2) / maxY\n    const scale = Math.min(scaleX, scaleY)\n    const sx = margin + x * scale\n    const sy = groundY - y * scale\n    return { sx, sy, scale, margin, groundY }\n  }\n\n  function drawGrid(ctx: CanvasRenderingContext2D, w: number, h: number, _ts: ScreenTransform) {\n    const { margin, groundY } = _ts\n    ctx.strokeStyle = 'rgba(148,163,184,0.15)'\n    ctx.lineWidth = 1\n    const step = 20\n    for (let x = margin; x < w - margin; x += step) {\n      ctx.beginPath(); ctx.moveTo(x, margin); ctx.lineTo(x, groundY); ctx.stroke()\n    }\n    for (let y = margin; y < groundY; y += step) {\n      ctx.beginPath(); ctx.moveTo(margin, y); ctx.lineTo(w - margin, y); ctx.stroke()\n    }\n  }\n\n  function drawAxes(ctx: CanvasRenderingContext2D, w: number, h: number, _ts: ScreenTransform) {\n    const { margin, groundY } = _ts\n    ctx.strokeStyle = '#475569'\n    ctx.lineWidth = 2\n    ctx.beginPath(); ctx.moveTo(margin, groundY); ctx.lineTo(w - margin, groundY); ctx.stroke()\n    ctx.beginPath(); ctx.moveTo(margin, margin); ctx.lineTo(margin, groundY); ctx.stroke()\n    ctx.beginPath(); ctx.moveTo(w - margin, groundY); ctx.lineTo(w - margin - 10, groundY - 4); ctx.lineTo(w - margin - 10, groundY + 4); ctx.closePath(); ctx.fillStyle = '#475569'; ctx.fill()\n    ctx.beginPath(); ctx.moveTo(margin, margin); ctx.lineTo(margin - 4, margin + 10); ctx.lineTo(margin + 4, margin + 10); ctx.closePath(); ctx.fillStyle = '#475569'; ctx.fill()\n    ctx.fillStyle = '#94a3b8'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center'\n    ctx.fillText('X (m)', w - margin - 15, groundY + 15)\n    ctx.fillText('Y (m)', margin - 15, margin + 15)\n  }\n\n  function screenToWorld(w: number, h: number, sx: number, sy: number) {\n    const ts = toScreen(w, h, 0, 0)\n    const x = (sx - ts.margin) / ts.scale\n    const y = (ts.groundY - sy) / ts.scale\n    return { x, y, scale: ts.scale, margin: ts.margin, groundY: ts.groundY }\n  }\n\n  return { toScreen, screenToWorld, drawGrid, drawAxes }\n}\n",
+      "start": 1783634642248,
+      "end": 1783634642634,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642634,
+      "end": 1783634642634,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "export function useProjectileGrid(params) {\n  function toScreen(w, h, x, y) {\n    const margin = 50;\n    const groundY = h - margin;\n    const rad = params.angleDeg * Math.PI / 180;\n    const v0 = params.v0;\n    const g = params.g;\n    const R = v0 * v0 * Math.sin(2 * rad) / g;\n    const H = Math.pow(v0 * Math.sin(rad), 2) / (2 * g);\n    const maxX = params.targetMode && params.targetVisible ? Math.max(params.targetX * 1.5, R * 1.6, 80) : Math.max(R * 1.6, 50);\n    const maxY = params.targetMode && params.targetVisible ? Math.max(H * 1.6, params.targetX * 0.3, 30) : Math.max(H * 1.6, 30);\n    const scaleX = (w - margin * 2) / maxX;\n    const scaleY = (groundY - margin * 2) / maxY;\n    const scale = Math.min(scaleX, scaleY);\n    const sx = margin + x * scale;\n    const sy = groundY - y * scale;\n    return { sx, sy, scale, margin, groundY };\n  }\n  function drawGrid(ctx, w, h, _ts) {\n    const { margin, groundY } = _ts;\n    ctx.strokeStyle = \"rgba(148,163,184,0.15)\";\n    ctx.lineWidth = 1;\n    const step = 20;\n    for (let x = margin; x < w - margin; x += step) {\n      ctx.beginPath();\n      ctx.moveTo(x, margin);\n      ctx.lineTo(x, groundY);\n      ctx.stroke();\n    }\n    for (let y = margin; y < groundY; y += step) {\n      ctx.beginPath();\n      ctx.moveTo(margin, y);\n      ctx.lineTo(w - margin, y);\n      ctx.stroke();\n    }\n  }\n  function drawAxes(ctx, w, h, _ts) {\n    const { margin, groundY } = _ts;\n    ctx.strokeStyle = \"#475569\";\n    ctx.lineWidth = 2;\n    ctx.beginPath();\n    ctx.moveTo(margin, groundY);\n    ctx.lineTo(w - margin, groundY);\n    ctx.stroke();\n    ctx.beginPath();\n    ctx.moveTo(margin, margin);\n    ctx.lineTo(margin, groundY);\n    ctx.stroke();\n    ctx.beginPath();\n    ctx.moveTo(w - margin, groundY);\n    ctx.lineTo(w - margin - 10, groundY - 4);\n    ctx.lineTo(w - margin - 10, groundY + 4);\n    ctx.closePath();\n    ctx.fillStyle = \"#475569\";\n    ctx.fill();\n    ctx.beginPath();\n    ctx.moveTo(margin, margin);\n    ctx.lineTo(margin - 4, margin + 10);\n    ctx.lineTo(margin + 4, margin + 10);\n    ctx.closePath();\n    ctx.fillStyle = \"#475569\";\n    ctx.fill();\n    ctx.fillStyle = \"#94a3b8\";\n    ctx.font = \"11px sans-serif\";\n    ctx.textAlign = \"center\";\n    ctx.fillText(\"X (m)\", w - margin - 15, groundY + 15);\n    ctx.fillText(\"Y (m)\", margin - 15, margin + 15);\n  }\n  function screenToWorld(w, h, sx, sy) {\n    const ts = toScreen(w, h, 0, 0);\n    const x = (sx - ts.margin) / ts.scale;\n    const y = (ts.groundY - sy) / ts.scale;\n    return { x, y, scale: ts.scale, margin: ts.margin, groundY: ts.groundY };\n  }\n  return { toScreen, screenToWorld, drawGrid, drawAxes };\n}\n",
+      "start": 1783634642634,
+      "end": 1783634642829,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/projectile/useProjectileGrid.ts"
+        ],
+        "sourcesContent": [
+          "import type { ProjectileParams } from '../../modules/physics/experiments/projectile/useProjectilePhysics'\n\ninterface ScreenTransform {\n  margin: number\n  groundY: number\n  scale: number\n}\n\nexport function useProjectileGrid(params: ProjectileParams) {\n  function toScreen(w: number, h: number, x: number, y: number) {\n    const margin = 50\n    const groundY = h - margin\n    const rad = (params.angleDeg * Math.PI) / 180\n    const v0 = params.v0\n    const g = params.g\n    const R = (v0 * v0 * Math.sin(2 * rad)) / g\n    const H = (Math.pow(v0 * Math.sin(rad), 2)) / (2 * g)\n    const maxX = params.targetMode && params.targetVisible ? Math.max(params.targetX * 1.5, R * 1.6, 80) : Math.max(R * 1.6, 50)\n    const maxY = params.targetMode && params.targetVisible ? Math.max(H * 1.6, params.targetX * 0.3, 30) : Math.max(H * 1.6, 30)\n    const scaleX = (w - margin * 2) / maxX\n    const scaleY = (groundY - margin * 2) / maxY\n    const scale = Math.min(scaleX, scaleY)\n    const sx = margin + x * scale\n    const sy = groundY - y * scale\n    return { sx, sy, scale, margin, groundY }\n  }\n\n  function drawGrid(ctx: CanvasRenderingContext2D, w: number, h: number, _ts: ScreenTransform) {\n    const { margin, groundY } = _ts\n    ctx.strokeStyle = 'rgba(148,163,184,0.15)'\n    ctx.lineWidth = 1\n    const step = 20\n    for (let x = margin; x < w - margin; x += step) {\n      ctx.beginPath(); ctx.moveTo(x, margin); ctx.lineTo(x, groundY); ctx.stroke()\n    }\n    for (let y = margin; y < groundY; y += step) {\n      ctx.beginPath(); ctx.moveTo(margin, y); ctx.lineTo(w - margin, y); ctx.stroke()\n    }\n  }\n\n  function drawAxes(ctx: CanvasRenderingContext2D, w: number, h: number, _ts: ScreenTransform) {\n    const { margin, groundY } = _ts\n    ctx.strokeStyle = '#475569'\n    ctx.lineWidth = 2\n    ctx.beginPath(); ctx.moveTo(margin, groundY); ctx.lineTo(w - margin, groundY); ctx.stroke()\n    ctx.beginPath(); ctx.moveTo(margin, margin); ctx.lineTo(margin, groundY); ctx.stroke()\n    ctx.beginPath(); ctx.moveTo(w - margin, groundY); ctx.lineTo(w - margin - 10, groundY - 4); ctx.lineTo(w - margin - 10, groundY + 4); ctx.closePath(); ctx.fillStyle = '#475569'; ctx.fill()\n    ctx.beginPath(); ctx.moveTo(margin, margin); ctx.lineTo(margin - 4, margin + 10); ctx.lineTo(margin + 4, margin + 10); ctx.closePath(); ctx.fillStyle = '#475569'; ctx.fill()\n    ctx.fillStyle = '#94a3b8'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center'\n    ctx.fillText('X (m)', w - margin - 15, groundY + 15)\n    ctx.fillText('Y (m)', margin - 15, margin + 15)\n  }\n\n  function screenToWorld(w: number, h: number, sx: number, sy: number) {\n    const ts = toScreen(w, h, 0, 0)\n    const x = (sx - ts.margin) / ts.scale\n    const y = (ts.groundY - sy) / ts.scale\n    return { x, y, scale: ts.scale, margin: ts.margin, groundY: ts.groundY }\n  }\n\n  return { toScreen, screenToWorld, drawGrid, drawAxes }\n}\n"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642829,
+      "end": 1783634642829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642830,
+      "end": 1783634642830,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642830,
+      "end": 1783634642830,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642831,
+      "end": 1783634642831,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642831,
+      "end": 1783634642831,
+      "order": "normal"
+    }
+  ]
+}

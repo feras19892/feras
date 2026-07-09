@@ -114,7 +114,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       <div class="lab-col ctrl-col" :style="{ width: ex.colWidths.ctrl + 'px' }">
         <template v-for="id in ex.getColumnPanels('ctrl')" :key="id">
           <DraggablePanel
-            v-if="ex.layout.isPanelVisible(id)"
+            v-if="id !== 'params' && ex.layout.isPanelVisible(id)"
             class="lab-card"
             :id="id"
             :title="ex.layout.panelTitle(id)"
@@ -140,6 +140,23 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
               @update:params="Object.assign(ex.params, $event)"
             />
           </DraggablePanel>
+          <div v-else-if="id === 'params'" class="params-embedded">
+            <LightRayPanelBody
+              id="params"
+              :trials="ex.trials.trials.value"
+              :params="ex.params"
+              :angle-reflection="ex.lab.angleReflection.value"
+              :angle-refraction="ex.lab.angleRefraction.value"
+              :total-internal-reflection="ex.lab.totalInternalReflection.value"
+              :critical-angle="ex.lab.criticalAngle.value"
+              :slope="ex.regression.value.m"
+              :intercept="ex.regression.value.b"
+              :r-squared="ex.regression.value.r2"
+              :calculated-n2="ex.calculatedN2.value"
+              :speed-in-medium="ex.speedInMedium.value"
+              @update:params="Object.assign(ex.params, $event)"
+            />
+          </div>
         </template>
       </div>
     </div>
@@ -203,6 +220,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 .data-col { background: rgba(255,255,255,0.02); }
 .vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 0; }
 .ctrl-col { background: rgba(255,255,255,0.02); }
+.params-embedded { padding: .6rem; }
 .resizer { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0; }
 .resizer:hover, .resizer:active { background: #5B8DB8; }
 .hint-bar { background: #252D3A; border: 1px solid #2D3645; border-radius: 6px; padding: .35rem .7rem; font-size: .75rem; color: #8B95A5; text-align: center; flex-shrink: 0; }

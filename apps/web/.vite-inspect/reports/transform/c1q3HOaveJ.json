@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/freefall/FreeFallStatusBar.vue?vue&type=style&index=0&scoped=25e98a4e&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.status-bar { display: flex; align-items: center; gap: .4rem; font-size: .72rem; color: #94a3b8; padding: .15rem .4rem; background: #0f172a; border-radius: 4px; }\n.dot { width: 8px; height: 8px; border-radius: 50%; }\n.dot.idle { background: #64748b; }\n.dot.paused { background: #fbbf24; }\n.dot.active { background: #34d399; box-shadow: 0 0 4px #34d399; }\n",
+      "start": 1783634642095,
+      "end": 1783634642095
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.status-bar { display: flex; align-items: center; gap: .4rem; font-size: .72rem; color: #94a3b8; padding: .15rem .4rem; background: #0f172a; border-radius: 4px; }\n.dot { width: 8px; height: 8px; border-radius: 50%; }\n.dot.idle { background: #64748b; }\n.dot.paused { background: #fbbf24; }\n.dot.active { background: #34d399; box-shadow: 0 0 4px #34d399; }\n",
+      "start": 1783634642095,
+      "end": 1783634642095,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642095,
+      "end": 1783634642095,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642095,
+      "end": 1783634642095,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642095,
+      "end": 1783634642095,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.status-bar[data-v-25e98a4e] { display: flex; align-items: center; gap: .4rem; font-size: .72rem; color: #94a3b8; padding: .15rem .4rem; background: #0f172a; border-radius: 4px;\n}\n.dot[data-v-25e98a4e] { width: 8px; height: 8px; border-radius: 50%;\n}\n.dot.idle[data-v-25e98a4e] { background: #64748b;\n}\n.dot.paused[data-v-25e98a4e] { background: #fbbf24;\n}\n.dot.active[data-v-25e98a4e] { background: #34d399; box-shadow: 0 0 4px #34d399;\n}\n",
+      "start": 1783634642095,
+      "end": 1783634642096,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642096,
+      "end": 1783634642096,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634642096,
+      "end": 1783634642096,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642096,
+      "end": 1783634642096,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642096,
+      "end": 1783634642096,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642096,
+      "end": 1783634642096,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642096,
+      "end": 1783634642096,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642096,
+      "end": 1783634642096,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642096,
+      "end": 1783634642096,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642096,
+      "end": 1783634642096,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642096,
+      "end": 1783634642096,
+      "order": "normal"
+    }
+  ]
+}

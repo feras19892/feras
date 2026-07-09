@@ -1,17 +1,19 @@
 import { useExperimentReport } from '../useExperimentReport'
 import { useI18n } from '../useI18n'
+import type { SpringTrial } from './useSpringTrials'
 import type { LabReportTable, LabReportStat } from '../../utils/lab-report'
+
+interface SpringReading { mass: number; deltaY: number; force: number }
+interface SpringDynamicTrial { mass: number; t1: number; t2: number; t3: number; tAvg: number; T: number; T2: number }
+interface SpringReportInput { params: { k: number; mass: number; amplitude: number; measureCycles: number }; staticK: { value: number | null }; kDynamic: { value: number | null }; staticReadings: { value: SpringReading[] }; dynamicTrials: { value: SpringDynamicTrial[] }; trials: { trials: { value: SpringTrial[] }; trialStats: { value: { t_mean: number; k_mean: number; T_std: number } }; calcResult: { value: string } } }
 
 export function useSpringReport() {
   const { t } = useI18n()
   const rep = useExperimentReport('spring_report_student')
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function openFullReport(ex: any) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const staticReadings: any[] = ex.staticReadings.value
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const dynamicTrials: any[] = ex.dynamicTrials.value
+  function openFullReport(ex: SpringReportInput) {
+    const staticReadings = ex.staticReadings.value
+    const dynamicTrials = ex.dynamicTrials.value
 
     const staticTable: LabReportTable = {
       caption: t('experiments.springStaticCaption'),
@@ -101,8 +103,7 @@ export function useSpringReport() {
         calculationsBlock ? { title: t('experiments.calculationsTitle'), html: calculationsBlock } : null,
         regressionBlock ? { title: t('experiments.regressionResultsTitle'), html: regressionBlock } : null,
         { title: t('experiments.potentialErrorSources'), html: `<ul style="margin:0;padding-right:1.2rem;font-size:.85rem"><li>${t('experiments.airFriction')}</li><li>${t('experiments.humanStopwatchAccuracy')}</li><li>${t('experiments.parallaxError')}</li><li>${t('experiments.springNonLinearDeformation')}</li><li>${t('experiments.tableVibrations')}</li><li>${t('experiments.massNonCentrality')}</li></ul>` },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ].filter(Boolean) as any[],
+      ].filter((x): x is { title: string; html: string } => x !== null),
       footerNote: t('experiments.footerNote') + ' • ' + t('experiments.branchMechanics'),
     })
   }

@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/dev/ExperimentMonitorWidget.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref } from 'vue';\nimport { useExperimentMonitor } from '../../composables/useExperimentMonitor';\n\nconst { fps, memoryUsed, memoryLimit, consoleErrors, physicsHealth } = useExperimentMonitor();\nconst expanded = ref(false);\n\nconst fpsColor = (v: number) => {\n  if (v >= 50) return '#22c55e';\n  if (v >= 30) return '#eab308';\n  return '#ef4444';\n};\n\nconst memPct = () => {\n  if (!memoryLimit.value) return 0;\n  return Math.round((memoryUsed.value / memoryLimit.value) * 100);\n};\n</script>\n\n<template>\n  <div class=\"widget\" :class=\"{ expanded }\">\n    <!-- Collapsed strip -->\n    <button class=\"strip\" @click=\"expanded = !expanded\">\n      <span class=\"dot\" :style=\"{ background: fpsColor(fps) }\">{{ fps }}</span>\n      <span class=\"label\">مراقبة التجربة</span>\n      <span v-if=\"consoleErrors > 0\" class=\"badge\">{{ consoleErrors }}</span>\n      <span v-if=\"physicsHealth === 'fail'\" class=\"alert\">⚠️</span>\n    </button>\n\n    <!-- Expanded panel -->\n    <div v-if=\"expanded\" class=\"panel\">\n      <div class=\"row\">\n        <span class=\"key\">🎮 FPS</span>\n        <span class=\"val\" :style=\"{ color: fpsColor(fps) }\">{{ fps }} إطار/ث</span>\n      </div>\n      <div class=\"row\">\n        <span class=\"key\">💾 الذاكرة</span>\n        <span class=\"val\">{{ memoryUsed }} / {{ memoryLimit }} MB ({{ memPct() }}%)</span>\n      </div>\n      <div class=\"row\">\n        <span class=\"key\">🐛 أخطاء</span>\n        <span class=\"val\" :class=\"consoleErrors > 0 ? 'bad' : 'good'\">{{ consoleErrors }}</span>\n      </div>\n      <div class=\"row\">\n        <span class=\"key\">🔬 الفيزياء</span>\n        <span class=\"val\" :class=\"physicsHealth\">{{ physicsHealth === 'ok' ? '✅ سليم' : '❌ معطل' }}</span>\n      </div>\n      <a href=\"/monitor\" target=\"_blank\" class=\"link\">📊 فتح لوحة المراقبة الكاملة</a>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.widget {\n  position: fixed;\n  bottom: 16px;\n  right: 16px;\n  z-index: 9999;\n  font-family: system-ui, sans-serif;\n  direction: rtl;\n}\n\n.strip {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  padding: 6px 12px;\n  border-radius: 999px;\n  background: #1e293b;\n  border: 1px solid #334155;\n  color: #e2e8f0;\n  cursor: pointer;\n  font-size: 0.82rem;\n}\n\n.dot {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 32px;\n  height: 32px;\n  border-radius: 50%;\n  font-weight: 700;\n  font-size: 0.72rem;\n  color: #fff;\n  flex-shrink: 0;\n}\n\n.label { font-weight: 500; }\n\n.badge {\n  background: #ef4444;\n  color: #fff;\n  border-radius: 50%;\n  width: 18px;\n  height: 18px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 0.65rem;\n  font-weight: 700;\n}\n\n.alert { color: #fca5a5; font-size: 0.9rem; }\n\n.panel {\n  margin-top: 8px;\n  background: #0f172a;\n  border: 1px solid #334155;\n  border-radius: 12px;\n  padding: 14px;\n  min-width: 220px;\n  box-shadow: 0 8px 24px rgba(0,0,0,.4);\n}\n\n.row {\n  display: flex;\n  justify-content: space-between;\n  padding: 6px 0;\n  border-bottom: 1px solid #1e293b;\n  font-size: 0.82rem;\n}\n\n.row:last-child { border-bottom: none; }\n\n.key { color: #94a3b8; }\n\n.val { font-weight: 600; }\n\n.val.good  { color: #22c55e; }\n.val.bad   { color: #ef4444; }\n\n.link {\n  display: block;\n  margin-top: 10px;\n  text-align: center;\n  color: #818cf8;\n  font-size: 0.78rem;\n  text-decoration: none;\n  padding: 6px;\n  border-radius: 6px;\n  background: #1e293b;\n}\n\n.link:hover { background: #334155; }\n</style>\n",
+      "start": 1783634639140,
+      "end": 1783634639144,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639144,
+      "end": 1783634639144,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639145,
+      "end": 1783634639145,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639145,
+      "end": 1783634639145,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639145,
+      "end": 1783634639145,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/dev/ExperimentMonitorWidget.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/dev/ExperimentMonitorWidget.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/dev/ExperimentMonitorWidget.vue?vue&type=style&index=0&scoped=2b7c5cc7&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-2b7c5cc7\"]]);\n",
+      "start": 1783634639145,
+      "end": 1783634639164,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639164,
+      "end": 1783634639164,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639165,
+      "end": 1783634639165,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639170,
+      "end": 1783634639170,
+      "order": "normal"
+    }
+  ]
+}

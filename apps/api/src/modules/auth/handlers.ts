@@ -2,11 +2,11 @@ import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { loginSchema, registerSchema, passwordUpdateSchema } from './schemas.js';
 import { login, register, refreshAccessToken, logout, updatePassword } from './services.js';
-import * as activitySvc from '../admin/activity-service.js';
-import * as sessionSvc from '../admin/session-service.js';
+import * as activitySvc from '../activity/service.js';
+import * as sessionSvc from '../sessions/service.js';
 import { setRefreshCookie, getRefreshCookie, clearRefreshCookie, setAccessCookie, getAccessCookie, clearAccessCookie } from './cookies.js';
 import { verifyAccessToken } from './jwt.js';
-import { authMiddleware } from '../../shared/middleware/auth.js';
+import { authMiddleware } from './middleware.js';
 import type { User } from '@my-modern-app/shared-types';
 
 const authRoutes = new Hono();

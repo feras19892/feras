@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/ExperimentTheoryPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { useCssVars as _useCssVars, defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, withModifiers as _withModifiers, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"theory-panel\" }\nconst _hoisted_2 = { class: \"theory-header\" }\nconst _hoisted_3 = { class: \"theory-body\" }\nconst _hoisted_4 = { class: \"section-heading\" }\nconst _hoisted_5 = {\n  class: \"section-content\",\n  style: {\"white-space\":\"pre-line\"}\n}\n\nimport { computed } from 'vue';\nimport type { ExperimentTheory } from '../../../composables/chemistry/useExperiments';\nimport { useI18n } from '../../../composables/useI18n';\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ExperimentTheoryPanel',\n  props: {\n    theory: {}\n  },\n  emits: [\"close\"],\n  setup(__props: any, { emit: __emit }) {\n\n_useCssVars(_ctx => ({\n  \"v1a6e659c\": (bodyDir.value),\n  \"v63a14a6a\": (bodyAlign.value)\n}))\n\nconst { t, locale } = useI18n();\n\nconst props = __props;\n\nconst emit = __emit;\n\nconst bodyDir = computed(() => locale.value === 'ar' ? 'rtl' : 'ltr');\nconst bodyAlign = computed(() => locale.value === 'ar' ? 'right' : 'left');\n\nreturn (_ctx: any,_cache: any) => {\n  return (__props.theory)\n    ? (_openBlock(), _createElementBlock(\"div\", {\n        key: 0,\n        class: \"theory-overlay\",\n        onClick: _cache[1] || (_cache[1] = _withModifiers(($event: any) => (emit('close')), [\"self\"]))\n      }, [\n        _createElementVNode(\"div\", _hoisted_1, [\n          _createElementVNode(\"div\", _hoisted_2, [\n            _createElementVNode(\"h2\", null, _toDisplayString(_unref(t)(__props.theory.title)), 1),\n            _createElementVNode(\"button\", {\n              class: \"close-btn\",\n              onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('close')))\n            }, \"✕\")\n          ]),\n          _createElementVNode(\"div\", _hoisted_3, [\n            (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.theory.sections, (section, index) => {\n              return (_openBlock(), _createElementBlock(\"div\", {\n                key: index,\n                class: \"theory-section\"\n              }, [\n                _createElementVNode(\"h3\", _hoisted_4, _toDisplayString(_unref(t)(section.heading)), 1),\n                _createElementVNode(\"div\", _hoisted_5, _toDisplayString(_unref(t)(section.content)), 1)\n              ]))\n            }), 128))\n          ])\n        ])\n      ]))\n    : _createCommentVNode(\"\", true)\n}\n}\n\n})",
+      "start": 1783634640010,
+      "end": 1783634640010
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640010,
+      "end": 1783634640010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { useCssVars as _useCssVars, defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, withModifiers as _withModifiers, createCommentVNode as _createCommentVNode } from \"vue\";\nconst _hoisted_1 = { class: \"theory-panel\" };\nconst _hoisted_2 = { class: \"theory-header\" };\nconst _hoisted_3 = { class: \"theory-body\" };\nconst _hoisted_4 = { class: \"section-heading\" };\nconst _hoisted_5 = {\n  class: \"section-content\",\n  style: { \"white-space\": \"pre-line\" }\n};\nimport { computed } from \"vue\";\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"ExperimentTheoryPanel\",\n  props: {\n    theory: {}\n  },\n  emits: [\"close\"],\n  setup(__props, { emit: __emit }) {\n    _useCssVars((_ctx) => ({\n      \"v1a6e659c\": bodyDir.value,\n      \"v63a14a6a\": bodyAlign.value\n    }));\n    const { t, locale } = useI18n();\n    const props = __props;\n    const emit = __emit;\n    const bodyDir = computed(() => locale.value === \"ar\" ? \"rtl\" : \"ltr\");\n    const bodyAlign = computed(() => locale.value === \"ar\" ? \"right\" : \"left\");\n    return (_ctx, _cache) => {\n      return __props.theory ? (_openBlock(), _createElementBlock(\"div\", {\n        key: 0,\n        class: \"theory-overlay\",\n        onClick: _cache[1] || (_cache[1] = _withModifiers(($event) => emit(\"close\"), [\"self\"]))\n      }, [\n        _createElementVNode(\"div\", _hoisted_1, [\n          _createElementVNode(\"div\", _hoisted_2, [\n            _createElementVNode(\"h2\", null, _toDisplayString(_unref(t)(__props.theory.title)), 1),\n            _createElementVNode(\"button\", {\n              class: \"close-btn\",\n              onClick: _cache[0] || (_cache[0] = ($event) => emit(\"close\"))\n            }, \"✕\")\n          ]),\n          _createElementVNode(\"div\", _hoisted_3, [\n            (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.theory.sections, (section, index) => {\n              return _openBlock(), _createElementBlock(\"div\", {\n                key: index,\n                class: \"theory-section\"\n              }, [\n                _createElementVNode(\"h3\", _hoisted_4, _toDisplayString(_unref(t)(section.heading)), 1),\n                _createElementVNode(\"div\", _hoisted_5, _toDisplayString(_unref(t)(section.content)), 1)\n              ]);\n            }), 128))\n          ])\n        ])\n      ])) : _createCommentVNode(\"\", true);\n    };\n  }\n});\n",
+      "start": 1783634640010,
+      "end": 1783634640115,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/ExperimentTheoryPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { useCssVars as _useCssVars, defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, withModifiers as _withModifiers, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"theory-panel\" }\nconst _hoisted_2 = { class: \"theory-header\" }\nconst _hoisted_3 = { class: \"theory-body\" }\nconst _hoisted_4 = { class: \"section-heading\" }\nconst _hoisted_5 = {\n  class: \"section-content\",\n  style: {\"white-space\":\"pre-line\"}\n}\n\nimport { computed } from 'vue';\nimport type { ExperimentTheory } from '../../../composables/chemistry/useExperiments';\nimport { useI18n } from '../../../composables/useI18n';\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ExperimentTheoryPanel',\n  props: {\n    theory: {}\n  },\n  emits: [\"close\"],\n  setup(__props: any, { emit: __emit }) {\n\n_useCssVars(_ctx => ({\n  \"v1a6e659c\": (bodyDir.value),\n  \"v63a14a6a\": (bodyAlign.value)\n}))\n\nconst { t, locale } = useI18n();\n\nconst props = __props;\n\nconst emit = __emit;\n\nconst bodyDir = computed(() => locale.value === 'ar' ? 'rtl' : 'ltr');\nconst bodyAlign = computed(() => locale.value === 'ar' ? 'right' : 'left');\n\nreturn (_ctx: any,_cache: any) => {\n  return (__props.theory)\n    ? (_openBlock(), _createElementBlock(\"div\", {\n        key: 0,\n        class: \"theory-overlay\",\n        onClick: _cache[1] || (_cache[1] = _withModifiers(($event: any) => (emit('close')), [\"self\"]))\n      }, [\n        _createElementVNode(\"div\", _hoisted_1, [\n          _createElementVNode(\"div\", _hoisted_2, [\n            _createElementVNode(\"h2\", null, _toDisplayString(_unref(t)(__props.theory.title)), 1),\n            _createElementVNode(\"button\", {\n              class: \"close-btn\",\n              onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('close')))\n            }, \"✕\")\n          ]),\n          _createElementVNode(\"div\", _hoisted_3, [\n            (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.theory.sections, (section, index) => {\n              return (_openBlock(), _createElementBlock(\"div\", {\n                key: index,\n                class: \"theory-section\"\n              }, [\n                _createElementVNode(\"h3\", _hoisted_4, _toDisplayString(_unref(t)(section.heading)), 1),\n                _createElementVNode(\"div\", _hoisted_5, _toDisplayString(_unref(t)(section.content)), 1)\n              ]))\n            }), 128))\n          ])\n        ])\n      ]))\n    : _createCommentVNode(\"\", true)\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,cAAc,aAAa,mBAAmB,wBAAwB;AAC/E,SAAS,SAAS,QAAQ,mBAAmB,kBAAkB,sBAAsB,qBAAqB,cAAc,aAAa,YAAY,WAAW,aAAa,YAAY,sBAAsB,qBAAqB,iBAAiB,gBAAgB,sBAAsB,2BAA2B;AAElT,MAAM,aAAa,EAAE,OAAO,eAAe;AAC3C,MAAM,aAAa,EAAE,OAAO,gBAAgB;AAC5C,MAAM,aAAa,EAAE,OAAO,cAAc;AAC1C,MAAM,aAAa,EAAE,OAAO,kBAAkB;AAC9C,MAAM,aAAa;AAAA,EACjB,OAAO;AAAA,EACP,OAAO,EAAC,eAAc,WAAU;AAClC;AAEA,SAAS,gBAAgB;AAEzB,SAAS,eAAe;AAGxB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,QAAQ,CAAC;AAAA,EACX;AAAA,EACA,OAAO,CAAC,OAAO;AAAA,EACf,MAAM,SAAc,EAAE,MAAM,OAAO,GAAG;AAExC,gBAAY,WAAS;AAAA,MACnB,aAAc,QAAQ;AAAA,MACtB,aAAc,UAAU;AAAA,IAC1B,EAAE;AAEF,UAAM,EAAE,GAAG,OAAO,IAAI,QAAQ;AAE9B,UAAM,QAAQ;AAEd,UAAM,OAAO;AAEb,UAAM,UAAU,SAAS,MAAM,OAAO,UAAU,OAAO,QAAQ,KAAK;AACpE,UAAM,YAAY,SAAS,MAAM,OAAO,UAAU,OAAO,UAAU,MAAM;AAEzE,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,QAAQ,UACX,WAAW,GAAG,oBAAoB,OAAO;AAAA,QACxC,KAAK;AAAA,QACL,OAAO;AAAA,QACP,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,eAAe,CAAC,WAAiB,KAAK,OAAO,GAAI,CAAC,MAAM,CAAC;AAAA,MAC9F,GAAG;AAAA,QACD,oBAAoB,OAAO,YAAY;AAAA,UACrC,oBAAoB,OAAO,YAAY;AAAA,YACrC,oBAAoB,MAAM,MAAM,iBAAiB,OAAO,CAAC,EAAE,QAAQ,OAAO,KAAK,CAAC,GAAG,CAAC;AAAA,YACpF,oBAAoB,UAAU;AAAA,cAC5B,OAAO;AAAA,cACP,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,OAAO;AAAA,YACnE,GAAG,GAAG;AAAA,UACR,CAAC;AAAA,UACD,oBAAoB,OAAO,YAAY;AAAA,aACpC,WAAW,IAAI,GAAG,oBAAoB,WAAW,MAAM,YAAY,QAAQ,OAAO,UAAU,CAAC,SAAS,UAAU;AAC/G,qBAAQ,WAAW,GAAG,oBAAoB,OAAO;AAAA,gBAC/C,KAAK;AAAA,gBACL,OAAO;AAAA,cACT,GAAG;AAAA,gBACD,oBAAoB,MAAM,YAAY,iBAAiB,OAAO,CAAC,EAAE,QAAQ,OAAO,CAAC,GAAG,CAAC;AAAA,gBACrF,oBAAoB,OAAO,YAAY,iBAAiB,OAAO,CAAC,EAAE,QAAQ,OAAO,CAAC,GAAG,CAAC;AAAA,cACxF,CAAC;AAAA,YACH,CAAC,GAAG,GAAG;AAAA,UACT,CAAC;AAAA,QACH,CAAC;AAAA,MACH,CAAC,KACD,oBAAoB,IAAI,IAAI;AAAA,IAClC;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640115,
+      "end": 1783634640115,
+      "order": "normal"
+    }
+  ]
+}

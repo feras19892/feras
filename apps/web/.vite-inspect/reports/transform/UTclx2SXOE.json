@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisTab.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref } from 'vue';\nimport type { AnalysisColumnMeta, AnalysisEquation, AnalysisPlotConfig } from '../../../types/physics';\nimport AnalysisChartWorkspace from './AnalysisChartWorkspace.vue';\nimport AnalysisEquationsPanel from './AnalysisEquationsPanel.vue';\nimport AnalysisErrorPanel from './AnalysisErrorPanel.vue';\nimport AnalysisMediumPanel from './AnalysisMediumPanel.vue';\n\nconst props = defineProps<{\n  readings: Record<string, number>[];\n  columns: AnalysisColumnMeta[];\n  equations: AnalysisEquation[];\n  plots: AnalysisPlotConfig[];\n  mediumType?: string;\n  mediumN2?: number | null;\n}>();\n\nconst emit = defineEmits<{\n  (e: 'select-medium', n2: number): void;\n}>();\n\nconst chartRef = ref<InstanceType<typeof AnalysisChartWorkspace> | null>(null);\nconst solvedEquations = ref<{ equationName: string; formula: string; targetVar: string; varValues: Record<string, number>; result: string; timestamp: number }[]>([]);\nconst errorCalcData = ref<{ theoretical: number | null; experimental: number | null; errorPercent: number | null } | null>(null);\n\ndefineExpose({\n  getCanvas: () => chartRef.value?.getCanvas() ?? null,\n  getRegression: () => chartRef.value?.getRegression() ?? null,\n  getSlopeCalc: () => chartRef.value?.getSlopeCalc() ?? null,\n  getAxes: () => chartRef.value?.getAxes() ?? null,\n  drawChart: () => chartRef.value?.draw?.(),\n  solvedEquations,\n  errorCalcData,\n});\n</script>\n\n<template>\n  <div class=\"analysis-tab\">\n    <AnalysisMediumPanel\n      v-if=\"mediumType\"\n      :current-medium=\"mediumType\"\n      :current-n2=\"mediumN2\"\n      @select-medium=\"emit('select-medium', $event)\"\n    />\n    <div class=\"chart-section\">\n      <AnalysisChartWorkspace\n        ref=\"chartRef\"\n        :readings=\"readings\"\n        :columns=\"columns\"\n        :suggested-plots=\"plots\"\n      />\n    </div>\n    <div v-if=\"equations.length\" class=\"bottom-section\">\n      <div class=\"bottom-col\">\n        <AnalysisEquationsPanel :equations=\"equations\" :readings=\"readings\" @solved-equations=\"solvedEquations = $event\" />\n      </div>\n      <div class=\"bottom-col\">\n        <AnalysisErrorPanel @error-calc=\"errorCalcData = $event\" />\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.analysis-tab {\n  flex: 1;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n  gap: 0.5rem;\n  padding: 0.5rem;\n}\n.chart-section {\n  flex: 0.70;\n  min-height: 0;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n}\n.bottom-section {\n  flex: 0.28;\n  min-height: 0;\n  display: flex;\n  gap: 0.5rem;\n  overflow: hidden;\n}\n.bottom-col {\n  flex: 1;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n}\n</style>\n",
+      "start": 1783634639359,
+      "end": 1783634639695,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639695,
+      "end": 1783634639695,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639695,
+      "end": 1783634639695,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639695,
+      "end": 1783634639695,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639695,
+      "end": 1783634639695,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisTab.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisTab.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisTab.vue?vue&type=style&index=0&scoped=08057433&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-08057433\"]]);\n",
+      "start": 1783634639695,
+      "end": 1783634639942,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639942,
+      "end": 1783634639942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639943,
+      "end": 1783634639943,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639943,
+      "end": 1783634639943,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639943,
+      "end": 1783634639943,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639943,
+      "end": 1783634639943,
+      "order": "normal"
+    }
+  ]
+}

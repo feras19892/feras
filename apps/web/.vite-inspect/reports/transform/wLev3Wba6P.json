@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabHeatingMantle.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n';\nconst { t } = useI18n();\n\ninterface Props {\n  isOn?: boolean;\n  intensity?: number;    // 0–1\n  isHovered?: boolean;\n}\n\nconst props = withDefaults(defineProps<Props>(), {\n  isOn: false,\n  intensity: 0.5,\n  isHovered: false,\n});\n\n</script>\n\n<template>\n  <div class=\"mantle-wrapper\">\n    <svg viewBox=\"0 0 120 130\" class=\"mantle-svg\" :class=\"{ hovered: isHovered, on: isOn }\">\n      <!-- Shadow -->\n      <ellipse cx=\"60\" cy=\"125\" rx=\"52\" ry=\"3\" fill=\"rgba(0,0,0,0.08)\" />\n\n      <!-- Base housing -->\n      <rect x=\"10\" y=\"85\" width=\"100\" height=\"32\" rx=\"6\" fill=\"#334155\" />\n      <rect x=\"12\" y=\"87\" width=\"96\" height=\"28\" rx=\"5\" fill=\"#475569\" />\n\n      <!-- Control dial -->\n      <circle cx=\"60\" cy=\"100\" r=\"10\" fill=\"#1e293b\" />\n      <circle cx=\"60\" cy=\"100\" r=\"7\" fill=\"#64748b\" />\n      <!-- Dial indicator -->\n      <line\n        :x1=\"60\"\n        :y1=\"100\"\n        :x2=\"60 + 6 * Math.cos((intensity * 270 - 135) * Math.PI / 180)\"\n        :y2=\"100 + 6 * Math.sin((intensity * 270 - 135) * Math.PI / 180)\"\n        stroke=\"#ef4444\"\n        stroke-width=\"1.5\"\n        stroke-linecap=\"round\"\n      />\n\n      <!-- Power LED -->\n      <circle cx=\"30\" cy=\"100\" r=\"3\" :fill=\"isOn ? '#22c55e' : '#64748b'\" />\n\n      <!-- Heating cavity (where flask sits) -->\n      <ellipse cx=\"60\" cy=\"80\" rx=\"46\" ry=\"10\" fill=\"#1e293b\" />\n      <ellipse cx=\"60\" cy=\"80\" rx=\"42\" ry=\"8\" fill=\"#0f172a\" />\n\n      <!-- Heating element coils (visible inside) -->\n      <g v-if=\"isOn\" opacity=\"0.6\">\n        <ellipse cx=\"60\" cy=\"78\" rx=\"38\" ry=\"6\" fill=\"none\" stroke=\"#ef4444\" stroke-width=\"1.5\" />\n        <ellipse cx=\"60\" cy=\"78\" rx=\"32\" ry=\"5\" fill=\"none\" stroke=\"#f97316\" stroke-width=\"1\" />\n        <ellipse cx=\"60\" cy=\"78\" rx=\"26\" ry=\"4\" fill=\"none\" stroke=\"#fbbf24\" stroke-width=\"0.8\" />\n      </g>\n\n      <!-- Fabric cover (hemispherical feel) -->\n      <path\n        d=\"M 14 80 Q 14 55 60 50 Q 106 55 106 80\"\n        fill=\"rgba(120,53,15,0.3)\"\n        stroke=\"#92400e\"\n        stroke-width=\"1.2\"\n      />\n      <!-- Fabric texture lines -->\n      <line x1=\"30\" y1=\"65\" x2=\"30\" y2=\"78\" stroke=\"#92400e\" stroke-width=\"0.5\" opacity=\"0.4\" />\n      <line x1=\"45\" y1=\"58\" x2=\"45\" y2=\"78\" stroke=\"#92400e\" stroke-width=\"0.5\" opacity=\"0.4\" />\n      <line x1=\"60\" y1=\"55\" x2=\"60\" y2=\"78\" stroke=\"#92400e\" stroke-width=\"0.5\" opacity=\"0.4\" />\n      <line x1=\"75\" y1=\"58\" x2=\"75\" y2=\"78\" stroke=\"#92400e\" stroke-width=\"0.5\" opacity=\"0.4\" />\n      <line x1=\"90\" y1=\"65\" x2=\"90\" y2=\"78\" stroke=\"#92400e\" stroke-width=\"0.5\" opacity=\"0.4\" />\n\n      <!-- Top rim -->\n      <ellipse cx=\"60\" cy=\"50\" rx=\"42\" ry=\"5\" fill=\"none\" stroke=\"#92400e\" stroke-width=\"1.5\" />\n\n      <!-- Glow when on -->\n      <ellipse\n        v-if=\"isOn\"\n        cx=\"60\"\n        cy=\"65\"\n        rx=\"35\"\n        ry=\"12\"\n        fill=\"rgba(239,68,68,0.15)\"\n        class=\"glow\"\n      />\n\n      <!-- Cord -->\n      <path d=\"M 110 102 Q 125 102 125 115\" stroke=\"#334155\" stroke-width=\"3\" fill=\"none\" />\n      <circle cx=\"125\" cy=\"118\" r=\"3\" fill=\"#1e293b\" />\n    </svg>\n\n    <!-- Status label -->\n    <div v-if=\"isOn\" class=\"mantle-label on\">🔥 {{ Math.round(intensity * 100) }}%</div>\n    <div v-else class=\"mantle-label off\">⚫ {{ t('chemistry.off') }}</div>\n  </div>\n</template>\n\n<style scoped>\n.mantle-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.mantle-svg {\n  width: 90px;\n  height: 98px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));\n}\n.mantle-svg.hovered {\n  transform: scale(1.05);\n  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));\n}\n.mantle-svg.on {\n  filter: drop-shadow(0 0 15px rgba(239,68,68,0.3));\n}\n.glow {\n  animation: mantleGlow 2s ease infinite alternate;\n}\n@keyframes mantleGlow {\n  0% { opacity: 0.1; }\n  100% { opacity: 0.25; }\n}\n.mantle-label {\n  position: absolute;\n  bottom: -2px;\n  font-size: 0.6rem;\n  font-weight: 700;\n  padding: 1px 6px;\n  border-radius: 6px;\n  white-space: nowrap;\n  pointer-events: none;\n}\n.mantle-label.on {\n  color: #ea580c;\n  background: rgba(254,243,199,0.9);\n}\n.mantle-label.off {\n  color: #64748b;\n  background: rgba(241,245,249,0.9);\n}\n</style>\n",
+      "start": 1783634641064,
+      "end": 1783634641577,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641577,
+      "end": 1783634641577,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641577,
+      "end": 1783634641577,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641577,
+      "end": 1783634641577,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641577,
+      "end": 1783634641577,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabHeatingMantle.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabHeatingMantle.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabHeatingMantle.vue?vue&type=style&index=0&scoped=557bf575&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-557bf575\"]]);\n",
+      "start": 1783634641577,
+      "end": 1783634641665,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641665,
+      "end": 1783634641665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641665,
+      "end": 1783634641665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641665,
+      "end": 1783634641665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641666,
+      "end": 1783634641666,
+      "order": "normal"
+    }
+  ]
+}

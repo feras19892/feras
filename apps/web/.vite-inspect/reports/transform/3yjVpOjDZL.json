@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/PowerReferencePanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nconst FORMULAS = [\n  { formula: 'P = V × I', desc: 'الصيغة الأساسية', color: '#f87171' },\n  { formula: 'P = I² × R', desc: 'باستخدام التيار والمقاومة', color: '#fbbf24' },\n  { formula: 'P = V² / R', desc: 'باستخدام الجهد والمقاومة', color: '#67e8f9' },\n  { formula: 'E = P × t', desc: 'الطاقة = القدرة × الزمن', color: '#a78bfa' },\n]\n\nconst UNITS = [\n  { unit: 'W', name: 'واط', desc: '1 W = 1 J/s' },\n  { unit: 'kW', name: 'كيلوواط', desc: '1 kW = 1000 W' },\n  { unit: 'kWh', name: 'كيلوواط·ساعة', desc: 'وحدة طاقة للعدّاد' },\n  { unit: 'J', name: 'جول', desc: '1 J = 1 W × 1s' },\n]\n\nconst NOTES = [\n  '💡 القدرة تزداد مع مربع الجهد: P ∝ V² (عند ثبوت R)',\n  '⚡ المقاومة الصغيرة = قدرة كبيرة (عند ثبوت V)',\n  '🔥 كل القدرة في المقاومة تتحول إلى حرارة (Joule heating)',\n  '📊 الرسم: P vs V → قطع مكافئ (P = V²/R)',\n  '📊 الرسم: P vs I → قطع مكافئ (P = I²×R)',\n]\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <div class=\"ref-title\">⚡ القدرة الكهربائية</div>\n\n    <div class=\"ref-section\">\n      <div class=\"section-title\">الصيغ الأساسية</div>\n      <div v-for=\"f in FORMULAS\" :key=\"f.formula\" class=\"formula-row\">\n        <span class=\"formula-text\" :style=\"{ color: f.color }\">{{ f.formula }}</span>\n        <span class=\"formula-desc\">{{ f.desc }}</span>\n      </div>\n    </div>\n\n    <div class=\"ref-section\">\n      <div class=\"section-title\">الوحدات</div>\n      <div class=\"units-table\">\n        <div v-for=\"u in UNITS\" :key=\"u.unit\" class=\"unit-row\">\n          <span class=\"unit-symbol\" style=\"color:#f87171\">{{ u.unit }}</span>\n          <span class=\"unit-name\">{{ u.name }}</span>\n          <span class=\"unit-desc\">{{ u.desc }}</span>\n        </div>\n      </div>\n    </div>\n\n    <div v-for=\"(note, i) in NOTES\" :key=\"i\" class=\"ref-note\">{{ note }}</div>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { padding: 1rem; display: flex; flex-direction: column; gap: .5rem; overflow-y: auto; }\n.ref-title { font-size: .9rem; font-weight: 700; color: #f87171; text-align: center; padding-bottom: .3rem; border-bottom: 1px solid #1e2530; }\n.ref-section { margin-top: .4rem; padding: .5rem; background: rgba(255,255,255,.02); border-radius: 4px; }\n.section-title { font-size: .78rem; font-weight: 700; color: #67e8f9; margin-bottom: .3rem; }\n.formula-row { display: flex; justify-content: space-between; align-items: center; padding: .25rem 0; border-bottom: 1px solid rgba(255,255,255,.04); }\n.formula-row:last-child { border-bottom: none; }\n.formula-text { font-family: 'Courier New', monospace; font-weight: 700; font-size: .85rem; }\n.formula-desc { font-size: .7rem; color: #64748b; }\n.units-table { display: flex; flex-direction: column; gap: .15rem; }\n.unit-row { display: flex; align-items: center; gap: .4rem; padding: .2rem 0; font-size: .75rem; }\n.unit-symbol { font-weight: 700; width: 2.5rem; text-align: center; }\n.unit-name { color: #e2e8f0; width: 5rem; }\n.unit-desc { color: #64748b; font-size: .7rem; }\n.ref-note { font-size: .72rem; color: #64748b; margin-top: .3rem; line-height: 1.5; }\n</style>\n",
+      "start": 1783634639360,
+      "end": 1783634639808,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639808,
+      "end": 1783634639808,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639808,
+      "end": 1783634639808,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639808,
+      "end": 1783634639808,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639808,
+      "end": 1783634639808,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/PowerReferencePanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/PowerReferencePanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electric-lab/panels/PowerReferencePanel.vue?vue&type=style&index=0&scoped=fe7261f9&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-fe7261f9\"]]);\n",
+      "start": 1783634639808,
+      "end": 1783634640089,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640089,
+      "end": 1783634640089,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640090,
+      "end": 1783634640090,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640091,
+      "end": 1783634640091,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640091,
+      "end": 1783634640093,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640094,
+      "end": 1783634640094,
+      "order": "normal"
+    }
+  ]
+}

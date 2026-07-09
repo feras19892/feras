@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/freefall/useFreeFallLab.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { ref } from 'vue'\nimport { useFreeFallPhysics, type FreeFallParams } from '../../modules/physics/experiments/freefall/useFreeFallPhysics'\n\nexport function useFreeFallLab(params: FreeFallParams, onTick?: () => void) {\n  const { sim, step, start: physStart, stop: physStop, togglePause: physTogglePause, reset, measured } = useFreeFallPhysics(params)\n\n  const running = ref(false)\n  const paused = ref(false)\n  const speed = ref(1)\n  const labFlowRunning = ref(false)\n  let rafId: number | null = null\n  let waitRafId: number | null = null\n  let lastTime = 0\n\n  function tickFrame() {\n    if (!sim.running || sim.paused) return\n    const now = performance.now()\n    const dt = Math.min((now - lastTime) / 1000, 0.1)\n    lastTime = now\n    step(dt, speed.value)\n    onTick?.()\n    rafId = requestAnimationFrame(tickFrame)\n  }\n\n  function start() {\n    if (rafId) cancelAnimationFrame(rafId)\n    physStart()\n    running.value = sim.running\n    paused.value = sim.paused\n    lastTime = performance.now()\n    rafId = requestAnimationFrame(tickFrame)\n  }\n\n  function togglePause() {\n    if (!sim.running) { start(); return }\n    physTogglePause()\n    running.value = sim.running\n    paused.value = sim.paused\n    if (!sim.paused) { lastTime = performance.now(); rafId = requestAnimationFrame(tickFrame) }\n  }\n\n  function stopSim() {\n    if (rafId) cancelAnimationFrame(rafId)\n    rafId = null\n    physStop()\n    running.value = sim.running\n    paused.value = sim.paused\n  }\n\n  function cleanup() {\n    if (rafId) cancelAnimationFrame(rafId)\n    if (waitRafId) cancelAnimationFrame(waitRafId)\n    rafId = null\n    waitRafId = null\n  }\n\n  function resetSim() {\n    stopSim()\n    reset()\n  }\n\n  const sleep = (ms: number) => new Promise<void>(r => setTimeout(r, ms))\n\n  const waitForLanding = (timeoutMs = 30000): Promise<boolean> => new Promise((resolve) => {\n    const t0 = performance.now()\n    const tick = () => {\n      if (sim.landed) { waitRafId = null; resolve(true); return }\n      if (!sim.running || performance.now() - t0 > timeoutMs) { waitRafId = null; resolve(false); return }\n      waitRafId = requestAnimationFrame(tick)\n    }\n    tick()\n  })\n\n  async function runFreeFallLab(recordTrial: () => void, calcFitG: () => void) {\n    if (labFlowRunning.value) return\n    labFlowRunning.value = true\n    try {\n      params.g = 9.81\n      for (const h of [0.20, 0.40, 0.60, 0.80, 1.00]) {\n        params.h = h\n        reset()\n        start()\n        const ok = await waitForLanding()\n        stopSim()\n        if (!ok) break\n        recordTrial()\n        await sleep(250)\n      }\n      calcFitG()\n    } finally {\n      labFlowRunning.value = false\n      resetSim()\n    }\n  }\n\n  return {\n    sim, running, paused, speed,\n    start, stopSim, togglePause, resetSim, cleanup,\n    measured,\n    labFlowRunning, runFreeFallLab,\n  }\n}\n",
+      "start": 1783634642165,
+      "end": 1783634642193,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642193,
+      "end": 1783634642193,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { ref } from \"vue\";\nimport { useFreeFallPhysics } from \"../../modules/physics/experiments/freefall/useFreeFallPhysics\";\nexport function useFreeFallLab(params, onTick) {\n  const { sim, step, start: physStart, stop: physStop, togglePause: physTogglePause, reset, measured } = useFreeFallPhysics(params);\n  const running = ref(false);\n  const paused = ref(false);\n  const speed = ref(1);\n  const labFlowRunning = ref(false);\n  let rafId = null;\n  let waitRafId = null;\n  let lastTime = 0;\n  function tickFrame() {\n    if (!sim.running || sim.paused) return;\n    const now = performance.now();\n    const dt = Math.min((now - lastTime) / 1e3, 0.1);\n    lastTime = now;\n    step(dt, speed.value);\n    onTick?.();\n    rafId = requestAnimationFrame(tickFrame);\n  }\n  function start() {\n    if (rafId) cancelAnimationFrame(rafId);\n    physStart();\n    running.value = sim.running;\n    paused.value = sim.paused;\n    lastTime = performance.now();\n    rafId = requestAnimationFrame(tickFrame);\n  }\n  function togglePause() {\n    if (!sim.running) {\n      start();\n      return;\n    }\n    physTogglePause();\n    running.value = sim.running;\n    paused.value = sim.paused;\n    if (!sim.paused) {\n      lastTime = performance.now();\n      rafId = requestAnimationFrame(tickFrame);\n    }\n  }\n  function stopSim() {\n    if (rafId) cancelAnimationFrame(rafId);\n    rafId = null;\n    physStop();\n    running.value = sim.running;\n    paused.value = sim.paused;\n  }\n  function cleanup() {\n    if (rafId) cancelAnimationFrame(rafId);\n    if (waitRafId) cancelAnimationFrame(waitRafId);\n    rafId = null;\n    waitRafId = null;\n  }\n  function resetSim() {\n    stopSim();\n    reset();\n  }\n  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));\n  const waitForLanding = (timeoutMs = 3e4) => new Promise((resolve) => {\n    const t0 = performance.now();\n    const tick = () => {\n      if (sim.landed) {\n        waitRafId = null;\n        resolve(true);\n        return;\n      }\n      if (!sim.running || performance.now() - t0 > timeoutMs) {\n        waitRafId = null;\n        resolve(false);\n        return;\n      }\n      waitRafId = requestAnimationFrame(tick);\n    };\n    tick();\n  });\n  async function runFreeFallLab(recordTrial, calcFitG) {\n    if (labFlowRunning.value) return;\n    labFlowRunning.value = true;\n    try {\n      params.g = 9.81;\n      for (const h of [0.2, 0.4, 0.6, 0.8, 1]) {\n        params.h = h;\n        reset();\n        start();\n        const ok = await waitForLanding();\n        stopSim();\n        if (!ok) break;\n        recordTrial();\n        await sleep(250);\n      }\n      calcFitG();\n    } finally {\n      labFlowRunning.value = false;\n      resetSim();\n    }\n  }\n  return {\n    sim,\n    running,\n    paused,\n    speed,\n    start,\n    stopSim,\n    togglePause,\n    resetSim,\n    cleanup,\n    measured,\n    labFlowRunning,\n    runFreeFallLab\n  };\n}\n",
+      "start": 1783634642193,
+      "end": 1783634642315,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/freefall/useFreeFallLab.ts"
+        ],
+        "sourcesContent": [
+          "import { ref } from 'vue'\nimport { useFreeFallPhysics, type FreeFallParams } from '../../modules/physics/experiments/freefall/useFreeFallPhysics'\n\nexport function useFreeFallLab(params: FreeFallParams, onTick?: () => void) {\n  const { sim, step, start: physStart, stop: physStop, togglePause: physTogglePause, reset, measured } = useFreeFallPhysics(params)\n\n  const running = ref(false)\n  const paused = ref(false)\n  const speed = ref(1)\n  const labFlowRunning = ref(false)\n  let rafId: number | null = null\n  let waitRafId: number | null = null\n  let lastTime = 0\n\n  function tickFrame() {\n    if (!sim.running || sim.paused) return\n    const now = performance.now()\n    const dt = Math.min((now - lastTime) / 1000, 0.1)\n    lastTime = now\n    step(dt, speed.value)\n    onTick?.()\n    rafId = requestAnimationFrame(tickFrame)\n  }\n\n  function start() {\n    if (rafId) cancelAnimationFrame(rafId)\n    physStart()\n    running.value = sim.running\n    paused.value = sim.paused\n    lastTime = performance.now()\n    rafId = requestAnimationFrame(tickFrame)\n  }\n\n  function togglePause() {\n    if (!sim.running) { start(); return }\n    physTogglePause()\n    running.value = sim.running\n    paused.value = sim.paused\n    if (!sim.paused) { lastTime = performance.now(); rafId = requestAnimationFrame(tickFrame) }\n  }\n\n  function stopSim() {\n    if (rafId) cancelAnimationFrame(rafId)\n    rafId = null\n    physStop()\n    running.value = sim.running\n    paused.value = sim.paused\n  }\n\n  function cleanup() {\n    if (rafId) cancelAnimationFrame(rafId)\n    if (waitRafId) cancelAnimationFrame(waitRafId)\n    rafId = null\n    waitRafId = null\n  }\n\n  function resetSim() {\n    stopSim()\n    reset()\n  }\n\n  const sleep = (ms: number) => new Promise<void>(r => setTimeout(r, ms))\n\n  const waitForLanding = (timeoutMs = 30000): Promise<boolean> => new Promise((resolve) => {\n    const t0 = performance.now()\n    const tick = () => {\n      if (sim.landed) { waitRafId = null; resolve(true); return }\n      if (!sim.running || performance.now() - t0 > timeoutMs) { waitRafId = null; resolve(false); return }\n      waitRafId = requestAnimationFrame(tick)\n    }\n    tick()\n  })\n\n  async function runFreeFallLab(recordTrial: () => void, calcFitG: () => void) {\n    if (labFlowRunning.value) return\n    labFlowRunning.value = true\n    try {\n      params.g = 9.81\n      for (const h of [0.20, 0.40, 0.60, 0.80, 1.00]) {\n        params.h = h\n        reset()\n        start()\n        const ok = await waitForLanding()\n        stopSim()\n        if (!ok) break\n        recordTrial()\n        await sleep(250)\n      }\n      calcFitG()\n    } finally {\n      labFlowRunning.value = false\n      resetSim()\n    }\n  }\n\n  return {\n    sim, running, paused, speed,\n    start, stopSim, togglePause, resetSim, cleanup,\n    measured,\n    labFlowRunning, runFreeFallLab,\n  }\n}\n"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642315,
+      "end": 1783634642315,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642315,
+      "end": 1783634642315,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642315,
+      "end": 1783634642315,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642315,
+      "end": 1783634642315,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642315,
+      "end": 1783634642315,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642315,
+      "end": 1783634642315,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642315,
+      "end": 1783634642315,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642315,
+      "end": 1783634642315,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642315,
+      "end": 1783634642315,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642315,
+      "end": 1783634642315,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642315,
+      "end": 1783634642315,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642315,
+      "end": 1783634642315,
+      "order": "normal"
+    }
+  ]
+}

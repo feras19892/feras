@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedReport.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, unref as _unref, toDisplayString as _toDisplayString, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, withModifiers as _withModifiers } from \"vue\"\n\nconst _hoisted_1 = { class: \"report-content\" }\nconst _hoisted_2 = { class: \"report-section\" }\nconst _hoisted_3 = {\n  key: 0,\n  class: \"report-section\"\n}\nconst _hoisted_4 = {\n  key: 1,\n  class: \"report-section\"\n}\n\nimport type { InclinedTrial } from '../../../composables/inclined/useInclinedTrials'\nimport { useI18n } from '../../../composables/useI18n'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'InclinedReport',\n  props: {\n    trials: {},\n    params: {},\n    trialStats: {}\n  },\n  emits: [\"close\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\nconst props = __props\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    class: \"report-modal\",\n    onClick: _cache[1] || (_cache[1] = _withModifiers(($event: any) => (emit('close')), [\"self\"]))\n  }, [\n    _createElementVNode(\"div\", _hoisted_1, [\n      _createElementVNode(\"button\", {\n        class: \"close-btn\",\n        onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('close')))\n      }, \"✕\"),\n      _createElementVNode(\"h2\", null, \"📋 \" + _toDisplayString(_unref(t)('experiments.inclinedPlaneReport')), 1),\n      _createElementVNode(\"div\", _hoisted_2, [\n        _createElementVNode(\"h4\", null, _toDisplayString(_unref(t)('experiments.parameters')), 1),\n        _createElementVNode(\"p\", null, \"θ = \" + _toDisplayString(__props.params.thetaDeg) + \"°, L = \" + _toDisplayString(__props.params.length) + \" m, m = \" + _toDisplayString(__props.params.mass) + \" kg, g = \" + _toDisplayString(__props.params.g) + \" m/s², μ = \" + _toDisplayString(__props.params.mu), 1)\n      ]),\n      (__props.trials.length)\n        ? (_openBlock(), _createElementBlock(\"div\", _hoisted_3, [\n            _createElementVNode(\"h4\", null, _toDisplayString(_unref(t)('experiments.readings')) + \" (\" + _toDisplayString(__props.trials.length) + \")\", 1),\n            _createElementVNode(\"table\", null, [\n              _cache[2] || (_cache[2] = _createElementVNode(\"thead\", null, [\n                _createElementVNode(\"tr\", null, [\n                  _createElementVNode(\"th\", null, \"#\"),\n                  _createElementVNode(\"th\", null, \"θ\"),\n                  _createElementVNode(\"th\", null, \"a\"),\n                  _createElementVNode(\"th\", null, \"t\"),\n                  _createElementVNode(\"th\", null, \"v\"),\n                  _createElementVNode(\"th\", null, \"err\")\n                ])\n              ], -1)),\n              _createElementVNode(\"tbody\", null, [\n                (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.trials, (tr, i) => {\n                  return (_openBlock(), _createElementBlock(\"tr\", {\n                    key: tr.id\n                  }, [\n                    _createElementVNode(\"td\", null, _toDisplayString(i+1), 1),\n                    _createElementVNode(\"td\", null, _toDisplayString(tr.thetaDeg) + \"°\", 1),\n                    _createElementVNode(\"td\", null, _toDisplayString(tr.acceleration), 1),\n                    _createElementVNode(\"td\", null, _toDisplayString(tr.timeOfArrival), 1),\n                    _createElementVNode(\"td\", null, _toDisplayString(tr.finalVelocity), 1),\n                    _createElementVNode(\"td\", null, _toDisplayString(tr.err) + \"%\", 1)\n                  ]))\n                }), 128))\n              ])\n            ])\n          ]))\n        : _createCommentVNode(\"\", true),\n      (__props.trials.length)\n        ? (_openBlock(), _createElementBlock(\"div\", _hoisted_4, [\n            _createElementVNode(\"h4\", null, _toDisplayString(_unref(t)('experiments.statisticsLabel')), 1),\n            _createElementVNode(\"p\", null, \"a_mean = \" + _toDisplayString(__props.trialStats.a_mean.toFixed(3)) + \", a_std = \" + _toDisplayString(__props.trialStats.a_std.toFixed(3)), 1),\n            _createElementVNode(\"p\", null, \"t_mean = \" + _toDisplayString(__props.trialStats.t_mean.toFixed(3)) + \", t_std = \" + _toDisplayString(__props.trialStats.t_std.toFixed(3)), 1),\n            _createElementVNode(\"p\", null, \"v_mean = \" + _toDisplayString(__props.trialStats.v_mean.toFixed(2)) + \", v_std = \" + _toDisplayString(__props.trialStats.v_std.toFixed(2)), 1)\n          ]))\n        : _createCommentVNode(\"\", true)\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783634641800,
+      "end": 1783634641800
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641800,
+      "end": 1783634641800,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, unref as _unref, toDisplayString as _toDisplayString, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, withModifiers as _withModifiers } from \"vue\";\nconst _hoisted_1 = { class: \"report-content\" };\nconst _hoisted_2 = { class: \"report-section\" };\nconst _hoisted_3 = {\n  key: 0,\n  class: \"report-section\"\n};\nconst _hoisted_4 = {\n  key: 1,\n  class: \"report-section\"\n};\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"InclinedReport\",\n  props: {\n    trials: {},\n    params: {},\n    trialStats: {}\n  },\n  emits: [\"close\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const props = __props;\n    const emit = __emit;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", {\n        class: \"report-modal\",\n        onClick: _cache[1] || (_cache[1] = _withModifiers(($event) => emit(\"close\"), [\"self\"]))\n      }, [\n        _createElementVNode(\"div\", _hoisted_1, [\n          _createElementVNode(\"button\", {\n            class: \"close-btn\",\n            onClick: _cache[0] || (_cache[0] = ($event) => emit(\"close\"))\n          }, \"✕\"),\n          _createElementVNode(\"h2\", null, \"📋 \" + _toDisplayString(_unref(t)(\"experiments.inclinedPlaneReport\")), 1),\n          _createElementVNode(\"div\", _hoisted_2, [\n            _createElementVNode(\"h4\", null, _toDisplayString(_unref(t)(\"experiments.parameters\")), 1),\n            _createElementVNode(\"p\", null, \"θ = \" + _toDisplayString(__props.params.thetaDeg) + \"°, L = \" + _toDisplayString(__props.params.length) + \" m, m = \" + _toDisplayString(__props.params.mass) + \" kg, g = \" + _toDisplayString(__props.params.g) + \" m/s², μ = \" + _toDisplayString(__props.params.mu), 1)\n          ]),\n          __props.trials.length ? (_openBlock(), _createElementBlock(\"div\", _hoisted_3, [\n            _createElementVNode(\"h4\", null, _toDisplayString(_unref(t)(\"experiments.readings\")) + \" (\" + _toDisplayString(__props.trials.length) + \")\", 1),\n            _createElementVNode(\"table\", null, [\n              _cache[2] || (_cache[2] = _createElementVNode(\"thead\", null, [\n                _createElementVNode(\"tr\", null, [\n                  _createElementVNode(\"th\", null, \"#\"),\n                  _createElementVNode(\"th\", null, \"θ\"),\n                  _createElementVNode(\"th\", null, \"a\"),\n                  _createElementVNode(\"th\", null, \"t\"),\n                  _createElementVNode(\"th\", null, \"v\"),\n                  _createElementVNode(\"th\", null, \"err\")\n                ])\n              ], -1)),\n              _createElementVNode(\"tbody\", null, [\n                (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.trials, (tr, i) => {\n                  return _openBlock(), _createElementBlock(\"tr\", {\n                    key: tr.id\n                  }, [\n                    _createElementVNode(\"td\", null, _toDisplayString(i + 1), 1),\n                    _createElementVNode(\"td\", null, _toDisplayString(tr.thetaDeg) + \"°\", 1),\n                    _createElementVNode(\"td\", null, _toDisplayString(tr.acceleration), 1),\n                    _createElementVNode(\"td\", null, _toDisplayString(tr.timeOfArrival), 1),\n                    _createElementVNode(\"td\", null, _toDisplayString(tr.finalVelocity), 1),\n                    _createElementVNode(\"td\", null, _toDisplayString(tr.err) + \"%\", 1)\n                  ]);\n                }), 128))\n              ])\n            ])\n          ])) : _createCommentVNode(\"\", true),\n          __props.trials.length ? (_openBlock(), _createElementBlock(\"div\", _hoisted_4, [\n            _createElementVNode(\"h4\", null, _toDisplayString(_unref(t)(\"experiments.statisticsLabel\")), 1),\n            _createElementVNode(\"p\", null, \"a_mean = \" + _toDisplayString(__props.trialStats.a_mean.toFixed(3)) + \", a_std = \" + _toDisplayString(__props.trialStats.a_std.toFixed(3)), 1),\n            _createElementVNode(\"p\", null, \"t_mean = \" + _toDisplayString(__props.trialStats.t_mean.toFixed(3)) + \", t_std = \" + _toDisplayString(__props.trialStats.t_std.toFixed(3)), 1),\n            _createElementVNode(\"p\", null, \"v_mean = \" + _toDisplayString(__props.trialStats.v_mean.toFixed(2)) + \", v_std = \" + _toDisplayString(__props.trialStats.v_std.toFixed(2)), 1)\n          ])) : _createCommentVNode(\"\", true)\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634641800,
+      "end": 1783634642258,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedReport.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, unref as _unref, toDisplayString as _toDisplayString, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, withModifiers as _withModifiers } from \"vue\"\n\nconst _hoisted_1 = { class: \"report-content\" }\nconst _hoisted_2 = { class: \"report-section\" }\nconst _hoisted_3 = {\n  key: 0,\n  class: \"report-section\"\n}\nconst _hoisted_4 = {\n  key: 1,\n  class: \"report-section\"\n}\n\nimport type { InclinedTrial } from '../../../composables/inclined/useInclinedTrials'\nimport { useI18n } from '../../../composables/useI18n'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'InclinedReport',\n  props: {\n    trials: {},\n    params: {},\n    trialStats: {}\n  },\n  emits: [\"close\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\nconst props = __props\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    class: \"report-modal\",\n    onClick: _cache[1] || (_cache[1] = _withModifiers(($event: any) => (emit('close')), [\"self\"]))\n  }, [\n    _createElementVNode(\"div\", _hoisted_1, [\n      _createElementVNode(\"button\", {\n        class: \"close-btn\",\n        onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('close')))\n      }, \"✕\"),\n      _createElementVNode(\"h2\", null, \"📋 \" + _toDisplayString(_unref(t)('experiments.inclinedPlaneReport')), 1),\n      _createElementVNode(\"div\", _hoisted_2, [\n        _createElementVNode(\"h4\", null, _toDisplayString(_unref(t)('experiments.parameters')), 1),\n        _createElementVNode(\"p\", null, \"θ = \" + _toDisplayString(__props.params.thetaDeg) + \"°, L = \" + _toDisplayString(__props.params.length) + \" m, m = \" + _toDisplayString(__props.params.mass) + \" kg, g = \" + _toDisplayString(__props.params.g) + \" m/s², μ = \" + _toDisplayString(__props.params.mu), 1)\n      ]),\n      (__props.trials.length)\n        ? (_openBlock(), _createElementBlock(\"div\", _hoisted_3, [\n            _createElementVNode(\"h4\", null, _toDisplayString(_unref(t)('experiments.readings')) + \" (\" + _toDisplayString(__props.trials.length) + \")\", 1),\n            _createElementVNode(\"table\", null, [\n              _cache[2] || (_cache[2] = _createElementVNode(\"thead\", null, [\n                _createElementVNode(\"tr\", null, [\n                  _createElementVNode(\"th\", null, \"#\"),\n                  _createElementVNode(\"th\", null, \"θ\"),\n                  _createElementVNode(\"th\", null, \"a\"),\n                  _createElementVNode(\"th\", null, \"t\"),\n                  _createElementVNode(\"th\", null, \"v\"),\n                  _createElementVNode(\"th\", null, \"err\")\n                ])\n              ], -1)),\n              _createElementVNode(\"tbody\", null, [\n                (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.trials, (tr, i) => {\n                  return (_openBlock(), _createElementBlock(\"tr\", {\n                    key: tr.id\n                  }, [\n                    _createElementVNode(\"td\", null, _toDisplayString(i+1), 1),\n                    _createElementVNode(\"td\", null, _toDisplayString(tr.thetaDeg) + \"°\", 1),\n                    _createElementVNode(\"td\", null, _toDisplayString(tr.acceleration), 1),\n                    _createElementVNode(\"td\", null, _toDisplayString(tr.timeOfArrival), 1),\n                    _createElementVNode(\"td\", null, _toDisplayString(tr.finalVelocity), 1),\n                    _createElementVNode(\"td\", null, _toDisplayString(tr.err) + \"%\", 1)\n                  ]))\n                }), 128))\n              ])\n            ])\n          ]))\n        : _createCommentVNode(\"\", true),\n      (__props.trials.length)\n        ? (_openBlock(), _createElementBlock(\"div\", _hoisted_4, [\n            _createElementVNode(\"h4\", null, _toDisplayString(_unref(t)('experiments.statisticsLabel')), 1),\n            _createElementVNode(\"p\", null, \"a_mean = \" + _toDisplayString(__props.trialStats.a_mean.toFixed(3)) + \", a_std = \" + _toDisplayString(__props.trialStats.a_std.toFixed(3)), 1),\n            _createElementVNode(\"p\", null, \"t_mean = \" + _toDisplayString(__props.trialStats.t_mean.toFixed(3)) + \", t_std = \" + _toDisplayString(__props.trialStats.t_std.toFixed(3)), 1),\n            _createElementVNode(\"p\", null, \"v_mean = \" + _toDisplayString(__props.trialStats.v_mean.toFixed(2)) + \", v_std = \" + _toDisplayString(__props.trialStats.v_std.toFixed(2)), 1)\n          ]))\n        : _createCommentVNode(\"\", true)\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,sBAAsB,qBAAqB,SAAS,QAAQ,mBAAmB,kBAAkB,cAAc,aAAa,YAAY,WAAW,aAAa,YAAY,sBAAsB,qBAAqB,sBAAsB,qBAAqB,iBAAiB,sBAAsB;AAElT,MAAM,aAAa,EAAE,OAAO,iBAAiB;AAC7C,MAAM,aAAa,EAAE,OAAO,iBAAiB;AAC7C,MAAM,aAAa;AAAA,EACjB,KAAK;AAAA,EACL,OAAO;AACT;AACA,MAAM,aAAa;AAAA,EACjB,KAAK;AAAA,EACL,OAAO;AACT;AAGA,SAAS,eAAe;AAGxB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,QAAQ,CAAC;AAAA,IACT,QAAQ,CAAC;AAAA,IACT,YAAY,CAAC;AAAA,EACf;AAAA,EACA,OAAO,CAAC,OAAO;AAAA,EACf,MAAM,SAAc,EAAE,MAAM,OAAO,GAAG;AAExC,UAAM,EAAE,EAAE,IAAI,QAAQ;AACtB,UAAM,QAAQ;AAEd,UAAM,OAAO;AAEb,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO;AAAA,QAC/C,OAAO;AAAA,QACP,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,eAAe,CAAC,WAAiB,KAAK,OAAO,GAAI,CAAC,MAAM,CAAC;AAAA,MAC9F,GAAG;AAAA,QACD,oBAAoB,OAAO,YAAY;AAAA,UACrC,oBAAoB,UAAU;AAAA,YAC5B,OAAO;AAAA,YACP,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,OAAO;AAAA,UACnE,GAAG,GAAG;AAAA,UACN,oBAAoB,MAAM,MAAM,QAAQ,iBAAiB,OAAO,CAAC,EAAE,iCAAiC,CAAC,GAAG,CAAC;AAAA,UACzG,oBAAoB,OAAO,YAAY;AAAA,YACrC,oBAAoB,MAAM,MAAM,iBAAiB,OAAO,CAAC,EAAE,wBAAwB,CAAC,GAAG,CAAC;AAAA,YACxF,oBAAoB,KAAK,MAAM,SAAS,iBAAiB,QAAQ,OAAO,QAAQ,IAAI,YAAY,iBAAiB,QAAQ,OAAO,MAAM,IAAI,aAAa,iBAAiB,QAAQ,OAAO,IAAI,IAAI,cAAc,iBAAiB,QAAQ,OAAO,CAAC,IAAI,gBAAgB,iBAAiB,QAAQ,OAAO,EAAE,GAAG,CAAC;AAAA,UAC1S,CAAC;AAAA,UACA,QAAQ,OAAO,UACX,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,YACpD,oBAAoB,MAAM,MAAM,iBAAiB,OAAO,CAAC,EAAE,sBAAsB,CAAC,IAAI,OAAO,iBAAiB,QAAQ,OAAO,MAAM,IAAI,KAAK,CAAC;AAAA,YAC7I,oBAAoB,SAAS,MAAM;AAAA,cACjC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,SAAS,MAAM;AAAA,gBAC3D,oBAAoB,MAAM,MAAM;AAAA,kBAC9B,oBAAoB,MAAM,MAAM,GAAG;AAAA,kBACnC,oBAAoB,MAAM,MAAM,GAAG;AAAA,kBACnC,oBAAoB,MAAM,MAAM,GAAG;AAAA,kBACnC,oBAAoB,MAAM,MAAM,GAAG;AAAA,kBACnC,oBAAoB,MAAM,MAAM,GAAG;AAAA,kBACnC,oBAAoB,MAAM,MAAM,KAAK;AAAA,gBACvC,CAAC;AAAA,cACH,GAAG,EAAE;AAAA,cACL,oBAAoB,SAAS,MAAM;AAAA,iBAChC,WAAW,IAAI,GAAG,oBAAoB,WAAW,MAAM,YAAY,QAAQ,QAAQ,CAAC,IAAI,MAAM;AAC7F,yBAAQ,WAAW,GAAG,oBAAoB,MAAM;AAAA,oBAC9C,KAAK,GAAG;AAAA,kBACV,GAAG;AAAA,oBACD,oBAAoB,MAAM,MAAM,iBAAiB,IAAE,CAAC,GAAG,CAAC;AAAA,oBACxD,oBAAoB,MAAM,MAAM,iBAAiB,GAAG,QAAQ,IAAI,KAAK,CAAC;AAAA,oBACtE,oBAAoB,MAAM,MAAM,iBAAiB,GAAG,YAAY,GAAG,CAAC;AAAA,oBACpE,oBAAoB,MAAM,MAAM,iBAAiB,GAAG,aAAa,GAAG,CAAC;AAAA,oBACrE,oBAAoB,MAAM,MAAM,iBAAiB,GAAG,aAAa,GAAG,CAAC;AAAA,oBACrE,oBAAoB,MAAM,MAAM,iBAAiB,GAAG,GAAG,IAAI,KAAK,CAAC;AAAA,kBACnE,CAAC;AAAA,gBACH,CAAC,GAAG,GAAG;AAAA,cACT,CAAC;AAAA,YACH,CAAC;AAAA,UACH,CAAC,KACD,oBAAoB,IAAI,IAAI;AAAA,UAC/B,QAAQ,OAAO,UACX,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,YACpD,oBAAoB,MAAM,MAAM,iBAAiB,OAAO,CAAC,EAAE,6BAA6B,CAAC,GAAG,CAAC;AAAA,YAC7F,oBAAoB,KAAK,MAAM,cAAc,iBAAiB,QAAQ,WAAW,OAAO,QAAQ,CAAC,CAAC,IAAI,eAAe,iBAAiB,QAAQ,WAAW,MAAM,QAAQ,CAAC,CAAC,GAAG,CAAC;AAAA,YAC7K,oBAAoB,KAAK,MAAM,cAAc,iBAAiB,QAAQ,WAAW,OAAO,QAAQ,CAAC,CAAC,IAAI,eAAe,iBAAiB,QAAQ,WAAW,MAAM,QAAQ,CAAC,CAAC,GAAG,CAAC;AAAA,YAC7K,oBAAoB,KAAK,MAAM,cAAc,iBAAiB,QAAQ,WAAW,OAAO,QAAQ,CAAC,CAAC,IAAI,eAAe,iBAAiB,QAAQ,WAAW,MAAM,QAAQ,CAAC,CAAC,GAAG,CAAC;AAAA,UAC/K,CAAC,KACD,oBAAoB,IAAI,IAAI;AAAA,QAClC,CAAC;AAAA,MACH,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642258,
+      "end": 1783634642258,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642258,
+      "end": 1783634642258,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634642258,
+      "end": 1783634642258,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642258,
+      "end": 1783634642258,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642258,
+      "end": 1783634642258,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642258,
+      "end": 1783634642258,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642258,
+      "end": 1783634642258,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642258,
+      "end": 1783634642258,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642258,
+      "end": 1783634642258,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642258,
+      "end": 1783634642258,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642258,
+      "end": 1783634642258,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642258,
+      "end": 1783634642258,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642258,
+      "end": 1783634642258,
+      "order": "normal"
+    }
+  ]
+}

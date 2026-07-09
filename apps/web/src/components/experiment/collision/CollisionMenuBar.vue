@@ -22,6 +22,7 @@ const emit = defineEmits<{
   (e: 'reset'): void
   (e: 'recordTrial'): void
   (e: 'toggleHelp'): void
+  (e: 'runLab'): void
   (e: 'analyzeResults'): void
 }>()
 
@@ -53,6 +54,7 @@ onUnmounted(() => window.removeEventListener('click', onMenuClick))
         <div v-if="activeMenu==='view'" class="menu-dropdown" @click.stop>
           <div class="menu-row check" @click="emit('togglePanel','params');"><span class="mi">&#x2699;&#xFE0F;</span><span>{{ t('experiments.menuParameters') }}</span></div>
           <div class="menu-row check" @click="emit('togglePanel','data');"><span class="mi">&#x1F4CB;</span><span>{{ t('experiments.data') }}</span></div>
+          <div class="menu-row check" @click="emit('togglePanel','scatter');"><span class="mi">&#x1F4C8;</span><span>{{ t('experiments.menuScatter') }}</span></div>
         </div>
       </div>
     </div>
@@ -65,6 +67,7 @@ onUnmounted(() => window.removeEventListener('click', onMenuClick))
         <button class="menu-btn" :class="{open:activeMenu==='run'}" @click.stop="toggleMenu('run')">{{ t('experiments.menuRun') }}</button>
         <div v-if="activeMenu==='run'" class="menu-dropdown" @click.stop>
           <div class="menu-row" @click="emit('togglePause'); closeMenu()"><span class="mi">&#x25B6;</span><span>{{ t('experiments.menuStartStop') }}</span></div>
+          <div class="menu-row" @click="emit('runLab'); closeMenu()"><span class="mi">&#x1F9EA;</span><span>{{ t('experiments.menuRunLab') }}</span></div>
           <div class="menu-row" @click="emit('reset'); closeMenu()"><span class="mi">&#x1F504;</span><span>{{ t('experiments.menuReset') }}</span></div>
           <div class="menu-row" @click="emit('recordTrial'); closeMenu()"><span class="mi">&#x1F4CC;</span><span>{{ t('experiments.menuRecord') }}</span></div>
         </div>

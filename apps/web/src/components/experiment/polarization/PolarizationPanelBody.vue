@@ -15,6 +15,10 @@ interface Props {
   relativeAngle: number
   transmissionPercent: number
   intensityCurve: { theta: number; intensity: number }[]
+  regressionSlope: number
+  regressionIntercept: number
+  rSquared: number
+  i0FromRegression: number | null
 }
 
 defineProps<Props>()
@@ -31,13 +35,17 @@ const emit = defineEmits<{
       v-if="id === 'readings'"
       :polarizer-angle="params.polarizerAngle"
       :analyzer-angle="params.analyzerAngle"
-      :i0="params.I0"
+      :I0="params.I0"
       :output-intensity="outputIntensity"
       :relative-angle="relativeAngle"
       :transmission-percent="transmissionPercent"
     />
     <PolarizationChartPanel
       v-else-if="id === 'chart'"
+      :trials="trials"
+      :regression-slope="regressionSlope"
+      :regression-intercept="regressionIntercept"
+      :r-squared="rSquared"
       :intensity-curve="intensityCurve"
       :relative-angle="relativeAngle"
     />
@@ -56,13 +64,18 @@ const emit = defineEmits<{
       v-else-if="id === 'laws'"
       :polarizer-angle="params.polarizerAngle"
       :analyzer-angle="params.analyzerAngle"
-      :i0="params.I0"
+      :I0="params.I0"
       :output-intensity="outputIntensity"
       :relative-angle="relativeAngle"
     />
     <PolarizationResultsPanel
       v-else-if="id === 'results'"
       :trials="trials"
+      :regression-slope="regressionSlope"
+      :regression-intercept="regressionIntercept"
+      :r-squared="rSquared"
+      :i0-from-regression="i0FromRegression"
+      :theoretical-i0="params.I0"
     />
   </div>
 </template>

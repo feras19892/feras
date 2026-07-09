@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/panels/InclinedWorksheetPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, computed } from 'vue'\n\nconst props = defineProps<{\n  thetaDeg: number\n  length: number\n  g: number\n  mu: number\n  acceleration: number\n}>()\n\nconst showSteps = ref<Record<string, boolean>>({\n  step1: false,\n  step2: false,\n})\n\nconst thetaRad = computed(() => props.thetaDeg * Math.PI / 180)\nconst aCalc = computed(() => {\n  const sin = Math.sin(thetaRad.value)\n  const cos = Math.cos(thetaRad.value)\n  return props.g * (sin - props.mu * cos)\n})\n\nfunction toggleStep(step: string) {\n  showSteps.value[step] = !showSteps.value[step]\n}\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <div class=\"ws-title\">📐 خطوات حساب التسارع على المستوى المائل</div>\n\n    <div class=\"step-row\">\n      <button class=\"step-toggle\" @click=\"toggleStep('step1')\">\n        {{ showSteps.step1 ? '▼' : '▶' }} الخطوة 1: القانون\n      </button>\n      <div v-if=\"showSteps.step1\" class=\"step-content\">\n        <div class=\"formula\">a = g(sinθ − μ·cosθ)</div>\n        <div class=\"explain\">حيث θ = زاوية الميل، μ = معامل الاحتكاك</div>\n      </div>\n    </div>\n\n    <div class=\"step-row\">\n      <button class=\"step-toggle\" @click=\"toggleStep('step2')\">\n        {{ showSteps.step2 ? '▼' : '▶' }} الخطوة 2: الحساب\n      </button>\n      <div v-if=\"showSteps.step2\" class=\"step-content\">\n        <div class=\"calc\">\n          <div>sin({{ thetaDeg.toFixed(1) }}°) = {{ Math.sin(thetaRad).toFixed(4) }}</div>\n          <div>cos({{ thetaDeg.toFixed(1) }}°) = {{ Math.cos(thetaRad).toFixed(4) }}</div>\n          <div>a = {{ g.toFixed(2) }} × ({{ Math.sin(thetaRad).toFixed(4) }} − {{ mu.toFixed(2) }} × {{ Math.cos(thetaRad).toFixed(4) }})</div>\n          <div class=\"result\">a = {{ aCalc.toFixed(2) }} m/s²</div>\n          <div>المقاس: {{ acceleration.toFixed(2) }} m/s²</div>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { padding: 1rem; display: flex; flex-direction: column; gap: .75rem; }\n.ws-title { font-size: 1rem; font-weight: 700; color: #5B8DB8; text-align: center; padding: .5rem; border-bottom: 1px solid #1e2530; margin-bottom: .25rem; }\n.step-row { display: flex; flex-direction: column; gap: .25rem; }\n.step-toggle { background: #1E2530; border: 1px solid #2D3645; color: #D1D7E0; padding: .5rem .75rem; border-radius: 6px; cursor: pointer; text-align: right; font-size: .85rem; }\n.step-toggle:hover { background: #252D3A; }\n.step-content { background: #0d1117; border: 1px solid #1e2530; border-radius: 6px; padding: .75rem; font-size: .85rem; }\n.formula { font-family: 'Courier New', monospace; font-size: 1rem; color: #5B8DB8; text-align: center; padding: .5rem; background: rgba(91,141,184,.08); border-radius: 4px; margin-bottom: .5rem; }\n.explain { color: #94a3b8; font-size: .8rem; }\n.calc { display: flex; flex-direction: column; gap: .25rem; color: #D1D7E0; }\n.result { color: #22c55e; font-weight: 700; margin-top: .25rem; }\n</style>\n",
+      "start": 1783634639360,
+      "end": 1783634639771,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634639771,
+      "end": 1783634639771,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639771,
+      "end": 1783634639771,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639771,
+      "end": 1783634639771,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639771,
+      "end": 1783634639771,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/panels/InclinedWorksheetPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/panels/InclinedWorksheetPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/panels/InclinedWorksheetPanel.vue?vue&type=style&index=0&scoped=55af69b2&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-55af69b2\"]]);\n",
+      "start": 1783634639771,
+      "end": 1783634640098,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640098,
+      "end": 1783634640098,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640098,
+      "end": 1783634640099,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640099,
+      "end": 1783634640099,
+      "order": "normal"
+    }
+  ]
+}

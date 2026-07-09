@@ -1,63 +1,105 @@
 <script setup lang="ts">
 import { useI18n } from '../../../composables/useI18n'
 
-defineProps<{ open: boolean }>()
 const { t } = useI18n()
+defineProps<{ open: boolean }>()
 const emit = defineEmits<{ (e: 'close'): void }>()
 </script>
 
 <template>
   <Teleport to="body">
-    <div v-if="open" class="help-overlay" @click.self="emit('close')">
-      <div class="help-card">
-        <div class="help-header">
-          <h2>&#x2753; {{ t('experiments.pendulumExperimentGuide') }}</h2>
+    <div v-if="open" class="overlay" @click.self="emit('close')">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>{{ t('experiments.pdHelpTitle') }}</h3>
           <button class="close-btn" @click="emit('close')">&#x2715;</button>
         </div>
-        <div class="help-body">
-          <section class="help-section">
-            <h3>&#x1F4DA; {{ t('experiments.pendulumDefinition') }}</h3>
-            <p>{{ t('experiments.pendulumDefinitionDesc') }}</p>
+        <div class="modal-body">
+
+          <!-- 1. Theoretical Background -->
+          <section>
+            <h4>{{ t('experiments.pdHelpS1Title') }}</h4>
+            <p>{{ t('experiments.pdHelpS1P1') }}</p>
+            <p>{{ t('experiments.pdHelpS1P2') }}</p>
+            <div class="formula">F = -m · g · sin(θ)</div>
+            <p>{{ t('experiments.pdHelpS1P3') }}</p>
           </section>
-          <section class="help-section">
-            <h3>&#x2696;&#xFE0F; {{ t('experiments.basicEquations') }}</h3>
-            <div class="eq-box">
-              <div class="eq-line"><b>T</b> = 2π √(L / g)</div>
-              <div class="eq-line"><b>ω₀</b> = √(g / L)</div>
-              <div class="eq-line"><b>g</b> = 4π²L / T²</div>
-            </div>
-            <p class="help-hint">{{ t('experiments.validForSmallAngles') }}</p>
+
+          <!-- 2. Mathematical Equations -->
+          <section>
+            <h4>{{ t('experiments.pdHelpS2Title') }}</h4>
+            <p>{{ t('experiments.pdHelpS2P1') }}</p>
+            <div class="formula">T = 2π √(L / g)</div>
+            <p>{{ t('experiments.pdHelpS2P2') }}</p>
+            <div class="formula">T² = (4π² / g) · L</div>
+            <p>{{ t('experiments.pdHelpS2P3') }}</p>
+            <div class="formula">f = 1 / T = (1 / 2π) √(g / L)</div>
+            <p>{{ t('experiments.pdHelpS2P4') }}</p>
+            <div class="formula">ω₀ = √(g / L)</div>
           </section>
-          <section class="help-section">
-            <h3>&#x1F9EA; {{ t('experiments.methodOfWork') }}</h3>
+
+          <!-- 3. Laboratory Procedure -->
+          <section>
+            <h4>{{ t('experiments.pdHelpS3Title') }}</h4>
             <ol>
-              <li>{{ t('experiments.pendulumGuideStep1') }}</li>
-              <li>{{ t('experiments.pendulumGuideStep2') }}</li>
-              <li>{{ t('experiments.pendulumGuideStep3') }}</li>
-              <li>{{ t('experiments.pendulumGuideStep4') }}</li>
-              <li>{{ t('experiments.pendulumGuideStep5') }}</li>
-              <li>{{ t('experiments.pendulumGuideStep6') }}</li>
-              <li>{{ t('experiments.pendulumGuideStep7') }}</li>
+              <li>{{ t('experiments.pdHelpS3L1') }}</li>
+              <li>{{ t('experiments.pdHelpS3L2') }}</li>
+              <li>{{ t('experiments.pdHelpS3L3') }}</li>
+              <li>{{ t('experiments.pdHelpS3L4') }}</li>
             </ol>
           </section>
-          <section class="help-section">
-            <h3>&#x1F4C9; {{ t('experiments.calculateSlopeFromGraph') }}</h3>
-            <p>{{ t('experiments.calculateSlopeDesc') }}</p>
-            <div class="eq-box">
-              <div class="eq-line">T² = (4π²/g) · L</div>
-              <div class="eq-note">{{ t('experiments.slopeEquation') }}</div>
-              <div class="eq-note">{{ t('experiments.gFromSlope') }}</div>
+
+          <!-- 4. Graphical Analysis -->
+          <section>
+            <h4>{{ t('experiments.pdHelpS4Title') }}</h4>
+            <p>{{ t('experiments.pdHelpS4P1') }}</p>
+            <ul>
+              <li>{{ t('experiments.pdHelpS4L1') }}</li>
+              <li>
+                {{ t('experiments.pdHelpS4L2') }}
+                <div class="formula">Slope = ΔT² / ΔL</div>
+              </li>
+              <li>
+                {{ t('experiments.pdHelpS4L3') }}
+                <div class="formula">Slope = 4π² / g</div>
+                <div class="formula">g = 4π² / Slope</div>
+              </li>
+            </ul>
+          </section>
+
+          <!-- 5. Variables & Constants -->
+          <section>
+            <h4>{{ t('experiments.pdHelpS5Title') }}</h4>
+            <div class="element-grid">
+              <div class="element">{{ t('experiments.pdHelpS5E1') }}</div>
+              <div class="element">{{ t('experiments.pdHelpS5E2') }}</div>
+              <div class="element">{{ t('experiments.pdHelpS5E3') }}</div>
             </div>
           </section>
-          <section class="help-section">
-            <h3>&#x1F4BE; {{ t('experiments.controlButtons') }}</h3>
-            <div class="btn-help-grid">
-              <div class="btn-help-row"><span class="btn-tag primary">▶️ {{ t('experiments.start') }}</span><span>{{ t('experiments.startSimulation') }}</span></div>
-              <div class="btn-help-row"><span class="btn-tag">&#x1F504; {{ t('experiments.reset') }}</span><span>{{ t('experiments.resetSimulation') }}</span></div>
-              <div class="btn-help-row"><span class="btn-tag">&#x1F4CC; {{ t('experiments.record') }}</span><span>{{ t('experiments.recordCurrentMeasurement') }}</span></div>
-              <div class="btn-help-row"><span class="btn-tag speed">&#x1F40D; ×1.0</span><span>{{ t('experiments.simulationSpeed') }}</span></div>
+
+          <!-- 6. Scientific Importance -->
+          <section>
+            <h4>{{ t('experiments.pdHelpS6Title') }}</h4>
+            <ul>
+              <li>{{ t('experiments.pdHelpS6L1') }}</li>
+              <li>{{ t('experiments.pdHelpS6L2') }}</li>
+              <li>{{ t('experiments.pdHelpS6L3') }}</li>
+            </ul>
+          </section>
+
+          <!-- Keyboard shortcuts -->
+          <section>
+            <h4>{{ t('experiments.helpKbdTitle') }}</h4>
+            <div class="kbd-grid">
+              <span><kbd>Space</kbd> {{ t('experiments.helpKbdSpace') }}</span>
+              <span><kbd>S</kbd> {{ t('experiments.helpKbdS') }}</span>
+              <span><kbd>R</kbd> {{ t('experiments.helpKbdR') }}</span>
+              <span><kbd>Ctrl</kbd>+<kbd>Z</kbd> {{ t('experiments.helpKbdUndo') }}</span>
+              <span><kbd>Ctrl</kbd>+<kbd>Y</kbd> {{ t('experiments.helpKbdRedo') }}</span>
+              <span><kbd>?</kbd> {{ t('experiments.helpKbdHelp') }}</span>
             </div>
           </section>
+
         </div>
       </div>
     </div>
@@ -65,25 +107,23 @@ const emit = defineEmits<{ (e: 'close'): void }>()
 </template>
 
 <style scoped>
-.help-overlay { position:fixed; inset:0; background:rgba(0,0,0,.65); z-index:99999; display:flex; align-items:center; justify-content:center; padding:1.5rem; }
-.help-card { background:#1E2530; border:1px solid #2D3645; border-radius:12px; width:92vw; max-width:640px; max-height:90vh; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 24px 64px rgba(0,0,0,.5); }
-.help-header { display:flex; justify-content:space-between; align-items:center; padding:.8rem 1rem; border-bottom:1px solid #2D3645; background:rgba(91,141,184,.06); flex-shrink:0; }
-.help-header h2 { margin:0; font-size:1rem; color:#D1D7E0; }
-.close-btn { background:transparent; border:1px solid #2D3645; color:#8B95A5; border-radius:6px; width:28px; height:28px; cursor:pointer; font-size:.8rem; }
-.close-btn:hover { background:rgba(91,141,184,.1); color:#D1D7E0; }
-.help-body { overflow-y:auto; padding:1rem 1.2rem; font-size:.78rem; color:#B8C0CC; line-height:1.7; }
-.help-section { margin-bottom:1.2rem; }
-.help-section h3 { margin:0 0 .4rem; font-size:.82rem; color:#5B8DB8; border-bottom:1px solid #2D3645; padding-bottom:.2rem; }
-.help-section p { margin:.3rem 0; }
-.help-section ul, .help-section ol { margin:.3rem 0; padding-right:1.2rem; }
-.help-section li { margin-bottom:.25rem; }
-.eq-box { background:#161B22; border:1px solid #2D3645; border-radius:6px; padding:.5rem .7rem; margin:.4rem 0; font-family:monospace; }
-.eq-line { color:#D1D7E0; font-size:.8rem; margin-bottom:.15rem; }
-.eq-note { color:#8B95A5; font-size:.72rem; }
-.help-hint { color:#4ade80; font-size:.72rem; margin-top:.3rem; }
-.btn-help-grid { display:flex; flex-direction:column; gap:.3rem; margin-top:.3rem; }
-.btn-help-row { display:flex; align-items:center; gap:.5rem; padding:.25rem .4rem; background:#161B22; border-radius:4px; border:1px solid #2D3645; }
-.btn-tag { background:#252D3A; border:1px solid #2D3645; color:#8B95A5; border-radius:4px; padding:.15rem .35rem; font-size:.68rem; font-family:monospace; min-width:70px; text-align:center; }
-.btn-tag.primary { color:#5B8DB8; border-color:rgba(91,141,184,.3); }
-.btn-tag.speed { color:#fbbf24; border-color:rgba(251,191,36,.3); }
+.overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+.modal { background: #131a25; border: 1px solid #2D3645; border-radius: 12px; max-width: 720px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+.modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.2rem; border-bottom: 1px solid #2D3645; flex-shrink: 0; }
+.modal-header h3 { margin: 0; font-size: 1rem; color: #e2e8f0; }
+.close-btn { background: transparent; border: 1px solid #2D3645; color: #8B95A5; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; padding: 0; }
+.close-btn:hover { background: rgba(91,141,184,.1); color: #5B8DB8; }
+.modal-body { overflow-y: auto; padding: 1.2rem; font-size: .82rem; color: #cbd5e1; line-height: 1.8; direction: rtl; text-align: right; }
+.modal-body section { margin-bottom: 1.4rem; }
+.modal-body h4 { margin: 0 0 .5rem; font-size: .9rem; color: #5B8DB8; border-bottom: 1px solid #2D3645; padding-bottom: .3rem; }
+.modal-body p { margin: .4rem 0; }
+.modal-body ol, .modal-body ul { margin: .4rem 0; padding-right: 1.2rem; }
+.modal-body li { margin-bottom: .25rem; }
+.formula { background: #1a2332; border: 1px solid #2D3645; border-radius: 6px; padding: .6rem .8rem; font-family: monospace; font-size: .9rem; color: #5B8DB8; text-align: center; margin: .6rem 0; direction: ltr; }
+.element-grid { display: flex; flex-direction: column; gap: .35rem; }
+.element { background: #1a2332; border-radius: 6px; padding: .4rem .6rem; font-size: .78rem; }
+.tag { color: #5B8DB8; }
+.kbd-grid { display: flex; flex-wrap: wrap; gap: .4rem; }
+.kbd-grid span { background: #1a2332; border: 1px solid #2D3645; border-radius: 5px; padding: .3rem .5rem; font-size: .75rem; }
+kbd { background: #252D3A; border: 1px solid #475569; border-radius: 4px; padding: .05rem .3rem; font-family: monospace; font-size: .7rem; color: #D1D7E0; }
 </style>

@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/MagneticFluxCanvas.vue?vue&type=style&index=0&scoped=9288d206&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.flux-canvas { width: 100%; height: 100%; display: block; cursor: grab; }\n",
+      "start": 1783634641690,
+      "end": 1783634641690
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.flux-canvas { width: 100%; height: 100%; display: block; cursor: grab; }\n",
+      "start": 1783634641690,
+      "end": 1783634641690,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641690,
+      "end": 1783634641690,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641691,
+      "end": 1783634641691,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641691,
+      "end": 1783634641691,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.flux-canvas[data-v-9288d206] { width: 100%; height: 100%; display: block; cursor: grab;\n}\n",
+      "start": 1783634641691,
+      "end": 1783634641691,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641691,
+      "end": 1783634641691,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634641691,
+      "end": 1783634641691,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641691,
+      "end": 1783634641691,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641691,
+      "end": 1783634641691,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641691,
+      "end": 1783634641691,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641691,
+      "end": 1783634641691,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641691,
+      "end": 1783634641691,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641691,
+      "end": 1783634641691,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641691,
+      "end": 1783634641691,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641691,
+      "end": 1783634641691,
+      "order": "normal"
+    }
+  ]
+}

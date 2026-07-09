@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/SpeedOfSoundOverlayPanels.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, withModifiers as _withModifiers, createVNode as _createVNode, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"overlay-panels\" }\nconst _hoisted_2 = [\"onClick\"]\nconst _hoisted_3 = { class: \"overlay-header\" }\nconst _hoisted_4 = [\"onClick\"]\n\nimport type { SpeedOfSoundTrial } from '../../../composables/speed-of-sound/useSpeedOfSoundTrials'\nimport SpeedOfSoundPanelBody from './SpeedOfSoundPanelBody.vue'\n\ninterface Props {\n  maximized: Record<string, boolean>\n  panelTitle: (id: string) => string\n  trials: SpeedOfSoundTrial[]\n  params: { tubeLength: number; frequency: number; temperature: number; harmonic: 1 | 3 }\n  wavelength: number\n  vMeasured: number\n  vTheory: number\n  percentError: number\n  waveformData: { x: number; y: number }[]\n  regressionSlope: number\n  regressionIntercept: number\n  rSquared: number\n  vFromRegression: number | null\n  endCorrection: number | null\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'SpeedOfSoundOverlayPanels',\n  props: {\n    maximized: {},\n    panelTitle: { type: Function },\n    trials: {},\n    params: {},\n    wavelength: {},\n    vMeasured: {},\n    vTheory: {},\n    percentError: {},\n    waveformData: {},\n    regressionSlope: {},\n    regressionIntercept: {},\n    rSquared: {},\n    vFromRegression: {},\n    endCorrection: {}\n  },\n  emits: [\"maximize\", \"remove\", \"clear\", \"update:params\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst props = __props\nconst emit = __emit\nconst ids = ['readings', 'chart', 'trials', 'params', 'laws', 'results']\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (_openBlock(), _createElementBlock(_Fragment, null, _renderList(ids, (id) => {\n      return (_openBlock(), _createElementBlock(_Fragment, { key: id }, [\n        (props.maximized[id])\n          ? (_openBlock(), _createElementBlock(\"div\", {\n              key: 0,\n              class: \"overlay-panel\",\n              onClick: ($event: any) => (emit('maximize', id))\n            }, [\n              _createElementVNode(\"div\", _hoisted_3, [\n                _createElementVNode(\"span\", null, _toDisplayString(__props.panelTitle(id)), 1),\n                _createElementVNode(\"button\", {\n                  class: \"overlay-close\",\n                  onClick: _withModifiers(($event: any) => (emit('maximize', id)), [\"stop\"])\n                }, \"✕\", 8, _hoisted_4)\n              ]),\n              _createVNode(SpeedOfSoundPanelBody, {\n                id: id,\n                trials: __props.trials,\n                params: __props.params,\n                wavelength: __props.wavelength,\n                \"v-measured\": __props.vMeasured,\n                \"v-theory\": __props.vTheory,\n                \"percent-error\": __props.percentError,\n                \"waveform-data\": __props.waveformData,\n                \"regression-slope\": __props.regressionSlope,\n                \"regression-intercept\": __props.regressionIntercept,\n                \"r-squared\": __props.rSquared,\n                \"v-from-regression\": __props.vFromRegression,\n                \"end-correction\": __props.endCorrection,\n                onRemove: _cache[0] || (_cache[0] = ($event: any) => (emit('remove', $event))),\n                onClear: _cache[1] || (_cache[1] = ($event: any) => (emit('clear'))),\n                \"onUpdate:params\": _cache[2] || (_cache[2] = ($event: any) => (emit('update:params', $event)))\n              }, null, 8, [\"id\", \"trials\", \"params\", \"wavelength\", \"v-measured\", \"v-theory\", \"percent-error\", \"waveform-data\", \"regression-slope\", \"regression-intercept\", \"r-squared\", \"v-from-regression\", \"end-correction\"])\n            ], 8, _hoisted_2))\n          : _createCommentVNode(\"\", true)\n      ], 64))\n    }), 64))\n  ]))\n}\n}\n\n})",
+      "start": 1783634641900,
+      "end": 1783634641900
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641900,
+      "end": 1783634641900,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, withModifiers as _withModifiers, createVNode as _createVNode, createCommentVNode as _createCommentVNode } from \"vue\";\nconst _hoisted_1 = { class: \"overlay-panels\" };\nconst _hoisted_2 = [\"onClick\"];\nconst _hoisted_3 = { class: \"overlay-header\" };\nconst _hoisted_4 = [\"onClick\"];\nimport SpeedOfSoundPanelBody from \"./SpeedOfSoundPanelBody.vue\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"SpeedOfSoundOverlayPanels\",\n  props: {\n    maximized: {},\n    panelTitle: { type: Function },\n    trials: {},\n    params: {},\n    wavelength: {},\n    vMeasured: {},\n    vTheory: {},\n    percentError: {},\n    waveformData: {},\n    regressionSlope: {},\n    regressionIntercept: {},\n    rSquared: {},\n    vFromRegression: {},\n    endCorrection: {}\n  },\n  emits: [\"maximize\", \"remove\", \"clear\", \"update:params\"],\n  setup(__props, { emit: __emit }) {\n    const props = __props;\n    const emit = __emit;\n    const ids = [\"readings\", \"chart\", \"trials\", \"params\", \"laws\", \"results\"];\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        (_openBlock(), _createElementBlock(_Fragment, null, _renderList(ids, (id) => {\n          return _openBlock(), _createElementBlock(_Fragment, { key: id }, [\n            props.maximized[id] ? (_openBlock(), _createElementBlock(\"div\", {\n              key: 0,\n              class: \"overlay-panel\",\n              onClick: ($event) => emit(\"maximize\", id)\n            }, [\n              _createElementVNode(\"div\", _hoisted_3, [\n                _createElementVNode(\"span\", null, _toDisplayString(__props.panelTitle(id)), 1),\n                _createElementVNode(\"button\", {\n                  class: \"overlay-close\",\n                  onClick: _withModifiers(($event) => emit(\"maximize\", id), [\"stop\"])\n                }, \"✕\", 8, _hoisted_4)\n              ]),\n              _createVNode(SpeedOfSoundPanelBody, {\n                id,\n                trials: __props.trials,\n                params: __props.params,\n                wavelength: __props.wavelength,\n                \"v-measured\": __props.vMeasured,\n                \"v-theory\": __props.vTheory,\n                \"percent-error\": __props.percentError,\n                \"waveform-data\": __props.waveformData,\n                \"regression-slope\": __props.regressionSlope,\n                \"regression-intercept\": __props.regressionIntercept,\n                \"r-squared\": __props.rSquared,\n                \"v-from-regression\": __props.vFromRegression,\n                \"end-correction\": __props.endCorrection,\n                onRemove: _cache[0] || (_cache[0] = ($event) => emit(\"remove\", $event)),\n                onClear: _cache[1] || (_cache[1] = ($event) => emit(\"clear\")),\n                \"onUpdate:params\": _cache[2] || (_cache[2] = ($event) => emit(\"update:params\", $event))\n              }, null, 8, [\"id\", \"trials\", \"params\", \"wavelength\", \"v-measured\", \"v-theory\", \"percent-error\", \"waveform-data\", \"regression-slope\", \"regression-intercept\", \"r-squared\", \"v-from-regression\", \"end-correction\"])\n            ], 8, _hoisted_2)) : _createCommentVNode(\"\", true)\n          ], 64);\n        }), 64))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634641900,
+      "end": 1783634642268,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/SpeedOfSoundOverlayPanels.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, withModifiers as _withModifiers, createVNode as _createVNode, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"overlay-panels\" }\nconst _hoisted_2 = [\"onClick\"]\nconst _hoisted_3 = { class: \"overlay-header\" }\nconst _hoisted_4 = [\"onClick\"]\n\nimport type { SpeedOfSoundTrial } from '../../../composables/speed-of-sound/useSpeedOfSoundTrials'\nimport SpeedOfSoundPanelBody from './SpeedOfSoundPanelBody.vue'\n\ninterface Props {\n  maximized: Record<string, boolean>\n  panelTitle: (id: string) => string\n  trials: SpeedOfSoundTrial[]\n  params: { tubeLength: number; frequency: number; temperature: number; harmonic: 1 | 3 }\n  wavelength: number\n  vMeasured: number\n  vTheory: number\n  percentError: number\n  waveformData: { x: number; y: number }[]\n  regressionSlope: number\n  regressionIntercept: number\n  rSquared: number\n  vFromRegression: number | null\n  endCorrection: number | null\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'SpeedOfSoundOverlayPanels',\n  props: {\n    maximized: {},\n    panelTitle: { type: Function },\n    trials: {},\n    params: {},\n    wavelength: {},\n    vMeasured: {},\n    vTheory: {},\n    percentError: {},\n    waveformData: {},\n    regressionSlope: {},\n    regressionIntercept: {},\n    rSquared: {},\n    vFromRegression: {},\n    endCorrection: {}\n  },\n  emits: [\"maximize\", \"remove\", \"clear\", \"update:params\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst props = __props\nconst emit = __emit\nconst ids = ['readings', 'chart', 'trials', 'params', 'laws', 'results']\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (_openBlock(), _createElementBlock(_Fragment, null, _renderList(ids, (id) => {\n      return (_openBlock(), _createElementBlock(_Fragment, { key: id }, [\n        (props.maximized[id])\n          ? (_openBlock(), _createElementBlock(\"div\", {\n              key: 0,\n              class: \"overlay-panel\",\n              onClick: ($event: any) => (emit('maximize', id))\n            }, [\n              _createElementVNode(\"div\", _hoisted_3, [\n                _createElementVNode(\"span\", null, _toDisplayString(__props.panelTitle(id)), 1),\n                _createElementVNode(\"button\", {\n                  class: \"overlay-close\",\n                  onClick: _withModifiers(($event: any) => (emit('maximize', id)), [\"stop\"])\n                }, \"✕\", 8, _hoisted_4)\n              ]),\n              _createVNode(SpeedOfSoundPanelBody, {\n                id: id,\n                trials: __props.trials,\n                params: __props.params,\n                wavelength: __props.wavelength,\n                \"v-measured\": __props.vMeasured,\n                \"v-theory\": __props.vTheory,\n                \"percent-error\": __props.percentError,\n                \"waveform-data\": __props.waveformData,\n                \"regression-slope\": __props.regressionSlope,\n                \"regression-intercept\": __props.regressionIntercept,\n                \"r-squared\": __props.rSquared,\n                \"v-from-regression\": __props.vFromRegression,\n                \"end-correction\": __props.endCorrection,\n                onRemove: _cache[0] || (_cache[0] = ($event: any) => (emit('remove', $event))),\n                onClear: _cache[1] || (_cache[1] = ($event: any) => (emit('clear'))),\n                \"onUpdate:params\": _cache[2] || (_cache[2] = ($event: any) => (emit('update:params', $event)))\n              }, null, 8, [\"id\", \"trials\", \"params\", \"wavelength\", \"v-measured\", \"v-theory\", \"percent-error\", \"waveform-data\", \"regression-slope\", \"regression-intercept\", \"r-squared\", \"v-from-regression\", \"end-correction\"])\n            ], 8, _hoisted_2))\n          : _createCommentVNode(\"\", true)\n      ], 64))\n    }), 64))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642268,
+      "end": 1783634642268,
+      "order": "normal"
+    }
+  ]
+}

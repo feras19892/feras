@@ -1,5 +1,7 @@
 import { ref, reactive, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import type { AnalysisPayload } from '../../types/physics'
+import { sendToAnalysis } from '../analysis/sendToAnalysis'
 import { useWaveInterferenceLayout } from './useWaveInterferenceLayout'
 import { useWaveInterferenceTrials } from './useWaveInterferenceTrials'
 import { waveSpeed, constructivePoints, destructivePoints } from './useWaveInterferenceCalculations'
@@ -60,14 +62,14 @@ export function useWaveInterferenceExperiment() {
   }
   function resetSim() {
     running.value = false; paused.value = false
-    params.sourceDistance = 0.05; params.wavelength = 0.02; params.frequency = 20; params.screenDistance = 1.0
-    trials.clearTrials()
   }
+  const router = useRouter()
   function exportToAnalysis() {
     if (trials.trials.value.length < 2) return
     const payload: AnalysisPayload = {
       sourceExperiment: 'wave-interference',
       sourceNameAr: 'تداخل الموجات',
+      hasCalcTab: true,
       readings: trials.trials.value.map(t => ({ d: t.sourceDistance, lambda: t.wavelength, f: t.frequency, D: t.screenDistance })),
       columns: [
         { key: 'd', label: 'd (m)', unit: 'm' },
@@ -80,8 +82,7 @@ export function useWaveInterferenceExperiment() {
       ],
       suggestedPlots: [{ xKey: 'd', yKey: 'lambda', xLabel: 'd (m)', yLabel: 'lambda (m)', type: 'scatter' }],
     }
-    localStorage.setItem('analysis_payload', JSON.stringify(payload))
-    window.open('/analysis', '_blank')
+    sendToAnalysis(router, payload)
   }
   function handleDrop(fromId: string, x?: number, y?: number) {
     if (x === undefined || y === undefined) return
@@ -98,8 +99,8 @@ export function useWaveInterferenceExperiment() {
   }
   function onResizeStart(col: string, e: MouseEvent) {
     if (!(col in layout.widths)) return
-    const startX = e.clientX, startW = (layout.widths as any)[col] as number
-    function move(ev: MouseEvent) { (layout.widths as any)[col] = Math.max(220, startW + (ev.clientX - startX)) }
+    const startX = e.clientX, startW = (layout.widths as Record<string, number>)[col] as number
+    function move(ev: MouseEvent) { (layout.widths as Record<string, number>)[col] = Math.max(220, startW + (ev.clientX - startX)) }
     function up() { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up) }
     window.addEventListener('mousemove', move); window.addEventListener('mouseup', up)
   }

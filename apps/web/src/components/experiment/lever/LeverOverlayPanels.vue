@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
 import DraggablePanel from '../spring/DraggablePanel.vue'
 import LeverPanelBody from './LeverPanelBody.vue'
-
-const { t } = useI18n()
 import type { BeamMass } from '../../../modules/physics/experiments/lever/useLeverBeamPhysics'
 
 const props = defineProps<{
@@ -19,7 +16,7 @@ const props = defineProps<{
   tiltDeg?: number
   netTorque?: number
 }>()
-const emit = defineEmits<{
+defineEmits<{
   (e: 'maximize', id: string): void
   (e: 'drop', id: string, x: number, y: number): void
   (e: 'removeTrial', id: number): void
@@ -35,10 +32,10 @@ const emit = defineEmits<{
     <template v-for="id in ['table','signal','equations','guide','report']" :key="id">
       <div v-if="maximized[id]" class="overlay-backdrop" @click="$emit('maximize', id)">
         <DraggablePanel class="overlay-panel" :id="id" :title="panelTitle(id)" @maximize="$emit('maximize', id)" @hide="$emit('maximize', id)" @drop="(panelId, x, y) => $emit('drop', panelId, x, y)">
-          <LeverPanelBody :id="id" :mode="mode" :trials="trials" :forces="forces" :resultant="resultant" :equilibriumForce="equilibriumForce" :isBalanced="isBalanced"
-            :masses="masses" :tiltDeg="tiltDeg" :netTorque="netTorque"
-            @removeTrial="$emit('removeTrial', $event)" @clearTrials="$emit('clearTrials')" @removeForce="$emit('removeForce', $event)" @updateForce="$emit('updateForce', $event, $event, $event)"
-            @removeMass="$emit('removeMass', $event)" @updateMass="$emit('updateMass', $event, $event, $event)" />
+          <LeverPanelBody :id="id" :mode="mode" :trials="trials" :forces="forces" :resultant="resultant" :equilibrium-force="equilibriumForce" :is-balanced="isBalanced"
+            :masses="masses" :tilt-deg="tiltDeg" :net-torque="netTorque"
+            @remove-trial="$emit('removeTrial', $event)" @clear-trials="$emit('clearTrials')" @remove-force="$emit('removeForce', $event)" @update-force="$emit('updateForce', $event, $event, $event)"
+            @remove-mass="$emit('removeMass', $event)" @update-mass="$emit('updateMass', $event, $event, $event)" />
         </DraggablePanel>
       </div>
     </template>

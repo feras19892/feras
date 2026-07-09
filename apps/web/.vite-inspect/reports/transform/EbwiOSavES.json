@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useTitrationRecorder.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { reactive } from 'vue';\nimport type { ChemAnalysisPayload, ChemAnalysisColumnMeta, ChemAnalysisEquation, ChemAnalysisPlotConfig } from '../../types/chemistry';\nimport { getLiquid } from './useChemistryLab';\n\ninterface TitrationReading {\n  vAdded: number; // mL of titrant added\n  ph: number;\n  temperature: number;\n}\n\nconst readings = reactive<TitrationReading[]>([]);\nlet lastPh: number | null = null;\n\nexport function recordTitrationStep(targetUid: string, vAdded: number) {\n  const liq = getLiquid(targetUid);\n  if (!liq || liq.ph == null) return;\n  const step = 0.5; // only record if pH changed by at least 0.5 or V changed by 1ml\n  if (readings.length === 0 || Math.abs(liq.ph - (lastPh ?? liq.ph)) >= step || readings[readings.length - 1].vAdded + 1 <= vAdded) {\n    readings.push({ vAdded, ph: liq.ph, temperature: liq.temperature });\n    lastPh = liq.ph;\n  }\n}\n\nexport function clearTitrationReadings() {\n  readings.splice(0, readings.length);\n  lastPh = null;\n}\n\nexport function getTitrationReadings(): TitrationReading[] {\n  return [...readings];\n}\n\nexport function hasTitrationData(): boolean {\n  return readings.length >= 3;\n}\n\nexport function buildTitrationPayload(experimentName: string, t: (key: string) => string): ChemAnalysisPayload {\n  const columns: ChemAnalysisColumnMeta[] = [\n    { key: 'vAdded', label: t('chemistryLab.addedBaseVolume'), unit: 'mL' },\n    { key: 'ph', label: 'pH', unit: '' },\n    { key: 'temperature', label: t('chemistryLab.temperatureLabel'), unit: '°C' },\n  ];\n  const rows = readings.map(r => ({ vAdded: +r.vAdded.toFixed(2), ph: +r.ph.toFixed(2), temperature: +r.temperature.toFixed(1) }));\n  const equations: ChemAnalysisEquation[] = [\n    {\n      name: t('chemistryLab.concentrationCalc'),\n      formula: 'M_acid = (M_base * V_eq) / V_acid',\n      variables: [\n        { symbol: 'M_base', label: t('chemistryLab.baseConcentrationKnown') },\n        { symbol: 'V_eq', label: t('chemistryLab.equivalenceVolume') },\n        { symbol: 'V_acid', label: t('chemistryLab.acidVolume') },\n      ],\n      solveFor: ['M_acid'],\n    },\n    {\n      name: t('chemistryLab.phCalc'),\n      formula: 'pH = -log10(H)',\n      variables: [\n        { symbol: 'H', label: t('chemistryLab.hPlusLabel') },\n      ],\n      solveFor: ['pH'],\n    },\n  ];\n  const plots: ChemAnalysisPlotConfig[] = [\n    { xKey: 'vAdded', yKey: 'ph', xLabel: t('chemistryLab.baseVolume'), yLabel: 'pH', type: 'scatter' },\n    { xKey: 'vAdded', yKey: 'temperature', xLabel: t('chemistryLab.baseVolume'), yLabel: t('chemistryLab.temperatureLabel'), type: 'line' },\n  ];\n  return {\n    sourceExperiment: 'titration',\n    sourceNameAr: experimentName || t('chemistryLab.acidBaseTitration'),\n    readings: rows,\n    columns,\n    equations,\n    suggestedPlots: plots,\n  };\n}\n",
+      "start": 1783634640343,
+      "end": 1783634640644,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640644,
+      "end": 1783634640644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { reactive } from \"vue\";\nimport { getLiquid } from \"./useChemistryLab\";\nconst readings = reactive([]);\nlet lastPh = null;\nexport function recordTitrationStep(targetUid, vAdded) {\n  const liq = getLiquid(targetUid);\n  if (!liq || liq.ph == null) return;\n  const step = 0.5;\n  if (readings.length === 0 || Math.abs(liq.ph - (lastPh ?? liq.ph)) >= step || readings[readings.length - 1].vAdded + 1 <= vAdded) {\n    readings.push({ vAdded, ph: liq.ph, temperature: liq.temperature });\n    lastPh = liq.ph;\n  }\n}\nexport function clearTitrationReadings() {\n  readings.splice(0, readings.length);\n  lastPh = null;\n}\nexport function getTitrationReadings() {\n  return [...readings];\n}\nexport function hasTitrationData() {\n  return readings.length >= 3;\n}\nexport function buildTitrationPayload(experimentName, t) {\n  const columns = [\n    { key: \"vAdded\", label: t(\"chemistryLab.addedBaseVolume\"), unit: \"mL\" },\n    { key: \"ph\", label: \"pH\", unit: \"\" },\n    { key: \"temperature\", label: t(\"chemistryLab.temperatureLabel\"), unit: \"°C\" }\n  ];\n  const rows = readings.map((r) => ({ vAdded: +r.vAdded.toFixed(2), ph: +r.ph.toFixed(2), temperature: +r.temperature.toFixed(1) }));\n  const equations = [\n    {\n      name: t(\"chemistryLab.concentrationCalc\"),\n      formula: \"M_acid = (M_base * V_eq) / V_acid\",\n      variables: [\n        { symbol: \"M_base\", label: t(\"chemistryLab.baseConcentrationKnown\") },\n        { symbol: \"V_eq\", label: t(\"chemistryLab.equivalenceVolume\") },\n        { symbol: \"V_acid\", label: t(\"chemistryLab.acidVolume\") }\n      ],\n      solveFor: [\"M_acid\"]\n    },\n    {\n      name: t(\"chemistryLab.phCalc\"),\n      formula: \"pH = -log10(H)\",\n      variables: [\n        { symbol: \"H\", label: t(\"chemistryLab.hPlusLabel\") }\n      ],\n      solveFor: [\"pH\"]\n    }\n  ];\n  const plots = [\n    { xKey: \"vAdded\", yKey: \"ph\", xLabel: t(\"chemistryLab.baseVolume\"), yLabel: \"pH\", type: \"scatter\" },\n    { xKey: \"vAdded\", yKey: \"temperature\", xLabel: t(\"chemistryLab.baseVolume\"), yLabel: t(\"chemistryLab.temperatureLabel\"), type: \"line\" }\n  ];\n  return {\n    sourceExperiment: \"titration\",\n    sourceNameAr: experimentName || t(\"chemistryLab.acidBaseTitration\"),\n    readings: rows,\n    columns,\n    equations,\n    suggestedPlots: plots\n  };\n}\n",
+      "start": 1783634640644,
+      "end": 1783634640829,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useTitrationRecorder.ts"
+        ],
+        "sourcesContent": [
+          "import { reactive } from 'vue';\nimport type { ChemAnalysisPayload, ChemAnalysisColumnMeta, ChemAnalysisEquation, ChemAnalysisPlotConfig } from '../../types/chemistry';\nimport { getLiquid } from './useChemistryLab';\n\ninterface TitrationReading {\n  vAdded: number; // mL of titrant added\n  ph: number;\n  temperature: number;\n}\n\nconst readings = reactive<TitrationReading[]>([]);\nlet lastPh: number | null = null;\n\nexport function recordTitrationStep(targetUid: string, vAdded: number) {\n  const liq = getLiquid(targetUid);\n  if (!liq || liq.ph == null) return;\n  const step = 0.5; // only record if pH changed by at least 0.5 or V changed by 1ml\n  if (readings.length === 0 || Math.abs(liq.ph - (lastPh ?? liq.ph)) >= step || readings[readings.length - 1].vAdded + 1 <= vAdded) {\n    readings.push({ vAdded, ph: liq.ph, temperature: liq.temperature });\n    lastPh = liq.ph;\n  }\n}\n\nexport function clearTitrationReadings() {\n  readings.splice(0, readings.length);\n  lastPh = null;\n}\n\nexport function getTitrationReadings(): TitrationReading[] {\n  return [...readings];\n}\n\nexport function hasTitrationData(): boolean {\n  return readings.length >= 3;\n}\n\nexport function buildTitrationPayload(experimentName: string, t: (key: string) => string): ChemAnalysisPayload {\n  const columns: ChemAnalysisColumnMeta[] = [\n    { key: 'vAdded', label: t('chemistryLab.addedBaseVolume'), unit: 'mL' },\n    { key: 'ph', label: 'pH', unit: '' },\n    { key: 'temperature', label: t('chemistryLab.temperatureLabel'), unit: '°C' },\n  ];\n  const rows = readings.map(r => ({ vAdded: +r.vAdded.toFixed(2), ph: +r.ph.toFixed(2), temperature: +r.temperature.toFixed(1) }));\n  const equations: ChemAnalysisEquation[] = [\n    {\n      name: t('chemistryLab.concentrationCalc'),\n      formula: 'M_acid = (M_base * V_eq) / V_acid',\n      variables: [\n        { symbol: 'M_base', label: t('chemistryLab.baseConcentrationKnown') },\n        { symbol: 'V_eq', label: t('chemistryLab.equivalenceVolume') },\n        { symbol: 'V_acid', label: t('chemistryLab.acidVolume') },\n      ],\n      solveFor: ['M_acid'],\n    },\n    {\n      name: t('chemistryLab.phCalc'),\n      formula: 'pH = -log10(H)',\n      variables: [\n        { symbol: 'H', label: t('chemistryLab.hPlusLabel') },\n      ],\n      solveFor: ['pH'],\n    },\n  ];\n  const plots: ChemAnalysisPlotConfig[] = [\n    { xKey: 'vAdded', yKey: 'ph', xLabel: t('chemistryLab.baseVolume'), yLabel: 'pH', type: 'scatter' },\n    { xKey: 'vAdded', yKey: 'temperature', xLabel: t('chemistryLab.baseVolume'), yLabel: t('chemistryLab.temperatureLabel'), type: 'line' },\n  ];\n  return {\n    sourceExperiment: 'titration',\n    sourceNameAr: experimentName || t('chemistryLab.acidBaseTitration'),\n    readings: rows,\n    columns,\n    equations,\n    suggestedPlots: plots,\n  };\n}\n"
+        ],
+        "mappings": "AAAA,SAAS,gBAAgB;AAEzB,SAAS,iBAAiB;AAQ1B,MAAM,WAAW,SAA6B,CAAC,CAAC;AAChD,IAAI,SAAwB;AAErB,gBAAS,oBAAoB,WAAmB,QAAgB;AACrE,QAAM,MAAM,UAAU,SAAS;AAC/B,MAAI,CAAC,OAAO,IAAI,MAAM,KAAM;AAC5B,QAAM,OAAO;AACb,MAAI,SAAS,WAAW,KAAK,KAAK,IAAI,IAAI,MAAM,UAAU,IAAI,GAAG,KAAK,QAAQ,SAAS,SAAS,SAAS,CAAC,EAAE,SAAS,KAAK,QAAQ;AAChI,aAAS,KAAK,EAAE,QAAQ,IAAI,IAAI,IAAI,aAAa,IAAI,YAAY,CAAC;AAClE,aAAS,IAAI;AAAA,EACf;AACF;AAEO,gBAAS,yBAAyB;AACvC,WAAS,OAAO,GAAG,SAAS,MAAM;AAClC,WAAS;AACX;AAEO,gBAAS,uBAA2C;AACzD,SAAO,CAAC,GAAG,QAAQ;AACrB;AAEO,gBAAS,mBAA4B;AAC1C,SAAO,SAAS,UAAU;AAC5B;AAEO,gBAAS,sBAAsB,gBAAwB,GAAiD;AAC7G,QAAM,UAAoC;AAAA,IACxC,EAAE,KAAK,UAAU,OAAO,EAAE,8BAA8B,GAAG,MAAM,KAAK;AAAA,IACtE,EAAE,KAAK,MAAM,OAAO,MAAM,MAAM,GAAG;AAAA,IACnC,EAAE,KAAK,eAAe,OAAO,EAAE,+BAA+B,GAAG,MAAM,KAAK;AAAA,EAC9E;AACA,QAAM,OAAO,SAAS,IAAI,QAAM,EAAE,QAAQ,CAAC,EAAE,OAAO,QAAQ,CAAC,GAAG,IAAI,CAAC,EAAE,GAAG,QAAQ,CAAC,GAAG,aAAa,CAAC,EAAE,YAAY,QAAQ,CAAC,EAAE,EAAE;AAC/H,QAAM,YAAoC;AAAA,IACxC;AAAA,MACE,MAAM,EAAE,gCAAgC;AAAA,MACxC,SAAS;AAAA,MACT,WAAW;AAAA,QACT,EAAE,QAAQ,UAAU,OAAO,EAAE,qCAAqC,EAAE;AAAA,QACpE,EAAE,QAAQ,QAAQ,OAAO,EAAE,gCAAgC,EAAE;AAAA,QAC7D,EAAE,QAAQ,UAAU,OAAO,EAAE,yBAAyB,EAAE;AAAA,MAC1D;AAAA,MACA,UAAU,CAAC,QAAQ;AAAA,IACrB;AAAA,IACA;AAAA,MACE,MAAM,EAAE,qBAAqB;AAAA,MAC7B,SAAS;AAAA,MACT,WAAW;AAAA,QACT,EAAE,QAAQ,KAAK,OAAO,EAAE,yBAAyB,EAAE;AAAA,MACrD;AAAA,MACA,UAAU,CAAC,IAAI;AAAA,IACjB;AAAA,EACF;AACA,QAAM,QAAkC;AAAA,IACtC,EAAE,MAAM,UAAU,MAAM,MAAM,QAAQ,EAAE,yBAAyB,GAAG,QAAQ,MAAM,MAAM,UAAU;AAAA,IAClG,EAAE,MAAM,UAAU,MAAM,eAAe,QAAQ,EAAE,yBAAyB,GAAG,QAAQ,EAAE,+BAA+B,GAAG,MAAM,OAAO;AAAA,EACxI;AACA,SAAO;AAAA,IACL,kBAAkB;AAAA,IAClB,cAAc,kBAAkB,EAAE,gCAAgC;AAAA,IAClE,UAAU;AAAA,IACV;AAAA,IACA;AAAA,IACA,gBAAgB;AAAA,EAClB;AACF;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640829,
+      "end": 1783634640829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640829,
+      "end": 1783634640829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640829,
+      "end": 1783634640829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640829,
+      "end": 1783634640829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640829,
+      "end": 1783634640829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640829,
+      "end": 1783634640829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640829,
+      "end": 1783634640829,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640829,
+      "end": 1783634640829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640829,
+      "end": 1783634640829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640829,
+      "end": 1783634640829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640829,
+      "end": 1783634640829,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640829,
+      "end": 1783634640829,
+      "order": "normal"
+    }
+  ]
+}

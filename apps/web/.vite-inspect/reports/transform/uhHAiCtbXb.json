@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/ThermalExpansionPanelBody.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport type { ThermalExpansionTrial } from '../../../composables/thermal-expansion/useThermalExpansionTrials'\nimport ThermalExpansionReadingsPanel from './panels/ThermalExpansionReadingsPanel.vue'\nimport ThermalExpansionChartPanel from './panels/ThermalExpansionChartPanel.vue'\nimport ThermalExpansionTrialsPanel from './panels/ThermalExpansionTrialsPanel.vue'\nimport ThermalExpansionParamsPanel from './panels/ThermalExpansionParamsPanel.vue'\nimport ThermalExpansionLawsPanel from './panels/ThermalExpansionLawsPanel.vue'\nimport ThermalExpansionResultsPanel from './panels/ThermalExpansionResultsPanel.vue'\n\ninterface Props { id: string; trials: ThermalExpansionTrial[]; params: { material: string; L0: number; t0: number; t1: number }; alpha: number; dL: number; L1: number }\ndefineProps<Props>()\nconst emit = defineEmits<{\n  (e: 'remove', id: number): void\n  (e: 'clear'): void\n  (e: 'update:params', p: { material: string; L0: number; t0: number; t1: number }): void\n  (e: 'hoverField', field: string): void\n}>()\n</script>\n<template>\n  <div>\n    <ThermalExpansionReadingsPanel v-if=\"id === 'readings'\" :material=\"params.material\" :L0=\"params.L0\" :t0=\"params.t0\" :t1=\"params.t1\" :d-l=\"dL\" :L1=\"L1\" :alpha=\"alpha\" @hover-field=\"emit('hoverField', $event)\" />\n    <ThermalExpansionChartPanel v-else-if=\"id === 'chart'\" :trials=\"trials\" />\n    <ThermalExpansionTrialsPanel v-else-if=\"id === 'trials'\" :trials=\"trials\" @remove=\"emit('remove', $event)\" @clear=\"emit('clear')\" />\n    <ThermalExpansionParamsPanel v-else-if=\"id === 'params'\" :params=\"params\" @update:params=\"emit('update:params', $event)\" />\n    <ThermalExpansionLawsPanel v-else-if=\"id === 'laws'\" :L0=\"params.L0\" :t0=\"params.t0\" :t1=\"params.t1\" :alpha=\"alpha\" :d-l=\"dL\" :material=\"params.material\" />\n    <ThermalExpansionResultsPanel v-else-if=\"id === 'results'\" :trials=\"trials\" />\n  </div>\n</template>\n",
+      "start": 1783634640990,
+      "end": 1783634641462,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641462,
+      "end": 1783634641462,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641462,
+      "end": 1783634641462,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641462,
+      "end": 1783634641462,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641462,
+      "end": 1783634641462,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/ThermalExpansionPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/ThermalExpansionPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nexport default _sfc_main;\n",
+      "start": 1783634641462,
+      "end": 1783634641655,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641655,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641656,
+      "end": 1783634641656,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641656,
+      "end": 1783634641657,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641657,
+      "end": 1783634641657,
+      "order": "normal"
+    }
+  ]
+}

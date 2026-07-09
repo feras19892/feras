@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/admin/AdminUserManager.vue?vue&type=style&index=0&scoped=7afa291c&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.section { color: #e2e8f0; }\n.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }\n.section-header h3 { margin: 0; font-size: 1.1rem; }\n.section-actions { display: flex; gap: 0.5rem; align-items: center; }\n.search-input { padding: 0.4rem 0.8rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; font-size: 0.85rem; min-width: 200px; }\n.btn-primary { padding: 0.45rem 0.9rem; border-radius: 0.5rem; border: none; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 0.85rem; }\n.empty { text-align: center; color: #64748b; padding: 2rem; }\n.table-wrapper { overflow-x: auto; }\n.data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }\n.data-table th { text-align: right; padding: 0.6rem 0.75rem; color: #94a3b8; border-bottom: 1px solid rgba(255,255,255,0.08); font-weight: 600; }\n.data-table td { padding: 0.6rem 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.04); color: #e2e8f0; }\n.data-table tr:hover { background: rgba(255,255,255,0.02); }\n.data-table select { padding: 0.2rem 0.4rem; border-radius: 0.3rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; }\n.btn-danger { padding: 0.3rem 0.6rem; border-radius: 0.35rem; border: none; background: rgba(239,68,68,0.15); color: #f87171; cursor: pointer; font-family: inherit; font-size: 0.8rem; }\n.btn-danger:hover { background: rgba(239,68,68,0.25); }\n.btn-view { padding: 0.3rem 0.6rem; border-radius: 0.35rem; border: none; background: rgba(59,130,246,0.15); color: #60a5fa; cursor: pointer; font-family: inherit; font-size: 0.8rem; margin-left: 0.3rem; }\n.btn-view:hover { background: rgba(59,130,246,0.25); }\n\n.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 200; }\n.modal-content { background: #111827; border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; padding: 1.5rem; width: 100%; max-width: 420px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }\n.modal-content h4 { margin: 0 0 1rem; color: #e2e8f0; font-size: 1rem; }\n.form-row { margin-bottom: 0.75rem; }\n.form-row label { display: block; font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.25rem; }\n.form-row input, .form-row select { width: 100%; padding: 0.5rem; border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; font-size: 0.85rem; box-sizing: border-box; }\n.modal-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }\n.modal-actions button { flex: 1; padding: 0.55rem; border-radius: 0.5rem; font-family: inherit; font-weight: 700; cursor: pointer; }\n.btn-cancel { background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); }\n.btn-submit { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none; }\n.msg.error { color: #f87171; font-size: 0.85rem; margin: 0.5rem 0; }\n",
+      "start": 1783634640067,
+      "end": 1783634640067
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.section { color: #e2e8f0; }\n.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }\n.section-header h3 { margin: 0; font-size: 1.1rem; }\n.section-actions { display: flex; gap: 0.5rem; align-items: center; }\n.search-input { padding: 0.4rem 0.8rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; font-size: 0.85rem; min-width: 200px; }\n.btn-primary { padding: 0.45rem 0.9rem; border-radius: 0.5rem; border: none; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 0.85rem; }\n.empty { text-align: center; color: #64748b; padding: 2rem; }\n.table-wrapper { overflow-x: auto; }\n.data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }\n.data-table th { text-align: right; padding: 0.6rem 0.75rem; color: #94a3b8; border-bottom: 1px solid rgba(255,255,255,0.08); font-weight: 600; }\n.data-table td { padding: 0.6rem 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.04); color: #e2e8f0; }\n.data-table tr:hover { background: rgba(255,255,255,0.02); }\n.data-table select { padding: 0.2rem 0.4rem; border-radius: 0.3rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; }\n.btn-danger { padding: 0.3rem 0.6rem; border-radius: 0.35rem; border: none; background: rgba(239,68,68,0.15); color: #f87171; cursor: pointer; font-family: inherit; font-size: 0.8rem; }\n.btn-danger:hover { background: rgba(239,68,68,0.25); }\n.btn-view { padding: 0.3rem 0.6rem; border-radius: 0.35rem; border: none; background: rgba(59,130,246,0.15); color: #60a5fa; cursor: pointer; font-family: inherit; font-size: 0.8rem; margin-left: 0.3rem; }\n.btn-view:hover { background: rgba(59,130,246,0.25); }\n\n.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 200; }\n.modal-content { background: #111827; border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; padding: 1.5rem; width: 100%; max-width: 420px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }\n.modal-content h4 { margin: 0 0 1rem; color: #e2e8f0; font-size: 1rem; }\n.form-row { margin-bottom: 0.75rem; }\n.form-row label { display: block; font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.25rem; }\n.form-row input, .form-row select { width: 100%; padding: 0.5rem; border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; font-size: 0.85rem; box-sizing: border-box; }\n.modal-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }\n.modal-actions button { flex: 1; padding: 0.55rem; border-radius: 0.5rem; font-family: inherit; font-weight: 700; cursor: pointer; }\n.btn-cancel { background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); }\n.btn-submit { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none; }\n.msg.error { color: #f87171; font-size: 0.85rem; margin: 0.5rem 0; }\n",
+      "start": 1783634640068,
+      "end": 1783634640068,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640068,
+      "end": 1783634640068,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640068,
+      "end": 1783634640068,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640068,
+      "end": 1783634640068,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.section[data-v-7afa291c] { color: #e2e8f0;\n}\n.section-header[data-v-7afa291c] { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;\n}\n.section-header h3[data-v-7afa291c] { margin: 0; font-size: 1.1rem;\n}\n.section-actions[data-v-7afa291c] { display: flex; gap: 0.5rem; align-items: center;\n}\n.search-input[data-v-7afa291c] { padding: 0.4rem 0.8rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; font-size: 0.85rem; min-width: 200px;\n}\n.btn-primary[data-v-7afa291c] { padding: 0.45rem 0.9rem; border-radius: 0.5rem; border: none; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 0.85rem;\n}\n.empty[data-v-7afa291c] { text-align: center; color: #64748b; padding: 2rem;\n}\n.table-wrapper[data-v-7afa291c] { overflow-x: auto;\n}\n.data-table[data-v-7afa291c] { width: 100%; border-collapse: collapse; font-size: 0.85rem;\n}\n.data-table th[data-v-7afa291c] { text-align: right; padding: 0.6rem 0.75rem; color: #94a3b8; border-bottom: 1px solid rgba(255,255,255,0.08); font-weight: 600;\n}\n.data-table td[data-v-7afa291c] { padding: 0.6rem 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.04); color: #e2e8f0;\n}\n.data-table tr[data-v-7afa291c]:hover { background: rgba(255,255,255,0.02);\n}\n.data-table select[data-v-7afa291c] { padding: 0.2rem 0.4rem; border-radius: 0.3rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit;\n}\n.btn-danger[data-v-7afa291c] { padding: 0.3rem 0.6rem; border-radius: 0.35rem; border: none; background: rgba(239,68,68,0.15); color: #f87171; cursor: pointer; font-family: inherit; font-size: 0.8rem;\n}\n.btn-danger[data-v-7afa291c]:hover { background: rgba(239,68,68,0.25);\n}\n.btn-view[data-v-7afa291c] { padding: 0.3rem 0.6rem; border-radius: 0.35rem; border: none; background: rgba(59,130,246,0.15); color: #60a5fa; cursor: pointer; font-family: inherit; font-size: 0.8rem; margin-left: 0.3rem;\n}\n.btn-view[data-v-7afa291c]:hover { background: rgba(59,130,246,0.25);\n}\n.modal-overlay[data-v-7afa291c] { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 200;\n}\n.modal-content[data-v-7afa291c] { background: #111827; border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; padding: 1.5rem; width: 100%; max-width: 420px; box-shadow: 0 25px 50px rgba(0,0,0,0.5);\n}\n.modal-content h4[data-v-7afa291c] { margin: 0 0 1rem; color: #e2e8f0; font-size: 1rem;\n}\n.form-row[data-v-7afa291c] { margin-bottom: 0.75rem;\n}\n.form-row label[data-v-7afa291c] { display: block; font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.25rem;\n}\n.form-row input[data-v-7afa291c], .form-row select[data-v-7afa291c] { width: 100%; padding: 0.5rem; border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; font-size: 0.85rem; box-sizing: border-box;\n}\n.modal-actions[data-v-7afa291c] { display: flex; gap: 0.5rem; margin-top: 1rem;\n}\n.modal-actions button[data-v-7afa291c] { flex: 1; padding: 0.55rem; border-radius: 0.5rem; font-family: inherit; font-weight: 700; cursor: pointer;\n}\n.btn-cancel[data-v-7afa291c] { background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1);\n}\n.btn-submit[data-v-7afa291c] { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none;\n}\n.msg.error[data-v-7afa291c] { color: #f87171; font-size: 0.85rem; margin: 0.5rem 0;\n}\n",
+      "start": 1783634640068,
+      "end": 1783634640069,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640069,
+      "end": 1783634640069,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634640069,
+      "end": 1783634640069,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640069,
+      "end": 1783634640069,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640069,
+      "end": 1783634640069,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640069,
+      "end": 1783634640069,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640069,
+      "end": 1783634640069,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640069,
+      "end": 1783634640069,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640069,
+      "end": 1783634640069,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640069,
+      "end": 1783634640069,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640069,
+      "end": 1783634640069,
+      "order": "normal"
+    }
+  ]
+}

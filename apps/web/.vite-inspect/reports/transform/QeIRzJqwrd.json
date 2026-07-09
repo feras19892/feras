@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisDataTable.vue?vue&type=style&index=0&scoped=86baf2d6&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.table-panel {\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.5rem;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n  min-height: 0;\n}\n.panel-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 0.5rem 0.75rem;\n  background: rgba(255,255,255,0.04);\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n  font-size: 0.85rem;\n  color: #67e8f9;\n  font-weight: 600;\n}\n.btn-add {\n  background: rgba(34,197,94,0.15);\n  border: 1px solid rgba(34,197,94,0.3);\n  color: #4ade80;\n  border-radius: 0.3rem;\n  padding: 0.2rem 0.5rem;\n  font-size: 0.75rem;\n  cursor: pointer;\n}\n.table-wrap { overflow: auto; flex: 1; min-height: 0; }\ntable { width: 100%; border-collapse: collapse; font-size: 0.95rem; }\nth, td { padding: 0.5rem 0.6rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08); }\nth { color: #94a3b8; font-weight: 700; background: rgba(255,255,255,0.06); position: sticky; top: 0; font-size: 0.92rem; letter-spacing: 0.3px; }\ntbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }\ntbody tr:hover { background: rgba(91,141,184,0.05); }\n.idx { color: #64748b; width: 24px; font-size: 0.8rem; }\n.unit { color: #64748b; font-size: 0.65rem; }\ninput {\n  width: 100%;\n  padding: 0.4rem 0.3rem;\n  border-radius: 0.3rem;\n  border: 1px solid #334155;\n  background: #0f172a;\n  color: #e2e8f0;\n  font-size: 0.95rem;\n  text-align: center;\n  font-weight: 600;\n  transition: border-color 0.15s, box-shadow 0.15s;\n}\ninput:focus {\n  outline: none;\n  border-color: #5B8DB8;\n  box-shadow: 0 0 0 2px rgba(91,141,184,0.15);\n}\n.btn-del {\n  background: none;\n  border: none;\n  color: #f87171;\n  cursor: pointer;\n  font-size: 0.7rem;\n  padding: 0.05rem 0.2rem;\n}\n.empty { color: #64748b; text-align: center; padding: 2rem; font-size: 0.9rem; }\ntd.outlier input {\n  background: rgba(245,158,11,0.15);\n  border-color: rgba(245,158,11,0.5);\n  color: #fbbf24;\n}\n",
+      "start": 1783634640913,
+      "end": 1783634640913
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.table-panel {\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.5rem;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n  min-height: 0;\n}\n.panel-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 0.5rem 0.75rem;\n  background: rgba(255,255,255,0.04);\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n  font-size: 0.85rem;\n  color: #67e8f9;\n  font-weight: 600;\n}\n.btn-add {\n  background: rgba(34,197,94,0.15);\n  border: 1px solid rgba(34,197,94,0.3);\n  color: #4ade80;\n  border-radius: 0.3rem;\n  padding: 0.2rem 0.5rem;\n  font-size: 0.75rem;\n  cursor: pointer;\n}\n.table-wrap { overflow: auto; flex: 1; min-height: 0; }\ntable { width: 100%; border-collapse: collapse; font-size: 0.95rem; }\nth, td { padding: 0.5rem 0.6rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08); }\nth { color: #94a3b8; font-weight: 700; background: rgba(255,255,255,0.06); position: sticky; top: 0; font-size: 0.92rem; letter-spacing: 0.3px; }\ntbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }\ntbody tr:hover { background: rgba(91,141,184,0.05); }\n.idx { color: #64748b; width: 24px; font-size: 0.8rem; }\n.unit { color: #64748b; font-size: 0.65rem; }\ninput {\n  width: 100%;\n  padding: 0.4rem 0.3rem;\n  border-radius: 0.3rem;\n  border: 1px solid #334155;\n  background: #0f172a;\n  color: #e2e8f0;\n  font-size: 0.95rem;\n  text-align: center;\n  font-weight: 600;\n  transition: border-color 0.15s, box-shadow 0.15s;\n}\ninput:focus {\n  outline: none;\n  border-color: #5B8DB8;\n  box-shadow: 0 0 0 2px rgba(91,141,184,0.15);\n}\n.btn-del {\n  background: none;\n  border: none;\n  color: #f87171;\n  cursor: pointer;\n  font-size: 0.7rem;\n  padding: 0.05rem 0.2rem;\n}\n.empty { color: #64748b; text-align: center; padding: 2rem; font-size: 0.9rem; }\ntd.outlier input {\n  background: rgba(245,158,11,0.15);\n  border-color: rgba(245,158,11,0.5);\n  color: #fbbf24;\n}\n",
+      "start": 1783634640913,
+      "end": 1783634640913,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640913,
+      "end": 1783634640913,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640913,
+      "end": 1783634640913,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640913,
+      "end": 1783634640913,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.table-panel[data-v-86baf2d6] {\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.5rem;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n  min-height: 0;\n}\n.panel-header[data-v-86baf2d6] {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 0.5rem 0.75rem;\n  background: rgba(255,255,255,0.04);\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n  font-size: 0.85rem;\n  color: #67e8f9;\n  font-weight: 600;\n}\n.btn-add[data-v-86baf2d6] {\n  background: rgba(34,197,94,0.15);\n  border: 1px solid rgba(34,197,94,0.3);\n  color: #4ade80;\n  border-radius: 0.3rem;\n  padding: 0.2rem 0.5rem;\n  font-size: 0.75rem;\n  cursor: pointer;\n}\n.table-wrap[data-v-86baf2d6] { overflow: auto; flex: 1; min-height: 0;\n}\ntable[data-v-86baf2d6] { width: 100%; border-collapse: collapse; font-size: 0.95rem;\n}\nth[data-v-86baf2d6], td[data-v-86baf2d6] { padding: 0.5rem 0.6rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08);\n}\nth[data-v-86baf2d6] { color: #94a3b8; font-weight: 700; background: rgba(255,255,255,0.06); position: sticky; top: 0; font-size: 0.92rem; letter-spacing: 0.3px;\n}\ntbody tr[data-v-86baf2d6]:nth-child(even) { background: rgba(255,255,255,0.02);\n}\ntbody tr[data-v-86baf2d6]:hover { background: rgba(91,141,184,0.05);\n}\n.idx[data-v-86baf2d6] { color: #64748b; width: 24px; font-size: 0.8rem;\n}\n.unit[data-v-86baf2d6] { color: #64748b; font-size: 0.65rem;\n}\ninput[data-v-86baf2d6] {\n  width: 100%;\n  padding: 0.4rem 0.3rem;\n  border-radius: 0.3rem;\n  border: 1px solid #334155;\n  background: #0f172a;\n  color: #e2e8f0;\n  font-size: 0.95rem;\n  text-align: center;\n  font-weight: 600;\n  transition: border-color 0.15s, box-shadow 0.15s;\n}\ninput[data-v-86baf2d6]:focus {\n  outline: none;\n  border-color: #5B8DB8;\n  box-shadow: 0 0 0 2px rgba(91,141,184,0.15);\n}\n.btn-del[data-v-86baf2d6] {\n  background: none;\n  border: none;\n  color: #f87171;\n  cursor: pointer;\n  font-size: 0.7rem;\n  padding: 0.05rem 0.2rem;\n}\n.empty[data-v-86baf2d6] { color: #64748b; text-align: center; padding: 2rem; font-size: 0.9rem;\n}\ntd.outlier input[data-v-86baf2d6] {\n  background: rgba(245,158,11,0.15);\n  border-color: rgba(245,158,11,0.5);\n  color: #fbbf24;\n}\n",
+      "start": 1783634640913,
+      "end": 1783634640914,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640914,
+      "end": 1783634640914,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634640914,
+      "end": 1783634640914,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640914,
+      "end": 1783634640914,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640914,
+      "end": 1783634640914,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640914,
+      "end": 1783634640914,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640914,
+      "end": 1783634640914,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640914,
+      "end": 1783634640914,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640914,
+      "end": 1783634640914,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640914,
+      "end": 1783634640914,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640914,
+      "end": 1783634640914,
+      "order": "normal"
+    }
+  ]
+}

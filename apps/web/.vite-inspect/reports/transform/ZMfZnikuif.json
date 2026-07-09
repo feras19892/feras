@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/interference/InterferencePanelBody.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport type { InterferenceTrial } from '../../../composables/interference/useInterferenceTrials'\nimport InterferenceReadingsPanel from './panels/InterferenceReadingsPanel.vue'\nimport InterferenceChartPanel from './panels/InterferenceChartPanel.vue'\nimport InterferenceTrialsPanel from './panels/InterferenceTrialsPanel.vue'\nimport InterferenceParamsPanel from './panels/InterferenceParamsPanel.vue'\nimport InterferenceLawsPanel from './panels/InterferenceLawsPanel.vue'\nimport InterferenceResultsPanel from './panels/InterferenceResultsPanel.vue'\n\ninterface Props {\n  id: string\n  trials: InterferenceTrial[]\n  params: { slitDistance: number; screenDistance: number; wavelength: number; slitWidth: number }\n  fringeSpacing: number\n  angularSeparation: number\n  intensityPattern: { xMm: number; intensity: number }[]\n  regressionSlope: number\n  regressionIntercept: number\n  rSquared: number\n  lambdaFromRegression: number | null\n}\ndefineProps<Props>()\nconst emit = defineEmits<{\n  (e: 'remove', id: number): void\n  (e: 'clear'): void\n  (e: 'update:params', params: { slitDistance: number; screenDistance: number; wavelength: number; slitWidth: number }): void\n}>()\n</script>\n\n<template>\n  <div>\n    <InterferenceReadingsPanel\n      v-if=\"id === 'readings'\"\n      :slit-distance=\"params.slitDistance\"\n      :screen-distance=\"params.screenDistance\"\n      :wavelength=\"params.wavelength\"\n      :slit-width=\"params.slitWidth\"\n      :fringe-spacing=\"fringeSpacing\"\n      :angular-separation=\"angularSeparation\"\n    />\n    <InterferenceChartPanel\n      v-else-if=\"id === 'chart'\"\n      :trials=\"trials\"\n      :regression-slope=\"regressionSlope\"\n      :regression-intercept=\"regressionIntercept\"\n      :r-squared=\"rSquared\"\n      :intensity-pattern=\"intensityPattern\"\n    />\n    <InterferenceTrialsPanel\n      v-else-if=\"id === 'trials'\"\n      :trials=\"trials\"\n      @remove=\"emit('remove', $event)\"\n      @clear=\"emit('clear')\"\n    />\n    <InterferenceParamsPanel\n      v-else-if=\"id === 'params'\"\n      :params=\"params\"\n      @update:params=\"emit('update:params', $event)\"\n    />\n    <InterferenceLawsPanel\n      v-else-if=\"id === 'laws'\"\n      :slit-distance=\"params.slitDistance\"\n      :screen-distance=\"params.screenDistance\"\n      :wavelength=\"params.wavelength\"\n      :fringe-spacing=\"fringeSpacing\"\n    />\n    <InterferenceResultsPanel\n      v-else-if=\"id === 'results'\"\n      :trials=\"trials\"\n      :regression-slope=\"regressionSlope\"\n      :regression-intercept=\"regressionIntercept\"\n      :r-squared=\"rSquared\"\n      :lambda-from-regression=\"lambdaFromRegression\"\n      :theoretical-lambda=\"params.wavelength\"\n      :screen-distance=\"params.screenDistance\"\n    />\n  </div>\n</template>\n",
+      "start": 1783634640927,
+      "end": 1783634641283,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641283,
+      "end": 1783634641283,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641283,
+      "end": 1783634641283,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641283,
+      "end": 1783634641283,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641283,
+      "end": 1783634641283,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/interference/InterferencePanelBody.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/interference/InterferencePanelBody.vue?vue&type=script&setup=true&lang.ts\";\nexport default _sfc_main;\n",
+      "start": 1783634641283,
+      "end": 1783634641637,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641637,
+      "end": 1783634641637,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/lever/useLeverLab.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { ref } from 'vue'\nimport { useLeverPhysics } from '../../modules/physics/experiments/lever/useLeverPhysics'\nimport { useLeverBeamPhysics } from '../../modules/physics/experiments/lever/useLeverBeamPhysics'\n\nexport type LeverMode = 'vector' | 'beam'\n\nexport function useLeverLab() {\n  const mode = ref<LeverMode>('vector')\n  const vector = useLeverPhysics()\n  const beam = useLeverBeamPhysics()\n\n  function togglePause() {\n    if (mode.value === 'vector') {\n      vector.state.running = !vector.state.running\n      vector.state.paused = false\n    }\n  }\n\n  function resetSim() {\n    if (mode.value === 'vector') vector.reset()\n    else beam.reset()\n  }\n  function cleanup() {}\n\n  function setMode(m: LeverMode) { mode.value = m; resetSim() }\n\n  return {\n    mode, setMode,\n    vector, beam,\n    running: ref(false), paused: ref(false),\n    addForce: vector.addForce, removeForce: vector.removeForce, updateForce: vector.updateForce,\n    addMass: beam.addMass, removeMass: beam.removeMass, updateMass: beam.updateMass,\n    resetSim, togglePause, cleanup,\n    resultant: vector.resultant, equilibriumForce: vector.equilibriumForce, isBalanced: vector.isBalanced,\n    netTorque: beam.netTorque, tiltDeg: beam.tiltDeg, leftTorque: beam.leftTorque, rightTorque: beam.rightTorque,\n  }\n}\n",
+      "start": 1783634641856,
+      "end": 1783634642177,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642177,
+      "end": 1783634642177,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { ref } from \"vue\";\nimport { useLeverPhysics } from \"../../modules/physics/experiments/lever/useLeverPhysics\";\nimport { useLeverBeamPhysics } from \"../../modules/physics/experiments/lever/useLeverBeamPhysics\";\nexport function useLeverLab() {\n  const mode = ref(\"vector\");\n  const vector = useLeverPhysics();\n  const beam = useLeverBeamPhysics();\n  function togglePause() {\n    if (mode.value === \"vector\") {\n      vector.state.running = !vector.state.running;\n      vector.state.paused = false;\n    }\n  }\n  function resetSim() {\n    if (mode.value === \"vector\") vector.reset();\n    else beam.reset();\n  }\n  function cleanup() {\n  }\n  function setMode(m) {\n    mode.value = m;\n    resetSim();\n  }\n  return {\n    mode,\n    setMode,\n    vector,\n    beam,\n    running: ref(false),\n    paused: ref(false),\n    addForce: vector.addForce,\n    removeForce: vector.removeForce,\n    updateForce: vector.updateForce,\n    addMass: beam.addMass,\n    removeMass: beam.removeMass,\n    updateMass: beam.updateMass,\n    resetSim,\n    togglePause,\n    cleanup,\n    resultant: vector.resultant,\n    equilibriumForce: vector.equilibriumForce,\n    isBalanced: vector.isBalanced,\n    netTorque: beam.netTorque,\n    tiltDeg: beam.tiltDeg,\n    leftTorque: beam.leftTorque,\n    rightTorque: beam.rightTorque\n  };\n}\n",
+      "start": 1783634642177,
+      "end": 1783634642326,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/lever/useLeverLab.ts"
+        ],
+        "sourcesContent": [
+          "import { ref } from 'vue'\nimport { useLeverPhysics } from '../../modules/physics/experiments/lever/useLeverPhysics'\nimport { useLeverBeamPhysics } from '../../modules/physics/experiments/lever/useLeverBeamPhysics'\n\nexport type LeverMode = 'vector' | 'beam'\n\nexport function useLeverLab() {\n  const mode = ref<LeverMode>('vector')\n  const vector = useLeverPhysics()\n  const beam = useLeverBeamPhysics()\n\n  function togglePause() {\n    if (mode.value === 'vector') {\n      vector.state.running = !vector.state.running\n      vector.state.paused = false\n    }\n  }\n\n  function resetSim() {\n    if (mode.value === 'vector') vector.reset()\n    else beam.reset()\n  }\n  function cleanup() {}\n\n  function setMode(m: LeverMode) { mode.value = m; resetSim() }\n\n  return {\n    mode, setMode,\n    vector, beam,\n    running: ref(false), paused: ref(false),\n    addForce: vector.addForce, removeForce: vector.removeForce, updateForce: vector.updateForce,\n    addMass: beam.addMass, removeMass: beam.removeMass, updateMass: beam.updateMass,\n    resetSim, togglePause, cleanup,\n    resultant: vector.resultant, equilibriumForce: vector.equilibriumForce, isBalanced: vector.isBalanced,\n    netTorque: beam.netTorque, tiltDeg: beam.tiltDeg, leftTorque: beam.leftTorque, rightTorque: beam.rightTorque,\n  }\n}\n"
+        ],
+        "mappings": "AAAA,SAAS,WAAW;AACpB,SAAS,uBAAuB;AAChC,SAAS,2BAA2B;AAI7B,gBAAS,cAAc;AAC5B,QAAM,OAAO,IAAe,QAAQ;AACpC,QAAM,SAAS,gBAAgB;AAC/B,QAAM,OAAO,oBAAoB;AAEjC,WAAS,cAAc;AACrB,QAAI,KAAK,UAAU,UAAU;AAC3B,aAAO,MAAM,UAAU,CAAC,OAAO,MAAM;AACrC,aAAO,MAAM,SAAS;AAAA,IACxB;AAAA,EACF;AAEA,WAAS,WAAW;AAClB,QAAI,KAAK,UAAU,SAAU,QAAO,MAAM;AAAA,QACrC,MAAK,MAAM;AAAA,EAClB;AACA,WAAS,UAAU;AAAA,EAAC;AAEpB,WAAS,QAAQ,GAAc;AAAE,SAAK,QAAQ;AAAG,aAAS;AAAA,EAAE;AAE5D,SAAO;AAAA,IACL;AAAA,IAAM;AAAA,IACN;AAAA,IAAQ;AAAA,IACR,SAAS,IAAI,KAAK;AAAA,IAAG,QAAQ,IAAI,KAAK;AAAA,IACtC,UAAU,OAAO;AAAA,IAAU,aAAa,OAAO;AAAA,IAAa,aAAa,OAAO;AAAA,IAChF,SAAS,KAAK;AAAA,IAAS,YAAY,KAAK;AAAA,IAAY,YAAY,KAAK;AAAA,IACrE;AAAA,IAAU;AAAA,IAAa;AAAA,IACvB,WAAW,OAAO;AAAA,IAAW,kBAAkB,OAAO;AAAA,IAAkB,YAAY,OAAO;AAAA,IAC3F,WAAW,KAAK;AAAA,IAAW,SAAS,KAAK;AAAA,IAAS,YAAY,KAAK;AAAA,IAAY,aAAa,KAAK;AAAA,EACnG;AACF;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642326,
+      "end": 1783634642326,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642326,
+      "end": 1783634642326,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642326,
+      "end": 1783634642326,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642326,
+      "end": 1783634642326,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642326,
+      "end": 1783634642326,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642326,
+      "end": 1783634642326,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642326,
+      "end": 1783634642326,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642326,
+      "end": 1783634642326,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642326,
+      "end": 1783634642326,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642326,
+      "end": 1783634642326,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642326,
+      "end": 1783634642327,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642327,
+      "end": 1783634642327,
+      "order": "normal"
+    }
+  ]
+}

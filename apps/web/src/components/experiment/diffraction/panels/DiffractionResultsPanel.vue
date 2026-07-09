@@ -1,37 +1,59 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from '../../../../composables/useI18n'
 import type { DiffractionTrial } from '../../../../composables/diffraction/useDiffractionTrials'
-
 const { t } = useI18n()
 
 interface Props {
   trials: DiffractionTrial[]
+  regressionSlope: number
+  regressionIntercept: number
+  rSquared: number
+  lambdaFromRegression: number | null
+  theoreticalLambda: number
+  screenDistance: number
 }
-defineProps<Props>()
+const props = defineProps<Props>()
+
+const singleTrials = computed(() => props.trials.filter(t => t.mode === 'single'))
+
+const errorPercent = computed(() => {
+  if (props.lambdaFromRegression === null || props.theoreticalLambda <= 0) return null
+  return Math.abs((props.lambdaFromRegression - props.theoreticalLambda) / props.theoreticalLambda) * 100
+})
 </script>
 
 <template>
   <div class="panel-body">
     <div v-if="trials.length >= 2" class="results">
-      <div class="res-row">
-        <span class="res-label">Trials</span>
-        <span class="res-val">{{ trials.length }}</span>
-      </div>
+      <div class="res-row"><span class="res-label">Trials</span><span class="res-val">{{ trials.length }}</span></div>
+
+      <!-- Single slit regression results per report: y = λD · (1/a) -->
+      <template v-if="singleTrials.length >= 2">
+        <div class="res-row"><span class="res-label">Slope (= λ·D/1000)</span><span class="res-val highlight">{{ regressionSlope.toFixed(3) }}</span></div>
+        <div class="res-row"><span class="res-label">D (screen dist)</span><span class="res-val">{{ screenDistance.toFixed(2) }} m</span></div>
+        <div class="res-row" v-if="lambdaFromRegression !== null"><span class="res-label">λ (from slope)</span><span class="res-val green">{{ lambdaFromRegression.toFixed(1) }} nm</span></div>
+        <div class="res-row"><span class="res-label">λ (theory)</span><span class="res-val">{{ theoreticalLambda }} nm</span></div>
+        <div class="res-row"><span class="res-label">R²</span><span class="res-val">{{ rSquared.toFixed(4) }}</span></div>
+        <div class="res-row" v-if="errorPercent !== null"><span class="res-label">Error %</span><span class="res-val">{{ errorPercent.toFixed(2) }}%</span></div>
+        <div class="divider"></div>
+      </template>
+
       <div class="res-row" v-if="trials[0]?.mode === 'single'">
         <span class="res-label">Avg w</span>
-        <span class="res-val green">{{ (trials.reduce((s, t) => s + t.centralWidth, 0) / trials.length).toFixed(3) }} mm</span>
+        <span class="res-val">{{ (trials.reduce((s, t) => s + t.centralWidth, 0) / trials.length).toFixed(3) }} mm</span>
       </div>
       <div class="res-row" v-else>
         <span class="res-label">Avg θ₁</span>
-        <span class="res-val green">{{ (trials.reduce((s, t) => s + t.firstOrderAngle, 0) / trials.length).toFixed(3) }}°</span>
+        <span class="res-val">{{ (trials.reduce((s, t) => s + t.firstOrderAngle, 0) / trials.length).toFixed(3) }}°</span>
       </div>
       <div class="res-row" v-if="trials[0]?.mode === 'single'">
         <span class="res-label">Avg y₁</span>
-        <span class="res-val green">{{ (trials.reduce((s, t) => s + t.darkFringe1, 0) / trials.length).toFixed(3) }} mm</span>
+        <span class="res-val">{{ (trials.reduce((s, t) => s + t.darkFringe1, 0) / trials.length).toFixed(3) }} mm</span>
       </div>
       <div class="res-row" v-else>
         <span class="res-label">Avg y₁</span>
-        <span class="res-val green">{{ (trials.reduce((s, t) => s + t.firstOrderY, 0) / trials.length).toFixed(3) }} mm</span>
+        <span class="res-val">{{ (trials.reduce((s, t) => s + t.firstOrderY, 0) / trials.length).toFixed(3) }} mm</span>
       </div>
     </div>
     <p v-else class="empty">{{ t('experiments.recordAtLeastTwo') }}</p>
@@ -45,5 +67,7 @@ defineProps<Props>()
 .res-label { color: #64748b; }
 .res-val { font-family: monospace; font-weight: 600; }
 .green { color: #4ade80; }
+.highlight { color: #fbbf24; }
+.divider { height: 1px; background: #2D3645; margin: .2rem 0; }
 .empty { color: #64748b; text-align: center; padding: 1rem; }
 </style>

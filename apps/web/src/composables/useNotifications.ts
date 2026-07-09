@@ -8,13 +8,17 @@ export function useNotifications() {
   const loading = ref(false);
   let intervalId: ReturnType<typeof setInterval> | null = null;
 
+  function isAuthError(err: unknown): boolean {
+    return err instanceof Error && (err.message.includes('401') || err.message.includes('Unauthorized'))
+  }
+
   async function loadNotifications() {
     loading.value = true;
     try {
       const res = await getNotifications();
       if (res.success) notifications.value = res.notifications;
     } catch (err) {
-      console.error('load notifications failed:', err);
+      if (!isAuthError(err)) console.error('load notifications failed:', err);
     }
     loading.value = false;
   }
@@ -24,7 +28,7 @@ export function useNotifications() {
       const res = await getUnreadCount();
       if (res.success) unreadCount.value = res.count;
     } catch (err) {
-      console.error('refresh unread count failed:', err);
+      if (!isAuthError(err)) console.error('refresh unread count failed:', err);
     }
   }
 
@@ -40,7 +44,11 @@ export function useNotifications() {
 
   function startPolling(intervalMs = 30000) {
     refreshUnread();
-    intervalId = setInterval(refreshUnread, intervalMs);
+    loadNotifications();
+    intervalId = setInterval(() => {
+      refreshUnread();
+      loadNotifications();
+    }, intervalMs);
   }
 
   function stopPolling() {

@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/GeneratorParamPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"param-panel\" }\nconst _hoisted_2 = { class: \"param-title\" }\nconst _hoisted_3 = { class: \"param-row\" }\nconst _hoisted_4 = [\"value\"]\nconst _hoisted_5 = { class: \"param-val\" }\nconst _hoisted_6 = { class: \"param-row\" }\nconst _hoisted_7 = [\"value\"]\nconst _hoisted_8 = { class: \"param-val\" }\nconst _hoisted_9 = { class: \"param-row\" }\nconst _hoisted_10 = [\"value\"]\nconst _hoisted_11 = { class: \"param-val\" }\nconst _hoisted_12 = { class: \"param-row\" }\nconst _hoisted_13 = [\"value\"]\nconst _hoisted_14 = { class: \"param-val\" }\nconst _hoisted_15 = { class: \"param-row\" }\nconst _hoisted_16 = [\"value\"]\nconst _hoisted_17 = { class: \"param-val\" }\n\nimport { useI18n } from '../../../composables/useI18n'\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'GeneratorParamPanel',\n  props: {\n    B: {},\n    N: {},\n    A: {},\n    omega: {},\n    R: {}\n  },\n  emits: [\"update:B\", \"update:N\", \"update:A\", \"update:omega\", \"update:R\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\n\nconst props = __props\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, _toDisplayString(_unref(t)('experiments.emParams')), 1),\n    _createElementVNode(\"div\", _hoisted_3, [\n      _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('experiments.genParamB')), 1),\n      _createElementVNode(\"input\", {\n        type: \"range\",\n        min: \"0.1\",\n        max: \"2\",\n        step: \"0.05\",\n        value: props.B,\n        onInput: _cache[0] || (_cache[0] = ($event: any) => (emit('update:B', +($event.target as HTMLInputElement).value)))\n      }, null, 40, _hoisted_4),\n      _createElementVNode(\"span\", _hoisted_5, _toDisplayString(props.B.toFixed(2)) + \" T\", 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_6, [\n      _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('experiments.genParamN')), 1),\n      _createElementVNode(\"input\", {\n        type: \"range\",\n        min: \"1\",\n        max: \"500\",\n        step: \"1\",\n        value: props.N,\n        onInput: _cache[1] || (_cache[1] = ($event: any) => (emit('update:N', +($event.target as HTMLInputElement).value)))\n      }, null, 40, _hoisted_7),\n      _createElementVNode(\"span\", _hoisted_8, _toDisplayString(props.N) + \" \" + _toDisplayString(_unref(t)('experiments.genTurns')), 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_9, [\n      _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('experiments.genParamA')), 1),\n      _createElementVNode(\"input\", {\n        type: \"range\",\n        min: \"10\",\n        max: \"500\",\n        step: \"5\",\n        value: props.A * 10000,\n        onInput: _cache[2] || (_cache[2] = ($event: any) => (emit('update:A', +($event.target as HTMLInputElement).value / 10000)))\n      }, null, 40, _hoisted_10),\n      _createElementVNode(\"span\", _hoisted_11, _toDisplayString((props.A * 10000).toFixed(0)) + \" cm²\", 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_12, [\n      _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('experiments.genParamOmega')), 1),\n      _createElementVNode(\"input\", {\n        type: \"range\",\n        min: \"1\",\n        max: \"50\",\n        step: \"0.5\",\n        value: props.omega,\n        onInput: _cache[3] || (_cache[3] = ($event: any) => (emit('update:omega', +($event.target as HTMLInputElement).value)))\n      }, null, 40, _hoisted_13),\n      _createElementVNode(\"span\", _hoisted_14, _toDisplayString(props.omega.toFixed(1)) + \" rad/s\", 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_15, [\n      _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('experiments.genParamR')), 1),\n      _createElementVNode(\"input\", {\n        type: \"range\",\n        min: \"1\",\n        max: \"100\",\n        step: \"1\",\n        value: props.R,\n        onInput: _cache[4] || (_cache[4] = ($event: any) => (emit('update:R', +($event.target as HTMLInputElement).value)))\n      }, null, 40, _hoisted_16),\n      _createElementVNode(\"span\", _hoisted_17, _toDisplayString(props.R.toFixed(0)) + \" Ω\", 1)\n    ]),\n    _cache[5] || (_cache[5] = _createElementVNode(\"div\", { class: \"formula-box\" }, [\n      _createElementVNode(\"div\", { class: \"formula\" }, \"EMF = N·B·A·ω·sin(ωt)\"),\n      _createElementVNode(\"div\", { class: \"const\" }, \"EMF_peak = N·B·A·ω\"),\n      _createElementVNode(\"div\", { class: \"const\" }, \"I = EMF / R  |  f = ω / 2π\")\n    ], -1))\n  ]))\n}\n}\n\n})",
+      "start": 1783634641694,
+      "end": 1783634641694
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641694,
+      "end": 1783634641694,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"param-panel\" };\nconst _hoisted_2 = { class: \"param-title\" };\nconst _hoisted_3 = { class: \"param-row\" };\nconst _hoisted_4 = [\"value\"];\nconst _hoisted_5 = { class: \"param-val\" };\nconst _hoisted_6 = { class: \"param-row\" };\nconst _hoisted_7 = [\"value\"];\nconst _hoisted_8 = { class: \"param-val\" };\nconst _hoisted_9 = { class: \"param-row\" };\nconst _hoisted_10 = [\"value\"];\nconst _hoisted_11 = { class: \"param-val\" };\nconst _hoisted_12 = { class: \"param-row\" };\nconst _hoisted_13 = [\"value\"];\nconst _hoisted_14 = { class: \"param-val\" };\nconst _hoisted_15 = { class: \"param-row\" };\nconst _hoisted_16 = [\"value\"];\nconst _hoisted_17 = { class: \"param-val\" };\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"GeneratorParamPanel\",\n  props: {\n    B: {},\n    N: {},\n    A: {},\n    omega: {},\n    R: {}\n  },\n  emits: [\"update:B\", \"update:N\", \"update:A\", \"update:omega\", \"update:R\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const props = __props;\n    const emit = __emit;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, _toDisplayString(_unref(t)(\"experiments.emParams\")), 1),\n        _createElementVNode(\"div\", _hoisted_3, [\n          _createElementVNode(\"label\", null, _toDisplayString(_unref(t)(\"experiments.genParamB\")), 1),\n          _createElementVNode(\"input\", {\n            type: \"range\",\n            min: \"0.1\",\n            max: \"2\",\n            step: \"0.05\",\n            value: props.B,\n            onInput: _cache[0] || (_cache[0] = ($event) => emit(\"update:B\", +$event.target.value))\n          }, null, 40, _hoisted_4),\n          _createElementVNode(\"span\", _hoisted_5, _toDisplayString(props.B.toFixed(2)) + \" T\", 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_6, [\n          _createElementVNode(\"label\", null, _toDisplayString(_unref(t)(\"experiments.genParamN\")), 1),\n          _createElementVNode(\"input\", {\n            type: \"range\",\n            min: \"1\",\n            max: \"500\",\n            step: \"1\",\n            value: props.N,\n            onInput: _cache[1] || (_cache[1] = ($event) => emit(\"update:N\", +$event.target.value))\n          }, null, 40, _hoisted_7),\n          _createElementVNode(\"span\", _hoisted_8, _toDisplayString(props.N) + \" \" + _toDisplayString(_unref(t)(\"experiments.genTurns\")), 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_9, [\n          _createElementVNode(\"label\", null, _toDisplayString(_unref(t)(\"experiments.genParamA\")), 1),\n          _createElementVNode(\"input\", {\n            type: \"range\",\n            min: \"10\",\n            max: \"500\",\n            step: \"5\",\n            value: props.A * 1e4,\n            onInput: _cache[2] || (_cache[2] = ($event) => emit(\"update:A\", +$event.target.value / 1e4))\n          }, null, 40, _hoisted_10),\n          _createElementVNode(\"span\", _hoisted_11, _toDisplayString((props.A * 1e4).toFixed(0)) + \" cm²\", 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_12, [\n          _createElementVNode(\"label\", null, _toDisplayString(_unref(t)(\"experiments.genParamOmega\")), 1),\n          _createElementVNode(\"input\", {\n            type: \"range\",\n            min: \"1\",\n            max: \"50\",\n            step: \"0.5\",\n            value: props.omega,\n            onInput: _cache[3] || (_cache[3] = ($event) => emit(\"update:omega\", +$event.target.value))\n          }, null, 40, _hoisted_13),\n          _createElementVNode(\"span\", _hoisted_14, _toDisplayString(props.omega.toFixed(1)) + \" rad/s\", 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_15, [\n          _createElementVNode(\"label\", null, _toDisplayString(_unref(t)(\"experiments.genParamR\")), 1),\n          _createElementVNode(\"input\", {\n            type: \"range\",\n            min: \"1\",\n            max: \"100\",\n            step: \"1\",\n            value: props.R,\n            onInput: _cache[4] || (_cache[4] = ($event) => emit(\"update:R\", +$event.target.value))\n          }, null, 40, _hoisted_16),\n          _createElementVNode(\"span\", _hoisted_17, _toDisplayString(props.R.toFixed(0)) + \" Ω\", 1)\n        ]),\n        _cache[5] || (_cache[5] = _createElementVNode(\"div\", { class: \"formula-box\" }, [\n          _createElementVNode(\"div\", { class: \"formula\" }, \"EMF = N·B·A·ω·sin(ωt)\"),\n          _createElementVNode(\"div\", { class: \"const\" }, \"EMF_peak = N·B·A·ω\"),\n          _createElementVNode(\"div\", { class: \"const\" }, \"I = EMF / R  |  f = ω / 2π\")\n        ], -1))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634641694,
+      "end": 1783634642302,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/GeneratorParamPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"param-panel\" }\nconst _hoisted_2 = { class: \"param-title\" }\nconst _hoisted_3 = { class: \"param-row\" }\nconst _hoisted_4 = [\"value\"]\nconst _hoisted_5 = { class: \"param-val\" }\nconst _hoisted_6 = { class: \"param-row\" }\nconst _hoisted_7 = [\"value\"]\nconst _hoisted_8 = { class: \"param-val\" }\nconst _hoisted_9 = { class: \"param-row\" }\nconst _hoisted_10 = [\"value\"]\nconst _hoisted_11 = { class: \"param-val\" }\nconst _hoisted_12 = { class: \"param-row\" }\nconst _hoisted_13 = [\"value\"]\nconst _hoisted_14 = { class: \"param-val\" }\nconst _hoisted_15 = { class: \"param-row\" }\nconst _hoisted_16 = [\"value\"]\nconst _hoisted_17 = { class: \"param-val\" }\n\nimport { useI18n } from '../../../composables/useI18n'\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'GeneratorParamPanel',\n  props: {\n    B: {},\n    N: {},\n    A: {},\n    omega: {},\n    R: {}\n  },\n  emits: [\"update:B\", \"update:N\", \"update:A\", \"update:omega\", \"update:R\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\n\nconst props = __props\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, _toDisplayString(_unref(t)('experiments.emParams')), 1),\n    _createElementVNode(\"div\", _hoisted_3, [\n      _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('experiments.genParamB')), 1),\n      _createElementVNode(\"input\", {\n        type: \"range\",\n        min: \"0.1\",\n        max: \"2\",\n        step: \"0.05\",\n        value: props.B,\n        onInput: _cache[0] || (_cache[0] = ($event: any) => (emit('update:B', +($event.target as HTMLInputElement).value)))\n      }, null, 40, _hoisted_4),\n      _createElementVNode(\"span\", _hoisted_5, _toDisplayString(props.B.toFixed(2)) + \" T\", 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_6, [\n      _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('experiments.genParamN')), 1),\n      _createElementVNode(\"input\", {\n        type: \"range\",\n        min: \"1\",\n        max: \"500\",\n        step: \"1\",\n        value: props.N,\n        onInput: _cache[1] || (_cache[1] = ($event: any) => (emit('update:N', +($event.target as HTMLInputElement).value)))\n      }, null, 40, _hoisted_7),\n      _createElementVNode(\"span\", _hoisted_8, _toDisplayString(props.N) + \" \" + _toDisplayString(_unref(t)('experiments.genTurns')), 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_9, [\n      _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('experiments.genParamA')), 1),\n      _createElementVNode(\"input\", {\n        type: \"range\",\n        min: \"10\",\n        max: \"500\",\n        step: \"5\",\n        value: props.A * 10000,\n        onInput: _cache[2] || (_cache[2] = ($event: any) => (emit('update:A', +($event.target as HTMLInputElement).value / 10000)))\n      }, null, 40, _hoisted_10),\n      _createElementVNode(\"span\", _hoisted_11, _toDisplayString((props.A * 10000).toFixed(0)) + \" cm²\", 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_12, [\n      _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('experiments.genParamOmega')), 1),\n      _createElementVNode(\"input\", {\n        type: \"range\",\n        min: \"1\",\n        max: \"50\",\n        step: \"0.5\",\n        value: props.omega,\n        onInput: _cache[3] || (_cache[3] = ($event: any) => (emit('update:omega', +($event.target as HTMLInputElement).value)))\n      }, null, 40, _hoisted_13),\n      _createElementVNode(\"span\", _hoisted_14, _toDisplayString(props.omega.toFixed(1)) + \" rad/s\", 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_15, [\n      _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('experiments.genParamR')), 1),\n      _createElementVNode(\"input\", {\n        type: \"range\",\n        min: \"1\",\n        max: \"100\",\n        step: \"1\",\n        value: props.R,\n        onInput: _cache[4] || (_cache[4] = ($event: any) => (emit('update:R', +($event.target as HTMLInputElement).value)))\n      }, null, 40, _hoisted_16),\n      _createElementVNode(\"span\", _hoisted_17, _toDisplayString(props.R.toFixed(0)) + \" Ω\", 1)\n    ]),\n    _cache[5] || (_cache[5] = _createElementVNode(\"div\", { class: \"formula-box\" }, [\n      _createElementVNode(\"div\", { class: \"formula\" }, \"EMF = N·B·A·ω·sin(ωt)\"),\n      _createElementVNode(\"div\", { class: \"const\" }, \"EMF_peak = N·B·A·ω\"),\n      _createElementVNode(\"div\", { class: \"const\" }, \"I = EMF / R  |  f = ω / 2π\")\n    ], -1))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642302,
+      "end": 1783634642302,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642302,
+      "end": 1783634642303,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642303,
+      "end": 1783634642303,
+      "order": "normal"
+    }
+  ]
+}

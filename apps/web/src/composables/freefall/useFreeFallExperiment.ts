@@ -87,7 +87,7 @@ export function useFreeFallExperiment() {
     if (tList.length === 0) { console.warn('[exportToAnalysis] no trials recorded'); return }
     const readings = tList.map(t => ({ h: t.heightMeters, t: t.timeSec, t2: t.timeSquaredSec2, gCalc: t.gCalc }))
     const payload: AnalysisPayload = {
-      sourceExperiment: 'freefall', sourceNameAr: t('experiments.expFreeFall'), readings,
+      sourceExperiment: 'freefall', sourceNameAr: t('experiments.expFreeFall'), hasCalcTab: true, readings,
       columns: [
         { key: 'h', label: t('experiments.colHeight'), unit: 'm' },
         { key: 't', label: t('experiments.colTime'), unit: 's' },

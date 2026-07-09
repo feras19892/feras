@@ -91,7 +91,7 @@ export function useProjectileExperiment() {
       flightTimeSec: t.flightTimeSec, maxHeightMeters: t.maxHeightMeters, rangeMeters: t.rangeMeters,
     }))
     const payload: AnalysisPayload = {
-      sourceExperiment: 'projectile', sourceNameAr: t('experiments.expProjectile'), readings,
+      sourceExperiment: 'projectile', sourceNameAr: t('experiments.expProjectile'), hasCalcTab: true, readings,
       columns: [
         { key: 'angleDegrees', label: t('experiments.colAngle'), unit: '°' },
         { key: 'initialVelocity', label: t('experiments.colInitialVelocity'), unit: 'm/s' },

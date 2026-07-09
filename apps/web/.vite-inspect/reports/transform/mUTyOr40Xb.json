@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemAnalysisReportExport.vue?vue&type=style&index=0&scoped=dc2b1aea&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.export-panel {\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.5rem;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n  flex-shrink: 0;\n}\n.panel-header {\n  padding: 0.6rem 0.9rem;\n  background: rgba(255,255,255,0.04);\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n  font-size: 0.95rem;\n  color: #67e8f9;\n  font-weight: 700;\n}\n.actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.5rem;\n  padding: 0.6rem;\n}\n.btn {\n  flex: 1;\n  min-width: 100px;\n  padding: 0.5rem 0.7rem;\n  border: none;\n  border-radius: 0.35rem;\n  font-size: 0.9rem;\n  font-weight: 700;\n  cursor: pointer;\n  transition: all .15s;\n  color: #fff;\n}\n.btn:disabled { opacity: 0.4; cursor: not-allowed; }\n.btn-print { background: linear-gradient(135deg, #475569, #334155); }\n.btn-csv { background: linear-gradient(135deg, #059669, #047857); }\n.btn-png { background: linear-gradient(135deg, #7c3aed, #6d28d9); }\n.btn-send { background: linear-gradient(135deg, #2563eb, #1d4ed8); }\n.btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.3); }\n.hint { font-size: 0.8rem; color: #64748b; padding: 0 0.6rem 0.6rem; text-align: center; margin: 0; }\n",
+      "start": 1783634640812,
+      "end": 1783634640812
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.export-panel {\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.5rem;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n  flex-shrink: 0;\n}\n.panel-header {\n  padding: 0.6rem 0.9rem;\n  background: rgba(255,255,255,0.04);\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n  font-size: 0.95rem;\n  color: #67e8f9;\n  font-weight: 700;\n}\n.actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.5rem;\n  padding: 0.6rem;\n}\n.btn {\n  flex: 1;\n  min-width: 100px;\n  padding: 0.5rem 0.7rem;\n  border: none;\n  border-radius: 0.35rem;\n  font-size: 0.9rem;\n  font-weight: 700;\n  cursor: pointer;\n  transition: all .15s;\n  color: #fff;\n}\n.btn:disabled { opacity: 0.4; cursor: not-allowed; }\n.btn-print { background: linear-gradient(135deg, #475569, #334155); }\n.btn-csv { background: linear-gradient(135deg, #059669, #047857); }\n.btn-png { background: linear-gradient(135deg, #7c3aed, #6d28d9); }\n.btn-send { background: linear-gradient(135deg, #2563eb, #1d4ed8); }\n.btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.3); }\n.hint { font-size: 0.8rem; color: #64748b; padding: 0 0.6rem 0.6rem; text-align: center; margin: 0; }\n",
+      "start": 1783634640812,
+      "end": 1783634640812,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634640812,
+      "end": 1783634640812,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640812,
+      "end": 1783634640812,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640812,
+      "end": 1783634640812,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.export-panel[data-v-dc2b1aea] {\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.5rem;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n  flex-shrink: 0;\n}\n.panel-header[data-v-dc2b1aea] {\n  padding: 0.6rem 0.9rem;\n  background: rgba(255,255,255,0.04);\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n  font-size: 0.95rem;\n  color: #67e8f9;\n  font-weight: 700;\n}\n.actions[data-v-dc2b1aea] {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.5rem;\n  padding: 0.6rem;\n}\n.btn[data-v-dc2b1aea] {\n  flex: 1;\n  min-width: 100px;\n  padding: 0.5rem 0.7rem;\n  border: none;\n  border-radius: 0.35rem;\n  font-size: 0.9rem;\n  font-weight: 700;\n  cursor: pointer;\n  transition: all .15s;\n  color: #fff;\n}\n.btn[data-v-dc2b1aea]:disabled { opacity: 0.4; cursor: not-allowed;\n}\n.btn-print[data-v-dc2b1aea] { background: linear-gradient(135deg, #475569, #334155);\n}\n.btn-csv[data-v-dc2b1aea] { background: linear-gradient(135deg, #059669, #047857);\n}\n.btn-png[data-v-dc2b1aea] { background: linear-gradient(135deg, #7c3aed, #6d28d9);\n}\n.btn-send[data-v-dc2b1aea] { background: linear-gradient(135deg, #2563eb, #1d4ed8);\n}\n.btn[data-v-dc2b1aea]:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.3);\n}\n.hint[data-v-dc2b1aea] { font-size: 0.8rem; color: #64748b; padding: 0 0.6rem 0.6rem; text-align: center; margin: 0;\n}\n",
+      "start": 1783634640812,
+      "end": 1783634640813,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640813,
+      "end": 1783634640813,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634640813,
+      "end": 1783634640813,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640813,
+      "end": 1783634640813,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640813,
+      "end": 1783634640813,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640813,
+      "end": 1783634640813,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640813,
+      "end": 1783634640813,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640813,
+      "end": 1783634640813,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640813,
+      "end": 1783634640813,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640813,
+      "end": 1783634640813,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640813,
+      "end": 1783634640813,
+      "order": "normal"
+    }
+  ]
+}

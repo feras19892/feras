@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from '../../../../composables/useI18n'
+import { ALPHA } from '../../../../composables/thermal-expansion/useThermalExpansionCalculations'
 const { t } = useI18n()
 const props = defineProps<{ params: { material: string; L0: number; t0: number; t1: number } }>()
 const emit = defineEmits<{ (e: 'update:params', p: typeof props.params): void }>()
@@ -7,6 +9,7 @@ const emit = defineEmits<{ (e: 'update:params', p: typeof props.params): void }>
 const materials: Record<string, string> = {
   copper: 'نحاس', aluminum: 'ألمنيوم', iron: 'حديد', steel: 'فولاذ', brass: 'سبائك نحاس', glass: 'زجاج',
 }
+const currentAlpha = computed(() => ALPHA[props.params.material] ?? 16.5)
 </script>
 <template>
   <div class="params-panel">
@@ -34,6 +37,10 @@ const materials: Record<string, string> = {
         <td><input type="range" min="50" max="200" step="5" :value="params.t1" @input="emit('update:params', { ...params, t1: Number(($event.target as HTMLInputElement).value) })" /></td>
         <td class="val">{{ params.t1 }} °C</td>
       </tr>
+      <tr class="alpha-row">
+        <td class="label">α (حقيقي)</td>
+        <td colspan="2" class="val alpha">{{ currentAlpha.toFixed(1) }} × 10⁻⁶/K</td>
+      </tr>
     </table>
   </div>
 </template>
@@ -45,4 +52,7 @@ const materials: Record<string, string> = {
 .params-table td.val { color: #5B8DB8; font-weight: 700; text-align: right; white-space: nowrap; }
 .params-table input[type=range] { width: 100%; min-width: 60px; }
 .params-table select { width: 100%; padding: .2rem .3rem; border-radius: 4px; border: 1px solid #1e2530; background: #0d1117; color: #D1D7E0; font-size: .72rem; }
+.alpha-row { background:rgba(91,141,184,.06); }
+.alpha-row .label { color:#5B8DB8; }
+.alpha-row .alpha { color:#5B8DB8; font-weight:800; }
 </style>

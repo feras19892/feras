@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemAnalysisPage.vue?vue&type=style&index=0&scoped=b18ddd4b&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.chem-analysis-page {\n  height: 100vh;\n  background: #0b1220;\n  color: #e2e8f0;\n  display: flex;\n  flex-direction: column;\n  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n  overflow: hidden;\n}\n.no-data { flex: 1; display: flex; align-items: center; justify-content: center; }\n.no-data-box { text-align: center; max-width: 420px; padding: 2rem; }\n.no-data-box h2 { color: #67e8f9; margin: 0 0 0.5rem; }\n.no-data-box p { color: #94a3b8; margin: 0 0 0.5rem; }\n.no-data-box .hint { color: #64748b; font-size: 0.85rem; }\n.btn-action {\n  margin-top: 1rem; padding: 0.5rem 1.2rem; border: none; border-radius: 0.5rem;\n  background: linear-gradient(135deg, #06b6d4, #0891b2); color: #fff; cursor: pointer; font-weight: 600;\n}\n.demo-btn {\n  background: linear-gradient(135deg, #8b5cf6, #7c3aed);\n  margin-left: 0.5rem;\n}\n.tab-content { flex: 1; overflow: hidden; display: flex; flex-direction: column; }\n.tab-fade-enter-active, .tab-fade-leave-active { transition: opacity 0.2s ease; }\n.tab-fade-enter-from, .tab-fade-leave-to { opacity: 0; }\n",
+      "start": 1783634639247,
+      "end": 1783634639247
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.chem-analysis-page {\n  height: 100vh;\n  background: #0b1220;\n  color: #e2e8f0;\n  display: flex;\n  flex-direction: column;\n  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n  overflow: hidden;\n}\n.no-data { flex: 1; display: flex; align-items: center; justify-content: center; }\n.no-data-box { text-align: center; max-width: 420px; padding: 2rem; }\n.no-data-box h2 { color: #67e8f9; margin: 0 0 0.5rem; }\n.no-data-box p { color: #94a3b8; margin: 0 0 0.5rem; }\n.no-data-box .hint { color: #64748b; font-size: 0.85rem; }\n.btn-action {\n  margin-top: 1rem; padding: 0.5rem 1.2rem; border: none; border-radius: 0.5rem;\n  background: linear-gradient(135deg, #06b6d4, #0891b2); color: #fff; cursor: pointer; font-weight: 600;\n}\n.demo-btn {\n  background: linear-gradient(135deg, #8b5cf6, #7c3aed);\n  margin-left: 0.5rem;\n}\n.tab-content { flex: 1; overflow: hidden; display: flex; flex-direction: column; }\n.tab-fade-enter-active, .tab-fade-leave-active { transition: opacity 0.2s ease; }\n.tab-fade-enter-from, .tab-fade-leave-to { opacity: 0; }\n",
+      "start": 1783634639247,
+      "end": 1783634639247,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634639247,
+      "end": 1783634639247,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634639247,
+      "end": 1783634639247,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634639247,
+      "end": 1783634639247,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.chem-analysis-page[data-v-b18ddd4b] {\n  height: 100vh;\n  background: #0b1220;\n  color: #e2e8f0;\n  display: flex;\n  flex-direction: column;\n  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n  overflow: hidden;\n}\n.no-data[data-v-b18ddd4b] { flex: 1; display: flex; align-items: center; justify-content: center;\n}\n.no-data-box[data-v-b18ddd4b] { text-align: center; max-width: 420px; padding: 2rem;\n}\n.no-data-box h2[data-v-b18ddd4b] { color: #67e8f9; margin: 0 0 0.5rem;\n}\n.no-data-box p[data-v-b18ddd4b] { color: #94a3b8; margin: 0 0 0.5rem;\n}\n.no-data-box .hint[data-v-b18ddd4b] { color: #64748b; font-size: 0.85rem;\n}\n.btn-action[data-v-b18ddd4b] {\n  margin-top: 1rem; padding: 0.5rem 1.2rem; border: none; border-radius: 0.5rem;\n  background: linear-gradient(135deg, #06b6d4, #0891b2); color: #fff; cursor: pointer; font-weight: 600;\n}\n.demo-btn[data-v-b18ddd4b] {\n  background: linear-gradient(135deg, #8b5cf6, #7c3aed);\n  margin-left: 0.5rem;\n}\n.tab-content[data-v-b18ddd4b] { flex: 1; overflow: hidden; display: flex; flex-direction: column;\n}\n.tab-fade-enter-active[data-v-b18ddd4b], .tab-fade-leave-active[data-v-b18ddd4b] { transition: opacity 0.2s ease;\n}\n.tab-fade-enter-from[data-v-b18ddd4b], .tab-fade-leave-to[data-v-b18ddd4b] { opacity: 0;\n}\n",
+      "start": 1783634639247,
+      "end": 1783634639249,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634639249,
+      "end": 1783634639249,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634639249,
+      "end": 1783634639249,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634639249,
+      "end": 1783634639249,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634639249,
+      "end": 1783634639249,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634639249,
+      "end": 1783634639249,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634639249,
+      "end": 1783634639249,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634639249,
+      "end": 1783634639249,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634639249,
+      "end": 1783634639249,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634639249,
+      "end": 1783634639249,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634639249,
+      "end": 1783634639249,
+      "order": "normal"
+    }
+  ]
+}

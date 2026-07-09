@@ -17,15 +17,16 @@ const emit = defineEmits<{
 <template>
   <div class="panel-body">
     <table class="trial-table" v-if="trials.length">
-      <thead><tr><th>#</th><th>θ₁</th><th>θ₂</th><th>I₀</th><th>I</th><th>Δθ</th><th></th></tr></thead>
+      <thead><tr><th>#</th><th>θ₁</th><th>θ₂</th><th>Δθ</th><th>cos²θ</th><th>I₀</th><th>I</th><th></th></tr></thead>
       <tbody>
         <tr v-for="tr in trials" :key="tr.id">
           <td>{{ tr.id }}</td>
           <td>{{ tr.polarizerAngle }}</td>
           <td>{{ tr.analyzerAngle }}</td>
+          <td>{{ tr.relativeAngle.toFixed(1) }}°</td>
+          <td>{{ Math.pow(Math.cos(tr.relativeAngle * Math.PI / 180), 2).toFixed(3) }}</td>
           <td>{{ tr.I0 }}</td>
           <td>{{ tr.outputIntensity.toFixed(2) }}</td>
-          <td>{{ tr.relativeAngle.toFixed(1) }}</td>
           <td><button class="rm" @click="emit('remove', tr.id)">x</button></td>
         </tr>
       </tbody>

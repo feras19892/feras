@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedParamsPanel.vue?vue&type=style&index=0&scoped=8c89e60b&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.params-panel { display: flex; flex-direction: column; gap: .6rem; padding: .4rem; }\n.param-row { display: flex; flex-direction: column; gap: .15rem; }\n.param-row label { font-size: .68rem; color: #8B95A5; font-weight: 600; }\n.param-inputs { display: flex; gap: .3rem; align-items: center; }\n.param-inputs input[type=range] { flex: 1; }\n.param-inputs input[type=number] { width: 60px; text-align: center; padding: .25rem; border-radius: 4px; border: 1px solid #2D3645; background: #252D3A; color: #D1D7E0; font-size: .72rem; }\n.checkbox-row { flex-direction: row; align-items: center; gap: .4rem; }\n.toggle-label { display: flex; align-items: center; gap: .4rem; cursor: pointer; }\n.toggle-label input { width: auto; }\n.toggle-text { font-size: .75rem; color: #D1D7E0; font-weight: 700; }\n.body-select { padding: .3rem .4rem; border-radius: 4px; border: 1px solid #2D3645; background: #252D3A; color: #D1D7E0; font-size: .72rem; }\n",
+      "start": 1783634642973,
+      "end": 1783634642973
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.params-panel { display: flex; flex-direction: column; gap: .6rem; padding: .4rem; }\n.param-row { display: flex; flex-direction: column; gap: .15rem; }\n.param-row label { font-size: .68rem; color: #8B95A5; font-weight: 600; }\n.param-inputs { display: flex; gap: .3rem; align-items: center; }\n.param-inputs input[type=range] { flex: 1; }\n.param-inputs input[type=number] { width: 60px; text-align: center; padding: .25rem; border-radius: 4px; border: 1px solid #2D3645; background: #252D3A; color: #D1D7E0; font-size: .72rem; }\n.checkbox-row { flex-direction: row; align-items: center; gap: .4rem; }\n.toggle-label { display: flex; align-items: center; gap: .4rem; cursor: pointer; }\n.toggle-label input { width: auto; }\n.toggle-text { font-size: .75rem; color: #D1D7E0; font-weight: 700; }\n.body-select { padding: .3rem .4rem; border-radius: 4px; border: 1px solid #2D3645; background: #252D3A; color: #D1D7E0; font-size: .72rem; }\n",
+      "start": 1783634642974,
+      "end": 1783634642974,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642974,
+      "end": 1783634642974,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642974,
+      "end": 1783634642974,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642974,
+      "end": 1783634642974,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.params-panel[data-v-8c89e60b] { display: flex; flex-direction: column; gap: .6rem; padding: .4rem;\n}\n.param-row[data-v-8c89e60b] { display: flex; flex-direction: column; gap: .15rem;\n}\n.param-row label[data-v-8c89e60b] { font-size: .68rem; color: #8B95A5; font-weight: 600;\n}\n.param-inputs[data-v-8c89e60b] { display: flex; gap: .3rem; align-items: center;\n}\n.param-inputs input[type=range][data-v-8c89e60b] { flex: 1;\n}\n.param-inputs input[type=number][data-v-8c89e60b] { width: 60px; text-align: center; padding: .25rem; border-radius: 4px; border: 1px solid #2D3645; background: #252D3A; color: #D1D7E0; font-size: .72rem;\n}\n.checkbox-row[data-v-8c89e60b] { flex-direction: row; align-items: center; gap: .4rem;\n}\n.toggle-label[data-v-8c89e60b] { display: flex; align-items: center; gap: .4rem; cursor: pointer;\n}\n.toggle-label input[data-v-8c89e60b] { width: auto;\n}\n.toggle-text[data-v-8c89e60b] { font-size: .75rem; color: #D1D7E0; font-weight: 700;\n}\n.body-select[data-v-8c89e60b] { padding: .3rem .4rem; border-radius: 4px; border: 1px solid #2D3645; background: #252D3A; color: #D1D7E0; font-size: .72rem;\n}\n",
+      "start": 1783634642974,
+      "end": 1783634642975,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642975,
+      "end": 1783634642975,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783634642975,
+      "end": 1783634642975,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642975,
+      "end": 1783634642975,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642975,
+      "end": 1783634642975,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642975,
+      "end": 1783634642975,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642975,
+      "end": 1783634642975,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642975,
+      "end": 1783634642975,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642975,
+      "end": 1783634642975,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642975,
+      "end": 1783634642975,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642975,
+      "end": 1783634642975,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/PrismOverlayPanels.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport type { PrismTrial } from '../../../composables/prism/usePrismTrials'\nimport PrismPanelBody from './PrismPanelBody.vue'\n\ninterface Props {\n  maximized: Record<string, boolean>\n  panelTitle: (id: string) => string\n  trials: PrismTrial[]\n  params: { prismAngle: number; angleIncidence: number; wavelength: number; material: string }\n  angleRefraction1: number | null\n  angleIncidence2: number | null\n  angleEmergence: number | null\n  deviation: number | null\n  totalInternalReflection: boolean\n  criticalAngle: number | null\n  slope: number\n  intercept: number\n  rSquared: number\n  nValue: number\n  avgN: number | null\n  speedInMedium: number | null\n}\n\nconst props = defineProps<Props>()\n\nconst emit = defineEmits<{\n  (e: 'maximize', id: string): void\n  (e: 'remove', id: number): void\n  (e: 'clear'): void\n  (e: 'update:params', params: { prismAngle: number; angleIncidence: number; wavelength: number; material: string }): void\n}>()\n\nconst ids = ['readings', 'chart', 'trials', 'params', 'laws', 'results']\n</script>\n\n<template>\n  <div class=\"overlay-panels\">\n    <template v-for=\"id in ids\" :key=\"id\">\n      <div v-if=\"props.maximized[id]\" class=\"overlay-panel\" @click=\"emit('maximize', id)\">\n        <div class=\"overlay-header\">\n          <span>{{ panelTitle(id) }}</span>\n          <button class=\"overlay-close\" @click.stop=\"emit('maximize', id)\">&#x2715;</button>\n        </div>\n        <PrismPanelBody\n          :id=\"id\"\n          :trials=\"trials\"\n          :params=\"params\"\n          :angle-refraction1=\"angleRefraction1\"\n          :angle-incidence2=\"angleIncidence2\"\n          :angle-emergence=\"angleEmergence\"\n          :deviation=\"deviation\"\n          :total-internal-reflection=\"totalInternalReflection\"\n          :critical-angle=\"criticalAngle\"\n          :slope=\"slope\"\n          :intercept=\"intercept\"\n          :r-squared=\"rSquared\"\n          :n-value=\"nValue\"\n          :avg-n=\"avgN\"\n          :speed-in-medium=\"speedInMedium\"\n          @remove=\"emit('remove', $event)\"\n          @clear=\"emit('clear')\"\n          @update:params=\"emit('update:params', $event)\"\n        />\n      </div>\n    </template>\n  </div>\n</template>\n\n<style scoped>\n.overlay-panels { position: fixed; inset: 0; z-index: 9998; pointer-events: none; }\n.overlay-panel { position: absolute; inset: 2rem; background: #1A1F27; border: 1px solid #2D3645; border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; pointer-events: auto; }\n.overlay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: .5rem; font-weight: 700; color: #5B8DB8; }\n.overlay-close { background: none; border: none; color: #8B95A5; cursor: pointer; font-size: 1rem; }\n</style>\n",
+      "start": 1783634641004,
+      "end": 1783634641517,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634641517,
+      "end": 1783634641517,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634641517,
+      "end": 1783634641517,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634641517,
+      "end": 1783634641517,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634641517,
+      "end": 1783634641517,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/PrismOverlayPanels.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/PrismOverlayPanels.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/PrismOverlayPanels.vue?vue&type=style&index=0&scoped=019d1514&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-019d1514\"]]);\n",
+      "start": 1783634641517,
+      "end": 1783634641641,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634641641,
+      "end": 1783634641641,
+      "order": "normal"
+    }
+  ]
+}

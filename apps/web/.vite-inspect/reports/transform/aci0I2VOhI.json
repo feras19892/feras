@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedStatsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\n\nconst { t } = useI18n()\nconst props = defineProps<{\n  trialStats: {\n    a_mean: number; a_std: number\n    t_mean: number; t_std: number\n    v_mean: number; v_std: number\n  }\n  trialCount: number\n}>()\n</script>\n\n<template>\n  <div class=\"stats-panel\">\n    <h4>{{ t('experiments.statisticsLabel') }} — {{ trialCount }} {{ t('experiments.experimentCount') }}</h4>\n    <div class=\"stat-group\">\n      <h5>{{ t('experiments.acceleration') }} a (m/s²)</h5>\n      <div class=\"stat-row\"><span>{{ t('experiments.avgLabel') }}</span><b>{{ trialCount ? trialStats.a_mean.toFixed(3) : '--' }}</b></div>\n      <div class=\"stat-row\"><span>{{ t('experiments.stdDev') }}</span><b>{{ trialCount ? trialStats.a_std.toFixed(3) : '--' }}</b></div>\n    </div>\n    <div class=\"stat-group\">\n      <h5>{{ t('experiments.arrivalTime') }} t (s)</h5>\n      <div class=\"stat-row\"><span>{{ t('experiments.avgLabel') }}</span><b>{{ trialCount ? trialStats.t_mean.toFixed(3) : '--' }}</b></div>\n      <div class=\"stat-row\"><span>{{ t('experiments.stdDev') }}</span><b>{{ trialCount ? trialStats.t_std.toFixed(3) : '--' }}</b></div>\n    </div>\n    <div class=\"stat-group\">\n      <h5>{{ t('experiments.finalVelocity') }} v (m/s)</h5>\n      <div class=\"stat-row\"><span>{{ t('experiments.avgLabel') }}</span><b>{{ trialCount ? trialStats.v_mean.toFixed(2) : '--' }}</b></div>\n      <div class=\"stat-row\"><span>{{ t('experiments.stdDev') }}</span><b>{{ trialCount ? trialStats.v_std.toFixed(2) : '--' }}</b></div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.stats-panel { padding: .5rem; }\nh4 { color: #5B8DB8; font-size: .78rem; margin: 0 0 .5rem; }\n.stat-group { margin-bottom: .5rem; }\n.stat-group h5 { color: #8B95A5; font-size: .68rem; margin: 0 0 .2rem; border-bottom: 1px solid #2D3645; padding-bottom: .15rem; }\n.stat-row { display: flex; justify-content: space-between; padding: .15rem 0; font-size: .68rem; }\n.stat-row span { color: #B8C0CC; }\n.stat-row b { color: #D1D7E0; }\n</style>\n",
+      "start": 1783634642471,
+      "end": 1783634642760,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642760,
+      "end": 1783634642760,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783634642760,
+      "end": 1783634642760,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642760,
+      "end": 1783634642760,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642760,
+      "end": 1783634642760,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedStatsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedStatsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedStatsPanel.vue?vue&type=style&index=0&scoped=a9dcff41&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-a9dcff41\"]]);\n",
+      "start": 1783634642760,
+      "end": 1783634642878,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642878,
+      "end": 1783634642878,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642878,
+      "end": 1783634642878,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642878,
+      "end": 1783634642878,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642878,
+      "end": 1783634642878,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642878,
+      "end": 1783634642878,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642878,
+      "end": 1783634642878,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642878,
+      "end": 1783634642878,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642878,
+      "end": 1783634642878,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642878,
+      "end": 1783634642879,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642879,
+      "end": 1783634642879,
+      "order": "normal"
+    }
+  ]
+}

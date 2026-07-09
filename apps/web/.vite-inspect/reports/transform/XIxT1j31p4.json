@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabExportNew4.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import type { AnalysisPayload } from '../../../../types/physics'\nimport { sendToAnalysis } from '../../../../composables/analysis/sendToAnalysis'\nimport type { ExportContext } from './electricLabExportBasic'\n\nexport function exportNew4(router: any, ctx: ExportContext): boolean {\n  if (ctx.isDiodeIV.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-diode-iv', sourceNameAr: 'خصائص الدايود', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current })),\n      columns: [{ key: 'V', label: 'Vd', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }],\n      equations: [{ name: 'Shockley Equation', formula: 'I = Is×(e^(V/ηVt) − 1)', variables: [{ symbol: 'I', label: 'Current' }, { symbol: 'V', label: 'Diode V' }, { symbol: 'Is', label: 'Saturation I' }, { symbol: 'Vt', label: 'Thermal V' }, { symbol: 'eta', label: 'Ideality' }], solveFor: ['I'] }],\n      suggestedPlots: [{ xKey: 'V', yKey: 'I', xLabel: 'Vd (V)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isTransformer.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-transformer', sourceNameAr: 'نسبة المحوّل', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'Vs', unit: 'V' }, { key: 'I', label: 'Is', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Transformer Ratio', formula: 'Vs/Vp = Ns/Np, Is/Ip = Np/Ns', variables: [{ symbol: 'Vs', label: 'Secondary V' }, { symbol: 'Vp', label: 'Primary V' }, { symbol: 'Ns', label: 'N secondary' }, { symbol: 'Np', label: 'N primary' }, { symbol: 'Is', label: 'Secondary I' }, { symbol: 'Ip', label: 'Primary I' }], solveFor: ['Vs', 'Is'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'Is (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isSelfInd.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-self-inductance', sourceNameAr: 'التحريض الذاتي', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Self-Inductance', formula: 'V = −L(dI/dt), E = ½LI², τ = L/R', variables: [{ symbol: 'L', label: 'Inductance' }, { symbol: 'I', label: 'Current' }, { symbol: 'E', label: 'Energy' }, { symbol: 'tau', label: 'Time const' }], solveFor: ['E', 'tau'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  return false\n}\n",
+      "start": 1783634642590,
+      "end": 1783634642823,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634642823,
+      "end": 1783634642823,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { sendToAnalysis } from \"../../../../composables/analysis/sendToAnalysis\";\nexport function exportNew4(router, ctx) {\n  if (ctx.isDiodeIV.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-diode-iv\",\n      sourceNameAr: \"خصائص الدايود\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current })),\n      columns: [{ key: \"V\", label: \"Vd\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }],\n      equations: [{ name: \"Shockley Equation\", formula: \"I = Is×(e^(V/ηVt) − 1)\", variables: [{ symbol: \"I\", label: \"Current\" }, { symbol: \"V\", label: \"Diode V\" }, { symbol: \"Is\", label: \"Saturation I\" }, { symbol: \"Vt\", label: \"Thermal V\" }, { symbol: \"eta\", label: \"Ideality\" }], solveFor: [\"I\"] }],\n      suggestedPlots: [{ xKey: \"V\", yKey: \"I\", xLabel: \"Vd (V)\", yLabel: \"I (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isTransformer.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-transformer\",\n      sourceNameAr: \"نسبة المحوّل\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"Vs\", unit: \"V\" }, { key: \"I\", label: \"Is\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"Transformer Ratio\", formula: \"Vs/Vp = Ns/Np, Is/Ip = Np/Ns\", variables: [{ symbol: \"Vs\", label: \"Secondary V\" }, { symbol: \"Vp\", label: \"Primary V\" }, { symbol: \"Ns\", label: \"N secondary\" }, { symbol: \"Np\", label: \"N primary\" }, { symbol: \"Is\", label: \"Secondary I\" }, { symbol: \"Ip\", label: \"Primary I\" }], solveFor: [\"Vs\", \"Is\"] }],\n      suggestedPlots: [{ xKey: \"R\", yKey: \"I\", xLabel: \"R (Ω)\", yLabel: \"Is (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isSelfInd.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-self-inductance\",\n      sourceNameAr: \"التحريض الذاتي\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"V\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"Self-Inductance\", formula: \"V = −L(dI/dt), E = ½LI², τ = L/R\", variables: [{ symbol: \"L\", label: \"Inductance\" }, { symbol: \"I\", label: \"Current\" }, { symbol: \"E\", label: \"Energy\" }, { symbol: \"tau\", label: \"Time const\" }], solveFor: [\"E\", \"tau\"] }],\n      suggestedPlots: [{ xKey: \"R\", yKey: \"I\", xLabel: \"R (Ω)\", yLabel: \"I (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  return false;\n}\n",
+      "start": 1783634642823,
+      "end": 1783634642876,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabExportNew4.ts"
+        ],
+        "sourcesContent": [
+          "import type { AnalysisPayload } from '../../../../types/physics'\nimport { sendToAnalysis } from '../../../../composables/analysis/sendToAnalysis'\nimport type { ExportContext } from './electricLabExportBasic'\n\nexport function exportNew4(router: any, ctx: ExportContext): boolean {\n  if (ctx.isDiodeIV.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-diode-iv', sourceNameAr: 'خصائص الدايود', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current })),\n      columns: [{ key: 'V', label: 'Vd', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }],\n      equations: [{ name: 'Shockley Equation', formula: 'I = Is×(e^(V/ηVt) − 1)', variables: [{ symbol: 'I', label: 'Current' }, { symbol: 'V', label: 'Diode V' }, { symbol: 'Is', label: 'Saturation I' }, { symbol: 'Vt', label: 'Thermal V' }, { symbol: 'eta', label: 'Ideality' }], solveFor: ['I'] }],\n      suggestedPlots: [{ xKey: 'V', yKey: 'I', xLabel: 'Vd (V)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isTransformer.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-transformer', sourceNameAr: 'نسبة المحوّل', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'Vs', unit: 'V' }, { key: 'I', label: 'Is', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Transformer Ratio', formula: 'Vs/Vp = Ns/Np, Is/Ip = Np/Ns', variables: [{ symbol: 'Vs', label: 'Secondary V' }, { symbol: 'Vp', label: 'Primary V' }, { symbol: 'Ns', label: 'N secondary' }, { symbol: 'Np', label: 'N primary' }, { symbol: 'Is', label: 'Secondary I' }, { symbol: 'Ip', label: 'Primary I' }], solveFor: ['Vs', 'Is'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'Is (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isSelfInd.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-self-inductance', sourceNameAr: 'التحريض الذاتي', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Self-Inductance', formula: 'V = −L(dI/dt), E = ½LI², τ = L/R', variables: [{ symbol: 'L', label: 'Inductance' }, { symbol: 'I', label: 'Current' }, { symbol: 'E', label: 'Energy' }, { symbol: 'tau', label: 'Time const' }], solveFor: ['E', 'tau'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  return false\n}\n"
+        ],
+        "mappings": "AACA,SAAS,sBAAsB;AAGxB,gBAAS,WAAW,QAAa,KAA6B;AACnE,MAAI,IAAI,UAAU,OAAO;AACvB,mBAAe,QAAQ;AAAA,MACrB,kBAAkB;AAAA,MAAyB,cAAc;AAAA,MAAiB,YAAY;AAAA,MACtF,UAAU,IAAI,OAAO,MAAM,IAAI,QAAM,EAAE,GAAG,EAAE,SAAS,GAAG,EAAE,QAAQ,EAAE;AAAA,MACpE,SAAS,CAAC,EAAE,KAAK,KAAK,OAAO,MAAM,MAAM,IAAI,GAAG,EAAE,KAAK,KAAK,OAAO,KAAK,MAAM,IAAI,CAAC;AAAA,MACnF,WAAW,CAAC,EAAE,MAAM,qBAAqB,SAAS,0BAA0B,WAAW,CAAC,EAAE,QAAQ,KAAK,OAAO,UAAU,GAAG,EAAE,QAAQ,KAAK,OAAO,UAAU,GAAG,EAAE,QAAQ,MAAM,OAAO,eAAe,GAAG,EAAE,QAAQ,MAAM,OAAO,YAAY,GAAG,EAAE,QAAQ,OAAO,OAAO,WAAW,CAAC,GAAG,UAAU,CAAC,GAAG,EAAE,CAAC;AAAA,MACrS,gBAAgB,CAAC,EAAE,MAAM,KAAK,MAAM,KAAK,QAAQ,UAAU,QAAQ,SAAS,MAAM,UAAU,CAAC;AAAA,IAC/F,CAAoB;AACpB,WAAO;AAAA,EACT;AACA,MAAI,IAAI,cAAc,OAAO;AAC3B,mBAAe,QAAQ;AAAA,MACrB,kBAAkB;AAAA,MAA4B,cAAc;AAAA,MAAgB,YAAY;AAAA,MACxF,UAAU,IAAI,OAAO,MAAM,IAAI,QAAM,EAAE,GAAG,EAAE,SAAS,GAAG,EAAE,SAAS,GAAG,EAAE,WAAW,EAAE;AAAA,MACrF,SAAS,CAAC,EAAE,KAAK,KAAK,OAAO,MAAM,MAAM,IAAI,GAAG,EAAE,KAAK,KAAK,OAAO,MAAM,MAAM,IAAI,GAAG,EAAE,KAAK,KAAK,OAAO,KAAK,MAAM,IAAI,CAAC;AAAA,MACzH,WAAW,CAAC,EAAE,MAAM,qBAAqB,SAAS,gCAAgC,WAAW,CAAC,EAAE,QAAQ,MAAM,OAAO,cAAc,GAAG,EAAE,QAAQ,MAAM,OAAO,YAAY,GAAG,EAAE,QAAQ,MAAM,OAAO,cAAc,GAAG,EAAE,QAAQ,MAAM,OAAO,YAAY,GAAG,EAAE,QAAQ,MAAM,OAAO,cAAc,GAAG,EAAE,QAAQ,MAAM,OAAO,YAAY,CAAC,GAAG,UAAU,CAAC,MAAM,IAAI,EAAE,CAAC;AAAA,MACjW,gBAAgB,CAAC,EAAE,MAAM,KAAK,MAAM,KAAK,QAAQ,SAAS,QAAQ,UAAU,MAAM,UAAU,CAAC;AAAA,IAC/F,CAAoB;AACpB,WAAO;AAAA,EACT;AACA,MAAI,IAAI,UAAU,OAAO;AACvB,mBAAe,QAAQ;AAAA,MACrB,kBAAkB;AAAA,MAAgC,cAAc;AAAA,MAAkB,YAAY;AAAA,MAC9F,UAAU,IAAI,OAAO,MAAM,IAAI,QAAM,EAAE,GAAG,EAAE,SAAS,GAAG,EAAE,SAAS,GAAG,EAAE,WAAW,EAAE;AAAA,MACrF,SAAS,CAAC,EAAE,KAAK,KAAK,OAAO,KAAK,MAAM,IAAI,GAAG,EAAE,KAAK,KAAK,OAAO,KAAK,MAAM,IAAI,GAAG,EAAE,KAAK,KAAK,OAAO,KAAK,MAAM,IAAI,CAAC;AAAA,MACvH,WAAW,CAAC,EAAE,MAAM,mBAAmB,SAAS,oCAAoC,WAAW,CAAC,EAAE,QAAQ,KAAK,OAAO,aAAa,GAAG,EAAE,QAAQ,KAAK,OAAO,UAAU,GAAG,EAAE,QAAQ,KAAK,OAAO,SAAS,GAAG,EAAE,QAAQ,OAAO,OAAO,aAAa,CAAC,GAAG,UAAU,CAAC,KAAK,KAAK,EAAE,CAAC;AAAA,MAC5Q,gBAAgB,CAAC,EAAE,MAAM,KAAK,MAAM,KAAK,QAAQ,SAAS,QAAQ,SAAS,MAAM,UAAU,CAAC;AAAA,IAC9F,CAAoB;AACpB,WAAO;AAAA,EACT;AACA,SAAO;AACT;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634642876,
+      "end": 1783634642876,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634642876,
+      "end": 1783634642876,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634642876,
+      "end": 1783634642877,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634642877,
+      "end": 1783634642877,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634642877,
+      "end": 1783634642877,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634642877,
+      "end": 1783634642877,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634642877,
+      "end": 1783634642877,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634642877,
+      "end": 1783634642877,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634642877,
+      "end": 1783634642877,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634642877,
+      "end": 1783634642877,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634642877,
+      "end": 1783634642877,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634642877,
+      "end": 1783634642877,
+      "order": "normal"
+    }
+  ]
+}

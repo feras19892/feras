@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/interference/panels/InterferenceWorksheetPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"step-row\" }\nconst _hoisted_3 = {\n  key: 0,\n  class: \"step-content\"\n}\nconst _hoisted_4 = { class: \"calc\" }\nconst _hoisted_5 = { class: \"result\" }\n\nimport { ref, computed } from 'vue'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'InterferenceWorksheetPanel',\n  props: {\n    slitDistance: {},\n    screenDistance: {},\n    wavelength: {},\n    fringeSpacing: {}\n  },\n  setup(__props: any) {\n\nconst props = __props\n\nconst showSteps = ref<Record<string, boolean>>({\n  step1: false,\n})\n\nconst deltaYCalc = computed(() => {\n  return (props.wavelength * 1e-9 * props.screenDistance) / (props.slitDistance * 1e-3) * 1000\n})\n\nfunction toggleStep(step: string) {\n  showSteps.value[step] = !showSteps.value[step]\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"ws-title\" }, \"📐 خطوات تداخل يونغ\", -1)),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"button\", {\n        class: \"step-toggle\",\n        onClick: _cache[0] || (_cache[0] = ($event: any) => (toggleStep('step1')))\n      }, _toDisplayString(showSteps.value.step1 ? '▼' : '▶') + \" الخطوة 1: المسافة بين الأهداب \", 1),\n      (showSteps.value.step1)\n        ? (_openBlock(), _createElementBlock(\"div\", _hoisted_3, [\n            _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"formula\" }, \"Δy = λD / d\", -1)),\n            _createElementVNode(\"div\", _hoisted_4, [\n              _createElementVNode(\"div\", null, \"Δy = \" + _toDisplayString(__props.wavelength) + \" nm × \" + _toDisplayString(__props.screenDistance) + \" m / \" + _toDisplayString(__props.slitDistance) + \" mm\", 1),\n              _createElementVNode(\"div\", _hoisted_5, \"Δy = \" + _toDisplayString(deltaYCalc.value.toFixed(3)) + \" mm\", 1),\n              _createElementVNode(\"div\", null, \"المقاس: \" + _toDisplayString(__props.fringeSpacing.toFixed(3)) + \" mm\", 1)\n            ])\n          ]))\n        : _createCommentVNode(\"\", true)\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783634640224,
+      "end": 1783634640224
+    },
+    {
+      "name": "vite:css",
+      "start": 1783634640224,
+      "end": 1783634640224,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nconst _hoisted_2 = { class: \"step-row\" };\nconst _hoisted_3 = {\n  key: 0,\n  class: \"step-content\"\n};\nconst _hoisted_4 = { class: \"calc\" };\nconst _hoisted_5 = { class: \"result\" };\nimport { ref, computed } from \"vue\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"InterferenceWorksheetPanel\",\n  props: {\n    slitDistance: {},\n    screenDistance: {},\n    wavelength: {},\n    fringeSpacing: {}\n  },\n  setup(__props) {\n    const props = __props;\n    const showSteps = ref({\n      step1: false\n    });\n    const deltaYCalc = computed(() => {\n      return props.wavelength * 1e-9 * props.screenDistance / (props.slitDistance * 1e-3) * 1e3;\n    });\n    function toggleStep(step) {\n      showSteps.value[step] = !showSteps.value[step];\n    }\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"ws-title\" }, \"📐 خطوات تداخل يونغ\", -1)),\n        _createElementVNode(\"div\", _hoisted_2, [\n          _createElementVNode(\"button\", {\n            class: \"step-toggle\",\n            onClick: _cache[0] || (_cache[0] = ($event) => toggleStep(\"step1\"))\n          }, _toDisplayString(showSteps.value.step1 ? \"▼\" : \"▶\") + \" الخطوة 1: المسافة بين الأهداب \", 1),\n          showSteps.value.step1 ? (_openBlock(), _createElementBlock(\"div\", _hoisted_3, [\n            _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"formula\" }, \"Δy = λD / d\", -1)),\n            _createElementVNode(\"div\", _hoisted_4, [\n              _createElementVNode(\"div\", null, \"Δy = \" + _toDisplayString(__props.wavelength) + \" nm × \" + _toDisplayString(__props.screenDistance) + \" m / \" + _toDisplayString(__props.slitDistance) + \" mm\", 1),\n              _createElementVNode(\"div\", _hoisted_5, \"Δy = \" + _toDisplayString(deltaYCalc.value.toFixed(3)) + \" mm\", 1),\n              _createElementVNode(\"div\", null, \"المقاس: \" + _toDisplayString(__props.fringeSpacing.toFixed(3)) + \" mm\", 1)\n            ])\n          ])) : _createCommentVNode(\"\", true)\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783634640224,
+      "end": 1783634640512,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/interference/panels/InterferenceWorksheetPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"step-row\" }\nconst _hoisted_3 = {\n  key: 0,\n  class: \"step-content\"\n}\nconst _hoisted_4 = { class: \"calc\" }\nconst _hoisted_5 = { class: \"result\" }\n\nimport { ref, computed } from 'vue'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'InterferenceWorksheetPanel',\n  props: {\n    slitDistance: {},\n    screenDistance: {},\n    wavelength: {},\n    fringeSpacing: {}\n  },\n  setup(__props: any) {\n\nconst props = __props\n\nconst showSteps = ref<Record<string, boolean>>({\n  step1: false,\n})\n\nconst deltaYCalc = computed(() => {\n  return (props.wavelength * 1e-9 * props.screenDistance) / (props.slitDistance * 1e-3) * 1000\n})\n\nfunction toggleStep(step: string) {\n  showSteps.value[step] = !showSteps.value[step]\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"ws-title\" }, \"📐 خطوات تداخل يونغ\", -1)),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"button\", {\n        class: \"step-toggle\",\n        onClick: _cache[0] || (_cache[0] = ($event: any) => (toggleStep('step1')))\n      }, _toDisplayString(showSteps.value.step1 ? '▼' : '▶') + \" الخطوة 1: المسافة بين الأهداب \", 1),\n      (showSteps.value.step1)\n        ? (_openBlock(), _createElementBlock(\"div\", _hoisted_3, [\n            _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"formula\" }, \"Δy = λD / d\", -1)),\n            _createElementVNode(\"div\", _hoisted_4, [\n              _createElementVNode(\"div\", null, \"Δy = \" + _toDisplayString(__props.wavelength) + \" nm × \" + _toDisplayString(__props.screenDistance) + \" m / \" + _toDisplayString(__props.slitDistance) + \" mm\", 1),\n              _createElementVNode(\"div\", _hoisted_5, \"Δy = \" + _toDisplayString(deltaYCalc.value.toFixed(3)) + \" mm\", 1),\n              _createElementVNode(\"div\", null, \"المقاس: \" + _toDisplayString(__props.fringeSpacing.toFixed(3)) + \" mm\", 1)\n            ])\n          ]))\n        : _createCommentVNode(\"\", true)\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,sBAAsB,qBAAqB,mBAAmB,kBAAkB,aAAa,YAAY,sBAAsB,qBAAqB,sBAAsB,2BAA2B;AAE9M,MAAM,aAAa,EAAE,OAAO,aAAa;AACzC,MAAM,aAAa,EAAE,OAAO,WAAW;AACvC,MAAM,aAAa;AAAA,EACjB,KAAK;AAAA,EACL,OAAO;AACT;AACA,MAAM,aAAa,EAAE,OAAO,OAAO;AACnC,MAAM,aAAa,EAAE,OAAO,SAAS;AAErC,SAAS,KAAK,gBAAgB;AAG9B,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,cAAc,CAAC;AAAA,IACf,gBAAgB,CAAC;AAAA,IACjB,YAAY,CAAC;AAAA,IACb,eAAe,CAAC;AAAA,EAClB;AAAA,EACA,MAAM,SAAc;AAEtB,UAAM,QAAQ;AAEd,UAAM,YAAY,IAA6B;AAAA,MAC7C,OAAO;AAAA,IACT,CAAC;AAED,UAAM,aAAa,SAAS,MAAM;AAChC,aAAQ,MAAM,aAAa,OAAO,MAAM,kBAAmB,MAAM,eAAe,QAAQ;AAAA,IAC1F,CAAC;AAED,aAAS,WAAW,MAAc;AAChC,gBAAU,MAAM,IAAI,IAAI,CAAC,UAAU,MAAM,IAAI;AAAA,IAC/C;AAEA,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,WAAW,GAAG,uBAAuB,EAAE;AAAA,QACrG,oBAAoB,OAAO,YAAY;AAAA,UACrC,oBAAoB,UAAU;AAAA,YAC5B,OAAO;AAAA,YACP,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,WAAW,OAAO;AAAA,UACzE,GAAG,iBAAiB,UAAU,MAAM,QAAQ,MAAM,GAAG,IAAI,mCAAmC,CAAC;AAAA,UAC5F,UAAU,MAAM,SACZ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,YACpD,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,UAAU,GAAG,eAAe,EAAE;AAAA,YAC5F,oBAAoB,OAAO,YAAY;AAAA,cACrC,oBAAoB,OAAO,MAAM,UAAU,iBAAiB,QAAQ,UAAU,IAAI,WAAW,iBAAiB,QAAQ,cAAc,IAAI,UAAU,iBAAiB,QAAQ,YAAY,IAAI,OAAO,CAAC;AAAA,cACnM,oBAAoB,OAAO,YAAY,UAAU,iBAAiB,WAAW,MAAM,QAAQ,CAAC,CAAC,IAAI,OAAO,CAAC;AAAA,cACzG,oBAAoB,OAAO,MAAM,aAAa,iBAAiB,QAAQ,cAAc,QAAQ,CAAC,CAAC,IAAI,OAAO,CAAC;AAAA,YAC7G,CAAC;AAAA,UACH,CAAC,KACD,oBAAoB,IAAI,IAAI;AAAA,QAClC,CAAC;AAAA,MACH,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783634640512,
+      "end": 1783634640512,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783634640512,
+      "end": 1783634640512,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783634640512,
+      "end": 1783634640512,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783634640512,
+      "end": 1783634640512,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783634640512,
+      "end": 1783634640512,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783634640512,
+      "end": 1783634640512,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783634640512,
+      "end": 1783634640512,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783634640512,
+      "end": 1783634640512,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783634640512,
+      "end": 1783634640512,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783634640512,
+      "end": 1783634640512,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783634640512,
+      "end": 1783634640512,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783634640512,
+      "end": 1783634640512,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783634640512,
+      "end": 1783634640512,
+      "order": "normal"
+    }
+  ]
+}

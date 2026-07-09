@@ -36,6 +36,11 @@ const emit = defineEmits<{
         <li>{{ t('experiments.pendulumGuideStep7') }}</li>
       </ol>
       <p><b>{{ t('experiments.note') }}:</b> {{ t('experiments.pendulumNote') }}</p>
+      <div class="mass-independence-note">
+        <p><b>🔬 ملاحظة علمية مهمة:</b></p>
+        <p>في المعادلة <code>T = 2π√(L/g)</code> لا يوجد متغير الكتلة (<code>m</code>)، مما يعني أن <strong>الزمن الدوري (T) لا يعتمد على كتلة الجسم المعلق</strong>.</p>
+        <p>جرب تغيير كتلة البندول من لوحة المتغيرات — ستجد أن T ثابت تقريباً رغم تغيّر الكتلة!</p>
+      </div>
     </div>
   </template>
   <PendulumSignalChart v-else-if="id === 'signal'" :series="sim.signalSeries" :params="{ length: params.length, g: params.g, theta0: params.theta0 }" :sim-t="sim.t" />
@@ -45,4 +50,7 @@ const emit = defineEmits<{
 .guide-text { font-size: .75rem; color: #D1D7E0; line-height: 1.6; }
 .guide-text ol { padding-right: 1.2rem; margin: .3rem 0; }
 .guide-text li { margin-bottom: .2rem; }
+.mass-independence-note { background: #1a2332; border: 1px solid #2D3645; border-radius: 6px; padding: .5rem .6rem; margin-top: .5rem; direction: rtl; text-align: right; }
+.mass-independence-note p { margin: .2rem 0; }
+.mass-independence-note code { background: #252D3A; padding: .05rem .25rem; border-radius: 3px; font-family: monospace; font-size: .75rem; }
 </style>

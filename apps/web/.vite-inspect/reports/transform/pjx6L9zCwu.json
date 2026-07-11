@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabExportNew3.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import type { AnalysisPayload } from '../../../../types/physics'\nimport { sendToAnalysis } from '../../../../composables/analysis/sendToAnalysis'\nimport type { ExportContext } from './electricLabExportBasic'\n\nexport function exportNew3(router: any, ctx: ExportContext): boolean {\n  if (ctx.isCurrentDivider.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-current-divider', sourceNameAr: 'مقسم التيار', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, It: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'It', label: 'It', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Current Divider', formula: 'I₁ = It×R₂/(R₁+R₂), I₂ = It×R₁/(R₁+R₂)', variables: [{ symbol: 'I1', label: 'Current R1' }, { symbol: 'I2', label: 'Current R2' }, { symbol: 'It', label: 'Total I' }, { symbol: 'R1', label: 'R1' }, { symbol: 'R2', label: 'R2' }], solveFor: ['I1', 'I2'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'It', xLabel: 'R (Ω)', yLabel: 'It (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isSourceEff.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-source-eff', sourceNameAr: 'كفاءة المصدر الكهربائي', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance, eta: t.resistance > 0 ? t.resistance / (t.resistance + 2) : 0 })),\n      columns: [{ key: 'V', label: 'Vt', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }, { key: 'eta', label: 'η', unit: '%' }],\n      equations: [{ name: 'Efficiency', formula: 'η = R/(R+r), P_load = I²R', variables: [{ symbol: 'eta', label: 'Efficiency' }, { symbol: 'R', label: 'Load R' }, { symbol: 'r', label: 'Internal r' }, { symbol: 'Pload', label: 'Load Power' }], solveFor: ['eta', 'Pload'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'eta', xLabel: 'R (Ω)', yLabel: 'η', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isTwoSources.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-two-sources', sourceNameAr: 'دائرة بمصدرين متضادين', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'Vt', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Opposing Sources', formula: 'I = (EMF₁−EMF₂)/(R+r₁+r₂)', variables: [{ symbol: 'I', label: 'Current' }, { symbol: 'EMF1', label: 'EMF 1' }, { symbol: 'EMF2', label: 'EMF 2' }, { symbol: 'R', label: 'Load R' }, { symbol: 'r1', label: 'r1' }, { symbol: 'r2', label: 'r2' }], solveFor: ['I'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  return false\n}\n",
-      "start": 1783634642590,
-      "end": 1783634642823,
+      "start": 1783626239180,
+      "end": 1783626239180
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626239180,
+      "end": 1783626239180,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import type { AnalysisPayload } from '../../../../types/physics'\nimport { sendToAnalysis } from '../../../../composables/analysis/sendToAnalysis'\nimport type { ExportContext } from './electricLabExportBasic'\n\nexport function exportNew3(router: any, ctx: ExportContext): boolean {\n  if (ctx.isCurrentDivider.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-current-divider', sourceNameAr: 'مقسم التيار', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, It: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'It', label: 'It', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Current Divider', formula: 'I₁ = It×R₂/(R₁+R₂), I₂ = It×R₁/(R₁+R₂)', variables: [{ symbol: 'I1', label: 'Current R1' }, { symbol: 'I2', label: 'Current R2' }, { symbol: 'It', label: 'Total I' }, { symbol: 'R1', label: 'R1' }, { symbol: 'R2', label: 'R2' }], solveFor: ['I1', 'I2'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'It', xLabel: 'R (Ω)', yLabel: 'It (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isSourceEff.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-source-eff', sourceNameAr: 'كفاءة المصدر الكهربائي', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance, eta: t.resistance > 0 ? t.resistance / (t.resistance + 2) : 0 })),\n      columns: [{ key: 'V', label: 'Vt', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }, { key: 'eta', label: 'η', unit: '%' }],\n      equations: [{ name: 'Efficiency', formula: 'η = R/(R+r), P_load = I²R', variables: [{ symbol: 'eta', label: 'Efficiency' }, { symbol: 'R', label: 'Load R' }, { symbol: 'r', label: 'Internal r' }, { symbol: 'Pload', label: 'Load Power' }], solveFor: ['eta', 'Pload'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'eta', xLabel: 'R (Ω)', yLabel: 'η', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isTwoSources.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-two-sources', sourceNameAr: 'دائرة بمصدرين متضادين', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'Vt', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Opposing Sources', formula: 'I = (EMF₁−EMF₂)/(R+r₁+r₂)', variables: [{ symbol: 'I', label: 'Current' }, { symbol: 'EMF1', label: 'EMF 1' }, { symbol: 'EMF2', label: 'EMF 2' }, { symbol: 'R', label: 'Load R' }, { symbol: 'r1', label: 'r1' }, { symbol: 'r2', label: 'r2' }], solveFor: ['I'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  return false\n}\n",
+      "start": 1783626239180,
+      "end": 1783626239180,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634642823,
-      "end": 1783634642823,
+      "start": 1783626239180,
+      "end": 1783626239180,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { sendToAnalysis } from \"../../../../composables/analysis/sendToAnalysis\";\nexport function exportNew3(router, ctx) {\n  if (ctx.isCurrentDivider.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-current-divider\",\n      sourceNameAr: \"مقسم التيار\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, It: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"V\", unit: \"V\" }, { key: \"It\", label: \"It\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"Current Divider\", formula: \"I₁ = It×R₂/(R₁+R₂), I₂ = It×R₁/(R₁+R₂)\", variables: [{ symbol: \"I1\", label: \"Current R1\" }, { symbol: \"I2\", label: \"Current R2\" }, { symbol: \"It\", label: \"Total I\" }, { symbol: \"R1\", label: \"R1\" }, { symbol: \"R2\", label: \"R2\" }], solveFor: [\"I1\", \"I2\"] }],\n      suggestedPlots: [{ xKey: \"R\", yKey: \"It\", xLabel: \"R (Ω)\", yLabel: \"It (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isSourceEff.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-source-eff\",\n      sourceNameAr: \"كفاءة المصدر الكهربائي\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance, eta: t.resistance > 0 ? t.resistance / (t.resistance + 2) : 0 })),\n      columns: [{ key: \"V\", label: \"Vt\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }, { key: \"eta\", label: \"η\", unit: \"%\" }],\n      equations: [{ name: \"Efficiency\", formula: \"η = R/(R+r), P_load = I²R\", variables: [{ symbol: \"eta\", label: \"Efficiency\" }, { symbol: \"R\", label: \"Load R\" }, { symbol: \"r\", label: \"Internal r\" }, { symbol: \"Pload\", label: \"Load Power\" }], solveFor: [\"eta\", \"Pload\"] }],\n      suggestedPlots: [{ xKey: \"R\", yKey: \"eta\", xLabel: \"R (Ω)\", yLabel: \"η\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isTwoSources.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-two-sources\",\n      sourceNameAr: \"دائرة بمصدرين متضادين\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"Vt\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"Opposing Sources\", formula: \"I = (EMF₁−EMF₂)/(R+r₁+r₂)\", variables: [{ symbol: \"I\", label: \"Current\" }, { symbol: \"EMF1\", label: \"EMF 1\" }, { symbol: \"EMF2\", label: \"EMF 2\" }, { symbol: \"R\", label: \"Load R\" }, { symbol: \"r1\", label: \"r1\" }, { symbol: \"r2\", label: \"r2\" }], solveFor: [\"I\"] }],\n      suggestedPlots: [{ xKey: \"R\", yKey: \"I\", xLabel: \"R (Ω)\", yLabel: \"I (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  return false;\n}\n",
-      "start": 1783634642823,
-      "end": 1783634642876,
+      "start": 1783626239180,
+      "end": 1783626239772,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabExportNew3.ts"
+          "electricLabExportNew3.ts"
         ],
         "sourcesContent": [
           "import type { AnalysisPayload } from '../../../../types/physics'\nimport { sendToAnalysis } from '../../../../composables/analysis/sendToAnalysis'\nimport type { ExportContext } from './electricLabExportBasic'\n\nexport function exportNew3(router: any, ctx: ExportContext): boolean {\n  if (ctx.isCurrentDivider.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-current-divider', sourceNameAr: 'مقسم التيار', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, It: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'It', label: 'It', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Current Divider', formula: 'I₁ = It×R₂/(R₁+R₂), I₂ = It×R₁/(R₁+R₂)', variables: [{ symbol: 'I1', label: 'Current R1' }, { symbol: 'I2', label: 'Current R2' }, { symbol: 'It', label: 'Total I' }, { symbol: 'R1', label: 'R1' }, { symbol: 'R2', label: 'R2' }], solveFor: ['I1', 'I2'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'It', xLabel: 'R (Ω)', yLabel: 'It (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isSourceEff.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-source-eff', sourceNameAr: 'كفاءة المصدر الكهربائي', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance, eta: t.resistance > 0 ? t.resistance / (t.resistance + 2) : 0 })),\n      columns: [{ key: 'V', label: 'Vt', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }, { key: 'eta', label: 'η', unit: '%' }],\n      equations: [{ name: 'Efficiency', formula: 'η = R/(R+r), P_load = I²R', variables: [{ symbol: 'eta', label: 'Efficiency' }, { symbol: 'R', label: 'Load R' }, { symbol: 'r', label: 'Internal r' }, { symbol: 'Pload', label: 'Load Power' }], solveFor: ['eta', 'Pload'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'eta', xLabel: 'R (Ω)', yLabel: 'η', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isTwoSources.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-two-sources', sourceNameAr: 'دائرة بمصدرين متضادين', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'Vt', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Opposing Sources', formula: 'I = (EMF₁−EMF₂)/(R+r₁+r₂)', variables: [{ symbol: 'I', label: 'Current' }, { symbol: 'EMF1', label: 'EMF 1' }, { symbol: 'EMF2', label: 'EMF 2' }, { symbol: 'R', label: 'Load R' }, { symbol: 'r1', label: 'r1' }, { symbol: 'r2', label: 'r2' }], solveFor: ['I'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  return false\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634642876,
-      "end": 1783634642876,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642876,
-      "end": 1783634642876,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626239772,
+      "end": 1783626239772,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634642877,
-      "end": 1783634642877,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642877,
-      "end": 1783634642877,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626239772,
+      "end": 1783626239772,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "name": "vite:css-analysis",
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { sendToAnalysis } from \"/src/composables/analysis/sendToAnalysis.ts\";\nexport function exportNew3(router, ctx) {\n  if (ctx.isCurrentDivider.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-current-divider\",\n      sourceNameAr: \"مقسم التيار\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, It: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"V\", unit: \"V\" }, { key: \"It\", label: \"It\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"Current Divider\", formula: \"I₁ = It×R₂/(R₁+R₂), I₂ = It×R₁/(R₁+R₂)\", variables: [{ symbol: \"I1\", label: \"Current R1\" }, { symbol: \"I2\", label: \"Current R2\" }, { symbol: \"It\", label: \"Total I\" }, { symbol: \"R1\", label: \"R1\" }, { symbol: \"R2\", label: \"R2\" }], solveFor: [\"I1\", \"I2\"] }],\n      suggestedPlots: [{ xKey: \"R\", yKey: \"It\", xLabel: \"R (Ω)\", yLabel: \"It (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isSourceEff.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-source-eff\",\n      sourceNameAr: \"كفاءة المصدر الكهربائي\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance, eta: t.resistance > 0 ? t.resistance / (t.resistance + 2) : 0 })),\n      columns: [{ key: \"V\", label: \"Vt\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }, { key: \"eta\", label: \"η\", unit: \"%\" }],\n      equations: [{ name: \"Efficiency\", formula: \"η = R/(R+r), P_load = I²R\", variables: [{ symbol: \"eta\", label: \"Efficiency\" }, { symbol: \"R\", label: \"Load R\" }, { symbol: \"r\", label: \"Internal r\" }, { symbol: \"Pload\", label: \"Load Power\" }], solveFor: [\"eta\", \"Pload\"] }],\n      suggestedPlots: [{ xKey: \"R\", yKey: \"eta\", xLabel: \"R (Ω)\", yLabel: \"η\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isTwoSources.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-two-sources\",\n      sourceNameAr: \"دائرة بمصدرين متضادين\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"Vt\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"Opposing Sources\", formula: \"I = (EMF₁−EMF₂)/(R+r₁+r₂)\", variables: [{ symbol: \"I\", label: \"Current\" }, { symbol: \"EMF1\", label: \"EMF 1\" }, { symbol: \"EMF2\", label: \"EMF 2\" }, { symbol: \"R\", label: \"Load R\" }, { symbol: \"r1\", label: \"r1\" }, { symbol: \"r2\", label: \"r2\" }], solveFor: [\"I\"] }],\n      suggestedPlots: [{ xKey: \"R\", yKey: \"I\", xLabel: \"R (Ω)\", yLabel: \"I (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  return false;\n}\n",
+      "start": 1783626239772,
+      "end": 1783626239793,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

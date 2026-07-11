@@ -1,0 +1,129 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/locales/ai.ts",
+  "transforms": [
+    {
+      "name": "__load__",
+      "result": "export const ai = {\n  ar: {\n    aiAnalysis: '🤖 تحليل ذكي',\n    analyze: 'تحليل',\n    hide: 'إخفاء',\n    analyzing: 'يحلل البيانات...',\n    readingsLabel: '📋 القراءات',\n    equationsLabel: '📐 معادلات',\n    plotsLabel: '📈 رسومات',\n    conclusionLabel: '📝 خاتمة',\n    chartLabel: '📸 رسم بياني',\n    dataQualityLabel: '🎯 جودة البيانات',\n    reportAnalysis: 'تحليل التقرير',\n    studentLabel: 'الطالب',\n    readingsCount: 'عدد القراءات',\n    dataQuality: 'جودة البيانات',\n    strengths: 'نقاط القوة',\n    goodReadings: 'عدد قراءات جيد',\n    acceptableReadings: 'عدد قراءات مقبول',\n    fewReadings: 'عدد قراءات قليل',\n    needMoreReadings: 'يحتاج لقراءات إضافية',\n    hasEquations: 'يتضمن معادلات رياضية',\n    hasPlots: 'يتضمن رسومات بيانية',\n    hasConclusion: 'يتضمن خاتمة وتحليل',\n    hasChart: 'يتضمن رسم بياني فعلي',\n    noEquations: 'لا يوجد معادلات',\n    addEquationsAdvice: 'يُنصح بإضافة المعادلات',\n    noConclusion: 'لا يوجد خاتمة',\n    addAnalysisAdvice: 'يُنصح بإضافة تحليل للنتائج',\n    notes: 'ملاحظات',\n    computedAverages: 'المتوسطات المحسوبة',\n    gradeSuggestion: 'اقتراح الدرجة',\n  },\n  en: {\n    aiAnalysis: '🤖 AI Analysis',\n    analyze: 'Analyze',\n    hide: 'Hide',\n    analyzing: 'Analyzing data...',\n    readingsLabel: '📋 Readings',\n    equationsLabel: '📐 Equations',\n    plotsLabel: '📈 Plots',\n    conclusionLabel: '📝 Conclusion',\n    chartLabel: '📸 Chart',\n    dataQualityLabel: '🎯 Data Quality',\n    reportAnalysis: 'Report Analysis',\n    studentLabel: 'Student',\n    readingsCount: 'Readings Count',\n    dataQuality: 'Data Quality',\n    strengths: 'Strengths',\n    goodReadings: 'Good number of readings',\n    acceptableReadings: 'Acceptable number of readings',\n    fewReadings: 'Few readings',\n    needMoreReadings: 'Needs more readings',\n    hasEquations: 'Includes mathematical equations',\n    hasPlots: 'Includes plots and graphs',\n    hasConclusion: 'Includes conclusion and analysis',\n    hasChart: 'Includes actual chart',\n    noEquations: 'No equations found',\n    addEquationsAdvice: 'Add equations recommended',\n    noConclusion: 'No conclusion found',\n    addAnalysisAdvice: 'Add result analysis recommended',\n    notes: 'Notes',\n    computedAverages: 'Computed averages',\n    gradeSuggestion: 'Grade Suggestion',\n  },\n  es: {\n    aiAnalysis: '🤖 Análisis IA',\n    analyze: 'Analizar',\n    hide: 'Ocultar',\n    analyzing: 'Analizando datos...',\n    readingsLabel: '📋 Lecturas',\n    equationsLabel: '📐 Ecuaciones',\n    plotsLabel: '📈 Gráficos',\n    conclusionLabel: '📝 Conclusión',\n    chartLabel: '📸 Gráfico',\n    dataQualityLabel: '🎯 Calidad de Datos',\n    reportAnalysis: 'Análisis del Informe',\n    studentLabel: 'Estudiante',\n    readingsCount: 'Número de Lecturas',\n    dataQuality: 'Calidad de Datos',\n    strengths: 'Puntos Fuertes',\n    goodReadings: 'Buen número de lecturas',\n    acceptableReadings: 'Número aceptable de lecturas',\n    fewReadings: 'Pocas lecturas',\n    needMoreReadings: 'Necesita más lecturas',\n    hasEquations: 'Incluye ecuaciones matemáticas',\n    hasPlots: 'Incluye gráficos',\n    hasConclusion: 'Incluye conclusión y análisis',\n    hasChart: 'Incluye gráfico real',\n    noEquations: 'No se encontraron ecuaciones',\n    addEquationsAdvice: 'Se recomienda añadir ecuaciones',\n    noConclusion: 'No se encontró conclusión',\n    addAnalysisAdvice: 'Se recomienda añadir análisis de resultados',\n    notes: 'Notas',\n    computedAverages: 'Promedios calculados',\n    gradeSuggestion: 'Sugerencia de Nota',\n  },\n} as const\n",
+      "start": 1783626227463,
+      "end": 1783626227463
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626227463,
+      "end": 1783626227463,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "export const ai = {\n  ar: {\n    aiAnalysis: '🤖 تحليل ذكي',\n    analyze: 'تحليل',\n    hide: 'إخفاء',\n    analyzing: 'يحلل البيانات...',\n    readingsLabel: '📋 القراءات',\n    equationsLabel: '📐 معادلات',\n    plotsLabel: '📈 رسومات',\n    conclusionLabel: '📝 خاتمة',\n    chartLabel: '📸 رسم بياني',\n    dataQualityLabel: '🎯 جودة البيانات',\n    reportAnalysis: 'تحليل التقرير',\n    studentLabel: 'الطالب',\n    readingsCount: 'عدد القراءات',\n    dataQuality: 'جودة البيانات',\n    strengths: 'نقاط القوة',\n    goodReadings: 'عدد قراءات جيد',\n    acceptableReadings: 'عدد قراءات مقبول',\n    fewReadings: 'عدد قراءات قليل',\n    needMoreReadings: 'يحتاج لقراءات إضافية',\n    hasEquations: 'يتضمن معادلات رياضية',\n    hasPlots: 'يتضمن رسومات بيانية',\n    hasConclusion: 'يتضمن خاتمة وتحليل',\n    hasChart: 'يتضمن رسم بياني فعلي',\n    noEquations: 'لا يوجد معادلات',\n    addEquationsAdvice: 'يُنصح بإضافة المعادلات',\n    noConclusion: 'لا يوجد خاتمة',\n    addAnalysisAdvice: 'يُنصح بإضافة تحليل للنتائج',\n    notes: 'ملاحظات',\n    computedAverages: 'المتوسطات المحسوبة',\n    gradeSuggestion: 'اقتراح الدرجة',\n  },\n  en: {\n    aiAnalysis: '🤖 AI Analysis',\n    analyze: 'Analyze',\n    hide: 'Hide',\n    analyzing: 'Analyzing data...',\n    readingsLabel: '📋 Readings',\n    equationsLabel: '📐 Equations',\n    plotsLabel: '📈 Plots',\n    conclusionLabel: '📝 Conclusion',\n    chartLabel: '📸 Chart',\n    dataQualityLabel: '🎯 Data Quality',\n    reportAnalysis: 'Report Analysis',\n    studentLabel: 'Student',\n    readingsCount: 'Readings Count',\n    dataQuality: 'Data Quality',\n    strengths: 'Strengths',\n    goodReadings: 'Good number of readings',\n    acceptableReadings: 'Acceptable number of readings',\n    fewReadings: 'Few readings',\n    needMoreReadings: 'Needs more readings',\n    hasEquations: 'Includes mathematical equations',\n    hasPlots: 'Includes plots and graphs',\n    hasConclusion: 'Includes conclusion and analysis',\n    hasChart: 'Includes actual chart',\n    noEquations: 'No equations found',\n    addEquationsAdvice: 'Add equations recommended',\n    noConclusion: 'No conclusion found',\n    addAnalysisAdvice: 'Add result analysis recommended',\n    notes: 'Notes',\n    computedAverages: 'Computed averages',\n    gradeSuggestion: 'Grade Suggestion',\n  },\n  es: {\n    aiAnalysis: '🤖 Análisis IA',\n    analyze: 'Analizar',\n    hide: 'Ocultar',\n    analyzing: 'Analizando datos...',\n    readingsLabel: '📋 Lecturas',\n    equationsLabel: '📐 Ecuaciones',\n    plotsLabel: '📈 Gráficos',\n    conclusionLabel: '📝 Conclusión',\n    chartLabel: '📸 Gráfico',\n    dataQualityLabel: '🎯 Calidad de Datos',\n    reportAnalysis: 'Análisis del Informe',\n    studentLabel: 'Estudiante',\n    readingsCount: 'Número de Lecturas',\n    dataQuality: 'Calidad de Datos',\n    strengths: 'Puntos Fuertes',\n    goodReadings: 'Buen número de lecturas',\n    acceptableReadings: 'Número aceptable de lecturas',\n    fewReadings: 'Pocas lecturas',\n    needMoreReadings: 'Necesita más lecturas',\n    hasEquations: 'Incluye ecuaciones matemáticas',\n    hasPlots: 'Incluye gráficos',\n    hasConclusion: 'Incluye conclusión y análisis',\n    hasChart: 'Incluye gráfico real',\n    noEquations: 'No se encontraron ecuaciones',\n    addEquationsAdvice: 'Se recomienda añadir ecuaciones',\n    noConclusion: 'No se encontró conclusión',\n    addAnalysisAdvice: 'Se recomienda añadir análisis de resultados',\n    notes: 'Notas',\n    computedAverages: 'Promedios calculados',\n    gradeSuggestion: 'Sugerencia de Nota',\n  },\n} as const\n",
+      "start": 1783626227463,
+      "end": 1783626227463,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783626227463,
+      "end": 1783626227463,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "export const ai = {\n  ar: {\n    aiAnalysis: \"🤖 تحليل ذكي\",\n    analyze: \"تحليل\",\n    hide: \"إخفاء\",\n    analyzing: \"يحلل البيانات...\",\n    readingsLabel: \"📋 القراءات\",\n    equationsLabel: \"📐 معادلات\",\n    plotsLabel: \"📈 رسومات\",\n    conclusionLabel: \"📝 خاتمة\",\n    chartLabel: \"📸 رسم بياني\",\n    dataQualityLabel: \"🎯 جودة البيانات\",\n    reportAnalysis: \"تحليل التقرير\",\n    studentLabel: \"الطالب\",\n    readingsCount: \"عدد القراءات\",\n    dataQuality: \"جودة البيانات\",\n    strengths: \"نقاط القوة\",\n    goodReadings: \"عدد قراءات جيد\",\n    acceptableReadings: \"عدد قراءات مقبول\",\n    fewReadings: \"عدد قراءات قليل\",\n    needMoreReadings: \"يحتاج لقراءات إضافية\",\n    hasEquations: \"يتضمن معادلات رياضية\",\n    hasPlots: \"يتضمن رسومات بيانية\",\n    hasConclusion: \"يتضمن خاتمة وتحليل\",\n    hasChart: \"يتضمن رسم بياني فعلي\",\n    noEquations: \"لا يوجد معادلات\",\n    addEquationsAdvice: \"يُنصح بإضافة المعادلات\",\n    noConclusion: \"لا يوجد خاتمة\",\n    addAnalysisAdvice: \"يُنصح بإضافة تحليل للنتائج\",\n    notes: \"ملاحظات\",\n    computedAverages: \"المتوسطات المحسوبة\",\n    gradeSuggestion: \"اقتراح الدرجة\"\n  },\n  en: {\n    aiAnalysis: \"🤖 AI Analysis\",\n    analyze: \"Analyze\",\n    hide: \"Hide\",\n    analyzing: \"Analyzing data...\",\n    readingsLabel: \"📋 Readings\",\n    equationsLabel: \"📐 Equations\",\n    plotsLabel: \"📈 Plots\",\n    conclusionLabel: \"📝 Conclusion\",\n    chartLabel: \"📸 Chart\",\n    dataQualityLabel: \"🎯 Data Quality\",\n    reportAnalysis: \"Report Analysis\",\n    studentLabel: \"Student\",\n    readingsCount: \"Readings Count\",\n    dataQuality: \"Data Quality\",\n    strengths: \"Strengths\",\n    goodReadings: \"Good number of readings\",\n    acceptableReadings: \"Acceptable number of readings\",\n    fewReadings: \"Few readings\",\n    needMoreReadings: \"Needs more readings\",\n    hasEquations: \"Includes mathematical equations\",\n    hasPlots: \"Includes plots and graphs\",\n    hasConclusion: \"Includes conclusion and analysis\",\n    hasChart: \"Includes actual chart\",\n    noEquations: \"No equations found\",\n    addEquationsAdvice: \"Add equations recommended\",\n    noConclusion: \"No conclusion found\",\n    addAnalysisAdvice: \"Add result analysis recommended\",\n    notes: \"Notes\",\n    computedAverages: \"Computed averages\",\n    gradeSuggestion: \"Grade Suggestion\"\n  },\n  es: {\n    aiAnalysis: \"🤖 Análisis IA\",\n    analyze: \"Analizar\",\n    hide: \"Ocultar\",\n    analyzing: \"Analizando datos...\",\n    readingsLabel: \"📋 Lecturas\",\n    equationsLabel: \"📐 Ecuaciones\",\n    plotsLabel: \"📈 Gráficos\",\n    conclusionLabel: \"📝 Conclusión\",\n    chartLabel: \"📸 Gráfico\",\n    dataQualityLabel: \"🎯 Calidad de Datos\",\n    reportAnalysis: \"Análisis del Informe\",\n    studentLabel: \"Estudiante\",\n    readingsCount: \"Número de Lecturas\",\n    dataQuality: \"Calidad de Datos\",\n    strengths: \"Puntos Fuertes\",\n    goodReadings: \"Buen número de lecturas\",\n    acceptableReadings: \"Número aceptable de lecturas\",\n    fewReadings: \"Pocas lecturas\",\n    needMoreReadings: \"Necesita más lecturas\",\n    hasEquations: \"Incluye ecuaciones matemáticas\",\n    hasPlots: \"Incluye gráficos\",\n    hasConclusion: \"Incluye conclusión y análisis\",\n    hasChart: \"Incluye gráfico real\",\n    noEquations: \"No se encontraron ecuaciones\",\n    addEquationsAdvice: \"Se recomienda añadir ecuaciones\",\n    noConclusion: \"No se encontró conclusión\",\n    addAnalysisAdvice: \"Se recomienda añadir análisis de resultados\",\n    notes: \"Notas\",\n    computedAverages: \"Promedios calculados\",\n    gradeSuggestion: \"Sugerencia de Nota\"\n  }\n};\n",
+      "start": 1783626227463,
+      "end": 1783626227560,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "ai.ts"
+        ],
+        "sourcesContent": [
+          "export const ai = {\n  ar: {\n    aiAnalysis: '🤖 تحليل ذكي',\n    analyze: 'تحليل',\n    hide: 'إخفاء',\n    analyzing: 'يحلل البيانات...',\n    readingsLabel: '📋 القراءات',\n    equationsLabel: '📐 معادلات',\n    plotsLabel: '📈 رسومات',\n    conclusionLabel: '📝 خاتمة',\n    chartLabel: '📸 رسم بياني',\n    dataQualityLabel: '🎯 جودة البيانات',\n    reportAnalysis: 'تحليل التقرير',\n    studentLabel: 'الطالب',\n    readingsCount: 'عدد القراءات',\n    dataQuality: 'جودة البيانات',\n    strengths: 'نقاط القوة',\n    goodReadings: 'عدد قراءات جيد',\n    acceptableReadings: 'عدد قراءات مقبول',\n    fewReadings: 'عدد قراءات قليل',\n    needMoreReadings: 'يحتاج لقراءات إضافية',\n    hasEquations: 'يتضمن معادلات رياضية',\n    hasPlots: 'يتضمن رسومات بيانية',\n    hasConclusion: 'يتضمن خاتمة وتحليل',\n    hasChart: 'يتضمن رسم بياني فعلي',\n    noEquations: 'لا يوجد معادلات',\n    addEquationsAdvice: 'يُنصح بإضافة المعادلات',\n    noConclusion: 'لا يوجد خاتمة',\n    addAnalysisAdvice: 'يُنصح بإضافة تحليل للنتائج',\n    notes: 'ملاحظات',\n    computedAverages: 'المتوسطات المحسوبة',\n    gradeSuggestion: 'اقتراح الدرجة',\n  },\n  en: {\n    aiAnalysis: '🤖 AI Analysis',\n    analyze: 'Analyze',\n    hide: 'Hide',\n    analyzing: 'Analyzing data...',\n    readingsLabel: '📋 Readings',\n    equationsLabel: '📐 Equations',\n    plotsLabel: '📈 Plots',\n    conclusionLabel: '📝 Conclusion',\n    chartLabel: '📸 Chart',\n    dataQualityLabel: '🎯 Data Quality',\n    reportAnalysis: 'Report Analysis',\n    studentLabel: 'Student',\n    readingsCount: 'Readings Count',\n    dataQuality: 'Data Quality',\n    strengths: 'Strengths',\n    goodReadings: 'Good number of readings',\n    acceptableReadings: 'Acceptable number of readings',\n    fewReadings: 'Few readings',\n    needMoreReadings: 'Needs more readings',\n    hasEquations: 'Includes mathematical equations',\n    hasPlots: 'Includes plots and graphs',\n    hasConclusion: 'Includes conclusion and analysis',\n    hasChart: 'Includes actual chart',\n    noEquations: 'No equations found',\n    addEquationsAdvice: 'Add equations recommended',\n    noConclusion: 'No conclusion found',\n    addAnalysisAdvice: 'Add result analysis recommended',\n    notes: 'Notes',\n    computedAverages: 'Computed averages',\n    gradeSuggestion: 'Grade Suggestion',\n  },\n  es: {\n    aiAnalysis: '🤖 Análisis IA',\n    analyze: 'Analizar',\n    hide: 'Ocultar',\n    analyzing: 'Analizando datos...',\n    readingsLabel: '📋 Lecturas',\n    equationsLabel: '📐 Ecuaciones',\n    plotsLabel: '📈 Gráficos',\n    conclusionLabel: '📝 Conclusión',\n    chartLabel: '📸 Gráfico',\n    dataQualityLabel: '🎯 Calidad de Datos',\n    reportAnalysis: 'Análisis del Informe',\n    studentLabel: 'Estudiante',\n    readingsCount: 'Número de Lecturas',\n    dataQuality: 'Calidad de Datos',\n    strengths: 'Puntos Fuertes',\n    goodReadings: 'Buen número de lecturas',\n    acceptableReadings: 'Número aceptable de lecturas',\n    fewReadings: 'Pocas lecturas',\n    needMoreReadings: 'Necesita más lecturas',\n    hasEquations: 'Incluye ecuaciones matemáticas',\n    hasPlots: 'Incluye gráficos',\n    hasConclusion: 'Incluye conclusión y análisis',\n    hasChart: 'Incluye gráfico real',\n    noEquations: 'No se encontraron ecuaciones',\n    addEquationsAdvice: 'Se recomienda añadir ecuaciones',\n    noConclusion: 'No se encontró conclusión',\n    addAnalysisAdvice: 'Se recomienda añadir análisis de resultados',\n    notes: 'Notas',\n    computedAverages: 'Promedios calculados',\n    gradeSuggestion: 'Sugerencia de Nota',\n  },\n} as const\n"
+        ],
+        "mappings": "AAAO,aAAM,KAAK;AAAA,EAChB,IAAI;AAAA,IACF,YAAY;AAAA,IACZ,SAAS;AAAA,IACT,MAAM;AAAA,IACN,WAAW;AAAA,IACX,eAAe;AAAA,IACf,gBAAgB;AAAA,IAChB,YAAY;AAAA,IACZ,iBAAiB;AAAA,IACjB,YAAY;AAAA,IACZ,kBAAkB;AAAA,IAClB,gBAAgB;AAAA,IAChB,cAAc;AAAA,IACd,eAAe;AAAA,IACf,aAAa;AAAA,IACb,WAAW;AAAA,IACX,cAAc;AAAA,IACd,oBAAoB;AAAA,IACpB,aAAa;AAAA,IACb,kBAAkB;AAAA,IAClB,cAAc;AAAA,IACd,UAAU;AAAA,IACV,eAAe;AAAA,IACf,UAAU;AAAA,IACV,aAAa;AAAA,IACb,oBAAoB;AAAA,IACpB,cAAc;AAAA,IACd,mBAAmB;AAAA,IACnB,OAAO;AAAA,IACP,kBAAkB;AAAA,IAClB,iBAAiB;AAAA,EACnB;AAAA,EACA,IAAI;AAAA,IACF,YAAY;AAAA,IACZ,SAAS;AAAA,IACT,MAAM;AAAA,IACN,WAAW;AAAA,IACX,eAAe;AAAA,IACf,gBAAgB;AAAA,IAChB,YAAY;AAAA,IACZ,iBAAiB;AAAA,IACjB,YAAY;AAAA,IACZ,kBAAkB;AAAA,IAClB,gBAAgB;AAAA,IAChB,cAAc;AAAA,IACd,eAAe;AAAA,IACf,aAAa;AAAA,IACb,WAAW;AAAA,IACX,cAAc;AAAA,IACd,oBAAoB;AAAA,IACpB,aAAa;AAAA,IACb,kBAAkB;AAAA,IAClB,cAAc;AAAA,IACd,UAAU;AAAA,IACV,eAAe;AAAA,IACf,UAAU;AAAA,IACV,aAAa;AAAA,IACb,oBAAoB;AAAA,IACpB,cAAc;AAAA,IACd,mBAAmB;AAAA,IACnB,OAAO;AAAA,IACP,kBAAkB;AAAA,IAClB,iBAAiB;AAAA,EACnB;AAAA,EACA,IAAI;AAAA,IACF,YAAY;AAAA,IACZ,SAAS;AAAA,IACT,MAAM;AAAA,IACN,WAAW;AAAA,IACX,eAAe;AAAA,IACf,gBAAgB;AAAA,IAChB,YAAY;AAAA,IACZ,iBAAiB;AAAA,IACjB,YAAY;AAAA,IACZ,kBAAkB;AAAA,IAClB,gBAAgB;AAAA,IAChB,cAAc;AAAA,IACd,eAAe;AAAA,IACf,aAAa;AAAA,IACb,WAAW;AAAA,IACX,cAAc;AAAA,IACd,oBAAoB;AAAA,IACpB,aAAa;AAAA,IACb,kBAAkB;AAAA,IAClB,cAAc;AAAA,IACd,UAAU;AAAA,IACV,eAAe;AAAA,IACf,UAAU;AAAA,IACV,aAAa;AAAA,IACb,oBAAoB;AAAA,IACpB,cAAc;AAAA,IACd,mBAAmB;AAAA,IACnB,OAAO;AAAA,IACP,kBAAkB;AAAA,IAClB,iBAAiB;AAAA,EACnB;AACF;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "export const ai = {\n  ar: {\n    aiAnalysis: \"🤖 تحليل ذكي\",\n    analyze: \"تحليل\",\n    hide: \"إخفاء\",\n    analyzing: \"يحلل البيانات...\",\n    readingsLabel: \"📋 القراءات\",\n    equationsLabel: \"📐 معادلات\",\n    plotsLabel: \"📈 رسومات\",\n    conclusionLabel: \"📝 خاتمة\",\n    chartLabel: \"📸 رسم بياني\",\n    dataQualityLabel: \"🎯 جودة البيانات\",\n    reportAnalysis: \"تحليل التقرير\",\n    studentLabel: \"الطالب\",\n    readingsCount: \"عدد القراءات\",\n    dataQuality: \"جودة البيانات\",\n    strengths: \"نقاط القوة\",\n    goodReadings: \"عدد قراءات جيد\",\n    acceptableReadings: \"عدد قراءات مقبول\",\n    fewReadings: \"عدد قراءات قليل\",\n    needMoreReadings: \"يحتاج لقراءات إضافية\",\n    hasEquations: \"يتضمن معادلات رياضية\",\n    hasPlots: \"يتضمن رسومات بيانية\",\n    hasConclusion: \"يتضمن خاتمة وتحليل\",\n    hasChart: \"يتضمن رسم بياني فعلي\",\n    noEquations: \"لا يوجد معادلات\",\n    addEquationsAdvice: \"يُنصح بإضافة المعادلات\",\n    noConclusion: \"لا يوجد خاتمة\",\n    addAnalysisAdvice: \"يُنصح بإضافة تحليل للنتائج\",\n    notes: \"ملاحظات\",\n    computedAverages: \"المتوسطات المحسوبة\",\n    gradeSuggestion: \"اقتراح الدرجة\"\n  },\n  en: {\n    aiAnalysis: \"🤖 AI Analysis\",\n    analyze: \"Analyze\",\n    hide: \"Hide\",\n    analyzing: \"Analyzing data...\",\n    readingsLabel: \"📋 Readings\",\n    equationsLabel: \"📐 Equations\",\n    plotsLabel: \"📈 Plots\",\n    conclusionLabel: \"📝 Conclusion\",\n    chartLabel: \"📸 Chart\",\n    dataQualityLabel: \"🎯 Data Quality\",\n    reportAnalysis: \"Report Analysis\",\n    studentLabel: \"Student\",\n    readingsCount: \"Readings Count\",\n    dataQuality: \"Data Quality\",\n    strengths: \"Strengths\",\n    goodReadings: \"Good number of readings\",\n    acceptableReadings: \"Acceptable number of readings\",\n    fewReadings: \"Few readings\",\n    needMoreReadings: \"Needs more readings\",\n    hasEquations: \"Includes mathematical equations\",\n    hasPlots: \"Includes plots and graphs\",\n    hasConclusion: \"Includes conclusion and analysis\",\n    hasChart: \"Includes actual chart\",\n    noEquations: \"No equations found\",\n    addEquationsAdvice: \"Add equations recommended\",\n    noConclusion: \"No conclusion found\",\n    addAnalysisAdvice: \"Add result analysis recommended\",\n    notes: \"Notes\",\n    computedAverages: \"Computed averages\",\n    gradeSuggestion: \"Grade Suggestion\"\n  },\n  es: {\n    aiAnalysis: \"🤖 Análisis IA\",\n    analyze: \"Analizar\",\n    hide: \"Ocultar\",\n    analyzing: \"Analizando datos...\",\n    readingsLabel: \"📋 Lecturas\",\n    equationsLabel: \"📐 Ecuaciones\",\n    plotsLabel: \"📈 Gráficos\",\n    conclusionLabel: \"📝 Conclusión\",\n    chartLabel: \"📸 Gráfico\",\n    dataQualityLabel: \"🎯 Calidad de Datos\",\n    reportAnalysis: \"Análisis del Informe\",\n    studentLabel: \"Estudiante\",\n    readingsCount: \"Número de Lecturas\",\n    dataQuality: \"Calidad de Datos\",\n    strengths: \"Puntos Fuertes\",\n    goodReadings: \"Buen número de lecturas\",\n    acceptableReadings: \"Número aceptable de lecturas\",\n    fewReadings: \"Pocas lecturas\",\n    needMoreReadings: \"Necesita más lecturas\",\n    hasEquations: \"Incluye ecuaciones matemáticas\",\n    hasPlots: \"Incluye gráficos\",\n    hasConclusion: \"Incluye conclusión y análisis\",\n    hasChart: \"Incluye gráfico real\",\n    noEquations: \"No se encontraron ecuaciones\",\n    addEquationsAdvice: \"Se recomienda añadir ecuaciones\",\n    noConclusion: \"No se encontró conclusión\",\n    addAnalysisAdvice: \"Se recomienda añadir análisis de resultados\",\n    notes: \"Notas\",\n    computedAverages: \"Promedios calculados\",\n    gradeSuggestion: \"Sugerencia de Nota\"\n  }\n};\n",
+      "start": 1783626227561,
+      "end": 1783626227561,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

@@ -7,6 +7,7 @@ import LightRayCanvas from '../../../../components/experiment/lightray/LightRayC
 import LightRayStatusBar from '../../../../components/experiment/lightray/LightRayStatusBar.vue'
 import LightRayControlBar from '../../../../components/experiment/lightray/LightRayControlBar.vue'
 import LightRayHelpModal from '../../../../components/experiment/lightray/LightRayHelpModal.vue'
+import LightRayGuidePanel from '../../../../components/experiment/lightray/LightRayGuidePanel.vue'
 import LightRayPanelBody from '../../../../components/experiment/lightray/LightRayPanelBody.vue'
 import LightRayOverlayPanels from '../../../../components/experiment/lightray/LightRayOverlayPanels.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
@@ -14,6 +15,7 @@ import DraggablePanel from '../../../../components/experiment/spring/DraggablePa
 const { t } = useI18n()
 const ex = useLightRayExperiment()
 const helpOpen = ref(false)
+const showGuide = ref(true)
 const canvasRef = ref<InstanceType<typeof LightRayCanvas> | null>(null)
 
 function onKeyDown(e: KeyboardEvent) {
@@ -158,6 +160,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             />
           </div>
         </template>
+        <LightRayGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
 

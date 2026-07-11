@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useLabAssistant.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { ref } from 'vue';\nimport { useI18n } from '../useI18n';\n\nconst { t } = useI18n();\n\nexport type AssistantMessageType = 'warning' | 'info' | 'success' | 'tip';\n\nexport interface AssistantMessage {\n  id: number;\n  text: string;\n  type: AssistantMessageType;\n}\n\nlet msgId = 0;\n\n// Only ONE message visible at a time\nexport const currentMessage = ref<AssistantMessage | null>(null);\nexport const assistantOpen = ref(true);\n\nlet dismissTimer: ReturnType<typeof setTimeout> | null = null;\n\nfunction showMessage(text: string, type: AssistantMessageType) {\n  // Replace current message immediately (never stack)\n  currentMessage.value = {\n    id: ++msgId,\n    text,\n    type,\n  };\n  // Clear previous timer\n  if (dismissTimer) clearTimeout(dismissTimer);\n  // Auto-dismiss after 6 seconds\n  dismissTimer = setTimeout(() => {\n    currentMessage.value = null;\n  }, 6000);\n}\n\nexport function clearAssistantMessages() {\n  currentMessage.value = null;\n  if (dismissTimer) clearTimeout(dismissTimer);\n}\n\nexport function toggleAssistant() {\n  assistantOpen.value = !assistantOpen.value;\n}\n\n// ── Idle messages pool (rotates when student is inactive) ──\nconst idleKeys = [\n  'chemistryAssistant.idleMsg1',\n  'chemistryAssistant.idleMsg2',\n  'chemistryAssistant.idleMsg3',\n  'chemistryAssistant.idleMsg4',\n  'chemistryAssistant.idleMsg5',\n  'chemistryAssistant.idleMsg6',\n  'chemistryAssistant.idleMsg7',\n  'chemistryAssistant.idleMsg8',\n];\nconst idleTypes: AssistantMessageType[] = ['tip', 'info', 'tip', 'tip', 'tip', 'tip', 'warning', 'tip'];\n\nlet idleIndex = 0;\nlet idleTimer: ReturnType<typeof setInterval> | null = null;\n\nexport function startIdleMessages() {\n  if (idleTimer) clearInterval(idleTimer);\n  idleTimer = setInterval(() => {\n    if (!currentMessage.value) {\n      const idx = idleIndex % idleKeys.length;\n      showMessage(t(idleKeys[idx]), idleTypes[idx]);\n      idleIndex++;\n    }\n  }, 8000);\n}\n\nexport function stopIdleMessages() {\n  if (idleTimer) clearInterval(idleTimer);\n}\n\n// ── Contextual message helpers (SHORT & RICH) ──\n\nexport function warnDangerousChemical(chemicalName: string, chemicalId: string) {\n  const acidChemicals = ['hcl', 'h2so4', 'hno3'];\n  const baseChemicals = ['naoh', 'koh'];\n\n  if (acidChemicals.includes(chemicalId)) {\n    showMessage(t('chemistryAssistant.strongAcidWarning', { name: chemicalName }), 'warning');\n  } else if (baseChemicals.includes(chemicalId)) {\n    showMessage(t('chemistryAssistant.strongBaseWarning', { name: chemicalName }), 'warning');\n  } else {\n    showMessage(t('chemistryAssistant.chemicalGeneralWarning', { name: chemicalName }), 'tip');\n  }\n}\n\nexport function encourageStep(stepName: string) {\n  const phrases = [\n    t('chemistryAssistant.stepComplete1', { name: stepName }),\n    t('chemistryAssistant.stepComplete2', { name: stepName }),\n    t('chemistryAssistant.stepComplete3', { name: stepName }),\n  ];\n  showMessage(phrases[Math.floor(Math.random() * phrases.length)], 'success');\n}\n\nexport function tipForStep(stepIndex: number, experimentName: string) {\n  const expKeys: Record<string, string[]> = {\n    'neutralization-hcl-naoh': [\n      'chemistryAssistant.tipExp1_1',\n      'chemistryAssistant.tipExp1_2',\n      'chemistryAssistant.tipExp1_3',\n      'chemistryAssistant.tipExp1_4',\n      'chemistryAssistant.tipExp1_5',\n      'chemistryAssistant.tipExp1_6',\n    ],\n    'neutralization-ch3cooh-naoh': [\n      'chemistryAssistant.tipExp2_1',\n      'chemistryAssistant.tipExp2_2',\n      'chemistryAssistant.tipExp2_3',\n      'chemistryAssistant.tipExp2_4',\n      'chemistryAssistant.tipExp2_5',\n      'chemistryAssistant.tipExp2_6',\n    ],\n  };\n  const keys = expKeys[experimentName] || ['chemistryAssistant.defaultTip'];\n  const key = keys[Math.min(stepIndex, keys.length - 1)];\n  if (key) showMessage(t(key), 'tip');\n}\n\nexport function warnOnAction(action: string) {\n  const map: Record<string, AssistantMessageType> = {\n    valveOpen: 'info',\n    acidSelected: 'warning',\n    baseSelected: 'warning',\n    equivalenceApproaching: 'warning',\n    equivalenceReached: 'success',\n    equivalenceExceeded: 'warning',\n  };\n  const key = 'chemistryAssistant.' + action;\n  const type = map[action] || 'info';\n  showMessage(t(key), type);\n}\n\nexport function welcomeMessage(experimentName: string) {\n  showMessage(t('chemistryAssistant.welcomeMessage', { name: experimentName }), 'info');\n}\n\nexport function quickFactAbout(chemicalId: string) {\n  const keyMap: Record<string, string> = {\n    hcl: 'chemistryAssistant.factHCl',\n    naoh: 'chemistryAssistant.factNaOH',\n    phenolphthalein: 'chemistryAssistant.factPhenolphthalein',\n  };\n  const key = keyMap[chemicalId];\n  if (key) showMessage(t(key), 'tip');\n}\n",
-      "start": 1783634639326,
-      "end": 1783634639613,
+      "start": 1783626304648,
+      "end": 1783626304648
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626304648,
+      "end": 1783626304648,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { ref } from 'vue';\nimport { useI18n } from '../useI18n';\n\nconst { t } = useI18n();\n\nexport type AssistantMessageType = 'warning' | 'info' | 'success' | 'tip';\n\nexport interface AssistantMessage {\n  id: number;\n  text: string;\n  type: AssistantMessageType;\n}\n\nlet msgId = 0;\n\n// Only ONE message visible at a time\nexport const currentMessage = ref<AssistantMessage | null>(null);\nexport const assistantOpen = ref(true);\n\nlet dismissTimer: ReturnType<typeof setTimeout> | null = null;\n\nfunction showMessage(text: string, type: AssistantMessageType) {\n  // Replace current message immediately (never stack)\n  currentMessage.value = {\n    id: ++msgId,\n    text,\n    type,\n  };\n  // Clear previous timer\n  if (dismissTimer) clearTimeout(dismissTimer);\n  // Auto-dismiss after 6 seconds\n  dismissTimer = setTimeout(() => {\n    currentMessage.value = null;\n  }, 6000);\n}\n\nexport function clearAssistantMessages() {\n  currentMessage.value = null;\n  if (dismissTimer) clearTimeout(dismissTimer);\n}\n\nexport function toggleAssistant() {\n  assistantOpen.value = !assistantOpen.value;\n}\n\n// ── Idle messages pool (rotates when student is inactive) ──\nconst idleKeys = [\n  'chemistryAssistant.idleMsg1',\n  'chemistryAssistant.idleMsg2',\n  'chemistryAssistant.idleMsg3',\n  'chemistryAssistant.idleMsg4',\n  'chemistryAssistant.idleMsg5',\n  'chemistryAssistant.idleMsg6',\n  'chemistryAssistant.idleMsg7',\n  'chemistryAssistant.idleMsg8',\n];\nconst idleTypes: AssistantMessageType[] = ['tip', 'info', 'tip', 'tip', 'tip', 'tip', 'warning', 'tip'];\n\nlet idleIndex = 0;\nlet idleTimer: ReturnType<typeof setInterval> | null = null;\n\nexport function startIdleMessages() {\n  if (idleTimer) clearInterval(idleTimer);\n  idleTimer = setInterval(() => {\n    if (!currentMessage.value) {\n      const idx = idleIndex % idleKeys.length;\n      showMessage(t(idleKeys[idx]), idleTypes[idx]);\n      idleIndex++;\n    }\n  }, 8000);\n}\n\nexport function stopIdleMessages() {\n  if (idleTimer) clearInterval(idleTimer);\n}\n\n// ── Contextual message helpers (SHORT & RICH) ──\n\nexport function warnDangerousChemical(chemicalName: string, chemicalId: string) {\n  const acidChemicals = ['hcl', 'h2so4', 'hno3'];\n  const baseChemicals = ['naoh', 'koh'];\n\n  if (acidChemicals.includes(chemicalId)) {\n    showMessage(t('chemistryAssistant.strongAcidWarning', { name: chemicalName }), 'warning');\n  } else if (baseChemicals.includes(chemicalId)) {\n    showMessage(t('chemistryAssistant.strongBaseWarning', { name: chemicalName }), 'warning');\n  } else {\n    showMessage(t('chemistryAssistant.chemicalGeneralWarning', { name: chemicalName }), 'tip');\n  }\n}\n\nexport function encourageStep(stepName: string) {\n  const phrases = [\n    t('chemistryAssistant.stepComplete1', { name: stepName }),\n    t('chemistryAssistant.stepComplete2', { name: stepName }),\n    t('chemistryAssistant.stepComplete3', { name: stepName }),\n  ];\n  showMessage(phrases[Math.floor(Math.random() * phrases.length)], 'success');\n}\n\nexport function tipForStep(stepIndex: number, experimentName: string) {\n  const expKeys: Record<string, string[]> = {\n    'neutralization-hcl-naoh': [\n      'chemistryAssistant.tipExp1_1',\n      'chemistryAssistant.tipExp1_2',\n      'chemistryAssistant.tipExp1_3',\n      'chemistryAssistant.tipExp1_4',\n      'chemistryAssistant.tipExp1_5',\n      'chemistryAssistant.tipExp1_6',\n    ],\n    'neutralization-ch3cooh-naoh': [\n      'chemistryAssistant.tipExp2_1',\n      'chemistryAssistant.tipExp2_2',\n      'chemistryAssistant.tipExp2_3',\n      'chemistryAssistant.tipExp2_4',\n      'chemistryAssistant.tipExp2_5',\n      'chemistryAssistant.tipExp2_6',\n    ],\n  };\n  const keys = expKeys[experimentName] || ['chemistryAssistant.defaultTip'];\n  const key = keys[Math.min(stepIndex, keys.length - 1)];\n  if (key) showMessage(t(key), 'tip');\n}\n\nexport function warnOnAction(action: string) {\n  const map: Record<string, AssistantMessageType> = {\n    valveOpen: 'info',\n    acidSelected: 'warning',\n    baseSelected: 'warning',\n    equivalenceApproaching: 'warning',\n    equivalenceReached: 'success',\n    equivalenceExceeded: 'warning',\n  };\n  const key = 'chemistryAssistant.' + action;\n  const type = map[action] || 'info';\n  showMessage(t(key), type);\n}\n\nexport function welcomeMessage(experimentName: string) {\n  showMessage(t('chemistryAssistant.welcomeMessage', { name: experimentName }), 'info');\n}\n\nexport function quickFactAbout(chemicalId: string) {\n  const keyMap: Record<string, string> = {\n    hcl: 'chemistryAssistant.factHCl',\n    naoh: 'chemistryAssistant.factNaOH',\n    phenolphthalein: 'chemistryAssistant.factPhenolphthalein',\n  };\n  const key = keyMap[chemicalId];\n  if (key) showMessage(t(key), 'tip');\n}\n",
+      "start": 1783626304648,
+      "end": 1783626304648,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634639613,
-      "end": 1783634639613,
+      "start": 1783626304648,
+      "end": 1783626304648,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { ref } from \"vue\";\nimport { useI18n } from \"../useI18n\";\nconst { t } = useI18n();\nlet msgId = 0;\nexport const currentMessage = ref(null);\nexport const assistantOpen = ref(true);\nlet dismissTimer = null;\nfunction showMessage(text, type) {\n  currentMessage.value = {\n    id: ++msgId,\n    text,\n    type\n  };\n  if (dismissTimer) clearTimeout(dismissTimer);\n  dismissTimer = setTimeout(() => {\n    currentMessage.value = null;\n  }, 6e3);\n}\nexport function clearAssistantMessages() {\n  currentMessage.value = null;\n  if (dismissTimer) clearTimeout(dismissTimer);\n}\nexport function toggleAssistant() {\n  assistantOpen.value = !assistantOpen.value;\n}\nconst idleKeys = [\n  \"chemistryAssistant.idleMsg1\",\n  \"chemistryAssistant.idleMsg2\",\n  \"chemistryAssistant.idleMsg3\",\n  \"chemistryAssistant.idleMsg4\",\n  \"chemistryAssistant.idleMsg5\",\n  \"chemistryAssistant.idleMsg6\",\n  \"chemistryAssistant.idleMsg7\",\n  \"chemistryAssistant.idleMsg8\"\n];\nconst idleTypes = [\"tip\", \"info\", \"tip\", \"tip\", \"tip\", \"tip\", \"warning\", \"tip\"];\nlet idleIndex = 0;\nlet idleTimer = null;\nexport function startIdleMessages() {\n  if (idleTimer) clearInterval(idleTimer);\n  idleTimer = setInterval(() => {\n    if (!currentMessage.value) {\n      const idx = idleIndex % idleKeys.length;\n      showMessage(t(idleKeys[idx]), idleTypes[idx]);\n      idleIndex++;\n    }\n  }, 8e3);\n}\nexport function stopIdleMessages() {\n  if (idleTimer) clearInterval(idleTimer);\n}\nexport function warnDangerousChemical(chemicalName, chemicalId) {\n  const acidChemicals = [\"hcl\", \"h2so4\", \"hno3\"];\n  const baseChemicals = [\"naoh\", \"koh\"];\n  if (acidChemicals.includes(chemicalId)) {\n    showMessage(t(\"chemistryAssistant.strongAcidWarning\", { name: chemicalName }), \"warning\");\n  } else if (baseChemicals.includes(chemicalId)) {\n    showMessage(t(\"chemistryAssistant.strongBaseWarning\", { name: chemicalName }), \"warning\");\n  } else {\n    showMessage(t(\"chemistryAssistant.chemicalGeneralWarning\", { name: chemicalName }), \"tip\");\n  }\n}\nexport function encourageStep(stepName) {\n  const phrases = [\n    t(\"chemistryAssistant.stepComplete1\", { name: stepName }),\n    t(\"chemistryAssistant.stepComplete2\", { name: stepName }),\n    t(\"chemistryAssistant.stepComplete3\", { name: stepName })\n  ];\n  showMessage(phrases[Math.floor(Math.random() * phrases.length)], \"success\");\n}\nexport function tipForStep(stepIndex, experimentName) {\n  const expKeys = {\n    \"neutralization-hcl-naoh\": [\n      \"chemistryAssistant.tipExp1_1\",\n      \"chemistryAssistant.tipExp1_2\",\n      \"chemistryAssistant.tipExp1_3\",\n      \"chemistryAssistant.tipExp1_4\",\n      \"chemistryAssistant.tipExp1_5\",\n      \"chemistryAssistant.tipExp1_6\"\n    ],\n    \"neutralization-ch3cooh-naoh\": [\n      \"chemistryAssistant.tipExp2_1\",\n      \"chemistryAssistant.tipExp2_2\",\n      \"chemistryAssistant.tipExp2_3\",\n      \"chemistryAssistant.tipExp2_4\",\n      \"chemistryAssistant.tipExp2_5\",\n      \"chemistryAssistant.tipExp2_6\"\n    ]\n  };\n  const keys = expKeys[experimentName] || [\"chemistryAssistant.defaultTip\"];\n  const key = keys[Math.min(stepIndex, keys.length - 1)];\n  if (key) showMessage(t(key), \"tip\");\n}\nexport function warnOnAction(action) {\n  const map = {\n    valveOpen: \"info\",\n    acidSelected: \"warning\",\n    baseSelected: \"warning\",\n    equivalenceApproaching: \"warning\",\n    equivalenceReached: \"success\",\n    equivalenceExceeded: \"warning\"\n  };\n  const key = \"chemistryAssistant.\" + action;\n  const type = map[action] || \"info\";\n  showMessage(t(key), type);\n}\nexport function welcomeMessage(experimentName) {\n  showMessage(t(\"chemistryAssistant.welcomeMessage\", { name: experimentName }), \"info\");\n}\nexport function quickFactAbout(chemicalId) {\n  const keyMap = {\n    hcl: \"chemistryAssistant.factHCl\",\n    naoh: \"chemistryAssistant.factNaOH\",\n    phenolphthalein: \"chemistryAssistant.factPhenolphthalein\"\n  };\n  const key = keyMap[chemicalId];\n  if (key) showMessage(t(key), \"tip\");\n}\n",
-      "start": 1783634639613,
-      "end": 1783634639942,
+      "start": 1783626304648,
+      "end": 1783626305028,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useLabAssistant.ts"
+          "useLabAssistant.ts"
         ],
         "sourcesContent": [
           "import { ref } from 'vue';\nimport { useI18n } from '../useI18n';\n\nconst { t } = useI18n();\n\nexport type AssistantMessageType = 'warning' | 'info' | 'success' | 'tip';\n\nexport interface AssistantMessage {\n  id: number;\n  text: string;\n  type: AssistantMessageType;\n}\n\nlet msgId = 0;\n\n// Only ONE message visible at a time\nexport const currentMessage = ref<AssistantMessage | null>(null);\nexport const assistantOpen = ref(true);\n\nlet dismissTimer: ReturnType<typeof setTimeout> | null = null;\n\nfunction showMessage(text: string, type: AssistantMessageType) {\n  // Replace current message immediately (never stack)\n  currentMessage.value = {\n    id: ++msgId,\n    text,\n    type,\n  };\n  // Clear previous timer\n  if (dismissTimer) clearTimeout(dismissTimer);\n  // Auto-dismiss after 6 seconds\n  dismissTimer = setTimeout(() => {\n    currentMessage.value = null;\n  }, 6000);\n}\n\nexport function clearAssistantMessages() {\n  currentMessage.value = null;\n  if (dismissTimer) clearTimeout(dismissTimer);\n}\n\nexport function toggleAssistant() {\n  assistantOpen.value = !assistantOpen.value;\n}\n\n// ── Idle messages pool (rotates when student is inactive) ──\nconst idleKeys = [\n  'chemistryAssistant.idleMsg1',\n  'chemistryAssistant.idleMsg2',\n  'chemistryAssistant.idleMsg3',\n  'chemistryAssistant.idleMsg4',\n  'chemistryAssistant.idleMsg5',\n  'chemistryAssistant.idleMsg6',\n  'chemistryAssistant.idleMsg7',\n  'chemistryAssistant.idleMsg8',\n];\nconst idleTypes: AssistantMessageType[] = ['tip', 'info', 'tip', 'tip', 'tip', 'tip', 'warning', 'tip'];\n\nlet idleIndex = 0;\nlet idleTimer: ReturnType<typeof setInterval> | null = null;\n\nexport function startIdleMessages() {\n  if (idleTimer) clearInterval(idleTimer);\n  idleTimer = setInterval(() => {\n    if (!currentMessage.value) {\n      const idx = idleIndex % idleKeys.length;\n      showMessage(t(idleKeys[idx]), idleTypes[idx]);\n      idleIndex++;\n    }\n  }, 8000);\n}\n\nexport function stopIdleMessages() {\n  if (idleTimer) clearInterval(idleTimer);\n}\n\n// ── Contextual message helpers (SHORT & RICH) ──\n\nexport function warnDangerousChemical(chemicalName: string, chemicalId: string) {\n  const acidChemicals = ['hcl', 'h2so4', 'hno3'];\n  const baseChemicals = ['naoh', 'koh'];\n\n  if (acidChemicals.includes(chemicalId)) {\n    showMessage(t('chemistryAssistant.strongAcidWarning', { name: chemicalName }), 'warning');\n  } else if (baseChemicals.includes(chemicalId)) {\n    showMessage(t('chemistryAssistant.strongBaseWarning', { name: chemicalName }), 'warning');\n  } else {\n    showMessage(t('chemistryAssistant.chemicalGeneralWarning', { name: chemicalName }), 'tip');\n  }\n}\n\nexport function encourageStep(stepName: string) {\n  const phrases = [\n    t('chemistryAssistant.stepComplete1', { name: stepName }),\n    t('chemistryAssistant.stepComplete2', { name: stepName }),\n    t('chemistryAssistant.stepComplete3', { name: stepName }),\n  ];\n  showMessage(phrases[Math.floor(Math.random() * phrases.length)], 'success');\n}\n\nexport function tipForStep(stepIndex: number, experimentName: string) {\n  const expKeys: Record<string, string[]> = {\n    'neutralization-hcl-naoh': [\n      'chemistryAssistant.tipExp1_1',\n      'chemistryAssistant.tipExp1_2',\n      'chemistryAssistant.tipExp1_3',\n      'chemistryAssistant.tipExp1_4',\n      'chemistryAssistant.tipExp1_5',\n      'chemistryAssistant.tipExp1_6',\n    ],\n    'neutralization-ch3cooh-naoh': [\n      'chemistryAssistant.tipExp2_1',\n      'chemistryAssistant.tipExp2_2',\n      'chemistryAssistant.tipExp2_3',\n      'chemistryAssistant.tipExp2_4',\n      'chemistryAssistant.tipExp2_5',\n      'chemistryAssistant.tipExp2_6',\n    ],\n  };\n  const keys = expKeys[experimentName] || ['chemistryAssistant.defaultTip'];\n  const key = keys[Math.min(stepIndex, keys.length - 1)];\n  if (key) showMessage(t(key), 'tip');\n}\n\nexport function warnOnAction(action: string) {\n  const map: Record<string, AssistantMessageType> = {\n    valveOpen: 'info',\n    acidSelected: 'warning',\n    baseSelected: 'warning',\n    equivalenceApproaching: 'warning',\n    equivalenceReached: 'success',\n    equivalenceExceeded: 'warning',\n  };\n  const key = 'chemistryAssistant.' + action;\n  const type = map[action] || 'info';\n  showMessage(t(key), type);\n}\n\nexport function welcomeMessage(experimentName: string) {\n  showMessage(t('chemistryAssistant.welcomeMessage', { name: experimentName }), 'info');\n}\n\nexport function quickFactAbout(chemicalId: string) {\n  const keyMap: Record<string, string> = {\n    hcl: 'chemistryAssistant.factHCl',\n    naoh: 'chemistryAssistant.factNaOH',\n    phenolphthalein: 'chemistryAssistant.factPhenolphthalein',\n  };\n  const key = keyMap[chemicalId];\n  if (key) showMessage(t(key), 'tip');\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634639942,
-      "end": 1783634639942,
+      "start": 1783626305028,
+      "end": 1783626305028,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634639942,
-      "end": 1783634639942,
+      "start": 1783626305028,
+      "end": 1783626305028,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626305028,
+      "end": 1783626305028,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634639942,
-      "end": 1783634639942,
+      "start": 1783626305028,
+      "end": 1783626305028,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634639942,
-      "end": 1783634639942,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634639942,
-      "end": 1783634639942,
+      "start": 1783626305028,
+      "end": 1783626305028,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634639942,
-      "end": 1783634639942,
+      "start": 1783626305028,
+      "end": 1783626305028,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634639943,
-      "end": 1783634639943,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634639943,
-      "end": 1783634639943,
+      "start": 1783626305028,
+      "end": 1783626305031,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634639943,
-      "end": 1783634639943,
+      "start": 1783626305031,
+      "end": 1783626305033,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634639943,
-      "end": 1783634639943,
+      "start": 1783626305033,
+      "end": 1783626305033,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634639943,
-      "end": 1783634639943,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626305033,
+      "end": 1783626305033,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626305034,
+      "end": 1783626305034,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634639943,
-      "end": 1783634639943,
+      "name": "vite:css-analysis",
+      "start": 1783626305034,
+      "end": 1783626305034,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { ref } from \"/node_modules/.vite/deps/vue.js?v=09a3ad4c\";\nimport { useI18n } from \"/src/composables/useI18n.ts\";\nconst { t } = useI18n();\nlet msgId = 0;\nexport const currentMessage = ref(null);\nexport const assistantOpen = ref(true);\nlet dismissTimer = null;\nfunction showMessage(text, type) {\n  currentMessage.value = {\n    id: ++msgId,\n    text,\n    type\n  };\n  if (dismissTimer) clearTimeout(dismissTimer);\n  dismissTimer = setTimeout(() => {\n    currentMessage.value = null;\n  }, 6e3);\n}\nexport function clearAssistantMessages() {\n  currentMessage.value = null;\n  if (dismissTimer) clearTimeout(dismissTimer);\n}\nexport function toggleAssistant() {\n  assistantOpen.value = !assistantOpen.value;\n}\nconst idleKeys = [\n  \"chemistryAssistant.idleMsg1\",\n  \"chemistryAssistant.idleMsg2\",\n  \"chemistryAssistant.idleMsg3\",\n  \"chemistryAssistant.idleMsg4\",\n  \"chemistryAssistant.idleMsg5\",\n  \"chemistryAssistant.idleMsg6\",\n  \"chemistryAssistant.idleMsg7\",\n  \"chemistryAssistant.idleMsg8\"\n];\nconst idleTypes = [\"tip\", \"info\", \"tip\", \"tip\", \"tip\", \"tip\", \"warning\", \"tip\"];\nlet idleIndex = 0;\nlet idleTimer = null;\nexport function startIdleMessages() {\n  if (idleTimer) clearInterval(idleTimer);\n  idleTimer = setInterval(() => {\n    if (!currentMessage.value) {\n      const idx = idleIndex % idleKeys.length;\n      showMessage(t(idleKeys[idx]), idleTypes[idx]);\n      idleIndex++;\n    }\n  }, 8e3);\n}\nexport function stopIdleMessages() {\n  if (idleTimer) clearInterval(idleTimer);\n}\nexport function warnDangerousChemical(chemicalName, chemicalId) {\n  const acidChemicals = [\"hcl\", \"h2so4\", \"hno3\"];\n  const baseChemicals = [\"naoh\", \"koh\"];\n  if (acidChemicals.includes(chemicalId)) {\n    showMessage(t(\"chemistryAssistant.strongAcidWarning\", { name: chemicalName }), \"warning\");\n  } else if (baseChemicals.includes(chemicalId)) {\n    showMessage(t(\"chemistryAssistant.strongBaseWarning\", { name: chemicalName }), \"warning\");\n  } else {\n    showMessage(t(\"chemistryAssistant.chemicalGeneralWarning\", { name: chemicalName }), \"tip\");\n  }\n}\nexport function encourageStep(stepName) {\n  const phrases = [\n    t(\"chemistryAssistant.stepComplete1\", { name: stepName }),\n    t(\"chemistryAssistant.stepComplete2\", { name: stepName }),\n    t(\"chemistryAssistant.stepComplete3\", { name: stepName })\n  ];\n  showMessage(phrases[Math.floor(Math.random() * phrases.length)], \"success\");\n}\nexport function tipForStep(stepIndex, experimentName) {\n  const expKeys = {\n    \"neutralization-hcl-naoh\": [\n      \"chemistryAssistant.tipExp1_1\",\n      \"chemistryAssistant.tipExp1_2\",\n      \"chemistryAssistant.tipExp1_3\",\n      \"chemistryAssistant.tipExp1_4\",\n      \"chemistryAssistant.tipExp1_5\",\n      \"chemistryAssistant.tipExp1_6\"\n    ],\n    \"neutralization-ch3cooh-naoh\": [\n      \"chemistryAssistant.tipExp2_1\",\n      \"chemistryAssistant.tipExp2_2\",\n      \"chemistryAssistant.tipExp2_3\",\n      \"chemistryAssistant.tipExp2_4\",\n      \"chemistryAssistant.tipExp2_5\",\n      \"chemistryAssistant.tipExp2_6\"\n    ]\n  };\n  const keys = expKeys[experimentName] || [\"chemistryAssistant.defaultTip\"];\n  const key = keys[Math.min(stepIndex, keys.length - 1)];\n  if (key) showMessage(t(key), \"tip\");\n}\nexport function warnOnAction(action) {\n  const map = {\n    valveOpen: \"info\",\n    acidSelected: \"warning\",\n    baseSelected: \"warning\",\n    equivalenceApproaching: \"warning\",\n    equivalenceReached: \"success\",\n    equivalenceExceeded: \"warning\"\n  };\n  const key = \"chemistryAssistant.\" + action;\n  const type = map[action] || \"info\";\n  showMessage(t(key), type);\n}\nexport function welcomeMessage(experimentName) {\n  showMessage(t(\"chemistryAssistant.welcomeMessage\", { name: experimentName }), \"info\");\n}\nexport function quickFactAbout(chemicalId) {\n  const keyMap = {\n    hcl: \"chemistryAssistant.factHCl\",\n    naoh: \"chemistryAssistant.factNaOH\",\n    phenolphthalein: \"chemistryAssistant.factPhenolphthalein\"\n  };\n  const key = keyMap[chemicalId];\n  if (key) showMessage(t(key), \"tip\");\n}\n",
+      "start": 1783626305034,
+      "end": 1783626305054,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

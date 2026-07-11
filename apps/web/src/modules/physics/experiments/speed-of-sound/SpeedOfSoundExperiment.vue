@@ -8,12 +8,14 @@ import SpeedOfSoundPanelBody from '../../../../components/experiment/speed-of-so
 import SpeedOfSoundStatusBar from '../../../../components/experiment/speed-of-sound/SpeedOfSoundStatusBar.vue'
 import SpeedOfSoundControlBar from '../../../../components/experiment/speed-of-sound/SpeedOfSoundControlBar.vue'
 import SpeedOfSoundHelpModal from '../../../../components/experiment/speed-of-sound/SpeedOfSoundHelpModal.vue'
+import SpeedOfSoundGuidePanel from '../../../../components/experiment/speed-of-sound/SpeedOfSoundGuidePanel.vue'
 import SpeedOfSoundOverlayPanels from '../../../../components/experiment/speed-of-sound/SpeedOfSoundOverlayPanels.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 
 const ex = useSpeedOfSoundExperiment()
 const { t } = useI18n()
 const helpOpen = ref(false)
+const showGuide = ref(true)
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
@@ -156,6 +158,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             />
           </div>
         </template>
+        <SpeedOfSoundGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
 

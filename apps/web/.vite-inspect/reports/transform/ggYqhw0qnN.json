@@ -4,40 +4,67 @@
     {
       "name": "vite:vue",
       "result": "\n@media print {\n  body * { visibility: hidden !important; }\n  #printable-report, #printable-report * { visibility: visible !important; }\n  #printable-report {\n    position: absolute !important;\n    left: 0 !important; top: 0 !important;\n    width: 100% !important; height: auto !important;\n    max-width: 100% !important; max-height: none !important;\n    overflow: visible !important;\n    background: #fff !important; color: #000 !important;\n    border: none !important; border-radius: 0 !important;\n    box-shadow: none !important;\n    padding: 1rem !important; margin: 0 !important;\n    gap: .6rem !important;\n  }\n  #printable-report .print-bar,\n  #printable-report .close-btn,\n  #printable-report .no-data { display: none !important; }\n  #printable-report section {\n    background: #fff !important;\n    border: 1px solid #ccc !important;\n    box-shadow: none !important;\n    break-inside: avoid;\n    page-break-inside: avoid;\n  }\n  #printable-report h5 { color: #000 !important; }\n  #printable-report .report-table th { background: #f0f0f0 !important; color: #000 !important; }\n  #printable-report .report-table td { color: #000 !important; border-color: #ccc !important; }\n  #printable-report .result-line { color: #000 !important; }\n  #printable-report .error-sources ul { color: #333 !important; }\n}\n",
-      "start": 1783634642909,
-      "end": 1783634642909
+      "start": 1783626292138,
+      "end": 1783626292138,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ExperimentReport.vue"
+        ],
+        "names": [],
+        "mappings": ";AA+IA,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE;EACX,CAAC,CAAC,CAAC,EAAE,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACxC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACzE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;IAChB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;IAC7B,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;IACrC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;IAC/C,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;IACvD,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;IAC5B,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;IACnD,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;IACpD,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;IAC3B,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;IAC9C,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACvB;EACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EAC5B,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EAC5B,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACvD,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;IACxB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;IAC3B,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;IACjC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;IAC3B,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC;IACnB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC;EAC1B;EACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EAC/C,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EAC7F,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EAC5F,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACzD,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAChE",
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ExperimentReport.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\nimport { shallowRef } from 'vue'\nimport { useI18n } from '../../composables/useI18n'\n\nconst { t } = useI18n()\nconst props = defineProps<{\n  studentStorageKey: string\n  hasData: boolean\n}>()\n\nconst emit = defineEmits<{\n  (e: 'close'): void\n  (e: 'open-full-report'): void\n}>()\n\nconst studentName = shallowRef('')\nconst studentEmail = shallowRef('')\nconst studentClass = shallowRef('')\nconst studentNotes = shallowRef('')\n\nfunction loadStudentInfo() {\n  try {\n    const raw = localStorage.getItem(props.studentStorageKey)\n    if (!raw) return\n    const d = JSON.parse(raw)\n    studentName.value = d.name || ''\n    studentEmail.value = d.email || ''\n    studentClass.value = d.class || ''\n    studentNotes.value = d.notes || ''\n  } catch { /* ignore */ }\n}\n\nfunction saveStudentInfo() {\n  localStorage.setItem(props.studentStorageKey, JSON.stringify({\n    name: studentName.value,\n    email: studentEmail.value,\n    class: studentClass.value,\n    notes: studentNotes.value,\n  }))\n}\n\nloadStudentInfo()\n\nfunction printReport() {\n  const el = document.getElementById('printable-report')\n  if (el) el.scrollTop = 0\n  window.print()\n}\n</script>\n\n<template>\n  <div id=\"printable-report\" class=\"experiment-report-panel\" data-v-inspector=\"src/components/experiment/ExperimentReport.vue:52:3\">\n    <button class=\"close-btn\" @click=\"emit('close')\" data-v-inspector=\"src/components/experiment/ExperimentReport.vue:53:5\">✕</button>\n\n    <section class=\"student-info\" data-v-inspector=\"src/components/experiment/ExperimentReport.vue:55:5\">\n      <h5 data-v-inspector=\"src/components/experiment/ExperimentReport.vue:56:7\">{{ t('experiments.studentInfo') }}</h5>\n      <div class=\"info-grid\" data-v-inspector=\"src/components/experiment/ExperimentReport.vue:57:7\">\n        <div class=\"info-field\" data-v-inspector=\"src/components/experiment/ExperimentReport.vue:58:9\">\n          <label data-v-inspector=\"src/components/experiment/ExperimentReport.vue:59:11\">{{ t('experiments.nameLabel') }}:</label>\n          <input v-model=\"studentName\" @change=\"saveStudentInfo\" :placeholder=\"t('experiments.nameLabel')\" data-v-inspector=\"src/components/experiment/ExperimentReport.vue:60:11\" />\n        </div>\n        <div class=\"info-field\" data-v-inspector=\"src/components/experiment/ExperimentReport.vue:62:9\">\n          <label data-v-inspector=\"src/components/experiment/ExperimentReport.vue:63:11\">{{ t('experiments.emailLabel') }}:</label>\n          <input v-model=\"studentEmail\" @change=\"saveStudentInfo\" placeholder=\"email@example.com\" data-v-inspector=\"src/components/experiment/ExperimentReport.vue:64:11\" />\n        </div>\n        <div class=\"info-field\" data-v-inspector=\"src/components/experiment/ExperimentReport.vue:66:9\">\n          <label data-v-inspector=\"src/components/experiment/ExperimentReport.vue:67:11\">{{ t('experiments.classLabel') }}:</label>\n          <input v-model=\"studentClass\" @change=\"saveStudentInfo\" :placeholder=\"t('experiments.classLabel')\" data-v-inspector=\"src/components/experiment/ExperimentReport.vue:68:11\" />\n        </div>\n      </div>\n      <div class=\"info-field notes\" data-v-inspector=\"src/components/experiment/ExperimentReport.vue:71:7\">\n        <label data-v-inspector=\"src/components/experiment/ExperimentReport.vue:72:9\">{{ t('experiments.notesLabel') }}:</label>\n        <textarea v-model=\"studentNotes\" @change=\"saveStudentInfo\" :placeholder=\"t('experiments.enterExperimentNotes')\" data-v-inspector=\"src/components/experiment/ExperimentReport.vue:73:9\"></textarea>\n      </div>\n    </section>\n\n    <slot name=\"content\" />\n\n    <div class=\"print-bar\" v-if=\"hasData\" data-v-inspector=\"src/components/experiment/ExperimentReport.vue:79:5\">\n      <button class=\"print-btn\" @click=\"printReport\" data-v-inspector=\"src/components/experiment/ExperimentReport.vue:80:7\">🖨️ {{ t('experiments.print') }}</button>\n      <button class=\"print-btn primary\" @click=\"emit('open-full-report')\" data-v-inspector=\"src/components/experiment/ExperimentReport.vue:81:7\">📋 {{ t('experiments.fullReport') }}</button>\n    </div>\n    <div class=\"no-data\" v-if=\"!hasData\" data-v-inspector=\"src/components/experiment/ExperimentReport.vue:83:5\">\n      <slot name=\"no-data\">{{ t('experiments.noRecordedDataPerformExperiment') }}</slot>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.experiment-report-panel { display: flex; flex-direction: column; gap: .6rem; position: relative; }\nh5 { margin: 0 0 .2rem; font-size: .82rem; color: #5B8DB8; }\nsection { background: #161B22; border: 1px solid #2D3645; border-radius: 8px; padding: .5rem; }\n.report-table { width: 100%; border-collapse: collapse; font-size: .72rem; margin-top: .3rem; }\n.report-table th, .report-table td { border: 1px solid #2D3645; padding: .2rem .3rem; text-align: center; color: #D1D7E0; }\n.report-table th { background: #252D3A; }\n.result-line { font-size: .78rem; color: #D1D7E0; margin-top: .3rem; }\n.error-sources ul { margin: .2rem 0; padding-right: 1.2rem; font-size: .75rem; color: #8B95A5; }\n.no-data { text-align: center; color: #8B95A5; font-size: .8rem; padding: 1rem; }\n.print-bar { display: flex; justify-content: center; margin-top: .3rem; gap: .3rem; }\n.print-btn { background: #252D3A; border: 1px solid #2D3645; color: #5B8DB8; border-radius: 4px; padding: .3rem .7rem; font-size: .75rem; cursor: pointer; }\n.print-btn:hover { background: rgba(91,141,184,.15); }\n.print-btn.primary { background: rgba(91,141,184,.15); border-color: #5B8DB8; color: #5B8DB8; font-weight: 700; }\n.edit-hint { font-size: .65rem; color: #5B8DB8; margin-right: .3rem; font-weight: 400; }\n.edit-input { width: 55px; background: #161B22; border: 1px solid #2D3645; color: #D1D7E0; border-radius: 3px; padding: .15rem; font-size: .72rem; text-align: center; }\n.edit-input:focus { border-color: #5B8DB8; outline: none; }\n.info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin-top: .3rem; }\n.info-field { display: flex; flex-direction: column; gap: .2rem; }\n.info-field label { font-size: .72rem; color: #8B95A5; }\n.info-field input, .info-field textarea { background: #161B22; border: 1px solid #2D3645; color: #D1D7E0; border-radius: 4px; padding: .25rem .4rem; font-size: .75rem; }\n.info-field input:focus, .info-field textarea:focus { border-color: #5B8DB8; outline: none; }\n.info-field.notes { grid-column: 1 / -1; }\n.info-field textarea { min-height: 60px; resize: vertical; }\n.close-btn { position: absolute; top: 6px; left: 6px; z-index: 10; background: #252D3A; border: 1px solid #2D3645; color: #8B95A5; border-radius: 4px; padding: .15rem .4rem; font-size: .75rem; cursor: pointer; }\n.close-btn:hover { background: #3a4555; color: #D1D7E0; }\n@media print {\n  .experiment-report-panel {\n    position: static !important;\n    inset: auto !important;\n    width: 100% !important;\n    height: auto !important;\n    max-width: 100% !important;\n    max-height: none !important;\n    overflow: visible !important;\n    background: #fff !important;\n    color: #000 !important;\n    border: none !important;\n    border-radius: 0 !important;\n    box-shadow: none !important;\n    padding: 0 !important;\n    margin: 0 !important;\n    gap: .4rem !important;\n  }\n  section { background: #fff !important; border: 1px solid #ccc !important; box-shadow: none !important; break-inside: avoid; page-break-inside: avoid; }\n  h5 { color: #000 !important; }\n  .report-table th { background: #f0f0f0 !important; color: #000 !important; }\n  .report-table td { color: #000 !important; border-color: #ccc !important; }\n  .result-line { color: #000 !important; }\n  .error-sources ul { color: #333 !important; }\n  .print-bar, .close-btn, .no-data { display: none !important; }\n}\n</style>\n\n<style>\n@media print {\n  body * { visibility: hidden !important; }\n  #printable-report, #printable-report * { visibility: visible !important; }\n  #printable-report {\n    position: absolute !important;\n    left: 0 !important; top: 0 !important;\n    width: 100% !important; height: auto !important;\n    max-width: 100% !important; max-height: none !important;\n    overflow: visible !important;\n    background: #fff !important; color: #000 !important;\n    border: none !important; border-radius: 0 !important;\n    box-shadow: none !important;\n    padding: 1rem !important; margin: 0 !important;\n    gap: .6rem !important;\n  }\n  #printable-report .print-bar,\n  #printable-report .close-btn,\n  #printable-report .no-data { display: none !important; }\n  #printable-report section {\n    background: #fff !important;\n    border: 1px solid #ccc !important;\n    box-shadow: none !important;\n    break-inside: avoid;\n    page-break-inside: avoid;\n  }\n  #printable-report h5 { color: #000 !important; }\n  #printable-report .report-table th { background: #f0f0f0 !important; color: #000 !important; }\n  #printable-report .report-table td { color: #000 !important; border-color: #ccc !important; }\n  #printable-report .result-line { color: #000 !important; }\n  #printable-report .error-sources ul { color: #333 !important; }\n}\n</style>\n"
+        ]
+      }
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626292148,
+      "end": 1783626292148,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "\n@media print {\n  body * { visibility: hidden !important; }\n  #printable-report, #printable-report * { visibility: visible !important; }\n  #printable-report {\n    position: absolute !important;\n    left: 0 !important; top: 0 !important;\n    width: 100% !important; height: auto !important;\n    max-width: 100% !important; max-height: none !important;\n    overflow: visible !important;\n    background: #fff !important; color: #000 !important;\n    border: none !important; border-radius: 0 !important;\n    box-shadow: none !important;\n    padding: 1rem !important; margin: 0 !important;\n    gap: .6rem !important;\n  }\n  #printable-report .print-bar,\n  #printable-report .close-btn,\n  #printable-report .no-data { display: none !important; }\n  #printable-report section {\n    background: #fff !important;\n    border: 1px solid #ccc !important;\n    box-shadow: none !important;\n    break-inside: avoid;\n    page-break-inside: avoid;\n  }\n  #printable-report h5 { color: #000 !important; }\n  #printable-report .report-table th { background: #f0f0f0 !important; color: #000 !important; }\n  #printable-report .report-table td { color: #000 !important; border-color: #ccc !important; }\n  #printable-report .result-line { color: #000 !important; }\n  #printable-report .error-sources ul { color: #333 !important; }\n}\n",
+      "start": 1783626292148,
+      "end": 1783626292148,
+      "order": "pre",
+      "sourcemaps": null
     },
     {
       "name": "vite:css",
       "result": "\n@media print {\n  body * { visibility: hidden !important; }\n  #printable-report, #printable-report * { visibility: visible !important; }\n  #printable-report {\n    position: absolute !important;\n    left: 0 !important; top: 0 !important;\n    width: 100% !important; height: auto !important;\n    max-width: 100% !important; max-height: none !important;\n    overflow: visible !important;\n    background: #fff !important; color: #000 !important;\n    border: none !important; border-radius: 0 !important;\n    box-shadow: none !important;\n    padding: 1rem !important; margin: 0 !important;\n    gap: .6rem !important;\n  }\n  #printable-report .print-bar,\n  #printable-report .close-btn,\n  #printable-report .no-data { display: none !important; }\n  #printable-report section {\n    background: #fff !important;\n    border: 1px solid #ccc !important;\n    box-shadow: none !important;\n    break-inside: avoid;\n    page-break-inside: avoid;\n  }\n  #printable-report h5 { color: #000 !important; }\n  #printable-report .report-table th { background: #f0f0f0 !important; color: #000 !important; }\n  #printable-report .report-table td { color: #000 !important; border-color: #ccc !important; }\n  #printable-report .result-line { color: #000 !important; }\n  #printable-report .error-sources ul { color: #333 !important; }\n}\n",
-      "start": 1783634642909,
-      "end": 1783634642909,
+      "start": 1783626292148,
+      "end": 1783626292148,
       "order": "normal",
       "sourcemaps": null
     },
     {
       "name": "vite:esbuild",
-      "start": 1783634642909,
-      "end": 1783634642909,
+      "start": 1783626292148,
+      "end": 1783626292148,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1783634642909,
-      "end": 1783634642909,
+      "start": 1783626292148,
+      "end": 1783626292148,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642909,
-      "end": 1783634642909,
+      "start": 1783626292148,
+      "end": 1783626292148,
       "order": "normal"
     },
     {
       "name": "vite:vue",
       "result": "\n@media print {\nbody * { visibility: hidden !important;\n}\n#printable-report, #printable-report * { visibility: visible !important;\n}\n#printable-report {\n    position: absolute !important;\n    left: 0 !important; top: 0 !important;\n    width: 100% !important; height: auto !important;\n    max-width: 100% !important; max-height: none !important;\n    overflow: visible !important;\n    background: #fff !important; color: #000 !important;\n    border: none !important; border-radius: 0 !important;\n    box-shadow: none !important;\n    padding: 1rem !important; margin: 0 !important;\n    gap: .6rem !important;\n}\n#printable-report .print-bar,\n  #printable-report .close-btn,\n  #printable-report .no-data { display: none !important;\n}\n#printable-report section {\n    background: #fff !important;\n    border: 1px solid #ccc !important;\n    box-shadow: none !important;\n    break-inside: avoid;\n    page-break-inside: avoid;\n}\n#printable-report h5 { color: #000 !important;\n}\n#printable-report .report-table th { background: #f0f0f0 !important; color: #000 !important;\n}\n#printable-report .report-table td { color: #000 !important; border-color: #ccc !important;\n}\n#printable-report .result-line { color: #000 !important;\n}\n#printable-report .error-sources ul { color: #333 !important;\n}\n}\n",
-      "start": 1783634642911,
-      "end": 1783634642911,
+      "start": 1783626292182,
+      "end": 1783626292184,
       "order": "normal-normal",
       "sourcemaps": {
         "mappings": ""
@@ -45,67 +72,69 @@
     },
     {
       "name": "vite:define",
-      "start": 1783634642911,
-      "end": 1783634642911,
+      "start": 1783626292184,
+      "end": 1783626292184,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "result": "",
-      "start": 1783634642911,
-      "end": 1783634642911,
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ExperimentReport.vue?vue&type=style&index=1&lang.css\"\nconst __vite__css = \"\\n@media print {\\nbody * { visibility: hidden !important;\\n}\\n#printable-report, #printable-report * { visibility: visible !important;\\n}\\n#printable-report {\\n    position: absolute !important;\\n    left: 0 !important; top: 0 !important;\\n    width: 100% !important; height: auto !important;\\n    max-width: 100% !important; max-height: none !important;\\n    overflow: visible !important;\\n    background: #fff !important; color: #000 !important;\\n    border: none !important; border-radius: 0 !important;\\n    box-shadow: none !important;\\n    padding: 1rem !important; margin: 0 !important;\\n    gap: .6rem !important;\\n}\\n#printable-report .print-bar,\\n  #printable-report .close-btn,\\n  #printable-report .no-data { display: none !important;\\n}\\n#printable-report section {\\n    background: #fff !important;\\n    border: 1px solid #ccc !important;\\n    box-shadow: none !important;\\n    break-inside: avoid;\\n    page-break-inside: avoid;\\n}\\n#printable-report h5 { color: #000 !important;\\n}\\n#printable-report .report-table th { background: #f0f0f0 !important; color: #000 !important;\\n}\\n#printable-report .report-table td { color: #000 !important; border-color: #ccc !important;\\n}\\n#printable-report .result-line { color: #000 !important;\\n}\\n#printable-report .error-sources ul { color: #333 !important;\\n}\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626292184,
+      "end": 1783626292184,
       "order": "normal",
       "sourcemaps": {
         "mappings": ""
       }
     },
     {
-      "name": "vite:build-html",
-      "start": 1783634642911,
-      "end": 1783634642911,
-      "order": "normal"
-    },
-    {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642911,
-      "end": 1783634642911,
+      "start": 1783626292184,
+      "end": 1783626292191,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642911,
-      "end": 1783634642911,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642911,
-      "end": 1783634642911,
+      "start": 1783626292191,
+      "end": 1783626292191,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642911,
-      "end": 1783634642911,
+      "start": 1783626292191,
+      "end": 1783626292191,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642911,
-      "end": 1783634642911,
+      "start": 1783626292191,
+      "end": 1783626292191,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642911,
-      "end": 1783634642911,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626292191,
+      "end": 1783626292191,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626292191,
+      "end": 1783626292192,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642911,
-      "end": 1783634642911,
+      "name": "vite:css-analysis",
+      "start": 1783626292192,
+      "end": 1783626292192,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/components/experiment/ExperimentReport.vue?vue&type=style&index=1&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ExperimentReport.vue?vue&type=style&index=1&lang.css\"\nconst __vite__css = \"\\n@media print {\\nbody * { visibility: hidden !important;\\n}\\n#printable-report, #printable-report * { visibility: visible !important;\\n}\\n#printable-report {\\n    position: absolute !important;\\n    left: 0 !important; top: 0 !important;\\n    width: 100% !important; height: auto !important;\\n    max-width: 100% !important; max-height: none !important;\\n    overflow: visible !important;\\n    background: #fff !important; color: #000 !important;\\n    border: none !important; border-radius: 0 !important;\\n    box-shadow: none !important;\\n    padding: 1rem !important; margin: 0 !important;\\n    gap: .6rem !important;\\n}\\n#printable-report .print-bar,\\n  #printable-report .close-btn,\\n  #printable-report .no-data { display: none !important;\\n}\\n#printable-report section {\\n    background: #fff !important;\\n    border: 1px solid #ccc !important;\\n    box-shadow: none !important;\\n    break-inside: avoid;\\n    page-break-inside: avoid;\\n}\\n#printable-report h5 { color: #000 !important;\\n}\\n#printable-report .report-table th { background: #f0f0f0 !important; color: #000 !important;\\n}\\n#printable-report .report-table td { color: #000 !important; border-color: #ccc !important;\\n}\\n#printable-report .result-line { color: #000 !important;\\n}\\n#printable-report .error-sources ul { color: #333 !important;\\n}\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626292192,
+      "end": 1783626292192,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

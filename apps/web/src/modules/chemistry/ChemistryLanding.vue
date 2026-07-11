@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
-import { pendingChemicalFill, getLiquid, getBurette, selectedChemical, hasSelectedChemicalMap, items, isBurette, buretteTotalConsumedMap, buretteConsumedThisRefill, buretteInitialVolumeMap } from '../../composables/chemistry/useChemistryLab';
+import { pendingChemicalFill, getLiquid, getBurette, getPipette, selectedChemical, hasSelectedChemicalMap, items, isBurette, isPipette, buretteTotalConsumedMap, buretteConsumedThisRefill, buretteInitialVolumeMap } from '../../composables/chemistry/useChemistryLab';
 import { isReactionVessel } from '../../composables/chemistry/chemLabIds';
 import type { Chemical } from '../../composables/chemistry/useChemistryLab';
 import type { LabItem } from '../../composables/chemistry/useChemistryTools';
@@ -10,6 +10,8 @@ import LeftPanel from '../../components/experiment/chemistry/LeftPanel.vue';
 import RightPanel from '../../components/experiment/chemistry/RightPanel.vue';
 import ExperimentSelector from '../../components/experiment/chemistry/ExperimentSelector.vue';
 import { type Experiment, type TitrationReading, type ReportData, validateExperimentSteps } from '../../composables/chemistry/useExperiments';
+import { type ExperimentDefinition, validateSteps as validateRegistrySteps, getExperiment as getRegistryExperiment } from '../../composables/chemistry/experiments';
+import '../../composables/chemistry/experiments'; // side-effect: registers all definitions
 import { undo, redo, canUndo, canRedo, canMicroUndo, canMicroRedo } from '../../composables/chemistry/useChemistryHistory';
 import { applyIndicator } from '../../composables/chemistry/useReactionEngine';
 import { buretteWarning } from '../../composables/chemistry/useLabSimulation';
@@ -32,24 +34,48 @@ const { t } = useI18n();
 const { leftWidth, rightWidth, onLeftDown, onRightDown } = useChemistryResizing();
 const activeTab = ref('glassware');
 const showExperimentSelector = ref(false);
-const activeExperiment = ref<Experiment | null>(null);
+const activeExperiment = ref<Experiment | ExperimentDefinition | null>(null);
 const selectedItem = ref<LabItem | null>(null);
 const showTheoryPanel = ref(false);
 const titrationReadings = ref<TitrationReading[]>([]);
 const showReport = ref(false);
 const reportData = ref<ReportData | null>(null);
 
+// Helpers: unify Experiment (legacy) and ExperimentDefinition (new registry)
+function expNameKey(exp: Experiment | ExperimentDefinition): string {
+  return 'nameKey' in exp ? exp.nameKey : exp.nameAr;
+}
+function expDescKey(exp: Experiment | ExperimentDefinition): string {
+  return 'descKey' in exp ? exp.descKey : exp.description;
+}
+function stepTextKey(step: { text?: string; textKey?: string }): string {
+  return step.textKey || step.text || '';
+}
+function expTheory(exp: Experiment | ExperimentDefinition): { title: string; sections: { heading: string; content: string }[] } | null {
+  if (!exp.theory) return null;
+  if ('title' in exp.theory) return exp.theory as any;
+  // Convert registry theory (titleKey/headingKey/contentKey) to legacy shape
+  const t2 = exp.theory as any;
+  return {
+    title: t(t2.titleKey),
+    sections: t2.sections.map((s: any) => ({ heading: t(s.headingKey), content: t(s.contentKey) })),
+  };
+}
+
 // Auto-check experiment steps against workspace state
 const stepCompletion = computed(() => {
   if (!activeExperiment.value) return [];
-  return validateExperimentSteps(activeExperiment.value);
+  const exp = activeExperiment.value;
+  // Use registry validator for ExperimentDefinition, legacy validator for Experiment
+  if ('nameKey' in exp) return validateRegistrySteps(exp);
+  return validateExperimentSteps(exp);
 });
 
 // ── Lab Assistant watchers ──
 
 // Watch experiment changes → welcome
 watch(activeExperiment, (exp) => {
-  if (exp) welcomeMessage(t(exp.nameAr));
+  if (exp) welcomeMessage(t(expNameKey(exp)));
 });
 
 // Watch selected chemical → warnings + facts
@@ -66,9 +92,9 @@ watch(stepCompletion, (newVal, oldVal) => {
   if (!activeExperiment.value) return;
   for (let i = 0; i < newVal.length; i++) {
     if (newVal[i] && !oldVal?.[i]) {
-      const step = activeExperiment.value.steps[i];
+      const step = activeExperiment.value.steps[i] as any;
       if (step) {
-        encourageStep(t(step.text));
+        encourageStep(t(stepTextKey(step)));
         tipForStep(i, activeExperiment.value.id);
       }
     }
@@ -107,7 +133,7 @@ function showReportManual() {
   });
   const liq = target ? getLiquid(target.uid) : null;
   reportData.value = {
-    experimentName: t(activeExperiment.value.nameAr),
+    experimentName: t(expNameKey(activeExperiment.value)),
     consumedVolume: consumed,
     acidVolume: 50,
     baseMolarity: 0.1,
@@ -142,7 +168,7 @@ function addManualReading() {
   });
 }
 
-function onSelectExperiment(exp: Experiment) {
+function onSelectExperiment(exp: Experiment | ExperimentDefinition) {
   activeExperiment.value = exp;
   titrationReadings.value = [];
   showExperimentSelector.value = false;
@@ -189,6 +215,13 @@ function onChemicalClick(chem: Chemical) {
     s.color = chem.color;
     s.opacity = chem.opacity;
     s.chemicalId = chem.id;
+  } else if (targetItem && isPipette(targetItem.id)) {
+    const pip = getPipette(uid);
+    pip.volume = Math.min(pip.maxVolume, pip.volume + amount);
+    pip.color = chem.color;
+    pip.opacity = chem.opacity;
+    pip.label = chem.id;
+    pip.chemicalId = chem.id;
   } else {
     const liq = getLiquid(uid);
     if (chem.category === 'indicator') {
@@ -254,7 +287,7 @@ onUnmounted(() => stopIdleMessages());
     <RightPanel
       :selected-item="selectedItem"
       :selected-state="selectedState"
-      :active-experiment="activeExperiment"
+      :active-experiment="activeExperiment as any"
       :step-completion="stepCompletion"
       @select-experiment="showExperimentSelector = true"
       @open-theory="showTheoryPanel = true"
@@ -269,7 +302,7 @@ onUnmounted(() => stopIdleMessages());
     />
     <ExperimentTheoryPanel
       v-if="showTheoryPanel && activeExperiment?.theory"
-      :theory="activeExperiment.theory"
+      :theory="expTheory(activeExperiment)"
       @close="showTheoryPanel = false"
     />
     <!-- Titration Data Table (top-right of workspace) -->

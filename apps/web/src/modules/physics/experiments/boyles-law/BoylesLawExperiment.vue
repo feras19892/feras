@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useBoylesLawExperiment } from '../../../../composables/boyles-law/useBoylesLawExperiment'
 import { useI18n } from '../../../../composables/useI18n'
 import BoylesLawMenuBar from '../../../../components/experiment/boyles-law/BoylesLawMenuBar.vue'
@@ -8,10 +8,14 @@ import BoylesLawPanelBody from '../../../../components/experiment/boyles-law/Boy
 import BoylesLawStatusBar from '../../../../components/experiment/boyles-law/BoylesLawStatusBar.vue'
 import BoylesLawControlBar from '../../../../components/experiment/boyles-law/BoylesLawControlBar.vue'
 import BoylesLawOverlayPanels from '../../../../components/experiment/boyles-law/BoylesLawOverlayPanels.vue'
+import BoylesLawGuidePanel from '../../../../components/experiment/boyles-law/BoylesLawGuidePanel.vue'
+import BoylesLawHelpModal from '../../../../components/experiment/boyles-law/BoylesLawHelpModal.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 
 const ex = useBoylesLawExperiment()
 const { t } = useI18n()
+const showGuide = ref(true)
+const helpOpen = ref(false)
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
@@ -21,6 +25,7 @@ function onKeyDown(e: KeyboardEvent) {
   else if (e.key === 's' || e.key === 'S') ex.trials.recordTrial()
   else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); if (e.shiftKey) ex.trials.redo(); else ex.trials.undo() }
   else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ex.trials.redo() }
+  else if (e.key === '?') { helpOpen.value = !helpOpen.value }
 }
 
 onMounted(() => { window.addEventListener('keydown', onKeyDown); ex.layout.applyPersistedLayout(); ex.trials.autoLoad() })
@@ -41,7 +46,10 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown) })
       @reset="ex.resetSim"
       @record-trial="ex.trials.recordTrial"
       @analyze-results="ex.exportToAnalysis"
+      @toggle-help="helpOpen = !helpOpen"
     />
+
+    <BoylesLawHelpModal :open="helpOpen" @close="helpOpen = false" />
 
     <div class="lab-grid">
       <div class="lab-col data-col" :style="{ width: ex.layout.widths.data + 'px' }">
@@ -128,6 +136,7 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown) })
             />
           </div>
         </template>
+        <BoylesLawGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
 

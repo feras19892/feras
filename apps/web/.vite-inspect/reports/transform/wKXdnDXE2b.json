@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/workspaceDrawWiresPotentiometer.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import type { CanvasContext, WorkspaceProps } from './workspaceTypes'\n\nexport function drawPotentiometerWires(\n  ctx: CanvasRenderingContext2D, cc: CanvasContext, props: WorkspaceProps,\n) {\n  const { worldToScreen, zoom } = cc\n  const z = zoom.value\n  const comps = props.components\n  const refBatt = comps.find(c => c.type === 'battery' && c.label === 'بطارية مرجعية')\n  const unkBatt = comps.find(c => c.type === 'battery' && c.label === 'بطارية مجهولة')\n  const r1 = comps.find(c => c.type === 'resistor' && c.label === 'سلك (R1)')\n  const r2 = comps.find(c => c.type === 'resistor' && c.label === 'R2')\n  const galv = comps.find(c => c.type === 'ammeter')\n  if (!refBatt || !unkBatt || !r1) return\n\n  const [rbx, rby] = worldToScreen(refBatt.x, refBatt.y)\n  const [r1x, r1y] = worldToScreen(r1.x, r1.y)\n  const [ubx, uby] = worldToScreen(unkBatt.x, unkBatt.y)\n  const [gx, gy] = galv ? worldToScreen(galv.x, galv.y) : [r1x + 100 * z, r1y]\n  const [r2x, r2y] = r2 ? worldToScreen(r2.x, r2.y) : [ubx - 100 * z, uby]\n\n  ctx.strokeStyle = props.running ? '#4ade80' : '#475569'\n  ctx.lineWidth = 2 * z; ctx.lineCap = 'round'\n\n  // Reference battery+ → R1 left (top wire of potentiometer wire)\n  ctx.beginPath()\n  ctx.moveTo(rbx + 30 * z, rby); ctx.lineTo(r1x - 40 * z, r1y)\n  ctx.stroke()\n\n  // R1 right → back to reference battery- (bottom return)\n  const botY = rby + 50 * z\n  ctx.beginPath()\n  ctx.moveTo(r1x + 40 * z, r1y); ctx.lineTo(r1x + 40 * z, botY)\n  ctx.lineTo(rbx - 30 * z, botY); ctx.lineTo(rbx - 30 * z, rby)\n  ctx.stroke()\n\n  // Unknown battery+ → R2 → galvanometer → R1 (sliding contact point)\n  ctx.beginPath()\n  ctx.moveTo(ubx + 30 * z, uby); ctx.lineTo(r2x - 40 * z, r2y)\n  ctx.moveTo(r2x + 40 * z, r2y); ctx.lineTo(gx - 18 * z, gy)\n  ctx.moveTo(gx + 18 * z, gy); ctx.lineTo(r1x + 40 * z, r1y)\n  ctx.stroke()\n\n  // Unknown battery- → back to reference battery- (common ground)\n  ctx.beginPath()\n  ctx.moveTo(ubx - 30 * z, uby); ctx.lineTo(ubx - 30 * z, botY)\n  ctx.lineTo(rbx - 30 * z, botY)\n  ctx.stroke()\n}\n",
-      "start": 1783634643186,
-      "end": 1783634643204,
+      "start": 1783626239973,
+      "end": 1783626239973
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626239973,
+      "end": 1783626239973,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import type { CanvasContext, WorkspaceProps } from './workspaceTypes'\n\nexport function drawPotentiometerWires(\n  ctx: CanvasRenderingContext2D, cc: CanvasContext, props: WorkspaceProps,\n) {\n  const { worldToScreen, zoom } = cc\n  const z = zoom.value\n  const comps = props.components\n  const refBatt = comps.find(c => c.type === 'battery' && c.label === 'بطارية مرجعية')\n  const unkBatt = comps.find(c => c.type === 'battery' && c.label === 'بطارية مجهولة')\n  const r1 = comps.find(c => c.type === 'resistor' && c.label === 'سلك (R1)')\n  const r2 = comps.find(c => c.type === 'resistor' && c.label === 'R2')\n  const galv = comps.find(c => c.type === 'ammeter')\n  if (!refBatt || !unkBatt || !r1) return\n\n  const [rbx, rby] = worldToScreen(refBatt.x, refBatt.y)\n  const [r1x, r1y] = worldToScreen(r1.x, r1.y)\n  const [ubx, uby] = worldToScreen(unkBatt.x, unkBatt.y)\n  const [gx, gy] = galv ? worldToScreen(galv.x, galv.y) : [r1x + 100 * z, r1y]\n  const [r2x, r2y] = r2 ? worldToScreen(r2.x, r2.y) : [ubx - 100 * z, uby]\n\n  ctx.strokeStyle = props.running ? '#4ade80' : '#475569'\n  ctx.lineWidth = 2 * z; ctx.lineCap = 'round'\n\n  // Reference battery+ → R1 left (top wire of potentiometer wire)\n  ctx.beginPath()\n  ctx.moveTo(rbx + 30 * z, rby); ctx.lineTo(r1x - 40 * z, r1y)\n  ctx.stroke()\n\n  // R1 right → back to reference battery- (bottom return)\n  const botY = rby + 50 * z\n  ctx.beginPath()\n  ctx.moveTo(r1x + 40 * z, r1y); ctx.lineTo(r1x + 40 * z, botY)\n  ctx.lineTo(rbx - 30 * z, botY); ctx.lineTo(rbx - 30 * z, rby)\n  ctx.stroke()\n\n  // Unknown battery+ → R2 → galvanometer → R1 (sliding contact point)\n  ctx.beginPath()\n  ctx.moveTo(ubx + 30 * z, uby); ctx.lineTo(r2x - 40 * z, r2y)\n  ctx.moveTo(r2x + 40 * z, r2y); ctx.lineTo(gx - 18 * z, gy)\n  ctx.moveTo(gx + 18 * z, gy); ctx.lineTo(r1x + 40 * z, r1y)\n  ctx.stroke()\n\n  // Unknown battery- → back to reference battery- (common ground)\n  ctx.beginPath()\n  ctx.moveTo(ubx - 30 * z, uby); ctx.lineTo(ubx - 30 * z, botY)\n  ctx.lineTo(rbx - 30 * z, botY)\n  ctx.stroke()\n}\n",
+      "start": 1783626239973,
+      "end": 1783626239973,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634643204,
-      "end": 1783634643204,
+      "start": 1783626239973,
+      "end": 1783626239973,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "export function drawPotentiometerWires(ctx, cc, props) {\n  const { worldToScreen, zoom } = cc;\n  const z = zoom.value;\n  const comps = props.components;\n  const refBatt = comps.find((c) => c.type === \"battery\" && c.label === \"بطارية مرجعية\");\n  const unkBatt = comps.find((c) => c.type === \"battery\" && c.label === \"بطارية مجهولة\");\n  const r1 = comps.find((c) => c.type === \"resistor\" && c.label === \"سلك (R1)\");\n  const r2 = comps.find((c) => c.type === \"resistor\" && c.label === \"R2\");\n  const galv = comps.find((c) => c.type === \"ammeter\");\n  if (!refBatt || !unkBatt || !r1) return;\n  const [rbx, rby] = worldToScreen(refBatt.x, refBatt.y);\n  const [r1x, r1y] = worldToScreen(r1.x, r1.y);\n  const [ubx, uby] = worldToScreen(unkBatt.x, unkBatt.y);\n  const [gx, gy] = galv ? worldToScreen(galv.x, galv.y) : [r1x + 100 * z, r1y];\n  const [r2x, r2y] = r2 ? worldToScreen(r2.x, r2.y) : [ubx - 100 * z, uby];\n  ctx.strokeStyle = props.running ? \"#4ade80\" : \"#475569\";\n  ctx.lineWidth = 2 * z;\n  ctx.lineCap = \"round\";\n  ctx.beginPath();\n  ctx.moveTo(rbx + 30 * z, rby);\n  ctx.lineTo(r1x - 40 * z, r1y);\n  ctx.stroke();\n  const botY = rby + 50 * z;\n  ctx.beginPath();\n  ctx.moveTo(r1x + 40 * z, r1y);\n  ctx.lineTo(r1x + 40 * z, botY);\n  ctx.lineTo(rbx - 30 * z, botY);\n  ctx.lineTo(rbx - 30 * z, rby);\n  ctx.stroke();\n  ctx.beginPath();\n  ctx.moveTo(ubx + 30 * z, uby);\n  ctx.lineTo(r2x - 40 * z, r2y);\n  ctx.moveTo(r2x + 40 * z, r2y);\n  ctx.lineTo(gx - 18 * z, gy);\n  ctx.moveTo(gx + 18 * z, gy);\n  ctx.lineTo(r1x + 40 * z, r1y);\n  ctx.stroke();\n  ctx.beginPath();\n  ctx.moveTo(ubx - 30 * z, uby);\n  ctx.lineTo(ubx - 30 * z, botY);\n  ctx.lineTo(rbx - 30 * z, botY);\n  ctx.stroke();\n}\n",
-      "start": 1783634643204,
-      "end": 1783634643213,
+      "start": 1783626239973,
+      "end": 1783626240000,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/workspaceDrawWiresPotentiometer.ts"
+          "workspaceDrawWiresPotentiometer.ts"
         ],
         "sourcesContent": [
           "import type { CanvasContext, WorkspaceProps } from './workspaceTypes'\n\nexport function drawPotentiometerWires(\n  ctx: CanvasRenderingContext2D, cc: CanvasContext, props: WorkspaceProps,\n) {\n  const { worldToScreen, zoom } = cc\n  const z = zoom.value\n  const comps = props.components\n  const refBatt = comps.find(c => c.type === 'battery' && c.label === 'بطارية مرجعية')\n  const unkBatt = comps.find(c => c.type === 'battery' && c.label === 'بطارية مجهولة')\n  const r1 = comps.find(c => c.type === 'resistor' && c.label === 'سلك (R1)')\n  const r2 = comps.find(c => c.type === 'resistor' && c.label === 'R2')\n  const galv = comps.find(c => c.type === 'ammeter')\n  if (!refBatt || !unkBatt || !r1) return\n\n  const [rbx, rby] = worldToScreen(refBatt.x, refBatt.y)\n  const [r1x, r1y] = worldToScreen(r1.x, r1.y)\n  const [ubx, uby] = worldToScreen(unkBatt.x, unkBatt.y)\n  const [gx, gy] = galv ? worldToScreen(galv.x, galv.y) : [r1x + 100 * z, r1y]\n  const [r2x, r2y] = r2 ? worldToScreen(r2.x, r2.y) : [ubx - 100 * z, uby]\n\n  ctx.strokeStyle = props.running ? '#4ade80' : '#475569'\n  ctx.lineWidth = 2 * z; ctx.lineCap = 'round'\n\n  // Reference battery+ → R1 left (top wire of potentiometer wire)\n  ctx.beginPath()\n  ctx.moveTo(rbx + 30 * z, rby); ctx.lineTo(r1x - 40 * z, r1y)\n  ctx.stroke()\n\n  // R1 right → back to reference battery- (bottom return)\n  const botY = rby + 50 * z\n  ctx.beginPath()\n  ctx.moveTo(r1x + 40 * z, r1y); ctx.lineTo(r1x + 40 * z, botY)\n  ctx.lineTo(rbx - 30 * z, botY); ctx.lineTo(rbx - 30 * z, rby)\n  ctx.stroke()\n\n  // Unknown battery+ → R2 → galvanometer → R1 (sliding contact point)\n  ctx.beginPath()\n  ctx.moveTo(ubx + 30 * z, uby); ctx.lineTo(r2x - 40 * z, r2y)\n  ctx.moveTo(r2x + 40 * z, r2y); ctx.lineTo(gx - 18 * z, gy)\n  ctx.moveTo(gx + 18 * z, gy); ctx.lineTo(r1x + 40 * z, r1y)\n  ctx.stroke()\n\n  // Unknown battery- → back to reference battery- (common ground)\n  ctx.beginPath()\n  ctx.moveTo(ubx - 30 * z, uby); ctx.lineTo(ubx - 30 * z, botY)\n  ctx.lineTo(rbx - 30 * z, botY)\n  ctx.stroke()\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634643213,
-      "end": 1783634643213,
+      "start": 1783626240000,
+      "end": 1783626240000,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634643213,
-      "end": 1783634643213,
+      "start": 1783626240000,
+      "end": 1783626240000,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626240000,
+      "end": 1783626240000,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634643213,
-      "end": 1783634643213,
+      "start": 1783626240000,
+      "end": 1783626240000,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634643213,
-      "end": 1783634643213,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634643213,
-      "end": 1783634643213,
+      "start": 1783626240001,
+      "end": 1783626240001,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634643213,
-      "end": 1783634643213,
+      "start": 1783626240001,
+      "end": 1783626240001,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634643213,
-      "end": 1783634643213,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634643213,
-      "end": 1783634643213,
+      "start": 1783626240001,
+      "end": 1783626240001,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634643213,
-      "end": 1783634643213,
+      "start": 1783626240001,
+      "end": 1783626240001,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634643213,
-      "end": 1783634643213,
+      "start": 1783626240001,
+      "end": 1783626240001,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634643213,
-      "end": 1783634643213,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626240001,
+      "end": 1783626240001,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626240001,
+      "end": 1783626240001,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634643213,
-      "end": 1783634643213,
+      "name": "vite:css-analysis",
+      "start": 1783626240001,
+      "end": 1783626240001,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "export function drawPotentiometerWires(ctx, cc, props) {\n  const { worldToScreen, zoom } = cc;\n  const z = zoom.value;\n  const comps = props.components;\n  const refBatt = comps.find((c) => c.type === \"battery\" && c.label === \"بطارية مرجعية\");\n  const unkBatt = comps.find((c) => c.type === \"battery\" && c.label === \"بطارية مجهولة\");\n  const r1 = comps.find((c) => c.type === \"resistor\" && c.label === \"سلك (R1)\");\n  const r2 = comps.find((c) => c.type === \"resistor\" && c.label === \"R2\");\n  const galv = comps.find((c) => c.type === \"ammeter\");\n  if (!refBatt || !unkBatt || !r1) return;\n  const [rbx, rby] = worldToScreen(refBatt.x, refBatt.y);\n  const [r1x, r1y] = worldToScreen(r1.x, r1.y);\n  const [ubx, uby] = worldToScreen(unkBatt.x, unkBatt.y);\n  const [gx, gy] = galv ? worldToScreen(galv.x, galv.y) : [r1x + 100 * z, r1y];\n  const [r2x, r2y] = r2 ? worldToScreen(r2.x, r2.y) : [ubx - 100 * z, uby];\n  ctx.strokeStyle = props.running ? \"#4ade80\" : \"#475569\";\n  ctx.lineWidth = 2 * z;\n  ctx.lineCap = \"round\";\n  ctx.beginPath();\n  ctx.moveTo(rbx + 30 * z, rby);\n  ctx.lineTo(r1x - 40 * z, r1y);\n  ctx.stroke();\n  const botY = rby + 50 * z;\n  ctx.beginPath();\n  ctx.moveTo(r1x + 40 * z, r1y);\n  ctx.lineTo(r1x + 40 * z, botY);\n  ctx.lineTo(rbx - 30 * z, botY);\n  ctx.lineTo(rbx - 30 * z, rby);\n  ctx.stroke();\n  ctx.beginPath();\n  ctx.moveTo(ubx + 30 * z, uby);\n  ctx.lineTo(r2x - 40 * z, r2y);\n  ctx.moveTo(r2x + 40 * z, r2y);\n  ctx.lineTo(gx - 18 * z, gy);\n  ctx.moveTo(gx + 18 * z, gy);\n  ctx.lineTo(r1x + 40 * z, r1y);\n  ctx.stroke();\n  ctx.beginPath();\n  ctx.moveTo(ubx - 30 * z, uby);\n  ctx.lineTo(ubx - 30 * z, botY);\n  ctx.lineTo(rbx - 30 * z, botY);\n  ctx.stroke();\n}\n",
+      "start": 1783626240001,
+      "end": 1783626240001,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

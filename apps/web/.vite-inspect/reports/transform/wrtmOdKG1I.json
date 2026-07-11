@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/packages/chemistry-engine/src/equations.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "// Chemical equation database: describes what happens when chemicals mix\nexport interface ChemicalEquation {\n  reactants: string[];\n  products: string[];\n  equation: string;\n  type: 'neutralization' | 'precipitation' | 'redox' | 'complex' | 'gas' | 'other';\n  resultPh?: number;\n  color: string;\n  opacity: number;\n  precipitate?: boolean;\n  precipitateColor?: string;\n  gasEvolution?: boolean;\n  temperatureRise: number;\n  indicatorEffect?: boolean;\n}\n\nconst equations: ChemicalEquation[] = [\n  // ===== NEUTRALIZATION =====\n  {\n    reactants: ['hcl', 'naoh'],\n    products: ['nacl', 'water'],\n    equation: 'HCl + NaOH → NaCl + H₂O',\n    type: 'neutralization',\n    resultPh: 7.0,\n    color: '#e0f2fe',\n    opacity: 0.3,\n    temperatureRise: 5,\n  },\n  {\n    reactants: ['h2so4', 'naoh'],\n    products: ['na2so4', 'water'],\n    equation: 'H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O',\n    type: 'neutralization',\n    resultPh: 7.0,\n    color: '#e0f2fe',\n    opacity: 0.3,\n    temperatureRise: 8,\n  },\n  {\n    reactants: ['hcl', 'koh'],\n    products: ['kcl', 'water'],\n    equation: 'HCl + KOH → KCl + H₂O',\n    type: 'neutralization',\n    resultPh: 7.0,\n    color: '#e0f2fe',\n    opacity: 0.3,\n    temperatureRise: 5,\n  },\n  {\n    reactants: ['ch3cooh', 'naoh'],\n    products: ['ch3coona', 'water'],\n    equation: 'CH₃COOH + NaOH → CH₃COONa + H₂O',\n    type: 'neutralization',\n    resultPh: 8.2,\n    color: '#fce7f3',\n    opacity: 0.35,\n    temperatureRise: 3,\n  },\n\n  // ===== PRECIPITATION =====\n  {\n    reactants: ['agno3', 'nacl'],\n    products: ['agcl', 'nano3'],\n    equation: 'AgNO₃ + NaCl → AgCl↓ + NaNO₃',\n    type: 'precipitation',\n    resultPh: 6.0,\n    color: '#e0e7ff',\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: '#f1f5f9',\n    temperatureRise: 1,\n  },\n  {\n    reactants: ['agno3', 'hcl'],\n    products: ['agcl', 'hno3'],\n    equation: 'AgNO₃ + HCl → AgCl↓ + HNO₃',\n    type: 'precipitation',\n    resultPh: 1.0,\n    color: '#e0e7ff',\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: '#f1f5f9',\n    temperatureRise: 1,\n  },\n  {\n    reactants: ['bacl2', 'h2so4'],\n    products: ['baso4', 'hcl'],\n    equation: 'BaCl₂ + H₂SO₄ → BaSO₄↓ + 2HCl',\n    type: 'precipitation',\n    resultPh: 1.0,\n    color: '#fef9c3',\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: '#f1f5f9',\n    temperatureRise: 2,\n  },\n\n  // ===== REDOX / GAS =====\n  {\n    reactants: ['kmno4', 'h2o2'],\n    products: ['mn2+', 'o2', 'water'],\n    equation: '2KMnO₄ + 3H₂O₂ → 2MnO₂ + 3O₂↑ + 2KOH + 2H₂O',\n    type: 'redox',\n    resultPh: 7.0,\n    color: '#c084fc',\n    opacity: 0.45,\n    gasEvolution: true,\n    temperatureRise: 10,\n  },\n  {\n    reactants: ['caco3', 'hcl'],\n    products: ['cacl2', 'co2', 'water'],\n    equation: 'CaCO₃ + 2HCl → CaCl₂ + CO₂↑ + H₂O',\n    type: 'gas',\n    resultPh: 1.0,\n    color: '#e0f2fe',\n    opacity: 0.4,\n    gasEvolution: true,\n    temperatureRise: 2,\n  },\n\n  // ===== COMPLEX / SPECIAL =====\n  {\n    reactants: ['cuso4', 'naoh'],\n    products: ['cuoh2', 'na2so4'],\n    equation: 'CuSO₄ + 2NaOH → Cu(OH)₂↓ + Na₂SO₄',\n    type: 'precipitation',\n    color: '#86efac',\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: '#15803d',\n    temperatureRise: 2,\n  },\n  {\n    reactants: ['fecl3', 'naoh'],\n    products: ['feoh3', 'nacl'],\n    equation: 'FeCl₃ + 3NaOH → Fe(OH)₃↓ + 3NaCl',\n    type: 'precipitation',\n    color: '#fca5a5',\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: '#7f1d1d',\n    temperatureRise: 2,\n  },\n];\n\nexport function findEquation(reactantIds: string[]): ChemicalEquation | null {\n  return equations.find((eq) =>\n    eq.reactants.every((r) => reactantIds.includes(r))\n  ) || null;\n}\n\nexport function canReact(c1: string, c2: string): boolean {\n  return equations.some((eq) =>\n    eq.reactants.includes(c1) && eq.reactants.includes(c2)\n  );\n}\n",
-      "start": 1783634641760,
-      "end": 1783634642175,
+      "start": 1783626310558,
+      "end": 1783626310558
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626310558,
+      "end": 1783626310558,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "// Chemical equation database: describes what happens when chemicals mix\nexport interface ChemicalEquation {\n  reactants: string[];\n  products: string[];\n  equation: string;\n  type: 'neutralization' | 'precipitation' | 'redox' | 'complex' | 'gas' | 'other';\n  resultPh?: number;\n  color: string;\n  opacity: number;\n  precipitate?: boolean;\n  precipitateColor?: string;\n  gasEvolution?: boolean;\n  temperatureRise: number;\n  indicatorEffect?: boolean;\n}\n\nconst equations: ChemicalEquation[] = [\n  // ===== NEUTRALIZATION =====\n  {\n    reactants: ['hcl', 'naoh'],\n    products: ['nacl', 'water'],\n    equation: 'HCl + NaOH → NaCl + H₂O',\n    type: 'neutralization',\n    resultPh: 7.0,\n    color: '#e0f2fe',\n    opacity: 0.3,\n    temperatureRise: 5,\n  },\n  {\n    reactants: ['h2so4', 'naoh'],\n    products: ['na2so4', 'water'],\n    equation: 'H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O',\n    type: 'neutralization',\n    resultPh: 7.0,\n    color: '#e0f2fe',\n    opacity: 0.3,\n    temperatureRise: 8,\n  },\n  {\n    reactants: ['hcl', 'koh'],\n    products: ['kcl', 'water'],\n    equation: 'HCl + KOH → KCl + H₂O',\n    type: 'neutralization',\n    resultPh: 7.0,\n    color: '#e0f2fe',\n    opacity: 0.3,\n    temperatureRise: 5,\n  },\n  {\n    reactants: ['ch3cooh', 'naoh'],\n    products: ['ch3coona', 'water'],\n    equation: 'CH₃COOH + NaOH → CH₃COONa + H₂O',\n    type: 'neutralization',\n    resultPh: 8.2,\n    color: '#fce7f3',\n    opacity: 0.35,\n    temperatureRise: 3,\n  },\n\n  // ===== PRECIPITATION =====\n  {\n    reactants: ['agno3', 'nacl'],\n    products: ['agcl', 'nano3'],\n    equation: 'AgNO₃ + NaCl → AgCl↓ + NaNO₃',\n    type: 'precipitation',\n    resultPh: 6.0,\n    color: '#e0e7ff',\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: '#f1f5f9',\n    temperatureRise: 1,\n  },\n  {\n    reactants: ['agno3', 'hcl'],\n    products: ['agcl', 'hno3'],\n    equation: 'AgNO₃ + HCl → AgCl↓ + HNO₃',\n    type: 'precipitation',\n    resultPh: 1.0,\n    color: '#e0e7ff',\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: '#f1f5f9',\n    temperatureRise: 1,\n  },\n  {\n    reactants: ['bacl2', 'h2so4'],\n    products: ['baso4', 'hcl'],\n    equation: 'BaCl₂ + H₂SO₄ → BaSO₄↓ + 2HCl',\n    type: 'precipitation',\n    resultPh: 1.0,\n    color: '#fef9c3',\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: '#f1f5f9',\n    temperatureRise: 2,\n  },\n\n  // ===== REDOX / GAS =====\n  {\n    reactants: ['kmno4', 'h2o2'],\n    products: ['mn2+', 'o2', 'water'],\n    equation: '2KMnO₄ + 3H₂O₂ → 2MnO₂ + 3O₂↑ + 2KOH + 2H₂O',\n    type: 'redox',\n    resultPh: 7.0,\n    color: '#c084fc',\n    opacity: 0.45,\n    gasEvolution: true,\n    temperatureRise: 10,\n  },\n  {\n    reactants: ['caco3', 'hcl'],\n    products: ['cacl2', 'co2', 'water'],\n    equation: 'CaCO₃ + 2HCl → CaCl₂ + CO₂↑ + H₂O',\n    type: 'gas',\n    resultPh: 1.0,\n    color: '#e0f2fe',\n    opacity: 0.4,\n    gasEvolution: true,\n    temperatureRise: 2,\n  },\n\n  // ===== COMPLEX / SPECIAL =====\n  {\n    reactants: ['cuso4', 'naoh'],\n    products: ['cuoh2', 'na2so4'],\n    equation: 'CuSO₄ + 2NaOH → Cu(OH)₂↓ + Na₂SO₄',\n    type: 'precipitation',\n    color: '#86efac',\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: '#15803d',\n    temperatureRise: 2,\n  },\n  {\n    reactants: ['fecl3', 'naoh'],\n    products: ['feoh3', 'nacl'],\n    equation: 'FeCl₃ + 3NaOH → Fe(OH)₃↓ + 3NaCl',\n    type: 'precipitation',\n    color: '#fca5a5',\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: '#7f1d1d',\n    temperatureRise: 2,\n  },\n];\n\nexport function findEquation(reactantIds: string[]): ChemicalEquation | null {\n  return equations.find((eq) =>\n    eq.reactants.every((r) => reactantIds.includes(r))\n  ) || null;\n}\n\nexport function canReact(c1: string, c2: string): boolean {\n  return equations.some((eq) =>\n    eq.reactants.includes(c1) && eq.reactants.includes(c2)\n  );\n}\n",
+      "start": 1783626310558,
+      "end": 1783626310558,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634642175,
-      "end": 1783634642175,
+      "start": 1783626310558,
+      "end": 1783626310558,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "const equations = [\n  // ===== NEUTRALIZATION =====\n  {\n    reactants: [\"hcl\", \"naoh\"],\n    products: [\"nacl\", \"water\"],\n    equation: \"HCl + NaOH → NaCl + H₂O\",\n    type: \"neutralization\",\n    resultPh: 7,\n    color: \"#e0f2fe\",\n    opacity: 0.3,\n    temperatureRise: 5\n  },\n  {\n    reactants: [\"h2so4\", \"naoh\"],\n    products: [\"na2so4\", \"water\"],\n    equation: \"H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O\",\n    type: \"neutralization\",\n    resultPh: 7,\n    color: \"#e0f2fe\",\n    opacity: 0.3,\n    temperatureRise: 8\n  },\n  {\n    reactants: [\"hcl\", \"koh\"],\n    products: [\"kcl\", \"water\"],\n    equation: \"HCl + KOH → KCl + H₂O\",\n    type: \"neutralization\",\n    resultPh: 7,\n    color: \"#e0f2fe\",\n    opacity: 0.3,\n    temperatureRise: 5\n  },\n  {\n    reactants: [\"ch3cooh\", \"naoh\"],\n    products: [\"ch3coona\", \"water\"],\n    equation: \"CH₃COOH + NaOH → CH₃COONa + H₂O\",\n    type: \"neutralization\",\n    resultPh: 8.2,\n    color: \"#fce7f3\",\n    opacity: 0.35,\n    temperatureRise: 3\n  },\n  // ===== PRECIPITATION =====\n  {\n    reactants: [\"agno3\", \"nacl\"],\n    products: [\"agcl\", \"nano3\"],\n    equation: \"AgNO₃ + NaCl → AgCl↓ + NaNO₃\",\n    type: \"precipitation\",\n    resultPh: 6,\n    color: \"#e0e7ff\",\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: \"#f1f5f9\",\n    temperatureRise: 1\n  },\n  {\n    reactants: [\"agno3\", \"hcl\"],\n    products: [\"agcl\", \"hno3\"],\n    equation: \"AgNO₃ + HCl → AgCl↓ + HNO₃\",\n    type: \"precipitation\",\n    resultPh: 1,\n    color: \"#e0e7ff\",\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: \"#f1f5f9\",\n    temperatureRise: 1\n  },\n  {\n    reactants: [\"bacl2\", \"h2so4\"],\n    products: [\"baso4\", \"hcl\"],\n    equation: \"BaCl₂ + H₂SO₄ → BaSO₄↓ + 2HCl\",\n    type: \"precipitation\",\n    resultPh: 1,\n    color: \"#fef9c3\",\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: \"#f1f5f9\",\n    temperatureRise: 2\n  },\n  // ===== REDOX / GAS =====\n  {\n    reactants: [\"kmno4\", \"h2o2\"],\n    products: [\"mn2+\", \"o2\", \"water\"],\n    equation: \"2KMnO₄ + 3H₂O₂ → 2MnO₂ + 3O₂↑ + 2KOH + 2H₂O\",\n    type: \"redox\",\n    resultPh: 7,\n    color: \"#c084fc\",\n    opacity: 0.45,\n    gasEvolution: true,\n    temperatureRise: 10\n  },\n  {\n    reactants: [\"caco3\", \"hcl\"],\n    products: [\"cacl2\", \"co2\", \"water\"],\n    equation: \"CaCO₃ + 2HCl → CaCl₂ + CO₂↑ + H₂O\",\n    type: \"gas\",\n    resultPh: 1,\n    color: \"#e0f2fe\",\n    opacity: 0.4,\n    gasEvolution: true,\n    temperatureRise: 2\n  },\n  // ===== COMPLEX / SPECIAL =====\n  {\n    reactants: [\"cuso4\", \"naoh\"],\n    products: [\"cuoh2\", \"na2so4\"],\n    equation: \"CuSO₄ + 2NaOH → Cu(OH)₂↓ + Na₂SO₄\",\n    type: \"precipitation\",\n    color: \"#86efac\",\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: \"#15803d\",\n    temperatureRise: 2\n  },\n  {\n    reactants: [\"fecl3\", \"naoh\"],\n    products: [\"feoh3\", \"nacl\"],\n    equation: \"FeCl₃ + 3NaOH → Fe(OH)₃↓ + 3NaCl\",\n    type: \"precipitation\",\n    color: \"#fca5a5\",\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: \"#7f1d1d\",\n    temperatureRise: 2\n  }\n];\nexport function findEquation(reactantIds) {\n  return equations.find(\n    (eq) => eq.reactants.every((r) => reactantIds.includes(r))\n  ) || null;\n}\nexport function canReact(c1, c2) {\n  return equations.some(\n    (eq) => eq.reactants.includes(c1) && eq.reactants.includes(c2)\n  );\n}\n",
-      "start": 1783634642175,
-      "end": 1783634642326,
+      "start": 1783626310558,
+      "end": 1783626310860,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/packages/chemistry-engine/src/equations.ts"
+          "equations.ts"
         ],
         "sourcesContent": [
           "// Chemical equation database: describes what happens when chemicals mix\nexport interface ChemicalEquation {\n  reactants: string[];\n  products: string[];\n  equation: string;\n  type: 'neutralization' | 'precipitation' | 'redox' | 'complex' | 'gas' | 'other';\n  resultPh?: number;\n  color: string;\n  opacity: number;\n  precipitate?: boolean;\n  precipitateColor?: string;\n  gasEvolution?: boolean;\n  temperatureRise: number;\n  indicatorEffect?: boolean;\n}\n\nconst equations: ChemicalEquation[] = [\n  // ===== NEUTRALIZATION =====\n  {\n    reactants: ['hcl', 'naoh'],\n    products: ['nacl', 'water'],\n    equation: 'HCl + NaOH → NaCl + H₂O',\n    type: 'neutralization',\n    resultPh: 7.0,\n    color: '#e0f2fe',\n    opacity: 0.3,\n    temperatureRise: 5,\n  },\n  {\n    reactants: ['h2so4', 'naoh'],\n    products: ['na2so4', 'water'],\n    equation: 'H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O',\n    type: 'neutralization',\n    resultPh: 7.0,\n    color: '#e0f2fe',\n    opacity: 0.3,\n    temperatureRise: 8,\n  },\n  {\n    reactants: ['hcl', 'koh'],\n    products: ['kcl', 'water'],\n    equation: 'HCl + KOH → KCl + H₂O',\n    type: 'neutralization',\n    resultPh: 7.0,\n    color: '#e0f2fe',\n    opacity: 0.3,\n    temperatureRise: 5,\n  },\n  {\n    reactants: ['ch3cooh', 'naoh'],\n    products: ['ch3coona', 'water'],\n    equation: 'CH₃COOH + NaOH → CH₃COONa + H₂O',\n    type: 'neutralization',\n    resultPh: 8.2,\n    color: '#fce7f3',\n    opacity: 0.35,\n    temperatureRise: 3,\n  },\n\n  // ===== PRECIPITATION =====\n  {\n    reactants: ['agno3', 'nacl'],\n    products: ['agcl', 'nano3'],\n    equation: 'AgNO₃ + NaCl → AgCl↓ + NaNO₃',\n    type: 'precipitation',\n    resultPh: 6.0,\n    color: '#e0e7ff',\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: '#f1f5f9',\n    temperatureRise: 1,\n  },\n  {\n    reactants: ['agno3', 'hcl'],\n    products: ['agcl', 'hno3'],\n    equation: 'AgNO₃ + HCl → AgCl↓ + HNO₃',\n    type: 'precipitation',\n    resultPh: 1.0,\n    color: '#e0e7ff',\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: '#f1f5f9',\n    temperatureRise: 1,\n  },\n  {\n    reactants: ['bacl2', 'h2so4'],\n    products: ['baso4', 'hcl'],\n    equation: 'BaCl₂ + H₂SO₄ → BaSO₄↓ + 2HCl',\n    type: 'precipitation',\n    resultPh: 1.0,\n    color: '#fef9c3',\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: '#f1f5f9',\n    temperatureRise: 2,\n  },\n\n  // ===== REDOX / GAS =====\n  {\n    reactants: ['kmno4', 'h2o2'],\n    products: ['mn2+', 'o2', 'water'],\n    equation: '2KMnO₄ + 3H₂O₂ → 2MnO₂ + 3O₂↑ + 2KOH + 2H₂O',\n    type: 'redox',\n    resultPh: 7.0,\n    color: '#c084fc',\n    opacity: 0.45,\n    gasEvolution: true,\n    temperatureRise: 10,\n  },\n  {\n    reactants: ['caco3', 'hcl'],\n    products: ['cacl2', 'co2', 'water'],\n    equation: 'CaCO₃ + 2HCl → CaCl₂ + CO₂↑ + H₂O',\n    type: 'gas',\n    resultPh: 1.0,\n    color: '#e0f2fe',\n    opacity: 0.4,\n    gasEvolution: true,\n    temperatureRise: 2,\n  },\n\n  // ===== COMPLEX / SPECIAL =====\n  {\n    reactants: ['cuso4', 'naoh'],\n    products: ['cuoh2', 'na2so4'],\n    equation: 'CuSO₄ + 2NaOH → Cu(OH)₂↓ + Na₂SO₄',\n    type: 'precipitation',\n    color: '#86efac',\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: '#15803d',\n    temperatureRise: 2,\n  },\n  {\n    reactants: ['fecl3', 'naoh'],\n    products: ['feoh3', 'nacl'],\n    equation: 'FeCl₃ + 3NaOH → Fe(OH)₃↓ + 3NaCl',\n    type: 'precipitation',\n    color: '#fca5a5',\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: '#7f1d1d',\n    temperatureRise: 2,\n  },\n];\n\nexport function findEquation(reactantIds: string[]): ChemicalEquation | null {\n  return equations.find((eq) =>\n    eq.reactants.every((r) => reactantIds.includes(r))\n  ) || null;\n}\n\nexport function canReact(c1: string, c2: string): boolean {\n  return equations.some((eq) =>\n    eq.reactants.includes(c1) && eq.reactants.includes(c2)\n  );\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634642326,
-      "end": 1783634642326,
+      "start": 1783626310860,
+      "end": 1783626310860,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642326,
-      "end": 1783634642326,
+      "start": 1783626310860,
+      "end": 1783626310860,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626310860,
+      "end": 1783626310860,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642326,
-      "end": 1783634642326,
+      "start": 1783626310860,
+      "end": 1783626310860,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634642326,
-      "end": 1783634642326,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634642326,
-      "end": 1783634642326,
+      "start": 1783626310860,
+      "end": 1783626310860,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642326,
-      "end": 1783634642326,
+      "start": 1783626310860,
+      "end": 1783626310860,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642326,
-      "end": 1783634642326,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642326,
-      "end": 1783634642326,
+      "start": 1783626310860,
+      "end": 1783626310860,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642326,
-      "end": 1783634642326,
+      "start": 1783626310860,
+      "end": 1783626310860,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642326,
-      "end": 1783634642326,
+      "start": 1783626310860,
+      "end": 1783626310860,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642326,
-      "end": 1783634642327,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626310860,
+      "end": 1783626310860,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626310860,
+      "end": 1783626310860,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642327,
-      "end": 1783634642327,
+      "name": "vite:css-analysis",
+      "start": 1783626310860,
+      "end": 1783626310860,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "const equations = [\n  // ===== NEUTRALIZATION =====\n  {\n    reactants: [\"hcl\", \"naoh\"],\n    products: [\"nacl\", \"water\"],\n    equation: \"HCl + NaOH → NaCl + H₂O\",\n    type: \"neutralization\",\n    resultPh: 7,\n    color: \"#e0f2fe\",\n    opacity: 0.3,\n    temperatureRise: 5\n  },\n  {\n    reactants: [\"h2so4\", \"naoh\"],\n    products: [\"na2so4\", \"water\"],\n    equation: \"H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O\",\n    type: \"neutralization\",\n    resultPh: 7,\n    color: \"#e0f2fe\",\n    opacity: 0.3,\n    temperatureRise: 8\n  },\n  {\n    reactants: [\"hcl\", \"koh\"],\n    products: [\"kcl\", \"water\"],\n    equation: \"HCl + KOH → KCl + H₂O\",\n    type: \"neutralization\",\n    resultPh: 7,\n    color: \"#e0f2fe\",\n    opacity: 0.3,\n    temperatureRise: 5\n  },\n  {\n    reactants: [\"ch3cooh\", \"naoh\"],\n    products: [\"ch3coona\", \"water\"],\n    equation: \"CH₃COOH + NaOH → CH₃COONa + H₂O\",\n    type: \"neutralization\",\n    resultPh: 8.2,\n    color: \"#fce7f3\",\n    opacity: 0.35,\n    temperatureRise: 3\n  },\n  // ===== PRECIPITATION =====\n  {\n    reactants: [\"agno3\", \"nacl\"],\n    products: [\"agcl\", \"nano3\"],\n    equation: \"AgNO₃ + NaCl → AgCl↓ + NaNO₃\",\n    type: \"precipitation\",\n    resultPh: 6,\n    color: \"#e0e7ff\",\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: \"#f1f5f9\",\n    temperatureRise: 1\n  },\n  {\n    reactants: [\"agno3\", \"hcl\"],\n    products: [\"agcl\", \"hno3\"],\n    equation: \"AgNO₃ + HCl → AgCl↓ + HNO₃\",\n    type: \"precipitation\",\n    resultPh: 1,\n    color: \"#e0e7ff\",\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: \"#f1f5f9\",\n    temperatureRise: 1\n  },\n  {\n    reactants: [\"bacl2\", \"h2so4\"],\n    products: [\"baso4\", \"hcl\"],\n    equation: \"BaCl₂ + H₂SO₄ → BaSO₄↓ + 2HCl\",\n    type: \"precipitation\",\n    resultPh: 1,\n    color: \"#fef9c3\",\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: \"#f1f5f9\",\n    temperatureRise: 2\n  },\n  // ===== REDOX / GAS =====\n  {\n    reactants: [\"kmno4\", \"h2o2\"],\n    products: [\"mn2+\", \"o2\", \"water\"],\n    equation: \"2KMnO₄ + 3H₂O₂ → 2MnO₂ + 3O₂↑ + 2KOH + 2H₂O\",\n    type: \"redox\",\n    resultPh: 7,\n    color: \"#c084fc\",\n    opacity: 0.45,\n    gasEvolution: true,\n    temperatureRise: 10\n  },\n  {\n    reactants: [\"caco3\", \"hcl\"],\n    products: [\"cacl2\", \"co2\", \"water\"],\n    equation: \"CaCO₃ + 2HCl → CaCl₂ + CO₂↑ + H₂O\",\n    type: \"gas\",\n    resultPh: 1,\n    color: \"#e0f2fe\",\n    opacity: 0.4,\n    gasEvolution: true,\n    temperatureRise: 2\n  },\n  // ===== COMPLEX / SPECIAL =====\n  {\n    reactants: [\"cuso4\", \"naoh\"],\n    products: [\"cuoh2\", \"na2so4\"],\n    equation: \"CuSO₄ + 2NaOH → Cu(OH)₂↓ + Na₂SO₄\",\n    type: \"precipitation\",\n    color: \"#86efac\",\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: \"#15803d\",\n    temperatureRise: 2\n  },\n  {\n    reactants: [\"fecl3\", \"naoh\"],\n    products: [\"feoh3\", \"nacl\"],\n    equation: \"FeCl₃ + 3NaOH → Fe(OH)₃↓ + 3NaCl\",\n    type: \"precipitation\",\n    color: \"#fca5a5\",\n    opacity: 0.5,\n    precipitate: true,\n    precipitateColor: \"#7f1d1d\",\n    temperatureRise: 2\n  }\n];\nexport function findEquation(reactantIds) {\n  return equations.find(\n    (eq) => eq.reactants.every((r) => reactantIds.includes(r))\n  ) || null;\n}\nexport function canReact(c1, c2) {\n  return equations.some(\n    (eq) => eq.reactants.includes(c1) && eq.reactants.includes(c2)\n  );\n}\n",
+      "start": 1783626310860,
+      "end": 1783626310860,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

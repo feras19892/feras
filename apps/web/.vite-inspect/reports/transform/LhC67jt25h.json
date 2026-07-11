@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabExportNew2.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import type { AnalysisPayload } from '../../../../types/physics'\nimport { sendToAnalysis } from '../../../../composables/analysis/sendToAnalysis'\nimport type { ExportContext } from './electricLabExportBasic'\n\nexport function exportNew2(router: any, ctx: ExportContext): boolean {\n  if (ctx.isCompound.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-compound', sourceNameAr: 'الدائرة المختلطة', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, Req: t.voltage / t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'Req', label: 'Req', unit: 'Ω' }],\n      equations: [\n        { name: 'Compound Req', formula: 'Req = R1 + (R2×R3)/(R2+R3)', variables: [{ symbol: 'Req', label: 'Equivalent R' }, { symbol: 'R1', label: 'Series R' }, { symbol: 'R2', label: 'Parallel R1' }, { symbol: 'R3', label: 'Parallel R2' }], solveFor: ['Req'] },\n      ],\n      suggestedPlots: [{ xKey: 'I', yKey: 'V', xLabel: 'I (A)', yLabel: 'V (V)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isEMF.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-emf', sourceNameAr: 'قياس القوة الدافعة', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ EMF: t.voltage, Vt: t.voltage, I: t.current, r: t.resistance })),\n      columns: [{ key: 'EMF', label: 'EMF', unit: 'V' }, { key: 'Vt', label: 'Vt', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'r', label: 'r', unit: 'Ω' }],\n      equations: [\n        { name: 'Internal Resistance', formula: 'r = (EMF - Vt) / I', variables: [{ symbol: 'r', label: 'Internal R' }, { symbol: 'EMF', label: 'EMF' }, { symbol: 'Vt', label: 'Terminal V' }, { symbol: 'I', label: 'Current' }], solveFor: ['r'] },\n      ],\n      suggestedPlots: [{ xKey: 'I', yKey: 'Vt', xLabel: 'I (A)', yLabel: 'Vt (V)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isTempR.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-temp-r', sourceNameAr: 'تأثير الحرارة على المقاومة', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ T: t.resistance, R: t.voltage / t.current, V: t.voltage, I: t.current })),\n      columns: [{ key: 'T', label: 'T', unit: '°C' }, { key: 'R', label: 'R', unit: 'Ω' }, { key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }],\n      equations: [\n        { name: 'Temp Dependence', formula: 'R = R₀(1 + αΔT)', variables: [{ symbol: 'R', label: 'Resistance' }, { symbol: 'R0', label: 'Base R' }, { symbol: 'alpha', label: 'Coeff' }, { symbol: 'T', label: 'Temp' }], solveFor: ['R'] },\n      ],\n      suggestedPlots: [{ xKey: 'T', yKey: 'R', xLabel: 'T (°C)', yLabel: 'R (Ω)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isCellsSeries.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-cells-series', sourceNameAr: 'توصيل الخلايا على التوالي', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Series Cells', formula: 'EMF = EMF₁ + EMF₂, I = EMF/(R+r)', variables: [{ symbol: 'EMF', label: 'Total EMF' }, { symbol: 'I', label: 'Current' }, { symbol: 'R', label: 'Load R' }, { symbol: 'r', label: 'Internal R' }], solveFor: ['EMF', 'I'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isCellsParallel.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-cells-parallel', sourceNameAr: 'توصيل الخلايا على التوازي', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Parallel Cells', formula: 'r = (r₁×r₂)/(r₁+r₂), I = EMF/(R+r)', variables: [{ symbol: 'r', label: 'Total r' }, { symbol: 'EMF', label: 'EMF' }, { symbol: 'I', label: 'Current' }, { symbol: 'R', label: 'Load R' }], solveFor: ['r', 'I'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isRheostat.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-rheostat', sourceNameAr: 'المقاومة المتغيرة', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Rheostat', formula: 'R = ρL/A, I = V/R', variables: [{ symbol: 'R', label: 'Resistance' }, { symbol: 'I', label: 'Current' }, { symbol: 'V', label: 'Voltage' }], solveFor: ['R', 'I'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  return false\n}\n",
-      "start": 1783634642590,
-      "end": 1783634642823,
+      "start": 1783626239179,
+      "end": 1783626239179
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626239179,
+      "end": 1783626239179,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import type { AnalysisPayload } from '../../../../types/physics'\nimport { sendToAnalysis } from '../../../../composables/analysis/sendToAnalysis'\nimport type { ExportContext } from './electricLabExportBasic'\n\nexport function exportNew2(router: any, ctx: ExportContext): boolean {\n  if (ctx.isCompound.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-compound', sourceNameAr: 'الدائرة المختلطة', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, Req: t.voltage / t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'Req', label: 'Req', unit: 'Ω' }],\n      equations: [\n        { name: 'Compound Req', formula: 'Req = R1 + (R2×R3)/(R2+R3)', variables: [{ symbol: 'Req', label: 'Equivalent R' }, { symbol: 'R1', label: 'Series R' }, { symbol: 'R2', label: 'Parallel R1' }, { symbol: 'R3', label: 'Parallel R2' }], solveFor: ['Req'] },\n      ],\n      suggestedPlots: [{ xKey: 'I', yKey: 'V', xLabel: 'I (A)', yLabel: 'V (V)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isEMF.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-emf', sourceNameAr: 'قياس القوة الدافعة', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ EMF: t.voltage, Vt: t.voltage, I: t.current, r: t.resistance })),\n      columns: [{ key: 'EMF', label: 'EMF', unit: 'V' }, { key: 'Vt', label: 'Vt', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'r', label: 'r', unit: 'Ω' }],\n      equations: [\n        { name: 'Internal Resistance', formula: 'r = (EMF - Vt) / I', variables: [{ symbol: 'r', label: 'Internal R' }, { symbol: 'EMF', label: 'EMF' }, { symbol: 'Vt', label: 'Terminal V' }, { symbol: 'I', label: 'Current' }], solveFor: ['r'] },\n      ],\n      suggestedPlots: [{ xKey: 'I', yKey: 'Vt', xLabel: 'I (A)', yLabel: 'Vt (V)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isTempR.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-temp-r', sourceNameAr: 'تأثير الحرارة على المقاومة', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ T: t.resistance, R: t.voltage / t.current, V: t.voltage, I: t.current })),\n      columns: [{ key: 'T', label: 'T', unit: '°C' }, { key: 'R', label: 'R', unit: 'Ω' }, { key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }],\n      equations: [\n        { name: 'Temp Dependence', formula: 'R = R₀(1 + αΔT)', variables: [{ symbol: 'R', label: 'Resistance' }, { symbol: 'R0', label: 'Base R' }, { symbol: 'alpha', label: 'Coeff' }, { symbol: 'T', label: 'Temp' }], solveFor: ['R'] },\n      ],\n      suggestedPlots: [{ xKey: 'T', yKey: 'R', xLabel: 'T (°C)', yLabel: 'R (Ω)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isCellsSeries.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-cells-series', sourceNameAr: 'توصيل الخلايا على التوالي', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Series Cells', formula: 'EMF = EMF₁ + EMF₂, I = EMF/(R+r)', variables: [{ symbol: 'EMF', label: 'Total EMF' }, { symbol: 'I', label: 'Current' }, { symbol: 'R', label: 'Load R' }, { symbol: 'r', label: 'Internal R' }], solveFor: ['EMF', 'I'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isCellsParallel.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-cells-parallel', sourceNameAr: 'توصيل الخلايا على التوازي', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Parallel Cells', formula: 'r = (r₁×r₂)/(r₁+r₂), I = EMF/(R+r)', variables: [{ symbol: 'r', label: 'Total r' }, { symbol: 'EMF', label: 'EMF' }, { symbol: 'I', label: 'Current' }, { symbol: 'R', label: 'Load R' }], solveFor: ['r', 'I'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isRheostat.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-rheostat', sourceNameAr: 'المقاومة المتغيرة', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Rheostat', formula: 'R = ρL/A, I = V/R', variables: [{ symbol: 'R', label: 'Resistance' }, { symbol: 'I', label: 'Current' }, { symbol: 'V', label: 'Voltage' }], solveFor: ['R', 'I'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  return false\n}\n",
+      "start": 1783626239179,
+      "end": 1783626239179,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634642823,
-      "end": 1783634642823,
+      "start": 1783626239179,
+      "end": 1783626239179,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { sendToAnalysis } from \"../../../../composables/analysis/sendToAnalysis\";\nexport function exportNew2(router, ctx) {\n  if (ctx.isCompound.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-compound\",\n      sourceNameAr: \"الدائرة المختلطة\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, Req: t.voltage / t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"V\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"Req\", label: \"Req\", unit: \"Ω\" }],\n      equations: [\n        { name: \"Compound Req\", formula: \"Req = R1 + (R2×R3)/(R2+R3)\", variables: [{ symbol: \"Req\", label: \"Equivalent R\" }, { symbol: \"R1\", label: \"Series R\" }, { symbol: \"R2\", label: \"Parallel R1\" }, { symbol: \"R3\", label: \"Parallel R2\" }], solveFor: [\"Req\"] }\n      ],\n      suggestedPlots: [{ xKey: \"I\", yKey: \"V\", xLabel: \"I (A)\", yLabel: \"V (V)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isEMF.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-emf\",\n      sourceNameAr: \"قياس القوة الدافعة\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ EMF: t.voltage, Vt: t.voltage, I: t.current, r: t.resistance })),\n      columns: [{ key: \"EMF\", label: \"EMF\", unit: \"V\" }, { key: \"Vt\", label: \"Vt\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"r\", label: \"r\", unit: \"Ω\" }],\n      equations: [\n        { name: \"Internal Resistance\", formula: \"r = (EMF - Vt) / I\", variables: [{ symbol: \"r\", label: \"Internal R\" }, { symbol: \"EMF\", label: \"EMF\" }, { symbol: \"Vt\", label: \"Terminal V\" }, { symbol: \"I\", label: \"Current\" }], solveFor: [\"r\"] }\n      ],\n      suggestedPlots: [{ xKey: \"I\", yKey: \"Vt\", xLabel: \"I (A)\", yLabel: \"Vt (V)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isTempR.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-temp-r\",\n      sourceNameAr: \"تأثير الحرارة على المقاومة\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ T: t.resistance, R: t.voltage / t.current, V: t.voltage, I: t.current })),\n      columns: [{ key: \"T\", label: \"T\", unit: \"°C\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }, { key: \"V\", label: \"V\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }],\n      equations: [\n        { name: \"Temp Dependence\", formula: \"R = R₀(1 + αΔT)\", variables: [{ symbol: \"R\", label: \"Resistance\" }, { symbol: \"R0\", label: \"Base R\" }, { symbol: \"alpha\", label: \"Coeff\" }, { symbol: \"T\", label: \"Temp\" }], solveFor: [\"R\"] }\n      ],\n      suggestedPlots: [{ xKey: \"T\", yKey: \"R\", xLabel: \"T (°C)\", yLabel: \"R (Ω)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isCellsSeries.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-cells-series\",\n      sourceNameAr: \"توصيل الخلايا على التوالي\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"V\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"Series Cells\", formula: \"EMF = EMF₁ + EMF₂, I = EMF/(R+r)\", variables: [{ symbol: \"EMF\", label: \"Total EMF\" }, { symbol: \"I\", label: \"Current\" }, { symbol: \"R\", label: \"Load R\" }, { symbol: \"r\", label: \"Internal R\" }], solveFor: [\"EMF\", \"I\"] }],\n      suggestedPlots: [{ xKey: \"R\", yKey: \"I\", xLabel: \"R (Ω)\", yLabel: \"I (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isCellsParallel.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-cells-parallel\",\n      sourceNameAr: \"توصيل الخلايا على التوازي\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"V\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"Parallel Cells\", formula: \"r = (r₁×r₂)/(r₁+r₂), I = EMF/(R+r)\", variables: [{ symbol: \"r\", label: \"Total r\" }, { symbol: \"EMF\", label: \"EMF\" }, { symbol: \"I\", label: \"Current\" }, { symbol: \"R\", label: \"Load R\" }], solveFor: [\"r\", \"I\"] }],\n      suggestedPlots: [{ xKey: \"R\", yKey: \"I\", xLabel: \"R (Ω)\", yLabel: \"I (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isRheostat.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-rheostat\",\n      sourceNameAr: \"المقاومة المتغيرة\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"V\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"Rheostat\", formula: \"R = ρL/A, I = V/R\", variables: [{ symbol: \"R\", label: \"Resistance\" }, { symbol: \"I\", label: \"Current\" }, { symbol: \"V\", label: \"Voltage\" }], solveFor: [\"R\", \"I\"] }],\n      suggestedPlots: [{ xKey: \"R\", yKey: \"I\", xLabel: \"R (Ω)\", yLabel: \"I (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  return false;\n}\n",
-      "start": 1783634642823,
-      "end": 1783634642880,
+      "start": 1783626239179,
+      "end": 1783626239759,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabExportNew2.ts"
+          "electricLabExportNew2.ts"
         ],
         "sourcesContent": [
           "import type { AnalysisPayload } from '../../../../types/physics'\nimport { sendToAnalysis } from '../../../../composables/analysis/sendToAnalysis'\nimport type { ExportContext } from './electricLabExportBasic'\n\nexport function exportNew2(router: any, ctx: ExportContext): boolean {\n  if (ctx.isCompound.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-compound', sourceNameAr: 'الدائرة المختلطة', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, Req: t.voltage / t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'Req', label: 'Req', unit: 'Ω' }],\n      equations: [\n        { name: 'Compound Req', formula: 'Req = R1 + (R2×R3)/(R2+R3)', variables: [{ symbol: 'Req', label: 'Equivalent R' }, { symbol: 'R1', label: 'Series R' }, { symbol: 'R2', label: 'Parallel R1' }, { symbol: 'R3', label: 'Parallel R2' }], solveFor: ['Req'] },\n      ],\n      suggestedPlots: [{ xKey: 'I', yKey: 'V', xLabel: 'I (A)', yLabel: 'V (V)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isEMF.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-emf', sourceNameAr: 'قياس القوة الدافعة', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ EMF: t.voltage, Vt: t.voltage, I: t.current, r: t.resistance })),\n      columns: [{ key: 'EMF', label: 'EMF', unit: 'V' }, { key: 'Vt', label: 'Vt', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'r', label: 'r', unit: 'Ω' }],\n      equations: [\n        { name: 'Internal Resistance', formula: 'r = (EMF - Vt) / I', variables: [{ symbol: 'r', label: 'Internal R' }, { symbol: 'EMF', label: 'EMF' }, { symbol: 'Vt', label: 'Terminal V' }, { symbol: 'I', label: 'Current' }], solveFor: ['r'] },\n      ],\n      suggestedPlots: [{ xKey: 'I', yKey: 'Vt', xLabel: 'I (A)', yLabel: 'Vt (V)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isTempR.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-temp-r', sourceNameAr: 'تأثير الحرارة على المقاومة', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ T: t.resistance, R: t.voltage / t.current, V: t.voltage, I: t.current })),\n      columns: [{ key: 'T', label: 'T', unit: '°C' }, { key: 'R', label: 'R', unit: 'Ω' }, { key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }],\n      equations: [\n        { name: 'Temp Dependence', formula: 'R = R₀(1 + αΔT)', variables: [{ symbol: 'R', label: 'Resistance' }, { symbol: 'R0', label: 'Base R' }, { symbol: 'alpha', label: 'Coeff' }, { symbol: 'T', label: 'Temp' }], solveFor: ['R'] },\n      ],\n      suggestedPlots: [{ xKey: 'T', yKey: 'R', xLabel: 'T (°C)', yLabel: 'R (Ω)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isCellsSeries.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-cells-series', sourceNameAr: 'توصيل الخلايا على التوالي', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Series Cells', formula: 'EMF = EMF₁ + EMF₂, I = EMF/(R+r)', variables: [{ symbol: 'EMF', label: 'Total EMF' }, { symbol: 'I', label: 'Current' }, { symbol: 'R', label: 'Load R' }, { symbol: 'r', label: 'Internal R' }], solveFor: ['EMF', 'I'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isCellsParallel.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-cells-parallel', sourceNameAr: 'توصيل الخلايا على التوازي', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Parallel Cells', formula: 'r = (r₁×r₂)/(r₁+r₂), I = EMF/(R+r)', variables: [{ symbol: 'r', label: 'Total r' }, { symbol: 'EMF', label: 'EMF' }, { symbol: 'I', label: 'Current' }, { symbol: 'R', label: 'Load R' }], solveFor: ['r', 'I'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isRheostat.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-rheostat', sourceNameAr: 'المقاومة المتغيرة', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Rheostat', formula: 'R = ρL/A, I = V/R', variables: [{ symbol: 'R', label: 'Resistance' }, { symbol: 'I', label: 'Current' }, { symbol: 'V', label: 'Voltage' }], solveFor: ['R', 'I'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  return false\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634642880,
-      "end": 1783634642880,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642880,
-      "end": 1783634642880,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626239759,
+      "end": 1783626239759,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642880,
-      "end": 1783634642880,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634642880,
-      "end": 1783634642880,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634642880,
-      "end": 1783634642880,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642880,
-      "end": 1783634642880,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642880,
-      "end": 1783634642880,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642880,
-      "end": 1783634642880,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642880,
-      "end": 1783634642880,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642880,
-      "end": 1783634642880,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642881,
-      "end": 1783634642881,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626239759,
+      "end": 1783626239759,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642881,
-      "end": 1783634642881,
+      "name": "vite:css-analysis",
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { sendToAnalysis } from \"/src/composables/analysis/sendToAnalysis.ts\";\nexport function exportNew2(router, ctx) {\n  if (ctx.isCompound.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-compound\",\n      sourceNameAr: \"الدائرة المختلطة\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, Req: t.voltage / t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"V\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"Req\", label: \"Req\", unit: \"Ω\" }],\n      equations: [\n        { name: \"Compound Req\", formula: \"Req = R1 + (R2×R3)/(R2+R3)\", variables: [{ symbol: \"Req\", label: \"Equivalent R\" }, { symbol: \"R1\", label: \"Series R\" }, { symbol: \"R2\", label: \"Parallel R1\" }, { symbol: \"R3\", label: \"Parallel R2\" }], solveFor: [\"Req\"] }\n      ],\n      suggestedPlots: [{ xKey: \"I\", yKey: \"V\", xLabel: \"I (A)\", yLabel: \"V (V)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isEMF.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-emf\",\n      sourceNameAr: \"قياس القوة الدافعة\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ EMF: t.voltage, Vt: t.voltage, I: t.current, r: t.resistance })),\n      columns: [{ key: \"EMF\", label: \"EMF\", unit: \"V\" }, { key: \"Vt\", label: \"Vt\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"r\", label: \"r\", unit: \"Ω\" }],\n      equations: [\n        { name: \"Internal Resistance\", formula: \"r = (EMF - Vt) / I\", variables: [{ symbol: \"r\", label: \"Internal R\" }, { symbol: \"EMF\", label: \"EMF\" }, { symbol: \"Vt\", label: \"Terminal V\" }, { symbol: \"I\", label: \"Current\" }], solveFor: [\"r\"] }\n      ],\n      suggestedPlots: [{ xKey: \"I\", yKey: \"Vt\", xLabel: \"I (A)\", yLabel: \"Vt (V)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isTempR.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-temp-r\",\n      sourceNameAr: \"تأثير الحرارة على المقاومة\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ T: t.resistance, R: t.voltage / t.current, V: t.voltage, I: t.current })),\n      columns: [{ key: \"T\", label: \"T\", unit: \"°C\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }, { key: \"V\", label: \"V\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }],\n      equations: [\n        { name: \"Temp Dependence\", formula: \"R = R₀(1 + αΔT)\", variables: [{ symbol: \"R\", label: \"Resistance\" }, { symbol: \"R0\", label: \"Base R\" }, { symbol: \"alpha\", label: \"Coeff\" }, { symbol: \"T\", label: \"Temp\" }], solveFor: [\"R\"] }\n      ],\n      suggestedPlots: [{ xKey: \"T\", yKey: \"R\", xLabel: \"T (°C)\", yLabel: \"R (Ω)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isCellsSeries.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-cells-series\",\n      sourceNameAr: \"توصيل الخلايا على التوالي\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"V\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"Series Cells\", formula: \"EMF = EMF₁ + EMF₂, I = EMF/(R+r)\", variables: [{ symbol: \"EMF\", label: \"Total EMF\" }, { symbol: \"I\", label: \"Current\" }, { symbol: \"R\", label: \"Load R\" }, { symbol: \"r\", label: \"Internal R\" }], solveFor: [\"EMF\", \"I\"] }],\n      suggestedPlots: [{ xKey: \"R\", yKey: \"I\", xLabel: \"R (Ω)\", yLabel: \"I (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isCellsParallel.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-cells-parallel\",\n      sourceNameAr: \"توصيل الخلايا على التوازي\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"V\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"Parallel Cells\", formula: \"r = (r₁×r₂)/(r₁+r₂), I = EMF/(R+r)\", variables: [{ symbol: \"r\", label: \"Total r\" }, { symbol: \"EMF\", label: \"EMF\" }, { symbol: \"I\", label: \"Current\" }, { symbol: \"R\", label: \"Load R\" }], solveFor: [\"r\", \"I\"] }],\n      suggestedPlots: [{ xKey: \"R\", yKey: \"I\", xLabel: \"R (Ω)\", yLabel: \"I (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isRheostat.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-rheostat\",\n      sourceNameAr: \"المقاومة المتغيرة\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"V\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"Rheostat\", formula: \"R = ρL/A, I = V/R\", variables: [{ symbol: \"R\", label: \"Resistance\" }, { symbol: \"I\", label: \"Current\" }, { symbol: \"V\", label: \"Voltage\" }], solveFor: [\"R\", \"I\"] }],\n      suggestedPlots: [{ xKey: \"R\", yKey: \"I\", xLabel: \"R (Ω)\", yLabel: \"I (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  return false;\n}\n",
+      "start": 1783626239759,
+      "end": 1783626239766,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

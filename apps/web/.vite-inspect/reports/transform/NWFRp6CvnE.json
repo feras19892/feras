@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/linearRegression.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "export function linearRegression(xs: number[], ys: number[]) {\n  const n = xs.length;\n  if (n < 2) return null;\n  const mx = xs.reduce((a, b) => a + b, 0) / n;\n  const my = ys.reduce((a, b) => a + b, 0) / n;\n  let ssxx = 0, ssxy = 0, ssyy = 0;\n  for (let i = 0; i < n; i++) {\n    const dx = xs[i] - mx;\n    const dy = ys[i] - my;\n    ssxx += dx * dx;\n    ssxy += dx * dy;\n    ssyy += dy * dy;\n  }\n  if (Math.abs(ssxx) < 1e-12) return null;\n  const slope = ssxy / ssxx;\n  const intercept = my - slope * mx;\n  const r2 = ssyy > 1e-12 ? (ssxy * ssxy) / (ssxx * ssyy) : 0;\n  return { slope, intercept, r2 };\n}\n",
-      "start": 1783634642548,
-      "end": 1783634642802,
+      "start": 1783626292085,
+      "end": 1783626292085
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626292085,
+      "end": 1783626292085,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "export function linearRegression(xs: number[], ys: number[]) {\n  const n = xs.length;\n  if (n < 2) return null;\n  const mx = xs.reduce((a, b) => a + b, 0) / n;\n  const my = ys.reduce((a, b) => a + b, 0) / n;\n  let ssxx = 0, ssxy = 0, ssyy = 0;\n  for (let i = 0; i < n; i++) {\n    const dx = xs[i] - mx;\n    const dy = ys[i] - my;\n    ssxx += dx * dx;\n    ssxy += dx * dy;\n    ssyy += dy * dy;\n  }\n  if (Math.abs(ssxx) < 1e-12) return null;\n  const slope = ssxy / ssxx;\n  const intercept = my - slope * mx;\n  const r2 = ssyy > 1e-12 ? (ssxy * ssxy) / (ssxx * ssyy) : 0;\n  return { slope, intercept, r2 };\n}\n",
+      "start": 1783626292085,
+      "end": 1783626292085,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634642802,
-      "end": 1783634642802,
+      "start": 1783626292085,
+      "end": 1783626292085,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "export function linearRegression(xs, ys) {\n  const n = xs.length;\n  if (n < 2) return null;\n  const mx = xs.reduce((a, b) => a + b, 0) / n;\n  const my = ys.reduce((a, b) => a + b, 0) / n;\n  let ssxx = 0, ssxy = 0, ssyy = 0;\n  for (let i = 0; i < n; i++) {\n    const dx = xs[i] - mx;\n    const dy = ys[i] - my;\n    ssxx += dx * dx;\n    ssxy += dx * dy;\n    ssyy += dy * dy;\n  }\n  if (Math.abs(ssxx) < 1e-12) return null;\n  const slope = ssxy / ssxx;\n  const intercept = my - slope * mx;\n  const r2 = ssyy > 1e-12 ? ssxy * ssxy / (ssxx * ssyy) : 0;\n  return { slope, intercept, r2 };\n}\n",
-      "start": 1783634642802,
-      "end": 1783634642883,
+      "start": 1783626292085,
+      "end": 1783626292203,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/linearRegression.ts"
+          "linearRegression.ts"
         ],
         "sourcesContent": [
           "export function linearRegression(xs: number[], ys: number[]) {\n  const n = xs.length;\n  if (n < 2) return null;\n  const mx = xs.reduce((a, b) => a + b, 0) / n;\n  const my = ys.reduce((a, b) => a + b, 0) / n;\n  let ssxx = 0, ssxy = 0, ssyy = 0;\n  for (let i = 0; i < n; i++) {\n    const dx = xs[i] - mx;\n    const dy = ys[i] - my;\n    ssxx += dx * dx;\n    ssxy += dx * dy;\n    ssyy += dy * dy;\n  }\n  if (Math.abs(ssxx) < 1e-12) return null;\n  const slope = ssxy / ssxx;\n  const intercept = my - slope * mx;\n  const r2 = ssyy > 1e-12 ? (ssxy * ssxy) / (ssxx * ssyy) : 0;\n  return { slope, intercept, r2 };\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634642883,
-      "end": 1783634642883,
+      "start": 1783626292203,
+      "end": 1783626292203,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642883,
-      "end": 1783634642883,
+      "start": 1783626292203,
+      "end": 1783626292203,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626292209,
+      "end": 1783626292209,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642883,
-      "end": 1783634642883,
+      "start": 1783626292209,
+      "end": 1783626292209,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634642883,
-      "end": 1783634642883,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634642883,
-      "end": 1783634642883,
+      "start": 1783626292209,
+      "end": 1783626292209,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642883,
-      "end": 1783634642883,
+      "start": 1783626292209,
+      "end": 1783626292209,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642883,
-      "end": 1783634642883,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642883,
-      "end": 1783634642883,
+      "start": 1783626292209,
+      "end": 1783626292210,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642884,
-      "end": 1783634642884,
+      "start": 1783626292210,
+      "end": 1783626292210,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642884,
-      "end": 1783634642884,
+      "start": 1783626292210,
+      "end": 1783626292210,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642884,
-      "end": 1783634642884,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626292210,
+      "end": 1783626292210,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626292210,
+      "end": 1783626292210,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642884,
-      "end": 1783634642884,
+      "name": "vite:css-analysis",
+      "start": 1783626292210,
+      "end": 1783626292210,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "export function linearRegression(xs, ys) {\n  const n = xs.length;\n  if (n < 2) return null;\n  const mx = xs.reduce((a, b) => a + b, 0) / n;\n  const my = ys.reduce((a, b) => a + b, 0) / n;\n  let ssxx = 0, ssxy = 0, ssyy = 0;\n  for (let i = 0; i < n; i++) {\n    const dx = xs[i] - mx;\n    const dy = ys[i] - my;\n    ssxx += dx * dx;\n    ssxy += dx * dy;\n    ssyy += dy * dy;\n  }\n  if (Math.abs(ssxx) < 1e-12) return null;\n  const slope = ssxy / ssxx;\n  const intercept = my - slope * mx;\n  const r2 = ssyy > 1e-12 ? ssxy * ssxy / (ssxx * ssyy) : 0;\n  return { slope, intercept, r2 };\n}\n",
+      "start": 1783626292210,
+      "end": 1783626292211,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

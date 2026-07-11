@@ -1,0 +1,140 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationToast.vue?vue&type=style&index=0&scoped=2b611cbe&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.toast {\n  min-width: 280px;\n  max-width: 380px;\n  padding: 0.75rem 0.9rem;\n  border-radius: 0.75rem;\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);\n  color: #e2e8f0;\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n}\n.toast.info { border-color: rgba(59,130,246,0.25); }\n.toast.success { border-color: rgba(34,197,94,0.25); }\n.toast.warning { border-color: rgba(234,179,8,0.35); }\n.toast.error { border-color: rgba(239,68,68,0.35); }\n\n.left { display: flex; align-items: center; gap: 0.6rem; flex: 1; }\n.icon { font-size: 1.2rem; }\n.content { display: flex; flex-direction: column; gap: 0.2rem; }\n.title { font-weight: 700; font-size: 0.95rem; }\n.message { font-size: 0.85rem; color: #cbd5e1; }\n.close {\n  background: none;\n  border: none;\n  color: #94a3b8;\n  font-size: 0.95rem;\n  cursor: pointer;\n  padding: 0.2rem;\n}\n.close:hover { color: #e2e8f0; }\n\n.toast-slide-enter-active,\n.toast-slide-leave-active { transition: all 0.2s ease; }\n.toast-slide-enter-from { opacity: 0; transform: translateX(12px) translateY(8px); }\n.toast-slide-leave-to { opacity: 0; transform: translateX(12px) translateY(8px); }\n",
+      "start": 1783626234256,
+      "end": 1783626234256,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationToast.vue"
+        ],
+        "names": [],
+        "mappings": ";AAuDA,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACL,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC;EAChB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC;EAChB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACvB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACtB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC;EAClC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC;EAC3C,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,EAAE,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC;EAC3C,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACd,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC;EACb,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACnB,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACd;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACnD,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACrD,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACrD,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;;AAEnD,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,EAAE;AAClE,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC3B,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC/D,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC/C,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC/C,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACL,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC;EAChB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC;EACZ,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACd,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EAClB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACf,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACjB;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;;AAE/B,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACzB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE;AACvD,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACnF,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE",
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationToast.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\nimport { onMounted, onUnmounted, watch } from 'vue'\n\nconst props = defineProps<{\n  show: boolean\n  title: string\n  message?: string\n  icon?: string\n  type?: 'info' | 'success' | 'warning' | 'error'\n  timeoutMs?: number\n}>()\n\nconst emit = defineEmits<{ (e: 'close'): void }>()\n\nlet timer: ReturnType<typeof setTimeout> | null = null\n\nfunction startTimer() {\n  clearTimer()\n  if (props.timeoutMs && props.timeoutMs > 0) {\n    timer = setTimeout(() => emit('close'), props.timeoutMs)\n  }\n}\n\nfunction clearTimer() {\n  if (timer) {\n    clearTimeout(timer)\n    timer = null\n  }\n}\n\nonMounted(startTimer)\nonUnmounted(clearTimer)\n\nwatch(() => props.show, (v) => {\n  if (v) startTimer()\n  else clearTimer()\n})\n</script>\n\n<template>\n  <transition name=\"toast-slide\" data-v-inspector=\"src/components/shared/NotificationToast.vue:41:3\">\n    <div v-if=\"show\" class=\"toast\" :class=\"type\" data-v-inspector=\"src/components/shared/NotificationToast.vue:42:5\">\n      <div class=\"left\" data-v-inspector=\"src/components/shared/NotificationToast.vue:43:7\">\n        <span class=\"icon\" data-v-inspector=\"src/components/shared/NotificationToast.vue:44:9\">{{ icon || '🔔' }}</span>\n        <div class=\"content\" data-v-inspector=\"src/components/shared/NotificationToast.vue:45:9\">\n          <div class=\"title\" data-v-inspector=\"src/components/shared/NotificationToast.vue:46:11\">{{ title }}</div>\n          <div v-if=\"message\" class=\"message\" data-v-inspector=\"src/components/shared/NotificationToast.vue:47:11\">{{ message }}</div>\n        </div>\n      </div>\n      <button class=\"close\" @click=\"emit('close')\" data-v-inspector=\"src/components/shared/NotificationToast.vue:50:7\">✕</button>\n    </div>\n  </transition>\n</template>\n\n<style scoped>\n.toast {\n  min-width: 280px;\n  max-width: 380px;\n  padding: 0.75rem 0.9rem;\n  border-radius: 0.75rem;\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);\n  color: #e2e8f0;\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n}\n.toast.info { border-color: rgba(59,130,246,0.25); }\n.toast.success { border-color: rgba(34,197,94,0.25); }\n.toast.warning { border-color: rgba(234,179,8,0.35); }\n.toast.error { border-color: rgba(239,68,68,0.35); }\n\n.left { display: flex; align-items: center; gap: 0.6rem; flex: 1; }\n.icon { font-size: 1.2rem; }\n.content { display: flex; flex-direction: column; gap: 0.2rem; }\n.title { font-weight: 700; font-size: 0.95rem; }\n.message { font-size: 0.85rem; color: #cbd5e1; }\n.close {\n  background: none;\n  border: none;\n  color: #94a3b8;\n  font-size: 0.95rem;\n  cursor: pointer;\n  padding: 0.2rem;\n}\n.close:hover { color: #e2e8f0; }\n\n.toast-slide-enter-active,\n.toast-slide-leave-active { transition: all 0.2s ease; }\n.toast-slide-enter-from { opacity: 0; transform: translateX(12px) translateY(8px); }\n.toast-slide-leave-to { opacity: 0; transform: translateX(12px) translateY(8px); }\n</style>\n"
+        ]
+      }
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626234256,
+      "end": 1783626234256,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "\n.toast {\n  min-width: 280px;\n  max-width: 380px;\n  padding: 0.75rem 0.9rem;\n  border-radius: 0.75rem;\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);\n  color: #e2e8f0;\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n}\n.toast.info { border-color: rgba(59,130,246,0.25); }\n.toast.success { border-color: rgba(34,197,94,0.25); }\n.toast.warning { border-color: rgba(234,179,8,0.35); }\n.toast.error { border-color: rgba(239,68,68,0.35); }\n\n.left { display: flex; align-items: center; gap: 0.6rem; flex: 1; }\n.icon { font-size: 1.2rem; }\n.content { display: flex; flex-direction: column; gap: 0.2rem; }\n.title { font-weight: 700; font-size: 0.95rem; }\n.message { font-size: 0.85rem; color: #cbd5e1; }\n.close {\n  background: none;\n  border: none;\n  color: #94a3b8;\n  font-size: 0.95rem;\n  cursor: pointer;\n  padding: 0.2rem;\n}\n.close:hover { color: #e2e8f0; }\n\n.toast-slide-enter-active,\n.toast-slide-leave-active { transition: all 0.2s ease; }\n.toast-slide-enter-from { opacity: 0; transform: translateX(12px) translateY(8px); }\n.toast-slide-leave-to { opacity: 0; transform: translateX(12px) translateY(8px); }\n",
+      "start": 1783626234256,
+      "end": 1783626234256,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.toast {\n  min-width: 280px;\n  max-width: 380px;\n  padding: 0.75rem 0.9rem;\n  border-radius: 0.75rem;\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);\n  color: #e2e8f0;\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n}\n.toast.info { border-color: rgba(59,130,246,0.25); }\n.toast.success { border-color: rgba(34,197,94,0.25); }\n.toast.warning { border-color: rgba(234,179,8,0.35); }\n.toast.error { border-color: rgba(239,68,68,0.35); }\n\n.left { display: flex; align-items: center; gap: 0.6rem; flex: 1; }\n.icon { font-size: 1.2rem; }\n.content { display: flex; flex-direction: column; gap: 0.2rem; }\n.title { font-weight: 700; font-size: 0.95rem; }\n.message { font-size: 0.85rem; color: #cbd5e1; }\n.close {\n  background: none;\n  border: none;\n  color: #94a3b8;\n  font-size: 0.95rem;\n  cursor: pointer;\n  padding: 0.2rem;\n}\n.close:hover { color: #e2e8f0; }\n\n.toast-slide-enter-active,\n.toast-slide-leave-active { transition: all 0.2s ease; }\n.toast-slide-enter-from { opacity: 0; transform: translateX(12px) translateY(8px); }\n.toast-slide-leave-to { opacity: 0; transform: translateX(12px) translateY(8px); }\n",
+      "start": 1783626234256,
+      "end": 1783626234257,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783626234257,
+      "end": 1783626234257,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626234257,
+      "end": 1783626234257,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626234257,
+      "end": 1783626234257,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.toast[data-v-2b611cbe] {\n  min-width: 280px;\n  max-width: 380px;\n  padding: 0.75rem 0.9rem;\n  border-radius: 0.75rem;\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);\n  color: #e2e8f0;\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n}\n.toast.info[data-v-2b611cbe] { border-color: rgba(59,130,246,0.25);\n}\n.toast.success[data-v-2b611cbe] { border-color: rgba(34,197,94,0.25);\n}\n.toast.warning[data-v-2b611cbe] { border-color: rgba(234,179,8,0.35);\n}\n.toast.error[data-v-2b611cbe] { border-color: rgba(239,68,68,0.35);\n}\n.left[data-v-2b611cbe] { display: flex; align-items: center; gap: 0.6rem; flex: 1;\n}\n.icon[data-v-2b611cbe] { font-size: 1.2rem;\n}\n.content[data-v-2b611cbe] { display: flex; flex-direction: column; gap: 0.2rem;\n}\n.title[data-v-2b611cbe] { font-weight: 700; font-size: 0.95rem;\n}\n.message[data-v-2b611cbe] { font-size: 0.85rem; color: #cbd5e1;\n}\n.close[data-v-2b611cbe] {\n  background: none;\n  border: none;\n  color: #94a3b8;\n  font-size: 0.95rem;\n  cursor: pointer;\n  padding: 0.2rem;\n}\n.close[data-v-2b611cbe]:hover { color: #e2e8f0;\n}\n.toast-slide-enter-active[data-v-2b611cbe],\n.toast-slide-leave-active[data-v-2b611cbe] { transition: all 0.2s ease;\n}\n.toast-slide-enter-from[data-v-2b611cbe] { opacity: 0; transform: translateX(12px) translateY(8px);\n}\n.toast-slide-leave-to[data-v-2b611cbe] { opacity: 0; transform: translateX(12px) translateY(8px);\n}\n",
+      "start": 1783626234257,
+      "end": 1783626234259,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626234259,
+      "end": 1783626234259,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationToast.vue?vue&type=style&index=0&scoped=2b611cbe&lang.css\"\nconst __vite__css = \"\\n.toast[data-v-2b611cbe] {\\n  min-width: 280px;\\n  max-width: 380px;\\n  padding: 0.75rem 0.9rem;\\n  border-radius: 0.75rem;\\n  background: rgba(15, 23, 42, 0.95);\\n  border: 1px solid rgba(255, 255, 255, 0.08);\\n  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);\\n  color: #e2e8f0;\\n  display: flex;\\n  align-items: center;\\n  gap: 0.75rem;\\n}\\n.toast.info[data-v-2b611cbe] { border-color: rgba(59,130,246,0.25);\\n}\\n.toast.success[data-v-2b611cbe] { border-color: rgba(34,197,94,0.25);\\n}\\n.toast.warning[data-v-2b611cbe] { border-color: rgba(234,179,8,0.35);\\n}\\n.toast.error[data-v-2b611cbe] { border-color: rgba(239,68,68,0.35);\\n}\\n.left[data-v-2b611cbe] { display: flex; align-items: center; gap: 0.6rem; flex: 1;\\n}\\n.icon[data-v-2b611cbe] { font-size: 1.2rem;\\n}\\n.content[data-v-2b611cbe] { display: flex; flex-direction: column; gap: 0.2rem;\\n}\\n.title[data-v-2b611cbe] { font-weight: 700; font-size: 0.95rem;\\n}\\n.message[data-v-2b611cbe] { font-size: 0.85rem; color: #cbd5e1;\\n}\\n.close[data-v-2b611cbe] {\\n  background: none;\\n  border: none;\\n  color: #94a3b8;\\n  font-size: 0.95rem;\\n  cursor: pointer;\\n  padding: 0.2rem;\\n}\\n.close[data-v-2b611cbe]:hover { color: #e2e8f0;\\n}\\n.toast-slide-enter-active[data-v-2b611cbe],\\n.toast-slide-leave-active[data-v-2b611cbe] { transition: all 0.2s ease;\\n}\\n.toast-slide-enter-from[data-v-2b611cbe] { opacity: 0; transform: translateX(12px) translateY(8px);\\n}\\n.toast-slide-leave-to[data-v-2b611cbe] { opacity: 0; transform: translateX(12px) translateY(8px);\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626234259,
+      "end": 1783626234260,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626234260,
+      "end": 1783626234260,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626234260,
+      "end": 1783626234260,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626234260,
+      "end": 1783626234260,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626234260,
+      "end": 1783626234260,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626234260,
+      "end": 1783626234260,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626234260,
+      "end": 1783626234260,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626234260,
+      "end": 1783626234260,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/components/shared/NotificationToast.vue?vue&type=style&index=0&scoped=2b611cbe&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationToast.vue?vue&type=style&index=0&scoped=2b611cbe&lang.css\"\nconst __vite__css = \"\\n.toast[data-v-2b611cbe] {\\n  min-width: 280px;\\n  max-width: 380px;\\n  padding: 0.75rem 0.9rem;\\n  border-radius: 0.75rem;\\n  background: rgba(15, 23, 42, 0.95);\\n  border: 1px solid rgba(255, 255, 255, 0.08);\\n  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);\\n  color: #e2e8f0;\\n  display: flex;\\n  align-items: center;\\n  gap: 0.75rem;\\n}\\n.toast.info[data-v-2b611cbe] { border-color: rgba(59,130,246,0.25);\\n}\\n.toast.success[data-v-2b611cbe] { border-color: rgba(34,197,94,0.25);\\n}\\n.toast.warning[data-v-2b611cbe] { border-color: rgba(234,179,8,0.35);\\n}\\n.toast.error[data-v-2b611cbe] { border-color: rgba(239,68,68,0.35);\\n}\\n.left[data-v-2b611cbe] { display: flex; align-items: center; gap: 0.6rem; flex: 1;\\n}\\n.icon[data-v-2b611cbe] { font-size: 1.2rem;\\n}\\n.content[data-v-2b611cbe] { display: flex; flex-direction: column; gap: 0.2rem;\\n}\\n.title[data-v-2b611cbe] { font-weight: 700; font-size: 0.95rem;\\n}\\n.message[data-v-2b611cbe] { font-size: 0.85rem; color: #cbd5e1;\\n}\\n.close[data-v-2b611cbe] {\\n  background: none;\\n  border: none;\\n  color: #94a3b8;\\n  font-size: 0.95rem;\\n  cursor: pointer;\\n  padding: 0.2rem;\\n}\\n.close[data-v-2b611cbe]:hover { color: #e2e8f0;\\n}\\n.toast-slide-enter-active[data-v-2b611cbe],\\n.toast-slide-leave-active[data-v-2b611cbe] { transition: all 0.2s ease;\\n}\\n.toast-slide-enter-from[data-v-2b611cbe] { opacity: 0; transform: translateX(12px) translateY(8px);\\n}\\n.toast-slide-leave-to[data-v-2b611cbe] { opacity: 0; transform: translateX(12px) translateY(8px);\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626234260,
+      "end": 1783626234261,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

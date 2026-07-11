@@ -1,0 +1,140 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabDropper.vue?vue&type=style&index=0&scoped=ce017640&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.dropper-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.dropper-svg {\n  width: 30px;\n  height: 96px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.06));\n}\n.dropper-svg.hovered {\n  transform: scale(1.08);\n  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));\n}\n",
+      "start": 1783626310212,
+      "end": 1783626310212,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabDropper.vue"
+        ],
+        "names": [],
+        "mappings": ";AA6CA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACf,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC;EACb,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACtB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACnB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EAClB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACjB;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACX,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC;EACX,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC;EACZ,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC;EACvC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACjD;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACnB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACtB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACjD",
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabDropper.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\ninterface Props {\n  isHovered?: boolean;\n}\n\nconst props = withDefaults(defineProps<Props>(), {\n  isHovered: false,\n});\n\nconst emit = defineEmits<{ click: [] }>();\n</script>\n\n<template>\n  <div class=\"dropper-wrapper\" @click.stop=\"emit('click')\" data-v-inspector=\"src/components/experiment/chemistry/LabDropper.vue:14:3\">\n    <svg viewBox=\"0 0 50 160\" class=\"dropper-svg\" :class=\"{ hovered: isHovered }\" data-v-inspector=\"src/components/experiment/chemistry/LabDropper.vue:15:5\">\n      <!-- Shadow -->\n      <ellipse cx=\"25\" cy=\"155\" rx=\"10\" ry=\"2\" fill=\"rgba(0,0,0,0.06)\" data-v-inspector=\"src/components/experiment/chemistry/LabDropper.vue:17:7\" />\n\n      <!-- Rubber bulb -->\n      <ellipse cx=\"25\" cy=\"20\" rx=\"14\" ry=\"16\" fill=\"#ef4444\" opacity=\"0.8\" data-v-inspector=\"src/components/experiment/chemistry/LabDropper.vue:20:7\" />\n      <ellipse cx=\"25\" cy=\"17\" rx=\"10\" ry=\"10\" fill=\"#f87171\" opacity=\"0.5\" data-v-inspector=\"src/components/experiment/chemistry/LabDropper.vue:21:7\" />\n\n      <!-- Bulb highlight -->\n      <ellipse cx=\"21\" cy=\"14\" rx=\"5\" ry=\"6\" fill=\"rgba(255,255,255,0.25)\" data-v-inspector=\"src/components/experiment/chemistry/LabDropper.vue:24:7\" />\n\n      <!-- Connector -->\n      <rect x=\"20\" y=\"32\" width=\"10\" height=\"6\" rx=\"1\" fill=\"#cbd5e1\" data-v-inspector=\"src/components/experiment/chemistry/LabDropper.vue:27:7\" />\n\n      <!-- Glass tube -->\n      <rect x=\"21\" y=\"36\" width=\"8\" height=\"100\" rx=\"2\" fill=\"rgba(241,245,249,0.3)\" stroke=\"#94a3b8\" stroke-width=\"0.8\" data-v-inspector=\"src/components/experiment/chemistry/LabDropper.vue:30:7\" />\n      <rect x=\"22\" y=\"37\" width=\"6\" height=\"98\" rx=\"1\" fill=\"rgba(255,255,255,0.2)\" data-v-inspector=\"src/components/experiment/chemistry/LabDropper.vue:31:7\" />\n\n      <!-- Tube highlight -->\n      <line x1=\"23\" y1=\"38\" x2=\"23\" y2=\"134\" stroke=\"rgba(255,255,255,0.4)\" stroke-width=\"1\" stroke-linecap=\"round\" data-v-inspector=\"src/components/experiment/chemistry/LabDropper.vue:34:7\" />\n\n      <!-- Tip -->\n      <path d=\"M 22 136 L 23 148 L 27 148 L 28 136 Z\" fill=\"rgba(241,245,249,0.4)\" stroke=\"#94a3b8\" stroke-width=\"0.6\" data-v-inspector=\"src/components/experiment/chemistry/LabDropper.vue:37:7\" />\n\n      <!-- Tip highlight -->\n      <line x1=\"24\" y1=\"138\" x2=\"25\" y2=\"146\" stroke=\"rgba(255,255,255,0.3)\" stroke-width=\"0.5\" data-v-inspector=\"src/components/experiment/chemistry/LabDropper.vue:40:7\" />\n    </svg>\n  </div>\n</template>\n\n<style scoped>\n.dropper-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.dropper-svg {\n  width: 30px;\n  height: 96px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.06));\n}\n.dropper-svg.hovered {\n  transform: scale(1.08);\n  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));\n}\n</style>\n"
+        ]
+      }
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626310212,
+      "end": 1783626310214,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "\n.dropper-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.dropper-svg {\n  width: 30px;\n  height: 96px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.06));\n}\n.dropper-svg.hovered {\n  transform: scale(1.08);\n  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));\n}\n",
+      "start": 1783626310214,
+      "end": 1783626310214,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.dropper-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.dropper-svg {\n  width: 30px;\n  height: 96px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.06));\n}\n.dropper-svg.hovered {\n  transform: scale(1.08);\n  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));\n}\n",
+      "start": 1783626310214,
+      "end": 1783626310214,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783626310214,
+      "end": 1783626310214,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626310214,
+      "end": 1783626310214,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626310222,
+      "end": 1783626310222,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.dropper-wrapper[data-v-ce017640] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.dropper-svg[data-v-ce017640] {\n  width: 30px;\n  height: 96px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.06));\n}\n.dropper-svg.hovered[data-v-ce017640] {\n  transform: scale(1.08);\n  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));\n}\n",
+      "start": 1783626310222,
+      "end": 1783626310228,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626310228,
+      "end": 1783626310228,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabDropper.vue?vue&type=style&index=0&scoped=ce017640&lang.css\"\nconst __vite__css = \"\\n.dropper-wrapper[data-v-ce017640] {\\n  display: flex;\\n  flex-direction: column;\\n  align-items: center;\\n  position: relative;\\n  cursor: pointer;\\n}\\n.dropper-svg[data-v-ce017640] {\\n  width: 30px;\\n  height: 96px;\\n  transition: transform 0.2s, filter 0.2s;\\n  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.06));\\n}\\n.dropper-svg.hovered[data-v-ce017640] {\\n  transform: scale(1.08);\\n  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626310228,
+      "end": 1783626310228,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626310228,
+      "end": 1783626310228,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626310228,
+      "end": 1783626310228,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626310228,
+      "end": 1783626310228,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626310228,
+      "end": 1783626310228,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626310228,
+      "end": 1783626310228,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626310228,
+      "end": 1783626310228,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626310228,
+      "end": 1783626310228,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/components/experiment/chemistry/LabDropper.vue?vue&type=style&index=0&scoped=ce017640&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabDropper.vue?vue&type=style&index=0&scoped=ce017640&lang.css\"\nconst __vite__css = \"\\n.dropper-wrapper[data-v-ce017640] {\\n  display: flex;\\n  flex-direction: column;\\n  align-items: center;\\n  position: relative;\\n  cursor: pointer;\\n}\\n.dropper-svg[data-v-ce017640] {\\n  width: 30px;\\n  height: 96px;\\n  transition: transform 0.2s, filter 0.2s;\\n  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.06));\\n}\\n.dropper-svg.hovered[data-v-ce017640] {\\n  transform: scale(1.08);\\n  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626310228,
+      "end": 1783626310228,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

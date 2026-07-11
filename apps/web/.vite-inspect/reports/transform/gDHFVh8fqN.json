@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/specific-heat/useSpecificHeatTrials.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { ref } from 'vue'\n\nexport interface SpecificHeatTrial {\n  id: number\n  metalType: string\n  metalMass: number      // kg\n  metalTemp: number       // °C (heated to 100)\n  waterMass: number       // kg\n  waterTemp: number       // °C\n  finalTemp: number        // °C (measured equilibrium)\n  cExtracted: number       // J/kg·°C computed from experiment\n  cTrue: number           // J/kg·°C actual from catalog\n}\n\nexport function useSpecificHeatTrials(\n  paramsGetter: { get value(): { metalType: string; metalMass: number; metalTemp: number; waterMass: number; waterTemp: number; finalTemp: number; cExtracted: number; cTrue: number } },\n) {\n  const trials = ref<SpecificHeatTrial[]>([])\n  const history = ref<SpecificHeatTrial[][]>([])\n  const historyIndex = ref(-1)\n  let nextId = 1\n\n  function snapshot() {\n    if (historyIndex.value < history.value.length - 1) history.value = history.value.slice(0, historyIndex.value + 1)\n    history.value.push([...trials.value])\n    historyIndex.value++\n  }\n\n  function recordTrial() {\n    const p = paramsGetter.value\n    const t: SpecificHeatTrial = {\n      id: nextId++, metalType: p.metalType, metalMass: p.metalMass, metalTemp: p.metalTemp,\n      waterMass: p.waterMass, waterTemp: p.waterTemp, finalTemp: p.finalTemp,\n      cExtracted: p.cExtracted, cTrue: p.cTrue,\n    }\n    snapshot()\n    trials.value.push(t)\n    save()\n  }\n  function removeTrial(id: number) { snapshot(); trials.value = trials.value.filter(t => t.id !== id); save() }\n  function clearTrials() { snapshot(); trials.value = []; nextId = 1; save() }\n\n  function undo() { if (canUndo()) { historyIndex.value--; trials.value = [...history.value[historyIndex.value]] } }\n  function redo() { if (canRedo()) { historyIndex.value++; trials.value = [...history.value[historyIndex.value]] } }\n  function canUndo() { return historyIndex.value > 0 }\n  function canRedo() { return historyIndex.value < history.value.length - 1 }\n\n  const STORAGE_KEY = 'specificheat_trials_v2'\n  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(trials.value)) }\n  function autoLoad() {\n    const raw = localStorage.getItem(STORAGE_KEY)\n    if (!raw) return\n    try {\n      const arr = JSON.parse(raw) as SpecificHeatTrial[]\n      trials.value = arr\n      nextId = arr.length ? Math.max(...arr.map(t => t.id)) + 1 : 1\n      snapshot()\n    } catch { /* ignore */ }\n  }\n\n  function exportCsv() {\n    const headers = 'ID,MetalType,MetalMass(kg),MetalTemp(C),WaterMass(kg),WaterTemp(C),FinalTemp(C),cExtracted(J/kgK),cTrue(J/kgK)\\n'\n    const rows = trials.value.map(t =>\n      `${t.id},${t.metalType},${t.metalMass.toFixed(3)},${t.metalTemp},${t.waterMass.toFixed(3)},${t.waterTemp},${t.finalTemp.toFixed(2)},${t.cExtracted.toFixed(1)},${t.cTrue.toFixed(1)}`\n    ).join('\\n')\n    const blob = new Blob([headers + rows], { type: 'text/csv' })\n    const a = document.createElement('a')\n    a.href = URL.createObjectURL(blob)\n    a.download = 'specific_heat_mixture_trials.csv'\n    a.click()\n  }\n\n  return { trials, recordTrial, removeTrial, clearTrials, undo, redo, canUndo, canRedo, autoLoad, exportCsv }\n}\n",
-      "start": 1783634641822,
-      "end": 1783634642176,
+      "start": 1783626281165,
+      "end": 1783626281165
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626281165,
+      "end": 1783626281165,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { ref } from 'vue'\n\nexport interface SpecificHeatTrial {\n  id: number\n  metalType: string\n  metalMass: number      // kg\n  metalTemp: number       // °C (heated to 100)\n  waterMass: number       // kg\n  waterTemp: number       // °C\n  finalTemp: number        // °C (measured equilibrium)\n  cExtracted: number       // J/kg·°C computed from experiment\n  cTrue: number           // J/kg·°C actual from catalog\n}\n\nexport function useSpecificHeatTrials(\n  paramsGetter: { get value(): { metalType: string; metalMass: number; metalTemp: number; waterMass: number; waterTemp: number; finalTemp: number; cExtracted: number; cTrue: number } },\n) {\n  const trials = ref<SpecificHeatTrial[]>([])\n  const history = ref<SpecificHeatTrial[][]>([])\n  const historyIndex = ref(-1)\n  let nextId = 1\n\n  function snapshot() {\n    if (historyIndex.value < history.value.length - 1) history.value = history.value.slice(0, historyIndex.value + 1)\n    history.value.push([...trials.value])\n    historyIndex.value++\n  }\n\n  function recordTrial() {\n    const p = paramsGetter.value\n    const t: SpecificHeatTrial = {\n      id: nextId++, metalType: p.metalType, metalMass: p.metalMass, metalTemp: p.metalTemp,\n      waterMass: p.waterMass, waterTemp: p.waterTemp, finalTemp: p.finalTemp,\n      cExtracted: p.cExtracted, cTrue: p.cTrue,\n    }\n    snapshot()\n    trials.value.push(t)\n    save()\n  }\n  function removeTrial(id: number) { snapshot(); trials.value = trials.value.filter(t => t.id !== id); save() }\n  function clearTrials() { snapshot(); trials.value = []; nextId = 1; save() }\n\n  function undo() { if (canUndo()) { historyIndex.value--; trials.value = [...history.value[historyIndex.value]] } }\n  function redo() { if (canRedo()) { historyIndex.value++; trials.value = [...history.value[historyIndex.value]] } }\n  function canUndo() { return historyIndex.value > 0 }\n  function canRedo() { return historyIndex.value < history.value.length - 1 }\n\n  const STORAGE_KEY = 'specificheat_trials_v2'\n  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(trials.value)) }\n  function autoLoad() {\n    const raw = localStorage.getItem(STORAGE_KEY)\n    if (!raw) return\n    try {\n      const arr = JSON.parse(raw) as SpecificHeatTrial[]\n      trials.value = arr\n      nextId = arr.length ? Math.max(...arr.map(t => t.id)) + 1 : 1\n      snapshot()\n    } catch { /* ignore */ }\n  }\n\n  function exportCsv() {\n    const headers = 'ID,MetalType,MetalMass(kg),MetalTemp(C),WaterMass(kg),WaterTemp(C),FinalTemp(C),cExtracted(J/kgK),cTrue(J/kgK)\\n'\n    const rows = trials.value.map(t =>\n      `${t.id},${t.metalType},${t.metalMass.toFixed(3)},${t.metalTemp},${t.waterMass.toFixed(3)},${t.waterTemp},${t.finalTemp.toFixed(2)},${t.cExtracted.toFixed(1)},${t.cTrue.toFixed(1)}`\n    ).join('\\n')\n    const blob = new Blob([headers + rows], { type: 'text/csv' })\n    const a = document.createElement('a')\n    a.href = URL.createObjectURL(blob)\n    a.download = 'specific_heat_mixture_trials.csv'\n    a.click()\n  }\n\n  return { trials, recordTrial, removeTrial, clearTrials, undo, redo, canUndo, canRedo, autoLoad, exportCsv }\n}\n",
+      "start": 1783626281165,
+      "end": 1783626281165,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634642176,
-      "end": 1783634642176,
+      "start": 1783626281165,
+      "end": 1783626281165,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { ref } from \"vue\";\nexport function useSpecificHeatTrials(paramsGetter) {\n  const trials = ref([]);\n  const history = ref([]);\n  const historyIndex = ref(-1);\n  let nextId = 1;\n  function snapshot() {\n    if (historyIndex.value < history.value.length - 1) history.value = history.value.slice(0, historyIndex.value + 1);\n    history.value.push([...trials.value]);\n    historyIndex.value++;\n  }\n  function recordTrial() {\n    const p = paramsGetter.value;\n    const t = {\n      id: nextId++,\n      metalType: p.metalType,\n      metalMass: p.metalMass,\n      metalTemp: p.metalTemp,\n      waterMass: p.waterMass,\n      waterTemp: p.waterTemp,\n      finalTemp: p.finalTemp,\n      cExtracted: p.cExtracted,\n      cTrue: p.cTrue\n    };\n    snapshot();\n    trials.value.push(t);\n    save();\n  }\n  function removeTrial(id) {\n    snapshot();\n    trials.value = trials.value.filter((t) => t.id !== id);\n    save();\n  }\n  function clearTrials() {\n    snapshot();\n    trials.value = [];\n    nextId = 1;\n    save();\n  }\n  function undo() {\n    if (canUndo()) {\n      historyIndex.value--;\n      trials.value = [...history.value[historyIndex.value]];\n    }\n  }\n  function redo() {\n    if (canRedo()) {\n      historyIndex.value++;\n      trials.value = [...history.value[historyIndex.value]];\n    }\n  }\n  function canUndo() {\n    return historyIndex.value > 0;\n  }\n  function canRedo() {\n    return historyIndex.value < history.value.length - 1;\n  }\n  const STORAGE_KEY = \"specificheat_trials_v2\";\n  function save() {\n    localStorage.setItem(STORAGE_KEY, JSON.stringify(trials.value));\n  }\n  function autoLoad() {\n    const raw = localStorage.getItem(STORAGE_KEY);\n    if (!raw) return;\n    try {\n      const arr = JSON.parse(raw);\n      trials.value = arr;\n      nextId = arr.length ? Math.max(...arr.map((t) => t.id)) + 1 : 1;\n      snapshot();\n    } catch {\n    }\n  }\n  function exportCsv() {\n    const headers = \"ID,MetalType,MetalMass(kg),MetalTemp(C),WaterMass(kg),WaterTemp(C),FinalTemp(C),cExtracted(J/kgK),cTrue(J/kgK)\\n\";\n    const rows = trials.value.map(\n      (t) => `${t.id},${t.metalType},${t.metalMass.toFixed(3)},${t.metalTemp},${t.waterMass.toFixed(3)},${t.waterTemp},${t.finalTemp.toFixed(2)},${t.cExtracted.toFixed(1)},${t.cTrue.toFixed(1)}`\n    ).join(\"\\n\");\n    const blob = new Blob([headers + rows], { type: \"text/csv\" });\n    const a = document.createElement(\"a\");\n    a.href = URL.createObjectURL(blob);\n    a.download = \"specific_heat_mixture_trials.csv\";\n    a.click();\n  }\n  return { trials, recordTrial, removeTrial, clearTrials, undo, redo, canUndo, canRedo, autoLoad, exportCsv };\n}\n",
-      "start": 1783634642176,
-      "end": 1783634642315,
+      "start": 1783626281165,
+      "end": 1783626281631,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/composables/specific-heat/useSpecificHeatTrials.ts"
+          "useSpecificHeatTrials.ts"
         ],
         "sourcesContent": [
           "import { ref } from 'vue'\n\nexport interface SpecificHeatTrial {\n  id: number\n  metalType: string\n  metalMass: number      // kg\n  metalTemp: number       // °C (heated to 100)\n  waterMass: number       // kg\n  waterTemp: number       // °C\n  finalTemp: number        // °C (measured equilibrium)\n  cExtracted: number       // J/kg·°C computed from experiment\n  cTrue: number           // J/kg·°C actual from catalog\n}\n\nexport function useSpecificHeatTrials(\n  paramsGetter: { get value(): { metalType: string; metalMass: number; metalTemp: number; waterMass: number; waterTemp: number; finalTemp: number; cExtracted: number; cTrue: number } },\n) {\n  const trials = ref<SpecificHeatTrial[]>([])\n  const history = ref<SpecificHeatTrial[][]>([])\n  const historyIndex = ref(-1)\n  let nextId = 1\n\n  function snapshot() {\n    if (historyIndex.value < history.value.length - 1) history.value = history.value.slice(0, historyIndex.value + 1)\n    history.value.push([...trials.value])\n    historyIndex.value++\n  }\n\n  function recordTrial() {\n    const p = paramsGetter.value\n    const t: SpecificHeatTrial = {\n      id: nextId++, metalType: p.metalType, metalMass: p.metalMass, metalTemp: p.metalTemp,\n      waterMass: p.waterMass, waterTemp: p.waterTemp, finalTemp: p.finalTemp,\n      cExtracted: p.cExtracted, cTrue: p.cTrue,\n    }\n    snapshot()\n    trials.value.push(t)\n    save()\n  }\n  function removeTrial(id: number) { snapshot(); trials.value = trials.value.filter(t => t.id !== id); save() }\n  function clearTrials() { snapshot(); trials.value = []; nextId = 1; save() }\n\n  function undo() { if (canUndo()) { historyIndex.value--; trials.value = [...history.value[historyIndex.value]] } }\n  function redo() { if (canRedo()) { historyIndex.value++; trials.value = [...history.value[historyIndex.value]] } }\n  function canUndo() { return historyIndex.value > 0 }\n  function canRedo() { return historyIndex.value < history.value.length - 1 }\n\n  const STORAGE_KEY = 'specificheat_trials_v2'\n  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(trials.value)) }\n  function autoLoad() {\n    const raw = localStorage.getItem(STORAGE_KEY)\n    if (!raw) return\n    try {\n      const arr = JSON.parse(raw) as SpecificHeatTrial[]\n      trials.value = arr\n      nextId = arr.length ? Math.max(...arr.map(t => t.id)) + 1 : 1\n      snapshot()\n    } catch { /* ignore */ }\n  }\n\n  function exportCsv() {\n    const headers = 'ID,MetalType,MetalMass(kg),MetalTemp(C),WaterMass(kg),WaterTemp(C),FinalTemp(C),cExtracted(J/kgK),cTrue(J/kgK)\\n'\n    const rows = trials.value.map(t =>\n      `${t.id},${t.metalType},${t.metalMass.toFixed(3)},${t.metalTemp},${t.waterMass.toFixed(3)},${t.waterTemp},${t.finalTemp.toFixed(2)},${t.cExtracted.toFixed(1)},${t.cTrue.toFixed(1)}`\n    ).join('\\n')\n    const blob = new Blob([headers + rows], { type: 'text/csv' })\n    const a = document.createElement('a')\n    a.href = URL.createObjectURL(blob)\n    a.download = 'specific_heat_mixture_trials.csv'\n    a.click()\n  }\n\n  return { trials, recordTrial, removeTrial, clearTrials, undo, redo, canUndo, canRedo, autoLoad, exportCsv }\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634642315,
-      "end": 1783634642315,
+      "start": 1783626281631,
+      "end": 1783626281631,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642315,
-      "end": 1783634642315,
+      "start": 1783626281631,
+      "end": 1783626281631,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626281631,
+      "end": 1783626281631,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642315,
-      "end": 1783634642315,
+      "start": 1783626281631,
+      "end": 1783626281631,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634642315,
-      "end": 1783634642315,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634642315,
-      "end": 1783634642315,
+      "start": 1783626281631,
+      "end": 1783626281631,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642315,
-      "end": 1783634642315,
+      "start": 1783626281631,
+      "end": 1783626281631,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642315,
-      "end": 1783634642315,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642315,
-      "end": 1783634642315,
+      "start": 1783626281632,
+      "end": 1783626281632,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642315,
-      "end": 1783634642315,
+      "start": 1783626281632,
+      "end": 1783626281632,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642315,
-      "end": 1783634642315,
+      "start": 1783626281641,
+      "end": 1783626281641,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642315,
-      "end": 1783634642315,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626281641,
+      "end": 1783626281642,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626281642,
+      "end": 1783626281642,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642315,
-      "end": 1783634642315,
+      "name": "vite:css-analysis",
+      "start": 1783626281642,
+      "end": 1783626281642,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { ref } from \"/node_modules/.vite/deps/vue.js?v=09a3ad4c\";\nexport function useSpecificHeatTrials(paramsGetter) {\n  const trials = ref([]);\n  const history = ref([]);\n  const historyIndex = ref(-1);\n  let nextId = 1;\n  function snapshot() {\n    if (historyIndex.value < history.value.length - 1) history.value = history.value.slice(0, historyIndex.value + 1);\n    history.value.push([...trials.value]);\n    historyIndex.value++;\n  }\n  function recordTrial() {\n    const p = paramsGetter.value;\n    const t = {\n      id: nextId++,\n      metalType: p.metalType,\n      metalMass: p.metalMass,\n      metalTemp: p.metalTemp,\n      waterMass: p.waterMass,\n      waterTemp: p.waterTemp,\n      finalTemp: p.finalTemp,\n      cExtracted: p.cExtracted,\n      cTrue: p.cTrue\n    };\n    snapshot();\n    trials.value.push(t);\n    save();\n  }\n  function removeTrial(id) {\n    snapshot();\n    trials.value = trials.value.filter((t) => t.id !== id);\n    save();\n  }\n  function clearTrials() {\n    snapshot();\n    trials.value = [];\n    nextId = 1;\n    save();\n  }\n  function undo() {\n    if (canUndo()) {\n      historyIndex.value--;\n      trials.value = [...history.value[historyIndex.value]];\n    }\n  }\n  function redo() {\n    if (canRedo()) {\n      historyIndex.value++;\n      trials.value = [...history.value[historyIndex.value]];\n    }\n  }\n  function canUndo() {\n    return historyIndex.value > 0;\n  }\n  function canRedo() {\n    return historyIndex.value < history.value.length - 1;\n  }\n  const STORAGE_KEY = \"specificheat_trials_v2\";\n  function save() {\n    localStorage.setItem(STORAGE_KEY, JSON.stringify(trials.value));\n  }\n  function autoLoad() {\n    const raw = localStorage.getItem(STORAGE_KEY);\n    if (!raw) return;\n    try {\n      const arr = JSON.parse(raw);\n      trials.value = arr;\n      nextId = arr.length ? Math.max(...arr.map((t) => t.id)) + 1 : 1;\n      snapshot();\n    } catch {\n    }\n  }\n  function exportCsv() {\n    const headers = \"ID,MetalType,MetalMass(kg),MetalTemp(C),WaterMass(kg),WaterTemp(C),FinalTemp(C),cExtracted(J/kgK),cTrue(J/kgK)\\n\";\n    const rows = trials.value.map(\n      (t) => `${t.id},${t.metalType},${t.metalMass.toFixed(3)},${t.metalTemp},${t.waterMass.toFixed(3)},${t.waterTemp},${t.finalTemp.toFixed(2)},${t.cExtracted.toFixed(1)},${t.cTrue.toFixed(1)}`\n    ).join(\"\\n\");\n    const blob = new Blob([headers + rows], { type: \"text/csv\" });\n    const a = document.createElement(\"a\");\n    a.href = URL.createObjectURL(blob);\n    a.download = \"specific_heat_mixture_trials.csv\";\n    a.click();\n  }\n  return { trials, recordTrial, removeTrial, clearTrials, undo, redo, canUndo, canRedo, autoLoad, exportCsv };\n}\n",
+      "start": 1783626281642,
+      "end": 1783626281662,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

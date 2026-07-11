@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useBuretteMixRecorder.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { handleDropMix, type MixEvent } from './useReactionEngine';\nimport { getLiquid } from './useChemistryLab';\nimport { recordTitrationStep } from './useTitrationRecorder';\n\nexport function handleDropMixWithRecording(event: MixEvent): void {\n  const beforePh = getLiquid(event.targetUid)?.ph ?? null;\n  handleDropMix(event);\n  const after = getLiquid(event.targetUid);\n  if (after && after.ph !== null && after.ph !== undefined && beforePh !== after.ph) {\n    const vAdded = after.reactants?.[event.sourceChemicalId] || 0;\n    recordTitrationStep(event.targetUid, vAdded);\n  }\n}\n",
-      "start": 1783634640047,
-      "end": 1783634640498,
+      "start": 1783626308048,
+      "end": 1783626308048
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626308048,
+      "end": 1783626308048,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { handleDropMix, type MixEvent } from './useReactionEngine';\nimport { getLiquid } from './useChemistryLab';\nimport { recordTitrationStep } from './useTitrationRecorder';\n\nexport function handleDropMixWithRecording(event: MixEvent): void {\n  const beforePh = getLiquid(event.targetUid)?.ph ?? null;\n  handleDropMix(event);\n  const after = getLiquid(event.targetUid);\n  if (after && after.ph !== null && after.ph !== undefined && beforePh !== after.ph) {\n    const vAdded = after.reactants?.[event.sourceChemicalId] || 0;\n    recordTitrationStep(event.targetUid, vAdded);\n  }\n}\n",
+      "start": 1783626308048,
+      "end": 1783626308048,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634640498,
-      "end": 1783634640498,
+      "start": 1783626308048,
+      "end": 1783626308048,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { handleDropMix } from \"./useReactionEngine\";\nimport { getLiquid } from \"./useChemistryLab\";\nimport { recordTitrationStep } from \"./useTitrationRecorder\";\nexport function handleDropMixWithRecording(event) {\n  const beforePh = getLiquid(event.targetUid)?.ph ?? null;\n  handleDropMix(event);\n  const after = getLiquid(event.targetUid);\n  if (after && after.ph !== null && after.ph !== void 0 && beforePh !== after.ph) {\n    const vAdded = after.reactants?.[event.sourceChemicalId] || 0;\n    recordTitrationStep(event.targetUid, vAdded);\n  }\n}\n",
-      "start": 1783634640498,
-      "end": 1783634640664,
+      "start": 1783626308048,
+      "end": 1783626308416,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useBuretteMixRecorder.ts"
+          "useBuretteMixRecorder.ts"
         ],
         "sourcesContent": [
           "import { handleDropMix, type MixEvent } from './useReactionEngine';\nimport { getLiquid } from './useChemistryLab';\nimport { recordTitrationStep } from './useTitrationRecorder';\n\nexport function handleDropMixWithRecording(event: MixEvent): void {\n  const beforePh = getLiquid(event.targetUid)?.ph ?? null;\n  handleDropMix(event);\n  const after = getLiquid(event.targetUid);\n  if (after && after.ph !== null && after.ph !== undefined && beforePh !== after.ph) {\n    const vAdded = after.reactants?.[event.sourceChemicalId] || 0;\n    recordTitrationStep(event.targetUid, vAdded);\n  }\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634640664,
-      "end": 1783634640664,
+      "start": 1783626308417,
+      "end": 1783626308417,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634640664,
-      "end": 1783634640664,
+      "start": 1783626308417,
+      "end": 1783626308417,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626308417,
+      "end": 1783626308417,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634640664,
-      "end": 1783634640664,
+      "start": 1783626308417,
+      "end": 1783626308417,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634640664,
-      "end": 1783634640664,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634640664,
-      "end": 1783634640665,
+      "start": 1783626308417,
+      "end": 1783626308417,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634640665,
-      "end": 1783634640665,
+      "start": 1783626308417,
+      "end": 1783626308417,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634640665,
-      "end": 1783634640665,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634640665,
-      "end": 1783634640665,
+      "start": 1783626308428,
+      "end": 1783626308430,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634640667,
-      "end": 1783634640667,
+      "start": 1783626308430,
+      "end": 1783626308430,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634640668,
-      "end": 1783634640668,
+      "start": 1783626308430,
+      "end": 1783626308430,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634640669,
-      "end": 1783634640669,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626308430,
+      "end": 1783626308439,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626308444,
+      "end": 1783626308445,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634640669,
-      "end": 1783634640669,
+      "name": "vite:css-analysis",
+      "start": 1783626308445,
+      "end": 1783626308445,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { handleDropMix } from \"/src/composables/chemistry/useReactionEngine.ts\";\nimport { getLiquid } from \"/src/composables/chemistry/useChemistryLab.ts\";\nimport { recordTitrationStep } from \"/src/composables/chemistry/useTitrationRecorder.ts\";\nexport function handleDropMixWithRecording(event) {\n  const beforePh = getLiquid(event.targetUid)?.ph ?? null;\n  handleDropMix(event);\n  const after = getLiquid(event.targetUid);\n  if (after && after.ph !== null && after.ph !== void 0 && beforePh !== after.ph) {\n    const vAdded = after.reactants?.[event.sourceChemicalId] || 0;\n    recordTitrationStep(event.targetUid, vAdded);\n  }\n}\n",
+      "start": 1783626308445,
+      "end": 1783626308517,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/useNotifications.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { ref, onMounted, onUnmounted } from 'vue';\nimport { getNotifications, getUnreadCount, markAllAsRead } from '../services/notification.service';\nimport type { Notification } from '../services/notification.service';\n\nexport function useNotifications() {\n  const notifications = ref<Notification[]>([]);\n  const unreadCount = ref(0);\n  const loading = ref(false);\n  let intervalId: ReturnType<typeof setInterval> | null = null;\n\n  function isAuthError(err: unknown): boolean {\n    return err instanceof Error && (err.message.includes('401') || err.message.includes('Unauthorized'))\n  }\n\n  async function loadNotifications() {\n    loading.value = true;\n    try {\n      const res = await getNotifications();\n      if (res.success) notifications.value = res.notifications;\n    } catch (err) {\n      if (!isAuthError(err)) console.error('load notifications failed:', err);\n    }\n    loading.value = false;\n  }\n\n  async function refreshUnread() {\n    try {\n      const res = await getUnreadCount();\n      if (res.success) unreadCount.value = res.count;\n    } catch (err) {\n      if (!isAuthError(err)) console.error('refresh unread count failed:', err);\n    }\n  }\n\n  async function markAllRead() {\n    try {\n      await markAllAsRead();\n      notifications.value = notifications.value.map(n => ({ ...n, is_read: true }));\n      unreadCount.value = 0;\n    } catch (err) {\n      console.error('mark all read failed:', err);\n    }\n  }\n\n  function startPolling(intervalMs = 30000) {\n    refreshUnread();\n    loadNotifications();\n    intervalId = setInterval(() => {\n      refreshUnread();\n      loadNotifications();\n    }, intervalMs);\n  }\n\n  function stopPolling() {\n    if (intervalId) {\n      clearInterval(intervalId);\n      intervalId = null;\n    }\n  }\n\n  onMounted(() => {\n    loadNotifications();\n    startPolling();\n  });\n\n  onUnmounted(() => stopPolling());\n\n  return { notifications, unreadCount, loading, loadNotifications, markAllRead };\n}\n",
-      "start": 1783634640353,
-      "end": 1783634640650,
+      "start": 1783626233801,
+      "end": 1783626233801
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626233801,
+      "end": 1783626233801,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { ref, onMounted, onUnmounted } from 'vue';\nimport { getNotifications, getUnreadCount, markAllAsRead } from '../services/notification.service';\nimport type { Notification } from '../services/notification.service';\n\nexport function useNotifications() {\n  const notifications = ref<Notification[]>([]);\n  const unreadCount = ref(0);\n  const loading = ref(false);\n  let intervalId: ReturnType<typeof setInterval> | null = null;\n\n  function isAuthError(err: unknown): boolean {\n    return err instanceof Error && (err.message.includes('401') || err.message.includes('Unauthorized'))\n  }\n\n  async function loadNotifications() {\n    loading.value = true;\n    try {\n      const res = await getNotifications();\n      if (res.success) notifications.value = res.notifications;\n    } catch (err) {\n      if (!isAuthError(err)) console.error('load notifications failed:', err);\n    }\n    loading.value = false;\n  }\n\n  async function refreshUnread() {\n    try {\n      const res = await getUnreadCount();\n      if (res.success) unreadCount.value = res.count;\n    } catch (err) {\n      if (!isAuthError(err)) console.error('refresh unread count failed:', err);\n    }\n  }\n\n  async function markAllRead() {\n    try {\n      await markAllAsRead();\n      notifications.value = notifications.value.map(n => ({ ...n, is_read: true }));\n      unreadCount.value = 0;\n    } catch (err) {\n      console.error('mark all read failed:', err);\n    }\n  }\n\n  function startPolling(intervalMs = 30000) {\n    refreshUnread();\n    loadNotifications();\n    intervalId = setInterval(() => {\n      refreshUnread();\n      loadNotifications();\n    }, intervalMs);\n  }\n\n  function stopPolling() {\n    if (intervalId) {\n      clearInterval(intervalId);\n      intervalId = null;\n    }\n  }\n\n  onMounted(() => {\n    loadNotifications();\n    startPolling();\n  });\n\n  onUnmounted(() => stopPolling());\n\n  return { notifications, unreadCount, loading, loadNotifications, markAllRead };\n}\n",
+      "start": 1783626233801,
+      "end": 1783626233801,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634640650,
-      "end": 1783634640650,
+      "start": 1783626233801,
+      "end": 1783626233801,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { ref, onMounted, onUnmounted } from \"vue\";\nimport { getNotifications, getUnreadCount, markAllAsRead } from \"../services/notification.service\";\nexport function useNotifications() {\n  const notifications = ref([]);\n  const unreadCount = ref(0);\n  const loading = ref(false);\n  let intervalId = null;\n  function isAuthError(err) {\n    return err instanceof Error && (err.message.includes(\"401\") || err.message.includes(\"Unauthorized\"));\n  }\n  async function loadNotifications() {\n    loading.value = true;\n    try {\n      const res = await getNotifications();\n      if (res.success) notifications.value = res.notifications;\n    } catch (err) {\n      if (!isAuthError(err)) console.error(\"load notifications failed:\", err);\n    }\n    loading.value = false;\n  }\n  async function refreshUnread() {\n    try {\n      const res = await getUnreadCount();\n      if (res.success) unreadCount.value = res.count;\n    } catch (err) {\n      if (!isAuthError(err)) console.error(\"refresh unread count failed:\", err);\n    }\n  }\n  async function markAllRead() {\n    try {\n      await markAllAsRead();\n      notifications.value = notifications.value.map((n) => ({ ...n, is_read: true }));\n      unreadCount.value = 0;\n    } catch (err) {\n      console.error(\"mark all read failed:\", err);\n    }\n  }\n  function startPolling(intervalMs = 3e4) {\n    refreshUnread();\n    loadNotifications();\n    intervalId = setInterval(() => {\n      refreshUnread();\n      loadNotifications();\n    }, intervalMs);\n  }\n  function stopPolling() {\n    if (intervalId) {\n      clearInterval(intervalId);\n      intervalId = null;\n    }\n  }\n  onMounted(() => {\n    loadNotifications();\n    startPolling();\n  });\n  onUnmounted(() => stopPolling());\n  return { notifications, unreadCount, loading, loadNotifications, markAllRead };\n}\n",
-      "start": 1783634640650,
-      "end": 1783634640823,
+      "start": 1783626233801,
+      "end": 1783626234121,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/composables/useNotifications.ts"
+          "useNotifications.ts"
         ],
         "sourcesContent": [
           "import { ref, onMounted, onUnmounted } from 'vue';\nimport { getNotifications, getUnreadCount, markAllAsRead } from '../services/notification.service';\nimport type { Notification } from '../services/notification.service';\n\nexport function useNotifications() {\n  const notifications = ref<Notification[]>([]);\n  const unreadCount = ref(0);\n  const loading = ref(false);\n  let intervalId: ReturnType<typeof setInterval> | null = null;\n\n  function isAuthError(err: unknown): boolean {\n    return err instanceof Error && (err.message.includes('401') || err.message.includes('Unauthorized'))\n  }\n\n  async function loadNotifications() {\n    loading.value = true;\n    try {\n      const res = await getNotifications();\n      if (res.success) notifications.value = res.notifications;\n    } catch (err) {\n      if (!isAuthError(err)) console.error('load notifications failed:', err);\n    }\n    loading.value = false;\n  }\n\n  async function refreshUnread() {\n    try {\n      const res = await getUnreadCount();\n      if (res.success) unreadCount.value = res.count;\n    } catch (err) {\n      if (!isAuthError(err)) console.error('refresh unread count failed:', err);\n    }\n  }\n\n  async function markAllRead() {\n    try {\n      await markAllAsRead();\n      notifications.value = notifications.value.map(n => ({ ...n, is_read: true }));\n      unreadCount.value = 0;\n    } catch (err) {\n      console.error('mark all read failed:', err);\n    }\n  }\n\n  function startPolling(intervalMs = 30000) {\n    refreshUnread();\n    loadNotifications();\n    intervalId = setInterval(() => {\n      refreshUnread();\n      loadNotifications();\n    }, intervalMs);\n  }\n\n  function stopPolling() {\n    if (intervalId) {\n      clearInterval(intervalId);\n      intervalId = null;\n    }\n  }\n\n  onMounted(() => {\n    loadNotifications();\n    startPolling();\n  });\n\n  onUnmounted(() => stopPolling());\n\n  return { notifications, unreadCount, loading, loadNotifications, markAllRead };\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634640823,
-      "end": 1783634640823,
+      "start": 1783626234121,
+      "end": 1783626234121,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634640823,
-      "end": 1783634640823,
+      "start": 1783626234121,
+      "end": 1783626234121,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626234121,
+      "end": 1783626234121,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634640823,
-      "end": 1783634640823,
+      "start": 1783626234121,
+      "end": 1783626234121,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634640823,
-      "end": 1783634640823,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634640823,
-      "end": 1783634640823,
+      "start": 1783626234121,
+      "end": 1783626234121,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634640823,
-      "end": 1783634640823,
+      "start": 1783626234121,
+      "end": 1783626234121,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634640823,
-      "end": 1783634640823,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634640823,
-      "end": 1783634640823,
+      "start": 1783626234123,
+      "end": 1783626234132,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634640823,
-      "end": 1783634640823,
+      "start": 1783626234132,
+      "end": 1783626234132,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634640823,
-      "end": 1783634640823,
+      "start": 1783626234132,
+      "end": 1783626234132,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634640824,
-      "end": 1783634640824,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626234132,
+      "end": 1783626234133,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626234133,
+      "end": 1783626234133,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634640824,
-      "end": 1783634640824,
+      "name": "vite:css-analysis",
+      "start": 1783626234134,
+      "end": 1783626234134,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { ref, onMounted, onUnmounted } from \"/node_modules/.vite/deps/vue.js?v=09a3ad4c\";\nimport { getNotifications, getUnreadCount, markAllAsRead } from \"/src/services/notification.service.ts\";\nexport function useNotifications() {\n  const notifications = ref([]);\n  const unreadCount = ref(0);\n  const loading = ref(false);\n  let intervalId = null;\n  function isAuthError(err) {\n    return err instanceof Error && (err.message.includes(\"401\") || err.message.includes(\"Unauthorized\"));\n  }\n  async function loadNotifications() {\n    loading.value = true;\n    try {\n      const res = await getNotifications();\n      if (res.success) notifications.value = res.notifications;\n    } catch (err) {\n      if (!isAuthError(err)) console.error(\"load notifications failed:\", err);\n    }\n    loading.value = false;\n  }\n  async function refreshUnread() {\n    try {\n      const res = await getUnreadCount();\n      if (res.success) unreadCount.value = res.count;\n    } catch (err) {\n      if (!isAuthError(err)) console.error(\"refresh unread count failed:\", err);\n    }\n  }\n  async function markAllRead() {\n    try {\n      await markAllAsRead();\n      notifications.value = notifications.value.map((n) => ({ ...n, is_read: true }));\n      unreadCount.value = 0;\n    } catch (err) {\n      console.error(\"mark all read failed:\", err);\n    }\n  }\n  function startPolling(intervalMs = 3e4) {\n    refreshUnread();\n    loadNotifications();\n    intervalId = setInterval(() => {\n      refreshUnread();\n      loadNotifications();\n    }, intervalMs);\n  }\n  function stopPolling() {\n    if (intervalId) {\n      clearInterval(intervalId);\n      intervalId = null;\n    }\n  }\n  onMounted(() => {\n    loadNotifications();\n    startPolling();\n  });\n  onUnmounted(() => stopPolling());\n  return { notifications, unreadCount, loading, loadNotifications, markAllRead };\n}\n",
+      "start": 1783626234134,
+      "end": 1783626234163,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

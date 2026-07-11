@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/teacher/useClassManager.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { ref, onMounted } from 'vue'\nimport { useI18n } from '../useI18n'\nimport {\n  createClass as apiCreateClass,\n  getMyClasses,\n  getClassDetails,\n  deleteClass as apiDeleteClass,\n} from '../../services/class.service'\nimport type { ClassItem, ClassStudent } from '../../services/class.service'\n\nexport { type ClassItem, type ClassStudent }\n\nexport function useClassManager() {\n  const { t } = useI18n()\n  const classes = ref<ClassItem[]>([])\n  const expandedId = ref<string | null>(null)\n  const classStudents = ref<ClassStudent[]>([])\n  const loading = ref(false)\n  const showModal = ref(false)\n  const newClassName = ref('')\n\n  async function loadClasses() {\n    loading.value = true\n    try {\n      const res = await getMyClasses()\n      if (res.success) classes.value = res.classes\n    } catch (err) {\n      console.error('load classes failed:', err)\n    } finally {\n      loading.value = false\n    }\n  }\n\n  async function createClass() {\n    if (!newClassName.value.trim()) return\n    try {\n      const res = await apiCreateClass(newClassName.value.trim())\n      if (res.success) {\n        classes.value.unshift(res.class)\n        newClassName.value = ''\n        showModal.value = false\n      }\n    } catch (err) {\n      console.error('create class failed:', err)\n    }\n  }\n\n  async function deleteClass(id: string) {\n    if (!confirm(t('admin.confirmDeleteClassShort'))) return\n    try {\n      const res = await apiDeleteClass(id)\n      if (res.success) classes.value = classes.value.filter(c => c.id !== id)\n    } catch (err) {\n      console.error('delete class failed:', err)\n    }\n  }\n\n  async function loadClassDetails(id: string) {\n    if (expandedId.value === id) { expandedId.value = null; return }\n    try {\n      const res = await getClassDetails(id)\n      if (res.success) {\n        classStudents.value = res.students\n        expandedId.value = id\n      }\n    } catch (err) {\n      console.error('load class details failed:', err)\n    }\n  }\n\n  function copyCode(code: string) {\n    navigator.clipboard?.writeText(code)\n  }\n\n  onMounted(() => {\n    loadClasses()\n  })\n\n  return {\n    classes,\n    expandedId,\n    classStudents,\n    showModal,\n    newClassName,\n    loading,\n    createClass,\n    deleteClass,\n    copyCode,\n    loadClassDetails,\n  }\n}\n",
-      "start": 1783634640334,
-      "end": 1783634640614,
+      "start": 1783626232595,
+      "end": 1783626232595
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626232595,
+      "end": 1783626232595,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { ref, onMounted } from 'vue'\nimport { useI18n } from '../useI18n'\nimport {\n  createClass as apiCreateClass,\n  getMyClasses,\n  getClassDetails,\n  deleteClass as apiDeleteClass,\n} from '../../services/class.service'\nimport type { ClassItem, ClassStudent } from '../../services/class.service'\n\nexport { type ClassItem, type ClassStudent }\n\nexport function useClassManager() {\n  const { t } = useI18n()\n  const classes = ref<ClassItem[]>([])\n  const expandedId = ref<string | null>(null)\n  const classStudents = ref<ClassStudent[]>([])\n  const loading = ref(false)\n  const showModal = ref(false)\n  const newClassName = ref('')\n\n  async function loadClasses() {\n    loading.value = true\n    try {\n      const res = await getMyClasses()\n      if (res.success) classes.value = res.classes\n    } catch (err) {\n      console.error('load classes failed:', err)\n    } finally {\n      loading.value = false\n    }\n  }\n\n  async function createClass() {\n    if (!newClassName.value.trim()) return\n    try {\n      const res = await apiCreateClass(newClassName.value.trim())\n      if (res.success) {\n        classes.value.unshift(res.class)\n        newClassName.value = ''\n        showModal.value = false\n      }\n    } catch (err) {\n      console.error('create class failed:', err)\n    }\n  }\n\n  async function deleteClass(id: string) {\n    if (!confirm(t('admin.confirmDeleteClassShort'))) return\n    try {\n      const res = await apiDeleteClass(id)\n      if (res.success) classes.value = classes.value.filter(c => c.id !== id)\n    } catch (err) {\n      console.error('delete class failed:', err)\n    }\n  }\n\n  async function loadClassDetails(id: string) {\n    if (expandedId.value === id) { expandedId.value = null; return }\n    try {\n      const res = await getClassDetails(id)\n      if (res.success) {\n        classStudents.value = res.students\n        expandedId.value = id\n      }\n    } catch (err) {\n      console.error('load class details failed:', err)\n    }\n  }\n\n  function copyCode(code: string) {\n    navigator.clipboard?.writeText(code)\n  }\n\n  onMounted(() => {\n    loadClasses()\n  })\n\n  return {\n    classes,\n    expandedId,\n    classStudents,\n    showModal,\n    newClassName,\n    loading,\n    createClass,\n    deleteClass,\n    copyCode,\n    loadClassDetails,\n  }\n}\n",
+      "start": 1783626232595,
+      "end": 1783626232595,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634640614,
-      "end": 1783634640614,
+      "start": 1783626232595,
+      "end": 1783626232595,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { ref, onMounted } from \"vue\";\nimport { useI18n } from \"../useI18n\";\nimport {\n  createClass as apiCreateClass,\n  getMyClasses,\n  getClassDetails,\n  deleteClass as apiDeleteClass\n} from \"../../services/class.service\";\nexport {};\nexport function useClassManager() {\n  const { t } = useI18n();\n  const classes = ref([]);\n  const expandedId = ref(null);\n  const classStudents = ref([]);\n  const loading = ref(false);\n  const showModal = ref(false);\n  const newClassName = ref(\"\");\n  async function loadClasses() {\n    loading.value = true;\n    try {\n      const res = await getMyClasses();\n      if (res.success) classes.value = res.classes;\n    } catch (err) {\n      console.error(\"load classes failed:\", err);\n    } finally {\n      loading.value = false;\n    }\n  }\n  async function createClass() {\n    if (!newClassName.value.trim()) return;\n    try {\n      const res = await apiCreateClass(newClassName.value.trim());\n      if (res.success) {\n        classes.value.unshift(res.class);\n        newClassName.value = \"\";\n        showModal.value = false;\n      }\n    } catch (err) {\n      console.error(\"create class failed:\", err);\n    }\n  }\n  async function deleteClass(id) {\n    if (!confirm(t(\"admin.confirmDeleteClassShort\"))) return;\n    try {\n      const res = await apiDeleteClass(id);\n      if (res.success) classes.value = classes.value.filter((c) => c.id !== id);\n    } catch (err) {\n      console.error(\"delete class failed:\", err);\n    }\n  }\n  async function loadClassDetails(id) {\n    if (expandedId.value === id) {\n      expandedId.value = null;\n      return;\n    }\n    try {\n      const res = await getClassDetails(id);\n      if (res.success) {\n        classStudents.value = res.students;\n        expandedId.value = id;\n      }\n    } catch (err) {\n      console.error(\"load class details failed:\", err);\n    }\n  }\n  function copyCode(code) {\n    navigator.clipboard?.writeText(code);\n  }\n  onMounted(() => {\n    loadClasses();\n  });\n  return {\n    classes,\n    expandedId,\n    classStudents,\n    showModal,\n    newClassName,\n    loading,\n    createClass,\n    deleteClass,\n    copyCode,\n    loadClassDetails\n  };\n}\n",
-      "start": 1783634640614,
-      "end": 1783634640814,
+      "start": 1783626232595,
+      "end": 1783626233931,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/composables/teacher/useClassManager.ts"
+          "useClassManager.ts"
         ],
         "sourcesContent": [
           "import { ref, onMounted } from 'vue'\nimport { useI18n } from '../useI18n'\nimport {\n  createClass as apiCreateClass,\n  getMyClasses,\n  getClassDetails,\n  deleteClass as apiDeleteClass,\n} from '../../services/class.service'\nimport type { ClassItem, ClassStudent } from '../../services/class.service'\n\nexport { type ClassItem, type ClassStudent }\n\nexport function useClassManager() {\n  const { t } = useI18n()\n  const classes = ref<ClassItem[]>([])\n  const expandedId = ref<string | null>(null)\n  const classStudents = ref<ClassStudent[]>([])\n  const loading = ref(false)\n  const showModal = ref(false)\n  const newClassName = ref('')\n\n  async function loadClasses() {\n    loading.value = true\n    try {\n      const res = await getMyClasses()\n      if (res.success) classes.value = res.classes\n    } catch (err) {\n      console.error('load classes failed:', err)\n    } finally {\n      loading.value = false\n    }\n  }\n\n  async function createClass() {\n    if (!newClassName.value.trim()) return\n    try {\n      const res = await apiCreateClass(newClassName.value.trim())\n      if (res.success) {\n        classes.value.unshift(res.class)\n        newClassName.value = ''\n        showModal.value = false\n      }\n    } catch (err) {\n      console.error('create class failed:', err)\n    }\n  }\n\n  async function deleteClass(id: string) {\n    if (!confirm(t('admin.confirmDeleteClassShort'))) return\n    try {\n      const res = await apiDeleteClass(id)\n      if (res.success) classes.value = classes.value.filter(c => c.id !== id)\n    } catch (err) {\n      console.error('delete class failed:', err)\n    }\n  }\n\n  async function loadClassDetails(id: string) {\n    if (expandedId.value === id) { expandedId.value = null; return }\n    try {\n      const res = await getClassDetails(id)\n      if (res.success) {\n        classStudents.value = res.students\n        expandedId.value = id\n      }\n    } catch (err) {\n      console.error('load class details failed:', err)\n    }\n  }\n\n  function copyCode(code: string) {\n    navigator.clipboard?.writeText(code)\n  }\n\n  onMounted(() => {\n    loadClasses()\n  })\n\n  return {\n    classes,\n    expandedId,\n    classStudents,\n    showModal,\n    newClassName,\n    loading,\n    createClass,\n    deleteClass,\n    copyCode,\n    loadClassDetails,\n  }\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634640814,
-      "end": 1783634640814,
+      "start": 1783626233931,
+      "end": 1783626233931,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634640814,
-      "end": 1783634640814,
+      "start": 1783626233931,
+      "end": 1783626233931,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626233931,
+      "end": 1783626233931,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634640814,
-      "end": 1783634640814,
+      "start": 1783626233931,
+      "end": 1783626233931,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634640814,
-      "end": 1783634640814,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634640814,
-      "end": 1783634640814,
+      "start": 1783626233931,
+      "end": 1783626233931,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634640814,
-      "end": 1783634640814,
+      "start": 1783626233931,
+      "end": 1783626233931,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634640814,
-      "end": 1783634640814,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634640814,
-      "end": 1783634640814,
+      "start": 1783626233931,
+      "end": 1783626233931,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634640815,
-      "end": 1783634640815,
+      "start": 1783626233931,
+      "end": 1783626233931,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634640815,
-      "end": 1783634640815,
+      "start": 1783626233931,
+      "end": 1783626233931,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634640815,
-      "end": 1783634640816,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626233931,
+      "end": 1783626233931,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626233931,
+      "end": 1783626233931,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634640816,
-      "end": 1783634640816,
+      "name": "vite:css-analysis",
+      "start": 1783626233931,
+      "end": 1783626233931,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { ref, onMounted } from \"/node_modules/.vite/deps/vue.js?v=09a3ad4c\";\nimport { useI18n } from \"/src/composables/useI18n.ts\";\nimport {\n  createClass as apiCreateClass,\n  getMyClasses,\n  getClassDetails,\n  deleteClass as apiDeleteClass\n} from \"/src/services/class.service.ts\";\nexport {};\nexport function useClassManager() {\n  const { t } = useI18n();\n  const classes = ref([]);\n  const expandedId = ref(null);\n  const classStudents = ref([]);\n  const loading = ref(false);\n  const showModal = ref(false);\n  const newClassName = ref(\"\");\n  async function loadClasses() {\n    loading.value = true;\n    try {\n      const res = await getMyClasses();\n      if (res.success) classes.value = res.classes;\n    } catch (err) {\n      console.error(\"load classes failed:\", err);\n    } finally {\n      loading.value = false;\n    }\n  }\n  async function createClass() {\n    if (!newClassName.value.trim()) return;\n    try {\n      const res = await apiCreateClass(newClassName.value.trim());\n      if (res.success) {\n        classes.value.unshift(res.class);\n        newClassName.value = \"\";\n        showModal.value = false;\n      }\n    } catch (err) {\n      console.error(\"create class failed:\", err);\n    }\n  }\n  async function deleteClass(id) {\n    if (!confirm(t(\"admin.confirmDeleteClassShort\"))) return;\n    try {\n      const res = await apiDeleteClass(id);\n      if (res.success) classes.value = classes.value.filter((c) => c.id !== id);\n    } catch (err) {\n      console.error(\"delete class failed:\", err);\n    }\n  }\n  async function loadClassDetails(id) {\n    if (expandedId.value === id) {\n      expandedId.value = null;\n      return;\n    }\n    try {\n      const res = await getClassDetails(id);\n      if (res.success) {\n        classStudents.value = res.students;\n        expandedId.value = id;\n      }\n    } catch (err) {\n      console.error(\"load class details failed:\", err);\n    }\n  }\n  function copyCode(code) {\n    navigator.clipboard?.writeText(code);\n  }\n  onMounted(() => {\n    loadClasses();\n  });\n  return {\n    classes,\n    expandedId,\n    classStudents,\n    showModal,\n    newClassName,\n    loading,\n    createClass,\n    deleteClass,\n    copyCode,\n    loadClassDetails\n  };\n}\n",
+      "start": 1783626233931,
+      "end": 1783626233942,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

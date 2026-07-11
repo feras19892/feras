@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabComputedsNew3.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { computed, type Ref, type Reactive } from 'vue'\nimport type { CircuitComponent } from './types'\n\nexport function createNewComputeds3(\n  components: Reactive<CircuitComponent[]>,\n  running: Ref<boolean>,\n  activePresetId: Ref<string | null>,\n) {\n  const isCurrentDivider = computed(() => activePresetId.value === 'current-divider')\n  const currentDividerData = computed(() => {\n    if (!isCurrentDivider.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const resistors = components.filter(c => c.type === 'resistor')\n    if (!batt || resistors.length < 2) return null\n    const V = batt.value\n    const R1 = resistors[0].value, R2 = resistors[1].value\n    if (R1 === 0 || R2 === 0) return null\n    const Req = (R1 * R2) / (R1 + R2)\n    const It = V / Req\n    const I1 = It * R2 / (R1 + R2)\n    const I2 = It * R1 / (R1 + R2)\n    return { V, R1, R2, Req, It, I1, I2 }\n  })\n  const currentDividerReading = computed(() => {\n    if (!currentDividerData.value || !running.value) return { V: 0, It: 0, I1: 0, I2: 0 }\n    const d = currentDividerData.value\n    return { V: d.V, It: d.It, I1: d.I1, I2: d.I2 }\n  })\n\n  const isSourceEff = computed(() => activePresetId.value === 'source-efficiency')\n  const sourceEffData = computed(() => {\n    if (!isSourceEff.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const EMF = batt.value\n    const r = (batt as any)._internalR ?? 0\n    const R = res.value\n    if (R + r === 0) return null\n    const I = EMF / (R + r)\n    const Vt = I * R\n    const Pload = I * I * R\n    const Ploss = I * I * r\n    const Ptotal = EMF * I\n    const eta = R / (R + r)\n    return { EMF, r, R, I, Vt, Pload, Ploss, Ptotal, eta }\n  })\n  const sourceEffReading = computed(() => {\n    if (!sourceEffData.value || !running.value) return { Vt: 0, I: 0, Pload: 0, eta: 0 }\n    const d = sourceEffData.value\n    return { Vt: d.Vt, I: d.I, Pload: d.Pload, eta: d.eta }\n  })\n\n  const isTwoSources = computed(() => activePresetId.value === 'two-sources')\n  const twoSourcesData = computed(() => {\n    if (!isTwoSources.value) return null\n    const batteries = components.filter(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (batteries.length < 2 || !res) return null\n    const EMF1 = batteries[0].value, EMF2 = batteries[1].value\n    const r1 = (batteries[0] as any)._internalR ?? 0, r2 = (batteries[1] as any)._internalR ?? 0\n    const R = res.value\n    const netEMF = EMF1 - EMF2\n    const totalR = R + r1 + r2\n    if (totalR === 0) return null\n    const I = netEMF / totalR\n    const Vt = I * R\n    const direction = netEMF >= 0 ? 1 : -1\n    return { EMF1, EMF2, r1, r2, R, netEMF, I, Vt, direction }\n  })\n  const twoSourcesReading = computed(() => {\n    if (!twoSourcesData.value || !running.value) return { netEMF: 0, I: 0, Vt: 0, direction: 0 }\n    const d = twoSourcesData.value\n    return { netEMF: d.netEMF, I: d.I, Vt: d.Vt, direction: d.direction }\n  })\n\n  return {\n    isCurrentDivider, currentDividerData, currentDividerReading,\n    isSourceEff, sourceEffData, sourceEffReading,\n    isTwoSources, twoSourcesData, twoSourcesReading,\n  }\n}\n",
-      "start": 1783634642573,
-      "end": 1783634642822,
+      "start": 1783626239197,
+      "end": 1783626239197
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626239197,
+      "end": 1783626239197,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { computed, type Ref, type Reactive } from 'vue'\nimport type { CircuitComponent } from './types'\n\nexport function createNewComputeds3(\n  components: Reactive<CircuitComponent[]>,\n  running: Ref<boolean>,\n  activePresetId: Ref<string | null>,\n) {\n  const isCurrentDivider = computed(() => activePresetId.value === 'current-divider')\n  const currentDividerData = computed(() => {\n    if (!isCurrentDivider.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const resistors = components.filter(c => c.type === 'resistor')\n    if (!batt || resistors.length < 2) return null\n    const V = batt.value\n    const R1 = resistors[0].value, R2 = resistors[1].value\n    if (R1 === 0 || R2 === 0) return null\n    const Req = (R1 * R2) / (R1 + R2)\n    const It = V / Req\n    const I1 = It * R2 / (R1 + R2)\n    const I2 = It * R1 / (R1 + R2)\n    return { V, R1, R2, Req, It, I1, I2 }\n  })\n  const currentDividerReading = computed(() => {\n    if (!currentDividerData.value || !running.value) return { V: 0, It: 0, I1: 0, I2: 0 }\n    const d = currentDividerData.value\n    return { V: d.V, It: d.It, I1: d.I1, I2: d.I2 }\n  })\n\n  const isSourceEff = computed(() => activePresetId.value === 'source-efficiency')\n  const sourceEffData = computed(() => {\n    if (!isSourceEff.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const EMF = batt.value\n    const r = (batt as any)._internalR ?? 0\n    const R = res.value\n    if (R + r === 0) return null\n    const I = EMF / (R + r)\n    const Vt = I * R\n    const Pload = I * I * R\n    const Ploss = I * I * r\n    const Ptotal = EMF * I\n    const eta = R / (R + r)\n    return { EMF, r, R, I, Vt, Pload, Ploss, Ptotal, eta }\n  })\n  const sourceEffReading = computed(() => {\n    if (!sourceEffData.value || !running.value) return { Vt: 0, I: 0, Pload: 0, eta: 0 }\n    const d = sourceEffData.value\n    return { Vt: d.Vt, I: d.I, Pload: d.Pload, eta: d.eta }\n  })\n\n  const isTwoSources = computed(() => activePresetId.value === 'two-sources')\n  const twoSourcesData = computed(() => {\n    if (!isTwoSources.value) return null\n    const batteries = components.filter(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (batteries.length < 2 || !res) return null\n    const EMF1 = batteries[0].value, EMF2 = batteries[1].value\n    const r1 = (batteries[0] as any)._internalR ?? 0, r2 = (batteries[1] as any)._internalR ?? 0\n    const R = res.value\n    const netEMF = EMF1 - EMF2\n    const totalR = R + r1 + r2\n    if (totalR === 0) return null\n    const I = netEMF / totalR\n    const Vt = I * R\n    const direction = netEMF >= 0 ? 1 : -1\n    return { EMF1, EMF2, r1, r2, R, netEMF, I, Vt, direction }\n  })\n  const twoSourcesReading = computed(() => {\n    if (!twoSourcesData.value || !running.value) return { netEMF: 0, I: 0, Vt: 0, direction: 0 }\n    const d = twoSourcesData.value\n    return { netEMF: d.netEMF, I: d.I, Vt: d.Vt, direction: d.direction }\n  })\n\n  return {\n    isCurrentDivider, currentDividerData, currentDividerReading,\n    isSourceEff, sourceEffData, sourceEffReading,\n    isTwoSources, twoSourcesData, twoSourcesReading,\n  }\n}\n",
+      "start": 1783626239197,
+      "end": 1783626239197,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634642822,
-      "end": 1783634642822,
+      "start": 1783626239197,
+      "end": 1783626239197,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { computed } from \"vue\";\nexport function createNewComputeds3(components, running, activePresetId) {\n  const isCurrentDivider = computed(() => activePresetId.value === \"current-divider\");\n  const currentDividerData = computed(() => {\n    if (!isCurrentDivider.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const resistors = components.filter((c) => c.type === \"resistor\");\n    if (!batt || resistors.length < 2) return null;\n    const V = batt.value;\n    const R1 = resistors[0].value, R2 = resistors[1].value;\n    if (R1 === 0 || R2 === 0) return null;\n    const Req = R1 * R2 / (R1 + R2);\n    const It = V / Req;\n    const I1 = It * R2 / (R1 + R2);\n    const I2 = It * R1 / (R1 + R2);\n    return { V, R1, R2, Req, It, I1, I2 };\n  });\n  const currentDividerReading = computed(() => {\n    if (!currentDividerData.value || !running.value) return { V: 0, It: 0, I1: 0, I2: 0 };\n    const d = currentDividerData.value;\n    return { V: d.V, It: d.It, I1: d.I1, I2: d.I2 };\n  });\n  const isSourceEff = computed(() => activePresetId.value === \"source-efficiency\");\n  const sourceEffData = computed(() => {\n    if (!isSourceEff.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (!batt || !res) return null;\n    const EMF = batt.value;\n    const r = batt._internalR ?? 0;\n    const R = res.value;\n    if (R + r === 0) return null;\n    const I = EMF / (R + r);\n    const Vt = I * R;\n    const Pload = I * I * R;\n    const Ploss = I * I * r;\n    const Ptotal = EMF * I;\n    const eta = R / (R + r);\n    return { EMF, r, R, I, Vt, Pload, Ploss, Ptotal, eta };\n  });\n  const sourceEffReading = computed(() => {\n    if (!sourceEffData.value || !running.value) return { Vt: 0, I: 0, Pload: 0, eta: 0 };\n    const d = sourceEffData.value;\n    return { Vt: d.Vt, I: d.I, Pload: d.Pload, eta: d.eta };\n  });\n  const isTwoSources = computed(() => activePresetId.value === \"two-sources\");\n  const twoSourcesData = computed(() => {\n    if (!isTwoSources.value) return null;\n    const batteries = components.filter((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (batteries.length < 2 || !res) return null;\n    const EMF1 = batteries[0].value, EMF2 = batteries[1].value;\n    const r1 = batteries[0]._internalR ?? 0, r2 = batteries[1]._internalR ?? 0;\n    const R = res.value;\n    const netEMF = EMF1 - EMF2;\n    const totalR = R + r1 + r2;\n    if (totalR === 0) return null;\n    const I = netEMF / totalR;\n    const Vt = I * R;\n    const direction = netEMF >= 0 ? 1 : -1;\n    return { EMF1, EMF2, r1, r2, R, netEMF, I, Vt, direction };\n  });\n  const twoSourcesReading = computed(() => {\n    if (!twoSourcesData.value || !running.value) return { netEMF: 0, I: 0, Vt: 0, direction: 0 };\n    const d = twoSourcesData.value;\n    return { netEMF: d.netEMF, I: d.I, Vt: d.Vt, direction: d.direction };\n  });\n  return {\n    isCurrentDivider,\n    currentDividerData,\n    currentDividerReading,\n    isSourceEff,\n    sourceEffData,\n    sourceEffReading,\n    isTwoSources,\n    twoSourcesData,\n    twoSourcesReading\n  };\n}\n",
-      "start": 1783634642822,
-      "end": 1783634642883,
+      "start": 1783626239197,
+      "end": 1783626239745,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabComputedsNew3.ts"
+          "electricLabComputedsNew3.ts"
         ],
         "sourcesContent": [
           "import { computed, type Ref, type Reactive } from 'vue'\nimport type { CircuitComponent } from './types'\n\nexport function createNewComputeds3(\n  components: Reactive<CircuitComponent[]>,\n  running: Ref<boolean>,\n  activePresetId: Ref<string | null>,\n) {\n  const isCurrentDivider = computed(() => activePresetId.value === 'current-divider')\n  const currentDividerData = computed(() => {\n    if (!isCurrentDivider.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const resistors = components.filter(c => c.type === 'resistor')\n    if (!batt || resistors.length < 2) return null\n    const V = batt.value\n    const R1 = resistors[0].value, R2 = resistors[1].value\n    if (R1 === 0 || R2 === 0) return null\n    const Req = (R1 * R2) / (R1 + R2)\n    const It = V / Req\n    const I1 = It * R2 / (R1 + R2)\n    const I2 = It * R1 / (R1 + R2)\n    return { V, R1, R2, Req, It, I1, I2 }\n  })\n  const currentDividerReading = computed(() => {\n    if (!currentDividerData.value || !running.value) return { V: 0, It: 0, I1: 0, I2: 0 }\n    const d = currentDividerData.value\n    return { V: d.V, It: d.It, I1: d.I1, I2: d.I2 }\n  })\n\n  const isSourceEff = computed(() => activePresetId.value === 'source-efficiency')\n  const sourceEffData = computed(() => {\n    if (!isSourceEff.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const EMF = batt.value\n    const r = (batt as any)._internalR ?? 0\n    const R = res.value\n    if (R + r === 0) return null\n    const I = EMF / (R + r)\n    const Vt = I * R\n    const Pload = I * I * R\n    const Ploss = I * I * r\n    const Ptotal = EMF * I\n    const eta = R / (R + r)\n    return { EMF, r, R, I, Vt, Pload, Ploss, Ptotal, eta }\n  })\n  const sourceEffReading = computed(() => {\n    if (!sourceEffData.value || !running.value) return { Vt: 0, I: 0, Pload: 0, eta: 0 }\n    const d = sourceEffData.value\n    return { Vt: d.Vt, I: d.I, Pload: d.Pload, eta: d.eta }\n  })\n\n  const isTwoSources = computed(() => activePresetId.value === 'two-sources')\n  const twoSourcesData = computed(() => {\n    if (!isTwoSources.value) return null\n    const batteries = components.filter(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (batteries.length < 2 || !res) return null\n    const EMF1 = batteries[0].value, EMF2 = batteries[1].value\n    const r1 = (batteries[0] as any)._internalR ?? 0, r2 = (batteries[1] as any)._internalR ?? 0\n    const R = res.value\n    const netEMF = EMF1 - EMF2\n    const totalR = R + r1 + r2\n    if (totalR === 0) return null\n    const I = netEMF / totalR\n    const Vt = I * R\n    const direction = netEMF >= 0 ? 1 : -1\n    return { EMF1, EMF2, r1, r2, R, netEMF, I, Vt, direction }\n  })\n  const twoSourcesReading = computed(() => {\n    if (!twoSourcesData.value || !running.value) return { netEMF: 0, I: 0, Vt: 0, direction: 0 }\n    const d = twoSourcesData.value\n    return { netEMF: d.netEMF, I: d.I, Vt: d.Vt, direction: d.direction }\n  })\n\n  return {\n    isCurrentDivider, currentDividerData, currentDividerReading,\n    isSourceEff, sourceEffData, sourceEffReading,\n    isTwoSources, twoSourcesData, twoSourcesReading,\n  }\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634642883,
-      "end": 1783634642883,
+      "start": 1783626239745,
+      "end": 1783626239745,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642883,
-      "end": 1783634642883,
+      "start": 1783626239745,
+      "end": 1783626239745,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626239745,
+      "end": 1783626239745,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642883,
-      "end": 1783634642883,
+      "start": 1783626239745,
+      "end": 1783626239745,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634642883,
-      "end": 1783634642883,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634642883,
-      "end": 1783634642883,
+      "start": 1783626239745,
+      "end": 1783626239745,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642883,
-      "end": 1783634642883,
+      "start": 1783626239745,
+      "end": 1783626239745,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642883,
-      "end": 1783634642883,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642883,
-      "end": 1783634642883,
+      "start": 1783626239745,
+      "end": 1783626239745,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642884,
-      "end": 1783634642884,
+      "start": 1783626239746,
+      "end": 1783626239746,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642884,
-      "end": 1783634642884,
+      "start": 1783626239746,
+      "end": 1783626239746,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642884,
-      "end": 1783634642884,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626239746,
+      "end": 1783626239746,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626239746,
+      "end": 1783626239746,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642884,
-      "end": 1783634642884,
+      "name": "vite:css-analysis",
+      "start": 1783626239746,
+      "end": 1783626239746,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { computed } from \"/node_modules/.vite/deps/vue.js?v=09a3ad4c\";\nexport function createNewComputeds3(components, running, activePresetId) {\n  const isCurrentDivider = computed(() => activePresetId.value === \"current-divider\");\n  const currentDividerData = computed(() => {\n    if (!isCurrentDivider.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const resistors = components.filter((c) => c.type === \"resistor\");\n    if (!batt || resistors.length < 2) return null;\n    const V = batt.value;\n    const R1 = resistors[0].value, R2 = resistors[1].value;\n    if (R1 === 0 || R2 === 0) return null;\n    const Req = R1 * R2 / (R1 + R2);\n    const It = V / Req;\n    const I1 = It * R2 / (R1 + R2);\n    const I2 = It * R1 / (R1 + R2);\n    return { V, R1, R2, Req, It, I1, I2 };\n  });\n  const currentDividerReading = computed(() => {\n    if (!currentDividerData.value || !running.value) return { V: 0, It: 0, I1: 0, I2: 0 };\n    const d = currentDividerData.value;\n    return { V: d.V, It: d.It, I1: d.I1, I2: d.I2 };\n  });\n  const isSourceEff = computed(() => activePresetId.value === \"source-efficiency\");\n  const sourceEffData = computed(() => {\n    if (!isSourceEff.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (!batt || !res) return null;\n    const EMF = batt.value;\n    const r = batt._internalR ?? 0;\n    const R = res.value;\n    if (R + r === 0) return null;\n    const I = EMF / (R + r);\n    const Vt = I * R;\n    const Pload = I * I * R;\n    const Ploss = I * I * r;\n    const Ptotal = EMF * I;\n    const eta = R / (R + r);\n    return { EMF, r, R, I, Vt, Pload, Ploss, Ptotal, eta };\n  });\n  const sourceEffReading = computed(() => {\n    if (!sourceEffData.value || !running.value) return { Vt: 0, I: 0, Pload: 0, eta: 0 };\n    const d = sourceEffData.value;\n    return { Vt: d.Vt, I: d.I, Pload: d.Pload, eta: d.eta };\n  });\n  const isTwoSources = computed(() => activePresetId.value === \"two-sources\");\n  const twoSourcesData = computed(() => {\n    if (!isTwoSources.value) return null;\n    const batteries = components.filter((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (batteries.length < 2 || !res) return null;\n    const EMF1 = batteries[0].value, EMF2 = batteries[1].value;\n    const r1 = batteries[0]._internalR ?? 0, r2 = batteries[1]._internalR ?? 0;\n    const R = res.value;\n    const netEMF = EMF1 - EMF2;\n    const totalR = R + r1 + r2;\n    if (totalR === 0) return null;\n    const I = netEMF / totalR;\n    const Vt = I * R;\n    const direction = netEMF >= 0 ? 1 : -1;\n    return { EMF1, EMF2, r1, r2, R, netEMF, I, Vt, direction };\n  });\n  const twoSourcesReading = computed(() => {\n    if (!twoSourcesData.value || !running.value) return { netEMF: 0, I: 0, Vt: 0, direction: 0 };\n    const d = twoSourcesData.value;\n    return { netEMF: d.netEMF, I: d.I, Vt: d.Vt, direction: d.direction };\n  });\n  return {\n    isCurrentDivider,\n    currentDividerData,\n    currentDividerReading,\n    isSourceEff,\n    sourceEffData,\n    sourceEffReading,\n    isTwoSources,\n    twoSourcesData,\n    twoSourcesReading\n  };\n}\n",
+      "start": 1783626239746,
+      "end": 1783626239757,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

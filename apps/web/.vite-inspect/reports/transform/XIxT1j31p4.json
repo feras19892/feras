@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabExportNew4.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import type { AnalysisPayload } from '../../../../types/physics'\nimport { sendToAnalysis } from '../../../../composables/analysis/sendToAnalysis'\nimport type { ExportContext } from './electricLabExportBasic'\n\nexport function exportNew4(router: any, ctx: ExportContext): boolean {\n  if (ctx.isDiodeIV.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-diode-iv', sourceNameAr: 'خصائص الدايود', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current })),\n      columns: [{ key: 'V', label: 'Vd', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }],\n      equations: [{ name: 'Shockley Equation', formula: 'I = Is×(e^(V/ηVt) − 1)', variables: [{ symbol: 'I', label: 'Current' }, { symbol: 'V', label: 'Diode V' }, { symbol: 'Is', label: 'Saturation I' }, { symbol: 'Vt', label: 'Thermal V' }, { symbol: 'eta', label: 'Ideality' }], solveFor: ['I'] }],\n      suggestedPlots: [{ xKey: 'V', yKey: 'I', xLabel: 'Vd (V)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isTransformer.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-transformer', sourceNameAr: 'نسبة المحوّل', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'Vs', unit: 'V' }, { key: 'I', label: 'Is', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Transformer Ratio', formula: 'Vs/Vp = Ns/Np, Is/Ip = Np/Ns', variables: [{ symbol: 'Vs', label: 'Secondary V' }, { symbol: 'Vp', label: 'Primary V' }, { symbol: 'Ns', label: 'N secondary' }, { symbol: 'Np', label: 'N primary' }, { symbol: 'Is', label: 'Secondary I' }, { symbol: 'Ip', label: 'Primary I' }], solveFor: ['Vs', 'Is'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'Is (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isSelfInd.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-self-inductance', sourceNameAr: 'التحريض الذاتي', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Self-Inductance', formula: 'V = −L(dI/dt), E = ½LI², τ = L/R', variables: [{ symbol: 'L', label: 'Inductance' }, { symbol: 'I', label: 'Current' }, { symbol: 'E', label: 'Energy' }, { symbol: 'tau', label: 'Time const' }], solveFor: ['E', 'tau'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  return false\n}\n",
-      "start": 1783634642590,
-      "end": 1783634642823,
+      "start": 1783626239180,
+      "end": 1783626239180
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626239180,
+      "end": 1783626239183,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import type { AnalysisPayload } from '../../../../types/physics'\nimport { sendToAnalysis } from '../../../../composables/analysis/sendToAnalysis'\nimport type { ExportContext } from './electricLabExportBasic'\n\nexport function exportNew4(router: any, ctx: ExportContext): boolean {\n  if (ctx.isDiodeIV.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-diode-iv', sourceNameAr: 'خصائص الدايود', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current })),\n      columns: [{ key: 'V', label: 'Vd', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }],\n      equations: [{ name: 'Shockley Equation', formula: 'I = Is×(e^(V/ηVt) − 1)', variables: [{ symbol: 'I', label: 'Current' }, { symbol: 'V', label: 'Diode V' }, { symbol: 'Is', label: 'Saturation I' }, { symbol: 'Vt', label: 'Thermal V' }, { symbol: 'eta', label: 'Ideality' }], solveFor: ['I'] }],\n      suggestedPlots: [{ xKey: 'V', yKey: 'I', xLabel: 'Vd (V)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isTransformer.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-transformer', sourceNameAr: 'نسبة المحوّل', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'Vs', unit: 'V' }, { key: 'I', label: 'Is', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Transformer Ratio', formula: 'Vs/Vp = Ns/Np, Is/Ip = Np/Ns', variables: [{ symbol: 'Vs', label: 'Secondary V' }, { symbol: 'Vp', label: 'Primary V' }, { symbol: 'Ns', label: 'N secondary' }, { symbol: 'Np', label: 'N primary' }, { symbol: 'Is', label: 'Secondary I' }, { symbol: 'Ip', label: 'Primary I' }], solveFor: ['Vs', 'Is'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'Is (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isSelfInd.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-self-inductance', sourceNameAr: 'التحريض الذاتي', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Self-Inductance', formula: 'V = −L(dI/dt), E = ½LI², τ = L/R', variables: [{ symbol: 'L', label: 'Inductance' }, { symbol: 'I', label: 'Current' }, { symbol: 'E', label: 'Energy' }, { symbol: 'tau', label: 'Time const' }], solveFor: ['E', 'tau'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  return false\n}\n",
+      "start": 1783626239183,
+      "end": 1783626239183,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634642823,
-      "end": 1783634642823,
+      "start": 1783626239183,
+      "end": 1783626239183,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { sendToAnalysis } from \"../../../../composables/analysis/sendToAnalysis\";\nexport function exportNew4(router, ctx) {\n  if (ctx.isDiodeIV.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-diode-iv\",\n      sourceNameAr: \"خصائص الدايود\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current })),\n      columns: [{ key: \"V\", label: \"Vd\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }],\n      equations: [{ name: \"Shockley Equation\", formula: \"I = Is×(e^(V/ηVt) − 1)\", variables: [{ symbol: \"I\", label: \"Current\" }, { symbol: \"V\", label: \"Diode V\" }, { symbol: \"Is\", label: \"Saturation I\" }, { symbol: \"Vt\", label: \"Thermal V\" }, { symbol: \"eta\", label: \"Ideality\" }], solveFor: [\"I\"] }],\n      suggestedPlots: [{ xKey: \"V\", yKey: \"I\", xLabel: \"Vd (V)\", yLabel: \"I (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isTransformer.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-transformer\",\n      sourceNameAr: \"نسبة المحوّل\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"Vs\", unit: \"V\" }, { key: \"I\", label: \"Is\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"Transformer Ratio\", formula: \"Vs/Vp = Ns/Np, Is/Ip = Np/Ns\", variables: [{ symbol: \"Vs\", label: \"Secondary V\" }, { symbol: \"Vp\", label: \"Primary V\" }, { symbol: \"Ns\", label: \"N secondary\" }, { symbol: \"Np\", label: \"N primary\" }, { symbol: \"Is\", label: \"Secondary I\" }, { symbol: \"Ip\", label: \"Primary I\" }], solveFor: [\"Vs\", \"Is\"] }],\n      suggestedPlots: [{ xKey: \"R\", yKey: \"I\", xLabel: \"R (Ω)\", yLabel: \"Is (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isSelfInd.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-self-inductance\",\n      sourceNameAr: \"التحريض الذاتي\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"V\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"Self-Inductance\", formula: \"V = −L(dI/dt), E = ½LI², τ = L/R\", variables: [{ symbol: \"L\", label: \"Inductance\" }, { symbol: \"I\", label: \"Current\" }, { symbol: \"E\", label: \"Energy\" }, { symbol: \"tau\", label: \"Time const\" }], solveFor: [\"E\", \"tau\"] }],\n      suggestedPlots: [{ xKey: \"R\", yKey: \"I\", xLabel: \"R (Ω)\", yLabel: \"I (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  return false;\n}\n",
-      "start": 1783634642823,
-      "end": 1783634642876,
+      "start": 1783626239183,
+      "end": 1783626239772,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabExportNew4.ts"
+          "electricLabExportNew4.ts"
         ],
         "sourcesContent": [
           "import type { AnalysisPayload } from '../../../../types/physics'\nimport { sendToAnalysis } from '../../../../composables/analysis/sendToAnalysis'\nimport type { ExportContext } from './electricLabExportBasic'\n\nexport function exportNew4(router: any, ctx: ExportContext): boolean {\n  if (ctx.isDiodeIV.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-diode-iv', sourceNameAr: 'خصائص الدايود', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current })),\n      columns: [{ key: 'V', label: 'Vd', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }],\n      equations: [{ name: 'Shockley Equation', formula: 'I = Is×(e^(V/ηVt) − 1)', variables: [{ symbol: 'I', label: 'Current' }, { symbol: 'V', label: 'Diode V' }, { symbol: 'Is', label: 'Saturation I' }, { symbol: 'Vt', label: 'Thermal V' }, { symbol: 'eta', label: 'Ideality' }], solveFor: ['I'] }],\n      suggestedPlots: [{ xKey: 'V', yKey: 'I', xLabel: 'Vd (V)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isTransformer.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-transformer', sourceNameAr: 'نسبة المحوّل', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'Vs', unit: 'V' }, { key: 'I', label: 'Is', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Transformer Ratio', formula: 'Vs/Vp = Ns/Np, Is/Ip = Np/Ns', variables: [{ symbol: 'Vs', label: 'Secondary V' }, { symbol: 'Vp', label: 'Primary V' }, { symbol: 'Ns', label: 'N secondary' }, { symbol: 'Np', label: 'N primary' }, { symbol: 'Is', label: 'Secondary I' }, { symbol: 'Ip', label: 'Primary I' }], solveFor: ['Vs', 'Is'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'Is (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isSelfInd.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-self-inductance', sourceNameAr: 'التحريض الذاتي', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Self-Inductance', formula: 'V = −L(dI/dt), E = ½LI², τ = L/R', variables: [{ symbol: 'L', label: 'Inductance' }, { symbol: 'I', label: 'Current' }, { symbol: 'E', label: 'Energy' }, { symbol: 'tau', label: 'Time const' }], solveFor: ['E', 'tau'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  return false\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634642876,
-      "end": 1783634642876,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642876,
-      "end": 1783634642876,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626239772,
+      "end": 1783626239772,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642876,
-      "end": 1783634642877,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634642877,
-      "end": 1783634642877,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642877,
-      "end": 1783634642877,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626239772,
+      "end": 1783626239772,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "name": "vite:css-analysis",
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { sendToAnalysis } from \"/src/composables/analysis/sendToAnalysis.ts\";\nexport function exportNew4(router, ctx) {\n  if (ctx.isDiodeIV.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-diode-iv\",\n      sourceNameAr: \"خصائص الدايود\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current })),\n      columns: [{ key: \"V\", label: \"Vd\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }],\n      equations: [{ name: \"Shockley Equation\", formula: \"I = Is×(e^(V/ηVt) − 1)\", variables: [{ symbol: \"I\", label: \"Current\" }, { symbol: \"V\", label: \"Diode V\" }, { symbol: \"Is\", label: \"Saturation I\" }, { symbol: \"Vt\", label: \"Thermal V\" }, { symbol: \"eta\", label: \"Ideality\" }], solveFor: [\"I\"] }],\n      suggestedPlots: [{ xKey: \"V\", yKey: \"I\", xLabel: \"Vd (V)\", yLabel: \"I (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isTransformer.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-transformer\",\n      sourceNameAr: \"نسبة المحوّل\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"Vs\", unit: \"V\" }, { key: \"I\", label: \"Is\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"Transformer Ratio\", formula: \"Vs/Vp = Ns/Np, Is/Ip = Np/Ns\", variables: [{ symbol: \"Vs\", label: \"Secondary V\" }, { symbol: \"Vp\", label: \"Primary V\" }, { symbol: \"Ns\", label: \"N secondary\" }, { symbol: \"Np\", label: \"N primary\" }, { symbol: \"Is\", label: \"Secondary I\" }, { symbol: \"Ip\", label: \"Primary I\" }], solveFor: [\"Vs\", \"Is\"] }],\n      suggestedPlots: [{ xKey: \"R\", yKey: \"I\", xLabel: \"R (Ω)\", yLabel: \"Is (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isSelfInd.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-self-inductance\",\n      sourceNameAr: \"التحريض الذاتي\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"V\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"Self-Inductance\", formula: \"V = −L(dI/dt), E = ½LI², τ = L/R\", variables: [{ symbol: \"L\", label: \"Inductance\" }, { symbol: \"I\", label: \"Current\" }, { symbol: \"E\", label: \"Energy\" }, { symbol: \"tau\", label: \"Time const\" }], solveFor: [\"E\", \"tau\"] }],\n      suggestedPlots: [{ xKey: \"R\", yKey: \"I\", xLabel: \"R (Ω)\", yLabel: \"I (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  return false;\n}\n",
+      "start": 1783626239772,
+      "end": 1783626239793,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

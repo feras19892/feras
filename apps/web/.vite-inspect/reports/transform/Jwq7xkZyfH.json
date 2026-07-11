@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/utils/lab-report.send.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import type { OpenLabReportOptions } from './lab-report.types'\n\nexport function buildSendScript(options: OpenLabReportOptions): string {\n  const payload = {\n    title: options.title,\n    experimentName: options.experimentName || options.title,\n    params: options.params || [],\n    summaryStats: options.summaryStats || [],\n    tables: options.tables || [],\n    images: (options.images || []).map(img => ({ caption: img.caption || '', src: img.src.slice(0, 100) })),\n    htmlBlocks: (options.htmlBlocks || []).map(b => ({ title: b.title || '', html: b.html.slice(0, 500) })),\n    canvasSnapshot: options.canvasSnapshot ? '[snapshot]' : null,\n    submittedAt: new Date().toISOString(),\n  }\n  const payloadJson = JSON.stringify(payload).replace(/\"/g, '&quot;')\n\n  const s = options.strings || {}\n  const btnLabel = s.sendToTeacherBtn ?? '📤 Send to Teacher'\n  const guestStudent = s.guestStudent ?? 'Guest Student'\n  const joinClassMsg = s.joinClassFirst ?? 'You must join a class first'\n  const branchPhysics = s.branchPhysics ?? 'Physics'\n  const sentLabel = s.sentSuccessfully ?? '✅ Sent'\n  const sentSuccessMsg = s.reportSentSuccess ?? 'Report sent to teacher successfully!'\n  const errorLabel = s.errorLabel ?? 'Error: '\n\n  return `<button id=\"btn-send\" class=\"btn-send-teacher\" type=\"button\" onclick=\"sendToTeacher()\">${btnLabel}</button>\n<script>\nfunction sendToTeacher() {\n  const btn = document.getElementById('btn-send');\n  if (btn.disabled) return;\n  try {\n    const data = JSON.parse(\"${payloadJson}\");\n    const studentName = '${guestStudent}';\n    const classInfoRaw = localStorage.getItem('auth_classes');\n    const classes = classInfoRaw ? JSON.parse(classInfoRaw) : [];\n    const classInfo = classes[0] || null;\n    if (!classInfo || !classInfo.code) {\n      alert('${joinClassMsg}');\n      return;\n    }\n    const report = {\n      id: 'guest-report-' + Date.now(),\n      attemptId: Date.now(),\n      experimentId: 0,\n      experimentTitle: data.experimentName || data.title,\n      branch: '${branchPhysics}',\n      studentName: studentName,\n      classCode: classInfo.code,\n      classId: classInfo.id,\n      notes: data.htmlBlocks.map(b => (b.title || '') + '\\\\n' + b.html).join('\\\\n\\\\n'),\n      readings: data.tables.flatMap(t => t.rows.map((row, i) => {\n        const obj = { '#': i + 1 };\n        t.headers.forEach((h, hi) => { obj[String(h)] = row[hi] !== undefined ? String(row[hi]) : ''; });\n        return obj;\n      })),\n      completedSteps: [],\n      status: 'submitted',\n      submittedAt: data.submittedAt,\n    };\n    const reports = JSON.parse(localStorage.getItem('physlab_guest_reports') || '[]');\n    reports.push(report);\n    localStorage.setItem('physlab_guest_reports', JSON.stringify(reports));\n    const teacherClasses = JSON.parse(localStorage.getItem('physlab_guest_classes') || '[]');\n    const cls = teacherClasses.find(c => c.code === classInfo.code);\n    if (cls && cls.students) {\n      const stu = cls.students.find(s => s.name === studentName);\n      if (stu) {\n        if (!stu.reports) stu.reports = [];\n        stu.reports.push(report);\n        stu.reportCount = stu.reports.length;\n        localStorage.setItem('physlab_guest_classes', JSON.stringify(teacherClasses));\n      }\n    }\n    btn.disabled = true;\n    btn.className = 'btn-sent';\n    btn.textContent = '${sentLabel}';\n    alert('${sentSuccessMsg}');\n  } catch (e) {\n    alert('${errorLabel}' + e.message);\n  }\n}\n</script>`\n}\n",
-      "start": 1783634643053,
-      "end": 1783634643082,
+      "start": 1783626292708,
+      "end": 1783626292708
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626292708,
+      "end": 1783626292708,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import type { OpenLabReportOptions } from './lab-report.types'\n\nexport function buildSendScript(options: OpenLabReportOptions): string {\n  const payload = {\n    title: options.title,\n    experimentName: options.experimentName || options.title,\n    params: options.params || [],\n    summaryStats: options.summaryStats || [],\n    tables: options.tables || [],\n    images: (options.images || []).map(img => ({ caption: img.caption || '', src: img.src.slice(0, 100) })),\n    htmlBlocks: (options.htmlBlocks || []).map(b => ({ title: b.title || '', html: b.html.slice(0, 500) })),\n    canvasSnapshot: options.canvasSnapshot ? '[snapshot]' : null,\n    submittedAt: new Date().toISOString(),\n  }\n  const payloadJson = JSON.stringify(payload).replace(/\"/g, '&quot;')\n\n  const s = options.strings || {}\n  const btnLabel = s.sendToTeacherBtn ?? '📤 Send to Teacher'\n  const guestStudent = s.guestStudent ?? 'Guest Student'\n  const joinClassMsg = s.joinClassFirst ?? 'You must join a class first'\n  const branchPhysics = s.branchPhysics ?? 'Physics'\n  const sentLabel = s.sentSuccessfully ?? '✅ Sent'\n  const sentSuccessMsg = s.reportSentSuccess ?? 'Report sent to teacher successfully!'\n  const errorLabel = s.errorLabel ?? 'Error: '\n\n  return `<button id=\"btn-send\" class=\"btn-send-teacher\" type=\"button\" onclick=\"sendToTeacher()\">${btnLabel}</button>\n<script>\nfunction sendToTeacher() {\n  const btn = document.getElementById('btn-send');\n  if (btn.disabled) return;\n  try {\n    const data = JSON.parse(\"${payloadJson}\");\n    const studentName = '${guestStudent}';\n    const classInfoRaw = localStorage.getItem('auth_classes');\n    const classes = classInfoRaw ? JSON.parse(classInfoRaw) : [];\n    const classInfo = classes[0] || null;\n    if (!classInfo || !classInfo.code) {\n      alert('${joinClassMsg}');\n      return;\n    }\n    const report = {\n      id: 'guest-report-' + Date.now(),\n      attemptId: Date.now(),\n      experimentId: 0,\n      experimentTitle: data.experimentName || data.title,\n      branch: '${branchPhysics}',\n      studentName: studentName,\n      classCode: classInfo.code,\n      classId: classInfo.id,\n      notes: data.htmlBlocks.map(b => (b.title || '') + '\\\\n' + b.html).join('\\\\n\\\\n'),\n      readings: data.tables.flatMap(t => t.rows.map((row, i) => {\n        const obj = { '#': i + 1 };\n        t.headers.forEach((h, hi) => { obj[String(h)] = row[hi] !== undefined ? String(row[hi]) : ''; });\n        return obj;\n      })),\n      completedSteps: [],\n      status: 'submitted',\n      submittedAt: data.submittedAt,\n    };\n    const reports = JSON.parse(localStorage.getItem('physlab_guest_reports') || '[]');\n    reports.push(report);\n    localStorage.setItem('physlab_guest_reports', JSON.stringify(reports));\n    const teacherClasses = JSON.parse(localStorage.getItem('physlab_guest_classes') || '[]');\n    const cls = teacherClasses.find(c => c.code === classInfo.code);\n    if (cls && cls.students) {\n      const stu = cls.students.find(s => s.name === studentName);\n      if (stu) {\n        if (!stu.reports) stu.reports = [];\n        stu.reports.push(report);\n        stu.reportCount = stu.reports.length;\n        localStorage.setItem('physlab_guest_classes', JSON.stringify(teacherClasses));\n      }\n    }\n    btn.disabled = true;\n    btn.className = 'btn-sent';\n    btn.textContent = '${sentLabel}';\n    alert('${sentSuccessMsg}');\n  } catch (e) {\n    alert('${errorLabel}' + e.message);\n  }\n}\n</script>`\n}\n",
+      "start": 1783626292708,
+      "end": 1783626292708,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634643082,
-      "end": 1783634643082,
+      "start": 1783626292708,
+      "end": 1783626292708,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "export function buildSendScript(options) {\n  const payload = {\n    title: options.title,\n    experimentName: options.experimentName || options.title,\n    params: options.params || [],\n    summaryStats: options.summaryStats || [],\n    tables: options.tables || [],\n    images: (options.images || []).map((img) => ({ caption: img.caption || \"\", src: img.src.slice(0, 100) })),\n    htmlBlocks: (options.htmlBlocks || []).map((b) => ({ title: b.title || \"\", html: b.html.slice(0, 500) })),\n    canvasSnapshot: options.canvasSnapshot ? \"[snapshot]\" : null,\n    submittedAt: (/* @__PURE__ */ new Date()).toISOString()\n  };\n  const payloadJson = JSON.stringify(payload).replace(/\"/g, \"&quot;\");\n  const s = options.strings || {};\n  const btnLabel = s.sendToTeacherBtn ?? \"📤 Send to Teacher\";\n  const guestStudent = s.guestStudent ?? \"Guest Student\";\n  const joinClassMsg = s.joinClassFirst ?? \"You must join a class first\";\n  const branchPhysics = s.branchPhysics ?? \"Physics\";\n  const sentLabel = s.sentSuccessfully ?? \"✅ Sent\";\n  const sentSuccessMsg = s.reportSentSuccess ?? \"Report sent to teacher successfully!\";\n  const errorLabel = s.errorLabel ?? \"Error: \";\n  return `<button id=\"btn-send\" class=\"btn-send-teacher\" type=\"button\" onclick=\"sendToTeacher()\">${btnLabel}</button>\n<script>\nfunction sendToTeacher() {\n  const btn = document.getElementById('btn-send');\n  if (btn.disabled) return;\n  try {\n    const data = JSON.parse(\"${payloadJson}\");\n    const studentName = '${guestStudent}';\n    const classInfoRaw = localStorage.getItem('auth_classes');\n    const classes = classInfoRaw ? JSON.parse(classInfoRaw) : [];\n    const classInfo = classes[0] || null;\n    if (!classInfo || !classInfo.code) {\n      alert('${joinClassMsg}');\n      return;\n    }\n    const report = {\n      id: 'guest-report-' + Date.now(),\n      attemptId: Date.now(),\n      experimentId: 0,\n      experimentTitle: data.experimentName || data.title,\n      branch: '${branchPhysics}',\n      studentName: studentName,\n      classCode: classInfo.code,\n      classId: classInfo.id,\n      notes: data.htmlBlocks.map(b => (b.title || '') + '\\\\n' + b.html).join('\\\\n\\\\n'),\n      readings: data.tables.flatMap(t => t.rows.map((row, i) => {\n        const obj = { '#': i + 1 };\n        t.headers.forEach((h, hi) => { obj[String(h)] = row[hi] !== undefined ? String(row[hi]) : ''; });\n        return obj;\n      })),\n      completedSteps: [],\n      status: 'submitted',\n      submittedAt: data.submittedAt,\n    };\n    const reports = JSON.parse(localStorage.getItem('physlab_guest_reports') || '[]');\n    reports.push(report);\n    localStorage.setItem('physlab_guest_reports', JSON.stringify(reports));\n    const teacherClasses = JSON.parse(localStorage.getItem('physlab_guest_classes') || '[]');\n    const cls = teacherClasses.find(c => c.code === classInfo.code);\n    if (cls && cls.students) {\n      const stu = cls.students.find(s => s.name === studentName);\n      if (stu) {\n        if (!stu.reports) stu.reports = [];\n        stu.reports.push(report);\n        stu.reportCount = stu.reports.length;\n        localStorage.setItem('physlab_guest_classes', JSON.stringify(teacherClasses));\n      }\n    }\n    btn.disabled = true;\n    btn.className = 'btn-sent';\n    btn.textContent = '${sentLabel}';\n    alert('${sentSuccessMsg}');\n  } catch (e) {\n    alert('${errorLabel}' + e.message);\n  }\n}\n<\\/script>`;\n}\n",
-      "start": 1783634643082,
-      "end": 1783634643187,
+      "start": 1783626292708,
+      "end": 1783626292883,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/utils/lab-report.send.ts"
+          "lab-report.send.ts"
         ],
         "sourcesContent": [
           "import type { OpenLabReportOptions } from './lab-report.types'\n\nexport function buildSendScript(options: OpenLabReportOptions): string {\n  const payload = {\n    title: options.title,\n    experimentName: options.experimentName || options.title,\n    params: options.params || [],\n    summaryStats: options.summaryStats || [],\n    tables: options.tables || [],\n    images: (options.images || []).map(img => ({ caption: img.caption || '', src: img.src.slice(0, 100) })),\n    htmlBlocks: (options.htmlBlocks || []).map(b => ({ title: b.title || '', html: b.html.slice(0, 500) })),\n    canvasSnapshot: options.canvasSnapshot ? '[snapshot]' : null,\n    submittedAt: new Date().toISOString(),\n  }\n  const payloadJson = JSON.stringify(payload).replace(/\"/g, '&quot;')\n\n  const s = options.strings || {}\n  const btnLabel = s.sendToTeacherBtn ?? '📤 Send to Teacher'\n  const guestStudent = s.guestStudent ?? 'Guest Student'\n  const joinClassMsg = s.joinClassFirst ?? 'You must join a class first'\n  const branchPhysics = s.branchPhysics ?? 'Physics'\n  const sentLabel = s.sentSuccessfully ?? '✅ Sent'\n  const sentSuccessMsg = s.reportSentSuccess ?? 'Report sent to teacher successfully!'\n  const errorLabel = s.errorLabel ?? 'Error: '\n\n  return `<button id=\"btn-send\" class=\"btn-send-teacher\" type=\"button\" onclick=\"sendToTeacher()\">${btnLabel}</button>\n<script>\nfunction sendToTeacher() {\n  const btn = document.getElementById('btn-send');\n  if (btn.disabled) return;\n  try {\n    const data = JSON.parse(\"${payloadJson}\");\n    const studentName = '${guestStudent}';\n    const classInfoRaw = localStorage.getItem('auth_classes');\n    const classes = classInfoRaw ? JSON.parse(classInfoRaw) : [];\n    const classInfo = classes[0] || null;\n    if (!classInfo || !classInfo.code) {\n      alert('${joinClassMsg}');\n      return;\n    }\n    const report = {\n      id: 'guest-report-' + Date.now(),\n      attemptId: Date.now(),\n      experimentId: 0,\n      experimentTitle: data.experimentName || data.title,\n      branch: '${branchPhysics}',\n      studentName: studentName,\n      classCode: classInfo.code,\n      classId: classInfo.id,\n      notes: data.htmlBlocks.map(b => (b.title || '') + '\\\\n' + b.html).join('\\\\n\\\\n'),\n      readings: data.tables.flatMap(t => t.rows.map((row, i) => {\n        const obj = { '#': i + 1 };\n        t.headers.forEach((h, hi) => { obj[String(h)] = row[hi] !== undefined ? String(row[hi]) : ''; });\n        return obj;\n      })),\n      completedSteps: [],\n      status: 'submitted',\n      submittedAt: data.submittedAt,\n    };\n    const reports = JSON.parse(localStorage.getItem('physlab_guest_reports') || '[]');\n    reports.push(report);\n    localStorage.setItem('physlab_guest_reports', JSON.stringify(reports));\n    const teacherClasses = JSON.parse(localStorage.getItem('physlab_guest_classes') || '[]');\n    const cls = teacherClasses.find(c => c.code === classInfo.code);\n    if (cls && cls.students) {\n      const stu = cls.students.find(s => s.name === studentName);\n      if (stu) {\n        if (!stu.reports) stu.reports = [];\n        stu.reports.push(report);\n        stu.reportCount = stu.reports.length;\n        localStorage.setItem('physlab_guest_classes', JSON.stringify(teacherClasses));\n      }\n    }\n    btn.disabled = true;\n    btn.className = 'btn-sent';\n    btn.textContent = '${sentLabel}';\n    alert('${sentSuccessMsg}');\n  } catch (e) {\n    alert('${errorLabel}' + e.message);\n  }\n}\n</script>`\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634643187,
-      "end": 1783634643187,
+      "start": 1783626292883,
+      "end": 1783626292883,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634643187,
-      "end": 1783634643187,
+      "start": 1783626292883,
+      "end": 1783626292883,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626292883,
+      "end": 1783626292883,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634643187,
-      "end": 1783634643187,
+      "start": 1783626292883,
+      "end": 1783626292883,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634643187,
-      "end": 1783634643187,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634643187,
-      "end": 1783634643187,
+      "start": 1783626292883,
+      "end": 1783626292883,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634643187,
-      "end": 1783634643187,
+      "start": 1783626292883,
+      "end": 1783626292883,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634643187,
-      "end": 1783634643187,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634643187,
-      "end": 1783634643187,
+      "start": 1783626292883,
+      "end": 1783626292883,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634643187,
-      "end": 1783634643187,
+      "start": 1783626292883,
+      "end": 1783626292883,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634643187,
-      "end": 1783634643187,
+      "start": 1783626292883,
+      "end": 1783626292883,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634643187,
-      "end": 1783634643187,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626292883,
+      "end": 1783626292883,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626292883,
+      "end": 1783626292883,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634643187,
-      "end": 1783634643187,
+      "name": "vite:css-analysis",
+      "start": 1783626292883,
+      "end": 1783626292883,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "export function buildSendScript(options) {\n  const payload = {\n    title: options.title,\n    experimentName: options.experimentName || options.title,\n    params: options.params || [],\n    summaryStats: options.summaryStats || [],\n    tables: options.tables || [],\n    images: (options.images || []).map((img) => ({ caption: img.caption || \"\", src: img.src.slice(0, 100) })),\n    htmlBlocks: (options.htmlBlocks || []).map((b) => ({ title: b.title || \"\", html: b.html.slice(0, 500) })),\n    canvasSnapshot: options.canvasSnapshot ? \"[snapshot]\" : null,\n    submittedAt: (/* @__PURE__ */ new Date()).toISOString()\n  };\n  const payloadJson = JSON.stringify(payload).replace(/\"/g, \"&quot;\");\n  const s = options.strings || {};\n  const btnLabel = s.sendToTeacherBtn ?? \"📤 Send to Teacher\";\n  const guestStudent = s.guestStudent ?? \"Guest Student\";\n  const joinClassMsg = s.joinClassFirst ?? \"You must join a class first\";\n  const branchPhysics = s.branchPhysics ?? \"Physics\";\n  const sentLabel = s.sentSuccessfully ?? \"✅ Sent\";\n  const sentSuccessMsg = s.reportSentSuccess ?? \"Report sent to teacher successfully!\";\n  const errorLabel = s.errorLabel ?? \"Error: \";\n  return `<button id=\"btn-send\" class=\"btn-send-teacher\" type=\"button\" onclick=\"sendToTeacher()\">${btnLabel}</button>\n<script>\nfunction sendToTeacher() {\n  const btn = document.getElementById('btn-send');\n  if (btn.disabled) return;\n  try {\n    const data = JSON.parse(\"${payloadJson}\");\n    const studentName = '${guestStudent}';\n    const classInfoRaw = localStorage.getItem('auth_classes');\n    const classes = classInfoRaw ? JSON.parse(classInfoRaw) : [];\n    const classInfo = classes[0] || null;\n    if (!classInfo || !classInfo.code) {\n      alert('${joinClassMsg}');\n      return;\n    }\n    const report = {\n      id: 'guest-report-' + Date.now(),\n      attemptId: Date.now(),\n      experimentId: 0,\n      experimentTitle: data.experimentName || data.title,\n      branch: '${branchPhysics}',\n      studentName: studentName,\n      classCode: classInfo.code,\n      classId: classInfo.id,\n      notes: data.htmlBlocks.map(b => (b.title || '') + '\\\\n' + b.html).join('\\\\n\\\\n'),\n      readings: data.tables.flatMap(t => t.rows.map((row, i) => {\n        const obj = { '#': i + 1 };\n        t.headers.forEach((h, hi) => { obj[String(h)] = row[hi] !== undefined ? String(row[hi]) : ''; });\n        return obj;\n      })),\n      completedSteps: [],\n      status: 'submitted',\n      submittedAt: data.submittedAt,\n    };\n    const reports = JSON.parse(localStorage.getItem('physlab_guest_reports') || '[]');\n    reports.push(report);\n    localStorage.setItem('physlab_guest_reports', JSON.stringify(reports));\n    const teacherClasses = JSON.parse(localStorage.getItem('physlab_guest_classes') || '[]');\n    const cls = teacherClasses.find(c => c.code === classInfo.code);\n    if (cls && cls.students) {\n      const stu = cls.students.find(s => s.name === studentName);\n      if (stu) {\n        if (!stu.reports) stu.reports = [];\n        stu.reports.push(report);\n        stu.reportCount = stu.reports.length;\n        localStorage.setItem('physlab_guest_classes', JSON.stringify(teacherClasses));\n      }\n    }\n    btn.disabled = true;\n    btn.className = 'btn-sent';\n    btn.textContent = '${sentLabel}';\n    alert('${sentSuccessMsg}');\n  } catch (e) {\n    alert('${errorLabel}' + e.message);\n  }\n}\n<\\/script>`;\n}\n",
+      "start": 1783626292883,
+      "end": 1783626292883,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

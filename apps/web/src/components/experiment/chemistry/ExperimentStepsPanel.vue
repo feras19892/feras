@@ -18,7 +18,7 @@ const emit = defineEmits<{
   <div class="right-exp-panel">
     <div v-if="experiment" class="right-exp-content">
       <div class="right-exp-header">
-        <span class="right-exp-title">📋 {{ t(experiment.nameAr) }}</span>
+        <span class="right-exp-title">📋 {{ t((experiment as any).nameKey || (experiment as any).nameAr) }}</span>
         <button class="right-exp-reset" @click="emit('clear')">❌</button>
       </div>
       <ol class="right-exp-list">
@@ -35,7 +35,7 @@ const emit = defineEmits<{
             <span v-if="stepCompletion[idx]">✓</span>
             <span v-else>{{ step.id }}</span>
           </span>
-          <span class="right-exp-text">{{ t(step.text) }}</span>
+          <span class="right-exp-text">{{ t((step as any).textKey || (step as any).text) }}</span>
         </li>
       </ol>
       <button

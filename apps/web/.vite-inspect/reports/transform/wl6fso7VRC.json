@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/experiment/useAnomalyWatcher.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { ref, type Ref } from 'vue'\n\nexport interface AnomalyRule {\n  name: string\n  check: (state: Record<string, unknown>) => boolean\n  severity: 'warn' | 'error' | 'fatal'\n  message: string\n}\n\nexport interface AnomalyReport {\n  id: string\n  experiment: string\n  rule: string\n  severity: 'warn' | 'error' | 'fatal'\n  message: string\n  timestamp: number\n  stateSnapshot: Record<string, unknown>\n}\n\nconst globalReports = ref<AnomalyReport[]>([])\n\nexport const defaultPhysicsRules: AnomalyRule[] = [\n  {\n    name: 'nan-infinity',\n    check: (s) => Object.values(s).some((v) => typeof v === 'number' && (!Number.isFinite(v))),\n    severity: 'fatal',\n    message: 'NaN or Infinity detected in simulation state',\n  },\n  {\n    name: 'negative-mass',\n    check: (s) => (s.mass !== undefined && typeof s.mass === 'number' && s.mass < 0),\n    severity: 'error',\n    message: 'Negative mass detected',\n  },\n  {\n    name: 'negative-time',\n    check: (s) => (s.t !== undefined && typeof s.t === 'number' && s.t < 0),\n    severity: 'error',\n    message: 'Negative simulation time',\n  },\n  {\n    name: 'excessive-velocity',\n    check: (s) => (s.v !== undefined && typeof s.v === 'number' && Math.abs(s.v) > 1e6),\n    severity: 'warn',\n    message: 'Velocity exceeds 1,000,000 m/s — possible numerical instability',\n  },\n  {\n    name: 'energy-gain',\n    check: (s) => {\n      if (s.KEi === undefined || s.KEf === undefined) return false\n      const kei = s.KEi as number\n      const kef = s.KEf as number\n      return typeof kei === 'number' && typeof kef === 'number' && kef > kei * 1.001\n    },\n    severity: 'error',\n    message: 'Kinetic energy increased without external force — conservation violation',\n  },\n]\n\nlet _idCounter = 0\n\nexport function useAnomalyWatcher(experimentName: string, rules: AnomalyRule[] = defaultPhysicsRules) {\n  const active = ref(true)\n  const localReports = ref<AnomalyReport[]>([])\n\n  function inspect(state: Record<string, unknown>) {\n    if (!active.value) return\n    for (const rule of rules) {\n      if (rule.check(state)) {\n        const report: AnomalyReport = {\n          id: `anomaly-${++_idCounter}`,\n          experiment: experimentName,\n          rule: rule.name,\n          severity: rule.severity,\n          message: rule.message,\n          timestamp: performance.now(),\n          stateSnapshot: { ...state },\n        }\n        localReports.value.push(report)\n        if (localReports.value.length > 50) localReports.value.shift()\n        globalReports.value.push(report)\n        if (globalReports.value.length > 200) globalReports.value.shift()\n\n        // Log with appropriate level\n        const logPrefix = `[AnomalyWatcher][${experimentName}][${rule.severity.toUpperCase()}]`\n        if (rule.severity === 'fatal') {\n          console.error(logPrefix, rule.message, report.stateSnapshot)\n        } else if (rule.severity === 'error') {\n          console.error(logPrefix, rule.message, report.stateSnapshot)\n        } else {\n          console.warn(logPrefix, rule.message, report.stateSnapshot)\n        }\n      }\n    }\n  }\n\n  function clear() {\n    localReports.value = []\n  }\n\n  function pause() { active.value = false }\n  function resume() { active.value = true }\n\n  return { inspect, clear, pause, resume, localReports, active }\n}\n\nexport function getGlobalReports(): Ref<AnomalyReport[]> {\n  return globalReports\n}\n",
-      "start": 1783634641932,
-      "end": 1783634642181,
+      "start": 1783626292543,
+      "end": 1783626292543
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626292543,
+      "end": 1783626292543,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { ref, type Ref } from 'vue'\n\nexport interface AnomalyRule {\n  name: string\n  check: (state: Record<string, unknown>) => boolean\n  severity: 'warn' | 'error' | 'fatal'\n  message: string\n}\n\nexport interface AnomalyReport {\n  id: string\n  experiment: string\n  rule: string\n  severity: 'warn' | 'error' | 'fatal'\n  message: string\n  timestamp: number\n  stateSnapshot: Record<string, unknown>\n}\n\nconst globalReports = ref<AnomalyReport[]>([])\n\nexport const defaultPhysicsRules: AnomalyRule[] = [\n  {\n    name: 'nan-infinity',\n    check: (s) => Object.values(s).some((v) => typeof v === 'number' && (!Number.isFinite(v))),\n    severity: 'fatal',\n    message: 'NaN or Infinity detected in simulation state',\n  },\n  {\n    name: 'negative-mass',\n    check: (s) => (s.mass !== undefined && typeof s.mass === 'number' && s.mass < 0),\n    severity: 'error',\n    message: 'Negative mass detected',\n  },\n  {\n    name: 'negative-time',\n    check: (s) => (s.t !== undefined && typeof s.t === 'number' && s.t < 0),\n    severity: 'error',\n    message: 'Negative simulation time',\n  },\n  {\n    name: 'excessive-velocity',\n    check: (s) => (s.v !== undefined && typeof s.v === 'number' && Math.abs(s.v) > 1e6),\n    severity: 'warn',\n    message: 'Velocity exceeds 1,000,000 m/s — possible numerical instability',\n  },\n  {\n    name: 'energy-gain',\n    check: (s) => {\n      if (s.KEi === undefined || s.KEf === undefined) return false\n      const kei = s.KEi as number\n      const kef = s.KEf as number\n      return typeof kei === 'number' && typeof kef === 'number' && kef > kei * 1.001\n    },\n    severity: 'error',\n    message: 'Kinetic energy increased without external force — conservation violation',\n  },\n]\n\nlet _idCounter = 0\n\nexport function useAnomalyWatcher(experimentName: string, rules: AnomalyRule[] = defaultPhysicsRules) {\n  const active = ref(true)\n  const localReports = ref<AnomalyReport[]>([])\n\n  function inspect(state: Record<string, unknown>) {\n    if (!active.value) return\n    for (const rule of rules) {\n      if (rule.check(state)) {\n        const report: AnomalyReport = {\n          id: `anomaly-${++_idCounter}`,\n          experiment: experimentName,\n          rule: rule.name,\n          severity: rule.severity,\n          message: rule.message,\n          timestamp: performance.now(),\n          stateSnapshot: { ...state },\n        }\n        localReports.value.push(report)\n        if (localReports.value.length > 50) localReports.value.shift()\n        globalReports.value.push(report)\n        if (globalReports.value.length > 200) globalReports.value.shift()\n\n        // Log with appropriate level\n        const logPrefix = `[AnomalyWatcher][${experimentName}][${rule.severity.toUpperCase()}]`\n        if (rule.severity === 'fatal') {\n          console.error(logPrefix, rule.message, report.stateSnapshot)\n        } else if (rule.severity === 'error') {\n          console.error(logPrefix, rule.message, report.stateSnapshot)\n        } else {\n          console.warn(logPrefix, rule.message, report.stateSnapshot)\n        }\n      }\n    }\n  }\n\n  function clear() {\n    localReports.value = []\n  }\n\n  function pause() { active.value = false }\n  function resume() { active.value = true }\n\n  return { inspect, clear, pause, resume, localReports, active }\n}\n\nexport function getGlobalReports(): Ref<AnomalyReport[]> {\n  return globalReports\n}\n",
+      "start": 1783626292543,
+      "end": 1783626292543,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634642181,
-      "end": 1783634642181,
+      "start": 1783626292543,
+      "end": 1783626292543,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { ref } from \"vue\";\nconst globalReports = ref([]);\nexport const defaultPhysicsRules = [\n  {\n    name: \"nan-infinity\",\n    check: (s) => Object.values(s).some((v) => typeof v === \"number\" && !Number.isFinite(v)),\n    severity: \"fatal\",\n    message: \"NaN or Infinity detected in simulation state\"\n  },\n  {\n    name: \"negative-mass\",\n    check: (s) => s.mass !== void 0 && typeof s.mass === \"number\" && s.mass < 0,\n    severity: \"error\",\n    message: \"Negative mass detected\"\n  },\n  {\n    name: \"negative-time\",\n    check: (s) => s.t !== void 0 && typeof s.t === \"number\" && s.t < 0,\n    severity: \"error\",\n    message: \"Negative simulation time\"\n  },\n  {\n    name: \"excessive-velocity\",\n    check: (s) => s.v !== void 0 && typeof s.v === \"number\" && Math.abs(s.v) > 1e6,\n    severity: \"warn\",\n    message: \"Velocity exceeds 1,000,000 m/s — possible numerical instability\"\n  },\n  {\n    name: \"energy-gain\",\n    check: (s) => {\n      if (s.KEi === void 0 || s.KEf === void 0) return false;\n      const kei = s.KEi;\n      const kef = s.KEf;\n      return typeof kei === \"number\" && typeof kef === \"number\" && kef > kei * 1.001;\n    },\n    severity: \"error\",\n    message: \"Kinetic energy increased without external force — conservation violation\"\n  }\n];\nlet _idCounter = 0;\nexport function useAnomalyWatcher(experimentName, rules = defaultPhysicsRules) {\n  const active = ref(true);\n  const localReports = ref([]);\n  function inspect(state) {\n    if (!active.value) return;\n    for (const rule of rules) {\n      if (rule.check(state)) {\n        const report = {\n          id: `anomaly-${++_idCounter}`,\n          experiment: experimentName,\n          rule: rule.name,\n          severity: rule.severity,\n          message: rule.message,\n          timestamp: performance.now(),\n          stateSnapshot: { ...state }\n        };\n        localReports.value.push(report);\n        if (localReports.value.length > 50) localReports.value.shift();\n        globalReports.value.push(report);\n        if (globalReports.value.length > 200) globalReports.value.shift();\n        const logPrefix = `[AnomalyWatcher][${experimentName}][${rule.severity.toUpperCase()}]`;\n        if (rule.severity === \"fatal\") {\n          console.error(logPrefix, rule.message, report.stateSnapshot);\n        } else if (rule.severity === \"error\") {\n          console.error(logPrefix, rule.message, report.stateSnapshot);\n        } else {\n          console.warn(logPrefix, rule.message, report.stateSnapshot);\n        }\n      }\n    }\n  }\n  function clear() {\n    localReports.value = [];\n  }\n  function pause() {\n    active.value = false;\n  }\n  function resume() {\n    active.value = true;\n  }\n  return { inspect, clear, pause, resume, localReports, active };\n}\nexport function getGlobalReports() {\n  return globalReports;\n}\n",
-      "start": 1783634642181,
-      "end": 1783634642304,
+      "start": 1783626292543,
+      "end": 1783626292759,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/composables/experiment/useAnomalyWatcher.ts"
+          "useAnomalyWatcher.ts"
         ],
         "sourcesContent": [
           "import { ref, type Ref } from 'vue'\n\nexport interface AnomalyRule {\n  name: string\n  check: (state: Record<string, unknown>) => boolean\n  severity: 'warn' | 'error' | 'fatal'\n  message: string\n}\n\nexport interface AnomalyReport {\n  id: string\n  experiment: string\n  rule: string\n  severity: 'warn' | 'error' | 'fatal'\n  message: string\n  timestamp: number\n  stateSnapshot: Record<string, unknown>\n}\n\nconst globalReports = ref<AnomalyReport[]>([])\n\nexport const defaultPhysicsRules: AnomalyRule[] = [\n  {\n    name: 'nan-infinity',\n    check: (s) => Object.values(s).some((v) => typeof v === 'number' && (!Number.isFinite(v))),\n    severity: 'fatal',\n    message: 'NaN or Infinity detected in simulation state',\n  },\n  {\n    name: 'negative-mass',\n    check: (s) => (s.mass !== undefined && typeof s.mass === 'number' && s.mass < 0),\n    severity: 'error',\n    message: 'Negative mass detected',\n  },\n  {\n    name: 'negative-time',\n    check: (s) => (s.t !== undefined && typeof s.t === 'number' && s.t < 0),\n    severity: 'error',\n    message: 'Negative simulation time',\n  },\n  {\n    name: 'excessive-velocity',\n    check: (s) => (s.v !== undefined && typeof s.v === 'number' && Math.abs(s.v) > 1e6),\n    severity: 'warn',\n    message: 'Velocity exceeds 1,000,000 m/s — possible numerical instability',\n  },\n  {\n    name: 'energy-gain',\n    check: (s) => {\n      if (s.KEi === undefined || s.KEf === undefined) return false\n      const kei = s.KEi as number\n      const kef = s.KEf as number\n      return typeof kei === 'number' && typeof kef === 'number' && kef > kei * 1.001\n    },\n    severity: 'error',\n    message: 'Kinetic energy increased without external force — conservation violation',\n  },\n]\n\nlet _idCounter = 0\n\nexport function useAnomalyWatcher(experimentName: string, rules: AnomalyRule[] = defaultPhysicsRules) {\n  const active = ref(true)\n  const localReports = ref<AnomalyReport[]>([])\n\n  function inspect(state: Record<string, unknown>) {\n    if (!active.value) return\n    for (const rule of rules) {\n      if (rule.check(state)) {\n        const report: AnomalyReport = {\n          id: `anomaly-${++_idCounter}`,\n          experiment: experimentName,\n          rule: rule.name,\n          severity: rule.severity,\n          message: rule.message,\n          timestamp: performance.now(),\n          stateSnapshot: { ...state },\n        }\n        localReports.value.push(report)\n        if (localReports.value.length > 50) localReports.value.shift()\n        globalReports.value.push(report)\n        if (globalReports.value.length > 200) globalReports.value.shift()\n\n        // Log with appropriate level\n        const logPrefix = `[AnomalyWatcher][${experimentName}][${rule.severity.toUpperCase()}]`\n        if (rule.severity === 'fatal') {\n          console.error(logPrefix, rule.message, report.stateSnapshot)\n        } else if (rule.severity === 'error') {\n          console.error(logPrefix, rule.message, report.stateSnapshot)\n        } else {\n          console.warn(logPrefix, rule.message, report.stateSnapshot)\n        }\n      }\n    }\n  }\n\n  function clear() {\n    localReports.value = []\n  }\n\n  function pause() { active.value = false }\n  function resume() { active.value = true }\n\n  return { inspect, clear, pause, resume, localReports, active }\n}\n\nexport function getGlobalReports(): Ref<AnomalyReport[]> {\n  return globalReports\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634642304,
-      "end": 1783634642304,
+      "start": 1783626292759,
+      "end": 1783626292759,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642304,
-      "end": 1783634642304,
+      "start": 1783626292759,
+      "end": 1783626292759,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626292759,
+      "end": 1783626292760,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642304,
-      "end": 1783634642304,
+      "start": 1783626292760,
+      "end": 1783626292760,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634642305,
-      "end": 1783634642305,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634642305,
-      "end": 1783634642305,
+      "start": 1783626292760,
+      "end": 1783626292760,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642305,
-      "end": 1783634642305,
+      "start": 1783626292760,
+      "end": 1783626292760,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642305,
-      "end": 1783634642305,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642305,
-      "end": 1783634642305,
+      "start": 1783626292760,
+      "end": 1783626292760,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642305,
-      "end": 1783634642305,
+      "start": 1783626292760,
+      "end": 1783626292760,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642305,
-      "end": 1783634642305,
+      "start": 1783626292760,
+      "end": 1783626292760,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642305,
-      "end": 1783634642305,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626292760,
+      "end": 1783626292760,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626292760,
+      "end": 1783626292760,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642305,
-      "end": 1783634642305,
+      "name": "vite:css-analysis",
+      "start": 1783626292760,
+      "end": 1783626292760,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { ref } from \"/node_modules/.vite/deps/vue.js?v=09a3ad4c\";\nconst globalReports = ref([]);\nexport const defaultPhysicsRules = [\n  {\n    name: \"nan-infinity\",\n    check: (s) => Object.values(s).some((v) => typeof v === \"number\" && !Number.isFinite(v)),\n    severity: \"fatal\",\n    message: \"NaN or Infinity detected in simulation state\"\n  },\n  {\n    name: \"negative-mass\",\n    check: (s) => s.mass !== void 0 && typeof s.mass === \"number\" && s.mass < 0,\n    severity: \"error\",\n    message: \"Negative mass detected\"\n  },\n  {\n    name: \"negative-time\",\n    check: (s) => s.t !== void 0 && typeof s.t === \"number\" && s.t < 0,\n    severity: \"error\",\n    message: \"Negative simulation time\"\n  },\n  {\n    name: \"excessive-velocity\",\n    check: (s) => s.v !== void 0 && typeof s.v === \"number\" && Math.abs(s.v) > 1e6,\n    severity: \"warn\",\n    message: \"Velocity exceeds 1,000,000 m/s — possible numerical instability\"\n  },\n  {\n    name: \"energy-gain\",\n    check: (s) => {\n      if (s.KEi === void 0 || s.KEf === void 0) return false;\n      const kei = s.KEi;\n      const kef = s.KEf;\n      return typeof kei === \"number\" && typeof kef === \"number\" && kef > kei * 1.001;\n    },\n    severity: \"error\",\n    message: \"Kinetic energy increased without external force — conservation violation\"\n  }\n];\nlet _idCounter = 0;\nexport function useAnomalyWatcher(experimentName, rules = defaultPhysicsRules) {\n  const active = ref(true);\n  const localReports = ref([]);\n  function inspect(state) {\n    if (!active.value) return;\n    for (const rule of rules) {\n      if (rule.check(state)) {\n        const report = {\n          id: `anomaly-${++_idCounter}`,\n          experiment: experimentName,\n          rule: rule.name,\n          severity: rule.severity,\n          message: rule.message,\n          timestamp: performance.now(),\n          stateSnapshot: { ...state }\n        };\n        localReports.value.push(report);\n        if (localReports.value.length > 50) localReports.value.shift();\n        globalReports.value.push(report);\n        if (globalReports.value.length > 200) globalReports.value.shift();\n        const logPrefix = `[AnomalyWatcher][${experimentName}][${rule.severity.toUpperCase()}]`;\n        if (rule.severity === \"fatal\") {\n          console.error(logPrefix, rule.message, report.stateSnapshot);\n        } else if (rule.severity === \"error\") {\n          console.error(logPrefix, rule.message, report.stateSnapshot);\n        } else {\n          console.warn(logPrefix, rule.message, report.stateSnapshot);\n        }\n      }\n    }\n  }\n  function clear() {\n    localReports.value = [];\n  }\n  function pause() {\n    active.value = false;\n  }\n  function resume() {\n    active.value = true;\n  }\n  return { inspect, clear, pause, resume, localReports, active };\n}\nexport function getGlobalReports() {\n  return globalReports;\n}\n",
+      "start": 1783626292760,
+      "end": 1783626292760,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

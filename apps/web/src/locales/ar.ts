@@ -6,7 +6,6 @@ import { adminUser } from './admin-user'
 import { teacher } from './teacher'
 import { common } from './common'
 import { settings } from './settings'
-import { experiments } from './experiments/index'
 import { analysis } from './analysis/index'
 import { ai } from './ai'
 import { chemistry } from './chemistry'
@@ -27,7 +26,6 @@ export default {
   teacher: teacher.ar,
   settings: settings.ar,
   common: common.ar,
-  experiments: experiments.ar,
   analysis: analysis.ar,
   ai: ai.ar,
   chemistry: chemistry.ar,
@@ -38,20 +36,4 @@ export default {
   chemistryExperiments: chemistryExperiments.ar,
   chemistryTools: chemistryTools.ar,
   chemistryAssistant: chemistryAssistant.ar,
-  prism: {
-    ...experiments.ar,
-    title: 'تحلل الضوء بالمنشور',
-    emptyResults: 'سجل قراءتين على الأقل لعرض النتائج',
-    dragLaserSource: '⊹ اسحب مصدر الليزر ↕ لتغيير θ₁',
-    dragA: 'اسحب A لتغيير زاوية المنشور',
-    dragPrism: '✥ اسحب المنشور لتحريكه على الشاشة',
-    selectTool: 'تحديد (افتراضي)',
-    moveMode: 'وضع النقل',
-    normalLines: 'خطوط عمودية',
-    showSpectrum: 'إظهار الطيف',
-    angleArcs: 'أقواس الزوايا',
-    virtualScreen: 'شاشة افتراضية',
-    grid: 'شبكة',
-    resetView: 'إعادة ضبط العرض',
-  },
 } as const

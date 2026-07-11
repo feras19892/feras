@@ -1,0 +1,140 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabVolumetricFlask.vue?vue&type=style&index=0&scoped=7595d590&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.flask-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.flask-svg {\n  width: 72px;\n  height: 144px;\n}\n.flask-svg.hovered {\n  transform: scale(1.05);\n}\n.drop-canvas {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  width: 120px;\n  height: 260px;\n  margin-left: -60px;\n  z-index: 2;\n  pointer-events: none;\n}\n",
+      "start": 1783626310898,
+      "end": 1783626310899,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabVolumetricFlask.vue"
+        ],
+        "names": [],
+        "mappings": ";AAmLA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACb,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC;EACb,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACtB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACnB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EAClB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACjB;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACT,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC;EACX,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC;AACf;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACjB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACxB;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACX,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EAClB,CAAC,CAAC,CAAC,EAAE,CAAC;EACN,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC;EACT,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC;EACZ,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC;EACb,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC;EAClB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC;EACV,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC;AACtB",
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabVolumetricFlask.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\nimport { computed, ref } from 'vue';\nimport { useSpillDrops } from '../../../composables/chemistry/useSpillDrops';\n\ninterface Props {\n  volume?: number;     // 0–250 mL\n  maxVolume?: number;  // 250\n  liquidColor?: string;\n  liquidOpacity?: number;\n  isHovered?: boolean;\n  tiltAngle?: number;\n  itemUid?: string;\n  itemX?: number;\n  itemY?: number;\n}\n\nconst props = withDefaults(defineProps<Props>(), {\n  volume: 0,\n  maxVolume: 250,\n  liquidColor: '#3b82f6',\n  liquidOpacity: 0.35,\n  isHovered: false,\n  tiltAngle: 0,\n  itemX: 0,\n  itemY: 0,\n  itemUid: '',\n});\n\nconst emit = defineEmits<{ click: []; spill: [amount: number]; dropExited: [worldX: number, worldY: number, color: string]; }>();\n\nconst canvasRef = ref<HTMLCanvasElement | null>(null);\n\nuseSpillDrops({\n  canvasRef,\n  tiltAngle: () => props.tiltAngle,\n  volume: () => props.volume,\n  maxVolume: () => props.maxVolume,\n  liquidColor: () => props.liquidColor,\n  itemX: () => props.itemX,\n  itemY: () => props.itemY,\n  mouthPosition: (tilt) => {\n    const rad = tilt * Math.PI / 180;\n    const cx = 60, cy = 121, mouthDist = 99; // cy=(neckTop22+bulbBottom220)/2\n    return { x: cx + mouthDist * Math.sin(rad), y: cy - mouthDist * Math.cos(rad) };\n  },\n  canvasW: 120,\n  canvasH: 260,\n  mouthBounds: { minX: 10, maxX: 110, minY: 10, maxY: 240 },\n  exitY: 200,\n  onSpill: (amount) => emit('spill', amount),\n  onDropExited: (wx, wy, color) => emit('dropExited', wx, wy, color),\n});\n\n/* Geometry: pear-shaped with long narrow neck */\nconst bulbTop = 85;\nconst bulbBottom = 220;\nconst bulbH = bulbBottom - bulbTop;\nconst neckTop = 22;\nconst neckW = 14;\nconst centerX = 60;\nconst bulbW = 56;\n\n/* Liquid fills only the bulb (not the neck) */\nconst liquidH = computed(() => {\n  if (props.volume <= 0) return 0;\n  return (props.volume / props.maxVolume) * bulbH;\n});\nconst liquidY = computed(() => bulbBottom - liquidH.value);\n\n/* Single calibration mark on neck */\nconst markY = bulbTop;\n</script>\n\n<template>\n  <div class=\"flask-wrapper\" @click.stop=\"emit('click')\" data-v-inspector=\"src/components/experiment/chemistry/LabVolumetricFlask.vue:75:3\">\n    <svg viewBox=\"0 0 120 240\" class=\"flask-svg\" :class=\"{ hovered: isHovered }\" data-v-inspector=\"src/components/experiment/chemistry/LabVolumetricFlask.vue:76:5\">\n      <!-- Shadow -->\n      <ellipse cx=\"60\" cy=\"235\" rx=\"30\" ry=\"3\" fill=\"rgba(0,0,0,0.06)\" data-v-inspector=\"src/components/experiment/chemistry/LabVolumetricFlask.vue:78:7\" />\n\n      <!-- Bulb (pear shape) -->\n      <path\n        d=\"M 34 85 Q 28 140 18 170 Q 14 195 28 215 Q 44 230 60 230 Q 76 230 92 215 Q 106 195 102 170 Q 92 140 86 85\"\n        fill=\"rgba(241,245,249,0.15)\"\n        stroke=\"#94a3b8\"\n        stroke-width=\"1.2\" data-v-inspector=\"src/components/experiment/chemistry/LabVolumetricFlask.vue:81:7\"\n      />\n\n      <!-- Neck (narrow cylinder) -->\n      <rect\n        :x=\"centerX - neckW/2\"\n        :y=\"neckTop\"\n        :width=\"neckW\"\n        :height=\"bulbTop - neckTop\"\n        rx=\"1\"\n        fill=\"rgba(241,245,249,0.15)\"\n        stroke=\"#94a3b8\"\n        stroke-width=\"1.2\" data-v-inspector=\"src/components/experiment/chemistry/LabVolumetricFlask.vue:89:7\"\n      />\n\n      <!-- Rim -->\n      <ellipse :cx=\"centerX\" :cy=\"neckTop\" :rx=\"neckW/2 + 3\" ry=\"3\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"1.2\" data-v-inspector=\"src/components/experiment/chemistry/LabVolumetricFlask.vue:101:7\" />\n      <ellipse :cx=\"centerX\" :cy=\"neckTop\" :rx=\"neckW/2\" ry=\"2\" fill=\"none\" stroke=\"rgba(148,163,184,0.3)\" stroke-width=\"0.5\" data-v-inspector=\"src/components/experiment/chemistry/LabVolumetricFlask.vue:102:7\" />\n\n      <!-- Calibration mark (single ring on neck) -->\n      <line\n        :x1=\"centerX - neckW/2 - 4\"\n        :y1=\"markY\"\n        :x2=\"centerX + neckW/2 + 4\"\n        :y2=\"markY\"\n        stroke=\"#334155\"\n        stroke-width=\"1.5\"\n        opacity=\"0.9\" data-v-inspector=\"src/components/experiment/chemistry/LabVolumetricFlask.vue:105:7\"\n      />\n      <text\n        :x=\"centerX + neckW/2 + 8\"\n        :y=\"markY + 2.5\"\n        font-size=\"7\"\n        fill=\"#334155\"\n        font-weight=\"800\"\n        opacity=\"0.85\" data-v-inspector=\"src/components/experiment/chemistry/LabVolumetricFlask.vue:114:7\"\n      >{{ maxVolume }}</text>\n\n      <!-- LIQUID (bulb only) -->\n      <g v-if=\"volume > 0\" data-v-inspector=\"src/components/experiment/chemistry/LabVolumetricFlask.vue:124:7\">\n        <path\n          :d=\"`M ${34 + (1.5 * (bulbBottom - liquidY)/bulbH)} ${liquidY} Q ${28 + (2 * (bulbBottom - liquidY)/bulbH)} ${(liquidY + bulbBottom)/2} ${28 + (4 * (bulbBottom - liquidY)/bulbH)} ${bulbBottom - 5} Q ${44} ${bulbBottom - 2} ${60} ${bulbBottom - 2} Q ${76} ${bulbBottom - 2} ${92 - (4 * (bulbBottom - liquidY)/bulbH)} ${bulbBottom - 5} Q ${92 - (2 * (bulbBottom - liquidY)/bulbH)} ${(liquidY + bulbBottom)/2} ${86 - (1.5 * (bulbBottom - liquidY)/bulbH)} ${liquidY} Z`\"\n          :fill=\"liquidColor\"\n          :opacity=\"liquidOpacity\" data-v-inspector=\"src/components/experiment/chemistry/LabVolumetricFlask.vue:125:9\"\n        />\n        <!-- Meniscus at bulb top -->\n        <ellipse\n          :cx=\"centerX\"\n          :cy=\"liquidY\"\n          :rx=\"bulbW/2 - 2\"\n          ry=\"2.5\"\n          :fill=\"liquidColor\"\n          :opacity=\"liquidOpacity + 0.1\" data-v-inspector=\"src/components/experiment/chemistry/LabVolumetricFlask.vue:131:9\"\n        />\n        <!-- Highlight -->\n        <ellipse\n          :cx=\"centerX\"\n          :cy=\"liquidY + 0.3\"\n          :rx=\"bulbW/2 - 8\"\n          ry=\"1\"\n          fill=\"rgba(255,255,255,0.4)\" data-v-inspector=\"src/components/experiment/chemistry/LabVolumetricFlask.vue:140:9\"\n        />\n        <!-- Surface level indicator (red line for transparent liquids) -->\n        <line\n          :x1=\"centerX - bulbW/2 + 6\"\n          :y1=\"liquidY\"\n          :x2=\"centerX + bulbW/2 - 6\"\n          :y2=\"liquidY\"\n          stroke=\"#ef4444\"\n          stroke-width=\"1.2\"\n          opacity=\"0.65\"\n          stroke-linecap=\"round\" data-v-inspector=\"src/components/experiment/chemistry/LabVolumetricFlask.vue:148:9\"\n        />\n        <circle :cx=\"centerX\" :cy=\"liquidY\" r=\"2.5\" fill=\"#ef4444\" opacity=\"0.3\" data-v-inspector=\"src/components/experiment/chemistry/LabVolumetricFlask.vue:158:9\" />\n      </g>\n\n      <!-- Glass highlights -->\n      <line :x1=\"centerX - bulbW/2 + 6\" :y1=\"bulbTop + 10\" :x2=\"centerX - bulbW/2 + 12\" :y2=\"bulbBottom - 15\" stroke=\"rgba(255,255,255,0.3)\" stroke-width=\"2\" stroke-linecap=\"round\" data-v-inspector=\"src/components/experiment/chemistry/LabVolumetricFlask.vue:162:7\" />\n      <line :x1=\"centerX + bulbW/2 - 8\" :y1=\"bulbTop + 15\" :x2=\"centerX + bulbW/2 - 5\" :y2=\"bulbBottom - 20\" stroke=\"rgba(255,255,255,0.1)\" stroke-width=\"1\" stroke-linecap=\"round\" data-v-inspector=\"src/components/experiment/chemistry/LabVolumetricFlask.vue:163:7\" />\n      <line :x1=\"centerX - neckW/2 + 3\" :y1=\"neckTop + 5\" :x2=\"centerX - neckW/2 + 3\" :y2=\"bulbTop - 5\" stroke=\"rgba(255,255,255,0.35)\" stroke-width=\"1.5\" stroke-linecap=\"round\" data-v-inspector=\"src/components/experiment/chemistry/LabVolumetricFlask.vue:164:7\" />\n    </svg>\n\n    <!-- Drop canvas -->\n    <canvas\n      v-if=\"volume > 0\"\n      ref=\"canvasRef\"\n      width=\"120\"\n      height=\"260\"\n      class=\"drop-canvas\"\n      :style=\"{ transform: `rotate(${-tiltAngle}deg)`, transformOrigin: '60px 120px' }\" data-v-inspector=\"src/components/experiment/chemistry/LabVolumetricFlask.vue:168:5\"\n    />\n  </div>\n</template>\n\n<style scoped>\n.flask-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.flask-svg {\n  width: 72px;\n  height: 144px;\n}\n.flask-svg.hovered {\n  transform: scale(1.05);\n}\n.drop-canvas {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  width: 120px;\n  height: 260px;\n  margin-left: -60px;\n  z-index: 2;\n  pointer-events: none;\n}\n</style>\n"
+        ]
+      }
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626310899,
+      "end": 1783626310899,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "\n.flask-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.flask-svg {\n  width: 72px;\n  height: 144px;\n}\n.flask-svg.hovered {\n  transform: scale(1.05);\n}\n.drop-canvas {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  width: 120px;\n  height: 260px;\n  margin-left: -60px;\n  z-index: 2;\n  pointer-events: none;\n}\n",
+      "start": 1783626310899,
+      "end": 1783626310899,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.flask-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.flask-svg {\n  width: 72px;\n  height: 144px;\n}\n.flask-svg.hovered {\n  transform: scale(1.05);\n}\n.drop-canvas {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  width: 120px;\n  height: 260px;\n  margin-left: -60px;\n  z-index: 2;\n  pointer-events: none;\n}\n",
+      "start": 1783626310899,
+      "end": 1783626310899,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783626310899,
+      "end": 1783626310899,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626310899,
+      "end": 1783626310899,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626310899,
+      "end": 1783626310899,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.flask-wrapper[data-v-7595d590] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.flask-svg[data-v-7595d590] {\n  width: 72px;\n  height: 144px;\n}\n.flask-svg.hovered[data-v-7595d590] {\n  transform: scale(1.05);\n}\n.drop-canvas[data-v-7595d590] {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  width: 120px;\n  height: 260px;\n  margin-left: -60px;\n  z-index: 2;\n  pointer-events: none;\n}\n",
+      "start": 1783626310899,
+      "end": 1783626310902,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626310902,
+      "end": 1783626310902,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabVolumetricFlask.vue?vue&type=style&index=0&scoped=7595d590&lang.css\"\nconst __vite__css = \"\\n.flask-wrapper[data-v-7595d590] {\\n  display: flex;\\n  flex-direction: column;\\n  align-items: center;\\n  position: relative;\\n  cursor: pointer;\\n}\\n.flask-svg[data-v-7595d590] {\\n  width: 72px;\\n  height: 144px;\\n}\\n.flask-svg.hovered[data-v-7595d590] {\\n  transform: scale(1.05);\\n}\\n.drop-canvas[data-v-7595d590] {\\n  position: absolute;\\n  top: 0;\\n  left: 50%;\\n  width: 120px;\\n  height: 260px;\\n  margin-left: -60px;\\n  z-index: 2;\\n  pointer-events: none;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626310902,
+      "end": 1783626310902,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626310902,
+      "end": 1783626310902,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626310902,
+      "end": 1783626310902,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626310902,
+      "end": 1783626310902,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626310902,
+      "end": 1783626310902,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626310902,
+      "end": 1783626310902,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626310902,
+      "end": 1783626310902,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626310902,
+      "end": 1783626310902,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/components/experiment/chemistry/LabVolumetricFlask.vue?vue&type=style&index=0&scoped=7595d590&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabVolumetricFlask.vue?vue&type=style&index=0&scoped=7595d590&lang.css\"\nconst __vite__css = \"\\n.flask-wrapper[data-v-7595d590] {\\n  display: flex;\\n  flex-direction: column;\\n  align-items: center;\\n  position: relative;\\n  cursor: pointer;\\n}\\n.flask-svg[data-v-7595d590] {\\n  width: 72px;\\n  height: 144px;\\n}\\n.flask-svg.hovered[data-v-7595d590] {\\n  transform: scale(1.05);\\n}\\n.drop-canvas[data-v-7595d590] {\\n  position: absolute;\\n  top: 0;\\n  left: 50%;\\n  width: 120px;\\n  height: 260px;\\n  margin-left: -60px;\\n  z-index: 2;\\n  pointer-events: none;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626310902,
+      "end": 1783626310902,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingLoginForm.vue?vue&type=style&index=0&scoped=8d494e43&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.login-card {\n  width: 100%;\n  padding: 1.5rem;\n  border-radius: 1rem;\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.08);\n  backdrop-filter: blur(12px);\n}\n.field {\n  margin-bottom: 1rem;\n  text-align: right;\n}\n:global(html[dir='ltr']) .field {\n  text-align: left;\n}\n.field label {\n  display: block;\n  font-size: 0.82rem;\n  margin-bottom: 0.35rem;\n  color: #cbd5e1;\n}\n.field input {\n  width: 100%;\n  padding: 0.65rem 0.9rem;\n  border-radius: 0.5rem;\n  border: 1px solid #334155;\n  background: #0f172a;\n  color: #e2e8f0;\n  font-size: 0.9rem;\n  box-sizing: border-box;\n}\n.field input:focus {\n  outline: none;\n  border-color: #06b6d4;\n}\n.password-wrap {\n  position: relative;\n}\n.toggle-pw {\n  position: absolute;\n  left: 0.6rem;\n  top: 50%;\n  transform: translateY(-50%);\n  background: none;\n  border: none;\n  cursor: pointer;\n  font-size: 1rem;\n  opacity: 0.6;\n}\n.toggle-pw:hover { opacity: 1; }\n.error {\n  color: #fca5a5;\n  font-size: 0.8rem;\n  margin: 0.5rem 0;\n}\n.btn-row {\n  display: flex;\n  gap: 0.6rem;\n  margin-top: 0.5rem;\n}\n.btn-submit {\n  flex: 1;\n  padding: 0.8rem;\n  border: none;\n  border-radius: 0.5rem;\n  background: linear-gradient(135deg, #06b6d4, #0891b2);\n  color: #fff;\n  font-weight: 700;\n  cursor: pointer;\n  font-size: 0.95rem;\n}\n.btn-register {\n  flex: 1;\n  padding: 0.8rem;\n  border: 1px solid rgba(255,255,255,0.15);\n  border-radius: 0.5rem;\n  background: rgba(255,255,255,0.06);\n  color: #e2e8f0;\n  font-weight: 700;\n  cursor: pointer;\n  font-size: 0.95rem;\n}\n.btn-register:hover {\n  background: rgba(255,255,255,0.1);\n}\n",
+      "start": 1783626227624,
+      "end": 1783626227624,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingLoginForm.vue"
+        ],
+        "names": [],
+        "mappings": "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",
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingLoginForm.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\nimport { ref } from 'vue'\nimport { useI18n } from '../../composables/useI18n'\n\nconst { t } = useI18n()\n\nconst email = ref('')\nconst password = ref('')\nconst showPassword = ref(false)\nconst formError = ref('')\n\nconst emit = defineEmits<{\n  (e: 'login', payload: { email: string; password: string }): void\n  (e: 'register'): void\n}>()\n\nfunction handleLogin() {\n  formError.value = ''\n  if (!email.value.trim() || !password.value) {\n    formError.value = t('auth.errors.fillAll')\n    return\n  }\n  emit('login', { email: email.value.trim(), password: password.value })\n}\n</script>\n\n<template>\n  <div class=\"login-card\" data-v-inspector=\"src/components/landing/LandingLoginForm.vue:28:3\">\n    <div class=\"form-step\" data-v-inspector=\"src/components/landing/LandingLoginForm.vue:29:5\">\n      <form @submit.prevent=\"handleLogin\" data-v-inspector=\"src/components/landing/LandingLoginForm.vue:30:7\">\n        <div class=\"field\" data-v-inspector=\"src/components/landing/LandingLoginForm.vue:31:9\">\n          <label data-v-inspector=\"src/components/landing/LandingLoginForm.vue:32:11\">{{ t('auth.emailLabel') }}</label>\n          <input v-model=\"email\" type=\"email\" required autocomplete=\"username\" name=\"email\" data-v-inspector=\"src/components/landing/LandingLoginForm.vue:33:11\" />\n        </div>\n        <div class=\"field\" data-v-inspector=\"src/components/landing/LandingLoginForm.vue:35:9\">\n          <label data-v-inspector=\"src/components/landing/LandingLoginForm.vue:36:11\">{{ t('auth.passwordLabel') }}</label>\n          <div class=\"password-wrap\" data-v-inspector=\"src/components/landing/LandingLoginForm.vue:37:11\">\n            <input v-model=\"password\" :type=\"showPassword ? 'text' : 'password'\" required autocomplete=\"current-password\" name=\"password\" data-v-inspector=\"src/components/landing/LandingLoginForm.vue:38:13\" />\n            <button type=\"button\" class=\"toggle-pw\" @click.prevent=\"showPassword = !showPassword\" data-v-inspector=\"src/components/landing/LandingLoginForm.vue:39:13\">\n              {{ showPassword ? '🙈' : '👁️' }}\n            </button>\n          </div>\n        </div>\n        <p v-if=\"formError\" class=\"error\" data-v-inspector=\"src/components/landing/LandingLoginForm.vue:44:9\">{{ formError }}</p>\n        <div class=\"btn-row\" data-v-inspector=\"src/components/landing/LandingLoginForm.vue:45:9\">\n          <button type=\"submit\" class=\"btn-submit\" data-v-inspector=\"src/components/landing/LandingLoginForm.vue:46:11\">\n            {{ t('auth.loginBtn') }}\n          </button>\n          <router-link to=\"/register\" class=\"btn-register\" data-v-inspector=\"src/components/landing/LandingLoginForm.vue:49:11\">\n            {{ t('auth.registerBtn') }}\n          </router-link>\n        </div>\n      </form>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.login-card {\n  width: 100%;\n  padding: 1.5rem;\n  border-radius: 1rem;\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.08);\n  backdrop-filter: blur(12px);\n}\n.field {\n  margin-bottom: 1rem;\n  text-align: right;\n}\n:global(html[dir='ltr']) .field {\n  text-align: left;\n}\n.field label {\n  display: block;\n  font-size: 0.82rem;\n  margin-bottom: 0.35rem;\n  color: #cbd5e1;\n}\n.field input {\n  width: 100%;\n  padding: 0.65rem 0.9rem;\n  border-radius: 0.5rem;\n  border: 1px solid #334155;\n  background: #0f172a;\n  color: #e2e8f0;\n  font-size: 0.9rem;\n  box-sizing: border-box;\n}\n.field input:focus {\n  outline: none;\n  border-color: #06b6d4;\n}\n.password-wrap {\n  position: relative;\n}\n.toggle-pw {\n  position: absolute;\n  left: 0.6rem;\n  top: 50%;\n  transform: translateY(-50%);\n  background: none;\n  border: none;\n  cursor: pointer;\n  font-size: 1rem;\n  opacity: 0.6;\n}\n.toggle-pw:hover { opacity: 1; }\n.error {\n  color: #fca5a5;\n  font-size: 0.8rem;\n  margin: 0.5rem 0;\n}\n.btn-row {\n  display: flex;\n  gap: 0.6rem;\n  margin-top: 0.5rem;\n}\n.btn-submit {\n  flex: 1;\n  padding: 0.8rem;\n  border: none;\n  border-radius: 0.5rem;\n  background: linear-gradient(135deg, #06b6d4, #0891b2);\n  color: #fff;\n  font-weight: 700;\n  cursor: pointer;\n  font-size: 0.95rem;\n}\n.btn-register {\n  flex: 1;\n  padding: 0.8rem;\n  border: 1px solid rgba(255,255,255,0.15);\n  border-radius: 0.5rem;\n  background: rgba(255,255,255,0.06);\n  color: #e2e8f0;\n  font-weight: 700;\n  cursor: pointer;\n  font-size: 0.95rem;\n}\n.btn-register:hover {\n  background: rgba(255,255,255,0.1);\n}\n</style>\n"
+        ]
+      }
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626227624,
+      "end": 1783626227624,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "\n.login-card {\n  width: 100%;\n  padding: 1.5rem;\n  border-radius: 1rem;\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.08);\n  backdrop-filter: blur(12px);\n}\n.field {\n  margin-bottom: 1rem;\n  text-align: right;\n}\n:global(html[dir='ltr']) .field {\n  text-align: left;\n}\n.field label {\n  display: block;\n  font-size: 0.82rem;\n  margin-bottom: 0.35rem;\n  color: #cbd5e1;\n}\n.field input {\n  width: 100%;\n  padding: 0.65rem 0.9rem;\n  border-radius: 0.5rem;\n  border: 1px solid #334155;\n  background: #0f172a;\n  color: #e2e8f0;\n  font-size: 0.9rem;\n  box-sizing: border-box;\n}\n.field input:focus {\n  outline: none;\n  border-color: #06b6d4;\n}\n.password-wrap {\n  position: relative;\n}\n.toggle-pw {\n  position: absolute;\n  left: 0.6rem;\n  top: 50%;\n  transform: translateY(-50%);\n  background: none;\n  border: none;\n  cursor: pointer;\n  font-size: 1rem;\n  opacity: 0.6;\n}\n.toggle-pw:hover { opacity: 1; }\n.error {\n  color: #fca5a5;\n  font-size: 0.8rem;\n  margin: 0.5rem 0;\n}\n.btn-row {\n  display: flex;\n  gap: 0.6rem;\n  margin-top: 0.5rem;\n}\n.btn-submit {\n  flex: 1;\n  padding: 0.8rem;\n  border: none;\n  border-radius: 0.5rem;\n  background: linear-gradient(135deg, #06b6d4, #0891b2);\n  color: #fff;\n  font-weight: 700;\n  cursor: pointer;\n  font-size: 0.95rem;\n}\n.btn-register {\n  flex: 1;\n  padding: 0.8rem;\n  border: 1px solid rgba(255,255,255,0.15);\n  border-radius: 0.5rem;\n  background: rgba(255,255,255,0.06);\n  color: #e2e8f0;\n  font-weight: 700;\n  cursor: pointer;\n  font-size: 0.95rem;\n}\n.btn-register:hover {\n  background: rgba(255,255,255,0.1);\n}\n",
+      "start": 1783626227624,
+      "end": 1783626227624,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.login-card {\n  width: 100%;\n  padding: 1.5rem;\n  border-radius: 1rem;\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.08);\n  backdrop-filter: blur(12px);\n}\n.field {\n  margin-bottom: 1rem;\n  text-align: right;\n}\n:global(html[dir='ltr']) .field {\n  text-align: left;\n}\n.field label {\n  display: block;\n  font-size: 0.82rem;\n  margin-bottom: 0.35rem;\n  color: #cbd5e1;\n}\n.field input {\n  width: 100%;\n  padding: 0.65rem 0.9rem;\n  border-radius: 0.5rem;\n  border: 1px solid #334155;\n  background: #0f172a;\n  color: #e2e8f0;\n  font-size: 0.9rem;\n  box-sizing: border-box;\n}\n.field input:focus {\n  outline: none;\n  border-color: #06b6d4;\n}\n.password-wrap {\n  position: relative;\n}\n.toggle-pw {\n  position: absolute;\n  left: 0.6rem;\n  top: 50%;\n  transform: translateY(-50%);\n  background: none;\n  border: none;\n  cursor: pointer;\n  font-size: 1rem;\n  opacity: 0.6;\n}\n.toggle-pw:hover { opacity: 1; }\n.error {\n  color: #fca5a5;\n  font-size: 0.8rem;\n  margin: 0.5rem 0;\n}\n.btn-row {\n  display: flex;\n  gap: 0.6rem;\n  margin-top: 0.5rem;\n}\n.btn-submit {\n  flex: 1;\n  padding: 0.8rem;\n  border: none;\n  border-radius: 0.5rem;\n  background: linear-gradient(135deg, #06b6d4, #0891b2);\n  color: #fff;\n  font-weight: 700;\n  cursor: pointer;\n  font-size: 0.95rem;\n}\n.btn-register {\n  flex: 1;\n  padding: 0.8rem;\n  border: 1px solid rgba(255,255,255,0.15);\n  border-radius: 0.5rem;\n  background: rgba(255,255,255,0.06);\n  color: #e2e8f0;\n  font-weight: 700;\n  cursor: pointer;\n  font-size: 0.95rem;\n}\n.btn-register:hover {\n  background: rgba(255,255,255,0.1);\n}\n",
+      "start": 1783626227624,
+      "end": 1783626227624,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783626227624,
+      "end": 1783626227624,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626227624,
+      "end": 1783626227624,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626227624,
+      "end": 1783626227624,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.login-card[data-v-8d494e43] {\n  width: 100%;\n  padding: 1.5rem;\n  border-radius: 1rem;\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.08);\n  backdrop-filter: blur(12px);\n}\n.field[data-v-8d494e43] {\n  margin-bottom: 1rem;\n  text-align: right;\n}\nhtml[dir='ltr'] {\n  text-align: left;\n}\n.field label[data-v-8d494e43] {\n  display: block;\n  font-size: 0.82rem;\n  margin-bottom: 0.35rem;\n  color: #cbd5e1;\n}\n.field input[data-v-8d494e43] {\n  width: 100%;\n  padding: 0.65rem 0.9rem;\n  border-radius: 0.5rem;\n  border: 1px solid #334155;\n  background: #0f172a;\n  color: #e2e8f0;\n  font-size: 0.9rem;\n  box-sizing: border-box;\n}\n.field input[data-v-8d494e43]:focus {\n  outline: none;\n  border-color: #06b6d4;\n}\n.password-wrap[data-v-8d494e43] {\n  position: relative;\n}\n.toggle-pw[data-v-8d494e43] {\n  position: absolute;\n  left: 0.6rem;\n  top: 50%;\n  transform: translateY(-50%);\n  background: none;\n  border: none;\n  cursor: pointer;\n  font-size: 1rem;\n  opacity: 0.6;\n}\n.toggle-pw[data-v-8d494e43]:hover { opacity: 1;\n}\n.error[data-v-8d494e43] {\n  color: #fca5a5;\n  font-size: 0.8rem;\n  margin: 0.5rem 0;\n}\n.btn-row[data-v-8d494e43] {\n  display: flex;\n  gap: 0.6rem;\n  margin-top: 0.5rem;\n}\n.btn-submit[data-v-8d494e43] {\n  flex: 1;\n  padding: 0.8rem;\n  border: none;\n  border-radius: 0.5rem;\n  background: linear-gradient(135deg, #06b6d4, #0891b2);\n  color: #fff;\n  font-weight: 700;\n  cursor: pointer;\n  font-size: 0.95rem;\n}\n.btn-register[data-v-8d494e43] {\n  flex: 1;\n  padding: 0.8rem;\n  border: 1px solid rgba(255,255,255,0.15);\n  border-radius: 0.5rem;\n  background: rgba(255,255,255,0.06);\n  color: #e2e8f0;\n  font-weight: 700;\n  cursor: pointer;\n  font-size: 0.95rem;\n}\n.btn-register[data-v-8d494e43]:hover {\n  background: rgba(255,255,255,0.1);\n}\n",
+      "start": 1783626227628,
+      "end": 1783626227635,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626227636,
+      "end": 1783626227636,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingLoginForm.vue?vue&type=style&index=0&scoped=8d494e43&lang.css\"\nconst __vite__css = \"\\n.login-card[data-v-8d494e43] {\\n  width: 100%;\\n  padding: 1.5rem;\\n  border-radius: 1rem;\\n  background: rgba(255,255,255,0.03);\\n  border: 1px solid rgba(255,255,255,0.08);\\n  backdrop-filter: blur(12px);\\n}\\n.field[data-v-8d494e43] {\\n  margin-bottom: 1rem;\\n  text-align: right;\\n}\\nhtml[dir='ltr'] {\\n  text-align: left;\\n}\\n.field label[data-v-8d494e43] {\\n  display: block;\\n  font-size: 0.82rem;\\n  margin-bottom: 0.35rem;\\n  color: #cbd5e1;\\n}\\n.field input[data-v-8d494e43] {\\n  width: 100%;\\n  padding: 0.65rem 0.9rem;\\n  border-radius: 0.5rem;\\n  border: 1px solid #334155;\\n  background: #0f172a;\\n  color: #e2e8f0;\\n  font-size: 0.9rem;\\n  box-sizing: border-box;\\n}\\n.field input[data-v-8d494e43]:focus {\\n  outline: none;\\n  border-color: #06b6d4;\\n}\\n.password-wrap[data-v-8d494e43] {\\n  position: relative;\\n}\\n.toggle-pw[data-v-8d494e43] {\\n  position: absolute;\\n  left: 0.6rem;\\n  top: 50%;\\n  transform: translateY(-50%);\\n  background: none;\\n  border: none;\\n  cursor: pointer;\\n  font-size: 1rem;\\n  opacity: 0.6;\\n}\\n.toggle-pw[data-v-8d494e43]:hover { opacity: 1;\\n}\\n.error[data-v-8d494e43] {\\n  color: #fca5a5;\\n  font-size: 0.8rem;\\n  margin: 0.5rem 0;\\n}\\n.btn-row[data-v-8d494e43] {\\n  display: flex;\\n  gap: 0.6rem;\\n  margin-top: 0.5rem;\\n}\\n.btn-submit[data-v-8d494e43] {\\n  flex: 1;\\n  padding: 0.8rem;\\n  border: none;\\n  border-radius: 0.5rem;\\n  background: linear-gradient(135deg, #06b6d4, #0891b2);\\n  color: #fff;\\n  font-weight: 700;\\n  cursor: pointer;\\n  font-size: 0.95rem;\\n}\\n.btn-register[data-v-8d494e43] {\\n  flex: 1;\\n  padding: 0.8rem;\\n  border: 1px solid rgba(255,255,255,0.15);\\n  border-radius: 0.5rem;\\n  background: rgba(255,255,255,0.06);\\n  color: #e2e8f0;\\n  font-weight: 700;\\n  cursor: pointer;\\n  font-size: 0.95rem;\\n}\\n.btn-register[data-v-8d494e43]:hover {\\n  background: rgba(255,255,255,0.1);\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626227636,
+      "end": 1783626227636,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626227636,
+      "end": 1783626227636,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626227636,
+      "end": 1783626227636,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626227636,
+      "end": 1783626227636,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626227636,
+      "end": 1783626227636,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626227636,
+      "end": 1783626227636,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626227636,
+      "end": 1783626227636,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626227636,
+      "end": 1783626227636,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/components/landing/LandingLoginForm.vue?vue&type=style&index=0&scoped=8d494e43&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingLoginForm.vue?vue&type=style&index=0&scoped=8d494e43&lang.css\"\nconst __vite__css = \"\\n.login-card[data-v-8d494e43] {\\n  width: 100%;\\n  padding: 1.5rem;\\n  border-radius: 1rem;\\n  background: rgba(255,255,255,0.03);\\n  border: 1px solid rgba(255,255,255,0.08);\\n  backdrop-filter: blur(12px);\\n}\\n.field[data-v-8d494e43] {\\n  margin-bottom: 1rem;\\n  text-align: right;\\n}\\nhtml[dir='ltr'] {\\n  text-align: left;\\n}\\n.field label[data-v-8d494e43] {\\n  display: block;\\n  font-size: 0.82rem;\\n  margin-bottom: 0.35rem;\\n  color: #cbd5e1;\\n}\\n.field input[data-v-8d494e43] {\\n  width: 100%;\\n  padding: 0.65rem 0.9rem;\\n  border-radius: 0.5rem;\\n  border: 1px solid #334155;\\n  background: #0f172a;\\n  color: #e2e8f0;\\n  font-size: 0.9rem;\\n  box-sizing: border-box;\\n}\\n.field input[data-v-8d494e43]:focus {\\n  outline: none;\\n  border-color: #06b6d4;\\n}\\n.password-wrap[data-v-8d494e43] {\\n  position: relative;\\n}\\n.toggle-pw[data-v-8d494e43] {\\n  position: absolute;\\n  left: 0.6rem;\\n  top: 50%;\\n  transform: translateY(-50%);\\n  background: none;\\n  border: none;\\n  cursor: pointer;\\n  font-size: 1rem;\\n  opacity: 0.6;\\n}\\n.toggle-pw[data-v-8d494e43]:hover { opacity: 1;\\n}\\n.error[data-v-8d494e43] {\\n  color: #fca5a5;\\n  font-size: 0.8rem;\\n  margin: 0.5rem 0;\\n}\\n.btn-row[data-v-8d494e43] {\\n  display: flex;\\n  gap: 0.6rem;\\n  margin-top: 0.5rem;\\n}\\n.btn-submit[data-v-8d494e43] {\\n  flex: 1;\\n  padding: 0.8rem;\\n  border: none;\\n  border-radius: 0.5rem;\\n  background: linear-gradient(135deg, #06b6d4, #0891b2);\\n  color: #fff;\\n  font-weight: 700;\\n  cursor: pointer;\\n  font-size: 0.95rem;\\n}\\n.btn-register[data-v-8d494e43] {\\n  flex: 1;\\n  padding: 0.8rem;\\n  border: 1px solid rgba(255,255,255,0.15);\\n  border-radius: 0.5rem;\\n  background: rgba(255,255,255,0.06);\\n  color: #e2e8f0;\\n  font-weight: 700;\\n  cursor: pointer;\\n  font-size: 0.95rem;\\n}\\n.btn-register[data-v-8d494e43]:hover {\\n  background: rgba(255,255,255,0.1);\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626227636,
+      "end": 1783626227636,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

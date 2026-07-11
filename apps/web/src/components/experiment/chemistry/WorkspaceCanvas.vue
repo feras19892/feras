@@ -15,8 +15,8 @@ import {
 } from '../../../composables/chemistry/useLabSimulation';
 import { handleDropExited } from '../../../composables/chemistry/useDropPhysics';
 import { undo, redo, canUndo, canRedo, clearHistory } from '../../../composables/chemistry/useChemistryHistory';
-import { pipetteDraw, pipetteDispense } from '../../../composables/chemistry/usePipetteActions';
-import { execAction, toggleSepFunnelValve, toggleBurner, tareBalance, tareContainer } from '../../../composables/chemistry/useExecActions';
+import { pipetteDraw, pipetteDispense, pipetteDrawAmount, pipetteDispenseAmount, pipetteDrawFrom, pipetteDispenseTo, pipetteFill, pipetteEmpty } from '../../../composables/chemistry/usePipetteActions';
+import { execAction, toggleSepFunnelValve, toggleBurner, tareBalance, tareContainer, buretteDropOne } from '../../../composables/chemistry/useExecActions';
 import { useI18n } from '../../../composables/useI18n';
 const { t } = useI18n();
 import { useWorkspaceDrag } from '../../../composables/chemistry/useWorkspaceDrag';
@@ -102,8 +102,15 @@ function _toggleSepFunnelValve(item: LabItem) { toggleSepFunnelValve(item, selec
 function _toggleBurner(item: LabItem) { toggleBurner(item, selectedItem, emit); }
 function _tareBalance(item: LabItem) { tareBalance(item, selectedItem, emit); }
 function _tareContainer(item: LabItem) { tareContainer(item, selectedItem, emit); }
+function _buretteDropOne(item: LabItem) { buretteDropOne(item, selectedItem, emit); }
 function _pipetteDraw(item: LabItem) { pipetteDraw(item, selectedItem, emit); }
 function _pipetteDispense(item: LabItem) { pipetteDispense(item, selectedItem, emit); }
+function _pipetteDrawAmount(item: LabItem, amount: number) { pipetteDrawAmount(item, amount, selectedItem, emit); }
+function _pipetteDispenseAmount(item: LabItem, amount: number) { pipetteDispenseAmount(item, amount, selectedItem, emit); }
+function _pipetteDrawFrom(item: LabItem, targetUid: string, amount: number) { pipetteDrawFrom(item, targetUid, amount, selectedItem, emit); }
+function _pipetteDispenseTo(item: LabItem, targetUid: string, amount: number) { pipetteDispenseTo(item, targetUid, amount, selectedItem, emit); }
+function _pipetteFill(item: LabItem, amount: number) { pipetteFill(item, amount, selectedItem, emit); }
+function _pipetteEmpty(item: LabItem) { pipetteEmpty(item, selectedItem, emit); }
 
 /* ---- Computed ---- */
 const selectedState = computed<ToolState | null>(() => buildToolState(selectedItem.value));
@@ -205,6 +212,13 @@ defineExpose({
       @toggle-burner="_toggleBurner(selectedItem)"
       @pipette-draw="_pipetteDraw(selectedItem!)"
       @pipette-dispense="_pipetteDispense(selectedItem!)"
+      @pipette-draw-amount="(amount: number) => _pipetteDrawAmount(selectedItem!, amount)"
+      @pipette-dispense-amount="(amount: number) => _pipetteDispenseAmount(selectedItem!, amount)"
+      @pipette-draw-from="(targetUid: string, amount: number) => _pipetteDrawFrom(selectedItem!, targetUid, amount)"
+      @pipette-dispense-to="(targetUid: string, amount: number) => _pipetteDispenseTo(selectedItem!, targetUid, amount)"
+      @pipette-fill="(amount: number) => _pipetteFill(selectedItem!, amount)"
+      @pipette-empty="_pipetteEmpty(selectedItem!)"
+      @burette-drop="_buretteDropOne(selectedItem!)"
       @tare="_tareBalance(selectedItem)"
       @tare-container="_tareContainer(selectedItem)"
       @intensity-change="(val) => { if(selectedItem){getBurnerState(selectedItem.uid).intensity = val; emit('select', selectedItem, buildToolState(selectedItem));} }"

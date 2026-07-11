@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabComputedsNew2.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { computed, type Ref, type Reactive } from 'vue'\nimport type { CircuitComponent } from './types'\n\nexport function createNewComputeds2(\n  components: Reactive<CircuitComponent[]>,\n  running: Ref<boolean>,\n  activePresetId: Ref<string | null>,\n) {\n  const isCompound = computed(() => activePresetId.value === 'compound-circuit')\n  const compoundData = computed(() => {\n    if (!isCompound.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const resistors = components.filter(c => c.type === 'resistor')\n    if (!batt || resistors.length < 3) return null\n    const V = batt.value\n    const R1 = resistors[0].value, R2 = resistors[1].value, R3 = resistors[2].value\n    const Rpar = (R2 * R3) / (R2 + R3)\n    const Req = R1 + Rpar\n    const I = V / Req\n    const V1 = I * R1, Vpar = I * Rpar\n    const I2 = Vpar / R2, I3 = Vpar / R3\n    return { V, R1, R2, R3, Rpar, Req, I, V1, Vpar, I2, I3 }\n  })\n  const compoundReading = computed(() => {\n    if (!compoundData.value || !running.value) return { V: 0, I: 0, Req: 0, V1: 0, Vpar: 0, I2: 0, I3: 0 }\n    const d = compoundData.value\n    return { V: d.V, I: d.I, Req: d.Req, V1: d.V1, Vpar: d.Vpar, I2: d.I2, I3: d.I3 }\n  })\n\n  const isEMF = computed(() => activePresetId.value === 'emf-measurement')\n  const emfData = computed(() => {\n    if (!isEMF.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const sw = components.find(c => c.type === 'switch')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const EMF = batt.value, r = batt._internalR ?? 0, R = res.value\n    const closed = sw ? sw.value === 1 : true\n    if (closed) {\n      const I = EMF / (R + r), Vt = EMF - I * r\n      return { EMF, r, R, I, Vt, closed: true }\n    }\n    return { EMF, r, R, I: 0, Vt: EMF, closed: false }\n  })\n  const emfReading = computed(() => {\n    if (!emfData.value || !running.value) return { EMF: 0, Vt: 0, I: 0, r: 0, closed: false }\n    const d = emfData.value\n    return { EMF: d.EMF, Vt: d.Vt, I: d.I, r: d.r, closed: d.closed }\n  })\n\n  const isTempR = computed(() => activePresetId.value === 'temperature-resistance')\n  const tempRData = computed(() => {\n    if (!isTempR.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const resistors = components.filter(c => c.type === 'resistor')\n    if (!batt || resistors.length < 2) return null\n    const V = batt.value, R0 = resistors[0].value, T = resistors[1].value\n    const alpha = 0.004, T0 = 20\n    const R = R0 * (1 + alpha * (T - T0))\n    const I = V / R, Vm = V\n    return { V, R0, T, alpha, R, I, Vm }\n  })\n  const tempRReading = computed(() => {\n    if (!tempRData.value || !running.value) return { V: 0, I: 0, R: 0, R0: 0, T: 0 }\n    const d = tempRData.value\n    return { V: d.Vm, I: d.I, R: d.R, R0: d.R0, T: d.T }\n  })\n\n  const isCellsSeries = computed(() => activePresetId.value === 'cells-series')\n  const cellsSeriesData = computed(() => {\n    if (!isCellsSeries.value) return null\n    const batteries = components.filter(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (batteries.length < 2 || !res) return null\n    const EMF = batteries.reduce((s, b) => s + b.value, 0)\n    const r = batteries.reduce((s, b) => s + (b._internalR ?? 0), 0)\n    const R = res.value\n    const I = EMF / (R + r), Vt = I * R\n    return { EMF, r, R, I, Vt }\n  })\n  const cellsSeriesReading = computed(() => {\n    if (!cellsSeriesData.value || !running.value) return { EMF: 0, Vt: 0, I: 0, R: 0 }\n    const d = cellsSeriesData.value\n    return { EMF: d.EMF, Vt: d.Vt, I: d.I, R: d.R }\n  })\n\n  const isCellsParallel = computed(() => activePresetId.value === 'cells-parallel')\n  const cellsParallelData = computed(() => {\n    if (!isCellsParallel.value) return null\n    const batteries = components.filter(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (batteries.length < 2 || !res) return null\n    const EMF = batteries.reduce((s, b) => s + b.value, 0) / batteries.length\n    const rVals = batteries.map(b => b._internalR ?? 0)\n    const r = 1 / rVals.reduce((s, r) => s + 1 / r, 0)\n    const R = res.value\n    const I = EMF / (R + r), Vt = I * R\n    return { EMF, r, R, I, Vt }\n  })\n  const cellsParallelReading = computed(() => {\n    if (!cellsParallelData.value || !running.value) return { EMF: 0, Vt: 0, I: 0, R: 0 }\n    const d = cellsParallelData.value\n    return { EMF: d.EMF, Vt: d.Vt, I: d.I, R: d.R }\n  })\n\n  const isRheostat = computed(() => activePresetId.value === 'rheostat')\n  const rheostatData = computed(() => {\n    if (!isRheostat.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const V = batt.value, R = res.value\n    if (R === 0) return null\n    const I = V / R, Vm = V\n    return { V, R, I, Vm }\n  })\n  const rheostatReading = computed(() => {\n    if (!rheostatData.value || !running.value) return { V: 0, I: 0, R: 0 }\n    const d = rheostatData.value\n    return { V: d.Vm, I: d.I, R: d.R }\n  })\n\n  return {\n    isCompound, compoundData, compoundReading,\n    isEMF, emfData, emfReading,\n    isTempR, tempRData, tempRReading,\n    isCellsSeries, cellsSeriesData, cellsSeriesReading,\n    isCellsParallel, cellsParallelData, cellsParallelReading,\n    isRheostat, rheostatData, rheostatReading,\n  }\n}\n",
-      "start": 1783634642573,
-      "end": 1783634642822,
+      "start": 1783626239196,
+      "end": 1783626239196
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626239196,
+      "end": 1783626239196,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { computed, type Ref, type Reactive } from 'vue'\nimport type { CircuitComponent } from './types'\n\nexport function createNewComputeds2(\n  components: Reactive<CircuitComponent[]>,\n  running: Ref<boolean>,\n  activePresetId: Ref<string | null>,\n) {\n  const isCompound = computed(() => activePresetId.value === 'compound-circuit')\n  const compoundData = computed(() => {\n    if (!isCompound.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const resistors = components.filter(c => c.type === 'resistor')\n    if (!batt || resistors.length < 3) return null\n    const V = batt.value\n    const R1 = resistors[0].value, R2 = resistors[1].value, R3 = resistors[2].value\n    const Rpar = (R2 * R3) / (R2 + R3)\n    const Req = R1 + Rpar\n    const I = V / Req\n    const V1 = I * R1, Vpar = I * Rpar\n    const I2 = Vpar / R2, I3 = Vpar / R3\n    return { V, R1, R2, R3, Rpar, Req, I, V1, Vpar, I2, I3 }\n  })\n  const compoundReading = computed(() => {\n    if (!compoundData.value || !running.value) return { V: 0, I: 0, Req: 0, V1: 0, Vpar: 0, I2: 0, I3: 0 }\n    const d = compoundData.value\n    return { V: d.V, I: d.I, Req: d.Req, V1: d.V1, Vpar: d.Vpar, I2: d.I2, I3: d.I3 }\n  })\n\n  const isEMF = computed(() => activePresetId.value === 'emf-measurement')\n  const emfData = computed(() => {\n    if (!isEMF.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const sw = components.find(c => c.type === 'switch')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const EMF = batt.value, r = batt._internalR ?? 0, R = res.value\n    const closed = sw ? sw.value === 1 : true\n    if (closed) {\n      const I = EMF / (R + r), Vt = EMF - I * r\n      return { EMF, r, R, I, Vt, closed: true }\n    }\n    return { EMF, r, R, I: 0, Vt: EMF, closed: false }\n  })\n  const emfReading = computed(() => {\n    if (!emfData.value || !running.value) return { EMF: 0, Vt: 0, I: 0, r: 0, closed: false }\n    const d = emfData.value\n    return { EMF: d.EMF, Vt: d.Vt, I: d.I, r: d.r, closed: d.closed }\n  })\n\n  const isTempR = computed(() => activePresetId.value === 'temperature-resistance')\n  const tempRData = computed(() => {\n    if (!isTempR.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const resistors = components.filter(c => c.type === 'resistor')\n    if (!batt || resistors.length < 2) return null\n    const V = batt.value, R0 = resistors[0].value, T = resistors[1].value\n    const alpha = 0.004, T0 = 20\n    const R = R0 * (1 + alpha * (T - T0))\n    const I = V / R, Vm = V\n    return { V, R0, T, alpha, R, I, Vm }\n  })\n  const tempRReading = computed(() => {\n    if (!tempRData.value || !running.value) return { V: 0, I: 0, R: 0, R0: 0, T: 0 }\n    const d = tempRData.value\n    return { V: d.Vm, I: d.I, R: d.R, R0: d.R0, T: d.T }\n  })\n\n  const isCellsSeries = computed(() => activePresetId.value === 'cells-series')\n  const cellsSeriesData = computed(() => {\n    if (!isCellsSeries.value) return null\n    const batteries = components.filter(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (batteries.length < 2 || !res) return null\n    const EMF = batteries.reduce((s, b) => s + b.value, 0)\n    const r = batteries.reduce((s, b) => s + (b._internalR ?? 0), 0)\n    const R = res.value\n    const I = EMF / (R + r), Vt = I * R\n    return { EMF, r, R, I, Vt }\n  })\n  const cellsSeriesReading = computed(() => {\n    if (!cellsSeriesData.value || !running.value) return { EMF: 0, Vt: 0, I: 0, R: 0 }\n    const d = cellsSeriesData.value\n    return { EMF: d.EMF, Vt: d.Vt, I: d.I, R: d.R }\n  })\n\n  const isCellsParallel = computed(() => activePresetId.value === 'cells-parallel')\n  const cellsParallelData = computed(() => {\n    if (!isCellsParallel.value) return null\n    const batteries = components.filter(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (batteries.length < 2 || !res) return null\n    const EMF = batteries.reduce((s, b) => s + b.value, 0) / batteries.length\n    const rVals = batteries.map(b => b._internalR ?? 0)\n    const r = 1 / rVals.reduce((s, r) => s + 1 / r, 0)\n    const R = res.value\n    const I = EMF / (R + r), Vt = I * R\n    return { EMF, r, R, I, Vt }\n  })\n  const cellsParallelReading = computed(() => {\n    if (!cellsParallelData.value || !running.value) return { EMF: 0, Vt: 0, I: 0, R: 0 }\n    const d = cellsParallelData.value\n    return { EMF: d.EMF, Vt: d.Vt, I: d.I, R: d.R }\n  })\n\n  const isRheostat = computed(() => activePresetId.value === 'rheostat')\n  const rheostatData = computed(() => {\n    if (!isRheostat.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const V = batt.value, R = res.value\n    if (R === 0) return null\n    const I = V / R, Vm = V\n    return { V, R, I, Vm }\n  })\n  const rheostatReading = computed(() => {\n    if (!rheostatData.value || !running.value) return { V: 0, I: 0, R: 0 }\n    const d = rheostatData.value\n    return { V: d.Vm, I: d.I, R: d.R }\n  })\n\n  return {\n    isCompound, compoundData, compoundReading,\n    isEMF, emfData, emfReading,\n    isTempR, tempRData, tempRReading,\n    isCellsSeries, cellsSeriesData, cellsSeriesReading,\n    isCellsParallel, cellsParallelData, cellsParallelReading,\n    isRheostat, rheostatData, rheostatReading,\n  }\n}\n",
+      "start": 1783626239196,
+      "end": 1783626239196,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634642822,
-      "end": 1783634642822,
+      "start": 1783626239196,
+      "end": 1783626239196,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { computed } from \"vue\";\nexport function createNewComputeds2(components, running, activePresetId) {\n  const isCompound = computed(() => activePresetId.value === \"compound-circuit\");\n  const compoundData = computed(() => {\n    if (!isCompound.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const resistors = components.filter((c) => c.type === \"resistor\");\n    if (!batt || resistors.length < 3) return null;\n    const V = batt.value;\n    const R1 = resistors[0].value, R2 = resistors[1].value, R3 = resistors[2].value;\n    const Rpar = R2 * R3 / (R2 + R3);\n    const Req = R1 + Rpar;\n    const I = V / Req;\n    const V1 = I * R1, Vpar = I * Rpar;\n    const I2 = Vpar / R2, I3 = Vpar / R3;\n    return { V, R1, R2, R3, Rpar, Req, I, V1, Vpar, I2, I3 };\n  });\n  const compoundReading = computed(() => {\n    if (!compoundData.value || !running.value) return { V: 0, I: 0, Req: 0, V1: 0, Vpar: 0, I2: 0, I3: 0 };\n    const d = compoundData.value;\n    return { V: d.V, I: d.I, Req: d.Req, V1: d.V1, Vpar: d.Vpar, I2: d.I2, I3: d.I3 };\n  });\n  const isEMF = computed(() => activePresetId.value === \"emf-measurement\");\n  const emfData = computed(() => {\n    if (!isEMF.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const sw = components.find((c) => c.type === \"switch\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (!batt || !res) return null;\n    const EMF = batt.value, r = batt._internalR ?? 0, R = res.value;\n    const closed = sw ? sw.value === 1 : true;\n    if (closed) {\n      const I = EMF / (R + r), Vt = EMF - I * r;\n      return { EMF, r, R, I, Vt, closed: true };\n    }\n    return { EMF, r, R, I: 0, Vt: EMF, closed: false };\n  });\n  const emfReading = computed(() => {\n    if (!emfData.value || !running.value) return { EMF: 0, Vt: 0, I: 0, r: 0, closed: false };\n    const d = emfData.value;\n    return { EMF: d.EMF, Vt: d.Vt, I: d.I, r: d.r, closed: d.closed };\n  });\n  const isTempR = computed(() => activePresetId.value === \"temperature-resistance\");\n  const tempRData = computed(() => {\n    if (!isTempR.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const resistors = components.filter((c) => c.type === \"resistor\");\n    if (!batt || resistors.length < 2) return null;\n    const V = batt.value, R0 = resistors[0].value, T = resistors[1].value;\n    const alpha = 4e-3, T0 = 20;\n    const R = R0 * (1 + alpha * (T - T0));\n    const I = V / R, Vm = V;\n    return { V, R0, T, alpha, R, I, Vm };\n  });\n  const tempRReading = computed(() => {\n    if (!tempRData.value || !running.value) return { V: 0, I: 0, R: 0, R0: 0, T: 0 };\n    const d = tempRData.value;\n    return { V: d.Vm, I: d.I, R: d.R, R0: d.R0, T: d.T };\n  });\n  const isCellsSeries = computed(() => activePresetId.value === \"cells-series\");\n  const cellsSeriesData = computed(() => {\n    if (!isCellsSeries.value) return null;\n    const batteries = components.filter((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (batteries.length < 2 || !res) return null;\n    const EMF = batteries.reduce((s, b) => s + b.value, 0);\n    const r = batteries.reduce((s, b) => s + (b._internalR ?? 0), 0);\n    const R = res.value;\n    const I = EMF / (R + r), Vt = I * R;\n    return { EMF, r, R, I, Vt };\n  });\n  const cellsSeriesReading = computed(() => {\n    if (!cellsSeriesData.value || !running.value) return { EMF: 0, Vt: 0, I: 0, R: 0 };\n    const d = cellsSeriesData.value;\n    return { EMF: d.EMF, Vt: d.Vt, I: d.I, R: d.R };\n  });\n  const isCellsParallel = computed(() => activePresetId.value === \"cells-parallel\");\n  const cellsParallelData = computed(() => {\n    if (!isCellsParallel.value) return null;\n    const batteries = components.filter((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (batteries.length < 2 || !res) return null;\n    const EMF = batteries.reduce((s, b) => s + b.value, 0) / batteries.length;\n    const rVals = batteries.map((b) => b._internalR ?? 0);\n    const r = 1 / rVals.reduce((s, r2) => s + 1 / r2, 0);\n    const R = res.value;\n    const I = EMF / (R + r), Vt = I * R;\n    return { EMF, r, R, I, Vt };\n  });\n  const cellsParallelReading = computed(() => {\n    if (!cellsParallelData.value || !running.value) return { EMF: 0, Vt: 0, I: 0, R: 0 };\n    const d = cellsParallelData.value;\n    return { EMF: d.EMF, Vt: d.Vt, I: d.I, R: d.R };\n  });\n  const isRheostat = computed(() => activePresetId.value === \"rheostat\");\n  const rheostatData = computed(() => {\n    if (!isRheostat.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (!batt || !res) return null;\n    const V = batt.value, R = res.value;\n    if (R === 0) return null;\n    const I = V / R, Vm = V;\n    return { V, R, I, Vm };\n  });\n  const rheostatReading = computed(() => {\n    if (!rheostatData.value || !running.value) return { V: 0, I: 0, R: 0 };\n    const d = rheostatData.value;\n    return { V: d.Vm, I: d.I, R: d.R };\n  });\n  return {\n    isCompound,\n    compoundData,\n    compoundReading,\n    isEMF,\n    emfData,\n    emfReading,\n    isTempR,\n    tempRData,\n    tempRReading,\n    isCellsSeries,\n    cellsSeriesData,\n    cellsSeriesReading,\n    isCellsParallel,\n    cellsParallelData,\n    cellsParallelReading,\n    isRheostat,\n    rheostatData,\n    rheostatReading\n  };\n}\n",
-      "start": 1783634642822,
-      "end": 1783634642885,
+      "start": 1783626239196,
+      "end": 1783626239759,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabComputedsNew2.ts"
+          "electricLabComputedsNew2.ts"
         ],
         "sourcesContent": [
           "import { computed, type Ref, type Reactive } from 'vue'\nimport type { CircuitComponent } from './types'\n\nexport function createNewComputeds2(\n  components: Reactive<CircuitComponent[]>,\n  running: Ref<boolean>,\n  activePresetId: Ref<string | null>,\n) {\n  const isCompound = computed(() => activePresetId.value === 'compound-circuit')\n  const compoundData = computed(() => {\n    if (!isCompound.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const resistors = components.filter(c => c.type === 'resistor')\n    if (!batt || resistors.length < 3) return null\n    const V = batt.value\n    const R1 = resistors[0].value, R2 = resistors[1].value, R3 = resistors[2].value\n    const Rpar = (R2 * R3) / (R2 + R3)\n    const Req = R1 + Rpar\n    const I = V / Req\n    const V1 = I * R1, Vpar = I * Rpar\n    const I2 = Vpar / R2, I3 = Vpar / R3\n    return { V, R1, R2, R3, Rpar, Req, I, V1, Vpar, I2, I3 }\n  })\n  const compoundReading = computed(() => {\n    if (!compoundData.value || !running.value) return { V: 0, I: 0, Req: 0, V1: 0, Vpar: 0, I2: 0, I3: 0 }\n    const d = compoundData.value\n    return { V: d.V, I: d.I, Req: d.Req, V1: d.V1, Vpar: d.Vpar, I2: d.I2, I3: d.I3 }\n  })\n\n  const isEMF = computed(() => activePresetId.value === 'emf-measurement')\n  const emfData = computed(() => {\n    if (!isEMF.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const sw = components.find(c => c.type === 'switch')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const EMF = batt.value, r = batt._internalR ?? 0, R = res.value\n    const closed = sw ? sw.value === 1 : true\n    if (closed) {\n      const I = EMF / (R + r), Vt = EMF - I * r\n      return { EMF, r, R, I, Vt, closed: true }\n    }\n    return { EMF, r, R, I: 0, Vt: EMF, closed: false }\n  })\n  const emfReading = computed(() => {\n    if (!emfData.value || !running.value) return { EMF: 0, Vt: 0, I: 0, r: 0, closed: false }\n    const d = emfData.value\n    return { EMF: d.EMF, Vt: d.Vt, I: d.I, r: d.r, closed: d.closed }\n  })\n\n  const isTempR = computed(() => activePresetId.value === 'temperature-resistance')\n  const tempRData = computed(() => {\n    if (!isTempR.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const resistors = components.filter(c => c.type === 'resistor')\n    if (!batt || resistors.length < 2) return null\n    const V = batt.value, R0 = resistors[0].value, T = resistors[1].value\n    const alpha = 0.004, T0 = 20\n    const R = R0 * (1 + alpha * (T - T0))\n    const I = V / R, Vm = V\n    return { V, R0, T, alpha, R, I, Vm }\n  })\n  const tempRReading = computed(() => {\n    if (!tempRData.value || !running.value) return { V: 0, I: 0, R: 0, R0: 0, T: 0 }\n    const d = tempRData.value\n    return { V: d.Vm, I: d.I, R: d.R, R0: d.R0, T: d.T }\n  })\n\n  const isCellsSeries = computed(() => activePresetId.value === 'cells-series')\n  const cellsSeriesData = computed(() => {\n    if (!isCellsSeries.value) return null\n    const batteries = components.filter(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (batteries.length < 2 || !res) return null\n    const EMF = batteries.reduce((s, b) => s + b.value, 0)\n    const r = batteries.reduce((s, b) => s + (b._internalR ?? 0), 0)\n    const R = res.value\n    const I = EMF / (R + r), Vt = I * R\n    return { EMF, r, R, I, Vt }\n  })\n  const cellsSeriesReading = computed(() => {\n    if (!cellsSeriesData.value || !running.value) return { EMF: 0, Vt: 0, I: 0, R: 0 }\n    const d = cellsSeriesData.value\n    return { EMF: d.EMF, Vt: d.Vt, I: d.I, R: d.R }\n  })\n\n  const isCellsParallel = computed(() => activePresetId.value === 'cells-parallel')\n  const cellsParallelData = computed(() => {\n    if (!isCellsParallel.value) return null\n    const batteries = components.filter(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (batteries.length < 2 || !res) return null\n    const EMF = batteries.reduce((s, b) => s + b.value, 0) / batteries.length\n    const rVals = batteries.map(b => b._internalR ?? 0)\n    const r = 1 / rVals.reduce((s, r) => s + 1 / r, 0)\n    const R = res.value\n    const I = EMF / (R + r), Vt = I * R\n    return { EMF, r, R, I, Vt }\n  })\n  const cellsParallelReading = computed(() => {\n    if (!cellsParallelData.value || !running.value) return { EMF: 0, Vt: 0, I: 0, R: 0 }\n    const d = cellsParallelData.value\n    return { EMF: d.EMF, Vt: d.Vt, I: d.I, R: d.R }\n  })\n\n  const isRheostat = computed(() => activePresetId.value === 'rheostat')\n  const rheostatData = computed(() => {\n    if (!isRheostat.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const V = batt.value, R = res.value\n    if (R === 0) return null\n    const I = V / R, Vm = V\n    return { V, R, I, Vm }\n  })\n  const rheostatReading = computed(() => {\n    if (!rheostatData.value || !running.value) return { V: 0, I: 0, R: 0 }\n    const d = rheostatData.value\n    return { V: d.Vm, I: d.I, R: d.R }\n  })\n\n  return {\n    isCompound, compoundData, compoundReading,\n    isEMF, emfData, emfReading,\n    isTempR, tempRData, tempRReading,\n    isCellsSeries, cellsSeriesData, cellsSeriesReading,\n    isCellsParallel, cellsParallelData, cellsParallelReading,\n    isRheostat, rheostatData, rheostatReading,\n  }\n}\n"
@@ -36,75 +49,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634642885,
-      "end": 1783634642885,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642885,
-      "end": 1783634642885,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626239759,
+      "end": 1783626239759,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642885,
-      "end": 1783634642885,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634642885,
-      "end": 1783634642885,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634642885,
-      "end": 1783634642885,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642885,
-      "end": 1783634642885,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642885,
-      "end": 1783634642885,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642885,
-      "end": 1783634642885,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642885,
-      "end": 1783634642885,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642885,
-      "end": 1783634642885,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642885,
-      "end": 1783634642885,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626239759,
+      "end": 1783626239759,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642885,
-      "end": 1783634642885,
+      "name": "vite:css-analysis",
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { computed } from \"/node_modules/.vite/deps/vue.js?v=09a3ad4c\";\nexport function createNewComputeds2(components, running, activePresetId) {\n  const isCompound = computed(() => activePresetId.value === \"compound-circuit\");\n  const compoundData = computed(() => {\n    if (!isCompound.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const resistors = components.filter((c) => c.type === \"resistor\");\n    if (!batt || resistors.length < 3) return null;\n    const V = batt.value;\n    const R1 = resistors[0].value, R2 = resistors[1].value, R3 = resistors[2].value;\n    const Rpar = R2 * R3 / (R2 + R3);\n    const Req = R1 + Rpar;\n    const I = V / Req;\n    const V1 = I * R1, Vpar = I * Rpar;\n    const I2 = Vpar / R2, I3 = Vpar / R3;\n    return { V, R1, R2, R3, Rpar, Req, I, V1, Vpar, I2, I3 };\n  });\n  const compoundReading = computed(() => {\n    if (!compoundData.value || !running.value) return { V: 0, I: 0, Req: 0, V1: 0, Vpar: 0, I2: 0, I3: 0 };\n    const d = compoundData.value;\n    return { V: d.V, I: d.I, Req: d.Req, V1: d.V1, Vpar: d.Vpar, I2: d.I2, I3: d.I3 };\n  });\n  const isEMF = computed(() => activePresetId.value === \"emf-measurement\");\n  const emfData = computed(() => {\n    if (!isEMF.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const sw = components.find((c) => c.type === \"switch\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (!batt || !res) return null;\n    const EMF = batt.value, r = batt._internalR ?? 0, R = res.value;\n    const closed = sw ? sw.value === 1 : true;\n    if (closed) {\n      const I = EMF / (R + r), Vt = EMF - I * r;\n      return { EMF, r, R, I, Vt, closed: true };\n    }\n    return { EMF, r, R, I: 0, Vt: EMF, closed: false };\n  });\n  const emfReading = computed(() => {\n    if (!emfData.value || !running.value) return { EMF: 0, Vt: 0, I: 0, r: 0, closed: false };\n    const d = emfData.value;\n    return { EMF: d.EMF, Vt: d.Vt, I: d.I, r: d.r, closed: d.closed };\n  });\n  const isTempR = computed(() => activePresetId.value === \"temperature-resistance\");\n  const tempRData = computed(() => {\n    if (!isTempR.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const resistors = components.filter((c) => c.type === \"resistor\");\n    if (!batt || resistors.length < 2) return null;\n    const V = batt.value, R0 = resistors[0].value, T = resistors[1].value;\n    const alpha = 4e-3, T0 = 20;\n    const R = R0 * (1 + alpha * (T - T0));\n    const I = V / R, Vm = V;\n    return { V, R0, T, alpha, R, I, Vm };\n  });\n  const tempRReading = computed(() => {\n    if (!tempRData.value || !running.value) return { V: 0, I: 0, R: 0, R0: 0, T: 0 };\n    const d = tempRData.value;\n    return { V: d.Vm, I: d.I, R: d.R, R0: d.R0, T: d.T };\n  });\n  const isCellsSeries = computed(() => activePresetId.value === \"cells-series\");\n  const cellsSeriesData = computed(() => {\n    if (!isCellsSeries.value) return null;\n    const batteries = components.filter((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (batteries.length < 2 || !res) return null;\n    const EMF = batteries.reduce((s, b) => s + b.value, 0);\n    const r = batteries.reduce((s, b) => s + (b._internalR ?? 0), 0);\n    const R = res.value;\n    const I = EMF / (R + r), Vt = I * R;\n    return { EMF, r, R, I, Vt };\n  });\n  const cellsSeriesReading = computed(() => {\n    if (!cellsSeriesData.value || !running.value) return { EMF: 0, Vt: 0, I: 0, R: 0 };\n    const d = cellsSeriesData.value;\n    return { EMF: d.EMF, Vt: d.Vt, I: d.I, R: d.R };\n  });\n  const isCellsParallel = computed(() => activePresetId.value === \"cells-parallel\");\n  const cellsParallelData = computed(() => {\n    if (!isCellsParallel.value) return null;\n    const batteries = components.filter((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (batteries.length < 2 || !res) return null;\n    const EMF = batteries.reduce((s, b) => s + b.value, 0) / batteries.length;\n    const rVals = batteries.map((b) => b._internalR ?? 0);\n    const r = 1 / rVals.reduce((s, r2) => s + 1 / r2, 0);\n    const R = res.value;\n    const I = EMF / (R + r), Vt = I * R;\n    return { EMF, r, R, I, Vt };\n  });\n  const cellsParallelReading = computed(() => {\n    if (!cellsParallelData.value || !running.value) return { EMF: 0, Vt: 0, I: 0, R: 0 };\n    const d = cellsParallelData.value;\n    return { EMF: d.EMF, Vt: d.Vt, I: d.I, R: d.R };\n  });\n  const isRheostat = computed(() => activePresetId.value === \"rheostat\");\n  const rheostatData = computed(() => {\n    if (!isRheostat.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (!batt || !res) return null;\n    const V = batt.value, R = res.value;\n    if (R === 0) return null;\n    const I = V / R, Vm = V;\n    return { V, R, I, Vm };\n  });\n  const rheostatReading = computed(() => {\n    if (!rheostatData.value || !running.value) return { V: 0, I: 0, R: 0 };\n    const d = rheostatData.value;\n    return { V: d.Vm, I: d.I, R: d.R };\n  });\n  return {\n    isCompound,\n    compoundData,\n    compoundReading,\n    isEMF,\n    emfData,\n    emfReading,\n    isTempR,\n    tempRData,\n    tempRReading,\n    isCellsSeries,\n    cellsSeriesData,\n    cellsSeriesReading,\n    isCellsParallel,\n    cellsParallelData,\n    cellsParallelReading,\n    isRheostat,\n    rheostatData,\n    rheostatReading\n  };\n}\n",
+      "start": 1783626239759,
+      "end": 1783626239766,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

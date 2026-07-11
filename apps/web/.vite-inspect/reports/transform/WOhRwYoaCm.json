@@ -1,0 +1,118 @@
+{
+  "resolvedId": "virtual:vue-inspector-options",
+  "transforms": [
+    {
+      "name": "vite-plugin-vue-inspector",
+      "result": "export default {\"vue\":3,\"enabled\":false,\"toggleComboKey\":\"\",\"toggleButtonVisibility\":\"never\",\"toggleButtonPos\":\"top-right\",\"appendTo\":\"manually\",\"lazyLoad\":false,\"launchEditor\":\"code\",\"reduceMotion\":false,\"base\":\"/\"}",
+      "start": 1783626216753,
+      "end": 1783626216753,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626216753,
+      "end": 1783626216753,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "export default {\"vue\":3,\"enabled\":false,\"toggleComboKey\":\"\",\"toggleButtonVisibility\":\"never\",\"toggleButtonPos\":\"top-right\",\"appendTo\":\"manually\",\"lazyLoad\":false,\"launchEditor\":\"code\",\"reduceMotion\":false,\"base\":\"/\"}",
+      "start": 1783626216753,
+      "end": 1783626216753,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783626216753,
+      "end": 1783626216753,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783626216753,
+      "end": 1783626216753,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626216753,
+      "end": 1783626216753,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626216753,
+      "end": 1783626216753,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783626216753,
+      "end": 1783626216753,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626216753,
+      "end": 1783626216753,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783626216753,
+      "end": 1783626216753,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626216753,
+      "end": 1783626216753,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626216753,
+      "end": 1783626216753,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626216753,
+      "end": 1783626216753,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626216753,
+      "end": 1783626216753,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626216753,
+      "end": 1783626216753,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626216753,
+      "end": 1783626216753,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626216753,
+      "end": 1783626216753,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "export default {\"vue\":3,\"enabled\":false,\"toggleComboKey\":\"\",\"toggleButtonVisibility\":\"never\",\"toggleButtonPos\":\"top-right\",\"appendTo\":\"manually\",\"lazyLoad\":false,\"launchEditor\":\"code\",\"reduceMotion\":false,\"base\":\"/\"}",
+      "start": 1783626216753,
+      "end": 1783626216753,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

@@ -9,6 +9,7 @@ import ProjectilePanelBody from '../../../../components/experiment/projectile/Pr
 import ProjectileOverlayPanels from '../../../../components/experiment/projectile/ProjectileOverlayPanels.vue'
 import ProjectileControlBar from '../../../../components/experiment/projectile/ProjectileControlBar.vue'
 import ProjectileHelpModal from '../../../../components/experiment/projectile/ProjectileHelpModal.vue'
+import ProjectileGuidePanel from '../../../../components/experiment/projectile/ProjectileGuidePanel.vue'
 import ProjectileReport from '../../../../components/experiment/projectile/ProjectileReport.vue'
 import ProjectileStepTracker from '../../../../components/experiment/projectile/ProjectileStepTracker.vue'
 import ProjectileStatusBar from '../../../../components/experiment/projectile/ProjectileStatusBar.vue'
@@ -18,6 +19,7 @@ const ex = useProjectileExperiment()
 const rep = useProjectileReport()
 const { t } = useI18n()
 const helpOpen = ref(false)
+const showGuide = ref(true)
 const reportOpen = ref(false)
 const canvasRef = ref<InstanceType<typeof ProjectileCanvas> | null>(null)
 
@@ -96,6 +98,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             />
           </div>
         </template>
+        <ProjectileGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
 

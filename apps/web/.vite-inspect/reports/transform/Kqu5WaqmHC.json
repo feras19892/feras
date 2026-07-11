@@ -1,0 +1,140 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue?vue&type=style&index=0&scoped=e00f7ef1&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.panel-body { padding:.5rem; display:flex; flex-direction:column; gap:.3rem; }\n.read-row { display:flex; justify-content:space-between; align-items:center; padding:.3rem .4rem; border-radius:5px; background:rgba(255,255,255,0.02); transition:background .15s; }\n.read-row:hover { background:rgba(255,255,255,0.04); }\n.read-row.highlight { background:rgba(74,222,128,.08); border:1px solid rgba(74,222,128,.22); }\n.label { color:#8B95A5; font-size:.74rem; display:flex; align-items:center; gap:.35rem; }\n.value { color:#D1D7E0; font-weight:700; font-size:.76rem; }\n.green { color:#4ade80; }\n.sep { height:1px; background:rgba(30,37,48,.6); margin:.15rem 0; }\n.dot { width:6px; height:6px; border-radius:50%; display:inline-block; }\n.dot.blue { background:#5B8DB8; }\n.dot.amber { background:#fbbf24; }\n.dot.green { background:#4ade80; }\n",
+      "start": 1783635325637,
+      "end": 1783635325637,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue"
+        ],
+        "names": [],
+        "mappings": ";AAkCA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC7E,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE;AACpL,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACrD,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC9F,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACxF,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC3D,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACxB,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,EAAE;AAClE,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACvE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAChC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACjC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE",
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\nimport { computed } from 'vue'\nimport { useI18n } from '../../../../composables/useI18n'\nconst { t } = useI18n()\nconst props = defineProps<{\n  mWater: number\n  tWater: number\n  mMetal: number\n  tMetal: number\n  tf: number\n  cMetal: number\n  metalType?: string\n  metalOptions?: Record<string, { c: number; nameAr: string; nameEn: string }>\n}>()\n\nconst metalName = computed(() => {\n  if (!props.metalType || !props.metalOptions) return ''\n  return props.metalOptions[props.metalType]?.nameAr ?? props.metalType\n})\n</script>\n<template>\n  <div class=\"panel-body\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:22:3\">\n    <div class=\"read-row\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:23:5\"><span class=\"label\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:23:27\"><span class=\"dot blue\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:23:47\"></span>{{ t('experiments.calorimetryWaterMass') }}</span><span class=\"value\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:23:127\">{{ mWater.toFixed(3) }} kg</span></div>\n    <div class=\"read-row\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:24:5\"><span class=\"label\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:24:27\"><span class=\"dot blue\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:24:47\"></span>{{ t('experiments.calorimetryWaterTemp') }}</span><span class=\"value\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:24:127\">{{ tWater }} °C</span></div>\n    <div class=\"sep\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:25:5\"></div>\n    <div class=\"read-row\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:26:5\"><span class=\"label\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:26:27\"><span class=\"dot amber\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:26:47\"></span>{{ t('experiments.calorimetryMetalMass') }}</span><span class=\"value\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:26:128\">{{ mMetal.toFixed(3) }} kg</span></div>\n    <div class=\"read-row\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:27:5\"><span class=\"label\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:27:27\"><span class=\"dot amber\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:27:47\"></span>{{ t('experiments.calorimetryMetalTemp') }}</span><span class=\"value\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:27:128\">{{ tMetal }} °C</span></div>\n    <div class=\"read-row\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:28:5\"><span class=\"label\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:28:27\"><span class=\"dot amber\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:28:47\"></span>نوع المعدن</span><span class=\"value\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:28:95\">{{ metalName || '—' }}</span></div>\n    <div class=\"sep\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:29:5\"></div>\n    <div class=\"read-row highlight\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:30:5\"><span class=\"label\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:30:37\"><span class=\"dot green\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:30:57\"></span>{{ t('experiments.calorimetryFinalTemp') }}</span><span class=\"value green\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:30:138\">{{ tf.toFixed(1) }} °C</span></div>\n    <div class=\"read-row highlight\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:31:5\"><span class=\"label\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:31:37\"><span class=\"dot green\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:31:57\"></span>{{ t('experiments.calorimetrySpecificHeat') }}</span><span class=\"value green\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue:31:141\">{{ cMetal.toFixed(0) }} J/kg·K</span></div>\n  </div>\n</template>\n<style scoped>\n.panel-body { padding:.5rem; display:flex; flex-direction:column; gap:.3rem; }\n.read-row { display:flex; justify-content:space-between; align-items:center; padding:.3rem .4rem; border-radius:5px; background:rgba(255,255,255,0.02); transition:background .15s; }\n.read-row:hover { background:rgba(255,255,255,0.04); }\n.read-row.highlight { background:rgba(74,222,128,.08); border:1px solid rgba(74,222,128,.22); }\n.label { color:#8B95A5; font-size:.74rem; display:flex; align-items:center; gap:.35rem; }\n.value { color:#D1D7E0; font-weight:700; font-size:.76rem; }\n.green { color:#4ade80; }\n.sep { height:1px; background:rgba(30,37,48,.6); margin:.15rem 0; }\n.dot { width:6px; height:6px; border-radius:50%; display:inline-block; }\n.dot.blue { background:#5B8DB8; }\n.dot.amber { background:#fbbf24; }\n.dot.green { background:#4ade80; }\n</style>\n"
+        ]
+      }
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783635325637,
+      "end": 1783635325637,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "\n.panel-body { padding:.5rem; display:flex; flex-direction:column; gap:.3rem; }\n.read-row { display:flex; justify-content:space-between; align-items:center; padding:.3rem .4rem; border-radius:5px; background:rgba(255,255,255,0.02); transition:background .15s; }\n.read-row:hover { background:rgba(255,255,255,0.04); }\n.read-row.highlight { background:rgba(74,222,128,.08); border:1px solid rgba(74,222,128,.22); }\n.label { color:#8B95A5; font-size:.74rem; display:flex; align-items:center; gap:.35rem; }\n.value { color:#D1D7E0; font-weight:700; font-size:.76rem; }\n.green { color:#4ade80; }\n.sep { height:1px; background:rgba(30,37,48,.6); margin:.15rem 0; }\n.dot { width:6px; height:6px; border-radius:50%; display:inline-block; }\n.dot.blue { background:#5B8DB8; }\n.dot.amber { background:#fbbf24; }\n.dot.green { background:#4ade80; }\n",
+      "start": 1783635325637,
+      "end": 1783635325637,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.panel-body { padding:.5rem; display:flex; flex-direction:column; gap:.3rem; }\n.read-row { display:flex; justify-content:space-between; align-items:center; padding:.3rem .4rem; border-radius:5px; background:rgba(255,255,255,0.02); transition:background .15s; }\n.read-row:hover { background:rgba(255,255,255,0.04); }\n.read-row.highlight { background:rgba(74,222,128,.08); border:1px solid rgba(74,222,128,.22); }\n.label { color:#8B95A5; font-size:.74rem; display:flex; align-items:center; gap:.35rem; }\n.value { color:#D1D7E0; font-weight:700; font-size:.76rem; }\n.green { color:#4ade80; }\n.sep { height:1px; background:rgba(30,37,48,.6); margin:.15rem 0; }\n.dot { width:6px; height:6px; border-radius:50%; display:inline-block; }\n.dot.blue { background:#5B8DB8; }\n.dot.amber { background:#fbbf24; }\n.dot.green { background:#4ade80; }\n",
+      "start": 1783635325637,
+      "end": 1783635325637,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783635325637,
+      "end": 1783635325637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783635325637,
+      "end": 1783635325637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783635325637,
+      "end": 1783635325637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.panel-body[data-v-e00f7ef1] { padding:.5rem; display:flex; flex-direction:column; gap:.3rem;\n}\n.read-row[data-v-e00f7ef1] { display:flex; justify-content:space-between; align-items:center; padding:.3rem .4rem; border-radius:5px; background:rgba(255,255,255,0.02); transition:background .15s;\n}\n.read-row[data-v-e00f7ef1]:hover { background:rgba(255,255,255,0.04);\n}\n.read-row.highlight[data-v-e00f7ef1] { background:rgba(74,222,128,.08); border:1px solid rgba(74,222,128,.22);\n}\n.label[data-v-e00f7ef1] { color:#8B95A5; font-size:.74rem; display:flex; align-items:center; gap:.35rem;\n}\n.value[data-v-e00f7ef1] { color:#D1D7E0; font-weight:700; font-size:.76rem;\n}\n.green[data-v-e00f7ef1] { color:#4ade80;\n}\n.sep[data-v-e00f7ef1] { height:1px; background:rgba(30,37,48,.6); margin:.15rem 0;\n}\n.dot[data-v-e00f7ef1] { width:6px; height:6px; border-radius:50%; display:inline-block;\n}\n.dot.blue[data-v-e00f7ef1] { background:#5B8DB8;\n}\n.dot.amber[data-v-e00f7ef1] { background:#fbbf24;\n}\n.dot.green[data-v-e00f7ef1] { background:#4ade80;\n}\n",
+      "start": 1783635325637,
+      "end": 1783635325646,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783635325646,
+      "end": 1783635325646,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue?vue&type=style&index=0&scoped=e00f7ef1&lang.css\"\nconst __vite__css = \"\\n.panel-body[data-v-e00f7ef1] { padding:.5rem; display:flex; flex-direction:column; gap:.3rem;\\n}\\n.read-row[data-v-e00f7ef1] { display:flex; justify-content:space-between; align-items:center; padding:.3rem .4rem; border-radius:5px; background:rgba(255,255,255,0.02); transition:background .15s;\\n}\\n.read-row[data-v-e00f7ef1]:hover { background:rgba(255,255,255,0.04);\\n}\\n.read-row.highlight[data-v-e00f7ef1] { background:rgba(74,222,128,.08); border:1px solid rgba(74,222,128,.22);\\n}\\n.label[data-v-e00f7ef1] { color:#8B95A5; font-size:.74rem; display:flex; align-items:center; gap:.35rem;\\n}\\n.value[data-v-e00f7ef1] { color:#D1D7E0; font-weight:700; font-size:.76rem;\\n}\\n.green[data-v-e00f7ef1] { color:#4ade80;\\n}\\n.sep[data-v-e00f7ef1] { height:1px; background:rgba(30,37,48,.6); margin:.15rem 0;\\n}\\n.dot[data-v-e00f7ef1] { width:6px; height:6px; border-radius:50%; display:inline-block;\\n}\\n.dot.blue[data-v-e00f7ef1] { background:#5B8DB8;\\n}\\n.dot.amber[data-v-e00f7ef1] { background:#fbbf24;\\n}\\n.dot.green[data-v-e00f7ef1] { background:#4ade80;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783635325646,
+      "end": 1783635325646,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783635325646,
+      "end": 1783635325646,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783635325646,
+      "end": 1783635325646,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783635325646,
+      "end": 1783635325646,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783635325646,
+      "end": 1783635325646,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783635325646,
+      "end": 1783635325646,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783635325646,
+      "end": 1783635325646,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783635325646,
+      "end": 1783635325646,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue?vue&type=style&index=0&scoped=e00f7ef1&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryReadingsPanel.vue?vue&type=style&index=0&scoped=e00f7ef1&lang.css\"\nconst __vite__css = \"\\n.panel-body[data-v-e00f7ef1] { padding:.5rem; display:flex; flex-direction:column; gap:.3rem;\\n}\\n.read-row[data-v-e00f7ef1] { display:flex; justify-content:space-between; align-items:center; padding:.3rem .4rem; border-radius:5px; background:rgba(255,255,255,0.02); transition:background .15s;\\n}\\n.read-row[data-v-e00f7ef1]:hover { background:rgba(255,255,255,0.04);\\n}\\n.read-row.highlight[data-v-e00f7ef1] { background:rgba(74,222,128,.08); border:1px solid rgba(74,222,128,.22);\\n}\\n.label[data-v-e00f7ef1] { color:#8B95A5; font-size:.74rem; display:flex; align-items:center; gap:.35rem;\\n}\\n.value[data-v-e00f7ef1] { color:#D1D7E0; font-weight:700; font-size:.76rem;\\n}\\n.green[data-v-e00f7ef1] { color:#4ade80;\\n}\\n.sep[data-v-e00f7ef1] { height:1px; background:rgba(30,37,48,.6); margin:.15rem 0;\\n}\\n.dot[data-v-e00f7ef1] { width:6px; height:6px; border-radius:50%; display:inline-block;\\n}\\n.dot.blue[data-v-e00f7ef1] { background:#5B8DB8;\\n}\\n.dot.amber[data-v-e00f7ef1] { background:#fbbf24;\\n}\\n.dot.green[data-v-e00f7ef1] { background:#4ade80;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783635325646,
+      "end": 1783635325646,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

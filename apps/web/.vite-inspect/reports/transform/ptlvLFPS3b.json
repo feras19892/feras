@@ -4,41 +4,55 @@
     {
       "name": "vite:vue",
       "result": ".readings-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; }\n.reading-box {\n  display: flex; flex-direction: column; align-items: center;\n  padding: 0.5rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.06);\n}\n.reading-box.voltage { background: rgba(245,158,11,0.08); }\n.reading-box.current { background: rgba(34,197,94,0.08); }\n.reading-box.resistance { background: rgba(6,182,212,0.08); }\n.reading-box.power { background: rgba(239,68,68,0.08); }\n.reading-box.resistivity { background: rgba(168,85,247,0.08); }\n.r-label { font-size: 0.7rem; color: #64748b; }\n.r-value { font-size: 1.1rem; font-weight: 700; font-family: monospace; }\n.reading-box.voltage .r-value { color: #fbbf24; }\n.reading-box.current .r-value { color: #4ade80; }\n.reading-box.resistance .r-value { color: #67e8f9; }\n.reading-box.power .r-value { color: #f87171; }\n.reading-box.resistivity .r-value { color: #c084fc; }\n.reading-box.charging { background: rgba(34,197,94,.12); }\n.reading-box.charging .r-value { color: #4ade80; }\n.reading-box.discharging { background: rgba(239,68,68,.12); }\n.reading-box.discharging .r-value { color: #f87171; }\n.r-unit { font-size: 0.65rem; color: #475569; }\n.rc-section { display: flex; flex-direction: column; gap: .5rem; }\n.rc-grid { grid-template-columns: 1fr 1fr; }\n.lamp-section { display: flex; flex-direction: column; gap: .5rem; }\n.lamp-grid { grid-template-columns: 1fr 1fr 1fr; }\n.reading-box.light { background: rgba(251,191,36,.08); }\n.reading-box.light .r-value { color: #fbbf24; }\n.reading-box.heat { background: rgba(239,68,68,.08); }\n.reading-box.heat .r-value { color: #f87171; }\n.reading-box.brightness { background: rgba(168,85,247,.08); }\n.reading-box.brightness .r-value { color: #c084fc; }\n.lamp-visual { display: flex; align-items: center; gap: .75rem; padding: .5rem; }\n.lamp-bulb { font-size: 2rem; transition: opacity .3s; }\n.lamp-bar-bg { flex: 1; height: 12px; background: #1e2530; border-radius: 6px; overflow: hidden; }\n.lamp-bar-fill { height: 100%; background: linear-gradient(90deg, #f59e0b, #fbbf24, #fde047); border-radius: 6px; transition: width .3s; }\n.galv-section { display: flex; flex-direction: column; gap: .5rem; }\n.galv-grid { grid-template-columns: 1fr 1fr; }\n.galv-gauge { display: flex; flex-direction: column; align-items: center; padding: .5rem; }\n.galv-svg { width: 100%; max-width: 220px; height: auto; }\n.galv-sensitivity { font-size: .75rem; color: #c084fc; margin-top: .25rem; }\n.wheatstone-section { display: flex; flex-direction: column; gap: .5rem; }\n.wheatstone-grid { grid-template-columns: 1fr 1fr; }\n.reading-box.balanced { background: rgba(34,197,94,.15); border: 1px solid rgba(34,197,94,.3); }\n.reading-box.balanced .r-value { color: #4ade80; }\n.bridge-status { display: flex; align-items: center; gap: .4rem; padding: .5rem; border-radius: 6px; font-size: .78rem; font-weight: 600; }\n.bridge-status.balanced { background: rgba(34,197,94,.12); color: #4ade80; border: 1px solid rgba(34,197,94,.25); }\n.bridge-status.unbalanced { background: rgba(245,158,11,.1); color: #fbbf24; border: 1px solid rgba(245,158,11,.2); }\n.bridge-icon { font-size: 1.1rem; }\n.vdiv-section { display: flex; flex-direction: column; gap: .5rem; }\n.vdiv-grid { grid-template-columns: 1fr 1fr; }\n.vdiv-bar { padding: .5rem; }\n.vdiv-label { font-size: .72rem; color: #94a3b8; margin-bottom: .25rem; }\n.vdiv-bar-bg { display: flex; height: 16px; border-radius: 8px; overflow: hidden; }\n.vdiv-bar-v1 { background: #3b82f6; transition: width .3s; }\n.vdiv-bar-v2 { background: #f59e0b; flex: 1; }\n.vdiv-legend { display: flex; justify-content: space-between; margin-top: .2rem; font-size: .68rem; }\n.leg-v1 { color: #3b82f6; }\n.leg-v2 { color: #f59e0b; }\n",
-      "start": 1783634643023,
-      "end": 1783634643027,
+      "start": 1783626239039,
+      "end": 1783626239040,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626239040,
+      "end": 1783626239040,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": ".readings-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; }\n.reading-box {\n  display: flex; flex-direction: column; align-items: center;\n  padding: 0.5rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.06);\n}\n.reading-box.voltage { background: rgba(245,158,11,0.08); }\n.reading-box.current { background: rgba(34,197,94,0.08); }\n.reading-box.resistance { background: rgba(6,182,212,0.08); }\n.reading-box.power { background: rgba(239,68,68,0.08); }\n.reading-box.resistivity { background: rgba(168,85,247,0.08); }\n.r-label { font-size: 0.7rem; color: #64748b; }\n.r-value { font-size: 1.1rem; font-weight: 700; font-family: monospace; }\n.reading-box.voltage .r-value { color: #fbbf24; }\n.reading-box.current .r-value { color: #4ade80; }\n.reading-box.resistance .r-value { color: #67e8f9; }\n.reading-box.power .r-value { color: #f87171; }\n.reading-box.resistivity .r-value { color: #c084fc; }\n.reading-box.charging { background: rgba(34,197,94,.12); }\n.reading-box.charging .r-value { color: #4ade80; }\n.reading-box.discharging { background: rgba(239,68,68,.12); }\n.reading-box.discharging .r-value { color: #f87171; }\n.r-unit { font-size: 0.65rem; color: #475569; }\n.rc-section { display: flex; flex-direction: column; gap: .5rem; }\n.rc-grid { grid-template-columns: 1fr 1fr; }\n.lamp-section { display: flex; flex-direction: column; gap: .5rem; }\n.lamp-grid { grid-template-columns: 1fr 1fr 1fr; }\n.reading-box.light { background: rgba(251,191,36,.08); }\n.reading-box.light .r-value { color: #fbbf24; }\n.reading-box.heat { background: rgba(239,68,68,.08); }\n.reading-box.heat .r-value { color: #f87171; }\n.reading-box.brightness { background: rgba(168,85,247,.08); }\n.reading-box.brightness .r-value { color: #c084fc; }\n.lamp-visual { display: flex; align-items: center; gap: .75rem; padding: .5rem; }\n.lamp-bulb { font-size: 2rem; transition: opacity .3s; }\n.lamp-bar-bg { flex: 1; height: 12px; background: #1e2530; border-radius: 6px; overflow: hidden; }\n.lamp-bar-fill { height: 100%; background: linear-gradient(90deg, #f59e0b, #fbbf24, #fde047); border-radius: 6px; transition: width .3s; }\n.galv-section { display: flex; flex-direction: column; gap: .5rem; }\n.galv-grid { grid-template-columns: 1fr 1fr; }\n.galv-gauge { display: flex; flex-direction: column; align-items: center; padding: .5rem; }\n.galv-svg { width: 100%; max-width: 220px; height: auto; }\n.galv-sensitivity { font-size: .75rem; color: #c084fc; margin-top: .25rem; }\n.wheatstone-section { display: flex; flex-direction: column; gap: .5rem; }\n.wheatstone-grid { grid-template-columns: 1fr 1fr; }\n.reading-box.balanced { background: rgba(34,197,94,.15); border: 1px solid rgba(34,197,94,.3); }\n.reading-box.balanced .r-value { color: #4ade80; }\n.bridge-status { display: flex; align-items: center; gap: .4rem; padding: .5rem; border-radius: 6px; font-size: .78rem; font-weight: 600; }\n.bridge-status.balanced { background: rgba(34,197,94,.12); color: #4ade80; border: 1px solid rgba(34,197,94,.25); }\n.bridge-status.unbalanced { background: rgba(245,158,11,.1); color: #fbbf24; border: 1px solid rgba(245,158,11,.2); }\n.bridge-icon { font-size: 1.1rem; }\n.vdiv-section { display: flex; flex-direction: column; gap: .5rem; }\n.vdiv-grid { grid-template-columns: 1fr 1fr; }\n.vdiv-bar { padding: .5rem; }\n.vdiv-label { font-size: .72rem; color: #94a3b8; margin-bottom: .25rem; }\n.vdiv-bar-bg { display: flex; height: 16px; border-radius: 8px; overflow: hidden; }\n.vdiv-bar-v1 { background: #3b82f6; transition: width .3s; }\n.vdiv-bar-v2 { background: #f59e0b; flex: 1; }\n.vdiv-legend { display: flex; justify-content: space-between; margin-top: .2rem; font-size: .68rem; }\n.leg-v1 { color: #3b82f6; }\n.leg-v2 { color: #f59e0b; }\n",
+      "start": 1783626239040,
+      "end": 1783626239040,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
       "result": ".readings-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; }\n.reading-box {\n  display: flex; flex-direction: column; align-items: center;\n  padding: 0.5rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.06);\n}\n.reading-box.voltage { background: rgba(245,158,11,0.08); }\n.reading-box.current { background: rgba(34,197,94,0.08); }\n.reading-box.resistance { background: rgba(6,182,212,0.08); }\n.reading-box.power { background: rgba(239,68,68,0.08); }\n.reading-box.resistivity { background: rgba(168,85,247,0.08); }\n.r-label { font-size: 0.7rem; color: #64748b; }\n.r-value { font-size: 1.1rem; font-weight: 700; font-family: monospace; }\n.reading-box.voltage .r-value { color: #fbbf24; }\n.reading-box.current .r-value { color: #4ade80; }\n.reading-box.resistance .r-value { color: #67e8f9; }\n.reading-box.power .r-value { color: #f87171; }\n.reading-box.resistivity .r-value { color: #c084fc; }\n.reading-box.charging { background: rgba(34,197,94,.12); }\n.reading-box.charging .r-value { color: #4ade80; }\n.reading-box.discharging { background: rgba(239,68,68,.12); }\n.reading-box.discharging .r-value { color: #f87171; }\n.r-unit { font-size: 0.65rem; color: #475569; }\n.rc-section { display: flex; flex-direction: column; gap: .5rem; }\n.rc-grid { grid-template-columns: 1fr 1fr; }\n.lamp-section { display: flex; flex-direction: column; gap: .5rem; }\n.lamp-grid { grid-template-columns: 1fr 1fr 1fr; }\n.reading-box.light { background: rgba(251,191,36,.08); }\n.reading-box.light .r-value { color: #fbbf24; }\n.reading-box.heat { background: rgba(239,68,68,.08); }\n.reading-box.heat .r-value { color: #f87171; }\n.reading-box.brightness { background: rgba(168,85,247,.08); }\n.reading-box.brightness .r-value { color: #c084fc; }\n.lamp-visual { display: flex; align-items: center; gap: .75rem; padding: .5rem; }\n.lamp-bulb { font-size: 2rem; transition: opacity .3s; }\n.lamp-bar-bg { flex: 1; height: 12px; background: #1e2530; border-radius: 6px; overflow: hidden; }\n.lamp-bar-fill { height: 100%; background: linear-gradient(90deg, #f59e0b, #fbbf24, #fde047); border-radius: 6px; transition: width .3s; }\n.galv-section { display: flex; flex-direction: column; gap: .5rem; }\n.galv-grid { grid-template-columns: 1fr 1fr; }\n.galv-gauge { display: flex; flex-direction: column; align-items: center; padding: .5rem; }\n.galv-svg { width: 100%; max-width: 220px; height: auto; }\n.galv-sensitivity { font-size: .75rem; color: #c084fc; margin-top: .25rem; }\n.wheatstone-section { display: flex; flex-direction: column; gap: .5rem; }\n.wheatstone-grid { grid-template-columns: 1fr 1fr; }\n.reading-box.balanced { background: rgba(34,197,94,.15); border: 1px solid rgba(34,197,94,.3); }\n.reading-box.balanced .r-value { color: #4ade80; }\n.bridge-status { display: flex; align-items: center; gap: .4rem; padding: .5rem; border-radius: 6px; font-size: .78rem; font-weight: 600; }\n.bridge-status.balanced { background: rgba(34,197,94,.12); color: #4ade80; border: 1px solid rgba(34,197,94,.25); }\n.bridge-status.unbalanced { background: rgba(245,158,11,.1); color: #fbbf24; border: 1px solid rgba(245,158,11,.2); }\n.bridge-icon { font-size: 1.1rem; }\n.vdiv-section { display: flex; flex-direction: column; gap: .5rem; }\n.vdiv-grid { grid-template-columns: 1fr 1fr; }\n.vdiv-bar { padding: .5rem; }\n.vdiv-label { font-size: .72rem; color: #94a3b8; margin-bottom: .25rem; }\n.vdiv-bar-bg { display: flex; height: 16px; border-radius: 8px; overflow: hidden; }\n.vdiv-bar-v1 { background: #3b82f6; transition: width .3s; }\n.vdiv-bar-v2 { background: #f59e0b; flex: 1; }\n.vdiv-legend { display: flex; justify-content: space-between; margin-top: .2rem; font-size: .68rem; }\n.leg-v1 { color: #3b82f6; }\n.leg-v2 { color: #f59e0b; }\n",
-      "start": 1783634643028,
-      "end": 1783634643028,
+      "start": 1783626239042,
+      "end": 1783626239043,
       "order": "normal",
       "sourcemaps": null
     },
     {
       "name": "vite:esbuild",
-      "start": 1783634643028,
-      "end": 1783634643028,
+      "start": 1783626239043,
+      "end": 1783626239043,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1783634643028,
-      "end": 1783634643028,
+      "start": 1783626239043,
+      "end": 1783626239043,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634643028,
-      "end": 1783634643028,
+      "start": 1783626239043,
+      "end": 1783626239043,
       "order": "normal"
     },
     {
       "name": "vite:vue",
       "result": ".readings-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem;\n}\n.reading-box {\n  display: flex; flex-direction: column; align-items: center;\n  padding: 0.5rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.06);\n}\n.reading-box.voltage { background: rgba(245,158,11,0.08);\n}\n.reading-box.current { background: rgba(34,197,94,0.08);\n}\n.reading-box.resistance { background: rgba(6,182,212,0.08);\n}\n.reading-box.power { background: rgba(239,68,68,0.08);\n}\n.reading-box.resistivity { background: rgba(168,85,247,0.08);\n}\n.r-label { font-size: 0.7rem; color: #64748b;\n}\n.r-value { font-size: 1.1rem; font-weight: 700; font-family: monospace;\n}\n.reading-box.voltage .r-value { color: #fbbf24;\n}\n.reading-box.current .r-value { color: #4ade80;\n}\n.reading-box.resistance .r-value { color: #67e8f9;\n}\n.reading-box.power .r-value { color: #f87171;\n}\n.reading-box.resistivity .r-value { color: #c084fc;\n}\n.reading-box.charging { background: rgba(34,197,94,.12);\n}\n.reading-box.charging .r-value { color: #4ade80;\n}\n.reading-box.discharging { background: rgba(239,68,68,.12);\n}\n.reading-box.discharging .r-value { color: #f87171;\n}\n.r-unit { font-size: 0.65rem; color: #475569;\n}\n.rc-section { display: flex; flex-direction: column; gap: .5rem;\n}\n.rc-grid { grid-template-columns: 1fr 1fr;\n}\n.lamp-section { display: flex; flex-direction: column; gap: .5rem;\n}\n.lamp-grid { grid-template-columns: 1fr 1fr 1fr;\n}\n.reading-box.light { background: rgba(251,191,36,.08);\n}\n.reading-box.light .r-value { color: #fbbf24;\n}\n.reading-box.heat { background: rgba(239,68,68,.08);\n}\n.reading-box.heat .r-value { color: #f87171;\n}\n.reading-box.brightness { background: rgba(168,85,247,.08);\n}\n.reading-box.brightness .r-value { color: #c084fc;\n}\n.lamp-visual { display: flex; align-items: center; gap: .75rem; padding: .5rem;\n}\n.lamp-bulb { font-size: 2rem; transition: opacity .3s;\n}\n.lamp-bar-bg { flex: 1; height: 12px; background: #1e2530; border-radius: 6px; overflow: hidden;\n}\n.lamp-bar-fill { height: 100%; background: linear-gradient(90deg, #f59e0b, #fbbf24, #fde047); border-radius: 6px; transition: width .3s;\n}\n.galv-section { display: flex; flex-direction: column; gap: .5rem;\n}\n.galv-grid { grid-template-columns: 1fr 1fr;\n}\n.galv-gauge { display: flex; flex-direction: column; align-items: center; padding: .5rem;\n}\n.galv-svg { width: 100%; max-width: 220px; height: auto;\n}\n.galv-sensitivity { font-size: .75rem; color: #c084fc; margin-top: .25rem;\n}\n.wheatstone-section { display: flex; flex-direction: column; gap: .5rem;\n}\n.wheatstone-grid { grid-template-columns: 1fr 1fr;\n}\n.reading-box.balanced { background: rgba(34,197,94,.15); border: 1px solid rgba(34,197,94,.3);\n}\n.reading-box.balanced .r-value { color: #4ade80;\n}\n.bridge-status { display: flex; align-items: center; gap: .4rem; padding: .5rem; border-radius: 6px; font-size: .78rem; font-weight: 600;\n}\n.bridge-status.balanced { background: rgba(34,197,94,.12); color: #4ade80; border: 1px solid rgba(34,197,94,.25);\n}\n.bridge-status.unbalanced { background: rgba(245,158,11,.1); color: #fbbf24; border: 1px solid rgba(245,158,11,.2);\n}\n.bridge-icon { font-size: 1.1rem;\n}\n.vdiv-section { display: flex; flex-direction: column; gap: .5rem;\n}\n.vdiv-grid { grid-template-columns: 1fr 1fr;\n}\n.vdiv-bar { padding: .5rem;\n}\n.vdiv-label { font-size: .72rem; color: #94a3b8; margin-bottom: .25rem;\n}\n.vdiv-bar-bg { display: flex; height: 16px; border-radius: 8px; overflow: hidden;\n}\n.vdiv-bar-v1 { background: #3b82f6; transition: width .3s;\n}\n.vdiv-bar-v2 { background: #f59e0b; flex: 1;\n}\n.vdiv-legend { display: flex; justify-content: space-between; margin-top: .2rem; font-size: .68rem;\n}\n.leg-v1 { color: #3b82f6;\n}\n.leg-v2 { color: #f59e0b;\n}\n",
-      "start": 1783634643028,
-      "end": 1783634643029,
+      "start": 1783626239043,
+      "end": 1783626239044,
       "order": "normal-normal",
       "sourcemaps": {
         "mappings": ""
@@ -46,67 +60,69 @@
     },
     {
       "name": "vite:define",
-      "start": 1783634643029,
-      "end": 1783634643029,
+      "start": 1783626239044,
+      "end": 1783626239044,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "result": "",
-      "start": 1783634643029,
-      "end": 1783634643029,
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/experimentReadings.css?vue&type=style&index=0&src=true&lang.css\"\nconst __vite__css = \".readings-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem;\\n}\\n.reading-box {\\n  display: flex; flex-direction: column; align-items: center;\\n  padding: 0.5rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.06);\\n}\\n.reading-box.voltage { background: rgba(245,158,11,0.08);\\n}\\n.reading-box.current { background: rgba(34,197,94,0.08);\\n}\\n.reading-box.resistance { background: rgba(6,182,212,0.08);\\n}\\n.reading-box.power { background: rgba(239,68,68,0.08);\\n}\\n.reading-box.resistivity { background: rgba(168,85,247,0.08);\\n}\\n.r-label { font-size: 0.7rem; color: #64748b;\\n}\\n.r-value { font-size: 1.1rem; font-weight: 700; font-family: monospace;\\n}\\n.reading-box.voltage .r-value { color: #fbbf24;\\n}\\n.reading-box.current .r-value { color: #4ade80;\\n}\\n.reading-box.resistance .r-value { color: #67e8f9;\\n}\\n.reading-box.power .r-value { color: #f87171;\\n}\\n.reading-box.resistivity .r-value { color: #c084fc;\\n}\\n.reading-box.charging { background: rgba(34,197,94,.12);\\n}\\n.reading-box.charging .r-value { color: #4ade80;\\n}\\n.reading-box.discharging { background: rgba(239,68,68,.12);\\n}\\n.reading-box.discharging .r-value { color: #f87171;\\n}\\n.r-unit { font-size: 0.65rem; color: #475569;\\n}\\n.rc-section { display: flex; flex-direction: column; gap: .5rem;\\n}\\n.rc-grid { grid-template-columns: 1fr 1fr;\\n}\\n.lamp-section { display: flex; flex-direction: column; gap: .5rem;\\n}\\n.lamp-grid { grid-template-columns: 1fr 1fr 1fr;\\n}\\n.reading-box.light { background: rgba(251,191,36,.08);\\n}\\n.reading-box.light .r-value { color: #fbbf24;\\n}\\n.reading-box.heat { background: rgba(239,68,68,.08);\\n}\\n.reading-box.heat .r-value { color: #f87171;\\n}\\n.reading-box.brightness { background: rgba(168,85,247,.08);\\n}\\n.reading-box.brightness .r-value { color: #c084fc;\\n}\\n.lamp-visual { display: flex; align-items: center; gap: .75rem; padding: .5rem;\\n}\\n.lamp-bulb { font-size: 2rem; transition: opacity .3s;\\n}\\n.lamp-bar-bg { flex: 1; height: 12px; background: #1e2530; border-radius: 6px; overflow: hidden;\\n}\\n.lamp-bar-fill { height: 100%; background: linear-gradient(90deg, #f59e0b, #fbbf24, #fde047); border-radius: 6px; transition: width .3s;\\n}\\n.galv-section { display: flex; flex-direction: column; gap: .5rem;\\n}\\n.galv-grid { grid-template-columns: 1fr 1fr;\\n}\\n.galv-gauge { display: flex; flex-direction: column; align-items: center; padding: .5rem;\\n}\\n.galv-svg { width: 100%; max-width: 220px; height: auto;\\n}\\n.galv-sensitivity { font-size: .75rem; color: #c084fc; margin-top: .25rem;\\n}\\n.wheatstone-section { display: flex; flex-direction: column; gap: .5rem;\\n}\\n.wheatstone-grid { grid-template-columns: 1fr 1fr;\\n}\\n.reading-box.balanced { background: rgba(34,197,94,.15); border: 1px solid rgba(34,197,94,.3);\\n}\\n.reading-box.balanced .r-value { color: #4ade80;\\n}\\n.bridge-status { display: flex; align-items: center; gap: .4rem; padding: .5rem; border-radius: 6px; font-size: .78rem; font-weight: 600;\\n}\\n.bridge-status.balanced { background: rgba(34,197,94,.12); color: #4ade80; border: 1px solid rgba(34,197,94,.25);\\n}\\n.bridge-status.unbalanced { background: rgba(245,158,11,.1); color: #fbbf24; border: 1px solid rgba(245,158,11,.2);\\n}\\n.bridge-icon { font-size: 1.1rem;\\n}\\n.vdiv-section { display: flex; flex-direction: column; gap: .5rem;\\n}\\n.vdiv-grid { grid-template-columns: 1fr 1fr;\\n}\\n.vdiv-bar { padding: .5rem;\\n}\\n.vdiv-label { font-size: .72rem; color: #94a3b8; margin-bottom: .25rem;\\n}\\n.vdiv-bar-bg { display: flex; height: 16px; border-radius: 8px; overflow: hidden;\\n}\\n.vdiv-bar-v1 { background: #3b82f6; transition: width .3s;\\n}\\n.vdiv-bar-v2 { background: #f59e0b; flex: 1;\\n}\\n.vdiv-legend { display: flex; justify-content: space-between; margin-top: .2rem; font-size: .68rem;\\n}\\n.leg-v1 { color: #3b82f6;\\n}\\n.leg-v2 { color: #f59e0b;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626239044,
+      "end": 1783626239044,
       "order": "normal",
       "sourcemaps": {
         "mappings": ""
       }
     },
     {
-      "name": "vite:build-html",
-      "start": 1783634643029,
-      "end": 1783634643029,
-      "order": "normal"
-    },
-    {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634643029,
-      "end": 1783634643029,
+      "start": 1783626239044,
+      "end": 1783626239044,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634643029,
-      "end": 1783634643029,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634643029,
-      "end": 1783634643029,
+      "start": 1783626239044,
+      "end": 1783626239044,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634643029,
-      "end": 1783634643029,
+      "start": 1783626239044,
+      "end": 1783626239044,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634643029,
-      "end": 1783634643029,
+      "start": 1783626239044,
+      "end": 1783626239044,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634643029,
-      "end": 1783634643029,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626239044,
+      "end": 1783626239044,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626239044,
+      "end": 1783626239044,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634643029,
-      "end": 1783634643029,
+      "name": "vite:css-analysis",
+      "start": 1783626239044,
+      "end": 1783626239044,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/modules/physics/experiments/electric-lab/components/experimentReadings.css?vue&type=style&index=0&src=true&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/experimentReadings.css?vue&type=style&index=0&src=true&lang.css\"\nconst __vite__css = \".readings-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem;\\n}\\n.reading-box {\\n  display: flex; flex-direction: column; align-items: center;\\n  padding: 0.5rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.06);\\n}\\n.reading-box.voltage { background: rgba(245,158,11,0.08);\\n}\\n.reading-box.current { background: rgba(34,197,94,0.08);\\n}\\n.reading-box.resistance { background: rgba(6,182,212,0.08);\\n}\\n.reading-box.power { background: rgba(239,68,68,0.08);\\n}\\n.reading-box.resistivity { background: rgba(168,85,247,0.08);\\n}\\n.r-label { font-size: 0.7rem; color: #64748b;\\n}\\n.r-value { font-size: 1.1rem; font-weight: 700; font-family: monospace;\\n}\\n.reading-box.voltage .r-value { color: #fbbf24;\\n}\\n.reading-box.current .r-value { color: #4ade80;\\n}\\n.reading-box.resistance .r-value { color: #67e8f9;\\n}\\n.reading-box.power .r-value { color: #f87171;\\n}\\n.reading-box.resistivity .r-value { color: #c084fc;\\n}\\n.reading-box.charging { background: rgba(34,197,94,.12);\\n}\\n.reading-box.charging .r-value { color: #4ade80;\\n}\\n.reading-box.discharging { background: rgba(239,68,68,.12);\\n}\\n.reading-box.discharging .r-value { color: #f87171;\\n}\\n.r-unit { font-size: 0.65rem; color: #475569;\\n}\\n.rc-section { display: flex; flex-direction: column; gap: .5rem;\\n}\\n.rc-grid { grid-template-columns: 1fr 1fr;\\n}\\n.lamp-section { display: flex; flex-direction: column; gap: .5rem;\\n}\\n.lamp-grid { grid-template-columns: 1fr 1fr 1fr;\\n}\\n.reading-box.light { background: rgba(251,191,36,.08);\\n}\\n.reading-box.light .r-value { color: #fbbf24;\\n}\\n.reading-box.heat { background: rgba(239,68,68,.08);\\n}\\n.reading-box.heat .r-value { color: #f87171;\\n}\\n.reading-box.brightness { background: rgba(168,85,247,.08);\\n}\\n.reading-box.brightness .r-value { color: #c084fc;\\n}\\n.lamp-visual { display: flex; align-items: center; gap: .75rem; padding: .5rem;\\n}\\n.lamp-bulb { font-size: 2rem; transition: opacity .3s;\\n}\\n.lamp-bar-bg { flex: 1; height: 12px; background: #1e2530; border-radius: 6px; overflow: hidden;\\n}\\n.lamp-bar-fill { height: 100%; background: linear-gradient(90deg, #f59e0b, #fbbf24, #fde047); border-radius: 6px; transition: width .3s;\\n}\\n.galv-section { display: flex; flex-direction: column; gap: .5rem;\\n}\\n.galv-grid { grid-template-columns: 1fr 1fr;\\n}\\n.galv-gauge { display: flex; flex-direction: column; align-items: center; padding: .5rem;\\n}\\n.galv-svg { width: 100%; max-width: 220px; height: auto;\\n}\\n.galv-sensitivity { font-size: .75rem; color: #c084fc; margin-top: .25rem;\\n}\\n.wheatstone-section { display: flex; flex-direction: column; gap: .5rem;\\n}\\n.wheatstone-grid { grid-template-columns: 1fr 1fr;\\n}\\n.reading-box.balanced { background: rgba(34,197,94,.15); border: 1px solid rgba(34,197,94,.3);\\n}\\n.reading-box.balanced .r-value { color: #4ade80;\\n}\\n.bridge-status { display: flex; align-items: center; gap: .4rem; padding: .5rem; border-radius: 6px; font-size: .78rem; font-weight: 600;\\n}\\n.bridge-status.balanced { background: rgba(34,197,94,.12); color: #4ade80; border: 1px solid rgba(34,197,94,.25);\\n}\\n.bridge-status.unbalanced { background: rgba(245,158,11,.1); color: #fbbf24; border: 1px solid rgba(245,158,11,.2);\\n}\\n.bridge-icon { font-size: 1.1rem;\\n}\\n.vdiv-section { display: flex; flex-direction: column; gap: .5rem;\\n}\\n.vdiv-grid { grid-template-columns: 1fr 1fr;\\n}\\n.vdiv-bar { padding: .5rem;\\n}\\n.vdiv-label { font-size: .72rem; color: #94a3b8; margin-bottom: .25rem;\\n}\\n.vdiv-bar-bg { display: flex; height: 16px; border-radius: 8px; overflow: hidden;\\n}\\n.vdiv-bar-v1 { background: #3b82f6; transition: width .3s;\\n}\\n.vdiv-bar-v2 { background: #f59e0b; flex: 1;\\n}\\n.vdiv-legend { display: flex; justify-content: space-between; margin-top: .2rem; font-size: .68rem;\\n}\\n.leg-v1 { color: #3b82f6;\\n}\\n.leg-v2 { color: #f59e0b;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626239044,
+      "end": 1783626239044,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

@@ -8,6 +8,7 @@ import SpecificHeatPanelBody from '../../../../components/experiment/specific-he
 import SpecificHeatStatusBar from '../../../../components/experiment/specific-heat/SpecificHeatStatusBar.vue'
 import SpecificHeatControlBar from '../../../../components/experiment/specific-heat/SpecificHeatControlBar.vue'
 import SpecificHeatHelpModal from '../../../../components/experiment/specific-heat/SpecificHeatHelpModal.vue'
+import SpecificHeatGuidePanel from '../../../../components/experiment/specific-heat/SpecificHeatGuidePanel.vue'
 import SpecificHeatParamsPanel from '../../../../components/experiment/specific-heat/panels/SpecificHeatParamsPanel.vue'
 import SpecificHeatOverlayPanels from '../../../../components/experiment/specific-heat/SpecificHeatOverlayPanels.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
@@ -15,6 +16,7 @@ import DraggablePanel from '../../../../components/experiment/spring/DraggablePa
 const ex = useSpecificHeatExperiment()
 const { t } = useI18n()
 const helpOpen = ref(false)
+const showGuide = ref(true)
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
@@ -160,6 +162,7 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown) })
             />
           </div>
         </template>
+        <SpecificHeatGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
 

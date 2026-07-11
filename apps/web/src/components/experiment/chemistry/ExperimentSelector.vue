@@ -1,12 +1,21 @@
 <script setup lang="ts">
-import { experiments, type Experiment } from '../../../composables/chemistry/useExperiments';
+import { experiments as legacyExperiments, type Experiment } from '../../../composables/chemistry/useExperiments';
+import { listExperiments as listRegistryExperiments, type ExperimentDefinition } from '../../../composables/chemistry/experiments';
 import { useI18n } from '../../../composables/useI18n';
+import '../../../composables/chemistry/experiments'; // side-effect: registers all definitions
 const { t } = useI18n();
 
-const emit = defineEmits<{ select: [exp: Experiment]; close: [] }>();
+const emit = defineEmits<{ select: [exp: Experiment | ExperimentDefinition]; close: [] }>();
 
-function onSelect(exp: Experiment) {
-  emit('select', exp);
+// Merge: registry experiments + legacy experiments (deduped by id)
+const registryIds = new Set(listRegistryExperiments().map((e) => e.id));
+const mergedExperiments = [
+  ...listRegistryExperiments(),
+  ...legacyExperiments.filter((e) => !registryIds.has(e.id)),
+];
+
+function onSelect(exp: Experiment | ExperimentDefinition) {
+  emit('select', exp as Experiment);
 }
 function onClose() {
   emit('close');
@@ -22,14 +31,14 @@ function onClose() {
       </div>
       <div class="experiments-grid">
         <div
-          v-for="exp in experiments"
+          v-for="exp in mergedExperiments"
           :key="exp.id"
           class="exp-card"
           @click="onSelect(exp)"
         >
           <div class="exp-icon">{{ exp.icon }}</div>
-          <div class="exp-name">{{ t(exp.nameAr) }}</div>
-          <div class="exp-desc">{{ t(exp.description) }}</div>
+          <div class="exp-name">{{ t('nameKey' in exp ? exp.nameKey : exp.nameAr) }}</div>
+          <div class="exp-desc">{{ t('descKey' in exp ? exp.descKey : exp.description) }}</div>
           <div class="exp-steps-count">{{ exp.steps.length }} {{ t('chemistryLab.steps') }}</div>
         </div>
       </div>

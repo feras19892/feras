@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabComputedsNew4.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { computed, type Ref, type Reactive } from 'vue'\nimport type { CircuitComponent } from './types'\n\nconst VT = 0.02585\nconst IS = 1e-12\nconst ETA = 1.5\n\nexport function createNewComputeds4(\n  components: Reactive<CircuitComponent[]>,\n  running: Ref<boolean>,\n  activePresetId: Ref<string | null>,\n) {\n  const isDiodeIV = computed(() => activePresetId.value === 'diode-iv')\n  const diodeData = computed(() => {\n    if (!isDiodeIV.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const Vsrc = batt.value\n    const R = res.value\n    if (R === 0) return null\n    const Vd = Vsrc - 0.7\n    if (Vd <= 0) return { Vd: Vsrc, I: 0, R, Vsrc, Vbarrier: 0.7 }\n    const Iexp = IS * (Math.exp(Vd / (ETA * VT)) - 1)\n    const I = Math.min(Iexp, Vsrc / R)\n    const Vactual = Vsrc - I * R\n    return { Vd: Vactual, I, R, Vsrc, Vbarrier: 0.7 }\n  })\n  const diodeReading = computed(() => {\n    if (!diodeData.value || !running.value) return { Vd: 0, I: 0, Vsrc: 0 }\n    const d = diodeData.value\n    return { Vd: d.Vd, I: d.I, Vsrc: d.Vsrc }\n  })\n\n  const isTransformer = computed(() => activePresetId.value === 'transformer-ratio')\n  const transformerData = computed(() => {\n    if (!isTransformer.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const Vp = batt.value\n    const Rload = res.value\n    const Np = 200, Ns = 100\n    const ratio = Ns / Np\n    const Vs = Vp * ratio\n    if (Rload === 0) return null\n    const Is = Vs / Rload\n    const Ip = Is * ratio\n    const Pp = Vp * Ip\n    const Ps = Vs * Is\n    const eff = Pp > 0 ? Ps / Pp : 0\n    return { Vp, Vs, Np, Ns, ratio, Is, Ip, Pp, Ps, eff, Rload }\n  })\n  const transformerReading = computed(() => {\n    if (!transformerData.value || !running.value) return { Vp: 0, Vs: 0, Ip: 0, Is: 0 }\n    const d = transformerData.value\n    return { Vp: d.Vp, Vs: d.Vs, Ip: d.Ip, Is: d.Is }\n  })\n\n  const isSelfInd = computed(() => activePresetId.value === 'self-inductance')\n  const selfIndData = computed(() => {\n    if (!isSelfInd.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const V = batt.value\n    const R = res.value\n    if (R === 0) return null\n    const L = 0.5\n    const I = V / R\n    const tau = L / R\n    const E = 0.5 * L * I * I\n    const Vl = V\n    return { V, I, R, L, tau, E, Vl }\n  })\n  const selfIndReading = computed(() => {\n    if (!selfIndData.value || !running.value) return { V: 0, I: 0, E: 0, tau: 0 }\n    const d = selfIndData.value\n    return { V: d.V, I: d.I, E: d.E, tau: d.tau }\n  })\n\n  return {\n    isDiodeIV, diodeData, diodeReading,\n    isTransformer, transformerData, transformerReading,\n    isSelfInd, selfIndData, selfIndReading,\n  }\n}\n",
-      "start": 1783634642573,
-      "end": 1783634642822,
+      "start": 1783626239211,
+      "end": 1783626239211
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626239211,
+      "end": 1783626239211,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { computed, type Ref, type Reactive } from 'vue'\nimport type { CircuitComponent } from './types'\n\nconst VT = 0.02585\nconst IS = 1e-12\nconst ETA = 1.5\n\nexport function createNewComputeds4(\n  components: Reactive<CircuitComponent[]>,\n  running: Ref<boolean>,\n  activePresetId: Ref<string | null>,\n) {\n  const isDiodeIV = computed(() => activePresetId.value === 'diode-iv')\n  const diodeData = computed(() => {\n    if (!isDiodeIV.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const Vsrc = batt.value\n    const R = res.value\n    if (R === 0) return null\n    const Vd = Vsrc - 0.7\n    if (Vd <= 0) return { Vd: Vsrc, I: 0, R, Vsrc, Vbarrier: 0.7 }\n    const Iexp = IS * (Math.exp(Vd / (ETA * VT)) - 1)\n    const I = Math.min(Iexp, Vsrc / R)\n    const Vactual = Vsrc - I * R\n    return { Vd: Vactual, I, R, Vsrc, Vbarrier: 0.7 }\n  })\n  const diodeReading = computed(() => {\n    if (!diodeData.value || !running.value) return { Vd: 0, I: 0, Vsrc: 0 }\n    const d = diodeData.value\n    return { Vd: d.Vd, I: d.I, Vsrc: d.Vsrc }\n  })\n\n  const isTransformer = computed(() => activePresetId.value === 'transformer-ratio')\n  const transformerData = computed(() => {\n    if (!isTransformer.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const Vp = batt.value\n    const Rload = res.value\n    const Np = 200, Ns = 100\n    const ratio = Ns / Np\n    const Vs = Vp * ratio\n    if (Rload === 0) return null\n    const Is = Vs / Rload\n    const Ip = Is * ratio\n    const Pp = Vp * Ip\n    const Ps = Vs * Is\n    const eff = Pp > 0 ? Ps / Pp : 0\n    return { Vp, Vs, Np, Ns, ratio, Is, Ip, Pp, Ps, eff, Rload }\n  })\n  const transformerReading = computed(() => {\n    if (!transformerData.value || !running.value) return { Vp: 0, Vs: 0, Ip: 0, Is: 0 }\n    const d = transformerData.value\n    return { Vp: d.Vp, Vs: d.Vs, Ip: d.Ip, Is: d.Is }\n  })\n\n  const isSelfInd = computed(() => activePresetId.value === 'self-inductance')\n  const selfIndData = computed(() => {\n    if (!isSelfInd.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const V = batt.value\n    const R = res.value\n    if (R === 0) return null\n    const L = 0.5\n    const I = V / R\n    const tau = L / R\n    const E = 0.5 * L * I * I\n    const Vl = V\n    return { V, I, R, L, tau, E, Vl }\n  })\n  const selfIndReading = computed(() => {\n    if (!selfIndData.value || !running.value) return { V: 0, I: 0, E: 0, tau: 0 }\n    const d = selfIndData.value\n    return { V: d.V, I: d.I, E: d.E, tau: d.tau }\n  })\n\n  return {\n    isDiodeIV, diodeData, diodeReading,\n    isTransformer, transformerData, transformerReading,\n    isSelfInd, selfIndData, selfIndReading,\n  }\n}\n",
+      "start": 1783626239211,
+      "end": 1783626239211,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634642822,
-      "end": 1783634642822,
+      "start": 1783626239211,
+      "end": 1783626239211,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { computed } from \"vue\";\nconst VT = 0.02585;\nconst IS = 1e-12;\nconst ETA = 1.5;\nexport function createNewComputeds4(components, running, activePresetId) {\n  const isDiodeIV = computed(() => activePresetId.value === \"diode-iv\");\n  const diodeData = computed(() => {\n    if (!isDiodeIV.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (!batt || !res) return null;\n    const Vsrc = batt.value;\n    const R = res.value;\n    if (R === 0) return null;\n    const Vd = Vsrc - 0.7;\n    if (Vd <= 0) return { Vd: Vsrc, I: 0, R, Vsrc, Vbarrier: 0.7 };\n    const Iexp = IS * (Math.exp(Vd / (ETA * VT)) - 1);\n    const I = Math.min(Iexp, Vsrc / R);\n    const Vactual = Vsrc - I * R;\n    return { Vd: Vactual, I, R, Vsrc, Vbarrier: 0.7 };\n  });\n  const diodeReading = computed(() => {\n    if (!diodeData.value || !running.value) return { Vd: 0, I: 0, Vsrc: 0 };\n    const d = diodeData.value;\n    return { Vd: d.Vd, I: d.I, Vsrc: d.Vsrc };\n  });\n  const isTransformer = computed(() => activePresetId.value === \"transformer-ratio\");\n  const transformerData = computed(() => {\n    if (!isTransformer.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (!batt || !res) return null;\n    const Vp = batt.value;\n    const Rload = res.value;\n    const Np = 200, Ns = 100;\n    const ratio = Ns / Np;\n    const Vs = Vp * ratio;\n    if (Rload === 0) return null;\n    const Is = Vs / Rload;\n    const Ip = Is * ratio;\n    const Pp = Vp * Ip;\n    const Ps = Vs * Is;\n    const eff = Pp > 0 ? Ps / Pp : 0;\n    return { Vp, Vs, Np, Ns, ratio, Is, Ip, Pp, Ps, eff, Rload };\n  });\n  const transformerReading = computed(() => {\n    if (!transformerData.value || !running.value) return { Vp: 0, Vs: 0, Ip: 0, Is: 0 };\n    const d = transformerData.value;\n    return { Vp: d.Vp, Vs: d.Vs, Ip: d.Ip, Is: d.Is };\n  });\n  const isSelfInd = computed(() => activePresetId.value === \"self-inductance\");\n  const selfIndData = computed(() => {\n    if (!isSelfInd.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (!batt || !res) return null;\n    const V = batt.value;\n    const R = res.value;\n    if (R === 0) return null;\n    const L = 0.5;\n    const I = V / R;\n    const tau = L / R;\n    const E = 0.5 * L * I * I;\n    const Vl = V;\n    return { V, I, R, L, tau, E, Vl };\n  });\n  const selfIndReading = computed(() => {\n    if (!selfIndData.value || !running.value) return { V: 0, I: 0, E: 0, tau: 0 };\n    const d = selfIndData.value;\n    return { V: d.V, I: d.I, E: d.E, tau: d.tau };\n  });\n  return {\n    isDiodeIV,\n    diodeData,\n    diodeReading,\n    isTransformer,\n    transformerData,\n    transformerReading,\n    isSelfInd,\n    selfIndData,\n    selfIndReading\n  };\n}\n",
-      "start": 1783634642822,
-      "end": 1783634642870,
+      "start": 1783626239211,
+      "end": 1783626239759,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabComputedsNew4.ts"
+          "electricLabComputedsNew4.ts"
         ],
         "sourcesContent": [
           "import { computed, type Ref, type Reactive } from 'vue'\nimport type { CircuitComponent } from './types'\n\nconst VT = 0.02585\nconst IS = 1e-12\nconst ETA = 1.5\n\nexport function createNewComputeds4(\n  components: Reactive<CircuitComponent[]>,\n  running: Ref<boolean>,\n  activePresetId: Ref<string | null>,\n) {\n  const isDiodeIV = computed(() => activePresetId.value === 'diode-iv')\n  const diodeData = computed(() => {\n    if (!isDiodeIV.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const Vsrc = batt.value\n    const R = res.value\n    if (R === 0) return null\n    const Vd = Vsrc - 0.7\n    if (Vd <= 0) return { Vd: Vsrc, I: 0, R, Vsrc, Vbarrier: 0.7 }\n    const Iexp = IS * (Math.exp(Vd / (ETA * VT)) - 1)\n    const I = Math.min(Iexp, Vsrc / R)\n    const Vactual = Vsrc - I * R\n    return { Vd: Vactual, I, R, Vsrc, Vbarrier: 0.7 }\n  })\n  const diodeReading = computed(() => {\n    if (!diodeData.value || !running.value) return { Vd: 0, I: 0, Vsrc: 0 }\n    const d = diodeData.value\n    return { Vd: d.Vd, I: d.I, Vsrc: d.Vsrc }\n  })\n\n  const isTransformer = computed(() => activePresetId.value === 'transformer-ratio')\n  const transformerData = computed(() => {\n    if (!isTransformer.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const Vp = batt.value\n    const Rload = res.value\n    const Np = 200, Ns = 100\n    const ratio = Ns / Np\n    const Vs = Vp * ratio\n    if (Rload === 0) return null\n    const Is = Vs / Rload\n    const Ip = Is * ratio\n    const Pp = Vp * Ip\n    const Ps = Vs * Is\n    const eff = Pp > 0 ? Ps / Pp : 0\n    return { Vp, Vs, Np, Ns, ratio, Is, Ip, Pp, Ps, eff, Rload }\n  })\n  const transformerReading = computed(() => {\n    if (!transformerData.value || !running.value) return { Vp: 0, Vs: 0, Ip: 0, Is: 0 }\n    const d = transformerData.value\n    return { Vp: d.Vp, Vs: d.Vs, Ip: d.Ip, Is: d.Is }\n  })\n\n  const isSelfInd = computed(() => activePresetId.value === 'self-inductance')\n  const selfIndData = computed(() => {\n    if (!isSelfInd.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const V = batt.value\n    const R = res.value\n    if (R === 0) return null\n    const L = 0.5\n    const I = V / R\n    const tau = L / R\n    const E = 0.5 * L * I * I\n    const Vl = V\n    return { V, I, R, L, tau, E, Vl }\n  })\n  const selfIndReading = computed(() => {\n    if (!selfIndData.value || !running.value) return { V: 0, I: 0, E: 0, tau: 0 }\n    const d = selfIndData.value\n    return { V: d.V, I: d.I, E: d.E, tau: d.tau }\n  })\n\n  return {\n    isDiodeIV, diodeData, diodeReading,\n    isTransformer, transformerData, transformerReading,\n    isSelfInd, selfIndData, selfIndReading,\n  }\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634642870,
-      "end": 1783634642870,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642870,
-      "end": 1783634642870,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626239759,
+      "end": 1783626239759,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642870,
-      "end": 1783634642870,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634642870,
-      "end": 1783634642870,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634642870,
-      "end": 1783634642870,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642870,
-      "end": 1783634642870,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642870,
-      "end": 1783634642870,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642870,
-      "end": 1783634642870,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642871,
-      "end": 1783634642871,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642871,
-      "end": 1783634642871,
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642871,
-      "end": 1783634642871,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626239759,
+      "end": 1783626239759,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642871,
-      "end": 1783634642871,
+      "name": "vite:css-analysis",
+      "start": 1783626239759,
+      "end": 1783626239759,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { computed } from \"/node_modules/.vite/deps/vue.js?v=09a3ad4c\";\nconst VT = 0.02585;\nconst IS = 1e-12;\nconst ETA = 1.5;\nexport function createNewComputeds4(components, running, activePresetId) {\n  const isDiodeIV = computed(() => activePresetId.value === \"diode-iv\");\n  const diodeData = computed(() => {\n    if (!isDiodeIV.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (!batt || !res) return null;\n    const Vsrc = batt.value;\n    const R = res.value;\n    if (R === 0) return null;\n    const Vd = Vsrc - 0.7;\n    if (Vd <= 0) return { Vd: Vsrc, I: 0, R, Vsrc, Vbarrier: 0.7 };\n    const Iexp = IS * (Math.exp(Vd / (ETA * VT)) - 1);\n    const I = Math.min(Iexp, Vsrc / R);\n    const Vactual = Vsrc - I * R;\n    return { Vd: Vactual, I, R, Vsrc, Vbarrier: 0.7 };\n  });\n  const diodeReading = computed(() => {\n    if (!diodeData.value || !running.value) return { Vd: 0, I: 0, Vsrc: 0 };\n    const d = diodeData.value;\n    return { Vd: d.Vd, I: d.I, Vsrc: d.Vsrc };\n  });\n  const isTransformer = computed(() => activePresetId.value === \"transformer-ratio\");\n  const transformerData = computed(() => {\n    if (!isTransformer.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (!batt || !res) return null;\n    const Vp = batt.value;\n    const Rload = res.value;\n    const Np = 200, Ns = 100;\n    const ratio = Ns / Np;\n    const Vs = Vp * ratio;\n    if (Rload === 0) return null;\n    const Is = Vs / Rload;\n    const Ip = Is * ratio;\n    const Pp = Vp * Ip;\n    const Ps = Vs * Is;\n    const eff = Pp > 0 ? Ps / Pp : 0;\n    return { Vp, Vs, Np, Ns, ratio, Is, Ip, Pp, Ps, eff, Rload };\n  });\n  const transformerReading = computed(() => {\n    if (!transformerData.value || !running.value) return { Vp: 0, Vs: 0, Ip: 0, Is: 0 };\n    const d = transformerData.value;\n    return { Vp: d.Vp, Vs: d.Vs, Ip: d.Ip, Is: d.Is };\n  });\n  const isSelfInd = computed(() => activePresetId.value === \"self-inductance\");\n  const selfIndData = computed(() => {\n    if (!isSelfInd.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (!batt || !res) return null;\n    const V = batt.value;\n    const R = res.value;\n    if (R === 0) return null;\n    const L = 0.5;\n    const I = V / R;\n    const tau = L / R;\n    const E = 0.5 * L * I * I;\n    const Vl = V;\n    return { V, I, R, L, tau, E, Vl };\n  });\n  const selfIndReading = computed(() => {\n    if (!selfIndData.value || !running.value) return { V: 0, I: 0, E: 0, tau: 0 };\n    const d = selfIndData.value;\n    return { V: d.V, I: d.I, E: d.E, tau: d.tau };\n  });\n  return {\n    isDiodeIV,\n    diodeData,\n    diodeReading,\n    isTransformer,\n    transformerData,\n    transformerReading,\n    isSelfInd,\n    selfIndData,\n    selfIndReading\n  };\n}\n",
+      "start": 1783626239759,
+      "end": 1783626239766,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

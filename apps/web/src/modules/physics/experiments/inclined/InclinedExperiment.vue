@@ -8,6 +8,7 @@ import InclinedPanelBody from '../../../../components/experiment/inclined/Inclin
 import InclinedOverlayPanels from '../../../../components/experiment/inclined/InclinedOverlayPanels.vue'
 import InclinedControlBar from '../../../../components/experiment/inclined/InclinedControlBar.vue'
 import InclinedHelpModal from '../../../../components/experiment/inclined/InclinedHelpModal.vue'
+import InclinedGuidePanel from '../../../../components/experiment/inclined/InclinedGuidePanel.vue'
 import InclinedReport from '../../../../components/experiment/inclined/InclinedReport.vue'
 import InclinedStatusBar from '../../../../components/experiment/inclined/InclinedStatusBar.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
@@ -15,6 +16,7 @@ import DraggablePanel from '../../../../components/experiment/spring/DraggablePa
 const { t } = useI18n()
 const ex = useInclinedExperiment()
 const helpOpen = ref(false)
+const showGuide = ref(true)
 const reportOpen = ref(false)
 const canvasRef = ref<InstanceType<typeof InclinedCanvas> | null>(null)
 
@@ -101,6 +103,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             />
           </div>
         </template>
+        <InclinedGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
 

@@ -8,12 +8,14 @@ import InterferencePanelBody from '../../../../components/experiment/interferenc
 import InterferenceStatusBar from '../../../../components/experiment/interference/InterferenceStatusBar.vue'
 import InterferenceControlBar from '../../../../components/experiment/interference/InterferenceControlBar.vue'
 import InterferenceHelpModal from '../../../../components/experiment/interference/InterferenceHelpModal.vue'
+import InterferenceGuidePanel from '../../../../components/experiment/interference/InterferenceGuidePanel.vue'
 import InterferenceOverlayPanels from '../../../../components/experiment/interference/InterferenceOverlayPanels.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 
 const ex = useInterferenceExperiment()
 const { t } = useI18n()
 const helpOpen = ref(false)
+const showGuide = ref(true)
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
@@ -165,6 +167,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             />
           </div>
         </template>
+        <InterferenceGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
 

@@ -1,0 +1,140 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabGradCylinder.vue?vue&type=style&index=0&scoped=102ffca1&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.cylinder-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.cylinder-svg.hovered {\n  filter: brightness(1.04);\n}\n.drop-canvas {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  width: 110px;\n  height: 260px;\n  margin-left: -55px;\n  z-index: 2;\n  pointer-events: none;\n}\n",
+      "start": 1783626310483,
+      "end": 1783626310483,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabGradCylinder.vue"
+        ],
+        "names": [],
+        "mappings": ";AAuOA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EAChB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC;EACb,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACtB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACnB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EAClB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACjB;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACpB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AAC1B;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACX,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EAClB,CAAC,CAAC,CAAC,EAAE,CAAC;EACN,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC;EACT,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC;EACZ,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC;EACb,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC;EAClB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC;EACV,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC;AACtB",
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabGradCylinder.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\nimport { computed, ref } from 'vue';\nimport { useSpillDrops } from '../../../composables/chemistry/useSpillDrops';\n\ninterface Props {\n  volume?: number;     // 0–100 mL\n  maxVolume?: number;  // 100\n  liquidColor?: string;\n  liquidOpacity?: number;\n  isHovered?: boolean;\n  tiltAngle?: number;\n  itemUid?: string;\n  itemX?: number;\n  itemY?: number;\n  scale?: number;\n  isSelected?: boolean;\n}\n\nconst props = withDefaults(defineProps<Props>(), {\n  volume: 0,\n  maxVolume: 100,\n  liquidColor: '#3b82f6',\n  liquidOpacity: 0.35,\n  isHovered: false,\n  tiltAngle: 0,\n  itemX: 0,\n  itemY: 0,\n  itemUid: '',\n  scale: 1,\n  isSelected: false,\n});\n\nconst emit = defineEmits<{ click: []; spill: [amount: number]; dropExited: [worldX: number, worldY: number, color: string]; }>();\n\nconst canvasRef = ref<HTMLCanvasElement | null>(null);\n\nuseSpillDrops({\n  canvasRef,\n  tiltAngle: () => props.tiltAngle,\n  volume: () => props.volume,\n  maxVolume: () => props.maxVolume,\n  liquidColor: () => props.liquidColor,\n  itemX: () => props.itemX,\n  itemY: () => props.itemY,\n  mouthPosition: (tilt) => {\n    const rad = tilt * Math.PI / 180;\n    const cx = 55, cy = 114, mouthDist = 92; // cy=(tubeTop22+tubeBottom205)/2\n    return { x: cx + mouthDist * Math.sin(rad), y: cy - mouthDist * Math.cos(rad) };\n  },\n  canvasW: 110,\n  canvasH: 260,\n  mouthBounds: { minX: 10, maxX: 100, minY: 10, maxY: 240 },\n  exitY: 200,\n  onSpill: (amount) => emit('spill', amount),\n  onDropExited: (wx, wy, color) => emit('dropExited', wx, wy, color),\n});\n\n/* Geometry */\nconst tubeTop = 22;\nconst tubeBottom = 205;\nconst tubeH = tubeBottom - tubeTop;\nconst tubeW = 28;\nconst centerX = 55;\n\n/* Liquid */\nconst liquidH = computed(() => {\n  if (props.volume <= 0) return 0;\n  return (props.volume / props.maxVolume) * tubeH;\n});\nconst liquidY = computed(() => tubeBottom - liquidH.value);\n\n/* Scale: every 10 mL with minor every 5 */\ninterface Mark { y: number; value: number; type: 'major' | 'minor'; label?: string }\nconst marks = computed<Mark[]>(() => {\n  const m: Mark[] = [];\n  const step = 5; // every 5 mL\n  for (let v = 0; v <= props.maxVolume; v += step) {\n    const pct = v / props.maxVolume;\n    const y = tubeBottom - pct * tubeH;\n    const type: Mark['type'] = v % 10 === 0 ? 'major' : 'minor';\n    m.push({ y, value: v, type, label: v % 10 === 0 && v > 0 ? String(v) : undefined });\n  }\n  return m;\n});\n</script>\n\n<template>\n  <div class=\"cylinder-wrapper\" @click.stop=\"emit('click')\" data-v-inspector=\"src/components/experiment/chemistry/LabGradCylinder.vue:88:3\">\n    <svg\n      viewBox=\"0 0 110 230\"\n      class=\"cylinder-svg\"\n      :class=\"{ hovered: isHovered }\"\n      :style=\"{ width: 75 * props.scale + 'px', height: 158 * props.scale + 'px' }\" data-v-inspector=\"src/components/experiment/chemistry/LabGradCylinder.vue:89:5\"\n    >\n      <!-- Ground shadow -->\n      <ellipse cx=\"55\" cy=\"223\" rx=\"22\" ry=\"2.5\" fill=\"rgba(0,0,0,0.06)\" data-v-inspector=\"src/components/experiment/chemistry/LabGradCylinder.vue:96:7\" />\n\n      <!-- Base (hexagonal feel) -->\n      <path\n        d=\"M 38 205 L 42 218 Q 42 220 45 220 L 65 220 Q 68 220 68 218 L 72 205\"\n        fill=\"rgba(241,245,249,0.3)\"\n        stroke=\"#94a3b8\"\n        stroke-width=\"1\" data-v-inspector=\"src/components/experiment/chemistry/LabGradCylinder.vue:99:7\"\n      />\n\n      <!-- Tube body -->\n      <rect\n        :x=\"centerX - tubeW/2\"\n        :y=\"tubeTop\"\n        :width=\"tubeW\"\n        :height=\"tubeH\"\n        rx=\"2\"\n        fill=\"rgba(241,245,249,0.15)\"\n        stroke=\"#94a3b8\"\n        stroke-width=\"1.2\" data-v-inspector=\"src/components/experiment/chemistry/LabGradCylinder.vue:107:7\"\n      />\n      <!-- Selection outline -->\n      <rect\n        v-if=\"isSelected\"\n        :x=\"centerX - tubeW/2 - 2\"\n        :y=\"tubeTop - 2\"\n        :width=\"tubeW + 4\"\n        :height=\"tubeH + 4\"\n        rx=\"3\"\n        fill=\"none\"\n        stroke=\"#10b981\"\n        stroke-width=\"2\"\n        opacity=\"0.9\" data-v-inspector=\"src/components/experiment/chemistry/LabGradCylinder.vue:118:7\"\n      />\n\n      <!-- Rim (poured lip) -->\n      <ellipse cx=\"55\" cy=\"tubeTop\" rx=\"16\" ry=\"3.5\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"1.2\" data-v-inspector=\"src/components/experiment/chemistry/LabGradCylinder.vue:132:7\" />\n      <ellipse cx=\"55\" cy=\"tubeTop\" rx=\"14\" ry=\"2.5\" fill=\"none\" stroke=\"rgba(148,163,184,0.3)\" stroke-width=\"0.5\" data-v-inspector=\"src/components/experiment/chemistry/LabGradCylinder.vue:133:7\" />\n\n      <!-- Scale marks (right side) -->\n      <g v-for=\"mark in marks\" :key=\"mark.value\" data-v-inspector=\"src/components/experiment/chemistry/LabGradCylinder.vue:136:7\">\n        <line\n          :x1=\"centerX + tubeW/2\"\n          :y1=\"mark.y\"\n          :x2=\"mark.type === 'major' ? centerX + tubeW/2 + 10 : centerX + tubeW/2 + 6\"\n          :y2=\"mark.y\"\n          :stroke=\"mark.type === 'major' ? '#334155' : '#94a3b8'\"\n          :stroke-width=\"mark.type === 'major' ? 1 : 0.5\"\n          :opacity=\"mark.type === 'major' ? 0.8 : 0.4\"\n          stroke-linecap=\"round\" data-v-inspector=\"src/components/experiment/chemistry/LabGradCylinder.vue:137:9\"\n        />\n        <text\n          v-if=\"mark.label\"\n          :x=\"centerX + tubeW/2 + 12\"\n          :y=\"mark.y + 2.5\"\n          font-size=\"7\"\n          fill=\"#1e293b\"\n          font-weight=\"800\"\n          opacity=\"0.85\"\n          text-anchor=\"start\" data-v-inspector=\"src/components/experiment/chemistry/LabGradCylinder.vue:147:9\"\n        >{{ mark.label }}</text>\n      </g>\n\n      <!-- LIQUID -->\n      <g v-if=\"volume > 0\" data-v-inspector=\"src/components/experiment/chemistry/LabGradCylinder.vue:160:7\">\n        <rect\n          :x=\"centerX - tubeW/2 + 1.5\"\n          :y=\"liquidY\"\n          :width=\"tubeW - 3\"\n          :height=\"liquidH\"\n          rx=\"1\"\n          :fill=\"liquidColor\"\n          :opacity=\"liquidOpacity\" data-v-inspector=\"src/components/experiment/chemistry/LabGradCylinder.vue:161:9\"\n        />\n        <!-- Meniscus -->\n        <ellipse\n          :cx=\"centerX\"\n          :cy=\"liquidY\"\n          :rx=\"tubeW/2 - 2\"\n          ry=\"2.5\"\n          :fill=\"liquidColor\"\n          :opacity=\"liquidOpacity + 0.1\" data-v-inspector=\"src/components/experiment/chemistry/LabGradCylinder.vue:171:9\"\n        />\n        <!-- Highlight -->\n        <ellipse\n          :cx=\"centerX\"\n          :cy=\"liquidY + 0.3\"\n          :rx=\"tubeW/2 - 6\"\n          ry=\"1\"\n          fill=\"rgba(255,255,255,0.4)\" data-v-inspector=\"src/components/experiment/chemistry/LabGradCylinder.vue:180:9\"\n        />\n        <!-- Surface level indicator (red line for transparent liquids) -->\n        <line\n          :x1=\"centerX - tubeW/2 + 2\"\n          :y1=\"liquidY\"\n          :x2=\"centerX + tubeW/2 - 2\"\n          :y2=\"liquidY\"\n          stroke=\"#ef4444\"\n          stroke-width=\"1.2\"\n          opacity=\"0.65\"\n          stroke-linecap=\"round\" data-v-inspector=\"src/components/experiment/chemistry/LabGradCylinder.vue:188:9\"\n        />\n        <circle :cx=\"centerX\" :cy=\"liquidY\" r=\"2.5\" fill=\"#ef4444\" opacity=\"0.3\" data-v-inspector=\"src/components/experiment/chemistry/LabGradCylinder.vue:198:9\" />\n        <!-- Side reflection -->\n        <line\n          :x1=\"centerX - tubeW/2 + 4\"\n          :y1=\"liquidY + 5\"\n          :x2=\"centerX - tubeW/2 + 4\"\n          :y2=\"tubeBottom - 3\"\n          stroke=\"rgba(255,255,255,0.22)\"\n          stroke-width=\"1.5\"\n          stroke-linecap=\"round\" data-v-inspector=\"src/components/experiment/chemistry/LabGradCylinder.vue:200:9\"\n        />\n      </g>\n\n      <!-- Glass highlights -->\n      <line :x1=\"centerX - tubeW/2 + 4\" :y1=\"tubeTop + 5\" :x2=\"centerX - tubeW/2 + 4\" :y2=\"tubeBottom - 5\" stroke=\"rgba(255,255,255,0.35)\" stroke-width=\"2\" stroke-linecap=\"round\" data-v-inspector=\"src/components/experiment/chemistry/LabGradCylinder.vue:212:7\" />\n      <line :x1=\"centerX + tubeW/2 - 5\" :y1=\"tubeTop + 8\" :x2=\"centerX + tubeW/2 - 5\" :y2=\"tubeBottom - 8\" stroke=\"rgba(255,255,255,0.12)\" stroke-width=\"1\" stroke-linecap=\"round\" data-v-inspector=\"src/components/experiment/chemistry/LabGradCylinder.vue:213:7\" />\n\n      <!-- Base highlight -->\n      <path d=\"M 44 218 Q 55 221 66 218\" stroke=\"rgba(255,255,255,0.2)\" stroke-width=\"1\" fill=\"none\" data-v-inspector=\"src/components/experiment/chemistry/LabGradCylinder.vue:216:7\" />\n    </svg>\n\n    <!-- Drop canvas -->\n    <canvas\n      v-if=\"volume > 0\"\n      ref=\"canvasRef\"\n      width=\"110\"\n      height=\"260\"\n      class=\"drop-canvas\"\n      :style=\"{ transform: `rotate(${-tiltAngle}deg)`, transformOrigin: '55px 115px' }\" data-v-inspector=\"src/components/experiment/chemistry/LabGradCylinder.vue:220:5\"\n    />\n  </div>\n</template>\n\n<style scoped>\n.cylinder-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.cylinder-svg.hovered {\n  filter: brightness(1.04);\n}\n.drop-canvas {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  width: 110px;\n  height: 260px;\n  margin-left: -55px;\n  z-index: 2;\n  pointer-events: none;\n}\n</style>\n"
+        ]
+      }
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626310483,
+      "end": 1783626310483,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "\n.cylinder-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.cylinder-svg.hovered {\n  filter: brightness(1.04);\n}\n.drop-canvas {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  width: 110px;\n  height: 260px;\n  margin-left: -55px;\n  z-index: 2;\n  pointer-events: none;\n}\n",
+      "start": 1783626310483,
+      "end": 1783626310483,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.cylinder-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.cylinder-svg.hovered {\n  filter: brightness(1.04);\n}\n.drop-canvas {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  width: 110px;\n  height: 260px;\n  margin-left: -55px;\n  z-index: 2;\n  pointer-events: none;\n}\n",
+      "start": 1783626310483,
+      "end": 1783626310483,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783626310483,
+      "end": 1783626310483,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626310483,
+      "end": 1783626310483,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626310483,
+      "end": 1783626310483,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.cylinder-wrapper[data-v-102ffca1] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.cylinder-svg.hovered[data-v-102ffca1] {\n  filter: brightness(1.04);\n}\n.drop-canvas[data-v-102ffca1] {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  width: 110px;\n  height: 260px;\n  margin-left: -55px;\n  z-index: 2;\n  pointer-events: none;\n}\n",
+      "start": 1783626310483,
+      "end": 1783626310489,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626310489,
+      "end": 1783626310489,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabGradCylinder.vue?vue&type=style&index=0&scoped=102ffca1&lang.css\"\nconst __vite__css = \"\\n.cylinder-wrapper[data-v-102ffca1] {\\n  display: flex;\\n  flex-direction: column;\\n  align-items: center;\\n  position: relative;\\n  cursor: pointer;\\n}\\n.cylinder-svg.hovered[data-v-102ffca1] {\\n  filter: brightness(1.04);\\n}\\n.drop-canvas[data-v-102ffca1] {\\n  position: absolute;\\n  top: 0;\\n  left: 50%;\\n  width: 110px;\\n  height: 260px;\\n  margin-left: -55px;\\n  z-index: 2;\\n  pointer-events: none;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626310489,
+      "end": 1783626310489,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626310489,
+      "end": 1783626310489,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626310489,
+      "end": 1783626310489,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626310489,
+      "end": 1783626310489,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626310489,
+      "end": 1783626310489,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626310489,
+      "end": 1783626310489,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626310489,
+      "end": 1783626310489,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626310489,
+      "end": 1783626310489,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/components/experiment/chemistry/LabGradCylinder.vue?vue&type=style&index=0&scoped=102ffca1&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabGradCylinder.vue?vue&type=style&index=0&scoped=102ffca1&lang.css\"\nconst __vite__css = \"\\n.cylinder-wrapper[data-v-102ffca1] {\\n  display: flex;\\n  flex-direction: column;\\n  align-items: center;\\n  position: relative;\\n  cursor: pointer;\\n}\\n.cylinder-svg.hovered[data-v-102ffca1] {\\n  filter: brightness(1.04);\\n}\\n.drop-canvas[data-v-102ffca1] {\\n  position: absolute;\\n  top: 0;\\n  left: 50%;\\n  width: 110px;\\n  height: 260px;\\n  margin-left: -55px;\\n  z-index: 2;\\n  pointer-events: none;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626310489,
+      "end": 1783626310489,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

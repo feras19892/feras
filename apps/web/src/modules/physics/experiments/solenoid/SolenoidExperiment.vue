@@ -9,18 +9,21 @@ import SolenoidParamPanel from '../../../../components/experiment/electromagneti
 import SolenoidReadingsPanel from '../../../../components/experiment/electromagnetism/SolenoidReadingsPanel.vue'
 import SolenoidDataPanel from '../../../../components/experiment/electromagnetism/SolenoidDataPanel.vue'
 import SolenoidGuidePanel from '../../../../components/experiment/electromagnetism/SolenoidGuidePanel.vue'
+import ElectromagnetismHelpModal from '../../../../components/experiment/electromagnetism/ElectromagnetismHelpModal.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 import { ref } from 'vue'
 
 const ex = useSolenoidExperiment()
 const { t } = useI18n()
 const showGuide = ref(true)
+const helpOpen = ref(false)
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return
   if (e.code === 'Space') { e.preventDefault(); ex.togglePause() }
   else if (e.key === 's' || e.key === 'S') { ex.recordTrial() }
+  else if (e.key === '?') { helpOpen.value = !helpOpen.value }
 }
 
 onMounted(() => window.addEventListener('keydown', onKeyDown))
@@ -39,7 +42,10 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @reset="ex.resetSim"
       @record-trial="ex.recordTrial"
       @analyze-results="ex.exportToAnalysis"
+      @toggle-help="helpOpen = !helpOpen"
     />
+
+    <ElectromagnetismHelpModal :open="helpOpen" @close="helpOpen = false" />
 
     <div class="lab-grid">
       <div class="lab-col data-col">

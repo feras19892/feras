@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/chemLabIds.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "export function isBeaker(id: string): boolean { return id.startsWith('beaker'); }\r\nexport function isTestTube(id: string): boolean { return id.startsWith('test-tube') && id !== 'test-tube-rack'; }\r\nexport function isTestTubeRack(id: string): boolean { return id === 'test-tube-rack'; }\r\nexport function isBurette(id: string): boolean { return id === 'burette'; }\r\nexport function isPipette(id: string): boolean { return id === 'pipette' || id === 'volumetric-pipette'; }\r\nexport function isErlenmeyer(id: string): boolean { return id === 'erlenmeyer'; }\r\nexport function isVolumetricFlask(id: string): boolean { return id === 'volumetric-flask'; }\r\nexport function isRoundBottomFlask(id: string): boolean { return id === 'round-bottom-flask'; }\r\nexport function isSeparatoryFunnel(id: string): boolean { return id === 'sep-funnel'; }\r\nexport function isGradCylinder(id: string): boolean { return id === 'grad-cylinder'; }\r\nexport function isHeatingMantle(id: string): boolean { return id === 'heating-mantle'; }\r\nexport function isBunsenBurner(id: string): boolean { return id === 'bunsen-burner'; }\r\nexport function isHotPlate(id: string): boolean { return id === 'hot-plate'; }\r\nexport function isBalance(id: string): boolean { return id === 'digital-balance'; }\r\nexport function isPhMeter(id: string): boolean { return id === 'ph-meter'; }\r\nexport function isWatchGlass(id: string): boolean { return id === 'watch-glass'; }\r\nexport function isFilterFunnel(id: string): boolean { return id === 'filter-funnel'; }\r\nexport function isRubberStopper(id: string): boolean { return id === 'rubber-stopper'; }\r\nexport function isThermometer(id: string): boolean { return id === 'thermometer-mercury' || id === 'thermometer-digital'; }\r\nexport function isClampAttachable(id: string): boolean {\r\n  return isBurette(id) || isPipette(id) || isGradCylinder(id);\r\n}\r\nexport function isRetortStand(id: string): boolean { return id === 'retort-stand'; }\r\nexport function isRetortStandAssembly(id: string): boolean { return id === 'retort-stand-assembly'; }\r\nexport function isBeakerClamp(id: string): boolean { return id === 'beaker-clamp'; }\r\nexport function isWoodenBase(id: string): boolean { return id === 'wooden-base'; }\r\n\r\nexport function isContainer(id: string): boolean {\r\n  return isBeaker(id) || isTestTube(id) || id === 'erlenmeyer' || id === 'grad-cylinder'\r\n    || id === 'volumetric-flask' || id === 'round-bottom-flask' || id === 'sep-funnel';\r\n}\r\n\r\n// Reaction vessels: containers that can receive titrant drops (exclude test tubes)\r\nexport function isReactionVessel(id: string): boolean {\r\n  return isBeaker(id) || id === 'erlenmeyer' || id === 'grad-cylinder'\r\n    || id === 'volumetric-flask' || id === 'round-bottom-flask' || id === 'sep-funnel';\r\n}\r\n\r\nexport function getMaxVolume(id: string): number {\r\n  if (id === 'beaker-100') return 100;\r\n  if (id === 'beaker-250') return 250;\r\n  if (id === 'beaker-500') return 500;\r\n  if (id === 'erlenmeyer') return 300;\r\n  if (id === 'volumetric-flask') return 250;\r\n  if (id === 'round-bottom-flask') return 250;\r\n  if (id === 'sep-funnel') return 250;\r\n  if (id === 'grad-cylinder') return 100;\r\n  if (id === 'test-tube-sm') return 15;\r\n  if (id === 'test-tube-md') return 25;\r\n  if (id === 'test-tube-lg') return 50;\r\n  return 250;\r\n}\r\n",
-      "start": 1783634639326,
-      "end": 1783634639557,
+      "start": 1783626303688,
+      "end": 1783626303688
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626303688,
+      "end": 1783626303688,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "export function isBeaker(id: string): boolean { return id.startsWith('beaker'); }\r\nexport function isTestTube(id: string): boolean { return id.startsWith('test-tube') && id !== 'test-tube-rack'; }\r\nexport function isTestTubeRack(id: string): boolean { return id === 'test-tube-rack'; }\r\nexport function isBurette(id: string): boolean { return id === 'burette'; }\r\nexport function isPipette(id: string): boolean { return id === 'pipette' || id === 'volumetric-pipette'; }\r\nexport function isErlenmeyer(id: string): boolean { return id === 'erlenmeyer'; }\r\nexport function isVolumetricFlask(id: string): boolean { return id === 'volumetric-flask'; }\r\nexport function isRoundBottomFlask(id: string): boolean { return id === 'round-bottom-flask'; }\r\nexport function isSeparatoryFunnel(id: string): boolean { return id === 'sep-funnel'; }\r\nexport function isGradCylinder(id: string): boolean { return id === 'grad-cylinder'; }\r\nexport function isHeatingMantle(id: string): boolean { return id === 'heating-mantle'; }\r\nexport function isBunsenBurner(id: string): boolean { return id === 'bunsen-burner'; }\r\nexport function isHotPlate(id: string): boolean { return id === 'hot-plate'; }\r\nexport function isBalance(id: string): boolean { return id === 'digital-balance'; }\r\nexport function isPhMeter(id: string): boolean { return id === 'ph-meter'; }\r\nexport function isWatchGlass(id: string): boolean { return id === 'watch-glass'; }\r\nexport function isFilterFunnel(id: string): boolean { return id === 'filter-funnel'; }\r\nexport function isRubberStopper(id: string): boolean { return id === 'rubber-stopper'; }\r\nexport function isThermometer(id: string): boolean { return id === 'thermometer-mercury' || id === 'thermometer-digital'; }\r\nexport function isClampAttachable(id: string): boolean {\r\n  return isBurette(id) || isPipette(id) || isGradCylinder(id);\r\n}\r\nexport function isRetortStand(id: string): boolean { return id === 'retort-stand'; }\r\nexport function isRetortStandAssembly(id: string): boolean { return id === 'retort-stand-assembly'; }\r\nexport function isBeakerClamp(id: string): boolean { return id === 'beaker-clamp'; }\r\nexport function isWoodenBase(id: string): boolean { return id === 'wooden-base'; }\r\n\r\nexport function isContainer(id: string): boolean {\r\n  return isBeaker(id) || isTestTube(id) || id === 'erlenmeyer' || id === 'grad-cylinder'\r\n    || id === 'volumetric-flask' || id === 'round-bottom-flask' || id === 'sep-funnel';\r\n}\r\n\r\n// Reaction vessels: containers that can receive titrant drops (exclude test tubes)\r\nexport function isReactionVessel(id: string): boolean {\r\n  return isBeaker(id) || id === 'erlenmeyer' || id === 'grad-cylinder'\r\n    || id === 'volumetric-flask' || id === 'round-bottom-flask' || id === 'sep-funnel';\r\n}\r\n\r\nexport function getMaxVolume(id: string): number {\r\n  if (id === 'beaker-100') return 100;\r\n  if (id === 'beaker-250') return 250;\r\n  if (id === 'beaker-500') return 500;\r\n  if (id === 'erlenmeyer') return 300;\r\n  if (id === 'volumetric-flask') return 250;\r\n  if (id === 'round-bottom-flask') return 250;\r\n  if (id === 'sep-funnel') return 250;\r\n  if (id === 'grad-cylinder') return 100;\r\n  if (id === 'test-tube-sm') return 15;\r\n  if (id === 'test-tube-md') return 25;\r\n  if (id === 'test-tube-lg') return 50;\r\n  return 250;\r\n}\r\n",
+      "start": 1783626303688,
+      "end": 1783626303688,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634639557,
-      "end": 1783634639557,
+      "start": 1783626303688,
+      "end": 1783626303688,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "export function isBeaker(id) {\n  return id.startsWith(\"beaker\");\n}\nexport function isTestTube(id) {\n  return id.startsWith(\"test-tube\") && id !== \"test-tube-rack\";\n}\nexport function isTestTubeRack(id) {\n  return id === \"test-tube-rack\";\n}\nexport function isBurette(id) {\n  return id === \"burette\";\n}\nexport function isPipette(id) {\n  return id === \"pipette\" || id === \"volumetric-pipette\";\n}\nexport function isErlenmeyer(id) {\n  return id === \"erlenmeyer\";\n}\nexport function isVolumetricFlask(id) {\n  return id === \"volumetric-flask\";\n}\nexport function isRoundBottomFlask(id) {\n  return id === \"round-bottom-flask\";\n}\nexport function isSeparatoryFunnel(id) {\n  return id === \"sep-funnel\";\n}\nexport function isGradCylinder(id) {\n  return id === \"grad-cylinder\";\n}\nexport function isHeatingMantle(id) {\n  return id === \"heating-mantle\";\n}\nexport function isBunsenBurner(id) {\n  return id === \"bunsen-burner\";\n}\nexport function isHotPlate(id) {\n  return id === \"hot-plate\";\n}\nexport function isBalance(id) {\n  return id === \"digital-balance\";\n}\nexport function isPhMeter(id) {\n  return id === \"ph-meter\";\n}\nexport function isWatchGlass(id) {\n  return id === \"watch-glass\";\n}\nexport function isFilterFunnel(id) {\n  return id === \"filter-funnel\";\n}\nexport function isRubberStopper(id) {\n  return id === \"rubber-stopper\";\n}\nexport function isThermometer(id) {\n  return id === \"thermometer-mercury\" || id === \"thermometer-digital\";\n}\nexport function isClampAttachable(id) {\n  return isBurette(id) || isPipette(id) || isGradCylinder(id);\n}\nexport function isRetortStand(id) {\n  return id === \"retort-stand\";\n}\nexport function isRetortStandAssembly(id) {\n  return id === \"retort-stand-assembly\";\n}\nexport function isBeakerClamp(id) {\n  return id === \"beaker-clamp\";\n}\nexport function isWoodenBase(id) {\n  return id === \"wooden-base\";\n}\nexport function isContainer(id) {\n  return isBeaker(id) || isTestTube(id) || id === \"erlenmeyer\" || id === \"grad-cylinder\" || id === \"volumetric-flask\" || id === \"round-bottom-flask\" || id === \"sep-funnel\";\n}\nexport function isReactionVessel(id) {\n  return isBeaker(id) || id === \"erlenmeyer\" || id === \"grad-cylinder\" || id === \"volumetric-flask\" || id === \"round-bottom-flask\" || id === \"sep-funnel\";\n}\nexport function getMaxVolume(id) {\n  if (id === \"beaker-100\") return 100;\n  if (id === \"beaker-250\") return 250;\n  if (id === \"beaker-500\") return 500;\n  if (id === \"erlenmeyer\") return 300;\n  if (id === \"volumetric-flask\") return 250;\n  if (id === \"round-bottom-flask\") return 250;\n  if (id === \"sep-funnel\") return 250;\n  if (id === \"grad-cylinder\") return 100;\n  if (id === \"test-tube-sm\") return 15;\n  if (id === \"test-tube-md\") return 25;\n  if (id === \"test-tube-lg\") return 50;\n  return 250;\n}\n",
-      "start": 1783634639557,
-      "end": 1783634639942,
+      "start": 1783626303688,
+      "end": 1783626305080,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/chemLabIds.ts"
+          "chemLabIds.ts"
         ],
         "sourcesContent": [
           "export function isBeaker(id: string): boolean { return id.startsWith('beaker'); }\r\nexport function isTestTube(id: string): boolean { return id.startsWith('test-tube') && id !== 'test-tube-rack'; }\r\nexport function isTestTubeRack(id: string): boolean { return id === 'test-tube-rack'; }\r\nexport function isBurette(id: string): boolean { return id === 'burette'; }\r\nexport function isPipette(id: string): boolean { return id === 'pipette' || id === 'volumetric-pipette'; }\r\nexport function isErlenmeyer(id: string): boolean { return id === 'erlenmeyer'; }\r\nexport function isVolumetricFlask(id: string): boolean { return id === 'volumetric-flask'; }\r\nexport function isRoundBottomFlask(id: string): boolean { return id === 'round-bottom-flask'; }\r\nexport function isSeparatoryFunnel(id: string): boolean { return id === 'sep-funnel'; }\r\nexport function isGradCylinder(id: string): boolean { return id === 'grad-cylinder'; }\r\nexport function isHeatingMantle(id: string): boolean { return id === 'heating-mantle'; }\r\nexport function isBunsenBurner(id: string): boolean { return id === 'bunsen-burner'; }\r\nexport function isHotPlate(id: string): boolean { return id === 'hot-plate'; }\r\nexport function isBalance(id: string): boolean { return id === 'digital-balance'; }\r\nexport function isPhMeter(id: string): boolean { return id === 'ph-meter'; }\r\nexport function isWatchGlass(id: string): boolean { return id === 'watch-glass'; }\r\nexport function isFilterFunnel(id: string): boolean { return id === 'filter-funnel'; }\r\nexport function isRubberStopper(id: string): boolean { return id === 'rubber-stopper'; }\r\nexport function isThermometer(id: string): boolean { return id === 'thermometer-mercury' || id === 'thermometer-digital'; }\r\nexport function isClampAttachable(id: string): boolean {\r\n  return isBurette(id) || isPipette(id) || isGradCylinder(id);\r\n}\r\nexport function isRetortStand(id: string): boolean { return id === 'retort-stand'; }\r\nexport function isRetortStandAssembly(id: string): boolean { return id === 'retort-stand-assembly'; }\r\nexport function isBeakerClamp(id: string): boolean { return id === 'beaker-clamp'; }\r\nexport function isWoodenBase(id: string): boolean { return id === 'wooden-base'; }\r\n\r\nexport function isContainer(id: string): boolean {\r\n  return isBeaker(id) || isTestTube(id) || id === 'erlenmeyer' || id === 'grad-cylinder'\r\n    || id === 'volumetric-flask' || id === 'round-bottom-flask' || id === 'sep-funnel';\r\n}\r\n\r\n// Reaction vessels: containers that can receive titrant drops (exclude test tubes)\r\nexport function isReactionVessel(id: string): boolean {\r\n  return isBeaker(id) || id === 'erlenmeyer' || id === 'grad-cylinder'\r\n    || id === 'volumetric-flask' || id === 'round-bottom-flask' || id === 'sep-funnel';\r\n}\r\n\r\nexport function getMaxVolume(id: string): number {\r\n  if (id === 'beaker-100') return 100;\r\n  if (id === 'beaker-250') return 250;\r\n  if (id === 'beaker-500') return 500;\r\n  if (id === 'erlenmeyer') return 300;\r\n  if (id === 'volumetric-flask') return 250;\r\n  if (id === 'round-bottom-flask') return 250;\r\n  if (id === 'sep-funnel') return 250;\r\n  if (id === 'grad-cylinder') return 100;\r\n  if (id === 'test-tube-sm') return 15;\r\n  if (id === 'test-tube-md') return 25;\r\n  if (id === 'test-tube-lg') return 50;\r\n  return 250;\r\n}\r\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634639942,
-      "end": 1783634639942,
+      "start": 1783626305080,
+      "end": 1783626305080,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634639942,
-      "end": 1783634639942,
+      "start": 1783626305080,
+      "end": 1783626305080,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626305080,
+      "end": 1783626305080,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634639942,
-      "end": 1783634639942,
+      "start": 1783626305080,
+      "end": 1783626305080,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634639942,
-      "end": 1783634639942,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634639942,
-      "end": 1783634639942,
+      "start": 1783626305080,
+      "end": 1783626305080,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634639942,
-      "end": 1783634639942,
+      "start": 1783626305080,
+      "end": 1783626305080,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634639943,
-      "end": 1783634639943,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634639943,
-      "end": 1783634639943,
+      "start": 1783626305081,
+      "end": 1783626305083,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634639943,
-      "end": 1783634639943,
+      "start": 1783626305083,
+      "end": 1783626305083,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634639943,
-      "end": 1783634639943,
+      "start": 1783626305083,
+      "end": 1783626305083,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634639943,
-      "end": 1783634639943,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626305083,
+      "end": 1783626305083,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626305084,
+      "end": 1783626305084,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634639943,
-      "end": 1783634639943,
+      "name": "vite:css-analysis",
+      "start": 1783626305084,
+      "end": 1783626305084,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "export function isBeaker(id) {\n  return id.startsWith(\"beaker\");\n}\nexport function isTestTube(id) {\n  return id.startsWith(\"test-tube\") && id !== \"test-tube-rack\";\n}\nexport function isTestTubeRack(id) {\n  return id === \"test-tube-rack\";\n}\nexport function isBurette(id) {\n  return id === \"burette\";\n}\nexport function isPipette(id) {\n  return id === \"pipette\" || id === \"volumetric-pipette\";\n}\nexport function isErlenmeyer(id) {\n  return id === \"erlenmeyer\";\n}\nexport function isVolumetricFlask(id) {\n  return id === \"volumetric-flask\";\n}\nexport function isRoundBottomFlask(id) {\n  return id === \"round-bottom-flask\";\n}\nexport function isSeparatoryFunnel(id) {\n  return id === \"sep-funnel\";\n}\nexport function isGradCylinder(id) {\n  return id === \"grad-cylinder\";\n}\nexport function isHeatingMantle(id) {\n  return id === \"heating-mantle\";\n}\nexport function isBunsenBurner(id) {\n  return id === \"bunsen-burner\";\n}\nexport function isHotPlate(id) {\n  return id === \"hot-plate\";\n}\nexport function isBalance(id) {\n  return id === \"digital-balance\";\n}\nexport function isPhMeter(id) {\n  return id === \"ph-meter\";\n}\nexport function isWatchGlass(id) {\n  return id === \"watch-glass\";\n}\nexport function isFilterFunnel(id) {\n  return id === \"filter-funnel\";\n}\nexport function isRubberStopper(id) {\n  return id === \"rubber-stopper\";\n}\nexport function isThermometer(id) {\n  return id === \"thermometer-mercury\" || id === \"thermometer-digital\";\n}\nexport function isClampAttachable(id) {\n  return isBurette(id) || isPipette(id) || isGradCylinder(id);\n}\nexport function isRetortStand(id) {\n  return id === \"retort-stand\";\n}\nexport function isRetortStandAssembly(id) {\n  return id === \"retort-stand-assembly\";\n}\nexport function isBeakerClamp(id) {\n  return id === \"beaker-clamp\";\n}\nexport function isWoodenBase(id) {\n  return id === \"wooden-base\";\n}\nexport function isContainer(id) {\n  return isBeaker(id) || isTestTube(id) || id === \"erlenmeyer\" || id === \"grad-cylinder\" || id === \"volumetric-flask\" || id === \"round-bottom-flask\" || id === \"sep-funnel\";\n}\nexport function isReactionVessel(id) {\n  return isBeaker(id) || id === \"erlenmeyer\" || id === \"grad-cylinder\" || id === \"volumetric-flask\" || id === \"round-bottom-flask\" || id === \"sep-funnel\";\n}\nexport function getMaxVolume(id) {\n  if (id === \"beaker-100\") return 100;\n  if (id === \"beaker-250\") return 250;\n  if (id === \"beaker-500\") return 500;\n  if (id === \"erlenmeyer\") return 300;\n  if (id === \"volumetric-flask\") return 250;\n  if (id === \"round-bottom-flask\") return 250;\n  if (id === \"sep-funnel\") return 250;\n  if (id === \"grad-cylinder\") return 100;\n  if (id === \"test-tube-sm\") return 15;\n  if (id === \"test-tube-md\") return 25;\n  if (id === \"test-tube-lg\") return 50;\n  return 250;\n}\n",
+      "start": 1783626305084,
+      "end": 1783626305084,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/services/home.service.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import type { HomeCard, SiteInfo } from '../types/physics';\n\nconst HOME_CARDS: HomeCard[] = [\n  {\n    id: 'physics',\n    icon: '⚛️',\n    title: 'Physics',\n    desc: 'Mechanics, waves, heat, electricity and magnetism experiments',\n    stats: '20+ experiments',\n    branchId: 'physics',\n  },\n  {\n    id: 'chemistry',\n    icon: '🧪',\n    title: 'Chemistry',\n    desc: 'pH, titration, electrolysis, and chromatography experiments',\n    stats: '5+ experiments',\n    branchId: 'chemistry',\n  },\n  {\n    id: 'mathematics',\n    icon: '📐',\n    title: 'Mathematics',\n    desc: 'Functions, differential geometry, and statistics',\n    stats: '10+ experiments',\n    branchId: 'mathematics',\n  },\n  {\n    id: 'general',\n    icon: '📚',\n    title: 'General Science',\n    desc: 'Various scientific topics and practical applications',\n    stats: '8+ experiments',\n    branchId: 'general',\n  },\n];\n\nexport async function fetchSite(): Promise<SiteInfo> {\n  return {\n    title: 'PhysLab',\n    language: 'ar',\n    description: 'Interactive Science Lab',\n  };\n}\n\nexport async function fetchHomeCards(): Promise<HomeCard[]> {\n  return HOME_CARDS;\n}\n",
-      "start": 1783634639336,
-      "end": 1783634639628,
+      "start": 1783626231968,
+      "end": 1783626231968
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626231968,
+      "end": 1783626231968,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import type { HomeCard, SiteInfo } from '../types/physics';\n\nconst HOME_CARDS: HomeCard[] = [\n  {\n    id: 'physics',\n    icon: '⚛️',\n    title: 'Physics',\n    desc: 'Mechanics, waves, heat, electricity and magnetism experiments',\n    stats: '20+ experiments',\n    branchId: 'physics',\n  },\n  {\n    id: 'chemistry',\n    icon: '🧪',\n    title: 'Chemistry',\n    desc: 'pH, titration, electrolysis, and chromatography experiments',\n    stats: '5+ experiments',\n    branchId: 'chemistry',\n  },\n  {\n    id: 'mathematics',\n    icon: '📐',\n    title: 'Mathematics',\n    desc: 'Functions, differential geometry, and statistics',\n    stats: '10+ experiments',\n    branchId: 'mathematics',\n  },\n  {\n    id: 'general',\n    icon: '📚',\n    title: 'General Science',\n    desc: 'Various scientific topics and practical applications',\n    stats: '8+ experiments',\n    branchId: 'general',\n  },\n];\n\nexport async function fetchSite(): Promise<SiteInfo> {\n  return {\n    title: 'PhysLab',\n    language: 'ar',\n    description: 'Interactive Science Lab',\n  };\n}\n\nexport async function fetchHomeCards(): Promise<HomeCard[]> {\n  return HOME_CARDS;\n}\n",
+      "start": 1783626231968,
+      "end": 1783626231968,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634639628,
-      "end": 1783634639628,
+      "start": 1783626231968,
+      "end": 1783626231968,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "const HOME_CARDS = [\n  {\n    id: \"physics\",\n    icon: \"⚛️\",\n    title: \"Physics\",\n    desc: \"Mechanics, waves, heat, electricity and magnetism experiments\",\n    stats: \"20+ experiments\",\n    branchId: \"physics\"\n  },\n  {\n    id: \"chemistry\",\n    icon: \"🧪\",\n    title: \"Chemistry\",\n    desc: \"pH, titration, electrolysis, and chromatography experiments\",\n    stats: \"5+ experiments\",\n    branchId: \"chemistry\"\n  },\n  {\n    id: \"mathematics\",\n    icon: \"📐\",\n    title: \"Mathematics\",\n    desc: \"Functions, differential geometry, and statistics\",\n    stats: \"10+ experiments\",\n    branchId: \"mathematics\"\n  },\n  {\n    id: \"general\",\n    icon: \"📚\",\n    title: \"General Science\",\n    desc: \"Various scientific topics and practical applications\",\n    stats: \"8+ experiments\",\n    branchId: \"general\"\n  }\n];\nexport async function fetchSite() {\n  return {\n    title: \"PhysLab\",\n    language: \"ar\",\n    description: \"Interactive Science Lab\"\n  };\n}\nexport async function fetchHomeCards() {\n  return HOME_CARDS;\n}\n",
-      "start": 1783634639628,
-      "end": 1783634639938,
+      "start": 1783626231968,
+      "end": 1783626231996,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/services/home.service.ts"
+          "home.service.ts"
         ],
         "sourcesContent": [
           "import type { HomeCard, SiteInfo } from '../types/physics';\n\nconst HOME_CARDS: HomeCard[] = [\n  {\n    id: 'physics',\n    icon: '⚛️',\n    title: 'Physics',\n    desc: 'Mechanics, waves, heat, electricity and magnetism experiments',\n    stats: '20+ experiments',\n    branchId: 'physics',\n  },\n  {\n    id: 'chemistry',\n    icon: '🧪',\n    title: 'Chemistry',\n    desc: 'pH, titration, electrolysis, and chromatography experiments',\n    stats: '5+ experiments',\n    branchId: 'chemistry',\n  },\n  {\n    id: 'mathematics',\n    icon: '📐',\n    title: 'Mathematics',\n    desc: 'Functions, differential geometry, and statistics',\n    stats: '10+ experiments',\n    branchId: 'mathematics',\n  },\n  {\n    id: 'general',\n    icon: '📚',\n    title: 'General Science',\n    desc: 'Various scientific topics and practical applications',\n    stats: '8+ experiments',\n    branchId: 'general',\n  },\n];\n\nexport async function fetchSite(): Promise<SiteInfo> {\n  return {\n    title: 'PhysLab',\n    language: 'ar',\n    description: 'Interactive Science Lab',\n  };\n}\n\nexport async function fetchHomeCards(): Promise<HomeCard[]> {\n  return HOME_CARDS;\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634639938,
-      "end": 1783634639938,
+      "start": 1783626231996,
+      "end": 1783626231996,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634639938,
-      "end": 1783634639938,
+      "start": 1783626231996,
+      "end": 1783626231996,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626231996,
+      "end": 1783626231996,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634639938,
-      "end": 1783634639938,
+      "start": 1783626231996,
+      "end": 1783626231996,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634639938,
-      "end": 1783634639938,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634639938,
-      "end": 1783634639938,
+      "start": 1783626231996,
+      "end": 1783626231996,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634639938,
-      "end": 1783634639938,
+      "start": 1783626231996,
+      "end": 1783626231996,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634639938,
-      "end": 1783634639938,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634639938,
-      "end": 1783634639938,
+      "start": 1783626231996,
+      "end": 1783626231996,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634639939,
-      "end": 1783634639939,
+      "start": 1783626231996,
+      "end": 1783626231996,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634639939,
-      "end": 1783634639939,
+      "start": 1783626231996,
+      "end": 1783626231996,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634639939,
-      "end": 1783634639939,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626231996,
+      "end": 1783626231996,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626231996,
+      "end": 1783626231996,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634639939,
-      "end": 1783634639939,
+      "name": "vite:css-analysis",
+      "start": 1783626231996,
+      "end": 1783626231996,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "const HOME_CARDS = [\n  {\n    id: \"physics\",\n    icon: \"⚛️\",\n    title: \"Physics\",\n    desc: \"Mechanics, waves, heat, electricity and magnetism experiments\",\n    stats: \"20+ experiments\",\n    branchId: \"physics\"\n  },\n  {\n    id: \"chemistry\",\n    icon: \"🧪\",\n    title: \"Chemistry\",\n    desc: \"pH, titration, electrolysis, and chromatography experiments\",\n    stats: \"5+ experiments\",\n    branchId: \"chemistry\"\n  },\n  {\n    id: \"mathematics\",\n    icon: \"📐\",\n    title: \"Mathematics\",\n    desc: \"Functions, differential geometry, and statistics\",\n    stats: \"10+ experiments\",\n    branchId: \"mathematics\"\n  },\n  {\n    id: \"general\",\n    icon: \"📚\",\n    title: \"General Science\",\n    desc: \"Various scientific topics and practical applications\",\n    stats: \"8+ experiments\",\n    branchId: \"general\"\n  }\n];\nexport async function fetchSite() {\n  return {\n    title: \"PhysLab\",\n    language: \"ar\",\n    description: \"Interactive Science Lab\"\n  };\n}\nexport async function fetchHomeCards() {\n  return HOME_CARDS;\n}\n",
+      "start": 1783626231996,
+      "end": 1783626231996,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

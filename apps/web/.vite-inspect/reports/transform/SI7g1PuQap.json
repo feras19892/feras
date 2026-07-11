@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/projectile/useProjectileLab.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { ref, watch } from 'vue'\nimport { useProjectilePhysics, type ProjectileParams } from '../../modules/physics/experiments/projectile/useProjectilePhysics'\n\nexport function useProjectileLab(params: ProjectileParams, onTick?: () => void) {\n  const { state: sim, step, start: simStart, stop: simStop, togglePause: simTogglePause, reset, measured } = useProjectilePhysics(params)\n\n  const running = ref(false)\n  const paused = ref(false)\n  const speed = ref(1)\n  const labFlowRunning = ref(false)\n  let rafId: number | null = null\n  let waitRafId: number | null = null\n  let autoResetTimer: ReturnType<typeof setTimeout> | null = null\n\n  // Auto-reset only in target mode when target is missed (not in normal projectile mode)\n  watch(() => sim.landed, (landed) => {\n    if (autoResetTimer) { clearTimeout(autoResetTimer); autoResetTimer = null }\n    const inTargetMode = params.targetMode === true && params.targetVisible === true\n    if (landed && inTargetMode && sim.targetHit === false) {\n      autoResetTimer = setTimeout(() => {\n        autoResetTimer = null\n        if (sim.landed && sim.targetHit === false) resetSim()\n      }, 1000)\n    }\n  })\n\n  function tickFrame() {\n    if (!sim.running || sim.paused) return\n    step(1 / 60, speed.value)\n    onTick?.()\n    rafId = requestAnimationFrame(tickFrame)\n  }\n\n  function start() {\n    if (rafId) cancelAnimationFrame(rafId)\n    simStart()\n    running.value = sim.running\n    paused.value = sim.paused\n    rafId = requestAnimationFrame(tickFrame)\n  }\n\n  function togglePause() {\n    if (!sim.running) { start(); return }\n    simTogglePause()\n    running.value = sim.running\n    paused.value = sim.paused\n    if (!sim.paused) rafId = requestAnimationFrame(tickFrame)\n  }\n\n  function stopSim() {\n    if (rafId) cancelAnimationFrame(rafId)\n    rafId = null\n    simStop()\n    running.value = sim.running\n    paused.value = sim.paused\n  }\n\n  function cleanup() {\n    if (rafId) cancelAnimationFrame(rafId)\n    if (waitRafId) cancelAnimationFrame(waitRafId)\n    rafId = null\n    waitRafId = null\n  }\n\n  function resetSim() {\n    if (autoResetTimer) { clearTimeout(autoResetTimer); autoResetTimer = null }\n    stopSim()\n    reset()\n  }\n\n  const sleep = (ms: number) => new Promise<void>(r => setTimeout(r, ms))\n\n  const waitForLanding = (timeoutMs = 30000): Promise<boolean> => new Promise((resolve) => {\n    const t0 = performance.now()\n    const tick = () => {\n      if (sim.landed) { waitRafId = null; resolve(true); return }\n      if (!sim.running || performance.now() - t0 > timeoutMs) { waitRafId = null; resolve(false); return }\n      waitRafId = requestAnimationFrame(tick)\n    }\n    tick()\n  })\n\n  async function runProjectileLab(recordTrial: () => void, calcFitRange: () => void) {\n    if (labFlowRunning.value) return\n    labFlowRunning.value = true\n    try {\n      // Scenario 1: constant v0=10, varying angle\n      params.v0 = 10; params.g = 9.81; params.x0 = 0; params.y0 = 0\n      for (const angle of [15, 30, 45, 60, 75]) {\n        params.angleDeg = angle\n        reset()\n        start()\n        const ok = await waitForLanding()\n        stopSim()\n        if (!ok) break\n        recordTrial()\n        await sleep(250)\n      }\n      calcFitRange()\n    } finally {\n      labFlowRunning.value = false\n      resetSim()\n    }\n  }\n\n  return {\n    sim, running, paused, speed, step,\n    start, stopSim, togglePause, resetSim, cleanup,\n    measured,\n    labFlowRunning, runProjectileLab,\n  }\n}\n",
-      "start": 1783634641825,
-      "end": 1783634642177,
+      "start": 1783626290579,
+      "end": 1783626290579
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626290579,
+      "end": 1783626290579,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { ref, watch } from 'vue'\nimport { useProjectilePhysics, type ProjectileParams } from '../../modules/physics/experiments/projectile/useProjectilePhysics'\n\nexport function useProjectileLab(params: ProjectileParams, onTick?: () => void) {\n  const { state: sim, step, start: simStart, stop: simStop, togglePause: simTogglePause, reset, measured } = useProjectilePhysics(params)\n\n  const running = ref(false)\n  const paused = ref(false)\n  const speed = ref(1)\n  const labFlowRunning = ref(false)\n  let rafId: number | null = null\n  let waitRafId: number | null = null\n  let autoResetTimer: ReturnType<typeof setTimeout> | null = null\n\n  // Auto-reset only in target mode when target is missed (not in normal projectile mode)\n  watch(() => sim.landed, (landed) => {\n    if (autoResetTimer) { clearTimeout(autoResetTimer); autoResetTimer = null }\n    const inTargetMode = params.targetMode === true && params.targetVisible === true\n    if (landed && inTargetMode && sim.targetHit === false) {\n      autoResetTimer = setTimeout(() => {\n        autoResetTimer = null\n        if (sim.landed && sim.targetHit === false) resetSim()\n      }, 1000)\n    }\n  })\n\n  function tickFrame() {\n    if (!sim.running || sim.paused) return\n    step(1 / 60, speed.value)\n    onTick?.()\n    rafId = requestAnimationFrame(tickFrame)\n  }\n\n  function start() {\n    if (rafId) cancelAnimationFrame(rafId)\n    simStart()\n    running.value = sim.running\n    paused.value = sim.paused\n    rafId = requestAnimationFrame(tickFrame)\n  }\n\n  function togglePause() {\n    if (!sim.running) { start(); return }\n    simTogglePause()\n    running.value = sim.running\n    paused.value = sim.paused\n    if (!sim.paused) rafId = requestAnimationFrame(tickFrame)\n  }\n\n  function stopSim() {\n    if (rafId) cancelAnimationFrame(rafId)\n    rafId = null\n    simStop()\n    running.value = sim.running\n    paused.value = sim.paused\n  }\n\n  function cleanup() {\n    if (rafId) cancelAnimationFrame(rafId)\n    if (waitRafId) cancelAnimationFrame(waitRafId)\n    rafId = null\n    waitRafId = null\n  }\n\n  function resetSim() {\n    if (autoResetTimer) { clearTimeout(autoResetTimer); autoResetTimer = null }\n    stopSim()\n    reset()\n  }\n\n  const sleep = (ms: number) => new Promise<void>(r => setTimeout(r, ms))\n\n  const waitForLanding = (timeoutMs = 30000): Promise<boolean> => new Promise((resolve) => {\n    const t0 = performance.now()\n    const tick = () => {\n      if (sim.landed) { waitRafId = null; resolve(true); return }\n      if (!sim.running || performance.now() - t0 > timeoutMs) { waitRafId = null; resolve(false); return }\n      waitRafId = requestAnimationFrame(tick)\n    }\n    tick()\n  })\n\n  async function runProjectileLab(recordTrial: () => void, calcFitRange: () => void) {\n    if (labFlowRunning.value) return\n    labFlowRunning.value = true\n    try {\n      // Scenario 1: constant v0=10, varying angle\n      params.v0 = 10; params.g = 9.81; params.x0 = 0; params.y0 = 0\n      for (const angle of [15, 30, 45, 60, 75]) {\n        params.angleDeg = angle\n        reset()\n        start()\n        const ok = await waitForLanding()\n        stopSim()\n        if (!ok) break\n        recordTrial()\n        await sleep(250)\n      }\n      calcFitRange()\n    } finally {\n      labFlowRunning.value = false\n      resetSim()\n    }\n  }\n\n  return {\n    sim, running, paused, speed, step,\n    start, stopSim, togglePause, resetSim, cleanup,\n    measured,\n    labFlowRunning, runProjectileLab,\n  }\n}\n",
+      "start": 1783626290579,
+      "end": 1783626290579,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634642177,
-      "end": 1783634642177,
+      "start": 1783626290579,
+      "end": 1783626290579,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { ref, watch } from \"vue\";\nimport { useProjectilePhysics } from \"../../modules/physics/experiments/projectile/useProjectilePhysics\";\nexport function useProjectileLab(params, onTick) {\n  const { state: sim, step, start: simStart, stop: simStop, togglePause: simTogglePause, reset, measured } = useProjectilePhysics(params);\n  const running = ref(false);\n  const paused = ref(false);\n  const speed = ref(1);\n  const labFlowRunning = ref(false);\n  let rafId = null;\n  let waitRafId = null;\n  let autoResetTimer = null;\n  watch(() => sim.landed, (landed) => {\n    if (autoResetTimer) {\n      clearTimeout(autoResetTimer);\n      autoResetTimer = null;\n    }\n    const inTargetMode = params.targetMode === true && params.targetVisible === true;\n    if (landed && inTargetMode && sim.targetHit === false) {\n      autoResetTimer = setTimeout(() => {\n        autoResetTimer = null;\n        if (sim.landed && sim.targetHit === false) resetSim();\n      }, 1e3);\n    }\n  });\n  function tickFrame() {\n    if (!sim.running || sim.paused) return;\n    step(1 / 60, speed.value);\n    onTick?.();\n    rafId = requestAnimationFrame(tickFrame);\n  }\n  function start() {\n    if (rafId) cancelAnimationFrame(rafId);\n    simStart();\n    running.value = sim.running;\n    paused.value = sim.paused;\n    rafId = requestAnimationFrame(tickFrame);\n  }\n  function togglePause() {\n    if (!sim.running) {\n      start();\n      return;\n    }\n    simTogglePause();\n    running.value = sim.running;\n    paused.value = sim.paused;\n    if (!sim.paused) rafId = requestAnimationFrame(tickFrame);\n  }\n  function stopSim() {\n    if (rafId) cancelAnimationFrame(rafId);\n    rafId = null;\n    simStop();\n    running.value = sim.running;\n    paused.value = sim.paused;\n  }\n  function cleanup() {\n    if (rafId) cancelAnimationFrame(rafId);\n    if (waitRafId) cancelAnimationFrame(waitRafId);\n    rafId = null;\n    waitRafId = null;\n  }\n  function resetSim() {\n    if (autoResetTimer) {\n      clearTimeout(autoResetTimer);\n      autoResetTimer = null;\n    }\n    stopSim();\n    reset();\n  }\n  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));\n  const waitForLanding = (timeoutMs = 3e4) => new Promise((resolve) => {\n    const t0 = performance.now();\n    const tick = () => {\n      if (sim.landed) {\n        waitRafId = null;\n        resolve(true);\n        return;\n      }\n      if (!sim.running || performance.now() - t0 > timeoutMs) {\n        waitRafId = null;\n        resolve(false);\n        return;\n      }\n      waitRafId = requestAnimationFrame(tick);\n    };\n    tick();\n  });\n  async function runProjectileLab(recordTrial, calcFitRange) {\n    if (labFlowRunning.value) return;\n    labFlowRunning.value = true;\n    try {\n      params.v0 = 10;\n      params.g = 9.81;\n      params.x0 = 0;\n      params.y0 = 0;\n      for (const angle of [15, 30, 45, 60, 75]) {\n        params.angleDeg = angle;\n        reset();\n        start();\n        const ok = await waitForLanding();\n        stopSim();\n        if (!ok) break;\n        recordTrial();\n        await sleep(250);\n      }\n      calcFitRange();\n    } finally {\n      labFlowRunning.value = false;\n      resetSim();\n    }\n  }\n  return {\n    sim,\n    running,\n    paused,\n    speed,\n    step,\n    start,\n    stopSim,\n    togglePause,\n    resetSim,\n    cleanup,\n    measured,\n    labFlowRunning,\n    runProjectileLab\n  };\n}\n",
-      "start": 1783634642177,
-      "end": 1783634642316,
+      "start": 1783626290579,
+      "end": 1783626291124,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/composables/projectile/useProjectileLab.ts"
+          "useProjectileLab.ts"
         ],
         "sourcesContent": [
           "import { ref, watch } from 'vue'\nimport { useProjectilePhysics, type ProjectileParams } from '../../modules/physics/experiments/projectile/useProjectilePhysics'\n\nexport function useProjectileLab(params: ProjectileParams, onTick?: () => void) {\n  const { state: sim, step, start: simStart, stop: simStop, togglePause: simTogglePause, reset, measured } = useProjectilePhysics(params)\n\n  const running = ref(false)\n  const paused = ref(false)\n  const speed = ref(1)\n  const labFlowRunning = ref(false)\n  let rafId: number | null = null\n  let waitRafId: number | null = null\n  let autoResetTimer: ReturnType<typeof setTimeout> | null = null\n\n  // Auto-reset only in target mode when target is missed (not in normal projectile mode)\n  watch(() => sim.landed, (landed) => {\n    if (autoResetTimer) { clearTimeout(autoResetTimer); autoResetTimer = null }\n    const inTargetMode = params.targetMode === true && params.targetVisible === true\n    if (landed && inTargetMode && sim.targetHit === false) {\n      autoResetTimer = setTimeout(() => {\n        autoResetTimer = null\n        if (sim.landed && sim.targetHit === false) resetSim()\n      }, 1000)\n    }\n  })\n\n  function tickFrame() {\n    if (!sim.running || sim.paused) return\n    step(1 / 60, speed.value)\n    onTick?.()\n    rafId = requestAnimationFrame(tickFrame)\n  }\n\n  function start() {\n    if (rafId) cancelAnimationFrame(rafId)\n    simStart()\n    running.value = sim.running\n    paused.value = sim.paused\n    rafId = requestAnimationFrame(tickFrame)\n  }\n\n  function togglePause() {\n    if (!sim.running) { start(); return }\n    simTogglePause()\n    running.value = sim.running\n    paused.value = sim.paused\n    if (!sim.paused) rafId = requestAnimationFrame(tickFrame)\n  }\n\n  function stopSim() {\n    if (rafId) cancelAnimationFrame(rafId)\n    rafId = null\n    simStop()\n    running.value = sim.running\n    paused.value = sim.paused\n  }\n\n  function cleanup() {\n    if (rafId) cancelAnimationFrame(rafId)\n    if (waitRafId) cancelAnimationFrame(waitRafId)\n    rafId = null\n    waitRafId = null\n  }\n\n  function resetSim() {\n    if (autoResetTimer) { clearTimeout(autoResetTimer); autoResetTimer = null }\n    stopSim()\n    reset()\n  }\n\n  const sleep = (ms: number) => new Promise<void>(r => setTimeout(r, ms))\n\n  const waitForLanding = (timeoutMs = 30000): Promise<boolean> => new Promise((resolve) => {\n    const t0 = performance.now()\n    const tick = () => {\n      if (sim.landed) { waitRafId = null; resolve(true); return }\n      if (!sim.running || performance.now() - t0 > timeoutMs) { waitRafId = null; resolve(false); return }\n      waitRafId = requestAnimationFrame(tick)\n    }\n    tick()\n  })\n\n  async function runProjectileLab(recordTrial: () => void, calcFitRange: () => void) {\n    if (labFlowRunning.value) return\n    labFlowRunning.value = true\n    try {\n      // Scenario 1: constant v0=10, varying angle\n      params.v0 = 10; params.g = 9.81; params.x0 = 0; params.y0 = 0\n      for (const angle of [15, 30, 45, 60, 75]) {\n        params.angleDeg = angle\n        reset()\n        start()\n        const ok = await waitForLanding()\n        stopSim()\n        if (!ok) break\n        recordTrial()\n        await sleep(250)\n      }\n      calcFitRange()\n    } finally {\n      labFlowRunning.value = false\n      resetSim()\n    }\n  }\n\n  return {\n    sim, running, paused, speed, step,\n    start, stopSim, togglePause, resetSim, cleanup,\n    measured,\n    labFlowRunning, runProjectileLab,\n  }\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634642316,
-      "end": 1783634642316,
+      "start": 1783626291124,
+      "end": 1783626291124,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642316,
-      "end": 1783634642316,
+      "start": 1783626291124,
+      "end": 1783626291124,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626291124,
+      "end": 1783626291124,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642316,
-      "end": 1783634642316,
+      "start": 1783626291124,
+      "end": 1783626291124,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634642316,
-      "end": 1783634642316,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634642316,
-      "end": 1783634642316,
+      "start": 1783626291124,
+      "end": 1783626291124,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642316,
-      "end": 1783634642316,
+      "start": 1783626291124,
+      "end": 1783626291124,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642316,
-      "end": 1783634642316,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642316,
-      "end": 1783634642316,
+      "start": 1783626291124,
+      "end": 1783626291124,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642316,
-      "end": 1783634642316,
+      "start": 1783626291124,
+      "end": 1783626291124,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642316,
-      "end": 1783634642316,
+      "start": 1783626291124,
+      "end": 1783626291124,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642316,
-      "end": 1783634642316,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626291124,
+      "end": 1783626291124,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626291124,
+      "end": 1783626291124,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642316,
-      "end": 1783634642316,
+      "name": "vite:css-analysis",
+      "start": 1783626291124,
+      "end": 1783626291124,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { ref, watch } from \"/node_modules/.vite/deps/vue.js?v=09a3ad4c\";\nimport { useProjectilePhysics } from \"/src/modules/physics/experiments/projectile/useProjectilePhysics.ts\";\nexport function useProjectileLab(params, onTick) {\n  const { state: sim, step, start: simStart, stop: simStop, togglePause: simTogglePause, reset, measured } = useProjectilePhysics(params);\n  const running = ref(false);\n  const paused = ref(false);\n  const speed = ref(1);\n  const labFlowRunning = ref(false);\n  let rafId = null;\n  let waitRafId = null;\n  let autoResetTimer = null;\n  watch(() => sim.landed, (landed) => {\n    if (autoResetTimer) {\n      clearTimeout(autoResetTimer);\n      autoResetTimer = null;\n    }\n    const inTargetMode = params.targetMode === true && params.targetVisible === true;\n    if (landed && inTargetMode && sim.targetHit === false) {\n      autoResetTimer = setTimeout(() => {\n        autoResetTimer = null;\n        if (sim.landed && sim.targetHit === false) resetSim();\n      }, 1e3);\n    }\n  });\n  function tickFrame() {\n    if (!sim.running || sim.paused) return;\n    step(1 / 60, speed.value);\n    onTick?.();\n    rafId = requestAnimationFrame(tickFrame);\n  }\n  function start() {\n    if (rafId) cancelAnimationFrame(rafId);\n    simStart();\n    running.value = sim.running;\n    paused.value = sim.paused;\n    rafId = requestAnimationFrame(tickFrame);\n  }\n  function togglePause() {\n    if (!sim.running) {\n      start();\n      return;\n    }\n    simTogglePause();\n    running.value = sim.running;\n    paused.value = sim.paused;\n    if (!sim.paused) rafId = requestAnimationFrame(tickFrame);\n  }\n  function stopSim() {\n    if (rafId) cancelAnimationFrame(rafId);\n    rafId = null;\n    simStop();\n    running.value = sim.running;\n    paused.value = sim.paused;\n  }\n  function cleanup() {\n    if (rafId) cancelAnimationFrame(rafId);\n    if (waitRafId) cancelAnimationFrame(waitRafId);\n    rafId = null;\n    waitRafId = null;\n  }\n  function resetSim() {\n    if (autoResetTimer) {\n      clearTimeout(autoResetTimer);\n      autoResetTimer = null;\n    }\n    stopSim();\n    reset();\n  }\n  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));\n  const waitForLanding = (timeoutMs = 3e4) => new Promise((resolve) => {\n    const t0 = performance.now();\n    const tick = () => {\n      if (sim.landed) {\n        waitRafId = null;\n        resolve(true);\n        return;\n      }\n      if (!sim.running || performance.now() - t0 > timeoutMs) {\n        waitRafId = null;\n        resolve(false);\n        return;\n      }\n      waitRafId = requestAnimationFrame(tick);\n    };\n    tick();\n  });\n  async function runProjectileLab(recordTrial, calcFitRange) {\n    if (labFlowRunning.value) return;\n    labFlowRunning.value = true;\n    try {\n      params.v0 = 10;\n      params.g = 9.81;\n      params.x0 = 0;\n      params.y0 = 0;\n      for (const angle of [15, 30, 45, 60, 75]) {\n        params.angleDeg = angle;\n        reset();\n        start();\n        const ok = await waitForLanding();\n        stopSim();\n        if (!ok) break;\n        recordTrial();\n        await sleep(250);\n      }\n      calcFitRange();\n    } finally {\n      labFlowRunning.value = false;\n      resetSim();\n    }\n  }\n  return {\n    sim,\n    running,\n    paused,\n    speed,\n    step,\n    start,\n    stopSim,\n    togglePause,\n    resetSim,\n    cleanup,\n    measured,\n    labFlowRunning,\n    runProjectileLab\n  };\n}\n",
+      "start": 1783626291124,
+      "end": 1783626291146,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

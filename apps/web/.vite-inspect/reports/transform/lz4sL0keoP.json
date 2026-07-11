@@ -1,0 +1,140 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/dev/ExperimentMonitorWidget.vue?vue&type=style&index=0&scoped=d18180b8&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.widget {\n  position: fixed;\n  bottom: 16px;\n  right: 16px;\n  z-index: 9999;\n  font-family: system-ui, sans-serif;\n  direction: rtl;\n}\n\n.strip {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  padding: 6px 12px;\n  border-radius: 999px;\n  background: #1e293b;\n  border: 1px solid #334155;\n  color: #e2e8f0;\n  cursor: pointer;\n  font-size: 0.82rem;\n}\n\n.dot {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 32px;\n  height: 32px;\n  border-radius: 50%;\n  font-weight: 700;\n  font-size: 0.72rem;\n  color: #fff;\n  flex-shrink: 0;\n}\n\n.label { font-weight: 500; }\n\n.badge {\n  background: #ef4444;\n  color: #fff;\n  border-radius: 50%;\n  width: 18px;\n  height: 18px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 0.65rem;\n  font-weight: 700;\n}\n\n.alert { color: #fca5a5; font-size: 0.9rem; }\n\n.panel {\n  margin-top: 8px;\n  background: #0f172a;\n  border: 1px solid #334155;\n  border-radius: 12px;\n  padding: 14px;\n  min-width: 220px;\n  box-shadow: 0 8px 24px rgba(0,0,0,.4);\n}\n\n.row {\n  display: flex;\n  justify-content: space-between;\n  padding: 6px 0;\n  border-bottom: 1px solid #1e293b;\n  font-size: 0.82rem;\n}\n\n.row:last-child { border-bottom: none; }\n\n.key { color: #94a3b8; }\n\n.val { font-weight: 600; }\n\n.val.good  { color: #22c55e; }\n.val.bad   { color: #ef4444; }\n\n.link {\n  display: block;\n  margin-top: 10px;\n  text-align: center;\n  color: #818cf8;\n  font-size: 0.78rem;\n  text-decoration: none;\n  padding: 6px;\n  border-radius: 6px;\n  background: #1e293b;\n}\n\n.link:hover { background: #334155; }\n",
+      "start": 1783626218950,
+      "end": 1783626218950,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/dev/ExperimentMonitorWidget.vue"
+        ],
+        "names": [],
+        "mappings": "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",
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/components/dev/ExperimentMonitorWidget.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\nimport { ref } from 'vue';\nimport { useExperimentMonitor } from '../../composables/useExperimentMonitor';\n\nconst { fps, memoryUsed, memoryLimit, consoleErrors, physicsHealth } = useExperimentMonitor();\nconst expanded = ref(false);\n\nconst fpsColor = (v: number) => {\n  if (v >= 50) return '#22c55e';\n  if (v >= 30) return '#eab308';\n  return '#ef4444';\n};\n\nconst memPct = () => {\n  if (!memoryLimit.value) return 0;\n  return Math.round((memoryUsed.value / memoryLimit.value) * 100);\n};\n</script>\n\n<template>\n  <div class=\"widget\" :class=\"{ expanded }\" data-v-inspector=\"src/components/dev/ExperimentMonitorWidget.vue:21:3\">\n    <!-- Collapsed strip -->\n    <button class=\"strip\" @click=\"expanded = !expanded\" data-v-inspector=\"src/components/dev/ExperimentMonitorWidget.vue:23:5\">\n      <span class=\"dot\" :style=\"{ background: fpsColor(fps) }\" data-v-inspector=\"src/components/dev/ExperimentMonitorWidget.vue:24:7\">{{ fps }}</span>\n      <span class=\"label\" data-v-inspector=\"src/components/dev/ExperimentMonitorWidget.vue:25:7\">مراقبة التجربة</span>\n      <span v-if=\"consoleErrors > 0\" class=\"badge\" data-v-inspector=\"src/components/dev/ExperimentMonitorWidget.vue:26:7\">{{ consoleErrors }}</span>\n      <span v-if=\"physicsHealth === 'fail'\" class=\"alert\" data-v-inspector=\"src/components/dev/ExperimentMonitorWidget.vue:27:7\">⚠️</span>\n    </button>\n\n    <!-- Expanded panel -->\n    <div v-if=\"expanded\" class=\"panel\" data-v-inspector=\"src/components/dev/ExperimentMonitorWidget.vue:31:5\">\n      <div class=\"row\" data-v-inspector=\"src/components/dev/ExperimentMonitorWidget.vue:32:7\">\n        <span class=\"key\" data-v-inspector=\"src/components/dev/ExperimentMonitorWidget.vue:33:9\">🎮 FPS</span>\n        <span class=\"val\" :style=\"{ color: fpsColor(fps) }\" data-v-inspector=\"src/components/dev/ExperimentMonitorWidget.vue:34:9\">{{ fps }} إطار/ث</span>\n      </div>\n      <div class=\"row\" data-v-inspector=\"src/components/dev/ExperimentMonitorWidget.vue:36:7\">\n        <span class=\"key\" data-v-inspector=\"src/components/dev/ExperimentMonitorWidget.vue:37:9\">💾 الذاكرة</span>\n        <span class=\"val\" data-v-inspector=\"src/components/dev/ExperimentMonitorWidget.vue:38:9\">{{ memoryUsed }} / {{ memoryLimit }} MB ({{ memPct() }}%)</span>\n      </div>\n      <div class=\"row\" data-v-inspector=\"src/components/dev/ExperimentMonitorWidget.vue:40:7\">\n        <span class=\"key\" data-v-inspector=\"src/components/dev/ExperimentMonitorWidget.vue:41:9\">🐛 أخطاء</span>\n        <span class=\"val\" :class=\"consoleErrors > 0 ? 'bad' : 'good'\" data-v-inspector=\"src/components/dev/ExperimentMonitorWidget.vue:42:9\">{{ consoleErrors }}</span>\n      </div>\n      <div class=\"row\" data-v-inspector=\"src/components/dev/ExperimentMonitorWidget.vue:44:7\">\n        <span class=\"key\" data-v-inspector=\"src/components/dev/ExperimentMonitorWidget.vue:45:9\">🔬 الفيزياء</span>\n        <span class=\"val\" :class=\"physicsHealth\" data-v-inspector=\"src/components/dev/ExperimentMonitorWidget.vue:46:9\">{{ physicsHealth === 'ok' ? '✅ سليم' : '❌ معطل' }}</span>\n      </div>\n      <a href=\"/monitor\" target=\"_blank\" class=\"link\" data-v-inspector=\"src/components/dev/ExperimentMonitorWidget.vue:48:7\">📊 فتح لوحة المراقبة الكاملة</a>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.widget {\n  position: fixed;\n  bottom: 16px;\n  right: 16px;\n  z-index: 9999;\n  font-family: system-ui, sans-serif;\n  direction: rtl;\n}\n\n.strip {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  padding: 6px 12px;\n  border-radius: 999px;\n  background: #1e293b;\n  border: 1px solid #334155;\n  color: #e2e8f0;\n  cursor: pointer;\n  font-size: 0.82rem;\n}\n\n.dot {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 32px;\n  height: 32px;\n  border-radius: 50%;\n  font-weight: 700;\n  font-size: 0.72rem;\n  color: #fff;\n  flex-shrink: 0;\n}\n\n.label { font-weight: 500; }\n\n.badge {\n  background: #ef4444;\n  color: #fff;\n  border-radius: 50%;\n  width: 18px;\n  height: 18px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 0.65rem;\n  font-weight: 700;\n}\n\n.alert { color: #fca5a5; font-size: 0.9rem; }\n\n.panel {\n  margin-top: 8px;\n  background: #0f172a;\n  border: 1px solid #334155;\n  border-radius: 12px;\n  padding: 14px;\n  min-width: 220px;\n  box-shadow: 0 8px 24px rgba(0,0,0,.4);\n}\n\n.row {\n  display: flex;\n  justify-content: space-between;\n  padding: 6px 0;\n  border-bottom: 1px solid #1e293b;\n  font-size: 0.82rem;\n}\n\n.row:last-child { border-bottom: none; }\n\n.key { color: #94a3b8; }\n\n.val { font-weight: 600; }\n\n.val.good  { color: #22c55e; }\n.val.bad   { color: #ef4444; }\n\n.link {\n  display: block;\n  margin-top: 10px;\n  text-align: center;\n  color: #818cf8;\n  font-size: 0.78rem;\n  text-decoration: none;\n  padding: 6px;\n  border-radius: 6px;\n  background: #1e293b;\n}\n\n.link:hover { background: #334155; }\n</style>\n"
+        ]
+      }
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626218950,
+      "end": 1783626218950,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "\n.widget {\n  position: fixed;\n  bottom: 16px;\n  right: 16px;\n  z-index: 9999;\n  font-family: system-ui, sans-serif;\n  direction: rtl;\n}\n\n.strip {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  padding: 6px 12px;\n  border-radius: 999px;\n  background: #1e293b;\n  border: 1px solid #334155;\n  color: #e2e8f0;\n  cursor: pointer;\n  font-size: 0.82rem;\n}\n\n.dot {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 32px;\n  height: 32px;\n  border-radius: 50%;\n  font-weight: 700;\n  font-size: 0.72rem;\n  color: #fff;\n  flex-shrink: 0;\n}\n\n.label { font-weight: 500; }\n\n.badge {\n  background: #ef4444;\n  color: #fff;\n  border-radius: 50%;\n  width: 18px;\n  height: 18px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 0.65rem;\n  font-weight: 700;\n}\n\n.alert { color: #fca5a5; font-size: 0.9rem; }\n\n.panel {\n  margin-top: 8px;\n  background: #0f172a;\n  border: 1px solid #334155;\n  border-radius: 12px;\n  padding: 14px;\n  min-width: 220px;\n  box-shadow: 0 8px 24px rgba(0,0,0,.4);\n}\n\n.row {\n  display: flex;\n  justify-content: space-between;\n  padding: 6px 0;\n  border-bottom: 1px solid #1e293b;\n  font-size: 0.82rem;\n}\n\n.row:last-child { border-bottom: none; }\n\n.key { color: #94a3b8; }\n\n.val { font-weight: 600; }\n\n.val.good  { color: #22c55e; }\n.val.bad   { color: #ef4444; }\n\n.link {\n  display: block;\n  margin-top: 10px;\n  text-align: center;\n  color: #818cf8;\n  font-size: 0.78rem;\n  text-decoration: none;\n  padding: 6px;\n  border-radius: 6px;\n  background: #1e293b;\n}\n\n.link:hover { background: #334155; }\n",
+      "start": 1783626218950,
+      "end": 1783626218950,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.widget {\n  position: fixed;\n  bottom: 16px;\n  right: 16px;\n  z-index: 9999;\n  font-family: system-ui, sans-serif;\n  direction: rtl;\n}\n\n.strip {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  padding: 6px 12px;\n  border-radius: 999px;\n  background: #1e293b;\n  border: 1px solid #334155;\n  color: #e2e8f0;\n  cursor: pointer;\n  font-size: 0.82rem;\n}\n\n.dot {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 32px;\n  height: 32px;\n  border-radius: 50%;\n  font-weight: 700;\n  font-size: 0.72rem;\n  color: #fff;\n  flex-shrink: 0;\n}\n\n.label { font-weight: 500; }\n\n.badge {\n  background: #ef4444;\n  color: #fff;\n  border-radius: 50%;\n  width: 18px;\n  height: 18px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 0.65rem;\n  font-weight: 700;\n}\n\n.alert { color: #fca5a5; font-size: 0.9rem; }\n\n.panel {\n  margin-top: 8px;\n  background: #0f172a;\n  border: 1px solid #334155;\n  border-radius: 12px;\n  padding: 14px;\n  min-width: 220px;\n  box-shadow: 0 8px 24px rgba(0,0,0,.4);\n}\n\n.row {\n  display: flex;\n  justify-content: space-between;\n  padding: 6px 0;\n  border-bottom: 1px solid #1e293b;\n  font-size: 0.82rem;\n}\n\n.row:last-child { border-bottom: none; }\n\n.key { color: #94a3b8; }\n\n.val { font-weight: 600; }\n\n.val.good  { color: #22c55e; }\n.val.bad   { color: #ef4444; }\n\n.link {\n  display: block;\n  margin-top: 10px;\n  text-align: center;\n  color: #818cf8;\n  font-size: 0.78rem;\n  text-decoration: none;\n  padding: 6px;\n  border-radius: 6px;\n  background: #1e293b;\n}\n\n.link:hover { background: #334155; }\n",
+      "start": 1783626218951,
+      "end": 1783626221071,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783626221071,
+      "end": 1783626221071,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626221071,
+      "end": 1783626221071,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626221071,
+      "end": 1783626221071,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.widget[data-v-d18180b8] {\n  position: fixed;\n  bottom: 16px;\n  right: 16px;\n  z-index: 9999;\n  font-family: system-ui, sans-serif;\n  direction: rtl;\n}\n.strip[data-v-d18180b8] {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  padding: 6px 12px;\n  border-radius: 999px;\n  background: #1e293b;\n  border: 1px solid #334155;\n  color: #e2e8f0;\n  cursor: pointer;\n  font-size: 0.82rem;\n}\n.dot[data-v-d18180b8] {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 32px;\n  height: 32px;\n  border-radius: 50%;\n  font-weight: 700;\n  font-size: 0.72rem;\n  color: #fff;\n  flex-shrink: 0;\n}\n.label[data-v-d18180b8] { font-weight: 500;\n}\n.badge[data-v-d18180b8] {\n  background: #ef4444;\n  color: #fff;\n  border-radius: 50%;\n  width: 18px;\n  height: 18px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 0.65rem;\n  font-weight: 700;\n}\n.alert[data-v-d18180b8] { color: #fca5a5; font-size: 0.9rem;\n}\n.panel[data-v-d18180b8] {\n  margin-top: 8px;\n  background: #0f172a;\n  border: 1px solid #334155;\n  border-radius: 12px;\n  padding: 14px;\n  min-width: 220px;\n  box-shadow: 0 8px 24px rgba(0,0,0,.4);\n}\n.row[data-v-d18180b8] {\n  display: flex;\n  justify-content: space-between;\n  padding: 6px 0;\n  border-bottom: 1px solid #1e293b;\n  font-size: 0.82rem;\n}\n.row[data-v-d18180b8]:last-child { border-bottom: none;\n}\n.key[data-v-d18180b8] { color: #94a3b8;\n}\n.val[data-v-d18180b8] { font-weight: 600;\n}\n.val.good[data-v-d18180b8]  { color: #22c55e;\n}\n.val.bad[data-v-d18180b8]   { color: #ef4444;\n}\n.link[data-v-d18180b8] {\n  display: block;\n  margin-top: 10px;\n  text-align: center;\n  color: #818cf8;\n  font-size: 0.78rem;\n  text-decoration: none;\n  padding: 6px;\n  border-radius: 6px;\n  background: #1e293b;\n}\n.link[data-v-d18180b8]:hover { background: #334155;\n}\n",
+      "start": 1783626221132,
+      "end": 1783626221153,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626221153,
+      "end": 1783626221153,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/dev/ExperimentMonitorWidget.vue?vue&type=style&index=0&scoped=d18180b8&lang.css\"\nconst __vite__css = \"\\n.widget[data-v-d18180b8] {\\n  position: fixed;\\n  bottom: 16px;\\n  right: 16px;\\n  z-index: 9999;\\n  font-family: system-ui, sans-serif;\\n  direction: rtl;\\n}\\n.strip[data-v-d18180b8] {\\n  display: flex;\\n  align-items: center;\\n  gap: 8px;\\n  padding: 6px 12px;\\n  border-radius: 999px;\\n  background: #1e293b;\\n  border: 1px solid #334155;\\n  color: #e2e8f0;\\n  cursor: pointer;\\n  font-size: 0.82rem;\\n}\\n.dot[data-v-d18180b8] {\\n  display: inline-flex;\\n  align-items: center;\\n  justify-content: center;\\n  width: 32px;\\n  height: 32px;\\n  border-radius: 50%;\\n  font-weight: 700;\\n  font-size: 0.72rem;\\n  color: #fff;\\n  flex-shrink: 0;\\n}\\n.label[data-v-d18180b8] { font-weight: 500;\\n}\\n.badge[data-v-d18180b8] {\\n  background: #ef4444;\\n  color: #fff;\\n  border-radius: 50%;\\n  width: 18px;\\n  height: 18px;\\n  display: inline-flex;\\n  align-items: center;\\n  justify-content: center;\\n  font-size: 0.65rem;\\n  font-weight: 700;\\n}\\n.alert[data-v-d18180b8] { color: #fca5a5; font-size: 0.9rem;\\n}\\n.panel[data-v-d18180b8] {\\n  margin-top: 8px;\\n  background: #0f172a;\\n  border: 1px solid #334155;\\n  border-radius: 12px;\\n  padding: 14px;\\n  min-width: 220px;\\n  box-shadow: 0 8px 24px rgba(0,0,0,.4);\\n}\\n.row[data-v-d18180b8] {\\n  display: flex;\\n  justify-content: space-between;\\n  padding: 6px 0;\\n  border-bottom: 1px solid #1e293b;\\n  font-size: 0.82rem;\\n}\\n.row[data-v-d18180b8]:last-child { border-bottom: none;\\n}\\n.key[data-v-d18180b8] { color: #94a3b8;\\n}\\n.val[data-v-d18180b8] { font-weight: 600;\\n}\\n.val.good[data-v-d18180b8]  { color: #22c55e;\\n}\\n.val.bad[data-v-d18180b8]   { color: #ef4444;\\n}\\n.link[data-v-d18180b8] {\\n  display: block;\\n  margin-top: 10px;\\n  text-align: center;\\n  color: #818cf8;\\n  font-size: 0.78rem;\\n  text-decoration: none;\\n  padding: 6px;\\n  border-radius: 6px;\\n  background: #1e293b;\\n}\\n.link[data-v-d18180b8]:hover { background: #334155;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626221153,
+      "end": 1783626221153,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626221153,
+      "end": 1783626221153,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626221153,
+      "end": 1783626221153,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626221154,
+      "end": 1783626221154,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626221154,
+      "end": 1783626221154,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626221154,
+      "end": 1783626221154,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626221154,
+      "end": 1783626221154,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626221154,
+      "end": 1783626221154,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/components/dev/ExperimentMonitorWidget.vue?vue&type=style&index=0&scoped=d18180b8&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/dev/ExperimentMonitorWidget.vue?vue&type=style&index=0&scoped=d18180b8&lang.css\"\nconst __vite__css = \"\\n.widget[data-v-d18180b8] {\\n  position: fixed;\\n  bottom: 16px;\\n  right: 16px;\\n  z-index: 9999;\\n  font-family: system-ui, sans-serif;\\n  direction: rtl;\\n}\\n.strip[data-v-d18180b8] {\\n  display: flex;\\n  align-items: center;\\n  gap: 8px;\\n  padding: 6px 12px;\\n  border-radius: 999px;\\n  background: #1e293b;\\n  border: 1px solid #334155;\\n  color: #e2e8f0;\\n  cursor: pointer;\\n  font-size: 0.82rem;\\n}\\n.dot[data-v-d18180b8] {\\n  display: inline-flex;\\n  align-items: center;\\n  justify-content: center;\\n  width: 32px;\\n  height: 32px;\\n  border-radius: 50%;\\n  font-weight: 700;\\n  font-size: 0.72rem;\\n  color: #fff;\\n  flex-shrink: 0;\\n}\\n.label[data-v-d18180b8] { font-weight: 500;\\n}\\n.badge[data-v-d18180b8] {\\n  background: #ef4444;\\n  color: #fff;\\n  border-radius: 50%;\\n  width: 18px;\\n  height: 18px;\\n  display: inline-flex;\\n  align-items: center;\\n  justify-content: center;\\n  font-size: 0.65rem;\\n  font-weight: 700;\\n}\\n.alert[data-v-d18180b8] { color: #fca5a5; font-size: 0.9rem;\\n}\\n.panel[data-v-d18180b8] {\\n  margin-top: 8px;\\n  background: #0f172a;\\n  border: 1px solid #334155;\\n  border-radius: 12px;\\n  padding: 14px;\\n  min-width: 220px;\\n  box-shadow: 0 8px 24px rgba(0,0,0,.4);\\n}\\n.row[data-v-d18180b8] {\\n  display: flex;\\n  justify-content: space-between;\\n  padding: 6px 0;\\n  border-bottom: 1px solid #1e293b;\\n  font-size: 0.82rem;\\n}\\n.row[data-v-d18180b8]:last-child { border-bottom: none;\\n}\\n.key[data-v-d18180b8] { color: #94a3b8;\\n}\\n.val[data-v-d18180b8] { font-weight: 600;\\n}\\n.val.good[data-v-d18180b8]  { color: #22c55e;\\n}\\n.val.bad[data-v-d18180b8]   { color: #ef4444;\\n}\\n.link[data-v-d18180b8] {\\n  display: block;\\n  margin-top: 10px;\\n  text-align: center;\\n  color: #818cf8;\\n  font-size: 0.78rem;\\n  text-decoration: none;\\n  padding: 6px;\\n  border-radius: 6px;\\n  background: #1e293b;\\n}\\n.link[data-v-d18180b8]:hover { background: #334155;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626221154,
+      "end": 1783626221154,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

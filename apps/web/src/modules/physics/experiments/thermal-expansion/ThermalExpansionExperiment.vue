@@ -10,10 +10,12 @@ import DraggablePanel from '../../../../components/experiment/spring/DraggablePa
 import ThermalExpansionPanelBody from '../../../../components/experiment/thermal-expansion/ThermalExpansionPanelBody.vue'
 import ThermalExpansionOverlayPanels from '../../../../components/experiment/thermal-expansion/ThermalExpansionOverlayPanels.vue'
 import ThermalExpansionHelpModal from '../../../../components/experiment/thermal-expansion/ThermalExpansionHelpModal.vue'
+import ThermalExpansionGuidePanel from '../../../../components/experiment/thermal-expansion/ThermalExpansionGuidePanel.vue'
 
 const ex = useThermalExpansionExperiment()
 const { t } = useI18n()
 const helpOpen = ref(false)
+const showGuide = ref(true)
 const hoveredField = ref('')
 
 function onKeyDown(e: KeyboardEvent) {
@@ -95,6 +97,7 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown) })
               @hover-field="hoveredField = $event" />
           </div>
         </template>
+        <ThermalExpansionGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
     <ThermalExpansionOverlayPanels

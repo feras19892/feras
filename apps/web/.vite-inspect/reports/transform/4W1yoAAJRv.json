@@ -1,0 +1,140 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/SpringParamPanel.vue?vue&type=style&index=0&scoped=a37583d5&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.lab-card { background:#1E2530; border-radius:8px; padding:.6rem; border:1px solid #2D3645; }\n.card-header { display:flex; justify-content:space-between; align-items:center; margin:0 0 .3rem; }\n.card-header h4 { margin:0; font-size:.82rem; color:#D1D7E0; font-weight:700; }\n.param-row { display:flex; flex-direction:column; gap:.1rem; margin-bottom:.25rem; }\n.param-row label { font-size:.68rem; color:#8B95A5; font-weight:600; }\n.param-row input, .param-row select { padding:.35rem .4rem; border-radius:4px; border:1px solid #2D3645; background:#252D3A; color:#D1D7E0; font-size:.75rem; }\n.param-inputs { display:flex; gap:.3rem; align-items:center; }\n.param-inputs input[type=range] { flex:1; }\n.param-inputs input[type=number] { width:60px; text-align:center; }\n",
+      "start": 1783635314000,
+      "end": 1783635314000,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/SpringParamPanel.vue"
+        ],
+        "names": [],
+        "mappings": ";AAsBA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC5F,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAClG,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC9E,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACnF,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACrE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC9J,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC7D,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC1C,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE",
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/SpringParamPanel.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\nimport type { SpringParams } from '../../../modules/physics/experiments/spring/useSpringPhysics'\n\nconst { t } = useI18n()\nconst params = defineModel<SpringParams>({ required: true })\n</script>\n\n<template>\n  <div class=\"lab-card params-card\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:10:3\">\n    <div class=\"card-header\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:11:5\"><h4 data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:11:30\">&#x2699;&#xFE0F; {{ t('experiments.params') }}</h4></div>\n    <div class=\"param-row\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:12:5\"><label data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:12:28\">{{ t('experiments.mass') }} (kg)</label><div class=\"param-inputs\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:12:75\"><input type=\"range\" min=\"0.1\" max=\"999\" step=\"0.01\" v-model.number=\"params.mass\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:12:101\" /><input type=\"number\" step=\"0.01\" v-model.number=\"params.mass\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:12:184\" /></div></div>\n    <div class=\"param-row\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:13:5\"><label data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:13:28\">{{ t('experiments.springConstant') }} (N/m)</label><div class=\"param-inputs\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:13:86\"><input type=\"range\" min=\"5\" max=\"9999\" step=\"1\" v-model.number=\"params.k\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:13:112\" /><input type=\"number\" step=\"1\" v-model.number=\"params.k\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:13:188\" /></div></div>\n    <div class=\"param-row\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:14:5\"><label data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:14:28\">{{ t('experiments.amplitude') }} (m)</label><div class=\"param-inputs\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:14:79\"><input type=\"range\" min=\"0.05\" max=\"50\" step=\"0.01\" v-model.number=\"params.amplitude\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:14:105\" /><input type=\"number\" step=\"0.01\" v-model.number=\"params.amplitude\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:14:193\" /></div></div>\n    <div class=\"param-row\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:15:5\"><label data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:15:28\">{{ t('experiments.damping') }}</label><div class=\"param-inputs\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:15:73\"><input type=\"range\" min=\"0\" max=\"999\" step=\"0.05\" v-model.number=\"params.damping\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:15:99\" /><input type=\"number\" step=\"0.05\" v-model.number=\"params.damping\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:15:183\" /></div></div>\n    <div class=\"param-row\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:16:5\"><label data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:16:28\">{{ t('experiments.dampingModel') }}</label><select v-model=\"params.dampingModel\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:16:78\"><option value=\"linear\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:16:116\">{{ t('experiments.linear') }}</option><option value=\"quadratic\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:16:177\">{{ t('experiments.quadratic') }}</option></select></div>\n    <div class=\"param-row\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:17:5\"><label data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:17:28\">{{ t('experiments.measureCycles') }}</label><input type=\"number\" min=\"1\" max=\"20\" step=\"1\" v-model.number=\"params.measureCycles\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:17:79\" /></div>\n    <div class=\"param-row\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:18:5\"><label data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:18:28\">{{ t('experiments.springMass') }} (kg)</label><div class=\"param-inputs\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:18:81\"><input type=\"range\" min=\"0\" max=\"2\" step=\"0.001\" v-model.number=\"params.springMass\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:18:107\" /><input type=\"number\" step=\"0.001\" v-model.number=\"params.springMass\" data-v-inspector=\"src/components/experiment/spring/SpringParamPanel.vue:18:193\" /></div></div>\n  </div>\n</template>\n\n<style scoped>\n.lab-card { background:#1E2530; border-radius:8px; padding:.6rem; border:1px solid #2D3645; }\n.card-header { display:flex; justify-content:space-between; align-items:center; margin:0 0 .3rem; }\n.card-header h4 { margin:0; font-size:.82rem; color:#D1D7E0; font-weight:700; }\n.param-row { display:flex; flex-direction:column; gap:.1rem; margin-bottom:.25rem; }\n.param-row label { font-size:.68rem; color:#8B95A5; font-weight:600; }\n.param-row input, .param-row select { padding:.35rem .4rem; border-radius:4px; border:1px solid #2D3645; background:#252D3A; color:#D1D7E0; font-size:.75rem; }\n.param-inputs { display:flex; gap:.3rem; align-items:center; }\n.param-inputs input[type=range] { flex:1; }\n.param-inputs input[type=number] { width:60px; text-align:center; }\n</style>\n"
+        ]
+      }
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783635314000,
+      "end": 1783635314000,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "\n.lab-card { background:#1E2530; border-radius:8px; padding:.6rem; border:1px solid #2D3645; }\n.card-header { display:flex; justify-content:space-between; align-items:center; margin:0 0 .3rem; }\n.card-header h4 { margin:0; font-size:.82rem; color:#D1D7E0; font-weight:700; }\n.param-row { display:flex; flex-direction:column; gap:.1rem; margin-bottom:.25rem; }\n.param-row label { font-size:.68rem; color:#8B95A5; font-weight:600; }\n.param-row input, .param-row select { padding:.35rem .4rem; border-radius:4px; border:1px solid #2D3645; background:#252D3A; color:#D1D7E0; font-size:.75rem; }\n.param-inputs { display:flex; gap:.3rem; align-items:center; }\n.param-inputs input[type=range] { flex:1; }\n.param-inputs input[type=number] { width:60px; text-align:center; }\n",
+      "start": 1783635314000,
+      "end": 1783635314000,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.lab-card { background:#1E2530; border-radius:8px; padding:.6rem; border:1px solid #2D3645; }\n.card-header { display:flex; justify-content:space-between; align-items:center; margin:0 0 .3rem; }\n.card-header h4 { margin:0; font-size:.82rem; color:#D1D7E0; font-weight:700; }\n.param-row { display:flex; flex-direction:column; gap:.1rem; margin-bottom:.25rem; }\n.param-row label { font-size:.68rem; color:#8B95A5; font-weight:600; }\n.param-row input, .param-row select { padding:.35rem .4rem; border-radius:4px; border:1px solid #2D3645; background:#252D3A; color:#D1D7E0; font-size:.75rem; }\n.param-inputs { display:flex; gap:.3rem; align-items:center; }\n.param-inputs input[type=range] { flex:1; }\n.param-inputs input[type=number] { width:60px; text-align:center; }\n",
+      "start": 1783635314000,
+      "end": 1783635314000,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783635314000,
+      "end": 1783635314000,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783635314000,
+      "end": 1783635314000,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783635314000,
+      "end": 1783635314000,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.lab-card[data-v-a37583d5] { background:#1E2530; border-radius:8px; padding:.6rem; border:1px solid #2D3645;\n}\n.card-header[data-v-a37583d5] { display:flex; justify-content:space-between; align-items:center; margin:0 0 .3rem;\n}\n.card-header h4[data-v-a37583d5] { margin:0; font-size:.82rem; color:#D1D7E0; font-weight:700;\n}\n.param-row[data-v-a37583d5] { display:flex; flex-direction:column; gap:.1rem; margin-bottom:.25rem;\n}\n.param-row label[data-v-a37583d5] { font-size:.68rem; color:#8B95A5; font-weight:600;\n}\n.param-row input[data-v-a37583d5], .param-row select[data-v-a37583d5] { padding:.35rem .4rem; border-radius:4px; border:1px solid #2D3645; background:#252D3A; color:#D1D7E0; font-size:.75rem;\n}\n.param-inputs[data-v-a37583d5] { display:flex; gap:.3rem; align-items:center;\n}\n.param-inputs input[type=range][data-v-a37583d5] { flex:1;\n}\n.param-inputs input[type=number][data-v-a37583d5] { width:60px; text-align:center;\n}\n",
+      "start": 1783635314000,
+      "end": 1783635314009,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783635314010,
+      "end": 1783635314010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/SpringParamPanel.vue?vue&type=style&index=0&scoped=a37583d5&lang.css\"\nconst __vite__css = \"\\n.lab-card[data-v-a37583d5] { background:#1E2530; border-radius:8px; padding:.6rem; border:1px solid #2D3645;\\n}\\n.card-header[data-v-a37583d5] { display:flex; justify-content:space-between; align-items:center; margin:0 0 .3rem;\\n}\\n.card-header h4[data-v-a37583d5] { margin:0; font-size:.82rem; color:#D1D7E0; font-weight:700;\\n}\\n.param-row[data-v-a37583d5] { display:flex; flex-direction:column; gap:.1rem; margin-bottom:.25rem;\\n}\\n.param-row label[data-v-a37583d5] { font-size:.68rem; color:#8B95A5; font-weight:600;\\n}\\n.param-row input[data-v-a37583d5], .param-row select[data-v-a37583d5] { padding:.35rem .4rem; border-radius:4px; border:1px solid #2D3645; background:#252D3A; color:#D1D7E0; font-size:.75rem;\\n}\\n.param-inputs[data-v-a37583d5] { display:flex; gap:.3rem; align-items:center;\\n}\\n.param-inputs input[type=range][data-v-a37583d5] { flex:1;\\n}\\n.param-inputs input[type=number][data-v-a37583d5] { width:60px; text-align:center;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783635314010,
+      "end": 1783635314010,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783635314010,
+      "end": 1783635314010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783635314010,
+      "end": 1783635314010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783635314010,
+      "end": 1783635314010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783635314010,
+      "end": 1783635314010,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783635314010,
+      "end": 1783635314010,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783635314010,
+      "end": 1783635314010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783635314010,
+      "end": 1783635314010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/components/experiment/spring/SpringParamPanel.vue?vue&type=style&index=0&scoped=a37583d5&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/SpringParamPanel.vue?vue&type=style&index=0&scoped=a37583d5&lang.css\"\nconst __vite__css = \"\\n.lab-card[data-v-a37583d5] { background:#1E2530; border-radius:8px; padding:.6rem; border:1px solid #2D3645;\\n}\\n.card-header[data-v-a37583d5] { display:flex; justify-content:space-between; align-items:center; margin:0 0 .3rem;\\n}\\n.card-header h4[data-v-a37583d5] { margin:0; font-size:.82rem; color:#D1D7E0; font-weight:700;\\n}\\n.param-row[data-v-a37583d5] { display:flex; flex-direction:column; gap:.1rem; margin-bottom:.25rem;\\n}\\n.param-row label[data-v-a37583d5] { font-size:.68rem; color:#8B95A5; font-weight:600;\\n}\\n.param-row input[data-v-a37583d5], .param-row select[data-v-a37583d5] { padding:.35rem .4rem; border-radius:4px; border:1px solid #2D3645; background:#252D3A; color:#D1D7E0; font-size:.75rem;\\n}\\n.param-inputs[data-v-a37583d5] { display:flex; gap:.3rem; align-items:center;\\n}\\n.param-inputs input[type=range][data-v-a37583d5] { flex:1;\\n}\\n.param-inputs input[type=number][data-v-a37583d5] { width:60px; text-align:center;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783635314010,
+      "end": 1783635314010,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

@@ -10,9 +10,11 @@ import DraggablePanel from '../../../../components/experiment/spring/DraggablePa
 import SpringPanelBody from '../../../../components/experiment/spring/SpringPanelBody.vue'
 import SpringParamPanel from '../../../../components/experiment/spring/SpringParamPanel.vue'
 import SpringHelpModal from '../../../../components/experiment/spring/SpringHelpModal.vue'
+import SpringGuidePanel from '../../../../components/experiment/spring/SpringGuidePanel.vue'
 const ex = useSpringExperiment()
 const { t } = useI18n()
 const helpOpen = ref(false)
+const showGuide = ref(true)
 const canvasRef = ref<InstanceType<typeof SpringCanvas> | null>(null)
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
@@ -116,6 +118,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             />
           </div>
         </template>
+        <SpringGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
 

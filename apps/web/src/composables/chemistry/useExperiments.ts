@@ -1,4 +1,4 @@
-import { items, liquidMap, buretteMap, buretteTotalConsumedMap } from './useChemistryLab';
+import { items, liquidMap, buretteMap, buretteTotalConsumedMap, buretteConsumedThisRefill, pipetteMap } from './useChemistryLab';
 import { isContainer, isReactionVessel, isBurette } from './chemLabIds';
 
 export interface ExperimentStep {
@@ -59,6 +59,21 @@ function hasValveOpenBurette(chemicalId: string) {
   return Object.values(buretteMap).some((b) => b.valveOpen && b.chemicalId === chemicalId && b.volume > 0);
 }
 
+function hasBuretteDispensed(chemicalId: string): boolean {
+  for (const bItem of items.value) {
+    if (!isBurette(bItem.id)) continue;
+    const b = buretteMap[bItem.uid];
+    if (b.chemicalId !== chemicalId) continue;
+    const total = (buretteTotalConsumedMap[bItem.uid] || 0) + (buretteConsumedThisRefill[bItem.uid] || 0);
+    if (total > 0) return true;
+  }
+  return false;
+}
+
+function hasPipetteWithChemical(chemicalId: string): boolean {
+  return Object.values(pipetteMap).some((p) => p.chemicalId === chemicalId && p.volume > 0);
+}
+
 // Helper: check if specific tool exists
 function hasTool(id: string): boolean {
   return items.value.some((i) => i.id === id);
@@ -77,15 +92,15 @@ const validators: Record<string, (experiment: Experiment) => boolean[]> = {
 
 function validateTitration(exp: Experiment, acidId: string, baseId: string): boolean[] {
   const c = new Array(exp.steps.length).fill(false);
-  // Step 1: Check required tools exist in workspace (flexible: any beaker, any test-tube, any pipette)
-  c[0] = hasTool('burette') && hasAnyTool('beaker') && hasAnyTool('test-tube') && (hasTool('pipette') || hasTool('volumetric-pipette'));
-  // Step 2: Base in burette
+  // Step 1: Check required tools exist in workspace (burette, beaker, pipette)
+  c[0] = hasTool('burette') && hasAnyTool('beaker') && (hasTool('pipette') || hasTool('volumetric-pipette'));
+  // Step 2: Base (NaOH) in burette
   c[1] = hasChemicalIn(isBurette, baseId);
-  // Step 3: Acid in any beaker/container
+  // Step 3: Acid in beaker/container
   c[2] = hasChemicalIn(isContainer, acidId);
-  // Step 4: Phenolphthalein in test tube
-  c[3] = hasChemicalIn(isContainer, 'phenolphthalein');
-  // Step 5: Indicator transferred to reaction vessel (indicator + acid present in same vessel)
+  // Step 4: Pipette filled with phenolphthalein from chemical shelf
+  c[3] = hasPipetteWithChemical('phenolphthalein');
+  // Step 5: Indicator dispensed from pipette into reaction vessel (acid + indicator in same vessel)
   c[4] = items.value.some((item) => {
     if (!isReactionVessel(item.id)) return false;
     const liq = liquidMap[item.uid];
@@ -96,8 +111,8 @@ function validateTitration(exp: Experiment, acidId: string, baseId: string): boo
     const hasPhenInReactants = liq.reactants && liq.reactants['phenolphthalein'] > 0;
     return (hasAcidAsBase && hasIndicatorInArray) || (hasAcidInReactants && hasPhenInReactants);
   });
-  // Step 6: Burette valve is open with base
-  c[5] = hasValveOpenBurette(baseId);
+  // Step 6: Base has been dispensed from burette (valve open OR drop-by-drop used)
+  c[5] = hasValveOpenBurette(baseId) || hasBuretteDispensed(baseId);
   // Step 7: Color changed to pink in reaction vessel (pH > 8.2 with phenolphthalein)
   // Must have consumed enough base to be realistic (~30+ mL for 50 mL acid at same conc)
   c[6] = items.value.some((item) => {
@@ -105,11 +120,11 @@ function validateTitration(exp: Experiment, acidId: string, baseId: string): boo
     const liq = liquidMap[item.uid];
     if (!liq || liq.ph === null || liq.ph <= 8.2) return false;
     if (!liq.indicators || !liq.indicators.includes('phenolphthalein')) return false;
-    // Require at least 30 mL total consumed to prevent false positive on first drops
+    // Total consumed includes both committed and current refill (for drop-by-drop)
     let totalConsumed = 0;
     for (const bItem of items.value) {
       if (isBurette(bItem.id)) {
-        totalConsumed += buretteTotalConsumedMap[bItem.uid] || 0;
+        totalConsumed += (buretteTotalConsumedMap[bItem.uid] || 0) + (buretteConsumedThisRefill[bItem.uid] || 0);
       }
     }
     return totalConsumed >= 30;
@@ -169,8 +184,8 @@ export const experiments: Experiment[] = [
       { id: 4, text: 'chemistryExperiments.step4', completed: false },
       { id: 5, text: 'chemistryExperiments.step5', completed: false },
       { id: 6, text: 'chemistryExperiments.step6', completed: false },
-      { id: 7, text: 'chemistryExperiments.step7', completed: false },
-      { id: 8, text: 'chemistryExperiments.step8', completed: false },
+      { id: 7, text: 'chemistryExperiments.step7Acetic', completed: false },
+      { id: 8, text: 'chemistryExperiments.step8Acetic', completed: false },
     ],
     theory: {
       title: 'chemistryExperiments.theory2Title',

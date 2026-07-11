@@ -6,20 +6,22 @@ const emit = defineEmits<{ (e: 'close'): void }>()
 </script>
 
 <template>
-  <div v-if="open" class="help-overlay" @click.self="emit('close')">
+  <Teleport to="body">
+    <div v-if="open" class="help-overlay" @click.self="emit('close')">
     <div class="help-modal">
       <h3>{{ t('experiments.helpTitle') }}</h3>
       <div class="help-grid">
-        <div><kbd>Space</kbd><span>{{ t('experiments.helpStartStop') }}</span></div>
-        <div><kbd>R</kbd><span>{{ t('experiments.helpReset') }}</span></div>
-        <div><kbd>S</kbd><span>{{ t('experiments.helpRecord') }}</span></div>
+        <div><kbd>Space</kbd><span>{{ t('experiments.helpSpace') }}</span></div>
+        <div><kbd>R</kbd><span>{{ t('experiments.helpR') }}</span></div>
+        <div><kbd>S</kbd><span>{{ t('experiments.helpS') }}</span></div>
         <div><kbd>Ctrl+Z</kbd><span>{{ t('experiments.helpUndo') }}</span></div>
         <div><kbd>Ctrl+Y</kbd><span>{{ t('experiments.helpRedo') }}</span></div>
-        <div><kbd>?</kbd><span>{{ t('experiments.helpHelp') }}</span></div>
+        <div><kbd>?</kbd><span>{{ t('experiments.helpQuestion') }}</span></div>
       </div>
-      <button class="close-btn" @click="emit('close')">{{ t('experiments.close') }}</button>
+      <button class="close-btn" @click="emit('close')">{{ t('experiments.helpQuestion') }}</button>
+      </div>
     </div>
-  </div>
+  </Teleport>
 </template>
 
 <style scoped>

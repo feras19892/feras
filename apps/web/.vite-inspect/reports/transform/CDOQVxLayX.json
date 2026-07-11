@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useChemicalLocale.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { useI18n } from '../useI18n';\nimport { getChemicalTranslation, chemistryChemicals } from '../../locales/chemistry-chemicals';\n\nexport function useChemicalLocale() {\n  const { t, locale } = useI18n();\n\n  const getName = (id: string) => getChemicalTranslation(id, locale.value).name;\n  const getDesc = (id: string) => getChemicalTranslation(id, locale.value).desc;\n\n  // Resolve a stored label to localized names\n  const resolveLabel = (label: string | undefined) => {\n    if (!label) return '';\n    if (label.startsWith('REACTION:')) {\n      return t('chemistryLab.reactionSolution') + ': ' + label.slice(9);\n    }\n    if (label === 'PIPETTE_SOLUTION') {\n      return t('chemistryLab.pipetteSolution');\n    }\n    // Direct chemical ID lookup\n    const byId = getChemicalTranslation(label, locale.value);\n    if (byId.name !== label) return byId.name;\n    const parts = label.split(' + ');\n    const resolved = parts.map((part) => {\n      for (const loc of ['ar', 'en', 'es'] as const) {\n        const map = chemistryChemicals[loc];\n        if (!map) continue;\n        for (const [id, entry] of Object.entries(map)) {\n          if (entry.name === part.trim()) {\n            return getChemicalTranslation(id, locale.value).name;\n          }\n        }\n      }\n      return part;\n    });\n    return resolved.join(' + ');\n  };\n\n  return { getName, getDesc, resolveLabel };\n}\n",
-      "start": 1783634639326,
-      "end": 1783634639611,
+      "start": 1783626304648,
+      "end": 1783626304648
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626304648,
+      "end": 1783626304648,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { useI18n } from '../useI18n';\nimport { getChemicalTranslation, chemistryChemicals } from '../../locales/chemistry-chemicals';\n\nexport function useChemicalLocale() {\n  const { t, locale } = useI18n();\n\n  const getName = (id: string) => getChemicalTranslation(id, locale.value).name;\n  const getDesc = (id: string) => getChemicalTranslation(id, locale.value).desc;\n\n  // Resolve a stored label to localized names\n  const resolveLabel = (label: string | undefined) => {\n    if (!label) return '';\n    if (label.startsWith('REACTION:')) {\n      return t('chemistryLab.reactionSolution') + ': ' + label.slice(9);\n    }\n    if (label === 'PIPETTE_SOLUTION') {\n      return t('chemistryLab.pipetteSolution');\n    }\n    // Direct chemical ID lookup\n    const byId = getChemicalTranslation(label, locale.value);\n    if (byId.name !== label) return byId.name;\n    const parts = label.split(' + ');\n    const resolved = parts.map((part) => {\n      for (const loc of ['ar', 'en', 'es'] as const) {\n        const map = chemistryChemicals[loc];\n        if (!map) continue;\n        for (const [id, entry] of Object.entries(map)) {\n          if (entry.name === part.trim()) {\n            return getChemicalTranslation(id, locale.value).name;\n          }\n        }\n      }\n      return part;\n    });\n    return resolved.join(' + ');\n  };\n\n  return { getName, getDesc, resolveLabel };\n}\n",
+      "start": 1783626304648,
+      "end": 1783626304648,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634639611,
-      "end": 1783634639611,
+      "start": 1783626304648,
+      "end": 1783626304648,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { useI18n } from \"../useI18n\";\nimport { getChemicalTranslation, chemistryChemicals } from \"../../locales/chemistry-chemicals\";\nexport function useChemicalLocale() {\n  const { t, locale } = useI18n();\n  const getName = (id) => getChemicalTranslation(id, locale.value).name;\n  const getDesc = (id) => getChemicalTranslation(id, locale.value).desc;\n  const resolveLabel = (label) => {\n    if (!label) return \"\";\n    if (label.startsWith(\"REACTION:\")) {\n      return t(\"chemistryLab.reactionSolution\") + \": \" + label.slice(9);\n    }\n    if (label === \"PIPETTE_SOLUTION\") {\n      return t(\"chemistryLab.pipetteSolution\");\n    }\n    const byId = getChemicalTranslation(label, locale.value);\n    if (byId.name !== label) return byId.name;\n    const parts = label.split(\" + \");\n    const resolved = parts.map((part) => {\n      for (const loc of [\"ar\", \"en\", \"es\"]) {\n        const map = chemistryChemicals[loc];\n        if (!map) continue;\n        for (const [id, entry] of Object.entries(map)) {\n          if (entry.name === part.trim()) {\n            return getChemicalTranslation(id, locale.value).name;\n          }\n        }\n      }\n      return part;\n    });\n    return resolved.join(\" + \");\n  };\n  return { getName, getDesc, resolveLabel };\n}\n",
-      "start": 1783634639611,
-      "end": 1783634639942,
+      "start": 1783626304648,
+      "end": 1783626305120,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useChemicalLocale.ts"
+          "useChemicalLocale.ts"
         ],
         "sourcesContent": [
           "import { useI18n } from '../useI18n';\nimport { getChemicalTranslation, chemistryChemicals } from '../../locales/chemistry-chemicals';\n\nexport function useChemicalLocale() {\n  const { t, locale } = useI18n();\n\n  const getName = (id: string) => getChemicalTranslation(id, locale.value).name;\n  const getDesc = (id: string) => getChemicalTranslation(id, locale.value).desc;\n\n  // Resolve a stored label to localized names\n  const resolveLabel = (label: string | undefined) => {\n    if (!label) return '';\n    if (label.startsWith('REACTION:')) {\n      return t('chemistryLab.reactionSolution') + ': ' + label.slice(9);\n    }\n    if (label === 'PIPETTE_SOLUTION') {\n      return t('chemistryLab.pipetteSolution');\n    }\n    // Direct chemical ID lookup\n    const byId = getChemicalTranslation(label, locale.value);\n    if (byId.name !== label) return byId.name;\n    const parts = label.split(' + ');\n    const resolved = parts.map((part) => {\n      for (const loc of ['ar', 'en', 'es'] as const) {\n        const map = chemistryChemicals[loc];\n        if (!map) continue;\n        for (const [id, entry] of Object.entries(map)) {\n          if (entry.name === part.trim()) {\n            return getChemicalTranslation(id, locale.value).name;\n          }\n        }\n      }\n      return part;\n    });\n    return resolved.join(' + ');\n  };\n\n  return { getName, getDesc, resolveLabel };\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634639942,
-      "end": 1783634639942,
+      "start": 1783626305120,
+      "end": 1783626305120,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634639942,
-      "end": 1783634639942,
+      "start": 1783626305120,
+      "end": 1783626305120,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626305120,
+      "end": 1783626305120,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634639942,
-      "end": 1783634639942,
+      "start": 1783626305120,
+      "end": 1783626305120,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634639942,
-      "end": 1783634639942,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634639942,
-      "end": 1783634639942,
+      "start": 1783626305120,
+      "end": 1783626305120,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634639942,
-      "end": 1783634639942,
+      "start": 1783626305120,
+      "end": 1783626305120,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634639943,
-      "end": 1783634639943,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634639943,
-      "end": 1783634639943,
+      "start": 1783626305122,
+      "end": 1783626305123,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634639943,
-      "end": 1783634639943,
+      "start": 1783626305123,
+      "end": 1783626305123,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634639943,
-      "end": 1783634639943,
+      "start": 1783626305123,
+      "end": 1783626305123,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634639943,
-      "end": 1783634639943,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626305123,
+      "end": 1783626305124,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626305124,
+      "end": 1783626305124,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634639943,
-      "end": 1783634639943,
+      "name": "vite:css-analysis",
+      "start": 1783626305124,
+      "end": 1783626305124,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { useI18n } from \"/src/composables/useI18n.ts\";\nimport { getChemicalTranslation, chemistryChemicals } from \"/src/locales/chemistry-chemicals.ts\";\nexport function useChemicalLocale() {\n  const { t, locale } = useI18n();\n  const getName = (id) => getChemicalTranslation(id, locale.value).name;\n  const getDesc = (id) => getChemicalTranslation(id, locale.value).desc;\n  const resolveLabel = (label) => {\n    if (!label) return \"\";\n    if (label.startsWith(\"REACTION:\")) {\n      return t(\"chemistryLab.reactionSolution\") + \": \" + label.slice(9);\n    }\n    if (label === \"PIPETTE_SOLUTION\") {\n      return t(\"chemistryLab.pipetteSolution\");\n    }\n    const byId = getChemicalTranslation(label, locale.value);\n    if (byId.name !== label) return byId.name;\n    const parts = label.split(\" + \");\n    const resolved = parts.map((part) => {\n      for (const loc of [\"ar\", \"en\", \"es\"]) {\n        const map = chemistryChemicals[loc];\n        if (!map) continue;\n        for (const [id, entry] of Object.entries(map)) {\n          if (entry.name === part.trim()) {\n            return getChemicalTranslation(id, locale.value).name;\n          }\n        }\n      }\n      return part;\n    });\n    return resolved.join(\" + \");\n  };\n  return { getName, getDesc, resolveLabel };\n}\n",
+      "start": 1783626305124,
+      "end": 1783626305146,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

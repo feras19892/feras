@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/packages/chemistry-engine/src/index.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "export type { LiquidState, BuretteState, PipetteState, SepFunnelState } from './types.js';\nexport type { ChemicalEquation } from './equations.js';\nexport { findEquation, canReact } from './equations.js';\nexport { mixColor, hexToRgb } from './color.js';\nexport { isAcid, isBase, isIndicator } from './type-checks.js';\nexport { calculateTitrationPh, getIndicatorColor, applyIndicatorsToContainer } from './reactions.js';\n",
-      "start": 1783634640043,
-      "end": 1783634640498,
+      "start": 1783626308831,
+      "end": 1783626308831
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626308831,
+      "end": 1783626308831,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "export type { LiquidState, BuretteState, PipetteState, SepFunnelState } from './types.js';\nexport type { ChemicalEquation } from './equations.js';\nexport { findEquation, canReact } from './equations.js';\nexport { mixColor, hexToRgb } from './color.js';\nexport { isAcid, isBase, isIndicator } from './type-checks.js';\nexport { calculateTitrationPh, getIndicatorColor, applyIndicatorsToContainer } from './reactions.js';\n",
+      "start": 1783626308831,
+      "end": 1783626308831,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634640498,
-      "end": 1783634640498,
+      "start": 1783626308831,
+      "end": 1783626308831,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "export { findEquation, canReact } from \"./equations.js\";\nexport { mixColor, hexToRgb } from \"./color.js\";\nexport { isAcid, isBase, isIndicator } from \"./type-checks.js\";\nexport { calculateTitrationPh, getIndicatorColor, applyIndicatorsToContainer } from \"./reactions.js\";\n",
-      "start": 1783634640498,
-      "end": 1783634641628,
+      "start": 1783626308831,
+      "end": 1783626310187,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/packages/chemistry-engine/src/index.ts"
+          "index.ts"
         ],
         "sourcesContent": [
           "export type { LiquidState, BuretteState, PipetteState, SepFunnelState } from './types.js';\nexport type { ChemicalEquation } from './equations.js';\nexport { findEquation, canReact } from './equations.js';\nexport { mixColor, hexToRgb } from './color.js';\nexport { isAcid, isBase, isIndicator } from './type-checks.js';\nexport { calculateTitrationPh, getIndicatorColor, applyIndicatorsToContainer } from './reactions.js';\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634641628,
-      "end": 1783634641628,
+      "start": 1783626310187,
+      "end": 1783626310187,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634641629,
-      "end": 1783634641629,
+      "start": 1783626310187,
+      "end": 1783626310187,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626310187,
+      "end": 1783626310188,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634641629,
-      "end": 1783634641629,
+      "start": 1783626310188,
+      "end": 1783626310188,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634641629,
-      "end": 1783634641629,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634641629,
-      "end": 1783634641629,
+      "start": 1783626310188,
+      "end": 1783626310188,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634641629,
-      "end": 1783634641629,
+      "start": 1783626310188,
+      "end": 1783626310188,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634641629,
-      "end": 1783634641629,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634641629,
-      "end": 1783634641629,
+      "start": 1783626310191,
+      "end": 1783626310195,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634641631,
-      "end": 1783634641631,
+      "start": 1783626310195,
+      "end": 1783626310195,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634641631,
-      "end": 1783634641631,
+      "start": 1783626310195,
+      "end": 1783626310195,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634641633,
-      "end": 1783634641633,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626310196,
+      "end": 1783626310196,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626310197,
+      "end": 1783626310197,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634641633,
-      "end": 1783634641633,
+      "name": "vite:css-analysis",
+      "start": 1783626310197,
+      "end": 1783626310197,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "export { findEquation, canReact } from \"/@fs/C:/Users/feras/Desktop/feras/packages/chemistry-engine/src/equations.ts\";\nexport { mixColor, hexToRgb } from \"/@fs/C:/Users/feras/Desktop/feras/packages/chemistry-engine/src/color.ts\";\nexport { isAcid, isBase, isIndicator } from \"/@fs/C:/Users/feras/Desktop/feras/packages/chemistry-engine/src/type-checks.ts\";\nexport { calculateTitrationPh, getIndicatorColor, applyIndicatorsToContainer } from \"/@fs/C:/Users/feras/Desktop/feras/packages/chemistry-engine/src/reactions.ts\";\n",
+      "start": 1783626310197,
+      "end": 1783626310206,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

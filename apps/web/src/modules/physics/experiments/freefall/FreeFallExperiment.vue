@@ -8,6 +8,7 @@ import FreeFallCanvas from '../../../../components/experiment/freefall/FreeFallC
 import FreeFallControlBar from '../../../../components/experiment/freefall/FreeFallControlBar.vue'
 import FreeFallStatusBar from '../../../../components/experiment/freefall/FreeFallStatusBar.vue'
 import FreeFallHelpModal from '../../../../components/experiment/freefall/FreeFallHelpModal.vue'
+import FreeFallGuidePanel from '../../../../components/experiment/freefall/FreeFallGuidePanel.vue'
 import FreeFallReport from '../../../../components/experiment/freefall/FreeFallReport.vue'
 import FreeFallPanelBody from '../../../../components/experiment/freefall/FreeFallPanelBody.vue'
 import FreeFallParamsPanel from '../../../../components/experiment/freefall/FreeFallParamsPanel.vue'
@@ -18,6 +19,7 @@ const { t } = useI18n()
 const ex = useFreeFallExperiment()
 const rep = useFreeFallReport()
 const helpOpen = ref(false)
+const showGuide = ref(true)
 const reportOpen = ref(false)
 const canvasRef = ref<InstanceType<typeof FreeFallCanvas> | null>(null)
 
@@ -107,6 +109,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             <FreeFallParamsPanel :params="ex.params" @update:params="Object.assign(ex.params, $event)" />
           </div>
         </template>
+        <FreeFallGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
 

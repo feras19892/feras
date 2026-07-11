@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/projectile/useProjectileHints.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { useI18n } from '../../composables/useI18n'\n\nexport function useProjectileHints() {\n  const { t } = useI18n()\n\n  function getHint(v0: number, angleDeg: number, g: number, targetX: number) {\n    const rad = (angleDeg * Math.PI) / 180\n    const R = (v0 * v0 * Math.sin(2 * rad)) / g\n    const diff = R - targetX\n    const sin2 = Math.sin(2 * rad)\n\n    let message = ''\n    let tip = ''\n    let strategy = ''\n\n    if (Math.abs(diff) < 2) {\n      message = t('experiments.projHintRangeClose')\n      tip = t('experiments.projHintLaunchAndSee')\n      strategy = t('experiments.projHintReady')\n    } else if (diff > 0) {\n      // Reaches too far\n      message = t('experiments.projHintTooFar')\n      if (angleDeg > 45) {\n        tip = t('experiments.projHintAngleGt45')\n        strategy = t('experiments.projHintCloserTo45')\n      } else if (angleDeg < 45) {\n        tip = t('experiments.projHintAngleLt45')\n        strategy = t('experiments.projHintTryReduceSpeed')\n      } else {\n        tip = t('experiments.projHintAngle45ReduceSpeed')\n        strategy = t('experiments.projHintV0ControlsRange')\n      }\n    } else {\n      // Falls short\n      message = t('experiments.projHintWontReach')\n      if (angleDeg < 45) {\n        tip = t('experiments.projHintAngleLt45Increase')\n        strategy = t('experiments.projHintCloserTo45MoreRange')\n      } else if (angleDeg > 45) {\n        tip = t('experiments.projHintAngleGt45OrSpeed')\n        strategy = t('experiments.projHint45MaxRangeForSpeed')\n      } else {\n        tip = t('experiments.projHintAngle45NeedSpeed')\n        strategy = t('experiments.projHintSmallV0Increase')\n      }\n    }\n\n    return {\n      equation: `R = v₀² · sin(2×${angleDeg}°) / g = ${R.toFixed(1)}m`,\n      targetX: targetX.toFixed(1),\n      sin2theta: `sin(2×${angleDeg}°) = ${sin2.toFixed(3)}`,\n      message,\n      tip,\n      strategy,\n    }\n  }\n\n  function checkStudentGuess(studentV0: number, studentAngle: number, g: number, targetX: number) {\n    const rad = (studentAngle * Math.PI) / 180\n    const R = (studentV0 * studentV0 * Math.sin(2 * rad)) / g\n    const diff = R - targetX\n    if (Math.abs(diff) < 2) return t('experiments.projHintExcellent')\n    if (diff > 0) {\n      if (studentAngle > 45) return t('experiments.projHintTooFarReduceAngle')\n      return t('experiments.projHintTooFarReduceSpeed')\n    }\n    if (studentAngle < 45) return t('experiments.projHintTooShortIncreaseAngle')\n    return t('experiments.projHintTooShortIncreaseSpeed')\n  }\n\n  return { getHint, checkStudentGuess }\n}\n",
-      "start": 1783634643076,
-      "end": 1783634643082,
+      "start": 1783626292533,
+      "end": 1783626292533
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626292533,
+      "end": 1783626292533,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { useI18n } from '../../composables/useI18n'\n\nexport function useProjectileHints() {\n  const { t } = useI18n()\n\n  function getHint(v0: number, angleDeg: number, g: number, targetX: number) {\n    const rad = (angleDeg * Math.PI) / 180\n    const R = (v0 * v0 * Math.sin(2 * rad)) / g\n    const diff = R - targetX\n    const sin2 = Math.sin(2 * rad)\n\n    let message = ''\n    let tip = ''\n    let strategy = ''\n\n    if (Math.abs(diff) < 2) {\n      message = t('experiments.projHintRangeClose')\n      tip = t('experiments.projHintLaunchAndSee')\n      strategy = t('experiments.projHintReady')\n    } else if (diff > 0) {\n      // Reaches too far\n      message = t('experiments.projHintTooFar')\n      if (angleDeg > 45) {\n        tip = t('experiments.projHintAngleGt45')\n        strategy = t('experiments.projHintCloserTo45')\n      } else if (angleDeg < 45) {\n        tip = t('experiments.projHintAngleLt45')\n        strategy = t('experiments.projHintTryReduceSpeed')\n      } else {\n        tip = t('experiments.projHintAngle45ReduceSpeed')\n        strategy = t('experiments.projHintV0ControlsRange')\n      }\n    } else {\n      // Falls short\n      message = t('experiments.projHintWontReach')\n      if (angleDeg < 45) {\n        tip = t('experiments.projHintAngleLt45Increase')\n        strategy = t('experiments.projHintCloserTo45MoreRange')\n      } else if (angleDeg > 45) {\n        tip = t('experiments.projHintAngleGt45OrSpeed')\n        strategy = t('experiments.projHint45MaxRangeForSpeed')\n      } else {\n        tip = t('experiments.projHintAngle45NeedSpeed')\n        strategy = t('experiments.projHintSmallV0Increase')\n      }\n    }\n\n    return {\n      equation: `R = v₀² · sin(2×${angleDeg}°) / g = ${R.toFixed(1)}m`,\n      targetX: targetX.toFixed(1),\n      sin2theta: `sin(2×${angleDeg}°) = ${sin2.toFixed(3)}`,\n      message,\n      tip,\n      strategy,\n    }\n  }\n\n  function checkStudentGuess(studentV0: number, studentAngle: number, g: number, targetX: number) {\n    const rad = (studentAngle * Math.PI) / 180\n    const R = (studentV0 * studentV0 * Math.sin(2 * rad)) / g\n    const diff = R - targetX\n    if (Math.abs(diff) < 2) return t('experiments.projHintExcellent')\n    if (diff > 0) {\n      if (studentAngle > 45) return t('experiments.projHintTooFarReduceAngle')\n      return t('experiments.projHintTooFarReduceSpeed')\n    }\n    if (studentAngle < 45) return t('experiments.projHintTooShortIncreaseAngle')\n    return t('experiments.projHintTooShortIncreaseSpeed')\n  }\n\n  return { getHint, checkStudentGuess }\n}\n",
+      "start": 1783626292533,
+      "end": 1783626292533,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634643082,
-      "end": 1783634643082,
+      "start": 1783626292533,
+      "end": 1783626292533,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { useI18n } from \"../../composables/useI18n\";\nexport function useProjectileHints() {\n  const { t } = useI18n();\n  function getHint(v0, angleDeg, g, targetX) {\n    const rad = angleDeg * Math.PI / 180;\n    const R = v0 * v0 * Math.sin(2 * rad) / g;\n    const diff = R - targetX;\n    const sin2 = Math.sin(2 * rad);\n    let message = \"\";\n    let tip = \"\";\n    let strategy = \"\";\n    if (Math.abs(diff) < 2) {\n      message = t(\"experiments.projHintRangeClose\");\n      tip = t(\"experiments.projHintLaunchAndSee\");\n      strategy = t(\"experiments.projHintReady\");\n    } else if (diff > 0) {\n      message = t(\"experiments.projHintTooFar\");\n      if (angleDeg > 45) {\n        tip = t(\"experiments.projHintAngleGt45\");\n        strategy = t(\"experiments.projHintCloserTo45\");\n      } else if (angleDeg < 45) {\n        tip = t(\"experiments.projHintAngleLt45\");\n        strategy = t(\"experiments.projHintTryReduceSpeed\");\n      } else {\n        tip = t(\"experiments.projHintAngle45ReduceSpeed\");\n        strategy = t(\"experiments.projHintV0ControlsRange\");\n      }\n    } else {\n      message = t(\"experiments.projHintWontReach\");\n      if (angleDeg < 45) {\n        tip = t(\"experiments.projHintAngleLt45Increase\");\n        strategy = t(\"experiments.projHintCloserTo45MoreRange\");\n      } else if (angleDeg > 45) {\n        tip = t(\"experiments.projHintAngleGt45OrSpeed\");\n        strategy = t(\"experiments.projHint45MaxRangeForSpeed\");\n      } else {\n        tip = t(\"experiments.projHintAngle45NeedSpeed\");\n        strategy = t(\"experiments.projHintSmallV0Increase\");\n      }\n    }\n    return {\n      equation: `R = v₀² · sin(2×${angleDeg}°) / g = ${R.toFixed(1)}m`,\n      targetX: targetX.toFixed(1),\n      sin2theta: `sin(2×${angleDeg}°) = ${sin2.toFixed(3)}`,\n      message,\n      tip,\n      strategy\n    };\n  }\n  function checkStudentGuess(studentV0, studentAngle, g, targetX) {\n    const rad = studentAngle * Math.PI / 180;\n    const R = studentV0 * studentV0 * Math.sin(2 * rad) / g;\n    const diff = R - targetX;\n    if (Math.abs(diff) < 2) return t(\"experiments.projHintExcellent\");\n    if (diff > 0) {\n      if (studentAngle > 45) return t(\"experiments.projHintTooFarReduceAngle\");\n      return t(\"experiments.projHintTooFarReduceSpeed\");\n    }\n    if (studentAngle < 45) return t(\"experiments.projHintTooShortIncreaseAngle\");\n    return t(\"experiments.projHintTooShortIncreaseSpeed\");\n  }\n  return { getHint, checkStudentGuess };\n}\n",
-      "start": 1783634643082,
-      "end": 1783634643131,
+      "start": 1783626292533,
+      "end": 1783626292681,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/composables/projectile/useProjectileHints.ts"
+          "useProjectileHints.ts"
         ],
         "sourcesContent": [
           "import { useI18n } from '../../composables/useI18n'\n\nexport function useProjectileHints() {\n  const { t } = useI18n()\n\n  function getHint(v0: number, angleDeg: number, g: number, targetX: number) {\n    const rad = (angleDeg * Math.PI) / 180\n    const R = (v0 * v0 * Math.sin(2 * rad)) / g\n    const diff = R - targetX\n    const sin2 = Math.sin(2 * rad)\n\n    let message = ''\n    let tip = ''\n    let strategy = ''\n\n    if (Math.abs(diff) < 2) {\n      message = t('experiments.projHintRangeClose')\n      tip = t('experiments.projHintLaunchAndSee')\n      strategy = t('experiments.projHintReady')\n    } else if (diff > 0) {\n      // Reaches too far\n      message = t('experiments.projHintTooFar')\n      if (angleDeg > 45) {\n        tip = t('experiments.projHintAngleGt45')\n        strategy = t('experiments.projHintCloserTo45')\n      } else if (angleDeg < 45) {\n        tip = t('experiments.projHintAngleLt45')\n        strategy = t('experiments.projHintTryReduceSpeed')\n      } else {\n        tip = t('experiments.projHintAngle45ReduceSpeed')\n        strategy = t('experiments.projHintV0ControlsRange')\n      }\n    } else {\n      // Falls short\n      message = t('experiments.projHintWontReach')\n      if (angleDeg < 45) {\n        tip = t('experiments.projHintAngleLt45Increase')\n        strategy = t('experiments.projHintCloserTo45MoreRange')\n      } else if (angleDeg > 45) {\n        tip = t('experiments.projHintAngleGt45OrSpeed')\n        strategy = t('experiments.projHint45MaxRangeForSpeed')\n      } else {\n        tip = t('experiments.projHintAngle45NeedSpeed')\n        strategy = t('experiments.projHintSmallV0Increase')\n      }\n    }\n\n    return {\n      equation: `R = v₀² · sin(2×${angleDeg}°) / g = ${R.toFixed(1)}m`,\n      targetX: targetX.toFixed(1),\n      sin2theta: `sin(2×${angleDeg}°) = ${sin2.toFixed(3)}`,\n      message,\n      tip,\n      strategy,\n    }\n  }\n\n  function checkStudentGuess(studentV0: number, studentAngle: number, g: number, targetX: number) {\n    const rad = (studentAngle * Math.PI) / 180\n    const R = (studentV0 * studentV0 * Math.sin(2 * rad)) / g\n    const diff = R - targetX\n    if (Math.abs(diff) < 2) return t('experiments.projHintExcellent')\n    if (diff > 0) {\n      if (studentAngle > 45) return t('experiments.projHintTooFarReduceAngle')\n      return t('experiments.projHintTooFarReduceSpeed')\n    }\n    if (studentAngle < 45) return t('experiments.projHintTooShortIncreaseAngle')\n    return t('experiments.projHintTooShortIncreaseSpeed')\n  }\n\n  return { getHint, checkStudentGuess }\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634643131,
-      "end": 1783634643131,
+      "start": 1783626292681,
+      "end": 1783626292681,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634643131,
-      "end": 1783634643131,
+      "start": 1783626292681,
+      "end": 1783626292681,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626292681,
+      "end": 1783626292682,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634643132,
-      "end": 1783634643132,
+      "start": 1783626292682,
+      "end": 1783626292682,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634643132,
-      "end": 1783634643132,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634643132,
-      "end": 1783634643132,
+      "start": 1783626292682,
+      "end": 1783626292682,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634643132,
-      "end": 1783634643132,
+      "start": 1783626292682,
+      "end": 1783626292682,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634643132,
-      "end": 1783634643132,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634643132,
-      "end": 1783634643132,
+      "start": 1783626292682,
+      "end": 1783626292682,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634643132,
-      "end": 1783634643132,
+      "start": 1783626292682,
+      "end": 1783626292682,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634643132,
-      "end": 1783634643132,
+      "start": 1783626292682,
+      "end": 1783626292682,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634643132,
-      "end": 1783634643132,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626292682,
+      "end": 1783626292682,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626292682,
+      "end": 1783626292682,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634643132,
-      "end": 1783634643132,
+      "name": "vite:css-analysis",
+      "start": 1783626292682,
+      "end": 1783626292682,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { useI18n } from \"/src/composables/useI18n.ts\";\nexport function useProjectileHints() {\n  const { t } = useI18n();\n  function getHint(v0, angleDeg, g, targetX) {\n    const rad = angleDeg * Math.PI / 180;\n    const R = v0 * v0 * Math.sin(2 * rad) / g;\n    const diff = R - targetX;\n    const sin2 = Math.sin(2 * rad);\n    let message = \"\";\n    let tip = \"\";\n    let strategy = \"\";\n    if (Math.abs(diff) < 2) {\n      message = t(\"experiments.projHintRangeClose\");\n      tip = t(\"experiments.projHintLaunchAndSee\");\n      strategy = t(\"experiments.projHintReady\");\n    } else if (diff > 0) {\n      message = t(\"experiments.projHintTooFar\");\n      if (angleDeg > 45) {\n        tip = t(\"experiments.projHintAngleGt45\");\n        strategy = t(\"experiments.projHintCloserTo45\");\n      } else if (angleDeg < 45) {\n        tip = t(\"experiments.projHintAngleLt45\");\n        strategy = t(\"experiments.projHintTryReduceSpeed\");\n      } else {\n        tip = t(\"experiments.projHintAngle45ReduceSpeed\");\n        strategy = t(\"experiments.projHintV0ControlsRange\");\n      }\n    } else {\n      message = t(\"experiments.projHintWontReach\");\n      if (angleDeg < 45) {\n        tip = t(\"experiments.projHintAngleLt45Increase\");\n        strategy = t(\"experiments.projHintCloserTo45MoreRange\");\n      } else if (angleDeg > 45) {\n        tip = t(\"experiments.projHintAngleGt45OrSpeed\");\n        strategy = t(\"experiments.projHint45MaxRangeForSpeed\");\n      } else {\n        tip = t(\"experiments.projHintAngle45NeedSpeed\");\n        strategy = t(\"experiments.projHintSmallV0Increase\");\n      }\n    }\n    return {\n      equation: `R = v₀² · sin(2×${angleDeg}°) / g = ${R.toFixed(1)}m`,\n      targetX: targetX.toFixed(1),\n      sin2theta: `sin(2×${angleDeg}°) = ${sin2.toFixed(3)}`,\n      message,\n      tip,\n      strategy\n    };\n  }\n  function checkStudentGuess(studentV0, studentAngle, g, targetX) {\n    const rad = studentAngle * Math.PI / 180;\n    const R = studentV0 * studentV0 * Math.sin(2 * rad) / g;\n    const diff = R - targetX;\n    if (Math.abs(diff) < 2) return t(\"experiments.projHintExcellent\");\n    if (diff > 0) {\n      if (studentAngle > 45) return t(\"experiments.projHintTooFarReduceAngle\");\n      return t(\"experiments.projHintTooFarReduceSpeed\");\n    }\n    if (studentAngle < 45) return t(\"experiments.projHintTooShortIncreaseAngle\");\n    return t(\"experiments.projHintTooShortIncreaseSpeed\");\n  }\n  return { getHint, checkStudentGuess };\n}\n",
+      "start": 1783626292682,
+      "end": 1783626292696,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

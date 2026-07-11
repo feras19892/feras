@@ -130,6 +130,11 @@
 .fi-actions button.refill {
   background: linear-gradient(135deg, #8b5cf6, #7c3aed);
 }
+.fi-actions button.drop-one {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  font-size: 0.72rem;
+  padding: 0.4rem;
+}
 .fi-actions button.remove {
   background: linear-gradient(135deg, #f97316, #ea580c);
   color: #fff;
@@ -182,3 +187,21 @@
 .tilt-actions button.tilt-right { color: #3b82f6; }
 .tilt-actions button.tilt-reset { color: #10b981; font-weight: 800; }
 .tilt-value { color: #3b82f6; }
+.fi-select {
+  flex: 1;
+  padding: 0.3rem 0.4rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.4rem;
+  font-size: 0.68rem;
+  font-family: inherit;
+  background: #f8fafc;
+  color: #334155;
+  outline: none;
+  cursor: pointer;
+}
+.fi-select:focus { border-color: #3b82f6; background: #fff; }
+.fi-actions button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+}

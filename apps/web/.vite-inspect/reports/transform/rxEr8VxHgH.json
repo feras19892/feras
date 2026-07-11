@@ -1,0 +1,140 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/RCChart.vue?vue&type=style&index=0&scoped=33213615&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.rc-chart { width: 100%; height: 120px; background: #0d1117; border: 1px solid #1e2530; border-radius: 6px; }\n",
+      "start": 1783626239825,
+      "end": 1783626239825,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/RCChart.vue"
+        ],
+        "names": [],
+        "mappings": ";AAyEA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE",
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/RCChart.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\nimport { ref, watch, onMounted } from 'vue'\n\nconst props = defineProps<{\n  running: boolean\n  rcHistory?: { t: number; V: number; I: number }[]\n}>()\n\nconst rcChartRef = ref<HTMLCanvasElement | null>(null)\n\nfunction drawRCChart() {\n  const canvas = rcChartRef.value\n  if (!canvas || !props.rcHistory) return\n  const ctx = canvas.getContext('2d')\n  if (!ctx) return\n  const w = canvas.width\n  const h = canvas.height\n  ctx.fillStyle = '#0d1117'\n  ctx.fillRect(0, 0, w, h)\n\n  ctx.strokeStyle = '#1e2530'\n  ctx.lineWidth = 1\n  for (let i = 0; i <= 4; i++) {\n    const y = (h / 4) * i\n    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke()\n  }\n\n  const hist = props.rcHistory\n  if (hist.length < 2) return\n\n  const tMax = hist[hist.length - 1].t\n  const tMin = hist[0].t\n  const vMax = Math.max(...hist.map(p => p.V), 0.1)\n\n  ctx.strokeStyle = '#fbbf24'\n  ctx.lineWidth = 2\n  ctx.beginPath()\n  hist.forEach((p, i) => {\n    const x = ((p.t - tMin) / (tMax - tMin || 1)) * w\n    const y = h - (p.V / vMax) * (h - 10) - 5\n    if (i === 0) ctx.moveTo(x, y)\n    else ctx.lineTo(x, y)\n  })\n  ctx.stroke()\n\n  const iMax = Math.max(...hist.map(p => Math.abs(p.I)), 0.0001)\n  ctx.strokeStyle = '#4ade80'\n  ctx.lineWidth = 1.5\n  ctx.beginPath()\n  hist.forEach((p, i) => {\n    const x = ((p.t - tMin) / (tMax - tMin || 1)) * w\n    const y = h - (Math.abs(p.I) / iMax) * (h - 10) - 5\n    if (i === 0) ctx.moveTo(x, y)\n    else ctx.lineTo(x, y)\n  })\n  ctx.stroke()\n\n  ctx.fillStyle = '#fbbf24'\n  ctx.font = '10px sans-serif'\n  ctx.fillText('Vc', 5, 12)\n  ctx.fillStyle = '#4ade80'\n  ctx.fillText('I', 25, 12)\n}\n\nwatch(() => props.rcHistory, () => drawRCChart(), { deep: true })\nonMounted(() => drawRCChart())\n</script>\n\n<template>\n  <canvas ref=\"rcChartRef\" class=\"rc-chart\" width=\"280\" height=\"120\" data-v-inspector=\"src/modules/physics/experiments/electric-lab/components/RCChart.vue:70:3\"></canvas>\n</template>\n\n<style scoped>\n.rc-chart { width: 100%; height: 120px; background: #0d1117; border: 1px solid #1e2530; border-radius: 6px; }\n</style>\n"
+        ]
+      }
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626239825,
+      "end": 1783626239825,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "\n.rc-chart { width: 100%; height: 120px; background: #0d1117; border: 1px solid #1e2530; border-radius: 6px; }\n",
+      "start": 1783626239825,
+      "end": 1783626239825,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.rc-chart { width: 100%; height: 120px; background: #0d1117; border: 1px solid #1e2530; border-radius: 6px; }\n",
+      "start": 1783626239825,
+      "end": 1783626239825,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783626239825,
+      "end": 1783626239825,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626239825,
+      "end": 1783626239825,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626239825,
+      "end": 1783626239825,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.rc-chart[data-v-33213615] { width: 100%; height: 120px; background: #0d1117; border: 1px solid #1e2530; border-radius: 6px;\n}\n",
+      "start": 1783626239825,
+      "end": 1783626239826,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626239826,
+      "end": 1783626239826,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/RCChart.vue?vue&type=style&index=0&scoped=33213615&lang.css\"\nconst __vite__css = \"\\n.rc-chart[data-v-33213615] { width: 100%; height: 120px; background: #0d1117; border: 1px solid #1e2530; border-radius: 6px;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626239826,
+      "end": 1783626239826,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626239826,
+      "end": 1783626239826,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626239826,
+      "end": 1783626239826,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626239826,
+      "end": 1783626239826,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626239826,
+      "end": 1783626239826,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626239826,
+      "end": 1783626239826,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626239826,
+      "end": 1783626239826,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626239826,
+      "end": 1783626239826,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/modules/physics/experiments/electric-lab/components/RCChart.vue?vue&type=style&index=0&scoped=33213615&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/RCChart.vue?vue&type=style&index=0&scoped=33213615&lang.css\"\nconst __vite__css = \"\\n.rc-chart[data-v-33213615] { width: 100%; height: 120px; background: #0d1117; border: 1px solid #1e2530; border-radius: 6px;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626239826,
+      "end": 1783626239826,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

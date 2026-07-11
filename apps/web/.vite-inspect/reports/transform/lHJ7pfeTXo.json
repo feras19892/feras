@@ -1,0 +1,129 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/locales/chemistry-tools.ts",
+  "transforms": [
+    {
+      "name": "__load__",
+      "result": "export const chemistryTools = {\n  ar: {\n    sectionContainers: 'أدوات احتواء السوائل',\n    sectionMeasuring: 'أدوات القياس الدقيق',\n    sectionDevices: 'أجهزة القياس والتحكم',\n    sectionHelpers: 'أدوات مساعدة',\n    sectionThermometers: 'أدوات قياس الحرارة',\n    testTubeSm: 'أنبوب صغير',\n    testTubeMd: 'أنبوب متوسط',\n    testTubeLg: 'أنبوب كبير',\n    beaker100: 'بيكر 100مل',\n    beaker250: 'بيكر 250مل',\n    beaker500: 'بيكر 500مل',\n    erlenmeyer: 'دورق مخروطي',\n    volumetricFlask: 'دورق حجمي',\n    roundBottomFlask: 'دورق مستدير',\n    sepFunnel: 'قمع استخلاص',\n    burette: 'سحاحة',\n    pipette: 'ماصّة',\n    volumetricPipette: 'ماصة حجمية',\n    gradCylinder: 'مخبار مدرج',\n    bunsenBurner: 'موقد بنسن',\n    heatingMantle: 'غطاء تسخين',\n    hotPlate: 'لوحة تسخين كهربائية',\n    digitalBalance: 'ميزان رقمي',\n    phMeter: 'جهاز pH',\n    retortStandAssembly: 'حامل المختبر',\n    testTubeRack: 'حامل أنابيب',\n    spatula: 'ملعقة مخبرية',\n    watchGlass: 'زجاجة ساعة',\n    filterFunnel: 'قمع ترشيح',\n    rubberStopper: 'سدادة مطاطية',\n    thermometerMercury: 'ميزان حرارة زئبقي',\n    thermometerDigital: 'ميزان حرارة رقمي',\n  },\n  en: {\n    sectionContainers: 'Liquid Containers',\n    sectionMeasuring: 'Precision Measuring Tools',\n    sectionDevices: 'Measurement & Control Devices',\n    sectionHelpers: 'Helper Tools',\n    sectionThermometers: 'Temperature Measurement Tools',\n    testTubeSm: 'Small Test Tube',\n    testTubeMd: 'Medium Test Tube',\n    testTubeLg: 'Large Test Tube',\n    beaker100: 'Beaker 100mL',\n    beaker250: 'Beaker 250mL',\n    beaker500: 'Beaker 500mL',\n    erlenmeyer: 'Erlenmeyer Flask',\n    volumetricFlask: 'Volumetric Flask',\n    roundBottomFlask: 'Round Bottom Flask',\n    sepFunnel: 'Separatory Funnel',\n    burette: 'Burette',\n    pipette: 'Pipette',\n    volumetricPipette: 'Volumetric Pipette',\n    gradCylinder: 'Graduated Cylinder',\n    bunsenBurner: 'Bunsen Burner',\n    heatingMantle: 'Heating Mantle',\n    hotPlate: 'Hot Plate',\n    digitalBalance: 'Digital Balance',\n    phMeter: 'pH Meter',\n    retortStandAssembly: 'Retort Stand',\n    testTubeRack: 'Test Tube Rack',\n    spatula: 'Spatula',\n    watchGlass: 'Watch Glass',\n    filterFunnel: 'Filter Funnel',\n    rubberStopper: 'Rubber Stopper',\n    thermometerMercury: 'Mercury Thermometer',\n    thermometerDigital: 'Digital Thermometer',\n  },\n  es: {\n    sectionContainers: 'Recipientes de Líquidos',\n    sectionMeasuring: 'Herramientas de Medición Precisa',\n    sectionDevices: 'Dispositivos de Medición y Control',\n    sectionHelpers: 'Herramientas Auxiliares',\n    sectionThermometers: 'Herramientas de Medición de Temperatura',\n    testTubeSm: 'Tubo de Ensayo Pequeño',\n    testTubeMd: 'Tubo de Ensayo Mediano',\n    testTubeLg: 'Tubo de Ensayo Grande',\n    beaker100: 'Vaso 100mL',\n    beaker250: 'Vaso 250mL',\n    beaker500: 'Vaso 500mL',\n    erlenmeyer: 'Matraz Erlenmeyer',\n    volumetricFlask: 'Matraz Aforado',\n    roundBottomFlask: 'Matraz de Fondo Redondo',\n    sepFunnel: 'Embudo de Decantación',\n    burette: 'Bureta',\n    pipette: 'Pipeta',\n    volumetricPipette: 'Pipeta Volumétrica',\n    gradCylinder: 'Probeta Graduada',\n    bunsenBurner: 'Mechero Bunsen',\n    heatingMantle: 'Manta Calefactora',\n    hotPlate: 'Placa Calefactora',\n    digitalBalance: 'Balanza Digital',\n    phMeter: 'Medidor de pH',\n    retortStandAssembly: 'Soporte de Retorta',\n    testTubeRack: 'Gradilla',\n    spatula: 'Espátula',\n    watchGlass: 'Cristal de Reloj',\n    filterFunnel: 'Embudo de Filtrado',\n    rubberStopper: 'Tapón de Goma',\n    thermometerMercury: 'Termómetro de Mercurio',\n    thermometerDigital: 'Termómetro Digital',\n  },\n} as const\n",
+      "start": 1783626227475,
+      "end": 1783626227475
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626227475,
+      "end": 1783626227476,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "export const chemistryTools = {\n  ar: {\n    sectionContainers: 'أدوات احتواء السوائل',\n    sectionMeasuring: 'أدوات القياس الدقيق',\n    sectionDevices: 'أجهزة القياس والتحكم',\n    sectionHelpers: 'أدوات مساعدة',\n    sectionThermometers: 'أدوات قياس الحرارة',\n    testTubeSm: 'أنبوب صغير',\n    testTubeMd: 'أنبوب متوسط',\n    testTubeLg: 'أنبوب كبير',\n    beaker100: 'بيكر 100مل',\n    beaker250: 'بيكر 250مل',\n    beaker500: 'بيكر 500مل',\n    erlenmeyer: 'دورق مخروطي',\n    volumetricFlask: 'دورق حجمي',\n    roundBottomFlask: 'دورق مستدير',\n    sepFunnel: 'قمع استخلاص',\n    burette: 'سحاحة',\n    pipette: 'ماصّة',\n    volumetricPipette: 'ماصة حجمية',\n    gradCylinder: 'مخبار مدرج',\n    bunsenBurner: 'موقد بنسن',\n    heatingMantle: 'غطاء تسخين',\n    hotPlate: 'لوحة تسخين كهربائية',\n    digitalBalance: 'ميزان رقمي',\n    phMeter: 'جهاز pH',\n    retortStandAssembly: 'حامل المختبر',\n    testTubeRack: 'حامل أنابيب',\n    spatula: 'ملعقة مخبرية',\n    watchGlass: 'زجاجة ساعة',\n    filterFunnel: 'قمع ترشيح',\n    rubberStopper: 'سدادة مطاطية',\n    thermometerMercury: 'ميزان حرارة زئبقي',\n    thermometerDigital: 'ميزان حرارة رقمي',\n  },\n  en: {\n    sectionContainers: 'Liquid Containers',\n    sectionMeasuring: 'Precision Measuring Tools',\n    sectionDevices: 'Measurement & Control Devices',\n    sectionHelpers: 'Helper Tools',\n    sectionThermometers: 'Temperature Measurement Tools',\n    testTubeSm: 'Small Test Tube',\n    testTubeMd: 'Medium Test Tube',\n    testTubeLg: 'Large Test Tube',\n    beaker100: 'Beaker 100mL',\n    beaker250: 'Beaker 250mL',\n    beaker500: 'Beaker 500mL',\n    erlenmeyer: 'Erlenmeyer Flask',\n    volumetricFlask: 'Volumetric Flask',\n    roundBottomFlask: 'Round Bottom Flask',\n    sepFunnel: 'Separatory Funnel',\n    burette: 'Burette',\n    pipette: 'Pipette',\n    volumetricPipette: 'Volumetric Pipette',\n    gradCylinder: 'Graduated Cylinder',\n    bunsenBurner: 'Bunsen Burner',\n    heatingMantle: 'Heating Mantle',\n    hotPlate: 'Hot Plate',\n    digitalBalance: 'Digital Balance',\n    phMeter: 'pH Meter',\n    retortStandAssembly: 'Retort Stand',\n    testTubeRack: 'Test Tube Rack',\n    spatula: 'Spatula',\n    watchGlass: 'Watch Glass',\n    filterFunnel: 'Filter Funnel',\n    rubberStopper: 'Rubber Stopper',\n    thermometerMercury: 'Mercury Thermometer',\n    thermometerDigital: 'Digital Thermometer',\n  },\n  es: {\n    sectionContainers: 'Recipientes de Líquidos',\n    sectionMeasuring: 'Herramientas de Medición Precisa',\n    sectionDevices: 'Dispositivos de Medición y Control',\n    sectionHelpers: 'Herramientas Auxiliares',\n    sectionThermometers: 'Herramientas de Medición de Temperatura',\n    testTubeSm: 'Tubo de Ensayo Pequeño',\n    testTubeMd: 'Tubo de Ensayo Mediano',\n    testTubeLg: 'Tubo de Ensayo Grande',\n    beaker100: 'Vaso 100mL',\n    beaker250: 'Vaso 250mL',\n    beaker500: 'Vaso 500mL',\n    erlenmeyer: 'Matraz Erlenmeyer',\n    volumetricFlask: 'Matraz Aforado',\n    roundBottomFlask: 'Matraz de Fondo Redondo',\n    sepFunnel: 'Embudo de Decantación',\n    burette: 'Bureta',\n    pipette: 'Pipeta',\n    volumetricPipette: 'Pipeta Volumétrica',\n    gradCylinder: 'Probeta Graduada',\n    bunsenBurner: 'Mechero Bunsen',\n    heatingMantle: 'Manta Calefactora',\n    hotPlate: 'Placa Calefactora',\n    digitalBalance: 'Balanza Digital',\n    phMeter: 'Medidor de pH',\n    retortStandAssembly: 'Soporte de Retorta',\n    testTubeRack: 'Gradilla',\n    spatula: 'Espátula',\n    watchGlass: 'Cristal de Reloj',\n    filterFunnel: 'Embudo de Filtrado',\n    rubberStopper: 'Tapón de Goma',\n    thermometerMercury: 'Termómetro de Mercurio',\n    thermometerDigital: 'Termómetro Digital',\n  },\n} as const\n",
+      "start": 1783626227476,
+      "end": 1783626227476,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783626227476,
+      "end": 1783626227476,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "export const chemistryTools = {\n  ar: {\n    sectionContainers: \"أدوات احتواء السوائل\",\n    sectionMeasuring: \"أدوات القياس الدقيق\",\n    sectionDevices: \"أجهزة القياس والتحكم\",\n    sectionHelpers: \"أدوات مساعدة\",\n    sectionThermometers: \"أدوات قياس الحرارة\",\n    testTubeSm: \"أنبوب صغير\",\n    testTubeMd: \"أنبوب متوسط\",\n    testTubeLg: \"أنبوب كبير\",\n    beaker100: \"بيكر 100مل\",\n    beaker250: \"بيكر 250مل\",\n    beaker500: \"بيكر 500مل\",\n    erlenmeyer: \"دورق مخروطي\",\n    volumetricFlask: \"دورق حجمي\",\n    roundBottomFlask: \"دورق مستدير\",\n    sepFunnel: \"قمع استخلاص\",\n    burette: \"سحاحة\",\n    pipette: \"ماصّة\",\n    volumetricPipette: \"ماصة حجمية\",\n    gradCylinder: \"مخبار مدرج\",\n    bunsenBurner: \"موقد بنسن\",\n    heatingMantle: \"غطاء تسخين\",\n    hotPlate: \"لوحة تسخين كهربائية\",\n    digitalBalance: \"ميزان رقمي\",\n    phMeter: \"جهاز pH\",\n    retortStandAssembly: \"حامل المختبر\",\n    testTubeRack: \"حامل أنابيب\",\n    spatula: \"ملعقة مخبرية\",\n    watchGlass: \"زجاجة ساعة\",\n    filterFunnel: \"قمع ترشيح\",\n    rubberStopper: \"سدادة مطاطية\",\n    thermometerMercury: \"ميزان حرارة زئبقي\",\n    thermometerDigital: \"ميزان حرارة رقمي\"\n  },\n  en: {\n    sectionContainers: \"Liquid Containers\",\n    sectionMeasuring: \"Precision Measuring Tools\",\n    sectionDevices: \"Measurement & Control Devices\",\n    sectionHelpers: \"Helper Tools\",\n    sectionThermometers: \"Temperature Measurement Tools\",\n    testTubeSm: \"Small Test Tube\",\n    testTubeMd: \"Medium Test Tube\",\n    testTubeLg: \"Large Test Tube\",\n    beaker100: \"Beaker 100mL\",\n    beaker250: \"Beaker 250mL\",\n    beaker500: \"Beaker 500mL\",\n    erlenmeyer: \"Erlenmeyer Flask\",\n    volumetricFlask: \"Volumetric Flask\",\n    roundBottomFlask: \"Round Bottom Flask\",\n    sepFunnel: \"Separatory Funnel\",\n    burette: \"Burette\",\n    pipette: \"Pipette\",\n    volumetricPipette: \"Volumetric Pipette\",\n    gradCylinder: \"Graduated Cylinder\",\n    bunsenBurner: \"Bunsen Burner\",\n    heatingMantle: \"Heating Mantle\",\n    hotPlate: \"Hot Plate\",\n    digitalBalance: \"Digital Balance\",\n    phMeter: \"pH Meter\",\n    retortStandAssembly: \"Retort Stand\",\n    testTubeRack: \"Test Tube Rack\",\n    spatula: \"Spatula\",\n    watchGlass: \"Watch Glass\",\n    filterFunnel: \"Filter Funnel\",\n    rubberStopper: \"Rubber Stopper\",\n    thermometerMercury: \"Mercury Thermometer\",\n    thermometerDigital: \"Digital Thermometer\"\n  },\n  es: {\n    sectionContainers: \"Recipientes de Líquidos\",\n    sectionMeasuring: \"Herramientas de Medición Precisa\",\n    sectionDevices: \"Dispositivos de Medición y Control\",\n    sectionHelpers: \"Herramientas Auxiliares\",\n    sectionThermometers: \"Herramientas de Medición de Temperatura\",\n    testTubeSm: \"Tubo de Ensayo Pequeño\",\n    testTubeMd: \"Tubo de Ensayo Mediano\",\n    testTubeLg: \"Tubo de Ensayo Grande\",\n    beaker100: \"Vaso 100mL\",\n    beaker250: \"Vaso 250mL\",\n    beaker500: \"Vaso 500mL\",\n    erlenmeyer: \"Matraz Erlenmeyer\",\n    volumetricFlask: \"Matraz Aforado\",\n    roundBottomFlask: \"Matraz de Fondo Redondo\",\n    sepFunnel: \"Embudo de Decantación\",\n    burette: \"Bureta\",\n    pipette: \"Pipeta\",\n    volumetricPipette: \"Pipeta Volumétrica\",\n    gradCylinder: \"Probeta Graduada\",\n    bunsenBurner: \"Mechero Bunsen\",\n    heatingMantle: \"Manta Calefactora\",\n    hotPlate: \"Placa Calefactora\",\n    digitalBalance: \"Balanza Digital\",\n    phMeter: \"Medidor de pH\",\n    retortStandAssembly: \"Soporte de Retorta\",\n    testTubeRack: \"Gradilla\",\n    spatula: \"Espátula\",\n    watchGlass: \"Cristal de Reloj\",\n    filterFunnel: \"Embudo de Filtrado\",\n    rubberStopper: \"Tapón de Goma\",\n    thermometerMercury: \"Termómetro de Mercurio\",\n    thermometerDigital: \"Termómetro Digital\"\n  }\n};\n",
+      "start": 1783626227476,
+      "end": 1783626227584,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "chemistry-tools.ts"
+        ],
+        "sourcesContent": [
+          "export const chemistryTools = {\n  ar: {\n    sectionContainers: 'أدوات احتواء السوائل',\n    sectionMeasuring: 'أدوات القياس الدقيق',\n    sectionDevices: 'أجهزة القياس والتحكم',\n    sectionHelpers: 'أدوات مساعدة',\n    sectionThermometers: 'أدوات قياس الحرارة',\n    testTubeSm: 'أنبوب صغير',\n    testTubeMd: 'أنبوب متوسط',\n    testTubeLg: 'أنبوب كبير',\n    beaker100: 'بيكر 100مل',\n    beaker250: 'بيكر 250مل',\n    beaker500: 'بيكر 500مل',\n    erlenmeyer: 'دورق مخروطي',\n    volumetricFlask: 'دورق حجمي',\n    roundBottomFlask: 'دورق مستدير',\n    sepFunnel: 'قمع استخلاص',\n    burette: 'سحاحة',\n    pipette: 'ماصّة',\n    volumetricPipette: 'ماصة حجمية',\n    gradCylinder: 'مخبار مدرج',\n    bunsenBurner: 'موقد بنسن',\n    heatingMantle: 'غطاء تسخين',\n    hotPlate: 'لوحة تسخين كهربائية',\n    digitalBalance: 'ميزان رقمي',\n    phMeter: 'جهاز pH',\n    retortStandAssembly: 'حامل المختبر',\n    testTubeRack: 'حامل أنابيب',\n    spatula: 'ملعقة مخبرية',\n    watchGlass: 'زجاجة ساعة',\n    filterFunnel: 'قمع ترشيح',\n    rubberStopper: 'سدادة مطاطية',\n    thermometerMercury: 'ميزان حرارة زئبقي',\n    thermometerDigital: 'ميزان حرارة رقمي',\n  },\n  en: {\n    sectionContainers: 'Liquid Containers',\n    sectionMeasuring: 'Precision Measuring Tools',\n    sectionDevices: 'Measurement & Control Devices',\n    sectionHelpers: 'Helper Tools',\n    sectionThermometers: 'Temperature Measurement Tools',\n    testTubeSm: 'Small Test Tube',\n    testTubeMd: 'Medium Test Tube',\n    testTubeLg: 'Large Test Tube',\n    beaker100: 'Beaker 100mL',\n    beaker250: 'Beaker 250mL',\n    beaker500: 'Beaker 500mL',\n    erlenmeyer: 'Erlenmeyer Flask',\n    volumetricFlask: 'Volumetric Flask',\n    roundBottomFlask: 'Round Bottom Flask',\n    sepFunnel: 'Separatory Funnel',\n    burette: 'Burette',\n    pipette: 'Pipette',\n    volumetricPipette: 'Volumetric Pipette',\n    gradCylinder: 'Graduated Cylinder',\n    bunsenBurner: 'Bunsen Burner',\n    heatingMantle: 'Heating Mantle',\n    hotPlate: 'Hot Plate',\n    digitalBalance: 'Digital Balance',\n    phMeter: 'pH Meter',\n    retortStandAssembly: 'Retort Stand',\n    testTubeRack: 'Test Tube Rack',\n    spatula: 'Spatula',\n    watchGlass: 'Watch Glass',\n    filterFunnel: 'Filter Funnel',\n    rubberStopper: 'Rubber Stopper',\n    thermometerMercury: 'Mercury Thermometer',\n    thermometerDigital: 'Digital Thermometer',\n  },\n  es: {\n    sectionContainers: 'Recipientes de Líquidos',\n    sectionMeasuring: 'Herramientas de Medición Precisa',\n    sectionDevices: 'Dispositivos de Medición y Control',\n    sectionHelpers: 'Herramientas Auxiliares',\n    sectionThermometers: 'Herramientas de Medición de Temperatura',\n    testTubeSm: 'Tubo de Ensayo Pequeño',\n    testTubeMd: 'Tubo de Ensayo Mediano',\n    testTubeLg: 'Tubo de Ensayo Grande',\n    beaker100: 'Vaso 100mL',\n    beaker250: 'Vaso 250mL',\n    beaker500: 'Vaso 500mL',\n    erlenmeyer: 'Matraz Erlenmeyer',\n    volumetricFlask: 'Matraz Aforado',\n    roundBottomFlask: 'Matraz de Fondo Redondo',\n    sepFunnel: 'Embudo de Decantación',\n    burette: 'Bureta',\n    pipette: 'Pipeta',\n    volumetricPipette: 'Pipeta Volumétrica',\n    gradCylinder: 'Probeta Graduada',\n    bunsenBurner: 'Mechero Bunsen',\n    heatingMantle: 'Manta Calefactora',\n    hotPlate: 'Placa Calefactora',\n    digitalBalance: 'Balanza Digital',\n    phMeter: 'Medidor de pH',\n    retortStandAssembly: 'Soporte de Retorta',\n    testTubeRack: 'Gradilla',\n    spatula: 'Espátula',\n    watchGlass: 'Cristal de Reloj',\n    filterFunnel: 'Embudo de Filtrado',\n    rubberStopper: 'Tapón de Goma',\n    thermometerMercury: 'Termómetro de Mercurio',\n    thermometerDigital: 'Termómetro Digital',\n  },\n} as const\n"
+        ],
+        "mappings": "AAAO,aAAM,iBAAiB;AAAA,EAC5B,IAAI;AAAA,IACF,mBAAmB;AAAA,IACnB,kBAAkB;AAAA,IAClB,gBAAgB;AAAA,IAChB,gBAAgB;AAAA,IAChB,qBAAqB;AAAA,IACrB,YAAY;AAAA,IACZ,YAAY;AAAA,IACZ,YAAY;AAAA,IACZ,WAAW;AAAA,IACX,WAAW;AAAA,IACX,WAAW;AAAA,IACX,YAAY;AAAA,IACZ,iBAAiB;AAAA,IACjB,kBAAkB;AAAA,IAClB,WAAW;AAAA,IACX,SAAS;AAAA,IACT,SAAS;AAAA,IACT,mBAAmB;AAAA,IACnB,cAAc;AAAA,IACd,cAAc;AAAA,IACd,eAAe;AAAA,IACf,UAAU;AAAA,IACV,gBAAgB;AAAA,IAChB,SAAS;AAAA,IACT,qBAAqB;AAAA,IACrB,cAAc;AAAA,IACd,SAAS;AAAA,IACT,YAAY;AAAA,IACZ,cAAc;AAAA,IACd,eAAe;AAAA,IACf,oBAAoB;AAAA,IACpB,oBAAoB;AAAA,EACtB;AAAA,EACA,IAAI;AAAA,IACF,mBAAmB;AAAA,IACnB,kBAAkB;AAAA,IAClB,gBAAgB;AAAA,IAChB,gBAAgB;AAAA,IAChB,qBAAqB;AAAA,IACrB,YAAY;AAAA,IACZ,YAAY;AAAA,IACZ,YAAY;AAAA,IACZ,WAAW;AAAA,IACX,WAAW;AAAA,IACX,WAAW;AAAA,IACX,YAAY;AAAA,IACZ,iBAAiB;AAAA,IACjB,kBAAkB;AAAA,IAClB,WAAW;AAAA,IACX,SAAS;AAAA,IACT,SAAS;AAAA,IACT,mBAAmB;AAAA,IACnB,cAAc;AAAA,IACd,cAAc;AAAA,IACd,eAAe;AAAA,IACf,UAAU;AAAA,IACV,gBAAgB;AAAA,IAChB,SAAS;AAAA,IACT,qBAAqB;AAAA,IACrB,cAAc;AAAA,IACd,SAAS;AAAA,IACT,YAAY;AAAA,IACZ,cAAc;AAAA,IACd,eAAe;AAAA,IACf,oBAAoB;AAAA,IACpB,oBAAoB;AAAA,EACtB;AAAA,EACA,IAAI;AAAA,IACF,mBAAmB;AAAA,IACnB,kBAAkB;AAAA,IAClB,gBAAgB;AAAA,IAChB,gBAAgB;AAAA,IAChB,qBAAqB;AAAA,IACrB,YAAY;AAAA,IACZ,YAAY;AAAA,IACZ,YAAY;AAAA,IACZ,WAAW;AAAA,IACX,WAAW;AAAA,IACX,WAAW;AAAA,IACX,YAAY;AAAA,IACZ,iBAAiB;AAAA,IACjB,kBAAkB;AAAA,IAClB,WAAW;AAAA,IACX,SAAS;AAAA,IACT,SAAS;AAAA,IACT,mBAAmB;AAAA,IACnB,cAAc;AAAA,IACd,cAAc;AAAA,IACd,eAAe;AAAA,IACf,UAAU;AAAA,IACV,gBAAgB;AAAA,IAChB,SAAS;AAAA,IACT,qBAAqB;AAAA,IACrB,cAAc;AAAA,IACd,SAAS;AAAA,IACT,YAAY;AAAA,IACZ,cAAc;AAAA,IACd,eAAe;AAAA,IACf,oBAAoB;AAAA,IACpB,oBAAoB;AAAA,EACtB;AACF;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626227584,
+      "end": 1783626227584,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626227584,
+      "end": 1783626227584,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783626227584,
+      "end": 1783626227584,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626227584,
+      "end": 1783626227584,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783626227584,
+      "end": 1783626227584,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626227584,
+      "end": 1783626227584,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626227584,
+      "end": 1783626227584,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626227584,
+      "end": 1783626227584,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626227584,
+      "end": 1783626227584,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626227584,
+      "end": 1783626227584,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626227584,
+      "end": 1783626227584,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626227584,
+      "end": 1783626227584,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "export const chemistryTools = {\n  ar: {\n    sectionContainers: \"أدوات احتواء السوائل\",\n    sectionMeasuring: \"أدوات القياس الدقيق\",\n    sectionDevices: \"أجهزة القياس والتحكم\",\n    sectionHelpers: \"أدوات مساعدة\",\n    sectionThermometers: \"أدوات قياس الحرارة\",\n    testTubeSm: \"أنبوب صغير\",\n    testTubeMd: \"أنبوب متوسط\",\n    testTubeLg: \"أنبوب كبير\",\n    beaker100: \"بيكر 100مل\",\n    beaker250: \"بيكر 250مل\",\n    beaker500: \"بيكر 500مل\",\n    erlenmeyer: \"دورق مخروطي\",\n    volumetricFlask: \"دورق حجمي\",\n    roundBottomFlask: \"دورق مستدير\",\n    sepFunnel: \"قمع استخلاص\",\n    burette: \"سحاحة\",\n    pipette: \"ماصّة\",\n    volumetricPipette: \"ماصة حجمية\",\n    gradCylinder: \"مخبار مدرج\",\n    bunsenBurner: \"موقد بنسن\",\n    heatingMantle: \"غطاء تسخين\",\n    hotPlate: \"لوحة تسخين كهربائية\",\n    digitalBalance: \"ميزان رقمي\",\n    phMeter: \"جهاز pH\",\n    retortStandAssembly: \"حامل المختبر\",\n    testTubeRack: \"حامل أنابيب\",\n    spatula: \"ملعقة مخبرية\",\n    watchGlass: \"زجاجة ساعة\",\n    filterFunnel: \"قمع ترشيح\",\n    rubberStopper: \"سدادة مطاطية\",\n    thermometerMercury: \"ميزان حرارة زئبقي\",\n    thermometerDigital: \"ميزان حرارة رقمي\"\n  },\n  en: {\n    sectionContainers: \"Liquid Containers\",\n    sectionMeasuring: \"Precision Measuring Tools\",\n    sectionDevices: \"Measurement & Control Devices\",\n    sectionHelpers: \"Helper Tools\",\n    sectionThermometers: \"Temperature Measurement Tools\",\n    testTubeSm: \"Small Test Tube\",\n    testTubeMd: \"Medium Test Tube\",\n    testTubeLg: \"Large Test Tube\",\n    beaker100: \"Beaker 100mL\",\n    beaker250: \"Beaker 250mL\",\n    beaker500: \"Beaker 500mL\",\n    erlenmeyer: \"Erlenmeyer Flask\",\n    volumetricFlask: \"Volumetric Flask\",\n    roundBottomFlask: \"Round Bottom Flask\",\n    sepFunnel: \"Separatory Funnel\",\n    burette: \"Burette\",\n    pipette: \"Pipette\",\n    volumetricPipette: \"Volumetric Pipette\",\n    gradCylinder: \"Graduated Cylinder\",\n    bunsenBurner: \"Bunsen Burner\",\n    heatingMantle: \"Heating Mantle\",\n    hotPlate: \"Hot Plate\",\n    digitalBalance: \"Digital Balance\",\n    phMeter: \"pH Meter\",\n    retortStandAssembly: \"Retort Stand\",\n    testTubeRack: \"Test Tube Rack\",\n    spatula: \"Spatula\",\n    watchGlass: \"Watch Glass\",\n    filterFunnel: \"Filter Funnel\",\n    rubberStopper: \"Rubber Stopper\",\n    thermometerMercury: \"Mercury Thermometer\",\n    thermometerDigital: \"Digital Thermometer\"\n  },\n  es: {\n    sectionContainers: \"Recipientes de Líquidos\",\n    sectionMeasuring: \"Herramientas de Medición Precisa\",\n    sectionDevices: \"Dispositivos de Medición y Control\",\n    sectionHelpers: \"Herramientas Auxiliares\",\n    sectionThermometers: \"Herramientas de Medición de Temperatura\",\n    testTubeSm: \"Tubo de Ensayo Pequeño\",\n    testTubeMd: \"Tubo de Ensayo Mediano\",\n    testTubeLg: \"Tubo de Ensayo Grande\",\n    beaker100: \"Vaso 100mL\",\n    beaker250: \"Vaso 250mL\",\n    beaker500: \"Vaso 500mL\",\n    erlenmeyer: \"Matraz Erlenmeyer\",\n    volumetricFlask: \"Matraz Aforado\",\n    roundBottomFlask: \"Matraz de Fondo Redondo\",\n    sepFunnel: \"Embudo de Decantación\",\n    burette: \"Bureta\",\n    pipette: \"Pipeta\",\n    volumetricPipette: \"Pipeta Volumétrica\",\n    gradCylinder: \"Probeta Graduada\",\n    bunsenBurner: \"Mechero Bunsen\",\n    heatingMantle: \"Manta Calefactora\",\n    hotPlate: \"Placa Calefactora\",\n    digitalBalance: \"Balanza Digital\",\n    phMeter: \"Medidor de pH\",\n    retortStandAssembly: \"Soporte de Retorta\",\n    testTubeRack: \"Gradilla\",\n    spatula: \"Espátula\",\n    watchGlass: \"Cristal de Reloj\",\n    filterFunnel: \"Embudo de Filtrado\",\n    rubberStopper: \"Tapón de Goma\",\n    thermometerMercury: \"Termómetro de Mercurio\",\n    thermometerDigital: \"Termómetro Digital\"\n  }\n};\n",
+      "start": 1783626227584,
+      "end": 1783626227584,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

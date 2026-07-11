@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/services/report.service.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { fetchJson } from './http';\n\nexport interface Report {\n  id: number;\n  student_id: number;\n  class_id: string;\n  experiment_type: string;\n  experiment_name: string;\n  experiment_id?: string;\n  readings: string;\n  params?: string;\n  student_info?: string;\n  conclusion?: string;\n  conclusion_errors?: string;\n  conclusion_improvements?: string;\n  columns?: string;\n  equations?: string;\n  plots?: string;\n  chart_snapshot?: string;\n  status: 'draft' | 'submitted' | 'graded' | 'resubmitted';\n  version: number;\n  teacher_seen: boolean;\n  grade?: number;\n  feedback?: string;\n  graded_by?: number;\n  graded_by_name?: string;\n  submitted_at?: string;\n  graded_at?: string;\n  student_name?: string;\n  created_at?: string;\n}\n\nexport interface ReportComment {\n  id: number;\n  report_id: number;\n  author_id: number;\n  author_name: string;\n  author_role: string;\n  content: string;\n  created_at: string;\n}\n\nexport interface GradeHistoryEntry {\n  id: number;\n  report_id: number;\n  teacher_id: number;\n  teacher_name: string;\n  old_grade?: number;\n  new_grade: number;\n  old_feedback?: string;\n  new_feedback?: string;\n  created_at: string;\n}\n\nexport async function createReport(data: {\n  class_id: string;\n  experiment_type: string;\n  experiment_name: string;\n  experiment_id?: string;\n  readings: string;\n  params?: string;\n  student_info?: string;\n  conclusion?: string;\n  conclusion_errors?: string;\n  conclusion_improvements?: string;\n  columns?: string;\n  equations?: string;\n  plots?: string;\n  chart_snapshot?: string;\n}) {\n  return fetchJson<{ success: boolean; report: Report }>('/api/reports', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify(data),\n  });\n}\n\nexport async function resubmitReport(reportId: number, data: {\n  class_id: string;\n  experiment_type: string;\n  experiment_name: string;\n  experiment_id?: string;\n  readings: string;\n  params?: string;\n  student_info?: string;\n  conclusion?: string;\n  conclusion_errors?: string;\n  conclusion_improvements?: string;\n  columns?: string;\n  equations?: string;\n  plots?: string;\n  chart_snapshot?: string;\n}) {\n  return fetchJson<{ success: boolean; report: Report }>(`/api/reports/${reportId}/resubmit`, {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify(data),\n  });\n}\n\nexport async function getReports(params?: { class_id?: string; student_id?: string; status?: string }) {\n  const qs = params ? '?' + new URLSearchParams(params as Record<string, string>).toString() : '';\n  return fetchJson<{ success: boolean; reports: Report[] }>(`/api/reports${qs}`);\n}\n\nexport async function getReport(id: number) {\n  return fetchJson<{ success: boolean; report: Report }>(`/api/reports/${id}`);\n}\n\nexport async function markReportSeen(id: number) {\n  return fetchJson<{ success: boolean }>(`/api/reports/${id}/seen`, { method: 'PATCH' });\n}\n\nexport async function gradeReport(id: number, data: { grade: number; feedback?: string }) {\n  return fetchJson<{ success: boolean }>(`/api/reports/${id}/grade`, {\n    method: 'PATCH',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify(data),\n  });\n}\n\nexport async function addComment(reportId: number, content: string) {\n  return fetchJson<{ success: boolean; comment: ReportComment }>(`/api/reports/${reportId}/comments`, {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ content }),\n  });\n}\n\nexport async function getComments(reportId: number) {\n  return fetchJson<{ success: boolean; comments: ReportComment[] }>(`/api/reports/${reportId}/comments`);\n}\n\nexport async function getGradeHistory(reportId: number) {\n  return fetchJson<{ success: boolean; history: GradeHistoryEntry[] }>(`/api/reports/${reportId}/history`);\n}\n\nexport async function getStudentStats(studentId: number) {\n  return fetchJson<{ success: boolean; stats: {\n    total: number;\n    graded: number;\n    pending: number;\n    average: number;\n  } }>(`/api/reports/student/${studentId}/stats`);\n}\n\nexport async function getClassStats(classId: string) {\n  return fetchJson<{ success: boolean; stats: {\n    total: number;\n    graded: number;\n    pending: number;\n    average: number;\n    experiments: { name: string; count: number; avg: number; highest: number; lowest: number }[];\n    students: { id: number; name: string; reports: number; avg: number; lastSubmitted?: string }[];\n    distribution: Record<string, number>;\n  } }>(`/api/reports/class/${classId}/stats`);\n}\n\nexport async function exportClassReports(classId: string) {\n  return fetchJson<{ success: boolean; reports: Report[] }>(`/api/reports/class/${classId}/export`);\n}\n\nexport async function deleteReport(id: number) {\n  return fetchJson<{ success: boolean }>(`/api/reports/${id}`, { method: 'DELETE' });\n}\n",
-      "start": 1783634640315,
-      "end": 1783634640592,
+      "start": 1783626233304,
+      "end": 1783626233304
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626233304,
+      "end": 1783626233304,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { fetchJson } from './http';\n\nexport interface Report {\n  id: number;\n  student_id: number;\n  class_id: string;\n  experiment_type: string;\n  experiment_name: string;\n  experiment_id?: string;\n  readings: string;\n  params?: string;\n  student_info?: string;\n  conclusion?: string;\n  conclusion_errors?: string;\n  conclusion_improvements?: string;\n  columns?: string;\n  equations?: string;\n  plots?: string;\n  chart_snapshot?: string;\n  status: 'draft' | 'submitted' | 'graded' | 'resubmitted';\n  version: number;\n  teacher_seen: boolean;\n  grade?: number;\n  feedback?: string;\n  graded_by?: number;\n  graded_by_name?: string;\n  submitted_at?: string;\n  graded_at?: string;\n  student_name?: string;\n  created_at?: string;\n}\n\nexport interface ReportComment {\n  id: number;\n  report_id: number;\n  author_id: number;\n  author_name: string;\n  author_role: string;\n  content: string;\n  created_at: string;\n}\n\nexport interface GradeHistoryEntry {\n  id: number;\n  report_id: number;\n  teacher_id: number;\n  teacher_name: string;\n  old_grade?: number;\n  new_grade: number;\n  old_feedback?: string;\n  new_feedback?: string;\n  created_at: string;\n}\n\nexport async function createReport(data: {\n  class_id: string;\n  experiment_type: string;\n  experiment_name: string;\n  experiment_id?: string;\n  readings: string;\n  params?: string;\n  student_info?: string;\n  conclusion?: string;\n  conclusion_errors?: string;\n  conclusion_improvements?: string;\n  columns?: string;\n  equations?: string;\n  plots?: string;\n  chart_snapshot?: string;\n}) {\n  return fetchJson<{ success: boolean; report: Report }>('/api/reports', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify(data),\n  });\n}\n\nexport async function resubmitReport(reportId: number, data: {\n  class_id: string;\n  experiment_type: string;\n  experiment_name: string;\n  experiment_id?: string;\n  readings: string;\n  params?: string;\n  student_info?: string;\n  conclusion?: string;\n  conclusion_errors?: string;\n  conclusion_improvements?: string;\n  columns?: string;\n  equations?: string;\n  plots?: string;\n  chart_snapshot?: string;\n}) {\n  return fetchJson<{ success: boolean; report: Report }>(`/api/reports/${reportId}/resubmit`, {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify(data),\n  });\n}\n\nexport async function getReports(params?: { class_id?: string; student_id?: string; status?: string }) {\n  const qs = params ? '?' + new URLSearchParams(params as Record<string, string>).toString() : '';\n  return fetchJson<{ success: boolean; reports: Report[] }>(`/api/reports${qs}`);\n}\n\nexport async function getReport(id: number) {\n  return fetchJson<{ success: boolean; report: Report }>(`/api/reports/${id}`);\n}\n\nexport async function markReportSeen(id: number) {\n  return fetchJson<{ success: boolean }>(`/api/reports/${id}/seen`, { method: 'PATCH' });\n}\n\nexport async function gradeReport(id: number, data: { grade: number; feedback?: string }) {\n  return fetchJson<{ success: boolean }>(`/api/reports/${id}/grade`, {\n    method: 'PATCH',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify(data),\n  });\n}\n\nexport async function addComment(reportId: number, content: string) {\n  return fetchJson<{ success: boolean; comment: ReportComment }>(`/api/reports/${reportId}/comments`, {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ content }),\n  });\n}\n\nexport async function getComments(reportId: number) {\n  return fetchJson<{ success: boolean; comments: ReportComment[] }>(`/api/reports/${reportId}/comments`);\n}\n\nexport async function getGradeHistory(reportId: number) {\n  return fetchJson<{ success: boolean; history: GradeHistoryEntry[] }>(`/api/reports/${reportId}/history`);\n}\n\nexport async function getStudentStats(studentId: number) {\n  return fetchJson<{ success: boolean; stats: {\n    total: number;\n    graded: number;\n    pending: number;\n    average: number;\n  } }>(`/api/reports/student/${studentId}/stats`);\n}\n\nexport async function getClassStats(classId: string) {\n  return fetchJson<{ success: boolean; stats: {\n    total: number;\n    graded: number;\n    pending: number;\n    average: number;\n    experiments: { name: string; count: number; avg: number; highest: number; lowest: number }[];\n    students: { id: number; name: string; reports: number; avg: number; lastSubmitted?: string }[];\n    distribution: Record<string, number>;\n  } }>(`/api/reports/class/${classId}/stats`);\n}\n\nexport async function exportClassReports(classId: string) {\n  return fetchJson<{ success: boolean; reports: Report[] }>(`/api/reports/class/${classId}/export`);\n}\n\nexport async function deleteReport(id: number) {\n  return fetchJson<{ success: boolean }>(`/api/reports/${id}`, { method: 'DELETE' });\n}\n",
+      "start": 1783626233304,
+      "end": 1783626233304,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634640592,
-      "end": 1783634640592,
+      "start": 1783626233304,
+      "end": 1783626233304,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { fetchJson } from \"./http\";\nexport async function createReport(data) {\n  return fetchJson(\"/api/reports\", {\n    method: \"POST\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify(data)\n  });\n}\nexport async function resubmitReport(reportId, data) {\n  return fetchJson(`/api/reports/${reportId}/resubmit`, {\n    method: \"POST\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify(data)\n  });\n}\nexport async function getReports(params) {\n  const qs = params ? \"?\" + new URLSearchParams(params).toString() : \"\";\n  return fetchJson(`/api/reports${qs}`);\n}\nexport async function getReport(id) {\n  return fetchJson(`/api/reports/${id}`);\n}\nexport async function markReportSeen(id) {\n  return fetchJson(`/api/reports/${id}/seen`, { method: \"PATCH\" });\n}\nexport async function gradeReport(id, data) {\n  return fetchJson(`/api/reports/${id}/grade`, {\n    method: \"PATCH\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify(data)\n  });\n}\nexport async function addComment(reportId, content) {\n  return fetchJson(`/api/reports/${reportId}/comments`, {\n    method: \"POST\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify({ content })\n  });\n}\nexport async function getComments(reportId) {\n  return fetchJson(`/api/reports/${reportId}/comments`);\n}\nexport async function getGradeHistory(reportId) {\n  return fetchJson(`/api/reports/${reportId}/history`);\n}\nexport async function getStudentStats(studentId) {\n  return fetchJson(`/api/reports/student/${studentId}/stats`);\n}\nexport async function getClassStats(classId) {\n  return fetchJson(`/api/reports/class/${classId}/stats`);\n}\nexport async function exportClassReports(classId) {\n  return fetchJson(`/api/reports/class/${classId}/export`);\n}\nexport async function deleteReport(id) {\n  return fetchJson(`/api/reports/${id}`, { method: \"DELETE\" });\n}\n",
-      "start": 1783634640592,
-      "end": 1783634640830,
+      "start": 1783626233304,
+      "end": 1783626233880,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/services/report.service.ts"
+          "report.service.ts"
         ],
         "sourcesContent": [
           "import { fetchJson } from './http';\n\nexport interface Report {\n  id: number;\n  student_id: number;\n  class_id: string;\n  experiment_type: string;\n  experiment_name: string;\n  experiment_id?: string;\n  readings: string;\n  params?: string;\n  student_info?: string;\n  conclusion?: string;\n  conclusion_errors?: string;\n  conclusion_improvements?: string;\n  columns?: string;\n  equations?: string;\n  plots?: string;\n  chart_snapshot?: string;\n  status: 'draft' | 'submitted' | 'graded' | 'resubmitted';\n  version: number;\n  teacher_seen: boolean;\n  grade?: number;\n  feedback?: string;\n  graded_by?: number;\n  graded_by_name?: string;\n  submitted_at?: string;\n  graded_at?: string;\n  student_name?: string;\n  created_at?: string;\n}\n\nexport interface ReportComment {\n  id: number;\n  report_id: number;\n  author_id: number;\n  author_name: string;\n  author_role: string;\n  content: string;\n  created_at: string;\n}\n\nexport interface GradeHistoryEntry {\n  id: number;\n  report_id: number;\n  teacher_id: number;\n  teacher_name: string;\n  old_grade?: number;\n  new_grade: number;\n  old_feedback?: string;\n  new_feedback?: string;\n  created_at: string;\n}\n\nexport async function createReport(data: {\n  class_id: string;\n  experiment_type: string;\n  experiment_name: string;\n  experiment_id?: string;\n  readings: string;\n  params?: string;\n  student_info?: string;\n  conclusion?: string;\n  conclusion_errors?: string;\n  conclusion_improvements?: string;\n  columns?: string;\n  equations?: string;\n  plots?: string;\n  chart_snapshot?: string;\n}) {\n  return fetchJson<{ success: boolean; report: Report }>('/api/reports', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify(data),\n  });\n}\n\nexport async function resubmitReport(reportId: number, data: {\n  class_id: string;\n  experiment_type: string;\n  experiment_name: string;\n  experiment_id?: string;\n  readings: string;\n  params?: string;\n  student_info?: string;\n  conclusion?: string;\n  conclusion_errors?: string;\n  conclusion_improvements?: string;\n  columns?: string;\n  equations?: string;\n  plots?: string;\n  chart_snapshot?: string;\n}) {\n  return fetchJson<{ success: boolean; report: Report }>(`/api/reports/${reportId}/resubmit`, {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify(data),\n  });\n}\n\nexport async function getReports(params?: { class_id?: string; student_id?: string; status?: string }) {\n  const qs = params ? '?' + new URLSearchParams(params as Record<string, string>).toString() : '';\n  return fetchJson<{ success: boolean; reports: Report[] }>(`/api/reports${qs}`);\n}\n\nexport async function getReport(id: number) {\n  return fetchJson<{ success: boolean; report: Report }>(`/api/reports/${id}`);\n}\n\nexport async function markReportSeen(id: number) {\n  return fetchJson<{ success: boolean }>(`/api/reports/${id}/seen`, { method: 'PATCH' });\n}\n\nexport async function gradeReport(id: number, data: { grade: number; feedback?: string }) {\n  return fetchJson<{ success: boolean }>(`/api/reports/${id}/grade`, {\n    method: 'PATCH',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify(data),\n  });\n}\n\nexport async function addComment(reportId: number, content: string) {\n  return fetchJson<{ success: boolean; comment: ReportComment }>(`/api/reports/${reportId}/comments`, {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ content }),\n  });\n}\n\nexport async function getComments(reportId: number) {\n  return fetchJson<{ success: boolean; comments: ReportComment[] }>(`/api/reports/${reportId}/comments`);\n}\n\nexport async function getGradeHistory(reportId: number) {\n  return fetchJson<{ success: boolean; history: GradeHistoryEntry[] }>(`/api/reports/${reportId}/history`);\n}\n\nexport async function getStudentStats(studentId: number) {\n  return fetchJson<{ success: boolean; stats: {\n    total: number;\n    graded: number;\n    pending: number;\n    average: number;\n  } }>(`/api/reports/student/${studentId}/stats`);\n}\n\nexport async function getClassStats(classId: string) {\n  return fetchJson<{ success: boolean; stats: {\n    total: number;\n    graded: number;\n    pending: number;\n    average: number;\n    experiments: { name: string; count: number; avg: number; highest: number; lowest: number }[];\n    students: { id: number; name: string; reports: number; avg: number; lastSubmitted?: string }[];\n    distribution: Record<string, number>;\n  } }>(`/api/reports/class/${classId}/stats`);\n}\n\nexport async function exportClassReports(classId: string) {\n  return fetchJson<{ success: boolean; reports: Report[] }>(`/api/reports/class/${classId}/export`);\n}\n\nexport async function deleteReport(id: number) {\n  return fetchJson<{ success: boolean }>(`/api/reports/${id}`, { method: 'DELETE' });\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634640830,
-      "end": 1783634640830,
+      "start": 1783626233880,
+      "end": 1783626233880,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634640830,
-      "end": 1783634640830,
+      "start": 1783626233880,
+      "end": 1783626233880,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626233885,
+      "end": 1783626233885,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634640830,
-      "end": 1783634640830,
+      "start": 1783626233885,
+      "end": 1783626233885,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634640831,
-      "end": 1783634640831,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634640831,
-      "end": 1783634640831,
+      "start": 1783626233885,
+      "end": 1783626233885,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634640831,
-      "end": 1783634640831,
+      "start": 1783626233885,
+      "end": 1783626233885,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634640831,
-      "end": 1783634640831,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634640831,
-      "end": 1783634640831,
+      "start": 1783626233885,
+      "end": 1783626233885,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634640831,
-      "end": 1783634640831,
+      "start": 1783626233885,
+      "end": 1783626233885,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634640831,
-      "end": 1783634640831,
+      "start": 1783626233885,
+      "end": 1783626233885,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634640831,
-      "end": 1783634640831,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626233885,
+      "end": 1783626233885,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626233885,
+      "end": 1783626233885,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634640831,
-      "end": 1783634640831,
+      "name": "vite:css-analysis",
+      "start": 1783626233885,
+      "end": 1783626233885,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { fetchJson } from \"/src/services/http.ts\";\nexport async function createReport(data) {\n  return fetchJson(\"/api/reports\", {\n    method: \"POST\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify(data)\n  });\n}\nexport async function resubmitReport(reportId, data) {\n  return fetchJson(`/api/reports/${reportId}/resubmit`, {\n    method: \"POST\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify(data)\n  });\n}\nexport async function getReports(params) {\n  const qs = params ? \"?\" + new URLSearchParams(params).toString() : \"\";\n  return fetchJson(`/api/reports${qs}`);\n}\nexport async function getReport(id) {\n  return fetchJson(`/api/reports/${id}`);\n}\nexport async function markReportSeen(id) {\n  return fetchJson(`/api/reports/${id}/seen`, { method: \"PATCH\" });\n}\nexport async function gradeReport(id, data) {\n  return fetchJson(`/api/reports/${id}/grade`, {\n    method: \"PATCH\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify(data)\n  });\n}\nexport async function addComment(reportId, content) {\n  return fetchJson(`/api/reports/${reportId}/comments`, {\n    method: \"POST\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify({ content })\n  });\n}\nexport async function getComments(reportId) {\n  return fetchJson(`/api/reports/${reportId}/comments`);\n}\nexport async function getGradeHistory(reportId) {\n  return fetchJson(`/api/reports/${reportId}/history`);\n}\nexport async function getStudentStats(studentId) {\n  return fetchJson(`/api/reports/student/${studentId}/stats`);\n}\nexport async function getClassStats(classId) {\n  return fetchJson(`/api/reports/class/${classId}/stats`);\n}\nexport async function exportClassReports(classId) {\n  return fetchJson(`/api/reports/class/${classId}/export`);\n}\nexport async function deleteReport(id) {\n  return fetchJson(`/api/reports/${id}`, { method: \"DELETE\" });\n}\n",
+      "start": 1783626233885,
+      "end": 1783626233886,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

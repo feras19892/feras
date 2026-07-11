@@ -2,105 +2,142 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingGuestButtons.vue",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../composables/useI18n'\n\nconst { t } = useI18n()\n\nconst emit = defineEmits<{\n  (e: 'enterAsTeacher'): void\n  (e: 'enterAsStudent'): void\n}>()\n</script>\n\n<template>\n  <div class=\"guest-row\">\n    <span>{{ t('auth.or') }}</span>\n  </div>\n  <div class=\"guest-btn-row\">\n    <button type=\"button\" class=\"btn-guest teacher\" @click=\"emit('enterAsTeacher')\">\n      {{ t('auth.guestTeacher') }}\n    </button>\n    <button data-testid=\"guest-login\" type=\"button\" class=\"btn-guest student\" @click=\"emit('enterAsStudent')\">\n      {{ t('auth.guestStudent') }}\n    </button>\n  </div>\n</template>\n\n<style scoped>\n.guest-row {\n  text-align: center;\n  margin-top: 1rem;\n  font-size: 0.8rem;\n  color: #64748b;\n}\n.guest-row span { margin: 0 0.4rem; }\n\n.guest-btn-row {\n  display: flex;\n  gap: 0.5rem;\n  margin-top: 0.8rem;\n}\n.btn-guest {\n  flex: 1;\n  padding: 0.6rem;\n  border: 1px solid rgba(255,255,255,0.12);\n  border-radius: 0.5rem;\n  background: rgba(255,255,255,0.04);\n  color: #94a3b8;\n  font-size: 0.8rem;\n  cursor: pointer;\n  transition: all 0.2s;\n  font-family: inherit;\n}\n.btn-guest:hover {\n  background: rgba(255,255,255,0.08);\n  color: #e2e8f0;\n}\n.btn-guest.teacher:hover {\n  border-color: rgba(59,130,246,0.4);\n  background: rgba(59,130,246,0.1);\n  color: #93c5fd;\n}\n.btn-guest.student:hover {\n  border-color: rgba(16,185,129,0.4);\n  background: rgba(16,185,129,0.1);\n  color: #86efac;\n}\n</style>\n",
-      "start": 1783634639333,
-      "end": 1783634639613,
+      "start": 1783626227517,
+      "end": 1783626227517,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../composables/useI18n'\n\nconst { t } = useI18n()\n\nconst emit = defineEmits<{\n  (e: 'enterAsTeacher'): void\n  (e: 'enterAsStudent'): void\n}>()\n</script>\n\n<template>\n  <div class=\"guest-row\" data-v-inspector=\"src/components/landing/LandingGuestButtons.vue:13:3\">\n    <span data-v-inspector=\"src/components/landing/LandingGuestButtons.vue:14:5\">{{ t('auth.or') }}</span>\n  </div>\n  <div class=\"guest-btn-row\" data-v-inspector=\"src/components/landing/LandingGuestButtons.vue:16:3\">\n    <button type=\"button\" class=\"btn-guest teacher\" @click=\"emit('enterAsTeacher')\" data-v-inspector=\"src/components/landing/LandingGuestButtons.vue:17:5\">\n      {{ t('auth.guestTeacher') }}\n    </button>\n    <button data-testid=\"guest-login\" type=\"button\" class=\"btn-guest student\" @click=\"emit('enterAsStudent')\" data-v-inspector=\"src/components/landing/LandingGuestButtons.vue:20:5\">\n      {{ t('auth.guestStudent') }}\n    </button>\n  </div>\n</template>\n\n<style scoped>\n.guest-row {\n  text-align: center;\n  margin-top: 1rem;\n  font-size: 0.8rem;\n  color: #64748b;\n}\n.guest-row span { margin: 0 0.4rem; }\n\n.guest-btn-row {\n  display: flex;\n  gap: 0.5rem;\n  margin-top: 0.8rem;\n}\n.btn-guest {\n  flex: 1;\n  padding: 0.6rem;\n  border: 1px solid rgba(255,255,255,0.12);\n  border-radius: 0.5rem;\n  background: rgba(255,255,255,0.04);\n  color: #94a3b8;\n  font-size: 0.8rem;\n  cursor: pointer;\n  transition: all 0.2s;\n  font-family: inherit;\n}\n.btn-guest:hover {\n  background: rgba(255,255,255,0.08);\n  color: #e2e8f0;\n}\n.btn-guest.teacher:hover {\n  border-color: rgba(59,130,246,0.4);\n  background: rgba(59,130,246,0.1);\n  color: #93c5fd;\n}\n.btn-guest.student:hover {\n  border-color: rgba(16,185,129,0.4);\n  background: rgba(16,185,129,0.1);\n  color: #86efac;\n}\n</style>\n",
+      "start": 1783626227517,
+      "end": 1783626227519,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../composables/useI18n'\n\nconst { t } = useI18n()\n\nconst emit = defineEmits<{\n  (e: 'enterAsTeacher'): void\n  (e: 'enterAsStudent'): void\n}>()\n</script>\n\n<template>\n  <div class=\"guest-row\" data-v-inspector=\"src/components/landing/LandingGuestButtons.vue:13:3\">\n    <span data-v-inspector=\"src/components/landing/LandingGuestButtons.vue:14:5\">{{ t('auth.or') }}</span>\n  </div>\n  <div class=\"guest-btn-row\" data-v-inspector=\"src/components/landing/LandingGuestButtons.vue:16:3\">\n    <button type=\"button\" class=\"btn-guest teacher\" @click=\"emit('enterAsTeacher')\" data-v-inspector=\"src/components/landing/LandingGuestButtons.vue:17:5\">\n      {{ t('auth.guestTeacher') }}\n    </button>\n    <button data-testid=\"guest-login\" type=\"button\" class=\"btn-guest student\" @click=\"emit('enterAsStudent')\" data-v-inspector=\"src/components/landing/LandingGuestButtons.vue:20:5\">\n      {{ t('auth.guestStudent') }}\n    </button>\n  </div>\n</template>\n\n<style scoped>\n.guest-row {\n  text-align: center;\n  margin-top: 1rem;\n  font-size: 0.8rem;\n  color: #64748b;\n}\n.guest-row span { margin: 0 0.4rem; }\n\n.guest-btn-row {\n  display: flex;\n  gap: 0.5rem;\n  margin-top: 0.8rem;\n}\n.btn-guest {\n  flex: 1;\n  padding: 0.6rem;\n  border: 1px solid rgba(255,255,255,0.12);\n  border-radius: 0.5rem;\n  background: rgba(255,255,255,0.04);\n  color: #94a3b8;\n  font-size: 0.8rem;\n  cursor: pointer;\n  transition: all 0.2s;\n  font-family: inherit;\n}\n.btn-guest:hover {\n  background: rgba(255,255,255,0.08);\n  color: #e2e8f0;\n}\n.btn-guest.teacher:hover {\n  border-color: rgba(59,130,246,0.4);\n  background: rgba(59,130,246,0.1);\n  color: #93c5fd;\n}\n.btn-guest.student:hover {\n  border-color: rgba(16,185,129,0.4);\n  background: rgba(16,185,129,0.1);\n  color: #86efac;\n}\n</style>\n",
+      "start": 1783626227519,
+      "end": 1783626227519,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634639613,
-      "end": 1783634639613,
+      "start": 1783626227519,
+      "end": 1783626227519,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1783634639613,
-      "end": 1783634639613,
+      "start": 1783626227519,
+      "end": 1783626227519,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1783634639613,
-      "end": 1783634639613,
+      "start": 1783626227519,
+      "end": 1783626227519,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634639613,
-      "end": 1783634639613,
+      "start": 1783626227519,
+      "end": 1783626227519,
       "order": "normal"
     },
     {
       "name": "vite:vue",
-      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingGuestButtons.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingGuestButtons.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingGuestButtons.vue?vue&type=style&index=0&scoped=6450d91d&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-6450d91d\"]]);\n",
-      "start": 1783634639613,
-      "end": 1783634639940,
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { useI18n } from \"../../composables/useI18n\";\nconst _sfc_main = /* @__PURE__ */ _defineComponent({\n  __name: \"LandingGuestButtons\",\n  emits: [\"enterAsTeacher\", \"enterAsStudent\"],\n  setup(__props, { expose: __expose, emit: __emit }) {\n    __expose();\n    const { t } = useI18n();\n    const emit = __emit;\n    const __returned__ = { t, emit };\n    Object.defineProperty(__returned__, \"__isScriptSetup\", { enumerable: false, value: true });\n    return __returned__;\n  }\n});\nimport { toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = {\n  class: \"guest-row\",\n  \"data-v-inspector\": \"src/components/landing/LandingGuestButtons.vue:13:3\"\n};\nconst _hoisted_2 = { \"data-v-inspector\": \"src/components/landing/LandingGuestButtons.vue:14:5\" };\nconst _hoisted_3 = {\n  class: \"guest-btn-row\",\n  \"data-v-inspector\": \"src/components/landing/LandingGuestButtons.vue:16:3\"\n};\nfunction _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {\n  return _openBlock(), _createElementBlock(\n    _Fragment,\n    null,\n    [\n      _createElementVNode(\"div\", _hoisted_1, [\n        _createElementVNode(\n          \"span\",\n          _hoisted_2,\n          _toDisplayString($setup.t(\"auth.or\")),\n          1\n          /* TEXT */\n        )\n      ]),\n      _createElementVNode(\"div\", _hoisted_3, [\n        _createElementVNode(\n          \"button\",\n          {\n            type: \"button\",\n            class: \"btn-guest teacher\",\n            onClick: _cache[0] || (_cache[0] = ($event) => $setup.emit(\"enterAsTeacher\")),\n            \"data-v-inspector\": \"src/components/landing/LandingGuestButtons.vue:17:5\"\n          },\n          _toDisplayString($setup.t(\"auth.guestTeacher\")),\n          1\n          /* TEXT */\n        ),\n        _createElementVNode(\n          \"button\",\n          {\n            \"data-testid\": \"guest-login\",\n            type: \"button\",\n            class: \"btn-guest student\",\n            onClick: _cache[1] || (_cache[1] = ($event) => $setup.emit(\"enterAsStudent\")),\n            \"data-v-inspector\": \"src/components/landing/LandingGuestButtons.vue:20:5\"\n          },\n          _toDisplayString($setup.t(\"auth.guestStudent\")),\n          1\n          /* TEXT */\n        )\n      ])\n    ],\n    64\n    /* STABLE_FRAGMENT */\n  );\n}\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingGuestButtons.vue?vue&type=style&index=0&scoped=ba6ec3a6&lang.css\";\n_sfc_main.__hmrId = \"ba6ec3a6\";\ntypeof __VUE_HMR_RUNTIME__ !== \"undefined\" && __VUE_HMR_RUNTIME__.createRecord(_sfc_main.__hmrId, _sfc_main);\nimport.meta.hot.on(\"file-changed\", ({ file }) => {\n  __VUE_HMR_RUNTIME__.CHANGED_FILE = file;\n});\nimport.meta.hot.accept((mod) => {\n  if (!mod) return;\n  const { default: updated, _rerender_only } = mod;\n  if (_rerender_only) {\n    __VUE_HMR_RUNTIME__.rerender(updated.__hmrId, updated.render);\n  } else {\n    __VUE_HMR_RUNTIME__.reload(updated.__hmrId, updated);\n  }\n});\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"render\", _sfc_render], [\"__scopeId\", \"data-v-ba6ec3a6\"], [\"__file\", \"C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingGuestButtons.vue\"]]);\n",
+      "start": 1783626227519,
+      "end": 1783626227613,
       "order": "normal-normal",
       "sourcemaps": {
-        "mappings": ""
+        "version": 3,
+        "mappings": ";AACA,SAAS,eAAe;;;;;;AAExB,UAAM,EAAE,EAAE,IAAI,QAAQ;AAEtB,UAAM,OAAO;;;;;;;;EAON,OAAM;AAAA,EAAY,oBAAiB;;qBAChC,oBAAiB,sDAAqD;;EAEzE,OAAM;AAAA,EAAgB,oBAAiB;;;;;;;MAH5C,oBAEM,OAFN,YAEM;AAAA,QADJ;AAAA,UAAsG;AAAA,UAAtG;AAAA,UAAsG,iBAAtB,SAAC;AAAA;AAAA;AAAA;AAAA;MAEnF,oBAOM,OAPN,YAOM;AAAA,QANJ;AAAA,UAES;AAAA;AAAA,YAFD,MAAK;AAAA,YAAS,OAAM;AAAA,YAAqB,SAAK,sCAAE,YAAI;AAAA,YAAoB,oBAAiB;AAAA;2BAC5F,SAAC;AAAA;AAAA;AAAA;AAAA,QAEN;AAAA,UAES;AAAA;AAAA,YAFD,eAAY;AAAA,YAAc,MAAK;AAAA,YAAS,OAAM;AAAA,YAAqB,SAAK,sCAAE,YAAI;AAAA,YAAoB,oBAAiB;AAAA;2BACtH,SAAC;AAAA;AAAA;AAAA;AAAA",
+        "names": [],
+        "ignoreList": [],
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingGuestButtons.vue"
+        ],
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\nimport { useI18n } from '../../composables/useI18n'\n\nconst { t } = useI18n()\n\nconst emit = defineEmits<{\n  (e: 'enterAsTeacher'): void\n  (e: 'enterAsStudent'): void\n}>()\n</script>\n\n<template>\n  <div class=\"guest-row\" data-v-inspector=\"src/components/landing/LandingGuestButtons.vue:13:3\">\n    <span data-v-inspector=\"src/components/landing/LandingGuestButtons.vue:14:5\">{{ t('auth.or') }}</span>\n  </div>\n  <div class=\"guest-btn-row\" data-v-inspector=\"src/components/landing/LandingGuestButtons.vue:16:3\">\n    <button type=\"button\" class=\"btn-guest teacher\" @click=\"emit('enterAsTeacher')\" data-v-inspector=\"src/components/landing/LandingGuestButtons.vue:17:5\">\n      {{ t('auth.guestTeacher') }}\n    </button>\n    <button data-testid=\"guest-login\" type=\"button\" class=\"btn-guest student\" @click=\"emit('enterAsStudent')\" data-v-inspector=\"src/components/landing/LandingGuestButtons.vue:20:5\">\n      {{ t('auth.guestStudent') }}\n    </button>\n  </div>\n</template>\n\n<style scoped>\n.guest-row {\n  text-align: center;\n  margin-top: 1rem;\n  font-size: 0.8rem;\n  color: #64748b;\n}\n.guest-row span { margin: 0 0.4rem; }\n\n.guest-btn-row {\n  display: flex;\n  gap: 0.5rem;\n  margin-top: 0.8rem;\n}\n.btn-guest {\n  flex: 1;\n  padding: 0.6rem;\n  border: 1px solid rgba(255,255,255,0.12);\n  border-radius: 0.5rem;\n  background: rgba(255,255,255,0.04);\n  color: #94a3b8;\n  font-size: 0.8rem;\n  cursor: pointer;\n  transition: all 0.2s;\n  font-family: inherit;\n}\n.btn-guest:hover {\n  background: rgba(255,255,255,0.08);\n  color: #e2e8f0;\n}\n.btn-guest.teacher:hover {\n  border-color: rgba(59,130,246,0.4);\n  background: rgba(59,130,246,0.1);\n  color: #93c5fd;\n}\n.btn-guest.student:hover {\n  border-color: rgba(16,185,129,0.4);\n  background: rgba(16,185,129,0.1);\n  color: #86efac;\n}\n</style>\n"
+        ],
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingGuestButtons.vue"
       }
     },
     {
       "name": "vite:define",
-      "start": 1783634639940,
-      "end": 1783634639940,
+      "start": 1783626227613,
+      "end": 1783626227613,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634639940,
-      "end": 1783634639940,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634639940,
-      "end": 1783634639940,
+      "start": 1783626227613,
+      "end": 1783626227613,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634639940,
-      "end": 1783634639940,
+      "start": 1783626227613,
+      "end": 1783626227613,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634639940,
-      "end": 1783634639940,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634639940,
-      "end": 1783634639940,
+      "start": 1783626227613,
+      "end": 1783626227613,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634639940,
-      "end": 1783634639940,
+      "start": 1783626227613,
+      "end": 1783626227613,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634639940,
-      "end": 1783634639940,
+      "start": 1783626227613,
+      "end": 1783626227613,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634639940,
-      "end": 1783634639941,
+      "name": "vite-plugin-vue-inspector:post",
+      "result": "/* Injection by vite-plugin-vue-inspector Start */\nimport { createElementVNode as __createElementVNode,createElementBlock as __createElementBlock } from 'vue'\nfunction _interopVNode(vnode) {\n  if (vnode && vnode.props && 'data-v-inspector' in vnode.props) {\n    const data = vnode.props['data-v-inspector']\n    delete vnode.props['data-v-inspector']\n    Object.defineProperty(vnode.props, '__v_inspector', { value: data, enumerable: false })\n  }\n  return vnode\n}\nfunction _createElementVNode(...args) { return _interopVNode(__createElementVNode(...args)) }\nfunction _createElementBlock(...args) { return _interopVNode(__createElementBlock(...args)) }\n/* Injection by vite-plugin-vue-inspector End */\nimport { defineComponent as _defineComponent } from \"vue\";\nimport { useI18n } from \"../../composables/useI18n\";\nconst _sfc_main = /* @__PURE__ */ _defineComponent({\n  __name: \"LandingGuestButtons\",\n  emits: [\"enterAsTeacher\", \"enterAsStudent\"],\n  setup(__props, { expose: __expose, emit: __emit }) {\n    __expose();\n    const { t } = useI18n();\n    const emit = __emit;\n    const __returned__ = { t, emit };\n    Object.defineProperty(__returned__, \"__isScriptSetup\", { enumerable: false, value: true });\n    return __returned__;\n  }\n});\nimport { toDisplayString as _toDisplayString,  Fragment as _Fragment, openBlock as _openBlock,  } from \"vue\";\nconst _hoisted_1 = {\n  class: \"guest-row\",\n  \"data-v-inspector\": \"src/components/landing/LandingGuestButtons.vue:13:3\"\n};\nconst _hoisted_2 = { \"data-v-inspector\": \"src/components/landing/LandingGuestButtons.vue:14:5\" };\nconst _hoisted_3 = {\n  class: \"guest-btn-row\",\n  \"data-v-inspector\": \"src/components/landing/LandingGuestButtons.vue:16:3\"\n};\nfunction _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {\n  return _openBlock(), _createElementBlock(\n    _Fragment,\n    null,\n    [\n      _createElementVNode(\"div\", _hoisted_1, [\n        _createElementVNode(\n          \"span\",\n          _hoisted_2,\n          _toDisplayString($setup.t(\"auth.or\")),\n          1\n          /* TEXT */\n        )\n      ]),\n      _createElementVNode(\"div\", _hoisted_3, [\n        _createElementVNode(\n          \"button\",\n          {\n            type: \"button\",\n            class: \"btn-guest teacher\",\n            onClick: _cache[0] || (_cache[0] = ($event) => $setup.emit(\"enterAsTeacher\")),\n            \"data-v-inspector\": \"src/components/landing/LandingGuestButtons.vue:17:5\"\n          },\n          _toDisplayString($setup.t(\"auth.guestTeacher\")),\n          1\n          /* TEXT */\n        ),\n        _createElementVNode(\n          \"button\",\n          {\n            \"data-testid\": \"guest-login\",\n            type: \"button\",\n            class: \"btn-guest student\",\n            onClick: _cache[1] || (_cache[1] = ($event) => $setup.emit(\"enterAsStudent\")),\n            \"data-v-inspector\": \"src/components/landing/LandingGuestButtons.vue:20:5\"\n          },\n          _toDisplayString($setup.t(\"auth.guestStudent\")),\n          1\n          /* TEXT */\n        )\n      ])\n    ],\n    64\n    /* STABLE_FRAGMENT */\n  );\n}\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingGuestButtons.vue?vue&type=style&index=0&scoped=ba6ec3a6&lang.css\";\n_sfc_main.__hmrId = \"ba6ec3a6\";\ntypeof __VUE_HMR_RUNTIME__ !== \"undefined\" && __VUE_HMR_RUNTIME__.createRecord(_sfc_main.__hmrId, _sfc_main);\nimport.meta.hot.on(\"file-changed\", ({ file }) => {\n  __VUE_HMR_RUNTIME__.CHANGED_FILE = file;\n});\nimport.meta.hot.accept((mod) => {\n  if (!mod) return;\n  const { default: updated, _rerender_only } = mod;\n  if (_rerender_only) {\n    __VUE_HMR_RUNTIME__.rerender(updated.__hmrId, updated.render);\n  } else {\n    __VUE_HMR_RUNTIME__.reload(updated.__hmrId, updated);\n  }\n});\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"render\", _sfc_render], [\"__scopeId\", \"data-v-ba6ec3a6\"], [\"__file\", \"C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingGuestButtons.vue\"]]);\n",
+      "start": 1783626227613,
+      "end": 1783626227615,
+      "order": "post",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          ""
+        ],
+        "names": [],
+        "mappings": "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"
+      }
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626227615,
+      "end": 1783626227615,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634639941,
-      "end": 1783634639941,
+      "name": "vite:css-analysis",
+      "start": 1783626227615,
+      "end": 1783626227615,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/components/landing/LandingGuestButtons.vue\");/* Injection by vite-plugin-vue-inspector Start */\nimport { createElementVNode as __createElementVNode,createElementBlock as __createElementBlock } from \"/node_modules/.vite/deps/vue.js?v=09a3ad4c\"\nfunction _interopVNode(vnode) {\n  if (vnode && vnode.props && 'data-v-inspector' in vnode.props) {\n    const data = vnode.props['data-v-inspector']\n    delete vnode.props['data-v-inspector']\n    Object.defineProperty(vnode.props, '__v_inspector', { value: data, enumerable: false })\n  }\n  return vnode\n}\nfunction _createElementVNode(...args) { return _interopVNode(__createElementVNode(...args)) }\nfunction _createElementBlock(...args) { return _interopVNode(__createElementBlock(...args)) }\n/* Injection by vite-plugin-vue-inspector End */\nimport { defineComponent as _defineComponent } from \"/node_modules/.vite/deps/vue.js?v=09a3ad4c\";\nimport { useI18n } from \"/src/composables/useI18n.ts\";\nconst _sfc_main = /* @__PURE__ */ _defineComponent({\n  __name: \"LandingGuestButtons\",\n  emits: [\"enterAsTeacher\", \"enterAsStudent\"],\n  setup(__props, { expose: __expose, emit: __emit }) {\n    __expose();\n    const { t } = useI18n();\n    const emit = __emit;\n    const __returned__ = { t, emit };\n    Object.defineProperty(__returned__, \"__isScriptSetup\", { enumerable: false, value: true });\n    return __returned__;\n  }\n});\nimport { toDisplayString as _toDisplayString,  Fragment as _Fragment, openBlock as _openBlock,  } from \"/node_modules/.vite/deps/vue.js?v=09a3ad4c\";\nconst _hoisted_1 = {\n  class: \"guest-row\",\n  \"data-v-inspector\": \"src/components/landing/LandingGuestButtons.vue:13:3\"\n};\nconst _hoisted_2 = { \"data-v-inspector\": \"src/components/landing/LandingGuestButtons.vue:14:5\" };\nconst _hoisted_3 = {\n  class: \"guest-btn-row\",\n  \"data-v-inspector\": \"src/components/landing/LandingGuestButtons.vue:16:3\"\n};\nfunction _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {\n  return _openBlock(), _createElementBlock(\n    _Fragment,\n    null,\n    [\n      _createElementVNode(\"div\", _hoisted_1, [\n        _createElementVNode(\n          \"span\",\n          _hoisted_2,\n          _toDisplayString($setup.t(\"auth.or\")),\n          1\n          /* TEXT */\n        )\n      ]),\n      _createElementVNode(\"div\", _hoisted_3, [\n        _createElementVNode(\n          \"button\",\n          {\n            type: \"button\",\n            class: \"btn-guest teacher\",\n            onClick: _cache[0] || (_cache[0] = ($event) => $setup.emit(\"enterAsTeacher\")),\n            \"data-v-inspector\": \"src/components/landing/LandingGuestButtons.vue:17:5\"\n          },\n          _toDisplayString($setup.t(\"auth.guestTeacher\")),\n          1\n          /* TEXT */\n        ),\n        _createElementVNode(\n          \"button\",\n          {\n            \"data-testid\": \"guest-login\",\n            type: \"button\",\n            class: \"btn-guest student\",\n            onClick: _cache[1] || (_cache[1] = ($event) => $setup.emit(\"enterAsStudent\")),\n            \"data-v-inspector\": \"src/components/landing/LandingGuestButtons.vue:20:5\"\n          },\n          _toDisplayString($setup.t(\"auth.guestStudent\")),\n          1\n          /* TEXT */\n        )\n      ])\n    ],\n    64\n    /* STABLE_FRAGMENT */\n  );\n}\nimport \"/src/components/landing/LandingGuestButtons.vue?vue&type=style&index=0&scoped=ba6ec3a6&lang.css\";\n_sfc_main.__hmrId = \"ba6ec3a6\";\ntypeof __VUE_HMR_RUNTIME__ !== \"undefined\" && __VUE_HMR_RUNTIME__.createRecord(_sfc_main.__hmrId, _sfc_main);\nimport.meta.hot.on(\"file-changed\", ({ file }) => {\n  __VUE_HMR_RUNTIME__.CHANGED_FILE = file;\n});\nimport.meta.hot.accept((mod) => {\n  if (!mod) return;\n  const { default: updated, _rerender_only } = mod;\n  if (_rerender_only) {\n    __VUE_HMR_RUNTIME__.rerender(updated.__hmrId, updated.render);\n  } else {\n    __VUE_HMR_RUNTIME__.reload(updated.__hmrId, updated);\n  }\n});\nimport _export_sfc from \"/@id/__x00__plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"render\", _sfc_render], [\"__scopeId\", \"data-v-ba6ec3a6\"], [\"__file\", \"C:/Users/feras/Desktop/feras/apps/web/src/components/landing/LandingGuestButtons.vue\"]]);\n",
+      "start": 1783626227615,
+      "end": 1783626227622,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

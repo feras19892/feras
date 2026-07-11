@@ -1,0 +1,140 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/FaradayLawParamPanel.vue?vue&type=style&index=0&scoped=d832e002&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.param-panel { padding: .75rem; display: flex; flex-direction: column; gap: .6rem; }\n.param-title { font-size: .85rem; font-weight: 700; color: #f59e0b; text-align: center; padding-bottom: .3rem; border-bottom: 1px solid #1e2530; }\n.param-row { display: flex; flex-direction: column; gap: .25rem; }\n.param-row label { font-size: .75rem; color: #94a3b8; }\n.param-row input[type=range] { width: 100%; accent-color: #22c55e; }\n.param-val { font-size: .8rem; color: #22c55e; font-weight: 700; font-family: 'Courier New', monospace; }\n.formula-box { margin-top: .25rem; padding: .5rem; background: rgba(245,158,11,.08); border-radius: 6px; border: 1px solid rgba(245,158,11,.15); }\n.formula { font-family: 'Courier New', monospace; font-size: .85rem; color: #f59e0b; text-align: center; }\n.const { font-size: .7rem; color: #a855f7; text-align: center; margin-top: .25rem; }\n",
+      "start": 1783626273900,
+      "end": 1783626273900,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/FaradayLawParamPanel.vue"
+        ],
+        "names": [],
+        "mappings": ";AA+EA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACnF,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACjJ,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACjE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACtD,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACnE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACxG,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACjJ,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACzG,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE",
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/FaradayLawParamPanel.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\nconst { t } = useI18n()\n\nconst props = defineProps<{\n  B: number\n  N: number\n  A: number\n  v: number\n  R: number\n  d: number\n  mode: 'faraday' | 'lenz'\n}>()\n\nconst emit = defineEmits<{\n  (e: 'update:B', v: number): void\n  (e: 'update:N', v: number): void\n  (e: 'update:A', v: number): void\n  (e: 'update:v', v: number): void\n  (e: 'update:R', v: number): void\n  (e: 'update:d', v: number): void\n}>()\n</script>\n\n<template>\n  <div class=\"param-panel\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:26:3\">\n    <div class=\"param-title\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:27:5\">{{ t('experiments.emParams') }}</div>\n\n    <div class=\"param-row\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:29:5\">\n      <label data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:30:7\">{{ t('experiments.faradayParamB') }}</label>\n      <input type=\"range\" min=\"0.1\" max=\"2\" step=\"0.05\" :value=\"props.B\"\n        @input=\"emit('update:B', +($event.target as HTMLInputElement).value)\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:31:7\" />\n      <span class=\"param-val\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:33:7\">{{ props.B.toFixed(2) }} T</span>\n    </div>\n\n    <div class=\"param-row\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:36:5\">\n      <label data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:37:7\">{{ t('experiments.faradayParamN') }}</label>\n      <input type=\"range\" min=\"1\" max=\"500\" step=\"1\" :value=\"props.N\"\n        @input=\"emit('update:N', +($event.target as HTMLInputElement).value)\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:38:7\" />\n      <span class=\"param-val\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:40:7\">{{ props.N }} {{ t('experiments.genTurns') }}</span>\n    </div>\n\n    <div class=\"param-row\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:43:5\">\n      <label data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:44:7\">{{ t('experiments.faradayParamA') }}</label>\n      <input type=\"range\" min=\"10\" max=\"500\" step=\"5\" :value=\"props.A * 10000\"\n        @input=\"emit('update:A', +($event.target as HTMLInputElement).value / 10000)\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:45:7\" />\n      <span class=\"param-val\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:47:7\">{{ (props.A * 10000).toFixed(0) }} cm²</span>\n    </div>\n\n    <div class=\"param-row\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:50:5\">\n      <label data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:51:7\">{{ t('experiments.faradayParamV') }}</label>\n      <input type=\"range\" min=\"0.1\" max=\"5\" step=\"0.1\" :value=\"props.v\"\n        @input=\"emit('update:v', +($event.target as HTMLInputElement).value)\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:52:7\" />\n      <span class=\"param-val\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:54:7\">{{ props.v.toFixed(1) }} m/s</span>\n    </div>\n\n    <div class=\"param-row\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:57:5\">\n      <label data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:58:7\">{{ t('experiments.faradayParamR') }}</label>\n      <input type=\"range\" min=\"1\" max=\"100\" step=\"1\" :value=\"props.R\"\n        @input=\"emit('update:R', +($event.target as HTMLInputElement).value)\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:59:7\" />\n      <span class=\"param-val\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:61:7\">{{ props.R.toFixed(0) }} Ω</span>\n    </div>\n\n    <div class=\"param-row\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:64:5\">\n      <label data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:65:7\">{{ t('experiments.faradayParamD') }}</label>\n      <input type=\"range\" min=\"2\" max=\"15\" step=\"0.5\" :value=\"props.d * 100\"\n        @input=\"emit('update:d', +($event.target as HTMLInputElement).value / 100)\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:66:7\" />\n      <span class=\"param-val\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:68:7\">{{ (props.d * 100).toFixed(1) }} cm</span>\n    </div>\n\n    <div class=\"formula-box\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:71:5\">\n      <div class=\"formula\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:72:7\">EMF = -N · dΦ/dt</div>\n      <div class=\"const\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:73:7\">Φ = B·A &nbsp;|&nbsp; I = EMF / R</div>\n      <div v-if=\"props.mode === 'lenz'\" class=\"const\" style=\"color:#ef4444\" data-v-inspector=\"src/components/experiment/electromagnetism/FaradayLawParamPanel.vue:74:7\">{{ t('experiments.flParamLenz') }}</div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.param-panel { padding: .75rem; display: flex; flex-direction: column; gap: .6rem; }\n.param-title { font-size: .85rem; font-weight: 700; color: #f59e0b; text-align: center; padding-bottom: .3rem; border-bottom: 1px solid #1e2530; }\n.param-row { display: flex; flex-direction: column; gap: .25rem; }\n.param-row label { font-size: .75rem; color: #94a3b8; }\n.param-row input[type=range] { width: 100%; accent-color: #22c55e; }\n.param-val { font-size: .8rem; color: #22c55e; font-weight: 700; font-family: 'Courier New', monospace; }\n.formula-box { margin-top: .25rem; padding: .5rem; background: rgba(245,158,11,.08); border-radius: 6px; border: 1px solid rgba(245,158,11,.15); }\n.formula { font-family: 'Courier New', monospace; font-size: .85rem; color: #f59e0b; text-align: center; }\n.const { font-size: .7rem; color: #a855f7; text-align: center; margin-top: .25rem; }\n</style>\n"
+        ]
+      }
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626273900,
+      "end": 1783626273900,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "\n.param-panel { padding: .75rem; display: flex; flex-direction: column; gap: .6rem; }\n.param-title { font-size: .85rem; font-weight: 700; color: #f59e0b; text-align: center; padding-bottom: .3rem; border-bottom: 1px solid #1e2530; }\n.param-row { display: flex; flex-direction: column; gap: .25rem; }\n.param-row label { font-size: .75rem; color: #94a3b8; }\n.param-row input[type=range] { width: 100%; accent-color: #22c55e; }\n.param-val { font-size: .8rem; color: #22c55e; font-weight: 700; font-family: 'Courier New', monospace; }\n.formula-box { margin-top: .25rem; padding: .5rem; background: rgba(245,158,11,.08); border-radius: 6px; border: 1px solid rgba(245,158,11,.15); }\n.formula { font-family: 'Courier New', monospace; font-size: .85rem; color: #f59e0b; text-align: center; }\n.const { font-size: .7rem; color: #a855f7; text-align: center; margin-top: .25rem; }\n",
+      "start": 1783626273900,
+      "end": 1783626273900,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.param-panel { padding: .75rem; display: flex; flex-direction: column; gap: .6rem; }\n.param-title { font-size: .85rem; font-weight: 700; color: #f59e0b; text-align: center; padding-bottom: .3rem; border-bottom: 1px solid #1e2530; }\n.param-row { display: flex; flex-direction: column; gap: .25rem; }\n.param-row label { font-size: .75rem; color: #94a3b8; }\n.param-row input[type=range] { width: 100%; accent-color: #22c55e; }\n.param-val { font-size: .8rem; color: #22c55e; font-weight: 700; font-family: 'Courier New', monospace; }\n.formula-box { margin-top: .25rem; padding: .5rem; background: rgba(245,158,11,.08); border-radius: 6px; border: 1px solid rgba(245,158,11,.15); }\n.formula { font-family: 'Courier New', monospace; font-size: .85rem; color: #f59e0b; text-align: center; }\n.const { font-size: .7rem; color: #a855f7; text-align: center; margin-top: .25rem; }\n",
+      "start": 1783626273900,
+      "end": 1783626273900,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783626273900,
+      "end": 1783626273900,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626273900,
+      "end": 1783626273900,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626273900,
+      "end": 1783626273900,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.param-panel[data-v-d832e002] { padding: .75rem; display: flex; flex-direction: column; gap: .6rem;\n}\n.param-title[data-v-d832e002] { font-size: .85rem; font-weight: 700; color: #f59e0b; text-align: center; padding-bottom: .3rem; border-bottom: 1px solid #1e2530;\n}\n.param-row[data-v-d832e002] { display: flex; flex-direction: column; gap: .25rem;\n}\n.param-row label[data-v-d832e002] { font-size: .75rem; color: #94a3b8;\n}\n.param-row input[type=range][data-v-d832e002] { width: 100%; accent-color: #22c55e;\n}\n.param-val[data-v-d832e002] { font-size: .8rem; color: #22c55e; font-weight: 700; font-family: 'Courier New', monospace;\n}\n.formula-box[data-v-d832e002] { margin-top: .25rem; padding: .5rem; background: rgba(245,158,11,.08); border-radius: 6px; border: 1px solid rgba(245,158,11,.15);\n}\n.formula[data-v-d832e002] { font-family: 'Courier New', monospace; font-size: .85rem; color: #f59e0b; text-align: center;\n}\n.const[data-v-d832e002] { font-size: .7rem; color: #a855f7; text-align: center; margin-top: .25rem;\n}\n",
+      "start": 1783626273931,
+      "end": 1783626273940,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626273940,
+      "end": 1783626273940,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/FaradayLawParamPanel.vue?vue&type=style&index=0&scoped=d832e002&lang.css\"\nconst __vite__css = \"\\n.param-panel[data-v-d832e002] { padding: .75rem; display: flex; flex-direction: column; gap: .6rem;\\n}\\n.param-title[data-v-d832e002] { font-size: .85rem; font-weight: 700; color: #f59e0b; text-align: center; padding-bottom: .3rem; border-bottom: 1px solid #1e2530;\\n}\\n.param-row[data-v-d832e002] { display: flex; flex-direction: column; gap: .25rem;\\n}\\n.param-row label[data-v-d832e002] { font-size: .75rem; color: #94a3b8;\\n}\\n.param-row input[type=range][data-v-d832e002] { width: 100%; accent-color: #22c55e;\\n}\\n.param-val[data-v-d832e002] { font-size: .8rem; color: #22c55e; font-weight: 700; font-family: 'Courier New', monospace;\\n}\\n.formula-box[data-v-d832e002] { margin-top: .25rem; padding: .5rem; background: rgba(245,158,11,.08); border-radius: 6px; border: 1px solid rgba(245,158,11,.15);\\n}\\n.formula[data-v-d832e002] { font-family: 'Courier New', monospace; font-size: .85rem; color: #f59e0b; text-align: center;\\n}\\n.const[data-v-d832e002] { font-size: .7rem; color: #a855f7; text-align: center; margin-top: .25rem;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626273940,
+      "end": 1783626273940,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626273940,
+      "end": 1783626273940,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626273940,
+      "end": 1783626273940,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626273940,
+      "end": 1783626273940,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626273940,
+      "end": 1783626273940,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626273940,
+      "end": 1783626273940,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626273940,
+      "end": 1783626273940,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626273940,
+      "end": 1783626273940,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/components/experiment/electromagnetism/FaradayLawParamPanel.vue?vue&type=style&index=0&scoped=d832e002&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/FaradayLawParamPanel.vue?vue&type=style&index=0&scoped=d832e002&lang.css\"\nconst __vite__css = \"\\n.param-panel[data-v-d832e002] { padding: .75rem; display: flex; flex-direction: column; gap: .6rem;\\n}\\n.param-title[data-v-d832e002] { font-size: .85rem; font-weight: 700; color: #f59e0b; text-align: center; padding-bottom: .3rem; border-bottom: 1px solid #1e2530;\\n}\\n.param-row[data-v-d832e002] { display: flex; flex-direction: column; gap: .25rem;\\n}\\n.param-row label[data-v-d832e002] { font-size: .75rem; color: #94a3b8;\\n}\\n.param-row input[type=range][data-v-d832e002] { width: 100%; accent-color: #22c55e;\\n}\\n.param-val[data-v-d832e002] { font-size: .8rem; color: #22c55e; font-weight: 700; font-family: 'Courier New', monospace;\\n}\\n.formula-box[data-v-d832e002] { margin-top: .25rem; padding: .5rem; background: rgba(245,158,11,.08); border-radius: 6px; border: 1px solid rgba(245,158,11,.15);\\n}\\n.formula[data-v-d832e002] { font-family: 'Courier New', monospace; font-size: .85rem; color: #f59e0b; text-align: center;\\n}\\n.const[data-v-d832e002] { font-size: .7rem; color: #a855f7; text-align: center; margin-top: .25rem;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626273940,
+      "end": 1783626273941,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

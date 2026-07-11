@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabExportNew5.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import type { AnalysisPayload } from '../../../../types/physics'\nimport { sendToAnalysis } from '../../../../composables/analysis/sendToAnalysis'\nimport type { ExportContext } from './electricLabExportBasic'\n\nexport function exportNew5(router: any, ctx: ExportContext): boolean {\n  if (ctx.isThermistor.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-thermistor', sourceNameAr: 'الثيرميستور (NTC)', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'NTC Thermistor', formula: 'R = R₀×e^(β×(1/T − 1/T₀))', variables: [{ symbol: 'R', label: 'Resistance' }, { symbol: 'R0', label: 'R at T0' }, { symbol: 'beta', label: 'Beta' }, { symbol: 'T', label: 'Temp K' }, { symbol: 'T0', label: 'Ref Temp' }], solveFor: ['R'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isMagneticForce.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-magnetic-force', sourceNameAr: 'القوة المغناطيسية', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Magnetic Force', formula: 'F = B×I×L×sin(θ)', variables: [{ symbol: 'F', label: 'Force' }, { symbol: 'B', label: 'Magnetic Field' }, { symbol: 'I', label: 'Current' }, { symbol: 'L', label: 'Wire Length' }, { symbol: 'theta', label: 'Angle' }], solveFor: ['F'] }],\n      suggestedPlots: [{ xKey: 'I', yKey: 'V', xLabel: 'I (A)', yLabel: 'V (V)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isLCOsc.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-lc-oscillation', sourceNameAr: 'دائرة LC المتذبذبة', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'LC Oscillation', formula: 'f = 1/(2π√(LC)), E = ½CV² + ½LI²', variables: [{ symbol: 'f', label: 'Frequency' }, { symbol: 'L', label: 'Inductance' }, { symbol: 'C', label: 'Capacitance' }, { symbol: 'E', label: 'Total Energy' }], solveFor: ['f', 'E'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  return false\n}\n",
-      "start": 1783634642590,
-      "end": 1783634642823,
+      "start": 1783626239184,
+      "end": 1783626239184
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626239184,
+      "end": 1783626239184,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import type { AnalysisPayload } from '../../../../types/physics'\nimport { sendToAnalysis } from '../../../../composables/analysis/sendToAnalysis'\nimport type { ExportContext } from './electricLabExportBasic'\n\nexport function exportNew5(router: any, ctx: ExportContext): boolean {\n  if (ctx.isThermistor.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-thermistor', sourceNameAr: 'الثيرميستور (NTC)', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'NTC Thermistor', formula: 'R = R₀×e^(β×(1/T − 1/T₀))', variables: [{ symbol: 'R', label: 'Resistance' }, { symbol: 'R0', label: 'R at T0' }, { symbol: 'beta', label: 'Beta' }, { symbol: 'T', label: 'Temp K' }, { symbol: 'T0', label: 'Ref Temp' }], solveFor: ['R'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isMagneticForce.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-magnetic-force', sourceNameAr: 'القوة المغناطيسية', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Magnetic Force', formula: 'F = B×I×L×sin(θ)', variables: [{ symbol: 'F', label: 'Force' }, { symbol: 'B', label: 'Magnetic Field' }, { symbol: 'I', label: 'Current' }, { symbol: 'L', label: 'Wire Length' }, { symbol: 'theta', label: 'Angle' }], solveFor: ['F'] }],\n      suggestedPlots: [{ xKey: 'I', yKey: 'V', xLabel: 'I (A)', yLabel: 'V (V)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isLCOsc.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-lc-oscillation', sourceNameAr: 'دائرة LC المتذبذبة', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'LC Oscillation', formula: 'f = 1/(2π√(LC)), E = ½CV² + ½LI²', variables: [{ symbol: 'f', label: 'Frequency' }, { symbol: 'L', label: 'Inductance' }, { symbol: 'C', label: 'Capacitance' }, { symbol: 'E', label: 'Total Energy' }], solveFor: ['f', 'E'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  return false\n}\n",
+      "start": 1783626239184,
+      "end": 1783626239184,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634642823,
-      "end": 1783634642823,
+      "start": 1783626239184,
+      "end": 1783626239184,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { sendToAnalysis } from \"../../../../composables/analysis/sendToAnalysis\";\nexport function exportNew5(router, ctx) {\n  if (ctx.isThermistor.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-thermistor\",\n      sourceNameAr: \"الثيرميستور (NTC)\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"V\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"NTC Thermistor\", formula: \"R = R₀×e^(β×(1/T − 1/T₀))\", variables: [{ symbol: \"R\", label: \"Resistance\" }, { symbol: \"R0\", label: \"R at T0\" }, { symbol: \"beta\", label: \"Beta\" }, { symbol: \"T\", label: \"Temp K\" }, { symbol: \"T0\", label: \"Ref Temp\" }], solveFor: [\"R\"] }],\n      suggestedPlots: [{ xKey: \"R\", yKey: \"I\", xLabel: \"R (Ω)\", yLabel: \"I (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isMagneticForce.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-magnetic-force\",\n      sourceNameAr: \"القوة المغناطيسية\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"V\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"Magnetic Force\", formula: \"F = B×I×L×sin(θ)\", variables: [{ symbol: \"F\", label: \"Force\" }, { symbol: \"B\", label: \"Magnetic Field\" }, { symbol: \"I\", label: \"Current\" }, { symbol: \"L\", label: \"Wire Length\" }, { symbol: \"theta\", label: \"Angle\" }], solveFor: [\"F\"] }],\n      suggestedPlots: [{ xKey: \"I\", yKey: \"V\", xLabel: \"I (A)\", yLabel: \"V (V)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isLCOsc.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-lc-oscillation\",\n      sourceNameAr: \"دائرة LC المتذبذبة\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"V\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"LC Oscillation\", formula: \"f = 1/(2π√(LC)), E = ½CV² + ½LI²\", variables: [{ symbol: \"f\", label: \"Frequency\" }, { symbol: \"L\", label: \"Inductance\" }, { symbol: \"C\", label: \"Capacitance\" }, { symbol: \"E\", label: \"Total Energy\" }], solveFor: [\"f\", \"E\"] }],\n      suggestedPlots: [{ xKey: \"R\", yKey: \"I\", xLabel: \"R (Ω)\", yLabel: \"I (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  return false;\n}\n",
-      "start": 1783634642823,
-      "end": 1783634642872,
+      "start": 1783626239184,
+      "end": 1783626239745,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabExportNew5.ts"
+          "electricLabExportNew5.ts"
         ],
         "sourcesContent": [
           "import type { AnalysisPayload } from '../../../../types/physics'\nimport { sendToAnalysis } from '../../../../composables/analysis/sendToAnalysis'\nimport type { ExportContext } from './electricLabExportBasic'\n\nexport function exportNew5(router: any, ctx: ExportContext): boolean {\n  if (ctx.isThermistor.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-thermistor', sourceNameAr: 'الثيرميستور (NTC)', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'NTC Thermistor', formula: 'R = R₀×e^(β×(1/T − 1/T₀))', variables: [{ symbol: 'R', label: 'Resistance' }, { symbol: 'R0', label: 'R at T0' }, { symbol: 'beta', label: 'Beta' }, { symbol: 'T', label: 'Temp K' }, { symbol: 'T0', label: 'Ref Temp' }], solveFor: ['R'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isMagneticForce.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-magnetic-force', sourceNameAr: 'القوة المغناطيسية', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'Magnetic Force', formula: 'F = B×I×L×sin(θ)', variables: [{ symbol: 'F', label: 'Force' }, { symbol: 'B', label: 'Magnetic Field' }, { symbol: 'I', label: 'Current' }, { symbol: 'L', label: 'Wire Length' }, { symbol: 'theta', label: 'Angle' }], solveFor: ['F'] }],\n      suggestedPlots: [{ xKey: 'I', yKey: 'V', xLabel: 'I (A)', yLabel: 'V (V)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  if (ctx.isLCOsc.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab-lc-oscillation', sourceNameAr: 'دائرة LC المتذبذبة', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: 'LC Oscillation', formula: 'f = 1/(2π√(LC)), E = ½CV² + ½LI²', variables: [{ symbol: 'f', label: 'Frequency' }, { symbol: 'L', label: 'Inductance' }, { symbol: 'C', label: 'Capacitance' }, { symbol: 'E', label: 'Total Energy' }], solveFor: ['f', 'E'] }],\n      suggestedPlots: [{ xKey: 'R', yKey: 'I', xLabel: 'R (Ω)', yLabel: 'I (A)', type: 'scatter' }],\n    } as AnalysisPayload)\n    return true\n  }\n  return false\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634642873,
-      "end": 1783634642873,
+      "start": 1783626239745,
+      "end": 1783626239745,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642873,
-      "end": 1783634642873,
+      "start": 1783626239745,
+      "end": 1783626239745,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626239745,
+      "end": 1783626239745,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642873,
-      "end": 1783634642873,
+      "start": 1783626239745,
+      "end": 1783626239745,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634642873,
-      "end": 1783634642873,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634642873,
-      "end": 1783634642873,
+      "start": 1783626239745,
+      "end": 1783626239745,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642873,
-      "end": 1783634642873,
+      "start": 1783626239745,
+      "end": 1783626239745,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642873,
-      "end": 1783634642873,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642873,
-      "end": 1783634642873,
+      "start": 1783626239745,
+      "end": 1783626239745,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642873,
-      "end": 1783634642873,
+      "start": 1783626239746,
+      "end": 1783626239746,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642873,
-      "end": 1783634642873,
+      "start": 1783626239746,
+      "end": 1783626239746,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642874,
-      "end": 1783634642874,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626239746,
+      "end": 1783626239746,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626239746,
+      "end": 1783626239746,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642874,
-      "end": 1783634642874,
+      "name": "vite:css-analysis",
+      "start": 1783626239746,
+      "end": 1783626239746,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { sendToAnalysis } from \"/src/composables/analysis/sendToAnalysis.ts\";\nexport function exportNew5(router, ctx) {\n  if (ctx.isThermistor.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-thermistor\",\n      sourceNameAr: \"الثيرميستور (NTC)\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"V\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"NTC Thermistor\", formula: \"R = R₀×e^(β×(1/T − 1/T₀))\", variables: [{ symbol: \"R\", label: \"Resistance\" }, { symbol: \"R0\", label: \"R at T0\" }, { symbol: \"beta\", label: \"Beta\" }, { symbol: \"T\", label: \"Temp K\" }, { symbol: \"T0\", label: \"Ref Temp\" }], solveFor: [\"R\"] }],\n      suggestedPlots: [{ xKey: \"R\", yKey: \"I\", xLabel: \"R (Ω)\", yLabel: \"I (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isMagneticForce.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-magnetic-force\",\n      sourceNameAr: \"القوة المغناطيسية\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"V\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"Magnetic Force\", formula: \"F = B×I×L×sin(θ)\", variables: [{ symbol: \"F\", label: \"Force\" }, { symbol: \"B\", label: \"Magnetic Field\" }, { symbol: \"I\", label: \"Current\" }, { symbol: \"L\", label: \"Wire Length\" }, { symbol: \"theta\", label: \"Angle\" }], solveFor: [\"F\"] }],\n      suggestedPlots: [{ xKey: \"I\", yKey: \"V\", xLabel: \"I (A)\", yLabel: \"V (V)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  if (ctx.isLCOsc.value) {\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab-lc-oscillation\",\n      sourceNameAr: \"دائرة LC المتذبذبة\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"V\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"LC Oscillation\", formula: \"f = 1/(2π√(LC)), E = ½CV² + ½LI²\", variables: [{ symbol: \"f\", label: \"Frequency\" }, { symbol: \"L\", label: \"Inductance\" }, { symbol: \"C\", label: \"Capacitance\" }, { symbol: \"E\", label: \"Total Energy\" }], solveFor: [\"f\", \"E\"] }],\n      suggestedPlots: [{ xKey: \"R\", yKey: \"I\", xLabel: \"R (Ω)\", yLabel: \"I (A)\", type: \"scatter\" }]\n    });\n    return true;\n  }\n  return false;\n}\n",
+      "start": 1783626239746,
+      "end": 1783626239757,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/electromagnetism/useMagneticFluxExperiment.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { ref, reactive, computed } from 'vue'\nimport { useRouter } from 'vue-router'\nimport { sendToAnalysis } from '../analysis/sendToAnalysis'\nimport type { AnalysisPayload } from '../../types/physics'\n\nexport interface MagneticFluxParams {\n  B: number       // magnetic field strength (T), 0.1–2.0\n  A: number       // coil area (m²), 0.001–0.05\n  theta: number   // angle between B and normal to coil (rad), 0–π\n}\n\nexport interface MagneticFluxTrial {\n  id: number\n  B: number\n  A: number\n  theta: number\n  flux: number       // Φ = B·A·cos(θ) (Wb)\n  cosTheta: number   // cos(θ)\n  angleDeg: number   // θ in degrees\n}\n\nconst _state = {\n  running: ref(false),\n  paused: ref(false),\n  trials: ref<MagneticFluxTrial[]>([]),\n  nextId: 1,\n  params: reactive<MagneticFluxParams>({\n    B: 0.5,\n    A: 0.01,\n    theta: 0,\n  }),\n  probeData: ref<{ flux: number; angle: number } | null>(null),\n}\n\nexport function useMagneticFluxExperiment() {\n  const router = useRouter()\n  const { running, paused, trials, params, probeData } = _state\n\n  // Flux: Φ = B·A·cos(θ)\n  function fluxAt(theta: number): number {\n    return params.B * params.A * Math.cos(theta)\n  }\n\n  // Current flux (live)\n  const fluxNow = computed(() => fluxAt(params.theta))\n  const cosThetaNow = computed(() => Math.cos(params.theta))\n  const angleDegNow = computed(() => params.theta * 180 / Math.PI)\n\n  // Max flux (at θ=0)\n  const fluxMax = computed(() => params.B * params.A)\n\n  function setProbeData(flux: number, angle: number) {\n    probeData.value = { flux, angle }\n  }\n\n  function togglePause() {\n    if (!running.value) { running.value = true; paused.value = false }\n    else paused.value = !paused.value\n  }\n\n  function resetSim() {\n    running.value = false\n    paused.value = false\n    probeData.value = null\n    params.theta = 0\n  }\n\n  function recordTrial() {\n    const flux = probeData.value ? probeData.value.flux : fluxNow.value\n    const theta = probeData.value ? probeData.value.angle : params.theta\n    trials.value.push({\n      id: _state.nextId++,\n      B: params.B,\n      A: params.A,\n      theta,\n      flux,\n      cosTheta: Math.cos(theta),\n      angleDeg: theta * 180 / Math.PI,\n    })\n  }\n\n  function removeTrial(id: number) {\n    trials.value = trials.value.filter(t => t.id !== id)\n  }\n\n  function clearTrials() {\n    trials.value = []\n    _state.nextId = 1\n  }\n\n  function exportCsv() {\n    if (!trials.value.length) return\n    const headers = 'B (T),A (m^2),theta (rad),theta (deg),cos(theta),Flux (Wb)'\n    const rows = trials.value.map(t =>\n      `${t.B.toFixed(3)},${t.A.toExponential(4)},${t.theta.toFixed(4)},${t.angleDeg.toFixed(2)},${t.cosTheta.toFixed(4)},${t.flux.toExponential(4)}`\n    )\n    const csv = [headers, ...rows].join('\\n')\n    const blob = new Blob(['\\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' })\n    const url = URL.createObjectURL(blob)\n    const a = document.createElement('a')\n    a.href = url\n    a.download = 'magnetic-flux-results.csv'\n    a.click()\n    URL.revokeObjectURL(url)\n  }\n\n  function exportToAnalysis() {\n    if (trials.value.length < 2) return\n    const readings = trials.value.map(t => ({\n      B: t.B,\n      A: t.A,\n      theta: t.theta,\n      angleDeg: t.angleDeg,\n      cosTheta: t.cosTheta,\n      flux: t.flux,\n      'B*A': t.B * t.A,\n    }))\n    const payload: AnalysisPayload = {\n      sourceExperiment: 'electromagnetism-magnetic-flux',\n      sourceNameAr: 'الفيض المغناطيسي',\n      hasCalcTab: true,\n      readings,\n      columns: [\n        { key: 'B', label: 'B', unit: 'T' },\n        { key: 'A', label: 'A', unit: 'm²' },\n        { key: 'theta', label: 'θ', unit: 'rad' },\n        { key: 'angleDeg', label: 'θ', unit: '°' },\n        { key: 'cosTheta', label: 'cos θ', unit: '' },\n        { key: 'flux', label: 'Φ', unit: 'Wb' },\n        { key: 'B*A', label: 'BA', unit: 'Wb' },\n      ],\n      equations: [\n        {\n          name: 'Magnetic Flux',\n          formula: 'Φ = B · A · cos(θ)',\n          variables: [\n            { symbol: 'Φ', label: 'Flux' },\n            { symbol: 'B', label: 'Field' },\n            { symbol: 'A', label: 'Area' },\n            { symbol: 'θ', label: 'Angle' },\n          ],\n          solveFor: ['Φ', 'B', 'A', 'θ'],\n        },\n      ],\n      suggestedPlots: [\n        { xKey: 'theta', yKey: 'flux', xLabel: 'θ (rad)', yLabel: 'Φ (Wb)', type: 'scatter' as const },\n        { xKey: 'angleDeg', yKey: 'flux', xLabel: 'θ (°)', yLabel: 'Φ (Wb)', type: 'scatter' as const },\n        { xKey: 'cosTheta', yKey: 'flux', xLabel: 'cos θ', yLabel: 'Φ (Wb)', type: 'scatter' as const },\n        { xKey: 'B', yKey: 'flux', xLabel: 'B (T)', yLabel: 'Φ (Wb)', type: 'scatter' as const },\n        { xKey: 'A', yKey: 'flux', xLabel: 'A (m²)', yLabel: 'Φ (Wb)', type: 'scatter' as const },\n      ],\n    }\n    sendToAnalysis(router, payload)\n  }\n\n  return {\n    params, running, paused, fluxNow, cosThetaNow, angleDegNow, fluxMax,\n    trials, probeData,\n    fluxAt,\n    togglePause, resetSim, recordTrial, removeTrial, clearTrials,\n    exportCsv, exportToAnalysis, setProbeData,\n  }\n}\n",
-      "start": 1783634640886,
-      "end": 1783634641198,
+      "start": 1783626261617,
+      "end": 1783626261617
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626261617,
+      "end": 1783626261617,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { ref, reactive, computed } from 'vue'\nimport { useRouter } from 'vue-router'\nimport { sendToAnalysis } from '../analysis/sendToAnalysis'\nimport type { AnalysisPayload } from '../../types/physics'\n\nexport interface MagneticFluxParams {\n  B: number       // magnetic field strength (T), 0.1–2.0\n  A: number       // coil area (m²), 0.001–0.05\n  theta: number   // angle between B and normal to coil (rad), 0–π\n}\n\nexport interface MagneticFluxTrial {\n  id: number\n  B: number\n  A: number\n  theta: number\n  flux: number       // Φ = B·A·cos(θ) (Wb)\n  cosTheta: number   // cos(θ)\n  angleDeg: number   // θ in degrees\n}\n\nconst _state = {\n  running: ref(false),\n  paused: ref(false),\n  trials: ref<MagneticFluxTrial[]>([]),\n  nextId: 1,\n  params: reactive<MagneticFluxParams>({\n    B: 0.5,\n    A: 0.01,\n    theta: 0,\n  }),\n  probeData: ref<{ flux: number; angle: number } | null>(null),\n}\n\nexport function useMagneticFluxExperiment() {\n  const router = useRouter()\n  const { running, paused, trials, params, probeData } = _state\n\n  // Flux: Φ = B·A·cos(θ)\n  function fluxAt(theta: number): number {\n    return params.B * params.A * Math.cos(theta)\n  }\n\n  // Current flux (live)\n  const fluxNow = computed(() => fluxAt(params.theta))\n  const cosThetaNow = computed(() => Math.cos(params.theta))\n  const angleDegNow = computed(() => params.theta * 180 / Math.PI)\n\n  // Max flux (at θ=0)\n  const fluxMax = computed(() => params.B * params.A)\n\n  function setProbeData(flux: number, angle: number) {\n    probeData.value = { flux, angle }\n  }\n\n  function togglePause() {\n    if (!running.value) { running.value = true; paused.value = false }\n    else paused.value = !paused.value\n  }\n\n  function resetSim() {\n    running.value = false\n    paused.value = false\n    probeData.value = null\n    params.theta = 0\n  }\n\n  function recordTrial() {\n    const flux = probeData.value ? probeData.value.flux : fluxNow.value\n    const theta = probeData.value ? probeData.value.angle : params.theta\n    trials.value.push({\n      id: _state.nextId++,\n      B: params.B,\n      A: params.A,\n      theta,\n      flux,\n      cosTheta: Math.cos(theta),\n      angleDeg: theta * 180 / Math.PI,\n    })\n  }\n\n  function removeTrial(id: number) {\n    trials.value = trials.value.filter(t => t.id !== id)\n  }\n\n  function clearTrials() {\n    trials.value = []\n    _state.nextId = 1\n  }\n\n  function exportCsv() {\n    if (!trials.value.length) return\n    const headers = 'B (T),A (m^2),theta (rad),theta (deg),cos(theta),Flux (Wb)'\n    const rows = trials.value.map(t =>\n      `${t.B.toFixed(3)},${t.A.toExponential(4)},${t.theta.toFixed(4)},${t.angleDeg.toFixed(2)},${t.cosTheta.toFixed(4)},${t.flux.toExponential(4)}`\n    )\n    const csv = [headers, ...rows].join('\\n')\n    const blob = new Blob(['\\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' })\n    const url = URL.createObjectURL(blob)\n    const a = document.createElement('a')\n    a.href = url\n    a.download = 'magnetic-flux-results.csv'\n    a.click()\n    URL.revokeObjectURL(url)\n  }\n\n  function exportToAnalysis() {\n    if (trials.value.length < 2) return\n    const readings = trials.value.map(t => ({\n      B: t.B,\n      A: t.A,\n      theta: t.theta,\n      angleDeg: t.angleDeg,\n      cosTheta: t.cosTheta,\n      flux: t.flux,\n      'B*A': t.B * t.A,\n    }))\n    const payload: AnalysisPayload = {\n      sourceExperiment: 'electromagnetism-magnetic-flux',\n      sourceNameAr: 'الفيض المغناطيسي',\n      hasCalcTab: true,\n      readings,\n      columns: [\n        { key: 'B', label: 'B', unit: 'T' },\n        { key: 'A', label: 'A', unit: 'm²' },\n        { key: 'theta', label: 'θ', unit: 'rad' },\n        { key: 'angleDeg', label: 'θ', unit: '°' },\n        { key: 'cosTheta', label: 'cos θ', unit: '' },\n        { key: 'flux', label: 'Φ', unit: 'Wb' },\n        { key: 'B*A', label: 'BA', unit: 'Wb' },\n      ],\n      equations: [\n        {\n          name: 'Magnetic Flux',\n          formula: 'Φ = B · A · cos(θ)',\n          variables: [\n            { symbol: 'Φ', label: 'Flux' },\n            { symbol: 'B', label: 'Field' },\n            { symbol: 'A', label: 'Area' },\n            { symbol: 'θ', label: 'Angle' },\n          ],\n          solveFor: ['Φ', 'B', 'A', 'θ'],\n        },\n      ],\n      suggestedPlots: [\n        { xKey: 'theta', yKey: 'flux', xLabel: 'θ (rad)', yLabel: 'Φ (Wb)', type: 'scatter' as const },\n        { xKey: 'angleDeg', yKey: 'flux', xLabel: 'θ (°)', yLabel: 'Φ (Wb)', type: 'scatter' as const },\n        { xKey: 'cosTheta', yKey: 'flux', xLabel: 'cos θ', yLabel: 'Φ (Wb)', type: 'scatter' as const },\n        { xKey: 'B', yKey: 'flux', xLabel: 'B (T)', yLabel: 'Φ (Wb)', type: 'scatter' as const },\n        { xKey: 'A', yKey: 'flux', xLabel: 'A (m²)', yLabel: 'Φ (Wb)', type: 'scatter' as const },\n      ],\n    }\n    sendToAnalysis(router, payload)\n  }\n\n  return {\n    params, running, paused, fluxNow, cosThetaNow, angleDegNow, fluxMax,\n    trials, probeData,\n    fluxAt,\n    togglePause, resetSim, recordTrial, removeTrial, clearTrials,\n    exportCsv, exportToAnalysis, setProbeData,\n  }\n}\n",
+      "start": 1783626261617,
+      "end": 1783626261617,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634641198,
-      "end": 1783634641198,
+      "start": 1783626261617,
+      "end": 1783626261617,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { ref, reactive, computed } from \"vue\";\nimport { useRouter } from \"vue-router\";\nimport { sendToAnalysis } from \"../analysis/sendToAnalysis\";\nconst _state = {\n  running: ref(false),\n  paused: ref(false),\n  trials: ref([]),\n  nextId: 1,\n  params: reactive({\n    B: 0.5,\n    A: 0.01,\n    theta: 0\n  }),\n  probeData: ref(null)\n};\nexport function useMagneticFluxExperiment() {\n  const router = useRouter();\n  const { running, paused, trials, params, probeData } = _state;\n  function fluxAt(theta) {\n    return params.B * params.A * Math.cos(theta);\n  }\n  const fluxNow = computed(() => fluxAt(params.theta));\n  const cosThetaNow = computed(() => Math.cos(params.theta));\n  const angleDegNow = computed(() => params.theta * 180 / Math.PI);\n  const fluxMax = computed(() => params.B * params.A);\n  function setProbeData(flux, angle) {\n    probeData.value = { flux, angle };\n  }\n  function togglePause() {\n    if (!running.value) {\n      running.value = true;\n      paused.value = false;\n    } else paused.value = !paused.value;\n  }\n  function resetSim() {\n    running.value = false;\n    paused.value = false;\n    probeData.value = null;\n    params.theta = 0;\n  }\n  function recordTrial() {\n    const flux = probeData.value ? probeData.value.flux : fluxNow.value;\n    const theta = probeData.value ? probeData.value.angle : params.theta;\n    trials.value.push({\n      id: _state.nextId++,\n      B: params.B,\n      A: params.A,\n      theta,\n      flux,\n      cosTheta: Math.cos(theta),\n      angleDeg: theta * 180 / Math.PI\n    });\n  }\n  function removeTrial(id) {\n    trials.value = trials.value.filter((t) => t.id !== id);\n  }\n  function clearTrials() {\n    trials.value = [];\n    _state.nextId = 1;\n  }\n  function exportCsv() {\n    if (!trials.value.length) return;\n    const headers = \"B (T),A (m^2),theta (rad),theta (deg),cos(theta),Flux (Wb)\";\n    const rows = trials.value.map(\n      (t) => `${t.B.toFixed(3)},${t.A.toExponential(4)},${t.theta.toFixed(4)},${t.angleDeg.toFixed(2)},${t.cosTheta.toFixed(4)},${t.flux.toExponential(4)}`\n    );\n    const csv = [headers, ...rows].join(\"\\n\");\n    const blob = new Blob([\"\\uFEFF\" + csv], { type: \"text/csv;charset=utf-8;\" });\n    const url = URL.createObjectURL(blob);\n    const a = document.createElement(\"a\");\n    a.href = url;\n    a.download = \"magnetic-flux-results.csv\";\n    a.click();\n    URL.revokeObjectURL(url);\n  }\n  function exportToAnalysis() {\n    if (trials.value.length < 2) return;\n    const readings = trials.value.map((t) => ({\n      B: t.B,\n      A: t.A,\n      theta: t.theta,\n      angleDeg: t.angleDeg,\n      cosTheta: t.cosTheta,\n      flux: t.flux,\n      \"B*A\": t.B * t.A\n    }));\n    const payload = {\n      sourceExperiment: \"electromagnetism-magnetic-flux\",\n      sourceNameAr: \"الفيض المغناطيسي\",\n      hasCalcTab: true,\n      readings,\n      columns: [\n        { key: \"B\", label: \"B\", unit: \"T\" },\n        { key: \"A\", label: \"A\", unit: \"m²\" },\n        { key: \"theta\", label: \"θ\", unit: \"rad\" },\n        { key: \"angleDeg\", label: \"θ\", unit: \"°\" },\n        { key: \"cosTheta\", label: \"cos θ\", unit: \"\" },\n        { key: \"flux\", label: \"Φ\", unit: \"Wb\" },\n        { key: \"B*A\", label: \"BA\", unit: \"Wb\" }\n      ],\n      equations: [\n        {\n          name: \"Magnetic Flux\",\n          formula: \"Φ = B · A · cos(θ)\",\n          variables: [\n            { symbol: \"Φ\", label: \"Flux\" },\n            { symbol: \"B\", label: \"Field\" },\n            { symbol: \"A\", label: \"Area\" },\n            { symbol: \"θ\", label: \"Angle\" }\n          ],\n          solveFor: [\"Φ\", \"B\", \"A\", \"θ\"]\n        }\n      ],\n      suggestedPlots: [\n        { xKey: \"theta\", yKey: \"flux\", xLabel: \"θ (rad)\", yLabel: \"Φ (Wb)\", type: \"scatter\" },\n        { xKey: \"angleDeg\", yKey: \"flux\", xLabel: \"θ (°)\", yLabel: \"Φ (Wb)\", type: \"scatter\" },\n        { xKey: \"cosTheta\", yKey: \"flux\", xLabel: \"cos θ\", yLabel: \"Φ (Wb)\", type: \"scatter\" },\n        { xKey: \"B\", yKey: \"flux\", xLabel: \"B (T)\", yLabel: \"Φ (Wb)\", type: \"scatter\" },\n        { xKey: \"A\", yKey: \"flux\", xLabel: \"A (m²)\", yLabel: \"Φ (Wb)\", type: \"scatter\" }\n      ]\n    };\n    sendToAnalysis(router, payload);\n  }\n  return {\n    params,\n    running,\n    paused,\n    fluxNow,\n    cosThetaNow,\n    angleDegNow,\n    fluxMax,\n    trials,\n    probeData,\n    fluxAt,\n    togglePause,\n    resetSim,\n    recordTrial,\n    removeTrial,\n    clearTrials,\n    exportCsv,\n    exportToAnalysis,\n    setProbeData\n  };\n}\n",
-      "start": 1783634641198,
-      "end": 1783634641628,
+      "start": 1783626261617,
+      "end": 1783626262947,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/composables/electromagnetism/useMagneticFluxExperiment.ts"
+          "useMagneticFluxExperiment.ts"
         ],
         "sourcesContent": [
           "import { ref, reactive, computed } from 'vue'\nimport { useRouter } from 'vue-router'\nimport { sendToAnalysis } from '../analysis/sendToAnalysis'\nimport type { AnalysisPayload } from '../../types/physics'\n\nexport interface MagneticFluxParams {\n  B: number       // magnetic field strength (T), 0.1–2.0\n  A: number       // coil area (m²), 0.001–0.05\n  theta: number   // angle between B and normal to coil (rad), 0–π\n}\n\nexport interface MagneticFluxTrial {\n  id: number\n  B: number\n  A: number\n  theta: number\n  flux: number       // Φ = B·A·cos(θ) (Wb)\n  cosTheta: number   // cos(θ)\n  angleDeg: number   // θ in degrees\n}\n\nconst _state = {\n  running: ref(false),\n  paused: ref(false),\n  trials: ref<MagneticFluxTrial[]>([]),\n  nextId: 1,\n  params: reactive<MagneticFluxParams>({\n    B: 0.5,\n    A: 0.01,\n    theta: 0,\n  }),\n  probeData: ref<{ flux: number; angle: number } | null>(null),\n}\n\nexport function useMagneticFluxExperiment() {\n  const router = useRouter()\n  const { running, paused, trials, params, probeData } = _state\n\n  // Flux: Φ = B·A·cos(θ)\n  function fluxAt(theta: number): number {\n    return params.B * params.A * Math.cos(theta)\n  }\n\n  // Current flux (live)\n  const fluxNow = computed(() => fluxAt(params.theta))\n  const cosThetaNow = computed(() => Math.cos(params.theta))\n  const angleDegNow = computed(() => params.theta * 180 / Math.PI)\n\n  // Max flux (at θ=0)\n  const fluxMax = computed(() => params.B * params.A)\n\n  function setProbeData(flux: number, angle: number) {\n    probeData.value = { flux, angle }\n  }\n\n  function togglePause() {\n    if (!running.value) { running.value = true; paused.value = false }\n    else paused.value = !paused.value\n  }\n\n  function resetSim() {\n    running.value = false\n    paused.value = false\n    probeData.value = null\n    params.theta = 0\n  }\n\n  function recordTrial() {\n    const flux = probeData.value ? probeData.value.flux : fluxNow.value\n    const theta = probeData.value ? probeData.value.angle : params.theta\n    trials.value.push({\n      id: _state.nextId++,\n      B: params.B,\n      A: params.A,\n      theta,\n      flux,\n      cosTheta: Math.cos(theta),\n      angleDeg: theta * 180 / Math.PI,\n    })\n  }\n\n  function removeTrial(id: number) {\n    trials.value = trials.value.filter(t => t.id !== id)\n  }\n\n  function clearTrials() {\n    trials.value = []\n    _state.nextId = 1\n  }\n\n  function exportCsv() {\n    if (!trials.value.length) return\n    const headers = 'B (T),A (m^2),theta (rad),theta (deg),cos(theta),Flux (Wb)'\n    const rows = trials.value.map(t =>\n      `${t.B.toFixed(3)},${t.A.toExponential(4)},${t.theta.toFixed(4)},${t.angleDeg.toFixed(2)},${t.cosTheta.toFixed(4)},${t.flux.toExponential(4)}`\n    )\n    const csv = [headers, ...rows].join('\\n')\n    const blob = new Blob(['\\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' })\n    const url = URL.createObjectURL(blob)\n    const a = document.createElement('a')\n    a.href = url\n    a.download = 'magnetic-flux-results.csv'\n    a.click()\n    URL.revokeObjectURL(url)\n  }\n\n  function exportToAnalysis() {\n    if (trials.value.length < 2) return\n    const readings = trials.value.map(t => ({\n      B: t.B,\n      A: t.A,\n      theta: t.theta,\n      angleDeg: t.angleDeg,\n      cosTheta: t.cosTheta,\n      flux: t.flux,\n      'B*A': t.B * t.A,\n    }))\n    const payload: AnalysisPayload = {\n      sourceExperiment: 'electromagnetism-magnetic-flux',\n      sourceNameAr: 'الفيض المغناطيسي',\n      hasCalcTab: true,\n      readings,\n      columns: [\n        { key: 'B', label: 'B', unit: 'T' },\n        { key: 'A', label: 'A', unit: 'm²' },\n        { key: 'theta', label: 'θ', unit: 'rad' },\n        { key: 'angleDeg', label: 'θ', unit: '°' },\n        { key: 'cosTheta', label: 'cos θ', unit: '' },\n        { key: 'flux', label: 'Φ', unit: 'Wb' },\n        { key: 'B*A', label: 'BA', unit: 'Wb' },\n      ],\n      equations: [\n        {\n          name: 'Magnetic Flux',\n          formula: 'Φ = B · A · cos(θ)',\n          variables: [\n            { symbol: 'Φ', label: 'Flux' },\n            { symbol: 'B', label: 'Field' },\n            { symbol: 'A', label: 'Area' },\n            { symbol: 'θ', label: 'Angle' },\n          ],\n          solveFor: ['Φ', 'B', 'A', 'θ'],\n        },\n      ],\n      suggestedPlots: [\n        { xKey: 'theta', yKey: 'flux', xLabel: 'θ (rad)', yLabel: 'Φ (Wb)', type: 'scatter' as const },\n        { xKey: 'angleDeg', yKey: 'flux', xLabel: 'θ (°)', yLabel: 'Φ (Wb)', type: 'scatter' as const },\n        { xKey: 'cosTheta', yKey: 'flux', xLabel: 'cos θ', yLabel: 'Φ (Wb)', type: 'scatter' as const },\n        { xKey: 'B', yKey: 'flux', xLabel: 'B (T)', yLabel: 'Φ (Wb)', type: 'scatter' as const },\n        { xKey: 'A', yKey: 'flux', xLabel: 'A (m²)', yLabel: 'Φ (Wb)', type: 'scatter' as const },\n      ],\n    }\n    sendToAnalysis(router, payload)\n  }\n\n  return {\n    params, running, paused, fluxNow, cosThetaNow, angleDegNow, fluxMax,\n    trials, probeData,\n    fluxAt,\n    togglePause, resetSim, recordTrial, removeTrial, clearTrials,\n    exportCsv, exportToAnalysis, setProbeData,\n  }\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634641628,
-      "end": 1783634641628,
+      "start": 1783626262947,
+      "end": 1783626262947,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634641629,
-      "end": 1783634641629,
+      "start": 1783626262947,
+      "end": 1783626262947,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626262947,
+      "end": 1783626262947,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634641629,
-      "end": 1783634641629,
+      "start": 1783626262947,
+      "end": 1783626262947,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634641629,
-      "end": 1783634641629,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634641629,
-      "end": 1783634641629,
+      "start": 1783626262947,
+      "end": 1783626262947,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634641629,
-      "end": 1783634641629,
+      "start": 1783626262947,
+      "end": 1783626262947,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634641629,
-      "end": 1783634641629,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634641629,
-      "end": 1783634641629,
+      "start": 1783626262947,
+      "end": 1783626262947,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634641631,
-      "end": 1783634641631,
+      "start": 1783626262947,
+      "end": 1783626262947,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634641631,
-      "end": 1783634641631,
+      "start": 1783626262947,
+      "end": 1783626262947,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634641633,
-      "end": 1783634641633,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626262947,
+      "end": 1783626262947,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626262947,
+      "end": 1783626262947,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634641633,
-      "end": 1783634641633,
+      "name": "vite:css-analysis",
+      "start": 1783626262947,
+      "end": 1783626262947,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { ref, reactive, computed } from \"/node_modules/.vite/deps/vue.js?v=09a3ad4c\";\nimport { useRouter } from \"/node_modules/.vite/deps/vue-router.js?v=79ad0905\";\nimport { sendToAnalysis } from \"/src/composables/analysis/sendToAnalysis.ts\";\nconst _state = {\n  running: ref(false),\n  paused: ref(false),\n  trials: ref([]),\n  nextId: 1,\n  params: reactive({\n    B: 0.5,\n    A: 0.01,\n    theta: 0\n  }),\n  probeData: ref(null)\n};\nexport function useMagneticFluxExperiment() {\n  const router = useRouter();\n  const { running, paused, trials, params, probeData } = _state;\n  function fluxAt(theta) {\n    return params.B * params.A * Math.cos(theta);\n  }\n  const fluxNow = computed(() => fluxAt(params.theta));\n  const cosThetaNow = computed(() => Math.cos(params.theta));\n  const angleDegNow = computed(() => params.theta * 180 / Math.PI);\n  const fluxMax = computed(() => params.B * params.A);\n  function setProbeData(flux, angle) {\n    probeData.value = { flux, angle };\n  }\n  function togglePause() {\n    if (!running.value) {\n      running.value = true;\n      paused.value = false;\n    } else paused.value = !paused.value;\n  }\n  function resetSim() {\n    running.value = false;\n    paused.value = false;\n    probeData.value = null;\n    params.theta = 0;\n  }\n  function recordTrial() {\n    const flux = probeData.value ? probeData.value.flux : fluxNow.value;\n    const theta = probeData.value ? probeData.value.angle : params.theta;\n    trials.value.push({\n      id: _state.nextId++,\n      B: params.B,\n      A: params.A,\n      theta,\n      flux,\n      cosTheta: Math.cos(theta),\n      angleDeg: theta * 180 / Math.PI\n    });\n  }\n  function removeTrial(id) {\n    trials.value = trials.value.filter((t) => t.id !== id);\n  }\n  function clearTrials() {\n    trials.value = [];\n    _state.nextId = 1;\n  }\n  function exportCsv() {\n    if (!trials.value.length) return;\n    const headers = \"B (T),A (m^2),theta (rad),theta (deg),cos(theta),Flux (Wb)\";\n    const rows = trials.value.map(\n      (t) => `${t.B.toFixed(3)},${t.A.toExponential(4)},${t.theta.toFixed(4)},${t.angleDeg.toFixed(2)},${t.cosTheta.toFixed(4)},${t.flux.toExponential(4)}`\n    );\n    const csv = [headers, ...rows].join(\"\\n\");\n    const blob = new Blob([\"\\uFEFF\" + csv], { type: \"text/csv;charset=utf-8;\" });\n    const url = URL.createObjectURL(blob);\n    const a = document.createElement(\"a\");\n    a.href = url;\n    a.download = \"magnetic-flux-results.csv\";\n    a.click();\n    URL.revokeObjectURL(url);\n  }\n  function exportToAnalysis() {\n    if (trials.value.length < 2) return;\n    const readings = trials.value.map((t) => ({\n      B: t.B,\n      A: t.A,\n      theta: t.theta,\n      angleDeg: t.angleDeg,\n      cosTheta: t.cosTheta,\n      flux: t.flux,\n      \"B*A\": t.B * t.A\n    }));\n    const payload = {\n      sourceExperiment: \"electromagnetism-magnetic-flux\",\n      sourceNameAr: \"الفيض المغناطيسي\",\n      hasCalcTab: true,\n      readings,\n      columns: [\n        { key: \"B\", label: \"B\", unit: \"T\" },\n        { key: \"A\", label: \"A\", unit: \"m²\" },\n        { key: \"theta\", label: \"θ\", unit: \"rad\" },\n        { key: \"angleDeg\", label: \"θ\", unit: \"°\" },\n        { key: \"cosTheta\", label: \"cos θ\", unit: \"\" },\n        { key: \"flux\", label: \"Φ\", unit: \"Wb\" },\n        { key: \"B*A\", label: \"BA\", unit: \"Wb\" }\n      ],\n      equations: [\n        {\n          name: \"Magnetic Flux\",\n          formula: \"Φ = B · A · cos(θ)\",\n          variables: [\n            { symbol: \"Φ\", label: \"Flux\" },\n            { symbol: \"B\", label: \"Field\" },\n            { symbol: \"A\", label: \"Area\" },\n            { symbol: \"θ\", label: \"Angle\" }\n          ],\n          solveFor: [\"Φ\", \"B\", \"A\", \"θ\"]\n        }\n      ],\n      suggestedPlots: [\n        { xKey: \"theta\", yKey: \"flux\", xLabel: \"θ (rad)\", yLabel: \"Φ (Wb)\", type: \"scatter\" },\n        { xKey: \"angleDeg\", yKey: \"flux\", xLabel: \"θ (°)\", yLabel: \"Φ (Wb)\", type: \"scatter\" },\n        { xKey: \"cosTheta\", yKey: \"flux\", xLabel: \"cos θ\", yLabel: \"Φ (Wb)\", type: \"scatter\" },\n        { xKey: \"B\", yKey: \"flux\", xLabel: \"B (T)\", yLabel: \"Φ (Wb)\", type: \"scatter\" },\n        { xKey: \"A\", yKey: \"flux\", xLabel: \"A (m²)\", yLabel: \"Φ (Wb)\", type: \"scatter\" }\n      ]\n    };\n    sendToAnalysis(router, payload);\n  }\n  return {\n    params,\n    running,\n    paused,\n    fluxNow,\n    cosThetaNow,\n    angleDegNow,\n    fluxMax,\n    trials,\n    probeData,\n    fluxAt,\n    togglePause,\n    resetSim,\n    recordTrial,\n    removeTrial,\n    clearTrials,\n    exportCsv,\n    exportToAnalysis,\n    setProbeData\n  };\n}\n",
+      "start": 1783626262947,
+      "end": 1783626262956,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

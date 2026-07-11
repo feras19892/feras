@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabComputedsBasic.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { computed, type Ref, type Reactive } from 'vue'\nimport type { CircuitComponent } from './types'\n\nexport function createBasicComputeds(\n  components: Reactive<CircuitComponent[]>,\n  running: Ref<boolean>,\n  activePresetId: Ref<string | null>,\n) {\n  const battery = computed(() => components.find(c => c.type === 'battery'))\n  const resistor = computed(() => components.find(c => c.type === 'resistor'))\n\n  const voltage = computed(() => battery.value?.value ?? 0)\n  const resistance = computed(() => resistor.value?.value ?? 0)\n  const current = computed(() => {\n    if (!running.value || resistance.value === 0) return 0\n    const sw = components.find(c => c.type === 'switch')\n    if (sw && !sw._closed) return 0\n    return voltage.value / resistance.value\n  })\n\n  const isKirchhoff = computed(() => activePresetId.value === 'kirchhoff')\n  const kirchhoffData = computed(() => {\n    if (!isKirchhoff.value) return null\n    const sw = components.find(c => c.type === 'switch')\n    if (sw && !sw._closed) return null\n    const batteries = components.filter(c => c.type === 'battery')\n    const resistors = components.filter(c => c.type === 'resistor')\n    if (batteries.length < 2 || resistors.length < 3) return null\n    const V1 = batteries[0]?.value ?? 0, V2 = batteries[1]?.value ?? 0\n    const R1 = resistors[0]?.value ?? 1, R2 = resistors[1]?.value ?? 1, R3 = resistors[2]?.value ?? 1\n    if (R1 === 0 || R2 === 0 || R3 === 0) return null\n    const det = (R1 + R3) * (R2 + R3) - R3 * R3\n    if (det === 0) return null\n    const I1 = (V1 * (R2 + R3) - V2 * R3) / det\n    const I2 = (V2 * (R1 + R3) - V1 * R3) / det\n    const I3 = I1 + I2\n    return { V1, V2, R1, R2, R3, I1, I2, I3 }\n  })\n  const kirchhoffCurrents = computed(() => {\n    if (!kirchhoffData.value || !running.value) return { I1: 0, I2: 0, I3: 0 }\n    return { I1: kirchhoffData.value.I1, I2: kirchhoffData.value.I2, I3: kirchhoffData.value.I3 }\n  })\n\n  const isParallel = computed(() => activePresetId.value === 'ohms-law-parallel')\n  const parallelData = computed(() => {\n    if (!isParallel.value) return null\n    const sw = components.find(c => c.type === 'switch')\n    if (sw && !sw._closed) return null\n    const batteries = components.filter(c => c.type === 'battery')\n    const resistors = components.filter(c => c.type === 'resistor')\n    if (batteries.length < 1 || resistors.length < 2) return null\n    const V = batteries[0]?.value ?? 0\n    const R1 = resistors[0]?.value ?? 1, R2 = resistors[1]?.value ?? 1\n    if (R1 === 0 || R2 === 0) return null\n    const I1 = V / R1, I2 = V / R2, Itotal = I1 + I2\n    const Req = (R1 * R2) / (R1 + R2)\n    return { V, R1, R2, I1, I2, Itotal, Req }\n  })\n  const parallelCurrents = computed(() => {\n    if (!parallelData.value || !running.value) return { I1: 0, I2: 0, Itotal: 0 }\n    return { I1: parallelData.value.I1, I2: parallelData.value.I2, Itotal: parallelData.value.Itotal }\n  })\n\n  const isPower = computed(() => activePresetId.value === 'power')\n  const powerData = computed(() => {\n    if (!isPower.value) return null\n    const sw = components.find(c => c.type === 'switch')\n    if (sw && !sw._closed) return null\n    const V = voltage.value, R = resistance.value\n    if (R === 0) return null\n    const I = V / R, P = V * I\n    return { V, I, R, P }\n  })\n  const powerReading = computed(() => {\n    if (!powerData.value || !running.value) return { V: 0, I: 0, P: 0 }\n    return { V: powerData.value.V, I: powerData.value.I, P: powerData.value.P }\n  })\n\n  const isResistivity = computed(() => activePresetId.value === 'resistivity')\n  const resistivityData = computed(() => {\n    if (!isResistivity.value) return null\n    const sw = components.find(c => c.type === 'switch')\n    if (sw && !sw._closed) return null\n    const V = voltage.value, R = resistance.value\n    if (R === 0) return null\n    const I = V / R\n    const res = components.find(c => c.type === 'resistor')\n    const L = (res as any)?._length ?? 1.0\n    const A = (res as any)?._area ?? 1e-6\n    const rho = R * A / L\n    return { V, I, R, L, A, rho }\n  })\n  const resistivityReading = computed(() => {\n    if (!resistivityData.value || !running.value) return { V: 0, I: 0, R: 0, rho: 0 }\n    return { V: resistivityData.value.V, I: resistivityData.value.I, R: resistivityData.value.R, rho: resistivityData.value.rho }\n  })\n\n  return {\n    voltage, resistance, current,\n    isKirchhoff, kirchhoffData, kirchhoffCurrents,\n    isParallel, parallelData, parallelCurrents,\n    isPower, powerData, powerReading,\n    isResistivity, resistivityData, resistivityReading,\n  }\n}\n",
-      "start": 1783634642572,
-      "end": 1783634642821,
+      "start": 1783626239185,
+      "end": 1783626239185
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626239185,
+      "end": 1783626239185,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { computed, type Ref, type Reactive } from 'vue'\nimport type { CircuitComponent } from './types'\n\nexport function createBasicComputeds(\n  components: Reactive<CircuitComponent[]>,\n  running: Ref<boolean>,\n  activePresetId: Ref<string | null>,\n) {\n  const battery = computed(() => components.find(c => c.type === 'battery'))\n  const resistor = computed(() => components.find(c => c.type === 'resistor'))\n\n  const voltage = computed(() => battery.value?.value ?? 0)\n  const resistance = computed(() => resistor.value?.value ?? 0)\n  const current = computed(() => {\n    if (!running.value || resistance.value === 0) return 0\n    const sw = components.find(c => c.type === 'switch')\n    if (sw && !sw._closed) return 0\n    return voltage.value / resistance.value\n  })\n\n  const isKirchhoff = computed(() => activePresetId.value === 'kirchhoff')\n  const kirchhoffData = computed(() => {\n    if (!isKirchhoff.value) return null\n    const sw = components.find(c => c.type === 'switch')\n    if (sw && !sw._closed) return null\n    const batteries = components.filter(c => c.type === 'battery')\n    const resistors = components.filter(c => c.type === 'resistor')\n    if (batteries.length < 2 || resistors.length < 3) return null\n    const V1 = batteries[0]?.value ?? 0, V2 = batteries[1]?.value ?? 0\n    const R1 = resistors[0]?.value ?? 1, R2 = resistors[1]?.value ?? 1, R3 = resistors[2]?.value ?? 1\n    if (R1 === 0 || R2 === 0 || R3 === 0) return null\n    const det = (R1 + R3) * (R2 + R3) - R3 * R3\n    if (det === 0) return null\n    const I1 = (V1 * (R2 + R3) - V2 * R3) / det\n    const I2 = (V2 * (R1 + R3) - V1 * R3) / det\n    const I3 = I1 + I2\n    return { V1, V2, R1, R2, R3, I1, I2, I3 }\n  })\n  const kirchhoffCurrents = computed(() => {\n    if (!kirchhoffData.value || !running.value) return { I1: 0, I2: 0, I3: 0 }\n    return { I1: kirchhoffData.value.I1, I2: kirchhoffData.value.I2, I3: kirchhoffData.value.I3 }\n  })\n\n  const isParallel = computed(() => activePresetId.value === 'ohms-law-parallel')\n  const parallelData = computed(() => {\n    if (!isParallel.value) return null\n    const sw = components.find(c => c.type === 'switch')\n    if (sw && !sw._closed) return null\n    const batteries = components.filter(c => c.type === 'battery')\n    const resistors = components.filter(c => c.type === 'resistor')\n    if (batteries.length < 1 || resistors.length < 2) return null\n    const V = batteries[0]?.value ?? 0\n    const R1 = resistors[0]?.value ?? 1, R2 = resistors[1]?.value ?? 1\n    if (R1 === 0 || R2 === 0) return null\n    const I1 = V / R1, I2 = V / R2, Itotal = I1 + I2\n    const Req = (R1 * R2) / (R1 + R2)\n    return { V, R1, R2, I1, I2, Itotal, Req }\n  })\n  const parallelCurrents = computed(() => {\n    if (!parallelData.value || !running.value) return { I1: 0, I2: 0, Itotal: 0 }\n    return { I1: parallelData.value.I1, I2: parallelData.value.I2, Itotal: parallelData.value.Itotal }\n  })\n\n  const isPower = computed(() => activePresetId.value === 'power')\n  const powerData = computed(() => {\n    if (!isPower.value) return null\n    const sw = components.find(c => c.type === 'switch')\n    if (sw && !sw._closed) return null\n    const V = voltage.value, R = resistance.value\n    if (R === 0) return null\n    const I = V / R, P = V * I\n    return { V, I, R, P }\n  })\n  const powerReading = computed(() => {\n    if (!powerData.value || !running.value) return { V: 0, I: 0, P: 0 }\n    return { V: powerData.value.V, I: powerData.value.I, P: powerData.value.P }\n  })\n\n  const isResistivity = computed(() => activePresetId.value === 'resistivity')\n  const resistivityData = computed(() => {\n    if (!isResistivity.value) return null\n    const sw = components.find(c => c.type === 'switch')\n    if (sw && !sw._closed) return null\n    const V = voltage.value, R = resistance.value\n    if (R === 0) return null\n    const I = V / R\n    const res = components.find(c => c.type === 'resistor')\n    const L = (res as any)?._length ?? 1.0\n    const A = (res as any)?._area ?? 1e-6\n    const rho = R * A / L\n    return { V, I, R, L, A, rho }\n  })\n  const resistivityReading = computed(() => {\n    if (!resistivityData.value || !running.value) return { V: 0, I: 0, R: 0, rho: 0 }\n    return { V: resistivityData.value.V, I: resistivityData.value.I, R: resistivityData.value.R, rho: resistivityData.value.rho }\n  })\n\n  return {\n    voltage, resistance, current,\n    isKirchhoff, kirchhoffData, kirchhoffCurrents,\n    isParallel, parallelData, parallelCurrents,\n    isPower, powerData, powerReading,\n    isResistivity, resistivityData, resistivityReading,\n  }\n}\n",
+      "start": 1783626239185,
+      "end": 1783626239185,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634642821,
-      "end": 1783634642821,
+      "start": 1783626239185,
+      "end": 1783626239185,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { computed } from \"vue\";\nexport function createBasicComputeds(components, running, activePresetId) {\n  const battery = computed(() => components.find((c) => c.type === \"battery\"));\n  const resistor = computed(() => components.find((c) => c.type === \"resistor\"));\n  const voltage = computed(() => battery.value?.value ?? 0);\n  const resistance = computed(() => resistor.value?.value ?? 0);\n  const current = computed(() => {\n    if (!running.value || resistance.value === 0) return 0;\n    const sw = components.find((c) => c.type === \"switch\");\n    if (sw && !sw._closed) return 0;\n    return voltage.value / resistance.value;\n  });\n  const isKirchhoff = computed(() => activePresetId.value === \"kirchhoff\");\n  const kirchhoffData = computed(() => {\n    if (!isKirchhoff.value) return null;\n    const sw = components.find((c) => c.type === \"switch\");\n    if (sw && !sw._closed) return null;\n    const batteries = components.filter((c) => c.type === \"battery\");\n    const resistors = components.filter((c) => c.type === \"resistor\");\n    if (batteries.length < 2 || resistors.length < 3) return null;\n    const V1 = batteries[0]?.value ?? 0, V2 = batteries[1]?.value ?? 0;\n    const R1 = resistors[0]?.value ?? 1, R2 = resistors[1]?.value ?? 1, R3 = resistors[2]?.value ?? 1;\n    if (R1 === 0 || R2 === 0 || R3 === 0) return null;\n    const det = (R1 + R3) * (R2 + R3) - R3 * R3;\n    if (det === 0) return null;\n    const I1 = (V1 * (R2 + R3) - V2 * R3) / det;\n    const I2 = (V2 * (R1 + R3) - V1 * R3) / det;\n    const I3 = I1 + I2;\n    return { V1, V2, R1, R2, R3, I1, I2, I3 };\n  });\n  const kirchhoffCurrents = computed(() => {\n    if (!kirchhoffData.value || !running.value) return { I1: 0, I2: 0, I3: 0 };\n    return { I1: kirchhoffData.value.I1, I2: kirchhoffData.value.I2, I3: kirchhoffData.value.I3 };\n  });\n  const isParallel = computed(() => activePresetId.value === \"ohms-law-parallel\");\n  const parallelData = computed(() => {\n    if (!isParallel.value) return null;\n    const sw = components.find((c) => c.type === \"switch\");\n    if (sw && !sw._closed) return null;\n    const batteries = components.filter((c) => c.type === \"battery\");\n    const resistors = components.filter((c) => c.type === \"resistor\");\n    if (batteries.length < 1 || resistors.length < 2) return null;\n    const V = batteries[0]?.value ?? 0;\n    const R1 = resistors[0]?.value ?? 1, R2 = resistors[1]?.value ?? 1;\n    if (R1 === 0 || R2 === 0) return null;\n    const I1 = V / R1, I2 = V / R2, Itotal = I1 + I2;\n    const Req = R1 * R2 / (R1 + R2);\n    return { V, R1, R2, I1, I2, Itotal, Req };\n  });\n  const parallelCurrents = computed(() => {\n    if (!parallelData.value || !running.value) return { I1: 0, I2: 0, Itotal: 0 };\n    return { I1: parallelData.value.I1, I2: parallelData.value.I2, Itotal: parallelData.value.Itotal };\n  });\n  const isPower = computed(() => activePresetId.value === \"power\");\n  const powerData = computed(() => {\n    if (!isPower.value) return null;\n    const sw = components.find((c) => c.type === \"switch\");\n    if (sw && !sw._closed) return null;\n    const V = voltage.value, R = resistance.value;\n    if (R === 0) return null;\n    const I = V / R, P = V * I;\n    return { V, I, R, P };\n  });\n  const powerReading = computed(() => {\n    if (!powerData.value || !running.value) return { V: 0, I: 0, P: 0 };\n    return { V: powerData.value.V, I: powerData.value.I, P: powerData.value.P };\n  });\n  const isResistivity = computed(() => activePresetId.value === \"resistivity\");\n  const resistivityData = computed(() => {\n    if (!isResistivity.value) return null;\n    const sw = components.find((c) => c.type === \"switch\");\n    if (sw && !sw._closed) return null;\n    const V = voltage.value, R = resistance.value;\n    if (R === 0) return null;\n    const I = V / R;\n    const res = components.find((c) => c.type === \"resistor\");\n    const L = res?._length ?? 1;\n    const A = res?._area ?? 1e-6;\n    const rho = R * A / L;\n    return { V, I, R, L, A, rho };\n  });\n  const resistivityReading = computed(() => {\n    if (!resistivityData.value || !running.value) return { V: 0, I: 0, R: 0, rho: 0 };\n    return { V: resistivityData.value.V, I: resistivityData.value.I, R: resistivityData.value.R, rho: resistivityData.value.rho };\n  });\n  return {\n    voltage,\n    resistance,\n    current,\n    isKirchhoff,\n    kirchhoffData,\n    kirchhoffCurrents,\n    isParallel,\n    parallelData,\n    parallelCurrents,\n    isPower,\n    powerData,\n    powerReading,\n    isResistivity,\n    resistivityData,\n    resistivityReading\n  };\n}\n",
-      "start": 1783634642821,
-      "end": 1783634642876,
+      "start": 1783626239185,
+      "end": 1783626239745,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabComputedsBasic.ts"
+          "electricLabComputedsBasic.ts"
         ],
         "sourcesContent": [
           "import { computed, type Ref, type Reactive } from 'vue'\nimport type { CircuitComponent } from './types'\n\nexport function createBasicComputeds(\n  components: Reactive<CircuitComponent[]>,\n  running: Ref<boolean>,\n  activePresetId: Ref<string | null>,\n) {\n  const battery = computed(() => components.find(c => c.type === 'battery'))\n  const resistor = computed(() => components.find(c => c.type === 'resistor'))\n\n  const voltage = computed(() => battery.value?.value ?? 0)\n  const resistance = computed(() => resistor.value?.value ?? 0)\n  const current = computed(() => {\n    if (!running.value || resistance.value === 0) return 0\n    const sw = components.find(c => c.type === 'switch')\n    if (sw && !sw._closed) return 0\n    return voltage.value / resistance.value\n  })\n\n  const isKirchhoff = computed(() => activePresetId.value === 'kirchhoff')\n  const kirchhoffData = computed(() => {\n    if (!isKirchhoff.value) return null\n    const sw = components.find(c => c.type === 'switch')\n    if (sw && !sw._closed) return null\n    const batteries = components.filter(c => c.type === 'battery')\n    const resistors = components.filter(c => c.type === 'resistor')\n    if (batteries.length < 2 || resistors.length < 3) return null\n    const V1 = batteries[0]?.value ?? 0, V2 = batteries[1]?.value ?? 0\n    const R1 = resistors[0]?.value ?? 1, R2 = resistors[1]?.value ?? 1, R3 = resistors[2]?.value ?? 1\n    if (R1 === 0 || R2 === 0 || R3 === 0) return null\n    const det = (R1 + R3) * (R2 + R3) - R3 * R3\n    if (det === 0) return null\n    const I1 = (V1 * (R2 + R3) - V2 * R3) / det\n    const I2 = (V2 * (R1 + R3) - V1 * R3) / det\n    const I3 = I1 + I2\n    return { V1, V2, R1, R2, R3, I1, I2, I3 }\n  })\n  const kirchhoffCurrents = computed(() => {\n    if (!kirchhoffData.value || !running.value) return { I1: 0, I2: 0, I3: 0 }\n    return { I1: kirchhoffData.value.I1, I2: kirchhoffData.value.I2, I3: kirchhoffData.value.I3 }\n  })\n\n  const isParallel = computed(() => activePresetId.value === 'ohms-law-parallel')\n  const parallelData = computed(() => {\n    if (!isParallel.value) return null\n    const sw = components.find(c => c.type === 'switch')\n    if (sw && !sw._closed) return null\n    const batteries = components.filter(c => c.type === 'battery')\n    const resistors = components.filter(c => c.type === 'resistor')\n    if (batteries.length < 1 || resistors.length < 2) return null\n    const V = batteries[0]?.value ?? 0\n    const R1 = resistors[0]?.value ?? 1, R2 = resistors[1]?.value ?? 1\n    if (R1 === 0 || R2 === 0) return null\n    const I1 = V / R1, I2 = V / R2, Itotal = I1 + I2\n    const Req = (R1 * R2) / (R1 + R2)\n    return { V, R1, R2, I1, I2, Itotal, Req }\n  })\n  const parallelCurrents = computed(() => {\n    if (!parallelData.value || !running.value) return { I1: 0, I2: 0, Itotal: 0 }\n    return { I1: parallelData.value.I1, I2: parallelData.value.I2, Itotal: parallelData.value.Itotal }\n  })\n\n  const isPower = computed(() => activePresetId.value === 'power')\n  const powerData = computed(() => {\n    if (!isPower.value) return null\n    const sw = components.find(c => c.type === 'switch')\n    if (sw && !sw._closed) return null\n    const V = voltage.value, R = resistance.value\n    if (R === 0) return null\n    const I = V / R, P = V * I\n    return { V, I, R, P }\n  })\n  const powerReading = computed(() => {\n    if (!powerData.value || !running.value) return { V: 0, I: 0, P: 0 }\n    return { V: powerData.value.V, I: powerData.value.I, P: powerData.value.P }\n  })\n\n  const isResistivity = computed(() => activePresetId.value === 'resistivity')\n  const resistivityData = computed(() => {\n    if (!isResistivity.value) return null\n    const sw = components.find(c => c.type === 'switch')\n    if (sw && !sw._closed) return null\n    const V = voltage.value, R = resistance.value\n    if (R === 0) return null\n    const I = V / R\n    const res = components.find(c => c.type === 'resistor')\n    const L = (res as any)?._length ?? 1.0\n    const A = (res as any)?._area ?? 1e-6\n    const rho = R * A / L\n    return { V, I, R, L, A, rho }\n  })\n  const resistivityReading = computed(() => {\n    if (!resistivityData.value || !running.value) return { V: 0, I: 0, R: 0, rho: 0 }\n    return { V: resistivityData.value.V, I: resistivityData.value.I, R: resistivityData.value.R, rho: resistivityData.value.rho }\n  })\n\n  return {\n    voltage, resistance, current,\n    isKirchhoff, kirchhoffData, kirchhoffCurrents,\n    isParallel, parallelData, parallelCurrents,\n    isPower, powerData, powerReading,\n    isResistivity, resistivityData, resistivityReading,\n  }\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634642876,
-      "end": 1783634642876,
+      "start": 1783626239745,
+      "end": 1783626239745,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642876,
-      "end": 1783634642876,
+      "start": 1783626239745,
+      "end": 1783626239745,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626239745,
+      "end": 1783626239745,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783626239745,
+      "end": 1783626239745,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634642877,
-      "end": 1783634642877,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783626239745,
+      "end": 1783626239745,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783626239745,
+      "end": 1783626239745,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642877,
-      "end": 1783634642877,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783626239745,
+      "end": 1783626239745,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783626239746,
+      "end": 1783626239746,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783626239746,
+      "end": 1783626239746,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626239746,
+      "end": 1783626239746,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626239746,
+      "end": 1783626239746,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "name": "vite:css-analysis",
+      "start": 1783626239746,
+      "end": 1783626239746,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { computed } from \"/node_modules/.vite/deps/vue.js?v=09a3ad4c\";\nexport function createBasicComputeds(components, running, activePresetId) {\n  const battery = computed(() => components.find((c) => c.type === \"battery\"));\n  const resistor = computed(() => components.find((c) => c.type === \"resistor\"));\n  const voltage = computed(() => battery.value?.value ?? 0);\n  const resistance = computed(() => resistor.value?.value ?? 0);\n  const current = computed(() => {\n    if (!running.value || resistance.value === 0) return 0;\n    const sw = components.find((c) => c.type === \"switch\");\n    if (sw && !sw._closed) return 0;\n    return voltage.value / resistance.value;\n  });\n  const isKirchhoff = computed(() => activePresetId.value === \"kirchhoff\");\n  const kirchhoffData = computed(() => {\n    if (!isKirchhoff.value) return null;\n    const sw = components.find((c) => c.type === \"switch\");\n    if (sw && !sw._closed) return null;\n    const batteries = components.filter((c) => c.type === \"battery\");\n    const resistors = components.filter((c) => c.type === \"resistor\");\n    if (batteries.length < 2 || resistors.length < 3) return null;\n    const V1 = batteries[0]?.value ?? 0, V2 = batteries[1]?.value ?? 0;\n    const R1 = resistors[0]?.value ?? 1, R2 = resistors[1]?.value ?? 1, R3 = resistors[2]?.value ?? 1;\n    if (R1 === 0 || R2 === 0 || R3 === 0) return null;\n    const det = (R1 + R3) * (R2 + R3) - R3 * R3;\n    if (det === 0) return null;\n    const I1 = (V1 * (R2 + R3) - V2 * R3) / det;\n    const I2 = (V2 * (R1 + R3) - V1 * R3) / det;\n    const I3 = I1 + I2;\n    return { V1, V2, R1, R2, R3, I1, I2, I3 };\n  });\n  const kirchhoffCurrents = computed(() => {\n    if (!kirchhoffData.value || !running.value) return { I1: 0, I2: 0, I3: 0 };\n    return { I1: kirchhoffData.value.I1, I2: kirchhoffData.value.I2, I3: kirchhoffData.value.I3 };\n  });\n  const isParallel = computed(() => activePresetId.value === \"ohms-law-parallel\");\n  const parallelData = computed(() => {\n    if (!isParallel.value) return null;\n    const sw = components.find((c) => c.type === \"switch\");\n    if (sw && !sw._closed) return null;\n    const batteries = components.filter((c) => c.type === \"battery\");\n    const resistors = components.filter((c) => c.type === \"resistor\");\n    if (batteries.length < 1 || resistors.length < 2) return null;\n    const V = batteries[0]?.value ?? 0;\n    const R1 = resistors[0]?.value ?? 1, R2 = resistors[1]?.value ?? 1;\n    if (R1 === 0 || R2 === 0) return null;\n    const I1 = V / R1, I2 = V / R2, Itotal = I1 + I2;\n    const Req = R1 * R2 / (R1 + R2);\n    return { V, R1, R2, I1, I2, Itotal, Req };\n  });\n  const parallelCurrents = computed(() => {\n    if (!parallelData.value || !running.value) return { I1: 0, I2: 0, Itotal: 0 };\n    return { I1: parallelData.value.I1, I2: parallelData.value.I2, Itotal: parallelData.value.Itotal };\n  });\n  const isPower = computed(() => activePresetId.value === \"power\");\n  const powerData = computed(() => {\n    if (!isPower.value) return null;\n    const sw = components.find((c) => c.type === \"switch\");\n    if (sw && !sw._closed) return null;\n    const V = voltage.value, R = resistance.value;\n    if (R === 0) return null;\n    const I = V / R, P = V * I;\n    return { V, I, R, P };\n  });\n  const powerReading = computed(() => {\n    if (!powerData.value || !running.value) return { V: 0, I: 0, P: 0 };\n    return { V: powerData.value.V, I: powerData.value.I, P: powerData.value.P };\n  });\n  const isResistivity = computed(() => activePresetId.value === \"resistivity\");\n  const resistivityData = computed(() => {\n    if (!isResistivity.value) return null;\n    const sw = components.find((c) => c.type === \"switch\");\n    if (sw && !sw._closed) return null;\n    const V = voltage.value, R = resistance.value;\n    if (R === 0) return null;\n    const I = V / R;\n    const res = components.find((c) => c.type === \"resistor\");\n    const L = res?._length ?? 1;\n    const A = res?._area ?? 1e-6;\n    const rho = R * A / L;\n    return { V, I, R, L, A, rho };\n  });\n  const resistivityReading = computed(() => {\n    if (!resistivityData.value || !running.value) return { V: 0, I: 0, R: 0, rho: 0 };\n    return { V: resistivityData.value.V, I: resistivityData.value.I, R: resistivityData.value.R, rho: resistivityData.value.rho };\n  });\n  return {\n    voltage,\n    resistance,\n    current,\n    isKirchhoff,\n    kirchhoffData,\n    kirchhoffCurrents,\n    isParallel,\n    parallelData,\n    parallelCurrents,\n    isPower,\n    powerData,\n    powerReading,\n    isResistivity,\n    resistivityData,\n    resistivityReading\n  };\n}\n",
+      "start": 1783626239746,
+      "end": 1783626239757,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

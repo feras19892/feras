@@ -8,12 +8,14 @@ import PolarizationPanelBody from '../../../../components/experiment/polarizatio
 import PolarizationStatusBar from '../../../../components/experiment/polarization/PolarizationStatusBar.vue'
 import PolarizationControlBar from '../../../../components/experiment/polarization/PolarizationControlBar.vue'
 import PolarizationHelpModal from '../../../../components/experiment/polarization/PolarizationHelpModal.vue'
+import PolarizationGuidePanel from '../../../../components/experiment/polarization/PolarizationGuidePanel.vue'
 import PolarizationOverlayPanels from '../../../../components/experiment/polarization/PolarizationOverlayPanels.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 
 const ex = usePolarizationExperiment()
 const { t } = useI18n()
 const helpOpen = ref(false)
+const showGuide = ref(true)
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
@@ -150,6 +152,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             />
           </div>
         </template>
+        <PolarizationGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
 

@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/spring/useSpringDraw.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { drawSpringDigital } from './drawSpringDigital'\nimport { drawSpringScene } from './useSpringScene'\nimport { useI18n } from '../useI18n'\nimport type { SpringParams } from '../../modules/physics/experiments/spring/useSpringPhysics'\n\ninterface SimState {\n  x: number; v: number; t: number; running: boolean; paused: boolean\n}\n\nexport function useSpringDraw(\n  canvasRef: { value: HTMLCanvasElement | null },\n  params: SpringParams,\n  simState: SimState\n) {\n  const { t } = useI18n()\n  function resizeCanvas() {\n    const canvas = canvasRef.value\n    if (!canvas) return\n    const wrap = canvas.parentElement as HTMLDivElement\n    if (!wrap) return\n    const w = wrap.clientWidth\n    const h = wrap.clientHeight\n    if (canvas.width !== w || canvas.height !== h) {\n      canvas.width = w\n      canvas.height = h\n    }\n  }\n\n  function draw() {\n    const canvas = canvasRef.value\n    if (!canvas) return\n    resizeCanvas()\n    const ctx = canvas.getContext('2d')\n    if (!ctx) return\n    const w = canvas.width, h = canvas.height\n\n    ctx.clearRect(0, 0, w, h)\n    ctx.fillStyle = '#f8fafc'\n    ctx.fillRect(0, 0, w, h)\n\n    const { massY, natEqY, staticStretchCm, pxPerCm } = drawSpringScene(ctx, w, h, params, simState)\n    drawSpringDigital(ctx, w, params, simState, massY, natEqY, staticStretchCm, pxPerCm, t)\n  }\n\n  return { draw, resizeCanvas }\n}\n",
-      "start": 1783634642435,
-      "end": 1783634642731,
+      "start": 1783635314723,
+      "end": 1783635314723
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783635314723,
+      "end": 1783635314723,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { drawSpringDigital } from './drawSpringDigital'\nimport { drawSpringScene } from './useSpringScene'\nimport { useI18n } from '../useI18n'\nimport type { SpringParams } from '../../modules/physics/experiments/spring/useSpringPhysics'\n\ninterface SimState {\n  x: number; v: number; t: number; running: boolean; paused: boolean\n}\n\nexport function useSpringDraw(\n  canvasRef: { value: HTMLCanvasElement | null },\n  params: SpringParams,\n  simState: SimState\n) {\n  const { t } = useI18n()\n  function resizeCanvas() {\n    const canvas = canvasRef.value\n    if (!canvas) return\n    const wrap = canvas.parentElement as HTMLDivElement\n    if (!wrap) return\n    const w = wrap.clientWidth\n    const h = wrap.clientHeight\n    if (canvas.width !== w || canvas.height !== h) {\n      canvas.width = w\n      canvas.height = h\n    }\n  }\n\n  function draw() {\n    const canvas = canvasRef.value\n    if (!canvas) return\n    resizeCanvas()\n    const ctx = canvas.getContext('2d')\n    if (!ctx) return\n    const w = canvas.width, h = canvas.height\n\n    ctx.clearRect(0, 0, w, h)\n    ctx.fillStyle = '#f8fafc'\n    ctx.fillRect(0, 0, w, h)\n\n    const { massY, natEqY, staticStretchCm, pxPerCm } = drawSpringScene(ctx, w, h, params, simState)\n    drawSpringDigital(ctx, w, params, simState, massY, natEqY, staticStretchCm, pxPerCm, t)\n  }\n\n  return { draw, resizeCanvas }\n}\n",
+      "start": 1783635314723,
+      "end": 1783635314723,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634642731,
-      "end": 1783634642731,
+      "start": 1783635314723,
+      "end": 1783635314723,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { drawSpringDigital } from \"./drawSpringDigital\";\nimport { drawSpringScene } from \"./useSpringScene\";\nimport { useI18n } from \"../useI18n\";\nexport function useSpringDraw(canvasRef, params, simState) {\n  const { t } = useI18n();\n  function resizeCanvas() {\n    const canvas = canvasRef.value;\n    if (!canvas) return;\n    const wrap = canvas.parentElement;\n    if (!wrap) return;\n    const w = wrap.clientWidth;\n    const h = wrap.clientHeight;\n    if (canvas.width !== w || canvas.height !== h) {\n      canvas.width = w;\n      canvas.height = h;\n    }\n  }\n  function draw() {\n    const canvas = canvasRef.value;\n    if (!canvas) return;\n    resizeCanvas();\n    const ctx = canvas.getContext(\"2d\");\n    if (!ctx) return;\n    const w = canvas.width, h = canvas.height;\n    ctx.clearRect(0, 0, w, h);\n    ctx.fillStyle = \"#f8fafc\";\n    ctx.fillRect(0, 0, w, h);\n    const { massY, natEqY, staticStretchCm, pxPerCm } = drawSpringScene(ctx, w, h, params, simState);\n    drawSpringDigital(ctx, w, params, simState, massY, natEqY, staticStretchCm, pxPerCm, t);\n  }\n  return { draw, resizeCanvas };\n}\n",
-      "start": 1783634642731,
-      "end": 1783634642867,
+      "start": 1783635314723,
+      "end": 1783635315184,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/composables/spring/useSpringDraw.ts"
+          "useSpringDraw.ts"
         ],
         "sourcesContent": [
           "import { drawSpringDigital } from './drawSpringDigital'\nimport { drawSpringScene } from './useSpringScene'\nimport { useI18n } from '../useI18n'\nimport type { SpringParams } from '../../modules/physics/experiments/spring/useSpringPhysics'\n\ninterface SimState {\n  x: number; v: number; t: number; running: boolean; paused: boolean\n}\n\nexport function useSpringDraw(\n  canvasRef: { value: HTMLCanvasElement | null },\n  params: SpringParams,\n  simState: SimState\n) {\n  const { t } = useI18n()\n  function resizeCanvas() {\n    const canvas = canvasRef.value\n    if (!canvas) return\n    const wrap = canvas.parentElement as HTMLDivElement\n    if (!wrap) return\n    const w = wrap.clientWidth\n    const h = wrap.clientHeight\n    if (canvas.width !== w || canvas.height !== h) {\n      canvas.width = w\n      canvas.height = h\n    }\n  }\n\n  function draw() {\n    const canvas = canvasRef.value\n    if (!canvas) return\n    resizeCanvas()\n    const ctx = canvas.getContext('2d')\n    if (!ctx) return\n    const w = canvas.width, h = canvas.height\n\n    ctx.clearRect(0, 0, w, h)\n    ctx.fillStyle = '#f8fafc'\n    ctx.fillRect(0, 0, w, h)\n\n    const { massY, natEqY, staticStretchCm, pxPerCm } = drawSpringScene(ctx, w, h, params, simState)\n    drawSpringDigital(ctx, w, params, simState, massY, natEqY, staticStretchCm, pxPerCm, t)\n  }\n\n  return { draw, resizeCanvas }\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634642867,
-      "end": 1783634642867,
+      "start": 1783635315184,
+      "end": 1783635315184,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642867,
-      "end": 1783634642867,
+      "start": 1783635315184,
+      "end": 1783635315184,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783635315184,
+      "end": 1783635315184,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642867,
-      "end": 1783634642867,
+      "start": 1783635315184,
+      "end": 1783635315184,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634642867,
-      "end": 1783634642867,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634642867,
-      "end": 1783634642867,
+      "start": 1783635315184,
+      "end": 1783635315184,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642867,
-      "end": 1783634642867,
+      "start": 1783635315184,
+      "end": 1783635315184,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642867,
-      "end": 1783634642867,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642867,
-      "end": 1783634642867,
+      "start": 1783635315184,
+      "end": 1783635315184,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642868,
-      "end": 1783634642868,
+      "start": 1783635315184,
+      "end": 1783635315184,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642868,
-      "end": 1783634642868,
+      "start": 1783635315184,
+      "end": 1783635315184,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642869,
-      "end": 1783634642869,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783635315184,
+      "end": 1783635315184,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783635315184,
+      "end": 1783635315184,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642869,
-      "end": 1783634642869,
+      "name": "vite:css-analysis",
+      "start": 1783635315184,
+      "end": 1783635315184,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { drawSpringDigital } from \"/src/composables/spring/drawSpringDigital.ts\";\nimport { drawSpringScene } from \"/src/composables/spring/useSpringScene.ts\";\nimport { useI18n } from \"/src/composables/useI18n.ts\";\nexport function useSpringDraw(canvasRef, params, simState) {\n  const { t } = useI18n();\n  function resizeCanvas() {\n    const canvas = canvasRef.value;\n    if (!canvas) return;\n    const wrap = canvas.parentElement;\n    if (!wrap) return;\n    const w = wrap.clientWidth;\n    const h = wrap.clientHeight;\n    if (canvas.width !== w || canvas.height !== h) {\n      canvas.width = w;\n      canvas.height = h;\n    }\n  }\n  function draw() {\n    const canvas = canvasRef.value;\n    if (!canvas) return;\n    resizeCanvas();\n    const ctx = canvas.getContext(\"2d\");\n    if (!ctx) return;\n    const w = canvas.width, h = canvas.height;\n    ctx.clearRect(0, 0, w, h);\n    ctx.fillStyle = \"#f8fafc\";\n    ctx.fillRect(0, 0, w, h);\n    const { massY, natEqY, staticStretchCm, pxPerCm } = drawSpringScene(ctx, w, h, params, simState);\n    drawSpringDigital(ctx, w, params, simState, massY, natEqY, staticStretchCm, pxPerCm, t);\n  }\n  return { draw, resizeCanvas };\n}\n",
+      "start": 1783635315184,
+      "end": 1783635315187,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

@@ -1,0 +1,140 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/SpringStatusBar.vue?vue&type=style&index=0&scoped=20a518cf&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.status-bar { display:flex; align-items:center; justify-content:center; gap:.4rem; padding:.35rem; border-radius:6px; font-size:.72rem; font-weight:700; margin:.2rem 0; flex-shrink:0; }\n.status-bar.ready { background:rgba(91,141,184,.12); color:#5B8DB8; border:1px solid rgba(91,141,184,.2); }\n.status-bar.paused { background:rgba(196,162,101,.12); color:#c4a265; border:1px solid rgba(196,162,101,.2); }\n.status-bar.running { background:rgba(122,158,126,.12); color:#7a9e7e; border:1px solid rgba(122,158,126,.2); }\n.status-dot { width:8px; height:8px; border-radius:50%; background:currentColor; animation:dotPulse 2s ease-in-out infinite; }\n@keyframes dotPulse { 0%,100%{opacity:.7;transform:scale(1)} 50%{opacity:1;transform:scale(1.15)} }\n",
+      "start": 1783635313946,
+      "end": 1783635313946,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/SpringStatusBar.vue"
+        ],
+        "names": [],
+        "mappings": ";AAmBA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACxL,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC1G,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC7G,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC9G,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC7H,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE",
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/SpringStatusBar.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\n\nconst { t } = useI18n()\nconst props = defineProps<{\n  running: boolean; paused: boolean\n}>()\n</script>\n\n<template>\n  <div class=\"status-bar\" :class=\"{ready:!running&&!paused, paused:running&&paused, running:running&&!paused}\" data-v-inspector=\"src/components/experiment/spring/SpringStatusBar.vue:11:3\">\n    <span class=\"status-dot\" data-v-inspector=\"src/components/experiment/spring/SpringStatusBar.vue:12:5\" />\n    <span v-if=\"!running&&!paused\" data-v-inspector=\"src/components/experiment/spring/SpringStatusBar.vue:13:5\">{{ t('experiments.ready') }}</span>\n    <span v-else-if=\"running&&paused\" data-v-inspector=\"src/components/experiment/spring/SpringStatusBar.vue:14:5\">{{ t('experiments.paused') }}</span>\n    <span v-else data-v-inspector=\"src/components/experiment/spring/SpringStatusBar.vue:15:5\">{{ t('experiments.running') }}</span>\n  </div>\n</template>\n\n<style scoped>\n.status-bar { display:flex; align-items:center; justify-content:center; gap:.4rem; padding:.35rem; border-radius:6px; font-size:.72rem; font-weight:700; margin:.2rem 0; flex-shrink:0; }\n.status-bar.ready { background:rgba(91,141,184,.12); color:#5B8DB8; border:1px solid rgba(91,141,184,.2); }\n.status-bar.paused { background:rgba(196,162,101,.12); color:#c4a265; border:1px solid rgba(196,162,101,.2); }\n.status-bar.running { background:rgba(122,158,126,.12); color:#7a9e7e; border:1px solid rgba(122,158,126,.2); }\n.status-dot { width:8px; height:8px; border-radius:50%; background:currentColor; animation:dotPulse 2s ease-in-out infinite; }\n@keyframes dotPulse { 0%,100%{opacity:.7;transform:scale(1)} 50%{opacity:1;transform:scale(1.15)} }\n</style>\n"
+        ]
+      }
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783635313946,
+      "end": 1783635313947,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "\n.status-bar { display:flex; align-items:center; justify-content:center; gap:.4rem; padding:.35rem; border-radius:6px; font-size:.72rem; font-weight:700; margin:.2rem 0; flex-shrink:0; }\n.status-bar.ready { background:rgba(91,141,184,.12); color:#5B8DB8; border:1px solid rgba(91,141,184,.2); }\n.status-bar.paused { background:rgba(196,162,101,.12); color:#c4a265; border:1px solid rgba(196,162,101,.2); }\n.status-bar.running { background:rgba(122,158,126,.12); color:#7a9e7e; border:1px solid rgba(122,158,126,.2); }\n.status-dot { width:8px; height:8px; border-radius:50%; background:currentColor; animation:dotPulse 2s ease-in-out infinite; }\n@keyframes dotPulse { 0%,100%{opacity:.7;transform:scale(1)} 50%{opacity:1;transform:scale(1.15)} }\n",
+      "start": 1783635313947,
+      "end": 1783635313947,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.status-bar { display:flex; align-items:center; justify-content:center; gap:.4rem; padding:.35rem; border-radius:6px; font-size:.72rem; font-weight:700; margin:.2rem 0; flex-shrink:0; }\n.status-bar.ready { background:rgba(91,141,184,.12); color:#5B8DB8; border:1px solid rgba(91,141,184,.2); }\n.status-bar.paused { background:rgba(196,162,101,.12); color:#c4a265; border:1px solid rgba(196,162,101,.2); }\n.status-bar.running { background:rgba(122,158,126,.12); color:#7a9e7e; border:1px solid rgba(122,158,126,.2); }\n.status-dot { width:8px; height:8px; border-radius:50%; background:currentColor; animation:dotPulse 2s ease-in-out infinite; }\n@keyframes dotPulse { 0%,100%{opacity:.7;transform:scale(1)} 50%{opacity:1;transform:scale(1.15)} }\n",
+      "start": 1783635313947,
+      "end": 1783635313948,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783635313948,
+      "end": 1783635313948,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783635313948,
+      "end": 1783635313948,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783635313951,
+      "end": 1783635313951,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.status-bar[data-v-20a518cf] { display:flex; align-items:center; justify-content:center; gap:.4rem; padding:.35rem; border-radius:6px; font-size:.72rem; font-weight:700; margin:.2rem 0; flex-shrink:0;\n}\n.status-bar.ready[data-v-20a518cf] { background:rgba(91,141,184,.12); color:#5B8DB8; border:1px solid rgba(91,141,184,.2);\n}\n.status-bar.paused[data-v-20a518cf] { background:rgba(196,162,101,.12); color:#c4a265; border:1px solid rgba(196,162,101,.2);\n}\n.status-bar.running[data-v-20a518cf] { background:rgba(122,158,126,.12); color:#7a9e7e; border:1px solid rgba(122,158,126,.2);\n}\n.status-dot[data-v-20a518cf] { width:8px; height:8px; border-radius:50%; background:currentColor; animation:dotPulse-20a518cf 2s ease-in-out infinite;\n}\n@keyframes dotPulse-20a518cf {\n0%,100%{opacity:.7;transform:scale(1)}\n50%{opacity:1;transform:scale(1.15)}\n}\n",
+      "start": 1783635313951,
+      "end": 1783635313967,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783635313967,
+      "end": 1783635313967,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/SpringStatusBar.vue?vue&type=style&index=0&scoped=20a518cf&lang.css\"\nconst __vite__css = \"\\n.status-bar[data-v-20a518cf] { display:flex; align-items:center; justify-content:center; gap:.4rem; padding:.35rem; border-radius:6px; font-size:.72rem; font-weight:700; margin:.2rem 0; flex-shrink:0;\\n}\\n.status-bar.ready[data-v-20a518cf] { background:rgba(91,141,184,.12); color:#5B8DB8; border:1px solid rgba(91,141,184,.2);\\n}\\n.status-bar.paused[data-v-20a518cf] { background:rgba(196,162,101,.12); color:#c4a265; border:1px solid rgba(196,162,101,.2);\\n}\\n.status-bar.running[data-v-20a518cf] { background:rgba(122,158,126,.12); color:#7a9e7e; border:1px solid rgba(122,158,126,.2);\\n}\\n.status-dot[data-v-20a518cf] { width:8px; height:8px; border-radius:50%; background:currentColor; animation:dotPulse-20a518cf 2s ease-in-out infinite;\\n}\\n@keyframes dotPulse-20a518cf {\\n0%,100%{opacity:.7;transform:scale(1)}\\n50%{opacity:1;transform:scale(1.15)}\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783635313967,
+      "end": 1783635313968,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783635313968,
+      "end": 1783635313968,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783635313968,
+      "end": 1783635313968,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783635313968,
+      "end": 1783635313968,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783635313968,
+      "end": 1783635313968,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783635313968,
+      "end": 1783635313968,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783635313968,
+      "end": 1783635313968,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783635313968,
+      "end": 1783635313968,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/components/experiment/spring/SpringStatusBar.vue?vue&type=style&index=0&scoped=20a518cf&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/SpringStatusBar.vue?vue&type=style&index=0&scoped=20a518cf&lang.css\"\nconst __vite__css = \"\\n.status-bar[data-v-20a518cf] { display:flex; align-items:center; justify-content:center; gap:.4rem; padding:.35rem; border-radius:6px; font-size:.72rem; font-weight:700; margin:.2rem 0; flex-shrink:0;\\n}\\n.status-bar.ready[data-v-20a518cf] { background:rgba(91,141,184,.12); color:#5B8DB8; border:1px solid rgba(91,141,184,.2);\\n}\\n.status-bar.paused[data-v-20a518cf] { background:rgba(196,162,101,.12); color:#c4a265; border:1px solid rgba(196,162,101,.2);\\n}\\n.status-bar.running[data-v-20a518cf] { background:rgba(122,158,126,.12); color:#7a9e7e; border:1px solid rgba(122,158,126,.2);\\n}\\n.status-dot[data-v-20a518cf] { width:8px; height:8px; border-radius:50%; background:currentColor; animation:dotPulse-20a518cf 2s ease-in-out infinite;\\n}\\n@keyframes dotPulse-20a518cf {\\n0%,100%{opacity:.7;transform:scale(1)}\\n50%{opacity:1;transform:scale(1.15)}\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783635313968,
+      "end": 1783635313968,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

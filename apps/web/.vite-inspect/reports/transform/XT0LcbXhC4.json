@@ -1,0 +1,129 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/locales/chemistry-analysis.ts",
+  "transforms": [
+    {
+      "name": "__load__",
+      "result": "export const chemistryAnalysis = {\n  ar: {\n    slope: 'الميل',\n    equivalencePoint: '🧪 نقطة التعادل',\n    calculateVeqAcid: 'حساب Veq & Macid',\n    jumpPrefix: 'قفزة: pH',\n    jumpAt: 'عند V=',\n    phCalculator: '🧮 حاسبة pH / pOH',\n    equations: '📐 المعادلات',\n    solve: 'حل',\n    aiAnalysisTitle: '🤖 تحليل ذكي بالـ AI',\n    analyzing: '⏳ جاري التحليل...',\n    aiAnalysisFailed: 'فشل التحليل الذكي',\n    serverConnectionError: 'خطأ في الاتصال بالخادم',\n    concentrationTable: '📊 جدول التراكيز',\n  },\n  en: {\n    slope: 'Slope',\n    equivalencePoint: '🧪 Equivalence Point',\n    calculateVeqAcid: 'Calculate Veq & Macid',\n    jumpPrefix: 'Jump: pH',\n    jumpAt: 'at V=',\n    phCalculator: '🧮 pH / pOH Calculator',\n    equations: '📐 Equations',\n    solve: 'Solve',\n    aiAnalysisTitle: '🤖 AI Smart Analysis',\n    analyzing: '⏳ Analyzing...',\n    aiAnalysisFailed: 'AI analysis failed',\n    serverConnectionError: 'Server connection error',\n    concentrationTable: '📊 Concentration Table',\n  },\n  es: {\n    slope: 'Pendiente',\n    equivalencePoint: '🧪 Punto de Equivalencia',\n    calculateVeqAcid: 'Calcular Veq & Macid',\n    jumpPrefix: 'Salto: pH',\n    jumpAt: 'en V=',\n    phCalculator: '🧮 Calculadora pH / pOH',\n    equations: '📐 Ecuaciones',\n    solve: 'Resolver',\n    aiAnalysisTitle: '🤖 Análisis Inteligente con IA',\n    analyzing: '⏳ Analizando...',\n    aiAnalysisFailed: 'Falló el análisis inteligente',\n    serverConnectionError: 'Error de conexión con el servidor',\n    concentrationTable: '📊 Tabla de Concentraciones',\n  },\n} as const\n",
+      "start": 1783626227468,
+      "end": 1783626227468
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626227468,
+      "end": 1783626227468,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "export const chemistryAnalysis = {\n  ar: {\n    slope: 'الميل',\n    equivalencePoint: '🧪 نقطة التعادل',\n    calculateVeqAcid: 'حساب Veq & Macid',\n    jumpPrefix: 'قفزة: pH',\n    jumpAt: 'عند V=',\n    phCalculator: '🧮 حاسبة pH / pOH',\n    equations: '📐 المعادلات',\n    solve: 'حل',\n    aiAnalysisTitle: '🤖 تحليل ذكي بالـ AI',\n    analyzing: '⏳ جاري التحليل...',\n    aiAnalysisFailed: 'فشل التحليل الذكي',\n    serverConnectionError: 'خطأ في الاتصال بالخادم',\n    concentrationTable: '📊 جدول التراكيز',\n  },\n  en: {\n    slope: 'Slope',\n    equivalencePoint: '🧪 Equivalence Point',\n    calculateVeqAcid: 'Calculate Veq & Macid',\n    jumpPrefix: 'Jump: pH',\n    jumpAt: 'at V=',\n    phCalculator: '🧮 pH / pOH Calculator',\n    equations: '📐 Equations',\n    solve: 'Solve',\n    aiAnalysisTitle: '🤖 AI Smart Analysis',\n    analyzing: '⏳ Analyzing...',\n    aiAnalysisFailed: 'AI analysis failed',\n    serverConnectionError: 'Server connection error',\n    concentrationTable: '📊 Concentration Table',\n  },\n  es: {\n    slope: 'Pendiente',\n    equivalencePoint: '🧪 Punto de Equivalencia',\n    calculateVeqAcid: 'Calcular Veq & Macid',\n    jumpPrefix: 'Salto: pH',\n    jumpAt: 'en V=',\n    phCalculator: '🧮 Calculadora pH / pOH',\n    equations: '📐 Ecuaciones',\n    solve: 'Resolver',\n    aiAnalysisTitle: '🤖 Análisis Inteligente con IA',\n    analyzing: '⏳ Analizando...',\n    aiAnalysisFailed: 'Falló el análisis inteligente',\n    serverConnectionError: 'Error de conexión con el servidor',\n    concentrationTable: '📊 Tabla de Concentraciones',\n  },\n} as const\n",
+      "start": 1783626227468,
+      "end": 1783626227468,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783626227468,
+      "end": 1783626227468,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "export const chemistryAnalysis = {\n  ar: {\n    slope: \"الميل\",\n    equivalencePoint: \"🧪 نقطة التعادل\",\n    calculateVeqAcid: \"حساب Veq & Macid\",\n    jumpPrefix: \"قفزة: pH\",\n    jumpAt: \"عند V=\",\n    phCalculator: \"🧮 حاسبة pH / pOH\",\n    equations: \"📐 المعادلات\",\n    solve: \"حل\",\n    aiAnalysisTitle: \"🤖 تحليل ذكي بالـ AI\",\n    analyzing: \"⏳ جاري التحليل...\",\n    aiAnalysisFailed: \"فشل التحليل الذكي\",\n    serverConnectionError: \"خطأ في الاتصال بالخادم\",\n    concentrationTable: \"📊 جدول التراكيز\"\n  },\n  en: {\n    slope: \"Slope\",\n    equivalencePoint: \"🧪 Equivalence Point\",\n    calculateVeqAcid: \"Calculate Veq & Macid\",\n    jumpPrefix: \"Jump: pH\",\n    jumpAt: \"at V=\",\n    phCalculator: \"🧮 pH / pOH Calculator\",\n    equations: \"📐 Equations\",\n    solve: \"Solve\",\n    aiAnalysisTitle: \"🤖 AI Smart Analysis\",\n    analyzing: \"⏳ Analyzing...\",\n    aiAnalysisFailed: \"AI analysis failed\",\n    serverConnectionError: \"Server connection error\",\n    concentrationTable: \"📊 Concentration Table\"\n  },\n  es: {\n    slope: \"Pendiente\",\n    equivalencePoint: \"🧪 Punto de Equivalencia\",\n    calculateVeqAcid: \"Calcular Veq & Macid\",\n    jumpPrefix: \"Salto: pH\",\n    jumpAt: \"en V=\",\n    phCalculator: \"🧮 Calculadora pH / pOH\",\n    equations: \"📐 Ecuaciones\",\n    solve: \"Resolver\",\n    aiAnalysisTitle: \"🤖 Análisis Inteligente con IA\",\n    analyzing: \"⏳ Analizando...\",\n    aiAnalysisFailed: \"Falló el análisis inteligente\",\n    serverConnectionError: \"Error de conexión con el servidor\",\n    concentrationTable: \"📊 Tabla de Concentraciones\"\n  }\n};\n",
+      "start": 1783626227468,
+      "end": 1783626227585,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "chemistry-analysis.ts"
+        ],
+        "sourcesContent": [
+          "export const chemistryAnalysis = {\n  ar: {\n    slope: 'الميل',\n    equivalencePoint: '🧪 نقطة التعادل',\n    calculateVeqAcid: 'حساب Veq & Macid',\n    jumpPrefix: 'قفزة: pH',\n    jumpAt: 'عند V=',\n    phCalculator: '🧮 حاسبة pH / pOH',\n    equations: '📐 المعادلات',\n    solve: 'حل',\n    aiAnalysisTitle: '🤖 تحليل ذكي بالـ AI',\n    analyzing: '⏳ جاري التحليل...',\n    aiAnalysisFailed: 'فشل التحليل الذكي',\n    serverConnectionError: 'خطأ في الاتصال بالخادم',\n    concentrationTable: '📊 جدول التراكيز',\n  },\n  en: {\n    slope: 'Slope',\n    equivalencePoint: '🧪 Equivalence Point',\n    calculateVeqAcid: 'Calculate Veq & Macid',\n    jumpPrefix: 'Jump: pH',\n    jumpAt: 'at V=',\n    phCalculator: '🧮 pH / pOH Calculator',\n    equations: '📐 Equations',\n    solve: 'Solve',\n    aiAnalysisTitle: '🤖 AI Smart Analysis',\n    analyzing: '⏳ Analyzing...',\n    aiAnalysisFailed: 'AI analysis failed',\n    serverConnectionError: 'Server connection error',\n    concentrationTable: '📊 Concentration Table',\n  },\n  es: {\n    slope: 'Pendiente',\n    equivalencePoint: '🧪 Punto de Equivalencia',\n    calculateVeqAcid: 'Calcular Veq & Macid',\n    jumpPrefix: 'Salto: pH',\n    jumpAt: 'en V=',\n    phCalculator: '🧮 Calculadora pH / pOH',\n    equations: '📐 Ecuaciones',\n    solve: 'Resolver',\n    aiAnalysisTitle: '🤖 Análisis Inteligente con IA',\n    analyzing: '⏳ Analizando...',\n    aiAnalysisFailed: 'Falló el análisis inteligente',\n    serverConnectionError: 'Error de conexión con el servidor',\n    concentrationTable: '📊 Tabla de Concentraciones',\n  },\n} as const\n"
+        ],
+        "mappings": "AAAO,aAAM,oBAAoB;AAAA,EAC/B,IAAI;AAAA,IACF,OAAO;AAAA,IACP,kBAAkB;AAAA,IAClB,kBAAkB;AAAA,IAClB,YAAY;AAAA,IACZ,QAAQ;AAAA,IACR,cAAc;AAAA,IACd,WAAW;AAAA,IACX,OAAO;AAAA,IACP,iBAAiB;AAAA,IACjB,WAAW;AAAA,IACX,kBAAkB;AAAA,IAClB,uBAAuB;AAAA,IACvB,oBAAoB;AAAA,EACtB;AAAA,EACA,IAAI;AAAA,IACF,OAAO;AAAA,IACP,kBAAkB;AAAA,IAClB,kBAAkB;AAAA,IAClB,YAAY;AAAA,IACZ,QAAQ;AAAA,IACR,cAAc;AAAA,IACd,WAAW;AAAA,IACX,OAAO;AAAA,IACP,iBAAiB;AAAA,IACjB,WAAW;AAAA,IACX,kBAAkB;AAAA,IAClB,uBAAuB;AAAA,IACvB,oBAAoB;AAAA,EACtB;AAAA,EACA,IAAI;AAAA,IACF,OAAO;AAAA,IACP,kBAAkB;AAAA,IAClB,kBAAkB;AAAA,IAClB,YAAY;AAAA,IACZ,QAAQ;AAAA,IACR,cAAc;AAAA,IACd,WAAW;AAAA,IACX,OAAO;AAAA,IACP,iBAAiB;AAAA,IACjB,WAAW;AAAA,IACX,kBAAkB;AAAA,IAClB,uBAAuB;AAAA,IACvB,oBAAoB;AAAA,EACtB;AACF;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626227585,
+      "end": 1783626227585,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626227586,
+      "end": 1783626227586,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783626227586,
+      "end": 1783626227586,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626227586,
+      "end": 1783626227586,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783626227586,
+      "end": 1783626227586,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626227586,
+      "end": 1783626227586,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626227586,
+      "end": 1783626227586,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626227586,
+      "end": 1783626227586,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626227586,
+      "end": 1783626227586,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626227586,
+      "end": 1783626227586,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626227586,
+      "end": 1783626227586,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626227586,
+      "end": 1783626227586,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "export const chemistryAnalysis = {\n  ar: {\n    slope: \"الميل\",\n    equivalencePoint: \"🧪 نقطة التعادل\",\n    calculateVeqAcid: \"حساب Veq & Macid\",\n    jumpPrefix: \"قفزة: pH\",\n    jumpAt: \"عند V=\",\n    phCalculator: \"🧮 حاسبة pH / pOH\",\n    equations: \"📐 المعادلات\",\n    solve: \"حل\",\n    aiAnalysisTitle: \"🤖 تحليل ذكي بالـ AI\",\n    analyzing: \"⏳ جاري التحليل...\",\n    aiAnalysisFailed: \"فشل التحليل الذكي\",\n    serverConnectionError: \"خطأ في الاتصال بالخادم\",\n    concentrationTable: \"📊 جدول التراكيز\"\n  },\n  en: {\n    slope: \"Slope\",\n    equivalencePoint: \"🧪 Equivalence Point\",\n    calculateVeqAcid: \"Calculate Veq & Macid\",\n    jumpPrefix: \"Jump: pH\",\n    jumpAt: \"at V=\",\n    phCalculator: \"🧮 pH / pOH Calculator\",\n    equations: \"📐 Equations\",\n    solve: \"Solve\",\n    aiAnalysisTitle: \"🤖 AI Smart Analysis\",\n    analyzing: \"⏳ Analyzing...\",\n    aiAnalysisFailed: \"AI analysis failed\",\n    serverConnectionError: \"Server connection error\",\n    concentrationTable: \"📊 Concentration Table\"\n  },\n  es: {\n    slope: \"Pendiente\",\n    equivalencePoint: \"🧪 Punto de Equivalencia\",\n    calculateVeqAcid: \"Calcular Veq & Macid\",\n    jumpPrefix: \"Salto: pH\",\n    jumpAt: \"en V=\",\n    phCalculator: \"🧮 Calculadora pH / pOH\",\n    equations: \"📐 Ecuaciones\",\n    solve: \"Resolver\",\n    aiAnalysisTitle: \"🤖 Análisis Inteligente con IA\",\n    analyzing: \"⏳ Analizando...\",\n    aiAnalysisFailed: \"Falló el análisis inteligente\",\n    serverConnectionError: \"Error de conexión con el servidor\",\n    concentrationTable: \"📊 Tabla de Concentraciones\"\n  }\n};\n",
+      "start": 1783626227586,
+      "end": 1783626227587,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

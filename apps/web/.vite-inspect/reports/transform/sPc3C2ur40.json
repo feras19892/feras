@@ -2,31 +2,44 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabExport.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "﻿import type { AnalysisPayload } from '../../../../types/physics'\nimport { sendToAnalysis } from '../../../../composables/analysis/sendToAnalysis'\nimport { exportBasic, type ExportContext } from './electricLabExportBasic'\nimport { exportAdvanced } from './electricLabExportAdvanced'\nimport { exportNew } from './electricLabExportNew'\nimport { exportNew2 } from './electricLabExportNew2'\nimport { exportNew3 } from './electricLabExportNew3'\nimport { exportNew4 } from './electricLabExportNew4'\nimport { exportNew5 } from './electricLabExportNew5'\n\nexport { type ExportContext } from './electricLabExportBasic'\n\nexport function createExporter(router: any, ctx: ExportContext) {\n  function exportToAnalysis() {\n    if (ctx.trials.value.length < 2) return\n    if (exportBasic(router, ctx)) return\n    if (exportAdvanced(router, ctx)) return\n    if (exportNew(router, ctx)) return\n    if (exportNew2(router, ctx)) return\n    if (exportNew3(router, ctx)) return\n    if (exportNew4(router, ctx)) return\n    if (exportNew5(router, ctx)) return\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab', sourceNameAr: 'قانون أوم', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: \"Ohm's Law\", formula: 'V = I × R', variables: [{ symbol: 'V', label: 'Voltage' }, { symbol: 'I', label: 'Current' }, { symbol: 'R', label: 'Resistance' }], solveFor: ['R'] }],\n      suggestedPlots: [{ xKey: 'I', yKey: 'V', xLabel: 'I (A)', yLabel: 'V (V)', type: 'scatter' }],\n    } as AnalysisPayload)\n  }\n  return { exportToAnalysis }\n}\n",
-      "start": 1783634641887,
-      "end": 1783634642180,
+      "start": 1783626238577,
+      "end": 1783626238577
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626238577,
+      "end": 1783626238577,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "﻿import type { AnalysisPayload } from '../../../../types/physics'\nimport { sendToAnalysis } from '../../../../composables/analysis/sendToAnalysis'\nimport { exportBasic, type ExportContext } from './electricLabExportBasic'\nimport { exportAdvanced } from './electricLabExportAdvanced'\nimport { exportNew } from './electricLabExportNew'\nimport { exportNew2 } from './electricLabExportNew2'\nimport { exportNew3 } from './electricLabExportNew3'\nimport { exportNew4 } from './electricLabExportNew4'\nimport { exportNew5 } from './electricLabExportNew5'\n\nexport { type ExportContext } from './electricLabExportBasic'\n\nexport function createExporter(router: any, ctx: ExportContext) {\n  function exportToAnalysis() {\n    if (ctx.trials.value.length < 2) return\n    if (exportBasic(router, ctx)) return\n    if (exportAdvanced(router, ctx)) return\n    if (exportNew(router, ctx)) return\n    if (exportNew2(router, ctx)) return\n    if (exportNew3(router, ctx)) return\n    if (exportNew4(router, ctx)) return\n    if (exportNew5(router, ctx)) return\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab', sourceNameAr: 'قانون أوم', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: \"Ohm's Law\", formula: 'V = I × R', variables: [{ symbol: 'V', label: 'Voltage' }, { symbol: 'I', label: 'Current' }, { symbol: 'R', label: 'Resistance' }], solveFor: ['R'] }],\n      suggestedPlots: [{ xKey: 'I', yKey: 'V', xLabel: 'I (A)', yLabel: 'V (V)', type: 'scatter' }],\n    } as AnalysisPayload)\n  }\n  return { exportToAnalysis }\n}\n",
+      "start": 1783626238577,
+      "end": 1783626238577,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634642180,
-      "end": 1783634642180,
+      "start": 1783626238577,
+      "end": 1783626238577,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { sendToAnalysis } from \"../../../../composables/analysis/sendToAnalysis\";\nimport { exportBasic } from \"./electricLabExportBasic\";\nimport { exportAdvanced } from \"./electricLabExportAdvanced\";\nimport { exportNew } from \"./electricLabExportNew\";\nimport { exportNew2 } from \"./electricLabExportNew2\";\nimport { exportNew3 } from \"./electricLabExportNew3\";\nimport { exportNew4 } from \"./electricLabExportNew4\";\nimport { exportNew5 } from \"./electricLabExportNew5\";\nexport function createExporter(router, ctx) {\n  function exportToAnalysis() {\n    if (ctx.trials.value.length < 2) return;\n    if (exportBasic(router, ctx)) return;\n    if (exportAdvanced(router, ctx)) return;\n    if (exportNew(router, ctx)) return;\n    if (exportNew2(router, ctx)) return;\n    if (exportNew3(router, ctx)) return;\n    if (exportNew4(router, ctx)) return;\n    if (exportNew5(router, ctx)) return;\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab\",\n      sourceNameAr: \"قانون أوم\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"V\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"Ohm's Law\", formula: \"V = I × R\", variables: [{ symbol: \"V\", label: \"Voltage\" }, { symbol: \"I\", label: \"Current\" }, { symbol: \"R\", label: \"Resistance\" }], solveFor: [\"R\"] }],\n      suggestedPlots: [{ xKey: \"I\", yKey: \"V\", xLabel: \"I (A)\", yLabel: \"V (V)\", type: \"scatter\" }]\n    });\n  }\n  return { exportToAnalysis };\n}\n",
-      "start": 1783634642180,
-      "end": 1783634642321,
+      "start": 1783626238577,
+      "end": 1783626238816,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabExport.ts"
+          "electricLabExport.ts"
         ],
         "sourcesContent": [
-          "import type { AnalysisPayload } from '../../../../types/physics'\nimport { sendToAnalysis } from '../../../../composables/analysis/sendToAnalysis'\nimport { exportBasic, type ExportContext } from './electricLabExportBasic'\nimport { exportAdvanced } from './electricLabExportAdvanced'\nimport { exportNew } from './electricLabExportNew'\nimport { exportNew2 } from './electricLabExportNew2'\nimport { exportNew3 } from './electricLabExportNew3'\nimport { exportNew4 } from './electricLabExportNew4'\nimport { exportNew5 } from './electricLabExportNew5'\n\nexport { type ExportContext } from './electricLabExportBasic'\n\nexport function createExporter(router: any, ctx: ExportContext) {\n  function exportToAnalysis() {\n    if (ctx.trials.value.length < 2) return\n    if (exportBasic(router, ctx)) return\n    if (exportAdvanced(router, ctx)) return\n    if (exportNew(router, ctx)) return\n    if (exportNew2(router, ctx)) return\n    if (exportNew3(router, ctx)) return\n    if (exportNew4(router, ctx)) return\n    if (exportNew5(router, ctx)) return\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab', sourceNameAr: 'قانون أوم', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: \"Ohm's Law\", formula: 'V = I × R', variables: [{ symbol: 'V', label: 'Voltage' }, { symbol: 'I', label: 'Current' }, { symbol: 'R', label: 'Resistance' }], solveFor: ['R'] }],\n      suggestedPlots: [{ xKey: 'I', yKey: 'V', xLabel: 'I (A)', yLabel: 'V (V)', type: 'scatter' }],\n    } as AnalysisPayload)\n  }\n  return { exportToAnalysis }\n}\n"
+          "﻿import type { AnalysisPayload } from '../../../../types/physics'\nimport { sendToAnalysis } from '../../../../composables/analysis/sendToAnalysis'\nimport { exportBasic, type ExportContext } from './electricLabExportBasic'\nimport { exportAdvanced } from './electricLabExportAdvanced'\nimport { exportNew } from './electricLabExportNew'\nimport { exportNew2 } from './electricLabExportNew2'\nimport { exportNew3 } from './electricLabExportNew3'\nimport { exportNew4 } from './electricLabExportNew4'\nimport { exportNew5 } from './electricLabExportNew5'\n\nexport { type ExportContext } from './electricLabExportBasic'\n\nexport function createExporter(router: any, ctx: ExportContext) {\n  function exportToAnalysis() {\n    if (ctx.trials.value.length < 2) return\n    if (exportBasic(router, ctx)) return\n    if (exportAdvanced(router, ctx)) return\n    if (exportNew(router, ctx)) return\n    if (exportNew2(router, ctx)) return\n    if (exportNew3(router, ctx)) return\n    if (exportNew4(router, ctx)) return\n    if (exportNew5(router, ctx)) return\n    sendToAnalysis(router, {\n      sourceExperiment: 'electric-lab', sourceNameAr: 'قانون أوم', hasCalcTab: true,\n      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }],\n      equations: [{ name: \"Ohm's Law\", formula: 'V = I × R', variables: [{ symbol: 'V', label: 'Voltage' }, { symbol: 'I', label: 'Current' }, { symbol: 'R', label: 'Resistance' }], solveFor: ['R'] }],\n      suggestedPlots: [{ xKey: 'I', yKey: 'V', xLabel: 'I (A)', yLabel: 'V (V)', type: 'scatter' }],\n    } as AnalysisPayload)\n  }\n  return { exportToAnalysis }\n}\n"
         ],
         "mappings": "AACA,SAAS,sBAAsB;AAC/B,SAAS,mBAAuC;AAChD,SAAS,sBAAsB;AAC/B,SAAS,iBAAiB;AAC1B,SAAS,kBAAkB;AAC3B,SAAS,kBAAkB;AAC3B,SAAS,kBAAkB;AAC3B,SAAS,kBAAkB;AAIpB,gBAAS,eAAe,QAAa,KAAoB;AAC9D,WAAS,mBAAmB;AAC1B,QAAI,IAAI,OAAO,MAAM,SAAS,EAAG;AACjC,QAAI,YAAY,QAAQ,GAAG,EAAG;AAC9B,QAAI,eAAe,QAAQ,GAAG,EAAG;AACjC,QAAI,UAAU,QAAQ,GAAG,EAAG;AAC5B,QAAI,WAAW,QAAQ,GAAG,EAAG;AAC7B,QAAI,WAAW,QAAQ,GAAG,EAAG;AAC7B,QAAI,WAAW,QAAQ,GAAG,EAAG;AAC7B,QAAI,WAAW,QAAQ,GAAG,EAAG;AAC7B,mBAAe,QAAQ;AAAA,MACrB,kBAAkB;AAAA,MAAgB,cAAc;AAAA,MAAa,YAAY;AAAA,MACzE,UAAU,IAAI,OAAO,MAAM,IAAI,QAAM,EAAE,GAAG,EAAE,SAAS,GAAG,EAAE,SAAS,GAAG,EAAE,WAAW,EAAE;AAAA,MACrF,SAAS,CAAC,EAAE,KAAK,KAAK,OAAO,KAAK,MAAM,IAAI,GAAG,EAAE,KAAK,KAAK,OAAO,KAAK,MAAM,IAAI,GAAG,EAAE,KAAK,KAAK,OAAO,KAAK,MAAM,IAAI,CAAC;AAAA,MACvH,WAAW,CAAC,EAAE,MAAM,aAAa,SAAS,aAAa,WAAW,CAAC,EAAE,QAAQ,KAAK,OAAO,UAAU,GAAG,EAAE,QAAQ,KAAK,OAAO,UAAU,GAAG,EAAE,QAAQ,KAAK,OAAO,aAAa,CAAC,GAAG,UAAU,CAAC,GAAG,EAAE,CAAC;AAAA,MACjM,gBAAgB,CAAC,EAAE,MAAM,KAAK,MAAM,KAAK,QAAQ,SAAS,QAAQ,SAAS,MAAM,UAAU,CAAC;AAAA,IAC9F,CAAoB;AAAA,EACtB;AACA,SAAO,EAAE,iBAAiB;AAC5B;",
         "names": []
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634642321,
-      "end": 1783634642321,
+      "start": 1783626238816,
+      "end": 1783626238816,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642321,
-      "end": 1783634642321,
+      "start": 1783626238816,
+      "end": 1783626238816,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626238816,
+      "end": 1783626238816,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642321,
-      "end": 1783634642321,
+      "start": 1783626238816,
+      "end": 1783626238816,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634642321,
-      "end": 1783634642321,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634642321,
-      "end": 1783634642321,
+      "start": 1783626238816,
+      "end": 1783626238819,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642321,
-      "end": 1783634642321,
+      "start": 1783626238819,
+      "end": 1783626238819,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642321,
-      "end": 1783634642321,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642321,
-      "end": 1783634642321,
+      "start": 1783626238819,
+      "end": 1783626238819,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642321,
-      "end": 1783634642321,
+      "start": 1783626238819,
+      "end": 1783626238819,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642321,
-      "end": 1783634642321,
+      "start": 1783626238819,
+      "end": 1783626238819,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642321,
-      "end": 1783634642321,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626238819,
+      "end": 1783626238819,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626238819,
+      "end": 1783626238819,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642321,
-      "end": 1783634642321,
+      "name": "vite:css-analysis",
+      "start": 1783626238819,
+      "end": 1783626238819,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { sendToAnalysis } from \"/src/composables/analysis/sendToAnalysis.ts\";\nimport { exportBasic } from \"/src/modules/physics/experiments/electric-lab/electricLabExportBasic.ts\";\nimport { exportAdvanced } from \"/src/modules/physics/experiments/electric-lab/electricLabExportAdvanced.ts\";\nimport { exportNew } from \"/src/modules/physics/experiments/electric-lab/electricLabExportNew.ts\";\nimport { exportNew2 } from \"/src/modules/physics/experiments/electric-lab/electricLabExportNew2.ts\";\nimport { exportNew3 } from \"/src/modules/physics/experiments/electric-lab/electricLabExportNew3.ts\";\nimport { exportNew4 } from \"/src/modules/physics/experiments/electric-lab/electricLabExportNew4.ts\";\nimport { exportNew5 } from \"/src/modules/physics/experiments/electric-lab/electricLabExportNew5.ts\";\nexport function createExporter(router, ctx) {\n  function exportToAnalysis() {\n    if (ctx.trials.value.length < 2) return;\n    if (exportBasic(router, ctx)) return;\n    if (exportAdvanced(router, ctx)) return;\n    if (exportNew(router, ctx)) return;\n    if (exportNew2(router, ctx)) return;\n    if (exportNew3(router, ctx)) return;\n    if (exportNew4(router, ctx)) return;\n    if (exportNew5(router, ctx)) return;\n    sendToAnalysis(router, {\n      sourceExperiment: \"electric-lab\",\n      sourceNameAr: \"قانون أوم\",\n      hasCalcTab: true,\n      readings: ctx.trials.value.map((t) => ({ V: t.voltage, I: t.current, R: t.resistance })),\n      columns: [{ key: \"V\", label: \"V\", unit: \"V\" }, { key: \"I\", label: \"I\", unit: \"A\" }, { key: \"R\", label: \"R\", unit: \"Ω\" }],\n      equations: [{ name: \"Ohm's Law\", formula: \"V = I × R\", variables: [{ symbol: \"V\", label: \"Voltage\" }, { symbol: \"I\", label: \"Current\" }, { symbol: \"R\", label: \"Resistance\" }], solveFor: [\"R\"] }],\n      suggestedPlots: [{ xKey: \"I\", yKey: \"V\", xLabel: \"I (A)\", yLabel: \"V (V)\", type: \"scatter\" }]\n    });\n  }\n  return { exportToAnalysis };\n}\n",
+      "start": 1783626238819,
+      "end": 1783626238872,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

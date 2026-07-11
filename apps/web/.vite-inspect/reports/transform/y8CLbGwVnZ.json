@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabComputedsNew5.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { computed, type Ref, type Reactive } from 'vue'\nimport type { CircuitComponent } from './types'\n\nconst BETA = 3950\nconst R0_NTC = 10000\nconst T0_NTC = 298.15\n\nexport function createNewComputeds5(\n  components: Reactive<CircuitComponent[]>,\n  running: Ref<boolean>,\n  activePresetId: Ref<string | null>,\n) {\n  const isThermistor = computed(() => activePresetId.value === 'thermistor-ntc')\n  const thermistorData = computed(() => {\n    if (!isThermistor.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const V = batt.value\n    const Tc = res.value\n    const T = Tc + 273.15\n    const R = R0_NTC * Math.exp(BETA * (1 / T - 1 / T0_NTC))\n    if (R === 0) return null\n    const I = V / R\n    const Vm = I * R\n    return { V, I, R, Tc, T, Vm }\n  })\n  const thermistorReading = computed(() => {\n    if (!thermistorData.value || !running.value) return { V: 0, I: 0, R: 0, T: 0 }\n    const d = thermistorData.value\n    return { V: d.Vm, I: d.I, R: d.R, T: d.Tc }\n  })\n\n  const isMagneticForce = computed(() => activePresetId.value === 'magnetic-force')\n  const magneticForceData = computed(() => {\n    if (!isMagneticForce.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const V = batt.value\n    const R = res.value\n    if (R === 0) return null\n    const I = V / R\n    const B = 0.5\n    const L = 0.1\n    const theta = 90\n    const F = B * I * L * Math.sin(theta * Math.PI / 180)\n    return { V, I, R, B, L, theta, F }\n  })\n  const magneticForceReading = computed(() => {\n    if (!magneticForceData.value || !running.value) return { I: 0, F: 0, B: 0, L: 0 }\n    const d = magneticForceData.value\n    return { I: d.I, F: d.F, B: d.B, L: d.L }\n  })\n\n  const isLCOsc = computed(() => activePresetId.value === 'lc-oscillation')\n  const lcOscData = computed(() => {\n    if (!isLCOsc.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const V = batt.value\n    const R = res.value\n    const L = 0.1\n    const C = 1e-6\n    const omega = 1 / Math.sqrt(L * C)\n    const f = omega / (2 * Math.PI)\n    const T_period = 1 / f\n    const I = V / R\n    const E_C = 0.5 * C * V * V\n    const E_L = 0.5 * L * I * I\n    const E_total = E_C + E_L\n    return { V, I, R, L, C, omega, f, T_period, E_C, E_L, E_total }\n  })\n  const lcOscReading = computed(() => {\n    if (!lcOscData.value || !running.value) return { V: 0, I: 0, f: 0, E: 0 }\n    const d = lcOscData.value\n    return { V: d.V, I: d.I, f: d.f, E: d.E_total }\n  })\n\n  return {\n    isThermistor, thermistorData, thermistorReading,\n    isMagneticForce, magneticForceData, magneticForceReading,\n    isLCOsc, lcOscData, lcOscReading,\n  }\n}\n",
-      "start": 1783634642573,
-      "end": 1783634642822,
+      "start": 1783626239218,
+      "end": 1783626239218
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626239218,
+      "end": 1783626239218,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { computed, type Ref, type Reactive } from 'vue'\nimport type { CircuitComponent } from './types'\n\nconst BETA = 3950\nconst R0_NTC = 10000\nconst T0_NTC = 298.15\n\nexport function createNewComputeds5(\n  components: Reactive<CircuitComponent[]>,\n  running: Ref<boolean>,\n  activePresetId: Ref<string | null>,\n) {\n  const isThermistor = computed(() => activePresetId.value === 'thermistor-ntc')\n  const thermistorData = computed(() => {\n    if (!isThermistor.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const V = batt.value\n    const Tc = res.value\n    const T = Tc + 273.15\n    const R = R0_NTC * Math.exp(BETA * (1 / T - 1 / T0_NTC))\n    if (R === 0) return null\n    const I = V / R\n    const Vm = I * R\n    return { V, I, R, Tc, T, Vm }\n  })\n  const thermistorReading = computed(() => {\n    if (!thermistorData.value || !running.value) return { V: 0, I: 0, R: 0, T: 0 }\n    const d = thermistorData.value\n    return { V: d.Vm, I: d.I, R: d.R, T: d.Tc }\n  })\n\n  const isMagneticForce = computed(() => activePresetId.value === 'magnetic-force')\n  const magneticForceData = computed(() => {\n    if (!isMagneticForce.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const V = batt.value\n    const R = res.value\n    if (R === 0) return null\n    const I = V / R\n    const B = 0.5\n    const L = 0.1\n    const theta = 90\n    const F = B * I * L * Math.sin(theta * Math.PI / 180)\n    return { V, I, R, B, L, theta, F }\n  })\n  const magneticForceReading = computed(() => {\n    if (!magneticForceData.value || !running.value) return { I: 0, F: 0, B: 0, L: 0 }\n    const d = magneticForceData.value\n    return { I: d.I, F: d.F, B: d.B, L: d.L }\n  })\n\n  const isLCOsc = computed(() => activePresetId.value === 'lc-oscillation')\n  const lcOscData = computed(() => {\n    if (!isLCOsc.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const V = batt.value\n    const R = res.value\n    const L = 0.1\n    const C = 1e-6\n    const omega = 1 / Math.sqrt(L * C)\n    const f = omega / (2 * Math.PI)\n    const T_period = 1 / f\n    const I = V / R\n    const E_C = 0.5 * C * V * V\n    const E_L = 0.5 * L * I * I\n    const E_total = E_C + E_L\n    return { V, I, R, L, C, omega, f, T_period, E_C, E_L, E_total }\n  })\n  const lcOscReading = computed(() => {\n    if (!lcOscData.value || !running.value) return { V: 0, I: 0, f: 0, E: 0 }\n    const d = lcOscData.value\n    return { V: d.V, I: d.I, f: d.f, E: d.E_total }\n  })\n\n  return {\n    isThermistor, thermistorData, thermistorReading,\n    isMagneticForce, magneticForceData, magneticForceReading,\n    isLCOsc, lcOscData, lcOscReading,\n  }\n}\n",
+      "start": 1783626239218,
+      "end": 1783626239218,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634642822,
-      "end": 1783634642822,
+      "start": 1783626239218,
+      "end": 1783626239218,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { computed } from \"vue\";\nconst BETA = 3950;\nconst R0_NTC = 1e4;\nconst T0_NTC = 298.15;\nexport function createNewComputeds5(components, running, activePresetId) {\n  const isThermistor = computed(() => activePresetId.value === \"thermistor-ntc\");\n  const thermistorData = computed(() => {\n    if (!isThermistor.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (!batt || !res) return null;\n    const V = batt.value;\n    const Tc = res.value;\n    const T = Tc + 273.15;\n    const R = R0_NTC * Math.exp(BETA * (1 / T - 1 / T0_NTC));\n    if (R === 0) return null;\n    const I = V / R;\n    const Vm = I * R;\n    return { V, I, R, Tc, T, Vm };\n  });\n  const thermistorReading = computed(() => {\n    if (!thermistorData.value || !running.value) return { V: 0, I: 0, R: 0, T: 0 };\n    const d = thermistorData.value;\n    return { V: d.Vm, I: d.I, R: d.R, T: d.Tc };\n  });\n  const isMagneticForce = computed(() => activePresetId.value === \"magnetic-force\");\n  const magneticForceData = computed(() => {\n    if (!isMagneticForce.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (!batt || !res) return null;\n    const V = batt.value;\n    const R = res.value;\n    if (R === 0) return null;\n    const I = V / R;\n    const B = 0.5;\n    const L = 0.1;\n    const theta = 90;\n    const F = B * I * L * Math.sin(theta * Math.PI / 180);\n    return { V, I, R, B, L, theta, F };\n  });\n  const magneticForceReading = computed(() => {\n    if (!magneticForceData.value || !running.value) return { I: 0, F: 0, B: 0, L: 0 };\n    const d = magneticForceData.value;\n    return { I: d.I, F: d.F, B: d.B, L: d.L };\n  });\n  const isLCOsc = computed(() => activePresetId.value === \"lc-oscillation\");\n  const lcOscData = computed(() => {\n    if (!isLCOsc.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (!batt || !res) return null;\n    const V = batt.value;\n    const R = res.value;\n    const L = 0.1;\n    const C = 1e-6;\n    const omega = 1 / Math.sqrt(L * C);\n    const f = omega / (2 * Math.PI);\n    const T_period = 1 / f;\n    const I = V / R;\n    const E_C = 0.5 * C * V * V;\n    const E_L = 0.5 * L * I * I;\n    const E_total = E_C + E_L;\n    return { V, I, R, L, C, omega, f, T_period, E_C, E_L, E_total };\n  });\n  const lcOscReading = computed(() => {\n    if (!lcOscData.value || !running.value) return { V: 0, I: 0, f: 0, E: 0 };\n    const d = lcOscData.value;\n    return { V: d.V, I: d.I, f: d.f, E: d.E_total };\n  });\n  return {\n    isThermistor,\n    thermistorData,\n    thermistorReading,\n    isMagneticForce,\n    magneticForceData,\n    magneticForceReading,\n    isLCOsc,\n    lcOscData,\n    lcOscReading\n  };\n}\n",
-      "start": 1783634642822,
-      "end": 1783634642880,
+      "start": 1783626239218,
+      "end": 1783626239795,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabComputedsNew5.ts"
+          "electricLabComputedsNew5.ts"
         ],
         "sourcesContent": [
           "import { computed, type Ref, type Reactive } from 'vue'\nimport type { CircuitComponent } from './types'\n\nconst BETA = 3950\nconst R0_NTC = 10000\nconst T0_NTC = 298.15\n\nexport function createNewComputeds5(\n  components: Reactive<CircuitComponent[]>,\n  running: Ref<boolean>,\n  activePresetId: Ref<string | null>,\n) {\n  const isThermistor = computed(() => activePresetId.value === 'thermistor-ntc')\n  const thermistorData = computed(() => {\n    if (!isThermistor.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const V = batt.value\n    const Tc = res.value\n    const T = Tc + 273.15\n    const R = R0_NTC * Math.exp(BETA * (1 / T - 1 / T0_NTC))\n    if (R === 0) return null\n    const I = V / R\n    const Vm = I * R\n    return { V, I, R, Tc, T, Vm }\n  })\n  const thermistorReading = computed(() => {\n    if (!thermistorData.value || !running.value) return { V: 0, I: 0, R: 0, T: 0 }\n    const d = thermistorData.value\n    return { V: d.Vm, I: d.I, R: d.R, T: d.Tc }\n  })\n\n  const isMagneticForce = computed(() => activePresetId.value === 'magnetic-force')\n  const magneticForceData = computed(() => {\n    if (!isMagneticForce.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const V = batt.value\n    const R = res.value\n    if (R === 0) return null\n    const I = V / R\n    const B = 0.5\n    const L = 0.1\n    const theta = 90\n    const F = B * I * L * Math.sin(theta * Math.PI / 180)\n    return { V, I, R, B, L, theta, F }\n  })\n  const magneticForceReading = computed(() => {\n    if (!magneticForceData.value || !running.value) return { I: 0, F: 0, B: 0, L: 0 }\n    const d = magneticForceData.value\n    return { I: d.I, F: d.F, B: d.B, L: d.L }\n  })\n\n  const isLCOsc = computed(() => activePresetId.value === 'lc-oscillation')\n  const lcOscData = computed(() => {\n    if (!isLCOsc.value) return null\n    const batt = components.find(c => c.type === 'battery')\n    const res = components.find(c => c.type === 'resistor')\n    if (!batt || !res) return null\n    const V = batt.value\n    const R = res.value\n    const L = 0.1\n    const C = 1e-6\n    const omega = 1 / Math.sqrt(L * C)\n    const f = omega / (2 * Math.PI)\n    const T_period = 1 / f\n    const I = V / R\n    const E_C = 0.5 * C * V * V\n    const E_L = 0.5 * L * I * I\n    const E_total = E_C + E_L\n    return { V, I, R, L, C, omega, f, T_period, E_C, E_L, E_total }\n  })\n  const lcOscReading = computed(() => {\n    if (!lcOscData.value || !running.value) return { V: 0, I: 0, f: 0, E: 0 }\n    const d = lcOscData.value\n    return { V: d.V, I: d.I, f: d.f, E: d.E_total }\n  })\n\n  return {\n    isThermistor, thermistorData, thermistorReading,\n    isMagneticForce, magneticForceData, magneticForceReading,\n    isLCOsc, lcOscData, lcOscReading,\n  }\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634642880,
-      "end": 1783634642880,
+      "start": 1783626239795,
+      "end": 1783626239795,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642880,
-      "end": 1783634642880,
+      "start": 1783626239795,
+      "end": 1783626239795,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626239795,
+      "end": 1783626239795,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642880,
-      "end": 1783634642880,
+      "start": 1783626239795,
+      "end": 1783626239795,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634642880,
-      "end": 1783634642880,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634642880,
-      "end": 1783634642880,
+      "start": 1783626239795,
+      "end": 1783626239795,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642880,
-      "end": 1783634642880,
+      "start": 1783626239795,
+      "end": 1783626239795,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642880,
-      "end": 1783634642880,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642880,
-      "end": 1783634642880,
+      "start": 1783626239795,
+      "end": 1783626239795,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642880,
-      "end": 1783634642880,
+      "start": 1783626239795,
+      "end": 1783626239795,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642880,
-      "end": 1783634642880,
+      "start": 1783626239795,
+      "end": 1783626239795,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642881,
-      "end": 1783634642881,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626239795,
+      "end": 1783626239795,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626239795,
+      "end": 1783626239795,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642881,
-      "end": 1783634642881,
+      "name": "vite:css-analysis",
+      "start": 1783626239795,
+      "end": 1783626239795,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { computed } from \"/node_modules/.vite/deps/vue.js?v=09a3ad4c\";\nconst BETA = 3950;\nconst R0_NTC = 1e4;\nconst T0_NTC = 298.15;\nexport function createNewComputeds5(components, running, activePresetId) {\n  const isThermistor = computed(() => activePresetId.value === \"thermistor-ntc\");\n  const thermistorData = computed(() => {\n    if (!isThermistor.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (!batt || !res) return null;\n    const V = batt.value;\n    const Tc = res.value;\n    const T = Tc + 273.15;\n    const R = R0_NTC * Math.exp(BETA * (1 / T - 1 / T0_NTC));\n    if (R === 0) return null;\n    const I = V / R;\n    const Vm = I * R;\n    return { V, I, R, Tc, T, Vm };\n  });\n  const thermistorReading = computed(() => {\n    if (!thermistorData.value || !running.value) return { V: 0, I: 0, R: 0, T: 0 };\n    const d = thermistorData.value;\n    return { V: d.Vm, I: d.I, R: d.R, T: d.Tc };\n  });\n  const isMagneticForce = computed(() => activePresetId.value === \"magnetic-force\");\n  const magneticForceData = computed(() => {\n    if (!isMagneticForce.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (!batt || !res) return null;\n    const V = batt.value;\n    const R = res.value;\n    if (R === 0) return null;\n    const I = V / R;\n    const B = 0.5;\n    const L = 0.1;\n    const theta = 90;\n    const F = B * I * L * Math.sin(theta * Math.PI / 180);\n    return { V, I, R, B, L, theta, F };\n  });\n  const magneticForceReading = computed(() => {\n    if (!magneticForceData.value || !running.value) return { I: 0, F: 0, B: 0, L: 0 };\n    const d = magneticForceData.value;\n    return { I: d.I, F: d.F, B: d.B, L: d.L };\n  });\n  const isLCOsc = computed(() => activePresetId.value === \"lc-oscillation\");\n  const lcOscData = computed(() => {\n    if (!isLCOsc.value) return null;\n    const batt = components.find((c) => c.type === \"battery\");\n    const res = components.find((c) => c.type === \"resistor\");\n    if (!batt || !res) return null;\n    const V = batt.value;\n    const R = res.value;\n    const L = 0.1;\n    const C = 1e-6;\n    const omega = 1 / Math.sqrt(L * C);\n    const f = omega / (2 * Math.PI);\n    const T_period = 1 / f;\n    const I = V / R;\n    const E_C = 0.5 * C * V * V;\n    const E_L = 0.5 * L * I * I;\n    const E_total = E_C + E_L;\n    return { V, I, R, L, C, omega, f, T_period, E_C, E_L, E_total };\n  });\n  const lcOscReading = computed(() => {\n    if (!lcOscData.value || !running.value) return { V: 0, I: 0, f: 0, E: 0 };\n    const d = lcOscData.value;\n    return { V: d.V, I: d.I, f: d.f, E: d.E_total };\n  });\n  return {\n    isThermistor,\n    thermistorData,\n    thermistorReading,\n    isMagneticForce,\n    magneticForceData,\n    magneticForceReading,\n    isLCOsc,\n    lcOscData,\n    lcOscReading\n  };\n}\n",
+      "start": 1783626239795,
+      "end": 1783626239809,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

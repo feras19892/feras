@@ -9,12 +9,14 @@ import FaradayLawParamPanel from '../../../../components/experiment/electromagne
 import FaradayLawReadingsPanel from '../../../../components/experiment/electromagnetism/FaradayLawReadingsPanel.vue'
 import FaradayLawDataPanel from '../../../../components/experiment/electromagnetism/FaradayLawDataPanel.vue'
 import FaradayLawGuidePanel from '../../../../components/experiment/electromagnetism/FaradayLawGuidePanel.vue'
+import ElectromagnetismHelpModal from '../../../../components/experiment/electromagnetism/ElectromagnetismHelpModal.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 import { ref } from 'vue'
 
 const ex = useFaradayLawExperiment()
 const { t } = useI18n()
 const showGuide = ref(true)
+const helpOpen = ref(false)
 const activeTab = ref<'faraday' | 'lenz'>('faraday')
 
 function onKeyDown(e: KeyboardEvent) {
@@ -22,6 +24,7 @@ function onKeyDown(e: KeyboardEvent) {
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return
   if (e.code === 'Space') { e.preventDefault(); ex.togglePause() }
   else if (e.key === 's' || e.key === 'S') { ex.recordTrial() }
+  else if (e.key === '?') { helpOpen.value = !helpOpen.value }
 }
 
 onMounted(() => window.addEventListener('keydown', onKeyDown))
@@ -40,7 +43,10 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @reset="ex.resetSim"
       @record-trial="ex.recordTrial"
       @analyze-results="ex.exportToAnalysis"
+      @toggle-help="helpOpen = !helpOpen"
     />
+
+    <ElectromagnetismHelpModal :open="helpOpen" @close="helpOpen = false" />
 
     <div class="tab-bar">
       <button class="tab-btn" :class="{ active: activeTab === 'faraday' }" @click="activeTab = 'faraday'">⚡ {{ t('experiments.faradayTab') }}</button>

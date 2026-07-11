@@ -8,12 +8,14 @@ import IdealGasPanelBody from '../../../../components/experiment/ideal-gas/Ideal
 import IdealGasStatusBar from '../../../../components/experiment/ideal-gas/IdealGasStatusBar.vue'
 import IdealGasControlBar from '../../../../components/experiment/ideal-gas/IdealGasControlBar.vue'
 import IdealGasHelpModal from '../../../../components/experiment/ideal-gas/IdealGasHelpModal.vue'
+import IdealGasGuidePanel from '../../../../components/experiment/ideal-gas/IdealGasGuidePanel.vue'
 import IdealGasOverlayPanels from '../../../../components/experiment/ideal-gas/IdealGasOverlayPanels.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 
 const ex = useIdealGasExperiment()
 const { t } = useI18n()
 const helpOpen = ref(false)
+const showGuide = ref(true)
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
@@ -139,6 +141,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             />
           </div>
         </template>
+        <IdealGasGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
 

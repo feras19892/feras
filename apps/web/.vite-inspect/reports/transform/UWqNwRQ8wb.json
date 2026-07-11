@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/projectile/useProjectileLayout.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { reactive } from 'vue'\nimport { useI18n } from '../useI18n'\n\nexport type ColumnId = 'data' | 'vis' | 'ctrl'\nexport type PanelId = 'table' | 'equations' | 'scatter' | 'tutor' | 'signal' | 'vxSignal' | 'vySignal' | 'params' | 'guide' | 'stats' | 'report'\n\nconst layoutStorageKey = 'projectile:layout:v3'\n\nconst defaultPanelColumn: Record<PanelId, ColumnId> = {\n  table: 'data', equations: 'data', scatter: 'data', tutor: 'data', report: 'data',\n  signal: 'data', vxSignal: 'data', vySignal: 'data',\n  params: 'ctrl', guide: 'ctrl', stats: 'ctrl',\n}\n\nconst defaultColumnOrder: Record<ColumnId, PanelId[]> = {\n  data: ['table', 'signal', 'vxSignal', 'vySignal'],\n  vis: [],\n  ctrl: ['params'],\n}\n\nconst allPanelIds: PanelId[] = [\n  'table', 'equations', 'scatter', 'tutor', 'report',\n  'signal', 'vxSignal', 'vySignal', 'params', 'guide', 'stats',\n]\n\nexport function useProjectileLayout() {\n  const { t } = useI18n()\n\n  const panels = reactive<Record<PanelId, boolean>>({\n    table: true, equations: false, signal: true, params: true, guide: false, stats: false,\n    vxSignal: true, vySignal: true, scatter: false, tutor: false, report: false,\n  })\n\n  const maximized = reactive<Record<PanelId, boolean>>({\n    table: false, equations: false, signal: false, params: false, guide: false, stats: false,\n    vxSignal: false, vySignal: false, scatter: false, tutor: false, report: false,\n  })\n\n  const panelColumn = reactive<Record<PanelId, ColumnId>>({ ...defaultPanelColumn })\n\n  const columnOrder = reactive<Record<ColumnId, PanelId[]>>({\n    data: [...defaultColumnOrder.data], vis: [...defaultColumnOrder.vis], ctrl: [...defaultColumnOrder.ctrl],\n  })\n\n  function isPanelVisible(id: string) { const pid = id as PanelId; return panels[pid] && !maximized[pid] }\n  function togglePanel(key: string) { if (allPanelIds.includes(key as PanelId)) panels[key as PanelId] = !panels[key as PanelId] }\n  function showAllPanels() { allPanelIds.forEach((k) => { panels[k] = true; maximized[k] = false }); resetLayout() }\n  function maximizePanel(key: string) { if (allPanelIds.includes(key as PanelId)) maximized[key as PanelId] = !maximized[key as PanelId] }\n\n  function persistLayout() { try { localStorage.setItem(layoutStorageKey, JSON.stringify({ panelColumn, columnOrder })) } catch { /* ignore */ } }\n\n  function normalizeLayout() {\n    for (const id of allPanelIds) { const col = panelColumn[id]; if (col !== 'data' && col !== 'vis' && col !== 'ctrl') panelColumn[id] = 'data' }\n    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) {\n      const seen = new Set<PanelId>()\n      columnOrder[col] = (columnOrder[col] || []).filter((id) => allPanelIds.includes(id) && !seen.has(id) && (seen.add(id), true))\n    }\n    const placed = new Set<PanelId>([...columnOrder.data, ...columnOrder.vis, ...columnOrder.ctrl])\n    for (const id of allPanelIds) { if (!placed.has(id)) columnOrder[panelColumn[id]] = [...columnOrder[panelColumn[id]], id] }\n    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) { for (const id of columnOrder[col]) panelColumn[id] = col }\n  }\n\n  function applyPersistedLayout() {\n    allPanelIds.forEach((k) => { maximized[k] = false })\n    try {\n      const raw = localStorage.getItem(layoutStorageKey)\n      if (!raw) return\n      const parsed = JSON.parse(raw) as { panelColumn?: Record<string, ColumnId>, columnOrder?: Record<string, PanelId[]> }\n      if (parsed.panelColumn) { for (const k of allPanelIds) { const v = parsed.panelColumn[k]; if (v === 'data' || v === 'vis' || v === 'ctrl') panelColumn[k] = v } }\n      if (parsed.columnOrder) { for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) { const arr = parsed.columnOrder[col]; if (Array.isArray(arr)) columnOrder[col] = arr.filter((x: PanelId) => allPanelIds.includes(x)) as PanelId[] } }\n      normalizeLayout()\n    } catch { /* ignore */ }\n  }\n\n  function resetLayout() {\n    allPanelIds.forEach((id) => { panelColumn[id] = defaultPanelColumn[id] })\n    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) { columnOrder[col] = [...defaultColumnOrder[col]] }\n    normalizeLayout(); persistLayout()\n  }\n\n  function movePanel(id: string, targetCol: ColumnId, insertAfterId?: string | null) {\n    const pid = id as PanelId\n    const after = insertAfterId ? (insertAfterId as PanelId) : null\n    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) { columnOrder[col] = columnOrder[col].filter(p => p !== pid) }\n    if (after && columnOrder[targetCol].includes(after)) {\n      const idx = columnOrder[targetCol].indexOf(after)\n      columnOrder[targetCol] = [...columnOrder[targetCol].slice(0, idx + 1), pid, ...columnOrder[targetCol].slice(idx + 1)]\n    } else { columnOrder[targetCol] = [pid, ...columnOrder[targetCol]] }\n    panelColumn[pid] = targetCol; normalizeLayout(); persistLayout()\n  }\n\n  function panelTitle(id: string) {\n    const pid = id as PanelId\n    const titles: Record<PanelId, string> = {\n      table: t('experiments.panelTable'),\n      equations: t('experiments.panelEquations'),\n      scatter: t('experiments.panelChart'),\n      tutor: t('experiments.panelResults'),\n      report: t('experiments.panelReport'),\n      signal: t('experiments.panelSignal'),\n      vxSignal: t('experiments.panelSignal'),\n      vySignal: t('experiments.panelSignal'),\n      params: t('experiments.panelParams'),\n      guide: t('experiments.guidePanel'),\n      stats: t('experiments.panelStats'),\n    }\n    return titles[pid] ?? t('experiments.panelStats')\n  }\n\n  return {\n    panels, maximized, panelColumn, columnOrder,\n    isPanelVisible, togglePanel, showAllPanels, maximizePanel, movePanel,\n    applyPersistedLayout, resetLayout, panelTitle,\n  }\n}\n",
-      "start": 1783634641825,
-      "end": 1783634642176,
+      "start": 1783626290574,
+      "end": 1783626290574
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626290574,
+      "end": 1783626290574,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { reactive } from 'vue'\nimport { useI18n } from '../useI18n'\n\nexport type ColumnId = 'data' | 'vis' | 'ctrl'\nexport type PanelId = 'table' | 'equations' | 'scatter' | 'tutor' | 'signal' | 'vxSignal' | 'vySignal' | 'params' | 'guide' | 'stats' | 'report'\n\nconst layoutStorageKey = 'projectile:layout:v3'\n\nconst defaultPanelColumn: Record<PanelId, ColumnId> = {\n  table: 'data', equations: 'data', scatter: 'data', tutor: 'data', report: 'data',\n  signal: 'data', vxSignal: 'data', vySignal: 'data',\n  params: 'ctrl', guide: 'ctrl', stats: 'ctrl',\n}\n\nconst defaultColumnOrder: Record<ColumnId, PanelId[]> = {\n  data: ['table', 'signal', 'vxSignal', 'vySignal'],\n  vis: [],\n  ctrl: ['params'],\n}\n\nconst allPanelIds: PanelId[] = [\n  'table', 'equations', 'scatter', 'tutor', 'report',\n  'signal', 'vxSignal', 'vySignal', 'params', 'guide', 'stats',\n]\n\nexport function useProjectileLayout() {\n  const { t } = useI18n()\n\n  const panels = reactive<Record<PanelId, boolean>>({\n    table: true, equations: false, signal: true, params: true, guide: false, stats: false,\n    vxSignal: true, vySignal: true, scatter: false, tutor: false, report: false,\n  })\n\n  const maximized = reactive<Record<PanelId, boolean>>({\n    table: false, equations: false, signal: false, params: false, guide: false, stats: false,\n    vxSignal: false, vySignal: false, scatter: false, tutor: false, report: false,\n  })\n\n  const panelColumn = reactive<Record<PanelId, ColumnId>>({ ...defaultPanelColumn })\n\n  const columnOrder = reactive<Record<ColumnId, PanelId[]>>({\n    data: [...defaultColumnOrder.data], vis: [...defaultColumnOrder.vis], ctrl: [...defaultColumnOrder.ctrl],\n  })\n\n  function isPanelVisible(id: string) { const pid = id as PanelId; return panels[pid] && !maximized[pid] }\n  function togglePanel(key: string) { if (allPanelIds.includes(key as PanelId)) panels[key as PanelId] = !panels[key as PanelId] }\n  function showAllPanels() { allPanelIds.forEach((k) => { panels[k] = true; maximized[k] = false }); resetLayout() }\n  function maximizePanel(key: string) { if (allPanelIds.includes(key as PanelId)) maximized[key as PanelId] = !maximized[key as PanelId] }\n\n  function persistLayout() { try { localStorage.setItem(layoutStorageKey, JSON.stringify({ panelColumn, columnOrder })) } catch { /* ignore */ } }\n\n  function normalizeLayout() {\n    for (const id of allPanelIds) { const col = panelColumn[id]; if (col !== 'data' && col !== 'vis' && col !== 'ctrl') panelColumn[id] = 'data' }\n    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) {\n      const seen = new Set<PanelId>()\n      columnOrder[col] = (columnOrder[col] || []).filter((id) => allPanelIds.includes(id) && !seen.has(id) && (seen.add(id), true))\n    }\n    const placed = new Set<PanelId>([...columnOrder.data, ...columnOrder.vis, ...columnOrder.ctrl])\n    for (const id of allPanelIds) { if (!placed.has(id)) columnOrder[panelColumn[id]] = [...columnOrder[panelColumn[id]], id] }\n    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) { for (const id of columnOrder[col]) panelColumn[id] = col }\n  }\n\n  function applyPersistedLayout() {\n    allPanelIds.forEach((k) => { maximized[k] = false })\n    try {\n      const raw = localStorage.getItem(layoutStorageKey)\n      if (!raw) return\n      const parsed = JSON.parse(raw) as { panelColumn?: Record<string, ColumnId>, columnOrder?: Record<string, PanelId[]> }\n      if (parsed.panelColumn) { for (const k of allPanelIds) { const v = parsed.panelColumn[k]; if (v === 'data' || v === 'vis' || v === 'ctrl') panelColumn[k] = v } }\n      if (parsed.columnOrder) { for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) { const arr = parsed.columnOrder[col]; if (Array.isArray(arr)) columnOrder[col] = arr.filter((x: PanelId) => allPanelIds.includes(x)) as PanelId[] } }\n      normalizeLayout()\n    } catch { /* ignore */ }\n  }\n\n  function resetLayout() {\n    allPanelIds.forEach((id) => { panelColumn[id] = defaultPanelColumn[id] })\n    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) { columnOrder[col] = [...defaultColumnOrder[col]] }\n    normalizeLayout(); persistLayout()\n  }\n\n  function movePanel(id: string, targetCol: ColumnId, insertAfterId?: string | null) {\n    const pid = id as PanelId\n    const after = insertAfterId ? (insertAfterId as PanelId) : null\n    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) { columnOrder[col] = columnOrder[col].filter(p => p !== pid) }\n    if (after && columnOrder[targetCol].includes(after)) {\n      const idx = columnOrder[targetCol].indexOf(after)\n      columnOrder[targetCol] = [...columnOrder[targetCol].slice(0, idx + 1), pid, ...columnOrder[targetCol].slice(idx + 1)]\n    } else { columnOrder[targetCol] = [pid, ...columnOrder[targetCol]] }\n    panelColumn[pid] = targetCol; normalizeLayout(); persistLayout()\n  }\n\n  function panelTitle(id: string) {\n    const pid = id as PanelId\n    const titles: Record<PanelId, string> = {\n      table: t('experiments.panelTable'),\n      equations: t('experiments.panelEquations'),\n      scatter: t('experiments.panelChart'),\n      tutor: t('experiments.panelResults'),\n      report: t('experiments.panelReport'),\n      signal: t('experiments.panelSignal'),\n      vxSignal: t('experiments.panelSignal'),\n      vySignal: t('experiments.panelSignal'),\n      params: t('experiments.panelParams'),\n      guide: t('experiments.guidePanel'),\n      stats: t('experiments.panelStats'),\n    }\n    return titles[pid] ?? t('experiments.panelStats')\n  }\n\n  return {\n    panels, maximized, panelColumn, columnOrder,\n    isPanelVisible, togglePanel, showAllPanels, maximizePanel, movePanel,\n    applyPersistedLayout, resetLayout, panelTitle,\n  }\n}\n",
+      "start": 1783626290574,
+      "end": 1783626290574,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634642176,
-      "end": 1783634642176,
+      "start": 1783626290574,
+      "end": 1783626290574,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { reactive } from \"vue\";\nimport { useI18n } from \"../useI18n\";\nconst layoutStorageKey = \"projectile:layout:v3\";\nconst defaultPanelColumn = {\n  table: \"data\",\n  equations: \"data\",\n  scatter: \"data\",\n  tutor: \"data\",\n  report: \"data\",\n  signal: \"data\",\n  vxSignal: \"data\",\n  vySignal: \"data\",\n  params: \"ctrl\",\n  guide: \"ctrl\",\n  stats: \"ctrl\"\n};\nconst defaultColumnOrder = {\n  data: [\"table\", \"signal\", \"vxSignal\", \"vySignal\"],\n  vis: [],\n  ctrl: [\"params\"]\n};\nconst allPanelIds = [\n  \"table\",\n  \"equations\",\n  \"scatter\",\n  \"tutor\",\n  \"report\",\n  \"signal\",\n  \"vxSignal\",\n  \"vySignal\",\n  \"params\",\n  \"guide\",\n  \"stats\"\n];\nexport function useProjectileLayout() {\n  const { t } = useI18n();\n  const panels = reactive({\n    table: true,\n    equations: false,\n    signal: true,\n    params: true,\n    guide: false,\n    stats: false,\n    vxSignal: true,\n    vySignal: true,\n    scatter: false,\n    tutor: false,\n    report: false\n  });\n  const maximized = reactive({\n    table: false,\n    equations: false,\n    signal: false,\n    params: false,\n    guide: false,\n    stats: false,\n    vxSignal: false,\n    vySignal: false,\n    scatter: false,\n    tutor: false,\n    report: false\n  });\n  const panelColumn = reactive({ ...defaultPanelColumn });\n  const columnOrder = reactive({\n    data: [...defaultColumnOrder.data],\n    vis: [...defaultColumnOrder.vis],\n    ctrl: [...defaultColumnOrder.ctrl]\n  });\n  function isPanelVisible(id) {\n    const pid = id;\n    return panels[pid] && !maximized[pid];\n  }\n  function togglePanel(key) {\n    if (allPanelIds.includes(key)) panels[key] = !panels[key];\n  }\n  function showAllPanels() {\n    allPanelIds.forEach((k) => {\n      panels[k] = true;\n      maximized[k] = false;\n    });\n    resetLayout();\n  }\n  function maximizePanel(key) {\n    if (allPanelIds.includes(key)) maximized[key] = !maximized[key];\n  }\n  function persistLayout() {\n    try {\n      localStorage.setItem(layoutStorageKey, JSON.stringify({ panelColumn, columnOrder }));\n    } catch {\n    }\n  }\n  function normalizeLayout() {\n    for (const id of allPanelIds) {\n      const col = panelColumn[id];\n      if (col !== \"data\" && col !== \"vis\" && col !== \"ctrl\") panelColumn[id] = \"data\";\n    }\n    for (const col of [\"data\", \"vis\", \"ctrl\"]) {\n      const seen = /* @__PURE__ */ new Set();\n      columnOrder[col] = (columnOrder[col] || []).filter((id) => allPanelIds.includes(id) && !seen.has(id) && (seen.add(id), true));\n    }\n    const placed = /* @__PURE__ */ new Set([...columnOrder.data, ...columnOrder.vis, ...columnOrder.ctrl]);\n    for (const id of allPanelIds) {\n      if (!placed.has(id)) columnOrder[panelColumn[id]] = [...columnOrder[panelColumn[id]], id];\n    }\n    for (const col of [\"data\", \"vis\", \"ctrl\"]) {\n      for (const id of columnOrder[col]) panelColumn[id] = col;\n    }\n  }\n  function applyPersistedLayout() {\n    allPanelIds.forEach((k) => {\n      maximized[k] = false;\n    });\n    try {\n      const raw = localStorage.getItem(layoutStorageKey);\n      if (!raw) return;\n      const parsed = JSON.parse(raw);\n      if (parsed.panelColumn) {\n        for (const k of allPanelIds) {\n          const v = parsed.panelColumn[k];\n          if (v === \"data\" || v === \"vis\" || v === \"ctrl\") panelColumn[k] = v;\n        }\n      }\n      if (parsed.columnOrder) {\n        for (const col of [\"data\", \"vis\", \"ctrl\"]) {\n          const arr = parsed.columnOrder[col];\n          if (Array.isArray(arr)) columnOrder[col] = arr.filter((x) => allPanelIds.includes(x));\n        }\n      }\n      normalizeLayout();\n    } catch {\n    }\n  }\n  function resetLayout() {\n    allPanelIds.forEach((id) => {\n      panelColumn[id] = defaultPanelColumn[id];\n    });\n    for (const col of [\"data\", \"vis\", \"ctrl\"]) {\n      columnOrder[col] = [...defaultColumnOrder[col]];\n    }\n    normalizeLayout();\n    persistLayout();\n  }\n  function movePanel(id, targetCol, insertAfterId) {\n    const pid = id;\n    const after = insertAfterId ? insertAfterId : null;\n    for (const col of [\"data\", \"vis\", \"ctrl\"]) {\n      columnOrder[col] = columnOrder[col].filter((p) => p !== pid);\n    }\n    if (after && columnOrder[targetCol].includes(after)) {\n      const idx = columnOrder[targetCol].indexOf(after);\n      columnOrder[targetCol] = [...columnOrder[targetCol].slice(0, idx + 1), pid, ...columnOrder[targetCol].slice(idx + 1)];\n    } else {\n      columnOrder[targetCol] = [pid, ...columnOrder[targetCol]];\n    }\n    panelColumn[pid] = targetCol;\n    normalizeLayout();\n    persistLayout();\n  }\n  function panelTitle(id) {\n    const pid = id;\n    const titles = {\n      table: t(\"experiments.panelTable\"),\n      equations: t(\"experiments.panelEquations\"),\n      scatter: t(\"experiments.panelChart\"),\n      tutor: t(\"experiments.panelResults\"),\n      report: t(\"experiments.panelReport\"),\n      signal: t(\"experiments.panelSignal\"),\n      vxSignal: t(\"experiments.panelSignal\"),\n      vySignal: t(\"experiments.panelSignal\"),\n      params: t(\"experiments.panelParams\"),\n      guide: t(\"experiments.guidePanel\"),\n      stats: t(\"experiments.panelStats\")\n    };\n    return titles[pid] ?? t(\"experiments.panelStats\");\n  }\n  return {\n    panels,\n    maximized,\n    panelColumn,\n    columnOrder,\n    isPanelVisible,\n    togglePanel,\n    showAllPanels,\n    maximizePanel,\n    movePanel,\n    applyPersistedLayout,\n    resetLayout,\n    panelTitle\n  };\n}\n",
-      "start": 1783634642176,
-      "end": 1783634642310,
+      "start": 1783626290574,
+      "end": 1783626290862,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/composables/projectile/useProjectileLayout.ts"
+          "useProjectileLayout.ts"
         ],
         "sourcesContent": [
           "import { reactive } from 'vue'\nimport { useI18n } from '../useI18n'\n\nexport type ColumnId = 'data' | 'vis' | 'ctrl'\nexport type PanelId = 'table' | 'equations' | 'scatter' | 'tutor' | 'signal' | 'vxSignal' | 'vySignal' | 'params' | 'guide' | 'stats' | 'report'\n\nconst layoutStorageKey = 'projectile:layout:v3'\n\nconst defaultPanelColumn: Record<PanelId, ColumnId> = {\n  table: 'data', equations: 'data', scatter: 'data', tutor: 'data', report: 'data',\n  signal: 'data', vxSignal: 'data', vySignal: 'data',\n  params: 'ctrl', guide: 'ctrl', stats: 'ctrl',\n}\n\nconst defaultColumnOrder: Record<ColumnId, PanelId[]> = {\n  data: ['table', 'signal', 'vxSignal', 'vySignal'],\n  vis: [],\n  ctrl: ['params'],\n}\n\nconst allPanelIds: PanelId[] = [\n  'table', 'equations', 'scatter', 'tutor', 'report',\n  'signal', 'vxSignal', 'vySignal', 'params', 'guide', 'stats',\n]\n\nexport function useProjectileLayout() {\n  const { t } = useI18n()\n\n  const panels = reactive<Record<PanelId, boolean>>({\n    table: true, equations: false, signal: true, params: true, guide: false, stats: false,\n    vxSignal: true, vySignal: true, scatter: false, tutor: false, report: false,\n  })\n\n  const maximized = reactive<Record<PanelId, boolean>>({\n    table: false, equations: false, signal: false, params: false, guide: false, stats: false,\n    vxSignal: false, vySignal: false, scatter: false, tutor: false, report: false,\n  })\n\n  const panelColumn = reactive<Record<PanelId, ColumnId>>({ ...defaultPanelColumn })\n\n  const columnOrder = reactive<Record<ColumnId, PanelId[]>>({\n    data: [...defaultColumnOrder.data], vis: [...defaultColumnOrder.vis], ctrl: [...defaultColumnOrder.ctrl],\n  })\n\n  function isPanelVisible(id: string) { const pid = id as PanelId; return panels[pid] && !maximized[pid] }\n  function togglePanel(key: string) { if (allPanelIds.includes(key as PanelId)) panels[key as PanelId] = !panels[key as PanelId] }\n  function showAllPanels() { allPanelIds.forEach((k) => { panels[k] = true; maximized[k] = false }); resetLayout() }\n  function maximizePanel(key: string) { if (allPanelIds.includes(key as PanelId)) maximized[key as PanelId] = !maximized[key as PanelId] }\n\n  function persistLayout() { try { localStorage.setItem(layoutStorageKey, JSON.stringify({ panelColumn, columnOrder })) } catch { /* ignore */ } }\n\n  function normalizeLayout() {\n    for (const id of allPanelIds) { const col = panelColumn[id]; if (col !== 'data' && col !== 'vis' && col !== 'ctrl') panelColumn[id] = 'data' }\n    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) {\n      const seen = new Set<PanelId>()\n      columnOrder[col] = (columnOrder[col] || []).filter((id) => allPanelIds.includes(id) && !seen.has(id) && (seen.add(id), true))\n    }\n    const placed = new Set<PanelId>([...columnOrder.data, ...columnOrder.vis, ...columnOrder.ctrl])\n    for (const id of allPanelIds) { if (!placed.has(id)) columnOrder[panelColumn[id]] = [...columnOrder[panelColumn[id]], id] }\n    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) { for (const id of columnOrder[col]) panelColumn[id] = col }\n  }\n\n  function applyPersistedLayout() {\n    allPanelIds.forEach((k) => { maximized[k] = false })\n    try {\n      const raw = localStorage.getItem(layoutStorageKey)\n      if (!raw) return\n      const parsed = JSON.parse(raw) as { panelColumn?: Record<string, ColumnId>, columnOrder?: Record<string, PanelId[]> }\n      if (parsed.panelColumn) { for (const k of allPanelIds) { const v = parsed.panelColumn[k]; if (v === 'data' || v === 'vis' || v === 'ctrl') panelColumn[k] = v } }\n      if (parsed.columnOrder) { for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) { const arr = parsed.columnOrder[col]; if (Array.isArray(arr)) columnOrder[col] = arr.filter((x: PanelId) => allPanelIds.includes(x)) as PanelId[] } }\n      normalizeLayout()\n    } catch { /* ignore */ }\n  }\n\n  function resetLayout() {\n    allPanelIds.forEach((id) => { panelColumn[id] = defaultPanelColumn[id] })\n    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) { columnOrder[col] = [...defaultColumnOrder[col]] }\n    normalizeLayout(); persistLayout()\n  }\n\n  function movePanel(id: string, targetCol: ColumnId, insertAfterId?: string | null) {\n    const pid = id as PanelId\n    const after = insertAfterId ? (insertAfterId as PanelId) : null\n    for (const col of ['data', 'vis', 'ctrl'] as ColumnId[]) { columnOrder[col] = columnOrder[col].filter(p => p !== pid) }\n    if (after && columnOrder[targetCol].includes(after)) {\n      const idx = columnOrder[targetCol].indexOf(after)\n      columnOrder[targetCol] = [...columnOrder[targetCol].slice(0, idx + 1), pid, ...columnOrder[targetCol].slice(idx + 1)]\n    } else { columnOrder[targetCol] = [pid, ...columnOrder[targetCol]] }\n    panelColumn[pid] = targetCol; normalizeLayout(); persistLayout()\n  }\n\n  function panelTitle(id: string) {\n    const pid = id as PanelId\n    const titles: Record<PanelId, string> = {\n      table: t('experiments.panelTable'),\n      equations: t('experiments.panelEquations'),\n      scatter: t('experiments.panelChart'),\n      tutor: t('experiments.panelResults'),\n      report: t('experiments.panelReport'),\n      signal: t('experiments.panelSignal'),\n      vxSignal: t('experiments.panelSignal'),\n      vySignal: t('experiments.panelSignal'),\n      params: t('experiments.panelParams'),\n      guide: t('experiments.guidePanel'),\n      stats: t('experiments.panelStats'),\n    }\n    return titles[pid] ?? t('experiments.panelStats')\n  }\n\n  return {\n    panels, maximized, panelColumn, columnOrder,\n    isPanelVisible, togglePanel, showAllPanels, maximizePanel, movePanel,\n    applyPersistedLayout, resetLayout, panelTitle,\n  }\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634642310,
-      "end": 1783634642310,
+      "start": 1783626290862,
+      "end": 1783626290862,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642310,
-      "end": 1783634642310,
+      "start": 1783626290862,
+      "end": 1783626290862,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626290862,
+      "end": 1783626290862,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642310,
-      "end": 1783634642310,
+      "start": 1783626290862,
+      "end": 1783626290862,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634642310,
-      "end": 1783634642310,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634642310,
-      "end": 1783634642310,
+      "start": 1783626290862,
+      "end": 1783626290862,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642310,
-      "end": 1783634642310,
+      "start": 1783626290862,
+      "end": 1783626290872,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642310,
-      "end": 1783634642310,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642310,
-      "end": 1783634642310,
+      "start": 1783626290872,
+      "end": 1783626290875,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642310,
-      "end": 1783634642310,
+      "start": 1783626290875,
+      "end": 1783626290875,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642310,
-      "end": 1783634642310,
+      "start": 1783626290875,
+      "end": 1783626290887,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642310,
-      "end": 1783634642310,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626290887,
+      "end": 1783626290887,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626290889,
+      "end": 1783626290889,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642310,
-      "end": 1783634642310,
+      "name": "vite:css-analysis",
+      "start": 1783626290889,
+      "end": 1783626290889,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { reactive } from \"/node_modules/.vite/deps/vue.js?v=09a3ad4c\";\nimport { useI18n } from \"/src/composables/useI18n.ts\";\nconst layoutStorageKey = \"projectile:layout:v3\";\nconst defaultPanelColumn = {\n  table: \"data\",\n  equations: \"data\",\n  scatter: \"data\",\n  tutor: \"data\",\n  report: \"data\",\n  signal: \"data\",\n  vxSignal: \"data\",\n  vySignal: \"data\",\n  params: \"ctrl\",\n  guide: \"ctrl\",\n  stats: \"ctrl\"\n};\nconst defaultColumnOrder = {\n  data: [\"table\", \"signal\", \"vxSignal\", \"vySignal\"],\n  vis: [],\n  ctrl: [\"params\"]\n};\nconst allPanelIds = [\n  \"table\",\n  \"equations\",\n  \"scatter\",\n  \"tutor\",\n  \"report\",\n  \"signal\",\n  \"vxSignal\",\n  \"vySignal\",\n  \"params\",\n  \"guide\",\n  \"stats\"\n];\nexport function useProjectileLayout() {\n  const { t } = useI18n();\n  const panels = reactive({\n    table: true,\n    equations: false,\n    signal: true,\n    params: true,\n    guide: false,\n    stats: false,\n    vxSignal: true,\n    vySignal: true,\n    scatter: false,\n    tutor: false,\n    report: false\n  });\n  const maximized = reactive({\n    table: false,\n    equations: false,\n    signal: false,\n    params: false,\n    guide: false,\n    stats: false,\n    vxSignal: false,\n    vySignal: false,\n    scatter: false,\n    tutor: false,\n    report: false\n  });\n  const panelColumn = reactive({ ...defaultPanelColumn });\n  const columnOrder = reactive({\n    data: [...defaultColumnOrder.data],\n    vis: [...defaultColumnOrder.vis],\n    ctrl: [...defaultColumnOrder.ctrl]\n  });\n  function isPanelVisible(id) {\n    const pid = id;\n    return panels[pid] && !maximized[pid];\n  }\n  function togglePanel(key) {\n    if (allPanelIds.includes(key)) panels[key] = !panels[key];\n  }\n  function showAllPanels() {\n    allPanelIds.forEach((k) => {\n      panels[k] = true;\n      maximized[k] = false;\n    });\n    resetLayout();\n  }\n  function maximizePanel(key) {\n    if (allPanelIds.includes(key)) maximized[key] = !maximized[key];\n  }\n  function persistLayout() {\n    try {\n      localStorage.setItem(layoutStorageKey, JSON.stringify({ panelColumn, columnOrder }));\n    } catch {\n    }\n  }\n  function normalizeLayout() {\n    for (const id of allPanelIds) {\n      const col = panelColumn[id];\n      if (col !== \"data\" && col !== \"vis\" && col !== \"ctrl\") panelColumn[id] = \"data\";\n    }\n    for (const col of [\"data\", \"vis\", \"ctrl\"]) {\n      const seen = /* @__PURE__ */ new Set();\n      columnOrder[col] = (columnOrder[col] || []).filter((id) => allPanelIds.includes(id) && !seen.has(id) && (seen.add(id), true));\n    }\n    const placed = /* @__PURE__ */ new Set([...columnOrder.data, ...columnOrder.vis, ...columnOrder.ctrl]);\n    for (const id of allPanelIds) {\n      if (!placed.has(id)) columnOrder[panelColumn[id]] = [...columnOrder[panelColumn[id]], id];\n    }\n    for (const col of [\"data\", \"vis\", \"ctrl\"]) {\n      for (const id of columnOrder[col]) panelColumn[id] = col;\n    }\n  }\n  function applyPersistedLayout() {\n    allPanelIds.forEach((k) => {\n      maximized[k] = false;\n    });\n    try {\n      const raw = localStorage.getItem(layoutStorageKey);\n      if (!raw) return;\n      const parsed = JSON.parse(raw);\n      if (parsed.panelColumn) {\n        for (const k of allPanelIds) {\n          const v = parsed.panelColumn[k];\n          if (v === \"data\" || v === \"vis\" || v === \"ctrl\") panelColumn[k] = v;\n        }\n      }\n      if (parsed.columnOrder) {\n        for (const col of [\"data\", \"vis\", \"ctrl\"]) {\n          const arr = parsed.columnOrder[col];\n          if (Array.isArray(arr)) columnOrder[col] = arr.filter((x) => allPanelIds.includes(x));\n        }\n      }\n      normalizeLayout();\n    } catch {\n    }\n  }\n  function resetLayout() {\n    allPanelIds.forEach((id) => {\n      panelColumn[id] = defaultPanelColumn[id];\n    });\n    for (const col of [\"data\", \"vis\", \"ctrl\"]) {\n      columnOrder[col] = [...defaultColumnOrder[col]];\n    }\n    normalizeLayout();\n    persistLayout();\n  }\n  function movePanel(id, targetCol, insertAfterId) {\n    const pid = id;\n    const after = insertAfterId ? insertAfterId : null;\n    for (const col of [\"data\", \"vis\", \"ctrl\"]) {\n      columnOrder[col] = columnOrder[col].filter((p) => p !== pid);\n    }\n    if (after && columnOrder[targetCol].includes(after)) {\n      const idx = columnOrder[targetCol].indexOf(after);\n      columnOrder[targetCol] = [...columnOrder[targetCol].slice(0, idx + 1), pid, ...columnOrder[targetCol].slice(idx + 1)];\n    } else {\n      columnOrder[targetCol] = [pid, ...columnOrder[targetCol]];\n    }\n    panelColumn[pid] = targetCol;\n    normalizeLayout();\n    persistLayout();\n  }\n  function panelTitle(id) {\n    const pid = id;\n    const titles = {\n      table: t(\"experiments.panelTable\"),\n      equations: t(\"experiments.panelEquations\"),\n      scatter: t(\"experiments.panelChart\"),\n      tutor: t(\"experiments.panelResults\"),\n      report: t(\"experiments.panelReport\"),\n      signal: t(\"experiments.panelSignal\"),\n      vxSignal: t(\"experiments.panelSignal\"),\n      vySignal: t(\"experiments.panelSignal\"),\n      params: t(\"experiments.panelParams\"),\n      guide: t(\"experiments.guidePanel\"),\n      stats: t(\"experiments.panelStats\")\n    };\n    return titles[pid] ?? t(\"experiments.panelStats\");\n  }\n  return {\n    panels,\n    maximized,\n    panelColumn,\n    columnOrder,\n    isPanelVisible,\n    togglePanel,\n    showAllPanels,\n    maximizePanel,\n    movePanel,\n    applyPersistedLayout,\n    resetLayout,\n    panelTitle\n  };\n}\n",
+      "start": 1783626290889,
+      "end": 1783626290981,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

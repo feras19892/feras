@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/stores/i18n.store.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { defineStore } from 'pinia';\nimport { computed, ref } from 'vue';\nimport type { Locale, TranslationDict } from '../locales/types';\nimport { loadLocaleMessages, supportedLocales } from '../locales';\n\nconst STORAGE_KEY = 'physicslab.locale';\n\nfunction getSavedLocale(): Locale {\n  const saved = localStorage.getItem(STORAGE_KEY);\n  return (saved as Locale) || 'ar';\n}\n\nexport const useI18nStore = defineStore('i18n', () => {\n  const locale = ref<Locale>(getSavedLocale());\n  const supported = ref<Locale[]>(supportedLocales);\n  const loading = ref(false);\n  const messages = ref<TranslationDict>({});\n\n  const isRtl = computed(() => locale.value === 'ar');\n  const direction = computed<'rtl' | 'ltr'>(() => (isRtl.value ? 'rtl' : 'ltr'));\n\n  async function bootstrap() {\n    await setLocale(locale.value, false);\n  }\n\n  async function setLocale(next: Locale, persist = true) {\n    loading.value = true;\n    locale.value = next;\n    if (persist) {\n      localStorage.setItem(STORAGE_KEY, next);\n    }\n    document.documentElement.lang = next;\n    document.documentElement.dir = isRtl.value ? 'rtl' : 'ltr';\n    messages.value = await loadLocaleMessages(next);\n    loading.value = false;\n  }\n\n  const t = (\n    key: string,\n    fallbackOrVars: string | Record<string, string | number> = '',\n    vars?: Record<string, string | number>\n  ): string => {\n    const isFallbackString = typeof fallbackOrVars === 'string';\n    const fallback = isFallbackString ? fallbackOrVars : '';\n    const variables = isFallbackString ? vars : fallbackOrVars;\n\n    const segments = key.split('.').filter(Boolean);\n    let node: unknown = messages.value;\n    for (const segment of segments) {\n      if (node && typeof node === 'object') {\n        node = (node as Record<string, unknown>)[segment];\n      } else {\n        node = undefined;\n        break;\n      }\n    }\n    let value = typeof node === 'string' ? node : undefined;\n    if (!value) return fallback || key;\n    if (variables) {\n      value = value.replace(/\\{([^}]+)\\}/g, (match, name) => {\n        const replacement = variables[name.trim()];\n        return replacement !== undefined ? String(replacement) : match;\n      });\n    }\n    return value;\n  };\n\n  return {\n    locale,\n    supported,\n    messages,\n    loading,\n    direction,\n    bootstrap,\n    setLocale,\n    t,\n  };\n});\n",
-      "start": 1783634638966,
-      "end": 1783634638967,
+      "start": 1783626216907,
+      "end": 1783626216907
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626216907,
+      "end": 1783626216907,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { defineStore } from 'pinia';\nimport { computed, ref } from 'vue';\nimport type { Locale, TranslationDict } from '../locales/types';\nimport { loadLocaleMessages, supportedLocales } from '../locales';\n\nconst STORAGE_KEY = 'physicslab.locale';\n\nfunction getSavedLocale(): Locale {\n  const saved = localStorage.getItem(STORAGE_KEY);\n  return (saved as Locale) || 'ar';\n}\n\nexport const useI18nStore = defineStore('i18n', () => {\n  const locale = ref<Locale>(getSavedLocale());\n  const supported = ref<Locale[]>(supportedLocales);\n  const loading = ref(false);\n  const messages = ref<TranslationDict>({});\n\n  const isRtl = computed(() => locale.value === 'ar');\n  const direction = computed<'rtl' | 'ltr'>(() => (isRtl.value ? 'rtl' : 'ltr'));\n\n  async function bootstrap() {\n    await setLocale(locale.value, false);\n  }\n\n  async function setLocale(next: Locale, persist = true) {\n    loading.value = true;\n    locale.value = next;\n    if (persist) {\n      localStorage.setItem(STORAGE_KEY, next);\n    }\n    document.documentElement.lang = next;\n    document.documentElement.dir = isRtl.value ? 'rtl' : 'ltr';\n    messages.value = await loadLocaleMessages(next);\n    loading.value = false;\n  }\n\n  const t = (\n    key: string,\n    fallbackOrVars: string | Record<string, string | number> = '',\n    vars?: Record<string, string | number>\n  ): string => {\n    const isFallbackString = typeof fallbackOrVars === 'string';\n    const fallback = isFallbackString ? fallbackOrVars : '';\n    const variables = isFallbackString ? vars : fallbackOrVars;\n\n    const segments = key.split('.').filter(Boolean);\n    let node: unknown = messages.value;\n    for (const segment of segments) {\n      if (node && typeof node === 'object') {\n        node = (node as Record<string, unknown>)[segment];\n      } else {\n        node = undefined;\n        break;\n      }\n    }\n    let value = typeof node === 'string' ? node : undefined;\n    if (!value) return fallback || key;\n    if (variables) {\n      value = value.replace(/\\{([^}]+)\\}/g, (match, name) => {\n        const replacement = variables[name.trim()];\n        return replacement !== undefined ? String(replacement) : match;\n      });\n    }\n    return value;\n  };\n\n  return {\n    locale,\n    supported,\n    messages,\n    loading,\n    direction,\n    bootstrap,\n    setLocale,\n    t,\n  };\n});\n",
+      "start": 1783626216907,
+      "end": 1783626216907,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634638967,
-      "end": 1783634638967,
+      "start": 1783626216907,
+      "end": 1783626216907,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { defineStore } from \"pinia\";\nimport { computed, ref } from \"vue\";\nimport { loadLocaleMessages, supportedLocales } from \"../locales\";\nconst STORAGE_KEY = \"physicslab.locale\";\nfunction getSavedLocale() {\n  const saved = localStorage.getItem(STORAGE_KEY);\n  return saved || \"ar\";\n}\nexport const useI18nStore = defineStore(\"i18n\", () => {\n  const locale = ref(getSavedLocale());\n  const supported = ref(supportedLocales);\n  const loading = ref(false);\n  const messages = ref({});\n  const isRtl = computed(() => locale.value === \"ar\");\n  const direction = computed(() => isRtl.value ? \"rtl\" : \"ltr\");\n  async function bootstrap() {\n    await setLocale(locale.value, false);\n  }\n  async function setLocale(next, persist = true) {\n    loading.value = true;\n    locale.value = next;\n    if (persist) {\n      localStorage.setItem(STORAGE_KEY, next);\n    }\n    document.documentElement.lang = next;\n    document.documentElement.dir = isRtl.value ? \"rtl\" : \"ltr\";\n    messages.value = await loadLocaleMessages(next);\n    loading.value = false;\n  }\n  const t = (key, fallbackOrVars = \"\", vars) => {\n    const isFallbackString = typeof fallbackOrVars === \"string\";\n    const fallback = isFallbackString ? fallbackOrVars : \"\";\n    const variables = isFallbackString ? vars : fallbackOrVars;\n    const segments = key.split(\".\").filter(Boolean);\n    let node = messages.value;\n    for (const segment of segments) {\n      if (node && typeof node === \"object\") {\n        node = node[segment];\n      } else {\n        node = void 0;\n        break;\n      }\n    }\n    let value = typeof node === \"string\" ? node : void 0;\n    if (!value) return fallback || key;\n    if (variables) {\n      value = value.replace(/\\{([^}]+)\\}/g, (match, name) => {\n        const replacement = variables[name.trim()];\n        return replacement !== void 0 ? String(replacement) : match;\n      });\n    }\n    return value;\n  };\n  return {\n    locale,\n    supported,\n    messages,\n    loading,\n    direction,\n    bootstrap,\n    setLocale,\n    t\n  };\n});\n",
-      "start": 1783634638967,
-      "end": 1783634639018,
+      "start": 1783626216907,
+      "end": 1783626218537,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/stores/i18n.store.ts"
+          "i18n.store.ts"
         ],
         "sourcesContent": [
           "import { defineStore } from 'pinia';\nimport { computed, ref } from 'vue';\nimport type { Locale, TranslationDict } from '../locales/types';\nimport { loadLocaleMessages, supportedLocales } from '../locales';\n\nconst STORAGE_KEY = 'physicslab.locale';\n\nfunction getSavedLocale(): Locale {\n  const saved = localStorage.getItem(STORAGE_KEY);\n  return (saved as Locale) || 'ar';\n}\n\nexport const useI18nStore = defineStore('i18n', () => {\n  const locale = ref<Locale>(getSavedLocale());\n  const supported = ref<Locale[]>(supportedLocales);\n  const loading = ref(false);\n  const messages = ref<TranslationDict>({});\n\n  const isRtl = computed(() => locale.value === 'ar');\n  const direction = computed<'rtl' | 'ltr'>(() => (isRtl.value ? 'rtl' : 'ltr'));\n\n  async function bootstrap() {\n    await setLocale(locale.value, false);\n  }\n\n  async function setLocale(next: Locale, persist = true) {\n    loading.value = true;\n    locale.value = next;\n    if (persist) {\n      localStorage.setItem(STORAGE_KEY, next);\n    }\n    document.documentElement.lang = next;\n    document.documentElement.dir = isRtl.value ? 'rtl' : 'ltr';\n    messages.value = await loadLocaleMessages(next);\n    loading.value = false;\n  }\n\n  const t = (\n    key: string,\n    fallbackOrVars: string | Record<string, string | number> = '',\n    vars?: Record<string, string | number>\n  ): string => {\n    const isFallbackString = typeof fallbackOrVars === 'string';\n    const fallback = isFallbackString ? fallbackOrVars : '';\n    const variables = isFallbackString ? vars : fallbackOrVars;\n\n    const segments = key.split('.').filter(Boolean);\n    let node: unknown = messages.value;\n    for (const segment of segments) {\n      if (node && typeof node === 'object') {\n        node = (node as Record<string, unknown>)[segment];\n      } else {\n        node = undefined;\n        break;\n      }\n    }\n    let value = typeof node === 'string' ? node : undefined;\n    if (!value) return fallback || key;\n    if (variables) {\n      value = value.replace(/\\{([^}]+)\\}/g, (match, name) => {\n        const replacement = variables[name.trim()];\n        return replacement !== undefined ? String(replacement) : match;\n      });\n    }\n    return value;\n  };\n\n  return {\n    locale,\n    supported,\n    messages,\n    loading,\n    direction,\n    bootstrap,\n    setLocale,\n    t,\n  };\n});\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634639018,
-      "end": 1783634639018,
+      "start": 1783626218538,
+      "end": 1783626218538,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634639018,
-      "end": 1783634639018,
+      "start": 1783626218538,
+      "end": 1783626218538,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626218538,
+      "end": 1783626218538,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634639018,
-      "end": 1783634639018,
+      "start": 1783626218538,
+      "end": 1783626218538,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634639018,
-      "end": 1783634639018,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634639019,
-      "end": 1783634639019,
+      "start": 1783626218539,
+      "end": 1783626218539,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634639019,
-      "end": 1783634639019,
+      "start": 1783626218539,
+      "end": 1783626218539,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634639019,
-      "end": 1783634639019,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634639019,
-      "end": 1783634639019,
+      "start": 1783626218541,
+      "end": 1783626218541,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634639019,
-      "end": 1783634639019,
+      "start": 1783626218541,
+      "end": 1783626218541,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634639020,
-      "end": 1783634639020,
+      "start": 1783626218541,
+      "end": 1783626218541,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634639020,
-      "end": 1783634639020,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626218541,
+      "end": 1783626218542,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626218542,
+      "end": 1783626218542,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634639020,
-      "end": 1783634639020,
+      "name": "vite:css-analysis",
+      "start": 1783626218542,
+      "end": 1783626218542,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { defineStore } from \"/node_modules/.vite/deps/pinia.js?v=d975c841\";\nimport { computed, ref } from \"/node_modules/.vite/deps/vue.js?v=09a3ad4c\";\nimport { loadLocaleMessages, supportedLocales } from \"/src/locales/index.ts\";\nconst STORAGE_KEY = \"physicslab.locale\";\nfunction getSavedLocale() {\n  const saved = localStorage.getItem(STORAGE_KEY);\n  return saved || \"ar\";\n}\nexport const useI18nStore = defineStore(\"i18n\", () => {\n  const locale = ref(getSavedLocale());\n  const supported = ref(supportedLocales);\n  const loading = ref(false);\n  const messages = ref({});\n  const isRtl = computed(() => locale.value === \"ar\");\n  const direction = computed(() => isRtl.value ? \"rtl\" : \"ltr\");\n  async function bootstrap() {\n    await setLocale(locale.value, false);\n  }\n  async function setLocale(next, persist = true) {\n    loading.value = true;\n    locale.value = next;\n    if (persist) {\n      localStorage.setItem(STORAGE_KEY, next);\n    }\n    document.documentElement.lang = next;\n    document.documentElement.dir = isRtl.value ? \"rtl\" : \"ltr\";\n    messages.value = await loadLocaleMessages(next);\n    loading.value = false;\n  }\n  const t = (key, fallbackOrVars = \"\", vars) => {\n    const isFallbackString = typeof fallbackOrVars === \"string\";\n    const fallback = isFallbackString ? fallbackOrVars : \"\";\n    const variables = isFallbackString ? vars : fallbackOrVars;\n    const segments = key.split(\".\").filter(Boolean);\n    let node = messages.value;\n    for (const segment of segments) {\n      if (node && typeof node === \"object\") {\n        node = node[segment];\n      } else {\n        node = void 0;\n        break;\n      }\n    }\n    let value = typeof node === \"string\" ? node : void 0;\n    if (!value) return fallback || key;\n    if (variables) {\n      value = value.replace(/\\{([^}]+)\\}/g, (match, name) => {\n        const replacement = variables[name.trim()];\n        return replacement !== void 0 ? String(replacement) : match;\n      });\n    }\n    return value;\n  };\n  return {\n    locale,\n    supported,\n    messages,\n    loading,\n    direction,\n    bootstrap,\n    setLocale,\n    t\n  };\n});\n",
+      "start": 1783626218542,
+      "end": 1783626226100,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

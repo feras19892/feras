@@ -6,7 +6,6 @@ import { adminUser } from './admin-user'
 import { teacher } from './teacher'
 import { common } from './common'
 import { settings } from './settings'
-import { experiments } from './experiments/index'
 import { analysis } from './analysis/index'
 import { ai } from './ai'
 import { chemistry } from './chemistry'
@@ -27,7 +26,6 @@ export default {
   teacher: teacher.es,
   settings: settings.es,
   common: common.es,
-  experiments: experiments.es,
   analysis: analysis.es,
   ai: ai.es,
   chemistry: chemistry.es,
@@ -38,20 +36,4 @@ export default {
   chemistryExperiments: chemistryExperiments.es,
   chemistryTools: chemistryTools.es,
   chemistryAssistant: chemistryAssistant.es,
-  prism: {
-    ...experiments.es,
-    title: 'Dispersión de Luz por Prisma',
-    emptyResults: 'Registra al menos 2 lecturas para ver resultados',
-    dragLaserSource: '⊹ Arrastra la fuente láser ↕ para cambiar θ₁',
-    dragA: 'Arrastra A para cambiar el ángulo del prisma',
-    dragPrism: '✥ Arrastra el prisma para moverlo en la pantalla',
-    selectTool: 'Seleccionar (predeterminado)',
-    moveMode: 'Modo mover',
-    normalLines: 'Líneas Normales',
-    showSpectrum: 'Mostrar Espectro',
-    angleArcs: 'Arcos de Ángulo',
-    virtualScreen: 'Pantalla Virtual',
-    grid: 'Cuadrícula',
-    resetView: 'Restablecer vista',
-  },
 } as const

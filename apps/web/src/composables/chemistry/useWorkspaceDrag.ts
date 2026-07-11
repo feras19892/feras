@@ -176,11 +176,16 @@ export function useWorkspaceDrag(
 
     // --- Clamp-attached tool snap to retort stand slot ---
     if (isClampAttachable(item.id)) {
+      detachFromTopSlots(item.uid);
+      const result = findNearestSlot(item.uid, item.x, item.y, item.id);
+      retortStandSnapUid.value = result ? result.standUid + '|' + result.slotIdx : null;
       finalizeTopSlotSnap(item.uid);
     }
 
     // --- Bottom clamp beaker snap ---
     if (item.id === 'beaker-100' || item.id === 'beaker-250' || item.id === 'beaker-500') {
+      detachFromBottomClamp(item.uid);
+      bottomClampSnapUid.value = findNearestBottomClamp(item.uid, item.x, item.y);
       finalizeBottomClampSnap(item.uid);
     }
 

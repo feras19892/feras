@@ -1,0 +1,129 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/locales/settings.ts",
+  "transforms": [
+    {
+      "name": "__load__",
+      "result": "export const settings = {\n  ar: {\n    darkMode: 'وضع داكن',\n    lightMode: 'وضع فاتح',\n  },\n  en: {\n    darkMode: 'Dark Mode',\n    lightMode: 'Light Mode',\n  },\n  es: {\n    darkMode: 'Modo Oscuro',\n    lightMode: 'Modo Claro',\n  },\n} as const\n",
+      "start": 1783626227462,
+      "end": 1783626227462
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626227462,
+      "end": 1783626227462,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "export const settings = {\n  ar: {\n    darkMode: 'وضع داكن',\n    lightMode: 'وضع فاتح',\n  },\n  en: {\n    darkMode: 'Dark Mode',\n    lightMode: 'Light Mode',\n  },\n  es: {\n    darkMode: 'Modo Oscuro',\n    lightMode: 'Modo Claro',\n  },\n} as const\n",
+      "start": 1783626227462,
+      "end": 1783626227462,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783626227462,
+      "end": 1783626227462,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "export const settings = {\n  ar: {\n    darkMode: \"وضع داكن\",\n    lightMode: \"وضع فاتح\"\n  },\n  en: {\n    darkMode: \"Dark Mode\",\n    lightMode: \"Light Mode\"\n  },\n  es: {\n    darkMode: \"Modo Oscuro\",\n    lightMode: \"Modo Claro\"\n  }\n};\n",
+      "start": 1783626227462,
+      "end": 1783626227560,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "settings.ts"
+        ],
+        "sourcesContent": [
+          "export const settings = {\n  ar: {\n    darkMode: 'وضع داكن',\n    lightMode: 'وضع فاتح',\n  },\n  en: {\n    darkMode: 'Dark Mode',\n    lightMode: 'Light Mode',\n  },\n  es: {\n    darkMode: 'Modo Oscuro',\n    lightMode: 'Modo Claro',\n  },\n} as const\n"
+        ],
+        "mappings": "AAAO,aAAM,WAAW;AAAA,EACtB,IAAI;AAAA,IACF,UAAU;AAAA,IACV,WAAW;AAAA,EACb;AAAA,EACA,IAAI;AAAA,IACF,UAAU;AAAA,IACV,WAAW;AAAA,EACb;AAAA,EACA,IAAI;AAAA,IACF,UAAU;AAAA,IACV,WAAW;AAAA,EACb;AACF;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "export const settings = {\n  ar: {\n    darkMode: \"وضع داكن\",\n    lightMode: \"وضع فاتح\"\n  },\n  en: {\n    darkMode: \"Dark Mode\",\n    lightMode: \"Light Mode\"\n  },\n  es: {\n    darkMode: \"Modo Oscuro\",\n    lightMode: \"Modo Claro\"\n  }\n};\n",
+      "start": 1783626227561,
+      "end": 1783626227561,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

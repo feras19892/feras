@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/types/router.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import 'vue-router';\nimport type { UserRole } from '@my-modern-app/shared-types';\n\ndeclare module 'vue-router' {\n  interface RouteMeta {\n    requiresAuth?: boolean;\n    roles?: UserRole[];\n  }\n}\n\nexport {};\n",
-      "start": 1783634639007,
-      "end": 1783634639043,
+      "start": 1783626218712,
+      "end": 1783626218712
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626218712,
+      "end": 1783626218712,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import 'vue-router';\nimport type { UserRole } from '@my-modern-app/shared-types';\n\ndeclare module 'vue-router' {\n  interface RouteMeta {\n    requiresAuth?: boolean;\n    roles?: UserRole[];\n  }\n}\n\nexport {};\n",
+      "start": 1783626218712,
+      "end": 1783626218712,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634639043,
-      "end": 1783634639043,
+      "start": 1783626218712,
+      "end": 1783626218712,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import \"vue-router\";\nexport {};\n",
-      "start": 1783634639043,
-      "end": 1783634639164,
+      "start": 1783626218712,
+      "end": 1783626218788,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/types/router.ts"
+          "router.ts"
         ],
         "sourcesContent": [
           "import 'vue-router';\nimport type { UserRole } from '@my-modern-app/shared-types';\n\ndeclare module 'vue-router' {\n  interface RouteMeta {\n    requiresAuth?: boolean;\n    roles?: UserRole[];\n  }\n}\n\nexport {};\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634639164,
-      "end": 1783634639164,
+      "start": 1783626218788,
+      "end": 1783626218788,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634639165,
-      "end": 1783634639165,
+      "start": 1783626218788,
+      "end": 1783626218788,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626218788,
+      "end": 1783626218788,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634639165,
-      "end": 1783634639165,
+      "start": 1783626218788,
+      "end": 1783626218788,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634639165,
-      "end": 1783634639165,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634639165,
-      "end": 1783634639165,
+      "start": 1783626218788,
+      "end": 1783626218788,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634639165,
-      "end": 1783634639165,
+      "start": 1783626218792,
+      "end": 1783626218792,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634639165,
-      "end": 1783634639165,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634639165,
-      "end": 1783634639165,
+      "start": 1783626218792,
+      "end": 1783626218792,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634639165,
-      "end": 1783634639165,
+      "start": 1783626218792,
+      "end": 1783626218796,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634639170,
-      "end": 1783634639170,
+      "start": 1783626218881,
+      "end": 1783626218881,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634639170,
-      "end": 1783634639170,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626218881,
+      "end": 1783626218881,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626218881,
+      "end": 1783626218881,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634639170,
-      "end": 1783634639170,
+      "name": "vite:css-analysis",
+      "start": 1783626218881,
+      "end": 1783626218881,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import \"/node_modules/.vite/deps/vue-router.js?v=79ad0905\";\nexport {};\n",
+      "start": 1783626218881,
+      "end": 1783626226143,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

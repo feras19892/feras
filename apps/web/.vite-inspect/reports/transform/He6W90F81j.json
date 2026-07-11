@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/teacher/useTeacherStatsCharts.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { ref, watch, onMounted, onUnmounted } from 'vue'\n\nexport function useTeacherStatsCharts(\n  statsRef: { value: { distribution?: Record<string, number>; total?: number } | null },\n  reportLabel = 'report'\n) {\n  const barCanvas = ref<HTMLCanvasElement | null>(null)\n  const pieCanvas = ref<HTMLCanvasElement | null>(null)\n\n  function drawBarChart() {\n    const canvas = barCanvas.value\n    if (!canvas || !statsRef.value) return\n    const ctx = canvas.getContext('2d')\n    if (!ctx) return\n    const dpr = window.devicePixelRatio || 1\n    const w = 500, h = 220\n    canvas.width = w * dpr; canvas.height = h * dpr\n    canvas.style.width = w + 'px'; canvas.style.height = h + 'px'\n    ctx.scale(dpr, dpr)\n\n    const dist = statsRef.value.distribution || {}\n    const labels = Object.keys(dist)\n    const values = Object.values(dist) as number[]\n    const max = Math.max(...values, 1)\n\n    ctx.clearRect(0, 0, w, h)\n    const barW = 50, gap = 30, startX = 40, chartH = h - 60\n    const colors = ['#f87171', '#fbbf24', '#60a5fa', '#34d399', '#a78bfa']\n\n    labels.forEach((label, i) => {\n      const v = values[i]\n      const barH = (v / max) * chartH\n      const x = startX + i * (barW + gap)\n      const y = h - 40 - barH\n      ctx.fillStyle = colors[i]\n      ctx.fillRect(x, y, barW, barH)\n      ctx.fillStyle = '#94a3b8'\n      ctx.font = '11px sans-serif'\n      ctx.textAlign = 'center'\n      ctx.fillText(label, x + barW / 2, h - 15)\n      if (v > 0) {\n        ctx.fillStyle = '#e2e8f0'\n        ctx.fillText(String(v), x + barW / 2, y - 5)\n      }\n    })\n  }\n\n  function drawPieChart() {\n    const canvas = pieCanvas.value\n    if (!canvas || !statsRef.value) return\n    const ctx = canvas.getContext('2d')\n    if (!ctx) return\n    const dpr = window.devicePixelRatio || 1\n    const w = 220, h = 220\n    canvas.width = w * dpr; canvas.height = h * dpr\n    canvas.style.width = w + 'px'; canvas.style.height = h + 'px'\n    ctx.scale(dpr, dpr)\n\n    const dist = statsRef.value.distribution || {}\n    const values = Object.values(dist) as number[]\n    const total = values.reduce((a, b) => a + b, 0)\n    if (total === 0) return\n\n    ctx.clearRect(0, 0, w, h)\n    const cx = w / 2, cy = h / 2, r = 80\n    const colors = ['#f87171', '#fbbf24', '#60a5fa', '#34d399', '#a78bfa']\n    let start = -Math.PI / 2\n\n    values.forEach((v, i) => {\n      const slice = (v / total) * 2 * Math.PI\n      ctx.beginPath()\n      ctx.moveTo(cx, cy)\n      ctx.arc(cx, cy, r, start, start + slice)\n      ctx.closePath()\n      ctx.fillStyle = colors[i]\n      ctx.fill()\n      start += slice\n    })\n\n    ctx.beginPath()\n    ctx.arc(cx, cy, 45, 0, 2 * Math.PI)\n    ctx.fillStyle = 'rgba(15,23,42,0.95)'\n    ctx.fill()\n    ctx.fillStyle = '#e2e8f0'\n    ctx.font = 'bold 14px sans-serif'\n    ctx.textAlign = 'center'\n    ctx.textBaseline = 'middle'\n    ctx.fillText(`${total}`, cx, cy - 6)\n    ctx.font = '10px sans-serif'\n    ctx.fillStyle = '#94a3b8'\n    ctx.fillText(reportLabel, cx, cy + 8)\n  }\n\n  watch(() => statsRef.value, () => {\n    setTimeout(() => { drawBarChart(); drawPieChart() }, 100)\n  }, { deep: true })\n\n  let resizeTimer: ReturnType<typeof setTimeout> | null = null\n  function onResize() {\n    if (resizeTimer) clearTimeout(resizeTimer)\n    resizeTimer = setTimeout(() => { drawBarChart(); drawPieChart() }, 200)\n  }\n\n  onMounted(() => window.addEventListener('resize', onResize))\n  onUnmounted(() => window.removeEventListener('resize', onResize))\n\n  return { barCanvas, pieCanvas, drawBarChart, drawPieChart }\n}\n",
-      "start": 1783634641041,
-      "end": 1783634641570,
+      "start": 1783626234296,
+      "end": 1783626234296
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626234296,
+      "end": 1783626234296,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { ref, watch, onMounted, onUnmounted } from 'vue'\n\nexport function useTeacherStatsCharts(\n  statsRef: { value: { distribution?: Record<string, number>; total?: number } | null },\n  reportLabel = 'report'\n) {\n  const barCanvas = ref<HTMLCanvasElement | null>(null)\n  const pieCanvas = ref<HTMLCanvasElement | null>(null)\n\n  function drawBarChart() {\n    const canvas = barCanvas.value\n    if (!canvas || !statsRef.value) return\n    const ctx = canvas.getContext('2d')\n    if (!ctx) return\n    const dpr = window.devicePixelRatio || 1\n    const w = 500, h = 220\n    canvas.width = w * dpr; canvas.height = h * dpr\n    canvas.style.width = w + 'px'; canvas.style.height = h + 'px'\n    ctx.scale(dpr, dpr)\n\n    const dist = statsRef.value.distribution || {}\n    const labels = Object.keys(dist)\n    const values = Object.values(dist) as number[]\n    const max = Math.max(...values, 1)\n\n    ctx.clearRect(0, 0, w, h)\n    const barW = 50, gap = 30, startX = 40, chartH = h - 60\n    const colors = ['#f87171', '#fbbf24', '#60a5fa', '#34d399', '#a78bfa']\n\n    labels.forEach((label, i) => {\n      const v = values[i]\n      const barH = (v / max) * chartH\n      const x = startX + i * (barW + gap)\n      const y = h - 40 - barH\n      ctx.fillStyle = colors[i]\n      ctx.fillRect(x, y, barW, barH)\n      ctx.fillStyle = '#94a3b8'\n      ctx.font = '11px sans-serif'\n      ctx.textAlign = 'center'\n      ctx.fillText(label, x + barW / 2, h - 15)\n      if (v > 0) {\n        ctx.fillStyle = '#e2e8f0'\n        ctx.fillText(String(v), x + barW / 2, y - 5)\n      }\n    })\n  }\n\n  function drawPieChart() {\n    const canvas = pieCanvas.value\n    if (!canvas || !statsRef.value) return\n    const ctx = canvas.getContext('2d')\n    if (!ctx) return\n    const dpr = window.devicePixelRatio || 1\n    const w = 220, h = 220\n    canvas.width = w * dpr; canvas.height = h * dpr\n    canvas.style.width = w + 'px'; canvas.style.height = h + 'px'\n    ctx.scale(dpr, dpr)\n\n    const dist = statsRef.value.distribution || {}\n    const values = Object.values(dist) as number[]\n    const total = values.reduce((a, b) => a + b, 0)\n    if (total === 0) return\n\n    ctx.clearRect(0, 0, w, h)\n    const cx = w / 2, cy = h / 2, r = 80\n    const colors = ['#f87171', '#fbbf24', '#60a5fa', '#34d399', '#a78bfa']\n    let start = -Math.PI / 2\n\n    values.forEach((v, i) => {\n      const slice = (v / total) * 2 * Math.PI\n      ctx.beginPath()\n      ctx.moveTo(cx, cy)\n      ctx.arc(cx, cy, r, start, start + slice)\n      ctx.closePath()\n      ctx.fillStyle = colors[i]\n      ctx.fill()\n      start += slice\n    })\n\n    ctx.beginPath()\n    ctx.arc(cx, cy, 45, 0, 2 * Math.PI)\n    ctx.fillStyle = 'rgba(15,23,42,0.95)'\n    ctx.fill()\n    ctx.fillStyle = '#e2e8f0'\n    ctx.font = 'bold 14px sans-serif'\n    ctx.textAlign = 'center'\n    ctx.textBaseline = 'middle'\n    ctx.fillText(`${total}`, cx, cy - 6)\n    ctx.font = '10px sans-serif'\n    ctx.fillStyle = '#94a3b8'\n    ctx.fillText(reportLabel, cx, cy + 8)\n  }\n\n  watch(() => statsRef.value, () => {\n    setTimeout(() => { drawBarChart(); drawPieChart() }, 100)\n  }, { deep: true })\n\n  let resizeTimer: ReturnType<typeof setTimeout> | null = null\n  function onResize() {\n    if (resizeTimer) clearTimeout(resizeTimer)\n    resizeTimer = setTimeout(() => { drawBarChart(); drawPieChart() }, 200)\n  }\n\n  onMounted(() => window.addEventListener('resize', onResize))\n  onUnmounted(() => window.removeEventListener('resize', onResize))\n\n  return { barCanvas, pieCanvas, drawBarChart, drawPieChart }\n}\n",
+      "start": 1783626234296,
+      "end": 1783626234296,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634641570,
-      "end": 1783634641570,
+      "start": 1783626234296,
+      "end": 1783626234296,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { ref, watch, onMounted, onUnmounted } from \"vue\";\nexport function useTeacherStatsCharts(statsRef, reportLabel = \"report\") {\n  const barCanvas = ref(null);\n  const pieCanvas = ref(null);\n  function drawBarChart() {\n    const canvas = barCanvas.value;\n    if (!canvas || !statsRef.value) return;\n    const ctx = canvas.getContext(\"2d\");\n    if (!ctx) return;\n    const dpr = window.devicePixelRatio || 1;\n    const w = 500, h = 220;\n    canvas.width = w * dpr;\n    canvas.height = h * dpr;\n    canvas.style.width = w + \"px\";\n    canvas.style.height = h + \"px\";\n    ctx.scale(dpr, dpr);\n    const dist = statsRef.value.distribution || {};\n    const labels = Object.keys(dist);\n    const values = Object.values(dist);\n    const max = Math.max(...values, 1);\n    ctx.clearRect(0, 0, w, h);\n    const barW = 50, gap = 30, startX = 40, chartH = h - 60;\n    const colors = [\"#f87171\", \"#fbbf24\", \"#60a5fa\", \"#34d399\", \"#a78bfa\"];\n    labels.forEach((label, i) => {\n      const v = values[i];\n      const barH = v / max * chartH;\n      const x = startX + i * (barW + gap);\n      const y = h - 40 - barH;\n      ctx.fillStyle = colors[i];\n      ctx.fillRect(x, y, barW, barH);\n      ctx.fillStyle = \"#94a3b8\";\n      ctx.font = \"11px sans-serif\";\n      ctx.textAlign = \"center\";\n      ctx.fillText(label, x + barW / 2, h - 15);\n      if (v > 0) {\n        ctx.fillStyle = \"#e2e8f0\";\n        ctx.fillText(String(v), x + barW / 2, y - 5);\n      }\n    });\n  }\n  function drawPieChart() {\n    const canvas = pieCanvas.value;\n    if (!canvas || !statsRef.value) return;\n    const ctx = canvas.getContext(\"2d\");\n    if (!ctx) return;\n    const dpr = window.devicePixelRatio || 1;\n    const w = 220, h = 220;\n    canvas.width = w * dpr;\n    canvas.height = h * dpr;\n    canvas.style.width = w + \"px\";\n    canvas.style.height = h + \"px\";\n    ctx.scale(dpr, dpr);\n    const dist = statsRef.value.distribution || {};\n    const values = Object.values(dist);\n    const total = values.reduce((a, b) => a + b, 0);\n    if (total === 0) return;\n    ctx.clearRect(0, 0, w, h);\n    const cx = w / 2, cy = h / 2, r = 80;\n    const colors = [\"#f87171\", \"#fbbf24\", \"#60a5fa\", \"#34d399\", \"#a78bfa\"];\n    let start = -Math.PI / 2;\n    values.forEach((v, i) => {\n      const slice = v / total * 2 * Math.PI;\n      ctx.beginPath();\n      ctx.moveTo(cx, cy);\n      ctx.arc(cx, cy, r, start, start + slice);\n      ctx.closePath();\n      ctx.fillStyle = colors[i];\n      ctx.fill();\n      start += slice;\n    });\n    ctx.beginPath();\n    ctx.arc(cx, cy, 45, 0, 2 * Math.PI);\n    ctx.fillStyle = \"rgba(15,23,42,0.95)\";\n    ctx.fill();\n    ctx.fillStyle = \"#e2e8f0\";\n    ctx.font = \"bold 14px sans-serif\";\n    ctx.textAlign = \"center\";\n    ctx.textBaseline = \"middle\";\n    ctx.fillText(`${total}`, cx, cy - 6);\n    ctx.font = \"10px sans-serif\";\n    ctx.fillStyle = \"#94a3b8\";\n    ctx.fillText(reportLabel, cx, cy + 8);\n  }\n  watch(() => statsRef.value, () => {\n    setTimeout(() => {\n      drawBarChart();\n      drawPieChart();\n    }, 100);\n  }, { deep: true });\n  let resizeTimer = null;\n  function onResize() {\n    if (resizeTimer) clearTimeout(resizeTimer);\n    resizeTimer = setTimeout(() => {\n      drawBarChart();\n      drawPieChart();\n    }, 200);\n  }\n  onMounted(() => window.addEventListener(\"resize\", onResize));\n  onUnmounted(() => window.removeEventListener(\"resize\", onResize));\n  return { barCanvas, pieCanvas, drawBarChart, drawPieChart };\n}\n",
-      "start": 1783634641570,
-      "end": 1783634641667,
+      "start": 1783626234296,
+      "end": 1783626234367,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/composables/teacher/useTeacherStatsCharts.ts"
+          "useTeacherStatsCharts.ts"
         ],
         "sourcesContent": [
           "import { ref, watch, onMounted, onUnmounted } from 'vue'\n\nexport function useTeacherStatsCharts(\n  statsRef: { value: { distribution?: Record<string, number>; total?: number } | null },\n  reportLabel = 'report'\n) {\n  const barCanvas = ref<HTMLCanvasElement | null>(null)\n  const pieCanvas = ref<HTMLCanvasElement | null>(null)\n\n  function drawBarChart() {\n    const canvas = barCanvas.value\n    if (!canvas || !statsRef.value) return\n    const ctx = canvas.getContext('2d')\n    if (!ctx) return\n    const dpr = window.devicePixelRatio || 1\n    const w = 500, h = 220\n    canvas.width = w * dpr; canvas.height = h * dpr\n    canvas.style.width = w + 'px'; canvas.style.height = h + 'px'\n    ctx.scale(dpr, dpr)\n\n    const dist = statsRef.value.distribution || {}\n    const labels = Object.keys(dist)\n    const values = Object.values(dist) as number[]\n    const max = Math.max(...values, 1)\n\n    ctx.clearRect(0, 0, w, h)\n    const barW = 50, gap = 30, startX = 40, chartH = h - 60\n    const colors = ['#f87171', '#fbbf24', '#60a5fa', '#34d399', '#a78bfa']\n\n    labels.forEach((label, i) => {\n      const v = values[i]\n      const barH = (v / max) * chartH\n      const x = startX + i * (barW + gap)\n      const y = h - 40 - barH\n      ctx.fillStyle = colors[i]\n      ctx.fillRect(x, y, barW, barH)\n      ctx.fillStyle = '#94a3b8'\n      ctx.font = '11px sans-serif'\n      ctx.textAlign = 'center'\n      ctx.fillText(label, x + barW / 2, h - 15)\n      if (v > 0) {\n        ctx.fillStyle = '#e2e8f0'\n        ctx.fillText(String(v), x + barW / 2, y - 5)\n      }\n    })\n  }\n\n  function drawPieChart() {\n    const canvas = pieCanvas.value\n    if (!canvas || !statsRef.value) return\n    const ctx = canvas.getContext('2d')\n    if (!ctx) return\n    const dpr = window.devicePixelRatio || 1\n    const w = 220, h = 220\n    canvas.width = w * dpr; canvas.height = h * dpr\n    canvas.style.width = w + 'px'; canvas.style.height = h + 'px'\n    ctx.scale(dpr, dpr)\n\n    const dist = statsRef.value.distribution || {}\n    const values = Object.values(dist) as number[]\n    const total = values.reduce((a, b) => a + b, 0)\n    if (total === 0) return\n\n    ctx.clearRect(0, 0, w, h)\n    const cx = w / 2, cy = h / 2, r = 80\n    const colors = ['#f87171', '#fbbf24', '#60a5fa', '#34d399', '#a78bfa']\n    let start = -Math.PI / 2\n\n    values.forEach((v, i) => {\n      const slice = (v / total) * 2 * Math.PI\n      ctx.beginPath()\n      ctx.moveTo(cx, cy)\n      ctx.arc(cx, cy, r, start, start + slice)\n      ctx.closePath()\n      ctx.fillStyle = colors[i]\n      ctx.fill()\n      start += slice\n    })\n\n    ctx.beginPath()\n    ctx.arc(cx, cy, 45, 0, 2 * Math.PI)\n    ctx.fillStyle = 'rgba(15,23,42,0.95)'\n    ctx.fill()\n    ctx.fillStyle = '#e2e8f0'\n    ctx.font = 'bold 14px sans-serif'\n    ctx.textAlign = 'center'\n    ctx.textBaseline = 'middle'\n    ctx.fillText(`${total}`, cx, cy - 6)\n    ctx.font = '10px sans-serif'\n    ctx.fillStyle = '#94a3b8'\n    ctx.fillText(reportLabel, cx, cy + 8)\n  }\n\n  watch(() => statsRef.value, () => {\n    setTimeout(() => { drawBarChart(); drawPieChart() }, 100)\n  }, { deep: true })\n\n  let resizeTimer: ReturnType<typeof setTimeout> | null = null\n  function onResize() {\n    if (resizeTimer) clearTimeout(resizeTimer)\n    resizeTimer = setTimeout(() => { drawBarChart(); drawPieChart() }, 200)\n  }\n\n  onMounted(() => window.addEventListener('resize', onResize))\n  onUnmounted(() => window.removeEventListener('resize', onResize))\n\n  return { barCanvas, pieCanvas, drawBarChart, drawPieChart }\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634641667,
-      "end": 1783634641667,
+      "start": 1783626234367,
+      "end": 1783626234367,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634641667,
-      "end": 1783634641667,
+      "start": 1783626234367,
+      "end": 1783626234367,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626234367,
+      "end": 1783626234367,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634641668,
-      "end": 1783634641668,
+      "start": 1783626234367,
+      "end": 1783626234367,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634641668,
-      "end": 1783634641668,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634641668,
-      "end": 1783634641668,
+      "start": 1783626234367,
+      "end": 1783626234367,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634641668,
-      "end": 1783634641668,
+      "start": 1783626234367,
+      "end": 1783626234367,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634641668,
-      "end": 1783634641668,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634641668,
-      "end": 1783634641668,
+      "start": 1783626234367,
+      "end": 1783626234367,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634641668,
-      "end": 1783634641668,
+      "start": 1783626234367,
+      "end": 1783626234367,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634641668,
-      "end": 1783634641668,
+      "start": 1783626234367,
+      "end": 1783626234367,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634641668,
-      "end": 1783634641668,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626234367,
+      "end": 1783626234367,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626234367,
+      "end": 1783626234367,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634641668,
-      "end": 1783634641668,
+      "name": "vite:css-analysis",
+      "start": 1783626234367,
+      "end": 1783626234367,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { ref, watch, onMounted, onUnmounted } from \"/node_modules/.vite/deps/vue.js?v=09a3ad4c\";\nexport function useTeacherStatsCharts(statsRef, reportLabel = \"report\") {\n  const barCanvas = ref(null);\n  const pieCanvas = ref(null);\n  function drawBarChart() {\n    const canvas = barCanvas.value;\n    if (!canvas || !statsRef.value) return;\n    const ctx = canvas.getContext(\"2d\");\n    if (!ctx) return;\n    const dpr = window.devicePixelRatio || 1;\n    const w = 500, h = 220;\n    canvas.width = w * dpr;\n    canvas.height = h * dpr;\n    canvas.style.width = w + \"px\";\n    canvas.style.height = h + \"px\";\n    ctx.scale(dpr, dpr);\n    const dist = statsRef.value.distribution || {};\n    const labels = Object.keys(dist);\n    const values = Object.values(dist);\n    const max = Math.max(...values, 1);\n    ctx.clearRect(0, 0, w, h);\n    const barW = 50, gap = 30, startX = 40, chartH = h - 60;\n    const colors = [\"#f87171\", \"#fbbf24\", \"#60a5fa\", \"#34d399\", \"#a78bfa\"];\n    labels.forEach((label, i) => {\n      const v = values[i];\n      const barH = v / max * chartH;\n      const x = startX + i * (barW + gap);\n      const y = h - 40 - barH;\n      ctx.fillStyle = colors[i];\n      ctx.fillRect(x, y, barW, barH);\n      ctx.fillStyle = \"#94a3b8\";\n      ctx.font = \"11px sans-serif\";\n      ctx.textAlign = \"center\";\n      ctx.fillText(label, x + barW / 2, h - 15);\n      if (v > 0) {\n        ctx.fillStyle = \"#e2e8f0\";\n        ctx.fillText(String(v), x + barW / 2, y - 5);\n      }\n    });\n  }\n  function drawPieChart() {\n    const canvas = pieCanvas.value;\n    if (!canvas || !statsRef.value) return;\n    const ctx = canvas.getContext(\"2d\");\n    if (!ctx) return;\n    const dpr = window.devicePixelRatio || 1;\n    const w = 220, h = 220;\n    canvas.width = w * dpr;\n    canvas.height = h * dpr;\n    canvas.style.width = w + \"px\";\n    canvas.style.height = h + \"px\";\n    ctx.scale(dpr, dpr);\n    const dist = statsRef.value.distribution || {};\n    const values = Object.values(dist);\n    const total = values.reduce((a, b) => a + b, 0);\n    if (total === 0) return;\n    ctx.clearRect(0, 0, w, h);\n    const cx = w / 2, cy = h / 2, r = 80;\n    const colors = [\"#f87171\", \"#fbbf24\", \"#60a5fa\", \"#34d399\", \"#a78bfa\"];\n    let start = -Math.PI / 2;\n    values.forEach((v, i) => {\n      const slice = v / total * 2 * Math.PI;\n      ctx.beginPath();\n      ctx.moveTo(cx, cy);\n      ctx.arc(cx, cy, r, start, start + slice);\n      ctx.closePath();\n      ctx.fillStyle = colors[i];\n      ctx.fill();\n      start += slice;\n    });\n    ctx.beginPath();\n    ctx.arc(cx, cy, 45, 0, 2 * Math.PI);\n    ctx.fillStyle = \"rgba(15,23,42,0.95)\";\n    ctx.fill();\n    ctx.fillStyle = \"#e2e8f0\";\n    ctx.font = \"bold 14px sans-serif\";\n    ctx.textAlign = \"center\";\n    ctx.textBaseline = \"middle\";\n    ctx.fillText(`${total}`, cx, cy - 6);\n    ctx.font = \"10px sans-serif\";\n    ctx.fillStyle = \"#94a3b8\";\n    ctx.fillText(reportLabel, cx, cy + 8);\n  }\n  watch(() => statsRef.value, () => {\n    setTimeout(() => {\n      drawBarChart();\n      drawPieChart();\n    }, 100);\n  }, { deep: true });\n  let resizeTimer = null;\n  function onResize() {\n    if (resizeTimer) clearTimeout(resizeTimer);\n    resizeTimer = setTimeout(() => {\n      drawBarChart();\n      drawPieChart();\n    }, 200);\n  }\n  onMounted(() => window.addEventListener(\"resize\", onResize));\n  onUnmounted(() => window.removeEventListener(\"resize\", onResize));\n  return { barCanvas, pieCanvas, drawBarChart, drawPieChart };\n}\n",
+      "start": 1783626234367,
+      "end": 1783626234370,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

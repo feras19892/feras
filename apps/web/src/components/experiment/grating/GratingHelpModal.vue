@@ -8,22 +8,24 @@ const emit = defineEmits<{ (e: 'close'): void }>()
 </script>
 
 <template>
-  <div v-if="open" class="modal-overlay" @click.self="emit('close')">
-    <div class="modal">
-      <div class="modal-header">
-        <h3>{{ t('experiments.helpTitle') }}</h3>
-        <button class="modal-close" @click="emit('close')">&#x2715;</button>
-      </div>
-      <div class="modal-body">
-        <p><strong>Space</strong> — {{ t('experiments.helpSpace') }}</p>
-        <p><strong>R</strong> — {{ t('experiments.helpR') }}</p>
-        <p><strong>S</strong> — {{ t('experiments.helpS') }}</p>
-        <p><strong>Ctrl+Z</strong> — {{ t('experiments.helpUndo') }}</p>
-        <p><strong>Ctrl+Y</strong> — {{ t('experiments.helpRedo') }}</p>
-        <p><strong>?</strong> — {{ t('experiments.helpQuestion') }}</p>
+  <Teleport to="body">
+    <div v-if="open" class="modal-overlay" @click.self="emit('close')">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>{{ t('experiments.helpTitle') }}</h3>
+          <button class="modal-close" @click="emit('close')">&#x2715;</button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Space</strong> — {{ t('experiments.helpSpace') }}</p>
+          <p><strong>R</strong> — {{ t('experiments.helpR') }}</p>
+          <p><strong>S</strong> — {{ t('experiments.helpS') }}</p>
+          <p><strong>Ctrl+Z</strong> — {{ t('experiments.helpUndo') }}</p>
+          <p><strong>Ctrl+Y</strong> — {{ t('experiments.helpRedo') }}</p>
+          <p><strong>?</strong> — {{ t('experiments.helpQuestion') }}</p>
+        </div>
       </div>
     </div>
-  </div>
+  </Teleport>
 </template>
 
 <style scoped>

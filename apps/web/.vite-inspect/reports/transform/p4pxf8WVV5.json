@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/specific-heat/useSpecificHeatCalculations.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "// Water specific heat (J/kg·°C)\nexport const C_WATER = 4186\n\n// Metal catalog (hidden from user in \"unknown\" mode)\nexport const METAL_CATALOG: Record<string, { c: number; nameAr: string; nameEn: string }> = {\n  metalA: { c: 900, nameAr: 'ألمنيوم', nameEn: 'Aluminum' },\n  metalB: { c: 385, nameAr: 'نحاس', nameEn: 'Copper' },\n  metalC: { c: 450, nameAr: 'حديد', nameEn: 'Iron' },\n  metalD: { c: 130, nameAr: 'رصاص', nameEn: 'Lead' },\n  metalE: { c: 235, nameAr: 'زنك', nameEn: 'Zinc' },\n}\n\n/** Equilibrium temperature from mixing\n *  m_m·c_m·(T_m - Tf) = m_w·c_w·(Tf - T_w)\n *  Tf = (m_m·c_m·T_m + m_w·c_w·T_w) / (m_m·c_m + m_w·c_w)\n */\nexport function equilibriumTemp(\n  metalMassKg: number, metalC: number, metalTemp: number,\n  waterMassKg: number, waterTemp: number\n): number {\n  const num = metalMassKg * metalC * metalTemp + waterMassKg * C_WATER * waterTemp\n  const den = metalMassKg * metalC + waterMassKg * C_WATER\n  if (den === 0) return waterTemp\n  return num / den\n}\n\n/** Extract c_m from measured Tf using method of mixtures:\n *  c_m = m_w·c_w·(Tf - T_w) / (m_m·(T_m - Tf))\n */\nexport function findMetalSpecificHeat(\n  metalMassKg: number, metalTemp: number,\n  waterMassKg: number, waterTemp: number,\n  finalTemp: number\n): number {\n  const num = waterMassKg * C_WATER * (finalTemp - waterTemp)\n  const den = metalMassKg * (metalTemp - finalTemp)\n  if (den === 0 || num <= 0) return 0\n  return num / den\n}\n\nexport function linearRegression(pts: { x: number; y: number }[]) {\n  const n = pts.length\n  if (n < 2) return { m: 0, b: 0, r2: 0 }\n  let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumY2 = 0\n  for (const p of pts) { sumX += p.x; sumY += p.y; sumXY += p.x * p.y; sumX2 += p.x * p.x; sumY2 += p.y * p.y }\n  const m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX)\n  const b = (sumY - m * sumX) / n\n  const ssTot = sumY2 - (sumY * sumY) / n\n  const ssRes = sumY2 - 2 * m * sumXY - 2 * b * sumY + m * m * sumX2 + 2 * m * b * sumX + n * b * b\n  const r2 = ssTot === 0 ? 1 : 1 - ssRes / ssTot\n  return { m, b, r2 }\n}\n",
-      "start": 1783634640543,
-      "end": 1783634640805,
+      "start": 1783626281174,
+      "end": 1783626281174
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626281174,
+      "end": 1783626281174,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "// Water specific heat (J/kg·°C)\nexport const C_WATER = 4186\n\n// Metal catalog (hidden from user in \"unknown\" mode)\nexport const METAL_CATALOG: Record<string, { c: number; nameAr: string; nameEn: string }> = {\n  metalA: { c: 900, nameAr: 'ألمنيوم', nameEn: 'Aluminum' },\n  metalB: { c: 385, nameAr: 'نحاس', nameEn: 'Copper' },\n  metalC: { c: 450, nameAr: 'حديد', nameEn: 'Iron' },\n  metalD: { c: 130, nameAr: 'رصاص', nameEn: 'Lead' },\n  metalE: { c: 235, nameAr: 'زنك', nameEn: 'Zinc' },\n}\n\n/** Equilibrium temperature from mixing\n *  m_m·c_m·(T_m - Tf) = m_w·c_w·(Tf - T_w)\n *  Tf = (m_m·c_m·T_m + m_w·c_w·T_w) / (m_m·c_m + m_w·c_w)\n */\nexport function equilibriumTemp(\n  metalMassKg: number, metalC: number, metalTemp: number,\n  waterMassKg: number, waterTemp: number\n): number {\n  const num = metalMassKg * metalC * metalTemp + waterMassKg * C_WATER * waterTemp\n  const den = metalMassKg * metalC + waterMassKg * C_WATER\n  if (den === 0) return waterTemp\n  return num / den\n}\n\n/** Extract c_m from measured Tf using method of mixtures:\n *  c_m = m_w·c_w·(Tf - T_w) / (m_m·(T_m - Tf))\n */\nexport function findMetalSpecificHeat(\n  metalMassKg: number, metalTemp: number,\n  waterMassKg: number, waterTemp: number,\n  finalTemp: number\n): number {\n  const num = waterMassKg * C_WATER * (finalTemp - waterTemp)\n  const den = metalMassKg * (metalTemp - finalTemp)\n  if (den === 0 || num <= 0) return 0\n  return num / den\n}\n\nexport function linearRegression(pts: { x: number; y: number }[]) {\n  const n = pts.length\n  if (n < 2) return { m: 0, b: 0, r2: 0 }\n  let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumY2 = 0\n  for (const p of pts) { sumX += p.x; sumY += p.y; sumXY += p.x * p.y; sumX2 += p.x * p.x; sumY2 += p.y * p.y }\n  const m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX)\n  const b = (sumY - m * sumX) / n\n  const ssTot = sumY2 - (sumY * sumY) / n\n  const ssRes = sumY2 - 2 * m * sumXY - 2 * b * sumY + m * m * sumX2 + 2 * m * b * sumX + n * b * b\n  const r2 = ssTot === 0 ? 1 : 1 - ssRes / ssTot\n  return { m, b, r2 }\n}\n",
+      "start": 1783626281174,
+      "end": 1783626281174,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634640805,
-      "end": 1783634640805,
+      "start": 1783626281174,
+      "end": 1783626281174,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "export const C_WATER = 4186;\nexport const METAL_CATALOG = {\n  metalA: { c: 900, nameAr: \"ألمنيوم\", nameEn: \"Aluminum\" },\n  metalB: { c: 385, nameAr: \"نحاس\", nameEn: \"Copper\" },\n  metalC: { c: 450, nameAr: \"حديد\", nameEn: \"Iron\" },\n  metalD: { c: 130, nameAr: \"رصاص\", nameEn: \"Lead\" },\n  metalE: { c: 235, nameAr: \"زنك\", nameEn: \"Zinc\" }\n};\nexport function equilibriumTemp(metalMassKg, metalC, metalTemp, waterMassKg, waterTemp) {\n  const num = metalMassKg * metalC * metalTemp + waterMassKg * C_WATER * waterTemp;\n  const den = metalMassKg * metalC + waterMassKg * C_WATER;\n  if (den === 0) return waterTemp;\n  return num / den;\n}\nexport function findMetalSpecificHeat(metalMassKg, metalTemp, waterMassKg, waterTemp, finalTemp) {\n  const num = waterMassKg * C_WATER * (finalTemp - waterTemp);\n  const den = metalMassKg * (metalTemp - finalTemp);\n  if (den === 0 || num <= 0) return 0;\n  return num / den;\n}\nexport function linearRegression(pts) {\n  const n = pts.length;\n  if (n < 2) return { m: 0, b: 0, r2: 0 };\n  let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumY2 = 0;\n  for (const p of pts) {\n    sumX += p.x;\n    sumY += p.y;\n    sumXY += p.x * p.y;\n    sumX2 += p.x * p.x;\n    sumY2 += p.y * p.y;\n  }\n  const m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);\n  const b = (sumY - m * sumX) / n;\n  const ssTot = sumY2 - sumY * sumY / n;\n  const ssRes = sumY2 - 2 * m * sumXY - 2 * b * sumY + m * m * sumX2 + 2 * m * b * sumX + n * b * b;\n  const r2 = ssTot === 0 ? 1 : 1 - ssRes / ssTot;\n  return { m, b, r2 };\n}\n",
-      "start": 1783634640805,
-      "end": 1783634641014,
+      "start": 1783626281174,
+      "end": 1783626281721,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/composables/specific-heat/useSpecificHeatCalculations.ts"
+          "useSpecificHeatCalculations.ts"
         ],
         "sourcesContent": [
           "// Water specific heat (J/kg·°C)\nexport const C_WATER = 4186\n\n// Metal catalog (hidden from user in \"unknown\" mode)\nexport const METAL_CATALOG: Record<string, { c: number; nameAr: string; nameEn: string }> = {\n  metalA: { c: 900, nameAr: 'ألمنيوم', nameEn: 'Aluminum' },\n  metalB: { c: 385, nameAr: 'نحاس', nameEn: 'Copper' },\n  metalC: { c: 450, nameAr: 'حديد', nameEn: 'Iron' },\n  metalD: { c: 130, nameAr: 'رصاص', nameEn: 'Lead' },\n  metalE: { c: 235, nameAr: 'زنك', nameEn: 'Zinc' },\n}\n\n/** Equilibrium temperature from mixing\n *  m_m·c_m·(T_m - Tf) = m_w·c_w·(Tf - T_w)\n *  Tf = (m_m·c_m·T_m + m_w·c_w·T_w) / (m_m·c_m + m_w·c_w)\n */\nexport function equilibriumTemp(\n  metalMassKg: number, metalC: number, metalTemp: number,\n  waterMassKg: number, waterTemp: number\n): number {\n  const num = metalMassKg * metalC * metalTemp + waterMassKg * C_WATER * waterTemp\n  const den = metalMassKg * metalC + waterMassKg * C_WATER\n  if (den === 0) return waterTemp\n  return num / den\n}\n\n/** Extract c_m from measured Tf using method of mixtures:\n *  c_m = m_w·c_w·(Tf - T_w) / (m_m·(T_m - Tf))\n */\nexport function findMetalSpecificHeat(\n  metalMassKg: number, metalTemp: number,\n  waterMassKg: number, waterTemp: number,\n  finalTemp: number\n): number {\n  const num = waterMassKg * C_WATER * (finalTemp - waterTemp)\n  const den = metalMassKg * (metalTemp - finalTemp)\n  if (den === 0 || num <= 0) return 0\n  return num / den\n}\n\nexport function linearRegression(pts: { x: number; y: number }[]) {\n  const n = pts.length\n  if (n < 2) return { m: 0, b: 0, r2: 0 }\n  let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumY2 = 0\n  for (const p of pts) { sumX += p.x; sumY += p.y; sumXY += p.x * p.y; sumX2 += p.x * p.x; sumY2 += p.y * p.y }\n  const m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX)\n  const b = (sumY - m * sumX) / n\n  const ssTot = sumY2 - (sumY * sumY) / n\n  const ssRes = sumY2 - 2 * m * sumXY - 2 * b * sumY + m * m * sumX2 + 2 * m * b * sumX + n * b * b\n  const r2 = ssTot === 0 ? 1 : 1 - ssRes / ssTot\n  return { m, b, r2 }\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634641014,
-      "end": 1783634641014,
+      "start": 1783626281721,
+      "end": 1783626281721,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634641014,
-      "end": 1783634641014,
+      "start": 1783626281721,
+      "end": 1783626281721,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626281721,
+      "end": 1783626281721,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634641014,
-      "end": 1783634641014,
+      "start": 1783626281721,
+      "end": 1783626281721,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634641014,
-      "end": 1783634641014,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634641014,
-      "end": 1783634641014,
+      "start": 1783626281721,
+      "end": 1783626281721,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634641014,
-      "end": 1783634641014,
+      "start": 1783626281721,
+      "end": 1783626281721,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634641014,
-      "end": 1783634641014,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634641014,
-      "end": 1783634641014,
+      "start": 1783626281721,
+      "end": 1783626281735,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634641014,
-      "end": 1783634641014,
+      "start": 1783626281735,
+      "end": 1783626281735,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634641014,
-      "end": 1783634641014,
+      "start": 1783626281735,
+      "end": 1783626281735,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634641014,
-      "end": 1783634641014,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626281735,
+      "end": 1783626281735,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626281745,
+      "end": 1783626281745,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634641015,
-      "end": 1783634641015,
+      "name": "vite:css-analysis",
+      "start": 1783626281745,
+      "end": 1783626281745,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "export const C_WATER = 4186;\nexport const METAL_CATALOG = {\n  metalA: { c: 900, nameAr: \"ألمنيوم\", nameEn: \"Aluminum\" },\n  metalB: { c: 385, nameAr: \"نحاس\", nameEn: \"Copper\" },\n  metalC: { c: 450, nameAr: \"حديد\", nameEn: \"Iron\" },\n  metalD: { c: 130, nameAr: \"رصاص\", nameEn: \"Lead\" },\n  metalE: { c: 235, nameAr: \"زنك\", nameEn: \"Zinc\" }\n};\nexport function equilibriumTemp(metalMassKg, metalC, metalTemp, waterMassKg, waterTemp) {\n  const num = metalMassKg * metalC * metalTemp + waterMassKg * C_WATER * waterTemp;\n  const den = metalMassKg * metalC + waterMassKg * C_WATER;\n  if (den === 0) return waterTemp;\n  return num / den;\n}\nexport function findMetalSpecificHeat(metalMassKg, metalTemp, waterMassKg, waterTemp, finalTemp) {\n  const num = waterMassKg * C_WATER * (finalTemp - waterTemp);\n  const den = metalMassKg * (metalTemp - finalTemp);\n  if (den === 0 || num <= 0) return 0;\n  return num / den;\n}\nexport function linearRegression(pts) {\n  const n = pts.length;\n  if (n < 2) return { m: 0, b: 0, r2: 0 };\n  let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumY2 = 0;\n  for (const p of pts) {\n    sumX += p.x;\n    sumY += p.y;\n    sumXY += p.x * p.y;\n    sumX2 += p.x * p.x;\n    sumY2 += p.y * p.y;\n  }\n  const m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);\n  const b = (sumY - m * sumX) / n;\n  const ssTot = sumY2 - sumY * sumY / n;\n  const ssRes = sumY2 - 2 * m * sumXY - 2 * b * sumY + m * m * sumX2 + 2 * m * b * sumX + n * b * b;\n  const r2 = ssTot === 0 ? 1 : 1 - ssRes / ssTot;\n  return { m, b, r2 };\n}\n",
+      "start": 1783626281745,
+      "end": 1783626281745,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

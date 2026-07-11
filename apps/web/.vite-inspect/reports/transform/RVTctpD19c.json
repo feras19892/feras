@@ -2,101 +2,122 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabBeaker.css",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": ".beaker-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n}\n.drop-canvas {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  width: 140px;\n  height: 300px;\n  margin-left: -70px;\n  z-index: 2;\n  pointer-events: none;\n}\n.beaker-svg.hovered {\n  filter: brightness(1.04);\n}\n.mouth-hitbox {\n  cursor: pointer;\n}\n.mouth-glow {\n  animation: pulse 1.5s ease infinite;\n}\n.mouth-glow-outer {\n  animation: pulse 1.5s ease infinite 0.2s;\n}\n@keyframes pulse {\n  0%, 100% { opacity: 0.6; }\n  50% { opacity: 0.2; }\n}\n.ripple {\n  animation: rippleExpand 0.6s ease infinite;\n}\n.ripple-delay {\n  animation: rippleExpand 0.6s ease 0.3s infinite;\n}\n@keyframes rippleExpand {\n  0% { rx: 8; opacity: 0.6; }\n  50% { rx: 22; opacity: 0; }\n  100% { rx: 8; opacity: 0.6; }\n}\n",
-      "start": 1783634642422,
-      "end": 1783634642827,
+      "start": 1783626310579,
+      "end": 1783626310579
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626310579,
+      "end": 1783626310580,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": ".beaker-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n}\n.drop-canvas {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  width: 140px;\n  height: 300px;\n  margin-left: -70px;\n  z-index: 2;\n  pointer-events: none;\n}\n.beaker-svg.hovered {\n  filter: brightness(1.04);\n}\n.mouth-hitbox {\n  cursor: pointer;\n}\n.mouth-glow {\n  animation: pulse 1.5s ease infinite;\n}\n.mouth-glow-outer {\n  animation: pulse 1.5s ease infinite 0.2s;\n}\n@keyframes pulse {\n  0%, 100% { opacity: 0.6; }\n  50% { opacity: 0.2; }\n}\n.ripple {\n  animation: rippleExpand 0.6s ease infinite;\n}\n.ripple-delay {\n  animation: rippleExpand 0.6s ease 0.3s infinite;\n}\n@keyframes rippleExpand {\n  0% { rx: 8; opacity: 0.6; }\n  50% { rx: 22; opacity: 0; }\n  100% { rx: 8; opacity: 0.6; }\n}\n",
+      "start": 1783626310580,
+      "end": 1783626310580,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
       "result": ".beaker-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n}\n.drop-canvas {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  width: 140px;\n  height: 300px;\n  margin-left: -70px;\n  z-index: 2;\n  pointer-events: none;\n}\n.beaker-svg.hovered {\n  filter: brightness(1.04);\n}\n.mouth-hitbox {\n  cursor: pointer;\n}\n.mouth-glow {\n  animation: pulse 1.5s ease infinite;\n}\n.mouth-glow-outer {\n  animation: pulse 1.5s ease infinite 0.2s;\n}\n@keyframes pulse {\n  0%, 100% { opacity: 0.6; }\n  50% { opacity: 0.2; }\n}\n.ripple {\n  animation: rippleExpand 0.6s ease infinite;\n}\n.ripple-delay {\n  animation: rippleExpand 0.6s ease 0.3s infinite;\n}\n@keyframes rippleExpand {\n  0% { rx: 8; opacity: 0.6; }\n  50% { rx: 22; opacity: 0; }\n  100% { rx: 8; opacity: 0.6; }\n}\n",
-      "start": 1783634642827,
-      "end": 1783634642827,
+      "start": 1783626310580,
+      "end": 1783626310580,
       "order": "normal",
       "sourcemaps": null
     },
     {
       "name": "vite:esbuild",
-      "start": 1783634642827,
-      "end": 1783634642827,
+      "start": 1783626310580,
+      "end": 1783626310580,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1783634642827,
-      "end": 1783634642827,
+      "start": 1783626310580,
+      "end": 1783626310580,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642827,
-      "end": 1783634642827,
+      "start": 1783626310580,
+      "end": 1783626310580,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626310580,
+      "end": 1783626310580,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642827,
-      "end": 1783634642827,
+      "start": 1783626310580,
+      "end": 1783626310580,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "result": "",
-      "start": 1783634642827,
-      "end": 1783634642827,
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabBeaker.css\"\nconst __vite__css = \".beaker-wrapper {\\n  display: flex;\\n  flex-direction: column;\\n  align-items: center;\\n  position: relative;\\n}\\n.drop-canvas {\\n  position: absolute;\\n  top: 0;\\n  left: 50%;\\n  width: 140px;\\n  height: 300px;\\n  margin-left: -70px;\\n  z-index: 2;\\n  pointer-events: none;\\n}\\n.beaker-svg.hovered {\\n  filter: brightness(1.04);\\n}\\n.mouth-hitbox {\\n  cursor: pointer;\\n}\\n.mouth-glow {\\n  animation: pulse 1.5s ease infinite;\\n}\\n.mouth-glow-outer {\\n  animation: pulse 1.5s ease infinite 0.2s;\\n}\\n@keyframes pulse {\\n  0%, 100% { opacity: 0.6; }\\n  50% { opacity: 0.2; }\\n}\\n.ripple {\\n  animation: rippleExpand 0.6s ease infinite;\\n}\\n.ripple-delay {\\n  animation: rippleExpand 0.6s ease 0.3s infinite;\\n}\\n@keyframes rippleExpand {\\n  0% { rx: 8; opacity: 0.6; }\\n  50% { rx: 22; opacity: 0; }\\n  100% { rx: 8; opacity: 0.6; }\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626310580,
+      "end": 1783626310580,
       "order": "normal",
       "sourcemaps": {
         "mappings": ""
       }
     },
     {
-      "name": "vite:build-html",
-      "start": 1783634642827,
-      "end": 1783634642827,
-      "order": "normal"
-    },
-    {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642827,
-      "end": 1783634642827,
+      "start": 1783626310580,
+      "end": 1783626310580,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642827,
-      "end": 1783634642827,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642827,
-      "end": 1783634642827,
+      "start": 1783626310580,
+      "end": 1783626310580,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642827,
-      "end": 1783634642827,
+      "start": 1783626310580,
+      "end": 1783626310580,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642827,
-      "end": 1783634642827,
+      "start": 1783626310580,
+      "end": 1783626310580,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642827,
-      "end": 1783634642827,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626310580,
+      "end": 1783626310580,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626310580,
+      "end": 1783626310580,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642827,
-      "end": 1783634642827,
+      "name": "vite:css-analysis",
+      "start": 1783626310580,
+      "end": 1783626310580,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/components/experiment/chemistry/LabBeaker.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabBeaker.css\"\nconst __vite__css = \".beaker-wrapper {\\n  display: flex;\\n  flex-direction: column;\\n  align-items: center;\\n  position: relative;\\n}\\n.drop-canvas {\\n  position: absolute;\\n  top: 0;\\n  left: 50%;\\n  width: 140px;\\n  height: 300px;\\n  margin-left: -70px;\\n  z-index: 2;\\n  pointer-events: none;\\n}\\n.beaker-svg.hovered {\\n  filter: brightness(1.04);\\n}\\n.mouth-hitbox {\\n  cursor: pointer;\\n}\\n.mouth-glow {\\n  animation: pulse 1.5s ease infinite;\\n}\\n.mouth-glow-outer {\\n  animation: pulse 1.5s ease infinite 0.2s;\\n}\\n@keyframes pulse {\\n  0%, 100% { opacity: 0.6; }\\n  50% { opacity: 0.2; }\\n}\\n.ripple {\\n  animation: rippleExpand 0.6s ease infinite;\\n}\\n.ripple-delay {\\n  animation: rippleExpand 0.6s ease 0.3s infinite;\\n}\\n@keyframes rippleExpand {\\n  0% { rx: 8; opacity: 0.6; }\\n  50% { rx: 22; opacity: 0; }\\n  100% { rx: 8; opacity: 0.6; }\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626310580,
+      "end": 1783626310580,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

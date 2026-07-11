@@ -9,11 +9,13 @@ import LeverStatusBar from '../../../../components/experiment/lever/LeverStatusB
 import LeverPanelBody from '../../../../components/experiment/lever/LeverPanelBody.vue'
 import LeverOverlayPanels from '../../../../components/experiment/lever/LeverOverlayPanels.vue'
 import LeverHelpModal from '../../../../components/experiment/lever/LeverHelpModal.vue'
+import LeverGuidePanel from '../../../../components/experiment/lever/LeverGuidePanel.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 
 const ex = useLeverExperiment()
 const { t } = useI18n()
 const helpOpen = ref(false)
+const showGuide = ref(true)
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
@@ -84,6 +86,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
               @remove-mass="ex.lab.removeMass" @update-mass="ex.lab.updateMass" />
           </DraggablePanel>
         </template>
+        <LeverGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
 

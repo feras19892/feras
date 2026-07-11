@@ -8,12 +8,14 @@ import WaveInterferencePanelBody from '../../../../components/experiment/wave-in
 import WaveInterferenceStatusBar from '../../../../components/experiment/wave-interference/WaveInterferenceStatusBar.vue'
 import WaveInterferenceControlBar from '../../../../components/experiment/wave-interference/WaveInterferenceControlBar.vue'
 import WaveInterferenceHelpModal from '../../../../components/experiment/wave-interference/WaveInterferenceHelpModal.vue'
+import WaveInterferenceGuidePanel from '../../../../components/experiment/wave-interference/WaveInterferenceGuidePanel.vue'
 import WaveInterferenceOverlayPanels from '../../../../components/experiment/wave-interference/WaveInterferenceOverlayPanels.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 
 const ex = useWaveInterferenceExperiment()
 const { t } = useI18n()
 const helpOpen = ref(false)
+const showGuide = ref(true)
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
@@ -146,6 +148,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             />
           </div>
         </template>
+        <WaveInterferenceGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
 

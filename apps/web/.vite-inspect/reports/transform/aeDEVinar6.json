@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useBalance.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import type { LabItem } from './useChemistryTools';\nimport { items, isContainer, getLiquid, balanceTareMap, containerTareMap } from './useChemistryLab';\n\nexport function computeBalanceWeight(balance: LabItem): number {\n  const onTop = items.value.filter((i: LabItem) =>\n    i.uid !== balance.uid && Math.abs(i.x - balance.x) < 80 && i.y < balance.y + 50 && i.y > balance.y - 300\n  );\n  let total = 0;\n  for (const item of onTop) {\n    total += 5; // container weight\n    if (isContainer(item.id)) {\n      total += getLiquid(item.uid).volume; // liquid volume ≈ weight in grams\n    }\n  }\n  return total;\n}\n\nexport function getContainerWeight(balance: LabItem): number {\n  const onTop = items.value.filter((i: LabItem) =>\n    i.uid !== balance.uid && Math.abs(i.x - balance.x) < 80 && i.y < balance.y + 50 && i.y > balance.y - 300\n  );\n  return onTop.length * 5;\n}\n\nexport function getBalanceReading(uid: string): number | null {\n  const balance = items.value.find((i: LabItem) => i.uid === uid && i.id === 'digital-balance');\n  if (!balance) return null;\n  const gross = computeBalanceWeight(balance);\n  const fullTare = balanceTareMap[uid] || 0;\n  const containerTare = containerTareMap[uid] || 0;\n  const effectiveTare = containerTare > 0 ? containerTare : fullTare;\n  return +(gross - effectiveTare).toFixed(2);\n}\n",
-      "start": 1783634640048,
-      "end": 1783634640498,
+      "start": 1783626308059,
+      "end": 1783626308059
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626308059,
+      "end": 1783626308059,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import type { LabItem } from './useChemistryTools';\nimport { items, isContainer, getLiquid, balanceTareMap, containerTareMap } from './useChemistryLab';\n\nexport function computeBalanceWeight(balance: LabItem): number {\n  const onTop = items.value.filter((i: LabItem) =>\n    i.uid !== balance.uid && Math.abs(i.x - balance.x) < 80 && i.y < balance.y + 50 && i.y > balance.y - 300\n  );\n  let total = 0;\n  for (const item of onTop) {\n    total += 5; // container weight\n    if (isContainer(item.id)) {\n      total += getLiquid(item.uid).volume; // liquid volume ≈ weight in grams\n    }\n  }\n  return total;\n}\n\nexport function getContainerWeight(balance: LabItem): number {\n  const onTop = items.value.filter((i: LabItem) =>\n    i.uid !== balance.uid && Math.abs(i.x - balance.x) < 80 && i.y < balance.y + 50 && i.y > balance.y - 300\n  );\n  return onTop.length * 5;\n}\n\nexport function getBalanceReading(uid: string): number | null {\n  const balance = items.value.find((i: LabItem) => i.uid === uid && i.id === 'digital-balance');\n  if (!balance) return null;\n  const gross = computeBalanceWeight(balance);\n  const fullTare = balanceTareMap[uid] || 0;\n  const containerTare = containerTareMap[uid] || 0;\n  const effectiveTare = containerTare > 0 ? containerTare : fullTare;\n  return +(gross - effectiveTare).toFixed(2);\n}\n",
+      "start": 1783626308059,
+      "end": 1783626308059,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634640498,
-      "end": 1783634640498,
+      "start": 1783626308059,
+      "end": 1783626308059,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { items, isContainer, getLiquid, balanceTareMap, containerTareMap } from \"./useChemistryLab\";\nexport function computeBalanceWeight(balance) {\n  const onTop = items.value.filter(\n    (i) => i.uid !== balance.uid && Math.abs(i.x - balance.x) < 80 && i.y < balance.y + 50 && i.y > balance.y - 300\n  );\n  let total = 0;\n  for (const item of onTop) {\n    total += 5;\n    if (isContainer(item.id)) {\n      total += getLiquid(item.uid).volume;\n    }\n  }\n  return total;\n}\nexport function getContainerWeight(balance) {\n  const onTop = items.value.filter(\n    (i) => i.uid !== balance.uid && Math.abs(i.x - balance.x) < 80 && i.y < balance.y + 50 && i.y > balance.y - 300\n  );\n  return onTop.length * 5;\n}\nexport function getBalanceReading(uid) {\n  const balance = items.value.find((i) => i.uid === uid && i.id === \"digital-balance\");\n  if (!balance) return null;\n  const gross = computeBalanceWeight(balance);\n  const fullTare = balanceTareMap[uid] || 0;\n  const containerTare = containerTareMap[uid] || 0;\n  const effectiveTare = containerTare > 0 ? containerTare : fullTare;\n  return +(gross - effectiveTare).toFixed(2);\n}\n",
-      "start": 1783634640498,
-      "end": 1783634640664,
+      "start": 1783626308059,
+      "end": 1783626308636,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useBalance.ts"
+          "useBalance.ts"
         ],
         "sourcesContent": [
           "import type { LabItem } from './useChemistryTools';\nimport { items, isContainer, getLiquid, balanceTareMap, containerTareMap } from './useChemistryLab';\n\nexport function computeBalanceWeight(balance: LabItem): number {\n  const onTop = items.value.filter((i: LabItem) =>\n    i.uid !== balance.uid && Math.abs(i.x - balance.x) < 80 && i.y < balance.y + 50 && i.y > balance.y - 300\n  );\n  let total = 0;\n  for (const item of onTop) {\n    total += 5; // container weight\n    if (isContainer(item.id)) {\n      total += getLiquid(item.uid).volume; // liquid volume ≈ weight in grams\n    }\n  }\n  return total;\n}\n\nexport function getContainerWeight(balance: LabItem): number {\n  const onTop = items.value.filter((i: LabItem) =>\n    i.uid !== balance.uid && Math.abs(i.x - balance.x) < 80 && i.y < balance.y + 50 && i.y > balance.y - 300\n  );\n  return onTop.length * 5;\n}\n\nexport function getBalanceReading(uid: string): number | null {\n  const balance = items.value.find((i: LabItem) => i.uid === uid && i.id === 'digital-balance');\n  if (!balance) return null;\n  const gross = computeBalanceWeight(balance);\n  const fullTare = balanceTareMap[uid] || 0;\n  const containerTare = containerTareMap[uid] || 0;\n  const effectiveTare = containerTare > 0 ? containerTare : fullTare;\n  return +(gross - effectiveTare).toFixed(2);\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634640664,
-      "end": 1783634640664,
+      "start": 1783626308636,
+      "end": 1783626308636,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634640664,
-      "end": 1783634640664,
+      "start": 1783626308636,
+      "end": 1783626308636,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626308636,
+      "end": 1783626308636,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634640664,
-      "end": 1783634640664,
+      "start": 1783626308636,
+      "end": 1783626308636,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634640664,
-      "end": 1783634640664,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634640664,
-      "end": 1783634640665,
+      "start": 1783626308636,
+      "end": 1783626308636,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634640665,
-      "end": 1783634640665,
+      "start": 1783626308636,
+      "end": 1783626308636,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634640665,
-      "end": 1783634640665,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634640665,
-      "end": 1783634640665,
+      "start": 1783626308636,
+      "end": 1783626308636,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634640667,
-      "end": 1783634640667,
+      "start": 1783626308636,
+      "end": 1783626308636,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634640668,
-      "end": 1783634640668,
+      "start": 1783626308636,
+      "end": 1783626308636,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634640669,
-      "end": 1783634640669,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626308636,
+      "end": 1783626308639,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626308639,
+      "end": 1783626308639,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634640669,
-      "end": 1783634640669,
+      "name": "vite:css-analysis",
+      "start": 1783626308639,
+      "end": 1783626308639,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { items, isContainer, getLiquid, balanceTareMap, containerTareMap } from \"/src/composables/chemistry/useChemistryLab.ts\";\nexport function computeBalanceWeight(balance) {\n  const onTop = items.value.filter(\n    (i) => i.uid !== balance.uid && Math.abs(i.x - balance.x) < 80 && i.y < balance.y + 50 && i.y > balance.y - 300\n  );\n  let total = 0;\n  for (const item of onTop) {\n    total += 5;\n    if (isContainer(item.id)) {\n      total += getLiquid(item.uid).volume;\n    }\n  }\n  return total;\n}\nexport function getContainerWeight(balance) {\n  const onTop = items.value.filter(\n    (i) => i.uid !== balance.uid && Math.abs(i.x - balance.x) < 80 && i.y < balance.y + 50 && i.y > balance.y - 300\n  );\n  return onTop.length * 5;\n}\nexport function getBalanceReading(uid) {\n  const balance = items.value.find((i) => i.uid === uid && i.id === \"digital-balance\");\n  if (!balance) return null;\n  const gross = computeBalanceWeight(balance);\n  const fullTare = balanceTareMap[uid] || 0;\n  const containerTare = containerTareMap[uid] || 0;\n  const effectiveTare = containerTare > 0 ? containerTare : fullTare;\n  return +(gross - effectiveTare).toFixed(2);\n}\n",
+      "start": 1783626308639,
+      "end": 1783626308656,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

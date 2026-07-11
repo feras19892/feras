@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useBeakerScale.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "export interface Mark { y: number; value: number; type: 'major' | 'mid' | 'minor'; label?: string }\n\nexport function useBeakerScale(maxVolume: number): Mark[] {\n  const marks: Mark[] = [];\n  const minorStep = maxVolume >= 500 ? 10 : maxVolume >= 250 ? 5 : 5;\n  const majorStep = maxVolume >= 500 ? 50 : maxVolume >= 250 ? 25 : 10;\n  for (let v = minorStep; v <= maxVolume; v += minorStep) {\n    const pct = v / maxVolume;\n    const y = 160 - pct * 125;\n    const isMajor = v % majorStep === 0;\n    const isMid = v % (majorStep / 2) === 0;\n    marks.push({ y, value: v, type: isMajor ? 'major' : isMid ? 'mid' : 'minor', label: isMajor ? String(v) : undefined });\n  }\n  return marks;\n}\n",
-      "start": 1783634642422,
-      "end": 1783634642732,
+      "start": 1783626310578,
+      "end": 1783626310578
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626310578,
+      "end": 1783626310578,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "export interface Mark { y: number; value: number; type: 'major' | 'mid' | 'minor'; label?: string }\n\nexport function useBeakerScale(maxVolume: number): Mark[] {\n  const marks: Mark[] = [];\n  const minorStep = maxVolume >= 500 ? 10 : maxVolume >= 250 ? 5 : 5;\n  const majorStep = maxVolume >= 500 ? 50 : maxVolume >= 250 ? 25 : 10;\n  for (let v = minorStep; v <= maxVolume; v += minorStep) {\n    const pct = v / maxVolume;\n    const y = 160 - pct * 125;\n    const isMajor = v % majorStep === 0;\n    const isMid = v % (majorStep / 2) === 0;\n    marks.push({ y, value: v, type: isMajor ? 'major' : isMid ? 'mid' : 'minor', label: isMajor ? String(v) : undefined });\n  }\n  return marks;\n}\n",
+      "start": 1783626310578,
+      "end": 1783626310578,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634642732,
-      "end": 1783634642732,
+      "start": 1783626310578,
+      "end": 1783626310578,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "export function useBeakerScale(maxVolume) {\n  const marks = [];\n  const minorStep = maxVolume >= 500 ? 10 : maxVolume >= 250 ? 5 : 5;\n  const majorStep = maxVolume >= 500 ? 50 : maxVolume >= 250 ? 25 : 10;\n  for (let v = minorStep; v <= maxVolume; v += minorStep) {\n    const pct = v / maxVolume;\n    const y = 160 - pct * 125;\n    const isMajor = v % majorStep === 0;\n    const isMid = v % (majorStep / 2) === 0;\n    marks.push({ y, value: v, type: isMajor ? \"major\" : isMid ? \"mid\" : \"minor\", label: isMajor ? String(v) : void 0 });\n  }\n  return marks;\n}\n",
-      "start": 1783634642732,
-      "end": 1783634642883,
+      "start": 1783626310578,
+      "end": 1783626310814,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useBeakerScale.ts"
+          "useBeakerScale.ts"
         ],
         "sourcesContent": [
           "export interface Mark { y: number; value: number; type: 'major' | 'mid' | 'minor'; label?: string }\n\nexport function useBeakerScale(maxVolume: number): Mark[] {\n  const marks: Mark[] = [];\n  const minorStep = maxVolume >= 500 ? 10 : maxVolume >= 250 ? 5 : 5;\n  const majorStep = maxVolume >= 500 ? 50 : maxVolume >= 250 ? 25 : 10;\n  for (let v = minorStep; v <= maxVolume; v += minorStep) {\n    const pct = v / maxVolume;\n    const y = 160 - pct * 125;\n    const isMajor = v % majorStep === 0;\n    const isMid = v % (majorStep / 2) === 0;\n    marks.push({ y, value: v, type: isMajor ? 'major' : isMid ? 'mid' : 'minor', label: isMajor ? String(v) : undefined });\n  }\n  return marks;\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634642883,
-      "end": 1783634642883,
+      "start": 1783626310814,
+      "end": 1783626310814,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642883,
-      "end": 1783634642883,
+      "start": 1783626310814,
+      "end": 1783626310814,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626310814,
+      "end": 1783626310814,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642883,
-      "end": 1783634642883,
+      "start": 1783626310814,
+      "end": 1783626310814,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634642883,
-      "end": 1783634642883,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634642883,
-      "end": 1783634642883,
+      "start": 1783626310814,
+      "end": 1783626310814,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642883,
-      "end": 1783634642883,
+      "start": 1783626310814,
+      "end": 1783626310814,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642883,
-      "end": 1783634642883,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642883,
-      "end": 1783634642883,
+      "start": 1783626310814,
+      "end": 1783626310814,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642884,
-      "end": 1783634642884,
+      "start": 1783626310814,
+      "end": 1783626310814,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642884,
-      "end": 1783634642884,
+      "start": 1783626310814,
+      "end": 1783626310814,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642884,
-      "end": 1783634642884,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626310814,
+      "end": 1783626310814,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626310814,
+      "end": 1783626310814,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642884,
-      "end": 1783634642884,
+      "name": "vite:css-analysis",
+      "start": 1783626310814,
+      "end": 1783626310814,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "export function useBeakerScale(maxVolume) {\n  const marks = [];\n  const minorStep = maxVolume >= 500 ? 10 : maxVolume >= 250 ? 5 : 5;\n  const majorStep = maxVolume >= 500 ? 50 : maxVolume >= 250 ? 25 : 10;\n  for (let v = minorStep; v <= maxVolume; v += minorStep) {\n    const pct = v / maxVolume;\n    const y = 160 - pct * 125;\n    const isMajor = v % majorStep === 0;\n    const isMid = v % (majorStep / 2) === 0;\n    marks.push({ y, value: v, type: isMajor ? \"major\" : isMid ? \"mid\" : \"minor\", label: isMajor ? String(v) : void 0 });\n  }\n  return marks;\n}\n",
+      "start": 1783626310814,
+      "end": 1783626310814,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

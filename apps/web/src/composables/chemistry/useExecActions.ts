@@ -5,8 +5,9 @@ import {
   selectedChemical, hasSelectedChemicalMap, pendingChemicalFill
 } from './useChemistryLab';
 import { applyIndicator } from './useReactionEngine';
-import { pushMacroHistory } from './useChemistryHistory';
-import { computeBalanceWeight, getContainerWeight } from './useLabSimulation';
+import { pushMacroHistory, pushMicroHistory } from './useChemistryHistory';
+import { computeBalanceWeight, getContainerWeight, findContainerBelow, buretteWarning } from './useLabSimulation';
+import { handleDropMixWithRecording } from './useBuretteMixRecorder';
 import type { LabItem } from './useChemistryTools';
 import type { ToolState } from '../../components/experiment/chemistry/InspectorPanel.vue';
 
@@ -98,6 +99,44 @@ function toggleBuretteValve(item: LabItem, selectedItemRef: { value: LabItem | n
 export function toggleSepFunnelValve(item: LabItem, selectedItemRef: { value: LabItem | null }, emit: (name: 'select', item: LabItem | null, state: ToolState | null) => void) {
   const s = getSepFunnelState(item.uid); s.valveOpen = !s.valveOpen;
   if (selectedItemRef.value?.uid === item.uid) emit('select', item, buildToolState(item));
+}
+
+export function buretteDropOne(item: LabItem, selectedItemRef: { value: LabItem | null }, emit: (name: 'select', item: LabItem | null, state: ToolState | null) => void) {
+  const b = getBurette(item.uid);
+  if (b.volume <= 0) return;
+  const container = findContainerBelow(item);
+  if (!container) return;
+  const bLiquid = getLiquid(container.uid);
+  if (bLiquid.volume >= bLiquid.maxVolume) return;
+
+  pushMicroHistory();
+  const flowRate = 0.05;
+  const transfer = Math.min(flowRate, b.volume, bLiquid.maxVolume - bLiquid.volume);
+
+  b.volume = +(b.volume - transfer).toFixed(2);
+  buretteConsumedThisRefill[item.uid] = (buretteConsumedThisRefill[item.uid] || 0) + transfer;
+  bLiquid.volume = +(bLiquid.volume + transfer).toFixed(2);
+
+  if (b.chemicalId) {
+    handleDropMixWithRecording({
+      sourceUid: item.uid,
+      targetUid: container.uid,
+      sourceChemicalId: b.chemicalId,
+      targetChemicalId: bLiquid.chemicalId || '',
+      dropVolume: transfer,
+    });
+    if (bLiquid.ph !== null && bLiquid.ph !== undefined) {
+      if (bLiquid.ph >= 9.0) buretteWarning.value = 'exceeded';
+      else if (bLiquid.ph >= 8.0) buretteWarning.value = 'equivalence';
+      else if (bLiquid.ph >= 7.5) buretteWarning.value = 'approaching';
+    }
+  } else {
+    bLiquid.color = b.color;
+    bLiquid.opacity = b.opacity;
+  }
+
+  if (selectedItemRef.value?.uid === item.uid) emit('select', item, buildToolState(item));
+  if (selectedItemRef.value?.uid === container.uid) emit('select', container, buildToolState(container));
 }
 
 export function toggleBurner(item: LabItem, selectedItemRef: { value: LabItem | null }, emit: (name: 'select', item: LabItem | null, state: ToolState | null) => void) {

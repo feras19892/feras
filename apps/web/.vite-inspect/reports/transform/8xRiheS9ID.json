@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/projectile/useProjectileTargetDraw.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import type { ProjectileParams } from '../../modules/physics/experiments/projectile/useProjectilePhysics'\n\ninterface TargetSimState {\n  targetHit: boolean\n  distanceToTarget: number | null\n}\n\nexport function useProjectileTargetDraw() {\n  function drawTree(ctx: CanvasRenderingContext2D, tx: number, ty: number, scale: number, hit: boolean) {\n    const s = Math.max(scale, 18)\n    const trunkW = Math.max(6, s * 0.15)\n    const trunkH = Math.max(18, s * 0.6)\n    const canopyR = Math.max(14, s * 0.55)\n    const trunkColor = '#5D4037'\n    const canopyColor = hit ? '#4ade80' : '#16a34a'\n    // Shadow/glow at base\n    ctx.fillStyle = 'rgba(0,0,0,0.15)'\n    ctx.beginPath(); ctx.ellipse(tx, ty + 2, trunkW * 1.5, 3, 0, 0, Math.PI * 2); ctx.fill()\n    // Trunk\n    ctx.fillStyle = trunkColor\n    ctx.fillRect(tx - trunkW / 2, ty - trunkH, trunkW, trunkH)\n    // Canopy (3 circles)\n    ctx.fillStyle = canopyColor\n    ctx.beginPath(); ctx.arc(tx, ty - trunkH - canopyR * 0.3, canopyR, 0, Math.PI * 2); ctx.fill()\n    ctx.beginPath(); ctx.arc(tx - canopyR * 0.5, ty - trunkH + canopyR * 0.3, canopyR * 0.7, 0, Math.PI * 2); ctx.fill()\n    ctx.beginPath(); ctx.arc(tx + canopyR * 0.5, ty - trunkH + canopyR * 0.3, canopyR * 0.7, 0, Math.PI * 2); ctx.fill()\n    // Trunk outline\n    ctx.strokeStyle = '#3e2723'; ctx.lineWidth = 1\n    ctx.strokeRect(tx - trunkW / 2, ty - trunkH, trunkW, trunkH)\n    // Hit glow\n    if (hit) {\n      ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = 3\n      ctx.beginPath(); ctx.arc(tx, ty - trunkH * 0.5, canopyR * 1.4, 0, Math.PI * 2); ctx.stroke()\n      // Bright flash\n      ctx.fillStyle = 'rgba(251,191,36,0.3)'\n      ctx.beginPath(); ctx.arc(tx, ty - trunkH * 0.5, canopyR * 1.8, 0, Math.PI * 2); ctx.fill()\n      // Ripple rings\n      ctx.strokeStyle = 'rgba(251,191,36,0.6)'; ctx.lineWidth = 2\n      ctx.beginPath(); ctx.arc(tx, ty - trunkH * 0.5, canopyR * 2.2, 0, Math.PI * 2); ctx.stroke()\n      ctx.strokeStyle = 'rgba(251,191,36,0.3)'; ctx.lineWidth = 1\n      ctx.beginPath(); ctx.arc(tx, ty - trunkH * 0.5, canopyR * 2.8, 0, Math.PI * 2); ctx.stroke()\n    }\n  }\n\n  function drawTarget(\n    ctx: CanvasRenderingContext2D,\n    _w: number,\n    h: number,\n    params: ProjectileParams,\n    simState: TargetSimState,\n    margin: number,\n    groundY: number,\n    scale: number\n  ) {\n    if (!params.targetMode || !params.targetVisible) return\n    const tx = margin + params.targetX * scale\n    const ty = groundY - params.targetY * scale\n    drawTree(ctx, tx, ty, scale, simState.targetHit)\n    // Distance label above tree\n    ctx.fillStyle = '#1e293b'\n    ctx.beginPath(); ctx.roundRect(tx - 28, ty - scale * 0.9 - 18, 56, 18, 4); ctx.fill()\n    ctx.strokeStyle = simState.targetHit ? '#22c55e' : '#5B8DB8'; ctx.lineWidth = 1; ctx.stroke()\n    ctx.fillStyle = '#e2e8f0'; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'\n    ctx.fillText(`x=${params.targetX.toFixed(1)}m`, tx, ty - scale * 0.9 - 9)\n    // Hit emoji\n    ctx.fillStyle = simState.targetHit ? '#22c55e' : '#ef4444'\n    ctx.font = '12px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'\n    ctx.fillText(simState.targetHit ? '🎯' : '🌲', tx, ty - scale * 0.8)\n  }\n  return { drawTarget }\n}\n",
-      "start": 1783634642865,
-      "end": 1783634643079,
+      "start": 1783626292605,
+      "end": 1783626292605
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626292605,
+      "end": 1783626292605,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import type { ProjectileParams } from '../../modules/physics/experiments/projectile/useProjectilePhysics'\n\ninterface TargetSimState {\n  targetHit: boolean\n  distanceToTarget: number | null\n}\n\nexport function useProjectileTargetDraw() {\n  function drawTree(ctx: CanvasRenderingContext2D, tx: number, ty: number, scale: number, hit: boolean) {\n    const s = Math.max(scale, 18)\n    const trunkW = Math.max(6, s * 0.15)\n    const trunkH = Math.max(18, s * 0.6)\n    const canopyR = Math.max(14, s * 0.55)\n    const trunkColor = '#5D4037'\n    const canopyColor = hit ? '#4ade80' : '#16a34a'\n    // Shadow/glow at base\n    ctx.fillStyle = 'rgba(0,0,0,0.15)'\n    ctx.beginPath(); ctx.ellipse(tx, ty + 2, trunkW * 1.5, 3, 0, 0, Math.PI * 2); ctx.fill()\n    // Trunk\n    ctx.fillStyle = trunkColor\n    ctx.fillRect(tx - trunkW / 2, ty - trunkH, trunkW, trunkH)\n    // Canopy (3 circles)\n    ctx.fillStyle = canopyColor\n    ctx.beginPath(); ctx.arc(tx, ty - trunkH - canopyR * 0.3, canopyR, 0, Math.PI * 2); ctx.fill()\n    ctx.beginPath(); ctx.arc(tx - canopyR * 0.5, ty - trunkH + canopyR * 0.3, canopyR * 0.7, 0, Math.PI * 2); ctx.fill()\n    ctx.beginPath(); ctx.arc(tx + canopyR * 0.5, ty - trunkH + canopyR * 0.3, canopyR * 0.7, 0, Math.PI * 2); ctx.fill()\n    // Trunk outline\n    ctx.strokeStyle = '#3e2723'; ctx.lineWidth = 1\n    ctx.strokeRect(tx - trunkW / 2, ty - trunkH, trunkW, trunkH)\n    // Hit glow\n    if (hit) {\n      ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = 3\n      ctx.beginPath(); ctx.arc(tx, ty - trunkH * 0.5, canopyR * 1.4, 0, Math.PI * 2); ctx.stroke()\n      // Bright flash\n      ctx.fillStyle = 'rgba(251,191,36,0.3)'\n      ctx.beginPath(); ctx.arc(tx, ty - trunkH * 0.5, canopyR * 1.8, 0, Math.PI * 2); ctx.fill()\n      // Ripple rings\n      ctx.strokeStyle = 'rgba(251,191,36,0.6)'; ctx.lineWidth = 2\n      ctx.beginPath(); ctx.arc(tx, ty - trunkH * 0.5, canopyR * 2.2, 0, Math.PI * 2); ctx.stroke()\n      ctx.strokeStyle = 'rgba(251,191,36,0.3)'; ctx.lineWidth = 1\n      ctx.beginPath(); ctx.arc(tx, ty - trunkH * 0.5, canopyR * 2.8, 0, Math.PI * 2); ctx.stroke()\n    }\n  }\n\n  function drawTarget(\n    ctx: CanvasRenderingContext2D,\n    _w: number,\n    h: number,\n    params: ProjectileParams,\n    simState: TargetSimState,\n    margin: number,\n    groundY: number,\n    scale: number\n  ) {\n    if (!params.targetMode || !params.targetVisible) return\n    const tx = margin + params.targetX * scale\n    const ty = groundY - params.targetY * scale\n    drawTree(ctx, tx, ty, scale, simState.targetHit)\n    // Distance label above tree\n    ctx.fillStyle = '#1e293b'\n    ctx.beginPath(); ctx.roundRect(tx - 28, ty - scale * 0.9 - 18, 56, 18, 4); ctx.fill()\n    ctx.strokeStyle = simState.targetHit ? '#22c55e' : '#5B8DB8'; ctx.lineWidth = 1; ctx.stroke()\n    ctx.fillStyle = '#e2e8f0'; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'\n    ctx.fillText(`x=${params.targetX.toFixed(1)}m`, tx, ty - scale * 0.9 - 9)\n    // Hit emoji\n    ctx.fillStyle = simState.targetHit ? '#22c55e' : '#ef4444'\n    ctx.font = '12px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'\n    ctx.fillText(simState.targetHit ? '🎯' : '🌲', tx, ty - scale * 0.8)\n  }\n  return { drawTarget }\n}\n",
+      "start": 1783626292605,
+      "end": 1783626292605,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634643079,
-      "end": 1783634643079,
+      "start": 1783626292605,
+      "end": 1783626292605,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "export function useProjectileTargetDraw() {\n  function drawTree(ctx, tx, ty, scale, hit) {\n    const s = Math.max(scale, 18);\n    const trunkW = Math.max(6, s * 0.15);\n    const trunkH = Math.max(18, s * 0.6);\n    const canopyR = Math.max(14, s * 0.55);\n    const trunkColor = \"#5D4037\";\n    const canopyColor = hit ? \"#4ade80\" : \"#16a34a\";\n    ctx.fillStyle = \"rgba(0,0,0,0.15)\";\n    ctx.beginPath();\n    ctx.ellipse(tx, ty + 2, trunkW * 1.5, 3, 0, 0, Math.PI * 2);\n    ctx.fill();\n    ctx.fillStyle = trunkColor;\n    ctx.fillRect(tx - trunkW / 2, ty - trunkH, trunkW, trunkH);\n    ctx.fillStyle = canopyColor;\n    ctx.beginPath();\n    ctx.arc(tx, ty - trunkH - canopyR * 0.3, canopyR, 0, Math.PI * 2);\n    ctx.fill();\n    ctx.beginPath();\n    ctx.arc(tx - canopyR * 0.5, ty - trunkH + canopyR * 0.3, canopyR * 0.7, 0, Math.PI * 2);\n    ctx.fill();\n    ctx.beginPath();\n    ctx.arc(tx + canopyR * 0.5, ty - trunkH + canopyR * 0.3, canopyR * 0.7, 0, Math.PI * 2);\n    ctx.fill();\n    ctx.strokeStyle = \"#3e2723\";\n    ctx.lineWidth = 1;\n    ctx.strokeRect(tx - trunkW / 2, ty - trunkH, trunkW, trunkH);\n    if (hit) {\n      ctx.strokeStyle = \"#fbbf24\";\n      ctx.lineWidth = 3;\n      ctx.beginPath();\n      ctx.arc(tx, ty - trunkH * 0.5, canopyR * 1.4, 0, Math.PI * 2);\n      ctx.stroke();\n      ctx.fillStyle = \"rgba(251,191,36,0.3)\";\n      ctx.beginPath();\n      ctx.arc(tx, ty - trunkH * 0.5, canopyR * 1.8, 0, Math.PI * 2);\n      ctx.fill();\n      ctx.strokeStyle = \"rgba(251,191,36,0.6)\";\n      ctx.lineWidth = 2;\n      ctx.beginPath();\n      ctx.arc(tx, ty - trunkH * 0.5, canopyR * 2.2, 0, Math.PI * 2);\n      ctx.stroke();\n      ctx.strokeStyle = \"rgba(251,191,36,0.3)\";\n      ctx.lineWidth = 1;\n      ctx.beginPath();\n      ctx.arc(tx, ty - trunkH * 0.5, canopyR * 2.8, 0, Math.PI * 2);\n      ctx.stroke();\n    }\n  }\n  function drawTarget(ctx, _w, h, params, simState, margin, groundY, scale) {\n    if (!params.targetMode || !params.targetVisible) return;\n    const tx = margin + params.targetX * scale;\n    const ty = groundY - params.targetY * scale;\n    drawTree(ctx, tx, ty, scale, simState.targetHit);\n    ctx.fillStyle = \"#1e293b\";\n    ctx.beginPath();\n    ctx.roundRect(tx - 28, ty - scale * 0.9 - 18, 56, 18, 4);\n    ctx.fill();\n    ctx.strokeStyle = simState.targetHit ? \"#22c55e\" : \"#5B8DB8\";\n    ctx.lineWidth = 1;\n    ctx.stroke();\n    ctx.fillStyle = \"#e2e8f0\";\n    ctx.font = \"bold 11px sans-serif\";\n    ctx.textAlign = \"center\";\n    ctx.textBaseline = \"middle\";\n    ctx.fillText(`x=${params.targetX.toFixed(1)}m`, tx, ty - scale * 0.9 - 9);\n    ctx.fillStyle = simState.targetHit ? \"#22c55e\" : \"#ef4444\";\n    ctx.font = \"12px sans-serif\";\n    ctx.textAlign = \"center\";\n    ctx.textBaseline = \"alphabetic\";\n    ctx.fillText(simState.targetHit ? \"🎯\" : \"🌲\", tx, ty - scale * 0.8);\n  }\n  return { drawTarget };\n}\n",
-      "start": 1783634643079,
-      "end": 1783634643123,
+      "start": 1783626292605,
+      "end": 1783626292874,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/composables/projectile/useProjectileTargetDraw.ts"
+          "useProjectileTargetDraw.ts"
         ],
         "sourcesContent": [
           "import type { ProjectileParams } from '../../modules/physics/experiments/projectile/useProjectilePhysics'\n\ninterface TargetSimState {\n  targetHit: boolean\n  distanceToTarget: number | null\n}\n\nexport function useProjectileTargetDraw() {\n  function drawTree(ctx: CanvasRenderingContext2D, tx: number, ty: number, scale: number, hit: boolean) {\n    const s = Math.max(scale, 18)\n    const trunkW = Math.max(6, s * 0.15)\n    const trunkH = Math.max(18, s * 0.6)\n    const canopyR = Math.max(14, s * 0.55)\n    const trunkColor = '#5D4037'\n    const canopyColor = hit ? '#4ade80' : '#16a34a'\n    // Shadow/glow at base\n    ctx.fillStyle = 'rgba(0,0,0,0.15)'\n    ctx.beginPath(); ctx.ellipse(tx, ty + 2, trunkW * 1.5, 3, 0, 0, Math.PI * 2); ctx.fill()\n    // Trunk\n    ctx.fillStyle = trunkColor\n    ctx.fillRect(tx - trunkW / 2, ty - trunkH, trunkW, trunkH)\n    // Canopy (3 circles)\n    ctx.fillStyle = canopyColor\n    ctx.beginPath(); ctx.arc(tx, ty - trunkH - canopyR * 0.3, canopyR, 0, Math.PI * 2); ctx.fill()\n    ctx.beginPath(); ctx.arc(tx - canopyR * 0.5, ty - trunkH + canopyR * 0.3, canopyR * 0.7, 0, Math.PI * 2); ctx.fill()\n    ctx.beginPath(); ctx.arc(tx + canopyR * 0.5, ty - trunkH + canopyR * 0.3, canopyR * 0.7, 0, Math.PI * 2); ctx.fill()\n    // Trunk outline\n    ctx.strokeStyle = '#3e2723'; ctx.lineWidth = 1\n    ctx.strokeRect(tx - trunkW / 2, ty - trunkH, trunkW, trunkH)\n    // Hit glow\n    if (hit) {\n      ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = 3\n      ctx.beginPath(); ctx.arc(tx, ty - trunkH * 0.5, canopyR * 1.4, 0, Math.PI * 2); ctx.stroke()\n      // Bright flash\n      ctx.fillStyle = 'rgba(251,191,36,0.3)'\n      ctx.beginPath(); ctx.arc(tx, ty - trunkH * 0.5, canopyR * 1.8, 0, Math.PI * 2); ctx.fill()\n      // Ripple rings\n      ctx.strokeStyle = 'rgba(251,191,36,0.6)'; ctx.lineWidth = 2\n      ctx.beginPath(); ctx.arc(tx, ty - trunkH * 0.5, canopyR * 2.2, 0, Math.PI * 2); ctx.stroke()\n      ctx.strokeStyle = 'rgba(251,191,36,0.3)'; ctx.lineWidth = 1\n      ctx.beginPath(); ctx.arc(tx, ty - trunkH * 0.5, canopyR * 2.8, 0, Math.PI * 2); ctx.stroke()\n    }\n  }\n\n  function drawTarget(\n    ctx: CanvasRenderingContext2D,\n    _w: number,\n    h: number,\n    params: ProjectileParams,\n    simState: TargetSimState,\n    margin: number,\n    groundY: number,\n    scale: number\n  ) {\n    if (!params.targetMode || !params.targetVisible) return\n    const tx = margin + params.targetX * scale\n    const ty = groundY - params.targetY * scale\n    drawTree(ctx, tx, ty, scale, simState.targetHit)\n    // Distance label above tree\n    ctx.fillStyle = '#1e293b'\n    ctx.beginPath(); ctx.roundRect(tx - 28, ty - scale * 0.9 - 18, 56, 18, 4); ctx.fill()\n    ctx.strokeStyle = simState.targetHit ? '#22c55e' : '#5B8DB8'; ctx.lineWidth = 1; ctx.stroke()\n    ctx.fillStyle = '#e2e8f0'; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'\n    ctx.fillText(`x=${params.targetX.toFixed(1)}m`, tx, ty - scale * 0.9 - 9)\n    // Hit emoji\n    ctx.fillStyle = simState.targetHit ? '#22c55e' : '#ef4444'\n    ctx.font = '12px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'\n    ctx.fillText(simState.targetHit ? '🎯' : '🌲', tx, ty - scale * 0.8)\n  }\n  return { drawTarget }\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634643124,
-      "end": 1783634643124,
+      "start": 1783626292874,
+      "end": 1783626292874,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634643124,
-      "end": 1783634643124,
+      "start": 1783626292874,
+      "end": 1783626292874,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626292874,
+      "end": 1783626292874,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634643124,
-      "end": 1783634643124,
+      "start": 1783626292874,
+      "end": 1783626292874,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634643124,
-      "end": 1783634643124,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634643124,
-      "end": 1783634643124,
+      "start": 1783626292874,
+      "end": 1783626292874,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634643124,
-      "end": 1783634643124,
+      "start": 1783626292874,
+      "end": 1783626292874,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634643124,
-      "end": 1783634643124,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634643124,
-      "end": 1783634643124,
+      "start": 1783626292874,
+      "end": 1783626292874,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634643124,
-      "end": 1783634643124,
+      "start": 1783626292874,
+      "end": 1783626292874,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634643124,
-      "end": 1783634643124,
+      "start": 1783626292874,
+      "end": 1783626292874,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634643124,
-      "end": 1783634643124,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626292874,
+      "end": 1783626292874,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626292874,
+      "end": 1783626292874,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634643124,
-      "end": 1783634643124,
+      "name": "vite:css-analysis",
+      "start": 1783626292874,
+      "end": 1783626292874,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "export function useProjectileTargetDraw() {\n  function drawTree(ctx, tx, ty, scale, hit) {\n    const s = Math.max(scale, 18);\n    const trunkW = Math.max(6, s * 0.15);\n    const trunkH = Math.max(18, s * 0.6);\n    const canopyR = Math.max(14, s * 0.55);\n    const trunkColor = \"#5D4037\";\n    const canopyColor = hit ? \"#4ade80\" : \"#16a34a\";\n    ctx.fillStyle = \"rgba(0,0,0,0.15)\";\n    ctx.beginPath();\n    ctx.ellipse(tx, ty + 2, trunkW * 1.5, 3, 0, 0, Math.PI * 2);\n    ctx.fill();\n    ctx.fillStyle = trunkColor;\n    ctx.fillRect(tx - trunkW / 2, ty - trunkH, trunkW, trunkH);\n    ctx.fillStyle = canopyColor;\n    ctx.beginPath();\n    ctx.arc(tx, ty - trunkH - canopyR * 0.3, canopyR, 0, Math.PI * 2);\n    ctx.fill();\n    ctx.beginPath();\n    ctx.arc(tx - canopyR * 0.5, ty - trunkH + canopyR * 0.3, canopyR * 0.7, 0, Math.PI * 2);\n    ctx.fill();\n    ctx.beginPath();\n    ctx.arc(tx + canopyR * 0.5, ty - trunkH + canopyR * 0.3, canopyR * 0.7, 0, Math.PI * 2);\n    ctx.fill();\n    ctx.strokeStyle = \"#3e2723\";\n    ctx.lineWidth = 1;\n    ctx.strokeRect(tx - trunkW / 2, ty - trunkH, trunkW, trunkH);\n    if (hit) {\n      ctx.strokeStyle = \"#fbbf24\";\n      ctx.lineWidth = 3;\n      ctx.beginPath();\n      ctx.arc(tx, ty - trunkH * 0.5, canopyR * 1.4, 0, Math.PI * 2);\n      ctx.stroke();\n      ctx.fillStyle = \"rgba(251,191,36,0.3)\";\n      ctx.beginPath();\n      ctx.arc(tx, ty - trunkH * 0.5, canopyR * 1.8, 0, Math.PI * 2);\n      ctx.fill();\n      ctx.strokeStyle = \"rgba(251,191,36,0.6)\";\n      ctx.lineWidth = 2;\n      ctx.beginPath();\n      ctx.arc(tx, ty - trunkH * 0.5, canopyR * 2.2, 0, Math.PI * 2);\n      ctx.stroke();\n      ctx.strokeStyle = \"rgba(251,191,36,0.3)\";\n      ctx.lineWidth = 1;\n      ctx.beginPath();\n      ctx.arc(tx, ty - trunkH * 0.5, canopyR * 2.8, 0, Math.PI * 2);\n      ctx.stroke();\n    }\n  }\n  function drawTarget(ctx, _w, h, params, simState, margin, groundY, scale) {\n    if (!params.targetMode || !params.targetVisible) return;\n    const tx = margin + params.targetX * scale;\n    const ty = groundY - params.targetY * scale;\n    drawTree(ctx, tx, ty, scale, simState.targetHit);\n    ctx.fillStyle = \"#1e293b\";\n    ctx.beginPath();\n    ctx.roundRect(tx - 28, ty - scale * 0.9 - 18, 56, 18, 4);\n    ctx.fill();\n    ctx.strokeStyle = simState.targetHit ? \"#22c55e\" : \"#5B8DB8\";\n    ctx.lineWidth = 1;\n    ctx.stroke();\n    ctx.fillStyle = \"#e2e8f0\";\n    ctx.font = \"bold 11px sans-serif\";\n    ctx.textAlign = \"center\";\n    ctx.textBaseline = \"middle\";\n    ctx.fillText(`x=${params.targetX.toFixed(1)}m`, tx, ty - scale * 0.9 - 9);\n    ctx.fillStyle = simState.targetHit ? \"#22c55e\" : \"#ef4444\";\n    ctx.font = \"12px sans-serif\";\n    ctx.textAlign = \"center\";\n    ctx.textBaseline = \"alphabetic\";\n    ctx.fillText(simState.targetHit ? \"🎯\" : \"🌲\", tx, ty - scale * 0.8);\n  }\n  return { drawTarget };\n}\n",
+      "start": 1783626292874,
+      "end": 1783626292874,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

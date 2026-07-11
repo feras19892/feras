@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/usePhMeter.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import type { LabItem } from './useChemistryTools';\nimport { items, isContainer, getLiquid, phProbeTipMap } from './useChemistryLab';\n\nexport function phColor(ph: number | null): string {\n  if (ph === null) return '#94a3b8';\n  if (ph < 3) return '#ef4444';\n  if (ph < 7) return '#f59e0b';\n  if (ph === 7) return '#22c55e';\n  if (ph < 11) return '#3b82f6';\n  return '#8b5cf6';\n}\n\nexport function getPhReading(phMeter: LabItem): number | null {\n  const tip = phProbeTipMap[phMeter.uid];\n  if (!tip) return null;\n  const target = items.value.find((i: LabItem) => {\n    if (i.uid === phMeter.uid || !isContainer(i.id)) return false;\n    const dx = Math.abs((i.x + 40) - tip.x);\n    const dy = Math.abs((i.y + 10) - tip.y);\n    return dx < 60 && dy < 50;\n  });\n  if (!target) return null;\n  const liq = getLiquid(target.uid);\n  if (liq.ph !== null && liq.ph !== undefined) return liq.ph;\n  return 7.0;\n}\n",
-      "start": 1783634640048,
-      "end": 1783634640498,
+      "start": 1783626308055,
+      "end": 1783626308055
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626308055,
+      "end": 1783626308055,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import type { LabItem } from './useChemistryTools';\nimport { items, isContainer, getLiquid, phProbeTipMap } from './useChemistryLab';\n\nexport function phColor(ph: number | null): string {\n  if (ph === null) return '#94a3b8';\n  if (ph < 3) return '#ef4444';\n  if (ph < 7) return '#f59e0b';\n  if (ph === 7) return '#22c55e';\n  if (ph < 11) return '#3b82f6';\n  return '#8b5cf6';\n}\n\nexport function getPhReading(phMeter: LabItem): number | null {\n  const tip = phProbeTipMap[phMeter.uid];\n  if (!tip) return null;\n  const target = items.value.find((i: LabItem) => {\n    if (i.uid === phMeter.uid || !isContainer(i.id)) return false;\n    const dx = Math.abs((i.x + 40) - tip.x);\n    const dy = Math.abs((i.y + 10) - tip.y);\n    return dx < 60 && dy < 50;\n  });\n  if (!target) return null;\n  const liq = getLiquid(target.uid);\n  if (liq.ph !== null && liq.ph !== undefined) return liq.ph;\n  return 7.0;\n}\n",
+      "start": 1783626308055,
+      "end": 1783626308055,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634640498,
-      "end": 1783634640498,
+      "start": 1783626308055,
+      "end": 1783626308055,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { items, isContainer, getLiquid, phProbeTipMap } from \"./useChemistryLab\";\nexport function phColor(ph) {\n  if (ph === null) return \"#94a3b8\";\n  if (ph < 3) return \"#ef4444\";\n  if (ph < 7) return \"#f59e0b\";\n  if (ph === 7) return \"#22c55e\";\n  if (ph < 11) return \"#3b82f6\";\n  return \"#8b5cf6\";\n}\nexport function getPhReading(phMeter) {\n  const tip = phProbeTipMap[phMeter.uid];\n  if (!tip) return null;\n  const target = items.value.find((i) => {\n    if (i.uid === phMeter.uid || !isContainer(i.id)) return false;\n    const dx = Math.abs(i.x + 40 - tip.x);\n    const dy = Math.abs(i.y + 10 - tip.y);\n    return dx < 60 && dy < 50;\n  });\n  if (!target) return null;\n  const liq = getLiquid(target.uid);\n  if (liq.ph !== null && liq.ph !== void 0) return liq.ph;\n  return 7;\n}\n",
-      "start": 1783634640498,
-      "end": 1783634640664,
+      "start": 1783626308055,
+      "end": 1783626308416,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/usePhMeter.ts"
+          "usePhMeter.ts"
         ],
         "sourcesContent": [
           "import type { LabItem } from './useChemistryTools';\nimport { items, isContainer, getLiquid, phProbeTipMap } from './useChemistryLab';\n\nexport function phColor(ph: number | null): string {\n  if (ph === null) return '#94a3b8';\n  if (ph < 3) return '#ef4444';\n  if (ph < 7) return '#f59e0b';\n  if (ph === 7) return '#22c55e';\n  if (ph < 11) return '#3b82f6';\n  return '#8b5cf6';\n}\n\nexport function getPhReading(phMeter: LabItem): number | null {\n  const tip = phProbeTipMap[phMeter.uid];\n  if (!tip) return null;\n  const target = items.value.find((i: LabItem) => {\n    if (i.uid === phMeter.uid || !isContainer(i.id)) return false;\n    const dx = Math.abs((i.x + 40) - tip.x);\n    const dy = Math.abs((i.y + 10) - tip.y);\n    return dx < 60 && dy < 50;\n  });\n  if (!target) return null;\n  const liq = getLiquid(target.uid);\n  if (liq.ph !== null && liq.ph !== undefined) return liq.ph;\n  return 7.0;\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634640664,
-      "end": 1783634640664,
+      "start": 1783626308417,
+      "end": 1783626308417,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634640664,
-      "end": 1783634640664,
+      "start": 1783626308417,
+      "end": 1783626308417,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626308417,
+      "end": 1783626308417,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634640664,
-      "end": 1783634640664,
+      "start": 1783626308417,
+      "end": 1783626308417,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634640664,
-      "end": 1783634640664,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634640664,
-      "end": 1783634640665,
+      "start": 1783626308417,
+      "end": 1783626308417,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634640665,
-      "end": 1783634640665,
+      "start": 1783626308417,
+      "end": 1783626308417,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634640665,
-      "end": 1783634640665,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634640665,
-      "end": 1783634640665,
+      "start": 1783626308428,
+      "end": 1783626308430,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634640667,
-      "end": 1783634640667,
+      "start": 1783626308430,
+      "end": 1783626308430,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634640668,
-      "end": 1783634640668,
+      "start": 1783626308430,
+      "end": 1783626308430,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634640669,
-      "end": 1783634640669,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626308430,
+      "end": 1783626308439,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626308444,
+      "end": 1783626308445,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634640669,
-      "end": 1783634640669,
+      "name": "vite:css-analysis",
+      "start": 1783626308445,
+      "end": 1783626308445,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { items, isContainer, getLiquid, phProbeTipMap } from \"/src/composables/chemistry/useChemistryLab.ts\";\nexport function phColor(ph) {\n  if (ph === null) return \"#94a3b8\";\n  if (ph < 3) return \"#ef4444\";\n  if (ph < 7) return \"#f59e0b\";\n  if (ph === 7) return \"#22c55e\";\n  if (ph < 11) return \"#3b82f6\";\n  return \"#8b5cf6\";\n}\nexport function getPhReading(phMeter) {\n  const tip = phProbeTipMap[phMeter.uid];\n  if (!tip) return null;\n  const target = items.value.find((i) => {\n    if (i.uid === phMeter.uid || !isContainer(i.id)) return false;\n    const dx = Math.abs(i.x + 40 - tip.x);\n    const dy = Math.abs(i.y + 10 - tip.y);\n    return dx < 60 && dy < 50;\n  });\n  if (!target) return null;\n  const liq = getLiquid(target.uid);\n  if (liq.ph !== null && liq.ph !== void 0) return liq.ph;\n  return 7;\n}\n",
+      "start": 1783626308445,
+      "end": 1783626308517,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

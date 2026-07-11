@@ -1,0 +1,140 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabTestTubeRack.vue?vue&type=style&index=0&scoped=091e7bd9&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.rack-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.rack-svg {\n  width: 170px;\n  height: 71px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));\n}\n.rack-svg.hovered {\n  transform: scale(1.04);\n  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));\n}\n",
+      "start": 1783626310083,
+      "end": 1783626310083,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabTestTubeRack.vue"
+        ],
+        "names": [],
+        "mappings": ";AAwHA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACZ,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC;EACb,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACtB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACnB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EAClB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACjB;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACR,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC;EACZ,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC;EACZ,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC;EACvC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACjD;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EAChB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACtB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AAClD",
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabTestTubeRack.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\ninterface SlotData {\n  uid: string | null;\n  volume?: number;\n  maxVolume?: number;\n  color?: string;\n  opacity?: number;\n}\n\ninterface Props {\n  isHovered?: boolean;\n  slots?: (SlotData | null)[];\n  highlightIndex?: number | null;\n}\n\nconst props = withDefaults(defineProps<Props>(), {\n  isHovered: false,\n  slots: () => new Array(6).fill(null).map(() => ({ uid: null })),\n  highlightIndex: null,\n});\n\nconst emit = defineEmits<{\n  click: [];\n  slotClick: [index: number];\n}>();\n\nfunction onSlotClick(index: number, e: MouseEvent) {\n  e.stopPropagation();\n  emit('slotClick', index);\n}\n</script>\n\n<template>\n  <div class=\"rack-wrapper\" @click.stop=\"emit('click')\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:34:3\">\n    <!-- Wire rack: metal frame with 3 rows of holes -->\n    <svg viewBox=\"0 0 240 100\" class=\"rack-svg\" :class=\"{ hovered: isHovered }\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:36:5\">\n      <!-- Shadow -->\n      <ellipse cx=\"120\" cy=\"96\" rx=\"110\" ry=\"3\" fill=\"rgba(0,0,0,0.06)\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:38:7\" />\n\n      <!-- Bottom wire frame -->\n      <rect x=\"10\" y=\"85\" width=\"220\" height=\"6\" rx=\"3\" fill=\"#64748b\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:41:7\" />\n      <rect x=\"11\" y=\"86\" width=\"218\" height=\"4\" rx=\"2\" fill=\"#94a3b8\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:42:7\" />\n\n      <!-- Middle wire frame -->\n      <rect x=\"10\" y=\"48\" width=\"220\" height=\"6\" rx=\"3\" fill=\"#64748b\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:45:7\" />\n      <rect x=\"11\" y=\"49\" width=\"218\" height=\"4\" rx=\"2\" fill=\"#94a3b8\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:46:7\" />\n\n      <!-- Top wire frame -->\n      <rect x=\"10\" y=\"14\" width=\"220\" height=\"6\" rx=\"3\" fill=\"#64748b\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:49:7\" />\n      <rect x=\"11\" y=\"15\" width=\"218\" height=\"4\" rx=\"2\" fill=\"#94a3b8\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:50:7\" />\n\n      <!-- Vertical side wires (left and right) -->\n      <rect x=\"12\" y=\"20\" width=\"4\" height=\"65\" rx=\"2\" fill=\"#475569\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:53:7\" />\n      <rect x=\"224\" y=\"20\" width=\"4\" height=\"65\" rx=\"2\" fill=\"#475569\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:54:7\" />\n\n      <!-- Vertical middle wires -->\n      <rect x=\"62\" y=\"20\" width=\"3\" height=\"65\" rx=\"1.5\" fill=\"#475569\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:57:7\" />\n      <rect x=\"120\" y=\"20\" width=\"3\" height=\"65\" rx=\"1.5\" fill=\"#475569\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:58:7\" />\n      <rect x=\"175\" y=\"20\" width=\"3\" height=\"65\" rx=\"1.5\" fill=\"#475569\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:59:7\" />\n\n      <!-- Holes in top frame (6 tubes) -->\n      <g v-for=\"i in 6\" :key=\"i\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:62:7\">\n        <ellipse :cx=\"20 + (i-1) * 38\" cy=\"17\" rx=\"11\" ry=\"3.5\" fill=\"#334155\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:63:9\" />\n        <ellipse :cx=\"20 + (i-1) * 38\" cy=\"17\" rx=\"9\" ry=\"2.5\" fill=\"#0f172a\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:64:9\" />\n      </g>\n\n      <!-- Holes in middle frame (6 tubes, same positions) -->\n      <g v-for=\"i in 6\" :key=\"'m' + i\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:68:7\">\n        <ellipse :cx=\"20 + (i-1) * 38\" cy=\"51\" rx=\"11\" ry=\"3.5\" fill=\"#334155\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:69:9\" />\n        <ellipse :cx=\"20 + (i-1) * 38\" cy=\"51\" rx=\"9\" ry=\"2.5\" fill=\"#0f172a\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:70:9\" />\n      </g>\n\n      <!-- Dynamic test tubes from slots -->\n      <g v-for=\"(slot, i) in slots\" :key=\"i\" opacity=\"0.85\" @click.stop=\"onSlotClick(i, $event)\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:74:7\">\n        <g v-if=\"slot\" :transform=\"`translate(${20 + i * 38 - 20}, 0)`\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:75:9\">\n          <!-- Tube body -->\n          <path\n            d=\"M 12 17 L 12 82 Q 12 88 20 88 Q 28 88 28 82 L 28 17\"\n            :fill=\"slot.uid ? 'rgba(241,245,249,0.2)' : 'rgba(241,245,249,0.05)'\"\n            stroke=\"#94a3b8\"\n            stroke-width=\"0.7\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:77:11\"\n          />\n          <ellipse cx=\"20\" cy=\"17\" rx=\"8\" ry=\"2.5\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"0.7\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:83:11\" />\n          <!-- Liquid fill -->\n          <path\n            v-if=\"slot.uid && slot.volume && slot.volume > 0 && slot.maxVolume\"\n            :d=\"`M 14 ${82 - (slot.volume / slot.maxVolume) * 65} L 14 82 Q 14 86 20 86 Q 26 86 26 82 L 26 ${82 - (slot.volume / slot.maxVolume) * 65} Z`\"\n            :fill=\"slot.color || '#3b82f6'\"\n            :opacity=\"slot.opacity || 0.3\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:85:11\"\n          />\n          <!-- Highlight ring for empty slot when hovered rack -->\n          <ellipse\n            v-if=\"!slot.uid && highlightIndex === i\"\n            cx=\"20\" cy=\"17\" rx=\"9\" ry=\"3\"\n            fill=\"none\" stroke=\"#10b981\" stroke-width=\"1.2\" opacity=\"0.7\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:92:11\"\n          >\n            <animate attributeName=\"opacity\" values=\"0.7;0.3;0.7\" dur=\"1s\" repeatCount=\"indefinite\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:97:13\" />\n          </ellipse>\n        </g>\n        <g v-else :transform=\"`translate(${20 + i * 38 - 20}, 0)`\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:100:9\">\n          <!-- Empty slot placeholder -->\n          <path\n            d=\"M 12 17 L 12 82 Q 12 88 20 88 Q 28 88 28 82 L 28 17\"\n            fill=\"rgba(241,245,249,0.05)\"\n            stroke=\"#94a3b8\"\n            stroke-width=\"0.7\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:102:11\"\n          />\n          <ellipse cx=\"20\" cy=\"17\" rx=\"8\" ry=\"2.5\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"0.7\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:108:11\" />\n        </g>\n      </g>\n\n      <!-- Wire highlights -->\n      <line x1=\"14\" y1=\"16\" x2=\"226\" y2=\"16\" stroke=\"rgba(255,255,255,0.3)\" stroke-width=\"1\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:113:7\" />\n      <line x1=\"14\" y1=\"50\" x2=\"226\" y2=\"50\" stroke=\"rgba(255,255,255,0.3)\" stroke-width=\"1\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:114:7\" />\n      <line x1=\"14\" y1=\"87\" x2=\"226\" y2=\"87\" stroke=\"rgba(255,255,255,0.3)\" stroke-width=\"1\" data-v-inspector=\"src/components/experiment/chemistry/LabTestTubeRack.vue:115:7\" />\n    </svg>\n  </div>\n</template>\n\n<style scoped>\n.rack-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.rack-svg {\n  width: 170px;\n  height: 71px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));\n}\n.rack-svg.hovered {\n  transform: scale(1.04);\n  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));\n}\n</style>\n"
+        ]
+      }
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626310083,
+      "end": 1783626310083,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "\n.rack-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.rack-svg {\n  width: 170px;\n  height: 71px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));\n}\n.rack-svg.hovered {\n  transform: scale(1.04);\n  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));\n}\n",
+      "start": 1783626310083,
+      "end": 1783626310083,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.rack-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.rack-svg {\n  width: 170px;\n  height: 71px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));\n}\n.rack-svg.hovered {\n  transform: scale(1.04);\n  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));\n}\n",
+      "start": 1783626310083,
+      "end": 1783626310083,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783626310083,
+      "end": 1783626310083,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626310083,
+      "end": 1783626310083,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626310083,
+      "end": 1783626310083,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.rack-wrapper[data-v-091e7bd9] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.rack-svg[data-v-091e7bd9] {\n  width: 170px;\n  height: 71px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));\n}\n.rack-svg.hovered[data-v-091e7bd9] {\n  transform: scale(1.04);\n  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));\n}\n",
+      "start": 1783626310083,
+      "end": 1783626310084,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626310084,
+      "end": 1783626310084,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabTestTubeRack.vue?vue&type=style&index=0&scoped=091e7bd9&lang.css\"\nconst __vite__css = \"\\n.rack-wrapper[data-v-091e7bd9] {\\n  display: flex;\\n  flex-direction: column;\\n  align-items: center;\\n  position: relative;\\n  cursor: pointer;\\n}\\n.rack-svg[data-v-091e7bd9] {\\n  width: 170px;\\n  height: 71px;\\n  transition: transform 0.2s, filter 0.2s;\\n  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));\\n}\\n.rack-svg.hovered[data-v-091e7bd9] {\\n  transform: scale(1.04);\\n  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626310084,
+      "end": 1783626310084,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626310084,
+      "end": 1783626310084,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626310084,
+      "end": 1783626310084,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626310085,
+      "end": 1783626310085,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626310085,
+      "end": 1783626310085,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626310085,
+      "end": 1783626310085,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626310085,
+      "end": 1783626310085,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626310085,
+      "end": 1783626310085,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/components/experiment/chemistry/LabTestTubeRack.vue?vue&type=style&index=0&scoped=091e7bd9&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabTestTubeRack.vue?vue&type=style&index=0&scoped=091e7bd9&lang.css\"\nconst __vite__css = \"\\n.rack-wrapper[data-v-091e7bd9] {\\n  display: flex;\\n  flex-direction: column;\\n  align-items: center;\\n  position: relative;\\n  cursor: pointer;\\n}\\n.rack-svg[data-v-091e7bd9] {\\n  width: 170px;\\n  height: 71px;\\n  transition: transform 0.2s, filter 0.2s;\\n  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));\\n}\\n.rack-svg.hovered[data-v-091e7bd9] {\\n  transform: scale(1.04);\\n  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626310085,
+      "end": 1783626310085,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

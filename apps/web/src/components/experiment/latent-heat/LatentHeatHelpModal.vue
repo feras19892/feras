@@ -5,17 +5,19 @@ defineProps<{ open: boolean }>()
 const emit = defineEmits<{ (e: 'close'): void }>()
 </script>
 <template>
-  <div v-if="open" class="help-overlay" @click="emit('close')">
-    <div class="help-box" @click.stop>
-      <h3>{{ t('experiments.help') }}</h3>
-      <p><b>Space</b> — {{ t('experiments.startPause') }}</p>
-      <p><b>S</b> — {{ t('experiments.recordTrial') }}</p>
-      <p><b>Ctrl+Z</b> — {{ t('experiments.undo') }}</p>
-      <p><b>Ctrl+Y</b> — {{ t('experiments.redo') }}</p>
-      <p><b>R</b> — {{ t('experiments.reset') }}</p>
-      <button class="close-btn" @click="emit('close')">{{ t('experiments.close') }}</button>
+  <Teleport to="body">
+    <div v-if="open" class="help-overlay" @click="emit('close')">
+      <div class="help-box" @click.stop>
+        <h3>{{ t('experiments.helpTitle') }}</h3>
+        <p><b>Space</b> — {{ t('experiments.helpSpace') }}</p>
+        <p><b>S</b> — {{ t('experiments.helpS') }}</p>
+        <p><b>Ctrl+Z</b> — {{ t('experiments.helpUndo') }}</p>
+        <p><b>Ctrl+Y</b> — {{ t('experiments.helpRedo') }}</p>
+        <p><b>R</b> — {{ t('experiments.helpR') }}</p>
+        <button class="close-btn" @click="emit('close')">{{ t('experiments.helpQuestion') }}</button>
+      </div>
     </div>
-  </div>
+  </Teleport>
 </template>
 <style scoped>
 .help-overlay { position:fixed; inset:0; background:rgba(0,0,0,.6); display:flex; align-items:center; justify-content:center; z-index:10000; }

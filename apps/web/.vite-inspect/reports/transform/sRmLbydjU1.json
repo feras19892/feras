@@ -1,0 +1,140 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue?vue&type=style&index=0&scoped=85c004d5&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.panel-body { padding:.45rem; display:flex; flex-direction:column; gap:.35rem; }\n.stat-box { background:rgba(255,255,255,0.02); border:1px solid #1e2530; border-radius:6px; padding:.45rem .55rem; display:flex; justify-content:space-between; align-items:center; }\n.stat-label { color:#8B95A5; font-size:.72rem; }\n.stat-value { color:#D1D7E0; font-weight:700; font-size:.85rem; }\n.stat-value.highlight { color:#fbbf24; }\n.stat-value.green { color:#4ade80; }\n.stat-value.amber { color:#fbbf24; }\n.stat-value.red { color:#f87171; }\n.stat-value.blue { color:#5B8DB8; }\n.formula-badge { background:rgba(91,141,184,.08); border:1px solid rgba(91,141,184,.2); border-radius:5px; padding:.35rem .5rem; font-size:.7rem; color:#5B8DB8; font-family:monospace; text-align:center; }\n.guess-box { display:flex; flex-direction:column; gap:.35rem; }\n.guess-btn { width:100%; padding:.4rem; border-radius:6px; border:1px solid rgba(245,158,11,.4); background:rgba(245,158,11,.12); color:#fbbf24; font-size:.78rem; font-weight:700; cursor:pointer; transition:all .15s; }\n.guess-btn:hover { background:rgba(245,158,11,.2); }\n",
+      "start": 1783626283299,
+      "end": 1783626283299,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue"
+        ],
+        "names": [],
+        "mappings": ";AAqFA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC/E,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACpL,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC/C,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAChE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACvC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACnC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACnC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACjC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAClC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC3M,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC9D,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE;AACzN,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE",
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\nimport { computed, ref } from 'vue'\nimport type { SpecificHeatTrial } from '../../../../composables/specific-heat/useSpecificHeatTrials'\nimport { METAL_CATALOG } from '../../../../composables/specific-heat/useSpecificHeatCalculations'\n\nconst props = defineProps<{\n  trials: SpecificHeatTrial[]\n  regressionSlope: number\n  rSquared: number\n  cFromSlope: number\n  unknownMode?: boolean\n}>()\n\nconst lastTrial = computed(() => props.trials.length ? props.trials[props.trials.length - 1] : null)\nconst errorPercent = computed(() => {\n  if (!lastTrial.value || lastTrial.value.cTrue === 0) return null\n  return Math.abs(lastTrial.value.cExtracted - lastTrial.value.cTrue) / lastTrial.value.cTrue * 100\n})\n\nconst revealed = ref(false)\nfunction guessMetal(cGuess: number) {\n  let bestKey = ''\n  let bestDiff = Infinity\n  for (const [key, info] of Object.entries(METAL_CATALOG)) {\n    const diff = Math.abs(info.c - cGuess)\n    if (diff < bestDiff) { bestDiff = diff; bestKey = key }\n  }\n  return { key: bestKey, info: METAL_CATALOG[bestKey], diff: bestDiff }\n}\nconst guess = computed(() => lastTrial.value ? guessMetal(lastTrial.value.cExtracted) : null)\n</script>\n<template>\n  <div class=\"panel-body\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:33:3\">\n    <div class=\"stat-box\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:34:5\"><div class=\"stat-label\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:34:27\">عدد التجارب</div><div class=\"stat-value\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:34:68\">{{ trials.length }}</div></div>\n    <div v-if=\"trials.length >= 2\" class=\"stat-box\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:35:5\">\n      <div class=\"stat-label\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:36:7\">c_m (من الميل)</div>\n      <div class=\"stat-value highlight\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:37:7\">{{ cFromSlope.toFixed(1) }} J/kg·°C</div>\n    </div>\n    <div v-if=\"trials.length >= 2\" class=\"formula-badge\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:39:5\">\n      c_m = c_w·avg(T_f−T_w) / (m_m·Slope)\n    </div>\n    <div v-if=\"trials.length >= 2\" class=\"stat-box\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:42:5\">\n      <div class=\"stat-label\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:43:7\">R²</div>\n      <div class=\"stat-value\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:44:7\">{{ rSquared.toFixed(4) }}</div>\n    </div>\n    <div v-if=\"lastTrial\" class=\"stat-box\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:46:5\">\n      <div class=\"stat-label\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:47:7\">c_m (آخر تجربة)</div>\n      <div class=\"stat-value green\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:48:7\">{{ lastTrial.cExtracted.toFixed(1) }}</div>\n    </div>\n    <div v-if=\"lastTrial\" class=\"stat-box\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:50:5\">\n      <div class=\"stat-label\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:51:7\">c_m (الحقيقي)</div>\n      <div class=\"stat-value\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:52:7\">{{ lastTrial.cTrue.toFixed(1) }}</div>\n    </div>\n    <div v-if=\"errorPercent !== null\" class=\"stat-box\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:54:5\">\n      <div class=\"stat-label\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:55:7\">نسبة الخطأ</div>\n      <div class=\"stat-value\" :class=\"errorPercent < 5 ? 'green' : errorPercent < 15 ? 'amber' : 'red'\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:56:7\">\n        {{ errorPercent.toFixed(1) }}%\n      </div>\n    </div>\n    <div v-if=\"lastTrial\" class=\"stat-box\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:60:5\">\n      <div class=\"stat-label\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:61:7\">نوع المعدن (تخمين)</div>\n      <div class=\"stat-value blue\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:62:7\">{{ lastTrial.cExtracted < 500 ? 'نحاس/حديد' : lastTrial.cExtracted < 1000 ? 'ألومنيوم' : 'غير معروف' }}</div>\n    </div>\n    <div v-if=\"unknownMode && guess && lastTrial\" class=\"guess-box\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:64:5\">\n      <button v-if=\"!revealed\" class=\"guess-btn\" @click=\"revealed = true\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:65:7\">🔍 كشف النوع</button>\n      <template v-else>\n        <div class=\"stat-box\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:67:9\">\n          <div class=\"stat-label\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:68:11\">التخمين</div>\n          <div class=\"stat-value\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:69:11\">{{ guess.info.nameAr }}</div>\n        </div>\n        <div class=\"stat-box\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:71:9\">\n          <div class=\"stat-label\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:72:11\">النوع الحقيقي</div>\n          <div class=\"stat-value green\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:73:11\">{{ METAL_CATALOG[lastTrial.metalType]?.nameAr ?? lastTrial.metalType }}</div>\n        </div>\n        <div class=\"stat-box\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:75:9\">\n          <div class=\"stat-label\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:76:11\">دقة التخمين</div>\n          <div class=\"stat-value\" :class=\"guess.diff < 50 ? 'green' : guess.diff < 200 ? 'amber' : 'red'\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue:77:11\">\n            {{ guess.diff < 50 ? 'ممتاز' : guess.diff < 200 ? 'جيد' : 'ضعيف' }}\n          </div>\n        </div>\n      </template>\n    </div>\n  </div>\n</template>\n<style scoped>\n.panel-body { padding:.45rem; display:flex; flex-direction:column; gap:.35rem; }\n.stat-box { background:rgba(255,255,255,0.02); border:1px solid #1e2530; border-radius:6px; padding:.45rem .55rem; display:flex; justify-content:space-between; align-items:center; }\n.stat-label { color:#8B95A5; font-size:.72rem; }\n.stat-value { color:#D1D7E0; font-weight:700; font-size:.85rem; }\n.stat-value.highlight { color:#fbbf24; }\n.stat-value.green { color:#4ade80; }\n.stat-value.amber { color:#fbbf24; }\n.stat-value.red { color:#f87171; }\n.stat-value.blue { color:#5B8DB8; }\n.formula-badge { background:rgba(91,141,184,.08); border:1px solid rgba(91,141,184,.2); border-radius:5px; padding:.35rem .5rem; font-size:.7rem; color:#5B8DB8; font-family:monospace; text-align:center; }\n.guess-box { display:flex; flex-direction:column; gap:.35rem; }\n.guess-btn { width:100%; padding:.4rem; border-radius:6px; border:1px solid rgba(245,158,11,.4); background:rgba(245,158,11,.12); color:#fbbf24; font-size:.78rem; font-weight:700; cursor:pointer; transition:all .15s; }\n.guess-btn:hover { background:rgba(245,158,11,.2); }\n</style>\n"
+        ]
+      }
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626283299,
+      "end": 1783626283299,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "\n.panel-body { padding:.45rem; display:flex; flex-direction:column; gap:.35rem; }\n.stat-box { background:rgba(255,255,255,0.02); border:1px solid #1e2530; border-radius:6px; padding:.45rem .55rem; display:flex; justify-content:space-between; align-items:center; }\n.stat-label { color:#8B95A5; font-size:.72rem; }\n.stat-value { color:#D1D7E0; font-weight:700; font-size:.85rem; }\n.stat-value.highlight { color:#fbbf24; }\n.stat-value.green { color:#4ade80; }\n.stat-value.amber { color:#fbbf24; }\n.stat-value.red { color:#f87171; }\n.stat-value.blue { color:#5B8DB8; }\n.formula-badge { background:rgba(91,141,184,.08); border:1px solid rgba(91,141,184,.2); border-radius:5px; padding:.35rem .5rem; font-size:.7rem; color:#5B8DB8; font-family:monospace; text-align:center; }\n.guess-box { display:flex; flex-direction:column; gap:.35rem; }\n.guess-btn { width:100%; padding:.4rem; border-radius:6px; border:1px solid rgba(245,158,11,.4); background:rgba(245,158,11,.12); color:#fbbf24; font-size:.78rem; font-weight:700; cursor:pointer; transition:all .15s; }\n.guess-btn:hover { background:rgba(245,158,11,.2); }\n",
+      "start": 1783626283299,
+      "end": 1783626283299,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.panel-body { padding:.45rem; display:flex; flex-direction:column; gap:.35rem; }\n.stat-box { background:rgba(255,255,255,0.02); border:1px solid #1e2530; border-radius:6px; padding:.45rem .55rem; display:flex; justify-content:space-between; align-items:center; }\n.stat-label { color:#8B95A5; font-size:.72rem; }\n.stat-value { color:#D1D7E0; font-weight:700; font-size:.85rem; }\n.stat-value.highlight { color:#fbbf24; }\n.stat-value.green { color:#4ade80; }\n.stat-value.amber { color:#fbbf24; }\n.stat-value.red { color:#f87171; }\n.stat-value.blue { color:#5B8DB8; }\n.formula-badge { background:rgba(91,141,184,.08); border:1px solid rgba(91,141,184,.2); border-radius:5px; padding:.35rem .5rem; font-size:.7rem; color:#5B8DB8; font-family:monospace; text-align:center; }\n.guess-box { display:flex; flex-direction:column; gap:.35rem; }\n.guess-btn { width:100%; padding:.4rem; border-radius:6px; border:1px solid rgba(245,158,11,.4); background:rgba(245,158,11,.12); color:#fbbf24; font-size:.78rem; font-weight:700; cursor:pointer; transition:all .15s; }\n.guess-btn:hover { background:rgba(245,158,11,.2); }\n",
+      "start": 1783626283299,
+      "end": 1783626283299,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783626283299,
+      "end": 1783626283299,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626283299,
+      "end": 1783626283299,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626283299,
+      "end": 1783626283299,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.panel-body[data-v-85c004d5] { padding:.45rem; display:flex; flex-direction:column; gap:.35rem;\n}\n.stat-box[data-v-85c004d5] { background:rgba(255,255,255,0.02); border:1px solid #1e2530; border-radius:6px; padding:.45rem .55rem; display:flex; justify-content:space-between; align-items:center;\n}\n.stat-label[data-v-85c004d5] { color:#8B95A5; font-size:.72rem;\n}\n.stat-value[data-v-85c004d5] { color:#D1D7E0; font-weight:700; font-size:.85rem;\n}\n.stat-value.highlight[data-v-85c004d5] { color:#fbbf24;\n}\n.stat-value.green[data-v-85c004d5] { color:#4ade80;\n}\n.stat-value.amber[data-v-85c004d5] { color:#fbbf24;\n}\n.stat-value.red[data-v-85c004d5] { color:#f87171;\n}\n.stat-value.blue[data-v-85c004d5] { color:#5B8DB8;\n}\n.formula-badge[data-v-85c004d5] { background:rgba(91,141,184,.08); border:1px solid rgba(91,141,184,.2); border-radius:5px; padding:.35rem .5rem; font-size:.7rem; color:#5B8DB8; font-family:monospace; text-align:center;\n}\n.guess-box[data-v-85c004d5] { display:flex; flex-direction:column; gap:.35rem;\n}\n.guess-btn[data-v-85c004d5] { width:100%; padding:.4rem; border-radius:6px; border:1px solid rgba(245,158,11,.4); background:rgba(245,158,11,.12); color:#fbbf24; font-size:.78rem; font-weight:700; cursor:pointer; transition:all .15s;\n}\n.guess-btn[data-v-85c004d5]:hover { background:rgba(245,158,11,.2);\n}\n",
+      "start": 1783626283299,
+      "end": 1783626283327,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626283327,
+      "end": 1783626283327,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue?vue&type=style&index=0&scoped=85c004d5&lang.css\"\nconst __vite__css = \"\\n.panel-body[data-v-85c004d5] { padding:.45rem; display:flex; flex-direction:column; gap:.35rem;\\n}\\n.stat-box[data-v-85c004d5] { background:rgba(255,255,255,0.02); border:1px solid #1e2530; border-radius:6px; padding:.45rem .55rem; display:flex; justify-content:space-between; align-items:center;\\n}\\n.stat-label[data-v-85c004d5] { color:#8B95A5; font-size:.72rem;\\n}\\n.stat-value[data-v-85c004d5] { color:#D1D7E0; font-weight:700; font-size:.85rem;\\n}\\n.stat-value.highlight[data-v-85c004d5] { color:#fbbf24;\\n}\\n.stat-value.green[data-v-85c004d5] { color:#4ade80;\\n}\\n.stat-value.amber[data-v-85c004d5] { color:#fbbf24;\\n}\\n.stat-value.red[data-v-85c004d5] { color:#f87171;\\n}\\n.stat-value.blue[data-v-85c004d5] { color:#5B8DB8;\\n}\\n.formula-badge[data-v-85c004d5] { background:rgba(91,141,184,.08); border:1px solid rgba(91,141,184,.2); border-radius:5px; padding:.35rem .5rem; font-size:.7rem; color:#5B8DB8; font-family:monospace; text-align:center;\\n}\\n.guess-box[data-v-85c004d5] { display:flex; flex-direction:column; gap:.35rem;\\n}\\n.guess-btn[data-v-85c004d5] { width:100%; padding:.4rem; border-radius:6px; border:1px solid rgba(245,158,11,.4); background:rgba(245,158,11,.12); color:#fbbf24; font-size:.78rem; font-weight:700; cursor:pointer; transition:all .15s;\\n}\\n.guess-btn[data-v-85c004d5]:hover { background:rgba(245,158,11,.2);\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626283327,
+      "end": 1783626283327,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626283327,
+      "end": 1783626283327,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626283327,
+      "end": 1783626283327,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626283327,
+      "end": 1783626283327,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626283327,
+      "end": 1783626283327,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626283327,
+      "end": 1783626283327,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626283327,
+      "end": 1783626283327,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626283327,
+      "end": 1783626283327,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue?vue&type=style&index=0&scoped=85c004d5&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue?vue&type=style&index=0&scoped=85c004d5&lang.css\"\nconst __vite__css = \"\\n.panel-body[data-v-85c004d5] { padding:.45rem; display:flex; flex-direction:column; gap:.35rem;\\n}\\n.stat-box[data-v-85c004d5] { background:rgba(255,255,255,0.02); border:1px solid #1e2530; border-radius:6px; padding:.45rem .55rem; display:flex; justify-content:space-between; align-items:center;\\n}\\n.stat-label[data-v-85c004d5] { color:#8B95A5; font-size:.72rem;\\n}\\n.stat-value[data-v-85c004d5] { color:#D1D7E0; font-weight:700; font-size:.85rem;\\n}\\n.stat-value.highlight[data-v-85c004d5] { color:#fbbf24;\\n}\\n.stat-value.green[data-v-85c004d5] { color:#4ade80;\\n}\\n.stat-value.amber[data-v-85c004d5] { color:#fbbf24;\\n}\\n.stat-value.red[data-v-85c004d5] { color:#f87171;\\n}\\n.stat-value.blue[data-v-85c004d5] { color:#5B8DB8;\\n}\\n.formula-badge[data-v-85c004d5] { background:rgba(91,141,184,.08); border:1px solid rgba(91,141,184,.2); border-radius:5px; padding:.35rem .5rem; font-size:.7rem; color:#5B8DB8; font-family:monospace; text-align:center;\\n}\\n.guess-box[data-v-85c004d5] { display:flex; flex-direction:column; gap:.35rem;\\n}\\n.guess-btn[data-v-85c004d5] { width:100%; padding:.4rem; border-radius:6px; border:1px solid rgba(245,158,11,.4); background:rgba(245,158,11,.12); color:#fbbf24; font-size:.78rem; font-weight:700; cursor:pointer; transition:all .15s;\\n}\\n.guess-btn[data-v-85c004d5]:hover { background:rgba(245,158,11,.2);\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626283327,
+      "end": 1783626283328,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

@@ -8,11 +8,13 @@
   position: absolute;
   pointer-events: visiblePainted;
   cursor: pointer;
+  z-index: 5;
 }
 .attached-item {
   position: absolute;
   pointer-events: none;
   overflow: visible;
+  z-index: 25;
 }
 .attached-inner {
   display: inline-block;

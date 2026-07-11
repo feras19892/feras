@@ -8,12 +8,14 @@ import PrismPanelBody from '../../../../components/experiment/prism/PrismPanelBo
 import PrismStatusBar from '../../../../components/experiment/prism/PrismStatusBar.vue'
 import PrismControlBar from '../../../../components/experiment/prism/PrismControlBar.vue'
 import PrismHelpModal from '../../../../components/experiment/prism/PrismHelpModal.vue'
+import PrismGuidePanel from '../../../../components/experiment/prism/PrismGuidePanel.vue'
 import PrismOverlayPanels from '../../../../components/experiment/prism/PrismOverlayPanels.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 
 const ex = usePrismExperiment()
 const { t } = useI18n()
 const helpOpen = ref(false)
+const showGuide = ref(true)
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
@@ -188,6 +190,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             />
           </div>
         </template>
+        <PrismGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
 

@@ -1,0 +1,129 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/locales/analysis/index.ts",
+  "transforms": [
+    {
+      "name": "__load__",
+      "result": "import { analysisAr } from './ar'\nimport { analysisEn } from './en'\nimport { analysisEs } from './es'\n\nexport const analysis = {\n  ar: analysisAr,\n  en: analysisEn,\n  es: analysisEs,\n} as const\n",
+      "start": 1783626227463,
+      "end": 1783626227463
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626227463,
+      "end": 1783626227463,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { analysisAr } from './ar'\nimport { analysisEn } from './en'\nimport { analysisEs } from './es'\n\nexport const analysis = {\n  ar: analysisAr,\n  en: analysisEn,\n  es: analysisEs,\n} as const\n",
+      "start": 1783626227463,
+      "end": 1783626227463,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783626227463,
+      "end": 1783626227463,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { analysisAr } from \"./ar\";\nimport { analysisEn } from \"./en\";\nimport { analysisEs } from \"./es\";\nexport const analysis = {\n  ar: analysisAr,\n  en: analysisEn,\n  es: analysisEs\n};\n",
+      "start": 1783626227463,
+      "end": 1783626227562,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "index.ts"
+        ],
+        "sourcesContent": [
+          "import { analysisAr } from './ar'\nimport { analysisEn } from './en'\nimport { analysisEs } from './es'\n\nexport const analysis = {\n  ar: analysisAr,\n  en: analysisEn,\n  es: analysisEs,\n} as const\n"
+        ],
+        "mappings": "AAAA,SAAS,kBAAkB;AAC3B,SAAS,kBAAkB;AAC3B,SAAS,kBAAkB;AAEpB,aAAM,WAAW;AAAA,EACtB,IAAI;AAAA,EACJ,IAAI;AAAA,EACJ,IAAI;AACN;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626227562,
+      "end": 1783626227562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626227562,
+      "end": 1783626227562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783626227562,
+      "end": 1783626227562,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626227562,
+      "end": 1783626227562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783626227562,
+      "end": 1783626227562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626227562,
+      "end": 1783626227562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626227563,
+      "end": 1783626227563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626227563,
+      "end": 1783626227563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626227563,
+      "end": 1783626227563,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626227563,
+      "end": 1783626227563,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626227563,
+      "end": 1783626227563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626227563,
+      "end": 1783626227563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { analysisAr } from \"/src/locales/analysis/ar.ts\";\nimport { analysisEn } from \"/src/locales/analysis/en.ts\";\nimport { analysisEs } from \"/src/locales/analysis/es.ts\";\nexport const analysis = {\n  ar: analysisAr,\n  en: analysisEn,\n  es: analysisEs\n};\n",
+      "start": 1783626227563,
+      "end": 1783626227579,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

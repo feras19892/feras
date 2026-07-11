@@ -1,0 +1,140 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/ToolPalette.vue?vue&type=style&index=0&scoped=1536c56b&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.tool-palette {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.75rem;\n  overflow: hidden;\n}\n.panel-title {\n  margin: 0;\n  padding: 0.75rem 1rem;\n  font-size: 0.85rem;\n  color: #f59e0b;\n  background: rgba(245,158,11,0.08);\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n}\n.tool-list {\n  flex: 1;\n  overflow-y: auto;\n  padding: 0.5rem;\n  display: flex;\n  flex-direction: column;\n  gap: 0.5rem;\n}\n.tool-btn {\n  display: flex;\n  align-items: center;\n  gap: 0.6rem;\n  padding: 0.6rem 0.75rem;\n  background: rgba(255,255,255,0.04);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.5rem;\n  cursor: pointer;\n  transition: all 0.15s;\n  text-align: right;\n}\n.tool-btn:hover {\n  background: rgba(245,158,11,0.12);\n  border-color: rgba(245,158,11,0.3);\n  transform: translateX(-2px);\n}\n.tool-icon {\n  font-size: 1.3rem;\n  flex-shrink: 0;\n}\n.tool-info {\n  display: flex;\n  flex-direction: column;\n}\n.tool-label {\n  font-size: 0.82rem;\n  color: #e2e8f0;\n  font-weight: 600;\n}\n.tool-desc {\n  font-size: 0.68rem;\n  color: #64748b;\n}\n",
+      "start": 1783626238526,
+      "end": 1783626238526,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/ToolPalette.vue"
+        ],
+        "names": [],
+        "mappings": "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",
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/ToolPalette.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\nimport type { ComponentType } from '../types'\n\nconst emit = defineEmits<{ (e: 'add', type: ComponentType): void }>()\n\nconst tools: { type: ComponentType; icon: string; label: string; desc: string }[] = [\n  { type: 'battery',      icon: '🔋', label: 'بطارية',      desc: 'مصدر جهد DC' },\n  { type: 'resistor',     icon: '🔲', label: 'مقاومة',      desc: 'مقاومة ثابتة' },\n  { type: 'capacitor',    icon: '🔌', label: 'مكثف',        desc: 'يخزن الشحنة الكهربائية' },\n  { type: 'switch',       icon: '🔘', label: 'مفتاح',       desc: 'فتح/إغلاق الدائرة' },\n  { type: 'lamp',         icon: '💡', label: 'مصباح',       desc: 'تحويل كهرباء لضوء' },\n  { type: 'ammeter',      icon: '📊', label: 'أميتر',       desc: 'قياس التيار' },\n  { type: 'voltmeter',    icon: '📈', label: 'فولتميتر',    desc: 'قياس الجهد' },\n  { type: 'galvanometer', icon: '📐', label: 'جلفانوميتر',  desc: 'قياس تيارات صغيرة (µA)' },\n]\n</script>\n\n<template>\n  <div class=\"tool-palette\" data-v-inspector=\"src/modules/physics/experiments/electric-lab/components/ToolPalette.vue:19:3\">\n    <h3 class=\"panel-title\" data-v-inspector=\"src/modules/physics/experiments/electric-lab/components/ToolPalette.vue:20:5\">🧰 الأدوات</h3>\n    <div class=\"tool-list\" data-v-inspector=\"src/modules/physics/experiments/electric-lab/components/ToolPalette.vue:21:5\">\n      <button\n        v-for=\"tool in tools\"\n        :key=\"tool.type\"\n        class=\"tool-btn\"\n        @click=\"emit('add', tool.type)\" data-v-inspector=\"src/modules/physics/experiments/electric-lab/components/ToolPalette.vue:22:7\"\n      >\n        <span class=\"tool-icon\" data-v-inspector=\"src/modules/physics/experiments/electric-lab/components/ToolPalette.vue:28:9\">{{ tool.icon }}</span>\n        <span class=\"tool-info\" data-v-inspector=\"src/modules/physics/experiments/electric-lab/components/ToolPalette.vue:29:9\">\n          <span class=\"tool-label\" data-v-inspector=\"src/modules/physics/experiments/electric-lab/components/ToolPalette.vue:30:11\">{{ tool.label }}</span>\n          <span class=\"tool-desc\" data-v-inspector=\"src/modules/physics/experiments/electric-lab/components/ToolPalette.vue:31:11\">{{ tool.desc }}</span>\n        </span>\n      </button>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.tool-palette {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.75rem;\n  overflow: hidden;\n}\n.panel-title {\n  margin: 0;\n  padding: 0.75rem 1rem;\n  font-size: 0.85rem;\n  color: #f59e0b;\n  background: rgba(245,158,11,0.08);\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n}\n.tool-list {\n  flex: 1;\n  overflow-y: auto;\n  padding: 0.5rem;\n  display: flex;\n  flex-direction: column;\n  gap: 0.5rem;\n}\n.tool-btn {\n  display: flex;\n  align-items: center;\n  gap: 0.6rem;\n  padding: 0.6rem 0.75rem;\n  background: rgba(255,255,255,0.04);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.5rem;\n  cursor: pointer;\n  transition: all 0.15s;\n  text-align: right;\n}\n.tool-btn:hover {\n  background: rgba(245,158,11,0.12);\n  border-color: rgba(245,158,11,0.3);\n  transform: translateX(-2px);\n}\n.tool-icon {\n  font-size: 1.3rem;\n  flex-shrink: 0;\n}\n.tool-info {\n  display: flex;\n  flex-direction: column;\n}\n.tool-label {\n  font-size: 0.82rem;\n  color: #e2e8f0;\n  font-weight: 600;\n}\n.tool-desc {\n  font-size: 0.68rem;\n  color: #64748b;\n}\n</style>\n"
+        ]
+      }
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626238527,
+      "end": 1783626238528,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "\n.tool-palette {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.75rem;\n  overflow: hidden;\n}\n.panel-title {\n  margin: 0;\n  padding: 0.75rem 1rem;\n  font-size: 0.85rem;\n  color: #f59e0b;\n  background: rgba(245,158,11,0.08);\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n}\n.tool-list {\n  flex: 1;\n  overflow-y: auto;\n  padding: 0.5rem;\n  display: flex;\n  flex-direction: column;\n  gap: 0.5rem;\n}\n.tool-btn {\n  display: flex;\n  align-items: center;\n  gap: 0.6rem;\n  padding: 0.6rem 0.75rem;\n  background: rgba(255,255,255,0.04);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.5rem;\n  cursor: pointer;\n  transition: all 0.15s;\n  text-align: right;\n}\n.tool-btn:hover {\n  background: rgba(245,158,11,0.12);\n  border-color: rgba(245,158,11,0.3);\n  transform: translateX(-2px);\n}\n.tool-icon {\n  font-size: 1.3rem;\n  flex-shrink: 0;\n}\n.tool-info {\n  display: flex;\n  flex-direction: column;\n}\n.tool-label {\n  font-size: 0.82rem;\n  color: #e2e8f0;\n  font-weight: 600;\n}\n.tool-desc {\n  font-size: 0.68rem;\n  color: #64748b;\n}\n",
+      "start": 1783626238528,
+      "end": 1783626238528,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.tool-palette {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.75rem;\n  overflow: hidden;\n}\n.panel-title {\n  margin: 0;\n  padding: 0.75rem 1rem;\n  font-size: 0.85rem;\n  color: #f59e0b;\n  background: rgba(245,158,11,0.08);\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n}\n.tool-list {\n  flex: 1;\n  overflow-y: auto;\n  padding: 0.5rem;\n  display: flex;\n  flex-direction: column;\n  gap: 0.5rem;\n}\n.tool-btn {\n  display: flex;\n  align-items: center;\n  gap: 0.6rem;\n  padding: 0.6rem 0.75rem;\n  background: rgba(255,255,255,0.04);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.5rem;\n  cursor: pointer;\n  transition: all 0.15s;\n  text-align: right;\n}\n.tool-btn:hover {\n  background: rgba(245,158,11,0.12);\n  border-color: rgba(245,158,11,0.3);\n  transform: translateX(-2px);\n}\n.tool-icon {\n  font-size: 1.3rem;\n  flex-shrink: 0;\n}\n.tool-info {\n  display: flex;\n  flex-direction: column;\n}\n.tool-label {\n  font-size: 0.82rem;\n  color: #e2e8f0;\n  font-weight: 600;\n}\n.tool-desc {\n  font-size: 0.68rem;\n  color: #64748b;\n}\n",
+      "start": 1783626238528,
+      "end": 1783626238528,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783626238528,
+      "end": 1783626238528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626238528,
+      "end": 1783626238528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626238528,
+      "end": 1783626238528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.tool-palette[data-v-1536c56b] {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.75rem;\n  overflow: hidden;\n}\n.panel-title[data-v-1536c56b] {\n  margin: 0;\n  padding: 0.75rem 1rem;\n  font-size: 0.85rem;\n  color: #f59e0b;\n  background: rgba(245,158,11,0.08);\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n}\n.tool-list[data-v-1536c56b] {\n  flex: 1;\n  overflow-y: auto;\n  padding: 0.5rem;\n  display: flex;\n  flex-direction: column;\n  gap: 0.5rem;\n}\n.tool-btn[data-v-1536c56b] {\n  display: flex;\n  align-items: center;\n  gap: 0.6rem;\n  padding: 0.6rem 0.75rem;\n  background: rgba(255,255,255,0.04);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.5rem;\n  cursor: pointer;\n  transition: all 0.15s;\n  text-align: right;\n}\n.tool-btn[data-v-1536c56b]:hover {\n  background: rgba(245,158,11,0.12);\n  border-color: rgba(245,158,11,0.3);\n  transform: translateX(-2px);\n}\n.tool-icon[data-v-1536c56b] {\n  font-size: 1.3rem;\n  flex-shrink: 0;\n}\n.tool-info[data-v-1536c56b] {\n  display: flex;\n  flex-direction: column;\n}\n.tool-label[data-v-1536c56b] {\n  font-size: 0.82rem;\n  color: #e2e8f0;\n  font-weight: 600;\n}\n.tool-desc[data-v-1536c56b] {\n  font-size: 0.68rem;\n  color: #64748b;\n}\n",
+      "start": 1783626238537,
+      "end": 1783626238539,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626238539,
+      "end": 1783626238539,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/ToolPalette.vue?vue&type=style&index=0&scoped=1536c56b&lang.css\"\nconst __vite__css = \"\\n.tool-palette[data-v-1536c56b] {\\n  display: flex;\\n  flex-direction: column;\\n  height: 100%;\\n  background: rgba(255,255,255,0.03);\\n  border: 1px solid rgba(255,255,255,0.06);\\n  border-radius: 0.75rem;\\n  overflow: hidden;\\n}\\n.panel-title[data-v-1536c56b] {\\n  margin: 0;\\n  padding: 0.75rem 1rem;\\n  font-size: 0.85rem;\\n  color: #f59e0b;\\n  background: rgba(245,158,11,0.08);\\n  border-bottom: 1px solid rgba(255,255,255,0.06);\\n}\\n.tool-list[data-v-1536c56b] {\\n  flex: 1;\\n  overflow-y: auto;\\n  padding: 0.5rem;\\n  display: flex;\\n  flex-direction: column;\\n  gap: 0.5rem;\\n}\\n.tool-btn[data-v-1536c56b] {\\n  display: flex;\\n  align-items: center;\\n  gap: 0.6rem;\\n  padding: 0.6rem 0.75rem;\\n  background: rgba(255,255,255,0.04);\\n  border: 1px solid rgba(255,255,255,0.06);\\n  border-radius: 0.5rem;\\n  cursor: pointer;\\n  transition: all 0.15s;\\n  text-align: right;\\n}\\n.tool-btn[data-v-1536c56b]:hover {\\n  background: rgba(245,158,11,0.12);\\n  border-color: rgba(245,158,11,0.3);\\n  transform: translateX(-2px);\\n}\\n.tool-icon[data-v-1536c56b] {\\n  font-size: 1.3rem;\\n  flex-shrink: 0;\\n}\\n.tool-info[data-v-1536c56b] {\\n  display: flex;\\n  flex-direction: column;\\n}\\n.tool-label[data-v-1536c56b] {\\n  font-size: 0.82rem;\\n  color: #e2e8f0;\\n  font-weight: 600;\\n}\\n.tool-desc[data-v-1536c56b] {\\n  font-size: 0.68rem;\\n  color: #64748b;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626238539,
+      "end": 1783626238539,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626238539,
+      "end": 1783626238539,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626238539,
+      "end": 1783626238539,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626238539,
+      "end": 1783626238539,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626238539,
+      "end": 1783626238539,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626238539,
+      "end": 1783626238539,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626238539,
+      "end": 1783626238539,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626238539,
+      "end": 1783626238539,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/modules/physics/experiments/electric-lab/components/ToolPalette.vue?vue&type=style&index=0&scoped=1536c56b&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/components/ToolPalette.vue?vue&type=style&index=0&scoped=1536c56b&lang.css\"\nconst __vite__css = \"\\n.tool-palette[data-v-1536c56b] {\\n  display: flex;\\n  flex-direction: column;\\n  height: 100%;\\n  background: rgba(255,255,255,0.03);\\n  border: 1px solid rgba(255,255,255,0.06);\\n  border-radius: 0.75rem;\\n  overflow: hidden;\\n}\\n.panel-title[data-v-1536c56b] {\\n  margin: 0;\\n  padding: 0.75rem 1rem;\\n  font-size: 0.85rem;\\n  color: #f59e0b;\\n  background: rgba(245,158,11,0.08);\\n  border-bottom: 1px solid rgba(255,255,255,0.06);\\n}\\n.tool-list[data-v-1536c56b] {\\n  flex: 1;\\n  overflow-y: auto;\\n  padding: 0.5rem;\\n  display: flex;\\n  flex-direction: column;\\n  gap: 0.5rem;\\n}\\n.tool-btn[data-v-1536c56b] {\\n  display: flex;\\n  align-items: center;\\n  gap: 0.6rem;\\n  padding: 0.6rem 0.75rem;\\n  background: rgba(255,255,255,0.04);\\n  border: 1px solid rgba(255,255,255,0.06);\\n  border-radius: 0.5rem;\\n  cursor: pointer;\\n  transition: all 0.15s;\\n  text-align: right;\\n}\\n.tool-btn[data-v-1536c56b]:hover {\\n  background: rgba(245,158,11,0.12);\\n  border-color: rgba(245,158,11,0.3);\\n  transform: translateX(-2px);\\n}\\n.tool-icon[data-v-1536c56b] {\\n  font-size: 1.3rem;\\n  flex-shrink: 0;\\n}\\n.tool-info[data-v-1536c56b] {\\n  display: flex;\\n  flex-direction: column;\\n}\\n.tool-label[data-v-1536c56b] {\\n  font-size: 0.82rem;\\n  color: #e2e8f0;\\n  font-weight: 600;\\n}\\n.tool-desc[data-v-1536c56b] {\\n  font-size: 0.68rem;\\n  color: #64748b;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626238539,
+      "end": 1783626238539,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

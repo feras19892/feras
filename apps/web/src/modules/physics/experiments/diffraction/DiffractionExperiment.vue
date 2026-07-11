@@ -8,12 +8,14 @@ import DiffractionPanelBody from '../../../../components/experiment/diffraction/
 import DiffractionStatusBar from '../../../../components/experiment/diffraction/DiffractionStatusBar.vue'
 import DiffractionControlBar from '../../../../components/experiment/diffraction/DiffractionControlBar.vue'
 import DiffractionHelpModal from '../../../../components/experiment/diffraction/DiffractionHelpModal.vue'
+import DiffractionGuidePanel from '../../../../components/experiment/diffraction/DiffractionGuidePanel.vue'
 import DiffractionOverlayPanels from '../../../../components/experiment/diffraction/DiffractionOverlayPanels.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 
 const ex = useDiffractionExperiment()
 const { t } = useI18n()
 const helpOpen = ref(false)
+const showGuide = ref(true)
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
@@ -187,6 +189,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             />
           </div>
         </template>
+        <DiffractionGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
 

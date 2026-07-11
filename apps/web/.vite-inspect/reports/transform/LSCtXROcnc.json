@@ -1,0 +1,140 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/WorkspaceActionsPanel.vue?vue&type=style&index=0&scoped=a0145aec&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.workspace-actions {\n  position: absolute;\n  bottom: 1rem;\n  left: calc(var(--left-width, 300px) + 1rem);\n  display: flex;\n  gap: 0.4rem;\n  z-index: 20;\n}\n.action-btn {\n  padding: 0.45rem 0.7rem;\n  border: 1px solid #e2e8f0;\n  border-radius: 0.5rem;\n  background: #ffffff;\n  font-size: 0.75rem;\n  font-weight: 700;\n  cursor: pointer;\n  color: #475569;\n  font-family: inherit;\n  display: flex;\n  align-items: center;\n  gap: 0.3rem;\n  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);\n  transition: all 0.15s;\n}\n.action-btn:disabled {\n  opacity: 0.4;\n  cursor: not-allowed;\n}\n.action-btn.undo:hover:not(:disabled) {\n  background: #fee2e2;\n  color: #dc2626;\n  border-color: #fca5a5;\n  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);\n}\n.action-btn.redo:hover:not(:disabled) {\n  background: #dbeafe;\n  color: #2563eb;\n  border-color: #bfdbfe;\n  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);\n}\n.action-btn.step-undo, .action-btn.step-redo {\n  font-size: 0.7rem;\n  padding: 0.35rem 0.5rem;\n  background: #f1f5f9;\n  border-color: #cbd5e1;\n  color: #475569;\n}\n.action-btn.step-undo:hover:not(:disabled) {\n  background: #fee2e2;\n  border-color: #fca5a5;\n  color: #dc2626;\n}\n.action-btn.step-redo:hover:not(:disabled) {\n  background: #dbeafe;\n  border-color: #93c5fd;\n  color: #2563eb;\n}\n",
+      "start": 1783626305163,
+      "end": 1783626305163,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/WorkspaceActionsPanel.vue"
+        ],
+        "names": [],
+        "mappings": "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C,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACpC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACnB,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACd,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACrB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC;AAChD;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACpC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACnB,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACd,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACrB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC;AAChD;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EAC3C,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACjB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACvB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACnB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACrB,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AAChB;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACzC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACnB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACrB,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AAChB;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACzC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACnB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACrB,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AAChB",
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/WorkspaceActionsPanel.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n';\nconst { t } = useI18n();\n\nconst props = defineProps<{\n  canUndo: boolean;\n  canRedo: boolean;\n  canStepUndo?: boolean;\n  canStepRedo?: boolean;\n}>();\n\nconst emit = defineEmits<{\n  undo: [];\n  redo: [];\n  stepUndo: [];\n  stepRedo: [];\n}>();\n</script>\n\n<template>\n  <div class=\"workspace-actions\" data-v-inspector=\"src/components/experiment/chemistry/WorkspaceActionsPanel.vue:21:3\">\n    <button class=\"action-btn undo\" :disabled=\"!canUndo\" @click=\"emit('undo')\" :title=\"t('chemistryLab.undoFull')\" data-v-inspector=\"src/components/experiment/chemistry/WorkspaceActionsPanel.vue:22:5\">{{ t('chemistryLab.undoFull') }}</button>\n    <button class=\"action-btn step-undo\" :disabled=\"!canStepUndo\" @click=\"emit('stepUndo')\" :title=\"t('chemistryLab.undoStep')\" data-v-inspector=\"src/components/experiment/chemistry/WorkspaceActionsPanel.vue:23:5\">{{ t('chemistryLab.undoStep') }}</button>\n    <button class=\"action-btn step-redo\" :disabled=\"!canStepRedo\" @click=\"emit('stepRedo')\" :title=\"t('chemistryLab.redoStep')\" data-v-inspector=\"src/components/experiment/chemistry/WorkspaceActionsPanel.vue:24:5\">{{ t('chemistryLab.redoStep') }}</button>\n    <button class=\"action-btn redo\" :disabled=\"!canRedo\" @click=\"emit('redo')\" :title=\"t('chemistryLab.redoFull')\" data-v-inspector=\"src/components/experiment/chemistry/WorkspaceActionsPanel.vue:25:5\">{{ t('chemistryLab.redoFull') }}</button>\n  </div>\n</template>\n\n<style scoped>\n.workspace-actions {\n  position: absolute;\n  bottom: 1rem;\n  left: calc(var(--left-width, 300px) + 1rem);\n  display: flex;\n  gap: 0.4rem;\n  z-index: 20;\n}\n.action-btn {\n  padding: 0.45rem 0.7rem;\n  border: 1px solid #e2e8f0;\n  border-radius: 0.5rem;\n  background: #ffffff;\n  font-size: 0.75rem;\n  font-weight: 700;\n  cursor: pointer;\n  color: #475569;\n  font-family: inherit;\n  display: flex;\n  align-items: center;\n  gap: 0.3rem;\n  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);\n  transition: all 0.15s;\n}\n.action-btn:disabled {\n  opacity: 0.4;\n  cursor: not-allowed;\n}\n.action-btn.undo:hover:not(:disabled) {\n  background: #fee2e2;\n  color: #dc2626;\n  border-color: #fca5a5;\n  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);\n}\n.action-btn.redo:hover:not(:disabled) {\n  background: #dbeafe;\n  color: #2563eb;\n  border-color: #bfdbfe;\n  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);\n}\n.action-btn.step-undo, .action-btn.step-redo {\n  font-size: 0.7rem;\n  padding: 0.35rem 0.5rem;\n  background: #f1f5f9;\n  border-color: #cbd5e1;\n  color: #475569;\n}\n.action-btn.step-undo:hover:not(:disabled) {\n  background: #fee2e2;\n  border-color: #fca5a5;\n  color: #dc2626;\n}\n.action-btn.step-redo:hover:not(:disabled) {\n  background: #dbeafe;\n  border-color: #93c5fd;\n  color: #2563eb;\n}\n</style>\n"
+        ]
+      }
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626305164,
+      "end": 1783626305164,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "\n.workspace-actions {\n  position: absolute;\n  bottom: 1rem;\n  left: calc(var(--left-width, 300px) + 1rem);\n  display: flex;\n  gap: 0.4rem;\n  z-index: 20;\n}\n.action-btn {\n  padding: 0.45rem 0.7rem;\n  border: 1px solid #e2e8f0;\n  border-radius: 0.5rem;\n  background: #ffffff;\n  font-size: 0.75rem;\n  font-weight: 700;\n  cursor: pointer;\n  color: #475569;\n  font-family: inherit;\n  display: flex;\n  align-items: center;\n  gap: 0.3rem;\n  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);\n  transition: all 0.15s;\n}\n.action-btn:disabled {\n  opacity: 0.4;\n  cursor: not-allowed;\n}\n.action-btn.undo:hover:not(:disabled) {\n  background: #fee2e2;\n  color: #dc2626;\n  border-color: #fca5a5;\n  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);\n}\n.action-btn.redo:hover:not(:disabled) {\n  background: #dbeafe;\n  color: #2563eb;\n  border-color: #bfdbfe;\n  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);\n}\n.action-btn.step-undo, .action-btn.step-redo {\n  font-size: 0.7rem;\n  padding: 0.35rem 0.5rem;\n  background: #f1f5f9;\n  border-color: #cbd5e1;\n  color: #475569;\n}\n.action-btn.step-undo:hover:not(:disabled) {\n  background: #fee2e2;\n  border-color: #fca5a5;\n  color: #dc2626;\n}\n.action-btn.step-redo:hover:not(:disabled) {\n  background: #dbeafe;\n  border-color: #93c5fd;\n  color: #2563eb;\n}\n",
+      "start": 1783626305164,
+      "end": 1783626305164,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.workspace-actions {\n  position: absolute;\n  bottom: 1rem;\n  left: calc(var(--left-width, 300px) + 1rem);\n  display: flex;\n  gap: 0.4rem;\n  z-index: 20;\n}\n.action-btn {\n  padding: 0.45rem 0.7rem;\n  border: 1px solid #e2e8f0;\n  border-radius: 0.5rem;\n  background: #ffffff;\n  font-size: 0.75rem;\n  font-weight: 700;\n  cursor: pointer;\n  color: #475569;\n  font-family: inherit;\n  display: flex;\n  align-items: center;\n  gap: 0.3rem;\n  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);\n  transition: all 0.15s;\n}\n.action-btn:disabled {\n  opacity: 0.4;\n  cursor: not-allowed;\n}\n.action-btn.undo:hover:not(:disabled) {\n  background: #fee2e2;\n  color: #dc2626;\n  border-color: #fca5a5;\n  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);\n}\n.action-btn.redo:hover:not(:disabled) {\n  background: #dbeafe;\n  color: #2563eb;\n  border-color: #bfdbfe;\n  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);\n}\n.action-btn.step-undo, .action-btn.step-redo {\n  font-size: 0.7rem;\n  padding: 0.35rem 0.5rem;\n  background: #f1f5f9;\n  border-color: #cbd5e1;\n  color: #475569;\n}\n.action-btn.step-undo:hover:not(:disabled) {\n  background: #fee2e2;\n  border-color: #fca5a5;\n  color: #dc2626;\n}\n.action-btn.step-redo:hover:not(:disabled) {\n  background: #dbeafe;\n  border-color: #93c5fd;\n  color: #2563eb;\n}\n",
+      "start": 1783626305164,
+      "end": 1783626305164,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783626305164,
+      "end": 1783626305164,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626305164,
+      "end": 1783626305164,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626305164,
+      "end": 1783626305164,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.workspace-actions[data-v-a0145aec] {\n  position: absolute;\n  bottom: 1rem;\n  left: calc(var(--left-width, 300px) + 1rem);\n  display: flex;\n  gap: 0.4rem;\n  z-index: 20;\n}\n.action-btn[data-v-a0145aec] {\n  padding: 0.45rem 0.7rem;\n  border: 1px solid #e2e8f0;\n  border-radius: 0.5rem;\n  background: #ffffff;\n  font-size: 0.75rem;\n  font-weight: 700;\n  cursor: pointer;\n  color: #475569;\n  font-family: inherit;\n  display: flex;\n  align-items: center;\n  gap: 0.3rem;\n  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);\n  transition: all 0.15s;\n}\n.action-btn[data-v-a0145aec]:disabled {\n  opacity: 0.4;\n  cursor: not-allowed;\n}\n.action-btn.undo[data-v-a0145aec]:hover:not(:disabled) {\n  background: #fee2e2;\n  color: #dc2626;\n  border-color: #fca5a5;\n  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);\n}\n.action-btn.redo[data-v-a0145aec]:hover:not(:disabled) {\n  background: #dbeafe;\n  color: #2563eb;\n  border-color: #bfdbfe;\n  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);\n}\n.action-btn.step-undo[data-v-a0145aec], .action-btn.step-redo[data-v-a0145aec] {\n  font-size: 0.7rem;\n  padding: 0.35rem 0.5rem;\n  background: #f1f5f9;\n  border-color: #cbd5e1;\n  color: #475569;\n}\n.action-btn.step-undo[data-v-a0145aec]:hover:not(:disabled) {\n  background: #fee2e2;\n  border-color: #fca5a5;\n  color: #dc2626;\n}\n.action-btn.step-redo[data-v-a0145aec]:hover:not(:disabled) {\n  background: #dbeafe;\n  border-color: #93c5fd;\n  color: #2563eb;\n}\n",
+      "start": 1783626305172,
+      "end": 1783626305178,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626305178,
+      "end": 1783626305178,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/WorkspaceActionsPanel.vue?vue&type=style&index=0&scoped=a0145aec&lang.css\"\nconst __vite__css = \"\\n.workspace-actions[data-v-a0145aec] {\\n  position: absolute;\\n  bottom: 1rem;\\n  left: calc(var(--left-width, 300px) + 1rem);\\n  display: flex;\\n  gap: 0.4rem;\\n  z-index: 20;\\n}\\n.action-btn[data-v-a0145aec] {\\n  padding: 0.45rem 0.7rem;\\n  border: 1px solid #e2e8f0;\\n  border-radius: 0.5rem;\\n  background: #ffffff;\\n  font-size: 0.75rem;\\n  font-weight: 700;\\n  cursor: pointer;\\n  color: #475569;\\n  font-family: inherit;\\n  display: flex;\\n  align-items: center;\\n  gap: 0.3rem;\\n  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);\\n  transition: all 0.15s;\\n}\\n.action-btn[data-v-a0145aec]:disabled {\\n  opacity: 0.4;\\n  cursor: not-allowed;\\n}\\n.action-btn.undo[data-v-a0145aec]:hover:not(:disabled) {\\n  background: #fee2e2;\\n  color: #dc2626;\\n  border-color: #fca5a5;\\n  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);\\n}\\n.action-btn.redo[data-v-a0145aec]:hover:not(:disabled) {\\n  background: #dbeafe;\\n  color: #2563eb;\\n  border-color: #bfdbfe;\\n  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);\\n}\\n.action-btn.step-undo[data-v-a0145aec], .action-btn.step-redo[data-v-a0145aec] {\\n  font-size: 0.7rem;\\n  padding: 0.35rem 0.5rem;\\n  background: #f1f5f9;\\n  border-color: #cbd5e1;\\n  color: #475569;\\n}\\n.action-btn.step-undo[data-v-a0145aec]:hover:not(:disabled) {\\n  background: #fee2e2;\\n  border-color: #fca5a5;\\n  color: #dc2626;\\n}\\n.action-btn.step-redo[data-v-a0145aec]:hover:not(:disabled) {\\n  background: #dbeafe;\\n  border-color: #93c5fd;\\n  color: #2563eb;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626305178,
+      "end": 1783626305179,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626305179,
+      "end": 1783626305179,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626305179,
+      "end": 1783626305179,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626305179,
+      "end": 1783626305179,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626305179,
+      "end": 1783626305179,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626305179,
+      "end": 1783626305179,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626305179,
+      "end": 1783626305179,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626305179,
+      "end": 1783626305179,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/components/experiment/chemistry/WorkspaceActionsPanel.vue?vue&type=style&index=0&scoped=a0145aec&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/WorkspaceActionsPanel.vue?vue&type=style&index=0&scoped=a0145aec&lang.css\"\nconst __vite__css = \"\\n.workspace-actions[data-v-a0145aec] {\\n  position: absolute;\\n  bottom: 1rem;\\n  left: calc(var(--left-width, 300px) + 1rem);\\n  display: flex;\\n  gap: 0.4rem;\\n  z-index: 20;\\n}\\n.action-btn[data-v-a0145aec] {\\n  padding: 0.45rem 0.7rem;\\n  border: 1px solid #e2e8f0;\\n  border-radius: 0.5rem;\\n  background: #ffffff;\\n  font-size: 0.75rem;\\n  font-weight: 700;\\n  cursor: pointer;\\n  color: #475569;\\n  font-family: inherit;\\n  display: flex;\\n  align-items: center;\\n  gap: 0.3rem;\\n  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);\\n  transition: all 0.15s;\\n}\\n.action-btn[data-v-a0145aec]:disabled {\\n  opacity: 0.4;\\n  cursor: not-allowed;\\n}\\n.action-btn.undo[data-v-a0145aec]:hover:not(:disabled) {\\n  background: #fee2e2;\\n  color: #dc2626;\\n  border-color: #fca5a5;\\n  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);\\n}\\n.action-btn.redo[data-v-a0145aec]:hover:not(:disabled) {\\n  background: #dbeafe;\\n  color: #2563eb;\\n  border-color: #bfdbfe;\\n  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);\\n}\\n.action-btn.step-undo[data-v-a0145aec], .action-btn.step-redo[data-v-a0145aec] {\\n  font-size: 0.7rem;\\n  padding: 0.35rem 0.5rem;\\n  background: #f1f5f9;\\n  border-color: #cbd5e1;\\n  color: #475569;\\n}\\n.action-btn.step-undo[data-v-a0145aec]:hover:not(:disabled) {\\n  background: #fee2e2;\\n  border-color: #fca5a5;\\n  color: #dc2626;\\n}\\n.action-btn.step-redo[data-v-a0145aec]:hover:not(:disabled) {\\n  background: #dbeafe;\\n  border-color: #93c5fd;\\n  color: #2563eb;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626305179,
+      "end": 1783626305180,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

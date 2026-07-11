@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useStepControl.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { undoMicro, redoMicro } from './useChemistryHistory';\n\n/** Revert one drop step (0.05 mL) using micro history */\nexport function stepUndo(): boolean {\n  return undoMicro();\n}\n\n/** Forward one drop step using micro history */\nexport function stepRedo(): boolean {\n  return redoMicro();\n}\n",
-      "start": 1783634640048,
-      "end": 1783634640498,
+      "start": 1783626308060,
+      "end": 1783626308060
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626308060,
+      "end": 1783626308060,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { undoMicro, redoMicro } from './useChemistryHistory';\n\n/** Revert one drop step (0.05 mL) using micro history */\nexport function stepUndo(): boolean {\n  return undoMicro();\n}\n\n/** Forward one drop step using micro history */\nexport function stepRedo(): boolean {\n  return redoMicro();\n}\n",
+      "start": 1783626308060,
+      "end": 1783626308060,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634640498,
-      "end": 1783634640498,
+      "start": 1783626308060,
+      "end": 1783626308064,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { undoMicro, redoMicro } from \"./useChemistryHistory\";\nexport function stepUndo() {\n  return undoMicro();\n}\nexport function stepRedo() {\n  return redoMicro();\n}\n",
-      "start": 1783634640498,
-      "end": 1783634640664,
+      "start": 1783626308064,
+      "end": 1783626308636,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useStepControl.ts"
+          "useStepControl.ts"
         ],
         "sourcesContent": [
           "import { undoMicro, redoMicro } from './useChemistryHistory';\n\n/** Revert one drop step (0.05 mL) using micro history */\nexport function stepUndo(): boolean {\n  return undoMicro();\n}\n\n/** Forward one drop step using micro history */\nexport function stepRedo(): boolean {\n  return redoMicro();\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634640664,
-      "end": 1783634640664,
+      "start": 1783626308636,
+      "end": 1783626308636,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634640664,
-      "end": 1783634640664,
+      "start": 1783626308636,
+      "end": 1783626308636,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626308636,
+      "end": 1783626308636,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634640664,
-      "end": 1783634640664,
+      "start": 1783626308636,
+      "end": 1783626308636,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634640664,
-      "end": 1783634640664,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634640664,
-      "end": 1783634640665,
+      "start": 1783626308636,
+      "end": 1783626308636,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634640665,
-      "end": 1783634640665,
+      "start": 1783626308636,
+      "end": 1783626308636,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634640665,
-      "end": 1783634640665,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634640665,
-      "end": 1783634640665,
+      "start": 1783626308636,
+      "end": 1783626308636,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634640667,
-      "end": 1783634640667,
+      "start": 1783626308636,
+      "end": 1783626308636,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634640668,
-      "end": 1783634640668,
+      "start": 1783626308636,
+      "end": 1783626308636,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634640669,
-      "end": 1783634640669,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626308636,
+      "end": 1783626308639,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626308639,
+      "end": 1783626308639,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634640669,
-      "end": 1783634640669,
+      "name": "vite:css-analysis",
+      "start": 1783626308639,
+      "end": 1783626308639,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { undoMicro, redoMicro } from \"/src/composables/chemistry/useChemistryHistory.ts\";\nexport function stepUndo() {\n  return undoMicro();\n}\nexport function stepRedo() {\n  return redoMicro();\n}\n",
+      "start": 1783626308639,
+      "end": 1783626308656,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

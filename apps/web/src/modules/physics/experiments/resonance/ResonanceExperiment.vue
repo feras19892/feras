@@ -8,12 +8,14 @@ import ResonancePanelBody from '../../../../components/experiment/resonance/Reso
 import ResonanceStatusBar from '../../../../components/experiment/resonance/ResonanceStatusBar.vue'
 import ResonanceControlBar from '../../../../components/experiment/resonance/ResonanceControlBar.vue'
 import ResonanceHelpModal from '../../../../components/experiment/resonance/ResonanceHelpModal.vue'
+import ResonanceGuidePanel from '../../../../components/experiment/resonance/ResonanceGuidePanel.vue'
 import ResonanceOverlayPanels from '../../../../components/experiment/resonance/ResonanceOverlayPanels.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 
 const ex = useResonanceExperiment()
 const { t } = useI18n()
 const helpOpen = ref(false)
+const showGuide = ref(true)
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
@@ -139,6 +141,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             />
           </div>
         </template>
+        <ResonanceGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
 

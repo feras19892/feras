@@ -4,12 +4,12 @@ import Inspect from 'vite-plugin-inspect';
 import VueDevtools from 'vite-plugin-vue-devtools';
 import { fileURLToPath, URL } from 'node:url';
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [
     vue(),
     Inspect({
-      enabled: true,
-      build: true,
+      enabled: mode === 'development',
+      build: false,
       outputDir: '.vite-inspect',
     }),
     VueDevtools({ launchEditor: 'code' }),
@@ -31,7 +31,6 @@ export default defineConfig({
             return 'vendor';
           }
           if (id.includes('/modules/chemistry/')) return 'chemistry';
-          if (id.includes('/modules/physics/')) return 'physics';
           if (id.includes('/pages/admin')) return 'admin';
         },
       },
@@ -46,4 +45,4 @@ export default defineConfig({
       },
     },
   },
-});
+}));

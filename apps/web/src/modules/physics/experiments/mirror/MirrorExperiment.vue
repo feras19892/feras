@@ -8,11 +8,13 @@ import LightRayMenuBar from '../../../../components/experiment/lightray/LightRay
 import LightRayStatusBar from '../../../../components/experiment/lightray/LightRayStatusBar.vue'
 import LightRayControlBar from '../../../../components/experiment/lightray/LightRayControlBar.vue'
 import MirrorHelpModal from '../../../../components/experiment/mirror/MirrorHelpModal.vue'
+import MirrorGuidePanel from '../../../../components/experiment/mirror/MirrorGuidePanel.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 
 const { t } = useI18n()
 const ex = useMirrorExperiment()
 const helpOpen = ref(false)
+const showGuide = ref(true)
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
@@ -153,6 +155,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             />
           </div>
         </template>
+        <MirrorGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
 

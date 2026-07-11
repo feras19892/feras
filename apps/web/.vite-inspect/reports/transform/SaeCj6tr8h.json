@@ -2,31 +2,44 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabPresets.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "﻿export { type PresetDef } from './electricLabPresetHelpers'\nimport { basicPresets } from './electricLabPresetsBasic'\nimport { advancedPresets } from './electricLabPresetsAdvanced'\nimport { newPresets } from './electricLabPresetsNew'\nimport { newPresets2 } from './electricLabPresetsNew2'\nimport { newPresets3 } from './electricLabPresetsNew3'\nimport { newPresets4 } from './electricLabPresetsNew4'\nimport { newPresets5 } from './electricLabPresetsNew5'\n\nexport const presetDefs = [...basicPresets, ...advancedPresets, ...newPresets, ...newPresets2, ...newPresets3, ...newPresets4, ...newPresets5]\n",
-      "start": 1783634641887,
-      "end": 1783634642180,
+      "start": 1783626238575,
+      "end": 1783626238575
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626238575,
+      "end": 1783626238575,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "﻿export { type PresetDef } from './electricLabPresetHelpers'\nimport { basicPresets } from './electricLabPresetsBasic'\nimport { advancedPresets } from './electricLabPresetsAdvanced'\nimport { newPresets } from './electricLabPresetsNew'\nimport { newPresets2 } from './electricLabPresetsNew2'\nimport { newPresets3 } from './electricLabPresetsNew3'\nimport { newPresets4 } from './electricLabPresetsNew4'\nimport { newPresets5 } from './electricLabPresetsNew5'\n\nexport const presetDefs = [...basicPresets, ...advancedPresets, ...newPresets, ...newPresets2, ...newPresets3, ...newPresets4, ...newPresets5]\n",
+      "start": 1783626238575,
+      "end": 1783626238575,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634642180,
-      "end": 1783634642180,
+      "start": 1783626238575,
+      "end": 1783626238575,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { basicPresets } from \"./electricLabPresetsBasic\";\nimport { advancedPresets } from \"./electricLabPresetsAdvanced\";\nimport { newPresets } from \"./electricLabPresetsNew\";\nimport { newPresets2 } from \"./electricLabPresetsNew2\";\nimport { newPresets3 } from \"./electricLabPresetsNew3\";\nimport { newPresets4 } from \"./electricLabPresetsNew4\";\nimport { newPresets5 } from \"./electricLabPresetsNew5\";\nexport const presetDefs = [...basicPresets, ...advancedPresets, ...newPresets, ...newPresets2, ...newPresets3, ...newPresets4, ...newPresets5];\n",
-      "start": 1783634642180,
-      "end": 1783634642321,
+      "start": 1783626238575,
+      "end": 1783626238588,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabPresets.ts"
+          "electricLabPresets.ts"
         ],
         "sourcesContent": [
-          "export { type PresetDef } from './electricLabPresetHelpers'\nimport { basicPresets } from './electricLabPresetsBasic'\nimport { advancedPresets } from './electricLabPresetsAdvanced'\nimport { newPresets } from './electricLabPresetsNew'\nimport { newPresets2 } from './electricLabPresetsNew2'\nimport { newPresets3 } from './electricLabPresetsNew3'\nimport { newPresets4 } from './electricLabPresetsNew4'\nimport { newPresets5 } from './electricLabPresetsNew5'\n\nexport const presetDefs = [...basicPresets, ...advancedPresets, ...newPresets, ...newPresets2, ...newPresets3, ...newPresets4, ...newPresets5]\n"
+          "﻿export { type PresetDef } from './electricLabPresetHelpers'\nimport { basicPresets } from './electricLabPresetsBasic'\nimport { advancedPresets } from './electricLabPresetsAdvanced'\nimport { newPresets } from './electricLabPresetsNew'\nimport { newPresets2 } from './electricLabPresetsNew2'\nimport { newPresets3 } from './electricLabPresetsNew3'\nimport { newPresets4 } from './electricLabPresetsNew4'\nimport { newPresets5 } from './electricLabPresetsNew5'\n\nexport const presetDefs = [...basicPresets, ...advancedPresets, ...newPresets, ...newPresets2, ...newPresets3, ...newPresets4, ...newPresets5]\n"
         ],
         "mappings": "AACA,SAAS,oBAAoB;AAC7B,SAAS,uBAAuB;AAChC,SAAS,kBAAkB;AAC3B,SAAS,mBAAmB;AAC5B,SAAS,mBAAmB;AAC5B,SAAS,mBAAmB;AAC5B,SAAS,mBAAmB;AAErB,aAAM,aAAa,CAAC,GAAG,cAAc,GAAG,iBAAiB,GAAG,YAAY,GAAG,aAAa,GAAG,aAAa,GAAG,aAAa,GAAG,WAAW;",
         "names": []
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634642321,
-      "end": 1783634642321,
+      "start": 1783626238588,
+      "end": 1783626238588,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642321,
-      "end": 1783634642321,
+      "start": 1783626238588,
+      "end": 1783626238588,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626238588,
+      "end": 1783626238588,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642321,
-      "end": 1783634642321,
+      "start": 1783626238588,
+      "end": 1783626238588,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634642321,
-      "end": 1783634642321,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634642321,
-      "end": 1783634642321,
+      "start": 1783626238588,
+      "end": 1783626238588,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642321,
-      "end": 1783634642321,
+      "start": 1783626238588,
+      "end": 1783626238588,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642321,
-      "end": 1783634642321,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642321,
-      "end": 1783634642321,
+      "start": 1783626238588,
+      "end": 1783626238588,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642321,
-      "end": 1783634642321,
+      "start": 1783626238588,
+      "end": 1783626238588,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642321,
-      "end": 1783634642321,
+      "start": 1783626238588,
+      "end": 1783626238588,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642321,
-      "end": 1783634642321,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626238588,
+      "end": 1783626238588,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626238588,
+      "end": 1783626238588,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642321,
-      "end": 1783634642321,
+      "name": "vite:css-analysis",
+      "start": 1783626238588,
+      "end": 1783626238588,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { basicPresets } from \"/src/modules/physics/experiments/electric-lab/electricLabPresetsBasic.ts\";\nimport { advancedPresets } from \"/src/modules/physics/experiments/electric-lab/electricLabPresetsAdvanced.ts\";\nimport { newPresets } from \"/src/modules/physics/experiments/electric-lab/electricLabPresetsNew.ts\";\nimport { newPresets2 } from \"/src/modules/physics/experiments/electric-lab/electricLabPresetsNew2.ts\";\nimport { newPresets3 } from \"/src/modules/physics/experiments/electric-lab/electricLabPresetsNew3.ts\";\nimport { newPresets4 } from \"/src/modules/physics/experiments/electric-lab/electricLabPresetsNew4.ts\";\nimport { newPresets5 } from \"/src/modules/physics/experiments/electric-lab/electricLabPresetsNew5.ts\";\nexport const presetDefs = [...basicPresets, ...advancedPresets, ...newPresets, ...newPresets2, ...newPresets3, ...newPresets4, ...newPresets5];\n",
+      "start": 1783626238588,
+      "end": 1783626238605,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

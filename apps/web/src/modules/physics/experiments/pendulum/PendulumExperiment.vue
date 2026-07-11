@@ -10,10 +10,12 @@ import PendulumParamPanel from '../../../../components/experiment/pendulum/Pendu
 import PendulumOverlayPanels from '../../../../components/experiment/pendulum/PendulumOverlayPanels.vue'
 import PendulumControlBar from '../../../../components/experiment/pendulum/PendulumControlBar.vue'
 import PendulumHelpModal from '../../../../components/experiment/pendulum/PendulumHelpModal.vue'
+import PendulumGuidePanel from '../../../../components/experiment/pendulum/PendulumGuidePanel.vue'
 
 const ex = usePendulumExperiment()
 const { t } = useI18n()
 const helpOpen = ref(false)
+const showGuide = ref(true)
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
@@ -68,6 +70,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             <PendulumParamPanel :model-value="ex.params" @update:model-value="Object.assign(ex.params, $event)" />
           </div>
         </template>
+        <PendulumGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
 

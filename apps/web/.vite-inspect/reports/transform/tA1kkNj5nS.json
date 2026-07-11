@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabPresetsNew2.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { makeComp, type PresetDef } from './electricLabPresetHelpers'\n\nexport const newPresets2: PresetDef[] = [\n  {\n    id: 'compound-circuit',\n    name: 'Compound Circuit',\n    nameAr: 'الدائرة المختلطة (توالي وتوازي)',\n    level: 'intermediate',\n    instructions: [\n      '١. الدائرة: بطارية ← أميتر ← R1 (توالي) ← R2∥R3 (توازي) ← فولتميتر',\n      '٢. المقاومة المكافئة: Req = R1 + (R2×R3)/(R2+R3)',\n      '٣. التيار الكلي: I = V / Req',\n      '٤. اضغط ▶ تشغيل وغيّر قيم R1, R2, R3',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      components.push(makeComp('battery', 80, 220, 'بطارية', 12, 'V'))\n      components.push(makeComp('ammeter', 220, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 350, 220, 'R1', 100, 'Ω'))\n      components.push(makeComp('resistor', 480, 160, 'R2', 200, 'Ω'))\n      components.push(makeComp('resistor', 480, 280, 'R3', 300, 'Ω'))\n      components.push(makeComp('voltmeter', 480, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'emf-measurement',\n    name: 'EMF Measurement',\n    nameAr: 'قياس القوة الدافعة الكهربائية',\n    level: 'intermediate',\n    instructions: [\n      '١. الدائرة: بطارية ← مفتاح ← أميتر ← مقاومة ← فولتميتر',\n      '٢. المفتاح مفتوح: الفولتميتر يقيس EMF مباشرة',\n      '٣. المفتاح مغلق: Vt = EMF - Ir، I = EMF/(R+r)',\n      '٤. اضغط ▶ تشغيل، افتح وأغلق المفتاح',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      const batt = makeComp('battery', 80, 220, 'بطارية', 9, 'V')\n      batt._internalR = 1\n      components.push(batt)\n      components.push(makeComp('switch', 200, 220, 'مفتاح', 0, ''))\n      components.push(makeComp('ammeter', 320, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 450, 220, 'R حمل', 50, 'Ω'))\n      components.push(makeComp('voltmeter', 450, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'temperature-resistance',\n    name: 'Temperature & Resistance',\n    nameAr: 'تأثير درجة الحرارة على المقاومة',\n    level: 'intermediate',\n    instructions: [\n      '١. الدائرة: بطارية ← أميتر ← R0 (مقاومة) ← فولتميتر',\n      '٢. R = R₀(1 + αΔT)، α = 0.004/°C (نحاس)',\n      '٣. غيّر قيمة R0 والحرارة (المقاومة الثانية = الحرارة °C)',\n      '٤. اضغط ▶ تشغيل ولاحظ تغير R مع الحرارة',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      components.push(makeComp('battery', 80, 220, 'بطارية', 6, 'V'))\n      components.push(makeComp('ammeter', 220, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 350, 220, 'R₀ (Ω)', 100, 'Ω'))\n      components.push(makeComp('resistor', 480, 220, 'T (°C)', 20, '°C'))\n      components.push(makeComp('voltmeter', 350, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'cells-series',\n    name: 'Cells in Series',\n    nameAr: 'توصيل الخلايا على التوالي',\n    level: 'intermediate',\n    instructions: [\n      '١. الدائرة: بطاريتان على التوالي + أميتر + مقاومة + فولتميتر',\n      '٢. EMF الكلي = EMF₁ + EMF₂، r الكلي = r₁ + r₂',\n      '٣. I = (EMF₁ + EMF₂) / (R + r₁ + r₂)',\n      '٤. اضغط ▶ تشغيل وغيّر قيم البطاريات والمقاومة',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      const b1 = makeComp('battery', 60, 220, 'بطارية 1', 6, 'V')\n      b1._internalR = 0.5\n      const b2 = makeComp('battery', 180, 220, 'بطارية 2', 4, 'V')\n      b2._internalR = 0.5\n      components.push(b1, b2)\n      components.push(makeComp('ammeter', 300, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 430, 220, 'R حمل', 100, 'Ω'))\n      components.push(makeComp('voltmeter', 430, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'cells-parallel',\n    name: 'Cells in Parallel',\n    nameAr: 'توصيل الخلايا على التوازي',\n    level: 'intermediate',\n    instructions: [\n      '١. الدائرة: بطاريتان على التوازي + أميتر + مقاومة + فولتميتر',\n      '٢. EMF الكلي = المتوسط، r الكلي = (r₁×r₂)/(r₁+r₂)',\n      '٣. I = EMF / (R + r_total)',\n      '٤. اضغط ▶ تشغيل وغيّر قيم البطاريات',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      const b1 = makeComp('battery', 80, 160, 'بطارية 1', 6, 'V')\n      b1._internalR = 1\n      const b2 = makeComp('battery', 80, 280, 'بطارية 2', 6, 'V')\n      b2._internalR = 1\n      components.push(b1, b2)\n      components.push(makeComp('ammeter', 250, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 430, 220, 'R حمل', 100, 'Ω'))\n      components.push(makeComp('voltmeter', 430, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'rheostat',\n    name: 'Rheostat',\n    nameAr: 'المقاومة المتغيرة (ريوستات)',\n    level: 'intermediate',\n    instructions: [\n      '١. الدائرة: بطارية + أميتر + ريوستات + فولتميتر',\n      '٢. الريوستات = مقاومة متغيرة، R = ρL/A',\n      '٣. غيّر قيمة R ولاحظ تغير I و V',\n      '٤. اضغط ▶ تشغيل وحرّك المنزلق',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      components.push(makeComp('battery', 80, 220, 'بطارية', 12, 'V'))\n      components.push(makeComp('ammeter', 220, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 380, 220, 'ريوستات R', 50, 'Ω'))\n      components.push(makeComp('voltmeter', 380, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n]\n",
-      "start": 1783634642588,
-      "end": 1783634642823,
+      "start": 1783626239123,
+      "end": 1783626239123
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626239123,
+      "end": 1783626239123,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { makeComp, type PresetDef } from './electricLabPresetHelpers'\n\nexport const newPresets2: PresetDef[] = [\n  {\n    id: 'compound-circuit',\n    name: 'Compound Circuit',\n    nameAr: 'الدائرة المختلطة (توالي وتوازي)',\n    level: 'intermediate',\n    instructions: [\n      '١. الدائرة: بطارية ← أميتر ← R1 (توالي) ← R2∥R3 (توازي) ← فولتميتر',\n      '٢. المقاومة المكافئة: Req = R1 + (R2×R3)/(R2+R3)',\n      '٣. التيار الكلي: I = V / Req',\n      '٤. اضغط ▶ تشغيل وغيّر قيم R1, R2, R3',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      components.push(makeComp('battery', 80, 220, 'بطارية', 12, 'V'))\n      components.push(makeComp('ammeter', 220, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 350, 220, 'R1', 100, 'Ω'))\n      components.push(makeComp('resistor', 480, 160, 'R2', 200, 'Ω'))\n      components.push(makeComp('resistor', 480, 280, 'R3', 300, 'Ω'))\n      components.push(makeComp('voltmeter', 480, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'emf-measurement',\n    name: 'EMF Measurement',\n    nameAr: 'قياس القوة الدافعة الكهربائية',\n    level: 'intermediate',\n    instructions: [\n      '١. الدائرة: بطارية ← مفتاح ← أميتر ← مقاومة ← فولتميتر',\n      '٢. المفتاح مفتوح: الفولتميتر يقيس EMF مباشرة',\n      '٣. المفتاح مغلق: Vt = EMF - Ir، I = EMF/(R+r)',\n      '٤. اضغط ▶ تشغيل، افتح وأغلق المفتاح',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      const batt = makeComp('battery', 80, 220, 'بطارية', 9, 'V')\n      batt._internalR = 1\n      components.push(batt)\n      components.push(makeComp('switch', 200, 220, 'مفتاح', 0, ''))\n      components.push(makeComp('ammeter', 320, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 450, 220, 'R حمل', 50, 'Ω'))\n      components.push(makeComp('voltmeter', 450, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'temperature-resistance',\n    name: 'Temperature & Resistance',\n    nameAr: 'تأثير درجة الحرارة على المقاومة',\n    level: 'intermediate',\n    instructions: [\n      '١. الدائرة: بطارية ← أميتر ← R0 (مقاومة) ← فولتميتر',\n      '٢. R = R₀(1 + αΔT)، α = 0.004/°C (نحاس)',\n      '٣. غيّر قيمة R0 والحرارة (المقاومة الثانية = الحرارة °C)',\n      '٤. اضغط ▶ تشغيل ولاحظ تغير R مع الحرارة',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      components.push(makeComp('battery', 80, 220, 'بطارية', 6, 'V'))\n      components.push(makeComp('ammeter', 220, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 350, 220, 'R₀ (Ω)', 100, 'Ω'))\n      components.push(makeComp('resistor', 480, 220, 'T (°C)', 20, '°C'))\n      components.push(makeComp('voltmeter', 350, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'cells-series',\n    name: 'Cells in Series',\n    nameAr: 'توصيل الخلايا على التوالي',\n    level: 'intermediate',\n    instructions: [\n      '١. الدائرة: بطاريتان على التوالي + أميتر + مقاومة + فولتميتر',\n      '٢. EMF الكلي = EMF₁ + EMF₂، r الكلي = r₁ + r₂',\n      '٣. I = (EMF₁ + EMF₂) / (R + r₁ + r₂)',\n      '٤. اضغط ▶ تشغيل وغيّر قيم البطاريات والمقاومة',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      const b1 = makeComp('battery', 60, 220, 'بطارية 1', 6, 'V')\n      b1._internalR = 0.5\n      const b2 = makeComp('battery', 180, 220, 'بطارية 2', 4, 'V')\n      b2._internalR = 0.5\n      components.push(b1, b2)\n      components.push(makeComp('ammeter', 300, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 430, 220, 'R حمل', 100, 'Ω'))\n      components.push(makeComp('voltmeter', 430, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'cells-parallel',\n    name: 'Cells in Parallel',\n    nameAr: 'توصيل الخلايا على التوازي',\n    level: 'intermediate',\n    instructions: [\n      '١. الدائرة: بطاريتان على التوازي + أميتر + مقاومة + فولتميتر',\n      '٢. EMF الكلي = المتوسط، r الكلي = (r₁×r₂)/(r₁+r₂)',\n      '٣. I = EMF / (R + r_total)',\n      '٤. اضغط ▶ تشغيل وغيّر قيم البطاريات',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      const b1 = makeComp('battery', 80, 160, 'بطارية 1', 6, 'V')\n      b1._internalR = 1\n      const b2 = makeComp('battery', 80, 280, 'بطارية 2', 6, 'V')\n      b2._internalR = 1\n      components.push(b1, b2)\n      components.push(makeComp('ammeter', 250, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 430, 220, 'R حمل', 100, 'Ω'))\n      components.push(makeComp('voltmeter', 430, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'rheostat',\n    name: 'Rheostat',\n    nameAr: 'المقاومة المتغيرة (ريوستات)',\n    level: 'intermediate',\n    instructions: [\n      '١. الدائرة: بطارية + أميتر + ريوستات + فولتميتر',\n      '٢. الريوستات = مقاومة متغيرة، R = ρL/A',\n      '٣. غيّر قيمة R ولاحظ تغير I و V',\n      '٤. اضغط ▶ تشغيل وحرّك المنزلق',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      components.push(makeComp('battery', 80, 220, 'بطارية', 12, 'V'))\n      components.push(makeComp('ammeter', 220, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 380, 220, 'ريوستات R', 50, 'Ω'))\n      components.push(makeComp('voltmeter', 380, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n]\n",
+      "start": 1783626239123,
+      "end": 1783626239123,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634642823,
-      "end": 1783634642823,
+      "start": 1783626239123,
+      "end": 1783626239123,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { makeComp } from \"./electricLabPresetHelpers\";\nexport const newPresets2 = [\n  {\n    id: \"compound-circuit\",\n    name: \"Compound Circuit\",\n    nameAr: \"الدائرة المختلطة (توالي وتوازي)\",\n    level: \"intermediate\",\n    instructions: [\n      \"١. الدائرة: بطارية ← أميتر ← R1 (توالي) ← R2∥R3 (توازي) ← فولتميتر\",\n      \"٢. المقاومة المكافئة: Req = R1 + (R2×R3)/(R2+R3)\",\n      \"٣. التيار الكلي: I = V / Req\",\n      \"٤. اضغط ▶ تشغيل وغيّر قيم R1, R2, R3\",\n      \"٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج\"\n    ],\n    build: (components, reset) => {\n      reset();\n      components.push(makeComp(\"battery\", 80, 220, \"بطارية\", 12, \"V\"));\n      components.push(makeComp(\"ammeter\", 220, 220, \"أميتر\", 0, \"A\"));\n      components.push(makeComp(\"resistor\", 350, 220, \"R1\", 100, \"Ω\"));\n      components.push(makeComp(\"resistor\", 480, 160, \"R2\", 200, \"Ω\"));\n      components.push(makeComp(\"resistor\", 480, 280, \"R3\", 300, \"Ω\"));\n      components.push(makeComp(\"voltmeter\", 480, 100, \"فولتميتر\", 0, \"V\"));\n    }\n  },\n  {\n    id: \"emf-measurement\",\n    name: \"EMF Measurement\",\n    nameAr: \"قياس القوة الدافعة الكهربائية\",\n    level: \"intermediate\",\n    instructions: [\n      \"١. الدائرة: بطارية ← مفتاح ← أميتر ← مقاومة ← فولتميتر\",\n      \"٢. المفتاح مفتوح: الفولتميتر يقيس EMF مباشرة\",\n      \"٣. المفتاح مغلق: Vt = EMF - Ir، I = EMF/(R+r)\",\n      \"٤. اضغط ▶ تشغيل، افتح وأغلق المفتاح\",\n      \"٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج\"\n    ],\n    build: (components, reset) => {\n      reset();\n      const batt = makeComp(\"battery\", 80, 220, \"بطارية\", 9, \"V\");\n      batt._internalR = 1;\n      components.push(batt);\n      components.push(makeComp(\"switch\", 200, 220, \"مفتاح\", 0, \"\"));\n      components.push(makeComp(\"ammeter\", 320, 220, \"أميتر\", 0, \"A\"));\n      components.push(makeComp(\"resistor\", 450, 220, \"R حمل\", 50, \"Ω\"));\n      components.push(makeComp(\"voltmeter\", 450, 100, \"فولتميتر\", 0, \"V\"));\n    }\n  },\n  {\n    id: \"temperature-resistance\",\n    name: \"Temperature & Resistance\",\n    nameAr: \"تأثير درجة الحرارة على المقاومة\",\n    level: \"intermediate\",\n    instructions: [\n      \"١. الدائرة: بطارية ← أميتر ← R0 (مقاومة) ← فولتميتر\",\n      \"٢. R = R₀(1 + αΔT)، α = 0.004/°C (نحاس)\",\n      \"٣. غيّر قيمة R0 والحرارة (المقاومة الثانية = الحرارة °C)\",\n      \"٤. اضغط ▶ تشغيل ولاحظ تغير R مع الحرارة\",\n      \"٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج\"\n    ],\n    build: (components, reset) => {\n      reset();\n      components.push(makeComp(\"battery\", 80, 220, \"بطارية\", 6, \"V\"));\n      components.push(makeComp(\"ammeter\", 220, 220, \"أميتر\", 0, \"A\"));\n      components.push(makeComp(\"resistor\", 350, 220, \"R₀ (Ω)\", 100, \"Ω\"));\n      components.push(makeComp(\"resistor\", 480, 220, \"T (°C)\", 20, \"°C\"));\n      components.push(makeComp(\"voltmeter\", 350, 100, \"فولتميتر\", 0, \"V\"));\n    }\n  },\n  {\n    id: \"cells-series\",\n    name: \"Cells in Series\",\n    nameAr: \"توصيل الخلايا على التوالي\",\n    level: \"intermediate\",\n    instructions: [\n      \"١. الدائرة: بطاريتان على التوالي + أميتر + مقاومة + فولتميتر\",\n      \"٢. EMF الكلي = EMF₁ + EMF₂، r الكلي = r₁ + r₂\",\n      \"٣. I = (EMF₁ + EMF₂) / (R + r₁ + r₂)\",\n      \"٤. اضغط ▶ تشغيل وغيّر قيم البطاريات والمقاومة\",\n      \"٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج\"\n    ],\n    build: (components, reset) => {\n      reset();\n      const b1 = makeComp(\"battery\", 60, 220, \"بطارية 1\", 6, \"V\");\n      b1._internalR = 0.5;\n      const b2 = makeComp(\"battery\", 180, 220, \"بطارية 2\", 4, \"V\");\n      b2._internalR = 0.5;\n      components.push(b1, b2);\n      components.push(makeComp(\"ammeter\", 300, 220, \"أميتر\", 0, \"A\"));\n      components.push(makeComp(\"resistor\", 430, 220, \"R حمل\", 100, \"Ω\"));\n      components.push(makeComp(\"voltmeter\", 430, 100, \"فولتميتر\", 0, \"V\"));\n    }\n  },\n  {\n    id: \"cells-parallel\",\n    name: \"Cells in Parallel\",\n    nameAr: \"توصيل الخلايا على التوازي\",\n    level: \"intermediate\",\n    instructions: [\n      \"١. الدائرة: بطاريتان على التوازي + أميتر + مقاومة + فولتميتر\",\n      \"٢. EMF الكلي = المتوسط، r الكلي = (r₁×r₂)/(r₁+r₂)\",\n      \"٣. I = EMF / (R + r_total)\",\n      \"٤. اضغط ▶ تشغيل وغيّر قيم البطاريات\",\n      \"٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج\"\n    ],\n    build: (components, reset) => {\n      reset();\n      const b1 = makeComp(\"battery\", 80, 160, \"بطارية 1\", 6, \"V\");\n      b1._internalR = 1;\n      const b2 = makeComp(\"battery\", 80, 280, \"بطارية 2\", 6, \"V\");\n      b2._internalR = 1;\n      components.push(b1, b2);\n      components.push(makeComp(\"ammeter\", 250, 220, \"أميتر\", 0, \"A\"));\n      components.push(makeComp(\"resistor\", 430, 220, \"R حمل\", 100, \"Ω\"));\n      components.push(makeComp(\"voltmeter\", 430, 100, \"فولتميتر\", 0, \"V\"));\n    }\n  },\n  {\n    id: \"rheostat\",\n    name: \"Rheostat\",\n    nameAr: \"المقاومة المتغيرة (ريوستات)\",\n    level: \"intermediate\",\n    instructions: [\n      \"١. الدائرة: بطارية + أميتر + ريوستات + فولتميتر\",\n      \"٢. الريوستات = مقاومة متغيرة، R = ρL/A\",\n      \"٣. غيّر قيمة R ولاحظ تغير I و V\",\n      \"٤. اضغط ▶ تشغيل وحرّك المنزلق\",\n      \"٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج\"\n    ],\n    build: (components, reset) => {\n      reset();\n      components.push(makeComp(\"battery\", 80, 220, \"بطارية\", 12, \"V\"));\n      components.push(makeComp(\"ammeter\", 220, 220, \"أميتر\", 0, \"A\"));\n      components.push(makeComp(\"resistor\", 380, 220, \"ريوستات R\", 50, \"Ω\"));\n      components.push(makeComp(\"voltmeter\", 380, 100, \"فولتميتر\", 0, \"V\"));\n    }\n  }\n];\n",
-      "start": 1783634642823,
-      "end": 1783634642878,
+      "start": 1783626239123,
+      "end": 1783626239772,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/electricLabPresetsNew2.ts"
+          "electricLabPresetsNew2.ts"
         ],
         "sourcesContent": [
           "import { makeComp, type PresetDef } from './electricLabPresetHelpers'\n\nexport const newPresets2: PresetDef[] = [\n  {\n    id: 'compound-circuit',\n    name: 'Compound Circuit',\n    nameAr: 'الدائرة المختلطة (توالي وتوازي)',\n    level: 'intermediate',\n    instructions: [\n      '١. الدائرة: بطارية ← أميتر ← R1 (توالي) ← R2∥R3 (توازي) ← فولتميتر',\n      '٢. المقاومة المكافئة: Req = R1 + (R2×R3)/(R2+R3)',\n      '٣. التيار الكلي: I = V / Req',\n      '٤. اضغط ▶ تشغيل وغيّر قيم R1, R2, R3',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      components.push(makeComp('battery', 80, 220, 'بطارية', 12, 'V'))\n      components.push(makeComp('ammeter', 220, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 350, 220, 'R1', 100, 'Ω'))\n      components.push(makeComp('resistor', 480, 160, 'R2', 200, 'Ω'))\n      components.push(makeComp('resistor', 480, 280, 'R3', 300, 'Ω'))\n      components.push(makeComp('voltmeter', 480, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'emf-measurement',\n    name: 'EMF Measurement',\n    nameAr: 'قياس القوة الدافعة الكهربائية',\n    level: 'intermediate',\n    instructions: [\n      '١. الدائرة: بطارية ← مفتاح ← أميتر ← مقاومة ← فولتميتر',\n      '٢. المفتاح مفتوح: الفولتميتر يقيس EMF مباشرة',\n      '٣. المفتاح مغلق: Vt = EMF - Ir، I = EMF/(R+r)',\n      '٤. اضغط ▶ تشغيل، افتح وأغلق المفتاح',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      const batt = makeComp('battery', 80, 220, 'بطارية', 9, 'V')\n      batt._internalR = 1\n      components.push(batt)\n      components.push(makeComp('switch', 200, 220, 'مفتاح', 0, ''))\n      components.push(makeComp('ammeter', 320, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 450, 220, 'R حمل', 50, 'Ω'))\n      components.push(makeComp('voltmeter', 450, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'temperature-resistance',\n    name: 'Temperature & Resistance',\n    nameAr: 'تأثير درجة الحرارة على المقاومة',\n    level: 'intermediate',\n    instructions: [\n      '١. الدائرة: بطارية ← أميتر ← R0 (مقاومة) ← فولتميتر',\n      '٢. R = R₀(1 + αΔT)، α = 0.004/°C (نحاس)',\n      '٣. غيّر قيمة R0 والحرارة (المقاومة الثانية = الحرارة °C)',\n      '٤. اضغط ▶ تشغيل ولاحظ تغير R مع الحرارة',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      components.push(makeComp('battery', 80, 220, 'بطارية', 6, 'V'))\n      components.push(makeComp('ammeter', 220, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 350, 220, 'R₀ (Ω)', 100, 'Ω'))\n      components.push(makeComp('resistor', 480, 220, 'T (°C)', 20, '°C'))\n      components.push(makeComp('voltmeter', 350, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'cells-series',\n    name: 'Cells in Series',\n    nameAr: 'توصيل الخلايا على التوالي',\n    level: 'intermediate',\n    instructions: [\n      '١. الدائرة: بطاريتان على التوالي + أميتر + مقاومة + فولتميتر',\n      '٢. EMF الكلي = EMF₁ + EMF₂، r الكلي = r₁ + r₂',\n      '٣. I = (EMF₁ + EMF₂) / (R + r₁ + r₂)',\n      '٤. اضغط ▶ تشغيل وغيّر قيم البطاريات والمقاومة',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      const b1 = makeComp('battery', 60, 220, 'بطارية 1', 6, 'V')\n      b1._internalR = 0.5\n      const b2 = makeComp('battery', 180, 220, 'بطارية 2', 4, 'V')\n      b2._internalR = 0.5\n      components.push(b1, b2)\n      components.push(makeComp('ammeter', 300, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 430, 220, 'R حمل', 100, 'Ω'))\n      components.push(makeComp('voltmeter', 430, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'cells-parallel',\n    name: 'Cells in Parallel',\n    nameAr: 'توصيل الخلايا على التوازي',\n    level: 'intermediate',\n    instructions: [\n      '١. الدائرة: بطاريتان على التوازي + أميتر + مقاومة + فولتميتر',\n      '٢. EMF الكلي = المتوسط، r الكلي = (r₁×r₂)/(r₁+r₂)',\n      '٣. I = EMF / (R + r_total)',\n      '٤. اضغط ▶ تشغيل وغيّر قيم البطاريات',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      const b1 = makeComp('battery', 80, 160, 'بطارية 1', 6, 'V')\n      b1._internalR = 1\n      const b2 = makeComp('battery', 80, 280, 'بطارية 2', 6, 'V')\n      b2._internalR = 1\n      components.push(b1, b2)\n      components.push(makeComp('ammeter', 250, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 430, 220, 'R حمل', 100, 'Ω'))\n      components.push(makeComp('voltmeter', 430, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n  {\n    id: 'rheostat',\n    name: 'Rheostat',\n    nameAr: 'المقاومة المتغيرة (ريوستات)',\n    level: 'intermediate',\n    instructions: [\n      '١. الدائرة: بطارية + أميتر + ريوستات + فولتميتر',\n      '٢. الريوستات = مقاومة متغيرة، R = ρL/A',\n      '٣. غيّر قيمة R ولاحظ تغير I و V',\n      '٤. اضغط ▶ تشغيل وحرّك المنزلق',\n      '٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج',\n    ],\n    build: (components, reset) => {\n      reset()\n      components.push(makeComp('battery', 80, 220, 'بطارية', 12, 'V'))\n      components.push(makeComp('ammeter', 220, 220, 'أميتر', 0, 'A'))\n      components.push(makeComp('resistor', 380, 220, 'ريوستات R', 50, 'Ω'))\n      components.push(makeComp('voltmeter', 380, 100, 'فولتميتر', 0, 'V'))\n    },\n  },\n]\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634642878,
-      "end": 1783634642878,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642878,
-      "end": 1783634642878,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626239772,
+      "end": 1783626239772,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642878,
-      "end": 1783634642878,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634642878,
-      "end": 1783634642878,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634642878,
-      "end": 1783634642878,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642878,
-      "end": 1783634642878,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642878,
-      "end": 1783634642878,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642878,
-      "end": 1783634642878,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642879,
-      "end": 1783634642879,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642879,
-      "end": 1783634642879,
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642879,
-      "end": 1783634642879,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626239772,
+      "end": 1783626239772,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642879,
-      "end": 1783634642879,
+      "name": "vite:css-analysis",
+      "start": 1783626239772,
+      "end": 1783626239772,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { makeComp } from \"/src/modules/physics/experiments/electric-lab/electricLabPresetHelpers.ts\";\nexport const newPresets2 = [\n  {\n    id: \"compound-circuit\",\n    name: \"Compound Circuit\",\n    nameAr: \"الدائرة المختلطة (توالي وتوازي)\",\n    level: \"intermediate\",\n    instructions: [\n      \"١. الدائرة: بطارية ← أميتر ← R1 (توالي) ← R2∥R3 (توازي) ← فولتميتر\",\n      \"٢. المقاومة المكافئة: Req = R1 + (R2×R3)/(R2+R3)\",\n      \"٣. التيار الكلي: I = V / Req\",\n      \"٤. اضغط ▶ تشغيل وغيّر قيم R1, R2, R3\",\n      \"٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج\"\n    ],\n    build: (components, reset) => {\n      reset();\n      components.push(makeComp(\"battery\", 80, 220, \"بطارية\", 12, \"V\"));\n      components.push(makeComp(\"ammeter\", 220, 220, \"أميتر\", 0, \"A\"));\n      components.push(makeComp(\"resistor\", 350, 220, \"R1\", 100, \"Ω\"));\n      components.push(makeComp(\"resistor\", 480, 160, \"R2\", 200, \"Ω\"));\n      components.push(makeComp(\"resistor\", 480, 280, \"R3\", 300, \"Ω\"));\n      components.push(makeComp(\"voltmeter\", 480, 100, \"فولتميتر\", 0, \"V\"));\n    }\n  },\n  {\n    id: \"emf-measurement\",\n    name: \"EMF Measurement\",\n    nameAr: \"قياس القوة الدافعة الكهربائية\",\n    level: \"intermediate\",\n    instructions: [\n      \"١. الدائرة: بطارية ← مفتاح ← أميتر ← مقاومة ← فولتميتر\",\n      \"٢. المفتاح مفتوح: الفولتميتر يقيس EMF مباشرة\",\n      \"٣. المفتاح مغلق: Vt = EMF - Ir، I = EMF/(R+r)\",\n      \"٤. اضغط ▶ تشغيل، افتح وأغلق المفتاح\",\n      \"٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج\"\n    ],\n    build: (components, reset) => {\n      reset();\n      const batt = makeComp(\"battery\", 80, 220, \"بطارية\", 9, \"V\");\n      batt._internalR = 1;\n      components.push(batt);\n      components.push(makeComp(\"switch\", 200, 220, \"مفتاح\", 0, \"\"));\n      components.push(makeComp(\"ammeter\", 320, 220, \"أميتر\", 0, \"A\"));\n      components.push(makeComp(\"resistor\", 450, 220, \"R حمل\", 50, \"Ω\"));\n      components.push(makeComp(\"voltmeter\", 450, 100, \"فولتميتر\", 0, \"V\"));\n    }\n  },\n  {\n    id: \"temperature-resistance\",\n    name: \"Temperature & Resistance\",\n    nameAr: \"تأثير درجة الحرارة على المقاومة\",\n    level: \"intermediate\",\n    instructions: [\n      \"١. الدائرة: بطارية ← أميتر ← R0 (مقاومة) ← فولتميتر\",\n      \"٢. R = R₀(1 + αΔT)، α = 0.004/°C (نحاس)\",\n      \"٣. غيّر قيمة R0 والحرارة (المقاومة الثانية = الحرارة °C)\",\n      \"٤. اضغط ▶ تشغيل ولاحظ تغير R مع الحرارة\",\n      \"٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج\"\n    ],\n    build: (components, reset) => {\n      reset();\n      components.push(makeComp(\"battery\", 80, 220, \"بطارية\", 6, \"V\"));\n      components.push(makeComp(\"ammeter\", 220, 220, \"أميتر\", 0, \"A\"));\n      components.push(makeComp(\"resistor\", 350, 220, \"R₀ (Ω)\", 100, \"Ω\"));\n      components.push(makeComp(\"resistor\", 480, 220, \"T (°C)\", 20, \"°C\"));\n      components.push(makeComp(\"voltmeter\", 350, 100, \"فولتميتر\", 0, \"V\"));\n    }\n  },\n  {\n    id: \"cells-series\",\n    name: \"Cells in Series\",\n    nameAr: \"توصيل الخلايا على التوالي\",\n    level: \"intermediate\",\n    instructions: [\n      \"١. الدائرة: بطاريتان على التوالي + أميتر + مقاومة + فولتميتر\",\n      \"٢. EMF الكلي = EMF₁ + EMF₂، r الكلي = r₁ + r₂\",\n      \"٣. I = (EMF₁ + EMF₂) / (R + r₁ + r₂)\",\n      \"٤. اضغط ▶ تشغيل وغيّر قيم البطاريات والمقاومة\",\n      \"٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج\"\n    ],\n    build: (components, reset) => {\n      reset();\n      const b1 = makeComp(\"battery\", 60, 220, \"بطارية 1\", 6, \"V\");\n      b1._internalR = 0.5;\n      const b2 = makeComp(\"battery\", 180, 220, \"بطارية 2\", 4, \"V\");\n      b2._internalR = 0.5;\n      components.push(b1, b2);\n      components.push(makeComp(\"ammeter\", 300, 220, \"أميتر\", 0, \"A\"));\n      components.push(makeComp(\"resistor\", 430, 220, \"R حمل\", 100, \"Ω\"));\n      components.push(makeComp(\"voltmeter\", 430, 100, \"فولتميتر\", 0, \"V\"));\n    }\n  },\n  {\n    id: \"cells-parallel\",\n    name: \"Cells in Parallel\",\n    nameAr: \"توصيل الخلايا على التوازي\",\n    level: \"intermediate\",\n    instructions: [\n      \"١. الدائرة: بطاريتان على التوازي + أميتر + مقاومة + فولتميتر\",\n      \"٢. EMF الكلي = المتوسط، r الكلي = (r₁×r₂)/(r₁+r₂)\",\n      \"٣. I = EMF / (R + r_total)\",\n      \"٤. اضغط ▶ تشغيل وغيّر قيم البطاريات\",\n      \"٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج\"\n    ],\n    build: (components, reset) => {\n      reset();\n      const b1 = makeComp(\"battery\", 80, 160, \"بطارية 1\", 6, \"V\");\n      b1._internalR = 1;\n      const b2 = makeComp(\"battery\", 80, 280, \"بطارية 2\", 6, \"V\");\n      b2._internalR = 1;\n      components.push(b1, b2);\n      components.push(makeComp(\"ammeter\", 250, 220, \"أميتر\", 0, \"A\"));\n      components.push(makeComp(\"resistor\", 430, 220, \"R حمل\", 100, \"Ω\"));\n      components.push(makeComp(\"voltmeter\", 430, 100, \"فولتميتر\", 0, \"V\"));\n    }\n  },\n  {\n    id: \"rheostat\",\n    name: \"Rheostat\",\n    nameAr: \"المقاومة المتغيرة (ريوستات)\",\n    level: \"intermediate\",\n    instructions: [\n      \"١. الدائرة: بطارية + أميتر + ريوستات + فولتميتر\",\n      \"٢. الريوستات = مقاومة متغيرة، R = ρL/A\",\n      \"٣. غيّر قيمة R ولاحظ تغير I و V\",\n      \"٤. اضغط ▶ تشغيل وحرّك المنزلق\",\n      \"٥. سجّل قراءات ثم اضغط 📈 تحليل النتائج\"\n    ],\n    build: (components, reset) => {\n      reset();\n      components.push(makeComp(\"battery\", 80, 220, \"بطارية\", 12, \"V\"));\n      components.push(makeComp(\"ammeter\", 220, 220, \"أميتر\", 0, \"A\"));\n      components.push(makeComp(\"resistor\", 380, 220, \"ريوستات R\", 50, \"Ω\"));\n      components.push(makeComp(\"voltmeter\", 380, 100, \"فولتميتر\", 0, \"V\"));\n    }\n  }\n];\n",
+      "start": 1783626239772,
+      "end": 1783626239793,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

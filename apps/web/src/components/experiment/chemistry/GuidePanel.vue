@@ -32,8 +32,8 @@ const emit = defineEmits<{
       <div class="exp-active-header">
         <span class="exp-active-icon">{{ experiment.icon }}</span>
         <div class="exp-active-info">
-          <span class="exp-active-name">{{ t(experiment.nameAr) }}</span>
-          <span class="exp-active-desc">{{ t(experiment.description) }}</span>
+          <span class="exp-active-name">{{ t((experiment as any).nameKey || (experiment as any).nameAr) }}</span>
+          <span class="exp-active-desc">{{ t((experiment as any).descKey || (experiment as any).description) }}</span>
         </div>
       </div>
       <div class="exp-active-actions">

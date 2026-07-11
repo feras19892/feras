@@ -2,8 +2,57 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import type { Locale, TranslationDict } from '../locales/types';
 import { loadLocaleMessages, supportedLocales } from '../locales';
+import { loadExperimentMessages } from '../locales/experiments/index';
 
 const STORAGE_KEY = 'physicslab.locale';
+
+const prismOverrides: Record<Locale, Record<string, string>> = {
+  ar: {
+    title: 'تحلل الضوء بالمنشور',
+    emptyResults: 'سجل قراءتين على الأقل لعرض النتائج',
+    dragLaserSource: '⊹ اسحب مصدر الليزر ↕ لتغيير θ₁',
+    dragA: 'اسحب A لتغيير زاوية المنشور',
+    dragPrism: '✥ اسحب المنشور لتحريكه على الشاشة',
+    selectTool: 'تحديد (افتراضي)',
+    moveMode: 'وضع النقل',
+    normalLines: 'خطوط عمودية',
+    showSpectrum: 'إظهار الطيف',
+    angleArcs: 'أقواس الزوايا',
+    virtualScreen: 'شاشة افتراضية',
+    grid: 'شبكة',
+    resetView: 'إعادة ضبط العرض',
+  },
+  en: {
+    title: 'Light Dispersion by Prism',
+    emptyResults: 'Record at least 2 trials to see results',
+    dragLaserSource: '⊹ Drag the laser source ↕ to change θ₁',
+    dragA: 'Drag A to change prism angle',
+    dragPrism: '✥ Drag the prism to move it on screen',
+    selectTool: 'Select (default)',
+    moveMode: 'Move mode',
+    normalLines: 'Normal Lines',
+    showSpectrum: 'Show Spectrum',
+    angleArcs: 'Angle Arcs',
+    virtualScreen: 'Virtual Screen',
+    grid: 'Grid',
+    resetView: 'Reset view',
+  },
+  es: {
+    title: 'Dispersión de Luz por Prisma',
+    emptyResults: 'Registra al menos 2 lecturas para ver resultados',
+    dragLaserSource: '⊹ Arrastra la fuente láser ↕ para cambiar θ₁',
+    dragA: 'Arrastra A para cambiar el ángulo del prisma',
+    dragPrism: '✥ Arrastra el prisma para moverlo en la pantalla',
+    selectTool: 'Seleccionar (predeterminado)',
+    moveMode: 'Modo mover',
+    normalLines: 'Líneas Normales',
+    showSpectrum: 'Mostrar Espectro',
+    angleArcs: 'Arcos de Ángulo',
+    virtualScreen: 'Pantalla Virtual',
+    grid: 'Cuadrícula',
+    resetView: 'Restablecer vista',
+  },
+};
 
 function getSavedLocale(): Locale {
   const saved = localStorage.getItem(STORAGE_KEY);
@@ -31,7 +80,15 @@ export const useI18nStore = defineStore('i18n', () => {
     }
     document.documentElement.lang = next;
     document.documentElement.dir = isRtl.value ? 'rtl' : 'ltr';
-    messages.value = await loadLocaleMessages(next);
+    const [base, exp] = await Promise.all([
+      loadLocaleMessages(next),
+      loadExperimentMessages(next),
+    ]);
+    messages.value = {
+      ...base,
+      experiments: exp,
+      prism: { ...exp, ...prismOverrides[next] },
+    } as TranslationDict;
     loading.value = false;
   }
 

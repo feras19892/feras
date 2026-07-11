@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/services/ai.service.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { fetchJson } from './http';\n\nexport async function analyzeReport(data: {\n  experiment_name: string;\n  student_name?: string;\n  readings: string;\n  columns?: string;\n  equations?: string;\n  plots?: string;\n  conclusion?: string;\n  chart_snapshot?: string;\n}) {\n  return fetchJson<{ success: boolean; analysis: string; message?: string }>('/api/ai/analyze', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify(data),\n  });\n}\n\nexport async function getAiModels() {\n  return fetchJson<{ success: boolean; models: string[] }>('/api/ai/models');\n}\n\nexport async function checkAiHealth() {\n  return fetchJson<{ success: boolean; connected: boolean; modelCount: number }>('/api/ai/health');\n}\n",
-      "start": 1783634641048,
-      "end": 1783634641551,
+      "start": 1783626234380,
+      "end": 1783626234380
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626234380,
+      "end": 1783626234380,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { fetchJson } from './http';\n\nexport async function analyzeReport(data: {\n  experiment_name: string;\n  student_name?: string;\n  readings: string;\n  columns?: string;\n  equations?: string;\n  plots?: string;\n  conclusion?: string;\n  chart_snapshot?: string;\n}) {\n  return fetchJson<{ success: boolean; analysis: string; message?: string }>('/api/ai/analyze', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify(data),\n  });\n}\n\nexport async function getAiModels() {\n  return fetchJson<{ success: boolean; models: string[] }>('/api/ai/models');\n}\n\nexport async function checkAiHealth() {\n  return fetchJson<{ success: boolean; connected: boolean; modelCount: number }>('/api/ai/health');\n}\n",
+      "start": 1783626234380,
+      "end": 1783626234380,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634641551,
-      "end": 1783634641551,
+      "start": 1783626234380,
+      "end": 1783626234380,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { fetchJson } from \"./http\";\nexport async function analyzeReport(data) {\n  return fetchJson(\"/api/ai/analyze\", {\n    method: \"POST\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify(data)\n  });\n}\nexport async function getAiModels() {\n  return fetchJson(\"/api/ai/models\");\n}\nexport async function checkAiHealth() {\n  return fetchJson(\"/api/ai/health\");\n}\n",
-      "start": 1783634641551,
-      "end": 1783634641665,
+      "start": 1783626234380,
+      "end": 1783626234615,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/services/ai.service.ts"
+          "ai.service.ts"
         ],
         "sourcesContent": [
           "import { fetchJson } from './http';\n\nexport async function analyzeReport(data: {\n  experiment_name: string;\n  student_name?: string;\n  readings: string;\n  columns?: string;\n  equations?: string;\n  plots?: string;\n  conclusion?: string;\n  chart_snapshot?: string;\n}) {\n  return fetchJson<{ success: boolean; analysis: string; message?: string }>('/api/ai/analyze', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify(data),\n  });\n}\n\nexport async function getAiModels() {\n  return fetchJson<{ success: boolean; models: string[] }>('/api/ai/models');\n}\n\nexport async function checkAiHealth() {\n  return fetchJson<{ success: boolean; connected: boolean; modelCount: number }>('/api/ai/health');\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634641665,
-      "end": 1783634641665,
+      "start": 1783626234615,
+      "end": 1783626234615,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634641665,
-      "end": 1783634641665,
+      "start": 1783626234615,
+      "end": 1783626234615,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626234615,
+      "end": 1783626234615,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634641666,
-      "end": 1783634641666,
+      "start": 1783626234615,
+      "end": 1783626234615,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634641666,
-      "end": 1783634641666,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634641666,
-      "end": 1783634641666,
+      "start": 1783626234615,
+      "end": 1783626234615,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634641666,
-      "end": 1783634641666,
+      "start": 1783626234615,
+      "end": 1783626234615,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634641666,
-      "end": 1783634641666,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634641666,
-      "end": 1783634641666,
+      "start": 1783626234615,
+      "end": 1783626234615,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634641666,
-      "end": 1783634641666,
+      "start": 1783626234615,
+      "end": 1783626234615,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634641666,
-      "end": 1783634641666,
+      "start": 1783626234615,
+      "end": 1783626234615,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634641667,
-      "end": 1783634641667,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626234615,
+      "end": 1783626234615,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626234615,
+      "end": 1783626234615,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634641667,
-      "end": 1783634641667,
+      "name": "vite:css-analysis",
+      "start": 1783626234615,
+      "end": 1783626234615,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { fetchJson } from \"/src/services/http.ts\";\nexport async function analyzeReport(data) {\n  return fetchJson(\"/api/ai/analyze\", {\n    method: \"POST\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify(data)\n  });\n}\nexport async function getAiModels() {\n  return fetchJson(\"/api/ai/models\");\n}\nexport async function checkAiHealth() {\n  return fetchJson(\"/api/ai/health\");\n}\n",
+      "start": 1783626234615,
+      "end": 1783626234616,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

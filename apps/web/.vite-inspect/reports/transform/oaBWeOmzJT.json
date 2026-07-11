@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useRetortStandDrag.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { ref } from 'vue'\nimport type { Ref } from 'vue'\n\nexport interface RetortStandDragState {\n  clampDragging: Ref<boolean>\n  bottomClampDragging: Ref<boolean>\n  onClampMouseDown: (e: MouseEvent) => void\n  onBottomClampMouseDown: (e: MouseEvent) => void\n  cleanupDrag: () => void\n}\n\nexport function useRetortStandDrag(\n  clampY: () => number,\n  bottomClampX: () => number,\n  bottomClampY: () => number,\n  topClampLocked: () => boolean,\n  bottomClampLocked: () => boolean,\n  onTopMoved: (deltaY: number) => void,\n  onBottomMoved: (deltaX: number, deltaY: number) => void,\n): RetortStandDragState {\n  const clampDragging = ref(false)\n  const clampStartY = ref(0)\n  const clampStartTop = ref(0)\n  const clampPrevY = ref(60)\n\n  const bottomClampDragging = ref(false)\n  const bottomClampStartX = ref(0)\n  const bottomClampStartLeft = ref(0)\n  const bottomClampStartY = ref(0)\n  const bottomClampStartTop = ref(0)\n  const bottomClampPrevX = ref(0)\n  const bottomClampPrevY = ref(160)\n\n  /* ---- Top clamp drag ---- */\n  function onClampMouseDown(e: MouseEvent) {\n    e.stopPropagation()\n    e.stopImmediatePropagation()\n    e.preventDefault()\n    if (topClampLocked()) return\n    clampDragging.value = true\n    clampStartY.value = e.clientY\n    clampStartTop.value = clampY()\n    clampPrevY.value = clampY()\n    window.addEventListener('mousemove', onClampMove)\n    window.addEventListener('mouseup', onClampUp)\n  }\n\n  function onClampMove(e: MouseEvent) {\n    if (!clampDragging.value) return\n    const dy = e.clientY - clampStartY.value\n    const newY = Math.max(20, Math.min(280, clampStartTop.value + dy))\n    const clampDeltaY = newY - clampPrevY.value\n    clampPrevY.value = newY\n    onTopMoved(clampDeltaY)\n  }\n\n  function onClampUp() {\n    clampDragging.value = false\n    window.removeEventListener('mousemove', onClampMove)\n    window.removeEventListener('mouseup', onClampUp)\n  }\n\n  /* ---- Bottom clamp drag ---- */\n  function onBottomClampMouseDown(e: MouseEvent) {\n    e.stopPropagation()\n    e.stopImmediatePropagation()\n    e.preventDefault()\n    if (bottomClampLocked()) return\n    bottomClampDragging.value = true\n    bottomClampStartX.value = e.clientX\n    bottomClampStartLeft.value = bottomClampX()\n    bottomClampStartY.value = e.clientY\n    bottomClampStartTop.value = bottomClampY()\n    bottomClampPrevX.value = bottomClampX()\n    bottomClampPrevY.value = bottomClampY()\n    window.addEventListener('mousemove', onBottomClampMove)\n    window.addEventListener('mouseup', onBottomClampUp)\n  }\n\n  function onBottomClampMove(e: MouseEvent) {\n    if (!bottomClampDragging.value) return\n    const dx = e.clientX - bottomClampStartX.value\n    const newX = Math.max(-100, Math.min(35, bottomClampStartLeft.value + dx))\n    const clampDeltaX = newX - bottomClampPrevX.value\n    bottomClampPrevX.value = newX\n    const dy = e.clientY - bottomClampStartY.value\n    const newY = Math.max(90, Math.min(300, bottomClampStartTop.value + dy))\n    const clampDeltaY = newY - bottomClampPrevY.value\n    bottomClampPrevY.value = newY\n    onBottomMoved(clampDeltaX, clampDeltaY)\n  }\n\n  function onBottomClampUp() {\n    bottomClampDragging.value = false\n    window.removeEventListener('mousemove', onBottomClampMove)\n    window.removeEventListener('mouseup', onBottomClampUp)\n  }\n\n  function cleanupDrag() {\n    window.removeEventListener('mousemove', onClampMove)\n    window.removeEventListener('mouseup', onClampUp)\n    window.removeEventListener('mousemove', onBottomClampMove)\n    window.removeEventListener('mouseup', onBottomClampUp)\n  }\n\n  return {\n    clampDragging,\n    bottomClampDragging,\n    onClampMouseDown,\n    onBottomClampMouseDown,\n    cleanupDrag,\n  }\n}\n",
-      "start": 1783634642953,
-      "end": 1783634643081,
+      "start": 1783626310962,
+      "end": 1783626310962
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626310962,
+      "end": 1783626310962,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { ref } from 'vue'\nimport type { Ref } from 'vue'\n\nexport interface RetortStandDragState {\n  clampDragging: Ref<boolean>\n  bottomClampDragging: Ref<boolean>\n  onClampMouseDown: (e: MouseEvent) => void\n  onBottomClampMouseDown: (e: MouseEvent) => void\n  cleanupDrag: () => void\n}\n\nexport function useRetortStandDrag(\n  clampY: () => number,\n  bottomClampX: () => number,\n  bottomClampY: () => number,\n  topClampLocked: () => boolean,\n  bottomClampLocked: () => boolean,\n  onTopMoved: (deltaY: number) => void,\n  onBottomMoved: (deltaX: number, deltaY: number) => void,\n): RetortStandDragState {\n  const clampDragging = ref(false)\n  const clampStartY = ref(0)\n  const clampStartTop = ref(0)\n  const clampPrevY = ref(60)\n\n  const bottomClampDragging = ref(false)\n  const bottomClampStartX = ref(0)\n  const bottomClampStartLeft = ref(0)\n  const bottomClampStartY = ref(0)\n  const bottomClampStartTop = ref(0)\n  const bottomClampPrevX = ref(0)\n  const bottomClampPrevY = ref(160)\n\n  /* ---- Top clamp drag ---- */\n  function onClampMouseDown(e: MouseEvent) {\n    e.stopPropagation()\n    e.stopImmediatePropagation()\n    e.preventDefault()\n    if (topClampLocked()) return\n    clampDragging.value = true\n    clampStartY.value = e.clientY\n    clampStartTop.value = clampY()\n    clampPrevY.value = clampY()\n    window.addEventListener('mousemove', onClampMove)\n    window.addEventListener('mouseup', onClampUp)\n  }\n\n  function onClampMove(e: MouseEvent) {\n    if (!clampDragging.value) return\n    const dy = e.clientY - clampStartY.value\n    const newY = Math.max(20, Math.min(280, clampStartTop.value + dy))\n    const clampDeltaY = newY - clampPrevY.value\n    clampPrevY.value = newY\n    onTopMoved(clampDeltaY)\n  }\n\n  function onClampUp() {\n    clampDragging.value = false\n    window.removeEventListener('mousemove', onClampMove)\n    window.removeEventListener('mouseup', onClampUp)\n  }\n\n  /* ---- Bottom clamp drag ---- */\n  function onBottomClampMouseDown(e: MouseEvent) {\n    e.stopPropagation()\n    e.stopImmediatePropagation()\n    e.preventDefault()\n    if (bottomClampLocked()) return\n    bottomClampDragging.value = true\n    bottomClampStartX.value = e.clientX\n    bottomClampStartLeft.value = bottomClampX()\n    bottomClampStartY.value = e.clientY\n    bottomClampStartTop.value = bottomClampY()\n    bottomClampPrevX.value = bottomClampX()\n    bottomClampPrevY.value = bottomClampY()\n    window.addEventListener('mousemove', onBottomClampMove)\n    window.addEventListener('mouseup', onBottomClampUp)\n  }\n\n  function onBottomClampMove(e: MouseEvent) {\n    if (!bottomClampDragging.value) return\n    const dx = e.clientX - bottomClampStartX.value\n    const newX = Math.max(-100, Math.min(35, bottomClampStartLeft.value + dx))\n    const clampDeltaX = newX - bottomClampPrevX.value\n    bottomClampPrevX.value = newX\n    const dy = e.clientY - bottomClampStartY.value\n    const newY = Math.max(90, Math.min(300, bottomClampStartTop.value + dy))\n    const clampDeltaY = newY - bottomClampPrevY.value\n    bottomClampPrevY.value = newY\n    onBottomMoved(clampDeltaX, clampDeltaY)\n  }\n\n  function onBottomClampUp() {\n    bottomClampDragging.value = false\n    window.removeEventListener('mousemove', onBottomClampMove)\n    window.removeEventListener('mouseup', onBottomClampUp)\n  }\n\n  function cleanupDrag() {\n    window.removeEventListener('mousemove', onClampMove)\n    window.removeEventListener('mouseup', onClampUp)\n    window.removeEventListener('mousemove', onBottomClampMove)\n    window.removeEventListener('mouseup', onBottomClampUp)\n  }\n\n  return {\n    clampDragging,\n    bottomClampDragging,\n    onClampMouseDown,\n    onBottomClampMouseDown,\n    cleanupDrag,\n  }\n}\n",
+      "start": 1783626310962,
+      "end": 1783626310962,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634643081,
-      "end": 1783634643081,
+      "start": 1783626310962,
+      "end": 1783626310962,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { ref } from \"vue\";\nexport function useRetortStandDrag(clampY, bottomClampX, bottomClampY, topClampLocked, bottomClampLocked, onTopMoved, onBottomMoved) {\n  const clampDragging = ref(false);\n  const clampStartY = ref(0);\n  const clampStartTop = ref(0);\n  const clampPrevY = ref(60);\n  const bottomClampDragging = ref(false);\n  const bottomClampStartX = ref(0);\n  const bottomClampStartLeft = ref(0);\n  const bottomClampStartY = ref(0);\n  const bottomClampStartTop = ref(0);\n  const bottomClampPrevX = ref(0);\n  const bottomClampPrevY = ref(160);\n  function onClampMouseDown(e) {\n    e.stopPropagation();\n    e.stopImmediatePropagation();\n    e.preventDefault();\n    if (topClampLocked()) return;\n    clampDragging.value = true;\n    clampStartY.value = e.clientY;\n    clampStartTop.value = clampY();\n    clampPrevY.value = clampY();\n    window.addEventListener(\"mousemove\", onClampMove);\n    window.addEventListener(\"mouseup\", onClampUp);\n  }\n  function onClampMove(e) {\n    if (!clampDragging.value) return;\n    const dy = e.clientY - clampStartY.value;\n    const newY = Math.max(20, Math.min(280, clampStartTop.value + dy));\n    const clampDeltaY = newY - clampPrevY.value;\n    clampPrevY.value = newY;\n    onTopMoved(clampDeltaY);\n  }\n  function onClampUp() {\n    clampDragging.value = false;\n    window.removeEventListener(\"mousemove\", onClampMove);\n    window.removeEventListener(\"mouseup\", onClampUp);\n  }\n  function onBottomClampMouseDown(e) {\n    e.stopPropagation();\n    e.stopImmediatePropagation();\n    e.preventDefault();\n    if (bottomClampLocked()) return;\n    bottomClampDragging.value = true;\n    bottomClampStartX.value = e.clientX;\n    bottomClampStartLeft.value = bottomClampX();\n    bottomClampStartY.value = e.clientY;\n    bottomClampStartTop.value = bottomClampY();\n    bottomClampPrevX.value = bottomClampX();\n    bottomClampPrevY.value = bottomClampY();\n    window.addEventListener(\"mousemove\", onBottomClampMove);\n    window.addEventListener(\"mouseup\", onBottomClampUp);\n  }\n  function onBottomClampMove(e) {\n    if (!bottomClampDragging.value) return;\n    const dx = e.clientX - bottomClampStartX.value;\n    const newX = Math.max(-100, Math.min(35, bottomClampStartLeft.value + dx));\n    const clampDeltaX = newX - bottomClampPrevX.value;\n    bottomClampPrevX.value = newX;\n    const dy = e.clientY - bottomClampStartY.value;\n    const newY = Math.max(90, Math.min(300, bottomClampStartTop.value + dy));\n    const clampDeltaY = newY - bottomClampPrevY.value;\n    bottomClampPrevY.value = newY;\n    onBottomMoved(clampDeltaX, clampDeltaY);\n  }\n  function onBottomClampUp() {\n    bottomClampDragging.value = false;\n    window.removeEventListener(\"mousemove\", onBottomClampMove);\n    window.removeEventListener(\"mouseup\", onBottomClampUp);\n  }\n  function cleanupDrag() {\n    window.removeEventListener(\"mousemove\", onClampMove);\n    window.removeEventListener(\"mouseup\", onClampUp);\n    window.removeEventListener(\"mousemove\", onBottomClampMove);\n    window.removeEventListener(\"mouseup\", onBottomClampUp);\n  }\n  return {\n    clampDragging,\n    bottomClampDragging,\n    onClampMouseDown,\n    onBottomClampMouseDown,\n    cleanupDrag\n  };\n}\n",
-      "start": 1783634643081,
-      "end": 1783634643134,
+      "start": 1783626310962,
+      "end": 1783626310969,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useRetortStandDrag.ts"
+          "useRetortStandDrag.ts"
         ],
         "sourcesContent": [
           "import { ref } from 'vue'\nimport type { Ref } from 'vue'\n\nexport interface RetortStandDragState {\n  clampDragging: Ref<boolean>\n  bottomClampDragging: Ref<boolean>\n  onClampMouseDown: (e: MouseEvent) => void\n  onBottomClampMouseDown: (e: MouseEvent) => void\n  cleanupDrag: () => void\n}\n\nexport function useRetortStandDrag(\n  clampY: () => number,\n  bottomClampX: () => number,\n  bottomClampY: () => number,\n  topClampLocked: () => boolean,\n  bottomClampLocked: () => boolean,\n  onTopMoved: (deltaY: number) => void,\n  onBottomMoved: (deltaX: number, deltaY: number) => void,\n): RetortStandDragState {\n  const clampDragging = ref(false)\n  const clampStartY = ref(0)\n  const clampStartTop = ref(0)\n  const clampPrevY = ref(60)\n\n  const bottomClampDragging = ref(false)\n  const bottomClampStartX = ref(0)\n  const bottomClampStartLeft = ref(0)\n  const bottomClampStartY = ref(0)\n  const bottomClampStartTop = ref(0)\n  const bottomClampPrevX = ref(0)\n  const bottomClampPrevY = ref(160)\n\n  /* ---- Top clamp drag ---- */\n  function onClampMouseDown(e: MouseEvent) {\n    e.stopPropagation()\n    e.stopImmediatePropagation()\n    e.preventDefault()\n    if (topClampLocked()) return\n    clampDragging.value = true\n    clampStartY.value = e.clientY\n    clampStartTop.value = clampY()\n    clampPrevY.value = clampY()\n    window.addEventListener('mousemove', onClampMove)\n    window.addEventListener('mouseup', onClampUp)\n  }\n\n  function onClampMove(e: MouseEvent) {\n    if (!clampDragging.value) return\n    const dy = e.clientY - clampStartY.value\n    const newY = Math.max(20, Math.min(280, clampStartTop.value + dy))\n    const clampDeltaY = newY - clampPrevY.value\n    clampPrevY.value = newY\n    onTopMoved(clampDeltaY)\n  }\n\n  function onClampUp() {\n    clampDragging.value = false\n    window.removeEventListener('mousemove', onClampMove)\n    window.removeEventListener('mouseup', onClampUp)\n  }\n\n  /* ---- Bottom clamp drag ---- */\n  function onBottomClampMouseDown(e: MouseEvent) {\n    e.stopPropagation()\n    e.stopImmediatePropagation()\n    e.preventDefault()\n    if (bottomClampLocked()) return\n    bottomClampDragging.value = true\n    bottomClampStartX.value = e.clientX\n    bottomClampStartLeft.value = bottomClampX()\n    bottomClampStartY.value = e.clientY\n    bottomClampStartTop.value = bottomClampY()\n    bottomClampPrevX.value = bottomClampX()\n    bottomClampPrevY.value = bottomClampY()\n    window.addEventListener('mousemove', onBottomClampMove)\n    window.addEventListener('mouseup', onBottomClampUp)\n  }\n\n  function onBottomClampMove(e: MouseEvent) {\n    if (!bottomClampDragging.value) return\n    const dx = e.clientX - bottomClampStartX.value\n    const newX = Math.max(-100, Math.min(35, bottomClampStartLeft.value + dx))\n    const clampDeltaX = newX - bottomClampPrevX.value\n    bottomClampPrevX.value = newX\n    const dy = e.clientY - bottomClampStartY.value\n    const newY = Math.max(90, Math.min(300, bottomClampStartTop.value + dy))\n    const clampDeltaY = newY - bottomClampPrevY.value\n    bottomClampPrevY.value = newY\n    onBottomMoved(clampDeltaX, clampDeltaY)\n  }\n\n  function onBottomClampUp() {\n    bottomClampDragging.value = false\n    window.removeEventListener('mousemove', onBottomClampMove)\n    window.removeEventListener('mouseup', onBottomClampUp)\n  }\n\n  function cleanupDrag() {\n    window.removeEventListener('mousemove', onClampMove)\n    window.removeEventListener('mouseup', onClampUp)\n    window.removeEventListener('mousemove', onBottomClampMove)\n    window.removeEventListener('mouseup', onBottomClampUp)\n  }\n\n  return {\n    clampDragging,\n    bottomClampDragging,\n    onClampMouseDown,\n    onBottomClampMouseDown,\n    cleanupDrag,\n  }\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634643134,
-      "end": 1783634643134,
+      "start": 1783626310969,
+      "end": 1783626310969,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634643134,
-      "end": 1783634643134,
+      "start": 1783626310969,
+      "end": 1783626310969,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626310969,
+      "end": 1783626310970,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634643134,
-      "end": 1783634643134,
+      "start": 1783626310970,
+      "end": 1783626310970,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634643134,
-      "end": 1783634643134,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634643134,
-      "end": 1783634643134,
+      "start": 1783626310970,
+      "end": 1783626310970,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634643134,
-      "end": 1783634643134,
+      "start": 1783626310970,
+      "end": 1783626310970,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634643134,
-      "end": 1783634643134,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634643134,
-      "end": 1783634643134,
+      "start": 1783626310970,
+      "end": 1783626310970,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634643134,
-      "end": 1783634643134,
+      "start": 1783626310970,
+      "end": 1783626310970,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634643134,
-      "end": 1783634643134,
+      "start": 1783626310970,
+      "end": 1783626310970,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634643134,
-      "end": 1783634643134,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626310970,
+      "end": 1783626310970,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626310970,
+      "end": 1783626310970,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634643134,
-      "end": 1783634643134,
+      "name": "vite:css-analysis",
+      "start": 1783626310970,
+      "end": 1783626310970,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { ref } from \"/node_modules/.vite/deps/vue.js?v=09a3ad4c\";\nexport function useRetortStandDrag(clampY, bottomClampX, bottomClampY, topClampLocked, bottomClampLocked, onTopMoved, onBottomMoved) {\n  const clampDragging = ref(false);\n  const clampStartY = ref(0);\n  const clampStartTop = ref(0);\n  const clampPrevY = ref(60);\n  const bottomClampDragging = ref(false);\n  const bottomClampStartX = ref(0);\n  const bottomClampStartLeft = ref(0);\n  const bottomClampStartY = ref(0);\n  const bottomClampStartTop = ref(0);\n  const bottomClampPrevX = ref(0);\n  const bottomClampPrevY = ref(160);\n  function onClampMouseDown(e) {\n    e.stopPropagation();\n    e.stopImmediatePropagation();\n    e.preventDefault();\n    if (topClampLocked()) return;\n    clampDragging.value = true;\n    clampStartY.value = e.clientY;\n    clampStartTop.value = clampY();\n    clampPrevY.value = clampY();\n    window.addEventListener(\"mousemove\", onClampMove);\n    window.addEventListener(\"mouseup\", onClampUp);\n  }\n  function onClampMove(e) {\n    if (!clampDragging.value) return;\n    const dy = e.clientY - clampStartY.value;\n    const newY = Math.max(20, Math.min(280, clampStartTop.value + dy));\n    const clampDeltaY = newY - clampPrevY.value;\n    clampPrevY.value = newY;\n    onTopMoved(clampDeltaY);\n  }\n  function onClampUp() {\n    clampDragging.value = false;\n    window.removeEventListener(\"mousemove\", onClampMove);\n    window.removeEventListener(\"mouseup\", onClampUp);\n  }\n  function onBottomClampMouseDown(e) {\n    e.stopPropagation();\n    e.stopImmediatePropagation();\n    e.preventDefault();\n    if (bottomClampLocked()) return;\n    bottomClampDragging.value = true;\n    bottomClampStartX.value = e.clientX;\n    bottomClampStartLeft.value = bottomClampX();\n    bottomClampStartY.value = e.clientY;\n    bottomClampStartTop.value = bottomClampY();\n    bottomClampPrevX.value = bottomClampX();\n    bottomClampPrevY.value = bottomClampY();\n    window.addEventListener(\"mousemove\", onBottomClampMove);\n    window.addEventListener(\"mouseup\", onBottomClampUp);\n  }\n  function onBottomClampMove(e) {\n    if (!bottomClampDragging.value) return;\n    const dx = e.clientX - bottomClampStartX.value;\n    const newX = Math.max(-100, Math.min(35, bottomClampStartLeft.value + dx));\n    const clampDeltaX = newX - bottomClampPrevX.value;\n    bottomClampPrevX.value = newX;\n    const dy = e.clientY - bottomClampStartY.value;\n    const newY = Math.max(90, Math.min(300, bottomClampStartTop.value + dy));\n    const clampDeltaY = newY - bottomClampPrevY.value;\n    bottomClampPrevY.value = newY;\n    onBottomMoved(clampDeltaX, clampDeltaY);\n  }\n  function onBottomClampUp() {\n    bottomClampDragging.value = false;\n    window.removeEventListener(\"mousemove\", onBottomClampMove);\n    window.removeEventListener(\"mouseup\", onBottomClampUp);\n  }\n  function cleanupDrag() {\n    window.removeEventListener(\"mousemove\", onClampMove);\n    window.removeEventListener(\"mouseup\", onClampUp);\n    window.removeEventListener(\"mousemove\", onBottomClampMove);\n    window.removeEventListener(\"mouseup\", onBottomClampUp);\n  }\n  return {\n    clampDragging,\n    bottomClampDragging,\n    onClampMouseDown,\n    onBottomClampMouseDown,\n    cleanupDrag\n  };\n}\n",
+      "start": 1783626310970,
+      "end": 1783626310970,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

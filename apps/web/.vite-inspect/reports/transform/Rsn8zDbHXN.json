@@ -1,0 +1,129 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/locales/common.ts",
+  "transforms": [
+    {
+      "name": "__load__",
+      "result": "export const common = {\n  ar: {\n    chartTitle: '📈 الرسم البياني',\n    commentsTitle: '💬 التعليقات',\n    noComments: 'لا توجد تعليقات',\n    commentPlaceholder: 'اكتب تعليقًا...',\n    send: 'إرسال',\n    authorTeacher: '👨‍🏫 المدرس',\n    authorAdmin: '🛡️ المشرف',\n    authorStudent: '🎓 الطالب',\n    notifications: 'الإشعارات',\n    markAllRead: 'تحديد الكل',\n    noNotifications: 'لا توجد إشعارات',\n    feedbackTitle: '💬 إرسال ملاحظة',\n    typeLabel: 'النوع',\n    complaint: '🚩 شكوى',\n    rating: '⭐ تقييم',\n    suggestion: '💡 اقتراح',\n    ratingLabel: 'التقييم',\n    messageLabel: 'الرسالة',\n    messagePlaceholder: 'اكتب ملاحظتك هنا...',\n    cancel: 'إلغاء',\n    submit: 'إرسال',\n    writeMessage: 'اكتب رسالة',\n    thanks: 'تم الإرسال، شكراً!',\n    submitFailed: 'فشل الإرسال',\n    close: 'إغلاق',\n  },\n  en: {\n    chartTitle: '📈 Chart',\n    commentsTitle: '💬 Comments',\n    noComments: 'No comments',\n    commentPlaceholder: 'Write a comment...',\n    send: 'Send',\n    authorTeacher: '👨‍🏫 Teacher',\n    authorAdmin: '🛡️ Admin',\n    authorStudent: '🎓 Student',\n    notifications: 'Notifications',\n    markAllRead: 'Mark all read',\n    noNotifications: 'No notifications',\n    feedbackTitle: '💬 Send Feedback',\n    typeLabel: 'Type',\n    complaint: '🚩 Complaint',\n    rating: '⭐ Rating',\n    suggestion: '💡 Suggestion',\n    ratingLabel: 'Rating',\n    messageLabel: 'Message',\n    messagePlaceholder: 'Write your feedback here...',\n    cancel: 'Cancel',\n    submit: 'Submit',\n    writeMessage: 'Write a message',\n    thanks: 'Sent, thank you!',\n    submitFailed: 'Submission failed',\n    close: 'Close',\n  },\n  es: {\n    chartTitle: '📈 Gráfico',\n    commentsTitle: '💬 Comentarios',\n    noComments: 'No hay comentarios',\n    commentPlaceholder: 'Escribe un comentario...',\n    send: 'Enviar',\n    authorTeacher: '👨‍🏫 Profesor',\n    authorAdmin: '🛡️ Administrador',\n    authorStudent: '🎓 Estudiante',\n    notifications: 'Notificaciones',\n    markAllRead: 'Marcar todo como leído',\n    noNotifications: 'No hay notificaciones',\n    feedbackTitle: '💬 Enviar Comentario',\n    typeLabel: 'Tipo',\n    complaint: '🚩 Queja',\n    rating: '⭐ Valoración',\n    suggestion: '💡 Sugerencia',\n    ratingLabel: 'Valoración',\n    messageLabel: 'Mensaje',\n    messagePlaceholder: 'Escribe tu comentario aquí...',\n    cancel: 'Cancelar',\n    submit: 'Enviar',\n    writeMessage: 'Escribe un mensaje',\n    thanks: '¡Enviado, gracias!',\n    submitFailed: 'Error al enviar',\n    close: 'Cerrar',\n  },\n} as const\n",
+      "start": 1783626227461,
+      "end": 1783626227461
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626227461,
+      "end": 1783626227461,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "export const common = {\n  ar: {\n    chartTitle: '📈 الرسم البياني',\n    commentsTitle: '💬 التعليقات',\n    noComments: 'لا توجد تعليقات',\n    commentPlaceholder: 'اكتب تعليقًا...',\n    send: 'إرسال',\n    authorTeacher: '👨‍🏫 المدرس',\n    authorAdmin: '🛡️ المشرف',\n    authorStudent: '🎓 الطالب',\n    notifications: 'الإشعارات',\n    markAllRead: 'تحديد الكل',\n    noNotifications: 'لا توجد إشعارات',\n    feedbackTitle: '💬 إرسال ملاحظة',\n    typeLabel: 'النوع',\n    complaint: '🚩 شكوى',\n    rating: '⭐ تقييم',\n    suggestion: '💡 اقتراح',\n    ratingLabel: 'التقييم',\n    messageLabel: 'الرسالة',\n    messagePlaceholder: 'اكتب ملاحظتك هنا...',\n    cancel: 'إلغاء',\n    submit: 'إرسال',\n    writeMessage: 'اكتب رسالة',\n    thanks: 'تم الإرسال، شكراً!',\n    submitFailed: 'فشل الإرسال',\n    close: 'إغلاق',\n  },\n  en: {\n    chartTitle: '📈 Chart',\n    commentsTitle: '💬 Comments',\n    noComments: 'No comments',\n    commentPlaceholder: 'Write a comment...',\n    send: 'Send',\n    authorTeacher: '👨‍🏫 Teacher',\n    authorAdmin: '🛡️ Admin',\n    authorStudent: '🎓 Student',\n    notifications: 'Notifications',\n    markAllRead: 'Mark all read',\n    noNotifications: 'No notifications',\n    feedbackTitle: '💬 Send Feedback',\n    typeLabel: 'Type',\n    complaint: '🚩 Complaint',\n    rating: '⭐ Rating',\n    suggestion: '💡 Suggestion',\n    ratingLabel: 'Rating',\n    messageLabel: 'Message',\n    messagePlaceholder: 'Write your feedback here...',\n    cancel: 'Cancel',\n    submit: 'Submit',\n    writeMessage: 'Write a message',\n    thanks: 'Sent, thank you!',\n    submitFailed: 'Submission failed',\n    close: 'Close',\n  },\n  es: {\n    chartTitle: '📈 Gráfico',\n    commentsTitle: '💬 Comentarios',\n    noComments: 'No hay comentarios',\n    commentPlaceholder: 'Escribe un comentario...',\n    send: 'Enviar',\n    authorTeacher: '👨‍🏫 Profesor',\n    authorAdmin: '🛡️ Administrador',\n    authorStudent: '🎓 Estudiante',\n    notifications: 'Notificaciones',\n    markAllRead: 'Marcar todo como leído',\n    noNotifications: 'No hay notificaciones',\n    feedbackTitle: '💬 Enviar Comentario',\n    typeLabel: 'Tipo',\n    complaint: '🚩 Queja',\n    rating: '⭐ Valoración',\n    suggestion: '💡 Sugerencia',\n    ratingLabel: 'Valoración',\n    messageLabel: 'Mensaje',\n    messagePlaceholder: 'Escribe tu comentario aquí...',\n    cancel: 'Cancelar',\n    submit: 'Enviar',\n    writeMessage: 'Escribe un mensaje',\n    thanks: '¡Enviado, gracias!',\n    submitFailed: 'Error al enviar',\n    close: 'Cerrar',\n  },\n} as const\n",
+      "start": 1783626227461,
+      "end": 1783626227461,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783626227461,
+      "end": 1783626227461,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "export const common = {\n  ar: {\n    chartTitle: \"📈 الرسم البياني\",\n    commentsTitle: \"💬 التعليقات\",\n    noComments: \"لا توجد تعليقات\",\n    commentPlaceholder: \"اكتب تعليقًا...\",\n    send: \"إرسال\",\n    authorTeacher: \"👨‍🏫 المدرس\",\n    authorAdmin: \"🛡️ المشرف\",\n    authorStudent: \"🎓 الطالب\",\n    notifications: \"الإشعارات\",\n    markAllRead: \"تحديد الكل\",\n    noNotifications: \"لا توجد إشعارات\",\n    feedbackTitle: \"💬 إرسال ملاحظة\",\n    typeLabel: \"النوع\",\n    complaint: \"🚩 شكوى\",\n    rating: \"⭐ تقييم\",\n    suggestion: \"💡 اقتراح\",\n    ratingLabel: \"التقييم\",\n    messageLabel: \"الرسالة\",\n    messagePlaceholder: \"اكتب ملاحظتك هنا...\",\n    cancel: \"إلغاء\",\n    submit: \"إرسال\",\n    writeMessage: \"اكتب رسالة\",\n    thanks: \"تم الإرسال، شكراً!\",\n    submitFailed: \"فشل الإرسال\",\n    close: \"إغلاق\"\n  },\n  en: {\n    chartTitle: \"📈 Chart\",\n    commentsTitle: \"💬 Comments\",\n    noComments: \"No comments\",\n    commentPlaceholder: \"Write a comment...\",\n    send: \"Send\",\n    authorTeacher: \"👨‍🏫 Teacher\",\n    authorAdmin: \"🛡️ Admin\",\n    authorStudent: \"🎓 Student\",\n    notifications: \"Notifications\",\n    markAllRead: \"Mark all read\",\n    noNotifications: \"No notifications\",\n    feedbackTitle: \"💬 Send Feedback\",\n    typeLabel: \"Type\",\n    complaint: \"🚩 Complaint\",\n    rating: \"⭐ Rating\",\n    suggestion: \"💡 Suggestion\",\n    ratingLabel: \"Rating\",\n    messageLabel: \"Message\",\n    messagePlaceholder: \"Write your feedback here...\",\n    cancel: \"Cancel\",\n    submit: \"Submit\",\n    writeMessage: \"Write a message\",\n    thanks: \"Sent, thank you!\",\n    submitFailed: \"Submission failed\",\n    close: \"Close\"\n  },\n  es: {\n    chartTitle: \"📈 Gráfico\",\n    commentsTitle: \"💬 Comentarios\",\n    noComments: \"No hay comentarios\",\n    commentPlaceholder: \"Escribe un comentario...\",\n    send: \"Enviar\",\n    authorTeacher: \"👨‍🏫 Profesor\",\n    authorAdmin: \"🛡️ Administrador\",\n    authorStudent: \"🎓 Estudiante\",\n    notifications: \"Notificaciones\",\n    markAllRead: \"Marcar todo como leído\",\n    noNotifications: \"No hay notificaciones\",\n    feedbackTitle: \"💬 Enviar Comentario\",\n    typeLabel: \"Tipo\",\n    complaint: \"🚩 Queja\",\n    rating: \"⭐ Valoración\",\n    suggestion: \"💡 Sugerencia\",\n    ratingLabel: \"Valoración\",\n    messageLabel: \"Mensaje\",\n    messagePlaceholder: \"Escribe tu comentario aquí...\",\n    cancel: \"Cancelar\",\n    submit: \"Enviar\",\n    writeMessage: \"Escribe un mensaje\",\n    thanks: \"¡Enviado, gracias!\",\n    submitFailed: \"Error al enviar\",\n    close: \"Cerrar\"\n  }\n};\n",
+      "start": 1783626227461,
+      "end": 1783626227560,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "common.ts"
+        ],
+        "sourcesContent": [
+          "export const common = {\n  ar: {\n    chartTitle: '📈 الرسم البياني',\n    commentsTitle: '💬 التعليقات',\n    noComments: 'لا توجد تعليقات',\n    commentPlaceholder: 'اكتب تعليقًا...',\n    send: 'إرسال',\n    authorTeacher: '👨‍🏫 المدرس',\n    authorAdmin: '🛡️ المشرف',\n    authorStudent: '🎓 الطالب',\n    notifications: 'الإشعارات',\n    markAllRead: 'تحديد الكل',\n    noNotifications: 'لا توجد إشعارات',\n    feedbackTitle: '💬 إرسال ملاحظة',\n    typeLabel: 'النوع',\n    complaint: '🚩 شكوى',\n    rating: '⭐ تقييم',\n    suggestion: '💡 اقتراح',\n    ratingLabel: 'التقييم',\n    messageLabel: 'الرسالة',\n    messagePlaceholder: 'اكتب ملاحظتك هنا...',\n    cancel: 'إلغاء',\n    submit: 'إرسال',\n    writeMessage: 'اكتب رسالة',\n    thanks: 'تم الإرسال، شكراً!',\n    submitFailed: 'فشل الإرسال',\n    close: 'إغلاق',\n  },\n  en: {\n    chartTitle: '📈 Chart',\n    commentsTitle: '💬 Comments',\n    noComments: 'No comments',\n    commentPlaceholder: 'Write a comment...',\n    send: 'Send',\n    authorTeacher: '👨‍🏫 Teacher',\n    authorAdmin: '🛡️ Admin',\n    authorStudent: '🎓 Student',\n    notifications: 'Notifications',\n    markAllRead: 'Mark all read',\n    noNotifications: 'No notifications',\n    feedbackTitle: '💬 Send Feedback',\n    typeLabel: 'Type',\n    complaint: '🚩 Complaint',\n    rating: '⭐ Rating',\n    suggestion: '💡 Suggestion',\n    ratingLabel: 'Rating',\n    messageLabel: 'Message',\n    messagePlaceholder: 'Write your feedback here...',\n    cancel: 'Cancel',\n    submit: 'Submit',\n    writeMessage: 'Write a message',\n    thanks: 'Sent, thank you!',\n    submitFailed: 'Submission failed',\n    close: 'Close',\n  },\n  es: {\n    chartTitle: '📈 Gráfico',\n    commentsTitle: '💬 Comentarios',\n    noComments: 'No hay comentarios',\n    commentPlaceholder: 'Escribe un comentario...',\n    send: 'Enviar',\n    authorTeacher: '👨‍🏫 Profesor',\n    authorAdmin: '🛡️ Administrador',\n    authorStudent: '🎓 Estudiante',\n    notifications: 'Notificaciones',\n    markAllRead: 'Marcar todo como leído',\n    noNotifications: 'No hay notificaciones',\n    feedbackTitle: '💬 Enviar Comentario',\n    typeLabel: 'Tipo',\n    complaint: '🚩 Queja',\n    rating: '⭐ Valoración',\n    suggestion: '💡 Sugerencia',\n    ratingLabel: 'Valoración',\n    messageLabel: 'Mensaje',\n    messagePlaceholder: 'Escribe tu comentario aquí...',\n    cancel: 'Cancelar',\n    submit: 'Enviar',\n    writeMessage: 'Escribe un mensaje',\n    thanks: '¡Enviado, gracias!',\n    submitFailed: 'Error al enviar',\n    close: 'Cerrar',\n  },\n} as const\n"
+        ],
+        "mappings": "AAAO,aAAM,SAAS;AAAA,EACpB,IAAI;AAAA,IACF,YAAY;AAAA,IACZ,eAAe;AAAA,IACf,YAAY;AAAA,IACZ,oBAAoB;AAAA,IACpB,MAAM;AAAA,IACN,eAAe;AAAA,IACf,aAAa;AAAA,IACb,eAAe;AAAA,IACf,eAAe;AAAA,IACf,aAAa;AAAA,IACb,iBAAiB;AAAA,IACjB,eAAe;AAAA,IACf,WAAW;AAAA,IACX,WAAW;AAAA,IACX,QAAQ;AAAA,IACR,YAAY;AAAA,IACZ,aAAa;AAAA,IACb,cAAc;AAAA,IACd,oBAAoB;AAAA,IACpB,QAAQ;AAAA,IACR,QAAQ;AAAA,IACR,cAAc;AAAA,IACd,QAAQ;AAAA,IACR,cAAc;AAAA,IACd,OAAO;AAAA,EACT;AAAA,EACA,IAAI;AAAA,IACF,YAAY;AAAA,IACZ,eAAe;AAAA,IACf,YAAY;AAAA,IACZ,oBAAoB;AAAA,IACpB,MAAM;AAAA,IACN,eAAe;AAAA,IACf,aAAa;AAAA,IACb,eAAe;AAAA,IACf,eAAe;AAAA,IACf,aAAa;AAAA,IACb,iBAAiB;AAAA,IACjB,eAAe;AAAA,IACf,WAAW;AAAA,IACX,WAAW;AAAA,IACX,QAAQ;AAAA,IACR,YAAY;AAAA,IACZ,aAAa;AAAA,IACb,cAAc;AAAA,IACd,oBAAoB;AAAA,IACpB,QAAQ;AAAA,IACR,QAAQ;AAAA,IACR,cAAc;AAAA,IACd,QAAQ;AAAA,IACR,cAAc;AAAA,IACd,OAAO;AAAA,EACT;AAAA,EACA,IAAI;AAAA,IACF,YAAY;AAAA,IACZ,eAAe;AAAA,IACf,YAAY;AAAA,IACZ,oBAAoB;AAAA,IACpB,MAAM;AAAA,IACN,eAAe;AAAA,IACf,aAAa;AAAA,IACb,eAAe;AAAA,IACf,eAAe;AAAA,IACf,aAAa;AAAA,IACb,iBAAiB;AAAA,IACjB,eAAe;AAAA,IACf,WAAW;AAAA,IACX,WAAW;AAAA,IACX,QAAQ;AAAA,IACR,YAAY;AAAA,IACZ,aAAa;AAAA,IACb,cAAc;AAAA,IACd,oBAAoB;AAAA,IACpB,QAAQ;AAAA,IACR,QAAQ;AAAA,IACR,cAAc;AAAA,IACd,QAAQ;AAAA,IACR,cAAc;AAAA,IACd,OAAO;AAAA,EACT;AACF;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626227560,
+      "end": 1783626227560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "export const common = {\n  ar: {\n    chartTitle: \"📈 الرسم البياني\",\n    commentsTitle: \"💬 التعليقات\",\n    noComments: \"لا توجد تعليقات\",\n    commentPlaceholder: \"اكتب تعليقًا...\",\n    send: \"إرسال\",\n    authorTeacher: \"👨‍🏫 المدرس\",\n    authorAdmin: \"🛡️ المشرف\",\n    authorStudent: \"🎓 الطالب\",\n    notifications: \"الإشعارات\",\n    markAllRead: \"تحديد الكل\",\n    noNotifications: \"لا توجد إشعارات\",\n    feedbackTitle: \"💬 إرسال ملاحظة\",\n    typeLabel: \"النوع\",\n    complaint: \"🚩 شكوى\",\n    rating: \"⭐ تقييم\",\n    suggestion: \"💡 اقتراح\",\n    ratingLabel: \"التقييم\",\n    messageLabel: \"الرسالة\",\n    messagePlaceholder: \"اكتب ملاحظتك هنا...\",\n    cancel: \"إلغاء\",\n    submit: \"إرسال\",\n    writeMessage: \"اكتب رسالة\",\n    thanks: \"تم الإرسال، شكراً!\",\n    submitFailed: \"فشل الإرسال\",\n    close: \"إغلاق\"\n  },\n  en: {\n    chartTitle: \"📈 Chart\",\n    commentsTitle: \"💬 Comments\",\n    noComments: \"No comments\",\n    commentPlaceholder: \"Write a comment...\",\n    send: \"Send\",\n    authorTeacher: \"👨‍🏫 Teacher\",\n    authorAdmin: \"🛡️ Admin\",\n    authorStudent: \"🎓 Student\",\n    notifications: \"Notifications\",\n    markAllRead: \"Mark all read\",\n    noNotifications: \"No notifications\",\n    feedbackTitle: \"💬 Send Feedback\",\n    typeLabel: \"Type\",\n    complaint: \"🚩 Complaint\",\n    rating: \"⭐ Rating\",\n    suggestion: \"💡 Suggestion\",\n    ratingLabel: \"Rating\",\n    messageLabel: \"Message\",\n    messagePlaceholder: \"Write your feedback here...\",\n    cancel: \"Cancel\",\n    submit: \"Submit\",\n    writeMessage: \"Write a message\",\n    thanks: \"Sent, thank you!\",\n    submitFailed: \"Submission failed\",\n    close: \"Close\"\n  },\n  es: {\n    chartTitle: \"📈 Gráfico\",\n    commentsTitle: \"💬 Comentarios\",\n    noComments: \"No hay comentarios\",\n    commentPlaceholder: \"Escribe un comentario...\",\n    send: \"Enviar\",\n    authorTeacher: \"👨‍🏫 Profesor\",\n    authorAdmin: \"🛡️ Administrador\",\n    authorStudent: \"🎓 Estudiante\",\n    notifications: \"Notificaciones\",\n    markAllRead: \"Marcar todo como leído\",\n    noNotifications: \"No hay notificaciones\",\n    feedbackTitle: \"💬 Enviar Comentario\",\n    typeLabel: \"Tipo\",\n    complaint: \"🚩 Queja\",\n    rating: \"⭐ Valoración\",\n    suggestion: \"💡 Sugerencia\",\n    ratingLabel: \"Valoración\",\n    messageLabel: \"Mensaje\",\n    messagePlaceholder: \"Escribe tu comentario aquí...\",\n    cancel: \"Cancelar\",\n    submit: \"Enviar\",\n    writeMessage: \"Escribe un mensaje\",\n    thanks: \"¡Enviado, gracias!\",\n    submitFailed: \"Error al enviar\",\n    close: \"Cerrar\"\n  }\n};\n",
+      "start": 1783626227561,
+      "end": 1783626227561,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

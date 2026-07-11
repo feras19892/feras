@@ -1,0 +1,140 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/ControlBar.vue?vue&type=style&index=0&scoped=99cb0962&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.control-bar { display: flex; gap: .4rem; padding: .5rem .75rem; background: rgba(30,37,48,.6); border-radius: 8px; flex-shrink: 0; flex-wrap: wrap; }\n.ctrl-btn { padding: .4rem .8rem; border: 1px solid #2D3645; background: rgba(45,54,69,.4); color: #B8C0CC; border-radius: 6px; cursor: pointer; font-size: .75rem; font-weight: 600; transition: all .15s; }\n.ctrl-btn:hover { background: rgba(91,141,184,.15); color: #D1D7E0; border-color: rgba(91,141,184,.25); }\n.ctrl-btn.launch { background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; border: none; }\n.ctrl-btn.launch:hover { opacity: .9; }\n.ctrl-btn.record { background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.2); color: #f59e0b; }\n.ctrl-btn.analyze { background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.2); color: #22c55e; font-weight: 700; }\n",
+      "start": 1783626263464,
+      "end": 1783626263464,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/ControlBar.vue"
+        ],
+        "names": [],
+        "mappings": ";AAgCA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE;AACrJ,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE;AAC5M,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACxG,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE;AACrG,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE;AACtC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACxG,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE",
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/ControlBar.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\nconst { t } = useI18n()\n\ndefineProps<{\n  launchLabel: string\n  canUndo: boolean\n  canRedo: boolean\n}>()\n\nconst emit = defineEmits<{\n  (e: 'toggle-pause'): void\n  (e: 'reset'): void\n  (e: 'record-trial'): void\n  (e: 'clear-trials'): void\n  (e: 'export-csv'): void\n  (e: 'analyze'): void\n}>()\n</script>\n\n<template>\n  <div class=\"control-bar\" data-v-inspector=\"src/components/experiment/electromagnetism/ControlBar.vue:22:3\">\n    <button class=\"ctrl-btn launch\" @click=\"emit('toggle-pause')\" data-v-inspector=\"src/components/experiment/electromagnetism/ControlBar.vue:23:5\">{{ launchLabel }}</button>\n    <button class=\"ctrl-btn\" @click=\"emit('reset')\" data-v-inspector=\"src/components/experiment/electromagnetism/ControlBar.vue:24:5\">🔄 {{ t('experiments.emReset') }}</button>\n    <button class=\"ctrl-btn record\" @click=\"emit('record-trial')\" data-v-inspector=\"src/components/experiment/electromagnetism/ControlBar.vue:25:5\">📌 {{ t('experiments.emRecordTrial') }}</button>\n    <button class=\"ctrl-btn\" @click=\"emit('clear-trials')\" data-v-inspector=\"src/components/experiment/electromagnetism/ControlBar.vue:26:5\">{{ t('experiments.emClear') }}</button>\n    <button class=\"ctrl-btn\" @click=\"emit('export-csv')\" data-v-inspector=\"src/components/experiment/electromagnetism/ControlBar.vue:27:5\">{{ t('experiments.emCsv') }}</button>\n    <button class=\"ctrl-btn analyze\" @click=\"emit('analyze')\" data-v-inspector=\"src/components/experiment/electromagnetism/ControlBar.vue:28:5\">{{ t('experiments.emAnalyze') }}</button>\n  </div>\n</template>\n\n<style scoped>\n.control-bar { display: flex; gap: .4rem; padding: .5rem .75rem; background: rgba(30,37,48,.6); border-radius: 8px; flex-shrink: 0; flex-wrap: wrap; }\n.ctrl-btn { padding: .4rem .8rem; border: 1px solid #2D3645; background: rgba(45,54,69,.4); color: #B8C0CC; border-radius: 6px; cursor: pointer; font-size: .75rem; font-weight: 600; transition: all .15s; }\n.ctrl-btn:hover { background: rgba(91,141,184,.15); color: #D1D7E0; border-color: rgba(91,141,184,.25); }\n.ctrl-btn.launch { background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; border: none; }\n.ctrl-btn.launch:hover { opacity: .9; }\n.ctrl-btn.record { background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.2); color: #f59e0b; }\n.ctrl-btn.analyze { background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.2); color: #22c55e; font-weight: 700; }\n</style>\n"
+        ]
+      }
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626263464,
+      "end": 1783626263464,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "\n.control-bar { display: flex; gap: .4rem; padding: .5rem .75rem; background: rgba(30,37,48,.6); border-radius: 8px; flex-shrink: 0; flex-wrap: wrap; }\n.ctrl-btn { padding: .4rem .8rem; border: 1px solid #2D3645; background: rgba(45,54,69,.4); color: #B8C0CC; border-radius: 6px; cursor: pointer; font-size: .75rem; font-weight: 600; transition: all .15s; }\n.ctrl-btn:hover { background: rgba(91,141,184,.15); color: #D1D7E0; border-color: rgba(91,141,184,.25); }\n.ctrl-btn.launch { background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; border: none; }\n.ctrl-btn.launch:hover { opacity: .9; }\n.ctrl-btn.record { background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.2); color: #f59e0b; }\n.ctrl-btn.analyze { background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.2); color: #22c55e; font-weight: 700; }\n",
+      "start": 1783626263464,
+      "end": 1783626263464,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.control-bar { display: flex; gap: .4rem; padding: .5rem .75rem; background: rgba(30,37,48,.6); border-radius: 8px; flex-shrink: 0; flex-wrap: wrap; }\n.ctrl-btn { padding: .4rem .8rem; border: 1px solid #2D3645; background: rgba(45,54,69,.4); color: #B8C0CC; border-radius: 6px; cursor: pointer; font-size: .75rem; font-weight: 600; transition: all .15s; }\n.ctrl-btn:hover { background: rgba(91,141,184,.15); color: #D1D7E0; border-color: rgba(91,141,184,.25); }\n.ctrl-btn.launch { background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; border: none; }\n.ctrl-btn.launch:hover { opacity: .9; }\n.ctrl-btn.record { background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.2); color: #f59e0b; }\n.ctrl-btn.analyze { background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.2); color: #22c55e; font-weight: 700; }\n",
+      "start": 1783626263464,
+      "end": 1783626263464,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783626263464,
+      "end": 1783626263464,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626263464,
+      "end": 1783626263464,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626263464,
+      "end": 1783626263464,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.control-bar[data-v-99cb0962] { display: flex; gap: .4rem; padding: .5rem .75rem; background: rgba(30,37,48,.6); border-radius: 8px; flex-shrink: 0; flex-wrap: wrap;\n}\n.ctrl-btn[data-v-99cb0962] { padding: .4rem .8rem; border: 1px solid #2D3645; background: rgba(45,54,69,.4); color: #B8C0CC; border-radius: 6px; cursor: pointer; font-size: .75rem; font-weight: 600; transition: all .15s;\n}\n.ctrl-btn[data-v-99cb0962]:hover { background: rgba(91,141,184,.15); color: #D1D7E0; border-color: rgba(91,141,184,.25);\n}\n.ctrl-btn.launch[data-v-99cb0962] { background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; border: none;\n}\n.ctrl-btn.launch[data-v-99cb0962]:hover { opacity: .9;\n}\n.ctrl-btn.record[data-v-99cb0962] { background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.2); color: #f59e0b;\n}\n.ctrl-btn.analyze[data-v-99cb0962] { background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.2); color: #22c55e; font-weight: 700;\n}\n",
+      "start": 1783626263464,
+      "end": 1783626263502,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626263502,
+      "end": 1783626263502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/ControlBar.vue?vue&type=style&index=0&scoped=99cb0962&lang.css\"\nconst __vite__css = \"\\n.control-bar[data-v-99cb0962] { display: flex; gap: .4rem; padding: .5rem .75rem; background: rgba(30,37,48,.6); border-radius: 8px; flex-shrink: 0; flex-wrap: wrap;\\n}\\n.ctrl-btn[data-v-99cb0962] { padding: .4rem .8rem; border: 1px solid #2D3645; background: rgba(45,54,69,.4); color: #B8C0CC; border-radius: 6px; cursor: pointer; font-size: .75rem; font-weight: 600; transition: all .15s;\\n}\\n.ctrl-btn[data-v-99cb0962]:hover { background: rgba(91,141,184,.15); color: #D1D7E0; border-color: rgba(91,141,184,.25);\\n}\\n.ctrl-btn.launch[data-v-99cb0962] { background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; border: none;\\n}\\n.ctrl-btn.launch[data-v-99cb0962]:hover { opacity: .9;\\n}\\n.ctrl-btn.record[data-v-99cb0962] { background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.2); color: #f59e0b;\\n}\\n.ctrl-btn.analyze[data-v-99cb0962] { background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.2); color: #22c55e; font-weight: 700;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626263502,
+      "end": 1783626263502,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626263502,
+      "end": 1783626263502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626263502,
+      "end": 1783626263502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626263502,
+      "end": 1783626263502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626263502,
+      "end": 1783626263502,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626263502,
+      "end": 1783626263502,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626263502,
+      "end": 1783626263503,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626263503,
+      "end": 1783626263503,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/components/experiment/electromagnetism/ControlBar.vue?vue&type=style&index=0&scoped=99cb0962&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/electromagnetism/ControlBar.vue?vue&type=style&index=0&scoped=99cb0962&lang.css\"\nconst __vite__css = \"\\n.control-bar[data-v-99cb0962] { display: flex; gap: .4rem; padding: .5rem .75rem; background: rgba(30,37,48,.6); border-radius: 8px; flex-shrink: 0; flex-wrap: wrap;\\n}\\n.ctrl-btn[data-v-99cb0962] { padding: .4rem .8rem; border: 1px solid #2D3645; background: rgba(45,54,69,.4); color: #B8C0CC; border-radius: 6px; cursor: pointer; font-size: .75rem; font-weight: 600; transition: all .15s;\\n}\\n.ctrl-btn[data-v-99cb0962]:hover { background: rgba(91,141,184,.15); color: #D1D7E0; border-color: rgba(91,141,184,.25);\\n}\\n.ctrl-btn.launch[data-v-99cb0962] { background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; border: none;\\n}\\n.ctrl-btn.launch[data-v-99cb0962]:hover { opacity: .9;\\n}\\n.ctrl-btn.record[data-v-99cb0962] { background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.2); color: #f59e0b;\\n}\\n.ctrl-btn.analyze[data-v-99cb0962] { background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.2); color: #22c55e; font-weight: 700;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626263503,
+      "end": 1783626263503,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

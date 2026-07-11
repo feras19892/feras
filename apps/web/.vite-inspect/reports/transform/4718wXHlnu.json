@@ -1,0 +1,140 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue?vue&type=style&index=0&scoped=e7be82d4&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.trials-panel { display:flex; flex-direction:column; gap:.5rem; }\ntable { width:100%; border-collapse:collapse; font-size:.7rem; }\nth, td { padding:.2rem .3rem; text-align:center; border-bottom:1px solid #1e2530; }\nth { color:#5B8DB8; font-weight:700; }\n.rm { background:none; border:none; color:#8B95A5; cursor:pointer; font-size:.65rem; }\n.rm:hover { color:#f87171; }\n.no-trials { text-align:center; padding:1rem .5rem; display:flex; flex-direction:column; align-items:center; gap:.3rem; }\n.no-icon { font-size:1.4rem; opacity:.5; }\n.no-title { color:#8B95A5; font-size:.78rem; font-weight:600; }\n.no-hint { color:#475569; font-size:.68rem; max-width:180px; line-height:1.4; }\n.clear-btn { padding:.25rem .5rem; border-radius:4px; border:1px solid #1e2530; background:#161B22; color:#8B95A5; font-size:.7rem; cursor:pointer; }\n.clear-btn:hover { color:#f87171; border-color:rgba(248,113,113,.3); }\n",
+      "start": 1783635325637,
+      "end": 1783635325637,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue"
+        ],
+        "names": [],
+        "mappings": ";AAiCA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAChE,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC/D,CAAC,CAAC,EAAE,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAClF,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACrC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACrF,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC3B,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACxH,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACzC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC9D,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC9E,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACpJ,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE",
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\nimport { useI18n } from '../../../../composables/useI18n'\nimport type { CalorimetryTrial } from '../../../../composables/calorimetry/useCalorimetryTrials'\nconst { t } = useI18n()\ndefineProps<{ trials: CalorimetryTrial[] }>()\nconst emit = defineEmits<{ (e: 'remove', id: number): void; (e: 'clear'): void }>()\n</script>\n<template>\n  <div class=\"trials-panel\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:9:3\">\n    <table v-if=\"trials.length\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:10:5\">\n      <thead data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:11:7\"><tr data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:11:14\"><th data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:11:18\">#</th><th data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:11:28\">mW</th><th data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:11:39\">tW</th><th data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:11:50\">mM</th><th data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:11:61\">tM</th><th data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:11:72\">Tf</th><th data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:11:83\">c</th><th data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:11:93\"></th></tr></thead>\n      <tbody data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:12:7\">\n        <tr v-for=\"trial in trials\" :key=\"trial.id\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:13:9\">\n          <td data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:14:11\">{{ trial.id }}</td>\n          <td data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:15:11\">{{ trial.mWater.toFixed(3) }}</td>\n          <td data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:16:11\">{{ trial.tWater }}</td>\n          <td data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:17:11\">{{ trial.mMetal.toFixed(3) }}</td>\n          <td data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:18:11\">{{ trial.tMetal }}</td>\n          <td data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:19:11\">{{ trial.tf.toFixed(1) }}</td>\n          <td data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:20:11\">{{ trial.cMetal.toFixed(0) }}</td>\n          <td data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:21:11\"><button class=\"rm\" @click=\"emit('remove', trial.id)\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:21:15\">&#x2715;</button></td>\n        </tr>\n      </tbody>\n    </table>\n    <div v-else class=\"no-trials\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:25:5\">\n      <div class=\"no-icon\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:26:7\">📝</div>\n      <div class=\"no-title\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:27:7\">لا توجد تجارب</div>\n      <div class=\"no-hint\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:28:7\">اضغط Start → Record بعد كل تشغيل</div>\n    </div>\n    <button v-if=\"trials.length\" class=\"clear-btn\" @click=\"emit('clear')\" data-v-inspector=\"src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue:30:5\">{{ t('experiments.clearAll') }}</button>\n  </div>\n</template>\n<style scoped>\n.trials-panel { display:flex; flex-direction:column; gap:.5rem; }\ntable { width:100%; border-collapse:collapse; font-size:.7rem; }\nth, td { padding:.2rem .3rem; text-align:center; border-bottom:1px solid #1e2530; }\nth { color:#5B8DB8; font-weight:700; }\n.rm { background:none; border:none; color:#8B95A5; cursor:pointer; font-size:.65rem; }\n.rm:hover { color:#f87171; }\n.no-trials { text-align:center; padding:1rem .5rem; display:flex; flex-direction:column; align-items:center; gap:.3rem; }\n.no-icon { font-size:1.4rem; opacity:.5; }\n.no-title { color:#8B95A5; font-size:.78rem; font-weight:600; }\n.no-hint { color:#475569; font-size:.68rem; max-width:180px; line-height:1.4; }\n.clear-btn { padding:.25rem .5rem; border-radius:4px; border:1px solid #1e2530; background:#161B22; color:#8B95A5; font-size:.7rem; cursor:pointer; }\n.clear-btn:hover { color:#f87171; border-color:rgba(248,113,113,.3); }\n</style>\n"
+        ]
+      }
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783635325637,
+      "end": 1783635325637,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "\n.trials-panel { display:flex; flex-direction:column; gap:.5rem; }\ntable { width:100%; border-collapse:collapse; font-size:.7rem; }\nth, td { padding:.2rem .3rem; text-align:center; border-bottom:1px solid #1e2530; }\nth { color:#5B8DB8; font-weight:700; }\n.rm { background:none; border:none; color:#8B95A5; cursor:pointer; font-size:.65rem; }\n.rm:hover { color:#f87171; }\n.no-trials { text-align:center; padding:1rem .5rem; display:flex; flex-direction:column; align-items:center; gap:.3rem; }\n.no-icon { font-size:1.4rem; opacity:.5; }\n.no-title { color:#8B95A5; font-size:.78rem; font-weight:600; }\n.no-hint { color:#475569; font-size:.68rem; max-width:180px; line-height:1.4; }\n.clear-btn { padding:.25rem .5rem; border-radius:4px; border:1px solid #1e2530; background:#161B22; color:#8B95A5; font-size:.7rem; cursor:pointer; }\n.clear-btn:hover { color:#f87171; border-color:rgba(248,113,113,.3); }\n",
+      "start": 1783635325637,
+      "end": 1783635325637,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.trials-panel { display:flex; flex-direction:column; gap:.5rem; }\ntable { width:100%; border-collapse:collapse; font-size:.7rem; }\nth, td { padding:.2rem .3rem; text-align:center; border-bottom:1px solid #1e2530; }\nth { color:#5B8DB8; font-weight:700; }\n.rm { background:none; border:none; color:#8B95A5; cursor:pointer; font-size:.65rem; }\n.rm:hover { color:#f87171; }\n.no-trials { text-align:center; padding:1rem .5rem; display:flex; flex-direction:column; align-items:center; gap:.3rem; }\n.no-icon { font-size:1.4rem; opacity:.5; }\n.no-title { color:#8B95A5; font-size:.78rem; font-weight:600; }\n.no-hint { color:#475569; font-size:.68rem; max-width:180px; line-height:1.4; }\n.clear-btn { padding:.25rem .5rem; border-radius:4px; border:1px solid #1e2530; background:#161B22; color:#8B95A5; font-size:.7rem; cursor:pointer; }\n.clear-btn:hover { color:#f87171; border-color:rgba(248,113,113,.3); }\n",
+      "start": 1783635325637,
+      "end": 1783635325637,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783635325637,
+      "end": 1783635325637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783635325637,
+      "end": 1783635325637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783635325637,
+      "end": 1783635325637,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.trials-panel[data-v-e7be82d4] { display:flex; flex-direction:column; gap:.5rem;\n}\ntable[data-v-e7be82d4] { width:100%; border-collapse:collapse; font-size:.7rem;\n}\nth[data-v-e7be82d4], td[data-v-e7be82d4] { padding:.2rem .3rem; text-align:center; border-bottom:1px solid #1e2530;\n}\nth[data-v-e7be82d4] { color:#5B8DB8; font-weight:700;\n}\n.rm[data-v-e7be82d4] { background:none; border:none; color:#8B95A5; cursor:pointer; font-size:.65rem;\n}\n.rm[data-v-e7be82d4]:hover { color:#f87171;\n}\n.no-trials[data-v-e7be82d4] { text-align:center; padding:1rem .5rem; display:flex; flex-direction:column; align-items:center; gap:.3rem;\n}\n.no-icon[data-v-e7be82d4] { font-size:1.4rem; opacity:.5;\n}\n.no-title[data-v-e7be82d4] { color:#8B95A5; font-size:.78rem; font-weight:600;\n}\n.no-hint[data-v-e7be82d4] { color:#475569; font-size:.68rem; max-width:180px; line-height:1.4;\n}\n.clear-btn[data-v-e7be82d4] { padding:.25rem .5rem; border-radius:4px; border:1px solid #1e2530; background:#161B22; color:#8B95A5; font-size:.7rem; cursor:pointer;\n}\n.clear-btn[data-v-e7be82d4]:hover { color:#f87171; border-color:rgba(248,113,113,.3);\n}\n",
+      "start": 1783635325643,
+      "end": 1783635325646,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783635325646,
+      "end": 1783635325646,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue?vue&type=style&index=0&scoped=e7be82d4&lang.css\"\nconst __vite__css = \"\\n.trials-panel[data-v-e7be82d4] { display:flex; flex-direction:column; gap:.5rem;\\n}\\ntable[data-v-e7be82d4] { width:100%; border-collapse:collapse; font-size:.7rem;\\n}\\nth[data-v-e7be82d4], td[data-v-e7be82d4] { padding:.2rem .3rem; text-align:center; border-bottom:1px solid #1e2530;\\n}\\nth[data-v-e7be82d4] { color:#5B8DB8; font-weight:700;\\n}\\n.rm[data-v-e7be82d4] { background:none; border:none; color:#8B95A5; cursor:pointer; font-size:.65rem;\\n}\\n.rm[data-v-e7be82d4]:hover { color:#f87171;\\n}\\n.no-trials[data-v-e7be82d4] { text-align:center; padding:1rem .5rem; display:flex; flex-direction:column; align-items:center; gap:.3rem;\\n}\\n.no-icon[data-v-e7be82d4] { font-size:1.4rem; opacity:.5;\\n}\\n.no-title[data-v-e7be82d4] { color:#8B95A5; font-size:.78rem; font-weight:600;\\n}\\n.no-hint[data-v-e7be82d4] { color:#475569; font-size:.68rem; max-width:180px; line-height:1.4;\\n}\\n.clear-btn[data-v-e7be82d4] { padding:.25rem .5rem; border-radius:4px; border:1px solid #1e2530; background:#161B22; color:#8B95A5; font-size:.7rem; cursor:pointer;\\n}\\n.clear-btn[data-v-e7be82d4]:hover { color:#f87171; border-color:rgba(248,113,113,.3);\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783635325646,
+      "end": 1783635325646,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783635325646,
+      "end": 1783635325646,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783635325646,
+      "end": 1783635325646,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783635325646,
+      "end": 1783635325646,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783635325646,
+      "end": 1783635325646,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783635325646,
+      "end": 1783635325646,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783635325646,
+      "end": 1783635325646,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783635325646,
+      "end": 1783635325646,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue?vue&type=style&index=0&scoped=e7be82d4&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue?vue&type=style&index=0&scoped=e7be82d4&lang.css\"\nconst __vite__css = \"\\n.trials-panel[data-v-e7be82d4] { display:flex; flex-direction:column; gap:.5rem;\\n}\\ntable[data-v-e7be82d4] { width:100%; border-collapse:collapse; font-size:.7rem;\\n}\\nth[data-v-e7be82d4], td[data-v-e7be82d4] { padding:.2rem .3rem; text-align:center; border-bottom:1px solid #1e2530;\\n}\\nth[data-v-e7be82d4] { color:#5B8DB8; font-weight:700;\\n}\\n.rm[data-v-e7be82d4] { background:none; border:none; color:#8B95A5; cursor:pointer; font-size:.65rem;\\n}\\n.rm[data-v-e7be82d4]:hover { color:#f87171;\\n}\\n.no-trials[data-v-e7be82d4] { text-align:center; padding:1rem .5rem; display:flex; flex-direction:column; align-items:center; gap:.3rem;\\n}\\n.no-icon[data-v-e7be82d4] { font-size:1.4rem; opacity:.5;\\n}\\n.no-title[data-v-e7be82d4] { color:#8B95A5; font-size:.78rem; font-weight:600;\\n}\\n.no-hint[data-v-e7be82d4] { color:#475569; font-size:.68rem; max-width:180px; line-height:1.4;\\n}\\n.clear-btn[data-v-e7be82d4] { padding:.25rem .5rem; border-radius:4px; border:1px solid #1e2530; background:#161B22; color:#8B95A5; font-size:.7rem; cursor:pointer;\\n}\\n.clear-btn[data-v-e7be82d4]:hover { color:#f87171; border-color:rgba(248,113,113,.3);\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783635325646,
+      "end": 1783635325646,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

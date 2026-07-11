@@ -111,6 +111,50 @@ export const chemDataExtended: Chemical[] = [
     hazardLevel: 'safe', description: 'يتغير لونه عبر طيف pH: أحمر (حمضي) → أخضر (محايد) → بنفسجي (قلوي)'
   },
 
+  // ========== ADDITIONAL SALTS FOR REACTIONS ==========
+  {
+    id: 'pbno3', nameAr: 'نترات الرصاص', formula: 'Pb(NO₃)₂',
+    category: 'salt', physicalState: 'liquid', concentration: 0.1, ph: 5.5,
+    color: '#e0e7ff', opacity: 0.35, density: 1.05, molarMass: 331.21,
+    boilingPoint: 470, hazardLevel: 'danger', description: 'محلول شفاف، سام، يُستخدم في ترسيب اليوديدات'
+  },
+  {
+    id: 'cacl2', nameAr: 'كلوريد الكالسيوم', formula: 'CaCl₂',
+    category: 'salt', physicalState: 'liquid', concentration: 0.1, ph: 7.0,
+    color: '#f1f5f9', opacity: 0.3, density: 1.05, molarMass: 110.98,
+    boilingPoint: 1935, hazardLevel: 'safe', description: 'محلول شفاف، يُستخدم في ترسيب الكربونات'
+  },
+  {
+    id: 'mgso4', nameAr: 'كبريتات المغنيسيوم', formula: 'MgSO₄',
+    category: 'salt', physicalState: 'liquid', concentration: 0.1, ph: 6.5,
+    color: '#f1f5f9', opacity: 0.3, density: 1.04, molarMass: 120.37,
+    boilingPoint: 1124, hazardLevel: 'safe', description: 'محلول شفاف، ملح إنجليزي'
+  },
+  {
+    id: 'znso4', nameAr: 'كبريتات الزنك', formula: 'ZnSO₄',
+    category: 'salt', physicalState: 'liquid', concentration: 0.1, ph: 5.0,
+    color: '#f1f5f9', opacity: 0.3, density: 1.05, molarMass: 161.47,
+    boilingPoint: 740, hazardLevel: 'caution', description: 'محلول شفاف، يُستخدم في ترسيب الهيدروكسيدات'
+  },
+  {
+    id: 'feso4', nameAr: 'كبريتات الحديد الثنائي', formula: 'FeSO₄',
+    category: 'salt', physicalState: 'liquid', concentration: 0.1, ph: 3.5,
+    color: '#a3e635', opacity: 0.4, density: 1.05, molarMass: 151.91,
+    boilingPoint: 680, hazardLevel: 'caution', description: 'محلول أخضر باهت، عامل مرجع'
+  },
+  {
+    id: 'fe', nameAr: 'حديد', formula: 'Fe',
+    category: 'solid', physicalState: 'solid', concentration: undefined, ph: undefined,
+    color: '#94a3b8', opacity: 0.6, density: 7.87, molarMass: 55.85,
+    hazardLevel: 'safe', description: 'معدن رمادي، يتفاعل مع الأحماض'
+  },
+  {
+    id: 'nh3', nameAr: 'الأمونيا الغازية', formula: 'NH₃',
+    category: 'gas', physicalState: 'gas', concentration: undefined, ph: 11.6,
+    color: '#e0f2fe', opacity: 0.25, density: 0.0008, molarMass: 17.03,
+    boilingPoint: -33, hazardLevel: 'warning', description: 'غاز عديم اللون، رائحة نفاذة، قاعدة ضعيفة'
+  },
+
   // ========== GASES ==========
   {
     id: 'o2', nameAr: 'أكسجين', formula: 'O₂',

@@ -1,0 +1,140 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationBell.vue?vue&type=style&index=0&scoped=9bf72ae1&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.bell-wrapper { position: relative; }\n.bell-btn {\n  background: none; border: none; cursor: pointer; font-size: 1.1rem;\n  position: relative; padding: 0.3rem;\n}\n.badge {\n  position: absolute; top: -2px; right: -4px;\n  background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 700;\n  padding: 0.1rem 0.35rem; border-radius: 999px;\n}\n.dropdown {\n  position: absolute; top: calc(100% + 0.5rem); right: 0;\n  width: 320px; max-height: 400px; overflow-y: auto;\n  background: rgba(15, 23, 42, 0.98); border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 0.6rem; z-index: 400; padding: 0.75rem;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);\n}\n.header {\n  display: flex; justify-content: space-between; align-items: center;\n  margin-bottom: 0.5rem; padding-bottom: 0.4rem;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.06);\n  font-weight: 700; color: #e2e8f0; font-size: 0.85rem;\n}\n.mark-all {\n  background: none; border: none; color: #67e8f9; font-size: 0.7rem;\n  cursor: pointer; padding: 0;\n}\n.empty { text-align: center; padding: 1rem; color: #64748b; font-size: 0.8rem; }\n.item {\n  display: flex; gap: 0.5rem; padding: 0.5rem; border-radius: 0.35rem;\n  transition: background 0.15s; cursor: pointer;\n}\n.item:hover { background: rgba(255, 255, 255, 0.03); }\n.item.unread { background: rgba(99, 102, 241, 0.08); }\n.icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.1rem; }\n.content { display: flex; flex-direction: column; gap: 0.15rem; flex: 1; }\n.title { color: #e2e8f0; font-size: 0.8rem; font-weight: 600; }\n.msg { color: #94a3b8; font-size: 0.75rem; }\n.time { color: #64748b; font-size: 0.7rem; }\n",
+      "start": 1783626234088,
+      "end": 1783626234088,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationBell.vue"
+        ],
+        "names": [],
+        "mappings": ";AAqEA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACpC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACR,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EAClE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACrC;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACL,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC;EAC1C,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC;EACtE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC;AAC/C;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACR,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC;EACtD,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC;EACjD,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC;EAC/E,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACrD,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,EAAE,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC;AAC3C;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACN,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EAClE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EAC7C,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC;EAClD,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACtD;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;EACR,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACjE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC;AAC7B;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC/E,CAAC,CAAC,CAAC,CAAC,EAAE;EACJ,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;EACnE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AAC/C;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACrD,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACrD,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC7D,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,EAAE;AACzE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE;AAC9D,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC3C,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE",
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationBell.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\nimport { ref, onMounted, onUnmounted } from 'vue';\nimport { useNotifications } from '../../composables/useNotifications';\nimport { useI18n } from '../../composables/useI18n';\n\nconst { notifications, unreadCount, markAllRead } = useNotifications();\nconst { t } = useI18n();\nconst open = ref(false);\nconst wrapperRef = ref<HTMLElement | null>(null);\n\nfunction toggle() { open.value = !open.value; }\n\nfunction onDocumentClick(event: MouseEvent) {\n  if (wrapperRef.value && !wrapperRef.value.contains(event.target as Node)) {\n    open.value = false;\n  }\n}\n\nonMounted(() => document.addEventListener('mousedown', onDocumentClick));\nonUnmounted(() => document.removeEventListener('mousedown', onDocumentClick));\n\nfunction getIcon(type: string) {\n  const map: Record<string, string> = {\n    report_submitted: '📤',\n    report_graded: '⭐',\n    report_resubmitted: '↩️',\n    comment_added: '💬',\n    class_joined: '🏫',\n  };\n  return map[type] || '🔔';\n}\n\nfunction formatTime(dateStr: string) {\n  const d = new Date(dateStr);\n  return d.toLocaleString('ar-SA', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });\n}\n</script>\n\n<template>\n  <div ref=\"wrapperRef\" class=\"bell-wrapper\" data-v-inspector=\"src/components/shared/NotificationBell.vue:40:3\">\n    <button class=\"bell-btn\" @click=\"toggle\" data-v-inspector=\"src/components/shared/NotificationBell.vue:41:5\">\n      🔔\n      <span v-if=\"unreadCount > 0\" class=\"badge\" data-v-inspector=\"src/components/shared/NotificationBell.vue:43:7\">{{ unreadCount }}</span>\n    </button>\n    <div v-if=\"open\" class=\"dropdown\" @click.stop data-v-inspector=\"src/components/shared/NotificationBell.vue:45:5\">\n      <div class=\"header\" data-v-inspector=\"src/components/shared/NotificationBell.vue:46:7\">\n        <span data-v-inspector=\"src/components/shared/NotificationBell.vue:47:9\">{{ t('common.notifications') }}</span>\n        <button v-if=\"notifications.length > 0\" class=\"mark-all\" @click=\"markAllRead\" data-v-inspector=\"src/components/shared/NotificationBell.vue:48:9\">\n          {{ t('common.markAllRead') }}\n        </button>\n      </div>\n      <div v-if=\"notifications.length === 0\" class=\"empty\" data-v-inspector=\"src/components/shared/NotificationBell.vue:52:7\">{{ t('common.noNotifications') }}</div>\n      <div\n        v-for=\"n in notifications\"\n        :key=\"n.id\"\n        :class=\"['item', { unread: !n.is_read }]\" data-v-inspector=\"src/components/shared/NotificationBell.vue:53:7\"\n      >\n        <span class=\"icon\" data-v-inspector=\"src/components/shared/NotificationBell.vue:58:9\">{{ getIcon(n.type) }}</span>\n        <div class=\"content\" data-v-inspector=\"src/components/shared/NotificationBell.vue:59:9\">\n          <div class=\"title\" data-v-inspector=\"src/components/shared/NotificationBell.vue:60:11\">{{ n.title }}</div>\n          <div v-if=\"n.message\" class=\"msg\" data-v-inspector=\"src/components/shared/NotificationBell.vue:61:11\">{{ n.message }}</div>\n          <div class=\"time\" data-v-inspector=\"src/components/shared/NotificationBell.vue:62:11\">{{ formatTime(n.created_at) }}</div>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.bell-wrapper { position: relative; }\n.bell-btn {\n  background: none; border: none; cursor: pointer; font-size: 1.1rem;\n  position: relative; padding: 0.3rem;\n}\n.badge {\n  position: absolute; top: -2px; right: -4px;\n  background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 700;\n  padding: 0.1rem 0.35rem; border-radius: 999px;\n}\n.dropdown {\n  position: absolute; top: calc(100% + 0.5rem); right: 0;\n  width: 320px; max-height: 400px; overflow-y: auto;\n  background: rgba(15, 23, 42, 0.98); border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 0.6rem; z-index: 400; padding: 0.75rem;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);\n}\n.header {\n  display: flex; justify-content: space-between; align-items: center;\n  margin-bottom: 0.5rem; padding-bottom: 0.4rem;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.06);\n  font-weight: 700; color: #e2e8f0; font-size: 0.85rem;\n}\n.mark-all {\n  background: none; border: none; color: #67e8f9; font-size: 0.7rem;\n  cursor: pointer; padding: 0;\n}\n.empty { text-align: center; padding: 1rem; color: #64748b; font-size: 0.8rem; }\n.item {\n  display: flex; gap: 0.5rem; padding: 0.5rem; border-radius: 0.35rem;\n  transition: background 0.15s; cursor: pointer;\n}\n.item:hover { background: rgba(255, 255, 255, 0.03); }\n.item.unread { background: rgba(99, 102, 241, 0.08); }\n.icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.1rem; }\n.content { display: flex; flex-direction: column; gap: 0.15rem; flex: 1; }\n.title { color: #e2e8f0; font-size: 0.8rem; font-weight: 600; }\n.msg { color: #94a3b8; font-size: 0.75rem; }\n.time { color: #64748b; font-size: 0.7rem; }\n</style>\n"
+        ]
+      }
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626234088,
+      "end": 1783626234088,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "\n.bell-wrapper { position: relative; }\n.bell-btn {\n  background: none; border: none; cursor: pointer; font-size: 1.1rem;\n  position: relative; padding: 0.3rem;\n}\n.badge {\n  position: absolute; top: -2px; right: -4px;\n  background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 700;\n  padding: 0.1rem 0.35rem; border-radius: 999px;\n}\n.dropdown {\n  position: absolute; top: calc(100% + 0.5rem); right: 0;\n  width: 320px; max-height: 400px; overflow-y: auto;\n  background: rgba(15, 23, 42, 0.98); border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 0.6rem; z-index: 400; padding: 0.75rem;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);\n}\n.header {\n  display: flex; justify-content: space-between; align-items: center;\n  margin-bottom: 0.5rem; padding-bottom: 0.4rem;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.06);\n  font-weight: 700; color: #e2e8f0; font-size: 0.85rem;\n}\n.mark-all {\n  background: none; border: none; color: #67e8f9; font-size: 0.7rem;\n  cursor: pointer; padding: 0;\n}\n.empty { text-align: center; padding: 1rem; color: #64748b; font-size: 0.8rem; }\n.item {\n  display: flex; gap: 0.5rem; padding: 0.5rem; border-radius: 0.35rem;\n  transition: background 0.15s; cursor: pointer;\n}\n.item:hover { background: rgba(255, 255, 255, 0.03); }\n.item.unread { background: rgba(99, 102, 241, 0.08); }\n.icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.1rem; }\n.content { display: flex; flex-direction: column; gap: 0.15rem; flex: 1; }\n.title { color: #e2e8f0; font-size: 0.8rem; font-weight: 600; }\n.msg { color: #94a3b8; font-size: 0.75rem; }\n.time { color: #64748b; font-size: 0.7rem; }\n",
+      "start": 1783626234088,
+      "end": 1783626234088,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.bell-wrapper { position: relative; }\n.bell-btn {\n  background: none; border: none; cursor: pointer; font-size: 1.1rem;\n  position: relative; padding: 0.3rem;\n}\n.badge {\n  position: absolute; top: -2px; right: -4px;\n  background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 700;\n  padding: 0.1rem 0.35rem; border-radius: 999px;\n}\n.dropdown {\n  position: absolute; top: calc(100% + 0.5rem); right: 0;\n  width: 320px; max-height: 400px; overflow-y: auto;\n  background: rgba(15, 23, 42, 0.98); border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 0.6rem; z-index: 400; padding: 0.75rem;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);\n}\n.header {\n  display: flex; justify-content: space-between; align-items: center;\n  margin-bottom: 0.5rem; padding-bottom: 0.4rem;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.06);\n  font-weight: 700; color: #e2e8f0; font-size: 0.85rem;\n}\n.mark-all {\n  background: none; border: none; color: #67e8f9; font-size: 0.7rem;\n  cursor: pointer; padding: 0;\n}\n.empty { text-align: center; padding: 1rem; color: #64748b; font-size: 0.8rem; }\n.item {\n  display: flex; gap: 0.5rem; padding: 0.5rem; border-radius: 0.35rem;\n  transition: background 0.15s; cursor: pointer;\n}\n.item:hover { background: rgba(255, 255, 255, 0.03); }\n.item.unread { background: rgba(99, 102, 241, 0.08); }\n.icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.1rem; }\n.content { display: flex; flex-direction: column; gap: 0.15rem; flex: 1; }\n.title { color: #e2e8f0; font-size: 0.8rem; font-weight: 600; }\n.msg { color: #94a3b8; font-size: 0.75rem; }\n.time { color: #64748b; font-size: 0.7rem; }\n",
+      "start": 1783626234088,
+      "end": 1783626234089,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783626234089,
+      "end": 1783626234089,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626234089,
+      "end": 1783626234089,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626234089,
+      "end": 1783626234089,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.bell-wrapper[data-v-9bf72ae1] { position: relative;\n}\n.bell-btn[data-v-9bf72ae1] {\n  background: none; border: none; cursor: pointer; font-size: 1.1rem;\n  position: relative; padding: 0.3rem;\n}\n.badge[data-v-9bf72ae1] {\n  position: absolute; top: -2px; right: -4px;\n  background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 700;\n  padding: 0.1rem 0.35rem; border-radius: 999px;\n}\n.dropdown[data-v-9bf72ae1] {\n  position: absolute; top: calc(100% + 0.5rem); right: 0;\n  width: 320px; max-height: 400px; overflow-y: auto;\n  background: rgba(15, 23, 42, 0.98); border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 0.6rem; z-index: 400; padding: 0.75rem;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);\n}\n.header[data-v-9bf72ae1] {\n  display: flex; justify-content: space-between; align-items: center;\n  margin-bottom: 0.5rem; padding-bottom: 0.4rem;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.06);\n  font-weight: 700; color: #e2e8f0; font-size: 0.85rem;\n}\n.mark-all[data-v-9bf72ae1] {\n  background: none; border: none; color: #67e8f9; font-size: 0.7rem;\n  cursor: pointer; padding: 0;\n}\n.empty[data-v-9bf72ae1] { text-align: center; padding: 1rem; color: #64748b; font-size: 0.8rem;\n}\n.item[data-v-9bf72ae1] {\n  display: flex; gap: 0.5rem; padding: 0.5rem; border-radius: 0.35rem;\n  transition: background 0.15s; cursor: pointer;\n}\n.item[data-v-9bf72ae1]:hover { background: rgba(255, 255, 255, 0.03);\n}\n.item.unread[data-v-9bf72ae1] { background: rgba(99, 102, 241, 0.08);\n}\n.icon[data-v-9bf72ae1] { font-size: 1rem; flex-shrink: 0; margin-top: 0.1rem;\n}\n.content[data-v-9bf72ae1] { display: flex; flex-direction: column; gap: 0.15rem; flex: 1;\n}\n.title[data-v-9bf72ae1] { color: #e2e8f0; font-size: 0.8rem; font-weight: 600;\n}\n.msg[data-v-9bf72ae1] { color: #94a3b8; font-size: 0.75rem;\n}\n.time[data-v-9bf72ae1] { color: #64748b; font-size: 0.7rem;\n}\n",
+      "start": 1783626234089,
+      "end": 1783626234110,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626234110,
+      "end": 1783626234110,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationBell.vue?vue&type=style&index=0&scoped=9bf72ae1&lang.css\"\nconst __vite__css = \"\\n.bell-wrapper[data-v-9bf72ae1] { position: relative;\\n}\\n.bell-btn[data-v-9bf72ae1] {\\n  background: none; border: none; cursor: pointer; font-size: 1.1rem;\\n  position: relative; padding: 0.3rem;\\n}\\n.badge[data-v-9bf72ae1] {\\n  position: absolute; top: -2px; right: -4px;\\n  background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 700;\\n  padding: 0.1rem 0.35rem; border-radius: 999px;\\n}\\n.dropdown[data-v-9bf72ae1] {\\n  position: absolute; top: calc(100% + 0.5rem); right: 0;\\n  width: 320px; max-height: 400px; overflow-y: auto;\\n  background: rgba(15, 23, 42, 0.98); border: 1px solid rgba(255, 255, 255, 0.08);\\n  border-radius: 0.6rem; z-index: 400; padding: 0.75rem;\\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);\\n}\\n.header[data-v-9bf72ae1] {\\n  display: flex; justify-content: space-between; align-items: center;\\n  margin-bottom: 0.5rem; padding-bottom: 0.4rem;\\n  border-bottom: 1px solid rgba(255, 255, 255, 0.06);\\n  font-weight: 700; color: #e2e8f0; font-size: 0.85rem;\\n}\\n.mark-all[data-v-9bf72ae1] {\\n  background: none; border: none; color: #67e8f9; font-size: 0.7rem;\\n  cursor: pointer; padding: 0;\\n}\\n.empty[data-v-9bf72ae1] { text-align: center; padding: 1rem; color: #64748b; font-size: 0.8rem;\\n}\\n.item[data-v-9bf72ae1] {\\n  display: flex; gap: 0.5rem; padding: 0.5rem; border-radius: 0.35rem;\\n  transition: background 0.15s; cursor: pointer;\\n}\\n.item[data-v-9bf72ae1]:hover { background: rgba(255, 255, 255, 0.03);\\n}\\n.item.unread[data-v-9bf72ae1] { background: rgba(99, 102, 241, 0.08);\\n}\\n.icon[data-v-9bf72ae1] { font-size: 1rem; flex-shrink: 0; margin-top: 0.1rem;\\n}\\n.content[data-v-9bf72ae1] { display: flex; flex-direction: column; gap: 0.15rem; flex: 1;\\n}\\n.title[data-v-9bf72ae1] { color: #e2e8f0; font-size: 0.8rem; font-weight: 600;\\n}\\n.msg[data-v-9bf72ae1] { color: #94a3b8; font-size: 0.75rem;\\n}\\n.time[data-v-9bf72ae1] { color: #64748b; font-size: 0.7rem;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626234110,
+      "end": 1783626234110,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626234110,
+      "end": 1783626234110,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626234110,
+      "end": 1783626234110,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626234110,
+      "end": 1783626234110,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626234110,
+      "end": 1783626234110,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626234110,
+      "end": 1783626234110,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626234110,
+      "end": 1783626234110,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626234110,
+      "end": 1783626234110,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/components/shared/NotificationBell.vue?vue&type=style&index=0&scoped=9bf72ae1&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/shared/NotificationBell.vue?vue&type=style&index=0&scoped=9bf72ae1&lang.css\"\nconst __vite__css = \"\\n.bell-wrapper[data-v-9bf72ae1] { position: relative;\\n}\\n.bell-btn[data-v-9bf72ae1] {\\n  background: none; border: none; cursor: pointer; font-size: 1.1rem;\\n  position: relative; padding: 0.3rem;\\n}\\n.badge[data-v-9bf72ae1] {\\n  position: absolute; top: -2px; right: -4px;\\n  background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 700;\\n  padding: 0.1rem 0.35rem; border-radius: 999px;\\n}\\n.dropdown[data-v-9bf72ae1] {\\n  position: absolute; top: calc(100% + 0.5rem); right: 0;\\n  width: 320px; max-height: 400px; overflow-y: auto;\\n  background: rgba(15, 23, 42, 0.98); border: 1px solid rgba(255, 255, 255, 0.08);\\n  border-radius: 0.6rem; z-index: 400; padding: 0.75rem;\\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);\\n}\\n.header[data-v-9bf72ae1] {\\n  display: flex; justify-content: space-between; align-items: center;\\n  margin-bottom: 0.5rem; padding-bottom: 0.4rem;\\n  border-bottom: 1px solid rgba(255, 255, 255, 0.06);\\n  font-weight: 700; color: #e2e8f0; font-size: 0.85rem;\\n}\\n.mark-all[data-v-9bf72ae1] {\\n  background: none; border: none; color: #67e8f9; font-size: 0.7rem;\\n  cursor: pointer; padding: 0;\\n}\\n.empty[data-v-9bf72ae1] { text-align: center; padding: 1rem; color: #64748b; font-size: 0.8rem;\\n}\\n.item[data-v-9bf72ae1] {\\n  display: flex; gap: 0.5rem; padding: 0.5rem; border-radius: 0.35rem;\\n  transition: background 0.15s; cursor: pointer;\\n}\\n.item[data-v-9bf72ae1]:hover { background: rgba(255, 255, 255, 0.03);\\n}\\n.item.unread[data-v-9bf72ae1] { background: rgba(99, 102, 241, 0.08);\\n}\\n.icon[data-v-9bf72ae1] { font-size: 1rem; flex-shrink: 0; margin-top: 0.1rem;\\n}\\n.content[data-v-9bf72ae1] { display: flex; flex-direction: column; gap: 0.15rem; flex: 1;\\n}\\n.title[data-v-9bf72ae1] { color: #e2e8f0; font-size: 0.8rem; font-weight: 600;\\n}\\n.msg[data-v-9bf72ae1] { color: #94a3b8; font-size: 0.75rem;\\n}\\n.time[data-v-9bf72ae1] { color: #64748b; font-size: 0.7rem;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626234110,
+      "end": 1783626234115,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

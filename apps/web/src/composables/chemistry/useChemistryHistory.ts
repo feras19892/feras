@@ -182,8 +182,6 @@ export function undoMicro(): boolean {
   const snap = microPast.value.pop()!;
   microFuture.value.push(current);
   restore(snap);
-  for (const uid of Object.keys(buretteMap)) buretteMap[uid].valveOpen = false;
-  for (const uid of Object.keys(sepFunnelMap)) sepFunnelMap[uid].valveOpen = false;
   return true;
 }
 
@@ -193,8 +191,6 @@ export function redoMicro(): boolean {
   const snap = microFuture.value.pop()!;
   microPast.value.push(current);
   restore(snap);
-  for (const uid of Object.keys(buretteMap)) buretteMap[uid].valveOpen = false;
-  for (const uid of Object.keys(sepFunnelMap)) sepFunnelMap[uid].valveOpen = false;
   return true;
 }
 

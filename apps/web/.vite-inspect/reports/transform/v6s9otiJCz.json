@@ -1,0 +1,140 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue?vue&type=style&index=0&scoped=77218fb4&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.panel-body { padding:.45rem; display:flex; flex-direction:column; gap:.35rem; }\n.trials-header { display:grid; grid-template-columns:30px 1fr 1fr 1fr 1fr 1fr 24px; gap:.3rem; font-size:.65rem; color:#5B8DB8; font-weight:700; padding:0 .2rem; border-bottom:1px solid #1e2530; padding-bottom:.25rem; }\n.trial-row { display:grid; grid-template-columns:30px 1fr 1fr 1fr 1fr 1fr 24px; gap:.3rem; align-items:center; padding:.25rem .2rem; font-size:.68rem; color:#D1D7E0; border-bottom:1px solid rgba(30,37,48,.5); }\n.del-btn { width:20px; height:20px; border-radius:50%; border:none; background:transparent; color:#8B95A5; cursor:pointer; font-size:.7rem; display:flex; align-items:center; justify-content:center; }\n.del-btn:hover { background:rgba(248,113,113,.15); color:#f87171; }\n.no-trials { text-align:center; color:#475569; font-size:.75rem; padding:.5rem; }\n.trials-actions { display:flex; justify-content:center; padding-top:.3rem; }\n.clear-btn { padding:.25rem .6rem; border-radius:5px; border:1px solid rgba(248,113,113,.3); background:rgba(248,113,113,.08); color:#f87171; font-size:.7rem; cursor:pointer; }\n",
+      "start": 1783626283451,
+      "end": 1783626283451,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue"
+        ],
+        "names": [],
+        "mappings": ";AAyBA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC/E,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC1N,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACjN,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACtM,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAClE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAChF,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC3E,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE",
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\nimport type { SpecificHeatTrial } from '../../../../composables/specific-heat/useSpecificHeatTrials'\nimport { METAL_CATALOG } from '../../../../composables/specific-heat/useSpecificHeatCalculations'\n\nconst props = defineProps<{ trials: SpecificHeatTrial[]; unknownMode?: boolean }>()\nfunction metalName(key: string) { return props.unknownMode ? '❓' : (METAL_CATALOG[key]?.nameAr ?? key) }\nconst emit = defineEmits<{\n  (e: 'remove', id: number): void\n  (e: 'clear'): void\n}>()\n</script>\n<template>\n  <div class=\"panel-body\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue:13:3\">\n    <div class=\"trials-header\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue:14:5\"><span data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue:14:32\">#</span><span data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue:14:46\">Metal</span><span data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue:14:64\">m_m</span><span data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue:14:80\">m_w</span><span data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue:14:96\">T_f</span><span data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue:14:112\">c_m</span><span data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue:14:128\"></span></div>\n    <div v-for=\"t in trials\" :key=\"t.id\" class=\"trial-row\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue:15:5\">\n      <span data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue:16:7\">{{ t.id }}</span><span data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue:16:30\">{{ metalName(t.metalType) }}</span><span data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue:16:71\">{{ (t.metalMass*1000).toFixed(0) }}g</span>\n      <span data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue:17:7\">{{ (t.waterMass*1000).toFixed(0) }}g</span><span data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue:17:56\">{{ t.finalTemp.toFixed(1) }}</span>\n      <span data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue:18:7\">{{ t.cExtracted.toFixed(1) }}</span>\n      <button class=\"del-btn\" @click=\"emit('remove', t.id)\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue:19:7\">x</button>\n    </div>\n    <div v-if=\"!trials.length\" class=\"no-trials\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue:21:5\">لا توجد تجارب</div>\n    <div class=\"trials-actions\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue:22:5\"><button class=\"clear-btn\" @click=\"emit('clear')\" data-v-inspector=\"src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue:22:33\">مسح الكل</button></div>\n  </div>\n</template>\n<style scoped>\n.panel-body { padding:.45rem; display:flex; flex-direction:column; gap:.35rem; }\n.trials-header { display:grid; grid-template-columns:30px 1fr 1fr 1fr 1fr 1fr 24px; gap:.3rem; font-size:.65rem; color:#5B8DB8; font-weight:700; padding:0 .2rem; border-bottom:1px solid #1e2530; padding-bottom:.25rem; }\n.trial-row { display:grid; grid-template-columns:30px 1fr 1fr 1fr 1fr 1fr 24px; gap:.3rem; align-items:center; padding:.25rem .2rem; font-size:.68rem; color:#D1D7E0; border-bottom:1px solid rgba(30,37,48,.5); }\n.del-btn { width:20px; height:20px; border-radius:50%; border:none; background:transparent; color:#8B95A5; cursor:pointer; font-size:.7rem; display:flex; align-items:center; justify-content:center; }\n.del-btn:hover { background:rgba(248,113,113,.15); color:#f87171; }\n.no-trials { text-align:center; color:#475569; font-size:.75rem; padding:.5rem; }\n.trials-actions { display:flex; justify-content:center; padding-top:.3rem; }\n.clear-btn { padding:.25rem .6rem; border-radius:5px; border:1px solid rgba(248,113,113,.3); background:rgba(248,113,113,.08); color:#f87171; font-size:.7rem; cursor:pointer; }\n</style>\n"
+        ]
+      }
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626283452,
+      "end": 1783626283452,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "\n.panel-body { padding:.45rem; display:flex; flex-direction:column; gap:.35rem; }\n.trials-header { display:grid; grid-template-columns:30px 1fr 1fr 1fr 1fr 1fr 24px; gap:.3rem; font-size:.65rem; color:#5B8DB8; font-weight:700; padding:0 .2rem; border-bottom:1px solid #1e2530; padding-bottom:.25rem; }\n.trial-row { display:grid; grid-template-columns:30px 1fr 1fr 1fr 1fr 1fr 24px; gap:.3rem; align-items:center; padding:.25rem .2rem; font-size:.68rem; color:#D1D7E0; border-bottom:1px solid rgba(30,37,48,.5); }\n.del-btn { width:20px; height:20px; border-radius:50%; border:none; background:transparent; color:#8B95A5; cursor:pointer; font-size:.7rem; display:flex; align-items:center; justify-content:center; }\n.del-btn:hover { background:rgba(248,113,113,.15); color:#f87171; }\n.no-trials { text-align:center; color:#475569; font-size:.75rem; padding:.5rem; }\n.trials-actions { display:flex; justify-content:center; padding-top:.3rem; }\n.clear-btn { padding:.25rem .6rem; border-radius:5px; border:1px solid rgba(248,113,113,.3); background:rgba(248,113,113,.08); color:#f87171; font-size:.7rem; cursor:pointer; }\n",
+      "start": 1783626283452,
+      "end": 1783626283452,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.panel-body { padding:.45rem; display:flex; flex-direction:column; gap:.35rem; }\n.trials-header { display:grid; grid-template-columns:30px 1fr 1fr 1fr 1fr 1fr 24px; gap:.3rem; font-size:.65rem; color:#5B8DB8; font-weight:700; padding:0 .2rem; border-bottom:1px solid #1e2530; padding-bottom:.25rem; }\n.trial-row { display:grid; grid-template-columns:30px 1fr 1fr 1fr 1fr 1fr 24px; gap:.3rem; align-items:center; padding:.25rem .2rem; font-size:.68rem; color:#D1D7E0; border-bottom:1px solid rgba(30,37,48,.5); }\n.del-btn { width:20px; height:20px; border-radius:50%; border:none; background:transparent; color:#8B95A5; cursor:pointer; font-size:.7rem; display:flex; align-items:center; justify-content:center; }\n.del-btn:hover { background:rgba(248,113,113,.15); color:#f87171; }\n.no-trials { text-align:center; color:#475569; font-size:.75rem; padding:.5rem; }\n.trials-actions { display:flex; justify-content:center; padding-top:.3rem; }\n.clear-btn { padding:.25rem .6rem; border-radius:5px; border:1px solid rgba(248,113,113,.3); background:rgba(248,113,113,.08); color:#f87171; font-size:.7rem; cursor:pointer; }\n",
+      "start": 1783626283452,
+      "end": 1783626283452,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783626283452,
+      "end": 1783626283452,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626283452,
+      "end": 1783626283452,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626283452,
+      "end": 1783626283452,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.panel-body[data-v-77218fb4] { padding:.45rem; display:flex; flex-direction:column; gap:.35rem;\n}\n.trials-header[data-v-77218fb4] { display:grid; grid-template-columns:30px 1fr 1fr 1fr 1fr 1fr 24px; gap:.3rem; font-size:.65rem; color:#5B8DB8; font-weight:700; padding:0 .2rem; border-bottom:1px solid #1e2530; padding-bottom:.25rem;\n}\n.trial-row[data-v-77218fb4] { display:grid; grid-template-columns:30px 1fr 1fr 1fr 1fr 1fr 24px; gap:.3rem; align-items:center; padding:.25rem .2rem; font-size:.68rem; color:#D1D7E0; border-bottom:1px solid rgba(30,37,48,.5);\n}\n.del-btn[data-v-77218fb4] { width:20px; height:20px; border-radius:50%; border:none; background:transparent; color:#8B95A5; cursor:pointer; font-size:.7rem; display:flex; align-items:center; justify-content:center;\n}\n.del-btn[data-v-77218fb4]:hover { background:rgba(248,113,113,.15); color:#f87171;\n}\n.no-trials[data-v-77218fb4] { text-align:center; color:#475569; font-size:.75rem; padding:.5rem;\n}\n.trials-actions[data-v-77218fb4] { display:flex; justify-content:center; padding-top:.3rem;\n}\n.clear-btn[data-v-77218fb4] { padding:.25rem .6rem; border-radius:5px; border:1px solid rgba(248,113,113,.3); background:rgba(248,113,113,.08); color:#f87171; font-size:.7rem; cursor:pointer;\n}\n",
+      "start": 1783626283452,
+      "end": 1783626283521,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626283521,
+      "end": 1783626283521,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue?vue&type=style&index=0&scoped=77218fb4&lang.css\"\nconst __vite__css = \"\\n.panel-body[data-v-77218fb4] { padding:.45rem; display:flex; flex-direction:column; gap:.35rem;\\n}\\n.trials-header[data-v-77218fb4] { display:grid; grid-template-columns:30px 1fr 1fr 1fr 1fr 1fr 24px; gap:.3rem; font-size:.65rem; color:#5B8DB8; font-weight:700; padding:0 .2rem; border-bottom:1px solid #1e2530; padding-bottom:.25rem;\\n}\\n.trial-row[data-v-77218fb4] { display:grid; grid-template-columns:30px 1fr 1fr 1fr 1fr 1fr 24px; gap:.3rem; align-items:center; padding:.25rem .2rem; font-size:.68rem; color:#D1D7E0; border-bottom:1px solid rgba(30,37,48,.5);\\n}\\n.del-btn[data-v-77218fb4] { width:20px; height:20px; border-radius:50%; border:none; background:transparent; color:#8B95A5; cursor:pointer; font-size:.7rem; display:flex; align-items:center; justify-content:center;\\n}\\n.del-btn[data-v-77218fb4]:hover { background:rgba(248,113,113,.15); color:#f87171;\\n}\\n.no-trials[data-v-77218fb4] { text-align:center; color:#475569; font-size:.75rem; padding:.5rem;\\n}\\n.trials-actions[data-v-77218fb4] { display:flex; justify-content:center; padding-top:.3rem;\\n}\\n.clear-btn[data-v-77218fb4] { padding:.25rem .6rem; border-radius:5px; border:1px solid rgba(248,113,113,.3); background:rgba(248,113,113,.08); color:#f87171; font-size:.7rem; cursor:pointer;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626283521,
+      "end": 1783626283521,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626283521,
+      "end": 1783626283521,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626283521,
+      "end": 1783626283521,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626283521,
+      "end": 1783626283545,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626283545,
+      "end": 1783626283545,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626283545,
+      "end": 1783626283545,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626283545,
+      "end": 1783626283545,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626283545,
+      "end": 1783626283545,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue?vue&type=style&index=0&scoped=77218fb4&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatTrialsPanel.vue?vue&type=style&index=0&scoped=77218fb4&lang.css\"\nconst __vite__css = \"\\n.panel-body[data-v-77218fb4] { padding:.45rem; display:flex; flex-direction:column; gap:.35rem;\\n}\\n.trials-header[data-v-77218fb4] { display:grid; grid-template-columns:30px 1fr 1fr 1fr 1fr 1fr 24px; gap:.3rem; font-size:.65rem; color:#5B8DB8; font-weight:700; padding:0 .2rem; border-bottom:1px solid #1e2530; padding-bottom:.25rem;\\n}\\n.trial-row[data-v-77218fb4] { display:grid; grid-template-columns:30px 1fr 1fr 1fr 1fr 1fr 24px; gap:.3rem; align-items:center; padding:.25rem .2rem; font-size:.68rem; color:#D1D7E0; border-bottom:1px solid rgba(30,37,48,.5);\\n}\\n.del-btn[data-v-77218fb4] { width:20px; height:20px; border-radius:50%; border:none; background:transparent; color:#8B95A5; cursor:pointer; font-size:.7rem; display:flex; align-items:center; justify-content:center;\\n}\\n.del-btn[data-v-77218fb4]:hover { background:rgba(248,113,113,.15); color:#f87171;\\n}\\n.no-trials[data-v-77218fb4] { text-align:center; color:#475569; font-size:.75rem; padding:.5rem;\\n}\\n.trials-actions[data-v-77218fb4] { display:flex; justify-content:center; padding-top:.3rem;\\n}\\n.clear-btn[data-v-77218fb4] { padding:.25rem .6rem; border-radius:5px; border:1px solid rgba(248,113,113,.3); background:rgba(248,113,113,.08); color:#f87171; font-size:.7rem; cursor:pointer;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626283545,
+      "end": 1783626283545,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

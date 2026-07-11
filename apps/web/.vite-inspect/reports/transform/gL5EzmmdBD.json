@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/workspaceDrawWiresBridge.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import type { CanvasContext, WorkspaceProps } from './workspaceTypes'\nimport type { CircuitComponent } from './types'\n\nexport function drawWheatstoneWires(\n  ctx: CanvasRenderingContext2D,\n  cc: CanvasContext,\n  props: WorkspaceProps,\n  components: CircuitComponent[],\n) {\n  const { worldToScreen, zoom } = cc\n  const z = zoom.value\n  const batt = components.find(c => c.type === 'battery')!\n  const galv = components.find(c => c.type === 'galvanometer')!\n  const sw = components.find(c => c.type === 'switch')\n  const resistors = components.filter(c => c.type === 'resistor')\n  if (resistors.length < 3) return\n  const [r1, r2, r3] = resistors\n\n  const [bx, by] = worldToScreen(batt.x, batt.y)\n  const [sx, sy] = sw ? worldToScreen(sw.x, sw.y) : [bx + 60 * z, by]\n  const [r1x, r1y] = worldToScreen(r1.x, r1.y)\n  const [r2x, r2y] = worldToScreen(r2.x, r2.y)\n  const [r3x, r3y] = worldToScreen(r3.x, r3.y)\n  const [gx, gy] = worldToScreen(galv.x, galv.y)\n\n  const r1L = r1x - 40 * z, r1R = r1x + 40 * z\n  const r2L = r2x - 40 * z, r2R = r2x + 40 * z\n  const r3L = r3x - 40 * z, r3R = r3x + 40 * z\n  const gL = gx - 20 * z, gR = gx + 20 * z\n  const botY = r3y + 40 * z\n\n  ctx.strokeStyle = props.running ? '#4ade80' : '#475569'\n  ctx.lineWidth = 2 * z; ctx.lineCap = 'round'\n\n  // Battery+ → Switch → Top node A (R1 right to R2 left)\n  ctx.beginPath()\n  ctx.moveTo(bx + 30 * z, by); ctx.lineTo(sx - 20 * z, sy)\n  ctx.moveTo(sx + 20 * z, sy); ctx.lineTo(sx + 20 * z, r1y)\n  ctx.lineTo(r1R, r1y); ctx.lineTo(r2L, r2y)\n  ctx.stroke()\n\n  // Left side: R1 left → down → R3 left (node B)\n  ctx.beginPath()\n  ctx.moveTo(r1L, r1y); ctx.lineTo(r1L, r3y); ctx.lineTo(r3L, r3y)\n  ctx.stroke()\n\n  // Node B → Galvanometer left\n  ctx.beginPath()\n  ctx.moveTo(r1L, gy); ctx.lineTo(gL, gy)\n  ctx.stroke()\n\n  // R2 right → down → Galvanometer right (node C)\n  ctx.beginPath()\n  ctx.moveTo(r2R, r2y); ctx.lineTo(r2R, gy); ctx.lineTo(gR, gy)\n  ctx.stroke()\n\n  // Node C → down → bottom node D (implicit Rx) → R3 right\n  ctx.beginPath()\n  ctx.moveTo(r2R, gy); ctx.lineTo(r2R, botY)\n  ctx.lineTo(r3R, botY); ctx.lineTo(r3R, r3y)\n  ctx.stroke()\n\n  // Bottom node D → Battery-\n  ctx.beginPath()\n  ctx.moveTo(r3R, botY); ctx.lineTo(bx - 30 * z, botY); ctx.lineTo(bx - 30 * z, by)\n  ctx.stroke()\n\n  // Label Rx (implicit resistor)\n  ctx.fillStyle = '#94a3b8'; ctx.font = `${9 * z}px sans-serif`; ctx.textAlign = 'center'\n  ctx.fillText('Rx=150Ω', (r3x + r2x) / 2, botY + 15 * z)\n}\n",
-      "start": 1783634643186,
-      "end": 1783634643204,
+      "start": 1783626239969,
+      "end": 1783626239969
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626239969,
+      "end": 1783626239969,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import type { CanvasContext, WorkspaceProps } from './workspaceTypes'\nimport type { CircuitComponent } from './types'\n\nexport function drawWheatstoneWires(\n  ctx: CanvasRenderingContext2D,\n  cc: CanvasContext,\n  props: WorkspaceProps,\n  components: CircuitComponent[],\n) {\n  const { worldToScreen, zoom } = cc\n  const z = zoom.value\n  const batt = components.find(c => c.type === 'battery')!\n  const galv = components.find(c => c.type === 'galvanometer')!\n  const sw = components.find(c => c.type === 'switch')\n  const resistors = components.filter(c => c.type === 'resistor')\n  if (resistors.length < 3) return\n  const [r1, r2, r3] = resistors\n\n  const [bx, by] = worldToScreen(batt.x, batt.y)\n  const [sx, sy] = sw ? worldToScreen(sw.x, sw.y) : [bx + 60 * z, by]\n  const [r1x, r1y] = worldToScreen(r1.x, r1.y)\n  const [r2x, r2y] = worldToScreen(r2.x, r2.y)\n  const [r3x, r3y] = worldToScreen(r3.x, r3.y)\n  const [gx, gy] = worldToScreen(galv.x, galv.y)\n\n  const r1L = r1x - 40 * z, r1R = r1x + 40 * z\n  const r2L = r2x - 40 * z, r2R = r2x + 40 * z\n  const r3L = r3x - 40 * z, r3R = r3x + 40 * z\n  const gL = gx - 20 * z, gR = gx + 20 * z\n  const botY = r3y + 40 * z\n\n  ctx.strokeStyle = props.running ? '#4ade80' : '#475569'\n  ctx.lineWidth = 2 * z; ctx.lineCap = 'round'\n\n  // Battery+ → Switch → Top node A (R1 right to R2 left)\n  ctx.beginPath()\n  ctx.moveTo(bx + 30 * z, by); ctx.lineTo(sx - 20 * z, sy)\n  ctx.moveTo(sx + 20 * z, sy); ctx.lineTo(sx + 20 * z, r1y)\n  ctx.lineTo(r1R, r1y); ctx.lineTo(r2L, r2y)\n  ctx.stroke()\n\n  // Left side: R1 left → down → R3 left (node B)\n  ctx.beginPath()\n  ctx.moveTo(r1L, r1y); ctx.lineTo(r1L, r3y); ctx.lineTo(r3L, r3y)\n  ctx.stroke()\n\n  // Node B → Galvanometer left\n  ctx.beginPath()\n  ctx.moveTo(r1L, gy); ctx.lineTo(gL, gy)\n  ctx.stroke()\n\n  // R2 right → down → Galvanometer right (node C)\n  ctx.beginPath()\n  ctx.moveTo(r2R, r2y); ctx.lineTo(r2R, gy); ctx.lineTo(gR, gy)\n  ctx.stroke()\n\n  // Node C → down → bottom node D (implicit Rx) → R3 right\n  ctx.beginPath()\n  ctx.moveTo(r2R, gy); ctx.lineTo(r2R, botY)\n  ctx.lineTo(r3R, botY); ctx.lineTo(r3R, r3y)\n  ctx.stroke()\n\n  // Bottom node D → Battery-\n  ctx.beginPath()\n  ctx.moveTo(r3R, botY); ctx.lineTo(bx - 30 * z, botY); ctx.lineTo(bx - 30 * z, by)\n  ctx.stroke()\n\n  // Label Rx (implicit resistor)\n  ctx.fillStyle = '#94a3b8'; ctx.font = `${9 * z}px sans-serif`; ctx.textAlign = 'center'\n  ctx.fillText('Rx=150Ω', (r3x + r2x) / 2, botY + 15 * z)\n}\n",
+      "start": 1783626239969,
+      "end": 1783626239969,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634643204,
-      "end": 1783634643204,
+      "start": 1783626239969,
+      "end": 1783626239969,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "export function drawWheatstoneWires(ctx, cc, props, components) {\n  const { worldToScreen, zoom } = cc;\n  const z = zoom.value;\n  const batt = components.find((c) => c.type === \"battery\");\n  const galv = components.find((c) => c.type === \"galvanometer\");\n  const sw = components.find((c) => c.type === \"switch\");\n  const resistors = components.filter((c) => c.type === \"resistor\");\n  if (resistors.length < 3) return;\n  const [r1, r2, r3] = resistors;\n  const [bx, by] = worldToScreen(batt.x, batt.y);\n  const [sx, sy] = sw ? worldToScreen(sw.x, sw.y) : [bx + 60 * z, by];\n  const [r1x, r1y] = worldToScreen(r1.x, r1.y);\n  const [r2x, r2y] = worldToScreen(r2.x, r2.y);\n  const [r3x, r3y] = worldToScreen(r3.x, r3.y);\n  const [gx, gy] = worldToScreen(galv.x, galv.y);\n  const r1L = r1x - 40 * z, r1R = r1x + 40 * z;\n  const r2L = r2x - 40 * z, r2R = r2x + 40 * z;\n  const r3L = r3x - 40 * z, r3R = r3x + 40 * z;\n  const gL = gx - 20 * z, gR = gx + 20 * z;\n  const botY = r3y + 40 * z;\n  ctx.strokeStyle = props.running ? \"#4ade80\" : \"#475569\";\n  ctx.lineWidth = 2 * z;\n  ctx.lineCap = \"round\";\n  ctx.beginPath();\n  ctx.moveTo(bx + 30 * z, by);\n  ctx.lineTo(sx - 20 * z, sy);\n  ctx.moveTo(sx + 20 * z, sy);\n  ctx.lineTo(sx + 20 * z, r1y);\n  ctx.lineTo(r1R, r1y);\n  ctx.lineTo(r2L, r2y);\n  ctx.stroke();\n  ctx.beginPath();\n  ctx.moveTo(r1L, r1y);\n  ctx.lineTo(r1L, r3y);\n  ctx.lineTo(r3L, r3y);\n  ctx.stroke();\n  ctx.beginPath();\n  ctx.moveTo(r1L, gy);\n  ctx.lineTo(gL, gy);\n  ctx.stroke();\n  ctx.beginPath();\n  ctx.moveTo(r2R, r2y);\n  ctx.lineTo(r2R, gy);\n  ctx.lineTo(gR, gy);\n  ctx.stroke();\n  ctx.beginPath();\n  ctx.moveTo(r2R, gy);\n  ctx.lineTo(r2R, botY);\n  ctx.lineTo(r3R, botY);\n  ctx.lineTo(r3R, r3y);\n  ctx.stroke();\n  ctx.beginPath();\n  ctx.moveTo(r3R, botY);\n  ctx.lineTo(bx - 30 * z, botY);\n  ctx.lineTo(bx - 30 * z, by);\n  ctx.stroke();\n  ctx.fillStyle = \"#94a3b8\";\n  ctx.font = `${9 * z}px sans-serif`;\n  ctx.textAlign = \"center\";\n  ctx.fillText(\"Rx=150Ω\", (r3x + r2x) / 2, botY + 15 * z);\n}\n",
-      "start": 1783634643204,
-      "end": 1783634643218,
+      "start": 1783626239969,
+      "end": 1783626240000,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/electric-lab/workspaceDrawWiresBridge.ts"
+          "workspaceDrawWiresBridge.ts"
         ],
         "sourcesContent": [
           "import type { CanvasContext, WorkspaceProps } from './workspaceTypes'\nimport type { CircuitComponent } from './types'\n\nexport function drawWheatstoneWires(\n  ctx: CanvasRenderingContext2D,\n  cc: CanvasContext,\n  props: WorkspaceProps,\n  components: CircuitComponent[],\n) {\n  const { worldToScreen, zoom } = cc\n  const z = zoom.value\n  const batt = components.find(c => c.type === 'battery')!\n  const galv = components.find(c => c.type === 'galvanometer')!\n  const sw = components.find(c => c.type === 'switch')\n  const resistors = components.filter(c => c.type === 'resistor')\n  if (resistors.length < 3) return\n  const [r1, r2, r3] = resistors\n\n  const [bx, by] = worldToScreen(batt.x, batt.y)\n  const [sx, sy] = sw ? worldToScreen(sw.x, sw.y) : [bx + 60 * z, by]\n  const [r1x, r1y] = worldToScreen(r1.x, r1.y)\n  const [r2x, r2y] = worldToScreen(r2.x, r2.y)\n  const [r3x, r3y] = worldToScreen(r3.x, r3.y)\n  const [gx, gy] = worldToScreen(galv.x, galv.y)\n\n  const r1L = r1x - 40 * z, r1R = r1x + 40 * z\n  const r2L = r2x - 40 * z, r2R = r2x + 40 * z\n  const r3L = r3x - 40 * z, r3R = r3x + 40 * z\n  const gL = gx - 20 * z, gR = gx + 20 * z\n  const botY = r3y + 40 * z\n\n  ctx.strokeStyle = props.running ? '#4ade80' : '#475569'\n  ctx.lineWidth = 2 * z; ctx.lineCap = 'round'\n\n  // Battery+ → Switch → Top node A (R1 right to R2 left)\n  ctx.beginPath()\n  ctx.moveTo(bx + 30 * z, by); ctx.lineTo(sx - 20 * z, sy)\n  ctx.moveTo(sx + 20 * z, sy); ctx.lineTo(sx + 20 * z, r1y)\n  ctx.lineTo(r1R, r1y); ctx.lineTo(r2L, r2y)\n  ctx.stroke()\n\n  // Left side: R1 left → down → R3 left (node B)\n  ctx.beginPath()\n  ctx.moveTo(r1L, r1y); ctx.lineTo(r1L, r3y); ctx.lineTo(r3L, r3y)\n  ctx.stroke()\n\n  // Node B → Galvanometer left\n  ctx.beginPath()\n  ctx.moveTo(r1L, gy); ctx.lineTo(gL, gy)\n  ctx.stroke()\n\n  // R2 right → down → Galvanometer right (node C)\n  ctx.beginPath()\n  ctx.moveTo(r2R, r2y); ctx.lineTo(r2R, gy); ctx.lineTo(gR, gy)\n  ctx.stroke()\n\n  // Node C → down → bottom node D (implicit Rx) → R3 right\n  ctx.beginPath()\n  ctx.moveTo(r2R, gy); ctx.lineTo(r2R, botY)\n  ctx.lineTo(r3R, botY); ctx.lineTo(r3R, r3y)\n  ctx.stroke()\n\n  // Bottom node D → Battery-\n  ctx.beginPath()\n  ctx.moveTo(r3R, botY); ctx.lineTo(bx - 30 * z, botY); ctx.lineTo(bx - 30 * z, by)\n  ctx.stroke()\n\n  // Label Rx (implicit resistor)\n  ctx.fillStyle = '#94a3b8'; ctx.font = `${9 * z}px sans-serif`; ctx.textAlign = 'center'\n  ctx.fillText('Rx=150Ω', (r3x + r2x) / 2, botY + 15 * z)\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634643218,
-      "end": 1783634643218,
+      "start": 1783626240000,
+      "end": 1783626240000,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634643218,
-      "end": 1783634643218,
+      "start": 1783626240000,
+      "end": 1783626240000,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626240000,
+      "end": 1783626240000,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634643218,
-      "end": 1783634643218,
+      "start": 1783626240000,
+      "end": 1783626240000,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634643218,
-      "end": 1783634643218,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634643218,
-      "end": 1783634643218,
+      "start": 1783626240001,
+      "end": 1783626240001,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634643218,
-      "end": 1783634643218,
+      "start": 1783626240001,
+      "end": 1783626240001,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634643218,
-      "end": 1783634643218,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634643218,
-      "end": 1783634643218,
+      "start": 1783626240001,
+      "end": 1783626240001,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634643218,
-      "end": 1783634643218,
+      "start": 1783626240001,
+      "end": 1783626240001,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634643218,
-      "end": 1783634643218,
+      "start": 1783626240001,
+      "end": 1783626240001,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634643218,
-      "end": 1783634643218,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626240001,
+      "end": 1783626240001,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626240001,
+      "end": 1783626240001,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634643218,
-      "end": 1783634643218,
+      "name": "vite:css-analysis",
+      "start": 1783626240001,
+      "end": 1783626240001,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "export function drawWheatstoneWires(ctx, cc, props, components) {\n  const { worldToScreen, zoom } = cc;\n  const z = zoom.value;\n  const batt = components.find((c) => c.type === \"battery\");\n  const galv = components.find((c) => c.type === \"galvanometer\");\n  const sw = components.find((c) => c.type === \"switch\");\n  const resistors = components.filter((c) => c.type === \"resistor\");\n  if (resistors.length < 3) return;\n  const [r1, r2, r3] = resistors;\n  const [bx, by] = worldToScreen(batt.x, batt.y);\n  const [sx, sy] = sw ? worldToScreen(sw.x, sw.y) : [bx + 60 * z, by];\n  const [r1x, r1y] = worldToScreen(r1.x, r1.y);\n  const [r2x, r2y] = worldToScreen(r2.x, r2.y);\n  const [r3x, r3y] = worldToScreen(r3.x, r3.y);\n  const [gx, gy] = worldToScreen(galv.x, galv.y);\n  const r1L = r1x - 40 * z, r1R = r1x + 40 * z;\n  const r2L = r2x - 40 * z, r2R = r2x + 40 * z;\n  const r3L = r3x - 40 * z, r3R = r3x + 40 * z;\n  const gL = gx - 20 * z, gR = gx + 20 * z;\n  const botY = r3y + 40 * z;\n  ctx.strokeStyle = props.running ? \"#4ade80\" : \"#475569\";\n  ctx.lineWidth = 2 * z;\n  ctx.lineCap = \"round\";\n  ctx.beginPath();\n  ctx.moveTo(bx + 30 * z, by);\n  ctx.lineTo(sx - 20 * z, sy);\n  ctx.moveTo(sx + 20 * z, sy);\n  ctx.lineTo(sx + 20 * z, r1y);\n  ctx.lineTo(r1R, r1y);\n  ctx.lineTo(r2L, r2y);\n  ctx.stroke();\n  ctx.beginPath();\n  ctx.moveTo(r1L, r1y);\n  ctx.lineTo(r1L, r3y);\n  ctx.lineTo(r3L, r3y);\n  ctx.stroke();\n  ctx.beginPath();\n  ctx.moveTo(r1L, gy);\n  ctx.lineTo(gL, gy);\n  ctx.stroke();\n  ctx.beginPath();\n  ctx.moveTo(r2R, r2y);\n  ctx.lineTo(r2R, gy);\n  ctx.lineTo(gR, gy);\n  ctx.stroke();\n  ctx.beginPath();\n  ctx.moveTo(r2R, gy);\n  ctx.lineTo(r2R, botY);\n  ctx.lineTo(r3R, botY);\n  ctx.lineTo(r3R, r3y);\n  ctx.stroke();\n  ctx.beginPath();\n  ctx.moveTo(r3R, botY);\n  ctx.lineTo(bx - 30 * z, botY);\n  ctx.lineTo(bx - 30 * z, by);\n  ctx.stroke();\n  ctx.fillStyle = \"#94a3b8\";\n  ctx.font = `${9 * z}px sans-serif`;\n  ctx.textAlign = \"center\";\n  ctx.fillText(\"Rx=150Ω\", (r3x + r2x) / 2, botY + 15 * z);\n}\n",
+      "start": 1783626240001,
+      "end": 1783626240001,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

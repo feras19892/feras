@@ -4,7 +4,6 @@ import FreeFallTablePanel from './FreeFallTablePanel.vue'
 import FreeFallScatterPanel from './FreeFallScatterPanel.vue'
 import FreeFallSignalPanel from './FreeFallSignalPanel.vue'
 import FreeFallParamsPanel from './FreeFallParamsPanel.vue'
-import FreeFallGuidePanel from './FreeFallGuidePanel.vue'
 import FreeFallReportPanel from './FreeFallReportPanel.vue'
 import type { FreeFallTrial } from '../../../composables/freefall/useFreeFallTrials'
 import type { FreeFallParams } from '../../../modules/physics/experiments/freefall/useFreeFallPhysics'
@@ -103,8 +102,6 @@ const errorSources = [
 
   <FreeFallSignalPanel v-else-if="id === 'signal'" :sim-state="simState" />
   <FreeFallParamsPanel v-else-if="id === 'params'" :params="params" @update:params="emit('update:params', $event)" />
-  <FreeFallGuidePanel v-else-if="id === 'guide'" />
-
   <template v-else-if="id === 'error'">
     <div class="stat-section-title">{{ t('experiments.potentialErrorSources') }}</div>
     <ul class="error-list">

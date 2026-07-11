@@ -7,6 +7,7 @@ import CollisionCanvas from '../../../../components/experiment/collision/Collisi
 import CollisionControlBar from '../../../../components/experiment/collision/CollisionControlBar.vue'
 import CollisionStatusBar from '../../../../components/experiment/collision/CollisionStatusBar.vue'
 import CollisionHelpModal from '../../../../components/experiment/collision/CollisionHelpModal.vue'
+import CollisionGuidePanel from '../../../../components/experiment/collision/CollisionGuidePanel.vue'
 import CollisionPanelBody from '../../../../components/experiment/collision/CollisionPanelBody.vue'
 import CollisionOverlayPanels from '../../../../components/experiment/collision/CollisionOverlayPanels.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
@@ -14,6 +15,7 @@ import DraggablePanel from '../../../../components/experiment/spring/DraggablePa
 const { t } = useI18n()
 const ex = useCollisionExperiment()
 const helpOpen = ref(false)
+const showGuide = ref(true)
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
@@ -77,6 +79,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             />
           </div>
         </template>
+        <CollisionGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
 

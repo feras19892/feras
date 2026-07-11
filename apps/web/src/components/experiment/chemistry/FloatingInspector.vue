@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import type { ToolState } from './InspectorPanel.vue';
 import {
-  getPipette, getBurnerState, getBalanceTare, getContainerTare,
+  items, isContainer,
+  getPipette, getBurnerState, getBalanceTare, getContainerTare, getLiquid,
   isGradCylinder, tiltAngleMap,
   selectedChemical, hasSelectedChemicalMap, simSpeed
 } from '../../../composables/chemistry/useChemistryLab';
@@ -24,6 +26,13 @@ const emit = defineEmits<{
   remove: [uid: string];
   pipetteDraw: [];
   pipetteDispense: [];
+  pipetteDrawAmount: [amount: number];
+  pipetteDispenseAmount: [amount: number];
+  pipetteDrawFrom: [targetUid: string, amount: number];
+  pipetteDispenseTo: [targetUid: string, amount: number];
+  pipetteFill: [amount: number];
+  pipetteEmpty: [];
+  buretteDrop: [];
   toggleBurner: [];
   tare: [];
   tareContainer: [];
@@ -66,6 +75,19 @@ function pipetteStatus(): string {
   if (!props.item) return '';
   const v = getPipette(props.item.uid).volume;
   return v > 0 ? t('chemistry.contains') + ' ' + v.toFixed(1) + t('chemistry.mL') : t('chemistry.emptyF');
+}
+
+const pipetteTargetUid = ref<string>('');
+
+const containerList = computed(() => {
+  if (!props.item) return [];
+  return items.value.filter((i: LabItem) => i.uid !== props.item!.uid && isContainer(i.id));
+});
+
+function containerLabel(c: LabItem): string {
+  const liq = getLiquid(c.uid);
+  const vol = liq.volume > 0 ? ` (${liq.volume.toFixed(1)} ${t('chemistry.mL')})` : ` (${t('chemistry.emptyF')})`;
+  return t(c.name) + vol;
 }
 </script>
 
@@ -161,6 +183,9 @@ function pipetteStatus(): string {
           <button class="refill" @click="emit('action', 'refill', item.uid)">♻️ {{ t('chemistry.refill') }}</button>
         </div>
         <div class="fi-actions">
+          <button class="drop-one" @click="emit('buretteDrop')">💧 {{ t('chemistry.dropByDrop') }}</button>
+        </div>
+        <div class="fi-actions">
           <button class="remove" @click="emit('action', 'remove5', item.uid)">💨 −5</button>
           <button class="remove" @click="emit('action', 'remove10', item.uid)">💨 −10</button>
           <button class="remove" @click="emit('action', 'remove50', item.uid)">💨 −50</button>
@@ -173,15 +198,56 @@ function pipetteStatus(): string {
       </template>
       <!-- Pipette -->
       <template v-else-if="state.type === 'pipette'">
-        <div class="fi-row"><span>{{ t('chemistry.pipette') }}</span><b>{{ state.volume.toFixed(1) }} / {{ state.maxVolume }} {{ t('chemistry.mL') }}</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.solution') }}</span><b>{{ state.volume.toFixed(1) }} / {{ state.maxVolume }} {{ t('chemistry.mL') }}</b></div>
         <div class="fi-bar"><div class="fi-fill" :style="{ width: (state.volume/state.maxVolume*100).toFixed(0) + '%', background: state.color }" /></div>
         <div class="fi-row"><span>{{ t('chemistry.color') }}</span><span class="fi-dot" :style="{ background: state.color }" /></div>
-        <div class="fi-actions">
-          <button v-if="state.volume <= 0" class="success" @click="emit('pipetteDraw')">💉 {{ t('chemistry.draw') }}</button>
-          <button v-else class="success" @click="emit('pipetteDispense')">💉 {{ t('chemistry.dispense') }}</button>
+        <!-- Current chemical indicator -->
+        <div v-if="item && hasSelectedChemicalMap[item.uid]" class="fi-row fi-chem-row">
+          <span>{{ t('chemistry.selectedSolution') }}</span>
+          <span class="fi-chem-name">
+            <span class="fi-dot" :style="{ background: selectedChemical.color }" />
+            {{ getName(selectedChemical.id) }}
+          </span>
         </div>
+        <!-- Fill from chemical shelf -->
+        <div class="fi-row"><span>🧪 {{ t('chemistry.fillFromShelf') }}</span></div>
         <div class="fi-actions">
+          <button @click="emit('pipetteFill', 5)">💧 +5</button>
+          <button @click="emit('pipetteFill', 10)">💧 +10</button>
+          <button @click="emit('pipetteFill', 50)">💧 +50</button>
+          <button @click="emit('pipetteFill', 100)">💧 +100</button>
+        </div>
+        <!-- Select target container -->
+        <div class="fi-row"><span>🎯 {{ t('chemistry.selectContainer') }}</span></div>
+        <div class="fi-actions">
+          <select v-model="pipetteTargetUid" class="fi-select" @click.stop>
+            <option value="">{{ t('chemistry.chooseContainer') }}</option>
+            <option v-for="c in containerList" :key="c.uid" :value="c.uid">{{ containerLabel(c) }}</option>
+          </select>
+        </div>
+        <!-- Draw from selected container -->
+        <div class="fi-row"><span>💉 {{ t('chemistry.drawFrom') }}</span></div>
+        <div class="fi-actions">
+          <button class="success" :disabled="!pipetteTargetUid" @click="emit('pipetteDrawFrom', pipetteTargetUid, 1)">💉 1</button>
+          <button class="success" :disabled="!pipetteTargetUid" @click="emit('pipetteDrawFrom', pipetteTargetUid, 3)">💉 3</button>
+          <button class="success" :disabled="!pipetteTargetUid" @click="emit('pipetteDrawFrom', pipetteTargetUid, 5)">💉 5</button>
+          <button class="success" :disabled="!pipetteTargetUid" @click="emit('pipetteDrawFrom', pipetteTargetUid, 10)">💉 10</button>
+        </div>
+        <!-- Dispense to selected container -->
+        <div class="fi-row"><span>💧 {{ t('chemistry.dispenseTo') }}</span></div>
+        <div class="fi-actions">
+          <button class="success" :disabled="!pipetteTargetUid" @click="emit('pipetteDispenseTo', pipetteTargetUid, 1)">💧 1</button>
+          <button class="success" :disabled="!pipetteTargetUid" @click="emit('pipetteDispenseTo', pipetteTargetUid, 3)">💧 3</button>
+          <button class="success" :disabled="!pipetteTargetUid" @click="emit('pipetteDispenseTo', pipetteTargetUid, 5)">💧 5</button>
+          <button class="success" :disabled="!pipetteTargetUid" @click="emit('pipetteDispenseTo', pipetteTargetUid, 10)">💧 10</button>
+        </div>
+        <!-- Quick actions -->
+        <div class="fi-actions">
+          <button class="empty" @click="emit('pipetteEmpty')">🗑️ {{ t('chemistry.drain') }}</button>
           <button class="delete" @click="emit('remove', item.uid)">❌ {{ t('chemistry.remove') }}</button>
+        </div>
+        <div class="fi-row hint">
+          <span>📖</span><small>{{ t('chemistry.pipetteHintNew') }}</small>
         </div>
       </template>
       <!-- Bunsen Burner -->

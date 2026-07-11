@@ -1,6 +1,7 @@
 import { liquidMap } from './useChemistryLab';
 import type { LiquidState } from '@my-modern-app/chemistry-engine';
 import { findEquation, isAcid, isBase, isIndicator, mixColor, calculateTitrationPh } from '@my-modern-app/chemistry-engine';
+import { chemicals } from './chemDatabase';
 
 // Re-export the engine's calculateTitrationPh so existing imports keep working
 export { calculateTitrationPh } from '@my-modern-app/chemistry-engine';
@@ -128,20 +129,58 @@ export function handleDropMix(event: MixEvent): void {
     // Update reactants tracking
     if (!target.reactants) target.reactants = {};
     target.reactants[src] = (target.reactants[src] || 0) + event.dropVolume;
-    target.reactants[tgt] = (target.reactants[tgt] || 0) + (target.volume - event.dropVolume);
-
-    // Apply reaction results
-    if (eq.resultPh !== undefined) target.ph = eq.resultPh;
-    target.color = eq.color;
-    target.opacity = eq.opacity;
-    target.label = `REACTION:${eq.equation}`;
-    target.temperature = Math.min(100, target.temperature + eq.temperatureRise);
-    target.precipitate = eq.precipitate || false;
-    target.gasEvolution = eq.gasEvolution || false;
-
-    if (eq.precipitate) {
-      target.opacity = Math.min(1, target.opacity + 0.2);
+    if (!target.reactants[tgt]) {
+      const trackedVol = Object.values(target.reactants).reduce((s, v) => s + v, 0) - target.reactants[src];
+      target.reactants[tgt] = Math.max(0, target.volume - event.dropVolume - trackedVol);
     }
+
+    // Calculate stoichiometric ratio for gradual color transition
+    // ratio = moles of src added / moles of src required for complete reaction
+    const srcConc = chemicals.find(c => c.id === src)?.concentration || 0.1;
+    const tgtConc = chemicals.find(c => c.id === tgt)?.concentration || 0.1;
+    const srcMoles = target.reactants[src] * srcConc;
+    const tgtMoles = target.reactants[tgt] * tgtConc;
+    // For precipitation: src is titrant (naoh), tgt is analyte (cuso4)
+    // Equation: CuSO4 + 2NaOH → ... so ratio is 2:1 (naoh:cuso4)
+    // Determine ratio from equation products
+    let stoichRatio = 1;
+    if (eq.reactants.length === 2) {
+      // The first reactant in equation that matches src determines its coefficient
+      const srcIdx = eq.reactants.indexOf(src);
+      const tgtIdx = eq.reactants.indexOf(tgt);
+      if (srcIdx >= 0 && tgtIdx >= 0) {
+        // Check equation string for coefficients
+        const eqStr = eq.equation;
+        const srcMatch = eqStr.match(new RegExp(`(\\d*)\\s*${src}`, 'i'));
+        const tgtMatch = eqStr.match(new RegExp(`(\\d*)\\s*${tgt}`, 'i'));
+        const srcCoeff = srcMatch && srcMatch[1] ? parseInt(srcMatch[1]) : 1;
+        const tgtCoeff = tgtMatch && tgtMatch[1] ? parseInt(tgtMatch[1]) : 1;
+        stoichRatio = srcCoeff / tgtCoeff;
+      }
+    }
+    const requiredSrcMoles = tgtMoles * stoichRatio;
+    const reactionFraction = requiredSrcMoles > 0 ? Math.min(1, srcMoles / requiredSrcMoles) : 0;
+
+    // Apply reaction results gradually
+    if (eq.resultPh !== undefined) target.ph = eq.resultPh;
+
+    // Gradual color: mix original color with reaction color based on fraction
+    const originalColor = target.baseColor || target.color;
+    target.color = mixColor(originalColor, target.volume, eq.color, target.volume * reactionFraction);
+    // Gradual opacity transition
+    const originalOpacity = target.opacity;
+    target.opacity = originalOpacity + (eq.opacity - originalOpacity) * reactionFraction;
+    target.label = `REACTION:${eq.equation}`;
+    target.temperature = Math.min(100, target.temperature + eq.temperatureRise * reactionFraction);
+
+    // Precipitate only starts forming after 10% reaction, increases gradually
+    if (eq.precipitate && reactionFraction > 0.1) {
+      target.precipitate = true;
+      target.opacity = Math.min(1, target.opacity + 0.2 * reactionFraction);
+    } else if (reactionFraction <= 0.1) {
+      target.precipitate = false;
+    }
+    target.gasEvolution = eq.gasEvolution || false;
 
     // Re-apply indicators after reaction
     applyIndicatorsToContainer(target);

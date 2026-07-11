@@ -1,0 +1,140 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabHeatingMantle.vue?vue&type=style&index=0&scoped=37cd0482&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.mantle-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.mantle-svg {\n  width: 90px;\n  height: 98px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));\n}\n.mantle-svg.hovered {\n  transform: scale(1.05);\n  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));\n}\n.mantle-svg.on {\n  filter: drop-shadow(0 0 15px rgba(239,68,68,0.3));\n}\n.glow {\n  animation: mantleGlow 2s ease infinite alternate;\n}\n@keyframes mantleGlow {\n  0% { opacity: 0.1; }\n  100% { opacity: 0.25; }\n}\n.mantle-label {\n  position: absolute;\n  bottom: -2px;\n  font-size: 0.6rem;\n  font-weight: 700;\n  padding: 1px 6px;\n  border-radius: 6px;\n  white-space: nowrap;\n  pointer-events: none;\n}\n.mantle-label.on {\n  color: #ea580c;\n  background: rgba(254,243,199,0.9);\n}\n.mantle-label.off {\n  color: #64748b;\n  background: rgba(241,245,249,0.9);\n}\n",
+      "start": 1783626310399,
+      "end": 1783626310399,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabHeatingMantle.vue"
+        ],
+        "names": [],
+        "mappings": "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",
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabHeatingMantle.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n';\nconst { t } = useI18n();\n\ninterface Props {\n  isOn?: boolean;\n  intensity?: number;    // 0–1\n  isHovered?: boolean;\n}\n\nconst props = withDefaults(defineProps<Props>(), {\n  isOn: false,\n  intensity: 0.5,\n  isHovered: false,\n});\n\n</script>\n\n<template>\n  <div class=\"mantle-wrapper\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:20:3\">\n    <svg viewBox=\"0 0 120 130\" class=\"mantle-svg\" :class=\"{ hovered: isHovered, on: isOn }\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:21:5\">\n      <!-- Shadow -->\n      <ellipse cx=\"60\" cy=\"125\" rx=\"52\" ry=\"3\" fill=\"rgba(0,0,0,0.08)\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:23:7\" />\n\n      <!-- Base housing -->\n      <rect x=\"10\" y=\"85\" width=\"100\" height=\"32\" rx=\"6\" fill=\"#334155\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:26:7\" />\n      <rect x=\"12\" y=\"87\" width=\"96\" height=\"28\" rx=\"5\" fill=\"#475569\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:27:7\" />\n\n      <!-- Control dial -->\n      <circle cx=\"60\" cy=\"100\" r=\"10\" fill=\"#1e293b\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:30:7\" />\n      <circle cx=\"60\" cy=\"100\" r=\"7\" fill=\"#64748b\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:31:7\" />\n      <!-- Dial indicator -->\n      <line\n        :x1=\"60\"\n        :y1=\"100\"\n        :x2=\"60 + 6 * Math.cos((intensity * 270 - 135) * Math.PI / 180)\"\n        :y2=\"100 + 6 * Math.sin((intensity * 270 - 135) * Math.PI / 180)\"\n        stroke=\"#ef4444\"\n        stroke-width=\"1.5\"\n        stroke-linecap=\"round\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:33:7\"\n      />\n\n      <!-- Power LED -->\n      <circle cx=\"30\" cy=\"100\" r=\"3\" :fill=\"isOn ? '#22c55e' : '#64748b'\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:44:7\" />\n\n      <!-- Heating cavity (where flask sits) -->\n      <ellipse cx=\"60\" cy=\"80\" rx=\"46\" ry=\"10\" fill=\"#1e293b\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:47:7\" />\n      <ellipse cx=\"60\" cy=\"80\" rx=\"42\" ry=\"8\" fill=\"#0f172a\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:48:7\" />\n\n      <!-- Heating element coils (visible inside) -->\n      <g v-if=\"isOn\" opacity=\"0.6\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:51:7\">\n        <ellipse cx=\"60\" cy=\"78\" rx=\"38\" ry=\"6\" fill=\"none\" stroke=\"#ef4444\" stroke-width=\"1.5\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:52:9\" />\n        <ellipse cx=\"60\" cy=\"78\" rx=\"32\" ry=\"5\" fill=\"none\" stroke=\"#f97316\" stroke-width=\"1\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:53:9\" />\n        <ellipse cx=\"60\" cy=\"78\" rx=\"26\" ry=\"4\" fill=\"none\" stroke=\"#fbbf24\" stroke-width=\"0.8\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:54:9\" />\n      </g>\n\n      <!-- Fabric cover (hemispherical feel) -->\n      <path\n        d=\"M 14 80 Q 14 55 60 50 Q 106 55 106 80\"\n        fill=\"rgba(120,53,15,0.3)\"\n        stroke=\"#92400e\"\n        stroke-width=\"1.2\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:58:7\"\n      />\n      <!-- Fabric texture lines -->\n      <line x1=\"30\" y1=\"65\" x2=\"30\" y2=\"78\" stroke=\"#92400e\" stroke-width=\"0.5\" opacity=\"0.4\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:65:7\" />\n      <line x1=\"45\" y1=\"58\" x2=\"45\" y2=\"78\" stroke=\"#92400e\" stroke-width=\"0.5\" opacity=\"0.4\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:66:7\" />\n      <line x1=\"60\" y1=\"55\" x2=\"60\" y2=\"78\" stroke=\"#92400e\" stroke-width=\"0.5\" opacity=\"0.4\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:67:7\" />\n      <line x1=\"75\" y1=\"58\" x2=\"75\" y2=\"78\" stroke=\"#92400e\" stroke-width=\"0.5\" opacity=\"0.4\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:68:7\" />\n      <line x1=\"90\" y1=\"65\" x2=\"90\" y2=\"78\" stroke=\"#92400e\" stroke-width=\"0.5\" opacity=\"0.4\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:69:7\" />\n\n      <!-- Top rim -->\n      <ellipse cx=\"60\" cy=\"50\" rx=\"42\" ry=\"5\" fill=\"none\" stroke=\"#92400e\" stroke-width=\"1.5\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:72:7\" />\n\n      <!-- Glow when on -->\n      <ellipse\n        v-if=\"isOn\"\n        cx=\"60\"\n        cy=\"65\"\n        rx=\"35\"\n        ry=\"12\"\n        fill=\"rgba(239,68,68,0.15)\"\n        class=\"glow\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:75:7\"\n      />\n\n      <!-- Cord -->\n      <path d=\"M 110 102 Q 125 102 125 115\" stroke=\"#334155\" stroke-width=\"3\" fill=\"none\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:86:7\" />\n      <circle cx=\"125\" cy=\"118\" r=\"3\" fill=\"#1e293b\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:87:7\" />\n    </svg>\n\n    <!-- Status label -->\n    <div v-if=\"isOn\" class=\"mantle-label on\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:91:5\">🔥 {{ Math.round(intensity * 100) }}%</div>\n    <div v-else class=\"mantle-label off\" data-v-inspector=\"src/components/experiment/chemistry/LabHeatingMantle.vue:92:5\">⚫ {{ t('chemistry.off') }}</div>\n  </div>\n</template>\n\n<style scoped>\n.mantle-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.mantle-svg {\n  width: 90px;\n  height: 98px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));\n}\n.mantle-svg.hovered {\n  transform: scale(1.05);\n  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));\n}\n.mantle-svg.on {\n  filter: drop-shadow(0 0 15px rgba(239,68,68,0.3));\n}\n.glow {\n  animation: mantleGlow 2s ease infinite alternate;\n}\n@keyframes mantleGlow {\n  0% { opacity: 0.1; }\n  100% { opacity: 0.25; }\n}\n.mantle-label {\n  position: absolute;\n  bottom: -2px;\n  font-size: 0.6rem;\n  font-weight: 700;\n  padding: 1px 6px;\n  border-radius: 6px;\n  white-space: nowrap;\n  pointer-events: none;\n}\n.mantle-label.on {\n  color: #ea580c;\n  background: rgba(254,243,199,0.9);\n}\n.mantle-label.off {\n  color: #64748b;\n  background: rgba(241,245,249,0.9);\n}\n</style>\n"
+        ]
+      }
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626310399,
+      "end": 1783626310399,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "\n.mantle-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.mantle-svg {\n  width: 90px;\n  height: 98px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));\n}\n.mantle-svg.hovered {\n  transform: scale(1.05);\n  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));\n}\n.mantle-svg.on {\n  filter: drop-shadow(0 0 15px rgba(239,68,68,0.3));\n}\n.glow {\n  animation: mantleGlow 2s ease infinite alternate;\n}\n@keyframes mantleGlow {\n  0% { opacity: 0.1; }\n  100% { opacity: 0.25; }\n}\n.mantle-label {\n  position: absolute;\n  bottom: -2px;\n  font-size: 0.6rem;\n  font-weight: 700;\n  padding: 1px 6px;\n  border-radius: 6px;\n  white-space: nowrap;\n  pointer-events: none;\n}\n.mantle-label.on {\n  color: #ea580c;\n  background: rgba(254,243,199,0.9);\n}\n.mantle-label.off {\n  color: #64748b;\n  background: rgba(241,245,249,0.9);\n}\n",
+      "start": 1783626310399,
+      "end": 1783626310399,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.mantle-wrapper {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.mantle-svg {\n  width: 90px;\n  height: 98px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));\n}\n.mantle-svg.hovered {\n  transform: scale(1.05);\n  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));\n}\n.mantle-svg.on {\n  filter: drop-shadow(0 0 15px rgba(239,68,68,0.3));\n}\n.glow {\n  animation: mantleGlow 2s ease infinite alternate;\n}\n@keyframes mantleGlow {\n  0% { opacity: 0.1; }\n  100% { opacity: 0.25; }\n}\n.mantle-label {\n  position: absolute;\n  bottom: -2px;\n  font-size: 0.6rem;\n  font-weight: 700;\n  padding: 1px 6px;\n  border-radius: 6px;\n  white-space: nowrap;\n  pointer-events: none;\n}\n.mantle-label.on {\n  color: #ea580c;\n  background: rgba(254,243,199,0.9);\n}\n.mantle-label.off {\n  color: #64748b;\n  background: rgba(241,245,249,0.9);\n}\n",
+      "start": 1783626310399,
+      "end": 1783626310399,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783626310399,
+      "end": 1783626310399,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626310399,
+      "end": 1783626310399,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626310399,
+      "end": 1783626310399,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.mantle-wrapper[data-v-37cd0482] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  cursor: pointer;\n}\n.mantle-svg[data-v-37cd0482] {\n  width: 90px;\n  height: 98px;\n  transition: transform 0.2s, filter 0.2s;\n  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));\n}\n.mantle-svg.hovered[data-v-37cd0482] {\n  transform: scale(1.05);\n  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));\n}\n.mantle-svg.on[data-v-37cd0482] {\n  filter: drop-shadow(0 0 15px rgba(239,68,68,0.3));\n}\n.glow[data-v-37cd0482] {\n  animation: mantleGlow-37cd0482 2s ease infinite alternate;\n}\n@keyframes mantleGlow-37cd0482 {\n0% { opacity: 0.1;\n}\n100% { opacity: 0.25;\n}\n}\n.mantle-label[data-v-37cd0482] {\n  position: absolute;\n  bottom: -2px;\n  font-size: 0.6rem;\n  font-weight: 700;\n  padding: 1px 6px;\n  border-radius: 6px;\n  white-space: nowrap;\n  pointer-events: none;\n}\n.mantle-label.on[data-v-37cd0482] {\n  color: #ea580c;\n  background: rgba(254,243,199,0.9);\n}\n.mantle-label.off[data-v-37cd0482] {\n  color: #64748b;\n  background: rgba(241,245,249,0.9);\n}\n",
+      "start": 1783626310399,
+      "end": 1783626310403,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626310403,
+      "end": 1783626310403,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabHeatingMantle.vue?vue&type=style&index=0&scoped=37cd0482&lang.css\"\nconst __vite__css = \"\\n.mantle-wrapper[data-v-37cd0482] {\\n  display: flex;\\n  flex-direction: column;\\n  align-items: center;\\n  position: relative;\\n  cursor: pointer;\\n}\\n.mantle-svg[data-v-37cd0482] {\\n  width: 90px;\\n  height: 98px;\\n  transition: transform 0.2s, filter 0.2s;\\n  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));\\n}\\n.mantle-svg.hovered[data-v-37cd0482] {\\n  transform: scale(1.05);\\n  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));\\n}\\n.mantle-svg.on[data-v-37cd0482] {\\n  filter: drop-shadow(0 0 15px rgba(239,68,68,0.3));\\n}\\n.glow[data-v-37cd0482] {\\n  animation: mantleGlow-37cd0482 2s ease infinite alternate;\\n}\\n@keyframes mantleGlow-37cd0482 {\\n0% { opacity: 0.1;\\n}\\n100% { opacity: 0.25;\\n}\\n}\\n.mantle-label[data-v-37cd0482] {\\n  position: absolute;\\n  bottom: -2px;\\n  font-size: 0.6rem;\\n  font-weight: 700;\\n  padding: 1px 6px;\\n  border-radius: 6px;\\n  white-space: nowrap;\\n  pointer-events: none;\\n}\\n.mantle-label.on[data-v-37cd0482] {\\n  color: #ea580c;\\n  background: rgba(254,243,199,0.9);\\n}\\n.mantle-label.off[data-v-37cd0482] {\\n  color: #64748b;\\n  background: rgba(241,245,249,0.9);\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626310403,
+      "end": 1783626310403,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626310403,
+      "end": 1783626310403,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626310403,
+      "end": 1783626310403,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626310403,
+      "end": 1783626310403,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626310403,
+      "end": 1783626310403,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626310403,
+      "end": 1783626310403,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626310403,
+      "end": 1783626310406,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626310406,
+      "end": 1783626310406,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/components/experiment/chemistry/LabHeatingMantle.vue?vue&type=style&index=0&scoped=37cd0482&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabHeatingMantle.vue?vue&type=style&index=0&scoped=37cd0482&lang.css\"\nconst __vite__css = \"\\n.mantle-wrapper[data-v-37cd0482] {\\n  display: flex;\\n  flex-direction: column;\\n  align-items: center;\\n  position: relative;\\n  cursor: pointer;\\n}\\n.mantle-svg[data-v-37cd0482] {\\n  width: 90px;\\n  height: 98px;\\n  transition: transform 0.2s, filter 0.2s;\\n  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));\\n}\\n.mantle-svg.hovered[data-v-37cd0482] {\\n  transform: scale(1.05);\\n  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));\\n}\\n.mantle-svg.on[data-v-37cd0482] {\\n  filter: drop-shadow(0 0 15px rgba(239,68,68,0.3));\\n}\\n.glow[data-v-37cd0482] {\\n  animation: mantleGlow-37cd0482 2s ease infinite alternate;\\n}\\n@keyframes mantleGlow-37cd0482 {\\n0% { opacity: 0.1;\\n}\\n100% { opacity: 0.25;\\n}\\n}\\n.mantle-label[data-v-37cd0482] {\\n  position: absolute;\\n  bottom: -2px;\\n  font-size: 0.6rem;\\n  font-weight: 700;\\n  padding: 1px 6px;\\n  border-radius: 6px;\\n  white-space: nowrap;\\n  pointer-events: none;\\n}\\n.mantle-label.on[data-v-37cd0482] {\\n  color: #ea580c;\\n  background: rgba(254,243,199,0.9);\\n}\\n.mantle-label.off[data-v-37cd0482] {\\n  color: #64748b;\\n  background: rgba(241,245,249,0.9);\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626310406,
+      "end": 1783626310406,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

@@ -10,10 +10,12 @@ import DraggablePanel from '../../../../components/experiment/spring/DraggablePa
 import CalorimetryPanelBody from '../../../../components/experiment/calorimetry/CalorimetryPanelBody.vue'
 import CalorimetryOverlayPanels from '../../../../components/experiment/calorimetry/CalorimetryOverlayPanels.vue'
 import CalorimetryHelpModal from '../../../../components/experiment/calorimetry/CalorimetryHelpModal.vue'
+import CalorimetryGuidePanel from '../../../../components/experiment/calorimetry/CalorimetryGuidePanel.vue'
 
 const ex = useCalorimetryExperiment()
 const { t } = useI18n()
 const helpOpen = ref(false)
+const showGuide = ref(true)
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
@@ -142,6 +144,7 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown) })
             />
           </div>
         </template>
+        <CalorimetryGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
 

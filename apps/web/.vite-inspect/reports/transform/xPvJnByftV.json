@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/spring/useSpringPhysics.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import { computed, reactive } from 'vue';\nimport { useAnomalyWatcher } from '../../../../composables/experiment/useAnomalyWatcher';\n\nexport interface SpringParams {\n  mass: number;\n  k: number;\n  amplitude: number;\n  damping: number;\n  measureCycles: number;\n  dampingModel?: 'linear' | 'quadratic';\n  forcingEnabled?: boolean;\n  F0?: number;\n  omegaDrive?: number;\n  springMass?: number; // كتلة النابض الفعلية (لحساب m_eff ≈ m_spring/3)\n}\n\nexport interface SpringState {\n  running: boolean;\n  paused: boolean;\n  t: number;\n  x: number;\n  v: number;\n  zeroCrossings: number[];\n  measurementPeriod: number | null;\n  signalSeries: { t: number; x: number }[];\n  trail: number[];\n}\n\nexport function useSpringPhysics(params: SpringParams) {\n  const watcher = useAnomalyWatcher('spring');\n  const state = reactive<SpringState>({\n    running: false,\n    paused: false,\n    t: 0,\n    x: 0,\n    v: 0,\n    zeroCrossings: [],\n    measurementPeriod: null,\n    signalSeries: [],\n    trail: [],\n  });\n\n  function derivatives(x: number, v: number, tLocal: number) {\n    const m = effectiveMass.value;\n    const k = params.k;\n    const c = params.damping;\n    const model = params.dampingModel ?? 'linear';\n    const dampingForce = model === 'quadratic' ? -c * Math.abs(v) * v : -c * v;\n    const springForce = -k * x;\n    const forcingForce = params.forcingEnabled\n      ? (params.F0 ?? 0) * Math.sin((params.omegaDrive ?? 0) * tLocal)\n      : 0;\n    return {\n      dx: v,\n      dv: (springForce + dampingForce + forcingForce) / m,\n    };\n  }\n\n  function rk4Step(x: number, v: number, t: number, dt: number): { x: number; v: number } {\n    const k1 = derivatives(x, v, t);\n    const k2 = derivatives(x + 0.5 * dt * k1.dx, v + 0.5 * dt * k1.dv, t + 0.5 * dt);\n    const k3 = derivatives(x + 0.5 * dt * k2.dx, v + 0.5 * dt * k2.dv, t + 0.5 * dt);\n    const k4 = derivatives(x + dt * k3.dx, v + dt * k3.dv, t + dt);\n    return {\n      x: x + (dt / 6) * (k1.dx + 2 * k2.dx + 2 * k3.dx + k4.dx),\n      v: v + (dt / 6) * (k1.dv + 2 * k2.dv + 2 * k3.dv + k4.dv),\n    };\n  }\n\n  function trackCrossings(prevX: number, newX: number, prevTime: number, newTime: number) {\n    if ((prevX > 0 && newX <= 0) || (prevX < 0 && newX >= 0)) {\n      const ratio = Math.abs(prevX - newX) < 1e-12 ? 0.5 : prevX / (prevX - newX);\n      const crossingTime = prevTime + (newTime - prevTime) * ratio;\n      state.zeroCrossings.push(crossingTime);\n      if (state.zeroCrossings.length > 30) state.zeroCrossings.shift();\n      const cycles = Math.min(20, Math.max(1, params.measureCycles || 5));\n      if (state.zeroCrossings.length >= cycles + 2) {\n        const start = Math.max(0, state.zeroCrossings.length - (cycles + 2));\n        const periods: number[] = [];\n        for (let i = start; i < state.zeroCrossings.length - 2; i++) {\n          periods.push(state.zeroCrossings[i + 2] - state.zeroCrossings[i]);\n        }\n        state.measurementPeriod = periods.reduce((a, b) => a + b, 0) / periods.length;\n      }\n    }\n  }\n\n  function step(dt: number, speedMultiplier: number = 1) {\n    const omega0 = Math.sqrt(params.k / Math.max(params.mass, 1e-9));\n    const safeDt = Math.min(1 / 240, 0.15 / omega0);\n    let accum = dt;\n    let steps = 0;\n    while (accum > 1e-12 && steps < 300) {\n      steps++;\n      const sdt = Math.min(safeDt, accum);\n      const prevX = state.x;\n      const prevTime = state.t;\n      const next = rk4Step(state.x, state.v, state.t, sdt * speedMultiplier);\n      state.x = next.x;\n      state.v = next.v;\n      state.t += sdt * speedMultiplier;\n      trackCrossings(prevX, state.x, prevTime, state.t);\n      accum -= sdt;\n    }\n\n    state.signalSeries = [...state.signalSeries.slice(-1499), { t: state.t, x: state.x }];\n\n    state.trail.push(state.x);\n    if (state.trail.length > 400) state.trail.shift();\n\n    // Auto-stop when damping is active and no forcing\n    const stillDriven = !!params.forcingEnabled && (params.F0 ?? 0) > 1e-6;\n    const fr = Math.abs(params.k * state.x);\n    if (!stillDriven && params.damping > 0.001 && state.t > 0.3 && fr < 0.01 && Math.abs(state.v) < 0.005) {\n      stop();\n    }\n\n    watcher.inspect({ t: state.t, x: state.x, v: state.v, mass: params.mass });\n  }\n\n  function start() {\n    state.running = true;\n    state.paused = false;\n    // Keep current displacement (set by pull/push), only reset if no mass\n    if (params.mass <= 1e-6) state.x = 0;\n    state.v = 0;\n    state.t = 0;\n    state.trail = [];\n    state.zeroCrossings = [];\n    state.measurementPeriod = null;\n    state.signalSeries = [];\n  }\n\n  function togglePause() {\n    if (!state.running) return start();\n    state.paused = !state.paused;\n  }\n\n  function stop() {\n    state.running = false;\n    state.paused = false;\n  }\n\n  function reset() {\n    stop();\n    state.t = 0;\n    state.x = 0;  // equilibrium position (not stretched)\n    state.v = 0;\n    state.trail = [];\n    state.zeroCrossings = [];\n    state.measurementPeriod = null;\n    state.signalSeries = [];\n  }\n\n  const effectiveMass = computed(() => {\n    const mEff = (params.springMass ?? 0) / 3;\n    return params.mass + mEff;\n  });\n\n  const theoreticalPeriod = computed(() => {\n    const mTotal = effectiveMass.value;\n    if (mTotal <= 1e-9 || params.k <= 1e-9) return null;\n    return 2 * Math.PI * Math.sqrt(mTotal / params.k);\n  });\n\n  const measured = computed(() => {\n    const T = state.measurementPeriod;\n    if (!T) return { T: null, f: null, omega: null, kCalc: null, kCalcEff: null };\n    const mTotal = effectiveMass.value;\n    return {\n      T,\n      f: 1 / T,\n      omega: (2 * Math.PI) / T,\n      kCalc: (4 * Math.PI * Math.PI * params.mass) / (T * T),\n      kCalcEff: (4 * Math.PI * Math.PI * mTotal) / (T * T),\n    };\n  });\n\n  return { state, step, start, stop, togglePause, reset, theoreticalPeriod, measured, effectiveMass };\n}\n",
-      "start": 1783634642522,
-      "end": 1783634642770,
+      "start": 1783635316306,
+      "end": 1783635316306
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783635316306,
+      "end": 1783635316307,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import { computed, reactive } from 'vue';\nimport { useAnomalyWatcher } from '../../../../composables/experiment/useAnomalyWatcher';\n\nexport interface SpringParams {\n  mass: number;\n  k: number;\n  amplitude: number;\n  damping: number;\n  measureCycles: number;\n  dampingModel?: 'linear' | 'quadratic';\n  forcingEnabled?: boolean;\n  F0?: number;\n  omegaDrive?: number;\n  springMass?: number; // كتلة النابض الفعلية (لحساب m_eff ≈ m_spring/3)\n}\n\nexport interface SpringState {\n  running: boolean;\n  paused: boolean;\n  t: number;\n  x: number;\n  v: number;\n  zeroCrossings: number[];\n  measurementPeriod: number | null;\n  signalSeries: { t: number; x: number }[];\n  trail: number[];\n}\n\nexport function useSpringPhysics(params: SpringParams) {\n  const watcher = useAnomalyWatcher('spring');\n  const state = reactive<SpringState>({\n    running: false,\n    paused: false,\n    t: 0,\n    x: 0,\n    v: 0,\n    zeroCrossings: [],\n    measurementPeriod: null,\n    signalSeries: [],\n    trail: [],\n  });\n\n  function derivatives(x: number, v: number, tLocal: number) {\n    const m = effectiveMass.value;\n    const k = params.k;\n    const c = params.damping;\n    const model = params.dampingModel ?? 'linear';\n    const dampingForce = model === 'quadratic' ? -c * Math.abs(v) * v : -c * v;\n    const springForce = -k * x;\n    const forcingForce = params.forcingEnabled\n      ? (params.F0 ?? 0) * Math.sin((params.omegaDrive ?? 0) * tLocal)\n      : 0;\n    return {\n      dx: v,\n      dv: (springForce + dampingForce + forcingForce) / m,\n    };\n  }\n\n  function rk4Step(x: number, v: number, t: number, dt: number): { x: number; v: number } {\n    const k1 = derivatives(x, v, t);\n    const k2 = derivatives(x + 0.5 * dt * k1.dx, v + 0.5 * dt * k1.dv, t + 0.5 * dt);\n    const k3 = derivatives(x + 0.5 * dt * k2.dx, v + 0.5 * dt * k2.dv, t + 0.5 * dt);\n    const k4 = derivatives(x + dt * k3.dx, v + dt * k3.dv, t + dt);\n    return {\n      x: x + (dt / 6) * (k1.dx + 2 * k2.dx + 2 * k3.dx + k4.dx),\n      v: v + (dt / 6) * (k1.dv + 2 * k2.dv + 2 * k3.dv + k4.dv),\n    };\n  }\n\n  function trackCrossings(prevX: number, newX: number, prevTime: number, newTime: number) {\n    if ((prevX > 0 && newX <= 0) || (prevX < 0 && newX >= 0)) {\n      const ratio = Math.abs(prevX - newX) < 1e-12 ? 0.5 : prevX / (prevX - newX);\n      const crossingTime = prevTime + (newTime - prevTime) * ratio;\n      state.zeroCrossings.push(crossingTime);\n      if (state.zeroCrossings.length > 30) state.zeroCrossings.shift();\n      const cycles = Math.min(20, Math.max(1, params.measureCycles || 5));\n      if (state.zeroCrossings.length >= cycles + 2) {\n        const start = Math.max(0, state.zeroCrossings.length - (cycles + 2));\n        const periods: number[] = [];\n        for (let i = start; i < state.zeroCrossings.length - 2; i++) {\n          periods.push(state.zeroCrossings[i + 2] - state.zeroCrossings[i]);\n        }\n        state.measurementPeriod = periods.reduce((a, b) => a + b, 0) / periods.length;\n      }\n    }\n  }\n\n  function step(dt: number, speedMultiplier: number = 1) {\n    const omega0 = Math.sqrt(params.k / Math.max(params.mass, 1e-9));\n    const safeDt = Math.min(1 / 240, 0.15 / omega0);\n    let accum = dt;\n    let steps = 0;\n    while (accum > 1e-12 && steps < 300) {\n      steps++;\n      const sdt = Math.min(safeDt, accum);\n      const prevX = state.x;\n      const prevTime = state.t;\n      const next = rk4Step(state.x, state.v, state.t, sdt * speedMultiplier);\n      state.x = next.x;\n      state.v = next.v;\n      state.t += sdt * speedMultiplier;\n      trackCrossings(prevX, state.x, prevTime, state.t);\n      accum -= sdt;\n    }\n\n    state.signalSeries = [...state.signalSeries.slice(-1499), { t: state.t, x: state.x }];\n\n    state.trail.push(state.x);\n    if (state.trail.length > 400) state.trail.shift();\n\n    // Auto-stop when damping is active and no forcing\n    const stillDriven = !!params.forcingEnabled && (params.F0 ?? 0) > 1e-6;\n    const fr = Math.abs(params.k * state.x);\n    if (!stillDriven && params.damping > 0.001 && state.t > 0.3 && fr < 0.01 && Math.abs(state.v) < 0.005) {\n      stop();\n    }\n\n    watcher.inspect({ t: state.t, x: state.x, v: state.v, mass: params.mass });\n  }\n\n  function start() {\n    state.running = true;\n    state.paused = false;\n    // Keep current displacement (set by pull/push), only reset if no mass\n    if (params.mass <= 1e-6) state.x = 0;\n    state.v = 0;\n    state.t = 0;\n    state.trail = [];\n    state.zeroCrossings = [];\n    state.measurementPeriod = null;\n    state.signalSeries = [];\n  }\n\n  function togglePause() {\n    if (!state.running) return start();\n    state.paused = !state.paused;\n  }\n\n  function stop() {\n    state.running = false;\n    state.paused = false;\n  }\n\n  function reset() {\n    stop();\n    state.t = 0;\n    state.x = 0;  // equilibrium position (not stretched)\n    state.v = 0;\n    state.trail = [];\n    state.zeroCrossings = [];\n    state.measurementPeriod = null;\n    state.signalSeries = [];\n  }\n\n  const effectiveMass = computed(() => {\n    const mEff = (params.springMass ?? 0) / 3;\n    return params.mass + mEff;\n  });\n\n  const theoreticalPeriod = computed(() => {\n    const mTotal = effectiveMass.value;\n    if (mTotal <= 1e-9 || params.k <= 1e-9) return null;\n    return 2 * Math.PI * Math.sqrt(mTotal / params.k);\n  });\n\n  const measured = computed(() => {\n    const T = state.measurementPeriod;\n    if (!T) return { T: null, f: null, omega: null, kCalc: null, kCalcEff: null };\n    const mTotal = effectiveMass.value;\n    return {\n      T,\n      f: 1 / T,\n      omega: (2 * Math.PI) / T,\n      kCalc: (4 * Math.PI * Math.PI * params.mass) / (T * T),\n      kCalcEff: (4 * Math.PI * Math.PI * mTotal) / (T * T),\n    };\n  });\n\n  return { state, step, start, stop, togglePause, reset, theoreticalPeriod, measured, effectiveMass };\n}\n",
+      "start": 1783635316307,
+      "end": 1783635316307,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634642770,
-      "end": 1783634642770,
+      "start": 1783635316307,
+      "end": 1783635316307,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { computed, reactive } from \"vue\";\nimport { useAnomalyWatcher } from \"../../../../composables/experiment/useAnomalyWatcher\";\nexport function useSpringPhysics(params) {\n  const watcher = useAnomalyWatcher(\"spring\");\n  const state = reactive({\n    running: false,\n    paused: false,\n    t: 0,\n    x: 0,\n    v: 0,\n    zeroCrossings: [],\n    measurementPeriod: null,\n    signalSeries: [],\n    trail: []\n  });\n  function derivatives(x, v, tLocal) {\n    const m = effectiveMass.value;\n    const k = params.k;\n    const c = params.damping;\n    const model = params.dampingModel ?? \"linear\";\n    const dampingForce = model === \"quadratic\" ? -c * Math.abs(v) * v : -c * v;\n    const springForce = -k * x;\n    const forcingForce = params.forcingEnabled ? (params.F0 ?? 0) * Math.sin((params.omegaDrive ?? 0) * tLocal) : 0;\n    return {\n      dx: v,\n      dv: (springForce + dampingForce + forcingForce) / m\n    };\n  }\n  function rk4Step(x, v, t, dt) {\n    const k1 = derivatives(x, v, t);\n    const k2 = derivatives(x + 0.5 * dt * k1.dx, v + 0.5 * dt * k1.dv, t + 0.5 * dt);\n    const k3 = derivatives(x + 0.5 * dt * k2.dx, v + 0.5 * dt * k2.dv, t + 0.5 * dt);\n    const k4 = derivatives(x + dt * k3.dx, v + dt * k3.dv, t + dt);\n    return {\n      x: x + dt / 6 * (k1.dx + 2 * k2.dx + 2 * k3.dx + k4.dx),\n      v: v + dt / 6 * (k1.dv + 2 * k2.dv + 2 * k3.dv + k4.dv)\n    };\n  }\n  function trackCrossings(prevX, newX, prevTime, newTime) {\n    if (prevX > 0 && newX <= 0 || prevX < 0 && newX >= 0) {\n      const ratio = Math.abs(prevX - newX) < 1e-12 ? 0.5 : prevX / (prevX - newX);\n      const crossingTime = prevTime + (newTime - prevTime) * ratio;\n      state.zeroCrossings.push(crossingTime);\n      if (state.zeroCrossings.length > 30) state.zeroCrossings.shift();\n      const cycles = Math.min(20, Math.max(1, params.measureCycles || 5));\n      if (state.zeroCrossings.length >= cycles + 2) {\n        const start2 = Math.max(0, state.zeroCrossings.length - (cycles + 2));\n        const periods = [];\n        for (let i = start2; i < state.zeroCrossings.length - 2; i++) {\n          periods.push(state.zeroCrossings[i + 2] - state.zeroCrossings[i]);\n        }\n        state.measurementPeriod = periods.reduce((a, b) => a + b, 0) / periods.length;\n      }\n    }\n  }\n  function step(dt, speedMultiplier = 1) {\n    const omega0 = Math.sqrt(params.k / Math.max(params.mass, 1e-9));\n    const safeDt = Math.min(1 / 240, 0.15 / omega0);\n    let accum = dt;\n    let steps = 0;\n    while (accum > 1e-12 && steps < 300) {\n      steps++;\n      const sdt = Math.min(safeDt, accum);\n      const prevX = state.x;\n      const prevTime = state.t;\n      const next = rk4Step(state.x, state.v, state.t, sdt * speedMultiplier);\n      state.x = next.x;\n      state.v = next.v;\n      state.t += sdt * speedMultiplier;\n      trackCrossings(prevX, state.x, prevTime, state.t);\n      accum -= sdt;\n    }\n    state.signalSeries = [...state.signalSeries.slice(-1499), { t: state.t, x: state.x }];\n    state.trail.push(state.x);\n    if (state.trail.length > 400) state.trail.shift();\n    const stillDriven = !!params.forcingEnabled && (params.F0 ?? 0) > 1e-6;\n    const fr = Math.abs(params.k * state.x);\n    if (!stillDriven && params.damping > 1e-3 && state.t > 0.3 && fr < 0.01 && Math.abs(state.v) < 5e-3) {\n      stop();\n    }\n    watcher.inspect({ t: state.t, x: state.x, v: state.v, mass: params.mass });\n  }\n  function start() {\n    state.running = true;\n    state.paused = false;\n    if (params.mass <= 1e-6) state.x = 0;\n    state.v = 0;\n    state.t = 0;\n    state.trail = [];\n    state.zeroCrossings = [];\n    state.measurementPeriod = null;\n    state.signalSeries = [];\n  }\n  function togglePause() {\n    if (!state.running) return start();\n    state.paused = !state.paused;\n  }\n  function stop() {\n    state.running = false;\n    state.paused = false;\n  }\n  function reset() {\n    stop();\n    state.t = 0;\n    state.x = 0;\n    state.v = 0;\n    state.trail = [];\n    state.zeroCrossings = [];\n    state.measurementPeriod = null;\n    state.signalSeries = [];\n  }\n  const effectiveMass = computed(() => {\n    const mEff = (params.springMass ?? 0) / 3;\n    return params.mass + mEff;\n  });\n  const theoreticalPeriod = computed(() => {\n    const mTotal = effectiveMass.value;\n    if (mTotal <= 1e-9 || params.k <= 1e-9) return null;\n    return 2 * Math.PI * Math.sqrt(mTotal / params.k);\n  });\n  const measured = computed(() => {\n    const T = state.measurementPeriod;\n    if (!T) return { T: null, f: null, omega: null, kCalc: null, kCalcEff: null };\n    const mTotal = effectiveMass.value;\n    return {\n      T,\n      f: 1 / T,\n      omega: 2 * Math.PI / T,\n      kCalc: 4 * Math.PI * Math.PI * params.mass / (T * T),\n      kCalcEff: 4 * Math.PI * Math.PI * mTotal / (T * T)\n    };\n  });\n  return { state, step, start, stop, togglePause, reset, theoreticalPeriod, measured, effectiveMass };\n}\n",
-      "start": 1783634642770,
-      "end": 1783634642876,
+      "start": 1783635316307,
+      "end": 1783635316979,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/spring/useSpringPhysics.ts"
+          "useSpringPhysics.ts"
         ],
         "sourcesContent": [
           "import { computed, reactive } from 'vue';\nimport { useAnomalyWatcher } from '../../../../composables/experiment/useAnomalyWatcher';\n\nexport interface SpringParams {\n  mass: number;\n  k: number;\n  amplitude: number;\n  damping: number;\n  measureCycles: number;\n  dampingModel?: 'linear' | 'quadratic';\n  forcingEnabled?: boolean;\n  F0?: number;\n  omegaDrive?: number;\n  springMass?: number; // كتلة النابض الفعلية (لحساب m_eff ≈ m_spring/3)\n}\n\nexport interface SpringState {\n  running: boolean;\n  paused: boolean;\n  t: number;\n  x: number;\n  v: number;\n  zeroCrossings: number[];\n  measurementPeriod: number | null;\n  signalSeries: { t: number; x: number }[];\n  trail: number[];\n}\n\nexport function useSpringPhysics(params: SpringParams) {\n  const watcher = useAnomalyWatcher('spring');\n  const state = reactive<SpringState>({\n    running: false,\n    paused: false,\n    t: 0,\n    x: 0,\n    v: 0,\n    zeroCrossings: [],\n    measurementPeriod: null,\n    signalSeries: [],\n    trail: [],\n  });\n\n  function derivatives(x: number, v: number, tLocal: number) {\n    const m = effectiveMass.value;\n    const k = params.k;\n    const c = params.damping;\n    const model = params.dampingModel ?? 'linear';\n    const dampingForce = model === 'quadratic' ? -c * Math.abs(v) * v : -c * v;\n    const springForce = -k * x;\n    const forcingForce = params.forcingEnabled\n      ? (params.F0 ?? 0) * Math.sin((params.omegaDrive ?? 0) * tLocal)\n      : 0;\n    return {\n      dx: v,\n      dv: (springForce + dampingForce + forcingForce) / m,\n    };\n  }\n\n  function rk4Step(x: number, v: number, t: number, dt: number): { x: number; v: number } {\n    const k1 = derivatives(x, v, t);\n    const k2 = derivatives(x + 0.5 * dt * k1.dx, v + 0.5 * dt * k1.dv, t + 0.5 * dt);\n    const k3 = derivatives(x + 0.5 * dt * k2.dx, v + 0.5 * dt * k2.dv, t + 0.5 * dt);\n    const k4 = derivatives(x + dt * k3.dx, v + dt * k3.dv, t + dt);\n    return {\n      x: x + (dt / 6) * (k1.dx + 2 * k2.dx + 2 * k3.dx + k4.dx),\n      v: v + (dt / 6) * (k1.dv + 2 * k2.dv + 2 * k3.dv + k4.dv),\n    };\n  }\n\n  function trackCrossings(prevX: number, newX: number, prevTime: number, newTime: number) {\n    if ((prevX > 0 && newX <= 0) || (prevX < 0 && newX >= 0)) {\n      const ratio = Math.abs(prevX - newX) < 1e-12 ? 0.5 : prevX / (prevX - newX);\n      const crossingTime = prevTime + (newTime - prevTime) * ratio;\n      state.zeroCrossings.push(crossingTime);\n      if (state.zeroCrossings.length > 30) state.zeroCrossings.shift();\n      const cycles = Math.min(20, Math.max(1, params.measureCycles || 5));\n      if (state.zeroCrossings.length >= cycles + 2) {\n        const start = Math.max(0, state.zeroCrossings.length - (cycles + 2));\n        const periods: number[] = [];\n        for (let i = start; i < state.zeroCrossings.length - 2; i++) {\n          periods.push(state.zeroCrossings[i + 2] - state.zeroCrossings[i]);\n        }\n        state.measurementPeriod = periods.reduce((a, b) => a + b, 0) / periods.length;\n      }\n    }\n  }\n\n  function step(dt: number, speedMultiplier: number = 1) {\n    const omega0 = Math.sqrt(params.k / Math.max(params.mass, 1e-9));\n    const safeDt = Math.min(1 / 240, 0.15 / omega0);\n    let accum = dt;\n    let steps = 0;\n    while (accum > 1e-12 && steps < 300) {\n      steps++;\n      const sdt = Math.min(safeDt, accum);\n      const prevX = state.x;\n      const prevTime = state.t;\n      const next = rk4Step(state.x, state.v, state.t, sdt * speedMultiplier);\n      state.x = next.x;\n      state.v = next.v;\n      state.t += sdt * speedMultiplier;\n      trackCrossings(prevX, state.x, prevTime, state.t);\n      accum -= sdt;\n    }\n\n    state.signalSeries = [...state.signalSeries.slice(-1499), { t: state.t, x: state.x }];\n\n    state.trail.push(state.x);\n    if (state.trail.length > 400) state.trail.shift();\n\n    // Auto-stop when damping is active and no forcing\n    const stillDriven = !!params.forcingEnabled && (params.F0 ?? 0) > 1e-6;\n    const fr = Math.abs(params.k * state.x);\n    if (!stillDriven && params.damping > 0.001 && state.t > 0.3 && fr < 0.01 && Math.abs(state.v) < 0.005) {\n      stop();\n    }\n\n    watcher.inspect({ t: state.t, x: state.x, v: state.v, mass: params.mass });\n  }\n\n  function start() {\n    state.running = true;\n    state.paused = false;\n    // Keep current displacement (set by pull/push), only reset if no mass\n    if (params.mass <= 1e-6) state.x = 0;\n    state.v = 0;\n    state.t = 0;\n    state.trail = [];\n    state.zeroCrossings = [];\n    state.measurementPeriod = null;\n    state.signalSeries = [];\n  }\n\n  function togglePause() {\n    if (!state.running) return start();\n    state.paused = !state.paused;\n  }\n\n  function stop() {\n    state.running = false;\n    state.paused = false;\n  }\n\n  function reset() {\n    stop();\n    state.t = 0;\n    state.x = 0;  // equilibrium position (not stretched)\n    state.v = 0;\n    state.trail = [];\n    state.zeroCrossings = [];\n    state.measurementPeriod = null;\n    state.signalSeries = [];\n  }\n\n  const effectiveMass = computed(() => {\n    const mEff = (params.springMass ?? 0) / 3;\n    return params.mass + mEff;\n  });\n\n  const theoreticalPeriod = computed(() => {\n    const mTotal = effectiveMass.value;\n    if (mTotal <= 1e-9 || params.k <= 1e-9) return null;\n    return 2 * Math.PI * Math.sqrt(mTotal / params.k);\n  });\n\n  const measured = computed(() => {\n    const T = state.measurementPeriod;\n    if (!T) return { T: null, f: null, omega: null, kCalc: null, kCalcEff: null };\n    const mTotal = effectiveMass.value;\n    return {\n      T,\n      f: 1 / T,\n      omega: (2 * Math.PI) / T,\n      kCalc: (4 * Math.PI * Math.PI * params.mass) / (T * T),\n      kCalcEff: (4 * Math.PI * Math.PI * mTotal) / (T * T),\n    };\n  });\n\n  return { state, step, start, stop, togglePause, reset, theoreticalPeriod, measured, effectiveMass };\n}\n"
@@ -36,75 +49,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634642876,
-      "end": 1783634642876,
+      "start": 1783635316980,
+      "end": 1783635316980,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642876,
-      "end": 1783634642876,
+      "start": 1783635316980,
+      "end": 1783635316980,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783635316980,
+      "end": 1783635316980,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783635316980,
+      "end": 1783635316980,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634642877,
-      "end": 1783634642877,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783635316980,
+      "end": 1783635316980,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783635316980,
+      "end": 1783635316980,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642877,
-      "end": 1783634642877,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783635316980,
+      "end": 1783635316980,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783635316980,
+      "end": 1783635316980,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "start": 1783635316980,
+      "end": 1783635316980,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783635316980,
+      "end": 1783635316980,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783635316980,
+      "end": 1783635316980,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642877,
-      "end": 1783634642877,
+      "name": "vite:css-analysis",
+      "start": 1783635316980,
+      "end": 1783635316980,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { computed, reactive } from \"/node_modules/.vite/deps/vue.js?v=09a3ad4c\";\nimport { useAnomalyWatcher } from \"/src/composables/experiment/useAnomalyWatcher.ts\";\nexport function useSpringPhysics(params) {\n  const watcher = useAnomalyWatcher(\"spring\");\n  const state = reactive({\n    running: false,\n    paused: false,\n    t: 0,\n    x: 0,\n    v: 0,\n    zeroCrossings: [],\n    measurementPeriod: null,\n    signalSeries: [],\n    trail: []\n  });\n  function derivatives(x, v, tLocal) {\n    const m = effectiveMass.value;\n    const k = params.k;\n    const c = params.damping;\n    const model = params.dampingModel ?? \"linear\";\n    const dampingForce = model === \"quadratic\" ? -c * Math.abs(v) * v : -c * v;\n    const springForce = -k * x;\n    const forcingForce = params.forcingEnabled ? (params.F0 ?? 0) * Math.sin((params.omegaDrive ?? 0) * tLocal) : 0;\n    return {\n      dx: v,\n      dv: (springForce + dampingForce + forcingForce) / m\n    };\n  }\n  function rk4Step(x, v, t, dt) {\n    const k1 = derivatives(x, v, t);\n    const k2 = derivatives(x + 0.5 * dt * k1.dx, v + 0.5 * dt * k1.dv, t + 0.5 * dt);\n    const k3 = derivatives(x + 0.5 * dt * k2.dx, v + 0.5 * dt * k2.dv, t + 0.5 * dt);\n    const k4 = derivatives(x + dt * k3.dx, v + dt * k3.dv, t + dt);\n    return {\n      x: x + dt / 6 * (k1.dx + 2 * k2.dx + 2 * k3.dx + k4.dx),\n      v: v + dt / 6 * (k1.dv + 2 * k2.dv + 2 * k3.dv + k4.dv)\n    };\n  }\n  function trackCrossings(prevX, newX, prevTime, newTime) {\n    if (prevX > 0 && newX <= 0 || prevX < 0 && newX >= 0) {\n      const ratio = Math.abs(prevX - newX) < 1e-12 ? 0.5 : prevX / (prevX - newX);\n      const crossingTime = prevTime + (newTime - prevTime) * ratio;\n      state.zeroCrossings.push(crossingTime);\n      if (state.zeroCrossings.length > 30) state.zeroCrossings.shift();\n      const cycles = Math.min(20, Math.max(1, params.measureCycles || 5));\n      if (state.zeroCrossings.length >= cycles + 2) {\n        const start2 = Math.max(0, state.zeroCrossings.length - (cycles + 2));\n        const periods = [];\n        for (let i = start2; i < state.zeroCrossings.length - 2; i++) {\n          periods.push(state.zeroCrossings[i + 2] - state.zeroCrossings[i]);\n        }\n        state.measurementPeriod = periods.reduce((a, b) => a + b, 0) / periods.length;\n      }\n    }\n  }\n  function step(dt, speedMultiplier = 1) {\n    const omega0 = Math.sqrt(params.k / Math.max(params.mass, 1e-9));\n    const safeDt = Math.min(1 / 240, 0.15 / omega0);\n    let accum = dt;\n    let steps = 0;\n    while (accum > 1e-12 && steps < 300) {\n      steps++;\n      const sdt = Math.min(safeDt, accum);\n      const prevX = state.x;\n      const prevTime = state.t;\n      const next = rk4Step(state.x, state.v, state.t, sdt * speedMultiplier);\n      state.x = next.x;\n      state.v = next.v;\n      state.t += sdt * speedMultiplier;\n      trackCrossings(prevX, state.x, prevTime, state.t);\n      accum -= sdt;\n    }\n    state.signalSeries = [...state.signalSeries.slice(-1499), { t: state.t, x: state.x }];\n    state.trail.push(state.x);\n    if (state.trail.length > 400) state.trail.shift();\n    const stillDriven = !!params.forcingEnabled && (params.F0 ?? 0) > 1e-6;\n    const fr = Math.abs(params.k * state.x);\n    if (!stillDriven && params.damping > 1e-3 && state.t > 0.3 && fr < 0.01 && Math.abs(state.v) < 5e-3) {\n      stop();\n    }\n    watcher.inspect({ t: state.t, x: state.x, v: state.v, mass: params.mass });\n  }\n  function start() {\n    state.running = true;\n    state.paused = false;\n    if (params.mass <= 1e-6) state.x = 0;\n    state.v = 0;\n    state.t = 0;\n    state.trail = [];\n    state.zeroCrossings = [];\n    state.measurementPeriod = null;\n    state.signalSeries = [];\n  }\n  function togglePause() {\n    if (!state.running) return start();\n    state.paused = !state.paused;\n  }\n  function stop() {\n    state.running = false;\n    state.paused = false;\n  }\n  function reset() {\n    stop();\n    state.t = 0;\n    state.x = 0;\n    state.v = 0;\n    state.trail = [];\n    state.zeroCrossings = [];\n    state.measurementPeriod = null;\n    state.signalSeries = [];\n  }\n  const effectiveMass = computed(() => {\n    const mEff = (params.springMass ?? 0) / 3;\n    return params.mass + mEff;\n  });\n  const theoreticalPeriod = computed(() => {\n    const mTotal = effectiveMass.value;\n    if (mTotal <= 1e-9 || params.k <= 1e-9) return null;\n    return 2 * Math.PI * Math.sqrt(mTotal / params.k);\n  });\n  const measured = computed(() => {\n    const T = state.measurementPeriod;\n    if (!T) return { T: null, f: null, omega: null, kCalc: null, kCalcEff: null };\n    const mTotal = effectiveMass.value;\n    return {\n      T,\n      f: 1 / T,\n      omega: 2 * Math.PI / T,\n      kCalc: 4 * Math.PI * Math.PI * params.mass / (T * T),\n      kCalcEff: 4 * Math.PI * Math.PI * mTotal / (T * T)\n    };\n  });\n  return { state, step, start, stop, togglePause, reset, theoreticalPeriod, measured, effectiveMass };\n}\n",
+      "start": 1783635316980,
+      "end": 1783635316982,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

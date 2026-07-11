@@ -1,0 +1,140 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/student/ReportResubmitModal.vue?vue&type=style&index=0&scoped=f6cafa6c&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 300; }\n.resubmit-modal { background: rgba(15,23,42,0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 1.5rem; width: 90%; max-width: 450px; display: flex; flex-direction: column; gap: 1rem; }\n.resubmit-modal h3 { margin: 0; font-size: 1.05rem; color: #f1f5f9; text-align: center; }\n.form-row { display: flex; flex-direction: column; gap: 0.3rem; }\n.form-row label { font-size: 0.8rem; color: #94a3b8; font-weight: 600; }\n.form-row select, .form-row textarea { padding: 0.6rem 0.8rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-size: 0.85rem; font-family: inherit; }\n.msg { text-align: center; font-size: 0.85rem; margin: 0; }\n.msg.error { color: #f87171; }\n.msg.success { color: #4ade80; }\n.actions { display: flex; gap: 0.5rem; margin-top: 0.5rem; }\n.btn-cancel, .btn-submit { flex: 1; padding: 0.55rem; border-radius: 0.55rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.2s; }\n.btn-cancel { background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); }\n.btn-submit { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none; }\n.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }\n",
+      "start": 1783626233998,
+      "end": 1783626233998,
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/student/ReportResubmitModal.vue"
+        ],
+        "names": [],
+        "mappings": ";AAgHA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE;AAChL,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE;AAClN,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACxF,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAChE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE;AACvE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACtN,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,EAAE;AAC1D,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC7B,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC/B,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC3D,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE;AACjL,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AAC3G,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,EAAE;AAChG,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE",
+        "file": "C:/Users/feras/Desktop/feras/apps/web/src/components/student/ReportResubmitModal.vue",
+        "sourceRoot": "",
+        "sourcesContent": [
+          "<script setup lang=\"ts\">\nimport { ref, watch } from 'vue';\nimport { useI18n } from '../../composables/useI18n';\nimport { resubmitReport } from '../../services/report.service';\nimport { getMyClasses } from '../../services/class.service';\nimport type { Report } from '../../services/report.service';\nimport type { ClassItem } from '../../services/class.service';\n\nconst props = defineProps<{\n  show: boolean;\n  originalReport: Report | null;\n}>();\n\nconst emit = defineEmits<{\n  (e: 'update:show', v: boolean): void;\n  (e: 'submitted'): void;\n}>();\n\nconst { t } = useI18n();\nconst classes = ref<ClassItem[]>([]);\nconst selectedClassId = ref('');\nconst readings = ref('');\nconst conclusion = ref('');\nconst loading = ref(false);\nconst error = ref('');\nconst success = ref('');\n\nwatch(() => props.show, async (val) => {\n  if (val && props.originalReport) {\n    selectedClassId.value = props.originalReport.class_id;\n    try {\n      const parsed = JSON.parse(props.originalReport.readings || '[]');\n      readings.value = JSON.stringify(parsed, null, 2);\n    } catch { readings.value = props.originalReport.readings; }\n    conclusion.value = props.originalReport.conclusion || '';\n\n    const res = await getMyClasses();\n    if (res.success) classes.value = res.classes;\n  }\n});\n\nasync function submit() {\n  if (!props.originalReport) return;\n  loading.value = true; error.value = ''; success.value = '';\n\n  try {\n    const res = await resubmitReport(props.originalReport.id, {\n      class_id: selectedClassId.value,\n      experiment_type: props.originalReport.experiment_type,\n      experiment_name: props.originalReport.experiment_name,\n      experiment_id: props.originalReport.experiment_id,\n      readings: readings.value,\n      params: props.originalReport.params,\n      student_info: props.originalReport.student_info,\n      conclusion: conclusion.value,\n      conclusion_errors: props.originalReport.conclusion_errors,\n      conclusion_improvements: props.originalReport.conclusion_improvements,\n      columns: props.originalReport.columns,\n      equations: props.originalReport.equations,\n      plots: props.originalReport.plots,\n      chart_snapshot: props.originalReport.chart_snapshot,\n    });\n    if (res.success) {\n      success.value = t('dashboard.resubmitSuccess');\n      setTimeout(() => { emit('update:show', false); emit('submitted'); }, 1200);\n    } else {\n      error.value = t('dashboard.submitFailed');\n    }\n  } catch (err) {\n    error.value = t('dashboard.serverConnFailed');\n  } finally {\n    loading.value = false;\n  }\n}\n</script>\n\n<template>\n  <div v-if=\"show && originalReport\" class=\"modal-overlay\" @click.self=\"$emit('update:show', false)\" data-v-inspector=\"src/components/student/ReportResubmitModal.vue:78:3\">\n    <div class=\"resubmit-modal\" data-v-inspector=\"src/components/student/ReportResubmitModal.vue:79:5\">\n      <h3 data-v-inspector=\"src/components/student/ReportResubmitModal.vue:80:7\">{{ t('dashboard.resubmitTitle') }} — {{ originalReport.experiment_name }}</h3>\n\n      <div class=\"form-row\" data-v-inspector=\"src/components/student/ReportResubmitModal.vue:82:7\">\n        <label data-v-inspector=\"src/components/student/ReportResubmitModal.vue:83:9\">{{ t('dashboard.classes') }}</label>\n        <select v-model=\"selectedClassId\" data-v-inspector=\"src/components/student/ReportResubmitModal.vue:84:9\">\n          <option v-for=\"cls in classes\" :key=\"cls.id\" :value=\"cls.id\" data-v-inspector=\"src/components/student/ReportResubmitModal.vue:85:11\">{{ cls.name }}</option>\n        </select>\n      </div>\n\n      <div class=\"form-row\" data-v-inspector=\"src/components/student/ReportResubmitModal.vue:89:7\">\n        <label data-v-inspector=\"src/components/student/ReportResubmitModal.vue:90:9\">{{ t('dashboard.readingsJson') }}</label>\n        <textarea v-model=\"readings\" rows=\"5\" data-v-inspector=\"src/components/student/ReportResubmitModal.vue:91:9\" />\n      </div>\n\n      <div class=\"form-row\" data-v-inspector=\"src/components/student/ReportResubmitModal.vue:94:7\">\n        <label data-v-inspector=\"src/components/student/ReportResubmitModal.vue:95:9\">{{ t('dashboard.conclusionEdits') }}</label>\n        <textarea v-model=\"conclusion\" rows=\"3\" :placeholder=\"t('dashboard.whatChanges')\" data-v-inspector=\"src/components/student/ReportResubmitModal.vue:96:9\" />\n      </div>\n\n      <p v-if=\"error\" class=\"msg error\" data-v-inspector=\"src/components/student/ReportResubmitModal.vue:99:7\">{{ error }}</p>\n      <p v-if=\"success\" class=\"msg success\" data-v-inspector=\"src/components/student/ReportResubmitModal.vue:100:7\">{{ success }}</p>\n\n      <div class=\"actions\" data-v-inspector=\"src/components/student/ReportResubmitModal.vue:102:7\">\n        <button class=\"btn-cancel\" @click=\"$emit('update:show', false)\" data-v-inspector=\"src/components/student/ReportResubmitModal.vue:103:9\">{{ t('dashboard.cancelBtn') }}</button>\n        <button class=\"btn-submit\" :disabled=\"loading\" @click=\"submit\" data-v-inspector=\"src/components/student/ReportResubmitModal.vue:104:9\">\n          {{ loading ? '...' : '↩️ ' + t('dashboard.resubmit') }}\n        </button>\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 300; }\n.resubmit-modal { background: rgba(15,23,42,0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 1.5rem; width: 90%; max-width: 450px; display: flex; flex-direction: column; gap: 1rem; }\n.resubmit-modal h3 { margin: 0; font-size: 1.05rem; color: #f1f5f9; text-align: center; }\n.form-row { display: flex; flex-direction: column; gap: 0.3rem; }\n.form-row label { font-size: 0.8rem; color: #94a3b8; font-weight: 600; }\n.form-row select, .form-row textarea { padding: 0.6rem 0.8rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-size: 0.85rem; font-family: inherit; }\n.msg { text-align: center; font-size: 0.85rem; margin: 0; }\n.msg.error { color: #f87171; }\n.msg.success { color: #4ade80; }\n.actions { display: flex; gap: 0.5rem; margin-top: 0.5rem; }\n.btn-cancel, .btn-submit { flex: 1; padding: 0.55rem; border-radius: 0.55rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.2s; }\n.btn-cancel { background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); }\n.btn-submit { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none; }\n.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }\n</style>\n"
+        ]
+      }
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626233998,
+      "end": 1783626233999,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "\n.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 300; }\n.resubmit-modal { background: rgba(15,23,42,0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 1.5rem; width: 90%; max-width: 450px; display: flex; flex-direction: column; gap: 1rem; }\n.resubmit-modal h3 { margin: 0; font-size: 1.05rem; color: #f1f5f9; text-align: center; }\n.form-row { display: flex; flex-direction: column; gap: 0.3rem; }\n.form-row label { font-size: 0.8rem; color: #94a3b8; font-weight: 600; }\n.form-row select, .form-row textarea { padding: 0.6rem 0.8rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-size: 0.85rem; font-family: inherit; }\n.msg { text-align: center; font-size: 0.85rem; margin: 0; }\n.msg.error { color: #f87171; }\n.msg.success { color: #4ade80; }\n.actions { display: flex; gap: 0.5rem; margin-top: 0.5rem; }\n.btn-cancel, .btn-submit { flex: 1; padding: 0.55rem; border-radius: 0.55rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.2s; }\n.btn-cancel { background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); }\n.btn-submit { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none; }\n.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }\n",
+      "start": 1783626233999,
+      "end": 1783626233999,
+      "order": "pre",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 300; }\n.resubmit-modal { background: rgba(15,23,42,0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 1.5rem; width: 90%; max-width: 450px; display: flex; flex-direction: column; gap: 1rem; }\n.resubmit-modal h3 { margin: 0; font-size: 1.05rem; color: #f1f5f9; text-align: center; }\n.form-row { display: flex; flex-direction: column; gap: 0.3rem; }\n.form-row label { font-size: 0.8rem; color: #94a3b8; font-weight: 600; }\n.form-row select, .form-row textarea { padding: 0.6rem 0.8rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-size: 0.85rem; font-family: inherit; }\n.msg { text-align: center; font-size: 0.85rem; margin: 0; }\n.msg.error { color: #f87171; }\n.msg.success { color: #4ade80; }\n.actions { display: flex; gap: 0.5rem; margin-top: 0.5rem; }\n.btn-cancel, .btn-submit { flex: 1; padding: 0.55rem; border-radius: 0.55rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.2s; }\n.btn-cancel { background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); }\n.btn-submit { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none; }\n.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }\n",
+      "start": 1783626233999,
+      "end": 1783626233999,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783626233999,
+      "end": 1783626233999,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783626233999,
+      "end": 1783626233999,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783626233999,
+      "end": 1783626233999,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.modal-overlay[data-v-f6cafa6c] { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 300;\n}\n.resubmit-modal[data-v-f6cafa6c] { background: rgba(15,23,42,0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 1.5rem; width: 90%; max-width: 450px; display: flex; flex-direction: column; gap: 1rem;\n}\n.resubmit-modal h3[data-v-f6cafa6c] { margin: 0; font-size: 1.05rem; color: #f1f5f9; text-align: center;\n}\n.form-row[data-v-f6cafa6c] { display: flex; flex-direction: column; gap: 0.3rem;\n}\n.form-row label[data-v-f6cafa6c] { font-size: 0.8rem; color: #94a3b8; font-weight: 600;\n}\n.form-row select[data-v-f6cafa6c], .form-row textarea[data-v-f6cafa6c] { padding: 0.6rem 0.8rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-size: 0.85rem; font-family: inherit;\n}\n.msg[data-v-f6cafa6c] { text-align: center; font-size: 0.85rem; margin: 0;\n}\n.msg.error[data-v-f6cafa6c] { color: #f87171;\n}\n.msg.success[data-v-f6cafa6c] { color: #4ade80;\n}\n.actions[data-v-f6cafa6c] { display: flex; gap: 0.5rem; margin-top: 0.5rem;\n}\n.btn-cancel[data-v-f6cafa6c], .btn-submit[data-v-f6cafa6c] { flex: 1; padding: 0.55rem; border-radius: 0.55rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.2s;\n}\n.btn-cancel[data-v-f6cafa6c] { background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1);\n}\n.btn-submit[data-v-f6cafa6c] { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none;\n}\n.btn-submit[data-v-f6cafa6c]:disabled { opacity: 0.5; cursor: not-allowed;\n}\n",
+      "start": 1783626233999,
+      "end": 1783626234020,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783626234020,
+      "end": 1783626234020,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/student/ReportResubmitModal.vue?vue&type=style&index=0&scoped=f6cafa6c&lang.css\"\nconst __vite__css = \"\\n.modal-overlay[data-v-f6cafa6c] { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 300;\\n}\\n.resubmit-modal[data-v-f6cafa6c] { background: rgba(15,23,42,0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 1.5rem; width: 90%; max-width: 450px; display: flex; flex-direction: column; gap: 1rem;\\n}\\n.resubmit-modal h3[data-v-f6cafa6c] { margin: 0; font-size: 1.05rem; color: #f1f5f9; text-align: center;\\n}\\n.form-row[data-v-f6cafa6c] { display: flex; flex-direction: column; gap: 0.3rem;\\n}\\n.form-row label[data-v-f6cafa6c] { font-size: 0.8rem; color: #94a3b8; font-weight: 600;\\n}\\n.form-row select[data-v-f6cafa6c], .form-row textarea[data-v-f6cafa6c] { padding: 0.6rem 0.8rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-size: 0.85rem; font-family: inherit;\\n}\\n.msg[data-v-f6cafa6c] { text-align: center; font-size: 0.85rem; margin: 0;\\n}\\n.msg.error[data-v-f6cafa6c] { color: #f87171;\\n}\\n.msg.success[data-v-f6cafa6c] { color: #4ade80;\\n}\\n.actions[data-v-f6cafa6c] { display: flex; gap: 0.5rem; margin-top: 0.5rem;\\n}\\n.btn-cancel[data-v-f6cafa6c], .btn-submit[data-v-f6cafa6c] { flex: 1; padding: 0.55rem; border-radius: 0.55rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.2s;\\n}\\n.btn-cancel[data-v-f6cafa6c] { background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1);\\n}\\n.btn-submit[data-v-f6cafa6c] { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none;\\n}\\n.btn-submit[data-v-f6cafa6c]:disabled { opacity: 0.5; cursor: not-allowed;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626234020,
+      "end": 1783626234025,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783626234025,
+      "end": 1783626234025,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783626234025,
+      "end": 1783626234025,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783626234025,
+      "end": 1783626234025,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783626234025,
+      "end": 1783626234025,
+      "order": "normal"
+    },
+    {
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626234025,
+      "end": 1783626234025,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626234025,
+      "end": 1783626234025,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-analysis",
+      "start": 1783626234025,
+      "end": 1783626234025,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/components/student/ReportResubmitModal.vue?vue&type=style&index=0&scoped=f6cafa6c&lang.css\");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from \"/@vite/client\"\nconst __vite__id = \"C:/Users/feras/Desktop/feras/apps/web/src/components/student/ReportResubmitModal.vue?vue&type=style&index=0&scoped=f6cafa6c&lang.css\"\nconst __vite__css = \"\\n.modal-overlay[data-v-f6cafa6c] { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 300;\\n}\\n.resubmit-modal[data-v-f6cafa6c] { background: rgba(15,23,42,0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 1.5rem; width: 90%; max-width: 450px; display: flex; flex-direction: column; gap: 1rem;\\n}\\n.resubmit-modal h3[data-v-f6cafa6c] { margin: 0; font-size: 1.05rem; color: #f1f5f9; text-align: center;\\n}\\n.form-row[data-v-f6cafa6c] { display: flex; flex-direction: column; gap: 0.3rem;\\n}\\n.form-row label[data-v-f6cafa6c] { font-size: 0.8rem; color: #94a3b8; font-weight: 600;\\n}\\n.form-row select[data-v-f6cafa6c], .form-row textarea[data-v-f6cafa6c] { padding: 0.6rem 0.8rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-size: 0.85rem; font-family: inherit;\\n}\\n.msg[data-v-f6cafa6c] { text-align: center; font-size: 0.85rem; margin: 0;\\n}\\n.msg.error[data-v-f6cafa6c] { color: #f87171;\\n}\\n.msg.success[data-v-f6cafa6c] { color: #4ade80;\\n}\\n.actions[data-v-f6cafa6c] { display: flex; gap: 0.5rem; margin-top: 0.5rem;\\n}\\n.btn-cancel[data-v-f6cafa6c], .btn-submit[data-v-f6cafa6c] { flex: 1; padding: 0.55rem; border-radius: 0.55rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.2s;\\n}\\n.btn-cancel[data-v-f6cafa6c] { background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1);\\n}\\n.btn-submit[data-v-f6cafa6c] { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none;\\n}\\n.btn-submit[data-v-f6cafa6c]:disabled { opacity: 0.5; cursor: not-allowed;\\n}\\n\"\n__vite__updateStyle(__vite__id, __vite__css)\nimport.meta.hot.accept()\nimport.meta.hot.prune(() => __vite__removeStyle(__vite__id))",
+      "start": 1783626234025,
+      "end": 1783626234025,
+      "order": "normal",
+      "sourcemaps": null
+    }
+  ]
+}

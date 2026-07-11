@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/packages/chemistry-engine/src/color.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "function hex2rgb(hex: string) {\n  const c = hex.replace('#', '');\n  const r = parseInt(c.substring(0, 2), 16);\n  const g = parseInt(c.substring(2, 4), 16);\n  const b = parseInt(c.substring(4, 6), 16);\n  return { r: isNaN(r) ? 59 : r, g: isNaN(g) ? 130 : g, b: isNaN(b) ? 246 : b };\n}\n\nexport function hexToRgb(hex: string) {\n  return hex2rgb(hex);\n}\n\nfunction rgb2hex(r: number, g: number, b: number) {\n  const toHex = (n: number) => Math.round(n).toString(16).padStart(2, '0');\n  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;\n}\n\nexport function mixColor(c1: string, vol1: number, c2: string, vol2: number): string {\n  const rgb1 = hex2rgb(c1);\n  const rgb2 = hex2rgb(c2);\n  const total = vol1 + vol2;\n  const r = (rgb1.r * vol1 + rgb2.r * vol2) / total;\n  const g = (rgb1.g * vol1 + rgb2.g * vol2) / total;\n  const b = (rgb1.b * vol1 + rgb2.b * vol2) / total;\n  return rgb2hex(r, g, b);\n}\n",
-      "start": 1783634641760,
-      "end": 1783634642174,
+      "start": 1783626310549,
+      "end": 1783626310549
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626310549,
+      "end": 1783626310549,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "function hex2rgb(hex: string) {\n  const c = hex.replace('#', '');\n  const r = parseInt(c.substring(0, 2), 16);\n  const g = parseInt(c.substring(2, 4), 16);\n  const b = parseInt(c.substring(4, 6), 16);\n  return { r: isNaN(r) ? 59 : r, g: isNaN(g) ? 130 : g, b: isNaN(b) ? 246 : b };\n}\n\nexport function hexToRgb(hex: string) {\n  return hex2rgb(hex);\n}\n\nfunction rgb2hex(r: number, g: number, b: number) {\n  const toHex = (n: number) => Math.round(n).toString(16).padStart(2, '0');\n  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;\n}\n\nexport function mixColor(c1: string, vol1: number, c2: string, vol2: number): string {\n  const rgb1 = hex2rgb(c1);\n  const rgb2 = hex2rgb(c2);\n  const total = vol1 + vol2;\n  const r = (rgb1.r * vol1 + rgb2.r * vol2) / total;\n  const g = (rgb1.g * vol1 + rgb2.g * vol2) / total;\n  const b = (rgb1.b * vol1 + rgb2.b * vol2) / total;\n  return rgb2hex(r, g, b);\n}\n",
+      "start": 1783626310549,
+      "end": 1783626310549,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634642174,
-      "end": 1783634642174,
+      "start": 1783626310549,
+      "end": 1783626310549,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "function hex2rgb(hex) {\n  const c = hex.replace(\"#\", \"\");\n  const r = parseInt(c.substring(0, 2), 16);\n  const g = parseInt(c.substring(2, 4), 16);\n  const b = parseInt(c.substring(4, 6), 16);\n  return { r: isNaN(r) ? 59 : r, g: isNaN(g) ? 130 : g, b: isNaN(b) ? 246 : b };\n}\nexport function hexToRgb(hex) {\n  return hex2rgb(hex);\n}\nfunction rgb2hex(r, g, b) {\n  const toHex = (n) => Math.round(n).toString(16).padStart(2, \"0\");\n  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;\n}\nexport function mixColor(c1, vol1, c2, vol2) {\n  const rgb1 = hex2rgb(c1);\n  const rgb2 = hex2rgb(c2);\n  const total = vol1 + vol2;\n  const r = (rgb1.r * vol1 + rgb2.r * vol2) / total;\n  const g = (rgb1.g * vol1 + rgb2.g * vol2) / total;\n  const b = (rgb1.b * vol1 + rgb2.b * vol2) / total;\n  return rgb2hex(r, g, b);\n}\n",
-      "start": 1783634642174,
-      "end": 1783634642316,
+      "start": 1783626310549,
+      "end": 1783626310820,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/packages/chemistry-engine/src/color.ts"
+          "color.ts"
         ],
         "sourcesContent": [
           "function hex2rgb(hex: string) {\n  const c = hex.replace('#', '');\n  const r = parseInt(c.substring(0, 2), 16);\n  const g = parseInt(c.substring(2, 4), 16);\n  const b = parseInt(c.substring(4, 6), 16);\n  return { r: isNaN(r) ? 59 : r, g: isNaN(g) ? 130 : g, b: isNaN(b) ? 246 : b };\n}\n\nexport function hexToRgb(hex: string) {\n  return hex2rgb(hex);\n}\n\nfunction rgb2hex(r: number, g: number, b: number) {\n  const toHex = (n: number) => Math.round(n).toString(16).padStart(2, '0');\n  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;\n}\n\nexport function mixColor(c1: string, vol1: number, c2: string, vol2: number): string {\n  const rgb1 = hex2rgb(c1);\n  const rgb2 = hex2rgb(c2);\n  const total = vol1 + vol2;\n  const r = (rgb1.r * vol1 + rgb2.r * vol2) / total;\n  const g = (rgb1.g * vol1 + rgb2.g * vol2) / total;\n  const b = (rgb1.b * vol1 + rgb2.b * vol2) / total;\n  return rgb2hex(r, g, b);\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634642316,
-      "end": 1783634642316,
+      "start": 1783626310820,
+      "end": 1783626310820,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634642316,
-      "end": 1783634642316,
+      "start": 1783626310820,
+      "end": 1783626310820,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626310820,
+      "end": 1783626310820,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634642316,
-      "end": 1783634642316,
+      "start": 1783626310820,
+      "end": 1783626310820,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634642316,
-      "end": 1783634642316,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634642316,
-      "end": 1783634642316,
+      "start": 1783626310820,
+      "end": 1783626310820,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634642316,
-      "end": 1783634642316,
+      "start": 1783626310820,
+      "end": 1783626310820,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634642316,
-      "end": 1783634642316,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634642316,
-      "end": 1783634642316,
+      "start": 1783626310820,
+      "end": 1783626310820,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634642316,
-      "end": 1783634642316,
+      "start": 1783626310820,
+      "end": 1783626310820,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634642316,
-      "end": 1783634642316,
+      "start": 1783626310820,
+      "end": 1783626310820,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634642316,
-      "end": 1783634642316,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626310820,
+      "end": 1783626310820,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626310820,
+      "end": 1783626310820,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634642316,
-      "end": 1783634642316,
+      "name": "vite:css-analysis",
+      "start": 1783626310820,
+      "end": 1783626310820,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "function hex2rgb(hex) {\n  const c = hex.replace(\"#\", \"\");\n  const r = parseInt(c.substring(0, 2), 16);\n  const g = parseInt(c.substring(2, 4), 16);\n  const b = parseInt(c.substring(4, 6), 16);\n  return { r: isNaN(r) ? 59 : r, g: isNaN(g) ? 130 : g, b: isNaN(b) ? 246 : b };\n}\nexport function hexToRgb(hex) {\n  return hex2rgb(hex);\n}\nfunction rgb2hex(r, g, b) {\n  const toHex = (n) => Math.round(n).toString(16).padStart(2, \"0\");\n  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;\n}\nexport function mixColor(c1, vol1, c2, vol2) {\n  const rgb1 = hex2rgb(c1);\n  const rgb2 = hex2rgb(c2);\n  const total = vol1 + vol2;\n  const r = (rgb1.r * vol1 + rgb2.r * vol2) / total;\n  const g = (rgb1.g * vol1 + rgb2.g * vol2) / total;\n  const b = (rgb1.b * vol1 + rgb2.b * vol2) / total;\n  return rgb2hex(r, g, b);\n}\n",
+      "start": 1783626310820,
+      "end": 1783626310825,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

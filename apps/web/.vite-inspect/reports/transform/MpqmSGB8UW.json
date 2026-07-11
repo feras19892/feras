@@ -2,28 +2,41 @@
   "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/sendToAnalysis.ts",
   "transforms": [
     {
-      "name": "vite:load-fallback",
+      "name": "__load__",
       "result": "import type { ChemAnalysisPayload } from '../../types/chemistry';\nimport type { Router } from 'vue-router';\n\nconst KEY = 'chemistry-analysis-pending';\nconst LAST_KEY = 'chemistry-analysis-last';\nconst REFERRER_KEY = 'chemistry-analysis-referrer';\n\nexport function sendToAnalysis(router: Router, payload: ChemAnalysisPayload) {\n  const data = JSON.stringify({ ts: Date.now(), payload });\n  try {\n    localStorage.setItem(KEY, data);\n    localStorage.setItem(LAST_KEY, data);\n    localStorage.setItem(REFERRER_KEY, window.location.pathname);\n  } catch { /* ignore */ }\n  router.push('/chemistry/analysis-calc');\n}\n\nexport function consumePendingPayload(): ChemAnalysisPayload | null {\n  try {\n    const raw = localStorage.getItem(KEY);\n    if (raw) {\n      localStorage.removeItem(KEY);\n      const parsed = JSON.parse(raw);\n      if (parsed && parsed.payload) return parsed.payload as ChemAnalysisPayload;\n    }\n    const last = localStorage.getItem(LAST_KEY);\n    if (last) {\n      const parsed = JSON.parse(last);\n      if (parsed && parsed.payload) return parsed.payload as ChemAnalysisPayload;\n    }\n  } catch { /* ignore */ }\n  return null;\n}\n\nexport function clearAnalysisStorage() {\n  try {\n    localStorage.removeItem(KEY);\n    localStorage.removeItem(LAST_KEY);\n    localStorage.removeItem(REFERRER_KEY);\n  } catch { /* ignore */ }\n}\n",
-      "start": 1783634639312,
-      "end": 1783634639557,
+      "start": 1783626307784,
+      "end": 1783626307784
+    },
+    {
+      "name": "vite-plugin-vue-inspector",
+      "start": 1783626307784,
+      "end": 1783626307784,
+      "order": "pre"
+    },
+    {
+      "name": "vite-plugin-vue-devtools",
+      "result": "import type { ChemAnalysisPayload } from '../../types/chemistry';\nimport type { Router } from 'vue-router';\n\nconst KEY = 'chemistry-analysis-pending';\nconst LAST_KEY = 'chemistry-analysis-last';\nconst REFERRER_KEY = 'chemistry-analysis-referrer';\n\nexport function sendToAnalysis(router: Router, payload: ChemAnalysisPayload) {\n  const data = JSON.stringify({ ts: Date.now(), payload });\n  try {\n    localStorage.setItem(KEY, data);\n    localStorage.setItem(LAST_KEY, data);\n    localStorage.setItem(REFERRER_KEY, window.location.pathname);\n  } catch { /* ignore */ }\n  router.push('/chemistry/analysis-calc');\n}\n\nexport function consumePendingPayload(): ChemAnalysisPayload | null {\n  try {\n    const raw = localStorage.getItem(KEY);\n    if (raw) {\n      localStorage.removeItem(KEY);\n      const parsed = JSON.parse(raw);\n      if (parsed && parsed.payload) return parsed.payload as ChemAnalysisPayload;\n    }\n    const last = localStorage.getItem(LAST_KEY);\n    if (last) {\n      const parsed = JSON.parse(last);\n      if (parsed && parsed.payload) return parsed.payload as ChemAnalysisPayload;\n    }\n  } catch { /* ignore */ }\n  return null;\n}\n\nexport function clearAnalysisStorage() {\n  try {\n    localStorage.removeItem(KEY);\n    localStorage.removeItem(LAST_KEY);\n    localStorage.removeItem(REFERRER_KEY);\n  } catch { /* ignore */ }\n}\n",
+      "start": 1783626307784,
+      "end": 1783626307784,
+      "order": "pre",
       "sourcemaps": null
     },
     {
       "name": "vite:css",
-      "start": 1783634639557,
-      "end": 1783634639557,
+      "start": 1783626307784,
+      "end": 1783626307784,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "const KEY = \"chemistry-analysis-pending\";\nconst LAST_KEY = \"chemistry-analysis-last\";\nconst REFERRER_KEY = \"chemistry-analysis-referrer\";\nexport function sendToAnalysis(router, payload) {\n  const data = JSON.stringify({ ts: Date.now(), payload });\n  try {\n    localStorage.setItem(KEY, data);\n    localStorage.setItem(LAST_KEY, data);\n    localStorage.setItem(REFERRER_KEY, window.location.pathname);\n  } catch {\n  }\n  router.push(\"/chemistry/analysis-calc\");\n}\nexport function consumePendingPayload() {\n  try {\n    const raw = localStorage.getItem(KEY);\n    if (raw) {\n      localStorage.removeItem(KEY);\n      const parsed = JSON.parse(raw);\n      if (parsed && parsed.payload) return parsed.payload;\n    }\n    const last = localStorage.getItem(LAST_KEY);\n    if (last) {\n      const parsed = JSON.parse(last);\n      if (parsed && parsed.payload) return parsed.payload;\n    }\n  } catch {\n  }\n  return null;\n}\nexport function clearAnalysisStorage() {\n  try {\n    localStorage.removeItem(KEY);\n    localStorage.removeItem(LAST_KEY);\n    localStorage.removeItem(REFERRER_KEY);\n  } catch {\n  }\n}\n",
-      "start": 1783634639557,
-      "end": 1783634639938,
+      "start": 1783626307784,
+      "end": 1783626308246,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
         "sources": [
-          "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/sendToAnalysis.ts"
+          "sendToAnalysis.ts"
         ],
         "sourcesContent": [
           "import type { ChemAnalysisPayload } from '../../types/chemistry';\nimport type { Router } from 'vue-router';\n\nconst KEY = 'chemistry-analysis-pending';\nconst LAST_KEY = 'chemistry-analysis-last';\nconst REFERRER_KEY = 'chemistry-analysis-referrer';\n\nexport function sendToAnalysis(router: Router, payload: ChemAnalysisPayload) {\n  const data = JSON.stringify({ ts: Date.now(), payload });\n  try {\n    localStorage.setItem(KEY, data);\n    localStorage.setItem(LAST_KEY, data);\n    localStorage.setItem(REFERRER_KEY, window.location.pathname);\n  } catch { /* ignore */ }\n  router.push('/chemistry/analysis-calc');\n}\n\nexport function consumePendingPayload(): ChemAnalysisPayload | null {\n  try {\n    const raw = localStorage.getItem(KEY);\n    if (raw) {\n      localStorage.removeItem(KEY);\n      const parsed = JSON.parse(raw);\n      if (parsed && parsed.payload) return parsed.payload as ChemAnalysisPayload;\n    }\n    const last = localStorage.getItem(LAST_KEY);\n    if (last) {\n      const parsed = JSON.parse(last);\n      if (parsed && parsed.payload) return parsed.payload as ChemAnalysisPayload;\n    }\n  } catch { /* ignore */ }\n  return null;\n}\n\nexport function clearAnalysisStorage() {\n  try {\n    localStorage.removeItem(KEY);\n    localStorage.removeItem(LAST_KEY);\n    localStorage.removeItem(REFERRER_KEY);\n  } catch { /* ignore */ }\n}\n"
@@ -34,75 +47,83 @@
     },
     {
       "name": "vite:json",
-      "start": 1783634639938,
-      "end": 1783634639938,
+      "start": 1783626308246,
+      "end": 1783626308246,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1783634639938,
-      "end": 1783634639938,
+      "start": 1783626308246,
+      "end": 1783626308246,
       "order": "normal"
     },
     {
+      "name": "vite:vue",
+      "start": 1783626308247,
+      "end": 1783626308247,
+      "order": "normal-normal"
+    },
+    {
       "name": "vite:define",
-      "start": 1783634639938,
-      "end": 1783634639938,
+      "start": 1783626308247,
+      "end": 1783626308247,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1783634639938,
-      "end": 1783634639938,
-      "order": "normal"
-    },
-    {
-      "name": "vite:build-html",
-      "start": 1783634639938,
-      "end": 1783634639938,
+      "start": 1783626308247,
+      "end": 1783626308247,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1783634639938,
-      "end": 1783634639938,
+      "start": 1783626308247,
+      "end": 1783626308247,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1783634639938,
-      "end": 1783634639938,
-      "order": "normal"
-    },
-    {
-      "name": "commonjs",
-      "start": 1783634639938,
-      "end": 1783634639938,
+      "start": 1783626308248,
+      "end": 1783626308248,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1783634639939,
-      "end": 1783634639939,
+      "start": 1783626308248,
+      "end": 1783626308248,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1783634639939,
-      "end": 1783634639939,
+      "start": 1783626308248,
+      "end": 1783626308248,
       "order": "normal"
     },
     {
-      "name": "vite:build-import-analysis",
-      "start": 1783634639939,
-      "end": 1783634639939,
+      "name": "vite-plugin-vue-inspector:post",
+      "start": 1783626308248,
+      "end": 1783626308248,
+      "order": "post"
+    },
+    {
+      "name": "vite:client-inject",
+      "start": 1783626308248,
+      "end": 1783626308248,
       "order": "normal"
     },
     {
-      "name": "vite:reporter",
-      "start": 1783634639939,
-      "end": 1783634639939,
+      "name": "vite:css-analysis",
+      "start": 1783626308248,
+      "end": 1783626308248,
       "order": "normal"
+    },
+    {
+      "name": "vite:import-analysis",
+      "result": "const KEY = \"chemistry-analysis-pending\";\nconst LAST_KEY = \"chemistry-analysis-last\";\nconst REFERRER_KEY = \"chemistry-analysis-referrer\";\nexport function sendToAnalysis(router, payload) {\n  const data = JSON.stringify({ ts: Date.now(), payload });\n  try {\n    localStorage.setItem(KEY, data);\n    localStorage.setItem(LAST_KEY, data);\n    localStorage.setItem(REFERRER_KEY, window.location.pathname);\n  } catch {\n  }\n  router.push(\"/chemistry/analysis-calc\");\n}\nexport function consumePendingPayload() {\n  try {\n    const raw = localStorage.getItem(KEY);\n    if (raw) {\n      localStorage.removeItem(KEY);\n      const parsed = JSON.parse(raw);\n      if (parsed && parsed.payload) return parsed.payload;\n    }\n    const last = localStorage.getItem(LAST_KEY);\n    if (last) {\n      const parsed = JSON.parse(last);\n      if (parsed && parsed.payload) return parsed.payload;\n    }\n  } catch {\n  }\n  return null;\n}\nexport function clearAnalysisStorage() {\n  try {\n    localStorage.removeItem(KEY);\n    localStorage.removeItem(LAST_KEY);\n    localStorage.removeItem(REFERRER_KEY);\n  } catch {\n  }\n}\n",
+      "start": 1783626308248,
+      "end": 1783626308252,
+      "order": "normal",
+      "sourcemaps": null
     }
   ]
 }

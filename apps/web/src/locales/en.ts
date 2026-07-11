@@ -6,7 +6,6 @@ import { adminUser } from './admin-user'
 import { teacher } from './teacher'
 import { common } from './common'
 import { settings } from './settings'
-import { experiments } from './experiments/index'
 import { analysis } from './analysis/index'
 import { ai } from './ai'
 import { chemistry } from './chemistry'
@@ -27,7 +26,6 @@ export default {
   teacher: teacher.en,
   settings: settings.en,
   common: common.en,
-  experiments: experiments.en,
   analysis: analysis.en,
   ai: ai.en,
   chemistry: chemistry.en,
@@ -38,20 +36,4 @@ export default {
   chemistryExperiments: chemistryExperiments.en,
   chemistryTools: chemistryTools.en,
   chemistryAssistant: chemistryAssistant.en,
-  prism: {
-    ...experiments.en,
-    title: 'Light Dispersion by Prism',
-    emptyResults: 'Record at least 2 trials to see results',
-    dragLaserSource: '⊹ Drag the laser source ↕ to change θ₁',
-    dragA: 'Drag A to change prism angle',
-    dragPrism: '✥ Drag the prism to move it on screen',
-    selectTool: 'Select (default)',
-    moveMode: 'Move mode',
-    normalLines: 'Normal Lines',
-    showSpectrum: 'Show Spectrum',
-    angleArcs: 'Angle Arcs',
-    virtualScreen: 'Virtual Screen',
-    grid: 'Grid',
-    resetView: 'Reset view',
-  },
 } as const

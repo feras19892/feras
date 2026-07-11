@@ -8,12 +8,14 @@ import LatentHeatPanelBody from '../../../../components/experiment/latent-heat/L
 import LatentHeatStatusBar from '../../../../components/experiment/latent-heat/LatentHeatStatusBar.vue'
 import LatentHeatControlBar from '../../../../components/experiment/latent-heat/LatentHeatControlBar.vue'
 import LatentHeatHelpModal from '../../../../components/experiment/latent-heat/LatentHeatHelpModal.vue'
+import LatentHeatGuidePanel from '../../../../components/experiment/latent-heat/LatentHeatGuidePanel.vue'
 import LatentHeatOverlayPanels from '../../../../components/experiment/latent-heat/LatentHeatOverlayPanels.vue'
 import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
 
 const ex = useLatentHeatExperiment()
 const { t } = useI18n()
 const helpOpen = ref(false)
+const showGuide = ref(true)
 const hoveredField = ref('')
 
 function onKeyDown(e: KeyboardEvent) {
@@ -156,6 +158,7 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown) })
             />
           </div>
         </template>
+        <LatentHeatGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
 

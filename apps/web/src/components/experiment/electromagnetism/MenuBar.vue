@@ -18,6 +18,7 @@ const emit = defineEmits<{
   (e: 'togglePause'): void
   (e: 'reset'): void
   (e: 'recordTrial'): void
+  (e: 'toggleHelp'): void
   (e: 'analyzeResults'): void
 }>()
 
@@ -58,6 +59,9 @@ onUnmounted(() => window.removeEventListener('click', onMenuClick))
       </div>
       <div class="menu-group">
         <button class="menu-btn analyze-btn" @click="emit('analyzeResults')">{{ t('experiments.emAnalyze') }}</button>
+      </div>
+      <div class="menu-group">
+        <button class="menu-btn" @click="emit('toggleHelp')">❓ {{ t('experiments.menuHelp') }}</button>
       </div>
     </div>
   </nav>

@@ -5,8 +5,8 @@ import { isBurette, isPipette, isGradCylinder, isRetortStandAssembly } from './c
 export const retortStandSnapUid = ref<string | null>(null);
 export const bottomClampSnapUid = ref<string | null>(null);
 
-const SNAP_DISTANCE = 250;
-const BOTTOM_CLAMP_DISTANCE = 180;
+const SNAP_DISTANCE = 140;
+const BOTTOM_CLAMP_DISTANCE = 90;
 
 export function getMagnetOffset(id: string): { x: number; y: number } {
   if (isBurette(id)) return { x: 30, y: 55 };

@@ -1,38 +1,50 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-
-const props = defineProps<{
-  mass: number; k: number; amplitude: number; damping: number; running?: boolean;
-  measuredT?: number | null; measuredF?: number | null; measuredOmega?: number | null; measuredKCalc?: number | null;
-}>()
-
-const analysisVals = computed(() => {
-  const omega0 = props.mass > 1e-9 && props.k > 1e-9 ? Math.sqrt(props.k / props.mass) : 0
-  return {
-    omega0: omega0.toFixed(3),
-    vmax: props.running ? (props.amplitude * omega0).toFixed(3) : '--'
-  }
-})
+import { useI18n } from '../../../composables/useI18n'
+const { t } = useI18n()
+defineProps<{ visible: boolean }>()
+const emit = defineEmits<{ (e: 'close'): void }>()
 </script>
 
 <template>
-  <div class="guide-panel">
-    <div class="guide-row"><span class="guide-label">m</span><span class="guide-value">{{ mass.toFixed(2) }} kg</span></div>
-    <div class="guide-row"><span class="guide-label">k</span><span class="guide-value">{{ k.toFixed(0) }} N/m</span></div>
-    <div class="guide-row"><span class="guide-label">A</span><span class="guide-value">{{ amplitude.toFixed(3) }} m</span></div>
-    <div class="guide-row"><span class="guide-label">ω₀</span><span class="guide-value">{{ analysisVals.omega0 }} rad/s</span></div>
-    <div class="guide-row"><span class="guide-label">vmax</span><span class="guide-value">{{ analysisVals.vmax }} m/s</span></div>
-    <div class="guide-row"><span class="guide-label">T</span><span class="guide-value">{{ measuredT?.toFixed(4) ?? '--' }} s</span></div>
-    <div class="guide-row"><span class="guide-label">f</span><span class="guide-value">{{ measuredF?.toFixed(3) ?? '--' }} Hz</span></div>
-    <div class="guide-row"><span class="guide-label">ω</span><span class="guide-value">{{ measuredOmega?.toFixed(3) ?? '--' }} rad/s</span></div>
-    <div class="guide-row"><span class="guide-label">k<sub>calc</sub></span><span class="guide-value highlight">{{ measuredKCalc?.toFixed(2) ?? '--' }} N/m</span></div>
+  <div class="guide-panel" v-if="visible">
+    <div class="guide-header">
+      <span class="guide-title">{{ t('experiments.spgTitle') }}</span>
+      <button class="close-btn" @click="emit('close')">✕</button>
+    </div>
+    <div class="guide-body">
+      <div class="step"><span class="step-num">1</span><div class="step-text">{{ t('experiments.spgS1') }}</div></div>
+      <div class="step"><span class="step-num">2</span><div class="step-text">{{ t('experiments.spgS2') }}</div></div>
+      <div class="step"><span class="step-num">3</span><div class="step-text">{{ t('experiments.spgS3') }}</div></div>
+      <div class="step"><span class="step-num">4</span><div class="step-text">{{ t('experiments.spgS4') }}</div></div>
+      <div class="step"><span class="step-num">5</span><div class="step-text">{{ t('experiments.spgS5') }}</div></div>
+      <div class="step"><span class="step-num">6</span><div class="step-text">{{ t('experiments.spgS6') }}</div></div>
+      <div class="step"><span class="step-num">7</span><div class="step-text">{{ t('experiments.spgS7') }}</div></div>
+      <div class="step"><span class="step-num">8</span><div class="step-text">{{ t('experiments.spgS8') }}</div></div>
+      <div class="step"><span class="step-num">9</span><div class="step-text">{{ t('experiments.spgS9') }}</div></div>
+      <div class="step"><span class="step-num">10</span><div class="step-text">{{ t('experiments.spgS10') }}</div></div>
+      <div class="formula-hint">
+        <div class="formula">F = -k · x</div>
+        <div class="formula-desc">{{ t('experiments.spgF1') }}</div>
+        <div class="formula" style="margin-top:.4rem">T = 2π √(m / k)</div>
+        <div class="formula-desc">{{ t('experiments.spgF2') }}</div>
+        <div class="formula" style="margin-top:.4rem">T² = (4π² / k) · m</div>
+        <div class="formula-desc">{{ t('experiments.spgF3') }}</div>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.guide-panel { display:flex; flex-direction:column; gap:.15rem; }
-.guide-row { display:flex; justify-content:space-between; padding:.15rem .3rem; border-radius:4px; background:#252D3A; }
-.guide-label { font-size:.68rem; color:#8B95A5; font-weight:600; }
-.guide-value { font-size:.75rem; font-weight:700; color:#D1D7E0; font-family:monospace; }
-.guide-value.highlight { color:#5B8DB8; }
+.guide-panel { background: #161B22; border: 1px solid #2D3645; border-radius: 8px; display: flex; flex-direction: column; max-height: 100%; overflow: hidden; }
+.guide-header { display: flex; justify-content: space-between; align-items: center; padding: .6rem .75rem; border-bottom: 1px solid #2D3645; }
+.guide-title { font-size: .85rem; font-weight: 700; color: #67e8f9; }
+.close-btn { background: none; border: none; color: #64748b; cursor: pointer; font-size: .9rem; }
+.close-btn:hover { color: #ef4444; }
+.guide-body { padding: .6rem .75rem; overflow-y: auto; display: flex; flex-direction: column; gap: .5rem; }
+.step { display: flex; gap: .5rem; align-items: flex-start; }
+.step-num { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: rgba(103,232,249,.15); color: #67e8f9; font-size: .7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.step-text { font-size: .75rem; color: #94a3b8; line-height: 1.5; }
+.formula-hint { margin-top: .5rem; padding: .6rem; background: rgba(103,232,249,.06); border-radius: 6px; border: 1px solid rgba(103,232,249,.12); }
+.formula { font-family: 'Courier New', monospace; font-size: .85rem; color: #67e8f9; text-align: center; }
+.formula-desc { font-size: .65rem; color: #64748b; text-align: center; margin-top: .25rem; }
 </style>

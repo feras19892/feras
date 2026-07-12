@@ -1,9 +1,10 @@
 import { useExperimentReport } from '../useExperimentReport'
 import { useI18n } from '../useI18n'
+import { linearRegression } from '../../components/experiment/spring/linearRegression'
 import type { PendulumTrial } from './usePendulumTrials'
 import type { LabReportTable, LabReportStat } from '../../utils/lab-report'
 
-interface PendulumReportInput { params: { length: number; angle: number; mass: number; g: number; theta0: number }; trials: { trials: { value: PendulumTrial[] }; trialStats: { value: { t_mean: number; g_mean: number } }; calcResult: { value: string } } }
+interface PendulumReportInput { params: { length: number; angle: number; mass: number; g: number; theta0: number }; trials: { trials: { value: PendulumTrial[] }; trialStats: { value: { T_mean: number; T_std: number; g_mean: number; g_std: number } }; calcResult: { value: string } } }
 
 export function usePendulumReport() {
   const { t } = useI18n()
@@ -31,12 +32,19 @@ export function usePendulumReport() {
 </div>`
 
     let regressionBlock = ''
-    if (statsVal.g_mean > 0) {
-      regressionBlock = `
+    if (trials.length >= 2) {
+      const xs = trials.map(tr => tr.length)
+      const ys = trials.map(tr => tr.T * tr.T)
+      const fit = linearRegression(xs, ys)
+      if (fit && Math.abs(fit.slope) > 1e-12) {
+        const gFromFit = (4 * Math.PI * Math.PI) / fit.slope
+        regressionBlock = `
 <div style="font-family:monospace;font-size:.85rem;line-height:1.8;color:#1e3a8a">
-  <div>• ${t('experiments.slopeLabel')} = ${(4 * Math.PI * Math.PI / statsVal.g_mean).toFixed(5)} s²/m</div>
-  <div>• ${t('experiments.gFromRegression')} = ${statsVal.g_mean.toFixed(2)} m/s²</div>
+  <div>• ${t('experiments.slopeLabel')} = ${fit.slope.toFixed(5)} s²/m</div>
+  <div>• ${t('experiments.rSquaredLabel')} = ${fit.r2.toFixed(4)}</div>
+  <div>• ${t('experiments.gFromRegression')} = ${gFromFit.toFixed(2)} m/s²</div>
 </div>`
+      }
     }
 
     rep.openFullReport({

@@ -1,46 +1,13 @@
 import { liquidMap } from './useChemistryLab';
-import type { LiquidState } from '@my-modern-app/chemistry-engine';
-import { findEquation, isAcid, isBase, isIndicator, mixColor, calculateTitrationPh } from '@my-modern-app/chemistry-engine';
+import { findEquation, isAcid, isBase, isIndicator, mixColor, calculateTitrationPh, getIndicatorColor, applyIndicatorsToContainer as engineApplyIndicators } from '@my-modern-app/chemistry-engine';
 import { chemicals } from './chemDatabase';
 
-// Re-export the engine's calculateTitrationPh so existing imports keep working
+// Re-export engine functions so existing imports keep working
 export { calculateTitrationPh } from '@my-modern-app/chemistry-engine';
+export { getIndicatorColor } from '@my-modern-app/chemistry-engine';
+export { applyIndicatorsToContainer } from '@my-modern-app/chemistry-engine';
 
 // ================== INDICATOR COLOR SYSTEM ==================
-
-export function getIndicatorColor(indicatorId: string, ph: number): string {
-  switch (indicatorId) {
-    case 'phenolphthalein':
-      return ph > 8.2 ? '#ec4899' : '#fdf4ff';
-    case 'methyl-orange':
-      return ph < 3.1 ? '#ef4444' : ph > 4.4 ? '#fbbf24' : '#fb923c';
-    case 'bromothymol-blue':
-      return ph > 7.6 ? '#3b82f6' : ph < 6.0 ? '#facc15' : '#22c55e';
-    case 'universal-indicator': {
-      if (ph < 3) return '#ef4444';
-      if (ph < 6) return '#fb923c';
-      if (ph < 7) return '#facc15';
-      if (ph < 8) return '#22c55e';
-      if (ph < 10) return '#3b82f6';
-      return '#7c3aed';
-    }
-    case 'starch':
-      return ph > 6 ? '#1e3a8a' : '#fefce8';
-    default:
-      return '#e0f2fe';
-  }
-}
-
-export function applyIndicatorsToContainer(liq: LiquidState): void {
-  if (!liq.indicators || liq.indicators.length === 0) return;
-  const currentPh = liq.ph ?? 7;
-  const base = liq.baseColor || liq.color;
-  for (const indId of liq.indicators) {
-    const indColor = getIndicatorColor(indId, currentPh);
-    // Indicators are highly visible even in tiny amounts — give 50% visual weight
-    liq.color = mixColor(base, liq.volume, indColor, liq.volume);
-  }
-}
 
 export function applyIndicator(indicatorId: string, containerUid: string): void {
   const liq = liquidMap[containerUid];
@@ -101,7 +68,9 @@ export function handleDropMix(event: MixEvent): void {
       if (isBase(chemId)) { baseVol += vol; baseId = chemId; }
     }
 
-    const newPh = calculateTitrationPh(acidVol, acidId, baseVol, baseId);
+    const acidConc = chemicals.find(c => c.id === acidId)?.concentration ?? 0.1;
+    const baseConc = chemicals.find(c => c.id === baseId)?.concentration ?? 0.1;
+    const newPh = calculateTitrationPh(acidVol, acidId, baseVol, baseId, acidConc, baseConc);
     target.ph = newPh;
     target.temperature = Math.min(100, target.temperature + 0.5);
 
@@ -110,11 +79,13 @@ export function handleDropMix(event: MixEvent): void {
     if (eq) {
       target.equation = eq.equation;
       target.precipitate = eq.precipitate || false;
+      target.precipitateColor = eq.precipitate ? (eq.precipitateColor || '#c0c0c0') : undefined;
       target.gasEvolution = eq.gasEvolution || false;
+      if (eq.gasType) target.gasType = eq.gasType;
     }
 
     // Apply indicators based on new pH
-    applyIndicatorsToContainer(target);
+    engineApplyIndicators(target);
     return;
   }
 
@@ -145,16 +116,11 @@ export function handleDropMix(event: MixEvent): void {
     // Determine ratio from equation products
     let stoichRatio = 1;
     if (eq.reactants.length === 2) {
-      // The first reactant in equation that matches src determines its coefficient
       const srcIdx = eq.reactants.indexOf(src);
       const tgtIdx = eq.reactants.indexOf(tgt);
-      if (srcIdx >= 0 && tgtIdx >= 0) {
-        // Check equation string for coefficients
-        const eqStr = eq.equation;
-        const srcMatch = eqStr.match(new RegExp(`(\\d*)\\s*${src}`, 'i'));
-        const tgtMatch = eqStr.match(new RegExp(`(\\d*)\\s*${tgt}`, 'i'));
-        const srcCoeff = srcMatch && srcMatch[1] ? parseInt(srcMatch[1]) : 1;
-        const tgtCoeff = tgtMatch && tgtMatch[1] ? parseInt(tgtMatch[1]) : 1;
+      if (srcIdx >= 0 && tgtIdx >= 0 && eq.coefficients) {
+        const srcCoeff = eq.coefficients[src] ?? 1;
+        const tgtCoeff = eq.coefficients[tgt] ?? 1;
         stoichRatio = srcCoeff / tgtCoeff;
       }
     }
@@ -170,20 +136,21 @@ export function handleDropMix(event: MixEvent): void {
     // Gradual opacity transition
     const originalOpacity = target.opacity;
     target.opacity = originalOpacity + (eq.opacity - originalOpacity) * reactionFraction;
-    target.label = `REACTION:${eq.equation}`;
     target.temperature = Math.min(100, target.temperature + eq.temperatureRise * reactionFraction);
 
     // Precipitate only starts forming after 10% reaction, increases gradually
     if (eq.precipitate && reactionFraction > 0.1) {
       target.precipitate = true;
+      target.precipitateColor = eq.precipitateColor || '#c0c0c0';
       target.opacity = Math.min(1, target.opacity + 0.2 * reactionFraction);
     } else if (reactionFraction <= 0.1) {
       target.precipitate = false;
     }
     target.gasEvolution = eq.gasEvolution || false;
+    if (eq.gasType) target.gasType = eq.gasType;
 
     // Re-apply indicators after reaction
-    applyIndicatorsToContainer(target);
+    engineApplyIndicators(target);
     return;
   }
 

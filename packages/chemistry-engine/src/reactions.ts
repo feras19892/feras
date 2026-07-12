@@ -2,42 +2,99 @@ import { mixColor } from './color.js';
 import { isAcid, isBase, isIndicator } from './type-checks.js';
 import type { LiquidState } from './types.js';
 
-// Calculate pH from acid/base excess
+// pKa values for acids (lower = stronger)
+const acidPKa: Record<string, number> = {
+  hcl: -7, h2so4: -3, hno3: -1.4, ch3cooh: 4.76, h2o2: 11.6,
+};
+// pKb values for bases (lower = stronger)
+const basePKb: Record<string, number> = {
+  naoh: -0.5, koh: -0.5, nh4oh: 4.75, nh3: 4.75,
+};
+
+const isWeakAcid = (id: string) => (acidPKa[id] ?? -7) > 2;
+const isWeakBase = (id: string) => (basePKb[id] ?? -0.5) > 2;
+
+// Calculate pH from acid/base volumes and concentrations
 export function calculateTitrationPh(
   acidVol: number,
   acidId: string,
   baseVol: number,
   baseId: string,
+  acidConc?: number,
+  baseConc?: number,
 ): number {
-  const acidStrengths: Record<string, number> = {
-    hcl: 1.0, h2so4: 2.0, hno3: 1.0, ch3cooh: 0.05,
-  };
-  const baseStrengths: Record<string, number> = {
-    naoh: 1.0, koh: 1.0, nh4oh: 0.05,
-  };
+  const aConc = acidConc ?? 0.1;
+  const bConc = baseConc ?? 0.1;
 
-  const aStr = acidStrengths[acidId] || 1.0;
-  const bStr = baseStrengths[baseId] || 1.0;
+  // Total moles (neutralization consumes ALL acid/base, not just dissociated part)
+  const acidMoles = acidVol * aConc;
+  const baseMoles = baseVol * bConc;
 
-  const acidMoles = acidVol * aStr;
-  const baseMoles = baseVol * bStr;
+  const totalVol = acidVol + baseVol;
+  if (totalVol <= 0) return 7.0;
 
   const excess = baseMoles - acidMoles;
-  const totalVol = acidVol + baseVol;
+  const weakAcid = isWeakAcid(acidId);
+  const weakBase = isWeakBase(baseId);
 
-  if (Math.abs(excess) < 0.001 * totalVol) return 7.0;
+  // ===== AT OR NEAR EQUIVALENCE =====
+  if (Math.abs(excess) < 0.0001 * Math.max(acidMoles, baseMoles, 0.001)) {
+    if (weakAcid && !weakBase) {
+      // Weak acid + strong base: pH > 7 from conjugate base hydrolysis
+      // pH ≈ 7 + 0.5*(pKa + log(C_equivalence))
+      const cEq = acidMoles / totalVol;
+      return 7 + 0.5 * (acidPKa[acidId] + Math.log10(Math.max(cEq, 0.0001)));
+    }
+    if (weakBase && !weakAcid) {
+      // Strong acid + weak base: pH < 7 from conjugate acid
+      const cEq = baseMoles / totalVol;
+      return 7 - 0.5 * (basePKb[baseId] + Math.log10(Math.max(cEq, 0.0001)));
+    }
+    // Strong + strong
+    return 7.0;
+  }
 
   if (excess > 0) {
-    const oh = excess / totalVol;
-    if (oh < 0.001) return 7.0 + oh * 2000;
-    if (oh < 0.01) return 9.0 + oh * 300;
-    if (oh < 0.1) return 11.0 + oh * 20;
+    // ===== AFTER EQUIVALENCE: excess base =====
+    const ohConc = excess / totalVol;
+    if (weakBase) {
+      // Weak base excess: [OH-] = sqrt(Kb * C)
+      const kb = Math.pow(10, -basePKb[baseId]);
+      const oh = Math.sqrt(kb * ohConc);
+      return Math.min(13, 14 + Math.log10(Math.max(oh, 1e-14)));
+    }
+    // Strong base excess
+    if (ohConc < 0.001) return 7.0 + ohConc * 2000;
+    if (ohConc < 0.01) return 9.0 + ohConc * 300;
+    if (ohConc < 0.1) return 11.0 + ohConc * 20;
     return 13.0;
   } else {
-    const h = Math.abs(excess) / totalVol;
-    if (h < 0.001) return 7.0 - h * 2000;
-    if (h < 0.01) return 5.0 - h * 300;
-    if (h < 0.1) return 3.0 - h * 20;
+    // ===== BEFORE EQUIVALENCE: excess acid =====
+    const remainingAcid = Math.abs(excess);
+    const baseAdded = baseMoles; // moles of base added = moles of conjugate formed
+
+    if (weakAcid && baseAdded > 0) {
+      // Henderson-Hasselbalch: pH = pKa + log([A-]/[HA])
+      const conjugateConc = baseAdded / totalVol;
+      const acidConcRemaining = remainingAcid / totalVol;
+      if (acidConcRemaining <= 0) return 7.0;
+      const pKa = acidPKa[acidId];
+      return pKa + Math.log10(conjugateConc / acidConcRemaining);
+    }
+
+    // Strong acid (or weak acid with no base added yet)
+    if (weakAcid && baseAdded <= 0) {
+      // Weak acid alone: [H+] = sqrt(Ka * C)
+      const ka = Math.pow(10, -acidPKa[acidId]);
+      const h = Math.sqrt(ka * (acidMoles / totalVol));
+      return Math.max(0, -Math.log10(Math.max(h, 1e-14)));
+    }
+
+    // Strong acid excess
+    const hConc = remainingAcid / totalVol;
+    if (hConc < 0.001) return 7.0 - hConc * 2000;
+    if (hConc < 0.01) return 5.0 - hConc * 300;
+    if (hConc < 0.1) return 3.0 - hConc * 20;
     return 1.0;
   }
 }
@@ -59,7 +116,7 @@ export function getIndicatorColor(indicatorId: string, ph: number): string {
       return '#7c3aed';
     }
     case 'starch':
-      return ph > 6 ? '#1e3a8a' : '#fefce8';
+      return '#fefce8';
     default:
       return '#e0f2fe';
   }

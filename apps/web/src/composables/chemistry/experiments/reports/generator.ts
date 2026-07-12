@@ -32,8 +32,8 @@ export function buildReportContext(
     if (!liq || liq.volume <= 0) continue;
     if (liq.ph !== null && liq.ph !== undefined) phAtEquivalence = liq.ph;
     colorAtEquivalence = liq.color;
-    if (liq.precipitate) precipitateColor = liq.color;
-    if (liq.gasEvolution) gasType = 'CO₂';
+    if (liq.precipitate) precipitateColor = liq.precipitateColor || liq.color;
+    if (liq.gasEvolution) gasType = liq.gasType || 'CO₂';
     if (liq.temperature > temperatureMax) temperatureMax = liq.temperature;
   }
 

@@ -32,10 +32,12 @@ let lastTime = performance.now();
 let rafId = 0;
 let memTimer = 0;
 let historyTimer = 0;
+let windowErrorHandler: ((e: ErrorEvent) => void) | null = null;
 
 /* ── intercept console ── */
 const origErr = console.error;
 const origWarn = console.warn;
+let consoleHookCount = 0;
 
 function addLog(type: 'error' | 'warn' | 'info', args: unknown[]) {
   const text = args.map((a) => (typeof a === 'string' ? a : String(a))).join(' ');
@@ -44,6 +46,7 @@ function addLog(type: 'error' | 'warn' | 'info', args: unknown[]) {
 }
 
 function hookConsole() {
+  if (consoleHookCount++ > 0) return;
   console.error = (...args: unknown[]) => {
     consoleErrors.value++;
     addLog('error', args);
@@ -57,6 +60,8 @@ function hookConsole() {
 }
 
 function unhookConsole() {
+  if (--consoleHookCount > 0) return;
+  consoleHookCount = 0;
   console.error = origErr;
   console.warn = origWarn;
 }
@@ -68,7 +73,13 @@ function onWindowError(e: ErrorEvent) {
 }
 
 /* ── hook Canvas & WebGL ── */
+let canvasHookInstalled = false;
+const wrapped2dContexts = new WeakSet<CanvasRenderingContext2D>();
+const wrappedGlContexts = new WeakSet<WebGLRenderingContext>();
+
 function hookCanvas() {
+  if (canvasHookInstalled) return;
+  canvasHookInstalled = true;
   const origGetContext = HTMLCanvasElement.prototype.getContext;
   (HTMLCanvasElement.prototype as any).getContext = function (
     contextId: string,
@@ -78,6 +89,8 @@ function hookCanvas() {
     if (!ctx) return null;
     if (contextId === '2d') {
       const c2d = ctx as CanvasRenderingContext2D;
+      if (wrapped2dContexts.has(c2d)) return ctx;
+      wrapped2dContexts.add(c2d);
       const origFill = c2d.fillRect;
       c2d.fillRect = function (x: number, y: number, w: number, h: number) {
         try { return origFill.call(this, x, y, w, h); }
@@ -86,6 +99,8 @@ function hookCanvas() {
     }
     if (contextId === 'webgl' || contextId === 'webgl2') {
       const gl = ctx as WebGLRenderingContext;
+      if (wrappedGlContexts.has(gl)) return ctx;
+      wrappedGlContexts.add(gl);
       const origDraw = gl.drawArrays;
       gl.drawArrays = function (mode: number, first: number, count: number) {
         try { return origDraw.call(this, mode, first, count); }
@@ -156,7 +171,8 @@ function pushSnapshot() {
 export function useExperimentMonitor() {
   onMounted(() => {
     hookConsole();
-    window.addEventListener('error', (e: ErrorEvent) => onWindowError(e));
+    windowErrorHandler = (e: ErrorEvent) => onWindowError(e);
+    window.addEventListener('error', windowErrorHandler);
     hookCanvas();
     rafId = requestAnimationFrame(tick);
     memTimer = window.setInterval(readMemory, 2000);
@@ -168,6 +184,10 @@ export function useExperimentMonitor() {
     clearInterval(memTimer);
     clearInterval(historyTimer);
     unhookConsole();
+    if (windowErrorHandler) {
+      window.removeEventListener('error', windowErrorHandler);
+      windowErrorHandler = null;
+    }
   });
 
   return {

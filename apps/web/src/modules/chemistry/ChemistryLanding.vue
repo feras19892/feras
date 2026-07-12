@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
-import { pendingChemicalFill, getLiquid, getBurette, getPipette, selectedChemical, hasSelectedChemicalMap, items, isBurette, isPipette, buretteTotalConsumedMap, buretteConsumedThisRefill, buretteInitialVolumeMap } from '../../composables/chemistry/useChemistryLab';
+import { pendingChemicalFill, pendingSolidSelect, getLiquid, getBurette, getPipette, selectedChemical, hasSelectedChemicalMap, items, isBurette, isPipette, buretteTotalConsumedMap, buretteConsumedThisRefill, buretteInitialVolumeMap } from '../../composables/chemistry/useChemistryLab';
 import { isReactionVessel } from '../../composables/chemistry/chemLabIds';
 import type { Chemical } from '../../composables/chemistry/useChemistryLab';
 import type { LabItem } from '../../composables/chemistry/useChemistryTools';
-import type { ToolState } from '../../components/experiment/chemistry/InspectorPanel.vue';
+import type { ToolState } from '../../composables/chemistry/chemLabTypes';
 import WorkspaceCanvas from '../../components/experiment/chemistry/WorkspaceCanvas.vue';
 import LeftPanel from '../../components/experiment/chemistry/LeftPanel.vue';
 import RightPanel from '../../components/experiment/chemistry/RightPanel.vue';
 import ExperimentSelector from '../../components/experiment/chemistry/ExperimentSelector.vue';
 import { type Experiment, type TitrationReading, type ReportData, validateExperimentSteps } from '../../composables/chemistry/useExperiments';
-import { type ExperimentDefinition, validateSteps as validateRegistrySteps, getExperiment as getRegistryExperiment } from '../../composables/chemistry/experiments';
+import { type ExperimentDefinition, validateSteps as validateRegistrySteps } from '../../composables/chemistry/experiments';
+import { generateReport } from '../../composables/chemistry/experiments/reports';
 import '../../composables/chemistry/experiments'; // side-effect: registers all definitions
 import { undo, redo, canUndo, canRedo, canMicroUndo, canMicroRedo } from '../../composables/chemistry/useChemistryHistory';
 import { applyIndicator } from '../../composables/chemistry/useReactionEngine';
@@ -29,6 +30,7 @@ import {
   startIdleMessages, stopIdleMessages
 } from '../../composables/chemistry/useLabAssistant';
 import { useChemicalLocale } from '../../composables/chemistry/useChemicalLocale';
+import { clearTitrationReadings } from '../../composables/chemistry/useTitrationRecorder';
 
 const { t } = useI18n();
 const { leftWidth, rightWidth, onLeftDown, onRightDown } = useChemistryResizing();
@@ -40,6 +42,8 @@ const showTheoryPanel = ref(false);
 const titrationReadings = ref<TitrationReading[]>([]);
 const showReport = ref(false);
 const reportData = ref<ReportData | null>(null);
+const reportFields = ref<Record<string, string | number | null>>({});
+const reportTemplate = ref<{ type: string; fields: { key: string; labelKey: string; source: string }[] } | null>(null);
 
 // Helpers: unify Experiment (legacy) and ExperimentDefinition (new registry)
 function expNameKey(exp: Experiment | ExperimentDefinition): string {
@@ -125,6 +129,18 @@ watch(buretteWarning, (warn) => {
 
 function showReportManual() {
   if (!activeExperiment.value) return;
+  const exp = activeExperiment.value;
+
+  // Use new declarative report system for ExperimentDefinition
+  if ('nameKey' in exp && exp.reportTemplate) {
+    const fields = generateReport(exp.reportTemplate, titrationReadings.value.length);
+    reportFields.value = fields;
+    reportTemplate.value = exp.reportTemplate;
+    showReport.value = true;
+    return;
+  }
+
+  // Legacy report for old Experiment type
   const consumed = buretteConsumption.value.grandTotal;
   const target = items.value.find((i) => {
     if (!isReactionVessel(i.id)) return false;
@@ -133,7 +149,7 @@ function showReportManual() {
   });
   const liq = target ? getLiquid(target.uid) : null;
   reportData.value = {
-    experimentName: t(expNameKey(activeExperiment.value)),
+    experimentName: t(expNameKey(exp)),
     consumedVolume: consumed,
     acidVolume: 50,
     baseMolarity: 0.1,
@@ -171,13 +187,19 @@ function addManualReading() {
 function onSelectExperiment(exp: Experiment | ExperimentDefinition) {
   activeExperiment.value = exp;
   titrationReadings.value = [];
+  clearTitrationReadings();
   showExperimentSelector.value = false;
 }
 
 function restartExperiment() {
   showReport.value = false;
   reportData.value = null;
+  reportFields.value = {};
+  reportTemplate.value = null;
   titrationReadings.value = [];
+  clearTitrationReadings();
+  selectedItem.value = null;
+  selectedState.value = null;
   canvasRef.value?.resetLab();
 }
 
@@ -193,6 +215,11 @@ function onSelect(item: LabItem | null, state: ToolState | null) {
   selectedState.value = state;
 }
 
+const expandedSections = ref<Record<string, boolean>>({
+  containers: true, measuring: true, devices: true, helpers: true,
+  liquids: true, solids: true, indicators: true,
+});
+
 // Auto-switch to chemical shelf when pending fill is set
 watch(pendingChemicalFill, (val) => {
   if (val) {
@@ -201,6 +228,14 @@ watch(pendingChemicalFill, (val) => {
     expandedSections.value.liquids = true;
     expandedSections.value.solids = true;
     expandedSections.value.indicators = true;
+  }
+});
+
+// Auto-switch to chemical shelf when pending solid select (from spatula)
+watch(pendingSolidSelect, (val) => {
+  if (val) {
+    activeTab.value = 'chemicals';
+    expandedSections.value.solids = true;
   }
 });
 
@@ -250,11 +285,6 @@ function onChemicalClick(chem: Chemical) {
   }
   pendingChemicalFill.value = null;
 }
-
-const expandedSections = ref<Record<string, boolean>>({
-  containers: true, measuring: true, devices: true, helpers: true,
-  liquids: true, solids: true, indicators: true,
-});
 
 onMounted(() => startIdleMessages());
 onUnmounted(() => stopIdleMessages());
@@ -313,8 +343,10 @@ onUnmounted(() => stopIdleMessages());
     />
     <!-- Final Report Modal -->
     <ChemReportModal
-      v-if="showReport && reportData"
+      v-if="showReport && (reportData || reportTemplate)"
       :data="reportData"
+      :fields="reportFields"
+      :template="reportTemplate"
       @close="showReport = false"
       @restart="restartExperiment"
     />

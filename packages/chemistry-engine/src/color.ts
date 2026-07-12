@@ -19,6 +19,7 @@ export function mixColor(c1: string, vol1: number, c2: string, vol2: number): st
   const rgb1 = hex2rgb(c1);
   const rgb2 = hex2rgb(c2);
   const total = vol1 + vol2;
+  if (total <= 0) return c1;
   const r = (rgb1.r * vol1 + rgb2.r * vol2) / total;
   const g = (rgb1.g * vol1 + rgb2.g * vol2) / total;
   const b = (rgb1.b * vol1 + rgb2.b * vol2) / total;

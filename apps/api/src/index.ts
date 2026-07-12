@@ -10,6 +10,8 @@ import { notificationRoutes } from './modules/notifications/handlers.js';
 import { adminRoutes } from './modules/admin/handlers.js';
 import { feedbackRoutes } from './modules/feedback/handlers.js';
 import { aiRoutes } from './modules/ai/handlers.js';
+import { mathRoutes } from './modules/math/index.js';
+import { seedMathData } from './modules/math/bootstrap.js';
 import { runMigrations } from './db/index.js';
 import { corsMiddleware } from './shared/middleware/cors.js';
 import { securityHeaders } from './shared/middleware/security.js';
@@ -17,6 +19,7 @@ import { customLogger } from './shared/middleware/logger.js';
 import { loginRateLimit, passwordUpdateRateLimit } from './shared/middleware/rate-limit.js';
 
 await runMigrations();
+await seedMathData();
 
 const app = new Hono();
 
@@ -36,6 +39,7 @@ app.route('/api/notifications', notificationRoutes);
 app.route('/api/admin', adminRoutes);
 app.route('/api/feedback', feedbackRoutes);
 app.route('/api/ai', aiRoutes);
+app.route('/api/math', mathRoutes);
 
 app.get('/api/health', (c) => c.json({ status: 'ok' }));
 

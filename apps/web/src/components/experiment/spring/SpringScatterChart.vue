@@ -54,7 +54,7 @@ function draw() {
   ctx.save(); ctx.translate(12, padT+iH/2); ctx.rotate(-Math.PI/2); ctx.fillText(yLabel.value,0,0); ctx.restore()
 }
 
-watch(() => [props.trials.length], draw, { flush:'post' })
+watch(() => props.trials, draw, { flush:'post', deep: true })
 onMounted(draw)
 </script>
 

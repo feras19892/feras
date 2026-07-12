@@ -18,7 +18,7 @@ const HOME_CARDS: HomeCard[] = [
     branchId: 'chemistry',
   },
   {
-    id: 'mathematics',
+    id: 'math',
     icon: '📐',
     title: 'Mathematics',
     desc: 'Functions, differential geometry, and statistics',

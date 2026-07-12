@@ -7,7 +7,7 @@ export const METAL_CATALOG: Record<string, { c: number; nameAr: string; nameEn: 
   metalB: { c: 385, nameAr: 'نحاس', nameEn: 'Copper' },
   metalC: { c: 450, nameAr: 'حديد', nameEn: 'Iron' },
   metalD: { c: 130, nameAr: 'رصاص', nameEn: 'Lead' },
-  metalE: { c: 235, nameAr: 'زنك', nameEn: 'Zinc' },
+  metalE: { c: 390, nameAr: 'زنك', nameEn: 'Zinc' },
 }
 
 /** Equilibrium temperature from mixing

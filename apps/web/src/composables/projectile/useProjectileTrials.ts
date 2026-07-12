@@ -142,7 +142,7 @@ export function useProjectileTrials(params: ProjectileParams, measured: Ref<Proj
   }
 
   const calcResult = ref(t('experiments.clickBtnShowCalc'))
-  const fitResult = ref<{ slope: number; intercept: number } | null>(null)
+  const fitResult = ref<{ slope: number; intercept: number; r2: number } | null>(null)
 
   function calcFlightTime() {
     const rad = (params.angleDeg * Math.PI) / 180
@@ -168,7 +168,7 @@ export function useProjectileTrials(params: ProjectileParams, measured: Ref<Proj
     const ys = trials.value.map(t => t.rangeMeters)
     const fit = linearRegression(xs, ys)
     if (!fit || Math.abs(fit.slope) < 1e-12) { calcResult.value = t('experiments.insufficientData'); fitResult.value = null; return }
-    fitResult.value = { slope: fit.slope, intercept: fit.intercept }
+    fitResult.value = { slope: fit.slope, intercept: fit.intercept, r2: fit.r2 }
     const v0Est = Math.sqrt(Math.abs(fit.slope) * params.g)
     const quality = fit.r2 > 0.98 ? '✅' : fit.r2 > 0.9 ? '🟡' : '⚠️'
     calcResult.value = `R = ${fit.slope.toFixed(5)}·sin(2θ) ${fit.intercept >= 0 ? '+' : ''} ${fit.intercept.toFixed(5)}<br>R² = ${fit.r2.toFixed(4)} ${quality}<br>v₀ ≈ <b>${v0Est.toFixed(2)} m/s</b>`

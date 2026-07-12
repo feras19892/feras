@@ -3,11 +3,11 @@ import type { LabItem } from './useChemistryTools';
 import {
   items, getLiquid, getBurette,
   receivingMap, pourFlowMap, tiltAngleMap,
-  getBurnerState, simSpeed, phProbeTipMap, stopperMap,
+  getBurnerState, getHotPlateState, simSpeed, phProbeTipMap, stopperMap,
   buretteConsumedThisRefill,
-  isContainer, retortStandMap
+  isContainer, retortStandMap,
 } from './useChemistryLab';
-import { isBeaker, isTestTube } from './chemLabIds';
+import { isBeaker, isTestTube, isBurette, isBunsenBurner, isHeatingMantle, isHotPlate, isPhMeter } from './chemLabIds';
 import { handleDropMixWithRecording } from './useBuretteMixRecorder';
 import { getPhReading } from './usePhMeter';
 import { pushMicroHistory } from './useChemistryHistory';
@@ -15,6 +15,7 @@ import { pushMicroHistory } from './useChemistryHistory';
 // Re-export extracted functions for backward compatibility
 export { phColor, getPhReading } from './usePhMeter';
 export { computeBalanceWeight, getContainerWeight, getBalanceReading } from './useBalance';
+export { getTemperatureReading } from './useThermometer';
 export { stepUndo, stepRedo } from './useStepControl';
 
 // ================== BURETTE WARNING ==================
@@ -79,7 +80,7 @@ export function isHeated(item: LabItem): boolean {
   if (item.type !== 'container') return false;
   return items.value.some((other: LabItem) =>
     other.uid !== item.uid &&
-    (other.id === 'bunsen-burner' || other.id === 'heating-mantle') &&
+    (isBunsenBurner(other.id) || isHeatingMantle(other.id)) &&
     getBurnerState(other.uid).on &&
     Math.abs(other.x - item.x) < 80 && other.y > item.y && other.y < item.y + 250
   );
@@ -90,12 +91,9 @@ let simTimer = 0;
 
 export function startSimulation(_onSync: (item: LabItem | null) => void) {
   function run() {
-    // Clear receiving state
-    Object.keys(receivingMap).forEach(k => delete receivingMap[k]);
-
     // Burette dripping
     for (const item of items.value) {
-      if (item.id !== 'burette') continue;
+      if (!isBurette(item.id)) continue;
       const bState = getBurette(item.uid);
       if (!bState.valveOpen || bState.volume <= 0) continue;
 
@@ -135,6 +133,8 @@ export function startSimulation(_onSync: (item: LabItem | null) => void) {
             buretteWarning.value = 'equivalence';
           } else if (bLiquid.ph >= 7.5) {
             buretteWarning.value = 'approaching';
+          } else {
+            buretteWarning.value = null;
           }
         }
       } else {
@@ -145,22 +145,44 @@ export function startSimulation(_onSync: (item: LabItem | null) => void) {
       receivingMap[container.uid] = true;
     }
 
+    // Clear receiving flags for containers no longer being dripped into
+    const activeReceivers = new Set<string>();
+    for (const item of items.value) {
+      if (!isBurette(item.id)) continue;
+      const bState = getBurette(item.uid);
+      if (!bState.valveOpen || bState.volume <= 0) continue;
+      const container = findContainerBelow(item);
+      if (container) activeReceivers.add(container.uid);
+    }
+    for (const dstUid of Object.keys(pourFlowMap)) activeReceivers.add(dstUid);
+    for (const uid of Object.keys(receivingMap)) {
+      if (!activeReceivers.has(uid)) delete receivingMap[uid];
+    }
+
     // Temperature + pH simulation
     for (const item of items.value) {
       if (!isContainer(item.id)) continue;
       const liq = getLiquid(item.uid);
-      const burner = items.value.find((o: LabItem) =>
-        o.uid !== item.uid &&
-        (o.id === 'bunsen-burner' || o.id === 'heating-mantle') &&
-        getBurnerState(o.uid).on &&
-        Math.abs(o.x - item.x) < 80 && o.y > item.y && o.y < item.y + 250
-      );
+      const burner = items.value.find((o: LabItem) => {
+        if (o.uid === item.uid) return false;
+        if (isBunsenBurner(o.id) || isHeatingMantle(o.id)) {
+          return getBurnerState(o.uid).on &&
+            Math.abs(o.x - item.x) < 100 && o.y > item.y - 20 && o.y < item.y + 300;
+        }
+        if (isHotPlate(o.id)) {
+          const hp = getHotPlateState(o.uid);
+          return hp.on &&
+            Math.abs(o.x - item.x) < 100 && o.y > item.y - 20 && o.y < item.y + 300;
+        }
+        return false;
+      });
       const hasStopper = !!stopperMap[item.uid];
       if (burner) {
         liq.heated = true;
-        const intensity = getBurnerState(burner.uid).intensity;
-        // Realistic heating: proportional to intensity, ~0.6°C/sec max at 1x
-        const rate = 0.01 * intensity * simSpeed.value;
+        const isHotPlateItem = isHotPlate(burner.id);
+        const intensity = isHotPlateItem ? 0.8 : getBurnerState(burner.uid).intensity;
+        // Faster heating: ~3°C/sec at intensity 1, scaled by simSpeed
+        const rate = 0.05 * intensity * simSpeed.value;
         if (liq.temperature < 100) liq.temperature = Math.min(100, +(liq.temperature + rate).toFixed(2));
         // Evaporation: lose ~1.2mL/min when heated, blocked by rubber stopper
         if (!hasStopper && liq.volume > 0 && liq.temperature > 50) {
@@ -169,11 +191,12 @@ export function startSimulation(_onSync: (item: LabItem | null) => void) {
         }
       } else {
         liq.heated = false;
-        const coolRate = 0.02 * simSpeed.value;
+        // Slower cooling so temperature is more stable
+        const coolRate = 0.008 * simSpeed.value;
         if (liq.temperature > 25) liq.temperature = Math.max(25, +(liq.temperature - coolRate).toFixed(2));
       }
       const phItem = items.value.find((other: LabItem) =>
-        other.id === 'ph-meter' && phProbeTipMap[other.uid] &&
+        isPhMeter(other.id) && phProbeTipMap[other.uid] &&
         Math.abs((item.x + 40) - phProbeTipMap[other.uid].x) < 60 &&
         Math.abs((item.y + 10) - phProbeTipMap[other.uid].y) < 50
       );
@@ -192,8 +215,20 @@ export function startSimulation(_onSync: (item: LabItem | null) => void) {
         src.volume = +(src.volume - amount).toFixed(2);
         dst.volume = +(dst.volume + amount).toFixed(2);
         dst.color = src.color; dst.opacity = src.opacity;
-        if (!dst.label.includes('+') && src.label !== dst.label) {
+        if (src.label !== dst.label && !dst.label.includes(src.label)) {
           dst.label = dst.label + ' + ' + src.label;
+        }
+        // Trigger chemical reaction if both have chemical IDs
+        if (src.chemicalId && dst.chemicalId && src.chemicalId !== dst.chemicalId) {
+          handleDropMixWithRecording({
+            sourceUid: srcUid,
+            targetUid: dstUid,
+            sourceChemicalId: src.chemicalId,
+            targetChemicalId: dst.chemicalId,
+            dropVolume: amount,
+          });
+        } else if (src.chemicalId && !dst.chemicalId) {
+          dst.chemicalId = src.chemicalId;
         }
         receivingMap[dstUid] = true;
       } else {

@@ -1,15 +1,17 @@
 import {
   items, buretteInitialVolumeMap, buretteTotalConsumedMap, buretteConsumedThisRefill,
-  balanceTareMap, containerTareMap, getLiquid, getBurette, getSepFunnelState, getBurnerState, buildToolState,
+  balanceTareMap, containerTareMap, getLiquid, getBurette, getSepFunnelState, getBurnerState, getHotPlateState, buildToolState,
   isContainer, isBurette,
-  selectedChemical, hasSelectedChemicalMap, pendingChemicalFill
+  selectedChemical, hasSelectedChemicalMap, pendingChemicalFill,
+  pendingSolidSelect, spatulaSelectedSolid, solidMap,
 } from './useChemistryLab';
 import { applyIndicator } from './useReactionEngine';
 import { pushMacroHistory, pushMicroHistory } from './useChemistryHistory';
 import { computeBalanceWeight, getContainerWeight, findContainerBelow, buretteWarning } from './useLabSimulation';
 import { handleDropMixWithRecording } from './useBuretteMixRecorder';
+import { isHotPlate } from './chemLabIds';
 import type { LabItem } from './useChemistryTools';
-import type { ToolState } from '../../components/experiment/chemistry/InspectorPanel.vue';
+import type { ToolState } from './chemLabTypes';
 
 /** Commit any pending burette consumption to the running total */
 function commitBuretteConsumption(uid: string) {
@@ -42,7 +44,7 @@ export function execAction(type: ActionType, uid: string, selectedItemRef: { val
   }
   if (type === 'empty' && (isContainer(item.id) || isBurette(item.id))) {
     if (isBurette(item.id)) { const s = getBurette(uid); s.volume = 0; s.chemicalId = undefined; }
-    else { const liq = getLiquid(uid); liq.volume = 0; liq.chemicalId = undefined; liq.indicators = []; liq.ph = null; liq.reactants = {}; liq.equation = undefined; liq.precipitate = false; liq.gasEvolution = false; }
+    else { const liq = getLiquid(uid); liq.volume = 0; liq.chemicalId = undefined; liq.indicators = []; liq.ph = null; liq.reactants = {}; liq.equation = undefined; liq.precipitate = false; liq.precipitateColor = undefined; liq.gasEvolution = false; liq.baseColor = undefined; liq.label = 'water'; }
   }
   if ((type === 'fill5' || type === 'fill10' || type === 'fill50' || type === 'fill100') && (isContainer(item.id) || isBurette(item.id))) {
     const amount = type === 'fill5' ? 5 : type === 'fill10' ? 10 : type === 'fill50' ? 50 : 100;
@@ -84,7 +86,7 @@ export function execAction(type: ActionType, uid: string, selectedItemRef: { val
   if (selectedItemRef.value?.uid === uid) emit('select', item, buildToolState(item));
 }
 
-function toggleBuretteValve(item: LabItem, selectedItemRef: { value: LabItem | null }, emit: (name: 'select', item: LabItem | null, state: ToolState | null) => void) {
+export function toggleBuretteValve(item: LabItem, selectedItemRef: { value: LabItem | null }, emit: (name: 'select', item: LabItem | null, state: ToolState | null) => void) {
   const b = getBurette(item.uid);
   const wasOpen = b.valveOpen;
   b.valveOpen = !b.valveOpen;
@@ -92,6 +94,10 @@ function toggleBuretteValve(item: LabItem, selectedItemRef: { value: LabItem | n
     // Commit previous consumption before starting a new drip cycle
     commitBuretteConsumption(item.uid);
     buretteInitialVolumeMap[item.uid] = b.volume;
+  }
+  if (wasOpen && !b.valveOpen) {
+    // Valve just closed: clear warning
+    buretteWarning.value = null;
   }
   if (selectedItemRef.value?.uid === item.uid) emit('select', item, buildToolState(item));
 }
@@ -129,6 +135,7 @@ export function buretteDropOne(item: LabItem, selectedItemRef: { value: LabItem 
       if (bLiquid.ph >= 9.0) buretteWarning.value = 'exceeded';
       else if (bLiquid.ph >= 8.0) buretteWarning.value = 'equivalence';
       else if (bLiquid.ph >= 7.5) buretteWarning.value = 'approaching';
+      else buretteWarning.value = null;
     }
   } else {
     bLiquid.color = b.color;
@@ -140,7 +147,12 @@ export function buretteDropOne(item: LabItem, selectedItemRef: { value: LabItem 
 }
 
 export function toggleBurner(item: LabItem, selectedItemRef: { value: LabItem | null }, emit: (name: 'select', item: LabItem | null, state: ToolState | null) => void) {
-  const s = getBurnerState(item.uid); s.on = !s.on;
+  if (isHotPlate(item.id)) {
+    const hp = getHotPlateState(item.uid);
+    hp.on = !hp.on;
+  } else {
+    const s = getBurnerState(item.uid); s.on = !s.on;
+  }
   if (selectedItemRef.value?.uid === item.uid) emit('select', item, buildToolState(item));
 }
 
@@ -154,4 +166,59 @@ export function tareContainer(item: LabItem, selectedItemRef: { value: LabItem |
   containerTareMap[item.uid] = getContainerWeight(item);
   balanceTareMap[item.uid] = 0;
   if (selectedItemRef.value?.uid === item.uid) emit('select', item, buildToolState(item));
+}
+
+export function spatulaSelectSolid(spatulaUid: string) {
+  pendingSolidSelect.value = spatulaUid;
+}
+
+export function spatulaAddSolid(
+  spatulaUid: string,
+  targetUid: string,
+  grams: number,
+  selectedItemRef: { value: LabItem | null },
+  emit: (name: 'select', item: LabItem | null, state: ToolState | null) => void,
+) {
+  if (!spatulaSelectedSolid.value) return;
+  const target = items.value.find(i => i.uid === targetUid);
+  if (!target || !isContainer(target.id)) return;
+
+  pushMacroHistory();
+
+  const chemId = spatulaSelectedSolid.value.chemicalId;
+
+  // Track solid in solidMap on the target container
+  if (!solidMap[targetUid]) {
+    solidMap[targetUid] = { amount: 0, type: chemId };
+  }
+  if (solidMap[targetUid].type !== chemId) {
+    solidMap[targetUid] = { amount: 0, type: chemId };
+  }
+  solidMap[targetUid].amount = +(solidMap[targetUid].amount + grams).toFixed(2);
+
+  // Also track in liquidMap.reactants so reaction engine can detect it
+  const liq = getLiquid(targetUid);
+  if (!liq.reactants) liq.reactants = {};
+  liq.reactants[chemId] = (liq.reactants[chemId] || 0) + grams;
+
+  // If container has a liquid, try to trigger reaction
+  if (liq.volume > 0 && liq.chemicalId) {
+    // Simulate the solid being added as a "drop" to trigger reaction engine
+    handleDropMixWithRecording({
+      sourceUid: spatulaUid,
+      targetUid: targetUid,
+      sourceChemicalId: chemId,
+      targetChemicalId: liq.chemicalId,
+      dropVolume: grams,
+    });
+  }
+
+  // Update label to show solid was added
+  if (!liq.label || liq.label === 'water') {
+    liq.label = chemId;
+  } else if (!liq.label.includes(chemId)) {
+    liq.label = liq.label + ' + ' + chemId;
+  }
+
+  if (selectedItemRef.value?.uid === targetUid) emit('select', target, buildToolState(target));
 }

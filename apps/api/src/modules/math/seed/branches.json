@@ -1,0 +1,32 @@
+[
+  {
+    "id": "algebra",
+    "slug": "algebra",
+    "name_ar": "الجبر",
+    "name_en": "Algebra",
+    "description": "المعادلات والمتغيرات والعمليات الحسابية",
+    "icon": "📐",
+    "color": "#3b82f6",
+    "sort_order": 1
+  },
+  {
+    "id": "geometry",
+    "slug": "geometry",
+    "name_ar": "الهندسة",
+    "name_en": "Geometry",
+    "description": "الأشكال والزوايا والمساحات والنظرات",
+    "icon": "📏",
+    "color": "#10b981",
+    "sort_order": 2
+  },
+  {
+    "id": "calculus",
+    "slug": "calculus",
+    "name_ar": "التفاضل",
+    "name_en": "Calculus",
+    "description": "المشتقات والدوال وقواعد الاشتقاق",
+    "icon": "∫",
+    "color": "#8b5cf6",
+    "sort_order": 3
+  }
+]

@@ -1,18 +1,46 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { experiments as legacyExperiments, type Experiment } from '../../../composables/chemistry/useExperiments';
-import { listExperiments as listRegistryExperiments, type ExperimentDefinition } from '../../../composables/chemistry/experiments';
+import { listExperiments as listRegistryExperiments, type ExperimentDefinition, type ExperimentLevel } from '../../../composables/chemistry/experiments';
 import { useI18n } from '../../../composables/useI18n';
 import '../../../composables/chemistry/experiments'; // side-effect: registers all definitions
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 const emit = defineEmits<{ select: [exp: Experiment | ExperimentDefinition]; close: [] }>();
 
 // Merge: registry experiments + legacy experiments (deduped by id)
-const registryIds = new Set(listRegistryExperiments().map((e) => e.id));
-const mergedExperiments = [
-  ...listRegistryExperiments(),
-  ...legacyExperiments.filter((e) => !registryIds.has(e.id)),
-];
+const mergedExperiments = computed(() => {
+  const registryIds = new Set(listRegistryExperiments().map((e) => e.id));
+  return [
+    ...listRegistryExperiments(),
+    ...legacyExperiments.filter((e) => !registryIds.has(e.id)),
+  ];
+});
+
+// Group experiments by level
+const levelOrder: ExperimentLevel[] = ['middle', 'high', 'university'];
+const levelLabels: Record<ExperimentLevel, { ar: string; en: string; es: string; icon: string }> = {
+  middle: { ar: 'متوسط', en: 'Middle School', es: 'Secundaria', icon: '📘' },
+  high: { ar: 'ثانوي', en: 'High School', es: 'Preparatoria', icon: '📗' },
+  university: { ar: 'جامعي', en: 'University', es: 'Universidad', icon: '📕' },
+};
+
+const groupedExperiments = computed(() => {
+  const groups: { level: ExperimentLevel; label: string; icon: string; items: (Experiment | ExperimentDefinition)[] }[] = [];
+  for (const level of levelOrder) {
+    const items = mergedExperiments.value.filter((e: Experiment | ExperimentDefinition) => 'level' in e && e.level === level);
+    if (items.length === 0) continue;
+    const lbl = levelLabels[level];
+    const label = locale.value === 'ar' ? lbl.ar : locale.value === 'es' ? lbl.es : lbl.en;
+    groups.push({ level, label, icon: lbl.icon, items });
+  }
+  // Add experiments without level (legacy) to a misc group
+  const noLevel = mergedExperiments.value.filter((e: Experiment | ExperimentDefinition) => !('level' in e));
+  if (noLevel.length > 0) {
+    groups.push({ level: 'high' as ExperimentLevel, label: '—', icon: '🔬', items: noLevel });
+  }
+  return groups;
+});
 
 function onSelect(exp: Experiment | ExperimentDefinition) {
   emit('select', exp as Experiment);
@@ -29,17 +57,26 @@ function onClose() {
         <h3>🔬 {{ t('chemistryLab.chooseExperiment') }}</h3>
         <button class="close-btn" @click="onClose">✕</button>
       </div>
-      <div class="experiments-grid">
-        <div
-          v-for="exp in mergedExperiments"
-          :key="exp.id"
-          class="exp-card"
-          @click="onSelect(exp)"
-        >
-          <div class="exp-icon">{{ exp.icon }}</div>
-          <div class="exp-name">{{ t('nameKey' in exp ? exp.nameKey : exp.nameAr) }}</div>
-          <div class="exp-desc">{{ t('descKey' in exp ? exp.descKey : exp.description) }}</div>
-          <div class="exp-steps-count">{{ exp.steps.length }} {{ t('chemistryLab.steps') }}</div>
+      <div class="experiments-scroll">
+        <div v-for="group in groupedExperiments" :key="group.level" class="level-group">
+          <div class="level-header">
+            <span class="level-icon">{{ group.icon }}</span>
+            <span class="level-label">{{ group.label }}</span>
+            <span class="level-count">{{ group.items.length }}</span>
+          </div>
+          <div class="experiments-grid">
+            <div
+              v-for="exp in group.items"
+              :key="exp.id"
+              class="exp-card"
+              @click="onSelect(exp)"
+            >
+              <div class="exp-icon">{{ exp.icon }}</div>
+              <div class="exp-name">{{ t('nameKey' in exp ? exp.nameKey : exp.nameAr) }}</div>
+              <div class="exp-desc">{{ t('descKey' in exp ? exp.descKey : exp.description) }}</div>
+              <div class="exp-steps-count">{{ exp.steps.length }} {{ t('chemistryLab.steps') }}</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -93,9 +130,44 @@ function onClose() {
   justify-content: center;
 }
 .close-btn:hover { background: #e2e8f0; }
-.experiments-grid {
+.experiments-scroll {
   padding: 1.25rem;
   overflow-y: auto;
+}
+.level-group {
+  margin-bottom: 1.5rem;
+}
+.level-group:last-child {
+  margin-bottom: 0;
+}
+.level-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+.level-icon {
+  font-size: 1.2rem;
+}
+.level-label {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #1e293b;
+}
+.level-count {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 0.15rem 0.45rem;
+  border-radius: 0.3rem;
+}
+.experiments-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
 }
 .exp-card {
   background: #f8fafc;

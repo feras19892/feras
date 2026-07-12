@@ -27,6 +27,9 @@ importers:
       '@hono/zod-validator':
         specifier: ^0.8.0
         version: 0.8.0(hono@4.12.27)(zod@3.25.76)
+      '@my-modern-app/math-engine':
+        specifier: workspace:*
+        version: link:../../packages/math-engine
       '@my-modern-app/shared-types':
         specifier: workspace:*
         version: link:../../packages/shared-types
@@ -91,9 +94,9 @@ importers:
       '@my-modern-app/chemistry-engine':
         specifier: workspace:*
         version: link:../../packages/chemistry-engine
-      '@my-modern-app/physics-engine':
+      '@my-modern-app/math-engine':
         specifier: workspace:*
-        version: link:../../packages/physics-engine
+        version: link:../../packages/math-engine
       '@my-modern-app/shared-types':
         specifier: workspace:*
         version: link:../../packages/shared-types
@@ -103,12 +106,18 @@ importers:
       '@tresjs/core':
         specifier: ^5.8.3
         version: 5.8.3(three@0.184.0)(vue@3.5.39(typescript@5.9.3))
+      '@types/katex':
+        specifier: ^0.16.8
+        version: 0.16.8
       '@types/matter-js':
         specifier: ^0.20.2
         version: 0.20.2
       '@types/three':
         specifier: ^0.184.1
         version: 0.184.1
+      katex:
+        specifier: ^0.17.0
+        version: 0.17.0
       liquidfun-emscripten:
         specifier: ^1.1.4
         version: 1.1.4
@@ -223,17 +232,14 @@ importers:
         specifier: ^5.4.0
         version: 5.9.3
 
-  packages/physics-engine:
+  packages/math-engine:
     devDependencies:
       '@my-modern-app/config':
         specifier: workspace:*
         version: link:../config
       typescript:
-        specifier: ^5.4.0
+        specifier: ^5.0.0
         version: 5.9.3
-      vitest:
-        specifier: ^2.1.0
-        version: 2.1.9(@types/node@20.19.43)(@vitest/ui@2.1.9)(jsdom@24.1.3)
 
   packages/shared-types:
     devDependencies:
@@ -1085,6 +1091,9 @@ packages:
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
 
+  '@types/katex@0.16.8':
+    resolution: {integrity: sha512-trgaNyfU+Xh2Tc+ABIb44a5AYUpicB3uwirOioeOkNPPbmgRNtcWyDeeFRzjPZENO9Vq8gvVqfhaaXWLlevVwg==}
+
   '@types/matter-js@0.20.2':
     resolution: {integrity: sha512-3PPKy3QxvZ89h9+wdBV2488I1JLVs7DEpIkPvgO8JC1mUdiVSO37ZIvVctOTD7hIq8OAL2gJ3ugGSuUip6DhCw==}
 
@@ -1534,6 +1543,10 @@ packages:
   combined-stream@1.0.8:
     resolution: {integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==}
     engines: {node: '>= 0.8'}
+
+  commander@8.3.0:
+    resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
+    engines: {node: '>= 12'}
 
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
@@ -2264,6 +2277,10 @@ packages:
 
   jsonfile@6.2.1:
     resolution: {integrity: sha512-zwOTdL3rFQ/lRdBnntKVOX6k5cKJwEc1HdilT71BWEu7J41gXIB2MRp+vxduPSwZJPWBxEzv4yH1wYLJGUHX4Q==}
+
+  katex@0.17.0:
+    resolution: {integrity: sha512-Vdw0ATsQ9V+LuegM/BTwQqV/6cTl5lbGcIrU+BCgLxyf6bo38ybOr372tuSIxir3CN720flu1meYR6XzNMwQnw==}
+    hasBin: true
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
@@ -3984,6 +4001,8 @@ snapshots:
 
   '@types/estree@1.0.9': {}
 
+  '@types/katex@0.16.8': {}
+
   '@types/matter-js@0.20.2': {}
 
   '@types/node@20.19.43':
@@ -4563,6 +4582,8 @@ snapshots:
   combined-stream@1.0.8:
     dependencies:
       delayed-stream: 1.0.0
+
+  commander@8.3.0: {}
 
   concat-map@0.0.1: {}
 
@@ -5372,6 +5393,10 @@ snapshots:
       universalify: 2.0.1
     optionalDependencies:
       graceful-fs: 4.2.11
+
+  katex@0.17.0:
+    dependencies:
+      commander: 8.3.0
 
   keyv@4.5.4:
     dependencies:

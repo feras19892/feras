@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useSpillDrops } from '../../../composables/chemistry/useSpillDrops';
+import ReactionEffects from './ReactionEffects.vue';
 
 interface Props {
   volume?: number;     // 0–300 mL
@@ -12,6 +13,10 @@ interface Props {
   itemUid?: string;
   itemX?: number;
   itemY?: number;
+  gasEvolution?: boolean;
+  gasType?: string;
+  precipitate?: boolean;
+  precipitateColor?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -24,6 +29,10 @@ const props = withDefaults(defineProps<Props>(), {
   itemX: 0,
   itemY: 0,
   itemUid: '',
+  gasEvolution: false,
+  gasType: '',
+  precipitate: false,
+  precipitateColor: '#c0c0c0',
 });
 
 const emit = defineEmits<{ click: []; spill: [amount: number]; dropExited: [worldX: number, worldY: number, color: string]; }>();
@@ -186,6 +195,16 @@ const marks = computed<Mark[]>(() => [
           stroke-width="2"
           stroke-linecap="round"
           fill="none"
+        />
+        <!-- Reaction effects: gas bubbles & precipitate -->
+        <ReactionEffects
+          :gas-evolution="gasEvolution"
+          :gas-type="gasType"
+          :precipitate="precipitate"
+          :precipitate-color="precipitateColor"
+          :center-x="centerX"
+          :liquid-y="liquidY"
+          :width="neckW"
         />
       </g>
 

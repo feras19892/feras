@@ -1,7 +1,9 @@
 import { ref } from 'vue';
 import { useI18n } from '../useI18n';
 
-const { t } = useI18n();
+function getT() {
+  return useI18n().t;
+}
 
 export type AssistantMessageType = 'warning' | 'info' | 'success' | 'tip';
 
@@ -64,7 +66,7 @@ export function startIdleMessages() {
   idleTimer = setInterval(() => {
     if (!currentMessage.value) {
       const idx = idleIndex % idleKeys.length;
-      showMessage(t(idleKeys[idx]), idleTypes[idx]);
+      showMessage(getT()(idleKeys[idx]), idleTypes[idx]);
       idleIndex++;
     }
   }, 8000);
@@ -81,19 +83,19 @@ export function warnDangerousChemical(chemicalName: string, chemicalId: string) 
   const baseChemicals = ['naoh', 'koh'];
 
   if (acidChemicals.includes(chemicalId)) {
-    showMessage(t('chemistryAssistant.strongAcidWarning', { name: chemicalName }), 'warning');
+    showMessage(getT()('chemistryAssistant.strongAcidWarning', { name: chemicalName }), 'warning');
   } else if (baseChemicals.includes(chemicalId)) {
-    showMessage(t('chemistryAssistant.strongBaseWarning', { name: chemicalName }), 'warning');
+    showMessage(getT()('chemistryAssistant.strongBaseWarning', { name: chemicalName }), 'warning');
   } else {
-    showMessage(t('chemistryAssistant.chemicalGeneralWarning', { name: chemicalName }), 'tip');
+    showMessage(getT()('chemistryAssistant.chemicalGeneralWarning', { name: chemicalName }), 'tip');
   }
 }
 
 export function encourageStep(stepName: string) {
   const phrases = [
-    t('chemistryAssistant.stepComplete1', { name: stepName }),
-    t('chemistryAssistant.stepComplete2', { name: stepName }),
-    t('chemistryAssistant.stepComplete3', { name: stepName }),
+    getT()('chemistryAssistant.stepComplete1', { name: stepName }),
+    getT()('chemistryAssistant.stepComplete2', { name: stepName }),
+    getT()('chemistryAssistant.stepComplete3', { name: stepName }),
   ];
   showMessage(phrases[Math.floor(Math.random() * phrases.length)], 'success');
 }
@@ -119,7 +121,7 @@ export function tipForStep(stepIndex: number, experimentName: string) {
   };
   const keys = expKeys[experimentName] || ['chemistryAssistant.defaultTip'];
   const key = keys[Math.min(stepIndex, keys.length - 1)];
-  if (key) showMessage(t(key), 'tip');
+  if (key) showMessage(getT()(key), 'tip');
 }
 
 export function warnOnAction(action: string) {
@@ -133,11 +135,11 @@ export function warnOnAction(action: string) {
   };
   const key = 'chemistryAssistant.' + action;
   const type = map[action] || 'info';
-  showMessage(t(key), type);
+  showMessage(getT()(key), type);
 }
 
 export function welcomeMessage(experimentName: string) {
-  showMessage(t('chemistryAssistant.welcomeMessage', { name: experimentName }), 'info');
+  showMessage(getT()('chemistryAssistant.welcomeMessage', { name: experimentName }), 'info');
 }
 
 export function quickFactAbout(chemicalId: string) {
@@ -147,5 +149,5 @@ export function quickFactAbout(chemicalId: string) {
     phenolphthalein: 'chemistryAssistant.factPhenolphthalein',
   };
   const key = keyMap[chemicalId];
-  if (key) showMessage(t(key), 'tip');
+  if (key) showMessage(getT()(key), 'tip');
 }

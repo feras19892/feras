@@ -75,6 +75,11 @@ const routes: RouteRecordRaw[] = [
     name: 'Monitor',
     component: () => import('./components/dev/ExperimentMonitorPage.vue'),
   },
+  {
+    path: '/math',
+    name: 'MathHome',
+    component: () => import('./pages/math/index.vue'),
+  },
 ];
 
 const router = createRouter({

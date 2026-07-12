@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
-import type { ToolState } from './InspectorPanel.vue';
+import type { ToolState } from '../../../composables/chemistry/chemLabTypes';
 import {
   items, receivingMap, itemZoomMap, pourFlowMap, stopperMap, retortStandMap,
-  buretteInitialVolumeMap, buretteConsumedThisRefill,
   getLiquid, getBurette, getBurnerState, getItemZoom, buildToolState,
-  isContainer,
+  isContainer, isRetortStandAssembly,
   hasSelectedChemicalMap,
   loadSession, clearSession, setupInitialLabLayout
 } from '../../../composables/chemistry/useChemistryLab';
@@ -16,7 +15,7 @@ import {
 import { handleDropExited } from '../../../composables/chemistry/useDropPhysics';
 import { undo, redo, canUndo, canRedo, clearHistory } from '../../../composables/chemistry/useChemistryHistory';
 import { pipetteDraw, pipetteDispense, pipetteDrawAmount, pipetteDispenseAmount, pipetteDrawFrom, pipetteDispenseTo, pipetteFill, pipetteEmpty } from '../../../composables/chemistry/usePipetteActions';
-import { execAction, toggleSepFunnelValve, toggleBurner, tareBalance, tareContainer, buretteDropOne } from '../../../composables/chemistry/useExecActions';
+import { execAction, toggleBuretteValve, toggleSepFunnelValve, toggleBurner, tareBalance, tareContainer, buretteDropOne, spatulaSelectSolid, spatulaAddSolid } from '../../../composables/chemistry/useExecActions';
 import { useI18n } from '../../../composables/useI18n';
 const { t } = useI18n();
 import { useWorkspaceDrag } from '../../../composables/chemistry/useWorkspaceDrag';
@@ -38,10 +37,14 @@ const {
 
 /* ---- Actions ---- */
 function removeItem(uid: string) {
-  // Clean up retort stand slots: detach burettes if stand removed, or detach this burette
-  for (const st of Object.values(retortStandMap)) {
+  // Clean up all retort stand references before removing the item
+  for (const [standUid, st] of Object.entries(retortStandMap)) {
     const idx = st.slotOccupants.indexOf(uid);
     if (idx >= 0) st.slotOccupants[idx] = null;
+    if (st.bottomSlotOccupant === uid) st.bottomSlotOccupant = null;
+    if (standUid === uid && isRetortStandAssembly(items.value.find(i => i.uid === uid)?.id || '')) {
+      delete retortStandMap[standUid];
+    }
   }
   items.value = items.value.filter(i => i.uid !== uid);
   delete hasSelectedChemicalMap[uid];
@@ -66,24 +69,7 @@ function handleSpill(item: LabItem, amount: number) {
     if (selectedItem.value?.uid === item.uid) emit('select', item, buildToolState(item));
   }
 }
-function toggleBuretteValve(item: LabItem) {
-  const b = getBurette(item.uid);
-  const wasOpen = b.valveOpen;
-  b.valveOpen = !b.valveOpen;
-
-  if (!wasOpen && b.valveOpen) {
-    // Valve just opened: record initial volume for this refill
-    buretteInitialVolumeMap[item.uid] = b.volume;
-    buretteConsumedThisRefill[item.uid] = 0;
-  }
-
-  if (wasOpen && !b.valveOpen) {
-    // Valve just closed: clear warning
-    import('../../../composables/chemistry/useLabSimulation').then(m => { m.buretteWarning.value = null; });
-  }
-
-  if (selectedItem.value?.uid === item.uid) emit('select', item, buildToolState(item));
-}
+function _toggleBuretteValve(item: LabItem) { toggleBuretteValve(item, selectedItem, emit); }
 function tipInteract(_item: LabItem) { /* placeholder for future tip interaction */ }
 function onWheel(e: WheelEvent) {
   const target = hoveredItem.value; if (!target) return;
@@ -111,6 +97,8 @@ function _pipetteDrawFrom(item: LabItem, targetUid: string, amount: number) { pi
 function _pipetteDispenseTo(item: LabItem, targetUid: string, amount: number) { pipetteDispenseTo(item, targetUid, amount, selectedItem, emit); }
 function _pipetteFill(item: LabItem, amount: number) { pipetteFill(item, amount, selectedItem, emit); }
 function _pipetteEmpty(item: LabItem) { pipetteEmpty(item, selectedItem, emit); }
+function _spatulaSelectSolid() { if (selectedItem.value) spatulaSelectSolid(selectedItem.value.uid); }
+function _spatulaAddTo(targetUid: string, grams: number) { if (selectedItem.value) spatulaAddSolid(selectedItem.value.uid, targetUid, grams, selectedItem, emit); }
 
 /* ---- Computed ---- */
 const selectedState = computed<ToolState | null>(() => buildToolState(selectedItem.value));
@@ -196,9 +184,10 @@ defineExpose({
         @mouth-interact="onMouthInteract(item)"
         @spill="handleSpill"
         @drop-exited="_handleDropExited"
-        @toggle-valve="toggleBuretteValve(item)"
+        @toggle-valve="_toggleBuretteValve(item)"
         @tip-interact="tipInteract(item)"
         @toggle-stopcock="_toggleSepFunnelValve(item)"
+        @toggle-burner="_toggleBurner(item)"
       />
     </div>
     <FloatingInspector
@@ -225,6 +214,8 @@ defineExpose({
       @undo="undo()"
       @redo="redo()"
       @label-change="(label) => { if(selectedItem){getLiquid(selectedItem.uid).label = label; emit('select', selectedItem, buildToolState(selectedItem));} }"
+      @spatula-select-solid="_spatulaSelectSolid()"
+      @spatula-add-to="(targetUid: string, grams: number) => _spatulaAddTo(targetUid, grams)"
     />
 
     <WorkspaceOverlays

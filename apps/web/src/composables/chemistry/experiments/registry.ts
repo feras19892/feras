@@ -22,6 +22,10 @@ export function listByCategory(category: string): ExperimentDefinition[] {
   return Array.from(registry.values()).filter((e) => e.category === category);
 }
 
+export function listByLevel(level: string): ExperimentDefinition[] {
+  return Array.from(registry.values()).filter((e) => e.level === level);
+}
+
 export function hasExperiment(id: string): boolean {
   return registry.has(id);
 }

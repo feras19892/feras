@@ -5,7 +5,7 @@ import LabAssistant from './LabAssistant.vue';
 import ExperimentStepsPanel from './ExperimentStepsPanel.vue';
 import type { Experiment } from '../../../composables/chemistry/useExperiments';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
-import type { ToolState } from './InspectorPanel.vue';
+import type { ToolState } from '../../../composables/chemistry/chemLabTypes';
 import { useI18n } from '../../../composables/useI18n';
 const { t } = useI18n();
 

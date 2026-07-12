@@ -17,7 +17,9 @@ export interface LiquidState {
   reactants?: Record<string, number>;
   equation?: string;
   precipitate?: boolean;
+  precipitateColor?: string;
   gasEvolution?: boolean;
+  gasType?: string;
 }
 
 export interface BuretteState {

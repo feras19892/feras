@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue';
 import { useSpillDrops } from '../../../composables/chemistry/useSpillDrops';
 import { useBeakerScale } from '../../../composables/chemistry/useBeakerScale';
+import ReactionEffects from './ReactionEffects.vue';
 import './LabBeaker.css';
 
 interface Props {
@@ -17,6 +18,10 @@ interface Props {
   itemX?: number;
   itemY?: number;
   scale?: number;
+  gasEvolution?: boolean;
+  gasType?: string;
+  precipitate?: boolean;
+  precipitateColor?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -32,6 +37,10 @@ const props = withDefaults(defineProps<Props>(), {
   itemY: 0,
   itemUid: '',
   scale: 1,
+  gasEvolution: false,
+  gasType: '',
+  precipitate: false,
+  precipitateColor: '#c0c0c0',
 });
 
 const showMouthGlow = ref(false);
@@ -217,6 +226,16 @@ useSpillDrops({
               <animateTransform attributeName="transform" type="rotate" from="360 70 150" to="0 70 150" dur="0.3s" repeatCount="indefinite" />
             </path>
           </g>
+          <!-- Reaction effects: gas bubbles & precipitate -->
+          <ReactionEffects
+            :gas-evolution="gasEvolution"
+            :gas-type="gasType"
+            :precipitate="precipitate"
+            :precipitate-color="precipitateColor"
+            :center-x="70"
+            :liquid-y="liquidY"
+            :width="60"
+          />
       </g>
 
       <!-- ========== GLASS HIGHLIGHTS ========== -->

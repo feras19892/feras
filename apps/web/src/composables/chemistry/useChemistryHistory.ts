@@ -6,7 +6,9 @@ import {
   sepFunnelMap, burnerMap, balanceTareMap, containerTareMap, itemZoomMap,
   buretteInitialVolumeMap, buretteTotalConsumedMap, buretteConsumedThisRefill,
   retortStandMap, phProbeTipMap, solidMap, stopperMap, rackSlotsMap,
-  beakerClampMap, hotPlateMap, woodenBaseMap, hasSelectedChemicalMap
+  beakerClampMap, hotPlateMap, woodenBaseMap, hasSelectedChemicalMap,
+  pourFlowMap, tiltAngleMap, spillParticles, receivingMap, simSpeed,
+  type RetortStandState
 } from './useChemistryLab';
 
 const MAX_MACRO = 100;
@@ -25,8 +27,9 @@ interface HistorySnapshot {
   buretteInitial: Record<string, number>;
   buretteTotal: Record<string, number>;
   buretteConsumed: Record<string, number>;
-  retortStands: Record<string, { leftBuretteUid: string | null; rightBuretteUid: string | null; leftContainerUid: string | null; rightContainerUid: string | null; heatingDeviceUid: string | null; topClampY: number; bottomClampY: number; slotOffsets: number[]; slotOccupants: (string | null)[] }>;
+  retortStands: Record<string, RetortStandState>;
   phProbeTips: Record<string, { x: number; y: number }>;
+  simSpeed: number;
   solids: Record<string, { amount: number; type: string }>;
   stoppers: Record<string, string>;
   rackSlots: Record<string, (string | null)[]>;
@@ -34,6 +37,10 @@ interface HistorySnapshot {
   hotPlates: Record<string, { on: boolean; temperature: number; currentTemp: number }>;
   woodenBases: Record<string, { attachedToolUids: string[] }>;
   hasSelectedChemicals: Record<string, boolean>;
+  pourFlows: Record<string, string>;
+  tiltAngles: Record<string, number>;
+  spillDrops: { x: number; y: number; vx: number; vy: number; size: number; color: string; sourceUid: string }[];
+  receiving: Record<string, boolean>;
 }
 
 /* ── Macro history (big actions: fill, remove, toggle, etc.) ── */
@@ -71,6 +78,11 @@ function capture(): HistorySnapshot {
     hotPlates: clone(hotPlateMap),
     woodenBases: clone(woodenBaseMap),
     hasSelectedChemicals: clone(hasSelectedChemicalMap),
+    pourFlows: clone(pourFlowMap),
+    tiltAngles: clone(tiltAngleMap),
+    spillDrops: clone(spillParticles),
+    receiving: clone(receivingMap),
+    simSpeed: simSpeed.value,
   };
 }
 
@@ -116,6 +128,15 @@ function restore(snap: HistorySnapshot) {
   Object.assign(woodenBaseMap, clone(snap.woodenBases));
   Object.keys(hasSelectedChemicalMap).forEach(k => delete hasSelectedChemicalMap[k]);
   Object.assign(hasSelectedChemicalMap, clone(snap.hasSelectedChemicals));
+  Object.keys(pourFlowMap).forEach(k => delete pourFlowMap[k]);
+  Object.assign(pourFlowMap, clone(snap.pourFlows));
+  Object.keys(tiltAngleMap).forEach(k => delete tiltAngleMap[k]);
+  Object.assign(tiltAngleMap, clone(snap.tiltAngles));
+  spillParticles.splice(0, spillParticles.length);
+  spillParticles.push(...clone(snap.spillDrops));
+  Object.keys(receivingMap).forEach(k => delete receivingMap[k]);
+  Object.assign(receivingMap, clone(snap.receiving));
+  simSpeed.value = snap.simSpeed;
 }
 
 /* ════════════════════════════════════════════

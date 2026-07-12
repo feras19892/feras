@@ -6,6 +6,7 @@ import { registerExperiment } from '../registry';
 
 const definition: ExperimentDefinition = {
   id: 'neutralization-hcl-naoh',
+  level: 'high',
   category: 'titration',
   nameKey: 'chemistryExperiments.expTitrationHClNaOH',
   descKey: 'chemistryExperiments.descTitrationHClNaOH',

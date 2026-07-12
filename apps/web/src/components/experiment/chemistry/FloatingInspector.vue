@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
-import type { ToolState } from './InspectorPanel.vue';
+import type { ToolState } from '../../../composables/chemistry/chemLabTypes';
 import {
   items, isContainer,
-  getPipette, getBurnerState, getBalanceTare, getContainerTare, getLiquid,
+  getPipette, getBurnerState, getBalanceTare, getContainerTare, getLiquid, getHotPlateState,
   isGradCylinder, tiltAngleMap,
-  selectedChemical, hasSelectedChemicalMap, simSpeed
+  selectedChemical, hasSelectedChemicalMap, simSpeed,
+  spatulaSelectedSolid, solidMap,
+  isBunsenBurner, isHeatingMantle, isHotPlate, isBalance, isPhMeter, isThermometer,
 } from '../../../composables/chemistry/useChemistryLab';
-import { computeBalanceWeight, getBalanceReading, getPhReading } from '../../../composables/chemistry/useLabSimulation';
+import { computeBalanceWeight, getBalanceReading, getPhReading, getTemperatureReading } from '../../../composables/chemistry/useLabSimulation';
 import { useI18n } from '../../../composables/useI18n';
 import { useChemicalLocale } from '../../../composables/chemistry/useChemicalLocale';
 
@@ -40,6 +42,8 @@ const emit = defineEmits<{
   labelChange: [label: string];
   undo: [];
   redo: [];
+  spatulaSelectSolid: [];
+  spatulaAddTo: [targetUid: string, grams: number];
 }>();
 
 function balanceReadout(): string {
@@ -55,6 +59,22 @@ function phReadout(): string {
   if (!props.item) return '--.--';
   const r = getPhReading(props.item);
   return r !== null ? r.toFixed(2) : '--.--';
+}
+function tempReadout(): string {
+  if (!props.item) return '--';
+  const r = getTemperatureReading(props.item);
+  return r !== null ? r.toFixed(1) : '--';
+}
+function tempColor(): string {
+  if (!props.item) return '#94a3b8';
+  const r = getTemperatureReading(props.item);
+  if (r === null) return '#94a3b8';
+  if (r < 15) return '#2563eb';
+  if (r < 25) return '#3b82f6';
+  if (r < 50) return '#10b981';
+  if (r < 75) return '#eab308';
+  if (r < 95) return '#f59e0b';
+  return '#dc2626';
 }
 function tiltLeft() {
   if (!props.item) return;
@@ -78,6 +98,21 @@ function pipetteStatus(): string {
 }
 
 const pipetteTargetUid = ref<string>('');
+
+const spatulaTargetUid = ref<string>('');
+
+const spatulaContainerList = computed(() => {
+  if (!props.item) return [];
+  return items.value.filter((i: LabItem) => i.uid !== props.item!.uid && isContainer(i.id));
+});
+
+function spatulaContainerLabel(c: LabItem): string {
+  const liq = getLiquid(c.uid);
+  const vol = liq.volume > 0 ? ` (${liq.volume.toFixed(1)} ${t('chemistry.mL')})` : ` (${t('chemistry.emptyF')})`;
+  const solid = solidMap[c.uid];
+  const solidInfo = solid && solid.amount > 0 ? ` + ${solid.amount.toFixed(1)}${t('chemistry.g')}` : '';
+  return t(c.name) + vol + solidInfo;
+}
 
 const containerList = computed(() => {
   if (!props.item) return [];
@@ -251,12 +286,15 @@ function containerLabel(c: LabItem): string {
         </div>
       </template>
       <!-- Bunsen Burner -->
-      <template v-else-if="item.id === 'bunsen-burner'">
+      <template v-else-if="isBunsenBurner(item.id)">
         <div class="fi-row"><span>{{ t('chemistry.status') }}</span><b :class="getBurnerState(item.uid).on ? 'open' : ''">{{ getBurnerState(item.uid).on ? '🔥 ' + t('chemistry.on') : '⚫ ' + t('chemistry.off') }}</b></div>
         <div class="fi-row"><span>{{ t('chemistry.intensity') }}</span><b>{{ Math.round(getBurnerState(item.uid).intensity * 100) }}%</b></div>
         <div class="fi-row"><span>{{ t('chemistry.heatingSpeed') }}</span><b>{{ simSpeed }}x</b></div>
         <div class="fi-actions">
           <button :class="getBurnerState(item.uid).on ? 'danger' : 'success'" @click="emit('toggleBurner')">{{ getBurnerState(item.uid).on ? '⏹️ ' + t('chemistry.heatOff') : '🔥 ' + t('chemistry.heatOn') }}</button>
+        </div>
+        <div class="fi-actions">
+          <input type="range" min="0" max="100" :value="getBurnerState(item.uid).intensity * 100" @input="emit('intensityChange', +($event.target as HTMLInputElement).value / 100)" class="fi-slider" style="width:100%" />
         </div>
         <div class="fi-actions">
           <button class="refill" @click="simSpeed = simSpeed === 1 ? 5 : 1">{{ simSpeed === 1 ? '⏩ ' + t('chemistry.fastX5') : '⏪ ' + t('chemistry.slowX1') }}</button>
@@ -266,7 +304,7 @@ function containerLabel(c: LabItem): string {
         </div>
       </template>
       <!-- Digital Balance -->
-      <template v-else-if="item.id === 'digital-balance'">
+      <template v-else-if="isBalance(item.id)">
         <div class="fi-row"><span>{{ t('chemistry.reading') }}</span><b style="color:#22c55e;font-family:monospace">{{ balanceReadout() }}</b></div>
         <div class="fi-row"><span>{{ t('chemistry.grossWeight') }}</span><b style="font-family:monospace">{{ grossWeight() }}</b></div>
         <div class="fi-row"><span>{{ t('chemistry.tare') }}</span><b style="font-family:monospace">{{ getBalanceTare(item.uid).toFixed(2) }} {{ t('chemistry.g') }}</b></div>
@@ -280,7 +318,7 @@ function containerLabel(c: LabItem): string {
         </div>
       </template>
       <!-- Heating Mantle -->
-      <template v-else-if="item.id === 'heating-mantle'">
+      <template v-else-if="isHeatingMantle(item.id)">
         <div class="fi-row"><span>{{ t('chemistry.status') }}</span><b :class="getBurnerState(item.uid).on ? 'open' : ''">{{ getBurnerState(item.uid).on ? '🔥 ' + t('chemistry.on') : '⚫ ' + t('chemistry.off') }}</b></div>
         <div class="fi-row"><span>{{ t('chemistry.intensity') }}</span><b>{{ Math.round(getBurnerState(item.uid).intensity * 100) }}%</b></div>
         <div class="fi-row"><span>{{ t('chemistry.heatingSpeed') }}</span><b>{{ simSpeed }}x</b></div>
@@ -298,9 +336,19 @@ function containerLabel(c: LabItem): string {
         </div>
       </template>
       <!-- pH Meter -->
-      <template v-else-if="item.id === 'ph-meter'">
+      <template v-else-if="isPhMeter(item.id)">
         <div class="fi-row"><span>{{ t('chemistry.reading') }}</span><b style="color:#22c55e;font-family:monospace;font-size:1.1rem">{{ phReadout() }}</b></div>
         <div class="fi-row"><span>{{ t('chemistry.status') }}</span><b>{{ getPhReading(item) !== null ? '🟢 ' + t('chemistry.electrodeIn') : '⚪ ' + t('chemistry.electrodeOut') }}</b></div>
+        <div class="fi-actions">
+          <button class="delete" @click="emit('remove', item.uid)">❌ {{ t('chemistry.remove') }}</button>
+        </div>
+      </template>
+      <!-- Thermometer -->
+      <template v-else-if="isThermometer(item.id)">
+        <div class="fi-row"><span>{{ t('chemistry.tool') }}</span><b>{{ item.id === 'thermometer-digital' ? t('chemistry.thermometerDigital') : t('chemistry.thermometerMercury') }}</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.reading') }}</span><b :style="{ color: tempColor(), fontFamily: 'monospace', fontSize: '1.1rem' }">{{ tempReadout() }}°C</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.status') }}</span><b>{{ getTemperatureReading(item) !== null ? '🟢 ' + t('chemistry.probeInLiquid') : '⚪ ' + t('chemistry.probeOutOfLiquid') }}</b></div>
+        <div class="fi-row hint"><span>📖</span><small>{{ t('chemistry.thermometerHint') }}</small></div>
         <div class="fi-actions">
           <button class="delete" @click="emit('remove', item.uid)">❌ {{ t('chemistry.remove') }}</button>
         </div>
@@ -323,9 +371,61 @@ function containerLabel(c: LabItem): string {
       <template v-else-if="item.id === 'spatula'">
         <div class="fi-row"><span>{{ t('chemistry.tool') }}</span><b>{{ t('chemistry.spatula') }}</b></div>
         <div class="fi-row"><span>{{ t('chemistry.usage') }}</span><b>{{ t('chemistry.transferSolids') }}</b></div>
-        <div class="fi-row hint"><span>📖</span><small>{{ t('chemistry.spatulaHint') }}</small></div>
+
+        <!-- Selected solid indicator -->
+        <div v-if="spatulaSelectedSolid" class="fi-row fi-chem-row">
+          <span>{{ t('chemistry.selectedSolid') }}</span>
+          <span class="fi-chem-name">
+            <span class="fi-dot" :style="{ background: spatulaSelectedSolid.color }" />
+            {{ spatulaSelectedSolid.name }}
+          </span>
+        </div>
+
+        <!-- Select solid button -->
         <div class="fi-actions">
-          <button class="success" @click="emit('action', 'addSolid', item.uid)">🥄 {{ t('chemistry.addSolid') }}</button>
+          <button class="success" @click="emit('spatulaSelectSolid')">
+            🧪 {{ spatulaSelectedSolid ? t('chemistry.changeSolid') : t('chemistry.selectSolid') }}
+          </button>
+        </div>
+
+        <!-- Target container selector -->
+        <div class="fi-row"><span>🎯 {{ t('chemistry.selectContainer') }}</span></div>
+        <div class="fi-actions">
+          <select v-model="spatulaTargetUid" class="fi-select" @click.stop>
+            <option value="">{{ t('chemistry.chooseContainer') }}</option>
+            <option v-for="c in spatulaContainerList" :key="c.uid" :value="c.uid">{{ spatulaContainerLabel(c) }}</option>
+          </select>
+        </div>
+
+        <!-- Grams buttons -->
+        <div class="fi-row"><span>⚖️ {{ t('chemistry.addGrams') }}</span></div>
+        <div class="fi-actions">
+          <button class="success" :disabled="!spatulaSelectedSolid || !spatulaTargetUid" @click="emit('spatulaAddTo', spatulaTargetUid, 0.5)">🥄 +0.5g</button>
+          <button class="success" :disabled="!spatulaSelectedSolid || !spatulaTargetUid" @click="emit('spatulaAddTo', spatulaTargetUid, 1)">🥄 +1g</button>
+          <button class="success" :disabled="!spatulaSelectedSolid || !spatulaTargetUid" @click="emit('spatulaAddTo', spatulaTargetUid, 2)">🥄 +2g</button>
+          <button class="success" :disabled="!spatulaSelectedSolid || !spatulaTargetUid" @click="emit('spatulaAddTo', spatulaTargetUid, 5)">🥄 +5g</button>
+        </div>
+
+        <!-- Show total solid in target -->
+        <div v-if="spatulaTargetUid && solidMap[spatulaTargetUid] && solidMap[spatulaTargetUid].amount > 0" class="fi-row">
+          <span>{{ t('chemistry.totalSolid') }}</span>
+          <b>{{ solidMap[spatulaTargetUid].amount.toFixed(2) }} {{ t('chemistry.g') }}</b>
+        </div>
+
+        <div class="fi-row hint"><span>📖</span><small>{{ t('chemistry.spatulaHintNew') }}</small></div>
+        <div class="fi-actions">
+          <button class="delete" @click="emit('remove', item.uid)">❌ {{ t('chemistry.remove') }}</button>
+        </div>
+      </template>
+      <!-- Hot Plate -->
+      <template v-else-if="isHotPlate(item.id)">
+        <div class="fi-row"><span>{{ t('chemistry.status') }}</span><b :class="getHotPlateState(item.uid).on ? 'open' : ''">{{ getHotPlateState(item.uid).on ? '🔥 ' + t('chemistry.on') : '⚫ ' + t('chemistry.off') }}</b></div>
+        <div class="fi-row"><span>{{ t('chemistry.heatingSpeed') }}</span><b>{{ simSpeed }}x</b></div>
+        <div class="fi-actions">
+          <button :class="getHotPlateState(item.uid).on ? 'danger' : 'success'" @click="emit('toggleBurner')">{{ getHotPlateState(item.uid).on ? '⏹️ ' + t('chemistry.heatingOff') : '🔥 ' + t('chemistry.heatingOn') }}</button>
+        </div>
+        <div class="fi-actions">
+          <button class="refill" @click="simSpeed = simSpeed === 1 ? 5 : 1">{{ simSpeed === 1 ? '⏩ ' + t('chemistry.fastX5') : '⏪ ' + t('chemistry.slowX1') }}</button>
         </div>
         <div class="fi-actions">
           <button class="delete" @click="emit('remove', item.uid)">❌ {{ t('chemistry.remove') }}</button>

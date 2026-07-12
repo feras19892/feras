@@ -1,9 +1,10 @@
 import { useExperimentReport } from '../useExperimentReport'
 import { useI18n } from '../useI18n'
+import { linearRegression } from '../../components/experiment/spring/linearRegression'
 import type { FreeFallTrial } from './useFreeFallTrials'
 import type { LabReportTable, LabReportStat } from '../../utils/lab-report'
 
-interface FreeFallReportInput { params: { h: number; g: number; mass: number; airResistance: boolean }; trials: { trials: { value: FreeFallTrial[] }; trialStats: { value: { g_mean: number } }; calcResult: { value: string } } }
+interface FreeFallReportInput { params: { h: number; g: number; mass: number; airResistance: boolean }; trials: { trials: { value: FreeFallTrial[] }; trialStats: { value: { time_mean: number; time_std: number; g_mean: number; g_std: number } }; calcResult: { value: string } } }
 
 export function useFreeFallReport() {
   const { t } = useI18n()
@@ -39,12 +40,19 @@ export function useFreeFallReport() {
       : ''
 
     let regressionBlock = ''
-    if (statsVal.g_mean > 0) {
-      regressionBlock = `
+    if (trials.length >= 2) {
+      const xs = trials.map(tr => tr.timeSquaredSec2)
+      const ys = trials.map(tr => tr.heightMeters)
+      const fit = linearRegression(xs, ys)
+      if (fit && Math.abs(fit.slope) > 1e-12) {
+        const gFromFit = 2 * fit.slope
+        regressionBlock = `
 <div style="font-family:monospace;font-size:.85rem;line-height:1.8;color:#1e3a8a">
-  <div>• ${t('experiments.slopeLabel')} = ${(statsVal.g_mean / 2).toFixed(5)} m/s²</div>
-  <div>• ${t('experiments.gFromRegression')} = ${statsVal.g_mean.toFixed(2)} m/s²</div>
+  <div>• ${t('experiments.slopeLabel')} = ${fit.slope.toFixed(5)} m/s²</div>
+  <div>• ${t('experiments.rSquaredLabel')} = ${fit.r2.toFixed(4)}</div>
+  <div>• ${t('experiments.gFromRegression')} = ${gFromFit.toFixed(2)} m/s²</div>
 </div>`
+      }
     }
 
     rep.openFullReport({

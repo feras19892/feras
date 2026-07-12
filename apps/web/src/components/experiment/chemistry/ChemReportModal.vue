@@ -6,16 +6,24 @@ const { t } = useI18n();
 
 const props = defineProps<{
   data: ReportData | null;
+  fields?: Record<string, string | number | null>;
+  template?: { type: string; fields: { key: string; labelKey: string; source: string }[] } | null;
 }>();
 
 const emit = defineEmits<{
   close: [];
   restart: [];
 }>();
+
+function formatValue(val: string | number | null): string {
+  if (val === null || val === undefined) return '--';
+  if (typeof val === 'number') return val.toFixed(2);
+  return String(val);
+}
 </script>
 
 <template>
-  <div v-if="data" class="report-overlay" @click.self="emit('close')">
+  <div v-if="data || (fields && template)" class="report-overlay" @click.self="emit('close')">
     <div class="report-panel">
       <div class="report-header">
         <h2>{{ t('chemistryReport.reportTitle') }}</h2>
@@ -23,6 +31,18 @@ const emit = defineEmits<{
       </div>
       <div class="report-body">
         <div class="report-section">
+          <!-- New template-based report -->
+          <template v-if="template && fields">
+            <div v-for="field in template.fields" :key="field.key" class="report-row">
+              <span class="label">{{ t(field.labelKey) }}</span>
+              <span v-if="field.source === 'colorAtEquivalence'" class="value">
+                <span class="color-dot" :style="{ background: String(fields[field.key] || '#3b82f6') }" />
+              </span>
+              <span v-else class="value">{{ formatValue(fields[field.key] ?? null) }}</span>
+            </div>
+          </template>
+          <!-- Legacy report -->
+          <template v-else-if="data">
           <div class="report-row">
             <span class="label">{{ t('chemistryReport.experimentLabel') }}</span>
             <span class="value">{{ data.experimentName }}</span>
@@ -55,6 +75,7 @@ const emit = defineEmits<{
             <span class="label">{{ t('chemistryReport.readingsCount') }}</span>
             <span class="value">{{ data.readingsCount }}</span>
           </div>
+          </template>
         </div>
         <div class="report-actions">
           <button class="restart-btn" @click="emit('restart')">{{ t('chemistryReport.restartExperiment') }}</button>

@@ -7,6 +7,7 @@ import {
   isGradCylinder, isHeatingMantle, isBunsenBurner, isBalance, isPhMeter,
   isWatchGlass, isFilterFunnel, isRubberStopper,
   isRetortStandAssembly, isBeakerClamp, isWoodenBase, isHotPlate,
+  isThermometer,
   isContainer, getMaxVolume
 } from './chemLabIds';
 import { loadSession, clearSession, saveSessionDebounced } from './useChemistrySession';
@@ -17,6 +18,7 @@ export {
   isGradCylinder, isHeatingMantle, isBunsenBurner, isBalance, isPhMeter,
   isWatchGlass, isFilterFunnel, isRubberStopper,
   isRetortStandAssembly, isBeakerClamp, isWoodenBase, isHotPlate,
+  isThermometer,
   isClampAttachable, isContainer, getMaxVolume
 } from './chemLabIds';
 export type { Chemical, ChemicalCategory, HazardLevel, PhysicalState } from './chemDatabase';
@@ -28,6 +30,8 @@ export { buildToolState } from './useToolStateBuilder';
 let uid = 0;
 
 export const pendingChemicalFill = ref<{ uid: string; amount: number } | null>(null);
+export const pendingSolidSelect = ref<string | null>(null);
+export const spatulaSelectedSolid = ref<{ chemicalId: string; color: string; name: string } | null>(null);
 export const hasSelectedChemicalMap = reactive<Record<string, boolean>>({});
 export const simSpeed = ref(1);
 export const items = ref<LabItem[]>([]);
@@ -267,9 +271,12 @@ export function useChemistryLab() {
     isWatchGlass,
     isFilterFunnel,
     isRubberStopper,
+    isThermometer,
     chemicals,
     selectedChemical,
     pendingChemicalFill,
+    pendingSolidSelect,
+    spatulaSelectedSolid,
     hasSelectedChemicalMap,
     simSpeed,
     phProbeTipMap,

@@ -3,7 +3,7 @@ import { useI18n } from '../useI18n'
 import type { ProjectileTrial } from './useProjectileTrials'
 import type { LabReportTable, LabReportStat } from '../../utils/lab-report'
 
-interface ProjectileReportInput { params: { v0: number; angleDeg: number; g: number; dragCoeff: number }; trials: { trials: { value: ProjectileTrial[] }; trialStats: { value: { range_mean: number; range_std: number; flightTime_mean: number; flightTime_std: number } }; fitResult: { value: { slope: number; intercept: number } | null }; calcResult: { value: string } } }
+interface ProjectileReportInput { params: { v0: number; angleDeg: number; g: number; dragCoeff: number }; trials: { trials: { value: ProjectileTrial[] }; trialStats: { value: { range_mean: number; range_std: number; flightTime_mean: number; flightTime_std: number } }; fitResult: { value: { slope: number; intercept: number; r2: number } | null }; calcResult: { value: string } } }
 
 export function useProjectileReport() {
   const { t } = useI18n()
@@ -41,6 +41,7 @@ export function useProjectileReport() {
       fitBlock = `
 <div style="font-family:monospace;font-size:.85rem;line-height:1.8;color:#1e3a8a">
   <div><b>${t('experiments.rangeEquationLabel')}:</b> R = ${fitResult.slope.toFixed(4)} · sin(2θ) ${fitResult.intercept >= 0 ? '+' : ''} ${fitResult.intercept.toFixed(4)}</div>
+  <div>R² = ${fitResult.r2.toFixed(4)}</div>
   <div>${t('experiments.linearRegressionCurve')}</div>
 </div>`
     }

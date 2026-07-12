@@ -11,6 +11,8 @@ export type ExperimentCategory =
   | 'heating'
   | 'custom';
 
+export type ExperimentLevel = 'middle' | 'high' | 'university';
+
 // ---- Steps ----
 
 export interface StepDef {
@@ -94,6 +96,7 @@ export interface SetupHint {
 
 export interface ExperimentDefinition {
   id: string;
+  level: ExperimentLevel;
   category: ExperimentCategory;
   nameKey: string;
   descKey: string;

@@ -1,11 +1,12 @@
 import { useExperimentReport } from '../useExperimentReport'
 import { useI18n } from '../useI18n'
+import { linearRegression } from '../../components/experiment/spring/linearRegression'
 import type { SpringTrial } from './useSpringTrials'
 import type { LabReportTable, LabReportStat } from '../../utils/lab-report'
 
 interface SpringReading { mass: number; deltaY: number; force: number }
 interface SpringDynamicTrial { mass: number; t1: number; t2: number; t3: number; tAvg: number; T: number; T2: number }
-interface SpringReportInput { params: { k: number; mass: number; amplitude: number; measureCycles: number }; staticK: { value: number | null }; kDynamic: { value: number | null }; staticReadings: { value: SpringReading[] }; dynamicTrials: { value: SpringDynamicTrial[] }; trials: { trials: { value: SpringTrial[] }; trialStats: { value: { t_mean: number; k_mean: number; T_std: number } }; calcResult: { value: string } } }
+interface SpringReportInput { params: { k: number; mass: number; amplitude: number; measureCycles: number }; staticK: { value: number | null }; kDynamic: { value: number | null }; staticReadings: { value: SpringReading[] }; dynamicTrials: { value: SpringDynamicTrial[] }; trials: { trials: { value: SpringTrial[] }; trialStats: { value: { T_mean: number; T_std: number; k_mean: number; k_std: number } }; calcResult: { value: string } } }
 
 export function useSpringReport() {
   const { t } = useI18n()
@@ -68,12 +69,17 @@ export function useSpringReport() {
 
     const statsVal = ex.trials.trialStats.value
     let regressionBlock = ''
-    if (statsVal.k_mean > 0) {
+    if (statsVal.k_mean > 0 && ex.trials.trials.value.length >= 2) {
+      const trialList = ex.trials.trials.value
+      const xs = trialList.map(tr => tr.mass)
+      const ys = trialList.map(tr => tr.T * tr.T)
+      const fit = linearRegression(xs, ys)
+      const r2 = fit ? fit.r2 : 0
       regressionBlock = `
 <div style="font-family:monospace;font-size:.85rem;line-height:1.8;color:#1e3a8a">
-  <div>• ${t('experiments.slopeLabel')} = ${statsVal.k_mean.toFixed(2)} N/m</div>
-  <div>• ${t('experiments.rSquaredLabel')} = ${(statsVal.T_std < 0.01 ? '0.999+' : (1 - statsVal.T_std).toFixed(3))}</div>
-  <div>• ${t('experiments.equationLabel')}: y = ${statsVal.k_mean.toFixed(2)} · x + b</div>
+  <div>• ${t('experiments.slopeLabel')} = ${fit ? fit.slope.toFixed(5) : 'N/A'}</div>
+  <div>• ${t('experiments.rSquaredLabel')} = ${r2.toFixed(4)}</div>
+  <div>• ${t('experiments.equationLabel')}: T² = ${fit ? fit.slope.toFixed(5) : 'N/A'} · m ${fit && fit.intercept >= 0 ? '+' : ''} ${fit ? fit.intercept.toFixed(5) : 'N/A'}</div>
 </div>`
     }
 

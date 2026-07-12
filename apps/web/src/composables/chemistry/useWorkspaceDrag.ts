@@ -5,7 +5,7 @@ import {
   createLabItem, isContainer,
   getPipette, retortStandMap,
 } from './useChemistryLab';
-import { isPipette, isRetortStandAssembly } from './chemLabIds';
+import { isBeaker, isPipette, isRetortStandAssembly, isPhMeter, isRubberStopper } from './chemLabIds';
 import {
   getMagnetOffset, isClampAttachable,
   retortStandSnapUid, bottomClampSnapUid,
@@ -72,6 +72,15 @@ export function useWorkspaceDrag(
         st.slotOccupants[result.slotIdx] = item.uid;
       }
     }
+
+    // --- Bottom clamp snap for beakers dropped near the stand ---
+    if (isBeaker(item.id)) {
+      const standUid = findNearestBottomClamp(item.uid, item.x, item.y);
+      if (standUid) {
+        bottomClampSnapUid.value = standUid;
+        finalizeBottomClampSnap(item.uid);
+      }
+    }
   }
 
   function onItemMouseDown(e: MouseEvent, item: LabItem) {
@@ -112,7 +121,7 @@ export function useWorkspaceDrag(
     const dx = newX - prevX;
     const dy = newY - prevY;
 
-    if (item.id === 'ph-meter' && phProbeTipMap[item.uid]) {
+    if (isPhMeter(item.id) && phProbeTipMap[item.uid]) {
       phProbeTipMap[item.uid].x += dx;
       phProbeTipMap[item.uid].y += dy;
     }
@@ -146,7 +155,7 @@ export function useWorkspaceDrag(
     }
 
     // --- Bottom clamp beaker snap detection (throttled) ---
-    if (item.id === 'beaker-100' || item.id === 'beaker-250' || item.id === 'beaker-500') {
+    if (isBeaker(item.id)) {
       const now = performance.now();
       if (now - lastSnapTime > 50) {
         lastSnapTime = now;
@@ -183,14 +192,14 @@ export function useWorkspaceDrag(
     }
 
     // --- Bottom clamp beaker snap ---
-    if (item.id === 'beaker-100' || item.id === 'beaker-250' || item.id === 'beaker-500') {
+    if (isBeaker(item.id)) {
       detachFromBottomClamp(item.uid);
       bottomClampSnapUid.value = findNearestBottomClamp(item.uid, item.x, item.y);
       finalizeBottomClampSnap(item.uid);
     }
 
     // Rubber stopper snap
-    if (item.id === 'rubber-stopper') {
+    if (isRubberStopper(item.id)) {
       const nearest = items.value.find(i =>
         i.uid !== item.uid && isContainer(i.id) &&
         Math.abs(i.x - item.x) < 50 && Math.abs(i.y - item.y) < 80

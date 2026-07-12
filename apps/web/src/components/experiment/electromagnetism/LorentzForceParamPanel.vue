@@ -10,9 +10,9 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'update:V', v: number): void
-  (e: 'update:I', v: number): void
-  (e: 'update:N', v: number): void
+  (e: 'update:v', v: number): void
+  (e: 'update:i', v: number): void
+  (e: 'update:n', v: number): void
 }>()
 </script>
 
@@ -23,21 +23,21 @@ const emit = defineEmits<{
     <div class="param-row">
       <label>{{ t('experiments.lfParamV') }}</label>
       <input type="range" min="150" max="300" step="5" :value="props.V"
-        @input="emit('update:V', +($event.target as HTMLInputElement).value)" />
+        @input="emit('update:v', +($event.target as HTMLInputElement).value)" />
       <span class="param-val">{{ props.V.toFixed(0) }} V</span>
     </div>
 
     <div class="param-row">
       <label>{{ t('experiments.lfParamI') }}</label>
       <input type="range" min="0" max="3" step="0.05" :value="props.I"
-        @input="emit('update:I', +($event.target as HTMLInputElement).value)" />
+        @input="emit('update:i', +($event.target as HTMLInputElement).value)" />
       <span class="param-val">{{ props.I.toFixed(2) }} A</span>
     </div>
 
     <div class="param-row">
       <label>{{ t('experiments.lfParamN') }}</label>
       <input type="range" min="1" max="500" step="1" :value="props.N"
-        @input="emit('update:N', +($event.target as HTMLInputElement).value)" />
+        @input="emit('update:n', +($event.target as HTMLInputElement).value)" />
       <span class="param-val">{{ props.N }} {{ t('experiments.genTurns') }}</span>
     </div>
 

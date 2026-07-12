@@ -3,10 +3,11 @@ import { registerExperiment } from '../registry';
 
 // ================== Precipitation: CuSO₄ + NaOH → Cu(OH)₂↓ ==================
 // A precipitation experiment using the new declarative system.
-// CuSO₄ (blue solution) + NaOH (clear) → Cu(OH)₂ (blue-green precipitate) + Na₂SO₄
+// CuSO₄ (blue solution) + NaOH (clear) → Cu(OH)₂ (blue precipitate) + Na₂SO₄
 
 const definition: ExperimentDefinition = {
   id: 'precipitation-cuso4-naoh',
+  level: 'high',
   category: 'precipitation',
   nameKey: 'chemistryExperiments.expPrecipitationCuSO4NaOH',
   descKey: 'chemistryExperiments.descPrecipitationCuSO4NaOH',
@@ -18,6 +19,10 @@ const definition: ExperimentDefinition = {
       rules: [
         { type: 'hasTool', toolId: 'burette' },
         { type: 'hasAnyTool', toolPrefix: 'beaker' },
+        { type: 'any', rules: [
+          { type: 'hasTool', toolId: 'pipette' },
+          { type: 'hasTool', toolId: 'volumetric-pipette' },
+        ]},
       ],
     },
     {

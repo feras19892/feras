@@ -10,8 +10,10 @@ export interface ChemicalEquation {
   precipitate?: boolean;
   precipitateColor?: string;
   gasEvolution?: boolean;
+  gasType?: string;
   temperatureRise: number;
   indicatorEffect?: boolean;
+  coefficients?: Record<string, number>;
 }
 
 const equations: ChemicalEquation[] = [
@@ -35,6 +37,7 @@ const equations: ChemicalEquation[] = [
     color: '#e0f2fe',
     opacity: 0.3,
     temperatureRise: 8,
+    coefficients: { h2so4: 1, naoh: 2 },
   },
   {
     reactants: ['hcl', 'koh'],
@@ -65,6 +68,7 @@ const equations: ChemicalEquation[] = [
     color: '#e0f2fe',
     opacity: 0.3,
     temperatureRise: 7,
+    coefficients: { h2so4: 1, koh: 2 },
   },
   {
     reactants: ['hno3', 'naoh'],
@@ -129,10 +133,11 @@ const equations: ChemicalEquation[] = [
     products: ['cuoh2', 'na2so4'],
     equation: 'CuSO₄ + 2NaOH → Cu(OH)₂↓ + Na₂SO₄',
     type: 'precipitation',
-    color: '#86efac',
-    opacity: 0.5,
+    coefficients: { cuso4: 1, naoh: 2 },
+    color: '#bae6fd',
+    opacity: 0.4,
     precipitate: true,
-    precipitateColor: '#15803d',
+    precipitateColor: '#1e90ff',
     temperatureRise: 2,
   },
   {
@@ -140,10 +145,11 @@ const equations: ChemicalEquation[] = [
     products: ['feoh3', 'nacl'],
     equation: 'FeCl₃ + 3NaOH → Fe(OH)₃↓ + 3NaCl',
     type: 'precipitation',
-    color: '#fca5a5',
-    opacity: 0.5,
+    coefficients: { fecl3: 1, naoh: 3 },
+    color: '#f1f5f9',
+    opacity: 0.3,
     precipitate: true,
-    precipitateColor: '#7f1d1d',
+    precipitateColor: '#b45309',
     temperatureRise: 2,
   },
   {
@@ -151,8 +157,9 @@ const equations: ChemicalEquation[] = [
     products: ['pbi2', 'kno3'],
     equation: 'Pb(NO₃)₂ + 2KI → PbI₂↓ + 2KNO₃',
     type: 'precipitation',
-    color: '#fef08a',
-    opacity: 0.5,
+    coefficients: { pbno3: 1, ki: 2 },
+    color: '#f1f5f9',
+    opacity: 0.3,
     precipitate: true,
     precipitateColor: '#facc15',
     temperatureRise: 1,
@@ -173,10 +180,11 @@ const equations: ChemicalEquation[] = [
     products: ['mgoh2', 'na2so4'],
     equation: 'MgSO₄ + 2NaOH → Mg(OH)₂↓ + Na₂SO₄',
     type: 'precipitation',
+    coefficients: { mgso4: 1, naoh: 2 },
     color: '#ecfccb',
     opacity: 0.5,
     precipitate: true,
-    precipitateColor: '#84cc16',
+    precipitateColor: '#f1f5f9',
     temperatureRise: 1,
   },
   {
@@ -184,10 +192,11 @@ const equations: ChemicalEquation[] = [
     products: ['znoh2', 'na2so4'],
     equation: 'ZnSO₄ + 2NaOH → Zn(OH)₂↓ + Na₂SO₄',
     type: 'precipitation',
+    coefficients: { znso4: 1, naoh: 2 },
     color: '#ecfccb',
     opacity: 0.5,
     precipitate: true,
-    precipitateColor: '#d9f99d',
+    precipitateColor: '#f1f5f9',
     temperatureRise: 1,
   },
 
@@ -198,9 +207,11 @@ const equations: ChemicalEquation[] = [
     equation: 'CaCO₃ + 2HCl → CaCl₂ + CO₂↑ + H₂O',
     type: 'gas',
     resultPh: 1.0,
+    coefficients: { caco3: 1, hcl: 2 },
     color: '#e0f2fe',
     opacity: 0.4,
     gasEvolution: true,
+    gasType: 'CO₂',
     temperatureRise: 2,
   },
   {
@@ -209,9 +220,11 @@ const equations: ChemicalEquation[] = [
     equation: 'Na₂CO₃ + 2HCl → 2NaCl + CO₂↑ + H₂O',
     type: 'gas',
     resultPh: 1.0,
+    coefficients: { na2co3: 1, hcl: 2 },
     color: '#e0f2fe',
     opacity: 0.4,
     gasEvolution: true,
+    gasType: 'CO₂',
     temperatureRise: 2,
   },
   {
@@ -223,6 +236,7 @@ const equations: ChemicalEquation[] = [
     color: '#e0f2fe',
     opacity: 0.4,
     gasEvolution: true,
+    gasType: 'CO₂',
     temperatureRise: 1,
   },
   {
@@ -231,9 +245,11 @@ const equations: ChemicalEquation[] = [
     equation: 'Zn + 2HCl → ZnCl₂ + H₂↑',
     type: 'gas',
     resultPh: 1.0,
+    coefficients: { zn: 1, hcl: 2 },
     color: '#e0f2fe',
     opacity: 0.4,
     gasEvolution: true,
+    gasType: 'H₂',
     temperatureRise: 8,
   },
   {
@@ -242,9 +258,11 @@ const equations: ChemicalEquation[] = [
     equation: 'Fe + 2HCl → FeCl₂ + H₂↑',
     type: 'gas',
     resultPh: 1.0,
+    coefficients: { fe: 1, hcl: 2 },
     color: '#e0f2fe',
     opacity: 0.4,
     gasEvolution: true,
+    gasType: 'H₂',
     temperatureRise: 6,
   },
   {
@@ -256,36 +274,43 @@ const equations: ChemicalEquation[] = [
     color: '#e0f2fe',
     opacity: 0.4,
     gasEvolution: true,
+    gasType: 'CO₂',
     temperatureRise: 3,
   },
 
   // ===== REDOX (3) =====
   {
     reactants: ['kmno4', 'h2o2'],
-    products: ['mn2+', 'o2', 'water'],
+    products: ['mno2', 'o2', 'koh', 'water'],
     equation: '2KMnO₄ + 3H₂O₂ → 2MnO₂ + 3O₂↑ + 2KOH + 2H₂O',
     type: 'redox',
     resultPh: 7.0,
-    color: '#c084fc',
-    opacity: 0.45,
+    coefficients: { kmno4: 2, h2o2: 3 },
+    color: '#d4a574',
+    opacity: 0.5,
     gasEvolution: true,
+    gasType: 'O₂',
+    precipitate: true,
+    precipitateColor: '#5c4033',
     temperatureRise: 10,
   },
   {
     reactants: ['feso4', 'kmno4'],
-    products: ['fe3+', 'mn2+', 'water'],
+    products: ['fe2(so4)3', 'mnso4', 'k2so4', 'water'],
     equation: '10FeSO₄ + 2KMnO₄ + 8H₂SO₄ → 5Fe₂(SO₄)₃ + 2MnSO₄ + K₂SO₄ + 8H₂O',
     type: 'redox',
+    coefficients: { feso4: 10, kmno4: 2 },
     color: '#fde047',
     opacity: 0.45,
     temperatureRise: 5,
   },
   {
     reactants: ['ki', 'h2o2'],
-    products: ['i2', 'water'],
+    products: ['i2', 'koh'],
     equation: '2KI + H₂O₂ → I₂ + 2KOH',
     type: 'redox',
-    color: '#fde047',
+    coefficients: { ki: 2, h2o2: 1 },
+    color: '#a16207',
     opacity: 0.5,
     temperatureRise: 4,
   },
@@ -296,7 +321,8 @@ const equations: ChemicalEquation[] = [
     products: ['cutetrammine'],
     equation: 'CuSO₄ + 4NH₃ → [Cu(NH₃)₄]SO₄',
     type: 'complex',
-    color: '#3b82f6',
+    coefficients: { cuso4: 1, nh3: 4 },
+    color: '#1d4ed8',
     opacity: 0.5,
     temperatureRise: 2,
   },
@@ -304,6 +330,7 @@ const equations: ChemicalEquation[] = [
 
 export function findEquation(reactantIds: string[]): ChemicalEquation | null {
   return equations.find((eq) =>
+    eq.reactants.length === reactantIds.length &&
     eq.reactants.every((r) => reactantIds.includes(r))
   ) || null;
 }

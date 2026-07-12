@@ -1,5 +1,6 @@
 import type { LabItem } from './useChemistryTools';
 import { items, isContainer, getLiquid, balanceTareMap, containerTareMap } from './useChemistryLab';
+import { isBalance } from './chemLabIds';
 
 export function computeBalanceWeight(balance: LabItem): number {
   const onTop = items.value.filter((i: LabItem) =>
@@ -23,7 +24,7 @@ export function getContainerWeight(balance: LabItem): number {
 }
 
 export function getBalanceReading(uid: string): number | null {
-  const balance = items.value.find((i: LabItem) => i.uid === uid && i.id === 'digital-balance');
+  const balance = items.value.find((i: LabItem) => i.uid === uid && isBalance(i.id));
   if (!balance) return null;
   const gross = computeBalanceWeight(balance);
   const fullTare = balanceTareMap[uid] || 0;

@@ -10,9 +10,6 @@ export function useChemicalLocale() {
   // Resolve a stored label to localized names
   const resolveLabel = (label: string | undefined) => {
     if (!label) return '';
-    if (label.startsWith('REACTION:')) {
-      return t('chemistryLab.reactionSolution') + ': ' + label.slice(9);
-    }
     if (label === 'PIPETTE_SOLUTION') {
       return t('chemistryLab.pipetteSolution');
     }

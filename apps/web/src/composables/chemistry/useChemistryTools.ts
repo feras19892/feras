@@ -61,6 +61,8 @@ export const glasswareSections: Section[] = [
       { id: 'hot-plate', name: 'chemistryTools.hotPlate', icon: '🔘', type: 'device' },
       { id: 'digital-balance', name: 'chemistryTools.digitalBalance', icon: '⚖️', type: 'device' },
       { id: 'ph-meter', name: 'chemistryTools.phMeter', icon: '📟', type: 'device' },
+      { id: 'thermometer-mercury', name: 'chemistryTools.thermometerMercury', icon: '🌡️', type: 'device' },
+      { id: 'thermometer-digital', name: 'chemistryTools.thermometerDigital', icon: '📟', type: 'device' },
     ],
   },
   {
@@ -74,15 +76,6 @@ export const glasswareSections: Section[] = [
       { id: 'watch-glass', name: 'chemistryTools.watchGlass', icon: '🔍', type: 'helper' },
       { id: 'filter-funnel', name: 'chemistryTools.filterFunnel', icon: '🔽', type: 'helper' },
       { id: 'rubber-stopper', name: 'chemistryTools.rubberStopper', icon: '⬛', type: 'helper' },
-    ],
-  },
-  {
-    id: 'thermometers',
-    title: 'chemistryTools.sectionThermometers',
-    icon: '🌡️',
-    items: [
-      { id: 'thermometer-mercury', name: 'chemistryTools.thermometerMercury', icon: '🌡️', type: 'device' },
-      { id: 'thermometer-digital', name: 'chemistryTools.thermometerDigital', icon: '📟', type: 'device' },
     ],
   },
 ];

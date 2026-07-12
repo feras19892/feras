@@ -4,8 +4,9 @@ import {
   isContainer, selectedChemical, hasSelectedChemicalMap, pendingChemicalFill
 } from './useChemistryLab';
 import { applyIndicator } from './useReactionEngine';
-import { pushHistory } from './useChemistryHistory';
+import { pushMicroHistory } from './useChemistryHistory';
 import { mixColor } from './chemColorUtils';
+import { isIndicator } from '@my-modern-app/chemistry-engine';
 import type { LiquidState } from './chemLabTypes';
 import type { LabItem } from './useChemistryTools';
 import type { ToolState } from './chemLabTypes';
@@ -33,12 +34,12 @@ export function pipetteDraw(pipItem: LabItem, selectedItemRef: { value: LabItem 
   if (pip.volume > 0) return;
   const target = getNearestContainer(pipItem, (liq) => liq.volume > 0);
   if (!target) return;
-  pushHistory();
+  pushMicroHistory();
   const tLiq = getLiquid(target.uid);
   const amount = Math.min(10, tLiq.volume);
   pip.volume = amount; pip.color = tLiq.color; pip.opacity = tLiq.opacity; pip.label = tLiq.label;
-  pip.chemicalId = tLiq.chemicalId || (tLiq.indicators && tLiq.indicators[0]) || undefined;
-  tLiq.volume -= amount;
+  pip.chemicalId = tLiq.chemicalId || undefined;
+  tLiq.volume = +(tLiq.volume - amount).toFixed(2);
   emit('select', pipItem, buildToolState(pipItem));
   if (selectedItemRef.value?.uid === target.uid) emit('select', target, buildToolState(target));
 }
@@ -48,16 +49,16 @@ export function pipetteDrawAmount(pipItem: LabItem, amount: number, selectedItem
   if (pip.volume + amount > pip.maxVolume) return;
   const target = getNearestContainer(pipItem, (liq) => liq.volume > 0);
   if (!target) return;
-  pushHistory();
+  pushMicroHistory();
   const tLiq = getLiquid(target.uid);
   const actualAmount = Math.min(amount, tLiq.volume, pip.maxVolume - pip.volume);
   if (actualAmount <= 0) return;
   if (pip.volume === 0) {
     pip.color = tLiq.color; pip.opacity = tLiq.opacity; pip.label = tLiq.label;
-    pip.chemicalId = tLiq.chemicalId || (tLiq.indicators && tLiq.indicators[0]) || undefined;
+    pip.chemicalId = tLiq.chemicalId || undefined;
   }
   pip.volume += actualAmount;
-  tLiq.volume -= actualAmount;
+  tLiq.volume = +(tLiq.volume - actualAmount).toFixed(2);
   emit('select', pipItem, buildToolState(pipItem));
   if (selectedItemRef.value?.uid === target.uid) emit('select', target, buildToolState(target));
 }
@@ -67,7 +68,7 @@ export function pipetteDispenseAmount(pipItem: LabItem, amount: number, selected
   if (pip.volume <= 0) return;
   const target = getNearestContainer(pipItem, (liq) => liq.volume < liq.maxVolume);
   if (!target) return;
-  pushHistory();
+  pushMicroHistory();
   const tLiq = getLiquid(target.uid);
   const actualAmount = Math.min(amount, pip.volume, tLiq.maxVolume - tLiq.volume);
   if (actualAmount <= 0) return;
@@ -81,7 +82,7 @@ export function pipetteDispenseAmount(pipItem: LabItem, amount: number, selected
     tLiq.opacity = pip.opacity;
   }
   const pipChemicalId = pip.chemicalId;
-  const isInd = pipChemicalId && ['phenolphthalein', 'methyl-orange', 'bromothymol-blue', 'universal-indicator', 'starch'].includes(pipChemicalId);
+  const isInd = pipChemicalId && isIndicator(pipChemicalId);
   if (isInd) {
     if (!tLiq.indicators) tLiq.indicators = [];
     if (!tLiq.indicators.includes(pipChemicalId)) {
@@ -105,16 +106,16 @@ export function pipetteDrawFrom(pipItem: LabItem, targetUid: string, amount: num
   if (!target || !isContainer(target.id)) return;
   const pip = getPipette(pipItem.uid);
   if (pip.volume + amount > pip.maxVolume) return;
-  pushHistory();
+  pushMicroHistory();
   const tLiq = getLiquid(target.uid);
   const actualAmount = Math.min(amount, tLiq.volume, pip.maxVolume - pip.volume);
   if (actualAmount <= 0) return;
   if (pip.volume === 0) {
     pip.color = tLiq.color; pip.opacity = tLiq.opacity; pip.label = tLiq.label;
-    pip.chemicalId = tLiq.chemicalId || (tLiq.indicators && tLiq.indicators[0]) || undefined;
+    pip.chemicalId = tLiq.chemicalId || undefined;
   }
   pip.volume += actualAmount;
-  tLiq.volume -= actualAmount;
+  tLiq.volume = +(tLiq.volume - actualAmount).toFixed(2);
   emit('select', pipItem, buildToolState(pipItem));
   if (selectedItemRef.value?.uid === target.uid) emit('select', target, buildToolState(target));
 }
@@ -124,7 +125,7 @@ export function pipetteDispenseTo(pipItem: LabItem, targetUid: string, amount: n
   if (!target || !isContainer(target.id)) return;
   const pip = getPipette(pipItem.uid);
   if (pip.volume <= 0) return;
-  pushHistory();
+  pushMicroHistory();
   const tLiq = getLiquid(target.uid);
   const actualAmount = Math.min(amount, pip.volume, tLiq.maxVolume - tLiq.volume);
   if (actualAmount <= 0) return;
@@ -138,7 +139,7 @@ export function pipetteDispenseTo(pipItem: LabItem, targetUid: string, amount: n
     tLiq.opacity = pip.opacity;
   }
   const pipChemicalId = pip.chemicalId;
-  const isInd = pipChemicalId && ['phenolphthalein', 'methyl-orange', 'bromothymol-blue', 'universal-indicator', 'starch'].includes(pipChemicalId);
+  const isInd = pipChemicalId && isIndicator(pipChemicalId);
   if (isInd) {
     if (!tLiq.indicators) tLiq.indicators = [];
     if (!tLiq.indicators.includes(pipChemicalId)) {
@@ -163,7 +164,7 @@ export function pipetteFill(pipItem: LabItem, amount: number, selectedItemRef: {
     return;
   }
   const pip = getPipette(pipItem.uid);
-  pushHistory();
+  pushMicroHistory();
   pip.volume = Math.min(pip.maxVolume, pip.volume + amount);
   pip.color = selectedChemical.color;
   pip.opacity = selectedChemical.opacity;
@@ -174,7 +175,7 @@ export function pipetteFill(pipItem: LabItem, amount: number, selectedItemRef: {
 
 export function pipetteEmpty(pipItem: LabItem, selectedItemRef: { value: LabItem | null }, emit: (name: 'select', item: LabItem | null, state: ToolState | null) => void) {
   const pip = getPipette(pipItem.uid);
-  pushHistory();
+  pushMicroHistory();
   pip.volume = 0; pip.color = '#94a3b8'; pip.label = ''; pip.chemicalId = undefined;
   emit('select', pipItem, buildToolState(pipItem));
 }
@@ -184,7 +185,7 @@ export function pipetteDispense(pipItem: LabItem, selectedItemRef: { value: LabI
   if (pip.volume <= 0) return;
   const target = getNearestContainer(pipItem, (liq) => liq.volume < liq.maxVolume);
   if (!target) return;
-  pushHistory();
+  pushMicroHistory();
   const tLiq = getLiquid(target.uid);
   const amount = Math.min(pip.volume, tLiq.maxVolume - tLiq.volume);
   const oldVolume = tLiq.volume;
@@ -197,7 +198,7 @@ export function pipetteDispense(pipItem: LabItem, selectedItemRef: { value: LabI
     tLiq.opacity = pip.opacity;
   }
   const pipChemicalId = pip.chemicalId;
-  const isInd = pipChemicalId && ['phenolphthalein', 'methyl-orange', 'bromothymol-blue', 'universal-indicator', 'starch'].includes(pipChemicalId);
+  const isInd = pipChemicalId && isIndicator(pipChemicalId);
   if (isInd) {
     if (!tLiq.indicators) tLiq.indicators = [];
     if (!tLiq.indicators.includes(pipChemicalId)) {
@@ -211,7 +212,7 @@ export function pipetteDispense(pipItem: LabItem, selectedItemRef: { value: LabI
     else if (pip.label && !tLiq.label.includes(pip.label)) { tLiq.label = tLiq.label + ' + ' + pip.label; }
   }
   pip.volume -= amount;
-  if (pip.volume <= 0.01) { pip.volume = 0; pip.color = '#94a3b8'; pip.label = ''; }
+  if (pip.volume <= 0.01) { pip.volume = 0; pip.color = '#94a3b8'; pip.label = ''; pip.chemicalId = undefined; }
   emit('select', pipItem, buildToolState(pipItem));
   if (selectedItemRef.value?.uid === target.uid) emit('select', target, buildToolState(target));
 }

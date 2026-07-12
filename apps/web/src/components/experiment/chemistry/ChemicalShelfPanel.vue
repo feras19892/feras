@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import type { Chemical, ChemicalCategory } from '../../../composables/chemistry/useChemistryLab';
-import { chemicals, selectedChemical, pendingChemicalFill } from '../../../composables/chemistry/useChemistryLab';
+import { chemicals, selectedChemical, pendingChemicalFill, pendingSolidSelect, spatulaSelectedSolid } from '../../../composables/chemistry/useChemistryLab';
 import { useI18n } from '../../../composables/useI18n';
 import { useChemicalLocale } from '../../../composables/chemistry/useChemicalLocale';
 import ChemicalCard from './ChemicalCard.vue';
@@ -46,6 +46,16 @@ const filteredChemicals = computed(() => {
 });
 
 function onCardClick(chem: Chemical) {
+  // If pending solid select (from spatula), handle it
+  if (pendingSolidSelect.value && chem.category === 'solid') {
+    spatulaSelectedSolid.value = {
+      chemicalId: chem.id,
+      color: chem.color,
+      name: getName(chem.id),
+    };
+    pendingSolidSelect.value = null;
+    return;
+  }
   Object.assign(selectedChemical, chem);
   emit('chemicalClick', chem);
 }
@@ -67,6 +77,12 @@ function onCardClick(chem: Chemical) {
     <div v-if="pendingChemicalFill" class="pending-banner">
       <span>{{ t('chemistryShelf.selectSolutionFromTable') }}</span>
       <button class="cancel-btn" @click="pendingChemicalFill = null">{{ t('chemistryShelf.cancel') }}</button>
+    </div>
+
+    <!-- Pending solid select banner (from spatula) -->
+    <div v-if="pendingSolidSelect" class="pending-banner">
+      <span>{{ t('chemistryShelf.selectSolidFromTable') }}</span>
+      <button class="cancel-btn" @click="pendingSolidSelect = null">{{ t('chemistryShelf.cancel') }}</button>
     </div>
 
     <!-- Category filter -->
@@ -96,7 +112,7 @@ function onCardClick(chem: Chemical) {
         :key="chem.id"
         :chem="chem"
         :selected="selectedChemical.id === chem.id"
-        :clickable="!!pendingChemicalFill && (chem.category === 'acid' || chem.category === 'base' || chem.category === 'solvent' || chem.category === 'salt' || chem.category === 'indicator')"
+        :clickable="!!pendingChemicalFill && (chem.category === 'acid' || chem.category === 'base' || chem.category === 'solvent' || chem.category === 'salt' || chem.category === 'indicator' || chem.category === 'gas') || (!!pendingSolidSelect && chem.category === 'solid')"
         @click="onCardClick(chem)"
       />
     </div>

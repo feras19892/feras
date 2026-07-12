@@ -1,11 +1,12 @@
 import {
   items, liquidMap, buretteMap, receivingMap,
   buretteConsumedThisRefill,
-  getLiquid, isContainer, isBurette
+  getLiquid, isContainer, isBurette, chemicals
 } from './useChemistryLab';
 import { applyIndicator } from './useReactionEngine';
 import { handleDropMix } from './useReactionEngine';
-import { pushHistory } from './useChemistryHistory';
+import { pushMicroHistory } from './useChemistryHistory';
+import { isIndicator } from '@my-modern-app/chemistry-engine';
 import type { LabItem } from './useChemistryTools';
 import type { ToolState } from './chemLabTypes';
 
@@ -39,19 +40,26 @@ export function handleDropExited(
   const tLiq = getLiquid(target.uid);
   if (tLiq.volume >= tLiq.maxVolume) return;
 
-  pushHistory();
+  pushMicroHistory();
   const amount = 0.15;
-  tLiq.volume = Math.min(tLiq.maxVolume, +(tLiq.volume + amount).toFixed(1));
+  tLiq.volume = Math.min(tLiq.maxVolume, +(tLiq.volume + amount).toFixed(2));
 
   const sLiq = liquidMap[sourceItem.uid];
   const sBur = buretteMap[sourceItem.uid];
-  const sourceChemicalId = sLiq?.chemicalId || sBur?.chemicalId || sLiq?.indicators?.[0] || undefined;
+  const sourceChemicalId = sLiq?.chemicalId || sBur?.chemicalId || undefined;
+  const sourceIndicatorId = !sourceChemicalId ? (sLiq?.indicators?.[0] || undefined) : undefined;
 
-  const indicatorIds = new Set(['phenolphthalein', 'methyl-orange', 'bromothymol-blue', 'universal-indicator', 'starch']);
-  const isIndicatorId = (id: string) => indicatorIds.has(id);
-
-  if (sourceChemicalId && tLiq.chemicalId) {
-    if (isIndicatorId(sourceChemicalId)) {
+  if (sourceIndicatorId && tLiq.chemicalId) {
+    if (!tLiq.indicators) tLiq.indicators = [];
+    if (!tLiq.indicators.includes(sourceIndicatorId)) {
+      tLiq.indicators.push(sourceIndicatorId);
+      applyIndicator(sourceIndicatorId, target.uid);
+    }
+    if (!tLiq.label.includes(sourceIndicatorId)) {
+      tLiq.label = tLiq.label + ' + ' + sourceIndicatorId;
+    }
+  } else if (sourceChemicalId && tLiq.chemicalId) {
+    if (isIndicator(sourceChemicalId)) {
       if (!tLiq.indicators) tLiq.indicators = [];
       if (!tLiq.indicators.includes(sourceChemicalId)) {
         tLiq.indicators.push(sourceChemicalId);
@@ -71,6 +79,16 @@ export function handleDropExited(
     }
   } else if (sourceChemicalId) {
     tLiq.chemicalId = sourceChemicalId;
+    if (!isIndicator(sourceChemicalId)) {
+      tLiq.label = sourceChemicalId;
+      tLiq.baseColor = tLiq.color;
+      const chem = chemicals.find(c => c.id === sourceChemicalId);
+      if (chem) {
+        tLiq.ph = chem.ph ?? null;
+      }
+      if (!tLiq.reactants) tLiq.reactants = {};
+      tLiq.reactants[sourceChemicalId] = (tLiq.reactants[sourceChemicalId] || 0) + amount;
+    }
   }
 
   if (!tLiq.chemicalId) {
@@ -83,6 +101,6 @@ export function handleDropExited(
   }
 
   receivingMap[target.uid] = true;
-  setTimeout(() => { receivingMap[target.uid] = false; }, 400);
+  setTimeout(() => { delete receivingMap[target.uid]; }, 400);
   if (selectedItemRef.value?.uid === target.uid) emit('select', target, buildToolState(target));
 }

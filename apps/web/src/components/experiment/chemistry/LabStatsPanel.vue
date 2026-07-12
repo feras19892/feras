@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import { getLiquid, isContainer, items, phProbeTipMap } from '../../../composables/chemistry/useChemistryLab';
+import { isPhMeter } from '../../../composables/chemistry/chemLabIds';
 import { getPhReading, isHeated } from '../../../composables/chemistry/useLabSimulation';
 import { useI18n } from '../../../composables/useI18n';
 const { t } = useI18n();
@@ -15,7 +16,7 @@ const ph = computed(() => {
   if (!props.item) return null;
   // Find a pH meter whose probe tip is inside this item
   const phMeter = items.value.find(i =>
-    i.id === 'ph-meter' &&
+    isPhMeter(i.id) &&
     phProbeTipMap[i.uid] &&
     Math.abs((props.item!.x + 40) - phProbeTipMap[i.uid].x) < 60 &&
     Math.abs((props.item!.y + 10) - phProbeTipMap[i.uid].y) < 50

@@ -13,6 +13,7 @@ interface Props {
   isHovered: boolean;
   itemUid: string;
   selectedBuretteUid?: string;
+  draggingUid?: string | null;
 }
 
 const props = defineProps<Props>();
@@ -147,7 +148,7 @@ const {
 
     <!-- 4. الأدوات الملتصقة بالمشبك العلوي -->
     <div
-      v-for="{ uid, slotOffset, slotIndex, item } in attachedItems"
+      v-for="{ uid, slotOffset, slotIndex, item } in attachedItems.filter(({ uid }) => uid !== props.draggingUid)"
       :key="uid"
       class="attached-item"
       :class="{ selected: props.selectedBuretteUid === uid }"
@@ -198,7 +199,7 @@ const {
 
     <!-- 5. البيكر الملتصق بالمشبك السفلي -->
     <div
-      v-if="st?.bottomSlotOccupant"
+      v-if="st?.bottomSlotOccupant && st.bottomSlotOccupant !== props.draggingUid"
       class="attached-item"
       :style="{
         left: (45 + 132 - 35 + bottomClampX) + 'px',

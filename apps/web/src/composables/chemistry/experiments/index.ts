@@ -5,11 +5,17 @@
 import './definitions/neutralization-hcl-naoh';
 import './definitions/neutralization-ch3cooh-naoh';
 import './definitions/precipitation-cuso4-naoh';
+import './definitions/middle-acid-base-identification';
+import './definitions/middle-metal-acid-gas';
+import './definitions/middle-carbonate-gas';
+import './definitions/uni-redox-kmno4-h2o2';
+import './definitions/uni-precip-pbi2';
 
 // Re-export public API
 export type {
   ExperimentDefinition,
   ExperimentCategory,
+  ExperimentLevel,
   StepDef,
   StepRule,
   ExperimentTheory,
@@ -27,6 +33,7 @@ export {
   getExperiment,
   listExperiments,
   listByCategory,
+  listByLevel,
   hasExperiment,
 } from './registry';
 

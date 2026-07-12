@@ -4,8 +4,9 @@ import {
   solidMap, stopperMap, pourFlowMap, tiltAngleMap, rackSlotsMap,
   buretteInitialVolumeMap, buretteTotalConsumedMap, buretteConsumedThisRefill,
   hasSelectedChemicalMap, beakerClampMap, hotPlateMap, woodenBaseMap,
-  retortStandMap
+  retortStandMap, spillParticles, receivingMap
 } from './useChemistryLab';
+import { buretteWarning } from './useLabSimulation';
 
 const STORAGE_KEY = 'chem-lab-session-v20';
 
@@ -56,6 +57,31 @@ export function loadSession(): void {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
     const data = JSON.parse(raw);
+    // Clear existing state before loading to avoid stale keys
+    items.value = [];
+    Object.keys(liquidMap).forEach(k => delete liquidMap[k]);
+    Object.keys(buretteMap).forEach(k => delete buretteMap[k]);
+    Object.keys(pipetteMap).forEach(k => delete pipetteMap[k]);
+    Object.keys(sepFunnelMap).forEach(k => delete sepFunnelMap[k]);
+    Object.keys(burnerMap).forEach(k => delete burnerMap[k]);
+    Object.keys(balanceTareMap).forEach(k => delete balanceTareMap[k]);
+    Object.keys(containerTareMap).forEach(k => delete containerTareMap[k]);
+    Object.keys(itemZoomMap).forEach(k => delete itemZoomMap[k]);
+    Object.keys(phProbeTipMap).forEach(k => delete phProbeTipMap[k]);
+    Object.keys(solidMap).forEach(k => delete solidMap[k]);
+    Object.keys(stopperMap).forEach(k => delete stopperMap[k]);
+    Object.keys(pourFlowMap).forEach(k => delete pourFlowMap[k]);
+    Object.keys(tiltAngleMap).forEach(k => delete tiltAngleMap[k]);
+    Object.keys(rackSlotsMap).forEach(k => delete rackSlotsMap[k]);
+    Object.keys(buretteInitialVolumeMap).forEach(k => delete buretteInitialVolumeMap[k]);
+    Object.keys(buretteTotalConsumedMap).forEach(k => delete buretteTotalConsumedMap[k]);
+    Object.keys(buretteConsumedThisRefill).forEach(k => delete buretteConsumedThisRefill[k]);
+    Object.keys(hasSelectedChemicalMap).forEach(k => delete hasSelectedChemicalMap[k]);
+    Object.keys(beakerClampMap).forEach(k => delete beakerClampMap[k]);
+    Object.keys(hotPlateMap).forEach(k => delete hotPlateMap[k]);
+    Object.keys(woodenBaseMap).forEach(k => delete woodenBaseMap[k]);
+    Object.keys(retortStandMap).forEach(k => delete retortStandMap[k]);
+    // Now load saved data
     if (data.items) items.value = data.items;
     if (data.liquids) Object.assign(liquidMap, data.liquids);
     if (data.burettes) Object.assign(buretteMap, data.burettes);
@@ -110,5 +136,8 @@ export function clearSession(): void {
   Object.keys(hotPlateMap).forEach(k => delete hotPlateMap[k]);
   Object.keys(woodenBaseMap).forEach(k => delete woodenBaseMap[k]);
   Object.keys(retortStandMap).forEach(k => delete retortStandMap[k]);
+  Object.keys(receivingMap).forEach(k => delete receivingMap[k]);
+  spillParticles.splice(0, spillParticles.length);
+  buretteWarning.value = null;
   localStorage.removeItem(STORAGE_KEY);
 }

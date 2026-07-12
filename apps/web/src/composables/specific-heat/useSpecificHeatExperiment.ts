@@ -118,7 +118,7 @@ export function useSpecificHeatExperiment() {
     const valid = trials.trials.value.filter((t) => t.cExtracted > 0 && t.finalTemp > t.waterTemp)
     if (valid.length < 2) return { m: 0, b: 0, r2: 0, avgDeltaT: 0 }
     const pts = valid.map((t) => ({
-      x: t.waterMass * 1000, // convert to grams for display
+      x: t.waterMass,
       y: t.metalTemp - t.finalTemp,
     }))
     const avgDeltaT = valid.reduce((s, t) => s + (t.finalTemp - t.waterTemp), 0) / valid.length

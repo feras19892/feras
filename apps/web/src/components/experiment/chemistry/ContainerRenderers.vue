@@ -34,6 +34,10 @@ const tilt = tiltAngleMap[props.item.uid] || 0;
     :item-uid="item.uid"
     :item-x="item.x"
     :item-y="item.y"
+    :gas-evolution="liq.gasEvolution"
+    :gas-type="liq.gasType || ''"
+    :precipitate="liq.precipitate"
+    :precipitate-color="liq.precipitateColor || '#c0c0c0'"
     @spill="emit('spill', $event)"
     @drop-exited="(wx: number, wy: number, color: string) => emit('dropExited', wx, wy, color)"
   />
@@ -48,6 +52,10 @@ const tilt = tiltAngleMap[props.item.uid] || 0;
     :item-uid="item.uid"
     :item-x="item.x"
     :item-y="item.y"
+    :gas-evolution="liq.gasEvolution"
+    :gas-type="liq.gasType || ''"
+    :precipitate="liq.precipitate"
+    :precipitate-color="liq.precipitateColor || '#c0c0c0'"
     @spill="emit('spill', $event)"
     @drop-exited="(wx: number, wy: number, color: string) => emit('dropExited', wx, wy, color)"
   />
@@ -62,6 +70,10 @@ const tilt = tiltAngleMap[props.item.uid] || 0;
     :item-uid="item.uid"
     :item-x="item.x"
     :item-y="item.y"
+    :gas-evolution="liq.gasEvolution"
+    :gas-type="liq.gasType || ''"
+    :precipitate="liq.precipitate"
+    :precipitate-color="liq.precipitateColor || '#c0c0c0'"
     @spill="emit('spill', $event)"
     @drop-exited="(wx: number, wy: number, color: string) => emit('dropExited', wx, wy, color)"
   />
@@ -76,6 +88,9 @@ const tilt = tiltAngleMap[props.item.uid] || 0;
     :item-uid="item.uid"
     :item-x="item.x"
     :item-y="item.y"
+    :gas-evolution="liq.gasEvolution"
+    :gas-type="liq.gasType || ''"
+    :precipitate="liq.precipitate"
     @spill="emit('spill', $event)"
     @drop-exited="(wx: number, wy: number, color: string) => emit('dropExited', wx, wy, color)"
   />
@@ -90,6 +105,10 @@ const tilt = tiltAngleMap[props.item.uid] || 0;
     :item-uid="item.uid"
     :item-x="item.x"
     :item-y="item.y"
+    :gas-evolution="liq.gasEvolution"
+    :gas-type="liq.gasType || ''"
+    :precipitate="liq.precipitate"
+    :precipitate-color="liq.precipitateColor || '#c0c0c0'"
     @spill="emit('spill', $event)"
     @drop-exited="(wx: number, wy: number, color: string) => emit('dropExited', wx, wy, color)"
   />

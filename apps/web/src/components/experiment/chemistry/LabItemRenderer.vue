@@ -2,12 +2,12 @@
 import { computed } from 'vue';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import {
-  items, getLiquid, getBurette, getPipette, getSepFunnelState, getBurnerState, getItemZoom, getBeakerClampState, getHotPlateState, beakerClampMap, pourFlowMap, tiltAngleMap, rackSlotsMap, retortStandMap,
+  items, getLiquid, getBurette, getPipette, getSepFunnelState, getBurnerState, getItemZoom, getBeakerClampState, getHotPlateState, pourFlowMap, tiltAngleMap, rackSlotsMap, retortStandMap,
   isContainer, isBeaker, isTestTube, isTestTubeRack, isBurette, isPipette, isErlenmeyer, isVolumetricFlask, isRoundBottomFlask, isClampAttachable,
   isSeparatoryFunnel, isGradCylinder, isBunsenBurner, isHeatingMantle, isBalance, isPhMeter,
-  isBeakerClamp, isWoodenBase, isHotPlate, isRetortStandAssembly
+  isBeakerClamp, isWoodenBase, isHotPlate, isRetortStandAssembly, isThermometer
 } from '../../../composables/chemistry/useChemistryLab';
-import { getBalanceReading, getPhReading, isHeated } from '../../../composables/chemistry/useLabSimulation';
+import { getBalanceReading, getPhReading, isHeated, getTemperatureReading } from '../../../composables/chemistry/useLabSimulation';
 import { useChemicalLocale } from '../../../composables/chemistry/useChemicalLocale';
 import { useI18n } from '../../../composables/useI18n';
 import LabTestTubeRack from './LabTestTubeRack.vue';
@@ -31,6 +31,7 @@ import LabWoodenBase from './LabWoodenBase.vue';
 import LabBeakerClamp from './LabBeakerClamp.vue';
 import LabHotPlate from './LabHotPlate.vue';
 import LabRetortStandAssembly from './LabRetortStandAssembly.vue';
+import LabThermometer from './LabThermometer.vue';
 
 
 const props = defineProps<{
@@ -52,6 +53,7 @@ const emit = defineEmits<{
   toggleValve: [item: LabItem];
   tipInteract: [item: LabItem];
   toggleStopcock: [item: LabItem];
+  toggleBurner: [item: LabItem];
 }>();
 
 const liq = computed(() => getLiquid(props.item.uid));
@@ -141,6 +143,10 @@ const { t } = useI18n();
     :item-y="item.y"
     :scale="getItemZoom(item.uid)"
     :is-selected="isSel"
+    :gas-evolution="liq.gasEvolution"
+    :gas-type="liq.gasType || ''"
+    :precipitate="liq.precipitate"
+    :precipitate-color="liq.precipitateColor || '#c0c0c0'"
     @spill="emit('spill', item, $event)"
     @drop-exited="(wx: number, wy: number, color: string) => emit('dropExited', item, wx, wy, color)"
   />
@@ -157,6 +163,10 @@ const { t } = useI18n();
     :item-uid="item.uid"
     :item-x="item.x"
     :item-y="item.y"
+    :gas-evolution="liq.gasEvolution"
+    :gas-type="liq.gasType || ''"
+    :precipitate="liq.precipitate"
+    :precipitate-color="liq.precipitateColor || '#c0c0c0'"
     @mouth-interact="emit('mouthInteract', item)"
     @spill="emit('spill', item, $event)"
     @drop-exited="(wx: number, wy: number, color: string) => emit('dropExited', item, wx, wy, color)"
@@ -177,7 +187,7 @@ const { t } = useI18n();
   <LabVolumetricPipette
     v-else-if="item.id === 'volumetric-pipette'"
     :volume="getPipette(item.uid).volume"
-    :max-volume="10"
+    :max-volume="getPipette(item.uid).maxVolume"
     :liquid-color="getPipette(item.uid).color"
     :liquid-opacity="getPipette(item.uid).opacity"
     :is-hovered="isSel"
@@ -243,7 +253,7 @@ const { t } = useI18n();
     :is-on="getHotPlateState(item.uid).on"
     :temperature="getHotPlateState(item.uid).temperature"
     :is-hovered="isSel"
-    @toggle="emit('toggleValve', item)"
+    @toggle="emit('toggleBurner', item)"
   />
   <LabWoodenBase
     v-else-if="isWoodenBase(item.id)"
@@ -251,15 +261,16 @@ const { t } = useI18n();
   />
   <LabBeakerClamp
     v-else-if="isBeakerClamp(item.id)"
-    :clamp-angle="0"
+    :clamp-angle="getBeakerClampState(item.uid).clampAngle"
     :held-container-uid="getBeakerClampState(item.uid).heldContainerUid"
     :is-hovered="isSel"
-    @rotate-left="beakerClampMap[item.uid].clampAngle -= 45"
-    @rotate-right="beakerClampMap[item.uid].clampAngle += 45"
+    @rotate-left="getBeakerClampState(item.uid).clampAngle -= 45"
+    @rotate-right="getBeakerClampState(item.uid).clampAngle += 45"
   />
   <LabRetortStandAssembly
     v-else-if="isRetortStandAssembly(item.id)"
     :item-uid="item.uid"
+    :dragging-uid="props.draggingUid"
     :is-hovered="hoveredUid === item.uid && props.draggingUid === null"
     :selected-burette-uid="props.selectedUid || undefined"
     @mousedown="emit('mousedown', $event, item)"
@@ -269,6 +280,12 @@ const { t } = useI18n();
     v-else-if="isTestTubeRack(item.id)"
     :is-hovered="isSel"
     :slots="rackSlotData"
+  />
+  <LabThermometer
+    v-else-if="isThermometer(item.id)"
+    :variant="item.id === 'thermometer-digital' ? 'digital' : 'mercury'"
+    :uid="item.uid"
+    :is-hovered="isSel"
   />
   <template v-else>
     <div class="item-icon" :class="{ heating: isHeated(item) }">{{ item.icon }}</div>

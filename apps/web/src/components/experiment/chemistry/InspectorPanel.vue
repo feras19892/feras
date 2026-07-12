@@ -2,7 +2,6 @@
 import { computed } from 'vue';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import type { ToolState } from '../../../composables/chemistry/chemLabTypes';
-export type { ToolState };
 import { useI18n } from '../../../composables/useI18n';
 const { t } = useI18n();
 
@@ -105,6 +104,31 @@ const pct = computed(() => {
         <div class="prop-row">
           <span class="prop-label">{{ t('chemistry.idLabel') }}</span>
           <span class="prop-value mono">{{ props.item.id }}</span>
+        </div>
+      </template>
+
+      <!-- Common: Reaction state info for containers -->
+      <template v-if="props.state.type === 'beaker' && props.state.volume > 0">
+        <div v-if="props.state.equation" class="reaction-info">
+          <div class="reaction-equation">{{ props.state.equation }}</div>
+        </div>
+        <div v-if="props.state.gasEvolution" class="prop-row reaction-badge gas">
+          <span class="prop-label">{{ t('chemistry.gasEvolved') }}</span>
+          <span class="prop-value">{{ props.state.gasType || 'CO₂' }}↑</span>
+        </div>
+        <div v-if="props.state.precipitate" class="prop-row reaction-badge precipitate">
+          <span class="prop-label">{{ t('chemistry.precipitateFormed') }}</span>
+          <span class="prop-value">
+            <span class="precipitate-dot" :style="{ background: props.state.precipitateColor || '#c0c0c0' }"></span>
+          </span>
+        </div>
+        <div v-if="props.state.temperature !== undefined && props.state.temperature > 25" class="prop-row reaction-badge temp">
+          <span class="prop-label">{{ t('chemistry.temperature') }}</span>
+          <span class="prop-value">{{ props.state.temperature.toFixed(1) }}°C</span>
+        </div>
+        <div v-if="props.state.ph !== undefined" class="prop-row">
+          <span class="prop-label">pH</span>
+          <span class="prop-value">{{ props.state.ph.toFixed(2) }}</span>
         </div>
       </template>
 
@@ -240,6 +264,54 @@ const pct = computed(() => {
 .btn.remove:hover {
   background: #fee2e2;
   color: #ef4444;
+}
+.reaction-info {
+  padding: 0.5rem;
+  background: #f8fafc;
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+}
+.reaction-equation {
+  font-size: 0.7rem;
+  color: #475569;
+  font-family: monospace;
+  text-align: center;
+  line-height: 1.4;
+}
+.reaction-badge {
+  padding: 0.3rem 0.5rem;
+  border-radius: 0.4rem;
+  font-size: 0.75rem;
+}
+.reaction-badge.gas {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+}
+.reaction-badge.gas .prop-value {
+  color: #2563eb;
+}
+.reaction-badge.precipitate {
+  background: #fefce8;
+  border: 1px solid #fde68a;
+}
+.reaction-badge.precipitate .prop-value {
+  color: #d97706;
+  font-size: 1rem;
+}
+.precipitate-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.2);
+  vertical-align: middle;
+}
+.reaction-badge.temp {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+}
+.reaction-badge.temp .prop-value {
+  color: #dc2626;
 }
 .divider {
   height: 1px;

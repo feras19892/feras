@@ -1,6 +1,7 @@
 import type { StepRule } from '../types';
 import {
   items, liquidMap, buretteMap, buretteTotalConsumedMap, buretteConsumedThisRefill, pipetteMap,
+  solidMap,
 } from '../../useChemistryLab';
 import {
   isContainer, isReactionVessel, isBurette,
@@ -36,7 +37,10 @@ function hasChemicalIn(chemicalId: string, container: ContainerFilter): boolean 
       return b && b.chemicalId === chemicalId && b.volume > 0;
     }
     const liq = liquidMap[item.uid];
-    return liq && liq.chemicalId === chemicalId && liq.volume > 0;
+    const hasLiquid = liq && liq.chemicalId === chemicalId && liq.volume > 0;
+    const solid = solidMap[item.uid];
+    const hasSolid = solid && solid.type === chemicalId && solid.amount > 0;
+    return hasLiquid || hasSolid;
   });
 }
 

@@ -26,14 +26,14 @@ export function isBeakerClamp(id: string): boolean { return id === 'beaker-clamp
 export function isWoodenBase(id: string): boolean { return id === 'wooden-base'; }
 
 export function isContainer(id: string): boolean {
-  return isBeaker(id) || isTestTube(id) || id === 'erlenmeyer' || id === 'grad-cylinder'
-    || id === 'volumetric-flask' || id === 'round-bottom-flask' || id === 'sep-funnel';
+  return isBeaker(id) || isTestTube(id) || isErlenmeyer(id) || isGradCylinder(id)
+    || isVolumetricFlask(id) || isRoundBottomFlask(id) || isSeparatoryFunnel(id);
 }
 
 // Reaction vessels: containers that can receive titrant drops (exclude test tubes)
 export function isReactionVessel(id: string): boolean {
-  return isBeaker(id) || id === 'erlenmeyer' || id === 'grad-cylinder'
-    || id === 'volumetric-flask' || id === 'round-bottom-flask' || id === 'sep-funnel';
+  return isBeaker(id) || isErlenmeyer(id) || isGradCylinder(id)
+    || isVolumetricFlask(id) || isRoundBottomFlask(id) || isSeparatoryFunnel(id);
 }
 
 export function getMaxVolume(id: string): number {

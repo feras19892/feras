@@ -155,7 +155,7 @@ function drawCharts() {
   })
 }
 
-watch(() => [props.id, props.sim?.trail?.length, props.sim?.signalSeries?.length, props.trials?.length, props.fitResult], drawCharts, { flush: 'post' })
+watch(() => [props.id, props.sim?.trail?.length, props.sim?.signalSeries?.length, props.trials, props.fitResult], drawCharts, { flush: 'post', deep: true })
 onMounted(drawCharts)
 </script>
 

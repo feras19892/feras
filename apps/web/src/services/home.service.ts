@@ -27,9 +27,9 @@ const HOME_CARDS: HomeCard[] = [
   },
   {
     id: 'general',
-    icon: '📚',
-    title: 'General Science',
-    desc: 'Various scientific topics and practical applications',
+    icon: '🧬',
+    title: 'Biology',
+    desc: 'Biology experiments: cells, reproduction, ecosystems, and life systems',
     stats: '8+ experiments',
     branchId: 'general',
   },

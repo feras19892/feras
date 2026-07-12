@@ -1,8 +1,0 @@
-{
-  "extends": "@my-modern-app/config/typescript/base.json",
-  "compilerOptions": {
-    "outDir": "./dist",
-    "rootDir": "./src"
-  },
-  "include": ["src/**/*"]
-}

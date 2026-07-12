@@ -16,6 +16,7 @@ import { chemistryLab } from './chemistry-lab'
 import { chemistryExperiments } from './chemistry-experiments'
 import { chemistryTools } from './chemistry-tools'
 import { chemistryAssistant } from './chemistry-assistant'
+import { biology } from './biology'
 
 export default {
   auth: auth.es,
@@ -36,4 +37,5 @@ export default {
   chemistryExperiments: chemistryExperiments.es,
   chemistryTools: chemistryTools.es,
   chemistryAssistant: chemistryAssistant.es,
+  biology: biology.es,
 } as const

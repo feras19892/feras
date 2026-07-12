@@ -80,6 +80,11 @@ const routes: RouteRecordRaw[] = [
     name: 'MathHome',
     component: () => import('./pages/math/index.vue'),
   },
+  {
+    path: '/biology',
+    name: 'BiologyHome',
+    component: () => import('./pages/biology/index.vue'),
+  },
 ];
 
 const router = createRouter({

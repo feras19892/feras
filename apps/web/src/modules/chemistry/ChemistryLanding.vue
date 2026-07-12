@@ -49,9 +49,6 @@ const reportTemplate = ref<{ type: string; fields: { key: string; labelKey: stri
 function expNameKey(exp: Experiment | ExperimentDefinition): string {
   return 'nameKey' in exp ? exp.nameKey : exp.nameAr;
 }
-function expDescKey(exp: Experiment | ExperimentDefinition): string {
-  return 'descKey' in exp ? exp.descKey : exp.description;
-}
 function stepTextKey(step: { text?: string; textKey?: string }): string {
   return step.textKey || step.text || '';
 }

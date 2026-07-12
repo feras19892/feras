@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted } from 'vue';
 import { items, liquidMap, burnerMap, hotPlateMap, isContainer } from '../../../composables/chemistry/useChemistryLab';
-import { isBunsenBurner, isHeatingMantle, isHotPlate } from '../../../composables/chemistry/chemLabIds';
 import { getEnvironmentTemp } from '../../../composables/chemistry/useThermometer';
 
 interface Props {

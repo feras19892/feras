@@ -7,7 +7,7 @@ import {
   isSeparatoryFunnel, isGradCylinder, isBunsenBurner, isHeatingMantle, isBalance, isPhMeter,
   isBeakerClamp, isWoodenBase, isHotPlate, isRetortStandAssembly, isThermometer
 } from '../../../composables/chemistry/useChemistryLab';
-import { getBalanceReading, getPhReading, isHeated, getTemperatureReading } from '../../../composables/chemistry/useLabSimulation';
+import { getBalanceReading, getPhReading, isHeated } from '../../../composables/chemistry/useLabSimulation';
 import { useChemicalLocale } from '../../../composables/chemistry/useChemicalLocale';
 import { useI18n } from '../../../composables/useI18n';
 import LabTestTubeRack from './LabTestTubeRack.vue';

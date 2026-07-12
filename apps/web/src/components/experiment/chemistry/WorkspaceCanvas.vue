@@ -4,7 +4,7 @@ import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import type { ToolState } from '../../../composables/chemistry/chemLabTypes';
 import {
   items, receivingMap, itemZoomMap, pourFlowMap, stopperMap, retortStandMap,
-  getLiquid, getBurette, getBurnerState, getItemZoom, buildToolState,
+  getLiquid, getBurnerState, getItemZoom, buildToolState,
   isContainer, isRetortStandAssembly,
   hasSelectedChemicalMap,
   loadSession, clearSession, setupInitialLabLayout

@@ -33,16 +33,6 @@ async function getLayoutBoxes(page: Page, selectors: string[]) {
   return boxes
 }
 
-/** Check if two boxes overlap */
-function _boxesOverlap(a: { x: number; y: number; w: number; h: number }, b: { x: number; y: number; w: number; h: number }) {
-  return (
-    a.x < b.x + b.w &&
-    a.x + a.w > b.x &&
-    a.y < b.y + b.h &&
-    a.y + a.h > b.y
-  )
-}
-
 test.describe('i18n UI: RTL / LTR Layout Integrity', () => {
   for (const locale of SUPPORTED_LOCALES) {
     const isRtl = locale === 'ar'

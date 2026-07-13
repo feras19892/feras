@@ -36,12 +36,21 @@ export interface GraphPoint {
   y: number;
 }
 
+export interface GraphLine {
+  fn?: (x: number, params: Record<string, number>) => number;
+  verticalX?: (params: Record<string, number>) => number;
+  params?: Record<string, number>;
+  label?: string;
+  color?: string;
+}
+
 export interface GraphConfig {
   fn: (x: number, params: Record<string, number>) => number;
   xRange: [number, number];
   yRange?: [number, number];
   label: string;
   params?: Record<string, number>;
+  lines?: GraphLine[];
 }
 
 export interface Constant {

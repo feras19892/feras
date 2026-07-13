@@ -56,6 +56,90 @@ export const equations: Equation[] = [
     },
   },
   {
+    id: 'linear-system',
+    branchId: 'algebra',
+    name: 'نظام معادلتين خطيتين',
+    formula: 'A: ax + by = c | B: dx + ey = f',
+    description: 'يُستخدم لحل معادلتين خطيتين معاً لإيجاد نقطة التقاطع (x, y). يظهر في مسائل التكلفة والدخل، والتوازن الكيميائي، والقوى المتزنة.',
+    method: 'لحل نظام معادلتين خطيتين: 1) نكتب المعادلتين: ax + by = c و dx + ey = f. 2) نحسب المحدد: D = a×e - b×d. 3) إذا كان D = 0، لا يوجد حل فريد (الخطان متوازيان أو متطابقان). 4) إذا كان D ≠ 0: x = (c×e - b×f) / D و y = (a×f - c×d) / D. 5) نعوض القيم للتحقق من الناتج.',
+    examples: [
+      {
+        title: 'مثال تطبيقي',
+        values: { a: 2, b: 3, c: 12, d: 1, e: -1, f: 1 },
+        steps: [
+          'المعادلة (A): 2x + 3y = 12',
+          'المعادلة (B): x - y = 1',
+          'D = 2×(-1) - 3×1 = -5',
+          'x = (12×(-1) - 3×1) / -5 = (-15) / -5 = 3',
+          'y = (2×1 - 12×1) / -5 = (-10) / -5 = 2',
+          'نقطة التقاطع: (3, 2)',
+        ],
+      },
+    ],
+    applicationProblems: [
+      {
+        question: 'محمصة تبيع كوب قهوة بـ 5 ليرات وكعكة بـ 3 ليرات. إذا اشترى زبون 7 منتجات ودفع 27 ليرة، كم كوب قهوة وكم كعكة اشترى؟',
+        hint: 'اكتب المعادلتين: x + y = 7 و 5x + 3y = 27.',
+        answer: 'x = 3 أكواب قهوة، y = 4 كعكات',
+        variables: { a: 1, b: 1, c: 7, d: 5, e: 3, f: 27 },
+        expectedValue: '3, 4',
+      },
+    ],
+    variables: [
+      { name: 'a', label: 'a' },
+      { name: 'b', label: 'b' },
+      { name: 'c', label: 'c' },
+      { name: 'd', label: 'd' },
+      { name: 'e', label: 'e' },
+      { name: 'f', label: 'f' },
+    ],
+    graph: {
+      label: 'المعادلتان A و B كمستقيمين متقاطعين',
+      xRange: [-10, 10],
+      yRange: [-10, 10],
+      params: { a: 2, b: 3, c: 12, d: 1, e: -1, f: 1 },
+      fn: () => 0,
+      lines: [
+        {
+          label: 'A: ax + by = c',
+          color: '#38bdf8',
+          fn: (x, p) => (p.b === 0 ? Number.NaN : (p.c - p.a * x) / p.b),
+        },
+        {
+          label: 'B: dx + ey = f',
+          color: '#f472b6',
+          fn: (x, p) => (p.e === 0 ? Number.NaN : (p.f - p.d * x) / p.e),
+        },
+      ],
+    },
+    solve(values) {
+      const a = Number(values.a);
+      const b = Number(values.b);
+      const c = Number(values.c);
+      const d = Number(values.d);
+      const e = Number(values.e);
+      const f = Number(values.f);
+      if ([a, b, c, d, e, f].some((n) => Number.isNaN(n))) {
+        return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+      }
+      const det = a * e - b * d;
+      if (det === 0) {
+        return { result: 'لا يوجد حل فريد (المحدد = 0)', steps: ['D = a×e - b×d = 0', 'الخطان متوازيان أو متطابقان'] };
+      }
+      const x = (c * e - b * f) / det;
+      const y = (a * f - c * d) / det;
+      return {
+        result: `x = ${fmt(x)}, y = ${fmt(y)}`,
+        steps: [
+          `D = ${a}×${e} - ${b}×${d} = ${fmt(det)}`,
+          `x = (c×e - b×f) / D = (${c}×${e} - ${b}×${f}) / ${fmt(det)} = ${fmt(x)}`,
+          `y = (a×f - c×d) / D = (${a}×${f} - ${c}×${d}) / ${fmt(det)} = ${fmt(y)}`,
+          `نقطة التقاطع: (${fmt(x)}, ${fmt(y)})`,
+        ],
+      };
+    },
+  },
+  {
     id: 'quadratic-equation',
     branchId: 'algebra',
     name: 'المعادلة التربيعية',
@@ -2653,7 +2737,7 @@ export const equations: Equation[] = [
       const denom = v - vs;
       if (denom === 0) return { result: 'قيم غير صالحة', steps: [] };
       const result = f * (v + vo) / denom;
-      return { result: `f\' = ${fmt(result)} Hz`, steps: [`f\' = ${f} × (${v} + ${vo}) / (${v} - ${vs})`, `f\' = ${fmt(result)} Hz`] };
+      return { result: `f' = ${fmt(result)} Hz`, steps: [`f' = ${f} × (${v} + ${vo}) / (${v} - ${vs})`, `f' = ${fmt(result)} Hz`] };
     },
   },
   {
@@ -3434,7 +3518,7 @@ export const equations: Equation[] = [
     method: '1) اختر u بحيث تبسط عند الاشتقاق. 2) حدد dv. 3) اشتق u للحصول على du. 4) اكامل dv للحصول على v. 5) طبّق الصيغة.',
     examples: [{ title: 'مثال', values: { u: 'x', dv: 'e^x' }, steps: ['∫x·e^x = x·e^x - e^x + C'] }],
     variables: [{ name: 'u', label: 'u' }, { name: 'dv', label: 'dv' }],
-    solve(values) {
+    solve(_values) {
       return { result: 'استخدم الصيغة ∫u dv = uv - ∫v du', steps: ['اختر u و dv بعناية', 'اشتق u وكامل dv', 'طبّق الصيغة'] };
     },
   },

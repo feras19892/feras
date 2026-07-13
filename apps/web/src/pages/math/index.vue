@@ -126,35 +126,47 @@ const graphSegments = computed(() => {
   const [xMin, xMax] = cfg.xRange;
   const yMin = cfg.yRange?.[0] ?? -10;
   const yMax = cfg.yRange?.[1] ?? 10;
-  const segments: string[] = [];
-  let current: string[] = [];
-  let lastPy: number | null = null;
   const steps = 300;
 
-  for (let i = 0; i <= steps; i++) {
-    const x = xMin + (xMax - xMin) * (i / steps);
-    const y = cfg.fn(x, graphParams.value);
-    if (!Number.isFinite(y) || y < yMin || y > yMax) {
-      if (current.length) {
-        segments.push(current.join(' '));
-        current = [];
+  const lines = cfg.lines && cfg.lines.length > 0
+    ? cfg.lines
+    : [{ fn: cfg.fn, color: undefined }];
+
+  const result: { points: string; color?: string }[] = [];
+
+  lines.forEach((line) => {
+    const lineParams = { ...graphParams.value, ...line.params };
+    const segments: string[] = [];
+    let current: string[] = [];
+    let lastPy: number | null = null;
+
+    for (let i = 0; i <= steps; i++) {
+      const x = xMin + (xMax - xMin) * (i / steps);
+      const y = line.fn(x, lineParams);
+      if (!Number.isFinite(y) || y < yMin || y > yMax) {
+        if (current.length) {
+          segments.push(current.join(' '));
+          current = [];
+        }
+        lastPy = null;
+        continue;
       }
-      lastPy = null;
-      continue;
-    }
-    const px = ((x - xMin) / (xMax - xMin)) * width;
-    const py = height - ((y - yMin) / (yMax - yMin)) * height;
-    if (lastPy !== null && Math.abs(py - lastPy) > height * 0.85) {
-      if (current.length) {
-        segments.push(current.join(' '));
-        current = [];
+      const px = ((x - xMin) / (xMax - xMin)) * width;
+      const py = height - ((y - yMin) / (yMax - yMin)) * height;
+      if (lastPy !== null && Math.abs(py - lastPy) > height * 0.85) {
+        if (current.length) {
+          segments.push(current.join(' '));
+          current = [];
+        }
       }
+      current.push(`${px.toFixed(1)},${py.toFixed(1)}`);
+      lastPy = py;
     }
-    current.push(`${px.toFixed(1)},${py.toFixed(1)}`);
-    lastPy = py;
-  }
-  if (current.length) segments.push(current.join(' '));
-  return segments;
+    if (current.length) segments.push(current.join(' '));
+    segments.forEach((seg) => result.push({ points: seg, color: line.color }));
+  });
+
+  return result;
 });
 
 function generatePractice() {
@@ -481,8 +493,12 @@ function runSolver() {
                   <polyline
                     v-for="(seg, idx) in graphSegments"
                     :key="idx"
-                    :points="seg"
-                    class="graph-curve"
+                    :points="seg.points"
+                    :stroke="seg.color || '#38bdf8'"
+                    fill="none"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
                   />
                 </svg>
                 <p class="hint-text">غيّر القيم في "جرب بنفسك" لتحديث الرسم.</p>

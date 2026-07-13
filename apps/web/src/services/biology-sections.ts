@@ -1,0 +1,60 @@
+import type { BiologySection } from '../types/biology.types';
+
+export const biologySections: BiologySection[] = [
+  {
+    id: 'cell-biology',
+    titleKey: 'biology.section.cellBiology.title',
+    descriptionKey: 'biology.section.cellBiology.description',
+    icon: '🔬',
+    route: '/biology/cell',
+    available: true,
+  },
+  {
+    id: 'human-anatomy',
+    titleKey: 'biology.section.humanAnatomy.title',
+    descriptionKey: 'biology.section.humanAnatomy.description',
+    icon: '🫀',
+    route: undefined,
+    available: false,
+  },
+  {
+    id: 'microbiology',
+    titleKey: 'biology.section.microbiology.title',
+    descriptionKey: 'biology.section.microbiology.description',
+    icon: '🦠',
+    route: undefined,
+    available: false,
+  },
+  {
+    id: 'plant-biology',
+    titleKey: 'biology.section.plantBiology.title',
+    descriptionKey: 'biology.section.plantBiology.description',
+    icon: '🌱',
+    route: undefined,
+    available: false,
+  },
+  {
+    id: 'genetics',
+    titleKey: 'biology.section.genetics.title',
+    descriptionKey: 'biology.section.genetics.description',
+    icon: '🧬',
+    route: undefined,
+    available: false,
+  },
+  {
+    id: 'ecology',
+    titleKey: 'biology.section.ecology.title',
+    descriptionKey: 'biology.section.ecology.description',
+    icon: '🌍',
+    route: undefined,
+    available: false,
+  },
+  {
+    id: 'biotechnology',
+    titleKey: 'biology.section.biotechnology.title',
+    descriptionKey: 'biology.section.biotechnology.description',
+    icon: '🧪',
+    route: undefined,
+    available: false,
+  },
+];

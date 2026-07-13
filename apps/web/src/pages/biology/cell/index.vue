@@ -1,62 +1,62 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import { useI18n } from '../../composables/useI18n';
-import { biologySections } from '../../services/biology-sections';
-import type { BiologySection } from '../../types/biology.types';
+import { useI18n } from '../../../composables/useI18n';
+import { cellBiologyTopics } from '../../../services/cell-biology-topics';
+import type { BiologyTopic } from '../../../types/biology.types';
 
 const router = useRouter();
 const { t } = useI18n();
 
-const goHome = (): void => {
-  router.push('/home');
+const goBack = (): void => {
+  router.push('/biology');
 };
 
-const selectSection = (section: BiologySection): void => {
-  if (section.available && section.route) {
-    router.push(section.route);
+const selectTopic = (topic: BiologyTopic): void => {
+  if (topic.available && topic.route) {
+    router.push(topic.route);
   }
 };
 </script>
 
 <template>
-  <div class="biology-page">
-    <header class="bio-header">
-      <button class="back-button" @click="goHome">
-        {{ t('biology.backToHome') }}
+  <div class="cell-biology-page">
+    <header class="cell-header">
+      <button class="back-button" @click="goBack">
+        {{ t('biology.backToExperiments') }}
       </button>
-      <h1 class="bio-title">{{ t('biology.title') }}</h1>
-      <p class="bio-subtitle">{{ t('biology.subtitle') }}</p>
+      <h1 class="cell-title">{{ t('biology.cellBiologySectionTitle') }}</h1>
+      <p class="cell-subtitle">{{ t('biology.cellBiologySectionSubtitle') }}</p>
     </header>
 
-    <main class="bio-content">
+    <main class="cell-content">
       <div
-        v-for="section in biologySections"
-        :key="section.id"
-        class="section-card"
-        :class="{ unavailable: !section.available }"
-        @click="selectSection(section)"
+        v-for="topic in cellBiologyTopics"
+        :key="topic.id"
+        class="topic-card"
+        :class="{ unavailable: !topic.available }"
+        @click="selectTopic(topic)"
       >
-        <div class="section-icon" aria-hidden="true">{{ section.icon }}</div>
-        <h2 class="section-title">{{ t(section.titleKey) }}</h2>
-        <p class="section-desc">{{ t(section.descriptionKey) }}</p>
-        <span v-if="!section.available" class="section-badge">
+        <div class="topic-icon" aria-hidden="true">{{ topic.icon }}</div>
+        <h2 class="topic-title">{{ t(topic.titleKey) }}</h2>
+        <p class="topic-desc">{{ t(topic.descriptionKey) }}</p>
+        <span v-if="!topic.available" class="topic-badge">
           {{ t('biology.comingSoon') }}
         </span>
-        <span v-else class="section-action">{{ t('biology.startExperiment') }}</span>
+        <span v-else class="topic-action">{{ t('biology.startExperiment') }}</span>
       </div>
     </main>
   </div>
 </template>
 
 <style scoped>
-.biology-page {
+.cell-biology-page {
   min-height: 100vh;
   background: linear-gradient(135deg, #0a0f1c 0%, #111827 40%, #0f172a 100%);
   color: #e2e8f0;
   padding: 2rem;
 }
 
-.bio-header {
+.cell-header {
   position: relative;
   text-align: center;
   margin-bottom: 3rem;
@@ -79,7 +79,7 @@ const selectSection = (section: BiologySection): void => {
   background: #1e293b;
 }
 
-.bio-title {
+.cell-title {
   font-size: 2.5rem;
   margin: 0 0 0.5rem;
   background: linear-gradient(90deg, #4ade80, #22c55e);
@@ -88,13 +88,13 @@ const selectSection = (section: BiologySection): void => {
   -webkit-text-fill-color: transparent;
 }
 
-.bio-subtitle {
+.cell-subtitle {
   color: #94a3b8;
   font-size: 1.1rem;
   margin: 0;
 }
 
-.bio-content {
+.cell-content {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 1.5rem;
@@ -102,7 +102,7 @@ const selectSection = (section: BiologySection): void => {
   margin: 0 auto;
 }
 
-.section-card {
+.topic-card {
   background: rgba(30, 41, 59, 0.6);
   border: 1px solid #334155;
   border-radius: 1rem;
@@ -112,36 +112,36 @@ const selectSection = (section: BiologySection): void => {
   transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
 }
 
-.section-card:hover:not(.unavailable) {
+.topic-card:hover:not(.unavailable) {
   transform: translateY(-3px);
   border-color: #4ade80;
   background: rgba(30, 41, 59, 0.85);
 }
 
-.section-card.unavailable {
+.topic-card.unavailable {
   cursor: default;
   opacity: 0.6;
 }
 
-.section-icon {
+.topic-icon {
   font-size: 3rem;
   margin-bottom: 1rem;
 }
 
-.section-title {
+.topic-title {
   margin: 0 0 0.5rem;
   color: #4ade80;
   font-size: 1.25rem;
 }
 
-.section-desc {
+.topic-desc {
   color: #94a3b8;
   margin: 0 0 1.25rem;
   line-height: 1.5;
   font-size: 0.95rem;
 }
 
-.section-action {
+.topic-action {
   display: inline-block;
   background: #22c55e;
   color: #0f172a;
@@ -151,7 +151,7 @@ const selectSection = (section: BiologySection): void => {
   font-weight: 600;
 }
 
-.section-badge {
+.topic-badge {
   display: inline-block;
   background: #334155;
   color: #94a3b8;

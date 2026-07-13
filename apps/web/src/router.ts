@@ -85,6 +85,36 @@ const routes: RouteRecordRaw[] = [
     name: 'BiologyHome',
     component: () => import('./pages/biology/index.vue'),
   },
+  {
+    path: '/biology/cell',
+    name: 'BiologyCell',
+    component: () => import('./pages/biology/cell/index.vue'),
+  },
+  {
+    path: '/biology/cell/animal-cell',
+    name: 'BiologyAnimalCell',
+    component: () => import('./pages/biology/cell/animal-cell.vue'),
+  },
+  {
+    path: '/biology/cell/dna-structure',
+    name: 'BiologyDnaStructure',
+    component: () => import('./pages/biology/cell/dna-structure.vue'),
+  },
+  {
+    path: '/biology/cell/mitosis',
+    name: 'BiologyMitosis',
+    component: () => import('./pages/biology/cell/mitosis.vue'),
+  },
+  {
+    path: '/biology/cell/plant-cell',
+    name: 'BiologyPlantCell',
+    component: () => import('./pages/biology/cell/plant-cell.vue'),
+  },
+  {
+    path: '/biology/cell/protein-synthesis',
+    name: 'BiologyProteinSynthesis',
+    component: () => import('./pages/biology/cell/protein-synthesis.vue'),
+  },
 ];
 
 const router = createRouter({

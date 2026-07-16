@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/latent-heat/panels/LatentHeatLawsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nconst props = defineProps<{\n  mass: number\n  phaseType: 'fusion' | 'vaporization'\n  currentQ: number\n  meltedMass: number\n  remainingMass: number\n}>()\nconst phaseName = { fusion: 'انصهار', vaporization: 'تبخر' }\nconst L = { fusion: 334000, vaporization: 2260000 }\n</script>\n<template>\n  <div class=\"panel-body\">\n    <div class=\"law-box\">\n      <div class=\"law-title\">قانون الحرارة الكامنة</div>\n      <div class=\"formula\">Q = m × L</div>\n      <div class=\"desc\">\n        عندما تُضاف حرارة لمادة عند درجة حرارة ثابتة، لا يتغير درجة الحرارة بل يتغير حالة المادة.\n      </div>\n    </div>\n    <div class=\"law-box\">\n      <div class=\"law-title\">قيم الحرارة الكامنة</div>\n      <div class=\"value-row\"><span>انصهار الثلج (L_f)</span><span>334 kJ/kg</span></div>\n      <div class=\"value-row\"><span>تبخر الماء (L_v)</span><span>2260 kJ/kg</span></div>\n    </div>\n    <div class=\"law-box\">\n      <div class=\"law-title\">الحالة الحالية — {{ phaseName[phaseType] }}</div>\n      <div class=\"value-row\"><span>الحرارة المضافة</span><span>{{ (currentQ/1000).toFixed(1) }} kJ</span></div>\n      <div class=\"value-row\"><span>الكتلة المتحولة</span><span>{{ meltedMass.toFixed(3) }} kg</span></div>\n      <div class=\"value-row\"><span>الكتلة المتبقية</span><span>{{ remainingMass.toFixed(3) }} kg</span></div>\n      <div class=\"value-row\"><span>L المستخدم</span><span>{{ (L[phaseType]/1000).toFixed(0) }} kJ/kg</span></div>\n    </div>\n  </div>\n</template>\n<style scoped>\n.panel-body { padding:.45rem; display:flex; flex-direction:column; gap:.5rem; }\n.law-box { background:rgba(91,141,184,.05); border:1px solid rgba(91,141,184,.15); border-radius:6px; padding:.5rem .6rem; }\n.law-title { color:#5B8DB8; font-weight:700; font-size:.78rem; margin-bottom:.35rem; }\n.formula { font-family:'Courier New', monospace; font-size:.9rem; color:#D1D7E0; text-align:center; margin:.3rem 0; }\n.desc { color:#8B95A5; font-size:.72rem; line-height:1.5; }\n.value-row { display:flex; justify-content:space-between; padding:.2rem 0; border-bottom:1px solid rgba(30,37,48,.4); font-size:.72rem; }\n.value-row:last-child { border:none; }\n.value-row span:first-child { color:#8B95A5; }\n.value-row span:last-child { color:#D1D7E0; font-weight:600; }\n</style>\n",
+      "start": 1783196194998,
+      "end": 1783196195277,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195277,
+      "end": 1783196195277,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195277,
+      "end": 1783196195277,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195277,
+      "end": 1783196195277,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195277,
+      "end": 1783196195277,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/latent-heat/panels/LatentHeatLawsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/latent-heat/panels/LatentHeatLawsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/latent-heat/panels/LatentHeatLawsPanel.vue?vue&type=style&index=0&scoped=6b166622&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-6b166622\"]]);\n",
+      "start": 1783196195277,
+      "end": 1783196195517,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195517,
+      "end": 1783196195517,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195517,
+      "end": 1783196195517,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195517,
+      "end": 1783196195517,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195517,
+      "end": 1783196195517,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195517,
+      "end": 1783196195517,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195517,
+      "end": 1783196195517,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195517,
+      "end": 1783196195517,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195517,
+      "end": 1783196195517,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195517,
+      "end": 1783196195517,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195517,
+      "end": 1783196195517,
+      "order": "normal"
+    }
+  ]
+}

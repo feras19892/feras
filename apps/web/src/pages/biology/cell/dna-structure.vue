@@ -1,8 +1,15 @@
 <script setup lang="ts">
-import BiologyExperiment from '../../../modules/biology/components/BiologyExperiment.vue';
-import { dnaStructureExperiment } from '../../../services/dna-data';
+import GLBExperiment from '../../../modules/biology/components/GLBExperiment.vue';
+import { dnaGLBParts } from '../../../services/dna-glb-parts';
 </script>
 
 <template>
-  <BiologyExperiment :experiment="dnaStructureExperiment" back-route="/biology/cell" />
+  <GLBExperiment
+    model-path="/models/dna.glb"
+    title-key="biology.dnaStructureTitle"
+    subtitle-key="biology.dnaStructureSubtitle"
+    back-route="/biology/cell"
+    back-label-key="biology.backToCellSection"
+    :parts="dnaGLBParts"
+  />
 </template>

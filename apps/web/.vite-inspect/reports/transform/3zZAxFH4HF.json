@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileHintOverlay.vue?vue&type=style&index=0&scoped=d9714cfc&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.hint-overlay { position: absolute; top: 42px; right: 10px; z-index: 20; }\n.hint-btn { background: rgba(15,23,42,0.9); border: 1px solid rgba(71,85,105,0.5); border-radius: 8px; padding: .35rem .6rem; font-size: 1rem; cursor: pointer; transition: .2s; }\n.hint-btn:hover, .hint-btn.open { background: rgba(91,141,184,.2); border-color: #5B8DB8; }\n.hint-panel { position: absolute; top: 40px; right: 0; width: 260px; background: rgba(15,23,42,0.95); border: 1px solid #2D3645; border-radius: 10px; padding: .8rem; backdrop-filter: blur(10px); }\n.hint-title { font-size: .8rem; font-weight: 700; color: #5B8DB8; margin-bottom: .3rem; }\n.hint-eq { font-family: monospace; font-size: .75rem; color: #D1D7E0; background: #1E2530; padding: .3rem .5rem; border-radius: 4px; margin-bottom: .5rem; text-align: center; }\n.hint-row { display: flex; justify-content: space-between; font-size: .72rem; color: #8B95A5; margin-bottom: .15rem; }\n.hint-row b { color: #D1D7E0; }\n.hint-msg { margin-top: .4rem; font-size: .75rem; color: #f59e0b; background: rgba(245,158,11,.08); padding: .3rem .5rem; border-radius: 4px; }\n.hint-tip { margin-top: .3rem; font-size: .72rem; color: #22c55e; }\n.hint-strat { margin-top: .3rem; font-size: .72rem; color: #fbbf24; background: rgba(251,191,36,.08); padding: .3rem .5rem; border-radius: 4px; }\n.hint-sub { font-size: .7rem; color: #8B95A5; background: transparent; margin-top: -.3rem; }\nhr { border: none; border-top: 1px solid #2D3645; margin: .5rem 0; }\n.hint-guess .guess-row { display: flex; gap: .3rem; align-items: center; margin-top: .3rem; }\n.hint-guess input { width: 50px; padding: .2rem; border-radius: 4px; border: 1px solid #2D3645; background: #252D3A; color: #D1D7E0; font-size: .72rem; text-align: center; }\n.hint-guess button { background: #5B8DB8; color: #fff; border: none; border-radius: 4px; padding: .25rem .5rem; font-size: .7rem; cursor: pointer; }\n.guess-result { margin-top: .3rem; font-size: .75rem; color: #D1D7E0; }\n",
+      "start": 1783196195642,
+      "end": 1783196195642
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.hint-overlay { position: absolute; top: 42px; right: 10px; z-index: 20; }\n.hint-btn { background: rgba(15,23,42,0.9); border: 1px solid rgba(71,85,105,0.5); border-radius: 8px; padding: .35rem .6rem; font-size: 1rem; cursor: pointer; transition: .2s; }\n.hint-btn:hover, .hint-btn.open { background: rgba(91,141,184,.2); border-color: #5B8DB8; }\n.hint-panel { position: absolute; top: 40px; right: 0; width: 260px; background: rgba(15,23,42,0.95); border: 1px solid #2D3645; border-radius: 10px; padding: .8rem; backdrop-filter: blur(10px); }\n.hint-title { font-size: .8rem; font-weight: 700; color: #5B8DB8; margin-bottom: .3rem; }\n.hint-eq { font-family: monospace; font-size: .75rem; color: #D1D7E0; background: #1E2530; padding: .3rem .5rem; border-radius: 4px; margin-bottom: .5rem; text-align: center; }\n.hint-row { display: flex; justify-content: space-between; font-size: .72rem; color: #8B95A5; margin-bottom: .15rem; }\n.hint-row b { color: #D1D7E0; }\n.hint-msg { margin-top: .4rem; font-size: .75rem; color: #f59e0b; background: rgba(245,158,11,.08); padding: .3rem .5rem; border-radius: 4px; }\n.hint-tip { margin-top: .3rem; font-size: .72rem; color: #22c55e; }\n.hint-strat { margin-top: .3rem; font-size: .72rem; color: #fbbf24; background: rgba(251,191,36,.08); padding: .3rem .5rem; border-radius: 4px; }\n.hint-sub { font-size: .7rem; color: #8B95A5; background: transparent; margin-top: -.3rem; }\nhr { border: none; border-top: 1px solid #2D3645; margin: .5rem 0; }\n.hint-guess .guess-row { display: flex; gap: .3rem; align-items: center; margin-top: .3rem; }\n.hint-guess input { width: 50px; padding: .2rem; border-radius: 4px; border: 1px solid #2D3645; background: #252D3A; color: #D1D7E0; font-size: .72rem; text-align: center; }\n.hint-guess button { background: #5B8DB8; color: #fff; border: none; border-radius: 4px; padding: .25rem .5rem; font-size: .7rem; cursor: pointer; }\n.guess-result { margin-top: .3rem; font-size: .75rem; color: #D1D7E0; }\n",
+      "start": 1783196195642,
+      "end": 1783196195642,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195642,
+      "end": 1783196195642,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195642,
+      "end": 1783196195642,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195642,
+      "end": 1783196195642,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.hint-overlay[data-v-d9714cfc] { position: absolute; top: 42px; right: 10px; z-index: 20;\n}\n.hint-btn[data-v-d9714cfc] { background: rgba(15,23,42,0.9); border: 1px solid rgba(71,85,105,0.5); border-radius: 8px; padding: .35rem .6rem; font-size: 1rem; cursor: pointer; transition: .2s;\n}\n.hint-btn[data-v-d9714cfc]:hover, .hint-btn.open[data-v-d9714cfc] { background: rgba(91,141,184,.2); border-color: #5B8DB8;\n}\n.hint-panel[data-v-d9714cfc] { position: absolute; top: 40px; right: 0; width: 260px; background: rgba(15,23,42,0.95); border: 1px solid #2D3645; border-radius: 10px; padding: .8rem; backdrop-filter: blur(10px);\n}\n.hint-title[data-v-d9714cfc] { font-size: .8rem; font-weight: 700; color: #5B8DB8; margin-bottom: .3rem;\n}\n.hint-eq[data-v-d9714cfc] { font-family: monospace; font-size: .75rem; color: #D1D7E0; background: #1E2530; padding: .3rem .5rem; border-radius: 4px; margin-bottom: .5rem; text-align: center;\n}\n.hint-row[data-v-d9714cfc] { display: flex; justify-content: space-between; font-size: .72rem; color: #8B95A5; margin-bottom: .15rem;\n}\n.hint-row b[data-v-d9714cfc] { color: #D1D7E0;\n}\n.hint-msg[data-v-d9714cfc] { margin-top: .4rem; font-size: .75rem; color: #f59e0b; background: rgba(245,158,11,.08); padding: .3rem .5rem; border-radius: 4px;\n}\n.hint-tip[data-v-d9714cfc] { margin-top: .3rem; font-size: .72rem; color: #22c55e;\n}\n.hint-strat[data-v-d9714cfc] { margin-top: .3rem; font-size: .72rem; color: #fbbf24; background: rgba(251,191,36,.08); padding: .3rem .5rem; border-radius: 4px;\n}\n.hint-sub[data-v-d9714cfc] { font-size: .7rem; color: #8B95A5; background: transparent; margin-top: -.3rem;\n}\nhr[data-v-d9714cfc] { border: none; border-top: 1px solid #2D3645; margin: .5rem 0;\n}\n.hint-guess .guess-row[data-v-d9714cfc] { display: flex; gap: .3rem; align-items: center; margin-top: .3rem;\n}\n.hint-guess input[data-v-d9714cfc] { width: 50px; padding: .2rem; border-radius: 4px; border: 1px solid #2D3645; background: #252D3A; color: #D1D7E0; font-size: .72rem; text-align: center;\n}\n.hint-guess button[data-v-d9714cfc] { background: #5B8DB8; color: #fff; border: none; border-radius: 4px; padding: .25rem .5rem; font-size: .7rem; cursor: pointer;\n}\n.guess-result[data-v-d9714cfc] { margin-top: .3rem; font-size: .75rem; color: #D1D7E0;\n}\n",
+      "start": 1783196195642,
+      "end": 1783196195644,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195644,
+      "end": 1783196195644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196195644,
+      "end": 1783196195644,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195644,
+      "end": 1783196195644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195644,
+      "end": 1783196195644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195644,
+      "end": 1783196195644,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195644,
+      "end": 1783196195644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195644,
+      "end": 1783196195644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195644,
+      "end": 1783196195644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195644,
+      "end": 1783196195644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195644,
+      "end": 1783196195644,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LeftPanel.vue?vue&type=style&index=0&scoped=8af9fe4e&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.panel-left {\n  display: flex;\n  flex-direction: column;\n  padding: 0.75rem;\n  gap: 0.75rem;\n}\n.tabs {\n  display: flex;\n  gap: 0.25rem;\n  background: #f1f5f9;\n  border-radius: 0.5rem;\n  padding: 0.25rem;\n}\n.tab-btn {\n  flex: 1;\n  padding: 0.65rem 0.25rem;\n  background: none;\n  border: none;\n  font-size: 0.75rem;\n  color: #64748b;\n  cursor: pointer;\n  transition: all 0.2s;\n  white-space: nowrap;\n  font-family: inherit;\n}\n.tab-btn:hover {\n  background: rgba(255,255,255,0.5);\n}\n.tab-btn.active {\n  background: #ffffff;\n  color: #10b981;\n  border-bottom: 2px solid #10b981;\n  font-weight: 700;\n}\n.sections-list {\n  overflow-y: auto;\n  flex: 1;\n}\n.section {\n  border-bottom: 1px solid #e2e8f0;\n}\n.section-header {\n  width: 100%;\n  padding: 0.6rem 0.75rem;\n  background: #f1f5f9;\n  border: none;\n  display: flex;\n  align-items: center;\n  gap: 0.5rem;\n  font-size: 0.8rem;\n  font-weight: 600;\n  color: #334155;\n  cursor: pointer;\n  text-align: right;\n  font-family: inherit;\n}\n.section-header:hover {\n  background: #e2e8f0;\n}\n.tools-grid {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  gap: 0.6rem;\n  padding: 0.75rem;\n  overflow-y: auto;\n}\n.tool-card {\n  background: #ffffff;\n  border: 1px solid #e2e8f0;\n  border-radius: 0.75rem;\n  padding: 0.75rem 0.5rem;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 0.4rem;\n  cursor: grab;\n  transition: all 0.2s;\n  user-select: none;\n}\n.tool-card:hover {\n  border-color: #10b981;\n  box-shadow: 0 4px 12px rgba(16,185,129,0.12);\n  transform: translateY(-2px);\n}\n.tool-card:active { cursor: grabbing; }\n.tool-icon { font-size: 2rem; line-height: 1; }\n.tool-name { font-size: 0.75rem; color: #475569; text-align: center; }\n",
+      "start": 1783196193038,
+      "end": 1783196193038
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.panel-left {\n  display: flex;\n  flex-direction: column;\n  padding: 0.75rem;\n  gap: 0.75rem;\n}\n.tabs {\n  display: flex;\n  gap: 0.25rem;\n  background: #f1f5f9;\n  border-radius: 0.5rem;\n  padding: 0.25rem;\n}\n.tab-btn {\n  flex: 1;\n  padding: 0.65rem 0.25rem;\n  background: none;\n  border: none;\n  font-size: 0.75rem;\n  color: #64748b;\n  cursor: pointer;\n  transition: all 0.2s;\n  white-space: nowrap;\n  font-family: inherit;\n}\n.tab-btn:hover {\n  background: rgba(255,255,255,0.5);\n}\n.tab-btn.active {\n  background: #ffffff;\n  color: #10b981;\n  border-bottom: 2px solid #10b981;\n  font-weight: 700;\n}\n.sections-list {\n  overflow-y: auto;\n  flex: 1;\n}\n.section {\n  border-bottom: 1px solid #e2e8f0;\n}\n.section-header {\n  width: 100%;\n  padding: 0.6rem 0.75rem;\n  background: #f1f5f9;\n  border: none;\n  display: flex;\n  align-items: center;\n  gap: 0.5rem;\n  font-size: 0.8rem;\n  font-weight: 600;\n  color: #334155;\n  cursor: pointer;\n  text-align: right;\n  font-family: inherit;\n}\n.section-header:hover {\n  background: #e2e8f0;\n}\n.tools-grid {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  gap: 0.6rem;\n  padding: 0.75rem;\n  overflow-y: auto;\n}\n.tool-card {\n  background: #ffffff;\n  border: 1px solid #e2e8f0;\n  border-radius: 0.75rem;\n  padding: 0.75rem 0.5rem;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 0.4rem;\n  cursor: grab;\n  transition: all 0.2s;\n  user-select: none;\n}\n.tool-card:hover {\n  border-color: #10b981;\n  box-shadow: 0 4px 12px rgba(16,185,129,0.12);\n  transform: translateY(-2px);\n}\n.tool-card:active { cursor: grabbing; }\n.tool-icon { font-size: 2rem; line-height: 1; }\n.tool-name { font-size: 0.75rem; color: #475569; text-align: center; }\n",
+      "start": 1783196193039,
+      "end": 1783196194190,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.panel-left[data-v-8af9fe4e] {\n  display: flex;\n  flex-direction: column;\n  padding: 0.75rem;\n  gap: 0.75rem;\n}\n.tabs[data-v-8af9fe4e] {\n  display: flex;\n  gap: 0.25rem;\n  background: #f1f5f9;\n  border-radius: 0.5rem;\n  padding: 0.25rem;\n}\n.tab-btn[data-v-8af9fe4e] {\n  flex: 1;\n  padding: 0.65rem 0.25rem;\n  background: none;\n  border: none;\n  font-size: 0.75rem;\n  color: #64748b;\n  cursor: pointer;\n  transition: all 0.2s;\n  white-space: nowrap;\n  font-family: inherit;\n}\n.tab-btn[data-v-8af9fe4e]:hover {\n  background: rgba(255,255,255,0.5);\n}\n.tab-btn.active[data-v-8af9fe4e] {\n  background: #ffffff;\n  color: #10b981;\n  border-bottom: 2px solid #10b981;\n  font-weight: 700;\n}\n.sections-list[data-v-8af9fe4e] {\n  overflow-y: auto;\n  flex: 1;\n}\n.section[data-v-8af9fe4e] {\n  border-bottom: 1px solid #e2e8f0;\n}\n.section-header[data-v-8af9fe4e] {\n  width: 100%;\n  padding: 0.6rem 0.75rem;\n  background: #f1f5f9;\n  border: none;\n  display: flex;\n  align-items: center;\n  gap: 0.5rem;\n  font-size: 0.8rem;\n  font-weight: 600;\n  color: #334155;\n  cursor: pointer;\n  text-align: right;\n  font-family: inherit;\n}\n.section-header[data-v-8af9fe4e]:hover {\n  background: #e2e8f0;\n}\n.tools-grid[data-v-8af9fe4e] {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  gap: 0.6rem;\n  padding: 0.75rem;\n  overflow-y: auto;\n}\n.tool-card[data-v-8af9fe4e] {\n  background: #ffffff;\n  border: 1px solid #e2e8f0;\n  border-radius: 0.75rem;\n  padding: 0.75rem 0.5rem;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 0.4rem;\n  cursor: grab;\n  transition: all 0.2s;\n  user-select: none;\n}\n.tool-card[data-v-8af9fe4e]:hover {\n  border-color: #10b981;\n  box-shadow: 0 4px 12px rgba(16,185,129,0.12);\n  transform: translateY(-2px);\n}\n.tool-card[data-v-8af9fe4e]:active { cursor: grabbing;\n}\n.tool-icon[data-v-8af9fe4e] { font-size: 2rem; line-height: 1;\n}\n.tool-name[data-v-8af9fe4e] { font-size: 0.75rem; color: #475569; text-align: center;\n}\n",
+      "start": 1783196194238,
+      "end": 1783196194316,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194317,
+      "end": 1783196194317,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196194317,
+      "end": 1783196194318,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    }
+  ]
+}

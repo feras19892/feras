@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabWoodenBase.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, unref as _unref, toDisplayString as _toDisplayString, normalizeClass as _normalizeClass, createStaticVNode as _createStaticVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"tool-label\" }\n\nimport { useI18n } from '../../../composables/useI18n';\ninterface Props {\n  isHovered: boolean;\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'LabWoodenBase',\n  props: {\n    isHovered: { type: Boolean }\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n();\n\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    class: _normalizeClass([\"lab-wooden-base\", { hovered: __props.isHovered }])\n  }, [\n    _cache[0] || (_cache[0] = _createStaticVNode(\"<svg width=\\\"160\\\" height=\\\"20\\\" viewBox=\\\"0 0 160 20\\\" data-v-811e4cac><rect x=\\\"0\\\" y=\\\"0\\\" width=\\\"160\\\" height=\\\"18\\\" rx=\\\"3\\\" fill=\\\"#8B5A2B\\\" data-v-811e4cac></rect><rect x=\\\"0\\\" y=\\\"14\\\" width=\\\"160\\\" height=\\\"4\\\" rx=\\\"1\\\" fill=\\\"#6B4226\\\" data-v-811e4cac></rect><line x1=\\\"20\\\" y1=\\\"2\\\" x2=\\\"20\\\" y2=\\\"14\\\" stroke=\\\"#7A4E1F\\\" stroke-width=\\\"1\\\" opacity=\\\"0.5\\\" data-v-811e4cac></line><line x1=\\\"50\\\" y1=\\\"2\\\" x2=\\\"50\\\" y2=\\\"14\\\" stroke=\\\"#7A4E1F\\\" stroke-width=\\\"1\\\" opacity=\\\"0.5\\\" data-v-811e4cac></line><line x1=\\\"80\\\" y1=\\\"2\\\" x2=\\\"80\\\" y2=\\\"14\\\" stroke=\\\"#7A4E1F\\\" stroke-width=\\\"1\\\" opacity=\\\"0.5\\\" data-v-811e4cac></line><line x1=\\\"110\\\" y1=\\\"2\\\" x2=\\\"110\\\" y2=\\\"14\\\" stroke=\\\"#7A4E1F\\\" stroke-width=\\\"1\\\" opacity=\\\"0.5\\\" data-v-811e4cac></line><line x1=\\\"140\\\" y1=\\\"2\\\" x2=\\\"140\\\" y2=\\\"14\\\" stroke=\\\"#7A4E1F\\\" stroke-width=\\\"1\\\" opacity=\\\"0.5\\\" data-v-811e4cac></line><rect x=\\\"2\\\" y=\\\"1\\\" width=\\\"156\\\" height=\\\"2\\\" rx=\\\"1\\\" fill=\\\"#A67B5B\\\" opacity=\\\"0.6\\\" data-v-811e4cac></rect></svg>\", 1)),\n    _createElementVNode(\"span\", _hoisted_1, _toDisplayString(_unref(t)('chemistryLab.woodenBase')), 1)\n  ], 2))\n}\n}\n\n})",
+      "start": 1783196194839,
+      "end": 1783196194839
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194839,
+      "end": 1783196194839,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, unref as _unref, toDisplayString as _toDisplayString, normalizeClass as _normalizeClass, createStaticVNode as _createStaticVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"tool-label\" };\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"LabWoodenBase\",\n  props: {\n    isHovered: { type: Boolean }\n  },\n  setup(__props) {\n    const { t } = useI18n();\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", {\n        class: _normalizeClass([\"lab-wooden-base\", { hovered: __props.isHovered }])\n      }, [\n        _cache[0] || (_cache[0] = _createStaticVNode('<svg width=\"160\" height=\"20\" viewBox=\"0 0 160 20\" data-v-811e4cac><rect x=\"0\" y=\"0\" width=\"160\" height=\"18\" rx=\"3\" fill=\"#8B5A2B\" data-v-811e4cac></rect><rect x=\"0\" y=\"14\" width=\"160\" height=\"4\" rx=\"1\" fill=\"#6B4226\" data-v-811e4cac></rect><line x1=\"20\" y1=\"2\" x2=\"20\" y2=\"14\" stroke=\"#7A4E1F\" stroke-width=\"1\" opacity=\"0.5\" data-v-811e4cac></line><line x1=\"50\" y1=\"2\" x2=\"50\" y2=\"14\" stroke=\"#7A4E1F\" stroke-width=\"1\" opacity=\"0.5\" data-v-811e4cac></line><line x1=\"80\" y1=\"2\" x2=\"80\" y2=\"14\" stroke=\"#7A4E1F\" stroke-width=\"1\" opacity=\"0.5\" data-v-811e4cac></line><line x1=\"110\" y1=\"2\" x2=\"110\" y2=\"14\" stroke=\"#7A4E1F\" stroke-width=\"1\" opacity=\"0.5\" data-v-811e4cac></line><line x1=\"140\" y1=\"2\" x2=\"140\" y2=\"14\" stroke=\"#7A4E1F\" stroke-width=\"1\" opacity=\"0.5\" data-v-811e4cac></line><rect x=\"2\" y=\"1\" width=\"156\" height=\"2\" rx=\"1\" fill=\"#A67B5B\" opacity=\"0.6\" data-v-811e4cac></rect></svg>', 1)),\n        _createElementVNode(\"span\", _hoisted_1, _toDisplayString(_unref(t)(\"chemistryLab.woodenBase\")), 1)\n      ], 2);\n    };\n  }\n});\n",
+      "start": 1783196194839,
+      "end": 1783196194970,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabWoodenBase.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, unref as _unref, toDisplayString as _toDisplayString, normalizeClass as _normalizeClass, createStaticVNode as _createStaticVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"tool-label\" }\n\nimport { useI18n } from '../../../composables/useI18n';\ninterface Props {\n  isHovered: boolean;\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'LabWoodenBase',\n  props: {\n    isHovered: { type: Boolean }\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n();\n\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    class: _normalizeClass([\"lab-wooden-base\", { hovered: __props.isHovered }])\n  }, [\n    _cache[0] || (_cache[0] = _createStaticVNode(\"<svg width=\\\"160\\\" height=\\\"20\\\" viewBox=\\\"0 0 160 20\\\" data-v-811e4cac><rect x=\\\"0\\\" y=\\\"0\\\" width=\\\"160\\\" height=\\\"18\\\" rx=\\\"3\\\" fill=\\\"#8B5A2B\\\" data-v-811e4cac></rect><rect x=\\\"0\\\" y=\\\"14\\\" width=\\\"160\\\" height=\\\"4\\\" rx=\\\"1\\\" fill=\\\"#6B4226\\\" data-v-811e4cac></rect><line x1=\\\"20\\\" y1=\\\"2\\\" x2=\\\"20\\\" y2=\\\"14\\\" stroke=\\\"#7A4E1F\\\" stroke-width=\\\"1\\\" opacity=\\\"0.5\\\" data-v-811e4cac></line><line x1=\\\"50\\\" y1=\\\"2\\\" x2=\\\"50\\\" y2=\\\"14\\\" stroke=\\\"#7A4E1F\\\" stroke-width=\\\"1\\\" opacity=\\\"0.5\\\" data-v-811e4cac></line><line x1=\\\"80\\\" y1=\\\"2\\\" x2=\\\"80\\\" y2=\\\"14\\\" stroke=\\\"#7A4E1F\\\" stroke-width=\\\"1\\\" opacity=\\\"0.5\\\" data-v-811e4cac></line><line x1=\\\"110\\\" y1=\\\"2\\\" x2=\\\"110\\\" y2=\\\"14\\\" stroke=\\\"#7A4E1F\\\" stroke-width=\\\"1\\\" opacity=\\\"0.5\\\" data-v-811e4cac></line><line x1=\\\"140\\\" y1=\\\"2\\\" x2=\\\"140\\\" y2=\\\"14\\\" stroke=\\\"#7A4E1F\\\" stroke-width=\\\"1\\\" opacity=\\\"0.5\\\" data-v-811e4cac></line><rect x=\\\"2\\\" y=\\\"1\\\" width=\\\"156\\\" height=\\\"2\\\" rx=\\\"1\\\" fill=\\\"#A67B5B\\\" opacity=\\\"0.6\\\" data-v-811e4cac></rect></svg>\", 1)),\n    _createElementVNode(\"span\", _hoisted_1, _toDisplayString(_unref(t)('chemistryLab.woodenBase')), 1)\n  ], 2))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,sBAAsB,qBAAqB,SAAS,QAAQ,mBAAmB,kBAAkB,kBAAkB,iBAAiB,qBAAqB,oBAAoB,aAAa,YAAY,sBAAsB,2BAA2B;AAEhQ,MAAM,aAAa,EAAE,OAAO,aAAa;AAEzC,SAAS,eAAe;AAKxB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,WAAW,EAAE,MAAM,QAAQ;AAAA,EAC7B;AAAA,EACA,MAAM,SAAc;AAEtB,UAAM,EAAE,EAAE,IAAI,QAAQ;AAGtB,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO;AAAA,QAC/C,OAAO,gBAAgB,CAAC,mBAAmB,EAAE,SAAS,QAAQ,UAAU,CAAC,CAAC;AAAA,MAC5E,GAAG;AAAA,QACD,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,mBAAmB,83BAAg/B,CAAC;AAAA,QAC9hC,oBAAoB,QAAQ,YAAY,iBAAiB,OAAO,CAAC,EAAE,yBAAyB,CAAC,GAAG,CAAC;AAAA,MACnG,GAAG,CAAC;AAAA,IACN;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    }
+  ]
+}

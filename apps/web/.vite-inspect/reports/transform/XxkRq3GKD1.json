@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/SpringStatusBar.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, unref as _unref, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, normalizeClass as _normalizeClass } from \"vue\"\n\nconst _hoisted_1 = { key: 0 }\nconst _hoisted_2 = { key: 1 }\nconst _hoisted_3 = { key: 2 }\n\nimport { useI18n } from '../../../composables/useI18n'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'SpringStatusBar',\n  props: {\n    running: { type: Boolean },\n    paused: { type: Boolean }\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\nconst props = __props\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    class: _normalizeClass([\"status-bar\", {ready:!__props.running&&!__props.paused, paused:__props.running&&__props.paused, running:__props.running&&!__props.paused}])\n  }, [\n    _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"status-dot\" }, null, -1)),\n    (!__props.running&&!__props.paused)\n      ? (_openBlock(), _createElementBlock(\"span\", _hoisted_1, _toDisplayString(_unref(t)('experiments.ready')), 1))\n      : (__props.running&&__props.paused)\n        ? (_openBlock(), _createElementBlock(\"span\", _hoisted_2, _toDisplayString(_unref(t)('experiments.paused')), 1))\n        : (_openBlock(), _createElementBlock(\"span\", _hoisted_3, _toDisplayString(_unref(t)('experiments.running')), 1))\n  ], 2))\n}\n}\n\n})",
+      "start": 1783196194367,
+      "end": 1783196194367
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194367,
+      "end": 1783196194367,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, unref as _unref, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, normalizeClass as _normalizeClass } from \"vue\";\nconst _hoisted_1 = { key: 0 };\nconst _hoisted_2 = { key: 1 };\nconst _hoisted_3 = { key: 2 };\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"SpringStatusBar\",\n  props: {\n    running: { type: Boolean },\n    paused: { type: Boolean }\n  },\n  setup(__props) {\n    const { t } = useI18n();\n    const props = __props;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", {\n        class: _normalizeClass([\"status-bar\", { ready: !__props.running && !__props.paused, paused: __props.running && __props.paused, running: __props.running && !__props.paused }])\n      }, [\n        _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"status-dot\" }, null, -1)),\n        !__props.running && !__props.paused ? (_openBlock(), _createElementBlock(\"span\", _hoisted_1, _toDisplayString(_unref(t)(\"experiments.ready\")), 1)) : __props.running && __props.paused ? (_openBlock(), _createElementBlock(\"span\", _hoisted_2, _toDisplayString(_unref(t)(\"experiments.paused\")), 1)) : (_openBlock(), _createElementBlock(\"span\", _hoisted_3, _toDisplayString(_unref(t)(\"experiments.running\")), 1))\n      ], 2);\n    };\n  }\n});\n",
+      "start": 1783196194367,
+      "end": 1783196194815,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/SpringStatusBar.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, unref as _unref, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, normalizeClass as _normalizeClass } from \"vue\"\n\nconst _hoisted_1 = { key: 0 }\nconst _hoisted_2 = { key: 1 }\nconst _hoisted_3 = { key: 2 }\n\nimport { useI18n } from '../../../composables/useI18n'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'SpringStatusBar',\n  props: {\n    running: { type: Boolean },\n    paused: { type: Boolean }\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\nconst props = __props\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    class: _normalizeClass([\"status-bar\", {ready:!__props.running&&!__props.paused, paused:__props.running&&__props.paused, running:__props.running&&!__props.paused}])\n  }, [\n    _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"status-dot\" }, null, -1)),\n    (!__props.running&&!__props.paused)\n      ? (_openBlock(), _createElementBlock(\"span\", _hoisted_1, _toDisplayString(_unref(t)('experiments.ready')), 1))\n      : (__props.running&&__props.paused)\n        ? (_openBlock(), _createElementBlock(\"span\", _hoisted_2, _toDisplayString(_unref(t)('experiments.paused')), 1))\n        : (_openBlock(), _createElementBlock(\"span\", _hoisted_3, _toDisplayString(_unref(t)('experiments.running')), 1))\n  ], 2))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,sBAAsB,qBAAqB,SAAS,QAAQ,mBAAmB,kBAAkB,aAAa,YAAY,sBAAsB,qBAAgE,kBAAkB,uBAAuB;AAElQ,MAAM,aAAa,EAAE,KAAK,EAAE;AAC5B,MAAM,aAAa,EAAE,KAAK,EAAE;AAC5B,MAAM,aAAa,EAAE,KAAK,EAAE;AAE5B,SAAS,eAAe;AAGxB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,SAAS,EAAE,MAAM,QAAQ;AAAA,IACzB,QAAQ,EAAE,MAAM,QAAQ;AAAA,EAC1B;AAAA,EACA,MAAM,SAAc;AAEtB,UAAM,EAAE,EAAE,IAAI,QAAQ;AACtB,UAAM,QAAQ;AAEd,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO;AAAA,QAC/C,OAAO,gBAAgB,CAAC,cAAc,EAAC,OAAM,CAAC,QAAQ,WAAS,CAAC,QAAQ,QAAQ,QAAO,QAAQ,WAAS,QAAQ,QAAQ,SAAQ,QAAQ,WAAS,CAAC,QAAQ,OAAM,CAAC,CAAC;AAAA,MACpK,GAAG;AAAA,QACD,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,QAAQ,EAAE,OAAO,aAAa,GAAG,MAAM,EAAE;AAAA,QACtF,CAAC,QAAQ,WAAS,CAAC,QAAQ,UACvB,WAAW,GAAG,oBAAoB,QAAQ,YAAY,iBAAiB,OAAO,CAAC,EAAE,mBAAmB,CAAC,GAAG,CAAC,KACzG,QAAQ,WAAS,QAAQ,UACvB,WAAW,GAAG,oBAAoB,QAAQ,YAAY,iBAAiB,OAAO,CAAC,EAAE,oBAAoB,CAAC,GAAG,CAAC,MAC1G,WAAW,GAAG,oBAAoB,QAAQ,YAAY,iBAAiB,OAAO,CAAC,EAAE,qBAAqB,CAAC,GAAG,CAAC;AAAA,MACpH,GAAG,CAAC;AAAA,IACN;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194815,
+      "end": 1783196194815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194815,
+      "end": 1783196194815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196194815,
+      "end": 1783196194815,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194815,
+      "end": 1783196194815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194815,
+      "end": 1783196194815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194815,
+      "end": 1783196194815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194815,
+      "end": 1783196194815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194815,
+      "end": 1783196194815,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194815,
+      "end": 1783196194815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194815,
+      "end": 1783196194815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194815,
+      "end": 1783196194815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194815,
+      "end": 1783196194815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194815,
+      "end": 1783196194815,
+      "order": "normal"
+    }
+  ]
+}

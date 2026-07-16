@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/boyles-law/useBoylesLawExperiment.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { ref, reactive, computed } from 'vue'\nimport { useRouter } from 'vue-router'\nimport type { AnalysisPayload } from '../../types/physics'\nimport { sendToAnalysis } from '../analysis/sendToAnalysis'\nimport { useBoylesLawLayout } from './useBoylesLawLayout'\nimport { useBoylesLawTrials } from './useBoylesLawTrials'\nimport { boyleProduct } from './useBoylesLawCalculations'\n\nconst R_L_atm = 0.082057\n\nfunction calcP(n: number, T: number, v: number) {\n  return Math.min(10, Math.max(0.1, (n * R_L_atm * T) / v))\n}\n\nexport function useBoylesLawExperiment() {\n  const params = reactive({\n    p: calcP(0.041, 300, 1.0),   // atm (computed from n,T,V)\n    v: 1.0,   // L\n    n: 0.041, // moles → gives P=1 atm at V=1L, T=300K (nRT = 1)\n    T: 300,   // K\n  })\n\n  function syncP() { params.p = calcP(params.n, params.T, params.v) }\n\n  const running = ref(false)\n  const paused = ref(false)\n  const phase = ref<'ready' | 'compressing' | 'done'>('ready')\n  const simTime = ref(0)\n\n  // Boyle's constant = n·R·T (physically correct)\n  const constTarget = computed(() => params.n * R_L_atm * params.T)\n\n  const pv = computed(() => boyleProduct(params.p, params.v))\n\n  function updateSim(dt: number) {\n    if (!running.value || paused.value) return\n    simTime.value += dt\n    if (params.v > 0.3) {\n      phase.value = 'compressing'\n      params.v -= 0.05 * dt\n      if (params.v <= 0.3) { params.v = 0.3; phase.value = 'done' }\n    } else {\n      phase.value = 'done'\n    }\n    syncP() // P = nRT/V\n  }\n\n  function togglePause() {\n    if (!running.value) {\n      running.value = true; paused.value = false; simTime.value = 0\n      phase.value = 'compressing'; params.v = 1.0; syncP()\n    } else { paused.value = !paused.value }\n  }\n  function resetSim() {\n    running.value = false; paused.value = false; simTime.value = 0; phase.value = 'ready'\n    params.v = 1.0; syncP()\n  }\n\n  const layout = useBoylesLawLayout()\n  const trials = useBoylesLawTrials(\n    { get value() { return { p: params.p, v: params.v, pv: pv.value } } }\n  )\n\n  const router = useRouter()\n  function exportToAnalysis() {\n    if (trials.trials.value.length < 2) return\n    const payload: AnalysisPayload = {\n      sourceExperiment: 'boyles-law', sourceNameAr: 'قانون بويل',\n      hasCalcTab: true,\n      readings: trials.trials.value.map(t => ({ p: t.p, v: t.v, pv: t.pv })),\n      columns: [\n        { key: 'p', label: 'P (atm)', unit: 'atm' },\n        { key: 'v', label: 'V (L)', unit: 'L' },\n        { key: 'pv', label: 'P·V', unit: 'atm·L' },\n      ],\n      equations: [\n        { name: \"Boyle's Law\", formula: 'P × V = constant', variables: [{ symbol: 'P', label: 'Pressure' }, { symbol: 'V', label: 'Volume' }], solveFor: ['P', 'V'] },\n      ],\n      suggestedPlots: [{ xKey: 'v', yKey: 'p', xLabel: 'V (L)', yLabel: 'P (atm)', type: 'scatter' }],\n    }\n    sendToAnalysis(router, payload)\n  }\n  function handleDrop(fromId: string, x?: number, y?: number) {\n    if (x === undefined || y === undefined) return\n    const el = document.elementFromPoint(x, y)\n    const toPanel = el?.closest('.draggable-panel')\n    const toId = toPanel?.getAttribute('data-id')\n    if (!toId || fromId === toId) return\n    for (const col of Object.keys(layout.columnMap)) {\n      const arr = layout.columnMap[col]\n      const fi = arr.indexOf(fromId), ti = arr.indexOf(toId)\n      if (fi >= 0 && ti >= 0) { const t = arr[fi]; arr[fi] = arr[ti]; arr[ti] = t }\n    }\n  }\n  function onResizeStart(col: string, e: MouseEvent) {\n    if (!(col in layout.widths)) return\n    const startX = e.clientX, startW = (layout.widths as Record<string, number>)[col] as number\n    function move(ev: MouseEvent) { (layout.widths as Record<string, number>)[col] = Math.max(220, startW + (ev.clientX - startX)) }\n    function up() { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up) }\n    window.addEventListener('mousemove', move); window.addEventListener('mouseup', up)\n  }\n\n  const lab = { running, paused, simTime, phase, pv, constTarget, togglePause, updateSim }\n  return { params, lab, layout, trials, resetSim, exportToAnalysis, onResizeStart, handleDrop, syncP }\n}\n",
+      "start": 1783196193602,
+      "end": 1783196194052,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194052,
+      "end": 1783196194052,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { ref, reactive, computed } from \"vue\";\nimport { useRouter } from \"vue-router\";\nimport { sendToAnalysis } from \"../analysis/sendToAnalysis\";\nimport { useBoylesLawLayout } from \"./useBoylesLawLayout\";\nimport { useBoylesLawTrials } from \"./useBoylesLawTrials\";\nimport { boyleProduct } from \"./useBoylesLawCalculations\";\nconst R_L_atm = 0.082057;\nfunction calcP(n, T, v) {\n  return Math.min(10, Math.max(0.1, n * R_L_atm * T / v));\n}\nexport function useBoylesLawExperiment() {\n  const params = reactive({\n    p: calcP(0.041, 300, 1),\n    // atm (computed from n,T,V)\n    v: 1,\n    // L\n    n: 0.041,\n    // moles → gives P=1 atm at V=1L, T=300K (nRT = 1)\n    T: 300\n    // K\n  });\n  function syncP() {\n    params.p = calcP(params.n, params.T, params.v);\n  }\n  const running = ref(false);\n  const paused = ref(false);\n  const phase = ref(\"ready\");\n  const simTime = ref(0);\n  const constTarget = computed(() => params.n * R_L_atm * params.T);\n  const pv = computed(() => boyleProduct(params.p, params.v));\n  function updateSim(dt) {\n    if (!running.value || paused.value) return;\n    simTime.value += dt;\n    if (params.v > 0.3) {\n      phase.value = \"compressing\";\n      params.v -= 0.05 * dt;\n      if (params.v <= 0.3) {\n        params.v = 0.3;\n        phase.value = \"done\";\n      }\n    } else {\n      phase.value = \"done\";\n    }\n    syncP();\n  }\n  function togglePause() {\n    if (!running.value) {\n      running.value = true;\n      paused.value = false;\n      simTime.value = 0;\n      phase.value = \"compressing\";\n      params.v = 1;\n      syncP();\n    } else {\n      paused.value = !paused.value;\n    }\n  }\n  function resetSim() {\n    running.value = false;\n    paused.value = false;\n    simTime.value = 0;\n    phase.value = \"ready\";\n    params.v = 1;\n    syncP();\n  }\n  const layout = useBoylesLawLayout();\n  const trials = useBoylesLawTrials(\n    { get value() {\n      return { p: params.p, v: params.v, pv: pv.value };\n    } }\n  );\n  const router = useRouter();\n  function exportToAnalysis() {\n    if (trials.trials.value.length < 2) return;\n    const payload = {\n      sourceExperiment: \"boyles-law\",\n      sourceNameAr: \"قانون بويل\",\n      hasCalcTab: true,\n      readings: trials.trials.value.map((t) => ({ p: t.p, v: t.v, pv: t.pv })),\n      columns: [\n        { key: \"p\", label: \"P (atm)\", unit: \"atm\" },\n        { key: \"v\", label: \"V (L)\", unit: \"L\" },\n        { key: \"pv\", label: \"P·V\", unit: \"atm·L\" }\n      ],\n      equations: [\n        { name: \"Boyle's Law\", formula: \"P × V = constant\", variables: [{ symbol: \"P\", label: \"Pressure\" }, { symbol: \"V\", label: \"Volume\" }], solveFor: [\"P\", \"V\"] }\n      ],\n      suggestedPlots: [{ xKey: \"v\", yKey: \"p\", xLabel: \"V (L)\", yLabel: \"P (atm)\", type: \"scatter\" }]\n    };\n    sendToAnalysis(router, payload);\n  }\n  function handleDrop(fromId, x, y) {\n    if (x === void 0 || y === void 0) return;\n    const el = document.elementFromPoint(x, y);\n    const toPanel = el?.closest(\".draggable-panel\");\n    const toId = toPanel?.getAttribute(\"data-id\");\n    if (!toId || fromId === toId) return;\n    for (const col of Object.keys(layout.columnMap)) {\n      const arr = layout.columnMap[col];\n      const fi = arr.indexOf(fromId), ti = arr.indexOf(toId);\n      if (fi >= 0 && ti >= 0) {\n        const t = arr[fi];\n        arr[fi] = arr[ti];\n        arr[ti] = t;\n      }\n    }\n  }\n  function onResizeStart(col, e) {\n    if (!(col in layout.widths)) return;\n    const startX = e.clientX, startW = layout.widths[col];\n    function move(ev) {\n      layout.widths[col] = Math.max(220, startW + (ev.clientX - startX));\n    }\n    function up() {\n      window.removeEventListener(\"mousemove\", move);\n      window.removeEventListener(\"mouseup\", up);\n    }\n    window.addEventListener(\"mousemove\", move);\n    window.addEventListener(\"mouseup\", up);\n  }\n  const lab = { running, paused, simTime, phase, pv, constTarget, togglePause, updateSim };\n  return { params, lab, layout, trials, resetSim, exportToAnalysis, onResizeStart, handleDrop, syncP };\n}\n",
+      "start": 1783196194052,
+      "end": 1783196194385,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/boyles-law/useBoylesLawExperiment.ts"
+        ],
+        "sourcesContent": [
+          "import { ref, reactive, computed } from 'vue'\nimport { useRouter } from 'vue-router'\nimport type { AnalysisPayload } from '../../types/physics'\nimport { sendToAnalysis } from '../analysis/sendToAnalysis'\nimport { useBoylesLawLayout } from './useBoylesLawLayout'\nimport { useBoylesLawTrials } from './useBoylesLawTrials'\nimport { boyleProduct } from './useBoylesLawCalculations'\n\nconst R_L_atm = 0.082057\n\nfunction calcP(n: number, T: number, v: number) {\n  return Math.min(10, Math.max(0.1, (n * R_L_atm * T) / v))\n}\n\nexport function useBoylesLawExperiment() {\n  const params = reactive({\n    p: calcP(0.041, 300, 1.0),   // atm (computed from n,T,V)\n    v: 1.0,   // L\n    n: 0.041, // moles → gives P=1 atm at V=1L, T=300K (nRT = 1)\n    T: 300,   // K\n  })\n\n  function syncP() { params.p = calcP(params.n, params.T, params.v) }\n\n  const running = ref(false)\n  const paused = ref(false)\n  const phase = ref<'ready' | 'compressing' | 'done'>('ready')\n  const simTime = ref(0)\n\n  // Boyle's constant = n·R·T (physically correct)\n  const constTarget = computed(() => params.n * R_L_atm * params.T)\n\n  const pv = computed(() => boyleProduct(params.p, params.v))\n\n  function updateSim(dt: number) {\n    if (!running.value || paused.value) return\n    simTime.value += dt\n    if (params.v > 0.3) {\n      phase.value = 'compressing'\n      params.v -= 0.05 * dt\n      if (params.v <= 0.3) { params.v = 0.3; phase.value = 'done' }\n    } else {\n      phase.value = 'done'\n    }\n    syncP() // P = nRT/V\n  }\n\n  function togglePause() {\n    if (!running.value) {\n      running.value = true; paused.value = false; simTime.value = 0\n      phase.value = 'compressing'; params.v = 1.0; syncP()\n    } else { paused.value = !paused.value }\n  }\n  function resetSim() {\n    running.value = false; paused.value = false; simTime.value = 0; phase.value = 'ready'\n    params.v = 1.0; syncP()\n  }\n\n  const layout = useBoylesLawLayout()\n  const trials = useBoylesLawTrials(\n    { get value() { return { p: params.p, v: params.v, pv: pv.value } } }\n  )\n\n  const router = useRouter()\n  function exportToAnalysis() {\n    if (trials.trials.value.length < 2) return\n    const payload: AnalysisPayload = {\n      sourceExperiment: 'boyles-law', sourceNameAr: 'قانون بويل',\n      hasCalcTab: true,\n      readings: trials.trials.value.map(t => ({ p: t.p, v: t.v, pv: t.pv })),\n      columns: [\n        { key: 'p', label: 'P (atm)', unit: 'atm' },\n        { key: 'v', label: 'V (L)', unit: 'L' },\n        { key: 'pv', label: 'P·V', unit: 'atm·L' },\n      ],\n      equations: [\n        { name: \"Boyle's Law\", formula: 'P × V = constant', variables: [{ symbol: 'P', label: 'Pressure' }, { symbol: 'V', label: 'Volume' }], solveFor: ['P', 'V'] },\n      ],\n      suggestedPlots: [{ xKey: 'v', yKey: 'p', xLabel: 'V (L)', yLabel: 'P (atm)', type: 'scatter' }],\n    }\n    sendToAnalysis(router, payload)\n  }\n  function handleDrop(fromId: string, x?: number, y?: number) {\n    if (x === undefined || y === undefined) return\n    const el = document.elementFromPoint(x, y)\n    const toPanel = el?.closest('.draggable-panel')\n    const toId = toPanel?.getAttribute('data-id')\n    if (!toId || fromId === toId) return\n    for (const col of Object.keys(layout.columnMap)) {\n      const arr = layout.columnMap[col]\n      const fi = arr.indexOf(fromId), ti = arr.indexOf(toId)\n      if (fi >= 0 && ti >= 0) { const t = arr[fi]; arr[fi] = arr[ti]; arr[ti] = t }\n    }\n  }\n  function onResizeStart(col: string, e: MouseEvent) {\n    if (!(col in layout.widths)) return\n    const startX = e.clientX, startW = (layout.widths as Record<string, number>)[col] as number\n    function move(ev: MouseEvent) { (layout.widths as Record<string, number>)[col] = Math.max(220, startW + (ev.clientX - startX)) }\n    function up() { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up) }\n    window.addEventListener('mousemove', move); window.addEventListener('mouseup', up)\n  }\n\n  const lab = { running, paused, simTime, phase, pv, constTarget, togglePause, updateSim }\n  return { params, lab, layout, trials, resetSim, exportToAnalysis, onResizeStart, handleDrop, syncP }\n}\n"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194385,
+      "end": 1783196194385,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194385,
+      "end": 1783196194385,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194385,
+      "end": 1783196194385,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194386,
+      "end": 1783196194386,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194386,
+      "end": 1783196194386,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194386,
+      "end": 1783196194386,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194386,
+      "end": 1783196194386,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194386,
+      "end": 1783196194386,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194386,
+      "end": 1783196194386,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194386,
+      "end": 1783196194386,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194386,
+      "end": 1783196194387,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194387,
+      "end": 1783196194387,
+      "order": "normal"
+    }
+  ]
+}

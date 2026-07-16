@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/rc-circuit/RcCircuitPanelBody.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport type { RcCircuitTrial } from '../../../composables/rc-circuit/useRcCircuitTrials'\n\ninterface Props { id: string; trials: RcCircuitTrial[]; params: { R: number; C: number; V0: number; mode: 'charge' | 'discharge' }; currentV: number; tau: number; simTime: number }\ndefineProps<Props>()\nconst emit = defineEmits<{\n  (e: 'remove', id: number): void\n  (e: 'clear'): void\n  (e: 'update:params', p: { R: number; C: number; V0: number; mode: 'charge' | 'discharge' }): void\n}>()\n</script>\n<template>\n  <div>\n    <div v-if=\"id === 'readings'\" class=\"panel-body\">\n      <div class=\"read-row\"><span class=\"label\">R</span><span class=\"value\">{{ params.R }} Ω</span></div>\n      <div class=\"read-row\"><span class=\"label\">C</span><span class=\"value\">{{ (params.C*1000).toFixed(0) }} μF</span></div>\n      <div class=\"read-row\"><span class=\"label\">V₀</span><span class=\"value\">{{ params.V0 }} V</span></div>\n      <div class=\"read-row\"><span class=\"label\">τ</span><span class=\"value\">{{ tau.toFixed(3) }} s</span></div>\n      <div class=\"read-row\"><span class=\"label\">V</span><span class=\"value\">{{ currentV.toFixed(2) }} V</span></div>\n      <div class=\"read-row\"><span class=\"label\">t</span><span class=\"value\">{{ simTime.toFixed(2) }} s</span></div>\n      <div class=\"read-row\"><span class=\"label\">الوضع</span><span class=\"value\">{{ params.mode === 'charge' ? 'شحن' : 'تفريغ' }}</span></div>\n    </div>\n    <div v-else-if=\"id === 'chart'\" class=\"panel-body center\">{{ trials.length < 2 ? 'سجل تجربتين على الأقل' : 'رسم V vs t' }}</div>\n    <div v-else-if=\"id === 'trials'\" class=\"panel-body\">\n      <div class=\"trials-header\"><span>#</span><span>R</span><span>C</span><span>τ</span><span>V</span><span></span></div>\n      <div v-for=\"t in trials\" :key=\"t.id\" class=\"trial-row\">\n        <span>{{ t.id }}</span><span>{{ t.R }}</span><span>{{ (t.C*1000).toFixed(0) }}μF</span><span>{{ t.tau.toFixed(2) }}</span><span>{{ t.V.toFixed(2) }}</span>\n        <button class=\"del-btn\" @click=\"emit('remove', t.id)\">x</button>\n      </div>\n      <div v-if=\"!trials.length\" class=\"no-trials\">لا توجد تجارب</div>\n      <div class=\"trials-actions\"><button class=\"clear-btn\" @click=\"emit('clear')\">مسح الكل</button></div>\n    </div>\n    <div v-else-if=\"id === 'params'\" class=\"panel-body\">\n      <div class=\"param-row\"><label>R (Ω)</label><input type=\"range\" :value=\"params.R\" min=\"100\" max=\"10000\" step=\"100\" @input=\"emit('update:params', { ...params, R: +($event.target as HTMLInputElement).value })\" /><span>{{ params.R }}</span></div>\n      <div class=\"param-row\"><label>C (mF)</label><input type=\"range\" :value=\"params.C*1000\" min=\"0.1\" max=\"10\" step=\"0.1\" @input=\"emit('update:params', { ...params, C: +($event.target as HTMLInputElement).value/1000 })\" /><span>{{ (params.C*1000).toFixed(1) }}</span></div>\n      <div class=\"param-row\"><label>V₀ (V)</label><input type=\"range\" :value=\"params.V0\" min=\"1\" max=\"20\" step=\"1\" @input=\"emit('update:params', { ...params, V0: +($event.target as HTMLInputElement).value })\" /><span>{{ params.V0 }}</span></div>\n      <div class=\"param-row\"><label>الوضع</label>\n        <select :value=\"params.mode\" @change=\"emit('update:params', { ...params, mode: ($event.target as HTMLSelectElement).value as 'charge' | 'discharge' })\">\n          <option value=\"charge\">شحن</option><option value=\"discharge\">تفريغ</option>\n        </select>\n      </div>\n    </div>\n    <div v-else-if=\"id === 'laws'\" class=\"panel-body\">\n      <div class=\"law-box\"><div class=\"law-title\">ثابت الزمن</div><div class=\"formula\">τ = R × C</div></div>\n      <div class=\"law-box\"><div class=\"law-title\">الشحن</div><div class=\"formula\">V = V₀(1 - e^(-t/τ))</div></div>\n      <div class=\"law-box\"><div class=\"law-title\">التفريغ</div><div class=\"formula\">V = V₀·e^(-t/τ)</div></div>\n    </div>\n    <div v-else-if=\"id === 'results'\" class=\"panel-body\">\n      <div class=\"stat-box\"><div class=\"stat-label\">عدد التجارب</div><div class=\"stat-value\">{{ trials.length }}</div></div>\n    </div>\n  </div>\n</template>\n<style scoped>\n.panel-body { padding:.45rem; display:flex; flex-direction:column; gap:.35rem; }\n.read-row { display:flex; justify-content:space-between; padding:.25rem .35rem; border-radius:4px; background:rgba(255,255,255,0.02); }\n.label { color:#8B95A5; font-size:.72rem; }\n.value { color:#D1D7E0; font-weight:600; font-size:.72rem; }\n.center { text-align:center; color:#475569; font-size:.75rem; padding:.5rem; }\n.trials-header { display:grid; grid-template-columns:30px 1fr 1fr 1fr 1fr 24px; gap:.3rem; font-size:.68rem; color:#5B8DB8; font-weight:700; padding:0 .2rem; border-bottom:1px solid #1e2530; padding-bottom:.25rem; }\n.trial-row { display:grid; grid-template-columns:30px 1fr 1fr 1fr 1fr 24px; gap:.3rem; align-items:center; padding:.25rem .2rem; font-size:.7rem; color:#D1D7E0; border-bottom:1px solid rgba(30,37,48,.5); }\n.del-btn { width:20px; height:20px; border-radius:50%; border:none; background:transparent; color:#8B95A5; cursor:pointer; font-size:.7rem; display:flex; align-items:center; justify-content:center; }\n.del-btn:hover { background:rgba(248,113,113,.15); color:#f87171; }\n.no-trials { text-align:center; color:#475569; font-size:.75rem; padding:.5rem; }\n.trials-actions { display:flex; justify-content:center; padding-top:.3rem; }\n.clear-btn { padding:.25rem .6rem; border-radius:5px; border:1px solid rgba(248,113,113,.3); background:rgba(248,113,113,.08); color:#f87171; font-size:.7rem; cursor:pointer; }\n.param-row { display:flex; flex-direction:column; gap:.25rem; margin-bottom:.4rem; }\n.param-row label { color:#8B95A5; font-size:.72rem; }\n.param-row input[type=range] { width:100%; accent-color:#5B8DB8; }\n.param-row select { background:#0d1117; border:1px solid #1e2530; color:#D1D7E0; padding:.3rem .45rem; border-radius:4px; font-size:.72rem; }\n.param-row span { color:#5B8DB8; font-weight:600; font-size:.72rem; text-align:right; }\n.law-box { background:rgba(91,141,184,.05); border:1px solid rgba(91,141,184,.15); border-radius:6px; padding:.5rem .6rem; margin-bottom:.4rem; }\n.law-title { color:#5B8DB8; font-weight:700; font-size:.78rem; margin-bottom:.35rem; }\n.formula { font-family:'Courier New', monospace; font-size:.9rem; color:#D1D7E0; text-align:center; margin:.3rem 0; }\n.stat-box { background:rgba(255,255,255,0.02); border:1px solid #1e2530; border-radius:6px; padding:.45rem .55rem; display:flex; justify-content:space-between; align-items:center; }\n.stat-label { color:#8B95A5; font-size:.72rem; }\n.stat-value { color:#D1D7E0; font-weight:700; font-size:.85rem; }\n</style>\n",
+      "start": 1783196193548,
+      "end": 1783196193786,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193786,
+      "end": 1783196193786,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196193786,
+      "end": 1783196193786,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193786,
+      "end": 1783196193786,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193786,
+      "end": 1783196193786,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/rc-circuit/RcCircuitPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/rc-circuit/RcCircuitPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/rc-circuit/RcCircuitPanelBody.vue?vue&type=style&index=0&scoped=b0780b29&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-b0780b29\"]]);\n",
+      "start": 1783196193786,
+      "end": 1783196194396,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194396,
+      "end": 1783196194396,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194396,
+      "end": 1783196194396,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194396,
+      "end": 1783196194396,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194396,
+      "end": 1783196194396,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194396,
+      "end": 1783196194396,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194396,
+      "end": 1783196194396,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194396,
+      "end": 1783196194396,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194396,
+      "end": 1783196194396,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194396,
+      "end": 1783196194397,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194397,
+      "end": 1783196194397,
+      "order": "normal"
+    }
+  ]
+}

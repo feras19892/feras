@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/resonance/useResonanceLayout.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { ref, reactive } from 'vue'\nimport { useI18n } from '../useI18n'\n\nconst STORAGE_KEY = 'resonance_layout_v1'\nconst allIds = ['readings', 'chart', 'trials', 'params', 'laws', 'results']\n\nconst defaultState = {\n  widths: { data: 320, ctrl: 320 },\n  visible: ['readings', 'chart', 'trials', 'params'] as string[],\n  columnMap: { data: ['readings', 'chart', 'trials'], ctrl: ['params'] } as Record<string, string[]>,\n  maximized: Object.fromEntries(allIds.map(id => [id, false])) as Record<string, boolean>,\n}\n\nexport function useResonanceLayout() {\n  const { t } = useI18n()\n  const PANEL_TITLES: Record<string, string> = {\n    readings: t('experiments.panelReadings'), chart: t('experiments.panelChart'), trials: t('experiments.panelTrials'),\n    params: t('experiments.panelParams'), laws: t('experiments.panelLaws'), results: t('experiments.panelResults'),\n  }\n  const widths = reactive<Record<string, number>>({ ...defaultState.widths })\n  const visible = ref<string[]>([...defaultState.visible])\n  const columnMap = reactive({ ...defaultState.columnMap })\n  const maximized = reactive<Record<string, boolean>>({ ...defaultState.maximized })\n\n  function persist() { localStorage.setItem(STORAGE_KEY, JSON.stringify({ widths, visible: visible.value, columnMap, maximized })) }\n  function applyPersistedLayout() {\n    const raw = localStorage.getItem(STORAGE_KEY)\n    if (!raw) return\n    try {\n      const s = JSON.parse(raw)\n      if (s.widths) Object.assign(widths, s.widths)\n      if (s.visible) visible.value = s.visible\n      if (s.columnMap) Object.assign(columnMap, s.columnMap)\n      if (s.maximized) Object.assign(maximized, s.maximized)\n    } catch { /* ignore */ }\n  }\n  function isPanelVisible(id: string) { return visible.value.includes(id) && !maximized[id] }\n  function panelTitle(id: string) { return PANEL_TITLES[id] ?? id }\n  function togglePanel(id: string) { const i = visible.value.indexOf(id); i >= 0 ? visible.value.splice(i, 1) : visible.value.push(id); persist() }\n  function showAllPanels() { visible.value = [...allIds]; allIds.forEach(id => maximized[id] = false); persist() }\n  function maximizePanel(id: string) { if (id in maximized) maximized[id] = !maximized[id] }\n  return { widths, visible, columnMap, maximized, isPanelVisible, panelTitle, togglePanel, showAllPanels, maximizePanel, applyPersistedLayout, persist }\n}\n",
+      "start": 1783196194683,
+      "end": 1783196194791,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194791,
+      "end": 1783196194791,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { ref, reactive } from \"vue\";\nimport { useI18n } from \"../useI18n\";\nconst STORAGE_KEY = \"resonance_layout_v1\";\nconst allIds = [\"readings\", \"chart\", \"trials\", \"params\", \"laws\", \"results\"];\nconst defaultState = {\n  widths: { data: 320, ctrl: 320 },\n  visible: [\"readings\", \"chart\", \"trials\", \"params\"],\n  columnMap: { data: [\"readings\", \"chart\", \"trials\"], ctrl: [\"params\"] },\n  maximized: Object.fromEntries(allIds.map((id) => [id, false]))\n};\nexport function useResonanceLayout() {\n  const { t } = useI18n();\n  const PANEL_TITLES = {\n    readings: t(\"experiments.panelReadings\"),\n    chart: t(\"experiments.panelChart\"),\n    trials: t(\"experiments.panelTrials\"),\n    params: t(\"experiments.panelParams\"),\n    laws: t(\"experiments.panelLaws\"),\n    results: t(\"experiments.panelResults\")\n  };\n  const widths = reactive({ ...defaultState.widths });\n  const visible = ref([...defaultState.visible]);\n  const columnMap = reactive({ ...defaultState.columnMap });\n  const maximized = reactive({ ...defaultState.maximized });\n  function persist() {\n    localStorage.setItem(STORAGE_KEY, JSON.stringify({ widths, visible: visible.value, columnMap, maximized }));\n  }\n  function applyPersistedLayout() {\n    const raw = localStorage.getItem(STORAGE_KEY);\n    if (!raw) return;\n    try {\n      const s = JSON.parse(raw);\n      if (s.widths) Object.assign(widths, s.widths);\n      if (s.visible) visible.value = s.visible;\n      if (s.columnMap) Object.assign(columnMap, s.columnMap);\n      if (s.maximized) Object.assign(maximized, s.maximized);\n    } catch {\n    }\n  }\n  function isPanelVisible(id) {\n    return visible.value.includes(id) && !maximized[id];\n  }\n  function panelTitle(id) {\n    return PANEL_TITLES[id] ?? id;\n  }\n  function togglePanel(id) {\n    const i = visible.value.indexOf(id);\n    i >= 0 ? visible.value.splice(i, 1) : visible.value.push(id);\n    persist();\n  }\n  function showAllPanels() {\n    visible.value = [...allIds];\n    allIds.forEach((id) => maximized[id] = false);\n    persist();\n  }\n  function maximizePanel(id) {\n    if (id in maximized) maximized[id] = !maximized[id];\n  }\n  return { widths, visible, columnMap, maximized, isPanelVisible, panelTitle, togglePanel, showAllPanels, maximizePanel, applyPersistedLayout, persist };\n}\n",
+      "start": 1783196194791,
+      "end": 1783196194966,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/resonance/useResonanceLayout.ts"
+        ],
+        "sourcesContent": [
+          "import { ref, reactive } from 'vue'\nimport { useI18n } from '../useI18n'\n\nconst STORAGE_KEY = 'resonance_layout_v1'\nconst allIds = ['readings', 'chart', 'trials', 'params', 'laws', 'results']\n\nconst defaultState = {\n  widths: { data: 320, ctrl: 320 },\n  visible: ['readings', 'chart', 'trials', 'params'] as string[],\n  columnMap: { data: ['readings', 'chart', 'trials'], ctrl: ['params'] } as Record<string, string[]>,\n  maximized: Object.fromEntries(allIds.map(id => [id, false])) as Record<string, boolean>,\n}\n\nexport function useResonanceLayout() {\n  const { t } = useI18n()\n  const PANEL_TITLES: Record<string, string> = {\n    readings: t('experiments.panelReadings'), chart: t('experiments.panelChart'), trials: t('experiments.panelTrials'),\n    params: t('experiments.panelParams'), laws: t('experiments.panelLaws'), results: t('experiments.panelResults'),\n  }\n  const widths = reactive<Record<string, number>>({ ...defaultState.widths })\n  const visible = ref<string[]>([...defaultState.visible])\n  const columnMap = reactive({ ...defaultState.columnMap })\n  const maximized = reactive<Record<string, boolean>>({ ...defaultState.maximized })\n\n  function persist() { localStorage.setItem(STORAGE_KEY, JSON.stringify({ widths, visible: visible.value, columnMap, maximized })) }\n  function applyPersistedLayout() {\n    const raw = localStorage.getItem(STORAGE_KEY)\n    if (!raw) return\n    try {\n      const s = JSON.parse(raw)\n      if (s.widths) Object.assign(widths, s.widths)\n      if (s.visible) visible.value = s.visible\n      if (s.columnMap) Object.assign(columnMap, s.columnMap)\n      if (s.maximized) Object.assign(maximized, s.maximized)\n    } catch { /* ignore */ }\n  }\n  function isPanelVisible(id: string) { return visible.value.includes(id) && !maximized[id] }\n  function panelTitle(id: string) { return PANEL_TITLES[id] ?? id }\n  function togglePanel(id: string) { const i = visible.value.indexOf(id); i >= 0 ? visible.value.splice(i, 1) : visible.value.push(id); persist() }\n  function showAllPanels() { visible.value = [...allIds]; allIds.forEach(id => maximized[id] = false); persist() }\n  function maximizePanel(id: string) { if (id in maximized) maximized[id] = !maximized[id] }\n  return { widths, visible, columnMap, maximized, isPanelVisible, panelTitle, togglePanel, showAllPanels, maximizePanel, applyPersistedLayout, persist }\n}\n"
+        ],
+        "mappings": "AAAA,SAAS,KAAK,gBAAgB;AAC9B,SAAS,eAAe;AAExB,MAAM,cAAc;AACpB,MAAM,SAAS,CAAC,YAAY,SAAS,UAAU,UAAU,QAAQ,SAAS;AAE1E,MAAM,eAAe;AAAA,EACnB,QAAQ,EAAE,MAAM,KAAK,MAAM,IAAI;AAAA,EAC/B,SAAS,CAAC,YAAY,SAAS,UAAU,QAAQ;AAAA,EACjD,WAAW,EAAE,MAAM,CAAC,YAAY,SAAS,QAAQ,GAAG,MAAM,CAAC,QAAQ,EAAE;AAAA,EACrE,WAAW,OAAO,YAAY,OAAO,IAAI,QAAM,CAAC,IAAI,KAAK,CAAC,CAAC;AAC7D;AAEO,gBAAS,qBAAqB;AACnC,QAAM,EAAE,EAAE,IAAI,QAAQ;AACtB,QAAM,eAAuC;AAAA,IAC3C,UAAU,EAAE,2BAA2B;AAAA,IAAG,OAAO,EAAE,wBAAwB;AAAA,IAAG,QAAQ,EAAE,yBAAyB;AAAA,IACjH,QAAQ,EAAE,yBAAyB;AAAA,IAAG,MAAM,EAAE,uBAAuB;AAAA,IAAG,SAAS,EAAE,0BAA0B;AAAA,EAC/G;AACA,QAAM,SAAS,SAAiC,EAAE,GAAG,aAAa,OAAO,CAAC;AAC1E,QAAM,UAAU,IAAc,CAAC,GAAG,aAAa,OAAO,CAAC;AACvD,QAAM,YAAY,SAAS,EAAE,GAAG,aAAa,UAAU,CAAC;AACxD,QAAM,YAAY,SAAkC,EAAE,GAAG,aAAa,UAAU,CAAC;AAEjF,WAAS,UAAU;AAAE,iBAAa,QAAQ,aAAa,KAAK,UAAU,EAAE,QAAQ,SAAS,QAAQ,OAAO,WAAW,UAAU,CAAC,CAAC;AAAA,EAAE;AACjI,WAAS,uBAAuB;AAC9B,UAAM,MAAM,aAAa,QAAQ,WAAW;AAC5C,QAAI,CAAC,IAAK;AACV,QAAI;AACF,YAAM,IAAI,KAAK,MAAM,GAAG;AACxB,UAAI,EAAE,OAAQ,QAAO,OAAO,QAAQ,EAAE,MAAM;AAC5C,UAAI,EAAE,QAAS,SAAQ,QAAQ,EAAE;AACjC,UAAI,EAAE,UAAW,QAAO,OAAO,WAAW,EAAE,SAAS;AACrD,UAAI,EAAE,UAAW,QAAO,OAAO,WAAW,EAAE,SAAS;AAAA,IACvD,QAAQ;AAAA,IAAe;AAAA,EACzB;AACA,WAAS,eAAe,IAAY;AAAE,WAAO,QAAQ,MAAM,SAAS,EAAE,KAAK,CAAC,UAAU,EAAE;AAAA,EAAE;AAC1F,WAAS,WAAW,IAAY;AAAE,WAAO,aAAa,EAAE,KAAK;AAAA,EAAG;AAChE,WAAS,YAAY,IAAY;AAAE,UAAM,IAAI,QAAQ,MAAM,QAAQ,EAAE;AAAG,SAAK,IAAI,QAAQ,MAAM,OAAO,GAAG,CAAC,IAAI,QAAQ,MAAM,KAAK,EAAE;AAAG,YAAQ;AAAA,EAAE;AAChJ,WAAS,gBAAgB;AAAE,YAAQ,QAAQ,CAAC,GAAG,MAAM;AAAG,WAAO,QAAQ,QAAM,UAAU,EAAE,IAAI,KAAK;AAAG,YAAQ;AAAA,EAAE;AAC/G,WAAS,cAAc,IAAY;AAAE,QAAI,MAAM,UAAW,WAAU,EAAE,IAAI,CAAC,UAAU,EAAE;AAAA,EAAE;AACzF,SAAO,EAAE,QAAQ,SAAS,WAAW,WAAW,gBAAgB,YAAY,aAAa,eAAe,eAAe,sBAAsB,QAAQ;AACvJ;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194966,
+      "end": 1783196194966,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194966,
+      "end": 1783196194966,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194966,
+      "end": 1783196194966,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194966,
+      "end": 1783196194966,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194966,
+      "end": 1783196194966,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194966,
+      "end": 1783196194966,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194966,
+      "end": 1783196194966,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194966,
+      "end": 1783196194966,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194966,
+      "end": 1783196194966,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194966,
+      "end": 1783196194966,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194966,
+      "end": 1783196194967,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194967,
+      "end": 1783196194967,
+      "order": "normal"
+    }
+  ]
+}

@@ -104,11 +104,13 @@ export const equations: Equation[] = [
           label: 'A: ax + by = c',
           color: '#38bdf8',
           fn: (x, p) => (p.b === 0 ? Number.NaN : (p.c - p.a * x) / p.b),
+          verticalX: (p) => (p.b === 0 && p.a !== 0 ? p.c / p.a : Number.NaN),
         },
         {
           label: 'B: dx + ey = f',
           color: '#f472b6',
           fn: (x, p) => (p.e === 0 ? Number.NaN : (p.f - p.d * x) / p.e),
+          verticalX: (p) => (p.e === 0 && p.d !== 0 ? p.f / p.d : Number.NaN),
         },
       ],
     },

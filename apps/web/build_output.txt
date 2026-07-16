@@ -1,0 +1,656 @@
+
+> @my-modern-app/web@0.0.1 build C:\Users\feras\Desktop\feras\apps\web
+> pnpm run diagnose && node ../../node_modules/vite/bin/vite.js build
+
+
+> @my-modern-app/web@0.0.1 diagnose C:\Users\feras\Desktop\feras\apps\web
+> node ../../node_modules/vue-tsc/bin/vue-tsc.js --noEmit && node ../../node_modules/eslint/bin/eslint.js . --ext .vue,.ts,.tsx && node ../../node_modules/vitest/vitest.mjs run src/composables/fuzz-physics-engines.test.ts src/composables/property-physics.test.ts
+
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\biot-savart\BiotSavartCanvas.vue
+  5:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+  9:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\biot-savart\BiotSavartPanelBody.vue
+  4:151  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\biot-savart\BiotSavartStatusBar.vue
+  7:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  9:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\boyles-law\BoylesLawPanelBody.vue
+  20:105  warning  Attribute ':T' must be hyphenated  vue/attribute-hyphenation
+  24:102  warning  Attribute ':T' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\boyles-law\panels\BoylesLawLawsPanel.vue
+  7:3  warning  Prop "T" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\boyles-law\panels\BoylesLawReadingsPanel.vue
+  7:3  warning  Prop "T" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\CapacitorsComboWorksheetPanel.vue
+  4:29  warning  Prop "Ceq" is not in camelCase  vue/prop-name-casing
+  4:55  warning  Prop "C1" is not in camelCase   vue/prop-name-casing
+  4:67  warning  Prop "C2" is not in camelCase   vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\GalvanometerWorksheetPanel.vue
+  5:3  warning  Prop "N" is not in camelCase    vue/prop-name-casing
+  8:3  warning  Prop "IuA" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\InternalResistanceWorksheetPanel.vue
+  4:29  warning  Prop "Vt" is not in camelCase  vue/prop-name-casing
+  4:41  warning  Prop "I" is not in camelCase   vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\KirchhoffWorksheetPanel.vue
+   5:3  warning  Prop "V1" is not in camelCase  vue/prop-name-casing
+   6:3  warning  Prop "V2" is not in camelCase  vue/prop-name-casing
+   7:3  warning  Prop "R1" is not in camelCase  vue/prop-name-casing
+   8:3  warning  Prop "R2" is not in camelCase  vue/prop-name-casing
+   9:3  warning  Prop "R3" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "I1" is not in camelCase  vue/prop-name-casing
+  11:3  warning  Prop "I2" is not in camelCase  vue/prop-name-casing
+  12:3  warning  Prop "I3" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\LampWorksheetPanel.vue
+   5:3  warning  Prop "V" is not in camelCase       vue/prop-name-casing
+   6:3  warning  Prop "I" is not in camelCase       vue/prop-name-casing
+   7:3  warning  Prop "R" is not in camelCase       vue/prop-name-casing
+   8:3  warning  Prop "P" is not in camelCase       vue/prop-name-casing
+   9:3  warning  Prop "PLight" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "PHeat" is not in camelCase   vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\NonOhmicWorksheetPanel.vue
+  4:29  warning  Prop "V" is not in camelCase        vue/prop-name-casing
+  4:40  warning  Prop "I_ohmic" is not in camelCase  vue/prop-name-casing
+  4:57  warning  Prop "I_lamp" is not in camelCase   vue/prop-name-casing
+  4:73  warning  Prop "R_dyn" is not in camelCase    vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\ParallelWorksheetPanel.vue
+   5:3  warning  Prop "V" is not in camelCase       vue/prop-name-casing
+   6:3  warning  Prop "R1" is not in camelCase      vue/prop-name-casing
+   7:3  warning  Prop "R2" is not in camelCase      vue/prop-name-casing
+   8:3  warning  Prop "I1" is not in camelCase      vue/prop-name-casing
+   9:3  warning  Prop "I2" is not in camelCase      vue/prop-name-casing
+  10:3  warning  Prop "Itotal" is not in camelCase  vue/prop-name-casing
+  11:3  warning  Prop "Req" is not in camelCase     vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\PotentiometerWorksheetPanel.vue
+  4:29  warning  Prop "Vref" is not in camelCase    vue/prop-name-casing
+  4:43  warning  Prop "Vx" is not in camelCase      vue/prop-name-casing
+  4:55  warning  Prop "Vslide" is not in camelCase  vue/prop-name-casing
+  4:71  warning  Prop "Ig" is not in camelCase      vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\PowerWorksheetPanel.vue
+  5:3  warning  Prop "V" is not in camelCase  vue/prop-name-casing
+  6:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+  8:3  warning  Prop "P" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\RCWorksheetPanel.vue
+   5:3  warning  Prop "V0" is not in camelCase  vue/prop-name-casing
+   6:3  warning  Prop "R" is not in camelCase   vue/prop-name-casing
+   7:3  warning  Prop "C" is not in camelCase   vue/prop-name-casing
+   9:3  warning  Prop "Vc" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "I" is not in camelCase   vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\ResistivityWorksheetPanel.vue
+   5:3  warning  Prop "V" is not in camelCase  vue/prop-name-casing
+   6:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+   7:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+   9:3  warning  Prop "L" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "A" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\SeriesWorksheetPanel.vue
+  4:29  warning  Prop "V" is not in camelCase    vue/prop-name-casing
+  4:40  warning  Prop "I" is not in camelCase    vue/prop-name-casing
+  4:51  warning  Prop "Req" is not in camelCase  vue/prop-name-casing
+  4:64  warning  Prop "V1" is not in camelCase   vue/prop-name-casing
+  4:76  warning  Prop "V2" is not in camelCase   vue/prop-name-casing
+  4:88  warning  Prop "V3" is not in camelCase   vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\VoltageDividerWorksheetPanel.vue
+   5:3  warning  Prop "V" is not in camelCase   vue/prop-name-casing
+   6:3  warning  Prop "R1" is not in camelCase  vue/prop-name-casing
+   7:3  warning  Prop "R2" is not in camelCase  vue/prop-name-casing
+   8:3  warning  Prop "V1" is not in camelCase  vue/prop-name-casing
+   9:3  warning  Prop "V2" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "I" is not in camelCase   vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\WheatstoneWorksheetPanel.vue
+   5:3  warning  Prop "R1" is not in camelCase  vue/prop-name-casing
+   6:3  warning  Prop "R2" is not in camelCase  vue/prop-name-casing
+   7:3  warning  Prop "R3" is not in camelCase  vue/prop-name-casing
+   8:3  warning  Prop "Rx" is not in camelCase  vue/prop-name-casing
+   9:3  warning  Prop "Vg" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "Ig" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\CircularCoilCanvas.vue
+  7:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  8:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\CircularCoilParamPanel.vue
+  6:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\CircularCoilReadingsPanel.vue
+  6:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+  8:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+  9:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\FaradayLawCanvas.vue
+   7:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+   8:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+   9:3  warning  Prop "A" is not in camelCase  vue/prop-name-casing
+  11:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\FaradayLawParamPanel.vue
+   6:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+   7:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+   8:3  warning  Prop "A" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\FaradayLawReadingsPanel.vue
+   6:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+   7:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+   8:3  warning  Prop "A" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\GeneratorCanvas.vue
+   7:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+   8:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+   9:3  warning  Prop "A" is not in camelCase  vue/prop-name-casing
+  11:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\GeneratorParamPanel.vue
+   6:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+   7:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+   8:3  warning  Prop "A" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\GeneratorReadingsPanel.vue
+   6:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+   7:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+   8:3  warning  Prop "A" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\LorentzForceCanvas.vue
+   7:3  warning  Prop "V" is not in camelCase  vue/prop-name-casing
+   8:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+   9:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\LorentzForceParamPanel.vue
+  6:3  warning  Prop "V" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  8:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+  9:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\LorentzForceReadingsPanel.vue
+   6:3  warning  Prop "V" is not in camelCase   vue/prop-name-casing
+   7:3  warning  Prop "I" is not in camelCase   vue/prop-name-casing
+   8:3  warning  Prop "N" is not in camelCase   vue/prop-name-casing
+   9:3  warning  Prop "B" is not in camelCase   vue/prop-name-casing
+  11:3  warning  Prop "Fm" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\MagneticFluxCanvas.vue
+  7:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+  8:3  warning  Prop "A" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\MagneticFluxParamPanel.vue
+  6:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "A" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\MagneticFluxReadingsPanel.vue
+  6:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "A" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\SolenoidCanvas.vue
+  7:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  8:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\SolenoidParamPanel.vue
+  6:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\SolenoidReadingsPanel.vue
+  6:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+  8:3  warning  Prop "L" is not in camelCase  vue/prop-name-casing
+  9:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\StraightWireCanvas.vue
+  7:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\StraightWireParamPanel.vue
+  6:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\StraightWireReadingsPanel.vue
+  6:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  8:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\TorqueCoilCanvas.vue
+  7:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  8:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\TorqueCoilParamPanel.vue
+  6:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\TorqueCoilReadingsPanel.vue
+  6:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\faraday\FaradayCanvas.vue
+  5:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+  6:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "A" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\faraday\FaradayStatusBar.vue
+  7:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+  8:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\ideal-gas\IdealGasCanvas.vue
+  6:3  warning  Prop "T" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "V" is not in camelCase  vue/prop-name-casing
+  8:3  warning  Prop "P" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\ideal-gas\IdealGasOverlayPanels.vue
+  10:3  warning  Prop "P" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\ideal-gas\IdealGasStatusBar.vue
+   8:3  warning  Prop "T" is not in camelCase  vue/prop-name-casing
+   9:3  warning  Prop "V" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "P" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\ideal-gas\panels\IdealGasWorksheetPanel.vue
+  6:3  warning  Prop "T" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "V" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\latent-heat\panels\LatentHeatWorksheetPanel.vue
+  6:3  warning  Prop "L" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "Q" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\polarization\PolarizationPanelBody.vue
+  38:7  warning  Attribute ':I0' must be hyphenated  vue/attribute-hyphenation
+  67:7  warning  Attribute ':I0' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\polarization\panels\PolarizationLawsPanel.vue
+  7:3  warning  Prop "I0" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\polarization\panels\PolarizationReadingsPanel.vue
+  7:3  warning  Prop "I0" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\polarization\panels\PolarizationWorksheetPanel.vue
+  7:3  warning  Prop "I0" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\thermal-expansion\ThermalExpansionCanvas.vue
+  11:3  warning  Prop "L0" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\thermal-expansion\ThermalExpansionOverlayPanels.vue
+  10:30   warning  Prop "L1" is not in camelCase       vue/prop-name-casing
+  29:104  warning  Attribute ':L1' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\thermal-expansion\ThermalExpansionPanelBody.vue
+  10:157  warning  Prop "L1" is not in camelCase       vue/prop-name-casing
+  21:89   warning  Attribute ':L0' must be hyphenated  vue/attribute-hyphenation
+  21:147  warning  Attribute ':L1' must be hyphenated  vue/attribute-hyphenation
+  25:58   warning  Attribute ':L0' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\thermal-expansion\ThermalExpansionStatusBar.vue
+  10:3  warning  Prop "L0" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\thermal-expansion\panels\ThermalExpansionLawsPanel.vue
+  2:29  warning  Prop "L0" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\thermal-expansion\panels\ThermalExpansionReadingsPanel.vue
+  5:3  warning  Prop "L0" is not in camelCase  vue/prop-name-casing
+  9:3  warning  Prop "L1" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\thermal-expansion\panels\ThermalExpansionWorksheetPanel.vue
+  5:3  warning  Prop "L0" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\math\MathBranchCard.vue
+  5:9  error  't' is assigned a value but never used. Allowed unused vars must match /^props$|^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\useExperimentMonitor.ts
+  84:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  88:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\chemistry\ChemistryLanding.vue
+  57:51  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  59:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  62:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  96:55  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\analysis-calc\AnalysisCalcExperiment.vue
+  370:17  warning  Attribute ':I0' must be hyphenated       vue/attribute-hyphenation
+  416:17  warning  Attribute ':T' must be hyphenated        vue/attribute-hyphenation
+  417:17  warning  Attribute ':V' must be hyphenated        vue/attribute-hyphenation
+  430:17  warning  Attribute ':L0' must be hyphenated       vue/attribute-hyphenation
+  440:17  warning  Attribute ':L' must be hyphenated        vue/attribute-hyphenation
+  441:17  warning  Attribute ':Q' must be hyphenated        vue/attribute-hyphenation
+  506:17  warning  Attribute ':V1' must be hyphenated       vue/attribute-hyphenation
+  507:17  warning  Attribute ':V2' must be hyphenated       vue/attribute-hyphenation
+  508:17  warning  Attribute ':R1' must be hyphenated       vue/attribute-hyphenation
+  509:17  warning  Attribute ':R2' must be hyphenated       vue/attribute-hyphenation
+  510:17  warning  Attribute ':R3' must be hyphenated       vue/attribute-hyphenation
+  511:17  warning  Attribute ':I1' must be hyphenated       vue/attribute-hyphenation
+  512:17  warning  Attribute ':I2' must be hyphenated       vue/attribute-hyphenation
+  513:17  warning  Attribute ':I3' must be hyphenated       vue/attribute-hyphenation
+  519:17  warning  Attribute ':V' must be hyphenated        vue/attribute-hyphenation
+  520:17  warning  Attribute ':R1' must be hyphenated       vue/attribute-hyphenation
+  521:17  warning  Attribute ':R2' must be hyphenated       vue/attribute-hyphenation
+  522:17  warning  Attribute ':I1' must be hyphenated       vue/attribute-hyphenation
+  523:17  warning  Attribute ':I2' must be hyphenated       vue/attribute-hyphenation
+  524:17  warning  Attribute ':Itotal' must be hyphenated   vue/attribute-hyphenation
+  525:17  warning  Attribute ':Req' must be hyphenated      vue/attribute-hyphenation
+  531:17  warning  Attribute ':V' must be hyphenated        vue/attribute-hyphenation
+  532:17  warning  Attribute ':I' must be hyphenated        vue/attribute-hyphenation
+  533:17  warning  Attribute ':R' must be hyphenated        vue/attribute-hyphenation
+  534:17  warning  Attribute ':P' must be hyphenated        vue/attribute-hyphenation
+  540:17  warning  Attribute ':V' must be hyphenated        vue/attribute-hyphenation
+  541:17  warning  Attribute ':I' must be hyphenated        vue/attribute-hyphenation
+  542:17  warning  Attribute ':R' must be hyphenated        vue/attribute-hyphenation
+  544:17  warning  Attribute ':L' must be hyphenated        vue/attribute-hyphenation
+  545:17  warning  Attribute ':A' must be hyphenated        vue/attribute-hyphenation
+  551:17  warning  Attribute ':V0' must be hyphenated       vue/attribute-hyphenation
+  552:17  warning  Attribute ':R' must be hyphenated        vue/attribute-hyphenation
+  553:17  warning  Attribute ':C' must be hyphenated        vue/attribute-hyphenation
+  555:17  warning  Attribute ':Vc' must be hyphenated       vue/attribute-hyphenation
+  556:17  warning  Attribute ':I' must be hyphenated        vue/attribute-hyphenation
+  564:17  warning  Attribute ':V' must be hyphenated        vue/attribute-hyphenation
+  565:17  warning  Attribute ':I' must be hyphenated        vue/attribute-hyphenation
+  566:17  warning  Attribute ':R' must be hyphenated        vue/attribute-hyphenation
+  567:17  warning  Attribute ':P' must be hyphenated        vue/attribute-hyphenation
+  568:17  warning  Attribute ':PLight' must be hyphenated   vue/attribute-hyphenation
+  569:17  warning  Attribute ':PHeat' must be hyphenated    vue/attribute-hyphenation
+  575:17  warning  Attribute ':N' must be hyphenated        vue/attribute-hyphenation
+  578:17  warning  Attribute ':IuA' must be hyphenated      vue/attribute-hyphenation
+  584:17  warning  Attribute ':R1' must be hyphenated       vue/attribute-hyphenation
+  585:17  warning  Attribute ':R2' must be hyphenated       vue/attribute-hyphenation
+  586:17  warning  Attribute ':R3' must be hyphenated       vue/attribute-hyphenation
+  587:17  warning  Attribute ':Rx' must be hyphenated       vue/attribute-hyphenation
+  588:17  warning  Attribute ':Vg' must be hyphenated       vue/attribute-hyphenation
+  589:17  warning  Attribute ':Ig' must be hyphenated       vue/attribute-hyphenation
+  595:17  warning  Attribute ':V' must be hyphenated        vue/attribute-hyphenation
+  596:17  warning  Attribute ':R1' must be hyphenated       vue/attribute-hyphenation
+  597:17  warning  Attribute ':R2' must be hyphenated       vue/attribute-hyphenation
+  598:17  warning  Attribute ':V1' must be hyphenated       vue/attribute-hyphenation
+  599:17  warning  Attribute ':V2' must be hyphenated       vue/attribute-hyphenation
+  600:17  warning  Attribute ':I' must be hyphenated        vue/attribute-hyphenation
+  606:17  warning  Attribute ':Vt' must be hyphenated       vue/attribute-hyphenation
+  607:17  warning  Attribute ':I' must be hyphenated        vue/attribute-hyphenation
+  615:17  warning  Attribute ':V' must be hyphenated        vue/attribute-hyphenation
+  616:17  warning  Attribute ':I' must be hyphenated        vue/attribute-hyphenation
+  617:17  warning  Attribute ':Req' must be hyphenated      vue/attribute-hyphenation
+  618:17  warning  Attribute ':V1' must be hyphenated       vue/attribute-hyphenation
+  619:17  warning  Attribute ':V2' must be hyphenated       vue/attribute-hyphenation
+  620:17  warning  Attribute ':V3' must be hyphenated       vue/attribute-hyphenation
+  626:17  warning  Attribute ':Ceq' must be hyphenated      vue/attribute-hyphenation
+  628:17  warning  Attribute ':C1' must be hyphenated       vue/attribute-hyphenation
+  629:17  warning  Attribute ':C2' must be hyphenated       vue/attribute-hyphenation
+  635:17  warning  Attribute ':Vref' must be hyphenated     vue/attribute-hyphenation
+  636:17  warning  Attribute ':Vx' must be hyphenated       vue/attribute-hyphenation
+  637:17  warning  Attribute ':Vslide' must be hyphenated   vue/attribute-hyphenation
+  638:17  warning  Attribute ':Ig' must be hyphenated       vue/attribute-hyphenation
+  645:17  warning  Attribute ':V' must be hyphenated        vue/attribute-hyphenation
+  646:17  warning  Attribute ':I_ohmic' must be hyphenated  vue/attribute-hyphenation
+  647:17  warning  Attribute ':I_lamp' must be hyphenated   vue/attribute-hyphenation
+  648:17  warning  Attribute ':R_dyn' must be hyphenated    vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\biot-savart\BiotSavartExperiment.vue
+    2:10  error    'ref' is defined but never used. Allowed unused vars must match /^props$|^_/u  @typescript-eslint/no-unused-vars
+   34:7   warning  v-on event '@togglePanel' must be hyphenated                                   vue/v-on-event-hyphenation
+   35:7   warning  v-on event '@showAllPanels' must be hyphenated                                 vue/v-on-event-hyphenation
+   36:7   warning  v-on event '@exportCsv' must be hyphenated                                     vue/v-on-event-hyphenation
+   37:7   warning  v-on event '@togglePause' must be hyphenated                                   vue/v-on-event-hyphenation
+   39:7   warning  v-on event '@recordTrial' must be hyphenated                                   vue/v-on-event-hyphenation
+   40:7   warning  v-on event '@analyzeResults' must be hyphenated                                vue/v-on-event-hyphenation
+   59:15  warning  Attribute ':B' must be hyphenated                                              vue/attribute-hyphenation
+   71:13  warning  Attribute ':I' must be hyphenated                                              vue/attribute-hyphenation
+   73:13  error    Parsing error: duplicate-attribute                                             vue/no-parsing-error
+   73:13  warning  Attribute ':R' must be hyphenated                                              vue/attribute-hyphenation
+   73:13  error    Duplicate attribute 'r'                                                        vue/no-duplicate-attributes
+   75:13  warning  Attribute ':B' must be hyphenated                                              vue/attribute-hyphenation
+  112:15  warning  Attribute ':B' must be hyphenated                                              vue/attribute-hyphenation
+  129:7   warning  Attribute ':I' must be hyphenated                                              vue/attribute-hyphenation
+  131:7   warning  Attribute ':B' must be hyphenated                                              vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\circular-coil\CircularCoilExperiment.vue
+  54:13  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+  55:13  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+  56:13  warning  Attribute ':R' must be hyphenated  vue/attribute-hyphenation
+  57:13  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+  74:13  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+  75:13  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+  96:11  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+  97:11  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\electricLabComputedsBasic.ts
+  88:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  89:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\electricLabComputedsNew3.ts
+  37:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  61:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  61:77  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\electricLabExport.ts
+  13:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\electricLabExportAdvanced.ts
+  5:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\electricLabExportBasic.ts
+  40:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  41:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  43:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  44:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  45:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  46:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  47:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  48:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  49:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  50:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  53:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\electricLabExportNew.ts
+  5:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\electricLabExportNew2.ts
+  5:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\electricLabExportNew3.ts
+  5:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\electricLabExportNew4.ts
+  5:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\electricLabExportNew5.ts
+  5:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\electricLabRecordTrial.ts
+  11:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  12:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  13:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  14:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  16:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  17:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  18:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  53:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  54:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  55:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  56:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  57:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  58:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  59:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  60:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  61:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  62:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  63:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  64:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  65:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  66:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  67:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  68:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  69:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  70:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  71:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  72:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  73:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  74:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  75:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  76:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\workspaceDrawComponent.ts
+  112:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-workshop\dc\DCLab.vue
+  141:5   error    'dragStartX' is assigned a value but never used. Allowed unused vars must match /^props$|^_/u  @typescript-eslint/no-unused-vars
+  142:5   error    'dragStartY' is assigned a value but never used. Allowed unused vars must match /^props$|^_/u  @typescript-eslint/no-unused-vars
+  432:33  warning  Unexpected any. Specify a different type                                                       @typescript-eslint/no-explicit-any
+  443:10  error    'saveEdit' is defined but never used. Allowed unused vars must match /^props$|^_/u             @typescript-eslint/no-unused-vars
+  501:10  error    'saveWireEdit' is defined but never used. Allowed unused vars must match /^props$|^_/u         @typescript-eslint/no-unused-vars
+  511:10  error    'deleteEditingComp' is defined but never used. Allowed unused vars must match /^props$|^_/u    @typescript-eslint/no-unused-vars
+  531:10  error    'deleteEditingWire' is defined but never used. Allowed unused vars must match /^props$|^_/u    @typescript-eslint/no-unused-vars
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-workshop\shared\drawComponent.ts
+    2:10   error  'WIRE_COLORS' is defined but never used                                    @typescript-eslint/no-unused-vars
+   29:9    error  'lw' is assigned a value but never used                                    @typescript-eslint/no-unused-vars
+  115:106  error  'running' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  142:107  error  'running' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  198:103  error  'running' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  232:104  error  'running' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  353:103  error  'running' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  395:105  error  'running' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  427:102  error  'running' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-workshop\shared\drawWire.ts
+  60:13  error  'key' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-workshop\shared\smartWire.ts
+  128:3  error  'obstacles' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-workshop\shared\solver.ts
+  127:5  error  Move function declaration to function body root  no-inner-declarations
+  135:5  error  Move function declaration to function body root  no-inner-declarations
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-workshop\shared\useWorkshop.ts
+  201:12   error  'tx' is assigned a value but never used                              @typescript-eslint/no-unused-vars
+  201:16   error  'ty' is assigned a value but never used                              @typescript-eslint/no-unused-vars
+  267:123  error  'w' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\faraday-law\FaradayLawExperiment.vue
+   60:13  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+   61:13  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+   62:13  warning  Attribute ':A' must be hyphenated  vue/attribute-hyphenation
+   64:13  warning  Attribute ':R' must be hyphenated  vue/attribute-hyphenation
+   87:13  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+   88:13  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+   89:13  warning  Attribute ':A' must be hyphenated  vue/attribute-hyphenation
+   91:13  warning  Attribute ':R' must be hyphenated  vue/attribute-hyphenation
+  114:11  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+  115:11  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+  116:11  warning  Attribute ':A' must be hyphenated  vue/attribute-hyphenation
+  118:11  warning  Attribute ':R' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\faraday\FaradayExperiment.vue
+    2:10  error    'ref' is defined but never used. Allowed unused vars must match /^props$|^_/u  @typescript-eslint/no-unused-vars
+   34:7   warning  v-on event '@togglePanel' must be hyphenated                                   vue/v-on-event-hyphenation
+   35:7   warning  v-on event '@showAllPanels' must be hyphenated                                 vue/v-on-event-hyphenation
+   36:7   warning  v-on event '@exportCsv' must be hyphenated                                     vue/v-on-event-hyphenation
+   37:7   warning  v-on event '@togglePause' must be hyphenated                                   vue/v-on-event-hyphenation
+   39:7   warning  v-on event '@recordTrial' must be hyphenated                                   vue/v-on-event-hyphenation
+   40:7   warning  v-on event '@analyzeResults' must be hyphenated                                vue/v-on-event-hyphenation
+   73:13  warning  Attribute ':N' must be hyphenated                                              vue/attribute-hyphenation
+   74:13  warning  Attribute ':B' must be hyphenated                                              vue/attribute-hyphenation
+   75:13  warning  Attribute ':A' must be hyphenated                                              vue/attribute-hyphenation
+  133:7   warning  Attribute ':N' must be hyphenated                                              vue/attribute-hyphenation
+  134:7   warning  Attribute ':B' must be hyphenated                                              vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\generator\GeneratorExperiment.vue
+   53:13  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+   54:13  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+   55:13  warning  Attribute ':A' must be hyphenated  vue/attribute-hyphenation
+   57:13  warning  Attribute ':R' must be hyphenated  vue/attribute-hyphenation
+   78:13  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+   79:13  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+   80:13  warning  Attribute ':A' must be hyphenated  vue/attribute-hyphenation
+   82:13  warning  Attribute ':R' must be hyphenated  vue/attribute-hyphenation
+  103:11  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+  104:11  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+  105:11  warning  Attribute ':A' must be hyphenated  vue/attribute-hyphenation
+  107:11  warning  Attribute ':R' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\ideal-gas\IdealGasExperiment.vue
+   83:13  warning  Attribute ':T' must be hyphenated  vue/attribute-hyphenation
+   84:13  warning  Attribute ':V' must be hyphenated  vue/attribute-hyphenation
+   85:13  warning  Attribute ':P' must be hyphenated  vue/attribute-hyphenation
+  153:7   warning  Attribute ':P' must be hyphenated  vue/attribute-hyphenation
+  169:7   warning  Attribute ':T' must be hyphenated  vue/attribute-hyphenation
+  170:7   warning  Attribute ':V' must be hyphenated  vue/attribute-hyphenation
+  171:7   warning  Attribute ':P' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\lorentz-force\LorentzForceExperiment.vue
+   54:13  warning  Attribute ':V' must be hyphenated   vue/attribute-hyphenation
+   55:13  warning  Attribute ':I' must be hyphenated   vue/attribute-hyphenation
+   56:13  warning  Attribute ':N' must be hyphenated   vue/attribute-hyphenation
+   57:13  warning  Attribute ':B' must be hyphenated   vue/attribute-hyphenation
+   59:13  warning  Attribute ':Fm' must be hyphenated  vue/attribute-hyphenation
+   78:13  warning  Attribute ':V' must be hyphenated   vue/attribute-hyphenation
+   79:13  warning  Attribute ':I' must be hyphenated   vue/attribute-hyphenation
+   80:13  warning  Attribute ':N' must be hyphenated   vue/attribute-hyphenation
+   81:13  warning  Attribute ':R' must be hyphenated   vue/attribute-hyphenation
+  102:11  warning  Attribute ':V' must be hyphenated   vue/attribute-hyphenation
+  103:11  warning  Attribute ':I' must be hyphenated   vue/attribute-hyphenation
+  104:11  warning  Attribute ':N' must be hyphenated   vue/attribute-hyphenation
+  105:11  warning  Attribute ':R' must be hyphenated   vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\magnetic-flux\MagneticFluxExperiment.vue
+   53:13  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+   54:13  warning  Attribute ':A' must be hyphenated  vue/attribute-hyphenation
+   76:13  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+   77:13  warning  Attribute ':A' must be hyphenated  vue/attribute-hyphenation
+   99:11  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+  100:11  warning  Attribute ':A' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\solenoid\SolenoidExperiment.vue
+  54:13  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+  55:13  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+  56:13  warning  Attribute ':L' must be hyphenated  vue/attribute-hyphenation
+  57:13  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+  74:13  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+  75:13  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+  96:11  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+  97:11  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\straight-wire\StraightWireExperiment.vue
+  54:13  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+  56:13  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+  73:13  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+  94:11  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\thermal-expansion\ThermalExpansionExperiment.vue
+   60:66  warning  Attribute ':L1' must be hyphenated  vue/attribute-hyphenation
+   70:44  warning  Attribute ':L0' must be hyphenated  vue/attribute-hyphenation
+   89:66  warning  Attribute ':L1' must be hyphenated  vue/attribute-hyphenation
+   95:66  warning  Attribute ':L1' must be hyphenated  vue/attribute-hyphenation
+  106:58  warning  Attribute ':L1' must be hyphenated  vue/attribute-hyphenation
+  118:7   warning  Attribute ':L0' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\torque-coil\TorqueCoilExperiment.vue
+   54:13  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+   55:13  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+   79:13  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+   80:13  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+  105:11  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+  106:11  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+
+✖ 450 problems (27 errors, 423 warnings)
+  0 errors and 12 warnings potentially fixable with the `--fix` option.
+
+ ELIFECYCLE  Command failed with exit code 1.
+ ELIFECYCLE  Command failed with exit code 1.

@@ -178,6 +178,7 @@ export const ar4 = {
     expGenerator: 'المولد الكهربائي',
     expMagneticFlux: 'الفيض المغناطيسي',
     expElectricLab: 'مختبر الكهرباء',
+    expElectricWorkshop: 'ورشة الكهرباء',
     colMass: 'الكتلة',
     colTime: 'الزمن',
     colPeriod: 'الدورة',

@@ -9,10 +9,17 @@ import Biology3DCanvas from './Biology3DCanvas.vue';
 import InfoPanel from './InfoPanel.vue';
 import OrganelleList from './OrganelleList.vue';
 
-const props = defineProps<{
-  experiment: BiologyExperimentModel;
-  backRoute?: string;
-}>();
+const props = withDefaults(
+  defineProps<{
+    experiment: BiologyExperimentModel;
+    backRoute?: string;
+    backLabelKey?: string;
+  }>(),
+  {
+    backRoute: '/biology',
+    backLabelKey: 'biology.backToCellSection',
+  }
+);
 
 const router = useRouter();
 const { t } = useI18n();
@@ -54,7 +61,7 @@ watch(selectedId, (id) => {
   <div class="experiment-page">
     <header class="experiment-header">
       <button class="back-button" @click="goBack">
-        {{ t('biology.backToCellSection') }}
+        {{ t(props.backLabelKey) }}
       </button>
       <h1 class="experiment-title">{{ t(experiment.titleKey) }}</h1>
       <p class="experiment-subtitle">{{ t(experiment.subtitleKey) }}</p>

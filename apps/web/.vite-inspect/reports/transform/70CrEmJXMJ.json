@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/panels/SpeedOfSoundTrialsPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createCommentVNode as _createCommentVNode, unref as _unref } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = {\n  key: 0,\n  class: \"trial-table\"\n}\nconst _hoisted_3 = [\"onClick\"]\nconst _hoisted_4 = {\n  key: 1,\n  class: \"empty\"\n}\n\nimport { useI18n } from '../../../../composables/useI18n'\nimport type { SpeedOfSoundTrial } from '../../../../composables/speed-of-sound/useSpeedOfSoundTrials'\ninterface Props {\n  trials: SpeedOfSoundTrial[]\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'SpeedOfSoundTrialsPanel',\n  props: {\n    trials: {}\n  },\n  emits: [\"remove\", \"clear\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\n\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (__props.trials.length)\n      ? (_openBlock(), _createElementBlock(\"table\", _hoisted_2, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"thead\", null, [\n            _createElementVNode(\"tr\", null, [\n              _createElementVNode(\"th\", null, \"#\"),\n              _createElementVNode(\"th\", null, \"L\"),\n              _createElementVNode(\"th\", null, \"f\"),\n              _createElementVNode(\"th\", null, \"1/f\"),\n              _createElementVNode(\"th\", null, \"T\"),\n              _createElementVNode(\"th\", null, \"λ\"),\n              _createElementVNode(\"th\", null, \"v\"),\n              _createElementVNode(\"th\")\n            ])\n          ], -1)),\n          _createElementVNode(\"tbody\", null, [\n            (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.trials, (tr) => {\n              return (_openBlock(), _createElementBlock(\"tr\", {\n                key: tr.id\n              }, [\n                _createElementVNode(\"td\", null, _toDisplayString(tr.id), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(tr.tubeLength.toFixed(3)), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(tr.frequency), 1),\n                _createElementVNode(\"td\", null, _toDisplayString((1 / tr.frequency).toExponential(3)), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(tr.temperature), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(tr.wavelength.toFixed(3)), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(tr.vMeasured.toFixed(1)), 1),\n                _createElementVNode(\"td\", null, [\n                  _createElementVNode(\"button\", {\n                    class: \"rm\",\n                    onClick: ($event: any) => (emit('remove', tr.id))\n                  }, \"x\", 8, _hoisted_3)\n                ])\n              ]))\n            }), 128))\n          ])\n        ]))\n      : (_openBlock(), _createElementBlock(\"p\", _hoisted_4, _toDisplayString(_unref(t)('experiments.noTrialsYet')), 1)),\n    (__props.trials.length)\n      ? (_openBlock(), _createElementBlock(\"button\", {\n          key: 2,\n          class: \"clear-btn\",\n          onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('clear')))\n        }, _toDisplayString(_unref(t)('experiments.clearData')), 1))\n      : _createCommentVNode(\"\", true)\n  ]))\n}\n}\n\n})",
+      "start": 1783196195690,
+      "end": 1783196195690
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195690,
+      "end": 1783196195690,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createCommentVNode as _createCommentVNode, unref as _unref } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nconst _hoisted_2 = {\n  key: 0,\n  class: \"trial-table\"\n};\nconst _hoisted_3 = [\"onClick\"];\nconst _hoisted_4 = {\n  key: 1,\n  class: \"empty\"\n};\nimport { useI18n } from \"../../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"SpeedOfSoundTrialsPanel\",\n  props: {\n    trials: {}\n  },\n  emits: [\"remove\", \"clear\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const emit = __emit;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        __props.trials.length ? (_openBlock(), _createElementBlock(\"table\", _hoisted_2, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"thead\", null, [\n            _createElementVNode(\"tr\", null, [\n              _createElementVNode(\"th\", null, \"#\"),\n              _createElementVNode(\"th\", null, \"L\"),\n              _createElementVNode(\"th\", null, \"f\"),\n              _createElementVNode(\"th\", null, \"1/f\"),\n              _createElementVNode(\"th\", null, \"T\"),\n              _createElementVNode(\"th\", null, \"λ\"),\n              _createElementVNode(\"th\", null, \"v\"),\n              _createElementVNode(\"th\")\n            ])\n          ], -1)),\n          _createElementVNode(\"tbody\", null, [\n            (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.trials, (tr) => {\n              return _openBlock(), _createElementBlock(\"tr\", {\n                key: tr.id\n              }, [\n                _createElementVNode(\"td\", null, _toDisplayString(tr.id), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(tr.tubeLength.toFixed(3)), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(tr.frequency), 1),\n                _createElementVNode(\"td\", null, _toDisplayString((1 / tr.frequency).toExponential(3)), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(tr.temperature), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(tr.wavelength.toFixed(3)), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(tr.vMeasured.toFixed(1)), 1),\n                _createElementVNode(\"td\", null, [\n                  _createElementVNode(\"button\", {\n                    class: \"rm\",\n                    onClick: ($event) => emit(\"remove\", tr.id)\n                  }, \"x\", 8, _hoisted_3)\n                ])\n              ]);\n            }), 128))\n          ])\n        ])) : (_openBlock(), _createElementBlock(\"p\", _hoisted_4, _toDisplayString(_unref(t)(\"experiments.noTrialsYet\")), 1)),\n        __props.trials.length ? (_openBlock(), _createElementBlock(\"button\", {\n          key: 2,\n          class: \"clear-btn\",\n          onClick: _cache[0] || (_cache[0] = ($event) => emit(\"clear\"))\n        }, _toDisplayString(_unref(t)(\"experiments.clearData\")), 1)) : _createCommentVNode(\"\", true)\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196195690,
+      "end": 1783196195779,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/panels/SpeedOfSoundTrialsPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createCommentVNode as _createCommentVNode, unref as _unref } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = {\n  key: 0,\n  class: \"trial-table\"\n}\nconst _hoisted_3 = [\"onClick\"]\nconst _hoisted_4 = {\n  key: 1,\n  class: \"empty\"\n}\n\nimport { useI18n } from '../../../../composables/useI18n'\nimport type { SpeedOfSoundTrial } from '../../../../composables/speed-of-sound/useSpeedOfSoundTrials'\ninterface Props {\n  trials: SpeedOfSoundTrial[]\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'SpeedOfSoundTrialsPanel',\n  props: {\n    trials: {}\n  },\n  emits: [\"remove\", \"clear\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\n\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (__props.trials.length)\n      ? (_openBlock(), _createElementBlock(\"table\", _hoisted_2, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"thead\", null, [\n            _createElementVNode(\"tr\", null, [\n              _createElementVNode(\"th\", null, \"#\"),\n              _createElementVNode(\"th\", null, \"L\"),\n              _createElementVNode(\"th\", null, \"f\"),\n              _createElementVNode(\"th\", null, \"1/f\"),\n              _createElementVNode(\"th\", null, \"T\"),\n              _createElementVNode(\"th\", null, \"λ\"),\n              _createElementVNode(\"th\", null, \"v\"),\n              _createElementVNode(\"th\")\n            ])\n          ], -1)),\n          _createElementVNode(\"tbody\", null, [\n            (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.trials, (tr) => {\n              return (_openBlock(), _createElementBlock(\"tr\", {\n                key: tr.id\n              }, [\n                _createElementVNode(\"td\", null, _toDisplayString(tr.id), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(tr.tubeLength.toFixed(3)), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(tr.frequency), 1),\n                _createElementVNode(\"td\", null, _toDisplayString((1 / tr.frequency).toExponential(3)), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(tr.temperature), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(tr.wavelength.toFixed(3)), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(tr.vMeasured.toFixed(1)), 1),\n                _createElementVNode(\"td\", null, [\n                  _createElementVNode(\"button\", {\n                    class: \"rm\",\n                    onClick: ($event: any) => (emit('remove', tr.id))\n                  }, \"x\", 8, _hoisted_3)\n                ])\n              ]))\n            }), 128))\n          ])\n        ]))\n      : (_openBlock(), _createElementBlock(\"p\", _hoisted_4, _toDisplayString(_unref(t)('experiments.noTrialsYet')), 1)),\n    (__props.trials.length)\n      ? (_openBlock(), _createElementBlock(\"button\", {\n          key: 2,\n          class: \"clear-btn\",\n          onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('clear')))\n        }, _toDisplayString(_unref(t)('experiments.clearData')), 1))\n      : _createCommentVNode(\"\", true)\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195779,
+      "end": 1783196195779,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195779,
+      "end": 1783196195779,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196195779,
+      "end": 1783196195779,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195779,
+      "end": 1783196195779,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195779,
+      "end": 1783196195779,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195779,
+      "end": 1783196195779,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195779,
+      "end": 1783196195779,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195779,
+      "end": 1783196195779,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195779,
+      "end": 1783196195779,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195779,
+      "end": 1783196195779,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195779,
+      "end": 1783196195779,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195779,
+      "end": 1783196195780,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195780,
+      "end": 1783196195780,
+      "order": "normal"
+    }
+  ]
+}

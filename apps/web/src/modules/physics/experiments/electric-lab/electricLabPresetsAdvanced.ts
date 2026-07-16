@@ -89,7 +89,7 @@ export const advancedPresets: PresetDef[] = [
       '١. جسر ويستون يقيس مقاومة مجهولة (Rx) بدقة عالية',
       '٢. المقاومة R1 (الأولى) و R2 (الثانية) = نسبة معروفة',
       '٣. المقاومة R3 (الثالثة) = مقاومة ضبط قابلة للتغيير',
-      '٤. Rx = 150Ω (مقاومة مجهولة ثابتة في هذه التجربة)',
+      '٤. Rx (المقاومة المجهولة) — غيّرها لتجربة قيم مختلفة',
       '٥. عدّل R3 حتى يقرأ الجلفانوميتر صفراً (التوازن)',
       '٦. عند التوازن: Rx = R2 × R3 / R1',
       '٧. اضغط ▶ تشغيل وراقب جهد الجلفانوميتر',
@@ -105,6 +105,7 @@ export const advancedPresets: PresetDef[] = [
       components.push(makeComp('resistor',     350, 180, 'R1',       100, 'Ω'))
       components.push(makeComp('resistor',     500, 180, 'R2',       200, 'Ω'))
       components.push(makeComp('resistor',     350, 380, 'R3 (ضبط)', 100, 'Ω'))
+      components.push(makeComp('resistor',     500, 380, 'Rx (مجهولة)', 150, 'Ω'))
       components.push(makeComp('galvanometer', 500, 280, 'G',        0,   'mA'))
     },
   },

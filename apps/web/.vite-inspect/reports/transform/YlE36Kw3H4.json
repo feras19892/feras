@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/ThermalExpansionOverlayPanels.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport type { ThermalExpansionTrial } from '../../../composables/thermal-expansion/useThermalExpansionTrials'\nimport ThermalExpansionPanelBody from './ThermalExpansionPanelBody.vue'\n\ninterface Props {\n  maximized: Record<string, boolean>\n  panelTitle: (id: string) => string\n  trials: ThermalExpansionTrial[]\n  params: { material: string; L0: number; t0: number; t1: number }\n  alpha: number; dL: number; L1: number\n}\nconst props = defineProps<Props>()\nconst emit = defineEmits<{\n  (e: 'maximize', id: string): void\n  (e: 'remove', id: number): void\n  (e: 'clear'): void\n  (e: 'update:params', p: { material: string; L0: number; t0: number; t1: number }): void\n}>()\nconst ids = ['readings', 'chart', 'trials', 'params', 'laws', 'results']\n</script>\n<template>\n  <div class=\"overlay-panels\">\n    <template v-for=\"id in ids\" :key=\"id\">\n      <div v-if=\"props.maximized[id]\" class=\"overlay-panel\" @click=\"emit('maximize', id)\">\n        <div class=\"overlay-header\">\n          <span>{{ panelTitle(id) }}</span>\n          <button class=\"overlay-close\" @click.stop=\"emit('maximize', id)\">&#x2715;</button>\n        </div>\n        <ThermalExpansionPanelBody :id=\"id\" :trials=\"trials\" :params=\"params\" :alpha=\"alpha\" :dL=\"dL\" :L1=\"L1\" @remove=\"emit('remove', $event)\" @clear=\"emit('clear')\" @update:params=\"emit('update:params', $event)\" />\n      </div>\n    </template>\n  </div>\n</template>\n<style scoped>\n.overlay-panels { position: fixed; inset: 0; z-index: 9998; pointer-events: none; }\n.overlay-panel { position: absolute; inset: 2rem; background: #1A1F27; border: 1px solid #2D3645; border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; pointer-events: auto; }\n.overlay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: .5rem; font-weight: 700; color: #5B8DB8; }\n.overlay-close { background: none; border: none; color: #8B95A5; cursor: pointer; font-size: 1rem; }\n</style>\n",
+      "start": 1783196193532,
+      "end": 1783196193744,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193744,
+      "end": 1783196193744,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196193744,
+      "end": 1783196193744,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193744,
+      "end": 1783196193744,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193744,
+      "end": 1783196193744,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/ThermalExpansionOverlayPanels.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/ThermalExpansionOverlayPanels.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/ThermalExpansionOverlayPanels.vue?vue&type=style&index=0&scoped=04e6688d&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-04e6688d\"]]);\n",
+      "start": 1783196193744,
+      "end": 1783196194381,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194381,
+      "end": 1783196194381,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194381,
+      "end": 1783196194381,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194381,
+      "end": 1783196194382,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194382,
+      "end": 1783196194382,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194382,
+      "end": 1783196194382,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194382,
+      "end": 1783196194382,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194382,
+      "end": 1783196194382,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194382,
+      "end": 1783196194382,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194382,
+      "end": 1783196194383,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194383,
+      "end": 1783196194383,
+      "order": "normal"
+    }
+  ]
+}

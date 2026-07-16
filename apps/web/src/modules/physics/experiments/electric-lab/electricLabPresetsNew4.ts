@@ -39,8 +39,10 @@ export const newPresets4: PresetDef[] = [
       b._internalR = 0
       components.push(b)
       components.push(makeComp('ammeter', 220, 220, 'Ip أميتر', 0, 'A'))
-      components.push(makeComp('resistor', 400, 220, 'R حمل', 50, 'Ω'))
-      components.push(makeComp('voltmeter', 400, 100, 'Vs فولتميتر', 0, 'V'))
+      components.push(makeComp('resistor', 320, 220, 'Np لفات', 200, 'لفة'))
+      components.push(makeComp('resistor', 470, 220, 'Ns لفات', 100, 'لفة'))
+      components.push(makeComp('resistor', 620, 220, 'R حمل', 50, 'Ω'))
+      components.push(makeComp('voltmeter', 620, 100, 'Vs فولتميتر', 0, 'V'))
     },
   },
   {
@@ -60,6 +62,7 @@ export const newPresets4: PresetDef[] = [
       components.push(makeComp('battery', 80, 220, 'بطارية', 12, 'V'))
       components.push(makeComp('ammeter', 220, 220, 'أميتر', 0, 'A'))
       components.push(makeComp('resistor', 380, 220, 'R', 100, 'Ω'))
+      components.push(makeComp('resistor', 530, 220, 'L (mH)', 500, 'mH'))
       components.push(makeComp('voltmeter', 380, 100, 'فولتميتر', 0, 'V'))
     },
   },

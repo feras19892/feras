@@ -1,0 +1,115 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionSignalPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nimport { useI18n } from '../../../composables/useI18n'\nimport { ref, watch, onMounted, onUnmounted } from 'vue'\nimport type { CollisionSignalPoint } from '../../../composables/collision/useCollisionLab'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'CollisionSignalPanel',\n  props: {\n    series: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\nconst props = __props\n\nconst canvasRef = ref<HTMLCanvasElement | null>(null)\nconst wrapRef = ref<HTMLDivElement | null>(null)\n\nfunction draw() {\n  const canvas = canvasRef.value\n  if (!canvas) return\n  const ctx = canvas.getContext('2d')\n  if (!ctx) return\n\n  const w = canvas.width, h = canvas.height\n  ctx.clearRect(0, 0, w, h)\n  ctx.fillStyle = '#0f172a'\n  ctx.fillRect(0, 0, w, h)\n\n  const data = props.series\n  if (data.length < 2) {\n    ctx.fillStyle = '#64748b'\n    ctx.font = 'bold 12px \"Segoe UI\", sans-serif'\n    ctx.textAlign = 'center'\n    ctx.fillText(t('experiments.startSimulationToSeeSignal'), w / 2, h / 2)\n    return\n  }\n\n  const pad = 40\n  const tMin = data[0].t\n  const tMax = data[data.length - 1].t\n  const tRange = Math.max(tMax - tMin, 0.001)\n\n  const allV = data.flatMap(d => [d.v1, d.v2])\n  const vMax = Math.max(...allV.map(Math.abs), 0.1) * 1.2\n\n  function tx(t: number) { return pad + ((t - tMin) / tRange) * (w - pad * 2) }\n  function vy(v: number) { return h - pad - ((v + vMax) / (vMax * 2)) * (h - pad * 2) }\n\n  // Grid\n  ctx.strokeStyle = 'rgba(148,163,184,0.10)'\n  ctx.lineWidth = 1\n  for (let i = 1; i < 4; i++) {\n    const y = pad + (i / 4) * (h - pad * 2)\n    ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(w - pad, y); ctx.stroke()\n  }\n  for (let i = 1; i < 4; i++) {\n    const x = pad + (i / 4) * (w - pad * 2)\n    ctx.beginPath(); ctx.moveTo(x, pad); ctx.lineTo(x, h - pad); ctx.stroke()\n  }\n\n  // Zero line\n  ctx.strokeStyle = 'rgba(148,163,184,0.4)'; ctx.lineWidth = 1.5\n  ctx.beginPath(); ctx.moveTo(pad, vy(0)); ctx.lineTo(w - pad, vy(0)); ctx.stroke()\n\n  // v1 line (blue)\n  ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 2.5\n  ctx.beginPath()\n  data.forEach((d, i) => { if (i === 0) ctx.moveTo(tx(d.t), vy(d.v1)); else ctx.lineTo(tx(d.t), vy(d.v1)) })\n  ctx.stroke()\n\n  // v2 line (red)\n  ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 2.5\n  ctx.beginPath()\n  data.forEach((d, i) => { if (i === 0) ctx.moveTo(tx(d.t), vy(d.v2)); else ctx.lineTo(tx(d.t), vy(d.v2)) })\n  ctx.stroke()\n\n  // Ticks + labels\n  ctx.fillStyle = '#cbd5e1'; ctx.font = 'bold 11px \"Segoe UI\", sans-serif'; ctx.textAlign = 'center'\n  for (let i = 0; i <= 4; i++) {\n    const tv = tMin + (i / 4) * tRange\n    const px = pad + (i / 4) * (w - pad * 2)\n    ctx.fillText(tv.toFixed(2), px, h - pad + 16)\n  }\n  ctx.textAlign = 'right'\n  for (let i = 0; i <= 4; i++) {\n    const vv = -vMax + (i / 4) * (vMax * 2)\n    const py = h - pad - (i / 4) * (h - pad * 2)\n    ctx.fillText(vv.toFixed(1), pad - 8, py + 4)\n  }\n\n  // Axis titles\n  ctx.fillStyle = '#38bdf8'; ctx.font = 'bold 13px \"Segoe UI\", sans-serif'; ctx.textAlign = 'center'\n  ctx.fillText('t (s)', w / 2, h - 4)\n  ctx.save(); ctx.translate(14, h / 2); ctx.rotate(-Math.PI / 2)\n  ctx.fillText('v (m/s)', 0, 0); ctx.restore()\n\n  // Legend\n  ctx.font = 'bold 10px \"Segoe UI\"'\n  ctx.fillStyle = '#3b82f6'; ctx.fillText('v₁', w - 44, 14)\n  ctx.fillStyle = '#ef4444'; ctx.fillText('v₂', w - 22, 14)\n}\n\nwatch(() => props.series, draw, { deep: true })\n\nlet ro: ResizeObserver | null = null\nonMounted(() => {\n  const canvas = canvasRef.value\n  const wrap = wrapRef.value\n  if (!canvas || !wrap) return\n  const resize = () => {\n    canvas.width = wrap.clientWidth\n    canvas.height = wrap.clientHeight\n    draw()\n  }\n  resize()\n  ro = new ResizeObserver(resize)\n  ro.observe(wrap)\n})\nonUnmounted(() => { if (ro) ro.disconnect() })\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    class: \"signal-wrap\",\n    ref_key: \"wrapRef\",\n    ref: wrapRef\n  }, [\n    _createElementVNode(\"canvas\", {\n      ref_key: \"canvasRef\",\n      ref: canvasRef\n    }, null, 512)\n  ], 512))\n}\n}\n\n})",
+      "start": 1783196195715,
+      "end": 1783196195715
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195715,
+      "end": 1783196195715,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nimport { useI18n } from \"../../../composables/useI18n\";\nimport { ref, watch, onMounted, onUnmounted } from \"vue\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"CollisionSignalPanel\",\n  props: {\n    series: {}\n  },\n  setup(__props) {\n    const { t } = useI18n();\n    const props = __props;\n    const canvasRef = ref(null);\n    const wrapRef = ref(null);\n    function draw() {\n      const canvas = canvasRef.value;\n      if (!canvas) return;\n      const ctx = canvas.getContext(\"2d\");\n      if (!ctx) return;\n      const w = canvas.width, h = canvas.height;\n      ctx.clearRect(0, 0, w, h);\n      ctx.fillStyle = \"#0f172a\";\n      ctx.fillRect(0, 0, w, h);\n      const data = props.series;\n      if (data.length < 2) {\n        ctx.fillStyle = \"#64748b\";\n        ctx.font = 'bold 12px \"Segoe UI\", sans-serif';\n        ctx.textAlign = \"center\";\n        ctx.fillText(t(\"experiments.startSimulationToSeeSignal\"), w / 2, h / 2);\n        return;\n      }\n      const pad = 40;\n      const tMin = data[0].t;\n      const tMax = data[data.length - 1].t;\n      const tRange = Math.max(tMax - tMin, 1e-3);\n      const allV = data.flatMap((d) => [d.v1, d.v2]);\n      const vMax = Math.max(...allV.map(Math.abs), 0.1) * 1.2;\n      function tx(t2) {\n        return pad + (t2 - tMin) / tRange * (w - pad * 2);\n      }\n      function vy(v) {\n        return h - pad - (v + vMax) / (vMax * 2) * (h - pad * 2);\n      }\n      ctx.strokeStyle = \"rgba(148,163,184,0.10)\";\n      ctx.lineWidth = 1;\n      for (let i = 1; i < 4; i++) {\n        const y = pad + i / 4 * (h - pad * 2);\n        ctx.beginPath();\n        ctx.moveTo(pad, y);\n        ctx.lineTo(w - pad, y);\n        ctx.stroke();\n      }\n      for (let i = 1; i < 4; i++) {\n        const x = pad + i / 4 * (w - pad * 2);\n        ctx.beginPath();\n        ctx.moveTo(x, pad);\n        ctx.lineTo(x, h - pad);\n        ctx.stroke();\n      }\n      ctx.strokeStyle = \"rgba(148,163,184,0.4)\";\n      ctx.lineWidth = 1.5;\n      ctx.beginPath();\n      ctx.moveTo(pad, vy(0));\n      ctx.lineTo(w - pad, vy(0));\n      ctx.stroke();\n      ctx.strokeStyle = \"#3b82f6\";\n      ctx.lineWidth = 2.5;\n      ctx.beginPath();\n      data.forEach((d, i) => {\n        if (i === 0) ctx.moveTo(tx(d.t), vy(d.v1));\n        else ctx.lineTo(tx(d.t), vy(d.v1));\n      });\n      ctx.stroke();\n      ctx.strokeStyle = \"#ef4444\";\n      ctx.lineWidth = 2.5;\n      ctx.beginPath();\n      data.forEach((d, i) => {\n        if (i === 0) ctx.moveTo(tx(d.t), vy(d.v2));\n        else ctx.lineTo(tx(d.t), vy(d.v2));\n      });\n      ctx.stroke();\n      ctx.fillStyle = \"#cbd5e1\";\n      ctx.font = 'bold 11px \"Segoe UI\", sans-serif';\n      ctx.textAlign = \"center\";\n      for (let i = 0; i <= 4; i++) {\n        const tv = tMin + i / 4 * tRange;\n        const px = pad + i / 4 * (w - pad * 2);\n        ctx.fillText(tv.toFixed(2), px, h - pad + 16);\n      }\n      ctx.textAlign = \"right\";\n      for (let i = 0; i <= 4; i++) {\n        const vv = -vMax + i / 4 * (vMax * 2);\n        const py = h - pad - i / 4 * (h - pad * 2);\n        ctx.fillText(vv.toFixed(1), pad - 8, py + 4);\n      }\n      ctx.fillStyle = \"#38bdf8\";\n      ctx.font = 'bold 13px \"Segoe UI\", sans-serif';\n      ctx.textAlign = \"center\";\n      ctx.fillText(\"t (s)\", w / 2, h - 4);\n      ctx.save();\n      ctx.translate(14, h / 2);\n      ctx.rotate(-Math.PI / 2);\n      ctx.fillText(\"v (m/s)\", 0, 0);\n      ctx.restore();\n      ctx.font = 'bold 10px \"Segoe UI\"';\n      ctx.fillStyle = \"#3b82f6\";\n      ctx.fillText(\"v₁\", w - 44, 14);\n      ctx.fillStyle = \"#ef4444\";\n      ctx.fillText(\"v₂\", w - 22, 14);\n    }\n    watch(() => props.series, draw, { deep: true });\n    let ro = null;\n    onMounted(() => {\n      const canvas = canvasRef.value;\n      const wrap = wrapRef.value;\n      if (!canvas || !wrap) return;\n      const resize = () => {\n        canvas.width = wrap.clientWidth;\n        canvas.height = wrap.clientHeight;\n        draw();\n      };\n      resize();\n      ro = new ResizeObserver(resize);\n      ro.observe(wrap);\n    });\n    onUnmounted(() => {\n      if (ro) ro.disconnect();\n    });\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", {\n        class: \"signal-wrap\",\n        ref_key: \"wrapRef\",\n        ref: wrapRef\n      }, [\n        _createElementVNode(\"canvas\", {\n          ref_key: \"canvasRef\",\n          ref: canvasRef\n        }, null, 512)\n      ], 512);\n    };\n  }\n});\n",
+      "start": 1783196195715,
+      "end": 1783196195773,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionSignalPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nimport { useI18n } from '../../../composables/useI18n'\nimport { ref, watch, onMounted, onUnmounted } from 'vue'\nimport type { CollisionSignalPoint } from '../../../composables/collision/useCollisionLab'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'CollisionSignalPanel',\n  props: {\n    series: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\nconst props = __props\n\nconst canvasRef = ref<HTMLCanvasElement | null>(null)\nconst wrapRef = ref<HTMLDivElement | null>(null)\n\nfunction draw() {\n  const canvas = canvasRef.value\n  if (!canvas) return\n  const ctx = canvas.getContext('2d')\n  if (!ctx) return\n\n  const w = canvas.width, h = canvas.height\n  ctx.clearRect(0, 0, w, h)\n  ctx.fillStyle = '#0f172a'\n  ctx.fillRect(0, 0, w, h)\n\n  const data = props.series\n  if (data.length < 2) {\n    ctx.fillStyle = '#64748b'\n    ctx.font = 'bold 12px \"Segoe UI\", sans-serif'\n    ctx.textAlign = 'center'\n    ctx.fillText(t('experiments.startSimulationToSeeSignal'), w / 2, h / 2)\n    return\n  }\n\n  const pad = 40\n  const tMin = data[0].t\n  const tMax = data[data.length - 1].t\n  const tRange = Math.max(tMax - tMin, 0.001)\n\n  const allV = data.flatMap(d => [d.v1, d.v2])\n  const vMax = Math.max(...allV.map(Math.abs), 0.1) * 1.2\n\n  function tx(t: number) { return pad + ((t - tMin) / tRange) * (w - pad * 2) }\n  function vy(v: number) { return h - pad - ((v + vMax) / (vMax * 2)) * (h - pad * 2) }\n\n  // Grid\n  ctx.strokeStyle = 'rgba(148,163,184,0.10)'\n  ctx.lineWidth = 1\n  for (let i = 1; i < 4; i++) {\n    const y = pad + (i / 4) * (h - pad * 2)\n    ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(w - pad, y); ctx.stroke()\n  }\n  for (let i = 1; i < 4; i++) {\n    const x = pad + (i / 4) * (w - pad * 2)\n    ctx.beginPath(); ctx.moveTo(x, pad); ctx.lineTo(x, h - pad); ctx.stroke()\n  }\n\n  // Zero line\n  ctx.strokeStyle = 'rgba(148,163,184,0.4)'; ctx.lineWidth = 1.5\n  ctx.beginPath(); ctx.moveTo(pad, vy(0)); ctx.lineTo(w - pad, vy(0)); ctx.stroke()\n\n  // v1 line (blue)\n  ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 2.5\n  ctx.beginPath()\n  data.forEach((d, i) => { if (i === 0) ctx.moveTo(tx(d.t), vy(d.v1)); else ctx.lineTo(tx(d.t), vy(d.v1)) })\n  ctx.stroke()\n\n  // v2 line (red)\n  ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 2.5\n  ctx.beginPath()\n  data.forEach((d, i) => { if (i === 0) ctx.moveTo(tx(d.t), vy(d.v2)); else ctx.lineTo(tx(d.t), vy(d.v2)) })\n  ctx.stroke()\n\n  // Ticks + labels\n  ctx.fillStyle = '#cbd5e1'; ctx.font = 'bold 11px \"Segoe UI\", sans-serif'; ctx.textAlign = 'center'\n  for (let i = 0; i <= 4; i++) {\n    const tv = tMin + (i / 4) * tRange\n    const px = pad + (i / 4) * (w - pad * 2)\n    ctx.fillText(tv.toFixed(2), px, h - pad + 16)\n  }\n  ctx.textAlign = 'right'\n  for (let i = 0; i <= 4; i++) {\n    const vv = -vMax + (i / 4) * (vMax * 2)\n    const py = h - pad - (i / 4) * (h - pad * 2)\n    ctx.fillText(vv.toFixed(1), pad - 8, py + 4)\n  }\n\n  // Axis titles\n  ctx.fillStyle = '#38bdf8'; ctx.font = 'bold 13px \"Segoe UI\", sans-serif'; ctx.textAlign = 'center'\n  ctx.fillText('t (s)', w / 2, h - 4)\n  ctx.save(); ctx.translate(14, h / 2); ctx.rotate(-Math.PI / 2)\n  ctx.fillText('v (m/s)', 0, 0); ctx.restore()\n\n  // Legend\n  ctx.font = 'bold 10px \"Segoe UI\"'\n  ctx.fillStyle = '#3b82f6'; ctx.fillText('v₁', w - 44, 14)\n  ctx.fillStyle = '#ef4444'; ctx.fillText('v₂', w - 22, 14)\n}\n\nwatch(() => props.series, draw, { deep: true })\n\nlet ro: ResizeObserver | null = null\nonMounted(() => {\n  const canvas = canvasRef.value\n  const wrap = wrapRef.value\n  if (!canvas || !wrap) return\n  const resize = () => {\n    canvas.width = wrap.clientWidth\n    canvas.height = wrap.clientHeight\n    draw()\n  }\n  resize()\n  ro = new ResizeObserver(resize)\n  ro.observe(wrap)\n})\nonUnmounted(() => { if (ro) ro.disconnect() })\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    class: \"signal-wrap\",\n    ref_key: \"wrapRef\",\n    ref: wrapRef\n  }, [\n    _createElementVNode(\"canvas\", {\n      ref_key: \"canvasRef\",\n      ref: canvasRef\n    }, null, 512)\n  ], 512))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": [
+          "t"
+        ]
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    }
+  ]
+}

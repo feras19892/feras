@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/experiment/collision/collision-drawers.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "export function drawTrail(c: CanvasRenderingContext2D, trail: { x: number; t: number }[], cy: number, colorBase: string) {\n  if (trail.length < 2) return\n  c.save()\n  for (let i = 1; i < trail.length; i++) {\n    const alpha = i / trail.length * 0.4\n    c.strokeStyle = colorBase + alpha + ')'\n    c.lineWidth = 2\n    c.beginPath()\n    c.moveTo(trail[i - 1].x, cy)\n    c.lineTo(trail[i].x, cy)\n    c.stroke()\n  }\n  c.restore()\n}\n\nexport function drawArrow(c: CanvasRenderingContext2D, x: number, y: number, v: number, color: string, r: number) {\n  if (Math.abs(v) < 0.3) return\n  const len = Math.min(70, Math.abs(v) * 12)\n  const dir = v > 0 ? 1 : -1\n  const ay = y - r - 14\n  c.save()\n  c.strokeStyle = color; c.lineWidth = 3; c.globalAlpha = 0.85\n  c.beginPath(); c.moveTo(x, ay); c.lineTo(x + len * dir, ay); c.stroke()\n  c.fillStyle = color; c.globalAlpha = 0.85\n  c.beginPath()\n  c.moveTo(x + len * dir, ay)\n  c.lineTo(x + len * dir - 7 * dir, ay - 5)\n  c.lineTo(x + len * dir - 7 * dir, ay + 5)\n  c.closePath(); c.fill()\n  c.fillStyle = color; c.font = 'bold 11px \"Segoe UI\"'; c.textAlign = 'center'; c.textBaseline = 'bottom'\n  c.fillText(`${v.toFixed(1)}`, x + (len * dir) / 2, ay - 6)\n  c.restore()\n}\n\nexport function drawBall(ctx: CanvasRenderingContext2D, cx: number, cy: number, sr: number, colors: string[], label: string) {\n  ctx.save()\n  const g = ctx.createRadialGradient(cx - sr * 0.3, cy - sr * 0.3, sr * 0.1, cx, cy, sr)\n  colors.forEach((c, i) => g.addColorStop(i / (colors.length - 1), c))\n  ctx.beginPath(); ctx.arc(cx, cy, sr, 0, Math.PI * 2)\n  ctx.fillStyle = g; ctx.fill()\n  ctx.strokeStyle = colors[colors.length - 1]; ctx.lineWidth = 3; ctx.stroke()\n  ctx.fillStyle = 'rgba(255,255,255,0.3)'\n  ctx.beginPath(); ctx.arc(cx - sr * 0.25, cy - sr * 0.25, sr * 0.35, 0, Math.PI * 2)\n  ctx.fill()\n  ctx.fillStyle = '#fff'; ctx.font = `bold ${Math.max(16, sr * 0.35)}px \"Segoe UI\"`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'\n  ctx.fillText(label, cx, cy + 2)\n  ctx.restore()\n}\n\nexport function drawWalls(ctx: CanvasRenderingContext2D, w: number, cy: number, wallLabel: string) {\n  ctx.save()\n  ctx.fillStyle = 'rgba(71,85,105,0.5)'\n  const wallW = 12\n  ctx.fillRect(0, cy - 60, wallW, 120)\n  ctx.fillRect(w - wallW, cy - 60, wallW, 120)\n  ctx.strokeStyle = '#64748b'; ctx.lineWidth = 2\n  ctx.strokeRect(0, cy - 60, wallW, 120)\n  ctx.strokeRect(w - wallW, cy - 60, wallW, 120)\n  ctx.fillStyle = '#94a3b8'; ctx.font = 'bold 10px \"Segoe UI\"'; ctx.textAlign = 'center'\n  ctx.save(); ctx.translate(6, cy); ctx.rotate(-Math.PI / 2); ctx.fillText(wallLabel, 0, 0); ctx.restore()\n  ctx.save(); ctx.translate(w - 6, cy); ctx.rotate(Math.PI / 2); ctx.fillText(wallLabel, 0, 0); ctx.restore()\n  ctx.restore()\n}\n",
+      "start": 1783196195723,
+      "end": 1783196195760,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195760,
+      "end": 1783196195760,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "export function drawTrail(c, trail, cy, colorBase) {\n  if (trail.length < 2) return;\n  c.save();\n  for (let i = 1; i < trail.length; i++) {\n    const alpha = i / trail.length * 0.4;\n    c.strokeStyle = colorBase + alpha + \")\";\n    c.lineWidth = 2;\n    c.beginPath();\n    c.moveTo(trail[i - 1].x, cy);\n    c.lineTo(trail[i].x, cy);\n    c.stroke();\n  }\n  c.restore();\n}\nexport function drawArrow(c, x, y, v, color, r) {\n  if (Math.abs(v) < 0.3) return;\n  const len = Math.min(70, Math.abs(v) * 12);\n  const dir = v > 0 ? 1 : -1;\n  const ay = y - r - 14;\n  c.save();\n  c.strokeStyle = color;\n  c.lineWidth = 3;\n  c.globalAlpha = 0.85;\n  c.beginPath();\n  c.moveTo(x, ay);\n  c.lineTo(x + len * dir, ay);\n  c.stroke();\n  c.fillStyle = color;\n  c.globalAlpha = 0.85;\n  c.beginPath();\n  c.moveTo(x + len * dir, ay);\n  c.lineTo(x + len * dir - 7 * dir, ay - 5);\n  c.lineTo(x + len * dir - 7 * dir, ay + 5);\n  c.closePath();\n  c.fill();\n  c.fillStyle = color;\n  c.font = 'bold 11px \"Segoe UI\"';\n  c.textAlign = \"center\";\n  c.textBaseline = \"bottom\";\n  c.fillText(`${v.toFixed(1)}`, x + len * dir / 2, ay - 6);\n  c.restore();\n}\nexport function drawBall(ctx, cx, cy, sr, colors, label) {\n  ctx.save();\n  const g = ctx.createRadialGradient(cx - sr * 0.3, cy - sr * 0.3, sr * 0.1, cx, cy, sr);\n  colors.forEach((c, i) => g.addColorStop(i / (colors.length - 1), c));\n  ctx.beginPath();\n  ctx.arc(cx, cy, sr, 0, Math.PI * 2);\n  ctx.fillStyle = g;\n  ctx.fill();\n  ctx.strokeStyle = colors[colors.length - 1];\n  ctx.lineWidth = 3;\n  ctx.stroke();\n  ctx.fillStyle = \"rgba(255,255,255,0.3)\";\n  ctx.beginPath();\n  ctx.arc(cx - sr * 0.25, cy - sr * 0.25, sr * 0.35, 0, Math.PI * 2);\n  ctx.fill();\n  ctx.fillStyle = \"#fff\";\n  ctx.font = `bold ${Math.max(16, sr * 0.35)}px \"Segoe UI\"`;\n  ctx.textAlign = \"center\";\n  ctx.textBaseline = \"middle\";\n  ctx.fillText(label, cx, cy + 2);\n  ctx.restore();\n}\nexport function drawWalls(ctx, w, cy, wallLabel) {\n  ctx.save();\n  ctx.fillStyle = \"rgba(71,85,105,0.5)\";\n  const wallW = 12;\n  ctx.fillRect(0, cy - 60, wallW, 120);\n  ctx.fillRect(w - wallW, cy - 60, wallW, 120);\n  ctx.strokeStyle = \"#64748b\";\n  ctx.lineWidth = 2;\n  ctx.strokeRect(0, cy - 60, wallW, 120);\n  ctx.strokeRect(w - wallW, cy - 60, wallW, 120);\n  ctx.fillStyle = \"#94a3b8\";\n  ctx.font = 'bold 10px \"Segoe UI\"';\n  ctx.textAlign = \"center\";\n  ctx.save();\n  ctx.translate(6, cy);\n  ctx.rotate(-Math.PI / 2);\n  ctx.fillText(wallLabel, 0, 0);\n  ctx.restore();\n  ctx.save();\n  ctx.translate(w - 6, cy);\n  ctx.rotate(Math.PI / 2);\n  ctx.fillText(wallLabel, 0, 0);\n  ctx.restore();\n  ctx.restore();\n}\n",
+      "start": 1783196195760,
+      "end": 1783196195866,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/experiment/collision/collision-drawers.ts"
+        ],
+        "sourcesContent": [
+          "export function drawTrail(c: CanvasRenderingContext2D, trail: { x: number; t: number }[], cy: number, colorBase: string) {\n  if (trail.length < 2) return\n  c.save()\n  for (let i = 1; i < trail.length; i++) {\n    const alpha = i / trail.length * 0.4\n    c.strokeStyle = colorBase + alpha + ')'\n    c.lineWidth = 2\n    c.beginPath()\n    c.moveTo(trail[i - 1].x, cy)\n    c.lineTo(trail[i].x, cy)\n    c.stroke()\n  }\n  c.restore()\n}\n\nexport function drawArrow(c: CanvasRenderingContext2D, x: number, y: number, v: number, color: string, r: number) {\n  if (Math.abs(v) < 0.3) return\n  const len = Math.min(70, Math.abs(v) * 12)\n  const dir = v > 0 ? 1 : -1\n  const ay = y - r - 14\n  c.save()\n  c.strokeStyle = color; c.lineWidth = 3; c.globalAlpha = 0.85\n  c.beginPath(); c.moveTo(x, ay); c.lineTo(x + len * dir, ay); c.stroke()\n  c.fillStyle = color; c.globalAlpha = 0.85\n  c.beginPath()\n  c.moveTo(x + len * dir, ay)\n  c.lineTo(x + len * dir - 7 * dir, ay - 5)\n  c.lineTo(x + len * dir - 7 * dir, ay + 5)\n  c.closePath(); c.fill()\n  c.fillStyle = color; c.font = 'bold 11px \"Segoe UI\"'; c.textAlign = 'center'; c.textBaseline = 'bottom'\n  c.fillText(`${v.toFixed(1)}`, x + (len * dir) / 2, ay - 6)\n  c.restore()\n}\n\nexport function drawBall(ctx: CanvasRenderingContext2D, cx: number, cy: number, sr: number, colors: string[], label: string) {\n  ctx.save()\n  const g = ctx.createRadialGradient(cx - sr * 0.3, cy - sr * 0.3, sr * 0.1, cx, cy, sr)\n  colors.forEach((c, i) => g.addColorStop(i / (colors.length - 1), c))\n  ctx.beginPath(); ctx.arc(cx, cy, sr, 0, Math.PI * 2)\n  ctx.fillStyle = g; ctx.fill()\n  ctx.strokeStyle = colors[colors.length - 1]; ctx.lineWidth = 3; ctx.stroke()\n  ctx.fillStyle = 'rgba(255,255,255,0.3)'\n  ctx.beginPath(); ctx.arc(cx - sr * 0.25, cy - sr * 0.25, sr * 0.35, 0, Math.PI * 2)\n  ctx.fill()\n  ctx.fillStyle = '#fff'; ctx.font = `bold ${Math.max(16, sr * 0.35)}px \"Segoe UI\"`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'\n  ctx.fillText(label, cx, cy + 2)\n  ctx.restore()\n}\n\nexport function drawWalls(ctx: CanvasRenderingContext2D, w: number, cy: number, wallLabel: string) {\n  ctx.save()\n  ctx.fillStyle = 'rgba(71,85,105,0.5)'\n  const wallW = 12\n  ctx.fillRect(0, cy - 60, wallW, 120)\n  ctx.fillRect(w - wallW, cy - 60, wallW, 120)\n  ctx.strokeStyle = '#64748b'; ctx.lineWidth = 2\n  ctx.strokeRect(0, cy - 60, wallW, 120)\n  ctx.strokeRect(w - wallW, cy - 60, wallW, 120)\n  ctx.fillStyle = '#94a3b8'; ctx.font = 'bold 10px \"Segoe UI\"'; ctx.textAlign = 'center'\n  ctx.save(); ctx.translate(6, cy); ctx.rotate(-Math.PI / 2); ctx.fillText(wallLabel, 0, 0); ctx.restore()\n  ctx.save(); ctx.translate(w - 6, cy); ctx.rotate(Math.PI / 2); ctx.fillText(wallLabel, 0, 0); ctx.restore()\n  ctx.restore()\n}\n"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195867,
+      "end": 1783196195867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195867,
+      "end": 1783196195867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195867,
+      "end": 1783196195867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195867,
+      "end": 1783196195867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195867,
+      "end": 1783196195867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195867,
+      "end": 1783196195867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195867,
+      "end": 1783196195867,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195867,
+      "end": 1783196195867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195867,
+      "end": 1783196195867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195867,
+      "end": 1783196195867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195867,
+      "end": 1783196195867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195867,
+      "end": 1783196195867,
+      "order": "normal"
+    }
+  ]
+}

@@ -36,11 +36,14 @@ export function createNewComputeds4(
   const transformerData = computed(() => {
     if (!isTransformer.value) return null
     const batt = components.find(c => c.type === 'battery')
-    const res = components.find(c => c.type === 'resistor')
-    if (!batt || !res) return null
+    const resistors = components.filter(c => c.type === 'resistor')
+    if (!batt || resistors.length < 3) return null
     const Vp = batt.value
-    const Rload = res.value
-    const Np = 200, Ns = 100
+    const npRes = resistors.find(r => r.label.includes('Np'))
+    const nsRes = resistors.find(r => r.label.includes('Ns'))
+    const loadRes = resistors.find(r => r.label.includes('R حمل') || r.label === 'R')
+    const Np = npRes?.value ?? 200, Ns = nsRes?.value ?? 100
+    const Rload = loadRes?.value ?? 50
     const ratio = Ns / Np
     const Vs = Vp * ratio
     if (Rload === 0) return null
@@ -61,12 +64,15 @@ export function createNewComputeds4(
   const selfIndData = computed(() => {
     if (!isSelfInd.value) return null
     const batt = components.find(c => c.type === 'battery')
-    const res = components.find(c => c.type === 'resistor')
-    if (!batt || !res) return null
+    const resistors = components.filter(c => c.type === 'resistor')
+    if (!batt || resistors.length < 2) return null
+    const rRes = resistors.find(r => r.label === 'R')
+    const lRes = resistors.find(r => r.label.includes('L'))
+    if (!rRes) return null
     const V = batt.value
-    const R = res.value
+    const R = rRes.value
     if (R === 0) return null
-    const L = 0.5
+    const L = (lRes?.value ?? 500) * 1e-3
     const I = V / R
     const tau = L / R
     const E = 0.5 * L * I * I

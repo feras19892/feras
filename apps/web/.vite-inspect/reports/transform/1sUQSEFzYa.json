@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/pendulum/PendulumStatusBar.vue?vue&type=style&index=0&scoped=5b1a932a&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.status-bar { display:flex; align-items:center; justify-content:center; gap:.4rem; padding:.4rem .6rem; border-radius:8px; font-size:.75rem; font-weight:800; flex-shrink:0; box-shadow:0 2px 6px rgba(0,0,0,.1); }\n.status-bar.ready { background:rgba(96,165,250,.12); color:#60a5fa; border:1px solid rgba(96,165,250,.2); }\n.status-bar.paused { background:rgba(234,179,8,.12); color:#eab308; border:1px solid rgba(234,179,8,.2); }\n.status-bar.running { background:rgba(52,211,153,.12); color:#34d399; border:1px solid rgba(52,211,153,.2); }\n.status-dot { width:8px; height:8px; border-radius:50%; background:currentColor; animation:dotPulse 2s ease-in-out infinite; }\n@keyframes dotPulse { 0%,100%{opacity:.7;transform:scale(1)} 50%{opacity:1;transform:scale(1.15)} }\n",
+      "start": 1783196195713,
+      "end": 1783196195713
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.status-bar { display:flex; align-items:center; justify-content:center; gap:.4rem; padding:.4rem .6rem; border-radius:8px; font-size:.75rem; font-weight:800; flex-shrink:0; box-shadow:0 2px 6px rgba(0,0,0,.1); }\n.status-bar.ready { background:rgba(96,165,250,.12); color:#60a5fa; border:1px solid rgba(96,165,250,.2); }\n.status-bar.paused { background:rgba(234,179,8,.12); color:#eab308; border:1px solid rgba(234,179,8,.2); }\n.status-bar.running { background:rgba(52,211,153,.12); color:#34d399; border:1px solid rgba(52,211,153,.2); }\n.status-dot { width:8px; height:8px; border-radius:50%; background:currentColor; animation:dotPulse 2s ease-in-out infinite; }\n@keyframes dotPulse { 0%,100%{opacity:.7;transform:scale(1)} 50%{opacity:1;transform:scale(1.15)} }\n",
+      "start": 1783196195713,
+      "end": 1783196195713,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195713,
+      "end": 1783196195713,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195713,
+      "end": 1783196195713,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195713,
+      "end": 1783196195713,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.status-bar[data-v-5b1a932a] { display:flex; align-items:center; justify-content:center; gap:.4rem; padding:.4rem .6rem; border-radius:8px; font-size:.75rem; font-weight:800; flex-shrink:0; box-shadow:0 2px 6px rgba(0,0,0,.1);\n}\n.status-bar.ready[data-v-5b1a932a] { background:rgba(96,165,250,.12); color:#60a5fa; border:1px solid rgba(96,165,250,.2);\n}\n.status-bar.paused[data-v-5b1a932a] { background:rgba(234,179,8,.12); color:#eab308; border:1px solid rgba(234,179,8,.2);\n}\n.status-bar.running[data-v-5b1a932a] { background:rgba(52,211,153,.12); color:#34d399; border:1px solid rgba(52,211,153,.2);\n}\n.status-dot[data-v-5b1a932a] { width:8px; height:8px; border-radius:50%; background:currentColor; animation:dotPulse-5b1a932a 2s ease-in-out infinite;\n}\n@keyframes dotPulse-5b1a932a {\n0%,100%{opacity:.7;transform:scale(1)}\n50%{opacity:1;transform:scale(1.15)}\n}\n",
+      "start": 1783196195713,
+      "end": 1783196195713,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195713,
+      "end": 1783196195713,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196195713,
+      "end": 1783196195713,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195713,
+      "end": 1783196195713,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195713,
+      "end": 1783196195713,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195713,
+      "end": 1783196195713,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195713,
+      "end": 1783196195713,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195713,
+      "end": 1783196195713,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195713,
+      "end": 1783196195713,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195713,
+      "end": 1783196195714,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195714,
+      "end": 1783196195714,
+      "order": "normal"
+    }
+  ]
+}

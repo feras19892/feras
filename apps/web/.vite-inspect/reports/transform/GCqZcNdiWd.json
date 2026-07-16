@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/thermal-expansion/ThermalExpansionExperiment.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, onMounted, onUnmounted } from 'vue'\nimport { useThermalExpansionExperiment } from '../../../../composables/thermal-expansion/useThermalExpansionExperiment'\nimport { useI18n } from '../../../../composables/useI18n'\nimport ThermalExpansionMenuBar from '../../../../components/experiment/thermal-expansion/ThermalExpansionMenuBar.vue'\nimport ThermalExpansionCanvas from '../../../../components/experiment/thermal-expansion/ThermalExpansionCanvas.vue'\nimport ThermalExpansionStatusBar from '../../../../components/experiment/thermal-expansion/ThermalExpansionStatusBar.vue'\nimport ThermalExpansionControlBar from '../../../../components/experiment/thermal-expansion/ThermalExpansionControlBar.vue'\nimport DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'\nimport ThermalExpansionPanelBody from '../../../../components/experiment/thermal-expansion/ThermalExpansionPanelBody.vue'\nimport ThermalExpansionOverlayPanels from '../../../../components/experiment/thermal-expansion/ThermalExpansionOverlayPanels.vue'\nimport ThermalExpansionHelpModal from '../../../../components/experiment/thermal-expansion/ThermalExpansionHelpModal.vue'\n\nconst ex = useThermalExpansionExperiment()\nconst { t } = useI18n()\nconst helpOpen = ref(false)\nconst hoveredField = ref('')\n\nfunction onKeyDown(e: KeyboardEvent) {\n  const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()\n  if (tag === 'input' || tag === 'textarea' || tag === 'select') return\n  if (e.code === 'Space') { e.preventDefault(); ex.lab.togglePause() }\n  else if (e.key === 'r' || e.key === 'R') { if (confirm(t('experiments.resetConfirm'))) ex.resetSim() }\n  else if (e.key === 's' || e.key === 'S') { ex.trials.recordTrial() }\n  else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); e.shiftKey ? ex.trials.redo() : ex.trials.undo() }\n  else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ex.trials.redo() }\n  else if (e.key === '?') { helpOpen.value = !helpOpen.value }\n}\n\nonMounted(() => { window.addEventListener('keydown', onKeyDown); ex.layout.applyPersistedLayout(); ex.trials.autoLoad() })\nonUnmounted(() => { window.removeEventListener('keydown', onKeyDown) })\n</script>\n\n<template>\n  <div class=\"thermal-lab\">\n    <ThermalExpansionMenuBar\n      :title=\"t('experiments.thermalTitle')\"\n      icon=\"🔥\"\n      experiment-route=\"/physics/heat/thermal-expansion\"\n      experiment-name=\"Thermal Expansion\"\n      @togglePanel=\"ex.layout.togglePanel\"\n      @showAllPanels=\"ex.layout.showAllPanels\"\n      @exportCsv=\"ex.trials.exportCsv\"\n      @togglePause=\"ex.lab.togglePause\"\n      @reset=\"ex.resetSim\"\n      @recordTrial=\"ex.trials.recordTrial\"\n      @toggleHelp=\"helpOpen = !helpOpen\"\n      @analyzeResults=\"ex.exportToAnalysis\"\n    />\n    <ThermalExpansionHelpModal :open=\"helpOpen\" @close=\"helpOpen = false\" />\n\n    <div class=\"lab-grid\">\n      <div class=\"lab-col data-col\" :style=\"{ width: ex.layout.widths.data + 'px' }\">\n        <template v-for=\"id in ex.layout.columnMap.data\" :key=\"id\">\n          <DraggablePanel v-if=\"ex.layout.isPanelVisible(id)\" class=\"lab-card\" :id=\"id\" :title=\"ex.layout.panelTitle(id)\"\n            @maximize=\"ex.layout.maximizePanel\" @hide=\"ex.layout.togglePanel\" @drop=\"ex.handleDrop\">\n            <ThermalExpansionPanelBody :id=\"id\" :trials=\"ex.trials.trials.value\" :params=\"ex.params\"\n              :alpha=\"ex.lab.alpha.value\" :dL=\"ex.lab.dL.value\" :L1=\"ex.lab.L1.value\"\n              @remove=\"ex.trials.removeTrial\" @clear=\"ex.trials.clearTrials\" @update:params=\"Object.assign(ex.params, $event)\"\n              @hover-field=\"hoveredField = $event\" />\n          </DraggablePanel>\n        </template>\n      </div>\n      <div class=\"resizer\" @mousedown=\"ex.onResizeStart('data', $event)\"></div>\n      <div class=\"lab-col vis-col\">\n        <div class=\"vis-canvas-wrap\">\n          <ThermalExpansionCanvas\n            :material=\"ex.params.material\" :L0=\"ex.params.L0\" :t0=\"ex.params.t0\" :t1=\"ex.params.t1\"\n            :current-t=\"ex.lab.currentT.value\" :phase=\"ex.lab.phase.value\"\n            :running=\"ex.lab.running.value\" :paused=\"ex.lab.paused.value\"\n            :highlight-field=\"hoveredField\"\n            @update-sim=\"ex.lab.updateSim\" />\n        </div>\n        <ThermalExpansionControlBar\n          :launch-label=\"ex.lab.running.value && !ex.lab.paused.value ? '⏸️ ' + t('experiments.pauseBtn') : '▶️ ' + t('experiments.startBtn')\"\n          :can-undo=\"ex.trials.canUndo()\" :can-redo=\"ex.trials.canRedo()\"\n          @toggle-pause=\"ex.lab.togglePause\" @reset=\"ex.resetSim\" @record-trial=\"ex.trials.recordTrial\"\n          @clear-trials=\"ex.trials.clearTrials\" @export-csv=\"ex.trials.exportCsv\"\n          @undo=\"ex.trials.undo\" @redo=\"ex.trials.redo\" />\n      </div>\n      <div class=\"resizer\" @mousedown=\"ex.onResizeStart('ctrl', $event)\"></div>\n      <div class=\"lab-col ctrl-col\" :style=\"{ width: ex.layout.widths.ctrl + 'px' }\">\n        <template v-for=\"id in ex.layout.columnMap.ctrl\" :key=\"id\">\n          <DraggablePanel v-if=\"id !== 'params' && ex.layout.isPanelVisible(id)\" class=\"lab-card\" :id=\"id\" :title=\"ex.layout.panelTitle(id)\"\n            @maximize=\"ex.layout.maximizePanel\" @hide=\"ex.layout.togglePanel\" @drop=\"ex.handleDrop\">\n            <ThermalExpansionPanelBody :id=\"id\" :trials=\"ex.trials.trials.value\" :params=\"ex.params\"\n              :alpha=\"ex.lab.alpha.value\" :dL=\"ex.lab.dL.value\" :L1=\"ex.lab.L1.value\"\n              @remove=\"ex.trials.removeTrial\" @clear=\"ex.trials.clearTrials\" @update:params=\"Object.assign(ex.params, $event)\"\n              @hover-field=\"hoveredField = $event\" />\n          </DraggablePanel>\n          <div v-else-if=\"id === 'params'\" class=\"params-embedded\">\n            <ThermalExpansionPanelBody id=\"params\" :trials=\"ex.trials.trials.value\" :params=\"ex.params\"\n              :alpha=\"ex.lab.alpha.value\" :dL=\"ex.lab.dL.value\" :L1=\"ex.lab.L1.value\"\n              @update:params=\"Object.assign(ex.params, $event)\"\n              @hover-field=\"hoveredField = $event\" />\n          </div>\n        </template>\n      </div>\n    </div>\n    <ThermalExpansionOverlayPanels\n      :maximized=\"ex.layout.maximized\" :panel-title=\"ex.layout.panelTitle\"\n      :trials=\"ex.trials.trials.value\" :params=\"ex.params\"\n      :alpha=\"ex.lab.alpha.value\" :dL=\"ex.lab.dL.value\" :L1=\"ex.lab.L1.value\"\n      @maximize=\"ex.layout.maximizePanel\" @remove=\"ex.trials.removeTrial\" @clear=\"ex.trials.clearTrials\"\n      @update:params=\"Object.assign(ex.params, $event)\" />\n\n    <div class=\"hint-bar\" v-if=\"!ex.lab.running.value\"><span>&#x1F4A1; {{ t('experiments.hintStart') }}</span></div>\n    <div class=\"hint-bar active\" v-else-if=\"ex.lab.paused.value\"><span>&#x23F8; {{ t('experiments.hintPaused') }}</span></div>\n    <div class=\"hint-bar success\" v-else><span>&#x2705; {{ t('experiments.hintRunning') }}</span></div>\n\n    <ThermalExpansionStatusBar\n      :running=\"ex.lab.running.value\"\n      :paused=\"ex.lab.paused.value\"\n      :material=\"ex.params.material\"\n      :L0=\"ex.params.L0\"\n      :t0=\"ex.params.t0\"\n      :t1=\"ex.params.t1\"\n      :current-t=\"ex.lab.currentT.value\"\n      :dL=\"ex.lab.dL.value\"\n      :phase=\"ex.lab.phase.value\"\n    />\n  </div>\n</template>\n\n<style scoped>\n.thermal-lab { background: #161B22; color: #D1D7E0; padding: .6rem .8rem; height: 100vh; display: flex; flex-direction: column; gap: .5rem; overflow: hidden; }\n.lab-grid { display: flex; flex-direction: row; flex: 1; min-height: 0; overflow: hidden; }\n.lab-col { display: flex; flex-direction: column; gap: .5rem; overflow-y: auto; min-height: 0; }\n.data-col { background: rgba(255,255,255,0.02); }\n.vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 360px; position: relative; }\n.vis-canvas-wrap { flex: 1; min-height: 0; position: relative; width: 100%; }\n.ctrl-col { background: rgba(255,255,255,0.02); }\n.params-embedded { padding: .6rem; }\n.lab-card { min-height: 0; }\n.lab-card :deep(.draggable-panel) { max-height: 100%; }\n.resizer { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0; }\n.resizer:hover, .resizer:active { background: #5B8DB8; }\n.hint-bar { background: #252D3A; border: 1px solid #2D3645; border-radius: 6px; padding: .35rem .7rem; font-size: .75rem; color: #8B95A5; text-align: center; flex-shrink: 0; }\n.hint-bar.active { border-color: #5B8DB8; color: #5B8DB8; background: rgba(91,141,184,.08); }\n.hint-bar.success { border-color: #22c55e; color: #22c55e; background: rgba(34,197,94,.08); }\n</style>\n",
+      "start": 1783196192962,
+      "end": 1783196193221,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193221,
+      "end": 1783196193221,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196193221,
+      "end": 1783196193221,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193221,
+      "end": 1783196193221,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193221,
+      "end": 1783196193221,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/thermal-expansion/ThermalExpansionExperiment.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/thermal-expansion/ThermalExpansionExperiment.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/thermal-expansion/ThermalExpansionExperiment.vue?vue&type=style&index=0&scoped=6d09928f&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-6d09928f\"]]);\n",
+      "start": 1783196193221,
+      "end": 1783196193338,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193338,
+      "end": 1783196193338,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193338,
+      "end": 1783196193338,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193338,
+      "end": 1783196193338,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193338,
+      "end": 1783196193338,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193339,
+      "end": 1783196193339,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193339,
+      "end": 1783196193339,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193339,
+      "end": 1783196193339,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193339,
+      "end": 1783196193339,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193339,
+      "end": 1783196193341,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193341,
+      "end": 1783196193341,
+      "order": "normal"
+    }
+  ]
+}

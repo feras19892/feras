@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/SpeedOfSoundHelpModal.vue?vue&type=style&index=0&scoped=6fdcde82&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; padding: 1.5rem; }\n.modal { background: #131a25; border: 1px solid #2D3645; border-radius: 12px; max-width: 720px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,.5); }\n.modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.2rem; border-bottom: 1px solid #2D3645; flex-shrink: 0; }\n.modal-header h3 { margin: 0; font-size: 1rem; color: #e2e8f0; }\n.close-btn { background: transparent; border: 1px solid #2D3645; color: #8B95A5; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; padding: 0; }\n.close-btn:hover { background: rgba(91,141,184,.1); color: #5B8DB8; }\n.modal-body { overflow-y: auto; padding: 1.2rem; font-size: .82rem; color: #cbd5e1; line-height: 1.8; direction: rtl; text-align: right; }\n.modal-body section { margin-bottom: 1.4rem; }\n.modal-body h4 { margin: 0 0 .5rem; font-size: .9rem; color: #5B8DB8; border-bottom: 1px solid #2D3645; padding-bottom: .3rem; }\n.modal-body p { margin: .4rem 0; }\n.modal-body ol, .modal-body ul { margin: .4rem 0; padding-right: 1.2rem; }\n.modal-body li { margin-bottom: .25rem; }\n.formula { background: #1a2332; border: 1px solid #2D3645; border-radius: 6px; padding: .6rem .8rem; font-family: monospace; font-size: .9rem; color: #5B8DB8; text-align: center; margin: .6rem 0; direction: ltr; }\n.element-grid { display: flex; flex-direction: column; gap: .35rem; }\n.element { background: #1a2332; border-radius: 6px; padding: .4rem .6rem; font-size: .78rem; }\n.tag { color: #5B8DB8; }\n.kbd-grid { display: flex; flex-wrap: wrap; gap: .4rem; }\n.kbd-grid span { background: #1a2332; border: 1px solid #2D3645; border-radius: 5px; padding: .3rem .5rem; font-size: .75rem; }\nkbd { background: #252D3A; border: 1px solid #475569; border-radius: 4px; padding: .05rem .3rem; font-family: monospace; font-size: .7rem; color: #D1D7E0; }\n",
+      "start": 1783196194453,
+      "end": 1783196194453
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; padding: 1.5rem; }\n.modal { background: #131a25; border: 1px solid #2D3645; border-radius: 12px; max-width: 720px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,.5); }\n.modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.2rem; border-bottom: 1px solid #2D3645; flex-shrink: 0; }\n.modal-header h3 { margin: 0; font-size: 1rem; color: #e2e8f0; }\n.close-btn { background: transparent; border: 1px solid #2D3645; color: #8B95A5; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; padding: 0; }\n.close-btn:hover { background: rgba(91,141,184,.1); color: #5B8DB8; }\n.modal-body { overflow-y: auto; padding: 1.2rem; font-size: .82rem; color: #cbd5e1; line-height: 1.8; direction: rtl; text-align: right; }\n.modal-body section { margin-bottom: 1.4rem; }\n.modal-body h4 { margin: 0 0 .5rem; font-size: .9rem; color: #5B8DB8; border-bottom: 1px solid #2D3645; padding-bottom: .3rem; }\n.modal-body p { margin: .4rem 0; }\n.modal-body ol, .modal-body ul { margin: .4rem 0; padding-right: 1.2rem; }\n.modal-body li { margin-bottom: .25rem; }\n.formula { background: #1a2332; border: 1px solid #2D3645; border-radius: 6px; padding: .6rem .8rem; font-family: monospace; font-size: .9rem; color: #5B8DB8; text-align: center; margin: .6rem 0; direction: ltr; }\n.element-grid { display: flex; flex-direction: column; gap: .35rem; }\n.element { background: #1a2332; border-radius: 6px; padding: .4rem .6rem; font-size: .78rem; }\n.tag { color: #5B8DB8; }\n.kbd-grid { display: flex; flex-wrap: wrap; gap: .4rem; }\n.kbd-grid span { background: #1a2332; border: 1px solid #2D3645; border-radius: 5px; padding: .3rem .5rem; font-size: .75rem; }\nkbd { background: #252D3A; border: 1px solid #475569; border-radius: 4px; padding: .05rem .3rem; font-family: monospace; font-size: .7rem; color: #D1D7E0; }\n",
+      "start": 1783196194453,
+      "end": 1783196194453,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194453,
+      "end": 1783196194453,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194453,
+      "end": 1783196194453,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194453,
+      "end": 1783196194453,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.overlay[data-v-6fdcde82] { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; padding: 1.5rem;\n}\n.modal[data-v-6fdcde82] { background: #131a25; border: 1px solid #2D3645; border-radius: 12px; max-width: 720px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,.5);\n}\n.modal-header[data-v-6fdcde82] { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.2rem; border-bottom: 1px solid #2D3645; flex-shrink: 0;\n}\n.modal-header h3[data-v-6fdcde82] { margin: 0; font-size: 1rem; color: #e2e8f0;\n}\n.close-btn[data-v-6fdcde82] { background: transparent; border: 1px solid #2D3645; color: #8B95A5; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; padding: 0;\n}\n.close-btn[data-v-6fdcde82]:hover { background: rgba(91,141,184,.1); color: #5B8DB8;\n}\n.modal-body[data-v-6fdcde82] { overflow-y: auto; padding: 1.2rem; font-size: .82rem; color: #cbd5e1; line-height: 1.8; direction: rtl; text-align: right;\n}\n.modal-body section[data-v-6fdcde82] { margin-bottom: 1.4rem;\n}\n.modal-body h4[data-v-6fdcde82] { margin: 0 0 .5rem; font-size: .9rem; color: #5B8DB8; border-bottom: 1px solid #2D3645; padding-bottom: .3rem;\n}\n.modal-body p[data-v-6fdcde82] { margin: .4rem 0;\n}\n.modal-body ol[data-v-6fdcde82], .modal-body ul[data-v-6fdcde82] { margin: .4rem 0; padding-right: 1.2rem;\n}\n.modal-body li[data-v-6fdcde82] { margin-bottom: .25rem;\n}\n.formula[data-v-6fdcde82] { background: #1a2332; border: 1px solid #2D3645; border-radius: 6px; padding: .6rem .8rem; font-family: monospace; font-size: .9rem; color: #5B8DB8; text-align: center; margin: .6rem 0; direction: ltr;\n}\n.element-grid[data-v-6fdcde82] { display: flex; flex-direction: column; gap: .35rem;\n}\n.element[data-v-6fdcde82] { background: #1a2332; border-radius: 6px; padding: .4rem .6rem; font-size: .78rem;\n}\n.tag[data-v-6fdcde82] { color: #5B8DB8;\n}\n.kbd-grid[data-v-6fdcde82] { display: flex; flex-wrap: wrap; gap: .4rem;\n}\n.kbd-grid span[data-v-6fdcde82] { background: #1a2332; border: 1px solid #2D3645; border-radius: 5px; padding: .3rem .5rem; font-size: .75rem;\n}\nkbd[data-v-6fdcde82] { background: #252D3A; border: 1px solid #475569; border-radius: 4px; padding: .05rem .3rem; font-family: monospace; font-size: .7rem; color: #D1D7E0;\n}\n",
+      "start": 1783196194453,
+      "end": 1783196194454,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194454,
+      "end": 1783196194454,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196194454,
+      "end": 1783196194454,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194454,
+      "end": 1783196194454,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194454,
+      "end": 1783196194454,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194454,
+      "end": 1783196194454,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194454,
+      "end": 1783196194454,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194454,
+      "end": 1783196194454,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194454,
+      "end": 1783196194454,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194454,
+      "end": 1783196194454,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194454,
+      "end": 1783196194454,
+      "order": "normal"
+    }
+  ]
+}

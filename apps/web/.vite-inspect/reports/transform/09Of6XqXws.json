@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/projectile/ProjectileCanvas.vue?vue&type=style&index=0&scoped=11755c67&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.canvas-wrap { flex: 1; min-height: 0; width: 100%; display: flex; flex-direction: column; position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,.3); border: 1px solid rgba(71,85,105,0.3); }\n.canvas-wrap canvas { display: block; width: 100%; flex: 1; min-height: 0; }\n.snapshot-btn { position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(15,23,42,0.85); border: 1px solid rgba(71,85,105,0.5); border-radius: 8px; padding: .3rem .5rem; font-size: .85rem; color: #e2e8f0; cursor: pointer; backdrop-filter: blur(8px); transition: background .2s; }\n.snapshot-btn:hover { background: rgba(30,41,59,0.95); }\n.target-input { position: absolute; z-index: 30; width: 70px; padding: .2rem .4rem; border-radius: 6px; border: 1px solid #5B8DB8; background: rgba(15,23,42,0.95); color: #e2e8f0; font-size: .8rem; text-align: center; outline: none; }\n",
+      "start": 1783196194473,
+      "end": 1783196194473
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.canvas-wrap { flex: 1; min-height: 0; width: 100%; display: flex; flex-direction: column; position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,.3); border: 1px solid rgba(71,85,105,0.3); }\n.canvas-wrap canvas { display: block; width: 100%; flex: 1; min-height: 0; }\n.snapshot-btn { position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(15,23,42,0.85); border: 1px solid rgba(71,85,105,0.5); border-radius: 8px; padding: .3rem .5rem; font-size: .85rem; color: #e2e8f0; cursor: pointer; backdrop-filter: blur(8px); transition: background .2s; }\n.snapshot-btn:hover { background: rgba(30,41,59,0.95); }\n.target-input { position: absolute; z-index: 30; width: 70px; padding: .2rem .4rem; border-radius: 6px; border: 1px solid #5B8DB8; background: rgba(15,23,42,0.95); color: #e2e8f0; font-size: .8rem; text-align: center; outline: none; }\n",
+      "start": 1783196194473,
+      "end": 1783196194473,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194473,
+      "end": 1783196194473,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194473,
+      "end": 1783196194473,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194473,
+      "end": 1783196194473,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.canvas-wrap[data-v-11755c67] { flex: 1; min-height: 0; width: 100%; display: flex; flex-direction: column; position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,.3); border: 1px solid rgba(71,85,105,0.3);\n}\n.canvas-wrap canvas[data-v-11755c67] { display: block; width: 100%; flex: 1; min-height: 0;\n}\n.snapshot-btn[data-v-11755c67] { position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(15,23,42,0.85); border: 1px solid rgba(71,85,105,0.5); border-radius: 8px; padding: .3rem .5rem; font-size: .85rem; color: #e2e8f0; cursor: pointer; backdrop-filter: blur(8px); transition: background .2s;\n}\n.snapshot-btn[data-v-11755c67]:hover { background: rgba(30,41,59,0.95);\n}\n.target-input[data-v-11755c67] { position: absolute; z-index: 30; width: 70px; padding: .2rem .4rem; border-radius: 6px; border: 1px solid #5B8DB8; background: rgba(15,23,42,0.95); color: #e2e8f0; font-size: .8rem; text-align: center; outline: none;\n}\n",
+      "start": 1783196194473,
+      "end": 1783196194473,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194473,
+      "end": 1783196194473,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196194473,
+      "end": 1783196194473,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194473,
+      "end": 1783196194473,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194473,
+      "end": 1783196194473,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194473,
+      "end": 1783196194473,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194473,
+      "end": 1783196194473,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194473,
+      "end": 1783196194473,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194473,
+      "end": 1783196194473,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194473,
+      "end": 1783196194473,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194473,
+      "end": 1783196194473,
+      "order": "normal"
+    }
+  ]
+}

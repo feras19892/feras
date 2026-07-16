@@ -10,6 +10,13 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'click'): void;
 }>();
+
+const handleKeydown = (event: KeyboardEvent): void => {
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault();
+    emit('click');
+  }
+};
 </script>
 
 <template>
@@ -19,7 +26,10 @@ const emit = defineEmits<{
     :class="{ active: props.active, hidden: !props.visible }"
     :style="{ left: `${props.x}px`, top: `${props.y}px` }"
     :title="props.label"
+    :aria-label="props.label"
+    tabindex="0"
     @click.stop="emit('click')"
+    @keydown="handleKeydown"
   >
     <span class="marker-pulse" />
     <span class="marker-tooltip">{{ props.label }}</span>

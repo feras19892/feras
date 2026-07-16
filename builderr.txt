@@ -1,0 +1,721 @@
+
+> @my-modern-app/web@0.0.1 build C:\Users\feras\Desktop\feras\apps\web
+> pnpm run diagnose && node ../../node_modules/vite/bin/vite.js build
+
+
+> @my-modern-app/web@0.0.1 diagnose C:\Users\feras\Desktop\feras\apps\web
+> node ../../node_modules/vue-tsc/bin/vue-tsc.js --noEmit && node ../../node_modules/eslint/bin/eslint.js . --ext .vue,.ts,.tsx && node ../../node_modules/vitest/vitest.mjs run src/composables/fuzz-physics-engines.test.ts src/composables/property-physics.test.ts
+
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\boyles-law\BoylesLawPanelBody.vue
+  20:105  warning  Attribute ':T' must be hyphenated  vue/attribute-hyphenation
+  24:102  warning  Attribute ':T' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\boyles-law\panels\BoylesLawLawsPanel.vue
+  7:3  warning  Prop "T" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\boyles-law\panels\BoylesLawReadingsPanel.vue
+  7:3  warning  Prop "T" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\CapacitorsComboWorksheetPanel.vue
+  4:29  warning  Prop "Ceq" is not in camelCase  vue/prop-name-casing
+  4:55  warning  Prop "C1" is not in camelCase   vue/prop-name-casing
+  4:67  warning  Prop "C2" is not in camelCase   vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\GalvanometerWorksheetPanel.vue
+  5:3  warning  Prop "N" is not in camelCase    vue/prop-name-casing
+  8:3  warning  Prop "IuA" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\InternalResistanceWorksheetPanel.vue
+  4:29  warning  Prop "Vt" is not in camelCase  vue/prop-name-casing
+  4:41  warning  Prop "I" is not in camelCase   vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\KirchhoffWorksheetPanel.vue
+   5:3  warning  Prop "V1" is not in camelCase  vue/prop-name-casing
+   6:3  warning  Prop "V2" is not in camelCase  vue/prop-name-casing
+   7:3  warning  Prop "R1" is not in camelCase  vue/prop-name-casing
+   8:3  warning  Prop "R2" is not in camelCase  vue/prop-name-casing
+   9:3  warning  Prop "R3" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "I1" is not in camelCase  vue/prop-name-casing
+  11:3  warning  Prop "I2" is not in camelCase  vue/prop-name-casing
+  12:3  warning  Prop "I3" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\LampWorksheetPanel.vue
+   5:3  warning  Prop "V" is not in camelCase       vue/prop-name-casing
+   6:3  warning  Prop "I" is not in camelCase       vue/prop-name-casing
+   7:3  warning  Prop "R" is not in camelCase       vue/prop-name-casing
+   8:3  warning  Prop "P" is not in camelCase       vue/prop-name-casing
+   9:3  warning  Prop "PLight" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "PHeat" is not in camelCase   vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\NonOhmicWorksheetPanel.vue
+  4:29  warning  Prop "V" is not in camelCase        vue/prop-name-casing
+  4:40  warning  Prop "I_ohmic" is not in camelCase  vue/prop-name-casing
+  4:57  warning  Prop "I_lamp" is not in camelCase   vue/prop-name-casing
+  4:73  warning  Prop "R_dyn" is not in camelCase    vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\ParallelWorksheetPanel.vue
+   5:3  warning  Prop "V" is not in camelCase       vue/prop-name-casing
+   6:3  warning  Prop "R1" is not in camelCase      vue/prop-name-casing
+   7:3  warning  Prop "R2" is not in camelCase      vue/prop-name-casing
+   8:3  warning  Prop "I1" is not in camelCase      vue/prop-name-casing
+   9:3  warning  Prop "I2" is not in camelCase      vue/prop-name-casing
+  10:3  warning  Prop "Itotal" is not in camelCase  vue/prop-name-casing
+  11:3  warning  Prop "Req" is not in camelCase     vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\PotentiometerWorksheetPanel.vue
+  4:29  warning  Prop "Vref" is not in camelCase    vue/prop-name-casing
+  4:43  warning  Prop "Vx" is not in camelCase      vue/prop-name-casing
+  4:55  warning  Prop "Vslide" is not in camelCase  vue/prop-name-casing
+  4:71  warning  Prop "Ig" is not in camelCase      vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\PowerWorksheetPanel.vue
+  5:3  warning  Prop "V" is not in camelCase  vue/prop-name-casing
+  6:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+  8:3  warning  Prop "P" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\RCWorksheetPanel.vue
+   5:3  warning  Prop "V0" is not in camelCase  vue/prop-name-casing
+   6:3  warning  Prop "R" is not in camelCase   vue/prop-name-casing
+   7:3  warning  Prop "C" is not in camelCase   vue/prop-name-casing
+   9:3  warning  Prop "Vc" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "I" is not in camelCase   vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\ResistivityWorksheetPanel.vue
+   5:3  warning  Prop "V" is not in camelCase  vue/prop-name-casing
+   6:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+   7:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+   9:3  warning  Prop "L" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "A" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\SeriesWorksheetPanel.vue
+  4:29  warning  Prop "V" is not in camelCase    vue/prop-name-casing
+  4:40  warning  Prop "I" is not in camelCase    vue/prop-name-casing
+  4:51  warning  Prop "Req" is not in camelCase  vue/prop-name-casing
+  4:64  warning  Prop "V1" is not in camelCase   vue/prop-name-casing
+  4:76  warning  Prop "V2" is not in camelCase   vue/prop-name-casing
+  4:88  warning  Prop "V3" is not in camelCase   vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\VoltageDividerWorksheetPanel.vue
+   5:3  warning  Prop "V" is not in camelCase   vue/prop-name-casing
+   6:3  warning  Prop "R1" is not in camelCase  vue/prop-name-casing
+   7:3  warning  Prop "R2" is not in camelCase  vue/prop-name-casing
+   8:3  warning  Prop "V1" is not in camelCase  vue/prop-name-casing
+   9:3  warning  Prop "V2" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "I" is not in camelCase   vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electric-lab\panels\WheatstoneWorksheetPanel.vue
+   5:3  warning  Prop "R1" is not in camelCase  vue/prop-name-casing
+   6:3  warning  Prop "R2" is not in camelCase  vue/prop-name-casing
+   7:3  warning  Prop "R3" is not in camelCase  vue/prop-name-casing
+   8:3  warning  Prop "Rx" is not in camelCase  vue/prop-name-casing
+   9:3  warning  Prop "Vg" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "Ig" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\CircularCoilCanvas.vue
+  7:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  8:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\CircularCoilParamPanel.vue
+  6:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\CircularCoilReadingsPanel.vue
+  6:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+  8:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+  9:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\FaradayLawCanvas.vue
+   7:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+   8:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+   9:3  warning  Prop "A" is not in camelCase  vue/prop-name-casing
+  11:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\FaradayLawParamPanel.vue
+   6:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+   7:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+   8:3  warning  Prop "A" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\FaradayLawReadingsPanel.vue
+   6:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+   7:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+   8:3  warning  Prop "A" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\GeneratorCanvas.vue
+   7:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+   8:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+   9:3  warning  Prop "A" is not in camelCase  vue/prop-name-casing
+  11:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\GeneratorParamPanel.vue
+   6:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+   7:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+   8:3  warning  Prop "A" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\GeneratorReadingsPanel.vue
+   6:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+   7:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+   8:3  warning  Prop "A" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\LorentzForceCanvas.vue
+   7:3  warning  Prop "V" is not in camelCase  vue/prop-name-casing
+   8:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+   9:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\LorentzForceParamPanel.vue
+  6:3  warning  Prop "V" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  8:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+  9:3  warning  Prop "R" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\LorentzForceReadingsPanel.vue
+   6:3  warning  Prop "V" is not in camelCase   vue/prop-name-casing
+   7:3  warning  Prop "I" is not in camelCase   vue/prop-name-casing
+   8:3  warning  Prop "N" is not in camelCase   vue/prop-name-casing
+   9:3  warning  Prop "B" is not in camelCase   vue/prop-name-casing
+  11:3  warning  Prop "Fm" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\MagneticFluxCanvas.vue
+  7:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+  8:3  warning  Prop "A" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\MagneticFluxParamPanel.vue
+  6:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "A" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\MagneticFluxReadingsPanel.vue
+  6:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "A" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\SolenoidCanvas.vue
+  7:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  8:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\SolenoidParamPanel.vue
+  6:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\SolenoidReadingsPanel.vue
+  6:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+  8:3  warning  Prop "L" is not in camelCase  vue/prop-name-casing
+  9:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\StraightWireCanvas.vue
+  7:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\StraightWireParamPanel.vue
+  6:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\StraightWireReadingsPanel.vue
+  6:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  8:3  warning  Prop "B" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\TorqueCoilCanvas.vue
+  7:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  8:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\TorqueCoilParamPanel.vue
+  6:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\electromagnetism\TorqueCoilReadingsPanel.vue
+  6:3  warning  Prop "I" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "N" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\ideal-gas\IdealGasCanvas.vue
+  6:3  warning  Prop "T" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "V" is not in camelCase  vue/prop-name-casing
+  8:3  warning  Prop "P" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\ideal-gas\IdealGasOverlayPanels.vue
+  10:3  warning  Prop "P" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\ideal-gas\IdealGasStatusBar.vue
+   8:3  warning  Prop "T" is not in camelCase  vue/prop-name-casing
+   9:3  warning  Prop "V" is not in camelCase  vue/prop-name-casing
+  10:3  warning  Prop "P" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\ideal-gas\panels\IdealGasWorksheetPanel.vue
+  6:3  warning  Prop "T" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "V" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\latent-heat\panels\LatentHeatWorksheetPanel.vue
+  6:3  warning  Prop "L" is not in camelCase  vue/prop-name-casing
+  7:3  warning  Prop "Q" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\polarization\PolarizationPanelBody.vue
+  38:7  warning  Attribute ':I0' must be hyphenated  vue/attribute-hyphenation
+  67:7  warning  Attribute ':I0' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\polarization\panels\PolarizationLawsPanel.vue
+  7:3  warning  Prop "I0" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\polarization\panels\PolarizationReadingsPanel.vue
+  7:3  warning  Prop "I0" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\polarization\panels\PolarizationWorksheetPanel.vue
+  7:3  warning  Prop "I0" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\thermal-expansion\ThermalExpansionCanvas.vue
+  11:3  warning  Prop "L0" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\thermal-expansion\ThermalExpansionOverlayPanels.vue
+  10:30   warning  Prop "L1" is not in camelCase       vue/prop-name-casing
+  29:104  warning  Attribute ':L1' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\thermal-expansion\ThermalExpansionPanelBody.vue
+  10:157  warning  Prop "L1" is not in camelCase       vue/prop-name-casing
+  21:89   warning  Attribute ':L0' must be hyphenated  vue/attribute-hyphenation
+  21:147  warning  Attribute ':L1' must be hyphenated  vue/attribute-hyphenation
+  25:58   warning  Attribute ':L0' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\thermal-expansion\ThermalExpansionStatusBar.vue
+  10:3  warning  Prop "L0" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\thermal-expansion\panels\ThermalExpansionLawsPanel.vue
+  2:29  warning  Prop "L0" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\thermal-expansion\panels\ThermalExpansionReadingsPanel.vue
+  5:3  warning  Prop "L0" is not in camelCase  vue/prop-name-casing
+  9:3  warning  Prop "L1" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\components\experiment\thermal-expansion\panels\ThermalExpansionWorksheetPanel.vue
+  5:3  warning  Prop "L0" is not in camelCase  vue/prop-name-casing
+
+C:\Users\feras\Desktop\feras\apps\web\src\composables\useExperimentMonitor.ts
+  84:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  88:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\chemistry\ChemistryLanding.vue
+  57:51  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  59:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  62:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  96:55  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\analysis-calc\AnalysisCalcExperiment.vue
+  370:17  warning  Attribute ':I0' must be hyphenated       vue/attribute-hyphenation
+  416:17  warning  Attribute ':T' must be hyphenated        vue/attribute-hyphenation
+  417:17  warning  Attribute ':V' must be hyphenated        vue/attribute-hyphenation
+  430:17  warning  Attribute ':L0' must be hyphenated       vue/attribute-hyphenation
+  440:17  warning  Attribute ':L' must be hyphenated        vue/attribute-hyphenation
+  441:17  warning  Attribute ':Q' must be hyphenated        vue/attribute-hyphenation
+  506:17  warning  Attribute ':V1' must be hyphenated       vue/attribute-hyphenation
+  507:17  warning  Attribute ':V2' must be hyphenated       vue/attribute-hyphenation
+  508:17  warning  Attribute ':R1' must be hyphenated       vue/attribute-hyphenation
+  509:17  warning  Attribute ':R2' must be hyphenated       vue/attribute-hyphenation
+  510:17  warning  Attribute ':R3' must be hyphenated       vue/attribute-hyphenation
+  511:17  warning  Attribute ':I1' must be hyphenated       vue/attribute-hyphenation
+  512:17  warning  Attribute ':I2' must be hyphenated       vue/attribute-hyphenation
+  513:17  warning  Attribute ':I3' must be hyphenated       vue/attribute-hyphenation
+  519:17  warning  Attribute ':V' must be hyphenated        vue/attribute-hyphenation
+  520:17  warning  Attribute ':R1' must be hyphenated       vue/attribute-hyphenation
+  521:17  warning  Attribute ':R2' must be hyphenated       vue/attribute-hyphenation
+  522:17  warning  Attribute ':I1' must be hyphenated       vue/attribute-hyphenation
+  523:17  warning  Attribute ':I2' must be hyphenated       vue/attribute-hyphenation
+  524:17  warning  Attribute ':Itotal' must be hyphenated   vue/attribute-hyphenation
+  525:17  warning  Attribute ':Req' must be hyphenated      vue/attribute-hyphenation
+  531:17  warning  Attribute ':V' must be hyphenated        vue/attribute-hyphenation
+  532:17  warning  Attribute ':I' must be hyphenated        vue/attribute-hyphenation
+  533:17  warning  Attribute ':R' must be hyphenated        vue/attribute-hyphenation
+  534:17  warning  Attribute ':P' must be hyphenated        vue/attribute-hyphenation
+  540:17  warning  Attribute ':V' must be hyphenated        vue/attribute-hyphenation
+  541:17  warning  Attribute ':I' must be hyphenated        vue/attribute-hyphenation
+  542:17  warning  Attribute ':R' must be hyphenated        vue/attribute-hyphenation
+  544:17  warning  Attribute ':L' must be hyphenated        vue/attribute-hyphenation
+  545:17  warning  Attribute ':A' must be hyphenated        vue/attribute-hyphenation
+  551:17  warning  Attribute ':V0' must be hyphenated       vue/attribute-hyphenation
+  552:17  warning  Attribute ':R' must be hyphenated        vue/attribute-hyphenation
+  553:17  warning  Attribute ':C' must be hyphenated        vue/attribute-hyphenation
+  555:17  warning  Attribute ':Vc' must be hyphenated       vue/attribute-hyphenation
+  556:17  warning  Attribute ':I' must be hyphenated        vue/attribute-hyphenation
+  564:17  warning  Attribute ':V' must be hyphenated        vue/attribute-hyphenation
+  565:17  warning  Attribute ':I' must be hyphenated        vue/attribute-hyphenation
+  566:17  warning  Attribute ':R' must be hyphenated        vue/attribute-hyphenation
+  567:17  warning  Attribute ':P' must be hyphenated        vue/attribute-hyphenation
+  568:17  warning  Attribute ':PLight' must be hyphenated   vue/attribute-hyphenation
+  569:17  warning  Attribute ':PHeat' must be hyphenated    vue/attribute-hyphenation
+  575:17  warning  Attribute ':N' must be hyphenated        vue/attribute-hyphenation
+  578:17  warning  Attribute ':IuA' must be hyphenated      vue/attribute-hyphenation
+  584:17  warning  Attribute ':R1' must be hyphenated       vue/attribute-hyphenation
+  585:17  warning  Attribute ':R2' must be hyphenated       vue/attribute-hyphenation
+  586:17  warning  Attribute ':R3' must be hyphenated       vue/attribute-hyphenation
+  587:17  warning  Attribute ':Rx' must be hyphenated       vue/attribute-hyphenation
+  588:17  warning  Attribute ':Vg' must be hyphenated       vue/attribute-hyphenation
+  589:17  warning  Attribute ':Ig' must be hyphenated       vue/attribute-hyphenation
+  595:17  warning  Attribute ':V' must be hyphenated        vue/attribute-hyphenation
+  596:17  warning  Attribute ':R1' must be hyphenated       vue/attribute-hyphenation
+  597:17  warning  Attribute ':R2' must be hyphenated       vue/attribute-hyphenation
+  598:17  warning  Attribute ':V1' must be hyphenated       vue/attribute-hyphenation
+  599:17  warning  Attribute ':V2' must be hyphenated       vue/attribute-hyphenation
+  600:17  warning  Attribute ':I' must be hyphenated        vue/attribute-hyphenation
+  606:17  warning  Attribute ':Vt' must be hyphenated       vue/attribute-hyphenation
+  607:17  warning  Attribute ':I' must be hyphenated        vue/attribute-hyphenation
+  615:17  warning  Attribute ':V' must be hyphenated        vue/attribute-hyphenation
+  616:17  warning  Attribute ':I' must be hyphenated        vue/attribute-hyphenation
+  617:17  warning  Attribute ':Req' must be hyphenated      vue/attribute-hyphenation
+  618:17  warning  Attribute ':V1' must be hyphenated       vue/attribute-hyphenation
+  619:17  warning  Attribute ':V2' must be hyphenated       vue/attribute-hyphenation
+  620:17  warning  Attribute ':V3' must be hyphenated       vue/attribute-hyphenation
+  626:17  warning  Attribute ':Ceq' must be hyphenated      vue/attribute-hyphenation
+  628:17  warning  Attribute ':C1' must be hyphenated       vue/attribute-hyphenation
+  629:17  warning  Attribute ':C2' must be hyphenated       vue/attribute-hyphenation
+  635:17  warning  Attribute ':Vref' must be hyphenated     vue/attribute-hyphenation
+  636:17  warning  Attribute ':Vx' must be hyphenated       vue/attribute-hyphenation
+  637:17  warning  Attribute ':Vslide' must be hyphenated   vue/attribute-hyphenation
+  638:17  warning  Attribute ':Ig' must be hyphenated       vue/attribute-hyphenation
+  645:17  warning  Attribute ':V' must be hyphenated        vue/attribute-hyphenation
+  646:17  warning  Attribute ':I_ohmic' must be hyphenated  vue/attribute-hyphenation
+  647:17  warning  Attribute ':I_lamp' must be hyphenated   vue/attribute-hyphenation
+  648:17  warning  Attribute ':R_dyn' must be hyphenated    vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\circular-coil\CircularCoilExperiment.vue
+  54:13  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+  55:13  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+  56:13  warning  Attribute ':R' must be hyphenated  vue/attribute-hyphenation
+  57:13  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+  74:13  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+  75:13  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+  96:11  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+  97:11  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\electricLabComputedsBasic.ts
+  88:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  89:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\electricLabComputedsNew3.ts
+  37:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  61:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  61:77  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\electricLabExport.ts
+  13:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\electricLabExportAdvanced.ts
+  5:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\electricLabExportBasic.ts
+  39:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  41:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  42:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  43:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  44:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  45:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  46:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  47:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  48:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  51:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\electricLabExportNew.ts
+  5:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\electricLabExportNew2.ts
+  5:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\electricLabExportNew3.ts
+  5:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\electricLabExportNew4.ts
+  5:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\electricLabExportNew5.ts
+  5:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\electricLabRecordTrial.ts
+  11:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  12:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  13:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  14:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  16:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  17:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  18:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  52:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  53:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  54:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  55:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  56:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  57:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  58:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  59:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  60:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  61:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  62:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  63:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  64:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  65:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  66:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  67:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  68:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  69:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  70:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  71:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  72:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  73:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  74:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  75:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\electric-lab\workspaceDrawComponent.ts
+  112:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\faraday-law\FaradayLawExperiment.vue
+   60:13  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+   61:13  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+   62:13  warning  Attribute ':A' must be hyphenated  vue/attribute-hyphenation
+   64:13  warning  Attribute ':R' must be hyphenated  vue/attribute-hyphenation
+   87:13  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+   88:13  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+   89:13  warning  Attribute ':A' must be hyphenated  vue/attribute-hyphenation
+   91:13  warning  Attribute ':R' must be hyphenated  vue/attribute-hyphenation
+  114:11  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+  115:11  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+  116:11  warning  Attribute ':A' must be hyphenated  vue/attribute-hyphenation
+  118:11  warning  Attribute ':R' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\generator\GeneratorExperiment.vue
+   53:13  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+   54:13  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+   55:13  warning  Attribute ':A' must be hyphenated  vue/attribute-hyphenation
+   57:13  warning  Attribute ':R' must be hyphenated  vue/attribute-hyphenation
+   78:13  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+   79:13  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+   80:13  warning  Attribute ':A' must be hyphenated  vue/attribute-hyphenation
+   82:13  warning  Attribute ':R' must be hyphenated  vue/attribute-hyphenation
+  103:11  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+  104:11  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+  105:11  warning  Attribute ':A' must be hyphenated  vue/attribute-hyphenation
+  107:11  warning  Attribute ':R' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\ideal-gas\IdealGasExperiment.vue
+   83:13  warning  Attribute ':T' must be hyphenated  vue/attribute-hyphenation
+   84:13  warning  Attribute ':V' must be hyphenated  vue/attribute-hyphenation
+   85:13  warning  Attribute ':P' must be hyphenated  vue/attribute-hyphenation
+  153:7   warning  Attribute ':P' must be hyphenated  vue/attribute-hyphenation
+  169:7   warning  Attribute ':T' must be hyphenated  vue/attribute-hyphenation
+  170:7   warning  Attribute ':V' must be hyphenated  vue/attribute-hyphenation
+  171:7   warning  Attribute ':P' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\lorentz-force\LorentzForceExperiment.vue
+   54:13  warning  Attribute ':V' must be hyphenated   vue/attribute-hyphenation
+   55:13  warning  Attribute ':I' must be hyphenated   vue/attribute-hyphenation
+   56:13  warning  Attribute ':N' must be hyphenated   vue/attribute-hyphenation
+   57:13  warning  Attribute ':B' must be hyphenated   vue/attribute-hyphenation
+   59:13  warning  Attribute ':Fm' must be hyphenated  vue/attribute-hyphenation
+   78:13  warning  Attribute ':V' must be hyphenated   vue/attribute-hyphenation
+   79:13  warning  Attribute ':I' must be hyphenated   vue/attribute-hyphenation
+   80:13  warning  Attribute ':N' must be hyphenated   vue/attribute-hyphenation
+   81:13  warning  Attribute ':R' must be hyphenated   vue/attribute-hyphenation
+  102:11  warning  Attribute ':V' must be hyphenated   vue/attribute-hyphenation
+  103:11  warning  Attribute ':I' must be hyphenated   vue/attribute-hyphenation
+  104:11  warning  Attribute ':N' must be hyphenated   vue/attribute-hyphenation
+  105:11  warning  Attribute ':R' must be hyphenated   vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\magnetic-flux\MagneticFluxExperiment.vue
+   53:13  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+   54:13  warning  Attribute ':A' must be hyphenated  vue/attribute-hyphenation
+   76:13  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+   77:13  warning  Attribute ':A' must be hyphenated  vue/attribute-hyphenation
+   99:11  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+  100:11  warning  Attribute ':A' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\solenoid\SolenoidExperiment.vue
+  54:13  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+  55:13  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+  56:13  warning  Attribute ':L' must be hyphenated  vue/attribute-hyphenation
+  57:13  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+  74:13  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+  75:13  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+  96:11  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+  97:11  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\straight-wire\StraightWireExperiment.vue
+  54:13  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+  56:13  warning  Attribute ':B' must be hyphenated  vue/attribute-hyphenation
+  73:13  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+  94:11  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\thermal-expansion\ThermalExpansionExperiment.vue
+   60:66  warning  Attribute ':L1' must be hyphenated  vue/attribute-hyphenation
+   70:44  warning  Attribute ':L0' must be hyphenated  vue/attribute-hyphenation
+   89:66  warning  Attribute ':L1' must be hyphenated  vue/attribute-hyphenation
+   95:66  warning  Attribute ':L1' must be hyphenated  vue/attribute-hyphenation
+  106:58  warning  Attribute ':L1' must be hyphenated  vue/attribute-hyphenation
+  118:7   warning  Attribute ':L0' must be hyphenated  vue/attribute-hyphenation
+
+C:\Users\feras\Desktop\feras\apps\web\src\modules\physics\experiments\torque-coil\TorqueCoilExperiment.vue
+   54:13  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+   55:13  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+   79:13  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+   80:13  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+  105:11  warning  Attribute ':I' must be hyphenated  vue/attribute-hyphenation
+  106:11  warning  Attribute ':N' must be hyphenated  vue/attribute-hyphenation
+
+✖ 386 problems (0 errors, 386 warnings)
+
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/Users/feras/Desktop/feras/apps/web[39m
+
+ [32m✓[39m src/composables/property-physics.test.ts [2m([22m[2m6 tests[22m[2m)[22m[90m 91[2mms[22m[39m
+ [32m✓[39m src/composables/fuzz-physics-engines.test.ts [2m([22m[2m8 tests[22m[2m)[22m[90m 169[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m2 passed[39m[22m[90m (2)[39m
+[2m      Tests [22m [1m[32m14 passed[39m[22m[90m (14)[39m
+[2m   Start at [22m 01:34:38
+[2m   Duration [22m 1.52s[2m (transform 73ms, setup 0ms, collect 139ms, tests 261ms, environment 1.75s, prepare 249ms)[22m
+
+[36mvite v5.4.21 [32mbuilding for production...[36m[39m
+transforming...
+[1m[33m[plugin:vite:dynamic-import-vars][39m[22m [33m[plugin vite:dynamic-import-vars] src/locales/experiments/index.ts: invalid import "./${locale}-1". A file extension must be included in the static part of the import. For example: import(`./foo/${bar}.js`).[39m
+[1m[33m[plugin:vite:dynamic-import-vars][39m[22m [33m[plugin vite:dynamic-import-vars] src/locales/index.ts: invalid import "./${locale}.ts". Variable imports cannot import their own directory, place imports in a separate directory or make the import filename more specific. For example: import(`./foo/${bar}.js`).[39m
+[1m[33m[plugin:vite:dynamic-import-vars][39m[22m [33m[plugin vite:dynamic-import-vars] src/locales/experiments/index.ts: invalid import "./${locale}-2". A file extension must be included in the static part of the import. For example: import(`./foo/${bar}.js`).[39m
+[1m[33m[plugin:vite:dynamic-import-vars][39m[22m [33m[plugin vite:dynamic-import-vars] src/locales/experiments/index.ts: invalid import "./${locale}-3". A file extension must be included in the static part of the import. For example: import(`./foo/${bar}.js`).[39m
+[1m[33m[plugin:vite:dynamic-import-vars][39m[22m [33m[plugin vite:dynamic-import-vars] src/locales/experiments/index.ts: invalid import "./${locale}-4". A file extension must be included in the static part of the import. For example: import(`./foo/${bar}.js`).[39m
+[32m✓[39m 2069 modules transformed.
+rendering chunks...
+computing gzip size...
+[2mdist/[22m[32mindex.html                                      [39m[1m[2m  0.71 kB[22m[1m[22m[2m │ gzip:   0.38 kB[22m
+[2mdist/[22m[35massets/mitosis-D9T6NOZq.css                     [39m[1m[2m  0.14 kB[22m[1m[22m[2m │ gzip:   0.12 kB[22m
+[2mdist/[22m[35massets/protein-synthesis-tvFlU_Pa.css           [39m[1m[2m  0.14 kB[22m[1m[22m[2m │ gzip:   0.12 kB[22m
+[2mdist/[22m[35massets/language-yfH9FypC.css                    [39m[1m[2m  1.00 kB[22m[1m[22m[2m │ gzip:   0.44 kB[22m
+[2mdist/[22m[35massets/experiment-page-ICrT21uz.css             [39m[1m[2m  1.15 kB[22m[1m[22m[2m │ gzip:   0.48 kB[22m
+[2mdist/[22m[35massets/branches-page-Hd_8Fhjm.css               [39m[1m[2m  1.16 kB[22m[1m[22m[2m │ gzip:   0.51 kB[22m
+[2mdist/[22m[35massets/InfoPanel-C-_Q94-K.css                   [39m[1m[2m  1.39 kB[22m[1m[22m[2m │ gzip:   0.54 kB[22m
+[2mdist/[22m[35massets/DraggablePanel-1YzSIyPQ.css              [39m[1m[2m  1.54 kB[22m[1m[22m[2m │ gzip:   0.66 kB[22m
+[2mdist/[22m[35massets/branch-page-B3WEfLOU.css                 [39m[1m[2m  1.81 kB[22m[1m[22m[2m │ gzip:   0.68 kB[22m
+[2mdist/[22m[35massets/index-C0OAWu0-.css                       [39m[1m[2m  1.86 kB[22m[1m[22m[2m │ gzip:   0.72 kB[22m
+[2mdist/[22m[35massets/index-DOnq9KES.css                       [39m[1m[2m  1.87 kB[22m[1m[22m[2m │ gzip:   0.72 kB[22m
+[2mdist/[22m[35massets/index-eljR1Lco.css                       [39m[1m[2m  1.87 kB[22m[1m[22m[2m │ gzip:   0.72 kB[22m
+[2mdist/[22m[35massets/index-D6YtLiY4.css                       [39m[1m[2m  1.92 kB[22m[1m[22m[2m │ gzip:   0.78 kB[22m
+[2mdist/[22m[35massets/FeedbackModal-DzVrdDpC.css               [39m[1m[2m  2.03 kB[22m[1m[22m[2m │ gzip:   0.72 kB[22m
+[2mdist/[22m[35massets/register-CHrs0u0A.css                    [39m[1m[2m  2.40 kB[22m[1m[22m[2m │ gzip:   0.81 kB[22m
+[2mdist/[22m[35massets/ExperimentShell-9pnsEAPr.css             [39m[1m[2m  2.53 kB[22m[1m[22m[2m │ gzip:   0.72 kB[22m
+[2mdist/[22m[35massets/ExperimentMonitorPage-DTLr0fwm.css       [39m[1m[2m  2.71 kB[22m[1m[22m[2m │ gzip:   0.89 kB[22m
+[2mdist/[22m[35massets/ElectromagnetismHelpModal-dQacBjSi.css   [39m[1m[2m  3.26 kB[22m[1m[22m[2m │ gzip:   1.04 kB[22m
+[2mdist/[22m[35massets/index-LQh3lO7o.css                       [39m[1m[2m  3.44 kB[22m[1m[22m[2m │ gzip:   1.12 kB[22m
+[2mdist/[22m[35massets/LightRayControlBar-Bo0da6ci.css          [39m[1m[2m  3.82 kB[22m[1m[22m[2m │ gzip:   1.22 kB[22m
+[2mdist/[22m[35massets/heart-D6FmaB5R.css                       [39m[1m[2m  3.91 kB[22m[1m[22m[2m │ gzip:   1.17 kB[22m
+[2mdist/[22m[35massets/dna-structure-B7R9DJah.css               [39m[1m[2m  4.05 kB[22m[1m[22m[2m │ gzip:   1.15 kB[22m
+[2mdist/[22m[35massets/StageStepper-Cx9rMDoN.css                [39m[1m[2m  4.42 kB[22m[1m[22m[2m │ gzip:   1.31 kB[22m
+[2mdist/[22m[35massets/plant-cell-mejdzR7-.css                  [39m[1m[2m  4.54 kB[22m[1m[22m[2m │ gzip:   1.43 kB[22m
+[2mdist/[22m[35massets/AnalysisReportPreview-BkhVZQ50.css       [39m[1m[2m  4.91 kB[22m[1m[22m[2m │ gzip:   1.21 kB[22m
+[2mdist/[22m[35massets/DeletableSection-Bh_p2qyX.css            [39m[1m[2m  5.39 kB[22m[1m[22m[2m │ gzip:   1.22 kB[22m
+[2mdist/[22m[35massets/CircularCoilExperiment-BeA_sZCM.css      [39m[1m[2m  6.77 kB[22m[1m[22m[2m │ gzip:   1.61 kB[22m
+[2mdist/[22m[35massets/SolenoidExperiment-BV5p9kwm.css          [39m[1m[2m  6.78 kB[22m[1m[22m[2m │ gzip:   1.61 kB[22m
+[2mdist/[22m[35massets/StraightWireExperiment-bS5kEwiG.css      [39m[1m[2m  7.05 kB[22m[1m[22m[2m │ gzip:   1.71 kB[22m
+[2mdist/[22m[35massets/MagneticFluxExperiment-bADsZGij.css      [39m[1m[2m  7.09 kB[22m[1m[22m[2m │ gzip:   1.61 kB[22m
+[2mdist/[22m[35massets/TorqueCoilExperiment-BEiIGdPl.css        [39m[1m[2m  7.09 kB[22m[1m[22m[2m │ gzip:   1.62 kB[22m
+[2mdist/[22m[35massets/GeneratorExperiment-XTYSVxs3.css         [39m[1m[2m  7.09 kB[22m[1m[22m[2m │ gzip:   1.62 kB[22m
+[2mdist/[22m[35massets/LightRayExperiment-Czk21xTN.css          [39m[1m[2m  7.40 kB[22m[1m[22m[2m │ gzip:   1.78 kB[22m
+[2mdist/[22m[35massets/ThinLensExperiment-efsvxk44.css          [39m[1m[2m  7.90 kB[22m[1m[22m[2m │ gzip:   1.91 kB[22m
+[2mdist/[22m[35massets/MirrorExperiment-D1Q1aApf.css            [39m[1m[2m  7.91 kB[22m[1m[22m[2m │ gzip:   1.91 kB[22m
+[2mdist/[22m[35massets/LorentzForceExperiment-BNS1RjBI.css      [39m[1m[2m  8.00 kB[22m[1m[22m[2m │ gzip:   1.74 kB[22m
+[2mdist/[22m[35massets/FaradayLawExperiment-EZppmrCH.css        [39m[1m[2m  8.03 kB[22m[1m[22m[2m │ gzip:   1.78 kB[22m
+[2mdist/[22m[35massets/index-rQvwtmuY.css                       [39m[1m[2m 10.77 kB[22m[1m[22m[2m │ gzip:   2.36 kB[22m
+[2mdist/[22m[35massets/IdealGasExperiment-Bnl58vjS.css          [39m[1m[2m 10.83 kB[22m[1m[22m[2m │ gzip:   2.54 kB[22m
+[2mdist/[22m[35massets/ResonanceExperiment-IXRf5I-2.css         [39m[1m[2m 11.74 kB[22m[1m[22m[2m │ gzip:   2.81 kB[22m
+[2mdist/[22m[35massets/LeverExperiment-Bov4mR4g.css             [39m[1m[2m 11.94 kB[22m[1m[22m[2m │ gzip:   2.83 kB[22m
+[2mdist/[22m[35massets/WaveInterferenceExperiment-Cw0esjsh.css  [39m[1m[2m 12.21 kB[22m[1m[22m[2m │ gzip:   2.87 kB[22m
+[2mdist/[22m[35massets/LatentHeatExperiment-DwvWJ_LF.css        [39m[1m[2m 12.59 kB[22m[1m[22m[2m │ gzip:   2.92 kB[22m
+[2mdist/[22m[35massets/CalorimetryExperiment-sX4Wb-27.css       [39m[1m[2m 12.74 kB[22m[1m[22m[2m │ gzip:   2.97 kB[22m
+[2mdist/[22m[35massets/CollisionExperiment-CLNbYz_c.css         [39m[1m[2m 13.16 kB[22m[1m[22m[2m │ gzip:   3.04 kB[22m
+[2mdist/[22m[35massets/ThermalExpansionExperiment-PoSN6ubZ.css  [39m[1m[2m 13.26 kB[22m[1m[22m[2m │ gzip:   2.99 kB[22m
+[2mdist/[22m[35massets/PolarizationExperiment-b-P9eMcB.css      [39m[1m[2m 13.70 kB[22m[1m[22m[2m │ gzip:   3.15 kB[22m
+[2mdist/[22m[35massets/SpeedOfSoundExperiment-CotLkUQ9.css      [39m[1m[2m 13.98 kB[22m[1m[22m[2m │ gzip:   3.19 kB[22m
+[2mdist/[22m[35massets/SpringExperiment-Q-I-ql1y.css            [39m[1m[2m 14.31 kB[22m[1m[22m[2m │ gzip:   3.14 kB[22m
+[2mdist/[22m[35massets/BoylesLawExperiment-C6Bb133u.css         [39m[1m[2m 14.54 kB[22m[1m[22m[2m │ gzip:   3.19 kB[22m
+[2mdist/[22m[35massets/ElectricLabExperiment-T3vd4H15.css       [39m[1m[2m 14.54 kB[22m[1m[22m[2m │ gzip:   2.96 kB[22m
+[2mdist/[22m[35massets/InterferenceExperiment-DgqqSUMl.css      [39m[1m[2m 14.56 kB[22m[1m[22m[2m │ gzip:   3.37 kB[22m
+[2mdist/[22m[35massets/InclinedExperiment-BdCpFTe5.css          [39m[1m[2m 14.76 kB[22m[1m[22m[2m │ gzip:   3.21 kB[22m
+[2mdist/[22m[35massets/DiffractionExperiment-CRA780MY.css       [39m[1m[2m 15.03 kB[22m[1m[22m[2m │ gzip:   3.43 kB[22m
+[2mdist/[22m[35massets/PendulumExperiment-Dv7d2h0K.css          [39m[1m[2m 17.87 kB[22m[1m[22m[2m │ gzip:   3.81 kB[22m
+[2mdist/[22m[35massets/PrismExperiment-nCDziFZF.css             [39m[1m[2m 17.97 kB[22m[1m[22m[2m │ gzip:   4.03 kB[22m
+[2mdist/[22m[35massets/ProjectileExperiment-BSRxSkMN.css        [39m[1m[2m 18.18 kB[22m[1m[22m[2m │ gzip:   3.89 kB[22m
+[2mdist/[22m[35massets/FreeFallExperiment-NDWMb3J6.css          [39m[1m[2m 18.43 kB[22m[1m[22m[2m │ gzip:   3.77 kB[22m
+[2mdist/[22m[35massets/admin-B_YDMnqs.css                       [39m[1m[2m 23.13 kB[22m[1m[22m[2m │ gzip:   3.58 kB[22m
+[2mdist/[22m[35massets/SpecificHeatExperiment-BuicRrKL.css      [39m[1m[2m 24.53 kB[22m[1m[22m[2m │ gzip:   5.07 kB[22m
+[2mdist/[22m[35massets/dashboard-IfvGI6WW.css                   [39m[1m[2m 42.58 kB[22m[1m[22m[2m │ gzip:   6.92 kB[22m
+[2mdist/[22m[35massets/chemistry-DPD_wIPO.css                   [39m[1m[2m 63.95 kB[22m[1m[22m[2m │ gzip:  11.05 kB[22m
+[2mdist/[22m[35massets/AnalysisCalcExperiment-CQeaEF_J.css      [39m[1m[2m107.89 kB[22m[1m[22m[2m │ gzip:  10.28 kB[22m
+[2mdist/[22m[36massets/linearRegression-GyG9xQjM.js             [39m[1m[2m  0.32 kB[22m[1m[22m[2m │ gzip:   0.23 kB[22m
+[2mdist/[22m[36massets/downloadCsv-BANqNPoU.js                  [39m[1m[2m  0.33 kB[22m[1m[22m[2m │ gzip:   0.26 kB[22m
+[2mdist/[22m[36massets/sendToAnalysis-DBuLgNzR.js               [39m[1m[2m  0.67 kB[22m[1m[22m[2m │ gzip:   0.31 kB[22m
+[2mdist/[22m[36massets/useSpecificHeatCalculations-BXGPw82H.js  [39m[1m[2m  0.71 kB[22m[1m[22m[2m │ gzip:   0.47 kB[22m
+[2mdist/[22m[36massets/language-CSEVlmUD.js                     [39m[1m[2m  0.78 kB[22m[1m[22m[2m │ gzip:   0.53 kB[22m
+[2mdist/[22m[36massets/biology-geometry-De70-kCW.js             [39m[1m[2m  1.01 kB[22m[1m[22m[2m │ gzip:   0.56 kB[22m
+[2mdist/[22m[36massets/index-1ywnhAl5.js                        [39m[1m[2m  1.42 kB[22m[1m[22m[2m │ gzip:   0.73 kB[22m
+[2mdist/[22m[36massets/InfoPanel-Dwy8ohGa.js                    [39m[1m[2m  1.53 kB[22m[1m[22m[2m │ gzip:   0.75 kB[22m
+[2mdist/[22m[36massets/useAnomalyWatcher-Dw-CZquF.js            [39m[1m[2m  1.63 kB[22m[1m[22m[2m │ gzip:   0.82 kB[22m
+[2mdist/[22m[36massets/branches-page-DeYnK34W.js                [39m[1m[2m  1.70 kB[22m[1m[22m[2m │ gzip:   0.78 kB[22m
+[2mdist/[22m[36massets/DraggablePanel-B2xiw1lK.js               [39m[1m[2m  1.73 kB[22m[1m[22m[2m │ gzip:   0.88 kB[22m
+[2mdist/[22m[36massets/index-BTDxo5rV.js                        [39m[1m[2m  1.95 kB[22m[1m[22m[2m │ gzip:   0.83 kB[22m
+[2mdist/[22m[36massets/StageStepper-DWOb9QXl.js                 [39m[1m[2m  2.23 kB[22m[1m[22m[2m │ gzip:   1.05 kB[22m
+[2mdist/[22m[36massets/index-D2BSCNPC.js                        [39m[1m[2m  2.33 kB[22m[1m[22m[2m │ gzip:   0.87 kB[22m
+[2mdist/[22m[36massets/FeedbackModal-Bud0q4BH.js                [39m[1m[2m  2.56 kB[22m[1m[22m[2m │ gzip:   1.16 kB[22m
+[2mdist/[22m[36massets/ExperimentShell-Dr_uGAnw.js              [39m[1m[2m  2.82 kB[22m[1m[22m[2m │ gzip:   1.15 kB[22m
+[2mdist/[22m[36massets/ExperimentMonitorPage-BwMZKXTi.js        [39m[1m[2m  2.93 kB[22m[1m[22m[2m │ gzip:   1.57 kB[22m
+[2mdist/[22m[36massets/experiment-page-Cr8sdLTw.js              [39m[1m[2m  2.95 kB[22m[1m[22m[2m │ gzip:   1.27 kB[22m
+[2mdist/[22m[36massets/branch-page-DNzovGw4.js                  [39m[1m[2m  3.29 kB[22m[1m[22m[2m │ gzip:   1.31 kB[22m
+[2mdist/[22m[36massets/index-DatB6X0p.js                        [39m[1m[2m  3.95 kB[22m[1m[22m[2m │ gzip:   1.70 kB[22m
+[2mdist/[22m[36massets/register-BdJ1OQ1E.js                     [39m[1m[2m  4.02 kB[22m[1m[22m[2m │ gzip:   1.54 kB[22m
+[2mdist/[22m[36massets/ElectromagnetismHelpModal-CwvPXBAk.js    [39m[1m[2m  4.49 kB[22m[1m[22m[2m │ gzip:   1.55 kB[22m
+[2mdist/[22m[36massets/LightRayControlBar-D0hq4wk8.js           [39m[1m[2m  6.52 kB[22m[1m[22m[2m │ gzip:   2.02 kB[22m
+[2mdist/[22m[36massets/mitosis-DAhwbLdm.js                      [39m[1m[2m  6.76 kB[22m[1m[22m[2m │ gzip:   2.73 kB[22m
+[2mdist/[22m[36massets/protein-synthesis-CAsS_Yui.js            [39m[1m[2m  7.29 kB[22m[1m[22m[2m │ gzip:   2.69 kB[22m
+[2mdist/[22m[36massets/AnalysisReportPreview-B0-hQehP.js        [39m[1m[2m  8.95 kB[22m[1m[22m[2m │ gzip:   2.63 kB[22m
+[2mdist/[22m[36massets/dna-structure-DuvSYyQ8.js                [39m[1m[2m  9.84 kB[22m[1m[22m[2m │ gzip:   3.94 kB[22m
+[2mdist/[22m[36massets/plant-cell-CJ8WJrs3.js                   [39m[1m[2m 14.56 kB[22m[1m[22m[2m │ gzip:   4.95 kB[22m
+[2mdist/[22m[36massets/heart-Nqbkw7K_.js                        [39m[1m[2m 15.75 kB[22m[1m[22m[2m │ gzip:   5.34 kB[22m
+[2mdist/[22m[36massets/DeletableSection-CR4iOHoK.js             [39m[1m[2m 16.59 kB[22m[1m[22m[2m │ gzip:   5.80 kB[22m
+[2mdist/[22m[36massets/StraightWireExperiment-CouEMpfj.js       [39m[1m[2m 18.25 kB[22m[1m[22m[2m │ gzip:   6.42 kB[22m
+[2mdist/[22m[36massets/SolenoidExperiment-C_I-eeo4.js           [39m[1m[2m 20.25 kB[22m[1m[22m[2m │ gzip:   6.93 kB[22m
+[2mdist/[22m[36massets/CircularCoilExperiment-C_sSHyun.js       [39m[1m[2m 20.65 kB[22m[1m[22m[2m │ gzip:   7.04 kB[22m
+[2mdist/[22m[36massets/MagneticFluxExperiment-DE_-xezP.js       [39m[1m[2m 22.54 kB[22m[1m[22m[2m │ gzip:   7.39 kB[22m
+[2mdist/[22m[36massets/TorqueCoilExperiment-Fx9SmMM4.js         [39m[1m[2m 24.11 kB[22m[1m[22m[2m │ gzip:   7.96 kB[22m
+[2mdist/[22m[36massets/GeneratorExperiment-DdxMKgc7.js          [39m[1m[2m 26.31 kB[22m[1m[22m[2m │ gzip:   8.32 kB[22m
+[2mdist/[22m[36massets/LorentzForceExperiment-TwVRqbCn.js       [39m[1m[2m 26.35 kB[22m[1m[22m[2m │ gzip:   8.60 kB[22m
+[2mdist/[22m[36massets/index-CrqDur1l.js                        [39m[1m[2m 26.56 kB[22m[1m[22m[2m │ gzip:   8.44 kB[22m
+[2mdist/[22m[36massets/FaradayLawExperiment-Bs9Q5Dj-.js         [39m[1m[2m 28.81 kB[22m[1m[22m[2m │ gzip:   9.19 kB[22m
+[2mdist/[22m[36massets/LightRayExperiment-sl9225jL.js           [39m[1m[2m 32.43 kB[22m[1m[22m[2m │ gzip:   9.32 kB[22m
+[2mdist/[22m[36massets/ResonanceExperiment-BMG6Pkx2.js          [39m[1m[2m 34.49 kB[22m[1m[22m[2m │ gzip:   9.64 kB[22m
+[2mdist/[22m[36massets/WaveInterferenceExperiment-CJdDtUto.js   [39m[1m[2m 35.82 kB[22m[1m[22m[2m │ gzip:  10.00 kB[22m
+[2mdist/[22m[36massets/BoylesLawExperiment-AXT1cDc0.js          [39m[1m[2m 36.40 kB[22m[1m[22m[2m │ gzip:  11.19 kB[22m
+[2mdist/[22m[36massets/IdealGasExperiment-EjV-bHEF.js           [39m[1m[2m 36.59 kB[22m[1m[22m[2m │ gzip:  11.09 kB[22m
+[2mdist/[22m[36massets/ThinLensExperiment-6uI3PqZQ.js           [39m[1m[2m 37.01 kB[22m[1m[22m[2m │ gzip:   9.92 kB[22m
+[2mdist/[22m[36massets/MirrorExperiment-BdQTp0El.js             [39m[1m[2m 38.16 kB[22m[1m[22m[2m │ gzip:  10.85 kB[22m
+[2mdist/[22m[36massets/admin-w_9ER_nj.js                        [39m[1m[2m 41.17 kB[22m[1m[22m[2m │ gzip:  10.63 kB[22m
+[2mdist/[22m[36massets/CalorimetryExperiment-CN5CSaku.js        [39m[1m[2m 44.07 kB[22m[1m[22m[2m │ gzip:  13.01 kB[22m
+[2mdist/[22m[36massets/PolarizationExperiment-Cr6jQ6z7.js       [39m[1m[2m 44.54 kB[22m[1m[22m[2m │ gzip:  11.65 kB[22m
+[2mdist/[22m[36massets/LatentHeatExperiment-DS2aWvoB.js         [39m[1m[2m 44.85 kB[22m[1m[22m[2m │ gzip:  12.91 kB[22m
+[2mdist/[22m[36massets/SpeedOfSoundExperiment-B2munwqW.js       [39m[1m[2m 45.41 kB[22m[1m[22m[2m │ gzip:  11.89 kB[22m
+[2mdist/[22m[36massets/ThermalExpansionExperiment-CmCm1sOq.js   [39m[1m[2m 45.53 kB[22m[1m[22m[2m │ gzip:  13.66 kB[22m
+[2mdist/[22m[36massets/LeverExperiment-ufETnxst.js              [39m[1m[2m 47.01 kB[22m[1m[22m[2m │ gzip:  12.69 kB[22m
+[2mdist/[22m[36massets/InterferenceExperiment-CmcP4sJ0.js       [39m[1m[2m 47.60 kB[22m[1m[22m[2m │ gzip:  12.73 kB[22m
+[2mdist/[22m[36massets/CollisionExperiment-Be2eTy7t.js          [39m[1m[2m 48.15 kB[22m[1m[22m[2m │ gzip:  14.82 kB[22m
+[2mdist/[22m[36massets/PendulumExperiment-DU4qOeA9.js           [39m[1m[2m 50.21 kB[22m[1m[22m[2m │ gzip:  15.01 kB[22m
+[2mdist/[22m[36massets/SpecificHeatExperiment-CzDMuGzj.js       [39m[1m[2m 50.34 kB[22m[1m[22m[2m │ gzip:  13.91 kB[22m
+[2mdist/[22m[36massets/SpringExperiment-CpKKMd1G.js             [39m[1m[2m 51.61 kB[22m[1m[22m[2m │ gzip:  15.83 kB[22m
+[2mdist/[22m[36massets/DiffractionExperiment-F0JS75a1.js        [39m[1m[2m 54.10 kB[22m[1m[22m[2m │ gzip:  13.98 kB[22m
+[2mdist/[22m[36massets/dashboard-yT07ITfg.js                    [39m[1m[2m 56.65 kB[22m[1m[22m[2m │ gzip:  16.70 kB[22m
+[2mdist/[22m[36massets/InclinedExperiment-xnLhAzzw.js           [39m[1m[2m 61.17 kB[22m[1m[22m[2m │ gzip:  16.41 kB[22m
+[2mdist/[22m[36massets/FreeFallExperiment-DY2PMab_.js           [39m[1m[2m 61.55 kB[22m[1m[22m[2m │ gzip:  17.25 kB[22m
+[2mdist/[22m[36massets/PrismExperiment-CIQ-cUm2.js              [39m[1m[2m 64.23 kB[22m[1m[22m[2m │ gzip:  18.58 kB[22m
+[2mdist/[22m[36massets/ProjectileExperiment-C3x8TAvQ.js         [39m[1m[2m 71.86 kB[22m[1m[22m[2m │ gzip:  20.26 kB[22m
+[2mdist/[22m[36massets/vendor-framework-D80ZIamR.js             [39m[1m[2m117.23 kB[22m[1m[22m[2m │ gzip:  45.60 kB[22m
+[2mdist/[22m[36massets/index-iPyLwBsl.js                        [39m[1m[2m143.48 kB[22m[1m[22m[2m │ gzip:  41.31 kB[22m
+[2mdist/[22m[36massets/ElectricLabExperiment-C_NRcaNM.js        [39m[1m[2m171.40 kB[22m[1m[22m[2m │ gzip:  38.53 kB[22m
+[2mdist/[22m[36massets/AnalysisCalcExperiment-o_oIDBnM.js       [39m[1m[2m226.04 kB[22m[1m[22m[2m │ gzip:  56.70 kB[22m
+[2mdist/[22m[36massets/chemistry-5I4SPH3V.js                    [39m[1m[2m322.10 kB[22m[1m[22m[2m │ gzip:  82.10 kB[22m
+[2mdist/[22m[36massets/vendor-g1qV6Uc5.js                       [39m[1m[33m647.43 kB[39m[22m[2m │ gzip: 166.68 kB[22m
+[33m
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+[32m✓ built in 9.04s[39m

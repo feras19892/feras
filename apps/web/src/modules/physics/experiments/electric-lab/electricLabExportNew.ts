@@ -30,8 +30,10 @@ export function exportNew(router: any, ctx: ExportContext): boolean {
     return true
   }
   if (ctx.isCapacitorsCombo.value) {
+    const isSeries = ctx.isCapacitorsSeries?.value ?? false
     sendToAnalysis(router, {
-      sourceExperiment: 'electric-lab-capacitors-combo', sourceNameAr: 'توالي وتوازي المكثفات', hasCalcTab: true,
+      sourceExperiment: isSeries ? 'electric-lab-capacitors-series' : 'electric-lab-capacitors-parallel',
+      sourceNameAr: isSeries ? 'توالي المكثفات' : 'توازي المكثفات', hasCalcTab: true,
       readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance })),
       columns: [{ key: 'V', label: 'V', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'τ', unit: 's' }],
       equations: [

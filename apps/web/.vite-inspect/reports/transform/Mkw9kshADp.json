@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/PrismStatusBar.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { normalizeClass as _normalizeClass, createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, createTextVNode as _createTextVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"st-item\" }\nconst _hoisted_2 = { class: \"st-item\" }\nconst _hoisted_3 = { class: \"cyan\" }\nconst _hoisted_4 = { class: \"st-item\" }\nconst _hoisted_5 = { class: \"amber\" }\nconst _hoisted_6 = {\n  key: 0,\n  class: \"st-item\"\n}\nconst _hoisted_7 = { class: \"green\" }\nconst _hoisted_8 = {\n  key: 1,\n  class: \"st-item\"\n}\nconst _hoisted_9 = { class: \"amber\" }\nconst _hoisted_10 = {\n  key: 2,\n  class: \"tir-badge\"\n}\n\nimport { computed } from 'vue'\nimport { useI18n } from '../../../composables/useI18n'\n\ninterface Props {\n  running: boolean\n  paused: boolean\n  prismAngle: number\n  angleIncidence: number\n  n: number\n  deviation: number | null\n  criticalAngle: number | null\n  totalInternalReflection: boolean\n}\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'PrismStatusBar',\n  props: {\n    running: { type: Boolean },\n    paused: { type: Boolean },\n    prismAngle: {},\n    angleIncidence: {},\n    n: {},\n    deviation: {},\n    criticalAngle: {},\n    totalInternalReflection: { type: Boolean }\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\n\nconst props = __props\n\nconst stateClass = computed(() => props.totalInternalReflection ? 'tir' : props.running && !props.paused ? 'running' : 'idle')\nconst stateLabel = computed(() => {\n  if (!props.running) return t('experiments.statusReady')\n  if (props.paused) return t('experiments.statusPaused')\n  if (props.totalInternalReflection) return '⚠ TIR'\n  return t('experiments.statusRunning')\n})\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    class: _normalizeClass([\"status-bar\", stateClass.value])\n  }, [\n    _createElementVNode(\"span\", {\n      class: _normalizeClass([\"pulse-dot\", stateClass.value])\n    }, null, 2),\n    _createElementVNode(\"span\", {\n      class: _normalizeClass([\"st-chip\", stateClass.value])\n    }, _toDisplayString(stateLabel.value), 3),\n    _cache[5] || (_cache[5] = _createElementVNode(\"span\", { class: \"sep\" }, null, -1)),\n    _createElementVNode(\"span\", _hoisted_1, [\n      _cache[0] || (_cache[0] = _createTextVNode(\"A = \", -1)),\n      _createElementVNode(\"b\", null, _toDisplayString(__props.prismAngle) + \"°\", 1)\n    ]),\n    _createElementVNode(\"span\", _hoisted_2, [\n      _cache[1] || (_cache[1] = _createTextVNode(\"θ₁ = \", -1)),\n      _createElementVNode(\"b\", _hoisted_3, _toDisplayString(__props.angleIncidence) + \"°\", 1)\n    ]),\n    _createElementVNode(\"span\", _hoisted_4, [\n      _cache[2] || (_cache[2] = _createTextVNode(\"n = \", -1)),\n      _createElementVNode(\"b\", _hoisted_5, _toDisplayString(__props.n.toFixed(3)), 1)\n    ]),\n    (__props.deviation !== null)\n      ? (_openBlock(), _createElementBlock(\"span\", _hoisted_6, [\n          _cache[3] || (_cache[3] = _createTextVNode(\"δ = \", -1)),\n          _createElementVNode(\"b\", _hoisted_7, _toDisplayString(__props.deviation.toFixed(1)) + \"°\", 1)\n        ]))\n      : _createCommentVNode(\"\", true),\n    (__props.criticalAngle !== null)\n      ? (_openBlock(), _createElementBlock(\"span\", _hoisted_8, [\n          _cache[4] || (_cache[4] = _createTextVNode(\"θc = \", -1)),\n          _createElementVNode(\"b\", _hoisted_9, _toDisplayString(__props.criticalAngle.toFixed(1)) + \"°\", 1)\n        ]))\n      : _createCommentVNode(\"\", true),\n    (__props.totalInternalReflection)\n      ? (_openBlock(), _createElementBlock(\"span\", _hoisted_10, \"⚠ TIR\"))\n      : _createCommentVNode(\"\", true)\n  ], 2))\n}\n}\n\n})",
+      "start": 1783196194527,
+      "end": 1783196194527
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194527,
+      "end": 1783196194527,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { normalizeClass as _normalizeClass, createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, createTextVNode as _createTextVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\";\nconst _hoisted_1 = { class: \"st-item\" };\nconst _hoisted_2 = { class: \"st-item\" };\nconst _hoisted_3 = { class: \"cyan\" };\nconst _hoisted_4 = { class: \"st-item\" };\nconst _hoisted_5 = { class: \"amber\" };\nconst _hoisted_6 = {\n  key: 0,\n  class: \"st-item\"\n};\nconst _hoisted_7 = { class: \"green\" };\nconst _hoisted_8 = {\n  key: 1,\n  class: \"st-item\"\n};\nconst _hoisted_9 = { class: \"amber\" };\nconst _hoisted_10 = {\n  key: 2,\n  class: \"tir-badge\"\n};\nimport { computed } from \"vue\";\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"PrismStatusBar\",\n  props: {\n    running: { type: Boolean },\n    paused: { type: Boolean },\n    prismAngle: {},\n    angleIncidence: {},\n    n: {},\n    deviation: {},\n    criticalAngle: {},\n    totalInternalReflection: { type: Boolean }\n  },\n  setup(__props) {\n    const { t } = useI18n();\n    const props = __props;\n    const stateClass = computed(() => props.totalInternalReflection ? \"tir\" : props.running && !props.paused ? \"running\" : \"idle\");\n    const stateLabel = computed(() => {\n      if (!props.running) return t(\"experiments.statusReady\");\n      if (props.paused) return t(\"experiments.statusPaused\");\n      if (props.totalInternalReflection) return \"⚠ TIR\";\n      return t(\"experiments.statusRunning\");\n    });\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", {\n        class: _normalizeClass([\"status-bar\", stateClass.value])\n      }, [\n        _createElementVNode(\"span\", {\n          class: _normalizeClass([\"pulse-dot\", stateClass.value])\n        }, null, 2),\n        _createElementVNode(\"span\", {\n          class: _normalizeClass([\"st-chip\", stateClass.value])\n        }, _toDisplayString(stateLabel.value), 3),\n        _cache[5] || (_cache[5] = _createElementVNode(\"span\", { class: \"sep\" }, null, -1)),\n        _createElementVNode(\"span\", _hoisted_1, [\n          _cache[0] || (_cache[0] = _createTextVNode(\"A = \", -1)),\n          _createElementVNode(\"b\", null, _toDisplayString(__props.prismAngle) + \"°\", 1)\n        ]),\n        _createElementVNode(\"span\", _hoisted_2, [\n          _cache[1] || (_cache[1] = _createTextVNode(\"θ₁ = \", -1)),\n          _createElementVNode(\"b\", _hoisted_3, _toDisplayString(__props.angleIncidence) + \"°\", 1)\n        ]),\n        _createElementVNode(\"span\", _hoisted_4, [\n          _cache[2] || (_cache[2] = _createTextVNode(\"n = \", -1)),\n          _createElementVNode(\"b\", _hoisted_5, _toDisplayString(__props.n.toFixed(3)), 1)\n        ]),\n        __props.deviation !== null ? (_openBlock(), _createElementBlock(\"span\", _hoisted_6, [\n          _cache[3] || (_cache[3] = _createTextVNode(\"δ = \", -1)),\n          _createElementVNode(\"b\", _hoisted_7, _toDisplayString(__props.deviation.toFixed(1)) + \"°\", 1)\n        ])) : _createCommentVNode(\"\", true),\n        __props.criticalAngle !== null ? (_openBlock(), _createElementBlock(\"span\", _hoisted_8, [\n          _cache[4] || (_cache[4] = _createTextVNode(\"θc = \", -1)),\n          _createElementVNode(\"b\", _hoisted_9, _toDisplayString(__props.criticalAngle.toFixed(1)) + \"°\", 1)\n        ])) : _createCommentVNode(\"\", true),\n        __props.totalInternalReflection ? (_openBlock(), _createElementBlock(\"span\", _hoisted_10, \"⚠ TIR\")) : _createCommentVNode(\"\", true)\n      ], 2);\n    };\n  }\n});\n",
+      "start": 1783196194527,
+      "end": 1783196194879,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/PrismStatusBar.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { normalizeClass as _normalizeClass, createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, createTextVNode as _createTextVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"st-item\" }\nconst _hoisted_2 = { class: \"st-item\" }\nconst _hoisted_3 = { class: \"cyan\" }\nconst _hoisted_4 = { class: \"st-item\" }\nconst _hoisted_5 = { class: \"amber\" }\nconst _hoisted_6 = {\n  key: 0,\n  class: \"st-item\"\n}\nconst _hoisted_7 = { class: \"green\" }\nconst _hoisted_8 = {\n  key: 1,\n  class: \"st-item\"\n}\nconst _hoisted_9 = { class: \"amber\" }\nconst _hoisted_10 = {\n  key: 2,\n  class: \"tir-badge\"\n}\n\nimport { computed } from 'vue'\nimport { useI18n } from '../../../composables/useI18n'\n\ninterface Props {\n  running: boolean\n  paused: boolean\n  prismAngle: number\n  angleIncidence: number\n  n: number\n  deviation: number | null\n  criticalAngle: number | null\n  totalInternalReflection: boolean\n}\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'PrismStatusBar',\n  props: {\n    running: { type: Boolean },\n    paused: { type: Boolean },\n    prismAngle: {},\n    angleIncidence: {},\n    n: {},\n    deviation: {},\n    criticalAngle: {},\n    totalInternalReflection: { type: Boolean }\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\n\nconst props = __props\n\nconst stateClass = computed(() => props.totalInternalReflection ? 'tir' : props.running && !props.paused ? 'running' : 'idle')\nconst stateLabel = computed(() => {\n  if (!props.running) return t('experiments.statusReady')\n  if (props.paused) return t('experiments.statusPaused')\n  if (props.totalInternalReflection) return '⚠ TIR'\n  return t('experiments.statusRunning')\n})\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    class: _normalizeClass([\"status-bar\", stateClass.value])\n  }, [\n    _createElementVNode(\"span\", {\n      class: _normalizeClass([\"pulse-dot\", stateClass.value])\n    }, null, 2),\n    _createElementVNode(\"span\", {\n      class: _normalizeClass([\"st-chip\", stateClass.value])\n    }, _toDisplayString(stateLabel.value), 3),\n    _cache[5] || (_cache[5] = _createElementVNode(\"span\", { class: \"sep\" }, null, -1)),\n    _createElementVNode(\"span\", _hoisted_1, [\n      _cache[0] || (_cache[0] = _createTextVNode(\"A = \", -1)),\n      _createElementVNode(\"b\", null, _toDisplayString(__props.prismAngle) + \"°\", 1)\n    ]),\n    _createElementVNode(\"span\", _hoisted_2, [\n      _cache[1] || (_cache[1] = _createTextVNode(\"θ₁ = \", -1)),\n      _createElementVNode(\"b\", _hoisted_3, _toDisplayString(__props.angleIncidence) + \"°\", 1)\n    ]),\n    _createElementVNode(\"span\", _hoisted_4, [\n      _cache[2] || (_cache[2] = _createTextVNode(\"n = \", -1)),\n      _createElementVNode(\"b\", _hoisted_5, _toDisplayString(__props.n.toFixed(3)), 1)\n    ]),\n    (__props.deviation !== null)\n      ? (_openBlock(), _createElementBlock(\"span\", _hoisted_6, [\n          _cache[3] || (_cache[3] = _createTextVNode(\"δ = \", -1)),\n          _createElementVNode(\"b\", _hoisted_7, _toDisplayString(__props.deviation.toFixed(1)) + \"°\", 1)\n        ]))\n      : _createCommentVNode(\"\", true),\n    (__props.criticalAngle !== null)\n      ? (_openBlock(), _createElementBlock(\"span\", _hoisted_8, [\n          _cache[4] || (_cache[4] = _createTextVNode(\"θc = \", -1)),\n          _createElementVNode(\"b\", _hoisted_9, _toDisplayString(__props.criticalAngle.toFixed(1)) + \"°\", 1)\n        ]))\n      : _createCommentVNode(\"\", true),\n    (__props.totalInternalReflection)\n      ? (_openBlock(), _createElementBlock(\"span\", _hoisted_10, \"⚠ TIR\"))\n      : _createCommentVNode(\"\", true)\n  ], 2))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,kBAAkB,iBAAiB,sBAAsB,qBAAqB,mBAAmB,kBAAkB,mBAAmB,kBAAkB,aAAa,YAAY,sBAAsB,qBAAqB,sBAAsB,2BAA2B;AAEtR,MAAM,aAAa,EAAE,OAAO,UAAU;AACtC,MAAM,aAAa,EAAE,OAAO,UAAU;AACtC,MAAM,aAAa,EAAE,OAAO,OAAO;AACnC,MAAM,aAAa,EAAE,OAAO,UAAU;AACtC,MAAM,aAAa,EAAE,OAAO,QAAQ;AACpC,MAAM,aAAa;AAAA,EACjB,KAAK;AAAA,EACL,OAAO;AACT;AACA,MAAM,aAAa,EAAE,OAAO,QAAQ;AACpC,MAAM,aAAa;AAAA,EACjB,KAAK;AAAA,EACL,OAAO;AACT;AACA,MAAM,aAAa,EAAE,OAAO,QAAQ;AACpC,MAAM,cAAc;AAAA,EAClB,KAAK;AAAA,EACL,OAAO;AACT;AAEA,SAAS,gBAAgB;AACzB,SAAS,eAAe;AAcxB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,SAAS,EAAE,MAAM,QAAQ;AAAA,IACzB,QAAQ,EAAE,MAAM,QAAQ;AAAA,IACxB,YAAY,CAAC;AAAA,IACb,gBAAgB,CAAC;AAAA,IACjB,GAAG,CAAC;AAAA,IACJ,WAAW,CAAC;AAAA,IACZ,eAAe,CAAC;AAAA,IAChB,yBAAyB,EAAE,MAAM,QAAQ;AAAA,EAC3C;AAAA,EACA,MAAM,SAAc;AAEtB,UAAM,EAAE,EAAE,IAAI,QAAQ;AAEtB,UAAM,QAAQ;AAEd,UAAM,aAAa,SAAS,MAAM,MAAM,0BAA0B,QAAQ,MAAM,WAAW,CAAC,MAAM,SAAS,YAAY,MAAM;AAC7H,UAAM,aAAa,SAAS,MAAM;AAChC,UAAI,CAAC,MAAM,QAAS,QAAO,EAAE,yBAAyB;AACtD,UAAI,MAAM,OAAQ,QAAO,EAAE,0BAA0B;AACrD,UAAI,MAAM,wBAAyB,QAAO;AAC1C,aAAO,EAAE,2BAA2B;AAAA,IACtC,CAAC;AAED,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO;AAAA,QAC/C,OAAO,gBAAgB,CAAC,cAAc,WAAW,KAAK,CAAC;AAAA,MACzD,GAAG;AAAA,QACD,oBAAoB,QAAQ;AAAA,UAC1B,OAAO,gBAAgB,CAAC,aAAa,WAAW,KAAK,CAAC;AAAA,QACxD,GAAG,MAAM,CAAC;AAAA,QACV,oBAAoB,QAAQ;AAAA,UAC1B,OAAO,gBAAgB,CAAC,WAAW,WAAW,KAAK,CAAC;AAAA,QACtD,GAAG,iBAAiB,WAAW,KAAK,GAAG,CAAC;AAAA,QACxC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,QAAQ,EAAE,OAAO,MAAM,GAAG,MAAM,EAAE;AAAA,QAChF,oBAAoB,QAAQ,YAAY;AAAA,UACtC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,iBAAiB,QAAQ,EAAE;AAAA,UACrD,oBAAoB,KAAK,MAAM,iBAAiB,QAAQ,UAAU,IAAI,KAAK,CAAC;AAAA,QAC9E,CAAC;AAAA,QACD,oBAAoB,QAAQ,YAAY;AAAA,UACtC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,iBAAiB,SAAS,EAAE;AAAA,UACtD,oBAAoB,KAAK,YAAY,iBAAiB,QAAQ,cAAc,IAAI,KAAK,CAAC;AAAA,QACxF,CAAC;AAAA,QACD,oBAAoB,QAAQ,YAAY;AAAA,UACtC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,iBAAiB,QAAQ,EAAE;AAAA,UACrD,oBAAoB,KAAK,YAAY,iBAAiB,QAAQ,EAAE,QAAQ,CAAC,CAAC,GAAG,CAAC;AAAA,QAChF,CAAC;AAAA,QACA,QAAQ,cAAc,QAClB,WAAW,GAAG,oBAAoB,QAAQ,YAAY;AAAA,UACrD,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,iBAAiB,QAAQ,EAAE;AAAA,UACrD,oBAAoB,KAAK,YAAY,iBAAiB,QAAQ,UAAU,QAAQ,CAAC,CAAC,IAAI,KAAK,CAAC;AAAA,QAC9F,CAAC,KACD,oBAAoB,IAAI,IAAI;AAAA,QAC/B,QAAQ,kBAAkB,QACtB,WAAW,GAAG,oBAAoB,QAAQ,YAAY;AAAA,UACrD,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,iBAAiB,SAAS,EAAE;AAAA,UACtD,oBAAoB,KAAK,YAAY,iBAAiB,QAAQ,cAAc,QAAQ,CAAC,CAAC,IAAI,KAAK,CAAC;AAAA,QAClG,CAAC,KACD,oBAAoB,IAAI,IAAI;AAAA,QAC/B,QAAQ,2BACJ,WAAW,GAAG,oBAAoB,QAAQ,aAAa,OAAO,KAC/D,oBAAoB,IAAI,IAAI;AAAA,MAClC,GAAG,CAAC;AAAA,IACN;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194879,
+      "end": 1783196194879,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194879,
+      "end": 1783196194879,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196194879,
+      "end": 1783196194879,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194879,
+      "end": 1783196194879,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194879,
+      "end": 1783196194879,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194879,
+      "end": 1783196194879,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194879,
+      "end": 1783196194879,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194880,
+      "end": 1783196194880,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194880,
+      "end": 1783196194880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194880,
+      "end": 1783196194880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194880,
+      "end": 1783196194880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194880,
+      "end": 1783196194881,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194881,
+      "end": 1783196194881,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/resonance/ResonanceOverlayPanels.vue?vue&type=style&index=0&scoped=126e66c9&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.overlay-panels { position: fixed; inset: 0; z-index: 9998; pointer-events: none; }\n.overlay-panel { position: absolute; inset: 2rem; background: #1A1F27; border: 1px solid #2D3645; border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; pointer-events: auto; }\n.overlay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: .5rem; font-weight: 700; color: #5B8DB8; }\n.overlay-close { background: none; border: none; color: #8B95A5; cursor: pointer; font-size: 1rem; }\n",
+      "start": 1783196194561,
+      "end": 1783196194561
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.overlay-panels { position: fixed; inset: 0; z-index: 9998; pointer-events: none; }\n.overlay-panel { position: absolute; inset: 2rem; background: #1A1F27; border: 1px solid #2D3645; border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; pointer-events: auto; }\n.overlay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: .5rem; font-weight: 700; color: #5B8DB8; }\n.overlay-close { background: none; border: none; color: #8B95A5; cursor: pointer; font-size: 1rem; }\n",
+      "start": 1783196194561,
+      "end": 1783196194561,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194561,
+      "end": 1783196194561,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194561,
+      "end": 1783196194561,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194561,
+      "end": 1783196194561,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.overlay-panels[data-v-126e66c9] { position: fixed; inset: 0; z-index: 9998; pointer-events: none;\n}\n.overlay-panel[data-v-126e66c9] { position: absolute; inset: 2rem; background: #1A1F27; border: 1px solid #2D3645; border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; pointer-events: auto;\n}\n.overlay-header[data-v-126e66c9] { display: flex; justify-content: space-between; align-items: center; margin-bottom: .5rem; font-weight: 700; color: #5B8DB8;\n}\n.overlay-close[data-v-126e66c9] { background: none; border: none; color: #8B95A5; cursor: pointer; font-size: 1rem;\n}\n",
+      "start": 1783196194561,
+      "end": 1783196194562,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194562,
+      "end": 1783196194562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196194562,
+      "end": 1783196194562,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194562,
+      "end": 1783196194562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194562,
+      "end": 1783196194562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194562,
+      "end": 1783196194562,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194562,
+      "end": 1783196194562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194562,
+      "end": 1783196194562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194562,
+      "end": 1783196194562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194562,
+      "end": 1783196194562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194562,
+      "end": 1783196194562,
+      "order": "normal"
+    }
+  ]
+}

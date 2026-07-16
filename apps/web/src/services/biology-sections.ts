@@ -14,8 +14,8 @@ export const biologySections: BiologySection[] = [
     titleKey: 'biology.section.humanAnatomy.title',
     descriptionKey: 'biology.section.humanAnatomy.description',
     icon: '🫀',
-    route: undefined,
-    available: false,
+    route: '/biology/anatomy',
+    available: true,
   },
   {
     id: 'microbiology',

@@ -1,4 +1,7 @@
 import type { Locale, TranslationDict } from './types'
+import arMessages from './ar'
+import enMessages from './en'
+import esMessages from './es'
 
 export type { Locale, TranslationDict }
 
@@ -10,7 +13,12 @@ export const localeNames: Record<Locale, string> = {
   es: 'Español',
 }
 
+const localeModules: Record<Locale, TranslationDict> = {
+  ar: arMessages as TranslationDict,
+  en: enMessages as TranslationDict,
+  es: esMessages as TranslationDict,
+}
+
 export async function loadLocaleMessages(locale: Locale): Promise<TranslationDict> {
-  const module = await import(`./${locale}.ts`)
-  return module.default as TranslationDict
+  return localeModules[locale]
 }

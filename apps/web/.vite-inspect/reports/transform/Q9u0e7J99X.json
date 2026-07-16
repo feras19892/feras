@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabAssistant.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, normalizeClass as _normalizeClass } from \"vue\"\n\nconst _hoisted_1 = { class: \"assistant-title\" }\nconst _hoisted_2 = { class: \"title-text\" }\nconst _hoisted_3 = {\n  key: 0,\n  class: \"badge\"\n}\nconst _hoisted_4 = { class: \"toggle-btn\" }\nconst _hoisted_5 = { key: 0 }\nconst _hoisted_6 = { key: 1 }\nconst _hoisted_7 = {\n  key: 0,\n  class: \"assistant-body\"\n}\nconst _hoisted_8 = {\n  key: 0,\n  class: \"assistant-empty\"\n}\nconst _hoisted_9 = { class: \"msg-icon\" }\nconst _hoisted_10 = { class: \"msg-text\" }\n\nimport { currentMessage, assistantOpen, toggleAssistant } from '../../../composables/chemistry/useLabAssistant';\nimport { useI18n } from '../../../composables/useI18n';\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'LabAssistant',\n  setup(__props) {\n\nconst { t } = useI18n();\n\nconst typeIcons: Record<string, string> = {\n  warning: '⚠️',\n  info: '💡',\n  success: '🎉',\n  tip: '🔬',\n};\n\nconst typeClasses: Record<string, string> = {\n  warning: 'msg-warning',\n  info: 'msg-info',\n  success: 'msg-success',\n  tip: 'msg-tip',\n};\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    class: _normalizeClass([\"lab-assistant\", { collapsed: !_unref(assistantOpen) }])\n  }, [\n    _createElementVNode(\"div\", {\n      class: \"assistant-header\",\n      onClick: _cache[0] || (_cache[0] = ($event: any) => (_unref(toggleAssistant)()))\n    }, [\n      _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"assistant-avatar\" }, [\n        _createElementVNode(\"span\", null, \"🤖\")\n      ], -1)),\n      _createElementVNode(\"div\", _hoisted_1, [\n        _createElementVNode(\"span\", _hoisted_2, _toDisplayString(_unref(t)('chemistryLab.labAssistant')), 1),\n        (_unref(currentMessage) && !_unref(assistantOpen))\n          ? (_openBlock(), _createElementBlock(\"span\", _hoisted_3, \"1\"))\n          : _createCommentVNode(\"\", true)\n      ]),\n      _createElementVNode(\"button\", _hoisted_4, [\n        (_unref(assistantOpen))\n          ? (_openBlock(), _createElementBlock(\"span\", _hoisted_5, \"▼\"))\n          : (_openBlock(), _createElementBlock(\"span\", _hoisted_6, \"▲\"))\n      ])\n    ]),\n    (_unref(assistantOpen))\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_7, [\n          (!_unref(currentMessage))\n            ? (_openBlock(), _createElementBlock(\"div\", _hoisted_8, [\n                _cache[2] || (_cache[2] = _createElementVNode(\"span\", { class: \"empty-icon\" }, \"🧪\", -1)),\n                _createElementVNode(\"p\", null, _toDisplayString(_unref(t)('chemistryLab.assistantWelcome')), 1)\n              ]))\n            : (_openBlock(), _createElementBlock(\"div\", {\n                key: 1,\n                class: _normalizeClass([\"assistant-single\", typeClasses[_unref(currentMessage).type]])\n              }, [\n                _createElementVNode(\"span\", _hoisted_9, _toDisplayString(typeIcons[_unref(currentMessage).type]), 1),\n                _createElementVNode(\"span\", _hoisted_10, _toDisplayString(_unref(currentMessage).text), 1)\n              ], 2))\n        ]))\n      : _createCommentVNode(\"\", true)\n  ], 2))\n}\n}\n\n})",
+      "start": 1783196193629,
+      "end": 1783196193629
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193629,
+      "end": 1783196193629,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, normalizeClass as _normalizeClass } from \"vue\";\nconst _hoisted_1 = { class: \"assistant-title\" };\nconst _hoisted_2 = { class: \"title-text\" };\nconst _hoisted_3 = {\n  key: 0,\n  class: \"badge\"\n};\nconst _hoisted_4 = { class: \"toggle-btn\" };\nconst _hoisted_5 = { key: 0 };\nconst _hoisted_6 = { key: 1 };\nconst _hoisted_7 = {\n  key: 0,\n  class: \"assistant-body\"\n};\nconst _hoisted_8 = {\n  key: 0,\n  class: \"assistant-empty\"\n};\nconst _hoisted_9 = { class: \"msg-icon\" };\nconst _hoisted_10 = { class: \"msg-text\" };\nimport { currentMessage, assistantOpen, toggleAssistant } from \"../../../composables/chemistry/useLabAssistant\";\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"LabAssistant\",\n  setup(__props) {\n    const { t } = useI18n();\n    const typeIcons = {\n      warning: \"⚠️\",\n      info: \"💡\",\n      success: \"🎉\",\n      tip: \"🔬\"\n    };\n    const typeClasses = {\n      warning: \"msg-warning\",\n      info: \"msg-info\",\n      success: \"msg-success\",\n      tip: \"msg-tip\"\n    };\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", {\n        class: _normalizeClass([\"lab-assistant\", { collapsed: !_unref(assistantOpen) }])\n      }, [\n        _createElementVNode(\"div\", {\n          class: \"assistant-header\",\n          onClick: _cache[0] || (_cache[0] = ($event) => _unref(toggleAssistant)())\n        }, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"assistant-avatar\" }, [\n            _createElementVNode(\"span\", null, \"🤖\")\n          ], -1)),\n          _createElementVNode(\"div\", _hoisted_1, [\n            _createElementVNode(\"span\", _hoisted_2, _toDisplayString(_unref(t)(\"chemistryLab.labAssistant\")), 1),\n            _unref(currentMessage) && !_unref(assistantOpen) ? (_openBlock(), _createElementBlock(\"span\", _hoisted_3, \"1\")) : _createCommentVNode(\"\", true)\n          ]),\n          _createElementVNode(\"button\", _hoisted_4, [\n            _unref(assistantOpen) ? (_openBlock(), _createElementBlock(\"span\", _hoisted_5, \"▼\")) : (_openBlock(), _createElementBlock(\"span\", _hoisted_6, \"▲\"))\n          ])\n        ]),\n        _unref(assistantOpen) ? (_openBlock(), _createElementBlock(\"div\", _hoisted_7, [\n          !_unref(currentMessage) ? (_openBlock(), _createElementBlock(\"div\", _hoisted_8, [\n            _cache[2] || (_cache[2] = _createElementVNode(\"span\", { class: \"empty-icon\" }, \"🧪\", -1)),\n            _createElementVNode(\"p\", null, _toDisplayString(_unref(t)(\"chemistryLab.assistantWelcome\")), 1)\n          ])) : (_openBlock(), _createElementBlock(\"div\", {\n            key: 1,\n            class: _normalizeClass([\"assistant-single\", typeClasses[_unref(currentMessage).type]])\n          }, [\n            _createElementVNode(\"span\", _hoisted_9, _toDisplayString(typeIcons[_unref(currentMessage).type]), 1),\n            _createElementVNode(\"span\", _hoisted_10, _toDisplayString(_unref(currentMessage).text), 1)\n          ], 2))\n        ])) : _createCommentVNode(\"\", true)\n      ], 2);\n    };\n  }\n});\n",
+      "start": 1783196193629,
+      "end": 1783196193685,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabAssistant.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, normalizeClass as _normalizeClass } from \"vue\"\n\nconst _hoisted_1 = { class: \"assistant-title\" }\nconst _hoisted_2 = { class: \"title-text\" }\nconst _hoisted_3 = {\n  key: 0,\n  class: \"badge\"\n}\nconst _hoisted_4 = { class: \"toggle-btn\" }\nconst _hoisted_5 = { key: 0 }\nconst _hoisted_6 = { key: 1 }\nconst _hoisted_7 = {\n  key: 0,\n  class: \"assistant-body\"\n}\nconst _hoisted_8 = {\n  key: 0,\n  class: \"assistant-empty\"\n}\nconst _hoisted_9 = { class: \"msg-icon\" }\nconst _hoisted_10 = { class: \"msg-text\" }\n\nimport { currentMessage, assistantOpen, toggleAssistant } from '../../../composables/chemistry/useLabAssistant';\nimport { useI18n } from '../../../composables/useI18n';\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'LabAssistant',\n  setup(__props) {\n\nconst { t } = useI18n();\n\nconst typeIcons: Record<string, string> = {\n  warning: '⚠️',\n  info: '💡',\n  success: '🎉',\n  tip: '🔬',\n};\n\nconst typeClasses: Record<string, string> = {\n  warning: 'msg-warning',\n  info: 'msg-info',\n  success: 'msg-success',\n  tip: 'msg-tip',\n};\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    class: _normalizeClass([\"lab-assistant\", { collapsed: !_unref(assistantOpen) }])\n  }, [\n    _createElementVNode(\"div\", {\n      class: \"assistant-header\",\n      onClick: _cache[0] || (_cache[0] = ($event: any) => (_unref(toggleAssistant)()))\n    }, [\n      _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"assistant-avatar\" }, [\n        _createElementVNode(\"span\", null, \"🤖\")\n      ], -1)),\n      _createElementVNode(\"div\", _hoisted_1, [\n        _createElementVNode(\"span\", _hoisted_2, _toDisplayString(_unref(t)('chemistryLab.labAssistant')), 1),\n        (_unref(currentMessage) && !_unref(assistantOpen))\n          ? (_openBlock(), _createElementBlock(\"span\", _hoisted_3, \"1\"))\n          : _createCommentVNode(\"\", true)\n      ]),\n      _createElementVNode(\"button\", _hoisted_4, [\n        (_unref(assistantOpen))\n          ? (_openBlock(), _createElementBlock(\"span\", _hoisted_5, \"▼\"))\n          : (_openBlock(), _createElementBlock(\"span\", _hoisted_6, \"▲\"))\n      ])\n    ]),\n    (_unref(assistantOpen))\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_7, [\n          (!_unref(currentMessage))\n            ? (_openBlock(), _createElementBlock(\"div\", _hoisted_8, [\n                _cache[2] || (_cache[2] = _createElementVNode(\"span\", { class: \"empty-icon\" }, \"🧪\", -1)),\n                _createElementVNode(\"p\", null, _toDisplayString(_unref(t)('chemistryLab.assistantWelcome')), 1)\n              ]))\n            : (_openBlock(), _createElementBlock(\"div\", {\n                key: 1,\n                class: _normalizeClass([\"assistant-single\", typeClasses[_unref(currentMessage).type]])\n              }, [\n                _createElementVNode(\"span\", _hoisted_9, _toDisplayString(typeIcons[_unref(currentMessage).type]), 1),\n                _createElementVNode(\"span\", _hoisted_10, _toDisplayString(_unref(currentMessage).text), 1)\n              ], 2))\n        ]))\n      : _createCommentVNode(\"\", true)\n  ], 2))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    }
+  ]
+}

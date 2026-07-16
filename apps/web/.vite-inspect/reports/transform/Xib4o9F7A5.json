@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/wave-interference/WaveInterferencePanelBody.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createBlock as _createBlock, createCommentVNode as _createCommentVNode, createElementBlock as _createElementBlock } from \"vue\"\n\nimport type { WaveInterferenceTrial } from '../../../composables/wave-interference/useWaveInterferenceTrials'\nimport WaveInterferenceReadingsPanel from './panels/WaveInterferenceReadingsPanel.vue'\nimport WaveInterferenceChartPanel from './panels/WaveInterferenceChartPanel.vue'\nimport WaveInterferenceTrialsPanel from './panels/WaveInterferenceTrialsPanel.vue'\nimport WaveInterferenceParamsPanel from './panels/WaveInterferenceParamsPanel.vue'\nimport WaveInterferenceLawsPanel from './panels/WaveInterferenceLawsPanel.vue'\nimport WaveInterferenceResultsPanel from './panels/WaveInterferenceResultsPanel.vue'\n\ninterface Props {\n  id: string\n  trials: WaveInterferenceTrial[]\n  params: { sourceDistance: number; wavelength: number; frequency: number; screenDistance: number }\n  vWave: number\n  constructive: { m: number; yMm: number }[]\n  destructive: { m: number; yMm: number }[]\n  amplitudeMap: { yMm: number; amplitude: number }[]\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'WaveInterferencePanelBody',\n  props: {\n    id: {},\n    trials: {},\n    params: {},\n    vWave: {},\n    constructive: {},\n    destructive: {},\n    amplitudeMap: {}\n  },\n  emits: [\"remove\", \"clear\", \"update:params\"],\n  setup(__props: any, { emit: __emit }) {\n\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", null, [\n    (__props.id === 'readings')\n      ? (_openBlock(), _createBlock(WaveInterferenceReadingsPanel, {\n          key: 0,\n          \"source-distance\": __props.params.sourceDistance,\n          wavelength: __props.params.wavelength,\n          frequency: __props.params.frequency,\n          \"screen-distance\": __props.params.screenDistance,\n          \"v-wave\": __props.vWave,\n          constructive: __props.constructive,\n          destructive: __props.destructive\n        }, null, 8, [\"source-distance\", \"wavelength\", \"frequency\", \"screen-distance\", \"v-wave\", \"constructive\", \"destructive\"]))\n      : (__props.id === 'chart')\n        ? (_openBlock(), _createBlock(WaveInterferenceChartPanel, {\n            key: 1,\n            \"amplitude-map\": __props.amplitudeMap\n          }, null, 8, [\"amplitude-map\"]))\n        : (__props.id === 'trials')\n          ? (_openBlock(), _createBlock(WaveInterferenceTrialsPanel, {\n              key: 2,\n              trials: __props.trials,\n              onRemove: _cache[0] || (_cache[0] = ($event: any) => (emit('remove', $event))),\n              onClear: _cache[1] || (_cache[1] = ($event: any) => (emit('clear')))\n            }, null, 8, [\"trials\"]))\n          : (__props.id === 'params')\n            ? (_openBlock(), _createBlock(WaveInterferenceParamsPanel, {\n                key: 3,\n                params: __props.params,\n                \"onUpdate:params\": _cache[2] || (_cache[2] = ($event: any) => (emit('update:params', $event)))\n              }, null, 8, [\"params\"]))\n            : (__props.id === 'laws')\n              ? (_openBlock(), _createBlock(WaveInterferenceLawsPanel, {\n                  key: 4,\n                  \"source-distance\": __props.params.sourceDistance,\n                  wavelength: __props.params.wavelength,\n                  frequency: __props.params.frequency,\n                  \"screen-distance\": __props.params.screenDistance,\n                  \"v-wave\": __props.vWave\n                }, null, 8, [\"source-distance\", \"wavelength\", \"frequency\", \"screen-distance\", \"v-wave\"]))\n              : (__props.id === 'results')\n                ? (_openBlock(), _createBlock(WaveInterferenceResultsPanel, {\n                    key: 5,\n                    trials: __props.trials\n                  }, null, 8, [\"trials\"]))\n                : _createCommentVNode(\"\", true)\n  ]))\n}\n}\n\n})",
+      "start": 1783196194633,
+      "end": 1783196194633
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194633,
+      "end": 1783196194633,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { openBlock as _openBlock, createBlock as _createBlock, createCommentVNode as _createCommentVNode, createElementBlock as _createElementBlock } from \"vue\";\nimport WaveInterferenceReadingsPanel from \"./panels/WaveInterferenceReadingsPanel.vue\";\nimport WaveInterferenceChartPanel from \"./panels/WaveInterferenceChartPanel.vue\";\nimport WaveInterferenceTrialsPanel from \"./panels/WaveInterferenceTrialsPanel.vue\";\nimport WaveInterferenceParamsPanel from \"./panels/WaveInterferenceParamsPanel.vue\";\nimport WaveInterferenceLawsPanel from \"./panels/WaveInterferenceLawsPanel.vue\";\nimport WaveInterferenceResultsPanel from \"./panels/WaveInterferenceResultsPanel.vue\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"WaveInterferencePanelBody\",\n  props: {\n    id: {},\n    trials: {},\n    params: {},\n    vWave: {},\n    constructive: {},\n    destructive: {},\n    amplitudeMap: {}\n  },\n  emits: [\"remove\", \"clear\", \"update:params\"],\n  setup(__props, { emit: __emit }) {\n    const emit = __emit;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", null, [\n        __props.id === \"readings\" ? (_openBlock(), _createBlock(WaveInterferenceReadingsPanel, {\n          key: 0,\n          \"source-distance\": __props.params.sourceDistance,\n          wavelength: __props.params.wavelength,\n          frequency: __props.params.frequency,\n          \"screen-distance\": __props.params.screenDistance,\n          \"v-wave\": __props.vWave,\n          constructive: __props.constructive,\n          destructive: __props.destructive\n        }, null, 8, [\"source-distance\", \"wavelength\", \"frequency\", \"screen-distance\", \"v-wave\", \"constructive\", \"destructive\"])) : __props.id === \"chart\" ? (_openBlock(), _createBlock(WaveInterferenceChartPanel, {\n          key: 1,\n          \"amplitude-map\": __props.amplitudeMap\n        }, null, 8, [\"amplitude-map\"])) : __props.id === \"trials\" ? (_openBlock(), _createBlock(WaveInterferenceTrialsPanel, {\n          key: 2,\n          trials: __props.trials,\n          onRemove: _cache[0] || (_cache[0] = ($event) => emit(\"remove\", $event)),\n          onClear: _cache[1] || (_cache[1] = ($event) => emit(\"clear\"))\n        }, null, 8, [\"trials\"])) : __props.id === \"params\" ? (_openBlock(), _createBlock(WaveInterferenceParamsPanel, {\n          key: 3,\n          params: __props.params,\n          \"onUpdate:params\": _cache[2] || (_cache[2] = ($event) => emit(\"update:params\", $event))\n        }, null, 8, [\"params\"])) : __props.id === \"laws\" ? (_openBlock(), _createBlock(WaveInterferenceLawsPanel, {\n          key: 4,\n          \"source-distance\": __props.params.sourceDistance,\n          wavelength: __props.params.wavelength,\n          frequency: __props.params.frequency,\n          \"screen-distance\": __props.params.screenDistance,\n          \"v-wave\": __props.vWave\n        }, null, 8, [\"source-distance\", \"wavelength\", \"frequency\", \"screen-distance\", \"v-wave\"])) : __props.id === \"results\" ? (_openBlock(), _createBlock(WaveInterferenceResultsPanel, {\n          key: 5,\n          trials: __props.trials\n        }, null, 8, [\"trials\"])) : _createCommentVNode(\"\", true)\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196194633,
+      "end": 1783196194927,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/wave-interference/WaveInterferencePanelBody.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createBlock as _createBlock, createCommentVNode as _createCommentVNode, createElementBlock as _createElementBlock } from \"vue\"\n\nimport type { WaveInterferenceTrial } from '../../../composables/wave-interference/useWaveInterferenceTrials'\nimport WaveInterferenceReadingsPanel from './panels/WaveInterferenceReadingsPanel.vue'\nimport WaveInterferenceChartPanel from './panels/WaveInterferenceChartPanel.vue'\nimport WaveInterferenceTrialsPanel from './panels/WaveInterferenceTrialsPanel.vue'\nimport WaveInterferenceParamsPanel from './panels/WaveInterferenceParamsPanel.vue'\nimport WaveInterferenceLawsPanel from './panels/WaveInterferenceLawsPanel.vue'\nimport WaveInterferenceResultsPanel from './panels/WaveInterferenceResultsPanel.vue'\n\ninterface Props {\n  id: string\n  trials: WaveInterferenceTrial[]\n  params: { sourceDistance: number; wavelength: number; frequency: number; screenDistance: number }\n  vWave: number\n  constructive: { m: number; yMm: number }[]\n  destructive: { m: number; yMm: number }[]\n  amplitudeMap: { yMm: number; amplitude: number }[]\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'WaveInterferencePanelBody',\n  props: {\n    id: {},\n    trials: {},\n    params: {},\n    vWave: {},\n    constructive: {},\n    destructive: {},\n    amplitudeMap: {}\n  },\n  emits: [\"remove\", \"clear\", \"update:params\"],\n  setup(__props: any, { emit: __emit }) {\n\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", null, [\n    (__props.id === 'readings')\n      ? (_openBlock(), _createBlock(WaveInterferenceReadingsPanel, {\n          key: 0,\n          \"source-distance\": __props.params.sourceDistance,\n          wavelength: __props.params.wavelength,\n          frequency: __props.params.frequency,\n          \"screen-distance\": __props.params.screenDistance,\n          \"v-wave\": __props.vWave,\n          constructive: __props.constructive,\n          destructive: __props.destructive\n        }, null, 8, [\"source-distance\", \"wavelength\", \"frequency\", \"screen-distance\", \"v-wave\", \"constructive\", \"destructive\"]))\n      : (__props.id === 'chart')\n        ? (_openBlock(), _createBlock(WaveInterferenceChartPanel, {\n            key: 1,\n            \"amplitude-map\": __props.amplitudeMap\n          }, null, 8, [\"amplitude-map\"]))\n        : (__props.id === 'trials')\n          ? (_openBlock(), _createBlock(WaveInterferenceTrialsPanel, {\n              key: 2,\n              trials: __props.trials,\n              onRemove: _cache[0] || (_cache[0] = ($event: any) => (emit('remove', $event))),\n              onClear: _cache[1] || (_cache[1] = ($event: any) => (emit('clear')))\n            }, null, 8, [\"trials\"]))\n          : (__props.id === 'params')\n            ? (_openBlock(), _createBlock(WaveInterferenceParamsPanel, {\n                key: 3,\n                params: __props.params,\n                \"onUpdate:params\": _cache[2] || (_cache[2] = ($event: any) => (emit('update:params', $event)))\n              }, null, 8, [\"params\"]))\n            : (__props.id === 'laws')\n              ? (_openBlock(), _createBlock(WaveInterferenceLawsPanel, {\n                  key: 4,\n                  \"source-distance\": __props.params.sourceDistance,\n                  wavelength: __props.params.wavelength,\n                  frequency: __props.params.frequency,\n                  \"screen-distance\": __props.params.screenDistance,\n                  \"v-wave\": __props.vWave\n                }, null, 8, [\"source-distance\", \"wavelength\", \"frequency\", \"screen-distance\", \"v-wave\"]))\n              : (__props.id === 'results')\n                ? (_openBlock(), _createBlock(WaveInterferenceResultsPanel, {\n                    key: 5,\n                    trials: __props.trials\n                  }, null, 8, [\"trials\"]))\n                : _createCommentVNode(\"\", true)\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,aAAa,YAAY,eAAe,cAAc,sBAAsB,qBAAqB,sBAAsB,2BAA2B;AAG3J,OAAO,mCAAmC;AAC1C,OAAO,gCAAgC;AACvC,OAAO,iCAAiC;AACxC,OAAO,iCAAiC;AACxC,OAAO,+BAA+B;AACtC,OAAO,kCAAkC;AAYzC,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,IAAI,CAAC;AAAA,IACL,QAAQ,CAAC;AAAA,IACT,QAAQ,CAAC;AAAA,IACT,OAAO,CAAC;AAAA,IACR,cAAc,CAAC;AAAA,IACf,aAAa,CAAC;AAAA,IACd,cAAc,CAAC;AAAA,EACjB;AAAA,EACA,OAAO,CAAC,UAAU,SAAS,eAAe;AAAA,EAC1C,MAAM,SAAc,EAAE,MAAM,OAAO,GAAG;AAGxC,UAAM,OAAO;AAEb,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,MAAM;AAAA,QACpD,QAAQ,OAAO,cACX,WAAW,GAAG,aAAa,+BAA+B;AAAA,UACzD,KAAK;AAAA,UACL,mBAAmB,QAAQ,OAAO;AAAA,UAClC,YAAY,QAAQ,OAAO;AAAA,UAC3B,WAAW,QAAQ,OAAO;AAAA,UAC1B,mBAAmB,QAAQ,OAAO;AAAA,UAClC,UAAU,QAAQ;AAAA,UAClB,cAAc,QAAQ;AAAA,UACtB,aAAa,QAAQ;AAAA,QACvB,GAAG,MAAM,GAAG,CAAC,mBAAmB,cAAc,aAAa,mBAAmB,UAAU,gBAAgB,aAAa,CAAC,KACrH,QAAQ,OAAO,WACb,WAAW,GAAG,aAAa,4BAA4B;AAAA,UACtD,KAAK;AAAA,UACL,iBAAiB,QAAQ;AAAA,QAC3B,GAAG,MAAM,GAAG,CAAC,eAAe,CAAC,KAC5B,QAAQ,OAAO,YACb,WAAW,GAAG,aAAa,6BAA6B;AAAA,UACvD,KAAK;AAAA,UACL,QAAQ,QAAQ;AAAA,UAChB,UAAU,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,UAAU,MAAM;AAAA,UAC3E,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,OAAO;AAAA,QACnE,GAAG,MAAM,GAAG,CAAC,QAAQ,CAAC,KACrB,QAAQ,OAAO,YACb,WAAW,GAAG,aAAa,6BAA6B;AAAA,UACvD,KAAK;AAAA,UACL,QAAQ,QAAQ;AAAA,UAChB,mBAAmB,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,iBAAiB,MAAM;AAAA,QAC7F,GAAG,MAAM,GAAG,CAAC,QAAQ,CAAC,KACrB,QAAQ,OAAO,UACb,WAAW,GAAG,aAAa,2BAA2B;AAAA,UACrD,KAAK;AAAA,UACL,mBAAmB,QAAQ,OAAO;AAAA,UAClC,YAAY,QAAQ,OAAO;AAAA,UAC3B,WAAW,QAAQ,OAAO;AAAA,UAC1B,mBAAmB,QAAQ,OAAO;AAAA,UAClC,UAAU,QAAQ;AAAA,QACpB,GAAG,MAAM,GAAG,CAAC,mBAAmB,cAAc,aAAa,mBAAmB,QAAQ,CAAC,KACtF,QAAQ,OAAO,aACb,WAAW,GAAG,aAAa,8BAA8B;AAAA,UACxD,KAAK;AAAA,UACL,QAAQ,QAAQ;AAAA,QAClB,GAAG,MAAM,GAAG,CAAC,QAAQ,CAAC,KACtB,oBAAoB,IAAI,IAAI;AAAA,MAC5C,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194927,
+      "end": 1783196194927,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194927,
+      "end": 1783196194927,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196194927,
+      "end": 1783196194927,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194927,
+      "end": 1783196194927,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194927,
+      "end": 1783196194927,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194927,
+      "end": 1783196194927,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194927,
+      "end": 1783196194927,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194927,
+      "end": 1783196194927,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194927,
+      "end": 1783196194928,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194928,
+      "end": 1783196194928,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194928,
+      "end": 1783196194928,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194928,
+      "end": 1783196194928,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194928,
+      "end": 1783196194928,
+      "order": "normal"
+    }
+  ]
+}

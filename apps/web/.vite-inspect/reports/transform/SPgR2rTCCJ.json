@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/TitrationDataTable.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, renderList as _renderList, Fragment as _Fragment, normalizeStyle as _normalizeStyle } from \"vue\"\n\nconst _hoisted_1 = { class: \"data-table-wrapper\" }\nconst _hoisted_2 = { class: \"data-table-header\" }\nconst _hoisted_3 = { class: \"data-title\" }\nconst _hoisted_4 = [\"title\"]\nconst _hoisted_5 = {\n  key: 0,\n  class: \"data-empty\"\n}\nconst _hoisted_6 = {\n  key: 1,\n  class: \"data-table\"\n}\n\nimport type { TitrationReading } from '../../../composables/chemistry/useExperiments';\nimport { useI18n } from '../../../composables/useI18n';\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'TitrationDataTable',\n  props: {\n    readings: {}\n  },\n  emits: [\"add\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n();\n\nconst props = __props;\n\nconst emit = __emit;\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"span\", _hoisted_3, _toDisplayString(_unref(t)('chemistryLab.readingsBook')), 1),\n      _createElementVNode(\"button\", {\n        class: \"add-btn\",\n        onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('add'))),\n        title: _unref(t)('chemistryLab.recordReading')\n      }, _toDisplayString(_unref(t)('chemistryLab.recordReading')), 9, _hoisted_4)\n    ]),\n    (__props.readings.length === 0)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_5, _toDisplayString(_unref(t)('chemistryLab.noReadingsYet')), 1))\n      : (_openBlock(), _createElementBlock(\"table\", _hoisted_6, [\n          _createElementVNode(\"thead\", null, [\n            _createElementVNode(\"tr\", null, [\n              _cache[1] || (_cache[1] = _createElementVNode(\"th\", null, \"#\", -1)),\n              _createElementVNode(\"th\", null, _toDisplayString(_unref(t)('chemistryLab.naohVolume')), 1),\n              _cache[2] || (_cache[2] = _createElementVNode(\"th\", null, \"pH\", -1)),\n              _createElementVNode(\"th\", null, _toDisplayString(_unref(t)('chemistry.color')), 1)\n            ])\n          ]),\n          _createElementVNode(\"tbody\", null, [\n            (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.readings, (r) => {\n              return (_openBlock(), _createElementBlock(\"tr\", {\n                key: r.n\n              }, [\n                _createElementVNode(\"td\", null, _toDisplayString(r.n), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(r.volume.toFixed(2)), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(r.ph !== null ? r.ph.toFixed(2) : '--'), 1),\n                _createElementVNode(\"td\", null, [\n                  _createElementVNode(\"span\", {\n                    class: \"color-dot\",\n                    style: _normalizeStyle({ background: r.color || '#3b82f6' })\n                  }, null, 4)\n                ])\n              ]))\n            }), 128))\n          ])\n        ]))\n  ]))\n}\n}\n\n})",
+      "start": 1783196193041,
+      "end": 1783196193041
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193041,
+      "end": 1783196193041,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, renderList as _renderList, Fragment as _Fragment, normalizeStyle as _normalizeStyle } from \"vue\";\nconst _hoisted_1 = { class: \"data-table-wrapper\" };\nconst _hoisted_2 = { class: \"data-table-header\" };\nconst _hoisted_3 = { class: \"data-title\" };\nconst _hoisted_4 = [\"title\"];\nconst _hoisted_5 = {\n  key: 0,\n  class: \"data-empty\"\n};\nconst _hoisted_6 = {\n  key: 1,\n  class: \"data-table\"\n};\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"TitrationDataTable\",\n  props: {\n    readings: {}\n  },\n  emits: [\"add\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const props = __props;\n    const emit = __emit;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _createElementVNode(\"span\", _hoisted_3, _toDisplayString(_unref(t)(\"chemistryLab.readingsBook\")), 1),\n          _createElementVNode(\"button\", {\n            class: \"add-btn\",\n            onClick: _cache[0] || (_cache[0] = ($event) => emit(\"add\")),\n            title: _unref(t)(\"chemistryLab.recordReading\")\n          }, _toDisplayString(_unref(t)(\"chemistryLab.recordReading\")), 9, _hoisted_4)\n        ]),\n        __props.readings.length === 0 ? (_openBlock(), _createElementBlock(\"div\", _hoisted_5, _toDisplayString(_unref(t)(\"chemistryLab.noReadingsYet\")), 1)) : (_openBlock(), _createElementBlock(\"table\", _hoisted_6, [\n          _createElementVNode(\"thead\", null, [\n            _createElementVNode(\"tr\", null, [\n              _cache[1] || (_cache[1] = _createElementVNode(\"th\", null, \"#\", -1)),\n              _createElementVNode(\"th\", null, _toDisplayString(_unref(t)(\"chemistryLab.naohVolume\")), 1),\n              _cache[2] || (_cache[2] = _createElementVNode(\"th\", null, \"pH\", -1)),\n              _createElementVNode(\"th\", null, _toDisplayString(_unref(t)(\"chemistry.color\")), 1)\n            ])\n          ]),\n          _createElementVNode(\"tbody\", null, [\n            (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.readings, (r) => {\n              return _openBlock(), _createElementBlock(\"tr\", {\n                key: r.n\n              }, [\n                _createElementVNode(\"td\", null, _toDisplayString(r.n), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(r.volume.toFixed(2)), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(r.ph !== null ? r.ph.toFixed(2) : \"--\"), 1),\n                _createElementVNode(\"td\", null, [\n                  _createElementVNode(\"span\", {\n                    class: \"color-dot\",\n                    style: _normalizeStyle({ background: r.color || \"#3b82f6\" })\n                  }, null, 4)\n                ])\n              ]);\n            }), 128))\n          ])\n        ]))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196193041,
+      "end": 1783196193245,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/TitrationDataTable.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, renderList as _renderList, Fragment as _Fragment, normalizeStyle as _normalizeStyle } from \"vue\"\n\nconst _hoisted_1 = { class: \"data-table-wrapper\" }\nconst _hoisted_2 = { class: \"data-table-header\" }\nconst _hoisted_3 = { class: \"data-title\" }\nconst _hoisted_4 = [\"title\"]\nconst _hoisted_5 = {\n  key: 0,\n  class: \"data-empty\"\n}\nconst _hoisted_6 = {\n  key: 1,\n  class: \"data-table\"\n}\n\nimport type { TitrationReading } from '../../../composables/chemistry/useExperiments';\nimport { useI18n } from '../../../composables/useI18n';\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'TitrationDataTable',\n  props: {\n    readings: {}\n  },\n  emits: [\"add\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n();\n\nconst props = __props;\n\nconst emit = __emit;\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"span\", _hoisted_3, _toDisplayString(_unref(t)('chemistryLab.readingsBook')), 1),\n      _createElementVNode(\"button\", {\n        class: \"add-btn\",\n        onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('add'))),\n        title: _unref(t)('chemistryLab.recordReading')\n      }, _toDisplayString(_unref(t)('chemistryLab.recordReading')), 9, _hoisted_4)\n    ]),\n    (__props.readings.length === 0)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_5, _toDisplayString(_unref(t)('chemistryLab.noReadingsYet')), 1))\n      : (_openBlock(), _createElementBlock(\"table\", _hoisted_6, [\n          _createElementVNode(\"thead\", null, [\n            _createElementVNode(\"tr\", null, [\n              _cache[1] || (_cache[1] = _createElementVNode(\"th\", null, \"#\", -1)),\n              _createElementVNode(\"th\", null, _toDisplayString(_unref(t)('chemistryLab.naohVolume')), 1),\n              _cache[2] || (_cache[2] = _createElementVNode(\"th\", null, \"pH\", -1)),\n              _createElementVNode(\"th\", null, _toDisplayString(_unref(t)('chemistry.color')), 1)\n            ])\n          ]),\n          _createElementVNode(\"tbody\", null, [\n            (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.readings, (r) => {\n              return (_openBlock(), _createElementBlock(\"tr\", {\n                key: r.n\n              }, [\n                _createElementVNode(\"td\", null, _toDisplayString(r.n), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(r.volume.toFixed(2)), 1),\n                _createElementVNode(\"td\", null, _toDisplayString(r.ph !== null ? r.ph.toFixed(2) : '--'), 1),\n                _createElementVNode(\"td\", null, [\n                  _createElementVNode(\"span\", {\n                    class: \"color-dot\",\n                    style: _normalizeStyle({ background: r.color || '#3b82f6' })\n                  }, null, 4)\n                ])\n              ]))\n            }), 128))\n          ])\n        ]))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,SAAS,QAAQ,mBAAmB,kBAAkB,sBAAsB,qBAAqB,aAAa,YAAY,sBAAsB,qBAAgE,cAAc,aAAa,YAAY,WAAW,kBAAkB,uBAAuB;AAEpT,MAAM,aAAa,EAAE,OAAO,qBAAqB;AACjD,MAAM,aAAa,EAAE,OAAO,oBAAoB;AAChD,MAAM,aAAa,EAAE,OAAO,aAAa;AACzC,MAAM,aAAa,CAAC,OAAO;AAC3B,MAAM,aAAa;AAAA,EACjB,KAAK;AAAA,EACL,OAAO;AACT;AACA,MAAM,aAAa;AAAA,EACjB,KAAK;AAAA,EACL,OAAO;AACT;AAGA,SAAS,eAAe;AAExB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,UAAU,CAAC;AAAA,EACb;AAAA,EACA,OAAO,CAAC,KAAK;AAAA,EACb,MAAM,SAAc,EAAE,MAAM,OAAO,GAAG;AAExC,UAAM,EAAE,EAAE,IAAI,QAAQ;AAEtB,UAAM,QAAQ;AAEd,UAAM,OAAO;AAEb,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,oBAAoB,OAAO,YAAY;AAAA,UACrC,oBAAoB,QAAQ,YAAY,iBAAiB,OAAO,CAAC,EAAE,2BAA2B,CAAC,GAAG,CAAC;AAAA,UACnG,oBAAoB,UAAU;AAAA,YAC5B,OAAO;AAAA,YACP,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,KAAK;AAAA,YAC/D,OAAO,OAAO,CAAC,EAAE,4BAA4B;AAAA,UAC/C,GAAG,iBAAiB,OAAO,CAAC,EAAE,4BAA4B,CAAC,GAAG,GAAG,UAAU;AAAA,QAC7E,CAAC;AAAA,QACA,QAAQ,SAAS,WAAW,KACxB,WAAW,GAAG,oBAAoB,OAAO,YAAY,iBAAiB,OAAO,CAAC,EAAE,4BAA4B,CAAC,GAAG,CAAC,MACjH,WAAW,GAAG,oBAAoB,SAAS,YAAY;AAAA,UACtD,oBAAoB,SAAS,MAAM;AAAA,YACjC,oBAAoB,MAAM,MAAM;AAAA,cAC9B,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,MAAM,MAAM,KAAK,EAAE;AAAA,cACjE,oBAAoB,MAAM,MAAM,iBAAiB,OAAO,CAAC,EAAE,yBAAyB,CAAC,GAAG,CAAC;AAAA,cACzF,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,MAAM,MAAM,MAAM,EAAE;AAAA,cAClE,oBAAoB,MAAM,MAAM,iBAAiB,OAAO,CAAC,EAAE,iBAAiB,CAAC,GAAG,CAAC;AAAA,YACnF,CAAC;AAAA,UACH,CAAC;AAAA,UACD,oBAAoB,SAAS,MAAM;AAAA,aAChC,WAAW,IAAI,GAAG,oBAAoB,WAAW,MAAM,YAAY,QAAQ,UAAU,CAAC,MAAM;AAC3F,qBAAQ,WAAW,GAAG,oBAAoB,MAAM;AAAA,gBAC9C,KAAK,EAAE;AAAA,cACT,GAAG;AAAA,gBACD,oBAAoB,MAAM,MAAM,iBAAiB,EAAE,CAAC,GAAG,CAAC;AAAA,gBACxD,oBAAoB,MAAM,MAAM,iBAAiB,EAAE,OAAO,QAAQ,CAAC,CAAC,GAAG,CAAC;AAAA,gBACxE,oBAAoB,MAAM,MAAM,iBAAiB,EAAE,OAAO,OAAO,EAAE,GAAG,QAAQ,CAAC,IAAI,IAAI,GAAG,CAAC;AAAA,gBAC3F,oBAAoB,MAAM,MAAM;AAAA,kBAC9B,oBAAoB,QAAQ;AAAA,oBAC1B,OAAO;AAAA,oBACP,OAAO,gBAAgB,EAAE,YAAY,EAAE,SAAS,UAAU,CAAC;AAAA,kBAC7D,GAAG,MAAM,CAAC;AAAA,gBACZ,CAAC;AAAA,cACH,CAAC;AAAA,YACH,CAAC,GAAG,GAAG;AAAA,UACT,CAAC;AAAA,QACH,CAAC;AAAA,MACP,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193245,
+      "end": 1783196193245,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193245,
+      "end": 1783196193245,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196193245,
+      "end": 1783196193245,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193245,
+      "end": 1783196193245,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193246,
+      "end": 1783196193246,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193246,
+      "end": 1783196193246,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193246,
+      "end": 1783196193246,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193246,
+      "end": 1783196193246,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193246,
+      "end": 1783196193246,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193246,
+      "end": 1783196193246,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193246,
+      "end": 1783196193246,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193246,
+      "end": 1783196193246,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193246,
+      "end": 1783196193246,
+      "order": "normal"
+    }
+  ]
+}

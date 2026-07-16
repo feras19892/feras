@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lever/LeverCanvas.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, watch, onMounted, onUnmounted, computed } from 'vue'\nimport { useI18n } from '../../../composables/useI18n'\nimport type { LeverForce } from '../../../modules/physics/experiments/lever/useLeverPhysics'\nimport type { BeamMass } from '../../../modules/physics/experiments/lever/useLeverBeamPhysics'\n\nconst { t } = useI18n()\n\nconst props = defineProps<{\n  mode: 'vector' | 'beam'\n  forces: LeverForce[]\n  resultant: { fx: number; fy: number; magnitude: number; angleDeg: number }\n  equilibriumForce: { magnitude: number; angleDeg: number } | null\n  isBalanced: boolean\n  masses?: BeamMass[]\n  tiltDeg?: number\n  netTorque?: number\n  beamLength?: number\n}>()\n\nconst emit = defineEmits<{\n  (e: 'addForce'): void\n  (e: 'updateForce', id: number, magnitude: number, angleDeg: number): void\n  (e: 'removeForce', id: number): void\n  (e: 'addMass'): void\n  (e: 'updateMass', id: number, mass: number, distance: number): void\n  (e: 'removeMass', id: number): void\n}>()\n\nconst canvasRef = ref<HTMLCanvasElement | null>(null)\nconst wrapRef = ref<HTMLDivElement | null>(null)\n\nconst SCALE = 2.5 // px per Newton\nconst COLORS = ['#ef4444', '#22c55e', '#3b82f6', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4']\n\nconst draggingId = ref<number | null>(null)\nconst hoverId = ref<number | null>(null)\n\nlet cx = 0, cy = 0, radius = 0\n\nfunction resize() {\n  const c = canvasRef.value, w = wrapRef.value\n  if (!c || !w) return\n  const rect = w.getBoundingClientRect()\n  c.width = rect.width; c.height = rect.height\n  cx = c.width / 2; cy = c.height / 2\n  radius = Math.min(cx, cy) - 40\n  draw()\n}\n\nfunction toCanvas(force: LeverForce) {\n  const rad = force.angleDeg * Math.PI / 180\n  const len = Math.min(force.magnitude * SCALE, radius)\n  return { x2: cx + len * Math.cos(rad), y2: cy - len * Math.sin(rad), len }\n}\n\nfunction drawArrow(ctx: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number, color: string, width = 2, dashed = false) {\n  ctx.save(); ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = width\n  if (dashed) ctx.setLineDash([6, 4])\n  ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke()\n  const angle = Math.atan2(y2 - y1, x2 - x1)\n  const head = 10\n  ctx.beginPath(); ctx.moveTo(x2, y2)\n  ctx.lineTo(x2 - head * Math.cos(angle - 0.5), y2 - head * Math.sin(angle - 0.5))\n  ctx.lineTo(x2 - head * Math.cos(angle + 0.5), y2 - head * Math.sin(angle + 0.5))\n  ctx.closePath(); ctx.fill(); ctx.restore()\n}\n\nfunction draw() {\n  const c = canvasRef.value; if (!c) return\n  const ctx = c.getContext('2d')!; ctx.clearRect(0, 0, c.width, c.height)\n  if (props.mode === 'vector') drawVector(ctx)\n  else drawBeam(ctx)\n}\n\nfunction drawVector(ctx: CanvasRenderingContext2D) {\n  const W = ctx.canvas.width, H = ctx.canvas.height\n\n  // Concentric circles\n  ctx.strokeStyle = 'rgba(91,141,184,0.10)'; ctx.lineWidth = 1\n  for (let r = 20; r <= radius; r += 40) { ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke() }\n\n  // Axes\n  ctx.strokeStyle = 'rgba(91,141,184,0.25)'; ctx.lineWidth = 1\n  ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, H); ctx.stroke()\n  ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(W, cy); ctx.stroke()\n  ctx.fillStyle = '#5B8DB8'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center'\n  ctx.fillText('0°', cx + radius + 14, cy + 4); ctx.fillText('90°', cx - 8, cy - radius - 6)\n  ctx.fillText('180°', cx - radius - 14, cy + 4); ctx.fillText('270°', cx - 8, cy + radius + 14)\n\n  // === Construction: head-to-tail dashed lines ===\n  if (props.forces.length >= 2) {\n    let curX = cx, curY = cy\n    ctx.strokeStyle = 'rgba(148,163,184,0.35)'; ctx.lineWidth = 1; ctx.setLineDash([4, 4])\n    for (const f of props.forces) {\n      const rad = f.angleDeg * Math.PI / 180\n      const len = Math.min(f.magnitude * SCALE, radius)\n      const nx = curX + len * Math.cos(rad)\n      const ny = curY - len * Math.sin(rad)\n      ctx.beginPath(); ctx.moveTo(curX, curY); ctx.lineTo(nx, ny); ctx.stroke()\n      // small dot at joint\n      ctx.fillStyle = 'rgba(148,163,184,0.5)'; ctx.beginPath(); ctx.arc(nx, ny, 2.5, 0, Math.PI * 2); ctx.fill()\n      curX = nx; curY = ny\n    }\n    // dashed line back to origin (should close if balanced)\n    if (!props.isBalanced) {\n      ctx.strokeStyle = 'rgba(239,68,68,0.3)'; ctx.setLineDash([3, 6])\n      ctx.beginPath(); ctx.moveTo(curX, curY); ctx.lineTo(cx, cy); ctx.stroke()\n    }\n    ctx.setLineDash([])\n  }\n\n  // === Force arrows from origin ===\n  props.forces.forEach((f, i) => {\n    const pos = toCanvas(f)\n    const color = COLORS[i % COLORS.length]\n    const isHover = hoverId.value === f.id\n    drawArrow(ctx, cx, cy, pos.x2, pos.y2, color, isHover ? 3.5 : 2.5)\n    // Label with background for readability\n    const labelX = pos.x2 + 8, labelY = pos.y2\n    ctx.fillStyle = 'rgba(22,27,34,0.85)'; ctx.fillRect(labelX - 2, labelY - 10, 90, 14)\n    ctx.fillStyle = color; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'left'\n    ctx.fillText(`${f.magnitude.toFixed(1)}N @${f.angleDeg.toFixed(0)}°`, labelX, labelY)\n  })\n\n  // === Resultant arrow (thick red) ===\n  if (props.resultant.magnitude > 0.01) {\n    const rLen = Math.min(props.resultant.magnitude * SCALE, radius)\n    const rRad = props.resultant.angleDeg * Math.PI / 180\n    const rx = cx + rLen * Math.cos(rRad), ry = cy - rLen * Math.sin(rRad)\n    // Glow\n    ctx.save(); ctx.strokeStyle = 'rgba(239,68,68,0.15)'; ctx.lineWidth = 8; ctx.lineCap = 'round'\n    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(rx, ry); ctx.stroke(); ctx.restore()\n    // Arrow\n    drawArrow(ctx, cx, cy, rx, ry, '#ef4444', 4)\n    // Value label\n    ctx.fillStyle = 'rgba(22,27,34,0.9)'; ctx.fillRect(rx + 6, ry - 22, 110, 28)\n    ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 1; ctx.strokeRect(rx + 6, ry - 22, 110, 28)\n    ctx.fillStyle = '#ef4444'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'left'\n    ctx.fillText('R = ' + props.resultant.magnitude.toFixed(2) + ' N', rx + 12, ry - 8)\n    ctx.fillStyle = '#8B95A5'; ctx.font = '10px sans-serif'\n    ctx.fillText('@ ' + props.resultant.angleDeg.toFixed(1) + '°', rx + 12, ry + 4)\n  }\n\n  // === Equilibrium force (green dashed) ===\n  if (props.equilibriumForce && props.equilibriumForce.magnitude > 0.01) {\n    const eLen = Math.min(props.equilibriumForce.magnitude * SCALE, radius)\n    const eRad = props.equilibriumForce.angleDeg * Math.PI / 180\n    const ex = cx + eLen * Math.cos(eRad), ey = cy - eLen * Math.sin(eRad)\n    drawArrow(ctx, cx, cy, ex, ey, '#22c55e', 2.5, true)\n    ctx.fillStyle = 'rgba(22,27,34,0.85)'; ctx.fillRect(ex + 6, ey + 4, 70, 14)\n    ctx.fillStyle = '#22c55e'; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'left'\n    ctx.fillText('F_eq = ' + props.equilibriumForce.magnitude.toFixed(1) + 'N', ex + 8, ey + 14)\n  }\n\n  // === Balance indicator ===\n  if (props.isBalanced) {\n    ctx.fillStyle = '#22c55e'; ctx.font = 'bold 22px sans-serif'; ctx.textAlign = 'center'\n    ctx.fillText('✅ ' + t('experiments.balanced'), cx, cy - radius - 20)\n  } else if (props.resultant.magnitude > 0.01) {\n    // Show \"net force\" hint\n    ctx.fillStyle = '#f59e0b'; ctx.font = 'bold 13px sans-serif'; ctx.textAlign = 'center'\n    ctx.fillText('⚠️ ' + t('experiments.unbalanced'), cx, cy - radius - 16)\n  }\n}\n\nfunction drawBeam(ctx: CanvasRenderingContext2D) {\n  const bLen = (props.beamLength ?? 2)\n  const pxPerM = Math.min(cx - 60, 200) / (bLen / 2)\n  const fulcrumX = cx, fulcrumY = cy\n  const tilt = (props.tiltDeg ?? 0) * Math.PI / 180\n\n  // Ground\n  ctx.fillStyle = '#2D3645'; ctx.fillRect(0, fulcrumY + 60, ctx.canvas.width, 4)\n\n  // Fulcrum (triangle)\n  ctx.fillStyle = '#8B95A5'; ctx.beginPath()\n  ctx.moveTo(fulcrumX, fulcrumY + 60); ctx.lineTo(fulcrumX - 20, fulcrumY + 80); ctx.lineTo(fulcrumX + 20, fulcrumY + 80); ctx.closePath(); ctx.fill()\n\n  // Beam (rotated around fulcrum)\n  const halfBeamPx = (bLen / 2) * pxPerM\n  ctx.save(); ctx.translate(fulcrumX, fulcrumY); ctx.rotate(tilt)\n  ctx.strokeStyle = '#5B8DB8'; ctx.lineWidth = 6\n  ctx.beginPath(); ctx.moveTo(-halfBeamPx, 0); ctx.lineTo(halfBeamPx, 0); ctx.stroke()\n  // Ticks\n  ctx.fillStyle = '#5B8DB8'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center'\n  for (let d = -bLen / 2; d <= bLen / 2; d += 0.25) {\n    const tx = d * pxPerM\n    ctx.beginPath(); ctx.moveTo(tx, -3); ctx.lineTo(tx, 3); ctx.stroke()\n    if (Math.abs(d * 4 - Math.round(d * 4)) < 0.01) ctx.fillText(d.toFixed(1) + 'm', tx, 18)\n  }\n  // Masses\n  props.masses?.forEach((m, i) => {\n    const mx = m.distance * pxPerM\n    const color = COLORS[i % COLORS.length]\n    // Weight arrow (down from beam)\n    const wLen = Math.min(m.mass * 3, 60)\n    drawArrow(ctx, mx, 0, mx, wLen, color, 2)\n    // Mass block\n    ctx.fillStyle = color; ctx.fillRect(mx - 10, -12, 20, 12)\n    ctx.fillStyle = '#fff'; ctx.font = 'bold 9px sans-serif'; ctx.textAlign = 'center'\n    ctx.fillText(`${m.mass.toFixed(1)}kg`, mx, -4)\n  })\n  ctx.restore()\n\n  // Torque info\n  ctx.fillStyle = '#D1D7E0'; ctx.font = '12px sans-serif'; ctx.textAlign = 'left'\n  ctx.fillText(`τ = ${(props.netTorque ?? 0).toFixed(2)} N·m`, 10, 20)\n  if (Math.abs(props.netTorque ?? 0) < 0.01) {\n    ctx.fillStyle = '#22c55e'; ctx.font = 'bold 16px sans-serif'; ctx.textAlign = 'center'\n    ctx.fillText('✅ ' + t('experiments.balanced'), cx, 30)\n  }\n}\n\nfunction hitTest(x: number, y: number): number | null {\n  if (props.mode === 'vector') {\n    for (const f of props.forces) {\n      const pos = toCanvas(f)\n      const dx = x - pos.x2, dy = y - pos.y2\n      if (dx * dx + dy * dy < 400) return f.id\n    }\n  } else {\n    // Hit test masses on beam\n    const bLen = props.beamLength ?? 2\n    const pxPerM = Math.min(cx - 60, 200) / (bLen / 2)\n    const tilt = (props.tiltDeg ?? 0) * Math.PI / 180\n    for (const m of props.masses ?? []) {\n      const mx = cx + (m.distance * pxPerM) * Math.cos(-tilt)\n      const my = cy - (m.distance * pxPerM) * Math.sin(-tilt) - 12\n      const dx = x - mx, dy = y - my\n      if (dx * dx + dy * dy < 400) return m.id\n    }\n  }\n  return null\n}\n\nfunction onPointerDown(e: PointerEvent) {\n  const rect = canvasRef.value!.getBoundingClientRect()\n  const x = e.clientX - rect.left, y = e.clientY - rect.top\n  const id = hitTest(x, y)\n  if (id !== null) { draggingId.value = id; canvasRef.value!.setPointerCapture(e.pointerId) }\n}\n\nfunction onPointerMove(e: PointerEvent) {\n  const rect = canvasRef.value!.getBoundingClientRect()\n  const x = e.clientX - rect.left, y = e.clientY - rect.top\n  hoverId.value = hitTest(x, y)\n  if (draggingId.value === null) return\n  if (props.mode === 'vector') {\n    const dx = x - cx, dy = cy - y\n    const angle = ((Math.atan2(dy, dx) * 180 / Math.PI) + 360) % 360\n    const dist = Math.sqrt(dx * dx + dy * dy)\n    emit('updateForce', draggingId.value, Math.max(0.1, Math.min(100, dist / SCALE)), angle)\n  } else {\n    const bLen = props.beamLength ?? 2\n    const pxPerM = Math.min(cx - 60, 200) / (bLen / 2)\n    const dist = (x - cx) / pxPerM\n    emit('updateMass', draggingId.value, (props.masses?.find(m => m.id === draggingId.value)?.mass ?? 1), Math.max(-bLen / 2, Math.min(bLen / 2, dist)))\n  }\n}\n\nfunction onPointerUp() { draggingId.value = null }\nfunction onDblClick(e: MouseEvent) {\n  const rect = canvasRef.value!.getBoundingClientRect()\n  const id = hitTest(e.clientX - rect.left, e.clientY - rect.top)\n  if (id !== null) { if (props.mode === 'vector') emit('removeForce', id); else emit('removeMass', id) }\n}\n\nlet resizeObs: ResizeObserver | null = null\nonMounted(() => { resize(); if (wrapRef.value) { resizeObs = new ResizeObserver(resize); resizeObs.observe(wrapRef.value) } })\nonUnmounted(() => { if (resizeObs) resizeObs.disconnect() })\nwatch(() => [props.mode, props.forces.length, props.forces.map(f => `${f.magnitude},${f.angleDeg}`), props.resultant.magnitude, props.isBalanced, props.masses?.length, props.tiltDeg, props.netTorque], draw, { flush: 'post' })\n</script>\n\n<template>\n  <div ref=\"wrapRef\" class=\"canvas-wrap\">\n    <canvas ref=\"canvasRef\" @pointerdown=\"onPointerDown\" @pointermove=\"onPointerMove\" @pointerup=\"onPointerUp\" @dblclick=\"onDblClick\" />\n    <button class=\"add-btn\" @click=\"mode === 'vector' ? emit('addForce') : emit('addMass')\">\n      + {{ mode === 'vector' ? t('experiments.addForce') : t('experiments.addMass') }}\n    </button>\n  </div>\n</template>\n\n<style scoped>\n.canvas-wrap { flex: 1; min-height: 0; width: 100%; display: flex; flex-direction: column; position: relative; }\n.canvas-wrap canvas { display: block; width: 100%; flex: 1; min-height: 0; border-radius: 8px; background: linear-gradient(180deg, #fffef7, #fff8ea); border: 1px solid #2D3645; }\n.add-btn { position: absolute; bottom: 16px; left: 16px; z-index: 10; background: linear-gradient(135deg, #5B8DB8, #3b6f99); color: #fff; border: none; border-radius: 24px; padding: .5rem 1rem; font-size: .75rem; font-weight: 700; cursor: pointer; transition: all .2s; box-shadow: 0 4px 12px rgba(91,141,184,.35); letter-spacing: .3px; }\n.add-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(91,141,184,.45); }\n.add-btn:active { transform: translateY(0); box-shadow: 0 2px 8px rgba(91,141,184,.3); }\n</style>\n",
+      "start": 1783196193607,
+      "end": 1783196194082,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194082,
+      "end": 1783196194083,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194083,
+      "end": 1783196194083,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194083,
+      "end": 1783196194083,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194083,
+      "end": 1783196194083,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lever/LeverCanvas.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lever/LeverCanvas.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lever/LeverCanvas.vue?vue&type=style&index=0&scoped=c2909ad8&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-c2909ad8\"]]);\n",
+      "start": 1783196194083,
+      "end": 1783196194372,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194372,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194373,
+      "end": 1783196194374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194374,
+      "end": 1783196194374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194374,
+      "end": 1783196194376,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194377,
+      "end": 1783196194377,
+      "order": "normal"
+    }
+  ]
+}

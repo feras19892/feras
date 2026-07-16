@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedEquationsPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"equations-panel\" }\nconst _hoisted_2 = { class: \"calc-buttons\" }\nconst _hoisted_3 = { class: \"result\" }\nconst _hoisted_4 = { class: \"formulas\" }\n\nimport { computed } from 'vue'\nimport { useI18n } from '../../../composables/useI18n'\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'InclinedEquationsPanel',\n  props: {\n    calcResult: {}\n  },\n  emits: [\"calcAcceleration\", \"calcTime\", \"calcVelocity\", \"calcNormal\", \"calcGFromSlope\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\nconst props = __props\n\nconst emit = __emit\n\nconst resultLines = computed(() => {\n  if (!props.calcResult) return []\n  return props.calcResult.split(/<br\\s*\\/?>/i).map(l => l.replace(/<\\/?b>/gi, '').trim()).filter(Boolean)\n})\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"button\", {\n        onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('calcAcceleration')))\n      }, _toDisplayString(_unref(t)('experiments.calculateAcceleration')), 1),\n      _createElementVNode(\"button\", {\n        onClick: _cache[1] || (_cache[1] = ($event: any) => (emit('calcTime')))\n      }, _toDisplayString(_unref(t)('experiments.calculateArrivalTime')), 1),\n      _createElementVNode(\"button\", {\n        onClick: _cache[2] || (_cache[2] = ($event: any) => (emit('calcVelocity')))\n      }, _toDisplayString(_unref(t)('experiments.calculateFinalVelocity')), 1),\n      _createElementVNode(\"button\", {\n        onClick: _cache[3] || (_cache[3] = ($event: any) => (emit('calcNormal')))\n      }, _toDisplayString(_unref(t)('experiments.calculateNormalForce')), 1),\n      _createElementVNode(\"button\", {\n        onClick: _cache[4] || (_cache[4] = ($event: any) => (emit('calcGFromSlope')))\n      }, _toDisplayString(_unref(t)('experiments.calculateGFromSlope')), 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_3, [\n      (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(resultLines.value, (line, i) => {\n        return (_openBlock(), _createElementBlock(\"div\", { key: i }, _toDisplayString(line), 1))\n      }), 128))\n    ]),\n    _createElementVNode(\"div\", _hoisted_4, [\n      _createElementVNode(\"h5\", null, _toDisplayString(_unref(t)('experiments.basicEquations')) + \":\", 1),\n      _cache[5] || (_cache[5] = _createElementVNode(\"ul\", null, [\n        _createElementVNode(\"li\", null, \"a = g·sin(θ) − μ·g·cos(θ)\"),\n        _createElementVNode(\"li\", null, \"s = ½·a·t²\"),\n        _createElementVNode(\"li\", null, \"v = a·t\"),\n        _createElementVNode(\"li\", null, \"t = √(2L/a)\"),\n        _createElementVNode(\"li\", null, \"v = √(2aL)\"),\n        _createElementVNode(\"li\", null, \"N = m·g·cos(θ)\"),\n        _createElementVNode(\"li\", null, \"F∥ = m·g·sin(θ)\"),\n        _createElementVNode(\"li\", null, \"f = μ·N = μ·m·g·cos(θ)\")\n      ], -1))\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783196195579,
+      "end": 1783196195579
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195579,
+      "end": 1783196195579,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"equations-panel\" };\nconst _hoisted_2 = { class: \"calc-buttons\" };\nconst _hoisted_3 = { class: \"result\" };\nconst _hoisted_4 = { class: \"formulas\" };\nimport { computed } from \"vue\";\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"InclinedEquationsPanel\",\n  props: {\n    calcResult: {}\n  },\n  emits: [\"calcAcceleration\", \"calcTime\", \"calcVelocity\", \"calcNormal\", \"calcGFromSlope\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const props = __props;\n    const emit = __emit;\n    const resultLines = computed(() => {\n      if (!props.calcResult) return [];\n      return props.calcResult.split(/<br\\s*\\/?>/i).map((l) => l.replace(/<\\/?b>/gi, \"\").trim()).filter(Boolean);\n    });\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _createElementVNode(\"button\", {\n            onClick: _cache[0] || (_cache[0] = ($event) => emit(\"calcAcceleration\"))\n          }, _toDisplayString(_unref(t)(\"experiments.calculateAcceleration\")), 1),\n          _createElementVNode(\"button\", {\n            onClick: _cache[1] || (_cache[1] = ($event) => emit(\"calcTime\"))\n          }, _toDisplayString(_unref(t)(\"experiments.calculateArrivalTime\")), 1),\n          _createElementVNode(\"button\", {\n            onClick: _cache[2] || (_cache[2] = ($event) => emit(\"calcVelocity\"))\n          }, _toDisplayString(_unref(t)(\"experiments.calculateFinalVelocity\")), 1),\n          _createElementVNode(\"button\", {\n            onClick: _cache[3] || (_cache[3] = ($event) => emit(\"calcNormal\"))\n          }, _toDisplayString(_unref(t)(\"experiments.calculateNormalForce\")), 1),\n          _createElementVNode(\"button\", {\n            onClick: _cache[4] || (_cache[4] = ($event) => emit(\"calcGFromSlope\"))\n          }, _toDisplayString(_unref(t)(\"experiments.calculateGFromSlope\")), 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_3, [\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(resultLines.value, (line, i) => {\n            return _openBlock(), _createElementBlock(\"div\", { key: i }, _toDisplayString(line), 1);\n          }), 128))\n        ]),\n        _createElementVNode(\"div\", _hoisted_4, [\n          _createElementVNode(\"h5\", null, _toDisplayString(_unref(t)(\"experiments.basicEquations\")) + \":\", 1),\n          _cache[5] || (_cache[5] = _createElementVNode(\"ul\", null, [\n            _createElementVNode(\"li\", null, \"a = g·sin(θ) − μ·g·cos(θ)\"),\n            _createElementVNode(\"li\", null, \"s = ½·a·t²\"),\n            _createElementVNode(\"li\", null, \"v = a·t\"),\n            _createElementVNode(\"li\", null, \"t = √(2L/a)\"),\n            _createElementVNode(\"li\", null, \"v = √(2aL)\"),\n            _createElementVNode(\"li\", null, \"N = m·g·cos(θ)\"),\n            _createElementVNode(\"li\", null, \"F∥ = m·g·sin(θ)\"),\n            _createElementVNode(\"li\", null, \"f = μ·N = μ·m·g·cos(θ)\")\n          ], -1))\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196195579,
+      "end": 1783196195751,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedEquationsPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"equations-panel\" }\nconst _hoisted_2 = { class: \"calc-buttons\" }\nconst _hoisted_3 = { class: \"result\" }\nconst _hoisted_4 = { class: \"formulas\" }\n\nimport { computed } from 'vue'\nimport { useI18n } from '../../../composables/useI18n'\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'InclinedEquationsPanel',\n  props: {\n    calcResult: {}\n  },\n  emits: [\"calcAcceleration\", \"calcTime\", \"calcVelocity\", \"calcNormal\", \"calcGFromSlope\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\nconst props = __props\n\nconst emit = __emit\n\nconst resultLines = computed(() => {\n  if (!props.calcResult) return []\n  return props.calcResult.split(/<br\\s*\\/?>/i).map(l => l.replace(/<\\/?b>/gi, '').trim()).filter(Boolean)\n})\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"button\", {\n        onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('calcAcceleration')))\n      }, _toDisplayString(_unref(t)('experiments.calculateAcceleration')), 1),\n      _createElementVNode(\"button\", {\n        onClick: _cache[1] || (_cache[1] = ($event: any) => (emit('calcTime')))\n      }, _toDisplayString(_unref(t)('experiments.calculateArrivalTime')), 1),\n      _createElementVNode(\"button\", {\n        onClick: _cache[2] || (_cache[2] = ($event: any) => (emit('calcVelocity')))\n      }, _toDisplayString(_unref(t)('experiments.calculateFinalVelocity')), 1),\n      _createElementVNode(\"button\", {\n        onClick: _cache[3] || (_cache[3] = ($event: any) => (emit('calcNormal')))\n      }, _toDisplayString(_unref(t)('experiments.calculateNormalForce')), 1),\n      _createElementVNode(\"button\", {\n        onClick: _cache[4] || (_cache[4] = ($event: any) => (emit('calcGFromSlope')))\n      }, _toDisplayString(_unref(t)('experiments.calculateGFromSlope')), 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_3, [\n      (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(resultLines.value, (line, i) => {\n        return (_openBlock(), _createElementBlock(\"div\", { key: i }, _toDisplayString(line), 1))\n      }), 128))\n    ]),\n    _createElementVNode(\"div\", _hoisted_4, [\n      _createElementVNode(\"h5\", null, _toDisplayString(_unref(t)('experiments.basicEquations')) + \":\", 1),\n      _cache[5] || (_cache[5] = _createElementVNode(\"ul\", null, [\n        _createElementVNode(\"li\", null, \"a = g·sin(θ) − μ·g·cos(θ)\"),\n        _createElementVNode(\"li\", null, \"s = ½·a·t²\"),\n        _createElementVNode(\"li\", null, \"v = a·t\"),\n        _createElementVNode(\"li\", null, \"t = √(2L/a)\"),\n        _createElementVNode(\"li\", null, \"v = √(2aL)\"),\n        _createElementVNode(\"li\", null, \"N = m·g·cos(θ)\"),\n        _createElementVNode(\"li\", null, \"F∥ = m·g·sin(θ)\"),\n        _createElementVNode(\"li\", null, \"f = μ·N = μ·m·g·cos(θ)\")\n      ], -1))\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,SAAS,QAAQ,mBAAmB,kBAAkB,sBAAsB,qBAAqB,cAAc,aAAa,YAAY,WAAW,aAAa,YAAY,sBAAsB,2BAA2B;AAEtO,MAAM,aAAa,EAAE,OAAO,kBAAkB;AAC9C,MAAM,aAAa,EAAE,OAAO,eAAe;AAC3C,MAAM,aAAa,EAAE,OAAO,SAAS;AACrC,MAAM,aAAa,EAAE,OAAO,WAAW;AAEvC,SAAS,gBAAgB;AACzB,SAAS,eAAe;AAExB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,YAAY,CAAC;AAAA,EACf;AAAA,EACA,OAAO,CAAC,oBAAoB,YAAY,gBAAgB,cAAc,gBAAgB;AAAA,EACtF,MAAM,SAAc,EAAE,MAAM,OAAO,GAAG;AAExC,UAAM,EAAE,EAAE,IAAI,QAAQ;AACtB,UAAM,QAAQ;AAEd,UAAM,OAAO;AAEb,UAAM,cAAc,SAAS,MAAM;AACjC,UAAI,CAAC,MAAM,WAAY,QAAO,CAAC;AAC/B,aAAO,MAAM,WAAW,MAAM,aAAa,EAAE,IAAI,OAAK,EAAE,QAAQ,YAAY,EAAE,EAAE,KAAK,CAAC,EAAE,OAAO,OAAO;AAAA,IACxG,CAAC;AAED,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,oBAAoB,OAAO,YAAY;AAAA,UACrC,oBAAoB,UAAU;AAAA,YAC5B,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,kBAAkB;AAAA,UAC9E,GAAG,iBAAiB,OAAO,CAAC,EAAE,mCAAmC,CAAC,GAAG,CAAC;AAAA,UACtE,oBAAoB,UAAU;AAAA,YAC5B,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,UAAU;AAAA,UACtE,GAAG,iBAAiB,OAAO,CAAC,EAAE,kCAAkC,CAAC,GAAG,CAAC;AAAA,UACrE,oBAAoB,UAAU;AAAA,YAC5B,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,cAAc;AAAA,UAC1E,GAAG,iBAAiB,OAAO,CAAC,EAAE,oCAAoC,CAAC,GAAG,CAAC;AAAA,UACvE,oBAAoB,UAAU;AAAA,YAC5B,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,YAAY;AAAA,UACxE,GAAG,iBAAiB,OAAO,CAAC,EAAE,kCAAkC,CAAC,GAAG,CAAC;AAAA,UACrE,oBAAoB,UAAU;AAAA,YAC5B,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,gBAAgB;AAAA,UAC5E,GAAG,iBAAiB,OAAO,CAAC,EAAE,iCAAiC,CAAC,GAAG,CAAC;AAAA,QACtE,CAAC;AAAA,QACD,oBAAoB,OAAO,YAAY;AAAA,WACpC,WAAW,IAAI,GAAG,oBAAoB,WAAW,MAAM,YAAY,YAAY,OAAO,CAAC,MAAM,MAAM;AAClG,mBAAQ,WAAW,GAAG,oBAAoB,OAAO,EAAE,KAAK,EAAE,GAAG,iBAAiB,IAAI,GAAG,CAAC;AAAA,UACxF,CAAC,GAAG,GAAG;AAAA,QACT,CAAC;AAAA,QACD,oBAAoB,OAAO,YAAY;AAAA,UACrC,oBAAoB,MAAM,MAAM,iBAAiB,OAAO,CAAC,EAAE,4BAA4B,CAAC,IAAI,KAAK,CAAC;AAAA,UAClG,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,MAAM,MAAM;AAAA,YACxD,oBAAoB,MAAM,MAAM,2BAA2B;AAAA,YAC3D,oBAAoB,MAAM,MAAM,YAAY;AAAA,YAC5C,oBAAoB,MAAM,MAAM,SAAS;AAAA,YACzC,oBAAoB,MAAM,MAAM,aAAa;AAAA,YAC7C,oBAAoB,MAAM,MAAM,YAAY;AAAA,YAC5C,oBAAoB,MAAM,MAAM,gBAAgB;AAAA,YAChD,oBAAoB,MAAM,MAAM,iBAAiB;AAAA,YACjD,oBAAoB,MAAM,MAAM,wBAAwB;AAAA,UAC1D,GAAG,EAAE;AAAA,QACP,CAAC;AAAA,MACH,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195751,
+      "end": 1783196195751,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195751,
+      "end": 1783196195751,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196195751,
+      "end": 1783196195751,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195752,
+      "end": 1783196195752,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195752,
+      "end": 1783196195752,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195752,
+      "end": 1783196195752,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195752,
+      "end": 1783196195752,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195752,
+      "end": 1783196195752,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195752,
+      "end": 1783196195752,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195752,
+      "end": 1783196195752,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195752,
+      "end": 1783196195752,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195752,
+      "end": 1783196195752,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195752,
+      "end": 1783196195752,
+      "order": "normal"
+    }
+  ]
+}

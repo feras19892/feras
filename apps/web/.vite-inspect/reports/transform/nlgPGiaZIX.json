@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useChemCalculations.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { computed, ref } from 'vue';\nimport type { ChemAnalysisColumnMeta } from '../../types/chemistry';\n\nexport function useChemCalculations(\n  readings: Record<string, number>[],\n  columns: ChemAnalysisColumnMeta[]\n) {\n  const mBase = ref(0.1);\n  const vAcid = ref(25.0);\n  const eqPoint = ref<number | null>(null);\n  const mAcidResult = ref<number | null>(null);\n  const phFromConc = ref<number | null>(null);\n  const hConc = ref(1e-7);\n  const ohConc = ref(1e-7);\n  const pOH = ref<number | null>(null);\n\n  const equivalencePointData = computed(() => {\n    if (!readings.length) return null;\n    const vKey = columns.find(c => c.key === 'vAdded')?.key;\n    const pHKey = columns.find(c => c.key === 'ph')?.key;\n    if (!vKey || !pHKey) return null;\n    const data = readings\n      .map(r => ({ v: Number(r[vKey]) || 0, ph: Number(r[pHKey]) || 0 }))\n      .filter(p => !isNaN(p.v) && !isNaN(p.ph))\n      .sort((a, b) => a.v - b.v);\n    if (data.length < 3) return null;\n    let maxJumpIdx = 0;\n    let maxJump = 0;\n    for (let i = 1; i < data.length; i++) {\n      const jump = Math.abs(data[i].ph - data[i - 1].ph);\n      if (jump > maxJump) { maxJump = jump; maxJumpIdx = i; }\n    }\n    return { vEq: data[maxJumpIdx].v, phEq: data[maxJumpIdx].ph, maxJump };\n  });\n\n  const concTable = computed(() => {\n    if (!readings.length) return [];\n    const vKey = columns.find(c => c.key === 'vAdded')?.key;\n    const pHKey = columns.find(c => c.key === 'ph')?.key;\n    if (!vKey || !pHKey) return [];\n    return readings\n      .map(r => {\n        const v = Number(r[vKey]) || 0;\n        const ph = Number(r[pHKey]) || 0;\n        const h = Math.pow(10, -ph);\n        const oh = Math.pow(10, -(14 - ph));\n        return { v, ph, h, oh };\n      })\n      .filter(r => !isNaN(r.v) && !isNaN(r.ph))\n      .sort((a, b) => a.v - b.v);\n  });\n\n  function calcEquivalencePoint() {\n    const ep = equivalencePointData.value;\n    if (ep) {\n      eqPoint.value = ep.vEq;\n      mAcidResult.value = (mBase.value * ep.vEq) / vAcid.value;\n    }\n  }\n\n  function calcPH() {\n    if (hConc.value > 0) phFromConc.value = -Math.log10(hConc.value);\n    else phFromConc.value = null;\n  }\n\n  function calcPOH() {\n    if (ohConc.value > 0) {\n      pOH.value = -Math.log10(ohConc.value);\n      phFromConc.value = 14 - pOH.value;\n    }\n  }\n\n  return {\n    mBase, vAcid, eqPoint, mAcidResult,\n    phFromConc, hConc, ohConc, pOH,\n    equivalencePointData, concTable,\n    calcEquivalencePoint, calcPH, calcPOH,\n  };\n}\n",
+      "start": 1783196193067,
+      "end": 1783196193346,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193346,
+      "end": 1783196193346,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { computed, ref } from \"vue\";\nexport function useChemCalculations(readings, columns) {\n  const mBase = ref(0.1);\n  const vAcid = ref(25);\n  const eqPoint = ref(null);\n  const mAcidResult = ref(null);\n  const phFromConc = ref(null);\n  const hConc = ref(1e-7);\n  const ohConc = ref(1e-7);\n  const pOH = ref(null);\n  const equivalencePointData = computed(() => {\n    if (!readings.length) return null;\n    const vKey = columns.find((c) => c.key === \"vAdded\")?.key;\n    const pHKey = columns.find((c) => c.key === \"ph\")?.key;\n    if (!vKey || !pHKey) return null;\n    const data = readings.map((r) => ({ v: Number(r[vKey]) || 0, ph: Number(r[pHKey]) || 0 })).filter((p) => !isNaN(p.v) && !isNaN(p.ph)).sort((a, b) => a.v - b.v);\n    if (data.length < 3) return null;\n    let maxJumpIdx = 0;\n    let maxJump = 0;\n    for (let i = 1; i < data.length; i++) {\n      const jump = Math.abs(data[i].ph - data[i - 1].ph);\n      if (jump > maxJump) {\n        maxJump = jump;\n        maxJumpIdx = i;\n      }\n    }\n    return { vEq: data[maxJumpIdx].v, phEq: data[maxJumpIdx].ph, maxJump };\n  });\n  const concTable = computed(() => {\n    if (!readings.length) return [];\n    const vKey = columns.find((c) => c.key === \"vAdded\")?.key;\n    const pHKey = columns.find((c) => c.key === \"ph\")?.key;\n    if (!vKey || !pHKey) return [];\n    return readings.map((r) => {\n      const v = Number(r[vKey]) || 0;\n      const ph = Number(r[pHKey]) || 0;\n      const h = Math.pow(10, -ph);\n      const oh = Math.pow(10, -(14 - ph));\n      return { v, ph, h, oh };\n    }).filter((r) => !isNaN(r.v) && !isNaN(r.ph)).sort((a, b) => a.v - b.v);\n  });\n  function calcEquivalencePoint() {\n    const ep = equivalencePointData.value;\n    if (ep) {\n      eqPoint.value = ep.vEq;\n      mAcidResult.value = mBase.value * ep.vEq / vAcid.value;\n    }\n  }\n  function calcPH() {\n    if (hConc.value > 0) phFromConc.value = -Math.log10(hConc.value);\n    else phFromConc.value = null;\n  }\n  function calcPOH() {\n    if (ohConc.value > 0) {\n      pOH.value = -Math.log10(ohConc.value);\n      phFromConc.value = 14 - pOH.value;\n    }\n  }\n  return {\n    mBase,\n    vAcid,\n    eqPoint,\n    mAcidResult,\n    phFromConc,\n    hConc,\n    ohConc,\n    pOH,\n    equivalencePointData,\n    concTable,\n    calcEquivalencePoint,\n    calcPH,\n    calcPOH\n  };\n}\n",
+      "start": 1783196193346,
+      "end": 1783196193485,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/chemistry/useChemCalculations.ts"
+        ],
+        "sourcesContent": [
+          "import { computed, ref } from 'vue';\nimport type { ChemAnalysisColumnMeta } from '../../types/chemistry';\n\nexport function useChemCalculations(\n  readings: Record<string, number>[],\n  columns: ChemAnalysisColumnMeta[]\n) {\n  const mBase = ref(0.1);\n  const vAcid = ref(25.0);\n  const eqPoint = ref<number | null>(null);\n  const mAcidResult = ref<number | null>(null);\n  const phFromConc = ref<number | null>(null);\n  const hConc = ref(1e-7);\n  const ohConc = ref(1e-7);\n  const pOH = ref<number | null>(null);\n\n  const equivalencePointData = computed(() => {\n    if (!readings.length) return null;\n    const vKey = columns.find(c => c.key === 'vAdded')?.key;\n    const pHKey = columns.find(c => c.key === 'ph')?.key;\n    if (!vKey || !pHKey) return null;\n    const data = readings\n      .map(r => ({ v: Number(r[vKey]) || 0, ph: Number(r[pHKey]) || 0 }))\n      .filter(p => !isNaN(p.v) && !isNaN(p.ph))\n      .sort((a, b) => a.v - b.v);\n    if (data.length < 3) return null;\n    let maxJumpIdx = 0;\n    let maxJump = 0;\n    for (let i = 1; i < data.length; i++) {\n      const jump = Math.abs(data[i].ph - data[i - 1].ph);\n      if (jump > maxJump) { maxJump = jump; maxJumpIdx = i; }\n    }\n    return { vEq: data[maxJumpIdx].v, phEq: data[maxJumpIdx].ph, maxJump };\n  });\n\n  const concTable = computed(() => {\n    if (!readings.length) return [];\n    const vKey = columns.find(c => c.key === 'vAdded')?.key;\n    const pHKey = columns.find(c => c.key === 'ph')?.key;\n    if (!vKey || !pHKey) return [];\n    return readings\n      .map(r => {\n        const v = Number(r[vKey]) || 0;\n        const ph = Number(r[pHKey]) || 0;\n        const h = Math.pow(10, -ph);\n        const oh = Math.pow(10, -(14 - ph));\n        return { v, ph, h, oh };\n      })\n      .filter(r => !isNaN(r.v) && !isNaN(r.ph))\n      .sort((a, b) => a.v - b.v);\n  });\n\n  function calcEquivalencePoint() {\n    const ep = equivalencePointData.value;\n    if (ep) {\n      eqPoint.value = ep.vEq;\n      mAcidResult.value = (mBase.value * ep.vEq) / vAcid.value;\n    }\n  }\n\n  function calcPH() {\n    if (hConc.value > 0) phFromConc.value = -Math.log10(hConc.value);\n    else phFromConc.value = null;\n  }\n\n  function calcPOH() {\n    if (ohConc.value > 0) {\n      pOH.value = -Math.log10(ohConc.value);\n      phFromConc.value = 14 - pOH.value;\n    }\n  }\n\n  return {\n    mBase, vAcid, eqPoint, mAcidResult,\n    phFromConc, hConc, ohConc, pOH,\n    equivalencePointData, concTable,\n    calcEquivalencePoint, calcPH, calcPOH,\n  };\n}\n"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193485,
+      "end": 1783196193485,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193485,
+      "end": 1783196193485,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193485,
+      "end": 1783196193485,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193485,
+      "end": 1783196193485,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193485,
+      "end": 1783196193485,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193485,
+      "end": 1783196193485,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193485,
+      "end": 1783196193485,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193485,
+      "end": 1783196193485,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193485,
+      "end": 1783196193485,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193485,
+      "end": 1783196193485,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193485,
+      "end": 1783196193486,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193486,
+      "end": 1783196193486,
+      "order": "normal"
+    }
+  ]
+}

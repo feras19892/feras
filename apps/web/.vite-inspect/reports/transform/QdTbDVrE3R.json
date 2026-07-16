@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/freefall/FreeFallPanelBody.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed } from 'vue'\nimport FreeFallTablePanel from './FreeFallTablePanel.vue'\nimport FreeFallScatterPanel from './FreeFallScatterPanel.vue'\nimport FreeFallSignalPanel from './FreeFallSignalPanel.vue'\nimport FreeFallParamsPanel from './FreeFallParamsPanel.vue'\nimport FreeFallGuidePanel from './FreeFallGuidePanel.vue'\nimport FreeFallReportPanel from './FreeFallReportPanel.vue'\nimport type { FreeFallTrial } from '../../../composables/freefall/useFreeFallTrials'\nimport type { FreeFallParams } from '../../../modules/physics/experiments/freefall/useFreeFallPhysics'\nimport { useI18n } from '../../../composables/useI18n'\n\ninterface SimState {\n  t: number\n  y: number\n  vy: number\n  running: boolean\n  paused: boolean\n  landed: boolean\n}\n\ninterface TrialStats {\n  time_mean: number\n  time_std: number\n  g_mean: number\n  g_std: number\n}\n\nconst { t } = useI18n()\nconst props = defineProps<{\n  id: string\n  trials: FreeFallTrial[]\n  calcResult: string\n  params: FreeFallParams\n  simState: SimState\n  trialStats: TrialStats | null\n  gTheoretical: number\n  enableNoise?: boolean\n}>()\n\nconst emit = defineEmits<{\n  (e: 'update:params', val: Partial<FreeFallParams>): void\n  (e: 'remove', id: number): void\n  (e: 'clear'): void\n  (e: 'calcG'): void\n  (e: 'calcT'): void\n  (e: 'calcV'): void\n  (e: 'calcFitG'): void\n  (e: 'printReport'): void\n  (e: 'openFullReport'): void\n}>()\n\nconst resultLines = computed(() => {\n  if (!props.calcResult) return []\n  return props.calcResult.split(/<br\\s*\\/?>/i).map(l => l.replace(/<\\/?b>/gi, '').trim()).filter(Boolean)\n})\n\nconst errorSources = [\n  t('experiments.digitalTimerAccuracy'),\n  t('experiments.heightMeasurementAccuracy'),\n  t('experiments.airFriction'),\n  t('experiments.deviceVibration'),\n  t('experiments.localGravityEffect'),\n]\n</script>\n\n<template>\n  <FreeFallTablePanel v-if=\"id === 'table'\" :trials=\"trials\" :enable-noise=\"enableNoise\" @remove=\"emit('remove', $event)\" @clear=\"emit('clear')\" />\n\n  <template v-else-if=\"id === 'equations'\">\n    <div class=\"calc-row\">\n      <button class=\"btn-calc\" @click=\"emit('calcG')\">📐 {{ t('experiments.calculateG') }}</button>\n      <button class=\"btn-calc\" @click=\"emit('calcT')\">⏱️ {{ t('experiments.calculateT') }}</button>\n      <button class=\"btn-calc\" @click=\"emit('calcV')\">⚡ {{ t('experiments.calculateV') }}</button>\n      <button class=\"btn-calc\" @click=\"emit('calcFitG')\">📈 {{ t('experiments.fitG') }}</button>\n    </div>\n    <div class=\"calc-result\">\n      <div v-for=\"(line, i) in resultLines\" :key=\"i\">{{ line }}</div>\n    </div>\n    <div class=\"equation-list\">\n      <div class=\"equation-item\"><span class=\"eq-type\">v(t)</span><span class=\"eq-formula\">v = -g·t</span></div>\n      <div class=\"equation-item\"><span class=\"eq-type\">y(t)</span><span class=\"eq-formula\">y = y₀ - ½gt²</span></div>\n      <div class=\"equation-item\"><span class=\"eq-type\">t_fall</span><span class=\"eq-formula\">t = √(2h/g)</span></div>\n      <div class=\"equation-item\"><span class=\"eq-type\">v_impact</span><span class=\"eq-formula\">v = √(2gh)</span></div>\n      <div class=\"equation-item\"><span class=\"eq-type\">g_calc</span><span class=\"eq-formula\">g = 2h/t²</span></div>\n    </div>\n  </template>\n\n  <FreeFallScatterPanel v-else-if=\"id === 'scatter'\" :trials=\"trials\" />\n\n  <template v-else-if=\"id === 'stats'\">\n    <div class=\"stat-section-title\">{{ t('experiments.currentMeasurement') }}</div>\n    <div class=\"stat-row\"><span class=\"stat-label\">t</span><span class=\"stat-value\">{{ simState.landed ? (simState.t?.toFixed(4) ?? '--') : '--' }} s</span></div>\n    <div class=\"stat-row\"><span class=\"stat-label\">v<sub>impact</sub></span><span class=\"stat-value\">{{ simState.landed ? (Math.abs(simState.vy)?.toFixed(2) ?? '--') : '--' }} m/s</span></div>\n    <template v-if=\"trials.length > 0 && trialStats\">\n      <div class=\"stat-section-title\">{{ t('experiments.measurementStatistics') }} ({{ trials.length }})</div>\n      <div class=\"stat-row\"><span class=\"stat-label\">t̄</span><span class=\"stat-value\">{{ trialStats.time_mean.toFixed(4) }} s</span></div>\n      <div class=\"stat-row\"><span class=\"stat-label\">σ<sub>t</sub></span><span class=\"stat-value\">{{ trialStats.time_std.toFixed(4) }} s</span></div>\n      <div class=\"stat-row\"><span class=\"stat-label\">ḡ<sub>calc</sub></span><span class=\"stat-value highlight\">{{ trialStats.g_mean.toFixed(2) }} m/s²</span></div>\n      <div class=\"stat-row\"><span class=\"stat-label\">σ<sub>g</sub></span><span class=\"stat-value\">{{ trialStats.g_std.toFixed(2) }} m/s²</span></div>\n    </template>\n  </template>\n\n  <FreeFallSignalPanel v-else-if=\"id === 'signal'\" :sim-state=\"simState\" />\n  <FreeFallParamsPanel v-else-if=\"id === 'params'\" :params=\"params\" @update:params=\"emit('update:params', $event)\" />\n  <FreeFallGuidePanel v-else-if=\"id === 'guide'\" />\n\n  <template v-else-if=\"id === 'error'\">\n    <div class=\"stat-section-title\">{{ t('experiments.potentialErrorSources') }}</div>\n    <ul class=\"error-list\">\n      <li v-for=\"err in errorSources\" :key=\"err\">{{ err }}</li>\n    </ul>\n  </template>\n\n  <FreeFallReportPanel v-else-if=\"id === 'report'\" :trials=\"trials\" :trial-stats=\"trialStats\" :g-theoretical=\"gTheoretical\" @print-report=\"emit('printReport')\" @open-full-report=\"emit('openFullReport')\" />\n  <div v-else class=\"empty\">{{ t('experiments.unknownPanel') }}</div>\n</template>\n\n<style scoped>\n.calc-row { display: flex; flex-wrap: wrap; gap: .3rem; margin-bottom: .4rem; }\n.btn-calc { background: #252D3A; border: 1px solid #2D3645; color: #D1D7E0; border-radius: 4px; padding: .25rem .5rem; font-size: .72rem; cursor: pointer; }\n.btn-calc:hover { background: rgba(91,141,184,.1); color: #5B8DB8; }\n.calc-result { background: #252D3A; border: 1px solid #2D3645; border-radius: 6px; padding: .4rem; font-size: .78rem; margin-bottom: .4rem; min-height: 30px; }\n.equation-list { display: flex; flex-direction: column; gap: .2rem; }\n.equation-item { display: flex; justify-content: space-between; padding: .15rem .3rem; background: #252D3A; border-radius: 4px; font-size: .75rem; }\n.eq-type { color: #5B8DB8; font-weight: 700; }\n.eq-formula { color: #D1D7E0; font-family: monospace; }\n.stat-section-title { font-size: .72rem; color: #5B8DB8; font-weight: 700; margin: .4rem 0 .2rem; border-bottom: 1px solid #2D3645; padding-bottom: .15rem; }\n.stat-row { display: flex; justify-content: space-between; padding: .15rem .3rem; border-radius: 4px; background: #252D3A; margin-bottom: .15rem; }\n.stat-label { font-size: .7rem; color: #8B95A5; font-weight: 600; }\n.stat-value { font-size: .75rem; font-weight: 700; color: #D1D7E0; font-family: monospace; }\n.stat-value.highlight { color: #5B8DB8; }\n.error-list { margin: 0; padding-right: 1.2rem; font-size: .78rem; color: #D1D7E0; line-height: 1.8; }\n.empty { text-align: center; color: #64748b; font-size: .75rem; padding: 1rem; }\n</style>\n",
+      "start": 1783196193562,
+      "end": 1783196193852,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193852,
+      "end": 1783196193852,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196193852,
+      "end": 1783196193852,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193852,
+      "end": 1783196193852,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193852,
+      "end": 1783196193852,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/freefall/FreeFallPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/freefall/FreeFallPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/freefall/FreeFallPanelBody.vue?vue&type=style&index=0&scoped=c6d86cc6&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-c6d86cc6\"]]);\n",
+      "start": 1783196193852,
+      "end": 1783196194371,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194372,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194374,
+      "end": 1783196194374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194374,
+      "end": 1783196194376,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194377,
+      "end": 1783196194377,
+      "order": "normal"
+    }
+  ]
+}

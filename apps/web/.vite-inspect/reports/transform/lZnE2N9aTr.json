@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/StudentInfoPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"student-panel\" }\nconst _hoisted_2 = { class: \"panel-header\" }\nconst _hoisted_3 = { class: \"form\" }\nconst _hoisted_4 = { class: \"row\" }\nconst _hoisted_5 = { class: \"field\" }\nconst _hoisted_6 = [\"value\", \"placeholder\"]\nconst _hoisted_7 = { class: \"field\" }\nconst _hoisted_8 = [\"value\"]\nconst _hoisted_9 = { class: \"row\" }\nconst _hoisted_10 = { class: \"field\" }\nconst _hoisted_11 = [\"value\", \"placeholder\"]\nconst _hoisted_12 = { class: \"field\" }\nconst _hoisted_13 = [\"value\"]\nconst _hoisted_14 = { class: \"field full\" }\nconst _hoisted_15 = [\"value\", \"placeholder\"]\n\nimport { computed } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\nimport { useAnalysisStore } from '../../../stores/analysis.store';\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'StudentInfoPanel',\n  setup(__props) {\n\nconst { t } = useI18n();\nconst store = useAnalysisStore();\nconst info = computed(() => store.studentInfo);\n\nfunction update(field: 'name' | 'email' | 'grade' | 'notes', val: string) {\n  store.updateStudentInfo({ [field]: val });\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, _toDisplayString(_unref(t)('analysis.studentInfo')), 1),\n    _createElementVNode(\"div\", _hoisted_3, [\n      _createElementVNode(\"div\", _hoisted_4, [\n        _createElementVNode(\"div\", _hoisted_5, [\n          _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('analysis.fullName')), 1),\n          _createElementVNode(\"input\", {\n            type: \"text\",\n            value: info.value.name,\n            onInput: _cache[0] || (_cache[0] = ($event: any) => (update('name', ($event.target as HTMLInputElement).value))),\n            placeholder: _unref(t)('analysis.studentNamePlaceholder')\n          }, null, 40, _hoisted_6)\n        ]),\n        _createElementVNode(\"div\", _hoisted_7, [\n          _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('analysis.emailLabel')), 1),\n          _createElementVNode(\"input\", {\n            type: \"email\",\n            value: info.value.email,\n            onInput: _cache[1] || (_cache[1] = ($event: any) => (update('email', ($event.target as HTMLInputElement).value))),\n            placeholder: \"student@school.edu\"\n          }, null, 40, _hoisted_8)\n        ])\n      ]),\n      _createElementVNode(\"div\", _hoisted_9, [\n        _createElementVNode(\"div\", _hoisted_10, [\n          _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('analysis.gradeClass')), 1),\n          _createElementVNode(\"input\", {\n            type: \"text\",\n            value: info.value.grade,\n            onInput: _cache[2] || (_cache[2] = ($event: any) => (update('grade', ($event.target as HTMLInputElement).value))),\n            placeholder: _unref(t)('analysis.gradePlaceholder')\n          }, null, 40, _hoisted_11)\n        ]),\n        _createElementVNode(\"div\", _hoisted_12, [\n          _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('analysis.dateLabel')), 1),\n          _createElementVNode(\"input\", {\n            type: \"text\",\n            value: _unref(store).reportDate,\n            readonly: \"\"\n          }, null, 8, _hoisted_13)\n        ])\n      ]),\n      _createElementVNode(\"div\", _hoisted_14, [\n        _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('analysis.experimentNotes')), 1),\n        _createElementVNode(\"textarea\", {\n          value: info.value.notes,\n          onInput: _cache[3] || (_cache[3] = ($event: any) => (update('notes', ($event.target as HTMLTextAreaElement).value))),\n          rows: \"2\",\n          placeholder: _unref(t)('analysis.notesPlaceholder')\n        }, null, 40, _hoisted_15)\n      ])\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783196193619,
+      "end": 1783196193619
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193619,
+      "end": 1783196193619,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"student-panel\" };\nconst _hoisted_2 = { class: \"panel-header\" };\nconst _hoisted_3 = { class: \"form\" };\nconst _hoisted_4 = { class: \"row\" };\nconst _hoisted_5 = { class: \"field\" };\nconst _hoisted_6 = [\"value\", \"placeholder\"];\nconst _hoisted_7 = { class: \"field\" };\nconst _hoisted_8 = [\"value\"];\nconst _hoisted_9 = { class: \"row\" };\nconst _hoisted_10 = { class: \"field\" };\nconst _hoisted_11 = [\"value\", \"placeholder\"];\nconst _hoisted_12 = { class: \"field\" };\nconst _hoisted_13 = [\"value\"];\nconst _hoisted_14 = { class: \"field full\" };\nconst _hoisted_15 = [\"value\", \"placeholder\"];\nimport { computed } from \"vue\";\nimport { useI18n } from \"../../../composables/useI18n\";\nimport { useAnalysisStore } from \"../../../stores/analysis.store\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"StudentInfoPanel\",\n  setup(__props) {\n    const { t } = useI18n();\n    const store = useAnalysisStore();\n    const info = computed(() => store.studentInfo);\n    function update(field, val) {\n      store.updateStudentInfo({ [field]: val });\n    }\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, _toDisplayString(_unref(t)(\"analysis.studentInfo\")), 1),\n        _createElementVNode(\"div\", _hoisted_3, [\n          _createElementVNode(\"div\", _hoisted_4, [\n            _createElementVNode(\"div\", _hoisted_5, [\n              _createElementVNode(\"label\", null, _toDisplayString(_unref(t)(\"analysis.fullName\")), 1),\n              _createElementVNode(\"input\", {\n                type: \"text\",\n                value: info.value.name,\n                onInput: _cache[0] || (_cache[0] = ($event) => update(\"name\", $event.target.value)),\n                placeholder: _unref(t)(\"analysis.studentNamePlaceholder\")\n              }, null, 40, _hoisted_6)\n            ]),\n            _createElementVNode(\"div\", _hoisted_7, [\n              _createElementVNode(\"label\", null, _toDisplayString(_unref(t)(\"analysis.emailLabel\")), 1),\n              _createElementVNode(\"input\", {\n                type: \"email\",\n                value: info.value.email,\n                onInput: _cache[1] || (_cache[1] = ($event) => update(\"email\", $event.target.value)),\n                placeholder: \"student@school.edu\"\n              }, null, 40, _hoisted_8)\n            ])\n          ]),\n          _createElementVNode(\"div\", _hoisted_9, [\n            _createElementVNode(\"div\", _hoisted_10, [\n              _createElementVNode(\"label\", null, _toDisplayString(_unref(t)(\"analysis.gradeClass\")), 1),\n              _createElementVNode(\"input\", {\n                type: \"text\",\n                value: info.value.grade,\n                onInput: _cache[2] || (_cache[2] = ($event) => update(\"grade\", $event.target.value)),\n                placeholder: _unref(t)(\"analysis.gradePlaceholder\")\n              }, null, 40, _hoisted_11)\n            ]),\n            _createElementVNode(\"div\", _hoisted_12, [\n              _createElementVNode(\"label\", null, _toDisplayString(_unref(t)(\"analysis.dateLabel\")), 1),\n              _createElementVNode(\"input\", {\n                type: \"text\",\n                value: _unref(store).reportDate,\n                readonly: \"\"\n              }, null, 8, _hoisted_13)\n            ])\n          ]),\n          _createElementVNode(\"div\", _hoisted_14, [\n            _createElementVNode(\"label\", null, _toDisplayString(_unref(t)(\"analysis.experimentNotes\")), 1),\n            _createElementVNode(\"textarea\", {\n              value: info.value.notes,\n              onInput: _cache[3] || (_cache[3] = ($event) => update(\"notes\", $event.target.value)),\n              rows: \"2\",\n              placeholder: _unref(t)(\"analysis.notesPlaceholder\")\n            }, null, 40, _hoisted_15)\n          ])\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196193619,
+      "end": 1783196193671,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/StudentInfoPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"student-panel\" }\nconst _hoisted_2 = { class: \"panel-header\" }\nconst _hoisted_3 = { class: \"form\" }\nconst _hoisted_4 = { class: \"row\" }\nconst _hoisted_5 = { class: \"field\" }\nconst _hoisted_6 = [\"value\", \"placeholder\"]\nconst _hoisted_7 = { class: \"field\" }\nconst _hoisted_8 = [\"value\"]\nconst _hoisted_9 = { class: \"row\" }\nconst _hoisted_10 = { class: \"field\" }\nconst _hoisted_11 = [\"value\", \"placeholder\"]\nconst _hoisted_12 = { class: \"field\" }\nconst _hoisted_13 = [\"value\"]\nconst _hoisted_14 = { class: \"field full\" }\nconst _hoisted_15 = [\"value\", \"placeholder\"]\n\nimport { computed } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\nimport { useAnalysisStore } from '../../../stores/analysis.store';\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'StudentInfoPanel',\n  setup(__props) {\n\nconst { t } = useI18n();\nconst store = useAnalysisStore();\nconst info = computed(() => store.studentInfo);\n\nfunction update(field: 'name' | 'email' | 'grade' | 'notes', val: string) {\n  store.updateStudentInfo({ [field]: val });\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, _toDisplayString(_unref(t)('analysis.studentInfo')), 1),\n    _createElementVNode(\"div\", _hoisted_3, [\n      _createElementVNode(\"div\", _hoisted_4, [\n        _createElementVNode(\"div\", _hoisted_5, [\n          _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('analysis.fullName')), 1),\n          _createElementVNode(\"input\", {\n            type: \"text\",\n            value: info.value.name,\n            onInput: _cache[0] || (_cache[0] = ($event: any) => (update('name', ($event.target as HTMLInputElement).value))),\n            placeholder: _unref(t)('analysis.studentNamePlaceholder')\n          }, null, 40, _hoisted_6)\n        ]),\n        _createElementVNode(\"div\", _hoisted_7, [\n          _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('analysis.emailLabel')), 1),\n          _createElementVNode(\"input\", {\n            type: \"email\",\n            value: info.value.email,\n            onInput: _cache[1] || (_cache[1] = ($event: any) => (update('email', ($event.target as HTMLInputElement).value))),\n            placeholder: \"student@school.edu\"\n          }, null, 40, _hoisted_8)\n        ])\n      ]),\n      _createElementVNode(\"div\", _hoisted_9, [\n        _createElementVNode(\"div\", _hoisted_10, [\n          _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('analysis.gradeClass')), 1),\n          _createElementVNode(\"input\", {\n            type: \"text\",\n            value: info.value.grade,\n            onInput: _cache[2] || (_cache[2] = ($event: any) => (update('grade', ($event.target as HTMLInputElement).value))),\n            placeholder: _unref(t)('analysis.gradePlaceholder')\n          }, null, 40, _hoisted_11)\n        ]),\n        _createElementVNode(\"div\", _hoisted_12, [\n          _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('analysis.dateLabel')), 1),\n          _createElementVNode(\"input\", {\n            type: \"text\",\n            value: _unref(store).reportDate,\n            readonly: \"\"\n          }, null, 8, _hoisted_13)\n        ])\n      ]),\n      _createElementVNode(\"div\", _hoisted_14, [\n        _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('analysis.experimentNotes')), 1),\n        _createElementVNode(\"textarea\", {\n          value: info.value.notes,\n          onInput: _cache[3] || (_cache[3] = ($event: any) => (update('notes', ($event.target as HTMLTextAreaElement).value))),\n          rows: \"2\",\n          placeholder: _unref(t)('analysis.notesPlaceholder')\n        }, null, 40, _hoisted_15)\n      ])\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193671,
+      "end": 1783196193671,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193671,
+      "end": 1783196193671,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196193671,
+      "end": 1783196193671,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193671,
+      "end": 1783196193671,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193671,
+      "end": 1783196193671,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193671,
+      "end": 1783196193671,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193671,
+      "end": 1783196193671,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193671,
+      "end": 1783196193671,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193671,
+      "end": 1783196193671,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193672,
+      "end": 1783196193672,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193672,
+      "end": 1783196193672,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193672,
+      "end": 1783196193672,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193672,
+      "end": 1783196193672,
+      "order": "normal"
+    }
+  ]
+}

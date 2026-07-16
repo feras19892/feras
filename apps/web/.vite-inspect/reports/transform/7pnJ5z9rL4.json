@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/student/StudentProfile.vue?vue&type=style&index=0&scoped=63dd7fd9&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.profile-panel { width: 100%; padding: 1rem 1.5rem; }\n.profile-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); }\n.avatar { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #4f46e5, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }\n.info h2 { margin: 0; font-size: 1.3rem; color: #f1f5f9; }\n.email { margin: 0.2rem 0 0; font-size: 0.85rem; color: #94a3b8; }\n.role { margin: 0; font-size: 0.75rem; color: #67e8f9; background: rgba(99,102,241,0.1); padding: 0.15rem 0.5rem; border-radius: 999px; display: inline-block; margin-top: 0.3rem; }\n.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-bottom: 1.5rem; }\n.stat-card { text-align: center; padding: 0.8rem; border-radius: 0.5rem; background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.05); }\n.stat-card.highlight { background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.15); }\n.stat-val { display: block; font-size: 1.4rem; font-weight: 800; color: #67e8f9; }\n.stat-card.highlight .stat-val { color: #a5b4fc; }\n.stat-label { font-size: 0.75rem; color: #94a3b8; }\n.recent-section h3 { margin: 0 0 0.75rem; font-size: 1rem; color: #e2e8f0; }\n.empty { text-align: center; padding: 1rem; color: #64748b; font-size: 0.85rem; }\n.report-list { display: flex; flex-direction: column; gap: 0.4rem; }\n.report-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.8rem; border-radius: 0.4rem; background: rgba(15,23,42,0.4); border: 1px solid rgba(255,255,255,0.05); }\n.report-name { flex: 1; font-weight: 600; color: #f1f5f9; font-size: 0.85rem; }\n.badge { padding: 0.15rem 0.5rem; border-radius: 999px; font-size: 0.7rem; font-weight: 700; }\n.badge.graded { background: rgba(34,197,94,0.15); color: #22c55e; }\n.badge.pending { background: rgba(245,158,11,0.15); color: #fbbf24; }\n.badge.resubmitted { background: rgba(99,102,241,0.15); color: #a5b4fc; }\n.badge.draft { background: rgba(148,163,184,0.15); color: #94a3b8; }\n.grade { color: #67e8f9; font-weight: 700; font-family: monospace; font-size: 0.85rem; }\n.date { color: #475569; font-size: 0.75rem; margin-right: auto; }\n",
+      "start": 1783196193036,
+      "end": 1783196193036
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.profile-panel { width: 100%; padding: 1rem 1.5rem; }\n.profile-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); }\n.avatar { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #4f46e5, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }\n.info h2 { margin: 0; font-size: 1.3rem; color: #f1f5f9; }\n.email { margin: 0.2rem 0 0; font-size: 0.85rem; color: #94a3b8; }\n.role { margin: 0; font-size: 0.75rem; color: #67e8f9; background: rgba(99,102,241,0.1); padding: 0.15rem 0.5rem; border-radius: 999px; display: inline-block; margin-top: 0.3rem; }\n.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-bottom: 1.5rem; }\n.stat-card { text-align: center; padding: 0.8rem; border-radius: 0.5rem; background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.05); }\n.stat-card.highlight { background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.15); }\n.stat-val { display: block; font-size: 1.4rem; font-weight: 800; color: #67e8f9; }\n.stat-card.highlight .stat-val { color: #a5b4fc; }\n.stat-label { font-size: 0.75rem; color: #94a3b8; }\n.recent-section h3 { margin: 0 0 0.75rem; font-size: 1rem; color: #e2e8f0; }\n.empty { text-align: center; padding: 1rem; color: #64748b; font-size: 0.85rem; }\n.report-list { display: flex; flex-direction: column; gap: 0.4rem; }\n.report-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.8rem; border-radius: 0.4rem; background: rgba(15,23,42,0.4); border: 1px solid rgba(255,255,255,0.05); }\n.report-name { flex: 1; font-weight: 600; color: #f1f5f9; font-size: 0.85rem; }\n.badge { padding: 0.15rem 0.5rem; border-radius: 999px; font-size: 0.7rem; font-weight: 700; }\n.badge.graded { background: rgba(34,197,94,0.15); color: #22c55e; }\n.badge.pending { background: rgba(245,158,11,0.15); color: #fbbf24; }\n.badge.resubmitted { background: rgba(99,102,241,0.15); color: #a5b4fc; }\n.badge.draft { background: rgba(148,163,184,0.15); color: #94a3b8; }\n.grade { color: #67e8f9; font-weight: 700; font-family: monospace; font-size: 0.85rem; }\n.date { color: #475569; font-size: 0.75rem; margin-right: auto; }\n",
+      "start": 1783196193036,
+      "end": 1783196194190,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.profile-panel[data-v-63dd7fd9] { width: 100%; padding: 1rem 1.5rem;\n}\n.profile-header[data-v-63dd7fd9] { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.06);\n}\n.avatar[data-v-63dd7fd9] { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #4f46e5, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;\n}\n.info h2[data-v-63dd7fd9] { margin: 0; font-size: 1.3rem; color: #f1f5f9;\n}\n.email[data-v-63dd7fd9] { margin: 0.2rem 0 0; font-size: 0.85rem; color: #94a3b8;\n}\n.role[data-v-63dd7fd9] { margin: 0; font-size: 0.75rem; color: #67e8f9; background: rgba(99,102,241,0.1); padding: 0.15rem 0.5rem; border-radius: 999px; display: inline-block; margin-top: 0.3rem;\n}\n.stats-grid[data-v-63dd7fd9] { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-bottom: 1.5rem;\n}\n.stat-card[data-v-63dd7fd9] { text-align: center; padding: 0.8rem; border-radius: 0.5rem; background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.05);\n}\n.stat-card.highlight[data-v-63dd7fd9] { background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.15);\n}\n.stat-val[data-v-63dd7fd9] { display: block; font-size: 1.4rem; font-weight: 800; color: #67e8f9;\n}\n.stat-card.highlight .stat-val[data-v-63dd7fd9] { color: #a5b4fc;\n}\n.stat-label[data-v-63dd7fd9] { font-size: 0.75rem; color: #94a3b8;\n}\n.recent-section h3[data-v-63dd7fd9] { margin: 0 0 0.75rem; font-size: 1rem; color: #e2e8f0;\n}\n.empty[data-v-63dd7fd9] { text-align: center; padding: 1rem; color: #64748b; font-size: 0.85rem;\n}\n.report-list[data-v-63dd7fd9] { display: flex; flex-direction: column; gap: 0.4rem;\n}\n.report-row[data-v-63dd7fd9] { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.8rem; border-radius: 0.4rem; background: rgba(15,23,42,0.4); border: 1px solid rgba(255,255,255,0.05);\n}\n.report-name[data-v-63dd7fd9] { flex: 1; font-weight: 600; color: #f1f5f9; font-size: 0.85rem;\n}\n.badge[data-v-63dd7fd9] { padding: 0.15rem 0.5rem; border-radius: 999px; font-size: 0.7rem; font-weight: 700;\n}\n.badge.graded[data-v-63dd7fd9] { background: rgba(34,197,94,0.15); color: #22c55e;\n}\n.badge.pending[data-v-63dd7fd9] { background: rgba(245,158,11,0.15); color: #fbbf24;\n}\n.badge.resubmitted[data-v-63dd7fd9] { background: rgba(99,102,241,0.15); color: #a5b4fc;\n}\n.badge.draft[data-v-63dd7fd9] { background: rgba(148,163,184,0.15); color: #94a3b8;\n}\n.grade[data-v-63dd7fd9] { color: #67e8f9; font-weight: 700; font-family: monospace; font-size: 0.85rem;\n}\n.date[data-v-63dd7fd9] { color: #475569; font-size: 0.75rem; margin-right: auto;\n}\n",
+      "start": 1783196194234,
+      "end": 1783196194316,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194317,
+      "end": 1783196194317,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196194317,
+      "end": 1783196194318,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    }
+  ]
+}

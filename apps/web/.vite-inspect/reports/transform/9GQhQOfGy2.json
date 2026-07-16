@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/panels/SpeedOfSoundLawsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../../composables/useI18n'\nconst { t } = useI18n()\n\ninterface Props {\n  tubeLength: number\n  frequency: number\n  temperature: number\n  harmonic: 1 | 3\n  wavelength: number\n  vMeasured: number\n  vTheory: number\n}\ndefineProps<Props>()\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <div class=\"eq-block\">\n      <div class=\"eq-title\">Resonance Wavelength</div>\n      <div class=\"eq\">{{ harmonic === 1 ? 'λ = 4L' : 'λ = 4L / 3' }}</div>\n      <div class=\"eq-values\">λ = {{ wavelength.toFixed(3) }} m, L = {{ tubeLength.toFixed(3) }} m</div>\n    </div>\n    <div class=\"eq-block\">\n      <div class=\"eq-title\">Speed of Sound</div>\n      <div class=\"eq\">v = f · λ</div>\n      <div class=\"eq-values\">\n        v = {{ vMeasured.toFixed(1) }} m/s<br>\n        f = {{ frequency }} Hz<br>\n        λ = {{ wavelength.toFixed(3) }} m\n      </div>\n    </div>\n    <div class=\"eq-block\">\n      <div class=\"eq-title\">Theoretical Speed (Air)</div>\n      <div class=\"eq\">v = 331.3 + 0.6·T</div>\n      <div class=\"eq-values\">\n        v = {{ vTheory.toFixed(1) }} m/s<br>\n        T = {{ temperature }}°C\n      </div>\n    </div>\n    <div class=\"eq-block\">\n      <div class=\"eq-title\">Percent Error</div>\n      <div class=\"eq\">|v − vₜ| / vₜ × 100%</div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { display: flex; flex-direction: column; gap: .5rem; font-size: .82rem; }\n.eq-block { margin-bottom: .3rem; }\n.eq-title { color: #5B8DB8; font-size: .75rem; margin-bottom: .2rem; }\n.eq { font-family: 'Courier New', monospace; background: #0d1117; padding: .3rem .5rem; border-radius: 4px; font-size: .9rem; color: #7ee787; }\n.eq-values { font-size: .8rem; color: #8B95A5; margin-top: .2rem; }\n</style>\n",
+      "start": 1783196195029,
+      "end": 1783196195288,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195288,
+      "end": 1783196195288,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195288,
+      "end": 1783196195288,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195288,
+      "end": 1783196195288,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195288,
+      "end": 1783196195288,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/panels/SpeedOfSoundLawsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/panels/SpeedOfSoundLawsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/panels/SpeedOfSoundLawsPanel.vue?vue&type=style&index=0&scoped=616a4c85&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-616a4c85\"]]);\n",
+      "start": 1783196195288,
+      "end": 1783196195571,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195571,
+      "end": 1783196195571,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195571,
+      "end": 1783196195571,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195571,
+      "end": 1783196195571,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195571,
+      "end": 1783196195571,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195571,
+      "end": 1783196195571,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195571,
+      "end": 1783196195571,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195571,
+      "end": 1783196195571,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195571,
+      "end": 1783196195571,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195571,
+      "end": 1783196195571,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195572,
+      "end": 1783196195572,
+      "order": "normal"
+    }
+  ]
+}

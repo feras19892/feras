@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue?vue&type=style&index=0&scoped=8bb20a74&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.panel-body { padding:.45rem; display:flex; flex-direction:column; gap:.35rem; }\n.stat-box { background:rgba(255,255,255,0.02); border:1px solid #1e2530; border-radius:6px; padding:.45rem .55rem; display:flex; justify-content:space-between; align-items:center; }\n.stat-label { color:#8B95A5; font-size:.72rem; }\n.stat-value { color:#D1D7E0; font-weight:700; font-size:.85rem; }\n.stat-value.highlight { color:#fbbf24; }\n.stat-value.green { color:#4ade80; }\n.stat-value.amber { color:#fbbf24; }\n.stat-value.red { color:#f87171; }\n.stat-value.blue { color:#5B8DB8; }\n.formula-badge { background:rgba(91,141,184,.08); border:1px solid rgba(91,141,184,.2); border-radius:5px; padding:.35rem .5rem; font-size:.7rem; color:#5B8DB8; font-family:monospace; text-align:center; }\n.guess-box { display:flex; flex-direction:column; gap:.35rem; }\n.guess-btn { width:100%; padding:.4rem; border-radius:6px; border:1px solid rgba(245,158,11,.4); background:rgba(245,158,11,.12); color:#fbbf24; font-size:.78rem; font-weight:700; cursor:pointer; transition:all .15s; }\n.guess-btn:hover { background:rgba(245,158,11,.2); }\n",
+      "start": 1783196195706,
+      "end": 1783196195706
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.panel-body { padding:.45rem; display:flex; flex-direction:column; gap:.35rem; }\n.stat-box { background:rgba(255,255,255,0.02); border:1px solid #1e2530; border-radius:6px; padding:.45rem .55rem; display:flex; justify-content:space-between; align-items:center; }\n.stat-label { color:#8B95A5; font-size:.72rem; }\n.stat-value { color:#D1D7E0; font-weight:700; font-size:.85rem; }\n.stat-value.highlight { color:#fbbf24; }\n.stat-value.green { color:#4ade80; }\n.stat-value.amber { color:#fbbf24; }\n.stat-value.red { color:#f87171; }\n.stat-value.blue { color:#5B8DB8; }\n.formula-badge { background:rgba(91,141,184,.08); border:1px solid rgba(91,141,184,.2); border-radius:5px; padding:.35rem .5rem; font-size:.7rem; color:#5B8DB8; font-family:monospace; text-align:center; }\n.guess-box { display:flex; flex-direction:column; gap:.35rem; }\n.guess-btn { width:100%; padding:.4rem; border-radius:6px; border:1px solid rgba(245,158,11,.4); background:rgba(245,158,11,.12); color:#fbbf24; font-size:.78rem; font-weight:700; cursor:pointer; transition:all .15s; }\n.guess-btn:hover { background:rgba(245,158,11,.2); }\n",
+      "start": 1783196195706,
+      "end": 1783196195706,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195706,
+      "end": 1783196195706,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195706,
+      "end": 1783196195706,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195706,
+      "end": 1783196195706,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.panel-body[data-v-8bb20a74] { padding:.45rem; display:flex; flex-direction:column; gap:.35rem;\n}\n.stat-box[data-v-8bb20a74] { background:rgba(255,255,255,0.02); border:1px solid #1e2530; border-radius:6px; padding:.45rem .55rem; display:flex; justify-content:space-between; align-items:center;\n}\n.stat-label[data-v-8bb20a74] { color:#8B95A5; font-size:.72rem;\n}\n.stat-value[data-v-8bb20a74] { color:#D1D7E0; font-weight:700; font-size:.85rem;\n}\n.stat-value.highlight[data-v-8bb20a74] { color:#fbbf24;\n}\n.stat-value.green[data-v-8bb20a74] { color:#4ade80;\n}\n.stat-value.amber[data-v-8bb20a74] { color:#fbbf24;\n}\n.stat-value.red[data-v-8bb20a74] { color:#f87171;\n}\n.stat-value.blue[data-v-8bb20a74] { color:#5B8DB8;\n}\n.formula-badge[data-v-8bb20a74] { background:rgba(91,141,184,.08); border:1px solid rgba(91,141,184,.2); border-radius:5px; padding:.35rem .5rem; font-size:.7rem; color:#5B8DB8; font-family:monospace; text-align:center;\n}\n.guess-box[data-v-8bb20a74] { display:flex; flex-direction:column; gap:.35rem;\n}\n.guess-btn[data-v-8bb20a74] { width:100%; padding:.4rem; border-radius:6px; border:1px solid rgba(245,158,11,.4); background:rgba(245,158,11,.12); color:#fbbf24; font-size:.78rem; font-weight:700; cursor:pointer; transition:all .15s;\n}\n.guess-btn[data-v-8bb20a74]:hover { background:rgba(245,158,11,.2);\n}\n",
+      "start": 1783196195706,
+      "end": 1783196195707,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195707,
+      "end": 1783196195707,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196195707,
+      "end": 1783196195707,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195707,
+      "end": 1783196195707,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195707,
+      "end": 1783196195707,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195707,
+      "end": 1783196195707,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195707,
+      "end": 1783196195707,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195707,
+      "end": 1783196195707,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195707,
+      "end": 1783196195707,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195707,
+      "end": 1783196195707,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195707,
+      "end": 1783196195707,
+      "order": "normal"
+    }
+  ]
+}

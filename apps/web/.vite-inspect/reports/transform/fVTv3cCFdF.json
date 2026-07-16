@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/spring/SpringSignalChart.vue?vue&type=style&index=0&scoped=3882e1dc&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.chart-wrap { height: 180px; min-height: 180px; position: relative; flex-shrink: 0; }\n.chart-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; background: #fffef7; border-radius: 8px; border: 1px solid #2D3645; }\n",
+      "start": 1783196195609,
+      "end": 1783196195609
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.chart-wrap { height: 180px; min-height: 180px; position: relative; flex-shrink: 0; }\n.chart-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; background: #fffef7; border-radius: 8px; border: 1px solid #2D3645; }\n",
+      "start": 1783196195609,
+      "end": 1783196195609,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195609,
+      "end": 1783196195609,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195609,
+      "end": 1783196195609,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195609,
+      "end": 1783196195609,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.chart-wrap[data-v-3882e1dc] { height: 180px; min-height: 180px; position: relative; flex-shrink: 0;\n}\n.chart-wrap canvas[data-v-3882e1dc] { position: absolute; inset: 0; width: 100%; height: 100%; background: #fffef7; border-radius: 8px; border: 1px solid #2D3645;\n}\n",
+      "start": 1783196195609,
+      "end": 1783196195610,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195610,
+      "end": 1783196195610,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196195610,
+      "end": 1783196195610,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195610,
+      "end": 1783196195610,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195610,
+      "end": 1783196195610,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195610,
+      "end": 1783196195610,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195610,
+      "end": 1783196195610,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195610,
+      "end": 1783196195610,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195610,
+      "end": 1783196195610,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195610,
+      "end": 1783196195610,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195610,
+      "end": 1783196195610,
+      "order": "normal"
+    }
+  ]
+}

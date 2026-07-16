@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/resonance/panels/ResonanceChartPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../../composables/useI18n'\nconst { t } = useI18n()\ninterface Props { waveformData: { x: number; y: number }[] }\ndefineProps<Props>()\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <div class=\"mini-chart\" v-if=\"waveformData.length\">\n      <svg viewBox=\"0 0 100 40\" preserveAspectRatio=\"none\" class=\"chart-svg\">\n        <polyline :points=\"waveformData.map((p, i) => `${(i / (waveformData.length - 1)) * 100},${20 - p.y / 3}`).join(' ')\" fill=\"none\" stroke=\"#5B8DB8\" stroke-width=\"0.5\" />\n      </svg>\n    </div>\n    <p v-else class=\"empty\">{{ t('experiments.noData') }}</p>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { font-size: .8rem; }\n.mini-chart { height: 100px; background: #0d1117; border-radius: 5px; border: 1px solid #2D3645; padding: .3rem; }\n.chart-svg { width: 100%; height: 100%; }\n.empty { color: #64748b; text-align: center; padding: 1rem; }\n</style>\n",
+      "start": 1783196195111,
+      "end": 1783196195358,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195358,
+      "end": 1783196195358,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195358,
+      "end": 1783196195358,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195358,
+      "end": 1783196195359,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195359,
+      "end": 1783196195359,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/resonance/panels/ResonanceChartPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/resonance/panels/ResonanceChartPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/resonance/panels/ResonanceChartPanel.vue?vue&type=style&index=0&scoped=42ba5c27&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-42ba5c27\"]]);\n",
+      "start": 1783196195359,
+      "end": 1783196195563,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    }
+  ]
+}

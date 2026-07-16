@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisEquationsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { watch } from 'vue'\nimport { useI18n } from '../../../composables/useI18n'\nimport { useEquationSolver } from '../../../composables/experiment/analysis/useEquationSolver'\nimport EquationDetail from './EquationDetail.vue'\nimport type { AnalysisEquation } from '../../../types/physics'\n\nconst props = defineProps<{\n  equations: AnalysisEquation[];\n  readings: Record<string, number>[];\n}>();\n\nconst emit = defineEmits<{\n  (e: 'solved-equations', val: { equationName: string; formula: string; targetVar: string; varValues: Record<string, number>; result: string; timestamp: number }[]): void;\n}>();\n\nconst { t } = useI18n()\n\nconst {\n  selectedIndex,\n  varValues,\n  targetVar,\n  result,\n  activeEquation,\n  solve,\n  solvedEquations,\n} = useEquationSolver(\n  () => props.equations,\n  () => props.readings\n);\n\nwatch(solvedEquations, (val) => emit('solved-equations', val), { deep: true });\n</script>\n\n<template>\n  <div class=\"equations-panel\">\n    <div class=\"panel-header\">\n      <span>{{ t('analysis.equations') }}</span>\n    </div>\n    <div v-if=\"equations.length\" class=\"body\">\n      <div class=\"eq-tabs-list\">\n        <button\n          v-for=\"(eq, i) in equations\"\n          :key=\"i\"\n          class=\"eq-tab\"\n          :class=\"{ active: i === selectedIndex }\"\n          @click=\"selectedIndex = i\"\n        >\n          {{ eq.name }}\n        </button>\n      </div>\n      <div class=\"eq-detail-area\">\n        <EquationDetail\n          :equation=\"activeEquation\"\n          v-model:var-values=\"varValues\"\n          v-model:target-var=\"targetVar\"\n          :result=\"result\"\n          @solve=\"solve\"\n        />\n      </div>\n    </div>\n    <p v-else class=\"empty\">{{ t('analysis.noEquations') }}</p>\n  </div>\n</template>\n\n<style scoped>\n.equations-panel {\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.5rem;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n.panel-header {\n  padding: 0.4rem 0.75rem;\n  background: rgba(255,255,255,0.04);\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n  font-size: 0.85rem;\n  color: #67e8f9;\n  font-weight: 700;\n  flex-shrink: 0;\n}\n.body {\n  flex: 1;\n  display: flex;\n  overflow: hidden;\n  min-height: 0;\n}\n.eq-tabs-list {\n  width: 150px;\n  flex-shrink: 0;\n  display: flex;\n  flex-direction: column;\n  gap: 0.25rem;\n  padding: 0.4rem;\n  border-left: 1px solid rgba(255,255,255,0.06);\n  overflow-y: auto;\n}\n.eq-tab {\n  background: rgba(255,255,255,0.04);\n  border: 1px solid rgba(255,255,255,0.07);\n  color: #94a3b8;\n  border-radius: 0.3rem;\n  padding: 0.3rem 0.45rem;\n  font-size: 0.73rem;\n  cursor: pointer;\n  text-align: right;\n  transition: all 0.15s;\n  font-weight: 600;\n  line-height: 1.3;\n}\n.eq-tab.active {\n  background: rgba(6,182,212,0.2);\n  color: #67e8f9;\n  border-color: rgba(6,182,212,0.4);\n}\n.eq-tab:hover:not(.active) { background: rgba(255,255,255,0.08); color: #e2e8f0; }\n.eq-detail-area { flex: 1; min-width: 0; overflow: hidden; display: flex; flex-direction: column; }\n.empty { color: #64748b; text-align: center; padding: 1rem; font-size: 0.85rem; }\n</style>\n",
+      "start": 1783196193271,
+      "end": 1783196193425,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193425,
+      "end": 1783196193425,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196193425,
+      "end": 1783196193425,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193425,
+      "end": 1783196193425,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193425,
+      "end": 1783196193425,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisEquationsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisEquationsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisEquationsPanel.vue?vue&type=style&index=0&scoped=aed4bafb&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-aed4bafb\"]]);\n",
+      "start": 1783196193425,
+      "end": 1783196193510,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193510,
+      "end": 1783196193510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193510,
+      "end": 1783196193510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193510,
+      "end": 1783196193510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193510,
+      "end": 1783196193510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193510,
+      "end": 1783196193510,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193510,
+      "end": 1783196193510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193510,
+      "end": 1783196193510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193510,
+      "end": 1783196193510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193511,
+      "end": 1783196193511,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193511,
+      "end": 1783196193511,
+      "order": "normal"
+    }
+  ]
+}

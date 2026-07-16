@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onUnmounted, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import * as THREE from 'three';
 import { useBiology3D } from '../../../composables/biology/useBiology3D';
 import type { Organelle3D } from '../../../types/biology.types';
@@ -25,11 +25,29 @@ interface MarkerPosition {
 
 const containerRef = ref<HTMLDivElement | null>(null);
 const markers = ref<MarkerPosition[]>([]);
-let rafId = 0;
 let dragStartX = 0;
 let dragStartY = 0;
 let dragDistance = 0;
 const DRAG_THRESHOLD = 5;
+
+const updateMarkers = (): void => {
+  markers.value = props.organelles
+    .filter((organelle) => organelle.selectable !== false)
+    .map((organelle) => {
+      const worldPos = getOrganelleWorldPosition(organelle.id);
+      const baseOffset = new THREE.Vector3(...organelle.hotspotPosition).sub(
+        new THREE.Vector3(...organelle.position)
+      );
+      const pos = worldPos ? worldPos.clone().add(baseOffset) : new THREE.Vector3(...organelle.hotspotPosition);
+      const screen = projectToScreen(pos);
+      return {
+        id: organelle.id,
+        x: screen.x,
+        y: screen.y,
+        visible: screen.visible,
+      };
+    });
+};
 
 const {
   setExplodeProgress,
@@ -40,7 +58,8 @@ const {
   focusOn,
   resetCamera,
   resize,
-} = useBiology3D(containerRef, props.organelles);
+  error,
+} = useBiology3D(containerRef, props.organelles, updateMarkers);
 
 defineExpose({
   focusOn,
@@ -61,40 +80,6 @@ watch(
   { immediate: true }
 );
 
-const updateMarkers = (): void => {
-  markers.value = props.organelles
-    .filter((organelle) => organelle.selectable !== false)
-    .map((organelle) => {
-      const worldPos = getOrganelleWorldPosition(organelle.id);
-      const baseOffset = new THREE.Vector3(...organelle.hotspotPosition).sub(
-        new THREE.Vector3(...organelle.position)
-      );
-      const pos = worldPos ? worldPos.clone().add(baseOffset) : new THREE.Vector3(...organelle.hotspotPosition);
-      const screen = projectToScreen(pos);
-      return {
-        id: organelle.id,
-        x: screen.x,
-        y: screen.y,
-        visible: screen.visible,
-      };
-    });
-  rafId = requestAnimationFrame(updateMarkers);
-};
-
-watch(
-  containerRef,
-  (el) => {
-    if (el) {
-      cancelAnimationFrame(rafId);
-      updateMarkers();
-    }
-  },
-  { immediate: true }
-);
-
-onUnmounted(() => {
-  cancelAnimationFrame(rafId);
-});
 
 const onPointerDown = (event: PointerEvent): void => {
   dragStartX = event.clientX;
@@ -126,10 +111,14 @@ const handleMarkerClick = (id: string): void => {
   <div
     ref="containerRef"
     class="biology-canvas"
+    :class="{ 'has-error': error }"
     @pointerdown="onPointerDown"
     @pointermove="onPointerMove"
     @click="handleCanvasClick"
   >
+    <div v-if="error" class="webgl-error" role="alert">
+      {{ error }}
+    </div>
     <HotspotMarker
       v-for="marker in markers"
       :key="marker.id"
@@ -154,7 +143,25 @@ const handleMarkerClick = (id: string): void => {
   overflow: hidden;
 }
 
+.biology-canvas.has-error {
+  cursor: default;
+}
+
 .biology-canvas:active {
   cursor: grabbing;
+}
+
+.webgl-error {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(15, 23, 42, 0.95);
+  color: #ef4444;
+  font-weight: 600;
+  text-align: center;
+  z-index: 20;
 }
 </style>

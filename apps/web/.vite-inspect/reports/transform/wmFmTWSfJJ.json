@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedPanelBody.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport type { InclinedTrial } from '../../../composables/inclined/useInclinedTrials'\nimport type { InclinedParams } from '../../../modules/physics/experiments/inclined/useInclinedPhysics'\nimport InclinedParamsPanel from './InclinedParamsPanel.vue'\nimport InclinedTablePanel from './InclinedTablePanel.vue'\nimport InclinedScatterPanel from './InclinedScatterPanel.vue'\nimport InclinedSignalPanel from './InclinedSignalPanel.vue'\nimport InclinedEquationsPanel from './InclinedEquationsPanel.vue'\nimport InclinedStatsPanel from './InclinedStatsPanel.vue'\nimport { useI18n } from '../../../composables/useI18n'\n\nconst { t } = useI18n()\nconst props = defineProps<{\n  id: string\n  trials: InclinedTrial[]\n  params: InclinedParams\n  sim: { t: number; s: number; v: number; arrived: boolean; running: boolean }\n  measured: { acceleration: number | null; timeOfArrival: number | null; finalVelocity: number | null; normalForce: number | null; parallelForce: number | null; frictionForce: number | null; dragForce: number | null }\n  trialStats: { a_mean: number; a_std: number; t_mean: number; t_std: number; v_mean: number; v_std: number }\n  calcResult: string\n}>()\n\nconst emit = defineEmits<{\n  (e: 'update:params', v: Partial<InclinedParams>): void\n  (e: 'remove', id: number): void\n  (e: 'clear'): void\n  (e: 'calcAcceleration'): void\n  (e: 'calcTime'): void\n  (e: 'calcVelocity'): void\n  (e: 'calcNormal'): void\n  (e: 'calcGFromSlope'): void\n}>()\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <InclinedParamsPanel v-if=\"id === 'params'\" :params=\"params\" @update:params=\"emit('update:params', $event)\" />\n    <InclinedTablePanel v-else-if=\"id === 'table'\" :trials=\"trials\" @remove=\"emit('remove', $event)\" />\n    <InclinedScatterPanel v-else-if=\"id === 'scatter'\" :trials=\"trials\" />\n    <InclinedSignalPanel v-else-if=\"id === 'signal'\" :sim-state=\"sim\" :params=\"params\" />\n    <InclinedEquationsPanel v-else-if=\"id === 'equations'\" :calc-result=\"calcResult\"\n      @calc-acceleration=\"emit('calcAcceleration')\" @calc-time=\"emit('calcTime')\" @calc-velocity=\"emit('calcVelocity')\" @calc-normal=\"emit('calcNormal')\" @calc-g-from-slope=\"emit('calcGFromSlope')\" />\n    <InclinedStatsPanel v-else-if=\"id === 'stats'\" :trial-stats=\"trialStats\" :trial-count=\"trials.length\" />\n    <div v-else-if=\"id === 'guide'\" class=\"guide-text\">\n      <h5>{{ t('experiments.usageGuide') }}</h5>\n      <ol>\n        <li>{{ t('experiments.inclinedGuideStep1') }}</li>\n        <li>{{ t('experiments.inclinedGuideStep2') }}</li>\n        <li>{{ t('experiments.inclinedGuideStep3') }}</li>\n        <li>{{ t('experiments.inclinedGuideStep4') }}</li>\n        <li>{{ t('experiments.inclinedGuideStep5') }}</li>\n      </ol>\n    </div>\n    <div v-else-if=\"id === 'error'\" class=\"error-text\">\n      <h5>{{ t('experiments.errorAnalysis') }}</h5>\n      <p>{{ t('experiments.errorAnalysisDesc') }}</p>\n      <p>{{ t('experiments.noiseAddsError') }}</p>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { height: 100%; overflow: auto; }\n.guide-text, .error-text { padding: .6rem; font-size: .72rem; color: #B8C0CC; line-height: 1.6; }\n.guide-text h5, .error-text h5 { color: #5B8DB8; margin: 0 0 .3rem; }\n.guide-text ol { padding-right: 1.2rem; margin: 0; }\n.guide-text li { margin-bottom: .2rem; }\n</style>\n",
+      "start": 1783196193537,
+      "end": 1783196193765,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193765,
+      "end": 1783196193765,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196193765,
+      "end": 1783196193765,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193765,
+      "end": 1783196193765,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193765,
+      "end": 1783196193765,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedPanelBody.vue?vue&type=style&index=0&scoped=6db49beb&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-6db49beb\"]]);\n",
+      "start": 1783196193765,
+      "end": 1783196194372,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194372,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194373,
+      "end": 1783196194374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194374,
+      "end": 1783196194374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194374,
+      "end": 1783196194376,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194377,
+      "end": 1783196194377,
+      "order": "normal"
+    }
+  ]
+}

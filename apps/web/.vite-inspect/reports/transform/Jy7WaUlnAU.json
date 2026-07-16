@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedControlBar.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\n\nconst { t } = useI18n()\nconst props = defineProps<{\n  launchLabel: string\n  speed: number\n  canUndo: boolean\n  canRedo: boolean\n}>()\n\nconst emit = defineEmits<{\n  (e: 'togglePause'): void\n  (e: 'reset'): void\n  (e: 'recordTrial'): void\n  (e: 'clearTrials'): void\n  (e: 'exportCsv'): void\n  (e: 'undo'): void\n  (e: 'redo'): void\n  (e: 'update:speed', v: number): void\n}>()\n</script>\n\n<template>\n  <div class=\"control-bar\">\n    <button class=\"ctrl-btn primary\" @click=\"emit('togglePause')\">{{ launchLabel }}</button>\n    <button class=\"ctrl-btn\" @click=\"emit('reset')\">🔄 {{ t('experiments.resetBtn') }}</button>\n    <button class=\"ctrl-btn\" @click=\"emit('recordTrial')\">📌 {{ t('experiments.recordBtn') }}</button>\n    <button class=\"ctrl-btn\" @click=\"emit('undo')\" :disabled=\"!canUndo\">↩️ {{ t('experiments.undoBtn') }}</button>\n    <button class=\"ctrl-btn\" @click=\"emit('redo')\" :disabled=\"!canRedo\">↪️ {{ t('experiments.redoBtn') }}</button>\n    <button class=\"ctrl-btn\" @click=\"emit('clearTrials')\">🗑️ {{ t('experiments.clearAll') }}</button>\n    <button class=\"ctrl-btn\" @click=\"emit('exportCsv')\">📤 {{ t('experiments.exportBtn') }}</button>\n    <div class=\"speed-control\">\n      <label>{{ t('experiments.speedLabel') }}:</label>\n      <input type=\"range\" min=\"0.25\" max=\"3\" step=\"0.25\" :value=\"speed\" @input=\"emit('update:speed', +($event.target as HTMLInputElement).value)\" />\n      <span>{{ speed }}x</span>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.control-bar { display:flex; align-items:center; justify-content:center; gap:.4rem; padding:.5rem .6rem; background:rgba(30,37,48,0.6); border:1px solid #2D3645; border-radius:8px; flex-shrink:0; flex-wrap:wrap; margin-top:.3rem; }\n.ctrl-btn { padding:.35rem .6rem; border:1px solid #2D3645; border-radius:6px; background:rgba(255,255,255,.03); color:#D1D7E0; cursor:pointer; font-size:.7rem; font-weight:600; transition:all .15s; white-space:nowrap; }\n.ctrl-btn:hover { background:rgba(91,141,184,.1); border-color:#5B8DB8; }\n.ctrl-btn.primary { background:rgba(91,141,184,.15); border-color:#5B8DB8; color:#5B8DB8; }\n.ctrl-btn:disabled { opacity:.4; cursor:not-allowed; }\n.speed-control { display:flex; align-items:center; gap:.3rem; }\n.speed-control label { font-size:.68rem; color:#8B95A5; }\n.speed-control span { font-size:.68rem; color:#D1D7E0; min-width:24px; }\n</style>\n",
+      "start": 1783196193537,
+      "end": 1783196193756,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193756,
+      "end": 1783196193756,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196193756,
+      "end": 1783196193756,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193756,
+      "end": 1783196193756,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193756,
+      "end": 1783196193756,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedControlBar.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedControlBar.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedControlBar.vue?vue&type=style&index=0&scoped=90cb5b5f&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-90cb5b5f\"]]);\n",
+      "start": 1783196193756,
+      "end": 1783196194372,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194372,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194373,
+      "end": 1783196194374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194374,
+      "end": 1783196194374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194374,
+      "end": 1783196194376,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194377,
+      "end": 1783196194377,
+      "order": "normal"
+    }
+  ]
+}

@@ -28,6 +28,7 @@ interface RecordContext {
   isSeries: { value: boolean }
   isNonOhmic: { value: boolean }
   isCapacitorsCombo: { value: boolean }
+  isCapacitorsSeries: { value: boolean }
   isPotentiometer: { value: boolean }
   isMaxPower: { value: boolean }
   isJoulesLaw: { value: boolean }
@@ -104,7 +105,7 @@ export function createRecordTrial(ctx: RecordContext) {
     if (ctx.isJoulesLaw.value && ctx.joulesData.value) { const l = last(); l.voltage = ctx.joulesData.value.V; l.current = ctx.joulesData.value.I; l.resistance = ctx.joulesData.value.R }
     if (ctx.isAmmeterVoltmeter.value && ctx.ammeterVoltmeterData.value) { const l = last(); l.voltage = ctx.ammeterVoltmeterData.value.Vm; l.current = ctx.ammeterVoltmeterData.value.I; l.resistance = ctx.ammeterVoltmeterData.value.Rx }
     if (ctx.isCompound.value && ctx.compoundData.value) { const l = last(); l.voltage = ctx.compoundData.value.V; l.current = ctx.compoundData.value.I; l.resistance = ctx.compoundData.value.Req }
-    if (ctx.isEMF.value && ctx.emfData.value) { const l = last(); l.voltage = ctx.emfData.value.Vt; l.current = ctx.emfData.value.I; l.resistance = ctx.emfData.value.r }
+    if (ctx.isEMF.value && ctx.emfData.value) { const l = last(); l.EMF = ctx.emfData.value.EMF; l.Vt = ctx.emfData.value.Vt; l.voltage = ctx.emfData.value.Vt; l.current = ctx.emfData.value.I; l.resistance = ctx.emfData.value.r; l.r = ctx.emfData.value.r; l.closed = ctx.emfData.value.closed }
     if (ctx.isTempR.value && ctx.tempRData.value) { const l = last(); l.voltage = ctx.tempRData.value.Vm; l.current = ctx.tempRData.value.I; l.resistance = ctx.tempRData.value.T }
     if (ctx.isCellsSeries.value && ctx.cellsSeriesData.value) { const l = last(); l.voltage = ctx.cellsSeriesData.value.Vt; l.current = ctx.cellsSeriesData.value.I; l.resistance = ctx.cellsSeriesData.value.R }
     if (ctx.isCellsParallel.value && ctx.cellsParallelData.value) { const l = last(); l.voltage = ctx.cellsParallelData.value.Vt; l.current = ctx.cellsParallelData.value.I; l.resistance = ctx.cellsParallelData.value.R }

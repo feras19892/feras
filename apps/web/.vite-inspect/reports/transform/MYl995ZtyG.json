@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/faraday/useFaradayExperiment.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { ref, reactive, computed, watch } from 'vue'\nimport type { AnalysisPayload } from '../../types/physics'\nimport { useFaradayLayout } from './useFaradayLayout'\nimport { useFaradayTrials } from './useFaradayTrials'\nimport { magneticFlux, inducedEMF } from './useFaradayCalculations'\n\nexport function useFaradayExperiment() {\n  const params = reactive({\n    N: 100,      // turns\n    B: 0.5,      // T\n    A: 0.01,     // m²\n    omega: 2,    // rad/s\n  })\n\n  watch(() => params.N, (v) => { params.N = Math.max(10, Math.min(500, Math.round(v / 10) * 10)) })\n  watch(() => params.B, (v) => { params.B = Math.max(0.1, Math.min(2, Math.round(v * 10) / 10)) })\n  watch(() => params.A, (v) => { params.A = Math.max(0.001, Math.min(0.1, Math.round(v * 1000) / 1000)) })\n  watch(() => params.omega, (v) => { params.omega = Math.max(0.5, Math.min(10, Math.round(v * 10) / 10)) })\n\n  const running = ref(false)\n  const paused = ref(false)\n  const simTime = ref(0)\n  const phase = ref<'ready' | 'running' | 'done'>('ready')\n\n  const theta = computed(() => (simTime.value * params.omega * 180 / Math.PI) % 360)\n  const flux = computed(() => magneticFlux(params.B, params.A, theta.value))\n  const emf = computed(() => {\n    const dPhi = params.B * params.A * params.omega * Math.sin((theta.value * Math.PI) / 180)\n    return Math.abs(inducedEMF(params.N, dPhi, 1))\n  })\n\n  function updateSim(dt: number) {\n    if (!running.value || paused.value) return\n    simTime.value += dt\n    phase.value = 'running'\n    if (simTime.value > 20) phase.value = 'done'\n  }\n\n  function togglePause() {\n    if (!running.value) {\n      running.value = true; paused.value = false; simTime.value = 0\n      phase.value = 'running'\n    } else { paused.value = !paused.value }\n  }\n  function resetSim() {\n    running.value = false; paused.value = false; simTime.value = 0; phase.value = 'ready'\n  }\n\n  const layout = useFaradayLayout()\n  const trials = useFaradayTrials(\n    { get value() { return { N: params.N, B: params.B, A: params.A, omega: params.omega, emf: emf.value } } }\n  )\n\n  function exportToAnalysis() {\n    if (trials.trials.value.length < 2) return\n    const payload: AnalysisPayload = {\n      sourceExperiment: 'faraday', sourceNameAr: 'حث فارادي',\n      readings: trials.trials.value.map(t => ({ N: t.N, B: t.B, A: t.A, omega: t.omega, emf: t.emf })),\n      columns: [\n        { key: 'N', label: 'N', unit: 'turns' },\n        { key: 'B', label: 'B (T)', unit: 'T' },\n        { key: 'A', label: 'A (m²)', unit: 'm²' },\n        { key: 'omega', label: 'ω (rad/s)', unit: 'rad/s' },\n        { key: 'emf', label: 'EMF (V)', unit: 'V' },\n      ],\n      equations: [\n        { name: \"Faraday's Law\", formula: 'ε = -N · dΦ/dt', variables: [{ symbol: 'ε', label: 'EMF' }, { symbol: 'N', label: 'Turns' }, { symbol: 'Φ', label: 'Flux' }], solveFor: ['emf'] },\n      ],\n      suggestedPlots: [{ xKey: 'omega', yKey: 'emf', xLabel: 'ω (rad/s)', yLabel: 'EMF (V)', type: 'scatter' }],\n    }\n    localStorage.setItem('analysis_payload', JSON.stringify(payload))\n    window.open('/analysis', '_blank')\n  }\n  function handleDrop(fromId: string, x?: number, y?: number) {\n    if (x === undefined || y === undefined) return\n    const el = document.elementFromPoint(x, y)\n    const toPanel = el?.closest('.draggable-panel')\n    const toId = toPanel?.getAttribute('data-id')\n    if (!toId || fromId === toId) return\n    for (const col of Object.keys(layout.columnMap)) {\n      const arr = layout.columnMap[col]\n      const fi = arr.indexOf(fromId), ti = arr.indexOf(toId)\n      if (fi >= 0 && ti >= 0) { const t = arr[fi]; arr[fi] = arr[ti]; arr[ti] = t }\n    }\n  }\n  function onResizeStart(col: string, e: MouseEvent) {\n    if (!(col in layout.widths)) return\n    const startX = e.clientX, startW = (layout.widths as Record<string, number>)[col] as number\n    function move(ev: MouseEvent) { (layout.widths as Record<string, number>)[col] = Math.max(220, startW + (ev.clientX - startX)) }\n    function up() { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up) }\n    window.addEventListener('mousemove', move); window.addEventListener('mouseup', up)\n  }\n\n  const lab = { running, paused, simTime, phase, theta, flux, emf, togglePause, updateSim }\n  return { params, lab, layout, trials, resetSim, exportToAnalysis, onResizeStart, handleDrop }\n}\n",
+      "start": 1783196193553,
+      "end": 1783196193805,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193805,
+      "end": 1783196193805,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { ref, reactive, computed, watch } from \"vue\";\nimport { useFaradayLayout } from \"./useFaradayLayout\";\nimport { useFaradayTrials } from \"./useFaradayTrials\";\nimport { magneticFlux, inducedEMF } from \"./useFaradayCalculations\";\nexport function useFaradayExperiment() {\n  const params = reactive({\n    N: 100,\n    // turns\n    B: 0.5,\n    // T\n    A: 0.01,\n    // m²\n    omega: 2\n    // rad/s\n  });\n  watch(() => params.N, (v) => {\n    params.N = Math.max(10, Math.min(500, Math.round(v / 10) * 10));\n  });\n  watch(() => params.B, (v) => {\n    params.B = Math.max(0.1, Math.min(2, Math.round(v * 10) / 10));\n  });\n  watch(() => params.A, (v) => {\n    params.A = Math.max(1e-3, Math.min(0.1, Math.round(v * 1e3) / 1e3));\n  });\n  watch(() => params.omega, (v) => {\n    params.omega = Math.max(0.5, Math.min(10, Math.round(v * 10) / 10));\n  });\n  const running = ref(false);\n  const paused = ref(false);\n  const simTime = ref(0);\n  const phase = ref(\"ready\");\n  const theta = computed(() => simTime.value * params.omega * 180 / Math.PI % 360);\n  const flux = computed(() => magneticFlux(params.B, params.A, theta.value));\n  const emf = computed(() => {\n    const dPhi = params.B * params.A * params.omega * Math.sin(theta.value * Math.PI / 180);\n    return Math.abs(inducedEMF(params.N, dPhi, 1));\n  });\n  function updateSim(dt) {\n    if (!running.value || paused.value) return;\n    simTime.value += dt;\n    phase.value = \"running\";\n    if (simTime.value > 20) phase.value = \"done\";\n  }\n  function togglePause() {\n    if (!running.value) {\n      running.value = true;\n      paused.value = false;\n      simTime.value = 0;\n      phase.value = \"running\";\n    } else {\n      paused.value = !paused.value;\n    }\n  }\n  function resetSim() {\n    running.value = false;\n    paused.value = false;\n    simTime.value = 0;\n    phase.value = \"ready\";\n  }\n  const layout = useFaradayLayout();\n  const trials = useFaradayTrials(\n    { get value() {\n      return { N: params.N, B: params.B, A: params.A, omega: params.omega, emf: emf.value };\n    } }\n  );\n  function exportToAnalysis() {\n    if (trials.trials.value.length < 2) return;\n    const payload = {\n      sourceExperiment: \"faraday\",\n      sourceNameAr: \"حث فارادي\",\n      readings: trials.trials.value.map((t) => ({ N: t.N, B: t.B, A: t.A, omega: t.omega, emf: t.emf })),\n      columns: [\n        { key: \"N\", label: \"N\", unit: \"turns\" },\n        { key: \"B\", label: \"B (T)\", unit: \"T\" },\n        { key: \"A\", label: \"A (m²)\", unit: \"m²\" },\n        { key: \"omega\", label: \"ω (rad/s)\", unit: \"rad/s\" },\n        { key: \"emf\", label: \"EMF (V)\", unit: \"V\" }\n      ],\n      equations: [\n        { name: \"Faraday's Law\", formula: \"ε = -N · dΦ/dt\", variables: [{ symbol: \"ε\", label: \"EMF\" }, { symbol: \"N\", label: \"Turns\" }, { symbol: \"Φ\", label: \"Flux\" }], solveFor: [\"emf\"] }\n      ],\n      suggestedPlots: [{ xKey: \"omega\", yKey: \"emf\", xLabel: \"ω (rad/s)\", yLabel: \"EMF (V)\", type: \"scatter\" }]\n    };\n    localStorage.setItem(\"analysis_payload\", JSON.stringify(payload));\n    window.open(\"/analysis\", \"_blank\");\n  }\n  function handleDrop(fromId, x, y) {\n    if (x === void 0 || y === void 0) return;\n    const el = document.elementFromPoint(x, y);\n    const toPanel = el?.closest(\".draggable-panel\");\n    const toId = toPanel?.getAttribute(\"data-id\");\n    if (!toId || fromId === toId) return;\n    for (const col of Object.keys(layout.columnMap)) {\n      const arr = layout.columnMap[col];\n      const fi = arr.indexOf(fromId), ti = arr.indexOf(toId);\n      if (fi >= 0 && ti >= 0) {\n        const t = arr[fi];\n        arr[fi] = arr[ti];\n        arr[ti] = t;\n      }\n    }\n  }\n  function onResizeStart(col, e) {\n    if (!(col in layout.widths)) return;\n    const startX = e.clientX, startW = layout.widths[col];\n    function move(ev) {\n      layout.widths[col] = Math.max(220, startW + (ev.clientX - startX));\n    }\n    function up() {\n      window.removeEventListener(\"mousemove\", move);\n      window.removeEventListener(\"mouseup\", up);\n    }\n    window.addEventListener(\"mousemove\", move);\n    window.addEventListener(\"mouseup\", up);\n  }\n  const lab = { running, paused, simTime, phase, theta, flux, emf, togglePause, updateSim };\n  return { params, lab, layout, trials, resetSim, exportToAnalysis, onResizeStart, handleDrop };\n}\n",
+      "start": 1783196193805,
+      "end": 1783196194396,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/faraday/useFaradayExperiment.ts"
+        ],
+        "sourcesContent": [
+          "import { ref, reactive, computed, watch } from 'vue'\nimport type { AnalysisPayload } from '../../types/physics'\nimport { useFaradayLayout } from './useFaradayLayout'\nimport { useFaradayTrials } from './useFaradayTrials'\nimport { magneticFlux, inducedEMF } from './useFaradayCalculations'\n\nexport function useFaradayExperiment() {\n  const params = reactive({\n    N: 100,      // turns\n    B: 0.5,      // T\n    A: 0.01,     // m²\n    omega: 2,    // rad/s\n  })\n\n  watch(() => params.N, (v) => { params.N = Math.max(10, Math.min(500, Math.round(v / 10) * 10)) })\n  watch(() => params.B, (v) => { params.B = Math.max(0.1, Math.min(2, Math.round(v * 10) / 10)) })\n  watch(() => params.A, (v) => { params.A = Math.max(0.001, Math.min(0.1, Math.round(v * 1000) / 1000)) })\n  watch(() => params.omega, (v) => { params.omega = Math.max(0.5, Math.min(10, Math.round(v * 10) / 10)) })\n\n  const running = ref(false)\n  const paused = ref(false)\n  const simTime = ref(0)\n  const phase = ref<'ready' | 'running' | 'done'>('ready')\n\n  const theta = computed(() => (simTime.value * params.omega * 180 / Math.PI) % 360)\n  const flux = computed(() => magneticFlux(params.B, params.A, theta.value))\n  const emf = computed(() => {\n    const dPhi = params.B * params.A * params.omega * Math.sin((theta.value * Math.PI) / 180)\n    return Math.abs(inducedEMF(params.N, dPhi, 1))\n  })\n\n  function updateSim(dt: number) {\n    if (!running.value || paused.value) return\n    simTime.value += dt\n    phase.value = 'running'\n    if (simTime.value > 20) phase.value = 'done'\n  }\n\n  function togglePause() {\n    if (!running.value) {\n      running.value = true; paused.value = false; simTime.value = 0\n      phase.value = 'running'\n    } else { paused.value = !paused.value }\n  }\n  function resetSim() {\n    running.value = false; paused.value = false; simTime.value = 0; phase.value = 'ready'\n  }\n\n  const layout = useFaradayLayout()\n  const trials = useFaradayTrials(\n    { get value() { return { N: params.N, B: params.B, A: params.A, omega: params.omega, emf: emf.value } } }\n  )\n\n  function exportToAnalysis() {\n    if (trials.trials.value.length < 2) return\n    const payload: AnalysisPayload = {\n      sourceExperiment: 'faraday', sourceNameAr: 'حث فارادي',\n      readings: trials.trials.value.map(t => ({ N: t.N, B: t.B, A: t.A, omega: t.omega, emf: t.emf })),\n      columns: [\n        { key: 'N', label: 'N', unit: 'turns' },\n        { key: 'B', label: 'B (T)', unit: 'T' },\n        { key: 'A', label: 'A (m²)', unit: 'm²' },\n        { key: 'omega', label: 'ω (rad/s)', unit: 'rad/s' },\n        { key: 'emf', label: 'EMF (V)', unit: 'V' },\n      ],\n      equations: [\n        { name: \"Faraday's Law\", formula: 'ε = -N · dΦ/dt', variables: [{ symbol: 'ε', label: 'EMF' }, { symbol: 'N', label: 'Turns' }, { symbol: 'Φ', label: 'Flux' }], solveFor: ['emf'] },\n      ],\n      suggestedPlots: [{ xKey: 'omega', yKey: 'emf', xLabel: 'ω (rad/s)', yLabel: 'EMF (V)', type: 'scatter' }],\n    }\n    localStorage.setItem('analysis_payload', JSON.stringify(payload))\n    window.open('/analysis', '_blank')\n  }\n  function handleDrop(fromId: string, x?: number, y?: number) {\n    if (x === undefined || y === undefined) return\n    const el = document.elementFromPoint(x, y)\n    const toPanel = el?.closest('.draggable-panel')\n    const toId = toPanel?.getAttribute('data-id')\n    if (!toId || fromId === toId) return\n    for (const col of Object.keys(layout.columnMap)) {\n      const arr = layout.columnMap[col]\n      const fi = arr.indexOf(fromId), ti = arr.indexOf(toId)\n      if (fi >= 0 && ti >= 0) { const t = arr[fi]; arr[fi] = arr[ti]; arr[ti] = t }\n    }\n  }\n  function onResizeStart(col: string, e: MouseEvent) {\n    if (!(col in layout.widths)) return\n    const startX = e.clientX, startW = (layout.widths as Record<string, number>)[col] as number\n    function move(ev: MouseEvent) { (layout.widths as Record<string, number>)[col] = Math.max(220, startW + (ev.clientX - startX)) }\n    function up() { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up) }\n    window.addEventListener('mousemove', move); window.addEventListener('mouseup', up)\n  }\n\n  const lab = { running, paused, simTime, phase, theta, flux, emf, togglePause, updateSim }\n  return { params, lab, layout, trials, resetSim, exportToAnalysis, onResizeStart, handleDrop }\n}\n"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194396,
+      "end": 1783196194396,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194396,
+      "end": 1783196194396,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194396,
+      "end": 1783196194396,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194396,
+      "end": 1783196194396,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194396,
+      "end": 1783196194396,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194396,
+      "end": 1783196194396,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194396,
+      "end": 1783196194396,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194396,
+      "end": 1783196194396,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194397,
+      "end": 1783196194397,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194397,
+      "end": 1783196194397,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194397,
+      "end": 1783196194397,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194397,
+      "end": 1783196194397,
+      "order": "normal"
+    }
+  ]
+}

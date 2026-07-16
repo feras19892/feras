@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemReportTab.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed, ref } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\nimport { fetchJson } from '../../../services/http';\nimport type { ChemAnalysisColumnMeta, ChemAnalysisEquation, ChemAnalysisPlotConfig } from '../../../types/chemistry';\nimport type { ChemStudentInfo } from '../../../types/chemistry';\nimport ChemAnalysisConclusionPanel from './ChemAnalysisConclusionPanel.vue';\nimport ChemAnalysisReportExport from './ChemAnalysisReportExport.vue';\n\nconst props = defineProps<{\n  sourceName: string;\n  reportDate: string;\n  studentInfo: ChemStudentInfo;\n  readings: Record<string, number>[];\n  columns: ChemAnalysisColumnMeta[];\n  equations: ChemAnalysisEquation[];\n  plots: ChemAnalysisPlotConfig[];\n  hasData: boolean;\n  solvedEquations?: { equationName: string; formula: string; targetVar: string; varValues: Record<string, number>; result: string; timestamp: number }[];\n  regressionData?: { slope: number; intercept: number; r2: number } | null;\n  slopeCalcData?: { label: string; formula: string; value: number; unit: string; expr: string } | null;\n  axesData?: { x: string; y: string; xLabel: string; yLabel: string } | null;\n  errorCalcData?: { theoretical: number | null; experimental: number | null; errorPercent: number | null } | null;\n  chartSnapshot?: string;\n  calculatedN2?: number | null;\n  expectedN2?: number | null;\n}>();\n\nconst emit = defineEmits<{\n  (e: 'print'): void;\n  (e: 'exportCsv'): void;\n  (e: 'exportPng'): void;\n  (e: 'sendToTeacher'): void;\n  (e: 'conclusionUpdate', data: { conclusion: string; errors: string; improvements: string }): void;\n}>();\n\nconst { t } = useI18n();\n\nconst conclusionData = ref({ conclusion: '', errors: '', improvements: '' });\nconst showPreview = ref(false);\nconst aiAnalysis = ref('');\nconst aiLoading = ref(false);\nconst aiError = ref('');\n\nasync function runAiAnalysis() {\n  aiLoading.value = true;\n  aiError.value = '';\n  aiAnalysis.value = '';\n  try {\n    const res = await fetchJson<{ success: boolean; analysis?: string; message?: string }>('/api/ai/analyze', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        experiment_name: props.sourceName,\n        student_name: props.studentInfo.name || undefined,\n        readings: JSON.stringify(props.readings),\n        columns: JSON.stringify(props.columns),\n        equations: JSON.stringify(props.equations),\n        plots: JSON.stringify(props.plots),\n        conclusion: conclusionData.value.conclusion || undefined,\n        chart_snapshot: props.chartSnapshot || undefined,\n      }),\n    });\n    if (res.success && res.analysis) {\n      aiAnalysis.value = res.analysis;\n    } else {\n      aiError.value = res.message || t('chemistryAnalysis.aiAnalysisFailed');\n    }\n  } catch (err) {\n    aiError.value = err instanceof Error ? err.message : t('chemistryAnalysis.serverConnectionError');\n  } finally {\n    aiLoading.value = false;\n  }\n}\n\nconst readyChecks = computed(() => {\n  const c: { ok: boolean; text: string }[] = [];\n  c.push({ ok: !!props.studentInfo.name, text: t('analysis.studentName') });\n  c.push({ ok: props.readings.length >= 2, text: t('analysis.minTwoReadings') });\n  c.push({ ok: conclusionData.value.conclusion.length > 10, text: t('analysis.conclusionWritten') });\n  return c;\n});\n\nconst allReady = computed(() => readyChecks.value.every(c => c.ok));\n\nconst concTable = computed(() => {\n  if (!props.readings.length) return [];\n  const vKey = props.columns.find(c => c.key === 'vAdded')?.key;\n  const pHKey = props.columns.find(c => c.key === 'ph')?.key;\n  if (!vKey || !pHKey) return [];\n  return props.readings\n    .map(r => {\n      const v = Number(r[vKey]) || 0;\n      const ph = Number(r[pHKey]) || 0;\n      const h = Math.pow(10, -ph);\n      const oh = Math.pow(10, -(14 - ph));\n      return { v, ph, h, oh };\n    })\n    .filter(r => !isNaN(r.v) && !isNaN(r.ph))\n    .sort((a, b) => a.v - b.v);\n});\n\nfunction onConclusionUpdate(data: { conclusion: string; errors: string; improvements: string }) {\n  conclusionData.value = data;\n  emit('conclusionUpdate', data);\n}\n</script>\n\n<template>\n  <div class=\"report-tab\">\n    <div class=\"grid\">\n      <div class=\"left\">\n        <ChemAnalysisConclusionPanel @update=\"onConclusionUpdate\" />\n        <div class=\"readiness\">\n          <div class=\"readiness-title\">{{ t('analysis.reportReadiness') }}</div>\n          <div v-for=\"(c, i) in readyChecks\" :key=\"i\" :class=\"['r-item', c.ok ? 'ok' : 'no']\">\n            {{ c.ok ? '✅' : '⬜' }} {{ c.text }}\n          </div>\n          <div v-if=\"allReady\" class=\"all-ready\">{{ t('analysis.reportReady') }}</div>\n        </div>\n      </div>\n      <div class=\"right\">\n        <button class=\"btn-preview\" @click=\"showPreview = !showPreview\">\n          {{ showPreview ? t('analysis.hide') : t('analysis.previewReport') }}\n        </button>\n        <div v-show=\"showPreview\" class=\"preview-box\">\n          <div class=\"preview-report\">\n            <h3>{{ sourceName }}</h3>\n            <p class=\"meta\">{{ t('analysis.dateLabel') }}: {{ reportDate }} | {{ t('analysis.studentName') }}: {{ studentInfo.name }}</p>\n            <table v-if=\"readings.length\" class=\"preview-table\">\n              <thead><tr><th>#</th><th v-for=\"col in columns\" :key=\"col.key\">{{ col.label }}</th></tr></thead>\n              <tbody><tr v-for=\"(r, i) in readings\" :key=\"i\"><td>{{ i + 1 }}</td><td v-for=\"col in columns\" :key=\"col.key\">{{ r[col.key] }}</td></tr></tbody>\n            </table>\n            <div v-if=\"solvedEquations?.length\" class=\"preview-equations\">\n              <h4>{{ t('analysis.solvedEquations') }}</h4>\n              <div v-for=\"(sol, i) in solvedEquations\" :key=\"i\">{{ sol.equationName }}: {{ sol.targetVar }} = {{ sol.result }}</div>\n            </div>\n            <div v-if=\"chartSnapshot\" class=\"preview-chart\"><img :src=\"chartSnapshot\" alt=\"chart\" /></div>\n            <div v-if=\"conclusionData.conclusion\" class=\"preview-conclusion\"><h4>{{ t('analysis.mainConclusion') }}</h4><p>{{ conclusionData.conclusion }}</p></div>\n          </div>\n        </div>\n        <ChemAnalysisReportExport\n          :has-data=\"hasData\"\n          @print=\"emit('print')\"\n          @export-csv=\"emit('exportCsv')\"\n          @export-png=\"emit('exportPng')\"\n          @send-to-teacher=\"emit('sendToTeacher')\"\n        />\n\n        <!-- AI Analysis -->\n        <div class=\"ai-section\">\n          <button class=\"btn-ai\" :disabled=\"!hasData || aiLoading\" @click=\"runAiAnalysis\">\n            {{ aiLoading ? t('chemistryAnalysis.analyzing') : t('chemistryAnalysis.aiAnalysisTitle') }}\n          </button>\n          <div v-if=\"aiError\" class=\"ai-error\">{{ aiError }}</div>\n          <!-- eslint-disable-next-line vue/no-v-html -->\n          <div v-if=\"aiAnalysis\" class=\"ai-result\" v-html=\"aiAnalysis\"></div>\n        </div>\n\n        <!-- Concentration Table -->\n        <div v-if=\"concTable.length\" class=\"conc-table-section\">\n          <div class=\"conc-title\">{{ t('chemistryAnalysis.concentrationTable') }}</div>\n          <div class=\"table-wrap\">\n            <table>\n              <thead><tr><th>V (mL)</th><th>pH</th><th>[H⁺] (M)</th><th>[OH⁻] (M)</th><th>pOH</th></tr></thead>\n              <tbody>\n                <tr v-for=\"(row, i) in concTable\" :key=\"i\">\n                  <td>{{ row.v.toFixed(1) }}</td>\n                  <td>{{ row.ph.toFixed(2) }}</td>\n                  <td>{{ row.h.toExponential(2) }}</td>\n                  <td>{{ row.oh.toExponential(2) }}</td>\n                  <td>{{ (14 - row.ph).toFixed(2) }}</td>\n                </tr>\n              </tbody>\n            </table>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.report-tab { flex: 1; overflow: hidden; display: flex; flex-direction: column; padding: 0.5rem; }\n.grid { display: flex; gap: 0.5rem; height: 100%; }\n.left { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 0.5rem; overflow-y: auto; }\n.right { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.5rem; overflow: hidden; }\n.btn-preview { flex-shrink: 0; padding: 0.4rem; border: none; border-radius: 0.35rem; background: linear-gradient(135deg, #475569, #334155); color: #fff; cursor: pointer; font-size: 0.8rem; font-weight: 600; }\n.preview-box { flex: 1; overflow-y: auto; background: #0f172a; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.06); padding: 0.5rem; }\n.preview-report h3 { color: #67e8f9; margin: 0 0 0.3rem; font-size: 1.1rem; }\n.preview-report .meta { color: #64748b; font-size: 0.75rem; margin-bottom: 0.5rem; }\n.preview-table { width: 100%; border-collapse: collapse; font-size: 0.72rem; margin-bottom: 0.5rem; }\n.preview-table th { background: rgba(255,255,255,0.05); color: #94a3b8; padding: 0.3rem; text-align: center; }\n.preview-table td { padding: 0.25rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.04); color: #e2e8f0; }\n.preview-equations { font-size: 0.75rem; color: #e2e8f0; margin-bottom: 0.5rem; }\n.preview-equations h4 { color: #67e8f9; margin: 0.3rem 0; font-size: 0.85rem; }\n.preview-chart img { max-width: 100%; border-radius: 0.3rem; margin-bottom: 0.5rem; }\n.preview-conclusion h4 { color: #67e8f9; margin: 0.3rem 0; font-size: 0.85rem; }\n.preview-conclusion p { color: #e2e8f0; font-size: 0.78rem; line-height: 1.5; }\n.readiness { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.5rem; padding: 0.5rem; }\n.readiness-title { font-size: 0.8rem; color: #67e8f9; font-weight: 600; margin-bottom: 0.3rem; }\n.r-item { font-size: 0.75rem; padding: 0.2rem 0; }\n.r-item.ok { color: #4ade80; }\n.r-item.no { color: #64748b; }\n.all-ready { margin-top: 0.4rem; padding: 0.4rem; background: rgba(34,197,94,0.1); border-radius: 0.3rem; color: #4ade80; font-size: 0.8rem; text-align: center; font-weight: 600; }\n\n.conc-table-section { flex-shrink: 0; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.5rem; padding: 0.5rem; overflow: hidden; display: flex; flex-direction: column; max-height: 220px; }\n.conc-title { font-size: 0.85rem; color: #67e8f9; font-weight: 700; margin-bottom: 0.3rem; }\n.table-wrap { overflow: auto; flex: 1; }\n.conc-table-section table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }\n.conc-table-section th, .conc-table-section td { padding: 0.4rem 0.5rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.06); }\n.conc-table-section th { background: rgba(255,255,255,0.05); color: #94a3b8; font-weight: 700; position: sticky; top: 0; }\n.conc-table-section tbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }\n.conc-table-section tbody tr:hover { background: rgba(91,141,184,0.05); }\n\n.ai-section { flex-shrink: 0; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.5rem; padding: 0.5rem; display: flex; flex-direction: column; gap: 0.4rem; }\n.btn-ai { padding: 0.5rem 1rem; border: none; border-radius: 0.4rem; background: linear-gradient(135deg, #8b5cf6, #6366f1); color: #fff; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.15s; }\n.btn-ai:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(139,92,246,0.4); }\n.btn-ai:disabled { opacity: 0.5; cursor: not-allowed; }\n.ai-error { color: #f87171; font-size: 0.8rem; padding: 0.3rem; background: rgba(239,68,68,0.1); border-radius: 0.3rem; }\n.ai-result { color: #e2e8f0; font-size: 0.82rem; line-height: 1.6; max-height: 300px; overflow-y: auto; padding: 0.5rem; background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.2); border-radius: 0.4rem; }\n.ai-result :deep(h1), .ai-result :deep(h2), .ai-result :deep(h3) { color: #67e8f9; font-size: 0.9rem; margin: 0.3rem 0; }\n.ai-result :deep(ul), .ai-result :deep(ol) { padding-right: 1.2rem; margin: 0.3rem 0; }\n.ai-result :deep(li) { margin: 0.15rem 0; }\n.ai-result :deep(strong) { color: #a5b4fc; }\n</style>\n",
+      "start": 1783196192491,
+      "end": 1783196192583,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196192583,
+      "end": 1783196192583,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196192583,
+      "end": 1783196192583,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196192583,
+      "end": 1783196192583,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196192583,
+      "end": 1783196192583,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemReportTab.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemReportTab.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemReportTab.vue?vue&type=style&index=0&scoped=cfbefb09&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-cfbefb09\"]]);\n",
+      "start": 1783196192583,
+      "end": 1783196192928,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196192929,
+      "end": 1783196192929,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196192929,
+      "end": 1783196192929,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196192929,
+      "end": 1783196192929,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196192929,
+      "end": 1783196192929,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196192929,
+      "end": 1783196192929,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196192929,
+      "end": 1783196192929,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196192929,
+      "end": 1783196192929,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196192929,
+      "end": 1783196192929,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196192929,
+      "end": 1783196192929,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196192930,
+      "end": 1783196192930,
+      "order": "normal"
+    }
+  ]
+}

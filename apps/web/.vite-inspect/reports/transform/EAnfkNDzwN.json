@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/EquationDetail.vue?vue&type=style&index=0&scoped=c63e1ab7&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.eq-detail {\n  display: flex;\n  flex-direction: row;\n  align-items: stretch;\n  gap: 0;\n  height: 100%;\n  overflow: hidden;\n}\n.divider {\n  width: 1px;\n  background: rgba(255,255,255,0.07);\n  flex-shrink: 0;\n  margin: 0.5rem 0;\n}\n.section-label {\n  font-size: 0.62rem;\n  color: #475569;\n  font-weight: 700;\n  text-transform: uppercase;\n  letter-spacing: 0.07em;\n  margin-bottom: 0.35rem;\n}\n.formula-box {\n  flex-shrink: 0;\n  width: 170px;\n  padding: 0.45rem 0.55rem;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n}\n.formula {\n  font-family: 'Courier New', monospace;\n  background: rgba(6,182,212,0.08);\n  border: 1px solid rgba(6,182,212,0.2);\n  padding: 0.35rem 0.5rem;\n  border-radius: 0.35rem;\n  color: #67e8f9;\n  font-size: 0.82rem;\n  font-weight: 700;\n  text-align: center;\n  line-height: 1.4;\n  word-break: break-all;\n}\n.vars-area {\n  flex: 1;\n  min-width: 0;\n  padding: 0.45rem 0.55rem;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  overflow: hidden;\n}\n.vars-grid {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.3rem 0.5rem;\n  align-items: center;\n}\n.var-item {\n  display: flex;\n  align-items: center;\n  gap: 0.3rem;\n}\n.var-item label {\n  font-size: 0.72rem;\n  color: #94a3b8;\n  font-weight: 600;\n  white-space: nowrap;\n}\n.sym { color: #64748b; font-size: 0.68rem; }\n.var-item input {\n  width: 72px;\n  background: #0f172a;\n  border: 1px solid #334155;\n  color: #e2e8f0;\n  border-radius: 0.25rem;\n  padding: 0.25rem 0.35rem;\n  font-size: 0.82rem;\n  text-align: center;\n  font-weight: 600;\n  transition: border-color 0.15s;\n}\n.var-item input:focus { border-color: #06b6d4; outline: none; box-shadow: 0 0 0 2px rgba(6,182,212,0.15); }\n.solve-area {\n  flex-shrink: 0;\n  width: 160px;\n  padding: 0.45rem 0.55rem;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  gap: 0.35rem;\n}\n.solve-row {\n  display: flex;\n  align-items: center;\n  gap: 0.4rem;\n}\nselect {\n  background: #0f172a;\n  border: 1px solid #334155;\n  color: #e2e8f0;\n  border-radius: 0.25rem;\n  padding: 0.25rem 0.35rem;\n  font-size: 0.78rem;\n  flex: 1;\n}\n.btn-solve {\n  background: linear-gradient(135deg, #06b6d4, #0891b2);\n  border: none;\n  color: #fff;\n  border-radius: 0.3rem;\n  padding: 0.28rem 0.55rem;\n  font-size: 0.78rem;\n  cursor: pointer;\n  font-weight: 700;\n  white-space: nowrap;\n  transition: all 0.15s;\n}\n.btn-solve:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(6,182,212,0.3); }\n.result {\n  background: linear-gradient(135deg, rgba(34,197,94,0.1), rgba(16,185,129,0.06));\n  border: 1px solid rgba(34,197,94,0.3);\n  border-radius: 0.3rem;\n  padding: 0.3rem 0.4rem;\n}\n.result-label { font-size: 0.6rem; color: #4ade80; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.1rem; }\n.result-value { color: #f0fdf4; font-size: 0.75rem; font-family: 'Courier New', monospace; font-weight: 700; word-break: break-all; line-height: 1.3; }\n",
+      "start": 1783196194831,
+      "end": 1783196194831
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.eq-detail {\n  display: flex;\n  flex-direction: row;\n  align-items: stretch;\n  gap: 0;\n  height: 100%;\n  overflow: hidden;\n}\n.divider {\n  width: 1px;\n  background: rgba(255,255,255,0.07);\n  flex-shrink: 0;\n  margin: 0.5rem 0;\n}\n.section-label {\n  font-size: 0.62rem;\n  color: #475569;\n  font-weight: 700;\n  text-transform: uppercase;\n  letter-spacing: 0.07em;\n  margin-bottom: 0.35rem;\n}\n.formula-box {\n  flex-shrink: 0;\n  width: 170px;\n  padding: 0.45rem 0.55rem;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n}\n.formula {\n  font-family: 'Courier New', monospace;\n  background: rgba(6,182,212,0.08);\n  border: 1px solid rgba(6,182,212,0.2);\n  padding: 0.35rem 0.5rem;\n  border-radius: 0.35rem;\n  color: #67e8f9;\n  font-size: 0.82rem;\n  font-weight: 700;\n  text-align: center;\n  line-height: 1.4;\n  word-break: break-all;\n}\n.vars-area {\n  flex: 1;\n  min-width: 0;\n  padding: 0.45rem 0.55rem;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  overflow: hidden;\n}\n.vars-grid {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.3rem 0.5rem;\n  align-items: center;\n}\n.var-item {\n  display: flex;\n  align-items: center;\n  gap: 0.3rem;\n}\n.var-item label {\n  font-size: 0.72rem;\n  color: #94a3b8;\n  font-weight: 600;\n  white-space: nowrap;\n}\n.sym { color: #64748b; font-size: 0.68rem; }\n.var-item input {\n  width: 72px;\n  background: #0f172a;\n  border: 1px solid #334155;\n  color: #e2e8f0;\n  border-radius: 0.25rem;\n  padding: 0.25rem 0.35rem;\n  font-size: 0.82rem;\n  text-align: center;\n  font-weight: 600;\n  transition: border-color 0.15s;\n}\n.var-item input:focus { border-color: #06b6d4; outline: none; box-shadow: 0 0 0 2px rgba(6,182,212,0.15); }\n.solve-area {\n  flex-shrink: 0;\n  width: 160px;\n  padding: 0.45rem 0.55rem;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  gap: 0.35rem;\n}\n.solve-row {\n  display: flex;\n  align-items: center;\n  gap: 0.4rem;\n}\nselect {\n  background: #0f172a;\n  border: 1px solid #334155;\n  color: #e2e8f0;\n  border-radius: 0.25rem;\n  padding: 0.25rem 0.35rem;\n  font-size: 0.78rem;\n  flex: 1;\n}\n.btn-solve {\n  background: linear-gradient(135deg, #06b6d4, #0891b2);\n  border: none;\n  color: #fff;\n  border-radius: 0.3rem;\n  padding: 0.28rem 0.55rem;\n  font-size: 0.78rem;\n  cursor: pointer;\n  font-weight: 700;\n  white-space: nowrap;\n  transition: all 0.15s;\n}\n.btn-solve:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(6,182,212,0.3); }\n.result {\n  background: linear-gradient(135deg, rgba(34,197,94,0.1), rgba(16,185,129,0.06));\n  border: 1px solid rgba(34,197,94,0.3);\n  border-radius: 0.3rem;\n  padding: 0.3rem 0.4rem;\n}\n.result-label { font-size: 0.6rem; color: #4ade80; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.1rem; }\n.result-value { color: #f0fdf4; font-size: 0.75rem; font-family: 'Courier New', monospace; font-weight: 700; word-break: break-all; line-height: 1.3; }\n",
+      "start": 1783196194831,
+      "end": 1783196194831,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194831,
+      "end": 1783196194831,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194831,
+      "end": 1783196194831,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194831,
+      "end": 1783196194831,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.eq-detail[data-v-c63e1ab7] {\n  display: flex;\n  flex-direction: row;\n  align-items: stretch;\n  gap: 0;\n  height: 100%;\n  overflow: hidden;\n}\n.divider[data-v-c63e1ab7] {\n  width: 1px;\n  background: rgba(255,255,255,0.07);\n  flex-shrink: 0;\n  margin: 0.5rem 0;\n}\n.section-label[data-v-c63e1ab7] {\n  font-size: 0.62rem;\n  color: #475569;\n  font-weight: 700;\n  text-transform: uppercase;\n  letter-spacing: 0.07em;\n  margin-bottom: 0.35rem;\n}\n.formula-box[data-v-c63e1ab7] {\n  flex-shrink: 0;\n  width: 170px;\n  padding: 0.45rem 0.55rem;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n}\n.formula[data-v-c63e1ab7] {\n  font-family: 'Courier New', monospace;\n  background: rgba(6,182,212,0.08);\n  border: 1px solid rgba(6,182,212,0.2);\n  padding: 0.35rem 0.5rem;\n  border-radius: 0.35rem;\n  color: #67e8f9;\n  font-size: 0.82rem;\n  font-weight: 700;\n  text-align: center;\n  line-height: 1.4;\n  word-break: break-all;\n}\n.vars-area[data-v-c63e1ab7] {\n  flex: 1;\n  min-width: 0;\n  padding: 0.45rem 0.55rem;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  overflow: hidden;\n}\n.vars-grid[data-v-c63e1ab7] {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.3rem 0.5rem;\n  align-items: center;\n}\n.var-item[data-v-c63e1ab7] {\n  display: flex;\n  align-items: center;\n  gap: 0.3rem;\n}\n.var-item label[data-v-c63e1ab7] {\n  font-size: 0.72rem;\n  color: #94a3b8;\n  font-weight: 600;\n  white-space: nowrap;\n}\n.sym[data-v-c63e1ab7] { color: #64748b; font-size: 0.68rem;\n}\n.var-item input[data-v-c63e1ab7] {\n  width: 72px;\n  background: #0f172a;\n  border: 1px solid #334155;\n  color: #e2e8f0;\n  border-radius: 0.25rem;\n  padding: 0.25rem 0.35rem;\n  font-size: 0.82rem;\n  text-align: center;\n  font-weight: 600;\n  transition: border-color 0.15s;\n}\n.var-item input[data-v-c63e1ab7]:focus { border-color: #06b6d4; outline: none; box-shadow: 0 0 0 2px rgba(6,182,212,0.15);\n}\n.solve-area[data-v-c63e1ab7] {\n  flex-shrink: 0;\n  width: 160px;\n  padding: 0.45rem 0.55rem;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  gap: 0.35rem;\n}\n.solve-row[data-v-c63e1ab7] {\n  display: flex;\n  align-items: center;\n  gap: 0.4rem;\n}\nselect[data-v-c63e1ab7] {\n  background: #0f172a;\n  border: 1px solid #334155;\n  color: #e2e8f0;\n  border-radius: 0.25rem;\n  padding: 0.25rem 0.35rem;\n  font-size: 0.78rem;\n  flex: 1;\n}\n.btn-solve[data-v-c63e1ab7] {\n  background: linear-gradient(135deg, #06b6d4, #0891b2);\n  border: none;\n  color: #fff;\n  border-radius: 0.3rem;\n  padding: 0.28rem 0.55rem;\n  font-size: 0.78rem;\n  cursor: pointer;\n  font-weight: 700;\n  white-space: nowrap;\n  transition: all 0.15s;\n}\n.btn-solve[data-v-c63e1ab7]:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(6,182,212,0.3);\n}\n.result[data-v-c63e1ab7] {\n  background: linear-gradient(135deg, rgba(34,197,94,0.1), rgba(16,185,129,0.06));\n  border: 1px solid rgba(34,197,94,0.3);\n  border-radius: 0.3rem;\n  padding: 0.3rem 0.4rem;\n}\n.result-label[data-v-c63e1ab7] { font-size: 0.6rem; color: #4ade80; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.1rem;\n}\n.result-value[data-v-c63e1ab7] { color: #f0fdf4; font-size: 0.75rem; font-family: 'Courier New', monospace; font-weight: 700; word-break: break-all; line-height: 1.3;\n}\n",
+      "start": 1783196194831,
+      "end": 1783196194832,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194832,
+      "end": 1783196194832,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196194832,
+      "end": 1783196194832,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194832,
+      "end": 1783196194832,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194832,
+      "end": 1783196194832,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194832,
+      "end": 1783196194832,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194832,
+      "end": 1783196194832,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194832,
+      "end": 1783196194832,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194832,
+      "end": 1783196194832,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194832,
+      "end": 1783196194832,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194832,
+      "end": 1783196194832,
+      "order": "normal"
+    }
+  ]
+}

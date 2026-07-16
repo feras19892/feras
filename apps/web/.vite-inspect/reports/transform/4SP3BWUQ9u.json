@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/resonance/useResonanceCalculations.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "export function standingWaveFreq(length: number, harmonic: number): number {\n  const vString = 60\n  return (harmonic * vString) / (2 * length)\n}\nexport function wavelengthOpenString(length: number, harmonic: number): number {\n  return (2 * length) / harmonic\n}\n",
+      "start": 1783196194683,
+      "end": 1783196194791,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194791,
+      "end": 1783196194791,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "export function standingWaveFreq(length, harmonic) {\n  const vString = 60;\n  return harmonic * vString / (2 * length);\n}\nexport function wavelengthOpenString(length, harmonic) {\n  return 2 * length / harmonic;\n}\n",
+      "start": 1783196194791,
+      "end": 1783196194968,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/resonance/useResonanceCalculations.ts"
+        ],
+        "sourcesContent": [
+          "export function standingWaveFreq(length: number, harmonic: number): number {\n  const vString = 60\n  return (harmonic * vString) / (2 * length)\n}\nexport function wavelengthOpenString(length: number, harmonic: number): number {\n  return (2 * length) / harmonic\n}\n"
+        ],
+        "mappings": "AAAO,gBAAS,iBAAiB,QAAgB,UAA0B;AACzE,QAAM,UAAU;AAChB,SAAQ,WAAW,WAAY,IAAI;AACrC;AACO,gBAAS,qBAAqB,QAAgB,UAA0B;AAC7E,SAAQ,IAAI,SAAU;AACxB;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194968,
+      "end": 1783196194968,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194968,
+      "end": 1783196194968,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194968,
+      "end": 1783196194968,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194968,
+      "end": 1783196194968,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194968,
+      "end": 1783196194968,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194968,
+      "end": 1783196194968,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194968,
+      "end": 1783196194968,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194968,
+      "end": 1783196194968,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194968,
+      "end": 1783196194968,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194968,
+      "end": 1783196194968,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194968,
+      "end": 1783196194968,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194968,
+      "end": 1783196194968,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/biot-savart/useBiotSavartCalculations.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "const MU_0 = 4 * Math.PI * 1e-7\n\nexport function magneticFieldWire(I: number, r: number): number {\n  if (r === 0) return 0\n  return (MU_0 * I) / (2 * Math.PI * r)\n}\n\nexport function magneticFieldLoop(I: number, R: number, x: number): number {\n  if (R === 0) return 0\n  return (MU_0 * I * R * R) / (2 * Math.pow(R * R + x * x, 1.5))\n}\n\nexport function magneticFieldSolenoid(I: number, n: number): number {\n  return MU_0 * n * I\n}\n",
+      "start": 1783196194703,
+      "end": 1783196194793,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194793,
+      "end": 1783196194793,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "const MU_0 = 4 * Math.PI * 1e-7;\nexport function magneticFieldWire(I, r) {\n  if (r === 0) return 0;\n  return MU_0 * I / (2 * Math.PI * r);\n}\nexport function magneticFieldLoop(I, R, x) {\n  if (R === 0) return 0;\n  return MU_0 * I * R * R / (2 * Math.pow(R * R + x * x, 1.5));\n}\nexport function magneticFieldSolenoid(I, n) {\n  return MU_0 * n * I;\n}\n",
+      "start": 1783196194793,
+      "end": 1783196194972,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/biot-savart/useBiotSavartCalculations.ts"
+        ],
+        "sourcesContent": [
+          "const MU_0 = 4 * Math.PI * 1e-7\n\nexport function magneticFieldWire(I: number, r: number): number {\n  if (r === 0) return 0\n  return (MU_0 * I) / (2 * Math.PI * r)\n}\n\nexport function magneticFieldLoop(I: number, R: number, x: number): number {\n  if (R === 0) return 0\n  return (MU_0 * I * R * R) / (2 * Math.pow(R * R + x * x, 1.5))\n}\n\nexport function magneticFieldSolenoid(I: number, n: number): number {\n  return MU_0 * n * I\n}\n"
+        ],
+        "mappings": "AAAA,MAAM,OAAO,IAAI,KAAK,KAAK;AAEpB,gBAAS,kBAAkB,GAAW,GAAmB;AAC9D,MAAI,MAAM,EAAG,QAAO;AACpB,SAAQ,OAAO,KAAM,IAAI,KAAK,KAAK;AACrC;AAEO,gBAAS,kBAAkB,GAAW,GAAW,GAAmB;AACzE,MAAI,MAAM,EAAG,QAAO;AACpB,SAAQ,OAAO,IAAI,IAAI,KAAM,IAAI,KAAK,IAAI,IAAI,IAAI,IAAI,GAAG,GAAG;AAC9D;AAEO,gBAAS,sBAAsB,GAAW,GAAmB;AAClE,SAAO,OAAO,IAAI;AACpB;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194972,
+      "end": 1783196194972,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194972,
+      "end": 1783196194972,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194972,
+      "end": 1783196194972,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194972,
+      "end": 1783196194972,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194972,
+      "end": 1783196194972,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194972,
+      "end": 1783196194972,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194972,
+      "end": 1783196194972,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194972,
+      "end": 1783196194972,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194972,
+      "end": 1783196194972,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194972,
+      "end": 1783196194972,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194972,
+      "end": 1783196194972,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194972,
+      "end": 1783196194972,
+      "order": "normal"
+    }
+  ]
+}

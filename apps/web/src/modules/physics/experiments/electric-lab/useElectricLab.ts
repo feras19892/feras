@@ -14,15 +14,15 @@ export function useElectricLab() {
   let nextId = 1
 
   const componentDefs: Record<ComponentType, { label: string; defaultValue: number; unit: string; icon: string }> = {
-    battery:      { label: 'Ø¨Ø·Ø§Ø±ÙŠØ©',      defaultValue: 6,     unit: 'V',  icon: 'ðŸ”‹' },
-    resistor:     { label: 'Ù…Ù‚Ø§ÙˆÙ…Ø©',      defaultValue: 100,   unit: 'Î©',  icon: 'ðŸ”²' },
-    ammeter:      { label: 'Ø£Ù…ÙŠØªØ±',       defaultValue: 0,     unit: 'A',  icon: 'ðŸ“Š' },
-    voltmeter:    { label: 'ÙÙˆÙ„ØªÙ…ÙŠØªØ±',    defaultValue: 0,     unit: 'V',  icon: 'ðŸ“ˆ' },
-    wire:         { label: 'Ø³Ù„Ùƒ',         defaultValue: 0,     unit: '',   icon: 'âž–' },
-    capacitor:    { label: 'Ù…ÙƒØ«Ù',        defaultValue: 100,   unit: 'ÂµF', icon: 'ðŸ”Œ' },
-    switch:       { label: 'Ù…ÙØªØ§Ø­',       defaultValue: 0,     unit: '',   icon: 'ðŸ”˜' },
-    lamp:         { label: 'Ù…ØµØ¨Ø§Ø­',       defaultValue: 6,     unit: 'V',  icon: 'ðŸ’¡' },
-    galvanometer: { label: 'Ø¬Ù„ÙØ§Ù†ÙˆÙ…ÙŠØªØ±',  defaultValue: 0,     unit: 'ÂµA', icon: 'ðŸ“' },
+    battery:      { label: 'بطارية',      defaultValue: 6,     unit: 'V',  icon: '🔋' },
+    resistor:     { label: 'مقاومة',      defaultValue: 100,   unit: 'Ω',  icon: '🔲' },
+    ammeter:      { label: 'أميتر',       defaultValue: 0,     unit: 'A',  icon: '📊' },
+    voltmeter:    { label: 'فولتميتر',    defaultValue: 0,     unit: 'V',  icon: '📈' },
+    wire:         { label: 'سلك',         defaultValue: 0,     unit: '',   icon: '➖' },
+    capacitor:    { label: 'مكثف',        defaultValue: 100,   unit: 'µF', icon: '🔌' },
+    switch:       { label: 'مفتاح',       defaultValue: 0,     unit: '',   icon: '🔘' },
+    lamp:         { label: 'مصباح',       defaultValue: 6,     unit: 'V',  icon: '💡' },
+    galvanometer: { label: 'جلفانوميتر',  defaultValue: 0,     unit: 'µA', icon: '📐' },
   }
 
   function addComponent(type: ComponentType, x: number, y: number) {
@@ -51,11 +51,11 @@ export function useElectricLab() {
   const isRC = rc.isRC
 
   const MATERIALS = [
-    { name: 'Ù†Ø­Ø§Ø³ (Copper)',   rho: 1.68e-8,  color: '#b87333' },
-    { name: 'Ø£Ù„Ù…Ù†ÙŠÙˆÙ… (Aluminum)', rho: 2.82e-8,  color: '#a0a0a0' },
-    { name: 'Ø­Ø¯ÙŠØ¯ (Iron)',     rho: 9.71e-8,   color: '#8b4513' },
-    { name: 'ØªÙ†Ø¬Ø³ØªÙ† (Tungsten)', rho: 5.6e-8,  color: '#4a4a4a' },
-    { name: 'Ù†ÙŠÙƒÙ„ (Nickel)',   rho: 6.99e-8,   color: '#c0c0c0' },
+    { name: 'نحاس (Copper)',   rho: 1.68e-8,  color: '#b87333' },
+    { name: 'ألمنيوم (Aluminum)', rho: 2.82e-8,  color: '#a0a0a0' },
+    { name: 'حديد (Iron)',     rho: 9.71e-8,   color: '#8b4513' },
+    { name: 'تنجستن (Tungsten)', rho: 5.6e-8,  color: '#4a4a4a' },
+    { name: 'نيكل (Nickel)',   rho: 6.99e-8,   color: '#c0c0c0' },
   ]
 
   function toggleRun() {
@@ -73,7 +73,7 @@ export function useElectricLab() {
     isLamp: c.isLamp, isGalvanometer: c.isGalvanometer, isWheatstone: c.isWheatstone,
     isVoltageDivider: c.isVoltageDivider, isRC,
     isInternalResistance: c.isInternalResistance, isSeries: c.isSeries, isNonOhmic: c.isNonOhmic,
-    isCapacitorsCombo: c.isCapacitorsCombo, isPotentiometer: c.isPotentiometer, isMaxPower: c.isMaxPower,
+    isCapacitorsCombo: c.isCapacitorsCombo, isCapacitorsSeries: c.isCapacitorsSeries, isPotentiometer: c.isPotentiometer, isMaxPower: c.isMaxPower,
     isJoulesLaw: c.isJoulesLaw,
     isAmmeterVoltmeter: c.isAmmeterVoltmeter,
     isCompound: c.isCompound, isEMF: c.isEMF, isTempR: c.isTempR,
@@ -121,7 +121,7 @@ export function useElectricLab() {
     isLamp: c.isLamp, isGalvanometer: c.isGalvanometer, isWheatstone: c.isWheatstone,
     isVoltageDivider: c.isVoltageDivider, isResistivity: c.isResistivity, isRC,
     isInternalResistance: c.isInternalResistance, isSeries: c.isSeries,
-    isCapacitorsCombo: c.isCapacitorsCombo, isPotentiometer: c.isPotentiometer, isNonOhmic: c.isNonOhmic,
+    isCapacitorsCombo: c.isCapacitorsCombo, isCapacitorsSeries: c.isCapacitorsSeries, isPotentiometer: c.isPotentiometer, isNonOhmic: c.isNonOhmic,
     isMaxPower: c.isMaxPower, isJoulesLaw: c.isJoulesLaw,
     isAmmeterVoltmeter: c.isAmmeterVoltmeter,
     isCompound: c.isCompound, isEMF: c.isEMF, isTempR: c.isTempR,
@@ -129,6 +129,7 @@ export function useElectricLab() {
     isCurrentDivider: c.isCurrentDivider, isSourceEff: c.isSourceEff, isTwoSources: c.isTwoSources,
     isDiodeIV: c.isDiodeIV, isTransformer: c.isTransformer, isSelfInd: c.isSelfInd,
     isThermistor: c.isThermistor, isMagneticForce: c.isMagneticForce, isLCOsc: c.isLCOsc,
+    sourceEffData: c.sourceEffData,
     rcData: rc.rcData, rcHistory: rc.rcHistory, kirchhoffData: c.kirchhoffData, parallelData: c.parallelData,
     powerData: c.powerData, lampData: c.lampData, galvanometerData: c.galvanometerData,
     wheatstoneData: c.wheatstoneData, voltageDividerData: c.voltageDividerData,
@@ -147,7 +148,7 @@ export function useElectricLab() {
     isResistivity: c.isResistivity, resistivityReading: c.resistivityReading,
     isInternalResistance: c.isInternalResistance, internalResistanceReading: c.internalResistanceReading,
     isSeries: c.isSeries, seriesReading: c.seriesReading,
-    isCapacitorsCombo: c.isCapacitorsCombo, capacitorsComboReading: c.capacitorsComboReading,
+    isCapacitorsCombo: c.isCapacitorsCombo, isCapacitorsSeries: c.isCapacitorsSeries, capacitorsComboReading: c.capacitorsComboReading,
     isPotentiometer: c.isPotentiometer, potentiometerReading: c.potentiometerReading,
     isNonOhmic: c.isNonOhmic, nonOhmicReading: c.nonOhmicReading,
     isMaxPower: c.isMaxPower, maxPowerReading: c.maxPowerReading,

@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/ThermalExpansionHelpModal.vue?vue&type=style&index=0&scoped=c4e2b9b8&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.help-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; z-index: 10000; }\n.help-box { background: #1A1F27; border: 1px solid #2D3645; border-radius: 10px; padding: 1.2rem 1.5rem; min-width: 280px; color: #D1D7E0; }\n.help-box h3 { margin: 0 0 .6rem; color: #5B8DB8; font-size: .95rem; }\n.help-box p { margin: .35rem 0; font-size: .8rem; color: #8B95A5; }\n.close-btn { margin-top: .8rem; padding: .4rem 1rem; border-radius: 6px; border: 1px solid #2D3645; background: #161B22; color: #8B95A5; cursor: pointer; font-size: .78rem; }\n.close-btn:hover { background: #1e2530; color: #D1D7E0; }\n",
+      "start": 1783196194646,
+      "end": 1783196194646
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.help-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; z-index: 10000; }\n.help-box { background: #1A1F27; border: 1px solid #2D3645; border-radius: 10px; padding: 1.2rem 1.5rem; min-width: 280px; color: #D1D7E0; }\n.help-box h3 { margin: 0 0 .6rem; color: #5B8DB8; font-size: .95rem; }\n.help-box p { margin: .35rem 0; font-size: .8rem; color: #8B95A5; }\n.close-btn { margin-top: .8rem; padding: .4rem 1rem; border-radius: 6px; border: 1px solid #2D3645; background: #161B22; color: #8B95A5; cursor: pointer; font-size: .78rem; }\n.close-btn:hover { background: #1e2530; color: #D1D7E0; }\n",
+      "start": 1783196194646,
+      "end": 1783196194646,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194646,
+      "end": 1783196194646,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194647,
+      "end": 1783196194647,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194647,
+      "end": 1783196194647,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.help-overlay[data-v-c4e2b9b8] { position: fixed; inset: 0; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; z-index: 10000;\n}\n.help-box[data-v-c4e2b9b8] { background: #1A1F27; border: 1px solid #2D3645; border-radius: 10px; padding: 1.2rem 1.5rem; min-width: 280px; color: #D1D7E0;\n}\n.help-box h3[data-v-c4e2b9b8] { margin: 0 0 .6rem; color: #5B8DB8; font-size: .95rem;\n}\n.help-box p[data-v-c4e2b9b8] { margin: .35rem 0; font-size: .8rem; color: #8B95A5;\n}\n.close-btn[data-v-c4e2b9b8] { margin-top: .8rem; padding: .4rem 1rem; border-radius: 6px; border: 1px solid #2D3645; background: #161B22; color: #8B95A5; cursor: pointer; font-size: .78rem;\n}\n.close-btn[data-v-c4e2b9b8]:hover { background: #1e2530; color: #D1D7E0;\n}\n",
+      "start": 1783196194647,
+      "end": 1783196194647,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194647,
+      "end": 1783196194647,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196194647,
+      "end": 1783196194647,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194647,
+      "end": 1783196194647,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194647,
+      "end": 1783196194647,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194647,
+      "end": 1783196194647,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194647,
+      "end": 1783196194647,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194647,
+      "end": 1783196194647,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194647,
+      "end": 1783196194647,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194647,
+      "end": 1783196194647,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194647,
+      "end": 1783196194647,
+      "order": "normal"
+    }
+  ]
+}

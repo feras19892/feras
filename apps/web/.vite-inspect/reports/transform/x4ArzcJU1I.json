@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionControlBar.vue?vue&type=style&index=0&scoped=a11676f6&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.control-bar { display:flex; justify-content:center; gap:.4rem; padding:.5rem; background:#1E2530; border-radius:8px; border:1px solid #2D3645; margin-top:.2rem; flex-shrink:0; }\n.control-bar button { font-size:.8rem; padding:.45rem .8rem; border-radius:5px; cursor:pointer; font-weight:600; transition:.2s; }\n.btn-primary { background:rgba(91,141,184,.15); color:#5B8DB8; border:1px solid rgba(91,141,184,.3); }\n.btn-primary:hover { background:rgba(91,141,184,.25); }\n.btn-secondary { background:#252D3A; color:#8B95A5; border:1px solid #2D3645; }\n.btn-secondary:hover { background:#2D3645; color:#D1D7E0; }\n.btn-undo { background:#252D3A; color:#8B95A5; border:1px solid #2D3645; }\n.speed-group { display:flex; align-items:center; gap:.2rem; background:#161B22; border:1px solid #2D3645; border-radius:5px; padding:.2rem .3rem; }\n.btn-speed { background:#252D3A; color:#5B8DB8; border:1px solid #2D3645; width:24px; height:24px; display:flex; align-items:center; justify-content:center; padding:0; font-size:.9rem; border-radius:4px; cursor:pointer; }\n.btn-speed:hover { background:#2D3645; }\n.speed-val { font-family:monospace; font-size:.75rem; color:#5B8DB8; min-width:36px; text-align:center; }\n",
+      "start": 1783196194465,
+      "end": 1783196194465
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.control-bar { display:flex; justify-content:center; gap:.4rem; padding:.5rem; background:#1E2530; border-radius:8px; border:1px solid #2D3645; margin-top:.2rem; flex-shrink:0; }\n.control-bar button { font-size:.8rem; padding:.45rem .8rem; border-radius:5px; cursor:pointer; font-weight:600; transition:.2s; }\n.btn-primary { background:rgba(91,141,184,.15); color:#5B8DB8; border:1px solid rgba(91,141,184,.3); }\n.btn-primary:hover { background:rgba(91,141,184,.25); }\n.btn-secondary { background:#252D3A; color:#8B95A5; border:1px solid #2D3645; }\n.btn-secondary:hover { background:#2D3645; color:#D1D7E0; }\n.btn-undo { background:#252D3A; color:#8B95A5; border:1px solid #2D3645; }\n.speed-group { display:flex; align-items:center; gap:.2rem; background:#161B22; border:1px solid #2D3645; border-radius:5px; padding:.2rem .3rem; }\n.btn-speed { background:#252D3A; color:#5B8DB8; border:1px solid #2D3645; width:24px; height:24px; display:flex; align-items:center; justify-content:center; padding:0; font-size:.9rem; border-radius:4px; cursor:pointer; }\n.btn-speed:hover { background:#2D3645; }\n.speed-val { font-family:monospace; font-size:.75rem; color:#5B8DB8; min-width:36px; text-align:center; }\n",
+      "start": 1783196194465,
+      "end": 1783196194465,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194465,
+      "end": 1783196194465,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194466,
+      "end": 1783196194466,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194466,
+      "end": 1783196194466,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.control-bar[data-v-a11676f6] { display:flex; justify-content:center; gap:.4rem; padding:.5rem; background:#1E2530; border-radius:8px; border:1px solid #2D3645; margin-top:.2rem; flex-shrink:0;\n}\n.control-bar button[data-v-a11676f6] { font-size:.8rem; padding:.45rem .8rem; border-radius:5px; cursor:pointer; font-weight:600; transition:.2s;\n}\n.btn-primary[data-v-a11676f6] { background:rgba(91,141,184,.15); color:#5B8DB8; border:1px solid rgba(91,141,184,.3);\n}\n.btn-primary[data-v-a11676f6]:hover { background:rgba(91,141,184,.25);\n}\n.btn-secondary[data-v-a11676f6] { background:#252D3A; color:#8B95A5; border:1px solid #2D3645;\n}\n.btn-secondary[data-v-a11676f6]:hover { background:#2D3645; color:#D1D7E0;\n}\n.btn-undo[data-v-a11676f6] { background:#252D3A; color:#8B95A5; border:1px solid #2D3645;\n}\n.speed-group[data-v-a11676f6] { display:flex; align-items:center; gap:.2rem; background:#161B22; border:1px solid #2D3645; border-radius:5px; padding:.2rem .3rem;\n}\n.btn-speed[data-v-a11676f6] { background:#252D3A; color:#5B8DB8; border:1px solid #2D3645; width:24px; height:24px; display:flex; align-items:center; justify-content:center; padding:0; font-size:.9rem; border-radius:4px; cursor:pointer;\n}\n.btn-speed[data-v-a11676f6]:hover { background:#2D3645;\n}\n.speed-val[data-v-a11676f6] { font-family:monospace; font-size:.75rem; color:#5B8DB8; min-width:36px; text-align:center;\n}\n",
+      "start": 1783196194466,
+      "end": 1783196194466,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194466,
+      "end": 1783196194466,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196194466,
+      "end": 1783196194466,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194466,
+      "end": 1783196194466,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194466,
+      "end": 1783196194466,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194466,
+      "end": 1783196194466,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194466,
+      "end": 1783196194466,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194466,
+      "end": 1783196194466,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194466,
+      "end": 1783196194466,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194466,
+      "end": 1783196194466,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194466,
+      "end": 1783196194466,
+      "order": "normal"
+    }
+  ]
+}

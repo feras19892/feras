@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatChartPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed } from 'vue'\nimport type { SpecificHeatTrial } from '../../../../composables/specific-heat/useSpecificHeatTrials'\nimport { C_WATER } from '../../../../composables/specific-heat/useSpecificHeatCalculations'\n\nconst props = defineProps<{\n  trials: SpecificHeatTrial[]\n  regressionSlope: number\n  regressionIntercept: number\n  rSquared: number\n}>()\n\nconst chartPoints = computed(() => props.trials\n  .filter(t => t.cExtracted > 0 && t.finalTemp > t.waterTemp)\n  .map(t => ({\n    x: t.waterMass * 1000, // m_w in grams\n    y: t.metalTemp - t.finalTemp, // Tm - Tf\n  })))\n\nconst chartBounds = computed(() => {\n  const pts = chartPoints.value\n  if (pts.length === 0) return { xMin: 100, xMax: 350, yMin: 0, yMax: 100 }\n  const xs = pts.map(p => p.x), ys = pts.map(p => p.y)\n  return { xMin: 100, xMax: Math.max(...xs, 300) * 1.15, yMin: 0, yMax: Math.max(...ys, 50) * 1.15 }\n})\n\nconst svgW = 300, svgH = 200\nconst pad = { l: 44, r: 14, t: 14, b: 34 }\nconst pw = svgW - pad.l - pad.r, ph = svgH - pad.t - pad.b\nfunction toX(v: number) {\n  const b = chartBounds.value\n  return pad.l + ((v - b.xMin) / (b.xMax - b.xMin)) * pw\n}\nfunction toY(v: number) {\n  const b = chartBounds.value\n  return svgH - pad.b - ((v - b.yMin) / (b.yMax - b.yMin)) * ph\n}\n</script>\n<template>\n  <div class=\"panel-body\">\n    <div v-if=\"chartPoints.length >= 2\" class=\"chart-box\">\n      <svg :viewBox=\"`0 0 ${svgW} ${svgH}`\" class=\"reg-chart\">\n        <template v-for=\"i in 5\" :key=\"'xg'+i\">\n          <line :x1=\"toX(chartBounds.xMin + (chartBounds.xMax-chartBounds.xMin)*(i-1)/4)\" :y1=\"toY(chartBounds.yMin)\" :y2=\"toY(chartBounds.yMax)\" stroke=\"rgba(255,255,255,0.08)\" stroke-width=\"1\"/>\n          <text :x=\"toX(chartBounds.xMin + (chartBounds.xMax-chartBounds.xMin)*(i-1)/4)\" :y=\"svgH-8\" fill=\"rgba(255,255,255,0.3)\" font-size=\"9\" text-anchor=\"middle\">{{ Math.round(chartBounds.xMin + (chartBounds.xMax-chartBounds.xMin)*(i-1)/4) }}</text>\n        </template>\n        <template v-for=\"i in 5\" :key=\"'yg'+i\">\n          <line :x1=\"toX(chartBounds.xMin)\" :x2=\"toX(chartBounds.xMax)\" :y1=\"toY(chartBounds.yMin + (chartBounds.yMax-chartBounds.yMin)*(i-1)/4)\" :y2=\"toY(chartBounds.yMin + (chartBounds.yMax-chartBounds.yMin)*(i-1)/4)\" stroke=\"rgba(255,255,255,0.08)\" stroke-width=\"1\"/>\n          <text :x=\"pad.l-4\" :y=\"toY(chartBounds.yMin + (chartBounds.yMax-chartBounds.yMin)*(i-1)/4)+3\" fill=\"rgba(255,255,255,0.3)\" font-size=\"9\" text-anchor=\"end\">{{ Math.round(chartBounds.yMin + (chartBounds.yMax-chartBounds.yMin)*(i-1)/4) }}</text>\n        </template>\n        <line :x1=\"toX(chartBounds.xMin)\" :y1=\"toY(chartBounds.yMin)\" :x2=\"toX(chartBounds.xMax)\" :y2=\"toY(chartBounds.yMin)\" stroke=\"rgba(255,255,255,0.3)\" stroke-width=\"1\"/>\n        <line :x1=\"toX(chartBounds.xMin)\" :y1=\"toY(chartBounds.yMin)\" :x2=\"toX(chartBounds.xMin)\" :y2=\"toY(chartBounds.yMax)\" stroke=\"rgba(255,255,255,0.3)\" stroke-width=\"1\"/>\n        <g v-for=\"(p,i) in chartPoints\" :key=\"i\">\n          <circle :cx=\"toX(p.x)\" :cy=\"toY(p.y)\" r=\"4\" fill=\"#22c55e\"/>\n          <title>{{ `m_w=${p.x.toFixed(0)}g, ΔT=${p.y.toFixed(1)}°C` }}</title>\n        </g>\n        <line v-if=\"Number.isFinite(regressionSlope) && chartPoints.length>=2\"\n              :x1=\"toX(chartBounds.xMin)\" :y1=\"toY(regressionSlope*chartBounds.xMin+regressionIntercept)\"\n              :x2=\"toX(chartBounds.xMax)\" :y2=\"toY(regressionSlope*chartBounds.xMax+regressionIntercept)\"\n              stroke=\"#fbbf24\" stroke-width=\"1.5\"/>\n      </svg>\n      <div class=\"reg-summary\">\n        <span class=\"reg-badge\">Slope = {{ regressionSlope.toFixed(3) }}</span>\n        <span class=\"reg-badge\">R² = {{ rSquared.toFixed(4) }}</span>\n      </div>\n      <div class=\"axis-labels\">\n        <span class=\"axis-x\">X: m_w (g)</span>\n        <span class=\"axis-y\">Y: T_m − T_f (°C)</span>\n      </div>\n    </div>\n    <p v-else class=\"center\">سجل تجربتين على الأقل لإظهار الرسم</p>\n  </div>\n</template>\n<style scoped>\n.panel-body { padding:.45rem; display:flex; flex-direction:column; gap:.35rem; }\n.center { text-align:center; color:#475569; font-size:.75rem; padding:.5rem; }\n.chart-box { display:flex; flex-direction:column; gap:.3rem; }\n.reg-chart { width:100%; height:160px; background:#0d1117; border-radius:5px; border:1px solid #2D3645; }\n.reg-summary { display:flex; gap:.4rem; flex-wrap:wrap; }\n.reg-badge { background:#1a2332; border:1px solid #2D3645; border-radius:5px; padding:.2rem .4rem; font-size:.72rem; color:#5B8DB8; font-family:monospace; }\n.axis-labels { display:flex; justify-content:space-between; font-size:.68rem; color:#8B95A5; }\n.axis-x { direction:ltr; }\n.axis-y { direction:ltr; }\n</style>\n",
+      "start": 1783196195116,
+      "end": 1783196195377,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195377,
+      "end": 1783196195377,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195377,
+      "end": 1783196195377,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195377,
+      "end": 1783196195377,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195377,
+      "end": 1783196195377,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatChartPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatChartPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/panels/SpecificHeatChartPanel.vue?vue&type=style&index=0&scoped=db277da5&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-db277da5\"]]);\n",
+      "start": 1783196195377,
+      "end": 1783196195568,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195568,
+      "end": 1783196195568,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195568,
+      "end": 1783196195568,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195568,
+      "end": 1783196195568,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195568,
+      "end": 1783196195568,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195568,
+      "end": 1783196195568,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195568,
+      "end": 1783196195568,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195568,
+      "end": 1783196195568,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195568,
+      "end": 1783196195568,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195568,
+      "end": 1783196195569,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195569,
+      "end": 1783196195569,
+      "order": "normal"
+    }
+  ]
+}

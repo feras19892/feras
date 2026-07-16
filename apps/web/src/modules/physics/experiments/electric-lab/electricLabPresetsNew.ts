@@ -53,20 +53,18 @@ export const newPresets: PresetDef[] = [
     },
   },
   {
-    id: 'capacitors-combination',
-    name: "Capacitors Series & Parallel",
-    nameAr: 'توالي وتوازي المكثفات',
+    id: 'capacitors-series',
+    name: "Capacitors in Series",
+    nameAr: 'توالي المكثفات',
     level: 'college',
     instructions: [
-      '١. الدائرة: بطارية ← مفتاح ← مكثفان C1 و C2 ← عودة',
-      '٢. الفولتميتر يقيس جهد C1، والأميتر يقيس تيار الشحن',
-      '٣. على التوالي: 1/Ceq = 1/C1 + 1/C2 (السعة الكلية أقل)',
-      '٤. على التوازي: Ceq = C1 + C2 (السعة الكلية أكبر)',
-      '٥. اضغط ▶ تشغيل وراقب شحن المكثفات',
-      '٦. ثابت الزمن: τ = R × Ceq',
-      '٧. غيّر قيم C1 و C2 وراقب كيف يتغير τ',
-      '٨. اضغط 🔘 مفتاح للتبديل بين الشحن والتفريغ',
-      '٩. سجّل نقاط من المنحنى ثم اضغط 📈 تحليل النتائج',
+      '١. الدائرة: بطارية ← مفتاح ← R ← مكثفان C1 و C2 على التوالي',
+      '٢. على التوالي: 1/Ceq = 1/C1 + 1/C2 (السعة الكلية أقل)',
+      '٣. ثابت الزمن: τ = R × Ceq',
+      '٤. اضغط ▶ تشغيل وراقب شحن المكثفات',
+      '٥. غيّر قيم C1 و C2 وراقب كيف يتغير τ',
+      '٦. اضغط 🔘 مفتاح للتبديل بين الشحن والتفريغ',
+      '٧. سجّل نقاط من المنحنى ثم اضغط 📈 تحليل النتائج',
     ],
     build: (components, reset) => {
       reset()
@@ -76,8 +74,35 @@ export const newPresets: PresetDef[] = [
       components.push(sw)
       components.push(makeComp('resistor', 340, 220, 'R', 5000, 'Ω'))
       components.push(makeComp('ammeter', 470, 220, 'أميتر', 0, 'A'))
-      components.push(makeComp('capacitor', 600, 120, 'C1', 100, 'µF'))
-      components.push(makeComp('capacitor', 600, 320, 'C2', 100, 'µF'))
+      components.push(makeComp('capacitor', 600, 220, 'C1 (توالي)', 100, 'µF'))
+      components.push(makeComp('capacitor', 750, 220, 'C2 (توالي)', 100, 'µF'))
+      components.push(makeComp('voltmeter', 720, 100, 'فولتميتر', 0, 'V'))
+    },
+  },
+  {
+    id: 'capacitors-parallel',
+    name: "Capacitors in Parallel",
+    nameAr: 'توازي المكثفات',
+    level: 'college',
+    instructions: [
+      '١. الدائرة: بطارية ← مفتاح ← R ← مكثفان C1 و C2 على التوازي',
+      '٢. على التوازي: Ceq = C1 + C2 (السعة الكلية أكبر)',
+      '٣. ثابت الزمن: τ = R × Ceq',
+      '٤. اضغط ▶ تشغيل وراقب شحن المكثفات',
+      '٥. غيّر قيم C1 و C2 وراقب كيف يتغير τ',
+      '٦. اضغط 🔘 مفتاح للتبديل بين الشحن والتفريغ',
+      '٧. سجّل نقاط من المنحنى ثم اضغط 📈 تحليل النتائج',
+    ],
+    build: (components, reset) => {
+      reset()
+      components.push(makeComp('battery', 80, 220, 'بطارية', 6, 'V'))
+      const sw = makeComp('switch', 200, 220, 'مفتاح', 0, '')
+      sw._closed = true
+      components.push(sw)
+      components.push(makeComp('resistor', 340, 220, 'R', 5000, 'Ω'))
+      components.push(makeComp('ammeter', 470, 220, 'أميتر', 0, 'A'))
+      components.push(makeComp('capacitor', 600, 120, 'C1 (توازي)', 100, 'µF'))
+      components.push(makeComp('capacitor', 600, 320, 'C2 (توازي)', 100, 'µF'))
       components.push(makeComp('voltmeter', 720, 220, 'فولتميتر', 0, 'V'))
     },
   },

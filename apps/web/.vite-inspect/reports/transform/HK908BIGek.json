@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/diffraction/panels/DiffractionLawsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../../composables/useI18n'\n\nconst { t } = useI18n()\n\ninterface Props {\n  mode: 'single' | 'grating'\n  slitWidth: number\n  linesPerMm: number\n  screenDistance: number\n  wavelength: number\n  centralWidth: number\n  firstOrderAngle: number\n}\ndefineProps<Props>()\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <template v-if=\"mode === 'single'\">\n      <div class=\"eq-block\">\n        <div class=\"eq-title\">Central Width</div>\n        <div class=\"eq\">w = 2λD / a</div>\n        <div class=\"eq-values\">\n          w = {{ centralWidth.toFixed(3) }} mm<br>\n          λ = {{ wavelength }} nm<br>\n          D = {{ screenDistance }} m<br>\n          a = {{ slitWidth }} mm\n        </div>\n      </div>\n      <div class=\"eq-block\">\n        <div class=\"eq-title\">Dark Fringes</div>\n        <div class=\"eq\">a·sinθ = mλ</div>\n      </div>\n      <div class=\"eq-block\">\n        <div class=\"eq-title\">Intensity</div>\n        <div class=\"eq\">I = I₀ sinc²(πa·sinθ/λ)</div>\n      </div>\n    </template>\n    <template v-else>\n      <div class=\"eq-block\">\n        <div class=\"eq-title\">Grating Equation</div>\n        <div class=\"eq\">d·sinθ = m·λ</div>\n        <div class=\"eq-values\">\n          d = {{ (1/linesPerMm).toFixed(4) }} mm<br>\n          λ = {{ wavelength }} nm<br>\n          D = {{ screenDistance }} m\n        </div>\n      </div>\n      <div class=\"eq-block\">\n        <div class=\"eq-title\">First Order Angle</div>\n        <div class=\"eq\">θ₁ = arcsin(λ/d)</div>\n        <div class=\"eq-values\">θ₁ = {{ firstOrderAngle.toFixed(3) }}°</div>\n      </div>\n      <div class=\"eq-block\">\n        <div class=\"eq-title\">Position on Screen</div>\n        <div class=\"eq\">y = D·tanθ</div>\n      </div>\n    </template>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { display: flex; flex-direction: column; gap: .5rem; font-size: .82rem; }\n.eq-block { margin-bottom: .3rem; }\n.eq-title { color: #5B8DB8; font-size: .75rem; margin-bottom: .2rem; }\n.eq { font-family: 'Courier New', monospace; background: #0d1117; padding: .3rem .5rem; border-radius: 4px; font-size: .9rem; color: #7ee787; }\n.eq-values { font-size: .8rem; color: #8B95A5; margin-top: .2rem; }\n</style>\n",
+      "start": 1783196195141,
+      "end": 1783196195419,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195419,
+      "end": 1783196195419,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195419,
+      "end": 1783196195419,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195419,
+      "end": 1783196195419,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195419,
+      "end": 1783196195419,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/diffraction/panels/DiffractionLawsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/diffraction/panels/DiffractionLawsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/diffraction/panels/DiffractionLawsPanel.vue?vue&type=style&index=0&scoped=7f5e865e&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-7f5e865e\"]]);\n",
+      "start": 1783196195419,
+      "end": 1783196195573,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    }
+  ]
+}

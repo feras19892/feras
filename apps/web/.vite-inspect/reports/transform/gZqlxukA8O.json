@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/resonance/panels/ResonanceLawsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../../composables/useI18n'\nconst { t } = useI18n()\ninterface Props { stringLength: number; tension: number; harmonic: number; frequency: number; wavelength: number; waveSpeed: number }\ndefineProps<Props>()\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <div class=\"eq-block\">\n      <div class=\"eq-title\">Standing Wave Frequency</div>\n      <div class=\"eq\">f_n = n v / (2L)</div>\n      <div class=\"eq-values\">n = {{ harmonic }}, L = {{ stringLength.toFixed(2) }} m, f = {{ frequency.toFixed(1) }} Hz</div>\n    </div>\n    <div class=\"eq-block\">\n      <div class=\"eq-title\">Wavelength</div>\n      <div class=\"eq\">lambda_n = 2L / n</div>\n      <div class=\"eq-values\">lambda = {{ wavelength.toFixed(3) }} m</div>\n    </div>\n    <div class=\"eq-block\">\n      <div class=\"eq-title\">Wave Speed</div>\n      <div class=\"eq\">v = f * lambda</div>\n      <div class=\"eq-values\">v = {{ waveSpeed.toFixed(1) }} m/s</div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { display: flex; flex-direction: column; gap: .5rem; font-size: .82rem; }\n.eq-block { margin-bottom: .3rem; }\n.eq-title { color: #5B8DB8; font-size: .75rem; margin-bottom: .2rem; }\n.eq { font-family: 'Courier New', monospace; background: #0d1117; padding: .3rem .5rem; border-radius: 4px; font-size: .9rem; color: #7ee787; }\n.eq-values { font-size: .8rem; color: #8B95A5; margin-top: .2rem; }\n</style>\n",
+      "start": 1783196195111,
+      "end": 1783196195357,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195357,
+      "end": 1783196195357,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195357,
+      "end": 1783196195357,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195357,
+      "end": 1783196195357,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195357,
+      "end": 1783196195357,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/resonance/panels/ResonanceLawsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/resonance/panels/ResonanceLawsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/resonance/panels/ResonanceLawsPanel.vue?vue&type=style&index=0&scoped=0af3ab20&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-0af3ab20\"]]);\n",
+      "start": 1783196195357,
+      "end": 1783196195528,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195528,
+      "end": 1783196195529,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195529,
+      "end": 1783196195529,
+      "order": "normal"
+    }
+  ]
+}

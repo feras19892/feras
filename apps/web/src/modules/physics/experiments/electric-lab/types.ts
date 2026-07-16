@@ -29,6 +29,10 @@ export interface Trial {
   I1?: number
   I2?: number
   I3?: number
+  EMF?: number
+  Vt?: number
+  r?: number
+  closed?: boolean
 }
 
 export interface CircuitState {

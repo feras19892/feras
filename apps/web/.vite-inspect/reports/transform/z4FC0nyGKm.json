@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/interference/panels/InterferenceReadingsPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, normalizeStyle as _normalizeStyle, createStaticVNode as _createStaticVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"reading-group\" }\nconst _hoisted_3 = { class: \"reading-row\" }\nconst _hoisted_4 = { class: \"reading-label\" }\nconst _hoisted_5 = { class: \"reading-val cyan\" }\nconst _hoisted_6 = { class: \"reading-row\" }\nconst _hoisted_7 = { class: \"reading-val amber\" }\nconst _hoisted_8 = { class: \"reading-row\" }\nconst _hoisted_9 = { class: \"reading-label\" }\nconst _hoisted_10 = { class: \"reading-val cyan\" }\nconst _hoisted_11 = { class: \"reading-row\" }\nconst _hoisted_12 = { class: \"reading-label\" }\nconst _hoisted_13 = { class: \"reading-val muted\" }\nconst _hoisted_14 = { class: \"reading-row highlight-row\" }\nconst _hoisted_15 = { class: \"reading-label bold\" }\nconst _hoisted_16 = { class: \"reading-val green bold\" }\nconst _hoisted_17 = { class: \"reading-group\" }\nconst _hoisted_18 = { class: \"reading-row\" }\nconst _hoisted_19 = { class: \"reading-label\" }\nconst _hoisted_20 = { class: \"reading-row\" }\nconst _hoisted_21 = { class: \"reading-label\" }\nconst _hoisted_22 = { class: \"reading-val amber\" }\n\nimport { useI18n } from '../../../../composables/useI18n'\nimport { wavelengthToColor } from '../../../../composables/interference/useInterferenceCalculations'\n\ninterface Props {\n  slitDistance: number\n  screenDistance: number\n  wavelength: number\n  slitWidth: number\n  fringeSpacing: number\n  angularSeparation: number\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'InterferenceReadingsPanel',\n  props: {\n    slitDistance: {},\n    screenDistance: {},\n    wavelength: {},\n    slitWidth: {},\n    fringeSpacing: {},\n    angularSeparation: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\n\n\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"div\", _hoisted_3, [\n        _createElementVNode(\"span\", _hoisted_4, \"d — \" + _toDisplayString(_unref(t)('experiments.slitDistance')), 1),\n        _createElementVNode(\"span\", _hoisted_5, _toDisplayString(__props.slitDistance.toFixed(2)) + \" mm\", 1)\n      ]),\n      _createElementVNode(\"div\", _hoisted_6, [\n        _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"reading-label\" }, \"1/d\", -1)),\n        _createElementVNode(\"span\", _hoisted_7, _toDisplayString((1 / __props.slitDistance).toFixed(1)) + \" 1/mm\", 1)\n      ]),\n      _createElementVNode(\"div\", _hoisted_8, [\n        _createElementVNode(\"span\", _hoisted_9, \"D — \" + _toDisplayString(_unref(t)('experiments.screenDistance')), 1),\n        _createElementVNode(\"span\", _hoisted_10, _toDisplayString(__props.screenDistance.toFixed(2)) + \" m\", 1)\n      ]),\n      _createElementVNode(\"div\", _hoisted_11, [\n        _createElementVNode(\"span\", _hoisted_12, \"a — \" + _toDisplayString(_unref(t)('experiments.slitWidth')), 1),\n        _createElementVNode(\"span\", _hoisted_13, _toDisplayString(__props.slitWidth.toFixed(3)) + \" μm\", 1)\n      ])\n    ]),\n    _createElementVNode(\"div\", _hoisted_14, [\n      _createElementVNode(\"span\", _hoisted_15, \"Δy — \" + _toDisplayString(_unref(t)('experiments.fringeSpacing')), 1),\n      _createElementVNode(\"span\", _hoisted_16, _toDisplayString(__props.fringeSpacing.toFixed(3)) + \" mm\", 1)\n    ]),\n    _cache[1] || (_cache[1] = _createStaticVNode(\"<div class=\\\"reading-group\\\" data-v-54572d12><div class=\\\"reading-row\\\" data-v-54572d12><span class=\\\"reading-label\\\" data-v-54572d12>Central fringe (m=0)</span><span class=\\\"reading-val green\\\" data-v-54572d12>Max intensity</span></div><div class=\\\"reading-row\\\" data-v-54572d12><span class=\\\"reading-label\\\" data-v-54572d12>Dark fringes</span><span class=\\\"reading-val\\\" data-v-54572d12>Between bright fringes</span></div></div>\", 1)),\n    _createElementVNode(\"div\", _hoisted_17, [\n      _createElementVNode(\"div\", _hoisted_18, [\n        _createElementVNode(\"span\", _hoisted_19, \"λ — \" + _toDisplayString(_unref(t)('experiments.wavelength')), 1),\n        _createElementVNode(\"span\", {\n          class: \"reading-val bold\",\n          style: _normalizeStyle({ color: _unref(wavelengthToColor)(__props.wavelength) })\n        }, _toDisplayString(__props.wavelength) + \" nm\", 5)\n      ]),\n      _createElementVNode(\"div\", _hoisted_20, [\n        _createElementVNode(\"span\", _hoisted_21, \"θ — \" + _toDisplayString(_unref(t)('experiments.angularSeparation')), 1),\n        _createElementVNode(\"span\", _hoisted_22, _toDisplayString(__props.angularSeparation.toFixed(4)) + \"°\", 1)\n      ])\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783196195482,
+      "end": 1783196195483
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195483,
+      "end": 1783196195483,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, normalizeStyle as _normalizeStyle, createStaticVNode as _createStaticVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nconst _hoisted_2 = { class: \"reading-group\" };\nconst _hoisted_3 = { class: \"reading-row\" };\nconst _hoisted_4 = { class: \"reading-label\" };\nconst _hoisted_5 = { class: \"reading-val cyan\" };\nconst _hoisted_6 = { class: \"reading-row\" };\nconst _hoisted_7 = { class: \"reading-val amber\" };\nconst _hoisted_8 = { class: \"reading-row\" };\nconst _hoisted_9 = { class: \"reading-label\" };\nconst _hoisted_10 = { class: \"reading-val cyan\" };\nconst _hoisted_11 = { class: \"reading-row\" };\nconst _hoisted_12 = { class: \"reading-label\" };\nconst _hoisted_13 = { class: \"reading-val muted\" };\nconst _hoisted_14 = { class: \"reading-row highlight-row\" };\nconst _hoisted_15 = { class: \"reading-label bold\" };\nconst _hoisted_16 = { class: \"reading-val green bold\" };\nconst _hoisted_17 = { class: \"reading-group\" };\nconst _hoisted_18 = { class: \"reading-row\" };\nconst _hoisted_19 = { class: \"reading-label\" };\nconst _hoisted_20 = { class: \"reading-row\" };\nconst _hoisted_21 = { class: \"reading-label\" };\nconst _hoisted_22 = { class: \"reading-val amber\" };\nimport { useI18n } from \"../../../../composables/useI18n\";\nimport { wavelengthToColor } from \"../../../../composables/interference/useInterferenceCalculations\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"InterferenceReadingsPanel\",\n  props: {\n    slitDistance: {},\n    screenDistance: {},\n    wavelength: {},\n    slitWidth: {},\n    fringeSpacing: {},\n    angularSeparation: {}\n  },\n  setup(__props) {\n    const { t } = useI18n();\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _createElementVNode(\"div\", _hoisted_3, [\n            _createElementVNode(\"span\", _hoisted_4, \"d — \" + _toDisplayString(_unref(t)(\"experiments.slitDistance\")), 1),\n            _createElementVNode(\"span\", _hoisted_5, _toDisplayString(__props.slitDistance.toFixed(2)) + \" mm\", 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_6, [\n            _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"reading-label\" }, \"1/d\", -1)),\n            _createElementVNode(\"span\", _hoisted_7, _toDisplayString((1 / __props.slitDistance).toFixed(1)) + \" 1/mm\", 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_8, [\n            _createElementVNode(\"span\", _hoisted_9, \"D — \" + _toDisplayString(_unref(t)(\"experiments.screenDistance\")), 1),\n            _createElementVNode(\"span\", _hoisted_10, _toDisplayString(__props.screenDistance.toFixed(2)) + \" m\", 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_11, [\n            _createElementVNode(\"span\", _hoisted_12, \"a — \" + _toDisplayString(_unref(t)(\"experiments.slitWidth\")), 1),\n            _createElementVNode(\"span\", _hoisted_13, _toDisplayString(__props.slitWidth.toFixed(3)) + \" μm\", 1)\n          ])\n        ]),\n        _createElementVNode(\"div\", _hoisted_14, [\n          _createElementVNode(\"span\", _hoisted_15, \"Δy — \" + _toDisplayString(_unref(t)(\"experiments.fringeSpacing\")), 1),\n          _createElementVNode(\"span\", _hoisted_16, _toDisplayString(__props.fringeSpacing.toFixed(3)) + \" mm\", 1)\n        ]),\n        _cache[1] || (_cache[1] = _createStaticVNode('<div class=\"reading-group\" data-v-54572d12><div class=\"reading-row\" data-v-54572d12><span class=\"reading-label\" data-v-54572d12>Central fringe (m=0)</span><span class=\"reading-val green\" data-v-54572d12>Max intensity</span></div><div class=\"reading-row\" data-v-54572d12><span class=\"reading-label\" data-v-54572d12>Dark fringes</span><span class=\"reading-val\" data-v-54572d12>Between bright fringes</span></div></div>', 1)),\n        _createElementVNode(\"div\", _hoisted_17, [\n          _createElementVNode(\"div\", _hoisted_18, [\n            _createElementVNode(\"span\", _hoisted_19, \"λ — \" + _toDisplayString(_unref(t)(\"experiments.wavelength\")), 1),\n            _createElementVNode(\"span\", {\n              class: \"reading-val bold\",\n              style: _normalizeStyle({ color: _unref(wavelengthToColor)(__props.wavelength) })\n            }, _toDisplayString(__props.wavelength) + \" nm\", 5)\n          ]),\n          _createElementVNode(\"div\", _hoisted_20, [\n            _createElementVNode(\"span\", _hoisted_21, \"θ — \" + _toDisplayString(_unref(t)(\"experiments.angularSeparation\")), 1),\n            _createElementVNode(\"span\", _hoisted_22, _toDisplayString(__props.angularSeparation.toFixed(4)) + \"°\", 1)\n          ])\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196195483,
+      "end": 1783196195566,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/interference/panels/InterferenceReadingsPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, normalizeStyle as _normalizeStyle, createStaticVNode as _createStaticVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"reading-group\" }\nconst _hoisted_3 = { class: \"reading-row\" }\nconst _hoisted_4 = { class: \"reading-label\" }\nconst _hoisted_5 = { class: \"reading-val cyan\" }\nconst _hoisted_6 = { class: \"reading-row\" }\nconst _hoisted_7 = { class: \"reading-val amber\" }\nconst _hoisted_8 = { class: \"reading-row\" }\nconst _hoisted_9 = { class: \"reading-label\" }\nconst _hoisted_10 = { class: \"reading-val cyan\" }\nconst _hoisted_11 = { class: \"reading-row\" }\nconst _hoisted_12 = { class: \"reading-label\" }\nconst _hoisted_13 = { class: \"reading-val muted\" }\nconst _hoisted_14 = { class: \"reading-row highlight-row\" }\nconst _hoisted_15 = { class: \"reading-label bold\" }\nconst _hoisted_16 = { class: \"reading-val green bold\" }\nconst _hoisted_17 = { class: \"reading-group\" }\nconst _hoisted_18 = { class: \"reading-row\" }\nconst _hoisted_19 = { class: \"reading-label\" }\nconst _hoisted_20 = { class: \"reading-row\" }\nconst _hoisted_21 = { class: \"reading-label\" }\nconst _hoisted_22 = { class: \"reading-val amber\" }\n\nimport { useI18n } from '../../../../composables/useI18n'\nimport { wavelengthToColor } from '../../../../composables/interference/useInterferenceCalculations'\n\ninterface Props {\n  slitDistance: number\n  screenDistance: number\n  wavelength: number\n  slitWidth: number\n  fringeSpacing: number\n  angularSeparation: number\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'InterferenceReadingsPanel',\n  props: {\n    slitDistance: {},\n    screenDistance: {},\n    wavelength: {},\n    slitWidth: {},\n    fringeSpacing: {},\n    angularSeparation: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\n\n\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"div\", _hoisted_3, [\n        _createElementVNode(\"span\", _hoisted_4, \"d — \" + _toDisplayString(_unref(t)('experiments.slitDistance')), 1),\n        _createElementVNode(\"span\", _hoisted_5, _toDisplayString(__props.slitDistance.toFixed(2)) + \" mm\", 1)\n      ]),\n      _createElementVNode(\"div\", _hoisted_6, [\n        _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"reading-label\" }, \"1/d\", -1)),\n        _createElementVNode(\"span\", _hoisted_7, _toDisplayString((1 / __props.slitDistance).toFixed(1)) + \" 1/mm\", 1)\n      ]),\n      _createElementVNode(\"div\", _hoisted_8, [\n        _createElementVNode(\"span\", _hoisted_9, \"D — \" + _toDisplayString(_unref(t)('experiments.screenDistance')), 1),\n        _createElementVNode(\"span\", _hoisted_10, _toDisplayString(__props.screenDistance.toFixed(2)) + \" m\", 1)\n      ]),\n      _createElementVNode(\"div\", _hoisted_11, [\n        _createElementVNode(\"span\", _hoisted_12, \"a — \" + _toDisplayString(_unref(t)('experiments.slitWidth')), 1),\n        _createElementVNode(\"span\", _hoisted_13, _toDisplayString(__props.slitWidth.toFixed(3)) + \" μm\", 1)\n      ])\n    ]),\n    _createElementVNode(\"div\", _hoisted_14, [\n      _createElementVNode(\"span\", _hoisted_15, \"Δy — \" + _toDisplayString(_unref(t)('experiments.fringeSpacing')), 1),\n      _createElementVNode(\"span\", _hoisted_16, _toDisplayString(__props.fringeSpacing.toFixed(3)) + \" mm\", 1)\n    ]),\n    _cache[1] || (_cache[1] = _createStaticVNode(\"<div class=\\\"reading-group\\\" data-v-54572d12><div class=\\\"reading-row\\\" data-v-54572d12><span class=\\\"reading-label\\\" data-v-54572d12>Central fringe (m=0)</span><span class=\\\"reading-val green\\\" data-v-54572d12>Max intensity</span></div><div class=\\\"reading-row\\\" data-v-54572d12><span class=\\\"reading-label\\\" data-v-54572d12>Dark fringes</span><span class=\\\"reading-val\\\" data-v-54572d12>Between bright fringes</span></div></div>\", 1)),\n    _createElementVNode(\"div\", _hoisted_17, [\n      _createElementVNode(\"div\", _hoisted_18, [\n        _createElementVNode(\"span\", _hoisted_19, \"λ — \" + _toDisplayString(_unref(t)('experiments.wavelength')), 1),\n        _createElementVNode(\"span\", {\n          class: \"reading-val bold\",\n          style: _normalizeStyle({ color: _unref(wavelengthToColor)(__props.wavelength) })\n        }, _toDisplayString(__props.wavelength) + \" nm\", 5)\n      ]),\n      _createElementVNode(\"div\", _hoisted_20, [\n        _createElementVNode(\"span\", _hoisted_21, \"θ — \" + _toDisplayString(_unref(t)('experiments.angularSeparation')), 1),\n        _createElementVNode(\"span\", _hoisted_22, _toDisplayString(__props.angularSeparation.toFixed(4)) + \"°\", 1)\n      ])\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195566,
+      "end": 1783196195566,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195566,
+      "end": 1783196195566,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196195566,
+      "end": 1783196195566,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195566,
+      "end": 1783196195566,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195566,
+      "end": 1783196195566,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195566,
+      "end": 1783196195566,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195566,
+      "end": 1783196195566,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195566,
+      "end": 1783196195566,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195566,
+      "end": 1783196195566,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195566,
+      "end": 1783196195566,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195566,
+      "end": 1783196195566,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195567,
+      "end": 1783196195567,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195567,
+      "end": 1783196195567,
+      "order": "normal"
+    }
+  ]
+}

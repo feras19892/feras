@@ -54,10 +54,10 @@ export function createAdvancedComputeds(
     if (sw && !sw._closed) return null
     const resistors = components.filter(c => c.type === 'resistor')
     const batt = components.find(c => c.type === 'battery')
-    if (resistors.length < 3 || !batt) return null
+    if (resistors.length < 4 || !batt) return null
     const V = batt.value
     const R1 = resistors[0]?.value ?? 100, R2 = resistors[1]?.value ?? 100, R3 = resistors[2]?.value ?? 100
-    const Rx = 150
+    const Rx = resistors[3]?.value ?? 150
     const Vg = V * (R3 / (R1 + R3) - Rx / (R2 + Rx))
     const Ig = Vg / 50 * 1000
     const balanced = Math.abs(Vg) < 0.01

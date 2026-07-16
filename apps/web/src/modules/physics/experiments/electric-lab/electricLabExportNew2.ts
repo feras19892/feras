@@ -18,7 +18,7 @@ export function exportNew2(router: any, ctx: ExportContext): boolean {
   if (ctx.isEMF.value) {
     sendToAnalysis(router, {
       sourceExperiment: 'electric-lab-emf', sourceNameAr: 'قياس القوة الدافعة', hasCalcTab: true,
-      readings: ctx.trials.value.map(t => ({ EMF: t.voltage, Vt: t.voltage, I: t.current, r: t.resistance })),
+      readings: ctx.trials.value.map(t => ({ EMF: t.EMF ?? t.voltage, Vt: t.Vt ?? t.voltage, I: t.current, r: t.r ?? t.resistance })),
       columns: [{ key: 'EMF', label: 'EMF', unit: 'V' }, { key: 'Vt', label: 'Vt', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'r', label: 'r', unit: 'Ω' }],
       equations: [
         { name: 'Internal Resistance', formula: 'r = (EMF - Vt) / I', variables: [{ symbol: 'r', label: 'Internal R' }, { symbol: 'EMF', label: 'EMF' }, { symbol: 'Vt', label: 'Terminal V' }, { symbol: 'I', label: 'Current' }], solveFor: ['r'] },

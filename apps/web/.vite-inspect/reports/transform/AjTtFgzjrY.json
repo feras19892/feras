@@ -1,0 +1,110 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/thermal-expansion/useThermalExpansionCalculations.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "/* Linear thermal expansion coefficient α (×10⁻⁶ /K) */\nexport const ALPHA: Record<string, number> = {\n  copper: 16.5,\n  aluminum: 23,\n  iron: 12,\n  steel: 13,\n  brass: 19,\n  glass: 9,\n}\n\nexport function deltaL(L0: number, alpha: number, deltaT: number): number {\n  return L0 * (alpha * 1e-6) * deltaT\n}\n\nexport function finalLength(L0: number, alpha: number, deltaT: number): number {\n  return L0 + deltaL(L0, alpha, deltaT)\n}\n\nexport function findAlpha(deltaL: number, L0: number, deltaT: number): number {\n  return (deltaL / (L0 * deltaT)) * 1e6\n}\n",
+      "start": 1783196194707,
+      "end": 1783196194793,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194793,
+      "end": 1783196194793,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "export const ALPHA = {\n  copper: 16.5,\n  aluminum: 23,\n  iron: 12,\n  steel: 13,\n  brass: 19,\n  glass: 9\n};\nexport function deltaL(L0, alpha, deltaT) {\n  return L0 * (alpha * 1e-6) * deltaT;\n}\nexport function finalLength(L0, alpha, deltaT) {\n  return L0 + deltaL(L0, alpha, deltaT);\n}\nexport function findAlpha(deltaL2, L0, deltaT) {\n  return deltaL2 / (L0 * deltaT) * 1e6;\n}\n",
+      "start": 1783196194793,
+      "end": 1783196194981,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/thermal-expansion/useThermalExpansionCalculations.ts"
+        ],
+        "sourcesContent": [
+          "/* Linear thermal expansion coefficient α (×10⁻⁶ /K) */\nexport const ALPHA: Record<string, number> = {\n  copper: 16.5,\n  aluminum: 23,\n  iron: 12,\n  steel: 13,\n  brass: 19,\n  glass: 9,\n}\n\nexport function deltaL(L0: number, alpha: number, deltaT: number): number {\n  return L0 * (alpha * 1e-6) * deltaT\n}\n\nexport function finalLength(L0: number, alpha: number, deltaT: number): number {\n  return L0 + deltaL(L0, alpha, deltaT)\n}\n\nexport function findAlpha(deltaL: number, L0: number, deltaT: number): number {\n  return (deltaL / (L0 * deltaT)) * 1e6\n}\n"
+        ],
+        "mappings": "AACO,aAAM,QAAgC;AAAA,EAC3C,QAAQ;AAAA,EACR,UAAU;AAAA,EACV,MAAM;AAAA,EACN,OAAO;AAAA,EACP,OAAO;AAAA,EACP,OAAO;AACT;AAEO,gBAAS,OAAO,IAAY,OAAe,QAAwB;AACxE,SAAO,MAAM,QAAQ,QAAQ;AAC/B;AAEO,gBAAS,YAAY,IAAY,OAAe,QAAwB;AAC7E,SAAO,KAAK,OAAO,IAAI,OAAO,MAAM;AACtC;AAEO,gBAAS,UAAUA,SAAgB,IAAY,QAAwB;AAC5E,SAAQA,WAAU,KAAK,UAAW;AACpC;",
+        "names": [
+          "deltaL"
+        ]
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194981,
+      "end": 1783196194981,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194981,
+      "end": 1783196194981,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194981,
+      "end": 1783196194981,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194981,
+      "end": 1783196194981,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194981,
+      "end": 1783196194981,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194981,
+      "end": 1783196194981,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194981,
+      "end": 1783196194981,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194981,
+      "end": 1783196194981,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194981,
+      "end": 1783196194981,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194981,
+      "end": 1783196194981,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194981,
+      "end": 1783196194981,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194981,
+      "end": 1783196194981,
+      "order": "normal"
+    }
+  ]
+}

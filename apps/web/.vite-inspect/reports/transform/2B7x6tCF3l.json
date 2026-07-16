@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/interference/InterferenceCanvas.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, onMounted, onUnmounted, watch } from 'vue'\n\nconst props = defineProps<{\n  slitDistance: number\n  screenDistance: number\n  wavelength: number\n  slitWidth: number\n  intensityPattern: { xMm: number; intensity: number }[]\n  orderPositions: number[]\n  lightColor: string\n  running: boolean\n}>()\n\nconst canvasRef = ref<HTMLCanvasElement | null>(null)\nconst width = 800\nconst height = 400\n\nfunction draw() {\n  const canvas = canvasRef.value\n  if (!canvas) return\n  const ctx = canvas.getContext('2d')\n  if (!ctx) return\n\n  ctx.clearRect(0, 0, width, height)\n  const midY = height / 2\n  const screenX = width - 80\n  const slitX = 80\n  const scaleY = 5\n\n  ctx.fillStyle = '#0d1117'\n  ctx.fillRect(0, 0, width, height)\n\n  // Laser source\n  ctx.fillStyle = props.lightColor\n  ctx.globalAlpha = 0.3\n  ctx.fillRect(10, midY - 20, 60, 40)\n  ctx.globalAlpha = 1\n  ctx.fillStyle = '#8B95A5'\n  ctx.font = '10px sans-serif'\n  ctx.fillText('Laser (coherent)', 20, midY - 28)\n\n  const slitGapPx = Math.max(10, props.slitDistance * 60)\n  ctx.fillStyle = '#161B22'\n  ctx.fillRect(slitX - 4, midY - slitGapPx / 2 - 2, 8, 2)\n  ctx.fillRect(slitX - 4, midY + slitGapPx / 2, 8, 2)\n  ctx.strokeStyle = props.lightColor\n  ctx.lineWidth = 2\n  ctx.strokeRect(slitX - 4, midY - slitGapPx / 2 - 2, 8, slitGapPx + 4)\n\n  if (props.running) {\n    ctx.strokeStyle = props.lightColor\n    ctx.globalAlpha = 0.15\n    const time = Date.now() / 500\n    for (let i = 0; i < 8; i++) {\n      const r = ((time + i) % 8) * 25\n      ctx.beginPath()\n      ctx.arc(slitX, midY - slitGapPx / 2, r, -Math.PI / 3, Math.PI / 3)\n      ctx.stroke()\n      ctx.beginPath()\n      ctx.arc(slitX, midY + slitGapPx / 2, r, -Math.PI / 3, Math.PI / 3)\n      ctx.stroke()\n    }\n    ctx.globalAlpha = 1\n  }\n\n  ctx.fillStyle = '#e2e8f0'\n  ctx.fillRect(screenX - 2, 40, 4, height - 80)\n\n  if (props.intensityPattern.length > 0) {\n    const maxI = Math.max(...props.intensityPattern.map(p => p.intensity))\n    const centerY = height / 2\n    for (const p of props.intensityPattern) {\n      const yPx = centerY - p.xMm * scaleY\n      const brightness = maxI > 0 ? p.intensity / maxI : 0\n      const r = 2 + brightness * 3\n      ctx.fillStyle = props.lightColor\n      ctx.globalAlpha = 0.3 + brightness * 0.7\n      ctx.beginPath()\n      ctx.arc(screenX, yPx, r, 0, Math.PI * 2)\n      ctx.fill()\n    }\n    ctx.globalAlpha = 1\n\n    ctx.strokeStyle = props.lightColor\n    ctx.lineWidth = 1.5\n    ctx.beginPath()\n    for (let i = 0; i < props.intensityPattern.length; i++) {\n      const p = props.intensityPattern[i]\n      const yPx = centerY - p.xMm * scaleY\n      const xOff = screenX + 10 + p.intensity * 60\n      if (i === 0) ctx.moveTo(xOff, yPx)\n      else ctx.lineTo(xOff, yPx)\n    }\n    ctx.stroke()\n  }\n\n  ctx.fillStyle = '#8B95A5'\n  ctx.font = '12px sans-serif'\n  ctx.fillText('Double Slit', slitX - 25, height - 15)\n  ctx.fillText('Screen', screenX - 15, height - 15)\n\n  // Order labels (left of screen so they don't get clipped)\n  for (let i = 0; i < props.orderPositions.length && i < 7; i++) {\n    const pos = props.orderPositions[i]\n    const yPx = midY - pos * scaleY\n    if (yPx > 30 && yPx < height - 30) {\n      const m = i - 3\n      const label = `m=${m}`\n      // Bright color for central fringe, slightly dimmer for others\n      const isCentral = m === 0\n      ctx.fillStyle = isCentral ? '#ffffff' : '#8B95A5'\n      ctx.font = isCentral ? 'bold 12px sans-serif' : '11px sans-serif'\n      // Draw small background pill for readability\n      const textX = screenX - 40\n      const textWidth = ctx.measureText(label).width\n      if (isCentral) {\n        ctx.fillStyle = 'rgba(255,255,255,0.1)'\n        ctx.beginPath()\n        ctx.roundRect(textX - 4, yPx - 8, textWidth + 8, 16, 4)\n        ctx.fill()\n      }\n      ctx.fillStyle = isCentral ? '#ffffff' : '#8B95A5'\n      ctx.fillText(label, textX, yPx + 3)\n    }\n  }\n}\n\nlet animId: number\nfunction animate() {\n  draw()\n  if (props.running) {\n    animId = requestAnimationFrame(animate)\n  }\n}\n\nwatch(() => props.running, (val) => {\n  if (val) { cancelAnimationFrame(animId); animate() }\n  else { cancelAnimationFrame(animId); draw() }\n})\n\nwatch(() => [\n  props.slitDistance, props.screenDistance, props.wavelength,\n  props.slitWidth, props.intensityPattern.length, props.lightColor\n], draw, { deep: true })\n\nonMounted(() => { draw() })\nonUnmounted(() => { cancelAnimationFrame(animId) })\n</script>\n\n<template>\n  <canvas ref=\"canvasRef\" :width=\"width\" :height=\"height\" style=\"width: 100%; height: 100%;\" />\n</template>\n",
+      "start": 1783196193597,
+      "end": 1783196194023,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194023,
+      "end": 1783196194023,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194023,
+      "end": 1783196194023,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194023,
+      "end": 1783196194023,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194023,
+      "end": 1783196194023,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/interference/InterferenceCanvas.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/interference/InterferenceCanvas.vue?vue&type=script&setup=true&lang.ts\";\nexport default _sfc_main;\n",
+      "start": 1783196194023,
+      "end": 1783196194372,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194372,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194373,
+      "end": 1783196194374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194374,
+      "end": 1783196194374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194374,
+      "end": 1783196194376,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194377,
+      "end": 1783196194377,
+      "order": "normal"
+    }
+  ]
+}

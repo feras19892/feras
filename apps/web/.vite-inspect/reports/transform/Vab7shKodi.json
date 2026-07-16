@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/panels/ThermalExpansionResultsPanel.vue?vue&type=style&index=0&scoped=8c6dcccd&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.results-panel { display:flex; flex-direction:column; gap:.35rem; }\n.stat { display:flex; justify-content:space-between; align-items:center; font-size:.76rem; padding:.3rem .4rem; border-radius:5px; background:rgba(255,255,255,.03); }\n.stat:hover { background:rgba(255,255,255,.05); }\n.label { color:#8B95A5; }\n.val { color:#D1D7E0; font-weight:700; }\n.val.highlight { color:#fbbf24; }\n.val.green { color:#4ade80; }\n.val.amber { color:#fbbf24; }\n.val.red { color:#f87171; }\n.empty { text-align:center; padding:1rem .5rem; display:flex; flex-direction:column; align-items:center; gap:.3rem; }\n.empty-icon { font-size:1.4rem; opacity:.5; }\n.empty-title { color:#8B95A5; font-size:.78rem; font-weight:600; }\n.empty-hint { color:#475569; font-size:.68rem; max-width:180px; line-height:1.4; }\n",
+      "start": 1783196195548,
+      "end": 1783196195548
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.results-panel { display:flex; flex-direction:column; gap:.35rem; }\n.stat { display:flex; justify-content:space-between; align-items:center; font-size:.76rem; padding:.3rem .4rem; border-radius:5px; background:rgba(255,255,255,.03); }\n.stat:hover { background:rgba(255,255,255,.05); }\n.label { color:#8B95A5; }\n.val { color:#D1D7E0; font-weight:700; }\n.val.highlight { color:#fbbf24; }\n.val.green { color:#4ade80; }\n.val.amber { color:#fbbf24; }\n.val.red { color:#f87171; }\n.empty { text-align:center; padding:1rem .5rem; display:flex; flex-direction:column; align-items:center; gap:.3rem; }\n.empty-icon { font-size:1.4rem; opacity:.5; }\n.empty-title { color:#8B95A5; font-size:.78rem; font-weight:600; }\n.empty-hint { color:#475569; font-size:.68rem; max-width:180px; line-height:1.4; }\n",
+      "start": 1783196195548,
+      "end": 1783196195548,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195548,
+      "end": 1783196195548,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195548,
+      "end": 1783196195548,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195548,
+      "end": 1783196195548,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.results-panel[data-v-8c6dcccd] { display:flex; flex-direction:column; gap:.35rem;\n}\n.stat[data-v-8c6dcccd] { display:flex; justify-content:space-between; align-items:center; font-size:.76rem; padding:.3rem .4rem; border-radius:5px; background:rgba(255,255,255,.03);\n}\n.stat[data-v-8c6dcccd]:hover { background:rgba(255,255,255,.05);\n}\n.label[data-v-8c6dcccd] { color:#8B95A5;\n}\n.val[data-v-8c6dcccd] { color:#D1D7E0; font-weight:700;\n}\n.val.highlight[data-v-8c6dcccd] { color:#fbbf24;\n}\n.val.green[data-v-8c6dcccd] { color:#4ade80;\n}\n.val.amber[data-v-8c6dcccd] { color:#fbbf24;\n}\n.val.red[data-v-8c6dcccd] { color:#f87171;\n}\n.empty[data-v-8c6dcccd] { text-align:center; padding:1rem .5rem; display:flex; flex-direction:column; align-items:center; gap:.3rem;\n}\n.empty-icon[data-v-8c6dcccd] { font-size:1.4rem; opacity:.5;\n}\n.empty-title[data-v-8c6dcccd] { color:#8B95A5; font-size:.78rem; font-weight:600;\n}\n.empty-hint[data-v-8c6dcccd] { color:#475569; font-size:.68rem; max-width:180px; line-height:1.4;\n}\n",
+      "start": 1783196195548,
+      "end": 1783196195549,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195549,
+      "end": 1783196195549,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196195549,
+      "end": 1783196195549,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195549,
+      "end": 1783196195549,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195549,
+      "end": 1783196195549,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195549,
+      "end": 1783196195549,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195549,
+      "end": 1783196195549,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195549,
+      "end": 1783196195549,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195549,
+      "end": 1783196195549,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195549,
+      "end": 1783196195549,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195549,
+      "end": 1783196195549,
+      "order": "normal"
+    }
+  ]
+}

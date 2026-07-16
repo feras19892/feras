@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/pendulum/usePendulumLab.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { ref } from 'vue'\nimport { usePendulumPhysics, type PendulumParams } from '../../modules/physics/experiments/pendulum/usePendulumPhysics'\n\nexport function usePendulumLab(params: PendulumParams, onTick?: () => void) {\n  const { state: sim, step, start: simStart, stop: simStop, togglePause: simTogglePause, reset, measured, getCutState } = usePendulumPhysics(params)\n\n  const running = ref(false)\n  const paused = ref(false)\n  const speed = ref(1)\n  const labFlowRunning = ref(false)\n  let rafId: number | null = null\n  let waitRafId: number | null = null\n\n  function tickFrame() {\n    if (!sim.running || sim.paused) return\n    step(1 / 60, speed.value)\n    onTick?.()\n    rafId = requestAnimationFrame(tickFrame)\n  }\n\n  function start() {\n    if (rafId) cancelAnimationFrame(rafId)\n    simStart()\n    running.value = sim.running\n    paused.value = sim.paused\n    rafId = requestAnimationFrame(tickFrame)\n  }\n\n  function togglePause() {\n    if (!sim.running) { start(); return }\n    simTogglePause()\n    running.value = sim.running\n    paused.value = sim.paused\n    if (!sim.paused) rafId = requestAnimationFrame(tickFrame)\n  }\n\n  function stopSim() {\n    if (rafId) cancelAnimationFrame(rafId)\n    rafId = null\n    simStop()\n    running.value = sim.running\n    paused.value = sim.paused\n  }\n\n  function cleanup() {\n    if (rafId) cancelAnimationFrame(rafId)\n    if (waitRafId) cancelAnimationFrame(waitRafId)\n    rafId = null\n    waitRafId = null\n  }\n\n  function resetSim() {\n    stopSim()\n    reset()\n  }\n\n  const sleep = (ms: number) => new Promise<void>(r => setTimeout(r, ms))\n\n  const waitForPeriod = (timeoutMs = 90000): Promise<boolean> => new Promise((resolve) => {\n    const t0 = performance.now()\n    const tick = () => {\n      if (sim.measurementPeriod != null) { waitRafId = null; resolve(true); return }\n      if (!sim.running || performance.now() - t0 > timeoutMs) { waitRafId = null; resolve(false); return }\n      waitRafId = requestAnimationFrame(tick)\n    }\n    tick()\n  })\n\n  async function runPendulumLab(recordTrial: () => void, calcFitG: () => void) {\n    if (labFlowRunning.value) return\n    labFlowRunning.value = true\n    try {\n      params.g = 9.81; params.theta0 = 10 * Math.PI / 180; params.damping = 0; params.measureCycles = 20\n      for (const L of [0.20, 0.30, 0.40, 0.50, 0.60, 0.70]) {\n        params.length = L\n        reset()\n        start()\n        const ok = await waitForPeriod()\n        stopSim()\n        if (!ok) break\n        recordTrial()\n        await sleep(250)\n      }\n      calcFitG()\n    } finally {\n      labFlowRunning.value = false\n      resetSim()\n    }\n  }\n\n  return {\n    sim, running, paused, speed, step,\n    start, stopSim, togglePause, resetSim, cleanup,\n    measured, getCutState,\n    labFlowRunning, runPendulumLab,\n  }\n}\n",
+      "start": 1783196194723,
+      "end": 1783196194795,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194795,
+      "end": 1783196194795,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { ref } from \"vue\";\nimport { usePendulumPhysics } from \"../../modules/physics/experiments/pendulum/usePendulumPhysics\";\nexport function usePendulumLab(params, onTick) {\n  const { state: sim, step, start: simStart, stop: simStop, togglePause: simTogglePause, reset, measured, getCutState } = usePendulumPhysics(params);\n  const running = ref(false);\n  const paused = ref(false);\n  const speed = ref(1);\n  const labFlowRunning = ref(false);\n  let rafId = null;\n  let waitRafId = null;\n  function tickFrame() {\n    if (!sim.running || sim.paused) return;\n    step(1 / 60, speed.value);\n    onTick?.();\n    rafId = requestAnimationFrame(tickFrame);\n  }\n  function start() {\n    if (rafId) cancelAnimationFrame(rafId);\n    simStart();\n    running.value = sim.running;\n    paused.value = sim.paused;\n    rafId = requestAnimationFrame(tickFrame);\n  }\n  function togglePause() {\n    if (!sim.running) {\n      start();\n      return;\n    }\n    simTogglePause();\n    running.value = sim.running;\n    paused.value = sim.paused;\n    if (!sim.paused) rafId = requestAnimationFrame(tickFrame);\n  }\n  function stopSim() {\n    if (rafId) cancelAnimationFrame(rafId);\n    rafId = null;\n    simStop();\n    running.value = sim.running;\n    paused.value = sim.paused;\n  }\n  function cleanup() {\n    if (rafId) cancelAnimationFrame(rafId);\n    if (waitRafId) cancelAnimationFrame(waitRafId);\n    rafId = null;\n    waitRafId = null;\n  }\n  function resetSim() {\n    stopSim();\n    reset();\n  }\n  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));\n  const waitForPeriod = (timeoutMs = 9e4) => new Promise((resolve) => {\n    const t0 = performance.now();\n    const tick = () => {\n      if (sim.measurementPeriod != null) {\n        waitRafId = null;\n        resolve(true);\n        return;\n      }\n      if (!sim.running || performance.now() - t0 > timeoutMs) {\n        waitRafId = null;\n        resolve(false);\n        return;\n      }\n      waitRafId = requestAnimationFrame(tick);\n    };\n    tick();\n  });\n  async function runPendulumLab(recordTrial, calcFitG) {\n    if (labFlowRunning.value) return;\n    labFlowRunning.value = true;\n    try {\n      params.g = 9.81;\n      params.theta0 = 10 * Math.PI / 180;\n      params.damping = 0;\n      params.measureCycles = 20;\n      for (const L of [0.2, 0.3, 0.4, 0.5, 0.6, 0.7]) {\n        params.length = L;\n        reset();\n        start();\n        const ok = await waitForPeriod();\n        stopSim();\n        if (!ok) break;\n        recordTrial();\n        await sleep(250);\n      }\n      calcFitG();\n    } finally {\n      labFlowRunning.value = false;\n      resetSim();\n    }\n  }\n  return {\n    sim,\n    running,\n    paused,\n    speed,\n    step,\n    start,\n    stopSim,\n    togglePause,\n    resetSim,\n    cleanup,\n    measured,\n    getCutState,\n    labFlowRunning,\n    runPendulumLab\n  };\n}\n",
+      "start": 1783196194795,
+      "end": 1783196194966,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/pendulum/usePendulumLab.ts"
+        ],
+        "sourcesContent": [
+          "import { ref } from 'vue'\nimport { usePendulumPhysics, type PendulumParams } from '../../modules/physics/experiments/pendulum/usePendulumPhysics'\n\nexport function usePendulumLab(params: PendulumParams, onTick?: () => void) {\n  const { state: sim, step, start: simStart, stop: simStop, togglePause: simTogglePause, reset, measured, getCutState } = usePendulumPhysics(params)\n\n  const running = ref(false)\n  const paused = ref(false)\n  const speed = ref(1)\n  const labFlowRunning = ref(false)\n  let rafId: number | null = null\n  let waitRafId: number | null = null\n\n  function tickFrame() {\n    if (!sim.running || sim.paused) return\n    step(1 / 60, speed.value)\n    onTick?.()\n    rafId = requestAnimationFrame(tickFrame)\n  }\n\n  function start() {\n    if (rafId) cancelAnimationFrame(rafId)\n    simStart()\n    running.value = sim.running\n    paused.value = sim.paused\n    rafId = requestAnimationFrame(tickFrame)\n  }\n\n  function togglePause() {\n    if (!sim.running) { start(); return }\n    simTogglePause()\n    running.value = sim.running\n    paused.value = sim.paused\n    if (!sim.paused) rafId = requestAnimationFrame(tickFrame)\n  }\n\n  function stopSim() {\n    if (rafId) cancelAnimationFrame(rafId)\n    rafId = null\n    simStop()\n    running.value = sim.running\n    paused.value = sim.paused\n  }\n\n  function cleanup() {\n    if (rafId) cancelAnimationFrame(rafId)\n    if (waitRafId) cancelAnimationFrame(waitRafId)\n    rafId = null\n    waitRafId = null\n  }\n\n  function resetSim() {\n    stopSim()\n    reset()\n  }\n\n  const sleep = (ms: number) => new Promise<void>(r => setTimeout(r, ms))\n\n  const waitForPeriod = (timeoutMs = 90000): Promise<boolean> => new Promise((resolve) => {\n    const t0 = performance.now()\n    const tick = () => {\n      if (sim.measurementPeriod != null) { waitRafId = null; resolve(true); return }\n      if (!sim.running || performance.now() - t0 > timeoutMs) { waitRafId = null; resolve(false); return }\n      waitRafId = requestAnimationFrame(tick)\n    }\n    tick()\n  })\n\n  async function runPendulumLab(recordTrial: () => void, calcFitG: () => void) {\n    if (labFlowRunning.value) return\n    labFlowRunning.value = true\n    try {\n      params.g = 9.81; params.theta0 = 10 * Math.PI / 180; params.damping = 0; params.measureCycles = 20\n      for (const L of [0.20, 0.30, 0.40, 0.50, 0.60, 0.70]) {\n        params.length = L\n        reset()\n        start()\n        const ok = await waitForPeriod()\n        stopSim()\n        if (!ok) break\n        recordTrial()\n        await sleep(250)\n      }\n      calcFitG()\n    } finally {\n      labFlowRunning.value = false\n      resetSim()\n    }\n  }\n\n  return {\n    sim, running, paused, speed, step,\n    start, stopSim, togglePause, resetSim, cleanup,\n    measured, getCutState,\n    labFlowRunning, runPendulumLab,\n  }\n}\n"
+        ],
+        "mappings": "AAAA,SAAS,WAAW;AACpB,SAAS,0BAA+C;AAEjD,gBAAS,eAAe,QAAwB,QAAqB;AAC1E,QAAM,EAAE,OAAO,KAAK,MAAM,OAAO,UAAU,MAAM,SAAS,aAAa,gBAAgB,OAAO,UAAU,YAAY,IAAI,mBAAmB,MAAM;AAEjJ,QAAM,UAAU,IAAI,KAAK;AACzB,QAAM,SAAS,IAAI,KAAK;AACxB,QAAM,QAAQ,IAAI,CAAC;AACnB,QAAM,iBAAiB,IAAI,KAAK;AAChC,MAAI,QAAuB;AAC3B,MAAI,YAA2B;AAE/B,WAAS,YAAY;AACnB,QAAI,CAAC,IAAI,WAAW,IAAI,OAAQ;AAChC,SAAK,IAAI,IAAI,MAAM,KAAK;AACxB,aAAS;AACT,YAAQ,sBAAsB,SAAS;AAAA,EACzC;AAEA,WAAS,QAAQ;AACf,QAAI,MAAO,sBAAqB,KAAK;AACrC,aAAS;AACT,YAAQ,QAAQ,IAAI;AACpB,WAAO,QAAQ,IAAI;AACnB,YAAQ,sBAAsB,SAAS;AAAA,EACzC;AAEA,WAAS,cAAc;AACrB,QAAI,CAAC,IAAI,SAAS;AAAE,YAAM;AAAG;AAAA,IAAO;AACpC,mBAAe;AACf,YAAQ,QAAQ,IAAI;AACpB,WAAO,QAAQ,IAAI;AACnB,QAAI,CAAC,IAAI,OAAQ,SAAQ,sBAAsB,SAAS;AAAA,EAC1D;AAEA,WAAS,UAAU;AACjB,QAAI,MAAO,sBAAqB,KAAK;AACrC,YAAQ;AACR,YAAQ;AACR,YAAQ,QAAQ,IAAI;AACpB,WAAO,QAAQ,IAAI;AAAA,EACrB;AAEA,WAAS,UAAU;AACjB,QAAI,MAAO,sBAAqB,KAAK;AACrC,QAAI,UAAW,sBAAqB,SAAS;AAC7C,YAAQ;AACR,gBAAY;AAAA,EACd;AAEA,WAAS,WAAW;AAClB,YAAQ;AACR,UAAM;AAAA,EACR;AAEA,QAAM,QAAQ,CAAC,OAAe,IAAI,QAAc,OAAK,WAAW,GAAG,EAAE,CAAC;AAEtE,QAAM,gBAAgB,CAAC,YAAY,QAA4B,IAAI,QAAQ,CAAC,YAAY;AACtF,UAAM,KAAK,YAAY,IAAI;AAC3B,UAAM,OAAO,MAAM;AACjB,UAAI,IAAI,qBAAqB,MAAM;AAAE,oBAAY;AAAM,gBAAQ,IAAI;AAAG;AAAA,MAAO;AAC7E,UAAI,CAAC,IAAI,WAAW,YAAY,IAAI,IAAI,KAAK,WAAW;AAAE,oBAAY;AAAM,gBAAQ,KAAK;AAAG;AAAA,MAAO;AACnG,kBAAY,sBAAsB,IAAI;AAAA,IACxC;AACA,SAAK;AAAA,EACP,CAAC;AAED,iBAAe,eAAe,aAAyB,UAAsB;AAC3E,QAAI,eAAe,MAAO;AAC1B,mBAAe,QAAQ;AACvB,QAAI;AACF,aAAO,IAAI;AAAM,aAAO,SAAS,KAAK,KAAK,KAAK;AAAK,aAAO,UAAU;AAAG,aAAO,gBAAgB;AAChG,iBAAW,KAAK,CAAC,KAAM,KAAM,KAAM,KAAM,KAAM,GAAI,GAAG;AACpD,eAAO,SAAS;AAChB,cAAM;AACN,cAAM;AACN,cAAM,KAAK,MAAM,cAAc;AAC/B,gBAAQ;AACR,YAAI,CAAC,GAAI;AACT,oBAAY;AACZ,cAAM,MAAM,GAAG;AAAA,MACjB;AACA,eAAS;AAAA,IACX,UAAE;AACA,qBAAe,QAAQ;AACvB,eAAS;AAAA,IACX;AAAA,EACF;AAEA,SAAO;AAAA,IACL;AAAA,IAAK;AAAA,IAAS;AAAA,IAAQ;AAAA,IAAO;AAAA,IAC7B;AAAA,IAAO;AAAA,IAAS;AAAA,IAAa;AAAA,IAAU;AAAA,IACvC;AAAA,IAAU;AAAA,IACV;AAAA,IAAgB;AAAA,EAClB;AACF;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194966,
+      "end": 1783196194966,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194966,
+      "end": 1783196194966,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194966,
+      "end": 1783196194966,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194966,
+      "end": 1783196194966,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194966,
+      "end": 1783196194966,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194966,
+      "end": 1783196194966,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194966,
+      "end": 1783196194966,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194966,
+      "end": 1783196194966,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194966,
+      "end": 1783196194966,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194966,
+      "end": 1783196194966,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194966,
+      "end": 1783196194967,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194967,
+      "end": 1783196194967,
+      "order": "normal"
+    }
+  ]
+}

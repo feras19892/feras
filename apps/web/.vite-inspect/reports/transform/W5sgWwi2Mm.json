@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/resonance/ResonanceCanvas.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nimport { ref, onMounted, onUnmounted, watch } from 'vue'\n\nconst W = 800, H = 400\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ResonanceCanvas',\n  props: {\n    stringLength: {},\n    harmonic: {},\n    running: { type: Boolean }\n  },\n  setup(__props: any) {\n\nconst props = __props\n\nconst canvasRef = ref<HTMLCanvasElement | null>(null)\nfunction draw() {\n  const c = canvasRef.value; if (!c) return\n  const ctx = c.getContext('2d'); if (!ctx) return\n  ctx.clearRect(0, 0, W, H)\n\n  const topY = 80\n  const bottomY = H - 80\n  const leftX = 100\n  const rightX = W - 100\n  const scaleX = (rightX - leftX) / props.stringLength\n\n  ctx.fillStyle = '#0d1117'; ctx.fillRect(0, 0, W, H)\n\n  /* fixed ends */\n  ctx.fillStyle = '#8B95A5'; ctx.fillRect(leftX - 8, topY - 15, 16, 30); ctx.fillRect(rightX - 8, topY - 15, 16, 30)\n  ctx.fillStyle = '#64748b'; ctx.font = '10px sans-serif'; ctx.fillText('Fixed', leftX - 14, topY - 22); ctx.fillText('Fixed', rightX - 14, topY - 22)\n\n  /* baseline string */\n  ctx.strokeStyle = '#2D3645'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(leftX, topY); ctx.lineTo(rightX, topY); ctx.stroke()\n\n  /* standing wave */\n  const amp = 50\n  const t = props.running ? Date.now() / 300 : 0\n  ctx.strokeStyle = '#5B8DB8'; ctx.lineWidth = 2.5; ctx.beginPath()\n  for (let px = leftX; px <= rightX; px++) {\n    const x = (px - leftX) / scaleX\n    const k = (Math.PI * props.harmonic) / props.stringLength\n    const y = topY + amp * Math.sin(k * x) * Math.cos(t)\n    if (px === leftX) ctx.moveTo(px, y); else ctx.lineTo(px, y)\n  }\n  ctx.stroke()\n\n  /* antinodes (loops) */\n  const loopCount = props.harmonic\n  for (let i = 1; i <= loopCount; i++) {\n    const ax = leftX + (i / loopCount) * (rightX - leftX) - (rightX - leftX) / (loopCount * 2)\n    if (ax >= leftX && ax <= rightX) {\n      ctx.fillStyle = 'rgba(91,141,184,.15)'; ctx.beginPath(); ctx.arc(ax, topY, 8, 0, Math.PI * 2); ctx.fill()\n      ctx.fillStyle = '#5B8DB8'; ctx.font = 'bold 9px sans-serif'; ctx.fillText('A', ax - 3, topY - 12)\n    }\n  }\n\n  /* nodes */\n  for (let i = 0; i <= loopCount; i++) {\n    const nx = leftX + (i / loopCount) * (rightX - leftX)\n    ctx.fillStyle = '#f87171'; ctx.beginPath(); ctx.arc(nx, topY, 4, 0, Math.PI * 2); ctx.fill()\n    ctx.fillStyle = '#f87171'; ctx.font = 'bold 9px sans-serif'; ctx.fillText('N', nx - 3, topY + 18)\n  }\n\n  /* labels */\n  ctx.fillStyle = '#8B95A5'; ctx.font = '12px sans-serif'; ctx.fillText(`L = ${props.stringLength.toFixed(2)} m`, leftX, bottomY + 20)\n  ctx.fillStyle = '#fbbf24'; ctx.font = 'bold 11px sans-serif'; ctx.fillText(`n = ${props.harmonic}`, rightX - 40, bottomY + 20)\n}\n\nlet animId = 0\nfunction animate() { draw(); if (props.running) animId = requestAnimationFrame(animate) }\n\nwatch(() => props.running, (v) => { cancelAnimationFrame(animId); v ? animate() : draw() })\nwatch(() => [props.stringLength, props.harmonic], draw, { deep: true })\nonMounted(() => draw()); onUnmounted(() => cancelAnimationFrame(animId))\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"canvas\", {\n    ref_key: \"canvasRef\",\n    ref: canvasRef,\n    width: W,\n    height: H,\n    style: {\"width\":\"100%\",\"height\":\"100%\"}\n  }, null, 512))\n}\n}\n\n})",
+      "start": 1783196194559,
+      "end": 1783196194559
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194559,
+      "end": 1783196194559,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nimport { ref, onMounted, onUnmounted, watch } from \"vue\";\nconst W = 800, H = 400;\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"ResonanceCanvas\",\n  props: {\n    stringLength: {},\n    harmonic: {},\n    running: { type: Boolean }\n  },\n  setup(__props) {\n    const props = __props;\n    const canvasRef = ref(null);\n    function draw() {\n      const c = canvasRef.value;\n      if (!c) return;\n      const ctx = c.getContext(\"2d\");\n      if (!ctx) return;\n      ctx.clearRect(0, 0, W, H);\n      const topY = 80;\n      const bottomY = H - 80;\n      const leftX = 100;\n      const rightX = W - 100;\n      const scaleX = (rightX - leftX) / props.stringLength;\n      ctx.fillStyle = \"#0d1117\";\n      ctx.fillRect(0, 0, W, H);\n      ctx.fillStyle = \"#8B95A5\";\n      ctx.fillRect(leftX - 8, topY - 15, 16, 30);\n      ctx.fillRect(rightX - 8, topY - 15, 16, 30);\n      ctx.fillStyle = \"#64748b\";\n      ctx.font = \"10px sans-serif\";\n      ctx.fillText(\"Fixed\", leftX - 14, topY - 22);\n      ctx.fillText(\"Fixed\", rightX - 14, topY - 22);\n      ctx.strokeStyle = \"#2D3645\";\n      ctx.lineWidth = 1;\n      ctx.beginPath();\n      ctx.moveTo(leftX, topY);\n      ctx.lineTo(rightX, topY);\n      ctx.stroke();\n      const amp = 50;\n      const t = props.running ? Date.now() / 300 : 0;\n      ctx.strokeStyle = \"#5B8DB8\";\n      ctx.lineWidth = 2.5;\n      ctx.beginPath();\n      for (let px = leftX; px <= rightX; px++) {\n        const x = (px - leftX) / scaleX;\n        const k = Math.PI * props.harmonic / props.stringLength;\n        const y = topY + amp * Math.sin(k * x) * Math.cos(t);\n        if (px === leftX) ctx.moveTo(px, y);\n        else ctx.lineTo(px, y);\n      }\n      ctx.stroke();\n      const loopCount = props.harmonic;\n      for (let i = 1; i <= loopCount; i++) {\n        const ax = leftX + i / loopCount * (rightX - leftX) - (rightX - leftX) / (loopCount * 2);\n        if (ax >= leftX && ax <= rightX) {\n          ctx.fillStyle = \"rgba(91,141,184,.15)\";\n          ctx.beginPath();\n          ctx.arc(ax, topY, 8, 0, Math.PI * 2);\n          ctx.fill();\n          ctx.fillStyle = \"#5B8DB8\";\n          ctx.font = \"bold 9px sans-serif\";\n          ctx.fillText(\"A\", ax - 3, topY - 12);\n        }\n      }\n      for (let i = 0; i <= loopCount; i++) {\n        const nx = leftX + i / loopCount * (rightX - leftX);\n        ctx.fillStyle = \"#f87171\";\n        ctx.beginPath();\n        ctx.arc(nx, topY, 4, 0, Math.PI * 2);\n        ctx.fill();\n        ctx.fillStyle = \"#f87171\";\n        ctx.font = \"bold 9px sans-serif\";\n        ctx.fillText(\"N\", nx - 3, topY + 18);\n      }\n      ctx.fillStyle = \"#8B95A5\";\n      ctx.font = \"12px sans-serif\";\n      ctx.fillText(`L = ${props.stringLength.toFixed(2)} m`, leftX, bottomY + 20);\n      ctx.fillStyle = \"#fbbf24\";\n      ctx.font = \"bold 11px sans-serif\";\n      ctx.fillText(`n = ${props.harmonic}`, rightX - 40, bottomY + 20);\n    }\n    let animId = 0;\n    function animate() {\n      draw();\n      if (props.running) animId = requestAnimationFrame(animate);\n    }\n    watch(() => props.running, (v) => {\n      cancelAnimationFrame(animId);\n      v ? animate() : draw();\n    });\n    watch(() => [props.stringLength, props.harmonic], draw, { deep: true });\n    onMounted(() => draw());\n    onUnmounted(() => cancelAnimationFrame(animId));\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"canvas\", {\n        ref_key: \"canvasRef\",\n        ref: canvasRef,\n        width: W,\n        height: H,\n        style: { \"width\": \"100%\", \"height\": \"100%\" }\n      }, null, 512);\n    };\n  }\n});\n",
+      "start": 1783196194559,
+      "end": 1783196194918,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/resonance/ResonanceCanvas.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nimport { ref, onMounted, onUnmounted, watch } from 'vue'\n\nconst W = 800, H = 400\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ResonanceCanvas',\n  props: {\n    stringLength: {},\n    harmonic: {},\n    running: { type: Boolean }\n  },\n  setup(__props: any) {\n\nconst props = __props\n\nconst canvasRef = ref<HTMLCanvasElement | null>(null)\nfunction draw() {\n  const c = canvasRef.value; if (!c) return\n  const ctx = c.getContext('2d'); if (!ctx) return\n  ctx.clearRect(0, 0, W, H)\n\n  const topY = 80\n  const bottomY = H - 80\n  const leftX = 100\n  const rightX = W - 100\n  const scaleX = (rightX - leftX) / props.stringLength\n\n  ctx.fillStyle = '#0d1117'; ctx.fillRect(0, 0, W, H)\n\n  /* fixed ends */\n  ctx.fillStyle = '#8B95A5'; ctx.fillRect(leftX - 8, topY - 15, 16, 30); ctx.fillRect(rightX - 8, topY - 15, 16, 30)\n  ctx.fillStyle = '#64748b'; ctx.font = '10px sans-serif'; ctx.fillText('Fixed', leftX - 14, topY - 22); ctx.fillText('Fixed', rightX - 14, topY - 22)\n\n  /* baseline string */\n  ctx.strokeStyle = '#2D3645'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(leftX, topY); ctx.lineTo(rightX, topY); ctx.stroke()\n\n  /* standing wave */\n  const amp = 50\n  const t = props.running ? Date.now() / 300 : 0\n  ctx.strokeStyle = '#5B8DB8'; ctx.lineWidth = 2.5; ctx.beginPath()\n  for (let px = leftX; px <= rightX; px++) {\n    const x = (px - leftX) / scaleX\n    const k = (Math.PI * props.harmonic) / props.stringLength\n    const y = topY + amp * Math.sin(k * x) * Math.cos(t)\n    if (px === leftX) ctx.moveTo(px, y); else ctx.lineTo(px, y)\n  }\n  ctx.stroke()\n\n  /* antinodes (loops) */\n  const loopCount = props.harmonic\n  for (let i = 1; i <= loopCount; i++) {\n    const ax = leftX + (i / loopCount) * (rightX - leftX) - (rightX - leftX) / (loopCount * 2)\n    if (ax >= leftX && ax <= rightX) {\n      ctx.fillStyle = 'rgba(91,141,184,.15)'; ctx.beginPath(); ctx.arc(ax, topY, 8, 0, Math.PI * 2); ctx.fill()\n      ctx.fillStyle = '#5B8DB8'; ctx.font = 'bold 9px sans-serif'; ctx.fillText('A', ax - 3, topY - 12)\n    }\n  }\n\n  /* nodes */\n  for (let i = 0; i <= loopCount; i++) {\n    const nx = leftX + (i / loopCount) * (rightX - leftX)\n    ctx.fillStyle = '#f87171'; ctx.beginPath(); ctx.arc(nx, topY, 4, 0, Math.PI * 2); ctx.fill()\n    ctx.fillStyle = '#f87171'; ctx.font = 'bold 9px sans-serif'; ctx.fillText('N', nx - 3, topY + 18)\n  }\n\n  /* labels */\n  ctx.fillStyle = '#8B95A5'; ctx.font = '12px sans-serif'; ctx.fillText(`L = ${props.stringLength.toFixed(2)} m`, leftX, bottomY + 20)\n  ctx.fillStyle = '#fbbf24'; ctx.font = 'bold 11px sans-serif'; ctx.fillText(`n = ${props.harmonic}`, rightX - 40, bottomY + 20)\n}\n\nlet animId = 0\nfunction animate() { draw(); if (props.running) animId = requestAnimationFrame(animate) }\n\nwatch(() => props.running, (v) => { cancelAnimationFrame(animId); v ? animate() : draw() })\nwatch(() => [props.stringLength, props.harmonic], draw, { deep: true })\nonMounted(() => draw()); onUnmounted(() => cancelAnimationFrame(animId))\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"canvas\", {\n    ref_key: \"canvasRef\",\n    ref: canvasRef,\n    width: W,\n    height: H,\n    style: {\"width\":\"100%\",\"height\":\"100%\"}\n  }, null, 512))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194918,
+      "end": 1783196194918,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194918,
+      "end": 1783196194918,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196194918,
+      "end": 1783196194918,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194918,
+      "end": 1783196194918,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194918,
+      "end": 1783196194918,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194918,
+      "end": 1783196194918,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194918,
+      "end": 1783196194918,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194918,
+      "end": 1783196194918,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194918,
+      "end": 1783196194918,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194918,
+      "end": 1783196194918,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194918,
+      "end": 1783196194918,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194918,
+      "end": 1783196194918,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194918,
+      "end": 1783196194918,
+      "order": "normal"
+    }
+  ]
+}

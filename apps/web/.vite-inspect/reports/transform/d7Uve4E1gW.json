@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/latent-heat/panels/LatentHeatResultsPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, toDisplayString as _toDisplayString, normalizeClass as _normalizeClass, Fragment as _Fragment } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = {\n  key: 0,\n  class: \"no-results\"\n}\nconst _hoisted_3 = { class: \"stat-box\" }\nconst _hoisted_4 = { class: \"stat-value\" }\nconst _hoisted_5 = { class: \"stat-box highlight\" }\nconst _hoisted_6 = { class: \"stat-value green\" }\nconst _hoisted_7 = { class: \"stat-box\" }\nconst _hoisted_8 = { class: \"stat-value\" }\nconst _hoisted_9 = { class: \"stat-box\" }\nconst _hoisted_10 = { class: \"stat-value\" }\nconst _hoisted_11 = { class: \"stat-box\" }\nconst _hoisted_12 = { class: \"stat-box\" }\nconst _hoisted_13 = { class: \"stat-value\" }\n\nimport { computed } from 'vue'\nimport type { LatentHeatTrial } from '../../../../composables/latent-heat/useLatentHeatTrials'\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'LatentHeatResultsPanel',\n  props: {\n    trials: {}\n  },\n  setup(__props: any) {\n\nconst props = __props\nconst avgL = computed(() => {\n  if (!props.trials.length) return 0\n  return props.trials.reduce((s, t) => s + t.L, 0) / props.trials.length\n})\nconst avgMelted = computed(() => {\n  if (!props.trials.length) return 0\n  return props.trials.reduce((s, t) => s + t.meltedMass, 0) / props.trials.length\n})\nconst totalQ = computed(() => props.trials.reduce((s, t) => s + t.Q, 0))\nconst cv = computed(() => {\n  if (props.trials.length < 2) return 0\n  const mean = avgL.value\n  const variance = props.trials.reduce((s, t) => s + Math.pow(t.L - mean, 2), 0) / (props.trials.length - 1)\n  return Math.sqrt(variance) / mean * 100\n})\nconst trueL = computed(() => props.trials.length > 0 ? props.trials[0].L : 0)\nconst errorPct = computed(() => trueL.value > 0 ? Math.abs(avgL.value - trueL.value) / trueL.value * 100 : 0)\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (!__props.trials.length)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_2, [...(_cache[0] || (_cache[0] = [\n          _createElementVNode(\"div\", { class: \"empty-icon\" }, \"📊\", -1),\n          _createElementVNode(\"div\", null, \"لا توجد نتائج\", -1),\n          _createElementVNode(\"div\", { class: \"empty-hint\" }, \"سجل تجارب لتحليل النتائج\", -1)\n        ]))]))\n      : (_openBlock(), _createElementBlock(_Fragment, { key: 1 }, [\n          _createElementVNode(\"div\", _hoisted_3, [\n            _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"عدد التجارب\", -1)),\n            _createElementVNode(\"div\", _hoisted_4, _toDisplayString(__props.trials.length), 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_5, [\n            _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"متوسط L\", -1)),\n            _createElementVNode(\"div\", _hoisted_6, _toDisplayString((avgL.value/1000).toFixed(0)) + \" kJ/kg\", 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_7, [\n            _cache[3] || (_cache[3] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"L الحقيقي\", -1)),\n            _createElementVNode(\"div\", _hoisted_8, _toDisplayString((trueL.value/1000).toFixed(0)) + \" kJ/kg\", 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_9, [\n            _cache[4] || (_cache[4] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"معامل التباين\", -1)),\n            _createElementVNode(\"div\", _hoisted_10, _toDisplayString(cv.value.toFixed(1)) + \"%\", 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_11, [\n            _cache[5] || (_cache[5] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"خطأ النسبة\", -1)),\n            _createElementVNode(\"div\", {\n              class: _normalizeClass(errorPct.value < 5 ? 'stat-value green' : 'stat-value yellow')\n            }, _toDisplayString(errorPct.value.toFixed(1)) + \"%\", 3)\n          ]),\n          _createElementVNode(\"div\", _hoisted_12, [\n            _cache[6] || (_cache[6] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"الحرارة الكلية\", -1)),\n            _createElementVNode(\"div\", _hoisted_13, _toDisplayString((totalQ.value/1000).toFixed(1)) + \" kJ\", 1)\n          ])\n        ], 64))\n  ]))\n}\n}\n\n})",
+      "start": 1783196195558,
+      "end": 1783196195558
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195558,
+      "end": 1783196195558,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeClass as _normalizeClass, Fragment as _Fragment } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nconst _hoisted_2 = {\n  key: 0,\n  class: \"no-results\"\n};\nconst _hoisted_3 = { class: \"stat-box\" };\nconst _hoisted_4 = { class: \"stat-value\" };\nconst _hoisted_5 = { class: \"stat-box highlight\" };\nconst _hoisted_6 = { class: \"stat-value green\" };\nconst _hoisted_7 = { class: \"stat-box\" };\nconst _hoisted_8 = { class: \"stat-value\" };\nconst _hoisted_9 = { class: \"stat-box\" };\nconst _hoisted_10 = { class: \"stat-value\" };\nconst _hoisted_11 = { class: \"stat-box\" };\nconst _hoisted_12 = { class: \"stat-box\" };\nconst _hoisted_13 = { class: \"stat-value\" };\nimport { computed } from \"vue\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"LatentHeatResultsPanel\",\n  props: {\n    trials: {}\n  },\n  setup(__props) {\n    const props = __props;\n    const avgL = computed(() => {\n      if (!props.trials.length) return 0;\n      return props.trials.reduce((s, t) => s + t.L, 0) / props.trials.length;\n    });\n    const avgMelted = computed(() => {\n      if (!props.trials.length) return 0;\n      return props.trials.reduce((s, t) => s + t.meltedMass, 0) / props.trials.length;\n    });\n    const totalQ = computed(() => props.trials.reduce((s, t) => s + t.Q, 0));\n    const cv = computed(() => {\n      if (props.trials.length < 2) return 0;\n      const mean = avgL.value;\n      const variance = props.trials.reduce((s, t) => s + Math.pow(t.L - mean, 2), 0) / (props.trials.length - 1);\n      return Math.sqrt(variance) / mean * 100;\n    });\n    const trueL = computed(() => props.trials.length > 0 ? props.trials[0].L : 0);\n    const errorPct = computed(() => trueL.value > 0 ? Math.abs(avgL.value - trueL.value) / trueL.value * 100 : 0);\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        !__props.trials.length ? (_openBlock(), _createElementBlock(\"div\", _hoisted_2, [..._cache[0] || (_cache[0] = [\n          _createElementVNode(\"div\", { class: \"empty-icon\" }, \"📊\", -1),\n          _createElementVNode(\"div\", null, \"لا توجد نتائج\", -1),\n          _createElementVNode(\"div\", { class: \"empty-hint\" }, \"سجل تجارب لتحليل النتائج\", -1)\n        ])])) : (_openBlock(), _createElementBlock(_Fragment, { key: 1 }, [\n          _createElementVNode(\"div\", _hoisted_3, [\n            _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"عدد التجارب\", -1)),\n            _createElementVNode(\"div\", _hoisted_4, _toDisplayString(__props.trials.length), 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_5, [\n            _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"متوسط L\", -1)),\n            _createElementVNode(\"div\", _hoisted_6, _toDisplayString((avgL.value / 1e3).toFixed(0)) + \" kJ/kg\", 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_7, [\n            _cache[3] || (_cache[3] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"L الحقيقي\", -1)),\n            _createElementVNode(\"div\", _hoisted_8, _toDisplayString((trueL.value / 1e3).toFixed(0)) + \" kJ/kg\", 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_9, [\n            _cache[4] || (_cache[4] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"معامل التباين\", -1)),\n            _createElementVNode(\"div\", _hoisted_10, _toDisplayString(cv.value.toFixed(1)) + \"%\", 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_11, [\n            _cache[5] || (_cache[5] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"خطأ النسبة\", -1)),\n            _createElementVNode(\"div\", {\n              class: _normalizeClass(errorPct.value < 5 ? \"stat-value green\" : \"stat-value yellow\")\n            }, _toDisplayString(errorPct.value.toFixed(1)) + \"%\", 3)\n          ]),\n          _createElementVNode(\"div\", _hoisted_12, [\n            _cache[6] || (_cache[6] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"الحرارة الكلية\", -1)),\n            _createElementVNode(\"div\", _hoisted_13, _toDisplayString((totalQ.value / 1e3).toFixed(1)) + \" kJ\", 1)\n          ])\n        ], 64))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196195558,
+      "end": 1783196195735,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/latent-heat/panels/LatentHeatResultsPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, toDisplayString as _toDisplayString, normalizeClass as _normalizeClass, Fragment as _Fragment } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = {\n  key: 0,\n  class: \"no-results\"\n}\nconst _hoisted_3 = { class: \"stat-box\" }\nconst _hoisted_4 = { class: \"stat-value\" }\nconst _hoisted_5 = { class: \"stat-box highlight\" }\nconst _hoisted_6 = { class: \"stat-value green\" }\nconst _hoisted_7 = { class: \"stat-box\" }\nconst _hoisted_8 = { class: \"stat-value\" }\nconst _hoisted_9 = { class: \"stat-box\" }\nconst _hoisted_10 = { class: \"stat-value\" }\nconst _hoisted_11 = { class: \"stat-box\" }\nconst _hoisted_12 = { class: \"stat-box\" }\nconst _hoisted_13 = { class: \"stat-value\" }\n\nimport { computed } from 'vue'\nimport type { LatentHeatTrial } from '../../../../composables/latent-heat/useLatentHeatTrials'\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'LatentHeatResultsPanel',\n  props: {\n    trials: {}\n  },\n  setup(__props: any) {\n\nconst props = __props\nconst avgL = computed(() => {\n  if (!props.trials.length) return 0\n  return props.trials.reduce((s, t) => s + t.L, 0) / props.trials.length\n})\nconst avgMelted = computed(() => {\n  if (!props.trials.length) return 0\n  return props.trials.reduce((s, t) => s + t.meltedMass, 0) / props.trials.length\n})\nconst totalQ = computed(() => props.trials.reduce((s, t) => s + t.Q, 0))\nconst cv = computed(() => {\n  if (props.trials.length < 2) return 0\n  const mean = avgL.value\n  const variance = props.trials.reduce((s, t) => s + Math.pow(t.L - mean, 2), 0) / (props.trials.length - 1)\n  return Math.sqrt(variance) / mean * 100\n})\nconst trueL = computed(() => props.trials.length > 0 ? props.trials[0].L : 0)\nconst errorPct = computed(() => trueL.value > 0 ? Math.abs(avgL.value - trueL.value) / trueL.value * 100 : 0)\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (!__props.trials.length)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_2, [...(_cache[0] || (_cache[0] = [\n          _createElementVNode(\"div\", { class: \"empty-icon\" }, \"📊\", -1),\n          _createElementVNode(\"div\", null, \"لا توجد نتائج\", -1),\n          _createElementVNode(\"div\", { class: \"empty-hint\" }, \"سجل تجارب لتحليل النتائج\", -1)\n        ]))]))\n      : (_openBlock(), _createElementBlock(_Fragment, { key: 1 }, [\n          _createElementVNode(\"div\", _hoisted_3, [\n            _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"عدد التجارب\", -1)),\n            _createElementVNode(\"div\", _hoisted_4, _toDisplayString(__props.trials.length), 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_5, [\n            _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"متوسط L\", -1)),\n            _createElementVNode(\"div\", _hoisted_6, _toDisplayString((avgL.value/1000).toFixed(0)) + \" kJ/kg\", 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_7, [\n            _cache[3] || (_cache[3] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"L الحقيقي\", -1)),\n            _createElementVNode(\"div\", _hoisted_8, _toDisplayString((trueL.value/1000).toFixed(0)) + \" kJ/kg\", 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_9, [\n            _cache[4] || (_cache[4] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"معامل التباين\", -1)),\n            _createElementVNode(\"div\", _hoisted_10, _toDisplayString(cv.value.toFixed(1)) + \"%\", 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_11, [\n            _cache[5] || (_cache[5] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"خطأ النسبة\", -1)),\n            _createElementVNode(\"div\", {\n              class: _normalizeClass(errorPct.value < 5 ? 'stat-value green' : 'stat-value yellow')\n            }, _toDisplayString(errorPct.value.toFixed(1)) + \"%\", 3)\n          ]),\n          _createElementVNode(\"div\", _hoisted_12, [\n            _cache[6] || (_cache[6] = _createElementVNode(\"div\", { class: \"stat-label\" }, \"الحرارة الكلية\", -1)),\n            _createElementVNode(\"div\", _hoisted_13, _toDisplayString((totalQ.value/1000).toFixed(1)) + \" kJ\", 1)\n          ])\n        ], 64))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195735,
+      "end": 1783196195735,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195735,
+      "end": 1783196195735,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196195735,
+      "end": 1783196195735,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195735,
+      "end": 1783196195735,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195735,
+      "end": 1783196195735,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195735,
+      "end": 1783196195735,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195735,
+      "end": 1783196195735,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195735,
+      "end": 1783196195735,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195735,
+      "end": 1783196195735,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195735,
+      "end": 1783196195735,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195735,
+      "end": 1783196195735,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195735,
+      "end": 1783196195735,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195735,
+      "end": 1783196195735,
+      "order": "normal"
+    }
+  ]
+}

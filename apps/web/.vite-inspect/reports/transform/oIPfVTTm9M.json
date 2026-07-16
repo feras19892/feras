@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/branches-page.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, normalizeStyle as _normalizeStyle } from \"vue\"\n\nconst _hoisted_1 = { class: \"branches-page\" }\nconst _hoisted_2 = { class: \"page-header\" }\nconst _hoisted_3 = { class: \"grid\" }\nconst _hoisted_4 = [\"onClick\"]\nconst _hoisted_5 = { class: \"desc\" }\nconst _hoisted_6 = { class: \"meta\" }\nconst _hoisted_7 = { class: \"badge\" }\n\nimport { useRouter } from 'vue-router';\nimport { branches } from './catalog';\nimport { useI18n } from '../../composables/useI18n';\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'branches-page',\n  setup(__props) {\n\nconst { t } = useI18n();\nconst router = useRouter();\n\nfunction goToBranch(id: string) {\n  router.push(`/physics/${id}`);\n}\n\nfunction branchNameKey(id: string): string {\n  const map: Record<string, string> = {\n    mechanics: 'experiments.branchMechanics',\n    waves: 'experiments.branchWaves',\n    heat: 'experiments.branchHeat',\n    electricity: 'experiments.branchElectricity',\n    electromagnetism: 'experiments.branchElectromagnetism',\n  };\n  return map[id] || id;\n}\n\nfunction branchDescKey(id: string): string {\n  const map: Record<string, string> = {\n    mechanics: 'experiments.branchMechanicsDesc',\n    waves: 'experiments.branchWavesDesc',\n    heat: 'experiments.branchHeatDesc',\n    electricity: 'experiments.branchElectricityDesc',\n    electromagnetism: 'experiments.branchElectromagnetismDesc',\n  };\n  return map[id] || id;\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"header\", _hoisted_2, [\n      _createElementVNode(\"h1\", null, \"🔬 \" + _toDisplayString(_unref(t)('experiments.physicsBranches')), 1),\n      _createElementVNode(\"p\", null, _toDisplayString(_unref(t)('experiments.chooseBranchToStart')), 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_3, [\n      (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(_unref(branches), (branch) => {\n        return (_openBlock(), _createElementBlock(\"div\", {\n          key: branch.id,\n          class: \"card\",\n          style: _normalizeStyle({ borderColor: branch.color }),\n          onClick: ($event: any) => (goToBranch(branch.id))\n        }, [\n          _createElementVNode(\"div\", {\n            class: \"icon\",\n            style: _normalizeStyle({ background: branch.color })\n          }, _toDisplayString(branch.icon), 5),\n          _createElementVNode(\"h3\", null, _toDisplayString(_unref(t)(branchNameKey(branch.id))), 1),\n          _createElementVNode(\"p\", _hoisted_5, _toDisplayString(_unref(t)(branchDescKey(branch.id))), 1),\n          _createElementVNode(\"div\", _hoisted_6, [\n            _createElementVNode(\"span\", _hoisted_7, _toDisplayString(branch.experiments.length) + \" \" + _toDisplayString(branch.experiments.length === 1 ? _unref(t)('experiments.experimentsCount') : _unref(t)('experiments.experimentsCountPlural')), 1)\n          ])\n        ], 12, _hoisted_4))\n      }), 128))\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783196192424,
+      "end": 1783196192424
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196192425,
+      "end": 1783196192425,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, normalizeStyle as _normalizeStyle } from \"vue\";\nconst _hoisted_1 = { class: \"branches-page\" };\nconst _hoisted_2 = { class: \"page-header\" };\nconst _hoisted_3 = { class: \"grid\" };\nconst _hoisted_4 = [\"onClick\"];\nconst _hoisted_5 = { class: \"desc\" };\nconst _hoisted_6 = { class: \"meta\" };\nconst _hoisted_7 = { class: \"badge\" };\nimport { useRouter } from \"vue-router\";\nimport { branches } from \"./catalog\";\nimport { useI18n } from \"../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"branches-page\",\n  setup(__props) {\n    const { t } = useI18n();\n    const router = useRouter();\n    function goToBranch(id) {\n      router.push(`/physics/${id}`);\n    }\n    function branchNameKey(id) {\n      const map = {\n        mechanics: \"experiments.branchMechanics\",\n        waves: \"experiments.branchWaves\",\n        heat: \"experiments.branchHeat\",\n        electricity: \"experiments.branchElectricity\",\n        electromagnetism: \"experiments.branchElectromagnetism\"\n      };\n      return map[id] || id;\n    }\n    function branchDescKey(id) {\n      const map = {\n        mechanics: \"experiments.branchMechanicsDesc\",\n        waves: \"experiments.branchWavesDesc\",\n        heat: \"experiments.branchHeatDesc\",\n        electricity: \"experiments.branchElectricityDesc\",\n        electromagnetism: \"experiments.branchElectromagnetismDesc\"\n      };\n      return map[id] || id;\n    }\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"header\", _hoisted_2, [\n          _createElementVNode(\"h1\", null, \"🔬 \" + _toDisplayString(_unref(t)(\"experiments.physicsBranches\")), 1),\n          _createElementVNode(\"p\", null, _toDisplayString(_unref(t)(\"experiments.chooseBranchToStart\")), 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_3, [\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(_unref(branches), (branch) => {\n            return _openBlock(), _createElementBlock(\"div\", {\n              key: branch.id,\n              class: \"card\",\n              style: _normalizeStyle({ borderColor: branch.color }),\n              onClick: ($event) => goToBranch(branch.id)\n            }, [\n              _createElementVNode(\"div\", {\n                class: \"icon\",\n                style: _normalizeStyle({ background: branch.color })\n              }, _toDisplayString(branch.icon), 5),\n              _createElementVNode(\"h3\", null, _toDisplayString(_unref(t)(branchNameKey(branch.id))), 1),\n              _createElementVNode(\"p\", _hoisted_5, _toDisplayString(_unref(t)(branchDescKey(branch.id))), 1),\n              _createElementVNode(\"div\", _hoisted_6, [\n                _createElementVNode(\"span\", _hoisted_7, _toDisplayString(branch.experiments.length) + \" \" + _toDisplayString(branch.experiments.length === 1 ? _unref(t)(\"experiments.experimentsCount\") : _unref(t)(\"experiments.experimentsCountPlural\")), 1)\n              ])\n            ], 12, _hoisted_4);\n          }), 128))\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196192425,
+      "end": 1783196192464,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/branches-page.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, normalizeStyle as _normalizeStyle } from \"vue\"\n\nconst _hoisted_1 = { class: \"branches-page\" }\nconst _hoisted_2 = { class: \"page-header\" }\nconst _hoisted_3 = { class: \"grid\" }\nconst _hoisted_4 = [\"onClick\"]\nconst _hoisted_5 = { class: \"desc\" }\nconst _hoisted_6 = { class: \"meta\" }\nconst _hoisted_7 = { class: \"badge\" }\n\nimport { useRouter } from 'vue-router';\nimport { branches } from './catalog';\nimport { useI18n } from '../../composables/useI18n';\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'branches-page',\n  setup(__props) {\n\nconst { t } = useI18n();\nconst router = useRouter();\n\nfunction goToBranch(id: string) {\n  router.push(`/physics/${id}`);\n}\n\nfunction branchNameKey(id: string): string {\n  const map: Record<string, string> = {\n    mechanics: 'experiments.branchMechanics',\n    waves: 'experiments.branchWaves',\n    heat: 'experiments.branchHeat',\n    electricity: 'experiments.branchElectricity',\n    electromagnetism: 'experiments.branchElectromagnetism',\n  };\n  return map[id] || id;\n}\n\nfunction branchDescKey(id: string): string {\n  const map: Record<string, string> = {\n    mechanics: 'experiments.branchMechanicsDesc',\n    waves: 'experiments.branchWavesDesc',\n    heat: 'experiments.branchHeatDesc',\n    electricity: 'experiments.branchElectricityDesc',\n    electromagnetism: 'experiments.branchElectromagnetismDesc',\n  };\n  return map[id] || id;\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"header\", _hoisted_2, [\n      _createElementVNode(\"h1\", null, \"🔬 \" + _toDisplayString(_unref(t)('experiments.physicsBranches')), 1),\n      _createElementVNode(\"p\", null, _toDisplayString(_unref(t)('experiments.chooseBranchToStart')), 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_3, [\n      (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(_unref(branches), (branch) => {\n        return (_openBlock(), _createElementBlock(\"div\", {\n          key: branch.id,\n          class: \"card\",\n          style: _normalizeStyle({ borderColor: branch.color }),\n          onClick: ($event: any) => (goToBranch(branch.id))\n        }, [\n          _createElementVNode(\"div\", {\n            class: \"icon\",\n            style: _normalizeStyle({ background: branch.color })\n          }, _toDisplayString(branch.icon), 5),\n          _createElementVNode(\"h3\", null, _toDisplayString(_unref(t)(branchNameKey(branch.id))), 1),\n          _createElementVNode(\"p\", _hoisted_5, _toDisplayString(_unref(t)(branchDescKey(branch.id))), 1),\n          _createElementVNode(\"div\", _hoisted_6, [\n            _createElementVNode(\"span\", _hoisted_7, _toDisplayString(branch.experiments.length) + \" \" + _toDisplayString(branch.experiments.length === 1 ? _unref(t)('experiments.experimentsCount') : _unref(t)('experiments.experimentsCountPlural')), 1)\n          ])\n        ], 12, _hoisted_4))\n      }), 128))\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196192464,
+      "end": 1783196192464,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196192464,
+      "end": 1783196192464,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196192464,
+      "end": 1783196192464,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196192464,
+      "end": 1783196192464,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196192465,
+      "end": 1783196192465,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196192465,
+      "end": 1783196192465,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196192465,
+      "end": 1783196192465,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196192465,
+      "end": 1783196192465,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196192465,
+      "end": 1783196192465,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196192465,
+      "end": 1783196192465,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196192465,
+      "end": 1783196192465,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196192465,
+      "end": 1783196192465,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196192465,
+      "end": 1783196192465,
+      "order": "normal"
+    }
+  ]
+}

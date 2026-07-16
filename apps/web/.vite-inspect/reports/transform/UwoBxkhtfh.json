@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/latent-heat/useLatentHeatExperiment.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { ref, reactive, computed, watch } from 'vue'\nimport { useRouter } from 'vue-router'\nimport type { AnalysisPayload } from '../../types/physics'\nimport { sendToAnalysis } from '../analysis/sendToAnalysis'\nimport { useLatentHeatLayout } from './useLatentHeatLayout'\nimport { useLatentHeatTrials } from './useLatentHeatTrials'\nimport { LATENT_HEAT, meltedMass, remainingIce, tempForPhase, phaseRatio } from './useLatentHeatCalculations'\n\nexport function useLatentHeatExperiment() {\n  const params = reactive({\n    mass: 0.5,          // kg\n    phaseType: 'fusion' as 'fusion' | 'vaporization',\n    heatingPower: 500,  // J/s (W)\n  })\n\n  watch(() => params.mass, (v) => { params.mass = Math.max(0.1, Math.min(2, Math.round(v * 100) / 100)) })\n  watch(() => params.heatingPower, (v) => { params.heatingPower = Math.max(100, Math.min(2000, Math.round(v / 50) * 50)) })\n\n  const running = ref(false)\n  const paused = ref(false)\n  const simTime = ref(0)\n  const phase = ref<'ready' | 'heating' | 'done'>('ready')\n\n  const currentQ = ref(0) // energy added (J)\n  const L = computed(() => params.phaseType === 'fusion' ? LATENT_HEAT.fusion : LATENT_HEAT.vaporization)\n  const totalQ = computed(() => params.mass * L.value)\n  const melted = computed(() => meltedMass(currentQ.value, L.value, params.mass))\n  const remaining = computed(() => remainingIce(currentQ.value, L.value, params.mass))\n  const ratio = computed(() => phaseRatio(currentQ.value, L.value, params.mass))\n  const currentTemp = computed(() => tempForPhase(params.phaseType))\n\n  function updateSim(dt: number) {\n    if (!running.value || paused.value) return\n    simTime.value += dt\n    const Qrate = params.heatingPower\n    if (currentQ.value < totalQ.value) {\n      phase.value = 'heating'\n      currentQ.value += Qrate * dt\n      if (currentQ.value >= totalQ.value) {\n        currentQ.value = totalQ.value\n        phase.value = 'done'\n      }\n    } else {\n      phase.value = 'done'\n    }\n  }\n\n  function togglePause() {\n    if (!running.value) {\n      running.value = true; paused.value = false; simTime.value = 0\n      phase.value = 'heating'; currentQ.value = 0\n    } else { paused.value = !paused.value }\n  }\n  function resetSim() {\n    running.value = false; paused.value = false; simTime.value = 0; phase.value = 'ready'\n    currentQ.value = 0\n  }\n\n  const layout = useLatentHeatLayout()\n  const trials = useLatentHeatTrials(\n    { get value() { return { mass: params.mass, phaseType: params.phaseType, Q: currentQ.value, L: L.value, meltedMass: melted.value, remainingMass: remaining.value, temp: currentTemp.value } } }\n  )\n\n  const router = useRouter()\n  function exportToAnalysis() {\n    if (trials.trials.value.length < 2) return\n    const payload: AnalysisPayload = {\n      sourceExperiment: 'latent-heat', sourceNameAr: 'الحرارة الكامنة',\n      hasCalcTab: true,\n      readings: trials.trials.value.map(t => ({ mass: t.mass, Q: t.Q, L: t.L, melted: t.meltedMass })),\n      columns: [\n        { key: 'mass', label: 'm (kg)', unit: 'kg' },\n        { key: 'Q', label: 'Q (J)', unit: 'J' },\n        { key: 'L', label: 'L (J/kg)', unit: 'J/kg' },\n        { key: 'melted', label: 'melted (kg)', unit: 'kg' },\n      ],\n      equations: [\n        { name: 'Latent Heat', formula: 'Q = m × L', variables: [{ symbol: 'Q', label: 'Heat' }, { symbol: 'm', label: 'Mass' }, { symbol: 'L', label: 'Latent Heat' }], solveFor: ['L'] },\n      ],\n      suggestedPlots: [{ xKey: 'Q', yKey: 'melted', xLabel: 'Q (J)', yLabel: 'melted (kg)', type: 'scatter' }],\n    }\n    sendToAnalysis(router, payload)\n  }\n  function handleDrop(fromId: string, x?: number, y?: number) {\n    if (x === undefined || y === undefined) return\n    const el = document.elementFromPoint(x, y)\n    const toPanel = el?.closest('.draggable-panel')\n    const toId = toPanel?.getAttribute('data-id')\n    if (!toId || fromId === toId) return\n    for (const col of Object.keys(layout.columnMap)) {\n      const arr = layout.columnMap[col]\n      const fi = arr.indexOf(fromId), ti = arr.indexOf(toId)\n      if (fi >= 0 && ti >= 0) { const t = arr[fi]; arr[fi] = arr[ti]; arr[ti] = t }\n    }\n  }\n  function onResizeStart(col: string, e: MouseEvent) {\n    if (!(col in layout.widths)) return\n    const startX = e.clientX, startW = (layout.widths as Record<string, number>)[col] as number\n    function move(ev: MouseEvent) { (layout.widths as Record<string, number>)[col] = Math.max(220, startW + (ev.clientX - startX)) }\n    function up() { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up) }\n    window.addEventListener('mousemove', move); window.addEventListener('mouseup', up)\n  }\n\n  const lab = { running, paused, simTime, phase, currentQ, L, totalQ, melted, remaining, ratio, currentTemp, togglePause, updateSim }\n  return { params, lab, layout, trials, resetSim, exportToAnalysis, onResizeStart, handleDrop }\n}\n",
+      "start": 1783196193558,
+      "end": 1783196193828,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193828,
+      "end": 1783196193828,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { ref, reactive, computed, watch } from \"vue\";\nimport { useRouter } from \"vue-router\";\nimport { sendToAnalysis } from \"../analysis/sendToAnalysis\";\nimport { useLatentHeatLayout } from \"./useLatentHeatLayout\";\nimport { useLatentHeatTrials } from \"./useLatentHeatTrials\";\nimport { LATENT_HEAT, meltedMass, remainingIce, tempForPhase, phaseRatio } from \"./useLatentHeatCalculations\";\nexport function useLatentHeatExperiment() {\n  const params = reactive({\n    mass: 0.5,\n    // kg\n    phaseType: \"fusion\",\n    heatingPower: 500\n    // J/s (W)\n  });\n  watch(() => params.mass, (v) => {\n    params.mass = Math.max(0.1, Math.min(2, Math.round(v * 100) / 100));\n  });\n  watch(() => params.heatingPower, (v) => {\n    params.heatingPower = Math.max(100, Math.min(2e3, Math.round(v / 50) * 50));\n  });\n  const running = ref(false);\n  const paused = ref(false);\n  const simTime = ref(0);\n  const phase = ref(\"ready\");\n  const currentQ = ref(0);\n  const L = computed(() => params.phaseType === \"fusion\" ? LATENT_HEAT.fusion : LATENT_HEAT.vaporization);\n  const totalQ = computed(() => params.mass * L.value);\n  const melted = computed(() => meltedMass(currentQ.value, L.value, params.mass));\n  const remaining = computed(() => remainingIce(currentQ.value, L.value, params.mass));\n  const ratio = computed(() => phaseRatio(currentQ.value, L.value, params.mass));\n  const currentTemp = computed(() => tempForPhase(params.phaseType));\n  function updateSim(dt) {\n    if (!running.value || paused.value) return;\n    simTime.value += dt;\n    const Qrate = params.heatingPower;\n    if (currentQ.value < totalQ.value) {\n      phase.value = \"heating\";\n      currentQ.value += Qrate * dt;\n      if (currentQ.value >= totalQ.value) {\n        currentQ.value = totalQ.value;\n        phase.value = \"done\";\n      }\n    } else {\n      phase.value = \"done\";\n    }\n  }\n  function togglePause() {\n    if (!running.value) {\n      running.value = true;\n      paused.value = false;\n      simTime.value = 0;\n      phase.value = \"heating\";\n      currentQ.value = 0;\n    } else {\n      paused.value = !paused.value;\n    }\n  }\n  function resetSim() {\n    running.value = false;\n    paused.value = false;\n    simTime.value = 0;\n    phase.value = \"ready\";\n    currentQ.value = 0;\n  }\n  const layout = useLatentHeatLayout();\n  const trials = useLatentHeatTrials(\n    { get value() {\n      return { mass: params.mass, phaseType: params.phaseType, Q: currentQ.value, L: L.value, meltedMass: melted.value, remainingMass: remaining.value, temp: currentTemp.value };\n    } }\n  );\n  const router = useRouter();\n  function exportToAnalysis() {\n    if (trials.trials.value.length < 2) return;\n    const payload = {\n      sourceExperiment: \"latent-heat\",\n      sourceNameAr: \"الحرارة الكامنة\",\n      hasCalcTab: true,\n      readings: trials.trials.value.map((t) => ({ mass: t.mass, Q: t.Q, L: t.L, melted: t.meltedMass })),\n      columns: [\n        { key: \"mass\", label: \"m (kg)\", unit: \"kg\" },\n        { key: \"Q\", label: \"Q (J)\", unit: \"J\" },\n        { key: \"L\", label: \"L (J/kg)\", unit: \"J/kg\" },\n        { key: \"melted\", label: \"melted (kg)\", unit: \"kg\" }\n      ],\n      equations: [\n        { name: \"Latent Heat\", formula: \"Q = m × L\", variables: [{ symbol: \"Q\", label: \"Heat\" }, { symbol: \"m\", label: \"Mass\" }, { symbol: \"L\", label: \"Latent Heat\" }], solveFor: [\"L\"] }\n      ],\n      suggestedPlots: [{ xKey: \"Q\", yKey: \"melted\", xLabel: \"Q (J)\", yLabel: \"melted (kg)\", type: \"scatter\" }]\n    };\n    sendToAnalysis(router, payload);\n  }\n  function handleDrop(fromId, x, y) {\n    if (x === void 0 || y === void 0) return;\n    const el = document.elementFromPoint(x, y);\n    const toPanel = el?.closest(\".draggable-panel\");\n    const toId = toPanel?.getAttribute(\"data-id\");\n    if (!toId || fromId === toId) return;\n    for (const col of Object.keys(layout.columnMap)) {\n      const arr = layout.columnMap[col];\n      const fi = arr.indexOf(fromId), ti = arr.indexOf(toId);\n      if (fi >= 0 && ti >= 0) {\n        const t = arr[fi];\n        arr[fi] = arr[ti];\n        arr[ti] = t;\n      }\n    }\n  }\n  function onResizeStart(col, e) {\n    if (!(col in layout.widths)) return;\n    const startX = e.clientX, startW = layout.widths[col];\n    function move(ev) {\n      layout.widths[col] = Math.max(220, startW + (ev.clientX - startX));\n    }\n    function up() {\n      window.removeEventListener(\"mousemove\", move);\n      window.removeEventListener(\"mouseup\", up);\n    }\n    window.addEventListener(\"mousemove\", move);\n    window.addEventListener(\"mouseup\", up);\n  }\n  const lab = { running, paused, simTime, phase, currentQ, L, totalQ, melted, remaining, ratio, currentTemp, togglePause, updateSim };\n  return { params, lab, layout, trials, resetSim, exportToAnalysis, onResizeStart, handleDrop };\n}\n",
+      "start": 1783196193828,
+      "end": 1783196194389,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/latent-heat/useLatentHeatExperiment.ts"
+        ],
+        "sourcesContent": [
+          "import { ref, reactive, computed, watch } from 'vue'\nimport { useRouter } from 'vue-router'\nimport type { AnalysisPayload } from '../../types/physics'\nimport { sendToAnalysis } from '../analysis/sendToAnalysis'\nimport { useLatentHeatLayout } from './useLatentHeatLayout'\nimport { useLatentHeatTrials } from './useLatentHeatTrials'\nimport { LATENT_HEAT, meltedMass, remainingIce, tempForPhase, phaseRatio } from './useLatentHeatCalculations'\n\nexport function useLatentHeatExperiment() {\n  const params = reactive({\n    mass: 0.5,          // kg\n    phaseType: 'fusion' as 'fusion' | 'vaporization',\n    heatingPower: 500,  // J/s (W)\n  })\n\n  watch(() => params.mass, (v) => { params.mass = Math.max(0.1, Math.min(2, Math.round(v * 100) / 100)) })\n  watch(() => params.heatingPower, (v) => { params.heatingPower = Math.max(100, Math.min(2000, Math.round(v / 50) * 50)) })\n\n  const running = ref(false)\n  const paused = ref(false)\n  const simTime = ref(0)\n  const phase = ref<'ready' | 'heating' | 'done'>('ready')\n\n  const currentQ = ref(0) // energy added (J)\n  const L = computed(() => params.phaseType === 'fusion' ? LATENT_HEAT.fusion : LATENT_HEAT.vaporization)\n  const totalQ = computed(() => params.mass * L.value)\n  const melted = computed(() => meltedMass(currentQ.value, L.value, params.mass))\n  const remaining = computed(() => remainingIce(currentQ.value, L.value, params.mass))\n  const ratio = computed(() => phaseRatio(currentQ.value, L.value, params.mass))\n  const currentTemp = computed(() => tempForPhase(params.phaseType))\n\n  function updateSim(dt: number) {\n    if (!running.value || paused.value) return\n    simTime.value += dt\n    const Qrate = params.heatingPower\n    if (currentQ.value < totalQ.value) {\n      phase.value = 'heating'\n      currentQ.value += Qrate * dt\n      if (currentQ.value >= totalQ.value) {\n        currentQ.value = totalQ.value\n        phase.value = 'done'\n      }\n    } else {\n      phase.value = 'done'\n    }\n  }\n\n  function togglePause() {\n    if (!running.value) {\n      running.value = true; paused.value = false; simTime.value = 0\n      phase.value = 'heating'; currentQ.value = 0\n    } else { paused.value = !paused.value }\n  }\n  function resetSim() {\n    running.value = false; paused.value = false; simTime.value = 0; phase.value = 'ready'\n    currentQ.value = 0\n  }\n\n  const layout = useLatentHeatLayout()\n  const trials = useLatentHeatTrials(\n    { get value() { return { mass: params.mass, phaseType: params.phaseType, Q: currentQ.value, L: L.value, meltedMass: melted.value, remainingMass: remaining.value, temp: currentTemp.value } } }\n  )\n\n  const router = useRouter()\n  function exportToAnalysis() {\n    if (trials.trials.value.length < 2) return\n    const payload: AnalysisPayload = {\n      sourceExperiment: 'latent-heat', sourceNameAr: 'الحرارة الكامنة',\n      hasCalcTab: true,\n      readings: trials.trials.value.map(t => ({ mass: t.mass, Q: t.Q, L: t.L, melted: t.meltedMass })),\n      columns: [\n        { key: 'mass', label: 'm (kg)', unit: 'kg' },\n        { key: 'Q', label: 'Q (J)', unit: 'J' },\n        { key: 'L', label: 'L (J/kg)', unit: 'J/kg' },\n        { key: 'melted', label: 'melted (kg)', unit: 'kg' },\n      ],\n      equations: [\n        { name: 'Latent Heat', formula: 'Q = m × L', variables: [{ symbol: 'Q', label: 'Heat' }, { symbol: 'm', label: 'Mass' }, { symbol: 'L', label: 'Latent Heat' }], solveFor: ['L'] },\n      ],\n      suggestedPlots: [{ xKey: 'Q', yKey: 'melted', xLabel: 'Q (J)', yLabel: 'melted (kg)', type: 'scatter' }],\n    }\n    sendToAnalysis(router, payload)\n  }\n  function handleDrop(fromId: string, x?: number, y?: number) {\n    if (x === undefined || y === undefined) return\n    const el = document.elementFromPoint(x, y)\n    const toPanel = el?.closest('.draggable-panel')\n    const toId = toPanel?.getAttribute('data-id')\n    if (!toId || fromId === toId) return\n    for (const col of Object.keys(layout.columnMap)) {\n      const arr = layout.columnMap[col]\n      const fi = arr.indexOf(fromId), ti = arr.indexOf(toId)\n      if (fi >= 0 && ti >= 0) { const t = arr[fi]; arr[fi] = arr[ti]; arr[ti] = t }\n    }\n  }\n  function onResizeStart(col: string, e: MouseEvent) {\n    if (!(col in layout.widths)) return\n    const startX = e.clientX, startW = (layout.widths as Record<string, number>)[col] as number\n    function move(ev: MouseEvent) { (layout.widths as Record<string, number>)[col] = Math.max(220, startW + (ev.clientX - startX)) }\n    function up() { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up) }\n    window.addEventListener('mousemove', move); window.addEventListener('mouseup', up)\n  }\n\n  const lab = { running, paused, simTime, phase, currentQ, L, totalQ, melted, remaining, ratio, currentTemp, togglePause, updateSim }\n  return { params, lab, layout, trials, resetSim, exportToAnalysis, onResizeStart, handleDrop }\n}\n"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194389,
+      "end": 1783196194389,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194389,
+      "end": 1783196194389,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194389,
+      "end": 1783196194389,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194389,
+      "end": 1783196194389,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194389,
+      "end": 1783196194389,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194389,
+      "end": 1783196194389,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194389,
+      "end": 1783196194389,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194389,
+      "end": 1783196194389,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194389,
+      "end": 1783196194389,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194389,
+      "end": 1783196194389,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194389,
+      "end": 1783196194389,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194389,
+      "end": 1783196194389,
+      "order": "normal"
+    }
+  ]
+}

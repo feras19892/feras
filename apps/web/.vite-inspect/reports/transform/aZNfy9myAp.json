@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/polarization/panels/PolarizationParamsPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"param-row\" }\nconst _hoisted_3 = { class: \"param-header\" }\nconst _hoisted_4 = { class: \"param-val cyan\" }\nconst _hoisted_5 = [\"value\"]\nconst _hoisted_6 = { class: \"param-row\" }\nconst _hoisted_7 = { class: \"param-header\" }\nconst _hoisted_8 = { class: \"param-val amber\" }\nconst _hoisted_9 = [\"value\"]\nconst _hoisted_10 = { class: \"param-row\" }\nconst _hoisted_11 = { class: \"param-header\" }\nconst _hoisted_12 = { class: \"param-val green\" }\nconst _hoisted_13 = [\"value\"]\n\nimport { useI18n } from '../../../../composables/useI18n'\n\ninterface Props {\n  params: { polarizerAngle: number; analyzerAngle: number; I0: number }\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'PolarizationParamsPanel',\n  props: {\n    params: {}\n  },\n  emits: [\"update:params\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\n\nconst props = __props\nconst emit = __emit\n\nfunction set(key: string, val: number) {\n  emit('update:params', { ...props.params, [key]: val })\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"div\", _hoisted_3, [\n        _cache[3] || (_cache[3] = _createElementVNode(\"span\", { class: \"param-label\" }, \"θ₁ — Polarizer angle\", -1)),\n        _createElementVNode(\"span\", _hoisted_4, _toDisplayString(__props.params.polarizerAngle) + \"°\", 1)\n      ]),\n      _createElementVNode(\"input\", {\n        class: \"slider\",\n        type: \"range\",\n        min: \"0\",\n        max: \"180\",\n        step: \"1\",\n        value: __props.params.polarizerAngle,\n        onInput: _cache[0] || (_cache[0] = ($event: any) => (set('polarizerAngle', Number(($event.target as HTMLInputElement).value))))\n      }, null, 40, _hoisted_5)\n    ]),\n    _createElementVNode(\"div\", _hoisted_6, [\n      _createElementVNode(\"div\", _hoisted_7, [\n        _cache[4] || (_cache[4] = _createElementVNode(\"span\", { class: \"param-label\" }, \"θ₂ — Analyzer angle\", -1)),\n        _createElementVNode(\"span\", _hoisted_8, _toDisplayString(__props.params.analyzerAngle) + \"°\", 1)\n      ]),\n      _createElementVNode(\"input\", {\n        class: \"slider\",\n        type: \"range\",\n        min: \"0\",\n        max: \"180\",\n        step: \"1\",\n        value: __props.params.analyzerAngle,\n        onInput: _cache[1] || (_cache[1] = ($event: any) => (set('analyzerAngle', Number(($event.target as HTMLInputElement).value))))\n      }, null, 40, _hoisted_9)\n    ]),\n    _createElementVNode(\"div\", _hoisted_10, [\n      _createElementVNode(\"div\", _hoisted_11, [\n        _cache[5] || (_cache[5] = _createElementVNode(\"span\", { class: \"param-label\" }, \"I₀ — Input intensity\", -1)),\n        _createElementVNode(\"span\", _hoisted_12, _toDisplayString(__props.params.I0), 1)\n      ]),\n      _createElementVNode(\"input\", {\n        class: \"slider\",\n        type: \"range\",\n        min: \"10\",\n        max: \"200\",\n        step: \"5\",\n        value: __props.params.I0,\n        onInput: _cache[2] || (_cache[2] = ($event: any) => (set('I0', Number(($event.target as HTMLInputElement).value))))\n      }, null, 40, _hoisted_13)\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783196195615,
+      "end": 1783196195615
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195615,
+      "end": 1783196195615,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nconst _hoisted_2 = { class: \"param-row\" };\nconst _hoisted_3 = { class: \"param-header\" };\nconst _hoisted_4 = { class: \"param-val cyan\" };\nconst _hoisted_5 = [\"value\"];\nconst _hoisted_6 = { class: \"param-row\" };\nconst _hoisted_7 = { class: \"param-header\" };\nconst _hoisted_8 = { class: \"param-val amber\" };\nconst _hoisted_9 = [\"value\"];\nconst _hoisted_10 = { class: \"param-row\" };\nconst _hoisted_11 = { class: \"param-header\" };\nconst _hoisted_12 = { class: \"param-val green\" };\nconst _hoisted_13 = [\"value\"];\nimport { useI18n } from \"../../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"PolarizationParamsPanel\",\n  props: {\n    params: {}\n  },\n  emits: [\"update:params\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const props = __props;\n    const emit = __emit;\n    function set(key, val) {\n      emit(\"update:params\", { ...props.params, [key]: val });\n    }\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _createElementVNode(\"div\", _hoisted_3, [\n            _cache[3] || (_cache[3] = _createElementVNode(\"span\", { class: \"param-label\" }, \"θ₁ — Polarizer angle\", -1)),\n            _createElementVNode(\"span\", _hoisted_4, _toDisplayString(__props.params.polarizerAngle) + \"°\", 1)\n          ]),\n          _createElementVNode(\"input\", {\n            class: \"slider\",\n            type: \"range\",\n            min: \"0\",\n            max: \"180\",\n            step: \"1\",\n            value: __props.params.polarizerAngle,\n            onInput: _cache[0] || (_cache[0] = ($event) => set(\"polarizerAngle\", Number($event.target.value)))\n          }, null, 40, _hoisted_5)\n        ]),\n        _createElementVNode(\"div\", _hoisted_6, [\n          _createElementVNode(\"div\", _hoisted_7, [\n            _cache[4] || (_cache[4] = _createElementVNode(\"span\", { class: \"param-label\" }, \"θ₂ — Analyzer angle\", -1)),\n            _createElementVNode(\"span\", _hoisted_8, _toDisplayString(__props.params.analyzerAngle) + \"°\", 1)\n          ]),\n          _createElementVNode(\"input\", {\n            class: \"slider\",\n            type: \"range\",\n            min: \"0\",\n            max: \"180\",\n            step: \"1\",\n            value: __props.params.analyzerAngle,\n            onInput: _cache[1] || (_cache[1] = ($event) => set(\"analyzerAngle\", Number($event.target.value)))\n          }, null, 40, _hoisted_9)\n        ]),\n        _createElementVNode(\"div\", _hoisted_10, [\n          _createElementVNode(\"div\", _hoisted_11, [\n            _cache[5] || (_cache[5] = _createElementVNode(\"span\", { class: \"param-label\" }, \"I₀ — Input intensity\", -1)),\n            _createElementVNode(\"span\", _hoisted_12, _toDisplayString(__props.params.I0), 1)\n          ]),\n          _createElementVNode(\"input\", {\n            class: \"slider\",\n            type: \"range\",\n            min: \"10\",\n            max: \"200\",\n            step: \"5\",\n            value: __props.params.I0,\n            onInput: _cache[2] || (_cache[2] = ($event) => set(\"I0\", Number($event.target.value)))\n          }, null, 40, _hoisted_13)\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196195615,
+      "end": 1783196195773,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/polarization/panels/PolarizationParamsPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"param-row\" }\nconst _hoisted_3 = { class: \"param-header\" }\nconst _hoisted_4 = { class: \"param-val cyan\" }\nconst _hoisted_5 = [\"value\"]\nconst _hoisted_6 = { class: \"param-row\" }\nconst _hoisted_7 = { class: \"param-header\" }\nconst _hoisted_8 = { class: \"param-val amber\" }\nconst _hoisted_9 = [\"value\"]\nconst _hoisted_10 = { class: \"param-row\" }\nconst _hoisted_11 = { class: \"param-header\" }\nconst _hoisted_12 = { class: \"param-val green\" }\nconst _hoisted_13 = [\"value\"]\n\nimport { useI18n } from '../../../../composables/useI18n'\n\ninterface Props {\n  params: { polarizerAngle: number; analyzerAngle: number; I0: number }\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'PolarizationParamsPanel',\n  props: {\n    params: {}\n  },\n  emits: [\"update:params\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n()\n\nconst props = __props\nconst emit = __emit\n\nfunction set(key: string, val: number) {\n  emit('update:params', { ...props.params, [key]: val })\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"div\", _hoisted_3, [\n        _cache[3] || (_cache[3] = _createElementVNode(\"span\", { class: \"param-label\" }, \"θ₁ — Polarizer angle\", -1)),\n        _createElementVNode(\"span\", _hoisted_4, _toDisplayString(__props.params.polarizerAngle) + \"°\", 1)\n      ]),\n      _createElementVNode(\"input\", {\n        class: \"slider\",\n        type: \"range\",\n        min: \"0\",\n        max: \"180\",\n        step: \"1\",\n        value: __props.params.polarizerAngle,\n        onInput: _cache[0] || (_cache[0] = ($event: any) => (set('polarizerAngle', Number(($event.target as HTMLInputElement).value))))\n      }, null, 40, _hoisted_5)\n    ]),\n    _createElementVNode(\"div\", _hoisted_6, [\n      _createElementVNode(\"div\", _hoisted_7, [\n        _cache[4] || (_cache[4] = _createElementVNode(\"span\", { class: \"param-label\" }, \"θ₂ — Analyzer angle\", -1)),\n        _createElementVNode(\"span\", _hoisted_8, _toDisplayString(__props.params.analyzerAngle) + \"°\", 1)\n      ]),\n      _createElementVNode(\"input\", {\n        class: \"slider\",\n        type: \"range\",\n        min: \"0\",\n        max: \"180\",\n        step: \"1\",\n        value: __props.params.analyzerAngle,\n        onInput: _cache[1] || (_cache[1] = ($event: any) => (set('analyzerAngle', Number(($event.target as HTMLInputElement).value))))\n      }, null, 40, _hoisted_9)\n    ]),\n    _createElementVNode(\"div\", _hoisted_10, [\n      _createElementVNode(\"div\", _hoisted_11, [\n        _cache[5] || (_cache[5] = _createElementVNode(\"span\", { class: \"param-label\" }, \"I₀ — Input intensity\", -1)),\n        _createElementVNode(\"span\", _hoisted_12, _toDisplayString(__props.params.I0), 1)\n      ]),\n      _createElementVNode(\"input\", {\n        class: \"slider\",\n        type: \"range\",\n        min: \"10\",\n        max: \"200\",\n        step: \"5\",\n        value: __props.params.I0,\n        onInput: _cache[2] || (_cache[2] = ($event: any) => (set('I0', Number(($event.target as HTMLInputElement).value))))\n      }, null, 40, _hoisted_13)\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    }
+  ]
+}

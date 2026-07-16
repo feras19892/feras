@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/RightPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createVNode as _createVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel panel-right\" }\nconst _hoisted_2 = { class: \"panel-header\" }\nconst _hoisted_3 = [\"title\"]\n\nimport LabStatsPanel from './LabStatsPanel.vue';\nimport GuidePanel from './GuidePanel.vue';\nimport LabAssistant from './LabAssistant.vue';\nimport ExperimentStepsPanel from './ExperimentStepsPanel.vue';\nimport type { Experiment } from '../../../composables/chemistry/useExperiments';\nimport type { LabItem } from '../../../composables/chemistry/useChemistryTools';\nimport type { ToolState } from './InspectorPanel.vue';\nimport { useI18n } from '../../../composables/useI18n';\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'RightPanel',\n  props: {\n    selectedItem: {},\n    selectedState: {},\n    activeExperiment: {},\n    stepCompletion: {}\n  },\n  emits: [\"selectExperiment\", \"openTheory\", \"clearExperiment\", \"resetLab\", \"showReport\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n();\n\nconst props = __props;\n\nconst emit = __emit;\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"aside\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('chemistryLab.infoPanel')), 1),\n      _createElementVNode(\"button\", {\n        class: \"reset-btn\",\n        onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('resetLab'))),\n        title: _unref(t)('chemistryLab.resetLab')\n      }, _toDisplayString(_unref(t)('chemistryLab.reset')), 9, _hoisted_3)\n    ]),\n    _createVNode(LabStatsPanel, { item: __props.selectedItem }, null, 8, [\"item\"]),\n    _createVNode(GuidePanel, {\n      experiment: __props.activeExperiment,\n      onSelectExperiment: _cache[1] || (_cache[1] = ($event: any) => (emit('selectExperiment'))),\n      onOpenTheory: _cache[2] || (_cache[2] = ($event: any) => (emit('openTheory')))\n    }, null, 8, [\"experiment\"]),\n    _createVNode(LabAssistant),\n    _createVNode(ExperimentStepsPanel, {\n      experiment: __props.activeExperiment,\n      \"step-completion\": __props.stepCompletion,\n      onClear: _cache[3] || (_cache[3] = ($event: any) => (emit('clearExperiment'))),\n      onShowReport: _cache[4] || (_cache[4] = ($event: any) => (emit('showReport')))\n    }, null, 8, [\"experiment\", \"step-completion\"])\n  ]))\n}\n}\n\n})",
+      "start": 1783196193044,
+      "end": 1783196193044
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193044,
+      "end": 1783196193044,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createVNode as _createVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"panel panel-right\" };\nconst _hoisted_2 = { class: \"panel-header\" };\nconst _hoisted_3 = [\"title\"];\nimport LabStatsPanel from \"./LabStatsPanel.vue\";\nimport GuidePanel from \"./GuidePanel.vue\";\nimport LabAssistant from \"./LabAssistant.vue\";\nimport ExperimentStepsPanel from \"./ExperimentStepsPanel.vue\";\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"RightPanel\",\n  props: {\n    selectedItem: {},\n    selectedState: {},\n    activeExperiment: {},\n    stepCompletion: {}\n  },\n  emits: [\"selectExperiment\", \"openTheory\", \"clearExperiment\", \"resetLab\", \"showReport\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const props = __props;\n    const emit = __emit;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"aside\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _createElementVNode(\"span\", null, _toDisplayString(_unref(t)(\"chemistryLab.infoPanel\")), 1),\n          _createElementVNode(\"button\", {\n            class: \"reset-btn\",\n            onClick: _cache[0] || (_cache[0] = ($event) => emit(\"resetLab\")),\n            title: _unref(t)(\"chemistryLab.resetLab\")\n          }, _toDisplayString(_unref(t)(\"chemistryLab.reset\")), 9, _hoisted_3)\n        ]),\n        _createVNode(LabStatsPanel, { item: __props.selectedItem }, null, 8, [\"item\"]),\n        _createVNode(GuidePanel, {\n          experiment: __props.activeExperiment,\n          onSelectExperiment: _cache[1] || (_cache[1] = ($event) => emit(\"selectExperiment\")),\n          onOpenTheory: _cache[2] || (_cache[2] = ($event) => emit(\"openTheory\"))\n        }, null, 8, [\"experiment\"]),\n        _createVNode(LabAssistant),\n        _createVNode(ExperimentStepsPanel, {\n          experiment: __props.activeExperiment,\n          \"step-completion\": __props.stepCompletion,\n          onClear: _cache[3] || (_cache[3] = ($event) => emit(\"clearExperiment\")),\n          onShowReport: _cache[4] || (_cache[4] = ($event) => emit(\"showReport\"))\n        }, null, 8, [\"experiment\", \"step-completion\"])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196193044,
+      "end": 1783196193236,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/RightPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createVNode as _createVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel panel-right\" }\nconst _hoisted_2 = { class: \"panel-header\" }\nconst _hoisted_3 = [\"title\"]\n\nimport LabStatsPanel from './LabStatsPanel.vue';\nimport GuidePanel from './GuidePanel.vue';\nimport LabAssistant from './LabAssistant.vue';\nimport ExperimentStepsPanel from './ExperimentStepsPanel.vue';\nimport type { Experiment } from '../../../composables/chemistry/useExperiments';\nimport type { LabItem } from '../../../composables/chemistry/useChemistryTools';\nimport type { ToolState } from './InspectorPanel.vue';\nimport { useI18n } from '../../../composables/useI18n';\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'RightPanel',\n  props: {\n    selectedItem: {},\n    selectedState: {},\n    activeExperiment: {},\n    stepCompletion: {}\n  },\n  emits: [\"selectExperiment\", \"openTheory\", \"clearExperiment\", \"resetLab\", \"showReport\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n();\n\nconst props = __props;\n\nconst emit = __emit;\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"aside\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('chemistryLab.infoPanel')), 1),\n      _createElementVNode(\"button\", {\n        class: \"reset-btn\",\n        onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('resetLab'))),\n        title: _unref(t)('chemistryLab.resetLab')\n      }, _toDisplayString(_unref(t)('chemistryLab.reset')), 9, _hoisted_3)\n    ]),\n    _createVNode(LabStatsPanel, { item: __props.selectedItem }, null, 8, [\"item\"]),\n    _createVNode(GuidePanel, {\n      experiment: __props.activeExperiment,\n      onSelectExperiment: _cache[1] || (_cache[1] = ($event: any) => (emit('selectExperiment'))),\n      onOpenTheory: _cache[2] || (_cache[2] = ($event: any) => (emit('openTheory')))\n    }, null, 8, [\"experiment\"]),\n    _createVNode(LabAssistant),\n    _createVNode(ExperimentStepsPanel, {\n      experiment: __props.activeExperiment,\n      \"step-completion\": __props.stepCompletion,\n      onClear: _cache[3] || (_cache[3] = ($event: any) => (emit('clearExperiment'))),\n      onShowReport: _cache[4] || (_cache[4] = ($event: any) => (emit('showReport')))\n    }, null, 8, [\"experiment\", \"step-completion\"])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,SAAS,QAAQ,mBAAmB,kBAAkB,sBAAsB,qBAAqB,eAAe,cAAc,aAAa,YAAY,sBAAsB,2BAA2B;AAEjN,MAAM,aAAa,EAAE,OAAO,oBAAoB;AAChD,MAAM,aAAa,EAAE,OAAO,eAAe;AAC3C,MAAM,aAAa,CAAC,OAAO;AAE3B,OAAO,mBAAmB;AAC1B,OAAO,gBAAgB;AACvB,OAAO,kBAAkB;AACzB,OAAO,0BAA0B;AAIjC,SAAS,eAAe;AAExB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,cAAc,CAAC;AAAA,IACf,eAAe,CAAC;AAAA,IAChB,kBAAkB,CAAC;AAAA,IACnB,gBAAgB,CAAC;AAAA,EACnB;AAAA,EACA,OAAO,CAAC,oBAAoB,cAAc,mBAAmB,YAAY,YAAY;AAAA,EACrF,MAAM,SAAc,EAAE,MAAM,OAAO,GAAG;AAExC,UAAM,EAAE,EAAE,IAAI,QAAQ;AAEtB,UAAM,QAAQ;AAEd,UAAM,OAAO;AAEb,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,SAAS,YAAY;AAAA,QAC7D,oBAAoB,OAAO,YAAY;AAAA,UACrC,oBAAoB,QAAQ,MAAM,iBAAiB,OAAO,CAAC,EAAE,wBAAwB,CAAC,GAAG,CAAC;AAAA,UAC1F,oBAAoB,UAAU;AAAA,YAC5B,OAAO;AAAA,YACP,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,UAAU;AAAA,YACpE,OAAO,OAAO,CAAC,EAAE,uBAAuB;AAAA,UAC1C,GAAG,iBAAiB,OAAO,CAAC,EAAE,oBAAoB,CAAC,GAAG,GAAG,UAAU;AAAA,QACrE,CAAC;AAAA,QACD,aAAa,eAAe,EAAE,MAAM,QAAQ,aAAa,GAAG,MAAM,GAAG,CAAC,MAAM,CAAC;AAAA,QAC7E,aAAa,YAAY;AAAA,UACvB,YAAY,QAAQ;AAAA,UACpB,oBAAoB,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,kBAAkB;AAAA,UACvF,cAAc,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,YAAY;AAAA,QAC7E,GAAG,MAAM,GAAG,CAAC,YAAY,CAAC;AAAA,QAC1B,aAAa,YAAY;AAAA,QACzB,aAAa,sBAAsB;AAAA,UACjC,YAAY,QAAQ;AAAA,UACpB,mBAAmB,QAAQ;AAAA,UAC3B,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,iBAAiB;AAAA,UAC3E,cAAc,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,YAAY;AAAA,QAC7E,GAAG,MAAM,GAAG,CAAC,cAAc,iBAAiB,CAAC;AAAA,MAC/C,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193236,
+      "end": 1783196193236,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193236,
+      "end": 1783196193236,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196193236,
+      "end": 1783196193236,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193236,
+      "end": 1783196193236,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193236,
+      "end": 1783196193236,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193236,
+      "end": 1783196193236,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193236,
+      "end": 1783196193236,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193236,
+      "end": 1783196193236,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193236,
+      "end": 1783196193236,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193236,
+      "end": 1783196193236,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193236,
+      "end": 1783196193236,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193236,
+      "end": 1783196193237,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193237,
+      "end": 1783196193237,
+      "order": "normal"
+    }
+  ]
+}

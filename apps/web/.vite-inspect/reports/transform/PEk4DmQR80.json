@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/freefall/FreeFallHelpModal.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\n\nconst { t } = useI18n()\ndefineProps<{ open: boolean }>()\nconst emit = defineEmits<{ (e: 'close'): void }>()\n</script>\n\n<template>\n  <Teleport to=\"body\">\n    <div v-if=\"open\" class=\"overlay\" @click.self=\"emit('close')\">\n      <div class=\"modal\">\n        <div class=\"modal-header\">\n          <h3>📖 دليل تجربة السقوط الحر — دليل شامل وكامل</h3>\n          <button class=\"close-btn\" @click=\"emit('close')\">&#x2715;</button>\n        </div>\n        <div class=\"modal-body\">\n\n          <!-- 1. Theoretical Background -->\n          <section>\n            <h4>🔬 1. المقدمة والنظرية العلمية</h4>\n            <p>\n              السقوط الحر هو حركة الجسم تحت تأثير قوة الجاذبية الأرضية فقط، مع إهمال مقاومة الهواء.\n              في هذه الحالة، تكتسب جميع الأجسام (بغض النظر عن كتلتها) نفس التسارع الثابت،\n              ويسمى <strong>تسارع الجاذبية الأرضية</strong> ويرمز له بالرمز <code>g</code>.\n            </p>\n            <p>\n              تخضع هذه الحركة لمعادلات الحركة الخطية بتسارع ثابت. إذا بدأ الجسم حركته من السكون\n              (السرعة الابتدائية <code>v₀ = 0</code>) وسقط مسافة رأسية <code>y</code> خلال زمن <code>t</code>،\n              فإن المعادلة التي تربط المسافة بالزمن هي:\n            </p>\n            <div class=\"formula\">y = ½ · g · t²</div>\n          </section>\n\n          <!-- 2. Mathematical Equations -->\n          <section>\n            <h4>📐 2. القوانين الرياضية المستعملة</h4>\n            <div class=\"method\"><b>معادلة المسافة والزمن:</b> y = ½ · g · t²</div>\n            <div class=\"method\"><b>معادلة السرعة النهائية والزمن:</b> v = g · t</div>\n            <div class=\"method\"><b>معادلة السرعة والمسافة:</b> v² = 2 · g · y</div>\n            <div class=\"method\"><b>استخراج g من قياس واحد:</b> g = 2y / t²</div>\n          </section>\n\n          <!-- 3. Laboratory Procedure -->\n          <section>\n            <h4>⚗️ 3. طريقة العمل في المختبر (الافتراضي أو الحقيقي)</h4>\n            <ol>\n              <li>\n                <b>تجهيز الأدوات:</b> ثبت المسطرة المدرجة عمودياً، وضع الكرة (أو الجسم الساقط) عند نقطة البداية\n                (الارتفاع الصفر)، وجهز المؤقت الزمني الإلكتروني (أو البوابات الضوئية لقياس الزمن بدقة).\n              </li>\n              <li>\n                <b>تحديد الارتفاع (y):</b> اختر ارتفاعاً معيناً (مثلاً 0.2 م، 0.4 م، 0.6 م، وهكذا).\n              </li>\n              <li>\n                <b>الإفلات والقياس:</b> اترك الجسم ليسقط بحرية (من السكون)، وسجّل الزمن (t)\n                المستغرق للوصول إلى الأرض أو البوابة الضوئية.\n              </li>\n              <li>\n                <b>التكرار:</b> كرّر الخطوة لكل ارتفاع 3 مرات واحسب متوسط الزمن لتقليل نسبة الخطأ التجريبي.\n              </li>\n              <li>\n                <b>تربيع الزمن:</b> قم بحساب مربع الزمن المتوسط (t²) لكل مسافة ارتفاع.\n              </li>\n            </ol>\n          </section>\n\n          <!-- 4. Graphical Analysis -->\n          <section>\n            <h4>📊 4. الرسم البياني، الميل، وحساب المجهول</h4>\n            <p>لإيجاد قيمة تسارع الجاذبية الأرضية (g) علمياً من خلال الرسم البياني:</p>\n            <ul>\n              <li>\n                <b>المحاور:</b> ارسم المسافة (y) على المحور الصادي (Y-axis).\n                ارسم مربع الزمن (t²) على المحور السيني (X-axis).\n              </li>\n              <li>\n                <b>الميل (Slope):</b> عند رسم العلاقة، ستحصل على خط مستقيم يمر بنقطة الأصل.\n                احسب ميله بالقانون:\n                <div class=\"formula\">Slope = Δy / Δt²</div>\n              </li>\n              <li>\n                <b>حساب المجهول (g):</b> بالمقارنة مع المعادلة النظرية (y = ½gt²)، نجد أن الميل يساوي نصف تسارع الجاذبية:\n                <div class=\"formula\">Slope = ½ · g  →  g = 2 × Slope</div>\n              </li>\n            </ul>\n          </section>\n\n          <!-- 5. Variables & Constants -->\n          <section>\n            <h4>⚙️ 5. الثوابت والمتغيرات في التجربة</h4>\n            <div class=\"element-grid\">\n              <div class=\"element\">\n                <b class=\"tag\">المتغير المستقل (الذي نتحكم به):</b> الارتفاع (y)\n              </div>\n              <div class=\"element\">\n                <b class=\"tag\">المتغير التابع (الذي يتغير تبعاً للارتفاع):</b> الزمن (t) وبالتالي (t²)\n              </div>\n              <div class=\"element\">\n                <b class=\"tag\">الثابت المراد حسابه والتأكد منه:</b> تسارع الجاذبية الأرضية (g ≈ 9.8 m/s²)\n              </div>\n            </div>\n          </section>\n\n          <!-- 6. Scientific Importance -->\n          <section>\n            <h4>🎯 6. الفائدة والأهمية العلمية للتجربة</h4>\n            <ul>\n              <li>إثبات أن تسارع السقوط الحر ثابت للأجسام ولا يعتمد على كتلة الجسم (عند إهمال الهواء).</li>\n              <li>حساب القيمة العملية لتسارع الجاذبية الأرضية (g) في مكان إجراء التجربة ومقارنتها بالقيمة القياسية.</li>\n              <li>فهم وتطبيق معادلات الحركة في بعد واحد عملياً.</li>\n            </ul>\n          </section>\n\n          <!-- Keyboard shortcuts (kept from existing) -->\n          <section>\n            <h4>⌨️ اختصارات لوحة المفاتيح</h4>\n            <div class=\"kbd-grid\">\n              <span><kbd>Space</kbd> إفلات / توقف</span>\n              <span><kbd>S</kbd> تسجيل قراءة</span>\n              <span><kbd>R</kbd> إعادة التعيين</span>\n              <span><kbd>Ctrl</kbd>+<kbd>Z</kbd> تراجع</span>\n              <span><kbd>Ctrl</kbd>+<kbd>Y</kbd> إعادة</span>\n              <span><kbd>?</kbd> فتح/إغلاق المساعدة</span>\n            </div>\n          </section>\n\n        </div>\n      </div>\n    </div>\n  </Teleport>\n</template>\n\n<style scoped>\n.overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; padding: 1.5rem; }\n.modal { background: #131a25; border: 1px solid #2D3645; border-radius: 12px; max-width: 720px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,.5); }\n.modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.2rem; border-bottom: 1px solid #2D3645; flex-shrink: 0; }\n.modal-header h3 { margin: 0; font-size: 1rem; color: #e2e8f0; }\n.close-btn { background: transparent; border: 1px solid #2D3645; color: #8B95A5; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; padding: 0; }\n.close-btn:hover { background: rgba(91,141,184,.1); color: #5B8DB8; }\n.modal-body { overflow-y: auto; padding: 1.2rem; font-size: .82rem; color: #cbd5e1; line-height: 1.8; direction: rtl; text-align: right; }\n.modal-body section { margin-bottom: 1.4rem; }\n.modal-body h4 { margin: 0 0 .5rem; font-size: .9rem; color: #5B8DB8; border-bottom: 1px solid #2D3645; padding-bottom: .3rem; }\n.modal-body p { margin: .4rem 0; }\n.modal-body ol, .modal-body ul { margin: .4rem 0; padding-right: 1.2rem; }\n.modal-body li { margin-bottom: .25rem; }\n.formula { background: #1a2332; border: 1px solid #2D3645; border-radius: 6px; padding: .6rem .8rem; font-family: monospace; font-size: .9rem; color: #5B8DB8; text-align: center; margin: .6rem 0; direction: ltr; }\n.element-grid { display: flex; flex-direction: column; gap: .35rem; }\n.element { background: #1a2332; border-radius: 6px; padding: .4rem .6rem; font-size: .78rem; }\n.tag { color: #5B8DB8; }\n.method { background: #1a2332; border-radius: 6px; padding: .5rem .7rem; margin-bottom: .35rem; font-size: .78rem; direction: ltr; text-align: left; }\n.kbd-grid { display: flex; flex-wrap: wrap; gap: .4rem; }\n.kbd-grid span { background: #1a2332; border: 1px solid #2D3645; border-radius: 5px; padding: .3rem .5rem; font-size: .75rem; }\nkbd { background: #252D3A; border: 1px solid #475569; border-radius: 4px; padding: .05rem .3rem; font-family: monospace; font-size: .7rem; color: #D1D7E0; }\n</style>\n",
+      "start": 1783196193562,
+      "end": 1783196193850,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193850,
+      "end": 1783196193850,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196193850,
+      "end": 1783196193850,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193850,
+      "end": 1783196193850,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193850,
+      "end": 1783196193850,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/freefall/FreeFallHelpModal.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/freefall/FreeFallHelpModal.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/freefall/FreeFallHelpModal.vue?vue&type=style&index=0&scoped=38935f39&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-38935f39\"]]);\n",
+      "start": 1783196193850,
+      "end": 1783196194372,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194372,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194373,
+      "end": 1783196194374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194374,
+      "end": 1783196194374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194374,
+      "end": 1783196194376,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194377,
+      "end": 1783196194377,
+      "order": "normal"
+    }
+  ]
+}

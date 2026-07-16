@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/admin/AdminSmartReports.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, onMounted } from 'vue';\nimport { useI18n } from '../../composables/useI18n';\nimport { getAdminInsights, getAdminActivity, getAdminActivityStats } from '../../services/admin.service';\n\nconst loading = ref(false);\nconst error = ref('');\ninterface InactiveUser { id: number; name: string; role: string }\ninterface EmptyClass { id: number; name: string; teacher_name: string }\ninterface NoReportsTeacher { id: number; name: string }\ninterface InsightsData {\n  inactiveUsers?: InactiveUser[];\n  emptyClasses?: EmptyClass[];\n  ungradedCount?: number;\n  noReportsTeachers?: NoReportsTeacher[];\n}\ninterface ActivityItem {\n  id: number;\n  action: string;\n  actor_name: string;\n  actor_role: string;\n  target_type?: string;\n  target_id?: number;\n  created_at?: string;\n}\ninterface ActivityStatsData { today: number; logins: number; signups: number; reports: number }\n\nconst { t } = useI18n();\nconst insights = ref<InsightsData | null>(null);\nconst activities = ref<ActivityItem[]>([]);\nconst activityStats = ref<ActivityStatsData | null>(null);\n\nasync function load() {\n  loading.value = true;\n  error.value = '';\n  try {\n    const [i, a, s] = await Promise.all([\n      getAdminInsights(),\n      getAdminActivity(),\n      getAdminActivityStats(),\n    ]);\n    if (i.success) insights.value = i.insights;\n    if (a.success) activities.value = a.activities;\n    if (s.success) activityStats.value = s.stats;\n  } catch (err: unknown) {\n    error.value = (err instanceof Error ? err.message : '') || t('admin.loadError');\n  } finally {\n    loading.value = false;\n  }\n}\n\nfunction formatDate(d: string | undefined) {\n  return d ? new Date(d).toLocaleString() : '';\n}\n\nfunction actionLabel(action: string) {\n  const map: Record<string, string> = {\n    login: t('adminUser.actionLogin'),\n    signup: t('adminUser.actionSignup'),\n    create_user: t('adminUser.actionCreateUser'),\n    delete_user: t('adminUser.actionDeleteUser'),\n    submit_report: t('adminUser.actionSubmitReport'),\n    grade_report: t('adminUser.actionGradeReport'),\n    create_class: t('adminUser.actionCreateClass'),\n    delete_class: t('adminUser.actionDeleteClass'),\n  };\n  return map[action] || action;\n}\n\nonMounted(load);\n</script>\n\n<template>\n  <div class=\"section\">\n    <div class=\"section-header\">\n      <h3>{{ t('admin.smart') }}</h3>\n      <button class=\"btn-primary\" @click=\"load\">{{ t('admin.refresh') }}</button>\n    </div>\n\n    <div v-if=\"loading\" class=\"loading\">{{ t('admin.loading') }}</div>\n    <div v-else-if=\"error\" class=\"error-box\">❌ {{ error }}</div>\n    <template v-else>\n      <!-- Activity Stats -->\n      <div v-if=\"activityStats\" class=\"stats-row\">\n        <div class=\"mini-card\">\n          <div class=\"mini-value\">{{ activityStats.today }}</div>\n          <div class=\"mini-label\">{{ t('admin.todayActivity') }}</div>\n        </div>\n        <div class=\"mini-card\">\n          <div class=\"mini-value\">{{ activityStats.logins }}</div>\n          <div class=\"mini-label\">{{ t('admin.todayLogins') }}</div>\n        </div>\n        <div class=\"mini-card\">\n          <div class=\"mini-value\">{{ activityStats.signups }}</div>\n          <div class=\"mini-label\">{{ t('admin.todaySignups') }}</div>\n        </div>\n        <div class=\"mini-card\">\n          <div class=\"mini-value\">{{ activityStats.reports }}</div>\n          <div class=\"mini-label\">{{ t('admin.todayReports') }}</div>\n        </div>\n      </div>\n\n      <!-- Insights -->\n      <div v-if=\"insights\" class=\"insights-grid\">\n        <div class=\"insight-card warning\" v-if=\"insights.inactiveUsers?.length\">\n          <h4>{{ t('adminUser.inactiveUsers7') }}</h4>\n          <ul>\n            <li v-for=\"u in insights.inactiveUsers\" :key=\"u.id\">{{ u.name }} ({{ u.role }})</li>\n          </ul>\n        </div>\n        <div class=\"insight-card warning\" v-if=\"insights.emptyClasses?.length\">\n          <h4>{{ t('adminUser.emptyClassesLabel') }}</h4>\n          <ul>\n            <li v-for=\"c in insights.emptyClasses\" :key=\"c.id\">{{ c.name }} — {{ c.teacher_name }}</li>\n          </ul>\n        </div>\n        <div class=\"insight-card alert\" v-if=\"insights.ungradedCount\">\n          <h4>{{ t('adminUser.pendingReports3') }}</h4>\n          <p>{{ insights.ungradedCount }} {{ t('admin.needsGrading') }}</p>\n        </div>\n        <div class=\"insight-card info\" v-if=\"insights.noReportsTeachers?.length\">\n          <h4>{{ t('adminUser.teachersNoReportsLabel') }}</h4>\n          <ul>\n            <li v-for=\"teacher in insights.noReportsTeachers\" :key=\"teacher.id\">{{ teacher.name }}</li>\n          </ul>\n        </div>\n      </div>\n\n      <!-- Activity Log -->\n      <div class=\"activity-section\">\n        <h4>{{ t('adminUser.activityLog') }}</h4>\n        <div class=\"activity-list\">\n          <div v-for=\"a in activities.slice(0, 50)\" :key=\"a.id\" class=\"activity-item\">\n            <span class=\"act-action\">{{ actionLabel(a.action) }}</span>\n            <span class=\"act-actor\">{{ a.actor_name }} ({{ a.actor_role }})</span>\n            <span class=\"act-target\" v-if=\"a.target_type\">→ {{ a.target_type }} {{ a.target_id }}</span>\n            <span class=\"act-time\">{{ formatDate(a.created_at) }}</span>\n          </div>\n        </div>\n      </div>\n    </template>\n  </div>\n</template>\n\n<style scoped>\n.section { color: #e2e8f0; }\n.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }\n.section-header h3 { margin: 0; font-size: 1.1rem; }\n.loading { text-align: center; color: #64748b; padding: 2rem; }\n.error-box { background: rgba(239,68,68,0.1); color: #f87171; padding: 1rem; border-radius: 0.5rem; text-align: center; }\n\n.btn-primary { padding: 0.45rem 0.9rem; border-radius: 0.5rem; border: none; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 0.85rem; }\n\n.stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem; }\n.mini-card { background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.5rem; padding: 0.8rem; text-align: center; }\n.mini-value { font-size: 1.4rem; font-weight: 800; color: #67e8f9; }\n.mini-label { font-size: 0.75rem; color: #94a3b8; }\n\n.insights-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }\n.insight-card { border-radius: 0.6rem; padding: 1rem; border: 1px solid rgba(255,255,255,0.06); }\n.insight-card.warning { background: rgba(251,191,36,0.08); border-color: rgba(251,191,36,0.15); }\n.insight-card.alert { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.15); }\n.insight-card.info { background: rgba(59,130,246,0.08); border-color: rgba(59,130,246,0.15); }\n.insight-card h4 { margin: 0 0 0.5rem; font-size: 0.9rem; }\n.insight-card ul { margin: 0; padding-right: 1.2rem; font-size: 0.85rem; color: #cbd5e1; }\n.insight-card li { margin-bottom: 0.2rem; }\n.insight-card p { margin: 0; font-size: 0.85rem; }\n\n.activity-section h4 { margin: 0 0 0.75rem; font-size: 1rem; }\n.activity-list { display: flex; flex-direction: column; gap: 0.4rem; max-height: 400px; overflow-y: auto; }\n.activity-item { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; padding: 0.4rem 0.6rem; border-radius: 0.35rem; background: rgba(0,0,0,0.2); font-size: 0.8rem; }\n.act-action { font-weight: 700; color: #a5b4fc; }\n.act-actor { color: #94a3b8; }\n.act-target { color: #67e8f9; }\n.act-time { margin-right: auto; color: #64748b; font-size: 0.75rem; }\n</style>\n",
+      "start": 1783196192496,
+      "end": 1783196192757,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196192757,
+      "end": 1783196192758,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196192758,
+      "end": 1783196192758,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196192758,
+      "end": 1783196192758,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196192758,
+      "end": 1783196192758,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/admin/AdminSmartReports.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/admin/AdminSmartReports.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/admin/AdminSmartReports.vue?vue&type=style&index=0&scoped=0b47c6f5&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-0b47c6f5\"]]);\n",
+      "start": 1783196192758,
+      "end": 1783196193010,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193010,
+      "end": 1783196193010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193010,
+      "end": 1783196193010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193010,
+      "end": 1783196193010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193010,
+      "end": 1783196193010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193010,
+      "end": 1783196193010,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193010,
+      "end": 1783196193010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193011,
+      "end": 1783196193011,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193011,
+      "end": 1783196193011,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193011,
+      "end": 1783196193011,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193012,
+      "end": 1783196193012,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/pendulum/PendulumPanelBody.vue?vue&type=style&index=0&scoped=f441e1f7&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.guide-text { font-size: .75rem; color: #D1D7E0; line-height: 1.6; }\n.guide-text ol { padding-right: 1.2rem; margin: .3rem 0; }\n.guide-text li { margin-bottom: .2rem; }\n.mass-independence-note { background: #1a2332; border: 1px solid #2D3645; border-radius: 6px; padding: .5rem .6rem; margin-top: .5rem; direction: rtl; text-align: right; }\n.mass-independence-note p { margin: .2rem 0; }\n.mass-independence-note code { background: #252D3A; padding: .05rem .25rem; border-radius: 3px; font-family: monospace; font-size: .75rem; }\n",
+      "start": 1783196194642,
+      "end": 1783196194642
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.guide-text { font-size: .75rem; color: #D1D7E0; line-height: 1.6; }\n.guide-text ol { padding-right: 1.2rem; margin: .3rem 0; }\n.guide-text li { margin-bottom: .2rem; }\n.mass-independence-note { background: #1a2332; border: 1px solid #2D3645; border-radius: 6px; padding: .5rem .6rem; margin-top: .5rem; direction: rtl; text-align: right; }\n.mass-independence-note p { margin: .2rem 0; }\n.mass-independence-note code { background: #252D3A; padding: .05rem .25rem; border-radius: 3px; font-family: monospace; font-size: .75rem; }\n",
+      "start": 1783196194642,
+      "end": 1783196194642,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194642,
+      "end": 1783196194642,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194642,
+      "end": 1783196194642,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194642,
+      "end": 1783196194642,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.guide-text[data-v-f441e1f7] { font-size: .75rem; color: #D1D7E0; line-height: 1.6;\n}\n.guide-text ol[data-v-f441e1f7] { padding-right: 1.2rem; margin: .3rem 0;\n}\n.guide-text li[data-v-f441e1f7] { margin-bottom: .2rem;\n}\n.mass-independence-note[data-v-f441e1f7] { background: #1a2332; border: 1px solid #2D3645; border-radius: 6px; padding: .5rem .6rem; margin-top: .5rem; direction: rtl; text-align: right;\n}\n.mass-independence-note p[data-v-f441e1f7] { margin: .2rem 0;\n}\n.mass-independence-note code[data-v-f441e1f7] { background: #252D3A; padding: .05rem .25rem; border-radius: 3px; font-family: monospace; font-size: .75rem;\n}\n",
+      "start": 1783196194642,
+      "end": 1783196194643,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194643,
+      "end": 1783196194643,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196194643,
+      "end": 1783196194643,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194643,
+      "end": 1783196194643,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194643,
+      "end": 1783196194643,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194643,
+      "end": 1783196194643,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194643,
+      "end": 1783196194643,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194643,
+      "end": 1783196194643,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194643,
+      "end": 1783196194643,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194643,
+      "end": 1783196194643,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194643,
+      "end": 1783196194643,
+      "order": "normal"
+    }
+  ]
+}

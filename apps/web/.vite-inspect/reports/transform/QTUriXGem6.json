@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/GradeModal.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, vModelText as _vModelText, withDirectives as _withDirectives, withModifiers as _withModifiers, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"grade-modal\" }\nconst _hoisted_2 = { class: \"form-row\" }\nconst _hoisted_3 = { class: \"grade-control\" }\nconst _hoisted_4 = { class: \"grade-display\" }\nconst _hoisted_5 = { class: \"form-row\" }\nconst _hoisted_6 = [\"placeholder\"]\nconst _hoisted_7 = { class: \"actions\" }\nconst _hoisted_8 = [\"disabled\"]\n\nimport { ref, watch } from 'vue';\nimport { gradeReport } from '../../services/report.service';\nimport type { Report } from '../../services/report.service';\nimport { useI18n } from '../../composables/useI18n';\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'GradeModal',\n  props: {\n    report: {},\n    open: { type: Boolean }\n  },\n  emits: [\"close\", \"graded\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst props = __props;\n\nconst emit = __emit;\n\nconst { t } = useI18n();\nconst grade = ref(0);\nconst feedback = ref('');\nconst loading = ref(false);\n\nwatch(\n  () => props.report,\n  (r) => {\n    if (r) {\n      grade.value = r.grade ?? 0;\n      feedback.value = r.feedback ?? '';\n    }\n  },\n  { immediate: true }\n);\n\nasync function submit() {\n  if (!props.report) return;\n  loading.value = true;\n  try {\n    const res = await gradeReport(props.report.id, { grade: grade.value, feedback: feedback.value });\n    if (res.success) {\n      emit('graded');\n      emit('close');\n    }\n  } catch (err) {\n    console.error('grade failed:', err);\n  } finally {\n    loading.value = false;\n  }\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (__props.open && __props.report)\n    ? (_openBlock(), _createElementBlock(\"div\", {\n        key: 0,\n        class: \"modal-overlay\",\n        onClick: _cache[3] || (_cache[3] = _withModifiers(($event: any) => (emit('close')), [\"self\"]))\n      }, [\n        _createElementVNode(\"div\", _hoisted_1, [\n          _createElementVNode(\"h3\", null, _toDisplayString(_unref(t)('teacher.gradeTitle')) + \" — \" + _toDisplayString(__props.report.student_name), 1),\n          _createElementVNode(\"div\", _hoisted_2, [\n            _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('teacher.gradeLabel')), 1),\n            _createElementVNode(\"div\", _hoisted_3, [\n              _withDirectives(_createElementVNode(\"input\", {\n                \"onUpdate:modelValue\": _cache[0] || (_cache[0] = ($event: any) => ((grade).value = $event)),\n                type: \"range\",\n                min: \"0\",\n                max: \"100\"\n              }, null, 512), [\n                [\n                  _vModelText,\n                  grade.value,\n                  void 0,\n                  { number: true }\n                ]\n              ]),\n              _createElementVNode(\"span\", _hoisted_4, _toDisplayString(grade.value) + \"/100\", 1)\n            ])\n          ]),\n          _createElementVNode(\"div\", _hoisted_5, [\n            _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('teacher.feedbackLabel')), 1),\n            _withDirectives(_createElementVNode(\"textarea\", {\n              \"onUpdate:modelValue\": _cache[1] || (_cache[1] = ($event: any) => ((feedback).value = $event)),\n              rows: \"4\",\n              placeholder: _unref(t)('teacher.feedbackPlaceholder')\n            }, null, 8, _hoisted_6), [\n              [_vModelText, feedback.value]\n            ])\n          ]),\n          _createElementVNode(\"div\", _hoisted_7, [\n            _createElementVNode(\"button\", {\n              class: \"btn-cancel\",\n              onClick: _cache[2] || (_cache[2] = ($event: any) => (emit('close')))\n            }, _toDisplayString(_unref(t)('teacher.cancelBtn')), 1),\n            _createElementVNode(\"button\", {\n              class: \"btn-submit\",\n              disabled: loading.value,\n              onClick: submit\n            }, _toDisplayString(loading.value ? '...' : _unref(t)('teacher.saveBtn')), 9, _hoisted_8)\n          ])\n        ])\n      ]))\n    : _createCommentVNode(\"\", true)\n}\n}\n\n})",
+      "start": 1783196193622,
+      "end": 1783196193622
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193622,
+      "end": 1783196193622,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, vModelText as _vModelText, withDirectives as _withDirectives, withModifiers as _withModifiers, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\";\nconst _hoisted_1 = { class: \"grade-modal\" };\nconst _hoisted_2 = { class: \"form-row\" };\nconst _hoisted_3 = { class: \"grade-control\" };\nconst _hoisted_4 = { class: \"grade-display\" };\nconst _hoisted_5 = { class: \"form-row\" };\nconst _hoisted_6 = [\"placeholder\"];\nconst _hoisted_7 = { class: \"actions\" };\nconst _hoisted_8 = [\"disabled\"];\nimport { ref, watch } from \"vue\";\nimport { gradeReport } from \"../../services/report.service\";\nimport { useI18n } from \"../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"GradeModal\",\n  props: {\n    report: {},\n    open: { type: Boolean }\n  },\n  emits: [\"close\", \"graded\"],\n  setup(__props, { emit: __emit }) {\n    const props = __props;\n    const emit = __emit;\n    const { t } = useI18n();\n    const grade = ref(0);\n    const feedback = ref(\"\");\n    const loading = ref(false);\n    watch(\n      () => props.report,\n      (r) => {\n        if (r) {\n          grade.value = r.grade ?? 0;\n          feedback.value = r.feedback ?? \"\";\n        }\n      },\n      { immediate: true }\n    );\n    async function submit() {\n      if (!props.report) return;\n      loading.value = true;\n      try {\n        const res = await gradeReport(props.report.id, { grade: grade.value, feedback: feedback.value });\n        if (res.success) {\n          emit(\"graded\");\n          emit(\"close\");\n        }\n      } catch (err) {\n        console.error(\"grade failed:\", err);\n      } finally {\n        loading.value = false;\n      }\n    }\n    return (_ctx, _cache) => {\n      return __props.open && __props.report ? (_openBlock(), _createElementBlock(\"div\", {\n        key: 0,\n        class: \"modal-overlay\",\n        onClick: _cache[3] || (_cache[3] = _withModifiers(($event) => emit(\"close\"), [\"self\"]))\n      }, [\n        _createElementVNode(\"div\", _hoisted_1, [\n          _createElementVNode(\"h3\", null, _toDisplayString(_unref(t)(\"teacher.gradeTitle\")) + \" — \" + _toDisplayString(__props.report.student_name), 1),\n          _createElementVNode(\"div\", _hoisted_2, [\n            _createElementVNode(\"label\", null, _toDisplayString(_unref(t)(\"teacher.gradeLabel\")), 1),\n            _createElementVNode(\"div\", _hoisted_3, [\n              _withDirectives(_createElementVNode(\"input\", {\n                \"onUpdate:modelValue\": _cache[0] || (_cache[0] = ($event) => grade.value = $event),\n                type: \"range\",\n                min: \"0\",\n                max: \"100\"\n              }, null, 512), [\n                [\n                  _vModelText,\n                  grade.value,\n                  void 0,\n                  { number: true }\n                ]\n              ]),\n              _createElementVNode(\"span\", _hoisted_4, _toDisplayString(grade.value) + \"/100\", 1)\n            ])\n          ]),\n          _createElementVNode(\"div\", _hoisted_5, [\n            _createElementVNode(\"label\", null, _toDisplayString(_unref(t)(\"teacher.feedbackLabel\")), 1),\n            _withDirectives(_createElementVNode(\"textarea\", {\n              \"onUpdate:modelValue\": _cache[1] || (_cache[1] = ($event) => feedback.value = $event),\n              rows: \"4\",\n              placeholder: _unref(t)(\"teacher.feedbackPlaceholder\")\n            }, null, 8, _hoisted_6), [\n              [_vModelText, feedback.value]\n            ])\n          ]),\n          _createElementVNode(\"div\", _hoisted_7, [\n            _createElementVNode(\"button\", {\n              class: \"btn-cancel\",\n              onClick: _cache[2] || (_cache[2] = ($event) => emit(\"close\"))\n            }, _toDisplayString(_unref(t)(\"teacher.cancelBtn\")), 1),\n            _createElementVNode(\"button\", {\n              class: \"btn-submit\",\n              disabled: loading.value,\n              onClick: submit\n            }, _toDisplayString(loading.value ? \"...\" : _unref(t)(\"teacher.saveBtn\")), 9, _hoisted_8)\n          ])\n        ])\n      ])) : _createCommentVNode(\"\", true);\n    };\n  }\n});\n",
+      "start": 1783196193622,
+      "end": 1783196193687,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/GradeModal.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, vModelText as _vModelText, withDirectives as _withDirectives, withModifiers as _withModifiers, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"grade-modal\" }\nconst _hoisted_2 = { class: \"form-row\" }\nconst _hoisted_3 = { class: \"grade-control\" }\nconst _hoisted_4 = { class: \"grade-display\" }\nconst _hoisted_5 = { class: \"form-row\" }\nconst _hoisted_6 = [\"placeholder\"]\nconst _hoisted_7 = { class: \"actions\" }\nconst _hoisted_8 = [\"disabled\"]\n\nimport { ref, watch } from 'vue';\nimport { gradeReport } from '../../services/report.service';\nimport type { Report } from '../../services/report.service';\nimport { useI18n } from '../../composables/useI18n';\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'GradeModal',\n  props: {\n    report: {},\n    open: { type: Boolean }\n  },\n  emits: [\"close\", \"graded\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst props = __props;\n\nconst emit = __emit;\n\nconst { t } = useI18n();\nconst grade = ref(0);\nconst feedback = ref('');\nconst loading = ref(false);\n\nwatch(\n  () => props.report,\n  (r) => {\n    if (r) {\n      grade.value = r.grade ?? 0;\n      feedback.value = r.feedback ?? '';\n    }\n  },\n  { immediate: true }\n);\n\nasync function submit() {\n  if (!props.report) return;\n  loading.value = true;\n  try {\n    const res = await gradeReport(props.report.id, { grade: grade.value, feedback: feedback.value });\n    if (res.success) {\n      emit('graded');\n      emit('close');\n    }\n  } catch (err) {\n    console.error('grade failed:', err);\n  } finally {\n    loading.value = false;\n  }\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (__props.open && __props.report)\n    ? (_openBlock(), _createElementBlock(\"div\", {\n        key: 0,\n        class: \"modal-overlay\",\n        onClick: _cache[3] || (_cache[3] = _withModifiers(($event: any) => (emit('close')), [\"self\"]))\n      }, [\n        _createElementVNode(\"div\", _hoisted_1, [\n          _createElementVNode(\"h3\", null, _toDisplayString(_unref(t)('teacher.gradeTitle')) + \" — \" + _toDisplayString(__props.report.student_name), 1),\n          _createElementVNode(\"div\", _hoisted_2, [\n            _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('teacher.gradeLabel')), 1),\n            _createElementVNode(\"div\", _hoisted_3, [\n              _withDirectives(_createElementVNode(\"input\", {\n                \"onUpdate:modelValue\": _cache[0] || (_cache[0] = ($event: any) => ((grade).value = $event)),\n                type: \"range\",\n                min: \"0\",\n                max: \"100\"\n              }, null, 512), [\n                [\n                  _vModelText,\n                  grade.value,\n                  void 0,\n                  { number: true }\n                ]\n              ]),\n              _createElementVNode(\"span\", _hoisted_4, _toDisplayString(grade.value) + \"/100\", 1)\n            ])\n          ]),\n          _createElementVNode(\"div\", _hoisted_5, [\n            _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('teacher.feedbackLabel')), 1),\n            _withDirectives(_createElementVNode(\"textarea\", {\n              \"onUpdate:modelValue\": _cache[1] || (_cache[1] = ($event: any) => ((feedback).value = $event)),\n              rows: \"4\",\n              placeholder: _unref(t)('teacher.feedbackPlaceholder')\n            }, null, 8, _hoisted_6), [\n              [_vModelText, feedback.value]\n            ])\n          ]),\n          _createElementVNode(\"div\", _hoisted_7, [\n            _createElementVNode(\"button\", {\n              class: \"btn-cancel\",\n              onClick: _cache[2] || (_cache[2] = ($event: any) => (emit('close')))\n            }, _toDisplayString(_unref(t)('teacher.cancelBtn')), 1),\n            _createElementVNode(\"button\", {\n              class: \"btn-submit\",\n              disabled: loading.value,\n              onClick: submit\n            }, _toDisplayString(loading.value ? '...' : _unref(t)('teacher.saveBtn')), 9, _hoisted_8)\n          ])\n        ])\n      ]))\n    : _createCommentVNode(\"\", true)\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193687,
+      "end": 1783196193687,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193687,
+      "end": 1783196193687,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196193687,
+      "end": 1783196193687,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193687,
+      "end": 1783196193687,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193687,
+      "end": 1783196193687,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193687,
+      "end": 1783196193687,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193687,
+      "end": 1783196193687,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193688,
+      "end": 1783196193688,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193688,
+      "end": 1783196193688,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193688,
+      "end": 1783196193688,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193688,
+      "end": 1783196193688,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193688,
+      "end": 1783196193688,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193688,
+      "end": 1783196193688,
+      "order": "normal"
+    }
+  ]
+}

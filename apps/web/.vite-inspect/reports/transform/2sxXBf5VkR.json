@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/pendulum/PendulumParamPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport type { PendulumParams } from '../../../modules/physics/experiments/pendulum/usePendulumPhysics'\nimport PendulumEnvSelector from './PendulumEnvSelector.vue'\nimport { useI18n } from '../../../composables/useI18n'\n\nconst { t } = useI18n()\nconst params = defineModel<PendulumParams>({ required: true })\n</script>\n\n<template>\n  <div class=\"lab-card params-card\">\n    <div class=\"card-header\"><h4>&#x2699;&#xFE0F; {{ t('experiments.parameters') }}</h4></div>\n    <PendulumEnvSelector v-model=\"params.g\" />\n    <div class=\"param-row\"><label>{{ t('experiments.stringLength') }} (m)</label><div class=\"param-inputs\"><input type=\"range\" min=\"0.10\" max=\"2.00\" step=\"0.01\" v-model.number=\"params.length\" /><input type=\"number\" step=\"0.01\" v-model.number=\"params.length\" /></div></div>\n    <div class=\"param-row\"><label>{{ t('experiments.initialAngle') }} (°)</label><div class=\"param-inputs\"><input type=\"range\" min=\"1\" max=\"90\" step=\"1\" v-model.number=\"params.theta0Deg\" /><input type=\"number\" step=\"1\" v-model.number=\"params.theta0Deg\" /></div></div>\n    <div v-if=\"params.theta0Deg > 15\" class=\"angle-warning\">⚠️ {{ t('experiments.largeAngleWarning') }}</div>\n    <div class=\"param-row\"><label>{{ t('experiments.bobMass') }} (kg)</label><div class=\"param-inputs\"><input type=\"range\" min=\"0.01\" max=\"0.50\" step=\"0.01\" v-model.number=\"params.mass\" /><input type=\"number\" step=\"0.01\" v-model.number=\"params.mass\" /></div></div>\n    <div class=\"param-row\"><label>{{ t('experiments.gravityAccel') }} (m/s²)</label><div class=\"param-inputs\"><input type=\"range\" min=\"1.60\" max=\"20.00\" step=\"0.01\" v-model.number=\"params.g\" /><input type=\"number\" step=\"0.01\" v-model.number=\"params.g\" /></div></div>\n    <div class=\"param-row\"><label>{{ t('experiments.damping') }}</label><div class=\"param-inputs\"><input type=\"range\" min=\"0\" max=\"0.5\" step=\"0.01\" v-model.number=\"params.damping\" /><input type=\"number\" step=\"0.01\" v-model.number=\"params.damping\" /></div></div>\n    <div class=\"param-row\"><label>{{ t('experiments.ballRadius') }} (m)</label><div class=\"param-inputs\"><input type=\"range\" min=\"0.005\" max=\"0.15\" step=\"0.001\" v-model.number=\"params.bobRadius\" /><input type=\"number\" step=\"0.001\" v-model.number=\"params.bobRadius\" /></div></div>\n    <div class=\"param-row\"><label>{{ t('experiments.airDensity') }} (kg/m³)</label><div class=\"param-inputs\"><input type=\"range\" min=\"0\" max=\"1.3\" step=\"0.01\" v-model.number=\"params.airDensity\" /><input type=\"number\" step=\"0.01\" v-model.number=\"params.airDensity\" /></div></div>\n    <div class=\"param-row\"><label>{{ t('experiments.springConstant') }} k (N/m)</label><div class=\"param-inputs\"><input type=\"range\" min=\"0\" max=\"50\" step=\"0.5\" v-model.number=\"params.springK\" /><input type=\"number\" step=\"0.5\" v-model.number=\"params.springK\" /></div></div>\n    <div class=\"param-row\"><label>{{ t('experiments.measureCycles') }}</label><input type=\"number\" min=\"5\" max=\"50\" step=\"1\" v-model.number=\"params.measureCycles\" /></div>\n  </div>\n</template>\n\n<style scoped>\n.lab-card { background:linear-gradient(145deg,rgba(30,41,59,0.9),rgba(15,23,42,0.85)); border-radius:10px; padding:.7rem; border:1px solid rgba(71,85,105,0.3); box-shadow:0 4px 12px rgba(0,0,0,.15); }\n.card-header { display:flex; justify-content:space-between; align-items:center; margin:0 0 .4rem; }\n.card-header h4 { margin:0; font-size:.85rem; color:#e2e8f0; font-weight:800; }\n.param-row { display:flex; flex-direction:column; gap:.15rem; margin-bottom:.3rem; }\n.param-row label { font-size:.72rem; color:#94a3b8; font-weight:700; }\n.param-row input, .param-row select { padding:.4rem .5rem; border-radius:6px; border:1px solid rgba(71,85,105,0.4); background:rgba(15,23,42,0.6); color:#e2e8f0; font-size:.75rem; transition:all .15s; }\n.param-row input:focus, .param-row select:focus { outline:none; border-color:#60a5fa; box-shadow:0 0 0 2px rgba(96,165,250,0.15); }\n.param-inputs { display:flex; gap:.4rem; align-items:center; }\n.param-inputs input[type=range] { flex:1; -webkit-appearance:none; appearance:none; height:6px; border-radius:3px; background:#334155; outline:none; cursor:pointer; }\n.param-inputs input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:16px; height:16px; border-radius:50%; background:linear-gradient(135deg,#60a5fa,#3b82f6); cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,.3); border:2px solid #1e293b; }\n.param-inputs input[type=range]::-moz-range-thumb { width:16px; height:16px; border-radius:50%; background:linear-gradient(135deg,#60a5fa,#3b82f6); cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,.3); border:2px solid #1e293b; }\n.param-inputs input[type=number] { width:64px; text-align:center; font-weight:700; font-family:monospace; }\n.angle-warning { font-size:.68rem; color:#fbbf24; background:rgba(251,191,36,0.08); border:1px solid rgba(251,191,36,0.25); border-radius:5px; padding:.25rem .4rem; margin:-.15rem 0 .2rem; text-align:center; }\n</style>\n",
+      "start": 1783196193590,
+      "end": 1783196193981,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193981,
+      "end": 1783196193981,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196193981,
+      "end": 1783196193981,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193981,
+      "end": 1783196193981,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193981,
+      "end": 1783196193981,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/pendulum/PendulumParamPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/pendulum/PendulumParamPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/pendulum/PendulumParamPanel.vue?vue&type=style&index=0&scoped=26a67e89&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-26a67e89\"]]);\n",
+      "start": 1783196193981,
+      "end": 1783196194371,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194372,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194374,
+      "end": 1783196194374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194374,
+      "end": 1783196194376,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194377,
+      "end": 1783196194377,
+      "order": "normal"
+    }
+  ]
+}

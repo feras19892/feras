@@ -1,0 +1,112 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/floating-inspector.css?vue&type=style&index=0&src=aad111e8&scoped=aad111e8&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": ".floating-inspector {\n  position: absolute;\n  top: 0.75rem;\n  right: 0.75rem;\n  width: 220px;\n  background: #ffffff;\n  border: 1px solid #e2e8f0;\n  border-radius: 0.75rem;\n  box-shadow: 0 8px 30px rgba(0,0,0,0.1);\n  padding: 0.75rem;\n  z-index: 50;\n  display: flex;\n  flex-direction: column;\n  gap: 0.4rem;\n}\n.fi-header {\n  display: flex;\n  align-items: center;\n  gap: 0.4rem;\n  padding-bottom: 0.4rem;\n  border-bottom: 1px solid #f1f5f9;\n}\n.fi-icon { font-size: 1.2rem; }\n.fi-name { font-weight: 700; color: #1e293b; font-size: 0.8rem; flex: 1; }\n.fi-undo-group { display: flex; gap: 0.2rem; }\n.fi-undo-group button {\n  width: 26px; height: 26px;\n  border: none; border-radius: 0.3rem;\n  background: #f1f5f9;\n  cursor: pointer; font-size: 0.75rem;\n  display: flex; align-items: center; justify-content: center;\n  transition: all 0.15s;\n}\n.fi-undo-group button:hover:not(:disabled) { background: #e2e8f0; transform: translateY(-1px); }\n.fi-undo-group button:disabled { opacity: 0.3; cursor: not-allowed; }\n.fi-body { display: flex; flex-direction: column; gap: 0.35rem; }\n.fi-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  font-size: 0.72rem;\n}\n.fi-row span { color: #64748b; }\n.fi-row b { color: #334155; font-weight: 700; }\n.fi-row b.open { color: #10b981; }\n.fi-row b.hot { color: #ef4444; }\n.fi-row b.acid { color: #f59e0b; }\n.fi-row b.base { color: #3b82f6; }\n.fi-row b.neutral { color: #22c55e; }\n.fi-bar {\n  height: 5px;\n  background: #f1f5f9;\n  border-radius: 3px;\n  overflow: hidden;\n}\n.fi-fill {\n  height: 100%;\n  border-radius: 3px;\n  transition: width 0.3s;\n}\n.fi-dot {\n  width: 10px; height: 10px; border-radius: 50%;\n  display: inline-block; border: 1px solid rgba(0,0,0,0.1);\n}\n.fi-input {\n  width: 100px;\n  padding: 0.2rem 0.4rem;\n  border: 1px solid #e2e8f0;\n  border-radius: 0.3rem;\n  font-size: 0.7rem;\n  font-family: inherit;\n  text-align: right;\n  background: #f8fafc;\n  color: #334155;\n  outline: none;\n}\n.fi-input:focus {\n  border-color: #3b82f6;\n  background: #fff;\n}\n.fi-row.hint, .fi-row.pour-hint {\n  color: #64748b;\n  font-size: 0.65rem;\n  gap: 0.3rem;\n  background: rgba(241,245,249,0.7);\n  padding: 0.15rem 0.4rem;\n  border-radius: 0.3rem;\n}\n.fi-row.hint small, .fi-row.pour-hint small { font-weight: 600; }\n.fi-row.pour-hint {\n  background: rgba(16,185,129,0.15);\n  color: #059669;\n  border: 1px solid rgba(16,185,129,0.3);\n}\n.fi-actions {\n  display: flex;\n  gap: 0.3rem;\n}\n.fi-actions button {\n  flex: 1;\n  padding: 0.35rem;\n  border: none;\n  border-radius: 0.4rem;\n  font-size: 0.68rem;\n  font-weight: 700;\n  cursor: pointer;\n  font-family: inherit;\n  text-align: center;\n  background: linear-gradient(135deg, #3b82f6, #2563eb);\n  color: #fff;\n  transition: all 0.15s;\n}\n.fi-actions button:hover { transform: translateY(-1px); }\n.fi-actions button.empty {\n  background: linear-gradient(135deg, #f59e0b, #d97706);\n}\n.fi-actions button.delete {\n  background: #f1f5f9;\n  color: #64748b;\n}\n.fi-actions button.delete:hover {\n  background: #fee2e2; color: #ef4444;\n}\n.fi-actions button.success {\n  background: linear-gradient(135deg, #10b981, #059669);\n}\n.fi-actions button.danger {\n  background: linear-gradient(135deg, #ef4444, #dc2626);\n}\n.fi-actions button.refill {\n  background: linear-gradient(135deg, #8b5cf6, #7c3aed);\n}\n.fi-actions button.remove {\n  background: linear-gradient(135deg, #f97316, #ea580c);\n  color: #fff;\n}\n.fi-chem-row {\n  background: rgba(241,245,249,0.6);\n  border-radius: 0.5rem;\n  padding: 0.3rem 0.5rem;\n  margin-bottom: 0.25rem;\n}\n.fi-chem-name {\n  display: flex;\n  align-items: center;\n  gap: 0.3rem;\n  font-weight: 700;\n  color: #334155;\n}\n.fi-dot {\n  width: 10px;\n  height: 10px;\n  border-radius: 50%;\n  display: inline-block;\n  box-shadow: 0 0 0 2px rgba(255,255,255,0.8);\n}\n.fi-slider {\n  width: 100px;\n  height: 4px;\n  -webkit-appearance: none;\n  appearance: none;\n  background: #e2e8f0;\n  border-radius: 2px;\n  outline: none;\n}\n.fi-slider::-webkit-slider-thumb {\n  -webkit-appearance: none;\n  width: 12px;\n  height: 12px;\n  border-radius: 50%;\n  background: #3b82f6;\n  cursor: pointer;\n}\n.tilt-actions button {\n  background: #f1f5f9;\n  color: #475569;\n  font-size: 0.6rem;\n  padding: 0.25rem;\n}\n.tilt-actions button:hover { background: #e2e8f0; }\n.tilt-actions button.tilt-left { color: #3b82f6; }\n.tilt-actions button.tilt-right { color: #3b82f6; }\n.tilt-actions button.tilt-reset { color: #10b981; font-weight: 800; }\n.tilt-value { color: #3b82f6; }\n",
+      "start": 1783196193625,
+      "end": 1783196193628,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "result": ".floating-inspector {\n  position: absolute;\n  top: 0.75rem;\n  right: 0.75rem;\n  width: 220px;\n  background: #ffffff;\n  border: 1px solid #e2e8f0;\n  border-radius: 0.75rem;\n  box-shadow: 0 8px 30px rgba(0,0,0,0.1);\n  padding: 0.75rem;\n  z-index: 50;\n  display: flex;\n  flex-direction: column;\n  gap: 0.4rem;\n}\n.fi-header {\n  display: flex;\n  align-items: center;\n  gap: 0.4rem;\n  padding-bottom: 0.4rem;\n  border-bottom: 1px solid #f1f5f9;\n}\n.fi-icon { font-size: 1.2rem; }\n.fi-name { font-weight: 700; color: #1e293b; font-size: 0.8rem; flex: 1; }\n.fi-undo-group { display: flex; gap: 0.2rem; }\n.fi-undo-group button {\n  width: 26px; height: 26px;\n  border: none; border-radius: 0.3rem;\n  background: #f1f5f9;\n  cursor: pointer; font-size: 0.75rem;\n  display: flex; align-items: center; justify-content: center;\n  transition: all 0.15s;\n}\n.fi-undo-group button:hover:not(:disabled) { background: #e2e8f0; transform: translateY(-1px); }\n.fi-undo-group button:disabled { opacity: 0.3; cursor: not-allowed; }\n.fi-body { display: flex; flex-direction: column; gap: 0.35rem; }\n.fi-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  font-size: 0.72rem;\n}\n.fi-row span { color: #64748b; }\n.fi-row b { color: #334155; font-weight: 700; }\n.fi-row b.open { color: #10b981; }\n.fi-row b.hot { color: #ef4444; }\n.fi-row b.acid { color: #f59e0b; }\n.fi-row b.base { color: #3b82f6; }\n.fi-row b.neutral { color: #22c55e; }\n.fi-bar {\n  height: 5px;\n  background: #f1f5f9;\n  border-radius: 3px;\n  overflow: hidden;\n}\n.fi-fill {\n  height: 100%;\n  border-radius: 3px;\n  transition: width 0.3s;\n}\n.fi-dot {\n  width: 10px; height: 10px; border-radius: 50%;\n  display: inline-block; border: 1px solid rgba(0,0,0,0.1);\n}\n.fi-input {\n  width: 100px;\n  padding: 0.2rem 0.4rem;\n  border: 1px solid #e2e8f0;\n  border-radius: 0.3rem;\n  font-size: 0.7rem;\n  font-family: inherit;\n  text-align: right;\n  background: #f8fafc;\n  color: #334155;\n  outline: none;\n}\n.fi-input:focus {\n  border-color: #3b82f6;\n  background: #fff;\n}\n.fi-row.hint, .fi-row.pour-hint {\n  color: #64748b;\n  font-size: 0.65rem;\n  gap: 0.3rem;\n  background: rgba(241,245,249,0.7);\n  padding: 0.15rem 0.4rem;\n  border-radius: 0.3rem;\n}\n.fi-row.hint small, .fi-row.pour-hint small { font-weight: 600; }\n.fi-row.pour-hint {\n  background: rgba(16,185,129,0.15);\n  color: #059669;\n  border: 1px solid rgba(16,185,129,0.3);\n}\n.fi-actions {\n  display: flex;\n  gap: 0.3rem;\n}\n.fi-actions button {\n  flex: 1;\n  padding: 0.35rem;\n  border: none;\n  border-radius: 0.4rem;\n  font-size: 0.68rem;\n  font-weight: 700;\n  cursor: pointer;\n  font-family: inherit;\n  text-align: center;\n  background: linear-gradient(135deg, #3b82f6, #2563eb);\n  color: #fff;\n  transition: all 0.15s;\n}\n.fi-actions button:hover { transform: translateY(-1px); }\n.fi-actions button.empty {\n  background: linear-gradient(135deg, #f59e0b, #d97706);\n}\n.fi-actions button.delete {\n  background: #f1f5f9;\n  color: #64748b;\n}\n.fi-actions button.delete:hover {\n  background: #fee2e2; color: #ef4444;\n}\n.fi-actions button.success {\n  background: linear-gradient(135deg, #10b981, #059669);\n}\n.fi-actions button.danger {\n  background: linear-gradient(135deg, #ef4444, #dc2626);\n}\n.fi-actions button.refill {\n  background: linear-gradient(135deg, #8b5cf6, #7c3aed);\n}\n.fi-actions button.remove {\n  background: linear-gradient(135deg, #f97316, #ea580c);\n  color: #fff;\n}\n.fi-chem-row {\n  background: rgba(241,245,249,0.6);\n  border-radius: 0.5rem;\n  padding: 0.3rem 0.5rem;\n  margin-bottom: 0.25rem;\n}\n.fi-chem-name {\n  display: flex;\n  align-items: center;\n  gap: 0.3rem;\n  font-weight: 700;\n  color: #334155;\n}\n.fi-dot {\n  width: 10px;\n  height: 10px;\n  border-radius: 50%;\n  display: inline-block;\n  box-shadow: 0 0 0 2px rgba(255,255,255,0.8);\n}\n.fi-slider {\n  width: 100px;\n  height: 4px;\n  -webkit-appearance: none;\n  appearance: none;\n  background: #e2e8f0;\n  border-radius: 2px;\n  outline: none;\n}\n.fi-slider::-webkit-slider-thumb {\n  -webkit-appearance: none;\n  width: 12px;\n  height: 12px;\n  border-radius: 50%;\n  background: #3b82f6;\n  cursor: pointer;\n}\n.tilt-actions button {\n  background: #f1f5f9;\n  color: #475569;\n  font-size: 0.6rem;\n  padding: 0.25rem;\n}\n.tilt-actions button:hover { background: #e2e8f0; }\n.tilt-actions button.tilt-left { color: #3b82f6; }\n.tilt-actions button.tilt-right { color: #3b82f6; }\n.tilt-actions button.tilt-reset { color: #10b981; font-weight: 800; }\n.tilt-value { color: #3b82f6; }\n",
+      "start": 1783196193628,
+      "end": 1783196194190,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": ".floating-inspector[data-v-aad111e8] {\n  position: absolute;\n  top: 0.75rem;\n  right: 0.75rem;\n  width: 220px;\n  background: #ffffff;\n  border: 1px solid #e2e8f0;\n  border-radius: 0.75rem;\n  box-shadow: 0 8px 30px rgba(0,0,0,0.1);\n  padding: 0.75rem;\n  z-index: 50;\n  display: flex;\n  flex-direction: column;\n  gap: 0.4rem;\n}\n.fi-header[data-v-aad111e8] {\n  display: flex;\n  align-items: center;\n  gap: 0.4rem;\n  padding-bottom: 0.4rem;\n  border-bottom: 1px solid #f1f5f9;\n}\n.fi-icon[data-v-aad111e8] { font-size: 1.2rem;\n}\n.fi-name[data-v-aad111e8] { font-weight: 700; color: #1e293b; font-size: 0.8rem; flex: 1;\n}\n.fi-undo-group[data-v-aad111e8] { display: flex; gap: 0.2rem;\n}\n.fi-undo-group button[data-v-aad111e8] {\n  width: 26px; height: 26px;\n  border: none; border-radius: 0.3rem;\n  background: #f1f5f9;\n  cursor: pointer; font-size: 0.75rem;\n  display: flex; align-items: center; justify-content: center;\n  transition: all 0.15s;\n}\n.fi-undo-group button[data-v-aad111e8]:hover:not(:disabled) { background: #e2e8f0; transform: translateY(-1px);\n}\n.fi-undo-group button[data-v-aad111e8]:disabled { opacity: 0.3; cursor: not-allowed;\n}\n.fi-body[data-v-aad111e8] { display: flex; flex-direction: column; gap: 0.35rem;\n}\n.fi-row[data-v-aad111e8] {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  font-size: 0.72rem;\n}\n.fi-row span[data-v-aad111e8] { color: #64748b;\n}\n.fi-row b[data-v-aad111e8] { color: #334155; font-weight: 700;\n}\n.fi-row b.open[data-v-aad111e8] { color: #10b981;\n}\n.fi-row b.hot[data-v-aad111e8] { color: #ef4444;\n}\n.fi-row b.acid[data-v-aad111e8] { color: #f59e0b;\n}\n.fi-row b.base[data-v-aad111e8] { color: #3b82f6;\n}\n.fi-row b.neutral[data-v-aad111e8] { color: #22c55e;\n}\n.fi-bar[data-v-aad111e8] {\n  height: 5px;\n  background: #f1f5f9;\n  border-radius: 3px;\n  overflow: hidden;\n}\n.fi-fill[data-v-aad111e8] {\n  height: 100%;\n  border-radius: 3px;\n  transition: width 0.3s;\n}\n.fi-dot[data-v-aad111e8] {\n  width: 10px; height: 10px; border-radius: 50%;\n  display: inline-block; border: 1px solid rgba(0,0,0,0.1);\n}\n.fi-input[data-v-aad111e8] {\n  width: 100px;\n  padding: 0.2rem 0.4rem;\n  border: 1px solid #e2e8f0;\n  border-radius: 0.3rem;\n  font-size: 0.7rem;\n  font-family: inherit;\n  text-align: right;\n  background: #f8fafc;\n  color: #334155;\n  outline: none;\n}\n.fi-input[data-v-aad111e8]:focus {\n  border-color: #3b82f6;\n  background: #fff;\n}\n.fi-row.hint[data-v-aad111e8], .fi-row.pour-hint[data-v-aad111e8] {\n  color: #64748b;\n  font-size: 0.65rem;\n  gap: 0.3rem;\n  background: rgba(241,245,249,0.7);\n  padding: 0.15rem 0.4rem;\n  border-radius: 0.3rem;\n}\n.fi-row.hint small[data-v-aad111e8], .fi-row.pour-hint small[data-v-aad111e8] { font-weight: 600;\n}\n.fi-row.pour-hint[data-v-aad111e8] {\n  background: rgba(16,185,129,0.15);\n  color: #059669;\n  border: 1px solid rgba(16,185,129,0.3);\n}\n.fi-actions[data-v-aad111e8] {\n  display: flex;\n  gap: 0.3rem;\n}\n.fi-actions button[data-v-aad111e8] {\n  flex: 1;\n  padding: 0.35rem;\n  border: none;\n  border-radius: 0.4rem;\n  font-size: 0.68rem;\n  font-weight: 700;\n  cursor: pointer;\n  font-family: inherit;\n  text-align: center;\n  background: linear-gradient(135deg, #3b82f6, #2563eb);\n  color: #fff;\n  transition: all 0.15s;\n}\n.fi-actions button[data-v-aad111e8]:hover { transform: translateY(-1px);\n}\n.fi-actions button.empty[data-v-aad111e8] {\n  background: linear-gradient(135deg, #f59e0b, #d97706);\n}\n.fi-actions button.delete[data-v-aad111e8] {\n  background: #f1f5f9;\n  color: #64748b;\n}\n.fi-actions button.delete[data-v-aad111e8]:hover {\n  background: #fee2e2; color: #ef4444;\n}\n.fi-actions button.success[data-v-aad111e8] {\n  background: linear-gradient(135deg, #10b981, #059669);\n}\n.fi-actions button.danger[data-v-aad111e8] {\n  background: linear-gradient(135deg, #ef4444, #dc2626);\n}\n.fi-actions button.refill[data-v-aad111e8] {\n  background: linear-gradient(135deg, #8b5cf6, #7c3aed);\n}\n.fi-actions button.remove[data-v-aad111e8] {\n  background: linear-gradient(135deg, #f97316, #ea580c);\n  color: #fff;\n}\n.fi-chem-row[data-v-aad111e8] {\n  background: rgba(241,245,249,0.6);\n  border-radius: 0.5rem;\n  padding: 0.3rem 0.5rem;\n  margin-bottom: 0.25rem;\n}\n.fi-chem-name[data-v-aad111e8] {\n  display: flex;\n  align-items: center;\n  gap: 0.3rem;\n  font-weight: 700;\n  color: #334155;\n}\n.fi-dot[data-v-aad111e8] {\n  width: 10px;\n  height: 10px;\n  border-radius: 50%;\n  display: inline-block;\n  box-shadow: 0 0 0 2px rgba(255,255,255,0.8);\n}\n.fi-slider[data-v-aad111e8] {\n  width: 100px;\n  height: 4px;\n  -webkit-appearance: none;\n  appearance: none;\n  background: #e2e8f0;\n  border-radius: 2px;\n  outline: none;\n}\n.fi-slider[data-v-aad111e8]::-webkit-slider-thumb {\n  -webkit-appearance: none;\n  width: 12px;\n  height: 12px;\n  border-radius: 50%;\n  background: #3b82f6;\n  cursor: pointer;\n}\n.tilt-actions button[data-v-aad111e8] {\n  background: #f1f5f9;\n  color: #475569;\n  font-size: 0.6rem;\n  padding: 0.25rem;\n}\n.tilt-actions button[data-v-aad111e8]:hover { background: #e2e8f0;\n}\n.tilt-actions button.tilt-left[data-v-aad111e8] { color: #3b82f6;\n}\n.tilt-actions button.tilt-right[data-v-aad111e8] { color: #3b82f6;\n}\n.tilt-actions button.tilt-reset[data-v-aad111e8] { color: #10b981; font-weight: 800;\n}\n.tilt-value[data-v-aad111e8] { color: #3b82f6;\n}\n",
+      "start": 1783196194300,
+      "end": 1783196194316,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194317,
+      "end": 1783196194317,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196194318,
+      "end": 1783196194318,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194320,
+      "end": 1783196194321,
+      "order": "normal"
+    }
+  ]
+}

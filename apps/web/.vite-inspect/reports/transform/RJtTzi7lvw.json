@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/polarization/panels/PolarizationLawsPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, createTextVNode as _createTextVNode, createStaticVNode as _createStaticVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"eq-block\" }\nconst _hoisted_3 = { class: \"eq-values\" }\n\nimport { useI18n } from '../../../../composables/useI18n'\n\ninterface Props {\n  polarizerAngle: number\n  analyzerAngle: number\n  I0: number\n  outputIntensity: number\n  relativeAngle: number\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'PolarizationLawsPanel',\n  props: {\n    polarizerAngle: {},\n    analyzerAngle: {},\n    I0: {},\n    outputIntensity: {},\n    relativeAngle: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\n\n\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[4] || (_cache[4] = _createElementVNode(\"div\", { class: \"eq-title\" }, \"Malus's Law\", -1)),\n      _cache[5] || (_cache[5] = _createElementVNode(\"div\", { class: \"eq\" }, \"I = I₀ cos²(θ₂ − θ₁)\", -1)),\n      _createElementVNode(\"div\", _hoisted_3, [\n        _createTextVNode(\" I₀ = \" + _toDisplayString(__props.I0), 1),\n        _cache[0] || (_cache[0] = _createElementVNode(\"br\", null, null, -1)),\n        _createTextVNode(\" θ₁ = \" + _toDisplayString(__props.polarizerAngle) + \"°\", 1),\n        _cache[1] || (_cache[1] = _createElementVNode(\"br\", null, null, -1)),\n        _createTextVNode(\" θ₂ = \" + _toDisplayString(__props.analyzerAngle) + \"°\", 1),\n        _cache[2] || (_cache[2] = _createElementVNode(\"br\", null, null, -1)),\n        _createTextVNode(\" Δθ = \" + _toDisplayString(__props.relativeAngle) + \"°\", 1),\n        _cache[3] || (_cache[3] = _createElementVNode(\"br\", null, null, -1)),\n        _createTextVNode(\" I = \" + _toDisplayString(__props.outputIntensity.toFixed(2)), 1)\n      ])\n    ]),\n    _cache[6] || (_cache[6] = _createStaticVNode(\"<div class=\\\"eq-block\\\" data-v-d82bcf5b><div class=\\\"eq-title\\\" data-v-d82bcf5b>Maximum Transmission</div><div class=\\\"eq\\\" data-v-d82bcf5b>I_max = I₀ (when Δθ = 0°)</div></div><div class=\\\"eq-block\\\" data-v-d82bcf5b><div class=\\\"eq-title\\\" data-v-d82bcf5b>Complete Extinction</div><div class=\\\"eq\\\" data-v-d82bcf5b>I = 0 (when Δθ = 90°)</div></div><div class=\\\"eq-block\\\" data-v-d82bcf5b><div class=\\\"eq-title\\\" data-v-d82bcf5b>Transmission Ratio</div><div class=\\\"eq\\\" data-v-d82bcf5b>T = cos²(Δθ) × 100%</div></div>\", 3))\n  ]))\n}\n}\n\n})",
+      "start": 1783196195718,
+      "end": 1783196195718
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195718,
+      "end": 1783196195718,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, createTextVNode as _createTextVNode, createStaticVNode as _createStaticVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nconst _hoisted_2 = { class: \"eq-block\" };\nconst _hoisted_3 = { class: \"eq-values\" };\nimport { useI18n } from \"../../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"PolarizationLawsPanel\",\n  props: {\n    polarizerAngle: {},\n    analyzerAngle: {},\n    I0: {},\n    outputIntensity: {},\n    relativeAngle: {}\n  },\n  setup(__props) {\n    const { t } = useI18n();\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _cache[4] || (_cache[4] = _createElementVNode(\"div\", { class: \"eq-title\" }, \"Malus's Law\", -1)),\n          _cache[5] || (_cache[5] = _createElementVNode(\"div\", { class: \"eq\" }, \"I = I₀ cos²(θ₂ − θ₁)\", -1)),\n          _createElementVNode(\"div\", _hoisted_3, [\n            _createTextVNode(\" I₀ = \" + _toDisplayString(__props.I0), 1),\n            _cache[0] || (_cache[0] = _createElementVNode(\"br\", null, null, -1)),\n            _createTextVNode(\" θ₁ = \" + _toDisplayString(__props.polarizerAngle) + \"°\", 1),\n            _cache[1] || (_cache[1] = _createElementVNode(\"br\", null, null, -1)),\n            _createTextVNode(\" θ₂ = \" + _toDisplayString(__props.analyzerAngle) + \"°\", 1),\n            _cache[2] || (_cache[2] = _createElementVNode(\"br\", null, null, -1)),\n            _createTextVNode(\" Δθ = \" + _toDisplayString(__props.relativeAngle) + \"°\", 1),\n            _cache[3] || (_cache[3] = _createElementVNode(\"br\", null, null, -1)),\n            _createTextVNode(\" I = \" + _toDisplayString(__props.outputIntensity.toFixed(2)), 1)\n          ])\n        ]),\n        _cache[6] || (_cache[6] = _createStaticVNode('<div class=\"eq-block\" data-v-d82bcf5b><div class=\"eq-title\" data-v-d82bcf5b>Maximum Transmission</div><div class=\"eq\" data-v-d82bcf5b>I_max = I₀ (when Δθ = 0°)</div></div><div class=\"eq-block\" data-v-d82bcf5b><div class=\"eq-title\" data-v-d82bcf5b>Complete Extinction</div><div class=\"eq\" data-v-d82bcf5b>I = 0 (when Δθ = 90°)</div></div><div class=\"eq-block\" data-v-d82bcf5b><div class=\"eq-title\" data-v-d82bcf5b>Transmission Ratio</div><div class=\"eq\" data-v-d82bcf5b>T = cos²(Δθ) × 100%</div></div>', 3))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196195718,
+      "end": 1783196195766,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/polarization/panels/PolarizationLawsPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, createTextVNode as _createTextVNode, createStaticVNode as _createStaticVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"eq-block\" }\nconst _hoisted_3 = { class: \"eq-values\" }\n\nimport { useI18n } from '../../../../composables/useI18n'\n\ninterface Props {\n  polarizerAngle: number\n  analyzerAngle: number\n  I0: number\n  outputIntensity: number\n  relativeAngle: number\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'PolarizationLawsPanel',\n  props: {\n    polarizerAngle: {},\n    analyzerAngle: {},\n    I0: {},\n    outputIntensity: {},\n    relativeAngle: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\n\n\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[4] || (_cache[4] = _createElementVNode(\"div\", { class: \"eq-title\" }, \"Malus's Law\", -1)),\n      _cache[5] || (_cache[5] = _createElementVNode(\"div\", { class: \"eq\" }, \"I = I₀ cos²(θ₂ − θ₁)\", -1)),\n      _createElementVNode(\"div\", _hoisted_3, [\n        _createTextVNode(\" I₀ = \" + _toDisplayString(__props.I0), 1),\n        _cache[0] || (_cache[0] = _createElementVNode(\"br\", null, null, -1)),\n        _createTextVNode(\" θ₁ = \" + _toDisplayString(__props.polarizerAngle) + \"°\", 1),\n        _cache[1] || (_cache[1] = _createElementVNode(\"br\", null, null, -1)),\n        _createTextVNode(\" θ₂ = \" + _toDisplayString(__props.analyzerAngle) + \"°\", 1),\n        _cache[2] || (_cache[2] = _createElementVNode(\"br\", null, null, -1)),\n        _createTextVNode(\" Δθ = \" + _toDisplayString(__props.relativeAngle) + \"°\", 1),\n        _cache[3] || (_cache[3] = _createElementVNode(\"br\", null, null, -1)),\n        _createTextVNode(\" I = \" + _toDisplayString(__props.outputIntensity.toFixed(2)), 1)\n      ])\n    ]),\n    _cache[6] || (_cache[6] = _createStaticVNode(\"<div class=\\\"eq-block\\\" data-v-d82bcf5b><div class=\\\"eq-title\\\" data-v-d82bcf5b>Maximum Transmission</div><div class=\\\"eq\\\" data-v-d82bcf5b>I_max = I₀ (when Δθ = 0°)</div></div><div class=\\\"eq-block\\\" data-v-d82bcf5b><div class=\\\"eq-title\\\" data-v-d82bcf5b>Complete Extinction</div><div class=\\\"eq\\\" data-v-d82bcf5b>I = 0 (when Δθ = 90°)</div></div><div class=\\\"eq-block\\\" data-v-d82bcf5b><div class=\\\"eq-title\\\" data-v-d82bcf5b>Transmission Ratio</div><div class=\\\"eq\\\" data-v-d82bcf5b>T = cos²(Δθ) × 100%</div></div>\", 3))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,sBAAsB,qBAAqB,mBAAmB,kBAAkB,mBAAmB,kBAAkB,qBAAqB,oBAAoB,aAAa,YAAY,sBAAsB,2BAA2B;AAEjP,MAAM,aAAa,EAAE,OAAO,aAAa;AACzC,MAAM,aAAa,EAAE,OAAO,WAAW;AACvC,MAAM,aAAa,EAAE,OAAO,YAAY;AAExC,SAAS,eAAe;AAUxB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,gBAAgB,CAAC;AAAA,IACjB,eAAe,CAAC;AAAA,IAChB,IAAI,CAAC;AAAA,IACL,iBAAiB,CAAC;AAAA,IAClB,eAAe,CAAC;AAAA,EAClB;AAAA,EACA,MAAM,SAAc;AAEtB,UAAM,EAAE,EAAE,IAAI,QAAQ;AAItB,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,oBAAoB,OAAO,YAAY;AAAA,UACrC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,WAAW,GAAG,eAAe,EAAE;AAAA,UAC7F,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,KAAK,GAAG,wBAAwB,EAAE;AAAA,UAChG,oBAAoB,OAAO,YAAY;AAAA,YACrC,iBAAiB,WAAW,iBAAiB,QAAQ,EAAE,GAAG,CAAC;AAAA,YAC3D,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,MAAM,MAAM,MAAM,EAAE;AAAA,YAClE,iBAAiB,WAAW,iBAAiB,QAAQ,cAAc,IAAI,KAAK,CAAC;AAAA,YAC7E,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,MAAM,MAAM,MAAM,EAAE;AAAA,YAClE,iBAAiB,WAAW,iBAAiB,QAAQ,aAAa,IAAI,KAAK,CAAC;AAAA,YAC5E,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,MAAM,MAAM,MAAM,EAAE;AAAA,YAClE,iBAAiB,WAAW,iBAAiB,QAAQ,aAAa,IAAI,KAAK,CAAC;AAAA,YAC5E,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,MAAM,MAAM,MAAM,EAAE;AAAA,YAClE,iBAAiB,UAAU,iBAAiB,QAAQ,gBAAgB,QAAQ,CAAC,CAAC,GAAG,CAAC;AAAA,UACpF,CAAC;AAAA,QACH,CAAC;AAAA,QACD,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,mBAAmB,wfAA0gB,CAAC;AAAA,MAC1jB,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    }
+  ]
+}

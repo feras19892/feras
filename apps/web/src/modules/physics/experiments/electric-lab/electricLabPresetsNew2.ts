@@ -40,7 +40,9 @@ export const newPresets2: PresetDef[] = [
       const batt = makeComp('battery', 80, 220, 'بطارية', 9, 'V')
       batt._internalR = 1
       components.push(batt)
-      components.push(makeComp('switch', 200, 220, 'مفتاح', 0, ''))
+      const sw = makeComp('switch', 200, 220, 'مفتاح', 0, '')
+      sw._closed = true
+      components.push(sw)
       components.push(makeComp('ammeter', 320, 220, 'أميتر', 0, 'A'))
       components.push(makeComp('resistor', 450, 220, 'R حمل', 50, 'Ω'))
       components.push(makeComp('voltmeter', 450, 100, 'فولتميتر', 0, 'V'))

@@ -1,0 +1,98 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/node_modules/vue/dist/vue.runtime.esm-bundler.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "/**\n* vue v3.5.39\n* (c) 2018-present Yuxi (Evan) You and Vue contributors\n* @license MIT\n**/\nimport { initCustomFormatter, warn } from '@vue/runtime-dom';\nexport * from '@vue/runtime-dom';\n\nfunction initDev() {\n  {\n    initCustomFormatter();\n  }\n}\n\nif (!!(process.env.NODE_ENV !== \"production\")) {\n  initDev();\n}\nconst compile = () => {\n  if (!!(process.env.NODE_ENV !== \"production\")) {\n    warn(\n      `Runtime compilation is not supported in this build of Vue.` + (` Configure your bundler to alias \"vue\" to \"vue/dist/vue.esm-bundler.js\".` )\n    );\n  }\n};\n\nexport { compile };\n",
+      "start": 1783196192199,
+      "end": 1783196192241,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196192241,
+      "end": 1783196192241,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196192241,
+      "end": 1783196192242,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196192242,
+      "end": 1783196192242,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196192242,
+      "end": 1783196192242,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "result": "/**\n* vue v3.5.39\n* (c) 2018-present Yuxi (Evan) You and Vue contributors\n* @license MIT\n**/\nimport { initCustomFormatter, warn } from \"@vue/runtime-dom\";\nexport * from \"@vue/runtime-dom\";\nfunction initDev() {\n  {\n    initCustomFormatter();\n  }\n}\nif (false) {\n  initDev();\n}\nconst compile = () => {\n  if (false) {\n    warn(\n      `Runtime compilation is not supported in this build of Vue. Configure your bundler to alias \"vue\" to \"vue/dist/vue.esm-bundler.js\".`\n    );\n  }\n};\nexport { compile };\n",
+      "start": 1783196192242,
+      "end": 1783196192264,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196192264,
+      "end": 1783196192264,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196192264,
+      "end": 1783196192264,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196192264,
+      "end": 1783196192264,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196192264,
+      "end": 1783196192265,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196192265,
+      "end": 1783196192266,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196192266,
+      "end": 1783196192266,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196192266,
+      "end": 1783196192266,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196192266,
+      "end": 1783196192266,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196192266,
+      "end": 1783196192266,
+      "order": "normal"
+    }
+  ]
+}

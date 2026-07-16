@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/panels/PrismReadingsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../../composables/useI18n'\nimport { wavelengthToColor } from '../../../../composables/prism/prism-drawing'\n\nconst { t } = useI18n()\n\ninterface Props {\n  prismAngle: number\n  angleIncidence: number\n  angleRefraction1: number | null\n  angleIncidence2: number | null\n  angleEmergence: number | null\n  deviation: number | null\n  nValue: number\n  wavelength: number\n  speedInMedium: number | null\n}\ndefineProps<Props>()\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <div class=\"reading-group\">\n      <div class=\"reading-row\">\n        <span class=\"reading-label\">A</span>\n        <span class=\"reading-val muted\">{{ prismAngle.toFixed(0) }}°</span>\n      </div>\n      <div class=\"reading-row\">\n        <span class=\"reading-label\">θ₁ — {{ t('prism.incidentAngle') }}</span>\n        <span class=\"reading-val cyan\">{{ angleIncidence.toFixed(1) }}°</span>\n      </div>\n      <div class=\"reading-row\">\n        <span class=\"reading-label\">r₁ — {{ t('prism.refractionAngle') }}</span>\n        <span class=\"reading-val green\">{{ angleRefraction1 !== null ? angleRefraction1.toFixed(1) + '°' : '—' }}</span>\n      </div>\n      <div class=\"reading-row\">\n        <span class=\"reading-label\">r₂ — {{ t('prism.incidentFace2') }}</span>\n        <span class=\"reading-val amber\">{{ angleIncidence2 !== null ? angleIncidence2.toFixed(1) + '°' : '—' }}</span>\n      </div>\n      <div class=\"reading-row\">\n        <span class=\"reading-label\">θ₂ — {{ t('prism.emergenceAngle') }}</span>\n        <span class=\"reading-val\" :class=\"angleEmergence === null ? 'red' : 'orange'\">\n          {{ angleEmergence !== null ? angleEmergence.toFixed(1) + '°' : '⚠ TIR' }}\n        </span>\n      </div>\n    </div>\n    <div class=\"reading-row highlight-row\">\n      <span class=\"reading-label bold\">δ — {{ t('prism.deviationAngle') }}</span>\n      <span class=\"reading-val\" :class=\"deviation !== null ? 'green bold' : 'red bold'\">\n        {{ deviation !== null ? deviation.toFixed(2) + '°' : 'TIR' }}\n      </span>\n    </div>\n    <div class=\"reading-group\">\n      <div class=\"reading-row\">\n        <span class=\"reading-label\">n — {{ t('prism.refractiveIndex') }}</span>\n        <span class=\"reading-val amber\">{{ nValue.toFixed(4) }}</span>\n      </div>\n      <div class=\"reading-row\">\n        <span class=\"reading-label\">λ — {{ t('prism.wavelength') }}</span>\n        <span class=\"reading-val bold\" :style=\"{ color: wavelengthToColor(wavelength) }\">{{ wavelength }} nm</span>\n      </div>\n      <div class=\"reading-row\">\n        <span class=\"reading-label\">v — {{ t('prism.speedInMedium') }}</span>\n        <span class=\"reading-val muted\">{{ speedInMedium !== null ? (speedInMedium / 1e6).toFixed(3) + ' ×10⁶ m/s' : '—' }}</span>\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { display: flex; flex-direction: column; gap: .35rem; font-size: .8rem; }\n.reading-group { display: flex; flex-direction: column; gap: .28rem; padding: .3rem .35rem; background: rgba(255,255,255,0.025); border-radius: 5px; border: 1px solid rgba(45,54,69,0.5); }\n.reading-row { display: flex; justify-content: space-between; align-items: center; gap: .5rem; }\n.highlight-row { padding: .3rem .4rem; background: rgba(74,222,128,0.06); border: 1px solid rgba(74,222,128,0.2); border-radius: 5px; }\n.reading-label { color: #64748b; font-size: .76rem; flex: 1; }\n.reading-label.bold { color: #94a3b8; font-weight: 600; }\n.reading-val { font-family: monospace; font-size: .8rem; font-weight: 600; flex-shrink: 0; }\n.reading-val.bold { font-weight: 800; }\n.cyan  { color: #67e8f9; }\n.green { color: #4ade80; }\n.amber { color: #fbbf24; }\n.orange{ color: #fb923c; }\n.red   { color: #f87171; }\n.muted { color: #94a3b8; }\n</style>\n",
+      "start": 1783196194994,
+      "end": 1783196195266,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195266,
+      "end": 1783196195266,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195266,
+      "end": 1783196195266,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195266,
+      "end": 1783196195266,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195266,
+      "end": 1783196195266,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/panels/PrismReadingsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/panels/PrismReadingsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/panels/PrismReadingsPanel.vue?vue&type=style&index=0&scoped=d0222126&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-d0222126\"]]);\n",
+      "start": 1783196195266,
+      "end": 1783196195573,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    }
+  ]
+}

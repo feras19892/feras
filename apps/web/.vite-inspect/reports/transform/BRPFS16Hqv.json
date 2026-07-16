@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/mirror/MirrorPanelBody.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed } from 'vue'\nimport type { MirrorTrial } from '../../../composables/mirror/useMirrorExperiment'\nimport { useI18n } from '../../../composables/useI18n'\n\ninterface Props {\n  id: string\n  trials: MirrorTrial[]\n  params: { mirrorType: 'concave' | 'convex'; focalLength: number; objectDistance: number; objectHeight: number }\n  imageDistance: number | null\n  imageHeight: number | null\n  magnification: number | null\n  imageProperties: { type: string; orientation: string; size: string }\n  focalFromRegression: number | null\n  regressionSlope: number\n  regressionIntercept: number\n  rSquared: number\n}\n\nconst { t } = useI18n()\nconst props = defineProps<Props>()\n\nconst emit = defineEmits<{\n  (e: 'remove', id: number): void\n  (e: 'clear'): void\n  (e: 'update:params', params: { mirrorType: 'concave' | 'convex'; focalLength: number; objectDistance: number; objectHeight: number }): void\n}>()\n\nconst chartPoints = computed(() => props.trials\n  .filter(t => t.imageDistance !== 0 && t.mirrorType === props.params.mirrorType && Number.isFinite(t.invDo) && Number.isFinite(t.invDi))\n  .map((t) => ({ invDo: t.invDo, invDi: t.invDi })))\n\nconst chartBounds = computed(() => {\n  const pts = chartPoints.value\n  if (pts.length === 0) return { xMin: 0, xMax: 0.12, yMin: -0.12, yMax: 0.05 }\n  const invDos = pts.map(p => p.invDo)\n  const invDis = pts.map(p => p.invDi)\n  const xMin = 0\n  const xMax = Math.max(...invDos, 0.001) * 1.1\n  const yMin = Math.min(...invDis, 0) * 1.1\n  const yMax = Math.max(...invDis, 0.001) * 1.1\n  return { xMin, xMax, yMin, yMax }\n})\n\nconst svgPad = { left: 40, right: 15, top: 15, bottom: 35 }\nconst svgW = 300\nconst svgH = 200\n\nconst plotW = computed(() => svgW - svgPad.left - svgPad.right)\nconst plotH = computed(() => svgH - svgPad.top - svgPad.bottom)\n\nconst xScale = computed(() => {\n  const dx = chartBounds.value.xMax - chartBounds.value.xMin\n  return dx > 0 ? plotW.value / dx : 1\n})\n\nconst yScale = computed(() => {\n  const dy = chartBounds.value.yMax - chartBounds.value.yMin\n  return dy > 0 ? plotH.value / dy : 1\n})\n\nfunction toSvgX(val: number) {\n  return svgPad.left + (val - chartBounds.value.xMin) * xScale.value\n}\n\nfunction toSvgY(val: number) {\n  return svgH - svgPad.bottom - (val - chartBounds.value.yMin) * yScale.value\n}\n\nconst regLineStart = computed(() => ({\n  x: toSvgX(chartBounds.value.xMin),\n  y: toSvgY(props.regressionSlope * chartBounds.value.xMin + props.regressionIntercept)\n}))\n\nconst regLineEnd = computed(() => ({\n  x: toSvgX(chartBounds.value.xMax),\n  y: toSvgY(props.regressionSlope * chartBounds.value.xMax + props.regressionIntercept)\n}))\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <template v-if=\"id === 'readings'\">\n      <div class=\"reading-row\"><span class=\"reading-label\">{{ t('lens.focalLength') }}</span><span class=\"reading-val\">{{ params.focalLength.toFixed(1) }} cm</span></div>\n      <div class=\"reading-row\"><span class=\"reading-label\">{{ t('lens.objectDistance') }}</span><span class=\"reading-val\">{{ params.objectDistance.toFixed(1) }} cm</span></div>\n      <div class=\"reading-row\"><span class=\"reading-label\">{{ t('lens.imageDistance') }}</span><span class=\"reading-val\">{{ imageDistance !== null ? imageDistance.toFixed(1) + ' cm' + (imageDistance < 0 ? ' (' + t('experiments.virtual') + ')' : '') : '∞' }}</span></div>\n      <div class=\"reading-row\"><span class=\"reading-label\">{{ t('lens.objectHeight') }}</span><span class=\"reading-val\">{{ params.objectHeight.toFixed(1) }} cm</span></div>\n      <div class=\"reading-row\"><span class=\"reading-label\">{{ t('lens.imageHeight') }}</span><span class=\"reading-val\">{{ imageHeight !== null ? imageHeight.toFixed(1) + ' cm' : '—' }}</span></div>\n      <div class=\"reading-row\"><span class=\"reading-label\">{{ t('lens.magnification') }}</span><span class=\"reading-val\">{{ magnification !== null ? magnification.toFixed(2) : '—' }}</span></div>\n      <div class=\"reading-row\"><span class=\"reading-label\">{{ t('lens.imageType') }}</span><span class=\"reading-val\">{{ imageProperties.type }}</span></div>\n      <div class=\"reading-row\"><span class=\"reading-label\">{{ t('lens.imageOrientation') }}</span><span class=\"reading-val\">{{ imageProperties.orientation }}</span></div>\n      <div class=\"reading-row\"><span class=\"reading-label\">{{ t('lens.imageSize') }}</span><span class=\"reading-val\">{{ imageProperties.size }}</span></div>\n    </template>\n\n    <template v-if=\"id === 'chart'\">\n      <div v-if=\"trials.length >= 2\" class=\"chart-box\">\n        <svg viewBox=\"0 0 300 200\" class=\"reg-chart\">\n          <!-- X axis -->\n          <line :x1=\"toSvgX(chartBounds.xMin)\" :y1=\"toSvgY(0)\" :x2=\"toSvgX(chartBounds.xMax)\" :y2=\"toSvgY(0)\" stroke=\"rgba(255,255,255,0.3)\" stroke-width=\"1\"/>\n          <!-- Y axis -->\n          <line :x1=\"toSvgX(0)\" :y1=\"toSvgY(chartBounds.yMin)\" :x2=\"toSvgX(0)\" :y2=\"toSvgY(chartBounds.yMax)\" stroke=\"rgba(255,255,255,0.3)\" stroke-width=\"1\"/>\n          <!-- Labels -->\n          <text x=\"150\" y=\"195\" fill=\"#8B95A5\" font-size=\"10\" text-anchor=\"middle\">1/do (1/cm)</text>\n          <text x=\"10\" y=\"100\" fill=\"#8B95A5\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90 10 100)\">1/di (1/cm)</text>\n          <!-- Points -->\n          <g v-for=\"(p, i) in chartPoints\" :key=\"i\">\n            <circle :cx=\"toSvgX(p.invDo)\" :cy=\"toSvgY(p.invDi)\" r=\"4\" fill=\"#22c55e\"/>\n          </g>\n          <!-- Regression line -->\n          <line v-if=\"regressionSlope && chartPoints.length >= 2\" :x1=\"regLineStart.x\" :y1=\"regLineStart.y\" :x2=\"regLineEnd.x\" :y2=\"regLineEnd.y\" stroke=\"#fbbf24\" stroke-width=\"1.5\"/>\n        </svg>\n        <div class=\"reg-summary\">\n          <span class=\"reg-badge\">{{ t('experiments.slopeLabel') }} = {{ regressionSlope.toFixed(3) }}</span>\n          <span class=\"reg-badge\">R² = {{ rSquared.toFixed(4) }}</span>\n        </div>\n      </div>\n      <div v-else class=\"empty\">{{ t('experiments.recordAtLeastTwo') }}</div>\n    </template>\n\n    <template v-if=\"id === 'trials'\">\n      <div v-if=\"trials.length === 0\" class=\"empty\">{{ t('experiments.noTrialsRecorded') }}</div>\n      <div v-else class=\"trial-table\">\n        <div class=\"trial-header\"><span>#</span><span>{{ t('experiments.type') }}</span><span>do</span><span>di</span><span>m</span></div>\n        <div v-for=\"trial in trials\" :key=\"trial.id\" class=\"trial-row\">\n          <span class=\"trial-num\">{{ trial.id }}</span>\n          <span class=\"mono\" style=\"font-size:.65rem\">{{ trial.mirrorType === 'concave' ? '🔭' : '🪞' }}</span>\n          <span>{{ trial.objectDistance.toFixed(0) }}</span>\n          <span>{{ trial.imageDistance.toFixed(1) }}</span>\n          <span class=\"mono\">{{ trial.magnification.toFixed(2) }}</span>\n          <button class=\"trial-del\" @click=\"emit('remove', trial.id)\">🗑️</button>\n        </div>\n      </div>\n      <button v-if=\"trials.length\" class=\"btn-clear\" @click=\"emit('clear')\">{{ t('experiments.clearAll') }}</button>\n    </template>\n\n    <template v-if=\"id === 'params'\">\n      <div class=\"param-row\">\n        <label>{{ t('experiments.mirrorType') }}</label>\n        <div class=\"mirror-toggle\">\n          <button :class=\"{ active: params.mirrorType === 'concave' }\" @click=\"emit('update:params', { ...params, mirrorType: 'concave' })\">{{ t('lens.concave') }} 🔭</button>\n          <button :class=\"{ active: params.mirrorType === 'convex' }\" @click=\"emit('update:params', { ...params, mirrorType: 'convex' })\">{{ t('lens.convex') }} 🪞</button>\n        </div>\n      </div>\n      <div class=\"param-row\">\n        <label>{{ t('experiments.focalLengthAbs') }}</label>\n        <input type=\"range\" min=\"5\" max=\"30\" step=\"1\" :value=\"params.focalLength\" @input=\"emit('update:params', { ...params, focalLength: Number(($event.target as HTMLInputElement).value) })\" />\n        <span class=\"param-val\">{{ params.focalLength }} cm ({{ params.mirrorType === 'concave' ? '+' : '-' }})</span>\n      </div>\n      <div class=\"param-row\">\n        <label>{{ t('lens.objectDistance') }}</label>\n        <input type=\"range\" min=\"10\" max=\"80\" step=\"1\" :value=\"params.objectDistance\" @input=\"emit('update:params', { ...params, objectDistance: Number(($event.target as HTMLInputElement).value) })\" />\n        <span class=\"param-val\">{{ params.objectDistance }} cm</span>\n      </div>\n      <div class=\"param-row\">\n        <label>{{ t('lens.objectHeight') }}</label>\n        <input type=\"range\" min=\"1\" max=\"15\" step=\"0.5\" :value=\"params.objectHeight\" @input=\"emit('update:params', { ...params, objectHeight: Number(($event.target as HTMLInputElement).value) })\" />\n        <span class=\"param-val\">{{ params.objectHeight }} cm</span>\n      </div>\n    </template>\n\n    <template v-if=\"id === 'laws'\">\n      <div class=\"law-box\">\n        <div class=\"law-title\">{{ t('experiments.mirrorEquation') }}</div>\n        <div class=\"law-formula\">1/f = 1/do + 1/di</div>\n        <div class=\"law-calc\">\n          1/{{ params.mirrorType === 'convex' ? '-' : '' }}{{ params.focalLength.toFixed(1) }} = 1/{{ params.objectDistance.toFixed(1) }} + 1/{{ imageDistance !== null ? imageDistance.toFixed(1) : '∞' }}\n        </div>\n        <div class=\"law-calc\" v-if=\"imageDistance !== null && imageDistance !== 0\">\n          {{ (1/(params.mirrorType === 'convex' ? -params.focalLength : params.focalLength)).toFixed(4) }} = {{ (1/params.objectDistance).toFixed(4) }} + {{ (1/imageDistance).toFixed(4) }} = {{ ((1/params.objectDistance) + (1/imageDistance)).toFixed(4) }} ✓\n        </div>\n      </div>\n      <div class=\"law-box\">\n        <div class=\"law-title\">{{ t('experiments.magnificationLabel') }}</div>\n        <div class=\"law-formula\">m = -di/do = hi/ho</div>\n        <div class=\"law-calc\">\n          m = {{ imageDistance !== null && params.objectDistance !== 0 ? (-imageDistance/params.objectDistance).toFixed(2) : '—' }} = {{ imageHeight !== null && params.objectHeight !== 0 ? (imageHeight/params.objectHeight).toFixed(2) : '—' }}\n        </div>\n      </div>\n    </template>\n\n    <template v-if=\"id === 'results'\">\n      <div v-if=\"trials.length < 2\" class=\"empty\">{{ t('experiments.recordAtLeastTwo') }}</div>\n      <template v-else>\n        <div class=\"result-row\"><span class=\"result-label\">{{ t('experiments.numberOfReadings') }}</span><span class=\"result-val\">{{ trials.length }}</span></div>\n        <div class=\"result-row\"><span class=\"result-label\">{{ t('lens.fFromRegression') }}</span><span class=\"result-val highlight\">{{ focalFromRegression !== null ? focalFromRegression.toFixed(2) + ' cm' : '—' }}</span></div>\n        <div class=\"result-row\"><span class=\"result-label\">{{ t('experiments.rSquaredLabel') }}</span><span class=\"result-val\">{{ rSquared.toFixed(4) }}</span></div>\n        <div class=\"result-row\"><span class=\"result-label\">{{ t('lens.expectedF') }}</span><span class=\"result-val\">{{ params.focalLength.toFixed(1) }} cm</span></div>\n      </template>\n    </template>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { display: flex; flex-direction: column; gap: .4rem; font-size: .82rem; }\n.reading-row { display: flex; justify-content: space-between; align-items: center; }\n.reading-label { color: #8B95A5; }\n.reading-val { font-family: monospace; color: #fbbf24; font-weight: 700; }\n.empty { text-align: center; color: #475569; font-size: .8rem; padding: .5rem; }\n.trial-table { display: flex; flex-direction: column; gap: .2rem; font-size: .7rem; }\n.trial-header { display: grid; grid-template-columns: 24px 28px 38px 38px 38px 20px; gap: .2rem; padding: .15rem .3rem; color: #8B95A5; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,0.06); }\n.trial-row { display: grid; grid-template-columns: 24px 28px 38px 38px 38px 20px; gap: .2rem; padding: .15rem .3rem; align-items: center; }\n.trial-row:nth-child(even) { background: rgba(255,255,255,0.02); }\n.mono { font-family: monospace; color: #67e8f9; }\n.trial-del { background: none; border: none; cursor: pointer; font-size: .65rem; opacity: .5; }\n.trial-del:hover { opacity: 1; }\n.btn-clear { padding: .3rem; border-radius: 4px; border: 1px solid rgba(239,68,68,0.2); background: rgba(239,68,68,0.05); color: #f87171; font-size: .75rem; cursor: pointer; font-family: inherit; margin-top: .3rem; }\n.param-row { display: flex; flex-direction: column; gap: .25rem; }\n.param-row label { font-size: .75rem; color: #8B95A5; }\n.param-row input[type='range'] { accent-color: #67e8f9; }\n.param-val { font-family: monospace; color: #67e8f9; font-size: .8rem; text-align: center; }\n.law-box { background: rgba(255,255,255,0.02); border-radius: 6px; padding: .5rem; }\n.law-title { font-size: .75rem; color: #8B95A5; margin-bottom: .2rem; }\n.law-formula { font-family: monospace; font-size: .9rem; color: #fbbf24; }\n.law-calc { font-family: monospace; font-size: .75rem; color: #67e8f9; margin-top: .2rem; }\n.result-row { display: flex; justify-content: space-between; align-items: center; }\n.result-label { color: #8B95A5; font-size: .78rem; }\n.result-val { font-family: monospace; color: #D1D7E0; font-size: .82rem; }\n.result-val.highlight { color: #22c55e; font-weight: 700; }\n.reg-summary { display: flex; gap: .4rem; margin-top: .4rem; flex-wrap: wrap; }\n.reg-badge { padding: .15rem .4rem; border-radius: 999px; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2); color: #22c55e; font-size: .7rem; font-weight: 700; font-family: monospace; }\n.chart-box { display: flex; flex-direction: column; align-items: center; }\n.reg-chart { width: 100%; height: 160px; }\n.mirror-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: .3rem; }\n.mirror-toggle button { padding: .35rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: #8B95A5; font-size: .78rem; cursor: pointer; font-family: inherit; transition: all .15s; }\n.mirror-toggle button:hover { background: rgba(255,255,255,0.06); }\n.mirror-toggle button.active { background: rgba(91,141,184,.15); border-color: #5B8DB8; color: #5B8DB8; font-weight: 700; }\n</style>\n",
+      "start": 1783196193566,
+      "end": 1783196193881,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193881,
+      "end": 1783196193881,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196193881,
+      "end": 1783196193881,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193881,
+      "end": 1783196193881,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193881,
+      "end": 1783196193881,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/mirror/MirrorPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/mirror/MirrorPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/mirror/MirrorPanelBody.vue?vue&type=style&index=0&scoped=0c3ef449&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-0c3ef449\"]]);\n",
+      "start": 1783196193881,
+      "end": 1783196194372,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194372,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194373,
+      "end": 1783196194374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194374,
+      "end": 1783196194374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194374,
+      "end": 1783196194376,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194377,
+      "end": 1783196194377,
+      "order": "normal"
+    }
+  ]
+}

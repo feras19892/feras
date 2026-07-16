@@ -32,6 +32,7 @@ export default defineConfig(({ mode }) => ({
           }
           if (id.includes('/modules/chemistry/')) return 'chemistry';
           if (id.includes('/pages/admin')) return 'admin';
+          if (id.includes('/locales/')) return 'locales';
         },
       },
     },

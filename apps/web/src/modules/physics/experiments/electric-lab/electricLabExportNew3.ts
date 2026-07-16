@@ -16,7 +16,7 @@ export function exportNew3(router: any, ctx: ExportContext): boolean {
   if (ctx.isSourceEff.value) {
     sendToAnalysis(router, {
       sourceExperiment: 'electric-lab-source-eff', sourceNameAr: 'كفاءة المصدر الكهربائي', hasCalcTab: true,
-      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance, eta: t.resistance > 0 ? t.resistance / (t.resistance + 2) : 0 })),
+      readings: ctx.trials.value.map(t => ({ V: t.voltage, I: t.current, R: t.resistance, eta: ctx.sourceEffData.value ? ctx.sourceEffData.value.R / (ctx.sourceEffData.value.R + ctx.sourceEffData.value.r) : 0 })),
       columns: [{ key: 'V', label: 'Vt', unit: 'V' }, { key: 'I', label: 'I', unit: 'A' }, { key: 'R', label: 'R', unit: 'Ω' }, { key: 'eta', label: 'η', unit: '%' }],
       equations: [{ name: 'Efficiency', formula: 'η = R/(R+r), P_load = I²R', variables: [{ symbol: 'eta', label: 'Efficiency' }, { symbol: 'R', label: 'Load R' }, { symbol: 'r', label: 'Internal r' }, { symbol: 'Pload', label: 'Load Power' }], solveFor: ['eta', 'Pload'] }],
       suggestedPlots: [{ xKey: 'R', yKey: 'eta', xLabel: 'R (Ω)', yLabel: 'η', type: 'scatter' }],

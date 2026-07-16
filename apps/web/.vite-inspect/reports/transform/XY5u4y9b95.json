@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lightray/LightRayCanvas.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, watch, onMounted } from 'vue';\n\ninterface Props {\n  angleIncidence: number;\n  n1: number;\n  n2: number;\n  angleReflection: number;\n  angleRefraction: number | null;\n  totalInternalReflection: boolean;\n  running: boolean;\n}\n\nconst props = defineProps<Props>();\nconst canvasRef = ref<HTMLCanvasElement | null>(null);\n\nfunction draw() {\n  const cvs = canvasRef.value;\n  if (!cvs) return;\n  const ctx = cvs.getContext('2d');\n  if (!ctx) return;\n\n  const w = cvs.width;\n  const h = cvs.height;\n  ctx.clearRect(0, 0, w, h);\n\n  // Background\n  ctx.fillStyle = '#161B22';\n  ctx.fillRect(0, 0, w, h);\n\n  const cx = w / 2;\n  const cy = h / 2;\n  const maxRayLen = Math.min(w, h) * 0.4;\n\n  // Normal line (dashed)\n  ctx.strokeStyle = 'rgba(255,255,255,0.15)';\n  ctx.setLineDash([5, 5]);\n  ctx.lineWidth = 1;\n  ctx.beginPath();\n  ctx.moveTo(cx, 20);\n  ctx.lineTo(cx, h - 20);\n  ctx.stroke();\n  ctx.setLineDash([]);\n\n  // Surface line\n  ctx.strokeStyle = 'rgba(255,255,255,0.3)';\n  ctx.lineWidth = 2;\n  ctx.beginPath();\n  ctx.moveTo(20, cy);\n  ctx.lineTo(w - 20, cy);\n  ctx.stroke();\n\n  // Medium labels\n  ctx.fillStyle = 'rgba(148,163,184,0.6)';\n  ctx.font = '12px sans-serif';\n  ctx.fillText(`Medium 1: n₁ = ${props.n1.toFixed(2)}`, 30, cy - 20);\n  ctx.fillText(`Medium 2: n₂ = ${props.n2.toFixed(2)}`, 30, cy + 35);\n\n  const incRad = (props.angleIncidence * Math.PI) / 180;\n  const reflRad = (props.angleReflection * Math.PI) / 180;\n\n  // Incident ray\n  ctx.strokeStyle = '#fbbf24';\n  ctx.lineWidth = 2.5;\n  ctx.beginPath();\n  const x1 = cx - maxRayLen * Math.sin(incRad);\n  const y1 = cy - maxRayLen * Math.cos(incRad);\n  ctx.moveTo(x1, y1);\n  ctx.lineTo(cx, cy);\n  ctx.stroke();\n  // Arrowhead on incident\n  drawArrow(ctx, x1, y1, cx, cy, '#fbbf24');\n\n  // Reflected ray\n  ctx.strokeStyle = '#fbbf24';\n  ctx.lineWidth = 2.5;\n  ctx.beginPath();\n  const xr = cx + maxRayLen * Math.sin(reflRad);\n  const yr = cy - maxRayLen * Math.cos(reflRad);\n  ctx.moveTo(cx, cy);\n  ctx.lineTo(xr, yr);\n  ctx.stroke();\n  drawArrow(ctx, cx, cy, xr, yr, '#fbbf24');\n\n  // Refracted ray (if not TIR)\n  if (!props.totalInternalReflection && props.angleRefraction !== null) {\n    const refrRad = (props.angleRefraction * Math.PI) / 180;\n    ctx.strokeStyle = '#67e8f9';\n    ctx.lineWidth = 2.5;\n    ctx.beginPath();\n    const xt = cx + maxRayLen * Math.sin(refrRad);\n    const yt = cy + maxRayLen * Math.cos(refrRad);\n    ctx.moveTo(cx, cy);\n    ctx.lineTo(xt, yt);\n    ctx.stroke();\n    drawArrow(ctx, cx, cy, xt, yt, '#67e8f9');\n  } else if (props.totalInternalReflection) {\n    // TIR label\n    ctx.fillStyle = '#f87171';\n    ctx.font = 'bold 14px sans-serif';\n    ctx.textAlign = 'center';\n    ctx.fillText('Total Internal Reflection', cx, cy + maxRayLen * 0.5);\n    ctx.textAlign = 'left';\n  }\n\n  // Angle arcs\n  drawAngleArc(ctx, cx, cy, incRad, '#fbbf24', 'θᵢ', -30, -50);\n  drawAngleArc(ctx, cx, cy, reflRad, '#fbbf24', 'θᵣ', 30, -50);\n  if (!props.totalInternalReflection && props.angleRefraction !== null) {\n    const refrRad = (props.angleRefraction * Math.PI) / 180;\n    drawAngleArc(ctx, cx, cy, refrRad, '#67e8f9', 'θₜ', 30, 50);\n  }\n\n  // Point of incidence\n  ctx.fillStyle = '#fff';\n  ctx.beginPath();\n  ctx.arc(cx, cy, 4, 0, Math.PI * 2);\n  ctx.fill();\n}\n\nfunction drawArrow(ctx: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number, color: string) {\n  const headLen = 10;\n  const angle = Math.atan2(y2 - y1, x2 - x1);\n  const midX = (x1 + x2) / 2;\n  const midY = (y1 + y2) / 2;\n  ctx.fillStyle = color;\n  ctx.beginPath();\n  ctx.moveTo(midX, midY);\n  ctx.lineTo(midX - headLen * Math.cos(angle - Math.PI / 6), midY - headLen * Math.sin(angle - Math.PI / 6));\n  ctx.lineTo(midX - headLen * Math.cos(angle + Math.PI / 6), midY - headLen * Math.sin(angle + Math.PI / 6));\n  ctx.closePath();\n  ctx.fill();\n}\n\nfunction drawAngleArc(\n  ctx: CanvasRenderingContext2D,\n  cx: number, cy: number, rad: number,\n  color: string, label: string, labelDx: number, labelDy: number\n) {\n  const arcR = 40;\n  ctx.strokeStyle = color;\n  ctx.lineWidth = 1.5;\n  ctx.beginPath();\n  if (label === 'θᵢ' || label === 'θᵣ') {\n    ctx.arc(cx, cy, arcR, -Math.PI / 2 - rad, -Math.PI / 2 + (label === 'θᵣ' ? rad : 0));\n  } else {\n    ctx.arc(cx, cy, arcR, Math.PI / 2, Math.PI / 2 + rad);\n  }\n  ctx.stroke();\n\n  ctx.fillStyle = color;\n  ctx.font = '11px sans-serif';\n  const lx = cx + labelDx;\n  const ly = cy + labelDy;\n  ctx.fillText(label, lx, ly);\n}\n\nwatch(\n  () => [props.angleIncidence, props.n1, props.n2, props.angleReflection, props.angleRefraction, props.totalInternalReflection],\n  draw,\n  { immediate: true }\n);\n\nonMounted(() => {\n  const cvs = canvasRef.value;\n  if (cvs) {\n    const dpr = window.devicePixelRatio || 1;\n    const rect = cvs.getBoundingClientRect();\n    cvs.width = rect.width * dpr;\n    cvs.height = rect.height * dpr;\n    const ctx = cvs.getContext('2d');\n    if (ctx) ctx.scale(dpr, dpr);\n    draw();\n  }\n});\n</script>\n\n<template>\n  <canvas ref=\"canvasRef\" class=\"lightray-canvas\"></canvas>\n</template>\n\n<style scoped>\n.lightray-canvas {\n  width: 100%;\n  height: 100%;\n  border-radius: 8px;\n  min-height: 300px;\n}\n</style>\n",
+      "start": 1783196193595,
+      "end": 1783196194002,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194002,
+      "end": 1783196194002,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194002,
+      "end": 1783196194002,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194002,
+      "end": 1783196194002,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194002,
+      "end": 1783196194002,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lightray/LightRayCanvas.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lightray/LightRayCanvas.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lightray/LightRayCanvas.vue?vue&type=style&index=0&scoped=72449a12&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-72449a12\"]]);\n",
+      "start": 1783196194002,
+      "end": 1783196194381,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194381,
+      "end": 1783196194381,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194381,
+      "end": 1783196194381,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194381,
+      "end": 1783196194382,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194382,
+      "end": 1783196194382,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194382,
+      "end": 1783196194382,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194382,
+      "end": 1783196194382,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194382,
+      "end": 1783196194382,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194382,
+      "end": 1783196194382,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194382,
+      "end": 1783196194383,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194383,
+      "end": 1783196194383,
+      "order": "normal"
+    }
+  ]
+}

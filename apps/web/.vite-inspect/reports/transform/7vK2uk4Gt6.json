@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisConclusionPanel.vue?vue&type=style&index=0&scoped=6ab5ccee&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.conclusion-panel {\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.5rem;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n  flex-shrink: 0;\n}\n.panel-header {\n  padding: 0.6rem 0.9rem;\n  background: rgba(255,255,255,0.04);\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n  font-size: 0.95rem;\n  color: #67e8f9;\n  font-weight: 700;\n}\n.form { padding: 0.6rem; display: flex; flex-direction: column; gap: 0.5rem; }\n.field { display: flex; flex-direction: column; gap: 0.25rem; }\nlabel { font-size: 0.82rem; color: #94a3b8; font-weight: 600; }\ntextarea {\n  background: #0f172a;\n  border: 1px solid #334155;\n  color: #e2e8f0;\n  border-radius: 0.3rem;\n  padding: 0.4rem 0.5rem;\n  font-size: 0.9rem;\n  font-family: inherit;\n  resize: vertical;\n}\n",
+      "start": 1783196193631,
+      "end": 1783196193631
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.conclusion-panel {\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.5rem;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n  flex-shrink: 0;\n}\n.panel-header {\n  padding: 0.6rem 0.9rem;\n  background: rgba(255,255,255,0.04);\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n  font-size: 0.95rem;\n  color: #67e8f9;\n  font-weight: 700;\n}\n.form { padding: 0.6rem; display: flex; flex-direction: column; gap: 0.5rem; }\n.field { display: flex; flex-direction: column; gap: 0.25rem; }\nlabel { font-size: 0.82rem; color: #94a3b8; font-weight: 600; }\ntextarea {\n  background: #0f172a;\n  border: 1px solid #334155;\n  color: #e2e8f0;\n  border-radius: 0.3rem;\n  padding: 0.4rem 0.5rem;\n  font-size: 0.9rem;\n  font-family: inherit;\n  resize: vertical;\n}\n",
+      "start": 1783196193631,
+      "end": 1783196194190,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.conclusion-panel[data-v-6ab5ccee] {\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.5rem;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n  flex-shrink: 0;\n}\n.panel-header[data-v-6ab5ccee] {\n  padding: 0.6rem 0.9rem;\n  background: rgba(255,255,255,0.04);\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n  font-size: 0.95rem;\n  color: #67e8f9;\n  font-weight: 700;\n}\n.form[data-v-6ab5ccee] { padding: 0.6rem; display: flex; flex-direction: column; gap: 0.5rem;\n}\n.field[data-v-6ab5ccee] { display: flex; flex-direction: column; gap: 0.25rem;\n}\nlabel[data-v-6ab5ccee] { font-size: 0.82rem; color: #94a3b8; font-weight: 600;\n}\ntextarea[data-v-6ab5ccee] {\n  background: #0f172a;\n  border: 1px solid #334155;\n  color: #e2e8f0;\n  border-radius: 0.3rem;\n  padding: 0.4rem 0.5rem;\n  font-size: 0.9rem;\n  font-family: inherit;\n  resize: vertical;\n}\n",
+      "start": 1783196194303,
+      "end": 1783196194316,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194317,
+      "end": 1783196194317,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196194318,
+      "end": 1783196194318,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194320,
+      "end": 1783196194321,
+      "order": "normal"
+    }
+  ]
+}

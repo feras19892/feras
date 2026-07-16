@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/admin/AdminGlobalSearch.vue?vue&type=style&index=0&scoped=650d331a&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.global-search { position: relative; max-width: 400px; flex: 1; }\n.global-search input {\n  width: 100%; padding: 0.5rem 1rem; border-radius: 0.5rem;\n  border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3);\n  color: #e2e8f0; font-family: inherit; font-size: 0.9rem;\n}\n.global-search input::placeholder { color: #64748b; }\n.results-dropdown {\n  position: absolute; top: calc(100% + 4px); left: 0; right: 0;\n  background: #111827; border: 1px solid rgba(255,255,255,0.08);\n  border-radius: 0.5rem; box-shadow: 0 12px 32px rgba(0,0,0,0.5);\n  z-index: 100; max-height: 300px; overflow-y: auto;\n}\n.result-item {\n  display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.8rem;\n  cursor: pointer; transition: background 0.15s; border-bottom: 1px solid rgba(255,255,255,0.04);\n}\n.result-item:hover { background: rgba(99,102,241,0.1); }\n.result-icon { font-size: 1.1rem; flex-shrink: 0; }\n.result-text { flex: 1; min-width: 0; }\n.result-title { font-weight: 700; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }\n.result-subtitle { font-size: 0.75rem; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }\n.no-results { padding: 1rem; text-align: center; color: #64748b; font-size: 0.85rem; }\n",
+      "start": 1783196193041,
+      "end": 1783196193041
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.global-search { position: relative; max-width: 400px; flex: 1; }\n.global-search input {\n  width: 100%; padding: 0.5rem 1rem; border-radius: 0.5rem;\n  border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3);\n  color: #e2e8f0; font-family: inherit; font-size: 0.9rem;\n}\n.global-search input::placeholder { color: #64748b; }\n.results-dropdown {\n  position: absolute; top: calc(100% + 4px); left: 0; right: 0;\n  background: #111827; border: 1px solid rgba(255,255,255,0.08);\n  border-radius: 0.5rem; box-shadow: 0 12px 32px rgba(0,0,0,0.5);\n  z-index: 100; max-height: 300px; overflow-y: auto;\n}\n.result-item {\n  display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.8rem;\n  cursor: pointer; transition: background 0.15s; border-bottom: 1px solid rgba(255,255,255,0.04);\n}\n.result-item:hover { background: rgba(99,102,241,0.1); }\n.result-icon { font-size: 1.1rem; flex-shrink: 0; }\n.result-text { flex: 1; min-width: 0; }\n.result-title { font-weight: 700; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }\n.result-subtitle { font-size: 0.75rem; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }\n.no-results { padding: 1rem; text-align: center; color: #64748b; font-size: 0.85rem; }\n",
+      "start": 1783196193042,
+      "end": 1783196194190,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.global-search[data-v-650d331a] { position: relative; max-width: 400px; flex: 1;\n}\n.global-search input[data-v-650d331a] {\n  width: 100%; padding: 0.5rem 1rem; border-radius: 0.5rem;\n  border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3);\n  color: #e2e8f0; font-family: inherit; font-size: 0.9rem;\n}\n.global-search input[data-v-650d331a]::placeholder { color: #64748b;\n}\n.results-dropdown[data-v-650d331a] {\n  position: absolute; top: calc(100% + 4px); left: 0; right: 0;\n  background: #111827; border: 1px solid rgba(255,255,255,0.08);\n  border-radius: 0.5rem; box-shadow: 0 12px 32px rgba(0,0,0,0.5);\n  z-index: 100; max-height: 300px; overflow-y: auto;\n}\n.result-item[data-v-650d331a] {\n  display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.8rem;\n  cursor: pointer; transition: background 0.15s; border-bottom: 1px solid rgba(255,255,255,0.04);\n}\n.result-item[data-v-650d331a]:hover { background: rgba(99,102,241,0.1);\n}\n.result-icon[data-v-650d331a] { font-size: 1.1rem; flex-shrink: 0;\n}\n.result-text[data-v-650d331a] { flex: 1; min-width: 0;\n}\n.result-title[data-v-650d331a] { font-weight: 700; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;\n}\n.result-subtitle[data-v-650d331a] { font-size: 0.75rem; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;\n}\n.no-results[data-v-650d331a] { padding: 1rem; text-align: center; color: #64748b; font-size: 0.85rem;\n}\n",
+      "start": 1783196194242,
+      "end": 1783196194316,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194317,
+      "end": 1783196194317,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196194317,
+      "end": 1783196194318,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    }
+  ]
+}

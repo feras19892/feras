@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisEquationsPanel.vue?vue&type=style&index=0&scoped=aed4bafb&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.equations-panel {\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.5rem;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n.panel-header {\n  padding: 0.4rem 0.75rem;\n  background: rgba(255,255,255,0.04);\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n  font-size: 0.85rem;\n  color: #67e8f9;\n  font-weight: 700;\n  flex-shrink: 0;\n}\n.body {\n  flex: 1;\n  display: flex;\n  overflow: hidden;\n  min-height: 0;\n}\n.eq-tabs-list {\n  width: 150px;\n  flex-shrink: 0;\n  display: flex;\n  flex-direction: column;\n  gap: 0.25rem;\n  padding: 0.4rem;\n  border-left: 1px solid rgba(255,255,255,0.06);\n  overflow-y: auto;\n}\n.eq-tab {\n  background: rgba(255,255,255,0.04);\n  border: 1px solid rgba(255,255,255,0.07);\n  color: #94a3b8;\n  border-radius: 0.3rem;\n  padding: 0.3rem 0.45rem;\n  font-size: 0.73rem;\n  cursor: pointer;\n  text-align: right;\n  transition: all 0.15s;\n  font-weight: 600;\n  line-height: 1.3;\n}\n.eq-tab.active {\n  background: rgba(6,182,212,0.2);\n  color: #67e8f9;\n  border-color: rgba(6,182,212,0.4);\n}\n.eq-tab:hover:not(.active) { background: rgba(255,255,255,0.08); color: #e2e8f0; }\n.eq-detail-area { flex: 1; min-width: 0; overflow: hidden; display: flex; flex-direction: column; }\n.empty { color: #64748b; text-align: center; padding: 1rem; font-size: 0.85rem; }\n",
+      "start": 1783196193637,
+      "end": 1783196193637
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.equations-panel {\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.5rem;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n.panel-header {\n  padding: 0.4rem 0.75rem;\n  background: rgba(255,255,255,0.04);\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n  font-size: 0.85rem;\n  color: #67e8f9;\n  font-weight: 700;\n  flex-shrink: 0;\n}\n.body {\n  flex: 1;\n  display: flex;\n  overflow: hidden;\n  min-height: 0;\n}\n.eq-tabs-list {\n  width: 150px;\n  flex-shrink: 0;\n  display: flex;\n  flex-direction: column;\n  gap: 0.25rem;\n  padding: 0.4rem;\n  border-left: 1px solid rgba(255,255,255,0.06);\n  overflow-y: auto;\n}\n.eq-tab {\n  background: rgba(255,255,255,0.04);\n  border: 1px solid rgba(255,255,255,0.07);\n  color: #94a3b8;\n  border-radius: 0.3rem;\n  padding: 0.3rem 0.45rem;\n  font-size: 0.73rem;\n  cursor: pointer;\n  text-align: right;\n  transition: all 0.15s;\n  font-weight: 600;\n  line-height: 1.3;\n}\n.eq-tab.active {\n  background: rgba(6,182,212,0.2);\n  color: #67e8f9;\n  border-color: rgba(6,182,212,0.4);\n}\n.eq-tab:hover:not(.active) { background: rgba(255,255,255,0.08); color: #e2e8f0; }\n.eq-detail-area { flex: 1; min-width: 0; overflow: hidden; display: flex; flex-direction: column; }\n.empty { color: #64748b; text-align: center; padding: 1rem; font-size: 0.85rem; }\n",
+      "start": 1783196193637,
+      "end": 1783196194190,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.equations-panel[data-v-aed4bafb] {\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.5rem;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n.panel-header[data-v-aed4bafb] {\n  padding: 0.4rem 0.75rem;\n  background: rgba(255,255,255,0.04);\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n  font-size: 0.85rem;\n  color: #67e8f9;\n  font-weight: 700;\n  flex-shrink: 0;\n}\n.body[data-v-aed4bafb] {\n  flex: 1;\n  display: flex;\n  overflow: hidden;\n  min-height: 0;\n}\n.eq-tabs-list[data-v-aed4bafb] {\n  width: 150px;\n  flex-shrink: 0;\n  display: flex;\n  flex-direction: column;\n  gap: 0.25rem;\n  padding: 0.4rem;\n  border-left: 1px solid rgba(255,255,255,0.06);\n  overflow-y: auto;\n}\n.eq-tab[data-v-aed4bafb] {\n  background: rgba(255,255,255,0.04);\n  border: 1px solid rgba(255,255,255,0.07);\n  color: #94a3b8;\n  border-radius: 0.3rem;\n  padding: 0.3rem 0.45rem;\n  font-size: 0.73rem;\n  cursor: pointer;\n  text-align: right;\n  transition: all 0.15s;\n  font-weight: 600;\n  line-height: 1.3;\n}\n.eq-tab.active[data-v-aed4bafb] {\n  background: rgba(6,182,212,0.2);\n  color: #67e8f9;\n  border-color: rgba(6,182,212,0.4);\n}\n.eq-tab[data-v-aed4bafb]:hover:not(.active) { background: rgba(255,255,255,0.08); color: #e2e8f0;\n}\n.eq-detail-area[data-v-aed4bafb] { flex: 1; min-width: 0; overflow: hidden; display: flex; flex-direction: column;\n}\n.empty[data-v-aed4bafb] { color: #64748b; text-align: center; padding: 1rem; font-size: 0.85rem;\n}\n",
+      "start": 1783196194307,
+      "end": 1783196194316,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194317,
+      "end": 1783196194317,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196194318,
+      "end": 1783196194318,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194320,
+      "end": 1783196194321,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/stores/analysis.store.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { defineStore } from 'pinia';\nimport { computed, ref } from 'vue';\nimport type { AnalysisPayload } from '../types/physics';\nimport { clearAnalysisStorage } from '../composables/analysis/sendToAnalysis';\n\nexport interface StudentInfo {\n  name: string;\n  email: string;\n  grade: string;\n  notes: string;\n}\n\nexport const useAnalysisStore = defineStore('analysis', () => {\n  const payload = ref<AnalysisPayload | null>(null);\n  const modifiedReadings = ref<Record<string, number>[]>([]);\n  const studentInfo = ref<StudentInfo>({ name: '', email: '', grade: '', notes: '' });\n  const reportDate = ref<string>(new Date().toLocaleDateString('ar-SA'));\n  const mediumType = ref<string>('');\n  const mediumN2 = ref<number | null>(null);\n  const calculatedN2 = ref<number | null>(null);\n  const expectedN2 = ref<number | null>(null);\n\n  const hasData = computed(() => payload.value !== null);\n  const sourceName = computed(() => payload.value?.sourceNameAr ?? '');\n\n  function loadFromExperiment(data: AnalysisPayload) {\n    payload.value = data;\n    modifiedReadings.value = data.readings.map(r => ({ ...r })) as unknown as Record<string, number>[];\n    mediumType.value = data.mediumType ?? '';\n    mediumN2.value = data.mediumN2 ?? null;\n    calculatedN2.value = data.calculatedN2 ?? null;\n    expectedN2.value = data.expectedN2 ?? null;\n    reportDate.value = new Date().toLocaleDateString('ar-SA');\n  }\n\n  function setPayload(data: AnalysisPayload) {\n    payload.value = data;\n    modifiedReadings.value = data.readings.map(r => ({ ...r })) as unknown as Record<string, number>[];\n    mediumType.value = data.mediumType ?? '';\n    mediumN2.value = data.mediumN2 ?? null;\n    calculatedN2.value = data.calculatedN2 ?? null;\n    expectedN2.value = data.expectedN2 ?? null;\n  }\n\n  function updateCell(rowIndex: number, key: string, value: number) {\n    if (!modifiedReadings.value[rowIndex]) return;\n    modifiedReadings.value[rowIndex][key] = value;\n  }\n\n  function clearData() {\n    payload.value = null;\n    modifiedReadings.value = [];\n    studentInfo.value = { name: '', email: '', grade: '', notes: '' };\n    mediumType.value = '';\n    mediumN2.value = null;\n    calculatedN2.value = null;\n    expectedN2.value = null;\n    clearAnalysisStorage();\n  }\n\n  function generateTheoreticalReadings(n2: number) {\n    if (!payload.value) return;\n    const n1 = 1.0;\n    const angles = [10, 20, 30, 40, 50, 60];\n    const newReadings = angles.map((thetaI) => {\n      const sinT = (n1 / n2) * Math.sin(thetaI * Math.PI / 180);\n      const thetaT = sinT <= 1 ? (Math.asin(sinT) * 180 / Math.PI) : 0;\n      const row: Record<string, number> = {};\n      for (const col of payload.value!.columns) {\n        if (col.key === 'theta_i') row[col.key] = thetaI;\n        else if (col.key === 'theta_t') row[col.key] = thetaT;\n        else if (col.key === 'sin_i') row[col.key] = Math.sin(thetaI * Math.PI / 180);\n        else if (col.key === 'sin_t') row[col.key] = Math.sin(thetaT * Math.PI / 180);\n        else row[col.key] = 0;\n      }\n      return row;\n    });\n    modifiedReadings.value = newReadings;\n    mediumN2.value = n2;\n  }\n\n  function addRow() {\n    if (!payload.value) return;\n    const empty: Record<string, number> = {};\n    for (const col of payload.value.columns) { empty[col.key] = 0; }\n    modifiedReadings.value = [...modifiedReadings.value, empty];\n  }\n\n  function removeRow(index: number) {\n    modifiedReadings.value = modifiedReadings.value.filter((_, i) => i !== index);\n  }\n\n  function updateStudentInfo(info: Partial<StudentInfo>) {\n    studentInfo.value = { ...studentInfo.value, ...info };\n  }\n\n  const readings = computed(() => modifiedReadings.value);\n  const columns = computed(() => payload.value?.columns ?? []);\n  const equations = computed(() => payload.value?.equations ?? []);\n  const plots = computed(() => payload.value?.suggestedPlots ?? []);\n\n  return {\n    payload,\n    hasData,\n    sourceName,\n    readings,\n    columns,\n    equations,\n    plots,\n    studentInfo,\n    reportDate,\n    mediumType,\n    mediumN2,\n    calculatedN2,\n    expectedN2,\n    loadFromExperiment,\n    setPayload,\n    updateCell,\n    clearData,\n    addRow,\n    removeRow,\n    updateStudentInfo,\n    generateTheoreticalReadings,\n  };\n});\n",
+      "start": 1783196192521,
+      "end": 1783196192834,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196192835,
+      "end": 1783196192835,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineStore } from \"pinia\";\nimport { computed, ref } from \"vue\";\nimport { clearAnalysisStorage } from \"../composables/analysis/sendToAnalysis\";\nexport const useAnalysisStore = defineStore(\"analysis\", () => {\n  const payload = ref(null);\n  const modifiedReadings = ref([]);\n  const studentInfo = ref({ name: \"\", email: \"\", grade: \"\", notes: \"\" });\n  const reportDate = ref((/* @__PURE__ */ new Date()).toLocaleDateString(\"ar-SA\"));\n  const mediumType = ref(\"\");\n  const mediumN2 = ref(null);\n  const calculatedN2 = ref(null);\n  const expectedN2 = ref(null);\n  const hasData = computed(() => payload.value !== null);\n  const sourceName = computed(() => payload.value?.sourceNameAr ?? \"\");\n  function loadFromExperiment(data) {\n    payload.value = data;\n    modifiedReadings.value = data.readings.map((r) => ({ ...r }));\n    mediumType.value = data.mediumType ?? \"\";\n    mediumN2.value = data.mediumN2 ?? null;\n    calculatedN2.value = data.calculatedN2 ?? null;\n    expectedN2.value = data.expectedN2 ?? null;\n    reportDate.value = (/* @__PURE__ */ new Date()).toLocaleDateString(\"ar-SA\");\n  }\n  function setPayload(data) {\n    payload.value = data;\n    modifiedReadings.value = data.readings.map((r) => ({ ...r }));\n    mediumType.value = data.mediumType ?? \"\";\n    mediumN2.value = data.mediumN2 ?? null;\n    calculatedN2.value = data.calculatedN2 ?? null;\n    expectedN2.value = data.expectedN2 ?? null;\n  }\n  function updateCell(rowIndex, key, value) {\n    if (!modifiedReadings.value[rowIndex]) return;\n    modifiedReadings.value[rowIndex][key] = value;\n  }\n  function clearData() {\n    payload.value = null;\n    modifiedReadings.value = [];\n    studentInfo.value = { name: \"\", email: \"\", grade: \"\", notes: \"\" };\n    mediumType.value = \"\";\n    mediumN2.value = null;\n    calculatedN2.value = null;\n    expectedN2.value = null;\n    clearAnalysisStorage();\n  }\n  function generateTheoreticalReadings(n2) {\n    if (!payload.value) return;\n    const n1 = 1;\n    const angles = [10, 20, 30, 40, 50, 60];\n    const newReadings = angles.map((thetaI) => {\n      const sinT = n1 / n2 * Math.sin(thetaI * Math.PI / 180);\n      const thetaT = sinT <= 1 ? Math.asin(sinT) * 180 / Math.PI : 0;\n      const row = {};\n      for (const col of payload.value.columns) {\n        if (col.key === \"theta_i\") row[col.key] = thetaI;\n        else if (col.key === \"theta_t\") row[col.key] = thetaT;\n        else if (col.key === \"sin_i\") row[col.key] = Math.sin(thetaI * Math.PI / 180);\n        else if (col.key === \"sin_t\") row[col.key] = Math.sin(thetaT * Math.PI / 180);\n        else row[col.key] = 0;\n      }\n      return row;\n    });\n    modifiedReadings.value = newReadings;\n    mediumN2.value = n2;\n  }\n  function addRow() {\n    if (!payload.value) return;\n    const empty = {};\n    for (const col of payload.value.columns) {\n      empty[col.key] = 0;\n    }\n    modifiedReadings.value = [...modifiedReadings.value, empty];\n  }\n  function removeRow(index) {\n    modifiedReadings.value = modifiedReadings.value.filter((_, i) => i !== index);\n  }\n  function updateStudentInfo(info) {\n    studentInfo.value = { ...studentInfo.value, ...info };\n  }\n  const readings = computed(() => modifiedReadings.value);\n  const columns = computed(() => payload.value?.columns ?? []);\n  const equations = computed(() => payload.value?.equations ?? []);\n  const plots = computed(() => payload.value?.suggestedPlots ?? []);\n  return {\n    payload,\n    hasData,\n    sourceName,\n    readings,\n    columns,\n    equations,\n    plots,\n    studentInfo,\n    reportDate,\n    mediumType,\n    mediumN2,\n    calculatedN2,\n    expectedN2,\n    loadFromExperiment,\n    setPayload,\n    updateCell,\n    clearData,\n    addRow,\n    removeRow,\n    updateStudentInfo,\n    generateTheoreticalReadings\n  };\n});\n",
+      "start": 1783196192835,
+      "end": 1783196193017,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/stores/analysis.store.ts"
+        ],
+        "sourcesContent": [
+          "import { defineStore } from 'pinia';\nimport { computed, ref } from 'vue';\nimport type { AnalysisPayload } from '../types/physics';\nimport { clearAnalysisStorage } from '../composables/analysis/sendToAnalysis';\n\nexport interface StudentInfo {\n  name: string;\n  email: string;\n  grade: string;\n  notes: string;\n}\n\nexport const useAnalysisStore = defineStore('analysis', () => {\n  const payload = ref<AnalysisPayload | null>(null);\n  const modifiedReadings = ref<Record<string, number>[]>([]);\n  const studentInfo = ref<StudentInfo>({ name: '', email: '', grade: '', notes: '' });\n  const reportDate = ref<string>(new Date().toLocaleDateString('ar-SA'));\n  const mediumType = ref<string>('');\n  const mediumN2 = ref<number | null>(null);\n  const calculatedN2 = ref<number | null>(null);\n  const expectedN2 = ref<number | null>(null);\n\n  const hasData = computed(() => payload.value !== null);\n  const sourceName = computed(() => payload.value?.sourceNameAr ?? '');\n\n  function loadFromExperiment(data: AnalysisPayload) {\n    payload.value = data;\n    modifiedReadings.value = data.readings.map(r => ({ ...r })) as unknown as Record<string, number>[];\n    mediumType.value = data.mediumType ?? '';\n    mediumN2.value = data.mediumN2 ?? null;\n    calculatedN2.value = data.calculatedN2 ?? null;\n    expectedN2.value = data.expectedN2 ?? null;\n    reportDate.value = new Date().toLocaleDateString('ar-SA');\n  }\n\n  function setPayload(data: AnalysisPayload) {\n    payload.value = data;\n    modifiedReadings.value = data.readings.map(r => ({ ...r })) as unknown as Record<string, number>[];\n    mediumType.value = data.mediumType ?? '';\n    mediumN2.value = data.mediumN2 ?? null;\n    calculatedN2.value = data.calculatedN2 ?? null;\n    expectedN2.value = data.expectedN2 ?? null;\n  }\n\n  function updateCell(rowIndex: number, key: string, value: number) {\n    if (!modifiedReadings.value[rowIndex]) return;\n    modifiedReadings.value[rowIndex][key] = value;\n  }\n\n  function clearData() {\n    payload.value = null;\n    modifiedReadings.value = [];\n    studentInfo.value = { name: '', email: '', grade: '', notes: '' };\n    mediumType.value = '';\n    mediumN2.value = null;\n    calculatedN2.value = null;\n    expectedN2.value = null;\n    clearAnalysisStorage();\n  }\n\n  function generateTheoreticalReadings(n2: number) {\n    if (!payload.value) return;\n    const n1 = 1.0;\n    const angles = [10, 20, 30, 40, 50, 60];\n    const newReadings = angles.map((thetaI) => {\n      const sinT = (n1 / n2) * Math.sin(thetaI * Math.PI / 180);\n      const thetaT = sinT <= 1 ? (Math.asin(sinT) * 180 / Math.PI) : 0;\n      const row: Record<string, number> = {};\n      for (const col of payload.value!.columns) {\n        if (col.key === 'theta_i') row[col.key] = thetaI;\n        else if (col.key === 'theta_t') row[col.key] = thetaT;\n        else if (col.key === 'sin_i') row[col.key] = Math.sin(thetaI * Math.PI / 180);\n        else if (col.key === 'sin_t') row[col.key] = Math.sin(thetaT * Math.PI / 180);\n        else row[col.key] = 0;\n      }\n      return row;\n    });\n    modifiedReadings.value = newReadings;\n    mediumN2.value = n2;\n  }\n\n  function addRow() {\n    if (!payload.value) return;\n    const empty: Record<string, number> = {};\n    for (const col of payload.value.columns) { empty[col.key] = 0; }\n    modifiedReadings.value = [...modifiedReadings.value, empty];\n  }\n\n  function removeRow(index: number) {\n    modifiedReadings.value = modifiedReadings.value.filter((_, i) => i !== index);\n  }\n\n  function updateStudentInfo(info: Partial<StudentInfo>) {\n    studentInfo.value = { ...studentInfo.value, ...info };\n  }\n\n  const readings = computed(() => modifiedReadings.value);\n  const columns = computed(() => payload.value?.columns ?? []);\n  const equations = computed(() => payload.value?.equations ?? []);\n  const plots = computed(() => payload.value?.suggestedPlots ?? []);\n\n  return {\n    payload,\n    hasData,\n    sourceName,\n    readings,\n    columns,\n    equations,\n    plots,\n    studentInfo,\n    reportDate,\n    mediumType,\n    mediumN2,\n    calculatedN2,\n    expectedN2,\n    loadFromExperiment,\n    setPayload,\n    updateCell,\n    clearData,\n    addRow,\n    removeRow,\n    updateStudentInfo,\n    generateTheoreticalReadings,\n  };\n});\n"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193017,
+      "end": 1783196193017,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193017,
+      "end": 1783196193017,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193017,
+      "end": 1783196193017,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193017,
+      "end": 1783196193017,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193017,
+      "end": 1783196193017,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193017,
+      "end": 1783196193017,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193017,
+      "end": 1783196193017,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193017,
+      "end": 1783196193017,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193017,
+      "end": 1783196193017,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193017,
+      "end": 1783196193017,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193018,
+      "end": 1783196193018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193018,
+      "end": 1783196193018,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/SpecificHeatHelpModal.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\nconst { t } = useI18n()\ndefineProps<{ open: boolean }>()\nconst emit = defineEmits<{ (e: 'close'): void }>()\n</script>\n\n<template>\n  <Teleport to=\"body\">\n    <div v-if=\"open\" class=\"overlay\" @click.self=\"emit('close')\">\n      <div class=\"modal\">\n        <div class=\"modal-header\">\n          <h3>🌡️ دليل تجربة السعة الحرارية النوعية — طريقة الخلط (Method of Mixtures)</h3>\n          <button class=\"close-btn\" @click=\"emit('close')\">&#x2715;</button>\n        </div>\n        <div class=\"modal-body\">\n\n          <!-- 1. Apparatus Description -->\n          <section>\n            <h4>🔧 1. جدول أدوات مساحة العمل</h4>\n            <ul>\n              <li>\n                <b>الكتلة المعدنية المجهولة (Metal Sample):</b>\n                قطعة من معدن مجهول يراد حساب سعته الحرارية النوعية (c_m).\n                اختيار نوع المعدن (A, B, C) وضبط كتلته (m_m) من 50 g إلى 200 g.\n              </li>\n              <li>\n                <b>سخان الماء الابتدائي (Water Bath / Heater):</b>\n                وعاء لتسخين القطعة المعدنية فيه حتى تصل لدرجة الغليان قبل نقلها.\n              </li>\n              <li>\n                <b>المسعر الحراري المعزول (Calorimeter):</b>\n                وعاء معزول يحتوي على كمية من الماء البارد لاستقبال القطعة الساخنة.\n                ضبط كتلة الماء البارد داخله (m_w) من 100 g إلى 300 g.\n              </li>\n              <li>\n                <b>ميزان حرارة رقمي (Digital Thermometer):</b>\n                مسبار مغمور في ماء المسعر يقرأ الحرارة الابتدائية والنهائية بدقة 0.1°C.\n              </li>\n              <li>\n                <b>ملقاط افتراضي (Tongs Tool):</b>\n                أداة لنقل القطعة المعدنية الساخنة سريعاً من السخان إلى المسعر دون فقد حراري.\n              </li>\n            </ul>\n          </section>\n\n          <!-- 2. Theoretical Background -->\n          <section>\n            <h4>🔬 2. المقدمة والنظرية العلمية</h4>\n            <p>\n              السعة الحرارية النوعية (c) هي كمية الحرارة اللازمة لرفع درجة حرارة جرام واحد من المادة بمقدار درجة سيليزية واحدة.\n            </p>\n            <p>\n              تعتمد التجربة على <b>طريقة الخلط (Method of Mixtures)</b> في نظام معزول (المسعر)، حيث يفترض القانون أن كمية الحرارة التي تفقدها القطعة المعدنية الساخنة (Q_lost) تساوي تماماً كمية الحرارة التي يكتسبها الماء البارد والمسعر (Q_gained):\n            </p>\n            <div class=\"formula\">Q_lost = Q_gained</div>\n            <p><b>الحرارة المفقودة من المعدن:</b></p>\n            <div class=\"formula\">Q_lost = m_m · c_m · (T_m - T_f)</div>\n            <p><b>الحرارة المكتسبة بواسطة الماء:</b></p>\n            <div class=\"formula\">Q_gained = m_w · c_w · (T_f - T_w)</div>\n            <p>حيث c_w = 4186 J/kg·°C (ثابت).</p>\n          </section>\n\n          <!-- 3. Experimental Steps -->\n          <section>\n            <h4>⚗️ 3. طريقة تشغيل التجربة وتجميع البيانات</h4>\n            <ol>\n              <li>\n                <b>تجهيز القطعة:</b> اختر المعدن المجهول (A) واضبط كتلته لتكون (m_m = 100 g)، ثم ضعه في سخان الماء وابدأ التسخين حتى تثبت حرارته عند (T_m = 100°C).\n              </li>\n              <li>\n                <b>تجهيز المسعر:</b> ضع في المسعر كمية من الماء البارد (m_w = 200 g)، وقس درجة حرارتها الابتدائية (T_w = 20°C).\n              </li>\n              <li>\n                <b>النقل اليدوي:</b> عندما تصل القطعة لـ 100°C، سيتوقف التسخين ويظهر زر \"نقل القطعة\" — اضغط عليه أو انقر القطعة في مساحة العمل لنقلها إلى المسعر.\n              </li>\n              <li>\n                <b>رصد الاتزان:</b> راقب ميزان الحرارة، ستلاحظ ارتفاع القراءة تدريجياً حتى تثبت عند قيمة معينة؛ سجل هذه القيمة كدرجة حرارة الاتزان النهائية (T_f).\n              </li>\n              <li>\n                <b>التكرار:</b> كرر مع تغيير كتلة الماء البارد (m_w = 150, 200, 250, 300 g) وسجّل T_f لكل كتلة.\n              </li>\n            </ol>\n          </section>\n\n          <!-- 4. Graphical Analysis -->\n          <section>\n            <h4>📊 4. التحليل البياني وحساب المجهول</h4>\n            <p>لإيجاد السعة الحرارية للمعدن بيانيّاً:</p>\n            <ul>\n              <li>\n                <b>المحاور:</b> ارسم Q_gained على المحور الصادي (Y-axis) و [m_m·(T_m - T_f)] على المحور السيني (X-axis).\n              </li>\n              <li>\n                <b>الميل (Slope):</b> الميل = c_m (السعة الحرارية النوعية للمعدن).\n              </li>\n              <li>\n                <b>المقارنة:</b> قارن قيمة c_m المستخرجة بالجداول المعيارية لمعرفة نوع المعدن (نحاس، حديد، ألومنيوم).\n              </li>\n            </ul>\n          </section>\n\n          <!-- 5. Scientific Importance -->\n          <section>\n            <h4>🎯 5. الفائدة والأهمية العلمية</h4>\n            <ul>\n              <li>فهم آلية التبادل الحراري وقانون حفظ الطاقة الحرارية في الأنظمة المغلقة.</li>\n              <li>التعرف على التميز الحراري للمواد: المعادن سعة حرارية منخفضة → تسخن بسرعة، الماء سعة حرارية عالية → يحتاج وقت طويل.</li>\n            </ul>\n          </section>\n\n          <!-- Keyboard shortcuts -->\n          <section>\n            <h4>⌨️ اختصارات لوحة المفاتيح</h4>\n            <div class=\"kbd-grid\">\n              <span><kbd>Space</kbd> بدء / توقف</span>\n              <span><kbd>S</kbd> تسجيل قراءة</span>\n              <span><kbd>R</kbd> إعادة التعيين</span>\n              <span><kbd>Ctrl</kbd>+<kbd>Z</kbd> تراجع</span>\n              <span><kbd>Ctrl</kbd>+<kbd>Y</kbd> إعادة</span>\n              <span><kbd>?</kbd> فتح/إغلاق المساعدة</span>\n            </div>\n          </section>\n\n        </div>\n      </div>\n    </div>\n  </Teleport>\n</template>\n\n<style scoped>\n.overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; padding: 1.5rem; }\n.modal { background: #131a25; border: 1px solid #2D3645; border-radius: 12px; max-width: 720px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,.5); }\n.modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.2rem; border-bottom: 1px solid #2D3645; flex-shrink: 0; }\n.modal-header h3 { margin: 0; font-size: 1rem; color: #e2e8f0; }\n.close-btn { background: transparent; border: 1px solid #2D3645; color: #8B95A5; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; padding: 0; }\n.close-btn:hover { background: rgba(91,141,184,.1); color: #5B8DB8; }\n.modal-body { overflow-y: auto; padding: 1.2rem; font-size: .82rem; color: #cbd5e1; line-height: 1.8; direction: rtl; text-align: right; }\n.modal-body section { margin-bottom: 1.4rem; }\n.modal-body h4 { margin: 0 0 .5rem; font-size: .9rem; color: #5B8DB8; border-bottom: 1px solid #2D3645; padding-bottom: .3rem; }\n.modal-body p { margin: .4rem 0; }\n.modal-body ol, .modal-body ul { margin: .4rem 0; padding-right: 1.2rem; }\n.modal-body li { margin-bottom: .25rem; }\n.formula { background: #1a2332; border: 1px solid #2D3645; border-radius: 6px; padding: .6rem .8rem; font-family: monospace; font-size: .9rem; color: #5B8DB8; text-align: center; margin: .6rem 0; direction: ltr; }\n.kbd-grid { display: flex; flex-wrap: wrap; gap: .4rem; }\n.kbd-grid span { background: #1a2332; border: 1px solid #2D3645; border-radius: 5px; padding: .3rem .5rem; font-size: .75rem; }\nkbd { background: #252D3A; border: 1px solid #475569; border-radius: 4px; padding: .05rem .3rem; font-family: monospace; font-size: .7rem; color: #D1D7E0; }\n</style>\n",
+      "start": 1783196193616,
+      "end": 1783196194122,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194122,
+      "end": 1783196194122,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194122,
+      "end": 1783196194122,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194122,
+      "end": 1783196194122,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194122,
+      "end": 1783196194122,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/SpecificHeatHelpModal.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/SpecificHeatHelpModal.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/specific-heat/SpecificHeatHelpModal.vue?vue&type=style&index=0&scoped=3250fa42&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-3250fa42\"]]);\n",
+      "start": 1783196194122,
+      "end": 1783196194385,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194385,
+      "end": 1783196194385,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194385,
+      "end": 1783196194385,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194385,
+      "end": 1783196194385,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194385,
+      "end": 1783196194385,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194386,
+      "end": 1783196194386,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194386,
+      "end": 1783196194386,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194386,
+      "end": 1783196194386,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194386,
+      "end": 1783196194386,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194386,
+      "end": 1783196194386,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194386,
+      "end": 1783196194386,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/panels/SpeedOfSoundReferencePanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeStyle as _normalizeStyle } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"ref-table\" }\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'SpeedOfSoundReferencePanel',\n  setup(__props) {\n\nconst TEMPS = [\n  { t: 0, v: 331, color: '#3b82f6' },\n  { t: 20, v: 343, color: '#22c55e' },\n  { t: 40, v: 355, color: '#ef4444' },\n]\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"ref-title\" }, \"📊 سرعة الصوت في الهواء\", -1)),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"ref-header\" }, [\n        _createElementVNode(\"span\", null, \"T (°C)\"),\n        _createElementVNode(\"span\", null, \"v (m/s)\")\n      ], -1)),\n      (_openBlock(), _createElementBlock(_Fragment, null, _renderList(TEMPS, (ref) => {\n        return _createElementVNode(\"div\", {\n          key: ref.t,\n          class: \"ref-row\"\n        }, [\n          _createElementVNode(\"span\", null, _toDisplayString(ref.t), 1),\n          _createElementVNode(\"span\", {\n            style: _normalizeStyle({ color: ref.color })\n          }, _toDisplayString(ref.v), 5)\n        ])\n      }), 64))\n    ]),\n    _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"ref-note\" }, \" 💡 v ≈ 331 + 0.6T. تزداد السرعة بارتفاع الحرارة. \", -1))\n  ]))\n}\n}\n\n})",
+      "start": 1783196193086,
+      "end": 1783196193086
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193086,
+      "end": 1783196193086,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeStyle as _normalizeStyle } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nconst _hoisted_2 = { class: \"ref-table\" };\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"SpeedOfSoundReferencePanel\",\n  setup(__props) {\n    const TEMPS = [\n      { t: 0, v: 331, color: \"#3b82f6\" },\n      { t: 20, v: 343, color: \"#22c55e\" },\n      { t: 40, v: 355, color: \"#ef4444\" }\n    ];\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"ref-title\" }, \"📊 سرعة الصوت في الهواء\", -1)),\n        _createElementVNode(\"div\", _hoisted_2, [\n          _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"ref-header\" }, [\n            _createElementVNode(\"span\", null, \"T (°C)\"),\n            _createElementVNode(\"span\", null, \"v (m/s)\")\n          ], -1)),\n          (_openBlock(), _createElementBlock(_Fragment, null, _renderList(TEMPS, (ref) => {\n            return _createElementVNode(\"div\", {\n              key: ref.t,\n              class: \"ref-row\"\n            }, [\n              _createElementVNode(\"span\", null, _toDisplayString(ref.t), 1),\n              _createElementVNode(\"span\", {\n                style: _normalizeStyle({ color: ref.color })\n              }, _toDisplayString(ref.v), 5)\n            ]);\n          }), 64))\n        ]),\n        _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"ref-note\" }, \" 💡 v ≈ 331 + 0.6T. تزداد السرعة بارتفاع الحرارة. \", -1))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196193086,
+      "end": 1783196193245,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/panels/SpeedOfSoundReferencePanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeStyle as _normalizeStyle } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"ref-table\" }\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'SpeedOfSoundReferencePanel',\n  setup(__props) {\n\nconst TEMPS = [\n  { t: 0, v: 331, color: '#3b82f6' },\n  { t: 20, v: 343, color: '#22c55e' },\n  { t: 40, v: 355, color: '#ef4444' },\n]\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"ref-title\" }, \"📊 سرعة الصوت في الهواء\", -1)),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"ref-header\" }, [\n        _createElementVNode(\"span\", null, \"T (°C)\"),\n        _createElementVNode(\"span\", null, \"v (m/s)\")\n      ], -1)),\n      (_openBlock(), _createElementBlock(_Fragment, null, _renderList(TEMPS, (ref) => {\n        return _createElementVNode(\"div\", {\n          key: ref.t,\n          class: \"ref-row\"\n        }, [\n          _createElementVNode(\"span\", null, _toDisplayString(ref.t), 1),\n          _createElementVNode(\"span\", {\n            style: _normalizeStyle({ color: ref.color })\n          }, _toDisplayString(ref.v), 5)\n        ])\n      }), 64))\n    ]),\n    _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"ref-note\" }, \" 💡 v ≈ 331 + 0.6T. تزداد السرعة بارتفاع الحرارة. \", -1))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,sBAAsB,qBAAqB,cAAc,aAAa,YAAY,WAAW,aAAa,YAAY,sBAAsB,qBAAqB,mBAAmB,kBAAkB,kBAAkB,uBAAuB;AAExP,MAAM,aAAa,EAAE,OAAO,aAAa;AACzC,MAAM,aAAa,EAAE,OAAO,YAAY;AAGxC,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,MAAM,SAAS;AAEjB,UAAM,QAAQ;AAAA,MACZ,EAAE,GAAG,GAAG,GAAG,KAAK,OAAO,UAAU;AAAA,MACjC,EAAE,GAAG,IAAI,GAAG,KAAK,OAAO,UAAU;AAAA,MAClC,EAAE,GAAG,IAAI,GAAG,KAAK,OAAO,UAAU;AAAA,IACpC;AAEA,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,YAAY,GAAG,2BAA2B,EAAE;AAAA,QAC1G,oBAAoB,OAAO,YAAY;AAAA,UACrC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,aAAa,GAAG;AAAA,YAC5E,oBAAoB,QAAQ,MAAM,QAAQ;AAAA,YAC1C,oBAAoB,QAAQ,MAAM,SAAS;AAAA,UAC7C,GAAG,EAAE;AAAA,WACJ,WAAW,GAAG,oBAAoB,WAAW,MAAM,YAAY,OAAO,CAAC,QAAQ;AAC9E,mBAAO,oBAAoB,OAAO;AAAA,cAChC,KAAK,IAAI;AAAA,cACT,OAAO;AAAA,YACT,GAAG;AAAA,cACD,oBAAoB,QAAQ,MAAM,iBAAiB,IAAI,CAAC,GAAG,CAAC;AAAA,cAC5D,oBAAoB,QAAQ;AAAA,gBAC1B,OAAO,gBAAgB,EAAE,OAAO,IAAI,MAAM,CAAC;AAAA,cAC7C,GAAG,iBAAiB,IAAI,CAAC,GAAG,CAAC;AAAA,YAC/B,CAAC;AAAA,UACH,CAAC,GAAG,EAAE;AAAA,QACR,CAAC;AAAA,QACD,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,WAAW,GAAG,sDAAsD,EAAE;AAAA,MACtI,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193245,
+      "end": 1783196193245,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193245,
+      "end": 1783196193245,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196193245,
+      "end": 1783196193245,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193245,
+      "end": 1783196193245,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193246,
+      "end": 1783196193246,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193246,
+      "end": 1783196193246,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193246,
+      "end": 1783196193246,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193246,
+      "end": 1783196193246,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193246,
+      "end": 1783196193246,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193246,
+      "end": 1783196193246,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193246,
+      "end": 1783196193246,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193246,
+      "end": 1783196193246,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193246,
+      "end": 1783196193246,
+      "order": "normal"
+    }
+  ]
+}

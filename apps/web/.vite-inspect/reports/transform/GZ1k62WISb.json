@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/stores/chemistry-analysis.store.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { defineStore } from 'pinia';\nimport { computed, ref } from 'vue';\nimport type { ChemAnalysisPayload, ChemStudentInfo } from '../types/chemistry';\nimport { clearAnalysisStorage } from '../composables/chemistry/sendToAnalysis';\n\nexport const useChemistryAnalysisStore = defineStore('chemistry-analysis', () => {\n  const payload = ref<ChemAnalysisPayload | null>(null);\n  const modifiedReadings = ref<Record<string, number>[]>([]);\n  const studentInfo = ref<ChemStudentInfo>({ name: '', email: '', grade: '', notes: '' });\n  const reportDate = ref<string>(new Date().toLocaleDateString('ar-SA'));\n  const mediumType = ref<string>('');\n  const calculatedResult = ref<number | null>(null);\n  const expectedResult = ref<number | null>(null);\n\n  const hasData = computed(() => payload.value !== null);\n  const sourceName = computed(() => payload.value?.sourceNameAr ?? '');\n\n  function loadFromExperiment(data: ChemAnalysisPayload) {\n    payload.value = data;\n    modifiedReadings.value = data.readings.map(r => ({ ...r })) as Record<string, number>[];\n    mediumType.value = data.mediumType ?? '';\n    calculatedResult.value = data.calculatedResult ?? null;\n    expectedResult.value = data.expectedResult ?? null;\n    reportDate.value = new Date().toLocaleDateString('ar-SA');\n  }\n\n  function setPayload(data: ChemAnalysisPayload) {\n    payload.value = data;\n    modifiedReadings.value = data.readings.map(r => ({ ...r })) as Record<string, number>[];\n    mediumType.value = data.mediumType ?? '';\n    calculatedResult.value = data.calculatedResult ?? null;\n    expectedResult.value = data.expectedResult ?? null;\n  }\n\n  function updateCell(rowIndex: number, key: string, value: number) {\n    if (!modifiedReadings.value[rowIndex]) return;\n    modifiedReadings.value[rowIndex][key] = value;\n  }\n\n  function clearData() {\n    payload.value = null;\n    modifiedReadings.value = [];\n    studentInfo.value = { name: '', email: '', grade: '', notes: '' };\n    mediumType.value = '';\n    calculatedResult.value = null;\n    expectedResult.value = null;\n    clearAnalysisStorage();\n  }\n\n  function addRow() {\n    if (!payload.value) return;\n    const empty: Record<string, number> = {};\n    for (const col of payload.value.columns) { empty[col.key] = 0; }\n    modifiedReadings.value = [...modifiedReadings.value, empty];\n  }\n\n  function removeRow(index: number) {\n    modifiedReadings.value = modifiedReadings.value.filter((_, i) => i !== index);\n  }\n\n  function updateStudentInfo(info: Partial<ChemStudentInfo>) {\n    studentInfo.value = { ...studentInfo.value, ...info };\n  }\n\n  function calculateEquivalencePoint(xKey: string, yKey: string): number | null {\n    if (!modifiedReadings.value.length) return null;\n    const data = modifiedReadings.value\n      .map(r => ({ x: Number(r[xKey]) || 0, y: Number(r[yKey]) || 0 }))\n      .filter(p => !isNaN(p.x) && !isNaN(p.y))\n      .sort((a, b) => a.x - b.x);\n    if (data.length < 3) return null;\n    let maxSlopeIdx = 0;\n    let maxSlope = 0;\n    for (let i = 1; i < data.length - 1; i++) {\n      const slope = Math.abs(data[i + 1].y - data[i - 1].y) / (data[i + 1].x - data[i - 1].x || 1);\n      if (slope > maxSlope) { maxSlope = slope; maxSlopeIdx = i; }\n    }\n    return data[maxSlopeIdx].x;\n  }\n\n  function calculateConcentration(V_eq: number, M_known: number, V_known: number): number | null {\n    if (!V_eq || !M_known || !V_known) return null;\n    return (M_known * V_known) / V_eq;\n  }\n\n  const readings = computed(() => modifiedReadings.value);\n  const columns = computed(() => payload.value?.columns ?? []);\n  const equations = computed(() => payload.value?.equations ?? []);\n  const plots = computed(() => payload.value?.suggestedPlots ?? []);\n\n  return {\n    payload,\n    hasData,\n    sourceName,\n    readings,\n    columns,\n    equations,\n    plots,\n    studentInfo,\n    reportDate,\n    mediumType,\n    calculatedResult,\n    expectedResult,\n    loadFromExperiment,\n    setPayload,\n    updateCell,\n    clearData,\n    addRow,\n    removeRow,\n    updateStudentInfo,\n    calculateEquivalencePoint,\n    calculateConcentration,\n  };\n});\n",
+      "start": 1783196192491,
+      "end": 1783196192573,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196192573,
+      "end": 1783196192573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineStore } from \"pinia\";\nimport { computed, ref } from \"vue\";\nimport { clearAnalysisStorage } from \"../composables/chemistry/sendToAnalysis\";\nexport const useChemistryAnalysisStore = defineStore(\"chemistry-analysis\", () => {\n  const payload = ref(null);\n  const modifiedReadings = ref([]);\n  const studentInfo = ref({ name: \"\", email: \"\", grade: \"\", notes: \"\" });\n  const reportDate = ref((/* @__PURE__ */ new Date()).toLocaleDateString(\"ar-SA\"));\n  const mediumType = ref(\"\");\n  const calculatedResult = ref(null);\n  const expectedResult = ref(null);\n  const hasData = computed(() => payload.value !== null);\n  const sourceName = computed(() => payload.value?.sourceNameAr ?? \"\");\n  function loadFromExperiment(data) {\n    payload.value = data;\n    modifiedReadings.value = data.readings.map((r) => ({ ...r }));\n    mediumType.value = data.mediumType ?? \"\";\n    calculatedResult.value = data.calculatedResult ?? null;\n    expectedResult.value = data.expectedResult ?? null;\n    reportDate.value = (/* @__PURE__ */ new Date()).toLocaleDateString(\"ar-SA\");\n  }\n  function setPayload(data) {\n    payload.value = data;\n    modifiedReadings.value = data.readings.map((r) => ({ ...r }));\n    mediumType.value = data.mediumType ?? \"\";\n    calculatedResult.value = data.calculatedResult ?? null;\n    expectedResult.value = data.expectedResult ?? null;\n  }\n  function updateCell(rowIndex, key, value) {\n    if (!modifiedReadings.value[rowIndex]) return;\n    modifiedReadings.value[rowIndex][key] = value;\n  }\n  function clearData() {\n    payload.value = null;\n    modifiedReadings.value = [];\n    studentInfo.value = { name: \"\", email: \"\", grade: \"\", notes: \"\" };\n    mediumType.value = \"\";\n    calculatedResult.value = null;\n    expectedResult.value = null;\n    clearAnalysisStorage();\n  }\n  function addRow() {\n    if (!payload.value) return;\n    const empty = {};\n    for (const col of payload.value.columns) {\n      empty[col.key] = 0;\n    }\n    modifiedReadings.value = [...modifiedReadings.value, empty];\n  }\n  function removeRow(index) {\n    modifiedReadings.value = modifiedReadings.value.filter((_, i) => i !== index);\n  }\n  function updateStudentInfo(info) {\n    studentInfo.value = { ...studentInfo.value, ...info };\n  }\n  function calculateEquivalencePoint(xKey, yKey) {\n    if (!modifiedReadings.value.length) return null;\n    const data = modifiedReadings.value.map((r) => ({ x: Number(r[xKey]) || 0, y: Number(r[yKey]) || 0 })).filter((p) => !isNaN(p.x) && !isNaN(p.y)).sort((a, b) => a.x - b.x);\n    if (data.length < 3) return null;\n    let maxSlopeIdx = 0;\n    let maxSlope = 0;\n    for (let i = 1; i < data.length - 1; i++) {\n      const slope = Math.abs(data[i + 1].y - data[i - 1].y) / (data[i + 1].x - data[i - 1].x || 1);\n      if (slope > maxSlope) {\n        maxSlope = slope;\n        maxSlopeIdx = i;\n      }\n    }\n    return data[maxSlopeIdx].x;\n  }\n  function calculateConcentration(V_eq, M_known, V_known) {\n    if (!V_eq || !M_known || !V_known) return null;\n    return M_known * V_known / V_eq;\n  }\n  const readings = computed(() => modifiedReadings.value);\n  const columns = computed(() => payload.value?.columns ?? []);\n  const equations = computed(() => payload.value?.equations ?? []);\n  const plots = computed(() => payload.value?.suggestedPlots ?? []);\n  return {\n    payload,\n    hasData,\n    sourceName,\n    readings,\n    columns,\n    equations,\n    plots,\n    studentInfo,\n    reportDate,\n    mediumType,\n    calculatedResult,\n    expectedResult,\n    loadFromExperiment,\n    setPayload,\n    updateCell,\n    clearData,\n    addRow,\n    removeRow,\n    updateStudentInfo,\n    calculateEquivalencePoint,\n    calculateConcentration\n  };\n});\n",
+      "start": 1783196192573,
+      "end": 1783196192931,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/stores/chemistry-analysis.store.ts"
+        ],
+        "sourcesContent": [
+          "import { defineStore } from 'pinia';\nimport { computed, ref } from 'vue';\nimport type { ChemAnalysisPayload, ChemStudentInfo } from '../types/chemistry';\nimport { clearAnalysisStorage } from '../composables/chemistry/sendToAnalysis';\n\nexport const useChemistryAnalysisStore = defineStore('chemistry-analysis', () => {\n  const payload = ref<ChemAnalysisPayload | null>(null);\n  const modifiedReadings = ref<Record<string, number>[]>([]);\n  const studentInfo = ref<ChemStudentInfo>({ name: '', email: '', grade: '', notes: '' });\n  const reportDate = ref<string>(new Date().toLocaleDateString('ar-SA'));\n  const mediumType = ref<string>('');\n  const calculatedResult = ref<number | null>(null);\n  const expectedResult = ref<number | null>(null);\n\n  const hasData = computed(() => payload.value !== null);\n  const sourceName = computed(() => payload.value?.sourceNameAr ?? '');\n\n  function loadFromExperiment(data: ChemAnalysisPayload) {\n    payload.value = data;\n    modifiedReadings.value = data.readings.map(r => ({ ...r })) as Record<string, number>[];\n    mediumType.value = data.mediumType ?? '';\n    calculatedResult.value = data.calculatedResult ?? null;\n    expectedResult.value = data.expectedResult ?? null;\n    reportDate.value = new Date().toLocaleDateString('ar-SA');\n  }\n\n  function setPayload(data: ChemAnalysisPayload) {\n    payload.value = data;\n    modifiedReadings.value = data.readings.map(r => ({ ...r })) as Record<string, number>[];\n    mediumType.value = data.mediumType ?? '';\n    calculatedResult.value = data.calculatedResult ?? null;\n    expectedResult.value = data.expectedResult ?? null;\n  }\n\n  function updateCell(rowIndex: number, key: string, value: number) {\n    if (!modifiedReadings.value[rowIndex]) return;\n    modifiedReadings.value[rowIndex][key] = value;\n  }\n\n  function clearData() {\n    payload.value = null;\n    modifiedReadings.value = [];\n    studentInfo.value = { name: '', email: '', grade: '', notes: '' };\n    mediumType.value = '';\n    calculatedResult.value = null;\n    expectedResult.value = null;\n    clearAnalysisStorage();\n  }\n\n  function addRow() {\n    if (!payload.value) return;\n    const empty: Record<string, number> = {};\n    for (const col of payload.value.columns) { empty[col.key] = 0; }\n    modifiedReadings.value = [...modifiedReadings.value, empty];\n  }\n\n  function removeRow(index: number) {\n    modifiedReadings.value = modifiedReadings.value.filter((_, i) => i !== index);\n  }\n\n  function updateStudentInfo(info: Partial<ChemStudentInfo>) {\n    studentInfo.value = { ...studentInfo.value, ...info };\n  }\n\n  function calculateEquivalencePoint(xKey: string, yKey: string): number | null {\n    if (!modifiedReadings.value.length) return null;\n    const data = modifiedReadings.value\n      .map(r => ({ x: Number(r[xKey]) || 0, y: Number(r[yKey]) || 0 }))\n      .filter(p => !isNaN(p.x) && !isNaN(p.y))\n      .sort((a, b) => a.x - b.x);\n    if (data.length < 3) return null;\n    let maxSlopeIdx = 0;\n    let maxSlope = 0;\n    for (let i = 1; i < data.length - 1; i++) {\n      const slope = Math.abs(data[i + 1].y - data[i - 1].y) / (data[i + 1].x - data[i - 1].x || 1);\n      if (slope > maxSlope) { maxSlope = slope; maxSlopeIdx = i; }\n    }\n    return data[maxSlopeIdx].x;\n  }\n\n  function calculateConcentration(V_eq: number, M_known: number, V_known: number): number | null {\n    if (!V_eq || !M_known || !V_known) return null;\n    return (M_known * V_known) / V_eq;\n  }\n\n  const readings = computed(() => modifiedReadings.value);\n  const columns = computed(() => payload.value?.columns ?? []);\n  const equations = computed(() => payload.value?.equations ?? []);\n  const plots = computed(() => payload.value?.suggestedPlots ?? []);\n\n  return {\n    payload,\n    hasData,\n    sourceName,\n    readings,\n    columns,\n    equations,\n    plots,\n    studentInfo,\n    reportDate,\n    mediumType,\n    calculatedResult,\n    expectedResult,\n    loadFromExperiment,\n    setPayload,\n    updateCell,\n    clearData,\n    addRow,\n    removeRow,\n    updateStudentInfo,\n    calculateEquivalencePoint,\n    calculateConcentration,\n  };\n});\n"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB;AAC5B,SAAS,UAAU,WAAW;AAE9B,SAAS,4BAA4B;AAE9B,aAAM,4BAA4B,YAAY,sBAAsB,MAAM;AAC/E,QAAM,UAAU,IAAgC,IAAI;AACpD,QAAM,mBAAmB,IAA8B,CAAC,CAAC;AACzD,QAAM,cAAc,IAAqB,EAAE,MAAM,IAAI,OAAO,IAAI,OAAO,IAAI,OAAO,GAAG,CAAC;AACtF,QAAM,aAAa,KAAY,oBAAI,KAAK,GAAE,mBAAmB,OAAO,CAAC;AACrE,QAAM,aAAa,IAAY,EAAE;AACjC,QAAM,mBAAmB,IAAmB,IAAI;AAChD,QAAM,iBAAiB,IAAmB,IAAI;AAE9C,QAAM,UAAU,SAAS,MAAM,QAAQ,UAAU,IAAI;AACrD,QAAM,aAAa,SAAS,MAAM,QAAQ,OAAO,gBAAgB,EAAE;AAEnE,WAAS,mBAAmB,MAA2B;AACrD,YAAQ,QAAQ;AAChB,qBAAiB,QAAQ,KAAK,SAAS,IAAI,QAAM,EAAE,GAAG,EAAE,EAAE;AAC1D,eAAW,QAAQ,KAAK,cAAc;AACtC,qBAAiB,QAAQ,KAAK,oBAAoB;AAClD,mBAAe,QAAQ,KAAK,kBAAkB;AAC9C,eAAW,SAAQ,oBAAI,KAAK,GAAE,mBAAmB,OAAO;AAAA,EAC1D;AAEA,WAAS,WAAW,MAA2B;AAC7C,YAAQ,QAAQ;AAChB,qBAAiB,QAAQ,KAAK,SAAS,IAAI,QAAM,EAAE,GAAG,EAAE,EAAE;AAC1D,eAAW,QAAQ,KAAK,cAAc;AACtC,qBAAiB,QAAQ,KAAK,oBAAoB;AAClD,mBAAe,QAAQ,KAAK,kBAAkB;AAAA,EAChD;AAEA,WAAS,WAAW,UAAkB,KAAa,OAAe;AAChE,QAAI,CAAC,iBAAiB,MAAM,QAAQ,EAAG;AACvC,qBAAiB,MAAM,QAAQ,EAAE,GAAG,IAAI;AAAA,EAC1C;AAEA,WAAS,YAAY;AACnB,YAAQ,QAAQ;AAChB,qBAAiB,QAAQ,CAAC;AAC1B,gBAAY,QAAQ,EAAE,MAAM,IAAI,OAAO,IAAI,OAAO,IAAI,OAAO,GAAG;AAChE,eAAW,QAAQ;AACnB,qBAAiB,QAAQ;AACzB,mBAAe,QAAQ;AACvB,yBAAqB;AAAA,EACvB;AAEA,WAAS,SAAS;AAChB,QAAI,CAAC,QAAQ,MAAO;AACpB,UAAM,QAAgC,CAAC;AACvC,eAAW,OAAO,QAAQ,MAAM,SAAS;AAAE,YAAM,IAAI,GAAG,IAAI;AAAA,IAAG;AAC/D,qBAAiB,QAAQ,CAAC,GAAG,iBAAiB,OAAO,KAAK;AAAA,EAC5D;AAEA,WAAS,UAAU,OAAe;AAChC,qBAAiB,QAAQ,iBAAiB,MAAM,OAAO,CAAC,GAAG,MAAM,MAAM,KAAK;AAAA,EAC9E;AAEA,WAAS,kBAAkB,MAAgC;AACzD,gBAAY,QAAQ,EAAE,GAAG,YAAY,OAAO,GAAG,KAAK;AAAA,EACtD;AAEA,WAAS,0BAA0B,MAAc,MAA6B;AAC5E,QAAI,CAAC,iBAAiB,MAAM,OAAQ,QAAO;AAC3C,UAAM,OAAO,iBAAiB,MAC3B,IAAI,QAAM,EAAE,GAAG,OAAO,EAAE,IAAI,CAAC,KAAK,GAAG,GAAG,OAAO,EAAE,IAAI,CAAC,KAAK,EAAE,EAAE,EAC/D,OAAO,OAAK,CAAC,MAAM,EAAE,CAAC,KAAK,CAAC,MAAM,EAAE,CAAC,CAAC,EACtC,KAAK,CAAC,GAAG,MAAM,EAAE,IAAI,EAAE,CAAC;AAC3B,QAAI,KAAK,SAAS,EAAG,QAAO;AAC5B,QAAI,cAAc;AAClB,QAAI,WAAW;AACf,aAAS,IAAI,GAAG,IAAI,KAAK,SAAS,GAAG,KAAK;AACxC,YAAM,QAAQ,KAAK,IAAI,KAAK,IAAI,CAAC,EAAE,IAAI,KAAK,IAAI,CAAC,EAAE,CAAC,KAAK,KAAK,IAAI,CAAC,EAAE,IAAI,KAAK,IAAI,CAAC,EAAE,KAAK;AAC1F,UAAI,QAAQ,UAAU;AAAE,mBAAW;AAAO,sBAAc;AAAA,MAAG;AAAA,IAC7D;AACA,WAAO,KAAK,WAAW,EAAE;AAAA,EAC3B;AAEA,WAAS,uBAAuB,MAAc,SAAiB,SAAgC;AAC7F,QAAI,CAAC,QAAQ,CAAC,WAAW,CAAC,QAAS,QAAO;AAC1C,WAAQ,UAAU,UAAW;AAAA,EAC/B;AAEA,QAAM,WAAW,SAAS,MAAM,iBAAiB,KAAK;AACtD,QAAM,UAAU,SAAS,MAAM,QAAQ,OAAO,WAAW,CAAC,CAAC;AAC3D,QAAM,YAAY,SAAS,MAAM,QAAQ,OAAO,aAAa,CAAC,CAAC;AAC/D,QAAM,QAAQ,SAAS,MAAM,QAAQ,OAAO,kBAAkB,CAAC,CAAC;AAEhE,SAAO;AAAA,IACL;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,IACA;AAAA,EACF;AACF,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196192931,
+      "end": 1783196192931,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196192931,
+      "end": 1783196192931,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196192931,
+      "end": 1783196192931,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196192931,
+      "end": 1783196192931,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196192932,
+      "end": 1783196192932,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196192932,
+      "end": 1783196192932,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196192932,
+      "end": 1783196192932,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196192932,
+      "end": 1783196192932,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196192932,
+      "end": 1783196192932,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196192932,
+      "end": 1783196192932,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196192932,
+      "end": 1783196192932,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196192932,
+      "end": 1783196192932,
+      "order": "normal"
+    }
+  ]
+}

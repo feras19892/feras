@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/prism/prism-raytracer.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "/**\n * Single-ray tracer through an equilateral triangular prism.\n */\n\nimport { refractiveIndex } from './usePrismCalculations'\nimport { toRad, lineIntersection, type Point } from './prism-geometry'\n\nexport interface RayTraceResult {\n  p2: Point\n  emergentAngle: number | null\n  tir: boolean\n  reflectionAngle: number | null\n  refractedRayAngle: number\n  internalIncidentAngle: number\n  edgeP: Point\n  edgeQ: Point\n}\n\nfunction norm(v: Point) {\n  const m = Math.hypot(v.x, v.y)\n  return m > 1e-12 ? { x: v.x / m, y: v.y / m } : { x: 0, y: 0 }\n}\n\nfunction dot(a: Point, b: Point) { return a.x * b.x + a.y * b.y }\n\nfunction pointInTriangle(p: Point, a: Point, b: Point, c: Point) {\n  const v0 = { x: c.x - a.x, y: c.y - a.y }\n  const v1 = { x: b.x - a.x, y: b.y - a.y }\n  const v2 = { x: p.x - a.x, y: p.y - a.y }\n  const d00 = dot(v0, v0)\n  const d01 = dot(v0, v1)\n  const d11 = dot(v1, v1)\n  const d20 = dot(v2, v0)\n  const d21 = dot(v2, v1)\n  const denom = d00 * d11 - d01 * d01\n  if (Math.abs(denom) < 1e-12) return false\n  const v = (d11 * d20 - d01 * d21) / denom\n  const w = (d00 * d21 - d01 * d20) / denom\n  const u = 1 - v - w\n  return u >= 0 && v >= 0 && w >= 0\n}\n\nfunction outwardNormal(edgeP: Point, edgeQ: Point, triA: Point, triB: Point, triC: Point) {\n  const t = norm({ x: edgeQ.x - edgeP.x, y: edgeQ.y - edgeP.y })\n  const n1 = { x: -t.y, y: t.x }\n  const n2 = { x: t.y, y: -t.x }\n  const mid = { x: (edgeP.x + edgeQ.x) / 2, y: (edgeP.y + edgeQ.y) / 2 }\n  const eps = 2\n  const test1 = { x: mid.x + n1.x * eps, y: mid.y + n1.y * eps }\n  return pointInTriangle(test1, triA, triB, triC) ? n2 : n1\n}\n\nfunction refract(I: Point, N: Point, n1: number, n2: number) {\n  const In = norm(I)\n  const Nn = norm(N)\n  const cosI = dot(In, Nn)\n  if (cosI < 0) return null\n  const t = { x: -Nn.y, y: Nn.x }\n  const sinI = dot(In, t)\n  const eta = n1 / n2\n  const sinT = eta * sinI\n  if (Math.abs(sinT) > 1) return null\n  const cosT = Math.sqrt(Math.max(0, 1 - sinT * sinT))\n  return norm({ x: Nn.x * cosT + t.x * sinT, y: Nn.y * cosT + t.y * sinT })\n}\n\nfunction reflect(I: Point, N: Point) {\n  const In = norm(I)\n  const Nn = norm(N)\n  const k = 2 * dot(In, Nn)\n  return norm({ x: In.x - k * Nn.x, y: In.y - k * Nn.y })\n}\n\nexport function traceRay(\n  p1: Point,\n  pA: Point,\n  pB: Point,\n  pC: Point,\n  theta1Deg: number,\n  wavelengthNm: number,\n  material: string,\n  edgeAB_angle: number,\n  normal1Angle: number\n): RayTraceResult | null {\n  const n_lambda = refractiveIndex(material, wavelengthNm)\n  const theta1 = toRad(theta1Deg)\n\n  // Incident direction (renderer uses this same convention)\n  const incidentRayAngle = normal1Angle + Math.PI + theta1\n  const I0 = norm({ x: Math.cos(incidentRayAngle), y: Math.sin(incidentRayAngle) })\n\n  // Face 1 normal: normal1Angle is expected to be the OUTWARD normal of AB.\n  const Nout1 = norm({ x: Math.cos(normal1Angle), y: Math.sin(normal1Angle) })\n  const Nin1 = { x: -Nout1.x, y: -Nout1.y }\n\n  // Refraction into prism\n  const D1 = refract(I0, Nin1, 1, n_lambda)\n  if (!D1) return null\n  const refractedRayAngle = Math.atan2(D1.y, D1.x)\n\n  // Intersect with face 2 (AC); if it fails, fall back to base (BC)\n  const far1 = { x: p1.x + D1.x * 1e6, y: p1.y + D1.y * 1e6 }\n  const p2AC = lineIntersection(p1, far1, pA, pC, false)\n  const p2BC = lineIntersection(p1, far1, pB, pC, false)\n\n  let p2: Point | null = p2AC\n  let eP = pA\n  let eQ = pC\n  if (!p2 && p2BC) {\n    p2 = p2BC\n    eP = pB\n    eQ = pC\n  }\n  if (!p2) return null\n\n  const Nout2 = outwardNormal(eP, eQ, pA, pB, pC)\n  const internalIncidentAngle = Math.acos(Math.max(-1, Math.min(1, dot(D1, norm(Nout2)))))\n\n  const D2 = refract(D1, Nout2, n_lambda, 1)\n  if (!D2) {\n    const R = reflect(D1, Nout2)\n    const reflectionAngle = Math.atan2(R.y, R.x)\n    return { p2, emergentAngle: null, tir: true, reflectionAngle, refractedRayAngle, internalIncidentAngle, edgeP: eP, edgeQ: eQ }\n  }\n\n  const emergentAngle = Math.atan2(D2.y, D2.x)\n  return { p2, emergentAngle, tir: false, reflectionAngle: null, refractedRayAngle, internalIncidentAngle, edgeP: eP, edgeQ: eQ }\n}\n",
+      "start": 1783196195649,
+      "end": 1783196195757,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195757,
+      "end": 1783196195757,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { refractiveIndex } from \"./usePrismCalculations\";\nimport { toRad, lineIntersection } from \"./prism-geometry\";\nfunction norm(v) {\n  const m = Math.hypot(v.x, v.y);\n  return m > 1e-12 ? { x: v.x / m, y: v.y / m } : { x: 0, y: 0 };\n}\nfunction dot(a, b) {\n  return a.x * b.x + a.y * b.y;\n}\nfunction pointInTriangle(p, a, b, c) {\n  const v0 = { x: c.x - a.x, y: c.y - a.y };\n  const v1 = { x: b.x - a.x, y: b.y - a.y };\n  const v2 = { x: p.x - a.x, y: p.y - a.y };\n  const d00 = dot(v0, v0);\n  const d01 = dot(v0, v1);\n  const d11 = dot(v1, v1);\n  const d20 = dot(v2, v0);\n  const d21 = dot(v2, v1);\n  const denom = d00 * d11 - d01 * d01;\n  if (Math.abs(denom) < 1e-12) return false;\n  const v = (d11 * d20 - d01 * d21) / denom;\n  const w = (d00 * d21 - d01 * d20) / denom;\n  const u = 1 - v - w;\n  return u >= 0 && v >= 0 && w >= 0;\n}\nfunction outwardNormal(edgeP, edgeQ, triA, triB, triC) {\n  const t = norm({ x: edgeQ.x - edgeP.x, y: edgeQ.y - edgeP.y });\n  const n1 = { x: -t.y, y: t.x };\n  const n2 = { x: t.y, y: -t.x };\n  const mid = { x: (edgeP.x + edgeQ.x) / 2, y: (edgeP.y + edgeQ.y) / 2 };\n  const eps = 2;\n  const test1 = { x: mid.x + n1.x * eps, y: mid.y + n1.y * eps };\n  return pointInTriangle(test1, triA, triB, triC) ? n2 : n1;\n}\nfunction refract(I, N, n1, n2) {\n  const In = norm(I);\n  const Nn = norm(N);\n  const cosI = dot(In, Nn);\n  if (cosI < 0) return null;\n  const t = { x: -Nn.y, y: Nn.x };\n  const sinI = dot(In, t);\n  const eta = n1 / n2;\n  const sinT = eta * sinI;\n  if (Math.abs(sinT) > 1) return null;\n  const cosT = Math.sqrt(Math.max(0, 1 - sinT * sinT));\n  return norm({ x: Nn.x * cosT + t.x * sinT, y: Nn.y * cosT + t.y * sinT });\n}\nfunction reflect(I, N) {\n  const In = norm(I);\n  const Nn = norm(N);\n  const k = 2 * dot(In, Nn);\n  return norm({ x: In.x - k * Nn.x, y: In.y - k * Nn.y });\n}\nexport function traceRay(p1, pA, pB, pC, theta1Deg, wavelengthNm, material, edgeAB_angle, normal1Angle) {\n  const n_lambda = refractiveIndex(material, wavelengthNm);\n  const theta1 = toRad(theta1Deg);\n  const incidentRayAngle = normal1Angle + Math.PI + theta1;\n  const I0 = norm({ x: Math.cos(incidentRayAngle), y: Math.sin(incidentRayAngle) });\n  const Nout1 = norm({ x: Math.cos(normal1Angle), y: Math.sin(normal1Angle) });\n  const Nin1 = { x: -Nout1.x, y: -Nout1.y };\n  const D1 = refract(I0, Nin1, 1, n_lambda);\n  if (!D1) return null;\n  const refractedRayAngle = Math.atan2(D1.y, D1.x);\n  const far1 = { x: p1.x + D1.x * 1e6, y: p1.y + D1.y * 1e6 };\n  const p2AC = lineIntersection(p1, far1, pA, pC, false);\n  const p2BC = lineIntersection(p1, far1, pB, pC, false);\n  let p2 = p2AC;\n  let eP = pA;\n  let eQ = pC;\n  if (!p2 && p2BC) {\n    p2 = p2BC;\n    eP = pB;\n    eQ = pC;\n  }\n  if (!p2) return null;\n  const Nout2 = outwardNormal(eP, eQ, pA, pB, pC);\n  const internalIncidentAngle = Math.acos(Math.max(-1, Math.min(1, dot(D1, norm(Nout2)))));\n  const D2 = refract(D1, Nout2, n_lambda, 1);\n  if (!D2) {\n    const R = reflect(D1, Nout2);\n    const reflectionAngle = Math.atan2(R.y, R.x);\n    return { p2, emergentAngle: null, tir: true, reflectionAngle, refractedRayAngle, internalIncidentAngle, edgeP: eP, edgeQ: eQ };\n  }\n  const emergentAngle = Math.atan2(D2.y, D2.x);\n  return { p2, emergentAngle, tir: false, reflectionAngle: null, refractedRayAngle, internalIncidentAngle, edgeP: eP, edgeQ: eQ };\n}\n",
+      "start": 1783196195757,
+      "end": 1783196195869,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/prism/prism-raytracer.ts"
+        ],
+        "sourcesContent": [
+          "/**\n * Single-ray tracer through an equilateral triangular prism.\n */\n\nimport { refractiveIndex } from './usePrismCalculations'\nimport { toRad, lineIntersection, type Point } from './prism-geometry'\n\nexport interface RayTraceResult {\n  p2: Point\n  emergentAngle: number | null\n  tir: boolean\n  reflectionAngle: number | null\n  refractedRayAngle: number\n  internalIncidentAngle: number\n  edgeP: Point\n  edgeQ: Point\n}\n\nfunction norm(v: Point) {\n  const m = Math.hypot(v.x, v.y)\n  return m > 1e-12 ? { x: v.x / m, y: v.y / m } : { x: 0, y: 0 }\n}\n\nfunction dot(a: Point, b: Point) { return a.x * b.x + a.y * b.y }\n\nfunction pointInTriangle(p: Point, a: Point, b: Point, c: Point) {\n  const v0 = { x: c.x - a.x, y: c.y - a.y }\n  const v1 = { x: b.x - a.x, y: b.y - a.y }\n  const v2 = { x: p.x - a.x, y: p.y - a.y }\n  const d00 = dot(v0, v0)\n  const d01 = dot(v0, v1)\n  const d11 = dot(v1, v1)\n  const d20 = dot(v2, v0)\n  const d21 = dot(v2, v1)\n  const denom = d00 * d11 - d01 * d01\n  if (Math.abs(denom) < 1e-12) return false\n  const v = (d11 * d20 - d01 * d21) / denom\n  const w = (d00 * d21 - d01 * d20) / denom\n  const u = 1 - v - w\n  return u >= 0 && v >= 0 && w >= 0\n}\n\nfunction outwardNormal(edgeP: Point, edgeQ: Point, triA: Point, triB: Point, triC: Point) {\n  const t = norm({ x: edgeQ.x - edgeP.x, y: edgeQ.y - edgeP.y })\n  const n1 = { x: -t.y, y: t.x }\n  const n2 = { x: t.y, y: -t.x }\n  const mid = { x: (edgeP.x + edgeQ.x) / 2, y: (edgeP.y + edgeQ.y) / 2 }\n  const eps = 2\n  const test1 = { x: mid.x + n1.x * eps, y: mid.y + n1.y * eps }\n  return pointInTriangle(test1, triA, triB, triC) ? n2 : n1\n}\n\nfunction refract(I: Point, N: Point, n1: number, n2: number) {\n  const In = norm(I)\n  const Nn = norm(N)\n  const cosI = dot(In, Nn)\n  if (cosI < 0) return null\n  const t = { x: -Nn.y, y: Nn.x }\n  const sinI = dot(In, t)\n  const eta = n1 / n2\n  const sinT = eta * sinI\n  if (Math.abs(sinT) > 1) return null\n  const cosT = Math.sqrt(Math.max(0, 1 - sinT * sinT))\n  return norm({ x: Nn.x * cosT + t.x * sinT, y: Nn.y * cosT + t.y * sinT })\n}\n\nfunction reflect(I: Point, N: Point) {\n  const In = norm(I)\n  const Nn = norm(N)\n  const k = 2 * dot(In, Nn)\n  return norm({ x: In.x - k * Nn.x, y: In.y - k * Nn.y })\n}\n\nexport function traceRay(\n  p1: Point,\n  pA: Point,\n  pB: Point,\n  pC: Point,\n  theta1Deg: number,\n  wavelengthNm: number,\n  material: string,\n  edgeAB_angle: number,\n  normal1Angle: number\n): RayTraceResult | null {\n  const n_lambda = refractiveIndex(material, wavelengthNm)\n  const theta1 = toRad(theta1Deg)\n\n  // Incident direction (renderer uses this same convention)\n  const incidentRayAngle = normal1Angle + Math.PI + theta1\n  const I0 = norm({ x: Math.cos(incidentRayAngle), y: Math.sin(incidentRayAngle) })\n\n  // Face 1 normal: normal1Angle is expected to be the OUTWARD normal of AB.\n  const Nout1 = norm({ x: Math.cos(normal1Angle), y: Math.sin(normal1Angle) })\n  const Nin1 = { x: -Nout1.x, y: -Nout1.y }\n\n  // Refraction into prism\n  const D1 = refract(I0, Nin1, 1, n_lambda)\n  if (!D1) return null\n  const refractedRayAngle = Math.atan2(D1.y, D1.x)\n\n  // Intersect with face 2 (AC); if it fails, fall back to base (BC)\n  const far1 = { x: p1.x + D1.x * 1e6, y: p1.y + D1.y * 1e6 }\n  const p2AC = lineIntersection(p1, far1, pA, pC, false)\n  const p2BC = lineIntersection(p1, far1, pB, pC, false)\n\n  let p2: Point | null = p2AC\n  let eP = pA\n  let eQ = pC\n  if (!p2 && p2BC) {\n    p2 = p2BC\n    eP = pB\n    eQ = pC\n  }\n  if (!p2) return null\n\n  const Nout2 = outwardNormal(eP, eQ, pA, pB, pC)\n  const internalIncidentAngle = Math.acos(Math.max(-1, Math.min(1, dot(D1, norm(Nout2)))))\n\n  const D2 = refract(D1, Nout2, n_lambda, 1)\n  if (!D2) {\n    const R = reflect(D1, Nout2)\n    const reflectionAngle = Math.atan2(R.y, R.x)\n    return { p2, emergentAngle: null, tir: true, reflectionAngle, refractedRayAngle, internalIncidentAngle, edgeP: eP, edgeQ: eQ }\n  }\n\n  const emergentAngle = Math.atan2(D2.y, D2.x)\n  return { p2, emergentAngle, tir: false, reflectionAngle: null, refractedRayAngle, internalIncidentAngle, edgeP: eP, edgeQ: eQ }\n}\n"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195869,
+      "end": 1783196195869,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195869,
+      "end": 1783196195869,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195869,
+      "end": 1783196195869,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195869,
+      "end": 1783196195869,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195869,
+      "end": 1783196195869,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195869,
+      "end": 1783196195869,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195869,
+      "end": 1783196195869,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195869,
+      "end": 1783196195869,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195869,
+      "end": 1783196195869,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195869,
+      "end": 1783196195869,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195869,
+      "end": 1783196195870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195870,
+      "end": 1783196195870,
+      "order": "normal"
+    }
+  ]
+}

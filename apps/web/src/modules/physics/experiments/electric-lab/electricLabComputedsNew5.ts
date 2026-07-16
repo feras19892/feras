@@ -35,15 +35,20 @@ export function createNewComputeds5(
   const magneticForceData = computed(() => {
     if (!isMagneticForce.value) return null
     const batt = components.find(c => c.type === 'battery')
-    const res = components.find(c => c.type === 'resistor')
-    if (!batt || !res) return null
+    const resistors = components.filter(c => c.type === 'resistor')
+    if (!batt || resistors.length < 4) return null
+    const rRes = resistors.find(r => r.label.includes('R'))
+    const bRes = resistors.find(r => r.label.includes('B'))
+    const lRes = resistors.find(r => r.label.includes('L'))
+    const thetaRes = resistors.find(r => r.label.includes('θ') || r.label.includes('theta'))
+    if (!rRes) return null
     const V = batt.value
-    const R = res.value
+    const R = rRes.value
     if (R === 0) return null
     const I = V / R
-    const B = 0.5
-    const L = 0.1
-    const theta = 90
+    const B = (bRes?.value ?? 500) * 1e-3
+    const L = (lRes?.value ?? 10) * 1e-2
+    const theta = thetaRes?.value ?? 90
     const F = B * I * L * Math.sin(theta * Math.PI / 180)
     return { V, I, R, B, L, theta, F }
   })
@@ -57,12 +62,16 @@ export function createNewComputeds5(
   const lcOscData = computed(() => {
     if (!isLCOsc.value) return null
     const batt = components.find(c => c.type === 'battery')
-    const res = components.find(c => c.type === 'resistor')
-    if (!batt || !res) return null
+    const resistors = components.filter(c => c.type === 'resistor')
+    if (!batt || resistors.length < 2) return null
+    const rRes = resistors.find(r => r.label === 'R')
+    const lRes = resistors.find(r => r.label.includes('L'))
+    const cap = components.find(c => c.type === 'capacitor')
+    if (!rRes) return null
     const V = batt.value
-    const R = res.value
-    const L = 0.1
-    const C = 1e-6
+    const R = rRes.value
+    const L = (lRes?.value ?? 100) * 1e-3
+    const C = (cap?.value ?? 1) * 1e-6
     const omega = 1 / Math.sqrt(L * C)
     const f = omega / (2 * Math.PI)
     const T_period = 1 / f

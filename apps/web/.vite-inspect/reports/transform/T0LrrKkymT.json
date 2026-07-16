@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/dev/ExperimentMonitorPage.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed } from 'vue';\nimport { useExperimentMonitor } from '../../composables/useExperimentMonitor';\n\nconst {\n  fps, memoryUsed, memoryLimit, consoleErrors, consoleWarns,\n  canvasErrors, physicsHealth, chemistryHealth, logs, history,\n} = useExperimentMonitor();\n\nconst memPct = computed(() => {\n  if (!memoryLimit.value) return 0;\n  return Math.round((memoryUsed.value / memoryLimit.value) * 100);\n});\n\nconst overall = computed(() => {\n  if (physicsHealth.value === 'fail' || consoleErrors.value > 0) return 'fail';\n  if (physicsHealth.value === 'warn' || fps.value < 30) return 'warn';\n  return 'ok';\n});\n</script>\n\n<template>\n  <div class=\"monitor-page\">\n    <header>\n      <h1>📊  لوحة مراقبة التجارب العلمية</h1>\n      <div class=\"overall\" :class=\"overall\">\n        {{ overall === 'ok' ? '✅ كل الأنظمة تعمل' : overall === 'warn' ? '⚠️ تحذير' : '❌ هناك مشكلة' }}\n      </div>\n    </header>\n\n    <!-- Overview cards -->\n    <section class=\"grid\">\n      <div class=\"card\" :class=\"overall\">\n        <h2>🎮  السرعة (FPS)</h2>\n        <p class=\"big\">{{ fps }} <small>إطار/ث</small></p>\n        <p class=\"sub\">{{ fps >= 50 ? 'ممتاز' : fps >= 30 ? 'مقبول' : 'بطيء' }}</p>\n      </div>\n\n      <div class=\"card\">\n        <h2>💾  الذاكرة</h2>\n        <p class=\"big\">{{ memoryUsed }} <small>MB</small></p>\n        <div class=\"bar\"><div class=\"fill\" :style=\"{ width: memPct + '%' }\" :class=\"memPct > 80 ? 'warn' : ''\" /></div>\n        <p class=\"sub\">{{ memPct }}% من {{ memoryLimit }} MB</p>\n      </div>\n\n      <div class=\"card\" :class=\"consoleErrors > 0 ? 'fail' : 'ok'\">\n        <h2>🐛  أخطاء البرنامج</h2>\n        <p class=\"big\">{{ consoleErrors }} <small>خطأ</small></p>\n        <p class=\"sub\">{{ consoleWarns }} تحذير · {{ canvasErrors }} رسومات</p>\n      </div>\n\n      <div class=\"card\" :class=\"physicsHealth\">\n        <h2>🔬  محرك الفيزياء</h2>\n        <p class=\"status\">{{ physicsHealth === 'ok' ? '✅ سليم' : physicsHealth === 'warn' ? '⚠️ تحذير' : '❌ معطل' }}</p>\n      </div>\n\n      <div class=\"card\" :class=\"chemistryHealth\">\n        <h2>🧪  محرك الكيمياء</h2>\n        <p class=\"status\">{{ chemistryHealth === 'ok' ? '✅ سليم' : chemistryHealth === 'warn' ? '⚠️ تحذير' : '❌ معطل' }}</p>\n      </div>\n    </section>\n\n    <!-- FPS history graph -->\n    <section class=\"section\">\n      <h2>📈  سجل السرعة (آخر ٥ دقائق)</h2>\n      <div class=\"chart\">\n        <div class=\"bars\">\n          <div\n            v-for=\"(h, i) in history\"\n            :key=\"i\"\n            class=\"bar\"\n            :style=\"{ height: Math.min((h.fps / 60) * 100, 100) + '%', background: h.fps >= 50 ? '#22c55e' : h.fps >= 30 ? '#eab308' : '#ef4444' }\"\n            :title=\"`${h.fps} FPS - ${h.time}`\"\n          />\n        </div>\n      </div>\n    </section>\n\n    <!-- Console logs -->\n    <section class=\"section\">\n      <h2>🔔  سجل الأحداث</h2>\n      <div class=\"log-list\">\n        <div v-for=\"(log, i) in logs\" :key=\"i\" class=\"log-item\" :class=\"log.type\">\n          <span class=\"time\">{{ log.time }}</span>\n          <span class=\"badge\">{{ log.type === 'error' ? '❌' : log.type === 'warn' ? '⚠️' : '📘' }}</span>\n          <span class=\"text\">{{ log.text }}</span>\n        </div>\n        <p v-if=\"logs.length === 0\" class=\"empty\">لا توجد أحداث</p>\n      </div>\n    </section>\n  </div>\n</template>\n\n<style scoped>\n.monitor-page {\n  max-width: 1100px;\n  margin: 0 auto;\n  padding: 24px;\n  font-family: system-ui, -apple-system, sans-serif;\n  background: #0b1021;\n  min-height: 100vh;\n  color: #e2e8f0;\n}\n\nheader {\n  text-align: center;\n  margin-bottom: 28px;\n}\n\nheader h1 { margin: 0 0 8px; font-size: 1.5rem; }\n\n.overall {\n  display: inline-block;\n  padding: 6px 20px;\n  border-radius: 999px;\n  font-weight: 600;\n}\n\n.overall.ok   { background: #064e3b; color: #6ee7b7; }\n.overall.warn { background: #422006; color: #fde047; }\n.overall.fail { background: #450a0a; color: #fca5a5; }\n\n.grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));\n  gap: 16px;\n  margin-bottom: 28px;\n}\n\n.card {\n  background: #111827;\n  border-radius: 14px;\n  padding: 18px;\n  border: 2px solid transparent;\n  transition: border-color .3s;\n}\n\n.card.ok   { border-color: #22c55e; }\n.card.warn { border-color: #eab308; }\n.card.fail { border-color: #ef4444; }\n\n.card h2 {\n  margin: 0 0 10px;\n  font-size: 0.88rem;\n  color: #94a3b8;\n  font-weight: 500;\n}\n\n.big {\n  font-size: 2.2rem;\n  font-weight: 800;\n  margin: 0 0 4px;\n  color: #f8fafc;\n}\n\n.big small {\n  font-size: 0.85rem;\n  font-weight: 500;\n  color: #94a3b8;\n}\n\n.sub {\n  margin: 0;\n  font-size: 0.78rem;\n  color: #64748b;\n}\n\n.status {\n  font-size: 1.1rem;\n  font-weight: 700;\n  margin: 0;\n}\n\n.bar {\n  height: 10px;\n  background: #1f2937;\n  border-radius: 999px;\n  overflow: hidden;\n  margin: 8px 0 4px;\n}\n\n.fill {\n  height: 100%;\n  background: #22c55e;\n  border-radius: 999px;\n  transition: width .5s ease;\n}\n\n.fill.warn { background: #ef4444; }\n\n.section {\n  background: #111827;\n  border-radius: 14px;\n  padding: 18px;\n  margin-bottom: 20px;\n}\n\n.section h2 {\n  margin: 0 0 14px;\n  font-size: 1rem;\n  color: #94a3b8;\n}\n\n.chart {\n  height: 140px;\n  display: flex;\n  align-items: flex-end;\n}\n\n.bars {\n  display: flex;\n  align-items: flex-end;\n  gap: 3px;\n  width: 100%;\n  height: 100%;\n}\n\n.bar {\n  flex: 1;\n  min-width: 3px;\n  border-radius: 2px;\n  transition: height .3s;\n}\n\n.log-list {\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n  max-height: 360px;\n  overflow-y: auto;\n}\n\n.log-item {\n  display: flex;\n  gap: 8px;\n  align-items: center;\n  padding: 6px 10px;\n  border-radius: 8px;\n  font-size: 0.82rem;\n  background: #0b1021;\n}\n\n.log-item.error { border-left: 3px solid #ef4444; }\n.log-item.warn  { border-left: 3px solid #eab308; }\n.log-item.log   { border-left: 3px solid #38bdf8; }\n\n.time   { color: #64748b; font-size: 0.7rem; min-width: 60px; }\n.badge  { min-width: 22px; text-align: center; }\n.text   { flex: 1; word-break: break-all; }\n\n.empty  { color: #64748b; text-align: center; margin: 0; padding: 12px 0; }\n</style>\n",
+      "start": 1783196192263,
+      "end": 1783196192372,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196192372,
+      "end": 1783196192372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196192372,
+      "end": 1783196192372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196192372,
+      "end": 1783196192372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196192372,
+      "end": 1783196192372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/dev/ExperimentMonitorPage.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/dev/ExperimentMonitorPage.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/dev/ExperimentMonitorPage.vue?vue&type=style&index=0&scoped=f5898ee4&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-f5898ee4\"]]);\n",
+      "start": 1783196192372,
+      "end": 1783196192392,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196192393,
+      "end": 1783196192393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196192393,
+      "end": 1783196192393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196192393,
+      "end": 1783196192393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196192393,
+      "end": 1783196192393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196192393,
+      "end": 1783196192393,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196192393,
+      "end": 1783196192393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196192393,
+      "end": 1783196192393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196192393,
+      "end": 1783196192393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196192393,
+      "end": 1783196192393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196192398,
+      "end": 1783196192399,
+      "order": "normal"
+    }
+  ]
+}

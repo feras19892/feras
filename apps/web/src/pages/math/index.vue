@@ -136,6 +136,20 @@ const graphSegments = computed(() => {
 
   lines.forEach((line) => {
     const lineParams = { ...graphParams.value, ...line.params };
+
+    if (line.verticalX) {
+      const vx = line.verticalX(lineParams);
+      if (Number.isFinite(vx) && vx >= xMin && vx <= xMax) {
+        const px = ((vx - xMin) / (xMax - xMin)) * width;
+        const pyMin = height;
+        const pyMax = 0;
+        result.push({ points: `${px.toFixed(1)},${pyMin.toFixed(1)} ${px.toFixed(1)},${pyMax.toFixed(1)}`, color: line.color });
+      }
+      return;
+    }
+
+    if (!line.fn) return;
+
     const segments: string[] = [];
     let current: string[] = [];
     let lastPy: number | null = null;

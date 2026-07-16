@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/resonance/panels/ResonanceWorksheetPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"step-row\" }\nconst _hoisted_3 = {\n  key: 0,\n  class: \"step-content\"\n}\nconst _hoisted_4 = { class: \"calc\" }\nconst _hoisted_5 = { class: \"result\" }\n\nimport { ref, computed } from 'vue'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ResonanceWorksheetPanel',\n  props: {\n    stringLength: {},\n    tension: {},\n    harmonic: {},\n    frequency: {}\n  },\n  setup(__props: any) {\n\nconst props = __props\n\nconst showSteps = ref<Record<string, boolean>>({\n  step1: false,\n})\n\nconst mu = computed(() => 0.01)\nconst vCalc = computed(() => Math.sqrt(props.tension / mu.value))\nconst fCalc = computed(() => (props.harmonic * vCalc.value) / (2 * props.stringLength))\n\nfunction toggleStep(step: string) {\n  showSteps.value[step] = !showSteps.value[step]\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"ws-title\" }, \"📐 خطوات الموجات القائمة\", -1)),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"button\", {\n        class: \"step-toggle\",\n        onClick: _cache[0] || (_cache[0] = ($event: any) => (toggleStep('step1')))\n      }, _toDisplayString(showSteps.value.step1 ? '▼' : '▶') + \" الخطوة 1: التردد \", 1),\n      (showSteps.value.step1)\n        ? (_openBlock(), _createElementBlock(\"div\", _hoisted_3, [\n            _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"formula\" }, \"f = n·v / (2L) = n·√(T/μ) / (2L)\", -1)),\n            _createElementVNode(\"div\", _hoisted_4, [\n              _createElementVNode(\"div\", null, \"v = √(\" + _toDisplayString(__props.tension) + \" / \" + _toDisplayString(mu.value.toFixed(2)) + \") = \" + _toDisplayString(vCalc.value.toFixed(1)) + \" m/s\", 1),\n              _createElementVNode(\"div\", null, \"f = \" + _toDisplayString(__props.harmonic) + \" × \" + _toDisplayString(vCalc.value.toFixed(1)) + \" / (2 × \" + _toDisplayString(__props.stringLength) + \")\", 1),\n              _createElementVNode(\"div\", _hoisted_5, \"f = \" + _toDisplayString(fCalc.value.toFixed(1)) + \" Hz\", 1),\n              _createElementVNode(\"div\", null, \"المقاس: \" + _toDisplayString(__props.frequency.toFixed(1)) + \" Hz\", 1)\n            ])\n          ]))\n        : _createCommentVNode(\"\", true)\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783196193081,
+      "end": 1783196193081
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193081,
+      "end": 1783196193081,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nconst _hoisted_2 = { class: \"step-row\" };\nconst _hoisted_3 = {\n  key: 0,\n  class: \"step-content\"\n};\nconst _hoisted_4 = { class: \"calc\" };\nconst _hoisted_5 = { class: \"result\" };\nimport { ref, computed } from \"vue\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"ResonanceWorksheetPanel\",\n  props: {\n    stringLength: {},\n    tension: {},\n    harmonic: {},\n    frequency: {}\n  },\n  setup(__props) {\n    const props = __props;\n    const showSteps = ref({\n      step1: false\n    });\n    const mu = computed(() => 0.01);\n    const vCalc = computed(() => Math.sqrt(props.tension / mu.value));\n    const fCalc = computed(() => props.harmonic * vCalc.value / (2 * props.stringLength));\n    function toggleStep(step) {\n      showSteps.value[step] = !showSteps.value[step];\n    }\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"ws-title\" }, \"📐 خطوات الموجات القائمة\", -1)),\n        _createElementVNode(\"div\", _hoisted_2, [\n          _createElementVNode(\"button\", {\n            class: \"step-toggle\",\n            onClick: _cache[0] || (_cache[0] = ($event) => toggleStep(\"step1\"))\n          }, _toDisplayString(showSteps.value.step1 ? \"▼\" : \"▶\") + \" الخطوة 1: التردد \", 1),\n          showSteps.value.step1 ? (_openBlock(), _createElementBlock(\"div\", _hoisted_3, [\n            _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"formula\" }, \"f = n·v / (2L) = n·√(T/μ) / (2L)\", -1)),\n            _createElementVNode(\"div\", _hoisted_4, [\n              _createElementVNode(\"div\", null, \"v = √(\" + _toDisplayString(__props.tension) + \" / \" + _toDisplayString(mu.value.toFixed(2)) + \") = \" + _toDisplayString(vCalc.value.toFixed(1)) + \" m/s\", 1),\n              _createElementVNode(\"div\", null, \"f = \" + _toDisplayString(__props.harmonic) + \" × \" + _toDisplayString(vCalc.value.toFixed(1)) + \" / (2 × \" + _toDisplayString(__props.stringLength) + \")\", 1),\n              _createElementVNode(\"div\", _hoisted_5, \"f = \" + _toDisplayString(fCalc.value.toFixed(1)) + \" Hz\", 1),\n              _createElementVNode(\"div\", null, \"المقاس: \" + _toDisplayString(__props.frequency.toFixed(1)) + \" Hz\", 1)\n            ])\n          ])) : _createCommentVNode(\"\", true)\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196193081,
+      "end": 1783196193233,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/resonance/panels/ResonanceWorksheetPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"step-row\" }\nconst _hoisted_3 = {\n  key: 0,\n  class: \"step-content\"\n}\nconst _hoisted_4 = { class: \"calc\" }\nconst _hoisted_5 = { class: \"result\" }\n\nimport { ref, computed } from 'vue'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ResonanceWorksheetPanel',\n  props: {\n    stringLength: {},\n    tension: {},\n    harmonic: {},\n    frequency: {}\n  },\n  setup(__props: any) {\n\nconst props = __props\n\nconst showSteps = ref<Record<string, boolean>>({\n  step1: false,\n})\n\nconst mu = computed(() => 0.01)\nconst vCalc = computed(() => Math.sqrt(props.tension / mu.value))\nconst fCalc = computed(() => (props.harmonic * vCalc.value) / (2 * props.stringLength))\n\nfunction toggleStep(step: string) {\n  showSteps.value[step] = !showSteps.value[step]\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"ws-title\" }, \"📐 خطوات الموجات القائمة\", -1)),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"button\", {\n        class: \"step-toggle\",\n        onClick: _cache[0] || (_cache[0] = ($event: any) => (toggleStep('step1')))\n      }, _toDisplayString(showSteps.value.step1 ? '▼' : '▶') + \" الخطوة 1: التردد \", 1),\n      (showSteps.value.step1)\n        ? (_openBlock(), _createElementBlock(\"div\", _hoisted_3, [\n            _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"formula\" }, \"f = n·v / (2L) = n·√(T/μ) / (2L)\", -1)),\n            _createElementVNode(\"div\", _hoisted_4, [\n              _createElementVNode(\"div\", null, \"v = √(\" + _toDisplayString(__props.tension) + \" / \" + _toDisplayString(mu.value.toFixed(2)) + \") = \" + _toDisplayString(vCalc.value.toFixed(1)) + \" m/s\", 1),\n              _createElementVNode(\"div\", null, \"f = \" + _toDisplayString(__props.harmonic) + \" × \" + _toDisplayString(vCalc.value.toFixed(1)) + \" / (2 × \" + _toDisplayString(__props.stringLength) + \")\", 1),\n              _createElementVNode(\"div\", _hoisted_5, \"f = \" + _toDisplayString(fCalc.value.toFixed(1)) + \" Hz\", 1),\n              _createElementVNode(\"div\", null, \"المقاس: \" + _toDisplayString(__props.frequency.toFixed(1)) + \" Hz\", 1)\n            ])\n          ]))\n        : _createCommentVNode(\"\", true)\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,sBAAsB,qBAAqB,mBAAmB,kBAAkB,aAAa,YAAY,sBAAsB,qBAAqB,sBAAsB,2BAA2B;AAE9M,MAAM,aAAa,EAAE,OAAO,aAAa;AACzC,MAAM,aAAa,EAAE,OAAO,WAAW;AACvC,MAAM,aAAa;AAAA,EACjB,KAAK;AAAA,EACL,OAAO;AACT;AACA,MAAM,aAAa,EAAE,OAAO,OAAO;AACnC,MAAM,aAAa,EAAE,OAAO,SAAS;AAErC,SAAS,KAAK,gBAAgB;AAG9B,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,cAAc,CAAC;AAAA,IACf,SAAS,CAAC;AAAA,IACV,UAAU,CAAC;AAAA,IACX,WAAW,CAAC;AAAA,EACd;AAAA,EACA,MAAM,SAAc;AAEtB,UAAM,QAAQ;AAEd,UAAM,YAAY,IAA6B;AAAA,MAC7C,OAAO;AAAA,IACT,CAAC;AAED,UAAM,KAAK,SAAS,MAAM,IAAI;AAC9B,UAAM,QAAQ,SAAS,MAAM,KAAK,KAAK,MAAM,UAAU,GAAG,KAAK,CAAC;AAChE,UAAM,QAAQ,SAAS,MAAO,MAAM,WAAW,MAAM,SAAU,IAAI,MAAM,aAAa;AAEtF,aAAS,WAAW,MAAc;AAChC,gBAAU,MAAM,IAAI,IAAI,CAAC,UAAU,MAAM,IAAI;AAAA,IAC/C;AAEA,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,WAAW,GAAG,4BAA4B,EAAE;AAAA,QAC1G,oBAAoB,OAAO,YAAY;AAAA,UACrC,oBAAoB,UAAU;AAAA,YAC5B,OAAO;AAAA,YACP,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,WAAW,OAAO;AAAA,UACzE,GAAG,iBAAiB,UAAU,MAAM,QAAQ,MAAM,GAAG,IAAI,sBAAsB,CAAC;AAAA,UAC/E,UAAU,MAAM,SACZ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,YACpD,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,OAAO,EAAE,OAAO,UAAU,GAAG,oCAAoC,EAAE;AAAA,YACjH,oBAAoB,OAAO,YAAY;AAAA,cACrC,oBAAoB,OAAO,MAAM,WAAW,iBAAiB,QAAQ,OAAO,IAAI,QAAQ,iBAAiB,GAAG,MAAM,QAAQ,CAAC,CAAC,IAAI,SAAS,iBAAiB,MAAM,MAAM,QAAQ,CAAC,CAAC,IAAI,QAAQ,CAAC;AAAA,cAC7L,oBAAoB,OAAO,MAAM,SAAS,iBAAiB,QAAQ,QAAQ,IAAI,QAAQ,iBAAiB,MAAM,MAAM,QAAQ,CAAC,CAAC,IAAI,aAAa,iBAAiB,QAAQ,YAAY,IAAI,KAAK,CAAC;AAAA,cAC9L,oBAAoB,OAAO,YAAY,SAAS,iBAAiB,MAAM,MAAM,QAAQ,CAAC,CAAC,IAAI,OAAO,CAAC;AAAA,cACnG,oBAAoB,OAAO,MAAM,aAAa,iBAAiB,QAAQ,UAAU,QAAQ,CAAC,CAAC,IAAI,OAAO,CAAC;AAAA,YACzG,CAAC;AAAA,UACH,CAAC,KACD,oBAAoB,IAAI,IAAI;AAAA,QAClC,CAAC;AAAA,MACH,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193233,
+      "end": 1783196193233,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193233,
+      "end": 1783196193233,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196193233,
+      "end": 1783196193233,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193233,
+      "end": 1783196193233,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193233,
+      "end": 1783196193233,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193233,
+      "end": 1783196193233,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193233,
+      "end": 1783196193233,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193233,
+      "end": 1783196193233,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193233,
+      "end": 1783196193233,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193233,
+      "end": 1783196193233,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193233,
+      "end": 1783196193233,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193233,
+      "end": 1783196193234,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193234,
+      "end": 1783196193234,
+      "order": "normal"
+    }
+  ]
+}

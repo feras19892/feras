@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/interference/panels/InterferenceLawsPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createTextVNode as _createTextVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"eq-block\" }\nconst _hoisted_3 = { class: \"eq-title\" }\nconst _hoisted_4 = { class: \"eq-values\" }\nconst _hoisted_5 = { class: \"eq-block\" }\nconst _hoisted_6 = { class: \"eq-title\" }\nconst _hoisted_7 = { class: \"eq-block\" }\nconst _hoisted_8 = { class: \"eq-title\" }\nconst _hoisted_9 = { class: \"eq-block\" }\nconst _hoisted_10 = { class: \"eq-title\" }\n\nimport { useI18n } from '../../../../composables/useI18n'\n\ninterface Props {\n  slitDistance: number\n  screenDistance: number\n  wavelength: number\n  fringeSpacing: number\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'InterferenceLawsPanel',\n  props: {\n    slitDistance: {},\n    screenDistance: {},\n    wavelength: {},\n    fringeSpacing: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\n\n\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"div\", _hoisted_3, _toDisplayString(_unref(t)('experiments.interferenceFringeSpacing')), 1),\n      _cache[3] || (_cache[3] = _createElementVNode(\"div\", { class: \"eq\" }, \"Δy = λD / d\", -1)),\n      _createElementVNode(\"div\", _hoisted_4, [\n        _createTextVNode(\" Δy = \" + _toDisplayString(__props.fringeSpacing.toFixed(3)) + \" mm\", 1),\n        _cache[0] || (_cache[0] = _createElementVNode(\"br\", null, null, -1)),\n        _createTextVNode(\" λ = \" + _toDisplayString(__props.wavelength) + \" nm\", 1),\n        _cache[1] || (_cache[1] = _createElementVNode(\"br\", null, null, -1)),\n        _createTextVNode(\" D = \" + _toDisplayString(__props.screenDistance) + \" m\", 1),\n        _cache[2] || (_cache[2] = _createElementVNode(\"br\", null, null, -1)),\n        _createTextVNode(\" d = \" + _toDisplayString(__props.slitDistance) + \" mm \", 1)\n      ])\n    ]),\n    _createElementVNode(\"div\", _hoisted_5, [\n      _createElementVNode(\"div\", _hoisted_6, _toDisplayString(_unref(t)('experiments.interferenceConstructive')), 1),\n      _cache[4] || (_cache[4] = _createElementVNode(\"div\", { class: \"eq\" }, \"d·sinθ = mλ\", -1)),\n      _cache[5] || (_cache[5] = _createElementVNode(\"div\", { class: \"eq-values\" }, [\n        _createTextVNode(\" Central bright fringe: m = 0 (max intensity)\"),\n        _createElementVNode(\"br\"),\n        _createTextVNode(\" First bright fringe: m = ±1 \")\n      ], -1))\n    ]),\n    _createElementVNode(\"div\", _hoisted_7, [\n      _createElementVNode(\"div\", _hoisted_8, _toDisplayString(_unref(t)('experiments.interferenceDestructive')), 1),\n      _cache[6] || (_cache[6] = _createElementVNode(\"div\", { class: \"eq\" }, \"d·sinθ = (m + ½)λ\", -1)),\n      _cache[7] || (_cache[7] = _createElementVNode(\"div\", { class: \"eq-values\" }, \" First dark fringe between m=0 and m=1 \", -1))\n    ]),\n    _createElementVNode(\"div\", _hoisted_9, [\n      _createElementVNode(\"div\", _hoisted_10, _toDisplayString(_unref(t)('experiments.interferenceIntensity')), 1),\n      _cache[8] || (_cache[8] = _createElementVNode(\"div\", { class: \"eq\" }, \"I = I₀ cos²(πd·sinθ/λ)\", -1))\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783196195484,
+      "end": 1783196195484
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195484,
+      "end": 1783196195484,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createTextVNode as _createTextVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nconst _hoisted_2 = { class: \"eq-block\" };\nconst _hoisted_3 = { class: \"eq-title\" };\nconst _hoisted_4 = { class: \"eq-values\" };\nconst _hoisted_5 = { class: \"eq-block\" };\nconst _hoisted_6 = { class: \"eq-title\" };\nconst _hoisted_7 = { class: \"eq-block\" };\nconst _hoisted_8 = { class: \"eq-title\" };\nconst _hoisted_9 = { class: \"eq-block\" };\nconst _hoisted_10 = { class: \"eq-title\" };\nimport { useI18n } from \"../../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"InterferenceLawsPanel\",\n  props: {\n    slitDistance: {},\n    screenDistance: {},\n    wavelength: {},\n    fringeSpacing: {}\n  },\n  setup(__props) {\n    const { t } = useI18n();\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _createElementVNode(\"div\", _hoisted_3, _toDisplayString(_unref(t)(\"experiments.interferenceFringeSpacing\")), 1),\n          _cache[3] || (_cache[3] = _createElementVNode(\"div\", { class: \"eq\" }, \"Δy = λD / d\", -1)),\n          _createElementVNode(\"div\", _hoisted_4, [\n            _createTextVNode(\" Δy = \" + _toDisplayString(__props.fringeSpacing.toFixed(3)) + \" mm\", 1),\n            _cache[0] || (_cache[0] = _createElementVNode(\"br\", null, null, -1)),\n            _createTextVNode(\" λ = \" + _toDisplayString(__props.wavelength) + \" nm\", 1),\n            _cache[1] || (_cache[1] = _createElementVNode(\"br\", null, null, -1)),\n            _createTextVNode(\" D = \" + _toDisplayString(__props.screenDistance) + \" m\", 1),\n            _cache[2] || (_cache[2] = _createElementVNode(\"br\", null, null, -1)),\n            _createTextVNode(\" d = \" + _toDisplayString(__props.slitDistance) + \" mm \", 1)\n          ])\n        ]),\n        _createElementVNode(\"div\", _hoisted_5, [\n          _createElementVNode(\"div\", _hoisted_6, _toDisplayString(_unref(t)(\"experiments.interferenceConstructive\")), 1),\n          _cache[4] || (_cache[4] = _createElementVNode(\"div\", { class: \"eq\" }, \"d·sinθ = mλ\", -1)),\n          _cache[5] || (_cache[5] = _createElementVNode(\"div\", { class: \"eq-values\" }, [\n            _createTextVNode(\" Central bright fringe: m = 0 (max intensity)\"),\n            _createElementVNode(\"br\"),\n            _createTextVNode(\" First bright fringe: m = ±1 \")\n          ], -1))\n        ]),\n        _createElementVNode(\"div\", _hoisted_7, [\n          _createElementVNode(\"div\", _hoisted_8, _toDisplayString(_unref(t)(\"experiments.interferenceDestructive\")), 1),\n          _cache[6] || (_cache[6] = _createElementVNode(\"div\", { class: \"eq\" }, \"d·sinθ = (m + ½)λ\", -1)),\n          _cache[7] || (_cache[7] = _createElementVNode(\"div\", { class: \"eq-values\" }, \" First dark fringe between m=0 and m=1 \", -1))\n        ]),\n        _createElementVNode(\"div\", _hoisted_9, [\n          _createElementVNode(\"div\", _hoisted_10, _toDisplayString(_unref(t)(\"experiments.interferenceIntensity\")), 1),\n          _cache[8] || (_cache[8] = _createElementVNode(\"div\", { class: \"eq\" }, \"I = I₀ cos²(πd·sinθ/λ)\", -1))\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196195484,
+      "end": 1783196195573,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/interference/panels/InterferenceLawsPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createTextVNode as _createTextVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"eq-block\" }\nconst _hoisted_3 = { class: \"eq-title\" }\nconst _hoisted_4 = { class: \"eq-values\" }\nconst _hoisted_5 = { class: \"eq-block\" }\nconst _hoisted_6 = { class: \"eq-title\" }\nconst _hoisted_7 = { class: \"eq-block\" }\nconst _hoisted_8 = { class: \"eq-title\" }\nconst _hoisted_9 = { class: \"eq-block\" }\nconst _hoisted_10 = { class: \"eq-title\" }\n\nimport { useI18n } from '../../../../composables/useI18n'\n\ninterface Props {\n  slitDistance: number\n  screenDistance: number\n  wavelength: number\n  fringeSpacing: number\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'InterferenceLawsPanel',\n  props: {\n    slitDistance: {},\n    screenDistance: {},\n    wavelength: {},\n    fringeSpacing: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\n\n\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"div\", _hoisted_3, _toDisplayString(_unref(t)('experiments.interferenceFringeSpacing')), 1),\n      _cache[3] || (_cache[3] = _createElementVNode(\"div\", { class: \"eq\" }, \"Δy = λD / d\", -1)),\n      _createElementVNode(\"div\", _hoisted_4, [\n        _createTextVNode(\" Δy = \" + _toDisplayString(__props.fringeSpacing.toFixed(3)) + \" mm\", 1),\n        _cache[0] || (_cache[0] = _createElementVNode(\"br\", null, null, -1)),\n        _createTextVNode(\" λ = \" + _toDisplayString(__props.wavelength) + \" nm\", 1),\n        _cache[1] || (_cache[1] = _createElementVNode(\"br\", null, null, -1)),\n        _createTextVNode(\" D = \" + _toDisplayString(__props.screenDistance) + \" m\", 1),\n        _cache[2] || (_cache[2] = _createElementVNode(\"br\", null, null, -1)),\n        _createTextVNode(\" d = \" + _toDisplayString(__props.slitDistance) + \" mm \", 1)\n      ])\n    ]),\n    _createElementVNode(\"div\", _hoisted_5, [\n      _createElementVNode(\"div\", _hoisted_6, _toDisplayString(_unref(t)('experiments.interferenceConstructive')), 1),\n      _cache[4] || (_cache[4] = _createElementVNode(\"div\", { class: \"eq\" }, \"d·sinθ = mλ\", -1)),\n      _cache[5] || (_cache[5] = _createElementVNode(\"div\", { class: \"eq-values\" }, [\n        _createTextVNode(\" Central bright fringe: m = 0 (max intensity)\"),\n        _createElementVNode(\"br\"),\n        _createTextVNode(\" First bright fringe: m = ±1 \")\n      ], -1))\n    ]),\n    _createElementVNode(\"div\", _hoisted_7, [\n      _createElementVNode(\"div\", _hoisted_8, _toDisplayString(_unref(t)('experiments.interferenceDestructive')), 1),\n      _cache[6] || (_cache[6] = _createElementVNode(\"div\", { class: \"eq\" }, \"d·sinθ = (m + ½)λ\", -1)),\n      _cache[7] || (_cache[7] = _createElementVNode(\"div\", { class: \"eq-values\" }, \" First dark fringe between m=0 and m=1 \", -1))\n    ]),\n    _createElementVNode(\"div\", _hoisted_9, [\n      _createElementVNode(\"div\", _hoisted_10, _toDisplayString(_unref(t)('experiments.interferenceIntensity')), 1),\n      _cache[8] || (_cache[8] = _createElementVNode(\"div\", { class: \"eq\" }, \"I = I₀ cos²(πd·sinθ/λ)\", -1))\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195574,
+      "end": 1783196195574,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195574,
+      "end": 1783196195574,
+      "order": "normal"
+    }
+  ]
+}

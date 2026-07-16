@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/ClassManager.vue?vue&type=style&index=0&scoped=a9d4c5b6&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.class-manager {\n  width: 100%;\n  margin: 0;\n  padding: 1rem 1.5rem;\n}\n\n.manager-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  margin-bottom: 1rem;\n  padding-bottom: 0.8rem;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.06);\n}\n\n.header-title {\n  display: flex;\n  align-items: center;\n  gap: 0.7rem;\n}\n\n.manager-header h2 {\n  font-size: 1.5rem;\n  font-weight: 800;\n  margin: 0;\n  background: linear-gradient(135deg, #67e8f9, #a78bfa);\n  -webkit-background-clip: text;\n  -webkit-text-fill-color: transparent;\n  background-clip: text;\n}\n\n.class-count {\n  font-size: 0.75rem;\n  color: #64748b;\n  background: rgba(255, 255, 255, 0.05);\n  padding: 0.2rem 0.6rem;\n  border-radius: 999px;\n}\n\n.create-btn {\n  display: flex;\n  align-items: center;\n  gap: 0.4rem;\n  padding: 0.55rem 1.1rem;\n  border: none;\n  border-radius: 0.7rem;\n  background: linear-gradient(135deg, #4f46e5, #7c3aed);\n  color: #fff;\n  font-size: 0.85rem;\n  font-weight: 700;\n  cursor: pointer;\n  font-family: inherit;\n  box-shadow: 0 4px 15px rgba(79, 70, 229, 0.35);\n  transition: all 0.25s ease;\n}\n\n.create-btn:hover {\n  transform: translateY(-2px) scale(1.02);\n  box-shadow: 0 6px 22px rgba(79, 70, 229, 0.45);\n}\n\n.create-btn.alt {\n  margin-top: 0.8rem;\n}\n\n.empty-state {\n  text-align: center;\n  padding: 3rem 1rem;\n  color: #64748b;\n}\n\n.empty-icon {\n  font-size: 3rem;\n  margin-bottom: 0.5rem;\n}\n\n.class-list {\n  display: flex;\n  flex-direction: column;\n  gap: 0.5rem;\n}\n\n.class-row {\n  display: flex;\n  align-items: center;\n  gap: 0.7rem;\n  padding: 0.8rem 1rem;\n  border-radius: 0.6rem;\n  background: rgba(15, 23, 42, 0.6);\n  border: 1px solid rgba(255, 255, 255, 0.07);\n  transition: all 0.2s;\n}\n\n.class-row:hover {\n  border-color: rgba(99, 102, 241, 0.25);\n  background: rgba(99, 102, 241, 0.04);\n}\n\n.sc-icon { font-size: 1.2rem; }\n\n.sc-name {\n  flex: 1;\n  font-size: 0.95rem;\n  font-weight: 700;\n  color: #f1f5f9;\n}\n\n.sc-code {\n  font-size: 0.85rem;\n  font-weight: 700;\n  color: #67e8f9;\n  font-family: monospace;\n  letter-spacing: 1px;\n  background: rgba(0, 0, 0, 0.4);\n  padding: 0.2rem 0.5rem;\n  border-radius: 0.35rem;\n  border: 1px solid rgba(103, 232, 249, 0.15);\n}\n\n.class-card { display: flex; flex-direction: column; border-radius: 0.6rem; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.07); transition: all 0.2s; }\n.class-card:hover { border-color: rgba(99, 102, 241, 0.25); }\n.sc-toggle { font-size: 0.7rem; color: #64748b; width: 16px; cursor: pointer; }\n.sc-copy, .sc-delete {\n  background: none;\n  border: none;\n  cursor: pointer;\n  font-size: 0.9rem;\n  opacity: 0.7;\n  transition: opacity 0.2s;\n}\n.sc-copy:hover, .sc-delete:hover { opacity: 1; }\n.class-details { padding: 0 1rem 1rem 1rem; border-top: 1px solid rgba(255,255,255,0.05); }\n.detail-empty { padding: 1rem; text-align: center; color: #64748b; font-size: 0.85rem; }\n.student-list { display: flex; flex-direction: column; gap: 0.3rem; margin-top: 0.5rem; }\n.student-header { display: grid; grid-template-columns: 1.5fr 2fr 1fr; gap: 0.5rem; padding: 0.4rem 0.6rem; font-size: 0.75rem; color: #64748b; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.05); }\n.student-row { display: grid; grid-template-columns: 1.5fr 2fr 1fr; gap: 0.5rem; padding: 0.5rem 0.6rem; font-size: 0.85rem; color: #e2e8f0; border-radius: 0.35rem; transition: background 0.15s; cursor: pointer; }\n.student-row:hover { background: rgba(99,102,241,0.08); }\n.stu-name { font-weight: 600; color: #f1f5f9; }\n.stu-email { color: #94a3b8; font-size: 0.8rem; }\n.stu-date { color: #64748b; font-size: 0.8rem; }\n.stats-panel { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; margin: 0.75rem 0; padding: 0.6rem; background: rgba(0,0,0,0.2); border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.05); }\n.stat-mini { text-align: center; }\n.stat-mini .val { display: block; font-size: 1.1rem; font-weight: 800; color: #67e8f9; }\n.stat-mini.highlight .val { color: #a5b4fc; }\n.stat-mini .lab { font-size: 0.7rem; color: #94a3b8; }\n",
+      "start": 1783196193038,
+      "end": 1783196193038
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.class-manager {\n  width: 100%;\n  margin: 0;\n  padding: 1rem 1.5rem;\n}\n\n.manager-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  margin-bottom: 1rem;\n  padding-bottom: 0.8rem;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.06);\n}\n\n.header-title {\n  display: flex;\n  align-items: center;\n  gap: 0.7rem;\n}\n\n.manager-header h2 {\n  font-size: 1.5rem;\n  font-weight: 800;\n  margin: 0;\n  background: linear-gradient(135deg, #67e8f9, #a78bfa);\n  -webkit-background-clip: text;\n  -webkit-text-fill-color: transparent;\n  background-clip: text;\n}\n\n.class-count {\n  font-size: 0.75rem;\n  color: #64748b;\n  background: rgba(255, 255, 255, 0.05);\n  padding: 0.2rem 0.6rem;\n  border-radius: 999px;\n}\n\n.create-btn {\n  display: flex;\n  align-items: center;\n  gap: 0.4rem;\n  padding: 0.55rem 1.1rem;\n  border: none;\n  border-radius: 0.7rem;\n  background: linear-gradient(135deg, #4f46e5, #7c3aed);\n  color: #fff;\n  font-size: 0.85rem;\n  font-weight: 700;\n  cursor: pointer;\n  font-family: inherit;\n  box-shadow: 0 4px 15px rgba(79, 70, 229, 0.35);\n  transition: all 0.25s ease;\n}\n\n.create-btn:hover {\n  transform: translateY(-2px) scale(1.02);\n  box-shadow: 0 6px 22px rgba(79, 70, 229, 0.45);\n}\n\n.create-btn.alt {\n  margin-top: 0.8rem;\n}\n\n.empty-state {\n  text-align: center;\n  padding: 3rem 1rem;\n  color: #64748b;\n}\n\n.empty-icon {\n  font-size: 3rem;\n  margin-bottom: 0.5rem;\n}\n\n.class-list {\n  display: flex;\n  flex-direction: column;\n  gap: 0.5rem;\n}\n\n.class-row {\n  display: flex;\n  align-items: center;\n  gap: 0.7rem;\n  padding: 0.8rem 1rem;\n  border-radius: 0.6rem;\n  background: rgba(15, 23, 42, 0.6);\n  border: 1px solid rgba(255, 255, 255, 0.07);\n  transition: all 0.2s;\n}\n\n.class-row:hover {\n  border-color: rgba(99, 102, 241, 0.25);\n  background: rgba(99, 102, 241, 0.04);\n}\n\n.sc-icon { font-size: 1.2rem; }\n\n.sc-name {\n  flex: 1;\n  font-size: 0.95rem;\n  font-weight: 700;\n  color: #f1f5f9;\n}\n\n.sc-code {\n  font-size: 0.85rem;\n  font-weight: 700;\n  color: #67e8f9;\n  font-family: monospace;\n  letter-spacing: 1px;\n  background: rgba(0, 0, 0, 0.4);\n  padding: 0.2rem 0.5rem;\n  border-radius: 0.35rem;\n  border: 1px solid rgba(103, 232, 249, 0.15);\n}\n\n.class-card { display: flex; flex-direction: column; border-radius: 0.6rem; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.07); transition: all 0.2s; }\n.class-card:hover { border-color: rgba(99, 102, 241, 0.25); }\n.sc-toggle { font-size: 0.7rem; color: #64748b; width: 16px; cursor: pointer; }\n.sc-copy, .sc-delete {\n  background: none;\n  border: none;\n  cursor: pointer;\n  font-size: 0.9rem;\n  opacity: 0.7;\n  transition: opacity 0.2s;\n}\n.sc-copy:hover, .sc-delete:hover { opacity: 1; }\n.class-details { padding: 0 1rem 1rem 1rem; border-top: 1px solid rgba(255,255,255,0.05); }\n.detail-empty { padding: 1rem; text-align: center; color: #64748b; font-size: 0.85rem; }\n.student-list { display: flex; flex-direction: column; gap: 0.3rem; margin-top: 0.5rem; }\n.student-header { display: grid; grid-template-columns: 1.5fr 2fr 1fr; gap: 0.5rem; padding: 0.4rem 0.6rem; font-size: 0.75rem; color: #64748b; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.05); }\n.student-row { display: grid; grid-template-columns: 1.5fr 2fr 1fr; gap: 0.5rem; padding: 0.5rem 0.6rem; font-size: 0.85rem; color: #e2e8f0; border-radius: 0.35rem; transition: background 0.15s; cursor: pointer; }\n.student-row:hover { background: rgba(99,102,241,0.08); }\n.stu-name { font-weight: 600; color: #f1f5f9; }\n.stu-email { color: #94a3b8; font-size: 0.8rem; }\n.stu-date { color: #64748b; font-size: 0.8rem; }\n.stats-panel { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; margin: 0.75rem 0; padding: 0.6rem; background: rgba(0,0,0,0.2); border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.05); }\n.stat-mini { text-align: center; }\n.stat-mini .val { display: block; font-size: 1.1rem; font-weight: 800; color: #67e8f9; }\n.stat-mini.highlight .val { color: #a5b4fc; }\n.stat-mini .lab { font-size: 0.7rem; color: #94a3b8; }\n",
+      "start": 1783196193038,
+      "end": 1783196194190,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.class-manager[data-v-a9d4c5b6] {\n  width: 100%;\n  margin: 0;\n  padding: 1rem 1.5rem;\n}\n.manager-header[data-v-a9d4c5b6] {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  margin-bottom: 1rem;\n  padding-bottom: 0.8rem;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.06);\n}\n.header-title[data-v-a9d4c5b6] {\n  display: flex;\n  align-items: center;\n  gap: 0.7rem;\n}\n.manager-header h2[data-v-a9d4c5b6] {\n  font-size: 1.5rem;\n  font-weight: 800;\n  margin: 0;\n  background: linear-gradient(135deg, #67e8f9, #a78bfa);\n  -webkit-background-clip: text;\n  -webkit-text-fill-color: transparent;\n  background-clip: text;\n}\n.class-count[data-v-a9d4c5b6] {\n  font-size: 0.75rem;\n  color: #64748b;\n  background: rgba(255, 255, 255, 0.05);\n  padding: 0.2rem 0.6rem;\n  border-radius: 999px;\n}\n.create-btn[data-v-a9d4c5b6] {\n  display: flex;\n  align-items: center;\n  gap: 0.4rem;\n  padding: 0.55rem 1.1rem;\n  border: none;\n  border-radius: 0.7rem;\n  background: linear-gradient(135deg, #4f46e5, #7c3aed);\n  color: #fff;\n  font-size: 0.85rem;\n  font-weight: 700;\n  cursor: pointer;\n  font-family: inherit;\n  box-shadow: 0 4px 15px rgba(79, 70, 229, 0.35);\n  transition: all 0.25s ease;\n}\n.create-btn[data-v-a9d4c5b6]:hover {\n  transform: translateY(-2px) scale(1.02);\n  box-shadow: 0 6px 22px rgba(79, 70, 229, 0.45);\n}\n.create-btn.alt[data-v-a9d4c5b6] {\n  margin-top: 0.8rem;\n}\n.empty-state[data-v-a9d4c5b6] {\n  text-align: center;\n  padding: 3rem 1rem;\n  color: #64748b;\n}\n.empty-icon[data-v-a9d4c5b6] {\n  font-size: 3rem;\n  margin-bottom: 0.5rem;\n}\n.class-list[data-v-a9d4c5b6] {\n  display: flex;\n  flex-direction: column;\n  gap: 0.5rem;\n}\n.class-row[data-v-a9d4c5b6] {\n  display: flex;\n  align-items: center;\n  gap: 0.7rem;\n  padding: 0.8rem 1rem;\n  border-radius: 0.6rem;\n  background: rgba(15, 23, 42, 0.6);\n  border: 1px solid rgba(255, 255, 255, 0.07);\n  transition: all 0.2s;\n}\n.class-row[data-v-a9d4c5b6]:hover {\n  border-color: rgba(99, 102, 241, 0.25);\n  background: rgba(99, 102, 241, 0.04);\n}\n.sc-icon[data-v-a9d4c5b6] { font-size: 1.2rem;\n}\n.sc-name[data-v-a9d4c5b6] {\n  flex: 1;\n  font-size: 0.95rem;\n  font-weight: 700;\n  color: #f1f5f9;\n}\n.sc-code[data-v-a9d4c5b6] {\n  font-size: 0.85rem;\n  font-weight: 700;\n  color: #67e8f9;\n  font-family: monospace;\n  letter-spacing: 1px;\n  background: rgba(0, 0, 0, 0.4);\n  padding: 0.2rem 0.5rem;\n  border-radius: 0.35rem;\n  border: 1px solid rgba(103, 232, 249, 0.15);\n}\n.class-card[data-v-a9d4c5b6] { display: flex; flex-direction: column; border-radius: 0.6rem; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.07); transition: all 0.2s;\n}\n.class-card[data-v-a9d4c5b6]:hover { border-color: rgba(99, 102, 241, 0.25);\n}\n.sc-toggle[data-v-a9d4c5b6] { font-size: 0.7rem; color: #64748b; width: 16px; cursor: pointer;\n}\n.sc-copy[data-v-a9d4c5b6], .sc-delete[data-v-a9d4c5b6] {\n  background: none;\n  border: none;\n  cursor: pointer;\n  font-size: 0.9rem;\n  opacity: 0.7;\n  transition: opacity 0.2s;\n}\n.sc-copy[data-v-a9d4c5b6]:hover, .sc-delete[data-v-a9d4c5b6]:hover { opacity: 1;\n}\n.class-details[data-v-a9d4c5b6] { padding: 0 1rem 1rem 1rem; border-top: 1px solid rgba(255,255,255,0.05);\n}\n.detail-empty[data-v-a9d4c5b6] { padding: 1rem; text-align: center; color: #64748b; font-size: 0.85rem;\n}\n.student-list[data-v-a9d4c5b6] { display: flex; flex-direction: column; gap: 0.3rem; margin-top: 0.5rem;\n}\n.student-header[data-v-a9d4c5b6] { display: grid; grid-template-columns: 1.5fr 2fr 1fr; gap: 0.5rem; padding: 0.4rem 0.6rem; font-size: 0.75rem; color: #64748b; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.05);\n}\n.student-row[data-v-a9d4c5b6] { display: grid; grid-template-columns: 1.5fr 2fr 1fr; gap: 0.5rem; padding: 0.5rem 0.6rem; font-size: 0.85rem; color: #e2e8f0; border-radius: 0.35rem; transition: background 0.15s; cursor: pointer;\n}\n.student-row[data-v-a9d4c5b6]:hover { background: rgba(99,102,241,0.08);\n}\n.stu-name[data-v-a9d4c5b6] { font-weight: 600; color: #f1f5f9;\n}\n.stu-email[data-v-a9d4c5b6] { color: #94a3b8; font-size: 0.8rem;\n}\n.stu-date[data-v-a9d4c5b6] { color: #64748b; font-size: 0.8rem;\n}\n.stats-panel[data-v-a9d4c5b6] { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; margin: 0.75rem 0; padding: 0.6rem; background: rgba(0,0,0,0.2); border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.05);\n}\n.stat-mini[data-v-a9d4c5b6] { text-align: center;\n}\n.stat-mini .val[data-v-a9d4c5b6] { display: block; font-size: 1.1rem; font-weight: 800; color: #67e8f9;\n}\n.stat-mini.highlight .val[data-v-a9d4c5b6] { color: #a5b4fc;\n}\n.stat-mini .lab[data-v-a9d4c5b6] { font-size: 0.7rem; color: #94a3b8;\n}\n",
+      "start": 1783196194236,
+      "end": 1783196194316,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194317,
+      "end": 1783196194317,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196194317,
+      "end": 1783196194318,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    }
+  ]
+}

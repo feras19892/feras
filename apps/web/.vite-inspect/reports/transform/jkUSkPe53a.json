@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ideal-gas/panels/IdealGasReadingsPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, createTextVNode as _createTextVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"readings-panel\" }\nconst _hoisted_2 = { class: \"row\" }\nconst _hoisted_3 = { class: \"val\" }\nconst _hoisted_4 = { class: \"row\" }\nconst _hoisted_5 = { class: \"val\" }\nconst _hoisted_6 = { class: \"row\" }\nconst _hoisted_7 = { class: \"val\" }\nconst _hoisted_8 = { class: \"row\" }\nconst _hoisted_9 = { class: \"val\" }\nconst _hoisted_10 = { class: \"row\" }\nconst _hoisted_11 = { class: \"val\" }\n\nimport { useI18n } from '../../../../composables/useI18n'\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'IdealGasReadingsPanel',\n  props: {\n    n: {},\n    temp: {},\n    vol: {},\n    press: {},\n    vRms: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\n\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"label\" }, \"n\", -1)),\n      _createElementVNode(\"span\", _hoisted_3, _toDisplayString(__props.n.toFixed(2)) + \" mol\", 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_4, [\n      _cache[1] || (_cache[1] = _createElementVNode(\"span\", { class: \"label\" }, \"T\", -1)),\n      _createElementVNode(\"span\", _hoisted_5, _toDisplayString(__props.temp) + \" K\", 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_6, [\n      _cache[2] || (_cache[2] = _createElementVNode(\"span\", { class: \"label\" }, \"V\", -1)),\n      _createElementVNode(\"span\", _hoisted_7, _toDisplayString((__props.vol*1000).toFixed(2)) + \" L\", 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_8, [\n      _cache[3] || (_cache[3] = _createElementVNode(\"span\", { class: \"label\" }, \"P\", -1)),\n      _createElementVNode(\"span\", _hoisted_9, _toDisplayString((__props.press/1000).toFixed(1)) + \" kPa\", 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_10, [\n      _cache[4] || (_cache[4] = _createElementVNode(\"span\", { class: \"label\" }, [\n        _createTextVNode(\"v\"),\n        _createElementVNode(\"sub\", null, \"rms\")\n      ], -1)),\n      _createElementVNode(\"span\", _hoisted_11, _toDisplayString(__props.vRms.toFixed(2)) + \" ×10² m/s\", 1)\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783196195551,
+      "end": 1783196195551
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195551,
+      "end": 1783196195551,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, createTextVNode as _createTextVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"readings-panel\" };\nconst _hoisted_2 = { class: \"row\" };\nconst _hoisted_3 = { class: \"val\" };\nconst _hoisted_4 = { class: \"row\" };\nconst _hoisted_5 = { class: \"val\" };\nconst _hoisted_6 = { class: \"row\" };\nconst _hoisted_7 = { class: \"val\" };\nconst _hoisted_8 = { class: \"row\" };\nconst _hoisted_9 = { class: \"val\" };\nconst _hoisted_10 = { class: \"row\" };\nconst _hoisted_11 = { class: \"val\" };\nimport { useI18n } from \"../../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"IdealGasReadingsPanel\",\n  props: {\n    n: {},\n    temp: {},\n    vol: {},\n    press: {},\n    vRms: {}\n  },\n  setup(__props) {\n    const { t } = useI18n();\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"label\" }, \"n\", -1)),\n          _createElementVNode(\"span\", _hoisted_3, _toDisplayString(__props.n.toFixed(2)) + \" mol\", 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_4, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"span\", { class: \"label\" }, \"T\", -1)),\n          _createElementVNode(\"span\", _hoisted_5, _toDisplayString(__props.temp) + \" K\", 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_6, [\n          _cache[2] || (_cache[2] = _createElementVNode(\"span\", { class: \"label\" }, \"V\", -1)),\n          _createElementVNode(\"span\", _hoisted_7, _toDisplayString((__props.vol * 1e3).toFixed(2)) + \" L\", 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_8, [\n          _cache[3] || (_cache[3] = _createElementVNode(\"span\", { class: \"label\" }, \"P\", -1)),\n          _createElementVNode(\"span\", _hoisted_9, _toDisplayString((__props.press / 1e3).toFixed(1)) + \" kPa\", 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_10, [\n          _cache[4] || (_cache[4] = _createElementVNode(\"span\", { class: \"label\" }, [\n            _createTextVNode(\"v\"),\n            _createElementVNode(\"sub\", null, \"rms\")\n          ], -1)),\n          _createElementVNode(\"span\", _hoisted_11, _toDisplayString(__props.vRms.toFixed(2)) + \" ×10² m/s\", 1)\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196195551,
+      "end": 1783196195730,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ideal-gas/panels/IdealGasReadingsPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, createTextVNode as _createTextVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"readings-panel\" }\nconst _hoisted_2 = { class: \"row\" }\nconst _hoisted_3 = { class: \"val\" }\nconst _hoisted_4 = { class: \"row\" }\nconst _hoisted_5 = { class: \"val\" }\nconst _hoisted_6 = { class: \"row\" }\nconst _hoisted_7 = { class: \"val\" }\nconst _hoisted_8 = { class: \"row\" }\nconst _hoisted_9 = { class: \"val\" }\nconst _hoisted_10 = { class: \"row\" }\nconst _hoisted_11 = { class: \"val\" }\n\nimport { useI18n } from '../../../../composables/useI18n'\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'IdealGasReadingsPanel',\n  props: {\n    n: {},\n    temp: {},\n    vol: {},\n    press: {},\n    vRms: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\n\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"label\" }, \"n\", -1)),\n      _createElementVNode(\"span\", _hoisted_3, _toDisplayString(__props.n.toFixed(2)) + \" mol\", 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_4, [\n      _cache[1] || (_cache[1] = _createElementVNode(\"span\", { class: \"label\" }, \"T\", -1)),\n      _createElementVNode(\"span\", _hoisted_5, _toDisplayString(__props.temp) + \" K\", 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_6, [\n      _cache[2] || (_cache[2] = _createElementVNode(\"span\", { class: \"label\" }, \"V\", -1)),\n      _createElementVNode(\"span\", _hoisted_7, _toDisplayString((__props.vol*1000).toFixed(2)) + \" L\", 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_8, [\n      _cache[3] || (_cache[3] = _createElementVNode(\"span\", { class: \"label\" }, \"P\", -1)),\n      _createElementVNode(\"span\", _hoisted_9, _toDisplayString((__props.press/1000).toFixed(1)) + \" kPa\", 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_10, [\n      _cache[4] || (_cache[4] = _createElementVNode(\"span\", { class: \"label\" }, [\n        _createTextVNode(\"v\"),\n        _createElementVNode(\"sub\", null, \"rms\")\n      ], -1)),\n      _createElementVNode(\"span\", _hoisted_11, _toDisplayString(__props.vRms.toFixed(2)) + \" ×10² m/s\", 1)\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,sBAAsB,qBAAqB,mBAAmB,kBAAkB,mBAAmB,kBAAkB,aAAa,YAAY,sBAAsB,2BAA2B;AAExM,MAAM,aAAa,EAAE,OAAO,iBAAiB;AAC7C,MAAM,aAAa,EAAE,OAAO,MAAM;AAClC,MAAM,aAAa,EAAE,OAAO,MAAM;AAClC,MAAM,aAAa,EAAE,OAAO,MAAM;AAClC,MAAM,aAAa,EAAE,OAAO,MAAM;AAClC,MAAM,aAAa,EAAE,OAAO,MAAM;AAClC,MAAM,aAAa,EAAE,OAAO,MAAM;AAClC,MAAM,aAAa,EAAE,OAAO,MAAM;AAClC,MAAM,aAAa,EAAE,OAAO,MAAM;AAClC,MAAM,cAAc,EAAE,OAAO,MAAM;AACnC,MAAM,cAAc,EAAE,OAAO,MAAM;AAEnC,SAAS,eAAe;AAExB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,GAAG,CAAC;AAAA,IACJ,MAAM,CAAC;AAAA,IACP,KAAK,CAAC;AAAA,IACN,OAAO,CAAC;AAAA,IACR,MAAM,CAAC;AAAA,EACT;AAAA,EACA,MAAM,SAAc;AAEtB,UAAM,EAAE,EAAE,IAAI,QAAQ;AAGtB,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,oBAAoB,OAAO,YAAY;AAAA,UACrC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,QAAQ,EAAE,OAAO,QAAQ,GAAG,KAAK,EAAE;AAAA,UACjF,oBAAoB,QAAQ,YAAY,iBAAiB,QAAQ,EAAE,QAAQ,CAAC,CAAC,IAAI,QAAQ,CAAC;AAAA,QAC5F,CAAC;AAAA,QACD,oBAAoB,OAAO,YAAY;AAAA,UACrC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,QAAQ,EAAE,OAAO,QAAQ,GAAG,KAAK,EAAE;AAAA,UACjF,oBAAoB,QAAQ,YAAY,iBAAiB,QAAQ,IAAI,IAAI,MAAM,CAAC;AAAA,QAClF,CAAC;AAAA,QACD,oBAAoB,OAAO,YAAY;AAAA,UACrC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,QAAQ,EAAE,OAAO,QAAQ,GAAG,KAAK,EAAE;AAAA,UACjF,oBAAoB,QAAQ,YAAY,kBAAkB,QAAQ,MAAI,KAAM,QAAQ,CAAC,CAAC,IAAI,MAAM,CAAC;AAAA,QACnG,CAAC;AAAA,QACD,oBAAoB,OAAO,YAAY;AAAA,UACrC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,QAAQ,EAAE,OAAO,QAAQ,GAAG,KAAK,EAAE;AAAA,UACjF,oBAAoB,QAAQ,YAAY,kBAAkB,QAAQ,QAAM,KAAM,QAAQ,CAAC,CAAC,IAAI,QAAQ,CAAC;AAAA,QACvG,CAAC;AAAA,QACD,oBAAoB,OAAO,aAAa;AAAA,UACtC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,QAAQ,EAAE,OAAO,QAAQ,GAAG;AAAA,YACxE,iBAAiB,GAAG;AAAA,YACpB,oBAAoB,OAAO,MAAM,KAAK;AAAA,UACxC,GAAG,EAAE;AAAA,UACL,oBAAoB,QAAQ,aAAa,iBAAiB,QAAQ,KAAK,QAAQ,CAAC,CAAC,IAAI,aAAa,CAAC;AAAA,QACrG,CAAC;AAAA,MACH,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195730,
+      "end": 1783196195730,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195730,
+      "end": 1783196195730,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196195730,
+      "end": 1783196195730,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195730,
+      "end": 1783196195731,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195731,
+      "end": 1783196195731,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195731,
+      "end": 1783196195731,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195731,
+      "end": 1783196195731,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195731,
+      "end": 1783196195731,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195731,
+      "end": 1783196195731,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195731,
+      "end": 1783196195731,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195731,
+      "end": 1783196195731,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195731,
+      "end": 1783196195731,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195731,
+      "end": 1783196195731,
+      "order": "normal"
+    }
+  ]
+}

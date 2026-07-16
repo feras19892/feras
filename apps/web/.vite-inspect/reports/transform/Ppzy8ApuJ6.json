@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lightray/LightRayChart.vue?vue&type=style&index=0&scoped=17292296&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.lightray-chart {\n  width: 100%;\n  height: 250px;\n  border-radius: 8px;\n  background: #161B22;\n}\n",
+      "start": 1783196195641,
+      "end": 1783196195641
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.lightray-chart {\n  width: 100%;\n  height: 250px;\n  border-radius: 8px;\n  background: #161B22;\n}\n",
+      "start": 1783196195641,
+      "end": 1783196195641,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195641,
+      "end": 1783196195641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195641,
+      "end": 1783196195641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195641,
+      "end": 1783196195641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.lightray-chart[data-v-17292296] {\n  width: 100%;\n  height: 250px;\n  border-radius: 8px;\n  background: #161B22;\n}\n",
+      "start": 1783196195641,
+      "end": 1783196195641,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195641,
+      "end": 1783196195641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196195641,
+      "end": 1783196195641,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195641,
+      "end": 1783196195641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195641,
+      "end": 1783196195641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195641,
+      "end": 1783196195641,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195641,
+      "end": 1783196195641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195641,
+      "end": 1783196195641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195641,
+      "end": 1783196195641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195641,
+      "end": 1783196195641,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195641,
+      "end": 1783196195641,
+      "order": "normal"
+    }
+  ]
+}

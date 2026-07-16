@@ -2,14 +2,6 @@ import type { BiologyTopic } from '../types/biology.types';
 
 export const cellBiologyTopics: BiologyTopic[] = [
   {
-    id: 'animal-cell',
-    titleKey: 'biology.topic.animalCell.title',
-    descriptionKey: 'biology.topic.animalCell.description',
-    icon: '🧬',
-    route: '/biology/cell/animal-cell',
-    available: true,
-  },
-  {
     id: 'dna-structure',
     titleKey: 'biology.topic.dnaStructure.title',
     descriptionKey: 'biology.topic.dnaStructure.description',
@@ -39,6 +31,14 @@ export const cellBiologyTopics: BiologyTopic[] = [
     descriptionKey: 'biology.topic.proteinSynthesis.description',
     icon: '🧫',
     route: '/biology/cell/protein-synthesis',
+    available: true,
+  },
+  {
+    id: 'animal-cell',
+    titleKey: 'biology.topic.animalCell.title',
+    descriptionKey: 'biology.topic.animalCell.description',
+    icon: '🐇',
+    route: '/biology/cell/animal-cell',
     available: true,
   },
 ];

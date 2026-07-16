@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemChartCanvas.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nimport { ref, watch, onMounted } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\ninterface Point { x: number; y: number }\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ChemChartCanvas',\n  props: {\n    data: {},\n    xLabel: {},\n    yLabel: {},\n    type: {}\n  },\n  setup(__props: any, { expose: __expose }) {\n\nconst { t } = useI18n();\n\nconst props = __props;\n\nconst canvasRef = ref<HTMLCanvasElement | null>(null);\n\nfunction draw() {\n  const canvas = canvasRef.value;\n  if (!canvas) return;\n  const ctx = canvas.getContext('2d');\n  if (!ctx) return;\n\n  const w = canvas.width;\n  const h = canvas.height;\n  const pad = { top: 30, right: 30, bottom: 50, left: 60 };\n  const gw = w - pad.left - pad.right;\n  const gh = h - pad.top - pad.bottom;\n\n  ctx.clearRect(0, 0, w, h);\n  if (!props.data.length) {\n    ctx.fillStyle = '#94a3b8';\n    ctx.font = '14px sans-serif';\n    ctx.textAlign = 'center';\n    ctx.fillText(t('chemistryLab.noData'), w / 2, h / 2);\n    return;\n  }\n\n  const xs = props.data.map(p => p.x);\n  const ys = props.data.map(p => p.y);\n  const minX = Math.min(...xs);\n  const maxX = Math.max(...xs);\n  const minY = Math.min(...ys);\n  const maxY = Math.max(...ys);\n  const dx = maxX - minX || 1;\n  const dy = maxY - minY || 1;\n\n  function tx(x: number) { return pad.left + ((x - minX) / dx) * gw; }\n  function ty(y: number) { return pad.top + gh - ((y - minY) / dy) * gh; }\n\n  // Grid\n  ctx.strokeStyle = 'rgba(255,255,255,0.05)';\n  ctx.lineWidth = 1;\n  for (let i = 0; i <= 5; i++) {\n    const gx = pad.left + (gw / 5) * i;\n    const gy = pad.top + (gh / 5) * i;\n    ctx.beginPath(); ctx.moveTo(gx, pad.top); ctx.lineTo(gx, pad.top + gh); ctx.stroke();\n    ctx.beginPath(); ctx.moveTo(pad.left, gy); ctx.lineTo(pad.left + gw, gy); ctx.stroke();\n  }\n\n  // Axes\n  ctx.strokeStyle = 'rgba(255,255,255,0.3)';\n  ctx.lineWidth = 1.5;\n  ctx.beginPath(); ctx.moveTo(pad.left, pad.top); ctx.lineTo(pad.left, pad.top + gh); ctx.lineTo(pad.left + gw, pad.top + gh); ctx.stroke();\n\n  // Labels\n  ctx.fillStyle = '#94a3b8';\n  ctx.font = '12px sans-serif';\n  ctx.textAlign = 'center';\n  ctx.fillText(props.xLabel, pad.left + gw / 2, h - 10);\n  ctx.save();\n  ctx.translate(15, pad.top + gh / 2);\n  ctx.rotate(-Math.PI / 2);\n  ctx.fillText(props.yLabel, 0, 0);\n  ctx.restore();\n\n  // Ticks\n  ctx.fillStyle = '#64748b';\n  ctx.font = '10px sans-serif';\n  for (let i = 0; i <= 5; i++) {\n    const xv = minX + (dx / 5) * i;\n    const yv = minY + (dy / 5) * i;\n    ctx.textAlign = 'center';\n    ctx.fillText(xv.toFixed(1), pad.left + (gw / 5) * i, pad.top + gh + 15);\n    ctx.textAlign = 'right';\n    ctx.fillText(yv.toFixed(1), pad.left - 8, pad.top + gh - (gh / 5) * i + 4);\n  }\n\n  // Data\n  if (props.type === 'line' && props.data.length > 1) {\n    ctx.strokeStyle = '#06b6d4';\n    ctx.lineWidth = 2;\n    ctx.beginPath();\n    ctx.moveTo(tx(props.data[0].x), ty(props.data[0].y));\n    for (let i = 1; i < props.data.length; i++) ctx.lineTo(tx(props.data[i].x), ty(props.data[i].y));\n    ctx.stroke();\n  }\n\n  for (const p of props.data) {\n    ctx.beginPath();\n    ctx.arc(tx(p.x), ty(p.y), 4, 0, Math.PI * 2);\n    ctx.fillStyle = '#06b6d4';\n    ctx.fill();\n    ctx.strokeStyle = '#fff';\n    ctx.lineWidth = 1;\n    ctx.stroke();\n  }\n}\n\nwatch(() => props.data, draw, { deep: true });\nonMounted(draw);\n\n__expose({ getCanvas: () => canvasRef.value, draw });\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"canvas\", {\n    ref_key: \"canvasRef\",\n    ref: canvasRef,\n    width: \"700\",\n    height: \"400\",\n    class: \"chart-canvas\"\n  }, null, 512))\n}\n}\n\n})",
+      "start": 1783196193522,
+      "end": 1783196193522
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193523,
+      "end": 1783196193523,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nimport { ref, watch, onMounted } from \"vue\";\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"ChemChartCanvas\",\n  props: {\n    data: {},\n    xLabel: {},\n    yLabel: {},\n    type: {}\n  },\n  setup(__props, { expose: __expose }) {\n    const { t } = useI18n();\n    const props = __props;\n    const canvasRef = ref(null);\n    function draw() {\n      const canvas = canvasRef.value;\n      if (!canvas) return;\n      const ctx = canvas.getContext(\"2d\");\n      if (!ctx) return;\n      const w = canvas.width;\n      const h = canvas.height;\n      const pad = { top: 30, right: 30, bottom: 50, left: 60 };\n      const gw = w - pad.left - pad.right;\n      const gh = h - pad.top - pad.bottom;\n      ctx.clearRect(0, 0, w, h);\n      if (!props.data.length) {\n        ctx.fillStyle = \"#94a3b8\";\n        ctx.font = \"14px sans-serif\";\n        ctx.textAlign = \"center\";\n        ctx.fillText(t(\"chemistryLab.noData\"), w / 2, h / 2);\n        return;\n      }\n      const xs = props.data.map((p) => p.x);\n      const ys = props.data.map((p) => p.y);\n      const minX = Math.min(...xs);\n      const maxX = Math.max(...xs);\n      const minY = Math.min(...ys);\n      const maxY = Math.max(...ys);\n      const dx = maxX - minX || 1;\n      const dy = maxY - minY || 1;\n      function tx(x) {\n        return pad.left + (x - minX) / dx * gw;\n      }\n      function ty(y) {\n        return pad.top + gh - (y - minY) / dy * gh;\n      }\n      ctx.strokeStyle = \"rgba(255,255,255,0.05)\";\n      ctx.lineWidth = 1;\n      for (let i = 0; i <= 5; i++) {\n        const gx = pad.left + gw / 5 * i;\n        const gy = pad.top + gh / 5 * i;\n        ctx.beginPath();\n        ctx.moveTo(gx, pad.top);\n        ctx.lineTo(gx, pad.top + gh);\n        ctx.stroke();\n        ctx.beginPath();\n        ctx.moveTo(pad.left, gy);\n        ctx.lineTo(pad.left + gw, gy);\n        ctx.stroke();\n      }\n      ctx.strokeStyle = \"rgba(255,255,255,0.3)\";\n      ctx.lineWidth = 1.5;\n      ctx.beginPath();\n      ctx.moveTo(pad.left, pad.top);\n      ctx.lineTo(pad.left, pad.top + gh);\n      ctx.lineTo(pad.left + gw, pad.top + gh);\n      ctx.stroke();\n      ctx.fillStyle = \"#94a3b8\";\n      ctx.font = \"12px sans-serif\";\n      ctx.textAlign = \"center\";\n      ctx.fillText(props.xLabel, pad.left + gw / 2, h - 10);\n      ctx.save();\n      ctx.translate(15, pad.top + gh / 2);\n      ctx.rotate(-Math.PI / 2);\n      ctx.fillText(props.yLabel, 0, 0);\n      ctx.restore();\n      ctx.fillStyle = \"#64748b\";\n      ctx.font = \"10px sans-serif\";\n      for (let i = 0; i <= 5; i++) {\n        const xv = minX + dx / 5 * i;\n        const yv = minY + dy / 5 * i;\n        ctx.textAlign = \"center\";\n        ctx.fillText(xv.toFixed(1), pad.left + gw / 5 * i, pad.top + gh + 15);\n        ctx.textAlign = \"right\";\n        ctx.fillText(yv.toFixed(1), pad.left - 8, pad.top + gh - gh / 5 * i + 4);\n      }\n      if (props.type === \"line\" && props.data.length > 1) {\n        ctx.strokeStyle = \"#06b6d4\";\n        ctx.lineWidth = 2;\n        ctx.beginPath();\n        ctx.moveTo(tx(props.data[0].x), ty(props.data[0].y));\n        for (let i = 1; i < props.data.length; i++) ctx.lineTo(tx(props.data[i].x), ty(props.data[i].y));\n        ctx.stroke();\n      }\n      for (const p of props.data) {\n        ctx.beginPath();\n        ctx.arc(tx(p.x), ty(p.y), 4, 0, Math.PI * 2);\n        ctx.fillStyle = \"#06b6d4\";\n        ctx.fill();\n        ctx.strokeStyle = \"#fff\";\n        ctx.lineWidth = 1;\n        ctx.stroke();\n      }\n    }\n    watch(() => props.data, draw, { deep: true });\n    onMounted(draw);\n    __expose({ getCanvas: () => canvasRef.value, draw });\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"canvas\", {\n        ref_key: \"canvasRef\",\n        ref: canvasRef,\n        width: \"700\",\n        height: \"400\",\n        class: \"chart-canvas\"\n      }, null, 512);\n    };\n  }\n});\n",
+      "start": 1783196193523,
+      "end": 1783196193671,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemChartCanvas.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nimport { ref, watch, onMounted } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\ninterface Point { x: number; y: number }\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ChemChartCanvas',\n  props: {\n    data: {},\n    xLabel: {},\n    yLabel: {},\n    type: {}\n  },\n  setup(__props: any, { expose: __expose }) {\n\nconst { t } = useI18n();\n\nconst props = __props;\n\nconst canvasRef = ref<HTMLCanvasElement | null>(null);\n\nfunction draw() {\n  const canvas = canvasRef.value;\n  if (!canvas) return;\n  const ctx = canvas.getContext('2d');\n  if (!ctx) return;\n\n  const w = canvas.width;\n  const h = canvas.height;\n  const pad = { top: 30, right: 30, bottom: 50, left: 60 };\n  const gw = w - pad.left - pad.right;\n  const gh = h - pad.top - pad.bottom;\n\n  ctx.clearRect(0, 0, w, h);\n  if (!props.data.length) {\n    ctx.fillStyle = '#94a3b8';\n    ctx.font = '14px sans-serif';\n    ctx.textAlign = 'center';\n    ctx.fillText(t('chemistryLab.noData'), w / 2, h / 2);\n    return;\n  }\n\n  const xs = props.data.map(p => p.x);\n  const ys = props.data.map(p => p.y);\n  const minX = Math.min(...xs);\n  const maxX = Math.max(...xs);\n  const minY = Math.min(...ys);\n  const maxY = Math.max(...ys);\n  const dx = maxX - minX || 1;\n  const dy = maxY - minY || 1;\n\n  function tx(x: number) { return pad.left + ((x - minX) / dx) * gw; }\n  function ty(y: number) { return pad.top + gh - ((y - minY) / dy) * gh; }\n\n  // Grid\n  ctx.strokeStyle = 'rgba(255,255,255,0.05)';\n  ctx.lineWidth = 1;\n  for (let i = 0; i <= 5; i++) {\n    const gx = pad.left + (gw / 5) * i;\n    const gy = pad.top + (gh / 5) * i;\n    ctx.beginPath(); ctx.moveTo(gx, pad.top); ctx.lineTo(gx, pad.top + gh); ctx.stroke();\n    ctx.beginPath(); ctx.moveTo(pad.left, gy); ctx.lineTo(pad.left + gw, gy); ctx.stroke();\n  }\n\n  // Axes\n  ctx.strokeStyle = 'rgba(255,255,255,0.3)';\n  ctx.lineWidth = 1.5;\n  ctx.beginPath(); ctx.moveTo(pad.left, pad.top); ctx.lineTo(pad.left, pad.top + gh); ctx.lineTo(pad.left + gw, pad.top + gh); ctx.stroke();\n\n  // Labels\n  ctx.fillStyle = '#94a3b8';\n  ctx.font = '12px sans-serif';\n  ctx.textAlign = 'center';\n  ctx.fillText(props.xLabel, pad.left + gw / 2, h - 10);\n  ctx.save();\n  ctx.translate(15, pad.top + gh / 2);\n  ctx.rotate(-Math.PI / 2);\n  ctx.fillText(props.yLabel, 0, 0);\n  ctx.restore();\n\n  // Ticks\n  ctx.fillStyle = '#64748b';\n  ctx.font = '10px sans-serif';\n  for (let i = 0; i <= 5; i++) {\n    const xv = minX + (dx / 5) * i;\n    const yv = minY + (dy / 5) * i;\n    ctx.textAlign = 'center';\n    ctx.fillText(xv.toFixed(1), pad.left + (gw / 5) * i, pad.top + gh + 15);\n    ctx.textAlign = 'right';\n    ctx.fillText(yv.toFixed(1), pad.left - 8, pad.top + gh - (gh / 5) * i + 4);\n  }\n\n  // Data\n  if (props.type === 'line' && props.data.length > 1) {\n    ctx.strokeStyle = '#06b6d4';\n    ctx.lineWidth = 2;\n    ctx.beginPath();\n    ctx.moveTo(tx(props.data[0].x), ty(props.data[0].y));\n    for (let i = 1; i < props.data.length; i++) ctx.lineTo(tx(props.data[i].x), ty(props.data[i].y));\n    ctx.stroke();\n  }\n\n  for (const p of props.data) {\n    ctx.beginPath();\n    ctx.arc(tx(p.x), ty(p.y), 4, 0, Math.PI * 2);\n    ctx.fillStyle = '#06b6d4';\n    ctx.fill();\n    ctx.strokeStyle = '#fff';\n    ctx.lineWidth = 1;\n    ctx.stroke();\n  }\n}\n\nwatch(() => props.data, draw, { deep: true });\nonMounted(draw);\n\n__expose({ getCanvas: () => canvasRef.value, draw });\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"canvas\", {\n    ref_key: \"canvasRef\",\n    ref: canvasRef,\n    width: \"700\",\n    height: \"400\",\n    class: \"chart-canvas\"\n  }, null, 512))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,aAAa,YAAY,sBAAsB,2BAA2B;AAEnF,SAAS,KAAK,OAAO,iBAAiB;AACtC,SAAS,eAAe;AAGxB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,MAAM,CAAC;AAAA,IACP,QAAQ,CAAC;AAAA,IACT,QAAQ,CAAC;AAAA,IACT,MAAM,CAAC;AAAA,EACT;AAAA,EACA,MAAM,SAAc,EAAE,QAAQ,SAAS,GAAG;AAE5C,UAAM,EAAE,EAAE,IAAI,QAAQ;AAEtB,UAAM,QAAQ;AAEd,UAAM,YAAY,IAA8B,IAAI;AAEpD,aAAS,OAAO;AACd,YAAM,SAAS,UAAU;AACzB,UAAI,CAAC,OAAQ;AACb,YAAM,MAAM,OAAO,WAAW,IAAI;AAClC,UAAI,CAAC,IAAK;AAEV,YAAM,IAAI,OAAO;AACjB,YAAM,IAAI,OAAO;AACjB,YAAM,MAAM,EAAE,KAAK,IAAI,OAAO,IAAI,QAAQ,IAAI,MAAM,GAAG;AACvD,YAAM,KAAK,IAAI,IAAI,OAAO,IAAI;AAC9B,YAAM,KAAK,IAAI,IAAI,MAAM,IAAI;AAE7B,UAAI,UAAU,GAAG,GAAG,GAAG,CAAC;AACxB,UAAI,CAAC,MAAM,KAAK,QAAQ;AACtB,YAAI,YAAY;AAChB,YAAI,OAAO;AACX,YAAI,YAAY;AAChB,YAAI,SAAS,EAAE,qBAAqB,GAAG,IAAI,GAAG,IAAI,CAAC;AACnD;AAAA,MACF;AAEA,YAAM,KAAK,MAAM,KAAK,IAAI,OAAK,EAAE,CAAC;AAClC,YAAM,KAAK,MAAM,KAAK,IAAI,OAAK,EAAE,CAAC;AAClC,YAAM,OAAO,KAAK,IAAI,GAAG,EAAE;AAC3B,YAAM,OAAO,KAAK,IAAI,GAAG,EAAE;AAC3B,YAAM,OAAO,KAAK,IAAI,GAAG,EAAE;AAC3B,YAAM,OAAO,KAAK,IAAI,GAAG,EAAE;AAC3B,YAAM,KAAK,OAAO,QAAQ;AAC1B,YAAM,KAAK,OAAO,QAAQ;AAE1B,eAAS,GAAG,GAAW;AAAE,eAAO,IAAI,QAAS,IAAI,QAAQ,KAAM;AAAA,MAAI;AACnE,eAAS,GAAG,GAAW;AAAE,eAAO,IAAI,MAAM,MAAO,IAAI,QAAQ,KAAM;AAAA,MAAI;AAGvE,UAAI,cAAc;AAClB,UAAI,YAAY;AAChB,eAAS,IAAI,GAAG,KAAK,GAAG,KAAK;AAC3B,cAAM,KAAK,IAAI,OAAQ,KAAK,IAAK;AACjC,cAAM,KAAK,IAAI,MAAO,KAAK,IAAK;AAChC,YAAI,UAAU;AAAG,YAAI,OAAO,IAAI,IAAI,GAAG;AAAG,YAAI,OAAO,IAAI,IAAI,MAAM,EAAE;AAAG,YAAI,OAAO;AACnF,YAAI,UAAU;AAAG,YAAI,OAAO,IAAI,MAAM,EAAE;AAAG,YAAI,OAAO,IAAI,OAAO,IAAI,EAAE;AAAG,YAAI,OAAO;AAAA,MACvF;AAGA,UAAI,cAAc;AAClB,UAAI,YAAY;AAChB,UAAI,UAAU;AAAG,UAAI,OAAO,IAAI,MAAM,IAAI,GAAG;AAAG,UAAI,OAAO,IAAI,MAAM,IAAI,MAAM,EAAE;AAAG,UAAI,OAAO,IAAI,OAAO,IAAI,IAAI,MAAM,EAAE;AAAG,UAAI,OAAO;AAGxI,UAAI,YAAY;AAChB,UAAI,OAAO;AACX,UAAI,YAAY;AAChB,UAAI,SAAS,MAAM,QAAQ,IAAI,OAAO,KAAK,GAAG,IAAI,EAAE;AACpD,UAAI,KAAK;AACT,UAAI,UAAU,IAAI,IAAI,MAAM,KAAK,CAAC;AAClC,UAAI,OAAO,CAAC,KAAK,KAAK,CAAC;AACvB,UAAI,SAAS,MAAM,QAAQ,GAAG,CAAC;AAC/B,UAAI,QAAQ;AAGZ,UAAI,YAAY;AAChB,UAAI,OAAO;AACX,eAAS,IAAI,GAAG,KAAK,GAAG,KAAK;AAC3B,cAAM,KAAK,OAAQ,KAAK,IAAK;AAC7B,cAAM,KAAK,OAAQ,KAAK,IAAK;AAC7B,YAAI,YAAY;AAChB,YAAI,SAAS,GAAG,QAAQ,CAAC,GAAG,IAAI,OAAQ,KAAK,IAAK,GAAG,IAAI,MAAM,KAAK,EAAE;AACtE,YAAI,YAAY;AAChB,YAAI,SAAS,GAAG,QAAQ,CAAC,GAAG,IAAI,OAAO,GAAG,IAAI,MAAM,KAAM,KAAK,IAAK,IAAI,CAAC;AAAA,MAC3E;AAGA,UAAI,MAAM,SAAS,UAAU,MAAM,KAAK,SAAS,GAAG;AAClD,YAAI,cAAc;AAClB,YAAI,YAAY;AAChB,YAAI,UAAU;AACd,YAAI,OAAO,GAAG,MAAM,KAAK,CAAC,EAAE,CAAC,GAAG,GAAG,MAAM,KAAK,CAAC,EAAE,CAAC,CAAC;AACnD,iBAAS,IAAI,GAAG,IAAI,MAAM,KAAK,QAAQ,IAAK,KAAI,OAAO,GAAG,MAAM,KAAK,CAAC,EAAE,CAAC,GAAG,GAAG,MAAM,KAAK,CAAC,EAAE,CAAC,CAAC;AAC/F,YAAI,OAAO;AAAA,MACb;AAEA,iBAAW,KAAK,MAAM,MAAM;AAC1B,YAAI,UAAU;AACd,YAAI,IAAI,GAAG,EAAE,CAAC,GAAG,GAAG,EAAE,CAAC,GAAG,GAAG,GAAG,KAAK,KAAK,CAAC;AAC3C,YAAI,YAAY;AAChB,YAAI,KAAK;AACT,YAAI,cAAc;AAClB,YAAI,YAAY;AAChB,YAAI,OAAO;AAAA,MACb;AAAA,IACF;AAEA,UAAM,MAAM,MAAM,MAAM,MAAM,EAAE,MAAM,KAAK,CAAC;AAC5C,cAAU,IAAI;AAEd,aAAS,EAAE,WAAW,MAAM,UAAU,OAAO,KAAK,CAAC;AAEnD,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,UAAU;AAAA,QAClD,SAAS;AAAA,QACT,KAAK;AAAA,QACL,OAAO;AAAA,QACP,QAAQ;AAAA,QACR,OAAO;AAAA,MACT,GAAG,MAAM,GAAG;AAAA,IACd;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193671,
+      "end": 1783196193671,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193671,
+      "end": 1783196193671,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196193671,
+      "end": 1783196193671,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193671,
+      "end": 1783196193671,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193671,
+      "end": 1783196193671,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193671,
+      "end": 1783196193671,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193671,
+      "end": 1783196193671,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193671,
+      "end": 1783196193671,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193671,
+      "end": 1783196193671,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193672,
+      "end": 1783196193672,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193672,
+      "end": 1783196193672,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193672,
+      "end": 1783196193672,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193672,
+      "end": 1783196193672,
+      "order": "normal"
+    }
+  ]
+}

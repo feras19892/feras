@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, type Ref } from 'vue';
+import { onMounted, onUnmounted, ref, type Ref } from 'vue';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import type { Organelle3D } from '../../types/biology.types';
@@ -21,11 +21,13 @@ export interface Biology3DApi {
   focusOn: (target: THREE.Vector3, distance?: number) => void;
   resetCamera: () => void;
   resize: () => void;
+  error: Ref<string | null>;
 }
 
 export function useBiology3D(
   containerRef: Ref<HTMLDivElement | null>,
-  organelles: Organelle3D[]
+  organelles: Organelle3D[],
+  onRender?: () => void
 ): Biology3DApi {
   let renderer: THREE.WebGLRenderer | null = null;
   let scene: THREE.Scene | null = null;
@@ -34,6 +36,7 @@ export function useBiology3D(
   let animationId = 0;
   let meshMap = new Map<string, OrganelleMesh>();
   let currentExplode = 0;
+  const error = ref<string | null>(null);
 
   const defaultCameraPosition = new THREE.Vector3(0, 0, 14);
   const defaultLookAt = new THREE.Vector3(0, 0, 0);
@@ -67,7 +70,12 @@ export function useBiology3D(
     camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
     camera.position.set(0, 0, 14);
 
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    } catch {
+      error.value = 'WebGL is not supported or has been disabled in this browser.';
+      return;
+    }
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     containerRef.value.appendChild(renderer.domElement);
@@ -87,6 +95,7 @@ export function useBiology3D(
       animationId = requestAnimationFrame(animate);
       lerpCamera();
       controls?.update();
+      onRender?.();
       renderer?.render(scene!, camera!);
     };
     animate();
@@ -150,5 +159,6 @@ export function useBiology3D(
       resetCamera(defaultCameraPosition, defaultLookAt, controls, targets);
     },
     resize,
+    error,
   };
 }

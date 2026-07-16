@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/boyles-law/panels/BoylesLawReferencePanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nconst GAS_LAWS = [\n  { name: 'بويل', formula: 'PV = const', color: '#22c55e' },\n  { name: 'شارل', formula: 'V/T = const', color: '#3b82f6' },\n  { name: 'جاي-لوساك', formula: 'P/T = const', color: '#f59e0b' },\n]\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <div class=\"ref-title\">📊 قوانين الغازات</div>\n    <div class=\"ref-table\">\n      <div class=\"ref-header\">\n        <span>القانون</span>\n        <span>المعادلة</span>\n      </div>\n      <div v-for=\"ref in GAS_LAWS\" :key=\"ref.name\" class=\"ref-row\">\n        <span :style=\"{ color: ref.color }\">{{ ref.name }}</span>\n        <span>{{ ref.formula }}</span>\n      </div>\n    </div>\n    <div class=\"ref-note\">\n      💡 جميعها حالات خاصة لقانون الغاز المثالي PV = nRT.\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { padding: 1rem; display: flex; flex-direction: column; gap: .5rem; }\n.ref-title { font-size: .9rem; font-weight: 700; color: #5B8DB8; text-align: center; padding-bottom: .3rem; border-bottom: 1px solid #1e2530; }\n.ref-table { display: flex; flex-direction: column; gap: .25rem; }\n.ref-header { display: flex; justify-content: space-between; padding: .4rem .6rem; background: #1E2530; border-radius: 4px; font-weight: 700; font-size: .8rem; color: #94a3b8; }\n.ref-row { display: flex; justify-content: space-between; padding: .35rem .6rem; border-bottom: 1px solid #1e2530; font-size: .8rem; }\n.ref-row:last-child { border-bottom: none; }\n.ref-note { font-size: .75rem; color: #64748b; margin-top: .5rem; }\n</style>\n",
+      "start": 1783196192521,
+      "end": 1783196192899,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196192899,
+      "end": 1783196192899,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196192899,
+      "end": 1783196192899,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196192899,
+      "end": 1783196192899,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196192899,
+      "end": 1783196192900,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/boyles-law/panels/BoylesLawReferencePanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/boyles-law/panels/BoylesLawReferencePanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/boyles-law/panels/BoylesLawReferencePanel.vue?vue&type=style&index=0&scoped=32b98d61&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-32b98d61\"]]);\n",
+      "start": 1783196192900,
+      "end": 1783196193021,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193021,
+      "end": 1783196193021,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193021,
+      "end": 1783196193021,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193021,
+      "end": 1783196193021,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193021,
+      "end": 1783196193021,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193021,
+      "end": 1783196193021,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193021,
+      "end": 1783196193021,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193022,
+      "end": 1783196193022,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193022,
+      "end": 1783196193022,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193022,
+      "end": 1783196193023,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193023,
+      "end": 1783196193023,
+      "order": "normal"
+    }
+  ]
+}

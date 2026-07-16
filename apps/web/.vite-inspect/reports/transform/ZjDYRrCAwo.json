@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/polarization/usePolarizationTrials.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { ref } from 'vue'\n\nexport interface PolarizationTrial {\n  id: number\n  polarizerAngle: number\n  analyzerAngle: number\n  I0: number\n  outputIntensity: number\n  relativeAngle: number\n}\n\nexport interface TrialState {\n  trials: PolarizationTrial[]\n  nextId: number\n}\n\nconst SAVE_KEY = 'polarization:trials:v1'\n\nexport function usePolarizationTrials(\n  params: { value: { polarizerAngle: number; analyzerAngle: number; I0: number } },\n  outputIntensity: { value: number },\n  relativeAngle: { value: number }\n) {\n  const trials = ref<PolarizationTrial[]>([])\n  const nextId = ref(1)\n  const undoStack = ref<TrialState[]>([])\n  const redoStack = ref<TrialState[]>([])\n\n  function autoSave() {\n    try {\n      localStorage.setItem(SAVE_KEY, JSON.stringify({\n        trials: trials.value, nextId: nextId.value,\n        undoStack: undoStack.value.slice(-10), redoStack: redoStack.value.slice(-10),\n      }))\n    } catch { /* ignore */ }\n  }\n  function autoLoad() {\n    try {\n      const raw = localStorage.getItem(SAVE_KEY)\n      if (!raw) return\n      const parsed = JSON.parse(raw)\n      if (Array.isArray(parsed.trials)) {\n        trials.value = parsed.trials\n        nextId.value = typeof parsed.nextId === 'number' ? parsed.nextId : (trials.value.length > 0 ? Math.max(...trials.value.map(t => t.id)) + 1 : 1)\n        if (Array.isArray(parsed.undoStack)) undoStack.value = parsed.undoStack\n        if (Array.isArray(parsed.redoStack)) redoStack.value = parsed.redoStack\n      }\n    } catch { /* ignore */ }\n  }\n  function pushState() {\n    undoStack.value.push({ trials: [...trials.value], nextId: nextId.value })\n    redoStack.value = []\n    if (undoStack.value.length > 50) undoStack.value.shift()\n    autoSave()\n  }\n  function recordTrial() {\n    pushState()\n    const { polarizerAngle, analyzerAngle, I0 } = params.value\n    trials.value.push({\n      id: nextId.value++, polarizerAngle, analyzerAngle, I0,\n      outputIntensity: outputIntensity.value, relativeAngle: relativeAngle.value,\n    })\n  }\n  function undo() {\n    if (undoStack.value.length === 0) return\n    const current = { trials: [...trials.value], nextId: nextId.value }\n    redoStack.value.push(current)\n    const prev = undoStack.value.pop()!\n    trials.value = prev.trials; nextId.value = prev.nextId\n  }\n  function redo() {\n    if (redoStack.value.length === 0) return\n    const current = { trials: [...trials.value], nextId: nextId.value }\n    undoStack.value.push(current)\n    const next = redoStack.value.pop()!\n    trials.value = next.trials; nextId.value = next.nextId\n  }\n  function canUndo() { return undoStack.value.length > 0 }\n  function canRedo() { return redoStack.value.length > 0 }\n  function removeTrial(id: number) { pushState(); trials.value = trials.value.filter(t => t.id !== id); autoSave() }\n  function clearTrials() { pushState(); trials.value = []; nextId.value = 1; autoSave() }\n  function exportCsv(): string {\n    const headers = ['Trial', 'theta1(deg)', 'theta2(deg)', 'I0', 'I_out', 'deltaTheta']\n    const rows = trials.value.map(t =>\n      `${t.id},${t.polarizerAngle},${t.analyzerAngle},${t.I0.toFixed(2)},${t.outputIntensity.toFixed(3)},${t.relativeAngle.toFixed(1)}`\n    )\n    return [headers.join(','), ...rows].join('\\n')\n  }\n  return { trials, recordTrial, undo, redo, canUndo, canRedo, removeTrial, clearTrials, exportCsv, autoLoad }\n}\n",
+      "start": 1783196194668,
+      "end": 1783196194789,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194789,
+      "end": 1783196194789,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { ref } from \"vue\";\nconst SAVE_KEY = \"polarization:trials:v1\";\nexport function usePolarizationTrials(params, outputIntensity, relativeAngle) {\n  const trials = ref([]);\n  const nextId = ref(1);\n  const undoStack = ref([]);\n  const redoStack = ref([]);\n  function autoSave() {\n    try {\n      localStorage.setItem(SAVE_KEY, JSON.stringify({\n        trials: trials.value,\n        nextId: nextId.value,\n        undoStack: undoStack.value.slice(-10),\n        redoStack: redoStack.value.slice(-10)\n      }));\n    } catch {\n    }\n  }\n  function autoLoad() {\n    try {\n      const raw = localStorage.getItem(SAVE_KEY);\n      if (!raw) return;\n      const parsed = JSON.parse(raw);\n      if (Array.isArray(parsed.trials)) {\n        trials.value = parsed.trials;\n        nextId.value = typeof parsed.nextId === \"number\" ? parsed.nextId : trials.value.length > 0 ? Math.max(...trials.value.map((t) => t.id)) + 1 : 1;\n        if (Array.isArray(parsed.undoStack)) undoStack.value = parsed.undoStack;\n        if (Array.isArray(parsed.redoStack)) redoStack.value = parsed.redoStack;\n      }\n    } catch {\n    }\n  }\n  function pushState() {\n    undoStack.value.push({ trials: [...trials.value], nextId: nextId.value });\n    redoStack.value = [];\n    if (undoStack.value.length > 50) undoStack.value.shift();\n    autoSave();\n  }\n  function recordTrial() {\n    pushState();\n    const { polarizerAngle, analyzerAngle, I0 } = params.value;\n    trials.value.push({\n      id: nextId.value++,\n      polarizerAngle,\n      analyzerAngle,\n      I0,\n      outputIntensity: outputIntensity.value,\n      relativeAngle: relativeAngle.value\n    });\n  }\n  function undo() {\n    if (undoStack.value.length === 0) return;\n    const current = { trials: [...trials.value], nextId: nextId.value };\n    redoStack.value.push(current);\n    const prev = undoStack.value.pop();\n    trials.value = prev.trials;\n    nextId.value = prev.nextId;\n  }\n  function redo() {\n    if (redoStack.value.length === 0) return;\n    const current = { trials: [...trials.value], nextId: nextId.value };\n    undoStack.value.push(current);\n    const next = redoStack.value.pop();\n    trials.value = next.trials;\n    nextId.value = next.nextId;\n  }\n  function canUndo() {\n    return undoStack.value.length > 0;\n  }\n  function canRedo() {\n    return redoStack.value.length > 0;\n  }\n  function removeTrial(id) {\n    pushState();\n    trials.value = trials.value.filter((t) => t.id !== id);\n    autoSave();\n  }\n  function clearTrials() {\n    pushState();\n    trials.value = [];\n    nextId.value = 1;\n    autoSave();\n  }\n  function exportCsv() {\n    const headers = [\"Trial\", \"theta1(deg)\", \"theta2(deg)\", \"I0\", \"I_out\", \"deltaTheta\"];\n    const rows = trials.value.map(\n      (t) => `${t.id},${t.polarizerAngle},${t.analyzerAngle},${t.I0.toFixed(2)},${t.outputIntensity.toFixed(3)},${t.relativeAngle.toFixed(1)}`\n    );\n    return [headers.join(\",\"), ...rows].join(\"\\n\");\n  }\n  return { trials, recordTrial, undo, redo, canUndo, canRedo, removeTrial, clearTrials, exportCsv, autoLoad };\n}\n",
+      "start": 1783196194789,
+      "end": 1783196194976,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/polarization/usePolarizationTrials.ts"
+        ],
+        "sourcesContent": [
+          "import { ref } from 'vue'\n\nexport interface PolarizationTrial {\n  id: number\n  polarizerAngle: number\n  analyzerAngle: number\n  I0: number\n  outputIntensity: number\n  relativeAngle: number\n}\n\nexport interface TrialState {\n  trials: PolarizationTrial[]\n  nextId: number\n}\n\nconst SAVE_KEY = 'polarization:trials:v1'\n\nexport function usePolarizationTrials(\n  params: { value: { polarizerAngle: number; analyzerAngle: number; I0: number } },\n  outputIntensity: { value: number },\n  relativeAngle: { value: number }\n) {\n  const trials = ref<PolarizationTrial[]>([])\n  const nextId = ref(1)\n  const undoStack = ref<TrialState[]>([])\n  const redoStack = ref<TrialState[]>([])\n\n  function autoSave() {\n    try {\n      localStorage.setItem(SAVE_KEY, JSON.stringify({\n        trials: trials.value, nextId: nextId.value,\n        undoStack: undoStack.value.slice(-10), redoStack: redoStack.value.slice(-10),\n      }))\n    } catch { /* ignore */ }\n  }\n  function autoLoad() {\n    try {\n      const raw = localStorage.getItem(SAVE_KEY)\n      if (!raw) return\n      const parsed = JSON.parse(raw)\n      if (Array.isArray(parsed.trials)) {\n        trials.value = parsed.trials\n        nextId.value = typeof parsed.nextId === 'number' ? parsed.nextId : (trials.value.length > 0 ? Math.max(...trials.value.map(t => t.id)) + 1 : 1)\n        if (Array.isArray(parsed.undoStack)) undoStack.value = parsed.undoStack\n        if (Array.isArray(parsed.redoStack)) redoStack.value = parsed.redoStack\n      }\n    } catch { /* ignore */ }\n  }\n  function pushState() {\n    undoStack.value.push({ trials: [...trials.value], nextId: nextId.value })\n    redoStack.value = []\n    if (undoStack.value.length > 50) undoStack.value.shift()\n    autoSave()\n  }\n  function recordTrial() {\n    pushState()\n    const { polarizerAngle, analyzerAngle, I0 } = params.value\n    trials.value.push({\n      id: nextId.value++, polarizerAngle, analyzerAngle, I0,\n      outputIntensity: outputIntensity.value, relativeAngle: relativeAngle.value,\n    })\n  }\n  function undo() {\n    if (undoStack.value.length === 0) return\n    const current = { trials: [...trials.value], nextId: nextId.value }\n    redoStack.value.push(current)\n    const prev = undoStack.value.pop()!\n    trials.value = prev.trials; nextId.value = prev.nextId\n  }\n  function redo() {\n    if (redoStack.value.length === 0) return\n    const current = { trials: [...trials.value], nextId: nextId.value }\n    undoStack.value.push(current)\n    const next = redoStack.value.pop()!\n    trials.value = next.trials; nextId.value = next.nextId\n  }\n  function canUndo() { return undoStack.value.length > 0 }\n  function canRedo() { return redoStack.value.length > 0 }\n  function removeTrial(id: number) { pushState(); trials.value = trials.value.filter(t => t.id !== id); autoSave() }\n  function clearTrials() { pushState(); trials.value = []; nextId.value = 1; autoSave() }\n  function exportCsv(): string {\n    const headers = ['Trial', 'theta1(deg)', 'theta2(deg)', 'I0', 'I_out', 'deltaTheta']\n    const rows = trials.value.map(t =>\n      `${t.id},${t.polarizerAngle},${t.analyzerAngle},${t.I0.toFixed(2)},${t.outputIntensity.toFixed(3)},${t.relativeAngle.toFixed(1)}`\n    )\n    return [headers.join(','), ...rows].join('\\n')\n  }\n  return { trials, recordTrial, undo, redo, canUndo, canRedo, removeTrial, clearTrials, exportCsv, autoLoad }\n}\n"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194976,
+      "end": 1783196194976,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194976,
+      "end": 1783196194976,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194976,
+      "end": 1783196194976,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194976,
+      "end": 1783196194976,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194976,
+      "end": 1783196194976,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194976,
+      "end": 1783196194976,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194976,
+      "end": 1783196194976,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194976,
+      "end": 1783196194976,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194976,
+      "end": 1783196194976,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194976,
+      "end": 1783196194976,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194976,
+      "end": 1783196194976,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194976,
+      "end": 1783196194976,
+      "order": "normal"
+    }
+  ]
+}

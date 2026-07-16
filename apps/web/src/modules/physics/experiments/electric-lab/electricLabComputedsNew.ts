@@ -51,7 +51,9 @@ export function createNewComputeds(
     return { V: d.V, I: d.I, Req: d.Req, V1: d.Vs[0] ?? 0, V2: d.Vs[1] ?? 0, V3: d.Vs[2] ?? 0 }
   })
 
-  const isCapacitorsCombo = computed(() => activePresetId.value === 'capacitors-combination')
+  const isCapacitorsSeries = computed(() => activePresetId.value === 'capacitors-series')
+  const isCapacitorsParallel = computed(() => activePresetId.value === 'capacitors-parallel')
+  const isCapacitorsCombo = computed(() => isCapacitorsSeries.value || isCapacitorsParallel.value)
   const capacitorsComboData = computed(() => {
     if (!isCapacitorsCombo.value) return null
     const sw = components.find(c => c.type === 'switch')
@@ -62,9 +64,9 @@ export function createNewComputeds(
     if (!batt || !res || caps.length < 2) return null
     const V0 = batt.value, R = res.value
     const C1 = caps[0].value * 1e-6, C2 = caps[1].value * 1e-6
-    const Ceq = C1 * C2 / (C1 + C2)
+    const Ceq = isCapacitorsSeries.value ? (C1 * C2) / (C1 + C2) : C1 + C2
     const tau = R * Ceq
-    return { V0, R, C1, C2, Ceq, tau }
+    return { V0, R, C1, C2, Ceq, tau, mode: isCapacitorsSeries.value ? 'series' : 'parallel' }
   })
   const capacitorsComboReading = computed(() => {
     if (!capacitorsComboData.value || !running.value) return { Ceq: 0, tau: 0, C1: 0, C2: 0 }
@@ -185,7 +187,7 @@ export function createNewComputeds(
   return {
     isInternalResistance, internalResistanceData, internalResistanceReading,
     isSeries, seriesData, seriesReading,
-    isCapacitorsCombo, capacitorsComboData, capacitorsComboReading,
+    isCapacitorsSeries, isCapacitorsParallel, isCapacitorsCombo, capacitorsComboData, capacitorsComboReading,
     isPotentiometer, potentiometerData, potentiometerReading,
     isNonOhmic, nonOhmicData, nonOhmicReading,
     isMaxPower, maxPowerData, maxPowerReading,

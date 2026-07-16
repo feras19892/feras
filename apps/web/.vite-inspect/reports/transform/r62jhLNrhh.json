@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/boyles-law/useBoylesLawCalculations.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "export function boyleProduct(p: number, v: number): number { return p * v }\n\nexport function pressureAtVolume(p0: number, v0: number, v: number): number {\n  if (v === 0) return 0\n  return (p0 * v0) / v\n}\n\nexport function volumeAtPressure(p0: number, v0: number, p: number): number {\n  if (p === 0) return 0\n  return (p0 * v0) / p\n}\n",
+      "start": 1783196194685,
+      "end": 1783196194792,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194792,
+      "end": 1783196194792,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "export function boyleProduct(p, v) {\n  return p * v;\n}\nexport function pressureAtVolume(p0, v0, v) {\n  if (v === 0) return 0;\n  return p0 * v0 / v;\n}\nexport function volumeAtPressure(p0, v0, p) {\n  if (p === 0) return 0;\n  return p0 * v0 / p;\n}\n",
+      "start": 1783196194792,
+      "end": 1783196194970,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/boyles-law/useBoylesLawCalculations.ts"
+        ],
+        "sourcesContent": [
+          "export function boyleProduct(p: number, v: number): number { return p * v }\n\nexport function pressureAtVolume(p0: number, v0: number, v: number): number {\n  if (v === 0) return 0\n  return (p0 * v0) / v\n}\n\nexport function volumeAtPressure(p0: number, v0: number, p: number): number {\n  if (p === 0) return 0\n  return (p0 * v0) / p\n}\n"
+        ],
+        "mappings": "AAAO,gBAAS,aAAa,GAAW,GAAmB;AAAE,SAAO,IAAI;AAAE;AAEnE,gBAAS,iBAAiB,IAAY,IAAY,GAAmB;AAC1E,MAAI,MAAM,EAAG,QAAO;AACpB,SAAQ,KAAK,KAAM;AACrB;AAEO,gBAAS,iBAAiB,IAAY,IAAY,GAAmB;AAC1E,MAAI,MAAM,EAAG,QAAO;AACpB,SAAQ,KAAK,KAAM;AACrB;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194971,
+      "end": 1783196194971,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/ChemicalCard.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, createElementVNode as _createElementVNode, unref as _unref, toDisplayString as _toDisplayString, normalizeClass as _normalizeClass } from \"vue\"\n\nconst _hoisted_1 = { class: \"chem-visual\" }\nconst _hoisted_2 = {\n  viewBox: \"0 0 48 64\",\n  class: \"chem-svg\",\n  xmlns: \"http://www.w3.org/2000/svg\"\n}\nconst _hoisted_3 = {\n  key: 0,\n  d: \"M14 0 L14 20 L4 44 L4 60 Q4 64 8 64 L40 64 Q44 64 44 60 L44 44 L34 20 L34 0\",\n  fill: \"none\",\n  stroke: \"#cbd5e1\",\n  \"stroke-width\": \"2\"\n}\nconst _hoisted_4 = {\n  key: 1,\n  x: \"8\",\n  y: \"8\",\n  width: \"32\",\n  height: \"48\",\n  rx: \"4\",\n  fill: \"none\",\n  stroke: \"#cbd5e1\",\n  \"stroke-width\": \"2\"\n}\nconst _hoisted_5 = {\n  key: 2,\n  x: \"6\",\n  y: \"8\",\n  width: \"36\",\n  height: \"48\",\n  rx: \"3\",\n  fill: \"none\",\n  stroke: \"#cbd5e1\",\n  \"stroke-width\": \"2\"\n}\nconst _hoisted_6 = [\"fill\", \"fill-opacity\"]\nconst _hoisted_7 = [\"fill\", \"fill-opacity\"]\nconst _hoisted_8 = [\"fill\", \"fill-opacity\"]\nconst _hoisted_9 = [\"fill\"]\nconst _hoisted_10 = { class: \"chem-name\" }\nconst _hoisted_11 = { class: \"chem-formula\" }\nconst _hoisted_12 = { class: \"chem-state\" }\n\nimport type { Chemical } from '../../../composables/chemistry/useChemistryLab';\nimport { useChemicalLocale } from '../../../composables/chemistry/useChemicalLocale';\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ChemicalCard',\n  props: {\n    chem: {},\n    selected: { type: Boolean },\n    clickable: { type: Boolean }\n  },\n  emits: [\"click\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst props = __props;\nconst emit = __emit;\nconst { getName } = useChemicalLocale();\n\nfunction hazardDot() {\n  const map = { safe: '#22c55e', caution: '#eab308', warning: '#f97316', danger: '#ef4444' };\n  return map[props.chem.hazardLevel];\n}\nfunction svgIcon() {\n  switch (props.chem.physicalState) {\n    case 'solid': return 'vial-solid';\n    case 'gas': return 'cylinder-gas';\n    default: return 'flask-liquid';\n  }\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    class: _normalizeClass([\"chem-card\", { selected: __props.selected, clickable: __props.clickable }]),\n    onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('click')))\n  }, [\n    _createElementVNode(\"div\", _hoisted_1, [\n      (_openBlock(), _createElementBlock(\"svg\", _hoisted_2, [\n        (svgIcon() === 'flask-liquid')\n          ? (_openBlock(), _createElementBlock(\"path\", _hoisted_3))\n          : (svgIcon() === 'vial-solid')\n            ? (_openBlock(), _createElementBlock(\"rect\", _hoisted_4))\n            : (_openBlock(), _createElementBlock(\"rect\", _hoisted_5)),\n        (svgIcon() === 'flask-liquid')\n          ? (_openBlock(), _createElementBlock(\"path\", {\n              key: 3,\n              d: \"M7 44 L41 44 L41 60 Q41 63 38 63 L10 63 Q7 63 7 60 Z\",\n              fill: __props.chem.color,\n              \"fill-opacity\": __props.chem.opacity,\n              stroke: \"none\"\n            }, null, 8, _hoisted_6))\n          : (svgIcon() === 'vial-solid')\n            ? (_openBlock(), _createElementBlock(\"rect\", {\n                key: 4,\n                x: \"10\",\n                y: \"24\",\n                width: \"28\",\n                height: \"30\",\n                rx: \"2\",\n                fill: __props.chem.color,\n                \"fill-opacity\": __props.chem.opacity,\n                stroke: \"none\"\n              }, null, 8, _hoisted_7))\n            : (_openBlock(), _createElementBlock(\"rect\", {\n                key: 5,\n                x: \"8\",\n                y: \"18\",\n                width: \"32\",\n                height: \"36\",\n                rx: \"2\",\n                fill: __props.chem.color,\n                \"fill-opacity\": __props.chem.opacity,\n                stroke: \"none\"\n              }, null, 8, _hoisted_8)),\n        _createElementVNode(\"circle\", {\n          cx: \"42\",\n          cy: \"6\",\n          r: \"3\",\n          fill: hazardDot(),\n          stroke: \"#fff\",\n          \"stroke-width\": \"1\"\n        }, null, 8, _hoisted_9)\n      ]))\n    ]),\n    _createElementVNode(\"span\", _hoisted_10, _toDisplayString(_unref(getName)(__props.chem.id)), 1),\n    _createElementVNode(\"span\", _hoisted_11, _toDisplayString(__props.chem.formula), 1),\n    _createElementVNode(\"span\", _hoisted_12, _toDisplayString(__props.chem.physicalState === 'liquid' ? 'L' : __props.chem.physicalState === 'solid' ? 'S' : 'G'), 1)\n  ], 2))\n}\n}\n\n})",
+      "start": 1783196194865,
+      "end": 1783196194865
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194865,
+      "end": 1783196194865,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock, createElementVNode as _createElementVNode, unref as _unref, toDisplayString as _toDisplayString, normalizeClass as _normalizeClass } from \"vue\";\nconst _hoisted_1 = { class: \"chem-visual\" };\nconst _hoisted_2 = {\n  viewBox: \"0 0 48 64\",\n  class: \"chem-svg\",\n  xmlns: \"http://www.w3.org/2000/svg\"\n};\nconst _hoisted_3 = {\n  key: 0,\n  d: \"M14 0 L14 20 L4 44 L4 60 Q4 64 8 64 L40 64 Q44 64 44 60 L44 44 L34 20 L34 0\",\n  fill: \"none\",\n  stroke: \"#cbd5e1\",\n  \"stroke-width\": \"2\"\n};\nconst _hoisted_4 = {\n  key: 1,\n  x: \"8\",\n  y: \"8\",\n  width: \"32\",\n  height: \"48\",\n  rx: \"4\",\n  fill: \"none\",\n  stroke: \"#cbd5e1\",\n  \"stroke-width\": \"2\"\n};\nconst _hoisted_5 = {\n  key: 2,\n  x: \"6\",\n  y: \"8\",\n  width: \"36\",\n  height: \"48\",\n  rx: \"3\",\n  fill: \"none\",\n  stroke: \"#cbd5e1\",\n  \"stroke-width\": \"2\"\n};\nconst _hoisted_6 = [\"fill\", \"fill-opacity\"];\nconst _hoisted_7 = [\"fill\", \"fill-opacity\"];\nconst _hoisted_8 = [\"fill\", \"fill-opacity\"];\nconst _hoisted_9 = [\"fill\"];\nconst _hoisted_10 = { class: \"chem-name\" };\nconst _hoisted_11 = { class: \"chem-formula\" };\nconst _hoisted_12 = { class: \"chem-state\" };\nimport { useChemicalLocale } from \"../../../composables/chemistry/useChemicalLocale\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"ChemicalCard\",\n  props: {\n    chem: {},\n    selected: { type: Boolean },\n    clickable: { type: Boolean }\n  },\n  emits: [\"click\"],\n  setup(__props, { emit: __emit }) {\n    const props = __props;\n    const emit = __emit;\n    const { getName } = useChemicalLocale();\n    function hazardDot() {\n      const map = { safe: \"#22c55e\", caution: \"#eab308\", warning: \"#f97316\", danger: \"#ef4444\" };\n      return map[props.chem.hazardLevel];\n    }\n    function svgIcon() {\n      switch (props.chem.physicalState) {\n        case \"solid\":\n          return \"vial-solid\";\n        case \"gas\":\n          return \"cylinder-gas\";\n        default:\n          return \"flask-liquid\";\n      }\n    }\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", {\n        class: _normalizeClass([\"chem-card\", { selected: __props.selected, clickable: __props.clickable }]),\n        onClick: _cache[0] || (_cache[0] = ($event) => emit(\"click\"))\n      }, [\n        _createElementVNode(\"div\", _hoisted_1, [\n          (_openBlock(), _createElementBlock(\"svg\", _hoisted_2, [\n            svgIcon() === \"flask-liquid\" ? (_openBlock(), _createElementBlock(\"path\", _hoisted_3)) : svgIcon() === \"vial-solid\" ? (_openBlock(), _createElementBlock(\"rect\", _hoisted_4)) : (_openBlock(), _createElementBlock(\"rect\", _hoisted_5)),\n            svgIcon() === \"flask-liquid\" ? (_openBlock(), _createElementBlock(\"path\", {\n              key: 3,\n              d: \"M7 44 L41 44 L41 60 Q41 63 38 63 L10 63 Q7 63 7 60 Z\",\n              fill: __props.chem.color,\n              \"fill-opacity\": __props.chem.opacity,\n              stroke: \"none\"\n            }, null, 8, _hoisted_6)) : svgIcon() === \"vial-solid\" ? (_openBlock(), _createElementBlock(\"rect\", {\n              key: 4,\n              x: \"10\",\n              y: \"24\",\n              width: \"28\",\n              height: \"30\",\n              rx: \"2\",\n              fill: __props.chem.color,\n              \"fill-opacity\": __props.chem.opacity,\n              stroke: \"none\"\n            }, null, 8, _hoisted_7)) : (_openBlock(), _createElementBlock(\"rect\", {\n              key: 5,\n              x: \"8\",\n              y: \"18\",\n              width: \"32\",\n              height: \"36\",\n              rx: \"2\",\n              fill: __props.chem.color,\n              \"fill-opacity\": __props.chem.opacity,\n              stroke: \"none\"\n            }, null, 8, _hoisted_8)),\n            _createElementVNode(\"circle\", {\n              cx: \"42\",\n              cy: \"6\",\n              r: \"3\",\n              fill: hazardDot(),\n              stroke: \"#fff\",\n              \"stroke-width\": \"1\"\n            }, null, 8, _hoisted_9)\n          ]))\n        ]),\n        _createElementVNode(\"span\", _hoisted_10, _toDisplayString(_unref(getName)(__props.chem.id)), 1),\n        _createElementVNode(\"span\", _hoisted_11, _toDisplayString(__props.chem.formula), 1),\n        _createElementVNode(\"span\", _hoisted_12, _toDisplayString(__props.chem.physicalState === \"liquid\" ? \"L\" : __props.chem.physicalState === \"solid\" ? \"S\" : \"G\"), 1)\n      ], 2);\n    };\n  }\n});\n",
+      "start": 1783196194865,
+      "end": 1783196194974,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/ChemicalCard.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, createElementVNode as _createElementVNode, unref as _unref, toDisplayString as _toDisplayString, normalizeClass as _normalizeClass } from \"vue\"\n\nconst _hoisted_1 = { class: \"chem-visual\" }\nconst _hoisted_2 = {\n  viewBox: \"0 0 48 64\",\n  class: \"chem-svg\",\n  xmlns: \"http://www.w3.org/2000/svg\"\n}\nconst _hoisted_3 = {\n  key: 0,\n  d: \"M14 0 L14 20 L4 44 L4 60 Q4 64 8 64 L40 64 Q44 64 44 60 L44 44 L34 20 L34 0\",\n  fill: \"none\",\n  stroke: \"#cbd5e1\",\n  \"stroke-width\": \"2\"\n}\nconst _hoisted_4 = {\n  key: 1,\n  x: \"8\",\n  y: \"8\",\n  width: \"32\",\n  height: \"48\",\n  rx: \"4\",\n  fill: \"none\",\n  stroke: \"#cbd5e1\",\n  \"stroke-width\": \"2\"\n}\nconst _hoisted_5 = {\n  key: 2,\n  x: \"6\",\n  y: \"8\",\n  width: \"36\",\n  height: \"48\",\n  rx: \"3\",\n  fill: \"none\",\n  stroke: \"#cbd5e1\",\n  \"stroke-width\": \"2\"\n}\nconst _hoisted_6 = [\"fill\", \"fill-opacity\"]\nconst _hoisted_7 = [\"fill\", \"fill-opacity\"]\nconst _hoisted_8 = [\"fill\", \"fill-opacity\"]\nconst _hoisted_9 = [\"fill\"]\nconst _hoisted_10 = { class: \"chem-name\" }\nconst _hoisted_11 = { class: \"chem-formula\" }\nconst _hoisted_12 = { class: \"chem-state\" }\n\nimport type { Chemical } from '../../../composables/chemistry/useChemistryLab';\nimport { useChemicalLocale } from '../../../composables/chemistry/useChemicalLocale';\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ChemicalCard',\n  props: {\n    chem: {},\n    selected: { type: Boolean },\n    clickable: { type: Boolean }\n  },\n  emits: [\"click\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst props = __props;\nconst emit = __emit;\nconst { getName } = useChemicalLocale();\n\nfunction hazardDot() {\n  const map = { safe: '#22c55e', caution: '#eab308', warning: '#f97316', danger: '#ef4444' };\n  return map[props.chem.hazardLevel];\n}\nfunction svgIcon() {\n  switch (props.chem.physicalState) {\n    case 'solid': return 'vial-solid';\n    case 'gas': return 'cylinder-gas';\n    default: return 'flask-liquid';\n  }\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", {\n    class: _normalizeClass([\"chem-card\", { selected: __props.selected, clickable: __props.clickable }]),\n    onClick: _cache[0] || (_cache[0] = ($event: any) => (emit('click')))\n  }, [\n    _createElementVNode(\"div\", _hoisted_1, [\n      (_openBlock(), _createElementBlock(\"svg\", _hoisted_2, [\n        (svgIcon() === 'flask-liquid')\n          ? (_openBlock(), _createElementBlock(\"path\", _hoisted_3))\n          : (svgIcon() === 'vial-solid')\n            ? (_openBlock(), _createElementBlock(\"rect\", _hoisted_4))\n            : (_openBlock(), _createElementBlock(\"rect\", _hoisted_5)),\n        (svgIcon() === 'flask-liquid')\n          ? (_openBlock(), _createElementBlock(\"path\", {\n              key: 3,\n              d: \"M7 44 L41 44 L41 60 Q41 63 38 63 L10 63 Q7 63 7 60 Z\",\n              fill: __props.chem.color,\n              \"fill-opacity\": __props.chem.opacity,\n              stroke: \"none\"\n            }, null, 8, _hoisted_6))\n          : (svgIcon() === 'vial-solid')\n            ? (_openBlock(), _createElementBlock(\"rect\", {\n                key: 4,\n                x: \"10\",\n                y: \"24\",\n                width: \"28\",\n                height: \"30\",\n                rx: \"2\",\n                fill: __props.chem.color,\n                \"fill-opacity\": __props.chem.opacity,\n                stroke: \"none\"\n              }, null, 8, _hoisted_7))\n            : (_openBlock(), _createElementBlock(\"rect\", {\n                key: 5,\n                x: \"8\",\n                y: \"18\",\n                width: \"32\",\n                height: \"36\",\n                rx: \"2\",\n                fill: __props.chem.color,\n                \"fill-opacity\": __props.chem.opacity,\n                stroke: \"none\"\n              }, null, 8, _hoisted_8)),\n        _createElementVNode(\"circle\", {\n          cx: \"42\",\n          cy: \"6\",\n          r: \"3\",\n          fill: hazardDot(),\n          stroke: \"#fff\",\n          \"stroke-width\": \"1\"\n        }, null, 8, _hoisted_9)\n      ]))\n    ]),\n    _createElementVNode(\"span\", _hoisted_10, _toDisplayString(_unref(getName)(__props.chem.id)), 1),\n    _createElementVNode(\"span\", _hoisted_11, _toDisplayString(__props.chem.formula), 1),\n    _createElementVNode(\"span\", _hoisted_12, _toDisplayString(__props.chem.physicalState === 'liquid' ? 'L' : __props.chem.physicalState === 'solid' ? 'S' : 'G'), 1)\n  ], 2))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194974,
+      "end": 1783196194974,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194974,
+      "end": 1783196194974,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196194974,
+      "end": 1783196194974,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194975,
+      "end": 1783196194975,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194975,
+      "end": 1783196194975,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194975,
+      "end": 1783196194975,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194975,
+      "end": 1783196194975,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194975,
+      "end": 1783196194975,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194975,
+      "end": 1783196194975,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194975,
+      "end": 1783196194975,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194975,
+      "end": 1783196194975,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194975,
+      "end": 1783196194975,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194975,
+      "end": 1783196194975,
+      "order": "normal"
+    }
+  ]
+}

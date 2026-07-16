@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/pendulum/PendulumOverlayPanels.vue?vue&type=style&index=0&scoped=c2381809&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.panel-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 2rem; }\n.overlay-card { background: #1E2530; border: 1px solid #2D3645; border-radius: 10px; padding: 1rem; width: 90vw; max-width: 1200px; height: 85vh; display: flex; flex-direction: column; overflow: hidden; }\n.card-header { display: flex; justify-content: space-between; align-items: center; margin: 0 0 .3rem; flex-shrink: 0; }\n.card-header h4 { margin: 0; font-size: .82rem; color: #D1D7E0; font-weight: 700; }\n.pa-btn { background: transparent; border: 1px solid #2D3645; color: #8B95A5; border-radius: 4px; cursor: pointer; font-size: .7rem; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; padding: 0; }\n.pa-btn:hover { background: rgba(91,141,184,.15); color: #5B8DB8; }\n",
+      "start": 1783196194634,
+      "end": 1783196194634
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.panel-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 2rem; }\n.overlay-card { background: #1E2530; border: 1px solid #2D3645; border-radius: 10px; padding: 1rem; width: 90vw; max-width: 1200px; height: 85vh; display: flex; flex-direction: column; overflow: hidden; }\n.card-header { display: flex; justify-content: space-between; align-items: center; margin: 0 0 .3rem; flex-shrink: 0; }\n.card-header h4 { margin: 0; font-size: .82rem; color: #D1D7E0; font-weight: 700; }\n.pa-btn { background: transparent; border: 1px solid #2D3645; color: #8B95A5; border-radius: 4px; cursor: pointer; font-size: .7rem; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; padding: 0; }\n.pa-btn:hover { background: rgba(91,141,184,.15); color: #5B8DB8; }\n",
+      "start": 1783196194634,
+      "end": 1783196194634,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194634,
+      "end": 1783196194634,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194634,
+      "end": 1783196194634,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194634,
+      "end": 1783196194634,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.panel-overlay[data-v-c2381809] { position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 2rem;\n}\n.overlay-card[data-v-c2381809] { background: #1E2530; border: 1px solid #2D3645; border-radius: 10px; padding: 1rem; width: 90vw; max-width: 1200px; height: 85vh; display: flex; flex-direction: column; overflow: hidden;\n}\n.card-header[data-v-c2381809] { display: flex; justify-content: space-between; align-items: center; margin: 0 0 .3rem; flex-shrink: 0;\n}\n.card-header h4[data-v-c2381809] { margin: 0; font-size: .82rem; color: #D1D7E0; font-weight: 700;\n}\n.pa-btn[data-v-c2381809] { background: transparent; border: 1px solid #2D3645; color: #8B95A5; border-radius: 4px; cursor: pointer; font-size: .7rem; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; padding: 0;\n}\n.pa-btn[data-v-c2381809]:hover { background: rgba(91,141,184,.15); color: #5B8DB8;\n}\n",
+      "start": 1783196194634,
+      "end": 1783196194635,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194635,
+      "end": 1783196194635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196194635,
+      "end": 1783196194635,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194635,
+      "end": 1783196194635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194635,
+      "end": 1783196194635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194635,
+      "end": 1783196194635,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194635,
+      "end": 1783196194635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194635,
+      "end": 1783196194635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194635,
+      "end": 1783196194635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194635,
+      "end": 1783196194635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194635,
+      "end": 1783196194635,
+      "order": "normal"
+    }
+  ]
+}

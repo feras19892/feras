@@ -91,11 +91,6 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./pages/biology/cell/index.vue'),
   },
   {
-    path: '/biology/cell/animal-cell',
-    name: 'BiologyAnimalCell',
-    component: () => import('./pages/biology/cell/animal-cell.vue'),
-  },
-  {
     path: '/biology/cell/dna-structure',
     name: 'BiologyDnaStructure',
     component: () => import('./pages/biology/cell/dna-structure.vue'),
@@ -114,6 +109,21 @@ const routes: RouteRecordRaw[] = [
     path: '/biology/cell/protein-synthesis',
     name: 'BiologyProteinSynthesis',
     component: () => import('./pages/biology/cell/protein-synthesis.vue'),
+  },
+  {
+    path: '/biology/cell/animal-cell',
+    name: 'BiologyAnimalCell',
+    component: () => import('./pages/biology/cell/animal-cell.vue'),
+  },
+  {
+    path: '/biology/anatomy',
+    name: 'BiologyAnatomy',
+    component: () => import('./pages/biology/anatomy/index.vue'),
+  },
+  {
+    path: '/biology/anatomy/heart',
+    name: 'BiologyHeart',
+    component: () => import('./pages/biology/anatomy/heart.vue'),
   },
 ];
 

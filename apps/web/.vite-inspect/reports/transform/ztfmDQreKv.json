@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/admin/AdminUserDetail.vue?vue&type=style&index=0&scoped=6c83f04a&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.user-detail { color: #e2e8f0; }\n.back-btn { background: none; border: none; color: #67e8f9; cursor: pointer; font-size: 0.9rem; margin-bottom: 1rem; padding: 0; }\n.loading { text-align: center; padding: 2rem; color: #64748b; }\n.error { background: rgba(239,68,68,0.1); color: #f87171; padding: 1rem; border-radius: 0.5rem; text-align: center; }\n\n.user-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); }\n.user-header h2 { margin: 0; font-size: 1.3rem; }\n.email { margin: 0.2rem 0; color: #94a3b8; font-size: 0.85rem; }\n.role-badge { padding: 0.15rem 0.5rem; border-radius: 0.3rem; font-size: 0.75rem; font-weight: 700; margin-left: 0.5rem; }\n.role-badge.admin { background: rgba(248,113,113,0.2); color: #f87171; }\n.role-badge.teacher { background: rgba(96,165,250,0.2); color: #60a5fa; }\n.role-badge.student { background: rgba(52,211,153,0.2); color: #34d399; }\n.banned-badge { background: rgba(239,68,68,0.2); color: #f87171; padding: 0.15rem 0.5rem; border-radius: 0.3rem; font-size: 0.75rem; }\n.actions { display: flex; gap: 0.5rem; }\n.actions button { padding: 0.4rem 0.8rem; border-radius: 0.4rem; border: none; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 0.8rem; }\n.btn-ban { background: rgba(239,68,68,0.15); color: #f87171; }\n.btn-unban { background: rgba(52,211,153,0.15); color: #34d399; }\n.btn-warn { background: rgba(251,191,36,0.15); color: #fbbf24; }\n.btn-impersonate { background: rgba(99,102,241,0.15); color: #a5b4fc; }\n.btn-reset { background: rgba(103,232,249,0.15); color: #67e8f9; }\n\n.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 200; }\n.modal { background: #111827; border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; padding: 1.5rem; width: 100%; max-width: 420px; }\n.modal h4 { margin: 0 0 1rem; color: #e2e8f0; }\n.modal input, .modal textarea, .modal select { width: 100%; padding: 0.5rem; border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; font-size: 0.85rem; margin-bottom: 0.5rem; box-sizing: border-box; }\n.modal-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }\n.modal-actions button { flex: 1; padding: 0.55rem; border-radius: 0.5rem; font-family: inherit; font-weight: 700; cursor: pointer; }\n.btn-cancel { background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); }\n.btn-submit { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none; }\n\n.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }\n.info-card { background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.6rem; padding: 1rem; }\n.info-card.full { grid-column: 1 / -1; }\n.info-card h4 { margin: 0 0 0.75rem; font-size: 0.95rem; color: #a5b4fc; }\n.info-card p { margin: 0.3rem 0; font-size: 0.85rem; }\n.info-card ul { margin: 0; padding-right: 1.2rem; font-size: 0.85rem; }\n.info-card li { margin-bottom: 0.3rem; }\n.info-card li.low { color: #94a3b8; }\n.info-card li.normal { color: #fbbf24; }\n.info-card li.high { color: #fb923c; }\n.info-card li.critical { color: #f87171; font-weight: 700; }\n.empty { color: #64748b; font-style: italic; }\n.note-input { display: flex; gap: 0.4rem; margin-top: 0.5rem; }\n.note-input input { flex: 1; padding: 0.4rem; border-radius: 0.35rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; }\n.note-input button { padding: 0.4rem 0.7rem; border-radius: 0.35rem; border: none; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; cursor: pointer; font-weight: 700; }\nsmall { color: #64748b; font-size: 0.75rem; }\n",
+      "start": 1783196193048,
+      "end": 1783196193048
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.user-detail { color: #e2e8f0; }\n.back-btn { background: none; border: none; color: #67e8f9; cursor: pointer; font-size: 0.9rem; margin-bottom: 1rem; padding: 0; }\n.loading { text-align: center; padding: 2rem; color: #64748b; }\n.error { background: rgba(239,68,68,0.1); color: #f87171; padding: 1rem; border-radius: 0.5rem; text-align: center; }\n\n.user-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); }\n.user-header h2 { margin: 0; font-size: 1.3rem; }\n.email { margin: 0.2rem 0; color: #94a3b8; font-size: 0.85rem; }\n.role-badge { padding: 0.15rem 0.5rem; border-radius: 0.3rem; font-size: 0.75rem; font-weight: 700; margin-left: 0.5rem; }\n.role-badge.admin { background: rgba(248,113,113,0.2); color: #f87171; }\n.role-badge.teacher { background: rgba(96,165,250,0.2); color: #60a5fa; }\n.role-badge.student { background: rgba(52,211,153,0.2); color: #34d399; }\n.banned-badge { background: rgba(239,68,68,0.2); color: #f87171; padding: 0.15rem 0.5rem; border-radius: 0.3rem; font-size: 0.75rem; }\n.actions { display: flex; gap: 0.5rem; }\n.actions button { padding: 0.4rem 0.8rem; border-radius: 0.4rem; border: none; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 0.8rem; }\n.btn-ban { background: rgba(239,68,68,0.15); color: #f87171; }\n.btn-unban { background: rgba(52,211,153,0.15); color: #34d399; }\n.btn-warn { background: rgba(251,191,36,0.15); color: #fbbf24; }\n.btn-impersonate { background: rgba(99,102,241,0.15); color: #a5b4fc; }\n.btn-reset { background: rgba(103,232,249,0.15); color: #67e8f9; }\n\n.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 200; }\n.modal { background: #111827; border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; padding: 1.5rem; width: 100%; max-width: 420px; }\n.modal h4 { margin: 0 0 1rem; color: #e2e8f0; }\n.modal input, .modal textarea, .modal select { width: 100%; padding: 0.5rem; border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; font-size: 0.85rem; margin-bottom: 0.5rem; box-sizing: border-box; }\n.modal-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }\n.modal-actions button { flex: 1; padding: 0.55rem; border-radius: 0.5rem; font-family: inherit; font-weight: 700; cursor: pointer; }\n.btn-cancel { background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); }\n.btn-submit { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none; }\n\n.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }\n.info-card { background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.6rem; padding: 1rem; }\n.info-card.full { grid-column: 1 / -1; }\n.info-card h4 { margin: 0 0 0.75rem; font-size: 0.95rem; color: #a5b4fc; }\n.info-card p { margin: 0.3rem 0; font-size: 0.85rem; }\n.info-card ul { margin: 0; padding-right: 1.2rem; font-size: 0.85rem; }\n.info-card li { margin-bottom: 0.3rem; }\n.info-card li.low { color: #94a3b8; }\n.info-card li.normal { color: #fbbf24; }\n.info-card li.high { color: #fb923c; }\n.info-card li.critical { color: #f87171; font-weight: 700; }\n.empty { color: #64748b; font-style: italic; }\n.note-input { display: flex; gap: 0.4rem; margin-top: 0.5rem; }\n.note-input input { flex: 1; padding: 0.4rem; border-radius: 0.35rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; }\n.note-input button { padding: 0.4rem 0.7rem; border-radius: 0.35rem; border: none; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; cursor: pointer; font-weight: 700; }\nsmall { color: #64748b; font-size: 0.75rem; }\n",
+      "start": 1783196193049,
+      "end": 1783196194190,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.user-detail[data-v-6c83f04a] { color: #e2e8f0;\n}\n.back-btn[data-v-6c83f04a] { background: none; border: none; color: #67e8f9; cursor: pointer; font-size: 0.9rem; margin-bottom: 1rem; padding: 0;\n}\n.loading[data-v-6c83f04a] { text-align: center; padding: 2rem; color: #64748b;\n}\n.error[data-v-6c83f04a] { background: rgba(239,68,68,0.1); color: #f87171; padding: 1rem; border-radius: 0.5rem; text-align: center;\n}\n.user-header[data-v-6c83f04a] { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.06);\n}\n.user-header h2[data-v-6c83f04a] { margin: 0; font-size: 1.3rem;\n}\n.email[data-v-6c83f04a] { margin: 0.2rem 0; color: #94a3b8; font-size: 0.85rem;\n}\n.role-badge[data-v-6c83f04a] { padding: 0.15rem 0.5rem; border-radius: 0.3rem; font-size: 0.75rem; font-weight: 700; margin-left: 0.5rem;\n}\n.role-badge.admin[data-v-6c83f04a] { background: rgba(248,113,113,0.2); color: #f87171;\n}\n.role-badge.teacher[data-v-6c83f04a] { background: rgba(96,165,250,0.2); color: #60a5fa;\n}\n.role-badge.student[data-v-6c83f04a] { background: rgba(52,211,153,0.2); color: #34d399;\n}\n.banned-badge[data-v-6c83f04a] { background: rgba(239,68,68,0.2); color: #f87171; padding: 0.15rem 0.5rem; border-radius: 0.3rem; font-size: 0.75rem;\n}\n.actions[data-v-6c83f04a] { display: flex; gap: 0.5rem;\n}\n.actions button[data-v-6c83f04a] { padding: 0.4rem 0.8rem; border-radius: 0.4rem; border: none; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 0.8rem;\n}\n.btn-ban[data-v-6c83f04a] { background: rgba(239,68,68,0.15); color: #f87171;\n}\n.btn-unban[data-v-6c83f04a] { background: rgba(52,211,153,0.15); color: #34d399;\n}\n.btn-warn[data-v-6c83f04a] { background: rgba(251,191,36,0.15); color: #fbbf24;\n}\n.btn-impersonate[data-v-6c83f04a] { background: rgba(99,102,241,0.15); color: #a5b4fc;\n}\n.btn-reset[data-v-6c83f04a] { background: rgba(103,232,249,0.15); color: #67e8f9;\n}\n.modal-overlay[data-v-6c83f04a] { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 200;\n}\n.modal[data-v-6c83f04a] { background: #111827; border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; padding: 1.5rem; width: 100%; max-width: 420px;\n}\n.modal h4[data-v-6c83f04a] { margin: 0 0 1rem; color: #e2e8f0;\n}\n.modal input[data-v-6c83f04a], .modal textarea[data-v-6c83f04a], .modal select[data-v-6c83f04a] { width: 100%; padding: 0.5rem; border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; font-size: 0.85rem; margin-bottom: 0.5rem; box-sizing: border-box;\n}\n.modal-actions[data-v-6c83f04a] { display: flex; gap: 0.5rem; margin-top: 1rem;\n}\n.modal-actions button[data-v-6c83f04a] { flex: 1; padding: 0.55rem; border-radius: 0.5rem; font-family: inherit; font-weight: 700; cursor: pointer;\n}\n.btn-cancel[data-v-6c83f04a] { background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1);\n}\n.btn-submit[data-v-6c83f04a] { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none;\n}\n.info-grid[data-v-6c83f04a] { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;\n}\n.info-card[data-v-6c83f04a] { background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.6rem; padding: 1rem;\n}\n.info-card.full[data-v-6c83f04a] { grid-column: 1 / -1;\n}\n.info-card h4[data-v-6c83f04a] { margin: 0 0 0.75rem; font-size: 0.95rem; color: #a5b4fc;\n}\n.info-card p[data-v-6c83f04a] { margin: 0.3rem 0; font-size: 0.85rem;\n}\n.info-card ul[data-v-6c83f04a] { margin: 0; padding-right: 1.2rem; font-size: 0.85rem;\n}\n.info-card li[data-v-6c83f04a] { margin-bottom: 0.3rem;\n}\n.info-card li.low[data-v-6c83f04a] { color: #94a3b8;\n}\n.info-card li.normal[data-v-6c83f04a] { color: #fbbf24;\n}\n.info-card li.high[data-v-6c83f04a] { color: #fb923c;\n}\n.info-card li.critical[data-v-6c83f04a] { color: #f87171; font-weight: 700;\n}\n.empty[data-v-6c83f04a] { color: #64748b; font-style: italic;\n}\n.note-input[data-v-6c83f04a] { display: flex; gap: 0.4rem; margin-top: 0.5rem;\n}\n.note-input input[data-v-6c83f04a] { flex: 1; padding: 0.4rem; border-radius: 0.35rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit;\n}\n.note-input button[data-v-6c83f04a] { padding: 0.4rem 0.7rem; border-radius: 0.35rem; border: none; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; cursor: pointer; font-weight: 700;\n}\nsmall[data-v-6c83f04a] { color: #64748b; font-size: 0.75rem;\n}\n",
+      "start": 1783196194247,
+      "end": 1783196194316,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194317,
+      "end": 1783196194317,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196194317,
+      "end": 1783196194318,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    }
+  ]
+}

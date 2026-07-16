@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, type Ref, ref } from 'vue';
+import { onMounted, onUnmounted, ref, type Ref } from 'vue';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
@@ -15,6 +15,7 @@ interface ChromosomeMesh {
 
 export function useMitosis3D(containerRef: Ref<HTMLDivElement | null>) {
   const currentStageIndex = ref(0);
+  const error = ref<string | null>(null);
   let renderer: THREE.WebGLRenderer | null = null;
   let scene: THREE.Scene | null = null;
   let camera: THREE.PerspectiveCamera | null = null;
@@ -127,7 +128,12 @@ export function useMitosis3D(containerRef: Ref<HTMLDivElement | null>) {
     camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
     camera.position.set(0, 0, 14);
 
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    } catch {
+      error.value = 'WebGL is not supported or has been disabled in this browser.';
+      return;
+    }
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     containerRef.value.appendChild(renderer.domElement);
@@ -231,5 +237,6 @@ export function useMitosis3D(containerRef: Ref<HTMLDivElement | null>) {
   return {
     currentStageIndex,
     setStage,
+    error,
   };
 }

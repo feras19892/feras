@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedSignalPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\nimport { ref, watch, onMounted, onUnmounted } from 'vue'\n\nconst { t } = useI18n()\nconst props = defineProps<{\n  simState: { t: number; s: number; v: number; arrived: boolean }\n  params: { thetaDeg: number; length: number; mass: number; g: number; mu: number }\n}>()\n\nconst canvasRef = ref<HTMLCanvasElement | null>(null)\nconst wrapRef = ref<HTMLDivElement | null>(null)\n\nlet points: { t: number; v: number }[] = []\n\nfunction resizeCanvas() {\n  const canvas = canvasRef.value\n  const wrap = wrapRef.value\n  if (!canvas || !wrap) return\n  const w = wrap.clientWidth\n  const h = wrap.clientHeight\n  if (canvas.width !== w || canvas.height !== h) {\n    canvas.width = w\n    canvas.height = h\n  }\n}\n\nfunction draw() {\n  const canvas = canvasRef.value\n  if (!canvas) return\n  resizeCanvas()\n  const ctx = canvas.getContext('2d')\n  if (!ctx) return\n  const w = canvas.width, h = canvas.height\n\n  const { t: simT, v, arrived } = props.simState\n  if (simT === 0) points = []\n  if (!arrived && simT > 0) {\n    points.push({ t: simT, v })\n    if (points.length > 300) points = points.slice(-300)\n  }\n\n  ctx.clearRect(0, 0, w, h)\n  ctx.fillStyle = '#fffef7'\n  ctx.fillRect(0, 0, w, h)\n\n  if (!points.length) {\n    ctx.fillStyle = '#64748b'; ctx.font = '14px Segoe UI'; ctx.textAlign = 'center'\n    ctx.fillText(t('experiments.signalAppearsHereDescent'), w / 2, h / 2)\n    ctx.textAlign = 'start'; return\n  }\n\n  const padL = 44, padR = 10, padT = 28, padB = 34\n  const W = w - padL - padR, H = h - padT - padB\n\n  const maxT = Math.max(...points.map(p => p.t)) || 1\n  const maxV = Math.max(...points.map(p => p.v), 0.1) || 1\n\n  // Grid\n  ctx.strokeStyle = 'rgba(148,163,184,0.15)'; ctx.lineWidth = 1\n  for (let i = 0; i <= 4; i++) { const y = padT + (i / 4) * H; ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(w - padR, y); ctx.stroke() }\n  for (let i = 0; i <= 5; i++) { const x = padL + (i / 5) * W; ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, h - padB); ctx.stroke() }\n\n  // Axes\n  ctx.strokeStyle = '#64748b'; ctx.lineWidth = 1.5\n  ctx.beginPath(); ctx.moveTo(padL, padT); ctx.lineTo(padL, h - padB); ctx.lineTo(w - padR, h - padB); ctx.stroke()\n\n  // X labels\n  ctx.fillStyle = '#475569'; ctx.font = '9px Segoe UI'; ctx.textAlign = 'center'\n  for (let i = 0; i <= 5; i++) {\n    const tVal = (i / 5) * maxT\n    const px = padL + (i / 5) * W\n    ctx.fillText(tVal.toFixed(2), px, h - padB + 16)\n    ctx.strokeStyle = '#64748b'; ctx.lineWidth = 1\n    ctx.beginPath(); ctx.moveTo(px, h - padB); ctx.lineTo(px, h - padB + 4); ctx.stroke()\n  }\n  ctx.fillStyle = '#475569'; ctx.font = 'bold 10px Segoe UI'\n  ctx.fillText('t (s)', padL + W / 2, h - 6)\n\n  // Y labels\n  ctx.textAlign = 'right'\n  for (let i = 0; i <= 4; i++) {\n    const frac = i / 4\n    const vVal = frac * maxV\n    const py = padT + H - frac * H\n    ctx.fillStyle = '#475569'; ctx.font = '9px Segoe UI'\n    ctx.fillText(vVal.toFixed(2), padL - 6, py + 4)\n    ctx.strokeStyle = '#64748b'; ctx.lineWidth = 1\n    ctx.beginPath(); ctx.moveTo(padL - 4, py); ctx.lineTo(padL, py); ctx.stroke()\n  }\n  ctx.save(); ctx.translate(16, padT + H / 2); ctx.rotate(-Math.PI / 2)\n  ctx.fillStyle = '#475569'; ctx.font = 'bold 10px Segoe UI'; ctx.textAlign = 'center'\n  ctx.fillText('v (m/s)', 0, 0); ctx.restore()\n\n  // v(t) line (ascending straight line)\n  ctx.strokeStyle = '#2563eb'; ctx.lineWidth = 2; ctx.beginPath()\n  points.forEach((p, i) => {\n    const px = padL + (p.t / maxT) * W\n    const py = padT + H - (p.v / maxV) * H\n    if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py)\n  })\n  ctx.stroke()\n}\n\nwatch(() => props.simState, draw, { deep: true, flush: 'post' })\n\nlet resizeObs: ResizeObserver | null = null\nonMounted(() => {\n  if (wrapRef.value) {\n    resizeObs = new ResizeObserver(() => { resizeCanvas(); draw() })\n    resizeObs.observe(wrapRef.value)\n  }\n  draw()\n})\nonUnmounted(() => { if (resizeObs) resizeObs.disconnect() })\n\ndefineExpose({ draw })\n</script>\n\n<template>\n  <div class=\"chart-wrap\" ref=\"wrapRef\">\n    <canvas ref=\"canvasRef\" />\n  </div>\n</template>\n\n<style scoped>\n.chart-wrap { width: 100%; flex: 1; min-height: 0; position: relative; }\n.chart-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; background: #fffef7; border-radius: 8px; border: 1px solid #2D3645; }\n</style>\n",
+      "start": 1783196195139,
+      "end": 1783196195415,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195415,
+      "end": 1783196195415,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195415,
+      "end": 1783196195415,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195415,
+      "end": 1783196195415,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195415,
+      "end": 1783196195415,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedSignalPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedSignalPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedSignalPanel.vue?vue&type=style&index=0&scoped=757c6d5a&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-757c6d5a\"]]);\n",
+      "start": 1783196195415,
+      "end": 1783196195573,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195573,
+      "end": 1783196195573,
+      "order": "normal"
+    }
+  ]
+}

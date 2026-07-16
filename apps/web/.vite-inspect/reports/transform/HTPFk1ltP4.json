@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/admin/AdminGlobalSearch.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, computed } from 'vue';\nimport { useI18n } from '../../composables/useI18n';\n\ninterface SearchUser { id: number; name: string; email: string; role: string }\ninterface SearchClass { id: string; name: string; code: string; teacher_name?: string }\ninterface SearchReport { id: number; student_name: string; experiment_name: string; status: string }\ninterface SearchFeedback { id: number; user_name: string; message: string; type: string }\n\nconst props = defineProps<{\n  users: SearchUser[];\n  classes: SearchClass[];\n  reports: SearchReport[];\n  feedback: SearchFeedback[];\n}>();\n\nconst emit = defineEmits<{\n  (e: 'selectUser', id: number): void;\n}>();\n\nconst { t } = useI18n();\nconst query = ref('');\nconst showResults = ref(false);\n\nconst results = computed(() => {\n  const q = query.value.trim().toLowerCase();\n  if (!q || q.length < 2) return [];\n\n  const list: { type: string; title: string; subtitle: string; id: number | string }[] = [];\n\n  // Users\n  for (const u of props.users) {\n    if ((u.name || '').toLowerCase().includes(q) || (u.email || '').toLowerCase().includes(q) || String(u.id).includes(q)) {\n      list.push({ type: 'user', title: u.name, subtitle: `${u.email} (${u.role})`, id: u.id });\n    }\n  }\n\n  // Classes\n  for (const c of props.classes) {\n    if ((c.name || '').toLowerCase().includes(q) || (c.code || '').toLowerCase().includes(q)) {\n      list.push({ type: 'class', title: c.name, subtitle: `${t('admin.code')}: ${c.code} — ${c.teacher_name || ''}`, id: c.id });\n    }\n  }\n\n  // Reports\n  for (const r of props.reports) {\n    if ((r.student_name || '').toLowerCase().includes(q) || (r.experiment_name || '').toLowerCase().includes(q)) {\n      list.push({ type: 'report', title: r.experiment_name, subtitle: `${t('admin.student')}: ${r.student_name} — ${r.status}`, id: r.id });\n    }\n  }\n\n  // Feedback\n  for (const f of props.feedback) {\n    if ((f.user_name || '').toLowerCase().includes(q) || (f.message || '').toLowerCase().includes(q)) {\n      list.push({ type: 'feedback', title: f.user_name, subtitle: `${f.type}: ${f.message?.slice(0, 40) || ''}...`, id: f.id });\n    }\n  }\n\n  return list.slice(0, 15);\n});\n\nfunction iconFor(type: string) {\n  switch (type) {\n    case 'user': return '👤';\n    case 'class': return '🏫';\n    case 'report': return '📋';\n    case 'feedback': return '💬';\n    default: return '•';\n  }\n}\n\nfunction onSelect(r: { type: string; id: number | string }) {\n  if (r.type === 'user') emit('selectUser', Number(r.id));\n  query.value = '';\n  showResults.value = false;\n}\n\nfunction onBlur() {\n  setTimeout(() => { showResults.value = false; }, 200);\n}\n</script>\n\n<template>\n  <div class=\"global-search\">\n    <input\n      v-model=\"query\"\n      :placeholder=\"t('adminUser.searchQuick')\"\n      @focus=\"showResults = true\"\n      @blur=\"onBlur\"\n    />\n    <div v-if=\"showResults && query.trim().length >= 2\" class=\"results-dropdown\">\n      <div v-if=\"results.length === 0\" class=\"no-results\">{{ t('admin.noResults') }}</div>\n      <div\n        v-for=\"r in results\"\n        :key=\"r.type + r.id\"\n        class=\"result-item\"\n        @click=\"onSelect(r)\"\n      >\n        <span class=\"result-icon\">{{ iconFor(r.type) }}</span>\n        <div class=\"result-text\">\n          <div class=\"result-title\">{{ r.title }}</div>\n          <div class=\"result-subtitle\">{{ r.subtitle }}</div>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.global-search { position: relative; max-width: 400px; flex: 1; }\n.global-search input {\n  width: 100%; padding: 0.5rem 1rem; border-radius: 0.5rem;\n  border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3);\n  color: #e2e8f0; font-family: inherit; font-size: 0.9rem;\n}\n.global-search input::placeholder { color: #64748b; }\n.results-dropdown {\n  position: absolute; top: calc(100% + 4px); left: 0; right: 0;\n  background: #111827; border: 1px solid rgba(255,255,255,0.08);\n  border-radius: 0.5rem; box-shadow: 0 12px 32px rgba(0,0,0,0.5);\n  z-index: 100; max-height: 300px; overflow-y: auto;\n}\n.result-item {\n  display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.8rem;\n  cursor: pointer; transition: background 0.15s; border-bottom: 1px solid rgba(255,255,255,0.04);\n}\n.result-item:hover { background: rgba(99,102,241,0.1); }\n.result-icon { font-size: 1.1rem; flex-shrink: 0; }\n.result-text { flex: 1; min-width: 0; }\n.result-title { font-weight: 700; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }\n.result-subtitle { font-size: 0.75rem; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }\n.no-results { padding: 1rem; text-align: center; color: #64748b; font-size: 0.85rem; }\n</style>\n",
+      "start": 1783196192496,
+      "end": 1783196192777,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196192777,
+      "end": 1783196192777,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196192777,
+      "end": 1783196192777,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196192777,
+      "end": 1783196192777,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196192777,
+      "end": 1783196192777,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/admin/AdminGlobalSearch.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/admin/AdminGlobalSearch.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/admin/AdminGlobalSearch.vue?vue&type=style&index=0&scoped=650d331a&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-650d331a\"]]);\n",
+      "start": 1783196192777,
+      "end": 1783196193010,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193010,
+      "end": 1783196193010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193010,
+      "end": 1783196193010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193010,
+      "end": 1783196193010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193010,
+      "end": 1783196193010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193010,
+      "end": 1783196193010,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193010,
+      "end": 1783196193010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193011,
+      "end": 1783196193011,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193011,
+      "end": 1783196193011,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193011,
+      "end": 1783196193011,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193012,
+      "end": 1783196193012,
+      "order": "normal"
+    }
+  ]
+}

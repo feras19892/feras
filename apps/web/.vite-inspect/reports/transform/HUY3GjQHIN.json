@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/polarization/PolarizationHelpModal.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\nconst { t } = useI18n()\ndefineProps<{ open: boolean }>()\nconst emit = defineEmits<{ (e: 'close'): void }>()\n</script>\n\n<template>\n  <Teleport to=\"body\">\n    <div v-if=\"open\" class=\"overlay\" @click.self=\"emit('close')\">\n      <div class=\"modal\">\n        <div class=\"modal-header\">\n          <h3>🕶️ دليل تجربة استقطاب الضوء (Light Polarization) — دليل شامل وكامل</h3>\n          <button class=\"close-btn\" @click=\"emit('close')\">&#x2715;</button>\n        </div>\n        <div class=\"modal-body\">\n\n          <!-- 1. Apparatus Description -->\n          <section>\n            <h4>🔧 1. وصف تفصيلي لأدوات التجربة بالمختبر</h4>\n            <ul>\n              <li>\n                <b>المقعد أو القضيب البصري (Optical Bench):</b>\n                مسطرة معدنية طويلة وثقيلة مثبتة على الطاولة، تحتوي على مجاري منزلقة لتركيب القطع البصرية فوقها.\n                وظيفتها الحفاظ على محور بصري مستقيم وموحد لجميع الأدوات لمنع تشتت الأشعة.\n              </li>\n              <li>\n                <b>المصدر الضوئي (Light Source):</b>\n                مصباح هالوجين أو ليزر يصدر حزمة ضوئية مكثفة. هذا الضوء يكون غير مستقطب (Unpolarized)،\n                مما يعني أن مجالاته الكهربائية تهتز في جميع الاتجاهات الممكنة والعمودية على خط انتشار الشعاع.\n              </li>\n              <li>\n                <b>المُستقطِب (Polarizer):</b>\n                مرشح (فلتر) بصري مصنوع من مادة البوليمر يحتوي على جزيئات مجهرية طولية مرتبة في اتجاه واحد\n                يُسمى محور النفاذ (Transmission Axis). يسمح للموجات الضوئية التي تهتز موازية لهذا المحور\n                فقط بالمرور، فيخرج الضوء منه مستقطباً خطياً.\n              </li>\n              <li>\n                <b>المُحلل (Analyzer):</b>\n                مرشح استقطاب ثانٍ مماثل للمستقطب الأول، يوضع داخل قرص دائري مدرج بالدرجات من 0° إلى 360°\n                يتيح تدويره يدوياً بدقة. وظيفته التحكم في كمية الضوء النافذة واختبار زاوية الاستقطاب.\n              </li>\n              <li>\n                <b>مستشعر شدة الضوء (Light Intensity Sensor):</b>\n                كاشف ضوئي رقمي (Photodetector) يوضع في نهاية القضيب البصري،\n                يستقبل الضوء النافذ ويحول طاقته الضوئية إلى قراءة رقمية دقيقة لشدة الضوء.\n              </li>\n            </ul>\n          </section>\n\n          <!-- 2. Theoretical Background -->\n          <section>\n            <h4>🔬 2. المقدمة والنظرية العلمية بالتفصيل</h4>\n            <p>\n              يتكون الضوء من مجالات كهربائية ومغناطيسية متعامدة وتتذبذب في الفراغ.\n              عندما يمر الضوء غير المستقطب عبر المستقطب الأول، تقل شدته إلى النصف وتصبح له زاوية اهتزاز وحيدة وثابتة،\n              ويسمى <b>ضوءاً مستقطباً خطياً (Linear Polarized Light)</b> بشدة ابتدائية رمزها I₀.\n            </p>\n            <p>\n              عندما يسقط هذا الضوء المستقطب على المستقطب الثاني (المُحلل)، فإن نفاذه يعتمد كلياً على الزاوية (θ)\n              بين محوري النفاذ للمستقطب والمحلل:\n            </p>\n            <ul>\n              <li><b>θ = 0°</b> (المحوران متوازيان): يمر الضوء كاملاً وتكون الشدة أعلى ما يمكن.</li>\n              <li><b>θ = 90°</b> (المحوران متعامدان): يمتص المحلل كل الضوء المستقطب وتنعدم الشدة تماماً (تعتيم كلي).</li>\n            </ul>\n            <p>\n              تخضع هذه العلاقة لـ <b>قانون مالوس (Malus's Law)</b>، الذي ينص على أن شدة الضوء النافذة\n              تتناسب طردياً مع مربع جيب تمام زاوية الدوران بين المحورين.\n            </p>\n          </section>\n\n          <!-- 3. Mathematical Equations -->\n          <section>\n            <h4>📐 3. القوانين الرياضية المستعملة</h4>\n            <p><b>قانون مالوس الأساسي:</b></p>\n            <div class=\"formula\">I = I₀ · cos²(θ)</div>\n            <p>(حيث I هي شدة الضوء النافذة والمقاسة بالمستشعر، I₀ هي الشدة القصوى عند التوازي، وθ هي زاوية دوران المحلل).</p>\n          </section>\n\n          <!-- 4. Laboratory Procedure -->\n          <section>\n            <h4>⚗️ 4. طريقة العمل في المختبر بالتفصيل الممل</h4>\n            <ol>\n              <li>\n                <b>تركيب خط التجربة:</b> صف الأدوات على القضيب البصري بالترتيب التالي:\n                المصدر الضوئي ← المستقطب الثابت ← المحلل القابل للدوران ← مستشعر شدة الضوء.\n                تأكد أن الأشعة تمر في مراكز القطع تماماً.\n              </li>\n              <li>\n                <b>معايرة نقطة الصفر (I₀):</b> شغّل مصدر الضوء، وقم بتدوير المحلل حتى تجد أعلى قراءة للشدة.\n                ثبت المحلل عند هذا الموضع واضبط القرص الدائري ليكون عند الزاوية θ = 0°.\n                سجّل هذه الشدة العظمى كـ (I₀).\n              </li>\n              <li>\n                <b>أخذ البيانات:</b> قم بتدوير المحلل بمقدار 10° وسجّل قيمة شدة الضوء (I) الجديدة.\n              </li>\n              <li>\n                <b>توسيع الملاحظة:</b> استمر بتدوير المحلل بخطوات ثابتة (20°, 30°, 40°...) وستلاحظ انخفاض الشدة\n                حتى تصل إلى 90° لتجد القراءة صفراً (تعتيم). واصل حتى 180° لتشهد عودة الشدة إلى العظمى.\n              </li>\n              <li>\n                <b>المعالجة الحسابية:</b> أنشئ جدولاً يضم الزوايا (θ) والشدة المقابلة (I).\n                احسب جيب تمام كل زاوية cos(θ) ثم قم بتربيعه لتحصل على قيم cos²(θ).\n              </li>\n            </ol>\n          </section>\n\n          <!-- 5. Graphical Analysis -->\n          <section>\n            <h4>📊 5. الرسم البياني، الميل، وحساب المجهول</h4>\n            <ul>\n              <li>\n                <b>المحاور:</b> ارسم شدة الضوء المقاسة (I) على المحور الصادي (Y-axis).\n                ارسم قيمة مربع جيب تمام الزاوية (cos²θ) على المحور السيني (X-axis).\n              </li>\n              <li>\n                <b>الميل (Slope):</b> بسبب التناسب الطردي الخطي بين I و cos²θ، ستتشكل النقاط على هيئة خط مستقيم\n                يمر بنقطة الأصل، ويُحسب ميله من خلال:\n                <div class=\"formula\">Slope = ΔI / Δcos²θ</div>\n              </li>\n              <li>\n                <b>حساب المجهول:</b> بالمقارنة مع قانون مالوس (I = I₀ cos²θ)، نجد أن الميل الناتج بيانيّاً\n                يمثل مباشرة قيمة الشدة الابتدائية القصوى المجهولة:\n                <div class=\"formula\">Slope = I₀</div>\n              </li>\n            </ul>\n          </section>\n\n          <!-- 6. Variables & Constants -->\n          <section>\n            <h4>⚙️ 6. الثوابت والمتغيرات في التجربة</h4>\n            <div class=\"element-grid\">\n              <div class=\"element\">\n                <b class=\"tag\">المتغير المستقل:</b> زاوية المحلل المدرجة (θ)\n              </div>\n              <div class=\"element\">\n                <b class=\"tag\">المتغير التابع:</b> شدة الضوء النافذة (I)\n              </div>\n              <div class=\"element\">\n                <b class=\"tag\">الثوابت:</b> شدة المصباح الأصلي (I₀)، المسافة بين الأدوات، نوع مرشحات الاستقطاب\n              </div>\n            </div>\n          </section>\n\n          <!-- 7. Scientific Importance -->\n          <section>\n            <h4>🎯 7. الفائدة والأهمية العلمية للتجربة</h4>\n            <ul>\n              <li>إثبات أن الضوء موجة مستعرضة (لأن الموجات الطولية كالصوت لا يمكن استقطابها مطلقاً).</li>\n              <li>التطبيقات الحياتية ضخمة: تصنيع شاشات الـ LCD (تعتمد على تغيير استقطاب الكريستالات السائلة بجهد كهربائي)،\n                والنظارات الشمسية المستقطبة (Polarized) لحجب وهج الضوء المنعكس عن أسطح البحار والطرقات.</li>\n            </ul>\n          </section>\n\n          <!-- Keyboard shortcuts -->\n          <section>\n            <h4>⌨️ اختصارات لوحة المفاتيح</h4>\n            <div class=\"kbd-grid\">\n              <span><kbd>Space</kbd> بدء / توقف</span>\n              <span><kbd>S</kbd> تسجيل قراءة</span>\n              <span><kbd>R</kbd> إعادة التعيين</span>\n              <span><kbd>Ctrl</kbd>+<kbd>Z</kbd> تراجع</span>\n              <span><kbd>Ctrl</kbd>+<kbd>Y</kbd> إعادة</span>\n              <span><kbd>?</kbd> فتح/إغلاق المساعدة</span>\n            </div>\n          </section>\n\n        </div>\n      </div>\n    </div>\n  </Teleport>\n</template>\n\n<style scoped>\n.overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; padding: 1.5rem; }\n.modal { background: #131a25; border: 1px solid #2D3645; border-radius: 12px; max-width: 720px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,.5); }\n.modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.2rem; border-bottom: 1px solid #2D3645; flex-shrink: 0; }\n.modal-header h3 { margin: 0; font-size: 1rem; color: #e2e8f0; }\n.close-btn { background: transparent; border: 1px solid #2D3645; color: #8B95A5; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; padding: 0; }\n.close-btn:hover { background: rgba(91,141,184,.1); color: #5B8DB8; }\n.modal-body { overflow-y: auto; padding: 1.2rem; font-size: .82rem; color: #cbd5e1; line-height: 1.8; direction: rtl; text-align: right; }\n.modal-body section { margin-bottom: 1.4rem; }\n.modal-body h4 { margin: 0 0 .5rem; font-size: .9rem; color: #5B8DB8; border-bottom: 1px solid #2D3645; padding-bottom: .3rem; }\n.modal-body p { margin: .4rem 0; }\n.modal-body ol, .modal-body ul { margin: .4rem 0; padding-right: 1.2rem; }\n.modal-body li { margin-bottom: .25rem; }\n.formula { background: #1a2332; border: 1px solid #2D3645; border-radius: 6px; padding: .6rem .8rem; font-family: monospace; font-size: .9rem; color: #5B8DB8; text-align: center; margin: .6rem 0; direction: ltr; }\n.element-grid { display: flex; flex-direction: column; gap: .35rem; }\n.element { background: #1a2332; border-radius: 6px; padding: .4rem .6rem; font-size: .78rem; }\n.tag { color: #5B8DB8; }\n.kbd-grid { display: flex; flex-wrap: wrap; gap: .4rem; }\n.kbd-grid span { background: #1a2332; border: 1px solid #2D3645; border-radius: 5px; padding: .3rem .5rem; font-size: .75rem; }\nkbd { background: #252D3A; border: 1px solid #475569; border-radius: 4px; padding: .05rem .3rem; font-family: monospace; font-size: .7rem; color: #D1D7E0; }\n</style>\n",
+      "start": 1783196193618,
+      "end": 1783196194143,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194143,
+      "end": 1783196194143,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194143,
+      "end": 1783196194143,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194143,
+      "end": 1783196194143,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194143,
+      "end": 1783196194143,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/polarization/PolarizationHelpModal.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/polarization/PolarizationHelpModal.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/polarization/PolarizationHelpModal.vue?vue&type=style&index=0&scoped=61518655&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-61518655\"]]);\n",
+      "start": 1783196194143,
+      "end": 1783196194390,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194390,
+      "end": 1783196194390,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194390,
+      "end": 1783196194390,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194390,
+      "end": 1783196194390,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194391,
+      "end": 1783196194391,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194391,
+      "end": 1783196194391,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194391,
+      "end": 1783196194391,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194391,
+      "end": 1783196194391,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194391,
+      "end": 1783196194391,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194391,
+      "end": 1783196194391,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194391,
+      "end": 1783196194391,
+      "order": "normal"
+    }
+  ]
+}

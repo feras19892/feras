@@ -38,6 +38,9 @@ export const newPresets5: PresetDef[] = [
       components.push(makeComp('battery', 80, 220, 'بطارية', 12, 'V'))
       components.push(makeComp('ammeter', 220, 220, 'أميتر', 0, 'A'))
       components.push(makeComp('resistor', 380, 220, 'R حد', 5, 'Ω'))
+      components.push(makeComp('resistor', 530, 220, 'B (mT)', 500, 'mT'))
+      components.push(makeComp('resistor', 680, 220, 'L (cm)', 10, 'cm'))
+      components.push(makeComp('resistor', 830, 220, 'θ (°)', 90, '°'))
       components.push(makeComp('voltmeter', 380, 100, 'فولتميتر', 0, 'V'))
     },
   },
@@ -58,6 +61,8 @@ export const newPresets5: PresetDef[] = [
       components.push(makeComp('battery', 80, 220, 'بطارية', 10, 'V'))
       components.push(makeComp('ammeter', 220, 220, 'أميتر', 0, 'A'))
       components.push(makeComp('resistor', 380, 220, 'R', 10, 'Ω'))
+      components.push(makeComp('resistor', 530, 220, 'L (mH)', 100, 'mH'))
+      components.push(makeComp('capacitor', 680, 220, 'C (µF)', 1, 'µF'))
       components.push(makeComp('voltmeter', 380, 100, 'فولتميتر', 0, 'V'))
     },
   },

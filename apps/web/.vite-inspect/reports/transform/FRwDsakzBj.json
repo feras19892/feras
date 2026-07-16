@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/panels/ThermalExpansionParamsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed } from 'vue'\nimport { useI18n } from '../../../../composables/useI18n'\nimport { ALPHA } from '../../../../composables/thermal-expansion/useThermalExpansionCalculations'\nconst { t } = useI18n()\nconst props = defineProps<{ params: { material: string; L0: number; t0: number; t1: number } }>()\nconst emit = defineEmits<{ (e: 'update:params', p: typeof props.params): void }>()\n\nconst materials: Record<string, string> = {\n  copper: 'نحاس', aluminum: 'ألمنيوم', iron: 'حديد', steel: 'فولاذ', brass: 'سبائك نحاس', glass: 'زجاج',\n}\nconst currentAlpha = computed(() => ALPHA[props.params.material] ?? 16.5)\n</script>\n<template>\n  <div class=\"params-panel\">\n    <table class=\"params-table\">\n      <tr>\n        <td class=\"label\">{{ t('experiments.thermalMaterial') }}</td>\n        <td colspan=\"2\">\n          <select :value=\"params.material\" @change=\"emit('update:params', { ...params, material: ($event.target as HTMLSelectElement).value })\">\n            <option v-for=\"(name, key) in materials\" :key=\"key\" :value=\"key\">{{ name }}</option>\n          </select>\n        </td>\n      </tr>\n      <tr>\n        <td class=\"label\">L₀ (m)</td>\n        <td><input type=\"range\" min=\"0.1\" max=\"3\" step=\"0.05\" :value=\"params.L0\" @input=\"emit('update:params', { ...params, L0: Number(($event.target as HTMLInputElement).value) })\" /></td>\n        <td class=\"val\">{{ params.L0.toFixed(2) }} m</td>\n      </tr>\n      <tr>\n        <td class=\"label\">t₀ (°C)</td>\n        <td><input type=\"range\" min=\"0\" max=\"30\" step=\"1\" :value=\"params.t0\" @input=\"emit('update:params', { ...params, t0: Number(($event.target as HTMLInputElement).value) })\" /></td>\n        <td class=\"val\">{{ params.t0 }} °C</td>\n      </tr>\n      <tr>\n        <td class=\"label\">t₁ (°C)</td>\n        <td><input type=\"range\" min=\"50\" max=\"200\" step=\"5\" :value=\"params.t1\" @input=\"emit('update:params', { ...params, t1: Number(($event.target as HTMLInputElement).value) })\" /></td>\n        <td class=\"val\">{{ params.t1 }} °C</td>\n      </tr>\n      <tr class=\"alpha-row\">\n        <td class=\"label\">α (حقيقي)</td>\n        <td colspan=\"2\" class=\"val alpha\">{{ currentAlpha.toFixed(1) }} × 10⁻⁶/K</td>\n      </tr>\n    </table>\n  </div>\n</template>\n<style scoped>\n.params-panel { padding: .25rem 0; }\n.params-table { width: 100%; border-collapse: collapse; font-size: .75rem; }\n.params-table td { padding: .25rem .3rem; vertical-align: middle; border-bottom: 1px solid rgba(255,255,255,.04); }\n.params-table td.label { color: #8B95A5; white-space: nowrap; font-size: .72rem; width: 1%; }\n.params-table td.val { color: #5B8DB8; font-weight: 700; text-align: right; white-space: nowrap; }\n.params-table input[type=range] { width: 100%; min-width: 60px; }\n.params-table select { width: 100%; padding: .2rem .3rem; border-radius: 4px; border: 1px solid #1e2530; background: #0d1117; color: #D1D7E0; font-size: .72rem; }\n.alpha-row { background:rgba(91,141,184,.06); }\n.alpha-row .label { color:#5B8DB8; }\n.alpha-row .alpha { color:#5B8DB8; font-weight:800; }\n</style>\n",
+      "start": 1783196194987,
+      "end": 1783196195255,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195255,
+      "end": 1783196195255,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195255,
+      "end": 1783196195255,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195255,
+      "end": 1783196195255,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195255,
+      "end": 1783196195255,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/panels/ThermalExpansionParamsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/panels/ThermalExpansionParamsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/panels/ThermalExpansionParamsPanel.vue?vue&type=style&index=0&scoped=f05c6234&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-f05c6234\"]]);\n",
+      "start": 1783196195255,
+      "end": 1783196195563,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    }
+  ]
+}

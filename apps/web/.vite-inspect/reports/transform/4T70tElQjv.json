@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/pendulum/PendulumEnvSelector.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { useModel as _useModel, defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"env-selector\" }\nconst _hoisted_2 = [\"value\"]\nconst _hoisted_3 = [\"value\"]\n\nimport { useI18n } from '../../../composables/useI18n'\n\ninterface EnvOption { label: string; value: number; icon: string }\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'PendulumEnvSelector',\n  props: {\n    \"modelValue\": { required: true },\n    \"modelModifiers\": {},\n  },\n  emits: [\"update:modelValue\"],\n  setup(__props) {\n\nconst { t } = useI18n()\n\nconst options: EnvOption[] = [\n  { label: '🌍 ' + t('experiments.earth'), value: 9.81, icon: '🌍' },\n  { label: '🌑 ' + t('experiments.moon'), value: 1.62, icon: '🌑' },\n  { label: '🪐 ' + t('experiments.jupiter'), value: 24.79, icon: '🪐' },\n  { label: '🛰️ ' + t('experiments.space'), value: 0, icon: '🛰️' },\n]\nconst model = _useModel<number>(__props, \"modelValue\")\nfunction onChange(e: Event) {\n  const val = Number((e.target as HTMLSelectElement).value)\n  model.value = val\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('experiments.environment')), 1),\n    _createElementVNode(\"select\", {\n      value: model.value,\n      onChange: onChange\n    }, [\n      (_openBlock(), _createElementBlock(_Fragment, null, _renderList(options, (opt) => {\n        return _createElementVNode(\"option\", {\n          key: opt.value,\n          value: opt.value\n        }, _toDisplayString(opt.label), 9, _hoisted_3)\n      }), 64))\n    ], 40, _hoisted_2)\n  ]))\n}\n}\n\n})",
+      "start": 1783196195686,
+      "end": 1783196195686
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195686,
+      "end": 1783196195686,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { useModel as _useModel, defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"env-selector\" };\nconst _hoisted_2 = [\"value\"];\nconst _hoisted_3 = [\"value\"];\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"PendulumEnvSelector\",\n  props: {\n    \"modelValue\": { required: true },\n    \"modelModifiers\": {}\n  },\n  emits: [\"update:modelValue\"],\n  setup(__props) {\n    const { t } = useI18n();\n    const options = [\n      { label: \"🌍 \" + t(\"experiments.earth\"), value: 9.81, icon: \"🌍\" },\n      { label: \"🌑 \" + t(\"experiments.moon\"), value: 1.62, icon: \"🌑\" },\n      { label: \"🪐 \" + t(\"experiments.jupiter\"), value: 24.79, icon: \"🪐\" },\n      { label: \"🛰️ \" + t(\"experiments.space\"), value: 0, icon: \"🛰️\" }\n    ];\n    const model = _useModel(__props, \"modelValue\");\n    function onChange(e) {\n      const val = Number(e.target.value);\n      model.value = val;\n    }\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"label\", null, _toDisplayString(_unref(t)(\"experiments.environment\")), 1),\n        _createElementVNode(\"select\", {\n          value: model.value,\n          onChange\n        }, [\n          (_openBlock(), _createElementBlock(_Fragment, null, _renderList(options, (opt) => {\n            return _createElementVNode(\"option\", {\n              key: opt.value,\n              value: opt.value\n            }, _toDisplayString(opt.label), 9, _hoisted_3);\n          }), 64))\n        ], 40, _hoisted_2)\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196195686,
+      "end": 1783196195751,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/pendulum/PendulumEnvSelector.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { useModel as _useModel, defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"env-selector\" }\nconst _hoisted_2 = [\"value\"]\nconst _hoisted_3 = [\"value\"]\n\nimport { useI18n } from '../../../composables/useI18n'\n\ninterface EnvOption { label: string; value: number; icon: string }\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'PendulumEnvSelector',\n  props: {\n    \"modelValue\": { required: true },\n    \"modelModifiers\": {},\n  },\n  emits: [\"update:modelValue\"],\n  setup(__props) {\n\nconst { t } = useI18n()\n\nconst options: EnvOption[] = [\n  { label: '🌍 ' + t('experiments.earth'), value: 9.81, icon: '🌍' },\n  { label: '🌑 ' + t('experiments.moon'), value: 1.62, icon: '🌑' },\n  { label: '🪐 ' + t('experiments.jupiter'), value: 24.79, icon: '🪐' },\n  { label: '🛰️ ' + t('experiments.space'), value: 0, icon: '🛰️' },\n]\nconst model = _useModel<number>(__props, \"modelValue\")\nfunction onChange(e: Event) {\n  const val = Number((e.target as HTMLSelectElement).value)\n  model.value = val\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('experiments.environment')), 1),\n    _createElementVNode(\"select\", {\n      value: model.value,\n      onChange: onChange\n    }, [\n      (_openBlock(), _createElementBlock(_Fragment, null, _renderList(options, (opt) => {\n        return _createElementVNode(\"option\", {\n          key: opt.value,\n          value: opt.value\n        }, _toDisplayString(opt.label), 9, _hoisted_3)\n      }), 64))\n    ], 40, _hoisted_2)\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,YAAY,WAAW,mBAAmB,wBAAwB;AAC3E,SAAS,SAAS,QAAQ,mBAAmB,kBAAkB,sBAAsB,qBAAqB,cAAc,aAAa,YAAY,WAAW,aAAa,YAAY,sBAAsB,2BAA2B;AAEtO,MAAM,aAAa,EAAE,OAAO,eAAe;AAC3C,MAAM,aAAa,CAAC,OAAO;AAC3B,MAAM,aAAa,CAAC,OAAO;AAE3B,SAAS,eAAe;AAIxB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,cAAc,EAAE,UAAU,KAAK;AAAA,IAC/B,kBAAkB,CAAC;AAAA,EACrB;AAAA,EACA,OAAO,CAAC,mBAAmB;AAAA,EAC3B,MAAM,SAAS;AAEjB,UAAM,EAAE,EAAE,IAAI,QAAQ;AAEtB,UAAM,UAAuB;AAAA,MAC3B,EAAE,OAAO,QAAQ,EAAE,mBAAmB,GAAG,OAAO,MAAM,MAAM,KAAK;AAAA,MACjE,EAAE,OAAO,QAAQ,EAAE,kBAAkB,GAAG,OAAO,MAAM,MAAM,KAAK;AAAA,MAChE,EAAE,OAAO,QAAQ,EAAE,qBAAqB,GAAG,OAAO,OAAO,MAAM,KAAK;AAAA,MACpE,EAAE,OAAO,SAAS,EAAE,mBAAmB,GAAG,OAAO,GAAG,MAAM,MAAM;AAAA,IAClE;AACA,UAAM,QAAQ,UAAkB,SAAS,YAAY;AACrD,aAAS,SAAS,GAAU;AAC1B,YAAM,MAAM,OAAQ,EAAE,OAA6B,KAAK;AACxD,YAAM,QAAQ;AAAA,IAChB;AAEA,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,oBAAoB,SAAS,MAAM,iBAAiB,OAAO,CAAC,EAAE,yBAAyB,CAAC,GAAG,CAAC;AAAA,QAC5F,oBAAoB,UAAU;AAAA,UAC5B,OAAO,MAAM;AAAA,UACb;AAAA,QACF,GAAG;AAAA,WACA,WAAW,GAAG,oBAAoB,WAAW,MAAM,YAAY,SAAS,CAAC,QAAQ;AAChF,mBAAO,oBAAoB,UAAU;AAAA,cACnC,KAAK,IAAI;AAAA,cACT,OAAO,IAAI;AAAA,YACb,GAAG,iBAAiB,IAAI,KAAK,GAAG,GAAG,UAAU;AAAA,UAC/C,CAAC,GAAG,EAAE;AAAA,QACR,GAAG,IAAI,UAAU;AAAA,MACnB,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195751,
+      "end": 1783196195751,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195751,
+      "end": 1783196195751,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196195751,
+      "end": 1783196195751,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195752,
+      "end": 1783196195752,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195752,
+      "end": 1783196195752,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195752,
+      "end": 1783196195752,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195752,
+      "end": 1783196195752,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195752,
+      "end": 1783196195752,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195752,
+      "end": 1783196195752,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195752,
+      "end": 1783196195752,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195752,
+      "end": 1783196195752,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195752,
+      "end": 1783196195752,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195752,
+      "end": 1783196195752,
+      "order": "normal"
+    }
+  ]
+}

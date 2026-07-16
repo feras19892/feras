@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemAnalysisDataTable.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\nimport type { ChemAnalysisColumnMeta } from '../../../types/chemistry';\n\nconst props = defineProps<{\n  readings: Record<string, number>[];\n  columns: ChemAnalysisColumnMeta[];\n}>();\n\nconst emit = defineEmits<{\n  (e: 'update-cell', row: number, key: string, value: number): void;\n  (e: 'add-row'): void;\n  (e: 'remove-row', index: number): void;\n}>();\n\nconst { t } = useI18n();\nconst rows = computed(() => props.readings);\n\nconst outlierMap = computed(() => {\n  const map: Record<string, boolean[]> = {};\n  for (const col of props.columns) {\n    const vals = props.readings.map(r => r[col.key]).filter(v => typeof v === 'number' && !isNaN(v));\n    if (vals.length < 3) { map[col.key] = props.readings.map(() => false); continue; }\n    const mean = vals.reduce((a, b) => a + b, 0) / vals.length;\n    const std = Math.sqrt(vals.reduce((s, v) => s + (v - mean) ** 2, 0) / vals.length);\n    map[col.key] = props.readings.map(r => std > 1e-9 && Math.abs((r[col.key] ?? 0) - mean) > 2 * std);\n  }\n  return map;\n});\n\nfunction onInput(row: number, key: string, ev: Event) {\n  const val = parseFloat((ev.target as HTMLInputElement).value);\n  if (!isNaN(val)) {\n    emit('update-cell', row, key, val);\n  }\n}\n</script>\n\n<template>\n  <div class=\"table-panel\">\n    <div class=\"panel-header\">\n      <span>{{ t('analysis.dataTable') }}</span>\n      <button class=\"btn-add\" @click=\"emit('add-row')\">{{ t('analysis.addRow') }}</button>\n    </div>\n    <div class=\"table-wrap\">\n      <table v-if=\"columns.length\">\n        <thead>\n          <tr>\n            <th>#</th>\n            <th v-for=\"col in columns\" :key=\"col.key\">\n              {{ col.label }} <span v-if=\"col.unit\" class=\"unit\">({{ col.unit }})</span>\n            </th>\n            <th></th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for=\"(row, i) in rows\" :key=\"i\">\n            <td class=\"idx\">{{ i + 1 }}</td>\n            <td v-for=\"col in columns\" :key=\"col.key\" :class=\"{ outlier: outlierMap[col.key]?.[i] }\">\n              <input\n                type=\"text\"\n                inputmode=\"decimal\"\n                :value=\"row[col.key] !== undefined ? (typeof row[col.key] === 'number' ? Number(row[col.key]).toFixed(3) : String(row[col.key])) : ''\"\n                @change=\"onInput(i, col.key, $event)\"\n                :title=\"outlierMap[col.key]?.[i] ? t('analysis.outlierTooltip') : ''\"\n              />\n            </td>\n            <td>\n              <button class=\"btn-del\" @click=\"emit('remove-row', i)\">✕</button>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n      <p v-else class=\"empty\">{{ t('analysis.noData') }}</p>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.table-panel {\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.5rem;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n  min-height: 0;\n}\n.panel-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 0.5rem 0.75rem;\n  background: rgba(255,255,255,0.04);\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n  font-size: 0.85rem;\n  color: #67e8f9;\n  font-weight: 600;\n}\n.btn-add {\n  background: rgba(34,197,94,0.15);\n  border: 1px solid rgba(34,197,94,0.3);\n  color: #4ade80;\n  border-radius: 0.3rem;\n  padding: 0.2rem 0.5rem;\n  font-size: 0.75rem;\n  cursor: pointer;\n}\n.table-wrap { overflow: auto; flex: 1; min-height: 0; }\ntable { width: 100%; border-collapse: collapse; font-size: 1rem; }\nth, td { padding: 0.55rem 0.7rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08); }\nth { color: #94a3b8; font-weight: 700; background: rgba(255,255,255,0.06); position: sticky; top: 0; font-size: 1rem; letter-spacing: 0.3px; }\ntbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }\ntbody tr:hover { background: rgba(91,141,184,0.05); }\n.idx { color: #64748b; width: 32px; font-size: 0.9rem; }\n.unit { color: #64748b; font-size: 0.75rem; }\ninput {\n  width: 100%;\n  padding: 0.5rem 0.4rem;\n  border-radius: 0.35rem;\n  border: 1px solid #334155;\n  background: #0f172a;\n  color: #e2e8f0;\n  font-size: 1rem;\n  text-align: center;\n  font-weight: 600;\n  transition: border-color 0.15s, box-shadow 0.15s;\n}\ninput:focus {\n  outline: none;\n  border-color: #5B8DB8;\n  box-shadow: 0 0 0 2px rgba(91,141,184,0.15);\n}\n.btn-del {\n  background: none;\n  border: none;\n  color: #f87171;\n  cursor: pointer;\n  font-size: 0.85rem;\n  padding: 0.15rem 0.3rem;\n}\n.empty { color: #64748b; text-align: center; padding: 2rem; font-size: 0.9rem; }\ntd.outlier input {\n  background: rgba(245,158,11,0.15);\n  border-color: rgba(245,158,11,0.5);\n  color: #fbbf24;\n}\n</style>\n",
+      "start": 1783196193075,
+      "end": 1783196193351,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193351,
+      "end": 1783196193351,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196193351,
+      "end": 1783196193351,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193351,
+      "end": 1783196193351,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193351,
+      "end": 1783196193351,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemAnalysisDataTable.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemAnalysisDataTable.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemAnalysisDataTable.vue?vue&type=style&index=0&scoped=115a2358&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-115a2358\"]]);\n",
+      "start": 1783196193351,
+      "end": 1783196193480,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193480,
+      "end": 1783196193480,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193480,
+      "end": 1783196193480,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193480,
+      "end": 1783196193480,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193480,
+      "end": 1783196193480,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193480,
+      "end": 1783196193480,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193480,
+      "end": 1783196193480,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193480,
+      "end": 1783196193480,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193480,
+      "end": 1783196193480,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193480,
+      "end": 1783196193480,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193480,
+      "end": 1783196193480,
+      "order": "normal"
+    }
+  ]
+}

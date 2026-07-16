@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/panels/ThermalExpansionLawsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed } from 'vue'\nimport { useI18n } from '../../../../composables/useI18n'\nimport { ALPHA } from '../../../../composables/thermal-expansion/useThermalExpansionCalculations'\nconst { t } = useI18n()\nconst props = defineProps<{ L0: number; t0: number; t1: number; alpha: number; dL: number; material?: string }>()\nconst alphaVal = computed(() => props.alpha * 1e-6)\nconst trueAlpha = computed(() => props.material ? (ALPHA[props.material] ?? props.alpha) : props.alpha)\n</script>\n<template>\n  <div class=\"laws-panel\">\n    <div class=\"law-box expansion\">\n      <div class=\"law-title\">قانون التمدد الخطي</div>\n      <div class=\"formula\">ΔL = α × L₀ × ΔT</div>\n      <div class=\"data-grid\">\n        <div class=\"data-item\"><span class=\"data-label\">L₀</span><span class=\"data-val\">{{ L0.toFixed(2) }} m</span></div>\n        <div class=\"data-item\"><span class=\"data-label\">ΔT</span><span class=\"data-val\">{{ (t1 - t0) }} °C</span></div>\n        <div class=\"data-item\"><span class=\"data-label\">α</span><span class=\"data-val\">{{ alpha.toFixed(1) }} × 10⁻⁶/K</span></div>\n        <div class=\"data-item highlight\"><span class=\"data-label\">ΔL</span><span class=\"data-val green\">{{ (dL * 1000).toFixed(3) }} mm</span></div>\n      </div>\n    </div>\n    <div class=\"law-box calc\">\n      <div class=\"law-title\">حساب معامل التمدد α</div>\n      <div class=\"formula\">α = ΔL / (L₀ × ΔT)</div>\n      <div class=\"data-grid\">\n        <div class=\"data-item\"><span class=\"data-label\">ΔL</span><span class=\"data-val\">{{ (dL * 1000).toFixed(3) }} mm</span></div>\n        <div class=\"data-item\"><span class=\"data-label\">L₀ × ΔT</span><span class=\"data-val\">{{ (L0 * (t1 - t0)).toFixed(2) }} m·°C</span></div>\n        <div class=\"data-item highlight\"><span class=\"data-label\">α (محسوب)</span><span class=\"data-val green\">{{ (dL / (L0 * (t1 - t0)) * 1e6).toFixed(1) }} × 10⁻⁶/K</span></div>\n        <div class=\"data-item\"><span class=\"data-label\">α (حقيقي)</span><span class=\"data-val blue\">{{ alpha.toFixed(1) }} × 10⁻⁶/K</span></div>\n      </div>\n    </div>\n  </div>\n</template>\n<style scoped>\n.laws-panel { display:flex; flex-direction:column; gap:.4rem; padding:.3rem; }\n.law-box { border-radius:8px; padding:.6rem .7rem; margin-bottom:.3rem; }\n.law-box.expansion { background:rgba(245,158,11,.06); border:1px solid rgba(245,158,11,.18); }\n.law-box.calc { background:rgba(91,141,184,.06); border:1px solid rgba(91,141,184,.18); }\n.law-title { font-weight:800; font-size:.8rem; margin-bottom:.4rem; }\n.law-box.expansion .law-title { color:#fbbf24; }\n.law-box.calc .law-title { color:#5B8DB8; }\n.formula { font-family:'Courier New', monospace; font-size:.9rem; color:#D1D7E0; text-align:center; margin:.25rem 0 .3rem; letter-spacing:.5px; }\n.data-grid { display:flex; flex-direction:column; gap:.2rem; }\n.data-item { display:flex; justify-content:space-between; padding:.25rem .35rem; border-radius:4px; background:rgba(255,255,255,.02); font-size:.74rem; }\n.data-item.highlight { background:rgba(74,222,128,.08); border:1px solid rgba(74,222,128,.2); }\n.data-label { color:#8B95A5; }\n.data-val { color:#D1D7E0; font-weight:700; }\n.data-val.green { color:#4ade80; }\n.data-val.blue { color:#5B8DB8; }\n</style>\n",
+      "start": 1783196194987,
+      "end": 1783196195259,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195259,
+      "end": 1783196195259,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195259,
+      "end": 1783196195259,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195259,
+      "end": 1783196195259,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195259,
+      "end": 1783196195259,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/panels/ThermalExpansionLawsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/panels/ThermalExpansionLawsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/panels/ThermalExpansionLawsPanel.vue?vue&type=style&index=0&scoped=1ef176bb&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-1ef176bb\"]]);\n",
+      "start": 1783196195259,
+      "end": 1783196195528,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195528,
+      "end": 1783196195529,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195529,
+      "end": 1783196195529,
+      "order": "normal"
+    }
+  ]
+}

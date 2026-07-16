@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisConclusionPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, vModelText as _vModelText, withDirectives as _withDirectives, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"conclusion-panel\" }\nconst _hoisted_2 = { class: \"panel-header\" }\nconst _hoisted_3 = { class: \"form\" }\nconst _hoisted_4 = { class: \"field\" }\nconst _hoisted_5 = [\"placeholder\"]\nconst _hoisted_6 = { class: \"field\" }\nconst _hoisted_7 = [\"placeholder\"]\nconst _hoisted_8 = { class: \"field\" }\nconst _hoisted_9 = [\"placeholder\"]\n\nimport { ref } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'AnalysisConclusionPanel',\n  emits: [\"update\"],\n  setup(__props, { emit: __emit }) {\n\nconst { t } = useI18n();\nconst conclusion = ref('');\nconst errors = ref('');\nconst improvements = ref('');\n\nconst emit = __emit;\n\nfunction onChange() {\n  emit('update', { conclusion: conclusion.value, errors: errors.value, improvements: improvements.value });\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, _toDisplayString(_unref(t)('analysis.conclusion')), 1),\n    _createElementVNode(\"div\", _hoisted_3, [\n      _createElementVNode(\"div\", _hoisted_4, [\n        _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('analysis.mainConclusion')), 1),\n        _withDirectives(_createElementVNode(\"textarea\", {\n          \"onUpdate:modelValue\": _cache[0] || (_cache[0] = ($event: any) => ((conclusion).value = $event)),\n          onInput: onChange,\n          rows: \"2\",\n          placeholder: _unref(t)('analysis.conclusionPlaceholder')\n        }, null, 40, _hoisted_5), [\n          [_vModelText, conclusion.value]\n        ])\n      ]),\n      _createElementVNode(\"div\", _hoisted_6, [\n        _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('analysis.errorSources')), 1),\n        _withDirectives(_createElementVNode(\"textarea\", {\n          \"onUpdate:modelValue\": _cache[1] || (_cache[1] = ($event: any) => ((errors).value = $event)),\n          onInput: onChange,\n          rows: \"2\",\n          placeholder: _unref(t)('analysis.errorSourcesPlaceholder')\n        }, null, 40, _hoisted_7), [\n          [_vModelText, errors.value]\n        ])\n      ]),\n      _createElementVNode(\"div\", _hoisted_8, [\n        _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('analysis.improvements')), 1),\n        _withDirectives(_createElementVNode(\"textarea\", {\n          \"onUpdate:modelValue\": _cache[2] || (_cache[2] = ($event: any) => ((improvements).value = $event)),\n          onInput: onChange,\n          rows: \"2\",\n          placeholder: _unref(t)('analysis.improvementsPlaceholder')\n        }, null, 40, _hoisted_9), [\n          [_vModelText, improvements.value]\n        ])\n      ])\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783196193631,
+      "end": 1783196193631
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193631,
+      "end": 1783196193631,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, vModelText as _vModelText, withDirectives as _withDirectives, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"conclusion-panel\" };\nconst _hoisted_2 = { class: \"panel-header\" };\nconst _hoisted_3 = { class: \"form\" };\nconst _hoisted_4 = { class: \"field\" };\nconst _hoisted_5 = [\"placeholder\"];\nconst _hoisted_6 = { class: \"field\" };\nconst _hoisted_7 = [\"placeholder\"];\nconst _hoisted_8 = { class: \"field\" };\nconst _hoisted_9 = [\"placeholder\"];\nimport { ref } from \"vue\";\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"AnalysisConclusionPanel\",\n  emits: [\"update\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const conclusion = ref(\"\");\n    const errors = ref(\"\");\n    const improvements = ref(\"\");\n    const emit = __emit;\n    function onChange() {\n      emit(\"update\", { conclusion: conclusion.value, errors: errors.value, improvements: improvements.value });\n    }\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, _toDisplayString(_unref(t)(\"analysis.conclusion\")), 1),\n        _createElementVNode(\"div\", _hoisted_3, [\n          _createElementVNode(\"div\", _hoisted_4, [\n            _createElementVNode(\"label\", null, _toDisplayString(_unref(t)(\"analysis.mainConclusion\")), 1),\n            _withDirectives(_createElementVNode(\"textarea\", {\n              \"onUpdate:modelValue\": _cache[0] || (_cache[0] = ($event) => conclusion.value = $event),\n              onInput: onChange,\n              rows: \"2\",\n              placeholder: _unref(t)(\"analysis.conclusionPlaceholder\")\n            }, null, 40, _hoisted_5), [\n              [_vModelText, conclusion.value]\n            ])\n          ]),\n          _createElementVNode(\"div\", _hoisted_6, [\n            _createElementVNode(\"label\", null, _toDisplayString(_unref(t)(\"analysis.errorSources\")), 1),\n            _withDirectives(_createElementVNode(\"textarea\", {\n              \"onUpdate:modelValue\": _cache[1] || (_cache[1] = ($event) => errors.value = $event),\n              onInput: onChange,\n              rows: \"2\",\n              placeholder: _unref(t)(\"analysis.errorSourcesPlaceholder\")\n            }, null, 40, _hoisted_7), [\n              [_vModelText, errors.value]\n            ])\n          ]),\n          _createElementVNode(\"div\", _hoisted_8, [\n            _createElementVNode(\"label\", null, _toDisplayString(_unref(t)(\"analysis.improvements\")), 1),\n            _withDirectives(_createElementVNode(\"textarea\", {\n              \"onUpdate:modelValue\": _cache[2] || (_cache[2] = ($event) => improvements.value = $event),\n              onInput: onChange,\n              rows: \"2\",\n              placeholder: _unref(t)(\"analysis.improvementsPlaceholder\")\n            }, null, 40, _hoisted_9), [\n              [_vModelText, improvements.value]\n            ])\n          ])\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196193631,
+      "end": 1783196193687,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisConclusionPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, vModelText as _vModelText, withDirectives as _withDirectives, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"conclusion-panel\" }\nconst _hoisted_2 = { class: \"panel-header\" }\nconst _hoisted_3 = { class: \"form\" }\nconst _hoisted_4 = { class: \"field\" }\nconst _hoisted_5 = [\"placeholder\"]\nconst _hoisted_6 = { class: \"field\" }\nconst _hoisted_7 = [\"placeholder\"]\nconst _hoisted_8 = { class: \"field\" }\nconst _hoisted_9 = [\"placeholder\"]\n\nimport { ref } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'AnalysisConclusionPanel',\n  emits: [\"update\"],\n  setup(__props, { emit: __emit }) {\n\nconst { t } = useI18n();\nconst conclusion = ref('');\nconst errors = ref('');\nconst improvements = ref('');\n\nconst emit = __emit;\n\nfunction onChange() {\n  emit('update', { conclusion: conclusion.value, errors: errors.value, improvements: improvements.value });\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, _toDisplayString(_unref(t)('analysis.conclusion')), 1),\n    _createElementVNode(\"div\", _hoisted_3, [\n      _createElementVNode(\"div\", _hoisted_4, [\n        _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('analysis.mainConclusion')), 1),\n        _withDirectives(_createElementVNode(\"textarea\", {\n          \"onUpdate:modelValue\": _cache[0] || (_cache[0] = ($event: any) => ((conclusion).value = $event)),\n          onInput: onChange,\n          rows: \"2\",\n          placeholder: _unref(t)('analysis.conclusionPlaceholder')\n        }, null, 40, _hoisted_5), [\n          [_vModelText, conclusion.value]\n        ])\n      ]),\n      _createElementVNode(\"div\", _hoisted_6, [\n        _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('analysis.errorSources')), 1),\n        _withDirectives(_createElementVNode(\"textarea\", {\n          \"onUpdate:modelValue\": _cache[1] || (_cache[1] = ($event: any) => ((errors).value = $event)),\n          onInput: onChange,\n          rows: \"2\",\n          placeholder: _unref(t)('analysis.errorSourcesPlaceholder')\n        }, null, 40, _hoisted_7), [\n          [_vModelText, errors.value]\n        ])\n      ]),\n      _createElementVNode(\"div\", _hoisted_8, [\n        _createElementVNode(\"label\", null, _toDisplayString(_unref(t)('analysis.improvements')), 1),\n        _withDirectives(_createElementVNode(\"textarea\", {\n          \"onUpdate:modelValue\": _cache[2] || (_cache[2] = ($event: any) => ((improvements).value = $event)),\n          onInput: onChange,\n          rows: \"2\",\n          placeholder: _unref(t)('analysis.improvementsPlaceholder')\n        }, null, 40, _hoisted_9), [\n          [_vModelText, improvements.value]\n        ])\n      ])\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193687,
+      "end": 1783196193687,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193687,
+      "end": 1783196193687,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196193687,
+      "end": 1783196193687,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193687,
+      "end": 1783196193687,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193687,
+      "end": 1783196193687,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193687,
+      "end": 1783196193687,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193687,
+      "end": 1783196193687,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193688,
+      "end": 1783196193688,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193688,
+      "end": 1783196193688,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193688,
+      "end": 1783196193688,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193688,
+      "end": 1783196193688,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193688,
+      "end": 1783196193688,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193688,
+      "end": 1783196193688,
+      "order": "normal"
+    }
+  ]
+}

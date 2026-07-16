@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/resonance/ResonanceExperiment.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, onMounted, onUnmounted } from 'vue'\nimport { useResonanceExperiment } from '../../../../composables/resonance/useResonanceExperiment'\nimport { useI18n } from '../../../../composables/useI18n'\nimport ResonanceMenuBar from '../../../../components/experiment/resonance/ResonanceMenuBar.vue'\nimport ResonanceCanvas from '../../../../components/experiment/resonance/ResonanceCanvas.vue'\nimport ResonancePanelBody from '../../../../components/experiment/resonance/ResonancePanelBody.vue'\nimport ResonanceStatusBar from '../../../../components/experiment/resonance/ResonanceStatusBar.vue'\nimport ResonanceControlBar from '../../../../components/experiment/resonance/ResonanceControlBar.vue'\nimport ResonanceHelpModal from '../../../../components/experiment/resonance/ResonanceHelpModal.vue'\nimport ResonanceOverlayPanels from '../../../../components/experiment/resonance/ResonanceOverlayPanels.vue'\nimport DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'\n\nconst ex = useResonanceExperiment()\nconst { t } = useI18n()\nconst helpOpen = ref(false)\n\nfunction onKeyDown(e: KeyboardEvent) {\n  const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()\n  if (tag === 'input' || tag === 'textarea' || tag === 'select') return\n  if (e.code === 'Space') { e.preventDefault(); ex.lab.togglePause() }\n  else if (e.key === 'r' || e.key === 'R') { if (confirm(t('experiments.resetConfirm'))) ex.resetSim() }\n  else if (e.key === 's' || e.key === 'S') ex.trials.recordTrial()\n  else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); if (e.shiftKey) ex.trials.redo(); else ex.trials.undo() }\n  else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ex.trials.redo() }\n  else if (e.key === '?') helpOpen.value = !helpOpen.value\n}\n\nonMounted(() => { ex.layout.applyPersistedLayout(); ex.trials.autoLoad(); window.addEventListener('keydown', onKeyDown) })\nonUnmounted(() => window.removeEventListener('keydown', onKeyDown))\n</script>\n\n<template>\n  <div class=\"resonance-lab\">\n    <ResonanceMenuBar\n      :title=\"t('experiments.expResonance')\"\n      icon=\"&#x1F3B5;\"\n      experiment-route=\"/physics/waves/resonance\"\n      experiment-name=\"Standing Waves\"\n      @toggle-panel=\"ex.layout.togglePanel\"\n      @show-all-panels=\"ex.layout.showAllPanels\"\n      @export-csv=\"ex.trials.exportCsv\"\n      @toggle-pause=\"ex.lab.togglePause\"\n      @reset=\"ex.resetSim\"\n      @record-trial=\"ex.trials.recordTrial\"\n      @toggle-help=\"helpOpen = !helpOpen\"\n      @analyze-results=\"ex.exportToAnalysis\"\n    />\n    <ResonanceHelpModal :open=\"helpOpen\" @close=\"helpOpen = false\" />\n\n    <div class=\"lab-grid\">\n      <div class=\"lab-col data-col\" :style=\"{ width: ex.layout.widths.data + 'px' }\">\n        <template v-for=\"id in ex.layout.columnMap.data\" :key=\"id\">\n          <DraggablePanel\n            v-if=\"ex.layout.isPanelVisible(id)\"\n            class=\"lab-card\"\n            :id=\"id\"\n            :title=\"ex.layout.panelTitle(id)\"\n            @maximize=\"ex.layout.maximizePanel\"\n            @hide=\"ex.layout.togglePanel\"\n            @drop=\"ex.handleDrop\"\n          >\n            <ResonancePanelBody\n              :id=\"id\"\n              :trials=\"ex.trials.trials.value\"\n              :params=\"ex.params\"\n              :frequency=\"ex.lab.frequency.value\"\n              :wavelength=\"ex.lab.wavelength.value\"\n              :wave-speed=\"ex.lab.waveSpeed.value\"\n              :waveform-data=\"ex.lab.waveformData.value\"\n              @remove=\"ex.trials.removeTrial\"\n              @clear=\"ex.trials.clearTrials\"\n              @update:params=\"Object.assign(ex.params, $event)\"\n            />\n          </DraggablePanel>\n        </template>\n      </div>\n      <div class=\"resizer\" @mousedown=\"ex.onResizeStart('data', $event)\"></div>\n      <div class=\"lab-col vis-col\">\n        <div class=\"vis-canvas-wrap\">\n          <ResonanceCanvas\n            :string-length=\"ex.params.stringLength\"\n            :harmonic=\"ex.params.harmonic\"\n            :running=\"ex.lab.running.value\"\n          />\n        </div>\n        <ResonanceControlBar\n          :launch-label=\"ex.lab.running.value && !ex.lab.paused.value ? '&#x23F8; ' + t('experiments.pauseBtn') : '&#x25B6; ' + t('experiments.startBtn')\"\n          :can-undo=\"ex.trials.canUndo()\"\n          :can-redo=\"ex.trials.canRedo()\"\n          @toggle-pause=\"ex.lab.togglePause\"\n          @reset=\"ex.resetSim\"\n          @record-trial=\"ex.trials.recordTrial\"\n          @clear-trials=\"ex.trials.clearTrials\"\n          @export-csv=\"ex.trials.exportCsv\"\n          @undo=\"ex.trials.undo\"\n          @redo=\"ex.trials.redo\"\n        />\n      </div>\n      <div class=\"resizer\" @mousedown=\"ex.onResizeStart('ctrl', $event)\"></div>\n      <div class=\"lab-col ctrl-col\" :style=\"{ width: ex.layout.widths.ctrl + 'px' }\">\n        <template v-for=\"id in ex.layout.columnMap.ctrl\" :key=\"id\">\n          <DraggablePanel\n            v-if=\"id !== 'params' && ex.layout.isPanelVisible(id)\"\n            class=\"lab-card\"\n            :id=\"id\"\n            :title=\"ex.layout.panelTitle(id)\"\n            @maximize=\"ex.layout.maximizePanel\"\n            @hide=\"ex.layout.togglePanel\"\n            @drop=\"ex.handleDrop\"\n          >\n            <ResonancePanelBody\n              :id=\"id\"\n              :trials=\"ex.trials.trials.value\"\n              :params=\"ex.params\"\n              :frequency=\"ex.lab.frequency.value\"\n              :wavelength=\"ex.lab.wavelength.value\"\n              :wave-speed=\"ex.lab.waveSpeed.value\"\n              :waveform-data=\"ex.lab.waveformData.value\"\n              @remove=\"ex.trials.removeTrial\"\n              @clear=\"ex.trials.clearTrials\"\n              @update:params=\"Object.assign(ex.params, $event)\"\n            />\n          </DraggablePanel>\n          <div v-else-if=\"id === 'params'\" class=\"params-embedded\">\n            <ResonancePanelBody\n              id=\"params\"\n              :trials=\"ex.trials.trials.value\"\n              :params=\"ex.params\"\n              :frequency=\"ex.lab.frequency.value\"\n              :wavelength=\"ex.lab.wavelength.value\"\n              :wave-speed=\"ex.lab.waveSpeed.value\"\n              :waveform-data=\"ex.lab.waveformData.value\"\n              @update:params=\"Object.assign(ex.params, $event)\"\n            />\n          </div>\n        </template>\n      </div>\n    </div>\n\n    <ResonanceOverlayPanels\n      :maximized=\"ex.layout.maximized\"\n      :panel-title=\"ex.layout.panelTitle\"\n      :trials=\"ex.trials.trials.value\"\n      :params=\"ex.params\"\n      :frequency=\"ex.lab.frequency.value\"\n      :wavelength=\"ex.lab.wavelength.value\"\n      :wave-speed=\"ex.lab.waveSpeed.value\"\n      :waveform-data=\"ex.lab.waveformData.value\"\n      @maximize=\"ex.layout.maximizePanel\"\n      @remove=\"ex.trials.removeTrial\"\n      @clear=\"ex.trials.clearTrials\"\n      @update:params=\"Object.assign(ex.params, $event)\"\n    />\n\n    <div class=\"hint-bar\" v-if=\"!ex.lab.running.value\"><span>&#x1F4A1; {{ t('experiments.hintStart') }}</span></div>\n    <div class=\"hint-bar active\" v-else-if=\"ex.lab.paused.value\"><span>&#x23F8; {{ t('experiments.hintPaused') }}</span></div>\n    <div class=\"hint-bar success\" v-else><span>&#x2705; {{ t('experiments.hintRunning') }}</span></div>\n\n    <ResonanceStatusBar\n      :running=\"ex.lab.running.value\"\n      :paused=\"ex.lab.paused.value\"\n      :string-length=\"ex.params.stringLength\"\n      :harmonic=\"ex.params.harmonic\"\n      :frequency=\"ex.lab.frequency.value\"\n      :wavelength=\"ex.lab.wavelength.value\"\n    />\n  </div>\n</template>\n\n<style scoped>\n.resonance-lab { background: #161B22; color: #D1D7E0; padding: .6rem .8rem; height: 100vh; display: flex; flex-direction: column; gap: .5rem; overflow: hidden; }\n.lab-grid { display: flex; flex-direction: row; flex: 1; min-height: 0; overflow: hidden; }\n.lab-col { display: flex; flex-direction: column; gap: .5rem; overflow-y: auto; min-height: 0; }\n.data-col { background: rgba(255,255,255,0.02); }\n.vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 0; position: relative; }\n.vis-canvas-wrap { flex: 1; min-height: 0; position: relative; width: 100%; }\n.ctrl-col { background: rgba(255,255,255,0.02); }\n.params-embedded { padding: .6rem; }\n.resizer { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0; }\n.resizer:hover, .resizer:active { background: #5B8DB8; }\n.hint-bar { background: #252D3A; border: 1px solid #2D3645; border-radius: 6px; padding: .35rem .7rem; font-size: .75rem; color: #8B95A5; text-align: center; flex-shrink: 0; }\n.hint-bar.active { border-color: #5B8DB8; color: #5B8DB8; background: rgba(91,141,184,.08); }\n.hint-bar.success { border-color: #22c55e; color: #22c55e; background: rgba(34,197,94,.08); }\n</style>\n",
+      "start": 1783196192962,
+      "end": 1783196193199,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193199,
+      "end": 1783196193199,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196193199,
+      "end": 1783196193199,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193199,
+      "end": 1783196193199,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193199,
+      "end": 1783196193199,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/resonance/ResonanceExperiment.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/resonance/ResonanceExperiment.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/resonance/ResonanceExperiment.vue?vue&type=style&index=0&scoped=383f7b3b&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-383f7b3b\"]]);\n",
+      "start": 1783196193199,
+      "end": 1783196193338,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193338,
+      "end": 1783196193338,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193338,
+      "end": 1783196193338,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193338,
+      "end": 1783196193338,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193338,
+      "end": 1783196193338,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193339,
+      "end": 1783196193339,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193339,
+      "end": 1783196193339,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193339,
+      "end": 1783196193339,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193339,
+      "end": 1783196193339,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193339,
+      "end": 1783196193341,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193341,
+      "end": 1783196193341,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/SpeedOfSoundOverlayPanels.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport type { SpeedOfSoundTrial } from '../../../composables/speed-of-sound/useSpeedOfSoundTrials'\nimport SpeedOfSoundPanelBody from './SpeedOfSoundPanelBody.vue'\n\ninterface Props {\n  maximized: Record<string, boolean>\n  panelTitle: (id: string) => string\n  trials: SpeedOfSoundTrial[]\n  params: { tubeLength: number; frequency: number; temperature: number; harmonic: 1 | 3 }\n  wavelength: number\n  vMeasured: number\n  vTheory: number\n  percentError: number\n  waveformData: { x: number; y: number }[]\n  regressionSlope: number\n  regressionIntercept: number\n  rSquared: number\n  vFromRegression: number | null\n  endCorrection: number | null\n}\nconst props = defineProps<Props>()\nconst emit = defineEmits<{\n  (e: 'maximize', id: string): void\n  (e: 'remove', id: number): void\n  (e: 'clear'): void\n  (e: 'update:params', p: { tubeLength: number; frequency: number; temperature: number; harmonic: 1 | 3 }): void\n}>()\nconst ids = ['readings', 'chart', 'trials', 'params', 'laws', 'results']\n</script>\n\n<template>\n  <div class=\"overlay-panels\">\n    <template v-for=\"id in ids\" :key=\"id\">\n      <div v-if=\"props.maximized[id]\" class=\"overlay-panel\" @click=\"emit('maximize', id)\">\n        <div class=\"overlay-header\">\n          <span>{{ panelTitle(id) }}</span>\n          <button class=\"overlay-close\" @click.stop=\"emit('maximize', id)\">&#x2715;</button>\n        </div>\n        <SpeedOfSoundPanelBody\n          :id=\"id\"\n          :trials=\"trials\"\n          :params=\"params\"\n          :wavelength=\"wavelength\"\n          :v-measured=\"vMeasured\"\n          :v-theory=\"vTheory\"\n          :percent-error=\"percentError\"\n          :waveform-data=\"waveformData\"\n          :regression-slope=\"regressionSlope\"\n          :regression-intercept=\"regressionIntercept\"\n          :r-squared=\"rSquared\"\n          :v-from-regression=\"vFromRegression\"\n          :end-correction=\"endCorrection\"\n          @remove=\"emit('remove', $event)\"\n          @clear=\"emit('clear')\"\n          @update:params=\"emit('update:params', $event)\"\n        />\n      </div>\n    </template>\n  </div>\n</template>\n\n<style scoped>\n.overlay-panels { position: fixed; inset: 0; z-index: 9998; pointer-events: none; }\n.overlay-panel { position: absolute; inset: 2rem; background: #1A1F27; border: 1px solid #2D3645; border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; pointer-events: auto; }\n.overlay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: .5rem; font-weight: 700; color: #5B8DB8; }\n.overlay-close { background: none; border: none; color: #8B95A5; cursor: pointer; font-size: 1rem; }\n</style>\n",
+      "start": 1783196193610,
+      "end": 1783196194105,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194105,
+      "end": 1783196194105,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194105,
+      "end": 1783196194105,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194105,
+      "end": 1783196194105,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194105,
+      "end": 1783196194105,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/SpeedOfSoundOverlayPanels.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/SpeedOfSoundOverlayPanels.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/SpeedOfSoundOverlayPanels.vue?vue&type=style&index=0&scoped=adee7659&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-adee7659\"]]);\n",
+      "start": 1783196194105,
+      "end": 1783196194372,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194372,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194373,
+      "end": 1783196194374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194374,
+      "end": 1783196194374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194374,
+      "end": 1783196194376,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194377,
+      "end": 1783196194377,
+      "order": "normal"
+    }
+  ]
+}

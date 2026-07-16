@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/ReportTab.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed, ref } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\nimport type { AnalysisColumnMeta, AnalysisEquation, AnalysisPlotConfig } from '../../../types/physics';\nimport type { StudentInfo } from '../../../stores/analysis.store';\nimport AnalysisConclusionPanel from './AnalysisConclusionPanel.vue';\nimport AnalysisReportPreview from './AnalysisReportPreview.vue';\nimport AnalysisReportExport from './AnalysisReportExport.vue';\n\nconst props = defineProps<{\n  sourceName: string;\n  reportDate: string;\n  studentInfo: StudentInfo;\n  readings: Record<string, number>[];\n  columns: AnalysisColumnMeta[];\n  equations: AnalysisEquation[];\n  plots: AnalysisPlotConfig[];\n  hasData: boolean;\n  solvedEquations?: { equationName: string; formula: string; targetVar: string; varValues: Record<string, number>; result: string; timestamp: number }[];\n  regressionData?: { slope: number; intercept: number; r2: number } | null;\n  slopeCalcData?: { label: string; formula: string; value: number; unit: string; expr: string } | null;\n  axesData?: { x: string; y: string; xLabel: string; yLabel: string } | null;\n  errorCalcData?: { theoretical: number | null; experimental: number | null; errorPercent: number | null } | null;\n  chartSnapshot?: string;\n  calculatedN2?: number | null;\n  expectedN2?: number | null;\n}>();\n\nconst emit = defineEmits<{\n  (e: 'print'): void;\n  (e: 'exportCsv'): void;\n  (e: 'exportPng'): void;\n  (e: 'sendToTeacher'): void;\n  (e: 'conclusionUpdate', data: { conclusion: string; errors: string; improvements: string }): void;\n}>();\n\nconst { t } = useI18n();\n\nconst conclusionData = ref({ conclusion: '', errors: '', improvements: '' });\nconst showPreview = ref(false);\n\nconst readyChecks = computed(() => {\n  const c: { ok: boolean; text: string }[] = [];\n  c.push({ ok: !!props.studentInfo.name, text: t('analysis.studentName') });\n  c.push({ ok: props.readings.length >= 2, text: t('analysis.minTwoReadings') });\n  c.push({ ok: conclusionData.value.conclusion.length > 10, text: t('analysis.conclusionWritten') });\n  return c;\n});\n\nconst allReady = computed(() => readyChecks.value.every(c => c.ok));\n\nfunction onConclusionUpdate(data: { conclusion: string; errors: string; improvements: string }) {\n  conclusionData.value = data;\n  emit('conclusionUpdate', data);\n}\n</script>\n\n<template>\n  <div class=\"report-tab\">\n    <div class=\"grid\">\n      <div class=\"left\">\n        <AnalysisConclusionPanel @update=\"onConclusionUpdate\" />\n        <div class=\"readiness\">\n          <div class=\"readiness-title\">{{ t('analysis.reportReadiness') }}</div>\n          <div v-for=\"(c, i) in readyChecks\" :key=\"i\" :class=\"['r-item', c.ok ? 'ok' : 'no']\">\n            {{ c.ok ? '✅' : '⬜' }} {{ c.text }}\n          </div>\n          <div v-if=\"allReady\" class=\"all-ready\">{{ t('analysis.reportReady') }}</div>\n        </div>\n      </div>\n      <div class=\"right\">\n        <button class=\"btn-preview\" @click=\"showPreview = !showPreview\">\n          {{ showPreview ? t('analysis.hide') : t('analysis.previewReport') }}\n        </button>\n        <div v-show=\"showPreview\" class=\"preview-box\">\n          <AnalysisReportPreview\n            :source-name=\"sourceName\"\n            :report-date=\"reportDate\"\n            :student-info=\"studentInfo\"\n            :readings=\"readings\"\n            :columns=\"columns\"\n            :equations=\"equations\"\n            :plots=\"plots\"\n            :conclusion=\"conclusionData\"\n            :solved-equations=\"solvedEquations\"\n            :regression-data=\"regressionData\"\n            :slope-calc-data=\"slopeCalcData\"\n            :axes-data=\"axesData\"\n            :error-calc-data=\"errorCalcData\"\n            :chart-snapshot=\"chartSnapshot\"\n            :calculated-n2=\"calculatedN2\"\n            :expected-n2=\"expectedN2\"\n          />\n        </div>\n        <AnalysisReportExport\n          :has-data=\"hasData\"\n          @print=\"emit('print')\"\n          @export-csv=\"emit('exportCsv')\"\n          @export-png=\"emit('exportPng')\"\n          @send-to-teacher=\"emit('sendToTeacher')\"\n        />\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.report-tab { flex: 1; overflow: hidden; display: flex; flex-direction: column; padding: 0.5rem; }\n.grid { display: flex; gap: 0.5rem; height: 100%; }\n.left { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 0.5rem; overflow-y: auto; }\n.right { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.5rem; overflow: hidden; }\n.btn-preview { flex-shrink: 0; padding: 0.4rem; border: none; border-radius: 0.35rem; background: linear-gradient(135deg, #475569, #334155); color: #fff; cursor: pointer; font-size: 0.8rem; font-weight: 600; }\n.preview-box { flex: 1; overflow-y: auto; background: #0f172a; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.06); padding: 0.5rem; }\n.readiness { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.5rem; padding: 0.5rem; }\n.readiness-title { font-size: 0.8rem; color: #67e8f9; font-weight: 600; margin-bottom: 0.3rem; }\n.r-item { font-size: 0.75rem; padding: 0.2rem 0; }\n.r-item.ok { color: #4ade80; }\n.r-item.no { color: #64748b; }\n.all-ready { margin-top: 0.4rem; padding: 0.4rem; background: rgba(34,197,94,0.1); border-radius: 0.3rem; color: #4ade80; font-size: 0.8rem; text-align: center; font-weight: 600; }\n</style>\n",
+      "start": 1783196192521,
+      "end": 1783196192846,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196192846,
+      "end": 1783196192846,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196192846,
+      "end": 1783196192846,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196192846,
+      "end": 1783196192846,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196192846,
+      "end": 1783196192846,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/ReportTab.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/ReportTab.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/ReportTab.vue?vue&type=style&index=0&scoped=4700d318&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-4700d318\"]]);\n",
+      "start": 1783196192846,
+      "end": 1783196193010,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193010,
+      "end": 1783196193010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193010,
+      "end": 1783196193010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193010,
+      "end": 1783196193010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193010,
+      "end": 1783196193010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193010,
+      "end": 1783196193010,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193010,
+      "end": 1783196193010,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193011,
+      "end": 1783196193011,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193011,
+      "end": 1783196193011,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193011,
+      "end": 1783196193011,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193012,
+      "end": 1783196193012,
+      "order": "normal"
+    }
+  ]
+}

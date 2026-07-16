@@ -16,6 +16,7 @@ export interface ExportContext {
   isInternalResistance: { value: boolean }
   isSeries: { value: boolean }
   isCapacitorsCombo: { value: boolean }
+  isCapacitorsSeries: { value: boolean }
   isPotentiometer: { value: boolean }
   isNonOhmic: { value: boolean }
   isMaxPower: { value: boolean }
@@ -36,6 +37,7 @@ export interface ExportContext {
   isThermistor: { value: boolean }
   isMagneticForce: { value: boolean }
   isLCOsc: { value: boolean }
+  sourceEffData: { value: any }
   rcData: { value: any }
   rcHistory: { value: { t: number; V: number; I: number }[] }
   kirchhoffData: { value: any }

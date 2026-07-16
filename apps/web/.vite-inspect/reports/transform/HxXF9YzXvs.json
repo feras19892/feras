@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionParamsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport type { CollisionParams } from '../../../modules/physics/experiments/collision/useCollisionPhysics'\nimport { useI18n } from '../../../composables/useI18n'\n\nconst { t } = useI18n()\nconst props = defineProps<{\n  params: CollisionParams\n}>()\n\nconst emit = defineEmits<{\n  (e: 'update:params', val: Partial<CollisionParams>): void\n}>()\n\nfunction update<K extends keyof CollisionParams>(key: K, value: CollisionParams[K]) {\n  emit('update:params', { [key]: value })\n}\n\nconst presets = [\n  { name: t('experiments.exchange'), desc: 'e=1, m₁=m₂', params: { m1: 1, m2: 1, v1i: 4, v2i: 0, e: 1 } },\n  { name: t('experiments.merge'), desc: 'e=0, ' + t('experiments.oppositeDirections'), params: { m1: 2, m2: 1, v1i: 3, v2i: -3, e: 0 } },\n  { name: t('experiments.wall'), desc: 'm₂ ' + t('experiments.huge'), params: { m1: 0.1, m2: 500, v1i: 5, v2i: 0, e: 1 } },\n  { name: t('experiments.partial'), desc: 'e=0.5', params: { m1: 1, m2: 1, v1i: 4, v2i: 0, e: 0.5 } },\n]\n\nfunction applyPreset(p: Partial<CollisionParams>) {\n  emit('update:params', p)\n}\n</script>\n\n<template>\n  <div class=\"params-panel\">\n    <div class=\"presets-bar\">\n      <div class=\"presets-label\">⚡ {{ t('experiments.presets') }}</div>\n      <div class=\"presets-row\">\n        <button v-for=\"preset in presets\" :key=\"preset.name\" class=\"preset-btn\" :title=\"preset.desc\" @click=\"applyPreset(preset.params)\">\n          {{ preset.name }}\n        </button>\n      </div>\n    </div>\n    <div class=\"param-row\">\n      <label>m₁ (kg)</label>\n      <input type=\"range\" min=\"0.1\" max=\"10\" step=\"0.1\" :value=\"params.m1\" @input=\"update('m1', +($event.target as HTMLInputElement).value)\">\n      <span>{{ params.m1 }}</span>\n    </div>\n    <div class=\"param-row\">\n      <label>m₂ (kg)</label>\n      <input type=\"range\" min=\"0.1\" max=\"10\" step=\"0.1\" :value=\"params.m2\" @input=\"update('m2', +($event.target as HTMLInputElement).value)\">\n      <span>{{ params.m2 }}</span>\n    </div>\n    <div class=\"param-row\">\n      <label>v₁i (m/s)</label>\n      <input type=\"range\" min=\"-10\" max=\"10\" step=\"0.5\" :value=\"params.v1i\" @input=\"update('v1i', +($event.target as HTMLInputElement).value)\">\n      <span :class=\"params.v1i < 0 ? 'neg' : 'pos'\">{{ params.v1i > 0 ? '+' : '' }}{{ params.v1i }}</span>\n    </div>\n    <div class=\"param-row\">\n      <label>v₂i (m/s)</label>\n      <input type=\"range\" min=\"-10\" max=\"10\" step=\"0.5\" :value=\"params.v2i\" @input=\"update('v2i', +($event.target as HTMLInputElement).value)\">\n      <span :class=\"params.v2i < 0 ? 'neg' : 'pos'\">{{ params.v2i > 0 ? '+' : '' }}{{ params.v2i }}</span>\n    </div>\n    <div class=\"param-row\">\n      <label>r₁ (m)</label>\n      <input type=\"range\" min=\"0.05\" max=\"0.5\" step=\"0.05\" :value=\"params.r1\" @input=\"update('r1', +($event.target as HTMLInputElement).value)\">\n      <span>{{ params.r1 }}</span>\n    </div>\n    <div class=\"param-row\">\n      <label>r₂ (m)</label>\n      <input type=\"range\" min=\"0.05\" max=\"0.5\" step=\"0.05\" :value=\"params.r2\" @input=\"update('r2', +($event.target as HTMLInputElement).value)\">\n      <span>{{ params.r2 }}</span>\n    </div>\n    <div class=\"param-row\">\n      <label>e ({{ t('experiments.restitution') }})</label>\n      <input type=\"range\" min=\"0\" max=\"1\" step=\"0.1\" :value=\"params.e\" @input=\"update('e', +($event.target as HTMLInputElement).value)\">\n      <span>{{ params.e }}</span>\n    </div>\n    <div class=\"hint\">{{ t('experiments.negativeSpeedLeft') }}</div>\n  </div>\n</template>\n\n<style scoped>\n.params-panel { padding: .5rem; }\n.param-row { display: flex; align-items: center; gap: .5rem; margin-bottom: .5rem; font-size: .75rem; }\n.param-row label { width: 80px; color: #D1D7E0; flex-shrink: 0; }\n.param-row input[type=\"range\"] { flex: 1; min-width: 0; }\n.param-row span { width: 50px; text-align: left; color: #5B8DB8; font-family: monospace; }\n.param-row span.pos { color: #22c55e; }\n.param-row span.neg { color: #ef4444; }\n.presets-bar { margin-bottom: .6rem; padding-bottom: .4rem; border-bottom: 1px dashed #2D3645; }\n.presets-label { font-size: .72rem; color: #fbbf24; font-weight: 700; margin-bottom: .3rem; }\n.presets-row { display: flex; flex-wrap: wrap; gap: .3rem; }\n.preset-btn {\n  flex: 1; min-width: 60px;\n  padding: .35rem .4rem; font-size: .68rem; font-weight: 700;\n  background: linear-gradient(135deg, #334155, #1e293b);\n  border: 1px solid rgba(71,85,105,0.4); border-radius: 6px;\n  color: #cbd5e1; cursor: pointer; transition: all .15s;\n}\n.preset-btn:hover {\n  background: linear-gradient(135deg, #3b82f6, #2563eb);\n  color: #fff; border-color: rgba(96,165,250,0.5);\n  transform: translateY(-1px);\n}\n.hint { font-size: .68rem; color: #94a3b8; text-align: center; margin-top: .3rem; border-top: 1px dashed #2D3645; padding-top: .3rem; }\n</style>\n",
+      "start": 1783196195137,
+      "end": 1783196195393,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195393,
+      "end": 1783196195393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195393,
+      "end": 1783196195393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195393,
+      "end": 1783196195393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195393,
+      "end": 1783196195393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionParamsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionParamsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionParamsPanel.vue?vue&type=style&index=0&scoped=e0f72d91&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-e0f72d91\"]]);\n",
+      "start": 1783196195393,
+      "end": 1783196195560,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195560,
+      "end": 1783196195560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195560,
+      "end": 1783196195560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195560,
+      "end": 1783196195560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195560,
+      "end": 1783196195560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195560,
+      "end": 1783196195560,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195560,
+      "end": 1783196195560,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195561,
+      "end": 1783196195561,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195561,
+      "end": 1783196195561,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195561,
+      "end": 1783196195561,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195561,
+      "end": 1783196195561,
+      "order": "normal"
+    }
+  ]
+}

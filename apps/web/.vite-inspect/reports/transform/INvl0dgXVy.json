@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionOverlayPanels.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createVNode as _createVNode, withModifiers as _withModifiers, Teleport as _Teleport, createBlock as _createBlock } from \"vue\"\n\nconst _hoisted_1 = [\"onClick\"]\nconst _hoisted_2 = { class: \"overlay-header\" }\nconst _hoisted_3 = [\"onClick\"]\n\nimport CollisionPanelBody from './CollisionPanelBody.vue'\n\nimport type { CollisionSignalPoint } from '../../../composables/collision/useCollisionLab'\nimport type { CollisionParams, CollisionState } from '../../../modules/physics/experiments/collision/useCollisionPhysics'\nimport type { CollisionTrial } from '../../../composables/collision/useCollisionTrials'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'CollisionOverlayPanels',\n  props: {\n    maximized: {},\n    panelTitle: { type: Function },\n    params: {},\n    sim: {},\n    trials: {},\n    signalSeries: {}\n  },\n  emits: [\"maximize\", \"update:params\", \"remove\", \"clear\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst props = __props\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createBlock(_Teleport, { to: \"body\" }, [\n    (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(Object.entries(__props.maximized).filter(([,a]) => a), ([id, active]) => {\n      return (_openBlock(), _createElementBlock(\"div\", {\n        key: id,\n        class: \"overlay-backdrop\",\n        onClick: ($event: any) => (emit('maximize', id))\n      }, [\n        _createElementVNode(\"div\", {\n          class: \"overlay-panel\",\n          onClick: _cache[3] || (_cache[3] = _withModifiers(() => {}, [\"stop\"]))\n        }, [\n          _createElementVNode(\"div\", _hoisted_2, [\n            _createElementVNode(\"span\", null, _toDisplayString(__props.panelTitle(id)), 1),\n            _createElementVNode(\"button\", {\n              onClick: ($event: any) => (emit('maximize', id))\n            }, \"×\", 8, _hoisted_3)\n          ]),\n          _createVNode(CollisionPanelBody, {\n            id: id,\n            params: __props.params,\n            sim: __props.sim,\n            trials: __props.trials,\n            \"signal-series\": __props.signalSeries || [],\n            \"onUpdate:params\": _cache[0] || (_cache[0] = ($event: any) => (emit('update:params', $event))),\n            onRemove: _cache[1] || (_cache[1] = ($event: any) => (emit('remove', $event))),\n            onClear: _cache[2] || (_cache[2] = ($event: any) => (emit('clear')))\n          }, null, 8, [\"id\", \"params\", \"sim\", \"trials\", \"signal-series\"])\n        ])\n      ], 8, _hoisted_1))\n    }), 128))\n  ]))\n}\n}\n\n})",
+      "start": 1783196194644,
+      "end": 1783196194644
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194644,
+      "end": 1783196194644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createVNode as _createVNode, withModifiers as _withModifiers, Teleport as _Teleport, createBlock as _createBlock } from \"vue\";\nconst _hoisted_1 = [\"onClick\"];\nconst _hoisted_2 = { class: \"overlay-header\" };\nconst _hoisted_3 = [\"onClick\"];\nimport CollisionPanelBody from \"./CollisionPanelBody.vue\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"CollisionOverlayPanels\",\n  props: {\n    maximized: {},\n    panelTitle: { type: Function },\n    params: {},\n    sim: {},\n    trials: {},\n    signalSeries: {}\n  },\n  emits: [\"maximize\", \"update:params\", \"remove\", \"clear\"],\n  setup(__props, { emit: __emit }) {\n    const props = __props;\n    const emit = __emit;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createBlock(_Teleport, { to: \"body\" }, [\n        (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(Object.entries(__props.maximized).filter(([, a]) => a), ([id, active]) => {\n          return _openBlock(), _createElementBlock(\"div\", {\n            key: id,\n            class: \"overlay-backdrop\",\n            onClick: ($event) => emit(\"maximize\", id)\n          }, [\n            _createElementVNode(\"div\", {\n              class: \"overlay-panel\",\n              onClick: _cache[3] || (_cache[3] = _withModifiers(() => {\n              }, [\"stop\"]))\n            }, [\n              _createElementVNode(\"div\", _hoisted_2, [\n                _createElementVNode(\"span\", null, _toDisplayString(__props.panelTitle(id)), 1),\n                _createElementVNode(\"button\", {\n                  onClick: ($event) => emit(\"maximize\", id)\n                }, \"×\", 8, _hoisted_3)\n              ]),\n              _createVNode(CollisionPanelBody, {\n                id,\n                params: __props.params,\n                sim: __props.sim,\n                trials: __props.trials,\n                \"signal-series\": __props.signalSeries || [],\n                \"onUpdate:params\": _cache[0] || (_cache[0] = ($event) => emit(\"update:params\", $event)),\n                onRemove: _cache[1] || (_cache[1] = ($event) => emit(\"remove\", $event)),\n                onClear: _cache[2] || (_cache[2] = ($event) => emit(\"clear\"))\n              }, null, 8, [\"id\", \"params\", \"sim\", \"trials\", \"signal-series\"])\n            ])\n          ], 8, _hoisted_1);\n        }), 128))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196194644,
+      "end": 1783196194937,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionOverlayPanels.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createVNode as _createVNode, withModifiers as _withModifiers, Teleport as _Teleport, createBlock as _createBlock } from \"vue\"\n\nconst _hoisted_1 = [\"onClick\"]\nconst _hoisted_2 = { class: \"overlay-header\" }\nconst _hoisted_3 = [\"onClick\"]\n\nimport CollisionPanelBody from './CollisionPanelBody.vue'\n\nimport type { CollisionSignalPoint } from '../../../composables/collision/useCollisionLab'\nimport type { CollisionParams, CollisionState } from '../../../modules/physics/experiments/collision/useCollisionPhysics'\nimport type { CollisionTrial } from '../../../composables/collision/useCollisionTrials'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'CollisionOverlayPanels',\n  props: {\n    maximized: {},\n    panelTitle: { type: Function },\n    params: {},\n    sim: {},\n    trials: {},\n    signalSeries: {}\n  },\n  emits: [\"maximize\", \"update:params\", \"remove\", \"clear\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst props = __props\n\nconst emit = __emit\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createBlock(_Teleport, { to: \"body\" }, [\n    (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(Object.entries(__props.maximized).filter(([,a]) => a), ([id, active]) => {\n      return (_openBlock(), _createElementBlock(\"div\", {\n        key: id,\n        class: \"overlay-backdrop\",\n        onClick: ($event: any) => (emit('maximize', id))\n      }, [\n        _createElementVNode(\"div\", {\n          class: \"overlay-panel\",\n          onClick: _cache[3] || (_cache[3] = _withModifiers(() => {}, [\"stop\"]))\n        }, [\n          _createElementVNode(\"div\", _hoisted_2, [\n            _createElementVNode(\"span\", null, _toDisplayString(__props.panelTitle(id)), 1),\n            _createElementVNode(\"button\", {\n              onClick: ($event: any) => (emit('maximize', id))\n            }, \"×\", 8, _hoisted_3)\n          ]),\n          _createVNode(CollisionPanelBody, {\n            id: id,\n            params: __props.params,\n            sim: __props.sim,\n            trials: __props.trials,\n            \"signal-series\": __props.signalSeries || [],\n            \"onUpdate:params\": _cache[0] || (_cache[0] = ($event: any) => (emit('update:params', $event))),\n            onRemove: _cache[1] || (_cache[1] = ($event: any) => (emit('remove', $event))),\n            onClear: _cache[2] || (_cache[2] = ($event: any) => (emit('clear')))\n          }, null, 8, [\"id\", \"params\", \"sim\", \"trials\", \"signal-series\"])\n        ])\n      ], 8, _hoisted_1))\n    }), 128))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,cAAc,aAAa,YAAY,WAAW,aAAa,YAAY,sBAAsB,qBAAqB,mBAAmB,kBAAkB,sBAAsB,qBAAqB,eAAe,cAAc,iBAAiB,gBAAgB,YAAY,WAAW,eAAe,oBAAoB;AAEvU,MAAM,aAAa,CAAC,SAAS;AAC7B,MAAM,aAAa,EAAE,OAAO,iBAAiB;AAC7C,MAAM,aAAa,CAAC,SAAS;AAE7B,OAAO,wBAAwB;AAO/B,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,WAAW,CAAC;AAAA,IACZ,YAAY,EAAE,MAAM,SAAS;AAAA,IAC7B,QAAQ,CAAC;AAAA,IACT,KAAK,CAAC;AAAA,IACN,QAAQ,CAAC;AAAA,IACT,cAAc,CAAC;AAAA,EACjB;AAAA,EACA,OAAO,CAAC,YAAY,iBAAiB,UAAU,OAAO;AAAA,EACtD,MAAM,SAAc,EAAE,MAAM,OAAO,GAAG;AAExC,UAAM,QAAQ;AAEd,UAAM,OAAO;AAEb,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,aAAa,WAAW,EAAE,IAAI,OAAO,GAAG;AAAA,SAC3D,WAAW,IAAI,GAAG,oBAAoB,WAAW,MAAM,YAAY,OAAO,QAAQ,QAAQ,SAAS,EAAE,OAAO,CAAC,CAAC,EAAC,CAAC,MAAM,CAAC,GAAG,CAAC,CAAC,IAAI,MAAM,MAAM;AAC3I,iBAAQ,WAAW,GAAG,oBAAoB,OAAO;AAAA,YAC/C,KAAK;AAAA,YACL,OAAO;AAAA,YACP,SAAS,CAAC,WAAiB,KAAK,YAAY,EAAE;AAAA,UAChD,GAAG;AAAA,YACD,oBAAoB,OAAO;AAAA,cACzB,OAAO;AAAA,cACP,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,eAAe,MAAM;AAAA,cAAC,GAAG,CAAC,MAAM,CAAC;AAAA,YACtE,GAAG;AAAA,cACD,oBAAoB,OAAO,YAAY;AAAA,gBACrC,oBAAoB,QAAQ,MAAM,iBAAiB,QAAQ,WAAW,EAAE,CAAC,GAAG,CAAC;AAAA,gBAC7E,oBAAoB,UAAU;AAAA,kBAC5B,SAAS,CAAC,WAAiB,KAAK,YAAY,EAAE;AAAA,gBAChD,GAAG,KAAK,GAAG,UAAU;AAAA,cACvB,CAAC;AAAA,cACD,aAAa,oBAAoB;AAAA,gBAC/B;AAAA,gBACA,QAAQ,QAAQ;AAAA,gBAChB,KAAK,QAAQ;AAAA,gBACb,QAAQ,QAAQ;AAAA,gBAChB,iBAAiB,QAAQ,gBAAgB,CAAC;AAAA,gBAC1C,mBAAmB,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,iBAAiB,MAAM;AAAA,gBAC3F,UAAU,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,UAAU,MAAM;AAAA,gBAC3E,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,KAAK,OAAO;AAAA,cACnE,GAAG,MAAM,GAAG,CAAC,MAAM,UAAU,OAAO,UAAU,eAAe,CAAC;AAAA,YAChE,CAAC;AAAA,UACH,GAAG,GAAG,UAAU;AAAA,QAClB,CAAC,GAAG,GAAG;AAAA,MACT,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194937,
+      "end": 1783196194937,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194937,
+      "end": 1783196194937,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196194937,
+      "end": 1783196194937,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194937,
+      "end": 1783196194937,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194937,
+      "end": 1783196194937,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194937,
+      "end": 1783196194937,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194937,
+      "end": 1783196194938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194938,
+      "end": 1783196194938,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194938,
+      "end": 1783196194938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194938,
+      "end": 1783196194938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194938,
+      "end": 1783196194938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194938,
+      "end": 1783196194938,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194938,
+      "end": 1783196194938,
+      "order": "normal"
+    }
+  ]
+}

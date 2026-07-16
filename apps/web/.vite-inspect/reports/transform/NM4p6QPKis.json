@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/freefall/FreeFallTablePanel.vue?vue&type=style&index=0&scoped=978afc65&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: .3rem; }\nh5 { margin: 0; font-size: .82rem; color: #5B8DB8; }\n.mode-badge { font-size: .65rem; font-weight: 600; padding: .15rem .35rem; border-radius: 4px; }\n.mode-badge.noisy { background: rgba(251,191,36,.1); color: #fbbf24; border: 1px solid rgba(251,191,36,.3); }\n.mode-badge.exact { background: rgba(34,197,94,.1); color: #22c55e; border: 1px solid rgba(34,197,94,.3); }\n.report-table { width: 100%; border-collapse: collapse; font-size: .72rem; }\n.report-table th, .report-table td { border: 1px solid #2D3645; padding: .2rem .3rem; text-align: center; color: #D1D7E0; }\n.report-table th { background: #252D3A; }\n.del-btn { background: transparent; border: none; color: #ff6b6b; cursor: pointer; font-size: .7rem; }\n.no-data { text-align: center; color: #64748b; font-size: .75rem; padding: .5rem; }\n.ctrl-btn { margin-top: .3rem; background: #252D3A; border: 1px solid #2D3645; color: #94a3b8; border-radius: 4px; padding: .2rem .5rem; font-size: .7rem; cursor: pointer; }\n",
+      "start": 1783196195514,
+      "end": 1783196195514
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: .3rem; }\nh5 { margin: 0; font-size: .82rem; color: #5B8DB8; }\n.mode-badge { font-size: .65rem; font-weight: 600; padding: .15rem .35rem; border-radius: 4px; }\n.mode-badge.noisy { background: rgba(251,191,36,.1); color: #fbbf24; border: 1px solid rgba(251,191,36,.3); }\n.mode-badge.exact { background: rgba(34,197,94,.1); color: #22c55e; border: 1px solid rgba(34,197,94,.3); }\n.report-table { width: 100%; border-collapse: collapse; font-size: .72rem; }\n.report-table th, .report-table td { border: 1px solid #2D3645; padding: .2rem .3rem; text-align: center; color: #D1D7E0; }\n.report-table th { background: #252D3A; }\n.del-btn { background: transparent; border: none; color: #ff6b6b; cursor: pointer; font-size: .7rem; }\n.no-data { text-align: center; color: #64748b; font-size: .75rem; padding: .5rem; }\n.ctrl-btn { margin-top: .3rem; background: #252D3A; border: 1px solid #2D3645; color: #94a3b8; border-radius: 4px; padding: .2rem .5rem; font-size: .7rem; cursor: pointer; }\n",
+      "start": 1783196195514,
+      "end": 1783196195515,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195515,
+      "end": 1783196195515,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195515,
+      "end": 1783196195515,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195515,
+      "end": 1783196195515,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.table-header[data-v-978afc65] { display: flex; justify-content: space-between; align-items: center; margin-bottom: .3rem;\n}\nh5[data-v-978afc65] { margin: 0; font-size: .82rem; color: #5B8DB8;\n}\n.mode-badge[data-v-978afc65] { font-size: .65rem; font-weight: 600; padding: .15rem .35rem; border-radius: 4px;\n}\n.mode-badge.noisy[data-v-978afc65] { background: rgba(251,191,36,.1); color: #fbbf24; border: 1px solid rgba(251,191,36,.3);\n}\n.mode-badge.exact[data-v-978afc65] { background: rgba(34,197,94,.1); color: #22c55e; border: 1px solid rgba(34,197,94,.3);\n}\n.report-table[data-v-978afc65] { width: 100%; border-collapse: collapse; font-size: .72rem;\n}\n.report-table th[data-v-978afc65], .report-table td[data-v-978afc65] { border: 1px solid #2D3645; padding: .2rem .3rem; text-align: center; color: #D1D7E0;\n}\n.report-table th[data-v-978afc65] { background: #252D3A;\n}\n.del-btn[data-v-978afc65] { background: transparent; border: none; color: #ff6b6b; cursor: pointer; font-size: .7rem;\n}\n.no-data[data-v-978afc65] { text-align: center; color: #64748b; font-size: .75rem; padding: .5rem;\n}\n.ctrl-btn[data-v-978afc65] { margin-top: .3rem; background: #252D3A; border: 1px solid #2D3645; color: #94a3b8; border-radius: 4px; padding: .2rem .5rem; font-size: .7rem; cursor: pointer;\n}\n",
+      "start": 1783196195515,
+      "end": 1783196195516,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195516,
+      "end": 1783196195516,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196195516,
+      "end": 1783196195516,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195516,
+      "end": 1783196195516,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195516,
+      "end": 1783196195516,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195516,
+      "end": 1783196195516,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195516,
+      "end": 1783196195516,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195516,
+      "end": 1783196195516,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195516,
+      "end": 1783196195516,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195516,
+      "end": 1783196195516,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195516,
+      "end": 1783196195516,
+      "order": "normal"
+    }
+  ]
+}

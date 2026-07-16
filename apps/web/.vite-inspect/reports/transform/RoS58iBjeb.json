@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/rc-circuit/useRcCircuitExperiment.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { ref, reactive, computed, watch } from 'vue'\nimport type { AnalysisPayload } from '../../types/physics'\nimport { useRcCircuitLayout } from './useRcCircuitLayout'\nimport { useRcCircuitTrials } from './useRcCircuitTrials'\nimport { timeConstant, chargingVoltage, dischargingVoltage } from './useRcCircuitCalculations'\n\nexport function useRcCircuitExperiment() {\n  const params = reactive({\n    R: 1000,    // ohm\n    C: 0.001,   // F (1000 μF)\n    V0: 10,     // V\n    mode: 'charge' as 'charge' | 'discharge',\n  })\n\n  watch(() => params.R, (v) => { params.R = Math.max(100, Math.min(10000, Math.round(v / 100) * 100)) })\n  watch(() => params.C, (v) => { params.C = Math.max(0.0001, Math.min(0.01, Math.round(v * 10000) / 10000)) })\n  watch(() => params.V0, (v) => { params.V0 = Math.max(1, Math.min(20, Math.round(v))) })\n\n  const running = ref(false)\n  const paused = ref(false)\n  const simTime = ref(0)\n  const phase = ref<'ready' | 'running' | 'done'>('ready')\n\n  const tau = computed(() => timeConstant(params.R, params.C))\n  const currentV = computed(() => {\n    if (phase.value === 'ready') return params.mode === 'charge' ? 0 : params.V0\n    if (params.mode === 'charge') return chargingVoltage(params.V0, simTime.value, tau.value)\n    return dischargingVoltage(params.V0, simTime.value, tau.value)\n  })\n\n  function updateSim(dt: number) {\n    if (!running.value || paused.value) return\n    simTime.value += dt\n    phase.value = 'running'\n    if (simTime.value > 5 * tau.value) {\n      phase.value = 'done'\n      simTime.value = 5 * tau.value\n    }\n  }\n\n  function togglePause() {\n    if (!running.value) {\n      running.value = true; paused.value = false; simTime.value = 0\n      phase.value = 'running'\n    } else { paused.value = !paused.value }\n  }\n  function resetSim() {\n    running.value = false; paused.value = false; simTime.value = 0; phase.value = 'ready'\n  }\n\n  const layout = useRcCircuitLayout()\n  const trials = useRcCircuitTrials(\n    { get value() { return { R: params.R, C: params.C, tau: tau.value, t: simTime.value, V: currentV.value, mode: params.mode } } }\n  )\n\n  function exportToAnalysis() {\n    if (trials.trials.value.length < 2) return\n    const payload: AnalysisPayload = {\n      sourceExperiment: 'rc-circuit', sourceNameAr: 'دائرة RC',\n      readings: trials.trials.value.map(t => ({ R: t.R, C: t.C, tau: t.tau, t: t.t, V: t.V })),\n      columns: [\n        { key: 'R', label: 'R (Ω)', unit: 'Ω' },\n        { key: 'C', label: 'C (F)', unit: 'F' },\n        { key: 'tau', label: 'τ (s)', unit: 's' },\n        { key: 't', label: 't (s)', unit: 's' },\n        { key: 'V', label: 'V (V)', unit: 'V' },\n      ],\n      equations: [\n        { name: 'RC Time Constant', formula: 'τ = R × C', variables: [{ symbol: 'τ', label: 'Time constant' }, { symbol: 'R', label: 'Resistance' }, { symbol: 'C', label: 'Capacitance' }], solveFor: ['tau'] },\n        { name: 'Charging', formula: 'V = V₀(1 - e^(-t/τ))', variables: [{ symbol: 'V', label: 'Voltage' }, { symbol: 'V₀', label: 'Source voltage' }, { symbol: 't', label: 'Time' }, { symbol: 'τ', label: 'Time constant' }], solveFor: ['V'] },\n      ],\n      suggestedPlots: [{ xKey: 't', yKey: 'V', xLabel: 't (s)', yLabel: 'V (V)', type: 'line' }],\n    }\n    localStorage.setItem('analysis_payload', JSON.stringify(payload))\n    window.open('/analysis', '_blank')\n  }\n  function handleDrop(fromId: string, x?: number, y?: number) {\n    if (x === undefined || y === undefined) return\n    const el = document.elementFromPoint(x, y)\n    const toPanel = el?.closest('.draggable-panel')\n    const toId = toPanel?.getAttribute('data-id')\n    if (!toId || fromId === toId) return\n    for (const col of Object.keys(layout.columnMap)) {\n      const arr = layout.columnMap[col]\n      const fi = arr.indexOf(fromId), ti = arr.indexOf(toId)\n      if (fi >= 0 && ti >= 0) { const t = arr[fi]; arr[fi] = arr[ti]; arr[ti] = t }\n    }\n  }\n  function onResizeStart(col: string, e: MouseEvent) {\n    if (!(col in layout.widths)) return\n    const startX = e.clientX, startW = (layout.widths as Record<string, number>)[col] as number\n    function move(ev: MouseEvent) { (layout.widths as Record<string, number>)[col] = Math.max(220, startW + (ev.clientX - startX)) }\n    function up() { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up) }\n    window.addEventListener('mousemove', move); window.addEventListener('mouseup', up)\n  }\n\n  const lab = { running, paused, simTime, phase, tau, currentV, togglePause, updateSim }\n  return { params, lab, layout, trials, resetSim, exportToAnalysis, onResizeStart, handleDrop }\n}\n",
+      "start": 1783196193548,
+      "end": 1783196193783,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193783,
+      "end": 1783196193783,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { ref, reactive, computed, watch } from \"vue\";\nimport { useRcCircuitLayout } from \"./useRcCircuitLayout\";\nimport { useRcCircuitTrials } from \"./useRcCircuitTrials\";\nimport { timeConstant, chargingVoltage, dischargingVoltage } from \"./useRcCircuitCalculations\";\nexport function useRcCircuitExperiment() {\n  const params = reactive({\n    R: 1e3,\n    // ohm\n    C: 1e-3,\n    // F (1000 μF)\n    V0: 10,\n    // V\n    mode: \"charge\"\n  });\n  watch(() => params.R, (v) => {\n    params.R = Math.max(100, Math.min(1e4, Math.round(v / 100) * 100));\n  });\n  watch(() => params.C, (v) => {\n    params.C = Math.max(1e-4, Math.min(0.01, Math.round(v * 1e4) / 1e4));\n  });\n  watch(() => params.V0, (v) => {\n    params.V0 = Math.max(1, Math.min(20, Math.round(v)));\n  });\n  const running = ref(false);\n  const paused = ref(false);\n  const simTime = ref(0);\n  const phase = ref(\"ready\");\n  const tau = computed(() => timeConstant(params.R, params.C));\n  const currentV = computed(() => {\n    if (phase.value === \"ready\") return params.mode === \"charge\" ? 0 : params.V0;\n    if (params.mode === \"charge\") return chargingVoltage(params.V0, simTime.value, tau.value);\n    return dischargingVoltage(params.V0, simTime.value, tau.value);\n  });\n  function updateSim(dt) {\n    if (!running.value || paused.value) return;\n    simTime.value += dt;\n    phase.value = \"running\";\n    if (simTime.value > 5 * tau.value) {\n      phase.value = \"done\";\n      simTime.value = 5 * tau.value;\n    }\n  }\n  function togglePause() {\n    if (!running.value) {\n      running.value = true;\n      paused.value = false;\n      simTime.value = 0;\n      phase.value = \"running\";\n    } else {\n      paused.value = !paused.value;\n    }\n  }\n  function resetSim() {\n    running.value = false;\n    paused.value = false;\n    simTime.value = 0;\n    phase.value = \"ready\";\n  }\n  const layout = useRcCircuitLayout();\n  const trials = useRcCircuitTrials(\n    { get value() {\n      return { R: params.R, C: params.C, tau: tau.value, t: simTime.value, V: currentV.value, mode: params.mode };\n    } }\n  );\n  function exportToAnalysis() {\n    if (trials.trials.value.length < 2) return;\n    const payload = {\n      sourceExperiment: \"rc-circuit\",\n      sourceNameAr: \"دائرة RC\",\n      readings: trials.trials.value.map((t) => ({ R: t.R, C: t.C, tau: t.tau, t: t.t, V: t.V })),\n      columns: [\n        { key: \"R\", label: \"R (Ω)\", unit: \"Ω\" },\n        { key: \"C\", label: \"C (F)\", unit: \"F\" },\n        { key: \"tau\", label: \"τ (s)\", unit: \"s\" },\n        { key: \"t\", label: \"t (s)\", unit: \"s\" },\n        { key: \"V\", label: \"V (V)\", unit: \"V\" }\n      ],\n      equations: [\n        { name: \"RC Time Constant\", formula: \"τ = R × C\", variables: [{ symbol: \"τ\", label: \"Time constant\" }, { symbol: \"R\", label: \"Resistance\" }, { symbol: \"C\", label: \"Capacitance\" }], solveFor: [\"tau\"] },\n        { name: \"Charging\", formula: \"V = V₀(1 - e^(-t/τ))\", variables: [{ symbol: \"V\", label: \"Voltage\" }, { symbol: \"V₀\", label: \"Source voltage\" }, { symbol: \"t\", label: \"Time\" }, { symbol: \"τ\", label: \"Time constant\" }], solveFor: [\"V\"] }\n      ],\n      suggestedPlots: [{ xKey: \"t\", yKey: \"V\", xLabel: \"t (s)\", yLabel: \"V (V)\", type: \"line\" }]\n    };\n    localStorage.setItem(\"analysis_payload\", JSON.stringify(payload));\n    window.open(\"/analysis\", \"_blank\");\n  }\n  function handleDrop(fromId, x, y) {\n    if (x === void 0 || y === void 0) return;\n    const el = document.elementFromPoint(x, y);\n    const toPanel = el?.closest(\".draggable-panel\");\n    const toId = toPanel?.getAttribute(\"data-id\");\n    if (!toId || fromId === toId) return;\n    for (const col of Object.keys(layout.columnMap)) {\n      const arr = layout.columnMap[col];\n      const fi = arr.indexOf(fromId), ti = arr.indexOf(toId);\n      if (fi >= 0 && ti >= 0) {\n        const t = arr[fi];\n        arr[fi] = arr[ti];\n        arr[ti] = t;\n      }\n    }\n  }\n  function onResizeStart(col, e) {\n    if (!(col in layout.widths)) return;\n    const startX = e.clientX, startW = layout.widths[col];\n    function move(ev) {\n      layout.widths[col] = Math.max(220, startW + (ev.clientX - startX));\n    }\n    function up() {\n      window.removeEventListener(\"mousemove\", move);\n      window.removeEventListener(\"mouseup\", up);\n    }\n    window.addEventListener(\"mousemove\", move);\n    window.addEventListener(\"mouseup\", up);\n  }\n  const lab = { running, paused, simTime, phase, tau, currentV, togglePause, updateSim };\n  return { params, lab, layout, trials, resetSim, exportToAnalysis, onResizeStart, handleDrop };\n}\n",
+      "start": 1783196193783,
+      "end": 1783196194395,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/rc-circuit/useRcCircuitExperiment.ts"
+        ],
+        "sourcesContent": [
+          "import { ref, reactive, computed, watch } from 'vue'\nimport type { AnalysisPayload } from '../../types/physics'\nimport { useRcCircuitLayout } from './useRcCircuitLayout'\nimport { useRcCircuitTrials } from './useRcCircuitTrials'\nimport { timeConstant, chargingVoltage, dischargingVoltage } from './useRcCircuitCalculations'\n\nexport function useRcCircuitExperiment() {\n  const params = reactive({\n    R: 1000,    // ohm\n    C: 0.001,   // F (1000 μF)\n    V0: 10,     // V\n    mode: 'charge' as 'charge' | 'discharge',\n  })\n\n  watch(() => params.R, (v) => { params.R = Math.max(100, Math.min(10000, Math.round(v / 100) * 100)) })\n  watch(() => params.C, (v) => { params.C = Math.max(0.0001, Math.min(0.01, Math.round(v * 10000) / 10000)) })\n  watch(() => params.V0, (v) => { params.V0 = Math.max(1, Math.min(20, Math.round(v))) })\n\n  const running = ref(false)\n  const paused = ref(false)\n  const simTime = ref(0)\n  const phase = ref<'ready' | 'running' | 'done'>('ready')\n\n  const tau = computed(() => timeConstant(params.R, params.C))\n  const currentV = computed(() => {\n    if (phase.value === 'ready') return params.mode === 'charge' ? 0 : params.V0\n    if (params.mode === 'charge') return chargingVoltage(params.V0, simTime.value, tau.value)\n    return dischargingVoltage(params.V0, simTime.value, tau.value)\n  })\n\n  function updateSim(dt: number) {\n    if (!running.value || paused.value) return\n    simTime.value += dt\n    phase.value = 'running'\n    if (simTime.value > 5 * tau.value) {\n      phase.value = 'done'\n      simTime.value = 5 * tau.value\n    }\n  }\n\n  function togglePause() {\n    if (!running.value) {\n      running.value = true; paused.value = false; simTime.value = 0\n      phase.value = 'running'\n    } else { paused.value = !paused.value }\n  }\n  function resetSim() {\n    running.value = false; paused.value = false; simTime.value = 0; phase.value = 'ready'\n  }\n\n  const layout = useRcCircuitLayout()\n  const trials = useRcCircuitTrials(\n    { get value() { return { R: params.R, C: params.C, tau: tau.value, t: simTime.value, V: currentV.value, mode: params.mode } } }\n  )\n\n  function exportToAnalysis() {\n    if (trials.trials.value.length < 2) return\n    const payload: AnalysisPayload = {\n      sourceExperiment: 'rc-circuit', sourceNameAr: 'دائرة RC',\n      readings: trials.trials.value.map(t => ({ R: t.R, C: t.C, tau: t.tau, t: t.t, V: t.V })),\n      columns: [\n        { key: 'R', label: 'R (Ω)', unit: 'Ω' },\n        { key: 'C', label: 'C (F)', unit: 'F' },\n        { key: 'tau', label: 'τ (s)', unit: 's' },\n        { key: 't', label: 't (s)', unit: 's' },\n        { key: 'V', label: 'V (V)', unit: 'V' },\n      ],\n      equations: [\n        { name: 'RC Time Constant', formula: 'τ = R × C', variables: [{ symbol: 'τ', label: 'Time constant' }, { symbol: 'R', label: 'Resistance' }, { symbol: 'C', label: 'Capacitance' }], solveFor: ['tau'] },\n        { name: 'Charging', formula: 'V = V₀(1 - e^(-t/τ))', variables: [{ symbol: 'V', label: 'Voltage' }, { symbol: 'V₀', label: 'Source voltage' }, { symbol: 't', label: 'Time' }, { symbol: 'τ', label: 'Time constant' }], solveFor: ['V'] },\n      ],\n      suggestedPlots: [{ xKey: 't', yKey: 'V', xLabel: 't (s)', yLabel: 'V (V)', type: 'line' }],\n    }\n    localStorage.setItem('analysis_payload', JSON.stringify(payload))\n    window.open('/analysis', '_blank')\n  }\n  function handleDrop(fromId: string, x?: number, y?: number) {\n    if (x === undefined || y === undefined) return\n    const el = document.elementFromPoint(x, y)\n    const toPanel = el?.closest('.draggable-panel')\n    const toId = toPanel?.getAttribute('data-id')\n    if (!toId || fromId === toId) return\n    for (const col of Object.keys(layout.columnMap)) {\n      const arr = layout.columnMap[col]\n      const fi = arr.indexOf(fromId), ti = arr.indexOf(toId)\n      if (fi >= 0 && ti >= 0) { const t = arr[fi]; arr[fi] = arr[ti]; arr[ti] = t }\n    }\n  }\n  function onResizeStart(col: string, e: MouseEvent) {\n    if (!(col in layout.widths)) return\n    const startX = e.clientX, startW = (layout.widths as Record<string, number>)[col] as number\n    function move(ev: MouseEvent) { (layout.widths as Record<string, number>)[col] = Math.max(220, startW + (ev.clientX - startX)) }\n    function up() { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up) }\n    window.addEventListener('mousemove', move); window.addEventListener('mouseup', up)\n  }\n\n  const lab = { running, paused, simTime, phase, tau, currentV, togglePause, updateSim }\n  return { params, lab, layout, trials, resetSim, exportToAnalysis, onResizeStart, handleDrop }\n}\n"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194395,
+      "end": 1783196194395,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194395,
+      "end": 1783196194395,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194395,
+      "end": 1783196194395,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194395,
+      "end": 1783196194395,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194395,
+      "end": 1783196194395,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194395,
+      "end": 1783196194395,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194395,
+      "end": 1783196194395,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194395,
+      "end": 1783196194395,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194395,
+      "end": 1783196194395,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194395,
+      "end": 1783196194395,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194395,
+      "end": 1783196194396,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194396,
+      "end": 1783196194396,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedStatsPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"stats-panel\" }\nconst _hoisted_2 = { class: \"stat-group\" }\nconst _hoisted_3 = { class: \"stat-row\" }\nconst _hoisted_4 = { class: \"stat-row\" }\nconst _hoisted_5 = { class: \"stat-group\" }\nconst _hoisted_6 = { class: \"stat-row\" }\nconst _hoisted_7 = { class: \"stat-row\" }\nconst _hoisted_8 = { class: \"stat-group\" }\nconst _hoisted_9 = { class: \"stat-row\" }\nconst _hoisted_10 = { class: \"stat-row\" }\n\nimport { useI18n } from '../../../composables/useI18n'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'InclinedStatsPanel',\n  props: {\n    trialStats: {},\n    trialCount: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\nconst props = __props\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"h4\", null, _toDisplayString(_unref(t)('experiments.statisticsLabel')) + \" — \" + _toDisplayString(__props.trialCount) + \" \" + _toDisplayString(_unref(t)('experiments.experimentCount')), 1),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"h5\", null, _toDisplayString(_unref(t)('experiments.acceleration')) + \" a (m/s²)\", 1),\n      _createElementVNode(\"div\", _hoisted_3, [\n        _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.avgLabel')), 1),\n        _createElementVNode(\"b\", null, _toDisplayString(__props.trialCount ? __props.trialStats.a_mean.toFixed(3) : '--'), 1)\n      ]),\n      _createElementVNode(\"div\", _hoisted_4, [\n        _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.stdDev')), 1),\n        _createElementVNode(\"b\", null, _toDisplayString(__props.trialCount ? __props.trialStats.a_std.toFixed(3) : '--'), 1)\n      ])\n    ]),\n    _createElementVNode(\"div\", _hoisted_5, [\n      _createElementVNode(\"h5\", null, _toDisplayString(_unref(t)('experiments.arrivalTime')) + \" t (s)\", 1),\n      _createElementVNode(\"div\", _hoisted_6, [\n        _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.avgLabel')), 1),\n        _createElementVNode(\"b\", null, _toDisplayString(__props.trialCount ? __props.trialStats.t_mean.toFixed(3) : '--'), 1)\n      ]),\n      _createElementVNode(\"div\", _hoisted_7, [\n        _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.stdDev')), 1),\n        _createElementVNode(\"b\", null, _toDisplayString(__props.trialCount ? __props.trialStats.t_std.toFixed(3) : '--'), 1)\n      ])\n    ]),\n    _createElementVNode(\"div\", _hoisted_8, [\n      _createElementVNode(\"h5\", null, _toDisplayString(_unref(t)('experiments.finalVelocity')) + \" v (m/s)\", 1),\n      _createElementVNode(\"div\", _hoisted_9, [\n        _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.avgLabel')), 1),\n        _createElementVNode(\"b\", null, _toDisplayString(__props.trialCount ? __props.trialStats.v_mean.toFixed(2) : '--'), 1)\n      ]),\n      _createElementVNode(\"div\", _hoisted_10, [\n        _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.stdDev')), 1),\n        _createElementVNode(\"b\", null, _toDisplayString(__props.trialCount ? __props.trialStats.v_std.toFixed(2) : '--'), 1)\n      ])\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783196195723,
+      "end": 1783196195723
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195723,
+      "end": 1783196195723,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"stats-panel\" };\nconst _hoisted_2 = { class: \"stat-group\" };\nconst _hoisted_3 = { class: \"stat-row\" };\nconst _hoisted_4 = { class: \"stat-row\" };\nconst _hoisted_5 = { class: \"stat-group\" };\nconst _hoisted_6 = { class: \"stat-row\" };\nconst _hoisted_7 = { class: \"stat-row\" };\nconst _hoisted_8 = { class: \"stat-group\" };\nconst _hoisted_9 = { class: \"stat-row\" };\nconst _hoisted_10 = { class: \"stat-row\" };\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"InclinedStatsPanel\",\n  props: {\n    trialStats: {},\n    trialCount: {}\n  },\n  setup(__props) {\n    const { t } = useI18n();\n    const props = __props;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"h4\", null, _toDisplayString(_unref(t)(\"experiments.statisticsLabel\")) + \" — \" + _toDisplayString(__props.trialCount) + \" \" + _toDisplayString(_unref(t)(\"experiments.experimentCount\")), 1),\n        _createElementVNode(\"div\", _hoisted_2, [\n          _createElementVNode(\"h5\", null, _toDisplayString(_unref(t)(\"experiments.acceleration\")) + \" a (m/s²)\", 1),\n          _createElementVNode(\"div\", _hoisted_3, [\n            _createElementVNode(\"span\", null, _toDisplayString(_unref(t)(\"experiments.avgLabel\")), 1),\n            _createElementVNode(\"b\", null, _toDisplayString(__props.trialCount ? __props.trialStats.a_mean.toFixed(3) : \"--\"), 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_4, [\n            _createElementVNode(\"span\", null, _toDisplayString(_unref(t)(\"experiments.stdDev\")), 1),\n            _createElementVNode(\"b\", null, _toDisplayString(__props.trialCount ? __props.trialStats.a_std.toFixed(3) : \"--\"), 1)\n          ])\n        ]),\n        _createElementVNode(\"div\", _hoisted_5, [\n          _createElementVNode(\"h5\", null, _toDisplayString(_unref(t)(\"experiments.arrivalTime\")) + \" t (s)\", 1),\n          _createElementVNode(\"div\", _hoisted_6, [\n            _createElementVNode(\"span\", null, _toDisplayString(_unref(t)(\"experiments.avgLabel\")), 1),\n            _createElementVNode(\"b\", null, _toDisplayString(__props.trialCount ? __props.trialStats.t_mean.toFixed(3) : \"--\"), 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_7, [\n            _createElementVNode(\"span\", null, _toDisplayString(_unref(t)(\"experiments.stdDev\")), 1),\n            _createElementVNode(\"b\", null, _toDisplayString(__props.trialCount ? __props.trialStats.t_std.toFixed(3) : \"--\"), 1)\n          ])\n        ]),\n        _createElementVNode(\"div\", _hoisted_8, [\n          _createElementVNode(\"h5\", null, _toDisplayString(_unref(t)(\"experiments.finalVelocity\")) + \" v (m/s)\", 1),\n          _createElementVNode(\"div\", _hoisted_9, [\n            _createElementVNode(\"span\", null, _toDisplayString(_unref(t)(\"experiments.avgLabel\")), 1),\n            _createElementVNode(\"b\", null, _toDisplayString(__props.trialCount ? __props.trialStats.v_mean.toFixed(2) : \"--\"), 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_10, [\n            _createElementVNode(\"span\", null, _toDisplayString(_unref(t)(\"experiments.stdDev\")), 1),\n            _createElementVNode(\"b\", null, _toDisplayString(__props.trialCount ? __props.trialStats.v_std.toFixed(2) : \"--\"), 1)\n          ])\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196195723,
+      "end": 1783196195773,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/inclined/InclinedStatsPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"stats-panel\" }\nconst _hoisted_2 = { class: \"stat-group\" }\nconst _hoisted_3 = { class: \"stat-row\" }\nconst _hoisted_4 = { class: \"stat-row\" }\nconst _hoisted_5 = { class: \"stat-group\" }\nconst _hoisted_6 = { class: \"stat-row\" }\nconst _hoisted_7 = { class: \"stat-row\" }\nconst _hoisted_8 = { class: \"stat-group\" }\nconst _hoisted_9 = { class: \"stat-row\" }\nconst _hoisted_10 = { class: \"stat-row\" }\n\nimport { useI18n } from '../../../composables/useI18n'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'InclinedStatsPanel',\n  props: {\n    trialStats: {},\n    trialCount: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\nconst props = __props\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"h4\", null, _toDisplayString(_unref(t)('experiments.statisticsLabel')) + \" — \" + _toDisplayString(__props.trialCount) + \" \" + _toDisplayString(_unref(t)('experiments.experimentCount')), 1),\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"h5\", null, _toDisplayString(_unref(t)('experiments.acceleration')) + \" a (m/s²)\", 1),\n      _createElementVNode(\"div\", _hoisted_3, [\n        _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.avgLabel')), 1),\n        _createElementVNode(\"b\", null, _toDisplayString(__props.trialCount ? __props.trialStats.a_mean.toFixed(3) : '--'), 1)\n      ]),\n      _createElementVNode(\"div\", _hoisted_4, [\n        _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.stdDev')), 1),\n        _createElementVNode(\"b\", null, _toDisplayString(__props.trialCount ? __props.trialStats.a_std.toFixed(3) : '--'), 1)\n      ])\n    ]),\n    _createElementVNode(\"div\", _hoisted_5, [\n      _createElementVNode(\"h5\", null, _toDisplayString(_unref(t)('experiments.arrivalTime')) + \" t (s)\", 1),\n      _createElementVNode(\"div\", _hoisted_6, [\n        _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.avgLabel')), 1),\n        _createElementVNode(\"b\", null, _toDisplayString(__props.trialCount ? __props.trialStats.t_mean.toFixed(3) : '--'), 1)\n      ]),\n      _createElementVNode(\"div\", _hoisted_7, [\n        _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.stdDev')), 1),\n        _createElementVNode(\"b\", null, _toDisplayString(__props.trialCount ? __props.trialStats.t_std.toFixed(3) : '--'), 1)\n      ])\n    ]),\n    _createElementVNode(\"div\", _hoisted_8, [\n      _createElementVNode(\"h5\", null, _toDisplayString(_unref(t)('experiments.finalVelocity')) + \" v (m/s)\", 1),\n      _createElementVNode(\"div\", _hoisted_9, [\n        _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.avgLabel')), 1),\n        _createElementVNode(\"b\", null, _toDisplayString(__props.trialCount ? __props.trialStats.v_mean.toFixed(2) : '--'), 1)\n      ]),\n      _createElementVNode(\"div\", _hoisted_10, [\n        _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('experiments.stdDev')), 1),\n        _createElementVNode(\"b\", null, _toDisplayString(__props.trialCount ? __props.trialStats.v_std.toFixed(2) : '--'), 1)\n      ])\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195774,
+      "end": 1783196195774,
+      "order": "normal"
+    }
+  ]
+}

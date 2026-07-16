@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/faraday/useFaradayCalculations.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "export function inducedEMF(N: number, dPhi: number, dt: number): number {\n  if (dt === 0) return 0\n  return -N * (dPhi / dt)\n}\n\nexport function magneticFlux(B: number, A: number, theta: number): number {\n  return B * A * Math.cos((theta * Math.PI) / 180)\n}\n",
+      "start": 1783196194760,
+      "end": 1783196194800,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194800,
+      "end": 1783196194800,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "export function inducedEMF(N, dPhi, dt) {\n  if (dt === 0) return 0;\n  return -N * (dPhi / dt);\n}\nexport function magneticFlux(B, A, theta) {\n  return B * A * Math.cos(theta * Math.PI / 180);\n}\n",
+      "start": 1783196194800,
+      "end": 1783196194977,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/faraday/useFaradayCalculations.ts"
+        ],
+        "sourcesContent": [
+          "export function inducedEMF(N: number, dPhi: number, dt: number): number {\n  if (dt === 0) return 0\n  return -N * (dPhi / dt)\n}\n\nexport function magneticFlux(B: number, A: number, theta: number): number {\n  return B * A * Math.cos((theta * Math.PI) / 180)\n}\n"
+        ],
+        "mappings": "AAAO,gBAAS,WAAW,GAAW,MAAc,IAAoB;AACtE,MAAI,OAAO,EAAG,QAAO;AACrB,SAAO,CAAC,KAAK,OAAO;AACtB;AAEO,gBAAS,aAAa,GAAW,GAAW,OAAuB;AACxE,SAAO,IAAI,IAAI,KAAK,IAAK,QAAQ,KAAK,KAAM,GAAG;AACjD;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194977,
+      "end": 1783196194977,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194977,
+      "end": 1783196194977,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194977,
+      "end": 1783196194977,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194977,
+      "end": 1783196194977,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194977,
+      "end": 1783196194977,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194977,
+      "end": 1783196194977,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194977,
+      "end": 1783196194977,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194977,
+      "end": 1783196194977,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194977,
+      "end": 1783196194977,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194977,
+      "end": 1783196194977,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194977,
+      "end": 1783196194977,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194977,
+      "end": 1783196194977,
+      "order": "normal"
+    }
+  ]
+}

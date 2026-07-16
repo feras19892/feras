@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ideal-gas/panels/IdealGasLawsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../../composables/useI18n'\nconst { t } = useI18n()\ndefineProps<{\n  n: number\n  temp: number\n  vol: number\n  press: number\n}>()\n</script>\n\n<template>\n  <div class=\"laws-panel\">\n    <div class=\"law\">\n      <h4>{{ t('experiments.idealGasLaw') }}</h4>\n      <p class=\"formula\">P · V = n · R · T</p>\n      <p class=\"values\">P = {{ (press/1000).toFixed(1) }} kPa &nbsp; V = {{ (vol*1000).toFixed(2) }} L</p>\n      <p class=\"values\">n = {{ n.toFixed(2) }} mol &nbsp; T = {{ temp }} K</p>\n    </div>\n    <div class=\"law\">\n      <h4>{{ t('experiments.idealGasPressure') }}</h4>\n      <p class=\"formula\">P = nRT / V</p>\n      <p class=\"values\">P = ({{ n.toFixed(2) }} × 8.314 × {{ temp }}) / {{ vol.toFixed(5) }}</p>\n      <p class=\"values\">P = {{ press.toFixed(1) }} Pa</p>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.laws-panel { display:flex; flex-direction:column; gap:.6rem; }\n.law { background:rgba(255,255,255,.03); border-radius:6px; padding:.5rem; }\n.law h4 { margin:0 0 .3rem; color:#5B8DB8; font-size:.8rem; }\n.formula { font-family:monospace; color:#fbbf24; font-size:.85rem; margin:.2rem 0; }\n.values { color:#8B95A5; font-size:.72rem; margin:.1rem 0; }\n</style>\n",
+      "start": 1783196195039,
+      "end": 1783196195321,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195321,
+      "end": 1783196195321,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195321,
+      "end": 1783196195321,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195321,
+      "end": 1783196195321,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195321,
+      "end": 1783196195321,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ideal-gas/panels/IdealGasLawsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ideal-gas/panels/IdealGasLawsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/ideal-gas/panels/IdealGasLawsPanel.vue?vue&type=style&index=0&scoped=8f71cf30&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-8f71cf30\"]]);\n",
+      "start": 1783196195321,
+      "end": 1783196195528,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195528,
+      "end": 1783196195529,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195529,
+      "end": 1783196195529,
+      "order": "normal"
+    }
+  ]
+}

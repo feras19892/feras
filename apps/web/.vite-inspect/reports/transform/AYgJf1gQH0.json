@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/analysis-calc/AnalysisCalcExperiment.vue?vue&type=style&index=0&scoped=a07bb96a&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.analysis-calc-page {\n  height: 100vh;\n  background: #0b1220;\n  color: #e2e8f0;\n  display: flex;\n  flex-direction: column;\n  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n  overflow: hidden;\n}\n.no-data { flex: 1; display: flex; align-items: center; justify-content: center; }\n.no-data-box { text-align: center; max-width: 420px; padding: 2rem; }\n.no-data-box h2 { color: #67e8f9; margin: 0 0 0.5rem; }\n.no-data-box p { color: #94a3b8; margin: 0 0 0.5rem; }\n.no-data-box .hint { color: #64748b; font-size: 0.85rem; }\n.btn-action {\n  margin-top: 1rem; padding: 0.5rem 1.2rem; border: none; border-radius: 0.5rem;\n  background: linear-gradient(135deg, #06b6d4, #0891b2); color: #fff; cursor: pointer; font-weight: 600;\n}\n.tab-content {\n  flex: 1;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n}\n\n.tab-fade-enter-active,\n.tab-fade-leave-active {\n  transition: opacity 0.2s ease;\n}\n\n.tab-fade-enter-from,\n.tab-fade-leave-to {\n  opacity: 0;\n}\n\n.calc-tab {\n  flex: 1;\n  overflow: auto;\n  padding: 1rem;\n  display: flex;\n  gap: 1.5rem;\n}\n.calc-tab > :first-child {\n  flex: 2;\n  min-width: 0;\n}\n.calc-tab > :last-child {\n  flex: 1;\n  min-width: 280px;\n  max-width: 360px;\n}\n@media (max-width: 900px) {\n  .calc-tab { flex-direction: column; }\n  .calc-tab > :last-child { max-width: none; }\n}\n",
+      "start": 1783196192421,
+      "end": 1783196192421
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.analysis-calc-page {\n  height: 100vh;\n  background: #0b1220;\n  color: #e2e8f0;\n  display: flex;\n  flex-direction: column;\n  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n  overflow: hidden;\n}\n.no-data { flex: 1; display: flex; align-items: center; justify-content: center; }\n.no-data-box { text-align: center; max-width: 420px; padding: 2rem; }\n.no-data-box h2 { color: #67e8f9; margin: 0 0 0.5rem; }\n.no-data-box p { color: #94a3b8; margin: 0 0 0.5rem; }\n.no-data-box .hint { color: #64748b; font-size: 0.85rem; }\n.btn-action {\n  margin-top: 1rem; padding: 0.5rem 1.2rem; border: none; border-radius: 0.5rem;\n  background: linear-gradient(135deg, #06b6d4, #0891b2); color: #fff; cursor: pointer; font-weight: 600;\n}\n.tab-content {\n  flex: 1;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n}\n\n.tab-fade-enter-active,\n.tab-fade-leave-active {\n  transition: opacity 0.2s ease;\n}\n\n.tab-fade-enter-from,\n.tab-fade-leave-to {\n  opacity: 0;\n}\n\n.calc-tab {\n  flex: 1;\n  overflow: auto;\n  padding: 1rem;\n  display: flex;\n  gap: 1.5rem;\n}\n.calc-tab > :first-child {\n  flex: 2;\n  min-width: 0;\n}\n.calc-tab > :last-child {\n  flex: 1;\n  min-width: 280px;\n  max-width: 360px;\n}\n@media (max-width: 900px) {\n  .calc-tab { flex-direction: column; }\n  .calc-tab > :last-child { max-width: none; }\n}\n",
+      "start": 1783196192421,
+      "end": 1783196194190,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194191,
+      "end": 1783196194191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.analysis-calc-page[data-v-a07bb96a] {\n  height: 100vh;\n  background: #0b1220;\n  color: #e2e8f0;\n  display: flex;\n  flex-direction: column;\n  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n  overflow: hidden;\n}\n.no-data[data-v-a07bb96a] { flex: 1; display: flex; align-items: center; justify-content: center;\n}\n.no-data-box[data-v-a07bb96a] { text-align: center; max-width: 420px; padding: 2rem;\n}\n.no-data-box h2[data-v-a07bb96a] { color: #67e8f9; margin: 0 0 0.5rem;\n}\n.no-data-box p[data-v-a07bb96a] { color: #94a3b8; margin: 0 0 0.5rem;\n}\n.no-data-box .hint[data-v-a07bb96a] { color: #64748b; font-size: 0.85rem;\n}\n.btn-action[data-v-a07bb96a] {\n  margin-top: 1rem; padding: 0.5rem 1.2rem; border: none; border-radius: 0.5rem;\n  background: linear-gradient(135deg, #06b6d4, #0891b2); color: #fff; cursor: pointer; font-weight: 600;\n}\n.tab-content[data-v-a07bb96a] {\n  flex: 1;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n}\n.tab-fade-enter-active[data-v-a07bb96a],\n.tab-fade-leave-active[data-v-a07bb96a] {\n  transition: opacity 0.2s ease;\n}\n.tab-fade-enter-from[data-v-a07bb96a],\n.tab-fade-leave-to[data-v-a07bb96a] {\n  opacity: 0;\n}\n.calc-tab[data-v-a07bb96a] {\n  flex: 1;\n  overflow: auto;\n  padding: 1rem;\n  display: flex;\n  gap: 1.5rem;\n}\n.calc-tab[data-v-a07bb96a] > :first-child {\n  flex: 2;\n  min-width: 0;\n}\n.calc-tab[data-v-a07bb96a] > :last-child {\n  flex: 1;\n  min-width: 280px;\n  max-width: 360px;\n}\n@media (max-width: 900px) {\n.calc-tab[data-v-a07bb96a] { flex-direction: column;\n}\n.calc-tab[data-v-a07bb96a] > :last-child { max-width: none;\n}\n}\n",
+      "start": 1783196194210,
+      "end": 1783196194316,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194317,
+      "end": 1783196194317,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196194317,
+      "end": 1783196194318,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194319,
+      "end": 1783196194319,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194320,
+      "end": 1783196194320,
+      "order": "normal"
+    }
+  ]
+}

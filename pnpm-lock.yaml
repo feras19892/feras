@@ -27,9 +27,6 @@ importers:
       '@hono/zod-validator':
         specifier: ^0.8.0
         version: 0.8.0(hono@4.12.27)(zod@3.25.76)
-      '@my-modern-app/math-engine':
-        specifier: workspace:*
-        version: link:../../packages/math-engine
       '@my-modern-app/shared-types':
         specifier: workspace:*
         version: link:../../packages/shared-types
@@ -94,9 +91,6 @@ importers:
       '@my-modern-app/chemistry-engine':
         specifier: workspace:*
         version: link:../../packages/chemistry-engine
-      '@my-modern-app/math-engine':
-        specifier: workspace:*
-        version: link:../../packages/math-engine
       '@my-modern-app/shared-types':
         specifier: workspace:*
         version: link:../../packages/shared-types
@@ -230,15 +224,6 @@ importers:
     devDependencies:
       typescript:
         specifier: ^5.4.0
-        version: 5.9.3
-
-  packages/math-engine:
-    devDependencies:
-      '@my-modern-app/config':
-        specifier: workspace:*
-        version: link:../config
-      typescript:
-        specifier: ^5.0.0
         version: 5.9.3
 
   packages/shared-types:

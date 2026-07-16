@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/panels/PrismResultsPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, createElementVNode as _createElementVNode, Fragment as _Fragment } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = {\n  key: 0,\n  class: \"empty\"\n}\nconst _hoisted_3 = { class: \"result-row\" }\nconst _hoisted_4 = { class: \"result-label\" }\nconst _hoisted_5 = { class: \"result-val\" }\nconst _hoisted_6 = { class: \"result-row\" }\nconst _hoisted_7 = { class: \"result-val highlight\" }\nconst _hoisted_8 = { class: \"result-row\" }\nconst _hoisted_9 = { class: \"result-val highlight\" }\nconst _hoisted_10 = { class: \"result-row\" }\nconst _hoisted_11 = { class: \"result-val\" }\nconst _hoisted_12 = { class: \"result-row\" }\nconst _hoisted_13 = { class: \"result-val\" }\nconst _hoisted_14 = { class: \"result-row\" }\nconst _hoisted_15 = { class: \"result-label\" }\nconst _hoisted_16 = { class: \"result-val\" }\n\nimport type { PrismTrial } from '../../../../composables/prism/usePrismTrials'\nimport { useI18n } from '../../../../composables/useI18n'\nimport { useMaterialName } from '../../../../composables/prism/useMaterialName'\n\ninterface Props {\n  trials: PrismTrial[]\n  material: string\n  avgN: number | null\n  rSquared: number\n  slope: number\n  intercept: number\n}\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'PrismResultsPanel',\n  props: {\n    trials: {},\n    material: {},\n    avgN: {},\n    rSquared: {},\n    slope: {},\n    intercept: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\nconst { materialName } = useMaterialName()\n\nconst props = __props\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (__props.trials.length < 2)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_2, _toDisplayString(_unref(t)('prism.emptyResults')), 1))\n      : (_openBlock(), _createElementBlock(_Fragment, { key: 1 }, [\n          _createElementVNode(\"div\", _hoisted_3, [\n            _createElementVNode(\"span\", _hoisted_4, _toDisplayString(_unref(t)('prism.readingsCount')), 1),\n            _createElementVNode(\"span\", _hoisted_5, _toDisplayString(__props.trials.length), 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_6, [\n            _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"result-label\" }, \"A (Y-intercept)\", -1)),\n            _createElementVNode(\"span\", _hoisted_7, _toDisplayString(__props.intercept.toFixed(4)), 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_8, [\n            _cache[1] || (_cache[1] = _createElementVNode(\"span\", { class: \"result-label\" }, \"B (Slope)\", -1)),\n            _createElementVNode(\"span\", _hoisted_9, _toDisplayString(__props.slope.toExponential(3)), 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_10, [\n            _cache[2] || (_cache[2] = _createElementVNode(\"span\", { class: \"result-label\" }, \"R²\", -1)),\n            _createElementVNode(\"span\", _hoisted_11, _toDisplayString(__props.rSquared.toFixed(4)), 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_12, [\n            _cache[3] || (_cache[3] = _createElementVNode(\"span\", { class: \"result-label\" }, \"n = A + B/λ²\", -1)),\n            _createElementVNode(\"span\", _hoisted_13, _toDisplayString(__props.intercept.toFixed(3)) + \" + \" + _toDisplayString(__props.slope.toExponential(2)) + \"/λ²\", 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_14, [\n            _createElementVNode(\"span\", _hoisted_15, _toDisplayString(_unref(t)('prism.material')), 1),\n            _createElementVNode(\"span\", _hoisted_16, _toDisplayString(_unref(materialName)(props.material)), 1)\n          ])\n        ], 64))\n  ]))\n}\n}\n\n})",
+      "start": 1783196195602,
+      "end": 1783196195602
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195602,
+      "end": 1783196195602,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createElementVNode as _createElementVNode, Fragment as _Fragment } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nconst _hoisted_2 = {\n  key: 0,\n  class: \"empty\"\n};\nconst _hoisted_3 = { class: \"result-row\" };\nconst _hoisted_4 = { class: \"result-label\" };\nconst _hoisted_5 = { class: \"result-val\" };\nconst _hoisted_6 = { class: \"result-row\" };\nconst _hoisted_7 = { class: \"result-val highlight\" };\nconst _hoisted_8 = { class: \"result-row\" };\nconst _hoisted_9 = { class: \"result-val highlight\" };\nconst _hoisted_10 = { class: \"result-row\" };\nconst _hoisted_11 = { class: \"result-val\" };\nconst _hoisted_12 = { class: \"result-row\" };\nconst _hoisted_13 = { class: \"result-val\" };\nconst _hoisted_14 = { class: \"result-row\" };\nconst _hoisted_15 = { class: \"result-label\" };\nconst _hoisted_16 = { class: \"result-val\" };\nimport { useI18n } from \"../../../../composables/useI18n\";\nimport { useMaterialName } from \"../../../../composables/prism/useMaterialName\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"PrismResultsPanel\",\n  props: {\n    trials: {},\n    material: {},\n    avgN: {},\n    rSquared: {},\n    slope: {},\n    intercept: {}\n  },\n  setup(__props) {\n    const { t } = useI18n();\n    const { materialName } = useMaterialName();\n    const props = __props;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        __props.trials.length < 2 ? (_openBlock(), _createElementBlock(\"div\", _hoisted_2, _toDisplayString(_unref(t)(\"prism.emptyResults\")), 1)) : (_openBlock(), _createElementBlock(_Fragment, { key: 1 }, [\n          _createElementVNode(\"div\", _hoisted_3, [\n            _createElementVNode(\"span\", _hoisted_4, _toDisplayString(_unref(t)(\"prism.readingsCount\")), 1),\n            _createElementVNode(\"span\", _hoisted_5, _toDisplayString(__props.trials.length), 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_6, [\n            _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"result-label\" }, \"A (Y-intercept)\", -1)),\n            _createElementVNode(\"span\", _hoisted_7, _toDisplayString(__props.intercept.toFixed(4)), 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_8, [\n            _cache[1] || (_cache[1] = _createElementVNode(\"span\", { class: \"result-label\" }, \"B (Slope)\", -1)),\n            _createElementVNode(\"span\", _hoisted_9, _toDisplayString(__props.slope.toExponential(3)), 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_10, [\n            _cache[2] || (_cache[2] = _createElementVNode(\"span\", { class: \"result-label\" }, \"R²\", -1)),\n            _createElementVNode(\"span\", _hoisted_11, _toDisplayString(__props.rSquared.toFixed(4)), 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_12, [\n            _cache[3] || (_cache[3] = _createElementVNode(\"span\", { class: \"result-label\" }, \"n = A + B/λ²\", -1)),\n            _createElementVNode(\"span\", _hoisted_13, _toDisplayString(__props.intercept.toFixed(3)) + \" + \" + _toDisplayString(__props.slope.toExponential(2)) + \"/λ²\", 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_14, [\n            _createElementVNode(\"span\", _hoisted_15, _toDisplayString(_unref(t)(\"prism.material\")), 1),\n            _createElementVNode(\"span\", _hoisted_16, _toDisplayString(_unref(materialName)(props.material)), 1)\n          ])\n        ], 64))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196195602,
+      "end": 1783196195768,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/panels/PrismResultsPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, createElementVNode as _createElementVNode, Fragment as _Fragment } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = {\n  key: 0,\n  class: \"empty\"\n}\nconst _hoisted_3 = { class: \"result-row\" }\nconst _hoisted_4 = { class: \"result-label\" }\nconst _hoisted_5 = { class: \"result-val\" }\nconst _hoisted_6 = { class: \"result-row\" }\nconst _hoisted_7 = { class: \"result-val highlight\" }\nconst _hoisted_8 = { class: \"result-row\" }\nconst _hoisted_9 = { class: \"result-val highlight\" }\nconst _hoisted_10 = { class: \"result-row\" }\nconst _hoisted_11 = { class: \"result-val\" }\nconst _hoisted_12 = { class: \"result-row\" }\nconst _hoisted_13 = { class: \"result-val\" }\nconst _hoisted_14 = { class: \"result-row\" }\nconst _hoisted_15 = { class: \"result-label\" }\nconst _hoisted_16 = { class: \"result-val\" }\n\nimport type { PrismTrial } from '../../../../composables/prism/usePrismTrials'\nimport { useI18n } from '../../../../composables/useI18n'\nimport { useMaterialName } from '../../../../composables/prism/useMaterialName'\n\ninterface Props {\n  trials: PrismTrial[]\n  material: string\n  avgN: number | null\n  rSquared: number\n  slope: number\n  intercept: number\n}\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'PrismResultsPanel',\n  props: {\n    trials: {},\n    material: {},\n    avgN: {},\n    rSquared: {},\n    slope: {},\n    intercept: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\nconst { materialName } = useMaterialName()\n\nconst props = __props\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (__props.trials.length < 2)\n      ? (_openBlock(), _createElementBlock(\"div\", _hoisted_2, _toDisplayString(_unref(t)('prism.emptyResults')), 1))\n      : (_openBlock(), _createElementBlock(_Fragment, { key: 1 }, [\n          _createElementVNode(\"div\", _hoisted_3, [\n            _createElementVNode(\"span\", _hoisted_4, _toDisplayString(_unref(t)('prism.readingsCount')), 1),\n            _createElementVNode(\"span\", _hoisted_5, _toDisplayString(__props.trials.length), 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_6, [\n            _cache[0] || (_cache[0] = _createElementVNode(\"span\", { class: \"result-label\" }, \"A (Y-intercept)\", -1)),\n            _createElementVNode(\"span\", _hoisted_7, _toDisplayString(__props.intercept.toFixed(4)), 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_8, [\n            _cache[1] || (_cache[1] = _createElementVNode(\"span\", { class: \"result-label\" }, \"B (Slope)\", -1)),\n            _createElementVNode(\"span\", _hoisted_9, _toDisplayString(__props.slope.toExponential(3)), 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_10, [\n            _cache[2] || (_cache[2] = _createElementVNode(\"span\", { class: \"result-label\" }, \"R²\", -1)),\n            _createElementVNode(\"span\", _hoisted_11, _toDisplayString(__props.rSquared.toFixed(4)), 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_12, [\n            _cache[3] || (_cache[3] = _createElementVNode(\"span\", { class: \"result-label\" }, \"n = A + B/λ²\", -1)),\n            _createElementVNode(\"span\", _hoisted_13, _toDisplayString(__props.intercept.toFixed(3)) + \" + \" + _toDisplayString(__props.slope.toExponential(2)) + \"/λ²\", 1)\n          ]),\n          _createElementVNode(\"div\", _hoisted_14, [\n            _createElementVNode(\"span\", _hoisted_15, _toDisplayString(_unref(t)('prism.material')), 1),\n            _createElementVNode(\"span\", _hoisted_16, _toDisplayString(_unref(materialName)(props.material)), 1)\n          ])\n        ], 64))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,SAAS,QAAQ,mBAAmB,kBAAkB,aAAa,YAAY,sBAAsB,qBAAgE,sBAAsB,qBAAqB,YAAY,iBAAiB;AAEtP,MAAM,aAAa,EAAE,OAAO,aAAa;AACzC,MAAM,aAAa;AAAA,EACjB,KAAK;AAAA,EACL,OAAO;AACT;AACA,MAAM,aAAa,EAAE,OAAO,aAAa;AACzC,MAAM,aAAa,EAAE,OAAO,eAAe;AAC3C,MAAM,aAAa,EAAE,OAAO,aAAa;AACzC,MAAM,aAAa,EAAE,OAAO,aAAa;AACzC,MAAM,aAAa,EAAE,OAAO,uBAAuB;AACnD,MAAM,aAAa,EAAE,OAAO,aAAa;AACzC,MAAM,aAAa,EAAE,OAAO,uBAAuB;AACnD,MAAM,cAAc,EAAE,OAAO,aAAa;AAC1C,MAAM,cAAc,EAAE,OAAO,aAAa;AAC1C,MAAM,cAAc,EAAE,OAAO,aAAa;AAC1C,MAAM,cAAc,EAAE,OAAO,aAAa;AAC1C,MAAM,cAAc,EAAE,OAAO,aAAa;AAC1C,MAAM,cAAc,EAAE,OAAO,eAAe;AAC5C,MAAM,cAAc,EAAE,OAAO,aAAa;AAG1C,SAAS,eAAe;AACxB,SAAS,uBAAuB;AAYhC,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,QAAQ,CAAC;AAAA,IACT,UAAU,CAAC;AAAA,IACX,MAAM,CAAC;AAAA,IACP,UAAU,CAAC;AAAA,IACX,OAAO,CAAC;AAAA,IACR,WAAW,CAAC;AAAA,EACd;AAAA,EACA,MAAM,SAAc;AAEtB,UAAM,EAAE,EAAE,IAAI,QAAQ;AACtB,UAAM,EAAE,aAAa,IAAI,gBAAgB;AAEzC,UAAM,QAAQ;AAEd,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC1D,QAAQ,OAAO,SAAS,KACpB,WAAW,GAAG,oBAAoB,OAAO,YAAY,iBAAiB,OAAO,CAAC,EAAE,oBAAoB,CAAC,GAAG,CAAC,MACzG,WAAW,GAAG,oBAAoB,WAAW,EAAE,KAAK,EAAE,GAAG;AAAA,UACxD,oBAAoB,OAAO,YAAY;AAAA,YACrC,oBAAoB,QAAQ,YAAY,iBAAiB,OAAO,CAAC,EAAE,qBAAqB,CAAC,GAAG,CAAC;AAAA,YAC7F,oBAAoB,QAAQ,YAAY,iBAAiB,QAAQ,OAAO,MAAM,GAAG,CAAC;AAAA,UACpF,CAAC;AAAA,UACD,oBAAoB,OAAO,YAAY;AAAA,YACrC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,QAAQ,EAAE,OAAO,eAAe,GAAG,mBAAmB,EAAE;AAAA,YACtG,oBAAoB,QAAQ,YAAY,iBAAiB,QAAQ,UAAU,QAAQ,CAAC,CAAC,GAAG,CAAC;AAAA,UAC3F,CAAC;AAAA,UACD,oBAAoB,OAAO,YAAY;AAAA,YACrC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,QAAQ,EAAE,OAAO,eAAe,GAAG,aAAa,EAAE;AAAA,YAChG,oBAAoB,QAAQ,YAAY,iBAAiB,QAAQ,MAAM,cAAc,CAAC,CAAC,GAAG,CAAC;AAAA,UAC7F,CAAC;AAAA,UACD,oBAAoB,OAAO,aAAa;AAAA,YACtC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,QAAQ,EAAE,OAAO,eAAe,GAAG,MAAM,EAAE;AAAA,YACzF,oBAAoB,QAAQ,aAAa,iBAAiB,QAAQ,SAAS,QAAQ,CAAC,CAAC,GAAG,CAAC;AAAA,UAC3F,CAAC;AAAA,UACD,oBAAoB,OAAO,aAAa;AAAA,YACtC,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,oBAAoB,QAAQ,EAAE,OAAO,eAAe,GAAG,gBAAgB,EAAE;AAAA,YACnG,oBAAoB,QAAQ,aAAa,iBAAiB,QAAQ,UAAU,QAAQ,CAAC,CAAC,IAAI,QAAQ,iBAAiB,QAAQ,MAAM,cAAc,CAAC,CAAC,IAAI,OAAO,CAAC;AAAA,UAC/J,CAAC;AAAA,UACD,oBAAoB,OAAO,aAAa;AAAA,YACtC,oBAAoB,QAAQ,aAAa,iBAAiB,OAAO,CAAC,EAAE,gBAAgB,CAAC,GAAG,CAAC;AAAA,YACzF,oBAAoB,QAAQ,aAAa,iBAAiB,OAAO,YAAY,EAAE,MAAM,QAAQ,CAAC,GAAG,CAAC;AAAA,UACpG,CAAC;AAAA,QACH,GAAG,EAAE;AAAA,MACX,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195768,
+      "end": 1783196195768,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195768,
+      "end": 1783196195769,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196195769,
+      "end": 1783196195769,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195769,
+      "end": 1783196195769,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195769,
+      "end": 1783196195769,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195769,
+      "end": 1783196195769,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195769,
+      "end": 1783196195769,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195769,
+      "end": 1783196195769,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195769,
+      "end": 1783196195769,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195769,
+      "end": 1783196195769,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195769,
+      "end": 1783196195769,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195769,
+      "end": 1783196195769,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195769,
+      "end": 1783196195769,
+      "order": "normal"
+    }
+  ]
+}

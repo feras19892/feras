@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/SpeedOfSoundHelpModal.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\nconst { t } = useI18n()\ndefineProps<{ open: boolean }>()\nconst emit = defineEmits<{ (e: 'close'): void }>()\n</script>\n\n<template>\n  <Teleport to=\"body\">\n    <div v-if=\"open\" class=\"overlay\" @click.self=\"emit('close')\">\n      <div class=\"modal\">\n        <div class=\"modal-header\">\n          <h3>🔊 دليل تجربة سرعة الصوت (Speed of Sound) — دليل شامل وكامل</h3>\n          <button class=\"close-btn\" @click=\"emit('close')\">&#x2715;</button>\n        </div>\n        <div class=\"modal-body\">\n\n          <!-- 1. Apparatus Description -->\n          <section>\n            <h4>🔧 1. وصف تفصيلي لأدوات التجربة بالمختبر</h4>\n            <ul>\n              <li>\n                <b>أنبوب الرنين الزجاجي/البلاستيكي (Resonance Tube):</b>\n                أنبوب شفاف طويل ومدرج بالسنتيمتر والمتر، يوضع عمودياً ويُملأ جزئياً بالماء.\n                الطرف السفلي متصل بخرطوم مرن، بينما الطرف العلوي مفتوح تماماً للهواء.\n              </li>\n              <li>\n                <b>خزان الماء المتحرك (Water Reservoir):</b>\n                وعاء متصل بالأنبوب عبر خرطوم بلاستيكي، يمكن رفعه وخفضه يدوياً على حامل معدني.\n                وظيفته التحكم في مستوى الماء داخل الأنبوب بدقة، وبالتالي التحكم في طول عمود الهواء (L).\n              </li>\n              <li>\n                <b>مجموعة شوكات رنانة (Tuning Forks Set):</b>\n                مجموعة من الشوكات المعدنية، كل شوكة محفور عليها ترددها الخاص والثابت\n                (مثل: 256 Hz، 320 Hz، 512 Hz). تُولّد موجات صوتية نقيّة وثابتة التردد.\n              </li>\n              <li>\n                <b>مطرقة مطاطية (Rubber Hammer/Striker):</b>\n                مطرقة صغيرة برأس مطاطي ليّن، تُستخدم لضرب فرعي الشوكة الرنانة بلطف\n                لتوليد الاهتزاز دون إتلاف الشوكة أو إحداث ضوضاء معدنية.\n              </li>\n              <li>\n                <b>منظم/مؤشر مستوى الماء (Level Indicator):</b>\n                حلقة صغيرة متحركة على الأنبوب تُستخدم لتحديد مكان سطح الماء بالضبط\n                عند سماع الرنين لتسهيل قراءة الطول من المسطرة المدرجة.\n              </li>\n            </ul>\n          </section>\n\n          <!-- 2. Theoretical Background -->\n          <section>\n            <h4>🔬 2. المقدمة والنظرية العلمية الشاملة</h4>\n            <p>\n              الصوت عبارة عن <b>موجة ميكانيكية طولية</b> تنتقل في الهواء على شكل تضاغطات وتخلخلات.\n              عندما تهتز الشوكة الرنانة عند فوهة الأنبوب المفتوحة، ترسل موجات صوتية تنتقل لأسفل الأنبوب\n              حتى تصطدم بالسطح المغلق (الماء) وترتد للأعلى.\n            </p>\n            <p>\n              تتداخل الموجة الساقطة مع الموجة المنعكسة تداخلاً بناءً وهداماً، مما يؤدي إلى تشكّل\n              <b>موجة موقوفة (Standing Wave)</b> داخل عمود الهواء.\n            </p>\n            <ul>\n              <li><b>عقدة (Node):</b> تتشكل دائماً عند سطح الماء (الطرف المغلق) لأن جزيئات الهواء مقيدة.</li>\n              <li><b>بطن (Antinode):</b> يتشكل عند فوهة الأنبوب (الطرف المفتوح) حيث تمتلك جزيئات الهواء الحرية القصوى للاهتزاز.</li>\n            </ul>\n            <p>\n              عندما يتطابق طول عمود الهواء (L) مع شروط تشكل الموجة الموقوفة، تحدث ظاهرة <b>الرنين (Resonance)</b>،\n              وهي الحالة التي تتدفق فيها أقصى طاقة صوتية، مما يؤدي إلى سماع صوت تضخيم واضح وقوي جداً.\n            </p>\n            <p>\n              يحدث الرنين الأول عندما يحتوي الأنبوب على ربع موجة كاملة فقط:\n            </p>\n            <div class=\"formula\">L = λ / 4</div>\n            <p>\n              وحيث إن البطن الفعلي يتشكل خارج حافة الأنبوب العلوية بمسافة صغيرة جداً، يُضاف معامل تصحيح للطرف (e):\n            </p>\n            <div class=\"formula\">L + e = λ / 4 &nbsp;&nbsp;&rArr;&nbsp;&nbsp; L = λ/4 − e</div>\n          </section>\n\n          <!-- 3. Mathematical Equations -->\n          <section>\n            <h4>📐 3. القوانين الرياضية المستعملة</h4>\n            <p><b>العلاقة الموجية الأساسية:</b></p>\n            <div class=\"formula\">v = f · λ &nbsp;&nbsp;&rArr;&nbsp;&nbsp; λ = v / f</div>\n            <p><b>معادلة الرنين الأول الخطية:</b></p>\n            <p>بتعويض قيمة الطول الموجي (λ) في معادلة الطول (L) نحصل على القانون المباشر للرسم البياني:</p>\n            <div class=\"formula\">L = (v/4) · (1/f) − e</div>\n            <p>(حيث L هو طول عمود الهواء بالمتر، v هي سرعة الصوت، f هو التردد، و e هو معامل التصحيح).</p>\n          </section>\n\n          <!-- 4. Laboratory Procedure -->\n          <section>\n            <h4>⚗️ 4. طريقة العمل في المختبر بالتفصيل الممل</h4>\n            <ol>\n              <li>\n                <b>تجهيز النظام:</b> تأكد من ملء خزان الماء حتى منتصف الأنبوب البصري تقريباً،\n                وتأكد من عدم وجود أي تسريب للماء في الخرطوم.\n              </li>\n              <li>\n                <b>اختيار الشوكة الأولى:</b> اختر شوكة رنانة بتردد معلوم (ابدأ بأقل تردد مثلاً f = 256 Hz\n                لأنها تعطي طولاً موجياً كبيراً يسهل رصده).\n              </li>\n              <li>\n                <b>إثارة الشوكة:</b> اضرب طرف الشوكة الرنانة بالمطرقة المطاطية بلطف، ثم قرّبها سريعاً وأفقياً\n                بحيث تكون فروعها المهتزة فوق فوهة الأنبوب مباشرة دون أن تلمسه.\n              </li>\n              <li>\n                <b>البحث عن الرنين:</b> أثناء اهتزاز الشوكة، قم بخفض خزان الماء ببطء لزيادة طول عمود الهواء.\n                استمع بدقة حتى تلاحظ فجأة تضخماً مفاجئاً وقوياً في صوت النغمة.\n              </li>\n              <li>\n                <b>تحديد الطول المباشر:</b> عند نقطة الصوت الأعلى تماماً، ثبت الخزان وضع مؤشر مستوى الماء\n                عند سطح الماء. اقرأ المسافة من أعلى حافة الأنبوب حتى المؤشر وسجلها كـ (L).\n              </li>\n              <li>\n                <b>تغيير الترددات:</b> كرر نفس العملية بالكامل باستخدام الشوكات الرنانة الأخرى المتبقية\n                (320 Hz، 384 Hz، 512 Hz)، وفي كل مرة سجل الطول المقابل (L).\n              </li>\n              <li>\n                <b>المعالجة الحسابية:</b> أنشئ جدولاً وضَع فيه الترددات (f)، ثم احسب مقلوب كل تردد (1/f)\n                لتجهيز البيانات للرسم البياني.\n              </li>\n            </ol>\n          </section>\n\n          <!-- 5. Graphical Analysis -->\n          <section>\n            <h4>📊 5. الرسم البياني، الميل، وحساب المجهول</h4>\n            <p>الهدف الأساسي هو استخراج سرعة الصوت (v) في ظروف المختبر الحالية.</p>\n            <ul>\n              <li>\n                <b>المحاور:</b> ارسم طول عمود الهواء المتوسط (L) على المحور الصادي (Y-axis).\n                ارسم مقلوب التردد (1/f) على المحور السيني (X-axis).\n              </li>\n              <li>\n                <b>الميل (Slope):</b> سوف تلاحظ أن النقاط تشكل خطاً مستقيماً يرتفع للأعلى ولا يمر بنقطة الأصل\n                (بل يقطع المحور الصادي في الجانب السالب). احسب ميل هذا الخط:\n                <div class=\"formula\">Slope = ΔL / Δ(1/f)</div>\n              </li>\n              <li>\n                <b>حساب المجهول (v):</b> بالمقارنة الفيزيائية مع المعادلة L = (v/4)·(1/f) − e، نجد أن:\n                <div class=\"formula\">Slope = v / 4</div>\n                إذن، القيمة المجهولة لسرعة الصوت تُحسب بضرب الميل في 4:\n                <div class=\"formula\">v = 4 × Slope</div>\n              </li>\n              <li>\n                <b>ملاحظة:</b> نقطة تقاطع الخط مع المحور الصادي السالب تمثل قيمة معامل تصحيح الفوهة (e).\n              </li>\n            </ul>\n          </section>\n\n          <!-- 6. Variables & Constants -->\n          <section>\n            <h4>⚙️ 6. الثوابت والمتغيرات في التجربة</h4>\n            <div class=\"element-grid\">\n              <div class=\"element\">\n                <b class=\"tag\">المتغير المستقل:</b> تردد الشوكة الرنانة المستعملة (f) وبالتالي مقلوبه (1/f)\n              </div>\n              <div class=\"element\">\n                <b class=\"tag\">المتغير التابع:</b> طول عمود الهواء (L) الناشئ عن تغير مستوى الماء\n              </div>\n              <div class=\"element\">\n                <b class=\"tag\">الثوابت:</b> درجة حرارة الهواء داخل المختبر (لأن سرعة الصوت تتغير مع درجة الحرارة)\n              </div>\n            </div>\n          </section>\n\n          <!-- 7. Scientific Importance -->\n          <section>\n            <h4>🎯 7. الفائدة والأهمية العلمية للتجربة</h4>\n            <ul>\n              <li>حساب القيمة الفعلية والعملية لسرعة الصوت في الهواء بمحيطك ومقارنتها بالقيمة النظرية القياسية (≈ 343 m/s عند 20°C).</li>\n              <li>فهم مبدأ \"الموجات الموقوفة\" والرنين، وهو المبدأ التشغيلي والفيزيائي الذي تقوم عليه جميع الآلات الموسيقية الهوائية (مثل الناي، الكلارينيت، وأنابيب الأرغن).</li>\n            </ul>\n          </section>\n\n          <!-- Keyboard shortcuts -->\n          <section>\n            <h4>⌨️ اختصارات لوحة المفاتيح</h4>\n            <div class=\"kbd-grid\">\n              <span><kbd>Space</kbd> بدء / توقف</span>\n              <span><kbd>S</kbd> تسجيل قراءة</span>\n              <span><kbd>R</kbd> إعادة التعيين</span>\n              <span><kbd>Ctrl</kbd>+<kbd>Z</kbd> تراجع</span>\n              <span><kbd>Ctrl</kbd>+<kbd>Y</kbd> إعادة</span>\n              <span><kbd>?</kbd> فتح/إغلاق المساعدة</span>\n            </div>\n          </section>\n\n        </div>\n      </div>\n    </div>\n  </Teleport>\n</template>\n\n<style scoped>\n.overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; padding: 1.5rem; }\n.modal { background: #131a25; border: 1px solid #2D3645; border-radius: 12px; max-width: 720px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,.5); }\n.modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.2rem; border-bottom: 1px solid #2D3645; flex-shrink: 0; }\n.modal-header h3 { margin: 0; font-size: 1rem; color: #e2e8f0; }\n.close-btn { background: transparent; border: 1px solid #2D3645; color: #8B95A5; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; padding: 0; }\n.close-btn:hover { background: rgba(91,141,184,.1); color: #5B8DB8; }\n.modal-body { overflow-y: auto; padding: 1.2rem; font-size: .82rem; color: #cbd5e1; line-height: 1.8; direction: rtl; text-align: right; }\n.modal-body section { margin-bottom: 1.4rem; }\n.modal-body h4 { margin: 0 0 .5rem; font-size: .9rem; color: #5B8DB8; border-bottom: 1px solid #2D3645; padding-bottom: .3rem; }\n.modal-body p { margin: .4rem 0; }\n.modal-body ol, .modal-body ul { margin: .4rem 0; padding-right: 1.2rem; }\n.modal-body li { margin-bottom: .25rem; }\n.formula { background: #1a2332; border: 1px solid #2D3645; border-radius: 6px; padding: .6rem .8rem; font-family: monospace; font-size: .9rem; color: #5B8DB8; text-align: center; margin: .6rem 0; direction: ltr; }\n.element-grid { display: flex; flex-direction: column; gap: .35rem; }\n.element { background: #1a2332; border-radius: 6px; padding: .4rem .6rem; font-size: .78rem; }\n.tag { color: #5B8DB8; }\n.kbd-grid { display: flex; flex-wrap: wrap; gap: .4rem; }\n.kbd-grid span { background: #1a2332; border: 1px solid #2D3645; border-radius: 5px; padding: .3rem .5rem; font-size: .75rem; }\nkbd { background: #252D3A; border: 1px solid #475569; border-radius: 4px; padding: .05rem .3rem; font-family: monospace; font-size: .7rem; color: #D1D7E0; }\n</style>\n",
+      "start": 1783196193610,
+      "end": 1783196194101,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194101,
+      "end": 1783196194101,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196194101,
+      "end": 1783196194101,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194101,
+      "end": 1783196194101,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194101,
+      "end": 1783196194101,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/SpeedOfSoundHelpModal.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/SpeedOfSoundHelpModal.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/SpeedOfSoundHelpModal.vue?vue&type=style&index=0&scoped=6fdcde82&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-6fdcde82\"]]);\n",
+      "start": 1783196194101,
+      "end": 1783196194371,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194372,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194374,
+      "end": 1783196194374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194374,
+      "end": 1783196194376,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194377,
+      "end": 1783196194377,
+      "order": "normal"
+    }
+  ]
+}

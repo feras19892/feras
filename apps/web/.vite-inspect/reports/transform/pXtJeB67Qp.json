@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/panels/PrismLawsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { toRef } from 'vue'\nimport { usePrismMinDeviation } from '../../../../composables/prism/usePrismMinDeviation'\nimport { useI18n } from '../../../../composables/useI18n'\n\nconst { t } = useI18n()\n\ninterface Props {\n  prismAngle: number\n  angleIncidence: number\n  angleRefraction1: number | null\n  deviation: number | null\n  nValue: number\n  wavelength: number\n  material: string\n}\n\nconst props = defineProps<Props>()\n\nconst minDev = usePrismMinDeviation(toRef(props, 'prismAngle'), toRef(props, 'wavelength'), toRef(props, 'material'))\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <div class=\"law-box\">\n      <div class=\"law-title\">{{ t('prism.lawSnell') }}</div>\n      <div class=\"law-formula\">n₁ sin θ₁ = n₂ sin θ₂</div>\n      <div class=\"law-calc\">\n        1.0 × sin({{ angleIncidence.toFixed(1) }}°) = n × sin({{ angleRefraction1 !== null ? angleRefraction1.toFixed(1) : '—' }}°)\n      </div>\n    </div>\n    <div class=\"law-box\">\n      <div class=\"law-title\">{{ t('prism.lawPrism') }}</div>\n      <div class=\"law-formula\">n = sin((A+D)/2) / sin(A/2)</div>\n      <div class=\"law-calc\" v-if=\"deviation !== null\">\n        n = sin(({{ prismAngle }}+{{ deviation.toFixed(1) }})/2) / sin({{ prismAngle }}/2) = {{ nValue.toFixed(3) }}\n      </div>\n    </div>\n    <div class=\"law-box\">\n      <div class=\"law-title\">{{ t('prism.lawMinDeviation') }}</div>\n      <div class=\"law-formula\">n = sin((A+δ_min)/2) / sin(A/2)</div>\n      <div v-if=\"minDev.minDelta.value !== null\" class=\"law-calc\">\n        δ_min = {{ minDev.minDelta.value.toFixed(1) }}° @ θᵢ = {{ minDev.minTheta.value }}°<br>\n        n(δ_min) = {{ minDev.nFromMinDeviation.value?.toFixed(3) }}\n      </div>\n      <div v-else class=\"law-calc\">—</div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { display: flex; flex-direction: column; gap: .4rem; font-size: .82rem; }\n.law-box { background: rgba(255,255,255,0.02); border-radius: 6px; padding: .5rem; }\n.law-title { font-size: .75rem; color: #8B95A5; margin-bottom: .2rem; }\n.law-formula { font-family: monospace; font-size: .9rem; color: #fbbf24; }\n.law-calc { font-family: monospace; font-size: .75rem; color: #67e8f9; margin-top: .2rem; }\n</style>\n",
+      "start": 1783196194995,
+      "end": 1783196195264,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195264,
+      "end": 1783196195264,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195264,
+      "end": 1783196195264,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195264,
+      "end": 1783196195264,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195264,
+      "end": 1783196195264,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/panels/PrismLawsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/panels/PrismLawsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/panels/PrismLawsPanel.vue?vue&type=style&index=0&scoped=75b3945a&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-75b3945a\"]]);\n",
+      "start": 1783196195264,
+      "end": 1783196195528,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195528,
+      "end": 1783196195528,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195528,
+      "end": 1783196195529,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195529,
+      "end": 1783196195529,
+      "order": "normal"
+    }
+  ]
+}

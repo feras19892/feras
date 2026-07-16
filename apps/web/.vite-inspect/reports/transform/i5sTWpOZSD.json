@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lever/LeverStatusBar.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createTextVNode as _createTextVNode, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, normalizeClass as _normalizeClass } from \"vue\"\n\nconst _hoisted_1 = { class: \"status-bar\" }\nconst _hoisted_2 = { class: \"status-item\" }\nconst _hoisted_3 = { class: \"status-item\" }\nconst _hoisted_4 = { class: \"status-item\" }\nconst _hoisted_5 = { class: \"status-item\" }\nconst _hoisted_6 = { class: \"status-item\" }\nconst _hoisted_7 = { class: \"status-item\" }\nconst _hoisted_8 = { class: \"status-item\" }\n\nimport { useI18n } from '../../../composables/useI18n'\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'LeverStatusBar',\n  props: {\n    mode: {},\n    forceCount: {},\n    sumFx: {},\n    sumFy: {},\n    resultantMag: {},\n    isBalanced: { type: Boolean },\n    massCount: {},\n    netTorque: {},\n    tiltDeg: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\nconst props = __props\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (__props.mode === 'vector')\n      ? (_openBlock(), _createElementBlock(_Fragment, { key: 0 }, [\n          _createElementVNode(\"span\", _hoisted_2, [\n            _createTextVNode(_toDisplayString(_unref(t)('experiments.forces')) + \": \", 1),\n            _createElementVNode(\"b\", null, _toDisplayString(__props.forceCount), 1)\n          ]),\n          _createElementVNode(\"span\", _hoisted_3, [\n            _cache[0] || (_cache[0] = _createTextVNode(\"∑Fx: \", -1)),\n            _createElementVNode(\"b\", null, _toDisplayString(__props.sumFx.toFixed(2)), 1),\n            _cache[1] || (_cache[1] = _createTextVNode(\" N\", -1))\n          ]),\n          _createElementVNode(\"span\", _hoisted_4, [\n            _cache[2] || (_cache[2] = _createTextVNode(\"∑Fy: \", -1)),\n            _createElementVNode(\"b\", null, _toDisplayString(__props.sumFy.toFixed(2)), 1),\n            _cache[3] || (_cache[3] = _createTextVNode(\" N\", -1))\n          ]),\n          _createElementVNode(\"span\", _hoisted_5, [\n            _cache[4] || (_cache[4] = _createTextVNode(\"|R|: \", -1)),\n            _createElementVNode(\"b\", null, _toDisplayString(__props.resultantMag.toFixed(2)), 1),\n            _cache[5] || (_cache[5] = _createTextVNode(\" N\", -1))\n          ])\n        ], 64))\n      : (_openBlock(), _createElementBlock(_Fragment, { key: 1 }, [\n          _createElementVNode(\"span\", _hoisted_6, [\n            _createTextVNode(_toDisplayString(_unref(t)('experiments.masses')) + \": \", 1),\n            _createElementVNode(\"b\", null, _toDisplayString(__props.massCount), 1)\n          ]),\n          _createElementVNode(\"span\", _hoisted_7, [\n            _cache[6] || (_cache[6] = _createTextVNode(\"τ: \", -1)),\n            _createElementVNode(\"b\", null, _toDisplayString((__props.netTorque ?? 0).toFixed(2)), 1),\n            _cache[7] || (_cache[7] = _createTextVNode(\" N·m\", -1))\n          ]),\n          _createElementVNode(\"span\", _hoisted_8, [\n            _cache[8] || (_cache[8] = _createTextVNode(\"θ: \", -1)),\n            _createElementVNode(\"b\", null, _toDisplayString((__props.tiltDeg ?? 0).toFixed(1)), 1),\n            _cache[9] || (_cache[9] = _createTextVNode(\"°\", -1))\n          ])\n        ], 64)),\n    _createElementVNode(\"span\", {\n      class: _normalizeClass([\"status-item\", { balanced: __props.isBalanced || Math.abs(__props.netTorque ?? 1) < 0.01 }])\n    }, _toDisplayString((__props.isBalanced || Math.abs(__props.netTorque ?? 1) < 0.01) ? '✅ ' + _unref(t)('experiments.balanced') : '❌ ' + _unref(t)('experiments.unbalanced')), 3)\n  ]))\n}\n}\n\n})",
+      "start": 1783196194652,
+      "end": 1783196194652
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194652,
+      "end": 1783196194652,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createTextVNode as _createTextVNode, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, normalizeClass as _normalizeClass } from \"vue\";\nconst _hoisted_1 = { class: \"status-bar\" };\nconst _hoisted_2 = { class: \"status-item\" };\nconst _hoisted_3 = { class: \"status-item\" };\nconst _hoisted_4 = { class: \"status-item\" };\nconst _hoisted_5 = { class: \"status-item\" };\nconst _hoisted_6 = { class: \"status-item\" };\nconst _hoisted_7 = { class: \"status-item\" };\nconst _hoisted_8 = { class: \"status-item\" };\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"LeverStatusBar\",\n  props: {\n    mode: {},\n    forceCount: {},\n    sumFx: {},\n    sumFy: {},\n    resultantMag: {},\n    isBalanced: { type: Boolean },\n    massCount: {},\n    netTorque: {},\n    tiltDeg: {}\n  },\n  setup(__props) {\n    const { t } = useI18n();\n    const props = __props;\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        __props.mode === \"vector\" ? (_openBlock(), _createElementBlock(_Fragment, { key: 0 }, [\n          _createElementVNode(\"span\", _hoisted_2, [\n            _createTextVNode(_toDisplayString(_unref(t)(\"experiments.forces\")) + \": \", 1),\n            _createElementVNode(\"b\", null, _toDisplayString(__props.forceCount), 1)\n          ]),\n          _createElementVNode(\"span\", _hoisted_3, [\n            _cache[0] || (_cache[0] = _createTextVNode(\"∑Fx: \", -1)),\n            _createElementVNode(\"b\", null, _toDisplayString(__props.sumFx.toFixed(2)), 1),\n            _cache[1] || (_cache[1] = _createTextVNode(\" N\", -1))\n          ]),\n          _createElementVNode(\"span\", _hoisted_4, [\n            _cache[2] || (_cache[2] = _createTextVNode(\"∑Fy: \", -1)),\n            _createElementVNode(\"b\", null, _toDisplayString(__props.sumFy.toFixed(2)), 1),\n            _cache[3] || (_cache[3] = _createTextVNode(\" N\", -1))\n          ]),\n          _createElementVNode(\"span\", _hoisted_5, [\n            _cache[4] || (_cache[4] = _createTextVNode(\"|R|: \", -1)),\n            _createElementVNode(\"b\", null, _toDisplayString(__props.resultantMag.toFixed(2)), 1),\n            _cache[5] || (_cache[5] = _createTextVNode(\" N\", -1))\n          ])\n        ], 64)) : (_openBlock(), _createElementBlock(_Fragment, { key: 1 }, [\n          _createElementVNode(\"span\", _hoisted_6, [\n            _createTextVNode(_toDisplayString(_unref(t)(\"experiments.masses\")) + \": \", 1),\n            _createElementVNode(\"b\", null, _toDisplayString(__props.massCount), 1)\n          ]),\n          _createElementVNode(\"span\", _hoisted_7, [\n            _cache[6] || (_cache[6] = _createTextVNode(\"τ: \", -1)),\n            _createElementVNode(\"b\", null, _toDisplayString((__props.netTorque ?? 0).toFixed(2)), 1),\n            _cache[7] || (_cache[7] = _createTextVNode(\" N·m\", -1))\n          ]),\n          _createElementVNode(\"span\", _hoisted_8, [\n            _cache[8] || (_cache[8] = _createTextVNode(\"θ: \", -1)),\n            _createElementVNode(\"b\", null, _toDisplayString((__props.tiltDeg ?? 0).toFixed(1)), 1),\n            _cache[9] || (_cache[9] = _createTextVNode(\"°\", -1))\n          ])\n        ], 64)),\n        _createElementVNode(\"span\", {\n          class: _normalizeClass([\"status-item\", { balanced: __props.isBalanced || Math.abs(__props.netTorque ?? 1) < 0.01 }])\n        }, _toDisplayString(__props.isBalanced || Math.abs(__props.netTorque ?? 1) < 0.01 ? \"✅ \" + _unref(t)(\"experiments.balanced\") : \"❌ \" + _unref(t)(\"experiments.unbalanced\")), 3)\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196194652,
+      "end": 1783196194924,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/lever/LeverStatusBar.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createTextVNode as _createTextVNode, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, normalizeClass as _normalizeClass } from \"vue\"\n\nconst _hoisted_1 = { class: \"status-bar\" }\nconst _hoisted_2 = { class: \"status-item\" }\nconst _hoisted_3 = { class: \"status-item\" }\nconst _hoisted_4 = { class: \"status-item\" }\nconst _hoisted_5 = { class: \"status-item\" }\nconst _hoisted_6 = { class: \"status-item\" }\nconst _hoisted_7 = { class: \"status-item\" }\nconst _hoisted_8 = { class: \"status-item\" }\n\nimport { useI18n } from '../../../composables/useI18n'\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'LeverStatusBar',\n  props: {\n    mode: {},\n    forceCount: {},\n    sumFx: {},\n    sumFy: {},\n    resultantMag: {},\n    isBalanced: { type: Boolean },\n    massCount: {},\n    netTorque: {},\n    tiltDeg: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\nconst props = __props\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (__props.mode === 'vector')\n      ? (_openBlock(), _createElementBlock(_Fragment, { key: 0 }, [\n          _createElementVNode(\"span\", _hoisted_2, [\n            _createTextVNode(_toDisplayString(_unref(t)('experiments.forces')) + \": \", 1),\n            _createElementVNode(\"b\", null, _toDisplayString(__props.forceCount), 1)\n          ]),\n          _createElementVNode(\"span\", _hoisted_3, [\n            _cache[0] || (_cache[0] = _createTextVNode(\"∑Fx: \", -1)),\n            _createElementVNode(\"b\", null, _toDisplayString(__props.sumFx.toFixed(2)), 1),\n            _cache[1] || (_cache[1] = _createTextVNode(\" N\", -1))\n          ]),\n          _createElementVNode(\"span\", _hoisted_4, [\n            _cache[2] || (_cache[2] = _createTextVNode(\"∑Fy: \", -1)),\n            _createElementVNode(\"b\", null, _toDisplayString(__props.sumFy.toFixed(2)), 1),\n            _cache[3] || (_cache[3] = _createTextVNode(\" N\", -1))\n          ]),\n          _createElementVNode(\"span\", _hoisted_5, [\n            _cache[4] || (_cache[4] = _createTextVNode(\"|R|: \", -1)),\n            _createElementVNode(\"b\", null, _toDisplayString(__props.resultantMag.toFixed(2)), 1),\n            _cache[5] || (_cache[5] = _createTextVNode(\" N\", -1))\n          ])\n        ], 64))\n      : (_openBlock(), _createElementBlock(_Fragment, { key: 1 }, [\n          _createElementVNode(\"span\", _hoisted_6, [\n            _createTextVNode(_toDisplayString(_unref(t)('experiments.masses')) + \": \", 1),\n            _createElementVNode(\"b\", null, _toDisplayString(__props.massCount), 1)\n          ]),\n          _createElementVNode(\"span\", _hoisted_7, [\n            _cache[6] || (_cache[6] = _createTextVNode(\"τ: \", -1)),\n            _createElementVNode(\"b\", null, _toDisplayString((__props.netTorque ?? 0).toFixed(2)), 1),\n            _cache[7] || (_cache[7] = _createTextVNode(\" N·m\", -1))\n          ]),\n          _createElementVNode(\"span\", _hoisted_8, [\n            _cache[8] || (_cache[8] = _createTextVNode(\"θ: \", -1)),\n            _createElementVNode(\"b\", null, _toDisplayString((__props.tiltDeg ?? 0).toFixed(1)), 1),\n            _cache[9] || (_cache[9] = _createTextVNode(\"°\", -1))\n          ])\n        ], 64)),\n    _createElementVNode(\"span\", {\n      class: _normalizeClass([\"status-item\", { balanced: __props.isBalanced || Math.abs(__props.netTorque ?? 1) < 0.01 }])\n    }, _toDisplayString((__props.isBalanced || Math.abs(__props.netTorque ?? 1) < 0.01) ? '✅ ' + _unref(t)('experiments.balanced') : '❌ ' + _unref(t)('experiments.unbalanced')), 3)\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194924,
+      "end": 1783196194924,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194924,
+      "end": 1783196194924,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196194924,
+      "end": 1783196194924,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194924,
+      "end": 1783196194924,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194924,
+      "end": 1783196194924,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194924,
+      "end": 1783196194924,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194924,
+      "end": 1783196194924,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194924,
+      "end": 1783196194924,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194924,
+      "end": 1783196194924,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194924,
+      "end": 1783196194924,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194924,
+      "end": 1783196194924,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194924,
+      "end": 1783196194924,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194924,
+      "end": 1783196194924,
+      "order": "normal"
+    }
+  ]
+}

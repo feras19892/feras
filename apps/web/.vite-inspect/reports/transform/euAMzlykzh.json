@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/PrismPanelBody.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport type { PrismTrial } from '../../../composables/prism/usePrismTrials'\nimport PrismReadingsPanel from './panels/PrismReadingsPanel.vue'\nimport PrismChartPanel from './panels/PrismChartPanel.vue'\nimport PrismTrialsPanel from './panels/PrismTrialsPanel.vue'\nimport PrismParamsPanel from './panels/PrismParamsPanel.vue'\nimport PrismLawsPanel from './panels/PrismLawsPanel.vue'\nimport PrismResultsPanel from './panels/PrismResultsPanel.vue'\n\ninterface Props {\n  id: string\n  trials: PrismTrial[]\n  params: { prismAngle: number; angleIncidence: number; wavelength: number; material: string }\n  angleRefraction1: number | null\n  angleIncidence2: number | null\n  angleEmergence: number | null\n  deviation: number | null\n  totalInternalReflection: boolean\n  criticalAngle: number | null\n  slope: number\n  intercept: number\n  rSquared: number\n  nValue: number\n  avgN: number | null\n  speedInMedium: number | null\n}\n\ndefineProps<Props>()\n\nconst emit = defineEmits<{\n  (e: 'remove', id: number): void\n  (e: 'clear'): void\n  (e: 'update:params', params: { prismAngle: number; angleIncidence: number; wavelength: number; material: string }): void\n}>()\n</script>\n\n<template>\n  <div>\n    <PrismReadingsPanel\n      v-if=\"id === 'readings'\"\n      :prism-angle=\"params.prismAngle\"\n      :angle-incidence=\"params.angleIncidence\"\n      :angle-refraction1=\"angleRefraction1\"\n      :angle-incidence2=\"angleIncidence2\"\n      :angle-emergence=\"angleEmergence\"\n      :deviation=\"deviation\"\n      :n-value=\"nValue\"\n      :wavelength=\"params.wavelength\"\n      :speed-in-medium=\"speedInMedium\"\n    />\n    <PrismChartPanel\n      v-else-if=\"id === 'chart'\"\n      :trials=\"trials\"\n      :slope=\"slope\"\n      :intercept=\"intercept\"\n      :r-squared=\"rSquared\"\n    />\n    <PrismTrialsPanel\n      v-else-if=\"id === 'trials'\"\n      :trials=\"trials\"\n      @remove=\"emit('remove', $event)\"\n      @clear=\"emit('clear')\"\n    />\n    <PrismParamsPanel\n      v-else-if=\"id === 'params'\"\n      :params=\"params\"\n      @update:params=\"emit('update:params', $event)\"\n    />\n    <PrismLawsPanel\n      v-else-if=\"id === 'laws'\"\n      :prism-angle=\"params.prismAngle\"\n      :angle-incidence=\"params.angleIncidence\"\n      :angle-refraction1=\"angleRefraction1\"\n      :deviation=\"deviation\"\n      :n-value=\"nValue\"\n      :wavelength=\"params.wavelength\"\n      :material=\"params.material\"\n    />\n    <PrismResultsPanel\n      v-else-if=\"id === 'results'\"\n      :trials=\"trials\"\n      :material=\"params.material\"\n      :avg-n=\"avgN\"\n      :r-squared=\"rSquared\"\n      :slope=\"slope\"\n      :intercept=\"intercept\"\n    />\n  </div>\n</template>\n",
+      "start": 1783196193585,
+      "end": 1783196193941,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193941,
+      "end": 1783196193942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196193942,
+      "end": 1783196193942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193942,
+      "end": 1783196193942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193942,
+      "end": 1783196193942,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/PrismPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/PrismPanelBody.vue?vue&type=script&setup=true&lang.ts\";\nexport default _sfc_main;\n",
+      "start": 1783196193942,
+      "end": 1783196194371,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194374,
+      "end": 1783196194374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194374,
+      "end": 1783196194376,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194377,
+      "end": 1783196194377,
+      "order": "normal"
+    }
+  ]
+}

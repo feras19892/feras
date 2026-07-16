@@ -39,7 +39,7 @@ const PRESET_ICONS: Record<string, string> = {
   'lamp-circuit': '💡', 'galvanometer': '📐', 'wheatstone': '⚖️',
   'voltage-divider': '📊',
   'internal-resistance': '🔋', 'series-circuit': '🔗',
-  'capacitors-combination': '🔌', 'potentiometer': '📏', 'non-ohmic': '💡',
+  'capacitors-series': '🔌', 'capacitors-parallel': '🔌', 'potentiometer': '📏', 'non-ohmic': '💡',
   'max-power-transfer': '⚡',
   'joules-law': '🔥',
   'ammeter-voltmeter': '📐',
@@ -75,6 +75,12 @@ function onToggleSwitch(id: number) {
   if (comp && comp.type === 'switch') comp._closed = !comp._closed
 }
 
+function onToggleSwitchClick() {
+  if (lab.isRC.value) { lab.toggleSwitch(); return }
+  const sw = lab.components.find(c => c.type === 'switch')
+  if (sw) sw._closed = !sw._closed
+}
+
 function onLoadPreset(id: string) {
   lab.loadPreset(id)
   selectedId.value = null
@@ -86,7 +92,7 @@ function onLoadPreset(id: string) {
     <header class="elab-header">
       <h1>🔌 {{ t('experiments.expElectricLab') }}</h1>
       <span class="elab-hint">قانون أوم: I = V/R</span>
-      <button v-if="lab.isRC.value" class="switch-toggle-btn" @click="lab.toggleSwitch">🔘 تبديل المفتاح</button>
+      <button v-if="lab.isRC.value || lab.isEMF.value" class="switch-toggle-btn" @click="onToggleSwitchClick">🔘 تبديل المفتاح</button>
       <div class="active-experiment-tag" v-if="lab.activeInstructions.value.length > 0">
         <span class="active-icon">{{ PRESET_ICONS[activePresetId] || '⚡' }}</span>
         <span class="active-name">{{ activeExperimentName }}</span>

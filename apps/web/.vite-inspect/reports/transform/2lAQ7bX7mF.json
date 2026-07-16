@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/pages/register.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, onMounted } from 'vue';\nimport { useRouter } from 'vue-router';\nimport { useAuthStore } from '../modules/auth/stores/auth';\nimport { useI18n } from '../composables/useI18n';\n\nconst router = useRouter();\nconst auth = useAuthStore();\nconst { t } = useI18n();\n\nonMounted(() => {\n  localStorage.clear();\n  auth.user = null;\n  auth.guestMode = false;\n  auth.guestRole = null;\n  auth.currentClassId = null;\n  auth.classes = [];\n});\n\nconst firstName = ref('');\nconst lastName = ref('');\nconst email = ref('');\nconst password = ref('');\nconst confirmPassword = ref('');\nconst showPassword = ref(false);\nconst showConfirmPassword = ref(false);\nconst formError = ref('');\nconst selectedRole = ref<'teacher' | 'student'>('student');\n\nasync function handleRegister() {\n  formError.value = '';\n\n  const fullName = `${firstName.value.trim()} ${lastName.value.trim()}`.trim();\n  const trimmedEmail = email.value.trim();\n  if (!fullName || !trimmedEmail || !password.value) {\n    formError.value = t('auth.errors.fillAll');\n    return;\n  }\n  if (fullName.length < 2) {\n    formError.value = t('auth.errors.nameTooShort');\n    return;\n  }\n  const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;\n  if (!emailRegex.test(trimmedEmail)) {\n    formError.value = t('auth.errors.invalidEmail');\n    return;\n  }\n  if (password.value !== confirmPassword.value) {\n    formError.value = t('auth.errors.passwordsMismatch');\n    return;\n  }\n  if (password.value.length < 8) {\n    formError.value = t('auth.errors.passwordTooShort');\n    return;\n  }\n\n  const ok = await auth.registerWithRole(\n    email.value.trim(),\n    password.value,\n    fullName,\n    selectedRole.value\n  );\n  if (ok) {\n    router.push('/dashboard');\n  } else {\n    formError.value = auth.error || t('auth.errors.registerFailed');\n  }\n}\n</script>\n\n<template>\n  <div class=\"register-page\">\n    <div class=\"register-card\">\n      <div class=\"app-header\">\n        <h1>{{ t('auth.registerTitle') }}</h1>\n        <p class=\"subtitle\">\n          {{ selectedRole === 'teacher' ? t('auth.roleTeacher') : t('auth.roleStudent') }}\n        </p>\n      </div>\n      <form @submit.prevent=\"handleRegister\">\n        <div class=\"field-row\">\n          <div class=\"field half\">\n            <label>{{ t('auth.firstNameLabel', 'First Name') }}</label>\n            <input v-model=\"firstName\" type=\"text\" required autocomplete=\"given-name\" name=\"firstName\" />\n          </div>\n          <div class=\"field half\">\n            <label>{{ t('auth.lastNameLabel', 'Last Name') }}</label>\n            <input v-model=\"lastName\" type=\"text\" required autocomplete=\"family-name\" name=\"lastName\" />\n          </div>\n        </div>\n        <div class=\"field\">\n          <label>{{ t('auth.roleLabel') }}</label>\n          <div class=\"role-toggle\">\n            <button\n              type=\"button\"\n              class=\"role-option\"\n              :class=\"{ active: selectedRole === 'teacher' }\"\n              @click=\"selectedRole = 'teacher'\"\n            >\n              {{ t('auth.roleTeacher') }}\n            </button>\n            <button\n              type=\"button\"\n              class=\"role-option\"\n              :class=\"{ active: selectedRole === 'student' }\"\n              @click=\"selectedRole = 'student'\"\n            >\n              {{ t('auth.roleStudent') }}\n            </button>\n          </div>\n        </div>\n        <div class=\"field\">\n          <label>{{ t('auth.emailLabel') }}</label>\n          <input v-model=\"email\" type=\"email\" required autocomplete=\"username\" name=\"email\" />\n        </div>\n        <div class=\"field\">\n          <label>{{ t('auth.passwordLabel') }}</label>\n          <div class=\"password-wrapper\">\n            <input\n              v-model=\"password\"\n              :type=\"showPassword ? 'text' : 'password'\"\n              required\n              autocomplete=\"new-password\"\n              name=\"password\"\n            />\n            <button\n              type=\"button\"\n              class=\"eye-btn\"\n              @click=\"showPassword = !showPassword\"\n              :title=\"showPassword ? t('auth.hidePassword') : t('auth.showPassword')\"\n            >\n              {{ showPassword ? '🙈' : '👁️' }}\n            </button>\n          </div>\n        </div>\n        <div class=\"field\">\n          <label>{{ t('auth.confirmPasswordLabel') }}</label>\n          <div class=\"password-wrapper\">\n            <input\n              v-model=\"confirmPassword\"\n              :type=\"showConfirmPassword ? 'text' : 'password'\"\n              required\n              autocomplete=\"new-password\"\n              name=\"confirmPassword\"\n            />\n            <button\n              type=\"button\"\n              class=\"eye-btn\"\n              @click=\"showConfirmPassword = !showConfirmPassword\"\n              :title=\"showConfirmPassword ? t('auth.hidePassword') : t('auth.showPassword')\"\n            >\n              {{ showConfirmPassword ? '🙈' : '👁️' }}\n            </button>\n          </div>\n        </div>\n        <p v-if=\"formError\" class=\"error\">{{ formError }}</p>\n        <button type=\"submit\" class=\"btn-submit\" :disabled=\"auth.loading\">\n          {{ auth.loading ? t('auth.loading') : t('auth.registerBtn') }}\n        </button>\n      </form>\n      <router-link to=\"/login\" class=\"back-link\">\n        ← {{ t('auth.backToLogin') }}\n      </router-link>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.register-page {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  min-height: 100vh;\n  background: linear-gradient(135deg, #0b1220, #0f172a, #1e3a5f);\n  padding: 1rem;\n}\n.register-card {\n  width: 400px;\n  padding: 2rem;\n  border-radius: 1.5rem;\n  background: rgba(255, 255, 255, 0.05);\n  backdrop-filter: blur(12px);\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  color: #e2e8f0;\n}\n.app-header { text-align: center; margin-bottom: 1.5rem; }\n.app-header h1 { margin: 0 0 0.4rem; font-size: 1.3rem; color: #67e8f9; }\n.app-header .subtitle { margin: 0; font-size: 0.9rem; color: #94a3b8; }\n.field { margin-bottom: 1rem; }\nlabel { display: block; font-size: 0.8rem; margin-bottom: 0.35rem; color: #cbd5e1; }\ninput {\n  width: 100%;\n  padding: 0.6rem 0.8rem;\n  border-radius: 0.5rem;\n  border: 1px solid #334155;\n  background: #0f172a;\n  color: #e2e8f0;\n  font-size: 0.9rem;\n  box-sizing: border-box;\n}\ninput:focus { outline: none; border-color: #06b6d4; }\n.field-row { display: flex; gap: 0.5rem; }\n.field.half { flex: 1; margin-bottom: 0; }\n.password-wrapper {\n  position: relative;\n  display: flex;\n  align-items: center;\n}\n.password-wrapper input {\n  flex: 1;\n  padding-right: 2.4rem;\n}\n.eye-btn {\n  position: absolute;\n  right: 0.5rem;\n  background: none;\n  border: none;\n  cursor: pointer;\n  font-size: 1rem;\n  padding: 0;\n  color: #94a3b8;\n  line-height: 1;\n}\n.eye-btn:hover { color: #e2e8f0; }\n.error { color: #fca5a5; font-size: 0.8rem; margin: 0.5rem 0; }\n.btn-submit {\n  width: 100%;\n  padding: 0.8rem;\n  border: none;\n  border-radius: 0.5rem;\n  background: linear-gradient(135deg, #06b6d4, #0891b2);\n  color: #fff;\n  font-weight: 700;\n  cursor: pointer;\n  margin-top: 0.5rem;\n  font-size: 0.95rem;\n}\n.btn-submit:disabled { opacity: 0.6; cursor: wait; }\n.role-toggle { display: flex; gap: 0.5rem; }\n.role-option {\n  flex: 1;\n  padding: 0.6rem;\n  border: 1px solid rgba(255,255,255,0.1);\n  border-radius: 0.5rem;\n  background: rgba(255,255,255,0.04);\n  color: #94a3b8;\n  cursor: pointer;\n  font-size: 0.85rem;\n  transition: all 0.2s;\n}\n.role-option:hover { background: rgba(255,255,255,0.08); }\n.role-option.active {\n  background: rgba(99,102,241,0.2);\n  border-color: rgba(99,102,241,0.4);\n  color: #e0e7ff;\n}\n.back-link {\n  display: block;\n  text-align: center;\n  background: none;\n  border: none;\n  color: #94a3b8;\n  cursor: pointer;\n  font-size: 0.85rem;\n  margin-top: 1rem;\n  text-decoration: none;\n}\n.back-link:hover { color: #67e8f9; }\n</style>\n",
+      "start": 1783196192263,
+      "end": 1783196192338,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196192338,
+      "end": 1783196192338,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196192338,
+      "end": 1783196192338,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196192338,
+      "end": 1783196192338,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196192338,
+      "end": 1783196192338,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/pages/register.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/pages/register.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/pages/register.vue?vue&type=style&index=0&scoped=a7e71110&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-a7e71110\"]]);\n",
+      "start": 1783196192338,
+      "end": 1783196192392,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196192393,
+      "end": 1783196192393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196192393,
+      "end": 1783196192393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196192393,
+      "end": 1783196192393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196192393,
+      "end": 1783196192393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196192393,
+      "end": 1783196192393,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196192393,
+      "end": 1783196192393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196192393,
+      "end": 1783196192393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196192393,
+      "end": 1783196192393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196192393,
+      "end": 1783196192393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196192398,
+      "end": 1783196192398,
+      "order": "normal"
+    }
+  ]
+}

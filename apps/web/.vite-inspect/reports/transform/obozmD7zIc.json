@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/panels/PrismLawsPanel.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, createTextVNode as _createTextVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"law-box\" }\nconst _hoisted_3 = { class: \"law-title\" }\nconst _hoisted_4 = { class: \"law-calc\" }\nconst _hoisted_5 = { class: \"law-box\" }\nconst _hoisted_6 = { class: \"law-title\" }\nconst _hoisted_7 = {\n  key: 0,\n  class: \"law-calc\"\n}\nconst _hoisted_8 = { class: \"law-box\" }\nconst _hoisted_9 = { class: \"law-title\" }\nconst _hoisted_10 = {\n  key: 0,\n  class: \"law-calc\"\n}\nconst _hoisted_11 = {\n  key: 1,\n  class: \"law-calc\"\n}\n\nimport { toRef } from 'vue'\nimport { usePrismMinDeviation } from '../../../../composables/prism/usePrismMinDeviation'\nimport { useI18n } from '../../../../composables/useI18n'\n\ninterface Props {\n  prismAngle: number\n  angleIncidence: number\n  angleRefraction1: number | null\n  deviation: number | null\n  nValue: number\n  wavelength: number\n  material: string\n}\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'PrismLawsPanel',\n  props: {\n    prismAngle: {},\n    angleIncidence: {},\n    angleRefraction1: {},\n    deviation: {},\n    nValue: {},\n    wavelength: {},\n    material: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\n\nconst props = __props\n\nconst minDev = usePrismMinDeviation(toRef(props, 'prismAngle'), toRef(props, 'wavelength'), toRef(props, 'material'))\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"div\", _hoisted_3, _toDisplayString(_unref(t)('prism.lawSnell')), 1),\n      _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"law-formula\" }, \"n₁ sin θ₁ = n₂ sin θ₂\", -1)),\n      _createElementVNode(\"div\", _hoisted_4, \" 1.0 × sin(\" + _toDisplayString(__props.angleIncidence.toFixed(1)) + \"°) = n × sin(\" + _toDisplayString(__props.angleRefraction1 !== null ? __props.angleRefraction1.toFixed(1) : '—') + \"°) \", 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_5, [\n      _createElementVNode(\"div\", _hoisted_6, _toDisplayString(_unref(t)('prism.lawPrism')), 1),\n      _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"law-formula\" }, \"n = sin((A+D)/2) / sin(A/2)\", -1)),\n      (__props.deviation !== null)\n        ? (_openBlock(), _createElementBlock(\"div\", _hoisted_7, \" n = sin((\" + _toDisplayString(__props.prismAngle) + \"+\" + _toDisplayString(__props.deviation.toFixed(1)) + \")/2) / sin(\" + _toDisplayString(__props.prismAngle) + \"/2) = \" + _toDisplayString(__props.nValue.toFixed(3)), 1))\n        : _createCommentVNode(\"\", true)\n    ]),\n    _createElementVNode(\"div\", _hoisted_8, [\n      _createElementVNode(\"div\", _hoisted_9, _toDisplayString(_unref(t)('prism.lawMinDeviation')), 1),\n      _cache[3] || (_cache[3] = _createElementVNode(\"div\", { class: \"law-formula\" }, \"n = sin((A+δ_min)/2) / sin(A/2)\", -1)),\n      (_unref(minDev).minDelta.value !== null)\n        ? (_openBlock(), _createElementBlock(\"div\", _hoisted_10, [\n            _createTextVNode(\" δ_min = \" + _toDisplayString(_unref(minDev).minDelta.value.toFixed(1)) + \"° @ θᵢ = \" + _toDisplayString(_unref(minDev).minTheta.value) + \"°\", 1),\n            _cache[2] || (_cache[2] = _createElementVNode(\"br\", null, null, -1)),\n            _createTextVNode(\" n(δ_min) = \" + _toDisplayString(_unref(minDev).nFromMinDeviation.value?.toFixed(3)), 1)\n          ]))\n        : (_openBlock(), _createElementBlock(\"div\", _hoisted_11, \"—\"))\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783196195533,
+      "end": 1783196195533
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195534,
+      "end": 1783196195534,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, createTextVNode as _createTextVNode } from \"vue\";\nconst _hoisted_1 = { class: \"panel-body\" };\nconst _hoisted_2 = { class: \"law-box\" };\nconst _hoisted_3 = { class: \"law-title\" };\nconst _hoisted_4 = { class: \"law-calc\" };\nconst _hoisted_5 = { class: \"law-box\" };\nconst _hoisted_6 = { class: \"law-title\" };\nconst _hoisted_7 = {\n  key: 0,\n  class: \"law-calc\"\n};\nconst _hoisted_8 = { class: \"law-box\" };\nconst _hoisted_9 = { class: \"law-title\" };\nconst _hoisted_10 = {\n  key: 0,\n  class: \"law-calc\"\n};\nconst _hoisted_11 = {\n  key: 1,\n  class: \"law-calc\"\n};\nimport { toRef } from \"vue\";\nimport { usePrismMinDeviation } from \"../../../../composables/prism/usePrismMinDeviation\";\nimport { useI18n } from \"../../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"PrismLawsPanel\",\n  props: {\n    prismAngle: {},\n    angleIncidence: {},\n    angleRefraction1: {},\n    deviation: {},\n    nValue: {},\n    wavelength: {},\n    material: {}\n  },\n  setup(__props) {\n    const { t } = useI18n();\n    const props = __props;\n    const minDev = usePrismMinDeviation(toRef(props, \"prismAngle\"), toRef(props, \"wavelength\"), toRef(props, \"material\"));\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _createElementVNode(\"div\", _hoisted_3, _toDisplayString(_unref(t)(\"prism.lawSnell\")), 1),\n          _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"law-formula\" }, \"n₁ sin θ₁ = n₂ sin θ₂\", -1)),\n          _createElementVNode(\"div\", _hoisted_4, \" 1.0 × sin(\" + _toDisplayString(__props.angleIncidence.toFixed(1)) + \"°) = n × sin(\" + _toDisplayString(__props.angleRefraction1 !== null ? __props.angleRefraction1.toFixed(1) : \"—\") + \"°) \", 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_5, [\n          _createElementVNode(\"div\", _hoisted_6, _toDisplayString(_unref(t)(\"prism.lawPrism\")), 1),\n          _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"law-formula\" }, \"n = sin((A+D)/2) / sin(A/2)\", -1)),\n          __props.deviation !== null ? (_openBlock(), _createElementBlock(\"div\", _hoisted_7, \" n = sin((\" + _toDisplayString(__props.prismAngle) + \"+\" + _toDisplayString(__props.deviation.toFixed(1)) + \")/2) / sin(\" + _toDisplayString(__props.prismAngle) + \"/2) = \" + _toDisplayString(__props.nValue.toFixed(3)), 1)) : _createCommentVNode(\"\", true)\n        ]),\n        _createElementVNode(\"div\", _hoisted_8, [\n          _createElementVNode(\"div\", _hoisted_9, _toDisplayString(_unref(t)(\"prism.lawMinDeviation\")), 1),\n          _cache[3] || (_cache[3] = _createElementVNode(\"div\", { class: \"law-formula\" }, \"n = sin((A+δ_min)/2) / sin(A/2)\", -1)),\n          _unref(minDev).minDelta.value !== null ? (_openBlock(), _createElementBlock(\"div\", _hoisted_10, [\n            _createTextVNode(\" δ_min = \" + _toDisplayString(_unref(minDev).minDelta.value.toFixed(1)) + \"° @ θᵢ = \" + _toDisplayString(_unref(minDev).minTheta.value) + \"°\", 1),\n            _cache[2] || (_cache[2] = _createElementVNode(\"br\", null, null, -1)),\n            _createTextVNode(\" n(δ_min) = \" + _toDisplayString(_unref(minDev).nFromMinDeviation.value?.toFixed(3)), 1)\n          ])) : (_openBlock(), _createElementBlock(\"div\", _hoisted_11, \"—\"))\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196195534,
+      "end": 1783196195732,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/prism/panels/PrismLawsPanel.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, createTextVNode as _createTextVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"panel-body\" }\nconst _hoisted_2 = { class: \"law-box\" }\nconst _hoisted_3 = { class: \"law-title\" }\nconst _hoisted_4 = { class: \"law-calc\" }\nconst _hoisted_5 = { class: \"law-box\" }\nconst _hoisted_6 = { class: \"law-title\" }\nconst _hoisted_7 = {\n  key: 0,\n  class: \"law-calc\"\n}\nconst _hoisted_8 = { class: \"law-box\" }\nconst _hoisted_9 = { class: \"law-title\" }\nconst _hoisted_10 = {\n  key: 0,\n  class: \"law-calc\"\n}\nconst _hoisted_11 = {\n  key: 1,\n  class: \"law-calc\"\n}\n\nimport { toRef } from 'vue'\nimport { usePrismMinDeviation } from '../../../../composables/prism/usePrismMinDeviation'\nimport { useI18n } from '../../../../composables/useI18n'\n\ninterface Props {\n  prismAngle: number\n  angleIncidence: number\n  angleRefraction1: number | null\n  deviation: number | null\n  nValue: number\n  wavelength: number\n  material: string\n}\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'PrismLawsPanel',\n  props: {\n    prismAngle: {},\n    angleIncidence: {},\n    angleRefraction1: {},\n    deviation: {},\n    nValue: {},\n    wavelength: {},\n    material: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\n\nconst props = __props\n\nconst minDev = usePrismMinDeviation(toRef(props, 'prismAngle'), toRef(props, 'wavelength'), toRef(props, 'material'))\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"div\", _hoisted_3, _toDisplayString(_unref(t)('prism.lawSnell')), 1),\n      _cache[0] || (_cache[0] = _createElementVNode(\"div\", { class: \"law-formula\" }, \"n₁ sin θ₁ = n₂ sin θ₂\", -1)),\n      _createElementVNode(\"div\", _hoisted_4, \" 1.0 × sin(\" + _toDisplayString(__props.angleIncidence.toFixed(1)) + \"°) = n × sin(\" + _toDisplayString(__props.angleRefraction1 !== null ? __props.angleRefraction1.toFixed(1) : '—') + \"°) \", 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_5, [\n      _createElementVNode(\"div\", _hoisted_6, _toDisplayString(_unref(t)('prism.lawPrism')), 1),\n      _cache[1] || (_cache[1] = _createElementVNode(\"div\", { class: \"law-formula\" }, \"n = sin((A+D)/2) / sin(A/2)\", -1)),\n      (__props.deviation !== null)\n        ? (_openBlock(), _createElementBlock(\"div\", _hoisted_7, \" n = sin((\" + _toDisplayString(__props.prismAngle) + \"+\" + _toDisplayString(__props.deviation.toFixed(1)) + \")/2) / sin(\" + _toDisplayString(__props.prismAngle) + \"/2) = \" + _toDisplayString(__props.nValue.toFixed(3)), 1))\n        : _createCommentVNode(\"\", true)\n    ]),\n    _createElementVNode(\"div\", _hoisted_8, [\n      _createElementVNode(\"div\", _hoisted_9, _toDisplayString(_unref(t)('prism.lawMinDeviation')), 1),\n      _cache[3] || (_cache[3] = _createElementVNode(\"div\", { class: \"law-formula\" }, \"n = sin((A+δ_min)/2) / sin(A/2)\", -1)),\n      (_unref(minDev).minDelta.value !== null)\n        ? (_openBlock(), _createElementBlock(\"div\", _hoisted_10, [\n            _createTextVNode(\" δ_min = \" + _toDisplayString(_unref(minDev).minDelta.value.toFixed(1)) + \"° @ θᵢ = \" + _toDisplayString(_unref(minDev).minTheta.value) + \"°\", 1),\n            _cache[2] || (_cache[2] = _createElementVNode(\"br\", null, null, -1)),\n            _createTextVNode(\" n(δ_min) = \" + _toDisplayString(_unref(minDev).nFromMinDeviation.value?.toFixed(3)), 1)\n          ]))\n        : (_openBlock(), _createElementBlock(\"div\", _hoisted_11, \"—\"))\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195732,
+      "end": 1783196195732,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195732,
+      "end": 1783196195732,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196195732,
+      "end": 1783196195732,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195732,
+      "end": 1783196195733,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195733,
+      "end": 1783196195733,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195733,
+      "end": 1783196195733,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195733,
+      "end": 1783196195733,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195733,
+      "end": 1783196195733,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195733,
+      "end": 1783196195733,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195733,
+      "end": 1783196195733,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195733,
+      "end": 1783196195733,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195733,
+      "end": 1783196195733,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195733,
+      "end": 1783196195733,
+      "order": "normal"
+    }
+  ]
+}

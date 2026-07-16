@@ -37,6 +37,7 @@ const experimentMap: Record<string, () => Promise<any>> = {
   'latent-heat': () => import('./experiments/latent-heat/LatentHeatExperiment.vue'),
   'analysis-calc': () => import('./experiments/analysis-calc/AnalysisCalcExperiment.vue'),
   'electric-lab': () => import('./experiments/electric-lab/ElectricLabExperiment.vue'),
+  'electric-workshop': () => import('./experiments/electric-workshop/ElectricWorkshop.vue'),
 };
 
 export function loadExperiment(id: string) {

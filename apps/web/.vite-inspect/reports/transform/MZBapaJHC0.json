@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/freefall/FreeFallCanvas.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref, watch, onMounted } from 'vue'\nimport type { FreeFallParams } from '../../../modules/physics/experiments/freefall/useFreeFallPhysics'\nimport type { FreeFallState } from '../../../modules/physics/experiments/freefall/useFreeFallPhysics'\n\nconst props = defineProps<{\n  params: FreeFallParams\n  simState: FreeFallState\n}>()\n\nconst canvasRef = ref<HTMLCanvasElement | null>(null)\n\nfunction draw() {\n  const c = canvasRef.value\n  if (!c) return\n  const ctx = c.getContext('2d')\n  if (!ctx) return\n  const w = c.width, h = c.height\n\n  // Gradient background\n  const bgGrad = ctx.createLinearGradient(0, 0, 0, h)\n  bgGrad.addColorStop(0, '#0c1220')\n  bgGrad.addColorStop(1, '#151e32')\n  ctx.fillStyle = bgGrad\n  ctx.fillRect(0, 0, w, h)\n\n  // Scale based on params.h so ball starts at top and falls to bottom\n  const magnetBottom = 22\n  const groundY = h - 24\n  const scale = (groundY - magnetBottom) / props.params.h\n  const leftX = w * 0.4\n\n  // Vertical rod / column\n  ctx.fillStyle = '#2a3a52'\n  ctx.fillRect(leftX - 3, magnetBottom, 6, groundY - magnetBottom)\n  // Rod highlight\n  ctx.fillStyle = '#3d5470'\n  ctx.fillRect(leftX - 1, magnetBottom, 2, groundY - magnetBottom)\n\n  // Electromagnet with metallic glow\n  const magGrad = ctx.createLinearGradient(leftX - 18, 0, leftX + 18, 0)\n  magGrad.addColorStop(0, '#1a365d')\n  magGrad.addColorStop(0.3, '#5B8DB8')\n  magGrad.addColorStop(0.7, '#5B8DB8')\n  magGrad.addColorStop(1, '#1a365d')\n  ctx.fillStyle = magGrad\n  ctx.fillRect(leftX - 18, 6, 36, 14)\n  // Magnet glow\n  ctx.shadowColor = 'rgba(91,141,184,0.4)'\n  ctx.shadowBlur = 12\n  ctx.strokeStyle = '#8bb8d8'\n  ctx.lineWidth = 1\n  ctx.strokeRect(leftX - 18, 6, 36, 14)\n  ctx.shadowBlur = 0\n  // Magnet coils detail\n  ctx.strokeStyle = 'rgba(26,54,93,0.6)'\n  ctx.lineWidth = 1\n  for (let i = -14; i < 16; i += 4) {\n    ctx.beginPath()\n    ctx.moveTo(leftX + i, 6)\n    ctx.lineTo(leftX + i, 20)\n    ctx.stroke()\n  }\n\n  // Height ruler with ticks\n  ctx.strokeStyle = 'rgba(148,163,184,0.25)'\n  ctx.lineWidth = 1.5\n  ctx.beginPath()\n  ctx.moveTo(leftX + 24, groundY)\n  ctx.lineTo(leftX + 24, magnetBottom)\n  ctx.stroke()\n  // Ruler ticks\n  const rulerH = groundY - magnetBottom\n  const tickCount = 5\n  ctx.fillStyle = 'rgba(148,163,184,0.4)'\n  ctx.font = '9px monospace'\n  ctx.textAlign = 'left'\n  for (let i = 0; i <= tickCount; i++) {\n    const ty = groundY - (i / tickCount) * rulerH\n    ctx.strokeStyle = 'rgba(148,163,184,0.3)'\n    ctx.lineWidth = 1\n    ctx.beginPath()\n    ctx.moveTo(leftX + 24, ty)\n    ctx.lineTo(leftX + 32, ty)\n    ctx.stroke()\n  }\n\n  // Ball shadow on ground (grows as ball falls)\n  const ballY = groundY - props.simState.y * scale\n  const fallProgress = 1 - (ballY - magnetBottom) / (groundY - magnetBottom)\n  if (fallProgress > 0) {\n    const shadowAlpha = Math.min(0.35, fallProgress * 0.4)\n    const shadowW = 6 + fallProgress * 10\n    const shadowH = 2 + fallProgress * 3\n    ctx.fillStyle = `rgba(0,0,0,${shadowAlpha})`\n    ctx.beginPath()\n    ctx.ellipse(leftX, groundY + 3, shadowW, shadowH, 0, 0, Math.PI * 2)\n    ctx.fill()\n  }\n\n  // 3D Ball with radial gradient\n  const ballGrad = ctx.createRadialGradient(leftX - 3, ballY - 3, 1, leftX, ballY, 10)\n  ballGrad.addColorStop(0, '#fdba74')\n  ballGrad.addColorStop(0.4, '#f97316')\n  ballGrad.addColorStop(1, '#9a3412')\n  ctx.fillStyle = ballGrad\n  ctx.beginPath()\n  ctx.arc(leftX, ballY, 10, 0, Math.PI * 2)\n  ctx.fill()\n  // Ball outer glow\n  ctx.shadowColor = 'rgba(249,115,22,0.3)'\n  ctx.shadowBlur = 8\n  ctx.strokeStyle = '#c2410c'\n  ctx.lineWidth = 1.5\n  ctx.beginPath()\n  ctx.arc(leftX, ballY, 10, 0, Math.PI * 2)\n  ctx.stroke()\n  ctx.shadowBlur = 0\n  // Highlight dot\n  ctx.fillStyle = 'rgba(255,255,255,0.5)'\n  ctx.beginPath()\n  ctx.arc(leftX - 3, ballY - 3, 3, 0, Math.PI * 2)\n  ctx.fill()\n\n  // Metallic ground pad\n  const floorGrad = ctx.createLinearGradient(0, groundY, 0, groundY + 10)\n  floorGrad.addColorStop(0, '#334155')\n  floorGrad.addColorStop(0.5, '#475569')\n  floorGrad.addColorStop(1, '#1e293b')\n  ctx.fillStyle = floorGrad\n  ctx.fillRect(leftX - 45, groundY, 90, 10)\n  // Floor edge highlight\n  ctx.fillStyle = 'rgba(148,163,184,0.3)'\n  ctx.fillRect(leftX - 45, groundY, 90, 1)\n  // Floor grid pattern\n  ctx.strokeStyle = 'rgba(148,163,184,0.1)'\n  ctx.lineWidth = 1\n  for (let i = -40; i < 45; i += 8) {\n    ctx.beginPath()\n    ctx.moveTo(leftX + i, groundY)\n    ctx.lineTo(leftX + i + 4, groundY + 10)\n    ctx.stroke()\n  }\n\n  // Electronic digital clock display\n  const clockW = 140\n  const clockH = 42\n  const clockX = w - clockW - 14\n  const clockY = groundY - clockH - 10\n\n  // Clock bezel\n  ctx.fillStyle = '#1a2332'\n  ctx.strokeStyle = '#2d3e52'\n  ctx.lineWidth = 2\n  roundRect(ctx, clockX, clockY, clockW, clockH, 6)\n  ctx.fill()\n  ctx.stroke()\n\n  // Clock inner screen (LCD dark)\n  ctx.fillStyle = '#0d1520'\n  roundRect(ctx, clockX + 4, clockY + 4, clockW - 8, clockH - 8, 4)\n  ctx.fill()\n\n  // LCD grid dots (subtle)\n  ctx.fillStyle = 'rgba(91,141,184,0.06)'\n  for (let gx = clockX + 8; gx < clockX + clockW - 8; gx += 3) {\n    for (let gy = clockY + 8; gy < clockY + clockH - 8; gy += 3) {\n      ctx.fillRect(gx, gy, 1, 1)\n    }\n  }\n\n  // Time value\n  const timeStr = props.simState.t.toFixed(3)\n  ctx.font = 'bold 18px monospace'\n  ctx.textAlign = 'center'\n  ctx.textBaseline = 'middle'\n  // Glow shadow\n  ctx.shadowColor = '#5B8DB8'\n  ctx.shadowBlur = 10\n  ctx.fillStyle = '#5B8DB8'\n  ctx.fillText(timeStr, clockX + clockW / 2, clockY + clockH / 2 - 2)\n  ctx.shadowBlur = 0\n\n  // Unit label\n  ctx.font = '9px sans-serif'\n  ctx.fillStyle = 'rgba(91,141,184,0.5)'\n  ctx.fillText('t (s)', clockX + clockW / 2, clockY + clockH - 6)\n\n  // Running indicator LED\n  const ledX = clockX + 12\n  const ledY = clockY + 10\n  ctx.beginPath()\n  ctx.arc(ledX, ledY, 3, 0, Math.PI * 2)\n  if (props.simState.running && !props.simState.paused) {\n    ctx.fillStyle = '#22c55e'\n    ctx.shadowColor = '#22c55e'\n    ctx.shadowBlur = 6\n  } else if (props.simState.paused) {\n    ctx.fillStyle = '#fbbf24'\n    ctx.shadowColor = '#fbbf24'\n    ctx.shadowBlur = 4\n  } else {\n    ctx.fillStyle = '#475569'\n    ctx.shadowBlur = 0\n  }\n  ctx.fill()\n  ctx.shadowBlur = 0\n\n  // LED label\n  ctx.font = '7px sans-serif'\n  ctx.fillStyle = 'rgba(148,163,184,0.5)'\n  ctx.textAlign = 'left'\n  ctx.fillText('REC', ledX + 6, ledY + 2)\n}\n\nfunction roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {\n  ctx.beginPath()\n  ctx.moveTo(x + r, y)\n  ctx.arcTo(x + w, y, x + w, y + h, r)\n  ctx.arcTo(x + w, y + h, x, y + h, r)\n  ctx.arcTo(x, y + h, x, y, r)\n  ctx.arcTo(x, y, x + w, y, r)\n  ctx.closePath()\n}\n\nwatch(() => [props.simState.t, props.simState.y, props.simState.vy, props.params.h], draw, { immediate: true })\n\nfunction captureSnapshot() {\n  return canvasRef.value?.toDataURL('image/png')\n}\n\ndefineExpose({ captureSnapshot })\n\nonMounted(draw)\n</script>\n\n<template>\n  <canvas ref=\"canvasRef\" width=\"480\" height=\"360\" style=\"width:100%;height:100%;background:#0b0f15;border-radius:10px;border:1px solid #1e293b;\" />\n</template>\n",
+      "start": 1783196193562,
+      "end": 1783196193860,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193860,
+      "end": 1783196193860,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196193860,
+      "end": 1783196193860,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193860,
+      "end": 1783196193860,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193860,
+      "end": 1783196193860,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/freefall/FreeFallCanvas.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/freefall/FreeFallCanvas.vue?vue&type=script&setup=true&lang.ts\";\nexport default _sfc_main;\n",
+      "start": 1783196193860,
+      "end": 1783196194381,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194381,
+      "end": 1783196194381,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194381,
+      "end": 1783196194381,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194381,
+      "end": 1783196194382,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194382,
+      "end": 1783196194382,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194382,
+      "end": 1783196194382,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194382,
+      "end": 1783196194382,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194382,
+      "end": 1783196194382,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194382,
+      "end": 1783196194382,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194382,
+      "end": 1783196194383,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194383,
+      "end": 1783196194383,
+      "order": "normal"
+    }
+  ]
+}

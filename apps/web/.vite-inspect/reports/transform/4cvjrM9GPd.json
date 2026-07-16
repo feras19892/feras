@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemAnalysisTabs.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeClass as _normalizeClass, createElementVNode as _createElementVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"chem-tabs\" }\nconst _hoisted_2 = [\"onClick\"]\n\nimport { useI18n } from '../../../composables/useI18n';\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ChemAnalysisTabs',\n  props: {\n    active: {}\n  },\n  emits: [\"change\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n();\nconst props = __props;\nconst emit = __emit;\nconst tabs = [\n  { key: 0, label: t('analysis.dataTab') },\n  { key: 1, label: t('analysis.analysisTab') },\n  { key: 2, label: t('analysis.reportTab') },\n];\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (_openBlock(), _createElementBlock(_Fragment, null, _renderList(tabs, (tab) => {\n      return _createElementVNode(\"button\", {\n        key: tab.key,\n        class: _normalizeClass(['tab-btn', { active: props.active === tab.key }]),\n        onClick: ($event: any) => (emit('change', tab.key))\n      }, _toDisplayString(tab.label), 11, _hoisted_2)\n    }), 64))\n  ]))\n}\n}\n\n})",
+      "start": 1783196192952,
+      "end": 1783196192952
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196192952,
+      "end": 1783196192952,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeClass as _normalizeClass, createElementVNode as _createElementVNode } from \"vue\";\nconst _hoisted_1 = { class: \"chem-tabs\" };\nconst _hoisted_2 = [\"onClick\"];\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"ChemAnalysisTabs\",\n  props: {\n    active: {}\n  },\n  emits: [\"change\"],\n  setup(__props, { emit: __emit }) {\n    const { t } = useI18n();\n    const props = __props;\n    const emit = __emit;\n    const tabs = [\n      { key: 0, label: t(\"analysis.dataTab\") },\n      { key: 1, label: t(\"analysis.analysisTab\") },\n      { key: 2, label: t(\"analysis.reportTab\") }\n    ];\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        (_openBlock(), _createElementBlock(_Fragment, null, _renderList(tabs, (tab) => {\n          return _createElementVNode(\"button\", {\n            key: tab.key,\n            class: _normalizeClass([\"tab-btn\", { active: props.active === tab.key }]),\n            onClick: ($event) => emit(\"change\", tab.key)\n          }, _toDisplayString(tab.label), 11, _hoisted_2);\n        }), 64))\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196192952,
+      "end": 1783196193014,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/modules/chemistry/analysis-calc/ChemAnalysisTabs.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString, normalizeClass as _normalizeClass, createElementVNode as _createElementVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"chem-tabs\" }\nconst _hoisted_2 = [\"onClick\"]\n\nimport { useI18n } from '../../../composables/useI18n';\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'ChemAnalysisTabs',\n  props: {\n    active: {}\n  },\n  emits: [\"change\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst { t } = useI18n();\nconst props = __props;\nconst emit = __emit;\nconst tabs = [\n  { key: 0, label: t('analysis.dataTab') },\n  { key: 1, label: t('analysis.analysisTab') },\n  { key: 2, label: t('analysis.reportTab') },\n];\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    (_openBlock(), _createElementBlock(_Fragment, null, _renderList(tabs, (tab) => {\n      return _createElementVNode(\"button\", {\n        key: tab.key,\n        class: _normalizeClass(['tab-btn', { active: props.active === tab.key }]),\n        onClick: ($event: any) => (emit('change', tab.key))\n      }, _toDisplayString(tab.label), 11, _hoisted_2)\n    }), 64))\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,cAAc,aAAa,YAAY,WAAW,aAAa,YAAY,sBAAsB,qBAAqB,mBAAmB,kBAAkB,kBAAkB,iBAAiB,sBAAsB,2BAA2B;AAExP,MAAM,aAAa,EAAE,OAAO,YAAY;AACxC,MAAM,aAAa,CAAC,SAAS;AAE7B,SAAS,eAAe;AAExB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,QAAQ,CAAC;AAAA,EACX;AAAA,EACA,OAAO,CAAC,QAAQ;AAAA,EAChB,MAAM,SAAc,EAAE,MAAM,OAAO,GAAG;AAExC,UAAM,EAAE,EAAE,IAAI,QAAQ;AACtB,UAAM,QAAQ;AACd,UAAM,OAAO;AACb,UAAM,OAAO;AAAA,MACX,EAAE,KAAK,GAAG,OAAO,EAAE,kBAAkB,EAAE;AAAA,MACvC,EAAE,KAAK,GAAG,OAAO,EAAE,sBAAsB,EAAE;AAAA,MAC3C,EAAE,KAAK,GAAG,OAAO,EAAE,oBAAoB,EAAE;AAAA,IAC3C;AAEA,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,SAC1D,WAAW,GAAG,oBAAoB,WAAW,MAAM,YAAY,MAAM,CAAC,QAAQ;AAC7E,iBAAO,oBAAoB,UAAU;AAAA,YACnC,KAAK,IAAI;AAAA,YACT,OAAO,gBAAgB,CAAC,WAAW,EAAE,QAAQ,MAAM,WAAW,IAAI,IAAI,CAAC,CAAC;AAAA,YACxE,SAAS,CAAC,WAAiB,KAAK,UAAU,IAAI,GAAG;AAAA,UACnD,GAAG,iBAAiB,IAAI,KAAK,GAAG,IAAI,UAAU;AAAA,QAChD,CAAC,GAAG,EAAE;AAAA,MACR,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193014,
+      "end": 1783196193014,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193014,
+      "end": 1783196193014,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196193014,
+      "end": 1783196193014,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193014,
+      "end": 1783196193014,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193014,
+      "end": 1783196193014,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193014,
+      "end": 1783196193014,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193014,
+      "end": 1783196193014,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193014,
+      "end": 1783196193014,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193014,
+      "end": 1783196193014,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193014,
+      "end": 1783196193014,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193015,
+      "end": 1783196193015,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193015,
+      "end": 1783196193015,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193015,
+      "end": 1783196193015,
+      "order": "normal"
+    }
+  ]
+}

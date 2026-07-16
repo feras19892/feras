@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/composables/biot-savart/useBiotSavartExperiment.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { ref, reactive, computed, watch } from 'vue'\nimport type { AnalysisPayload } from '../../types/physics'\nimport { useBiotSavartLayout } from './useBiotSavartLayout'\nimport { useBiotSavartTrials } from './useBiotSavartTrials'\nimport { magneticFieldWire, magneticFieldLoop, magneticFieldSolenoid } from './useBiotSavartCalculations'\n\nexport function useBiotSavartExperiment() {\n  const params = reactive({\n    I: 5,        // A\n    r: 0.05,     // m\n    R: 0.1,      // m (loop radius)\n    n: 100,      // turns per meter\n    shape: 'wire' as 'wire' | 'loop' | 'solenoid',\n  })\n\n  watch(() => params.I, (v) => { params.I = Math.max(0.1, Math.min(20, Math.round(v * 10) / 10)) })\n  watch(() => params.r, (v) => { params.r = Math.max(0.001, Math.min(1, Math.round(v * 1000) / 1000)) })\n  watch(() => params.R, (v) => { params.R = Math.max(0.01, Math.min(1, Math.round(v * 100) / 100)) })\n  watch(() => params.n, (v) => { params.n = Math.max(10, Math.min(1000, Math.round(v / 10) * 10)) })\n\n  const running = ref(false)\n  const paused = ref(false)\n  const simTime = ref(0)\n  const phase = ref<'ready' | 'running' | 'done'>('ready')\n\n  const B = computed(() => {\n    switch (params.shape) {\n      case 'wire': return magneticFieldWire(params.I, params.r)\n      case 'loop': return magneticFieldLoop(params.I, params.R, 0)\n      case 'solenoid': return magneticFieldSolenoid(params.I, params.n)\n      default: return 0\n    }\n  })\n\n  function updateSim(dt: number) {\n    if (!running.value || paused.value) return\n    simTime.value += dt\n    phase.value = 'running'\n    if (simTime.value > 5) phase.value = 'done'\n  }\n\n  function togglePause() {\n    if (!running.value) {\n      running.value = true; paused.value = false; simTime.value = 0\n      phase.value = 'running'\n    } else { paused.value = !paused.value }\n  }\n  function resetSim() {\n    running.value = false; paused.value = false; simTime.value = 0; phase.value = 'ready'\n  }\n\n  const layout = useBiotSavartLayout()\n  const trials = useBiotSavartTrials(\n    { get value() { return { I: params.I, r: params.r, B: B.value, shape: params.shape } } }\n  )\n\n  function exportToAnalysis() {\n    if (trials.trials.value.length < 2) return\n    const payload: AnalysisPayload = {\n      sourceExperiment: 'biot-savart', sourceNameAr: 'بيوسافار',\n      readings: trials.trials.value.map(t => ({ I: t.I, r: t.r, B: t.B, shape: t.shape })),\n      columns: [\n        { key: 'I', label: 'I (A)', unit: 'A' },\n        { key: 'r', label: 'r (m)', unit: 'm' },\n        { key: 'B', label: 'B (T)', unit: 'T' },\n        { key: 'shape', label: 'Shape', unit: '' },\n      ],\n      equations: [\n        { name: 'Biot-Savart (Wire)', formula: 'B = μ₀I / 2πr', variables: [{ symbol: 'B', label: 'Magnetic field' }, { symbol: 'I', label: 'Current' }, { symbol: 'r', label: 'Distance' }], solveFor: ['B'] },\n      ],\n      suggestedPlots: [{ xKey: 'r', yKey: 'B', xLabel: 'r (m)', yLabel: 'B (T)', type: 'scatter' }],\n    }\n    localStorage.setItem('analysis_payload', JSON.stringify(payload))\n    window.open('/analysis', '_blank')\n  }\n  function handleDrop(fromId: string, x?: number, y?: number) {\n    if (x === undefined || y === undefined) return\n    const el = document.elementFromPoint(x, y)\n    const toPanel = el?.closest('.draggable-panel')\n    const toId = toPanel?.getAttribute('data-id')\n    if (!toId || fromId === toId) return\n    for (const col of Object.keys(layout.columnMap)) {\n      const arr = layout.columnMap[col]\n      const fi = arr.indexOf(fromId), ti = arr.indexOf(toId)\n      if (fi >= 0 && ti >= 0) { const t = arr[fi]; arr[fi] = arr[ti]; arr[ti] = t }\n    }\n  }\n  function onResizeStart(col: string, e: MouseEvent) {\n    if (!(col in layout.widths)) return\n    const startX = e.clientX, startW = (layout.widths as Record<string, number>)[col] as number\n    function move(ev: MouseEvent) { (layout.widths as Record<string, number>)[col] = Math.max(220, startW + (ev.clientX - startX)) }\n    function up() { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up) }\n    window.addEventListener('mousemove', move); window.addEventListener('mouseup', up)\n  }\n\n  const lab = { running, paused, simTime, phase, B, togglePause, updateSim }\n  return { params, lab, layout, trials, resetSim, exportToAnalysis, onResizeStart, handleDrop }\n}\n",
+      "start": 1783196193568,
+      "end": 1783196193891,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193891,
+      "end": 1783196193891,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { ref, reactive, computed, watch } from \"vue\";\nimport { useBiotSavartLayout } from \"./useBiotSavartLayout\";\nimport { useBiotSavartTrials } from \"./useBiotSavartTrials\";\nimport { magneticFieldWire, magneticFieldLoop, magneticFieldSolenoid } from \"./useBiotSavartCalculations\";\nexport function useBiotSavartExperiment() {\n  const params = reactive({\n    I: 5,\n    // A\n    r: 0.05,\n    // m\n    R: 0.1,\n    // m (loop radius)\n    n: 100,\n    // turns per meter\n    shape: \"wire\"\n  });\n  watch(() => params.I, (v) => {\n    params.I = Math.max(0.1, Math.min(20, Math.round(v * 10) / 10));\n  });\n  watch(() => params.r, (v) => {\n    params.r = Math.max(1e-3, Math.min(1, Math.round(v * 1e3) / 1e3));\n  });\n  watch(() => params.R, (v) => {\n    params.R = Math.max(0.01, Math.min(1, Math.round(v * 100) / 100));\n  });\n  watch(() => params.n, (v) => {\n    params.n = Math.max(10, Math.min(1e3, Math.round(v / 10) * 10));\n  });\n  const running = ref(false);\n  const paused = ref(false);\n  const simTime = ref(0);\n  const phase = ref(\"ready\");\n  const B = computed(() => {\n    switch (params.shape) {\n      case \"wire\":\n        return magneticFieldWire(params.I, params.r);\n      case \"loop\":\n        return magneticFieldLoop(params.I, params.R, 0);\n      case \"solenoid\":\n        return magneticFieldSolenoid(params.I, params.n);\n      default:\n        return 0;\n    }\n  });\n  function updateSim(dt) {\n    if (!running.value || paused.value) return;\n    simTime.value += dt;\n    phase.value = \"running\";\n    if (simTime.value > 5) phase.value = \"done\";\n  }\n  function togglePause() {\n    if (!running.value) {\n      running.value = true;\n      paused.value = false;\n      simTime.value = 0;\n      phase.value = \"running\";\n    } else {\n      paused.value = !paused.value;\n    }\n  }\n  function resetSim() {\n    running.value = false;\n    paused.value = false;\n    simTime.value = 0;\n    phase.value = \"ready\";\n  }\n  const layout = useBiotSavartLayout();\n  const trials = useBiotSavartTrials(\n    { get value() {\n      return { I: params.I, r: params.r, B: B.value, shape: params.shape };\n    } }\n  );\n  function exportToAnalysis() {\n    if (trials.trials.value.length < 2) return;\n    const payload = {\n      sourceExperiment: \"biot-savart\",\n      sourceNameAr: \"بيوسافار\",\n      readings: trials.trials.value.map((t) => ({ I: t.I, r: t.r, B: t.B, shape: t.shape })),\n      columns: [\n        { key: \"I\", label: \"I (A)\", unit: \"A\" },\n        { key: \"r\", label: \"r (m)\", unit: \"m\" },\n        { key: \"B\", label: \"B (T)\", unit: \"T\" },\n        { key: \"shape\", label: \"Shape\", unit: \"\" }\n      ],\n      equations: [\n        { name: \"Biot-Savart (Wire)\", formula: \"B = μ₀I / 2πr\", variables: [{ symbol: \"B\", label: \"Magnetic field\" }, { symbol: \"I\", label: \"Current\" }, { symbol: \"r\", label: \"Distance\" }], solveFor: [\"B\"] }\n      ],\n      suggestedPlots: [{ xKey: \"r\", yKey: \"B\", xLabel: \"r (m)\", yLabel: \"B (T)\", type: \"scatter\" }]\n    };\n    localStorage.setItem(\"analysis_payload\", JSON.stringify(payload));\n    window.open(\"/analysis\", \"_blank\");\n  }\n  function handleDrop(fromId, x, y) {\n    if (x === void 0 || y === void 0) return;\n    const el = document.elementFromPoint(x, y);\n    const toPanel = el?.closest(\".draggable-panel\");\n    const toId = toPanel?.getAttribute(\"data-id\");\n    if (!toId || fromId === toId) return;\n    for (const col of Object.keys(layout.columnMap)) {\n      const arr = layout.columnMap[col];\n      const fi = arr.indexOf(fromId), ti = arr.indexOf(toId);\n      if (fi >= 0 && ti >= 0) {\n        const t = arr[fi];\n        arr[fi] = arr[ti];\n        arr[ti] = t;\n      }\n    }\n  }\n  function onResizeStart(col, e) {\n    if (!(col in layout.widths)) return;\n    const startX = e.clientX, startW = layout.widths[col];\n    function move(ev) {\n      layout.widths[col] = Math.max(220, startW + (ev.clientX - startX));\n    }\n    function up() {\n      window.removeEventListener(\"mousemove\", move);\n      window.removeEventListener(\"mouseup\", up);\n    }\n    window.addEventListener(\"mousemove\", move);\n    window.addEventListener(\"mouseup\", up);\n  }\n  const lab = { running, paused, simTime, phase, B, togglePause, updateSim };\n  return { params, lab, layout, trials, resetSim, exportToAnalysis, onResizeStart, handleDrop };\n}\n",
+      "start": 1783196193891,
+      "end": 1783196194390,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/composables/biot-savart/useBiotSavartExperiment.ts"
+        ],
+        "sourcesContent": [
+          "import { ref, reactive, computed, watch } from 'vue'\nimport type { AnalysisPayload } from '../../types/physics'\nimport { useBiotSavartLayout } from './useBiotSavartLayout'\nimport { useBiotSavartTrials } from './useBiotSavartTrials'\nimport { magneticFieldWire, magneticFieldLoop, magneticFieldSolenoid } from './useBiotSavartCalculations'\n\nexport function useBiotSavartExperiment() {\n  const params = reactive({\n    I: 5,        // A\n    r: 0.05,     // m\n    R: 0.1,      // m (loop radius)\n    n: 100,      // turns per meter\n    shape: 'wire' as 'wire' | 'loop' | 'solenoid',\n  })\n\n  watch(() => params.I, (v) => { params.I = Math.max(0.1, Math.min(20, Math.round(v * 10) / 10)) })\n  watch(() => params.r, (v) => { params.r = Math.max(0.001, Math.min(1, Math.round(v * 1000) / 1000)) })\n  watch(() => params.R, (v) => { params.R = Math.max(0.01, Math.min(1, Math.round(v * 100) / 100)) })\n  watch(() => params.n, (v) => { params.n = Math.max(10, Math.min(1000, Math.round(v / 10) * 10)) })\n\n  const running = ref(false)\n  const paused = ref(false)\n  const simTime = ref(0)\n  const phase = ref<'ready' | 'running' | 'done'>('ready')\n\n  const B = computed(() => {\n    switch (params.shape) {\n      case 'wire': return magneticFieldWire(params.I, params.r)\n      case 'loop': return magneticFieldLoop(params.I, params.R, 0)\n      case 'solenoid': return magneticFieldSolenoid(params.I, params.n)\n      default: return 0\n    }\n  })\n\n  function updateSim(dt: number) {\n    if (!running.value || paused.value) return\n    simTime.value += dt\n    phase.value = 'running'\n    if (simTime.value > 5) phase.value = 'done'\n  }\n\n  function togglePause() {\n    if (!running.value) {\n      running.value = true; paused.value = false; simTime.value = 0\n      phase.value = 'running'\n    } else { paused.value = !paused.value }\n  }\n  function resetSim() {\n    running.value = false; paused.value = false; simTime.value = 0; phase.value = 'ready'\n  }\n\n  const layout = useBiotSavartLayout()\n  const trials = useBiotSavartTrials(\n    { get value() { return { I: params.I, r: params.r, B: B.value, shape: params.shape } } }\n  )\n\n  function exportToAnalysis() {\n    if (trials.trials.value.length < 2) return\n    const payload: AnalysisPayload = {\n      sourceExperiment: 'biot-savart', sourceNameAr: 'بيوسافار',\n      readings: trials.trials.value.map(t => ({ I: t.I, r: t.r, B: t.B, shape: t.shape })),\n      columns: [\n        { key: 'I', label: 'I (A)', unit: 'A' },\n        { key: 'r', label: 'r (m)', unit: 'm' },\n        { key: 'B', label: 'B (T)', unit: 'T' },\n        { key: 'shape', label: 'Shape', unit: '' },\n      ],\n      equations: [\n        { name: 'Biot-Savart (Wire)', formula: 'B = μ₀I / 2πr', variables: [{ symbol: 'B', label: 'Magnetic field' }, { symbol: 'I', label: 'Current' }, { symbol: 'r', label: 'Distance' }], solveFor: ['B'] },\n      ],\n      suggestedPlots: [{ xKey: 'r', yKey: 'B', xLabel: 'r (m)', yLabel: 'B (T)', type: 'scatter' }],\n    }\n    localStorage.setItem('analysis_payload', JSON.stringify(payload))\n    window.open('/analysis', '_blank')\n  }\n  function handleDrop(fromId: string, x?: number, y?: number) {\n    if (x === undefined || y === undefined) return\n    const el = document.elementFromPoint(x, y)\n    const toPanel = el?.closest('.draggable-panel')\n    const toId = toPanel?.getAttribute('data-id')\n    if (!toId || fromId === toId) return\n    for (const col of Object.keys(layout.columnMap)) {\n      const arr = layout.columnMap[col]\n      const fi = arr.indexOf(fromId), ti = arr.indexOf(toId)\n      if (fi >= 0 && ti >= 0) { const t = arr[fi]; arr[fi] = arr[ti]; arr[ti] = t }\n    }\n  }\n  function onResizeStart(col: string, e: MouseEvent) {\n    if (!(col in layout.widths)) return\n    const startX = e.clientX, startW = (layout.widths as Record<string, number>)[col] as number\n    function move(ev: MouseEvent) { (layout.widths as Record<string, number>)[col] = Math.max(220, startW + (ev.clientX - startX)) }\n    function up() { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up) }\n    window.addEventListener('mousemove', move); window.addEventListener('mouseup', up)\n  }\n\n  const lab = { running, paused, simTime, phase, B, togglePause, updateSim }\n  return { params, lab, layout, trials, resetSim, exportToAnalysis, onResizeStart, handleDrop }\n}\n"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194390,
+      "end": 1783196194390,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194390,
+      "end": 1783196194390,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194390,
+      "end": 1783196194391,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194391,
+      "end": 1783196194391,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194391,
+      "end": 1783196194391,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194391,
+      "end": 1783196194391,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194391,
+      "end": 1783196194391,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194391,
+      "end": 1783196194391,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194391,
+      "end": 1783196194391,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194391,
+      "end": 1783196194391,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194391,
+      "end": 1783196194392,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194392,
+      "end": 1783196194392,
+      "order": "normal"
+    }
+  ]
+}

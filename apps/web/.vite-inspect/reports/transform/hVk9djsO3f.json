@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionHelpModal.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { useI18n } from '../../../composables/useI18n'\n\nconst { t } = useI18n()\ndefineProps<{ open: boolean }>()\nconst emit = defineEmits<{ (e: 'close'): void }>()\n</script>\n\n<template>\n  <Teleport to=\"body\">\n    <div v-if=\"open\" class=\"overlay\" @click.self=\"emit('close')\">\n      <div class=\"modal\">\n        <div class=\"modal-header\">\n          <h3>💥 دليل تجربة التصادم الخطي (1D Collision) — دليل شامل وكامل</h3>\n          <button class=\"close-btn\" @click=\"emit('close')\">&#x2715;</button>\n        </div>\n        <div class=\"modal-body\">\n\n          <!-- 1. Theoretical Background -->\n          <section>\n            <h4>🔬 1. المقدمة والنظرية العلمية</h4>\n            <p>\n              عندما يتصادم جسمان في نظام معزول (لا تؤثر عليه قوى خارجية مثل الاحتكاك)،\n              فإن <strong>قانون حفظ كمية الحركة (Conservation of Momentum)</strong> ينص على أن مجموع كمية الحركة\n              للأجسام قبل التصادم يساوي مجموع كمية الحركة لها بعد التصادم مباشرة.\n            </p>\n            <p>\n              كمية الحركة (<code>p</code>) تُعرّف حاصل ضرب الكتلة في السرعة (<code>p = m · v</code>).\n            </p>\n            <p>وينقسم التصادم في هذه التجربة إلى نوعين رئيسيين:</p>\n            <ul>\n              <li>\n                <b>التصادم المرن (Elastic Collision):</b> وفيه تُحفظ كمية الحركة وتُحفظ أيضاً الطاقة الحركية الكلية\n                للنظام (ترتد الأجسام عن بعضها).\n              </li>\n              <li>\n                <b>التصادم غير المرن تماماً (Perfectly Inelastic Collision):</b> وفيه تُحفظ كمية الحركة،\n                ولكن تضيع جزء من الطاقة الحركية (يلتحم الجسمان ويسيران معاً ككتلة واحدة بعد التصادم).\n              </li>\n            </ul>\n          </section>\n\n          <!-- 2. Mathematical Equations -->\n          <section>\n            <h4>📐 2. القوانين الرياضية المستعملة</h4>\n            <p><b>قانون حفظ كمية الحركة العام:</b></p>\n            <div class=\"formula\">m₁·v₁ᵢ + m₂·v₂ᵢ = m₁·v₁f + m₂·v₂f</div>\n            <p>(حيث i تعني قبل التصادم، و f تعني بعد التصادم).</p>\n            <p><b>في حالة التصادم غير المرن تماماً (التحام الكتل):</b></p>\n            <div class=\"formula\">m₁·v₁ᵢ + m₂·v₂ᵢ = (m₁ + m₂)·v_f</div>\n            <p><b>ومنها تكون السرعة المشتركة بعد التصادم (v_f):</b></p>\n            <div class=\"formula\">v_f = (m₁·v₁ᵢ + m₂·v₂ᵢ) / (m₁ + m₂)</div>\n          </section>\n\n          <!-- 3. Laboratory Procedure -->\n          <section>\n            <h4>⚗️ 3. طريقة العمل في المختبر (الافتراضي)</h4>\n            <p>سنطبق تجربة التصادم غير المرن تماماً حيث تكون العربة الثانية ساكنة في البداية لتسهيل الحسابات:</p>\n            <ol>\n              <li>\n                <b>إعداد النظام:</b> اختر عربتين، الأولى كتلتها (m₁) والثانية كتلتها (m₂).\n                اجعل العربة الثانية ساكنة تماماً (v₂ᵢ = 0).\n              </li>\n              <li>\n                <b>تحديد السرعة الابتدائية:</b> ادفع العربة الأولى بسرعة ابتدائية معلومة (v₁ᵢ) باتجاه العربة الثانية.\n              </li>\n              <li>\n                <b>التصادم والالتحام:</b> ستصطدم العربة الأولى بالثانية وتلتحمان معاً بفضل شريط لاصق أو مغناطيس\n                لتتحركا كجسم واحد.\n              </li>\n              <li>\n                <b>قياس السرعة النهائية:</b> قس السرعة المشتركة للعربتين بعد التصادم (v_f)\n                باستخدام البوابات الضوئية أو مستشعرات الحركة.\n              </li>\n              <li>\n                <b>التكرار:</b> غيّر قيمة الكتلة الأولى (m₁) عدة مرات مع إبقاء كتلة العربة الثانية (m₂)\n                والسرعة الابتدائية (v₁ᵢ) ثابتين، وسجّل السرعة النهائية (v_f) في كل مرة.\n              </li>\n            </ol>\n          </section>\n\n          <!-- 4. Graphical Analysis -->\n          <section>\n            <h4>📊 4. الرسم البياني، الميل، وحساب المجهول</h4>\n            <p>لإثبات قانون حفظ كمية الحركة بيانيّاً وإيجاد الكتلة الثابتة (m₂) كمجهول:</p>\n            <ul>\n              <li>\n                <b>المحاور:</b> ارسم كمية الحركة الابتدائية الكلية (pᵢ = m₁ · v₁ᵢ) على المحور الصادي (Y-axis).\n                ارسم السرعة النهائية المشتركة (v_f) على المحور السيني (X-axis).\n              </li>\n              <li>\n                <b>الميل (Slope):</b> ستحصل على خط مستقيم يمر بنقطة الأصل، وميله يُحسب بـ:\n                <div class=\"formula\">Slope = Δpᵢ / Δv_f</div>\n              </li>\n              <li>\n                <b>حساب المجهول:</b> بما أن pᵢ = p_f = (m₁ + m₂) · v_f، فإن الميل يمثل مجموع الكتل كالتالي:\n                <div class=\"formula\">Slope = m₁ + m₂</div>\n                إذا اعتبرنا أن كتلة العربة الثانية (m₂) مجهولة، يمكن حسابها عبر:\n                <div class=\"formula\">m₂ = Slope - m₁</div>\n              </li>\n            </ul>\n          </section>\n\n          <!-- 5. Variables & Constants -->\n          <section>\n            <h4>⚙️ 5. الثوابت والمتغيرات في التجربة</h4>\n            <div class=\"element-grid\">\n              <div class=\"element\">\n                <b class=\"tag\">المتغير المستقل:</b> كتلة العربة المتحركة (m₁) أو سرعتها الابتدائية\n              </div>\n              <div class=\"element\">\n                <b class=\"tag\">المتغير التابع:</b> السرعة النهائية المشتركة بعد التصادم (v_f)\n              </div>\n              <div class=\"element\">\n                <b class=\"tag\">الثابت:</b> كتلة العربة الثانية الساكنة (m₂) في حالة رغبتنا بحسابها\n              </div>\n            </div>\n          </section>\n\n          <!-- 6. Scientific Importance -->\n          <section>\n            <h4>🎯 6. الفائدة والأهمية العلمية للتجربة</h4>\n            <ul>\n              <li>التحقق العملي من قانون حفظ كمية الحركة الخطية.</li>\n              <li>فهم كيفية تبدد الطاقة الحركية وتحولها إلى أشكال أخرى (حرارة، تشوه في الهيكل، صوت) في التصادمات غير المرنة.</li>\n              <li>تطبيقاتها الحياتية بالغة الأهمية مثل دراسة حوادث السيارات وتصميم وسائد الأمان وهياكل السيارات لامتصاص الصدمات لحماية الركاب.</li>\n            </ul>\n          </section>\n\n          <!-- Keyboard shortcuts -->\n          <section>\n            <h4>⌨️ اختصارات لوحة المفاتيح</h4>\n            <div class=\"kbd-grid\">\n              <span><kbd>Space</kbd> بدء / توقف</span>\n              <span><kbd>S</kbd> تسجيل قراءة</span>\n              <span><kbd>R</kbd> إعادة التعيين</span>\n              <span><kbd>Ctrl</kbd>+<kbd>Z</kbd> تراجع</span>\n              <span><kbd>Ctrl</kbd>+<kbd>Y</kbd> إعادة</span>\n              <span><kbd>?</kbd> فتح/إغلاق المساعدة</span>\n            </div>\n          </section>\n\n        </div>\n      </div>\n    </div>\n  </Teleport>\n</template>\n\n<style scoped>\n.overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; padding: 1.5rem; }\n.modal { background: #131a25; border: 1px solid #2D3645; border-radius: 12px; max-width: 720px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,.5); }\n.modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.2rem; border-bottom: 1px solid #2D3645; flex-shrink: 0; }\n.modal-header h3 { margin: 0; font-size: 1rem; color: #e2e8f0; }\n.close-btn { background: transparent; border: 1px solid #2D3645; color: #8B95A5; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; padding: 0; }\n.close-btn:hover { background: rgba(91,141,184,.1); color: #5B8DB8; }\n.modal-body { overflow-y: auto; padding: 1.2rem; font-size: .82rem; color: #cbd5e1; line-height: 1.8; direction: rtl; text-align: right; }\n.modal-body section { margin-bottom: 1.4rem; }\n.modal-body h4 { margin: 0 0 .5rem; font-size: .9rem; color: #5B8DB8; border-bottom: 1px solid #2D3645; padding-bottom: .3rem; }\n.modal-body p { margin: .4rem 0; }\n.modal-body ol, .modal-body ul { margin: .4rem 0; padding-right: 1.2rem; }\n.modal-body li { margin-bottom: .25rem; }\n.formula { background: #1a2332; border: 1px solid #2D3645; border-radius: 6px; padding: .6rem .8rem; font-family: monospace; font-size: .9rem; color: #5B8DB8; text-align: center; margin: .6rem 0; direction: ltr; }\n.element-grid { display: flex; flex-direction: column; gap: .35rem; }\n.element { background: #1a2332; border-radius: 6px; padding: .4rem .6rem; font-size: .78rem; }\n.tag { color: #5B8DB8; }\n.kbd-grid { display: flex; flex-wrap: wrap; gap: .4rem; }\n.kbd-grid span { background: #1a2332; border: 1px solid #2D3645; border-radius: 5px; padding: .3rem .5rem; font-size: .75rem; }\nkbd { background: #252D3A; border: 1px solid #475569; border-radius: 4px; padding: .05rem .3rem; font-family: monospace; font-size: .7rem; color: #D1D7E0; }\n</style>\n",
+      "start": 1783196193544,
+      "end": 1783196193779,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193780,
+      "end": 1783196193780,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196193780,
+      "end": 1783196193780,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193780,
+      "end": 1783196193780,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193780,
+      "end": 1783196193780,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionHelpModal.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionHelpModal.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/collision/CollisionHelpModal.vue?vue&type=style&index=0&scoped=7bfe842b&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-7bfe842b\"]]);\n",
+      "start": 1783196193780,
+      "end": 1783196194372,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194372,
+      "end": 1783196194372,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194372,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194373,
+      "end": 1783196194373,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194373,
+      "end": 1783196194374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194374,
+      "end": 1783196194374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194374,
+      "end": 1783196194376,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194377,
+      "end": 1783196194377,
+      "order": "normal"
+    }
+  ]
+}

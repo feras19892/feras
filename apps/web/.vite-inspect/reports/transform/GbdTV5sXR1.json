@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/TeacherStatsSummary.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, unref as _unref, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"summary-cards\" }\nconst _hoisted_2 = { class: \"sum-card\" }\nconst _hoisted_3 = { class: \"sum-val\" }\nconst _hoisted_4 = { class: \"sum-label\" }\nconst _hoisted_5 = { class: \"sum-card\" }\nconst _hoisted_6 = { class: \"sum-val\" }\nconst _hoisted_7 = { class: \"sum-label\" }\nconst _hoisted_8 = { class: \"sum-card\" }\nconst _hoisted_9 = { class: \"sum-val\" }\nconst _hoisted_10 = { class: \"sum-label\" }\nconst _hoisted_11 = { class: \"sum-card\" }\nconst _hoisted_12 = { class: \"sum-val\" }\nconst _hoisted_13 = { class: \"sum-label\" }\n\nimport { useI18n } from '../../composables/useI18n'\n\ninterface Props {\n  total: number\n  average: number\n  pending: number\n  graded: number\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'TeacherStatsSummary',\n  props: {\n    total: {},\n    average: {},\n    pending: {},\n    graded: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\n\n\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"span\", _hoisted_3, _toDisplayString(__props.total), 1),\n      _createElementVNode(\"span\", _hoisted_4, _toDisplayString(_unref(t)('teacher.totalReports')), 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_5, [\n      _createElementVNode(\"span\", _hoisted_6, _toDisplayString(__props.average) + \"%\", 1),\n      _createElementVNode(\"span\", _hoisted_7, _toDisplayString(_unref(t)('teacher.avgGrades')), 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_8, [\n      _createElementVNode(\"span\", _hoisted_9, _toDisplayString(__props.pending), 1),\n      _createElementVNode(\"span\", _hoisted_10, _toDisplayString(_unref(t)('teacher.pendingGrading')), 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_11, [\n      _createElementVNode(\"span\", _hoisted_12, _toDisplayString(__props.graded), 1),\n      _createElementVNode(\"span\", _hoisted_13, _toDisplayString(_unref(t)('teacher.graded')), 1)\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783196193652,
+      "end": 1783196193652
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193652,
+      "end": 1783196193652,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, unref as _unref, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"summary-cards\" };\nconst _hoisted_2 = { class: \"sum-card\" };\nconst _hoisted_3 = { class: \"sum-val\" };\nconst _hoisted_4 = { class: \"sum-label\" };\nconst _hoisted_5 = { class: \"sum-card\" };\nconst _hoisted_6 = { class: \"sum-val\" };\nconst _hoisted_7 = { class: \"sum-label\" };\nconst _hoisted_8 = { class: \"sum-card\" };\nconst _hoisted_9 = { class: \"sum-val\" };\nconst _hoisted_10 = { class: \"sum-label\" };\nconst _hoisted_11 = { class: \"sum-card\" };\nconst _hoisted_12 = { class: \"sum-val\" };\nconst _hoisted_13 = { class: \"sum-label\" };\nimport { useI18n } from \"../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"TeacherStatsSummary\",\n  props: {\n    total: {},\n    average: {},\n    pending: {},\n    graded: {}\n  },\n  setup(__props) {\n    const { t } = useI18n();\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _createElementVNode(\"span\", _hoisted_3, _toDisplayString(__props.total), 1),\n          _createElementVNode(\"span\", _hoisted_4, _toDisplayString(_unref(t)(\"teacher.totalReports\")), 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_5, [\n          _createElementVNode(\"span\", _hoisted_6, _toDisplayString(__props.average) + \"%\", 1),\n          _createElementVNode(\"span\", _hoisted_7, _toDisplayString(_unref(t)(\"teacher.avgGrades\")), 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_8, [\n          _createElementVNode(\"span\", _hoisted_9, _toDisplayString(__props.pending), 1),\n          _createElementVNode(\"span\", _hoisted_10, _toDisplayString(_unref(t)(\"teacher.pendingGrading\")), 1)\n        ]),\n        _createElementVNode(\"div\", _hoisted_11, [\n          _createElementVNode(\"span\", _hoisted_12, _toDisplayString(__props.graded), 1),\n          _createElementVNode(\"span\", _hoisted_13, _toDisplayString(_unref(t)(\"teacher.graded\")), 1)\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196193652,
+      "end": 1783196193693,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/teacher/TeacherStatsSummary.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, unref as _unref, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"summary-cards\" }\nconst _hoisted_2 = { class: \"sum-card\" }\nconst _hoisted_3 = { class: \"sum-val\" }\nconst _hoisted_4 = { class: \"sum-label\" }\nconst _hoisted_5 = { class: \"sum-card\" }\nconst _hoisted_6 = { class: \"sum-val\" }\nconst _hoisted_7 = { class: \"sum-label\" }\nconst _hoisted_8 = { class: \"sum-card\" }\nconst _hoisted_9 = { class: \"sum-val\" }\nconst _hoisted_10 = { class: \"sum-label\" }\nconst _hoisted_11 = { class: \"sum-card\" }\nconst _hoisted_12 = { class: \"sum-val\" }\nconst _hoisted_13 = { class: \"sum-label\" }\n\nimport { useI18n } from '../../composables/useI18n'\n\ninterface Props {\n  total: number\n  average: number\n  pending: number\n  graded: number\n}\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'TeacherStatsSummary',\n  props: {\n    total: {},\n    average: {},\n    pending: {},\n    graded: {}\n  },\n  setup(__props: any) {\n\nconst { t } = useI18n()\n\n\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"span\", _hoisted_3, _toDisplayString(__props.total), 1),\n      _createElementVNode(\"span\", _hoisted_4, _toDisplayString(_unref(t)('teacher.totalReports')), 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_5, [\n      _createElementVNode(\"span\", _hoisted_6, _toDisplayString(__props.average) + \"%\", 1),\n      _createElementVNode(\"span\", _hoisted_7, _toDisplayString(_unref(t)('teacher.avgGrades')), 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_8, [\n      _createElementVNode(\"span\", _hoisted_9, _toDisplayString(__props.pending), 1),\n      _createElementVNode(\"span\", _hoisted_10, _toDisplayString(_unref(t)('teacher.pendingGrading')), 1)\n    ]),\n    _createElementVNode(\"div\", _hoisted_11, [\n      _createElementVNode(\"span\", _hoisted_12, _toDisplayString(__props.graded), 1),\n      _createElementVNode(\"span\", _hoisted_13, _toDisplayString(_unref(t)('teacher.graded')), 1)\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,mBAAmB,kBAAkB,sBAAsB,qBAAqB,SAAS,QAAQ,aAAa,YAAY,sBAAsB,2BAA2B;AAEpL,MAAM,aAAa,EAAE,OAAO,gBAAgB;AAC5C,MAAM,aAAa,EAAE,OAAO,WAAW;AACvC,MAAM,aAAa,EAAE,OAAO,UAAU;AACtC,MAAM,aAAa,EAAE,OAAO,YAAY;AACxC,MAAM,aAAa,EAAE,OAAO,WAAW;AACvC,MAAM,aAAa,EAAE,OAAO,UAAU;AACtC,MAAM,aAAa,EAAE,OAAO,YAAY;AACxC,MAAM,aAAa,EAAE,OAAO,WAAW;AACvC,MAAM,aAAa,EAAE,OAAO,UAAU;AACtC,MAAM,cAAc,EAAE,OAAO,YAAY;AACzC,MAAM,cAAc,EAAE,OAAO,WAAW;AACxC,MAAM,cAAc,EAAE,OAAO,UAAU;AACvC,MAAM,cAAc,EAAE,OAAO,YAAY;AAEzC,SAAS,eAAe;AASxB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,OAAO,CAAC;AAAA,IACR,SAAS,CAAC;AAAA,IACV,SAAS,CAAC;AAAA,IACV,QAAQ,CAAC;AAAA,EACX;AAAA,EACA,MAAM,SAAc;AAEtB,UAAM,EAAE,EAAE,IAAI,QAAQ;AAItB,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,oBAAoB,OAAO,YAAY;AAAA,UACrC,oBAAoB,QAAQ,YAAY,iBAAiB,QAAQ,KAAK,GAAG,CAAC;AAAA,UAC1E,oBAAoB,QAAQ,YAAY,iBAAiB,OAAO,CAAC,EAAE,sBAAsB,CAAC,GAAG,CAAC;AAAA,QAChG,CAAC;AAAA,QACD,oBAAoB,OAAO,YAAY;AAAA,UACrC,oBAAoB,QAAQ,YAAY,iBAAiB,QAAQ,OAAO,IAAI,KAAK,CAAC;AAAA,UAClF,oBAAoB,QAAQ,YAAY,iBAAiB,OAAO,CAAC,EAAE,mBAAmB,CAAC,GAAG,CAAC;AAAA,QAC7F,CAAC;AAAA,QACD,oBAAoB,OAAO,YAAY;AAAA,UACrC,oBAAoB,QAAQ,YAAY,iBAAiB,QAAQ,OAAO,GAAG,CAAC;AAAA,UAC5E,oBAAoB,QAAQ,aAAa,iBAAiB,OAAO,CAAC,EAAE,wBAAwB,CAAC,GAAG,CAAC;AAAA,QACnG,CAAC;AAAA,QACD,oBAAoB,OAAO,aAAa;AAAA,UACtC,oBAAoB,QAAQ,aAAa,iBAAiB,QAAQ,MAAM,GAAG,CAAC;AAAA,UAC5E,oBAAoB,QAAQ,aAAa,iBAAiB,OAAO,CAAC,EAAE,gBAAgB,CAAC,GAAG,CAAC;AAAA,QAC3F,CAAC;AAAA,MACH,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193693,
+      "end": 1783196193693,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193693,
+      "end": 1783196193693,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196193693,
+      "end": 1783196193693,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193693,
+      "end": 1783196193694,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193694,
+      "end": 1783196193694,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193694,
+      "end": 1783196193694,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193694,
+      "end": 1783196193694,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193694,
+      "end": 1783196193694,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193694,
+      "end": 1783196193694,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193694,
+      "end": 1783196193694,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193694,
+      "end": 1783196193694,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193694,
+      "end": 1783196193694,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193694,
+      "end": 1783196193694,
+      "order": "normal"
+    }
+  ]
+}

@@ -86,6 +86,7 @@ export const branches: Branch[] = [
     description: 'experiments.branchElectricityDesc',
     experiments: [
       { id: 'electric-lab', name: 'Electric Lab', nameAr: 'experiments.expElectricLab', icon: '🔌', difficulty: 'medium', tags: ['circuits', 'DC'], route: '', enabled: true },
+      { id: 'electric-workshop', name: 'Electric Workshop', nameAr: 'experiments.expElectricWorkshop', icon: '🛠️', difficulty: 'hard', tags: ['circuits', 'DC', 'AC', 'industrial', 'wiring'], route: '', enabled: true },
     ],
   },
   {

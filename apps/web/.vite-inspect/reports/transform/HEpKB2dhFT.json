@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/LabWatchGlass.vue?vue&type=style&index=0&scoped=14791d49&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\r\n.watch-glass-wrapper {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  position: relative;\r\n  cursor: pointer;\r\n}\r\n.watch-glass-svg {\r\n  width: 80px;\r\n  height: 32px;\r\n  transition: transform 0.2s, filter 0.2s;\r\n  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.06));\r\n}\r\n.watch-glass-svg.hovered {\r\n  transform: scale(1.06);\r\n  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.1));\r\n}\r\n",
+      "start": 1783196195018,
+      "end": 1783196195018
+    },
+    {
+      "name": "vite:css",
+      "result": "\r\n.watch-glass-wrapper {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  position: relative;\r\n  cursor: pointer;\r\n}\r\n.watch-glass-svg {\r\n  width: 80px;\r\n  height: 32px;\r\n  transition: transform 0.2s, filter 0.2s;\r\n  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.06));\r\n}\r\n.watch-glass-svg.hovered {\r\n  transform: scale(1.06);\r\n  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.1));\r\n}\r\n",
+      "start": 1783196195018,
+      "end": 1783196195018,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195018,
+      "end": 1783196195018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195018,
+      "end": 1783196195018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195018,
+      "end": 1783196195018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.watch-glass-wrapper[data-v-14791d49] {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  position: relative;\r\n  cursor: pointer;\n}\n.watch-glass-svg[data-v-14791d49] {\r\n  width: 80px;\r\n  height: 32px;\r\n  transition: transform 0.2s, filter 0.2s;\r\n  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.06));\n}\n.watch-glass-svg.hovered[data-v-14791d49] {\r\n  transform: scale(1.06);\r\n  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.1));\n}\r\n",
+      "start": 1783196195018,
+      "end": 1783196195018,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195018,
+      "end": 1783196195018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196195018,
+      "end": 1783196195018,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195018,
+      "end": 1783196195018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195018,
+      "end": 1783196195018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195018,
+      "end": 1783196195018,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195018,
+      "end": 1783196195018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195018,
+      "end": 1783196195018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195018,
+      "end": 1783196195018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195018,
+      "end": 1783196195018,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195018,
+      "end": 1783196195018,
+      "order": "normal"
+    }
+  ]
+}

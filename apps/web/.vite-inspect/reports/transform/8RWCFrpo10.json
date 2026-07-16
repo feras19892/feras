@@ -1,0 +1,111 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/diffraction/panels/DiffractionLawsPanel.vue?vue&type=style&index=0&scoped=7f5e865e&lang.css",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "\n.panel-body { display: flex; flex-direction: column; gap: .5rem; font-size: .82rem; }\n.eq-block { margin-bottom: .3rem; }\n.eq-title { color: #5B8DB8; font-size: .75rem; margin-bottom: .2rem; }\n.eq { font-family: 'Courier New', monospace; background: #0d1117; padding: .3rem .5rem; border-radius: 4px; font-size: .9rem; color: #7ee787; }\n.eq-values { font-size: .8rem; color: #8B95A5; margin-top: .2rem; }\n",
+      "start": 1783196195717,
+      "end": 1783196195717
+    },
+    {
+      "name": "vite:css",
+      "result": "\n.panel-body { display: flex; flex-direction: column; gap: .5rem; font-size: .82rem; }\n.eq-block { margin-bottom: .3rem; }\n.eq-title { color: #5B8DB8; font-size: .75rem; margin-bottom: .2rem; }\n.eq { font-family: 'Courier New', monospace; background: #0d1117; padding: .3rem .5rem; border-radius: 4px; font-size: .9rem; color: #7ee787; }\n.eq-values { font-size: .8rem; color: #8B95A5; margin-top: .2rem; }\n",
+      "start": 1783196195717,
+      "end": 1783196195717,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195717,
+      "end": 1783196195717,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195717,
+      "end": 1783196195717,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195717,
+      "end": 1783196195717,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "\n.panel-body[data-v-7f5e865e] { display: flex; flex-direction: column; gap: .5rem; font-size: .82rem;\n}\n.eq-block[data-v-7f5e865e] { margin-bottom: .3rem;\n}\n.eq-title[data-v-7f5e865e] { color: #5B8DB8; font-size: .75rem; margin-bottom: .2rem;\n}\n.eq[data-v-7f5e865e] { font-family: 'Courier New', monospace; background: #0d1117; padding: .3rem .5rem; border-radius: 4px; font-size: .9rem; color: #7ee787;\n}\n.eq-values[data-v-7f5e865e] { font-size: .8rem; color: #8B95A5; margin-top: .2rem;\n}\n",
+      "start": 1783196195717,
+      "end": 1783196195718,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195718,
+      "end": 1783196195718,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1783196195718,
+      "end": 1783196195718,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195718,
+      "end": 1783196195718,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195718,
+      "end": 1783196195718,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195718,
+      "end": 1783196195718,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195718,
+      "end": 1783196195718,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195718,
+      "end": 1783196195718,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195718,
+      "end": 1783196195718,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195718,
+      "end": 1783196195718,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195718,
+      "end": 1783196195718,
+      "order": "normal"
+    }
+  ]
+}

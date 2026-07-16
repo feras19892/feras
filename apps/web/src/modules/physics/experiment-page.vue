@@ -48,6 +48,7 @@ function expNameKey(id: string): string {
     'biot-savart': 'experiments.expBiotSavart',
     faraday: 'experiments.expFaraday',
     'electric-lab': 'experiments.expElectricLab',
+    'electric-workshop': 'experiments.expElectricWorkshop',
     'wave-interference': 'experiments.expWaveInterference',
     'specific-heat': 'experiments.expSpecificHeat',
     'boyles-law': 'experiments.expBoylesLaw',

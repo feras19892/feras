@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisConclusionPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { ref } from 'vue';\nimport { useI18n } from '../../../composables/useI18n';\n\nconst { t } = useI18n();\nconst conclusion = ref('');\nconst errors = ref('');\nconst improvements = ref('');\n\nconst emit = defineEmits<{\n  (e: 'update', data: { conclusion: string; errors: string; improvements: string }): void;\n}>();\n\nfunction onChange() {\n  emit('update', { conclusion: conclusion.value, errors: errors.value, improvements: improvements.value });\n}\n</script>\n\n<template>\n  <div class=\"conclusion-panel\">\n    <div class=\"panel-header\">{{ t('analysis.conclusion') }}</div>\n    <div class=\"form\">\n      <div class=\"field\">\n        <label>{{ t('analysis.mainConclusion') }}</label>\n        <textarea v-model=\"conclusion\" @input=\"onChange\" rows=\"2\" :placeholder=\"t('analysis.conclusionPlaceholder')\"></textarea>\n      </div>\n      <div class=\"field\">\n        <label>{{ t('analysis.errorSources') }}</label>\n        <textarea v-model=\"errors\" @input=\"onChange\" rows=\"2\" :placeholder=\"t('analysis.errorSourcesPlaceholder')\"></textarea>\n      </div>\n      <div class=\"field\">\n        <label>{{ t('analysis.improvements') }}</label>\n        <textarea v-model=\"improvements\" @input=\"onChange\" rows=\"2\" :placeholder=\"t('analysis.improvementsPlaceholder')\"></textarea>\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.conclusion-panel {\n  background: rgba(255,255,255,0.03);\n  border: 1px solid rgba(255,255,255,0.06);\n  border-radius: 0.5rem;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n  flex-shrink: 0;\n}\n.panel-header {\n  padding: 0.6rem 0.9rem;\n  background: rgba(255,255,255,0.04);\n  border-bottom: 1px solid rgba(255,255,255,0.06);\n  font-size: 0.95rem;\n  color: #67e8f9;\n  font-weight: 700;\n}\n.form { padding: 0.6rem; display: flex; flex-direction: column; gap: 0.5rem; }\n.field { display: flex; flex-direction: column; gap: 0.25rem; }\nlabel { font-size: 0.82rem; color: #94a3b8; font-weight: 600; }\ntextarea {\n  background: #0f172a;\n  border: 1px solid #334155;\n  color: #e2e8f0;\n  border-radius: 0.3rem;\n  padding: 0.4rem 0.5rem;\n  font-size: 0.9rem;\n  font-family: inherit;\n  resize: vertical;\n}\n</style>\n",
+      "start": 1783196193287,
+      "end": 1783196193439,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193439,
+      "end": 1783196193439,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196193439,
+      "end": 1783196193439,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193439,
+      "end": 1783196193439,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193439,
+      "end": 1783196193439,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisConclusionPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisConclusionPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/AnalysisConclusionPanel.vue?vue&type=style&index=0&scoped=6ab5ccee&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-6ab5ccee\"]]);\n",
+      "start": 1783196193439,
+      "end": 1783196193510,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193510,
+      "end": 1783196193510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193510,
+      "end": 1783196193510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193510,
+      "end": 1783196193510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193510,
+      "end": 1783196193510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193510,
+      "end": 1783196193510,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193510,
+      "end": 1783196193510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193510,
+      "end": 1783196193510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193510,
+      "end": 1783196193510,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193511,
+      "end": 1783196193511,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193511,
+      "end": 1783196193511,
+      "order": "normal"
+    }
+  ]
+}

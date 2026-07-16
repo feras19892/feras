@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/panels/SpeedOfSoundReferencePanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nconst TEMPS = [\n  { t: 0, v: 331, color: '#3b82f6' },\n  { t: 20, v: 343, color: '#22c55e' },\n  { t: 40, v: 355, color: '#ef4444' },\n]\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <div class=\"ref-title\">📊 سرعة الصوت في الهواء</div>\n    <div class=\"ref-table\">\n      <div class=\"ref-header\">\n        <span>T (°C)</span>\n        <span>v (m/s)</span>\n      </div>\n      <div v-for=\"ref in TEMPS\" :key=\"ref.t\" class=\"ref-row\">\n        <span>{{ ref.t }}</span>\n        <span :style=\"{ color: ref.color }\">{{ ref.v }}</span>\n      </div>\n    </div>\n    <div class=\"ref-note\">\n      💡 v ≈ 331 + 0.6T. تزداد السرعة بارتفاع الحرارة.\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { padding: 1rem; display: flex; flex-direction: column; gap: .5rem; }\n.ref-title { font-size: .9rem; font-weight: 700; color: #5B8DB8; text-align: center; padding-bottom: .3rem; border-bottom: 1px solid #1e2530; }\n.ref-table { display: flex; flex-direction: column; gap: .25rem; }\n.ref-header { display: flex; justify-content: space-between; padding: .4rem .6rem; background: #1E2530; border-radius: 4px; font-weight: 700; font-size: .8rem; color: #94a3b8; }\n.ref-row { display: flex; justify-content: space-between; padding: .35rem .6rem; border-bottom: 1px solid #1e2530; font-size: .8rem; }\n.ref-row:last-child { border-bottom: none; }\n.ref-note { font-size: .75rem; color: #64748b; margin-top: .5rem; }\n</style>\n",
+      "start": 1783196192521,
+      "end": 1783196192889,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196192889,
+      "end": 1783196192889,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196192889,
+      "end": 1783196192889,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196192889,
+      "end": 1783196192889,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196192889,
+      "end": 1783196192889,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/panels/SpeedOfSoundReferencePanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/panels/SpeedOfSoundReferencePanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/speed-of-sound/panels/SpeedOfSoundReferencePanel.vue?vue&type=style&index=0&scoped=82a2134a&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-82a2134a\"]]);\n",
+      "start": 1783196192889,
+      "end": 1783196193021,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193021,
+      "end": 1783196193021,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193021,
+      "end": 1783196193021,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193021,
+      "end": 1783196193021,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193021,
+      "end": 1783196193021,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193021,
+      "end": 1783196193021,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193021,
+      "end": 1783196193021,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193022,
+      "end": 1783196193022,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193022,
+      "end": 1783196193022,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193022,
+      "end": 1783196193023,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193023,
+      "end": 1783196193023,
+      "order": "normal"
+    }
+  ]
+}

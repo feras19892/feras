@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/DeletableSection.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, createElementVNode as _createElementVNode, renderSlot as _renderSlot, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, toDisplayString as _toDisplayString } from \"vue\"\n\nconst _hoisted_1 = {\n  key: 0,\n  class: \"deletable-section\"\n}\nconst _hoisted_2 = [\"title\"]\nconst _hoisted_3 = [\"title\"]\n\nimport { shallowRef } from 'vue'\nimport { useI18n } from '../../composables/useI18n'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'DeletableSection',\n  setup(__props) {\n\nconst { t } = useI18n()\nconst deleted = shallowRef(false)\nfunction restore() { deleted.value = false }\n\nreturn (_ctx: any,_cache: any) => {\n  return (!deleted.value)\n    ? (_openBlock(), _createElementBlock(\"section\", _hoisted_1, [\n        _createElementVNode(\"button\", {\n          class: \"delete-section-btn\",\n          onClick: _cache[0] || (_cache[0] = ($event: any) => (deleted.value = true)),\n          title: _unref(t)('experiments.removeSection')\n        }, \"✕\", 8, _hoisted_2),\n        _renderSlot(_ctx.$slots, \"default\", {}, undefined, true)\n      ]))\n    : (_openBlock(), _createElementBlock(\"div\", {\n        key: 1,\n        class: \"restored-section\",\n        onClick: restore,\n        title: _unref(t)('experiments.restoreSection')\n      }, [\n        _createElementVNode(\"span\", null, \"➕ \" + _toDisplayString(_unref(t)('experiments.restoreDeletedSection')), 1)\n      ], 8, _hoisted_3))\n}\n}\n\n})",
+      "start": 1783196195607,
+      "end": 1783196195607
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195607,
+      "end": 1783196195607,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, createElementVNode as _createElementVNode, renderSlot as _renderSlot, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString } from \"vue\";\nconst _hoisted_1 = {\n  key: 0,\n  class: \"deletable-section\"\n};\nconst _hoisted_2 = [\"title\"];\nconst _hoisted_3 = [\"title\"];\nimport { shallowRef } from \"vue\";\nimport { useI18n } from \"../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"DeletableSection\",\n  setup(__props) {\n    const { t } = useI18n();\n    const deleted = shallowRef(false);\n    function restore() {\n      deleted.value = false;\n    }\n    return (_ctx, _cache) => {\n      return !deleted.value ? (_openBlock(), _createElementBlock(\"section\", _hoisted_1, [\n        _createElementVNode(\"button\", {\n          class: \"delete-section-btn\",\n          onClick: _cache[0] || (_cache[0] = ($event) => deleted.value = true),\n          title: _unref(t)(\"experiments.removeSection\")\n        }, \"✕\", 8, _hoisted_2),\n        _renderSlot(_ctx.$slots, \"default\", {}, void 0, true)\n      ])) : (_openBlock(), _createElementBlock(\"div\", {\n        key: 1,\n        class: \"restored-section\",\n        onClick: restore,\n        title: _unref(t)(\"experiments.restoreSection\")\n      }, [\n        _createElementVNode(\"span\", null, \"➕ \" + _toDisplayString(_unref(t)(\"experiments.restoreDeletedSection\")), 1)\n      ], 8, _hoisted_3));\n    };\n  }\n});\n",
+      "start": 1783196195607,
+      "end": 1783196195766,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/DeletableSection.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, createElementVNode as _createElementVNode, renderSlot as _renderSlot, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, toDisplayString as _toDisplayString } from \"vue\"\n\nconst _hoisted_1 = {\n  key: 0,\n  class: \"deletable-section\"\n}\nconst _hoisted_2 = [\"title\"]\nconst _hoisted_3 = [\"title\"]\n\nimport { shallowRef } from 'vue'\nimport { useI18n } from '../../composables/useI18n'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'DeletableSection',\n  setup(__props) {\n\nconst { t } = useI18n()\nconst deleted = shallowRef(false)\nfunction restore() { deleted.value = false }\n\nreturn (_ctx: any,_cache: any) => {\n  return (!deleted.value)\n    ? (_openBlock(), _createElementBlock(\"section\", _hoisted_1, [\n        _createElementVNode(\"button\", {\n          class: \"delete-section-btn\",\n          onClick: _cache[0] || (_cache[0] = ($event: any) => (deleted.value = true)),\n          title: _unref(t)('experiments.removeSection')\n        }, \"✕\", 8, _hoisted_2),\n        _renderSlot(_ctx.$slots, \"default\", {}, undefined, true)\n      ]))\n    : (_openBlock(), _createElementBlock(\"div\", {\n        key: 1,\n        class: \"restored-section\",\n        onClick: restore,\n        title: _unref(t)('experiments.restoreSection')\n      }, [\n        _createElementVNode(\"span\", null, \"➕ \" + _toDisplayString(_unref(t)('experiments.restoreDeletedSection')), 1)\n      ], 8, _hoisted_3))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,SAAS,QAAQ,sBAAsB,qBAAqB,cAAc,aAAa,aAAa,YAAY,sBAAsB,qBAAgE,mBAAmB,wBAAwB;AAE1P,MAAM,aAAa;AAAA,EACjB,KAAK;AAAA,EACL,OAAO;AACT;AACA,MAAM,aAAa,CAAC,OAAO;AAC3B,MAAM,aAAa,CAAC,OAAO;AAE3B,SAAS,kBAAkB;AAC3B,SAAS,eAAe;AAGxB,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,MAAM,SAAS;AAEjB,UAAM,EAAE,EAAE,IAAI,QAAQ;AACtB,UAAM,UAAU,WAAW,KAAK;AAChC,aAAS,UAAU;AAAE,cAAQ,QAAQ;AAAA,IAAM;AAE3C,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,CAAC,QAAQ,SACZ,WAAW,GAAG,oBAAoB,WAAW,YAAY;AAAA,QACxD,oBAAoB,UAAU;AAAA,UAC5B,OAAO;AAAA,UACP,SAAS,OAAO,CAAC,MAAM,OAAO,CAAC,IAAI,CAAC,WAAiB,QAAQ,QAAQ;AAAA,UACrE,OAAO,OAAO,CAAC,EAAE,2BAA2B;AAAA,QAC9C,GAAG,KAAK,GAAG,UAAU;AAAA,QACrB,YAAY,KAAK,QAAQ,WAAW,CAAC,GAAG,QAAW,IAAI;AAAA,MACzD,CAAC,MACA,WAAW,GAAG,oBAAoB,OAAO;AAAA,QACxC,KAAK;AAAA,QACL,OAAO;AAAA,QACP,SAAS;AAAA,QACT,OAAO,OAAO,CAAC,EAAE,4BAA4B;AAAA,MAC/C,GAAG;AAAA,QACD,oBAAoB,QAAQ,MAAM,OAAO,iBAAiB,OAAO,CAAC,EAAE,mCAAmC,CAAC,GAAG,CAAC;AAAA,MAC9G,GAAG,GAAG,UAAU;AAAA,IACtB;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195766,
+      "end": 1783196195766,
+      "order": "normal"
+    }
+  ]
+}

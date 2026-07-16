@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/faraday/FaradayCanvas.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nimport { ref, onMounted, onUnmounted } from 'vue'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'FaradayCanvas',\n  props: {\n    N: {},\n    B: {},\n    A: {},\n    theta: {},\n    flux: {},\n    emf: {},\n    phase: {},\n    running: { type: Boolean },\n    paused: { type: Boolean }\n  },\n  emits: [\"updateSim\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst props = __props\n\nconst canvasRef = ref<HTMLCanvasElement | null>(null)\nlet animId = 0\nlet lastTs = 0\nlet dpr = 1\nlet cw = 600\nlet ch = 400\n\nconst emit = __emit\n\nfunction getCtx() { const c = canvasRef.value; return c ? c.getContext('2d') : null }\nfunction resizeCanvas() {\n  const c = canvasRef.value\n  if (!c) return\n  const rect = c.getBoundingClientRect()\n  dpr = window.devicePixelRatio || 1\n  cw = Math.round(rect.width)\n  ch = Math.round(rect.height)\n  c.width = Math.round(cw * dpr)\n  c.height = Math.round(ch * dpr)\n}\n\nfunction draw() {\n  const ctx = getCtx()\n  if (!ctx) return\n  ctx.setTransform(dpr, 0, 0, dpr, 0, 0)\n  const w = cw, h = ch\n  ctx.fillStyle = '#0B1220'; ctx.fillRect(0, 0, w, h)\n\n  const scale = Math.min(w / 560, h / 360)\n  const s = (v: number) => v * scale\n  const cx = w / 2\n  const cy = h / 2\n\n  // Magnet (N-S)\n  const magW = s(80), magH = s(30)\n  const magX = cx - magW / 2, magY = cy - s(100)\n  ctx.fillStyle = '#f87171'; ctx.fillRect(magX, magY, magW / 2, magH)\n  ctx.fillStyle = '#5B8DB8'; ctx.fillRect(magX + magW / 2, magY, magW / 2, magH)\n  ctx.strokeStyle = '#D1D7E0'; ctx.lineWidth = s(1); ctx.strokeRect(magX, magY, magW, magH)\n  ctx.fillStyle = '#fff'; ctx.font = `bold ${s(8)}px sans-serif`; ctx.textAlign = 'center'\n  ctx.fillText('N', magX + magW / 4, magY + magH / 2 + s(3))\n  ctx.fillText('S', magX + magW * 3 / 4, magY + magH / 2 + s(3))\n\n  // Field lines\n  ctx.strokeStyle = 'rgba(91,141,184,0.3)'; ctx.lineWidth = s(1)\n  for (let i = -2; i <= 2; i++) {\n    ctx.beginPath(); ctx.moveTo(cx + i * s(15), magY + magH); ctx.lineTo(cx + i * s(15), cy + s(60)); ctx.stroke()\n  }\n\n  // Rotating coil\n  const coilW = s(60), coilH = s(40)\n  const rad = (props.theta * Math.PI) / 180\n  ctx.save()\n  ctx.translate(cx, cy + s(30))\n  ctx.rotate(rad)\n  ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = s(2)\n  ctx.strokeRect(-coilW / 2, -coilH / 2, coilW, coilH)\n  ctx.fillStyle = 'rgba(251,191,36,0.1)'; ctx.fillRect(-coilW / 2, -coilH / 2, coilW, coilH)\n  // Turns\n  ctx.fillStyle = '#fbbf24'; ctx.font = `${s(7)}px sans-serif`\n  ctx.fillText(`${props.N} turns`, 0, 0)\n  ctx.restore()\n\n  // Labels\n  ctx.fillStyle = '#8B95A5'; ctx.font = `${s(8)}px sans-serif`; ctx.textAlign = 'center'\n  ctx.fillText(`Φ = ${props.flux.toFixed(4)} Wb`, cx, cy + s(60) + s(14))\n  ctx.fillStyle = '#22c55e'; ctx.font = `bold ${s(9)}px sans-serif`\n  ctx.fillText(`EMF = ${props.emf.toFixed(2)} V`, cx, cy + s(60) + s(26))\n\n  const labels: Record<string, { text: string; color: string }> = {\n    ready: { text: '⚡ جاهز — اضغط Start', color: '#64748b' },\n    running: { text: '🔄 جاري الدوران...', color: '#fbbf24' },\n    done: { text: '✅ اكتمل', color: '#22c55e' },\n  }\n  const pl = labels[props.phase]\n  ctx.fillStyle = pl.color; ctx.font = `bold ${s(12)}px sans-serif`\n  ctx.fillText(pl.text, w / 2, s(18))\n}\n\nfunction loop(ts: number) {\n  const dt = lastTs ? Math.min((ts - lastTs) / 1000, 0.05) : 0\n  lastTs = ts\n  emit('updateSim', dt)\n  draw()\n  animId = requestAnimationFrame(loop)\n}\n\nfunction onResize() { resizeCanvas(); draw() }\nonMounted(() => { resizeCanvas(); draw(); animId = requestAnimationFrame(loop); window.addEventListener('resize', onResize) })\nonUnmounted(() => { cancelAnimationFrame(animId); window.removeEventListener('resize', onResize) })\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"canvas\", {\n    ref_key: \"canvasRef\",\n    ref: canvasRef,\n    style: {\"width\":\"100%\",\"height\":\"100%\",\"display\":\"block\"}\n  }, null, 512))\n}\n}\n\n})",
+      "start": 1783196194657,
+      "end": 1783196194657
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194657,
+      "end": 1783196194657,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nimport { ref, onMounted, onUnmounted } from \"vue\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"FaradayCanvas\",\n  props: {\n    N: {},\n    B: {},\n    A: {},\n    theta: {},\n    flux: {},\n    emf: {},\n    phase: {},\n    running: { type: Boolean },\n    paused: { type: Boolean }\n  },\n  emits: [\"updateSim\"],\n  setup(__props, { emit: __emit }) {\n    const props = __props;\n    const canvasRef = ref(null);\n    let animId = 0;\n    let lastTs = 0;\n    let dpr = 1;\n    let cw = 600;\n    let ch = 400;\n    const emit = __emit;\n    function getCtx() {\n      const c = canvasRef.value;\n      return c ? c.getContext(\"2d\") : null;\n    }\n    function resizeCanvas() {\n      const c = canvasRef.value;\n      if (!c) return;\n      const rect = c.getBoundingClientRect();\n      dpr = window.devicePixelRatio || 1;\n      cw = Math.round(rect.width);\n      ch = Math.round(rect.height);\n      c.width = Math.round(cw * dpr);\n      c.height = Math.round(ch * dpr);\n    }\n    function draw() {\n      const ctx = getCtx();\n      if (!ctx) return;\n      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);\n      const w = cw, h = ch;\n      ctx.fillStyle = \"#0B1220\";\n      ctx.fillRect(0, 0, w, h);\n      const scale = Math.min(w / 560, h / 360);\n      const s = (v) => v * scale;\n      const cx = w / 2;\n      const cy = h / 2;\n      const magW = s(80), magH = s(30);\n      const magX = cx - magW / 2, magY = cy - s(100);\n      ctx.fillStyle = \"#f87171\";\n      ctx.fillRect(magX, magY, magW / 2, magH);\n      ctx.fillStyle = \"#5B8DB8\";\n      ctx.fillRect(magX + magW / 2, magY, magW / 2, magH);\n      ctx.strokeStyle = \"#D1D7E0\";\n      ctx.lineWidth = s(1);\n      ctx.strokeRect(magX, magY, magW, magH);\n      ctx.fillStyle = \"#fff\";\n      ctx.font = `bold ${s(8)}px sans-serif`;\n      ctx.textAlign = \"center\";\n      ctx.fillText(\"N\", magX + magW / 4, magY + magH / 2 + s(3));\n      ctx.fillText(\"S\", magX + magW * 3 / 4, magY + magH / 2 + s(3));\n      ctx.strokeStyle = \"rgba(91,141,184,0.3)\";\n      ctx.lineWidth = s(1);\n      for (let i = -2; i <= 2; i++) {\n        ctx.beginPath();\n        ctx.moveTo(cx + i * s(15), magY + magH);\n        ctx.lineTo(cx + i * s(15), cy + s(60));\n        ctx.stroke();\n      }\n      const coilW = s(60), coilH = s(40);\n      const rad = props.theta * Math.PI / 180;\n      ctx.save();\n      ctx.translate(cx, cy + s(30));\n      ctx.rotate(rad);\n      ctx.strokeStyle = \"#fbbf24\";\n      ctx.lineWidth = s(2);\n      ctx.strokeRect(-coilW / 2, -coilH / 2, coilW, coilH);\n      ctx.fillStyle = \"rgba(251,191,36,0.1)\";\n      ctx.fillRect(-coilW / 2, -coilH / 2, coilW, coilH);\n      ctx.fillStyle = \"#fbbf24\";\n      ctx.font = `${s(7)}px sans-serif`;\n      ctx.fillText(`${props.N} turns`, 0, 0);\n      ctx.restore();\n      ctx.fillStyle = \"#8B95A5\";\n      ctx.font = `${s(8)}px sans-serif`;\n      ctx.textAlign = \"center\";\n      ctx.fillText(`Φ = ${props.flux.toFixed(4)} Wb`, cx, cy + s(60) + s(14));\n      ctx.fillStyle = \"#22c55e\";\n      ctx.font = `bold ${s(9)}px sans-serif`;\n      ctx.fillText(`EMF = ${props.emf.toFixed(2)} V`, cx, cy + s(60) + s(26));\n      const labels = {\n        ready: { text: \"⚡ جاهز — اضغط Start\", color: \"#64748b\" },\n        running: { text: \"🔄 جاري الدوران...\", color: \"#fbbf24\" },\n        done: { text: \"✅ اكتمل\", color: \"#22c55e\" }\n      };\n      const pl = labels[props.phase];\n      ctx.fillStyle = pl.color;\n      ctx.font = `bold ${s(12)}px sans-serif`;\n      ctx.fillText(pl.text, w / 2, s(18));\n    }\n    function loop(ts) {\n      const dt = lastTs ? Math.min((ts - lastTs) / 1e3, 0.05) : 0;\n      lastTs = ts;\n      emit(\"updateSim\", dt);\n      draw();\n      animId = requestAnimationFrame(loop);\n    }\n    function onResize() {\n      resizeCanvas();\n      draw();\n    }\n    onMounted(() => {\n      resizeCanvas();\n      draw();\n      animId = requestAnimationFrame(loop);\n      window.addEventListener(\"resize\", onResize);\n    });\n    onUnmounted(() => {\n      cancelAnimationFrame(animId);\n      window.removeEventListener(\"resize\", onResize);\n    });\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"canvas\", {\n        ref_key: \"canvasRef\",\n        ref: canvasRef,\n        style: { \"width\": \"100%\", \"height\": \"100%\", \"display\": \"block\" }\n      }, null, 512);\n    };\n  }\n});\n",
+      "start": 1783196194657,
+      "end": 1783196194962,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/faraday/FaradayCanvas.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nimport { ref, onMounted, onUnmounted } from 'vue'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'FaradayCanvas',\n  props: {\n    N: {},\n    B: {},\n    A: {},\n    theta: {},\n    flux: {},\n    emf: {},\n    phase: {},\n    running: { type: Boolean },\n    paused: { type: Boolean }\n  },\n  emits: [\"updateSim\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst props = __props\n\nconst canvasRef = ref<HTMLCanvasElement | null>(null)\nlet animId = 0\nlet lastTs = 0\nlet dpr = 1\nlet cw = 600\nlet ch = 400\n\nconst emit = __emit\n\nfunction getCtx() { const c = canvasRef.value; return c ? c.getContext('2d') : null }\nfunction resizeCanvas() {\n  const c = canvasRef.value\n  if (!c) return\n  const rect = c.getBoundingClientRect()\n  dpr = window.devicePixelRatio || 1\n  cw = Math.round(rect.width)\n  ch = Math.round(rect.height)\n  c.width = Math.round(cw * dpr)\n  c.height = Math.round(ch * dpr)\n}\n\nfunction draw() {\n  const ctx = getCtx()\n  if (!ctx) return\n  ctx.setTransform(dpr, 0, 0, dpr, 0, 0)\n  const w = cw, h = ch\n  ctx.fillStyle = '#0B1220'; ctx.fillRect(0, 0, w, h)\n\n  const scale = Math.min(w / 560, h / 360)\n  const s = (v: number) => v * scale\n  const cx = w / 2\n  const cy = h / 2\n\n  // Magnet (N-S)\n  const magW = s(80), magH = s(30)\n  const magX = cx - magW / 2, magY = cy - s(100)\n  ctx.fillStyle = '#f87171'; ctx.fillRect(magX, magY, magW / 2, magH)\n  ctx.fillStyle = '#5B8DB8'; ctx.fillRect(magX + magW / 2, magY, magW / 2, magH)\n  ctx.strokeStyle = '#D1D7E0'; ctx.lineWidth = s(1); ctx.strokeRect(magX, magY, magW, magH)\n  ctx.fillStyle = '#fff'; ctx.font = `bold ${s(8)}px sans-serif`; ctx.textAlign = 'center'\n  ctx.fillText('N', magX + magW / 4, magY + magH / 2 + s(3))\n  ctx.fillText('S', magX + magW * 3 / 4, magY + magH / 2 + s(3))\n\n  // Field lines\n  ctx.strokeStyle = 'rgba(91,141,184,0.3)'; ctx.lineWidth = s(1)\n  for (let i = -2; i <= 2; i++) {\n    ctx.beginPath(); ctx.moveTo(cx + i * s(15), magY + magH); ctx.lineTo(cx + i * s(15), cy + s(60)); ctx.stroke()\n  }\n\n  // Rotating coil\n  const coilW = s(60), coilH = s(40)\n  const rad = (props.theta * Math.PI) / 180\n  ctx.save()\n  ctx.translate(cx, cy + s(30))\n  ctx.rotate(rad)\n  ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = s(2)\n  ctx.strokeRect(-coilW / 2, -coilH / 2, coilW, coilH)\n  ctx.fillStyle = 'rgba(251,191,36,0.1)'; ctx.fillRect(-coilW / 2, -coilH / 2, coilW, coilH)\n  // Turns\n  ctx.fillStyle = '#fbbf24'; ctx.font = `${s(7)}px sans-serif`\n  ctx.fillText(`${props.N} turns`, 0, 0)\n  ctx.restore()\n\n  // Labels\n  ctx.fillStyle = '#8B95A5'; ctx.font = `${s(8)}px sans-serif`; ctx.textAlign = 'center'\n  ctx.fillText(`Φ = ${props.flux.toFixed(4)} Wb`, cx, cy + s(60) + s(14))\n  ctx.fillStyle = '#22c55e'; ctx.font = `bold ${s(9)}px sans-serif`\n  ctx.fillText(`EMF = ${props.emf.toFixed(2)} V`, cx, cy + s(60) + s(26))\n\n  const labels: Record<string, { text: string; color: string }> = {\n    ready: { text: '⚡ جاهز — اضغط Start', color: '#64748b' },\n    running: { text: '🔄 جاري الدوران...', color: '#fbbf24' },\n    done: { text: '✅ اكتمل', color: '#22c55e' },\n  }\n  const pl = labels[props.phase]\n  ctx.fillStyle = pl.color; ctx.font = `bold ${s(12)}px sans-serif`\n  ctx.fillText(pl.text, w / 2, s(18))\n}\n\nfunction loop(ts: number) {\n  const dt = lastTs ? Math.min((ts - lastTs) / 1000, 0.05) : 0\n  lastTs = ts\n  emit('updateSim', dt)\n  draw()\n  animId = requestAnimationFrame(loop)\n}\n\nfunction onResize() { resizeCanvas(); draw() }\nonMounted(() => { resizeCanvas(); draw(); animId = requestAnimationFrame(loop); window.addEventListener('resize', onResize) })\nonUnmounted(() => { cancelAnimationFrame(animId); window.removeEventListener('resize', onResize) })\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"canvas\", {\n    ref_key: \"canvasRef\",\n    ref: canvasRef,\n    style: {\"width\":\"100%\",\"height\":\"100%\",\"display\":\"block\"}\n  }, null, 512))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194962,
+      "end": 1783196194962,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194962,
+      "end": 1783196194962,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196194962,
+      "end": 1783196194962,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194962,
+      "end": 1783196194962,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194962,
+      "end": 1783196194962,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194962,
+      "end": 1783196194962,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194962,
+      "end": 1783196194962,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194962,
+      "end": 1783196194962,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194962,
+      "end": 1783196194962,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194962,
+      "end": 1783196194962,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194962,
+      "end": 1783196194962,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194962,
+      "end": 1783196194962,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194962,
+      "end": 1783196194962,
+      "order": "normal"
+    }
+  ]
+}

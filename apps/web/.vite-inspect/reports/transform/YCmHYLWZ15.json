@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/interference/panels/InterferenceParamsPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed } from 'vue'\nimport { useI18n } from '../../../../composables/useI18n'\nimport { wavelengthToColor } from '../../../../composables/interference/useInterferenceCalculations'\n\nconst { t } = useI18n()\n\ninterface Props {\n  params: { slitDistance: number; screenDistance: number; wavelength: number; slitWidth: number }\n}\nconst props = defineProps<Props>()\nconst emit = defineEmits<{\n  (e: 'update:params', p: { slitDistance: number; screenDistance: number; wavelength: number; slitWidth: number }): void\n}>()\n\nconst waveColor = computed(() => wavelengthToColor(props.params.wavelength))\n\nfunction set(key: string, val: number) {\n  emit('update:params', { ...props.params, [key]: val })\n}\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <div class=\"param-row\">\n      <div class=\"param-header\">\n        <span class=\"param-label\">{{ t('experiments.slitDistance') }} d</span>\n        <span class=\"param-val\">{{ params.slitDistance }} mm</span>\n      </div>\n      <input class=\"slider\" type=\"range\" min=\"0.1\" max=\"2\" step=\"0.01\"\n        :value=\"params.slitDistance\"\n        @input=\"set('slitDistance', Number(($event.target as HTMLInputElement).value))\" />\n    </div>\n\n    <div class=\"param-row\">\n      <div class=\"param-header\">\n        <span class=\"param-label\">{{ t('experiments.screenDistance') }} D</span>\n        <span class=\"param-val cyan\">{{ params.screenDistance }} m</span>\n      </div>\n      <input class=\"slider\" type=\"range\" min=\"0.5\" max=\"3\" step=\"0.1\"\n        :value=\"params.screenDistance\"\n        @input=\"set('screenDistance', Number(($event.target as HTMLInputElement).value))\" />\n    </div>\n\n    <div class=\"param-row\">\n      <div class=\"param-header\">\n        <span class=\"param-label\">{{ t('experiments.slitWidth') }} a</span>\n        <span class=\"param-val\">{{ params.slitWidth }} μm</span>\n      </div>\n      <input class=\"slider\" type=\"range\" min=\"0.01\" max=\"0.2\" step=\"0.01\"\n        :value=\"params.slitWidth\"\n        @input=\"set('slitWidth', Number(($event.target as HTMLInputElement).value))\" />\n    </div>\n\n    <div class=\"param-row\">\n      <div class=\"param-header\">\n        <span class=\"param-label\">{{ t('experiments.wavelength') }} λ</span>\n        <span class=\"param-val\" :style=\"{ color: waveColor }\">{{ params.wavelength }} nm</span>\n      </div>\n      <div class=\"wave-row\">\n        <input class=\"slider wavelength-slider\" type=\"range\" min=\"380\" max=\"700\" step=\"5\"\n          :value=\"params.wavelength\"\n          @input=\"set('wavelength', Number(($event.target as HTMLInputElement).value))\" />\n        <span class=\"color-dot\" :style=\"{ background: waveColor }\" />\n      </div>\n    </div>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { display: flex; flex-direction: column; gap: .55rem; font-size: .82rem; padding: .1rem 0; }\n.param-row { display: flex; flex-direction: column; gap: .3rem; }\n.param-header { display: flex; justify-content: space-between; align-items: center; }\n.param-label { font-size: .75rem; color: #8B95A5; }\n.param-val { font-family: monospace; color: #67e8f9; font-size: .8rem; font-weight: 700; }\n.slider { width: 100%; accent-color: #67e8f9; height: 3px; }\n.wave-row { display: flex; align-items: center; gap: .5rem; }\n.wavelength-slider { flex: 1; -webkit-appearance: none; appearance: none; height: 6px; border-radius: 3px; outline: none;\n  background: linear-gradient(to right, #8B00FF, #4B0082, #0000FF, #00AAFF, #00CC00, #DDDD00, #FF7F00, #FF0000); }\n.wavelength-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 2px solid #67e8f9; cursor: pointer; box-shadow: 0 0 6px rgba(103,232,249,.6); }\n.wavelength-slider::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 2px solid #67e8f9; cursor: pointer; }\n.color-dot { width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; border: 1.5px solid rgba(255,255,255,0.15); box-shadow: 0 0 8px currentColor; }\n</style>\n",
+      "start": 1783196194854,
+      "end": 1783196195229,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195229,
+      "end": 1783196195229,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195229,
+      "end": 1783196195229,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195229,
+      "end": 1783196195229,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195229,
+      "end": 1783196195229,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/interference/panels/InterferenceParamsPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/interference/panels/InterferenceParamsPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/interference/panels/InterferenceParamsPanel.vue?vue&type=style&index=0&scoped=7526bc9e&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-7526bc9e\"]]);\n",
+      "start": 1783196195229,
+      "end": 1783196195247,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195247,
+      "end": 1783196195247,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195247,
+      "end": 1783196195247,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195247,
+      "end": 1783196195247,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195247,
+      "end": 1783196195247,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195247,
+      "end": 1783196195247,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195247,
+      "end": 1783196195247,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195247,
+      "end": 1783196195247,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195247,
+      "end": 1783196195247,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195247,
+      "end": 1783196195247,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195248,
+      "end": 1783196195248,
+      "order": "normal"
+    }
+  ]
+}

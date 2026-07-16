@@ -178,6 +178,7 @@ export const en4 = {
     expGenerator: 'Electric Generator',
     expMagneticFlux: 'Magnetic Flux',
     expElectricLab: 'Electric Lab',
+    expElectricWorkshop: 'Electric Workshop',
     colMass: 'Mass',
     colTime: 'Time',
     colPeriod: 'Period',

@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/polarization/panels/PolarizationChartPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed } from 'vue'\nimport { useI18n } from '../../../../composables/useI18n'\nimport type { PolarizationTrial } from '../../../../composables/polarization/usePolarizationTrials'\nconst { t } = useI18n()\n\ninterface Props {\n  trials: PolarizationTrial[]\n  regressionSlope: number\n  regressionIntercept: number\n  rSquared: number\n  intensityCurve: { theta: number; intensity: number }[]\n  relativeAngle: number\n}\nconst props = defineProps<Props>()\n\n// I vs cos²θ scatter plot points\nconst chartPoints = computed(() => props.trials\n  .map(t => ({ cos2: Math.pow(Math.cos(t.relativeAngle * Math.PI / 180), 2), I: t.outputIntensity })))\n\nconst chartBounds = computed(() => {\n  const pts = chartPoints.value\n  if (pts.length === 0) return { xMin: 0, xMax: 1.1, yMin: 0, yMax: props.intensityCurve.length ? 1.2 : 120 }\n  const xs = pts.map(p => p.cos2)\n  const ys = pts.map(p => p.I)\n  const xMin = 0\n  const xMax = Math.max(...xs, 1) * 1.05\n  const yMin = 0\n  const yMax = Math.max(...ys) * 1.15\n  return { xMin, xMax, yMin, yMax }\n})\n\nconst svgW = 300, svgH = 200\nconst svgPad = { left: 44, right: 14, top: 14, bottom: 34 }\nconst plotW = svgW - svgPad.left - svgPad.right\nconst plotH = svgH - svgPad.top - svgPad.bottom\n\nfunction toSvgX(val: number) {\n  const b = chartBounds.value\n  return svgPad.left + ((val - b.xMin) / (b.xMax - b.xMin)) * plotW\n}\nfunction toSvgY(val: number) {\n  const b = chartBounds.value\n  return svgH - svgPad.bottom - ((val - b.yMin) / (b.yMax - b.yMin)) * plotH\n}\n</script>\n\n<template>\n  <div class=\"panel-body\">\n    <!-- I vs cos²θ Regression Chart -->\n    <div v-if=\"chartPoints.length >= 2\" class=\"chart-box\">\n      <svg :viewBox=\"`0 0 ${svgW} ${svgH}`\" class=\"reg-chart\">\n        <template v-for=\"i in 5\" :key=\"'xg' + i\">\n          <line :x1=\"toSvgX(chartBounds.xMin + (chartBounds.xMax - chartBounds.xMin) * (i - 1) / 4)\"\n                :y1=\"toSvgY(chartBounds.yMin)\" :y2=\"toSvgY(chartBounds.yMax)\"\n                stroke=\"rgba(255,255,255,0.08)\" stroke-width=\"1\"/>\n        </template>\n        <template v-for=\"i in 5\" :key=\"'yg' + i\">\n          <line :x1=\"toSvgX(chartBounds.xMin)\" :x2=\"toSvgX(chartBounds.xMax)\"\n                :y1=\"toSvgY(chartBounds.yMin + (chartBounds.yMax - chartBounds.yMin) * (i - 1) / 4)\"\n                :y2=\"toSvgY(chartBounds.yMin + (chartBounds.yMax - chartBounds.yMin) * (i - 1) / 4)\"\n                stroke=\"rgba(255,255,255,0.08)\" stroke-width=\"1\"/>\n        </template>\n        <line :x1=\"toSvgX(chartBounds.xMin)\" :y1=\"toSvgY(chartBounds.yMin)\" :x2=\"toSvgX(chartBounds.xMax)\" :y2=\"toSvgY(chartBounds.yMin)\" stroke=\"rgba(255,255,255,0.3)\" stroke-width=\"1\"/>\n        <line :x1=\"toSvgX(chartBounds.xMin)\" :y1=\"toSvgY(chartBounds.yMin)\" :x2=\"toSvgX(chartBounds.xMin)\" :y2=\"toSvgY(chartBounds.yMax)\" stroke=\"rgba(255,255,255,0.3)\" stroke-width=\"1\"/>\n        <text v-for=\"i in 5\" :key=\"'xl' + i\" :x=\"toSvgX(chartBounds.xMin + (chartBounds.xMax - chartBounds.xMin) * (i - 1) / 4)\" :y=\"svgH - 8\" fill=\"#8B95A5\" font-size=\"8\" text-anchor=\"middle\">\n          {{ (chartBounds.xMin + (chartBounds.xMax - chartBounds.xMin) * (i - 1) / 4).toFixed(2) }}\n        </text>\n        <text v-for=\"i in 5\" :key=\"'yl' + i\" :x=\"svgPad.left - 6\" :y=\"toSvgY(chartBounds.yMin + (chartBounds.yMax - chartBounds.yMin) * (i - 1) / 4) + 3\" fill=\"#8B95A5\" font-size=\"8\" text-anchor=\"end\">\n          {{ (chartBounds.yMin + (chartBounds.yMax - chartBounds.yMin) * (i - 1) / 4).toFixed(0) }}\n        </text>\n        <text :x=\"svgW / 2\" :y=\"svgH - 2\" fill=\"#8B95A5\" font-size=\"9\" text-anchor=\"middle\">cos²θ</text>\n        <text x=\"8\" :y=\"svgH / 2\" fill=\"#8B95A5\" font-size=\"9\" text-anchor=\"middle\" transform=\"rotate(-90 8,${svgH / 2})\">I</text>\n        <g v-for=\"(p, i) in chartPoints\" :key=\"i\">\n          <circle :cx=\"toSvgX(p.cos2)\" :cy=\"toSvgY(p.I)\" r=\"4\" fill=\"#22c55e\"/>\n        </g>\n        <line v-if=\"Number.isFinite(regressionSlope) && chartPoints.length >= 2\"\n              :x1=\"toSvgX(chartBounds.xMin)\"\n              :y1=\"toSvgY(regressionSlope * chartBounds.xMin + regressionIntercept)\"\n              :x2=\"toSvgX(chartBounds.xMax)\"\n              :y2=\"toSvgY(regressionSlope * chartBounds.xMax + regressionIntercept)\"\n              stroke=\"#fbbf24\" stroke-width=\"1.5\"/>\n      </svg>\n      <div class=\"reg-summary\">\n        <span class=\"reg-badge\">Slope = {{ regressionSlope.toFixed(2) }}</span>\n        <span class=\"reg-badge\">R² = {{ rSquared.toFixed(4) }}</span>\n      </div>\n    </div>\n    <!-- Fallback intensity curve -->\n    <div v-else-if=\"intensityCurve.length\" class=\"mini-chart\">\n      <svg viewBox=\"0 0 100 40\" preserveAspectRatio=\"none\" class=\"chart-svg\">\n        <polyline\n          :points=\"intensityCurve.map(p => `${(p.theta / 360) * 100},${40 - p.intensity * 35}`).join(' ')\"\n          fill=\"none\" stroke=\"#5B8DB8\" stroke-width=\"0.5\"\n        />\n      </svg>\n    </div>\n    <p v-else class=\"empty\">{{ t('experiments.noData') }}</p>\n  </div>\n</template>\n\n<style scoped>\n.panel-body { font-size: .8rem; }\n.chart-box { display: flex; flex-direction: column; gap: .3rem; }\n.reg-chart { width: 100%; height: 180px; background: #0d1117; border-radius: 5px; border: 1px solid #2D3645; }\n.reg-summary { display: flex; gap: .4rem; flex-wrap: wrap; }\n.reg-badge { background: #1a2332; border: 1px solid #2D3645; border-radius: 5px; padding: .2rem .4rem; font-size: .72rem; color: #5B8DB8; font-family: monospace; }\n.mini-chart { height: 100px; background: #0d1117; border-radius: 5px; border: 1px solid #2D3645; padding: .3rem; }\n.chart-svg { width: 100%; height: 100%; }\n.empty { color: #64748b; text-align: center; padding: 1rem; }\n</style>\n",
+      "start": 1783196195112,
+      "end": 1783196195365,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195365,
+      "end": 1783196195365,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195365,
+      "end": 1783196195365,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195365,
+      "end": 1783196195365,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195365,
+      "end": 1783196195365,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/polarization/panels/PolarizationChartPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/polarization/panels/PolarizationChartPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/polarization/panels/PolarizationChartPanel.vue?vue&type=style&index=0&scoped=5ad8bba9&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-5ad8bba9\"]]);\n",
+      "start": 1783196195365,
+      "end": 1783196195564,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195565,
+      "end": 1783196195565,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195565,
+      "end": 1783196195565,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195565,
+      "end": 1783196195565,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195565,
+      "end": 1783196195565,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195565,
+      "end": 1783196195565,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195565,
+      "end": 1783196195565,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195565,
+      "end": 1783196195565,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195565,
+      "end": 1783196195565,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195565,
+      "end": 1783196195565,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195565,
+      "end": 1783196195565,
+      "order": "normal"
+    }
+  ]
+}

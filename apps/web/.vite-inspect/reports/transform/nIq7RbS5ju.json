@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/WorkspaceOverlays.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, unref as _unref, toDisplayString as _toDisplayString } from \"vue\"\n\nconst _hoisted_1 = {\n  key: 0,\n  class: \"pour-streams\",\n  style: {\"position\":\"absolute\",\"top\":\"0\",\"left\":\"0\",\"width\":\"100%\",\"height\":\"100%\",\"pointer-events\":\"none\",\"z-index\":\"20\"}\n}\nconst _hoisted_2 = [\"x1\", \"y1\", \"x2\", \"y2\"]\nconst _hoisted_3 = [\"cx\", \"cy\"]\nconst _hoisted_4 = { class: \"zoom-hint\" }\n\nimport { computed } from 'vue';\r\nimport type { LabItem } from '../../../composables/chemistry/useChemistryTools';\r\nimport { useI18n } from '../../../composables/useI18n';\r\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'WorkspaceOverlays',\n  props: {\n    pourFlowMap: {},\n    items: {}\n  },\n  setup(__props: any) {\n\r\nconst { t } = useI18n();\r\n\r\nconst props = __props;\r\n\r\nconst streamLines = computed(() => {\r\n  const lines: { x1: number; y1: number; x2: number; y2: number; color: string }[] = [];\r\n  if (!props.items || !props.pourFlowMap) return lines;\r\n  for (const [srcUid, dstUid] of Object.entries(props.pourFlowMap)) {\r\n    const src = props.items.find(i => i.uid === srcUid);\r\n    const dst = props.items.find(i => i.uid === dstUid);\r\n    if (!src || !dst) continue;\r\n    lines.push({\r\n      x1: src.x + 42, y1: src.y + 60,\r\n      x2: dst.x + 42, y2: dst.y + 10,\r\n      color: '#3b82f6',\r\n    });\r\n  }\r\n  return lines;\r\n});\r\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(_Fragment, null, [\n    (streamLines.value.length)\n      ? (_openBlock(), _createElementBlock(\"svg\", _hoisted_1, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"defs\", null, [\n            _createElementVNode(\"linearGradient\", {\n              id: \"streamGrad\",\n              x1: \"0%\",\n              y1: \"0%\",\n              x2: \"0%\",\n              y2: \"100%\"\n            }, [\n              _createElementVNode(\"stop\", {\n                offset: \"0%\",\n                \"stop-color\": \"rgba(59,130,246,0)\"\n              }),\n              _createElementVNode(\"stop\", {\n                offset: \"50%\",\n                \"stop-color\": \"rgba(59,130,246,0.6)\"\n              }),\n              _createElementVNode(\"stop\", {\n                offset: \"100%\",\n                \"stop-color\": \"rgba(59,130,246,0)\"\n              })\n            ])\n          ], -1)),\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(streamLines.value, (s, i) => {\n            return (_openBlock(), _createElementBlock(\"line\", {\n              key: i,\n              x1: s.x1,\n              y1: s.y1,\n              x2: s.x2,\n              y2: s.y2,\n              stroke: \"url(#streamGrad)\",\n              \"stroke-width\": \"3\",\n              \"stroke-linecap\": \"round\"\n            }, null, 8, _hoisted_2))\n          }), 128)),\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(streamLines.value, (s, i) => {\n            return (_openBlock(), _createElementBlock(\"circle\", {\n              key: 'd' + i,\n              cx: s.x2,\n              cy: s.y2,\n              r: \"4\",\n              fill: \"#3b82f6\",\n              opacity: \"0.5\"\n            }, [...(_cache[0] || (_cache[0] = [\n              _createElementVNode(\"animate\", {\n                attributeName: \"opacity\",\n                values: \"0.5;0.1;0.5\",\n                dur: \"0.8s\",\n                repeatCount: \"indefinite\"\n              }, null, -1)\n            ]))], 8, _hoisted_3))\n          }), 128))\n        ]))\n      : _createCommentVNode(\"\", true),\n    _createElementVNode(\"div\", _hoisted_4, [\n      _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('chemistryLab.mouseWheelZoom')), 1)\n    ])\n  ], 64))\n}\n}\n\n})",
+      "start": 1783196193640,
+      "end": 1783196193640
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196193640,
+      "end": 1783196193640,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, unref as _unref, toDisplayString as _toDisplayString } from \"vue\";\nconst _hoisted_1 = {\n  key: 0,\n  class: \"pour-streams\",\n  style: { \"position\": \"absolute\", \"top\": \"0\", \"left\": \"0\", \"width\": \"100%\", \"height\": \"100%\", \"pointer-events\": \"none\", \"z-index\": \"20\" }\n};\nconst _hoisted_2 = [\"x1\", \"y1\", \"x2\", \"y2\"];\nconst _hoisted_3 = [\"cx\", \"cy\"];\nconst _hoisted_4 = { class: \"zoom-hint\" };\nimport { computed } from \"vue\";\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"WorkspaceOverlays\",\n  props: {\n    pourFlowMap: {},\n    items: {}\n  },\n  setup(__props) {\n    const { t } = useI18n();\n    const props = __props;\n    const streamLines = computed(() => {\n      const lines = [];\n      if (!props.items || !props.pourFlowMap) return lines;\n      for (const [srcUid, dstUid] of Object.entries(props.pourFlowMap)) {\n        const src = props.items.find((i) => i.uid === srcUid);\n        const dst = props.items.find((i) => i.uid === dstUid);\n        if (!src || !dst) continue;\n        lines.push({\n          x1: src.x + 42,\n          y1: src.y + 60,\n          x2: dst.x + 42,\n          y2: dst.y + 10,\n          color: \"#3b82f6\"\n        });\n      }\n      return lines;\n    });\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(_Fragment, null, [\n        streamLines.value.length ? (_openBlock(), _createElementBlock(\"svg\", _hoisted_1, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"defs\", null, [\n            _createElementVNode(\"linearGradient\", {\n              id: \"streamGrad\",\n              x1: \"0%\",\n              y1: \"0%\",\n              x2: \"0%\",\n              y2: \"100%\"\n            }, [\n              _createElementVNode(\"stop\", {\n                offset: \"0%\",\n                \"stop-color\": \"rgba(59,130,246,0)\"\n              }),\n              _createElementVNode(\"stop\", {\n                offset: \"50%\",\n                \"stop-color\": \"rgba(59,130,246,0.6)\"\n              }),\n              _createElementVNode(\"stop\", {\n                offset: \"100%\",\n                \"stop-color\": \"rgba(59,130,246,0)\"\n              })\n            ])\n          ], -1)),\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(streamLines.value, (s, i) => {\n            return _openBlock(), _createElementBlock(\"line\", {\n              key: i,\n              x1: s.x1,\n              y1: s.y1,\n              x2: s.x2,\n              y2: s.y2,\n              stroke: \"url(#streamGrad)\",\n              \"stroke-width\": \"3\",\n              \"stroke-linecap\": \"round\"\n            }, null, 8, _hoisted_2);\n          }), 128)),\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(streamLines.value, (s, i) => {\n            return _openBlock(), _createElementBlock(\"circle\", {\n              key: \"d\" + i,\n              cx: s.x2,\n              cy: s.y2,\n              r: \"4\",\n              fill: \"#3b82f6\",\n              opacity: \"0.5\"\n            }, [..._cache[0] || (_cache[0] = [\n              _createElementVNode(\"animate\", {\n                attributeName: \"opacity\",\n                values: \"0.5;0.1;0.5\",\n                dur: \"0.8s\",\n                repeatCount: \"indefinite\"\n              }, null, -1)\n            ])], 8, _hoisted_3);\n          }), 128))\n        ])) : _createCommentVNode(\"\", true),\n        _createElementVNode(\"div\", _hoisted_4, [\n          _createElementVNode(\"span\", null, _toDisplayString(_unref(t)(\"chemistryLab.mouseWheelZoom\")), 1)\n        ])\n      ], 64);\n    };\n  }\n});\n",
+      "start": 1783196193640,
+      "end": 1783196193685,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/chemistry/WorkspaceOverlays.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, unref as _unref, toDisplayString as _toDisplayString } from \"vue\"\n\nconst _hoisted_1 = {\n  key: 0,\n  class: \"pour-streams\",\n  style: {\"position\":\"absolute\",\"top\":\"0\",\"left\":\"0\",\"width\":\"100%\",\"height\":\"100%\",\"pointer-events\":\"none\",\"z-index\":\"20\"}\n}\nconst _hoisted_2 = [\"x1\", \"y1\", \"x2\", \"y2\"]\nconst _hoisted_3 = [\"cx\", \"cy\"]\nconst _hoisted_4 = { class: \"zoom-hint\" }\n\nimport { computed } from 'vue';\r\nimport type { LabItem } from '../../../composables/chemistry/useChemistryTools';\r\nimport { useI18n } from '../../../composables/useI18n';\r\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'WorkspaceOverlays',\n  props: {\n    pourFlowMap: {},\n    items: {}\n  },\n  setup(__props: any) {\n\r\nconst { t } = useI18n();\r\n\r\nconst props = __props;\r\n\r\nconst streamLines = computed(() => {\r\n  const lines: { x1: number; y1: number; x2: number; y2: number; color: string }[] = [];\r\n  if (!props.items || !props.pourFlowMap) return lines;\r\n  for (const [srcUid, dstUid] of Object.entries(props.pourFlowMap)) {\r\n    const src = props.items.find(i => i.uid === srcUid);\r\n    const dst = props.items.find(i => i.uid === dstUid);\r\n    if (!src || !dst) continue;\r\n    lines.push({\r\n      x1: src.x + 42, y1: src.y + 60,\r\n      x2: dst.x + 42, y2: dst.y + 10,\r\n      color: '#3b82f6',\r\n    });\r\n  }\r\n  return lines;\r\n});\r\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(_Fragment, null, [\n    (streamLines.value.length)\n      ? (_openBlock(), _createElementBlock(\"svg\", _hoisted_1, [\n          _cache[1] || (_cache[1] = _createElementVNode(\"defs\", null, [\n            _createElementVNode(\"linearGradient\", {\n              id: \"streamGrad\",\n              x1: \"0%\",\n              y1: \"0%\",\n              x2: \"0%\",\n              y2: \"100%\"\n            }, [\n              _createElementVNode(\"stop\", {\n                offset: \"0%\",\n                \"stop-color\": \"rgba(59,130,246,0)\"\n              }),\n              _createElementVNode(\"stop\", {\n                offset: \"50%\",\n                \"stop-color\": \"rgba(59,130,246,0.6)\"\n              }),\n              _createElementVNode(\"stop\", {\n                offset: \"100%\",\n                \"stop-color\": \"rgba(59,130,246,0)\"\n              })\n            ])\n          ], -1)),\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(streamLines.value, (s, i) => {\n            return (_openBlock(), _createElementBlock(\"line\", {\n              key: i,\n              x1: s.x1,\n              y1: s.y1,\n              x2: s.x2,\n              y2: s.y2,\n              stroke: \"url(#streamGrad)\",\n              \"stroke-width\": \"3\",\n              \"stroke-linecap\": \"round\"\n            }, null, 8, _hoisted_2))\n          }), 128)),\n          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(streamLines.value, (s, i) => {\n            return (_openBlock(), _createElementBlock(\"circle\", {\n              key: 'd' + i,\n              cx: s.x2,\n              cy: s.y2,\n              r: \"4\",\n              fill: \"#3b82f6\",\n              opacity: \"0.5\"\n            }, [...(_cache[0] || (_cache[0] = [\n              _createElementVNode(\"animate\", {\n                attributeName: \"opacity\",\n                values: \"0.5;0.1;0.5\",\n                dur: \"0.8s\",\n                repeatCount: \"indefinite\"\n              }, null, -1)\n            ]))], 8, _hoisted_3))\n          }), 128))\n        ]))\n      : _createCommentVNode(\"\", true),\n    _createElementVNode(\"div\", _hoisted_4, [\n      _createElementVNode(\"span\", null, _toDisplayString(_unref(t)('chemistryLab.mouseWheelZoom')), 1)\n    ])\n  ], 64))\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196193685,
+      "end": 1783196193685,
+      "order": "normal"
+    }
+  ]
+}

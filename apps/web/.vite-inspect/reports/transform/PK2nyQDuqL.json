@@ -1,0 +1,108 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/collision/useCollisionPhysics.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { reactive } from 'vue'\nimport { useAnomalyWatcher } from '../../../../composables/experiment/useAnomalyWatcher'\nimport {\n  detectCollision,\n  separateBalls,\n  computeFinalVelocities,\n  computeMomentum,\n  computeTotalKE,\n  computeEnergyLoss,\n} from '../../../../composables/collision/collisionUtils'\n\nexport interface CollisionParams {\n  m1: number\n  m2: number\n  v1i: number\n  v2i: number\n  r1: number\n  r2: number\n  e: number\n}\n\nexport interface CollisionState {\n  running: boolean\n  paused: boolean\n  t: number\n  collided: boolean\n  x1: number\n  x2: number\n  v1: number\n  v2: number\n  v1f: number | null\n  v2f: number | null\n  Pi: number | null\n  Pf: number | null\n  KEi: number | null\n  KEf: number | null\n  lossPercent: number | null\n}\n\nexport function useCollisionPhysics(params: CollisionParams) {\n  const watcher = useAnomalyWatcher('collision')\n  const sim = reactive<CollisionState>({\n    running: false,\n    paused: false,\n    t: 0,\n    collided: false,\n    x1: -2,\n    x2: 2,\n    v1: params.v1i,\n    v2: params.v2i,\n    v1f: null,\n    v2f: null,\n    Pi: null,\n    Pf: null,\n    KEi: null,\n    KEf: null,\n    lossPercent: null,\n  })\n\n  function step(dt: number, speed: number = 1) {\n    if (!sim.running || sim.paused) return\n    const sDt = dt * speed\n    sim.t += sDt\n    sim.x1 += sim.v1 * sDt\n    sim.x2 += sim.v2 * sDt\n\n    if (!sim.collided && detectCollision(sim.x1, sim.x2, params.r1, params.r2)) {\n      const sep = separateBalls(sim.x1, sim.x2, params.r1, params.r2)\n      sim.x1 = sep.x1\n      sim.x2 = sep.x2\n\n      const { v1f, v2f } = computeFinalVelocities(params.m1, params.m2, sim.v1, sim.v2, params.e)\n      sim.v1f = v1f\n      sim.v2f = v2f\n      sim.v1 = v1f\n      sim.v2 = v2f\n      sim.collided = true\n\n      sim.Pi = computeMomentum(params.m1, params.v1i) + computeMomentum(params.m2, params.v2i)\n      sim.Pf = computeMomentum(params.m1, v1f) + computeMomentum(params.m2, v2f)\n      sim.KEi = computeTotalKE(params.m1, params.v1i, params.m2, params.v2i)\n      sim.KEf = computeTotalKE(params.m1, v1f, params.m2, v2f)\n      sim.lossPercent = computeEnergyLoss(sim.KEi, sim.KEf)\n    }\n\n    watcher.inspect({\n      t: sim.t,\n      x1: sim.x1, x2: sim.x2,\n      v1: sim.v1, v2: sim.v2,\n      KEi: sim.KEi, KEf: sim.KEf,\n      lossPercent: sim.lossPercent,\n      mass: params.m1 + params.m2,\n    })\n  }\n\n  function start() {\n    sim.running = true\n    sim.paused = false\n    sim.t = 0\n    sim.collided = false\n    sim.x1 = -2\n    sim.x2 = 2\n    sim.v1 = params.v1i\n    sim.v2 = params.v2i\n    sim.v1f = null\n    sim.v2f = null\n    sim.Pi = null\n    sim.Pf = null\n    sim.KEi = null\n    sim.KEf = null\n    sim.lossPercent = null\n  }\n\n  function stop() {\n    sim.running = false\n  }\n\n  function togglePause() {\n    sim.paused = !sim.paused\n  }\n\n  function reset() {\n    sim.running = false\n    sim.paused = false\n    sim.t = 0\n    sim.collided = false\n    sim.x1 = -2\n    sim.x2 = 2\n    sim.v1 = params.v1i\n    sim.v2 = params.v2i\n    sim.v1f = null\n    sim.v2f = null\n    sim.Pi = null\n    sim.Pf = null\n    sim.KEi = null\n    sim.KEf = null\n    sim.lossPercent = null\n  }\n\n  return { sim, step, start, stop, togglePause, reset }\n}\n",
+      "start": 1783196195182,
+      "end": 1783196195472,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195472,
+      "end": 1783196195472,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { reactive } from \"vue\";\nimport { useAnomalyWatcher } from \"../../../../composables/experiment/useAnomalyWatcher\";\nimport {\n  detectCollision,\n  separateBalls,\n  computeFinalVelocities,\n  computeMomentum,\n  computeTotalKE,\n  computeEnergyLoss\n} from \"../../../../composables/collision/collisionUtils\";\nexport function useCollisionPhysics(params) {\n  const watcher = useAnomalyWatcher(\"collision\");\n  const sim = reactive({\n    running: false,\n    paused: false,\n    t: 0,\n    collided: false,\n    x1: -2,\n    x2: 2,\n    v1: params.v1i,\n    v2: params.v2i,\n    v1f: null,\n    v2f: null,\n    Pi: null,\n    Pf: null,\n    KEi: null,\n    KEf: null,\n    lossPercent: null\n  });\n  function step(dt, speed = 1) {\n    if (!sim.running || sim.paused) return;\n    const sDt = dt * speed;\n    sim.t += sDt;\n    sim.x1 += sim.v1 * sDt;\n    sim.x2 += sim.v2 * sDt;\n    if (!sim.collided && detectCollision(sim.x1, sim.x2, params.r1, params.r2)) {\n      const sep = separateBalls(sim.x1, sim.x2, params.r1, params.r2);\n      sim.x1 = sep.x1;\n      sim.x2 = sep.x2;\n      const { v1f, v2f } = computeFinalVelocities(params.m1, params.m2, sim.v1, sim.v2, params.e);\n      sim.v1f = v1f;\n      sim.v2f = v2f;\n      sim.v1 = v1f;\n      sim.v2 = v2f;\n      sim.collided = true;\n      sim.Pi = computeMomentum(params.m1, params.v1i) + computeMomentum(params.m2, params.v2i);\n      sim.Pf = computeMomentum(params.m1, v1f) + computeMomentum(params.m2, v2f);\n      sim.KEi = computeTotalKE(params.m1, params.v1i, params.m2, params.v2i);\n      sim.KEf = computeTotalKE(params.m1, v1f, params.m2, v2f);\n      sim.lossPercent = computeEnergyLoss(sim.KEi, sim.KEf);\n    }\n    watcher.inspect({\n      t: sim.t,\n      x1: sim.x1,\n      x2: sim.x2,\n      v1: sim.v1,\n      v2: sim.v2,\n      KEi: sim.KEi,\n      KEf: sim.KEf,\n      lossPercent: sim.lossPercent,\n      mass: params.m1 + params.m2\n    });\n  }\n  function start() {\n    sim.running = true;\n    sim.paused = false;\n    sim.t = 0;\n    sim.collided = false;\n    sim.x1 = -2;\n    sim.x2 = 2;\n    sim.v1 = params.v1i;\n    sim.v2 = params.v2i;\n    sim.v1f = null;\n    sim.v2f = null;\n    sim.Pi = null;\n    sim.Pf = null;\n    sim.KEi = null;\n    sim.KEf = null;\n    sim.lossPercent = null;\n  }\n  function stop() {\n    sim.running = false;\n  }\n  function togglePause() {\n    sim.paused = !sim.paused;\n  }\n  function reset() {\n    sim.running = false;\n    sim.paused = false;\n    sim.t = 0;\n    sim.collided = false;\n    sim.x1 = -2;\n    sim.x2 = 2;\n    sim.v1 = params.v1i;\n    sim.v2 = params.v2i;\n    sim.v1f = null;\n    sim.v2f = null;\n    sim.Pi = null;\n    sim.Pf = null;\n    sim.KEi = null;\n    sim.KEf = null;\n    sim.lossPercent = null;\n  }\n  return { sim, step, start, stop, togglePause, reset };\n}\n",
+      "start": 1783196195472,
+      "end": 1783196195563,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/modules/physics/experiments/collision/useCollisionPhysics.ts"
+        ],
+        "sourcesContent": [
+          "import { reactive } from 'vue'\nimport { useAnomalyWatcher } from '../../../../composables/experiment/useAnomalyWatcher'\nimport {\n  detectCollision,\n  separateBalls,\n  computeFinalVelocities,\n  computeMomentum,\n  computeTotalKE,\n  computeEnergyLoss,\n} from '../../../../composables/collision/collisionUtils'\n\nexport interface CollisionParams {\n  m1: number\n  m2: number\n  v1i: number\n  v2i: number\n  r1: number\n  r2: number\n  e: number\n}\n\nexport interface CollisionState {\n  running: boolean\n  paused: boolean\n  t: number\n  collided: boolean\n  x1: number\n  x2: number\n  v1: number\n  v2: number\n  v1f: number | null\n  v2f: number | null\n  Pi: number | null\n  Pf: number | null\n  KEi: number | null\n  KEf: number | null\n  lossPercent: number | null\n}\n\nexport function useCollisionPhysics(params: CollisionParams) {\n  const watcher = useAnomalyWatcher('collision')\n  const sim = reactive<CollisionState>({\n    running: false,\n    paused: false,\n    t: 0,\n    collided: false,\n    x1: -2,\n    x2: 2,\n    v1: params.v1i,\n    v2: params.v2i,\n    v1f: null,\n    v2f: null,\n    Pi: null,\n    Pf: null,\n    KEi: null,\n    KEf: null,\n    lossPercent: null,\n  })\n\n  function step(dt: number, speed: number = 1) {\n    if (!sim.running || sim.paused) return\n    const sDt = dt * speed\n    sim.t += sDt\n    sim.x1 += sim.v1 * sDt\n    sim.x2 += sim.v2 * sDt\n\n    if (!sim.collided && detectCollision(sim.x1, sim.x2, params.r1, params.r2)) {\n      const sep = separateBalls(sim.x1, sim.x2, params.r1, params.r2)\n      sim.x1 = sep.x1\n      sim.x2 = sep.x2\n\n      const { v1f, v2f } = computeFinalVelocities(params.m1, params.m2, sim.v1, sim.v2, params.e)\n      sim.v1f = v1f\n      sim.v2f = v2f\n      sim.v1 = v1f\n      sim.v2 = v2f\n      sim.collided = true\n\n      sim.Pi = computeMomentum(params.m1, params.v1i) + computeMomentum(params.m2, params.v2i)\n      sim.Pf = computeMomentum(params.m1, v1f) + computeMomentum(params.m2, v2f)\n      sim.KEi = computeTotalKE(params.m1, params.v1i, params.m2, params.v2i)\n      sim.KEf = computeTotalKE(params.m1, v1f, params.m2, v2f)\n      sim.lossPercent = computeEnergyLoss(sim.KEi, sim.KEf)\n    }\n\n    watcher.inspect({\n      t: sim.t,\n      x1: sim.x1, x2: sim.x2,\n      v1: sim.v1, v2: sim.v2,\n      KEi: sim.KEi, KEf: sim.KEf,\n      lossPercent: sim.lossPercent,\n      mass: params.m1 + params.m2,\n    })\n  }\n\n  function start() {\n    sim.running = true\n    sim.paused = false\n    sim.t = 0\n    sim.collided = false\n    sim.x1 = -2\n    sim.x2 = 2\n    sim.v1 = params.v1i\n    sim.v2 = params.v2i\n    sim.v1f = null\n    sim.v2f = null\n    sim.Pi = null\n    sim.Pf = null\n    sim.KEi = null\n    sim.KEf = null\n    sim.lossPercent = null\n  }\n\n  function stop() {\n    sim.running = false\n  }\n\n  function togglePause() {\n    sim.paused = !sim.paused\n  }\n\n  function reset() {\n    sim.running = false\n    sim.paused = false\n    sim.t = 0\n    sim.collided = false\n    sim.x1 = -2\n    sim.x2 = 2\n    sim.v1 = params.v1i\n    sim.v2 = params.v2i\n    sim.v1f = null\n    sim.v2f = null\n    sim.Pi = null\n    sim.Pf = null\n    sim.KEi = null\n    sim.KEf = null\n    sim.lossPercent = null\n  }\n\n  return { sim, step, start, stop, togglePause, reset }\n}\n"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195563,
+      "end": 1783196195563,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195564,
+      "end": 1783196195564,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195564,
+      "end": 1783196195564,
+      "order": "normal"
+    }
+  ]
+}

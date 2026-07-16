@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/pages/language.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"lang-page\" }\nconst _hoisted_2 = { class: \"lang-card\" }\nconst _hoisted_3 = { class: \"title\" }\nconst _hoisted_4 = { class: \"options\" }\nconst _hoisted_5 = [\"onClick\"]\nconst _hoisted_6 = { class: \"flag\" }\nconst _hoisted_7 = { class: \"name\" }\n\nimport { useRouter } from 'vue-router'\nimport { useI18nStore } from '../stores/i18n.store'\nimport { localeNames } from '../locales'\nimport type { Locale } from '../locales/types'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'language',\n  setup(__props) {\n\nconst router = useRouter()\nconst i18n = useI18nStore()\n\nasync function pick(lang: Locale) {\n  await i18n.setLocale(lang)\n  router.replace('/')\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"h1\", _hoisted_3, _toDisplayString(_unref(i18n).t('landing.chooseLang', 'Choose Language')), 1),\n      _createElementVNode(\"div\", _hoisted_4, [\n        (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(_unref(i18n).supported, (loc) => {\n          return (_openBlock(), _createElementBlock(\"button\", {\n            key: loc,\n            class: \"option-btn\",\n            onClick: ($event: any) => (pick(loc))\n          }, [\n            _createElementVNode(\"span\", _hoisted_6, _toDisplayString(loc === 'ar' ? '🇸🇦' : loc === 'en' ? '🇬🇧' : '🇪🇸'), 1),\n            _createElementVNode(\"span\", _hoisted_7, _toDisplayString(_unref(localeNames)[loc]), 1)\n          ], 8, _hoisted_5))\n        }), 128))\n      ])\n    ])\n  ]))\n}\n}\n\n})",
+      "start": 1783196192419,
+      "end": 1783196192419
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196192419,
+      "end": 1783196192419,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\";\nconst _hoisted_1 = { class: \"lang-page\" };\nconst _hoisted_2 = { class: \"lang-card\" };\nconst _hoisted_3 = { class: \"title\" };\nconst _hoisted_4 = { class: \"options\" };\nconst _hoisted_5 = [\"onClick\"];\nconst _hoisted_6 = { class: \"flag\" };\nconst _hoisted_7 = { class: \"name\" };\nimport { useRouter } from \"vue-router\";\nimport { useI18nStore } from \"../stores/i18n.store\";\nimport { localeNames } from \"../locales\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"language\",\n  setup(__props) {\n    const router = useRouter();\n    const i18n = useI18nStore();\n    async function pick(lang) {\n      await i18n.setLocale(lang);\n      router.replace(\"/\");\n    }\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _createElementVNode(\"h1\", _hoisted_3, _toDisplayString(_unref(i18n).t(\"landing.chooseLang\", \"Choose Language\")), 1),\n          _createElementVNode(\"div\", _hoisted_4, [\n            (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(_unref(i18n).supported, (loc) => {\n              return _openBlock(), _createElementBlock(\"button\", {\n                key: loc,\n                class: \"option-btn\",\n                onClick: ($event) => pick(loc)\n              }, [\n                _createElementVNode(\"span\", _hoisted_6, _toDisplayString(loc === \"ar\" ? \"🇸🇦\" : loc === \"en\" ? \"🇬🇧\" : \"🇪🇸\"), 1),\n                _createElementVNode(\"span\", _hoisted_7, _toDisplayString(_unref(localeNames)[loc]), 1)\n              ], 8, _hoisted_5);\n            }), 128))\n          ])\n        ])\n      ]);\n    };\n  }\n});\n",
+      "start": 1783196192419,
+      "end": 1783196192464,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/pages/language.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nconst _hoisted_1 = { class: \"lang-page\" }\nconst _hoisted_2 = { class: \"lang-card\" }\nconst _hoisted_3 = { class: \"title\" }\nconst _hoisted_4 = { class: \"options\" }\nconst _hoisted_5 = [\"onClick\"]\nconst _hoisted_6 = { class: \"flag\" }\nconst _hoisted_7 = { class: \"name\" }\n\nimport { useRouter } from 'vue-router'\nimport { useI18nStore } from '../stores/i18n.store'\nimport { localeNames } from '../locales'\nimport type { Locale } from '../locales/types'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'language',\n  setup(__props) {\n\nconst router = useRouter()\nconst i18n = useI18nStore()\n\nasync function pick(lang: Locale) {\n  await i18n.setLocale(lang)\n  router.replace('/')\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _createElementVNode(\"h1\", _hoisted_3, _toDisplayString(_unref(i18n).t('landing.chooseLang', 'Choose Language')), 1),\n      _createElementVNode(\"div\", _hoisted_4, [\n        (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(_unref(i18n).supported, (loc) => {\n          return (_openBlock(), _createElementBlock(\"button\", {\n            key: loc,\n            class: \"option-btn\",\n            onClick: ($event: any) => (pick(loc))\n          }, [\n            _createElementVNode(\"span\", _hoisted_6, _toDisplayString(loc === 'ar' ? '🇸🇦' : loc === 'en' ? '🇬🇧' : '🇪🇸'), 1),\n            _createElementVNode(\"span\", _hoisted_7, _toDisplayString(_unref(localeNames)[loc]), 1)\n          ], 8, _hoisted_5))\n        }), 128))\n      ])\n    ])\n  ]))\n}\n}\n\n})"
+        ],
+        "mappings": "AAAA,SAAS,mBAAmB,wBAAwB;AACpD,SAAS,SAAS,QAAQ,mBAAmB,kBAAkB,sBAAsB,qBAAqB,cAAc,aAAa,YAAY,WAAW,aAAa,YAAY,sBAAsB,2BAA2B;AAEtO,MAAM,aAAa,EAAE,OAAO,YAAY;AACxC,MAAM,aAAa,EAAE,OAAO,YAAY;AACxC,MAAM,aAAa,EAAE,OAAO,QAAQ;AACpC,MAAM,aAAa,EAAE,OAAO,UAAU;AACtC,MAAM,aAAa,CAAC,SAAS;AAC7B,MAAM,aAAa,EAAE,OAAO,OAAO;AACnC,MAAM,aAAa,EAAE,OAAO,OAAO;AAEnC,SAAS,iBAAiB;AAC1B,SAAS,oBAAoB;AAC7B,SAAS,mBAAmB;AAI5B,eAA4B,iCAAiB;AAAA,EAC3C,QAAQ;AAAA,EACR,MAAM,SAAS;AAEjB,UAAM,SAAS,UAAU;AACzB,UAAM,OAAO,aAAa;AAE1B,mBAAe,KAAK,MAAc;AAChC,YAAM,KAAK,UAAU,IAAI;AACzB,aAAO,QAAQ,GAAG;AAAA,IACpB;AAEA,WAAO,CAAC,MAAU,WAAgB;AAChC,aAAQ,WAAW,GAAG,oBAAoB,OAAO,YAAY;AAAA,QAC3D,oBAAoB,OAAO,YAAY;AAAA,UACrC,oBAAoB,MAAM,YAAY,iBAAiB,OAAO,IAAI,EAAE,EAAE,sBAAsB,iBAAiB,CAAC,GAAG,CAAC;AAAA,UAClH,oBAAoB,OAAO,YAAY;AAAA,aACpC,WAAW,IAAI,GAAG,oBAAoB,WAAW,MAAM,YAAY,OAAO,IAAI,EAAE,WAAW,CAAC,QAAQ;AACnG,qBAAQ,WAAW,GAAG,oBAAoB,UAAU;AAAA,gBAClD,KAAK;AAAA,gBACL,OAAO;AAAA,gBACP,SAAS,CAAC,WAAiB,KAAK,GAAG;AAAA,cACrC,GAAG;AAAA,gBACD,oBAAoB,QAAQ,YAAY,iBAAiB,QAAQ,OAAO,SAAS,QAAQ,OAAO,SAAS,MAAM,GAAG,CAAC;AAAA,gBACnH,oBAAoB,QAAQ,YAAY,iBAAiB,OAAO,WAAW,EAAE,GAAG,CAAC,GAAG,CAAC;AAAA,cACvF,GAAG,GAAG,UAAU;AAAA,YAClB,CAAC,GAAG,GAAG;AAAA,UACT,CAAC;AAAA,QACH,CAAC;AAAA,MACH,CAAC;AAAA,IACH;AAAA,EACA;AAEA,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196192464,
+      "end": 1783196192464,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196192464,
+      "end": 1783196192464,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196192464,
+      "end": 1783196192464,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196192464,
+      "end": 1783196192464,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196192465,
+      "end": 1783196192465,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196192465,
+      "end": 1783196192465,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196192465,
+      "end": 1783196192465,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196192465,
+      "end": 1783196192465,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196192465,
+      "end": 1783196192465,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196192465,
+      "end": 1783196192465,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196192465,
+      "end": 1783196192465,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196192465,
+      "end": 1783196192465,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196192465,
+      "end": 1783196192465,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/panels/ThermalExpansionChartPanel.vue",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<script setup lang=\"ts\">\nimport { computed } from 'vue'\nimport { useI18n } from '../../../../composables/useI18n'\nimport type { ThermalExpansionTrial } from '../../../../composables/thermal-expansion/useThermalExpansionTrials'\nconst { t } = useI18n()\nconst props = defineProps<{ trials: ThermalExpansionTrial[] }>()\n\nconst pts = computed(() => props.trials.map(t => ({ x: t.t1, y: t.deltaL * 1000, label: `#${t.id}` })))\nconst xMin = computed(() => pts.value.length ? Math.min(...pts.value.map(p => p.x)) - 10 : 50)\nconst xMax = computed(() => pts.value.length ? Math.max(...pts.value.map(p => p.x)) + 10 : 120)\nconst yMin = computed(() => pts.value.length ? Math.min(...pts.value.map(p => p.y)) - 0.05 : 0)\nconst yMax = computed(() => pts.value.length ? Math.max(...pts.value.map(p => p.y)) + 0.05 : 0.5)\n\nfunction mapX(v: number, W: number) { return 40 + (v - xMin.value) / (xMax.value - xMin.value) * (W - 60) }\nfunction mapY(v: number, H: number) { return H - 30 - (v - yMin.value) / (yMax.value - yMin.value) * (H - 50) }\n</script>\n<template>\n  <div class=\"chart-panel\">\n    <svg v-if=\"trials.length >= 2\" viewBox=\"0 0 300 200\" style=\"width:100%;height:200px;\">\n      <text x=\"150\" y=\"12\" text-anchor=\"middle\" fill=\"#8B95A5\" font-size=\"10\">ΔL vs t₁</text>\n      <line x1=\"30\" y1=\"180\" x2=\"280\" y2=\"180\" stroke=\"#2D3645\" stroke-width=\"1\" />\n      <line x1=\"30\" y1=\"20\" x2=\"30\" y2=\"180\" stroke=\"#2D3645\" stroke-width=\"1\" />\n      <text x=\"150\" y=\"198\" text-anchor=\"middle\" fill=\"#64748b\" font-size=\"9\">t₁ (°C)</text>\n      <text x=\"8\" y=\"100\" text-anchor=\"middle\" fill=\"#64748b\" font-size=\"9\" transform=\"rotate(-90, 8, 100)\">ΔL (mm)</text>\n      <circle v-for=\"p in pts\" :key=\"p.label\" :cx=\"mapX(p.x, 300)\" :cy=\"mapY(p.y, 200)\" r=\"4\" fill=\"#5B8DB8\" />\n    </svg>\n    <p v-else class=\"empty\">{{ t('experiments.chartNeedTrials') }}</p>\n  </div>\n</template>\n<style scoped>\n.chart-panel { display:flex; align-items:center; justify-content:center; }\n.empty { color:#64748b; font-size:.75rem; text-align:center; }\n</style>\n",
+      "start": 1783196194987,
+      "end": 1783196195251,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196195251,
+      "end": 1783196195251,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1783196195251,
+      "end": 1783196195251,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196195251,
+      "end": 1783196195251,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196195251,
+      "end": 1783196195251,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "result": "import _sfc_main from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/panels/ThermalExpansionChartPanel.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/panels/ThermalExpansionChartPanel.vue?vue&type=script&setup=true&lang.ts\";\nimport \"C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/thermal-expansion/panels/ThermalExpansionChartPanel.vue?vue&type=style&index=0&scoped=155bb6fa&lang.css\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-155bb6fa\"]]);\n",
+      "start": 1783196195251,
+      "end": 1783196195568,
+      "order": "normal-normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196195568,
+      "end": 1783196195568,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196195568,
+      "end": 1783196195568,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196195568,
+      "end": 1783196195568,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196195568,
+      "end": 1783196195568,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196195568,
+      "end": 1783196195568,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196195568,
+      "end": 1783196195568,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196195568,
+      "end": 1783196195568,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196195568,
+      "end": 1783196195568,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196195568,
+      "end": 1783196195569,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196195569,
+      "end": 1783196195569,
+      "order": "normal"
+    }
+  ]
+}

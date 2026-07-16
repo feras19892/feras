@@ -89,7 +89,7 @@ export async function runStartupDiagnostics(): Promise<DiagnosticReport> {
     if (!value && required) {
       logIssue(issues, 'error', 'env', `Missing required env: ${key} (${name})`, `Add ${key} to .env`)
     } else if (!value) {
-      logIssue(issues, 'info', 'env', `${key} using default: http://localhost:3000`)
+      logIssue(issues, 'info', 'env', `${key} using default: ${import.meta.env.PROD ? 'relative' : 'http://localhost:3000'}`)
     } else {
       logIssue(issues, 'info', 'env', `${key} = ${value}`)
     }

@@ -35,7 +35,7 @@ export function createNewComputeds2(
     const res = components.find(c => c.type === 'resistor')
     if (!batt || !res) return null
     const EMF = batt.value, r = batt._internalR ?? 0, R = res.value
-    const closed = sw ? sw.value === 1 : true
+    const closed = sw ? (sw._closed ?? true) : true
     if (closed) {
       const I = EMF / (R + r), Vt = EMF - I * r
       return { EMF, r, R, I, Vt, closed: true }

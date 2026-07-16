@@ -1,0 +1,113 @@
+{
+  "resolvedId": "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/EquationDetail.vue?vue&type=script&setup=true&lang.ts",
+  "transforms": [
+    {
+      "name": "vite:vue",
+      "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createTextVNode as _createTextVNode, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = {\n  key: 0,\n  class: \"eq-detail\"\n}\nconst _hoisted_2 = { class: \"formula-box\" }\nconst _hoisted_3 = { class: \"section-label\" }\nconst _hoisted_4 = { class: \"formula\" }\nconst _hoisted_5 = { class: \"vars-area\" }\nconst _hoisted_6 = { class: \"section-label\" }\nconst _hoisted_7 = { class: \"vars-grid\" }\nconst _hoisted_8 = { class: \"sym\" }\nconst _hoisted_9 = [\"value\", \"onInput\"]\nconst _hoisted_10 = { class: \"solve-area\" }\nconst _hoisted_11 = { class: \"section-label\" }\nconst _hoisted_12 = { class: \"solve-row\" }\nconst _hoisted_13 = [\"value\"]\nconst _hoisted_14 = [\"value\"]\nconst _hoisted_15 = {\n  key: 0,\n  class: \"result\"\n}\nconst _hoisted_16 = { class: \"result-label\" }\nconst _hoisted_17 = { class: \"result-value\" }\n\nimport { useI18n } from '../../../composables/useI18n'\nimport type { AnalysisEquation } from '../../../types/physics'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'EquationDetail',\n  props: {\n    equation: {},\n    varValues: {},\n    targetVar: {},\n    result: {}\n  },\n  emits: [\"update:varValues\", \"update:targetVar\", \"solve\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst props = __props\n\nconst emit = __emit\n\nconst { t } = useI18n()\n\nfunction updateVar(symbol: string, value: number) {\n  emit('update:varValues', { ...props.varValues, [symbol]: value })\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (__props.equation)\n    ? (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _createElementVNode(\"div\", _hoisted_3, _toDisplayString(_unref(t)('analysis.formula')), 1),\n          _createElementVNode(\"div\", _hoisted_4, _toDisplayString(__props.equation.formula), 1)\n        ]),\n        _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"divider\" }, null, -1)),\n        _createElementVNode(\"div\", _hoisted_5, [\n          _createElementVNode(\"div\", _hoisted_6, _toDisplayString(_unref(t)('analysis.variables')), 1),\n          _createElementVNode(\"div\", _hoisted_7, [\n            (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.equation.variables, (v) => {\n              return (_openBlock(), _createElementBlock(\"div\", {\n                key: v.symbol,\n                class: \"var-item\"\n              }, [\n                _createElementVNode(\"label\", null, [\n                  _createTextVNode(_toDisplayString(v.label), 1),\n                  _createElementVNode(\"span\", _hoisted_8, \" (\" + _toDisplayString(v.symbol) + \")\", 1)\n                ]),\n                _createElementVNode(\"input\", {\n                  type: \"number\",\n                  step: \"any\",\n                  value: __props.varValues[v.symbol] ?? 0,\n                  onInput: ($event: any) => (updateVar(v.symbol, +($event.target as HTMLInputElement).value))\n                }, null, 40, _hoisted_9)\n              ]))\n            }), 128))\n          ])\n        ]),\n        _cache[3] || (_cache[3] = _createElementVNode(\"div\", { class: \"divider\" }, null, -1)),\n        _createElementVNode(\"div\", _hoisted_10, [\n          _createElementVNode(\"div\", _hoisted_11, _toDisplayString(_unref(t)('analysis.solveUnknown')), 1),\n          _createElementVNode(\"div\", _hoisted_12, [\n            _createElementVNode(\"select\", {\n              value: __props.targetVar,\n              onChange: _cache[0] || (_cache[0] = ($event: any) => (emit('update:targetVar', ($event.target as HTMLSelectElement).value)))\n            }, [\n              (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.equation.solveFor, (s) => {\n                return (_openBlock(), _createElementBlock(\"option\", {\n                  key: s,\n                  value: s\n                }, _toDisplayString(s), 9, _hoisted_14))\n              }), 128))\n            ], 40, _hoisted_13),\n            _createElementVNode(\"button\", {\n              class: \"btn-solve\",\n              onClick: _cache[1] || (_cache[1] = ($event: any) => (emit('solve')))\n            }, _toDisplayString(_unref(t)('analysis.calc')), 1)\n          ]),\n          (__props.result)\n            ? (_openBlock(), _createElementBlock(\"div\", _hoisted_15, [\n                _createElementVNode(\"div\", _hoisted_16, _toDisplayString(_unref(t)('analysis.resultLabel')), 1),\n                _createElementVNode(\"div\", _hoisted_17, _toDisplayString(__props.result), 1)\n              ]))\n            : _createCommentVNode(\"\", true)\n        ])\n      ]))\n    : _createCommentVNode(\"\", true)\n}\n}\n\n})",
+      "start": 1783196194831,
+      "end": 1783196194831
+    },
+    {
+      "name": "vite:css",
+      "start": 1783196194831,
+      "end": 1783196194831,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createTextVNode as _createTextVNode, createCommentVNode as _createCommentVNode } from \"vue\";\nconst _hoisted_1 = {\n  key: 0,\n  class: \"eq-detail\"\n};\nconst _hoisted_2 = { class: \"formula-box\" };\nconst _hoisted_3 = { class: \"section-label\" };\nconst _hoisted_4 = { class: \"formula\" };\nconst _hoisted_5 = { class: \"vars-area\" };\nconst _hoisted_6 = { class: \"section-label\" };\nconst _hoisted_7 = { class: \"vars-grid\" };\nconst _hoisted_8 = { class: \"sym\" };\nconst _hoisted_9 = [\"value\", \"onInput\"];\nconst _hoisted_10 = { class: \"solve-area\" };\nconst _hoisted_11 = { class: \"section-label\" };\nconst _hoisted_12 = { class: \"solve-row\" };\nconst _hoisted_13 = [\"value\"];\nconst _hoisted_14 = [\"value\"];\nconst _hoisted_15 = {\n  key: 0,\n  class: \"result\"\n};\nconst _hoisted_16 = { class: \"result-label\" };\nconst _hoisted_17 = { class: \"result-value\" };\nimport { useI18n } from \"../../../composables/useI18n\";\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"EquationDetail\",\n  props: {\n    equation: {},\n    varValues: {},\n    targetVar: {},\n    result: {}\n  },\n  emits: [\"update:varValues\", \"update:targetVar\", \"solve\"],\n  setup(__props, { emit: __emit }) {\n    const props = __props;\n    const emit = __emit;\n    const { t } = useI18n();\n    function updateVar(symbol, value) {\n      emit(\"update:varValues\", { ...props.varValues, [symbol]: value });\n    }\n    return (_ctx, _cache) => {\n      return __props.equation ? (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _createElementVNode(\"div\", _hoisted_3, _toDisplayString(_unref(t)(\"analysis.formula\")), 1),\n          _createElementVNode(\"div\", _hoisted_4, _toDisplayString(__props.equation.formula), 1)\n        ]),\n        _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"divider\" }, null, -1)),\n        _createElementVNode(\"div\", _hoisted_5, [\n          _createElementVNode(\"div\", _hoisted_6, _toDisplayString(_unref(t)(\"analysis.variables\")), 1),\n          _createElementVNode(\"div\", _hoisted_7, [\n            (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.equation.variables, (v) => {\n              return _openBlock(), _createElementBlock(\"div\", {\n                key: v.symbol,\n                class: \"var-item\"\n              }, [\n                _createElementVNode(\"label\", null, [\n                  _createTextVNode(_toDisplayString(v.label), 1),\n                  _createElementVNode(\"span\", _hoisted_8, \" (\" + _toDisplayString(v.symbol) + \")\", 1)\n                ]),\n                _createElementVNode(\"input\", {\n                  type: \"number\",\n                  step: \"any\",\n                  value: __props.varValues[v.symbol] ?? 0,\n                  onInput: ($event) => updateVar(v.symbol, +$event.target.value)\n                }, null, 40, _hoisted_9)\n              ]);\n            }), 128))\n          ])\n        ]),\n        _cache[3] || (_cache[3] = _createElementVNode(\"div\", { class: \"divider\" }, null, -1)),\n        _createElementVNode(\"div\", _hoisted_10, [\n          _createElementVNode(\"div\", _hoisted_11, _toDisplayString(_unref(t)(\"analysis.solveUnknown\")), 1),\n          _createElementVNode(\"div\", _hoisted_12, [\n            _createElementVNode(\"select\", {\n              value: __props.targetVar,\n              onChange: _cache[0] || (_cache[0] = ($event) => emit(\"update:targetVar\", $event.target.value))\n            }, [\n              (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.equation.solveFor, (s) => {\n                return _openBlock(), _createElementBlock(\"option\", {\n                  key: s,\n                  value: s\n                }, _toDisplayString(s), 9, _hoisted_14);\n              }), 128))\n            ], 40, _hoisted_13),\n            _createElementVNode(\"button\", {\n              class: \"btn-solve\",\n              onClick: _cache[1] || (_cache[1] = ($event) => emit(\"solve\"))\n            }, _toDisplayString(_unref(t)(\"analysis.calc\")), 1)\n          ]),\n          __props.result ? (_openBlock(), _createElementBlock(\"div\", _hoisted_15, [\n            _createElementVNode(\"div\", _hoisted_16, _toDisplayString(_unref(t)(\"analysis.resultLabel\")), 1),\n            _createElementVNode(\"div\", _hoisted_17, _toDisplayString(__props.result), 1)\n          ])) : _createCommentVNode(\"\", true)\n        ])\n      ])) : _createCommentVNode(\"\", true);\n    };\n  }\n});\n",
+      "start": 1783196194831,
+      "end": 1783196194969,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "C:/Users/feras/Desktop/feras/apps/web/src/components/experiment/analysis-calc/EquationDetail.vue?vue&type=script&setup=true&lang.ts"
+        ],
+        "sourcesContent": [
+          "import { defineComponent as _defineComponent } from 'vue'\nimport { unref as _unref, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createTextVNode as _createTextVNode, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = {\n  key: 0,\n  class: \"eq-detail\"\n}\nconst _hoisted_2 = { class: \"formula-box\" }\nconst _hoisted_3 = { class: \"section-label\" }\nconst _hoisted_4 = { class: \"formula\" }\nconst _hoisted_5 = { class: \"vars-area\" }\nconst _hoisted_6 = { class: \"section-label\" }\nconst _hoisted_7 = { class: \"vars-grid\" }\nconst _hoisted_8 = { class: \"sym\" }\nconst _hoisted_9 = [\"value\", \"onInput\"]\nconst _hoisted_10 = { class: \"solve-area\" }\nconst _hoisted_11 = { class: \"section-label\" }\nconst _hoisted_12 = { class: \"solve-row\" }\nconst _hoisted_13 = [\"value\"]\nconst _hoisted_14 = [\"value\"]\nconst _hoisted_15 = {\n  key: 0,\n  class: \"result\"\n}\nconst _hoisted_16 = { class: \"result-label\" }\nconst _hoisted_17 = { class: \"result-value\" }\n\nimport { useI18n } from '../../../composables/useI18n'\nimport type { AnalysisEquation } from '../../../types/physics'\n\n\nexport default /*@__PURE__*/_defineComponent({\n  __name: 'EquationDetail',\n  props: {\n    equation: {},\n    varValues: {},\n    targetVar: {},\n    result: {}\n  },\n  emits: [\"update:varValues\", \"update:targetVar\", \"solve\"],\n  setup(__props: any, { emit: __emit }) {\n\nconst props = __props\n\nconst emit = __emit\n\nconst { t } = useI18n()\n\nfunction updateVar(symbol: string, value: number) {\n  emit('update:varValues', { ...props.varValues, [symbol]: value })\n}\n\nreturn (_ctx: any,_cache: any) => {\n  return (__props.equation)\n    ? (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _createElementVNode(\"div\", _hoisted_3, _toDisplayString(_unref(t)('analysis.formula')), 1),\n          _createElementVNode(\"div\", _hoisted_4, _toDisplayString(__props.equation.formula), 1)\n        ]),\n        _cache[2] || (_cache[2] = _createElementVNode(\"div\", { class: \"divider\" }, null, -1)),\n        _createElementVNode(\"div\", _hoisted_5, [\n          _createElementVNode(\"div\", _hoisted_6, _toDisplayString(_unref(t)('analysis.variables')), 1),\n          _createElementVNode(\"div\", _hoisted_7, [\n            (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.equation.variables, (v) => {\n              return (_openBlock(), _createElementBlock(\"div\", {\n                key: v.symbol,\n                class: \"var-item\"\n              }, [\n                _createElementVNode(\"label\", null, [\n                  _createTextVNode(_toDisplayString(v.label), 1),\n                  _createElementVNode(\"span\", _hoisted_8, \" (\" + _toDisplayString(v.symbol) + \")\", 1)\n                ]),\n                _createElementVNode(\"input\", {\n                  type: \"number\",\n                  step: \"any\",\n                  value: __props.varValues[v.symbol] ?? 0,\n                  onInput: ($event: any) => (updateVar(v.symbol, +($event.target as HTMLInputElement).value))\n                }, null, 40, _hoisted_9)\n              ]))\n            }), 128))\n          ])\n        ]),\n        _cache[3] || (_cache[3] = _createElementVNode(\"div\", { class: \"divider\" }, null, -1)),\n        _createElementVNode(\"div\", _hoisted_10, [\n          _createElementVNode(\"div\", _hoisted_11, _toDisplayString(_unref(t)('analysis.solveUnknown')), 1),\n          _createElementVNode(\"div\", _hoisted_12, [\n            _createElementVNode(\"select\", {\n              value: __props.targetVar,\n              onChange: _cache[0] || (_cache[0] = ($event: any) => (emit('update:targetVar', ($event.target as HTMLSelectElement).value)))\n            }, [\n              (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(__props.equation.solveFor, (s) => {\n                return (_openBlock(), _createElementBlock(\"option\", {\n                  key: s,\n                  value: s\n                }, _toDisplayString(s), 9, _hoisted_14))\n              }), 128))\n            ], 40, _hoisted_13),\n            _createElementVNode(\"button\", {\n              class: \"btn-solve\",\n              onClick: _cache[1] || (_cache[1] = ($event: any) => (emit('solve')))\n            }, _toDisplayString(_unref(t)('analysis.calc')), 1)\n          ]),\n          (__props.result)\n            ? (_openBlock(), _createElementBlock(\"div\", _hoisted_15, [\n                _createElementVNode(\"div\", _hoisted_16, _toDisplayString(_unref(t)('analysis.resultLabel')), 1),\n                _createElementVNode(\"div\", _hoisted_17, _toDisplayString(__props.result), 1)\n              ]))\n            : _createCommentVNode(\"\", true)\n        ])\n      ]))\n    : _createCommentVNode(\"\", true)\n}\n}\n\n})"
+        ],
+        "mappings": "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",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1783196194969,
+      "end": 1783196194969,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1783196194969,
+      "end": 1783196194969,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1783196194969,
+      "end": 1783196194969,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1783196194969,
+      "end": 1783196194969,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1783196194969,
+      "end": 1783196194969,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1783196194969,
+      "end": 1783196194969,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1783196194969,
+      "end": 1783196194969,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1783196194969,
+      "end": 1783196194969,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1783196194969,
+      "end": 1783196194969,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1783196194969,
+      "end": 1783196194969,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1783196194969,
+      "end": 1783196194969,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1783196194970,
+      "end": 1783196194970,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1783196194970,
+      "end": 1783196194970,
+      "order": "normal"
+    }
+  ]
+}

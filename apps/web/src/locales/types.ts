@@ -10,5 +10,7 @@ export interface TranslationDict {
   prism?: Record<string, unknown>
   nav?: Record<string, unknown>
   common?: Record<string, unknown>
+  math?: Record<string, unknown>
+  lens?: Record<string, unknown>
   [key: string]: Record<string, unknown> | undefined
 }

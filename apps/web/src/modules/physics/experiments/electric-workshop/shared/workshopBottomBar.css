@@ -1,0 +1,59 @@
+﻿.bb-run-btn {
+  padding: 0.3rem 0.8rem;
+  background: #166534;
+  border: 1px solid #22c55e;
+  border-radius: 0.3rem;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+.bb-run-btn.active {
+  background: #991b1b;
+  border-color: #ef4444;
+}
+.bb-run-btn:hover { opacity: 0.85; }
+.bb-clear-btn {
+  padding: 0.3rem 0.7rem;
+  background: linear-gradient(135deg, #dc2626, #991b1b);
+  border: 1px solid #ef4444;
+  border-radius: 0.3rem;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  box-shadow: 0 2px 6px rgba(239,68,68,0.3);
+}
+.bb-clear-btn:hover {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  box-shadow: 0 4px 10px rgba(239,68,68,0.5);
+}
+.tb-render-toggle {
+  padding: 0.25rem 0.55rem;
+  background: #1e293b;
+  border: 1px solid rgba(99,102,241,0.3);
+  border-radius: 0.4rem;
+  color: #a5b4fc;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.tb-render-toggle:hover { background: #312e81; border-color: rgba(99,102,241,0.6); }
+.bb-rd {
+  font-size: 0.7rem;
+  color: #7dd3fc;
+  background: rgba(14,165,233,0.1);
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.2rem;
+  white-space: nowrap;
+}
+.bb-error {
+  font-size: 0.7rem;
+  color: #ef4444;
+  white-space: nowrap;
+}
+/* Experiments dropdown */

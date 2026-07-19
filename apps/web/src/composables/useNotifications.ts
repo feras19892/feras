@@ -17,8 +17,8 @@ export function useNotifications() {
     try {
       const res = await getNotifications();
       if (res.success) notifications.value = res.notifications;
-    } catch (err) {
-      if (!isAuthError(err)) console.error('load notifications failed:', err);
+    } catch {
+      // silently ignore when API is unavailable
     }
     loading.value = false;
   }
@@ -27,8 +27,8 @@ export function useNotifications() {
     try {
       const res = await getUnreadCount();
       if (res.success) unreadCount.value = res.count;
-    } catch (err) {
-      if (!isAuthError(err)) console.error('refresh unread count failed:', err);
+    } catch {
+      // silently ignore when API is unavailable
     }
   }
 

@@ -146,4 +146,5 @@ export const analysisEn = {
   enterValidValues: 'Enter valid values',
   enterValidKnownValues: 'Enter valid values for known variables',
   calculateFromEquation: 'Calculate {missing} from equation {formula}',
+  regressionTotalMass: 'Total mass (m₁ + m₂)',
 } as const

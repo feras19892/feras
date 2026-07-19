@@ -1,0 +1,130 @@
+﻿/* Resistor Color Code Tutorial */
+.rt-current-preview {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.rt-current-preview h4 {
+  color: #fcd34d;
+  margin: 0 0 0.8rem;
+  font-size: 1rem;
+}
+.rt-resistor-display {
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem 0;
+}
+.rt-resistor-body {
+  display: flex;
+  align-items: center;
+  width: 200px;
+  height: 40px;
+  background: linear-gradient(180deg, #e8dcc8, #d4c4a8, #b8a888);
+  border: 2px solid #8a7a5a;
+  border-radius: 6px;
+  padding: 0 10px;
+  gap: 4px;
+}
+.rt-band {
+  width: 14px;
+  height: 100%;
+  flex-shrink: 0;
+}
+.rt-explanation {
+  font-size: 0.85rem;
+  color: #a5f3fc;
+  margin: 0.5rem 0 0;
+  font-family: 'Courier New', monospace;
+}
+.rt-section-title {
+  color: #7dd3fc;
+  font-size: 0.95rem;
+  margin: 1.2rem 0 0.6rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.rt-color-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+.rt-color-table th {
+  background: rgba(59,130,246,0.15);
+  color: #93c5fd;
+  padding: 0.4rem 0.6rem;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.rt-color-table td {
+  padding: 0.35rem 0.6rem;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.06);
+  color: #cbd5e1;
+}
+.rt-color-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.rt-color-swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.2);
+  flex-shrink: 0;
+}
+.rt-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+.rt-step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: #cbd5e1;
+}
+.rt-step-num {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(59,130,246,0.15);
+  border: 1px solid rgba(59,130,246,0.3);
+  border-radius: 50%;
+  color: #93c5fd;
+  font-size: 0.75rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.rt-example {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 0.4rem;
+  padding: 0.8rem;
+}
+.rt-example p {
+  margin: 0 0 0.5rem;
+  font-size: 0.82rem;
+  color: #cbd5e1;
+}
+.rt-example-resistor {
+  display: flex;
+  justify-content: center;
+  margin: 0.8rem 0;
+}
+.rt-example-calc {
+  font-family: 'Courier New', monospace;
+  font-size: 0.82rem;
+  color: #86efac;
+  background: rgba(34,197,94,0.08);
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.3rem;
+  margin: 0.5rem 0 0;
+}

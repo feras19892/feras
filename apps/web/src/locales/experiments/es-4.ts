@@ -1,3 +1,5 @@
+import { ew } from '../electricWorkshop'
+
 export const es4 = {
     speedMultiplier: 'Velocidad ×',
     speedMultiplierDesc: 'Acelerar/ralentizar la simulación (de 0.25× a 3×).',
@@ -1474,4 +1476,33 @@ export const es4 = {
     lhgF1: 'Fórmula de calor latente',
     lhgF2: 'Calcular calor latente',
 
+    airDensity: 'Densidad del Aire',
+    branchLabel: 'Rama',
+    calculateGFromSlope: 'Calcular g del Pendiente',
+    chemistryExperiment: 'Experimento de Química',
+    data: 'Datos',
+    errorPercent: 'Error %',
+    expBiotSavart: 'Ley de Biot-Savart',
+    expElectricWorkshop: 'Taller de Electricidad',
+    expFaraday: 'Ley de Faraday',
+    guide: 'Guía',
+    magnificationLabel: 'Aumento',
+    menuRunLab: 'Ejecutar Laboratorio',
+    needInelasticTrials: 'Se necesitan ensayos inelásticos',
+    needTwoInelasticTrials: 'Registra al menos 2 ensayos inelásticos',
+    needTwoSmoothTrials: 'Registra al menos 2 ensayos suaves',
+    noMeasurements: 'Sin mediciones',
+    noReadings: 'Sin lecturas',
+    parameters: 'Parámetros',
+    paused: 'Pausado',
+    recordAtLeastTwoInelastic: 'Registra al menos 2 ensayos inelásticos',
+    recordAtLeastTwoSmooth: 'Registra al menos 2 ensayos suaves',
+    resultantAngle: 'Ángulo Resultante',
+    resultantMag: 'Magnitud Resultante',
+    running: 'En ejecución',
+    scatterAccelerationVsSin: 'Aceleración vs sin(θ)',
+    scatterMomentumVsVf: 'Momento vs Velocidad Final',
+    statusIdle: 'Inactivo',
+
+    ew: ew.es,
 } as const

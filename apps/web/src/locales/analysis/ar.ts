@@ -146,4 +146,5 @@ export const analysisAr = {
   enterValidValues: 'أدخل قيم صحيحة',
   enterValidKnownValues: 'أدخل قيم صحيحة للمتغيرات المعروفة',
   calculateFromEquation: 'حساب {missing} من المعادلة {formula}',
+  regressionTotalMass: 'الكتلة الكلية (m₁ + m₂)',
 } as const

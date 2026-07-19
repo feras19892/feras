@@ -1254,7 +1254,7 @@ export const equations: Equation[] = [
         expectedValue: 10,
       },
     ],
-    relatedExperiments: [{ id: 'electric-lab', name: 'المختبر الكهربائي', route: '/physics/electricity/electric-lab', context: 'قانون أوم أساسي في الدوائر.' }],
+    relatedExperiments: [{ id: 'electric-workshop', name: 'ورشة الكهرباء', route: '/physics/electricity/electric-workshop', context: 'قانون أوم أساسي في الدوائر.' }],
     constants: [{ label: 'ρ0 النحاس', value: '1.68 × 10^-8 Ω·m', description: 'المقاومية النوعية للنحاس' }],
     variables: [{ name: 'I', label: 'I' }, { name: 'R', label: 'R' }],
     solve(values) {
@@ -1271,7 +1271,7 @@ export const equations: Equation[] = [
     description: 'تُستخدم لحساب القدرة المستهلكة.',
     method: 'P = VI.',
     examples: [{ title: 'مثال', values: { V: 12, I: 3 }, steps: ['P = 36 W'] }],
-    relatedExperiments: [{ id: 'electric-lab', name: 'المختبر الكهربائي', route: '/physics/electricity/electric-lab', context: 'القدرة المستهلكة P = VI.' }],
+    relatedExperiments: [{ id: 'electric-workshop', name: 'ورشة الكهرباء', route: '/physics/electricity/electric-workshop', context: 'القدرة المستهلكة P = VI.' }],
     variables: [{ name: 'V', label: 'V' }, { name: 'I', label: 'I' }],
     solve(values) {
       const V = Number(values.V), I = Number(values.I);
@@ -1287,7 +1287,7 @@ export const equations: Equation[] = [
     description: 'يُستخدم لحساب المقاومة الكلية على التوالي.',
     method: 'R = R1 + R2.',
     examples: [{ title: 'مثال', values: { R1: 10, R2: 20 }, steps: ['R = 30 Ω'] }],
-    relatedExperiments: [{ id: 'electric-lab', name: 'المختبر الكهربائي', route: '/physics/electricity/electric-lab', context: 'توصيل المقاومات على التوالي.' }],
+    relatedExperiments: [{ id: 'electric-workshop', name: 'ورشة الكهرباء', route: '/physics/electricity/electric-workshop', context: 'توصيل المقاومات على التوالي.' }],
     variables: [{ name: 'R1', label: 'R1' }, { name: 'R2', label: 'R2' }],
     solve(values) {
       const R1 = Number(values.R1), R2 = Number(values.R2);
@@ -1303,7 +1303,7 @@ export const equations: Equation[] = [
     description: 'يُستخدم لحساب المقاومة الكلية على التوازي.',
     method: '1/R = 1/R1 + 1/R2.',
     examples: [{ title: 'مثال', values: { R1: 10, R2: 20 }, steps: ['R ≈ 6.667 Ω'] }],
-    relatedExperiments: [{ id: 'electric-lab', name: 'المختبر الكهربائي', route: '/physics/electricity/electric-lab', context: 'توصيل المقاومات على التوازي.' }],
+    relatedExperiments: [{ id: 'electric-workshop', name: 'ورشة الكهرباء', route: '/physics/electricity/electric-workshop', context: 'توصيل المقاومات على التوازي.' }],
     variables: [{ name: 'R1', label: 'R1' }, { name: 'R2', label: 'R2' }],
     solve(values) {
       const R1 = Number(values.R1), R2 = Number(values.R2);

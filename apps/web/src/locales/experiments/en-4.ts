@@ -1,3 +1,5 @@
+import { ew } from '../electricWorkshop'
+
 export const en4 = {
     speedMultiplier: 'Speed ×',
     speedMultiplierDesc: 'Speed up/slow down the simulation (from 0.25× to 3×).',
@@ -1475,4 +1477,32 @@ export const en4 = {
     lhgF1: 'Latent heat formula',
     lhgF2: 'Calculate latent heat from energy and mass',
 
+    airDensity: 'Air Density',
+    branchLabel: 'Branch',
+    calculateGFromSlope: 'Calculate g from Slope',
+    chemistryExperiment: 'Chemistry Experiment',
+    data: 'Data',
+    errorPercent: 'Error %',
+    expBiotSavart: 'Biot-Savart Law',
+    expFaraday: 'Faraday\'s Law',
+    guide: 'Guide',
+    magnificationLabel: 'Magnification',
+    menuRunLab: 'Run Lab',
+    needInelasticTrials: 'Need inelastic trials',
+    needTwoInelasticTrials: 'Record at least 2 inelastic trials',
+    needTwoSmoothTrials: 'Record at least 2 smooth trials',
+    noMeasurements: 'No measurements',
+    noReadings: 'No readings',
+    parameters: 'Parameters',
+    paused: 'Paused',
+    recordAtLeastTwoInelastic: 'Record at least 2 inelastic trials',
+    recordAtLeastTwoSmooth: 'Record at least 2 smooth trials',
+    resultantAngle: 'Resultant Angle',
+    resultantMag: 'Resultant Magnitude',
+    running: 'Running',
+    scatterAccelerationVsSin: 'Acceleration vs sin(θ)',
+    scatterMomentumVsVf: 'Momentum vs Final Velocity',
+    statusIdle: 'Idle',
+
+    ew: ew.en,
 } as const

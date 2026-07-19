@@ -1,3 +1,13 @@
+export interface Complex {
+  re: number
+  im: number
+}
+
+export interface ComplexSolution {
+  re: number[]
+  im: number[]
+}
+
 export interface MathProblem {
   expression: string;
   variable?: string;

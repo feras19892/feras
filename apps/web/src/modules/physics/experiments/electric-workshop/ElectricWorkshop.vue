@@ -1,19 +1,34 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useI18n } from '../../../../composables/useI18n'
 import DCLab from './dc/DCLab.vue'
+import ACLab from './ac/ACLab.vue'
 
 const { t } = useI18n()
 
 type TabId = 'dc' | 'ac' | 'home' | 'industrial'
 
-const activeTab = ref<TabId>('dc')
+const STORAGE_KEY_TAB = 'electric-workshop-active-tab'
 
-const tabs: { id: TabId; label: string; icon: string; color: string }[] = [
-  { id: 'dc',         label: 'مختبر DC',         icon: '⚡',  color: '#f59e0b' },
-  { id: 'ac',         label: 'مختبر AC',         icon: '〰️', color: '#3b82f6' },
-  { id: 'home',       label: 'تمديد منزلي',       icon: '🏠', color: '#22c55e' },
-  { id: 'industrial', label: 'تمديد صناعي',       icon: '🏭', color: '#ef4444' },
+const savedTab = (() => {
+  try {
+    const v = localStorage.getItem(STORAGE_KEY_TAB)
+    if (v === 'dc' || v === 'ac' || v === 'home' || v === 'industrial') return v
+  } catch (e) { /* ignore */ }
+  return 'dc'
+})()
+
+const activeTab = ref<TabId>(savedTab as TabId)
+
+watch(activeTab, (v) => {
+  try { localStorage.setItem(STORAGE_KEY_TAB, v) } catch (e) { /* ignore */ }
+})
+
+const tabs: { id: TabId; labelKey: string; icon: string; color: string }[] = [
+  { id: 'dc',         labelKey: 'ew.tabDc',         icon: '⚡',  color: '#f59e0b' },
+  { id: 'ac',         labelKey: 'ew.tabAc',         icon: '〰️', color: '#3b82f6' },
+  { id: 'home',       labelKey: 'ew.tabHome',       icon: '🏠', color: '#22c55e' },
+  { id: 'industrial', labelKey: 'ew.tabIndustrial', icon: '🏭', color: '#ef4444' },
 ]
 </script>
 
@@ -21,7 +36,7 @@ const tabs: { id: TabId; label: string; icon: string; color: string }[] = [
   <div class="workshop">
     <header class="workshop-header">
       <h1>🛠️ {{ t('experiments.expElectricWorkshop') }}</h1>
-      <span class="workshop-hint">مختبر كهرباء حر — ابنِ دائرتك بنفسك</span>
+      <span class="workshop-hint">{{ t('ew.workshopHint') }}</span>
     </header>
 
     <div class="workshop-tabs">
@@ -34,37 +49,30 @@ const tabs: { id: TabId; label: string; icon: string; color: string }[] = [
         @click="activeTab = tab.id"
       >
         <span class="tab-icon">{{ tab.icon }}</span>
-        <span class="tab-label">{{ tab.label }}</span>
+        <span class="tab-label">{{ t(tab.labelKey) }}</span>
       </button>
     </div>
 
     <div class="workshop-body">
       <DCLab v-if="activeTab === 'dc'" />
 
-      <div v-else-if="activeTab === 'ac'" class="tab-content">
-        <div class="coming-soon">
-          <span class="cs-icon">〰️</span>
-          <h2>مختبر AC</h2>
-          <p>مصادر مترددة، oscilloscope، impedance، محول</p>
-          <p class="cs-status">قيد البناء...</p>
-        </div>
-      </div>
+      <ACLab v-else-if="activeTab === 'ac'" />
 
       <div v-else-if="activeTab === 'home'" class="tab-content">
         <div class="coming-soon">
           <span class="cs-icon">🏠</span>
-          <h2>التمديدات المنزلية</h2>
-          <p>لوحة توزيع، مفاتيح إضاءة، مقابس، RCD، مصابيح، مروحة</p>
-          <p class="cs-status">قيد البناء...</p>
+          <h2>{{ t('ew.homeWiringTitle') }}</h2>
+          <p>{{ t('ew.homeWiringDesc') }}</p>
+          <p class="cs-status">{{ t('ew.underConstruction') }}</p>
         </div>
       </div>
 
       <div v-else-if="activeTab === 'industrial'" class="tab-content">
         <div class="coming-soon">
           <span class="cs-icon">🏭</span>
-          <h2>التمديدات الصناعية</h2>
-          <p>محرك 3 فاز، كونتاكتور، DOL Starter، Star-Delta، قاطع حراري</p>
-          <p class="cs-status">قيد البناء...</p>
+          <h2>{{ t('ew.industrialWiringTitle') }}</h2>
+          <p>{{ t('ew.industrialWiringDesc') }}</p>
+          <p class="cs-status">{{ t('ew.underConstruction') }}</p>
         </div>
       </div>
     </div>

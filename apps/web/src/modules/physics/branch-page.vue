@@ -84,7 +84,6 @@ function expNameKey(id: string): string {
     'rc-circuit': 'experiments.expRcCircuit',
     'biot-savart': 'experiments.expBiotSavart',
     faraday: 'experiments.expFaraday',
-    'electric-lab': 'experiments.expElectricLab',
     'electric-workshop': 'experiments.expElectricWorkshop',
   };
   return map[id] || id;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { submitFeedback } from '../../services/admin.service';
+import { sendTelegramFeedback } from '../../services/telegram-feedback';
 import { useI18n } from '../../composables/useI18n';
 
 const props = defineProps<{
@@ -25,7 +25,7 @@ async function send() {
   if (!message.value.trim()) { error.value = t('common.writeMessage'); return; }
   loading.value = true; error.value = ''; success.value = '';
   try {
-    const res = await submitFeedback(
+    const res = await sendTelegramFeedback(
       type.value,
       message.value,
       props.experimentId,

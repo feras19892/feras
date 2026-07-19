@@ -1,0 +1,113 @@
+﻿/* Fullscreen button in top bar */
+.tb-fs-btn {
+  padding: 0.25rem 0.6rem;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 0.3rem;
+  color: #93c5fd;
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tb-fs-btn:hover {
+  background: rgba(59, 130, 246, 0.25);
+  color: #bfdbfe;
+}
+
+/* Fullscreen Canvas View */
+.cv-fs-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9998;
+  animation: cv-fs-fade 0.2s ease;
+}
+
+@keyframes cv-fs-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.cv-fs-container {
+  background: #0a0f1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.6rem;
+  width: 96%;
+  max-width: 1600px;
+  height: 94vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+}
+
+.cv-fs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1.2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(59, 130, 246, 0.06);
+}
+
+.cv-fs-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #93c5fd;
+}
+
+.cv-fs-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.cv-fs-btn {
+  padding: 0.3rem 0.7rem;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 0.3rem;
+  color: #93c5fd;
+  cursor: pointer;
+  font-size: 0.75rem;
+}
+
+.cv-fs-btn:hover {
+  background: rgba(59, 130, 246, 0.25);
+}
+
+.cv-fs-close {
+  padding: 0.3rem 0.7rem;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 0.3rem;
+  color: #fca5a5;
+  cursor: pointer;
+  font-size: 0.75rem;
+}
+
+.cv-fs-close:hover {
+  background: rgba(239, 68, 68, 0.25);
+  color: #fff;
+}
+
+.cv-fs-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 1rem;
+  background: #060a12;
+}
+
+.cv-fs-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 0.4rem;
+}

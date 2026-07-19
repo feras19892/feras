@@ -1,0 +1,50 @@
+﻿.ac-palette {
+  width: 200px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  background: #0d1526;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+.ac-top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4rem 0.6rem;
+  background: rgba(13, 21, 38, 0.95);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  z-index: 20;
+  flex-wrap: wrap;
+  backdrop-filter: blur(8px);
+}
+
+.ac-bottom-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  background: rgba(13, 21, 38, 0.95);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  z-index: 20;
+  backdrop-filter: blur(8px);
+}
+
+.ac-readings {
+  width: 240px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  background: #0d1526;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}

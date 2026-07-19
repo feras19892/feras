@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, shallowRef, defineAsyncComponent } from 'vue';
 import { RouterView } from 'vue-router';
 import { useI18nStore } from './stores/i18n.store';
 import { runStartupDiagnostics } from './composables/experiment/useStartupDiagnostics';
-import ExperimentMonitorWidget from './components/dev/ExperimentMonitorWidget.vue';
 
 const i18n = useI18nStore();
+
+const ExperimentMonitorWidget = import.meta.env.DEV
+  ? defineAsyncComponent(() => import('./components/dev/ExperimentMonitorWidget.vue'))
+  : null;
 
 onMounted(() => {
   runStartupDiagnostics();
@@ -23,7 +26,7 @@ onMounted(() => {
         </div>
       </template>
     </Suspense>
-    <ExperimentMonitorWidget />
+    <component :is="ExperimentMonitorWidget" v-if="ExperimentMonitorWidget" />
   </div>
 </template>
 

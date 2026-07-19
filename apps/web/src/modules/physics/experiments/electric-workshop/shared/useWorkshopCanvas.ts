@@ -1,8 +1,9 @@
 import type { Ref } from 'vue'
 import type { WorkshopComponent, WorkshopWire } from './types'
-import { drawComponent } from './drawComponent'
+import { drawComponent, type RenderMode } from './drawComponent'
 import { drawWire, drawTempWire, getTerminalWorldPos } from './drawWire'
 import { findWireCrossings } from './smartWire'
+import { getDef } from './componentDefs'
 
 const GRID_SIZE = 20
 
@@ -11,6 +12,10 @@ export interface WorkshopCanvasProps {
   wires: WorkshopWire[]
   running: boolean
   selectedWireColor: string
+  renderMode: RenderMode
+  t: (key: string, vars?: Record<string, string | number>) => string
+  animTime?: number
+  wireCurrents?: Map<number, number>
 }
 
 export function useWorkshopCanvas(
@@ -40,8 +45,10 @@ export function useWorkshopCanvas(
         if (dist <= r) return c
         continue
       }
-      const halfW = 30 * cs * zoom.value
-      const halfH = 22 * cs * zoom.value
+      // Use actual component dimensions from defs, fallback to 30x22
+      const def = getDef(c.type)
+      const halfW = (def ? def.width / 2 : 30) * cs * zoom.value
+      const halfH = (def ? def.height / 2 : 22) * cs * zoom.value
       if (sx >= cx - halfW && sx <= cx + halfW && sy >= cy - halfH && sy <= cy + halfH) {
         return c
       }
@@ -55,6 +62,9 @@ export function useWorkshopCanvas(
       const cs = c.scale ?? 1
       const [ccx, ccy] = worldToScreen(c.x, c.y)
       const clickDistFromCenter = Math.sqrt((sx - ccx) ** 2 + (sy - ccy) ** 2)
+
+      // Skip multimeter — it uses probes/clamp, not terminals
+      if (c.type === 'multimeter') continue
 
       // For round components, don't catch terminal hits inside the body
       const roundTypes = ['ammeter', 'voltmeter', 'lamp']
@@ -172,7 +182,7 @@ export function useWorkshopCanvas(
     ctx.stroke()
 
     // Create dc with current values
-    const dc = { zoom: zoom.value, panX: panX.value, panY: panY.value, worldToScreen }
+    const dc = { zoom: zoom.value, panX: panX.value, panY: panY.value, worldToScreen, running: props.running, animTime: props.animTime, wireCurrents: props.wireCurrents }
 
     // Compute wire crossings for hop-over arcs
     const crossingMap = findWireCrossings(props.wires, props.components)
@@ -190,7 +200,7 @@ export function useWorkshopCanvas(
 
     // Components
     for (const comp of props.components) {
-      drawComponent(ctx, comp, selectedId, dc, props.running)
+      drawComponent(ctx, comp, selectedId, dc, props.running, props.renderMode)
     }
 
     // Status bar
@@ -198,17 +208,54 @@ export function useWorkshopCanvas(
     ctx.font = '0.7rem sans-serif'
     ctx.textAlign = 'left'
     ctx.fillText(`Zoom: ${zoom.value.toFixed(2)}x`, 10, 20)
-    ctx.fillText(`مكونات: ${props.components.length} | أسلاك: ${props.wires.length}`, 10, 38)
+    ctx.fillText(`${props.t('ew.canvas.components')}: ${props.components.length} | ${props.t('ew.canvas.wires')}: ${props.wires.length}`, 10, 38)
 
     if (props.components.length === 0 && props.wires.length === 0) {
       ctx.fillStyle = '#334155'
       ctx.font = '0.85rem sans-serif'
       ctx.textAlign = 'center'
-      ctx.fillText('اسحب مكوناً من القائمة أو انقر لإضافته', W / 2, H / 2)
+      ctx.fillText(props.t('ew.canvas.dragHint'), W / 2, H / 2)
     }
   }
 
-  return { worldToScreen, screenToWorld, hitTestComponent, hitTestTerminal, hitTestWire, hitTestWireJunction, hitTestWireSegment, draw }
+  function hitTestProbe(sx: number, sy: number): { comp: WorkshopComponent; probe: 'black' | 'red' } | null {
+    for (let i = props.components.length - 1; i >= 0; i--) {
+      const c = props.components[i]
+      if (c.type !== 'multimeter' || c.multimeterMode === 'current') continue
+      const cs = c.scale ?? 1
+      const hitR = 8 * cs * zoom.value
+      if (c.probeBlack) {
+        const [px, py] = worldToScreen(c.probeBlack.x, c.probeBlack.y)
+        if (Math.sqrt((sx - px) ** 2 + (sy - py) ** 2) < hitR) {
+          return { comp: c, probe: 'black' }
+        }
+      }
+      if (c.probeRed) {
+        const [px, py] = worldToScreen(c.probeRed.x, c.probeRed.y)
+        if (Math.sqrt((sx - px) ** 2 + (sy - py) ** 2) < hitR) {
+          return { comp: c, probe: 'red' }
+        }
+      }
+    }
+    return null
+  }
+
+  function hitTestClamp(sx: number, sy: number): { comp: WorkshopComponent } | null {
+    for (let i = props.components.length - 1; i >= 0; i--) {
+      const c = props.components[i]
+      if (c.type !== 'multimeter' || c.multimeterMode !== 'current') continue
+      if (!c.clampPos) continue
+      const cs = c.scale ?? 1
+      const [px, py] = worldToScreen(c.clampPos.x, c.clampPos.y)
+      const r = 20 * cs * zoom.value
+      if (Math.sqrt((sx - px) ** 2 + (sy - py) ** 2) < r) {
+        return { comp: c }
+      }
+    }
+    return null
+  }
+
+  return { worldToScreen, screenToWorld, hitTestComponent, hitTestTerminal, hitTestWire, hitTestWireJunction, hitTestWireSegment, hitTestProbe, hitTestClamp, draw }
 }
 
 function distToSegment(px: number, py: number, ax: number, ay: number, bx: number, by: number): number {

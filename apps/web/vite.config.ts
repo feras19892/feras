@@ -39,6 +39,21 @@ export default defineConfig(({ mode }) => ({
   },
   server: {
     port: 5173,
+    host: '0.0.0.0',
+    cors: true,
+    allowedHosts: ['.trycloudflare.com', '.loca.lt', '.serveousercontent.com', '.ngrok-free.dev', '.ngrok.io'],
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+      },
+    },
+  },
+  preview: {
+    port: 5173,
+    host: '0.0.0.0',
+    cors: true,
+    allowedHosts: ['.trycloudflare.com', '.loca.lt', '.serveousercontent.com', '.ngrok-free.dev', '.ngrok.io'],
     proxy: {
       '/api': {
         target: 'http://localhost:3000',

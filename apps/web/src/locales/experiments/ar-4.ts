@@ -1,3 +1,5 @@
+import { ew } from '../electricWorkshop'
+
 export const ar4 = {
     speedMultiplier: 'السرعة ×',
     speedMultiplierDesc: 'تسريع/إبطاء المحاكاة (من 0.25× إلى 3×).',
@@ -1475,4 +1477,32 @@ export const ar4 = {
     lhgF1: 'صيغة الحرارة الكامنة',
     lhgF2: 'حساب الحرارة الكامنة من الطاقة والكتلة',
 
+    airDensity: 'كثافة الهواء',
+    branchLabel: 'الفرع',
+    calculateGFromSlope: 'احسب g من الميل',
+    chemistryExperiment: 'تجربة كيميائية',
+    data: 'البيانات',
+    errorPercent: 'نسبة الخطأ',
+    expBiotSavart: 'قانون بيوت-سافار',
+    expFaraday: 'قانون فاراداي',
+    guide: 'الدليل',
+    magnificationLabel: 'التكبير',
+    menuRunLab: 'تشغيل المختبر',
+    needInelasticTrials: 'تحتاج قراءات غير مرنة',
+    needTwoInelasticTrials: 'سجل قراءتين غير مرنتين على الأقل',
+    needTwoSmoothTrials: 'سجل قراءتين سلستين على الأقل',
+    noMeasurements: 'لا توجد قياسات',
+    noReadings: 'لا توجد قراءات',
+    parameters: 'المعلمات',
+    paused: 'متوقف مؤقتاً',
+    recordAtLeastTwoInelastic: 'سجل قراءتين غير مرنتين على الأقل',
+    recordAtLeastTwoSmooth: 'سجل قراءتين سلستين على الأقل',
+    resultantAngle: 'زاوية المحصلة',
+    resultantMag: 'مقدار المحصلة',
+    running: 'قيد التشغيل',
+    scatterAccelerationVsSin: 'التسارع مقابل sin(θ)',
+    scatterMomentumVsVf: 'الزخم مقابل السرعة النهائية',
+    statusIdle: 'خامل',
+
+    ew: ew.ar,
 } as const

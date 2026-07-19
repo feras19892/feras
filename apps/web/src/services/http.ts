@@ -1,4 +1,4 @@
-export const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? '' : 'http://localhost:3000');
+export const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL ?? '';
 
 export function apiUrl(path: string): string {
   if (path.startsWith('http')) return path;
@@ -58,6 +58,9 @@ export async function fetchJson<T>(path: string, options: FetchOptions = {}): Pr
   }
 
   if (!response.ok) {
+    if (response.status === 404) {
+      return { success: false, message: 'API not available' } as unknown as T;
+    }
     let msg = `Request failed: ${response.status} ${response.statusText}`;
     try {
       const body = await response.json();

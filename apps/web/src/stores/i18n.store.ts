@@ -86,6 +86,7 @@ export const useI18nStore = defineStore('i18n', () => {
     ]);
     messages.value = {
       ...base,
+      ...exp,
       experiments: exp,
       prism: { ...exp, ...prismOverrides[next] },
     } as TranslationDict;

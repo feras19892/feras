@@ -17,9 +17,13 @@ import { chemistryExperiments } from './chemistry-experiments'
 import { chemistryTools } from './chemistry-tools'
 import { chemistryAssistant } from './chemistry-assistant'
 import { biology } from './biology'
+import { math } from './math'
+import { lens } from './lens'
+import { ew } from './electricWorkshop'
 
 export default {
   auth: auth.ar,
+  ew: ew.ar,
   landing: landing.ar,
   dashboard: dashboard.ar,
   admin: admin.ar,
@@ -38,4 +42,6 @@ export default {
   chemistryTools: chemistryTools.ar,
   chemistryAssistant: chemistryAssistant.ar,
   biology: biology.ar,
+  math: math.ar,
+  lens: lens.ar,
 } as const

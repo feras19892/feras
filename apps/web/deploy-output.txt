@@ -1,0 +1,24 @@
+npm warn Unknown project config "node-linker". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+Vercel CLI 56.3.1 (Node.js 24.18.0)
+Retrieving project…
+Deploying 198924/dist
+  Inspect         https://vercel.com/198924/dist/5D6zq6b15LXU5urmVbxxSpFFXfmE
+  Production      https://dist-ddj84o7uy-198924.vercel.app
+https://dist-ddj84o7uy-198924.vercel.appBuilding…
+Building…
+Running build in Washington, D.C., USA (East) – iad1
+Build machine configuration: 2 cores, 8 GB
+Retrieving list of deployment files...
+Previous build caches not available.
+Downloading 149 deployment files...
+Running "vercel build"
+Vercel CLI 56.2.0
+Build Completed in /vercel/output [258ms]
+Deploying outputs...
+[2K[1A[2K[G  Production      https://dist-ddj84o7uy-198924.vercel.app
+Completing…
+▲ Aliased         https://dist-eight-nu-90.vercel.app
+
+✓ Ready in 9s
+
+C:\Users\feras\Desktop\feras\apps\web>

@@ -67,6 +67,7 @@ export const dashboard = {
     resubmitSuccess: 'تم إعادة الإرسال بنجاح',
     submitFailed: 'فشل الإرسال',
     serverConnFailed: 'فشل الاتصال بالخادم',
+    viewReport: 'عرض التقرير',
   },
   en: {
     title: 'Dashboard',
@@ -136,6 +137,7 @@ export const dashboard = {
     resubmitSuccess: 'Resubmitted successfully',
     submitFailed: 'Submission failed',
     serverConnFailed: 'Server connection failed',
+    viewReport: 'View Report',
   },
   es: {
     title: 'Panel',
@@ -205,5 +207,6 @@ export const dashboard = {
     resubmitSuccess: 'Reenviado exitosamente',
     submitFailed: 'Error al enviar',
     serverConnFailed: 'Error de conexión con el servidor',
+    viewReport: 'Ver Reporte',
   },
 } as const

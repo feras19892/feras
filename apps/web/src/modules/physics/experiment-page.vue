@@ -47,7 +47,6 @@ function expNameKey(id: string): string {
     'rc-circuit': 'experiments.expRcCircuit',
     'biot-savart': 'experiments.expBiotSavart',
     faraday: 'experiments.expFaraday',
-    'electric-lab': 'experiments.expElectricLab',
     'electric-workshop': 'experiments.expElectricWorkshop',
     'wave-interference': 'experiments.expWaveInterference',
     'specific-heat': 'experiments.expSpecificHeat',
@@ -65,7 +64,6 @@ function expNameKey(id: string): string {
       <button class="back-btn" @click="goBack">← {{ t('experiments.back') }}</button>
       <h1><span class="icon">{{ experiment.icon }}</span> {{ experiment ? t(expNameKey(experiment.id)) : '' }}</h1>
       <p class="en">{{ experiment?.name }}</p>
-      <button class="feedback-btn" @click="showFeedback = true">🚩 {{ t('experiments.reportProblem') }}</button>
     </header>
 
     <FeedbackModal
@@ -73,6 +71,9 @@ function expNameKey(id: string): string {
       :experiment-id="expId"
       :experiment-name="experiment ? t(expNameKey(experiment.id)) : ''"
     />
+
+    <!-- Floating feedback button (always visible) -->
+    <button class="feedback-fab" @click="showFeedback = true" :title="t('experiments.reportProblem')">🚩</button>
 
     <!-- If experiment component exists, render it full-screen -->
     <component v-if="ExperimentComponent" :is="ExperimentComponent" />
@@ -104,4 +105,29 @@ function expNameKey(id: string): string {
 .btn-action { padding: 0.5rem 1rem; border: none; border-radius: 0.5rem; background: linear-gradient(135deg, #06b6d4, #0891b2); color: #fff; cursor: pointer; }
 .feedback-btn { margin-top: 0.5rem; padding: 0.35rem 0.7rem; border-radius: 0.4rem; border: 1px solid rgba(239,68,68,0.3); background: rgba(239,68,68,0.1); color: #fca5a5; cursor: pointer; font-family: inherit; font-size: 0.8rem; }
 .feedback-btn:hover { background: rgba(239,68,68,0.2); }
+.feedback-fab {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 2px solid rgba(239,68,68,0.4);
+  background: rgba(239,68,68,0.15);
+  backdrop-filter: blur(8px);
+  color: #fca5a5;
+  font-size: 1.3rem;
+  cursor: pointer;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.feedback-fab:hover {
+  background: rgba(239,68,68,0.3);
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(239,68,68,0.3);
+}
 </style>

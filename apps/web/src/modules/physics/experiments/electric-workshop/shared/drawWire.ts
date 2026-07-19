@@ -6,6 +6,9 @@ interface DrawCtx {
   panX: number
   panY: number
   worldToScreen: (x: number, y: number) => [number, number]
+  running?: boolean
+  animTime?: number
+  wireCurrents?: Map<number, number>
 }
 
 export function drawWire(
@@ -122,6 +125,29 @@ export function drawWire(
   }
   ctx.stroke()
 
+  // Current flow animation — moving dots along the wire
+  if (dc.running && dc.animTime !== undefined) {
+    const current = dc.wireCurrents?.get(wire.id) ?? 0
+    if (Math.abs(current) > 1e-10) {
+      const direction = current > 0 ? 1 : -1
+      const speed = Math.min(Math.abs(current) * 0.5 + 0.3, 3)
+      const dotSpacing = 30 * z
+      const numDots = Math.max(1, Math.ceil(200 / dotSpacing))
+      const offset = (dc.animTime * speed * direction) % dotSpacing
+
+      ctx.fillStyle = 'rgba(255, 235, 59, 0.85)'
+      for (let d = 0; d < numDots; d++) {
+        const targetDist = d * dotSpacing + offset
+        const pt = pointAlongPath(screenPts, targetDist)
+        if (pt) {
+          ctx.beginPath()
+          ctx.arc(pt.x, pt.y, 2.5 * z, 0, Math.PI * 2)
+          ctx.fill()
+        }
+      }
+    }
+  }
+
   // Connection dots at endpoints
   for (const [px, py] of [[sfx, sfy], [stx, sty]]) {
     const dotGrad = ctx.createRadialGradient(px, py, 0, px, py, 5 * z)
@@ -201,4 +227,20 @@ function lightenColor(hex: string, amount: number): string {
   const g = Math.min(255, ((num >> 8) & 0xff) + amount)
   const b = Math.min(255, (num & 0xff) + amount)
   return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`
+}
+
+function pointAlongPath(pts: { x: number; y: number }[], dist: number): { x: number; y: number } | null {
+  let remaining = dist
+  for (let i = 0; i < pts.length - 1; i++) {
+    const dx = pts[i + 1].x - pts[i].x
+    const dy = pts[i + 1].y - pts[i].y
+    const segLen = Math.sqrt(dx * dx + dy * dy)
+    if (segLen === 0) continue
+    if (remaining <= segLen) {
+      const t = remaining / segLen
+      return { x: pts[i].x + dx * t, y: pts[i].y + dy * t }
+    }
+    remaining -= segLen
+  }
+  return null
 }

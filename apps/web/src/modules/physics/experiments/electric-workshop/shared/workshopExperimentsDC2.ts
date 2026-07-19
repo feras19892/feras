@@ -13,7 +13,6 @@ export function loadDCExperiment2(name: ExperimentName2, ctx: ExperimentContext)
 
     addComponent('ammeter', 420, 300)
     const amm = components[components.length - 1]; amm.value = 0
-    rotateComponent(amm.id)
 
     addComponent('resistor', 560, 300)
     const r1 = components[components.length - 1]; r1.value = 2
@@ -52,25 +51,21 @@ export function loadDCExperiment2(name: ExperimentName2, ctx: ExperimentContext)
 
     addComponent('ammeter', 380, 300)
     const amm0 = components[components.length - 1]; amm0.value = 0
-    rotateComponent(amm0.id)
 
     addComponent('resistor', 540, 200)
     const r1 = components[components.length - 1]; r1.value = 6
     addComponent('ammeter', 420, 200)
     const amm1 = components[components.length - 1]; amm1.value = 0
-    rotateComponent(amm1.id)
 
     addComponent('resistor', 540, 300)
     const r2 = components[components.length - 1]; r2.value = 3
     addComponent('ammeter', 420, 300)
     const amm2 = components[components.length - 1]; amm2.value = 0
-    rotateComponent(amm2.id)
 
     addComponent('resistor', 540, 400)
     const r3 = components[components.length - 1]; r3.value = 2
     addComponent('ammeter', 420, 400)
     const amm3 = components[components.length - 1]; amm3.value = 0
-    rotateComponent(amm3.id)
 
     addComponent('voltmeter', 700, 300)
     const v1 = components[components.length - 1]; v1.value = 0
@@ -98,7 +93,6 @@ export function loadDCExperiment2(name: ExperimentName2, ctx: ExperimentContext)
 
     addComponent('ammeter', 420, 300)
     const amm = components[components.length - 1]; amm.value = 0
-    rotateComponent(amm.id)
 
     addComponent('resistor', 560, 300)
     const r1 = components[components.length - 1]; r1.value = 8
@@ -129,20 +123,17 @@ export function loadDCExperiment2(name: ExperimentName2, ctx: ExperimentContext)
 
     addComponent('ammeter', 380, 300)
     const amm0 = components[components.length - 1]; amm0.value = 0
-    rotateComponent(amm0.id)
 
     addComponent('resistor', 520, 300)
     const r1 = components[components.length - 1]; r1.value = 2
 
     addComponent('ammeter', 660, 220)
     const amm2 = components[components.length - 1]; amm2.value = 0
-    rotateComponent(amm2.id)
     addComponent('resistor', 800, 220)
     const r2 = components[components.length - 1]; r2.value = 6
 
     addComponent('ammeter', 660, 380)
     const amm3 = components[components.length - 1]; amm3.value = 0
-    rotateComponent(amm3.id)
     addComponent('resistor', 800, 380)
     const r3 = components[components.length - 1]; r3.value = 3
 

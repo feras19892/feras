@@ -1,6 +1,6 @@
 import type { WorkshopComponent, WorkshopWire, SolveResult } from './types'
 import { buildNodeGraph } from './nodeGraph'
-import { solveLinear } from './solver-linear'
+import { solveLinear } from '@my-modern-app/math-engine'
 import { measureMultimeterDC } from './solver-multimeter'
 import { detectFaultsDC } from './solver-faults'
 

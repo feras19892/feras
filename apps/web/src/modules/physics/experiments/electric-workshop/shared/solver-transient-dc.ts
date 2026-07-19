@@ -1,5 +1,6 @@
 import type { WorkshopComponent, WorkshopWire, TransientResult } from './types'
 import { buildNodeGraph } from './nodeGraph'
+import { solveLinear } from '@my-modern-app/math-engine'
 
 export function solveCircuitTransientDC(
   components: WorkshopComponent[],
@@ -151,7 +152,7 @@ export function solveCircuitTransientDC(
       }
     }
 
-    return solveLinearSystem(G, RHS, size)
+    return solveLinear(G, RHS, size)
   }
 
   for (let step = 0; step <= numSteps; step++) {
@@ -217,53 +218,4 @@ export function solveCircuitTransientDC(
   }
 
   return { timePoints, nodeVoltages, componentCurrents, componentVoltages, converged: true }
-}
-
-function solveLinearSystem(A: number[], b: number[], n: number): number[] | null {
-  const lu = [...A]
-  const pivots = new Int32Array(n)
-  for (let col = 0; col < n; col++) {
-    let maxVal = 0
-    let pivot = col
-    for (let row = col; row < n; row++) {
-      if (Math.abs(lu[row * n + col]) > maxVal) {
-        maxVal = Math.abs(lu[row * n + col])
-        pivot = row
-      }
-    }
-    if (maxVal < 1e-15) {
-      pivots[col] = col
-      lu[col * n + col] = 1
-      continue
-    }
-    pivots[col] = pivot
-    if (pivot !== col) {
-      for (let j = 0; j < n; j++) {
-        ;[lu[col * n + j], lu[pivot * n + j]] = [lu[pivot * n + j], lu[col * n + j]]
-      }
-    }
-    const diag = lu[col * n + col]
-    for (let row = col + 1; row < n; row++) {
-      const factor = lu[row * n + col] / diag
-      lu[row * n + col] = factor
-      for (let j = col + 1; j < n; j++) {
-        lu[row * n + j] -= factor * lu[col * n + j]
-      }
-    }
-  }
-  const x = [...b]
-  for (let i = 0; i < n; i++) {
-    const p = pivots[i]
-    ;[x[i], x[p]] = [x[p], x[i]]
-    for (let j = 0; j < i; j++) {
-      x[i] -= lu[i * n + j] * x[j]
-    }
-  }
-  for (let i = n - 1; i >= 0; i--) {
-    for (let j = i + 1; j < n; j++) {
-      x[i] -= lu[i * n + j] * x[j]
-    }
-    x[i] /= lu[i * n + i]
-  }
-  return x
 }

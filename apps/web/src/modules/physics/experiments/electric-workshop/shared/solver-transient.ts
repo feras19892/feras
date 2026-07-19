@@ -1,5 +1,6 @@
 import type { WorkshopComponent, WorkshopWire, TransientResult } from './types'
 import { buildNodeGraph } from './nodeGraph'
+import { factorLU, solveLU, type LUFactor } from '@my-modern-app/math-engine'
 
 export function solveCircuitTransient(
   components: WorkshopComponent[],
@@ -145,43 +146,9 @@ export function solveCircuitTransient(
     }
   }
 
-  function factorLU(): { luG: number[]; pivots: Int32Array } {
-    const luG = [...G]
-    const pivots = new Int32Array(size)
-    for (let col = 0; col < size; col++) {
-      let maxVal = 0
-      let pivot = col
-      for (let row = col; row < size; row++) {
-        if (Math.abs(luG[row * size + col]) > maxVal) {
-          maxVal = Math.abs(luG[row * size + col])
-          pivot = row
-        }
-      }
-      if (maxVal < 1e-15) {
-        pivots[col] = col
-        luG[col * size + col] = 1
-        continue
-      }
-      pivots[col] = pivot
-      if (pivot !== col) {
-        for (let j = 0; j < size; j++) {
-          [luG[col * size + j], luG[pivot * size + j]] = [luG[pivot * size + j], luG[col * size + j]]
-        }
-      }
-      const diag = luG[col * size + col]
-      for (let row = col + 1; row < size; row++) {
-        const factor = luG[row * size + col] / diag
-        luG[row * size + col] = factor
-        for (let j = col + 1; j < size; j++) {
-          luG[row * size + j] -= factor * luG[col * size + j]
-        }
-      }
-    }
-    return { luG, pivots }
-  }
 
   buildG()
-  let lu = factorLU()
+  let lu: LUFactor = factorLU(G, size)
 
   const capState = new Map<number, { vPrev: number; iPrev: number }>()
   const indState = new Map<number, { vPrev: number; iPrev: number }>()
@@ -240,23 +207,7 @@ export function solveCircuitTransient(
       RHS[vsRow] = (tfPrimaryVPrev.get(tf.id) ?? 0) * ratio
       tfVsI++
     }
-    const x = new Array(size).fill(0)
-    const { luG, pivots } = lu
-    for (let i = 0; i < size; i++) {
-      const p = pivots[i]
-      ;[RHS[i], RHS[p]] = [RHS[p], RHS[i]]
-      x[i] = RHS[i]
-      for (let j = 0; j < i; j++) {
-        x[i] -= luG[i * size + j] * x[j]
-      }
-    }
-    for (let i = size - 1; i >= 0; i--) {
-      for (let j = i + 1; j < size; j++) {
-        x[i] -= luG[i * size + j] * x[j]
-      }
-      x[i] /= luG[i * size + i]
-    }
-    return x
+    return solveLU(lu, RHS)
   }
 
   for (let step = 0; step <= totalSteps; step++) {
@@ -348,7 +299,7 @@ export function solveCircuitTransient(
     }
     if (relayChanged) {
       buildG()
-      lu = factorLU()
+      lu = factorLU(G, size)
     }
   }
 

@@ -30,6 +30,7 @@
     "@box2d/core": "^0.11.0",
     "@box2d/particles": "^0.11.0",
     "@my-modern-app/chemistry-engine": "workspace:*",
+    "@my-modern-app/math-engine": "workspace:*",
     "@my-modern-app/shared-types": "workspace:*",
     "@sentry/vue": "^8.0.0",
     "@tresjs/core": "^5.8.3",

@@ -157,12 +157,12 @@ export function loadACExperiment(name: ACExperimentName, ctx: ExperimentContext)
 
     addWire(src.id, 1, r.id, 0, WIRE_COLORS.red, [])
     addWire(r.id, 1, l.id, 0, WIRE_COLORS.red, [{x:480,y:200},{x:600,y:200}])
-    addWire(l.id, 1, c.id, 0, WIRE_COLORS.red, [{x:680,y:200},{x:680,y:340},{x:600,y:340}])
-    addWire(c.id, 1, amm.id, 1, WIRE_COLORS.black, [{x:560,y:340},{x:440,y:340}])
+    addWire(l.id, 1, c.id, 1, WIRE_COLORS.red, [{x:680,y:200},{x:680,y:340}])
+    addWire(c.id, 0, amm.id, 1, WIRE_COLORS.black, [{x:560,y:340},{x:440,y:340}])
     addWire(amm.id, 0, src.id, 0, WIRE_COLORS.black, [{x:360,y:340},{x:178,y:340},{x:178,y:240}])
     addWire(gnd.id, 0, src.id, 0, WIRE_COLORS.green, [{x:200,y:400},{x:178,y:400},{x:178,y:340}])
-    addWire(v1.id, 0, src.id, 1, WIRE_COLORS.blue, [{x:400,y:130},{x:400,y:170},{x:240,y:170}])
-    addWire(v1.id, 1, amm.id, 0, WIRE_COLORS.blue, [{x:440,y:130},{x:440,y:320},{x:360,y:320}])
+    addWire(v1.id, 0, amm.id, 0, WIRE_COLORS.blue, [{x:380,y:130},{x:380,y:320},{x:360,y:320}])
+    addWire(v1.id, 1, src.id, 1, WIRE_COLORS.blue, [{x:420,y:130},{x:420,y:170},{x:240,y:170}])
   }
 
   if (name === 'ac_resonance') {

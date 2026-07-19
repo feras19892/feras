@@ -1,5 +1,5 @@
 import type { WorkshopComponent, WorkshopWire, Complex } from './types'
-import { cSub, cAbs } from './solver-linear'
+import { cSub, cAbs } from '@my-modern-app/math-engine'
 
 function getTermWorldPos(c: WorkshopComponent, t: { dx: number; dy: number }): [number, number] {
   const s = c.scale ?? 1

@@ -1,5 +1,5 @@
 import type { WorkshopComponent, WorkshopWire, FaultInfo, Complex } from './types'
-import { cAbs } from './solver-linear'
+import { cAbs } from '@my-modern-app/math-engine'
 
 export function detectFaultsDC(
   components: WorkshopComponent[],

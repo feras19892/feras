@@ -1,3 +1,6 @@
+import type { Complex } from '@my-modern-app/math-engine'
+export type { Complex }
+
 export type ComponentType =
   | 'battery' | 'resistor' | 'capacitor' | 'inductor'
   | 'diode' | 'switch' | 'lamp' | 'ammeter' | 'voltmeter'
@@ -75,11 +78,6 @@ export interface SolveResult {
   converged: boolean
   iterations: number
   faults: FaultInfo[]
-}
-
-export interface Complex {
-  re: number
-  im: number
 }
 
 export interface ACSolveResult {

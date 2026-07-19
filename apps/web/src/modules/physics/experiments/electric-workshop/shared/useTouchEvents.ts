@@ -16,7 +16,7 @@ export function createTouchHandlers(
       onMouseMove({ clientX: t.clientX, clientY: t.clientY } as MouseEvent)
     }
   }
-  function onTouchEnd(e: TouchEvent) {
+  function onTouchEnd(_e: TouchEvent) {
     const { lastMouseX, lastMouseY } = getLastMouse()
     onMouseUp({ clientX: lastMouseX, clientY: lastMouseY } as MouseEvent)
   }

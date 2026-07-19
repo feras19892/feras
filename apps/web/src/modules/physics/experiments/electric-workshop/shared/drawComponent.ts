@@ -190,7 +190,7 @@ function drawLED(ctx: CanvasRenderingContext2D, z: number, comp: WorkshopCompone
   ctx.fillText(`${Vf}V`, 0, 20 * z)
 }
 
-function drawPotentiometer(ctx: CanvasRenderingContext2D, z: number, comp: WorkshopComponent, sel: boolean, running: boolean) {
+function drawPotentiometer(ctx: CanvasRenderingContext2D, z: number, comp: WorkshopComponent, sel: boolean, _running: boolean) {
   const R = comp.value || 1000
 
   ctx.strokeStyle = '#334155'

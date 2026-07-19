@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, shallowRef, defineAsyncComponent } from 'vue';
+import { onMounted, defineAsyncComponent } from 'vue';
 import { RouterView } from 'vue-router';
 import { useI18nStore } from './stores/i18n.store';
 import { runStartupDiagnostics } from './composables/experiment/useStartupDiagnostics';

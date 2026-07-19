@@ -1,9 +1,11 @@
-export const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL ?? '';
+export function getApiBaseUrl(): string {
+  return import.meta.env.VITE_API_BASE_URL ?? '';
+}
 
 export function apiUrl(path: string): string {
   if (path.startsWith('http')) return path;
   const normalized = path.startsWith('/') ? path : `/${path}`;
-  return `${API_BASE_URL}${normalized}`;
+  return `${getApiBaseUrl()}${normalized}`;
 }
 
 export interface FetchOptions extends RequestInit {

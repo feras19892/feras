@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { WorkshopComponent } from '../shared/types'
 import type { useWorkshop } from '../shared/useWorkshop'
 import { componentDefs } from '../shared/componentDefs'
 import { getSpec } from '../shared/componentSpecs'
@@ -18,6 +17,12 @@ const selectedSpec = computed(() => {
   if (!comp) return null
   return { comp, spec: getSpec(comp.type) }
 })
+
+function selectComponent(id: number) {
+  // eslint-disable-next-line vue/no-mutating-props
+  props.workshop.selectedComponentId.value = id
+  props.redraw()
+}
 </script>
 
 <template>
@@ -32,7 +37,7 @@ const selectedSpec = computed(() => {
         :key="comp.id"
         class="reading-item"
         :class="{ selected: workshop.selectedComponentId.value === comp.id }"
-        @click="workshop.selectedComponentId.value = comp.id; redraw()"
+        @click="selectComponent(comp.id)"
       >
         <span class="ri-icon">{{ componentDefs.find(d => d.type === comp.type)?.icon }}</span>
         <span class="ri-label">{{ t('ew.comp.' + comp.type) }}</span>

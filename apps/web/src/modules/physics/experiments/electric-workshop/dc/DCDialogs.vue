@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
 import type { WorkshopComponent } from '../shared/types'
 import type { useWorkshop } from '../shared/useWorkshop'
 
@@ -173,7 +172,7 @@ const emit = defineEmits<{
     <div class="fs-overlay" v-if="showHelp" @click.self="emit('update:showHelp', false)">
       <div class="fs-container" style="max-width: 600px;">
         <div class="fs-header">
-          <span class="fs-title">â“ {{ t('ew.helpTitle') }}</span>
+          <span class="fs-title">❓ {{ t('ew.helpTitle') }}</span>
           <button class="fs-close" @click="emit('update:showHelp', false)">{{ t('ew.close') }}</button>
         </div>
         <div class="fs-body" style="flex-direction: column; overflow-y: auto; padding: 20px;">

@@ -133,8 +133,6 @@ export function solveCircuitTransient(
       vsIdx2++
     }
     for (const tf of transformers) {
-      const sp0 = getTerminalNode(tf.id, 0)
-      const sp1 = getTerminalNode(tf.id, 1)
       const ss0 = getTerminalNode(tf.id, 2)
       const ss1 = getTerminalNode(tf.id, 3)
       const vsRow = numNodes + vsIdx2

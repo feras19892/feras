@@ -5,7 +5,7 @@ import { WIRE_COLOR_NAMES } from '../shared/types'
 import ComponentIconCanvas from './ComponentIconCanvas.vue'
 import type { useWorkshop } from '../shared/useWorkshop'
 
-defineProps<{
+const props = defineProps<{
   t: (key: string, vars?: Record<string, string | number>) => string
   workshop: ReturnType<typeof useWorkshop>
 }>()
@@ -15,6 +15,11 @@ const emit = defineEmits<{
 }>()
 
 const acComponents = getComponentsByCategory('ac')
+
+function selectWireColor(color: string) {
+  // eslint-disable-next-line vue/no-mutating-props
+  props.workshop.selectedWireColor.value = color
+}
 const componentGroups: { key: string; icon: string }[] = [
   { key: 'source', icon: '🔋' },
   { key: 'passive', icon: '🔲' },
@@ -88,7 +93,7 @@ const groupedComponents = computed(() => {
           class="wire-color-btn"
           :class="{ active: workshop.selectedWireColor.value === wc.color }"
           :style="{ '--wc': wc.color }"
-          @click="workshop.selectedWireColor.value = wc.color"
+          @click="selectWireColor(wc.color)"
         >
           <span class="wc-dot"></span>
           <span class="wc-label">{{ t('ew.wire.' + wc.key) }}</span>

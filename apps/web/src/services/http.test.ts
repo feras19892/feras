@@ -4,6 +4,9 @@ import {
   fetchJson,
 } from './http';
 
+// Mock the API_BASE_URL to a known value for tests
+vi.stubEnv('VITE_API_BASE_URL', 'http://localhost:3000');
+
 describe('http service', () => {
   let fetchMock: ReturnType<typeof vi.fn>;
 
@@ -44,12 +47,13 @@ describe('http service', () => {
       expect((opts.headers as Record<string, string>)['Authorization']).toBeUndefined();
     });
 
-    it('throws on non-ok response', async () => {
+    it('returns error object on 404 response', async () => {
       fetchMock.mockResolvedValueOnce(
         new Response('Not Found', { status: 404, statusText: 'Not Found' })
       );
 
-      await expect(fetchJson('/fail')).rejects.toThrow('Request failed: 404 Not Found');
+      const result = await fetchJson('/fail');
+      expect(result).toEqual({ success: false, message: 'API not available' });
     });
 
     it('retries after successful refresh on 401', async () => {

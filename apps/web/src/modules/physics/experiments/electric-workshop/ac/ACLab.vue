@@ -30,7 +30,7 @@ const zoom = ref(1)
 const panX = ref(0)
 const panY = ref(0)
 
-let dragState: ACCanvasState = { wireStart: null, junctionStart: null, tempWireEnd: { x: 0, y: 0 }, hoverWireId: null } as any
+const dragState: ACCanvasState = { wireStart: null, junctionStart: null, tempWireEnd: { x: 0, y: 0 }, hoverWireId: null } as any
 
 const showValueEditor = ref(false)
 const editingComp = ref<WorkshopComponent | null>(null)

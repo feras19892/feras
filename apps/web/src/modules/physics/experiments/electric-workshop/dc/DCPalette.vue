@@ -13,6 +13,11 @@ const props = defineProps<{
 
 const dcComponents = getComponentsByCategory('dc')
 
+function selectWireColor(color: string) {
+  // eslint-disable-next-line vue/no-mutating-props
+  props.workshop.selectedWireColor.value = color
+}
+
 const componentGroups: { key: string; icon: string }[] = [
   { key: 'source', icon: '\uD83D\uDD0B' },
   { key: 'passive', icon: '\uD83D\uDD32' },
@@ -86,7 +91,7 @@ const groupedComponents = computed(() => {
         class="wire-color-btn"
         :class="{ active: workshop.selectedWireColor.value === wc.color }"
         :style="{ '--wc': wc.color }"
-        @click="workshop.selectedWireColor.value = wc.color"
+        @click="selectWireColor(wc.color)"
       >
         <span class="wc-dot"></span>
         <span class="wc-label">{{ t('ew.wire.' + wc.key) }}</span>

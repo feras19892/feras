@@ -77,7 +77,7 @@ export function solveCircuitTransientDC(
   for (const [id, C] of capVal) capGeq.set(id, 2 * C / actualDt)
   for (const [id, L] of indVal) indGeq.set(id, actualDt / (2 * L))
 
-  function buildAndSolve(t: number): number[] | null {
+  function buildAndSolve(_t: number): number[] | null {
     const G = new Array(size * size).fill(0)
     const RHS = new Array(size).fill(0)
 

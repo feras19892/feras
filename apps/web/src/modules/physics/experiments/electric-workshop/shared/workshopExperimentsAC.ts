@@ -1,4 +1,3 @@
-import type { WorkshopComponent, WorkshopWire } from './types'
 import { WIRE_COLORS } from './types'
 import type { ExperimentContext } from './workshopExperimentsDC'
 

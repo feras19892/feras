@@ -6,7 +6,7 @@ export function detectFaultsDC(
   wires: WorkshopWire[],
   componentCurrents: Map<number, number>,
   componentVoltages: Map<number, number>,
-  find: (x: number) => number,
+  _find: (x: number) => number,
 ): FaultInfo[] {
   const faults: FaultInfo[] = []
   for (const comp of components) {

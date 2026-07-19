@@ -58,7 +58,7 @@ export function explainCdivider(ctx: ExplainCtx): string {
 }
 
 export function explainBseries(ctx: ExplainCtx): string {
-  const { t, V, I } = ctx
+  const { t, I } = ctx
   const batteries = ctx.comps.filter(c => c.type === 'battery')
   const V1 = batteries[0]?.value ?? 0
   const V2 = batteries[1]?.value ?? 0
@@ -117,7 +117,7 @@ export function explainBseries(ctx: ExplainCtx): string {
 }
 
 export function explainBparallel(ctx: ExplainCtx): string {
-  const { t, V, I } = ctx
+  const { t, I } = ctx
   const batteries = ctx.comps.filter(c => c.type === 'battery')
   const V1 = batteries[0]?.value ?? 0
   const V2 = batteries[1]?.value ?? 0

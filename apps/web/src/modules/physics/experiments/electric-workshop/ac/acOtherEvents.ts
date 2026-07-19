@@ -70,7 +70,7 @@ export function onTouchMove(s: ACCanvasState, e: TouchEvent) {
   onMouseMove(s, { clientX: t.clientX, clientY: t.clientY } as MouseEvent)
 }
 
-export function onTouchEnd(s: ACCanvasState, e: TouchEvent) {
+export function onTouchEnd(s: ACCanvasState, _e: TouchEvent) {
   onMouseUp(s, { clientX: s.lastMouseX, clientY: s.lastMouseY } as MouseEvent)
 }
 

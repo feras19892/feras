@@ -1,6 +1,6 @@
 import type { WorkshopComponent, WorkshopWire, Complex, ACSolveResult } from './types'
 import { buildNodeGraph } from './nodeGraph'
-import { cSub, cDiv, cAbs, solveComplexLinear } from '@my-modern-app/math-engine'
+import { cSub, cDiv, solveComplexLinear } from '@my-modern-app/math-engine'
 import { measureMultimeterAC } from './solver-multimeter'
 import { detectFaultsAC } from './solver-faults'
 

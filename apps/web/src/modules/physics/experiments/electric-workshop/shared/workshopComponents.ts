@@ -1,7 +1,6 @@
 import type { WorkshopComponent, WorkshopWire, ComponentType, Terminal } from './types'
 import { getDef } from './componentDefs'
 import { getTerminalWorldPos } from './drawWire'
-import { smartRoute } from './smartWire'
 
 export interface ComponentOpsContext {
   components: WorkshopComponent[]

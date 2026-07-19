@@ -1,5 +1,5 @@
 import type { Equation } from '../math-types';
-import { fmt, parseNumbers, toRad, toDeg } from '../math-utils';
+import { fmt, toRad, toDeg } from '../math-utils';
 
 export const waves_opticsEquations: Equation[] = [
   {

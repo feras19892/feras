@@ -8,10 +8,6 @@ export function useNotifications() {
   const loading = ref(false);
   let intervalId: ReturnType<typeof setInterval> | null = null;
 
-  function isAuthError(err: unknown): boolean {
-    return err instanceof Error && (err.message.includes('401') || err.message.includes('Unauthorized'))
-  }
-
   async function loadNotifications() {
     loading.value = true;
     try {

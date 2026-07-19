@@ -36,21 +36,21 @@ export function drawMultimeter3D(ctx: CanvasRenderingContext2D, z: number, comp:
     let displayUnit = ''
     if (mode === 'voltage') {
       const v = Math.abs(comp.voltage)
-      if (v < 1e-3) { displayVal = (v * 1e6).toFixed(0); displayUnit = 'ÂµV' }
+      if (v < 1e-3) { displayVal = (v * 1e6).toFixed(0); displayUnit = '\u00B5V' }
       else if (v < 1) { displayVal = (v * 1e3).toFixed(1); displayUnit = 'mV' }
       else if (v < 1000) { displayVal = v.toFixed(2); displayUnit = 'V' }
       else { displayVal = (v / 1e3).toFixed(2); displayUnit = 'kV' }
     } else if (mode === 'current') {
       const a = Math.abs(comp.current)
-      if (a < 1e-3) { displayVal = (a * 1e6).toFixed(0); displayUnit = 'ÂµA' }
+      if (a < 1e-3) { displayVal = (a * 1e6).toFixed(0); displayUnit = '\u00B5A' }
       else if (a < 1) { displayVal = (a * 1e3).toFixed(1); displayUnit = 'mA' }
       else { displayVal = a.toFixed(3); displayUnit = 'A' }
     } else if (mode === 'resistance') {
       const r = Math.abs(comp.current) > 1e-10 ? Math.abs(comp.voltage / comp.current) : 0
-      if (r < 1) { displayVal = r.toFixed(2); displayUnit = 'Î©' }
-      else if (r < 1000) { displayVal = r.toFixed(1); displayUnit = 'Î©' }
-      else if (r < 1e6) { displayVal = (r / 1e3).toFixed(2); displayUnit = 'kÎ©' }
-      else { displayVal = (r / 1e6).toFixed(2); displayUnit = 'MÎ©' }
+      if (r < 1) { displayVal = r.toFixed(2); displayUnit = '\u03A9' }
+      else if (r < 1000) { displayVal = r.toFixed(1); displayUnit = '\u03A9' }
+      else if (r < 1e6) { displayVal = (r / 1e3).toFixed(2); displayUnit = 'k\u03A9' }
+      else { displayVal = (r / 1e6).toFixed(2); displayUnit = 'M\u03A9' }
     }
     ctx.fillStyle = '#1a2a1a'
     ctx.font = `bold ${9 * z}px monospace`
@@ -85,7 +85,7 @@ export function drawMultimeter3D(ctx: CanvasRenderingContext2D, z: number, comp:
   const modes = [
     { label: 'V', angle: -Math.PI / 2, color: mode === 'voltage' ? '#38bdf8' : '#64748b' },
     { label: 'A', angle: 0, color: mode === 'current' ? '#38bdf8' : '#64748b' },
-    { label: 'Î©', angle: Math.PI / 2, color: mode === 'resistance' ? '#38bdf8' : '#64748b' },
+    { label: '\u03A9', angle: Math.PI / 2, color: mode === 'resistance' ? '#38bdf8' : '#64748b' },
   ]
   for (const m of modes) {
     const lx = Math.cos(m.angle) * (dialR + 4 * z)

@@ -17,11 +17,11 @@ export function drawBattery2D(ctx: CanvasRenderingContext2D, z: number, comp: Wo
   ctx.fillText(`${comp.value}V`, 0, -16 * z)
   ctx.font = `${8 * z}px sans-serif`; ctx.fillStyle = '#94a3b8'
   ctx.fillText('+', -w * 0.6, -14 * z)
-  ctx.fillText('âˆ’', w * 0.6, -14 * z)
+  ctx.fillText('\u2212', w * 0.6, -14 * z)
   if (running && Math.abs(comp.current) > 0.001) {
     ctx.fillStyle = `rgba(74,222,128,${0.3 + 0.2 * Math.sin(Date.now() / 200)})`
     ctx.font = `${8 * z}px sans-serif`
-    ctx.fillText('âš¡', 0, 16 * z)
+    ctx.fillText('\u26A1', 0, 16 * z)
   }
 }
 
@@ -48,7 +48,7 @@ export function drawResistor2D(ctx: CanvasRenderingContext2D, z: number, comp: W
   ctx.lineTo(w * 0.75, 0)
   ctx.stroke()
   ctx.fillStyle = sel ? '#a5b4fc' : '#818cf8'; ctx.font = `bold ${9 * z}px sans-serif`; ctx.textAlign = 'center'
-  ctx.fillText(`${comp.value}Î©`, 0, -h - 5 * z)
+  ctx.fillText(`${comp.value}\u03A9`, 0, -h - 5 * z)
 }
 
 export function drawCapacitor2D(ctx: CanvasRenderingContext2D, z: number, comp: WorkshopComponent, sel: boolean, _running: boolean) {
@@ -65,7 +65,7 @@ export function drawCapacitor2D(ctx: CanvasRenderingContext2D, z: number, comp: 
   ctx.moveTo(w + gap, 0); ctx.lineTo(w * 3, 0)
   ctx.stroke()
   ctx.fillStyle = '#67e8f9'; ctx.font = `bold ${9 * z}px sans-serif`; ctx.textAlign = 'center'
-  ctx.fillText(`${comp.value}ÂµF`, 0, -h - 5 * z)
+  ctx.fillText(`${comp.value}\u00B5F`, 0, -h - 5 * z)
 }
 
 export function drawInductor2D(ctx: CanvasRenderingContext2D, z: number, comp: WorkshopComponent, sel: boolean, running: boolean) {

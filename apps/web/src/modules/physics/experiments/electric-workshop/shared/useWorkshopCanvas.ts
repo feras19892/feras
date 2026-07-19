@@ -70,7 +70,7 @@ export function useWorkshopCanvas(
       // For round components, don't catch terminal hits inside the body
       const roundTypes = ['ammeter', 'voltmeter', 'lamp']
       if (roundTypes.includes(c.type)) {
-        const bodyR = 20 * cs * zoom.value
+        const bodyR = 10 * cs * zoom.value
         if (clickDistFromCenter < bodyR) continue // skip — let hitTestComponent handle it
       }
 

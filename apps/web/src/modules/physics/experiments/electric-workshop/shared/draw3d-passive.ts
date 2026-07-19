@@ -18,14 +18,14 @@ export function drawBattery3D(ctx: CanvasRenderingContext2D, z: number, comp: Wo
   ctx.font = `bold ${10 * z}px sans-serif`
   ctx.textAlign = 'center'
   ctx.fillText('+', -w * 0.7, -h - 4 * z)
-  ctx.fillText('âˆ’', w * 0.7, -h - 4 * z)
+  ctx.fillText('\u2212', w * 0.7, -h - 4 * z)
   ctx.fillStyle = '#fff'
   ctx.font = `bold ${10 * z}px sans-serif`
   ctx.fillText(`${comp.value}V`, 0, 3 * z)
   if (running && Math.abs(comp.current) > 0.001) {
     ctx.fillStyle = `rgba(74,222,128,${0.3 + 0.2 * Math.sin(Date.now() / 200)})`
     ctx.font = `${8 * z}px sans-serif`
-    ctx.fillText('âš¡', 0, h + 10 * z)
+    ctx.fillText('\u26A1', 0, h + 10 * z)
   }
 }
 
@@ -50,7 +50,7 @@ export function drawResistor3D(ctx: CanvasRenderingContext2D, z: number, comp: W
   ctx.fillStyle = '#1e293b'
   ctx.font = `bold ${9 * z}px sans-serif`
   ctx.textAlign = 'center'
-  ctx.fillText(`${comp.value}Î©`, 0, -h - 5 * z)
+  ctx.fillText(`${comp.value}\u03A9`, 0, -h - 5 * z)
 }
 
 export function drawCapacitor3D(ctx: CanvasRenderingContext2D, z: number, comp: WorkshopComponent, sel: boolean, _running: boolean) {
@@ -75,7 +75,7 @@ export function drawCapacitor3D(ctx: CanvasRenderingContext2D, z: number, comp: 
   ctx.fillStyle = '#67e8f9'
   ctx.font = `bold ${9 * z}px sans-serif`
   ctx.textAlign = 'center'
-  ctx.fillText(`${comp.value}ÂµF`, 0, -h - 5 * z)
+  ctx.fillText(`${comp.value}\u00B5F`, 0, -h - 5 * z)
 }
 
 export function drawInductor3D(ctx: CanvasRenderingContext2D, z: number, comp: WorkshopComponent, sel: boolean, running: boolean) {

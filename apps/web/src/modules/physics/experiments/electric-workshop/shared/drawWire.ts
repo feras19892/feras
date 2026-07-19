@@ -195,15 +195,41 @@ export function drawTempWire(
   color: string,
   z: number,
 ) {
+  // Build orthogonal L-shaped path (horizontal then vertical, or vice versa)
+  const dx = Math.abs(toX - fromX)
+  const dy = Math.abs(toY - fromY)
+
+  // Choose L-direction based on which axis is longer
+  const pts: [number, number][] = dx >= dy
+    ? [[fromX, fromY], [toX, fromY], [toX, toY]]
+    : [[fromX, fromY], [fromX, toY], [toX, toY]]
+
+  // Draw dashed orthogonal path
   ctx.strokeStyle = color
   ctx.lineWidth = 2 * z
-  ctx.setLineDash([6 * z, 4 * z])
+  ctx.setLineDash([7 * z, 4 * z])
+  ctx.lineDashOffset = -(Date.now() / 50) % (11 * z)
   ctx.lineCap = 'round'
   ctx.beginPath()
-  ctx.moveTo(fromX, fromY)
-  ctx.lineTo(toX, toY)
+  ctx.moveTo(pts[0][0], pts[0][1])
+  for (let i = 1; i < pts.length; i++) {
+    ctx.lineTo(pts[i][0], pts[i][1])
+  }
   ctx.stroke()
   ctx.setLineDash([])
+  ctx.lineDashOffset = 0
+
+  // Draw animated glow dot at the cursor end
+  const pulse = 0.5 + 0.5 * Math.sin(Date.now() / 200)
+  ctx.fillStyle = color
+  ctx.globalAlpha = 0.3 + 0.4 * pulse
+  ctx.beginPath()
+  ctx.arc(toX, toY, (5 + 3 * pulse) * z, 0, Math.PI * 2)
+  ctx.fill()
+  ctx.globalAlpha = 1
+  ctx.beginPath()
+  ctx.arc(toX, toY, 3 * z, 0, Math.PI * 2)
+  ctx.fill()
 }
 
 function getTerminalWorldPos(comp: WorkshopComponent, term: { dx: number; dy: number }): [number, number] {

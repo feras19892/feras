@@ -146,15 +146,14 @@ onUnmounted(() => {
   window.removeEventListener('keydown', onKeyDown)
 })
 
-const canvasState: DCCanvasState = {
+const canvasState = Object.assign(dragState, {
   canvasRef, zoom, panX, panY, renderMode, workshop, t,
   editingWire, editWireColor, editWireThickness, showWireEditor,
   toggleRun,
   worldToScreen, screenToWorld, hitTestComponent, hitTestTerminal,
   hitTestWire, hitTestWireJunction, hitTestWireSegment, hitTestProbe, hitTestClamp,
   draw, redraw, getMousePos,
-  ...dragState,
-}
+}) as DCCanvasState
 
 const { onMouseDown, onMouseMove, onMouseUp } = createMouseEvents(canvasState)
 const { onWheel, onDblClick, onKeyDown } = createOtherEvents(canvasState)

@@ -1,4 +1,4 @@
-﻿.readings-title {
+.readings-title {
   font-size: 0.75rem;
   color: #94a3b8;
   margin: 0.5rem 0 0.3rem;
@@ -235,7 +235,7 @@
   font-size: 0.62rem;
 }
 .ci-table th {
-  text-align: right;
+  text-align: end;
   padding: 0.2rem 0.3rem;
   background: rgba(255,255,255,0.04);
   color: #94a3b8;
@@ -247,7 +247,7 @@
   border-bottom: 1px solid rgba(255,255,255,0.03);
 }
 .ci-key { color: #64748b; white-space: nowrap; }
-.ci-val { color: #e2e8f0; text-align: left; }
+.ci-val { color: #e2e8f0; text-align: start; }
 .ci-step { color: #fbbf24; font-weight: 700; text-align: center; width: 24px; }
 .ci-desc { color: #cbd5e1; }
 .ci-ok { color: #4ade80 !important; font-weight: 600; }

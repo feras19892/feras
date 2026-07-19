@@ -11,6 +11,7 @@ export const useI18n = () => {
     loading,
     messages,
     t: store.t,
+    tArray: store.tArray,
     setLocale: store.setLocale,
     bootstrap: store.bootstrap,
   };

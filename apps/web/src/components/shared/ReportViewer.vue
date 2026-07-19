@@ -62,7 +62,7 @@ const parsed = computed(() => ({
 .report-viewer-wrapper {
   max-height: 70vh;
   overflow-y: auto;
-  padding-right: 0.5rem;
+  padding-inline-end: 0.5rem;
 }
 .chart-section {
   margin-top: 1rem;

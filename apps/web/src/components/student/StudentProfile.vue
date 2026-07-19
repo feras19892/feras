@@ -126,5 +126,5 @@ onMounted(() => load());
 .badge.resubmitted { background: rgba(99,102,241,0.15); color: #a5b4fc; }
 .badge.draft { background: rgba(148,163,184,0.15); color: #94a3b8; }
 .grade { color: #67e8f9; font-weight: 700; font-family: monospace; font-size: 0.85rem; }
-.date { color: #475569; font-size: 0.75rem; margin-right: auto; }
+.date { color: #475569; font-size: 0.75rem; margin-inline-start: auto; }
 </style>

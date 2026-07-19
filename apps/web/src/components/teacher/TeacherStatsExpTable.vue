@@ -41,7 +41,7 @@ const { t } = useI18n()
 .section { margin-bottom: 1.5rem; }
 .section h3 { font-size: 1.1rem; color: #e2e8f0; margin: 0 0 0.8rem; }
 .data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-.data-table th { text-align: right; padding: 0.5rem 0.75rem; color: #94a3b8; border-bottom: 1px solid rgba(255,255,255,0.08); font-weight: 600; }
+.data-table th { text-align: end; padding: 0.5rem 0.75rem; color: #94a3b8; border-bottom: 1px solid rgba(255,255,255,0.08); font-weight: 600; }
 .data-table td { padding: 0.5rem 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.04); color: #e2e8f0; }
 .data-table tr:hover { background: rgba(255,255,255,0.02); }
 .low { color: #f87171; }

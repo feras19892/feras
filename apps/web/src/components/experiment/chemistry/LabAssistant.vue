@@ -147,8 +147,7 @@ const typeClasses: Record<string, string> = {
   font-size: 0.78rem;
   line-height: 1.5;
   animation: slideIn 0.3s ease;
-  direction: rtl;
-  text-align: right;
+  text-align: start;
   min-height: 40px;
 }
 @keyframes slideIn {

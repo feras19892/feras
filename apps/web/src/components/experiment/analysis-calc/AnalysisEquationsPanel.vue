@@ -106,7 +106,7 @@ watch(solvedEquations, (val) => emit('solved-equations', val), { deep: true });
   padding: 0.3rem 0.45rem;
   font-size: 0.73rem;
   cursor: pointer;
-  text-align: right;
+  text-align: end;
   transition: all 0.15s;
   font-weight: 600;
   line-height: 1.3;

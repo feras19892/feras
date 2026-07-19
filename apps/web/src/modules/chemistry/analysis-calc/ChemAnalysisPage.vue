@@ -296,7 +296,7 @@ function loadDemoData() {
 }
 .demo-btn {
   background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-  margin-left: 0.5rem;
+  margin-inline-start: 0.5rem;
 }
 .tab-content { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
 .tab-fade-enter-active, .tab-fade-leave-active { transition: opacity 0.2s ease; }

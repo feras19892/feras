@@ -31,7 +31,7 @@ const emit = defineEmits<{
 .param-row { display:flex; flex-direction:column; gap:.25rem; margin-bottom:.4rem; }
 .param-row label { color:#8B95A5; font-size:.72rem; }
 .param-row input[type=range] { width:100%; accent-color:#5B8DB8; }
-.param-row span { color:#5B8DB8; font-weight:600; font-size:.72rem; text-align:right; }
+.param-row span { color:#5B8DB8; font-weight:600; font-size:.72rem; text-align: end; }
 .param-row.read-only .computed { color:#fbbf24; font-weight:700; font-size:.85rem; text-align:center; padding:.3rem; background:rgba(245,158,11,.06); border-radius:4px; border:1px solid rgba(245,158,11,.15); }
 .param-row.read-only .hint { color:#64748b; font-size:.6rem; text-align:center; }
 </style>

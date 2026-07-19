@@ -283,7 +283,7 @@ defineExpose({
 .meter-value small {
   font-size: 0.65rem;
   font-weight: 600;
-  margin-right: 0.1rem;
+  margin-inline-end: 0.1rem;
   color: #94a3b8;
 }
 </style>

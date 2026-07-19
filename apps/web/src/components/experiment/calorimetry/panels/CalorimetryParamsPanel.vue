@@ -63,7 +63,7 @@ function onMetalSelect(e: Event) {
 .params-table { width: 100%; border-collapse: collapse; font-size: .75rem; }
 .params-table td { padding: .25rem .3rem; vertical-align: middle; border-bottom: 1px solid rgba(255,255,255,.04); }
 .params-table td.label { color: #8B95A5; white-space: nowrap; font-size: .72rem; width: 1%; }
-.params-table td.val { color: #5B8DB8; font-weight: 700; text-align: right; white-space: nowrap; }
+.params-table td.val { color: #5B8DB8; font-weight: 700; text-align: end; white-space: nowrap; }
 .params-table td.val.read-only { color: #fbbf24; }
 .params-table td .hint { color: #475569; font-size: .6rem; margin-right: .3rem; }
 .params-table input[type=range] { width: 100%; min-width: 60px; }

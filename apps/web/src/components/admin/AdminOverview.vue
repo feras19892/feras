@@ -93,8 +93,8 @@ const totalUsers = computed(() => props.stats?.users?.total || 1);
 .role-chart h3 { margin: 0 0 1rem; font-size: 1rem; color: #e2e8f0; }
 .role-bars { display: flex; flex-direction: column; gap: 0.6rem; }
 .role-bar { display: flex; align-items: center; gap: 0.8rem; }
-.role-name { width: 80px; font-weight: 700; font-size: 0.85rem; text-align: right; }
+.role-name { width: 80px; font-weight: 700; font-size: 0.85rem; text-align: end; }
 .role-track { flex: 1; height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
 .role-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
-.role-count { width: 30px; text-align: left; font-size: 0.85rem; color: #e2e8f0; font-weight: 700; }
+.role-count { width: 30px; text-align: start; font-size: 0.85rem; color: #e2e8f0; font-weight: 700; }
 </style>

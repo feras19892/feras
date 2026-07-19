@@ -63,6 +63,6 @@ const emit = defineEmits<{
 .panel-body { height: 100%; overflow: auto; }
 .guide-text, .error-text { padding: .6rem; font-size: .72rem; color: #B8C0CC; line-height: 1.6; }
 .guide-text h5, .error-text h5 { color: #5B8DB8; margin: 0 0 .3rem; }
-.guide-text ol { padding-right: 1.2rem; margin: 0; }
+.guide-text ol { padding-inline-start: 1.2rem; margin: 0; }
 .guide-text li { margin-bottom: .2rem; }
 </style>

@@ -869,7 +869,7 @@ function runSolver() {
   color: #f1f5f9;
   direction: ltr;
   unicode-bidi: embed;
-  text-align: left;
+  text-align: start;
   background: rgba(15, 23, 42, 0.5);
   padding: 0.75rem;
   border-radius: 10px;
@@ -1021,7 +1021,7 @@ function runSolver() {
   font-size: 0.8rem;
   color: #94a3b8;
   direction: ltr;
-  text-align: left;
+  text-align: start;
 }
 
 .equation-graph {

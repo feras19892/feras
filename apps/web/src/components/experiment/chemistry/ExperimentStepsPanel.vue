@@ -92,7 +92,7 @@ const emit = defineEmits<{
 }
 .right-exp-list {
   margin: 0;
-  padding-right: 0;
+  padding-inline-end: 0;
   list-style: none;
   display: flex;
   flex-direction: column;

@@ -2,7 +2,8 @@ import type { useWorkshop } from '../shared/useWorkshop'
 import type { ExplainCtx } from './dcExplainCalcs1'
 import { explainOhm, explainSeries, explainParallel } from './dcExplainCalcs1'
 import { explainMixed, explainKvl, explainKcl, explainVdivider } from './dcExplainCalcs2'
-import { explainCdivider, explainBseries, explainBparallel, explainRelay, explainRcCharge, explainRlTransient, explainWheatstone, explainThevenin, explainSuperposition, explainMaxPower } from './dcExplainCalcs3'
+import { explainCdivider, explainBseries, explainBparallel, explainRelay, explainRcCharge } from './dcExplainCalcs3'
+import { explainRlTransient, explainWheatstone, explainThevenin, explainSuperposition, explainMaxPower } from './dcExplainCalcs4'
 
 type Workshop = ReturnType<typeof useWorkshop>
 

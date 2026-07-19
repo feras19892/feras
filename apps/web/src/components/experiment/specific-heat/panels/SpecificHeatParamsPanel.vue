@@ -39,6 +39,6 @@ const emit = defineEmits<{
 .param-row label { color:#8B95A5; font-size:.72rem; }
 .param-row input[type=range] { width:100%; accent-color:#5B8DB8; }
 .param-row select { background:#0d1117; border:1px solid #1e2530; color:#D1D7E0; padding:.3rem .45rem; border-radius:4px; font-size:.72rem; }
-.param-row span { color:#5B8DB8; font-weight:600; font-size:.72rem; text-align:right; }
+.param-row span { color:#5B8DB8; font-weight:600; font-size:.72rem; text-align: end; }
 .unknown-badge { background:rgba(245,158,11,.12); border:1px solid rgba(245,158,11,.3); color:#fbbf24; font-size:.72rem; font-weight:700; padding:.35rem .45rem; border-radius:4px; text-align:center; }
 </style>

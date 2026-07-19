@@ -232,7 +232,7 @@ function setTab(tab: string) {
 }
 .tool-icon { font-size: 1rem; }
 .tool-label { font-size: 0.82rem; }
-.tab-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 800; margin-right: -4px; margin-left: 2px; }
+.tab-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 800; margin-inline-end: -4px; margin-inline-start: 2px; }
 
 .nav-user {
   display: flex;
@@ -243,7 +243,7 @@ function setTab(tab: string) {
 .notif-count {
   position: absolute;
   top: -6px;
-  right: -8px;
+  inset-inline-end: -8px;
   background: #ef4444;
   color: #fff;
   border-radius: 999px;
@@ -306,7 +306,7 @@ function setTab(tab: string) {
 .toast-container {
   position: fixed;
   bottom: 16px;
-  right: 16px;
+  inset-inline-end: 16px;
   z-index: 500;
 }
 

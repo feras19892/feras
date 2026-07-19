@@ -78,7 +78,7 @@ onMounted(load);
     </div>
 
     <div v-if="loading" class="loading">{{ t('admin.loading') }}</div>
-    <div v-else-if="error" class="error-box">❌ {{ error }}</div>
+    <div v-else-if="error" class="error-box">âŒ {{ error }}</div>
     <template v-else>
       <!-- Activity Stats -->
       <div v-if="activityStats" class="stats-row">
@@ -111,7 +111,7 @@ onMounted(load);
         <div class="insight-card warning" v-if="insights.emptyClasses?.length">
           <h4>{{ t('adminUser.emptyClassesLabel') }}</h4>
           <ul>
-            <li v-for="c in insights.emptyClasses" :key="c.id">{{ c.name }} — {{ c.teacher_name }}</li>
+            <li v-for="c in insights.emptyClasses" :key="c.id">{{ c.name }} â€” {{ c.teacher_name }}</li>
           </ul>
         </div>
         <div class="insight-card alert" v-if="insights.ungradedCount">
@@ -133,7 +133,7 @@ onMounted(load);
           <div v-for="a in activities.slice(0, 50)" :key="a.id" class="activity-item">
             <span class="act-action">{{ actionLabel(a.action) }}</span>
             <span class="act-actor">{{ a.actor_name }} ({{ a.actor_role }})</span>
-            <span class="act-target" v-if="a.target_type">→ {{ a.target_type }} {{ a.target_id }}</span>
+            <span class="act-target" v-if="a.target_type">â†’ {{ a.target_type }} {{ a.target_id }}</span>
             <span class="act-time">{{ formatDate(a.created_at) }}</span>
           </div>
         </div>
@@ -162,7 +162,7 @@ onMounted(load);
 .insight-card.alert { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.15); }
 .insight-card.info { background: rgba(59,130,246,0.08); border-color: rgba(59,130,246,0.15); }
 .insight-card h4 { margin: 0 0 0.5rem; font-size: 0.9rem; }
-.insight-card ul { margin: 0; padding-right: 1.2rem; font-size: 0.85rem; color: #cbd5e1; }
+.insight-card ul { margin: 0; padding-inline-start: 1.2rem; font-size: 0.85rem; color: #cbd5e1; }
 .insight-card li { margin-bottom: 0.2rem; }
 .insight-card p { margin: 0; font-size: 0.85rem; }
 
@@ -172,5 +172,5 @@ onMounted(load);
 .act-action { font-weight: 700; color: #a5b4fc; }
 .act-actor { color: #94a3b8; }
 .act-target { color: #67e8f9; }
-.act-time { margin-right: auto; color: #64748b; font-size: 0.75rem; }
+.act-time { margin-inline-start: auto; color: #64748b; font-size: 0.75rem; }
 </style>

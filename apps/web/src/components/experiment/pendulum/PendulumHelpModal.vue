@@ -21,7 +21,7 @@ const emit = defineEmits<{ (e: 'close'): void }>()
             <h4>{{ t('experiments.pdHelpS1Title') }}</h4>
             <p>{{ t('experiments.pdHelpS1P1') }}</p>
             <p>{{ t('experiments.pdHelpS1P2') }}</p>
-            <div class="formula">F = -m · g · sin(θ)</div>
+            <div class="formula">F = -m Â· g Â· sin(Î¸)</div>
             <p>{{ t('experiments.pdHelpS1P3') }}</p>
           </section>
 
@@ -29,13 +29,13 @@ const emit = defineEmits<{ (e: 'close'): void }>()
           <section>
             <h4>{{ t('experiments.pdHelpS2Title') }}</h4>
             <p>{{ t('experiments.pdHelpS2P1') }}</p>
-            <div class="formula">T = 2π √(L / g)</div>
+            <div class="formula">T = 2Ï€ âˆš(L / g)</div>
             <p>{{ t('experiments.pdHelpS2P2') }}</p>
-            <div class="formula">T² = (4π² / g) · L</div>
+            <div class="formula">TÂ² = (4Ï€Â² / g) Â· L</div>
             <p>{{ t('experiments.pdHelpS2P3') }}</p>
-            <div class="formula">f = 1 / T = (1 / 2π) √(g / L)</div>
+            <div class="formula">f = 1 / T = (1 / 2Ï€) âˆš(g / L)</div>
             <p>{{ t('experiments.pdHelpS2P4') }}</p>
-            <div class="formula">ω₀ = √(g / L)</div>
+            <div class="formula">Ï‰â‚€ = âˆš(g / L)</div>
           </section>
 
           <!-- 3. Laboratory Procedure -->
@@ -57,12 +57,12 @@ const emit = defineEmits<{ (e: 'close'): void }>()
               <li>{{ t('experiments.pdHelpS4L1') }}</li>
               <li>
                 {{ t('experiments.pdHelpS4L2') }}
-                <div class="formula">Slope = ΔT² / ΔL</div>
+                <div class="formula">Slope = Î”TÂ² / Î”L</div>
               </li>
               <li>
                 {{ t('experiments.pdHelpS4L3') }}
-                <div class="formula">Slope = 4π² / g</div>
-                <div class="formula">g = 4π² / Slope</div>
+                <div class="formula">Slope = 4Ï€Â² / g</div>
+                <div class="formula">g = 4Ï€Â² / Slope</div>
               </li>
             </ul>
           </section>
@@ -113,11 +113,11 @@ const emit = defineEmits<{ (e: 'close'): void }>()
 .modal-header h3 { margin: 0; font-size: 1rem; color: #e2e8f0; }
 .close-btn { background: transparent; border: 1px solid #2D3645; color: #8B95A5; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; padding: 0; }
 .close-btn:hover { background: rgba(91,141,184,.1); color: #5B8DB8; }
-.modal-body { overflow-y: auto; padding: 1.2rem; font-size: .82rem; color: #cbd5e1; line-height: 1.8; direction: rtl; text-align: right; }
+.modal-body { overflow-y: auto; padding: 1.2rem; font-size: .82rem; color: #cbd5e1; line-height: 1.8; text-align: start; }
 .modal-body section { margin-bottom: 1.4rem; }
 .modal-body h4 { margin: 0 0 .5rem; font-size: .9rem; color: #5B8DB8; border-bottom: 1px solid #2D3645; padding-bottom: .3rem; }
 .modal-body p { margin: .4rem 0; }
-.modal-body ol, .modal-body ul { margin: .4rem 0; padding-right: 1.2rem; }
+.modal-body ol, .modal-body ul { margin: .4rem 0; padding-inline-start: 1.2rem; }
 .modal-body li { margin-bottom: .25rem; }
 .formula { background: #1a2332; border: 1px solid #2D3645; border-radius: 6px; padding: .6rem .8rem; font-family: monospace; font-size: .9rem; color: #5B8DB8; text-align: center; margin: .6rem 0; direction: ltr; }
 .element-grid { display: flex; flex-direction: column; gap: .35rem; }

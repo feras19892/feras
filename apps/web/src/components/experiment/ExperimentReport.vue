@@ -50,7 +50,7 @@ function printReport() {
 
 <template>
   <div id="printable-report" class="experiment-report-panel">
-    <button class="close-btn" @click="emit('close')">✕</button>
+    <button class="close-btn" @click="emit('close')">âœ•</button>
 
     <section class="student-info">
       <h5>{{ t('experiments.studentInfo') }}</h5>
@@ -77,8 +77,8 @@ function printReport() {
     <slot name="content" />
 
     <div class="print-bar" v-if="hasData">
-      <button class="print-btn" @click="printReport">🖨️ {{ t('experiments.print') }}</button>
-      <button class="print-btn primary" @click="emit('open-full-report')">📋 {{ t('experiments.fullReport') }}</button>
+      <button class="print-btn" @click="printReport">ðŸ–¨ï¸ {{ t('experiments.print') }}</button>
+      <button class="print-btn primary" @click="emit('open-full-report')">ðŸ“‹ {{ t('experiments.fullReport') }}</button>
     </div>
     <div class="no-data" v-if="!hasData">
       <slot name="no-data">{{ t('experiments.noRecordedDataPerformExperiment') }}</slot>
@@ -94,7 +94,7 @@ section { background: #161B22; border: 1px solid #2D3645; border-radius: 8px; pa
 .report-table th, .report-table td { border: 1px solid #2D3645; padding: .2rem .3rem; text-align: center; color: #D1D7E0; }
 .report-table th { background: #252D3A; }
 .result-line { font-size: .78rem; color: #D1D7E0; margin-top: .3rem; }
-.error-sources ul { margin: .2rem 0; padding-right: 1.2rem; font-size: .75rem; color: #8B95A5; }
+.error-sources ul { margin: .2rem 0; padding-inline-start: 1.2rem; font-size: .75rem; color: #8B95A5; }
 .no-data { text-align: center; color: #8B95A5; font-size: .8rem; padding: 1rem; }
 .print-bar { display: flex; justify-content: center; margin-top: .3rem; gap: .3rem; }
 .print-btn { background: #252D3A; border: 1px solid #2D3645; color: #5B8DB8; border-radius: 4px; padding: .3rem .7rem; font-size: .75rem; cursor: pointer; }

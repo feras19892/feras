@@ -75,7 +75,7 @@ async function onAddNote() {
 }
 
 function formatDate(d: string | null | undefined) {
-  return d ? new Date(d).toLocaleDateString() : '—';
+  return d ? new Date(d).toLocaleDateString() : 'â€”';
 }
 
 onMounted(() => load(props.userId));
@@ -86,7 +86,7 @@ onMounted(() => load(props.userId));
     <button class="back-btn" @click="$emit('back')">{{ t('adminUser.back') }}</button>
 
     <div v-if="loading" class="loading">{{ t('admin.loading') }}</div>
-    <div v-else-if="error" class="error">❌ {{ error }}</div>
+    <div v-else-if="error" class="error">âŒ {{ error }}</div>
     <template v-else-if="profile?.user">
       <!-- Header -->
       <div class="user-header">
@@ -161,7 +161,7 @@ onMounted(() => load(props.userId));
           <h4>{{ t('adminUser.reports') }} ({{ profile.reports?.length ?? 0 }})</h4>
           <ul v-if="profile.reports?.length">
             <li v-for="r in profile.reports" :key="r.id">
-              {{ r.experiment_name }} — {{ r.status }} {{ r.grade ? `(${t('adminUser.grade')}: ${r.grade})` : '' }}
+              {{ r.experiment_name }} â€” {{ r.status }} {{ r.grade ? `(${t('adminUser.grade')}: ${r.grade})` : '' }}
             </li>
           </ul>
           <p v-else class="empty">{{ t('adminUser.noReports') }}</p>
@@ -171,7 +171,7 @@ onMounted(() => load(props.userId));
           <h4>{{ t('adminUser.warnings') }} ({{ profile.warnings?.length ?? 0 }})</h4>
           <ul v-if="profile.warnings?.length">
             <li v-for="w in profile.warnings" :key="w.id" :class="w.severity">
-              {{ w.title }} ({{ w.severity }}) {{ w.is_read ? '✓' : '●' }}
+              {{ w.title }} ({{ w.severity }}) {{ w.is_read ? 'âœ“' : 'â—' }}
             </li>
           </ul>
           <p v-else class="empty">{{ t('adminUser.noWarnings') }}</p>
@@ -195,7 +195,7 @@ onMounted(() => load(props.userId));
           <h4>{{ t('adminUser.recentActivity') }}</h4>
           <ul v-if="profile.activity?.length">
             <li v-for="a in profile.activity" :key="a.created_at">
-              {{ a.action }} {{ a.details ? `— ${a.details}` : '' }} <small>{{ formatDate(a.created_at) }}</small>
+              {{ a.action }} {{ a.details ? `â€” ${a.details}` : '' }} <small>{{ formatDate(a.created_at) }}</small>
             </li>
           </ul>
           <p v-else class="empty">{{ t('adminUser.noActivity') }}</p>
@@ -214,7 +214,7 @@ onMounted(() => load(props.userId));
 .user-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
 .user-header h2 { margin: 0; font-size: 1.3rem; }
 .email { margin: 0.2rem 0; color: #94a3b8; font-size: 0.85rem; }
-.role-badge { padding: 0.15rem 0.5rem; border-radius: 0.3rem; font-size: 0.75rem; font-weight: 700; margin-left: 0.5rem; }
+.role-badge { padding: 0.15rem 0.5rem; border-radius: 0.3rem; font-size: 0.75rem; font-weight: 700; margin-inline-start: 0.5rem; }
 .role-badge.admin { background: rgba(248,113,113,0.2); color: #f87171; }
 .role-badge.teacher { background: rgba(96,165,250,0.2); color: #60a5fa; }
 .role-badge.student { background: rgba(52,211,153,0.2); color: #34d399; }
@@ -241,7 +241,7 @@ onMounted(() => load(props.userId));
 .info-card.full { grid-column: 1 / -1; }
 .info-card h4 { margin: 0 0 0.75rem; font-size: 0.95rem; color: #a5b4fc; }
 .info-card p { margin: 0.3rem 0; font-size: 0.85rem; }
-.info-card ul { margin: 0; padding-right: 1.2rem; font-size: 0.85rem; }
+.info-card ul { margin: 0; padding-inline-start: 1.2rem; font-size: 0.85rem; }
 .info-card li { margin-bottom: 0.3rem; }
 .info-card li.low { color: #94a3b8; }
 .info-card li.normal { color: #fbbf24; }

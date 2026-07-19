@@ -25,13 +25,13 @@ const emit = defineEmits<{ (e: 'close'): void }>()
               <li>{{ t('experiments.inHelpS1L2') }}</li>
             </ul>
             <p>{{ t('experiments.inHelpS1P2') }}</p>
-            <div class="formula">f_k = μ_k · N = μ_k · m · g · cos(θ)</div>
+            <div class="formula">f_k = Î¼_k Â· N = Î¼_k Â· m Â· g Â· cos(Î¸)</div>
             <p>{{ t('experiments.inHelpS1P3') }}</p>
             <p>{{ t('experiments.inHelpS1P4') }}</p>
             <div class="formula">
-              m·g·sinθ − f_k = m·a<br>
-              m·g·sinθ − μ_k·m·g·cosθ = m·a<br>
-              <b>a = g (sinθ − μ_k·cosθ)</b>
+              mÂ·gÂ·sinÎ¸ âˆ’ f_k = mÂ·a<br>
+              mÂ·gÂ·sinÎ¸ âˆ’ Î¼_kÂ·mÂ·gÂ·cosÎ¸ = mÂ·a<br>
+              <b>a = g (sinÎ¸ âˆ’ Î¼_kÂ·cosÎ¸)</b>
             </div>
           </section>
 
@@ -64,7 +64,7 @@ const emit = defineEmits<{ (e: 'close'): void }>()
               <li>{{ t('experiments.inHelpS4L1') }}</li>
               <li>
                 {{ t('experiments.inHelpS4L2') }}
-                <div class="formula">Slope = Δa / Δsin(θ)</div>
+                <div class="formula">Slope = Î”a / Î”sin(Î¸)</div>
               </li>
               <li>
                 {{ t('experiments.inHelpS4L3') }}
@@ -119,17 +119,17 @@ const emit = defineEmits<{ (e: 'close'): void }>()
 .modal-header h3 { margin: 0; font-size: 1rem; color: #e2e8f0; }
 .close-btn { background: transparent; border: 1px solid #2D3645; color: #8B95A5; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; padding: 0; }
 .close-btn:hover { background: rgba(91,141,184,.1); color: #5B8DB8; }
-.modal-body { overflow-y: auto; padding: 1.2rem; font-size: .82rem; color: #cbd5e1; line-height: 1.8; direction: rtl; text-align: right; }
+.modal-body { overflow-y: auto; padding: 1.2rem; font-size: .82rem; color: #cbd5e1; line-height: 1.8; text-align: start; }
 .modal-body section { margin-bottom: 1.4rem; }
 .modal-body h4 { margin: 0 0 .5rem; font-size: .9rem; color: #5B8DB8; border-bottom: 1px solid #2D3645; padding-bottom: .3rem; }
 .modal-body p { margin: .4rem 0; }
-.modal-body ol, .modal-body ul { margin: .4rem 0; padding-right: 1.2rem; }
+.modal-body ol, .modal-body ul { margin: .4rem 0; padding-inline-start: 1.2rem; }
 .modal-body li { margin-bottom: .25rem; }
 .formula { background: #1a2332; border: 1px solid #2D3645; border-radius: 6px; padding: .6rem .8rem; font-family: monospace; font-size: .9rem; color: #5B8DB8; text-align: center; margin: .6rem 0; direction: ltr; }
 .element-grid { display: flex; flex-direction: column; gap: .35rem; }
 .element { background: #1a2332; border-radius: 6px; padding: .4rem .6rem; font-size: .78rem; }
 .tag { color: #5B8DB8; }
-.method { background: #1a2332; border-radius: 6px; padding: .5rem .7rem; margin-bottom: .35rem; font-size: .78rem; direction: ltr; text-align: left; }
+.method { background: #1a2332; border-radius: 6px; padding: .5rem .7rem; margin-bottom: .35rem; font-size: .78rem; direction: ltr; text-align: start; }
 .kbd-grid { display: flex; flex-wrap: wrap; gap: .4rem; }
 .kbd-grid span { background: #1a2332; border: 1px solid #2D3645; border-radius: 5px; padding: .3rem .5rem; font-size: .75rem; }
 kbd { background: #252D3A; border: 1px solid #475569; border-radius: 4px; padding: .05rem .3rem; font-family: monospace; font-size: .7rem; color: #D1D7E0; }

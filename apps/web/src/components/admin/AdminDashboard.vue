@@ -200,10 +200,10 @@ onMounted(load);
 .role-chart h3 { margin: 0 0 1rem; font-size: 1rem; }
 .role-bars { display: flex; flex-direction: column; gap: 0.6rem; }
 .role-bar { display: flex; align-items: center; gap: 0.8rem; }
-.role-name { width: 80px; font-weight: 700; font-size: 0.85rem; text-align: right; }
+.role-name { width: 80px; font-weight: 700; font-size: 0.85rem; text-align: end; }
 .role-track { flex: 1; height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
 .role-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
-.role-count { width: 30px; text-align: left; font-size: 0.85rem; font-weight: 700; }
+.role-count { width: 30px; text-align: start; font-size: 0.85rem; font-weight: 700; }
 
 .alerts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
 .alert-card { border-radius: 0.6rem; padding: 1rem; border: 1px solid rgba(255,255,255,0.06); }
@@ -211,7 +211,7 @@ onMounted(load);
 .alert-card.alert { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.15); }
 .alert-card.info { background: rgba(59,130,246,0.08); border-color: rgba(59,130,246,0.15); }
 .alert-card h4 { margin: 0 0 0.5rem; font-size: 0.9rem; }
-.alert-card ul { margin: 0; padding-right: 1.2rem; font-size: 0.85rem; color: #cbd5e1; }
+.alert-card ul { margin: 0; padding-inline-start: 1.2rem; font-size: 0.85rem; color: #cbd5e1; }
 .alert-card li { margin-bottom: 0.2rem; }
 .alert-card p { margin: 0; font-size: 0.85rem; }
 
@@ -225,7 +225,7 @@ onMounted(load);
 .top-role.student { background: rgba(52,211,153,0.2); color: #34d399; }
 .top-bar { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
 .top-fill { height: 100%; background: linear-gradient(90deg, #4f46e5, #67e8f9); border-radius: 3px; transition: width 0.5s; }
-.top-count { width: 80px; font-size: 0.8rem; color: #94a3b8; text-align: left; }
+.top-count { width: 80px; font-size: 0.8rem; color: #94a3b8; text-align: start; }
 
 .recent-activity { background: rgba(15,23,42,0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.75rem; padding: 1rem; margin-bottom: 1.5rem; }
 .recent-activity h3 { margin: 0 0 1rem; font-size: 1rem; }

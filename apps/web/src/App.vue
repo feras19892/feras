@@ -37,6 +37,17 @@ onMounted(() => {
   box-sizing: border-box;
 }
 
+/* Ensure all text respects the dir attribute by default */
+body, .app {
+  text-align: start;
+}
+
+/* Neutralize vite-plugin-vue-devtools' dev-only bug that mirrors the
+   entire page via `html[dir="rtl"] { transform: scaleX(-1) }` */
+html[dir='rtl'] {
+  transform: none !important;
+}
+
 .app {
   min-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

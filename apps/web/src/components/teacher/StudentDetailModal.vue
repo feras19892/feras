@@ -118,7 +118,7 @@ function statusLabel(s: string) {
 .name { flex: 1; font-weight: 600; color: #f1f5f9; }
 .status { color: #94a3b8; font-size: 0.75rem; }
 .grade { color: #67e8f9; font-weight: 700; font-family: monospace; }
-.date { color: #475569; margin-right: auto; font-size: 0.75rem; }
+.date { color: #475569; margin-inline-start: auto; font-size: 0.75rem; }
 .actions { display: flex; justify-content: center; margin-top: 0.5rem; }
 .btn-close { padding: 0.55rem 1.5rem; border-radius: 0.55rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); }
 </style>

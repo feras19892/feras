@@ -50,7 +50,7 @@ const NOTES = [
 .ref-header { display: grid; grid-template-columns: 1fr 1.2fr 1.2fr; padding: .4rem .6rem; background: #1E2530; border-radius: 4px; font-weight: 700; font-size: .72rem; color: #94a3b8; text-align: center; }
 .ref-row { display: grid; grid-template-columns: 1fr 1.2fr 1.2fr; padding: .35rem .6rem; border-bottom: 1px solid #1e2530; font-size: .72rem; gap: .3rem; text-align: center; }
 .ref-row:last-child { border-bottom: none; }
-.prop { color: #e2e8f0; font-weight: 600; text-align: right; }
+.prop { color: #e2e8f0; font-weight: 600; text-align: end; }
 .ref-section { margin-top: .4rem; padding: .5rem; background: rgba(255,255,255,.02); border-radius: 4px; }
 .section-title { font-size: .78rem; font-weight: 700; color: #67e8f9; margin-bottom: .3rem; }
 .formula-box { font-family: 'Courier New', monospace; font-size: .78rem; color: #f59e0b; text-align: center; padding: .25rem; background: rgba(245,158,11,.06); border-radius: 3px; margin-bottom: .2rem; }

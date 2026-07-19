@@ -38,19 +38,19 @@ const emit = defineEmits<{ (e: 'close'): void }>()
             </ul>
             <p>{{ t('experiments.ssHelpS2P3') }}</p>
             <p>{{ t('experiments.ssHelpS2P4') }}</p>
-            <div class="formula">L = λ / 4</div>
+            <div class="formula">L = Î» / 4</div>
             <p>{{ t('experiments.ssHelpS2P5') }}</p>
-            <div class="formula">L + e = λ / 4 &nbsp;&nbsp;&rArr;&nbsp;&nbsp; L = λ/4 − e</div>
+            <div class="formula">L + e = Î» / 4 &nbsp;&nbsp;&rArr;&nbsp;&nbsp; L = Î»/4 âˆ’ e</div>
           </section>
 
           <!-- 3. Mathematical Equations -->
           <section>
             <h4>{{ t('experiments.ssHelpS3Title') }}</h4>
             <p>{{ t('experiments.ssHelpS3P1') }}</p>
-            <div class="formula">v = f · λ &nbsp;&nbsp;&rArr;&nbsp;&nbsp; λ = v / f</div>
+            <div class="formula">v = f Â· Î» &nbsp;&nbsp;&rArr;&nbsp;&nbsp; Î» = v / f</div>
             <p>{{ t('experiments.ssHelpS3P2') }}</p>
             <p>{{ t('experiments.ssHelpS3P3') }}</p>
-            <div class="formula">L = (v/4) · (1/f) − e</div>
+            <div class="formula">L = (v/4) Â· (1/f) âˆ’ e</div>
             <p>{{ t('experiments.ssHelpS3P4') }}</p>
           </section>
 
@@ -76,12 +76,12 @@ const emit = defineEmits<{ (e: 'close'): void }>()
               <li>{{ t('experiments.ssHelpS5L1') }}</li>
               <li>
                 {{ t('experiments.ssHelpS5L2') }}
-                <div class="formula">Slope = ΔL / Δ(1/f)</div>
+                <div class="formula">Slope = Î”L / Î”(1/f)</div>
               </li>
               <li>
                 {{ t('experiments.ssHelpS5L3') }}
                 <div class="formula">Slope = v / 4</div>
-                <div class="formula">v = 4 × Slope</div>
+                <div class="formula">v = 4 Ã— Slope</div>
               </li>
               <li>{{ t('experiments.ssHelpS5L4') }}</li>
             </ul>
@@ -132,11 +132,11 @@ const emit = defineEmits<{ (e: 'close'): void }>()
 .modal-header h3 { margin: 0; font-size: 1rem; color: #e2e8f0; }
 .close-btn { background: transparent; border: 1px solid #2D3645; color: #8B95A5; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; padding: 0; }
 .close-btn:hover { background: rgba(91,141,184,.1); color: #5B8DB8; }
-.modal-body { overflow-y: auto; padding: 1.2rem; font-size: .82rem; color: #cbd5e1; line-height: 1.8; direction: rtl; text-align: right; }
+.modal-body { overflow-y: auto; padding: 1.2rem; font-size: .82rem; color: #cbd5e1; line-height: 1.8; text-align: start; }
 .modal-body section { margin-bottom: 1.4rem; }
 .modal-body h4 { margin: 0 0 .5rem; font-size: .9rem; color: #5B8DB8; border-bottom: 1px solid #2D3645; padding-bottom: .3rem; }
 .modal-body p { margin: .4rem 0; }
-.modal-body ol, .modal-body ul { margin: .4rem 0; padding-right: 1.2rem; }
+.modal-body ol, .modal-body ul { margin: .4rem 0; padding-inline-start: 1.2rem; }
 .modal-body li { margin-bottom: .25rem; }
 .formula { background: #1a2332; border: 1px solid #2D3645; border-radius: 6px; padding: .6rem .8rem; font-family: monospace; font-size: .9rem; color: #5B8DB8; text-align: center; margin: .6rem 0; direction: ltr; }
 .element-grid { display: flex; flex-direction: column; gap: .35rem; }

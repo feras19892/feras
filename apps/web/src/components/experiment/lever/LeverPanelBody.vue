@@ -1,4 +1,4 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import { useI18n } from '../../../composables/useI18n'
 import type { LeverTrial } from '../../../composables/lever/useLeverTrials'
 import type { LeverForce } from '../../../modules/physics/experiments/lever/useLeverPhysics'
@@ -133,7 +133,7 @@ function onDistInput(id: number, val: string) { const n = parseFloat(val); if (!
 <style scoped>
 .panel-body { display:flex; flex-direction:column; gap:.35rem; font-size:.75rem; color:#D1D7E0; }
 .data-table { width:100%; border-collapse:collapse; font-size:.7rem; }
-.data-table th { text-align:left; padding:.25rem .3rem; color:#5B8DB8; border-bottom:1px solid #2D3645; }
+.data-table th { text-align: start; padding:.25rem .3rem; color:#5B8DB8; border-bottom:1px solid #2D3645; }
 .data-table td { padding:.2rem .3rem; border-bottom:1px solid rgba(45,54,69,0.4); }
 .placeholder { color:#64748b; text-align:center; padding:1rem; }
 .force-list { display:flex; flex-direction:column; gap:.3rem; }

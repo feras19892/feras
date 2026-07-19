@@ -101,7 +101,7 @@ load();
 }
 .title { margin: 0; font-size: 0.9rem; color: #67e8f9; }
 .status { text-align: center; color: #64748b; font-size: 0.8rem; padding: 0.5rem; }
-.comments-list { display: flex; flex-direction: column; gap: 0.5rem; max-height: 300px; overflow-y: auto; padding-right: 0.25rem; }
+.comments-list { display: flex; flex-direction: column; gap: 0.5rem; max-height: 300px; overflow-y: auto; padding-inline-end: 0.25rem; }
 .comment { padding: 0.6rem 0.8rem; border-radius: 0.45rem; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); }
 .comment.me { background: rgba(99, 102, 241, 0.08); border-color: rgba(99, 102, 241, 0.15); }
 .comment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem; }

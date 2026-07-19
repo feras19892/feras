@@ -1,8 +1,9 @@
 import type { WorkshopComponent, WorkshopWire } from './types'
 import { WIRE_COLORS } from './types'
 import { loadDCExperiment2, type ExperimentName2 } from './workshopExperimentsDC2'
+import { loadDCExperiment3, type ExperimentName3 } from './workshopExperimentsDC3'
 
-export type ExperimentName = 'ohm' | 'series' | 'parallel' | 'mixed' | ExperimentName2
+export type ExperimentName = 'ohm' | 'series' | 'parallel' | 'mixed' | ExperimentName2 | ExperimentName3
 
 export interface ExperimentContext {
   components: WorkshopComponent[]
@@ -157,8 +158,13 @@ export function loadDCExperiment(name: ExperimentName, ctx: ExperimentContext) {
     addWire(v3.id, 1, r3.id, 1, WIRE_COLORS.blue, [{x:883,y:200},{x:965,y:200}])
   }
 
-  const part2Names: ExperimentName2[] = ['kvl', 'kcl', 'vdivider', 'cdivider', 'bseries', 'bparallel', 'relay', 'rc_charge', 'rl_transient', 'wheatstone', 'thevenin', 'superposition', 'maxpower']
+  const part2Names: ExperimentName2[] = ['kvl', 'kcl', 'vdivider', 'cdivider', 'bseries', 'bparallel', 'relay']
   if (part2Names.includes(name as ExperimentName2)) {
     loadDCExperiment2(name as ExperimentName2, ctx)
+  }
+
+  const part3Names: ExperimentName3[] = ['rc_charge', 'rl_transient', 'wheatstone', 'thevenin', 'superposition', 'maxpower']
+  if (part3Names.includes(name as ExperimentName3)) {
+    loadDCExperiment3(name as ExperimentName3, ctx)
   }
 }

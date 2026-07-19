@@ -46,9 +46,9 @@ function handleLogin() {
           <button type="submit" class="btn-submit">
             {{ t('auth.loginBtn') }}
           </button>
-          <router-link to="/register" class="btn-register">
-            {{ t('auth.registerBtn') }}
-          </router-link>
+        </div>
+        <div class="register-link">
+          {{ t('auth.noAccount') }} <router-link to="/register" class="btn-register">{{ t('auth.registerBtn') }}</router-link>
         </div>
       </form>
     </div>
@@ -59,17 +59,16 @@ function handleLogin() {
 .login-card {
   width: 100%;
   padding: 1.5rem;
-  border-radius: 1rem;
+  border-radius: 16px;
   background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
-  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
 }
 .field {
   margin-bottom: 1rem;
-  text-align: right;
-}
-:global(html[dir='ltr']) .field {
-  text-align: left;
+  text-align: start;
 }
 .field label {
   display: block;
@@ -96,7 +95,7 @@ function handleLogin() {
 }
 .toggle-pw {
   position: absolute;
-  left: 0.6rem;
+  inset-inline-start: 0.6rem;
   top: 50%;
   transform: translateY(-50%);
   background: none;
@@ -112,33 +111,39 @@ function handleLogin() {
   margin: 0.5rem 0;
 }
 .btn-row {
-  display: flex;
-  gap: 0.6rem;
   margin-top: 0.5rem;
 }
 .btn-submit {
-  flex: 1;
-  padding: 0.8rem;
+  width: 100%;
+  padding: 0.85rem;
   border: none;
-  border-radius: 0.5rem;
-  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  border-radius: 12px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: #fff;
   font-weight: 700;
   cursor: pointer;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 16px rgba(99,102,241,0.25);
+}
+.btn-submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(99,102,241,0.35);
+}
+.register-link {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.82rem;
+  color: #64748b;
 }
 .btn-register {
-  flex: 1;
-  padding: 0.8rem;
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 0.5rem;
-  background: rgba(255,255,255,0.06);
-  color: #e2e8f0;
-  font-weight: 700;
-  cursor: pointer;
-  font-size: 0.95rem;
+  color: #a5b4fc;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 .btn-register:hover {
-  background: rgba(255,255,255,0.1);
+  color: #c7d2fe;
+  text-decoration: underline;
 }
 </style>

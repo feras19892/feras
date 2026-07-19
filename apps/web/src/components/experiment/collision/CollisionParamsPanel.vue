@@ -81,7 +81,7 @@ function applyPreset(p: Partial<CollisionParams>) {
 .param-row { display: flex; align-items: center; gap: .5rem; margin-bottom: .5rem; font-size: .75rem; }
 .param-row label { width: 80px; color: #D1D7E0; flex-shrink: 0; }
 .param-row input[type="range"] { flex: 1; min-width: 0; }
-.param-row span { width: 50px; text-align: left; color: #5B8DB8; font-family: monospace; }
+.param-row span { width: 50px; text-align: start; color: #5B8DB8; font-family: monospace; }
 .param-row span.pos { color: #22c55e; }
 .param-row span.neg { color: #ef4444; }
 .presets-bar { margin-bottom: .6rem; padding-bottom: .4rem; border-bottom: 1px dashed #2D3645; }

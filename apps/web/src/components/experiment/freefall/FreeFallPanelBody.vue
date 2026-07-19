@@ -68,20 +68,20 @@ const errorSources = [
 
   <template v-else-if="id === 'equations'">
     <div class="calc-row">
-      <button class="btn-calc" @click="emit('calcG')">📐 {{ t('experiments.calculateG') }}</button>
-      <button class="btn-calc" @click="emit('calcT')">⏱️ {{ t('experiments.calculateT') }}</button>
-      <button class="btn-calc" @click="emit('calcV')">⚡ {{ t('experiments.calculateV') }}</button>
-      <button class="btn-calc" @click="emit('calcFitG')">📈 {{ t('experiments.fitG') }}</button>
+      <button class="btn-calc" @click="emit('calcG')">ðŸ“ {{ t('experiments.calculateG') }}</button>
+      <button class="btn-calc" @click="emit('calcT')">â±ï¸ {{ t('experiments.calculateT') }}</button>
+      <button class="btn-calc" @click="emit('calcV')">âš¡ {{ t('experiments.calculateV') }}</button>
+      <button class="btn-calc" @click="emit('calcFitG')">ðŸ“ˆ {{ t('experiments.fitG') }}</button>
     </div>
     <div class="calc-result">
       <div v-for="(line, i) in resultLines" :key="i">{{ line }}</div>
     </div>
     <div class="equation-list">
-      <div class="equation-item"><span class="eq-type">v(t)</span><span class="eq-formula">v = -g·t</span></div>
-      <div class="equation-item"><span class="eq-type">y(t)</span><span class="eq-formula">y = y₀ - ½gt²</span></div>
-      <div class="equation-item"><span class="eq-type">t_fall</span><span class="eq-formula">t = √(2h/g)</span></div>
-      <div class="equation-item"><span class="eq-type">v_impact</span><span class="eq-formula">v = √(2gh)</span></div>
-      <div class="equation-item"><span class="eq-type">g_calc</span><span class="eq-formula">g = 2h/t²</span></div>
+      <div class="equation-item"><span class="eq-type">v(t)</span><span class="eq-formula">v = -gÂ·t</span></div>
+      <div class="equation-item"><span class="eq-type">y(t)</span><span class="eq-formula">y = yâ‚€ - Â½gtÂ²</span></div>
+      <div class="equation-item"><span class="eq-type">t_fall</span><span class="eq-formula">t = âˆš(2h/g)</span></div>
+      <div class="equation-item"><span class="eq-type">v_impact</span><span class="eq-formula">v = âˆš(2gh)</span></div>
+      <div class="equation-item"><span class="eq-type">g_calc</span><span class="eq-formula">g = 2h/tÂ²</span></div>
     </div>
   </template>
 
@@ -93,10 +93,10 @@ const errorSources = [
     <div class="stat-row"><span class="stat-label">v<sub>impact</sub></span><span class="stat-value">{{ simState.landed ? (Math.abs(simState.vy)?.toFixed(2) ?? '--') : '--' }} m/s</span></div>
     <template v-if="trials.length > 0 && trialStats">
       <div class="stat-section-title">{{ t('experiments.measurementStatistics') }} ({{ trials.length }})</div>
-      <div class="stat-row"><span class="stat-label">t̄</span><span class="stat-value">{{ trialStats.time_mean.toFixed(4) }} s</span></div>
-      <div class="stat-row"><span class="stat-label">σ<sub>t</sub></span><span class="stat-value">{{ trialStats.time_std.toFixed(4) }} s</span></div>
-      <div class="stat-row"><span class="stat-label">ḡ<sub>calc</sub></span><span class="stat-value highlight">{{ trialStats.g_mean.toFixed(2) }} m/s²</span></div>
-      <div class="stat-row"><span class="stat-label">σ<sub>g</sub></span><span class="stat-value">{{ trialStats.g_std.toFixed(2) }} m/s²</span></div>
+      <div class="stat-row"><span class="stat-label">tÌ„</span><span class="stat-value">{{ trialStats.time_mean.toFixed(4) }} s</span></div>
+      <div class="stat-row"><span class="stat-label">Ïƒ<sub>t</sub></span><span class="stat-value">{{ trialStats.time_std.toFixed(4) }} s</span></div>
+      <div class="stat-row"><span class="stat-label">gÌ„<sub>calc</sub></span><span class="stat-value highlight">{{ trialStats.g_mean.toFixed(2) }} m/sÂ²</span></div>
+      <div class="stat-row"><span class="stat-label">Ïƒ<sub>g</sub></span><span class="stat-value">{{ trialStats.g_std.toFixed(2) }} m/sÂ²</span></div>
     </template>
   </template>
 
@@ -127,6 +127,6 @@ const errorSources = [
 .stat-label { font-size: .7rem; color: #8B95A5; font-weight: 600; }
 .stat-value { font-size: .75rem; font-weight: 700; color: #D1D7E0; font-family: monospace; }
 .stat-value.highlight { color: #5B8DB8; }
-.error-list { margin: 0; padding-right: 1.2rem; font-size: .78rem; color: #D1D7E0; line-height: 1.8; }
+.error-list { margin: 0; padding-inline-start: 1.2rem; font-size: .78rem; color: #D1D7E0; line-height: 1.8; }
 .empty { text-align: center; color: #64748b; font-size: .75rem; padding: 1rem; }
 </style>

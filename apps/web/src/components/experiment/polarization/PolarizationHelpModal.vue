@@ -43,7 +43,7 @@ const emit = defineEmits<{ (e: 'close'): void }>()
           <section>
             <h4>{{ t('experiments.poHelpS3Title') }}</h4>
             <p>{{ t('experiments.poHelpS3P1') }}</p>
-            <div class="formula">I = I₀ · cos²(θ)</div>
+            <div class="formula">I = Iâ‚€ Â· cosÂ²(Î¸)</div>
             <p>{{ t('experiments.poHelpS3P2') }}</p>
           </section>
 
@@ -66,11 +66,11 @@ const emit = defineEmits<{ (e: 'close'): void }>()
               <li>{{ t('experiments.poHelpS5L1') }}</li>
               <li>
                 {{ t('experiments.poHelpS5L2') }}
-                <div class="formula">Slope = ΔI / Δcos²θ</div>
+                <div class="formula">Slope = Î”I / Î”cosÂ²Î¸</div>
               </li>
               <li>
                 {{ t('experiments.poHelpS5L3') }}
-                <div class="formula">Slope = I₀</div>
+                <div class="formula">Slope = Iâ‚€</div>
               </li>
             </ul>
           </section>
@@ -120,11 +120,11 @@ const emit = defineEmits<{ (e: 'close'): void }>()
 .modal-header h3 { margin: 0; font-size: 1rem; color: #e2e8f0; }
 .close-btn { background: transparent; border: 1px solid #2D3645; color: #8B95A5; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; padding: 0; }
 .close-btn:hover { background: rgba(91,141,184,.1); color: #5B8DB8; }
-.modal-body { overflow-y: auto; padding: 1.2rem; font-size: .82rem; color: #cbd5e1; line-height: 1.8; direction: rtl; text-align: right; }
+.modal-body { overflow-y: auto; padding: 1.2rem; font-size: .82rem; color: #cbd5e1; line-height: 1.8; text-align: start; }
 .modal-body section { margin-bottom: 1.4rem; }
 .modal-body h4 { margin: 0 0 .5rem; font-size: .9rem; color: #5B8DB8; border-bottom: 1px solid #2D3645; padding-bottom: .3rem; }
 .modal-body p { margin: .4rem 0; }
-.modal-body ol, .modal-body ul { margin: .4rem 0; padding-right: 1.2rem; }
+.modal-body ol, .modal-body ul { margin: .4rem 0; padding-inline-start: 1.2rem; }
 .modal-body li { margin-bottom: .25rem; }
 .formula { background: #1a2332; border: 1px solid #2D3645; border-radius: 6px; padding: .6rem .8rem; font-family: monospace; font-size: .9rem; color: #5B8DB8; text-align: center; margin: .6rem 0; direction: ltr; }
 .element-grid { display: flex; flex-direction: column; gap: .35rem; }

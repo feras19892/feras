@@ -123,6 +123,20 @@ export const useI18nStore = defineStore('i18n', () => {
     return value;
   };
 
+  const tArray = (key: string): string[] => {
+    const segments = key.split('.').filter(Boolean);
+    let node: unknown = messages.value;
+    for (const segment of segments) {
+      if (node && typeof node === 'object') {
+        node = (node as Record<string, unknown>)[segment];
+      } else {
+        node = undefined;
+        break;
+      }
+    }
+    return Array.isArray(node) ? (node as string[]) : [];
+  };
+
   return {
     locale,
     supported,
@@ -132,5 +146,6 @@ export const useI18nStore = defineStore('i18n', () => {
     bootstrap,
     setLocale,
     t,
+    tArray,
   };
 });

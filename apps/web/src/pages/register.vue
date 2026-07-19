@@ -208,11 +208,11 @@ input:focus { outline: none; border-color: #06b6d4; }
 }
 .password-wrapper input {
   flex: 1;
-  padding-right: 2.4rem;
+  padding-inline-end: 2.4rem;
 }
 .eye-btn {
   position: absolute;
-  right: 0.5rem;
+  inset-inline-end: 0.5rem;
   background: none;
   border: none;
   cursor: pointer;

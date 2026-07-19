@@ -260,6 +260,6 @@ const digitalBgColor = computed(() => {
 .immersed-dot {
   color: #22c55e;
   font-size: 0.5rem;
-  margin-left: 2px;
+  margin-inline-start: 2px;
 }
 </style>

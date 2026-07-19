@@ -297,7 +297,7 @@ watch(() => auth.user, (u) => {
 .history-teacher { color: #94a3b8; min-width: 80px; }
 .history-grade { color: #67e8f9; font-weight: 700; font-family: monospace; }
 .history-grade.changed { color: #fbbf24; }
-.history-date { color: #475569; margin-right: auto; font-size: 0.75rem; }
+.history-date { color: #475569; margin-inline-start: auto; font-size: 0.75rem; }
 .actions { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
 .btn-cancel, .btn-submit { flex: 1; padding: 0.55rem; border-radius: 0.55rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.2s; }
 .btn-cancel { background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); }

@@ -123,7 +123,7 @@ const emit = defineEmits<{
   font-weight: 600;
   color: #334155;
   cursor: pointer;
-  text-align: right;
+  text-align: end;
   font-family: inherit;
 }
 .section-header:hover {

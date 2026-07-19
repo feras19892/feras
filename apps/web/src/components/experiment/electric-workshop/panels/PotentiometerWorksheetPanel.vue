@@ -70,7 +70,7 @@ function toggleStep(step: string) { showSteps.value[step] = !showSteps.value[ste
 .panel-body { padding: 1rem; display: flex; flex-direction: column; gap: .75rem; overflow-y: auto; }
 .ws-title { font-size: 1rem; font-weight: 700; color: #c084fc; text-align: center; padding: .5rem; border-bottom: 1px solid #1e2530; margin-bottom: .25rem; }
 .step-row { display: flex; flex-direction: column; gap: .25rem; }
-.step-toggle { background: #1E2530; border: 1px solid #2D3645; color: #D1D7E0; padding: .5rem .75rem; border-radius: 6px; cursor: pointer; text-align: right; font-size: .85rem; }
+.step-toggle { background: #1E2530; border: 1px solid #2D3645; color: #D1D7E0; padding: .5rem .75rem; border-radius: 6px; cursor: pointer; text-align: end; font-size: .85rem; }
 .step-toggle:hover { background: #252D3A; }
 .step-content { background: #0d1117; border: 1px solid #1e2530; border-radius: 6px; padding: .75rem; font-size: .85rem; }
 .explain { color: #94a3b8; margin: .3rem 0; line-height: 1.6; font-size: .82rem; }

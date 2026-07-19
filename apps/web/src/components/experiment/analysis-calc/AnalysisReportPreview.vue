@@ -239,7 +239,7 @@ const stats = computed(() => {
 .chart-img { max-width: 100%; border-radius: 0.35rem; border: 1px solid #e5e7eb; }
 .plot-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .plot-item { background: #f8f9fa; padding: 0.35rem 0.6rem; border-radius: 0.3rem; font-size: 0.85rem; }
-.plot-type { color: #22c55e; margin-left: 0.3rem; }
+.plot-type { color: #22c55e; margin-inline-start: 0.3rem; }
 .block { margin-bottom: 0.4rem; font-size: 0.9rem; }
 .footer { text-align: center; font-size: 0.75rem; color: #888; border-top: 1px solid #ddd; padding-top: 1rem; margin-top: 1rem; }
 

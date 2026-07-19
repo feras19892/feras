@@ -53,7 +53,7 @@ const stateLabel = computed(() => {
 .cyan  { color: #67e8f9; }
 .green { color: #4ade80; }
 .amber { color: #fbbf24; }
-.tir-badge { margin-left: auto; padding: .1rem .4rem; border-radius: 4px; background: rgba(248,113,113,.15); color: #f87171; font-weight: 700; border: 1px solid rgba(248,113,113,.3); animation: blink 1s ease-in-out infinite; }
+.tir-badge { margin-inline-end: auto; padding: .1rem .4rem; border-radius: 4px; background: rgba(248,113,113,.15); color: #f87171; font-weight: 700; border: 1px solid rgba(248,113,113,.3); animation: blink 1s ease-in-out infinite; }
 .pulse-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 .pulse-dot.running { background: #4ade80; animation: pulse 1.4s ease-in-out infinite; }
 .pulse-dot.tir     { background: #f87171; animation: pulse .7s ease-in-out infinite; }

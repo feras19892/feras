@@ -107,10 +107,10 @@ input {
 }
 input:focus { outline: none; border-color: #06b6d4; }
 .password-wrap { position: relative; }
-.password-wrap input { padding-left: 2.5rem; }
+.password-wrap input { padding-inline-start: 2.5rem; }
 .toggle-pw {
   position: absolute;
-  left: 0.5rem;
+  inset-inline-start: 0.5rem;
   top: 50%;
   transform: translateY(-50%);
   background: none;

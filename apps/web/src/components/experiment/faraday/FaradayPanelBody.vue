@@ -62,7 +62,7 @@ const emit = defineEmits<{
 .param-row { display:flex; flex-direction:column; gap:.25rem; margin-bottom:.4rem; }
 .param-row label { color:#8B95A5; font-size:.72rem; }
 .param-row input[type=range] { width:100%; accent-color:#5B8DB8; }
-.param-row span { color:#5B8DB8; font-weight:600; font-size:.72rem; text-align:right; }
+.param-row span { color:#5B8DB8; font-weight:600; font-size:.72rem; text-align: end; }
 .law-box { background:rgba(91,141,184,.05); border:1px solid rgba(91,141,184,.15); border-radius:6px; padding:.5rem .6rem; margin-bottom:.4rem; }
 .law-title { color:#5B8DB8; font-weight:700; font-size:.78rem; margin-bottom:.35rem; }
 .formula { font-family:'Courier New', monospace; font-size:.9rem; color:#D1D7E0; text-align:center; margin:.3rem 0; }

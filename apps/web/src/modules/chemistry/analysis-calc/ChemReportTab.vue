@@ -114,7 +114,7 @@ function onConclusionUpdate(data: { conclusion: string; errors: string; improvem
         <div class="readiness">
           <div class="readiness-title">{{ t('analysis.reportReadiness') }}</div>
           <div v-for="(c, i) in readyChecks" :key="i" :class="['r-item', c.ok ? 'ok' : 'no']">
-            {{ c.ok ? '✅' : '⬜' }} {{ c.text }}
+            {{ c.ok ? 'âœ…' : 'â¬œ' }} {{ c.text }}
           </div>
           <div v-if="allReady" class="all-ready">{{ t('analysis.reportReady') }}</div>
         </div>
@@ -162,7 +162,7 @@ function onConclusionUpdate(data: { conclusion: string; errors: string; improvem
           <div class="conc-title">{{ t('chemistryAnalysis.concentrationTable') }}</div>
           <div class="table-wrap">
             <table>
-              <thead><tr><th>V (mL)</th><th>pH</th><th>[H⁺] (M)</th><th>[OH⁻] (M)</th><th>pOH</th></tr></thead>
+              <thead><tr><th>V (mL)</th><th>pH</th><th>[Hâº] (M)</th><th>[OHâ»] (M)</th><th>pOH</th></tr></thead>
               <tbody>
                 <tr v-for="(row, i) in concTable" :key="i">
                   <td>{{ row.v.toFixed(1) }}</td>
@@ -220,7 +220,7 @@ function onConclusionUpdate(data: { conclusion: string; errors: string; improvem
 .ai-error { color: #f87171; font-size: 0.8rem; padding: 0.3rem; background: rgba(239,68,68,0.1); border-radius: 0.3rem; }
 .ai-result { color: #e2e8f0; font-size: 0.82rem; line-height: 1.6; max-height: 300px; overflow-y: auto; padding: 0.5rem; background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.2); border-radius: 0.4rem; }
 .ai-result :deep(h1), .ai-result :deep(h2), .ai-result :deep(h3) { color: #67e8f9; font-size: 0.9rem; margin: 0.3rem 0; }
-.ai-result :deep(ul), .ai-result :deep(ol) { padding-right: 1.2rem; margin: 0.3rem 0; }
+.ai-result :deep(ul), .ai-result :deep(ol) { padding-inline-start: 1.2rem; margin: 0.3rem 0; }
 .ai-result :deep(li) { margin: 0.15rem 0; }
 .ai-result :deep(strong) { color: #a5b4fc; }
 </style>

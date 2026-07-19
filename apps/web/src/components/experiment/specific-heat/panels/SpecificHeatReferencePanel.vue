@@ -1,31 +1,31 @@
 <script setup lang="ts">
 const METALS = [
-  { name: 'ألمنيوم', symbol: 'Al', c: 900, color: '#a8a8a8' },
-  { name: 'نحاس', symbol: 'Cu', c: 385, color: '#b87333' },
-  { name: 'حديد', symbol: 'Fe', c: 450, color: '#4a4a4a' },
-  { name: 'رصاص', symbol: 'Pb', c: 130, color: '#5a5a6a' },
-  { name: 'زنك', symbol: 'Zn', c: 390, color: '#7a8a7a' },
-  { name: 'فضة', symbol: 'Ag', c: 235, color: '#c0c0c0' },
-  { name: 'ذهب', symbol: 'Au', c: 129, color: '#d4af37' },
-  { name: 'نيكل', symbol: 'Ni', c: 440, color: '#6a7a8a' },
-  { name: 'نحاس أصفر', symbol: 'Brass', c: 380, color: '#b5a642' },
-  { name: 'برونز', symbol: 'Bronze', c: 435, color: '#cd7f32' },
-  { name: 'قصدير', symbol: 'Sn', c: 227, color: '#718f91' },
-  { name: 'مغنيسيوم', symbol: 'Mg', c: 1020, color: '#8f9e8f' },
-  { name: 'تيتانيوم', symbol: 'Ti', c: 523, color: '#7a7a8a' },
+  { name: 'Ø£Ù„Ù…Ù†ÙŠÙˆÙ…', symbol: 'Al', c: 900, color: '#a8a8a8' },
+  { name: 'Ù†Ø­Ø§Ø³', symbol: 'Cu', c: 385, color: '#b87333' },
+  { name: 'Ø­Ø¯ÙŠØ¯', symbol: 'Fe', c: 450, color: '#4a4a4a' },
+  { name: 'Ø±ØµØ§Øµ', symbol: 'Pb', c: 130, color: '#5a5a6a' },
+  { name: 'Ø²Ù†Ùƒ', symbol: 'Zn', c: 390, color: '#7a8a7a' },
+  { name: 'ÙØ¶Ø©', symbol: 'Ag', c: 235, color: '#c0c0c0' },
+  { name: 'Ø°Ù‡Ø¨', symbol: 'Au', c: 129, color: '#d4af37' },
+  { name: 'Ù†ÙŠÙƒÙ„', symbol: 'Ni', c: 440, color: '#6a7a8a' },
+  { name: 'Ù†Ø­Ø§Ø³ Ø£ØµÙØ±', symbol: 'Brass', c: 380, color: '#b5a642' },
+  { name: 'Ø¨Ø±ÙˆÙ†Ø²', symbol: 'Bronze', c: 435, color: '#cd7f32' },
+  { name: 'Ù‚ØµØ¯ÙŠØ±', symbol: 'Sn', c: 227, color: '#718f91' },
+  { name: 'Ù…ØºÙ†ÙŠØ³ÙŠÙˆÙ…', symbol: 'Mg', c: 1020, color: '#8f9e8f' },
+  { name: 'ØªÙŠØªØ§Ù†ÙŠÙˆÙ…', symbol: 'Ti', c: 523, color: '#7a7a8a' },
 ]
 </script>
 
 <template>
   <div class="panel-body">
-    <div class="ref-title">📋 جدول السعات الحرارية النوعية</div>
-    <div class="ref-subtitle">للمقارنة وتحديد المعدن المجهول</div>
+    <div class="ref-title">ðŸ“‹ Ø¬Ø¯ÙˆÙ„ Ø§Ù„Ø³Ø¹Ø§Øª Ø§Ù„Ø­Ø±Ø§Ø±ÙŠØ© Ø§Ù„Ù†ÙˆØ¹ÙŠØ©</div>
+    <div class="ref-subtitle">Ù„Ù„Ù…Ù‚Ø§Ø±Ù†Ø© ÙˆØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…Ø¹Ø¯Ù† Ø§Ù„Ù…Ø¬Ù‡ÙˆÙ„</div>
 
     <div class="ref-table">
       <div class="ref-header">
-        <span>المعدن</span>
-        <span>الرمز</span>
-        <span>c (J/kg·°C)</span>
+        <span>Ø§Ù„Ù…Ø¹Ø¯Ù†</span>
+        <span>Ø§Ù„Ø±Ù…Ø²</span>
+        <span>c (J/kgÂ·Â°C)</span>
       </div>
       <div v-for="m in METALS" :key="m.name" class="ref-row">
         <span class="metal-name">
@@ -38,11 +38,11 @@ const METALS = [
     </div>
 
     <div class="ref-hint">
-      <div class="hint-title">💡 طريقة الاستخدام:</div>
+      <div class="hint-title">ðŸ’¡ Ø·Ø±ÙŠÙ‚Ø© Ø§Ù„Ø§Ø³ØªØ®Ø¯Ø§Ù…:</div>
       <ol>
-        <li>احسب c_m من تجربتك</li>
-        <li>قارن القيمة مع الجدول</li>
-        <li>اختر أقرب معدن</li>
+        <li>Ø§Ø­Ø³Ø¨ c_m Ù…Ù† ØªØ¬Ø±Ø¨ØªÙƒ</li>
+        <li>Ù‚Ø§Ø±Ù† Ø§Ù„Ù‚ÙŠÙ…Ø© Ù…Ø¹ Ø§Ù„Ø¬Ø¯ÙˆÙ„</li>
+        <li>Ø§Ø®ØªØ± Ø£Ù‚Ø±Ø¨ Ù…Ø¹Ø¯Ù†</li>
       </ol>
     </div>
   </div>
@@ -65,6 +65,6 @@ const METALS = [
 
 .ref-hint { background:rgba(34,197,94,.05); border:1px solid rgba(34,197,94,.15); border-radius:6px; padding:.4rem .55rem; }
 .hint-title { font-size:.7rem; font-weight:600; color:#22c55e; margin-bottom:.3rem; }
-.ref-hint ol { margin:0; padding-right:1.2rem; font-size:.65rem; color:#8B95A5; }
+.ref-hint ol { margin:0; padding-inline-start: 1.2rem; font-size:.65rem; color:#8B95A5; }
 .ref-hint li { margin-bottom:.15rem; }
 </style>

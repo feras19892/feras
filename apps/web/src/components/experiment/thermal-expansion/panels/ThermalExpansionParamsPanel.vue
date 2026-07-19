@@ -49,7 +49,7 @@ const currentAlpha = computed(() => ALPHA[props.params.material] ?? 16.5)
 .params-table { width: 100%; border-collapse: collapse; font-size: .75rem; }
 .params-table td { padding: .25rem .3rem; vertical-align: middle; border-bottom: 1px solid rgba(255,255,255,.04); }
 .params-table td.label { color: #8B95A5; white-space: nowrap; font-size: .72rem; width: 1%; }
-.params-table td.val { color: #5B8DB8; font-weight: 700; text-align: right; white-space: nowrap; }
+.params-table td.val { color: #5B8DB8; font-weight: 700; text-align: end; white-space: nowrap; }
 .params-table input[type=range] { width: 100%; min-width: 60px; }
 .params-table select { width: 100%; padding: .2rem .3rem; border-radius: 4px; border: 1px solid #1e2530; background: #0d1117; color: #D1D7E0; font-size: .72rem; }
 .alpha-row { background:rgba(91,141,184,.06); }

@@ -3,88 +3,83 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../modules/auth/stores/auth'
 import { useI18n } from '../composables/useI18n'
-import LandingLangSwitcher from '../components/landing/LandingLangSwitcher.vue'
-import LandingHeroSection from '../components/landing/LandingHeroSection.vue'
-import LandingLoginForm from '../components/landing/LandingLoginForm.vue'
-import LandingGuestButtons from '../components/landing/LandingGuestButtons.vue'
+import LandingInfoSide from '../components/landing/LandingInfoSide.vue'
+import LandingLoginSide from '../components/landing/LandingLoginSide.vue'
+import LandingFeatureDetail from '../components/landing/LandingFeatureDetail.vue'
+import FeedbackModal from '../components/shared/FeedbackModal.vue'
 
-const { t } = useI18n()
+const { t, direction } = useI18n()
 const router = useRouter()
 const auth = useAuthStore()
 
 const formError = ref('')
+const showFeedback = ref(false)
+const activeFeat = ref<number | null>(null)
+const featColors = ['#3b82f6','#10b981','#f59e0b','#8b5cf6','#ec4899','#ef4444']
 
 async function handleLogin(payload: { email: string; password: string }) {
   formError.value = ''
   auth.error = null
   const ok = await auth.login(payload.email, payload.password)
-  if (ok) {
-    routeByRole()
-  } else {
-    formError.value = t('auth.errors.invalidCredentials')
-  }
+  if (ok) router.push('/home')
+  else formError.value = t('auth.errors.invalidCredentials')
 }
 
-function handleJoin() {
-  router.push('/register')
+function handleJoin() { router.push('/register') }
+
+function scrollToLoginAfterDetail() {
+  activeFeat.value = null
+  document.querySelector('.login-side')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
 }
 
-function routeByRole() {
-  router.push('/home')
-}
-
-function enterAsTeacher() {
-  auth.loginAsGuest('teacher')
-  router.push('/home')
-}
-
-function enterAsStudent() {
-  auth.loginAsGuest('student')
-  router.push('/home')
-}
+function enterAsTeacher() { auth.loginAsGuest('teacher'); router.push('/home') }
+function enterAsStudent() { auth.loginAsGuest('student'); router.push('/home') }
 </script>
 
 <template>
-  <div class="landing-page">
-    <LandingLangSwitcher />
+  <div class="split-page" :class="{ rtl: direction === 'rtl' }">
+    <LandingInfoSide
+      :feat-colors="featColors"
+      @feat-click="activeFeat = $event"
+      @show-feedback="showFeedback = true"
+    />
 
-    <div class="landing-inner">
-      <LandingHeroSection />
+    <LandingFeatureDetail
+      :active-feat="activeFeat"
+      :feat-colors="featColors"
+      @close="activeFeat = null"
+      @cta="scrollToLoginAfterDetail"
+    />
 
-      <div class="login-section">
-        <LandingLoginForm @login="handleLogin" @register="handleJoin" />
-        <p v-if="formError" class="error">{{ formError }}</p>
-        <p v-else-if="auth.error" class="error">{{ auth.error }}</p>
-        <LandingGuestButtons @enter-as-teacher="enterAsTeacher" @enter-as-student="enterAsStudent" />
-      </div>
-    </div>
+    <FeedbackModal v-model:show="showFeedback" />
+
+    <LandingLoginSide
+      :form-error="formError"
+      :auth-error="auth.error"
+      @login="handleLogin"
+      @register="handleJoin"
+      @enter-as-teacher="enterAsTeacher"
+      @enter-as-student="enterAsStudent"
+    />
   </div>
 </template>
 
 <style scoped>
-.landing-page {
+.split-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0a0f1c 0%, #111827 40%, #0f172a 100%);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem 1rem;
+  direction: ltr;
+  background: #0a0f1c;
+  color: #e2e8f0;
 }
-.landing-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  max-width: 380px;
-  width: 100%;
-}
-.login-section {
-  width: 100%;
-}
-.error {
-  color: #fca5a5;
-  font-size: 0.8rem;
-  margin: 0.5rem 0;
-  text-align: center;
+.split-page.rtl { flex-direction: row; }
+.split-page.rtl :deep(.info-side) { order: 1; direction: rtl; }
+.split-page.rtl :deep(.login-side) { order: 2; direction: rtl; }
+
+@media (max-width: 900px) {
+  .split-page, .split-page.rtl { flex-direction: column; }
+  .split-page.rtl :deep(.info-side),
+  .split-page.rtl :deep(.login-side) { order: initial; }
+  .split-page :deep(.login-side) { position: static; height: auto; }
 }
 </style>

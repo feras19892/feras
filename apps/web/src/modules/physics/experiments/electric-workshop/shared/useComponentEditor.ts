@@ -23,6 +23,7 @@ export function useComponentEditor(
 
   function applyRotate(editingComp: Ref<WorkshopComponent | null>, editRotation: Ref<number>) {
     if (editingComp.value) {
+      workshop.pushUndo()
       while (editingComp.value.rotation !== editRotation.value) {
         workshop.rotateComponent(editingComp.value.id)
       }

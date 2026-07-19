@@ -18,6 +18,7 @@ export function useEditActions(
 ) {
   function saveEdit() {
     if (editingComp.value) {
+      workshop.pushUndo()
       workshop.updateComponentValue(editingComp.value.id, editValue.value)
       while (editingComp.value.rotation !== editRotation.value) {
         workshop.rotateComponent(editingComp.value.id)

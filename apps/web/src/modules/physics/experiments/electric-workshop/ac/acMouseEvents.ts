@@ -36,6 +36,7 @@ export function onMouseDown(s: ACCanvasState, e: MouseEvent) {
       s.isDraggingWirePoint = true
       s.draggingWireId = jHit.wire.id
       s.draggingPointIndex = jHit.pointIndex
+      s.workshop.pushUndo()
       return
     }
   }
@@ -67,6 +68,7 @@ export function onMouseDown(s: ACCanvasState, e: MouseEvent) {
     s.draggedCompType = compHit.type
     s._dragStartX = sx
     s._dragStartY = sy
+    s.workshop.pushUndo()
     s.workshop.selectedComponentId.value = compHit.id
     s.workshop.selectedWireId.value = null
     const [wx, wy] = s.screenToWorld(sx, sy)
@@ -89,6 +91,7 @@ export function onMouseDown(s: ACCanvasState, e: MouseEvent) {
           const [wx, wy] = s.screenToWorld(sx, sy)
           s.dragSegLastWX = wx
           s.dragSegLastWY = wy
+          s.workshop.pushUndo()
         }
       }
     } else {

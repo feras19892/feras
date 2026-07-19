@@ -40,15 +40,16 @@ export function useWorkshopCanvas(
       // Round components (ammeter, voltmeter, lamp) use circular hit test
       const roundTypes = ['ammeter', 'voltmeter', 'lamp']
       if (roundTypes.includes(c.type)) {
-        const r = 16 * cs * zoom.value
+        const r = 24 * cs * zoom.value
         const dist = Math.sqrt((sx - cx) ** 2 + (sy - cy) ** 2)
         if (dist <= r) return c
         continue
       }
-      // Use actual component dimensions from defs, fallback to 30x22
+      // Use actual component dimensions from defs with padding, fallback to 30x22
       const def = getDef(c.type)
-      const halfW = (def ? def.width / 2 : 30) * cs * zoom.value
-      const halfH = (def ? def.height / 2 : 22) * cs * zoom.value
+      const pad = 8 * zoom.value
+      const halfW = (def ? def.width / 2 : 30) * cs * zoom.value + pad
+      const halfH = (def ? def.height / 2 : 22) * cs * zoom.value + pad
       if (sx >= cx - halfW && sx <= cx + halfW && sy >= cy - halfH && sy <= cy + halfH) {
         return c
       }
@@ -69,7 +70,7 @@ export function useWorkshopCanvas(
       // For round components, don't catch terminal hits inside the body
       const roundTypes = ['ammeter', 'voltmeter', 'lamp']
       if (roundTypes.includes(c.type)) {
-        const bodyR = 10 * cs * zoom.value
+        const bodyR = 20 * cs * zoom.value
         if (clickDistFromCenter < bodyR) continue // skip — let hitTestComponent handle it
       }
 

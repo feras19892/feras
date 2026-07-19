@@ -1,3 +1,4 @@
+import { ref, type Ref } from 'vue'
 import type { WorkshopComponent, WorkshopWire } from './types'
 
 export interface HistorySnapshot {
@@ -10,8 +11,8 @@ export class WorkshopHistory {
   private undoStack: HistorySnapshot[] = []
   private redoStack: HistorySnapshot[] = []
   private maxHistory = 50
-  canUndo = false
-  canRedo = false
+  canUndo: Ref<boolean> = ref(false)
+  canRedo: Ref<boolean> = ref(false)
 
   constructor(
     private getComponents: () => WorkshopComponent[],
@@ -34,8 +35,8 @@ export class WorkshopHistory {
     this.undoStack.push(this.snapshot())
     if (this.undoStack.length > this.maxHistory) this.undoStack.shift()
     this.redoStack.length = 0
-    this.canUndo = this.undoStack.length > 0
-    this.canRedo = this.redoStack.length > 0
+    this.canUndo.value = this.undoStack.length > 0
+    this.canRedo.value = this.redoStack.length > 0
   }
 
   restoreSnapshot(s: HistorySnapshot, components: WorkshopComponent[], wires: WorkshopWire[]) {
@@ -51,8 +52,8 @@ export class WorkshopHistory {
     this.redoStack.push(this.snapshot())
     const s = this.undoStack.pop()!
     this.restoreSnapshot(s, components, wires)
-    this.canUndo = this.undoStack.length > 0
-    this.canRedo = this.redoStack.length > 0
+    this.canUndo.value = this.undoStack.length > 0
+    this.canRedo.value = this.redoStack.length > 0
     return s
   }
 
@@ -61,8 +62,8 @@ export class WorkshopHistory {
     this.undoStack.push(this.snapshot())
     const s = this.redoStack.pop()!
     this.restoreSnapshot(s, components, wires)
-    this.canUndo = this.undoStack.length > 0
-    this.canRedo = this.redoStack.length > 0
+    this.canUndo.value = this.undoStack.length > 0
+    this.canRedo.value = this.redoStack.length > 0
     return s
   }
 }

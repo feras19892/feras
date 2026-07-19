@@ -29,6 +29,7 @@ export function createMouseEvents(s: DCCanvasState) {
         s.isDraggingWirePoint = true
         s.draggingWireId = jHit.wire.id
         s.draggingPointIndex = jHit.pointIndex
+        s.workshop.pushUndo()
         return
       }
     }
@@ -55,6 +56,7 @@ export function createMouseEvents(s: DCCanvasState) {
     if (compHit) {
       s.isDraggingComp = true
       s.draggedCompType = compHit.type
+      s.workshop.pushUndo()
       s.workshop.selectedComponentId.value = compHit.id
       s.workshop.selectedWireId.value = null
       const [wx, wy] = s.screenToWorld(sx, sy)
@@ -75,6 +77,7 @@ export function createMouseEvents(s: DCCanvasState) {
             const [wx, wy] = s.screenToWorld(sx, sy)
             s.dragSegLastWX = wx
             s.dragSegLastWY = wy
+            s.workshop.pushUndo()
           }
         }
       } else {

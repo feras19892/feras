@@ -113,7 +113,10 @@ export function rotateComponent(ctx: ComponentOpsContext, id: number) {
 
 export function setComponentScale(ctx: ComponentOpsContext, id: number, scale: number) {
   const comp = ctx.components.find(c => c.id === id)
-  if (comp) comp.scale = Math.max(0.3, Math.min(4, scale))
+  if (comp) {
+    ctx.pushUndo()
+    comp.scale = Math.max(0.3, Math.min(4, scale))
+  }
 }
 
 export function removeComponent(ctx: ComponentOpsContext, id: number) {
@@ -202,6 +205,7 @@ export function insertAmmeterIntoWire(ctx: ComponentOpsContext, wireId: number, 
 export function updateComponentValue(ctx: ComponentOpsContext, id: number, value: number) {
   const comp = ctx.components.find(c => c.id === id)
   if (comp) {
+    ctx.pushUndo()
     comp.value = value
     if (comp.type === 'breaker') comp.breakerRating = value
     if (comp.type === 'acsource') comp.acAmplitude = value
@@ -210,7 +214,10 @@ export function updateComponentValue(ctx: ComponentOpsContext, id: number, value
 
 export function toggleSwitch(ctx: ComponentOpsContext, id: number) {
   const comp = ctx.components.find(c => c.id === id)
-  if (comp && comp.type === 'switch') comp.closed = !comp.closed
+  if (comp && comp.type === 'switch') {
+    ctx.pushUndo()
+    comp.closed = !comp.closed
+  }
 }
 
 export function setMultimeterMode(ctx: ComponentOpsContext, id: number, mode: 'voltage' | 'current' | 'resistance', running: boolean, solve: () => void) {

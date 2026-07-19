@@ -62,6 +62,10 @@ export function createOtherEvents(s: DCCanvasState) {
   }
 
   function onKeyDown(e: KeyboardEvent) {
+    // If focus is on an input field, let the key work normally (don't delete component)
+    const tag = (e.target as HTMLElement)?.tagName
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return
+
     if (e.key === 'Delete' || e.key === 'Backspace') {
       if (s.workshop.selectedComponentId.value !== null) {
         s.workshop.removeComponent(s.workshop.selectedComponentId.value)

@@ -72,11 +72,11 @@ const emit = defineEmits<{
 
       <!-- Warning Lamps (top-right corner) -->
       <div class="warning-lamps" v-if="workshop.running.value">
-        <div class="wlamp" :class="{ on: hasDanger, off: !hasDanger }" :title="t('ew.danger')">
+        <div class="wlamp clickable" :class="{ on: hasDanger, off: !hasDanger }" :title="t('ew.danger')" @click="hasDanger && emit('selectFault', workshop.faults.value.find(f => f.severity === 'danger'))">
           <span class="wl-icon">🔴</span>
           <span class="wl-label" v-if="hasDanger">{{ t('ew.danger') }}</span>
         </div>
-        <div class="wlamp" :class="{ on: hasWarning && !hasDanger, off: !hasWarning }" :title="t('ew.warning')">
+        <div class="wlamp clickable" :class="{ on: hasWarning && !hasDanger, off: !hasWarning }" :title="t('ew.warning')" @click="hasWarning && !hasDanger && emit('selectFault', workshop.faults.value.find(f => f.severity === 'warning'))">
           <span class="wl-icon">🟡</span>
           <span class="wl-label" v-if="hasWarning && !hasDanger">{{ t('ew.warning') }}</span>
         </div>

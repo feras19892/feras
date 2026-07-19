@@ -297,8 +297,8 @@ export function useWorkshop(labId: 'dc' | 'ac' = 'dc') {
     loadExperiment, run, stop, solve, solveAC, solveTransient, solveTransientDC,
     isACMode, faults, selectedWireThickness,
     getPower, totalPower, totalCurrent, totalVoltage,
-    undo, redo,
-    canUndo: computed(() => history.canUndo),
-    canRedo: computed(() => history.canRedo),
+    undo, redo, pushUndo,
+    canUndo: history.canUndo,
+    canRedo: history.canRedo,
   }
 }

@@ -23,6 +23,7 @@ export function createTerminals(compId: number, type: ComponentType, idCounter: 
     breaker: 18, fuse: 22, ground: 12, multimeter: 22,
     relay: 28, acsource: 22, transformer: 28, oscilloscope: 40,
     led: 14, potentiometer: 25, motor: 22,
+    zener: 14, npn: 22, pnp: 22, opamp: 30,
   }
   const d = termDist[type] ?? 26
 
@@ -32,6 +33,20 @@ export function createTerminals(compId: number, type: ComponentType, idCounter: 
       { id: idCounter.value++, compId, index: 1, dx: d, dy: 0, nodeId: null },
     ]
   } else if (count === 3) {
+    if (type === 'npn' || type === 'pnp') {
+      return [
+        { id: idCounter.value++, compId, index: 0, dx: -d, dy: 0, nodeId: null },
+        { id: idCounter.value++, compId, index: 1, dx: d, dy: -15, nodeId: null },
+        { id: idCounter.value++, compId, index: 2, dx: d, dy: 15, nodeId: null },
+      ]
+    }
+    if (type === 'opamp') {
+      return [
+        { id: idCounter.value++, compId, index: 0, dx: -d, dy: -12, nodeId: null },
+        { id: idCounter.value++, compId, index: 1, dx: -d, dy: 12, nodeId: null },
+        { id: idCounter.value++, compId, index: 2, dx: d, dy: 0, nodeId: null },
+      ]
+    }
     return [
       { id: idCounter.value++, compId, index: 0, dx: -d, dy: 0, nodeId: null },
       { id: idCounter.value++, compId, index: 1, dx: d, dy: 0, nodeId: null },
@@ -91,6 +106,8 @@ export function addComponent(ctx: ComponentOpsContext, type: ComponentType, x: n
     acAmplitude: type === 'acsource' ? def.defaultValue : undefined,
     transformerRatio: type === 'transformer' ? def.defaultValue : undefined,
     oscilloscopeTrace: type === 'oscilloscope' ? [] : undefined,
+    beta: (type === 'npn' || type === 'pnp') ? def.defaultValue : undefined,
+    opampGain: type === 'opamp' ? def.defaultValue : undefined,
   }
   comp.terminals = createTerminals(comp.id, type, ctx.idCounter)
   ctx.components.push(comp)

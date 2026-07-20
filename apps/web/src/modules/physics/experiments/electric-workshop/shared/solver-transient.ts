@@ -36,7 +36,8 @@ export function solveCircuitTransient(
 
   const acSources = components.filter(c => c.type === 'acsource')
   const transformers = components.filter(c => c.type === 'transformer')
-  const numVS = acSources.length + transformers.length
+  const opamps = components.filter(c => c.type === 'opamp')
+  const numVS = acSources.length + transformers.length + opamps.length
   const size = numNodes + numVS
 
   const G = new Array(size * size).fill(0)
@@ -118,6 +119,22 @@ export function solveCircuitTransient(
         const n0 = getTerminalNode(comp.id, 0)
         const n1 = getTerminalNode(comp.id, 1)
         addG(n0, n1, comp.fuseBlown ? 1e-12 : 1e6)
+      } else if (comp.type === 'zener') {
+        const n0 = getTerminalNode(comp.id, 0)
+        const n1 = getTerminalNode(comp.id, 1)
+        addG(n0, n1, 1 / 100)
+      } else if (comp.type === 'npn' || comp.type === 'pnp') {
+        const beta = comp.beta || 100
+        const isNpn = comp.type === 'npn'
+        const b = getTerminalNode(comp.id, 0)
+        const c = getTerminalNode(comp.id, 1)
+        const e = getTerminalNode(comp.id, 2)
+        const rPi = 1000
+        const gm = beta / rPi
+        addG(b, e, 1 / rPi)
+        const sign = isNpn ? 1 : -1
+        G[c * size + b] += sign * gm
+        G[e * size + b] -= sign * gm
       }
     }
 
@@ -140,6 +157,18 @@ export function solveCircuitTransient(
       G[vsRow * size + ss0] += 1
       G[ss1 * size + vsRow] -= 1
       G[vsRow * size + ss1] -= 1
+      vsIdx2++
+    }
+    for (const opa of opamps) {
+      const inp = getTerminalNode(opa.id, 0)
+      const inn = getTerminalNode(opa.id, 1)
+      const out = getTerminalNode(opa.id, 2)
+      const A = opa.opampGain || 100000
+      const vsRow = numNodes + vsIdx2
+      G[out * size + vsRow] += 1
+      G[vsRow * size + out] += 1
+      G[vsRow * size + inp] += A
+      G[vsRow * size + inn] -= A
       vsIdx2++
     }
   }
@@ -273,6 +302,18 @@ export function solveCircuitTransient(
         cc.push(v / Math.max(comp.value || 6, 1e-6))
       } else if (comp.type === 'potentiometer') {
         cc.push(v / Math.max(comp.value || 1000, 1))
+      } else if (comp.type === 'zener') {
+        cc.push(v / 100)
+      } else if (comp.type === 'npn' || comp.type === 'pnp') {
+        const beta = comp.beta || 100
+        const isNpn = comp.type === 'npn'
+        const b = getTerminalNode(comp.id, 0)
+        const e = getTerminalNode(comp.id, 2)
+        const vBE = isNpn ? x[b] - x[e] : x[e] - x[b]
+        cc.push(beta * vBE / 1000)
+      } else if (comp.type === 'opamp') {
+        const vsRow = numNodes + acSources.length + transformers.length + opamps.indexOf(comp)
+        cc.push(x[vsRow] ?? 0)
       } else {
         cc.push(0)
       }

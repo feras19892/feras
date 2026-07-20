@@ -57,7 +57,7 @@ export function useWorkshopCanvas(
     return null
   }
 
-  function hitTestTerminal(sx: number, sy: number): { comp: WorkshopComponent; termIndex: number } | null {
+  function hitTestTerminal(sx: number, sy: number, hitRadius = 9): { comp: WorkshopComponent; termIndex: number } | null {
     for (let i = props.components.length - 1; i >= 0; i--) {
       const c = props.components[i]
       const cs = c.scale ?? 1
@@ -79,7 +79,7 @@ export function useWorkshopCanvas(
         const [wx, wy] = getTerminalWorldPos(c, t)
         const [tsx, tsy] = worldToScreen(wx, wy)
         const dist = Math.sqrt((sx - tsx) ** 2 + (sy - tsy) ** 2)
-        if (dist < 9 * cs * zoom.value) {
+        if (dist < hitRadius * cs * zoom.value) {
           return { comp: c, termIndex: ti }
         }
       }

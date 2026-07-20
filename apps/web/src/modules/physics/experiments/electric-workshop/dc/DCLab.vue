@@ -22,8 +22,10 @@ import { createDCCanvasState, type DCCanvasState } from './dcCanvasState'
 import { createMouseEvents } from './dcMouseEvents'
 import { createOtherEvents } from './dcOtherEvents'
 import { createTouchHandlers } from '../shared/useTouchEvents'
+import { useDevice } from '../../../../../composables/useDevice'
 
 const workshop = useWorkshop()
+const device = useDevice()
 const { t } = useI18n()
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const zoom = ref(1)
@@ -84,9 +86,11 @@ const canvasProps = {
   t,
 }
 
-const { worldToScreen, screenToWorld, hitTestComponent, hitTestTerminal, hitTestWire, hitTestWireJunction, hitTestWireSegment, hitTestProbe, hitTestClamp, draw } = useWorkshopCanvas(
+const { worldToScreen, screenToWorld, hitTestComponent, hitTestTerminal: _hitTestTerminal, hitTestWire, hitTestWireJunction, hitTestWireSegment, hitTestProbe, hitTestClamp, draw } = useWorkshopCanvas(
   zoom, panX, panY, canvasProps,
 )
+
+const hitTestTerminal = (sx: number, sy: number) => _hitTestTerminal(sx, sy, device.value.hitRadius)
 
 const { redraw } = createRedraw(canvasRef, zoom, panX, panY, workshop, dragState, { worldToScreen, draw })
 function resizeCanvas() { _resizeCanvas(canvasRef, redraw) }

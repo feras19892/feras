@@ -29,7 +29,8 @@ export function solveCircuitTransientDC(
   }
 
   const batteries = components.filter(c => c.type === 'battery')
-  const numVS = batteries.length
+  const opamps = components.filter(c => c.type === 'opamp')
+  const numVS = batteries.length + opamps.length
   const size = numNodes + numVS
 
   const timePoints: number[] = []
@@ -149,6 +150,30 @@ export function solveCircuitTransientDC(
         G[row * size + n0] += 1
         G[row * size + n1] -= 1
         RHS[row] = comp.value
+      } else if (comp.type === 'zener') {
+        addG(n0, n1, 1 / 100)
+      } else if (comp.type === 'npn' || comp.type === 'pnp') {
+        const beta = comp.beta || 100
+        const isNpn = comp.type === 'npn'
+        const b = getTerminalNode(comp.id, 0)
+        const c = getTerminalNode(comp.id, 1)
+        const e = getTerminalNode(comp.id, 2)
+        const rPi = 1000
+        const gm = beta / rPi
+        addG(b, e, 1 / rPi)
+        const sign = isNpn ? 1 : -1
+        G[c * size + b] += sign * gm
+        G[e * size + b] -= sign * gm
+      } else if (comp.type === 'opamp') {
+        const A = comp.opampGain || 100000
+        const inp = getTerminalNode(comp.id, 0)
+        const inn = getTerminalNode(comp.id, 1)
+        const out = getTerminalNode(comp.id, 2)
+        const vsRow = numNodes + batteries.length + opamps.indexOf(comp)
+        G[out * size + vsRow] += 1
+        G[vsRow * size + out] += 1
+        G[vsRow * size + inp] += A
+        G[vsRow * size + inn] -= A
       }
     }
 
@@ -209,6 +234,18 @@ export function solveCircuitTransientDC(
         cc.push(v / Math.max(comp.value || 6, 1e-6))
       } else if (comp.type === 'potentiometer') {
         cc.push(v / Math.max(comp.value || 1000, 1))
+      } else if (comp.type === 'zener') {
+        cc.push(v / 100)
+      } else if (comp.type === 'npn' || comp.type === 'pnp') {
+        const beta = comp.beta || 100
+        const isNpn = comp.type === 'npn'
+        const b = getTerminalNode(comp.id, 0)
+        const e = getTerminalNode(comp.id, 2)
+        const vBE = isNpn ? x[b] - x[e] : x[e] - x[b]
+        cc.push(beta * vBE / 1000)
+      } else if (comp.type === 'opamp') {
+        const vsRow = numNodes + batteries.length + opamps.indexOf(comp)
+        cc.push(x[vsRow] ?? 0)
       } else {
         cc.push(0)
       }

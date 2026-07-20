@@ -6,6 +6,7 @@ import * as d3m from './draw3d-multimeter'
 import * as d3a from './draw3d-advanced'
 import * as d2b from './draw2d-basic'
 import * as d2a from './draw2d-advanced'
+import * as dsc from './draw-semiconductors'
 
 export type { RenderMode } from './drawHelpers'
 export { RESISTOR_COLORS, valueToResistorBands, getResistorBandColors } from './resistorColors'
@@ -71,6 +72,14 @@ export function drawComponent(
     drawPotentiometer(ctx, z, comp, isSelected, running)
   } else if (comp.type === 'motor') {
     drawMotor(ctx, z, comp, isSelected, running)
+  } else if (comp.type === 'zener') {
+    draw2d ? dsc.drawZener2D(ctx, z, comp, isSelected, running) : dsc.drawZener3D(ctx, z, comp, isSelected, running)
+  } else if (comp.type === 'npn') {
+    draw2d ? dsc.drawNPN2D(ctx, z, comp, isSelected, running) : dsc.drawNPN3D(ctx, z, comp, isSelected, running)
+  } else if (comp.type === 'pnp') {
+    draw2d ? dsc.drawPNP2D(ctx, z, comp, isSelected, running) : dsc.drawPNP3D(ctx, z, comp, isSelected, running)
+  } else if (comp.type === 'opamp') {
+    draw2d ? dsc.drawOpAmp2D(ctx, z, comp, isSelected, running) : dsc.drawOpAmp3D(ctx, z, comp, isSelected, running)
   }
 
   if (comp.type !== 'multimeter') {
@@ -141,6 +150,10 @@ export function drawComponentIcon(
     case 'led':         drawLED(ctx, 1, dummy, sel, running); break
     case 'potentiometer': drawPotentiometer(ctx, 1, dummy, sel, running); break
     case 'motor':       drawMotor(ctx, 1, dummy, sel, running); break
+    case 'zener':       dsc.drawZener2D(ctx, 1, dummy, sel, running); break
+    case 'npn':         dsc.drawNPN2D(ctx, 1, dummy, sel, running); break
+    case 'pnp':         dsc.drawPNP2D(ctx, 1, dummy, sel, running); break
+    case 'opamp':       dsc.drawOpAmp2D(ctx, 1, dummy, sel, running); break
   }
 
   ctx.restore()

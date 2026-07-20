@@ -67,6 +67,31 @@ function selectComponent(id: number) {
         <h4>{{ t('ew.comp.' + selectedSpec?.comp.type) }}</h4>
       </div>
 
+      <div class="ci-section" v-if="selectedSpec.spec?.descriptionKey">
+        <h5 class="ci-title">{{ t('ew.spec.description') }}</h5>
+        <p class="ci-desc-text">{{ t(selectedSpec.spec.descriptionKey) }}</p>
+      </div>
+
+      <div class="ci-section" v-if="selectedSpec.spec?.benefitKey">
+        <h5 class="ci-title">{{ t('ew.spec.benefit') }}</h5>
+        <p class="ci-desc-text">{{ t(selectedSpec.spec.benefitKey) }}</p>
+      </div>
+
+      <div class="ci-section" v-if="selectedSpec.spec?.connectionGuide?.length">
+        <h5 class="ci-title">{{ t('ew.spec.connectionGuide') }}</h5>
+        <table class="ci-table">
+          <thead>
+            <tr><th>{{ t('ew.spec.terminal') }}</th><th>{{ t('ew.spec.connectionDesc') }}</th></tr>
+          </thead>
+          <tbody>
+            <tr v-for="(conn, i) in selectedSpec.spec?.connectionGuide" :key="i">
+              <td class="ci-key">{{ conn.terminal }}</td>
+              <td class="ci-val">{{ t(conn.descKey) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <div class="ci-section">
         <h5 class="ci-title">{{ t('ew.properties') }}</h5>
         <table class="ci-table">

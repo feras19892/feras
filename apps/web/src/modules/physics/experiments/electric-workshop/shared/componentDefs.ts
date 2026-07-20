@@ -23,6 +23,11 @@ export const componentDefs: ComponentDef[] = [
   { type: 'led',         label: 'LED',           defaultValue: 2,    unit: 'V',  icon: '💡', color: '#ef4444', width: 60, height: 40, terminalCount: 2, category: 'common', group: 'active' },
   { type: 'potentiometer', label: 'Potentiometer', defaultValue: 1000, unit: 'Ω',  icon: '🎛️', color: '#f59e0b', width: 80, height: 60, terminalCount: 3, category: 'common', group: 'passive' },
   { type: 'motor',       label: 'DC Motor',      defaultValue: 6,    unit: 'V',  icon: '⚙️', color: '#64748b', width: 80, height: 60, terminalCount: 2, category: 'dc', group: 'active' },
+  // Semiconductor components
+  { type: 'zener',       label: 'Zener Diode',   defaultValue: 5.1,  unit: 'V',  icon: '⚡', color: '#ef4444', width: 80, height: 40, terminalCount: 2, category: 'common', group: 'active' },
+  { type: 'npn',         label: 'NPN Transistor', defaultValue: 100,  unit: '',   icon: '🔺', color: '#3b82f6', width: 80, height: 60, terminalCount: 3, category: 'common', group: 'active' },
+  { type: 'pnp',         label: 'PNP Transistor', defaultValue: 100,  unit: '',   icon: '🔻', color: '#ef4444', width: 80, height: 60, terminalCount: 3, category: 'common', group: 'active' },
+  { type: 'opamp',       label: 'OP-Amp',        defaultValue: 100000, unit: '',  icon: '📐', color: '#10b981', width: 100, height: 60, terminalCount: 3, category: 'common', group: 'active' },
 ]
 
 export function getDef(type: ComponentType): ComponentDef | undefined {

@@ -57,6 +57,34 @@ const emit = defineEmits<{
           <h4>{{ t('ew.comp.' + selectedSpec?.comp.type) }}</h4>
         </div>
 
+        <!-- Component Description -->
+        <div v-if="selectedSpec.spec?.descriptionKey" class="ci-section">
+          <h5 class="ci-title">{{ t('ew.spec.description') }}</h5>
+          <p class="ci-desc-text">{{ t(selectedSpec.spec.descriptionKey) }}</p>
+        </div>
+
+        <!-- Component Benefit -->
+        <div v-if="selectedSpec.spec?.benefitKey" class="ci-section">
+          <h5 class="ci-title">{{ t('ew.spec.benefit') }}</h5>
+          <p class="ci-desc-text">{{ t(selectedSpec.spec.benefitKey) }}</p>
+        </div>
+
+        <!-- Connection Guide -->
+        <div v-if="selectedSpec.spec?.connectionGuide?.length" class="ci-section">
+          <h5 class="ci-title">{{ t('ew.spec.connectionGuide') }}</h5>
+          <table class="ci-table">
+            <thead>
+              <tr><th>{{ t('ew.spec.terminal') }}</th><th>{{ t('ew.spec.connectionDesc') }}</th></tr>
+            </thead>
+            <tbody>
+              <tr v-for="(conn, i) in selectedSpec.spec?.connectionGuide" :key="i">
+                <td class="ci-key">{{ conn.terminal }}</td>
+                <td class="ci-val">{{ t(conn.descKey) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
         <!-- Properties Table -->
         <div class="ci-section">
           <h5 class="ci-title">{{ t('ew.properties') }}</h5>

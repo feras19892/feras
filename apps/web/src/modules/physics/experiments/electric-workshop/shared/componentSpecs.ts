@@ -1,8 +1,11 @@
 import type { ComponentType } from './types'
 
 export interface ComponentSpec {
+  descriptionKey?: string
   properties: { labelKey: string; valueKey: string }[]
   mechanism: { step: string; descKey: string }[]
+  connectionGuide?: { terminal: string; descKey: string }[]
+  benefitKey?: string
   formulaKey?: string
   formulaDescKey?: string
   applicationKeys: string[]
@@ -10,6 +13,12 @@ export interface ComponentSpec {
 
 export const componentSpecs: Record<string, ComponentSpec> = {
   battery: {
+    descriptionKey: 'ew.spec.battery.desc',
+    benefitKey: 'ew.spec.battery.benefit',
+    connectionGuide: [
+      { terminal: '+', descKey: 'ew.spec.battery.connPlus' },
+      { terminal: '−', descKey: 'ew.spec.battery.connMinus' },
+    ],
     properties: [
       { labelKey: 'ew.spec.type', valueKey: 'ew.spec.battery.type' },
       { labelKey: 'ew.spec.unit', valueKey: 'ew.spec.battery.unit' },
@@ -29,6 +38,12 @@ export const componentSpecs: Record<string, ComponentSpec> = {
   },
 
   resistor: {
+    descriptionKey: 'ew.spec.resistor.desc',
+    benefitKey: 'ew.spec.resistor.benefit',
+    connectionGuide: [
+      { terminal: 'T1', descKey: 'ew.spec.resistor.connT1' },
+      { terminal: 'T2', descKey: 'ew.spec.resistor.connT2' },
+    ],
     properties: [
       { labelKey: 'ew.spec.type', valueKey: 'ew.spec.resistor.type' },
       { labelKey: 'ew.spec.unit', valueKey: 'ew.spec.resistor.unit' },
@@ -48,6 +63,12 @@ export const componentSpecs: Record<string, ComponentSpec> = {
   },
 
   capacitor: {
+    descriptionKey: 'ew.spec.capacitor.desc',
+    benefitKey: 'ew.spec.capacitor.benefit',
+    connectionGuide: [
+      { terminal: '+', descKey: 'ew.spec.capacitor.connPlus' },
+      { terminal: '−', descKey: 'ew.spec.capacitor.connMinus' },
+    ],
     properties: [
       { labelKey: 'ew.spec.type', valueKey: 'ew.spec.capacitor.type' },
       { labelKey: 'ew.spec.unit', valueKey: 'ew.spec.capacitor.unit' },
@@ -67,6 +88,12 @@ export const componentSpecs: Record<string, ComponentSpec> = {
   },
 
   inductor: {
+    descriptionKey: 'ew.spec.inductor.desc',
+    benefitKey: 'ew.spec.inductor.benefit',
+    connectionGuide: [
+      { terminal: 'T1', descKey: 'ew.spec.inductor.connT1' },
+      { terminal: 'T2', descKey: 'ew.spec.inductor.connT2' },
+    ],
     properties: [
       { labelKey: 'ew.spec.type', valueKey: 'ew.spec.inductor.type' },
       { labelKey: 'ew.spec.unit', valueKey: 'ew.spec.inductor.unit' },
@@ -86,6 +113,12 @@ export const componentSpecs: Record<string, ComponentSpec> = {
   },
 
   diode: {
+    descriptionKey: 'ew.spec.diode.desc',
+    benefitKey: 'ew.spec.diode.benefit',
+    connectionGuide: [
+      { terminal: 'A', descKey: 'ew.spec.diode.connA' },
+      { terminal: 'K', descKey: 'ew.spec.diode.connK' },
+    ],
     properties: [
       { labelKey: 'ew.spec.type', valueKey: 'ew.spec.diode.type' },
       { labelKey: 'ew.spec.unit', valueKey: 'ew.spec.diode.unit' },
@@ -105,6 +138,12 @@ export const componentSpecs: Record<string, ComponentSpec> = {
   },
 
   switch: {
+    descriptionKey: 'ew.spec.switch.desc',
+    benefitKey: 'ew.spec.switch.benefit',
+    connectionGuide: [
+      { terminal: 'T1', descKey: 'ew.spec.switch.connT1' },
+      { terminal: 'T2', descKey: 'ew.spec.switch.connT2' },
+    ],
     properties: [
       { labelKey: 'ew.spec.type', valueKey: 'ew.spec.switch.type' },
       { labelKey: 'ew.spec.unit', valueKey: 'ew.spec.switch.unit' },
@@ -124,6 +163,12 @@ export const componentSpecs: Record<string, ComponentSpec> = {
   },
 
   lamp: {
+    descriptionKey: 'ew.spec.lamp.desc',
+    benefitKey: 'ew.spec.lamp.benefit',
+    connectionGuide: [
+      { terminal: 'T1', descKey: 'ew.spec.lamp.connT1' },
+      { terminal: 'T2', descKey: 'ew.spec.lamp.connT2' },
+    ],
     properties: [
       { labelKey: 'ew.spec.type', valueKey: 'ew.spec.lamp.type' },
       { labelKey: 'ew.spec.unit', valueKey: 'ew.spec.lamp.unit' },
@@ -143,6 +188,12 @@ export const componentSpecs: Record<string, ComponentSpec> = {
   },
 
   ammeter: {
+    descriptionKey: 'ew.spec.ammeter.desc',
+    benefitKey: 'ew.spec.ammeter.benefit',
+    connectionGuide: [
+      { terminal: 'T1', descKey: 'ew.spec.ammeter.connT1' },
+      { terminal: 'T2', descKey: 'ew.spec.ammeter.connT2' },
+    ],
     properties: [
       { labelKey: 'ew.spec.type', valueKey: 'ew.spec.ammeter.type' },
       { labelKey: 'ew.spec.unit', valueKey: 'ew.spec.ammeter.unit' },
@@ -162,6 +213,12 @@ export const componentSpecs: Record<string, ComponentSpec> = {
   },
 
   voltmeter: {
+    descriptionKey: 'ew.spec.voltmeter.desc',
+    benefitKey: 'ew.spec.voltmeter.benefit',
+    connectionGuide: [
+      { terminal: 'T1', descKey: 'ew.spec.voltmeter.connT1' },
+      { terminal: 'T2', descKey: 'ew.spec.voltmeter.connT2' },
+    ],
     properties: [
       { labelKey: 'ew.spec.type', valueKey: 'ew.spec.voltmeter.type' },
       { labelKey: 'ew.spec.unit', valueKey: 'ew.spec.voltmeter.unit' },
@@ -181,6 +238,15 @@ export const componentSpecs: Record<string, ComponentSpec> = {
   },
 
   relay: {
+    descriptionKey: 'ew.spec.relay.desc',
+    benefitKey: 'ew.spec.relay.benefit',
+    connectionGuide: [
+      { terminal: 'A1', descKey: 'ew.spec.relay.connA1' },
+      { terminal: 'A2', descKey: 'ew.spec.relay.connA2' },
+      { terminal: 'COM', descKey: 'ew.spec.relay.connCOM' },
+      { terminal: 'NO', descKey: 'ew.spec.relay.connNO' },
+      { terminal: 'NC', descKey: 'ew.spec.relay.connNC' },
+    ],
     properties: [
       { labelKey: 'ew.spec.type', valueKey: 'ew.spec.relay.type' },
       { labelKey: 'ew.spec.unit', valueKey: 'ew.spec.relay.unit' },
@@ -200,6 +266,12 @@ export const componentSpecs: Record<string, ComponentSpec> = {
   },
 
   breaker: {
+    descriptionKey: 'ew.spec.breaker.desc',
+    benefitKey: 'ew.spec.breaker.benefit',
+    connectionGuide: [
+      { terminal: 'IN', descKey: 'ew.spec.breaker.connIn' },
+      { terminal: 'OUT', descKey: 'ew.spec.breaker.connOut' },
+    ],
     properties: [
       { labelKey: 'ew.spec.type', valueKey: 'ew.spec.breaker.type' },
       { labelKey: 'ew.spec.unit', valueKey: 'ew.spec.breaker.unit' },
@@ -219,6 +291,12 @@ export const componentSpecs: Record<string, ComponentSpec> = {
   },
 
   fuse: {
+    descriptionKey: 'ew.spec.fuse.desc',
+    benefitKey: 'ew.spec.fuse.benefit',
+    connectionGuide: [
+      { terminal: 'T1', descKey: 'ew.spec.fuse.connT1' },
+      { terminal: 'T2', descKey: 'ew.spec.fuse.connT2' },
+    ],
     properties: [
       { labelKey: 'ew.spec.type', valueKey: 'ew.spec.fuse.type' },
       { labelKey: 'ew.spec.unit', valueKey: 'ew.spec.fuse.unit' },
@@ -238,6 +316,11 @@ export const componentSpecs: Record<string, ComponentSpec> = {
   },
 
   ground: {
+    descriptionKey: 'ew.spec.ground.desc',
+    benefitKey: 'ew.spec.ground.benefit',
+    connectionGuide: [
+      { terminal: 'GND', descKey: 'ew.spec.ground.connGND' },
+    ],
     properties: [
       { labelKey: 'ew.spec.type', valueKey: 'ew.spec.ground.type' },
       { labelKey: 'ew.spec.unit', valueKey: 'ew.spec.ground.unit' },
@@ -257,6 +340,12 @@ export const componentSpecs: Record<string, ComponentSpec> = {
   },
 
   multimeter: {
+    descriptionKey: 'ew.spec.multimeter.desc',
+    benefitKey: 'ew.spec.multimeter.benefit',
+    connectionGuide: [
+      { terminal: 'VΩ', descKey: 'ew.spec.multimeter.connRed' },
+      { terminal: 'COM', descKey: 'ew.spec.multimeter.connBlack' },
+    ],
     properties: [
       { labelKey: 'ew.spec.type', valueKey: 'ew.spec.multimeter.type' },
       { labelKey: 'ew.spec.modes', valueKey: 'ew.spec.multimeter.modes' },
@@ -274,6 +363,109 @@ export const componentSpecs: Record<string, ComponentSpec> = {
     formulaKey: 'ew.spec.multimeter.formula',
     formulaDescKey: 'ew.spec.multimeter.formulaDesc',
     applicationKeys: ['ew.spec.multimeter.app1', 'ew.spec.multimeter.app2', 'ew.spec.multimeter.app3', 'ew.spec.multimeter.app4'],
+  },
+
+  zener: {
+    descriptionKey: 'ew.spec.zener.desc',
+    benefitKey: 'ew.spec.zener.benefit',
+    connectionGuide: [
+      { terminal: 'A', descKey: 'ew.spec.zener.connA' },
+      { terminal: 'K', descKey: 'ew.spec.zener.connK' },
+    ],
+    properties: [
+      { labelKey: 'ew.spec.type', valueKey: 'ew.spec.zener.type' },
+      { labelKey: 'ew.spec.unit', valueKey: 'ew.spec.zener.unit' },
+      { labelKey: 'ew.spec.zenerVoltage', valueKey: 'ew.spec.zener.zenerVoltage' },
+      { labelKey: 'ew.spec.direction', valueKey: 'ew.spec.zener.direction' },
+      { labelKey: 'ew.spec.terminals', valueKey: 'ew.spec.zener.terminals' },
+    ],
+    mechanism: [
+      { step: '1', descKey: 'ew.spec.zener.m1' },
+      { step: '2', descKey: 'ew.spec.zener.m2' },
+      { step: '3', descKey: 'ew.spec.zener.m3' },
+      { step: '4', descKey: 'ew.spec.zener.m4' },
+    ],
+    formulaKey: 'ew.spec.zener.formula',
+    formulaDescKey: 'ew.spec.zener.formulaDesc',
+    applicationKeys: ['ew.spec.zener.app1', 'ew.spec.zener.app2', 'ew.spec.zener.app3'],
+  },
+
+  npn: {
+    descriptionKey: 'ew.spec.npn.desc',
+    benefitKey: 'ew.spec.npn.benefit',
+    connectionGuide: [
+      { terminal: 'B', descKey: 'ew.spec.npn.connB' },
+      { terminal: 'C', descKey: 'ew.spec.npn.connC' },
+      { terminal: 'E', descKey: 'ew.spec.npn.connE' },
+    ],
+    properties: [
+      { labelKey: 'ew.spec.type', valueKey: 'ew.spec.npn.type' },
+      { labelKey: 'ew.spec.terminals', valueKey: 'ew.spec.npn.terminals' },
+      { labelKey: 'ew.spec.gain', valueKey: 'ew.spec.npn.gain' },
+      { labelKey: 'ew.spec.mode', valueKey: 'ew.spec.npn.mode' },
+      { labelKey: 'ew.spec.maxCurrent', valueKey: 'ew.spec.npn.maxCurrent' },
+    ],
+    mechanism: [
+      { step: '1', descKey: 'ew.spec.npn.m1' },
+      { step: '2', descKey: 'ew.spec.npn.m2' },
+      { step: '3', descKey: 'ew.spec.npn.m3' },
+      { step: '4', descKey: 'ew.spec.npn.m4' },
+    ],
+    formulaKey: 'ew.spec.npn.formula',
+    formulaDescKey: 'ew.spec.npn.formulaDesc',
+    applicationKeys: ['ew.spec.npn.app1', 'ew.spec.npn.app2', 'ew.spec.npn.app3'],
+  },
+
+  pnp: {
+    descriptionKey: 'ew.spec.pnp.desc',
+    benefitKey: 'ew.spec.pnp.benefit',
+    connectionGuide: [
+      { terminal: 'B', descKey: 'ew.spec.pnp.connB' },
+      { terminal: 'C', descKey: 'ew.spec.pnp.connC' },
+      { terminal: 'E', descKey: 'ew.spec.pnp.connE' },
+    ],
+    properties: [
+      { labelKey: 'ew.spec.type', valueKey: 'ew.spec.pnp.type' },
+      { labelKey: 'ew.spec.terminals', valueKey: 'ew.spec.pnp.terminals' },
+      { labelKey: 'ew.spec.gain', valueKey: 'ew.spec.pnp.gain' },
+      { labelKey: 'ew.spec.mode', valueKey: 'ew.spec.pnp.mode' },
+      { labelKey: 'ew.spec.maxCurrent', valueKey: 'ew.spec.pnp.maxCurrent' },
+    ],
+    mechanism: [
+      { step: '1', descKey: 'ew.spec.pnp.m1' },
+      { step: '2', descKey: 'ew.spec.pnp.m2' },
+      { step: '3', descKey: 'ew.spec.pnp.m3' },
+      { step: '4', descKey: 'ew.spec.pnp.m4' },
+    ],
+    formulaKey: 'ew.spec.pnp.formula',
+    formulaDescKey: 'ew.spec.pnp.formulaDesc',
+    applicationKeys: ['ew.spec.pnp.app1', 'ew.spec.pnp.app2', 'ew.spec.pnp.app3'],
+  },
+
+  opamp: {
+    descriptionKey: 'ew.spec.opamp.desc',
+    benefitKey: 'ew.spec.opamp.benefit',
+    connectionGuide: [
+      { terminal: 'V−', descKey: 'ew.spec.opamp.connInverting' },
+      { terminal: 'V+', descKey: 'ew.spec.opamp.connNonInverting' },
+      { terminal: 'Out', descKey: 'ew.spec.opamp.connOut' },
+    ],
+    properties: [
+      { labelKey: 'ew.spec.type', valueKey: 'ew.spec.opamp.type' },
+      { labelKey: 'ew.spec.terminals', valueKey: 'ew.spec.opamp.terminals' },
+      { labelKey: 'ew.spec.openLoopGain', valueKey: 'ew.spec.opamp.openLoopGain' },
+      { labelKey: 'ew.spec.supply', valueKey: 'ew.spec.opamp.supply' },
+      { labelKey: 'ew.spec.config', valueKey: 'ew.spec.opamp.config' },
+    ],
+    mechanism: [
+      { step: '1', descKey: 'ew.spec.opamp.m1' },
+      { step: '2', descKey: 'ew.spec.opamp.m2' },
+      { step: '3', descKey: 'ew.spec.opamp.m3' },
+      { step: '4', descKey: 'ew.spec.opamp.m4' },
+    ],
+    formulaKey: 'ew.spec.opamp.formula',
+    formulaDescKey: 'ew.spec.opamp.formulaDesc',
+    applicationKeys: ['ew.spec.opamp.app1', 'ew.spec.opamp.app2', 'ew.spec.opamp.app3'],
   },
 }
 

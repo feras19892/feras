@@ -27,7 +27,8 @@ export function solveCircuit(
   }
 
   const batteries = components.filter(c => c.type === 'battery')
-  const numVS = batteries.length
+  const opamps = components.filter(c => c.type === 'opamp')
+  const numVS = batteries.length + opamps.length
   const size = numNodes + numVS
 
   const maxIter = 20
@@ -38,6 +39,7 @@ export function solveCircuit(
   for (let iter = 0; iter < maxIter; iter++) {
     const G = new Array(size * size).fill(0)
     const RHS = new Array(size).fill(0)
+    let opampIndex = 0
 
     const addConductance = (n1: number, n2: number, g: number) => {
       if (n1 === n2) return
@@ -140,6 +142,62 @@ export function solveCircuit(
           addConductance(comNode, ncNode, 1e6)
           addConductance(comNode, noNode, 1e-12)
         }
+      } else if (comp.type === 'zener') {
+        const Vz = comp.value || 5.1
+        const Vd = prevX[n0] - prevX[n1]
+        if (Vd >= 0) {
+          const Id = IS * (Math.exp(Vd / (ETA * VT)) - 1)
+          const Gd = (IS / (ETA * VT)) * Math.exp(Vd / (ETA * VT))
+          const Ieq = Id - Gd * Vd
+          addConductance(n0, n1, Gd)
+          RHS[n0] -= Ieq
+          RHS[n1] += Ieq
+        } else if (Vd <= -Vz) {
+          const Vdz = Vd + Vz
+          const Iz = IS * (Math.exp(-Vdz / (ETA * VT)) - 1)
+          const Gz = (IS / (ETA * VT)) * Math.exp(-Vdz / (ETA * VT))
+          const Ieq = -Iz - Gz * Vd
+          addConductance(n0, n1, Gz)
+          RHS[n0] -= Ieq
+          RHS[n1] += Ieq
+        } else {
+          addConductance(n0, n1, 1e-12)
+        }
+      } else if (comp.type === 'npn' || comp.type === 'pnp') {
+        const beta = comp.beta || 100
+        const isNpn = comp.type === 'npn'
+        const b = getTerminalNode(comp.id, 0)
+        const c = getTerminalNode(comp.id, 1)
+        const e = getTerminalNode(comp.id, 2)
+        const vBE = isNpn ? prevX[b] - prevX[e] : prevX[e] - prevX[b]
+        const vCE = isNpn ? prevX[c] - prevX[e] : prevX[e] - prevX[c]
+        const Vt = 0.02585
+        const Ic = beta * IS * (Math.exp(vBE / Vt) - 1)
+        const Ib = Ic / beta
+        const gm = Ic / Vt
+        const gmu = 1e-6
+        const IeqC = Ic - gm * vBE
+        const sign = isNpn ? 1 : -1
+        RHS[c] -= sign * IeqC
+        RHS[e] += sign * IeqC
+        RHS[b] -= sign * Ib
+        addConductance(b, e, gm / beta)
+        G[c * size + b] += sign * gm
+        G[e * size + b] -= sign * gm
+        G[b * size + c] += sign * gmu
+        G[e * size + c] -= sign * gmu
+        addConductance(c, e, gmu)
+      } else if (comp.type === 'opamp') {
+        const A = comp.opampGain || 100000
+        const inp = getTerminalNode(comp.id, 0)
+        const inn = getTerminalNode(comp.id, 1)
+        const out = getTerminalNode(comp.id, 2)
+        const vsRow = numNodes + numVS + opampIndex
+        G[out * size + vsRow] += 1
+        G[vsRow * size + out] += 1
+        G[vsRow * size + inp] += A
+        G[vsRow * size + inn] -= A
+        opampIndex++
       }
     }
 
@@ -208,6 +266,29 @@ export function solveCircuit(
       const a2Node = terminalNodeIndex.get(`${comp.id}:1`) ?? 0
       const coilV = X[a1Node] - X[a2Node]
       componentCurrents.set(comp.id, coilV / 100)
+    } else if (comp.type === 'zener') {
+      const Vz = comp.value || 5.1
+      if (V >= 0) {
+        componentCurrents.set(comp.id, IS * (Math.exp(V / (ETA * VT)) - 1))
+      } else if (V <= -Vz) {
+        const Vdz = V + Vz
+        componentCurrents.set(comp.id, -(IS * (Math.exp(-Vdz / (ETA * VT)) - 1)))
+      } else {
+        componentCurrents.set(comp.id, 0)
+      }
+    } else if (comp.type === 'npn' || comp.type === 'pnp') {
+      const beta = comp.beta || 100
+      const isNpn = comp.type === 'npn'
+      const b = terminalNodeIndex.get(`${comp.id}:0`) ?? 0
+      const e = terminalNodeIndex.get(`${comp.id}:2`) ?? 0
+      const vBE = isNpn ? X[b] - X[e] : X[e] - X[b]
+      const Vt = 0.02585
+      const Ic = beta * IS * (Math.exp(vBE / Vt) - 1)
+      componentCurrents.set(comp.id, Ic)
+    } else if (comp.type === 'opamp') {
+      const opampIdx = opamps.indexOf(comp)
+      const vsRow = numNodes + batteries.length + opampIdx
+      componentCurrents.set(comp.id, X[vsRow] ?? 0)
     } else {
       componentCurrents.set(comp.id, 0)
     }

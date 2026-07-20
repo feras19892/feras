@@ -17,6 +17,7 @@ import { buildACCalcExplanation } from './acExplainCalcs'
 import { createACCanvasState, type ACCanvasState } from './acCanvasState'
 import { onMouseDown, onMouseMove, onMouseUp } from './acMouseEvents'
 import { onWheel, onDblClick, onTouchStart, onTouchMove, onTouchEnd, onKeyDown } from './acOtherEvents'
+import { useDevice } from '../../../../../composables/useDevice'
 import ACDialogs from './ACDialogs.vue'
 import ACReadingsPanel from './ACReadingsPanel.vue'
 import ACPalette from './ACPalette.vue'
@@ -24,6 +25,7 @@ import ACTopBar from './ACTopBar.vue'
 import ACBottomBar from './ACBottomBar.vue'
 
 const workshop = useWorkshop('ac')
+const device = useDevice()
 const { t } = useI18n()
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const zoom = ref(1)
@@ -84,9 +86,11 @@ const canvasProps = {
   t,
 }
 
-const { worldToScreen, screenToWorld, hitTestComponent, hitTestTerminal, hitTestWire, hitTestWireJunction, hitTestWireSegment, hitTestProbe, hitTestClamp, draw } = useWorkshopCanvas(
+const { worldToScreen, screenToWorld, hitTestComponent, hitTestTerminal: _hitTestTerminal, hitTestWire, hitTestWireJunction, hitTestWireSegment, hitTestProbe, hitTestClamp, draw } = useWorkshopCanvas(
   zoom, panX, panY, canvasProps,
 )
+
+const hitTestTerminal = (sx: number, sy: number) => _hitTestTerminal(sx, sy, device.value.hitRadius)
 
 const { redraw: _redraw } = createRedraw(canvasRef, zoom, panX, panY, workshop, dragState, { worldToScreen, draw })
 function redraw() { _redraw() }

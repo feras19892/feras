@@ -8,6 +8,7 @@ export type ComponentType =
   | 'multimeter'
   | 'acsource' | 'transformer' | 'oscilloscope'
   | 'led' | 'potentiometer' | 'motor'
+  | 'zener' | 'npn' | 'pnp' | 'opamp'
 
 export interface Terminal {
   id: number
@@ -48,6 +49,10 @@ export interface WorkshopComponent {
   acAmplitude?: number    // RMS voltage (V) — matches entered/displayed value; peak = value * sqrt(2)
   transformerRatio?: number  // turns ratio N2/N1
   oscilloscopeTrace?: { t: number; v: number }[]  // waveform data
+  // Transistor fields
+  beta?: number       // current gain (hFE) for NPN/PNP
+  // OP-Amp fields
+  opampGain?: number  // open-loop gain for OP-Amp
   // Phasor results (complex: re + j*im)
   voltageRe?: number
   voltageIm?: number

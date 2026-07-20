@@ -16,9 +16,14 @@ export function createTouchHandlers(
       onMouseMove({ clientX: t.clientX, clientY: t.clientY } as MouseEvent)
     }
   }
-  function onTouchEnd(_e: TouchEvent) {
-    const { lastMouseX, lastMouseY } = getLastMouse()
-    onMouseUp({ clientX: lastMouseX, clientY: lastMouseY } as MouseEvent)
+  function onTouchEnd(e: TouchEvent) {
+    if (e.changedTouches.length > 0) {
+      const t = e.changedTouches[0]
+      onMouseUp({ clientX: t.clientX, clientY: t.clientY } as MouseEvent)
+    } else {
+      const { lastMouseX, lastMouseY } = getLastMouse()
+      onMouseUp({ clientX: lastMouseX, clientY: lastMouseY } as MouseEvent)
+    }
   }
 
   return { onTouchStart, onTouchMove, onTouchEnd }

@@ -70,8 +70,13 @@ export function onTouchMove(s: ACCanvasState, e: TouchEvent) {
   onMouseMove(s, { clientX: t.clientX, clientY: t.clientY } as MouseEvent)
 }
 
-export function onTouchEnd(s: ACCanvasState, _e: TouchEvent) {
-  onMouseUp(s, { clientX: s.lastMouseX, clientY: s.lastMouseY } as MouseEvent)
+export function onTouchEnd(s: ACCanvasState, e: TouchEvent) {
+  if (e.changedTouches.length > 0) {
+    const t = e.changedTouches[0]
+    onMouseUp(s, { clientX: t.clientX, clientY: t.clientY } as MouseEvent)
+  } else {
+    onMouseUp(s, { clientX: s.lastMouseX, clientY: s.lastMouseY } as MouseEvent)
+  }
 }
 
 export function onKeyDown(s: ACCanvasState, e: KeyboardEvent) {

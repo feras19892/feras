@@ -31,7 +31,8 @@ export function solveCircuitAC(
 
   const acSources = components.filter(c => c.type === 'acsource')
   const transformers = components.filter(c => c.type === 'transformer')
-  const numVS = acSources.length + transformers.length * 2
+  const opamps = components.filter(c => c.type === 'opamp')
+  const numVS = acSources.length + transformers.length * 2 + opamps.length
   const size = numNodes + numVS
 
   const Gre = new Array(size * size).fill(0)
@@ -113,6 +114,22 @@ export function solveCircuitAC(
         addY(com, no, { re: 1e-12, im: 0 })
         addY(com, nc, { re: 1e6, im: 0 })
       }
+    } else if (comp.type === 'zener') {
+      const n0 = getTerminalNode(comp.id, 0)
+      const n1 = getTerminalNode(comp.id, 1)
+      addY(n0, n1, { re: 1 / 100, im: 0 })
+    } else if (comp.type === 'npn' || comp.type === 'pnp') {
+      const beta = comp.beta || 100
+      const isNpn = comp.type === 'npn'
+      const b = getTerminalNode(comp.id, 0)
+      const c = getTerminalNode(comp.id, 1)
+      const e = getTerminalNode(comp.id, 2)
+      const rPi = 1000
+      const gm = beta / rPi
+      addY(b, e, { re: 1 / rPi, im: 0 })
+      const sign = isNpn ? 1 : -1
+      Gre[c * size + b] += sign * gm
+      Gre[e * size + b] -= sign * gm
     }
   }
 
@@ -129,6 +146,19 @@ export function solveCircuitAC(
     Gre[vsRow * size + n0] += 1; Gim[vsRow * size + n0] += 0
     Gre[n1 * size + vsRow] -= 1; Gim[n1 * size + vsRow] += 0
     Gre[vsRow * size + n1] -= 1; Gim[vsRow * size + n1] += 0
+    vsIdx++
+  }
+
+  for (const opa of opamps) {
+    const inp = getTerminalNode(opa.id, 0)
+    const inn = getTerminalNode(opa.id, 1)
+    const out = getTerminalNode(opa.id, 2)
+    const A = opa.opampGain || 100000
+    const vsRow = numNodes + vsIdx
+    Gre[out * size + vsRow] += 1
+    Gre[vsRow * size + out] += 1
+    Gre[vsRow * size + inp] += A
+    Gre[vsRow * size + inn] -= A
     vsIdx++
   }
 
@@ -205,6 +235,24 @@ export function solveCircuitAC(
       const vsRow1 = numNodes + vsIdx
       componentCurrentPhasors.set(comp.id, { re: xre[vsRow1], im: xim[vsRow1] })
       vsIdx += 2
+    } else if (comp.type === 'zener') {
+      componentCurrentPhasors.set(comp.id, cDiv(vComp, { re: 100, im: 0 }))
+    } else if (comp.type === 'npn' || comp.type === 'pnp') {
+      const beta = comp.beta || 100
+      const isNpn = comp.type === 'npn'
+      const b = getTerminalNode(comp.id, 0)
+      const e = getTerminalNode(comp.id, 2)
+      const vBE = isNpn
+        ? cSub({ re: xre[b], im: xim[b] }, { re: xre[e], im: xim[e] })
+        : cSub({ re: xre[e], im: xim[e] }, { re: xre[b], im: xim[b] })
+      const rPi = 1000
+      const Ib = cDiv(vBE, { re: rPi, im: 0 })
+      const Ic: Complex = { re: beta * Ib.re, im: beta * Ib.im }
+      componentCurrentPhasors.set(comp.id, Ic)
+    } else if (comp.type === 'opamp') {
+      const vsRow = numNodes + vsIdx
+      componentCurrentPhasors.set(comp.id, { re: xre[vsRow], im: xim[vsRow] })
+      vsIdx++
     } else {
       componentCurrentPhasors.set(comp.id, { re: 0, im: 0 })
     }

@@ -52,10 +52,11 @@ export interface DCCanvasState {
   draggingProbeType: 'black' | 'red' | null
   isDraggingClamp: boolean
   draggingClampCompId: number | null
+  pendingWireStart: { comp: WorkshopComponent; termIndex: number } | null
 }
 
 export function createDCCanvasState(): Pick<DCCanvasState, 
-  'isPanning' | 'isDraggingComp' | 'isDraggingWire' | 'isDraggingWirePoint' | 'draggingWireId' | 'draggingPointIndex' | 'isDraggingWireSegment' | 'dragSegWireId' | 'dragSegIndex' | 'dragSegLastWX' | 'dragSegLastWY' | 'lastMouseX' | 'lastMouseY' | 'dragOffsetX' | 'dragOffsetY' | 'wireStart' | 'junctionStart' | 'tempWireEnd' | 'draggedCompType' | 'hoverWireId' | 'isDraggingProbe' | 'draggingProbeCompId' | 'draggingProbeType' | 'isDraggingClamp' | 'draggingClampCompId'
+  'isPanning' | 'isDraggingComp' | 'isDraggingWire' | 'isDraggingWirePoint' | 'draggingWireId' | 'draggingPointIndex' | 'isDraggingWireSegment' | 'dragSegWireId' | 'dragSegIndex' | 'dragSegLastWX' | 'dragSegLastWY' | 'lastMouseX' | 'lastMouseY' | 'dragOffsetX' | 'dragOffsetY' | 'wireStart' | 'junctionStart' | 'tempWireEnd' | 'draggedCompType' | 'hoverWireId' | 'isDraggingProbe' | 'draggingProbeCompId' | 'draggingProbeType' | 'isDraggingClamp' | 'draggingClampCompId' | 'pendingWireStart'
 > {
   return {
     isPanning: false,
@@ -83,5 +84,6 @@ export function createDCCanvasState(): Pick<DCCanvasState,
     draggingProbeType: null,
     isDraggingClamp: false,
     draggingClampCompId: null,
+    pendingWireStart: null,
   }
 }

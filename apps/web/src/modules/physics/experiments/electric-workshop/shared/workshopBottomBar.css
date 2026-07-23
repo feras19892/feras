@@ -43,6 +43,37 @@
   transition: all 0.15s;
 }
 .tb-render-toggle:hover { background: #312e81; border-color: rgba(99,102,241,0.6); }
+.tb-toggle-btn {
+  padding: 0.25rem 0.45rem;
+  background: #1e293b;
+  border: 1px solid rgba(100,116,139,0.3);
+  border-radius: 0.4rem;
+  color: #94a3b8;
+  font-size: 0.68rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.tb-toggle-btn:hover { background: #334155; border-color: rgba(100,116,139,0.6); }
+.tb-toggle-btn.active {
+  background: #0ea5e9;
+  border-color: #0284c7;
+  color: #fff;
+}
+.tb-svg-btn {
+  padding: 0.25rem 0.5rem;
+  background: #1e293b;
+  border: 1px solid rgba(168,85,247,0.3);
+  border-radius: 0.4rem;
+  color: #c4b5fd;
+  font-size: 0.68rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.tb-svg-btn:hover { background: #4c1d95; border-color: rgba(168,85,247,0.6); }
 .bb-rd {
   font-size: 0.7rem;
   color: #7dd3fc;

@@ -16,6 +16,8 @@ export interface WorkshopCanvasProps {
   t: (key: string, vars?: Record<string, string | number>) => string
   animTime?: number
   wireCurrents?: Map<number, number>
+  showNodeNumbers?: boolean
+  showReadings?: boolean
 }
 
 export function useWorkshopCanvas(
@@ -202,6 +204,55 @@ export function useWorkshopCanvas(
     // Components
     for (const comp of props.components) {
       drawComponent(ctx, comp, selectedId, dc, props.running, props.renderMode)
+    }
+
+    // Node numbers
+    if (props.showNodeNumbers && props.running) {
+      const drawnNodes = new Set<string>()
+      for (const comp of props.components) {
+        for (const term of comp.terminals) {
+          if (term.nodeId === null) continue
+          const key = `${term.nodeId}`
+          if (drawnNodes.has(key)) continue
+          drawnNodes.add(key)
+          const [wx, wy] = getTerminalWorldPos(comp, term)
+          const [sx2, sy2] = worldToScreen(wx, wy)
+          ctx.fillStyle = 'rgba(14,165,233,0.85)'
+          ctx.beginPath()
+          ctx.arc(sx2, sy2, 9 * zoom.value, 0, Math.PI * 2)
+          ctx.fill()
+          ctx.fillStyle = '#fff'
+          ctx.font = `${8 * zoom.value}px sans-serif`
+          ctx.textAlign = 'center'
+          ctx.textBaseline = 'middle'
+          ctx.fillText(String(term.nodeId), sx2, sy2)
+        }
+      }
+    }
+
+    // Live readings
+    if (props.showReadings && props.running) {
+      ctx.textBaseline = 'alphabetic'
+      for (const comp of props.components) {
+        if (comp.type === 'ground' || comp.type === 'wire' || comp.type === 'multimeter') continue
+        const [sx2, sy2] = worldToScreen(comp.x, comp.y)
+        const def = getDef(comp.type)
+        const halfH = (def ? def.height / 2 : 22) * (comp.scale ?? 1) * zoom.value
+        const V = Math.abs(comp.voltage ?? 0)
+        const I = Math.abs(comp.current ?? 0)
+        let label = ''
+        if (I > 0.001 || V > 0.001) {
+          const vStr = V < 1 ? V.toFixed(3) : V < 100 ? V.toFixed(2) : V.toFixed(1)
+          const iStr = I < 0.001 ? I.toFixed(4) : I < 1 ? I.toFixed(3) : I.toFixed(2)
+          label = `${vStr}V ${iStr}A`
+        }
+        if (label) {
+          ctx.fillStyle = 'rgba(34,197,94,0.9)'
+          ctx.font = `${7 * zoom.value}px sans-serif`
+          ctx.textAlign = 'center'
+          ctx.fillText(label, sx2, sy2 + halfH + 12 * zoom.value)
+        }
+      }
     }
 
     // Status bar

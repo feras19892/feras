@@ -467,6 +467,224 @@ export const componentSpecs: Record<string, ComponentSpec> = {
     formulaDescKey: 'ew.spec.opamp.formulaDesc',
     applicationKeys: ['ew.spec.opamp.app1', 'ew.spec.opamp.app2', 'ew.spec.opamp.app3'],
   },
+  acsource: {
+    descriptionKey: 'ew.spec.acsource.desc',
+    benefitKey: 'ew.spec.acsource.benefit',
+    connectionGuide: [
+      { terminal: 'T1', descKey: 'ew.spec.acsource.connT1' },
+      { terminal: 'T2', descKey: 'ew.spec.acsource.connT2' },
+    ],
+    properties: [
+      { labelKey: 'ew.spec.type', valueKey: 'ew.spec.acsource.type' },
+      { labelKey: 'ew.spec.unit', valueKey: 'ew.spec.acsource.unit' },
+      { labelKey: 'ew.spec.frequency', valueKey: 'ew.spec.acsource.frequency' },
+      { labelKey: 'ew.spec.amplitude', valueKey: 'ew.spec.acsource.amplitude' },
+      { labelKey: 'ew.spec.terminals', valueKey: 'ew.spec.acsource.terminals' },
+    ],
+    mechanism: [
+      { step: '1', descKey: 'ew.spec.acsource.m1' },
+      { step: '2', descKey: 'ew.spec.acsource.m2' },
+      { step: '3', descKey: 'ew.spec.acsource.m3' },
+      { step: '4', descKey: 'ew.spec.acsource.m4' },
+    ],
+    formulaKey: 'ew.spec.acsource.formula',
+    formulaDescKey: 'ew.spec.acsource.formulaDesc',
+    applicationKeys: ['ew.spec.acsource.app1', 'ew.spec.acsource.app2', 'ew.spec.acsource.app3', 'ew.spec.acsource.app4'],
+  },
+
+  transformer: {
+    descriptionKey: 'ew.spec.transformer.desc',
+    benefitKey: 'ew.spec.transformer.benefit',
+    connectionGuide: [
+      { terminal: 'P1', descKey: 'ew.spec.transformer.connP1' },
+      { terminal: 'P2', descKey: 'ew.spec.transformer.connP2' },
+      { terminal: 'S1', descKey: 'ew.spec.transformer.connS1' },
+      { terminal: 'S2', descKey: 'ew.spec.transformer.connS2' },
+    ],
+    properties: [
+      { labelKey: 'ew.spec.type', valueKey: 'ew.spec.transformer.type' },
+      { labelKey: 'ew.spec.turnsRatio', valueKey: 'ew.spec.transformer.turnsRatio' },
+      { labelKey: 'ew.spec.primaryVoltage', valueKey: 'ew.spec.transformer.primaryVoltage' },
+      { labelKey: 'ew.spec.secondaryVoltage', valueKey: 'ew.spec.transformer.secondaryVoltage' },
+      { labelKey: 'ew.spec.terminals', valueKey: 'ew.spec.transformer.terminals' },
+    ],
+    mechanism: [
+      { step: '1', descKey: 'ew.spec.transformer.m1' },
+      { step: '2', descKey: 'ew.spec.transformer.m2' },
+      { step: '3', descKey: 'ew.spec.transformer.m3' },
+      { step: '4', descKey: 'ew.spec.transformer.m4' },
+    ],
+    formulaKey: 'ew.spec.transformer.formula',
+    formulaDescKey: 'ew.spec.transformer.formulaDesc',
+    applicationKeys: ['ew.spec.transformer.app1', 'ew.spec.transformer.app2', 'ew.spec.transformer.app3'],
+  },
+
+  oscilloscope: {
+    descriptionKey: 'ew.spec.oscilloscope.desc',
+    benefitKey: 'ew.spec.oscilloscope.benefit',
+    connectionGuide: [
+      { terminal: 'CH1', descKey: 'ew.spec.oscilloscope.connCH1' },
+      { terminal: 'GND', descKey: 'ew.spec.oscilloscope.connGND' },
+    ],
+    properties: [
+      { labelKey: 'ew.spec.type', valueKey: 'ew.spec.oscilloscope.type' },
+      { labelKey: 'ew.spec.channels', valueKey: 'ew.spec.oscilloscope.channels' },
+      { labelKey: 'ew.spec.timebase', valueKey: 'ew.spec.oscilloscope.timebase' },
+      { labelKey: 'ew.spec.voltageScale', valueKey: 'ew.spec.oscilloscope.voltageScale' },
+      { labelKey: 'ew.spec.terminals', valueKey: 'ew.spec.oscilloscope.terminals' },
+    ],
+    mechanism: [
+      { step: '1', descKey: 'ew.spec.oscilloscope.m1' },
+      { step: '2', descKey: 'ew.spec.oscilloscope.m2' },
+      { step: '3', descKey: 'ew.spec.oscilloscope.m3' },
+      { step: '4', descKey: 'ew.spec.oscilloscope.m4' },
+    ],
+    formulaKey: 'ew.spec.oscilloscope.formula',
+    formulaDescKey: 'ew.spec.oscilloscope.formulaDesc',
+    applicationKeys: ['ew.spec.oscilloscope.app1', 'ew.spec.oscilloscope.app2', 'ew.spec.oscilloscope.app3'],
+  },
+
+  led: {
+    descriptionKey: 'ew.spec.led.desc',
+    benefitKey: 'ew.spec.led.benefit',
+    connectionGuide: [
+      { terminal: 'A', descKey: 'ew.spec.led.connA' },
+      { terminal: 'K', descKey: 'ew.spec.led.connK' },
+    ],
+    properties: [
+      { labelKey: 'ew.spec.type', valueKey: 'ew.spec.led.type' },
+      { labelKey: 'ew.spec.unit', valueKey: 'ew.spec.led.unit' },
+      { labelKey: 'ew.spec.forwardVoltage', valueKey: 'ew.spec.led.forwardVoltage' },
+      { labelKey: 'ew.spec.direction', valueKey: 'ew.spec.led.direction' },
+      { labelKey: 'ew.spec.terminals', valueKey: 'ew.spec.led.terminals' },
+    ],
+    mechanism: [
+      { step: '1', descKey: 'ew.spec.led.m1' },
+      { step: '2', descKey: 'ew.spec.led.m2' },
+      { step: '3', descKey: 'ew.spec.led.m3' },
+      { step: '4', descKey: 'ew.spec.led.m4' },
+    ],
+    formulaKey: 'ew.spec.led.formula',
+    formulaDescKey: 'ew.spec.led.formulaDesc',
+    applicationKeys: ['ew.spec.led.app1', 'ew.spec.led.app2', 'ew.spec.led.app3', 'ew.spec.led.app4'],
+  },
+
+  potentiometer: {
+    descriptionKey: 'ew.spec.potentiometer.desc',
+    benefitKey: 'ew.spec.potentiometer.benefit',
+    connectionGuide: [
+      { terminal: 'T1', descKey: 'ew.spec.potentiometer.connT1' },
+      { terminal: 'T2', descKey: 'ew.spec.potentiometer.connT2' },
+      { terminal: 'W', descKey: 'ew.spec.potentiometer.connW' },
+    ],
+    properties: [
+      { labelKey: 'ew.spec.type', valueKey: 'ew.spec.potentiometer.type' },
+      { labelKey: 'ew.spec.unit', valueKey: 'ew.spec.potentiometer.unit' },
+      { labelKey: 'ew.spec.totalResistance', valueKey: 'ew.spec.potentiometer.totalResistance' },
+      { labelKey: 'ew.spec.wiperPosition', valueKey: 'ew.spec.potentiometer.wiperPosition' },
+      { labelKey: 'ew.spec.terminals', valueKey: 'ew.spec.potentiometer.terminals' },
+    ],
+    mechanism: [
+      { step: '1', descKey: 'ew.spec.potentiometer.m1' },
+      { step: '2', descKey: 'ew.spec.potentiometer.m2' },
+      { step: '3', descKey: 'ew.spec.potentiometer.m3' },
+      { step: '4', descKey: 'ew.spec.potentiometer.m4' },
+    ],
+    formulaKey: 'ew.spec.potentiometer.formula',
+    formulaDescKey: 'ew.spec.potentiometer.formulaDesc',
+    applicationKeys: ['ew.spec.potentiometer.app1', 'ew.spec.potentiometer.app2', 'ew.spec.potentiometer.app3', 'ew.spec.potentiometer.app4'],
+  },
+
+  motor: {
+    descriptionKey: 'ew.spec.motor.desc',
+    benefitKey: 'ew.spec.motor.benefit',
+    connectionGuide: [
+      { terminal: 'T1', descKey: 'ew.spec.motor.connT1' },
+      { terminal: 'T2', descKey: 'ew.spec.motor.connT2' },
+    ],
+    properties: [
+      { labelKey: 'ew.spec.type', valueKey: 'ew.spec.motor.type' },
+      { labelKey: 'ew.spec.unit', valueKey: 'ew.spec.motor.unit' },
+      { labelKey: 'ew.spec.ratedVoltage', valueKey: 'ew.spec.motor.ratedVoltage' },
+      { labelKey: 'ew.spec.rotationSpeed', valueKey: 'ew.spec.motor.rotationSpeed' },
+      { labelKey: 'ew.spec.terminals', valueKey: 'ew.spec.motor.terminals' },
+    ],
+    mechanism: [
+      { step: '1', descKey: 'ew.spec.motor.m1' },
+      { step: '2', descKey: 'ew.spec.motor.m2' },
+      { step: '3', descKey: 'ew.spec.motor.m3' },
+      { step: '4', descKey: 'ew.spec.motor.m4' },
+    ],
+    formulaKey: 'ew.spec.motor.formula',
+    formulaDescKey: 'ew.spec.motor.formulaDesc',
+    applicationKeys: ['ew.spec.motor.app1', 'ew.spec.motor.app2', 'ew.spec.motor.app3'],
+  },
+  thermistor: {
+    descriptionKey: 'ew.spec.thermistor.desc',
+    benefitKey: 'ew.spec.thermistor.benefit',
+    connectionGuide: [
+      { terminal: 'T1', descKey: 'ew.spec.thermistor.connT1' },
+      { terminal: 'T2', descKey: 'ew.spec.thermistor.connT2' },
+    ],
+    properties: [
+      { labelKey: 'ew.spec.type', valueKey: 'ew.spec.thermistor.type' },
+      { labelKey: 'ew.spec.unit', valueKey: 'ew.spec.thermistor.unit' },
+      { labelKey: 'ew.spec.resistance', valueKey: 'ew.spec.thermistor.resistance' },
+      { labelKey: 'ew.spec.terminals', valueKey: 'ew.spec.thermistor.terminals' },
+    ],
+    mechanism: [
+      { step: '1', descKey: 'ew.spec.thermistor.m1' },
+      { step: '2', descKey: 'ew.spec.thermistor.m2' },
+      { step: '3', descKey: 'ew.spec.thermistor.m3' },
+    ],
+    formulaKey: 'ew.spec.thermistor.formula',
+    formulaDescKey: 'ew.spec.thermistor.formulaDesc',
+    applicationKeys: ['ew.spec.thermistor.app1', 'ew.spec.thermistor.app2', 'ew.spec.thermistor.app3'],
+  },
+  buzzer: {
+    descriptionKey: 'ew.spec.buzzer.desc',
+    benefitKey: 'ew.spec.buzzer.benefit',
+    connectionGuide: [
+      { terminal: '+', descKey: 'ew.spec.buzzer.connPlus' },
+      { terminal: '−', descKey: 'ew.spec.buzzer.connMinus' },
+    ],
+    properties: [
+      { labelKey: 'ew.spec.type', valueKey: 'ew.spec.buzzer.type' },
+      { labelKey: 'ew.spec.unit', valueKey: 'ew.spec.buzzer.unit' },
+      { labelKey: 'ew.spec.resistance', valueKey: 'ew.spec.buzzer.resistance' },
+      { labelKey: 'ew.spec.terminals', valueKey: 'ew.spec.buzzer.terminals' },
+    ],
+    mechanism: [
+      { step: '1', descKey: 'ew.spec.buzzer.m1' },
+      { step: '2', descKey: 'ew.spec.buzzer.m2' },
+      { step: '3', descKey: 'ew.spec.buzzer.m3' },
+    ],
+    formulaKey: 'ew.spec.buzzer.formula',
+    formulaDescKey: 'ew.spec.buzzer.formulaDesc',
+    applicationKeys: ['ew.spec.buzzer.app1', 'ew.spec.buzzer.app2', 'ew.spec.buzzer.app3'],
+  },
+  solarcell: {
+    descriptionKey: 'ew.spec.solarcell.desc',
+    benefitKey: 'ew.spec.solarcell.benefit',
+    connectionGuide: [
+      { terminal: '+', descKey: 'ew.spec.solarcell.connPlus' },
+      { terminal: '−', descKey: 'ew.spec.solarcell.connMinus' },
+    ],
+    properties: [
+      { labelKey: 'ew.spec.type', valueKey: 'ew.spec.solarcell.type' },
+      { labelKey: 'ew.spec.unit', valueKey: 'ew.spec.solarcell.unit' },
+      { labelKey: 'ew.spec.voltage', valueKey: 'ew.spec.solarcell.voltage' },
+      { labelKey: 'ew.spec.terminals', valueKey: 'ew.spec.solarcell.terminals' },
+    ],
+    mechanism: [
+      { step: '1', descKey: 'ew.spec.solarcell.m1' },
+      { step: '2', descKey: 'ew.spec.solarcell.m2' },
+      { step: '3', descKey: 'ew.spec.solarcell.m3' },
+    ],
+    formulaKey: 'ew.spec.solarcell.formula',
+    formulaDescKey: 'ew.spec.solarcell.formulaDesc',
+    applicationKeys: ['ew.spec.solarcell.app1', 'ew.spec.solarcell.app2', 'ew.spec.solarcell.app3'],
+  },
 }
 
 export function getSpec(type: ComponentType): ComponentSpec | null {

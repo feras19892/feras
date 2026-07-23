@@ -17,7 +17,10 @@ export function detectFaultsDC(
     if (comp.type === 'battery' && I > 50) {
       faults.push({ type: 'short-circuit', componentId: comp.id, messageKey: 'ew.fault.shortCircuit', vars: { I: I.toFixed(1) }, severity: 'danger' })
     }
-    if (comp.type === 'resistor' && P > 5) {
+    if (comp.type === 'solarcell' && I > 20) {
+      faults.push({ type: 'short-circuit', componentId: comp.id, messageKey: 'ew.fault.shortCircuit', vars: { I: I.toFixed(1) }, severity: 'danger' })
+    }
+    if ((comp.type === 'resistor' || comp.type === 'thermistor' || comp.type === 'buzzer') && P > 5) {
       faults.push({ type: 'overheating', componentId: comp.id, messageKey: 'ew.fault.overheating', vars: { P: P.toFixed(2) }, severity: 'warning' })
     }
     if (comp.type === 'breaker' && comp.breakerTripped) {
@@ -85,6 +88,7 @@ export function detectFaultsDC(
 
 export function detectFaultsAC(
   components: WorkshopComponent[],
+  wires: WorkshopWire[],
   componentCurrentPhasors: Map<number, Complex>,
   componentVoltagePhasors: Map<number, Complex>,
 ): FaultInfo[] {
@@ -92,7 +96,11 @@ export function detectFaultsAC(
   for (const comp of components) {
     const I = cAbs(componentCurrentPhasors.get(comp.id) ?? { re: 0, im: 0 })
     const V = cAbs(componentVoltagePhasors.get(comp.id) ?? { re: 0, im: 0 })
-    const P = V * I * Math.cos(0)
+    const vComp = componentVoltagePhasors.get(comp.id) ?? { re: 0, im: 0 }
+    const iComp = componentCurrentPhasors.get(comp.id) ?? { re: 0, im: 0 }
+    const phaseV = Math.atan2(vComp.im, vComp.re)
+    const phaseI = Math.atan2(iComp.im, iComp.re)
+    const P = V * I * Math.cos(phaseV - phaseI)
 
     if (comp.type === 'acsource' && I > 50) {
       faults.push({ type: 'short-circuit', componentId: comp.id, messageKey: 'ew.fault.shortCircuit', vars: { I: I.toFixed(1) }, severity: 'danger' })
@@ -109,13 +117,27 @@ export function detectFaultsAC(
     if (comp.type === 'inductor' && I > 10) {
       faults.push({ type: 'overheating', componentId: comp.id, messageKey: 'ew.fault.inductorOvercurrent', vars: { I: I.toFixed(1) }, severity: 'warning' })
     }
+    if (comp.type === 'breaker' && comp.breakerTripped) {
+      faults.push({ type: 'overcurrent', componentId: comp.id, messageKey: 'ew.fault.breakerTripped', severity: 'danger' })
+    }
+    if (comp.type === 'fuse' && comp.fuseBlown) {
+      faults.push({ type: 'overcurrent', componentId: comp.id, messageKey: 'ew.fault.fuseBlown', severity: 'danger' })
+    }
+    if (comp.type === 'led' && V > (comp.value || 2) * 3) {
+      faults.push({ type: 'overheating', componentId: comp.id, messageKey: 'ew.fault.lampOvervoltage', vars: { V: V.toFixed(1) }, severity: 'warning' })
+    }
+    if (comp.type === 'motor' && I > 10) {
+      faults.push({ type: 'overheating', componentId: comp.id, messageKey: 'ew.fault.overheating', vars: { P: P.toFixed(2) }, severity: 'warning' })
+    }
   }
 
   const acSources = components.filter(c => c.type === 'acsource')
   for (const src of acSources) {
     const I = cAbs(componentCurrentPhasors.get(src.id) ?? { re: 0, im: 0 })
     if (I < 1e-10) {
-      const hasPath = components.some(c => c.id !== src.id)
+      const hasPath = wires.some(w =>
+        w.fromCompId === src.id || w.toCompId === src.id
+      )
       if (hasPath) {
         faults.push({ type: 'open-circuit', componentId: src.id, messageKey: 'ew.fault.openCircuit', severity: 'warning' })
       }

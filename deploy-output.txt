@@ -1,0 +1,30 @@
+﻿node.exe : npm warn Unknown project config "node-linker". This will stop working in the next major version of npm. See 
+`npm help npmrc` for supported config options.
+En línea: 1 Carácter: 1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm warn Unknow...config options.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Vercel CLI 56.3.1 (Node.js 24.18.0)
+Retrieving projectÔÇª
+Deploying 198924/dist
+  Inspect         https://vercel.com/198924/dist/4Db6dL5HMs7LxLkLCvY3X7aF36EL
+  Production      https://dist-4qnt9wgm4-198924.vercel.app
+BuildingÔÇª
+BuildingÔÇª
+Running build in Washington, D.C., USA (East) ÔÇô iad1
+Build machine configuration: 2 cores, 8 GB
+Retrieving list of deployment files...
+Previous build caches not available.
+Downloading 150 deployment files...
+Running "vercel build"
+Vercel CLI 56.5.0
+Build Completed in /vercel/output [346ms]
+Deploying outputs...
+[2K[1A[2K[G  Production      https://dist-4qnt9wgm4-198924.vercel.app
+CompletingÔÇª
+Ôû▓ Aliased         https://dist-eight-nu-90.vercel.app
+
+Ô£ô Ready in 13s
+https://dist-4qnt9wgm4-198924.vercel.app

@@ -10,7 +10,7 @@ export interface NodeGraph {
 export function buildNodeGraph(
   components: WorkshopComponent[],
   wires: WorkshopWire[],
-  autoGroundType: 'battery' | 'acsource',
+  autoGroundType: 'battery' | 'acsource' | 'solarcell',
 ): NodeGraph {
   const parent = new Map<number, number>()
   function find(x: number): number {
@@ -71,7 +71,7 @@ export function buildNodeGraph(
     nodeToIndex.set(root, 0)
     nodeIndex = 1
   } else {
-    const firstSource = components.find(c => c.type === autoGroundType)
+    const firstSource = components.find(c => c.type === autoGroundType || (autoGroundType === 'battery' && c.type === 'solarcell'))
     if (firstSource) {
       const negKey = `${firstSource.id}:1`
       const negNode = terminalNodeMap.get(negKey)

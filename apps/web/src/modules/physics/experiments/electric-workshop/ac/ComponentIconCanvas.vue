@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 import { drawComponentIcon } from '../shared/drawComponent'
+import type { ComponentType } from '../shared/types'
 
 const props = defineProps<{
-  type: string
+  type: ComponentType
   size?: number
   value?: number
 }>()

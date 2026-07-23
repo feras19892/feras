@@ -13,12 +13,14 @@ import { aiRoutes } from './modules/ai/handlers.js';
 import { mathRoutes } from './modules/math/index.js';
 import { seedMathData } from './modules/math/bootstrap.js';
 import { runMigrations } from './db/index.js';
+import { seedAdminUser } from './modules/auth/seed-admin.js';
 import { corsMiddleware } from './shared/middleware/cors.js';
 import { securityHeaders } from './shared/middleware/security.js';
 import { customLogger } from './shared/middleware/logger.js';
 import { loginRateLimit, passwordUpdateRateLimit } from './shared/middleware/rate-limit.js';
 
 await runMigrations();
+await seedAdminUser();
 await seedMathData();
 
 const app = new Hono();

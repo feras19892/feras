@@ -24,10 +24,15 @@ export function createTerminals(compId: number, type: ComponentType, idCounter: 
     relay: 28, acsource: 22, transformer: 28, oscilloscope: 40,
     led: 14, potentiometer: 25, motor: 22,
     zener: 14, npn: 22, pnp: 22, opamp: 30,
+    thermistor: 25, buzzer: 14, solarcell: 22,
   }
   const d = termDist[type] ?? 26
 
-  if (count === 2) {
+  if (count === 1) {
+    return [
+      { id: idCounter.value++, compId, index: 0, dx: 0, dy: -d, nodeId: null },
+    ]
+  } else if (count === 2) {
     return [
       { id: idCounter.value++, compId, index: 0, dx: -d, dy: 0, nodeId: null },
       { id: idCounter.value++, compId, index: 1, dx: d, dy: 0, nodeId: null },
@@ -95,6 +100,7 @@ export function addComponent(ctx: ComponentOpsContext, type: ComponentType, x: n
     breakerTripped: false,
     fuseBlown: false,
     relayState: false,
+    relayManualOverride: false,
     breakerRating: def.defaultValue,
     multimeterMode: type === 'multimeter' ? 'voltage' : undefined,
     probeBlack: type === 'multimeter' ? { x: Math.round(x / 20) * 20 - 60, y: Math.round(y / 20) * 20 + 40 } : undefined,
@@ -225,6 +231,7 @@ export function updateComponentValue(ctx: ComponentOpsContext, id: number, value
     comp.value = value
     if (comp.type === 'breaker') comp.breakerRating = value
     if (comp.type === 'acsource') comp.acAmplitude = value
+    if (comp.type === 'relay') comp.relayManualOverride = false
   }
 }
 

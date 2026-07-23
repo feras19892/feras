@@ -68,7 +68,8 @@ export interface Equation {
   examples: Example[];
   method: string;
   variables: Variable[];
-  solve: (values: Record<string, string>) => SolverResult;
+  solve: (values: Record<string, string>, solveFor?: string) => SolverResult;
+  defaultSolveFor?: string;
   relatedExperiments?: RelatedExperiment[];
   graph?: GraphConfig;
   constants?: Constant[];

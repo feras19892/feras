@@ -42,7 +42,8 @@ export function onDblClick(s: ACCanvasState, e: MouseEvent) {
   if (hit) {
     if (hit.type === 'switch') {
       s.workshop.toggleSwitch(hit.id)
-      if (s.workshop.running.value) s.workshop.solve()
+    } else if (hit.type === 'relay') {
+      s.workshop.toggleRelay(hit.id)
     } else if (hit.type === 'multimeter') {
       const modes = ['voltage', 'current', 'resistance'] as const
       const cur = hit.multimeterMode || 'voltage'
@@ -60,18 +61,61 @@ export function onDblClick(s: ACCanvasState, e: MouseEvent) {
   }
 }
 
+let acPinchStartDist = 0
+let acPinchStartZoom = 1
+let acPinchCenterX = 0
+let acPinchCenterY = 0
+let acPinchStartPanX = 0
+let acPinchStartPanY = 0
+let acIsPinching = false
+
 export function onTouchStart(s: ACCanvasState, e: TouchEvent) {
-  const t = e.touches[0]
-  onMouseDown(s, { clientX: t.clientX, clientY: t.clientY } as MouseEvent)
+  if (e.touches.length === 2) {
+    acIsPinching = true
+    const t1 = e.touches[0], t2 = e.touches[1]
+    acPinchStartDist = Math.sqrt((t1.clientX - t2.clientX) ** 2 + (t1.clientY - t2.clientY) ** 2)
+    acPinchStartZoom = s.zoom.value
+    acPinchCenterX = (t1.clientX + t2.clientX) / 2
+    acPinchCenterY = (t1.clientY + t2.clientY) / 2
+    acPinchStartPanX = s.panX.value
+    acPinchStartPanY = s.panY.value
+  } else if (e.touches.length === 1) {
+    const t = e.touches[0]
+    onMouseDown(s, { clientX: t.clientX, clientY: t.clientY } as MouseEvent)
+  }
 }
 
 export function onTouchMove(s: ACCanvasState, e: TouchEvent) {
-  const t = e.touches[0]
-  onMouseMove(s, { clientX: t.clientX, clientY: t.clientY } as MouseEvent)
+  if (acIsPinching && e.touches.length === 2) {
+    e.preventDefault()
+    const t1 = e.touches[0], t2 = e.touches[1]
+    const dist = Math.sqrt((t1.clientX - t2.clientX) ** 2 + (t1.clientY - t2.clientY) ** 2)
+    if (acPinchStartDist > 0) {
+      const scale = dist / acPinchStartDist
+      const newZoom = Math.max(0.3, Math.min(5, acPinchStartZoom * scale))
+      const cx = (t1.clientX + t2.clientX) / 2
+      const cy = (t1.clientY + t2.clientY) / 2
+      const worldX = (acPinchCenterX - acPinchStartPanX) / acPinchStartZoom
+      const worldY = (acPinchCenterY - acPinchStartPanY) / acPinchStartZoom
+      s.zoom.value = newZoom
+      s.panX.value = cx - worldX * newZoom
+      s.panY.value = cy - worldY * newZoom
+      s.redraw()
+    }
+  } else if (e.touches.length === 1 && !acIsPinching) {
+    const t = e.touches[0]
+    onMouseMove(s, { clientX: t.clientX, clientY: t.clientY } as MouseEvent)
+  }
 }
 
 export function onTouchEnd(s: ACCanvasState, e: TouchEvent) {
-  if (e.changedTouches.length > 0) {
+  if (acIsPinching && e.touches.length < 2) {
+    acIsPinching = false
+    if (e.touches.length === 1) {
+      const t = e.touches[0]
+      onMouseDown(s, { clientX: t.clientX, clientY: t.clientY } as MouseEvent)
+    }
+  } else if (e.changedTouches.length > 0) {
     const t = e.changedTouches[0]
     onMouseUp(s, { clientX: t.clientX, clientY: t.clientY } as MouseEvent)
   } else {
@@ -84,7 +128,12 @@ export function onKeyDown(s: ACCanvasState, e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName
   if (tag === 'INPUT' || tag === 'TEXTAREA') return
 
-  if (e.key === 'Delete' || e.key === 'Backspace') {
+  if (e.key === 'Escape') {
+    if (s.pendingWireStart) {
+      s.pendingWireStart = null
+      s.redraw()
+    }
+  } else if (e.key === 'Delete' || e.key === 'Backspace') {
     if (s.workshop.selectedComponentId.value !== null) {
       s.workshop.removeComponent(s.workshop.selectedComponentId.value)
       if (s.workshop.running.value) s.workshop.solve()

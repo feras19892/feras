@@ -30,6 +30,7 @@ export const equations: Equation[] = [
       },
     ],
     variables: [
+      { name: 'x', label: 'x' },
       { name: 'a', label: 'a' },
       { name: 'b', label: 'b' },
       { name: 'c', label: 'c' },
@@ -40,19 +41,38 @@ export const equations: Equation[] = [
       params: { a: 1, b: 0 },
       fn: (x, p) => p.a * x + p.b,
     },
-    solve(values) {
+    defaultSolveFor: 'x',
+    solve(values, solveFor) {
       const a = Number(values.a);
       const b = Number(values.b);
       const c = Number(values.c);
-      if ([a, b, c].some((n) => Number.isNaN(n))) {
-        return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+      const target = solveFor || 'x';
+      if (target === 'x') {
+        if ([a, b, c].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        if (a === 0) return { result: 'a يجب ألا يكون صفراً', steps: [] };
+        const x = (c - b) / a;
+        return { result: `x = ${fmt(x)}`, steps: [`${a}x + ${b} = ${c}`, `${a}x = ${c - b}`, `x = ${c - b} / ${a} = ${fmt(x)}`] };
       }
-      if (a === 0) return { result: 'a يجب ألا يكون صفراً', steps: [] };
-      const x = (c - b) / a;
-      return {
-        result: `x = ${fmt(x)}`,
-        steps: [`${a}x + ${b} = ${c}`, `${a}x = ${c - b}`, `x = ${c - b} / ${a} = ${fmt(x)}`],
-      };
+      if (target === 'a') {
+        const x = Number(values.x);
+        if ([x, b, c].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        if (x === 0) return { result: 'x يجب ألا يكون صفراً', steps: [] };
+        const aVal = (c - b) / x;
+        return { result: `a = ${fmt(aVal)}`, steps: [`${a}x + ${b} = ${c}`, `ax = ${c - b}`, `a = (${c} - ${b}) / ${x} = ${fmt(aVal)}`] };
+      }
+      if (target === 'b') {
+        const x = Number(values.x);
+        if ([a, x, c].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        const bVal = c - a * x;
+        return { result: `b = ${fmt(bVal)}`, steps: [`ax + b = ${c}`, `b = ${c} - ${a}×${x} = ${fmt(bVal)}`] };
+      }
+      if (target === 'c') {
+        const x = Number(values.x);
+        if ([a, b, x].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        const cVal = a * x + b;
+        return { result: `c = ${fmt(cVal)}`, steps: [`c = ${a}×${x} + ${b} = ${fmt(cVal)}`] };
+      }
+      return { result: 'متغير غير مدعوم', steps: [] };
     },
   },
   {
@@ -288,18 +308,35 @@ export const equations: Equation[] = [
     variables: [
       { name: 'a', label: 'a' },
       { name: 'b', label: 'b' },
+      { name: 'c', label: 'c (الوتر)' },
     ],
-    solve(values) {
-      const a = Number(values.a);
-      const b = Number(values.b);
-      if ([a, b].some((n) => Number.isNaN(n))) {
-        return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+    defaultSolveFor: 'c',
+    solve(values, solveFor) {
+      const target = solveFor || 'c';
+      if (target === 'c') {
+        const a = Number(values.a);
+        const b = Number(values.b);
+        if ([a, b].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        const c = Math.sqrt(a * a + b * b);
+        return { result: `c = ${fmt(c)}`, steps: [`c^2 = ${a}^2 + ${b}^2 = ${a * a + b * b}`, `c = √${a * a + b * b} = ${fmt(c)}`] };
       }
-      const c = Math.sqrt(a * a + b * b);
-      return {
-        result: `c = ${fmt(c)}`,
-        steps: [`c^2 = ${a}^2 + ${b}^2 = ${a * a + b * b}`, `c = √${a * a + b * b} = ${fmt(c)}`],
-      };
+      if (target === 'a') {
+        const b = Number(values.b);
+        const c = Number(values.c);
+        if ([b, c].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        if (c * c - b * b < 0) return { result: 'لا يمكن أن يكون الوتر أقصر من الضلع الآخر', steps: [] };
+        const a = Math.sqrt(c * c - b * b);
+        return { result: `a = ${fmt(a)}`, steps: [`a^2 = c^2 - b^2 = ${c * c} - ${b * b} = ${c * c - b * b}`, `a = √${c * c - b * b} = ${fmt(a)}`] };
+      }
+      if (target === 'b') {
+        const a = Number(values.a);
+        const c = Number(values.c);
+        if ([a, c].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        if (c * c - a * a < 0) return { result: 'لا يمكن أن يكون الوتر أقصر من الضلع الآخر', steps: [] };
+        const b = Math.sqrt(c * c - a * a);
+        return { result: `b = ${fmt(b)}`, steps: [`b^2 = c^2 - a^2 = ${c * c} - ${a * a} = ${c * c - a * a}`, `b = √${c * c - a * a} = ${fmt(b)}`] };
+      }
+      return { result: 'متغير غير مدعوم', steps: [] };
     },
   },
   {
@@ -329,15 +366,26 @@ export const equations: Equation[] = [
         expectedValue: 153.94,
       },
     ],
-    variables: [{ name: 'r', label: 'r' }],
-    solve(values) {
-      const r = Number(values.r);
-      if (Number.isNaN(r)) return { result: 'أدخل رقماً صحيحاً', steps: [] };
-      const area = Math.PI * r * r;
-      return {
-        result: `A = ${fmt(area)}`,
-        steps: [`A = π × ${r}^2`, `A = ${fmt(area)}`],
-      };
+    variables: [
+      { name: 'r', label: 'r' },
+      { name: 'A', label: 'A (المساحة)' },
+    ],
+    defaultSolveFor: 'A',
+    solve(values, solveFor) {
+      const target = solveFor || 'A';
+      if (target === 'A') {
+        const r = Number(values.r);
+        if (Number.isNaN(r)) return { result: 'أدخل رقماً صحيحاً', steps: [] };
+        const area = Math.PI * r * r;
+        return { result: `A = ${fmt(area)}`, steps: [`A = π × ${r}^2`, `A = ${fmt(area)}`] };
+      }
+      if (target === 'r') {
+        const A = Number(values.A);
+        if (Number.isNaN(A) || A < 0) return { result: 'أدخل مساحة صحيحة (موجبة)', steps: [] };
+        const r = Math.sqrt(A / Math.PI);
+        return { result: `r = ${fmt(r)}`, steps: [`r = √(A / π) = √(${A} / π)`, `r = ${fmt(r)}`] };
+      }
+      return { result: 'متغير غير مدعوم', steps: [] };
     },
   },
   {
@@ -972,11 +1020,33 @@ export const equations: Equation[] = [
       params: { v0: 0, a: 2 },
       fn: (t, p) => p.v0 + p.a * t,
     },
-    variables: [{ name: 'v0', label: 'v0' }, { name: 'a', label: 'a' }, { name: 't', label: 't' }],
-    solve(values) {
-      const v0 = Number(values.v0), a = Number(values.a), t = Number(values.t);
-      if ([v0, a, t].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
-      return { result: `v = ${fmt(v0 + a * t)}`, steps: [`v = ${v0} + ${a}×${t}`, `v = ${fmt(v0 + a * t)}`] };
+    variables: [{ name: 'v', label: 'v' }, { name: 'v0', label: 'v0' }, { name: 'a', label: 'a' }, { name: 't', label: 't' }],
+    defaultSolveFor: 'v',
+    solve(values, solveFor) {
+      const target = solveFor || 'v';
+      if (target === 'v') {
+        const v0 = Number(values.v0), a = Number(values.a), t = Number(values.t);
+        if ([v0, a, t].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        return { result: `v = ${fmt(v0 + a * t)}`, steps: [`v = ${v0} + ${a}×${t}`, `v = ${fmt(v0 + a * t)}`] };
+      }
+      if (target === 'v0') {
+        const v = Number(values.v), a = Number(values.a), t = Number(values.t);
+        if ([v, a, t].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        return { result: `v0 = ${fmt(v - a * t)}`, steps: [`v0 = v - a×t = ${v} - ${a}×${t}`, `v0 = ${fmt(v - a * t)}`] };
+      }
+      if (target === 'a') {
+        const v = Number(values.v), v0 = Number(values.v0), t = Number(values.t);
+        if ([v, v0, t].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        if (t === 0) return { result: 't يجب ألا يكون صفراً', steps: [] };
+        return { result: `a = ${fmt((v - v0) / t)}`, steps: [`a = (v - v0) / t = (${v} - ${v0}) / ${t}`, `a = ${fmt((v - v0) / t)}`] };
+      }
+      if (target === 't') {
+        const v = Number(values.v), v0 = Number(values.v0), a = Number(values.a);
+        if ([v, v0, a].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        if (a === 0) return { result: 'a يجب ألا يكون صفراً', steps: [] };
+        return { result: `t = ${fmt((v - v0) / a)}`, steps: [`t = (v - v0) / a = (${v} - ${v0}) / ${a}`, `t = ${fmt((v - v0) / a)}`] };
+      }
+      return { result: 'متغير غير مدعوم', steps: [] };
     },
   },
   {
@@ -1027,11 +1097,30 @@ export const equations: Equation[] = [
       params: { m: 2 },
       fn: (v, p) => 0.5 * p.m * v * v,
     },
-    variables: [{ name: 'm', label: 'm' }, { name: 'v', label: 'v' }],
-    solve(values) {
-      const m = Number(values.m), v = Number(values.v);
-      if ([m, v].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
-      return { result: `KE = ${fmt(0.5 * m * v * v)}`, steps: [`KE = 0.5×${m}×${v}²`, `KE = ${fmt(0.5 * m * v * v)}`] };
+    variables: [{ name: 'KE', label: 'KE' }, { name: 'm', label: 'm' }, { name: 'v', label: 'v' }],
+    defaultSolveFor: 'KE',
+    solve(values, solveFor) {
+      const target = solveFor || 'KE';
+      if (target === 'KE') {
+        const m = Number(values.m), v = Number(values.v);
+        if ([m, v].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        return { result: `KE = ${fmt(0.5 * m * v * v)}`, steps: [`KE = 0.5×${m}×${v}²`, `KE = ${fmt(0.5 * m * v * v)}`] };
+      }
+      if (target === 'm') {
+        const KE = Number(values.KE), v = Number(values.v);
+        if ([KE, v].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        if (v === 0) return { result: 'v يجب ألا يكون صفراً', steps: [] };
+        const m = (2 * KE) / (v * v);
+        return { result: `m = ${fmt(m)}`, steps: [`m = 2×KE / v² = 2×${KE} / ${v}²`, `m = ${fmt(m)}`] };
+      }
+      if (target === 'v') {
+        const KE = Number(values.KE), m = Number(values.m);
+        if ([KE, m].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        if (m === 0) return { result: 'm يجب ألا يكون صفراً', steps: [] };
+        const v = Math.sqrt((2 * KE) / m);
+        return { result: `v = ${fmt(v)}`, steps: [`v = √(2×KE / m) = √(2×${KE} / ${m})`, `v = ${fmt(v)}`] };
+      }
+      return { result: 'متغير غير مدعوم', steps: [] };
     },
   },
   {
@@ -1046,11 +1135,34 @@ export const equations: Equation[] = [
     constants: [
       { label: 'g', value: '9.8 m/s²', description: 'تسارع الجاذبية الأرضية' },
     ],
-    variables: [{ name: 'm', label: 'm' }, { name: 'g', label: 'g' }, { name: 'h', label: 'h' }],
-    solve(values) {
-      const m = Number(values.m), g = Number(values.g), h = Number(values.h);
-      if ([m, g, h].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
-      return { result: `PE = ${fmt(m * g * h)}`, steps: [`PE = ${m}×${g}×${h}`, `PE = ${fmt(m * g * h)}`] };
+    variables: [{ name: 'PE', label: 'PE' }, { name: 'm', label: 'm' }, { name: 'g', label: 'g' }, { name: 'h', label: 'h' }],
+    defaultSolveFor: 'PE',
+    solve(values, solveFor) {
+      const target = solveFor || 'PE';
+      if (target === 'PE') {
+        const m = Number(values.m), g = Number(values.g), h = Number(values.h);
+        if ([m, g, h].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        return { result: `PE = ${fmt(m * g * h)}`, steps: [`PE = ${m}×${g}×${h}`, `PE = ${fmt(m * g * h)}`] };
+      }
+      if (target === 'm') {
+        const PE = Number(values.PE), g = Number(values.g), h = Number(values.h);
+        if ([PE, g, h].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        if (g * h === 0) return { result: 'g×h يجب ألا يكون صفراً', steps: [] };
+        return { result: `m = ${fmt(PE / (g * h))}`, steps: [`m = PE / (g×h) = ${PE} / (${g}×${h})`, `m = ${fmt(PE / (g * h))}`] };
+      }
+      if (target === 'g') {
+        const PE = Number(values.PE), m = Number(values.m), h = Number(values.h);
+        if ([PE, m, h].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        if (m * h === 0) return { result: 'm×h يجب ألا يكون صفراً', steps: [] };
+        return { result: `g = ${fmt(PE / (m * h))}`, steps: [`g = PE / (m×h) = ${PE} / (${m}×${h})`, `g = ${fmt(PE / (m * h))}`] };
+      }
+      if (target === 'h') {
+        const PE = Number(values.PE), m = Number(values.m), g = Number(values.g);
+        if ([PE, m, g].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        if (m * g === 0) return { result: 'm×g يجب ألا يكون صفراً', steps: [] };
+        return { result: `h = ${fmt(PE / (m * g))}`, steps: [`h = PE / (m×g) = ${PE} / (${m}×${g})`, `h = ${fmt(PE / (m * g))}`] };
+      }
+      return { result: 'متغير غير مدعوم', steps: [] };
     },
   },
   {
@@ -1072,11 +1184,28 @@ export const equations: Equation[] = [
     ],
     relatedExperiments: [{ id: 'inclined', name: 'المنحدر', route: '/physics/mechanics/inclined', context: 'القوة المحصلة على الجسم.' }],
     constants: [{ label: 'g', value: '9.8 m/s²', description: 'تسارع الجاذبية الأرضية' }],
-    variables: [{ name: 'm', label: 'm' }, { name: 'a', label: 'a' }],
-    solve(values) {
-      const m = Number(values.m), a = Number(values.a);
-      if ([m, a].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
-      return { result: `F = ${fmt(m * a)} N`, steps: [`F = ${m}×${a}`, `F = ${fmt(m * a)} N`] };
+    variables: [{ name: 'F', label: 'F' }, { name: 'm', label: 'm' }, { name: 'a', label: 'a' }],
+    defaultSolveFor: 'F',
+    solve(values, solveFor) {
+      const target = solveFor || 'F';
+      if (target === 'F') {
+        const m = Number(values.m), a = Number(values.a);
+        if ([m, a].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        return { result: `F = ${fmt(m * a)} N`, steps: [`F = ${m}×${a}`, `F = ${fmt(m * a)} N`] };
+      }
+      if (target === 'm') {
+        const F = Number(values.F), a = Number(values.a);
+        if ([F, a].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        if (a === 0) return { result: 'a يجب ألا يكون صفراً', steps: [] };
+        return { result: `m = ${fmt(F / a)} kg`, steps: [`m = F / a = ${F} / ${a}`, `m = ${fmt(F / a)} kg`] };
+      }
+      if (target === 'a') {
+        const F = Number(values.F), m = Number(values.m);
+        if ([F, m].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        if (m === 0) return { result: 'm يجب ألا يكون صفراً', steps: [] };
+        return { result: `a = ${fmt(F / m)} m/s²`, steps: [`a = F / m = ${F} / ${m}`, `a = ${fmt(F / m)} m/s²`] };
+      }
+      return { result: 'متغير غير مدعوم', steps: [] };
     },
   },
   {
@@ -1256,11 +1385,28 @@ export const equations: Equation[] = [
     ],
     relatedExperiments: [{ id: 'electric-workshop', name: 'ورشة الكهرباء', route: '/physics/electricity/electric-workshop', context: 'قانون أوم أساسي في الدوائر.' }],
     constants: [{ label: 'ρ0 النحاس', value: '1.68 × 10^-8 Ω·m', description: 'المقاومية النوعية للنحاس' }],
-    variables: [{ name: 'I', label: 'I' }, { name: 'R', label: 'R' }],
-    solve(values) {
-      const I = Number(values.I), R = Number(values.R);
-      if ([I, R].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
-      return { result: `V = ${fmt(I * R)} V`, steps: [`V = ${I}×${R}`, `V = ${fmt(I * R)} V`] };
+    variables: [{ name: 'V', label: 'V' }, { name: 'I', label: 'I' }, { name: 'R', label: 'R' }],
+    defaultSolveFor: 'V',
+    solve(values, solveFor) {
+      const target = solveFor || 'V';
+      if (target === 'V') {
+        const I = Number(values.I), R = Number(values.R);
+        if ([I, R].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        return { result: `V = ${fmt(I * R)} V`, steps: [`V = ${I}×${R}`, `V = ${fmt(I * R)} V`] };
+      }
+      if (target === 'I') {
+        const V = Number(values.V), R = Number(values.R);
+        if ([V, R].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        if (R === 0) return { result: 'R يجب ألا يكون صفراً', steps: [] };
+        return { result: `I = ${fmt(V / R)} A`, steps: [`I = V / R = ${V} / ${R}`, `I = ${fmt(V / R)} A`] };
+      }
+      if (target === 'R') {
+        const V = Number(values.V), I = Number(values.I);
+        if ([V, I].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        if (I === 0) return { result: 'I يجب ألا يكون صفراً', steps: [] };
+        return { result: `R = ${fmt(V / I)} Ω`, steps: [`R = V / I = ${V} / ${I}`, `R = ${fmt(V / I)} Ω`] };
+      }
+      return { result: 'متغير غير مدعوم', steps: [] };
     },
   },
   {
@@ -1272,11 +1418,28 @@ export const equations: Equation[] = [
     method: 'P = VI.',
     examples: [{ title: 'مثال', values: { V: 12, I: 3 }, steps: ['P = 36 W'] }],
     relatedExperiments: [{ id: 'electric-workshop', name: 'ورشة الكهرباء', route: '/physics/electricity/electric-workshop', context: 'القدرة المستهلكة P = VI.' }],
-    variables: [{ name: 'V', label: 'V' }, { name: 'I', label: 'I' }],
-    solve(values) {
-      const V = Number(values.V), I = Number(values.I);
-      if ([V, I].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
-      return { result: `P = ${fmt(V * I)} W`, steps: [`P = ${V}×${I}`, `P = ${fmt(V * I)} W`] };
+    variables: [{ name: 'P', label: 'P' }, { name: 'V', label: 'V' }, { name: 'I', label: 'I' }],
+    defaultSolveFor: 'P',
+    solve(values, solveFor) {
+      const target = solveFor || 'P';
+      if (target === 'P') {
+        const V = Number(values.V), I = Number(values.I);
+        if ([V, I].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        return { result: `P = ${fmt(V * I)} W`, steps: [`P = ${V}×${I}`, `P = ${fmt(V * I)} W`] };
+      }
+      if (target === 'V') {
+        const P = Number(values.P), I = Number(values.I);
+        if ([P, I].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        if (I === 0) return { result: 'I يجب ألا يكون صفراً', steps: [] };
+        return { result: `V = ${fmt(P / I)} V`, steps: [`V = P / I = ${P} / ${I}`, `V = ${fmt(P / I)} V`] };
+      }
+      if (target === 'I') {
+        const P = Number(values.P), V = Number(values.V);
+        if ([P, V].some((n) => Number.isNaN(n))) return { result: 'أدخل أرقاماً صحيحة', steps: [] };
+        if (V === 0) return { result: 'V يجب ألا يكون صفراً', steps: [] };
+        return { result: `I = ${fmt(P / V)} A`, steps: [`I = P / V = ${P} / ${V}`, `I = ${fmt(P / V)} A`] };
+      }
+      return { result: 'متغير غير مدعوم', steps: [] };
     },
   },
   {

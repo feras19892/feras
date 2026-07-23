@@ -45,6 +45,13 @@ export function solve(ctx: SolverContext) {
   } else {
     ctx.error.value = ''
   }
+
+  const hasTransientComponents = ctx.components.some(c =>
+    c.type === 'capacitor' || c.type === 'inductor' || c.type === 'oscilloscope'
+  )
+  if (hasTransientComponents) {
+    solveTransientDC(ctx)
+  }
 }
 
 export function solveAC(ctx: SolverContext) {
@@ -74,6 +81,11 @@ export function solveAC(ctx: SolverContext) {
   }
   ctx.error.value = ''
   ctx.faults.value = result.faults ?? []
+
+  updateRelayStates(ctx.components)
+  if (result.converged) {
+    ctx.error.value = ''
+  }
 }
 
 export function solveTransient(ctx: SolverContext): TransientResult | null {

@@ -11,6 +11,7 @@ import { useSelectionSync } from '../shared/useSelectionSync'
 import { useAnimationLoop } from '../shared/useAnimationLoop'
 import { createRedraw, getMousePos as _getMousePos, resizeCanvas as _resizeCanvas } from '../shared/workshopRedraw'
 import { exportPNG as _exportPNG, openCanvasFullscreen as _openCanvasFullscreen, printCircuit as _printCircuit } from '../shared/workshopExport'
+import { exportCircuitSVG, downloadSVG } from '../shared/exportSVG'
 import type { WorkshopComponent, WorkshopWire } from '../shared/types'
 import DCDialogs from './DCDialogs.vue'
 import DCReadingsPanel from './DCReadingsPanel.vue'
@@ -52,6 +53,8 @@ const canvasSnapshot = ref('')
 const runStartTime = ref(0)
 const canvasFullscreen = ref(false)
 const renderMode = ref<'3d' | '2d'>('3d')
+const showNodeNumbers = ref(false)
+const showReadings = ref(false)
 const showResistorTutorial = ref(false)
 const showHelp = ref(false)
 const selectedFault = ref<any>(null)
@@ -83,6 +86,8 @@ const canvasProps = {
   get renderMode() { return renderMode.value },
   get animTime() { return animTime.value },
   get wireCurrents() { return wireCurrents.value },
+  get showNodeNumbers() { return showNodeNumbers.value },
+  get showReadings() { return showReadings.value },
   t,
 }
 
@@ -162,7 +167,7 @@ const canvasState = Object.assign(dragState, {
 const { onMouseDown, onMouseMove, onMouseUp } = createMouseEvents(canvasState)
 const { onWheel, onDblClick, onKeyDown } = createOtherEvents(canvasState)
 
-const { onTouchStart, onTouchMove, onTouchEnd } = createTouchHandlers(onMouseDown, onMouseMove, onMouseUp, () => dragState)
+const { onTouchStart, onTouchMove, onTouchEnd } = createTouchHandlers(onMouseDown, onMouseMove, onMouseUp, () => dragState, { zoom, panX, panY })
 const hasDanger = computed(() => workshop.faults.value.some(f => f.severity === 'danger'))
 const hasWarning = computed(() => workshop.faults.value.some(f => f.severity === 'warning'))
 const selectedCompFault = computed(() => {
@@ -174,6 +179,10 @@ const selectedCompFault = computed(() => {
 function exportPNG() { _exportPNG(canvasRef) }
 function openCanvasFullscreen() { _openCanvasFullscreen(canvasRef, canvasSnapshot, canvasFullscreen) }
 function printCircuit() { _printCircuit(canvasRef, workshop, t) }
+function doExportSVG() {
+  const svg = exportCircuitSVG(workshop.components, workshop.wires, zoom.value)
+  downloadSVG(svg, 'dc-circuit.svg')
+}
 
 function doLoadCircuit(name: string) {
   workshop.loadCircuit(name)
@@ -224,6 +233,8 @@ useSelectionSync(workshop, editingComp, editValue, editRotation, showValueEditor
         :editWireColor="editWireColor"
         :editWireThickness="editWireThickness"
         :renderMode="renderMode"
+        :showNodeNumbers="showNodeNumbers"
+        :showReadings="showReadings"
         :redraw="redraw"
         @update:editValue="editValue = $event"
         @update:editRotation="editRotation = $event"
@@ -238,6 +249,9 @@ useSelectionSync(workshop, editingComp, editValue, editRotation, showValueEditor
         @deleteSelectedComp="deleteSelectedComp"
         @deleteSelectedWire="deleteSelectedWire"
         @openCanvasFullscreen="openCanvasFullscreen"
+        @toggleNodeNumbers="showNodeNumbers = !showNodeNumbers; redraw()"
+        @toggleReadings="showReadings = !showReadings; redraw()"
+        @exportSVG="doExportSVG"
       />
 
       <DCBottomBar

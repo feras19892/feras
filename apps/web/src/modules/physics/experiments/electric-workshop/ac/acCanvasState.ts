@@ -54,6 +54,7 @@ export interface ACCanvasState {
   draggingProbeType: 'black' | 'red' | null
   isDraggingClamp: boolean
   draggingClampCompId: number | null
+  pendingWireStart: { comp: WorkshopComponent; termIndex: number } | null
 }
 
 export function createACCanvasState(
@@ -126,5 +127,6 @@ export function createACCanvasState(
     draggingProbeType: null,
     isDraggingClamp: false,
     draggingClampCompId: null,
+    pendingWireStart: null,
   }
 }

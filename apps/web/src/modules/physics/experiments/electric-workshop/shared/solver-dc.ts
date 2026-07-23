@@ -8,6 +8,22 @@ const VT = 0.02585
 const IS = 1e-12
 const ETA = 1.5
 
+let _cachedG: number[] | null = null
+let _cachedRHS: number[] | null = null
+let _cachedSize = 0
+
+function getMatrixBuffers(size: number): { G: number[]; RHS: number[] } {
+  if (_cachedG && _cachedRHS && _cachedSize === size) {
+    _cachedG.fill(0)
+    _cachedRHS.fill(0)
+    return { G: _cachedG, RHS: _cachedRHS }
+  }
+  _cachedG = new Array(size * size).fill(0)
+  _cachedRHS = new Array(size).fill(0)
+  _cachedSize = size
+  return { G: _cachedG, RHS: _cachedRHS }
+}
+
 export function solveCircuit(
   components: WorkshopComponent[],
   wires: WorkshopWire[],
@@ -26,7 +42,7 @@ export function solveCircuit(
     return { nodeVoltages, componentCurrents, componentVoltages, converged: true, iterations: 0, faults: [] }
   }
 
-  const batteries = components.filter(c => c.type === 'battery')
+  const batteries = components.filter(c => c.type === 'battery' || c.type === 'solarcell')
   const opamps = components.filter(c => c.type === 'opamp')
   const numVS = batteries.length + opamps.length
   const size = numNodes + numVS
@@ -37,8 +53,7 @@ export function solveCircuit(
   let actualIter = 0
 
   for (let iter = 0; iter < maxIter; iter++) {
-    const G = new Array(size * size).fill(0)
-    const RHS = new Array(size).fill(0)
+    const { G, RHS } = getMatrixBuffers(size)
     let opampIndex = 0
 
     const addConductance = (n1: number, n2: number, g: number) => {
@@ -57,7 +72,7 @@ export function solveCircuit(
       const n0 = getTerminalNode(comp.id, 0)
       const n1 = getTerminalNode(comp.id, 1)
 
-      if (comp.type === 'resistor' || comp.type === 'lamp') {
+      if (comp.type === 'resistor' || comp.type === 'lamp' || comp.type === 'thermistor' || comp.type === 'buzzer') {
         const R = comp.value || 1
         addConductance(n0, n1, 1 / R)
       } else if (comp.type === 'led') {
@@ -73,7 +88,7 @@ export function solveCircuit(
         const R = Math.max(comp.value || 1000, 1)
         addConductance(n0, n1, 1 / R)
         const wiper = getTerminalNode(comp.id, 2)
-        const wiperRatio = (comp as any).wiperRatio ?? 0.5
+        const wiperRatio = comp.wiperRatio ?? 0.5
         const rWiper = R * wiperRatio
         addConductance(n0, wiper, 1 / Math.max(rWiper, 1e-6))
         addConductance(wiper, n1, 1 / Math.max(R - rWiper, 1e-6))
@@ -111,7 +126,7 @@ export function solveCircuit(
         addConductance(n0, n1, 1e-12)
       } else if (comp.type === 'inductor') {
         addConductance(n0, n1, 1e6)
-      } else if (comp.type === 'battery') {
+      } else if (comp.type === 'battery' || comp.type === 'solarcell') {
         const vsIdx = batteries.indexOf(comp)
         const row = numNodes + vsIdx
         G[n0 * size + row] += 1
@@ -192,7 +207,7 @@ export function solveCircuit(
         const inp = getTerminalNode(comp.id, 0)
         const inn = getTerminalNode(comp.id, 1)
         const out = getTerminalNode(comp.id, 2)
-        const vsRow = numNodes + numVS + opampIndex
+        const vsRow = numNodes + batteries.length + opampIndex
         G[out * size + vsRow] += 1
         G[vsRow * size + out] += 1
         G[vsRow * size + inp] += A
@@ -233,10 +248,10 @@ export function solveCircuit(
     const V = v0 - v1
     if (comp.type !== 'multimeter') componentVoltages.set(comp.id, V)
 
-    if (comp.type === 'battery') {
+    if (comp.type === 'battery' || comp.type === 'solarcell') {
       const vsIdx = batteries.indexOf(comp)
       componentCurrents.set(comp.id, X[numNodes + vsIdx])
-    } else if (comp.type === 'resistor' || comp.type === 'lamp') {
+    } else if (comp.type === 'resistor' || comp.type === 'lamp' || comp.type === 'thermistor' || comp.type === 'buzzer') {
       componentCurrents.set(comp.id, V / (comp.value || 1))
     } else if (comp.type === 'led') {
       const Vf = comp.value || 2
@@ -304,9 +319,9 @@ export function solveCircuit(
 export function updateRelayStates(components: WorkshopComponent[]): boolean {
   let changed = false
   for (const comp of components) {
-    if (comp.type === 'relay') {
+    if (comp.type === 'relay' && !comp.relayManualOverride) {
       const coilCurrent = comp.current
-      const threshold = comp.value * 1e-3
+      const threshold = Math.max(comp.value * 1e-3, 1e-6)
       const newState = Math.abs(coilCurrent) > threshold
       if (newState !== comp.relayState) {
         comp.relayState = newState

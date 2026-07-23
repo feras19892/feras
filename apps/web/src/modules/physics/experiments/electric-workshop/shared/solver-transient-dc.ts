@@ -28,7 +28,7 @@ export function solveCircuitTransientDC(
     return terminalNodeIndex.get(`${compId}:${termIndex}`) ?? 0
   }
 
-  const batteries = components.filter(c => c.type === 'battery')
+  const batteries = components.filter(c => c.type === 'battery' || c.type === 'solarcell')
   const opamps = components.filter(c => c.type === 'opamp')
   const numVS = batteries.length + opamps.length
   const size = numNodes + numVS
@@ -94,7 +94,7 @@ export function solveCircuitTransientDC(
       const n0 = getTerminalNode(comp.id, 0)
       const n1 = getTerminalNode(comp.id, 1)
 
-      if (comp.type === 'resistor' || comp.type === 'lamp') {
+      if (comp.type === 'resistor' || comp.type === 'lamp' || comp.type === 'thermistor' || comp.type === 'buzzer') {
         addG(n0, n1, 1 / Math.max(comp.value, 1e-6))
       } else if (comp.type === 'led') {
         addG(n0, n1, 1 / 100)
@@ -103,6 +103,12 @@ export function solveCircuitTransientDC(
       } else if (comp.type === 'potentiometer') {
         const R = Math.max(comp.value || 1000, 1)
         addG(n0, n1, 1 / R)
+        const wiper = getTerminalNode(comp.id, 2)
+        const wiperRatio = comp.wiperRatio ?? 0.5
+        const rWiper = R * wiperRatio
+        addG(n0, wiper, 1 / Math.max(rWiper, 1e-6))
+        addG(wiper, n1, 1 / Math.max(R - rWiper, 1e-6))
+        addG(wiper, 0, 1e-12)
       } else if (comp.type === 'ammeter') {
         addG(n0, n1, 1e6)
       } else if (comp.type === 'voltmeter') {
@@ -142,7 +148,7 @@ export function solveCircuitTransientDC(
           addG(comNode, ncNode, 1e6)
           addG(comNode, noNode, 1e-12)
         }
-      } else if (comp.type === 'battery') {
+      } else if (comp.type === 'battery' || comp.type === 'solarcell') {
         const vsIdx = batteries.indexOf(comp)
         const row = numNodes + vsIdx
         G[n0 * size + row] += 1
@@ -200,10 +206,10 @@ export function solveCircuitTransientDC(
       const v = x[n0] - x[n1]
       cv.push(v)
 
-      if (comp.type === 'battery') {
+      if (comp.type === 'battery' || comp.type === 'solarcell') {
         const vsIdx = batteries.indexOf(comp)
         cc.push(x[numNodes + vsIdx])
-      } else if (comp.type === 'resistor' || comp.type === 'lamp') {
+      } else if (comp.type === 'resistor' || comp.type === 'lamp' || comp.type === 'thermistor' || comp.type === 'buzzer') {
         cc.push(v / Math.max(comp.value, 1e-6))
       } else if (comp.type === 'ammeter') {
         cc.push(v * 1e6)

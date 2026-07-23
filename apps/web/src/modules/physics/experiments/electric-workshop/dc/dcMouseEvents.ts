@@ -36,10 +36,25 @@ export function createMouseEvents(s: DCCanvasState) {
 
     const termHit = s.hitTestTerminal(sx, sy)
     if (termHit) {
+      if (s.pendingWireStart) {
+        if (termHit.comp.id !== s.pendingWireStart.comp.id || termHit.termIndex !== s.pendingWireStart.termIndex) {
+          s.workshop.addWire(
+            s.pendingWireStart.comp.id, s.pendingWireStart.termIndex,
+            termHit.comp.id, termHit.termIndex,
+            s.workshop.selectedWireColor.value,
+          )
+          if (s.workshop.running.value) s.workshop.solve()
+        }
+        s.pendingWireStart = null
+        s.redraw()
+        return
+      }
+      s.pendingWireStart = termHit
       s.isDraggingWire = true
       s.wireStart = termHit
       s.junctionStart = null
       s.tempWireEnd = { x: sx, y: sy }
+      s.redraw()
       return
     }
 
@@ -84,6 +99,7 @@ export function createMouseEvents(s: DCCanvasState) {
         s.isPanning = true
         s.workshop.selectedComponentId.value = null
         s.workshop.selectedWireId.value = null
+        s.pendingWireStart = null
       }
     }
     s.lastMouseX = e.clientX
@@ -121,6 +137,12 @@ export function createMouseEvents(s: DCCanvasState) {
     }
 
     if (s.isDraggingWire && s.wireStart) {
+      s.tempWireEnd = { x: sx, y: sy }
+      s.redraw()
+      return
+    }
+
+    if (s.pendingWireStart && !s.isDraggingWire) {
       s.tempWireEnd = { x: sx, y: sy }
       s.redraw()
       return
@@ -212,6 +234,9 @@ export function createMouseEvents(s: DCCanvasState) {
       s.wireStart = null
       s.junctionStart = null
       s.isDraggingWire = false
+    }
+    if (s.pendingWireStart && !s.isDraggingWire && !s.isPanning) {
+      // mouseup without drag — keep pendingWireStart for click-click mode
     }
     s.isPanning = false
     s.isDraggingComp = false

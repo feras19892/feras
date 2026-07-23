@@ -9,6 +9,13 @@ export type ComponentType =
   | 'acsource' | 'transformer' | 'oscilloscope'
   | 'led' | 'potentiometer' | 'motor'
   | 'zener' | 'npn' | 'pnp' | 'opamp'
+  | 'thermistor' | 'buzzer' | 'solarcell'
+
+export interface FrequencyPoint {
+  frequency: number
+  magnitude: number
+  phase: number
+}
 
 export interface Terminal {
   id: number
@@ -32,6 +39,7 @@ export interface WorkshopComponent {
   terminals: Terminal[]
   relayCoilTerminals?: [Terminal, Terminal]
   relayState?: boolean
+  relayManualOverride?: boolean
   breakerTripped?: boolean
   breakerRating?: number
   fuseBlown?: boolean
@@ -53,6 +61,8 @@ export interface WorkshopComponent {
   beta?: number       // current gain (hFE) for NPN/PNP
   // OP-Amp fields
   opampGain?: number  // open-loop gain for OP-Amp
+  // Potentiometer fields
+  wiperRatio?: number  // wiper position (0-1) for potentiometer
   // Phasor results (complex: re + j*im)
   voltageRe?: number
   voltageIm?: number
@@ -110,7 +120,7 @@ export interface ComponentDef {
   color: string
   width: number
   height: number
-  terminalCount: 2 | 3 | 4 | 5
+  terminalCount: 1 | 2 | 3 | 4 | 5
   category: 'dc' | 'ac' | 'home' | 'industrial' | 'common'
   acOnly?: boolean
   group: 'source' | 'passive' | 'active' | 'measurement' | 'protection' | 'misc'

@@ -8,6 +8,7 @@ interface DragStateLike {
   junctionStart: { worldX: number; worldY: number } | null
   tempWireEnd: { x: number; y: number }
   hoverWireId: number | null
+  pendingWireStart: { comp: any; termIndex: number } | null
 }
 
 interface CanvasHelpers {
@@ -27,7 +28,7 @@ export function createRedraw(
   function redraw() {
     if (!canvasRef.value) return
     const ds = dragState
-    const tempW = ds.wireStart || ds.junctionStart ? { fromX: 0, fromY: 0, toX: ds.tempWireEnd.x, toY: ds.tempWireEnd.y } : null
+    const tempW = ds.wireStart || ds.junctionStart || ds.pendingWireStart ? { fromX: 0, fromY: 0, toX: ds.tempWireEnd.x, toY: ds.tempWireEnd.y } : null
     if (ds.wireStart && canvasRef.value) {
       const ctx = canvasRef.value.getContext('2d')
       if (ctx) {
@@ -48,8 +49,47 @@ export function createRedraw(
         tempW.fromX = ds.junctionStart.worldX * zoom.value + panX.value
         tempW.fromY = ds.junctionStart.worldY * zoom.value + panY.value
       }
+    } else if (ds.pendingWireStart && canvasRef.value) {
+      const ctx = canvasRef.value.getContext('2d')
+      if (ctx) {
+        const comp = ds.pendingWireStart.comp
+        const term = comp.terminals[ds.pendingWireStart.termIndex]
+        const s = comp.scale ?? 1
+        const r = comp.rotation * Math.PI / 180
+        const cos = Math.cos(r), sin = Math.sin(r)
+        const dx = term.dx * s
+        const dy = term.dy * s
+        const wx = comp.x + dx * cos - dy * sin
+        const wy = comp.y + dx * sin + dy * cos
+        const [sfx, sfy] = [wx * zoom.value + panX.value, wy * zoom.value + panY.value]
+        if (tempW) { tempW.fromX = sfx; tempW.fromY = sfy }
+      }
     }
     helpers.draw(canvasRef.value, workshop.selectedComponentId.value, workshop.selectedWireId.value, tempW)
+
+    // Highlight pending terminal with a pulsing ring
+    if (ds.pendingWireStart && canvasRef.value) {
+      const ctx = canvasRef.value.getContext('2d')
+      if (ctx) {
+        const comp = ds.pendingWireStart.comp
+        const term = comp.terminals[ds.pendingWireStart.termIndex]
+        const s = comp.scale ?? 1
+        const r = comp.rotation * Math.PI / 180
+        const cos = Math.cos(r), sin = Math.sin(r)
+        const dx = term.dx * s
+        const dy = term.dy * s
+        const wx = comp.x + dx * cos - dy * sin
+        const wy = comp.y + dx * sin + dy * cos
+        const [tsx, tsy] = [wx * zoom.value + panX.value, wy * zoom.value + panY.value]
+        ctx.strokeStyle = 'rgba(34,197,94,0.8)'
+        ctx.lineWidth = 3 * zoom.value
+        ctx.beginPath()
+        ctx.arc(tsx, tsy, 12 * zoom.value, 0, Math.PI * 2)
+        ctx.stroke()
+        ctx.fillStyle = 'rgba(34,197,94,0.2)'
+        ctx.fill()
+      }
+    }
 
     if (ds.hoverWireId !== null && canvasRef.value) {
       const ctx = canvasRef.value.getContext('2d')

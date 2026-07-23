@@ -16,6 +16,8 @@ defineProps<{
   editWireColor: string
   editWireThickness: number
   renderMode: '3d' | '2d'
+  showNodeNumbers: boolean
+  showReadings: boolean
   redraw: () => void
 }>()
 
@@ -33,6 +35,9 @@ const emit = defineEmits<{
   (e: 'deleteSelectedComp'): void
   (e: 'deleteSelectedWire'): void
   (e: 'openCanvasFullscreen'): void
+  (e: 'toggleNodeNumbers'): void
+  (e: 'toggleReadings'): void
+  (e: 'exportSVG'): void
 }>()
 </script>
 
@@ -76,8 +81,14 @@ const emit = defineEmits<{
           </div>
 
           <div class="tb-section" v-if="editingComp?.type === 'switch'">
-            <button class="tb-action-btn" @click="workshop.toggleSwitch(editingComp!.id); if (workshop.running.value) workshop.solve()">
+            <button class="tb-action-btn" @click="workshop.toggleSwitch(editingComp!.id); redraw()">
               {{ editingComp?.closed ? ('🟢 ' + t('ew.on')) : ('🔴 ' + t('ew.off')) }}
+            </button>
+          </div>
+
+          <div class="tb-section" v-if="editingComp?.type === 'relay'">
+            <button class="tb-action-btn" @click="workshop.toggleRelay(editingComp!.id); redraw()">
+              {{ editingComp?.relayState ? ('🟢 ' + t('ew.relayNO')) : ('🔴 ' + t('ew.relayNC')) }}
             </button>
           </div>
 
@@ -158,6 +169,9 @@ const emit = defineEmits<{
           </div>
           <div class="tb-section tb-actions">
             <button class="tb-render-toggle" @click="emit('update:renderMode', renderMode === '3d' ? '2d' : '3d'); redraw()">{{ renderMode === '3d' ? '2D' : '3D' }}</button>
+            <button class="tb-toggle-btn" :class="{ active: showNodeNumbers }" @click="emit('toggleNodeNumbers')" :title="t('ew.canvas.showNodeNumbers')">N</button>
+            <button class="tb-toggle-btn" :class="{ active: showReadings }" @click="emit('toggleReadings')" :title="t('ew.canvas.showReadings')">V/A</button>
+            <button class="tb-svg-btn" @click="emit('exportSVG')" :title="t('ew.canvas.exportSVG')">SVG</button>
             <button class="tb-fs-btn" @click="emit('openCanvasFullscreen')" :title="t('ew.fullscreen')">{{ t('ew.fullscreen') }}</button>
           </div>
         </template>

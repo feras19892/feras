@@ -29,6 +29,7 @@ const selectedEquationId = ref<string>('');
 const searchQuery = ref<string>('');
 const solverValues = ref<Record<string, string>>({});
 const solverResult = ref<{ result: string; steps: string[] } | null>(null);
+const solveForTarget = ref<string>('');
 const noteText = ref('');
 const practiceMode = ref(false);
 const practiceValues = ref<Record<string, string>>({});
@@ -76,6 +77,9 @@ watch(selectedBranchId, () => {
 watch(selectedEquationId, () => {
   solverValues.value = {};
   solverResult.value = null;
+  solveForTarget.value = selectedEquation.value?.defaultSolveFor
+    ?? selectedEquation.value?.variables[0]?.name
+    ?? '';
   noteText.value = selectedEquationId.value ? localStorage.getItem(noteKey.value) ?? '' : '';
   practiceMode.value = false;
   practiceValues.value = {};
@@ -85,6 +89,13 @@ watch(selectedEquationId, () => {
   problemChecks.value = {};
   problemNoExpected.value = {};
   problemAttempts.value = {};
+});
+
+watch(solveForTarget, () => {
+  solverResult.value = null;
+  if (solveForTarget.value && solverValues.value[solveForTarget.value]) {
+    delete solverValues.value[solveForTarget.value];
+  }
 });
 
 watch(noteText, (val) => {
@@ -256,6 +267,10 @@ const selectedEquation = computed<Equation | undefined>(() =>
 
 const variableInputs = computed(() => selectedEquation.value?.variables ?? []);
 
+const inputVariables = computed(() =>
+  variableInputs.value.filter((v) => v.name !== solveForTarget.value)
+);
+
 function parseMethod(method: string): { intro: string; steps: string[] } {
   const parts = method
     .split(/(?=\d+\)\s)/)
@@ -273,7 +288,7 @@ const parsedMethod = computed(() => {
 
 function runSolver() {
   if (!selectedEquation.value) return;
-  solverResult.value = selectedEquation.value.solve(solverValues.value);
+  solverResult.value = selectedEquation.value.solve(solverValues.value, solveForTarget.value || undefined);
 }
 </script>
 
@@ -447,9 +462,26 @@ function runSolver() {
 
             <div v-if="selectedEquation" class="solver-section">
               <h3 class="block-title">جرب بنفسك</h3>
+              <div class="solve-for-group">
+                <label class="solver-label" for="solve-for-select">المتغير المطلوب حسابه</label>
+                <select
+                  id="solve-for-select"
+                  v-model="solveForTarget"
+                  class="solver-field solve-for-select"
+                >
+                  <option
+                    v-for="variable in variableInputs"
+                    :key="variable.name"
+                    :value="variable.name"
+                  >
+                    {{ variable.label }}
+                  </option>
+                </select>
+              </div>
+              <p class="solve-for-hint">أدخل قيم باقي المتغيرات لحساب {{ solveForTarget }}</p>
               <div class="solver-inputs">
                 <div
-                  v-for="variable in variableInputs"
+                  v-for="variable in inputVariables"
                   :key="variable.name"
                   class="solver-input"
                 >
@@ -942,6 +974,30 @@ function runSolver() {
   flex-wrap: wrap;
   gap: 0.75rem;
   align-items: flex-end;
+}
+
+.solve-for-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.solve-for-select {
+  min-width: 120px;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.solve-for-hint {
+  margin: 0 0 0.75rem;
+  font-size: 0.8rem;
+  color: #38bdf8;
+  font-weight: 600;
 }
 
 .solver-input {

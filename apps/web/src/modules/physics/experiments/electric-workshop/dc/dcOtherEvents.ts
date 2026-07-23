@@ -43,7 +43,8 @@ export function createOtherEvents(s: DCCanvasState) {
     if (hit) {
       if (hit.type === 'switch') {
         s.workshop.toggleSwitch(hit.id)
-        if (s.workshop.running.value) s.workshop.solve()
+      } else if (hit.type === 'relay') {
+        s.workshop.toggleRelay(hit.id)
       } else if (hit.type === 'multimeter') {
         const modes = ['voltage', 'current', 'resistance'] as const
         const cur = hit.multimeterMode || 'voltage'
@@ -66,7 +67,12 @@ export function createOtherEvents(s: DCCanvasState) {
     const tag = (e.target as HTMLElement)?.tagName
     if (tag === 'INPUT' || tag === 'TEXTAREA') return
 
-    if (e.key === 'Delete' || e.key === 'Backspace') {
+    if (e.key === 'Escape') {
+      if (s.pendingWireStart) {
+        s.pendingWireStart = null
+        s.redraw()
+      }
+    } else if (e.key === 'Delete' || e.key === 'Backspace') {
       if (s.workshop.selectedComponentId.value !== null) {
         s.workshop.removeComponent(s.workshop.selectedComponentId.value)
         if (s.workshop.running.value) s.workshop.solve()

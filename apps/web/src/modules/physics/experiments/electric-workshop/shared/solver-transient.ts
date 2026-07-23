@@ -70,6 +70,13 @@ export function solveCircuitTransient(
         const n0 = getTerminalNode(comp.id, 0)
         const n1 = getTerminalNode(comp.id, 1)
         addG(n0, n1, 1 / Math.max(comp.value || 1000, 1e-6))
+        const wiper = getTerminalNode(comp.id, 2)
+        const R = Math.max(comp.value || 1000, 1)
+        const wiperRatio = comp.wiperRatio ?? 0.5
+        const rWiper = R * wiperRatio
+        addG(n0, wiper, 1 / Math.max(rWiper, 1e-6))
+        addG(wiper, n1, 1 / Math.max(R - rWiper, 1e-6))
+        addG(wiper, 0, 1e-12)
       } else if (comp.type === 'motor') {
         const n0 = getTerminalNode(comp.id, 0)
         const n1 = getTerminalNode(comp.id, 1)
@@ -104,9 +111,16 @@ export function solveCircuitTransient(
         const L = Math.max(comp.value, 1) * 1e-3
         const Geq = dt / (2 * L)
         addG(n0, n1, Geq)
-        const nc0 = getTerminalNode(comp.id, 2)
-        const nc1 = getTerminalNode(comp.id, 3)
-        addG(nc0, nc1, comp.relayState ? 1e6 : 1e-12)
+        const comNode = getTerminalNode(comp.id, 2)
+        const noNode = getTerminalNode(comp.id, 3)
+        const ncNode = getTerminalNode(comp.id, 4)
+        if (comp.relayState) {
+          addG(comNode, noNode, 1e6)
+          addG(comNode, ncNode, 1e-12)
+        } else {
+          addG(comNode, noNode, 1e-12)
+          addG(comNode, ncNode, 1e6)
+        }
       } else if (comp.type === 'diode') {
         const n0 = getTerminalNode(comp.id, 0)
         const n1 = getTerminalNode(comp.id, 1)
@@ -323,11 +337,11 @@ export function solveCircuitTransient(
 
     let relayChanged = false
     for (const comp of components) {
-      if (comp.type === 'relay') {
+      if (comp.type === 'relay' && !comp.relayManualOverride) {
         const st = indState.get(comp.id)
         if (st) {
           const coilI = Math.abs(st.iPrev)
-          const threshold = comp.value * 1e-3
+          const threshold = Math.max(comp.value * 1e-3, 1e-6)
           const newState = coilI > threshold
           if (newState !== comp.relayState) {
             comp.relayState = newState

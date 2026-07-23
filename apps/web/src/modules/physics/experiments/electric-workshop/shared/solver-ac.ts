@@ -1,4 +1,4 @@
-import type { WorkshopComponent, WorkshopWire, Complex, ACSolveResult } from './types'
+import type { WorkshopComponent, WorkshopWire, Complex, ACSolveResult, FrequencyPoint } from './types'
 import { buildNodeGraph } from './nodeGraph'
 import { cSub, cDiv, solveComplexLinear } from '@my-modern-app/math-engine'
 import { measureMultimeterAC } from './solver-multimeter'
@@ -80,8 +80,14 @@ export function solveCircuitAC(
     } else if (comp.type === 'potentiometer') {
       const n0 = getTerminalNode(comp.id, 0)
       const n1 = getTerminalNode(comp.id, 1)
+      const wiper = getTerminalNode(comp.id, 2)
       const R = Math.max(comp.value || 1000, 1)
       addY(n0, n1, { re: 1 / R, im: 0 })
+      const wiperRatio = comp.wiperRatio ?? 0.5
+      const rWiper = R * wiperRatio
+      addY(n0, wiper, { re: 1 / Math.max(rWiper, 1e-6), im: 0 })
+      addY(wiper, n1, { re: 1 / Math.max(R - rWiper, 1e-6), im: 0 })
+      addY(wiper, 0, { re: 1e-12, im: 0 })
     } else if (comp.type === 'motor') {
       const n0 = getTerminalNode(comp.id, 0)
       const n1 = getTerminalNode(comp.id, 1)
@@ -99,7 +105,7 @@ export function solveCircuitAC(
     } else if (comp.type === 'voltmeter') {
       const n0 = getTerminalNode(comp.id, 0)
       const n1 = getTerminalNode(comp.id, 1)
-      addY(n0, n1, { re: 1e-12, im: 0 })
+      addY(n0, n1, { re: 1e-8, im: 0 })
     } else if (comp.type === 'relay') {
       const a1 = getTerminalNode(comp.id, 0)
       const a2 = getTerminalNode(comp.id, 1)
@@ -114,6 +120,16 @@ export function solveCircuitAC(
         addY(com, no, { re: 1e-12, im: 0 })
         addY(com, nc, { re: 1e6, im: 0 })
       }
+    } else if (comp.type === 'breaker') {
+      const n0 = getTerminalNode(comp.id, 0)
+      const n1 = getTerminalNode(comp.id, 1)
+      if (comp.breakerTripped) addY(n0, n1, { re: 1e-12, im: 0 })
+      else addY(n0, n1, { re: 1e6, im: 0 })
+    } else if (comp.type === 'fuse') {
+      const n0 = getTerminalNode(comp.id, 0)
+      const n1 = getTerminalNode(comp.id, 1)
+      if (comp.fuseBlown) addY(n0, n1, { re: 1e-12, im: 0 })
+      else addY(n0, n1, { re: 1e6, im: 0 })
     } else if (comp.type === 'zener') {
       const n0 = getTerminalNode(comp.id, 0)
       const n1 = getTerminalNode(comp.id, 1)
@@ -174,7 +190,6 @@ export function solveCircuitAC(
     Gre[p2 * size + vsRow1] -= 1; Gre[vsRow1 * size + p2] -= 1
     Gre[s1 * size + vsRow2] += 1; Gre[vsRow2 * size + s1] += 1
     Gre[s2 * size + vsRow2] -= 1; Gre[vsRow2 * size + s2] -= 1
-    Gre[vsRow2 * size + s1] += 1; Gre[vsRow2 * size + s2] -= 1
     Gre[vsRow2 * size + p1] -= n; Gre[vsRow2 * size + p2] += n
     Gre[vsRow1 * size + vsRow1] += 1; Gre[vsRow1 * size + vsRow2] += n
     vsIdx += 2
@@ -219,6 +234,12 @@ export function solveCircuitAC(
     } else if (comp.type === 'potentiometer') {
       const R = Math.max(comp.value || 1000, 1)
       componentCurrentPhasors.set(comp.id, cDiv(vComp, { re: R, im: 0 }))
+    } else if (comp.type === 'breaker') {
+      if (comp.breakerTripped) componentCurrentPhasors.set(comp.id, { re: 0, im: 0 })
+      else componentCurrentPhasors.set(comp.id, cDiv(vComp, { re: 1e-6, im: 0 }))
+    } else if (comp.type === 'fuse') {
+      if (comp.fuseBlown) componentCurrentPhasors.set(comp.id, { re: 0, im: 0 })
+      else componentCurrentPhasors.set(comp.id, cDiv(vComp, { re: 1e-6, im: 0 }))
     } else if (comp.type === 'motor') {
       const R = Math.max(comp.value || 6, 1)
       componentCurrentPhasors.set(comp.id, cDiv(vComp, { re: R, im: 0 }))
@@ -260,7 +281,62 @@ export function solveCircuitAC(
 
   measureMultimeterAC(components, wires, terminalNodeIndex, nodeVoltagePhasors, componentCurrentPhasors, componentVoltagePhasors)
 
-  const faults = detectFaultsAC(components, componentCurrentPhasors, componentVoltagePhasors)
+  const faults = detectFaultsAC(components, wires, componentCurrentPhasors, componentVoltagePhasors)
 
   return { nodeVoltagePhasors, componentCurrentPhasors, componentVoltagePhasors, converged: true, faults }
+}
+
+export function frequencySweep(
+  components: WorkshopComponent[],
+  wires: WorkshopWire[],
+  freqStart: number = 1,
+  freqEnd: number = 10000,
+  numPoints: number = 50,
+  probeCompId?: number,
+): FrequencyPoint[] {
+  const results: FrequencyPoint[] = []
+  const logStart = Math.log10(freqStart)
+  const logEnd = Math.log10(freqEnd)
+  const originalFreqs = components.filter(c => c.type === 'acsource').map(c => c.acFrequency ?? 50)
+
+  for (let i = 0; i < numPoints; i++) {
+    const freq = Math.pow(10, logStart + (logEnd - logStart) * i / (numPoints - 1))
+    for (const c of components) {
+      if (c.type === 'acsource') c.acFrequency = freq
+    }
+
+    const result = solveCircuitAC(components, wires)
+    if (!result.converged) {
+      results.push({ frequency: freq, magnitude: 0, phase: 0 })
+      continue
+    }
+
+    let mag = 0
+    let phase = 0
+    if (probeCompId !== undefined) {
+      const v = result.componentVoltagePhasors.get(probeCompId)
+      if (v) {
+        mag = Math.sqrt(v.re * v.re + v.im * v.im)
+        phase = Math.atan2(v.im, v.re) * 180 / Math.PI
+      }
+    } else {
+      const acSource = components.find(c => c.type === 'acsource')
+      if (acSource) {
+        const v = result.componentVoltagePhasors.get(acSource.id)
+        if (v) {
+          mag = Math.sqrt(v.re * v.re + v.im * v.im)
+          phase = Math.atan2(v.im, v.re) * 180 / Math.PI
+        }
+      }
+    }
+
+    results.push({ frequency: freq, magnitude: mag, phase })
+  }
+
+  for (let i = 0; i < originalFreqs.length; i++) {
+    const sources = components.filter(c => c.type === 'acsource')
+    if (sources[i]) sources[i].acFrequency = originalFreqs[i]
+  }
+
+  return results
 }

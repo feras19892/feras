@@ -99,6 +99,16 @@ export function useWorkshop(labId: 'dc' | 'ac' = 'dc') {
   }
   function toggleSwitch(id: number) {
     compOps.toggleSwitch(compCtx, id)
+    if (running.value) solve()
+  }
+  function toggleRelay(id: number) {
+    const comp = components.find(c => c.id === id)
+    if (comp && comp.type === 'relay') {
+      pushUndo()
+      comp.relayState = !comp.relayState
+      comp.relayManualOverride = true
+      if (running.value) solve()
+    }
   }
   function setMultimeterMode(id: number, mode: 'voltage' | 'current' | 'resistance') {
     compOps.setMultimeterMode(compCtx, id, mode, running.value, solve)
@@ -288,7 +298,7 @@ export function useWorkshop(labId: 'dc' | 'ac' = 'dc') {
     solveResult, error,
     addComponent, moveComponent, rotateComponent, setComponentScale,
     removeComponent, insertAmmeterIntoWire,
-    updateComponentValue, toggleSwitch, setMultimeterMode,
+    updateComponentValue, toggleSwitch, toggleRelay, setMultimeterMode,
     resetBreaker, resetFuse,
     addWire, addWireFromJunction, removeWire,
     updateWireColor, updateWireThickness, moveWirePoint,

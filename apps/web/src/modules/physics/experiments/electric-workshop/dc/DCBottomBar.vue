@@ -24,6 +24,7 @@ const emit = defineEmits<{
   (e: 'exportPNG'): void
   (e: 'printCircuit'): void
   (e: 'showHelp'): void
+  (e: 'explainMNA'): void
   (e: 'selectFault', fault: any): void
 }>()
 </script>
@@ -71,6 +72,7 @@ const emit = defineEmits<{
       <button class="bb-tool-btn" @click="emit('update:currentExperiment', null); workshop.clearAll(); redraw()">{{ t('ew.newWorkspace') }}</button>
       <button class="bb-tool-btn" @click="emit('exportPNG')">{{ t('ew.exportPng') }}</button>
       <button class="bb-tool-btn" @click="emit('printCircuit')">{{ t('ew.print') }}</button>
+      <button class="bb-mna-btn" @click="emit('explainMNA')" :title="t('ew.calc.mnaHint')">{{ t('ew.calc.mnaTitle') }}</button>
       <button class="bb-tool-btn" @click="emit('showHelp')">{{ String.fromCharCode(0x2753) }} {{ t('ew.help') }}</button>
       <span class="bb-rd" v-if="workshop.running.value && !workshop.error.value">
         I: {{ workshop.totalCurrent.value.toFixed(3) }}A | V: {{ workshop.totalVoltage.value.toFixed(1) }}V | P: {{ workshop.totalPower.value.toFixed(2) }}W

@@ -8,7 +8,7 @@ export function solveCircuitTransientDC(
   totalTime: number = 0.1,
   numSteps: number = 200,
 ): TransientResult {
-  const battery = components.find(c => c.type === 'battery')
+  const battery = components.find(c => c.type === 'battery' || c.type === 'solarcell')
   if (!battery) {
     return { timePoints: [], nodeVoltages: [], componentCurrents: [], componentVoltages: [], converged: false }
   }
@@ -19,7 +19,7 @@ export function solveCircuitTransientDC(
     return { timePoints: [], nodeVoltages: [], componentCurrents: [], componentVoltages: [], converged: false }
   }
 
-  const { terminalNodeIndex, numNodes } = buildNodeGraph(components, wires, 'battery')
+  const { terminalNodeIndex, numNodes } = buildNodeGraph(components, wires, battery.type === 'solarcell' ? 'solarcell' : 'battery')
   if (numNodes === 0) {
     return { timePoints: [], nodeVoltages: [], componentCurrents: [], componentVoltages: [], converged: false }
   }

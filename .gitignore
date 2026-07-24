@@ -29,10 +29,59 @@ lint-*.txt
 lint-*.json
 typecheck*.txt
 build.txt
+builderr.txt
 temp_*.txt
+deploy-output.txt
 
 # Large data files
 arabic_lines*.csv
+
+# Temporary / scratch directory
+tmp/
+
+# Dead plan/report markdown files
+*_PLAN*.md
+*_REPORT*.md
+PLAN-*.md
+PLAN_*.md
+PROJECT_TREE*.md
+project_tree*.md
+FULL_PROJECT_TREE.md
+PROJECT_STRUCTURE.md
+PROJECT_REPAIR_PLAN.md
+PRISM_DEEP_REPAIR_PLAN.md
+QA_REPORT.md
+RESEARCH_PHASE_*.md
+STRATEGIC_PLAN_*.md
+TEACHER_STUDENT_*.md
+AUTH_REBUILD_PLAN.md
+FINAL_PROJECT_STATUS.md
+IMPLEMENTATION_SUMMARY.md
+MIGRATION_RULES.md
+ANALYSIS_CALC_PLAN.md
+PENDULUM_PLAN.md
+ai_rules.md
+
+# One-off scripts
+fix-*.js
+cleanup-*.ps1
+remove-*.ps1
+parse_lint.py
+inspect_glb.py
+screenshot.mjs
+test-lamp.mjs
+test-ollama.mjs
+
+# Screenshots / debug images
+math-v1-*.png
+
+# npm lock file (project uses pnpm)
+package-lock.json
+
+# Build dist (should not be tracked)
+dist/
+apps/web/dist/
+apps/api/dist/
 
 # SQLite database
 *.db

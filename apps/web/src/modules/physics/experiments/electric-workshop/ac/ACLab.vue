@@ -12,7 +12,7 @@ import { useSelectionSync } from '../shared/useSelectionSync'
 import { useAnimationLoop } from '../shared/useAnimationLoop'
 import { createRedraw, resizeCanvas as _resizeCanvas } from '../shared/workshopRedraw'
 import { exportPNG as _exportPNG, openCanvasFullscreen as _openCanvasFullscreen, printCircuit as _printCircuit } from '../shared/workshopExport'
-import { exportCircuitSVG, downloadSVG } from '../shared/exportSVG'
+import { useLabActions } from '../shared/useLabActions'
 import type { WorkshopComponent, WorkshopWire } from '../shared/types'
 import { buildACCalcExplanation } from './acExplainCalcs'
 import { createACCanvasState, type ACCanvasState } from './acCanvasState'
@@ -123,13 +123,7 @@ function loadExp(name: 'ac_rl' | 'ac_rc' | 'ac_rlc' | 'ac_transformer' | 'ac_fil
 
 function explainCalcs() {
   if (!currentExperiment.value) return
-  if (workshop.running.value) workshop.solve()
-  redraw()
-  if (canvasRef.value) {
-    canvasSnapshot.value = canvasRef.value.toDataURL('image/png')
-  }
-  calcExplanationHtml.value = buildACCalcExplanation(currentExperiment.value, workshop)
-  showCalcExplanation.value = true
+  showCalcDialog(buildACCalcExplanation(currentExperiment.value, workshop))
 }
 
 const editor = useComponentEditor(workshop, redraw, selectedFault)
@@ -151,10 +145,7 @@ const hasWarning = computed(() => workshop.faults.value.some(f => f.severity ===
 function exportPNG() { _exportPNG(canvasRef) }
 function openCanvasFullscreen() { _openCanvasFullscreen(canvasRef, canvasSnapshot, canvasFullscreen) }
 function printCircuit() { _printCircuit(canvasRef, workshop, t) }
-function doExportSVG() {
-  const svg = exportCircuitSVG(workshop.components, workshop.wires, zoom.value)
-  downloadSVG(svg, 'ac-circuit.svg')
-}
+const { showMNAExplanation, showCalcDialog, doExportSVG } = useLabActions(workshop, canvasRef, canvasSnapshot, calcExplanationHtml, showCalcExplanation, redraw, zoom, 'ac-circuit.svg')
 
 function doLoadCircuit(name: string) {
   workshop.loadCircuit(name)
@@ -267,6 +258,7 @@ onUnmounted(() => {
         @exportPNG="exportPNG"
         @printCircuit="printCircuit"
         @showHelp="showHelp = true"
+        @explainMNA="showMNAExplanation"
         @selectFault="selectedFault = $event"
       />
 

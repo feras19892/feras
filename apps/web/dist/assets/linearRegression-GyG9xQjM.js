@@ -1,1 +1,0 @@
-function y(o,u){const t=o.length;if(t<2)return null;const i=o.reduce((n,e)=>n+e,0)/t,a=u.reduce((n,e)=>n+e,0)/t;let s=0,r=0,c=0;for(let n=0;n<t;n++){const e=o[n]-i,l=u[n]-a;s+=e*e,r+=e*l,c+=l*l}if(Math.abs(s)<1e-12)return null;const d=r/s,f=a-d*i,x=c>1e-12?r*r/(s*c):0;return{slope:d,intercept:f,r2:x}}export{y as l};

@@ -3,26 +3,13 @@ import { buildNodeGraph } from './nodeGraph'
 import { solveLinear } from '@my-modern-app/math-engine'
 import { measureMultimeterDC } from './solver-multimeter'
 import { detectFaultsDC } from './solver-faults'
+import { getMatrixBuffers } from './matrixBuffer'
+import { updateRelayStates } from './relayStates'
+export { updateRelayStates }
 
 const VT = 0.02585
 const IS = 1e-12
 const ETA = 1.5
-
-let _cachedG: number[] | null = null
-let _cachedRHS: number[] | null = null
-let _cachedSize = 0
-
-function getMatrixBuffers(size: number): { G: number[]; RHS: number[] } {
-  if (_cachedG && _cachedRHS && _cachedSize === size) {
-    _cachedG.fill(0)
-    _cachedRHS.fill(0)
-    return { G: _cachedG, RHS: _cachedRHS }
-  }
-  _cachedG = new Array(size * size).fill(0)
-  _cachedRHS = new Array(size).fill(0)
-  _cachedSize = size
-  return { G: _cachedG, RHS: _cachedRHS }
-}
 
 export function solveCircuit(
   components: WorkshopComponent[],
@@ -314,32 +301,4 @@ export function solveCircuit(
   const faults = detectFaultsDC(components, wires, componentCurrents, componentVoltages, find)
 
   return { nodeVoltages, componentCurrents, componentVoltages, converged, iterations: converged ? actualIter : maxIter, faults }
-}
-
-export function updateRelayStates(components: WorkshopComponent[]): boolean {
-  let changed = false
-  for (const comp of components) {
-    if (comp.type === 'relay' && !comp.relayManualOverride) {
-      const coilCurrent = comp.current
-      const threshold = Math.max(comp.value * 1e-3, 1e-6)
-      const newState = Math.abs(coilCurrent) > threshold
-      if (newState !== comp.relayState) {
-        comp.relayState = newState
-        changed = true
-      }
-    }
-    if (comp.type === 'breaker') {
-      if (Math.abs(comp.current) > (comp.breakerRating ?? comp.value) && !comp.breakerTripped) {
-        comp.breakerTripped = true
-        changed = true
-      }
-    }
-    if (comp.type === 'fuse') {
-      if (Math.abs(comp.current) > comp.value && !comp.fuseBlown) {
-        comp.fuseBlown = true
-        changed = true
-      }
-    }
-  }
-  return changed
 }

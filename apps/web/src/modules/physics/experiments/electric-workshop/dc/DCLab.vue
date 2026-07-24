@@ -11,7 +11,7 @@ import { useSelectionSync } from '../shared/useSelectionSync'
 import { useAnimationLoop } from '../shared/useAnimationLoop'
 import { createRedraw, getMousePos as _getMousePos, resizeCanvas as _resizeCanvas } from '../shared/workshopRedraw'
 import { exportPNG as _exportPNG, openCanvasFullscreen as _openCanvasFullscreen, printCircuit as _printCircuit } from '../shared/workshopExport'
-import { exportCircuitSVG, downloadSVG } from '../shared/exportSVG'
+import { useLabActions } from '../shared/useLabActions'
 import type { WorkshopComponent, WorkshopWire } from '../shared/types'
 import DCDialogs from './DCDialogs.vue'
 import DCReadingsPanel from './DCReadingsPanel.vue'
@@ -123,14 +123,10 @@ function loadExp(name: 'ohm' | 'series' | 'parallel' | 'mixed' | 'kvl' | 'kcl' |
 
 function explainCalcs() {
   if (!currentExperiment.value) return
-  if (workshop.running.value) workshop.solve()
-  redraw()
-  if (canvasRef.value) {
-    canvasSnapshot.value = canvasRef.value.toDataURL('image/png')
-  }
-  calcExplanationHtml.value = buildCalcExplanation(currentExperiment.value, workshop, t)
-  showCalcExplanation.value = true
+  showCalcDialog(buildCalcExplanation(currentExperiment.value, workshop, t))
 }
+
+const { showMNAExplanation, showCalcDialog, doExportSVG } = useLabActions(workshop, canvasRef, canvasSnapshot, calcExplanationHtml, showCalcExplanation, redraw, zoom, 'dc-circuit.svg')
 
 const editor = useComponentEditor(workshop, redraw, selectedFault)
 const applyEditValue = () => editor.applyEditValue(editingComp, editValue)
@@ -179,10 +175,6 @@ const selectedCompFault = computed(() => {
 function exportPNG() { _exportPNG(canvasRef) }
 function openCanvasFullscreen() { _openCanvasFullscreen(canvasRef, canvasSnapshot, canvasFullscreen) }
 function printCircuit() { _printCircuit(canvasRef, workshop, t) }
-function doExportSVG() {
-  const svg = exportCircuitSVG(workshop.components, workshop.wires, zoom.value)
-  downloadSVG(svg, 'dc-circuit.svg')
-}
 
 function doLoadCircuit(name: string) {
   workshop.loadCircuit(name)
@@ -274,6 +266,7 @@ useSelectionSync(workshop, editingComp, editValue, editRotation, showValueEditor
         @exportPNG="exportPNG"
         @printCircuit="printCircuit"
         @showHelp="showHelp = true"
+        @explainMNA="showMNAExplanation"
         @selectFault="selectedFault = $event"
       />
     </div>

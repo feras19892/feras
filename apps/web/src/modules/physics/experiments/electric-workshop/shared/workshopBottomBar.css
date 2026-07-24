@@ -74,6 +74,19 @@
   transition: all 0.15s;
 }
 .tb-svg-btn:hover { background: #4c1d95; border-color: rgba(168,85,247,0.6); }
+.bb-mna-btn {
+  padding: 0.25rem 0.5rem;
+  background: #1e293b;
+  border: 1px solid rgba(34,197,94,0.3);
+  border-radius: 0.4rem;
+  color: #86efac;
+  font-size: 0.68rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.bb-mna-btn:hover { background: #14532d; border-color: rgba(34,197,94,0.6); }
 .bb-rd {
   font-size: 0.7rem;
   color: #7dd3fc;

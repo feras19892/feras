@@ -19,10 +19,10 @@ const emit = defineEmits<{
     <ul>
       <li
         v-for="organelle in props.organelles"
-        :key="organelle.organelleId"
+        :key="organelle.partId"
         class="organelle-item"
-        :class="{ active: organelle.organelleId === props.selectedId }"
-        @click="emit('select', organelle.organelleId)"
+        :class="{ active: organelle.partId === props.selectedId }"
+        @click="emit('select', organelle.partId)"
       >
         <span class="organelle-dot" />
         <span class="organelle-name">{{ organelle.label }}</span>

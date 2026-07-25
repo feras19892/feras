@@ -11,7 +11,7 @@ export function useBiologyHotspots(organelles: Organelle3D[]) {
     organelles
       .filter((organelle) => organelle.selectable !== false)
       .map((organelle) => ({
-        organelleId: organelle.id,
+        partId: organelle.id,
         label: t(organelle.nameKey),
         description: t(organelle.descriptionKey),
         longDescription: organelle.longDescriptionKey ? t(organelle.longDescriptionKey) : undefined,
@@ -22,7 +22,7 @@ export function useBiologyHotspots(organelles: Organelle3D[]) {
 
   const selectedHotspot = computed<HotspotState | null>(() => {
     if (!selectedId.value) return null;
-    return hotspots.value.find((h) => h.organelleId === selectedId.value) ?? null;
+    return hotspots.value.find((h) => h.partId === selectedId.value) ?? null;
   });
 
   const select = (id: string | null): void => {

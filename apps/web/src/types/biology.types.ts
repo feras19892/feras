@@ -61,7 +61,7 @@ export interface BiologyTopic {
 }
 
 export interface HotspotState {
-  organelleId: string;
+  partId: string;
   label: string;
   description: string;
   longDescription?: string;

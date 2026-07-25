@@ -19,7 +19,7 @@ export const pickOrganelle = (
   const intersects = raycaster.intersectObjects(scene.children, true);
   for (const hit of intersects) {
     if (hit.object.userData.blocksRaycast) continue;
-    const id = hit.object.userData.organelleId;
+    const id = hit.object.userData.partId;
     if (id) return id;
   }
   return null;

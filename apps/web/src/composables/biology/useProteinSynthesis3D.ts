@@ -17,6 +17,7 @@ const AMINO_ACID_COLORS = [0xf59e0b, 0x22c55e, 0x3b82f6];
 export function useProteinSynthesis3D(containerRef: Ref<HTMLDivElement | null>) {
   const currentStageIndex = ref(0);
   const error = ref<string | null>(null);
+  const autoRotate = ref(true);
   let renderer: THREE.WebGLRenderer | null = null;
   let scene: THREE.Scene | null = null;
   let camera: THREE.PerspectiveCamera | null = null;
@@ -161,6 +162,7 @@ export function useProteinSynthesis3D(containerRef: Ref<HTMLDivElement | null>) 
     controls.maxDistance = 25;
     controls.autoRotate = true;
     controls.autoRotateSpeed = 0.3;
+    controls.saveState();
 
     addLights(scene);
 
@@ -214,6 +216,15 @@ export function useProteinSynthesis3D(containerRef: Ref<HTMLDivElement | null>) 
     currentStageIndex.value = Math.max(0, Math.min(STAGE_NAMES.length - 1, index));
   };
 
+  const toggleAutoRotate = (): void => {
+    autoRotate.value = !autoRotate.value;
+    if (controls) controls.autoRotate = autoRotate.value;
+  };
+
+  const resetCamera = (): void => {
+    if (controls) controls.reset();
+  };
+
   onMounted(() => {
     init();
     window.addEventListener('resize', resize);
@@ -227,5 +238,8 @@ export function useProteinSynthesis3D(containerRef: Ref<HTMLDivElement | null>) 
     currentStageIndex,
     setStage,
     error,
+    autoRotate,
+    toggleAutoRotate,
+    resetCamera,
   };
 }

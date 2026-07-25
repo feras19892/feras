@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import * as THREE from 'three';
 import { useI18n } from '../../../composables/useI18n';
 import { useHeartGLB } from '../../../composables/biology/useHeartGLB';
@@ -11,7 +12,11 @@ const props = defineProps<{
   parts: HeartPart[];
 }>();
 
+const router = useRouter();
 const { t } = useI18n();
+const goBack = (): void => {
+  router.push('/biology/anatomy');
+};
 const containerRef = ref<HTMLDivElement | null>(null);
 const {
   error,
@@ -77,7 +82,7 @@ const hotspot = computed<HotspotState | null>(() => {
   const part = activePart.value;
   if (!part) return null;
   return {
-    organelleId: part.id,
+    partId: part.id,
     label: t(part.nameKey),
     description: t(part.descriptionKey),
     longDescription: part.longDescriptionKey ? t(part.longDescriptionKey) : undefined,
@@ -110,6 +115,9 @@ const onResetAll = (): void => {
 <template>
   <div class="experiment-page">
     <header class="top-bar">
+      <button type="button" class="back-button" @click="goBack">
+        {{ t('biology.backToAnatomySection') }}
+      </button>
       <h1 class="title">{{ t('biology.heartTitle') }}</h1>
     </header>
 
@@ -208,7 +216,7 @@ const onResetAll = (): void => {
         </div>
 
         <div v-else-if="!isLoading" class="empty-card">
-          {{ t('biology.selectOrganelleHint') }}
+          {{ t('biology.selectPartHint') }}
         </div>
       </aside>
 
@@ -217,7 +225,7 @@ const onResetAll = (): void => {
         <div v-if="isLoading" class="loading-overlay" role="status">{{ t('biology.loadingModel') }}</div>
         <div v-if="error" class="webgl-error" role="alert">{{ error }}</div>
         <div v-if="!hotspot && !isLoading" class="hint">
-          {{ t('biology.selectOrganelleHint') }}
+          {{ t('biology.selectPartHint') }}
         </div>
       </section>
 
@@ -260,6 +268,21 @@ const onResetAll = (): void => {
   border-bottom: 1px solid #1e293b;
   background: rgba(7, 11, 20, 0.95);
   z-index: 30;
+}
+
+.back-button {
+  margin-inline-end: 1rem;
+  background: transparent;
+  border: 1px solid #475569;
+  color: #e2e8f0;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.back-button:hover {
+  background: #1e293b;
 }
 
 .title {

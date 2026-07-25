@@ -48,7 +48,7 @@ export const createOrganelleMeshes = (
       mesh.rotation.set(...organelle.rotation);
     }
     if (organelle.selectable !== false) {
-      mesh.userData.organelleId = organelle.id;
+      mesh.userData.partId = organelle.id;
     }
     mesh.userData.blocksRaycast = organelle.blocksRaycast ?? false;
     scene.add(mesh);

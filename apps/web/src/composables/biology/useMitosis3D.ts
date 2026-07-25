@@ -16,6 +16,7 @@ interface ChromosomeMesh {
 export function useMitosis3D(containerRef: Ref<HTMLDivElement | null>) {
   const currentStageIndex = ref(0);
   const error = ref<string | null>(null);
+  const autoRotate = ref(true);
   let renderer: THREE.WebGLRenderer | null = null;
   let scene: THREE.Scene | null = null;
   let camera: THREE.PerspectiveCamera | null = null;
@@ -145,6 +146,7 @@ export function useMitosis3D(containerRef: Ref<HTMLDivElement | null>) {
     controls.maxDistance = 25;
     controls.autoRotate = true;
     controls.autoRotateSpeed = 0.4;
+    controls.saveState();
 
     addLights(scene);
 
@@ -225,6 +227,15 @@ export function useMitosis3D(containerRef: Ref<HTMLDivElement | null>) {
     animateToStage(STAGE_NAMES[currentStageIndex.value]);
   };
 
+  const toggleAutoRotate = (): void => {
+    autoRotate.value = !autoRotate.value;
+    if (controls) controls.autoRotate = autoRotate.value;
+  };
+
+  const resetCamera = (): void => {
+    if (controls) controls.reset();
+  };
+
   onMounted(() => {
     init();
     window.addEventListener('resize', resize);
@@ -238,5 +249,8 @@ export function useMitosis3D(containerRef: Ref<HTMLDivElement | null>) {
     currentStageIndex,
     setStage,
     error,
+    autoRotate,
+    toggleAutoRotate,
+    resetCamera,
   };
 }

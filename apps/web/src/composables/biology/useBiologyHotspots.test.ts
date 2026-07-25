@@ -42,7 +42,7 @@ describe('useBiologyHotspots', () => {
   it('filters out non-selectable organelles', () => {
     const { hotspots } = useBiologyHotspots(mockOrganelles);
     expect(hotspots.value.length).toBe(1);
-    expect(hotspots.value[0].organelleId).toBe('nucleus');
+    expect(hotspots.value[0].partId).toBe('nucleus');
   });
 
   it('selects and deselects an organelle', () => {
@@ -53,7 +53,7 @@ describe('useBiologyHotspots', () => {
 
     select('nucleus');
     expect(selectedId.value).toBe('nucleus');
-    expect(selectedHotspot.value?.organelleId).toBe('nucleus');
+    expect(selectedHotspot.value?.partId).toBe('nucleus');
 
     select(null);
     expect(selectedId.value).toBeNull();

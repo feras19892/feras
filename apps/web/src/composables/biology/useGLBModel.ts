@@ -12,6 +12,7 @@ export interface ModelPart {
   longDescriptionKey?: string;
   factsKeys?: string[];
   position: [number, number, number];
+  meshNames?: string[];
 }
 
 export function useGLBModel(
@@ -27,6 +28,7 @@ export function useGLBModel(
   const crossSectionMode = ref(false);
   const crossSectionOffset = ref(0);
   const insideView = ref(false);
+  const autoRotate = ref(false);
   let renderer: THREE.WebGLRenderer | null = null;
   let scene: THREE.Scene | null = null;
   let camera: THREE.PerspectiveCamera | null = null;
@@ -37,19 +39,28 @@ export function useGLBModel(
   const lastCameraPosition = new THREE.Vector3();
   const lastControlsTarget = new THREE.Vector3();
   const markerBasePositions = new Map<string, THREE.Vector3>();
-  const partMeshes = new Map<string, THREE.Mesh>();
+  const pickableMeshes: THREE.Mesh[] = [];
+  const partWorldPositions = new Map<string, THREE.Vector3>();
 
   const getWorldPosition = (id: string): THREE.Vector3 | null => {
-    const mesh = partMeshes.get(id);
-    return mesh ? mesh.position.clone() : null;
+    const pos = partWorldPositions.get(id);
+    return pos ? pos.clone() : null;
   };
 
   const highlight = (id: string | null): void => {
     selectedPartId.value = id;
-    for (const [partId, mesh] of partMeshes.entries()) {
-      const material = mesh.material as THREE.MeshPhysicalMaterial | undefined;
-      if (material && 'emissive' in material) {
-        material.emissive.setHex(partId === id ? 0x444444 : 0x000000);
+
+    for (const mesh of pickableMeshes) {
+      const material = mesh.material as THREE.MeshStandardMaterial | THREE.MeshPhysicalMaterial | undefined;
+      if (!material) continue;
+      const isSelected = mesh.userData.partId === id;
+
+      if (isSelected && 'emissive' in material) {
+        material.emissive.setHex(0x66ff66);
+        material.emissiveIntensity = 1.5;
+      } else if ('emissive' in material) {
+        material.emissive.setHex(0x000000);
+        material.emissiveIntensity = 0;
       }
     }
   };
@@ -63,7 +74,7 @@ export function useGLBModel(
       -((clientY - rect.top) / rect.height) * 2 + 1
     );
     raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(Array.from(partMeshes.values()));
+    const intersects = raycaster.intersectObjects(pickableMeshes);
     return intersects.length > 0 ? (intersects[0].object.userData.partId as string) : null;
   };
 
@@ -154,6 +165,20 @@ export function useGLBModel(
     }
   };
 
+  const toggleAutoRotate = (): void => {
+    autoRotate.value = !autoRotate.value;
+    if (controls) {
+      controls.autoRotate = autoRotate.value;
+      controls.autoRotateSpeed = 1.5;
+    }
+  };
+
+  const screenshot = (): string | null => {
+    if (!renderer || !scene || !camera) return null;
+    renderer.render(scene, camera);
+    return renderer.domElement.toDataURL('image/png');
+  };
+
   const resetAll = (): void => {
     if (xRayMode.value) {
       xRayMode.value = false;
@@ -168,6 +193,10 @@ export function useGLBModel(
       camera.position.copy(lastCameraPosition);
       controls.target.copy(lastControlsTarget);
       controls.update();
+    }
+    if (autoRotate.value) {
+      autoRotate.value = false;
+      if (controls) controls.autoRotate = false;
     }
     selectedPartId.value = null;
     highlight(null);
@@ -219,21 +248,41 @@ export function useGLBModel(
         }
 
         for (const part of parts) {
-          const geometry = new THREE.SphereGeometry(0.3, 20, 20);
-          const material = new THREE.MeshPhysicalMaterial({
-            color: '#4ade80',
-            transparent: true,
-            opacity: 0.6,
-            emissive: 0x000000,
-            roughness: 0.2,
-            clearcoat: 0.5,
-          });
-          const mesh = new THREE.Mesh(geometry, material);
-          mesh.position.set(...part.position);
-          mesh.userData.partId = part.id;
-          scene!.add(mesh);
-          partMeshes.set(part.id, mesh);
-          markerBasePositions.set(part.id, new THREE.Vector3(...part.position));
+          if (part.meshNames && part.meshNames.length > 0) {
+            const matchedMeshes: THREE.Mesh[] = [];
+            loadedModel.traverse((child) => {
+              const mesh = child as THREE.Mesh;
+              if (!mesh.isMesh) return;
+              if (part.meshNames!.includes(mesh.name)) {
+                mesh.userData.partId = part.id;
+                matchedMeshes.push(mesh);
+              }
+            });
+            if (matchedMeshes.length > 0) {
+              const box = new THREE.Box3();
+              for (const m of matchedMeshes) box.expandByObject(m);
+              const center = box.getCenter(new THREE.Vector3());
+              partWorldPositions.set(part.id, center);
+              pickableMeshes.push(...matchedMeshes);
+            }
+          } else {
+            const geometry = new THREE.SphereGeometry(0.3, 20, 20);
+            const material = new THREE.MeshPhysicalMaterial({
+              color: '#4ade80',
+              transparent: true,
+              opacity: 0.6,
+              emissive: 0x000000,
+              roughness: 0.2,
+              clearcoat: 0.5,
+            });
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.position.set(...part.position);
+            mesh.userData.partId = part.id;
+            scene!.add(mesh);
+            pickableMeshes.push(mesh);
+            partWorldPositions.set(part.id, new THREE.Vector3(...part.position));
+            markerBasePositions.set(part.id, new THREE.Vector3(...part.position));
+          }
         }
       },
       undefined,
@@ -309,7 +358,8 @@ export function useGLBModel(
     camera = null;
     renderer = null;
     controls = null;
-    partMeshes.clear();
+    pickableMeshes.length = 0;
+    partWorldPositions.clear();
     markerBasePositions.clear();
   };
 
@@ -339,6 +389,9 @@ export function useGLBModel(
     toggleCrossSection,
     setCrossSectionOffset,
     toggleInsideView,
+    toggleAutoRotate,
+    autoRotate,
+    screenshot,
     resetAll,
   };
 }

@@ -9,7 +9,7 @@ const props = defineProps<{
   organelles: Organelle3D[];
   markerLabels: Record<string, string>;
   explodeProgress: number;
-  selectedOrganelleId: string | null;
+  selectedPartId: string | null;
 }>();
 
 const emit = defineEmits<{
@@ -75,7 +75,7 @@ watch(
 );
 
 watch(
-  () => props.selectedOrganelleId,
+  () => props.selectedPartId,
   (id) => highlightOrganelle(id),
   { immediate: true }
 );
@@ -126,7 +126,7 @@ const handleMarkerClick = (id: string): void => {
       :x="marker.x"
       :y="marker.y"
       :visible="marker.visible"
-      :active="marker.id === selectedOrganelleId"
+      :active="marker.id === selectedPartId"
       @click="handleMarkerClick(marker.id)"
     />
   </div>

@@ -2,48 +2,66 @@
 import { computed, ref } from 'vue';
 import * as THREE from 'three';
 import { useI18n } from '../../../composables/useI18n';
-import { useProteinSynthesis3D } from '../../../composables/biology/useProteinSynthesis3D';
-import { proteinSynthesisExperiment, proteinSynthesisStages } from '../../../services/protein-synthesis-data';
+import type { AnatomyOrganData, AnatomyOrganPart } from '../../../services/anatomy-viewer-data';
 import type { HotspotState } from '../../../types/biology.types';
 import InfoPanel from './InfoPanel.vue';
 import StageStepper from './StageStepper.vue';
 
-const { t } = useI18n();
-const containerRef = ref<HTMLDivElement | null>(null);
-const { currentStageIndex, setStage, error, autoRotate, toggleAutoRotate, resetCamera } = useProteinSynthesis3D(containerRef);
+const props = defineProps<{
+  organData: AnatomyOrganData;
+}>();
 
-const stage = computed(() => proteinSynthesisStages[currentStageIndex.value]);
+const { t } = useI18n();
+const currentPartIndex = ref(0);
+const isLoading = ref(true);
+
+const part = computed<AnatomyOrganPart>(() => props.organData.parts[currentPartIndex.value]);
+
+const sketchfabEmbedUrl = computed(() => {
+  const uid = props.organData.sketchfabUid;
+  if (!uid) return '';
+  return `https://sketchfab.com/models/${uid}/embed?autostart=1&internal=1&tracking=0&ui_ar=0&ui_infos=0&ui_snapshots=1&ui_stop=0&ui_theatre=1&ui_watermark=0&ui_help=0&ui_settings=0&ui_annotations=0&ui_hint=0&ui_inspector=0`;
+});
 
 const hotspot = computed<HotspotState>(() => ({
-  partId: stage.value.id,
-  label: t(stage.value.titleKey),
-  description: t(stage.value.descriptionKey),
-  longDescription: t(stage.value.longDescriptionKey),
-  facts: stage.value.factsKeys.map((key) => t(key)),
+  partId: part.value.id,
+  label: t(part.value.titleKey),
+  description: t(part.value.descriptionKey),
+  longDescription: part.value.longDescriptionKey ? t(part.value.longDescriptionKey) : undefined,
+  facts: part.value.factsKeys?.map((key) => t(key)),
   position: new THREE.Vector3(0, 0, 0),
 }));
 
-const stageItems = computed(() =>
-  proteinSynthesisStages.map((s) => ({
-    id: s.id,
-    label: t(s.titleKey),
-    description: t(s.descriptionKey),
+const partItems = computed(() =>
+  props.organData.parts.map((p) => ({
+    id: p.id,
+    label: t(p.titleKey),
+    description: t(p.descriptionKey),
   }))
 );
 
-const nextStage = (): void => {
-  setStage(currentStageIndex.value + 1);
+const setPart = (index: number): void => {
+  currentPartIndex.value = Math.max(0, Math.min(props.organData.parts.length - 1, index));
+  isLoading.value = true;
 };
 
-const previousStage = (): void => {
-  setStage(currentStageIndex.value - 1);
+const nextPart = (): void => {
+  setPart(currentPartIndex.value + 1);
 };
 
-const isFirstStage = computed(() => currentStageIndex.value === 0);
-const isLastStage = computed(() => currentStageIndex.value === proteinSynthesisStages.length - 1);
+const previousPart = (): void => {
+  setPart(currentPartIndex.value - 1);
+};
+
+const isFirst = computed(() => currentPartIndex.value === 0);
+const isLast = computed(() => currentPartIndex.value === props.organData.parts.length - 1);
 
 const goBack = (): void => {
   window.history.back();
+};
+
+const onIframeLoad = (): void => {
+  isLoading.value = false;
 };
 
 const isFullscreen = ref(false);
@@ -68,11 +86,11 @@ const toggleFullscreen = (): void => {
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M19 12H5M12 19l-7-7 7-7" />
         </svg>
-        {{ t('biology.backToCellSection') }}
+        {{ t('biology.backToAnatomySection') }}
       </button>
       <div class="header-content">
-        <h1 class="experiment-title">{{ t(proteinSynthesisExperiment.titleKey) }}</h1>
-        <p class="experiment-subtitle">{{ t(proteinSynthesisExperiment.subtitleKey) }}</p>
+        <h1 class="experiment-title">{{ t(organData.titleKey) }}</h1>
+        <p class="experiment-subtitle">{{ t(organData.subtitleKey) }}</p>
       </div>
       <button class="header-action" @click="toggleFullscreen">
         <svg v-if="!isFullscreen" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -92,33 +110,24 @@ const toggleFullscreen = (): void => {
       </aside>
 
       <section class="canvas-section">
-        <div ref="containerRef" class="protein-canvas" />
+        <div v-if="isLoading" class="loading-overlay" role="status">
+          <div class="spinner" />
+          <span>{{ t('biology.loadingModel') }}</span>
+        </div>
 
-        <div v-if="error" class="webgl-error" role="alert">{{ error }}</div>
+        <iframe
+          v-if="sketchfabEmbedUrl"
+          :key="organData.sketchfabUid"
+          :src="sketchfabEmbedUrl"
+          class="sketchfab-embed"
+          allow="autoplay; fullscreen; xr-spatial-tracking"
+          allowfullscreen
+          loading="eager"
+          @load="onIframeLoad"
+        />
 
-        <div class="floating-toolbar">
-          <button
-            class="tool-btn"
-            :class="{ active: autoRotate }"
-            :title="t('biology.autoRotate')"
-            @click.stop="toggleAutoRotate"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
-              <path d="M21 3v5h-5" />
-            </svg>
-          </button>
-          <div class="tool-divider" />
-          <button
-            class="tool-btn"
-            :title="t('biology.resetCameraLabel')"
-            @click.stop="resetCamera"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M23 4v6h-6M1 20v-6h6" />
-              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
-            </svg>
-          </button>
+        <div class="model-attribution">
+          <span>3D Model on Sketchfab</span>
         </div>
       </section>
 
@@ -133,19 +142,19 @@ const toggleFullscreen = (): void => {
               <line x1="3" y1="12" x2="3.01" y2="12" />
               <line x1="3" y1="18" x2="3.01" y2="18" />
             </svg>
-            {{ t('biology.proteinSynthesisStageLabel') }}
+            {{ t('biology.partsListTitle') }}
           </h3>
           <StageStepper
-            :model-value="currentStageIndex"
-            :stages="stageItems"
-            :aria-label="t('biology.proteinSynthesisStageLabel')"
-            @update:model-value="setStage"
+            :model-value="currentPartIndex"
+            :stages="partItems"
+            :aria-label="t('biology.partsListTitle')"
+            @update:model-value="setPart"
           />
           <div class="stage-actions">
             <button
               class="action-button"
-              :disabled="isFirstStage"
-              @click="previousStage"
+              :disabled="isFirst"
+              @click="previousPart"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M15 18l-6-6 6-6" />
@@ -154,8 +163,8 @@ const toggleFullscreen = (): void => {
             </button>
             <button
               class="action-button primary"
-              :disabled="isLastStage"
-              @click="nextStage"
+              :disabled="isLast"
+              @click="nextPart"
             >
               {{ t('biology.nextStage') }}
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -346,78 +355,51 @@ const toggleFullscreen = (): void => {
   border-radius: 1rem;
   overflow: hidden;
   background: radial-gradient(ellipse at center, #0f172a 0%, #0a0f1c 100%);
-  cursor: grab;
 }
 
-.canvas-section:active {
-  cursor: grabbing;
-}
-
-.protein-canvas {
+.sketchfab-embed {
   width: 100%;
   height: 100%;
   min-height: 500px;
-}
-
-.floating-toolbar {
-  position: absolute;
-  bottom: 1.25rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  background: rgba(15, 23, 42, 0.92);
-  backdrop-filter: blur(12px);
-  border: 1px solid #334155;
-  border-radius: 0.75rem;
-  padding: 0.5rem 0.6rem;
-  z-index: 15;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-}
-
-.tool-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
   border: none;
-  border-radius: 0.5rem;
-  background: transparent;
-  color: #94a3b8;
-  cursor: pointer;
-  transition: all 0.15s ease;
+  display: block;
 }
 
-.tool-btn:hover {
-  background: rgba(51, 65, 85, 0.8);
-  color: #e2e8f0;
+.model-attribution {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.75rem;
+  font-size: 0.7rem;
+  color: #475569;
+  background: rgba(10, 15, 28, 0.7);
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.3rem;
+  pointer-events: none;
 }
 
-.tool-btn.active {
-  background: rgba(74, 222, 128, 0.15);
-  color: #4ade80;
-}
-
-.tool-divider {
-  width: 1px;
-  height: 24px;
-  background: #334155;
-  margin: 0 0.2rem;
-}
-
-.webgl-error {
+.loading-overlay {
   position: absolute;
   inset: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem;
-  background: rgba(10, 15, 28, 0.95);
-  color: #ef4444;
-  font-weight: 600;
-  z-index: 20;
+  gap: 1rem;
+  background: rgba(10, 15, 28, 0.9);
+  z-index: 10;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(74, 222, 128, 0.2);
+  border-top-color: #4ade80;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 @media (max-width: 900px) {

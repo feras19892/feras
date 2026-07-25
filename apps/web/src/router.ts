@@ -120,6 +120,41 @@ const routes: RouteRecordRaw[] = [
     name: 'BiologyHeart',
     component: () => import('./pages/biology/anatomy/heart.vue'),
   },
+  {
+    path: '/biology/anatomy/brain',
+    name: 'BiologyBrain',
+    component: () => import('./pages/biology/anatomy/brain.vue'),
+  },
+  {
+    path: '/biology/anatomy/lungs',
+    name: 'BiologyLungs',
+    component: () => import('./pages/biology/anatomy/lungs.vue'),
+  },
+  {
+    path: '/biology/anatomy/skeleton',
+    name: 'BiologySkeleton',
+    component: () => import('./pages/biology/anatomy/skeleton.vue'),
+  },
+  {
+    path: '/biology/anatomy/digestive',
+    name: 'BiologyDigestive',
+    component: () => import('./pages/biology/anatomy/digestive.vue'),
+  },
+  {
+    path: '/biology/anatomy/kidney',
+    name: 'BiologyKidney',
+    component: () => import('./pages/biology/anatomy/kidney.vue'),
+  },
+  {
+    path: '/biology/anatomy/eye',
+    name: 'BiologyEye',
+    component: () => import('./pages/biology/anatomy/eye.vue'),
+  },
+  {
+    path: '/biology/anatomy/ear',
+    name: 'BiologyEar',
+    component: () => import('./pages/biology/anatomy/ear.vue'),
+  },
 ];
 
 const router = createRouter({

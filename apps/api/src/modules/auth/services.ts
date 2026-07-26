@@ -1,19 +1,57 @@
 import type { User, RegisterCredentials } from '@my-modern-app/shared-types';
 import { db } from '../../db/index.js';
-import { hashPassword, comparePassword, generateRefreshToken, hashRefreshToken } from './crypto.js';
+import { hashPassword, comparePassword, generateRefreshToken, hashRefreshToken, generateVerificationCode, hashVerificationCode } from './crypto.js';
 import { signAccessToken } from './jwt.js';
 
-export async function register(credentials: RegisterCredentials): Promise<{ success: boolean; message?: string; user?: User }> {
+async function issueTokensForUser(user: User): Promise<{ token: string; refreshToken: string }> {
+  const token = await signAccessToken({
+    sub: String(user.id),
+    email: user.email,
+    role: user.role,
+  });
+
+  const refreshToken = generateRefreshToken();
+  const refreshHash = hashRefreshToken(refreshToken);
+  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+
+  await db.run(
+    'INSERT INTO refresh_tokens (token_hash, user_id, expires_at) VALUES (?, ?, ?)',
+    refreshHash,
+    user.id,
+    expiresAt,
+  );
+
+  return { token, refreshToken };
+}
+
+async function createEmailVerificationCode(userId: number): Promise<{ code: string }> {
+  const code = generateVerificationCode(6);
+  const codeHash = hashVerificationCode(code);
+  const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString(); // 15 minutes
+
+  await db.run(
+    'INSERT INTO email_verification_codes (user_id, code_hash, expires_at) VALUES (?, ?, ?)',
+    userId,
+    codeHash,
+    expiresAt,
+  );
+
+  return { code };
+}
+
+export async function register(credentials: RegisterCredentials): Promise<{ success: boolean; message?: string; user?: User; devVerificationCode?: string }> {
   try {
     const existing = await db.all<{ id: number }[]>('SELECT id FROM users WHERE email = ?', credentials.email);
     if (existing.length > 0) {
       return { success: false, message: 'Email already registered' };
     }
-
     const passwordHash = await hashPassword(credentials.password);
     const result = await db.run(
       'INSERT INTO users (email, name, password_hash, role) VALUES (?, ?, ?, ?)',
-      credentials.email, credentials.name, passwordHash, credentials.role || 'student'
+      credentials.email,
+      credentials.name,
+      passwordHash,
+      credentials.role || 'student',
     );
 
     const user: User = {
@@ -22,7 +60,19 @@ export async function register(credentials: RegisterCredentials): Promise<{ succ
       name: credentials.name,
       role: credentials.role || 'student',
     };
-    return { success: true, user };
+
+    let devVerificationCode: string | undefined;
+    try {
+      const { code } = await createEmailVerificationCode(user.id);
+      if (process.env.NODE_ENV !== 'production') {
+        devVerificationCode = code;
+        console.log(`[auth] Dev email verification code for ${user.email}: ${code}`);
+      }
+    } catch (e) {
+      console.error('createEmailVerificationCode error:', e);
+    }
+
+    return { success: true, user, devVerificationCode };
   } catch (err) {
     console.error('register error:', err);
     return { success: false, message: 'Registration failed' };
@@ -31,10 +81,17 @@ export async function register(credentials: RegisterCredentials): Promise<{ succ
 
 export async function login(
   email: string,
-  password: string
+  password: string,
 ): Promise<{ success: boolean; message?: string; user?: User; token?: string; refreshToken?: string }> {
   try {
-    const rows = await db.all<{ id: number; email: string; name: string; role: string; password_hash: string; blocked_at: string | null }[]>(
+    const rows = await db.all<{
+      id: number;
+      email: string;
+      name: string;
+      role: string;
+      password_hash: string;
+      blocked_at: string | null;
+    }[]>(
       'SELECT id, email, name, role, password_hash, blocked_at FROM users WHERE email = ?',
       email
     );
@@ -58,25 +115,75 @@ export async function login(
       role: row.role as User['role'],
     };
 
-    const token = await signAccessToken({
-      sub: String(user.id),
-      email: user.email,
-      role: user.role,
-    });
-
-    const refreshToken = generateRefreshToken();
-    const refreshHash = hashRefreshToken(refreshToken);
-    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
-
-    await db.run(
-      'INSERT INTO refresh_tokens (token_hash, user_id, expires_at) VALUES (?, ?, ?)',
-      refreshHash, user.id, expiresAt
-    );
+    const { token, refreshToken } = await issueTokensForUser(user);
 
     return { success: true, user, token, refreshToken };
   } catch (err) {
     console.error('login error:', err);
     return { success: false, message: 'Login failed' };
+  }
+}
+
+export async function verifyEmailCode(
+  email: string,
+  code: string,
+): Promise<{ success: boolean; message?: string; user?: User }> {
+  try {
+    const users = await db.all<{
+      id: number;
+      email: string;
+      name: string;
+      role: string;
+      email_verified_at: string | null;
+    }[]>(
+      'SELECT id, email, name, role, email_verified_at FROM users WHERE email = ?',
+      email,
+    );
+    if (users.length === 0) {
+      return { success: false, message: 'Invalid code' };
+    }
+
+    const userRow = users[0];
+
+    const codes = await db.all<{
+      id: number;
+      code_hash: string;
+      attempts: number;
+    }[]>(
+      'SELECT id, code_hash, attempts FROM email_verification_codes WHERE user_id = ? AND used_at IS NULL AND expires_at > datetime("now") ORDER BY created_at DESC LIMIT 1',
+      userRow.id,
+    );
+
+    if (codes.length === 0) {
+      return { success: false, message: 'Invalid or expired code' };
+    }
+
+    const row = codes[0];
+    const hashedInput = hashVerificationCode(code);
+    if (hashedInput !== row.code_hash) {
+      try {
+        await db.run('UPDATE email_verification_codes SET attempts = attempts + 1 WHERE id = ?', row.id);
+      } catch (e) {
+        console.error('verifyEmailCode attempts update error:', e);
+      }
+      return { success: false, message: 'Invalid code' };
+    }
+
+    const nowIso = new Date().toISOString();
+    await db.run('UPDATE email_verification_codes SET used_at = ? WHERE id = ?', nowIso, row.id);
+    await db.run('UPDATE users SET email_verified_at = COALESCE(email_verified_at, ?) WHERE id = ?', nowIso, userRow.id);
+
+    const user: User = {
+      id: Number(userRow.id),
+      email: userRow.email,
+      name: userRow.name,
+      role: userRow.role as User['role'],
+    };
+
+    return { success: true, user };
+  } catch (err) {
+    console.error('verifyEmailCode error:', err);
+    return { success: false, message: 'Verification failed' };
   }
 }
 

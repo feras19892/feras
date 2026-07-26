@@ -1,18 +1,18 @@
 <script setup lang="ts">
 const METALS = [
-  { name: 'Ø£Ù„Ù…Ù†ÙŠÙˆÙ…', symbol: 'Al', c: 900, color: '#a8a8a8' },
-  { name: 'Ù†Ø­Ø§Ø³', symbol: 'Cu', c: 385, color: '#b87333' },
-  { name: 'Ø­Ø¯ÙŠØ¯', symbol: 'Fe', c: 450, color: '#4a4a4a' },
-  { name: 'Ø±ØµØ§Øµ', symbol: 'Pb', c: 130, color: '#5a5a6a' },
-  { name: 'Ø²Ù†Ùƒ', symbol: 'Zn', c: 390, color: '#7a8a7a' },
-  { name: 'ÙØ¶Ø©', symbol: 'Ag', c: 235, color: '#c0c0c0' },
-  { name: 'Ø°Ù‡Ø¨', symbol: 'Au', c: 129, color: '#d4af37' },
-  { name: 'Ù†ÙŠÙƒÙ„', symbol: 'Ni', c: 440, color: '#6a7a8a' },
-  { name: 'Ù†Ø­Ø§Ø³ Ø£ØµÙØ±', symbol: 'Brass', c: 380, color: '#b5a642' },
-  { name: 'Ø¨Ø±ÙˆÙ†Ø²', symbol: 'Bronze', c: 435, color: '#cd7f32' },
-  { name: 'Ù‚ØµØ¯ÙŠØ±', symbol: 'Sn', c: 227, color: '#718f91' },
-  { name: 'Ù…ØºÙ†ÙŠØ³ÙŠÙˆÙ…', symbol: 'Mg', c: 1020, color: '#8f9e8f' },
-  { name: 'ØªÙŠØªØ§Ù†ÙŠÙˆÙ…', symbol: 'Ti', c: 523, color: '#7a7a8a' },
+  { name: 'ألمنيوم', symbol: 'Al', c: 900, color: '#a8a8a8' },
+  { name: 'نحاس', symbol: 'Cu', c: 385, color: '#b87333' },
+  { name: 'حديد', symbol: 'Fe', c: 450, color: '#4a4a4a' },
+  { name: 'رصاص', symbol: 'Pb', c: 130, color: '#5a5a6a' },
+  { name: 'زنك', symbol: 'Zn', c: 390, color: '#7a8a7a' },
+  { name: 'فضة', symbol: 'Ag', c: 235, color: '#c0c0c0' },
+  { name: 'ذهب', symbol: 'Au', c: 129, color: '#d4af37' },
+  { name: 'نيكل', symbol: 'Ni', c: 440, color: '#6a7a8a' },
+  { name: 'نحاس أصفر', symbol: 'Brass', c: 380, color: '#b5a642' },
+  { name: 'برونز', symbol: 'Bronze', c: 435, color: '#cd7f32' },
+  { name: 'قصدير', symbol: 'Sn', c: 227, color: '#718f91' },
+  { name: 'مغنيسيوم', symbol: 'Mg', c: 1020, color: '#8f9e8f' },
+  { name: 'تيتانيوم', symbol: 'Ti', c: 523, color: '#7a7a8a' },
 ]
 </script>
 
@@ -24,8 +24,8 @@ const METALS = [
     <div class="ref-table">
       <div class="ref-header">
         <span>Ø§Ù„Ù…Ø¹Ø¯Ù†</span>
-        <span>Ø§Ù„Ø±Ù…Ø²</span>
-        <span>c (J/kgÂ·Â°C)</span>
+        <span>الرمز</span>
+        <span>c (J/kg·°C)</span>
       </div>
       <div v-for="m in METALS" :key="m.name" class="ref-row">
         <span class="metal-name">

@@ -10,6 +10,11 @@ export const registerSchema = loginSchema.extend({
   role: z.enum(['student', 'teacher']).optional().default('student'),
 });
 
+export const verifyEmailSchema = z.object({
+  email: z.string().email(),
+  code: z.string().min(4).max(16),
+});
+
 export const passwordUpdateSchema = z.object({
   user_id: z.number().int().positive(),
   new_password: z.string().min(8).max(128),

@@ -78,7 +78,7 @@ onMounted(load);
     </div>
 
     <div v-if="loading" class="loading">{{ t('admin.loading') }}</div>
-    <div v-else-if="error" class="error-box">âŒ {{ error }}</div>
+    <div v-else-if="error" class="error-box">❌ {{ error }}</div>
     <template v-else>
       <!-- Activity Stats -->
       <div v-if="activityStats" class="stats-row">
@@ -111,7 +111,7 @@ onMounted(load);
         <div class="insight-card warning" v-if="insights.emptyClasses?.length">
           <h4>{{ t('adminUser.emptyClassesLabel') }}</h4>
           <ul>
-            <li v-for="c in insights.emptyClasses" :key="c.id">{{ c.name }} â€” {{ c.teacher_name }}</li>
+            <li v-for="c in insights.emptyClasses" :key="c.id">{{ c.name }} — {{ c.teacher_name }}</li>
           </ul>
         </div>
         <div class="insight-card alert" v-if="insights.ungradedCount">
@@ -133,7 +133,7 @@ onMounted(load);
           <div v-for="a in activities.slice(0, 50)" :key="a.id" class="activity-item">
             <span class="act-action">{{ actionLabel(a.action) }}</span>
             <span class="act-actor">{{ a.actor_name }} ({{ a.actor_role }})</span>
-            <span class="act-target" v-if="a.target_type">â†’ {{ a.target_type }} {{ a.target_id }}</span>
+            <span class="act-target" v-if="a.target_type">→ {{ a.target_type }} {{ a.target_id }}</span>
             <span class="act-time">{{ formatDate(a.created_at) }}</span>
           </div>
         </div>

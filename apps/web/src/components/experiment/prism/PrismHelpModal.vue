@@ -21,7 +21,7 @@ const emit = defineEmits<{ (e: 'close'): void }>()
             <h4>{{ t('experiments.prHelpS1Title') }}</h4>
             <p>{{ t('experiments.prHelpS1P1') }}</p>
             <p>{{ t('experiments.prHelpS1P2') }}</p>
-            <div class="formula">n(Î») = A + B / Î»Â²</div>
+            <div class="formula">n(λ) = A + B / λ²</div>
             <p>{{ t('experiments.prHelpS1P3') }}</p>
             <ul>
               <li>{{ t('experiments.prHelpS1L1') }}</li>
@@ -34,9 +34,9 @@ const emit = defineEmits<{ (e: 'close'): void }>()
           <section>
             <h4>{{ t('experiments.prHelpS2Title') }}</h4>
             <p>{{ t('experiments.prHelpS2P1') }}</p>
-            <div class="formula">nâ‚ Â· sin(Î¸â‚) = nâ‚‚ Â· sin(Î¸â‚‚)</div>
+            <div class="formula">n₁ · sin(θ₁) = n₂ · sin(θ₂)</div>
             <p>{{ t('experiments.prHelpS2P2') }}</p>
-            <div class="formula">n = sin((A + Î´â‚˜)/2) / sin(A/2)</div>
+            <div class="formula">n = sin((A + δₘ)/2) / sin(A/2)</div>
             <p>{{ t('experiments.prHelpS2P3') }}</p>
           </section>
 
@@ -60,7 +60,7 @@ const emit = defineEmits<{ (e: 'close'): void }>()
               <li>{{ t('experiments.prHelpS4L1') }}</li>
               <li>
                 {{ t('experiments.prHelpS4L2') }}
-                <div class="formula">Slope = Î”n / Î”(1/Î»Â²) = B</div>
+                <div class="formula">Slope = Δn / Δ(1/λ²) = B</div>
               </li>
               <li>
                 {{ t('experiments.prHelpS4L3') }}

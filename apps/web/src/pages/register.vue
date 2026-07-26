@@ -54,14 +54,20 @@ async function handleRegister() {
     return;
   }
 
-  const ok = await auth.registerWithRole(
+  const result = await auth.registerWithRole(
     email.value.trim(),
     password.value,
     fullName,
     selectedRole.value
   );
-  if (ok) {
-    router.push('/dashboard');
+  if (result.ok) {
+    router.push({
+      path: '/verify-email',
+      query: {
+        email: email.value.trim(),
+        devCode: result.devCode ?? undefined,
+      },
+    });
   } else {
     formError.value = auth.error || t('auth.errors.registerFailed');
   }

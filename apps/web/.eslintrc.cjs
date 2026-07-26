@@ -42,6 +42,12 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^props$|^_', argsIgnorePattern: '^_' }],
       },
     },
+    {
+      files: ['src/modules/physics/experiments/electric-workshop/shared/switch-lamp.test.ts'],
+      rules: {
+        '@typescript-eslint/no-unused-vars': 'off',
+      },
+    },
   ],
   globals: {
     RequestInit: 'readonly',

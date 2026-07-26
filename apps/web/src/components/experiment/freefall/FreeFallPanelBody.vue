@@ -68,20 +68,20 @@ const errorSources = [
 
   <template v-else-if="id === 'equations'">
     <div class="calc-row">
-      <button class="btn-calc" @click="emit('calcG')">ðŸ“ {{ t('experiments.calculateG') }}</button>
-      <button class="btn-calc" @click="emit('calcT')">â±ï¸ {{ t('experiments.calculateT') }}</button>
-      <button class="btn-calc" @click="emit('calcV')">âš¡ {{ t('experiments.calculateV') }}</button>
-      <button class="btn-calc" @click="emit('calcFitG')">ðŸ“ˆ {{ t('experiments.fitG') }}</button>
+      <button class="btn-calc" @click="emit('calcG')">📐 {{ t('experiments.calculateG') }}</button>
+      <button class="btn-calc" @click="emit('calcT')">⏱️ {{ t('experiments.calculateT') }}</button>
+      <button class="btn-calc" @click="emit('calcV')">⚡ {{ t('experiments.calculateV') }}</button>
+      <button class="btn-calc" @click="emit('calcFitG')">📊 {{ t('experiments.fitG') }}</button>
     </div>
     <div class="calc-result">
       <div v-for="(line, i) in resultLines" :key="i">{{ line }}</div>
     </div>
     <div class="equation-list">
-      <div class="equation-item"><span class="eq-type">v(t)</span><span class="eq-formula">v = -gÂ·t</span></div>
-      <div class="equation-item"><span class="eq-type">y(t)</span><span class="eq-formula">y = yâ‚€ - Â½gtÂ²</span></div>
-      <div class="equation-item"><span class="eq-type">t_fall</span><span class="eq-formula">t = âˆš(2h/g)</span></div>
-      <div class="equation-item"><span class="eq-type">v_impact</span><span class="eq-formula">v = âˆš(2gh)</span></div>
-      <div class="equation-item"><span class="eq-type">g_calc</span><span class="eq-formula">g = 2h/tÂ²</span></div>
+      <div class="equation-item"><span class="eq-type">v(t)</span><span class="eq-formula">v = -g·t</span></div>
+      <div class="equation-item"><span class="eq-type">y(t)</span><span class="eq-formula">y = y₀ - ½ g t²</span></div>
+      <div class="equation-item"><span class="eq-type">t_fall</span><span class="eq-formula">t = √(2h / g)</span></div>
+      <div class="equation-item"><span class="eq-type">v_impact</span><span class="eq-formula">v = √(2gh)</span></div>
+      <div class="equation-item"><span class="eq-type">g_calc</span><span class="eq-formula">g = 2h / t²</span></div>
     </div>
   </template>
 

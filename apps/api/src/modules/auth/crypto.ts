@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { createHash, randomBytes } from 'crypto';
+import { createHash, randomBytes, randomInt } from 'crypto';
 
 const SALT_ROUNDS = 12;
 
@@ -17,4 +17,14 @@ export function generateRefreshToken(): string {
 
 export function hashRefreshToken(token: string): string {
   return createHash('sha256').update(token).digest('base64url');
+}
+
+export function generateVerificationCode(length = 6): string {
+  const max = 10 ** length;
+  const n = randomInt(0, max);
+  return n.toString().padStart(length, '0');
+}
+
+export function hashVerificationCode(code: string): string {
+  return createHash('sha256').update(code).digest('base64url');
 }

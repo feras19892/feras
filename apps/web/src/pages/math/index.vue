@@ -3,6 +3,12 @@ import { ref, computed, watch, defineComponent, h, type VNode } from 'vue';
 import { RouterLink } from 'vue-router';
 import { branches, equations, type Branch, type Equation } from './data';
 import type { ApplicationProblem } from './math-types';
+import { normalizeNumerals } from './math-utils';
+import FeedbackModal from '../../components/shared/FeedbackModal.vue';
+import { useI18n } from '../../composables/useI18n';
+
+const { t } = useI18n();
+const showFeedback = ref(false);
 
 const MathText = defineComponent({
   props: { text: { type: String, required: true } },
@@ -110,7 +116,7 @@ const graphParams = computed(() => {
   selectedEquation.value.variables.forEach((v) => {
     const raw = solverValues.value[v.name];
     if (raw === undefined || raw === '') return;
-    const n = Number(raw);
+    const n = Number(normalizeNumerals(raw));
     if (!Number.isNaN(n)) params[v.name] = n;
   });
   return params as Record<string, number>;
@@ -216,7 +222,7 @@ function loadProblemVariables(problem: ApplicationProblem) {
   Object.entries(problem.variables).forEach(([key, value]) => {
     solverValues.value[key] = String(value);
   });
-  solverResult.value = selectedEquation.value?.solve(solverValues.value) ?? null;
+  solverResult.value = selectedEquation.value?.solve(normalizeValues(solverValues.value)) ?? null;
 }
 
 function checkProblemAnswer(idx: number, problem: ApplicationProblem) {
@@ -232,7 +238,7 @@ function checkProblemAnswer(idx: number, problem: ApplicationProblem) {
   problemAttempts.value[idx] = (problemAttempts.value[idx] ?? 0) + 1;
   const expectedStr = String(expected);
   const expectedParts = expectedStr.split(',').map((s) => s.trim());
-  const userParts = userAnswer.split(',').map((s) => s.trim());
+  const userParts = normalizeNumerals(userAnswer).split(',').map((s) => s.trim());
 
   const allMatch = expectedParts.length === userParts.length && expectedParts.every((part) => {
     const expectedNum = Number(part);
@@ -254,7 +260,7 @@ const solvedCount = computed(() =>
 
 const practiceResult = computed(() => {
   if (!selectedEquation.value || !practiceReveal.value) return null;
-  return selectedEquation.value.solve(practiceValues.value);
+  return selectedEquation.value.solve(normalizeValues(practiceValues.value));
 });
 
 const selectedBranch = computed<Branch | undefined>(() =>
@@ -286,9 +292,15 @@ const parsedMethod = computed(() => {
   return parseMethod(selectedEquation.value.method);
 });
 
+function normalizeValues(values: Record<string, string>): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const key in values) out[key] = normalizeNumerals(values[key]);
+  return out;
+}
+
 function runSolver() {
   if (!selectedEquation.value) return;
-  solverResult.value = selectedEquation.value.solve(solverValues.value, solveForTarget.value || undefined);
+  solverResult.value = selectedEquation.value.solve(normalizeValues(solverValues.value), solveForTarget.value || undefined);
 }
 </script>
 
@@ -636,6 +648,9 @@ function runSolver() {
         </div>
       </div>
     </main>
+
+    <FeedbackModal v-model:show="showFeedback" experiment-id="math" experiment-name="Math" />
+    <button class="feedback-fab" @click="showFeedback = true" :title="t('experiments.reportProblem')">🚩</button>
   </div>
 </template>
 
@@ -646,6 +661,10 @@ function runSolver() {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
+
+  --feedback-fab-bottom: 1rem;
+  --feedback-fab-side: 1rem;
   background:
     radial-gradient(circle at 10% 20%, rgba(167, 139, 250, 0.08) 0%, transparent 30%),
     radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 30%),
@@ -1334,5 +1353,32 @@ function runSolver() {
     flex-direction: column;
     align-items: stretch;
   }
+}
+
+.feedback-fab {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 2px solid rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.15);
+  backdrop-filter: blur(8px);
+  color: #fca5a5;
+  font-size: 1.3rem;
+  cursor: pointer;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.feedback-fab:hover {
+  background: rgba(239, 68, 68, 0.3);
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
 }
 </style>

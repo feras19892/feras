@@ -172,7 +172,6 @@ export function solveCircuit(
         const c = getTerminalNode(comp.id, 1)
         const e = getTerminalNode(comp.id, 2)
         const vBE = isNpn ? prevX[b] - prevX[e] : prevX[e] - prevX[b]
-        const vCE = isNpn ? prevX[c] - prevX[e] : prevX[e] - prevX[c]
         const Vt = 0.02585
         const Ic = beta * IS * (Math.exp(vBE / Vt) - 1)
         const Ib = Ic / beta

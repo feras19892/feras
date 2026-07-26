@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
-import { loginSchema, registerSchema, passwordUpdateSchema } from './schemas.js';
-import { login, register, refreshAccessToken, logout, updatePassword } from './services.js';
+import { loginSchema, registerSchema, passwordUpdateSchema, verifyEmailSchema } from './schemas.js';
+import { login, register, refreshAccessToken, logout, updatePassword, verifyEmailCode } from './services.js';
 import * as activitySvc from '../activity/service.js';
 import * as sessionSvc from '../sessions/service.js';
 import { setRefreshCookie, getRefreshCookie, clearRefreshCookie, setAccessCookie, getAccessCookie, clearAccessCookie } from './cookies.js';
@@ -79,6 +79,15 @@ authRoutes.post('/logout', async (c) => {
 authRoutes.get('/me', authMiddleware, async (c) => {
   const user = (c as any).get('user') as User;
   return c.json({ success: true, user });
+});
+
+authRoutes.post('/verify-email', zValidator('json', verifyEmailSchema), async (c) => {
+  const body = c.req.valid('json');
+  const result = await verifyEmailCode(body.email, body.code);
+  if (!result.success) {
+    return c.json({ success: false, message: result.message || 'Invalid code' }, 400);
+  }
+  return c.json({ success: true, user: result.user });
 });
 
 authRoutes.patch('/password', authMiddleware, zValidator('json', passwordUpdateSchema), async (c) => {

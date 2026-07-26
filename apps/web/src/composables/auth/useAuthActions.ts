@@ -47,26 +47,24 @@ export function useAuthActions(
     loading.value = true
     error.value = null
     try {
-      await fetchJson<{ success: boolean; user?: User }>('/api/auth/register', {
+      const data = await fetchJson<{ success: boolean; user?: User; devVerificationCode?: string }>('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, name, role: roleVal }),
       })
-      const loginData = await fetchJson<{ user: User; token: string }>('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      })
+      if (!data.success || !data.user) {
+        error.value = t('auth.errors.registerFailed')
+        return { ok: false as const, devCode: null as string | null }
+      }
       clearGuestState()
-      user.value = loginData.user
-      return true
+      return { ok: true as const, devCode: data.devVerificationCode ?? null }
     } catch (err) {
       const status = extractStatusCode(err)
       if (status === 409) error.value = t('auth.errors.emailAlreadyUsed')
       else if (status === 400) error.value = t('auth.errors.invalidRegistrationData')
       else if (isNetworkError(err)) error.value = t('auth.errors.cannotConnectToServer')
       else error.value = t('auth.errors.registerFailed')
-      return false
+      return { ok: false as const, devCode: null as string | null }
     } finally {
       loading.value = false
     }

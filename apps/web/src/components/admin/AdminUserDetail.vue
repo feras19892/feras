@@ -75,7 +75,7 @@ async function onAddNote() {
 }
 
 function formatDate(d: string | null | undefined) {
-  return d ? new Date(d).toLocaleDateString() : 'â€”';
+  return d ? new Date(d).toLocaleDateString() : '—';
 }
 
 onMounted(() => load(props.userId));
@@ -86,7 +86,7 @@ onMounted(() => load(props.userId));
     <button class="back-btn" @click="$emit('back')">{{ t('adminUser.back') }}</button>
 
     <div v-if="loading" class="loading">{{ t('admin.loading') }}</div>
-    <div v-else-if="error" class="error">âŒ {{ error }}</div>
+    <div v-else-if="error" class="error">❌ {{ error }}</div>
     <template v-else-if="profile?.user">
       <!-- Header -->
       <div class="user-header">
@@ -161,7 +161,7 @@ onMounted(() => load(props.userId));
           <h4>{{ t('adminUser.reports') }} ({{ profile.reports?.length ?? 0 }})</h4>
           <ul v-if="profile.reports?.length">
             <li v-for="r in profile.reports" :key="r.id">
-              {{ r.experiment_name }} â€” {{ r.status }} {{ r.grade ? `(${t('adminUser.grade')}: ${r.grade})` : '' }}
+              {{ r.experiment_name }} — {{ r.status }} {{ r.grade ? `(${t('adminUser.grade')}: ${r.grade})` : '' }}
             </li>
           </ul>
           <p v-else class="empty">{{ t('adminUser.noReports') }}</p>
@@ -171,7 +171,7 @@ onMounted(() => load(props.userId));
           <h4>{{ t('adminUser.warnings') }} ({{ profile.warnings?.length ?? 0 }})</h4>
           <ul v-if="profile.warnings?.length">
             <li v-for="w in profile.warnings" :key="w.id" :class="w.severity">
-              {{ w.title }} ({{ w.severity }}) {{ w.is_read ? 'âœ“' : 'â—' }}
+              {{ w.title }} ({{ w.severity }}) {{ w.is_read ? '✓' : '●' }}
             </li>
           </ul>
           <p v-else class="empty">{{ t('adminUser.noWarnings') }}</p>
@@ -195,7 +195,7 @@ onMounted(() => load(props.userId));
           <h4>{{ t('adminUser.recentActivity') }}</h4>
           <ul v-if="profile.activity?.length">
             <li v-for="a in profile.activity" :key="a.created_at">
-              {{ a.action }} {{ a.details ? `â€” ${a.details}` : '' }} <small>{{ formatDate(a.created_at) }}</small>
+              {{ a.action }} {{ a.details ? `— ${a.details}` : '' }} <small>{{ formatDate(a.created_at) }}</small>
             </li>
           </ul>
           <p v-else class="empty">{{ t('adminUser.noActivity') }}</p>

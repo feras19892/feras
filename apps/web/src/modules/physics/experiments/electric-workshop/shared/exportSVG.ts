@@ -5,7 +5,6 @@ import { getTerminalWorldPos } from './drawWire'
 export function exportCircuitSVG(
   components: WorkshopComponent[],
   wires: WorkshopWire[],
-  zoom: number = 1,
 ): string {
   if (components.length === 0 && wires.length === 0) {
     return '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100"><text x="100" y="50" text-anchor="middle" fill="#666">Empty circuit</text></svg>'

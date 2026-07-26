@@ -32,12 +32,12 @@ const emit = defineEmits<{ (e: 'close'): void }>()
           <section>
             <h4>{{ t('experiments.coHelpS2Title') }}</h4>
             <p>{{ t('experiments.coHelpS2P1') }}</p>
-            <div class="formula">mâ‚Â·vâ‚áµ¢ + mâ‚‚Â·vâ‚‚áµ¢ = mâ‚Â·vâ‚f + mâ‚‚Â·vâ‚‚f</div>
+            <div class="formula">m1·v1ᵢ + m2·v2ᵢ = m1·v1f + m2·v2f</div>
             <p>{{ t('experiments.coHelpS2P2') }}</p>
             <p>{{ t('experiments.coHelpS2P3') }}</p>
-            <div class="formula">mâ‚Â·vâ‚áµ¢ + mâ‚‚Â·vâ‚‚áµ¢ = (mâ‚ + mâ‚‚)Â·v_f</div>
+            <div class="formula">m1·v1ᵢ + m2·v2ᵢ = (m1 + m2)·v_f</div>
             <p>{{ t('experiments.coHelpS2P4') }}</p>
-            <div class="formula">v_f = (mâ‚Â·vâ‚áµ¢ + mâ‚‚Â·vâ‚‚áµ¢) / (mâ‚ + mâ‚‚)</div>
+            <div class="formula">v_f = (m1·v1ᵢ + m2·v2ᵢ) / (m1 + m2)</div>
           </section>
 
           <!-- 3. Laboratory Procedure -->
@@ -61,12 +61,12 @@ const emit = defineEmits<{ (e: 'close'): void }>()
               <li>{{ t('experiments.coHelpS4L1') }}</li>
               <li>
                 {{ t('experiments.coHelpS4L2') }}
-                <div class="formula">Slope = Î”páµ¢ / Î”v_f</div>
+                <div class="formula">Slope = Δp / Δv_f</div>
               </li>
               <li>
                 {{ t('experiments.coHelpS4L3') }}
-                <div class="formula">Slope = mâ‚ + mâ‚‚</div>
-                <div class="formula">mâ‚‚ = Slope - mâ‚</div>
+                <div class="formula">Slope = m1 + m2</div>
+                <div class="formula">m2 = Slope - m1</div>
               </li>
             </ul>
           </section>

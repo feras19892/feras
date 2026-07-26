@@ -50,7 +50,7 @@ function printReport() {
 
 <template>
   <div id="printable-report" class="experiment-report-panel">
-    <button class="close-btn" @click="emit('close')">âœ•</button>
+    <button class="close-btn" @click="emit('close')">✕</button>
 
     <section class="student-info">
       <h5>{{ t('experiments.studentInfo') }}</h5>
@@ -77,8 +77,8 @@ function printReport() {
     <slot name="content" />
 
     <div class="print-bar" v-if="hasData">
-      <button class="print-btn" @click="printReport">ðŸ–¨ï¸ {{ t('experiments.print') }}</button>
-      <button class="print-btn primary" @click="emit('open-full-report')">ðŸ“‹ {{ t('experiments.fullReport') }}</button>
+      <button class="print-btn" @click="printReport">🖨️ {{ t('experiments.print') }}</button>
+      <button class="print-btn primary" @click="emit('open-full-report')">📄 {{ t('experiments.fullReport') }}</button>
     </div>
     <div class="no-data" v-if="!hasData">
       <slot name="no-data">{{ t('experiments.noRecordedDataPerformExperiment') }}</slot>

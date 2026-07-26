@@ -39,7 +39,7 @@ export function useLabActions(
   }
 
   function doExportSVG() {
-    const svg = exportCircuitSVG(workshop.components, workshop.wires, zoom.value)
+    const svg = exportCircuitSVG(workshop.components, workshop.wires)
     downloadSVG(svg, svgFilename)
   }
 

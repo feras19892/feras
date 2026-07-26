@@ -114,7 +114,7 @@ function onConclusionUpdate(data: { conclusion: string; errors: string; improvem
         <div class="readiness">
           <div class="readiness-title">{{ t('analysis.reportReadiness') }}</div>
           <div v-for="(c, i) in readyChecks" :key="i" :class="['r-item', c.ok ? 'ok' : 'no']">
-            {{ c.ok ? 'âœ…' : 'â¬œ' }} {{ c.text }}
+            {{ c.ok ? '✅' : '✗' }} {{ c.text }}
           </div>
           <div v-if="allReady" class="all-ready">{{ t('analysis.reportReady') }}</div>
         </div>
@@ -162,7 +162,7 @@ function onConclusionUpdate(data: { conclusion: string; errors: string; improvem
           <div class="conc-title">{{ t('chemistryAnalysis.concentrationTable') }}</div>
           <div class="table-wrap">
             <table>
-              <thead><tr><th>V (mL)</th><th>pH</th><th>[Hâº] (M)</th><th>[OHâ»] (M)</th><th>pOH</th></tr></thead>
+              <thead><tr><th>V (mL)</th><th>pH</th><th>[H⁺] (M)</th><th>[OH⁻] (M)</th><th>pOH</th></tr></thead>
               <tbody>
                 <tr v-for="(row, i) in concTable" :key="i">
                   <td>{{ row.v.toFixed(1) }}</td>

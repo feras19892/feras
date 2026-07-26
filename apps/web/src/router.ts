@@ -23,6 +23,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./pages/register.vue'),
   },
   {
+    path: '/verify-email',
+    name: 'VerifyEmail',
+    component: () => import('./pages/verify-email.vue'),
+  },
+  {
     path: '/dashboard',
     redirect: '/home',
   },

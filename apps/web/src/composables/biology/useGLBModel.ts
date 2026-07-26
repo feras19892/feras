@@ -41,6 +41,10 @@ export function useGLBModel(
   const markerBasePositions = new Map<string, THREE.Vector3>();
   const pickableMeshes: THREE.Mesh[] = [];
   const partWorldPositions = new Map<string, THREE.Vector3>();
+  const partMeshes = new Map<string, THREE.Mesh[]>();
+  const originalMaterials = new Map<THREE.Mesh, THREE.Material | THREE.Material[]>();
+  const highlightMaterials = new Map<string, THREE.MeshStandardMaterial>();
+  let currentHighlightedId: string | null = null;
 
   const getWorldPosition = (id: string): THREE.Vector3 | null => {
     const pos = partWorldPositions.get(id);
@@ -50,17 +54,36 @@ export function useGLBModel(
   const highlight = (id: string | null): void => {
     selectedPartId.value = id;
 
-    for (const mesh of pickableMeshes) {
-      const material = mesh.material as THREE.MeshStandardMaterial | THREE.MeshPhysicalMaterial | undefined;
-      if (!material) continue;
-      const isSelected = mesh.userData.partId === id;
+    if (currentHighlightedId && currentHighlightedId !== id) {
+      const meshes = partMeshes.get(currentHighlightedId);
+      if (meshes) {
+        for (const mesh of meshes) {
+          const orig = originalMaterials.get(mesh);
+          if (orig) mesh.material = orig;
+        }
+      }
+      currentHighlightedId = null;
+    }
 
-      if (isSelected && 'emissive' in material) {
-        material.emissive.setHex(0x66ff66);
-        material.emissiveIntensity = 1.5;
-      } else if ('emissive' in material) {
-        material.emissive.setHex(0x000000);
-        material.emissiveIntensity = 0;
+    if (id && id !== currentHighlightedId) {
+      const meshes = partMeshes.get(id);
+      if (meshes) {
+        let hlMat = highlightMaterials.get(id);
+        if (!hlMat) {
+          const firstMesh = meshes[0];
+          const origMat = Array.isArray(firstMesh.material) ? firstMesh.material[0] : firstMesh.material;
+          hlMat = (origMat as THREE.MeshStandardMaterial).clone();
+          hlMat.emissive = new THREE.Color(0x66ff66);
+          hlMat.emissiveIntensity = 1.5;
+          highlightMaterials.set(id, hlMat);
+        }
+        for (const mesh of meshes) {
+          if (!originalMaterials.has(mesh)) {
+            originalMaterials.set(mesh, mesh.material);
+          }
+          mesh.material = hlMat;
+        }
+        currentHighlightedId = id;
       }
     }
   };
@@ -247,7 +270,8 @@ export function useGLBModel(
           });
         }
 
-        for (const part of parts) {
+        for (let pi = 0; pi < parts.length; pi++) {
+          const part = parts[pi];
           if (part.meshNames && part.meshNames.length > 0) {
             const matchedMeshes: THREE.Mesh[] = [];
             loadedModel.traverse((child) => {
@@ -263,6 +287,7 @@ export function useGLBModel(
               for (const m of matchedMeshes) box.expandByObject(m);
               const center = box.getCenter(new THREE.Vector3());
               partWorldPositions.set(part.id, center);
+              partMeshes.set(part.id, matchedMeshes);
               pickableMeshes.push(...matchedMeshes);
             }
           } else {

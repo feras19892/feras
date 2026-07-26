@@ -3,8 +3,22 @@ export function fmt(n: number): string {
   return n.toFixed(3).replace(/0+$/, '').replace(/\.$/, '');
 }
 
+const ARABIC_DIGITS = '٠١٢٣٤٥٦٧٨٩';
+const PERSIAN_DIGITS = '۰۱۲۳۴۵۶۷۸۹';
+
+export function normalizeNumerals(input: string): string {
+  if (!input) return input;
+  let result = input;
+  for (let i = 0; i < 10; i++) {
+    result = result.replace(new RegExp(ARABIC_DIGITS[i], 'g'), String(i));
+    result = result.replace(new RegExp(PERSIAN_DIGITS[i], 'g'), String(i));
+  }
+  result = result.replace(/[٫,]/g, '.');
+  return result;
+}
+
 export function parseNumbers(input: string): number[] {
-  return input
+  return normalizeNumerals(input)
     .split(/[,\s]+/)
     .map((s) => s.trim())
     .filter((s) => s !== '')

@@ -1,0 +1,87 @@
+<script setup lang="ts">
+import { useI18n } from '../../composables/useI18n'
+import { useAuthStore } from '../../modules/auth/stores/auth'
+import AccountSettingsModal from '../shared/AccountSettingsModal.vue'
+import type { StudentKPI, StudentReportRow } from '../../composables/student/useStudentDashboard'
+
+defineProps<{
+  kpi: StudentKPI
+  recent: StudentReportRow[]
+}>()
+const { t } = useI18n()
+const auth = useAuthStore()
+
+function statusLabel(s: string): string {
+  if (s === 'graded') return t('dashboard.statusGraded')
+  if (s === 'submitted') return t('dashboard.statusSubmitted')
+  if (s === 'resubmitted') return t('dashboard.statusResubmitted')
+  return t('dashboard.statusDraft')
+}
+</script>
+
+<template>
+  <div class="tab-panel">
+    <!-- Profile header -->
+    <div class="panel-card profile-card">
+      <div class="avatar">🎓</div>
+      <div class="info">
+        <h2>{{ auth.user?.name }}</h2>
+        <p class="email">{{ auth.user?.email }}</p>
+        <span class="role-badge">{{ t('dashboard.student') }}</span>
+      </div>
+      <AccountSettingsModal />
+    </div>
+
+    <!-- Stats grid -->
+    <div class="stats-grid">
+      <div class="stat-card"><span class="stat-val">{{ kpi.totalReports }}</span><span class="stat-label">{{ t('dashboard.totalReports') }}</span></div>
+      <div class="stat-card"><span class="stat-val">{{ kpi.gradedCount }}</span><span class="stat-label">{{ t('dashboard.graded') }}</span></div>
+      <div class="stat-card"><span class="stat-val">{{ kpi.pendingCount }}</span><span class="stat-label">{{ t('dashboard.pending') }}</span></div>
+      <div class="stat-card highlight"><span class="stat-val">{{ kpi.avgGrade }}%</span><span class="stat-label">{{ t('dashboard.average') }}</span></div>
+      <div class="stat-card highlight"><span class="stat-val">{{ kpi.bestGrade }}%</span><span class="stat-label">{{ t('dashboard.bestGrade') }}</span></div>
+      <div class="stat-card"><span class="stat-val">{{ kpi.totalClasses }}</span><span class="stat-label">{{ t('dashboard.classes') }}</span></div>
+    </div>
+
+    <!-- Recent reports -->
+    <div class="panel-card">
+      <div class="pc-header"><h3>📋 {{ t('dashboard.recentReports') }}</h3></div>
+      <div v-if="recent.length === 0" class="pc-empty">📝 {{ t('dashboard.noReportsMsg') }}</div>
+      <div v-else class="pc-list">
+        <div v-for="r in recent" :key="r.id" class="pc-row">
+          <span class="pc-name">{{ r.experimentName }}</span>
+          <span :class="['badge', r.status]">{{ statusLabel(r.status) }}</span>
+          <span v-if="r.grade !== null" class="pc-grade">{{ r.grade }}%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.panel-card { background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.8rem; padding: 1rem; margin-bottom: 0.8rem; }
+.profile-card { display: flex; align-items: center; gap: 1rem; }
+.profile-card .info { flex: 1; }
+.avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #4f46e5, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+.info h2 { margin: 0; font-size: 1.1rem; color: #f1f5f9; }
+.email { margin: 0.2rem 0 0; font-size: 0.8rem; color: #94a3b8; }
+.role-badge { font-size: 0.7rem; color: #67e8f9; background: rgba(99,102,241,0.1); padding: 0.15rem 0.5rem; border-radius: 999px; display: inline-block; margin-top: 0.3rem; }
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 0.8rem; }
+@media (max-width: 600px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+.stat-card { text-align: center; padding: 0.7rem; border-radius: 0.5rem; background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.05); }
+.stat-card.highlight { background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.15); }
+.stat-val { display: block; font-size: 1.2rem; font-weight: 800; color: #67e8f9; }
+.stat-card.highlight .stat-val { color: #a5b4fc; }
+.stat-label { font-size: 0.7rem; color: #94a3b8; }
+.pc-header { margin-bottom: 0.6rem; }
+.pc-header h3 { margin: 0; font-size: 0.9rem; font-weight: 700; color: #e5e7eb; }
+.pc-empty { text-align: center; color: #64748b; padding: 1rem; font-size: 0.82rem; }
+.pc-list { display: flex; flex-direction: column; gap: 0.3rem; }
+.pc-row { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.6rem; border-radius: 0.4rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03); }
+.pc-name { flex: 1; font-size: 0.8rem; font-weight: 600; color: #f1f5f9; }
+.badge { padding: 0.15rem 0.5rem; border-radius: 999px; font-size: 0.68rem; font-weight: 700; }
+.badge.graded { background: rgba(34,197,94,0.15); color: #22c55e; }
+.badge.submitted { background: rgba(245,158,11,0.15); color: #fbbf24; }
+.badge.resubmitted { background: rgba(99,102,241,0.15); color: #a5b4fc; }
+.badge.draft { background: rgba(148,163,184,0.15); color: #94a3b8; }
+.pc-grade { color: #67e8f9; font-weight: 700; font-family: monospace; font-size: 0.8rem; }
+</style>

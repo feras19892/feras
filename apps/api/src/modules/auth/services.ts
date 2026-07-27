@@ -127,7 +127,7 @@ export async function login(
 export async function verifyEmailCode(
   email: string,
   code: string,
-): Promise<{ success: boolean; message?: string; user?: User }> {
+): Promise<{ success: boolean; message?: string; user?: User; token?: string; refreshToken?: string }> {
   try {
     const users = await db.all<{
       id: number;
@@ -180,7 +180,9 @@ export async function verifyEmailCode(
       role: userRow.role as User['role'],
     };
 
-    return { success: true, user };
+    const { token, refreshToken } = await issueTokensForUser(user);
+
+    return { success: true, user, token, refreshToken };
   } catch (err) {
     console.error('verifyEmailCode error:', err);
     return { success: false, message: 'Verification failed' };
@@ -264,6 +266,79 @@ export async function updatePassword(userId: number, newPassword: string): Promi
     console.error('updatePassword error:', err);
     return false;
   }
+}
+
+export async function updateProfileName(userId: number, name: string): Promise<{ success: boolean; user?: User; message?: string }> {
+  try {
+    await db.run('UPDATE users SET name = ? WHERE id = ?', name, userId);
+    const updated = await getUserById(userId);
+    if (!updated) return { success: false, message: 'Update failed' };
+    return { success: true, user: updated };
+  } catch (err) {
+    console.error('updateProfileName error:', err);
+    return { success: false, message: 'Update failed' };
+  }
+}
+
+export async function deleteAccount(userId: number, password: string): Promise<{ success: boolean; message?: string }> {
+  const rows = await db.all<{ id: number; password_hash: string }[]>(
+    'SELECT id, password_hash FROM users WHERE id = ?', userId,
+  );
+  if (rows.length === 0) return { success: false, message: 'User not found' };
+
+  const valid = await comparePassword(password, rows[0].password_hash);
+  if (!valid) return { success: false, message: 'Invalid password' };
+
+  await db.run('DELETE FROM refresh_tokens WHERE user_id = ?', userId);
+  await db.run('DELETE FROM users WHERE id = ?', userId);
+  return { success: true };
+}
+
+export async function createNameRequest(userId: number, requestedName: string): Promise<{ success: boolean; message?: string }> {
+  const pending = await db.all<{ id: number }[]>(
+    'SELECT id FROM name_change_requests WHERE user_id = ? AND status = ?', userId, 'pending',
+  );
+  if (pending.length > 0) {
+    await db.run('UPDATE name_change_requests SET requested_name = ? WHERE id = ?', requestedName, pending[0].id);
+    return { success: true };
+  }
+  await db.run('INSERT INTO name_change_requests (user_id, requested_name) VALUES (?, ?)', userId, requestedName);
+  return { success: true };
+}
+
+export async function getPendingNameRequests(teacherId: number): Promise<{ id: number; user_id: number; user_name: string; user_email: string; requested_name: string; created_at: string }[]> {
+  const requests = await db.all<{ id: number; user_id: number; user_name: string; user_email: string; requested_name: string; created_at: string }[]>(
+    `SELECT ncr.id, ncr.user_id, u.name as user_name, u.email as user_email, ncr.requested_name, ncr.created_at
+     FROM name_change_requests ncr
+     JOIN users u ON ncr.user_id = u.id
+     JOIN class_students cs ON cs.student_id = ncr.user_id
+     JOIN classes c ON c.id = cs.class_id
+     WHERE ncr.status = 'pending' AND c.teacher_id = ?
+     GROUP BY ncr.id
+     ORDER BY ncr.created_at DESC`,
+    teacherId,
+  );
+  return requests;
+}
+
+export async function resolveNameRequest(requestId: number, teacherId: number, approved: boolean): Promise<{ success: boolean; message?: string }> {
+  const req = await db.get<{ id: number; user_id: number; requested_name: string; status: string }>(
+    'SELECT id, user_id, requested_name, status FROM name_change_requests WHERE id = ?', requestId,
+  );
+  if (!req) return { success: false, message: 'Request not found' };
+  if (req.status !== 'pending') return { success: false, message: 'Already resolved' };
+
+  const status = approved ? 'approved' : 'rejected';
+  await db.run(
+    'UPDATE name_change_requests SET status = ?, teacher_id = ?, resolved_at = datetime(\'now\') WHERE id = ?',
+    status, teacherId, requestId,
+  );
+
+  if (approved) {
+    await db.run('UPDATE users SET name = ? WHERE id = ?', req.requested_name, req.user_id);
+  }
+
+  return { success: true };
 }
 
 export async function impersonateUser(targetId: number): Promise<{ user: User; token: string } | null> {

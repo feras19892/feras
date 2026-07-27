@@ -2,6 +2,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { useI18n } from '../../composables/useI18n';
 import { useAuthStore } from '../../modules/auth/stores/auth';
+import AccountSettingsModal from '../shared/AccountSettingsModal.vue';
 import { getReports, getStudentStats } from '../../services/report.service';
 import { getMyClasses } from '../../services/class.service';
 import type { Report } from '../../services/report.service';
@@ -57,6 +58,7 @@ onMounted(() => load());
         <p class="email">{{ auth.user?.email }}</p>
         <p class="role">{{ t('dashboard.student') }}</p>
       </div>
+      <AccountSettingsModal />
     </div>
 
     <div class="stats-grid">
@@ -105,6 +107,7 @@ onMounted(() => load());
 <style scoped>
 .profile-panel { width: 100%; padding: 1rem 1.5rem; }
 .profile-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.profile-header .info { flex: 1; }
 .avatar { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #4f46e5, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
 .info h2 { margin: 0; font-size: 1.3rem; color: #f1f5f9; }
 .email { margin: 0.2rem 0 0; font-size: 0.85rem; color: #94a3b8; }

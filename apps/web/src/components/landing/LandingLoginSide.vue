@@ -69,6 +69,11 @@ const emit = defineEmits<{
     <footer class="login-footer">
       <span>⚛️ PhysLab — {{ t('landing.footerRights') }}</span>
       <span class="footer-sub">{{ t('landing.footerMadeWith') }}</span>
+      <div class="footer-links">
+        <router-link to="/privacy">{{ t('legal.privacyLink') }}</router-link>
+        <span>·</span>
+        <router-link to="/terms">{{ t('legal.termsLink') }}</router-link>
+      </div>
     </footer>
   </div>
 </template>
@@ -118,4 +123,8 @@ const emit = defineEmits<{
 .error { color: #fca5a5; font-size: 0.8rem; margin: 0.2rem 0; text-align: center; }
 .login-footer { text-align: center; padding: 1rem; border-top: 1px solid rgba(255,255,255,0.04); color: #475569; font-size: 0.72rem; display: flex; flex-direction: column; gap: 0.15rem; width: 100%; }
 .footer-sub { font-size: 0.7rem; opacity: 0.7; }
+.footer-links { display: flex; gap: 0.4rem; align-items: center; justify-content: center; margin-top: 0.3rem; }
+.footer-links a { color: #64748b; text-decoration: none; font-size: 0.7rem; }
+.footer-links a:hover { color: #94a3b8; text-decoration: underline; }
+.footer-links span { color: #334155; font-size: 0.7rem; }
 </style>

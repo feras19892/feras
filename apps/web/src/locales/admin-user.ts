@@ -87,6 +87,8 @@ export const adminUser = {
     actionGradeReport: '✅ تصحيح تقرير',
     actionCreateClass: '🏫 إنشاء فصل',
     actionDeleteClass: '🗑️ حذف فصل',
+    editProfile: '✏️ تعديل البيانات',
+    fillFields: 'يرجى ملء جميع الحقول',
   },
   en: {
     back: '← Back',
@@ -176,6 +178,8 @@ export const adminUser = {
     actionGradeReport: '✅ Grade Report',
     actionCreateClass: '🏫 Create Class',
     actionDeleteClass: '🗑️ Delete Class',
+    editProfile: '✏️ Edit Profile',
+    fillFields: 'Please fill all fields',
   },
   es: {
     back: '← Volver',
@@ -265,5 +269,7 @@ export const adminUser = {
     actionGradeReport: '✅ Calificar Informe',
     actionCreateClass: '🏫 Crear Clase',
     actionDeleteClass: '🗑️ Eliminar Clase',
+    editProfile: '✏️ Editar Perfil',
+    fillFields: 'Por favor complete todos los campos',
   },
 } as const

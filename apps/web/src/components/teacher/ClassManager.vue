@@ -1,43 +1,62 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useI18n } from '../../composables/useI18n'
 import { useClassManager } from '../../composables/teacher/useClassManager'
 import { getClassStats } from '../../services/class.service'
-import type { ClassStudent } from '../../services/class.service'
 import CreateClassModal from './CreateClassModal.vue'
-import StudentDetailModal from './StudentDetailModal.vue'
+import ClassGrid from './ClassGrid.vue'
+import ClassDetail from './ClassDetail.vue'
 
 const { t } = useI18n()
-const { classes, expandedId, classStudents, showModal, newClassName, createClass, deleteClass, copyCode, loadClassDetails, loading } = useClassManager()
+const { classes, expandedId, classStudents, showModal, newClassName, createClass, deleteClass, renameClass, copyCode, loadClassDetails, loading } = useClassManager()
 
-const selectedStudent = ref<ClassStudent | null>(null)
-const detailOpen = ref(false)
+const renameTarget = ref<{ id: string; name: string } | null>(null)
+const renameValue = ref('')
+
 interface ClassStatItem { student_count: number; total_reports: number; pending_count: number; class_average: number }
 const classStats = ref<Record<string, ClassStatItem>>({})
 const statsLoading = ref(false)
 
-async function showStudentDetail(s: ClassStudent) {
-  selectedStudent.value = s
-  detailOpen.value = true
-}
+const selectedClass = computed(() => classes.value.find(c => c.id === expandedId.value) || null)
+
+const summaryStats = computed(() => {
+  let totalStudents = 0, totalReports = 0, totalPending = 0, avgAccum = 0, avgCount = 0
+  for (const key in classStats.value) {
+    const s = classStats.value[key]
+    if (!s) continue
+    totalStudents += s.student_count
+    totalReports += s.total_reports
+    totalPending += s.pending_count
+    if (s.class_average > 0) { avgAccum += s.class_average; avgCount++ }
+  }
+  return { totalClasses: classes.value.length, totalStudents, totalReports, totalPending, avg: avgCount ? Math.round(avgAccum / avgCount) : 0 }
+})
 
 async function loadStats(classId: string) {
   if (classStats.value[classId]) return
   statsLoading.value = true
   try {
     const res = await getClassStats(classId)
-    if (res.success) classStats.value[classId] = res.stats
-  } catch (err) {
-    console.error('load class stats failed:', err)
-  }
+    if (res.success) classStats.value = { ...classStats.value, [classId]: res.stats }
+  } catch (err) { console.error('load class stats failed:', err) }
   statsLoading.value = false
 }
 
-async function toggleClass(id: string) {
+async function openClass(id: string) {
   await loadClassDetails(id)
-  if (expandedId.value === id) {
-    await loadStats(id)
-  }
+  if (expandedId.value === id) await loadStats(id)
+}
+
+function startRename(cls: { id: string; name: string }) {
+  renameTarget.value = cls
+  renameValue.value = cls.name
+}
+
+async function confirmRename() {
+  if (!renameTarget.value || !renameValue.value.trim()) return
+  await renameClass(renameTarget.value.id, renameValue.value)
+  renameTarget.value = null
+  renameValue.value = ''
 }
 </script>
 
@@ -46,12 +65,20 @@ async function toggleClass(id: string) {
     <div class="manager-header">
       <div class="header-title">
         <h2>{{ t('teacher.myClassesTitle') }}</h2>
-        <span v-if="classes.length" class="class-count">{{ classes.length }} {{ t('teacher.classCount') }}</span>
+        <span v-if="summaryStats.totalClasses" class="class-count">
+          {{ summaryStats.totalClasses }} {{ t('teacher.classCount') }}
+        </span>
       </div>
       <button class="create-btn" @click="showModal = true">
-        <span>+</span>
-        <span>{{ t('teacher.createClass') }}</span>
+        <span>+</span><span>{{ t('teacher.createClass') }}</span>
       </button>
+    </div>
+
+    <div class="summary-row" v-if="summaryStats.totalClasses">
+      <div class="summary-card"><span class="summary-label">{{ t('teacher.studentsLabel') }}</span><span class="summary-value">{{ summaryStats.totalStudents }}</span></div>
+      <div class="summary-card"><span class="summary-label">{{ t('teacher.reportsStat') }}</span><span class="summary-value">{{ summaryStats.totalReports }}</span></div>
+      <div class="summary-card"><span class="summary-label">{{ t('teacher.pendingStat') }}</span><span class="summary-value">{{ summaryStats.totalPending }}</span></div>
+      <div class="summary-card"><span class="summary-label">{{ t('teacher.avgStat') }}</span><span class="summary-value">{{ summaryStats.avg }}%</span></div>
     </div>
 
     <div v-if="classes.length === 0" class="empty-state">
@@ -60,213 +87,67 @@ async function toggleClass(id: string) {
       <button class="create-btn alt" @click="showModal = true">{{ t('teacher.createFirstClass') }}</button>
     </div>
 
-    <div v-else class="class-list">
-      <div v-for="cls in classes" :key="cls.id" class="class-card">
-        <div class="class-row" @click="toggleClass(cls.id)">
-          <span class="sc-toggle">{{ expandedId === cls.id ? '▼' : '▶' }}</span>
-          <span class="sc-icon">📚</span>
-          <span class="sc-name">{{ cls.name }}</span>
-          <span class="sc-code">{{ cls.code }}</span>
-          <button class="sc-copy" @click.stop="copyCode(cls.code)">📋</button>
-          <button class="sc-delete" @click.stop="deleteClass(cls.id)">🗑️</button>
-        </div>
-        <div v-if="expandedId === cls.id" class="class-details">
-          <!-- Class Stats -->
-          <div v-if="classStats[cls.id]" class="stats-panel">
-            <div class="stat-mini">
-              <span class="val">{{ classStats[cls.id].student_count }}</span>
-              <span class="lab">{{ t('teacher.studentsLabel') }}</span>
-            </div>
-            <div class="stat-mini">
-              <span class="val">{{ classStats[cls.id].total_reports }}</span>
-              <span class="lab">{{ t('teacher.reportsStat') }}</span>
-            </div>
-            <div class="stat-mini">
-              <span class="val">{{ classStats[cls.id].pending_count }}</span>
-              <span class="lab">{{ t('teacher.pendingStat') }}</span>
-            </div>
-            <div class="stat-mini highlight">
-              <span class="val">{{ classStats[cls.id].class_average }}%</span>
-              <span class="lab">{{ t('teacher.avgStat') }}</span>
-            </div>
-          </div>
+    <ClassGrid
+      v-else
+      :classes="classes"
+      :active-id="expandedId"
+      :class-stats="classStats"
+      @open="openClass"
+      @copy="copyCode"
+      @delete="deleteClass"
+      @rename="startRename"
+    />
 
-          <div v-if="loading" class="detail-empty">...</div>
-          <div v-else-if="classStudents.length === 0" class="detail-empty">{{ t('teacher.noStudentsRegistered') }}</div>
-          <div v-else class="student-list">
-            <div class="student-header">
-              <span>{{ t('teacher.studentCol') }}</span>
-              <span>{{ t('teacher.emailCol') }}</span>
-              <span>{{ t('teacher.joinDate') }}</span>
-            </div>
-            <div v-for="s in classStudents" :key="s.id" class="student-row" @click="showStudentDetail(s)">
-              <span class="stu-name">{{ s.name }}</span>
-              <span class="stu-email">{{ s.email }}</span>
-              <span class="stu-date">{{ s.joined_at?.slice(0, 10) }}</span>
-            </div>
-          </div>
+    <ClassDetail
+      v-if="selectedClass"
+      :cls="selectedClass"
+      :stats="classStats[selectedClass.id]"
+      :stats-loading="statsLoading"
+      :students="classStudents"
+      :loading="loading"
+      @close="expandedId = null"
+    />
+
+    <CreateClassModal v-model:show="showModal" v-model="newClassName" @confirm="createClass" />
+
+    <!-- Rename Modal -->
+    <div v-if="renameTarget" class="modal-overlay" @click.self="renameTarget = null">
+      <div class="rename-modal">
+        <h3>{{ t('dashboard.renameClass') }}</h3>
+        <input v-model="renameValue" type="text" :placeholder="t('dashboard.enterClassName')" @keyup.enter="confirmRename" />
+        <div class="rename-actions">
+          <button class="rename-cancel" @click="renameTarget = null">{{ t('dashboard.close') }}</button>
+          <button class="rename-confirm" @click="confirmRename">{{ t('common.save') }}</button>
         </div>
       </div>
     </div>
-
-    <CreateClassModal
-      v-model:show="showModal"
-      v-model="newClassName"
-      @confirm="createClass"
-    />
-
-    <StudentDetailModal
-      :show="detailOpen"
-      :student="selectedStudent"
-      @close="detailOpen = false"
-    />
   </div>
 </template>
 
 <style scoped>
-.class-manager {
-  width: 100%;
-  margin: 0;
-  padding: 1rem 1.5rem;
-}
+.class-manager { width: 100%; margin: 0; padding: 1rem 1.5rem; }
+.manager-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 0.8rem; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+.header-title { display: flex; align-items: center; gap: 0.7rem; }
+.manager-header h2 { font-size: 1.5rem; font-weight: 800; margin: 0; background: linear-gradient(135deg, #67e8f9, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.class-count { font-size: 0.75rem; color: #64748b; background: rgba(255, 255, 255, 0.05); padding: 0.2rem 0.6rem; border-radius: 999px; }
+.create-btn { display: flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.1rem; border: none; border-radius: 0.7rem; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; font-size: 0.85rem; font-weight: 700; cursor: pointer; font-family: inherit; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.35); transition: all 0.25s ease; }
+.create-btn:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 6px 22px rgba(79, 70, 229, 0.45); }
+.create-btn.alt { margin-top: 0.8rem; }
+.empty-state { text-align: center; padding: 3rem 1rem; color: #64748b; }
+.empty-icon { font-size: 3rem; margin-bottom: 0.5rem; }
+.summary-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.8rem; margin-bottom: 1.4rem; }
+.summary-card { padding: 0.8rem 1rem; border-radius: 0.9rem; background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.16), rgba(15, 23, 42, 0.95)); border: 1px solid rgba(148, 163, 184, 0.35); }
+.summary-label { display: block; font-size: 0.78rem; color: #9ca3af; margin-bottom: 0.1rem; }
+.summary-value { font-size: 1.25rem; font-weight: 800; color: #e5e7eb; }
 
-.manager-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-  padding-bottom: 0.8rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.header-title {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-}
-
-.manager-header h2 {
-  font-size: 1.5rem;
-  font-weight: 800;
-  margin: 0;
-  background: linear-gradient(135deg, #67e8f9, #a78bfa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.class-count {
-  font-size: 0.75rem;
-  color: #64748b;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 0.2rem 0.6rem;
-  border-radius: 999px;
-}
-
-.create-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.55rem 1.1rem;
-  border: none;
-  border-radius: 0.7rem;
-  background: linear-gradient(135deg, #4f46e5, #7c3aed);
-  color: #fff;
-  font-size: 0.85rem;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: inherit;
-  box-shadow: 0 4px 15px rgba(79, 70, 229, 0.35);
-  transition: all 0.25s ease;
-}
-
-.create-btn:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 6px 22px rgba(79, 70, 229, 0.45);
-}
-
-.create-btn.alt {
-  margin-top: 0.8rem;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 3rem 1rem;
-  color: #64748b;
-}
-
-.empty-icon {
-  font-size: 3rem;
-  margin-bottom: 0.5rem;
-}
-
-.class-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.class-row {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  padding: 0.8rem 1rem;
-  border-radius: 0.6rem;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  transition: all 0.2s;
-}
-
-.class-row:hover {
-  border-color: rgba(99, 102, 241, 0.25);
-  background: rgba(99, 102, 241, 0.04);
-}
-
-.sc-icon { font-size: 1.2rem; }
-
-.sc-name {
-  flex: 1;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #f1f5f9;
-}
-
-.sc-code {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #67e8f9;
-  font-family: monospace;
-  letter-spacing: 1px;
-  background: rgba(0, 0, 0, 0.4);
-  padding: 0.2rem 0.5rem;
-  border-radius: 0.35rem;
-  border: 1px solid rgba(103, 232, 249, 0.15);
-}
-
-.class-card { display: flex; flex-direction: column; border-radius: 0.6rem; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.07); transition: all 0.2s; }
-.class-card:hover { border-color: rgba(99, 102, 241, 0.25); }
-.sc-toggle { font-size: 0.7rem; color: #64748b; width: 16px; cursor: pointer; }
-.sc-copy, .sc-delete {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 0.9rem;
-  opacity: 0.7;
-  transition: opacity 0.2s;
-}
-.sc-copy:hover, .sc-delete:hover { opacity: 1; }
-.class-details { padding: 0 1rem 1rem 1rem; border-top: 1px solid rgba(255,255,255,0.05); }
-.detail-empty { padding: 1rem; text-align: center; color: #64748b; font-size: 0.85rem; }
-.student-list { display: flex; flex-direction: column; gap: 0.3rem; margin-top: 0.5rem; }
-.student-header { display: grid; grid-template-columns: 1.5fr 2fr 1fr; gap: 0.5rem; padding: 0.4rem 0.6rem; font-size: 0.75rem; color: #64748b; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.05); }
-.student-row { display: grid; grid-template-columns: 1.5fr 2fr 1fr; gap: 0.5rem; padding: 0.5rem 0.6rem; font-size: 0.85rem; color: #e2e8f0; border-radius: 0.35rem; transition: background 0.15s; cursor: pointer; }
-.student-row:hover { background: rgba(99,102,241,0.08); }
-.stu-name { font-weight: 600; color: #f1f5f9; }
-.stu-email { color: #94a3b8; font-size: 0.8rem; }
-.stu-date { color: #64748b; font-size: 0.8rem; }
-.stats-panel { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; margin: 0.75rem 0; padding: 0.6rem; background: rgba(0,0,0,0.2); border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.05); }
-.stat-mini { text-align: center; }
-.stat-mini .val { display: block; font-size: 1.1rem; font-weight: 800; color: #67e8f9; }
-.stat-mini.highlight .val { color: #a5b4fc; }
-.stat-mini .lab { font-size: 0.7rem; color: #94a3b8; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 500; }
+.rename-modal { background: rgba(15,23,42,0.97); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.8rem; padding: 1.5rem; width: 90%; max-width: 400px; }
+.rename-modal h3 { margin: 0 0 1rem; font-size: 1.1rem; color: #e5e7eb; }
+.rename-modal input { width: 100%; padding: 0.6rem 0.8rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-size: 0.9rem; font-family: inherit; margin-bottom: 1rem; }
+.rename-modal input:focus { outline: none; border-color: rgba(99,102,241,0.4); }
+.rename-actions { display: flex; gap: 0.5rem; justify-content: flex-end; }
+.rename-cancel { padding: 0.5rem 1.2rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #94a3b8; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+.rename-cancel:hover { background: rgba(255,255,255,0.08); }
+.rename-confirm { padding: 0.5rem 1.2rem; border-radius: 0.5rem; border: none; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; font-size: 0.85rem; font-weight: 700; cursor: pointer; font-family: inherit; }
+.rename-confirm:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(79,70,229,0.3); }
 </style>

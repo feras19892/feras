@@ -25,6 +25,9 @@ export const common = {
     thanks: 'تم الإرسال، شكراً!',
     submitFailed: 'فشل الإرسال',
     close: 'إغلاق',
+    save: 'حفظ',
+    pageNotFound: 'الصفحة غير موجودة',
+    backHome: 'العودة للرئيسية',
   },
   en: {
     chartTitle: '📈 Chart',
@@ -52,6 +55,9 @@ export const common = {
     thanks: 'Sent, thank you!',
     submitFailed: 'Submission failed',
     close: 'Close',
+    save: 'Save',
+    pageNotFound: 'Page not found',
+    backHome: 'Back to home',
   },
   es: {
     chartTitle: '📈 Gráfico',
@@ -79,5 +85,8 @@ export const common = {
     thanks: '¡Enviado, gracias!',
     submitFailed: 'Error al enviar',
     close: 'Cerrar',
+    save: 'Guardar',
+    pageNotFound: 'Página no encontrada',
+    backHome: 'Volver al inicio',
   },
 } as const

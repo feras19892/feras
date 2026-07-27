@@ -124,10 +124,15 @@ app.get('/:id/comments', async (c) => {
 // GET /:id/history — سجل تصحيح
 app.get('/:id/history', async (c) => {
   const user = c.get('user');
-  if (user.role !== 'teacher' && user.role !== 'admin') {
+  const id = Number(c.req.param('id'));
+  if (user.role === 'student') {
+    const report = await svc.getReportById(id);
+    if (!report || report.student_id !== user.id) {
+      return c.json({ success: false, message: 'غير مصرح' }, 403);
+    }
+  } else if (user.role !== 'teacher' && user.role !== 'admin') {
     return c.json({ success: false, message: 'غير مصرح' }, 403);
   }
-  const id = Number(c.req.param('id'));
   const list = await svc.getGradeHistory(id);
   return c.json({ success: true, history: list });
 });

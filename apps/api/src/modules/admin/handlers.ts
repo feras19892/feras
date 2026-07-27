@@ -31,6 +31,17 @@ const adminResetPasswordSchema = z.object({
   password: z.string().min(8).max(128),
 });
 
+const updateUserSchema = z.object({
+  name: z.string().min(2).max(100).optional(),
+  email: z.string().email().optional(),
+});
+
+const createClassSchema = z.object({
+  name: z.string().min(2).max(100),
+  code: z.string().min(2).max(20).optional(),
+  teacher_id: z.number().int().positive(),
+});
+
 type Variables = { user: User };
 
 const app = new Hono<{ Variables: Variables }>();
@@ -245,6 +256,75 @@ app.post('/users/:id/reset-password', zValidator('json', adminResetPasswordSchem
   const ok = await updatePassword(id, password);
   if (!ok) return c.json({ success: false, message: 'Update failed' }, 500);
   return c.json({ success: true });
+});
+
+// GET /classes/:id/students — get students of a class
+app.get('/classes/:id/students', async (c) => {
+  const classId = c.req.param('id');
+  const students = await svc.getClassStudentsForAdmin(classId);
+  return c.json({ success: true, students });
+});
+
+// PATCH /classes/:id — update class (rename, transfer teacher)
+app.patch('/classes/:id', async (c) => {
+  const classId = c.req.param('id');
+  const body = await c.req.json();
+  const result = await svc.updateClassForAdmin(classId, body);
+  if (!result.success) return c.json(result, 400);
+  return c.json(result);
+});
+
+// PATCH /reports/:id/grade — update report grade
+app.patch('/reports/:id/grade', async (c) => {
+  const reportId = Number(c.req.param('id'));
+  const { grade, feedback } = await c.req.json();
+  const result = await svc.updateReportGradeForAdmin(reportId, grade, feedback);
+  if (!result.success) return c.json(result, 400);
+  return c.json(result);
+});
+
+// PATCH /users/:id — update user name/email
+app.patch('/users/:id', zValidator('json', updateUserSchema), async (c) => {
+  const id = Number(c.req.param('id'));
+  const { name, email } = c.req.valid('json');
+  const result = await svc.updateUserForAdmin(id, { name, email });
+  if (!result.success) return c.json(result, 400);
+  return c.json(result);
+});
+
+// POST /classes — create a new class
+app.post('/classes', zValidator('json', createClassSchema), async (c) => {
+  const { name, code, teacher_id } = c.req.valid('json');
+  const result = await svc.createClassForAdmin(name, code, teacher_id);
+  if (!result.success) return c.json(result, 400);
+  return c.json(result, 201);
+});
+
+// DELETE /reports/:id — delete a report
+app.delete('/reports/:id', async (c) => {
+  const id = Number(c.req.param('id'));
+  const result = await svc.deleteReportForAdmin(id);
+  return c.json(result);
+});
+
+// GET /teachers — list all teachers (for class transfer dropdown)
+app.get('/teachers', async (c) => {
+  const list = await svc.getAllTeachers();
+  return c.json({ success: true, teachers: list });
+});
+
+// GET /settings — get all system settings
+app.get('/settings', async (c) => {
+  const settings = await svc.getSystemSettings();
+  return c.json({ success: true, settings });
+});
+
+// PATCH /settings — update a system setting
+app.patch('/settings', async (c) => {
+  const user = c.get('user') as User;
+  const { key, value } = await c.req.json();
+  const result = await svc.updateSystemSetting(key, value, user.id);
+  return c.json(result);
 });
 
 export { app as adminRoutes };

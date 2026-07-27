@@ -69,6 +69,20 @@ export async function joinClassByCode(studentId: number, code: string) {
   return { success: true, class_id: cls.id, name: cls.name, code: cls.code };
 }
 
+export async function leaveClass(classId: string, studentId: number) {
+  const existing = await db.get(
+    'SELECT 1 FROM class_students WHERE class_id = ? AND student_id = ?',
+    classId,
+    studentId,
+  );
+  if (!existing) {
+    return { success: false, message: 'أنت لست مشتركاً في هذا الفصل' };
+  }
+
+  await db.run('DELETE FROM class_students WHERE class_id = ? AND student_id = ?', classId, studentId);
+  return { success: true };
+}
+
 export async function deleteClass(classId: string, teacherId: number) {
   const cls = await db.get('SELECT teacher_id FROM classes WHERE id = ?', classId);
   if (!cls) return { success: false, message: 'الفصل غير موجود' };

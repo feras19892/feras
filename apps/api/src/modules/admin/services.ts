@@ -78,3 +78,109 @@ export async function deleteClass(classId: string) {
   await db.run(`DELETE FROM classes WHERE id = ?`, classId);
   return { success: true };
 }
+
+export async function getClassStudentsForAdmin(classId: string) {
+  return db.all(
+    `SELECT u.id, u.name, u.email, cs.joined_at,
+     (SELECT COUNT(*) FROM experiment_reports r WHERE r.student_id = u.id AND r.class_id = ?) as report_count
+     FROM users u
+     JOIN class_students cs ON u.id = cs.student_id
+     WHERE cs.class_id = ?
+     ORDER BY cs.joined_at`,
+    classId, classId
+  );
+}
+
+export async function updateClassForAdmin(classId: string, data: { name?: string; teacher_id?: number }) {
+  const cls = await db.get(`SELECT * FROM classes WHERE id = ?`, classId);
+  if (!cls) return { success: false, message: 'الفصل غير موجود' };
+
+  const sets: string[] = [];
+  const vals: any[] = [];
+  if (data.name !== undefined && data.name.trim()) { sets.push('name = ?'); vals.push(data.name.trim()); }
+  if (data.teacher_id !== undefined) {
+    const teacher = await db.get(`SELECT id FROM users WHERE id = ? AND role = 'teacher'`, data.teacher_id);
+    if (!teacher) return { success: false, message: 'المدرس غير موجود' };
+    sets.push('teacher_id = ?');
+    vals.push(data.teacher_id);
+  }
+  if (sets.length === 0) return { success: true };
+
+  vals.push(classId);
+  await db.run(`UPDATE classes SET ${sets.join(', ')}, updated_at = CURRENT_TIMESTAMP WHERE id = ?`, ...vals);
+  return { success: true };
+}
+
+export async function updateReportGradeForAdmin(reportId: number, grade: number, feedback?: string) {
+  const report = await db.get(`SELECT id FROM experiment_reports WHERE id = ?`, reportId);
+  if (!report) return { success: false, message: 'التقرير غير موجود' };
+  if (grade < 0 || grade > 100) return { success: false, message: 'الدرجة يجب أن تكون بين 0 و 100' };
+
+  await db.run(
+    `UPDATE experiment_reports SET grade = ?, status = 'graded', graded_at = datetime('now'), feedback = ? WHERE id = ?`,
+    grade, feedback || null, reportId
+  );
+  return { success: true };
+}
+
+export async function getAllTeachers() {
+  return db.all(
+    `SELECT id, name, email FROM users WHERE role = 'teacher' ORDER BY name`
+  );
+}
+
+export async function getSystemSettings() {
+  const rows = await db.all(`SELECT key, value FROM system_settings`);
+  const settings: Record<string, string> = {};
+  for (const row of rows) {
+    settings[row.key] = row.value;
+  }
+  return settings;
+}
+
+export async function updateSystemSetting(key: string, value: string, updatedBy: number) {
+  await db.run(
+    `INSERT INTO system_settings (key, value, updated_by, updated_at) VALUES (?, ?, ?, datetime('now'))
+     ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_by = excluded.updated_by, updated_at = datetime('now')`,
+    key, value, updatedBy
+  );
+  return { success: true };
+}
+
+export async function updateUserForAdmin(userId: number, data: { name?: string; email?: string }) {
+  const user = await db.get(`SELECT id FROM users WHERE id = ?`, userId);
+  if (!user) return { success: false, message: 'المستخدم غير موجود' };
+
+  const sets: string[] = [];
+  const vals: (string | number)[] = [];
+  if (data.name !== undefined && data.name.trim()) { sets.push('name = ?'); vals.push(data.name.trim()); }
+  if (data.email !== undefined && data.email.trim()) {
+    const existing = await db.get(`SELECT id FROM users WHERE email = ? AND id != ?`, data.email.trim(), userId);
+    if (existing) return { success: false, message: 'البريد مستخدم بالفعل' };
+    sets.push('email = ?'); vals.push(data.email.trim());
+  }
+  if (sets.length === 0) return { success: true };
+
+  vals.push(userId);
+  await db.run(`UPDATE users SET ${sets.join(', ')} WHERE id = ?`, ...vals);
+  return { success: true };
+}
+
+export async function createClassForAdmin(name: string, code: string | undefined, teacherId: number) {
+  const teacher = await db.get(`SELECT id FROM users WHERE id = ? AND role = 'teacher'`, teacherId);
+  if (!teacher) return { success: false, message: 'المدرس غير موجود' };
+
+  const classCode = code || Math.random().toString(36).substring(2, 8).toUpperCase();
+  const result = await db.run(
+    `INSERT INTO classes (id, name, code, teacher_id) VALUES (?, ?, ?, ?)`,
+    `cls_${Date.now()}`, name, classCode, teacherId
+  );
+  return { success: true, id: result.lastID, code: classCode };
+}
+
+export async function deleteReportForAdmin(reportId: number) {
+  const report = await db.get(`SELECT id FROM experiment_reports WHERE id = ?`, reportId);
+  if (!report) return { success: false, message: 'التقرير غير موجود' };
+  await db.run(`DELETE FROM experiment_reports WHERE id = ?`, reportId);
+  return { success: true };
+}

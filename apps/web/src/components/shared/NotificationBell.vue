@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { useNotifications } from '../../composables/useNotifications';
 import { useI18n } from '../../composables/useI18n';
 
-const { notifications, unreadCount, markAllRead } = useNotifications();
+const router = useRouter();
+const { notifications, unreadCount, markAllRead, markOneRead } = useNotifications();
 const { t } = useI18n();
 const open = ref(false);
 const wrapperRef = ref<HTMLElement | null>(null);
@@ -34,6 +36,14 @@ function formatTime(dateStr: string) {
   const d = new Date(dateStr);
   return d.toLocaleString('ar-SA', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
+
+function handleNotificationClick(n: { id: number; report_id?: number; type: string; class_id?: string }) {
+  markOneRead(n.id);
+  open.value = false;
+  if (n.report_id) {
+    router.push(`/report/${n.report_id}`);
+  }
+}
 </script>
 
 <template>
@@ -53,7 +63,8 @@ function formatTime(dateStr: string) {
       <div
         v-for="n in notifications"
         :key="n.id"
-        :class="['item', { unread: !n.is_read }]"
+        :class="['item', { unread: !n.is_read, clickable: n.report_id }]"
+        @click="handleNotificationClick(n)"
       >
         <span class="icon">{{ getIcon(n.type) }}</span>
         <div class="content">
@@ -69,13 +80,16 @@ function formatTime(dateStr: string) {
 <style scoped>
 .bell-wrapper { position: relative; }
 .bell-btn {
-  background: none; border: none; cursor: pointer; font-size: 1.1rem;
-  position: relative; padding: 0.3rem;
+  background: none; border: none; cursor: pointer; font-size: 1.2rem;
+  position: relative; padding: 0.3rem; transition: transform 0.15s;
 }
+.bell-btn:hover { transform: scale(1.1); }
 .badge {
-  position: absolute; top: -2px; right: -4px;
-  background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 700;
-  padding: 0.1rem 0.35rem; border-radius: 999px;
+  position: absolute; top: -4px; right: -6px;
+  background: #ef4444; color: #fff; font-size: 0.62rem; font-weight: 800;
+  padding: 0.12rem 0.38rem; border-radius: 999px;
+  border: 2px solid rgba(15,23,42,0.9);
+  min-width: 16px; text-align: center; line-height: 1;
 }
 .dropdown {
   position: absolute; top: calc(100% + 0.5rem); right: 0;
@@ -100,6 +114,7 @@ function formatTime(dateStr: string) {
   transition: background 0.15s; cursor: pointer;
 }
 .item:hover { background: rgba(255, 255, 255, 0.03); }
+.item.clickable:hover { background: rgba(99, 102, 241, 0.08); }
 .item.unread { background: rgba(99, 102, 241, 0.08); }
 .icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.1rem; }
 .content { display: flex; flex-direction: column; gap: 0.15rem; flex: 1; }

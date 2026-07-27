@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
-import { loginSchema, registerSchema, passwordUpdateSchema, verifyEmailSchema } from './schemas.js';
-import { login, register, refreshAccessToken, logout, updatePassword, verifyEmailCode } from './services.js';
+import { loginSchema, registerSchema, passwordUpdateSchema, profileUpdateSchema, deleteAccountSchema, nameRequestSchema, verifyEmailSchema } from './schemas.js';
+import { login, register, refreshAccessToken, logout, updatePassword, updateProfileName, deleteAccount, createNameRequest, verifyEmailCode } from './services.js';
 import * as activitySvc from '../activity/service.js';
 import * as sessionSvc from '../sessions/service.js';
 import { setRefreshCookie, getRefreshCookie, clearRefreshCookie, setAccessCookie, getAccessCookie, clearAccessCookie } from './cookies.js';
@@ -87,6 +87,12 @@ authRoutes.post('/verify-email', zValidator('json', verifyEmailSchema), async (c
   if (!result.success) {
     return c.json({ success: false, message: result.message || 'Invalid code' }, 400);
   }
+  if (result.token) {
+    setAccessCookie(c, result.token);
+  }
+  if (result.refreshToken) {
+    setRefreshCookie(c, result.refreshToken);
+  }
   return c.json({ success: true, user: result.user });
 });
 
@@ -99,6 +105,46 @@ authRoutes.patch('/password', authMiddleware, zValidator('json', passwordUpdateS
   }
   const ok = await updatePassword(userId, body.new_password);
   if (!ok) return c.json({ success: false, message: 'Update failed' }, 500);
+  return c.json({ success: true });
+});
+
+authRoutes.patch('/profile', authMiddleware, zValidator('json', profileUpdateSchema), async (c) => {
+  const user = (c as any).get('user') as User;
+  const body = c.req.valid('json');
+  if (user.role !== 'teacher' && user.role !== 'admin') {
+    return c.json({ success: false, message: 'Only teachers can directly update name' }, 403);
+  }
+  const result = await updateProfileName(user.id, body.name);
+  if (!result.success) {
+    return c.json({ success: false, message: result.message }, 400);
+  }
+  if (result.user) {
+    await activitySvc.logActivity(result.user.id, result.user.name, result.user.role, 'update_profile');
+  }
+  return c.json({ success: true, user: result.user });
+});
+
+authRoutes.post('/name-request', authMiddleware, zValidator('json', nameRequestSchema), async (c) => {
+  const user = (c as any).get('user') as User;
+  const body = c.req.valid('json');
+  const result = await createNameRequest(user.id, body.requested_name);
+  if (!result.success) {
+    return c.json({ success: false, message: result.message }, 400);
+  }
+  return c.json({ success: true });
+});
+
+authRoutes.delete('/account', authMiddleware, zValidator('json', deleteAccountSchema), async (c) => {
+  const user = (c as any).get('user') as User;
+  const body = c.req.valid('json');
+  const result = await deleteAccount(user.id, body.password);
+  if (!result.success) {
+    const status = result.message === 'Invalid password' ? 403 : 400;
+    return c.json({ success: false, message: result.message }, status);
+  }
+  await activitySvc.logActivity(user.id, user.name, user.role, 'delete_account');
+  clearAccessCookie(c);
+  clearRefreshCookie(c);
   return c.json({ success: true });
 });
 

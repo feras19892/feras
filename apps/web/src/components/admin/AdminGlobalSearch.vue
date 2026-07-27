@@ -16,6 +16,8 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'selectUser', id: number): void;
+  (e: 'selectClass', id: string): void;
+  (e: 'selectReport', id: number): void;
 }>();
 
 const { t } = useI18n();
@@ -71,6 +73,8 @@ function iconFor(type: string) {
 
 function onSelect(r: { type: string; id: number | string }) {
   if (r.type === 'user') emit('selectUser', Number(r.id));
+  else if (r.type === 'class') emit('selectClass', String(r.id));
+  else if (r.type === 'report') emit('selectReport', Number(r.id));
   query.value = '';
   showResults.value = false;
 }

@@ -5,6 +5,7 @@ import {
   getMyClasses,
   getClassDetails,
   deleteClass as apiDeleteClass,
+  updateClass as apiUpdateClass,
 } from '../../services/class.service'
 import type { ClassItem, ClassStudent } from '../../services/class.service'
 
@@ -68,6 +69,18 @@ export function useClassManager() {
     }
   }
 
+  async function renameClass(id: string, newName: string) {
+    if (!newName.trim()) return
+    try {
+      const res = await apiUpdateClass(id, { name: newName.trim() })
+      if (res.success) {
+        classes.value = classes.value.map(c => c.id === id ? { ...c, name: newName.trim() } : c)
+      }
+    } catch (err) {
+      console.error('rename class failed:', err)
+    }
+  }
+
   function copyCode(code: string) {
     navigator.clipboard?.writeText(code)
   }
@@ -85,6 +98,7 @@ export function useClassManager() {
     loading,
     createClass,
     deleteClass,
+    renameClass,
     copyCode,
     loadClassDetails,
   }

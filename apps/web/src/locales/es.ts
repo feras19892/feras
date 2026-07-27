@@ -19,7 +19,10 @@ import { chemistryAssistant } from './chemistry-assistant'
 import { biology } from './biology'
 import { math } from './math'
 import { lens } from './lens'
+import { report } from './report'
 import { ew } from './electricWorkshop'
+import { legal, privacy, terms } from './legal'
+import { account } from './account'
 
 export default {
   auth: auth.es,
@@ -44,4 +47,9 @@ export default {
   biology: biology.es,
   math: math.es,
   lens: lens.es,
+  report: report.es,
+  legal: legal.es,
+  privacy: privacy.es,
+  terms: terms.es,
+  account: account.es,
 } as const

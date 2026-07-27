@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useI18n } from '../../composables/useI18n';
 import { getAdminStats, getAdminActivityStats, getAdminInsights } from '../../services/admin.service';
 
 interface RoleStat { role: string; count: number }
 interface UserStats { total: number; byRole: RoleStat[] }
 interface ClassStats { total: number }
-interface ReportStats { total: number; graded: number }
+interface ReportStats { total: number; graded: number; pending: number; resubmitted: number; average: number }
 interface StatsData { users: UserStats; classes: ClassStats; reports: ReportStats }
 
 interface ActivityStatsData { today: number; logins: number; signups: number; reports: number }
@@ -31,6 +31,41 @@ const activityStats = ref<ActivityStatsData | null>(null);
 const insights = ref<InsightsData | null>(null);
 const loading = ref(false);
 const error = ref('');
+
+const reportBreakdown = computed(() => {
+  if (!stats.value) return [];
+  const r = stats.value.reports;
+  const total = r.total || 1;
+  return [
+    { label: t('admin.statusGraded'), value: r.graded, color: '#34d399', pct: Math.round(r.graded / total * 100) },
+    { label: t('admin.statusSubmitted'), value: r.pending, color: '#fbbf24', pct: Math.round(r.pending / total * 100) },
+    { label: t('admin.statusResubmitted'), value: r.resubmitted, color: '#f87171', pct: Math.round(r.resubmitted / total * 100) },
+  ];
+});
+
+const donutSegments = computed(() => {
+  if (!stats.value?.users?.byRole?.length) return [];
+  const total = stats.value.users.total || 1;
+  let cumulative = 0;
+  return stats.value.users.byRole.map(r => {
+    const pct = r.count / total;
+    const seg = {
+      role: r.role,
+      count: r.count,
+      color: roleColor(r.role),
+      start: cumulative * 360,
+      end: (cumulative + pct) * 360,
+    };
+    cumulative += pct;
+    return seg;
+  });
+});
+
+const donutStyle = computed(() => {
+  if (!donutSegments.value.length) return {};
+  const segs = donutSegments.value.map(s => `${s.color} ${s.start}deg ${s.end}deg`).join(', ');
+  return { background: `conic-gradient(${segs})` };
+});
 
 async function load() {
   loading.value = true;
@@ -117,16 +152,44 @@ onMounted(load);
         </div>
       </div>
 
-      <!-- Role Distribution -->
-      <div v-if="stats?.users?.byRole?.length" class="role-chart">
-        <h3>{{ t('admin.roleDistribution') }}</h3>
-        <div class="role-bars">
-          <div v-for="r in stats.users.byRole" :key="r.role" class="role-bar">
-            <span class="role-name" :style="{ color: roleColor(r.role) }">{{ roleLabel(r.role) }}</span>
-            <div class="role-track">
-              <div class="role-fill" :style="{ width: (r.count / Math.max(stats.users.total, 1) * 100) + '%', background: roleColor(r.role) }"></div>
+      <!-- Role Distribution + Report Breakdown -->
+      <div class="charts-row">
+        <div v-if="donutSegments.length" class="chart-card">
+          <h3>{{ t('admin.roleDistribution') }}</h3>
+          <div class="donut-wrapper">
+            <div class="donut" :style="donutStyle">
+              <div class="donut-hole">
+                <span class="donut-total">{{ stats?.users?.total ?? 0 }}</span>
+                <span class="donut-label">{{ t('admin.totalUsers') }}</span>
+              </div>
             </div>
-            <span class="role-count">{{ r.count }}</span>
+            <div class="donut-legend">
+              <div v-for="s in donutSegments" :key="s.role" class="legend-item">
+                <span class="legend-dot" :style="{ background: s.color }"></span>
+                <span class="legend-name">{{ roleLabel(s.role) }}</span>
+                <span class="legend-count">{{ s.count }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="reportBreakdown.length" class="chart-card">
+          <h3>{{ t('admin.totalReports') }}</h3>
+          <div class="report-breakdown">
+            <div v-for="r in reportBreakdown" :key="r.label" class="breakdown-item">
+              <div class="breakdown-header">
+                <span class="breakdown-dot" :style="{ background: r.color }"></span>
+                <span class="breakdown-label">{{ r.label }}</span>
+                <span class="breakdown-value">{{ r.value }}</span>
+              </div>
+              <div class="breakdown-track">
+                <div class="breakdown-fill" :style="{ width: r.pct + '%', background: r.color }"></div>
+              </div>
+              <span class="breakdown-pct">{{ r.pct }}%</span>
+            </div>
+            <div v-if="stats?.reports?.average" class="breakdown-avg">
+              {{ t('admin.graded') }}: {{ stats.reports.average }}%
+            </div>
           </div>
         </div>
       </div>
@@ -214,6 +277,32 @@ onMounted(load);
 .alert-card ul { margin: 0; padding-inline-start: 1.2rem; font-size: 0.85rem; color: #cbd5e1; }
 .alert-card li { margin-bottom: 0.2rem; }
 .alert-card p { margin: 0; font-size: 0.85rem; }
+
+.charts-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.chart-card { background: rgba(15,23,42,0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.75rem; padding: 1rem; }
+.chart-card h3 { margin: 0 0 1rem; font-size: 1rem; }
+
+.donut-wrapper { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+.donut { width: 120px; height: 120px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.donut-hole { width: 70px; height: 70px; border-radius: 50%; background: #0a0f1c; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.donut-total { font-size: 1.4rem; font-weight: 800; color: #67e8f9; }
+.donut-label { font-size: 0.6rem; color: #94a3b8; text-align: center; }
+.donut-legend { display: flex; flex-direction: column; gap: 0.4rem; }
+.legend-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.legend-name { color: #cbd5e1; }
+.legend-count { font-weight: 700; color: #e2e8f0; margin-inline-start: auto; }
+
+.report-breakdown { display: flex; flex-direction: column; gap: 0.7rem; }
+.breakdown-item { display: flex; flex-direction: column; gap: 0.2rem; }
+.breakdown-header { display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; }
+.breakdown-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.breakdown-label { color: #cbd5e1; }
+.breakdown-value { font-weight: 700; color: #e2e8f0; margin-inline-start: auto; }
+.breakdown-track { height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+.breakdown-fill { height: 100%; border-radius: 3px; transition: width 0.5s; }
+.breakdown-pct { font-size: 0.7rem; color: #64748b; align-self: flex-end; }
+.breakdown-avg { margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.06); font-size: 0.85rem; color: #94a3b8; font-weight: 700; }
 
 .top-users { background: rgba(15,23,42,0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.75rem; padding: 1rem; margin-bottom: 1.5rem; }
 .top-users h3 { margin: 0 0 1rem; font-size: 1rem; }

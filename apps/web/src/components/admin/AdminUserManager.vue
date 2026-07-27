@@ -22,6 +22,8 @@ const showAddUser = ref(false);
 const newUser = ref({ name: '', email: '', password: '', role: 'student' as string });
 const addUserLoading = ref(false);
 const addUserError = ref('');
+const selectedIds = ref<Set<number>>(new Set());
+const bulkRole = ref<string>('');
 
 const filteredUsers = computed(() => {
   const q = searchQuery.value.trim().toLowerCase();
@@ -32,6 +34,36 @@ const filteredUsers = computed(() => {
     String(u.id).includes(q)
   );
 });
+
+const allSelected = computed(() => filteredUsers.value.length > 0 && filteredUsers.value.every(u => selectedIds.value.has(u.id)));
+
+function toggleAll() {
+  if (allSelected.value) {
+    selectedIds.value = new Set();
+  } else {
+    selectedIds.value = new Set(filteredUsers.value.map(u => u.id));
+  }
+}
+
+function toggleOne(id: number) {
+  const next = new Set(selectedIds.value);
+  if (next.has(id)) next.delete(id); else next.add(id);
+  selectedIds.value = next;
+}
+
+function bulkDelete() {
+  if (selectedIds.value.size === 0) return;
+  if (!confirm(t('admin.confirmBulkDelete', { count: selectedIds.value.size }))) return;
+  for (const id of selectedIds.value) emit('delete', id);
+  selectedIds.value = new Set();
+}
+
+function bulkChangeRole() {
+  if (selectedIds.value.size === 0 || !bulkRole.value) return;
+  for (const id of selectedIds.value) emit('change-role', id, bulkRole.value);
+  selectedIds.value = new Set();
+  bulkRole.value = '';
+}
 
 async function addUser() {
   addUserLoading.value = true;
@@ -93,11 +125,13 @@ async function addUser() {
       <table class="data-table">
         <thead>
           <tr>
+            <th class="col-check"><input type="checkbox" :checked="allSelected" @change="toggleAll" /></th>
             <th>ID</th><th>{{ t('admin.name') }}</th><th>{{ t('adminUser.email') }}</th><th>{{ t('adminUser.role') }}</th><th>{{ t('adminUser.from') }}</th><th>{{ t('admin.actions') }}</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="u in filteredUsers" :key="u.id">
+          <tr v-for="u in filteredUsers" :key="u.id" :class="{ 'row-selected': selectedIds.has(u.id) }">
+            <td class="col-check"><input type="checkbox" :checked="selectedIds.has(u.id)" @change="toggleOne(u.id)" /></td>
             <td>{{ u.id }}</td>
             <td>{{ u.name }}</td>
             <td>{{ u.email }}</td>
@@ -117,6 +151,20 @@ async function addUser() {
         </tbody>
       </table>
       <p v-if="filteredUsers.length === 0" class="empty">{{ t('admin.noResults') }}</p>
+    </div>
+
+    <!-- Bulk Actions Bar -->
+    <div v-if="selectedIds.size > 0" class="bulk-bar">
+      <span class="bulk-count">{{ selectedIds.size }} {{ t('admin.selected') }}</span>
+      <select v-model="bulkRole" class="bulk-select">
+        <option value="">— {{ t('adminUser.role') }} —</option>
+        <option value="student">{{ t('admin.roleStudent') }}</option>
+        <option value="teacher">{{ t('admin.roleTeacher') }}</option>
+        <option value="admin">{{ t('admin.roleAdmin') }}</option>
+      </select>
+      <button v-if="bulkRole" class="btn-bulk-role" @click="bulkChangeRole">{{ t('admin.applyRole') }}</button>
+      <button class="btn-bulk-delete" @click="bulkDelete">{{ t('admin.deleteSelected') }}</button>
+      <button class="btn-clear" @click="selectedIds = new Set()">✕</button>
     </div>
   </div>
 </template>
@@ -139,6 +187,19 @@ async function addUser() {
 .btn-danger:hover { background: rgba(239,68,68,0.25); }
 .btn-view { padding: 0.3rem 0.6rem; border-radius: 0.35rem; border: none; background: rgba(59,130,246,0.15); color: #60a5fa; cursor: pointer; font-family: inherit; font-size: 0.8rem; margin-inline-start: 0.3rem; }
 .btn-view:hover { background: rgba(59,130,246,0.25); }
+
+.data-table tr.row-selected { background: rgba(99,102,241,0.08); }
+.col-check { width: 32px; text-align: center; }
+.col-check input { cursor: pointer; }
+
+.bulk-bar { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.75rem; padding: 0.6rem 0.8rem; background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.15); border-radius: 0.5rem; flex-wrap: wrap; }
+.bulk-count { font-size: 0.85rem; font-weight: 700; color: #a5b4fc; }
+.bulk-select { padding: 0.3rem 0.5rem; border-radius: 0.35rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; font-size: 0.8rem; }
+.btn-bulk-role { padding: 0.3rem 0.7rem; border-radius: 0.35rem; border: none; background: rgba(251,191,36,0.15); color: #fbbf24; cursor: pointer; font-family: inherit; font-size: 0.8rem; font-weight: 700; }
+.btn-bulk-role:hover { background: rgba(251,191,36,0.25); }
+.btn-bulk-delete { padding: 0.3rem 0.7rem; border-radius: 0.35rem; border: none; background: rgba(239,68,68,0.15); color: #f87171; cursor: pointer; font-family: inherit; font-size: 0.8rem; font-weight: 700; }
+.btn-bulk-delete:hover { background: rgba(239,68,68,0.25); }
+.btn-clear { width: 28px; height: 28px; border-radius: 0.35rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #94a3b8; cursor: pointer; font-size: 0.8rem; }
 
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 200; }
 .modal-content { background: #111827; border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; padding: 1.5rem; width: 100%; max-width: 420px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }

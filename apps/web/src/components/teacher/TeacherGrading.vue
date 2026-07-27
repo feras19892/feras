@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { getMyClasses, getPendingCount } from '../../services/class.service'
-import { getReports, getGradeHistory, deleteReport, markReportSeen } from '../../services/report.service'
+import { getReports, deleteReport } from '../../services/report.service'
 import type { ClassItem } from '../../services/class.service'
-import type { Report, GradeHistoryEntry } from '../../services/report.service'
+import type { Report } from '../../services/report.service'
 import { useAuthStore } from '../../modules/auth/stores/auth'
 import { useI18n } from '../../composables/useI18n'
-import ReportViewer from '../shared/ReportViewer.vue'
-import ReportCommentThread from '../shared/ReportCommentThread.vue'
-import ReportAIAnalyzer from './ReportAIAnalyzer.vue'
 import GradeModal from './GradeModal.vue'
+
+const router = useRouter()
 
 const auth = useAuthStore()
 const { t } = useI18n()
@@ -36,28 +36,10 @@ const filteredReports = computed(() => {
 })
 
 const gradeOpen = ref(false)
-const viewOpen = ref(false)
-const viewReport = ref<Report | null>(null)
 const gradeTarget = ref<Report | null>(null)
-const gradeHistory = ref<GradeHistoryEntry[]>([])
 
-async function openView(r: Report) {
-  viewReport.value = r
-  viewOpen.value = true
-  if (!r.teacher_seen) {
-    try { await markReportSeen(r.id) } catch { /* ignore */ }
-    r.teacher_seen = true
-  }
-  loadHistory(r.id)
-}
-
-async function loadHistory(reportId: number) {
-  try {
-    const res = await getGradeHistory(reportId)
-    if (res.success) gradeHistory.value = res.history
-  } catch (err) {
-    console.error('load history failed:', err)
-  }
+function openView(r: Report) {
+  router.push(`/report/${r.id}`)
 }
 
 function openGrade(r: Report) {
@@ -67,7 +49,6 @@ function openGrade(r: Report) {
 
 function onGraded() {
   loadReports()
-  if (viewReport.value) loadHistory(viewReport.value.id)
 }
 
 async function confirmDelete(r: Report) {
@@ -208,42 +189,6 @@ watch(() => auth.user, (u) => {
               🗑️
             </button>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- View Report Modal -->
-    <div v-if="viewOpen && viewReport" class="modal-overlay" @click.self="viewOpen = false">
-      <div class="view-modal">
-        <ReportViewer :report="viewReport" />
-
-        <ReportAIAnalyzer :report="viewReport" />
-
-        <!-- Grade History -->
-        <div v-if="gradeHistory.length > 0" class="history-section">
-          <h4 class="section-title">{{ t('teacher.historyTitle') }}</h4>
-          <div class="history-list">
-            <div v-for="h in gradeHistory" :key="h.id" class="history-item">
-              <span class="history-teacher">{{ h.teacher_name }}</span>
-              <span class="history-grade" :class="{ changed: h.old_grade !== undefined }">
-                {{ h.old_grade !== undefined ? `${h.old_grade} → ` : '' }}{{ h.new_grade }}/100
-              </span>
-              <span class="history-date">{{ h.created_at?.slice(0, 10) }}</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Comments -->
-        <ReportCommentThread
-          v-if="viewReport"
-          :report-id="viewReport.id"
-          :user-role="auth.user?.role || ''"
-          :user-name="auth.user?.name || ''"
-        />
-
-        <div class="actions">
-          <button class="btn-cancel" @click="viewOpen = false">{{ t('teacher.closeBtn') }}</button>
-          <button class="btn-submit" @click="viewOpen = false; openGrade(viewReport)">{{ t('teacher.gradeNow') }}</button>
         </div>
       </div>
     </div>

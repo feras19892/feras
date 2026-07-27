@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
-import { createClassSchema, joinClassSchema, updateClassSchema } from './schemas.js';
+import { createClassSchema, joinClassSchema, leaveClassSchema, updateClassSchema } from './schemas.js';
 import * as svc from './services.js';
 import { authMiddleware } from '../auth/middleware.js';
 import type { User } from '@my-modern-app/shared-types';
@@ -50,6 +50,17 @@ app.post('/join', zValidator('json', joinClassSchema), async (c) => {
   }
   const { code } = c.req.valid('json');
   const result = await svc.joinClassByCode(user.id, code);
+  if (!result.success) return c.json(result, 400);
+  return c.json(result);
+});
+
+app.post('/leave', zValidator('json', leaveClassSchema), async (c) => {
+  const user = c.get('user');
+  if (user.role !== 'student') {
+    return c.json({ success: false, message: 'غير مصرح' }, 403);
+  }
+  const { class_id } = c.req.valid('json');
+  const result = await svc.leaveClass(class_id, user.id);
   if (!result.success) return c.json(result, 400);
   return c.json(result);
 });

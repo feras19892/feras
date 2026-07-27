@@ -99,6 +99,73 @@ export function useAuthActions(
     }
   }
 
+  async function updateProfileName(name: string) {
+    loading.value = true
+    error.value = null
+    try {
+      const data = await fetchJson<{ success: boolean; user?: User; message?: string }>('/api/auth/profile', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name }),
+      })
+      if (!data.success || !data.user) {
+        return { ok: false as const, message: data.message || t('auth.errors.serverConnectionError') }
+      }
+      user.value = data.user
+      return { ok: true as const, message: '' }
+    } catch (err) {
+      if (isNetworkError(err)) return { ok: false as const, message: t('auth.errors.cannotConnectToServer') }
+      return { ok: false as const, message: t('auth.errors.serverConnectionError') }
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function submitNameRequest(requestedName: string) {
+    loading.value = true
+    error.value = null
+    try {
+      const data = await fetchJson<{ success: boolean; message?: string }>('/api/auth/name-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ requested_name: requestedName }),
+      })
+      if (!data.success) {
+        return { ok: false as const, message: data.message || t('auth.errors.serverConnectionError') }
+      }
+      return { ok: true as const, message: '' }
+    } catch (err) {
+      if (isNetworkError(err)) return { ok: false as const, message: t('auth.errors.cannotConnectToServer') }
+      return { ok: false as const, message: t('auth.errors.serverConnectionError') }
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function deleteMyAccount(password: string) {
+    loading.value = true
+    error.value = null
+    try {
+      const data = await fetchJson<{ success: boolean; message?: string }>('/api/auth/account', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      })
+      if (!data.success) {
+        return { ok: false as const, message: data.message || t('auth.errors.serverConnectionError') }
+      }
+      user.value = null
+      return { ok: true as const, message: '' }
+    } catch (err) {
+      const status = extractStatusCode(err)
+      if (status === 403) return { ok: false as const, message: t('account.wrongPassword') }
+      if (isNetworkError(err)) return { ok: false as const, message: t('auth.errors.cannotConnectToServer') }
+      return { ok: false as const, message: t('auth.errors.serverConnectionError') }
+    } finally {
+      loading.value = false
+    }
+  }
+
   async function updatePassword(userId: number, newPassword: string) {
     if (user.value?.id !== userId && user.value?.role !== 'admin') return false
     try {
@@ -197,6 +264,9 @@ export function useAuthActions(
     init,
     tryRestore,
     updatePassword,
+    updateProfileName,
+    submitNameRequest,
+    deleteMyAccount,
     joinClass,
     createClass,
     selectClass,

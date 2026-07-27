@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useI18n } from '../../composables/useI18n'
-import { joinClass as apiJoinClass, getMyClasses } from '../../services/class.service'
+import { joinClass as apiJoinClass, getMyClasses, leaveClass as apiLeaveClass } from '../../services/class.service'
 import type { ClassItem } from '../../services/class.service'
 
 const { t } = useI18n()
@@ -21,6 +21,20 @@ async function loadClasses() {
     console.error('load classes failed:', err)
   } finally {
     loading.value = false
+  }
+}
+
+async function handleLeaveClass(cls: ClassItem) {
+  try {
+    const res = await apiLeaveClass(cls.id)
+    if (res.success) {
+      classes.value = classes.value.filter(c => c.id !== cls.id)
+    } else if (res.message) {
+      joinError.value = res.message
+    }
+  } catch (err) {
+    console.error('leave class failed:', err)
+    joinError.value = t('dashboard.serverConnFailed')
   }
 }
 
@@ -78,6 +92,9 @@ onMounted(() => {
         <span class="sc-icon">📚</span>
         <span class="sc-name">{{ cls.name }}</span>
         <span class="sc-code">{{ cls.code }}</span>
+        <button class="sc-leave" @click.stop="handleLeaveClass(cls)">
+          {{ t('dashboard.leaveClass') }}
+        </button>
       </div>
     </div>
 

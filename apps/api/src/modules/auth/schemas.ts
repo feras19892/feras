@@ -19,3 +19,15 @@ export const passwordUpdateSchema = z.object({
   user_id: z.number().int().positive(),
   new_password: z.string().min(8).max(128),
 });
+
+export const profileUpdateSchema = z.object({
+  name: z.string().min(2).max(100),
+});
+
+export const deleteAccountSchema = z.object({
+  password: z.string().min(1),
+});
+
+export const nameRequestSchema = z.object({
+  requested_name: z.string().min(2).max(100),
+});

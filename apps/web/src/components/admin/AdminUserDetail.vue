@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useI18n } from '../../composables/useI18n';
 import { useAdminUserDetail } from '../../composables/admin/useAdminUserDetail';
-import { impersonateUser, resetUserPassword } from '../../services/admin.service';
+import { impersonateUser, resetUserPassword, updateAdminUser } from '../../services/admin.service';
 
 const props = defineProps<{
   userId: number;
@@ -25,6 +25,11 @@ const sending = ref(false);
 const showResetModal = ref(false);
 const newPassword = ref('');
 const resetLoading = ref(false);
+const showEditModal = ref(false);
+const editName = ref('');
+const editEmail = ref('');
+const editLoading = ref(false);
+const editError = ref('');
 
 async function onBan() {
   const reason = prompt(t('adminUser.banReasonPrompt'));
@@ -74,6 +79,28 @@ async function onAddNote() {
   newNote.value = '';
 }
 
+async function onEditUser() {
+  if (!editName.value.trim() || !editEmail.value.trim()) { editError.value = t('adminUser.fillFields'); return; }
+  editLoading.value = true;
+  editError.value = '';
+  try {
+    const res = await updateAdminUser(props.userId, { name: editName.value.trim(), email: editEmail.value.trim() });
+    if (!res.success) { editError.value = res.message || 'Failed'; }
+    else { showEditModal.value = false; await load(props.userId); emit('refresh'); }
+  } catch (err: unknown) {
+    editError.value = (err instanceof Error ? err.message : '') || 'Failed';
+  } finally { editLoading.value = false; }
+}
+
+function openEditModal() {
+  if (profile.value?.user) {
+    editName.value = profile.value.user.name;
+    editEmail.value = profile.value.user.email;
+  }
+  editError.value = '';
+  showEditModal.value = true;
+}
+
 function formatDate(d: string | null | undefined) {
   return d ? new Date(d).toLocaleDateString() : '—';
 }
@@ -97,6 +124,7 @@ onMounted(() => load(props.userId));
           <span v-if="profile.user.blocked_at" class="banned-badge">{{ t('adminUser.banned') }}</span>
         </div>
         <div class="actions">
+          <button class="btn-edit" @click="openEditModal">{{ t('adminUser.editProfile') }}</button>
           <button class="btn-impersonate" @click="onImpersonate">{{ t('adminUser.impersonate') }}</button>
           <button class="btn-reset" @click="showResetModal = true">{{ t('adminUser.resetPassword') }}</button>
           <button v-if="!profile.user.blocked_at" class="btn-ban" @click="onBan">{{ t('adminUser.ban') }}</button>
@@ -132,6 +160,26 @@ onMounted(() => load(props.userId));
           <div class="modal-actions">
             <button class="btn-cancel" @click="showResetModal = false">{{ t('common.cancel') }}</button>
             <button class="btn-submit" :disabled="resetLoading" @click="onResetPassword">{{ resetLoading ? '...' : t('adminUser.setPassword') }}</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit User Modal -->
+      <div v-if="showEditModal" class="modal-overlay" @click.self="showEditModal = false">
+        <div class="modal">
+          <h4>{{ t('adminUser.editProfile') }}</h4>
+          <div class="form-row">
+            <label>{{ t('admin.name') }}</label>
+            <input v-model="editName" />
+          </div>
+          <div class="form-row">
+            <label>{{ t('adminUser.email') }}</label>
+            <input v-model="editEmail" type="email" />
+          </div>
+          <p v-if="editError" class="msg error">{{ editError }}</p>
+          <div class="modal-actions">
+            <button class="btn-cancel" @click="showEditModal = false">{{ t('common.cancel') }}</button>
+            <button class="btn-submit" :disabled="editLoading" @click="onEditUser">{{ editLoading ? '...' : t('common.save') }}</button>
           </div>
         </div>
       </div>
@@ -226,6 +274,10 @@ onMounted(() => load(props.userId));
 .btn-warn { background: rgba(251,191,36,0.15); color: #fbbf24; }
 .btn-impersonate { background: rgba(99,102,241,0.15); color: #a5b4fc; }
 .btn-reset { background: rgba(103,232,249,0.15); color: #67e8f9; }
+.btn-edit { background: rgba(251,191,36,0.15); color: #fbbf24; }
+.form-row { margin-bottom: 0.75rem; }
+.form-row label { display: block; font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.25rem; }
+.form-row input { width: 100%; padding: 0.5rem; border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; font-size: 0.85rem; box-sizing: border-box; }
 
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 200; }
 .modal { background: #111827; border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; padding: 1.5rem; width: 100%; max-width: 420px; }

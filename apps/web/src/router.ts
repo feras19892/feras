@@ -81,6 +81,12 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./components/dev/ExperimentMonitorPage.vue'),
   },
   {
+    path: '/report/:id',
+    name: 'TeacherReport',
+    meta: { requiresAuth: true, roles: ['student', 'teacher', 'admin'] },
+    component: () => import('./pages/report-view.vue'),
+  },
+  {
     path: '/math',
     name: 'MathHome',
     component: () => import('./pages/math/index.vue'),
@@ -159,6 +165,21 @@ const routes: RouteRecordRaw[] = [
     path: '/biology/anatomy/ear',
     name: 'BiologyEar',
     component: () => import('./pages/biology/anatomy/ear.vue'),
+  },
+  {
+    path: '/privacy',
+    name: 'PrivacyPolicy',
+    component: () => import('./pages/PrivacyPolicy.vue'),
+  },
+  {
+    path: '/terms',
+    name: 'TermsOfService',
+    component: () => import('./pages/TermsOfService.vue'),
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('./pages/NotFound.vue'),
   },
 ];
 

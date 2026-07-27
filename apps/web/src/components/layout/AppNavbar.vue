@@ -17,7 +17,7 @@ const showFeedback = ref(false)
 let pendingInterval: ReturnType<typeof setInterval> | null = null
 
 // Notifications toast
-const { notifications, unreadCount } = useNotifications()
+const { notifications } = useNotifications()
 const toastShow = ref(false)
 const toastTitle = ref('')
 const toastMessage = ref('')
@@ -79,46 +79,33 @@ function setTab(tab: string) {
         <span class="tool-icon">🛡️</span>
         <span class="tool-label">{{ t('dashboard.admin') }}</span>
       </button>
+      <button class="tool-btn" :class="{ active: activeTab === 'experiments' }" @click="setTab('experiments')">
+        <span class="tool-icon">📋</span>
+        <span class="tool-label">{{ t('dashboard.myExperiments') }}</span>
+      </button>
     </div>
 
     <!-- Teacher Tools (center) -->
     <div v-else-if="auth.isTeacher" class="nav-tools">
-      <button class="tool-btn" :class="{ active: activeTab === 'classes' }" @click="setTab('classes')">
-        <span class="tool-icon">🏫</span>
-        <span class="tool-label">{{ t('dashboard.myClasses') }}</span>
+      <button class="tool-btn" :class="{ active: activeTab === 'home' }" @click="setTab('home')">
+        <span class="tool-icon">🏠</span>
+        <span class="tool-label">{{ t('dashboard.home') }}</span>
       </button>
       <button class="tool-btn" :class="{ active: activeTab === 'experiments' }" @click="setTab('experiments')">
         <span class="tool-icon">📋</span>
         <span class="tool-label">{{ t('dashboard.myExperiments') }}</span>
       </button>
-      <button class="tool-btn" :class="{ active: activeTab === 'grading' }" @click="setTab('grading')">
-        <span class="tool-icon">✅</span>
-        <span class="tool-label">{{ t('dashboard.grading') }}</span>
-        <span v-if="pendingCount > 0" class="tab-badge">{{ pendingCount }}</span>
-      </button>
-      <button class="tool-btn" :class="{ active: activeTab === 'stats' }" @click="setTab('stats')">
-        <span class="tool-icon">📊</span>
-        <span class="tool-label">{{ t('dashboard.stats') }}</span>
-      </button>
     </div>
 
     <!-- Student Tools (center) -->
     <div v-else-if="auth.isStudent" class="nav-tools">
-      <button class="tool-btn" :class="{ active: activeTab === 'classes' }" @click="setTab('classes')">
-        <span class="tool-icon">🏫</span>
-        <span class="tool-label">{{ t('dashboard.myClasses') }}</span>
+      <button class="tool-btn" :class="{ active: activeTab === 'home' }" @click="setTab('home')">
+        <span class="tool-icon">🏠</span>
+        <span class="tool-label">{{ t('dashboard.home') }}</span>
       </button>
       <button class="tool-btn" :class="{ active: activeTab === 'branches' }" @click="setTab('branches')">
         <span class="tool-icon">⚛️</span>
         <span class="tool-label">{{ t('dashboard.branches') }}</span>
-      </button>
-      <button class="tool-btn" :class="{ active: activeTab === 'reports' }" @click="setTab('reports')">
-        <span class="tool-icon">📄</span>
-        <span class="tool-label">{{ t('dashboard.myReports') }}</span>
-      </button>
-      <button class="tool-btn" :class="{ active: activeTab === 'profile' }" @click="setTab('profile')">
-        <span class="tool-icon">👤</span>
-        <span class="tool-label">{{ t('dashboard.myProfile') }}</span>
       </button>
     </div>
 
@@ -126,7 +113,6 @@ function setTab(tab: string) {
     <div class="nav-user">
       <div class="notif-wrapper">
         <NotificationBell />
-        <span v-if="unreadCount > 0" class="notif-count">{{ unreadCount }}</span>
       </div>
       <button class="rate-btn" @click="showFeedback = true" :title="t('dashboard.rateProject')">⭐</button>
       <FeedbackModal v-model:show="showFeedback" />
@@ -240,17 +226,6 @@ function setTab(tab: string) {
   gap: 0.8rem;
 }
 .notif-wrapper { position: relative; display: inline-flex; }
-.notif-count {
-  position: absolute;
-  top: -6px;
-  inset-inline-end: -8px;
-  background: #ef4444;
-  color: #fff;
-  border-radius: 999px;
-  padding: 0 6px;
-  font-size: 0.65rem;
-  font-weight: 800;
-}
 .user-badge {
   display: flex;
   align-items: center;

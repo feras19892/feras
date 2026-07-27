@@ -26,6 +26,7 @@ const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 const formError = ref('');
 const selectedRole = ref<'teacher' | 'student'>('student');
+const agreedToTerms = ref(false);
 
 async function handleRegister() {
   formError.value = '';
@@ -51,6 +52,10 @@ async function handleRegister() {
   }
   if (password.value.length < 8) {
     formError.value = t('auth.errors.passwordTooShort');
+    return;
+  }
+  if (!agreedToTerms.value) {
+    formError.value = t('legal.mustAgree');
     return;
   }
 
@@ -160,6 +165,14 @@ async function handleRegister() {
           </div>
         </div>
         <p v-if="formError" class="error">{{ formError }}</p>
+        <label class="terms-check">
+          <input type="checkbox" v-model="agreedToTerms" />
+          <span>{{ t('legal.agreePrefix') }}
+            <router-link to="/terms" target="_blank">{{ t('legal.termsLink') }}</router-link>
+            {{ t('legal.andWord') }}
+            <router-link to="/privacy" target="_blank">{{ t('legal.privacyLink') }}</router-link>
+          </span>
+        </label>
         <button type="submit" class="btn-submit" :disabled="auth.loading">
           {{ auth.loading ? t('auth.loading') : t('auth.registerBtn') }}
         </button>
@@ -229,6 +242,26 @@ input:focus { outline: none; border-color: #06b6d4; }
 }
 .eye-btn:hover { color: #e2e8f0; }
 .error { color: #fca5a5; font-size: 0.8rem; margin: 0.5rem 0; }
+.terms-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin: 0.8rem 0;
+  font-size: 0.78rem;
+  color: #94a3b8;
+  cursor: pointer;
+  line-height: 1.5;
+}
+.terms-check input {
+  width: auto;
+  margin-top: 0.2rem;
+  accent-color: #06b6d4;
+}
+.terms-check a {
+  color: #67e8f9;
+  text-decoration: none;
+}
+.terms-check a:hover { text-decoration: underline; }
 .btn-submit {
   width: 100%;
   padding: 0.8rem;

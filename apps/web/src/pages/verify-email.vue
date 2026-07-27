@@ -28,7 +28,7 @@ async function handleVerify() {
   }
   loading.value = true
   try {
-    const data = await fetchJson<{ success: boolean; user?: any }>(' /api/auth/verify-email', {
+    const data = await fetchJson<{ success: boolean; user?: any }>('/api/auth/verify-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email.value.trim(), code: code.value.trim() }),

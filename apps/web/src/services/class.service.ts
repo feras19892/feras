@@ -43,6 +43,14 @@ export async function deleteClass(id: string) {
   return fetchJson<{ success: boolean }>(`/api/classes/${id}`, { method: 'DELETE' });
 }
 
+export async function leaveClass(id: string) {
+  return fetchJson<{ success: boolean; message?: string }>('/api/classes/leave', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ class_id: id }),
+  });
+}
+
 export async function getPendingCount() {
   return fetchJson<{ success: boolean; pendingCount: number }>('/api/classes/stats/pending');
 }

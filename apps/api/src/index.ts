@@ -10,6 +10,7 @@ import { notificationRoutes } from './modules/notifications/handlers.js';
 import { adminRoutes } from './modules/admin/handlers.js';
 import { feedbackRoutes } from './modules/feedback/handlers.js';
 import { aiRoutes } from './modules/ai/handlers.js';
+import { chatRoutes } from './modules/chat/handlers.js';
 import { mathRoutes } from './modules/math/index.js';
 import { seedMathData } from './modules/math/bootstrap.js';
 import { runMigrations } from './db/index.js';
@@ -41,6 +42,7 @@ app.route('/api/notifications', notificationRoutes);
 app.route('/api/admin', adminRoutes);
 app.route('/api/feedback', feedbackRoutes);
 app.route('/api/ai', aiRoutes);
+app.route('/api/chat', chatRoutes);
 app.route('/api/math', mathRoutes);
 
 app.get('/api/health', (c) => c.json({ status: 'ok' }));

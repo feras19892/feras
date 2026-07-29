@@ -11,6 +11,7 @@ import { adminRoutes } from './modules/admin/handlers.js';
 import { feedbackRoutes } from './modules/feedback/handlers.js';
 import { aiRoutes } from './modules/ai/handlers.js';
 import { chatRoutes } from './modules/chat/handlers.js';
+import { schoolRoutes } from './modules/school/handlers.js';
 import { mathRoutes } from './modules/math/index.js';
 import { seedMathData } from './modules/math/bootstrap.js';
 import { runMigrations } from './db/index.js';
@@ -43,6 +44,7 @@ app.route('/api/admin', adminRoutes);
 app.route('/api/feedback', feedbackRoutes);
 app.route('/api/ai', aiRoutes);
 app.route('/api/chat', chatRoutes);
+app.route('/api/school', schoolRoutes);
 app.route('/api/math', mathRoutes);
 
 app.get('/api/health', (c) => c.json({ status: 'ok' }));

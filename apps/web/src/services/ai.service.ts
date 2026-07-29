@@ -10,7 +10,7 @@ export async function analyzeReport(data: {
   conclusion?: string;
   chart_snapshot?: string;
 }) {
-  return fetchJson<{ success: boolean; analysis: string; message?: string }>('/api/ai/analyze', {
+  return fetchJson<{ success: boolean; analysis: string; grade?: number; message?: string }>('/api/ai/analyze', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),

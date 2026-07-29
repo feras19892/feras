@@ -75,7 +75,7 @@ function setTab(tab: string) {
 
     <!-- Admin Tools (center) -->
     <div v-if="auth.isAdmin" class="nav-tools">
-      <button class="tool-btn admin-tool" @click="router.push('/admin')">
+      <button class="tool-btn" @click="router.push('/admin')">
         <span class="tool-icon">🛡️</span>
         <span class="tool-label">{{ t('dashboard.admin') }}</span>
       </button>

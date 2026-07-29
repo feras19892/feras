@@ -1,7 +1,9 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { loginSchema, registerSchema, passwordUpdateSchema, profileUpdateSchema, deleteAccountSchema, nameRequestSchema, verifyEmailSchema } from './schemas.js';
-import { login, register, refreshAccessToken, logout, updatePassword, updateProfileName, deleteAccount, createNameRequest, verifyEmailCode } from './services.js';
+import { z } from 'zod';
+import { login, register, refreshAccessToken, logout, logoutSchool, updatePassword, updateProfileName, deleteAccount, createNameRequest, verifyEmailCode, resendVerificationCode } from './services.js';
+import { createEmailChangeRequest } from '../school/services.js';
 import * as activitySvc from '../activity/service.js';
 import * as sessionSvc from '../sessions/service.js';
 import { setRefreshCookie, getRefreshCookie, clearRefreshCookie, setAccessCookie, getAccessCookie, clearAccessCookie } from './cookies.js';
@@ -13,11 +15,12 @@ const authRoutes = new Hono();
 
 authRoutes.post('/register', zValidator('json', registerSchema), async (c) => {
   const body = c.req.valid('json');
-  const result = await register(body);
+  const creds = { ...body, school_code: body.school_code || undefined };
+  const result = await register(creds);
   if (!result.success) {
     return c.json({ success: false, message: result.message }, 409);
   }
-  return c.json({ success: true, user: result.user }, 201);
+  return c.json({ success: true, user: result.user, devVerificationCode: result.devVerificationCode }, 201);
 });
 
 authRoutes.post('/login', zValidator('json', loginSchema), async (c) => {
@@ -32,10 +35,14 @@ authRoutes.post('/login', zValidator('json', loginSchema), async (c) => {
   if (result.refreshToken) {
     setRefreshCookie(c, result.refreshToken);
   }
-  // Log activity + session
+  // Log activity + session for regular users
   if (result.user) {
     await sessionSvc.logLogin(result.user.id, c.req.header('X-Forwarded-For') || c.req.header('x-real-ip') || 'unknown', c.req.header('user-agent'));
     await activitySvc.logActivity(result.user.id, result.user.name, result.user.role, 'login');
+  }
+  // Return school info if it's a school login
+  if (result.school) {
+    return c.json({ success: true, school: result.school });
   }
   return c.json({ success: true, user: result.user });
 });
@@ -64,9 +71,13 @@ authRoutes.post('/logout', async (c) => {
   if (accessToken) {
     try {
       const payload = await verifyAccessToken(accessToken);
-      await logout(Number(payload.sub));
-      await sessionSvc.logLogout(Number(payload.sub));
-      await activitySvc.logActivity(Number(payload.sub), '', '', 'logout');
+      if (payload.role === 'school') {
+        await logoutSchool(Number(payload.sub));
+      } else {
+        await logout(Number(payload.sub));
+        await sessionSvc.logLogout(Number(payload.sub));
+        await activitySvc.logActivity(Number(payload.sub), '', '', 'logout');
+      }
     } catch {
       // ignore invalid token on logout
     }
@@ -146,6 +157,23 @@ authRoutes.delete('/account', authMiddleware, zValidator('json', deleteAccountSc
   clearAccessCookie(c);
   clearRefreshCookie(c);
   return c.json({ success: true });
+});
+
+authRoutes.post('/email-change-request', authMiddleware, zValidator('json', z.object({ requested_email: z.string().email() })), async (c) => {
+  const user = (c as any).get('user') as User;
+  const { requested_email } = c.req.valid('json');
+  const result = await createEmailChangeRequest('user', user.id, user.email, requested_email);
+  if (!result.success) return c.json({ success: false, message: result.message }, 400);
+  return c.json({ success: true });
+});
+
+authRoutes.post('/resend-verification', zValidator('json', z.object({ email: z.string().email() })), async (c) => {
+  const { email } = c.req.valid('json');
+  const result = await resendVerificationCode(email);
+  if (!result.success) {
+    return c.json({ success: false, message: result.message }, 400);
+  }
+  return c.json({ success: true, devVerificationCode: result.devVerificationCode });
 });
 
 export { authRoutes };

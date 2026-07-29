@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useI18n } from '../../composables/useI18n'
 import { useClassManager } from '../../composables/teacher/useClassManager'
 import { getClassStats } from '../../services/class.service'
@@ -33,7 +33,6 @@ const summaryStats = computed(() => {
 })
 
 async function loadStats(classId: string) {
-  if (classStats.value[classId]) return
   statsLoading.value = true
   try {
     const res = await getClassStats(classId)
@@ -58,6 +57,24 @@ async function confirmRename() {
   renameTarget.value = null
   renameValue.value = ''
 }
+
+async function loadAllStats() {
+  for (const cls of classes.value) {
+    if (classStats.value[cls.id]) continue
+    try {
+      const res = await getClassStats(cls.id)
+      if (res.success) classStats.value = { ...classStats.value, [cls.id]: res.stats }
+    } catch { /* ignore */ }
+  }
+}
+
+onMounted(() => {
+  loadAllStats()
+})
+
+watch(() => classes.value.length, () => {
+  loadAllStats()
+})
 </script>
 
 <template>

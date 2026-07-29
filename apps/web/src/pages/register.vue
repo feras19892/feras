@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../modules/auth/stores/auth';
 import { useI18n } from '../composables/useI18n';
+import { registerSchool } from '../services/school.service';
 
 const router = useRouter();
 const auth = useAuthStore();
 const { t } = useI18n();
 
 onMounted(() => {
-  localStorage.clear();
+  // Clear user/guest session via auth store, preserve school session
   auth.user = null;
   auth.guestMode = false;
   auth.guestRole = null;
@@ -25,22 +26,22 @@ const confirmPassword = ref('');
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 const formError = ref('');
-const selectedRole = ref<'teacher' | 'student'>('student');
+const selectedRole = ref<'teacher' | 'student' | 'school'>('student');
+const schoolCode = ref('');
+const schoolName = ref('');
+const maxStudents = ref(50);
+const maxTeachers = ref(10);
+const successCode = ref('');
 const agreedToTerms = ref(false);
+
+const isSchool = computed(() => selectedRole.value === 'school');
+const fullName = computed(() => `${firstName.value.trim()} ${lastName.value.trim()}`.trim());
 
 async function handleRegister() {
   formError.value = '';
+  successCode.value = '';
 
-  const fullName = `${firstName.value.trim()} ${lastName.value.trim()}`.trim();
   const trimmedEmail = email.value.trim();
-  if (!fullName || !trimmedEmail || !password.value) {
-    formError.value = t('auth.errors.fillAll');
-    return;
-  }
-  if (fullName.length < 2) {
-    formError.value = t('auth.errors.nameTooShort');
-    return;
-  }
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(trimmedEmail)) {
     formError.value = t('auth.errors.invalidEmail');
@@ -59,17 +60,42 @@ async function handleRegister() {
     return;
   }
 
+  // School registration path
+  if (isSchool.value) {
+    if (!schoolName.value.trim()) {
+      formError.value = t('auth.errors.fillAll');
+      return;
+    }
+    const res = await registerSchool(schoolName.value.trim(), trimmedEmail, password.value, maxStudents.value, maxTeachers.value);
+    if (res.success && res.code) {
+      successCode.value = res.code;
+      if (res.school) {
+        auth.setSchoolSession(res.school);
+      }
+    } else {
+      formError.value = res.message || t('auth.errors.registerFailed');
+    }
+    return;
+  }
+
+  // Student / Teacher registration path
+  if (!fullName.value || fullName.value.length < 2) {
+    formError.value = t('auth.errors.nameTooShort');
+    return;
+  }
+
   const result = await auth.registerWithRole(
-    email.value.trim(),
+    trimmedEmail,
     password.value,
-    fullName,
-    selectedRole.value
+    fullName.value,
+    selectedRole.value as 'student' | 'teacher',
+    schoolCode.value.trim() || undefined,
   );
   if (result.ok) {
     router.push({
       path: '/verify-email',
       query: {
-        email: email.value.trim(),
+        email: trimmedEmail,
         devCode: result.devCode ?? undefined,
       },
     });
@@ -85,11 +111,23 @@ async function handleRegister() {
       <div class="app-header">
         <h1>{{ t('auth.registerTitle') }}</h1>
         <p class="subtitle">
-          {{ selectedRole === 'teacher' ? t('auth.roleTeacher') : t('auth.roleStudent') }}
+          {{ isSchool ? t('school.registerSubtitle') : selectedRole === 'teacher' ? t('auth.roleTeacher') : t('auth.roleStudent') }}
         </p>
       </div>
-      <form @submit.prevent="handleRegister">
-        <div class="field-row">
+
+      <!-- Success: school code display -->
+      <div v-if="successCode" class="success-box">
+        <h2>✅ {{ t('school.registerSuccess') }}</h2>
+        <p>{{ t('school.yourCode') }}:</p>
+        <div class="code-display">{{ successCode }}</div>
+        <p class="code-hint">{{ t('school.codeHint') }}</p>
+        <button class="btn-submit" @click="router.push('/school')">{{ t('school.goToDashboard') }}</button>
+        <button class="btn-secondary" @click="router.push('/school/login')">{{ t('school.goToLogin') }}</button>
+      </div>
+
+      <form v-else @submit.prevent="handleRegister">
+        <!-- Name fields: only for student/teacher -->
+        <div v-if="!isSchool" class="field-row">
           <div class="field half">
             <label>{{ t('auth.firstNameLabel', 'First Name') }}</label>
             <input v-model="firstName" type="text" required autocomplete="given-name" name="firstName" />
@@ -99,30 +137,60 @@ async function handleRegister() {
             <input v-model="lastName" type="text" required autocomplete="family-name" name="lastName" />
           </div>
         </div>
+        <!-- School name: only for school -->
+        <div v-if="isSchool" class="field">
+          <label>{{ t('school.nameLabel') }}</label>
+          <input v-model="schoolName" type="text" required :placeholder="t('school.namePlaceholder')" />
+        </div>
         <div class="field">
           <label>{{ t('auth.roleLabel') }}</label>
           <div class="role-toggle">
             <button
               type="button"
               class="role-option"
-              :class="{ active: selectedRole === 'teacher' }"
-              @click="selectedRole = 'teacher'"
+              :class="{ active: selectedRole === 'student' }"
+              @click="selectedRole = 'student'"
             >
-              {{ t('auth.roleTeacher') }}
+              🎓 {{ t('auth.roleStudent') }}
             </button>
             <button
               type="button"
               class="role-option"
-              :class="{ active: selectedRole === 'student' }"
-              @click="selectedRole = 'student'"
+              :class="{ active: selectedRole === 'teacher' }"
+              @click="selectedRole = 'teacher'"
             >
-              {{ t('auth.roleStudent') }}
+              👨‍🏫 {{ t('auth.roleTeacher') }}
+            </button>
+            <button
+              type="button"
+              class="role-option school"
+              :class="{ active: isSchool }"
+              @click="selectedRole = 'school'"
+            >
+              🏫 {{ t('school.roleSchool') }}
             </button>
           </div>
         </div>
         <div class="field">
           <label>{{ t('auth.emailLabel') }}</label>
           <input v-model="email" type="email" required autocomplete="username" name="email" />
+        </div>
+        <!-- School code: only for student/teacher -->
+        <div v-if="!isSchool" class="field">
+          <label>{{ t('school.schoolCodeOptional') }}</label>
+          <input v-model="schoolCode" type="text" :placeholder="t('school.schoolCodePlaceholder')" name="schoolCode" />
+          <p class="field-hint">{{ t('school.schoolCodeHint') }}</p>
+        </div>
+        <!-- Capacity fields: only for school -->
+        <div v-if="isSchool" class="field-row">
+          <div class="field half">
+            <label>{{ t('school.maxStudents') }}</label>
+            <input v-model.number="maxStudents" type="number" min="1" max="10000" required />
+          </div>
+          <div class="field half">
+            <label>{{ t('school.maxTeachers') }}</label>
+            <input v-model.number="maxTeachers" type="number" min="1" max="500" required />
+          </div>
         </div>
         <div class="field">
           <label>{{ t('auth.passwordLabel') }}</label>
@@ -174,7 +242,7 @@ async function handleRegister() {
           </span>
         </label>
         <button type="submit" class="btn-submit" :disabled="auth.loading">
-          {{ auth.loading ? t('auth.loading') : t('auth.registerBtn') }}
+          {{ auth.loading ? t('auth.loading') : isSchool ? t('school.registerBtn') : t('auth.registerBtn') }}
         </button>
       </form>
       <router-link to="/login" class="back-link">
@@ -242,6 +310,7 @@ input:focus { outline: none; border-color: #06b6d4; }
 }
 .eye-btn:hover { color: #e2e8f0; }
 .error { color: #fca5a5; font-size: 0.8rem; margin: 0.5rem 0; }
+.field-hint { font-size: 0.72rem; color: #64748b; margin: 0.3rem 0 0; }
 .terms-check {
   display: flex;
   align-items: flex-start;
@@ -275,6 +344,19 @@ input:focus { outline: none; border-color: #06b6d4; }
   font-size: 0.95rem;
 }
 .btn-submit:disabled { opacity: 0.6; cursor: wait; }
+.btn-secondary {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 0.5rem;
+  background: rgba(255,255,255,0.04);
+  color: #94a3b8;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+.btn-secondary:hover { background: rgba(255,255,255,0.08); color: #e2e8f0; }
 .role-toggle { display: flex; gap: 0.5rem; }
 .role-option {
   flex: 1;
@@ -293,6 +375,26 @@ input:focus { outline: none; border-color: #06b6d4; }
   border-color: rgba(99,102,241,0.4);
   color: #e0e7ff;
 }
+.role-option.school.active {
+  background: rgba(6,182,212,0.2);
+  border-color: rgba(6,182,212,0.4);
+  color: #67e8f9;
+}
+.success-box { text-align: center; padding: 1rem 0; }
+.success-box h2 { color: #4ade80; font-size: 1.1rem; margin: 0 0 0.8rem; }
+.code-display {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 0.2rem;
+  color: #67e8f9;
+  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  border-radius: 0.8rem;
+  padding: 0.8rem;
+  margin: 0.8rem 0;
+  font-family: monospace;
+}
+.code-hint { font-size: 0.8rem; color: #94a3b8; margin: 0.5rem 0 1rem; }
 .back-link {
   display: block;
   text-align: center;

@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { useI18n } from './useI18n';
 import {
   getAdminUsers,
@@ -113,6 +113,12 @@ export function useAdmin() {
     const res = await deleteAdminClass(id);
     if (res.success) loadAll();
   }
+
+  let refreshTimer: ReturnType<typeof setInterval> | null = null;
+  onMounted(() => {
+    refreshTimer = setInterval(() => { loadAll(); }, 60000);
+  });
+  onUnmounted(() => { if (refreshTimer) clearInterval(refreshTimer); });
 
   return {
     loading,

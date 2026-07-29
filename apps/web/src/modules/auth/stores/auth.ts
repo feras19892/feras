@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed, watch } from 'vue'
 import { useAuthActions } from '../../../composables/auth/useAuthActions'
-import type { User, UserRole, ClassInfo } from '@my-modern-app/shared-types'
+import type { User, UserRole, ClassInfo, School } from '@my-modern-app/shared-types'
 
 function loadJson<T>(key: string, fallback: T): T {
   try {
@@ -14,6 +14,7 @@ function loadJson<T>(key: string, fallback: T): T {
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(loadJson<User | null>('auth_user', null));
+  const schoolSession = ref<School | null>(loadJson<School | null>('school_session', null));
   const loading = ref(false);
   const error = ref<string | null>(null);
 
@@ -32,9 +33,14 @@ export const useAuthStore = defineStore('auth', () => {
     try { localStorage.setItem('auth_user', JSON.stringify(u)); } catch { /* ignore */ }
   }, { deep: true });
 
-  const isLoggedIn = computed(() => !!user.value);
+  watch(schoolSession, (s) => {
+    try { if (s) localStorage.setItem('school_session', JSON.stringify(s)); else localStorage.removeItem('school_session'); } catch { /* ignore */ }
+  }, { deep: true });
+
+  const isLoggedIn = computed(() => !!user.value || !!schoolSession.value);
   const role = computed((): UserRole | null => {
     if (guestMode.value) return guestRole.value || 'guest';
+    if (schoolSession.value) return 'school';
     return user.value?.role ?? null;
   });
   const isGuest = computed(() => guestMode.value);
@@ -42,6 +48,7 @@ export const useAuthStore = defineStore('auth', () => {
   const isTeacher = computed(() => role.value === 'teacher');
   const isResearcher = computed(() => role.value === 'researcher');
   const isAdmin = computed(() => role.value === 'admin');
+  const isSchool = computed(() => role.value === 'school' || !!schoolSession.value);
 
   watch([guestMode, guestRole, guestExpiresAt, currentClassId, classes], () => persistGuest(), { deep: true });
 
@@ -66,7 +73,16 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('auth_classes');
   }
 
-  const actions = useAuthActions(user, loading, error, clearGuestState)
+  function setSchoolSession(s: School | null) {
+    schoolSession.value = s;
+  }
+
+  function clearSchoolSession() {
+    schoolSession.value = null;
+    localStorage.removeItem('school_session');
+  }
+
+  const actions = useAuthActions(user, loading, error, clearGuestState, setSchoolSession)
 
   function loginAsGuest(role?: 'teacher' | 'student') {
     clearGuestState()
@@ -86,10 +102,11 @@ export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = isLoggedIn;
 
   return {
-    user, loading, error,
+    user, schoolSession, loading, error,
     guestMode, guestRole, currentClassId, classes,
     isLoggedIn, isAuthenticated, role,
-    isGuest, isStudent, isTeacher, isResearcher, isAdmin,
+    isGuest, isStudent, isTeacher, isResearcher, isAdmin, isSchool,
+    setSchoolSession, clearSchoolSession,
     login: actions.login,
     registerWithRole: actions.registerWithRole,
     fetchMe: actions.fetchMe,

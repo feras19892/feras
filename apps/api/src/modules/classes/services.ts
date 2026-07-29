@@ -52,6 +52,14 @@ export async function getClassStudents(classId: string) {
   );
 }
 
+export async function isClassMember(classId: string, studentId: number) {
+  const row = await db.get(
+    'SELECT 1 FROM class_students WHERE class_id = ? AND student_id = ?',
+    classId, studentId
+  );
+  return !!row;
+}
+
 export async function joinClassByCode(studentId: number, code: string) {
   const cls = await db.get('SELECT * FROM classes WHERE code = ? AND is_active = 1', code);
   if (!cls) return { success: false, message: 'الكود غير صحيح أو الفصل مغلق' };

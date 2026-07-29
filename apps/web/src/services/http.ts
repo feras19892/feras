@@ -67,6 +67,9 @@ export async function fetchJson<T>(path: string, options: FetchOptions = {}): Pr
     try {
       const body = await response.json();
       if (body && body.message) msg = body.message;
+      if (body && typeof body.success === 'boolean') {
+        return body as T;
+      }
     } catch { /* ignore */ }
     throw new Error(msg);
   }

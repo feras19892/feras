@@ -45,20 +45,52 @@ export async function register(credentials: RegisterCredentials): Promise<{ succ
     if (existing.length > 0) {
       return { success: false, message: 'Email already registered' };
     }
+
+    let schoolId: number | null = null;
+    if (credentials.school_code) {
+      const school = await db.get<{ id: number; is_active: number; max_students: number; max_teachers: number }>(
+        'SELECT id, is_active, max_students, max_teachers FROM schools WHERE code = ?',
+        credentials.school_code,
+      );
+      if (!school) {
+        return { success: false, message: 'Invalid school code' };
+      }
+      if (!school.is_active) {
+        return { success: false, message: 'School is not active' };
+      }
+      // Count current users in this school
+      const counts = await db.get<{ students: number; teachers: number }>(
+        `SELECT SUM(CASE WHEN role = 'student' THEN 1 ELSE 0 END) as students, SUM(CASE WHEN role = 'teacher' THEN 1 ELSE 0 END) as teachers FROM users WHERE school_id = ?`,
+        school.id,
+      );
+      const studentCount = counts?.students || 0;
+      const teacherCount = counts?.teachers || 0;
+      const role = credentials.role || 'student';
+      if (role === 'student' && studentCount >= school.max_students) {
+        return { success: false, message: 'School has reached maximum student capacity' };
+      }
+      if (role === 'teacher' && teacherCount >= school.max_teachers) {
+        return { success: false, message: 'School has reached maximum teacher capacity' };
+      }
+      schoolId = school.id;
+    }
+
     const passwordHash = await hashPassword(credentials.password);
     const result = await db.run(
-      'INSERT INTO users (email, name, password_hash, role) VALUES (?, ?, ?, ?)',
+      'INSERT INTO users (email, name, password_hash, role, school_id) VALUES (?, ?, ?, ?, ?)',
       credentials.email,
       credentials.name,
       passwordHash,
       credentials.role || 'student',
+      schoolId,
     );
 
     const user: User = {
       id: Number(result.lastID),
       email: credentials.email,
       name: credentials.name,
-      role: credentials.role || 'student',
+      role: (credentials.role || 'student') as User['role'],
+      school_id: schoolId,
     };
 
     let devVerificationCode: string | undefined;
@@ -82,8 +114,9 @@ export async function register(credentials: RegisterCredentials): Promise<{ succ
 export async function login(
   email: string,
   password: string,
-): Promise<{ success: boolean; message?: string; user?: User; token?: string; refreshToken?: string }> {
+): Promise<{ success: boolean; message?: string; user?: User; token?: string; refreshToken?: string; school?: any }> {
   try {
+    // First: check users table
     const rows = await db.all<{
       id: number;
       email: string;
@@ -95,32 +128,109 @@ export async function login(
       'SELECT id, email, name, role, password_hash, blocked_at FROM users WHERE email = ?',
       email
     );
-    if (rows.length === 0) {
-      return { success: false, message: 'Invalid credentials' };
+
+    if (rows.length > 0) {
+      const row = rows[0];
+      if (row.blocked_at) {
+        return { success: false, message: 'Account is suspended' };
+      }
+      const valid = await comparePassword(password, row.password_hash);
+      if (!valid) {
+        return { success: false, message: 'Invalid credentials' };
+      }
+
+      const user: User = {
+        id: Number(row.id),
+        email: row.email,
+        name: row.name,
+        role: row.role as User['role'],
+      };
+
+      const { token, refreshToken } = await issueTokensForUser(user);
+      return { success: true, user, token, refreshToken };
     }
 
-    const row = rows[0];
-    if (row.blocked_at) {
-      return { success: false, message: 'Account is suspended' };
+    // Fallback: check schools table
+    const schoolRow = await db.get<{
+      id: number;
+      email: string;
+      name: string;
+      code: string;
+      password_hash: string;
+      max_students: number;
+      max_teachers: number;
+      is_active: number;
+    }>('SELECT id, email, name, code, password_hash, max_students, max_teachers, is_active FROM schools WHERE email = ?', email);
+
+    if (schoolRow) {
+      if (!schoolRow.is_active) {
+        return { success: false, message: 'School account is suspended' };
+      }
+      const valid = await comparePassword(password, schoolRow.password_hash);
+      if (!valid) {
+        return { success: false, message: 'Invalid credentials' };
+      }
+
+      const school = {
+        id: Number(schoolRow.id),
+        email: schoolRow.email,
+        name: schoolRow.name,
+        code: schoolRow.code,
+        max_students: schoolRow.max_students,
+        max_teachers: schoolRow.max_teachers,
+        is_active: true,
+      };
+
+      const token = await signAccessToken({
+        sub: String(schoolRow.id),
+        email: schoolRow.email,
+        role: 'school' as any,
+      });
+      const refreshToken = generateRefreshToken();
+      try {
+        await db.run(
+          'INSERT INTO school_refresh_tokens (token_hash, school_id, expires_at) VALUES (?, ?, ?)',
+          hashRefreshToken(refreshToken),
+          schoolRow.id,
+          new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+        );
+      } catch (e) {
+        console.error('school refresh token storage error:', e);
+      }
+
+      return { success: true, school, token, refreshToken };
     }
-    const valid = await comparePassword(password, row.password_hash);
-    if (!valid) {
-      return { success: false, message: 'Invalid credentials' };
-    }
 
-    const user: User = {
-      id: Number(row.id),
-      email: row.email,
-      name: row.name,
-      role: row.role as User['role'],
-    };
-
-    const { token, refreshToken } = await issueTokensForUser(user);
-
-    return { success: true, user, token, refreshToken };
+    return { success: false, message: 'Invalid credentials' };
   } catch (err) {
     console.error('login error:', err);
     return { success: false, message: 'Login failed' };
+  }
+}
+
+export async function resendVerificationCode(email: string): Promise<{ success: boolean; message?: string; devVerificationCode?: string }> {
+  try {
+    const users = await db.all<{ id: number; email_verified_at: string | null }[]>(
+      'SELECT id, email_verified_at FROM users WHERE email = ?',
+      email,
+    );
+    if (users.length === 0) {
+      return { success: false, message: 'User not found' };
+    }
+    if (users[0].email_verified_at) {
+      return { success: false, message: 'Email already verified' };
+    }
+
+    const { code } = await createEmailVerificationCode(users[0].id);
+    let devVerificationCode: string | undefined;
+    if (process.env.NODE_ENV !== 'production') {
+      devVerificationCode = code;
+      console.log(`[auth] Dev email verification code for ${email}: ${code}`);
+    }
+    return { success: true, devVerificationCode };
+  } catch (err) {
+    console.error('resendVerificationCode error:', err);
+    return { success: false, message: 'Failed to resend code' };
   }
 }
 
@@ -194,44 +304,58 @@ export async function refreshAccessToken(
 ): Promise<{ success: boolean; message?: string; token?: string; refreshToken?: string }> {
   try {
     const hash = hashRefreshToken(refreshToken);
-    const rows = await db.all<{ user_id: number }[]>(
+
+    // Try user refresh tokens first
+    const userRows = await db.all<{ user_id: number }[]>(
       'SELECT user_id FROM refresh_tokens WHERE token_hash = ? AND expires_at > datetime("now")',
       hash
     );
-    if (rows.length === 0) {
-      return { success: false, message: 'Invalid or expired refresh token' };
+
+    if (userRows.length > 0) {
+      const userId = Number(userRows[0].user_id);
+      await db.run('DELETE FROM refresh_tokens WHERE token_hash = ?', hash);
+
+      const u = await db.get<{ id: number; email: string; name: string; role: string }>(
+        'SELECT id, email, name, role FROM users WHERE id = ?', userId
+      );
+      if (!u) return { success: false, message: 'User not found' };
+
+      const token = await signAccessToken({ sub: String(u.id), email: u.email, role: u.role as User['role'] });
+      const newRefreshToken = generateRefreshToken();
+      await db.run(
+        'INSERT INTO refresh_tokens (token_hash, user_id, expires_at) VALUES (?, ?, ?)',
+        hashRefreshToken(newRefreshToken), userId,
+        new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+      );
+      return { success: true, token, refreshToken: newRefreshToken };
     }
 
-    const userId = Number(rows[0].user_id);
-
-    // Delete the old refresh token (rotation)
-    await db.run('DELETE FROM refresh_tokens WHERE token_hash = ?', hash);
-
-    const userRows = await db.all<{ id: number; email: string; name: string; role: string }[]>(
-      'SELECT id, email, name, role FROM users WHERE id = ?',
-      userId
+    // Try school refresh tokens
+    const schoolRows = await db.all<{ school_id: number }[]>(
+      'SELECT school_id FROM school_refresh_tokens WHERE token_hash = ? AND expires_at > datetime("now")',
+      hash
     );
-    if (userRows.length === 0) {
-      return { success: false, message: 'User not found' };
+
+    if (schoolRows.length > 0) {
+      const schoolId = Number(schoolRows[0].school_id);
+      await db.run('DELETE FROM school_refresh_tokens WHERE token_hash = ?', hash);
+
+      const s = await db.get<{ id: number; email: string; name: string }>(
+        'SELECT id, email, name FROM schools WHERE id = ?', schoolId
+      );
+      if (!s) return { success: false, message: 'School not found' };
+
+      const token = await signAccessToken({ sub: String(s.id), email: s.email, role: 'school' as any });
+      const newRefreshToken = generateRefreshToken();
+      await db.run(
+        'INSERT INTO school_refresh_tokens (token_hash, school_id, expires_at) VALUES (?, ?, ?)',
+        hashRefreshToken(newRefreshToken), schoolId,
+        new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+      );
+      return { success: true, token, refreshToken: newRefreshToken };
     }
 
-    const u = userRows[0];
-    const token = await signAccessToken({
-      sub: String(u.id),
-      email: u.email,
-      role: u.role as User['role'],
-    });
-
-    // Generate and store new refresh token
-    const newRefreshToken = generateRefreshToken();
-    const newRefreshHash = hashRefreshToken(newRefreshToken);
-    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
-    await db.run(
-      'INSERT INTO refresh_tokens (token_hash, user_id, expires_at) VALUES (?, ?, ?)',
-      newRefreshHash, userId, expiresAt
-    );
-
-    return { success: true, token, refreshToken: newRefreshToken };
+    return { success: false, message: 'Invalid or expired refresh token' };
   } catch (err) {
     console.error('refresh error:', err);
     return { success: false, message: 'Refresh failed' };
@@ -242,9 +366,13 @@ export async function logout(userId: number): Promise<void> {
   await db.run('DELETE FROM refresh_tokens WHERE user_id = ?', userId);
 }
 
+export async function logoutSchool(schoolId: number): Promise<void> {
+  await db.run('DELETE FROM school_refresh_tokens WHERE school_id = ?', schoolId);
+}
+
 export async function getUserById(id: number): Promise<User | null> {
-  const rows = await db.all<{ id: number; email: string; name: string; role: string }[]>(
-    'SELECT id, email, name, role FROM users WHERE id = ?',
+  const rows = await db.all<{ id: number; email: string; name: string; role: string; school_id: number | null }[]>(
+    'SELECT id, email, name, role, school_id FROM users WHERE id = ?',
     id
   );
   if (rows.length === 0) return null;
@@ -254,6 +382,7 @@ export async function getUserById(id: number): Promise<User | null> {
     email: u.email,
     name: u.name,
     role: u.role as User['role'],
+    school_id: u.school_id,
   };
 }
 

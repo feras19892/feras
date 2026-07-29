@@ -70,6 +70,34 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./pages/admin.vue'),
   },
   {
+    path: '/school/register',
+    name: 'SchoolRegister',
+    component: () => import('./pages/school-register.vue'),
+  },
+  {
+    path: '/school/login',
+    name: 'SchoolLogin',
+    component: () => import('./pages/school-login.vue'),
+  },
+  {
+    path: '/school',
+    name: 'SchoolDashboard',
+    meta: { requiresAuth: true, roles: ['school'] },
+    component: () => import('./pages/school.vue'),
+  },
+  {
+    path: '/school/user/:id',
+    name: 'SchoolUserDetail',
+    meta: { requiresAuth: true, roles: ['school'] },
+    component: () => import('./pages/school-user-detail.vue'),
+  },
+  {
+    path: '/school/class/:id',
+    name: 'SchoolClassDetail',
+    meta: { requiresAuth: true, roles: ['school'] },
+    component: () => import('./pages/school-class-detail.vue'),
+  },
+  {
     path: '/analysis',
     name: 'Analysis',
     meta: { requiresAuth: true },

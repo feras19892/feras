@@ -1,12 +1,13 @@
 import { fetchJson } from '../../services/http'
 import { useI18n } from '../useI18n'
-import type { User, ClassInfo } from '@my-modern-app/shared-types'
+import type { User, ClassInfo, School } from '@my-modern-app/shared-types'
 
 export function useAuthActions(
   user: { value: User | null },
   loading: { value: boolean },
   error: { value: string | null },
   clearGuestState: () => void,
+  setSchoolSession?: (s: School | null) => void,
 ) {
   const { t } = useI18n()
   function extractStatusCode(err: unknown): number | null {
@@ -24,14 +25,21 @@ export function useAuthActions(
     loading.value = true
     error.value = null
     try {
-      const data = await fetchJson<{ user: User; token: string }>('/api/auth/login', {
+      const data = await fetchJson<{ success: boolean; user?: User; school?: School }>('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       })
       clearGuestState()
-      user.value = data.user
-      return true
+      if (data.school) {
+        if (setSchoolSession) setSchoolSession(data.school)
+        return { ok: true, school: data.school } as any
+      }
+      if (data.user) {
+        user.value = data.user
+        return true
+      }
+      return false
     } catch (err) {
       const status = extractStatusCode(err)
       if (status === 401) error.value = t('auth.errors.invalidCredentials')
@@ -43,14 +51,16 @@ export function useAuthActions(
     }
   }
 
-  async function registerWithRole(email: string, password: string, name: string, roleVal: 'teacher' | 'student') {
+  async function registerWithRole(email: string, password: string, name: string, roleVal: 'teacher' | 'student', schoolCode?: string) {
     loading.value = true
     error.value = null
     try {
+      const body: Record<string, string> = { email, password, name, role: roleVal }
+      if (schoolCode) body.school_code = schoolCode
       const data = await fetchJson<{ success: boolean; user?: User; devVerificationCode?: string }>('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, name, role: roleVal }),
+        body: JSON.stringify(body),
       })
       if (!data.success || !data.user) {
         error.value = t('auth.errors.registerFailed')

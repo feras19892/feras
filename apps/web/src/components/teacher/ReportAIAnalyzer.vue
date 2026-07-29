@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useI18n } from '../../composables/useI18n';
 import type { Report } from '../../services/report.service';
 import { analyzeReport } from '../../services/ai.service';
@@ -11,7 +11,9 @@ const props = defineProps<{
 const { t } = useI18n();
 const analyzing = ref(false);
 const aiResult = ref<string>('');
+const aiGrade = ref<number | null>(null);
 const aiError = ref<string>('');
+const showDetail = ref(false);
 
 function safeParse(str: string | undefined) {
   try { return str ? JSON.parse(str) : []; } catch { return []; }
@@ -21,20 +23,6 @@ const readings = computed(() => safeParse(props.report.readings));
 const columns = computed(() => safeParse(props.report.columns));
 const equations = computed(() => safeParse(props.report.equations));
 const plots = computed(() => safeParse(props.report.plots));
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const _stats = computed(() => {
-  const r = readings.value;
-  if (!Array.isArray(r) || r.length === 0) return null;
-  interface ColumnItem { type: string; key: string }
-  const numericCols = (columns.value as ColumnItem[]).filter((c) => c.type === 'number');
-  const avgs: Record<string, number> = {};
-  numericCols.forEach((col) => {
-    const vals = r.map((row: Record<string, unknown>) => Number(row[col.key])).filter((v) => !isNaN(v));
-    if (vals.length) avgs[col.key] = vals.reduce((a: number, b: number) => a + b, 0) / vals.length;
-  });
-  return avgs;
-});
 
 const hasConclusion = computed(() => !!props.report.conclusion && props.report.conclusion.length > 20);
 const hasEquations = computed(() => Array.isArray(equations.value) && equations.value.length > 0);
@@ -52,190 +40,307 @@ const dataQuality = computed(() => {
   return Math.min(100, score);
 });
 
+function gradeLabel(grade: number): string {
+  if (grade >= 90) return t('ai.excellent');
+  if (grade >= 80) return t('ai.veryGood');
+  if (grade >= 70) return t('ai.good');
+  if (grade >= 60) return t('ai.acceptable');
+  return t('ai.weak');
+}
+
+function briefComment(grade: number): string {
+  if (grade >= 90) return t('ai.briefExcellent');
+  if (grade >= 80) return t('ai.briefVeryGood');
+  if (grade >= 70) return t('ai.briefGood');
+  if (grade >= 60) return t('ai.briefAcceptable');
+  return t('ai.briefWeak');
+}
+
+function renderMarkdown(md: string): string {
+  return md
+    .replace(/^## (.+)$/gm, '<h4 class="md-h4">$1</h4>')
+    .replace(/^### (.+)$/gm, '<h5 class="md-h5">$1</h5>')
+    .replace(/^- (.+)$/gm, '<div class="md-li">$1</div>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+}
+
 async function generateAnalysis() {
   analyzing.value = true;
   aiError.value = '';
+  aiResult.value = '';
+  aiGrade.value = null;
   try {
     const res = await analyzeReport({
-      experiment_name: props.report.experiment_name,
-      student_name: props.report.student_name,
-      readings: props.report.readings,
-      columns: props.report.columns,
-      equations: props.report.equations,
-      plots: props.report.plots,
-      conclusion: props.report.conclusion,
-      chart_snapshot: props.report.chart_snapshot,
+      experiment_name: props.report.experiment_name || 'Unknown',
+      student_name: props.report.student_name || '',
+      readings: props.report.readings || '[]',
+      columns: props.report.columns || '[]',
+      equations: props.report.equations || '[]',
+      plots: props.report.plots || '[]',
+      conclusion: props.report.conclusion || '',
+      chart_snapshot: props.report.chart_snapshot || '',
     });
     if (res.success) {
       aiResult.value = res.analysis;
+      aiGrade.value = res.grade ?? null;
     } else {
-      aiError.value = res.message || 'Analysis failed';
+      aiError.value = res.message || t('ai.analysisFailed');
     }
   } catch (err) {
-    aiError.value = err instanceof Error ? err.message : 'Failed to connect to AI';
+    aiError.value = err instanceof Error ? err.message : t('ai.analysisFailed');
   } finally {
     analyzing.value = false;
   }
 }
+
+onMounted(() => {
+  generateAnalysis();
+});
 </script>
 
 <template>
-  <div class="ai-analyzer">
-    <div class="ai-header">
-      <h4>{{ t('ai.aiAnalysis') }}</h4>
-      <button v-if="!aiResult" class="ai-btn" :disabled="analyzing" @click="generateAnalysis">
-        {{ analyzing ? '...' : t('ai.analyze') }}
-      </button>
-      <button v-else class="ai-btn secondary" @click="aiResult = ''; aiError = ''">
-        {{ t('ai.hide') }}
-      </button>
+  <div class="report-assessment">
+    <!-- Brief Summary (shows in report) -->
+    <div v-if="analyzing" class="assess-loading">
+      <div class="mini-spinner"></div>
+      <span>{{ t('ai.evaluating') }}</span>
     </div>
 
-    <div v-if="analyzing" class="ai-loading">
-      {{ t('ai.analyzing') }}
-    </div>
-
-    <div v-if="aiError" class="ai-error">
+    <div v-else-if="aiError" class="assess-error">
       ⚠️ {{ aiError }}
     </div>
 
-    <div v-if="aiResult" class="ai-result">
-      <pre>{{ aiResult }}</pre>
+    <div v-else-if="aiGrade !== null" class="assess-brief">
+      <div class="brief-row">
+        <div class="brief-grade" :class="{
+          excellent: aiGrade >= 90,
+          good: aiGrade >= 80 && aiGrade < 90,
+          fair: aiGrade >= 70 && aiGrade < 80,
+          poor: aiGrade < 70,
+        }">
+          <span class="grade-num">{{ aiGrade }}</span>
+          <span class="grade-max">/100</span>
+        </div>
+        <div class="brief-text">
+          <span class="brief-label">{{ gradeLabel(aiGrade) }}</span>
+          <span class="brief-comment">{{ briefComment(aiGrade) }}</span>
+        </div>
+        <button class="detail-btn" @click="showDetail = true">
+          📄 {{ t('ai.detailedAnalysis') }}
+        </button>
+      </div>
     </div>
 
-    <div v-if="!aiResult && !analyzing" class="ai-preview">
-      <div class="preview-item">
-        <span class="label">{{ t('ai.readingsLabel') }}:</span>
-        <span class="value">{{ readings.length }}</span>
+    <!-- Detailed Analysis Modal (floating) -->
+    <Teleport to="body">
+      <div v-if="showDetail" class="detail-overlay" @click.self="showDetail = false">
+        <div class="detail-modal">
+          <div class="detail-header">
+            <h3>📄 {{ t('ai.detailedReport') }}</h3>
+            <button class="detail-close" @click="showDetail = false">✕</button>
+          </div>
+          <div class="detail-body">
+            <div v-if="aiResult" class="detail-content" v-html="renderMarkdown(aiResult)"></div>
+          </div>
+          <div class="detail-footer">
+            <button class="detail-close-btn" @click="showDetail = false">{{ t('common.close') }}</button>
+          </div>
+        </div>
       </div>
-      <div class="preview-item">
-        <span class="label">{{ t('ai.equationsLabel') }}:</span>
-        <span class="value" :class="{ good: hasEquations, warn: !hasEquations }">
-          {{ hasEquations ? '✅' : '❌' }}
-        </span>
-      </div>
-      <div class="preview-item">
-        <span class="label">{{ t('ai.plotsLabel') }}:</span>
-        <span class="value" :class="{ good: hasPlots, warn: !hasPlots }">
-          {{ hasPlots ? '✅' : '❌' }}
-        </span>
-      </div>
-      <div class="preview-item">
-        <span class="label">{{ t('ai.conclusionLabel') }}:</span>
-        <span class="value" :class="{ good: hasConclusion, warn: !hasConclusion }">
-          {{ hasConclusion ? '✅' : '❌' }}
-        </span>
-      </div>
-      <div class="preview-item">
-        <span class="label">{{ t('ai.chartLabel') }}:</span>
-        <span class="value" :class="{ good: hasChart, warn: !hasChart }">
-          {{ hasChart ? '✅' : '❌' }}
-        </span>
-      </div>
-      <div class="preview-item total">
-        <span class="label">{{ t('ai.dataQualityLabel') }}:</span>
-        <span class="value score">{{ dataQuality }}%</span>
-      </div>
-    </div>
+    </Teleport>
   </div>
 </template>
 
 <style scoped>
-.ai-analyzer {
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(99, 102, 241, 0.15);
+.report-assessment {
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(148, 163, 184, 0.15);
   border-radius: 0.6rem;
+  padding: 0.8rem 1rem;
+}
+
+.assess-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #94a3b8;
+  font-size: 0.82rem;
+  padding: 0.3rem 0;
+}
+.mini-spinner {
+  width: 16px; height: 16px;
+  border: 2px solid rgba(99,102,241,0.2);
+  border-top-color: #818cf8;
+  border-radius: 50%;
+  animation: mini-spin 0.8s linear infinite;
+}
+@keyframes mini-spin { to { transform: rotate(360deg); } }
+
+.assess-error {
+  color: #f87171;
+  font-size: 0.8rem;
+  padding: 0.3rem 0;
+}
+
+.assess-brief {
+  display: flex;
+  align-items: center;
+}
+.brief-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+.brief-grade {
+  display: flex;
+  align-items: baseline;
+  gap: 0.1rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 0.5rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.brief-grade .grade-num { font-size: 1.4rem; }
+.brief-grade .grade-max { font-size: 0.75rem; opacity: 0.7; }
+.brief-grade.excellent { background: rgba(34,197,94,0.12); color: #22c55e; border: 1px solid rgba(34,197,94,0.2); }
+.brief-grade.good { background: rgba(99,102,241,0.12); color: #818cf8; border: 1px solid rgba(99,102,241,0.2); }
+.brief-grade.fair { background: rgba(251,191,36,0.12); color: #fbbf24; border: 1px solid rgba(251,191,36,0.2); }
+.brief-grade.poor { background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+
+.brief-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.brief-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #e2e8f0;
+}
+.brief-comment {
+  font-size: 0.78rem;
+  color: #94a3b8;
+}
+
+.detail-btn {
+  padding: 0.35rem 0.8rem;
+  border-radius: 0.4rem;
+  border: 1px solid rgba(99,102,241,0.2);
+  background: rgba(99,102,241,0.08);
+  color: #a5b4fc;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.detail-btn:hover { background: rgba(99,102,241,0.15); border-color: rgba(99,102,241,0.35); }
+
+/* Detail Modal */
+.detail-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
   padding: 1rem;
 }
-.ai-header {
+.detail-modal {
+  width: 100%;
+  max-width: 650px;
+  max-height: 85vh;
+  background: #0f172a;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 1rem;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.75rem;
+  flex-direction: column;
+  overflow: hidden;
 }
-.ai-header h4 {
+.detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.detail-header h3 {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #f1f5f9;
+}
+.detail-close {
+  width: 30px; height: 30px;
+  border-radius: 0.4rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.detail-close:hover { background: rgba(239,68,68,0.15); color: #f87171; }
+
+.detail-body {
+  padding: 1.2rem 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+.detail-content {
+  font-size: 0.82rem;
+  color: #cbd5e1;
+  line-height: 1.8;
+}
+.detail-content :deep(.md-h4) {
+  margin: 0.8rem 0 0.4rem;
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #67e8f9;
+  border-bottom: 1px solid rgba(99,102,241,0.1);
+  padding-bottom: 0.2rem;
+}
+.detail-content :deep(.md-h5) {
+  margin: 0.6rem 0 0.3rem;
+  font-size: 0.82rem;
+  font-weight: 700;
   color: #a5b4fc;
 }
-.ai-btn {
-  padding: 0.3rem 0.8rem;
-  border-radius: 0.4rem;
-  border: none;
-  background: linear-gradient(135deg, #4f46e5, #7c3aed);
-  color: #fff;
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
+.detail-content :deep(.md-li) {
+  padding: 0.15rem 0;
+  padding-inline-start: 1rem;
+  position: relative;
 }
-.ai-btn.secondary {
-  background: rgba(255, 255, 255, 0.08);
-  color: #94a3b8;
+.detail-content :deep(.md-li)::before {
+  content: '•';
+  position: absolute;
+  inset-inline-start: 0;
+  color: #64748b;
 }
-.ai-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-.ai-loading {
-  text-align: center;
-  color: #94a3b8;
-  font-size: 0.85rem;
-  padding: 0.5rem;
-}
-.ai-error {
-  color: #f87171;
-  font-size: 0.85rem;
-  padding: 0.5rem 0.75rem;
-  background: rgba(248, 113, 113, 0.08);
-  border: 1px solid rgba(248, 113, 113, 0.15);
-  border-radius: 0.4rem;
-}
-.ai-result pre {
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 0.4rem;
-  padding: 0.75rem;
-  font-size: 0.8rem;
-  color: #e2e8f0;
-  line-height: 1.5;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  margin: 0;
-}
-.ai-preview {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.4rem;
-}
-.preview-item {
+.detail-content :deep(strong) { color: #f1f5f9; }
+
+.detail-footer {
+  padding: 0.8rem 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.4rem 0.6rem;
-  border-radius: 0.35rem;
-  background: rgba(255, 255, 255, 0.03);
-  font-size: 0.8rem;
+  justify-content: flex-end;
 }
-.preview-item.total {
-  grid-column: 1 / -1;
-  background: rgba(99, 102, 241, 0.08);
-  border: 1px solid rgba(99, 102, 241, 0.12);
-}
-.preview-item .label {
+.detail-close-btn {
+  padding: 0.5rem 1.2rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
   color: #94a3b8;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
 }
-.preview-item .value {
-  color: #e2e8f0;
-  font-weight: 700;
-}
-.preview-item .value.good {
-  color: #22c55e;
-}
-.preview-item .value.warn {
-  color: #f87171;
-}
-.preview-item .value.score {
-  color: #67e8f9;
-  font-size: 1rem;
-}
+.detail-close-btn:hover { background: rgba(255,255,255,0.08); color: #e2e8f0; }
 </style>

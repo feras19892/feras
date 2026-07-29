@@ -52,9 +52,28 @@ export async function getAllReportsWithDetails(page = 1, limit = 50) {
 }
 
 export async function deleteUser(userId: number) {
-  // Delete user's reports first (cascade will handle some)
+  // Clean all FK-referencing rows before deleting the user
   await db.run(`DELETE FROM experiment_reports WHERE student_id = ?`, userId);
   await db.run(`DELETE FROM class_students WHERE student_id = ?`, userId);
+  await db.run(`DELETE FROM class_chat_reads WHERE user_id = ?`, userId);
+  await db.run(`DELETE FROM class_messages WHERE user_id = ?`, userId);
+  await db.run(`DELETE FROM report_comments WHERE author_id = ?`, userId);
+  await db.run(`DELETE FROM grade_history WHERE teacher_id = ?`, userId);
+  await db.run(`DELETE FROM admin_notes WHERE user_id = ?`, userId);
+  await db.run(`DELETE FROM warnings WHERE user_id = ?`, userId);
+  await db.run(`DELETE FROM notifications WHERE user_id = ?`, userId);
+  await db.run(`DELETE FROM feedback WHERE user_id = ?`, userId);
+  await db.run(`DELETE FROM activity_log WHERE actor_id = ?`, userId);
+  await db.run(`DELETE FROM audit_log WHERE actor_id = ?`, userId);
+  await db.run(`DELETE FROM session_log WHERE user_id = ?`, userId);
+  await db.run(`DELETE FROM email_verification_codes WHERE user_id = ?`, userId);
+  await db.run(`DELETE FROM email_change_requests WHERE reviewed_by = ?`, userId);
+  await db.run(`DELETE FROM name_change_requests WHERE user_id = ?`, userId);
+  await db.run(`DELETE FROM name_change_requests WHERE teacher_id = ?`, userId);
+  await db.run(`DELETE FROM refresh_tokens WHERE user_id = ?`, userId);
+  await db.run(`DELETE FROM math_progress WHERE user_id = ?`, userId);
+  // Set classes taught by this user to have no teacher (avoid FK violation)
+  await db.run(`UPDATE classes SET teacher_id = NULL WHERE teacher_id = ?`, userId);
   await db.run(`DELETE FROM users WHERE id = ?`, userId);
   return { success: true };
 }

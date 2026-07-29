@@ -36,6 +36,7 @@ const deleteError = ref('');
 const deleteLoading = ref(false);
 
 const isTeacher = computed(() => auth.role === 'teacher' || auth.role === 'admin');
+const isAdmin = computed(() => auth.role === 'admin');
 
 watch(show, (val) => {
   if (val) {
@@ -164,7 +165,7 @@ async function onDeleteAccount() {
 
         <!-- User info bar -->
         <div class="user-bar">
-          <div class="user-avatar">{{ isTeacher ? '👨‍🏫' : '🎓' }}</div>
+          <div class="user-avatar">{{ isAdmin ? '🛡️' : isTeacher ? '👨‍🏫' : '🎓' }}</div>
           <div class="user-info">
             <span class="user-name">{{ auth.user?.name }}</span>
             <span class="user-email">📧 {{ auth.user?.email }}</span>
@@ -180,7 +181,7 @@ async function onDeleteAccount() {
           <button :class="['sec-tab', { active: activeSection === 'password' }]" @click="activeSection = 'password'">
             <span>🔑</span> {{ t('account.changePassword') }}
           </button>
-          <button :class="['sec-tab', { active: activeSection === 'delete' }]" @click="activeSection = 'delete'">
+          <button v-if="!isAdmin" :class="['sec-tab', { active: activeSection === 'delete' }]" @click="activeSection = 'delete'">
             <span>🗑️</span> {{ t('account.deleteAccount') }}
           </button>
         </div>

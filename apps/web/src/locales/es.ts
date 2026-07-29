@@ -23,6 +23,7 @@ import { report } from './report'
 import { ew } from './electricWorkshop'
 import { legal, privacy, terms } from './legal'
 import { account } from './account'
+import { school } from './school'
 
 export default {
   auth: auth.es,
@@ -52,4 +53,5 @@ export default {
   privacy: privacy.es,
   terms: terms.es,
   account: account.es,
+  school: school.es,
 } as const

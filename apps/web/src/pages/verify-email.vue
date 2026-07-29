@@ -15,9 +15,39 @@ const code = ref('')
 const formError = ref('')
 const successMessage = ref('')
 const loading = ref(false)
+const resending = ref(false)
 
 // Dev-only helper: show code returned from backend when not in production
 const devCodeHint = ref<string | null>((route.query.devCode as string) || null)
+
+async function handleResend() {
+  formError.value = ''
+  successMessage.value = ''
+  if (!email.value) {
+    formError.value = t('auth.errors.fillAll')
+    return
+  }
+  resending.value = true
+  try {
+    const data = await fetchJson<{ success: boolean; devVerificationCode?: string }>('/api/auth/resend-verification', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email.value.trim() }),
+    })
+    if (!data.success) {
+      formError.value = t('auth.errors.verificationFailed')
+      return
+    }
+    if (data.devVerificationCode) {
+      devCodeHint.value = data.devVerificationCode
+    }
+    successMessage.value = t('auth.resendSuccess')
+  } catch {
+    formError.value = t('auth.errors.verificationFailed')
+  } finally {
+    resending.value = false
+  }
+}
 
 async function handleVerify() {
   formError.value = ''
@@ -77,6 +107,10 @@ async function handleVerify() {
 
       <button type="button" class="btn-submit" :disabled="loading" @click="handleVerify">
         {{ loading ? t('auth.loading') : t('auth.verifyBtn') }}
+      </button>
+
+      <button type="button" class="resend-link" :disabled="resending" @click="handleResend">
+        {{ resending ? t('auth.loading') : t('auth.resendCode') }}
       </button>
 
       <button type="button" class="back-link" @click="router.push('/')">
@@ -198,5 +232,26 @@ input:focus {
 
 .back-link:hover {
   color: #7dd3fc;
+}
+
+.resend-link {
+  display: block;
+  width: 100%;
+  margin-top: 0.5rem;
+  text-align: center;
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.resend-link:hover:not(:disabled) {
+  color: #7dd3fc;
+}
+
+.resend-link:disabled {
+  opacity: 0.5;
+  cursor: wait;
 }
 </style>

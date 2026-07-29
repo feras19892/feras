@@ -83,8 +83,13 @@ app.get('/reports', async (c) => {
 // DELETE /users/:id
 app.delete('/users/:id', async (c) => {
   const id = Number(c.req.param('id'));
-  const result = await svc.deleteUser(id);
-  return c.json(result);
+  try {
+    const result = await svc.deleteUser(id);
+    return c.json(result);
+  } catch (err) {
+    console.error('deleteUser error:', err);
+    return c.json({ success: false, message: 'Failed to delete user — foreign key constraint' }, 500);
+  }
 });
 
 // PATCH /users/:id/role
@@ -136,9 +141,9 @@ app.get('/feedback', async (c) => {
 });
 
 // PATCH /feedback/:id/status
-app.patch('/feedback/:id/status', async (c) => {
+app.patch('/feedback/:id/status', zValidator('json', z.object({ status: z.enum(['open', 'resolved', 'dismissed']) })), async (c) => {
   const id = Number(c.req.param('id'));
-  const { status } = await c.req.json();
+  const { status } = c.req.valid('json');
   const result = await feedbackSvc.updateFeedbackStatus(id, status);
   return c.json(result);
 });
@@ -152,10 +157,10 @@ app.get('/users/:id/full', async (c) => {
 });
 
 // POST /users/:id/ban
-app.post('/users/:id/ban', async (c) => {
+app.post('/users/:id/ban', zValidator('json', z.object({ reason: z.string().optional() })), async (c) => {
   const id = Number(c.req.param('id'));
-  const { reason } = await c.req.json();
-  const result = await detailSvc.banUser(id, reason);
+  const { reason } = c.req.valid('json');
+  const result = await detailSvc.banUser(id, reason || '');
   return c.json(result);
 });
 
@@ -167,9 +172,14 @@ app.post('/users/:id/unban', async (c) => {
 });
 
 // POST /warnings
-app.post('/warnings', async (c) => {
+app.post('/warnings', zValidator('json', z.object({
+  userId: z.number().int().positive(),
+  title: z.string().min(1).max(200),
+  message: z.string().min(1).max(2000),
+  severity: z.enum(['low', 'normal', 'high', 'critical']).optional().default('normal'),
+})), async (c) => {
   const admin = c.get('user');
-  const { userId, title, message, severity } = await c.req.json();
+  const { userId, title, message, severity } = c.req.valid('json');
   const result = await warnSvc.createWarning(admin.id, userId, title, message, severity);
   return c.json(result, 201);
 });
@@ -188,9 +198,12 @@ app.get('/warnings/:userId', async (c) => {
 });
 
 // POST /notes
-app.post('/notes', async (c) => {
+app.post('/notes', zValidator('json', z.object({
+  userId: z.number().int().positive(),
+  note: z.string().min(1).max(2000),
+})), async (c) => {
   const admin = c.get('user');
-  const { userId, note } = await c.req.json();
+  const { userId, note } = c.req.valid('json');
   const result = await detailSvc.addNote(admin.id, userId, note);
   return c.json(result, 201);
 });
@@ -266,18 +279,24 @@ app.get('/classes/:id/students', async (c) => {
 });
 
 // PATCH /classes/:id — update class (rename, transfer teacher)
-app.patch('/classes/:id', async (c) => {
+app.patch('/classes/:id', zValidator('json', z.object({
+  name: z.string().min(2).max(100).optional(),
+  teacher_id: z.number().int().positive().optional(),
+})), async (c) => {
   const classId = c.req.param('id');
-  const body = await c.req.json();
+  const body = c.req.valid('json');
   const result = await svc.updateClassForAdmin(classId, body);
   if (!result.success) return c.json(result, 400);
   return c.json(result);
 });
 
 // PATCH /reports/:id/grade — update report grade
-app.patch('/reports/:id/grade', async (c) => {
+app.patch('/reports/:id/grade', zValidator('json', z.object({
+  grade: z.number().min(0).max(100),
+  feedback: z.string().max(2000).optional(),
+})), async (c) => {
   const reportId = Number(c.req.param('id'));
-  const { grade, feedback } = await c.req.json();
+  const { grade, feedback } = c.req.valid('json');
   const result = await svc.updateReportGradeForAdmin(reportId, grade, feedback);
   if (!result.success) return c.json(result, 400);
   return c.json(result);
@@ -320,9 +339,12 @@ app.get('/settings', async (c) => {
 });
 
 // PATCH /settings — update a system setting
-app.patch('/settings', async (c) => {
+app.patch('/settings', zValidator('json', z.object({
+  key: z.string().min(1).max(100),
+  value: z.string().max(5000),
+})), async (c) => {
   const user = c.get('user') as User;
-  const { key, value } = await c.req.json();
+  const { key, value } = c.req.valid('json');
   const result = await svc.updateSystemSetting(key, value, user.id);
   return c.json(result);
 });

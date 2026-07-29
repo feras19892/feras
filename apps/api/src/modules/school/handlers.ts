@@ -1,0 +1,327 @@
+import { Hono } from 'hono';
+import { zValidator } from '@hono/zod-validator';
+import { z } from 'zod';
+import { schoolRegisterSchema, schoolLoginSchema } from '../auth/schemas.js';
+import {
+  registerSchool, loginSchool, getSchoolById, getSchoolStats,
+  getSchoolUsers, getSchoolClasses, removeSchoolUser, getSchoolReports,
+  updateSchoolName, changeSchoolPassword, blockSchoolUser, unblockSchoolUser,
+  getAllSchools, toggleSchoolActive, updateSchool, deleteSchool,
+  adminGetSchoolUsers, adminGetSchoolClasses, adminGetSchoolReports,
+  adminRemoveSchoolUser, adminBlockSchoolUser,
+  createEmailChangeRequest, getEmailChangeRequests, reviewEmailChangeRequest,
+  getSchoolUserDetail, getSchoolClassDetail, createSchoolWarning,
+  getSchoolWarnings, reportToAdmin, getSchoolSessionLog, getSchoolActivityLog,
+} from './services.js';
+import { setRefreshCookie, setAccessCookie, clearRefreshCookie, clearAccessCookie } from '../auth/cookies.js';
+import { verifyAccessToken } from '../auth/jwt.js';
+import { getCookie } from 'hono/cookie';
+import type { School } from '@my-modern-app/shared-types';
+import type { User } from '@my-modern-app/shared-types';
+
+type Vars = { school: School; user: User };
+const schoolRoutes = new Hono<{ Variables: Vars }>();
+
+// ─── Middleware ───
+const schoolAuth = async (c: any, next: any) => {
+  const token = getCookie(c, 'access_token');
+  if (!token) return c.json({ success: false, message: 'Unauthorized' }, 401);
+  try {
+    const payload = await verifyAccessToken(token);
+    if (payload.role !== 'school') return c.json({ success: false, message: 'School access required' }, 403);
+    const school = await getSchoolById(Number(payload.sub));
+    if (!school) return c.json({ success: false, message: 'School not found' }, 401);
+    c.set('school', school);
+    await next();
+  } catch {
+    return c.json({ success: false, message: 'Invalid or expired token' }, 401);
+  }
+};
+
+const adminAuth = async (c: any, next: any) => {
+  const token = getCookie(c, 'access_token');
+  if (!token) return c.json({ success: false, message: 'Unauthorized' }, 401);
+  try {
+    const payload = await verifyAccessToken(token);
+    if (payload.role !== 'admin') return c.json({ success: false, message: 'Admin access required' }, 403);
+    await next();
+  } catch {
+    return c.json({ success: false, message: 'Invalid or expired token' }, 401);
+  }
+};
+
+// ─── Schemas ───
+const updateNameSchema = z.object({ name: z.string().min(2).max(200) });
+const changePasswordSchema = z.object({
+  current_password: z.string().min(1),
+  new_password: z.string().min(8).max(128),
+});
+const emailChangeSchema = z.object({ requested_email: z.string().email() });
+const reviewRequestSchema = z.object({ status: z.enum(['approved', 'rejected']) });
+
+// ─── Auth ───
+schoolRoutes.post('/register', zValidator('json', schoolRegisterSchema), async (c) => {
+  const body = c.req.valid('json');
+  const result = await registerSchool(body.name, body.email, body.password, body.max_students, body.max_teachers);
+  if (!result.success) return c.json({ success: false, message: result.message }, 409);
+  return c.json({ success: true, school: result.school, code: result.code }, 201);
+});
+
+schoolRoutes.post('/login', zValidator('json', schoolLoginSchema), async (c) => {
+  const body = c.req.valid('json');
+  const result = await loginSchool(body.email, body.password);
+  if (!result.success) return c.json({ success: false, message: result.message }, 401);
+  if (result.token) setAccessCookie(c, result.token);
+  if (result.refreshToken) setRefreshCookie(c, result.refreshToken);
+  return c.json({ success: true, school: result.school });
+});
+
+schoolRoutes.post('/logout', async (c) => {
+  clearAccessCookie(c);
+  clearRefreshCookie(c);
+  return c.json({ success: true });
+});
+
+// ─── School Profile ───
+schoolRoutes.get('/me', schoolAuth, async (c) => {
+  return c.json({ success: true, school: c.get('school') as School });
+});
+
+schoolRoutes.patch('/me', schoolAuth, zValidator('json', updateNameSchema), async (c) => {
+  const school = c.get('school') as School;
+  void school;
+  const { name } = c.req.valid('json');
+  const result = await updateSchoolName(school.id, name);
+  if (!result.success) return c.json({ success: false, message: result.message }, 400);
+  const updated = await getSchoolById(school.id);
+  return c.json({ success: true, school: updated });
+});
+
+schoolRoutes.post('/password', schoolAuth, zValidator('json', changePasswordSchema), async (c) => {
+  const school = c.get('school') as School;
+  void school;
+  const { current_password, new_password } = c.req.valid('json');
+  const result = await changeSchoolPassword(school.id, current_password, new_password);
+  if (!result.success) return c.json({ success: false, message: result.message }, 400);
+  return c.json({ success: true });
+});
+
+// ─── School Data ───
+schoolRoutes.get('/stats', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  void school;
+  const stats = await getSchoolStats(school.id);
+  return c.json({ success: true, stats, school });
+});
+
+schoolRoutes.get('/users', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  void school;
+  const users = await getSchoolUsers(school.id);
+  return c.json({ success: true, users });
+});
+
+schoolRoutes.get('/classes', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  void school;
+  const classes = await getSchoolClasses(school.id);
+  return c.json({ success: true, classes });
+});
+
+schoolRoutes.get('/reports', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  void school;
+  const reports = await getSchoolReports(school.id);
+  return c.json({ success: true, reports });
+});
+
+// ─── School User Management ───
+schoolRoutes.delete('/users/:userId', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  void school;
+  const result = await removeSchoolUser(school.id, Number(c.req.param('userId')));
+  if (!result.success) return c.json({ success: false, message: result.message }, 400);
+  return c.json({ success: true });
+});
+
+schoolRoutes.patch('/users/:userId/block', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  void school;
+  const result = await blockSchoolUser(school.id, Number(c.req.param('userId')));
+  if (!result.success) return c.json({ success: false, message: result.message }, 400);
+  return c.json({ success: true });
+});
+
+schoolRoutes.patch('/users/:userId/unblock', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  void school;
+  const result = await unblockSchoolUser(school.id, Number(c.req.param('userId')));
+  if (!result.success) return c.json({ success: false, message: result.message }, 400);
+  return c.json({ success: true });
+});
+
+// ─── Email Change Request ───
+schoolRoutes.post('/email-change-request', schoolAuth, zValidator('json', emailChangeSchema), async (c) => {
+  const school = c.get('school') as School;
+  void school;
+  const { requested_email } = c.req.valid('json');
+  const result = await createEmailChangeRequest('school', school.id, school.email, requested_email);
+  if (!result.success) return c.json({ success: false, message: result.message }, 400);
+  return c.json({ success: true });
+});
+
+// ─── Admin: School List ───
+schoolRoutes.get('/admin/all', adminAuth, async (c) => {
+  return c.json({ success: true, schools: await getAllSchools() });
+});
+
+// ─── Admin: School Detail ───
+schoolRoutes.get('/admin/:id', adminAuth, async (c) => {
+  const id = Number(c.req.param('id'));
+  const school = await getSchoolById(id);
+  if (!school) return c.json({ success: false, message: 'School not found' }, 404);
+  const stats = await getSchoolStats(id);
+  return c.json({ success: true, school, stats });
+});
+
+schoolRoutes.patch('/admin/:id', adminAuth, async (c) => {
+  const id = Number(c.req.param('id'));
+  const body = await c.req.json();
+  const updates: { name?: string; email?: string; max_students?: number; max_teachers?: number } = {};
+  if (typeof body.name === 'string' && body.name.trim().length > 0) updates.name = body.name.trim().slice(0, 200);
+  if (typeof body.email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email)) updates.email = body.email.trim().slice(0, 255);
+  if (typeof body.max_students === 'number' && body.max_students > 0 && body.max_students <= 100000) updates.max_students = Math.floor(body.max_students);
+  if (typeof body.max_teachers === 'number' && body.max_teachers > 0 && body.max_teachers <= 1000) updates.max_teachers = Math.floor(body.max_teachers);
+  const result = await updateSchool(id, updates);
+  if (!result.success) return c.json({ success: false, message: result.message }, 400);
+  return c.json({ success: true });
+});
+
+schoolRoutes.delete('/admin/:id', adminAuth, async (c) => {
+  const result = await deleteSchool(Number(c.req.param('id')));
+  if (!result.success) return c.json({ success: false, message: result.message }, 404);
+  return c.json({ success: true });
+});
+
+schoolRoutes.patch('/admin/:id/toggle', adminAuth, async (c) => {
+  const result = await toggleSchoolActive(Number(c.req.param('id')));
+  if (!result.success) return c.json({ success: false, message: result.message }, 404);
+  return c.json({ success: true });
+});
+
+// ─── Admin: School Sub-resources ───
+schoolRoutes.get('/admin/:id/users', adminAuth, async (c) => {
+  return c.json({ success: true, users: await adminGetSchoolUsers(Number(c.req.param('id'))) });
+});
+
+schoolRoutes.get('/admin/:id/classes', adminAuth, async (c) => {
+  return c.json({ success: true, classes: await adminGetSchoolClasses(Number(c.req.param('id'))) });
+});
+
+schoolRoutes.get('/admin/:id/reports', adminAuth, async (c) => {
+  return c.json({ success: true, reports: await adminGetSchoolReports(Number(c.req.param('id'))) });
+});
+
+schoolRoutes.delete('/admin/:id/users/:userId', adminAuth, async (c) => {
+  const result = await adminRemoveSchoolUser(Number(c.req.param('id')), Number(c.req.param('userId')));
+  if (!result.success) return c.json({ success: false, message: result.message }, 400);
+  return c.json({ success: true });
+});
+
+schoolRoutes.patch('/admin/:id/users/:userId/block', adminAuth, async (c) => {
+  const result = await adminBlockSchoolUser(Number(c.req.param('id')), Number(c.req.param('userId')), true);
+  if (!result.success) return c.json({ success: false, message: result.message }, 400);
+  return c.json({ success: true });
+});
+
+schoolRoutes.patch('/admin/:id/users/:userId/unblock', adminAuth, async (c) => {
+  const result = await adminBlockSchoolUser(Number(c.req.param('id')), Number(c.req.param('userId')), false);
+  if (!result.success) return c.json({ success: false, message: result.message }, 400);
+  return c.json({ success: true });
+});
+
+// ─── Admin: Email Change Requests ───
+schoolRoutes.get('/admin/email-requests', adminAuth, async (c) => {
+  const requests = await getEmailChangeRequests();
+  return c.json({ success: true, requests });
+});
+
+schoolRoutes.patch('/admin/email-requests/:id', adminAuth, zValidator('json', reviewRequestSchema), async (c) => {
+  const id = Number(c.req.param('id'));
+  const { status } = c.req.valid('json');
+  const admin = c.get('user') as User;
+  const result = await reviewEmailChangeRequest(id, status, admin?.id);
+  if (!result.success) return c.json({ success: false, message: result.message }, 400);
+  return c.json({ success: true });
+});
+
+// ─── School Oversight: User Detail ───
+schoolRoutes.get('/users/:userId/detail', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  const userId = Number(c.req.param('userId'));
+  const detail = await getSchoolUserDetail(school.id, userId);
+  if (!detail) return c.json({ success: false, message: 'User not found in this school' }, 404);
+  return c.json({ success: true, ...detail });
+});
+
+// ─── School Oversight: Class Detail ───
+schoolRoutes.get('/classes/:classId/detail', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  const classId = c.req.param('classId');
+  const detail = await getSchoolClassDetail(school.id, classId);
+  if (!detail) return c.json({ success: false, message: 'Class not found in this school' }, 404);
+  return c.json({ success: true, ...detail });
+});
+
+// ─── School Oversight: Warnings ───
+const warningSchema = z.object({
+  userId: z.number().int(),
+  title: z.string().min(1).max(200),
+  message: z.string().min(1).max(1000),
+  severity: z.enum(['low', 'normal', 'high', 'critical']).default('normal'),
+});
+
+schoolRoutes.post('/warnings', schoolAuth, zValidator('json', warningSchema), async (c) => {
+  const school = c.get('school') as School;
+  const { userId, title, message, severity } = c.req.valid('json');
+  const result = await createSchoolWarning(school.id, userId, title, message, severity);
+  if (!result.success) return c.json({ success: false, message: result.message }, 400);
+  return c.json({ success: true });
+});
+
+schoolRoutes.get('/warnings', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  const warnings = await getSchoolWarnings(school.id);
+  return c.json({ success: true, warnings });
+});
+
+// ─── School Oversight: Report to Admin ───
+const reportSchema = z.object({
+  userId: z.number().int(),
+  reason: z.string().min(1).max(200),
+  details: z.string().min(1).max(2000),
+});
+
+schoolRoutes.post('/report-to-admin', schoolAuth, zValidator('json', reportSchema), async (c) => {
+  const school = c.get('school') as School;
+  const { userId, reason, details } = c.req.valid('json');
+  const result = await reportToAdmin(school.id, userId, reason, details);
+  if (!result.success) return c.json({ success: false, message: result.message }, 400);
+  return c.json({ success: true });
+});
+
+// ─── School Oversight: Session Log ───
+schoolRoutes.get('/sessions', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  const sessions = await getSchoolSessionLog(school.id);
+  return c.json({ success: true, sessions });
+});
+
+// ─── School Oversight: Activity Log ───
+schoolRoutes.get('/activity', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  const activity = await getSchoolActivityLog(school.id);
+  return c.json({ success: true, activity });
+});
+
+export { schoolRoutes };

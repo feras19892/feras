@@ -121,9 +121,9 @@ watch(() => route.params.id, loadReport)
           <ReportCalculationsSection :equations="parser.equations.value" :solved-equations="parser.solvedEquations.value" :regression-data="parser.regressionData.value" :slope-calc-data="parser.slopeCalcData.value" :axes-data="parser.axesData.value" :error-calc-data="parser.errorCalcData.value" />
         </section>
 
-        <!-- AI Analysis -->
+        <!-- Assessment -->
         <section id="ai" class="rp-section">
-          <h3 class="sec-title">🤖 {{ t('report.aiAnalysis') }}</h3>
+          <h3 class="sec-title">🎯 {{ t('report.assessment') }}</h3>
           <ReportAIAnalyzer :report="report" />
         </section>
       </main>

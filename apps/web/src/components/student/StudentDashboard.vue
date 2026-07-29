@@ -80,15 +80,18 @@ function openReport(id: number) {
     <div v-if="loading" class="sd-loading"><div class="spinner"></div></div>
 
     <!-- Empty State -->
-    <div v-else-if="kpi.totalReports === 0 && kpi.totalClasses === 0" class="sd-empty">
+    <div v-if="!loading && kpi.totalReports === 0 && kpi.totalClasses === 0" class="sd-empty">
       <div class="empty-icon">🎓</div>
       <h3>{{ t('dashboard.dash.studentWelcomeTitle') }}</h3>
       <p>{{ t('dashboard.dash.studentWelcomeMsg') }}</p>
-      <button class="empty-cta" @click="emit('navigate', 'branches')">{{ t('dashboard.dash.startExperiment') }}</button>
+      <div class="empty-actions">
+        <button class="empty-cta" @click="emit('navigate', 'branches')">{{ t('dashboard.dash.startExperiment') }}</button>
+        <button class="empty-cta secondary" @click="activeTab = 'classes'">{{ t('dashboard.joinClass') }}</button>
+      </div>
     </div>
 
     <!-- Tabbed Content -->
-    <div v-else>
+    <div v-if="!loading">
       <div class="sd-tabs">
         <button :class="['tab', { active: activeTab === 'overview' }]" @click="activeTab = 'overview'">
           <span>🏠</span> {{ t('dashboard.dash.tabOverview') }}

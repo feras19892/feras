@@ -18,6 +18,7 @@ export interface LoginRequest {
 export interface RegisterRequest extends LoginRequest {
   name: string;
   role: 'student' | 'teacher';
+  school_code?: string;
 }
 
 export interface RefreshRequest {

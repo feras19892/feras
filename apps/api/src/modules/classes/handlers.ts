@@ -36,7 +36,10 @@ app.get('/:id', async (c) => {
   const classId = c.req.param('id');
   const cls = await svc.getClassById(classId);
   if (!cls) return c.json({ success: false, message: 'الفصل غير موجود' }, 404);
-  if (cls.teacher_id !== user.id && user.role !== 'admin') {
+  if (user.role === 'student') {
+    const isMember = await svc.isClassMember(classId, user.id);
+    if (!isMember) return c.json({ success: false, message: 'غير مصرح' }, 403);
+  } else if (cls.teacher_id !== user.id && user.role !== 'admin') {
     return c.json({ success: false, message: 'غير مصرح' }, 403);
   }
   const students = await svc.getClassStudents(classId);

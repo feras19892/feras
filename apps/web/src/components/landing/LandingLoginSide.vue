@@ -45,6 +45,13 @@ const emit = defineEmits<{
 
       <LandingGuestButtons @enter-as-teacher="emit('enterAsTeacher')" @enter-as-student="emit('enterAsStudent')" />
 
+      <router-link to="/school/register" class="school-link">
+        🏫 {{ t('school.registerTitle') }}
+      </router-link>
+      <router-link to="/school/login" class="school-login-link">
+        🔑 {{ t('school.loginTitle') }}
+      </router-link>
+
       <div class="login-info-panel">
         <div class="login-trust">
           <div class="trust-item"><span class="trust-icon">⚡</span><span class="trust-text">{{ t('landing.trustFast') }}</span></div>
@@ -121,6 +128,33 @@ const emit = defineEmits<{
 .perk-check { flex-shrink: 0; width: 18px; height: 18px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 700; color: #a5b4fc; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.15); }
 
 .error { color: #fca5a5; font-size: 0.8rem; margin: 0.2rem 0; text-align: center; }
+.school-link {
+  display: block;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  border-radius: 0.6rem;
+  background: rgba(6, 182, 212, 0.08);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  color: #67e8f9;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  margin-top: 0.4rem;
+  transition: all 0.2s;
+}
+.school-link:hover { background: rgba(6, 182, 212, 0.15); border-color: rgba(6, 182, 212, 0.4); }
+.school-login-link {
+  display: block;
+  text-align: center;
+  padding: 0.4rem 1rem;
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-decoration: none;
+  margin-top: 0.2rem;
+  transition: color 0.2s;
+}
+.school-login-link:hover { color: #94a3b8; }
 .login-footer { text-align: center; padding: 1rem; border-top: 1px solid rgba(255,255,255,0.04); color: #475569; font-size: 0.72rem; display: flex; flex-direction: column; gap: 0.15rem; width: 100%; }
 .footer-sub { font-size: 0.7rem; opacity: 0.7; }
 .footer-links { display: flex; gap: 0.4rem; align-items: center; justify-content: center; margin-top: 0.3rem; }

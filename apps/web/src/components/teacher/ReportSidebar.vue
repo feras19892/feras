@@ -25,7 +25,7 @@ const sections = [
   { id: 'stats', icon: '📈', label: 'report.detailedStats' },
   { id: 'calculations', icon: '🔢', label: 'report.equationsUsed' },
   { id: 'conclusion', icon: '📝', label: 'report.studentConclusion' },
-  { id: 'ai', icon: '🤖', label: 'report.aiAnalysis' },
+  { id: 'ai', icon: '🎯', label: 'report.assessment' },
   { id: 'comments', icon: '💬', label: 'report.comments' },
 ]
 </script>

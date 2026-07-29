@@ -28,6 +28,8 @@ export const auth = {
     verifyBtn: 'تأكيد الكود',
     devCodeHint: 'لأغراض التطوير، هذا هو كود التفعيل',
     verificationSuccess: 'تم تأكيد بريدك الإلكتروني بنجاح',
+    resendCode: 'إعادة إرسال الكود',
+    resendSuccess: 'تم إعادة إرسال الكود بنجاح',
     showPassword: 'إظهار',
     hidePassword: 'إخفاء',
     errors: {
@@ -74,6 +76,8 @@ export const auth = {
     verifyBtn: 'Verify code',
     devCodeHint: 'For development only, your code is',
     verificationSuccess: 'Your email has been verified successfully',
+    resendCode: 'Resend code',
+    resendSuccess: 'Code resent successfully',
     showPassword: 'Show',
     hidePassword: 'Hide',
     errors: {
@@ -122,6 +126,8 @@ export const auth = {
     verifyBtn: 'Verificar código',
     devCodeHint: 'Solo para desarrollo, tu código es',
     verificationSuccess: 'Tu correo ha sido verificado correctamente',
+    resendCode: 'Reenviar código',
+    resendSuccess: 'Código reenviado correctamente',
     showPassword: 'Mostrar',
     hidePassword: 'Ocultar',
     errors: {

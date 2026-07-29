@@ -21,8 +21,13 @@ async function handleLogin(payload: { email: string; password: string }) {
   formError.value = ''
   auth.error = null
   const ok = await auth.login(payload.email, payload.password)
-  if (ok) router.push('/home')
-  else formError.value = t('auth.errors.invalidCredentials')
+  if (ok === true) {
+    router.push('/home')
+  } else if (ok && typeof ok === 'object' && (ok as any).school) {
+    router.push('/school')
+  } else {
+    formError.value = t('auth.errors.invalidCredentials')
+  }
 }
 
 function handleJoin() { router.push('/register') }

@@ -11,6 +11,9 @@ import TeacherDashboard from '../components/teacher/TeacherDashboard.vue'
 import StudentDashboard from '../components/student/StudentDashboard.vue'
 import AccountSettingsModal from '../components/shared/AccountSettingsModal.vue'
 import NotificationBell from '../components/shared/NotificationBell.vue'
+import ApprovalPanel from '../components/shared/ApprovalPanel.vue'
+import PanelShell from '../components/shared/PanelShell.vue'
+import type { DockItem } from '../components/shared/PanelShell.vue'
 import { fetchHomeCards } from '../services/home.service'
 import { fetchJson } from '../services/http'
 import type { HomeCard } from '../types/physics'
@@ -20,9 +23,19 @@ const route = useRoute()
 const { t, locale } = useI18n()
 const auth = useAuthStore()
 
-const activeTab = ref<'experiments' | 'classes' | 'settings'>('experiments')
+const activeTab = ref<'experiments' | 'classes' | 'approvals' | 'settings'>('experiments')
 const cards = ref<HomeCard[]>([])
 const loading = ref(false)
+
+const dockItems = computed<DockItem[]>(() => {
+  const items: DockItem[] = [{ id: 'experiments', icon: '🔬', label: 'التجارب' }]
+  if (!auth.isAdmin) items.push({ id: 'classes', icon: '📚', label: 'فصولي' })
+  if (!auth.isAdmin) items.push({ id: 'approvals', icon: '📋', label: auth.isTeacher ? 'الموافقات' : 'الاعتراضات' })
+  if (!auth.isAdmin) items.push({ id: 'settings', icon: '⚙️', label: 'الإعدادات' })
+  return items
+})
+
+const activeLabel = computed(() => dockItems.value.find(d => d.id === activeTab.value)?.label || '')
 
 // Settings state
 const editName = ref('')
@@ -112,46 +125,16 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="dashboard-page">
-    <!-- Header -->
-    <div class="dash-header">
-      <div class="dash-brand" @click="router.push('/home')">
-        <span class="brand-icon">⚛️</span>
-        <div class="brand-text-group">
-          <h1>PhysLab</h1>
-          <span class="subtitle">
-            {{ t('dashboard.welcome') }}, {{ auth.user?.name }} 👋 ·
-            {{ new Date().toLocaleDateString(dateLocaleStr, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) }}
-          </span>
-        </div>
-      </div>
-      <div class="dash-header-right">
-        <AccountSettingsModal />
-        <NotificationBell />
-        <div class="user-badge" :class="{ teacher: auth.isTeacher, student: auth.isStudent, admin: auth.isAdmin }">
-          <span class="user-icon">{{ auth.isAdmin ? '🛡️' : auth.isTeacher ? '👨‍🏫' : '🎓' }}</span>
-          <span class="user-role">{{ auth.isAdmin ? 'أدمن' : auth.isTeacher ? 'مدرس' : 'طالب' }}</span>
-        </div>
-        <button class="logout-btn" @click="auth.logout(); router.push('/')">{{ t('dashboard.logout') }}</button>
-      </div>
-    </div>
-
-    <!-- Tabs -->
-    <div class="dash-tabs">
-      <button :class="['tab', { active: activeTab === 'experiments' }]" @click="activeTab = 'experiments'">
-        <span>🔬</span> التجارب
-      </button>
-      <button v-if="!auth.isAdmin" :class="['tab', { active: activeTab === 'classes' }]" @click="activeTab = 'classes'">
-        <span>📚</span> فصولي
-      </button>
-      <button v-if="auth.isAdmin" class="tab admin-link" @click="router.push('/admin')">
-        <span>🛡️</span> لوحة الأدمن
-      </button>
-      <button v-if="!auth.isAdmin" :class="['tab', { active: activeTab === 'settings' }]" @click="activeTab = 'settings'">
-        <span>⚙️</span> الإعدادات
-      </button>
-    </div>
-
+  <PanelShell
+    :dock-items="dockItems"
+    :active-id="activeTab"
+    :title="activeLabel"
+    :role="auth.isAdmin ? 'admin' : auth.isTeacher ? 'teacher' : 'student'"
+    :user-name="auth.user?.name || ''"
+    @select="activeTab = $event as any"
+    @home="router.push('/home')"
+    @logout="auth.logout(); router.push('/')"
+  >
     <!-- Experiments Tab -->
     <div v-if="activeTab === 'experiments'" class="tab-panel">
       <p v-if="loading" class="loading-text">...</p>
@@ -176,6 +159,11 @@ onMounted(async () => {
       <ClassManager v-if="auth.isTeacher" />
       <TeacherGrading v-if="auth.isTeacher" />
       <TeacherStats v-if="auth.isTeacher" />
+    </div>
+
+    <!-- Approvals Tab -->
+    <div v-if="activeTab === 'approvals' && !auth.isAdmin" class="tab-panel">
+      <ApprovalPanel :mode="auth.isTeacher ? 'teacher' : 'student'" />
     </div>
 
     <!-- Settings Tab -->
@@ -203,45 +191,10 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-  </div>
+  </PanelShell>
 </template>
 
 <style scoped>
-.dashboard-page {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0a0f1c 0%, #111827 40%, #0f172a 100%);
-  color: #e2e8f0;
-  padding: 1.5rem;
-}
-.dash-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-.dash-brand { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; user-select: none; }
-.brand-icon { font-size: 1.6rem; }
-.brand-text-group { display: flex; flex-direction: column; gap: 0.1rem; }
-.dash-header h1 { font-size: 1.5rem; font-weight: 800; margin: 0; background: linear-gradient(135deg, #67e8f9, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.subtitle { font-size: 0.8rem; color: #64748b; }
-.dash-header-right { display: flex; align-items: center; gap: 0.75rem; }
-.user-badge { display: flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.7rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.08); background: rgba(15,23,42,0.6); font-size: 0.8rem; }
-.user-badge.teacher { color: #a5b4fc; border-color: rgba(165,180,252,0.2); }
-.user-badge.student { color: #4ade80; border-color: rgba(74,222,128,0.2); }
-.user-badge.admin { color: #f87171; border-color: rgba(248,113,113,0.2); }
-.tab.admin-link { color: #f87171; border-color: rgba(248,113,113,0.2); }
-.tab.admin-link:hover { background: rgba(248,113,113,0.1); }
-.logout-btn { padding: 0.4rem 0.8rem; border-radius: 0.5rem; border: 1px solid rgba(239,68,68,0.2); background: rgba(239,68,68,0.08); color: #f87171; cursor: pointer; font-family: inherit; font-size: 0.82rem; font-weight: 600; }
-.logout-btn:hover { background: rgba(239,68,68,0.15); }
-
-.dash-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
-.tab { padding: 0.5rem 1rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.08); background: rgba(15,23,42,0.6); color: #94a3b8; cursor: pointer; font-family: inherit; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 0.3rem; }
-.tab.active { background: rgba(99,102,241,0.15); color: #a5b4fc; border-color: rgba(99,102,241,0.3); }
-
 .tab-panel { animation: fadeIn 0.2s; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 

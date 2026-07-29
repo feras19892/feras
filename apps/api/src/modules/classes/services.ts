@@ -61,14 +61,28 @@ export async function isClassMember(classId: string, studentId: number) {
 }
 
 export async function joinClassByCode(studentId: number, code: string) {
-  const cls = await db.get('SELECT * FROM classes WHERE code = ? AND is_active = 1', code);
+  const cls = await db.get<{ id: string; name: string; code: string; teacher_id: number; is_active: number; is_frozen: number }>(
+    'SELECT id, name, code, teacher_id, is_active, is_frozen FROM classes WHERE code = ? AND is_active = 1', code,
+  );
   if (!cls) return { success: false, message: 'الكود غير صحيح أو الفصل مغلق' };
+
+  // Check if class is frozen
+  if (cls.is_frozen) return { success: false, message: 'هذا الفصل مجمد — لا يمكن الانضمام' };
 
   const existing = await db.get(
     'SELECT 1 FROM class_students WHERE class_id = ? AND student_id = ?',
     cls.id, studentId
   );
   if (existing) return { success: false, message: 'أنت مشترك في هذا الفصل مسبقاً' };
+
+  // School linkage check: if student belongs to a school, teacher must belong to same school
+  const student = await db.get<{ school_id: number | null }>('SELECT school_id FROM users WHERE id = ?', studentId);
+  if (student?.school_id) {
+    const teacher = await db.get<{ school_id: number | null }>('SELECT school_id FROM users WHERE id = ?', cls.teacher_id);
+    if (teacher?.school_id && teacher.school_id !== student.school_id) {
+      return { success: false, message: 'لا يمكن الانضمام لفصل خارج مدرستك' };
+    }
+  }
 
   await db.run(
     'INSERT INTO class_students (class_id, student_id) VALUES (?, ?)',

@@ -56,9 +56,8 @@ CREATE INDEX IF NOT EXISTS idx_approval_school ON approval_requests(school_id);
 CREATE INDEX IF NOT EXISTS idx_approval_type ON approval_requests(type);
 
 -- Add new notification types
--- We need to alter the notifications table to accept new types
--- Since SQLite doesn't easily alter CHECK constraints, we use a workaround:
 -- The notification type column will accept any string (we drop the check via a new table)
+-- foreign_keys are disabled during migrations in index.ts
 CREATE TABLE IF NOT EXISTS notifications_new (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,

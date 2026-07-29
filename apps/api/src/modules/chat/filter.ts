@@ -147,6 +147,29 @@ export interface FilterResult {
   flaggedWords: string[];
   language: 'ar' | 'en' | 'es' | 'mixed';
   cleanedContent: string;
+  blockedReason?: string;
+}
+
+// Patterns for URLs, phone numbers, and social media handles
+const URL_PATTERN = /https?:\/\/[\w\S]+|www\.[\w\S]+\.[a-z]{2,}/gi;
+const PHONE_PATTERN = /\+?\d[\d\s\-]{7,}\d/g;
+const SOCIAL_PATTERNS = [
+  /@[a-zA-Z0-9_.]{3,}\b/g, // @handles (Twitter, Instagram, etc.)
+  /\b(snapchat|snap|insta|instagram|telegram|tiktok|whatsapp|facebook|youtube|twitter|discord)\b[\s:]*[@\w]+/gi,
+];
+
+function detectUrls(text: string): boolean {
+  return URL_PATTERN.test(text);
+}
+
+function detectPhones(text: string): boolean {
+  // Match sequences of 8+ digits (with possible spaces/dashes)
+  const matches = text.match(PHONE_PATTERN);
+  return !!matches && matches.some(m => m.replace(/\D/g, '').length >= 8);
+}
+
+function detectSocial(text: string): boolean {
+  return SOCIAL_PATTERNS.some(p => p.test(text));
 }
 
 export function filterMessage(content: string): FilterResult {
@@ -159,6 +182,18 @@ export function filterMessage(content: string): FilterResult {
 
   const allHits = [...arHits, ...enHits, ...esHits];
 
+  // Check for URLs, phones, and social media
+  const hasUrls = detectUrls(content);
+  const hasPhones = detectPhones(content);
+  const hasSocial = detectSocial(content);
+
+  const extraBlocked: string[] = [];
+  if (hasUrls) extraBlocked.push('روابط خارجية');
+  if (hasPhones) extraBlocked.push('أرقام هواتف');
+  if (hasSocial) extraBlocked.push('حسابات تواصل اجتماعي');
+
+  const isClean = allHits.length === 0 && extraBlocked.length === 0;
+
   let cleanedContent = content;
   if (allHits.length > 0) {
     for (const word of [...AR_BAD, ...EN_BAD, ...ES_BAD]) {
@@ -166,16 +201,27 @@ export function filterMessage(content: string): FilterResult {
       cleanedContent = cleanedContent.replace(new RegExp(escaped, 'gi'), '***');
     }
   }
+  // Clean URLs and phones
+  if (hasUrls) cleanedContent = cleanedContent.replace(URL_PATTERN, '[رابط محظور]');
+  if (hasPhones) cleanedContent = cleanedContent.replace(PHONE_PATTERN, '[رقم محظور]');
+  for (const p of SOCIAL_PATTERNS) {
+    cleanedContent = cleanedContent.replace(p, '[حساب محظور]');
+  }
 
   const languages: string[] = [];
   if (arHits.length > 0) languages.push('ar');
   if (enHits.length > 0) languages.push('en');
   if (esHits.length > 0) languages.push('es');
 
+  const blockedReason = extraBlocked.length > 0
+    ? `محتوى محظور: ${extraBlocked.join(', ')}`
+    : undefined;
+
   return {
-    clean: allHits.length === 0,
-    flaggedWords: allHits,
+    clean: isClean,
+    flaggedWords: [...allHits, ...extraBlocked],
     language: (languages.length <= 1 ? languages[0] || 'en' : 'mixed') as 'ar' | 'en' | 'es' | 'mixed',
     cleanedContent,
+    blockedReason,
   };
 }

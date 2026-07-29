@@ -1,4 +1,5 @@
 import { db } from '../../db/index.js';
+import { pushToUser } from './sse.js';
 
 export async function createNotification(data: {
   user_id: number; type: string; title: string; message?: string; report_id?: number; class_id?: string;
@@ -7,7 +8,12 @@ export async function createNotification(data: {
     `INSERT INTO notifications (user_id, type, title, message, report_id, class_id) VALUES (?, ?, ?, ?, ?, ?)`,
     data.user_id, data.type, data.title, data.message || null, data.report_id || null, data.class_id || null
   );
-  return { id: Number(result.lastID), ...data };
+  const notification = { id: Number(result.lastID), ...data };
+
+  // Push real-time SSE event
+  pushToUser(data.user_id, 'notification', notification);
+
+  return notification;
 }
 
 export async function getUserNotifications(userId: number, limit = 50) {

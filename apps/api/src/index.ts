@@ -12,10 +12,15 @@ import { feedbackRoutes } from './modules/feedback/handlers.js';
 import { aiRoutes } from './modules/ai/handlers.js';
 import { chatRoutes } from './modules/chat/handlers.js';
 import { schoolRoutes } from './modules/school/handlers.js';
+import { approvalRoutes } from './modules/approvals/handlers.js';
+import { announcementRoutes } from './modules/announcements/handlers.js';
+import { deadlineRoutes } from './modules/deadlines/handlers.js';
+import { plagiarismRoutes } from './modules/plagiarism/handlers.js';
 import { mathRoutes } from './modules/math/index.js';
 import { seedMathData } from './modules/math/bootstrap.js';
 import { runMigrations } from './db/index.js';
 import { seedAdminUser } from './modules/auth/seed-admin.js';
+import { startWorker } from './worker/index.js';
 import { corsMiddleware } from './shared/middleware/cors.js';
 import { securityHeaders } from './shared/middleware/security.js';
 import { customLogger } from './shared/middleware/logger.js';
@@ -45,6 +50,10 @@ app.route('/api/feedback', feedbackRoutes);
 app.route('/api/ai', aiRoutes);
 app.route('/api/chat', chatRoutes);
 app.route('/api/school', schoolRoutes);
+app.route('/api/approvals', approvalRoutes);
+app.route('/api/announcements', announcementRoutes);
+app.route('/api/deadlines', deadlineRoutes);
+app.route('/api/plagiarism', plagiarismRoutes);
 app.route('/api/math', mathRoutes);
 
 app.get('/api/health', (c) => c.json({ status: 'ok' }));
@@ -55,5 +64,7 @@ serve({
   fetch: app.fetch,
   port,
 });
+
+startWorker();
 
 console.log(`Server running at http://localhost:${port}`);

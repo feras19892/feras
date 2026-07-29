@@ -648,3 +648,182 @@ export async function reviewEmailChangeRequest(
 
   return { success: true };
 }
+
+// ─── Teacher Performance Dashboard ───
+export async function getTeacherPerformance(schoolId: number) {
+  const teachers = await db.all<{
+    id: number; name: string; email: string; created_at: string; blocked_at: string | null;
+  }[]>(
+    `SELECT id, name, email, created_at, blocked_at FROM users WHERE school_id = ? AND role = 'teacher' ORDER BY created_at DESC`,
+    schoolId,
+  );
+
+  const results = [];
+  for (const teacher of teachers) {
+    const classes = await db.all<{ id: string; name: string }[]>(
+      `SELECT id, name FROM classes WHERE teacher_id = ?`, teacher.id,
+    );
+
+    let totalReports = 0;
+    let gradedReports = 0;
+    let pendingReports = 0;
+    let totalStudents = 0;
+
+    for (const cls of classes) {
+      const reportStats = await db.get<{ total: number; graded: number; pending: number }>(
+        `SELECT
+          COUNT(*) as total,
+          SUM(CASE WHEN status = 'graded' THEN 1 ELSE 0 END) as graded,
+          SUM(CASE WHEN status = 'submitted' THEN 1 ELSE 0 END) as pending
+         FROM experiment_reports WHERE class_id = ?`, cls.id,
+      );
+      totalReports += reportStats?.total || 0;
+      gradedReports += reportStats?.graded || 0;
+      pendingReports += reportStats?.pending || 0;
+
+      const studentCount = await db.get<{ count: number }>(
+        `SELECT COUNT(*) as count FROM class_students WHERE class_id = ?`, cls.id,
+      );
+      totalStudents += studentCount?.count || 0;
+    }
+
+    const lastGraded = await db.get<{ graded_at: string }>(
+      `SELECT r.graded_at FROM experiment_reports r
+       JOIN classes c ON r.class_id = c.id
+       WHERE c.teacher_id = ? AND r.graded_at IS NOT NULL
+       ORDER BY r.graded_at DESC LIMIT 1`, teacher.id,
+    );
+
+    const avgGradingTime = await db.get<{ avg_hours: number }>(
+      `SELECT AVG((julianday(r.graded_at) - julianday(r.submitted_at)) * 24) as avg_hours
+       FROM experiment_reports r
+       JOIN classes c ON r.class_id = c.id
+       WHERE c.teacher_id = ? AND r.graded_at IS NOT NULL`, teacher.id,
+    );
+
+    results.push({
+      ...teacher,
+      class_count: classes.length,
+      total_students: totalStudents,
+      total_reports: totalReports,
+      graded_reports: gradedReports,
+      pending_reports: pendingReports,
+      grading_rate: totalReports > 0 ? Math.round((gradedReports / totalReports) * 100) : 0,
+      last_graded_at: lastGraded?.graded_at || null,
+      avg_grading_hours: avgGradingTime?.avg_hours ? Math.round(avgGradingTime.avg_hours) : null,
+      is_blocked: !!teacher.blocked_at,
+    });
+  }
+
+  return results;
+}
+
+// ─── Capacity Increase Request ───
+export async function createCapacityRequest(data: {
+  school_id: number;
+  school_name: string;
+  current_max_students: number;
+  current_max_teachers: number;
+  requested_max_students?: number;
+  requested_max_teachers?: number;
+  reason: string;
+}) {
+  const result = await db.run(
+    `INSERT INTO capacity_requests (school_id, school_name, current_max_students, current_max_teachers, requested_max_students, requested_max_teachers, reason)
+     VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    data.school_id, data.school_name, data.current_max_students, data.current_max_teachers,
+    data.requested_max_students || null, data.requested_max_teachers || null, data.reason,
+  );
+  return { success: true, id: Number(result.lastID) };
+}
+
+export async function getCapacityRequests(schoolId?: number, status?: string) {
+  if (schoolId) {
+    return db.all(
+      `SELECT * FROM capacity_requests WHERE school_id = ? ${status ? 'AND status = ?' : ''} ORDER BY created_at DESC`,
+      ...(status ? [schoolId, status] : [schoolId]),
+    );
+  }
+  return db.all(
+    `SELECT * FROM capacity_requests ${status ? 'WHERE status = ?' : ''} ORDER BY created_at DESC`,
+    ...(status ? [status] : []),
+  );
+}
+
+export async function reviewCapacityRequest(id: number, status: 'approved' | 'rejected', reviewerId: number, response?: string) {
+  const req = await db.get<{ school_id: number; requested_max_students: number | null; requested_max_teachers: number | null }>(
+    `SELECT * FROM capacity_requests WHERE id = ?`, id,
+  );
+  if (!req) return { success: false, message: 'الطلب غير موجود' };
+
+  await db.run(
+    `UPDATE capacity_requests SET status = ?, reviewed_by = ?, reviewed_at = datetime('now'), admin_response = ? WHERE id = ?`,
+    status, reviewerId, response || null, id,
+  );
+
+  if (status === 'approved') {
+    const updates: string[] = [];
+    const vals: any[] = [];
+    if (req.requested_max_students) {
+      updates.push('max_students = ?');
+      vals.push(req.requested_max_students);
+    }
+    if (req.requested_max_teachers) {
+      updates.push('max_teachers = ?');
+      vals.push(req.requested_max_teachers);
+    }
+    if (updates.length > 0) {
+      vals.push(req.school_id);
+      await db.run(`UPDATE schools SET ${updates.join(', ')}, updated_at = datetime('now') WHERE id = ?`, ...vals);
+    }
+  }
+
+  return { success: true };
+}
+
+// ─── Class Freeze ───
+export async function freezeClass(schoolId: number, classId: string, reason: string, frozenBy: number) {
+  const cls = await db.get<{ teacher_id: number }>(`SELECT teacher_id FROM classes WHERE id = ?`, classId);
+  if (!cls) return { success: false, message: 'الفصل غير موجود' };
+
+  const teacher = await db.get<{ school_id: number | null }>(`SELECT school_id FROM users WHERE id = ?`, cls.teacher_id);
+  if (!teacher || teacher.school_id !== schoolId) {
+    return { success: false, message: 'غير مصرح — الفصل لا يتبع مدرستك' };
+  }
+
+  await db.run(
+    `UPDATE classes SET is_frozen = 1, frozen_reason = ?, frozen_at = datetime('now'), frozen_by = ? WHERE id = ?`,
+    reason, frozenBy, classId,
+  );
+
+  await db.run(
+    `INSERT INTO notifications (user_id, type, title, message, class_id)
+     VALUES (?, 'class_frozen', 'تم تجميد فصلك', ?, ?)`,
+    cls.teacher_id, `تم تجميد الفصل من قبل المدرسة. السبب: ${reason}`, classId,
+  );
+
+  return { success: true };
+}
+
+export async function unfreezeClass(schoolId: number, classId: string) {
+  const cls = await db.get<{ teacher_id: number }>(`SELECT teacher_id FROM classes WHERE id = ?`, classId);
+  if (!cls) return { success: false, message: 'الفصل غير موجود' };
+
+  const teacher = await db.get<{ school_id: number | null }>(`SELECT school_id FROM users WHERE id = ?`, cls.teacher_id);
+  if (!teacher || teacher.school_id !== schoolId) {
+    return { success: false, message: 'غير مصرح' };
+  }
+
+  await db.run(
+    `UPDATE classes SET is_frozen = 0, frozen_reason = NULL, frozen_at = NULL, frozen_by = NULL WHERE id = ?`,
+    classId,
+  );
+
+  await db.run(
+    `INSERT INTO notifications (user_id, type, title, message, class_id)
+     VALUES (?, 'class_unfrozen', 'تم إلغاء تجميد فصلك', 'تم إلغاء تجميد الفصل من قبل المدرسة', ?)`,
+    cls.teacher_id, classId,
+  );
+
+  return { success: true };
+}

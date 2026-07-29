@@ -9,7 +9,7 @@ import {
   approveRequest, rejectRequest, escalateRequest, getApprovalById, getAllApprovals,
 } from './services.js';
 
-const approvalRoutes = new Hono();
+const approvalRoutes = new Hono<{ Variables: { user: { id: number; email: string; role: string }; schoolId: number } }>();
 
 // Auth middleware
 const authMiddleware = async (c: any, next: any) => {
@@ -76,7 +76,7 @@ approvalRoutes.post('/', authMiddleware, zValidator('json', createSchema), async
 
   const result = await createApprovalRequest({
     ...body,
-    requester_type: user.role,
+    requester_type: user.role as any,
     requester_id: user.id,
     requester_name: '',
     school_id: body.school_id,

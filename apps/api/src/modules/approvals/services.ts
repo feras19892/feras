@@ -32,17 +32,25 @@ const escalationMap: Record<ApproverType, ApproverType | null> = {
 };
 
 export async function createApprovalRequest(input: CreateApprovalInput) {
+  // Calculate escalation deadline based on approver type
+  const escalationHours: Record<ApproverType, number> = { teacher: 48, school: 72, admin: 0 };
+  const hours = escalationHours[input.approver_type];
+  const escalationDeadline = hours > 0
+    ? new Date(Date.now() + hours * 60 * 60 * 1000).toISOString()
+    : null;
+
   const result = await db.run(
     `INSERT INTO approval_requests
      (type, requester_type, requester_id, requester_name, approver_type, approver_id,
       target_user_id, target_user_name, class_id, report_id, school_id,
-      title, description, proposed_grade, severity, status)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')`,
+      title, description, proposed_grade, severity, status, escalation_deadline)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?)`,
     input.type, input.requester_type, input.requester_id, input.requester_name,
     input.approver_type, input.approver_id || null,
     input.target_user_id, input.target_user_name,
     input.class_id || null, input.report_id || null, input.school_id || null,
     input.title, input.description, input.proposed_grade || null, input.severity || null,
+    escalationDeadline,
   );
 
   const id = result.lastID;
@@ -203,9 +211,16 @@ export async function escalateRequest(
   const nextApprover = escalationMap[req.approver_type as ApproverType];
   if (!nextApprover) return { success: false, message: 'Cannot escalate further' };
 
+  // Calculate new escalation deadline for the next approver
+  const escalationHours: Record<ApproverType, number> = { teacher: 48, school: 72, admin: 0 };
+  const hours = escalationHours[nextApprover as ApproverType];
+  const newDeadline = hours > 0
+    ? new Date(Date.now() + hours * 60 * 60 * 1000).toISOString()
+    : null;
+
   await db.run(
-    `UPDATE approval_requests SET status = 'escalated', escalated_to = ?, escalated_at = datetime('now'), escalation_reason = ?, approver_type = ?, updated_at = datetime('now') WHERE id = ?`,
-    nextApprover, reason, nextApprover, requestId,
+    `UPDATE approval_requests SET status = 'escalated', escalated_to = ?, escalated_at = datetime('now'), escalation_reason = ?, approver_type = ?, escalation_deadline = ?, updated_at = datetime('now') WHERE id = ?`,
+    nextApprover, reason, nextApprover, newDeadline, requestId,
   );
 
   // Notify admins if escalated to admin
@@ -315,4 +330,54 @@ export async function getAllApprovals(limit = 200) {
 
 export async function getApprovalsByType(type: string, limit = 100) {
   return db.all(`SELECT * FROM approval_requests WHERE type = ? ORDER BY created_at DESC LIMIT ?`, type, limit);
+}
+
+export async function runAutoEscalation(): Promise<number> {
+  const now = new Date().toISOString();
+  const expired = await db.all<any[]>(
+    `SELECT * FROM approval_requests WHERE status = 'pending' AND escalation_deadline IS NOT NULL AND escalation_deadline < ?`,
+    now,
+  );
+
+  let count = 0;
+  for (const req of expired) {
+    const nextApprover = escalationMap[req.approver_type as ApproverType];
+    if (!nextApprover) continue;
+
+    const escalationHours: Record<ApproverType, number> = { teacher: 48, school: 72, admin: 0 };
+    const hours = escalationHours[nextApprover as ApproverType];
+    const newDeadline = hours > 0
+      ? new Date(Date.now() + hours * 60 * 60 * 1000).toISOString()
+      : null;
+
+    await db.run(
+      `UPDATE approval_requests SET status = 'auto_escalated', escalated_to = ?, escalated_at = datetime('now'), escalation_reason = ?, approver_type = ?, escalation_deadline = ?, auto_escalated_at = datetime('now'), updated_at = datetime('now') WHERE id = ?`,
+      nextApprover, 'تصعيد تلقائي — انتهاء مهلة الرد', nextApprover, newDeadline, req.id,
+    );
+
+    // Notify the requester about auto-escalation
+    await createNotification({
+      user_id: req.requester_id,
+      type: 'approval_auto_escalated',
+      title: `تصعيد تلقائي: ${req.title}`,
+      message: `تم تصعيد طلبك تلقائياً لعدم رد ${req.approver_type === 'teacher' ? 'المدرس' : 'المدرسة'} خلال المهلة المحددة`,
+    });
+
+    // Notify the next approver
+    if (nextApprover === 'admin') {
+      const admins = await db.all<{ id: number }[]>(`SELECT id FROM users WHERE role = 'admin'`);
+      for (const admin of admins) {
+        await createNotification({
+          user_id: admin.id,
+          type: 'approval_escalation',
+          title: `طلب تصعيد تلقائي: ${req.title}`,
+          message: `تم تصعيد طلب من ${req.requester_name} إليك تلقائياً.`,
+        });
+      }
+    }
+
+    count++;
+  }
+
+  return count;
 }

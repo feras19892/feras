@@ -15,7 +15,46 @@ interface CreateReportData {
   plots?: string; chart_snapshot?: string;
 }
 
+function validateReportData(data: CreateReportData): { valid: boolean; message?: string } {
+  // Validate readings — at least 3 entries
+  try {
+    const readings = typeof data.readings === 'string' ? JSON.parse(data.readings) : data.readings;
+    if (!Array.isArray(readings) || readings.length < 3) {
+      return { valid: false, message: 'يجب إدخال 3 قراءات على الأقل' };
+    }
+  } catch {
+    return { valid: false, message: 'بيانات القراءات غير صالحة' };
+  }
+
+  // Validate conclusion — at least 50 characters
+  if (!data.conclusion || data.conclusion.trim().length < 50) {
+    return { valid: false, message: 'يجب أن يكون الاستنتاج 50 حرفاً على الأقل' };
+  }
+
+  return { valid: true };
+}
+
+async function checkDuplicateReport(studentId: number, classId: string, experimentName: string): Promise<boolean> {
+  const existing = await db.get(
+    `SELECT id FROM experiment_reports WHERE student_id = ? AND class_id = ? AND experiment_name = ? AND status IN ('submitted','graded','resubmitted') LIMIT 1`,
+    studentId, classId, experimentName,
+  );
+  return !!existing;
+}
+
 export async function createReport(data: CreateReportData) {
+  // Validate report content
+  const validation = validateReportData(data);
+  if (!validation.valid) {
+    return { error: validation.message };
+  }
+
+  // Check for duplicate submission (same experiment + class + student)
+  const isDuplicate = await checkDuplicateReport(data.student_id, data.class_id, data.experiment_name);
+  if (isDuplicate) {
+    return { error: 'لقد سلمت تقريراً لهذه التجربة في هذا الفصل بالفعل. استخدم إعادة الإرسال بدلاً من ذلك.' };
+  }
+
   const result = await db.run(
     `INSERT INTO experiment_reports
      (student_id, class_id, experiment_type, experiment_name, experiment_id, readings, params,
@@ -98,7 +137,22 @@ export async function getReportById(id: number) {
 }
 
 export async function markReportAsSeen(id: number) {
-  await db.run(`UPDATE experiment_reports SET teacher_seen = 1 WHERE id = ?`, id);
+  const report = await db.get<{ student_id: number; experiment_name: string; teacher_seen: number }>(
+    `SELECT student_id, experiment_name, teacher_seen FROM experiment_reports WHERE id = ?`, id,
+  );
+  if (!report) return { success: false };
+
+  // Only notify if this is the first time being seen
+  if (report.teacher_seen === 0) {
+    await db.run(`UPDATE experiment_reports SET teacher_seen = 1 WHERE id = ?`, id);
+    await createNotification({
+      user_id: report.student_id,
+      type: 'report_opened',
+      title: `المدرس يراجع تقريرك`,
+      message: `تم فتح تقريرك "${report.experiment_name}" من قبل المدرس`,
+      report_id: id,
+    });
+  }
   return { success: true };
 }
 

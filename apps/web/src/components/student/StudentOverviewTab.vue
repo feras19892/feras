@@ -2,6 +2,8 @@
 import { useI18n } from '../../composables/useI18n'
 import type { StudentReportRow, StudentKPI } from '../../composables/student/useStudentDashboard'
 import type { ClassItem } from '../../services/class.service'
+import AnnouncementsPanel from '../shared/AnnouncementsPanel.vue'
+import DeadlinesPanel from './DeadlinesPanel.vue'
 
 defineProps<{
   kpi: StudentKPI
@@ -84,6 +86,16 @@ function timeShort(dateStr: string | null): string {
             <span class="pc-time">{{ timeShort(r.submittedAt) }}</span>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Announcements + Deadlines -->
+    <div class="dual-col">
+      <div class="panel-card">
+        <AnnouncementsPanel />
+      </div>
+      <div class="panel-card">
+        <DeadlinesPanel />
       </div>
     </div>
 

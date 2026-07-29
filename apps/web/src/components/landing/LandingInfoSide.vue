@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from '../../composables/useI18n'
+import LandingLangSwitcher from './LandingLangSwitcher.vue'
 
 const { t } = useI18n()
 
@@ -37,9 +38,12 @@ const subjectChips = computed(() =>
         <span class="brand-text">PhysLab</span>
       </div>
 
-      <div class="badge fade-up" style="--d: 1">
-        <span class="badge-dot"></span>
-        {{ t('landing.heroBadge') }}
+      <div class="badge-row fade-up" style="--d: 1">
+        <div class="badge">
+          <span class="badge-dot"></span>
+          {{ t('landing.heroBadge') }}
+        </div>
+        <span class="badge-lang"><LandingLangSwitcher /></span>
       </div>
 
       <h1 class="title fade-up" style="--d: 2">{{ t('landing.heroTitle') }}</h1>
@@ -72,6 +76,19 @@ const subjectChips = computed(() =>
         <div class="stat-item"><span class="stat-num">{{ t('landing.statsSchoolsNum') }}</span><span class="stat-label">{{ t('landing.statsSchools') }}</span></div>
         <div class="stat-divider"></div>
         <div class="stat-item"><span class="stat-num">{{ t('landing.statsSubjectsNum') }}</span><span class="stat-label">{{ t('landing.statsSubjects') }}</span></div>
+      </div>
+
+      <div class="trust-strip fade-up" style="--d: 6.5">
+        <div class="trust-item"><span class="trust-icon">⚡</span><span class="trust-text">{{ t('landing.trustFast') }}</span></div>
+        <div class="trust-item"><span class="trust-icon">🔒</span><span class="trust-text">{{ t('landing.trustSecure') }}</span></div>
+        <div class="trust-item"><span class="trust-icon">📱</span><span class="trust-text">{{ t('landing.trustAnyDevice') }}</span></div>
+      </div>
+
+      <div class="perks-box fade-up" style="--d: 6.8">
+        <div class="perk-item" v-for="i in 3" :key="i">
+          <span class="perk-check">✓</span>
+          <span>{{ t(`landing.perk${i}`) }}</span>
+        </div>
       </div>
 
       <div class="why-us fade-up" style="--d: 7">
@@ -149,6 +166,9 @@ const subjectChips = computed(() =>
 .brand-icon { font-size: 1.2rem; filter: drop-shadow(0 0 8px rgba(99,102,241,0.4)); position: relative; z-index: 1; }
 .brand-text { font-size: 1.3rem; font-weight: 700; color: #f1f5f9; letter-spacing: 0.5px; }
 
+.badge-row { display: flex; align-items: center; gap: 0.6rem; }
+.badge-lang { flex-shrink: 0; }
+
 .badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.9rem; border-radius: 999px; background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.2); font-size: 0.75rem; color: #a5b4fc; font-weight: 500; width: fit-content; }
 .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #818cf8; box-shadow: 0 0 6px #818cf8; animation: pulse 2s ease-in-out infinite; }
 @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
@@ -177,6 +197,15 @@ const subjectChips = computed(() =>
 .stat-num { font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, #67e8f9, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 .stat-label { font-size: 0.68rem; color: #94a3b8; text-align: center; }
 .stat-divider { width: 1px; height: 32px; background: rgba(255,255,255,0.08); flex-shrink: 0; }
+
+.trust-strip { display: flex; justify-content: space-around; gap: 0.5rem; padding: 0.8rem 0.5rem; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); }
+.trust-item { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
+.trust-icon { font-size: 1.1rem; }
+.trust-text { font-size: 0.68rem; color: #94a3b8; text-align: center; line-height: 1.3; }
+
+.perks-box { display: flex; flex-direction: column; gap: 0.5rem; padding: 0.8rem 1rem; border-radius: 12px; background: linear-gradient(135deg, rgba(99,102,241,0.04), rgba(139,92,246,0.03)); border: 1px solid rgba(99,102,241,0.08); }
+.perk-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: #cbd5e1; line-height: 1.4; }
+.perk-check { flex-shrink: 0; width: 18px; height: 18px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 700; color: #a5b4fc; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.15); }
 
 .section-title { font-size: 1.1rem; font-weight: 700; color: #f1f5f9; margin: 0 0 0.3rem; }
 .section-subtitle { font-size: 0.8rem; color: #94a3b8; margin: 0 0 1rem; }

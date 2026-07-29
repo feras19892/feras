@@ -7,6 +7,7 @@ import {
   adminRemoveSchoolUser, adminBlockSchoolUser, adminUnblockSchoolUser,
   type AdminSchool,
 } from '../../services/school.service';
+import { fetchJson } from '../../services/http';
 import { useI18n } from '../../composables/useI18n';
 import AdminSchoolList from './schools/AdminSchoolList.vue';
 import AdminSchoolOverview from './schools/AdminSchoolOverview.vue';
@@ -21,7 +22,9 @@ const loading = ref(true);
 const errorMsg = ref('');
 const selectedSchool = ref<AdminSchool | null>(null);
 const detailLoading = ref(false);
-const detailTab = ref<'overview' | 'users' | 'classes' | 'reports' | 'edit'>('overview');
+const detailTab = ref<'overview' | 'users' | 'classes' | 'reports' | 'edit' | 'capacity'>('overview');
+const capacityRequests = ref<any[]>([]);
+const capacityLoading = ref(false);
 const schoolUsers = ref<any[]>([]);
 const schoolClasses = ref<any[]>([]);
 const schoolReports = ref<any[]>([]);
@@ -115,6 +118,30 @@ async function handleUnblockUser(userId: number) {
 }
 
 onMounted(loadSchools);
+
+async function loadCapacityRequests() {
+  capacityLoading.value = true;
+  try {
+    const res = await fetchJson<{ success: boolean; requests: any[] }>('/api/school/admin/capacity-requests');
+    if (res.success) capacityRequests.value = res.requests;
+  } catch {
+    // ignore
+  }
+  capacityLoading.value = false;
+}
+
+async function reviewCapacityRequest(id: number, status: 'approved' | 'rejected') {
+  try {
+    const res = await fetchJson<{ success: boolean }>(`/api/school/admin/capacity-requests/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status }),
+    });
+    if (res.success) await loadCapacityRequests();
+  } catch {
+    // ignore
+  }
+}
 </script>
 
 <template>
@@ -144,6 +171,7 @@ onMounted(loadSchools);
         <button :class="{ active: detailTab === 'classes' }" @click="detailTab = 'classes'">📚 {{ t('admin.schoolClassesTab') }} ({{ schoolClasses.length }})</button>
         <button :class="{ active: detailTab === 'reports' }" @click="detailTab = 'reports'">📄 {{ t('admin.schoolReportsTab') }} ({{ schoolReports.length }})</button>
         <button :class="{ active: detailTab === 'edit' }" @click="detailTab = 'edit'">{{ t('admin.schoolEditTab') }}</button>
+        <button :class="{ active: detailTab === 'capacity' }" @click="detailTab = 'capacity'; loadCapacityRequests()">📦 طلبات السعة ({{ capacityRequests.filter(r => r.status === 'pending').length }})</button>
       </div>
 
       <div v-if="detailLoading" class="loading-state">{{ t('admin.loading') }}</div>
@@ -153,6 +181,32 @@ onMounted(loadSchools);
       <AdminSchoolClasses v-else-if="detailTab === 'classes'" :classes="schoolClasses" />
       <AdminSchoolReports v-else-if="detailTab === 'reports'" :reports="schoolReports" />
       <AdminSchoolEdit v-else-if="detailTab === 'edit'" :school="selectedSchool" @save="handleSaveEdit" />
+
+      <!-- Capacity Requests Tab -->
+      <div v-else-if="detailTab === 'capacity'" class="capacity-admin">
+        <div v-if="capacityLoading" class="loading-state">...</div>
+        <div v-else-if="capacityRequests.length === 0" class="loading-state">لا توجد طلبات</div>
+        <table v-else class="data-table">
+          <thead>
+            <tr><th>المدرسة</th><th>الطلاب</th><th>المدرسين</th><th>السبب</th><th>الحالة</th><th>التاريخ</th><th>إجراء</th></tr>
+          </thead>
+          <tbody>
+            <tr v-for="req in capacityRequests" :key="req.id">
+              <td>{{ req.school_name }}</td>
+              <td>{{ req.current_max_students }} → {{ req.requested_max_students || '—' }}</td>
+              <td>{{ req.current_max_teachers }} → {{ req.requested_max_teachers || '—' }}</td>
+              <td>{{ req.reason }}</td>
+              <td><span class="cap-status" :class="req.status">{{ req.status }}</span></td>
+              <td>{{ new Date(req.created_at).toLocaleDateString('ar-SA') }}</td>
+              <td v-if="req.status === 'pending'">
+                <button class="approve-btn" @click="reviewCapacityRequest(req.id, 'approved')">✓ موافقة</button>
+                <button class="reject-btn" @click="reviewCapacityRequest(req.id, 'rejected')">✕ رفض</button>
+              </td>
+              <td v-else>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </template>
   </div>
 </template>
@@ -171,4 +225,17 @@ onMounted(loadSchools);
 .detail-tabs button { padding: 0.5rem 0.9rem; border: 1px solid rgba(255,255,255,0.08); border-radius: 0.4rem; background: rgba(255,255,255,0.03); color: #94a3b8; cursor: pointer; font-size: 0.82rem; transition: all 0.15s; }
 .detail-tabs button:hover { background: rgba(255,255,255,0.06); color: #cbd5e1; }
 .detail-tabs button.active { background: rgba(6,182,212,0.15); border-color: rgba(6,182,212,0.3); color: #67e8f9; }
+
+.capacity-admin { padding: 0.5rem 0; }
+.capacity-admin .data-table { width: 100%; border-collapse: collapse; }
+.capacity-admin .data-table th { text-align: start; padding: 0.5rem 0.7rem; font-size: 0.78rem; color: #64748b; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.capacity-admin .data-table td { padding: 0.5rem 0.7rem; font-size: 0.8rem; color: #e2e8f0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.cap-status { padding: 0.1rem 0.4rem; border-radius: 999px; font-size: 0.7rem; font-weight: 700; }
+.cap-status.pending { background: rgba(251,191,36,0.15); color: #fbbf24; }
+.cap-status.approved { background: rgba(34,197,94,0.15); color: #22c55e; }
+.cap-status.rejected { background: rgba(239,68,68,0.15); color: #ef4444; }
+.approve-btn { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); border-radius: 0.3rem; padding: 0.2rem 0.5rem; font-size: 0.72rem; cursor: pointer; margin-inline-end: 0.3rem; }
+.approve-btn:hover { background: rgba(34,197,94,0.25); }
+.reject-btn { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); border-radius: 0.3rem; padding: 0.2rem 0.5rem; font-size: 0.72rem; cursor: pointer; }
+.reject-btn:hover { background: rgba(239,68,68,0.25); }
 </style>

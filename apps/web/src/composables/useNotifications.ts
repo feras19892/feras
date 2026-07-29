@@ -1,11 +1,13 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import { getNotifications, getUnreadCount, markAllAsRead, markAsRead } from '../services/notification.service';
+import { apiUrl } from '../services/http';
 import type { Notification } from '../services/notification.service';
 
 const notifications = ref<Notification[]>([]);
 const unreadCount = ref(0);
 const loading = ref(false);
-let intervalId: ReturnType<typeof setInterval> | null = null;
+let eventSource: EventSource | null = null;
+let fallbackIntervalId: ReturnType<typeof setInterval> | null = null;
 let activeInstances = 0;
 
 async function loadNotifications() {
@@ -50,20 +52,69 @@ async function markOneRead(id: number) {
   }
 }
 
+function startSSE() {
+  if (eventSource) return;
+  try {
+    const url = apiUrl('/api/notifications/stream');
+    eventSource = new EventSource(url, { withCredentials: true });
+
+    eventSource.addEventListener('connected', () => {
+      refreshUnread();
+      loadNotifications();
+    });
+
+    eventSource.addEventListener('notification', (e: MessageEvent) => {
+      try {
+        const data = JSON.parse(e.data) as Notification;
+        notifications.value = [data, ...notifications.value].slice(0, 50);
+        unreadCount.value++;
+      } catch {
+        // ignore parse errors
+      }
+    });
+
+    eventSource.addEventListener('ping', () => {
+      // heartbeat — connection alive
+    });
+
+    eventSource.onerror = () => {
+      eventSource?.close();
+      eventSource = null;
+      if (!fallbackIntervalId) {
+        refreshUnread();
+        loadNotifications();
+        fallbackIntervalId = setInterval(() => {
+          refreshUnread();
+          loadNotifications();
+        }, 30000);
+      }
+      setTimeout(() => {
+        if (!eventSource) startSSE();
+      }, 10000);
+    };
+  } catch {
+    startPolling();
+  }
+}
+
 function startPolling(intervalMs = 30000) {
   refreshUnread();
   loadNotifications();
-  if (intervalId) clearInterval(intervalId);
-  intervalId = setInterval(() => {
+  if (fallbackIntervalId) clearInterval(fallbackIntervalId);
+  fallbackIntervalId = setInterval(() => {
     refreshUnread();
     loadNotifications();
   }, intervalMs);
 }
 
-function stopPolling() {
-  if (intervalId) {
-    clearInterval(intervalId);
-    intervalId = null;
+function stopAll() {
+  if (eventSource) {
+    eventSource.close();
+    eventSource = null;
+  }
+  if (fallbackIntervalId) {
+    clearInterval(fallbackIntervalId);
+    fallbackIntervalId = null;
   }
 }
 
@@ -71,7 +122,7 @@ export function useNotifications() {
   onMounted(() => {
     activeInstances++;
     if (activeInstances === 1) {
-      startPolling();
+      startSSE();
     }
   });
 
@@ -79,7 +130,7 @@ export function useNotifications() {
     activeInstances--;
     if (activeInstances <= 0) {
       activeInstances = 0;
-      stopPolling();
+      stopAll();
     }
   });
 

@@ -8,6 +8,7 @@ import {
 } from '../services/school.service';
 import AccountSettingsModal from '../components/shared/AccountSettingsModal.vue';
 import NotificationBell from '../components/shared/NotificationBell.vue';
+import CreateApprovalButton from '../components/shared/CreateApprovalButton.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -160,11 +161,34 @@ onMounted(loadData);
           </div>
         </div>
         <div class="sud-profile-actions">
+          <CreateApprovalButton
+            v-if="user?.role === 'student'"
+            type="grade_change"
+            approverType="teacher"
+            :targetUserId="userId"
+            :targetUserName="user?.name || ''"
+            :schoolId="user?.school_id"
+          >
+            📊 طلب تغيير درجة
+          </CreateApprovalButton>
+          <CreateApprovalButton
+            v-if="user?.role === 'student'"
+            type="student_removal"
+            approverType="teacher"
+            :targetUserId="userId"
+            :targetUserName="user?.name || ''"
+            :schoolId="user?.school_id"
+          >
+            🚪 طلب فصل من فصل
+          </CreateApprovalButton>
           <button class="action-btn warning" @click="showWarningModal = true">
-            ⚠️ تحذير / عقوبة
+            ⚠️ تحذير مباشر
           </button>
           <button class="action-btn report" @click="showReportModal = true">
             🚩 بلاغ للأدمن
+          </button>
+          <button class="action-btn approvals" @click="router.push('/approvals')">
+            📋 الموافقات
           </button>
         </div>
       </div>
@@ -425,6 +449,8 @@ onMounted(loadData);
 .action-btn.warning:hover { background: rgba(245,158,11,0.25); }
 .action-btn.report { background: rgba(239,68,68,0.15); color: #fca5a5; border: 1px solid rgba(239,68,68,0.2); }
 .action-btn.report:hover { background: rgba(239,68,68,0.25); }
+.action-btn.approvals { background: rgba(99,102,241,0.15); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.2); }
+.action-btn.approvals:hover { background: rgba(99,102,241,0.25); }
 
 .sud-stats-strip { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; background: rgba(15,23,42,0.4); border-radius: 0.6rem; padding: 0.8rem; }
 .stat-item { display: flex; flex-direction: column; align-items: center; flex: 1; min-width: 80px; }

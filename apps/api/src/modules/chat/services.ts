@@ -2,6 +2,10 @@ import { db } from '../../db/index.js';
 import { createNotification } from '../notifications/services.js';
 import { filterMessage } from './filter.js';
 
+const SPAM_WINDOW_MS = 10_000; // 10 seconds
+const SPAM_MAX_MESSAGES = 5; // max 5 messages per 10s
+const SPAM_MUTE_DURATION_MS = 30_000; // mute for 30s
+
 export interface ClassMessage {
   id: number;
   class_id: string;
@@ -21,16 +25,75 @@ export async function getClassMessages(classId: string, limit = 100): Promise<Cl
   );
 }
 
+async function checkSpamRate(userId: number, classId: string): Promise<{ muted: boolean; muteRemainingMs: number }> {
+  const now = Date.now();
+  const row = await db.get<{ message_count: number; last_message_at: string; muted_until: string | null }>(
+    `SELECT message_count, last_message_at, muted_until FROM chat_spam_tracker WHERE user_id = ? AND class_id = ?`,
+    userId, classId,
+  );
+
+  if (row?.muted_until) {
+    const muteEnd = new Date(row.muted_until).getTime();
+    if (now < muteEnd) {
+      return { muted: true, muteRemainingMs: muteEnd - now };
+    }
+  }
+
+  // Check rate within window
+  if (row?.last_message_at) {
+    const lastAt = new Date(row.last_message_at).getTime();
+    if (now - lastAt < SPAM_WINDOW_MS && row.message_count >= SPAM_MAX_MESSAGES) {
+      // Mute the user
+      const mutedUntil = new Date(now + SPAM_MUTE_DURATION_MS).toISOString();
+      await db.run(
+        `UPDATE chat_spam_tracker SET muted_until = ? WHERE user_id = ? AND class_id = ?`,
+        mutedUntil, userId, classId,
+      );
+      return { muted: true, muteRemainingMs: SPAM_MUTE_DURATION_MS };
+    }
+  }
+
+  return { muted: false, muteRemainingMs: 0 };
+}
+
+async function updateSpamTracker(userId: number, classId: string): Promise<void> {
+  const now = new Date().toISOString();
+  const row = await db.get<{ message_count: number; last_message_at: string }>(
+    `SELECT message_count, last_message_at FROM chat_spam_tracker WHERE user_id = ? AND class_id = ?`,
+    userId, classId,
+  );
+
+  if (!row) {
+    await db.run(
+      `INSERT INTO chat_spam_tracker (user_id, class_id, message_count, last_message_at) VALUES (?, ?, 1, ?)`,
+      userId, classId, now,
+    );
+  } else {
+    const lastAt = new Date(row.last_message_at).getTime();
+    const withinWindow = Date.now() - lastAt < SPAM_WINDOW_MS;
+    await db.run(
+      `UPDATE chat_spam_tracker SET message_count = ?, last_message_at = ?, muted_until = NULL WHERE user_id = ? AND class_id = ?`,
+      withinWindow ? row.message_count + 1 : 1, now, userId, classId,
+    );
+  }
+}
+
 export async function sendMessage(
   classId: string,
   userId: number,
   userName: string,
   userRole: string,
   content: string
-): Promise<{ success: boolean; message?: ClassMessage; flagged?: boolean; reason?: string }> {
+): Promise<{ success: boolean; message?: ClassMessage; flagged?: boolean; reason?: string; muted?: boolean }> {
   const trimmed = content.trim();
   if (!trimmed) return { success: false, reason: 'empty' };
   if (trimmed.length > 500) return { success: false, reason: 'too_long' };
+
+  // Check spam rate limit
+  const spamCheck = await checkSpamRate(userId, classId);
+  if (spamCheck.muted) {
+    return { success: false, reason: 'spam_muted', muted: true };
+  }
 
   const result = filterMessage(trimmed);
 
@@ -61,6 +124,11 @@ export async function sendMessage(
     flagged ? result.cleanedContent : trimmed,
     flagged, flaggedReason
   );
+
+  // Update spam tracker for non-flagged messages
+  if (!flagged) {
+    await updateSpamTracker(userId, classId);
+  }
 
   const msg = await db.get(`SELECT * FROM class_messages WHERE id = ?`, Number(insertResult.lastID));
   return { success: true, message: msg, flagged: flagged === 1, reason: flaggedReason || undefined };

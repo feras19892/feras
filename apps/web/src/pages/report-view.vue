@@ -11,6 +11,7 @@ import ReportReadingsSection from '../components/teacher/ReportReadingsSection.v
 import ReportCalculationsSection from '../components/teacher/ReportCalculationsSection.vue'
 import ReportConclusionSection from '../components/teacher/ReportConclusionSection.vue'
 import ReportAIAnalyzer from '../components/teacher/ReportAIAnalyzer.vue'
+import CreateApprovalButton from '../components/shared/CreateApprovalButton.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -126,6 +127,24 @@ watch(() => route.params.id, loadReport)
           <h3 class="sec-title">🎯 {{ t('report.assessment') }}</h3>
           <ReportAIAnalyzer :report="report" />
         </section>
+
+        <!-- Student Grade Appeal -->
+        <section v-if="auth.isStudent && report.status === 'graded'" class="rp-section">
+          <div class="appeal-box">
+            <h3 class="sec-title">📝 اعتراض على الدرجة</h3>
+            <p class="appeal-hint">إذا كنت تعتقد أن درجتك غير عادلة، يمكنك تقديم اعتراض. سيتم إرساله للمدرس أولاً، ثم للمدرسة إذا لم يرد.</p>
+            <CreateApprovalButton
+              type="grade_appeal"
+              approverType="teacher"
+              :targetUserId="auth.user?.id || 0"
+              :targetUserName="auth.user?.name || ''"
+              :reportId="report.id"
+              :classId="report.class_id"
+            >
+              📝 تقديم اعتراض
+            </CreateApprovalButton>
+          </div>
+        </section>
       </main>
 
       <!-- Grade Modal (teacher/admin only) -->
@@ -178,4 +197,7 @@ watch(() => route.params.id, loadReport)
 .btn-save:disabled { opacity: 0.5; }
 
 @media (max-width: 1024px) { .rp-main { max-width: 100%; padding: 1rem; } .report-page { flex-direction: column; } }
+
+.appeal-box { background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.15); border-radius: 0.6rem; padding: 1rem; }
+.appeal-hint { font-size: 0.8rem; color: #94a3b8; margin: 0 0 0.8rem; line-height: 1.5; }
 </style>

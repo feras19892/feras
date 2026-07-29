@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import { z } from 'zod';
 import { zValidator } from '@hono/zod-validator';
 import { createReportSchema, gradeReportSchema, addCommentSchema } from './schemas.js';
 import * as svc from './services.js';
@@ -32,6 +33,7 @@ app.post('/', zValidator('json', createReportSchema), async (c) => {
     plots: body.plots,
     chart_snapshot: body.chart_snapshot,
   });
+  if (result.error) return c.json({ success: false, message: result.error }, 400);
   return c.json({ success: true, report: result }, 201);
 });
 
@@ -177,6 +179,31 @@ app.delete('/:id', async (c) => {
   const result = await svc.deleteReport(id, user.role === 'student' ? user.id : undefined);
   if (!result.success) return c.json(result, result.message === 'غير مصرح' ? 403 : 400);
   return c.json(result);
+});
+
+// POST /bulk-grade — bulk grading (teacher/admin)
+app.post('/bulk-grade', zValidator('json', z.object({
+  grades: z.array(z.object({
+    report_id: z.number(),
+    grade: z.number().min(0).max(100),
+    feedback: z.string().optional(),
+  })),
+})), async (c) => {
+  const user = c.get('user');
+  if (user.role !== 'teacher' && user.role !== 'admin') {
+    return c.json({ success: false, message: 'غير مصرح' }, 403);
+  }
+  const body = c.req.valid('json');
+  const results: { report_id: number; success: boolean; message?: string }[] = [];
+  for (const g of body.grades) {
+    try {
+      await svc.gradeReport(g.report_id, { grade: g.grade, feedback: g.feedback }, user.id, user.name);
+      results.push({ report_id: g.report_id, success: true });
+    } catch (err) {
+      results.push({ report_id: g.report_id, success: false, message: err instanceof Error ? err.message : 'Unknown error' });
+    }
+  }
+  return c.json({ success: true, results });
 });
 
 export { app as reportRoutes };

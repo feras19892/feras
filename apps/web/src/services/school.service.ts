@@ -33,6 +33,7 @@ export interface SchoolClass {
   teacher_name: string;
   student_count: number;
   created_at: string;
+  is_frozen?: number;
 }
 
 export async function registerSchool(name: string, email: string, password: string, maxStudents: number, maxTeachers: number): Promise<{ success: boolean; school?: School; code?: string; message?: string }> {

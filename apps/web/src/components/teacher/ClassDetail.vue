@@ -5,6 +5,9 @@ import type { ClassItem, ClassStudent } from '../../services/class.service'
 import ClassReportsTab from './ClassReportsTab.vue'
 import ClassStatsTab from './ClassStatsTab.vue'
 import StudentDetailModal from './StudentDetailModal.vue'
+import CreateAnnouncementForm from './CreateAnnouncementForm.vue'
+import AnnouncementsPanel from '../shared/AnnouncementsPanel.vue'
+import PlagiarismChecker from './PlagiarismChecker.vue'
 
 interface ClassStatItem { student_count: number; total_reports: number; pending_count: number; class_average: number }
 
@@ -19,7 +22,7 @@ const props = defineProps<{
 const emit = defineEmits<{ (e: 'close'): void }>()
 
 const { t } = useI18n()
-const activeSection = ref<'overview' | 'students' | 'reports' | 'stats'>('overview')
+const activeSection = ref<'overview' | 'students' | 'reports' | 'stats' | 'announcements' | 'plagiarism'>('overview')
 const selectedStudent = ref<ClassStudent | null>(null)
 const detailOpen = ref(false)
 
@@ -51,6 +54,8 @@ function showStudentDetail(s: ClassStudent) {
         <button class="tab-btn" :class="{ active: activeSection === 'students' }" @click="activeSection = 'students'">{{ t('teacher.tabStudents') }}</button>
         <button class="tab-btn" :class="{ active: activeSection === 'reports' }" @click="activeSection = 'reports'">{{ t('teacher.tabReports') }}</button>
         <button class="tab-btn" :class="{ active: activeSection === 'stats' }" @click="activeSection = 'stats'">{{ t('teacher.tabStats') }}</button>
+        <button class="tab-btn" :class="{ active: activeSection === 'announcements' }" @click="activeSection = 'announcements'">📢 إعلانات</button>
+        <button class="tab-btn" :class="{ active: activeSection === 'plagiarism' }" @click="activeSection = 'plagiarism'">🔍 احتيال</button>
       </div>
 
       <!-- Overview -->
@@ -89,8 +94,21 @@ function showStudentDetail(s: ClassStudent) {
       </div>
 
       <!-- Stats -->
-      <div v-else>
+      <div v-else-if="activeSection === 'stats'">
         <ClassStatsTab :class-id="cls.id" />
+      </div>
+
+      <!-- Announcements -->
+      <div v-else-if="activeSection === 'announcements'">
+        <CreateAnnouncementForm :class-id="cls.id" />
+        <div style="margin-top: 1rem">
+          <AnnouncementsPanel />
+        </div>
+      </div>
+
+      <!-- Plagiarism -->
+      <div v-else-if="activeSection === 'plagiarism'">
+        <PlagiarismChecker :class-id="cls.id" />
       </div>
     </div>
 

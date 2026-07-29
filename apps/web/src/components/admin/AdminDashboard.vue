@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useI18n } from '../../composables/useI18n';
 import { getAdminStats, getAdminActivityStats, getAdminInsights } from '../../services/admin.service';
+import EmergencyControls from './EmergencyControls.vue';
 
 interface RoleStat { role: string; count: number }
 interface UserStats { total: number; byRole: RoleStat[] }
@@ -239,6 +240,9 @@ onMounted(load);
           <ul><li v-for="teacher in insights.noReportsTeachers" :key="teacher.id">{{ teacher.name }}</li></ul>
         </div>
       </div>
+
+      <!-- Emergency Controls + System Alerts -->
+      <EmergencyControls />
     </template>
   </div>
 </template>

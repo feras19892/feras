@@ -49,6 +49,14 @@ app.post('/:classId', zValidator('json', sendMessageSchema), async (c) => {
 
   const result = await svc.sendMessage(classId, user.id, user.name, user.role, body.content);
 
+  if (result.muted) {
+    return c.json({
+      success: false,
+      message: 'تم كتمك مؤقتاً بسبب الإرسال السريع. انتظر 30 ثانية.',
+      muted: true,
+    }, 429);
+  }
+
   if (result.flagged) {
     return c.json({
       success: true,

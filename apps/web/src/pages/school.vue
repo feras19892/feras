@@ -11,9 +11,12 @@ import {
   getSchoolSessions, getSchoolActivity, getSchoolWarnings,
   type School, type SchoolStats, type SchoolUser, type SchoolClass,
 } from '../services/school.service';
-import AccountSettingsModal from '../components/shared/AccountSettingsModal.vue';
-import NotificationBell from '../components/shared/NotificationBell.vue';
+import { fetchJson } from '../services/http';
 import HelpModal from '../components/shared/HelpModal.vue';
+import ApprovalPanel from '../components/shared/ApprovalPanel.vue';
+import PanelShell from '../components/shared/PanelShell.vue';
+import TeacherPerformance from '../components/school/TeacherPerformance.vue';
+import type { DockItem } from '../components/shared/PanelShell.vue';
 
 const router = useRouter();
 const { t, locale } = useI18n();
@@ -25,8 +28,36 @@ const users = ref<SchoolUser[]>([]);
 const classes = ref<SchoolClass[]>([]);
 const loading = ref(true);
 const errorMsg = ref('');
-const activeTab = ref<'overview' | 'users' | 'classes' | 'reports' | 'sessions' | 'activity' | 'warnings' | 'settings'>('overview');
+const activeTab = ref<'overview' | 'users' | 'classes' | 'reports' | 'teachers' | 'sessions' | 'activity' | 'warnings' | 'approvals' | 'settings'>('overview');
+const freezeReason = ref('');
+const freezeLoading = ref(false);
+const capacityForm = ref({ requested_max_students: null as number | null, requested_max_teachers: null as number | null, reason: '' });
+const capacitySaving = ref(false);
+const capacityMsg = ref('');
+const capacityRequests = ref<any[]>([]);
 const helpOpen = ref(false);
+
+const dockItems = computed<DockItem[]>(() => [
+  { id: 'overview', icon: '📊', label: 'نظرة عامة' },
+  { id: 'users', icon: '👥', label: 'المستخدمون', badge: users.value.length || undefined },
+  { id: 'classes', icon: '📚', label: 'الفصول', badge: classes.value.length || undefined },
+  { id: 'reports', icon: '📄', label: 'التقارير', badge: reports.value.length || undefined },
+  { id: 'teachers', icon: '📊', label: 'أداء المدرسين' },
+  { id: 'sessions', icon: '🔑', label: 'الجلسات', badge: sessions.value.length || undefined },
+  { id: 'activity', icon: '📝', label: 'النشاطات', badge: activityLog.value.length || undefined },
+  { id: 'warnings', icon: '⚠️', label: 'التحذيرات', badge: schoolWarnings.value.length || undefined },
+  { id: 'approvals', icon: '📋', label: 'الموافقات' },
+  { id: 'settings', icon: '⚙️', label: 'الإعدادات' },
+]);
+
+const barStats = computed(() => stats.value ? [
+  { icon: '🎓', value: stats.value.students, label: 'طلاب' },
+  { icon: '👨‍🏫', value: stats.value.teachers, label: 'مدرسين' },
+  { icon: '🏫', value: stats.value.classes, label: 'فصول' },
+  { icon: '📄', value: stats.value.reports, label: 'تقارير' },
+] : []);
+
+const activeLabel = computed(() => dockItems.value.find(d => d.id === activeTab.value)?.label || '');
 const reports = ref<any[]>([]);
 const sessions = ref<any[]>([]);
 const activityLog = ref<any[]>([]);
@@ -42,6 +73,72 @@ const pwdMsg = ref('');
 const newEmail = ref('');
 const savingEmail = ref(false);
 const emailMsg = ref('');
+
+async function freezeClass(classId: string) {
+  if (!freezeReason.value.trim()) {
+    freezeReason.value = 'تم التجميد من قبل المدرسة';
+  }
+  freezeLoading.value = true;
+  try {
+    const res = await fetchJson<{ success: boolean; message?: string }>('/api/school/freeze-class', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ class_id: classId, reason: freezeReason.value }),
+    });
+    if (res.success) {
+      freezeReason.value = '';
+      await loadAll();
+    }
+  } catch (err) {
+    console.error('freeze failed:', err);
+  }
+  freezeLoading.value = false;
+}
+
+async function unfreezeClass(classId: string) {
+  freezeLoading.value = true;
+  try {
+    const res = await fetchJson<{ success: boolean; message?: string }>('/api/school/unfreeze-class', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ class_id: classId }),
+    });
+    if (res.success) await loadAll();
+  } catch (err) {
+    console.error('unfreeze failed:', err);
+  }
+  freezeLoading.value = false;
+}
+
+async function submitCapacityRequest() {
+  if (!capacityForm.value.reason.trim()) return;
+  capacitySaving.value = true;
+  capacityMsg.value = '';
+  try {
+    const res = await fetchJson<{ success: boolean }>('/api/school/capacity-request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(capacityForm.value),
+    });
+    if (res.success) {
+      capacityMsg.value = 'تم إرسال الطلب بنجاح';
+      capacityForm.value = { requested_max_students: null, requested_max_teachers: null, reason: '' };
+      await loadCapacityRequests();
+    }
+  } catch (err) {
+    capacityMsg.value = err instanceof Error ? err.message : 'فشل الإرسال';
+  }
+  capacitySaving.value = false;
+}
+
+async function loadCapacityRequests() {
+  try {
+    const res = await fetchJson<{ success: boolean; requests: any[] }>('/api/school/capacity-requests');
+    if (res.success) capacityRequests.value = res.requests;
+  } catch {
+    // ignore
+  }
+}
 
 const helpSections = [
   {
@@ -83,6 +180,7 @@ async function loadAll() {
     if (results[4].status === 'fulfilled' && results[4].value.success) sessions.value = results[4].value.sessions;
     if (results[5].status === 'fulfilled' && results[5].value.success) activityLog.value = results[5].value.activity;
     if (results[6].status === 'fulfilled' && results[6].value.success) schoolWarnings.value = results[6].value.warnings;
+    await loadCapacityRequests();
   } catch (err) {
     errorMsg.value = 'Failed to load data';
     console.error(err);
@@ -144,53 +242,17 @@ onMounted(loadAll);
 </script>
 
 <template>
-  <div class="school-page">
-    <!-- Header -->
-    <div class="school-header">
-      <div class="school-brand" @click="router.push('/')">
-        <span class="brand-icon">⚛️</span>
-        <div class="brand-text-group">
-          <h1>🏫 {{ school?.name || t('school.title') }}</h1>
-          <span class="subtitle">
-            {{ t('dashboard.welcome') }}, {{ school?.name }} 👋 ·
-            {{ new Date().toLocaleDateString(dateLocaleStr, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) }}
-          </span>
-        </div>
-      </div>
-      <div class="school-header-right">
-        <AccountSettingsModal />
-        <NotificationBell />
-        <button class="btn-help" @click="helpOpen = true" title="❓">❓</button>
-        <div class="user-badge school">
-          <span class="user-icon">🏫</span>
-          <span class="user-role">{{ t('school.roleSchool') }}</span>
-        </div>
-        <button class="logout-btn" @click="handleLogout">{{ t('dashboard.logout') }}</button>
-      </div>
-    </div>
-
-    <!-- Summary Strip -->
-    <div class="school-strip" v-if="stats">
-      <div class="strip-item">
-        <span class="si-icon">🎓</span><span class="si-val">{{ stats.students }}</span><span class="si-lab">{{ t('school.students') }}</span>
-      </div>
-      <div class="strip-item">
-        <span class="si-icon">👨‍🏫</span><span class="si-val">{{ stats.teachers }}</span><span class="si-lab">{{ t('school.teachers') }}</span>
-      </div>
-      <div class="strip-item">
-        <span class="si-icon">🏫</span><span class="si-val">{{ stats.classes }}</span><span class="si-lab">{{ t('school.classes') }}</span>
-      </div>
-      <div class="strip-item">
-        <span class="si-icon">📄</span><span class="si-val">{{ stats.reports }}</span><span class="si-lab">{{ t('school.reports') }}</span>
-      </div>
-      <div class="strip-item highlight">
-        <span class="si-icon">📋</span><span class="si-val">{{ school?.max_students }}</span><span class="si-lab">{{ t('school.maxStudents') }}</span>
-      </div>
-      <div class="strip-item highlight">
-        <span class="si-icon">👨‍🏫</span><span class="si-val">{{ school?.max_teachers }}</span><span class="si-lab">{{ t('school.maxTeachers') }}</span>
-      </div>
-    </div>
-
+  <PanelShell
+    :dock-items="dockItems"
+    :active-id="activeTab"
+    :title="activeLabel"
+    role="school"
+    :user-name="school?.name || ''"
+    :stats="barStats"
+    @select="activeTab = $event as any"
+    @home="router.push('/')"
+    @logout="handleLogout"
+  >
     <!-- School Code Box -->
     <div v-if="school" class="code-box">
       <span class="code-label">{{ t('school.yourCode') }}:</span>
@@ -202,19 +264,7 @@ onMounted(loadAll);
     <div v-if="loading" class="loading"><div class="spinner"></div></div>
     <div v-else-if="errorMsg" class="error-box">❌ {{ errorMsg }}</div>
 
-    <!-- Tabs -->
-    <div v-else>
-      <div class="school-tabs">
-        <button :class="['tab', { active: activeTab === 'overview' }]" @click="activeTab = 'overview'"><span>📊</span> نظرة عامة</button>
-        <button :class="['tab', { active: activeTab === 'users' }]" @click="activeTab = 'users'"><span>👥</span> المستخدمون <span v-if="users.length" class="tab-badge">{{ users.length }}</span></button>
-        <button :class="['tab', { active: activeTab === 'classes' }]" @click="activeTab = 'classes'"><span>📚</span> الفصول <span v-if="classes.length" class="tab-badge">{{ classes.length }}</span></button>
-        <button :class="['tab', { active: activeTab === 'reports' }]" @click="activeTab = 'reports'"><span>📄</span> التقارير <span v-if="reports.length" class="tab-badge">{{ reports.length }}</span></button>
-        <button :class="['tab', { active: activeTab === 'sessions' }]" @click="activeTab = 'sessions'"><span>🔑</span> الجلسات <span v-if="sessions.length" class="tab-badge">{{ sessions.length }}</span></button>
-        <button :class="['tab', { active: activeTab === 'activity' }]" @click="activeTab = 'activity'"><span>📝</span> النشاطات <span v-if="activityLog.length" class="tab-badge">{{ activityLog.length }}</span></button>
-        <button :class="['tab', { active: activeTab === 'warnings' }]" @click="activeTab = 'warnings'"><span>⚠️</span> التحذيرات <span v-if="schoolWarnings.length" class="tab-badge">{{ schoolWarnings.length }}</span></button>
-        <button :class="['tab', { active: activeTab === 'settings' }]" @click="activeTab = 'settings'"><span>⚙️</span> الإعدادات</button>
-      </div>
-
+    <template v-else>
       <!-- Overview Tab -->
       <div v-if="activeTab === 'overview'" class="tab-panel">
         <div class="stats-grid">
@@ -233,6 +283,50 @@ onMounted(loadAll);
             <div class="bar"><div class="bar-fill teacher" :style="{ width: Math.min(100, (stats.teachers / school.max_teachers) * 100) + '%' }"></div></div>
           </div>
         </div>
+
+        <!-- Capacity increase request -->
+        <div class="capacity-request-section">
+          <h4>📦 طلب زيادة السعة</h4>
+          <div class="cap-form">
+            <input
+              v-model.number="capacityForm.requested_max_students"
+              type="number"
+              :placeholder="`حد الطلاب (الحالي: ${school?.max_students || 0})`"
+              class="cap-input"
+            />
+            <input
+              v-model.number="capacityForm.requested_max_teachers"
+              type="number"
+              :placeholder="`حد المدرسين (الحالي: ${school?.max_teachers || 0})`"
+              class="cap-input"
+            />
+            <input
+              v-model="capacityForm.reason"
+              placeholder="سبب الطلب"
+              class="cap-input reason"
+            />
+            <button
+              @click="submitCapacityRequest"
+              :disabled="capacitySaving || !capacityForm.reason.trim()"
+              class="cap-submit"
+            >
+              {{ capacitySaving ? 'جاري...' : 'إرسال الطلب' }}
+            </button>
+          </div>
+          <div v-if="capacityMsg" class="cap-msg">{{ capacityMsg }}</div>
+          <div v-if="capacityRequests.length > 0" class="cap-requests-list">
+            <div v-for="req in capacityRequests" :key="req.id" class="cap-req-item">
+              <span class="cap-req-status" :class="req.status">{{ req.status }}</span>
+              <span>طلاب: {{ req.requested_max_students || '—' }} | مدرسين: {{ req.requested_max_teachers || '—' }}</span>
+              <span class="cap-req-date">{{ new Date(req.created_at).toLocaleDateString('ar-SA') }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Teachers Performance Tab -->
+      <div v-if="activeTab === 'teachers'" class="tab-panel">
+        <TeacherPerformance />
       </div>
 
       <!-- Users Tab -->
@@ -284,6 +378,7 @@ onMounted(loadAll);
               <th>المدرس</th>
               <th>الطلاب</th>
               <th>أنشئ في</th>
+              <th>إجراءات</th>
             </tr>
           </thead>
           <tbody>
@@ -293,6 +388,22 @@ onMounted(loadAll);
               <td>{{ c.teacher_name }}</td>
               <td>{{ c.student_count }}</td>
               <td>{{ new Date(c.created_at).toLocaleDateString(dateLocaleStr) }}</td>
+              <td @click.stop>
+                <button
+                  v-if="!c.is_frozen"
+                  class="freeze-btn"
+                  :disabled="freezeLoading"
+                  @click="freezeClass(c.id)"
+                  title="تجميد الفصل"
+                >❄️ تجميد</button>
+                <button
+                  v-else
+                  class="unfreeze-btn"
+                  :disabled="freezeLoading"
+                  @click="unfreezeClass(c.id)"
+                  title="إلغاء التجميد"
+                >🔥 إلغاء التجميد</button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -366,6 +477,11 @@ onMounted(loadAll);
         </div>
       </div>
 
+      <!-- Approvals Tab -->
+      <div v-if="activeTab === 'approvals'" class="tab-panel">
+        <ApprovalPanel mode="school" />
+      </div>
+
       <!-- Settings Tab -->
       <div v-if="activeTab === 'settings'" class="tab-panel">
         <div class="settings-grid">
@@ -392,50 +508,14 @@ onMounted(loadAll);
           </div>
         </div>
       </div>
-    </div>
+    </template>
 
     <!-- Help Modal -->
     <HelpModal v-if="helpOpen" :title="t('school.helpTitle')" :sections="helpSections" @close="helpOpen = false" />
-  </div>
+  </PanelShell>
 </template>
 
 <style scoped>
-.school-page {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0a0f1c 0%, #111827 40%, #0f172a 100%);
-  color: #e2e8f0;
-  padding: 1.5rem;
-}
-.school-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-.school-brand { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; user-select: none; }
-.brand-icon { font-size: 1.6rem; }
-.brand-text-group { display: flex; flex-direction: column; gap: 0.1rem; }
-.school-header h1 { font-size: 1.5rem; font-weight: 800; margin: 0; background: linear-gradient(135deg, #67e8f9, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.subtitle { font-size: 0.8rem; color: #64748b; }
-.school-header-right { display: flex; align-items: center; gap: 0.75rem; }
-.user-badge { display: flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.7rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.08); background: rgba(15,23,42,0.6); font-size: 0.8rem; }
-.user-badge.school { color: #67e8f9; border-color: rgba(103,232,249,0.2); }
-.logout-btn { padding: 0.4rem 0.8rem; border-radius: 0.5rem; border: 1px solid rgba(239,68,68,0.2); background: rgba(239,68,68,0.08); color: #f87171; cursor: pointer; font-family: inherit; font-size: 0.82rem; font-weight: 600; }
-.logout-btn:hover { background: rgba(239,68,68,0.15); }
-.btn-help { padding: 0.4rem 0.6rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.08); background: rgba(15,23,42,0.6); color: #94a3b8; cursor: pointer; font-size: 0.9rem; }
-.btn-help:hover { color: #e2e8f0; }
-
-.school-strip { display: flex; gap: 0.8rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
-.strip-item { display: flex; align-items: center; gap: 0.4rem; padding: 0.6rem 1rem; border-radius: 0.6rem; background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.06); }
-.strip-item.highlight { border-color: rgba(103,232,249,0.2); }
-.si-icon { font-size: 1.1rem; }
-.si-val { font-size: 1.2rem; font-weight: 800; color: #f1f5f9; }
-.si-lab { font-size: 0.75rem; color: #64748b; }
-
 .code-box {
   display: flex;
   align-items: center;
@@ -474,6 +554,28 @@ onMounted(loadAll);
 .bar { height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; margin-top: 0.3rem; overflow: hidden; }
 .bar-fill { height: 100%; background: linear-gradient(90deg, #06b6d4, #0891b2); border-radius: 4px; transition: width 0.3s; }
 .bar-fill.teacher { background: linear-gradient(90deg, #818cf8, #6366f1); }
+
+.capacity-request-section { background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.8rem; padding: 1.2rem; margin-top: 1rem; }
+.capacity-request-section h4 { margin: 0 0 0.8rem; font-size: 0.9rem; color: #e2e8f0; }
+.cap-form { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.cap-input { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.4rem; padding: 0.4rem 0.6rem; color: #e2e8f0; font-size: 0.8rem; width: 160px; }
+.cap-input.reason { flex: 1; min-width: 200px; }
+.cap-submit { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none; border-radius: 0.4rem; padding: 0.4rem 1rem; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
+.cap-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+.cap-msg { margin-top: 0.5rem; font-size: 0.8rem; color: #22c55e; }
+.cap-requests-list { margin-top: 0.8rem; display: flex; flex-direction: column; gap: 0.3rem; }
+.cap-req-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.4rem 0.6rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 0.4rem; font-size: 0.78rem; color: #94a3b8; }
+.cap-req-status { padding: 0.1rem 0.4rem; border-radius: 999px; font-size: 0.7rem; font-weight: 700; }
+.cap-req-status.pending { background: rgba(251,191,36,0.15); color: #fbbf24; }
+.cap-req-status.approved { background: rgba(34,197,94,0.15); color: #22c55e; }
+.cap-req-status.rejected { background: rgba(239,68,68,0.15); color: #ef4444; }
+.cap-req-date { margin-inline-start: auto; color: #64748b; font-size: 0.7rem; }
+.freeze-btn { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); border-radius: 0.3rem; padding: 0.2rem 0.5rem; font-size: 0.72rem; cursor: pointer; }
+.freeze-btn:hover { background: rgba(59,130,246,0.25); }
+.freeze-btn:disabled { opacity: 0.4; }
+.unfreeze-btn { background: rgba(249,115,22,0.15); color: #fb923c; border: 1px solid rgba(249,115,22,0.3); border-radius: 0.3rem; padding: 0.2rem 0.5rem; font-size: 0.72rem; cursor: pointer; }
+.unfreeze-btn:hover { background: rgba(249,115,22,0.25); }
+.unfreeze-btn:disabled { opacity: 0.4; }
 
 .data-table { width: 100%; border-collapse: collapse; }
 .data-table th { text-align: start; padding: 0.6rem 0.8rem; font-size: 0.8rem; color: #64748b; border-bottom: 1px solid rgba(255,255,255,0.06); }

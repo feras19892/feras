@@ -3,11 +3,13 @@ import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { getMyClasses, getPendingCount } from '../../services/class.service'
 import { getReports, deleteReport } from '../../services/report.service'
+import { fetchJson } from '../../services/http'
 import type { ClassItem } from '../../services/class.service'
 import type { Report } from '../../services/report.service'
 import { useAuthStore } from '../../modules/auth/stores/auth'
 import { useI18n } from '../../composables/useI18n'
 import GradeModal from './GradeModal.vue'
+import CreateApprovalButton from '../shared/CreateApprovalButton.vue'
 
 const router = useRouter()
 
@@ -37,6 +39,51 @@ const filteredReports = computed(() => {
 
 const gradeOpen = ref(false)
 const gradeTarget = ref<Report | null>(null)
+const selectedIds = ref<Set<number>>(new Set())
+const bulkMode = ref(false)
+const bulkGrade = ref<number | null>(null)
+const bulkFeedback = ref('')
+const bulkSaving = ref(false)
+
+function toggleSelect(id: number) {
+  if (selectedIds.value.has(id)) selectedIds.value.delete(id)
+  else selectedIds.value.add(id)
+  selectedIds.value = new Set(selectedIds.value)
+}
+
+function toggleAll() {
+  if (selectedIds.value.size === filteredReports.value.length) {
+    selectedIds.value = new Set()
+  } else {
+    selectedIds.value = new Set(filteredReports.value.map(r => r.id))
+  }
+}
+
+async function submitBulkGrade() {
+  if (bulkGrade.value === null || selectedIds.value.size === 0) return
+  bulkSaving.value = true
+  try {
+    const res = await fetchJson<{ success: boolean }>('/api/reports/bulk-grade', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        report_ids: Array.from(selectedIds.value),
+        grade: bulkGrade.value,
+        feedback: bulkFeedback.value || undefined,
+      }),
+    })
+    if (res.success) {
+      selectedIds.value = new Set()
+      bulkMode.value = false
+      bulkGrade.value = null
+      bulkFeedback.value = ''
+      loadReports()
+    }
+  } catch (err) {
+    console.error('bulk grade failed:', err)
+  }
+  bulkSaving.value = false
+}
 
 function openView(r: Report) {
   router.push(`/report/${r.id}`)
@@ -170,11 +217,50 @@ watch(() => auth.user, (u) => {
             t('teacher.filterResubmitted')
           }}
         </button>
+        <button
+          :class="['pill', { active: bulkMode }]"
+          @click="bulkMode = !bulkMode; selectedIds = new Set()"
+          style="margin-inline-start: auto"
+        >
+          ⚡ تصحيح جماعي
+        </button>
+      </div>
+
+      <!-- Bulk grading bar -->
+      <div v-if="bulkMode" class="bulk-bar">
+        <label class="bulk-check">
+          <input type="checkbox" :checked="selectedIds.size === filteredReports.length && filteredReports.length > 0" @change="toggleAll" />
+          تحديد الكل
+        </label>
+        <span class="bulk-count">{{ selectedIds.size }} محدد</span>
+        <input
+          v-model.number="bulkGrade"
+          type="number"
+          min="0"
+          max="100"
+          placeholder="الدرجة"
+          class="bulk-input"
+          :disabled="selectedIds.size === 0"
+        />
+        <input
+          v-model="bulkFeedback"
+          placeholder="ملاحظات (اختياري)"
+          class="bulk-input feedback"
+          :disabled="selectedIds.size === 0"
+        />
+        <button
+          @click="submitBulkGrade"
+          :disabled="bulkSaving || selectedIds.size === 0 || bulkGrade === null"
+          class="bulk-submit"
+        >
+          {{ bulkSaving ? 'جاري...' : 'تطبيق' }}
+        </button>
       </div>
 
       <div class="report-list">
-        <div v-for="r in filteredReports" :key="r.id" class="report-row" :class="{ graded: r.status === 'graded' }" @click="openView(r)">
+        <div v-for="r in filteredReports" :key="r.id" class="report-row" :class="{ graded: r.status === 'graded', selected: selectedIds.has(r.id) }" @click="bulkMode ? toggleSelect(r.id) : openView(r)">
           <div class="report-info">
+            <input v-if="bulkMode" type="checkbox" :checked="selectedIds.has(r.id)" @click.stop="toggleSelect(r.id)" class="bulk-checkbox" />
             <span class="report-student">{{ r.student_name }}</span>
             <span class="report-exp">{{ r.experiment_name }}</span>
             <span class="report-date">{{ r.submitted_at?.slice(0, 10) }}</span>
@@ -185,6 +271,16 @@ watch(() => auth.user, (u) => {
             <button class="grade-btn" @click.stop="openGrade(r)">
               {{ r.status === 'graded' ? t('teacher.editBtn') : t('teacher.gradeBtn') }}
             </button>
+            <CreateApprovalButton
+              type="penalty"
+              approverType="school"
+              :targetUserId="r.student_id"
+              :targetUserName="r.student_name || ''"
+              :classId="r.class_id || ''"
+              :reportId="r.id"
+            >
+              <button class="penalty-btn" @click.stop>⚠️</button>
+            </CreateApprovalButton>
             <button class="delete-btn" @click.stop="confirmDelete(r)" :title="t('teacher.deleteBtn')">
               🗑️
             </button>
@@ -215,6 +311,16 @@ watch(() => auth.user, (u) => {
 .filter-row { display: flex; gap: 0.4rem; margin-bottom: 0.8rem; }
 .pill { padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: #94a3b8; cursor: pointer; font-size: 0.8rem; font-weight: 700; }
 .pill.active { background: rgba(99,102,241,0.15); color: #c7d2fe; border-color: rgba(99,102,241,0.25); }
+.bulk-bar { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.8rem; margin-bottom: 0.8rem; background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.15); border-radius: 0.5rem; flex-wrap: wrap; }
+.bulk-check { display: flex; align-items: center; gap: 0.3rem; color: #94a3b8; font-size: 0.8rem; cursor: pointer; }
+.bulk-count { color: #c7d2fe; font-size: 0.8rem; font-weight: 700; }
+.bulk-input { background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.35rem; padding: 0.35rem 0.5rem; color: #e2e8f0; font-size: 0.8rem; width: 80px; }
+.bulk-input.feedback { width: 180px; }
+.bulk-input:disabled { opacity: 0.4; }
+.bulk-submit { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none; border-radius: 0.35rem; padding: 0.35rem 1rem; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
+.bulk-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+.bulk-checkbox { width: 16px; height: 16px; cursor: pointer; accent-color: #6366f1; }
+.report-row.selected { background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.25); }
 .empty { text-align: center; padding: 3rem 1rem; color: #64748b; }
 .report-list { display: flex; flex-direction: column; gap: 0.5rem; }
 .report-row { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1rem; border-radius: 0.6rem; background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.07); transition: all 0.2s; }
@@ -232,6 +338,8 @@ watch(() => auth.user, (u) => {
 .grade-btn:hover { opacity: 0.9; }
 .delete-btn { padding: 0.3rem 0.5rem; border-radius: 0.4rem; border: none; background: rgba(239,68,68,0.15); color: #f87171; font-size: 0.8rem; cursor: pointer; transition: all 0.15s; }
 .delete-btn:hover { background: rgba(239,68,68,0.25); }
+.penalty-btn { padding: 0.3rem 0.5rem; border-radius: 0.4rem; border: none; background: rgba(245,158,11,0.15); color: #fcd34d; font-size: 0.8rem; cursor: pointer; transition: all 0.15s; }
+.penalty-btn:hover { background: rgba(245,158,11,0.25); }
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 300; }
 .view-modal { background: rgba(15,23,42,0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 1.5rem; width: 90%; max-width: 800px; max-height: 85vh; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; }
 .history-section { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.5rem; padding: 0.75rem 1rem; }

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useI18n } from '../../composables/useI18n'
-import LandingLangSwitcher from './LandingLangSwitcher.vue'
 import LandingLoginForm from './LandingLoginForm.vue'
 import LandingGuestButtons from './LandingGuestButtons.vue'
 
@@ -25,7 +24,6 @@ const emit = defineEmits<{
 
     <div class="login-top">
       <span class="login-top-brand">⚛️ PhysLab</span>
-      <LandingLangSwitcher />
     </div>
 
     <div class="login-center">
@@ -52,25 +50,6 @@ const emit = defineEmits<{
         🔑 {{ t('school.loginTitle') }}
       </router-link>
 
-      <div class="login-info-panel">
-        <div class="login-trust">
-          <div class="trust-item"><span class="trust-icon">⚡</span><span class="trust-text">{{ t('landing.trustFast') }}</span></div>
-          <div class="trust-item"><span class="trust-icon">🔒</span><span class="trust-text">{{ t('landing.trustSecure') }}</span></div>
-          <div class="trust-item"><span class="trust-icon">📱</span><span class="trust-text">{{ t('landing.trustAnyDevice') }}</span></div>
-        </div>
-
-        <div class="login-mini-stats">
-          <div class="mini-stat"><span class="mini-stat-num">{{ t('landing.statsExperimentsNum') }}</span><span class="mini-stat-label">{{ t('landing.statsExperiments') }}</span></div>
-          <div class="mini-stat"><span class="mini-stat-num">{{ t('landing.statsSubjectsNum') }}</span><span class="mini-stat-label">{{ t('landing.statsSubjects') }}</span></div>
-        </div>
-
-        <div class="login-perks">
-          <div class="perk-item" v-for="i in 3" :key="i">
-            <span class="perk-check">✓</span>
-            <span>{{ t(`landing.perk${i}`) }}</span>
-          </div>
-        </div>
-      </div>
     </div>
 
     <footer class="login-footer">

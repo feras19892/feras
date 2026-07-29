@@ -28,6 +28,7 @@ export async function runMigrations() {
   const migrationsDir = join(__dirname, 'migrations');
   const files = readdirSync(migrationsDir).filter((f) => f.endsWith('.sql')).sort();
 
+  await db.run('PRAGMA foreign_keys = OFF');
   for (const file of files) {
     const exists = await db.get('SELECT 1 FROM __migrations WHERE name = ?', file);
     if (!exists) {
@@ -37,4 +38,5 @@ export async function runMigrations() {
       console.log(`Migration applied: ${file}`);
     }
   }
+  await db.run('PRAGMA foreign_keys = ON');
 }

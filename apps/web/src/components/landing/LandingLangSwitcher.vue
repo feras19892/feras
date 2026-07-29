@@ -21,14 +21,8 @@ async function onChange(ev: Event) {
 
 <style scoped>
 .lang-dropdown {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
+  position: static;
   z-index: 10;
-}
-:global(html[dir='rtl']) .lang-dropdown {
-  right: auto;
-  left: 1.5rem;
 }
 .lang-select {
   padding: 0.5rem 1rem;

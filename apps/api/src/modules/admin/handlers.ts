@@ -259,6 +259,15 @@ app.post('/impersonate/:id', async (c) => {
   if (!result) return c.json({ success: false, message: 'User not found' }, 404);
   setAccessCookie(c, result.token);
   await activitySvc.logActivity(admin.id, admin.name, admin.role, 'impersonate', 'user', String(targetId), `Admin impersonated ${result.user.name} (${result.user.email})`);
+  return c.json({ success: true, user: result.user, adminId: admin.id, adminName: admin.name });
+});
+
+// POST /impersonate/return — return from impersonation
+app.post('/impersonate/return', zValidator('json', z.object({ admin_id: z.number().int().positive() })), async (c) => {
+  const { admin_id } = c.req.valid('json');
+  const result = await impersonateUser(admin_id);
+  if (!result) return c.json({ success: false, message: 'Admin not found' }, 404);
+  setAccessCookie(c, result.token);
   return c.json({ success: true, user: result.user });
 });
 
@@ -347,6 +356,59 @@ app.patch('/settings', zValidator('json', z.object({
   const { key, value } = c.req.valid('json');
   const result = await svc.updateSystemSetting(key, value, user.id);
   return c.json(result);
+});
+
+// ─── System Alerts ───
+app.get('/alerts', async (c) => {
+  const list = await svc.getSystemAlerts();
+  return c.json({ success: true, alerts: list });
+});
+
+app.patch('/alerts/:id/resolve', async (c) => {
+  const user = c.get('user') as User;
+  const id = Number(c.req.param('id'));
+  const result = await svc.resolveSystemAlert(id, user.id);
+  if (!result.success) return c.json(result, 400);
+  return c.json(result);
+});
+
+// ─── Emergency Controls ───
+app.post('/emergency/stop-registration', async (c) => {
+  const user = c.get('user') as User;
+  await svc.updateSystemSetting('stop_registration', 'true', user.id);
+  return c.json({ success: true, message: 'تم إيقاف التسجيل' });
+});
+
+app.post('/emergency/resume-registration', async (c) => {
+  const user = c.get('user') as User;
+  await svc.updateSystemSetting('stop_registration', 'false', user.id);
+  return c.json({ success: true, message: 'تم استئناف التسجيل' });
+});
+
+app.post('/emergency/maintenance-on', async (c) => {
+  const user = c.get('user') as User;
+  await svc.updateSystemSetting('maintenance_mode', 'true', user.id);
+  return c.json({ success: true, message: 'تم تفعيل وضع الصيانة' });
+});
+
+app.post('/emergency/maintenance-off', async (c) => {
+  const user = c.get('user') as User;
+  await svc.updateSystemSetting('maintenance_mode', 'false', user.id);
+  return c.json({ success: true, message: 'تم إيقاف وضع الصيانة' });
+});
+
+app.post('/emergency/freeze-all', async (c) => {
+  const user = c.get('user') as User;
+  await svc.updateSystemSetting('freeze_all_classes', 'true', user.id);
+  await svc.freezeAllClasses(user.id);
+  return c.json({ success: true, message: 'تم تجميد جميع الفصول' });
+});
+
+app.post('/emergency/unfreeze-all', async (c) => {
+  const user = c.get('user') as User;
+  await svc.updateSystemSetting('freeze_all_classes', 'false', user.id);
+  await svc.unfreezeAllClasses();
+  return c.json({ success: true, message: 'تم إلغاء تجميد جميع الفصول' });
 });
 
 export { app as adminRoutes };

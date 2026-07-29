@@ -12,6 +12,8 @@ import {
   createEmailChangeRequest, getEmailChangeRequests, reviewEmailChangeRequest,
   getSchoolUserDetail, getSchoolClassDetail, createSchoolWarning,
   getSchoolWarnings, reportToAdmin, getSchoolSessionLog, getSchoolActivityLog,
+  getTeacherPerformance, createCapacityRequest, getCapacityRequests,
+  reviewCapacityRequest, freezeClass, unfreezeClass,
 } from './services.js';
 import { setRefreshCookie, setAccessCookie, clearRefreshCookie, clearAccessCookie } from '../auth/cookies.js';
 import { verifyAccessToken } from '../auth/jwt.js';
@@ -322,6 +324,83 @@ schoolRoutes.get('/activity', schoolAuth, async (c) => {
   const school = c.get('school') as School;
   const activity = await getSchoolActivityLog(school.id);
   return c.json({ success: true, activity });
+});
+
+// ─── School: Teacher Performance ───
+schoolRoutes.get('/teachers/performance', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  const performance = await getTeacherPerformance(school.id);
+  return c.json({ success: true, performance });
+});
+
+// ─── School: Capacity Requests ───
+const capacitySchema = z.object({
+  requested_max_students: z.number().int().positive().optional(),
+  requested_max_teachers: z.number().int().positive().optional(),
+  reason: z.string().min(1).max(500),
+});
+
+schoolRoutes.post('/capacity-request', schoolAuth, zValidator('json', capacitySchema), async (c) => {
+  const school = c.get('school') as School;
+  const body = c.req.valid('json');
+  const result = await createCapacityRequest({
+    school_id: school.id,
+    school_name: school.name,
+    current_max_students: school.max_students,
+    current_max_teachers: school.max_teachers,
+    requested_max_students: body.requested_max_students,
+    requested_max_teachers: body.requested_max_teachers,
+    reason: body.reason,
+  });
+  return c.json(result, 201);
+});
+
+schoolRoutes.get('/capacity-requests', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  const status = c.req.query('status');
+  const requests = await getCapacityRequests(school.id, status);
+  return c.json({ success: true, requests });
+});
+
+// ─── Admin: Review Capacity Requests ───
+schoolRoutes.get('/admin/capacity-requests', adminAuth, async (c) => {
+  const status = c.req.query('status');
+  const requests = await getCapacityRequests(undefined, status);
+  return c.json({ success: true, requests });
+});
+
+schoolRoutes.patch('/admin/capacity-requests/:id', adminAuth, zValidator('json', z.object({
+  status: z.enum(['approved', 'rejected']),
+  response: z.string().optional(),
+})), async (c) => {
+  const id = Number(c.req.param('id'));
+  const body = c.req.valid('json');
+  const admin = c.get('user') as User;
+  const result = await reviewCapacityRequest(id, body.status, admin?.id || 0, body.response);
+  if (!result.success) return c.json({ success: false, message: result.message }, 400);
+  return c.json({ success: true });
+});
+
+// ─── School: Class Freeze ───
+const freezeSchema = z.object({
+  class_id: z.string().min(1),
+  reason: z.string().min(1).max(500),
+});
+
+schoolRoutes.post('/freeze-class', schoolAuth, zValidator('json', freezeSchema), async (c) => {
+  const school = c.get('school') as School;
+  const { class_id, reason } = c.req.valid('json');
+  const result = await freezeClass(school.id, class_id, reason, school.id);
+  if (!result.success) return c.json({ success: false, message: result.message }, 400);
+  return c.json({ success: true });
+});
+
+schoolRoutes.post('/unfreeze-class', schoolAuth, zValidator('json', z.object({ class_id: z.string().min(1) })), async (c) => {
+  const school = c.get('school') as School;
+  const { class_id } = c.req.valid('json');
+  const result = await unfreezeClass(school.id, class_id);
+  if (!result.success) return c.json({ success: false, message: result.message }, 400);
+  return c.json({ success: true });
 });
 
 export { schoolRoutes };

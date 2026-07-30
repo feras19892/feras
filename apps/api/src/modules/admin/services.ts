@@ -52,29 +52,64 @@ export async function getAllReportsWithDetails(page = 1, limit = 50) {
 }
 
 export async function deleteUser(userId: number) {
-  // Clean all FK-referencing rows before deleting the user
-  await db.run(`DELETE FROM experiment_reports WHERE student_id = ?`, userId);
-  await db.run(`DELETE FROM class_students WHERE student_id = ?`, userId);
-  await db.run(`DELETE FROM class_chat_reads WHERE user_id = ?`, userId);
-  await db.run(`DELETE FROM class_messages WHERE user_id = ?`, userId);
-  await db.run(`DELETE FROM report_comments WHERE author_id = ?`, userId);
-  await db.run(`DELETE FROM grade_history WHERE teacher_id = ?`, userId);
-  await db.run(`DELETE FROM admin_notes WHERE user_id = ?`, userId);
-  await db.run(`DELETE FROM warnings WHERE user_id = ?`, userId);
-  await db.run(`DELETE FROM notifications WHERE user_id = ?`, userId);
-  await db.run(`DELETE FROM feedback WHERE user_id = ?`, userId);
-  await db.run(`DELETE FROM activity_log WHERE actor_id = ?`, userId);
-  await db.run(`DELETE FROM audit_log WHERE actor_id = ?`, userId);
-  await db.run(`DELETE FROM session_log WHERE user_id = ?`, userId);
-  await db.run(`DELETE FROM email_verification_codes WHERE user_id = ?`, userId);
-  await db.run(`DELETE FROM email_change_requests WHERE reviewed_by = ?`, userId);
-  await db.run(`DELETE FROM name_change_requests WHERE user_id = ?`, userId);
-  await db.run(`DELETE FROM name_change_requests WHERE teacher_id = ?`, userId);
-  await db.run(`DELETE FROM refresh_tokens WHERE user_id = ?`, userId);
-  await db.run(`DELETE FROM math_progress WHERE user_id = ?`, userId);
-  // Set classes taught by this user to have no teacher (avoid FK violation)
-  await db.run(`UPDATE classes SET teacher_id = NULL WHERE teacher_id = ?`, userId);
-  await db.run(`DELETE FROM users WHERE id = ?`, userId);
+  // Temporarily disable FK constraints to avoid ordering issues and
+  // NOT NULL constraints (e.g. classes.teacher_id is NOT NULL).
+  await db.run(`PRAGMA foreign_keys = OFF`);
+  try {
+    // Delete all rows that reference this user (both CASCADE and non-CASCADE)
+    await db.run(`DELETE FROM experiment_reports WHERE student_id = ?`, userId);
+    await db.run(`DELETE FROM experiment_reports WHERE admin_graded_by = ?`, userId);
+    await db.run(`DELETE FROM class_students WHERE student_id = ?`, userId);
+    await db.run(`DELETE FROM class_chat_reads WHERE user_id = ?`, userId);
+    await db.run(`DELETE FROM class_messages WHERE user_id = ?`, userId);
+    await db.run(`DELETE FROM chat_spam_tracker WHERE user_id = ?`, userId);
+    await db.run(`DELETE FROM report_comments WHERE author_id = ?`, userId);
+    await db.run(`DELETE FROM grade_history WHERE teacher_id = ?`, userId);
+    await db.run(`DELETE FROM admin_notes WHERE user_id = ?`, userId);
+    await db.run(`DELETE FROM admin_notes WHERE admin_id = ?`, userId);
+    await db.run(`DELETE FROM warnings WHERE user_id = ?`, userId);
+    await db.run(`DELETE FROM warnings WHERE admin_id = ?`, userId);
+    await db.run(`DELETE FROM notifications WHERE user_id = ?`, userId);
+    await db.run(`DELETE FROM feedback WHERE user_id = ?`, userId);
+    await db.run(`DELETE FROM activity_log WHERE actor_id = ?`, userId);
+    await db.run(`DELETE FROM audit_log WHERE actor_id = ?`, userId);
+    await db.run(`DELETE FROM session_log WHERE user_id = ?`, userId);
+    await db.run(`DELETE FROM email_verification_codes WHERE user_id = ?`, userId);
+    await db.run(`DELETE FROM email_change_requests WHERE reviewed_by = ?`, userId);
+    await db.run(`DELETE FROM name_change_requests WHERE user_id = ?`, userId);
+    await db.run(`DELETE FROM name_change_requests WHERE teacher_id = ?`, userId);
+    await db.run(`DELETE FROM refresh_tokens WHERE user_id = ?`, userId);
+    await db.run(`DELETE FROM math_progress WHERE user_id = ?`, userId);
+    await db.run(`DELETE FROM approval_requests WHERE target_user_id = ?`, userId);
+    await db.run(`DELETE FROM approval_requests WHERE requester_id = ?`, userId);
+    // Tables with NOT NULL user columns (no FK but should clean up)
+    await db.run(`DELETE FROM announcements WHERE author_id = ?`, userId);
+    await db.run(`DELETE FROM experiment_deadlines WHERE created_by = ?`, userId);
+    await db.run(`DELETE FROM plagiarism_flags WHERE detected_by = ?`, userId);
+    // classes.teacher_id is NOT NULL — can't set to NULL, must delete the classes
+    // First delete dependent rows for those classes
+    const classIds = await db.all(`SELECT id FROM classes WHERE teacher_id = ?`, userId);
+    if (classIds.length > 0) {
+      const ids = classIds.map(c => c.id);
+      const placeholders = ids.map(() => '?').join(',');
+      await db.run(`DELETE FROM experiment_deadlines WHERE class_id IN (${placeholders})`, ...ids);
+      await db.run(`DELETE FROM plagiarism_flags WHERE class_id IN (${placeholders})`, ...ids);
+      await db.run(`DELETE FROM announcements WHERE class_id IN (${placeholders})`, ...ids);
+      await db.run(`DELETE FROM approval_requests WHERE class_id IN (${placeholders})`, ...ids);
+      await db.run(`DELETE FROM chat_spam_tracker WHERE class_id IN (${placeholders})`, ...ids);
+      await db.run(`DELETE FROM class_chat_reads WHERE class_id IN (${placeholders})`, ...ids);
+      await db.run(`DELETE FROM class_messages WHERE class_id IN (${placeholders})`, ...ids);
+      await db.run(`DELETE FROM class_students WHERE class_id IN (${placeholders})`, ...ids);
+      await db.run(`DELETE FROM experiment_reports WHERE class_id IN (${placeholders})`, ...ids);
+      await db.run(`DELETE FROM classes WHERE id IN (${placeholders})`, ...ids);
+    }
+    // Set nullable FK references to NULL
+    await db.run(`UPDATE system_settings SET updated_by = NULL WHERE updated_by = ?`, userId);
+    // Finally delete the user
+    await db.run(`DELETE FROM users WHERE id = ?`, userId);
+  } finally {
+    await db.run(`PRAGMA foreign_keys = ON`);
+  }
   return { success: true };
 }
 

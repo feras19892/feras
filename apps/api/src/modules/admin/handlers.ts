@@ -83,12 +83,17 @@ app.get('/reports', async (c) => {
 // DELETE /users/:id
 app.delete('/users/:id', async (c) => {
   const id = Number(c.req.param('id'));
+  const admin = c.get('user');
+  if (id === admin.id) {
+    return c.json({ success: false, message: 'لا يمكن حذف حسابك الخاص' }, 400);
+  }
   try {
     const result = await svc.deleteUser(id);
     return c.json(result);
   } catch (err) {
     console.error('deleteUser error:', err);
-    return c.json({ success: false, message: 'Failed to delete user — foreign key constraint' }, 500);
+    const msg = err instanceof Error ? err.message : 'Failed to delete user — foreign key constraint';
+    return c.json({ success: false, message: msg }, 500);
   }
 });
 

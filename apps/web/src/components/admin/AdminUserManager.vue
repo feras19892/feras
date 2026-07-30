@@ -6,6 +6,7 @@ interface AdminUser { id: number; name: string; email: string; role: string; cre
 
 const props = defineProps<{
   users: AdminUser[];
+  currentUserId?: number;
 }>();
 
 const emit = defineEmits<{
@@ -27,8 +28,11 @@ const bulkRole = ref<string>('');
 
 const filteredUsers = computed(() => {
   const q = searchQuery.value.trim().toLowerCase();
-  if (!q) return props.users;
-  return props.users.filter((u) =>
+  const list = props.currentUserId
+    ? props.users.filter((u) => u.id !== props.currentUserId)
+    : props.users;
+  if (!q) return list;
+  return list.filter((u) =>
     u.name?.toLowerCase().includes(q) ||
     u.email?.toLowerCase().includes(q) ||
     String(u.id).includes(q)
@@ -141,6 +145,7 @@ async function addUser() {
                 <option value="teacher">{{ t('admin.roleTeacher') }}</option>
                 <option value="admin">{{ t('admin.roleAdmin') }}</option>
               </select>
+              <span v-if="u.role === 'admin'" class="admin-badge">Admin</span>
             </td>
             <td>{{ u.created_at?.slice(0, 10) }}</td>
             <td>
@@ -185,6 +190,7 @@ async function addUser() {
 .data-table select { padding: 0.2rem 0.4rem; border-radius: 0.3rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; }
 .btn-danger { padding: 0.3rem 0.6rem; border-radius: 0.35rem; border: none; background: rgba(239,68,68,0.15); color: #f87171; cursor: pointer; font-family: inherit; font-size: 0.8rem; }
 .btn-danger:hover { background: rgba(239,68,68,0.25); }
+.admin-badge { display: inline-block; margin-inline-start: 0.4rem; padding: 0.1rem 0.4rem; border-radius: 0.25rem; background: rgba(99,102,241,0.15); color: #a5b4fc; font-size: 0.7rem; font-weight: 700; }
 .btn-view { padding: 0.3rem 0.6rem; border-radius: 0.35rem; border: none; background: rgba(59,130,246,0.15); color: #60a5fa; cursor: pointer; font-family: inherit; font-size: 0.8rem; margin-inline-start: 0.3rem; }
 .btn-view:hover { background: rgba(59,130,246,0.25); }
 

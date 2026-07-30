@@ -106,7 +106,7 @@ onMounted(loadAll);
 
       <div v-else-if="active === 'users'" class="panel">
         <AdminUserDetail v-if="selectedUserId" :user-id="selectedUserId" @back="closeUserDetail" @refresh="loadAll" />
-        <AdminUserManager v-else :users="users" @refresh="loadAll" @delete="handleRemoveUser"
+        <AdminUserManager v-else :users="users" :current-user-id="auth.user?.id" @refresh="loadAll" @delete="handleRemoveUser"
           @change-role="handleChangeRole" @add="handleAddUser" @view="openUserDetail" />
       </div>
 

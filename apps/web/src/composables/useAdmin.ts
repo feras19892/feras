@@ -95,7 +95,11 @@ export function useAdmin() {
   async function handleRemoveUser(id: number) {
     if (!confirm(t('admin.confirmDeleteUser'))) return;
     const res = await deleteUser(id);
-    if (res.success) loadAll();
+    if (res.success) {
+      loadAll();
+    } else {
+      alert(res.message || t('admin.loadError'));
+    }
   }
 
   async function handleChangeRole(id: number, role: string) {

@@ -3,6 +3,8 @@ import { hashPassword, comparePassword, generateRefreshToken, hashRefreshToken }
 import { signAccessToken } from '../auth/jwt.js';
 import type { School } from '@my-modern-app/shared-types';
 import { randomBytes } from 'crypto';
+import { createNotification } from '../notifications/services.js';
+import { createSchoolNotification } from '../notifications/services.js';
 
 function generateSchoolCode(): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -537,10 +539,12 @@ export async function createSchoolWarning(
     schoolId, userId, title, message, severity,
   );
 
-  await db.run(
-    `INSERT INTO notifications (user_id, type, title, message) VALUES (?, ?, ?, ?)`,
-    userId, 'warning', title, message,
-  );
+  await createNotification({
+    user_id: userId,
+    type: 'warning',
+    title,
+    message,
+  });
 
   return { success: true };
 }
@@ -574,13 +578,12 @@ export async function reportToAdmin(
 
   const admins = await db.all<{ id: number }[]>(`SELECT id FROM users WHERE role = 'admin'`);
   for (const admin of admins) {
-    await db.run(
-      `INSERT INTO notifications (user_id, type, title, message) VALUES (?, ?, ?, ?)`,
-      admin.id,
-      'school_report',
-      `بلاغ من المدرسة "${schoolName}" عن المستخدم "${user.name}" (${user.email})`,
-      `السبب: ${reason}. التفاصيل: ${details}`,
-    );
+    await createNotification({
+      user_id: admin.id,
+      type: 'school_report',
+      title: `بلاغ من المدرسة "${schoolName}" عن المستخدم "${user.name}" (${user.email})`,
+      message: `السبب: ${reason}. التفاصيل: ${details}`,
+    });
   }
 
   await db.run(
@@ -734,6 +737,17 @@ export async function createCapacityRequest(data: {
     data.school_id, data.school_name, data.current_max_students, data.current_max_teachers,
     data.requested_max_students || null, data.requested_max_teachers || null, data.reason,
   );
+
+  const admins = await db.all<{ id: number }[]>(`SELECT id FROM users WHERE role = 'admin'`);
+  for (const admin of admins) {
+    await createNotification({
+      user_id: admin.id,
+      type: 'capacity_request',
+      title: `طلب سعة جديد من "${data.school_name}"`,
+      message: `طلب زيادة السعة: طلاب ${data.requested_max_students || '—'}, مدرسين ${data.requested_max_teachers || '—'}`,
+    });
+  }
+
   return { success: true, id: Number(result.lastID) };
 }
 
@@ -778,6 +792,13 @@ export async function reviewCapacityRequest(id: number, status: 'approved' | 're
     }
   }
 
+  await createSchoolNotification({
+    school_id: req.school_id,
+    type: 'capacity_reviewed',
+    title: status === 'approved' ? 'تمت الموافقة على طلب السعة' : 'تم رفض طلب السعة',
+    message: response || (status === 'approved' ? 'تمت الموافقة على طلبك' : 'تم رفض طلبك'),
+  });
+
   return { success: true };
 }
 
@@ -802,6 +823,19 @@ export async function freezeClass(schoolId: number, classId: string, reason: str
     cls.teacher_id, `تم تجميد الفصل من قبل المدرسة. السبب: ${reason}`, classId,
   );
 
+  const students = await db.all<{ student_id: number }[]>(
+    `SELECT student_id FROM class_students WHERE class_id = ?`, classId,
+  );
+  for (const s of students) {
+    await createNotification({
+      user_id: s.student_id,
+      type: 'class_frozen',
+      title: 'تم تجميد الفصل',
+      message: `تم تجميد فصلك من قبل المدرسة. السبب: ${reason}`,
+      class_id: classId,
+    });
+  }
+
   return { success: true };
 }
 
@@ -824,6 +858,19 @@ export async function unfreezeClass(schoolId: number, classId: string) {
      VALUES (?, 'class_unfrozen', 'تم إلغاء تجميد فصلك', 'تم إلغاء تجميد الفصل من قبل المدرسة', ?)`,
     cls.teacher_id, classId,
   );
+
+  const students = await db.all<{ student_id: number }[]>(
+    `SELECT student_id FROM class_students WHERE class_id = ?`, classId,
+  );
+  for (const s of students) {
+    await createNotification({
+      user_id: s.student_id,
+      type: 'class_unfrozen',
+      title: 'تم إلغاء تجميد الفصل',
+      message: 'تم إلغاء تجميد فصلك من قبل المدرسة',
+      class_id: classId,
+    });
+  }
 
   return { success: true };
 }

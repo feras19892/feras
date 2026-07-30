@@ -136,7 +136,7 @@ export async function getAdminReports() {
 }
 
 export async function deleteUser(userId: number) {
-  return fetchJson<{ success: boolean }>(`/api/admin/users/${userId}`, { method: 'DELETE' });
+  return fetchJson<{ success: boolean; message?: string }>(`/api/admin/users/${userId}`, { method: 'DELETE' });
 }
 
 export async function updateUserRole(userId: number, role: string) {

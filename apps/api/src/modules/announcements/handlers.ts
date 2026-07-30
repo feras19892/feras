@@ -3,6 +3,7 @@ import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
 import { authMiddleware } from '../auth/middleware.js';
 import * as svc from './services.js';
+import { db } from '../../db/index.js';
 import type { User } from '@my-modern-app/shared-types';
 
 type Variables = { user: User };
@@ -61,14 +62,26 @@ app.get('/', async (c) => {
   }
 
   if (user.role === 'teacher') {
-    // Teacher sees their class announcements + global
-    const classIds = await c.req.query('class_id');
-    if (classIds) {
-      const list = await svc.getClassAnnouncements(classIds);
+    const classId = c.req.query('class_id');
+    if (classId) {
+      const list = await svc.getClassAnnouncements(classId);
       return c.json({ success: true, announcements: list });
     }
+    const teacherClasses = await db.all<{ id: string }[]>(
+      `SELECT id FROM classes WHERE teacher_id = ?`, user.id,
+    );
+    let results: any[] = [];
+    for (const c of teacherClasses) {
+      const anns = await svc.getClassAnnouncements(c.id);
+      results.push(...anns);
+    }
     const global = await svc.getGlobalAnnouncements();
-    return c.json({ success: true, announcements: global });
+    results.push(...global);
+    results.sort((a, b) => {
+      if (a.is_pinned !== b.is_pinned) return b.is_pinned - a.is_pinned;
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    });
+    return c.json({ success: true, announcements: results });
   }
 
   if (user.role === 'school') {
@@ -85,8 +98,8 @@ app.get('/', async (c) => {
   }
 
   // Admin sees all
-  const global = await svc.getGlobalAnnouncements();
-  return c.json({ success: true, announcements: global });
+  const all = await svc.getAllAnnouncements();
+  return c.json({ success: true, announcements: all });
 });
 
 // Get class announcements

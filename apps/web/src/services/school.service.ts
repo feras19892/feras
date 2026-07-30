@@ -48,7 +48,7 @@ export async function registerSchool(name: string, email: string, password: stri
   }
 }
 
-export async function loginSchool(email: string, password: string) {
+export async function loginSchool(email: string, password: string): Promise<{ success: boolean; school?: School; message?: string }> {
   try {
     return await fetchJson<{ success: boolean; school?: School; message?: string }>('/api/school/login', {
       method: 'POST',
@@ -56,7 +56,7 @@ export async function loginSchool(email: string, password: string) {
       body: JSON.stringify({ email, password }),
     });
   } catch (err: any) {
-    return { success: false, message: err?.message || 'Login failed' };
+    return { success: false, school: undefined, message: err?.message || 'Login failed' };
   }
 }
 
@@ -246,5 +246,18 @@ export async function adminReviewEmailRequest(id: number, status: 'approved' | '
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status }),
+  });
+}
+
+export async function adminGetCapacityRequests(status?: string) {
+  const query = status ? `?status=${status}` : '';
+  return fetchJson<{ success: boolean; requests: any[] }>(`/api/school/admin/capacity-requests${query}`);
+}
+
+export async function adminReviewCapacityRequest(id: number, status: 'approved' | 'rejected', response?: string) {
+  return fetchJson<{ success: boolean; message?: string }>(`/api/school/admin/capacity-requests/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status, response }),
   });
 }

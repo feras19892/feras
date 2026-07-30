@@ -3,13 +3,22 @@ import { ref, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from '../../composables/useI18n';
 import { useAuthStore } from '../../modules/auth/stores/auth';
+import { updateAvatar } from '../../services/enhancements.service';
 
 const { t } = useI18n();
 const auth = useAuthStore();
 const router = useRouter();
 
 const show = ref(false);
-const activeSection = ref<'name' | 'password' | 'delete'>('name');
+const activeSection = ref<'avatar' | 'name' | 'password' | 'delete'>('avatar');
+
+// Avatar section
+const avatarUrl = ref('');
+const avatarPreview = ref('');
+const avatarLoading = ref(false);
+const avatarError = ref('');
+const avatarSuccess = ref('');
+const fileInput = ref<HTMLInputElement | null>(null);
 
 // Name section
 const newName = ref('');
@@ -40,8 +49,12 @@ const isAdmin = computed(() => auth.role === 'admin');
 
 watch(show, (val) => {
   if (val) {
-    activeSection.value = 'name';
+    activeSection.value = 'avatar';
     newName.value = auth.user?.name || '';
+    avatarUrl.value = (auth.user as any)?.avatar_url || '';
+    avatarPreview.value = (auth.user as any)?.avatar_url || '';
+    avatarError.value = '';
+    avatarSuccess.value = '';
     nameError.value = '';
     nameSuccess.value = '';
     currentPassword.value = '';
@@ -54,6 +67,47 @@ watch(show, (val) => {
     deleteError.value = '';
   }
 });
+
+async function onUploadAvatar() {
+  avatarError.value = '';
+  avatarSuccess.value = '';
+  if (!avatarUrl.value.trim()) {
+    avatarError.value = 'الرجاء إدخال رابط الصورة';
+    return;
+  }
+  avatarLoading.value = true;
+  try {
+    const res = await updateAvatar(avatarUrl.value.trim());
+    if (res.success) {
+      avatarPreview.value = avatarUrl.value.trim();
+      if (auth.user) (auth.user as any).avatar_url = avatarUrl.value.trim();
+      avatarSuccess.value = 'تم تحديث الصورة الشخصية';
+      setTimeout(() => { avatarSuccess.value = ''; }, 3000);
+    } else {
+      avatarError.value = res.message || 'فشل التحديث';
+    }
+  } catch (e: any) {
+    avatarError.value = e?.message || 'فشل التحديث';
+  }
+  avatarLoading.value = false;
+}
+
+function onFileSelected(e: Event) {
+  const target = e.target as HTMLInputElement;
+  const file = target.files?.[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) {
+    avatarError.value = 'حجم الصورة يجب أن يكون أقل من 2 ميجابايت';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = () => {
+    avatarUrl.value = reader.result as string;
+    avatarPreview.value = reader.result as string;
+    avatarError.value = '';
+  };
+  reader.readAsDataURL(file);
+}
 
 async function onSaveName() {
   nameError.value = '';
@@ -165,7 +219,10 @@ async function onDeleteAccount() {
 
         <!-- User info bar -->
         <div class="user-bar">
-          <div class="user-avatar">{{ isAdmin ? '🛡️' : isTeacher ? '👨‍🏫' : '🎓' }}</div>
+          <div class="user-avatar">
+            <img v-if="(auth.user as any)?.avatar_url" :src="(auth.user as any).avatar_url" alt="avatar" />
+            <span v-else>{{ isAdmin ? '🛡️' : isTeacher ? '👨‍🏫' : '🎓' }}</span>
+          </div>
           <div class="user-info">
             <span class="user-name">{{ auth.user?.name }}</span>
             <span class="user-email">📧 {{ auth.user?.email }}</span>
@@ -175,6 +232,9 @@ async function onDeleteAccount() {
 
         <!-- Section tabs -->
         <div class="section-tabs">
+          <button :class="['sec-tab', { active: activeSection === 'avatar' }]" @click="activeSection = 'avatar'">
+            <span>📸</span> الصورة
+          </button>
           <button :class="['sec-tab', { active: activeSection === 'name' }]" @click="activeSection = 'name'">
             <span>✏️</span> {{ t('account.editName') }}
           </button>
@@ -183,6 +243,28 @@ async function onDeleteAccount() {
           </button>
           <button v-if="!isAdmin" :class="['sec-tab', { active: activeSection === 'delete' }]" @click="activeSection = 'delete'">
             <span>🗑️</span> {{ t('account.deleteAccount') }}
+          </button>
+        </div>
+
+        <!-- Avatar section -->
+        <div v-if="activeSection === 'avatar'" class="section-body">
+          <div class="avatar-preview-wrap">
+            <img v-if="avatarPreview" :src="avatarPreview" class="avatar-preview-img" alt="avatar" />
+            <div v-else class="avatar-placeholder">{{ isAdmin ? '🛡️' : isTeacher ? '👨‍🏫' : '🎓' }}</div>
+          </div>
+          <div class="field">
+            <label>رابط الصورة</label>
+            <input v-model="avatarUrl" type="text" placeholder="https://example.com/photo.jpg" />
+          </div>
+          <div class="avatar-upload-row">
+            <button class="btn-upload" @click="fileInput?.click()">📁 اختيار ملف</button>
+            <input ref="fileInput" type="file" accept="image/*" @change="onFileSelected" style="display:none" />
+          </div>
+          <p class="info-note">💡 يمكنك لصق رابط صورة أو رفع ملف من جهازك (يستحبس كـ Base64)</p>
+          <p v-if="avatarError" class="error">{{ avatarError }}</p>
+          <p v-if="avatarSuccess" class="success">{{ avatarSuccess }}</p>
+          <button class="btn-primary" :disabled="avatarLoading" @click="onUploadAvatar">
+            {{ avatarLoading ? t('auth.loading') : 'حفظ الصورة' }}
           </button>
         </div>
 
@@ -498,6 +580,52 @@ async function onDeleteAccount() {
   line-height: 1.5;
 }
 .confirm-check input { width: auto; margin-top: 0.2rem; accent-color: #ef4444; }
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar-preview-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.avatar-preview-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(99,102,241,0.3);
+}
+.avatar-placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+.avatar-upload-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.btn-upload {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(99,102,241,0.25);
+  background: rgba(99,102,241,0.08);
+  color: #c7d2fe;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.82rem;
+}
+.btn-upload:hover { background: rgba(99,102,241,0.15); }
 
 @media (max-width: 480px) {
   .modal-card { max-width: 100%; }

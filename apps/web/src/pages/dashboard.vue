@@ -119,6 +119,8 @@ async function handleEmailChange() {
 onMounted(async () => {
   if (!auth.isGuest) { await auth.fetchMe() }
   if (auth.isAdmin && route.query.view !== 'experiments') { router.push('/admin'); return }
+  if (auth.isStudent && !auth.isGuest) { router.push('/student'); return }
+  if (auth.isTeacher && !auth.isGuest) { router.push('/teacher'); return }
   if (auth.user) editName.value = auth.user.name
   await loadCards()
 })

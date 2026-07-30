@@ -103,6 +103,12 @@ export async function getGlobalAnnouncements(): Promise<Announcement[]> {
   );
 }
 
+export async function getAllAnnouncements(): Promise<Announcement[]> {
+  return db.all(
+    `SELECT * FROM announcements ORDER BY is_pinned DESC, created_at DESC LIMIT 200`,
+  );
+}
+
 export async function getStudentAnnouncements(studentId: number): Promise<Announcement[]> {
   // Get class announcements for student's classes + school announcements + global
   const classIds = await db.all<{ class_id: string }[]>(

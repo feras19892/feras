@@ -17,6 +17,9 @@ import { announcementRoutes } from './modules/announcements/handlers.js';
 import { deadlineRoutes } from './modules/deadlines/handlers.js';
 import { plagiarismRoutes } from './modules/plagiarism/handlers.js';
 import { mathRoutes } from './modules/math/index.js';
+import { quizRoutes } from './modules/quizzes/handlers.js';
+import { gameRoutes } from './modules/gamification/handlers.js';
+import { enhRoutes } from './modules/enhancements/handlers.js';
 import { seedMathData } from './modules/math/bootstrap.js';
 import { runMigrations } from './db/index.js';
 import { seedAdminUser } from './modules/auth/seed-admin.js';
@@ -55,6 +58,9 @@ app.route('/api/announcements', announcementRoutes);
 app.route('/api/deadlines', deadlineRoutes);
 app.route('/api/plagiarism', plagiarismRoutes);
 app.route('/api/math', mathRoutes);
+app.route('/api/quizzes', quizRoutes);
+app.route('/api/game', gameRoutes);
+app.route('/api/enh', enhRoutes);
 
 app.get('/api/health', (c) => c.json({ status: 'ok' }));
 

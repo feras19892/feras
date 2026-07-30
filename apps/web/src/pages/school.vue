@@ -14,9 +14,12 @@ import {
 import { fetchJson } from '../services/http';
 import HelpModal from '../components/shared/HelpModal.vue';
 import ApprovalPanel from '../components/shared/ApprovalPanel.vue';
-import PanelShell from '../components/shared/PanelShell.vue';
+import AppSidebar from '../components/shared/AppSidebar.vue';
+import type { SidebarGroup } from '../components/shared/AppSidebar.vue';
+import SchoolNotificationBell from '../components/shared/SchoolNotificationBell.vue';
+import AnnouncementsPanel from '../components/shared/AnnouncementsPanel.vue';
+import SystemBanner from '../components/shared/SystemBanner.vue';
 import TeacherPerformance from '../components/school/TeacherPerformance.vue';
-import type { DockItem } from '../components/shared/PanelShell.vue';
 
 const router = useRouter();
 const { t, locale } = useI18n();
@@ -28,7 +31,7 @@ const users = ref<SchoolUser[]>([]);
 const classes = ref<SchoolClass[]>([]);
 const loading = ref(true);
 const errorMsg = ref('');
-const activeTab = ref<'overview' | 'users' | 'classes' | 'reports' | 'teachers' | 'sessions' | 'activity' | 'warnings' | 'approvals' | 'settings'>('overview');
+const activeTab = ref<'overview' | 'users' | 'classes' | 'reports' | 'teachers' | 'sessions' | 'activity' | 'warnings' | 'announcements' | 'approvals' | 'settings'>('overview');
 const freezeReason = ref('');
 const freezeLoading = ref(false);
 const capacityForm = ref({ requested_max_students: null as number | null, requested_max_teachers: null as number | null, reason: '' });
@@ -37,17 +40,55 @@ const capacityMsg = ref('');
 const capacityRequests = ref<any[]>([]);
 const helpOpen = ref(false);
 
-const dockItems = computed<DockItem[]>(() => [
-  { id: 'overview', icon: '📊', label: 'نظرة عامة' },
-  { id: 'users', icon: '👥', label: 'المستخدمون', badge: users.value.length || undefined },
-  { id: 'classes', icon: '📚', label: 'الفصول', badge: classes.value.length || undefined },
-  { id: 'reports', icon: '📄', label: 'التقارير', badge: reports.value.length || undefined },
-  { id: 'teachers', icon: '📊', label: 'أداء المدرسين' },
-  { id: 'sessions', icon: '🔑', label: 'الجلسات', badge: sessions.value.length || undefined },
-  { id: 'activity', icon: '📝', label: 'النشاطات', badge: activityLog.value.length || undefined },
-  { id: 'warnings', icon: '⚠️', label: 'التحذيرات', badge: schoolWarnings.value.length || undefined },
-  { id: 'approvals', icon: '📋', label: 'الموافقات' },
-  { id: 'settings', icon: '⚙️', label: 'الإعدادات' },
+const sidebarCollapsed = ref(false);
+
+const groups = computed<SidebarGroup[]>(() => [
+  {
+    id: 'main',
+    title: 'الرئيسية',
+    icon: '🏠',
+    items: [
+      { id: 'overview', icon: '📊', label: 'نظرة عامة' },
+    ],
+  },
+  {
+    id: 'manage',
+    title: 'الإدارة',
+    icon: '👥',
+    items: [
+      { id: 'users', icon: '👥', label: 'المستخدمون', badge: users.value.length || undefined },
+      { id: 'classes', icon: '📚', label: 'الفصول', badge: classes.value.length || undefined },
+      { id: 'reports', icon: '📄', label: 'التقارير', badge: reports.value.length || undefined },
+      { id: 'teachers', icon: '�', label: 'أداء المدرسين' },
+    ],
+  },
+  {
+    id: 'monitor',
+    title: 'المراقبة',
+    icon: '🔍',
+    items: [
+      { id: 'sessions', icon: '🔑', label: 'الجلسات', badge: sessions.value.length || undefined },
+      { id: 'activity', icon: '📝', label: 'النشاطات', badge: activityLog.value.length || undefined },
+      { id: 'warnings', icon: '⚠️', label: 'التحذيرات', badge: schoolWarnings.value.length || undefined },
+    ],
+  },
+  {
+    id: 'comm',
+    title: 'التواصل',
+    icon: '💬',
+    items: [
+      { id: 'announcements', icon: '📢', label: 'الإعلانات' },
+      { id: 'approvals', icon: '📋', label: 'الموافقات' },
+    ],
+  },
+  {
+    id: 'account',
+    title: 'الحساب',
+    icon: '⚙️',
+    items: [
+      { id: 'settings', icon: '⚙️', label: 'الإعدادات' },
+    ],
+  },
 ]);
 
 const barStats = computed(() => stats.value ? [
@@ -57,7 +98,13 @@ const barStats = computed(() => stats.value ? [
   { icon: '📄', value: stats.value.reports, label: 'تقارير' },
 ] : []);
 
-const activeLabel = computed(() => dockItems.value.find(d => d.id === activeTab.value)?.label || '');
+const activeLabel = computed(() => {
+  for (const g of groups.value) {
+    const item = g.items.find(i => i.id === activeTab.value);
+    if (item) return item.label;
+  }
+  return '';
+});
 const reports = ref<any[]>([]);
 const sessions = ref<any[]>([]);
 const activityLog = ref<any[]>([]);
@@ -242,29 +289,55 @@ onMounted(loadAll);
 </script>
 
 <template>
-  <PanelShell
-    :dock-items="dockItems"
-    :active-id="activeTab"
-    :title="activeLabel"
-    role="school"
-    :user-name="school?.name || ''"
-    :stats="barStats"
-    @select="activeTab = $event as any"
-    @home="router.push('/')"
-    @logout="handleLogout"
-  >
-    <!-- School Code Box -->
-    <div v-if="school" class="code-box">
-      <span class="code-label">{{ t('school.yourCode') }}:</span>
-      <span class="code-value">{{ school.code }}</span>
-      <span class="code-hint">{{ t('school.codeHint') }}</span>
-    </div>
+  <div class="school-layout">
+    <SystemBanner />
+    <AppSidebar
+      :groups="groups"
+      :active-id="activeTab"
+      role="school"
+      :user-name="school?.name || ''"
+      :collapsed="sidebarCollapsed"
+      @select="activeTab = $event as any"
+      @home="router.push('/')"
+      @logout="handleLogout"
+      @toggle-collapse="sidebarCollapsed = !sidebarCollapsed"
+    />
 
-    <!-- Loading -->
-    <div v-if="loading" class="loading"><div class="spinner"></div></div>
-    <div v-else-if="errorMsg" class="error-box">❌ {{ errorMsg }}</div>
+    <div class="school-main">
+      <!-- Top Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="topbar-title">{{ activeLabel }}</h1>
+          <span class="topbar-date">{{ new Date().toLocaleDateString(dateLocaleStr, { weekday: 'long', day: 'numeric', month: 'long' }) }}</span>
+        </div>
+        <div class="topbar-right">
+          <SchoolNotificationBell />
+          <button class="help-btn-top" @click="helpOpen = true" title="مساعدة">❓</button>
+        </div>
+      </header>
 
-    <template v-else>
+      <!-- KPI Strip -->
+      <div class="kpi-strip" v-if="stats">
+        <div class="kpi-item"><span class="kpi-icon">🎓</span><span class="kpi-val">{{ stats.students }}</span><span class="kpi-lab">طلاب</span></div>
+        <div class="kpi-item"><span class="kpi-icon">👨‍🏫</span><span class="kpi-val">{{ stats.teachers }}</span><span class="kpi-lab">مدرسين</span></div>
+        <div class="kpi-item"><span class="kpi-icon">🏫</span><span class="kpi-val">{{ stats.classes }}</span><span class="kpi-lab">فصول</span></div>
+        <div class="kpi-item"><span class="kpi-icon">📄</span><span class="kpi-val">{{ stats.reports }}</span><span class="kpi-lab">تقارير</span></div>
+      </div>
+
+      <!-- Content -->
+      <div class="content-area">
+        <!-- School Code Box -->
+        <div v-if="school" class="code-box">
+          <span class="code-label">{{ t('school.yourCode') }}:</span>
+          <span class="code-value">{{ school.code }}</span>
+          <span class="code-hint">{{ t('school.codeHint') }}</span>
+        </div>
+
+        <!-- Loading -->
+        <div v-if="loading" class="loading"><div class="spinner"></div></div>
+        <div v-else-if="errorMsg" class="error-box">❌ {{ errorMsg }}</div>
+
+        <template v-else>
       <!-- Overview Tab -->
       <div v-if="activeTab === 'overview'" class="tab-panel">
         <div class="stats-grid">
@@ -477,6 +550,11 @@ onMounted(loadAll);
         </div>
       </div>
 
+      <!-- Announcements Tab -->
+      <div v-if="activeTab === 'announcements'" class="tab-panel">
+        <AnnouncementsPanel />
+      </div>
+
       <!-- Approvals Tab -->
       <div v-if="activeTab === 'approvals'" class="tab-panel">
         <ApprovalPanel mode="school" />
@@ -512,10 +590,76 @@ onMounted(loadAll);
 
     <!-- Help Modal -->
     <HelpModal v-if="helpOpen" :title="t('school.helpTitle')" :sections="helpSections" @close="helpOpen = false" />
-  </PanelShell>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
+.school-layout {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0f1c 0%, #111827 40%, #0f172a 100%);
+  color: #e2e8f0;
+}
+.school-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  background: rgba(10,15,28,0.5);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.topbar-left { display: flex; align-items: center; gap: 0.8rem; }
+.topbar-title { margin: 0; font-size: 1.15rem; font-weight: 800; color: #f1f5f9; }
+.topbar-date { font-size: 0.75rem; color: #64748b; }
+.topbar-right { display: flex; align-items: center; gap: 0.4rem; }
+.help-btn-top {
+  width: 38px; height: 38px;
+  border-radius: 0.6rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(15,23,42,0.6);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.help-btn-top:hover { border-color: rgba(6,182,212,0.3); background: rgba(6,182,212,0.08); }
+.kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.kpi-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.5rem 0.4rem;
+  border-radius: 0.6rem;
+  background: rgba(15,23,42,0.5);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.kpi-icon { font-size: 1rem; }
+.kpi-val { font-size: 1.05rem; font-weight: 800; color: #e5e7eb; line-height: 1; }
+.kpi-lab { font-size: 0.6rem; color: #64748b; text-align: center; white-space: nowrap; }
+.content-area {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
 .code-box {
   display: flex;
   align-items: center;

@@ -14,6 +14,9 @@ import * as sessionSvc from '../sessions/service.js';
 import * as healthSvc from './system-health-service.js';
 import * as exportSvc from './export-service.js';
 import * as auditSvc from './audit-service.js';
+import { createAnnouncement } from '../announcements/services.js';
+import { createNotification } from '../notifications/services.js';
+import { db } from '../../db/index.js';
 import type { User } from '@my-modern-app/shared-types';
 
 const updateRoleSchema = z.object({
@@ -378,42 +381,69 @@ app.patch('/alerts/:id/resolve', async (c) => {
 });
 
 // ─── Emergency Controls ───
+async function broadcastEmergency(user: User, title: string, content: string) {
+  await createAnnouncement({
+    author_type: 'admin',
+    author_id: user.id,
+    author_name: user.name,
+    scope: 'global',
+    title,
+    content,
+    is_pinned: true,
+  });
+  const users = await db.all<{ id: number }[]>(`SELECT id FROM users WHERE blocked_at IS NULL`);
+  for (const u of users) {
+    await createNotification({
+      user_id: u.id,
+      type: 'emergency',
+      title: `🚨 ${title}`,
+      message: content.slice(0, 150),
+    });
+  }
+}
+
 app.post('/emergency/stop-registration', async (c) => {
   const user = c.get('user') as User;
   await svc.updateSystemSetting('stop_registration', 'true', user.id);
-  return c.json({ success: true, message: 'تم إيقاف التسجيل' });
+  await broadcastEmergency(user, 'إيقاف التسجيل', 'تم إيقاف تسجيل المستخدمين الجدد مؤقتاً بواسطة الإدارة. سيتم استئناف التسجيل قريباً.');
+  return c.json({ success: true, message: 'تم إيقاف التسجيل وإرسال إشعار لجميع المستخدمين' });
 });
 
 app.post('/emergency/resume-registration', async (c) => {
   const user = c.get('user') as User;
   await svc.updateSystemSetting('stop_registration', 'false', user.id);
-  return c.json({ success: true, message: 'تم استئناف التسجيل' });
+  await broadcastEmergency(user, 'استئناف التسجيل', 'تم استئناف تسجيل المستخدمين الجدد. يمكنكم التسجيل الآن.');
+  return c.json({ success: true, message: 'تم استئناف التسجيل وإرسال إشعار لجميع المستخدمين' });
 });
 
 app.post('/emergency/maintenance-on', async (c) => {
   const user = c.get('user') as User;
   await svc.updateSystemSetting('maintenance_mode', 'true', user.id);
-  return c.json({ success: true, message: 'تم تفعيل وضع الصيانة' });
+  await broadcastEmergency(user, 'وضع الصيانة', 'النظام في وضع الصيانة حالياً. قد تكون بعض الخدمات غير متاحة مؤقتاً. نعتذر عن الإزعاج.');
+  return c.json({ success: true, message: 'تم تفعيل وضع الصيانة وإرسال إشعار لجميع المستخدمين' });
 });
 
 app.post('/emergency/maintenance-off', async (c) => {
   const user = c.get('user') as User;
   await svc.updateSystemSetting('maintenance_mode', 'false', user.id);
-  return c.json({ success: true, message: 'تم إيقاف وضع الصيانة' });
+  await broadcastEmergency(user, 'انتهاء الصيانة', 'تم إيقاف وضع الصيانة. جميع الخدمات متاحة الآن بشكل طبيعي.');
+  return c.json({ success: true, message: 'تم إيقاف وضع الصيانة وإرسال إشعار لجميع المستخدمين' });
 });
 
 app.post('/emergency/freeze-all', async (c) => {
   const user = c.get('user') as User;
   await svc.updateSystemSetting('freeze_all_classes', 'true', user.id);
   await svc.freezeAllClasses(user.id);
-  return c.json({ success: true, message: 'تم تجميد جميع الفصول' });
+  await broadcastEmergency(user, 'تجميد الفصول', 'تم تجميد جميع الفصول مؤقتاً بواسطة الإدارة. لا يمكن إجراء تعديلات حتى إلغاء التجميد.');
+  return c.json({ success: true, message: 'تم تجميد جميع الفصول وإرسال إشعار لجميع المستخدمين' });
 });
 
 app.post('/emergency/unfreeze-all', async (c) => {
   const user = c.get('user') as User;
   await svc.updateSystemSetting('freeze_all_classes', 'false', user.id);
   await svc.unfreezeAllClasses();
-  return c.json({ success: true, message: 'تم إلغاء تجميد جميع الفصول' });
+  await broadcastEmergency(user, 'إلغاء تجميد الفصول', 'تم إلغاء تجميد جميع الفصول. يمكنكم متابعة العمل بشكل طبيعي.');
+  return c.json({ success: true, message: 'تم إلغاء التجميد وإرسال إشعار لجميع المستخدمين' });
 });
 
 export { app as adminRoutes };

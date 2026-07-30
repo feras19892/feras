@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
+import { db } from '../../db/index.js';
 import { schoolRegisterSchema, schoolLoginSchema } from '../auth/schemas.js';
 import {
   registerSchool, loginSchool, getSchoolById, getSchoolStats,
@@ -18,6 +19,9 @@ import {
 import { setRefreshCookie, setAccessCookie, clearRefreshCookie, clearAccessCookie } from '../auth/cookies.js';
 import { verifyAccessToken } from '../auth/jwt.js';
 import { getCookie } from 'hono/cookie';
+import { streamSSE } from 'hono/streaming';
+import { addSchoolSSEClient } from '../notifications/sse.js';
+import * as notifSvc from '../notifications/services.js';
 import type { School } from '@my-modern-app/shared-types';
 import type { User } from '@my-modern-app/shared-types';
 
@@ -63,6 +67,10 @@ const reviewRequestSchema = z.object({ status: z.enum(['approved', 'rejected']) 
 
 // ─── Auth ───
 schoolRoutes.post('/register', zValidator('json', schoolRegisterSchema), async (c) => {
+  const regRow = await db.get(`SELECT value FROM system_settings WHERE key = 'stop_registration'`);
+  if (regRow?.value === 'true') {
+    return c.json({ success: false, message: 'تم إيقاف التسجيل مؤقتاً بواسطة الإدارة. يرجى المحاولة لاحقاً.' }, 403);
+  }
   const body = c.req.valid('json');
   const result = await registerSchool(body.name, body.email, body.password, body.max_students, body.max_teachers);
   if (!result.success) return c.json({ success: false, message: result.message }, 409);
@@ -400,6 +408,64 @@ schoolRoutes.post('/unfreeze-class', schoolAuth, zValidator('json', z.object({ c
   const { class_id } = c.req.valid('json');
   const result = await unfreezeClass(school.id, class_id);
   if (!result.success) return c.json({ success: false, message: result.message }, 400);
+  return c.json({ success: true });
+});
+
+// ─── School Notifications ───
+schoolRoutes.get('/notifications/stream', schoolAuth, (c) => {
+  const school = c.get('school') as School;
+  return streamSSE(c, async (stream) => {
+    let aborted = false;
+    const cleanup = addSchoolSSEClient(school.id, stream.aborted as unknown as ReadableStreamDefaultController);
+
+    await stream.writeSSE({ event: 'connected', data: JSON.stringify({ schoolId: school.id }) });
+
+    const heartbeat = setInterval(async () => {
+      if (aborted) return;
+      try { await stream.writeSSE({ event: 'ping', data: String(Date.now()) }); }
+      catch { aborted = true; }
+    }, 30000);
+
+    await new Promise<void>((resolve) => {
+      stream.onAbort(() => {
+        aborted = true;
+        cleanup();
+        clearInterval(heartbeat);
+        resolve();
+      });
+    });
+  });
+});
+
+schoolRoutes.get('/notifications', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  const list = await notifSvc.getSchoolNotifications(school.id);
+  return c.json({ success: true, notifications: list });
+});
+
+schoolRoutes.get('/notifications/unread-count', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  const count = await notifSvc.getSchoolUnreadCount(school.id);
+  return c.json({ success: true, count });
+});
+
+schoolRoutes.patch('/notifications/:id/read', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  const id = Number(c.req.param('id'));
+  await notifSvc.markSchoolNotificationAsRead(id, school.id);
+  return c.json({ success: true });
+});
+
+schoolRoutes.patch('/notifications/read-all', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  await notifSvc.markAllSchoolNotificationsAsRead(school.id);
+  return c.json({ success: true });
+});
+
+schoolRoutes.delete('/notifications/:id', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  const id = Number(c.req.param('id'));
+  await notifSvc.deleteSchoolNotification(id, school.id);
   return c.json({ success: true });
 });
 

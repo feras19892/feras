@@ -68,15 +68,19 @@ async function handleLeave(cls: ClassItem) {
     </div>
 
     <!-- Class cards with classmates -->
-    <div v-for="c in classes" :key="c.id" class="panel-card cls-card">
+    <div v-for="c in classes" :key="c.id" class="panel-card cls-card" :class="{ frozen: c.is_frozen }">
       <div class="cls-header" @click="toggleClass(c.id)">
-        <span class="cls-icon">📚</span>
+        <span class="cls-icon">{{ c.is_frozen ? '🧊' : '📚' }}</span>
         <div class="cls-info">
           <span class="cls-name">{{ c.name }}</span>
-          <code class="cls-code">{{ c.code }}</code>
+          <div class="cls-sub">
+            <code class="cls-code">{{ c.code }}</code>
+            <span v-if="c.teacher_name" class="cls-teacher">👨‍🏫 {{ c.teacher_name }}</span>
+          </div>
         </div>
         <div class="cls-meta">
-          <span class="cls-count">👥 {{ classStudentsMap[c.id]?.length || 0 }}</span>
+          <span class="cls-count">👥 {{ c.student_count || classStudentsMap[c.id]?.length || 0 }}</span>
+          <span v-if="c.is_frozen" class="frozen-badge">🧊 مجمد</span>
           <button :class="['chat-toggle-btn', { active: props.activeChatId === c.id }]" @click.stop="emit('open-chat', { id: c.id, name: c.name })">💬</button>
           <span class="cls-expand">{{ expandedId === c.id ? '▼' : '◀' }}</span>
         </div>
@@ -136,14 +140,18 @@ async function handleLeave(cls: ClassItem) {
 .pc-empty { text-align: center; color: #64748b; padding: 1.2rem; font-size: 0.82rem; }
 .pc-empty .sub { font-size: 0.78rem; color: #475569; margin-top: 0.3rem; }
 .cls-card { padding: 0; overflow: hidden; }
+.cls-card.frozen { border-color: rgba(59,130,246,0.2); background: rgba(59,130,246,0.03); }
 .cls-header { display: flex; align-items: center; gap: 0.6rem; padding: 0.8rem 1rem; cursor: pointer; transition: background 0.12s; }
 .cls-header:hover { background: rgba(99,102,241,0.04); }
 .cls-icon { font-size: 1.1rem; }
 .cls-info { flex: 1; display: flex; flex-direction: column; gap: 0.15rem; }
 .cls-name { font-size: 0.9rem; font-weight: 700; color: #f1f5f9; }
+.cls-sub { display: flex; align-items: center; gap: 0.5rem; }
 .cls-code { font-size: 0.72rem; color: #67e8f9; font-family: monospace; letter-spacing: 1px; }
+.cls-teacher { font-size: 0.7rem; color: #94a3b8; }
 .cls-meta { display: flex; align-items: center; gap: 0.6rem; }
 .cls-count { font-size: 0.75rem; color: #94a3b8; font-weight: 600; }
+.frozen-badge { font-size: 0.65rem; font-weight: 700; color: #60a5fa; background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.2); padding: 0.1rem 0.4rem; border-radius: 0.3rem; }
 .chat-toggle-btn { width: 28px; height: 28px; border-radius: 0.4rem; border: 1px solid rgba(99,102,241,0.15); background: rgba(99,102,241,0.06); color: #c7d2fe; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; padding: 0; }
 .chat-toggle-btn:hover { background: rgba(99,102,241,0.15); border-color: rgba(99,102,241,0.3); }
 .chat-toggle-btn.active { background: rgba(99,102,241,0.25); border-color: rgba(99,102,241,0.4); }

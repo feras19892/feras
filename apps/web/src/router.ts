@@ -38,6 +38,18 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./pages/dashboard.vue'),
   },
   {
+    path: '/student',
+    name: 'StudentDashboard',
+    meta: { requiresAuth: true, roles: ['student'] },
+    component: () => import('./pages/student-dashboard.vue'),
+  },
+  {
+    path: '/teacher',
+    name: 'TeacherDashboard',
+    meta: { requiresAuth: true, roles: ['teacher'] },
+    component: () => import('./pages/teacher-dashboard.vue'),
+  },
+  {
     path: '/chemistry',
     name: 'Chemistry',
     component: () => import('./modules/chemistry/ChemistryLanding.vue'),

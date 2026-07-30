@@ -22,6 +22,8 @@ async function handleLogin(payload: { email: string; password: string }) {
   auth.error = null
   const ok = await auth.login(payload.email, payload.password)
   if (ok === true) {
+    if (auth.isStudent) { router.push('/student'); return }
+    if (auth.isTeacher) { router.push('/teacher'); return }
     router.push('/home')
   } else if (ok && typeof ok === 'object' && (ok as any).school) {
     router.push('/school')
@@ -37,8 +39,8 @@ function scrollToLoginAfterDetail() {
   document.querySelector('.login-side')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
 }
 
-function enterAsTeacher() { auth.loginAsGuest('teacher'); router.push('/home') }
-function enterAsStudent() { auth.loginAsGuest('student'); router.push('/home') }
+function enterAsTeacher() { auth.loginAsGuest('teacher'); router.push('/teacher') }
+function enterAsStudent() { auth.loginAsGuest('student'); router.push('/student') }
 </script>
 
 <template>

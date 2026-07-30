@@ -21,16 +21,23 @@ export async function createClass(teacherId: number, name: string) {
 
 export async function getTeacherClasses(teacherId: number) {
   return db.all(
-    'SELECT id, name, code, is_active, created_at FROM classes WHERE teacher_id = ? ORDER BY created_at DESC',
+    `SELECT c.id, c.name, c.code, c.is_active, c.is_frozen, c.created_at,
+            (SELECT COUNT(*) FROM class_students cs WHERE cs.class_id = c.id) AS student_count
+     FROM classes c
+     WHERE c.teacher_id = ?
+     ORDER BY c.created_at DESC`,
     teacherId
   );
 }
 
 export async function getStudentClasses(studentId: number) {
   return db.all(
-    `SELECT c.id, c.name, c.code, c.teacher_id, c.created_at
+    `SELECT c.id, c.name, c.code, c.teacher_id, c.is_frozen, c.created_at,
+            u.name AS teacher_name,
+            (SELECT COUNT(*) FROM class_students cs2 WHERE cs2.class_id = c.id) AS student_count
      FROM classes c
      JOIN class_students cs ON c.id = cs.class_id
+     LEFT JOIN users u ON c.teacher_id = u.id
      WHERE cs.student_id = ? AND c.is_active = 1
      ORDER BY cs.joined_at DESC`,
     studentId

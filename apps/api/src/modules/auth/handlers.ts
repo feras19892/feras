@@ -9,11 +9,29 @@ import * as sessionSvc from '../sessions/service.js';
 import { setRefreshCookie, getRefreshCookie, clearRefreshCookie, setAccessCookie, getAccessCookie, clearAccessCookie } from './cookies.js';
 import { verifyAccessToken } from './jwt.js';
 import { authMiddleware } from './middleware.js';
+import { db } from '../../db/index.js';
 import type { User } from '@my-modern-app/shared-types';
 
 const authRoutes = new Hono();
 
+// Public system status (no auth required)
+authRoutes.get('/system-status', async (c) => {
+  const rows = await db.all(`SELECT key, value FROM system_settings WHERE key IN ('stop_registration', 'maintenance_mode', 'freeze_all_classes')`);
+  const settings: Record<string, boolean> = {};
+  for (const r of rows) settings[r.key] = r.value === 'true';
+  return c.json({
+    success: true,
+    stop_registration: settings.stop_registration || false,
+    maintenance_mode: settings.maintenance_mode || false,
+    freeze_all_classes: settings.freeze_all_classes || false,
+  });
+});
+
 authRoutes.post('/register', zValidator('json', registerSchema), async (c) => {
+  const regRow = await db.get(`SELECT value FROM system_settings WHERE key = 'stop_registration'`);
+  if (regRow?.value === 'true') {
+    return c.json({ success: false, message: 'تم إيقاف التسجيل مؤقتاً بواسطة الإدارة. يرجى المحاولة لاحقاً.' }, 403);
+  }
   const body = c.req.valid('json');
   const creds = { ...body, school_code: body.school_code || undefined };
   const result = await register(creds);

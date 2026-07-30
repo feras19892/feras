@@ -5,6 +5,9 @@ export interface ClassItem {
   name: string;
   code: string;
   is_active: number;
+  is_frozen?: number;
+  teacher_name?: string;
+  student_count?: number;
   created_at: string;
 }
 

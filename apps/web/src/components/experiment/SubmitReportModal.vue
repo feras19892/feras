@@ -69,12 +69,10 @@ function safeParse(str: string | undefined) {
 
 async function submit() {
   if (!auth.isLoggedIn) { error.value = t('experiments.errorLogin'); return }
-  console.log('[Submit] clicked, classId:', selectedClassId.value, 'classes:', classes.value.length);
   if (!selectedClassId.value) { error.value = t('experiments.errorSelectClass'); return }
   loading.value = true; error.value = ''; success.value = ''
 
   try {
-    console.log('[Submit] readings length:', props.readings?.length, 'chartSnapshot length:', props.chartSnapshot?.length);
     const conclusionData = props.conclusion ? JSON.parse(props.conclusion) : { conclusion: '', errors: '', improvements: '' }
     const extra = {
       solved_equations: safeParse(props.solvedEquations),
@@ -100,10 +98,7 @@ async function submit() {
       plots: props.plots,
       chart_snapshot: props.chartSnapshot,
     }
-    console.log('[SubmitReport] payload keys:', Object.keys(payload).join(', '))
-    console.log('[SubmitReport] payload size:', JSON.stringify(payload).length, 'chars')
     const res = await createReport(payload)
-    console.log('[SubmitReport] response:', res)
     if (res.success) {
       success.value = t('experiments.successSubmit')
       setTimeout(() => { emit('update:show', false); emit('submitted') }, 1200)

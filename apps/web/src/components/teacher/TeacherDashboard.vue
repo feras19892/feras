@@ -148,6 +148,7 @@ onMounted(() => {
         v-if="activeTab === 'daily'"
         :unopened="todayUnopened"
         :overdue="overdueUngraded"
+        :locale="locale"
         @open-report="openReport"
       />
       <DashboardClassesTab

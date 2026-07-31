@@ -84,7 +84,7 @@ function solveEquation(eq: ChemAnalysisEquation) {
         });
       }
     } catch (e) {
-      console.error('[solveEquation] Error:', e, 'formula:', eq.formula);
+      if (import.meta.env.DEV) console.error('[solveEquation] Error:', e, 'formula:', eq.formula);
     }
   }
 }

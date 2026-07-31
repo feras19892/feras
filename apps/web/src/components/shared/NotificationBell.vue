@@ -5,8 +5,8 @@ import { useNotifications } from '../../composables/useNotifications';
 import { useI18n } from '../../composables/useI18n';
 
 const router = useRouter();
-const { notifications, unreadCount, markAllRead, markOneRead } = useNotifications();
-const { t } = useI18n();
+const { notifications, unreadCount, markAllRead, markOneRead, deleteOne, togglePin } = useNotifications();
+const { t, locale } = useI18n();
 const open = ref(false);
 const wrapperRef = ref<HTMLElement | null>(null);
 
@@ -34,11 +34,11 @@ function getIcon(type: string) {
 
 function formatTime(dateStr: string) {
   const d = new Date(dateStr);
-  return d.toLocaleString('ar-SA', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  return d.toLocaleString(locale.value === 'ar' ? 'ar-SA' : locale.value, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
 
-function handleNotificationClick(n: { id: number; report_id?: number; type: string; class_id?: string }) {
-  markOneRead(n.id);
+function handleNotificationClick(n: { id: number; report_id?: number; type: string; class_id?: string; is_read: boolean; is_pinned?: number }) {
+  if (!n.is_read) markOneRead(n.id);
   open.value = false;
   if (n.report_id) {
     router.push(`/report/${n.report_id}`);
@@ -63,14 +63,23 @@ function handleNotificationClick(n: { id: number; report_id?: number; type: stri
       <div
         v-for="n in notifications"
         :key="n.id"
-        :class="['item', { unread: !n.is_read, clickable: n.report_id }]"
+        :class="['item', { unread: !n.is_read, clickable: n.report_id, pinned: n.is_pinned }]"
         @click="handleNotificationClick(n)"
       >
         <span class="icon">{{ getIcon(n.type) }}</span>
         <div class="content">
-          <div class="title">{{ n.title }}</div>
+          <div class="title">
+            <span v-if="n.is_pinned" class="pin-indicator">📌</span>
+            {{ n.title }}
+          </div>
           <div v-if="n.message" class="msg">{{ n.message }}</div>
           <div class="time">{{ formatTime(n.created_at) }}</div>
+          <div class="item-actions" @click.stop>
+            <button class="action-btn pin" @click="togglePin(n.id)" :title="n.is_pinned ? t('common.unpin') : t('common.pin')">
+              {{ n.is_pinned ? '📌' : '📍' }}
+            </button>
+            <button class="action-btn del" @click="deleteOne(n.id)" :title="t('common.delete')">🗑️</button>
+          </div>
         </div>
       </div>
     </div>
@@ -120,5 +129,10 @@ function handleNotificationClick(n: { id: number; report_id?: number; type: stri
 .content { display: flex; flex-direction: column; gap: 0.15rem; flex: 1; }
 .title { color: #e2e8f0; font-size: 0.8rem; font-weight: 600; }
 .msg { color: #94a3b8; font-size: 0.75rem; }
-.time { color: #64748b; font-size: 0.7rem; }
+.item.pinned { border-left: 2px solid #fbbf24; }
+.pin-indicator { font-size: 0.7rem; }
+.item-actions { display: flex; gap: 0.3rem; margin-top: 0.3rem; }
+.action-btn { background: none; border: 1px solid rgba(255,255,255,0.08); border-radius: 0.3rem; padding: 0.15rem 0.4rem; cursor: pointer; font-size: 0.7rem; font-family: inherit; transition: background 0.15s; }
+.action-btn.pin:hover { background: rgba(251,191,36,0.15); }
+.action-btn.del:hover { background: rgba(239,68,68,0.15); }
 </style>

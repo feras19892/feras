@@ -72,4 +72,11 @@ app.delete('/:id', async (c) => {
   return c.json({ success: true });
 });
 
+app.patch('/:id/pin', async (c) => {
+  const user = c.get('user');
+  const id = Number(c.req.param('id'));
+  const result = await svc.togglePinNotification(id, user.id);
+  return c.json(result);
+});
+
 export { app as notificationRoutes };

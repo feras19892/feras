@@ -25,17 +25,28 @@ export default defineConfig(({ mode }) => ({
     exclude: ['@my-modern-app/math-engine'],
   },
   build: {
+    chunkSizeWarningLimit: 700,
     rollupOptions: {
       output: {
         manualChunks(id: string) {
           if (id.includes('node_modules')) {
             if (id.includes('vue') || id.includes('vue-router') || id.includes('pinia')) return 'vendor-framework';
+            if (id.includes('three') || id.includes('@tresjs')) return 'vendor-three';
+            if (id.includes('pixi')) return 'vendor-pixi';
+            if (id.includes('matter-js') || id.includes('box2d') || id.includes('liquidfun')) return 'vendor-physics';
+            if (id.includes('katex')) return 'vendor-katex';
+            if (id.includes('splitpanes')) return 'vendor-splitpanes';
             if (id.includes('chart') || id.includes('d3') || id.includes('echarts')) return 'vendor-charts';
+            if (id.includes('sentry')) return 'vendor-sentry';
             return 'vendor';
           }
           if (id.includes('/modules/chemistry/')) return 'chemistry';
           if (id.includes('/pages/admin')) return 'admin';
-          if (id.includes('/locales/')) return 'locales';
+          if (id.includes('/locales/electric-workshop') || id.includes('/locales/electricWorkshop')) return 'locale-electric-workshop';
+          if (id.includes('/locales/biology')) return 'locale-biology';
+          if (id.includes('/locales/chemistry')) return 'locale-chemistry';
+          if (id.includes('/locales/experiments/')) return 'locale-experiments';
+          if (id.includes('/locales/')) return 'locale-shared';
         },
       },
     },

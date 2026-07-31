@@ -8,6 +8,9 @@ import {
   adminGetAllApprovals, adminApprove, adminReject,
 } from '../../services/approval.service';
 import { useAuthStore } from '../../modules/auth/stores/auth';
+import { useI18n } from '../../composables/useI18n';
+
+const { t, locale } = useI18n();
 
 const props = defineProps<{
   mode: 'student' | 'teacher' | 'school' | 'admin';
@@ -24,31 +27,36 @@ const submitting = ref(false);
 const submitMsg = ref('');
 const submitSuccess = ref(false);
 
-const filteredApprovals = computed(() => {
+const filteredApprovals = computed<ApprovalRequest[]>(() => {
   if (pendingOnly.value) return approvals.value.filter(a => a.status === 'pending');
   return approvals.value;
 });
 
-const typeLabel: Record<string, string> = {
-  penalty: '⚠️ عقوبة',
-  grade_change: '📊 تغيير درجة',
-  student_removal: '🚪 فصل طالب',
-  grade_appeal: '📝 اعتراض على درجة',
-};
+// Escalation only allowed on rejected status — enforce in UI
+function canEscalate(a: ApprovalRequest): boolean {
+  return (props.mode === 'student' || props.mode === 'teacher') && a.status === 'rejected';
+}
 
-const statusLabel: Record<string, string> = {
-  pending: '⏳ في الانتظار',
-  approved: '✅ موافق عليه',
-  rejected: '❌ مرفوض',
-  escalated: '⬆️ تم التصعيد',
-  auto_escalated: '⬆️ تصعيد تلقائي',
-};
+const typeLabel = computed<Record<string, string>>(() => ({
+  penalty: t('approval.typePenalty'),
+  grade_change: t('approval.typeGradeChange'),
+  student_removal: t('approval.typeStudentRemoval'),
+  grade_appeal: t('approval.typeGradeAppeal'),
+}));
 
-const approverLabel: Record<string, string> = {
-  teacher: 'المدرس',
-  school: 'المدرسة',
-  admin: 'الأدمن',
-};
+const statusLabel = computed<Record<string, string>>(() => ({
+  pending: t('approval.statusPending'),
+  approved: t('approval.statusApproved'),
+  rejected: t('approval.statusRejected'),
+  escalated: t('approval.statusEscalated'),
+  auto_escalated: t('approval.statusAutoEscalated'),
+}));
+
+const approverLabel = computed<Record<string, string>>(() => ({
+  teacher: t('approval.approverTeacher'),
+  school: t('approval.approverSchool'),
+  admin: t('approval.approverAdmin'),
+}));
 
 async function loadData() {
   loading.value = true;
@@ -69,7 +77,7 @@ async function loadData() {
       if (all.success) approvals.value = all.approvals;
     }
   } catch (err) {
-    error.value = 'Failed to load approvals';
+    error.value = t('approval.loadingError');
     console.error(err);
   } finally {
     loading.value = false;
@@ -106,14 +114,14 @@ async function handleResponse() {
 
     if (res.success) {
       submitSuccess.value = true;
-      submitMsg.value = type === 'approve' ? 'تمت الموافقة بنجاح' : type === 'reject' ? 'تم الرفض' : 'تم التصعيد';
+      submitMsg.value = type === 'approve' ? t('approval.approveSuccess') : type === 'reject' ? t('approval.rejectSuccess') : t('approval.escalateSuccess');
       responseModal.value = null;
       await loadData();
     } else {
-      submitMsg.value = (res as any).message || 'فشل العملية';
+      submitMsg.value = res.message || t('approval.operationFailed');
     }
   } catch {
-    submitMsg.value = 'فشل العملية';
+    submitMsg.value = t('approval.operationFailed');
   } finally {
     submitting.value = false;
   }
@@ -121,7 +129,7 @@ async function handleResponse() {
 
 function fmtDate(s: string) {
   if (!s) return '—';
-  return new Date(s).toLocaleDateString('ar-SA', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  return new Date(s).toLocaleDateString(locale.value === 'ar' ? 'ar-SA' : locale.value, { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
 
 onMounted(loadData);
@@ -130,13 +138,13 @@ onMounted(loadData);
 <template>
   <div class="approvals-panel">
     <div class="ap-header">
-      <h3>📋 طلبات الموافقة</h3>
+      <h3>{{ t('approval.title') }}</h3>
       <div class="ap-controls">
         <label class="ap-toggle">
           <input type="checkbox" v-model="pendingOnly" />
-          <span>المعلقة فقط</span>
+          <span>{{ t('approval.pendingOnly') }}</span>
         </label>
-        <button class="ap-refresh" @click="loadData">🔄 تحديث</button>
+        <button class="ap-refresh" @click="loadData">{{ t('approval.refresh') }}</button>
       </div>
     </div>
 
@@ -145,7 +153,7 @@ onMounted(loadData);
 
     <div v-else-if="filteredApprovals.length === 0" class="ap-empty">
       <div class="ap-empty-icon">📭</div>
-      <p>لا توجد طلبات {{ pendingOnly ? 'معلقة' : '' }}</p>
+      <p>{{ pendingOnly ? t('approval.emptyPending') : t('approval.empty') }}</p>
     </div>
 
     <div v-else class="ap-list">
@@ -160,20 +168,20 @@ onMounted(loadData);
           <p class="ap-desc">{{ a.description }}</p>
 
           <div class="ap-meta">
-            <span class="ap-meta-item"><strong>من:</strong> {{ a.requester_name }}</span>
-            <span class="ap-meta-item"><strong>الموافق:</strong> {{ approverLabel[a.approver_type] || a.approver_type }}</span>
-            <span class="ap-meta-item"><strong>المستهدف:</strong> {{ a.target_user_name }}</span>
-            <span v-if="a.proposed_grade != null" class="ap-meta-item"><strong>الدرجة المقترحة:</strong> {{ a.proposed_grade }}</span>
-            <span v-if="a.severity" class="ap-meta-item"><strong>الخطورة:</strong> {{ a.severity }}</span>
+            <span class="ap-meta-item"><strong>{{ t('approval.from') }}:</strong> {{ a.requester_name }}</span>
+            <span class="ap-meta-item"><strong>{{ t('approval.approver') }}:</strong> {{ approverLabel[a.approver_type] || a.approver_type }}</span>
+            <span class="ap-meta-item"><strong>{{ t('approval.target') }}:</strong> {{ a.target_user_name }}</span>
+            <span v-if="a.proposed_grade != null" class="ap-meta-item"><strong>{{ t('approval.proposedGrade') }}:</strong> {{ a.proposed_grade }}</span>
+            <span v-if="a.severity" class="ap-meta-item"><strong>{{ t('approval.severity') }}:</strong> {{ a.severity }}</span>
           </div>
 
           <div v-if="a.approver_response" class="ap-response">
-            <strong>الرد:</strong> {{ a.approver_response }}
+            <strong>{{ t('approval.response') }}:</strong> {{ a.approver_response }}
             <span v-if="a.approver_name">— {{ a.approver_name }}</span>
           </div>
 
           <div v-if="a.escalated_to" class="ap-escalation">
-            <strong>تم التصعيد إلى:</strong> {{ approverLabel[a.escalated_to] || a.escalated_to }}
+            <strong>{{ t('approval.escalatedTo') }}:</strong> {{ approverLabel[a.escalated_to] || a.escalated_to }}
             <span v-if="a.escalation_reason"> — {{ a.escalation_reason }}</span>
           </div>
 
@@ -186,17 +194,17 @@ onMounted(loadData);
             v-if="mode === 'admin' || mode === a.approver_type || (mode === 'teacher' && a.approver_type === 'teacher')"
             class="ap-btn approve"
             @click="openResponse('approve', a.id)"
-          >✅ موافقة</button>
+          >{{ t('approval.approve') }}</button>
           <button
             v-if="mode === 'admin' || mode === a.approver_type || (mode === 'teacher' && a.approver_type === 'teacher')"
             class="ap-btn reject"
             @click="openResponse('reject', a.id)"
-          >❌ رفض</button>
+          >{{ t('approval.reject') }}</button>
           <button
-            v-if="mode === 'student' || mode === 'teacher'"
+            v-if="canEscalate(a)"
             class="ap-btn escalate"
             @click="openResponse('escalate', a.id)"
-          >⬆️ تصعيد</button>
+          >{{ t('approval.escalate') }}</button>
         </div>
       </div>
     </div>
@@ -204,12 +212,12 @@ onMounted(loadData);
     <!-- Response Modal -->
     <div v-if="responseModal?.show" class="ap-modal-overlay" @click.self="responseModal = null">
       <div class="ap-modal">
-        <h3>{{ responseModal.type === 'approve' ? '✅ موافقة' : responseModal.type === 'reject' ? '❌ رفض' : '⬆️ تصعيد' }}</h3>
-        <textarea v-model="responseText" class="ap-textarea" :placeholder="responseModal.type === 'approve' ? 'سبب الموافقة...' : responseModal.type === 'reject' ? 'سبب الرفض...' : 'سبب التصعيد...'" rows="3"></textarea>
+        <h3>{{ responseModal.type === 'approve' ? t('approval.approve') : responseModal.type === 'reject' ? t('approval.reject') : t('approval.escalate') }}</h3>
+        <textarea v-model="responseText" class="ap-textarea" :placeholder="responseModal.type === 'approve' ? t('approval.approveReason') : responseModal.type === 'reject' ? t('approval.rejectReason') : t('approval.escalateReason')" rows="3"></textarea>
         <p v-if="submitMsg && !submitSuccess" class="ap-form-error">{{ submitMsg }}</p>
         <div class="ap-modal-actions">
-          <button class="ap-btn-cancel" @click="responseModal = null">إلغاء</button>
-          <button class="ap-btn-confirm" :disabled="submitting" @click="handleResponse">{{ submitting ? '...' : 'تأكيد' }}</button>
+          <button class="ap-btn-cancel" @click="responseModal = null">{{ t('approval.cancel') }}</button>
+          <button class="ap-btn-confirm" :disabled="submitting" @click="handleResponse">{{ submitting ? '...' : t('approval.confirm') }}</button>
         </div>
       </div>
     </div>

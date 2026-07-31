@@ -205,11 +205,12 @@ export async function escalateRequest(
   requestId: number,
   reason: string,
 ): Promise<{ success: boolean; message?: string }> {
-  const req = await db.get<any>(`SELECT * FROM approval_requests WHERE id = ? AND status = 'pending'`, requestId);
-  if (!req) return { success: false, message: 'Request not found or already processed' };
+  // Only allow escalation after rejection — enforces hierarchical flow
+  const req = await db.get<any>(`SELECT * FROM approval_requests WHERE id = ? AND status = 'rejected'`, requestId);
+  if (!req) return { success: false, message: 'لا يمكن التصعيد — الطلب لم يُرفض بعد. يجب أن يُرفض من المسؤول الحالي أولاً قبل التصعيد للمستوى الأعلى.' };
 
   const nextApprover = escalationMap[req.approver_type as ApproverType];
-  if (!nextApprover) return { success: false, message: 'Cannot escalate further' };
+  if (!nextApprover) return { success: false, message: 'لا يمكن التصعيد أكثر — وصل الطلب للأدمن' };
 
   // Calculate new escalation deadline for the next approver
   const escalationHours: Record<ApproverType, number> = { teacher: 48, school: 72, admin: 0 };
@@ -219,7 +220,7 @@ export async function escalateRequest(
     : null;
 
   await db.run(
-    `UPDATE approval_requests SET status = 'escalated', escalated_to = ?, escalated_at = datetime('now'), escalation_reason = ?, approver_type = ?, escalation_deadline = ?, updated_at = datetime('now') WHERE id = ?`,
+    `UPDATE approval_requests SET status = 'pending', escalated_to = ?, escalated_at = datetime('now'), escalation_reason = ?, approver_type = ?, escalation_deadline = ?, updated_at = datetime('now') WHERE id = ?`,
     nextApprover, reason, nextApprover, newDeadline, requestId,
   );
 
@@ -351,7 +352,7 @@ export async function runAutoEscalation(): Promise<number> {
       : null;
 
     await db.run(
-      `UPDATE approval_requests SET status = 'auto_escalated', escalated_to = ?, escalated_at = datetime('now'), escalation_reason = ?, approver_type = ?, escalation_deadline = ?, auto_escalated_at = datetime('now'), updated_at = datetime('now') WHERE id = ?`,
+      `UPDATE approval_requests SET status = 'pending', escalated_to = ?, escalated_at = datetime('now'), escalation_reason = ?, approver_type = ?, escalation_deadline = ?, auto_escalated_at = datetime('now'), updated_at = datetime('now') WHERE id = ?`,
       nextApprover, 'تصعيد تلقائي — انتهاء مهلة الرد', nextApprover, newDeadline, req.id,
     );
 

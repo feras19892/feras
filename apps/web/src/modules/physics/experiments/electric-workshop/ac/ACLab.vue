@@ -115,7 +115,7 @@ function loadExp(name: 'ac_rl' | 'ac_rc' | 'ac_rlc' | 'ac_transformer' | 'ac_fil
   try {
     workshop.loadExperiment(name)
   } catch (e) {
-    console.error('loadExperiment error:', e)
+    if (import.meta.env.DEV) console.error('loadExperiment error:', e)
   }
   if (workshop.running.value) workshop.solve()
   redraw()

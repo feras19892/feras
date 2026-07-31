@@ -15,7 +15,7 @@ import * as healthSvc from './system-health-service.js';
 import * as exportSvc from './export-service.js';
 import * as auditSvc from './audit-service.js';
 import { createAnnouncement } from '../announcements/services.js';
-import { createNotification } from '../notifications/services.js';
+import { createNotification, createSchoolNotification } from '../notifications/services.js';
 import { db } from '../../db/index.js';
 import type { User } from '@my-modern-app/shared-types';
 
@@ -61,8 +61,10 @@ app.use(async (c, next) => {
 
 // GET /users
 app.get('/users', async (c) => {
-  const list = await svc.getAllUsers();
-  return c.json({ success: true, users: list });
+  const page = Math.max(1, Number(c.req.query('page') || '1'));
+  const limit = Math.min(100, Math.max(1, Number(c.req.query('limit') || '50')));
+  const result = await svc.getAllUsers(page, limit);
+  return c.json({ success: true, ...result });
 });
 
 // GET /stats
@@ -79,8 +81,10 @@ app.get('/classes', async (c) => {
 
 // GET /reports
 app.get('/reports', async (c) => {
-  const list = await svc.getAllReportsWithDetails();
-  return c.json({ success: true, reports: list });
+  const page = Math.max(1, Number(c.req.query('page') || '1'));
+  const limit = Math.min(100, Math.max(1, Number(c.req.query('limit') || '50')));
+  const result = await svc.getAllReportsWithDetails(page, limit);
+  return c.json({ success: true, ...result });
 });
 
 // DELETE /users/:id
@@ -94,7 +98,7 @@ app.delete('/users/:id', async (c) => {
     const result = await svc.deleteUser(id);
     return c.json(result);
   } catch (err) {
-    console.error('deleteUser error:', err);
+    if (process.env.NODE_ENV !== 'production') console.error('deleteUser error:', err);
     const msg = err instanceof Error ? err.message : 'Failed to delete user — foreign key constraint';
     return c.json({ success: false, message: msg }, 500);
   }
@@ -381,6 +385,17 @@ app.patch('/alerts/:id/resolve', async (c) => {
 });
 
 // ─── Emergency Controls ───
+const EMERGENCY_PASSWORD = process.env.EMERGENCY_PASSWORD || '';
+if (!EMERGENCY_PASSWORD && process.env.NODE_ENV === 'production') {
+  console.warn('[SECURITY] EMERGENCY_PASSWORD env variable is not set — emergency controls will be disabled in production');
+}
+
+async function verifyEmergencyPassword(c: any): Promise<boolean> {
+  if (!EMERGENCY_PASSWORD) return false;
+  const body = await c.req.json().catch(() => ({}));
+  return body.emergency_password === EMERGENCY_PASSWORD;
+}
+
 async function broadcastEmergency(user: User, title: string, content: string) {
   await createAnnouncement({
     author_type: 'admin',
@@ -391,6 +406,7 @@ async function broadcastEmergency(user: User, title: string, content: string) {
     content,
     is_pinned: true,
   });
+  // Notify all users
   const users = await db.all<{ id: number }[]>(`SELECT id FROM users WHERE blocked_at IS NULL`);
   for (const u of users) {
     await createNotification({
@@ -400,9 +416,20 @@ async function broadcastEmergency(user: User, title: string, content: string) {
       message: content.slice(0, 150),
     });
   }
+  // Notify all schools
+  const schools = await db.all<{ id: number }[]>(`SELECT id FROM schools WHERE blocked_at IS NULL`);
+  for (const s of schools) {
+    await createSchoolNotification({
+      school_id: s.id,
+      type: 'emergency',
+      title: `🚨 ${title}`,
+      message: content.slice(0, 150),
+    });
+  }
 }
 
 app.post('/emergency/stop-registration', async (c) => {
+  if (!await verifyEmergencyPassword(c)) return c.json({ success: false, message: 'كلمة مرور الطوارئ غير صحيحة' }, 403);
   const user = c.get('user') as User;
   await svc.updateSystemSetting('stop_registration', 'true', user.id);
   await broadcastEmergency(user, 'إيقاف التسجيل', 'تم إيقاف تسجيل المستخدمين الجدد مؤقتاً بواسطة الإدارة. سيتم استئناف التسجيل قريباً.');
@@ -410,6 +437,7 @@ app.post('/emergency/stop-registration', async (c) => {
 });
 
 app.post('/emergency/resume-registration', async (c) => {
+  if (!await verifyEmergencyPassword(c)) return c.json({ success: false, message: 'كلمة مرور الطوارئ غير صحيحة' }, 403);
   const user = c.get('user') as User;
   await svc.updateSystemSetting('stop_registration', 'false', user.id);
   await broadcastEmergency(user, 'استئناف التسجيل', 'تم استئناف تسجيل المستخدمين الجدد. يمكنكم التسجيل الآن.');
@@ -417,6 +445,7 @@ app.post('/emergency/resume-registration', async (c) => {
 });
 
 app.post('/emergency/maintenance-on', async (c) => {
+  if (!await verifyEmergencyPassword(c)) return c.json({ success: false, message: 'كلمة مرور الطوارئ غير صحيحة' }, 403);
   const user = c.get('user') as User;
   await svc.updateSystemSetting('maintenance_mode', 'true', user.id);
   await broadcastEmergency(user, 'وضع الصيانة', 'النظام في وضع الصيانة حالياً. قد تكون بعض الخدمات غير متاحة مؤقتاً. نعتذر عن الإزعاج.');
@@ -424,6 +453,7 @@ app.post('/emergency/maintenance-on', async (c) => {
 });
 
 app.post('/emergency/maintenance-off', async (c) => {
+  if (!await verifyEmergencyPassword(c)) return c.json({ success: false, message: 'كلمة مرور الطوارئ غير صحيحة' }, 403);
   const user = c.get('user') as User;
   await svc.updateSystemSetting('maintenance_mode', 'false', user.id);
   await broadcastEmergency(user, 'انتهاء الصيانة', 'تم إيقاف وضع الصيانة. جميع الخدمات متاحة الآن بشكل طبيعي.');
@@ -431,6 +461,7 @@ app.post('/emergency/maintenance-off', async (c) => {
 });
 
 app.post('/emergency/freeze-all', async (c) => {
+  if (!await verifyEmergencyPassword(c)) return c.json({ success: false, message: 'كلمة مرور الطوارئ غير صحيحة' }, 403);
   const user = c.get('user') as User;
   await svc.updateSystemSetting('freeze_all_classes', 'true', user.id);
   await svc.freezeAllClasses(user.id);
@@ -439,11 +470,34 @@ app.post('/emergency/freeze-all', async (c) => {
 });
 
 app.post('/emergency/unfreeze-all', async (c) => {
+  if (!await verifyEmergencyPassword(c)) return c.json({ success: false, message: 'كلمة مرور الطوارئ غير صحيحة' }, 403);
   const user = c.get('user') as User;
   await svc.updateSystemSetting('freeze_all_classes', 'false', user.id);
   await svc.unfreezeAllClasses();
   await broadcastEmergency(user, 'إلغاء تجميد الفصول', 'تم إلغاء تجميد جميع الفصول. يمكنكم متابعة العمل بشكل طبيعي.');
   return c.json({ success: true, message: 'تم إلغاء التجميد وإرسال إشعار لجميع المستخدمين' });
+});
+
+// ─── Admin Detailed Reports ───
+app.get('/detailed-stats', async (c) => {
+  const validPeriods = ['today', 'week', 'month', 'year', 'all'];
+  const period = (c.req.query('period') || 'today') as 'today' | 'week' | 'month' | 'year' | 'all';
+  if (!validPeriods.includes(period)) {
+    return c.json({ success: false, message: 'Invalid period' }, 400);
+  }
+  const stats = await svc.getDetailedSystemStats(period);
+  return c.json({ success: true, stats });
+});
+
+app.get('/academic-tracking', async (c) => {
+  const tracking = await svc.getAcademicTracking();
+  return c.json({ success: true, tracking });
+});
+
+app.get('/detailed-reports', async (c) => {
+  const date = c.req.query('date') || undefined;
+  const report = await svc.getAdminDetailedReports(date);
+  return c.json({ success: true, report });
 });
 
 export { app as adminRoutes };

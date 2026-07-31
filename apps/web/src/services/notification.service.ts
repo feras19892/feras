@@ -8,6 +8,7 @@ export interface Notification {
   report_id?: number;
   class_id?: string;
   is_read: boolean;
+  is_pinned?: number;
   created_at: string;
 }
 
@@ -29,4 +30,8 @@ export async function markAllAsRead() {
 
 export async function deleteNotification(id: number) {
   return fetchJson<{ success: boolean }>(`/api/notifications/${id}`, { method: 'DELETE' });
+}
+
+export async function pinNotification(id: number) {
+  return fetchJson<{ success: boolean; is_pinned?: number }>(`/api/notifications/${id}/pin`, { method: 'PATCH' });
 }

@@ -58,6 +58,26 @@ approvalRoutes.post('/', authMiddleware, zValidator('json', createSchema), async
   const user = c.get('user');
   const body = c.req.valid('json');
 
+  // ─── Enforce hierarchical escalation ───
+  // Students → teacher first (or school if no teacher context)
+  // Teachers → school first
+  // School → admin
+  // Nobody below school can send directly to admin
+  if (user.role === 'student' || user.role === 'teacher') {
+    if (body.approver_type === 'admin') {
+      return c.json({ success: false, message: 'لا يمكنك إرسال طلب مباشرة للأدمن. يجب أن يمر عبر المدرسة أولاً. إذا رفضت المدرسة طلبك، يمكنك التصعيد للأدمن.' }, 403);
+    }
+    // Students must go to teacher first (if class context) or school
+    if (user.role === 'student' && body.approver_type === 'school' && body.class_id) {
+      // Redirect to teacher instead
+      body.approver_type = 'teacher';
+      const cls = await db.get<{ teacher_id: number }>(
+        'SELECT teacher_id FROM classes WHERE id = ?', body.class_id,
+      );
+      if (cls) body.approver_id = cls.teacher_id;
+    }
+  }
+
   // Auto-fill school_id from target user if not provided
   if (!body.school_id) {
     const targetUser = await db.get<{ school_id: number | null }>(

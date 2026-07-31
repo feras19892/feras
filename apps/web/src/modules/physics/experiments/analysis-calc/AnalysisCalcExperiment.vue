@@ -201,7 +201,7 @@ async function exportPng() {
   const canvas = analysisTabRef.value?.getCanvas();
   if (!canvas || canvas.width === 0) {
     if (prevTab !== 1) activeTab.value = prevTab;
-    console.warn('[exportPng] no chart canvas available');
+    if (import.meta.env.DEV) console.warn('[exportPng] no chart canvas available');
     return;
   }
   const link = document.createElement('a');
@@ -212,7 +212,6 @@ async function exportPng() {
 }
 
 async function captureChart() {
-  console.log('[captureChart] start, current tab:', activeTab.value);
   const prevTab = activeTab.value;
   if (prevTab !== 1) {
     activeTab.value = 1;
@@ -221,23 +220,18 @@ async function captureChart() {
     analysisTabRef.value?.drawChart?.();
     await new Promise<void>(r => setTimeout(r, 200));
   }
-  console.log('[captureChart] analysisTabRef exists?', !!analysisTabRef.value);
   const canvas = analysisTabRef.value?.getCanvas();
-  console.log('[captureChart] canvas exists?', !!canvas, 'width:', canvas?.width);
   if (canvas && canvas.width > 0) {
     chartSnapshot.value = canvas.toDataURL('image/png');
-    console.log('[captureChart] snapshot captured, length:', chartSnapshot.value.length);
-  } else {
+  } else if (import.meta.env.DEV) {
     console.warn('[captureChart] no canvas or empty canvas');
   }
   if (prevTab !== 1) activeTab.value = prevTab;
 }
 
 async function sendToTeacher() {
-  console.log('[sendToTeacher] called, hasData:', hasData.value);
-  if (!hasData.value) { console.warn('[sendToTeacher] no data'); return; }
+  if (!hasData.value) return;
   await captureChart();
-  console.log('[sendToTeacher] opening modal, snapshot length:', chartSnapshot.value.length);
   reportOpen.value = true;
 }
 </script>

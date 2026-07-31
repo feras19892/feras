@@ -72,7 +72,7 @@ async function onUploadAvatar() {
   avatarError.value = '';
   avatarSuccess.value = '';
   if (!avatarUrl.value.trim()) {
-    avatarError.value = 'الرجاء إدخال رابط الصورة';
+    avatarError.value = t('shared.avatarUrlRequired');
     return;
   }
   avatarLoading.value = true;
@@ -81,13 +81,13 @@ async function onUploadAvatar() {
     if (res.success) {
       avatarPreview.value = avatarUrl.value.trim();
       if (auth.user) (auth.user as any).avatar_url = avatarUrl.value.trim();
-      avatarSuccess.value = 'تم تحديث الصورة الشخصية';
+      avatarSuccess.value = t('shared.avatarUpdated');
       setTimeout(() => { avatarSuccess.value = ''; }, 3000);
     } else {
-      avatarError.value = res.message || 'فشل التحديث';
+      avatarError.value = res.message || t('shared.avatarUpdateFailed');
     }
   } catch (e: any) {
-    avatarError.value = e?.message || 'فشل التحديث';
+    avatarError.value = e?.message || t('shared.avatarUpdateFailed');
   }
   avatarLoading.value = false;
 }
@@ -97,7 +97,7 @@ function onFileSelected(e: Event) {
   const file = target.files?.[0];
   if (!file) return;
   if (file.size > 2 * 1024 * 1024) {
-    avatarError.value = 'حجم الصورة يجب أن يكون أقل من 2 ميجابايت';
+    avatarError.value = t('shared.avatarTooLarge');
     return;
   }
   const reader = new FileReader();
@@ -233,7 +233,7 @@ async function onDeleteAccount() {
         <!-- Section tabs -->
         <div class="section-tabs">
           <button :class="['sec-tab', { active: activeSection === 'avatar' }]" @click="activeSection = 'avatar'">
-            <span>📸</span> الصورة
+            <span>📸</span> {{ t('shared.avatarTab') }}
           </button>
           <button :class="['sec-tab', { active: activeSection === 'name' }]" @click="activeSection = 'name'">
             <span>✏️</span> {{ t('account.editName') }}
@@ -253,18 +253,18 @@ async function onDeleteAccount() {
             <div v-else class="avatar-placeholder">{{ isAdmin ? '🛡️' : isTeacher ? '👨‍🏫' : '🎓' }}</div>
           </div>
           <div class="field">
-            <label>رابط الصورة</label>
+            <label>{{ t('shared.avatarUrlLabel') }}</label>
             <input v-model="avatarUrl" type="text" placeholder="https://example.com/photo.jpg" />
           </div>
           <div class="avatar-upload-row">
-            <button class="btn-upload" @click="fileInput?.click()">📁 اختيار ملف</button>
+            <button class="btn-upload" @click="fileInput?.click()">{{ t('shared.avatarChooseFile') }}</button>
             <input ref="fileInput" type="file" accept="image/*" @change="onFileSelected" style="display:none" />
           </div>
-          <p class="info-note">💡 يمكنك لصق رابط صورة أو رفع ملف من جهازك (يستحبس كـ Base64)</p>
+          <p class="info-note">{{ t('shared.avatarInfoNote') }}</p>
           <p v-if="avatarError" class="error">{{ avatarError }}</p>
           <p v-if="avatarSuccess" class="success">{{ avatarSuccess }}</p>
           <button class="btn-primary" :disabled="avatarLoading" @click="onUploadAvatar">
-            {{ avatarLoading ? t('auth.loading') : 'حفظ الصورة' }}
+            {{ avatarLoading ? t('auth.loading') : t('shared.avatarSave') }}
           </button>
         </div>
 

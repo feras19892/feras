@@ -47,46 +47,46 @@ const translatedCards = computed(() => cards.value.map(card => ({
 const groups = computed<SidebarGroup[]>(() => [
   {
     id: 'main',
-    title: 'الرئيسية',
+    title: t('shared.navHome'),
     icon: '🏠',
     items: [
-      { id: 'overview', icon: '📊', label: 'نظرة عامة' },
-      { id: 'experiments', icon: '🔬', label: 'التجارب' },
+      { id: 'overview', icon: '📊', label: t('shared.navOverview') },
+      { id: 'experiments', icon: '🔬', label: t('shared.navExperiments') },
     ],
   },
   {
     id: 'work',
-    title: 'العمل',
+    title: t('shared.navWork'),
     icon: '📚',
     items: [
-      { id: 'reports', icon: '📋', label: 'تقاريري', badge: kpi.value.pendingCount > 0 ? kpi.value.pendingCount : undefined },
-      { id: 'classes', icon: '🏫', label: 'فصولي' },
-      { id: 'quizzes', icon: '📝', label: 'الامتحانات' },
+      { id: 'reports', icon: '📋', label: t('shared.navMyReports'), badge: kpi.value.pendingCount > 0 ? kpi.value.pendingCount : undefined },
+      { id: 'classes', icon: '🏫', label: t('shared.navMyClasses') },
+      { id: 'quizzes', icon: '📝', label: t('shared.navQuizzes') },
     ],
   },
   {
     id: 'achieve',
-    title: 'الإنجازات',
+    title: t('shared.navAchieve'),
     icon: '🏆',
     items: [
-      { id: 'badges', icon: '🏅', label: 'شاراتي وترتيبي' },
+      { id: 'badges', icon: '🏅', label: t('shared.navBadges') },
     ],
   },
   {
     id: 'comm',
-    title: 'التواصل',
+    title: t('shared.navComm'),
     icon: '💬',
     items: [
-      { id: 'announcements', icon: '📢', label: 'الإعلانات' },
-      { id: 'approvals', icon: '✋', label: 'الاعتراضات' },
+      { id: 'announcements', icon: '📢', label: t('shared.navAnnouncements') },
+      { id: 'approvals', icon: '✋', label: t('shared.navObjections') },
     ],
   },
   {
     id: 'account',
-    title: 'الحساب',
+    title: t('shared.navAccount'),
     icon: '⚙️',
     items: [
-      { id: 'settings', icon: '👤', label: 'الإعدادات' },
+      { id: 'settings', icon: '👤', label: t('shared.navSettings') },
     ],
   },
 ])
@@ -168,42 +168,42 @@ onMounted(async () => {
         <div class="kpi-item" :class="{ click: kpi.pendingCount > 0 }" @click="kpi.pendingCount > 0 && (active = 'reports')">
           <span class="kpi-icon">⏳</span>
           <span class="kpi-val">{{ kpi.pendingCount }}</span>
-          <span class="kpi-lab">معلّق</span>
+          <span class="kpi-lab">{{ t('shared.kpiPendingShort') }}</span>
         </div>
         <div class="kpi-item" :class="{ click: kpi.newFeedback > 0 }" @click="kpi.newFeedback > 0 && (active = 'reports')">
           <span class="kpi-icon">💬</span>
           <span class="kpi-val">{{ kpi.newFeedback }}</span>
-          <span class="kpi-lab">ملاحظات</span>
+          <span class="kpi-lab">{{ t('shared.kpiFeedback') }}</span>
         </div>
         <div class="kpi-item">
           <span class="kpi-icon">✅</span>
           <span class="kpi-val">{{ kpi.gradedCount }}</span>
-          <span class="kpi-lab">مصحّح</span>
+          <span class="kpi-lab">{{ t('shared.kpiGradedShort') }}</span>
         </div>
         <div class="kpi-item">
           <span class="kpi-icon">📝</span>
           <span class="kpi-val">{{ kpi.draftCount }}</span>
-          <span class="kpi-lab">مسودة</span>
+          <span class="kpi-lab">{{ t('shared.kpiDraft') }}</span>
         </div>
         <div class="kpi-item">
           <span class="kpi-icon">📄</span>
           <span class="kpi-val">{{ kpi.totalReports }}</span>
-          <span class="kpi-lab">الإجمالي</span>
+          <span class="kpi-lab">{{ t('shared.kpiTotal') }}</span>
         </div>
         <div class="kpi-item">
           <span class="kpi-icon">🏫</span>
           <span class="kpi-val">{{ kpi.totalClasses }}</span>
-          <span class="kpi-lab">فصول</span>
+          <span class="kpi-lab">{{ t('shared.kpiClasses') }}</span>
         </div>
         <div class="kpi-item">
           <span class="kpi-icon">📊</span>
           <span class="kpi-val">{{ kpi.avgGrade }}%</span>
-          <span class="kpi-lab">المتوسط</span>
+          <span class="kpi-lab">{{ t('shared.kpiAvg') }}</span>
         </div>
         <div class="kpi-item">
           <span class="kpi-icon">⭐</span>
           <span class="kpi-val">{{ kpi.bestGrade }}%</span>
-          <span class="kpi-lab">الأفضل</span>
+          <span class="kpi-lab">{{ t('shared.kpiBest') }}</span>
         </div>
       </div>
 
@@ -231,6 +231,7 @@ onMounted(async () => {
               :recent="recentReports"
               :overdue="overduePending"
               :classes="classes"
+              :locale="locale"
               @open-report="openReport"
               @open-tab="active = $event as Section"
               @navigate="active = $event as Section"
@@ -255,7 +256,7 @@ onMounted(async () => {
 
           <!-- Reports -->
           <div v-else-if="active === 'reports'" class="section-panel">
-            <StudentReportsTab :rows="reportRows" @open-report="openReport" />
+            <StudentReportsTab :rows="reportRows" :locale="locale" @open-report="openReport" />
           </div>
 
           <!-- Classes -->

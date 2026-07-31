@@ -1,7 +1,4 @@
 import type { Locale, TranslationDict } from './types'
-import arMessages from './ar'
-import enMessages from './en'
-import esMessages from './es'
 
 export type { Locale, TranslationDict }
 
@@ -13,12 +10,10 @@ export const localeNames: Record<Locale, string> = {
   es: 'Español',
 }
 
-const localeModules: Record<Locale, TranslationDict> = {
-  ar: arMessages as TranslationDict,
-  en: enMessages as TranslationDict,
-  es: esMessages as TranslationDict,
-}
-
 export async function loadLocaleMessages(locale: Locale): Promise<TranslationDict> {
-  return localeModules[locale]
+  switch (locale) {
+    case 'ar': return (await import('./ar')).default as TranslationDict;
+    case 'en': return (await import('./en')).default as TranslationDict;
+    case 'es': return (await import('./es')).default as TranslationDict;
+  }
 }

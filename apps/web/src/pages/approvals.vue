@@ -5,9 +5,11 @@ import { useAuthStore } from '../modules/auth/stores/auth';
 import ApprovalPanel from '../components/shared/ApprovalPanel.vue';
 import AccountSettingsModal from '../components/shared/AccountSettingsModal.vue';
 import NotificationBell from '../components/shared/NotificationBell.vue';
+import { useI18n } from '../composables/useI18n';
 
 const router = useRouter();
 const auth = useAuthStore();
+const { t } = useI18n();
 
 const mode = computed<'student' | 'teacher' | 'school' | 'admin'>(() => {
   return (auth.user?.role || auth.role) as any;
@@ -15,11 +17,11 @@ const mode = computed<'student' | 'teacher' | 'school' | 'admin'>(() => {
 
 const title = computed(() => {
   switch (mode.value) {
-    case 'admin': return 'لوحة الموافقات — الأدمن';
-    case 'school': return 'لوحة الموافقات — المدرسة';
-    case 'teacher': return 'لوحة الموافقات — المدرس';
-    case 'student': return 'لوحة الاعتراضات — الطالب';
-    default: return 'لوحة الموافقات';
+    case 'admin': return t('shared.approvalsTitleAdmin');
+    case 'school': return t('shared.approvalsTitleSchool');
+    case 'teacher': return t('shared.approvalsTitleTeacher');
+    case 'student': return t('shared.approvalsTitleStudent');
+    default: return t('shared.approvalsTitleDefault');
   }
 });
 </script>
@@ -28,13 +30,13 @@ const title = computed(() => {
   <div class="ap-page">
     <div class="ap-page-header">
       <div class="ap-back" @click="router.back()">
-        <span>← رجوع</span>
+        <span>{{ t('shared.back') }}</span>
       </div>
       <h2>{{ title }}</h2>
       <div class="ap-page-right">
         <AccountSettingsModal />
         <NotificationBell />
-        <button class="logout-btn" @click="auth.logout(); router.push('/')">خروج</button>
+        <button class="logout-btn" @click="auth.logout(); router.push('/')">{{ t('shared.logout') }}</button>
       </div>
     </div>
 

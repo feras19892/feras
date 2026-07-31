@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useI18n } from '../../composables/useI18n'
+import { apiUrl } from '../../services/http'
 import {
   getSchoolNotifications, getSchoolUnreadCount,
   markSchoolNotificationRead, markAllSchoolNotificationsRead,
-  deleteSchoolNotification, type SchoolNotification,
+  deleteSchoolNotification, pinSchoolNotification, type SchoolNotification,
 } from '../../services/school-notification.service'
 
+const { t, locale } = useI18n()
 const open = ref(false)
 const notifications = ref<SchoolNotification[]>([])
 const unreadCount = ref(0)
 let eventSource: EventSource | null = null
+let fallbackIntervalId: ReturnType<typeof setInterval> | null = null
 
 async function loadUnread() {
   try {
@@ -32,13 +36,19 @@ function toggle() {
 
 async function markRead(id: number) {
   await markSchoolNotificationRead(id)
-  notifications.value = notifications.value.map(n => n.id === id ? { ...n, is_read: 1 } : n)
+  const n = notifications.value.find(x => x.id === id)
+  if (!n) return
+  if (n.is_pinned) {
+    n.is_read = 1
+  } else {
+    notifications.value = notifications.value.filter(x => x.id !== id)
+  }
   unreadCount.value = Math.max(0, unreadCount.value - 1)
 }
 
 async function markAll() {
   await markAllSchoolNotificationsRead()
-  notifications.value = notifications.value.map(n => ({ ...n, is_read: 1 }))
+  notifications.value = notifications.value.filter(n => n.is_pinned).map(n => ({ ...n, is_read: 1 }))
   unreadCount.value = 0
 }
 
@@ -48,12 +58,22 @@ async function remove(id: number) {
   await loadUnread()
 }
 
+async function togglePin(id: number) {
+  try {
+    const res = await pinSchoolNotification(id)
+    if (res.success) {
+      const n = notifications.value.find(x => x.id === id)
+      if (n) n.is_pinned = res.is_pinned ? 1 : 0
+    }
+  } catch { /* ignore */ }
+}
+
 function formatTime(dateStr: string) {
-  return new Date(dateStr).toLocaleString('ar-SA', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+  return new Date(dateStr).toLocaleString(locale.value === 'ar' ? 'ar-SA' : locale.value, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
 }
 
 function connectSSE() {
-  eventSource = new EventSource('/api/school/notifications/stream')
+  eventSource = new EventSource(apiUrl('/api/school/notifications/stream'))
   eventSource.addEventListener('notification', (e) => {
     try {
       const data = JSON.parse((e as MessageEvent).data)
@@ -63,7 +83,25 @@ function connectSSE() {
   })
   eventSource.onerror = () => {
     eventSource?.close()
-    setTimeout(connectSSE, 5000)
+    eventSource = null
+    if (!fallbackIntervalId) {
+      loadUnread()
+      loadNotifications()
+      fallbackIntervalId = setInterval(() => {
+        loadUnread()
+        loadNotifications()
+      }, 30000)
+    }
+    setTimeout(() => {
+      if (!eventSource) connectSSE()
+    }, 10000)
+  }
+}
+
+function stopFallback() {
+  if (fallbackIntervalId) {
+    clearInterval(fallbackIntervalId)
+    fallbackIntervalId = null
   }
 }
 
@@ -74,6 +112,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   eventSource?.close()
+  stopFallback()
 })
 </script>
 
@@ -86,23 +125,29 @@ onUnmounted(() => {
 
     <div v-if="open" class="notif-dropdown" @click.stop>
       <div class="notif-header">
-        <span>الإشعارات</span>
-        <button v-if="unreadCount > 0" class="mark-all-btn" @click="markAll">تعليم الكل كمقروء</button>
+        <span>{{ t('common.notifications') }}</span>
+        <button v-if="unreadCount > 0" class="mark-all-btn" @click="markAll">{{ t('common.markAllRead') }}</button>
       </div>
       <div class="notif-list">
-        <div v-if="notifications.length === 0" class="notif-empty">لا توجد إشعارات</div>
+        <div v-if="notifications.length === 0" class="notif-empty">{{ t('common.noNotifications') }}</div>
         <div
           v-for="n in notifications.slice(0, 30)"
           :key="n.id"
-          :class="['notif-item', { unread: !n.is_read }]"
+          :class="['notif-item', { unread: !n.is_read, pinned: n.is_pinned }]"
         >
           <div class="notif-item-header">
-            <span class="notif-title">{{ n.title }}</span>
-            <button class="notif-del" @click="remove(n.id)">✕</button>
+            <span class="notif-title">
+              <span v-if="n.is_pinned" class="pin-indicator">📌</span>
+              {{ n.title }}
+            </span>
+            <div class="notif-actions">
+              <button class="notif-pin" @click="togglePin(n.id)" :title="n.is_pinned ? t('common.unpin') : t('common.pin')">{{ n.is_pinned ? '📌' : '📍' }}</button>
+              <button class="notif-del" @click="remove(n.id)">✕</button>
+            </div>
           </div>
           <p v-if="n.message" class="notif-msg">{{ n.message }}</p>
           <span class="notif-time">{{ formatTime(n.created_at) }}</span>
-          <button v-if="!n.is_read" class="notif-read-btn" @click="markRead(n.id)">تعليم كمقروء</button>
+          <button v-if="!n.is_read" class="notif-read-btn" @click="markRead(n.id)">{{ t('common.markRead') }}</button>
         </div>
       </div>
     </div>
@@ -180,5 +225,9 @@ onUnmounted(() => {
   color: #38bdf8; font-size: 0.65rem; cursor: pointer;
   margin-top: 0.3rem; font-family: inherit;
 }
-.notif-read-btn:hover { background: rgba(56,189,248,0.08); }
+.notif-item.pinned { border-left: 2px solid #fbbf24; }
+.pin-indicator { font-size: 0.7rem; }
+.notif-actions { display: flex; gap: 0.2rem; }
+.notif-pin { background: none; border: none; color: #fbbf24; cursor: pointer; font-size: 0.65rem; padding: 0.1rem; }
+.notif-pin:hover { opacity: 0.7; }
 </style>

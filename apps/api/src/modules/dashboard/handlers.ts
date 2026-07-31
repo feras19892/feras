@@ -9,6 +9,10 @@ const dashboardRoutes = new Hono();
 dashboardRoutes.use(authMiddleware);
 
 dashboardRoutes.get('/stats', async (c) => {
+  const user = (c as any).get('user') as User;
+  if (user.role !== 'admin') {
+    return c.json({ success: false, message: 'Forbidden' }, 403);
+  }
   const stats = await getStats();
   return c.json({ success: true, data: stats });
 });

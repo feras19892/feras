@@ -47,7 +47,7 @@ const roleIcon = computed(() => {
 
 const roleLabel = computed(() => {
   if (!user.value) return '';
-  return user.value.role === 'teacher' ? 'مدرس' : 'طالب';
+  return user.value.role === 'teacher' ? t('shared.roleTeacher') : t('shared.roleStudent');
 });
 
 async function loadData() {
@@ -69,7 +69,7 @@ async function loadData() {
     }
   } catch (err) {
     error.value = 'Failed to load user data';
-    console.error(err);
+    if (import.meta.env.DEV) console.error('school-user-detail load failed:', err);
   } finally {
     loading.value = false;
   }
@@ -84,15 +84,15 @@ async function handleWarning() {
     const res = await createSchoolWarning(userId, warningForm.value.title, warningForm.value.message, warningForm.value.severity);
     if (res.success) {
       formSuccess.value = true;
-      formMsg.value = 'تم إرسال التحذير بنجاح';
+      formMsg.value = t('shared.sudWarningSent');
       showWarningModal.value = false;
       warningForm.value = { title: '', message: '', severity: 'normal' };
       await loadData();
     } else {
-      formMsg.value = res.message || 'فشل الإرسال';
+      formMsg.value = res.message || t('shared.sudSendFailed');
     }
   } catch {
-    formMsg.value = 'فشل الإرسال';
+    formMsg.value = t('shared.sudSendFailed');
   } finally {
     submitting.value = false;
   }
@@ -107,14 +107,14 @@ async function handleReport() {
     const res = await reportToAdmin(userId, reportForm.value.reason, reportForm.value.details);
     if (res.success) {
       formSuccess.value = true;
-      formMsg.value = 'تم إرسال البلاغ للأدمن بنجاح';
+      formMsg.value = t('shared.sudReportSent');
       showReportModal.value = false;
       reportForm.value = { reason: '', details: '' };
     } else {
-      formMsg.value = res.message || 'فشل الإرسال';
+      formMsg.value = res.message || t('shared.sudSendFailed');
     }
   } catch {
-    formMsg.value = 'فشل الإرسال';
+    formMsg.value = t('shared.sudSendFailed');
   } finally {
     submitting.value = false;
   }
@@ -133,12 +133,12 @@ onMounted(loadData);
     <!-- Header -->
     <div class="sud-header">
       <div class="sud-back" @click="router.push('/school')">
-        <span>← رجوع</span>
+        <span>{{ t('shared.back') }}</span>
       </div>
       <div class="sud-header-right">
         <AccountSettingsModal />
         <NotificationBell />
-        <button class="logout-btn" @click="auth.clearSchoolSession(); router.push('/')">خروج</button>
+        <button class="logout-btn" @click="auth.clearSchoolSession(); router.push('/')">{{ t('shared.logout') }}</button>
       </div>
     </div>
 
@@ -155,9 +155,9 @@ onMounted(loadData);
           <p class="sud-email">{{ user?.email }}</p>
           <div class="sud-badges">
             <span class="badge-role" :class="user?.role">{{ roleLabel }}</span>
-            <span v-if="user?.blocked_at" class="badge-blocked">🚫 محظور</span>
-            <span v-else class="badge-active">✅ نشط</span>
-            <span v-if="user?.email_verified_at" class="badge-verified">📧 موثق</span>
+            <span v-if="user?.blocked_at" class="badge-blocked">{{ t('shared.sudBlocked') }}</span>
+            <span v-else class="badge-active">{{ t('shared.sudActive') }}</span>
+            <span v-if="user?.email_verified_at" class="badge-verified">{{ t('shared.sudVerified') }}</span>
           </div>
         </div>
         <div class="sud-profile-actions">
@@ -169,7 +169,7 @@ onMounted(loadData);
             :targetUserName="user?.name || ''"
             :schoolId="user?.school_id"
           >
-            📊 طلب تغيير درجة
+            {{ t('shared.sudReqGradeChange') }}
           </CreateApprovalButton>
           <CreateApprovalButton
             v-if="user?.role === 'student'"
@@ -179,16 +179,16 @@ onMounted(loadData);
             :targetUserName="user?.name || ''"
             :schoolId="user?.school_id"
           >
-            🚪 طلب فصل من فصل
+            {{ t('shared.sudReqStudentRemoval') }}
           </CreateApprovalButton>
           <button class="action-btn warning" @click="showWarningModal = true">
-            ⚠️ تحذير مباشر
+            {{ t('shared.sudDirectWarning') }}
           </button>
           <button class="action-btn report" @click="showReportModal = true">
-            🚩 بلاغ للأدمن
+            {{ t('shared.sudReportToAdmin') }}
           </button>
           <button class="action-btn approvals" @click="router.push('/approvals')">
-            📋 الموافقات
+            {{ t('shared.sudApprovals') }}
           </button>
         </div>
       </div>
@@ -198,54 +198,54 @@ onMounted(loadData);
         <div class="stat-item">
           <span class="stat-icon">📚</span>
           <span class="stat-val">{{ stats.totalClasses || 0 }}</span>
-          <span class="stat-lab">فصول</span>
+          <span class="stat-lab">{{ t('shared.sudStatClasses') }}</span>
         </div>
         <div class="stat-item">
           <span class="stat-icon">📄</span>
           <span class="stat-val">{{ stats.totalReports || 0 }}</span>
-          <span class="stat-lab">تقارير</span>
+          <span class="stat-lab">{{ t('shared.sudStatReports') }}</span>
         </div>
         <div class="stat-item">
           <span class="stat-icon">✅</span>
           <span class="stat-val">{{ stats.gradedReports || 0 }}</span>
-          <span class="stat-lab">مصححة</span>
+          <span class="stat-lab">{{ t('shared.sudStatGraded') }}</span>
         </div>
         <div class="stat-item">
           <span class="stat-icon">⏳</span>
           <span class="stat-val">{{ stats.pendingReports || 0 }}</span>
-          <span class="stat-lab">معلقة</span>
+          <span class="stat-lab">{{ t('shared.sudStatPending') }}</span>
         </div>
         <div class="stat-item">
           <span class="stat-icon">📊</span>
           <span class="stat-val">{{ stats.avgGrade || 0 }}%</span>
-          <span class="stat-lab">المعدل</span>
+          <span class="stat-lab">{{ t('shared.sudStatAvg') }}</span>
         </div>
         <div class="stat-item">
           <span class="stat-icon">🔑</span>
           <span class="stat-val">{{ stats.totalSessions || 0 }}</span>
-          <span class="stat-lab">جلسات</span>
+          <span class="stat-lab">{{ t('shared.sudStatSessions') }}</span>
         </div>
       </div>
 
       <!-- Tabs -->
       <div class="sud-tabs">
         <button :class="['tab', { active: activeTab === 'overview' }]" @click="activeTab = 'overview'">
-          <span>📊</span> نظرة عامة
+          <span>📊</span> {{ t('shared.sudTabOverview') }}
         </button>
         <button :class="['tab', { active: activeTab === 'classes' }]" @click="activeTab = 'classes'">
-          <span>📚</span> الفصول
+          <span>📚</span> {{ t('shared.sudTabClasses') }}
         </button>
         <button :class="['tab', { active: activeTab === 'reports' }]" @click="activeTab = 'reports'">
-          <span>📄</span> التقارير
+          <span>📄</span> {{ t('shared.sudTabReports') }}
         </button>
         <button :class="['tab', { active: activeTab === 'activity' }]" @click="activeTab = 'activity'">
-          <span>📝</span> النشاطات
+          <span>📝</span> {{ t('shared.sudTabActivity') }}
         </button>
         <button :class="['tab', { active: activeTab === 'sessions' }]" @click="activeTab = 'sessions'">
-          <span>🔑</span> الجلسات
+          <span>🔑</span> {{ t('shared.sudTabSessions') }}
         </button>
         <button :class="['tab', { active: activeTab === 'warnings' }]" @click="activeTab = 'warnings'">
-          <span>⚠️</span> التحذيرات
+          <span>⚠️</span> {{ t('shared.sudTabWarnings') }}
           <span v-if="warnings.length" class="tab-badge">{{ warnings.length }}</span>
         </button>
       </div>
@@ -254,23 +254,23 @@ onMounted(loadData);
       <div v-if="activeTab === 'overview'" class="sud-tab-panel">
         <div class="sud-grid">
           <div class="sud-card">
-            <h3>📋 معلومات الحساب</h3>
-            <div class="info-row"><span>الاسم:</span><strong>{{ user?.name }}</strong></div>
-            <div class="info-row"><span>البريد:</span><strong>{{ user?.email }}</strong></div>
-            <div class="info-row"><span>الدور:</span><strong>{{ roleLabel }}</strong></div>
-            <div class="info-row"><span>تاريخ التسجيل:</span><strong>{{ fmtDate(user?.created_at) }}</strong></div>
-            <div class="info-row"><span>توثيق البريد:</span><strong>{{ user?.email_verified_at ? fmtDate(user?.email_verified_at) : 'غير موثق' }}</strong></div>
-            <div v-if="user?.blocked_at" class="info-row"><span>تاريخ الحظر:</span><strong class="danger">{{ fmtDate(user?.blocked_at) }}</strong></div>
-            <div v-if="user?.block_reason" class="info-row"><span>سبب الحظر:</span><strong class="danger">{{ user?.block_reason }}</strong></div>
+            <h3>{{ t('shared.sudAccountInfo') }}</h3>
+            <div class="info-row"><span>{{ t('shared.sudName') }}</span><strong>{{ user?.name }}</strong></div>
+            <div class="info-row"><span>{{ t('shared.sudEmail') }}</span><strong>{{ user?.email }}</strong></div>
+            <div class="info-row"><span>{{ t('shared.sudRole') }}</span><strong>{{ roleLabel }}</strong></div>
+            <div class="info-row"><span>{{ t('shared.sudRegDate') }}</span><strong>{{ fmtDate(user?.created_at) }}</strong></div>
+            <div class="info-row"><span>{{ t('shared.sudEmailVerified') }}</span><strong>{{ user?.email_verified_at ? fmtDate(user?.email_verified_at) : t('shared.sudNotVerified') }}</strong></div>
+            <div v-if="user?.blocked_at" class="info-row"><span>{{ t('shared.sudBlockDate') }}</span><strong class="danger">{{ fmtDate(user?.blocked_at) }}</strong></div>
+            <div v-if="user?.block_reason" class="info-row"><span>{{ t('shared.sudBlockReason') }}</span><strong class="danger">{{ user?.block_reason }}</strong></div>
           </div>
           <div class="sud-card">
-            <h3>📊 الإحصائيات</h3>
-            <div class="mini-stat"><span>📚 الفصول:</span><strong>{{ stats.totalClasses || 0 }}</strong></div>
-            <div class="mini-stat"><span>📄 إجمالي التقارير:</span><strong>{{ stats.totalReports || 0 }}</strong></div>
-            <div class="mini-stat"><span>✅ تقارير مصححة:</span><strong>{{ stats.gradedReports || 0 }}</strong></div>
-            <div class="mini-stat"><span>⏳ تقارير معلقة:</span><strong>{{ stats.pendingReports || 0 }}</strong></div>
-            <div class="mini-stat"><span>📊 متوسط الدرجات:</span><strong>{{ stats.avgGrade || 0 }}%</strong></div>
-            <div class="mini-stat"><span>🔑 عدد الجلسات:</span><strong>{{ stats.totalSessions || 0 }}</strong></div>
+            <h3>{{ t('shared.sudStats') }}</h3>
+            <div class="mini-stat"><span>📚 {{ t('shared.sudStatClasses') }}:</span><strong>{{ stats.totalClasses || 0 }}</strong></div>
+            <div class="mini-stat"><span>📄 {{ t('shared.sudStatReports') }}:</span><strong>{{ stats.totalReports || 0 }}</strong></div>
+            <div class="mini-stat"><span>✅ {{ t('shared.sudStatGraded') }}:</span><strong>{{ stats.gradedReports || 0 }}</strong></div>
+            <div class="mini-stat"><span>⏳ {{ t('shared.sudStatPending') }}:</span><strong>{{ stats.pendingReports || 0 }}</strong></div>
+            <div class="mini-stat"><span>📊 {{ t('shared.sudStatAvg') }}:</span><strong>{{ stats.avgGrade || 0 }}%</strong></div>
+            <div class="mini-stat"><span>🔑 {{ t('shared.sudStatSessions') }}:</span><strong>{{ stats.totalSessions || 0 }}</strong></div>
           </div>
         </div>
       </div>
@@ -278,11 +278,11 @@ onMounted(loadData);
       <!-- Classes Tab -->
       <div v-if="activeTab === 'classes'" class="sud-tab-panel">
         <div v-if="user?.role === 'teacher'" class="sud-section">
-          <h3>📚 الفصول التي يدرّسها</h3>
-          <div v-if="taughtClasses.length === 0" class="sud-empty">لا توجد فصول</div>
+          <h3>{{ t('shared.sudClassesTaught') }}</h3>
+          <div v-if="taughtClasses.length === 0" class="sud-empty">{{ t('shared.sudNoClasses') }}</div>
           <div v-else class="sud-table-wrap">
             <table class="sud-table">
-              <thead><tr><th>الفصل</th><th>الكود</th><th>الطلاب</th><th>تاريخ الإنشاء</th></tr></thead>
+              <thead><tr><th>{{ t('shared.sudThClass') }}</th><th>{{ t('shared.sudThCode') }}</th><th>{{ t('shared.sudThStudents') }}</th><th>{{ t('shared.sudThCreated') }}</th></tr></thead>
               <tbody>
                 <tr v-for="c in taughtClasses" :key="c.id" class="clickable-row" @click="router.push(`/school/class/${c.id}`)">
                   <td>{{ c.name }}</td>
@@ -295,11 +295,11 @@ onMounted(loadData);
           </div>
         </div>
         <div class="sud-section">
-          <h3>📚 الفصول المشترك بها</h3>
-          <div v-if="joinedClasses.length === 0" class="sud-empty">لا توجد فصول</div>
+          <h3>{{ t('shared.sudClassesJoined') }}</h3>
+          <div v-if="joinedClasses.length === 0" class="sud-empty">{{ t('shared.sudNoClasses') }}</div>
           <div v-else class="sud-table-wrap">
             <table class="sud-table">
-              <thead><tr><th>الفصل</th><th>الكود</th><th>المدرس</th><th>تاريخ الإنشاء</th></tr></thead>
+              <thead><tr><th>{{ t('shared.sudThClass') }}</th><th>{{ t('shared.sudThCode') }}</th><th>{{ t('shared.sudThTeacher') }}</th><th>{{ t('shared.sudThCreated') }}</th></tr></thead>
               <tbody>
                 <tr v-for="c in joinedClasses" :key="c.id" class="clickable-row" @click="router.push(`/school/class/${c.id}`)">
                   <td>{{ c.name }}</td>
@@ -315,10 +315,10 @@ onMounted(loadData);
 
       <!-- Reports Tab -->
       <div v-if="activeTab === 'reports'" class="sud-tab-panel">
-        <div v-if="reports.length === 0" class="sud-empty">لا توجد تقارير</div>
+        <div v-if="reports.length === 0" class="sud-empty">{{ t('shared.sudNoReports') }}</div>
         <div v-else class="sud-table-wrap">
           <table class="sud-table">
-            <thead><tr><th>التجربة</th><th>الفصل</th><th>الحالة</th><th>الدرجة</th><th>التاريخ</th></tr></thead>
+            <thead><tr><th>{{ t('shared.sudThExperiment') }}</th><th>{{ t('shared.sudThClassCol') }}</th><th>{{ t('shared.sudThStatus') }}</th><th>{{ t('shared.sudThGrade') }}</th><th>{{ t('shared.sudThDate') }}</th></tr></thead>
             <tbody>
               <tr v-for="r in reports" :key="r.id">
                 <td>{{ r.experiment_name }}</td>
@@ -334,7 +334,7 @@ onMounted(loadData);
 
       <!-- Activity Tab -->
       <div v-if="activeTab === 'activity'" class="sud-tab-panel">
-        <div v-if="activity.length === 0" class="sud-empty">لا توجد نشاطات</div>
+        <div v-if="activity.length === 0" class="sud-empty">{{ t('shared.sudNoActivity') }}</div>
         <div v-else class="sud-timeline">
           <div v-for="(a, i) in activity" :key="i" class="timeline-item">
             <div class="timeline-dot"></div>
@@ -349,16 +349,16 @@ onMounted(loadData);
 
       <!-- Sessions Tab -->
       <div v-if="activeTab === 'sessions'" class="sud-tab-panel">
-        <div v-if="sessions.length === 0" class="sud-empty">لا توجد جلسات مسجلة</div>
+        <div v-if="sessions.length === 0" class="sud-empty">{{ t('shared.sudNoSessions') }}</div>
         <div v-else class="sud-table-wrap">
           <table class="sud-table">
-            <thead><tr><th>IP</th><th>المتصفح</th><th>تسجيل الدخول</th><th>تسجيل الخروج</th></tr></thead>
+            <thead><tr><th>{{ t('shared.sudThIP') }}</th><th>{{ t('shared.sudThBrowser') }}</th><th>{{ t('shared.sudThLogin') }}</th><th>{{ t('shared.sudThLogout') }}</th></tr></thead>
             <tbody>
               <tr v-for="(s, i) in sessions" :key="i">
                 <td>{{ s.ip || '—' }}</td>
                 <td class="sud-ua">{{ s.user_agent || '—' }}</td>
                 <td>{{ fmtDate(s.login_at) }}</td>
-                <td>{{ s.logout_at ? fmtDate(s.logout_at) : 'نشط' }}</td>
+                <td>{{ s.logout_at ? fmtDate(s.logout_at) : t('shared.sudSessionActive') }}</td>
               </tr>
             </tbody>
           </table>
@@ -367,7 +367,7 @@ onMounted(loadData);
 
       <!-- Warnings Tab -->
       <div v-if="activeTab === 'warnings'" class="sud-tab-panel">
-        <div v-if="warnings.length === 0" class="sud-empty">لا توجد تحذيرات</div>
+        <div v-if="warnings.length === 0" class="sud-empty">{{ t('shared.sudNoWarnings') }}</div>
         <div v-else class="sud-warnings">
           <div v-for="w in warnings" :key="w.id" class="warning-card" :class="w.severity">
             <div class="warning-header">
@@ -384,20 +384,20 @@ onMounted(loadData);
     <!-- Warning Modal -->
     <div v-if="showWarningModal" class="sud-modal-overlay" @click.self="showWarningModal = false">
       <div class="sud-modal">
-        <h3>⚠️ إرسال تحذير / عقوبة</h3>
-        <p class="modal-subtitle">سيتم إرسال تحذير إلى {{ user?.name }}</p>
+        <h3>{{ t('shared.sudWarningTitle') }}</h3>
+        <p class="modal-subtitle">{{ t('shared.sudWarningSubtitle', { name: user?.name }) }}</p>
         <select v-model="warningForm.severity" class="sud-input">
-          <option value="low">منخفضة</option>
-          <option value="normal">عادية</option>
-          <option value="high">عالية</option>
-          <option value="critical">حرجة</option>
+          <option value="low">{{ t('shared.sudSevLow') }}</option>
+          <option value="normal">{{ t('shared.sudSevNormal') }}</option>
+          <option value="high">{{ t('shared.sudSevHigh') }}</option>
+          <option value="critical">{{ t('shared.sudSevCritical') }}</option>
         </select>
-        <input v-model="warningForm.title" type="text" class="sud-input" placeholder="عنوان التحذير" />
-        <textarea v-model="warningForm.message" class="sud-input sud-textarea" placeholder="تفاصيل التحذير" rows="3"></textarea>
+        <input v-model="warningForm.title" type="text" class="sud-input" :placeholder="t('shared.sudWarningTitleInput')" />
+        <textarea v-model="warningForm.message" class="sud-input sud-textarea" :placeholder="t('shared.sudWarningDetailsInput')" rows="3"></textarea>
         <p v-if="formMsg && !formSuccess" class="sud-form-error">{{ formMsg }}</p>
         <div class="sud-modal-actions">
-          <button class="sud-btn-cancel" @click="showWarningModal = false">إلغاء</button>
-          <button class="sud-btn-confirm" :disabled="submitting" @click="handleWarning">{{ submitting ? '...' : 'إرسال' }}</button>
+          <button class="sud-btn-cancel" @click="showWarningModal = false">{{ t('shared.annCancel') }}</button>
+          <button class="sud-btn-confirm" :disabled="submitting" @click="handleWarning">{{ submitting ? '...' : t('shared.annPublish') }}</button>
         </div>
       </div>
     </div>
@@ -405,14 +405,14 @@ onMounted(loadData);
     <!-- Report Modal -->
     <div v-if="showReportModal" class="sud-modal-overlay" @click.self="showReportModal = false">
       <div class="sud-modal">
-        <h3>🚩 بلاغ للأدمن</h3>
-        <p class="modal-subtitle">سيتم إرسال بلاغ عن {{ user?.name }} إلى الأدمن</p>
-        <input v-model="reportForm.reason" type="text" class="sud-input" placeholder="سبب البلاغ" />
-        <textarea v-model="reportForm.details" class="sud-input sud-textarea" placeholder="تفاصيل النشاط الغريب" rows="4"></textarea>
+        <h3>{{ t('shared.sudReportTitle') }}</h3>
+        <p class="modal-subtitle">{{ t('shared.sudReportSubtitle', { name: user?.name }) }}</p>
+        <input v-model="reportForm.reason" type="text" class="sud-input" :placeholder="t('shared.sudReportReasonInput')" />
+        <textarea v-model="reportForm.details" class="sud-input sud-textarea" :placeholder="t('shared.sudReportDetailsInput')" rows="4"></textarea>
         <p v-if="formMsg && !formSuccess" class="sud-form-error">{{ formMsg }}</p>
         <div class="sud-modal-actions">
-          <button class="sud-btn-cancel" @click="showReportModal = false">إلغاء</button>
-          <button class="sud-btn-confirm" :disabled="submitting" @click="handleReport">{{ submitting ? '...' : 'إرسال البلاغ' }}</button>
+          <button class="sud-btn-cancel" @click="showReportModal = false">{{ t('shared.annCancel') }}</button>
+          <button class="sud-btn-confirm" :disabled="submitting" @click="handleReport">{{ submitting ? '...' : t('shared.sudSendReport') }}</button>
         </div>
       </div>
     </div>

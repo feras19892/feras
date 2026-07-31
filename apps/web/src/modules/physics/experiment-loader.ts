@@ -47,7 +47,7 @@ export function loadExperiment(id: string) {
     loadingComponent: () => import('./experiment-template/ExperimentShell.vue'),
     errorComponent: () => import('./experiment-template/ExperimentShell.vue'),
     onError(error) {
-      console.error(`Failed to load experiment "${id}":`, error);
+      if (import.meta.env.DEV) console.error(`Failed to load experiment "${id}":`, error);
     },
   });
 }

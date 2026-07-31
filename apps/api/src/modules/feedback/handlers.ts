@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import { authMiddleware } from '../auth/middleware.js';
 import * as svc from '../admin/feedback-service.js';
+import { db } from '../../db/index.js';
 import type { User } from '@my-modern-app/shared-types';
 
 type Variables = { user: User };
@@ -13,6 +14,17 @@ app.post('/', async (c) => {
   const user = c.get('user');
   const { type, message, experimentId, experimentName, rating } = await c.req.json();
 
+  // Auto-fill school_id from the user's school
+  let schoolId: number | null = null;
+  if (user.role === 'student' || user.role === 'teacher') {
+    const userRow = await db.get<{ school_id: number | null }>(
+      'SELECT school_id FROM users WHERE id = ?', user.id,
+    );
+    schoolId = userRow?.school_id || null;
+  } else if (user.role === 'school') {
+    schoolId = user.id;
+  }
+
   await svc.createFeedback(
     user.id,
     user.name,
@@ -20,7 +32,8 @@ app.post('/', async (c) => {
     message,
     experimentId,
     experimentName,
-    rating
+    rating,
+    schoolId,
   );
 
   return c.json({ success: true }, 201);

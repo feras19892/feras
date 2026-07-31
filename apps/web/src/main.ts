@@ -27,7 +27,7 @@ if (sentryDsn) {
       replaysOnErrorSampleRate: 1.0,
     });
   } catch {
-    console.warn('[Sentry] @sentry/vue not installed; error tracking disabled');
+    if (import.meta.env.DEV) console.warn('[Sentry] @sentry/vue not installed; error tracking disabled');
   }
 }
 
@@ -41,12 +41,12 @@ const i18n = useI18nStore();
   try {
     await i18n.bootstrap();
   } catch (e) {
-    console.error('[main] i18n.bootstrap failed:', e);
+    if (import.meta.env.DEV) console.error('[main] i18n.bootstrap failed:', e);
   }
   try {
     await auth.init();
   } catch (e) {
-    console.error('[main] auth.init failed:', e);
+    if (import.meta.env.DEV) console.error('[main] auth.init failed:', e);
   }
   app.mount('#app');
 

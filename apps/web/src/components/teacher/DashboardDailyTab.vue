@@ -2,13 +2,14 @@
 import { useI18n } from '../../composables/useI18n'
 import type { Report } from '../../services/report.service'
 
-defineProps<{
+const props = defineProps<{
   unopened: Report[]
   overdue: Report[]
+  locale?: string
 }>()
 
 const emit = defineEmits<{ (e: 'open-report', id: number): void }>()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 function daysSince(dateStr?: string): number {
   if (!dateStr) return 0
@@ -18,7 +19,9 @@ function daysSince(dateStr?: string): number {
 function timeShort(dateStr?: string): string {
   if (!dateStr) return ''
   const d = new Date(dateStr)
-  return d.toLocaleDateString('ar-SA') + ' ' + d.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
+  const loc = props.locale || locale.value
+  const localeStr = loc === 'ar' ? 'ar-SA' : loc === 'es' ? 'es-ES' : 'en-US'
+  return d.toLocaleDateString(localeStr) + ' ' + d.toLocaleTimeString(localeStr, { hour: '2-digit', minute: '2-digit' })
 }
 </script>
 

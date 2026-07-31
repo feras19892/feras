@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import { getMyBadges, getLeaderboard, type StudentBadge, type LeaderboardEntry } from '../../services/gamification.service';
 import { getMyPenalties, type Penalty } from '../../services/enhancements.service';
+import { getMyClasses } from '../../services/class.service';
+import { useI18n } from '../../composables/useI18n';
+
+const { t, locale } = useI18n();
+const dateLocaleStr = computed(() => locale.value === 'ar' ? 'ar-SA' : locale.value === 'es' ? 'es-ES' : 'en-US');
 
 const badges = ref<StudentBadge[]>([]);
 const penalties = ref<Penalty[]>([]);
@@ -10,29 +15,47 @@ const myRank = ref<number | null>(null);
 const loading = ref(false);
 const error = ref('');
 const activeTab = ref<'badges' | 'penalties' | 'leaderboard'>('badges');
-const classIdForLeaderboard = ref('');
+const myClasses = ref<{ id: string; name: string }[]>([]);
+const selectedClass = ref('');
 
 async function load() {
   loading.value = true;
   error.value = '';
   try {
-    const [b, p] = await Promise.all([getMyBadges(), getMyPenalties()]);
+    const [b, p, c] = await Promise.all([getMyBadges(), getMyPenalties(), getMyClasses()]);
     if (b.success) badges.value = b.badges;
     if (p.success) penalties.value = p.penalties;
-  } catch (e: any) {
-    error.value = e?.message || 'Failed to load';
+    if (c.success) myClasses.value = c.classes;
+    if (myClasses.value.length > 0) {
+      selectedClass.value = myClasses.value[0].id;
+    }
+  } catch (e: unknown) {
+    error.value = e instanceof Error ? e.message : t('dashboard.dash.quizFailed');
+    if (import.meta.env.DEV) console.error('enhancements load failed:', e);
   }
   loading.value = false;
 }
 
 async function loadLeaderboard() {
-  if (!classIdForLeaderboard.value.trim()) return;
-  const res = await getLeaderboard(classIdForLeaderboard.value.trim());
-  if (res.success) {
-    leaderboard.value = res.leaderboard;
-    myRank.value = res.myRank;
+  if (!selectedClass.value) return;
+  try {
+    const res = await getLeaderboard(selectedClass.value);
+    if (res.success) {
+      leaderboard.value = res.leaderboard;
+      myRank.value = res.myRank;
+    }
+  } catch (err) {
+    if (import.meta.env.DEV) console.error('loadLeaderboard failed:', err);
   }
 }
+
+watch(selectedClass, () => {
+  if (activeTab.value === 'leaderboard') loadLeaderboard();
+});
+
+watch(activeTab, (tab) => {
+  if (tab === 'leaderboard' && selectedClass.value) loadLeaderboard();
+});
 
 onMounted(load);
 </script>
@@ -40,64 +63,66 @@ onMounted(load);
 <template>
   <div class="enhancements-tab">
     <div class="sub-tabs">
-      <button :class="{ active: activeTab === 'badges' }" @click="activeTab = 'badges'">🏆 الشارات</button>
-      <button :class="{ active: activeTab === 'penalties' }" @click="activeTab = 'penalties'">⚠️ العقوبات والمكافآت</button>
-      <button :class="{ active: activeTab === 'leaderboard' }" @click="activeTab = 'leaderboard'">📊 لوحة الشرف</button>
+      <button :class="{ active: activeTab === 'badges' }" @click="activeTab = 'badges'">{{ t('dashboard.dash.enhBadges') }}</button>
+      <button :class="{ active: activeTab === 'penalties' }" @click="activeTab = 'penalties'">{{ t('dashboard.dash.enhPenalties') }}</button>
+      <button :class="{ active: activeTab === 'leaderboard' }" @click="activeTab = 'leaderboard'">{{ t('dashboard.dash.enhLeaderboard') }}</button>
     </div>
 
-    <div v-if="loading" class="loading">جاري التحميل...</div>
+    <div v-if="loading" class="loading">{{ t('dashboard.dash.quizLoading') }}</div>
     <div v-else-if="error" class="error-box">❌ {{ error }}</div>
 
     <!-- Badges -->
     <div v-if="activeTab === 'badges'" class="badges-grid">
-      <div v-if="badges.length === 0" class="empty">لا توجد شارات بعد</div>
+      <div v-if="badges.length === 0" class="empty">{{ t('dashboard.dash.enhNoBadges') }}</div>
       <div v-for="b in badges" :key="b.id" class="badge-card">
         <div class="badge-icon">{{ b.icon }}</div>
         <div class="badge-info">
           <h4>{{ b.name }}</h4>
           <p>{{ b.description }}</p>
-          <span class="badge-date">{{ new Date(b.awarded_at).toLocaleDateString('ar-SA') }}</span>
-          <span v-if="b.awarded_by_name" class="badge-by">من: {{ b.awarded_by_name }}</span>
+          <span class="badge-date">{{ new Date(b.awarded_at).toLocaleDateString(dateLocaleStr) }}</span>
+          <span v-if="b.awarded_by_name" class="badge-by">{{ t('dashboard.dash.enhTeacher') }}: {{ b.awarded_by_name }}</span>
         </div>
       </div>
     </div>
 
     <!-- Penalties & Rewards -->
     <div v-if="activeTab === 'penalties'" class="penalties-list">
-      <div v-if="penalties.length === 0" class="empty">لا توجد عقوبات أو مكافآت</div>
+      <div v-if="penalties.length === 0" class="empty">{{ t('dashboard.dash.enhNoPenalties') }}</div>
       <div v-for="p in penalties" :key="p.id" :class="['penalty-card', p.type, p.status]">
         <div class="penalty-header">
-          <span :class="['penalty-type', p.type]">{{ p.type === 'penalty' ? '⚠️ عقوبة' : '🎁 مكافأة' }}</span>
-          <span v-if="p.status === 'dismissed'" class="dismissed-badge">تم الإلغاء</span>
+          <span :class="['penalty-type', p.type]">{{ p.type === 'penalty' ? t('dashboard.dash.enhPenalty') : t('dashboard.dash.enhReward') }}</span>
+          <span v-if="p.status === 'dismissed'" class="dismissed-badge">{{ t('dashboard.dash.enhDismissed') }}</span>
         </div>
         <p class="penalty-reason">{{ p.reason }}</p>
         <div class="penalty-meta">
-          <span>المدرس: {{ p.teacher_name }}</span>
-          <span v-if="p.class_name">الفصل: {{ p.class_name }}</span>
-          <span :class="p.type === 'penalty' ? 'penalty-points' : 'reward-points'">{{ p.points > 0 ? '+' : '' }}{{ p.points }} نقطة</span>
+          <span>{{ t('dashboard.dash.enhTeacher') }}: {{ p.teacher_name }}</span>
+          <span v-if="p.class_name">{{ t('dashboard.dash.enhClass') }}: {{ p.class_name }}</span>
+          <span :class="p.type === 'penalty' ? 'penalty-points' : 'reward-points'">{{ p.points > 0 ? '+' : '' }}{{ p.points }} {{ t('dashboard.dash.enhTotalPoints') }}</span>
         </div>
-        <span class="penalty-date">{{ new Date(p.created_at).toLocaleDateString('ar-SA') }}</span>
+        <span class="penalty-date">{{ new Date(p.created_at).toLocaleDateString(dateLocaleStr) }}</span>
       </div>
     </div>
 
     <!-- Leaderboard -->
     <div v-if="activeTab === 'leaderboard'" class="leaderboard-section">
       <div class="lb-input-row">
-        <input v-model="classIdForLeaderboard" placeholder="أدخل معرف الفصل لعرض الترتيب" />
-        <button @click="loadLeaderboard">عرض</button>
+        <select v-model="selectedClass" class="lb-class-select">
+          <option value="">{{ t('dashboard.dash.enhSelectClass') }}</option>
+          <option v-for="c in myClasses" :key="c.id" :value="c.id">{{ c.name }}</option>
+        </select>
       </div>
-      <div v-if="myRank !== null" class="my-rank">ترتيبك: {{ myRank }}</div>
+      <div v-if="myRank !== null" class="my-rank">{{ t('dashboard.dash.enhMyRank') }}: {{ myRank }}</div>
       <div v-if="leaderboard.length > 0" class="lb-list">
         <div v-for="(entry, i) in leaderboard" :key="entry.id" :class="['lb-row', { 'is-me': myRank === i + 1 }]">
           <span :class="['lb-rank', { gold: i === 0, silver: i === 1, bronze: i === 2 }]">{{ i + 1 }}</span>
           <span class="lb-name">{{ entry.name }}</span>
-          <span class="lb-avg">متوسط: {{ Math.round(entry.avg_grade) }}%</span>
-          <span class="lb-reports">تقارير: {{ entry.report_count }}</span>
-          <span class="lb-quiz">امتحانات: {{ entry.quiz_scores }}</span>
-          <span class="lb-total">{{ entry.total_points }} نقطة</span>
+          <span class="lb-avg">{{ t('dashboard.dash.enhAvg') }}: {{ Math.round(entry.avg_grade) }}%</span>
+          <span class="lb-reports">{{ t('dashboard.dash.enhReports') }}: {{ entry.report_count }}</span>
+          <span class="lb-quiz">{{ t('dashboard.dash.enhQuizzes') }}: {{ entry.quiz_scores }}</span>
+          <span class="lb-total">{{ entry.total_points }} {{ t('dashboard.dash.enhTotalPoints') }}</span>
         </div>
       </div>
-      <div v-else-if="classIdForLeaderboard && !loading" class="empty">لا توجد بيانات</div>
+      <div v-else-if="selectedClass && !loading" class="empty">{{ t('dashboard.dash.enhNoData') }}</div>
     </div>
   </div>
 </template>

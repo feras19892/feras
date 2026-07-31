@@ -26,7 +26,7 @@ const statusFilter = ref<'all' | 'pending' | 'graded' | 'resubmitted'>('all')
 const stats = computed(() => {
   const total = reports.value.length
   const graded = reports.value.filter(r => r.status === 'graded').length
-  const avg = total > 0
+  const avg = graded > 0
     ? Math.round(reports.value.filter(r => r.grade !== undefined).reduce((s, r) => s + (r.grade || 0), 0) / graded)
     : 0
   return { total, graded, pending: total - graded, avg }
@@ -80,7 +80,8 @@ async function submitBulkGrade() {
       loadReports()
     }
   } catch (err) {
-    console.error('bulk grade failed:', err)
+    if (import.meta.env.DEV) console.error('bulk grade failed:', err);
+    alert(t('teacher.bulkGradeFailed') || 'Bulk grade failed');
   }
   bulkSaving.value = false
 }
@@ -103,8 +104,10 @@ async function confirmDelete(r: Report) {
   try {
     const res = await deleteReport(r.id)
     if (res.success) loadReports()
+    else alert((res as any).message || 'Failed to delete report')
   } catch (err) {
-    console.error('delete failed:', err)
+    if (import.meta.env.DEV) console.error('delete failed:', err);
+    alert('Failed to delete report')
   }
 }
 
@@ -121,7 +124,7 @@ async function loadClasses() {
     const p = await getPendingCount()
     if (p.success) pendingCount.value = p.pendingCount
   } catch (err) {
-    console.error('load classes failed:', err)
+    if (import.meta.env.DEV) console.error('load classes failed:', err);
   }
 }
 
@@ -132,7 +135,7 @@ async function loadReports() {
     const res = await getReports({ class_id: selectedClassId.value })
     if (res.success) reports.value = res.reports
   } catch (err) {
-    console.error('load reports failed:', err)
+    if (import.meta.env.DEV) console.error('load reports failed:', err);
   } finally {
     loading.value = false
   }

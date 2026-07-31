@@ -66,6 +66,17 @@ export async function deleteQuiz(quizId: number) {
 }
 
 export async function startSubmission(quizId: number, studentId: number) {
+  const quiz = await getQuizById(quizId);
+  if (!quiz) return null;
+  if (quiz.status === 'draft') return null;
+  if (quiz.status === 'closed') return null;
+  if (quiz.class_id) {
+    const member = await db.get(
+      `SELECT 1 FROM class_students WHERE class_id = ? AND student_id = ?`,
+      [quiz.class_id, studentId],
+    );
+    if (!member) return null;
+  }
   const existing = await db.get(`SELECT * FROM quiz_submissions WHERE quiz_id = ? AND student_id = ?`, [quizId, studentId]);
   if (existing) return existing;
   const result = await db.run(
@@ -76,6 +87,20 @@ export async function startSubmission(quizId: number, studentId: number) {
 }
 
 export async function submitQuiz(quizId: number, studentId: number, answers: Record<number, string>) {
+  const quiz = await getQuizById(quizId);
+  if (!quiz) return { score: 0, total: 0, error: 'Quiz not found' };
+  if (quiz.status === 'draft') return { score: 0, total: 0, error: 'Quiz not published' };
+  if (quiz.status === 'closed') return { score: 0, total: 0, error: 'Quiz is closed' };
+
+  // Verify student is a member of the quiz's class
+  if (quiz.class_id) {
+    const member = await db.get(
+      `SELECT 1 FROM class_students WHERE class_id = ? AND student_id = ?`,
+      [quiz.class_id, studentId],
+    );
+    if (!member) return { score: 0, total: 0, error: 'Not enrolled in this class' };
+  }
+
   const questions = await getQuizQuestions(quizId);
   let score = 0;
   let total = 0;

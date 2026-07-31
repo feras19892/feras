@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { createApproval } from '../../services/approval.service';
+import { useI18n } from '../../composables/useI18n';
+
+const { t } = useI18n();
 
 const props = defineProps<{
   type: 'penalty' | 'grade_change' | 'student_removal' | 'grade_appeal';
@@ -21,12 +24,12 @@ const submitting = ref(false);
 const errorMsg = ref('');
 const successMsg = ref('');
 
-const typeLabels: Record<string, string> = {
-  penalty: '⚠️ طلب عقوبة',
-  grade_change: '📊 طلب تغيير درجة',
-  student_removal: '🚪 طلب فصل طالب',
-  grade_appeal: '📝 اعتراض على درجة',
-};
+const typeLabels = computed<Record<string, string>>(() => ({
+  penalty: t('approval.createPenalty'),
+  grade_change: t('approval.createGradeChange'),
+  student_removal: t('approval.createStudentRemoval'),
+  grade_appeal: t('approval.createGradeAppeal'),
+}));
 
 async function submit() {
   if (!title.value.trim() || !description.value.trim()) return;
@@ -48,17 +51,17 @@ async function submit() {
       severity: props.type === 'penalty' ? severity.value : undefined,
     });
     if (res.success) {
-      successMsg.value = 'تم إرسال الطلب بنجاح';
+      successMsg.value = t('approval.createSuccess');
       show.value = false;
       title.value = '';
       description.value = '';
       proposedGrade.value = null;
       severity.value = 'normal';
     } else {
-      errorMsg.value = (res as any).message || 'فشل الإرسال';
+      errorMsg.value = (res as any).message || t('approval.createFailed');
     }
   } catch {
-    errorMsg.value = 'فشل الإرسال';
+    errorMsg.value = t('approval.createFailed');
   } finally {
     submitting.value = false;
   }
@@ -80,24 +83,24 @@ function open() {
     <div v-if="show" class="ca-overlay" @click.self="show = false">
       <div class="ca-modal">
         <h3>{{ typeLabels[type] }}</h3>
-        <p class="ca-subtitle">المستهدف: {{ targetUserName }}</p>
+        <p class="ca-subtitle">{{ t('approval.createTarget') }}: {{ targetUserName }}</p>
 
-        <input v-model="title" type="text" class="ca-input" placeholder="عنوان الطلب" />
+        <input v-model="title" type="text" class="ca-input" :placeholder="t('approval.createTitlePlaceholder')" />
 
-        <textarea v-model="description" class="ca-input ca-textarea" placeholder="اشرح السبب والتفاصيل..." rows="3"></textarea>
+        <textarea v-model="description" class="ca-input ca-textarea" :placeholder="t('approval.createDescPlaceholder')" rows="3"></textarea>
 
         <div v-if="type === 'grade_change' || type === 'grade_appeal'" class="ca-field">
-          <label>الدرجة المقترحة (0-100)</label>
-          <input v-model.number="proposedGrade" type="number" min="0" max="100" class="ca-input" placeholder="مثال: 85" />
+          <label>{{ t('approval.createProposedGrade') }}</label>
+          <input v-model.number="proposedGrade" type="number" min="0" max="100" class="ca-input" :placeholder="t('approval.createProposedGradePlaceholder')" />
         </div>
 
         <div v-if="type === 'penalty'" class="ca-field">
-          <label>مستوى الخطورة</label>
+          <label>{{ t('approval.createSeverity') }}</label>
           <select v-model="severity" class="ca-input">
-            <option value="low">منخفضة</option>
-            <option value="normal">عادية</option>
-            <option value="high">عالية</option>
-            <option value="critical">حرجة</option>
+            <option value="low">{{ t('approval.severityLow') }}</option>
+            <option value="normal">{{ t('approval.severityNormal') }}</option>
+            <option value="high">{{ t('approval.severityHigh') }}</option>
+            <option value="critical">{{ t('approval.severityCritical') }}</option>
           </select>
         </div>
 
@@ -105,8 +108,8 @@ function open() {
         <p v-if="successMsg" class="ca-success">{{ successMsg }}</p>
 
         <div class="ca-actions">
-          <button class="ca-cancel" @click="show = false">إلغاء</button>
-          <button class="ca-confirm" :disabled="submitting" @click="submit">{{ submitting ? '...' : 'إرسال الطلب' }}</button>
+          <button class="ca-cancel" @click="show = false">{{ t('approval.cancel') }}</button>
+          <button class="ca-confirm" :disabled="submitting" @click="submit">{{ submitting ? '...' : t('approval.createSubmit') }}</button>
         </div>
       </div>
     </div>

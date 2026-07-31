@@ -24,6 +24,7 @@ export interface SchoolUser {
   email: string;
   role: string;
   created_at: string;
+  blocked_at?: string | null;
 }
 
 export interface SchoolClass {
@@ -43,8 +44,8 @@ export async function registerSchool(name: string, email: string, password: stri
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password, max_students: maxStudents, max_teachers: maxTeachers }),
     });
-  } catch (err: any) {
-    return { success: false, message: err?.message || 'Registration failed' };
+  } catch (err: unknown) {
+    return { success: false, message: err instanceof Error ? err.message : 'Registration failed' };
   }
 }
 
@@ -55,8 +56,8 @@ export async function loginSchool(email: string, password: string): Promise<{ su
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
     });
-  } catch (err: any) {
-    return { success: false, school: undefined, message: err?.message || 'Login failed' };
+  } catch (err: unknown) {
+    return { success: false, school: undefined, message: err instanceof Error ? err.message : 'Login failed' };
   }
 }
 
@@ -74,8 +75,8 @@ export async function getSchoolStats() {
   return fetchJson<{ success: boolean; stats: SchoolStats; school: School }>('/api/school/stats');
 }
 
-export async function getSchoolUsers() {
-  return fetchJson<{ success: boolean; users: SchoolUser[] }>('/api/school/users');
+export async function getSchoolUsers(page = 1, limit = 50) {
+  return fetchJson<{ success: boolean; users: SchoolUser[]; total: number; page: number; limit: number; totalPages: number }>(`/api/school/users?page=${page}&limit=${limit}`);
 }
 
 export async function getSchoolClasses() {
@@ -100,8 +101,19 @@ export async function unblockSchoolUser(userId: number) {
   });
 }
 
-export async function getSchoolReports() {
-  return fetchJson<{ success: boolean; reports: any[] }>('/api/school/reports');
+export interface SchoolReportItem {
+  id: number;
+  student_name: string;
+  experiment_name: string;
+  class_name?: string;
+  status: string;
+  grade?: number | null;
+  submitted_at?: string;
+  created_at: string;
+}
+
+export async function getSchoolReports(page = 1, limit = 50) {
+  return fetchJson<{ success: boolean; reports: SchoolReportItem[]; total: number; page: number; limit: number; totalPages: number }>(`/api/school/reports?page=${page}&limit=${limit}`);
 }
 
 export async function updateSchoolName(name: string) {
@@ -129,12 +141,72 @@ export async function requestEmailChange(requestedEmail: string) {
 }
 
 // ===== School Oversight Functions =====
+export interface SchoolUserDetail {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  created_at: string;
+  blocked_at?: string | null;
+}
+
+export interface SchoolUserDetailResult {
+  success: boolean;
+  user: SchoolUserDetail;
+  joinedClasses: SchoolClass[];
+  taughtClasses: SchoolClass[];
+  reports: SchoolReportItem[];
+  activity: SchoolActivityItem[];
+  sessions: SchoolSessionItem[];
+  warnings: SchoolWarningItem[];
+  stats: { report_count: number; avg_grade: number; last_activity?: string };
+}
+
+export interface SchoolActivityItem {
+  id: number;
+  action: string;
+  actor_name: string;
+  details?: string;
+  created_at: string;
+}
+
+export interface SchoolSessionItem {
+  id: number;
+  user_name: string;
+  user_role: string;
+  ip?: string;
+  user_agent?: string;
+  login_at: string;
+  logout_at?: string | null;
+}
+
+export interface SchoolWarningItem {
+  id: number;
+  user_id?: number;
+  user_name: string;
+  user_role: string;
+  title: string;
+  message: string;
+  severity: string;
+  is_read?: boolean;
+  created_at: string;
+}
+
 export async function getSchoolUserDetail(userId: number) {
-  return fetchJson<{ success: boolean; user: any; joinedClasses: any[]; taughtClasses: any[]; reports: any[]; activity: any[]; sessions: any[]; warnings: any[]; stats: any }>(`/api/school/users/${userId}/detail`);
+  return fetchJson<SchoolUserDetailResult>(`/api/school/users/${userId}/detail`);
+}
+
+export interface SchoolClassDetailResult {
+  success: boolean;
+  class: SchoolClass;
+  students: SchoolUser[];
+  messages: { id: number; user_name: string; content: string; created_at: string }[];
+  reports: SchoolReportItem[];
+  stats: { report_count: number; graded_count: number; pending_count: number; class_average: number };
 }
 
 export async function getSchoolClassDetail(classId: string) {
-  return fetchJson<{ success: boolean; class: any; students: any[]; messages: any[]; reports: any[]; stats: any }>(`/api/school/classes/${classId}/detail`);
+  return fetchJson<SchoolClassDetailResult>(`/api/school/classes/${classId}/detail`);
 }
 
 export async function createSchoolWarning(userId: number, title: string, message: string, severity: string) {
@@ -146,7 +218,7 @@ export async function createSchoolWarning(userId: number, title: string, message
 }
 
 export async function getSchoolWarnings() {
-  return fetchJson<{ success: boolean; warnings: any[] }>('/api/school/warnings');
+  return fetchJson<{ success: boolean; warnings: SchoolWarningItem[] }>('/api/school/warnings');
 }
 
 export async function reportToAdmin(userId: number, reason: string, details: string) {
@@ -158,11 +230,11 @@ export async function reportToAdmin(userId: number, reason: string, details: str
 }
 
 export async function getSchoolSessions() {
-  return fetchJson<{ success: boolean; sessions: any[] }>('/api/school/sessions');
+  return fetchJson<{ success: boolean; sessions: SchoolSessionItem[] }>('/api/school/sessions');
 }
 
 export async function getSchoolActivity() {
-  return fetchJson<{ success: boolean; activity: any[] }>('/api/school/activity');
+  return fetchJson<{ success: boolean; activity: SchoolActivityItem[] }>('/api/school/activity');
 }
 
 // ===== Admin functions =====
@@ -216,7 +288,7 @@ export async function adminGetSchoolClasses(id: number) {
 }
 
 export async function adminGetSchoolReports(id: number) {
-  return fetchJson<{ success: boolean; reports: any[] }>(`/api/school/admin/${id}/reports`);
+  return fetchJson<{ success: boolean; reports: SchoolReportItem[] }>(`/api/school/admin/${id}/reports`);
 }
 
 export async function adminRemoveSchoolUser(schoolId: number, userId: number) {
@@ -237,8 +309,18 @@ export async function adminUnblockSchoolUser(schoolId: number, userId: number) {
   });
 }
 
+export interface EmailChangeRequest {
+  id: number;
+  account_type: string;
+  account_id: number;
+  current_email: string;
+  requested_email: string;
+  status: 'pending' | 'approved' | 'rejected';
+  created_at: string;
+}
+
 export async function adminGetEmailRequests() {
-  return fetchJson<{ success: boolean; requests: any[] }>('/api/school/admin/email-requests');
+  return fetchJson<{ success: boolean; requests: EmailChangeRequest[] }>('/api/school/admin/email-requests');
 }
 
 export async function adminReviewEmailRequest(id: number, status: 'approved' | 'rejected') {
@@ -249,9 +331,23 @@ export async function adminReviewEmailRequest(id: number, status: 'approved' | '
   });
 }
 
+export interface CapacityRequest {
+  id: number;
+  school_id: number;
+  school_name: string;
+  current_max_students: number;
+  current_max_teachers: number;
+  requested_max_students?: number;
+  requested_max_teachers?: number;
+  reason: string;
+  status: 'pending' | 'approved' | 'rejected';
+  response?: string;
+  created_at: string;
+}
+
 export async function adminGetCapacityRequests(status?: string) {
   const query = status ? `?status=${status}` : '';
-  return fetchJson<{ success: boolean; requests: any[] }>(`/api/school/admin/capacity-requests${query}`);
+  return fetchJson<{ success: boolean; requests: CapacityRequest[] }>(`/api/school/admin/capacity-requests${query}`);
 }
 
 export async function adminReviewCapacityRequest(id: number, status: 'approved' | 'rejected', response?: string) {
@@ -259,5 +355,84 @@ export async function adminReviewCapacityRequest(id: number, status: 'approved' 
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status, response }),
+  });
+}
+
+// ─── School Detailed Reports ───
+export interface SchoolDetailedReport {
+  date: string;
+  total_reports: number;
+  graded_reports: number;
+  pending_reports: number;
+  avg_grade: number;
+  by_class: { class_name: string; report_count: number; avg_grade: number }[];
+}
+
+export async function getSchoolDetailedReports(date?: string) {
+  const query = date ? `?date=${date}` : '';
+  return fetchJson<{ success: boolean; report: SchoolDetailedReport }>(`/api/school/reports/detailed${query}`);
+}
+
+export interface OutstandingStudent {
+  id: number;
+  name: string;
+  class_name: string;
+  avg_grade: number;
+  report_count: number;
+}
+
+export async function getOutstandingStudents(limit?: number) {
+  const query = limit ? `?limit=${limit}` : '';
+  return fetchJson<{ success: boolean; students: OutstandingStudent[] }>(`/api/school/reports/outstanding-students${query}`);
+}
+
+export async function getStrugglingStudents(limit?: number) {
+  const query = limit ? `?limit=${limit}` : '';
+  return fetchJson<{ success: boolean; students: OutstandingStudent[] }>(`/api/school/reports/struggling-students${query}`);
+}
+
+export interface TeacherEvaluation {
+  teacher_id: number;
+  teacher_name: string;
+  class_count: number;
+  student_count: number;
+  total_reports: number;
+  graded_reports: number;
+  avg_grade: number;
+}
+
+export async function getTeacherEvaluation() {
+  return fetchJson<{ success: boolean; evaluations: TeacherEvaluation[] }>('/api/school/reports/teacher-evaluation');
+}
+
+// ─── School Feedback ───
+export interface SchoolFeedbackItem {
+  id: number;
+  type: string;
+  user_name: string;
+  experiment_name?: string;
+  rating?: number | null;
+  message: string;
+  status: string;
+  created_at: string;
+}
+
+export interface SchoolFeedbackStats {
+  total: number;
+  open: number;
+  resolved: number;
+  dismissed: number;
+  avg_rating: number;
+}
+
+export async function getSchoolFeedback() {
+  return fetchJson<{ success: boolean; feedback: SchoolFeedbackItem[]; stats: SchoolFeedbackStats }>('/api/school/feedback');
+}
+
+export async function updateSchoolFeedbackStatus(id: number, status: string) {
+  return fetchJson<{ success: boolean }>(`/api/school/feedback/${id}/status`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status }),
   });
 }

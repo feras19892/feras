@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
 import { authMiddleware } from '../auth/middleware.js';
+import { db } from '../../db/index.js';
 import type { User } from '@my-modern-app/shared-types';
 import * as svc from './services.js';
 
@@ -38,6 +39,13 @@ quizRoutes.post('/', zValidator('json', createQuizSchema), async (c) => {
     return c.json({ success: false, message: 'Teachers only' }, 403);
   }
   const body = c.req.valid('json');
+  // Verify teacher owns the class
+  if (user.role === 'teacher') {
+    const classRow = await db.get<{ teacher_id: number }>('SELECT teacher_id FROM classes WHERE id = ?', body.class_id);
+    if (!classRow || classRow.teacher_id !== user.id) {
+      return c.json({ success: false, message: 'غير مصرح — لا يمكنك إنشاء اختبار لفصل لا تملكه' }, 403);
+    }
+  }
   const quiz = await svc.createQuiz(user.id, body.class_id, body.title, body.description, body.time_limit_minutes);
   return c.json({ success: true, quiz }, 201);
 });
@@ -116,6 +124,11 @@ quizRoutes.get('/:id', async (c) => {
   // Student: only published quizzes, no correct answers
   if (quiz.status === 'draft') {
     return c.json({ success: false, message: 'Quiz not available' }, 403);
+  }
+  // Verify student is a member of the quiz's class
+  if (user.role === 'student' && quiz.class_id) {
+    const member = await db.get('SELECT 1 FROM class_students WHERE class_id = ? AND student_id = ?', quiz.class_id, user.id);
+    if (!member) return c.json({ success: false, message: 'غير مصرح' }, 403);
   }
   const questions = await svc.getQuizQuestionsForStudent(quizId);
   const submission = await svc.getSubmission(quizId, user.id);

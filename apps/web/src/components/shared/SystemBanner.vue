@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
-import { getSystemStatus, type SystemStatus } from '../services/system-status.service';
+import { getSystemStatus, type SystemStatus } from '../../services/system-status.service';
+import { useI18n } from '../../composables/useI18n';
 
+const { t } = useI18n();
 const status = ref<SystemStatus | null>(null);
 let pollTimer: ReturnType<typeof setInterval> | null = null;
 
@@ -28,15 +30,15 @@ onUnmounted(() => {
   <div v-if="status && (status.maintenance_mode || status.stop_registration || status.freeze_all_classes)" class="system-banner">
     <div v-if="status.maintenance_mode" class="banner-item maintenance">
       <span class="banner-icon">🔧</span>
-      <span class="banner-text">النظام في وضع الصيانة حالياً — قد تكون بعض الخدمات غير متاحة</span>
+      <span class="banner-text">{{ t('shared.bannerMaintenance') }}</span>
     </div>
     <div v-if="status.stop_registration" class="banner-item registration">
       <span class="banner-icon">🛑</span>
-      <span class="banner-text">تم إيقاف تسجيل المستخدمين الجدد مؤقتاً</span>
+      <span class="banner-text">{{ t('shared.bannerRegistration') }}</span>
     </div>
     <div v-if="status.freeze_all_classes" class="banner-item freeze">
       <span class="banner-icon">❄️</span>
-      <span class="banner-text">تم تجميد جميع الفصول — لا يمكن إجراء تعديلات حتى إشعار آخر</span>
+      <span class="banner-text">{{ t('shared.bannerFreeze') }}</span>
     </div>
   </div>
 </template>

@@ -181,7 +181,7 @@ export function useTeacherDashboard() {
       const rRes = await getReports()
       if (rRes.success) allReports.value = rRes.reports
     } catch (err) {
-      console.error('dashboard load failed:', err)
+      if (import.meta.env.DEV) console.error('dashboard load failed:', err);
     } finally {
       loading.value = false
     }

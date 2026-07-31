@@ -1,4 +1,5 @@
 import { db } from '../../db/index.js';
+import { createNotification } from '../notifications/services.js';
 
 export async function getAllBadges() {
   return await db.all(`SELECT * FROM badges ORDER BY id`);
@@ -22,7 +23,20 @@ export async function awardBadge(studentId: number, badgeId: number, awardedBy: 
       `INSERT OR IGNORE INTO student_badges (student_id, badge_id, awarded_by, awarded_by_type, note) VALUES (?, ?, ?, ?, ?)`,
       [studentId, badgeId, awardedBy, awardedByType, note],
     );
-    return (result.changes ?? 0) > 0;
+    const awarded = (result.changes ?? 0) > 0;
+    if (awarded) {
+      // Notify the student about the new badge
+      const badge = await db.get<{ name: string; icon: string }>(`SELECT name, icon FROM badges WHERE id = ?`, [badgeId]);
+      if (badge) {
+        await createNotification({
+          user_id: studentId,
+          type: 'badge_awarded',
+          title: `${badge.icon || '🏆'} شارة جديدة: ${badge.name}`,
+          message: note || `حصلت على شارة "${badge.name}"`,
+        });
+      }
+    }
+    return awarded;
   } catch {
     return false;
   }
@@ -48,19 +62,17 @@ export async function getStudentBadges(studentId: number) {
 export async function getClassLeaderboard(classId: string) {
   return await db.all(
     `SELECT u.id, u.name, u.avatar_url,
-     COALESCE(AVG(r.grade), 0) as avg_grade,
-     COUNT(DISTINCT r.id) as report_count,
-     COALESCE(SUM(qs.score), 0) as quiz_scores,
-     COUNT(DISTINCT r.id) * 10 + COALESCE(SUM(qs.score), 0) as total_points
+     COALESCE((SELECT AVG(r.grade) FROM experiment_reports r WHERE r.student_id = u.id AND r.class_id = ? AND r.status = 'graded'), 0) as avg_grade,
+     (SELECT COUNT(*) FROM experiment_reports r WHERE r.student_id = u.id AND r.class_id = ?) as report_count,
+     COALESCE((SELECT SUM(qs.score) FROM quiz_submissions qs JOIN quizzes q ON q.id = qs.quiz_id WHERE qs.student_id = u.id AND q.class_id = ?), 0) as quiz_scores,
+     (SELECT COUNT(*) FROM experiment_reports r WHERE r.student_id = u.id AND r.class_id = ?) * 10 +
+     COALESCE((SELECT SUM(qs.score) FROM quiz_submissions qs JOIN quizzes q ON q.id = qs.quiz_id WHERE qs.student_id = u.id AND q.class_id = ?), 0) as total_points
      FROM users u
      JOIN class_students cs ON cs.student_id = u.id
-     LEFT JOIN experiment_reports r ON r.student_id = u.id AND r.class_id = ?
-     LEFT JOIN quiz_submissions qs ON qs.student_id = u.id
-     LEFT JOIN quizzes q ON q.id = qs.quiz_id AND q.class_id = ?
      WHERE cs.class_id = ?
      GROUP BY u.id
      ORDER BY total_points DESC`,
-    [classId, classId, classId],
+    [classId, classId, classId, classId, classId, classId],
   );
 }
 

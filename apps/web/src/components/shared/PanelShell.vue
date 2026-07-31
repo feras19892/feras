@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import AccountSettingsModal from './AccountSettingsModal.vue';
 import NotificationBell from './NotificationBell.vue';
+import { useI18n } from '../../composables/useI18n';
+
+const { t } = useI18n();
 
 export interface DockItem {
   id: string;
@@ -41,12 +44,12 @@ const roleColor: Record<string, string> = {
   student: '#4ade80',
 };
 
-const roleLabel: Record<string, string> = {
-  admin: 'أدمن',
-  school: 'مدرسة',
-  teacher: 'مدرس',
-  student: 'طالب',
-};
+const roleLabel = computed(() => ({
+  admin: t('shared.roleAdmin'),
+  school: t('shared.roleSchool'),
+  teacher: t('shared.roleTeacher'),
+  student: t('shared.roleStudent'),
+}));
 </script>
 
 <template>
@@ -94,7 +97,7 @@ const roleLabel: Record<string, string> = {
             <span class="bar-username">{{ userName }}</span>
             <span class="bar-role">{{ roleLabel[role] }}</span>
           </div>
-          <button class="bar-logout" @click="emit('logout')">خروج</button>
+          <button class="bar-logout" @click="emit('logout')">{{ t('shared.logout') }}</button>
         </div>
       </header>
 

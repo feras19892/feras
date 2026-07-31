@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useI18n } from '../../composables/useI18n';
+
+const { t } = useI18n();
 
 export interface SidebarItem {
   id: string;
@@ -48,14 +51,14 @@ function groupHasActive(groupId: string) {
   return group?.items.some(item => item.id === props.activeId);
 }
 
-const roleConfig = {
-  student: { icon: '🎓', label: 'طالب', color: '#4ade80', accent: 'rgba(74,222,128,0.12)', border: 'rgba(74,222,128,0.25)' },
-  teacher: { icon: '👨‍🏫', label: 'مدرس', color: '#a5b4fc', accent: 'rgba(165,180,252,0.12)', border: 'rgba(165,180,252,0.25)' },
-  school: { icon: '🏫', label: 'مدرسة', color: '#67e8f9', accent: 'rgba(103,232,249,0.12)', border: 'rgba(103,232,249,0.25)' },
-  admin: { icon: '🛡️', label: 'أدمن', color: '#f87171', accent: 'rgba(248,113,113,0.12)', border: 'rgba(248,113,113,0.25)' },
-};
+const roleConfig = computed(() => ({
+  student: { icon: '🎓', label: t('shared.roleStudent'), color: '#4ade80', accent: 'rgba(74,222,128,0.12)', border: 'rgba(74,222,128,0.25)' },
+  teacher: { icon: '👨‍🏫', label: t('shared.roleTeacher'), color: '#a5b4fc', accent: 'rgba(165,180,252,0.12)', border: 'rgba(165,180,252,0.25)' },
+  school: { icon: '🏫', label: t('shared.roleSchool'), color: '#67e8f9', accent: 'rgba(103,232,249,0.12)', border: 'rgba(103,232,249,0.25)' },
+  admin: { icon: '🛡️', label: t('shared.roleAdmin'), color: '#f87171', accent: 'rgba(248,113,113,0.12)', border: 'rgba(248,113,113,0.25)' },
+}));
 
-const rc = computed(() => roleConfig[props.role]);
+const rc = computed(() => roleConfig.value[props.role]);
 </script>
 
 <template>
@@ -119,10 +122,10 @@ const rc = computed(() => roleConfig[props.role]);
 
     <!-- Footer -->
     <div class="sidebar-footer">
-      <button class="footer-btn" @click="emit('toggle-collapse')" :title="collapsed ? 'توسيع' : 'طي'">
+      <button class="footer-btn" @click="emit('toggle-collapse')" :title="collapsed ? t('shared.sidebarExpand') : t('shared.sidebarCollapse')">
         <span>{{ collapsed ? '▸' : '◂' }}</span>
       </button>
-      <button class="footer-btn logout" @click="emit('logout')" title="خروج">
+      <button class="footer-btn logout" @click="emit('logout')" :title="t('shared.logout')">
         <span>⏻</span>
       </button>
     </div>

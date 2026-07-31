@@ -3,9 +3,9 @@ import { ref, computed } from 'vue'
 import { useI18n } from '../../composables/useI18n'
 import type { StudentReportRow } from '../../composables/student/useStudentDashboard'
 
-const props = defineProps<{ rows: StudentReportRow[] }>()
+const props = defineProps<{ rows: StudentReportRow[]; locale?: string }>()
 const emit = defineEmits<{ (e: 'open-report', id: number): void }>()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const filter = ref<'all' | 'graded' | 'pending' | 'draft'>('all')
 
@@ -33,7 +33,9 @@ function statusClass(s: string): string {
 function timeShort(dateStr: string | null): string {
   if (!dateStr) return '—'
   const d = new Date(dateStr)
-  return d.toLocaleDateString('ar-SA')
+  const loc = props.locale || locale.value
+  const localeStr = loc === 'ar' ? 'ar-SA' : loc === 'es' ? 'es-ES' : 'en-US'
+  return d.toLocaleDateString(localeStr)
 }
 </script>
 

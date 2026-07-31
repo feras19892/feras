@@ -48,7 +48,7 @@ async function loadStats() {
     const res = await getClassStats(selectedClassId.value);
     if (res.success) stats.value = res.stats;
   } catch (err) {
-    console.error('load stats failed:', err);
+    if (import.meta.env.DEV) console.error('load stats failed:', err);
   } finally {
     loading.value = false;
   }
@@ -83,6 +83,8 @@ function exportFullReports() {
     const a = document.createElement('a');
     a.href = url; a.download = `class_${selectedClassId.value}_reports.csv`; a.click();
     URL.revokeObjectURL(url);
+  }).catch(err => {
+    if (import.meta.env.DEV) console.error('exportFullReports failed:', err);
   });
 }
 

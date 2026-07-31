@@ -76,7 +76,7 @@ async function submitGrade() {
     report.value.feedback = feedbackValue.value
     gradeOpen.value = false
     loadHistory(report.value.id)
-  } catch (err) { console.error('grade failed:', err) }
+  } catch (err) { if (import.meta.env.DEV) console.error('grade failed:', err) }
   saving.value = false
 }
 
@@ -131,8 +131,8 @@ watch(() => route.params.id, loadReport)
         <!-- Student Grade Appeal -->
         <section v-if="auth.isStudent && report.status === 'graded'" class="rp-section">
           <div class="appeal-box">
-            <h3 class="sec-title">📝 اعتراض على الدرجة</h3>
-            <p class="appeal-hint">إذا كنت تعتقد أن درجتك غير عادلة، يمكنك تقديم اعتراض. سيتم إرساله للمدرس أولاً، ثم للمدرسة إذا لم يرد.</p>
+            <h3 class="sec-title">📝 {{ t('shared.rvAppealTitle') }}</h3>
+            <p class="appeal-hint">{{ t('shared.rvAppealHint') }}</p>
             <CreateApprovalButton
               type="grade_appeal"
               approverType="teacher"
@@ -141,7 +141,7 @@ watch(() => route.params.id, loadReport)
               :reportId="report.id"
               :classId="report.class_id"
             >
-              📝 تقديم اعتراض
+              📝 {{ t('shared.rvSubmitAppeal') }}
             </CreateApprovalButton>
           </div>
         </section>

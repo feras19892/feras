@@ -24,6 +24,10 @@ import { ew } from './electricWorkshop'
 import { legal, privacy, terms } from './legal'
 import { account } from './account'
 import { school } from './school'
+import { schoolDashboard } from './school-dashboard'
+import { approval } from './approval'
+import { schoolReportsLocale } from './school-reports-locale'
+import { sharedLocale } from './shared-locale'
 
 export default {
   auth: auth.es,
@@ -53,5 +57,7 @@ export default {
   privacy: privacy.es,
   terms: terms.es,
   account: account.es,
-  school: school.es,
+  school: { ...school.es, ...schoolDashboard.es, ...schoolReportsLocale.es },
+  approval: approval.es,
+  shared: sharedLocale.es,
 } as const

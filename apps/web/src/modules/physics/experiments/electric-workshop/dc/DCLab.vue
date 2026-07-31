@@ -115,7 +115,7 @@ function loadExp(name: 'ohm' | 'series' | 'parallel' | 'mixed' | 'kvl' | 'kcl' |
   try {
     workshop.loadExperiment(name)
   } catch (e) {
-    console.error('loadExperiment error:', e)
+    if (import.meta.env.DEV) console.error('loadExperiment error:', e)
   }
   if (workshop.running.value) workshop.solve()
   redraw()

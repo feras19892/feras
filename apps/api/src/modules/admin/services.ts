@@ -1,9 +1,13 @@
 import { db } from '../../db/index.js';
 
-export async function getAllUsers() {
-  return db.all(
-    `SELECT id, email, name, role, email_verified_at, created_at FROM users ORDER BY created_at DESC`
+export async function getAllUsers(page = 1, limit = 50) {
+  const offset = (page - 1) * limit;
+  const rows = await db.all(
+    `SELECT id, email, name, role, email_verified_at, created_at FROM users ORDER BY created_at DESC LIMIT ? OFFSET ?`,
+    limit, offset
   );
+  const total = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM users`);
+  return { users: rows, total: total?.count || 0, page, limit, totalPages: Math.ceil((total?.count || 0) / limit) };
 }
 
 export async function getSystemStats() {
@@ -39,7 +43,7 @@ export async function getAllClassesWithTeachers() {
 
 export async function getAllReportsWithDetails(page = 1, limit = 50) {
   const offset = (page - 1) * limit;
-  return db.all(
+  const rows = await db.all(
     `SELECT r.*, u.name as student_name, u.email as student_email,
      c.name as class_name, t.name as teacher_name
      FROM experiment_reports r
@@ -49,6 +53,8 @@ export async function getAllReportsWithDetails(page = 1, limit = 50) {
      ORDER BY r.submitted_at DESC LIMIT ? OFFSET ?`,
     limit, offset
   );
+  const total = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM experiment_reports r JOIN users u ON r.student_id = u.id JOIN classes c ON r.class_id = c.id`);
+  return { reports: rows, total: total?.count || 0, page, limit, totalPages: Math.ceil((total?.count || 0) / limit) };
 }
 
 export async function deleteUser(userId: number) {
@@ -82,6 +88,12 @@ export async function deleteUser(userId: number) {
     await db.run(`DELETE FROM math_progress WHERE user_id = ?`, userId);
     await db.run(`DELETE FROM approval_requests WHERE target_user_id = ?`, userId);
     await db.run(`DELETE FROM approval_requests WHERE requester_id = ?`, userId);
+    // Gamification cleanup
+    await db.run(`DELETE FROM student_badges WHERE student_id = ?`, userId);
+    await db.run(`DELETE FROM penalties WHERE student_id = ?`, userId);
+    // Quiz cleanup
+    await db.run(`DELETE FROM quiz_submissions WHERE student_id = ?`, userId);
+    await db.run(`DELETE FROM password_reset_codes WHERE user_id = ?`, userId);
     // Tables with NOT NULL user columns (no FK but should clean up)
     await db.run(`DELETE FROM announcements WHERE author_id = ?`, userId);
     await db.run(`DELETE FROM experiment_deadlines WHERE created_by = ?`, userId);
@@ -101,6 +113,15 @@ export async function deleteUser(userId: number) {
       await db.run(`DELETE FROM class_messages WHERE class_id IN (${placeholders})`, ...ids);
       await db.run(`DELETE FROM class_students WHERE class_id IN (${placeholders})`, ...ids);
       await db.run(`DELETE FROM experiment_reports WHERE class_id IN (${placeholders})`, ...ids);
+      // Delete quizzes and their questions/submissions for these classes
+      const quizIds = await db.all(`SELECT id FROM quizzes WHERE class_id IN (${placeholders})`, ...ids);
+      if (quizIds.length > 0) {
+        const qIds = quizIds.map(q => q.id);
+        const qPlaceholders = qIds.map(() => '?').join(',');
+        await db.run(`DELETE FROM quiz_submissions WHERE quiz_id IN (${qPlaceholders})`, ...qIds);
+        await db.run(`DELETE FROM quiz_questions WHERE quiz_id IN (${qPlaceholders})`, ...qIds);
+        await db.run(`DELETE FROM quizzes WHERE id IN (${qPlaceholders})`, ...qIds);
+      }
       await db.run(`DELETE FROM classes WHERE id IN (${placeholders})`, ...ids);
     }
     // Set nullable FK references to NULL
@@ -127,6 +148,15 @@ export async function createUser(name: string, email: string, passwordHash: stri
 }
 
 export async function deleteClass(classId: string) {
+  // Clean up quizzes and their questions/submissions
+  const quizIds = await db.all(`SELECT id FROM quizzes WHERE class_id = ?`, classId);
+  if (quizIds.length > 0) {
+    const qIds = quizIds.map(q => q.id);
+    const qPlaceholders = qIds.map(() => '?').join(',');
+    await db.run(`DELETE FROM quiz_submissions WHERE quiz_id IN (${qPlaceholders})`, ...qIds);
+    await db.run(`DELETE FROM quiz_questions WHERE quiz_id IN (${qPlaceholders})`, ...qIds);
+    await db.run(`DELETE FROM quizzes WHERE id IN (${qPlaceholders})`, ...qIds);
+  }
   await db.run(`DELETE FROM experiment_reports WHERE class_id = ?`, classId);
   await db.run(`DELETE FROM class_students WHERE class_id = ?`, classId);
   await db.run(`DELETE FROM classes WHERE id = ?`, classId);
@@ -271,4 +301,260 @@ export async function unfreezeAllClasses() {
     `UPDATE classes SET is_frozen = 0, frozen_reason = NULL, frozen_at = NULL, frozen_by = NULL WHERE is_frozen = 1`,
   );
   return { success: true };
+}
+
+// ─── Admin Detailed Reports ───
+
+export async function getDetailedSystemStats(period: 'today' | 'week' | 'month' | 'year' | 'all' = 'today') {
+  let dateFilter: string | null = '';
+  switch (period) {
+    case 'today': dateFilter = "date('now')"; break;
+    case 'week': dateFilter = "datetime('now', '-7 days')"; break;
+    case 'month': dateFilter = "datetime('now', '-30 days')"; break;
+    case 'year': dateFilter = "datetime('now', '-365 days')"; break;
+    case 'all': dateFilter = null; break;
+  }
+
+  const where = dateFilter ? `WHERE created_at >= ${dateFilter}` : '';
+  const whereReports = dateFilter ? `WHERE submitted_at >= ${dateFilter}` : '';
+  const whereSessions = dateFilter ? `WHERE login_at >= ${dateFilter}` : '';
+
+  const totalUsers = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM users ${where}`);
+  const totalStudents = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM users WHERE role = 'student' ${dateFilter ? `AND created_at >= ${dateFilter}` : ''}`);
+  const totalTeachers = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM users WHERE role = 'teacher' ${dateFilter ? `AND created_at >= ${dateFilter}` : ''}`);
+  const totalSchools = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM schools ${dateFilter ? `WHERE created_at >= ${dateFilter}` : ''}`);
+  const totalClasses = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM classes ${where}`);
+  const totalReports = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM experiment_reports ${whereReports}`);
+  const totalGraded = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM experiment_reports WHERE status = 'graded' ${dateFilter ? `AND graded_at >= ${dateFilter}` : ''}`);
+  const totalPending = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM experiment_reports WHERE status = 'submitted'`);
+  const totalOverdue = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM experiment_reports WHERE status = 'submitted' AND submitted_at < datetime('now', '-3 days')`);
+  const totalSessions = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM session_log ${whereSessions}`);
+  const activeNow = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM session_log WHERE logout_at IS NULL`);
+  const avgGrade = await db.get<{ avg: number }>(`SELECT AVG(grade) as avg FROM experiment_reports WHERE grade IS NOT NULL ${dateFilter ? `AND graded_at >= ${dateFilter}` : ''}`);
+
+  // Hourly activity today
+  const hourlyActivity = await db.all(
+    `SELECT strftime('%H', created_at) as hour, COUNT(*) as count
+     FROM activity_log WHERE date(created_at) = date('now')
+     GROUP BY hour ORDER BY hour`,
+  );
+
+  // Daily activity for the period
+  const dailyActivity = await db.all(
+    `SELECT date(created_at) as date, COUNT(*) as count
+     FROM activity_log ${dateFilter ? `WHERE created_at >= ${dateFilter}` : ''}
+     GROUP BY date ORDER BY date DESC LIMIT 30`,
+  );
+
+  // Reports by status
+  const reportsByStatus = await db.all(
+    `SELECT status, COUNT(*) as count FROM experiment_reports GROUP BY status`,
+  );
+
+  // Users by role
+  const usersByRole = await db.all(
+    `SELECT role, COUNT(*) as count FROM users GROUP BY role`,
+  );
+
+  // Top schools by activity
+  const topSchools = await db.all(
+    `SELECT s.id, s.name,
+     (SELECT COUNT(*) FROM users u WHERE u.school_id = s.id) as user_count,
+     (SELECT COUNT(*) FROM classes c JOIN users u ON c.teacher_id = u.id WHERE u.school_id = s.id) as class_count,
+     (SELECT COUNT(*) FROM experiment_reports r JOIN users u ON r.student_id = u.id WHERE u.school_id = s.id) as report_count
+     FROM schools s ORDER BY report_count DESC LIMIT 10`,
+  );
+
+  // Top classes by reports
+  const topClasses = await db.all(
+    `SELECT c.id, c.name, u.name as teacher_name,
+     (SELECT COUNT(*) FROM experiment_reports r WHERE r.class_id = c.id) as report_count,
+     (SELECT COUNT(*) FROM class_students cs WHERE cs.class_id = c.id) as student_count
+     FROM classes c JOIN users u ON c.teacher_id = u.id
+     ORDER BY report_count DESC LIMIT 10`,
+  );
+
+  return {
+    period,
+    totals: {
+      users: totalUsers?.count || 0,
+      students: totalStudents?.count || 0,
+      teachers: totalTeachers?.count || 0,
+      schools: totalSchools?.count || 0,
+      classes: totalClasses?.count || 0,
+      reports: totalReports?.count || 0,
+      graded: totalGraded?.count || 0,
+      pending: totalPending?.count || 0,
+      overdue: totalOverdue?.count || 0,
+      sessions: totalSessions?.count || 0,
+      active_now: activeNow?.count || 0,
+      avg_grade: avgGrade?.avg ? Math.round(avgGrade.avg) : 0,
+    },
+    hourly_activity: hourlyActivity,
+    daily_activity: dailyActivity,
+    reports_by_status: reportsByStatus,
+    users_by_role: usersByRole,
+    top_schools: topSchools,
+    top_classes: topClasses,
+  };
+}
+
+export async function getAcademicTracking() {
+  // Overall academic status across all classes
+  const classes = await db.all(
+    `SELECT c.id, c.name, c.code, c.is_frozen, c.is_active,
+     u.name as teacher_name, u.email as teacher_email,
+     s.name as school_name,
+     (SELECT COUNT(*) FROM class_students cs WHERE cs.class_id = c.id) as student_count,
+     (SELECT COUNT(*) FROM experiment_reports r WHERE r.class_id = c.id) as report_count,
+     (SELECT COUNT(*) FROM experiment_reports r WHERE r.class_id = c.id AND r.status = 'submitted') as pending_count,
+     (SELECT COUNT(*) FROM experiment_reports r WHERE r.class_id = c.id AND r.status = 'graded') as graded_count,
+     (SELECT AVG(r.grade) FROM experiment_reports r WHERE r.class_id = c.id AND r.grade IS NOT NULL) as avg_grade,
+     (SELECT COUNT(*) FROM quizzes q WHERE q.class_id = c.id) as quiz_count,
+     (SELECT COUNT(*) FROM experiment_reports r WHERE r.class_id = c.id AND r.status = 'submitted' AND r.submitted_at < datetime('now', '-3 days')) as overdue_count
+     FROM classes c
+     LEFT JOIN users u ON c.teacher_id = u.id
+     LEFT JOIN schools s ON u.school_id = s.id
+     ORDER BY c.created_at DESC`,
+  );
+
+  // Global stats
+  const totalStudents = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM users WHERE role = 'student'`);
+  const totalTeachers = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM users WHERE role = 'teacher'`);
+  const totalClasses = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM classes`);
+  const totalReports = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM experiment_reports`);
+  const totalGraded = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM experiment_reports WHERE status = 'graded'`);
+  const totalPending = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM experiment_reports WHERE status = 'submitted'`);
+  const totalOverdue = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM experiment_reports WHERE status = 'submitted' AND submitted_at < datetime('now', '-3 days')`);
+  const globalAvg = await db.get<{ avg: number }>(`SELECT AVG(grade) as avg FROM experiment_reports WHERE grade IS NOT NULL`);
+
+  // Class health categories
+  const healthyClasses = classes.filter((c: any) => c.overdue_count === 0 && c.pending_count <= 5 && c.is_active && !c.is_frozen);
+  const warningClasses = classes.filter((c: any) => (c.overdue_count > 0 && c.overdue_count <= 3) || (c.pending_count > 5 && c.pending_count <= 10));
+  const criticalClasses = classes.filter((c: any) => c.overdue_count > 3 || c.pending_count > 10 || c.is_frozen || !c.is_active);
+  const inactiveClasses = classes.filter((c: any) => c.student_count === 0 || c.report_count === 0);
+
+  return {
+    global: {
+      total_students: totalStudents?.count || 0,
+      total_teachers: totalTeachers?.count || 0,
+      total_classes: totalClasses?.count || 0,
+      total_reports: totalReports?.count || 0,
+      total_graded: totalGraded?.count || 0,
+      total_pending: totalPending?.count || 0,
+      total_overdue: totalOverdue?.count || 0,
+      global_avg: globalAvg?.avg ? Math.round(globalAvg.avg) : 0,
+    },
+    class_health: {
+      healthy: healthyClasses.length,
+      warning: warningClasses.length,
+      critical: criticalClasses.length,
+      inactive: inactiveClasses.length,
+    },
+    classes: classes.map((c: any) => ({
+      ...c,
+      avg_grade: c.avg_grade ? Math.round(c.avg_grade) : 0,
+      health_status: c.is_frozen || !c.is_active ? 'critical' :
+        c.overdue_count > 3 || c.pending_count > 10 ? 'critical' :
+        c.overdue_count > 0 || c.pending_count > 5 ? 'warning' :
+        c.student_count === 0 || c.report_count === 0 ? 'inactive' : 'healthy',
+    })),
+  };
+}
+
+export async function getAdminDetailedReports(date?: string) {
+  const targetDate = date || new Date().toISOString().slice(0, 10);
+
+  // All classes with daily activity
+  const classes = await db.all(
+    `SELECT c.id, c.name, c.code, u.name as teacher_name, s.name as school_name,
+     c.is_frozen, c.is_active
+     FROM classes c
+     LEFT JOIN users u ON c.teacher_id = u.id
+     LEFT JOIN schools s ON u.school_id = s.id
+     ORDER BY c.name`,
+  );
+
+  const report = [];
+  for (const cls of classes) {
+    const todayReports = await db.get<{ count: number }>(
+      `SELECT COUNT(*) as count FROM experiment_reports WHERE class_id = ? AND date(submitted_at) = ?`,
+      cls.id, targetDate,
+    );
+    const gradedToday = await db.get<{ count: number }>(
+      `SELECT COUNT(*) as count FROM experiment_reports WHERE class_id = ? AND date(graded_at) = ?`,
+      cls.id, targetDate,
+    );
+    const pendingReports = await db.get<{ count: number }>(
+      `SELECT COUNT(*) as count FROM experiment_reports WHERE class_id = ? AND status = 'submitted'`,
+      cls.id,
+    );
+    const overdueReports = await db.get<{ count: number }>(
+      `SELECT COUNT(*) as count FROM experiment_reports WHERE class_id = ? AND status = 'submitted' AND submitted_at < datetime('now', '-3 days')`,
+      cls.id,
+    );
+    const studentCount = await db.get<{ count: number }>(
+      `SELECT COUNT(*) as count FROM class_students WHERE class_id = ?`, cls.id,
+    );
+    const activeToday = await db.get<{ count: number }>(
+      `SELECT COUNT(DISTINCT student_id) as count FROM experiment_reports WHERE class_id = ? AND date(submitted_at) = ?`,
+      cls.id, targetDate,
+    );
+    const quizSubmissionsToday = await db.get<{ count: number }>(
+      `SELECT COUNT(*) as count FROM quiz_submissions qs JOIN quizzes q ON qs.quiz_id = q.id WHERE q.class_id = ? AND date(qs.submitted_at) = ?`,
+      cls.id, targetDate,
+    );
+
+    const issues: string[] = [];
+    if (cls.is_frozen) issues.push('الفصل مجمد');
+    if (!cls.is_active) issues.push('الفصل غير نشط');
+    if (overdueReports && overdueReports.count > 0) issues.push(`${overdueReports.count} تقرير متأخر`);
+    if (pendingReports && pendingReports.count > 5) issues.push(`${pendingReports.count} تقرير معلق`);
+    if (studentCount && studentCount.count === 0) issues.push('لا يوجد طلاب');
+    if (todayReports && todayReports.count === 0 && studentCount && studentCount.count > 0) issues.push('لا يوجد نشاط اليوم');
+
+    report.push({
+      class_id: cls.id,
+      class_name: cls.name,
+      class_code: cls.code,
+      teacher_name: cls.teacher_name,
+      school_name: cls.school_name,
+      is_frozen: !!cls.is_frozen,
+      is_active: !!cls.is_active,
+      student_count: studentCount?.count || 0,
+      active_today: activeToday?.count || 0,
+      reports_today: todayReports?.count || 0,
+      graded_today: gradedToday?.count || 0,
+      pending_reports: pendingReports?.count || 0,
+      overdue_reports: overdueReports?.count || 0,
+      quiz_submissions_today: quizSubmissionsToday?.count || 0,
+      issues,
+    });
+  }
+
+  // Global summary
+  const totalReportsToday = await db.get<{ count: number }>(
+    `SELECT COUNT(*) as count FROM experiment_reports WHERE date(submitted_at) = ?`, targetDate,
+  );
+  const totalGradedToday = await db.get<{ count: number }>(
+    `SELECT COUNT(*) as count FROM experiment_reports WHERE date(graded_at) = ?`, targetDate,
+  );
+  const totalPending = await db.get<{ count: number }>(
+    `SELECT COUNT(*) as count FROM experiment_reports WHERE status = 'submitted'`,
+  );
+  const totalOverdue = await db.get<{ count: number }>(
+    `SELECT COUNT(*) as count FROM experiment_reports WHERE status = 'submitted' AND submitted_at < datetime('now', '-3 days')`,
+  );
+
+  return {
+    date: targetDate,
+    summary: {
+      total_classes: classes.length,
+      reports_today: totalReportsToday?.count || 0,
+      graded_today: totalGradedToday?.count || 0,
+      pending_reports: totalPending?.count || 0,
+      overdue_reports: totalOverdue?.count || 0,
+    },
+    classes: report,
+  };
 }

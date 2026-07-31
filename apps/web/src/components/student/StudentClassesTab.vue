@@ -3,12 +3,15 @@ import { ref } from 'vue'
 import { useI18n } from '../../composables/useI18n'
 import type { ClassItem, ClassStudent } from '../../services/class.service'
 
+type JoinResult = { success: boolean; class_id?: string; name?: string; message?: string }
+type LeaveResult = { success: boolean; message?: string }
+
 const props = defineProps<{
   classes: ClassItem[]
   classStudentsMap: Record<string, ClassStudent[]>
   currentUserId: number
-  joinFn: (code: string) => Promise<any>
-  leaveFn: (id: string) => Promise<any>
+  joinFn: (code: string) => Promise<JoinResult>
+  leaveFn: (id: string) => Promise<LeaveResult>
   activeChatId?: string | null
 }>()
 
@@ -80,7 +83,7 @@ async function handleLeave(cls: ClassItem) {
         </div>
         <div class="cls-meta">
           <span class="cls-count">👥 {{ c.student_count || classStudentsMap[c.id]?.length || 0 }}</span>
-          <span v-if="c.is_frozen" class="frozen-badge">🧊 مجمد</span>
+          <span v-if="c.is_frozen" class="frozen-badge">🧊 {{ t('dashboard.dash.frozen') }}</span>
           <button :class="['chat-toggle-btn', { active: props.activeChatId === c.id }]" @click.stop="emit('open-chat', { id: c.id, name: c.name })">💬</button>
           <span class="cls-expand">{{ expandedId === c.id ? '▼' : '◀' }}</span>
         </div>
@@ -89,7 +92,7 @@ async function handleLeave(cls: ClassItem) {
       <!-- Classmates list -->
       <div v-if="expandedId === c.id" class="cls-body">
         <div v-if="!classStudentsMap[c.id] || classStudentsMap[c.id].length === 0" class="cls-empty">
-          👤 لا يوجد طلاب آخرون
+          {{ t('dashboard.dash.enhNoOtherStudents') }}
         </div>
         <div v-else class="mates-list">
           <div

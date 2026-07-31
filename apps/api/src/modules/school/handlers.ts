@@ -15,8 +15,10 @@ import {
   getSchoolWarnings, reportToAdmin, getSchoolSessionLog, getSchoolActivityLog,
   getTeacherPerformance, createCapacityRequest, getCapacityRequests,
   reviewCapacityRequest, freezeClass, unfreezeClass,
+  getSchoolDetailedReports, getOutstandingStudents, getStrugglingStudents, getTeacherEvaluation,
 } from './services.js';
 import { setRefreshCookie, setAccessCookie, clearRefreshCookie, clearAccessCookie } from '../auth/cookies.js';
+import * as feedbackSvc from '../admin/feedback-service.js';
 import { verifyAccessToken } from '../auth/jwt.js';
 import { getCookie } from 'hono/cookie';
 import { streamSSE } from 'hono/streaming';
@@ -127,8 +129,10 @@ schoolRoutes.get('/stats', schoolAuth, async (c) => {
 schoolRoutes.get('/users', schoolAuth, async (c) => {
   const school = c.get('school') as School;
   void school;
-  const users = await getSchoolUsers(school.id);
-  return c.json({ success: true, users });
+  const page = Math.max(1, Number(c.req.query('page') || '1'));
+  const limit = Math.min(100, Math.max(1, Number(c.req.query('limit') || '50')));
+  const result = await getSchoolUsers(school.id, page, limit);
+  return c.json({ success: true, ...result });
 });
 
 schoolRoutes.get('/classes', schoolAuth, async (c) => {
@@ -141,33 +145,50 @@ schoolRoutes.get('/classes', schoolAuth, async (c) => {
 schoolRoutes.get('/reports', schoolAuth, async (c) => {
   const school = c.get('school') as School;
   void school;
-  const reports = await getSchoolReports(school.id);
-  return c.json({ success: true, reports });
+  const page = Math.max(1, Number(c.req.query('page') || '1'));
+  const limit = Math.min(100, Math.max(1, Number(c.req.query('limit') || '50')));
+  const result = await getSchoolReports(school.id, page, limit);
+  return c.json({ success: true, ...result });
 });
 
 // ─── School User Management ───
 schoolRoutes.delete('/users/:userId', schoolAuth, async (c) => {
   const school = c.get('school') as School;
   void school;
-  const result = await removeSchoolUser(school.id, Number(c.req.param('userId')));
-  if (!result.success) return c.json({ success: false, message: result.message }, 400);
-  return c.json({ success: true });
+  try {
+    const result = await removeSchoolUser(school.id, Number(c.req.param('userId')));
+    if (!result.success) return c.json({ success: false, message: result.message }, 400);
+    return c.json({ success: true });
+  } catch (err) {
+    if (process.env.NODE_ENV !== 'production') console.error('removeSchoolUser error:', err);
+    return c.json({ success: false, message: 'Failed to remove user' }, 500);
+  }
 });
 
 schoolRoutes.patch('/users/:userId/block', schoolAuth, async (c) => {
   const school = c.get('school') as School;
   void school;
-  const result = await blockSchoolUser(school.id, Number(c.req.param('userId')));
-  if (!result.success) return c.json({ success: false, message: result.message }, 400);
-  return c.json({ success: true });
+  try {
+    const result = await blockSchoolUser(school.id, Number(c.req.param('userId')));
+    if (!result.success) return c.json({ success: false, message: result.message }, 400);
+    return c.json({ success: true });
+  } catch (err) {
+    if (process.env.NODE_ENV !== 'production') console.error('blockSchoolUser error:', err);
+    return c.json({ success: false, message: 'Failed to block user' }, 500);
+  }
 });
 
 schoolRoutes.patch('/users/:userId/unblock', schoolAuth, async (c) => {
   const school = c.get('school') as School;
   void school;
-  const result = await unblockSchoolUser(school.id, Number(c.req.param('userId')));
-  if (!result.success) return c.json({ success: false, message: result.message }, 400);
-  return c.json({ success: true });
+  try {
+    const result = await unblockSchoolUser(school.id, Number(c.req.param('userId')));
+    if (!result.success) return c.json({ success: false, message: result.message }, 400);
+    return c.json({ success: true });
+  } catch (err) {
+    if (process.env.NODE_ENV !== 'production') console.error('unblockSchoolUser error:', err);
+    return c.json({ success: false, message: 'Failed to unblock user' }, 500);
+  }
 });
 
 // ─── Email Change Request ───
@@ -398,17 +419,27 @@ const freezeSchema = z.object({
 schoolRoutes.post('/freeze-class', schoolAuth, zValidator('json', freezeSchema), async (c) => {
   const school = c.get('school') as School;
   const { class_id, reason } = c.req.valid('json');
-  const result = await freezeClass(school.id, class_id, reason, school.id);
-  if (!result.success) return c.json({ success: false, message: result.message }, 400);
-  return c.json({ success: true });
+  try {
+    const result = await freezeClass(school.id, class_id, reason, school.id);
+    if (!result.success) return c.json({ success: false, message: result.message }, 400);
+    return c.json({ success: true });
+  } catch (err) {
+    if (process.env.NODE_ENV !== 'production') console.error('freeze-class error:', err);
+    return c.json({ success: false, message: 'Failed to freeze class' }, 500);
+  }
 });
 
 schoolRoutes.post('/unfreeze-class', schoolAuth, zValidator('json', z.object({ class_id: z.string().min(1) })), async (c) => {
   const school = c.get('school') as School;
   const { class_id } = c.req.valid('json');
-  const result = await unfreezeClass(school.id, class_id);
-  if (!result.success) return c.json({ success: false, message: result.message }, 400);
-  return c.json({ success: true });
+  try {
+    const result = await unfreezeClass(school.id, class_id);
+    if (!result.success) return c.json({ success: false, message: result.message }, 400);
+    return c.json({ success: true });
+  } catch (err) {
+    if (process.env.NODE_ENV !== 'production') console.error('unfreeze-class error:', err);
+    return c.json({ success: false, message: 'Failed to unfreeze class' }, 500);
+  }
 });
 
 // ─── School Notifications ───
@@ -466,6 +497,62 @@ schoolRoutes.delete('/notifications/:id', schoolAuth, async (c) => {
   const school = c.get('school') as School;
   const id = Number(c.req.param('id'));
   await notifSvc.deleteSchoolNotification(id, school.id);
+  return c.json({ success: true });
+});
+
+schoolRoutes.patch('/notifications/:id/pin', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  const id = Number(c.req.param('id'));
+  const result = await notifSvc.togglePinSchoolNotification(id, school.id);
+  return c.json(result);
+});
+
+// ─── School Detailed Reports ───
+schoolRoutes.get('/reports/detailed', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  const date = c.req.query('date');
+  const report = await getSchoolDetailedReports(school.id, date);
+  return c.json({ success: true, report });
+});
+
+schoolRoutes.get('/reports/outstanding-students', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  const limit = c.req.query('limit') ? Number(c.req.query('limit')) : 20;
+  const students = await getOutstandingStudents(school.id, limit);
+  return c.json({ success: true, students });
+});
+
+schoolRoutes.get('/reports/struggling-students', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  const limit = c.req.query('limit') ? Number(c.req.query('limit')) : 20;
+  const students = await getStrugglingStudents(school.id, limit);
+  return c.json({ success: true, students });
+});
+
+schoolRoutes.get('/reports/teacher-evaluation', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  const evaluations = await getTeacherEvaluation(school.id);
+  return c.json({ success: true, evaluations });
+});
+
+// ─── School Feedback Monitoring ───
+schoolRoutes.get('/feedback', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  void school;
+  const feedback = await feedbackSvc.getSchoolFeedback(school.id);
+  const stats = await feedbackSvc.getSchoolFeedbackStats(school.id);
+  return c.json({ success: true, feedback, stats });
+});
+
+schoolRoutes.patch('/feedback/:id/status', schoolAuth, zValidator('json', z.object({ status: z.enum(['open', 'resolved', 'dismissed']) })), async (c) => {
+  const school = c.get('school') as School;
+  const id = Number(c.req.param('id'));
+  // Verify the feedback belongs to this school
+  const item = await db.get<{ school_id: number | null }>('SELECT school_id FROM feedback WHERE id = ?', id);
+  if (!item) return c.json({ success: false, message: 'غير موجود' }, 404);
+  if (item.school_id !== school.id) return c.json({ success: false, message: 'غير مصرح' }, 403);
+  const { status } = c.req.valid('json');
+  await feedbackSvc.updateFeedbackStatus(id, status);
   return c.json({ success: true });
 });
 

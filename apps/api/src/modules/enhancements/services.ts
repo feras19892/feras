@@ -1,4 +1,5 @@
 import { db } from '../../db/index.js';
+import { createNotification } from '../notifications/services.js';
 
 // ─── Penalties & Rewards ───
 export async function createPenalty(studentId: number, teacherId: number, classId: string | null, type: string, reason: string, points: number) {
@@ -6,10 +7,19 @@ export async function createPenalty(studentId: number, teacherId: number, classI
     `INSERT INTO penalties (student_id, teacher_id, class_id, type, reason, points) VALUES (?, ?, ?, ?, ?, ?)`,
     [studentId, teacherId, classId, type, reason, points],
   );
-  return await db.get(
+  const penalty = await db.get(
     `SELECT p.*, u.name as teacher_name FROM penalties p JOIN users u ON u.id = p.teacher_id WHERE p.id = ?`,
     [result.lastID],
   );
+  // Notify the student
+  await createNotification({
+    user_id: studentId,
+    type: type === 'penalty' ? 'penalty' : 'reward',
+    title: type === 'penalty' ? `⚠️ عقوبة: ${reason.slice(0, 50)}` : `🎁 مكافأة: ${reason.slice(0, 50)}`,
+    message: `${penalty?.teacher_name || 'المدرس'}: ${reason} (${points > 0 ? '+' : ''}${points} نقطة)`,
+    class_id: classId || undefined,
+  });
+  return penalty;
 }
 
 export async function getStudentPenalties(studentId: number) {

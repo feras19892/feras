@@ -3,12 +3,13 @@ import { useI18n } from '../../composables/useI18n'
 import type { Report } from '../../services/report.service'
 import type { ClassRow } from '../../composables/teacher/useTeacherDashboard'
 
-defineProps<{
+const props = defineProps<{
   pendingCount: number
   unopened: Report[]
   overdue: Report[]
   classRows: ClassRow[]
   unreadChatCounts?: Record<string, number>
+  locale?: string
 }>()
 
 const emit = defineEmits<{
@@ -28,7 +29,9 @@ function daysSince(dateStr?: string): number {
 function timeShort(dateStr?: string): string {
   if (!dateStr) return ''
   const d = new Date(dateStr)
-  return d.toLocaleDateString('ar-SA') + ' ' + d.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
+  const loc = props.locale || 'ar'
+  const localeStr = loc === 'ar' ? 'ar-SA' : loc === 'es' ? 'es-ES' : 'en-US'
+  return d.toLocaleDateString(localeStr) + ' ' + d.toLocaleTimeString(localeStr, { hour: '2-digit', minute: '2-digit' })
 }
 </script>
 

@@ -120,7 +120,7 @@ export function useStudentDashboard() {
         if (sRes.success) stats.value = sRes.stats
       }
     } catch (err) {
-      console.error('student dashboard load failed:', err)
+      if (import.meta.env.DEV) console.error('student dashboard load failed:', err);
     } finally {
       loading.value = false
     }

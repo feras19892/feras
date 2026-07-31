@@ -22,6 +22,7 @@ import ClassManager from '../components/teacher/ClassManager.vue'
 import TeacherStats from '../components/teacher/TeacherStats.vue'
 import CreateAnnouncementForm from '../components/teacher/CreateAnnouncementForm.vue'
 import TeacherQuizBuilder from '../components/teacher/TeacherQuizBuilder.vue'
+import TeacherEnhancementsTab from '../components/teacher/TeacherEnhancementsTab.vue'
 import SystemBanner from '../components/shared/SystemBanner.vue'
 import { fetchHomeCards } from '../services/home.service'
 import { getUnreadChatCounts, markChatRead } from '../services/chat.service'
@@ -32,7 +33,7 @@ const { t, locale } = useI18n()
 const auth = useAuthStore()
 const { kpi, classRows, studentRows, todayUnopened, overdueUngraded, loading } = useTeacherDashboard()
 
-type Section = 'overview' | 'experiments' | 'grading' | 'classes' | 'students' | 'quizzes' | 'stats' | 'announcements' | 'approvals' | 'settings'
+type Section = 'overview' | 'experiments' | 'grading' | 'classes' | 'students' | 'quizzes' | 'stats' | 'enhancements' | 'announcements' | 'approvals' | 'settings'
 const active = ref<Section>('overview')
 const sidebarCollapsed = ref(false)
 const cards = ref<HomeCard[]>([])
@@ -53,40 +54,41 @@ const translatedCards = computed(() => cards.value.map(card => ({
 const groups = computed<SidebarGroup[]>(() => [
   {
     id: 'main',
-    title: 'الرئيسية',
+    title: t('shared.navHome'),
     icon: '🏠',
     items: [
-      { id: 'overview', icon: '📊', label: 'نظرة عامة' },
-      { id: 'experiments', icon: '🔬', label: 'التجارب' },
+      { id: 'overview', icon: '📊', label: t('shared.navOverview') },
+      { id: 'experiments', icon: '🔬', label: t('shared.navExperiments') },
     ],
   },
   {
     id: 'work',
-    title: 'العمل',
+    title: t('shared.navWork'),
     icon: '📚',
     items: [
-      { id: 'grading', icon: '✅', label: 'التصحيح', badge: kpi.value.pendingCount > 0 ? kpi.value.pendingCount : undefined },
-      { id: 'classes', icon: '🏫', label: 'الفصول' },
-      { id: 'students', icon: '🎓', label: 'الطلاب' },
-      { id: 'stats', icon: '📈', label: 'الإحصائيات' },
-      { id: 'quizzes', icon: '📝', label: 'الامتحانات' },
+      { id: 'grading', icon: '✅', label: t('shared.navGrading'), badge: kpi.value.pendingCount > 0 ? kpi.value.pendingCount : undefined },
+      { id: 'classes', icon: '🏫', label: t('shared.navClasses') },
+      { id: 'students', icon: '🎓', label: t('shared.navStudents') },
+      { id: 'stats', icon: '📈', label: t('shared.navStats') },
+      { id: 'quizzes', icon: '📝', label: t('shared.navQuizzes') },
+      { id: 'enhancements', icon: '🏆', label: t('shared.navEnhancements') },
     ],
   },
   {
     id: 'comm',
-    title: 'التواصل',
+    title: t('shared.navComm'),
     icon: '💬',
     items: [
-      { id: 'announcements', icon: '📢', label: 'الإعلانات' },
-      { id: 'approvals', icon: '✋', label: 'الموافقات' },
+      { id: 'announcements', icon: '📢', label: t('shared.navAnnouncements') },
+      { id: 'approvals', icon: '✋', label: t('shared.navApprovals') },
     ],
   },
   {
     id: 'account',
-    title: 'الحساب',
+    title: t('shared.navAccount'),
     icon: '⚙️',
     items: [
-      { id: 'settings', icon: '👤', label: 'الإعدادات' },
+      { id: 'settings', icon: '👤', label: t('shared.navSettings') },
     ],
   },
 ])
@@ -180,42 +182,42 @@ onMounted(async () => {
         <div class="kpi-item" :class="{ click: kpi.pendingCount > 0 }" @click="kpi.pendingCount > 0 && (active = 'grading')">
           <span class="kpi-icon">⏳</span>
           <span class="kpi-val">{{ kpi.pendingCount }}</span>
-          <span class="kpi-lab">بانتظار التصحيح</span>
+          <span class="kpi-lab">{{ t('shared.kpiPendingGrading') }}</span>
         </div>
         <div class="kpi-item" :class="{ click: kpi.unopenedCount > 0 }" @click="kpi.unopenedCount > 0 && (active = 'overview')">
           <span class="kpi-icon">📬</span>
           <span class="kpi-val">{{ kpi.unopenedCount }}</span>
-          <span class="kpi-lab">لم تُفتح</span>
+          <span class="kpi-lab">{{ t('shared.kpiUnopened') }}</span>
         </div>
         <div class="kpi-item" :class="{ click: kpi.overdueCount > 0 }" @click="kpi.overdueCount > 0 && (active = 'overview')">
           <span class="kpi-icon">🚨</span>
           <span class="kpi-val">{{ kpi.overdueCount }}</span>
-          <span class="kpi-lab">متأخرة</span>
+          <span class="kpi-lab">{{ t('shared.kpiOverdue') }}</span>
         </div>
         <div class="kpi-item">
           <span class="kpi-icon">📥</span>
           <span class="kpi-val">{{ kpi.submittedToday }}</span>
-          <span class="kpi-lab">وصل اليوم</span>
+          <span class="kpi-lab">{{ t('shared.kpiSubmittedToday') }}</span>
         </div>
         <div class="kpi-item">
           <span class="kpi-icon">✅</span>
           <span class="kpi-val">{{ kpi.gradedToday }}</span>
-          <span class="kpi-lab">صُحّح اليوم</span>
+          <span class="kpi-lab">{{ t('shared.kpiGradedToday') }}</span>
         </div>
         <div class="kpi-item">
           <span class="kpi-icon">🎓</span>
           <span class="kpi-val">{{ kpi.totalStudents }}</span>
-          <span class="kpi-lab">طلاب</span>
+          <span class="kpi-lab">{{ t('shared.kpiStudents') }}</span>
         </div>
         <div class="kpi-item">
           <span class="kpi-icon">🏫</span>
           <span class="kpi-val">{{ kpi.totalClasses }}</span>
-          <span class="kpi-lab">فصول</span>
+          <span class="kpi-lab">{{ t('shared.kpiClasses') }}</span>
         </div>
         <div class="kpi-item">
           <span class="kpi-icon">📊</span>
           <span class="kpi-val">{{ kpi.avgGrade }}%</span>
-          <span class="kpi-lab">المتوسط</span>
+          <span class="kpi-lab">{{ t('shared.kpiAvg') }}</span>
         </div>
       </div>
 
@@ -241,6 +243,7 @@ onMounted(async () => {
               :overdue="overdueUngraded"
               :class-rows="classRows"
               :unread-chat-counts="unreadChatCounts"
+              :locale="locale"
               @open-report="openReport"
               @open-tab="active = $event as Section"
               @navigate="active = $event as Section"
@@ -289,29 +292,34 @@ onMounted(async () => {
             <TeacherQuizBuilder />
           </div>
 
+          <!-- Enhancements (Badges/Penalties/Leaderboard) -->
+          <div v-else-if="active === 'enhancements'" class="section-panel">
+            <TeacherEnhancementsTab :class-rows="classRows" />
+          </div>
+
           <!-- Announcements -->
           <div v-else-if="active === 'announcements'" class="section-panel">
             <div class="ann-grid">
               <div class="panel-card">
                 <div class="pc-header">
-                  <h3>📢 الإعلانات</h3>
+                  <h3>{{ t('shared.tdAnnouncements') }}</h3>
                 </div>
                 <AnnouncementsPanel />
               </div>
               <div class="panel-card">
                 <div class="pc-header">
-                  <h3>✏️ إنشاء إعلان</h3>
+                  <h3>{{ t('shared.tdCreateAnnouncement') }}</h3>
                 </div>
                 <div class="ann-create-wrap">
                   <div class="class-select-row">
-                    <label>اختر الفصل:</label>
+                    <label>{{ t('shared.tdSelectClass') }}</label>
                     <select v-model="selectedClassForAnnouncement" class="class-select">
-                      <option value="">— اختر فصل —</option>
+                      <option value="">{{ t('shared.tdSelectClassPlaceholder') }}</option>
                       <option v-for="c in classRows" :key="c.id" :value="c.id">{{ c.name }} ({{ c.code }})</option>
                     </select>
                   </div>
                   <CreateAnnouncementForm v-if="selectedClassForAnnouncement" :class-id="selectedClassForAnnouncement" />
-                  <p v-else class="ann-hint">اختر فصلاً لإنشاء إعلان</p>
+                  <p v-else class="ann-hint">{{ t('shared.tdSelectClassHint') }}</p>
                 </div>
               </div>
             </div>
@@ -325,10 +333,10 @@ onMounted(async () => {
           <!-- Settings -->
           <div v-else-if="active === 'settings'" class="section-panel">
             <div class="panel-card settings-card">
-              <h3>👤 الملف الشخصي</h3>
+              <h3>{{ t('shared.tdProfile') }}</h3>
               <p class="settings-name">{{ auth.user?.name }}</p>
               <p class="settings-email">{{ auth.user?.email }}</p>
-              <p class="settings-role">المدرس</p>
+              <p class="settings-role">{{ t('shared.roleTeacher') }}</p>
             </div>
           </div>
         </div>

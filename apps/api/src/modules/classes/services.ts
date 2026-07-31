@@ -117,6 +117,22 @@ export async function deleteClass(classId: string, teacherId: number) {
   if (!cls) return { success: false, message: 'الفصل غير موجود' };
   if (cls.teacher_id !== teacherId) return { success: false, message: 'غير مصرح' };
 
+  // Clean up quizzes and their questions/submissions
+  const quizIds = await db.all<{ id: number }[]>('SELECT id FROM quizzes WHERE class_id = ?', classId);
+  if (quizIds.length > 0) {
+    const qIds = quizIds.map(q => q.id);
+    const qPlaceholders = qIds.map(() => '?').join(',');
+    await db.run(`DELETE FROM quiz_submissions WHERE quiz_id IN (${qPlaceholders})`, ...qIds);
+    await db.run(`DELETE FROM quiz_questions WHERE quiz_id IN (${qPlaceholders})`, ...qIds);
+    await db.run(`DELETE FROM quizzes WHERE id IN (${qPlaceholders})`, ...qIds);
+  }
+  // Clean up announcements for this class
+  await db.run('DELETE FROM announcements WHERE class_id = ?', classId);
+  // Clean up reports
+  await db.run('DELETE FROM experiment_reports WHERE class_id = ?', classId);
+  // Clean up class students
+  await db.run('DELETE FROM class_students WHERE class_id = ?', classId);
+  // Delete the class
   await db.run('DELETE FROM classes WHERE id = ?', classId);
   return { success: true };
 }

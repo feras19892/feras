@@ -22,8 +22,12 @@ async function handleLogin() {
     return;
   }
 
-  const ok = await auth.login(email.value.trim(), password.value);
-  if (ok) {
+  const result = await auth.login(email.value.trim(), password.value);
+  if (result && typeof result === 'object' && (result as any).school) {
+    router.push('/school');
+    return;
+  }
+  if (result) {
     router.push('/dashboard');
     return;
   }

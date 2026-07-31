@@ -31,7 +31,8 @@ export async function createSchoolNotification(data: {
 }
 
 export async function getSchoolNotifications(schoolId: number, limit = 50) {
-  return db.all(`SELECT * FROM school_notifications WHERE school_id = ? ORDER BY created_at DESC LIMIT ?`, schoolId, limit);
+  // Show pinned + unread; read non-pinned are auto-deleted
+  return db.all(`SELECT * FROM school_notifications WHERE school_id = ? AND (is_pinned = 1 OR is_read = 0) ORDER BY is_pinned DESC, created_at DESC LIMIT ?`, schoolId, limit);
 }
 
 export async function getSchoolUnreadCount(schoolId: number) {
@@ -40,11 +41,20 @@ export async function getSchoolUnreadCount(schoolId: number) {
 }
 
 export async function markSchoolNotificationAsRead(id: number, schoolId: number) {
-  await db.run(`UPDATE school_notifications SET is_read = 1 WHERE id = ? AND school_id = ?`, id, schoolId);
+  // If pinned, just mark as read. If not pinned, delete it (auto-disappear after reading)
+  const notif = await db.get<{ is_pinned: number }>(`SELECT is_pinned FROM school_notifications WHERE id = ? AND school_id = ?`, id, schoolId);
+  if (!notif) return { success: true };
+  if (notif.is_pinned) {
+    await db.run(`UPDATE school_notifications SET is_read = 1 WHERE id = ? AND school_id = ?`, id, schoolId);
+  } else {
+    await db.run(`DELETE FROM school_notifications WHERE id = ? AND school_id = ?`, id, schoolId);
+  }
   return { success: true };
 }
 
 export async function markAllSchoolNotificationsAsRead(schoolId: number) {
+  // Delete all non-pinned, mark pinned as read
+  await db.run(`DELETE FROM school_notifications WHERE school_id = ? AND is_pinned = 0`, schoolId);
   await db.run(`UPDATE school_notifications SET is_read = 1 WHERE school_id = ?`, schoolId);
   return { success: true };
 }
@@ -54,8 +64,17 @@ export async function deleteSchoolNotification(id: number, schoolId: number) {
   return { success: true };
 }
 
+export async function togglePinSchoolNotification(id: number, schoolId: number) {
+  const notif = await db.get<{ is_pinned: number }>(`SELECT is_pinned FROM school_notifications WHERE id = ? AND school_id = ?`, id, schoolId);
+  if (!notif) return { success: false, message: 'Not found' };
+  const newVal = notif.is_pinned ? 0 : 1;
+  await db.run(`UPDATE school_notifications SET is_pinned = ? WHERE id = ? AND school_id = ?`, newVal, id, schoolId);
+  return { success: true, is_pinned: newVal };
+}
+
 export async function getUserNotifications(userId: number, limit = 50) {
-  return db.all(`SELECT * FROM notifications WHERE user_id = ? ORDER BY created_at DESC LIMIT ?`, userId, limit);
+  // Show pinned + unread; read non-pinned are auto-deleted so they won't appear
+  return db.all(`SELECT * FROM notifications WHERE user_id = ? AND (is_pinned = 1 OR is_read = 0) ORDER BY is_pinned DESC, created_at DESC LIMIT ?`, userId, limit);
 }
 
 export async function getUnreadCount(userId: number) {
@@ -64,11 +83,20 @@ export async function getUnreadCount(userId: number) {
 }
 
 export async function markAsRead(id: number, userId: number) {
-  await db.run(`UPDATE notifications SET is_read = 1 WHERE id = ? AND user_id = ?`, id, userId);
+  // If pinned, just mark as read. If not pinned, delete it (auto-disappear after reading)
+  const notif = await db.get<{ is_pinned: number }>(`SELECT is_pinned FROM notifications WHERE id = ? AND user_id = ?`, id, userId);
+  if (!notif) return { success: true };
+  if (notif.is_pinned) {
+    await db.run(`UPDATE notifications SET is_read = 1 WHERE id = ? AND user_id = ?`, id, userId);
+  } else {
+    await db.run(`DELETE FROM notifications WHERE id = ? AND user_id = ?`, id, userId);
+  }
   return { success: true };
 }
 
 export async function markAllAsRead(userId: number) {
+  // Delete all non-pinned, mark pinned as read
+  await db.run(`DELETE FROM notifications WHERE user_id = ? AND is_pinned = 0`, userId);
   await db.run(`UPDATE notifications SET is_read = 1 WHERE user_id = ?`, userId);
   return { success: true };
 }
@@ -76,4 +104,12 @@ export async function markAllAsRead(userId: number) {
 export async function deleteNotification(id: number, userId: number) {
   await db.run(`DELETE FROM notifications WHERE id = ? AND user_id = ?`, id, userId);
   return { success: true };
+}
+
+export async function togglePinNotification(id: number, userId: number) {
+  const notif = await db.get<{ is_pinned: number }>(`SELECT is_pinned FROM notifications WHERE id = ? AND user_id = ?`, id, userId);
+  if (!notif) return { success: false, message: 'Not found' };
+  const newVal = notif.is_pinned ? 0 : 1;
+  await db.run(`UPDATE notifications SET is_pinned = ? WHERE id = ? AND user_id = ?`, newVal, id, userId);
+  return { success: true, is_pinned: newVal };
 }

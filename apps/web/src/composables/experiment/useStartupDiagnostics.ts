@@ -129,15 +129,17 @@ export async function runStartupDiagnostics(): Promise<DiagnosticReport> {
     summary,
   }
 
-  if (passed) {
-    console.log(`%c✓ All startup checks passed in ${elapsed}ms`, 'color: #22c55e; font-weight: bold;')
-  } else {
-    console.log(
-      `%c✗ Startup checks failed: ${summary.fatal} fatal, ${summary.error} errors, ${summary.warn} warnings`,
-      'color: #ef4444; font-weight: bold;'
-    )
+  if (import.meta.env.DEV) {
+    if (passed) {
+      console.log(`%c✓ All startup checks passed in ${elapsed}ms`, 'color: #22c55e; font-weight: bold;')
+    } else {
+      console.log(
+        `%c✗ Startup checks failed: ${summary.fatal} fatal, ${summary.error} errors, ${summary.warn} warnings`,
+        'color: #ef4444; font-weight: bold;'
+      )
+    }
+    console.groupEnd()
   }
-  console.groupEnd()
 
   return report.value
 }

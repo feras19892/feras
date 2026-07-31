@@ -18,6 +18,7 @@ import AdminAuditLog from '../components/admin/AdminAuditLog.vue';
 import AdminSchoolManager from '../components/admin/AdminSchoolManager.vue';
 import AdminRequests from '../components/admin/AdminRequests.vue';
 import AdminSmartReports from '../components/admin/AdminSmartReports.vue';
+import AdminDetailedReports from '../components/admin/AdminDetailedReports.vue';
 import EmergencyControls from '../components/admin/EmergencyControls.vue';
 import AdminEnhancements from '../components/admin/AdminEnhancements.vue';
 import SystemBanner from '../components/shared/SystemBanner.vue';
@@ -38,7 +39,7 @@ const auth = useAuthStore();
 const { t, locale } = useI18n();
 if (!auth.isAdmin) { router.push('/home'); }
 
-type Section = 'overview' | 'experiments' | 'users' | 'schools' | 'requests' | 'approvals' | 'announcements' | 'health' | 'settings' | 'export' | 'feedback' | 'audit' | 'chat' | 'smart' | 'emergency' | 'enhancements';
+type Section = 'overview' | 'experiments' | 'users' | 'schools' | 'requests' | 'approvals' | 'announcements' | 'health' | 'settings' | 'export' | 'feedback' | 'audit' | 'chat' | 'smart' | 'detailed' | 'emergency' | 'enhancements';
 const active = ref<Section>('overview');
 const selectedUserId = ref<number | null>(null);
 const hovered = ref<string | null>(null);
@@ -48,46 +49,47 @@ const cards = ref<HomeCard[]>([]);
 const groups = computed<SidebarGroup[]>(() => [
   {
     id: 'main',
-    title: 'الرئيسية',
+    title: t('shared.navHome'),
     icon: '🏠',
     items: [
-      { id: 'overview', icon: '📊', label: 'نظرة عامة' },
-      { id: 'experiments', icon: '�', label: 'التجارب' },
+      { id: 'overview', icon: '📊', label: t('shared.navOverview') },
+      { id: 'experiments', icon: '🔬', label: t('shared.navExperiments') },
     ],
   },
   {
     id: 'manage',
-    title: 'الإدارة',
+    title: t('shared.navManage'),
     icon: '👥',
     items: [
-      { id: 'users', icon: '👥', label: 'المستخدمون', badge: users.value.length || undefined },
-      { id: 'schools', icon: '🏫', label: 'المدارس' },
-      { id: 'requests', icon: '📋', label: 'الطلبات' },
-      { id: 'approvals', icon: '✅', label: 'الموافقات' },
+      { id: 'users', icon: '👥', label: t('shared.navUsers'), badge: users.value.length || undefined },
+      { id: 'schools', icon: '🏫', label: t('shared.navSchools') },
+      { id: 'requests', icon: '📋', label: t('shared.navRequests') },
+      { id: 'approvals', icon: '✅', label: t('shared.navApprovals') },
     ],
   },
   {
     id: 'comm',
-    title: 'التواصل',
+    title: t('shared.navComm'),
     icon: '💬',
     items: [
-      { id: 'announcements', icon: '�', label: 'الإعلانات' },
-      { id: 'feedback', icon: '💬', label: 'التعليقات' },
-      { id: 'chat', icon: '�️', label: 'مراقبة الشات' },
+      { id: 'announcements', icon: '📢', label: t('shared.navAnnouncements') },
+      { id: 'feedback', icon: '💬', label: t('shared.navFeedback') },
+      { id: 'chat', icon: '🖥️', label: t('shared.navChat') },
     ],
   },
   {
     id: 'system',
-    title: 'النظام',
+    title: t('shared.navSystem'),
     icon: '🖥️',
     items: [
-      { id: 'smart', icon: '🧠', label: 'تقارير ذكية' },
-      { id: 'enhancements', icon: '✨', label: 'الميزات المتقدمة' },
-      { id: 'health', icon: '🩺', label: 'صحة النظام' },
-      { id: 'emergency', icon: '🚨', label: 'الطوارئ' },
-      { id: 'audit', icon: '📜', label: 'سجل التدقيق' },
-      { id: 'export', icon: '📤', label: 'تصدير' },
-      { id: 'settings', icon: '⚙️', label: 'الإعدادات' },
+      { id: 'smart', icon: '🧠', label: t('shared.navSmart') },
+      { id: 'detailed', icon: '📈', label: t('shared.navDetailed') },
+      { id: 'enhancements', icon: '✨', label: t('shared.navAdvancedFeatures') },
+      { id: 'health', icon: '🩺', label: t('shared.navHealth') },
+      { id: 'emergency', icon: '🚨', label: t('shared.navEmergency') },
+      { id: 'audit', icon: '📜', label: t('shared.navAudit') },
+      { id: 'export', icon: '📤', label: t('shared.navExport') },
+      { id: 'settings', icon: '⚙️', label: t('shared.navSettings') },
     ],
   },
 ]);
@@ -138,6 +140,8 @@ async function loadCards() {
   try { cards.value = await fetchHomeCards() } catch { /* ignore */ }
 }
 
+const dateLocaleStr = computed(() => locale.value === 'ar' ? 'ar-SA' : locale.value === 'es' ? 'es-ES' : 'en-US')
+
 const translatedCards = computed(() => cards.value.map(card => ({
   ...card,
   title: t(`dashboard.${card.id}Title`),
@@ -171,7 +175,7 @@ onMounted(() => {
       <header class="topbar">
         <div class="topbar-left">
           <h1 class="topbar-title">{{ activeLabel }}</h1>
-          <span class="topbar-date">{{ new Date().toLocaleDateString('ar-SA', { weekday: 'long', day: 'numeric', month: 'long' }) }}</span>
+          <span class="topbar-date">{{ new Date().toLocaleDateString(dateLocaleStr, { weekday: 'long', day: 'numeric', month: 'long' }) }}</span>
         </div>
         <div class="topbar-right">
           <NameRequestBadge />
@@ -182,12 +186,12 @@ onMounted(() => {
 
       <!-- KPI Strip -->
       <div class="kpi-strip" v-if="stats">
-        <div class="kpi-item"><span class="kpi-icon">👥</span><span class="kpi-val">{{ stats.users.total }}</span><span class="kpi-lab">مستخدمين</span></div>
-        <div class="kpi-item"><span class="kpi-icon">📚</span><span class="kpi-val">{{ stats.classes.total }}</span><span class="kpi-lab">فصول</span></div>
-        <div class="kpi-item"><span class="kpi-icon">📄</span><span class="kpi-val">{{ stats.reports.total }}</span><span class="kpi-lab">تقارير</span></div>
-        <div class="kpi-item"><span class="kpi-icon">⏳</span><span class="kpi-val">{{ stats.reports.pending }}</span><span class="kpi-lab">معلقة</span></div>
-        <div class="kpi-item"><span class="kpi-icon">✅</span><span class="kpi-val">{{ stats.reports.graded }}</span><span class="kpi-lab">مصححة</span></div>
-        <div class="kpi-item"><span class="kpi-icon">📊</span><span class="kpi-val">{{ stats.reports.average }}%</span><span class="kpi-lab">المتوسط</span></div>
+        <div class="kpi-item"><span class="kpi-icon">👥</span><span class="kpi-val">{{ stats.users.total }}</span><span class="kpi-lab">{{ t('shared.kpiUsers') }}</span></div>
+        <div class="kpi-item"><span class="kpi-icon">📚</span><span class="kpi-val">{{ stats.classes.total }}</span><span class="kpi-lab">{{ t('shared.kpiClasses') }}</span></div>
+        <div class="kpi-item"><span class="kpi-icon">📄</span><span class="kpi-val">{{ stats.reports.total }}</span><span class="kpi-lab">{{ t('shared.kpiReports') }}</span></div>
+        <div class="kpi-item"><span class="kpi-icon">⏳</span><span class="kpi-val">{{ stats.reports.pending }}</span><span class="kpi-lab">{{ t('shared.kpiPending') }}</span></div>
+        <div class="kpi-item"><span class="kpi-icon">✅</span><span class="kpi-val">{{ stats.reports.graded }}</span><span class="kpi-lab">{{ t('shared.kpiGraded') }}</span></div>
+        <div class="kpi-item"><span class="kpi-icon">📊</span><span class="kpi-val">{{ stats.reports.average }}%</span><span class="kpi-lab">{{ t('shared.kpiAvg') }}</span></div>
       </div>
 
       <!-- Content -->
@@ -232,6 +236,7 @@ onMounted(() => {
           <div v-else-if="active === 'export'" class="panel"><AdminExportPanel /></div>
           <div v-else-if="active === 'feedback'" class="panel"><AdminFeedbackPanel /></div>
           <div v-else-if="active === 'smart'" class="panel"><AdminSmartReports /></div>
+          <div v-else-if="active === 'detailed'" class="panel"><AdminDetailedReports /></div>
           <div v-else-if="active === 'emergency'" class="panel"><EmergencyControls /></div>
           <div v-else-if="active === 'enhancements'" class="panel"><AdminEnhancements /></div>
           <div v-else-if="active === 'audit'" class="panel"><AdminAuditLog /></div>

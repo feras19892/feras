@@ -101,12 +101,12 @@ export async function register(credentials: RegisterCredentials): Promise<{ succ
         console.log(`[auth] Dev email verification code for ${user.email}: ${code}`);
       }
     } catch (e) {
-      console.error('createEmailVerificationCode error:', e);
+      if (process.env.NODE_ENV !== 'production') console.error('createEmailVerificationCode error:', e);
     }
 
     return { success: true, user, devVerificationCode };
   } catch (err) {
-    console.error('register error:', err);
+    if (process.env.NODE_ENV !== 'production') console.error('register error:', err);
     return { success: false, message: 'Registration failed' };
   }
 }
@@ -195,7 +195,7 @@ export async function login(
           new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
         );
       } catch (e) {
-        console.error('school refresh token storage error:', e);
+        if (process.env.NODE_ENV !== 'production') console.error('school refresh token storage error:', e);
       }
 
       return { success: true, school, token, refreshToken };
@@ -203,7 +203,7 @@ export async function login(
 
     return { success: false, message: 'Invalid credentials' };
   } catch (err) {
-    console.error('login error:', err);
+    if (process.env.NODE_ENV !== 'production') console.error('login error:', err);
     return { success: false, message: 'Login failed' };
   }
 }
@@ -229,7 +229,7 @@ export async function resendVerificationCode(email: string): Promise<{ success: 
     }
     return { success: true, devVerificationCode };
   } catch (err) {
-    console.error('resendVerificationCode error:', err);
+    if (process.env.NODE_ENV !== 'production') console.error('resendVerificationCode error:', err);
     return { success: false, message: 'Failed to resend code' };
   }
 }
@@ -274,7 +274,7 @@ export async function verifyEmailCode(
       try {
         await db.run('UPDATE email_verification_codes SET attempts = attempts + 1 WHERE id = ?', row.id);
       } catch (e) {
-        console.error('verifyEmailCode attempts update error:', e);
+        if (process.env.NODE_ENV !== 'production') console.error('verifyEmailCode attempts update error:', e);
       }
       return { success: false, message: 'Invalid code' };
     }
@@ -294,7 +294,7 @@ export async function verifyEmailCode(
 
     return { success: true, user, token, refreshToken };
   } catch (err) {
-    console.error('verifyEmailCode error:', err);
+    if (process.env.NODE_ENV !== 'production') console.error('verifyEmailCode error:', err);
     return { success: false, message: 'Verification failed' };
   }
 }
@@ -357,7 +357,7 @@ export async function refreshAccessToken(
 
     return { success: false, message: 'Invalid or expired refresh token' };
   } catch (err) {
-    console.error('refresh error:', err);
+    if (process.env.NODE_ENV !== 'production') console.error('refresh error:', err);
     return { success: false, message: 'Refresh failed' };
   }
 }
@@ -392,7 +392,7 @@ export async function updatePassword(userId: number, newPassword: string): Promi
     await db.run('UPDATE users SET password_hash = ? WHERE id = ?', hash, userId);
     return true;
   } catch (err) {
-    console.error('updatePassword error:', err);
+    if (process.env.NODE_ENV !== 'production') console.error('updatePassword error:', err);
     return false;
   }
 }
@@ -404,7 +404,7 @@ export async function updateProfileName(userId: number, name: string): Promise<{
     if (!updated) return { success: false, message: 'Update failed' };
     return { success: true, user: updated };
   } catch (err) {
-    console.error('updateProfileName error:', err);
+    if (process.env.NODE_ENV !== 'production') console.error('updateProfileName error:', err);
     return { success: false, message: 'Update failed' };
   }
 }
@@ -457,6 +457,13 @@ export async function resolveNameRequest(requestId: number, teacherId: number, a
   if (!req) return { success: false, message: 'Request not found' };
   if (req.status !== 'pending') return { success: false, message: 'Already resolved' };
 
+  // Verify this teacher owns a class that the student belongs to
+  const owns = await db.get<{ cnt: number }>(
+    `SELECT COUNT(*) as cnt FROM class_students cs JOIN classes c ON c.id = cs.class_id WHERE cs.student_id = ? AND c.teacher_id = ?`,
+    req.user_id, teacherId,
+  );
+  if (!owns || owns.cnt === 0) return { success: false, message: 'غير مصرح — هذا الطالب ليس في فصولك' };
+
   const status = approved ? 'approved' : 'rejected';
   await db.run(
     'UPDATE name_change_requests SET status = ?, teacher_id = ?, resolved_at = datetime(\'now\') WHERE id = ?',
@@ -485,4 +492,54 @@ export async function impersonateUser(targetId: number): Promise<{ user: User; t
     user: { id: Number(target.id), email: target.email, name: target.name, role: target.role as User['role'] },
     token,
   };
+}
+
+// ─── Forgot Password ───
+export async function requestPasswordReset(email: string): Promise<{ success: boolean; message?: string; devResetCode?: string }> {
+  const user = await db.get<{ id: number; email: string; name: string }>(
+    'SELECT id, email, name FROM users WHERE email = ?', email
+  );
+  // Always return success to prevent email enumeration
+  if (!user) return { success: true };
+  
+  const code = generateVerificationCode(6);
+  const codeHash = hashVerificationCode(code);
+  const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
+
+  // Delete old codes for this user
+  await db.run('DELETE FROM password_reset_codes WHERE user_id = ?', user.id);
+  await db.run(
+    'INSERT INTO password_reset_codes (user_id, code_hash, expires_at) VALUES (?, ?, ?)',
+    user.id, codeHash, expiresAt
+  );
+
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`[auth] Password reset code for ${user.email}: ${code}`);
+    return { success: true, devResetCode: code };
+  }
+  return { success: true };
+}
+
+export async function resetPassword(email: string, code: string, newPassword: string): Promise<{ success: boolean; message?: string }> {
+  const user = await db.get<{ id: number; email: string }>(
+    'SELECT id, email FROM users WHERE email = ?', email
+  );
+  if (!user) return { success: false, message: 'User not found' };
+
+  const resetRow = await db.get<{ code_hash: string; expires_at: string }>(
+    'SELECT code_hash, expires_at FROM password_reset_codes WHERE user_id = ? AND expires_at > datetime("now")',
+    user.id
+  );
+  if (!resetRow) return { success: false, message: 'Reset code expired or not found' };
+
+  const hashedInput = hashVerificationCode(code);
+  if (hashedInput !== resetRow.code_hash) return { success: false, message: 'Invalid reset code' };
+
+  const hash = await hashPassword(newPassword);
+  await db.run('UPDATE users SET password_hash = ? WHERE id = ?', hash, user.id);
+  await db.run('DELETE FROM password_reset_codes WHERE user_id = ?', user.id);
+  // Invalidate all refresh tokens
+  await db.run('DELETE FROM refresh_tokens WHERE user_id = ?', user.id);
+
+  return { success: true };
 }

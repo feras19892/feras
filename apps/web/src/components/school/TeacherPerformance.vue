@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { fetchJson } from '../../services/http';
+import { useI18n } from '../../composables/useI18n';
+
+const { t, locale } = useI18n();
+const dateLocaleStr = computed(() => locale.value === 'ar' ? 'ar-SA' : locale.value === 'es' ? 'es-ES' : 'en-US');
 
 interface TeacherPerf {
   id: number;
@@ -42,46 +46,46 @@ onMounted(load);
 
 <template>
   <div class="teacher-performance">
-    <h3>📊 أداء المدرسين</h3>
-    <div v-if="loading" class="loading">جاري التحميل...</div>
-    <div v-else-if="teachers.length === 0" class="empty">لا يوجد مدرسين</div>
+    <h3>{{ t('school.perfTitle') }}</h3>
+    <div v-if="loading" class="loading">{{ t('school.loading') }}</div>
+    <div v-else-if="teachers.length === 0" class="empty">{{ t('school.noTeachers') }}</div>
     <div v-else class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th>المدرس</th>
-            <th>الفصول</th>
-            <th>الطلاب</th>
-            <th>التقارير</th>
-            <th>المعلقة</th>
-            <th>نسبة التصحيح</th>
-            <th>متوسط وقت التصحيح</th>
-            <th>آخر تصحيح</th>
-            <th>الحالة</th>
+            <th>{{ t('school.thTeacher') }}</th>
+            <th>{{ t('school.thClasses') }}</th>
+            <th>{{ t('school.thStudents') }}</th>
+            <th>{{ t('school.thReports') }}</th>
+            <th>{{ t('school.thPending') }}</th>
+            <th>{{ t('school.thGradingRate') }}</th>
+            <th>{{ t('school.thAvgGradingTime') }}</th>
+            <th>{{ t('school.thLastGraded') }}</th>
+            <th>{{ t('school.thStatus') }}</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="t in teachers" :key="t.id">
+          <tr v-for="tp in teachers" :key="tp.id">
             <td class="name-cell">
-              <div>{{ t.name }}</div>
-              <div class="email">{{ t.email }}</div>
+              <div>{{ tp.name }}</div>
+              <div class="email">{{ tp.email }}</div>
             </td>
-            <td>{{ t.class_count }}</td>
-            <td>{{ t.total_students }}</td>
-            <td>{{ t.total_reports }}</td>
-            <td :class="{ 'pending-warn': t.pending_reports > 5 }">{{ t.pending_reports }}</td>
+            <td>{{ tp.class_count }}</td>
+            <td>{{ tp.total_students }}</td>
+            <td>{{ tp.total_reports }}</td>
+            <td :class="{ 'pending-warn': tp.pending_reports > 5 }">{{ tp.pending_reports }}</td>
             <td>
-              <span class="rate-badge" :style="{ color: rateColor(t.grading_rate) }">
-                {{ t.grading_rate }}%
+              <span class="rate-badge" :style="{ color: rateColor(tp.grading_rate) }">
+                {{ tp.grading_rate }}%
               </span>
             </td>
-            <td>{{ t.avg_grading_hours !== null ? `${t.avg_grading_hours}س` : '—' }}</td>
+            <td>{{ tp.avg_grading_hours !== null ? `${tp.avg_grading_hours}${t('school.hoursShort')}` : '—' }}</td>
             <td class="date-cell">
-              {{ t.last_graded_at ? new Date(t.last_graded_at).toLocaleDateString('ar-SA') : 'لم يصحح بعد' }}
+              {{ tp.last_graded_at ? new Date(tp.last_graded_at).toLocaleDateString(dateLocaleStr) : t('school.notGradedYet') }}
             </td>
             <td>
-              <span :class="['status-badge', t.is_blocked ? 'blocked' : 'active']">
-                {{ t.is_blocked ? 'محظور' : 'نشط' }}
+              <span :class="['status-badge', tp.is_blocked ? 'blocked' : 'active']">
+                {{ tp.is_blocked ? t('school.statusBlocked') : t('school.statusActive') }}
               </span>
             </td>
           </tr>

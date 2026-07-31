@@ -22,7 +22,7 @@ export function useReportGrading() {
       const res = await getReports({ class_id: classId });
       if (res.success) reports.value = res.reports;
     } catch (err) {
-      console.error('load class reports failed:', err);
+      if (import.meta.env.DEV) console.error('load class reports failed:', err);
     }
     loading.value = false;
   }
@@ -40,7 +40,7 @@ export function useReportGrading() {
       const res = await gradeReport(reportId, { grade: gradeValue, feedback });
       if (res.success) await loadClassReports(selectedReport.value?.class_id || '');
     } catch (err) {
-      console.error('grade failed:', err);
+      if (import.meta.env.DEV) console.error('grade failed:', err);
     }
   }
 
@@ -49,7 +49,7 @@ export function useReportGrading() {
       const res = await addComment(reportId, content);
       if (res.success) await loadComments(reportId);
     } catch (err) {
-      console.error('add comment failed:', err);
+      if (import.meta.env.DEV) console.error('add comment failed:', err);
     }
   }
 
@@ -58,7 +58,7 @@ export function useReportGrading() {
       const res = await getComments(reportId);
       if (res.success) comments.value = res.comments;
     } catch (err) {
-      console.error('load comments failed:', err);
+      if (import.meta.env.DEV) console.error('load comments failed:', err);
     }
   }
 
@@ -67,7 +67,7 @@ export function useReportGrading() {
       const res = await getGradeHistory(reportId);
       if (res.success) history.value = res.history;
     } catch (err) {
-      console.error('load history failed:', err);
+      if (import.meta.env.DEV) console.error('load history failed:', err);
     }
   }
 

@@ -28,10 +28,10 @@ const cards = ref<HomeCard[]>([])
 const loading = ref(false)
 
 const dockItems = computed<DockItem[]>(() => {
-  const items: DockItem[] = [{ id: 'experiments', icon: '🔬', label: 'التجارب' }]
-  if (!auth.isAdmin) items.push({ id: 'classes', icon: '📚', label: 'فصولي' })
-  if (!auth.isAdmin) items.push({ id: 'approvals', icon: '📋', label: auth.isTeacher ? 'الموافقات' : 'الاعتراضات' })
-  if (!auth.isAdmin) items.push({ id: 'settings', icon: '⚙️', label: 'الإعدادات' })
+  const items: DockItem[] = [{ id: 'experiments', icon: '🔬', label: t('shared.navExperiments') }]
+  if (!auth.isAdmin) items.push({ id: 'classes', icon: '📚', label: t('shared.navMyClasses') })
+  if (!auth.isAdmin) items.push({ id: 'approvals', icon: '📋', label: auth.isTeacher ? t('shared.navApprovals') : t('shared.navObjections') })
+  if (!auth.isAdmin) items.push({ id: 'settings', icon: '⚙️', label: t('shared.navSettings') })
   return items
 })
 
@@ -78,14 +78,14 @@ async function handleSaveName() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: editName.value.trim() }),
     })
-    if (res.success) { nameMsg.value = '✅ تم الحفظ'; if (res.user) auth.user = res.user }
-    else nameMsg.value = 'فشل الحفظ'
-  } catch { nameMsg.value = 'فشل الحفظ' }
+    if (res.success) { nameMsg.value = t('shared.dsSaved'); if (res.user) auth.user = res.user }
+    else nameMsg.value = t('shared.dsSaveFailed')
+  } catch { nameMsg.value = t('shared.dsSaveFailed') }
   savingName.value = false
 }
 
 async function handleChangePassword() {
-  if (newPwd.value.length < 8) { pwdMsg.value = 'كلمة المرور قصيرة جداً'; return }
+  if (newPwd.value.length < 8) { pwdMsg.value = t('shared.dsPwdTooShort'); return }
   savingPwd.value = true; pwdMsg.value = ''
   try {
     const res = await fetchJson<{ success: boolean }>('/api/auth/password', {
@@ -93,9 +93,9 @@ async function handleChangePassword() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: auth.user!.id, new_password: newPwd.value }),
     })
-    if (res.success) { pwdMsg.value = '✅ تم التغيير'; newPwd.value = '' }
-    else pwdMsg.value = 'فشل التغيير'
-  } catch { pwdMsg.value = 'فشل التغيير' }
+    if (res.success) { pwdMsg.value = t('shared.dsPwdChanged'); newPwd.value = '' }
+    else pwdMsg.value = t('shared.dsPwdChangeFailed')
+  } catch { pwdMsg.value = t('shared.dsPwdChangeFailed') }
   savingPwd.value = false
 }
 
@@ -108,10 +108,10 @@ async function handleEmailChange() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ requested_email: newEmail.value.trim() }),
     })
-    if (res.success) { emailMsg.value = '✅ تم إرسال الطلب للأدمن'; newEmail.value = '' }
-    else emailMsg.value = res.message || 'فشل الطلب'
+    if (res.success) { emailMsg.value = t('shared.dsEmailRequestSent'); newEmail.value = '' }
+    else emailMsg.value = res.message || t('shared.dsEmailRequestFailed')
   } catch (e: any) {
-    emailMsg.value = e?.message || 'فشل الطلب'
+    emailMsg.value = e?.message || t('shared.dsEmailRequestFailed')
   }
   savingEmail.value = false
 }
@@ -172,23 +172,23 @@ onMounted(async () => {
     <div v-if="activeTab === 'settings'" class="tab-panel">
       <div class="settings-grid">
         <div class="settings-card">
-          <h3>📝 تعديل الاسم</h3>
-          <input v-model="editName" type="text" class="settings-input" placeholder="الاسم" />
-          <button class="settings-btn" :disabled="savingName" @click="handleSaveName">{{ savingName ? '...' : 'حفظ' }}</button>
+          <h3>{{ t('shared.dsEditName') }}</h3>
+          <input v-model="editName" type="text" class="settings-input" :placeholder="t('shared.dsNamePlaceholder')" />
+          <button class="settings-btn" :disabled="savingName" @click="handleSaveName">{{ savingName ? '...' : t('shared.dsSave') }}</button>
           <p v-if="nameMsg" class="settings-msg">{{ nameMsg }}</p>
         </div>
         <div class="settings-card">
-          <h3>🔑 تغيير كلمة المرور</h3>
-          <input v-model="newPwd" type="password" class="settings-input" placeholder="كلمة المرور الجديدة" />
-          <button class="settings-btn" :disabled="savingPwd" @click="handleChangePassword">{{ savingPwd ? '...' : 'تغيير' }}</button>
+          <h3>{{ t('shared.dsChangePassword') }}</h3>
+          <input v-model="newPwd" type="password" class="settings-input" :placeholder="t('shared.dsNewPwdPlaceholder')" />
+          <button class="settings-btn" :disabled="savingPwd" @click="handleChangePassword">{{ savingPwd ? '...' : t('shared.dsChange') }}</button>
           <p v-if="pwdMsg" class="settings-msg">{{ pwdMsg }}</p>
         </div>
         <div class="settings-card">
-          <h3>📧 طلب تغيير البريد</h3>
-          <p class="settings-hint">البريد الحالي: <strong>{{ auth.user?.email }}</strong></p>
-          <p class="settings-hint">تغيير البريد يتطلب موافقة الأدمن.</p>
-          <input v-model="newEmail" type="email" class="settings-input" placeholder="البريد الجديد" />
-          <button class="settings-btn" :disabled="savingEmail" @click="handleEmailChange">{{ savingEmail ? '...' : 'إرسال الطلب' }}</button>
+          <h3>{{ t('shared.dsEmailChange') }}</h3>
+          <p class="settings-hint">{{ t('shared.dsCurrentEmail') }} <strong>{{ auth.user?.email }}</strong></p>
+          <p class="settings-hint">{{ t('shared.dsEmailHint') }}</p>
+          <input v-model="newEmail" type="email" class="settings-input" :placeholder="t('shared.dsNewEmailPlaceholder')" />
+          <button class="settings-btn" :disabled="savingEmail" @click="handleEmailChange">{{ savingEmail ? '...' : t('shared.dsSendRequest') }}</button>
           <p v-if="emailMsg" class="settings-msg">{{ emailMsg }}</p>
         </div>
       </div>

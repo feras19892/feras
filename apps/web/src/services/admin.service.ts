@@ -119,8 +119,8 @@ export interface AdminUserFull {
   activity?: AdminUserActivity[];
 }
 
-export async function getAdminUsers() {
-  return fetchJson<{ success: boolean; users: AdminUser[] }>('/api/admin/users');
+export async function getAdminUsers(page = 1, limit = 50) {
+  return fetchJson<{ success: boolean; users: AdminUser[]; total: number; page: number; limit: number; totalPages: number }>(`/api/admin/users?page=${page}&limit=${limit}`);
 }
 
 export async function getAdminStats() {
@@ -131,8 +131,8 @@ export async function getAdminClasses() {
   return fetchJson<{ success: boolean; classes: AdminClassItem[] }>('/api/admin/classes');
 }
 
-export async function getAdminReports() {
-  return fetchJson<{ success: boolean; reports: AdminReportItem[] }>('/api/admin/reports');
+export async function getAdminReports(page = 1, limit = 50) {
+  return fetchJson<{ success: boolean; reports: AdminReportItem[]; total: number; page: number; limit: number; totalPages: number }>(`/api/admin/reports?page=${page}&limit=${limit}`);
 }
 
 export async function deleteUser(userId: number) {
@@ -140,7 +140,7 @@ export async function deleteUser(userId: number) {
 }
 
 export async function updateUserRole(userId: number, role: string) {
-  return fetchJson<{ success: boolean }>(`/api/admin/users/${userId}/role`, {
+  return fetchJson<{ success: boolean; message?: string }>(`/api/admin/users/${userId}/role`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ role }),
@@ -148,7 +148,7 @@ export async function updateUserRole(userId: number, role: string) {
 }
 
 export async function createAdminUser(name: string, email: string, password: string, role: string) {
-  return fetchJson<{ success: boolean; id?: number }>('/api/admin/users', {
+  return fetchJson<{ success: boolean; id?: number; message?: string }>('/api/admin/users', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, email, password, role }),
@@ -319,4 +319,18 @@ export interface AuditLogEntry {
 
 export async function getAdminAuditLog() {
   return fetchJson<{ success: boolean; audit: AuditLogEntry[] }>('/api/admin/audit');
+}
+
+// ─── Detailed Reports ───
+export async function getDetailedStats(period: string = 'today') {
+  return fetchJson<{ success: boolean; stats: any }>(`/api/admin/detailed-stats?period=${period}`);
+}
+
+export async function getAcademicTracking() {
+  return fetchJson<{ success: boolean; tracking: any }>('/api/admin/academic-tracking');
+}
+
+export async function getAdminDetailedReports(date?: string) {
+  const query = date ? `?date=${date}` : '';
+  return fetchJson<{ success: boolean; report: any }>(`/api/admin/detailed-reports${query}`);
 }

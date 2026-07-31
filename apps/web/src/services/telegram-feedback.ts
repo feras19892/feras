@@ -41,7 +41,7 @@ export async function sendTelegramFeedback(
 
     return { success: true }
   } catch (err) {
-    console.error('Telegram feedback error:', err)
+    if (import.meta.env.DEV) console.error('Telegram feedback error:', err)
     throw err
   }
 }

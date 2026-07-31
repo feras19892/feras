@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { loginSchema, registerSchema, passwordUpdateSchema, profileUpdateSchema, deleteAccountSchema, nameRequestSchema, verifyEmailSchema } from './schemas.js';
 import { z } from 'zod';
-import { login, register, refreshAccessToken, logout, logoutSchool, updatePassword, updateProfileName, deleteAccount, createNameRequest, verifyEmailCode, resendVerificationCode } from './services.js';
+import { login, register, refreshAccessToken, logout, logoutSchool, updatePassword, updateProfileName, deleteAccount, createNameRequest, verifyEmailCode, resendVerificationCode, requestPasswordReset, resetPassword } from './services.js';
 import { createEmailChangeRequest } from '../school/services.js';
 import * as activitySvc from '../activity/service.js';
 import * as sessionSvc from '../sessions/service.js';
@@ -192,6 +192,26 @@ authRoutes.post('/resend-verification', zValidator('json', z.object({ email: z.s
     return c.json({ success: false, message: result.message }, 400);
   }
   return c.json({ success: true, devVerificationCode: result.devVerificationCode });
+});
+
+// ─── Forgot Password ───
+authRoutes.post('/forgot-password', zValidator('json', z.object({ email: z.string().email() })), async (c) => {
+  const { email } = c.req.valid('json');
+  const result = await requestPasswordReset(email);
+  return c.json({ success: true, devResetCode: result.devResetCode });
+});
+
+authRoutes.post('/reset-password', zValidator('json', z.object({
+  email: z.string().email(),
+  code: z.string().min(4).max(16),
+  new_password: z.string().min(8).max(128),
+})), async (c) => {
+  const { email, code, new_password } = c.req.valid('json');
+  const result = await resetPassword(email, code, new_password);
+  if (!result.success) {
+    return c.json({ success: false, message: result.message }, 400);
+  }
+  return c.json({ success: true });
 });
 
 export { authRoutes };

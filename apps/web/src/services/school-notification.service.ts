@@ -7,6 +7,7 @@ export interface SchoolNotification {
   title: string;
   message: string | null;
   is_read: number;
+  is_pinned?: number;
   created_at: string;
 }
 
@@ -28,4 +29,8 @@ export async function markAllSchoolNotificationsRead(): Promise<{ success: boole
 
 export async function deleteSchoolNotification(id: number): Promise<{ success: boolean }> {
   return fetchJson(`/api/school/notifications/${id}`, { method: 'DELETE' });
+}
+
+export async function pinSchoolNotification(id: number): Promise<{ success: boolean; is_pinned?: number }> {
+  return fetchJson(`/api/school/notifications/${id}/pin`, { method: 'PATCH' });
 }

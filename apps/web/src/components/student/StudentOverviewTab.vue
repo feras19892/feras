@@ -5,11 +5,12 @@ import type { ClassItem } from '../../services/class.service'
 import AnnouncementsPanel from '../shared/AnnouncementsPanel.vue'
 import DeadlinesPanel from './DeadlinesPanel.vue'
 
-defineProps<{
+const props = defineProps<{
   kpi: StudentKPI
   recent: StudentReportRow[]
   overdue: StudentReportRow[]
   classes: ClassItem[]
+  locale?: string
 }>()
 
 const emit = defineEmits<{
@@ -30,7 +31,9 @@ function statusLabel(s: string): string {
 function timeShort(dateStr: string | null): string {
   if (!dateStr) return ''
   const d = new Date(dateStr)
-  return d.toLocaleDateString('ar-SA') + ' ' + d.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
+  const loc = props.locale || 'ar'
+  const localeStr = loc === 'ar' ? 'ar-SA' : loc === 'es' ? 'es-ES' : 'en-US'
+  return d.toLocaleDateString(localeStr) + ' ' + d.toLocaleTimeString(localeStr, { hour: '2-digit', minute: '2-digit' })
 }
 </script>
 

@@ -36,13 +36,27 @@ app.post('/', zValidator('json', createSchema), async (c) => {
     return c.json({ success: false, message: 'غير مصرح' }, 403);
   }
 
+  // Verify teacher owns the class for class-scoped announcements
+  if (body.scope === 'class' && user.role === 'teacher' && body.class_id) {
+    const classRow = await db.get<{ teacher_id: number }>('SELECT teacher_id FROM classes WHERE id = ?', body.class_id);
+    if (!classRow || classRow.teacher_id !== user.id) {
+      return c.json({ success: false, message: 'غير مصرح — لا يمكنك إنشاء إعلان لفصل لا تملكه' }, 403);
+    }
+  }
+
+  // Force school_id to user.id for school role
+  let schoolId = body.school_id;
+  if (user.role === 'school' && body.scope === 'school') {
+    schoolId = user.id;
+  }
+
   const announcement = await svc.createAnnouncement({
     author_type: user.role as 'teacher' | 'school' | 'admin',
     author_id: user.id,
     author_name: user.name,
     scope: body.scope,
     class_id: body.class_id,
-    school_id: body.school_id,
+    school_id: schoolId,
     title: body.title,
     content: body.content,
     is_pinned: body.is_pinned,
@@ -75,6 +89,12 @@ app.get('/', async (c) => {
       const anns = await svc.getClassAnnouncements(c.id);
       results.push(...anns);
     }
+    // Include school announcements if teacher belongs to a school
+    const teacher = await db.get<{ school_id: number | null }>(`SELECT school_id FROM users WHERE id = ?`, user.id);
+    if (teacher?.school_id) {
+      const schoolAnns = await svc.getSchoolAnnouncements(teacher.school_id);
+      results.push(...schoolAnns);
+    }
     const global = await svc.getGlobalAnnouncements();
     results.push(...global);
     results.sort((a, b) => {
@@ -86,15 +106,10 @@ app.get('/', async (c) => {
 
   if (user.role === 'school') {
     // School sees their school announcements + global
-    // school_id is stored in the school's session
-    const schoolId = Number(c.req.query('school_id') || 0);
-    if (schoolId) {
-      const list = await svc.getSchoolAnnouncements(schoolId);
-      const global = await svc.getGlobalAnnouncements();
-      return c.json({ success: true, announcements: [...list, ...global] });
-    }
+    const schoolId = Number(c.req.query('school_id') || user.id);
+    const list = await svc.getSchoolAnnouncements(schoolId);
     const global = await svc.getGlobalAnnouncements();
-    return c.json({ success: true, announcements: global });
+    return c.json({ success: true, announcements: [...list, ...global] });
   }
 
   // Admin sees all
@@ -104,7 +119,18 @@ app.get('/', async (c) => {
 
 // Get class announcements
 app.get('/class/:classId', async (c) => {
+  const user = c.get('user');
   const classId = c.req.param('classId');
+  // Verify access: teacher must own the class, student must be a member
+  if (user.role === 'teacher') {
+    const classRow = await db.get<{ teacher_id: number }>('SELECT teacher_id FROM classes WHERE id = ?', classId);
+    if (!classRow || classRow.teacher_id !== user.id) {
+      return c.json({ success: false, message: 'غير مصرح' }, 403);
+    }
+  } else if (user.role === 'student') {
+    const member = await db.get('SELECT 1 FROM class_students WHERE class_id = ? AND student_id = ?', classId, user.id);
+    if (!member) return c.json({ success: false, message: 'غير مصرح' }, 403);
+  }
   const list = await svc.getClassAnnouncements(classId);
   return c.json({ success: true, announcements: list });
 });

@@ -1,25 +1,19 @@
 import type { Locale } from '../types';
 
-import { ar1 } from './ar-1'
-import { ar2 } from './ar-2'
-import { ar3 } from './ar-3'
-import { ar4 } from './ar-4'
-import { en1 } from './en-1'
-import { en2 } from './en-2'
-import { en3 } from './en-3'
-import { en4 } from './en-4'
-import { es1 } from './es-1'
-import { es2 } from './es-2'
-import { es3 } from './es-3'
-import { es4 } from './es-4'
-
-const experimentModules: Record<Locale, Record<string, unknown>> = {
-  ar: { ...ar1, ...ar2, ...ar3, ...ar4 },
-  en: { ...en1, ...en2, ...en3, ...en4 },
-  es: { ...es1, ...es2, ...es3, ...es4 },
-}
-
 export async function loadExperimentMessages(locale: Locale): Promise<Record<string, unknown>> {
-  return experimentModules[locale]
+  switch (locale) {
+    case 'ar': {
+      const [a1, a2, a3, a4] = await Promise.all([import('./ar-1'), import('./ar-2'), import('./ar-3'), import('./ar-4')]);
+      return { ...a1.ar1, ...a2.ar2, ...a3.ar3, ...a4.ar4 };
+    }
+    case 'en': {
+      const [e1, e2, e3, e4] = await Promise.all([import('./en-1'), import('./en-2'), import('./en-3'), import('./en-4')]);
+      return { ...e1.en1, ...e2.en2, ...e3.en3, ...e4.en4 };
+    }
+    case 'es': {
+      const [s1, s2, s3, s4] = await Promise.all([import('./es-1'), import('./es-2'), import('./es-3'), import('./es-4')]);
+      return { ...s1.es1, ...s2.es2, ...s3.es3, ...s4.es4 };
+    }
+  }
 }
 

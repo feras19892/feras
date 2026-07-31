@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, onUnmounted } from 'vue';
 import { getAvailableQuizzes, getQuiz, startQuiz, submitQuiz, type Quiz, type QuizQuestion } from '../../services/quiz.service';
+import { useI18n } from '../../composables/useI18n';
+
+const { t } = useI18n();
 
 const quizzes = ref<Quiz[]>([]);
 const loading = ref(false);
@@ -21,8 +24,8 @@ async function loadQuizzes() {
   try {
     const res = await getAvailableQuizzes();
     if (res.success) quizzes.value = res.quizzes;
-  } catch (e: any) {
-    error.value = e?.message || 'Failed to load';
+  } catch (e: unknown) {
+    error.value = e instanceof Error ? e.message : t('dashboard.dash.quizFailed');
   }
   loading.value = false;
 }
@@ -33,23 +36,30 @@ async function openQuiz(quiz: Quiz) {
   quizError.value = '';
   result.value = null;
   answers.value = {};
-  const res = await getQuiz(quiz.id);
-  if (res.success) {
-    activeQuiz.value = res.quiz;
-    questions.value = res.questions;
-    if (res.submission?.submitted_at) {
-      result.value = { score: res.submission.score, total: quiz.max_score };
+  try {
+    const res = await getQuiz(quiz.id);
+    if (res.success) {
+      activeQuiz.value = res.quiz;
+      questions.value = res.questions;
+      if (res.submission?.submitted_at) {
+        result.value = { score: res.submission.score, total: quiz.max_score };
+      } else {
+        await startQuiz(quiz.id);
+        timeLeft.value = res.quiz.time_limit_minutes * 60;
+        if (timer) clearInterval(timer);
+        timer = setInterval(() => {
+          timeLeft.value--;
+          if (timeLeft.value <= 0) {
+            handleSubmit();
+          }
+        }, 1000);
+      }
     } else {
-      await startQuiz(quiz.id);
-      timeLeft.value = res.quiz.time_limit_minutes * 60;
-      if (timer) clearInterval(timer);
-      timer = setInterval(() => {
-        timeLeft.value--;
-        if (timeLeft.value <= 0) {
-          handleSubmit();
-        }
-      }, 1000);
+      quizError.value = res.message || t('dashboard.dash.quizLoadFailed');
     }
+  } catch (err) {
+    quizError.value = t('dashboard.dash.quizLoadFailed');
+    if (import.meta.env.DEV) console.error('openQuiz failed:', err);
   }
   quizLoading.value = false;
 }
@@ -66,11 +76,16 @@ async function handleSubmit() {
   if (!activeQuiz.value) return;
   if (timer) { clearInterval(timer); timer = null; }
   quizLoading.value = true;
-  const res = await submitQuiz(activeQuiz.value.id, answers.value);
-  if (res.success && res.score !== undefined && res.total !== undefined) {
-    result.value = { score: res.score, total: res.total };
-  } else {
-    quizError.value = res.message || 'Submission failed';
+  try {
+    const res = await submitQuiz(activeQuiz.value.id, answers.value);
+    if (res.success && res.score !== undefined && res.total !== undefined) {
+      result.value = { score: res.score, total: res.total };
+    } else {
+      quizError.value = res.message || t('dashboard.dash.quizSubmitFailed');
+    }
+  } catch (err) {
+    quizError.value = t('dashboard.dash.quizSubmitFailed');
+    if (import.meta.env.DEV) console.error('quiz submit failed:', err);
   }
   quizLoading.value = false;
 }
@@ -91,25 +106,25 @@ onUnmounted(() => { if (timer) clearInterval(timer); });
   <div class="quizzes-tab">
     <!-- Quiz List -->
     <div v-if="!activeQuiz">
-      <div v-if="loading" class="loading">جاري التحميل...</div>
+      <div v-if="loading" class="loading">{{ t('dashboard.dash.quizLoading') }}</div>
       <div v-else-if="error" class="error-box">❌ {{ error }}</div>
-      <div v-else-if="quizzes.length === 0" class="empty">لا توجد امتحانات متاحة حالياً</div>
+      <div v-else-if="quizzes.length === 0" class="empty">{{ t('dashboard.dash.quizNoAvailable') }}</div>
       <div v-else class="quiz-list">
         <div v-for="q in quizzes" :key="q.id" :class="['quiz-card', { submitted: q.submitted }]">
           <div class="quiz-header">
             <h3>{{ q.title }}</h3>
-            <span :class="['quiz-status', q.status]">{{ q.status === 'published' ? 'متاح' : q.status === 'closed' ? 'منتهي' : q.status }}</span>
+            <span :class="['quiz-status', q.status]">{{ q.status === 'published' ? t('dashboard.dash.quizAvailable') : q.status === 'closed' ? t('dashboard.dash.quizClosed') : q.status }}</span>
           </div>
           <p v-if="q.description" class="quiz-desc">{{ q.description }}</p>
           <div class="quiz-meta">
-            <span>⏱️ {{ q.time_limit_minutes }} دقيقة</span>
-            <span>📊 {{ q.max_score }} نقطة</span>
+            <span>⏱️ {{ q.time_limit_minutes }} {{ t('dashboard.dash.quizMinutes') }}</span>
+            <span>📊 {{ q.max_score }} {{ t('dashboard.dash.quizPoints') }}</span>
             <span v-if="q.submitted" class="score-badge">✅ {{ q.score }}/{{ q.max_score }}</span>
           </div>
           <button v-if="!q.submitted && q.status === 'published'" class="btn-start" @click="openQuiz(q)" :disabled="quizLoading">
-            بدء الامتحان
+            {{ t('dashboard.dash.quizStart') }}
           </button>
-          <span v-else-if="q.submitted" class="done-badge">تم الإرسال</span>
+          <span v-else-if="q.submitted" class="done-badge">{{ t('dashboard.dash.quizSubmitted') }}</span>
         </div>
       </div>
     </div>
@@ -122,26 +137,26 @@ onUnmounted(() => { if (timer) clearInterval(timer); });
       </div>
 
       <div v-if="result" class="result-box">
-        <h3>نتيجة الامتحان</h3>
+        <h3>{{ t('dashboard.dash.quizResult') }}</h3>
         <div class="score-display">
           <span class="score-num">{{ result.score }}</span>
           <span class="score-sep">/</span>
           <span class="score-total">{{ result.total }}</span>
         </div>
         <p class="score-percent">{{ Math.round((result.score / result.total) * 100) }}%</p>
-        <button class="btn-back" @click="closeQuiz; loadQuizzes()">عودة للقائمة</button>
+        <button class="btn-back" @click="closeQuiz(); loadQuizzes()">{{ t('dashboard.dash.quizBackToList') }}</button>
       </div>
 
       <div v-else>
         <div v-if="quizError" class="error-box">❌ {{ quizError }}</div>
         <div class="progress-bar">
-          <span>{{ answeredCount }} / {{ totalQuestions }} تمت الإجابة</span>
+          <span>{{ answeredCount }} / {{ totalQuestions }} {{ t('dashboard.dash.quizAnswered') }}</span>
         </div>
 
         <div v-for="(q, i) in questions" :key="q.id" class="question-card">
           <div class="question-header">
-            <span class="question-num">سؤال {{ i + 1 }}</span>
-            <span class="question-points">{{ q.points }} نقطة</span>
+            <span class="question-num">{{ t('dashboard.dash.quizQuestion') }} {{ i + 1 }}</span>
+            <span class="question-points">{{ q.points }} {{ t('dashboard.dash.quizPoints') }}</span>
           </div>
           <p class="question-text">{{ q.question_text }}</p>
           <div class="options">
@@ -169,9 +184,9 @@ onUnmounted(() => { if (timer) clearInterval(timer); });
         </div>
 
         <div class="quiz-actions">
-          <button class="btn-cancel" @click="closeQuiz">إلغاء</button>
+          <button class="btn-cancel" @click="closeQuiz">{{ t('dashboard.dash.quizCancel') }}</button>
           <button class="btn-submit" @click="handleSubmit" :disabled="quizLoading || answeredCount === 0">
-            {{ quizLoading ? 'جاري الإرسال...' : 'تسليم الإجابات' }}
+            {{ quizLoading ? t('dashboard.dash.quizSubmitting') : t('dashboard.dash.quizSubmit') }}
           </button>
         </div>
       </div>

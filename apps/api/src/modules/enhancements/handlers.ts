@@ -21,7 +21,7 @@ const penaltySchema = z.object({
 
 enhRoutes.post('/penalties', zValidator('json', penaltySchema), async (c) => {
   const user = c.get('user');
-  if (user.role !== 'teacher' && user.role !== 'admin') {
+  if (user.role !== 'teacher' && user.role !== 'admin' && user.role !== 'school') {
     return c.json({ success: false, message: 'Not authorized' }, 403);
   }
   const body = c.req.valid('json');

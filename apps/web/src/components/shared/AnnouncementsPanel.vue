@@ -2,15 +2,24 @@
 import { ref, onMounted, computed } from 'vue';
 import { getAnnouncements, deleteAnnouncement, createAnnouncement, type Announcement } from '../../services/announcement.service';
 import { useAuthStore } from '../../modules/auth/stores/auth';
+import { useI18n } from '../../composables/useI18n';
 
+const { t, locale } = useI18n();
 const auth = useAuthStore();
 const announcements = ref<Announcement[]>([]);
 const loading = ref(false);
 const showForm = ref(false);
-const formData = ref({ title: '', content: '', scope: 'global' as 'global' | 'class' | 'school', is_pinned: false });
+const formData = ref({ title: '', content: '', scope: (auth.user?.role === 'admin' ? 'global' : auth.isSchool ? 'school' : 'class') as 'global' | 'class' | 'school', is_pinned: false });
 const saving = ref(false);
 
-const canCreate = computed(() => auth.user?.role === 'admin' || auth.user?.role === 'teacher');
+const canCreate = computed(() => auth.user?.role === 'admin' || auth.user?.role === 'teacher' || auth.isSchool);
+
+const availableScopes = computed(() => {
+  if (auth.user?.role === 'admin') return ['global', 'school', 'class'] as const;
+  if (auth.isSchool) return ['school'] as const;
+  if (auth.user?.role === 'teacher') return ['class'] as const;
+  return [] as const;
+});
 
 async function load() {
   loading.value = true;
@@ -34,21 +43,24 @@ async function submit() {
   try {
     const res = await createAnnouncement({
       scope: formData.value.scope,
+      school_id: auth.isSchool ? auth.schoolSession?.id : undefined,
       title: formData.value.title.trim(),
       content: formData.value.content.trim(),
       is_pinned: formData.value.is_pinned,
     });
     if (res.success) {
       announcements.value.unshift(res.announcement);
-      formData.value = { title: '', content: '', scope: 'global', is_pinned: false };
+      formData.value = { title: '', content: '', scope: (auth.user?.role === 'admin' ? 'global' : auth.isSchool ? 'school' : 'class') as 'global' | 'class' | 'school', is_pinned: false };
       showForm.value = false;
     }
   } catch { /* ignore */ }
   saving.value = false;
 }
 
+const dateLocaleStr = computed(() => locale.value === 'ar' ? 'ar-SA' : locale.value === 'es' ? 'es-ES' : 'en-US');
+
 function formatTime(dateStr: string) {
-  return new Date(dateStr).toLocaleString('ar-SA', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  return new Date(dateStr).toLocaleString(dateLocaleStr.value, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
 
 const canDelete = (a: Announcement) => auth.user?.role === 'admin' || auth.user?.id === a.author_id;
@@ -59,28 +71,31 @@ onMounted(load);
 <template>
   <div class="announcements-panel">
     <div class="panel-header">
-      <h3>📢 الإعلانات</h3>
+      <h3>{{ t('shared.annTitle') }}</h3>
       <button v-if="canCreate" class="add-btn" @click="showForm = !showForm">
-        {{ showForm ? 'إلغاء' : '+ إعلان جديد' }}
+        {{ showForm ? t('shared.annCancel') : t('shared.annNew') }}
       </button>
     </div>
 
     <!-- Create Form -->
     <div v-if="showForm && canCreate" class="create-form">
-      <input v-model="formData.title" placeholder="عنوان الإعلان" class="form-input" />
-      <textarea v-model="formData.content" placeholder="محتوى الإعلان" class="form-textarea" rows="3" />
+      <input v-model="formData.title" :placeholder="t('shared.annTitlePlaceholder')" class="form-input" />
+      <textarea v-model="formData.content" :placeholder="t('shared.annContentPlaceholder')" class="form-textarea" rows="3" />
       <div class="form-row">
+        <select v-if="availableScopes.length > 1" v-model="formData.scope" class="form-select">
+          <option v-for="s in availableScopes" :key="s" :value="s">{{ s === 'global' ? t('shared.annScopeGlobal') : s === 'school' ? t('shared.annScopeSchool') : t('shared.annScopeClass') }}</option>
+        </select>
         <label class="checkbox-label">
-          <input type="checkbox" v-model="formData.is_pinned" /> 📌 تثبيت
+          <input type="checkbox" v-model="formData.is_pinned" /> {{ t('shared.annPin') }}
         </label>
         <button class="submit-btn" :disabled="saving || !formData.title.trim() || !formData.content.trim()" @click="submit">
-          {{ saving ? '...' : 'نشر' }}
+          {{ saving ? '...' : t('shared.annPublish') }}
         </button>
       </div>
     </div>
 
-    <div v-if="loading" class="loading">جاري التحميل...</div>
-    <div v-else-if="announcements.length === 0" class="empty">لا توجد إعلانات</div>
+    <div v-if="loading" class="loading">{{ t('common.loading') }}</div>
+    <div v-else-if="announcements.length === 0" class="empty">{{ t('shared.annEmpty') }}</div>
     <div v-else class="list">
       <div
         v-for="a in announcements"
@@ -89,7 +104,7 @@ onMounted(load);
       >
         <div class="item-header">
           <span class="pin" v-if="a.is_pinned">📌</span>
-          <span class="scope-tag" :class="a.scope">{{ a.scope === 'global' ? 'عام' : a.scope === 'school' ? 'مدرسة' : 'فصل' }}</span>
+          <span class="scope-tag" :class="a.scope">{{ a.scope === 'global' ? t('shared.annScopeGlobal') : a.scope === 'school' ? t('shared.annScopeSchool') : t('shared.annScopeClass') }}</span>
           <span class="title">{{ a.title }}</span>
           <button v-if="canDelete(a)" class="del-btn" @click="remove(a.id)">✕</button>
         </div>
@@ -125,7 +140,11 @@ onMounted(load);
   background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.4rem;
   padding: 0.5rem 0.7rem; color: #e2e8f0; font-size: 0.85rem; font-family: inherit; resize: vertical;
 }
-.form-row { display: flex; align-items: center; justify-content: space-between; }
+.form-row { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.form-select {
+  background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.4rem;
+  padding: 0.4rem 0.6rem; color: #e2e8f0; font-size: 0.8rem; font-family: inherit;
+}
 .checkbox-label { display: flex; align-items: center; gap: 0.3rem; color: #94a3b8; font-size: 0.8rem; cursor: pointer; }
 .submit-btn {
   background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff; border: none;

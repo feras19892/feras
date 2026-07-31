@@ -1,5 +1,5 @@
 import { ref, onMounted, onUnmounted } from 'vue';
-import { getNotifications, getUnreadCount, markAllAsRead, markAsRead } from '../services/notification.service';
+import { getNotifications, getUnreadCount, markAllAsRead, markAsRead, deleteNotification, pinNotification } from '../services/notification.service';
 import { apiUrl } from '../services/http';
 import type { Notification } from '../services/notification.service';
 
@@ -33,10 +33,11 @@ async function refreshUnread() {
 async function markAllRead() {
   try {
     await markAllAsRead();
-    notifications.value = notifications.value.map(n => ({ ...n, is_read: true }));
+    // Remove all non-pinned, keep pinned as read
+    notifications.value = notifications.value.filter(n => n.is_pinned).map(n => ({ ...n, is_read: true }));
     unreadCount.value = 0;
   } catch (err) {
-    console.error('mark all read failed:', err);
+    if (import.meta.env.DEV) console.error('mark all read failed:', err);
   }
 }
 
@@ -45,10 +46,37 @@ async function markOneRead(id: number) {
   if (!n || n.is_read) return;
   try {
     await markAsRead(id);
-    n.is_read = true;
+    if (n.is_pinned) {
+      n.is_read = true;
+    } else {
+      // Non-pinned: auto-deleted on backend, remove from list
+      notifications.value = notifications.value.filter(x => x.id !== id);
+    }
     if (unreadCount.value > 0) unreadCount.value--;
   } catch (err) {
-    console.error('mark read failed:', err);
+    if (import.meta.env.DEV) console.error('mark read failed:', err);
+  }
+}
+
+async function deleteOne(id: number) {
+  try {
+    await deleteNotification(id);
+    notifications.value = notifications.value.filter(x => x.id !== id);
+    if (unreadCount.value > 0) unreadCount.value--;
+  } catch (err) {
+    if (import.meta.env.DEV) console.error('delete notification failed:', err);
+  }
+}
+
+async function togglePin(id: number) {
+  try {
+    const res = await pinNotification(id);
+    if (res.success) {
+      const n = notifications.value.find(x => x.id === id);
+      if (n) n.is_pinned = res.is_pinned ? 1 : 0;
+    }
+  } catch (err) {
+    if (import.meta.env.DEV) console.error('pin notification failed:', err);
   }
 }
 
@@ -134,5 +162,5 @@ export function useNotifications() {
     }
   });
 
-  return { notifications, unreadCount, loading, loadNotifications, markAllRead, markOneRead };
+  return { notifications, unreadCount, loading, loadNotifications, markAllRead, markOneRead, deleteOne, togglePin };
 }

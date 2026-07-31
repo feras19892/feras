@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted, computed, defineAsyncComponent } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from '../composables/useI18n';
 import { useAuthStore } from '../modules/auth/stores/auth';
@@ -12,18 +12,20 @@ import {
 } from '../services/school.service';
 import { fetchJson } from '../services/http';
 import HelpModal from '../components/shared/HelpModal.vue';
-import ApprovalPanel from '../components/shared/ApprovalPanel.vue';
 import AppSidebar from '../components/shared/AppSidebar.vue';
 import type { SidebarGroup } from '../components/shared/AppSidebar.vue';
 import SchoolNotificationBell from '../components/shared/SchoolNotificationBell.vue';
-import AnnouncementsPanel from '../components/shared/AnnouncementsPanel.vue';
 import SystemBanner from '../components/shared/SystemBanner.vue';
-import TeacherPerformance from '../components/school/TeacherPerformance.vue';
-import SchoolReports from '../components/school/SchoolReports.vue';
-import SchoolFeedback from '../components/school/SchoolFeedback.vue';
 import SchoolOverview from '../components/school/SchoolOverview.vue';
 import SchoolTables from '../components/school/SchoolTables.vue';
-import SchoolSettings from '../components/school/SchoolSettings.vue';
+import { useApprovalBadge } from '../composables/useApprovalBadge';
+
+const ApprovalPanel = defineAsyncComponent(() => import('../components/shared/ApprovalPanel.vue'));
+const AnnouncementsPanel = defineAsyncComponent(() => import('../components/shared/AnnouncementsPanel.vue'));
+const TeacherPerformance = defineAsyncComponent(() => import('../components/school/TeacherPerformance.vue'));
+const SchoolReports = defineAsyncComponent(() => import('../components/school/SchoolReports.vue'));
+const SchoolFeedback = defineAsyncComponent(() => import('../components/school/SchoolFeedback.vue'));
+const SchoolSettings = defineAsyncComponent(() => import('../components/school/SchoolSettings.vue'));
 
 const router = useRouter();
 const { t, locale } = useI18n();
@@ -45,6 +47,7 @@ const reports = ref<SchoolReportItem[]>([]);
 const sessions = ref<SchoolSessionItem[]>([]);
 const activityLog = ref<SchoolActivityItem[]>([]);
 const schoolWarnings = ref<SchoolWarningItem[]>([]);
+const { pendingCount: approvalPendingCount } = useApprovalBadge();
 
 const groups = computed<SidebarGroup[]>(() => [
   { id: 'main', title: t('school.sidebarMain'), icon: '🏠', items: [
@@ -65,7 +68,7 @@ const groups = computed<SidebarGroup[]>(() => [
   ]},
   { id: 'comm', title: t('school.sidebarComm'), icon: '💬', items: [
     { id: 'announcements', icon: '📢', label: t('school.navAnnouncements') },
-    { id: 'approvals', icon: '📋', label: t('school.navApprovals') },
+    { id: 'approvals', icon: '📋', label: t('school.navApprovals'), badge: approvalPendingCount.value > 0 ? approvalPendingCount.value : undefined },
   ]},
   { id: 'account', title: t('school.sidebarAccount'), icon: '⚙️', items: [
     { id: 'settings', icon: '⚙️', label: t('school.navSettings') },

@@ -350,6 +350,23 @@ export async function adminGetCapacityRequests(status?: string) {
   return fetchJson<{ success: boolean; requests: CapacityRequest[] }>(`/api/school/admin/capacity-requests${query}`);
 }
 
+export async function schoolCreateCapacityRequest(data: {
+  requested_max_students?: number;
+  requested_max_teachers?: number;
+  reason: string;
+}) {
+  return fetchJson<{ success: boolean; message?: string }>('/api/school/capacity-request', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+}
+
+export async function getSchoolCapacityRequests(status?: string) {
+  const query = status ? `?status=${status}` : '';
+  return fetchJson<{ success: boolean; requests: CapacityRequest[] }>(`/api/school/capacity-requests${query}`);
+}
+
 export async function adminReviewCapacityRequest(id: number, status: 'approved' | 'rejected', response?: string) {
   return fetchJson<{ success: boolean; message?: string }>(`/api/school/admin/capacity-requests/${id}`, {
     method: 'PATCH',

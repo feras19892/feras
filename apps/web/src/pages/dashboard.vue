@@ -4,13 +4,6 @@ import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from '../composables/useI18n'
 import { useAuthStore } from '../modules/auth/stores/auth'
 import BranchCard from '../components/ui/BranchCard.vue'
-import ClassManager from '../components/teacher/ClassManager.vue'
-import TeacherGrading from '../components/teacher/TeacherGrading.vue'
-import TeacherStats from '../components/teacher/TeacherStats.vue'
-import TeacherDashboard from '../components/teacher/TeacherDashboard.vue'
-import StudentDashboard from '../components/student/StudentDashboard.vue'
-import AccountSettingsModal from '../components/shared/AccountSettingsModal.vue'
-import NotificationBell from '../components/shared/NotificationBell.vue'
 import ApprovalPanel from '../components/shared/ApprovalPanel.vue'
 import PanelShell from '../components/shared/PanelShell.vue'
 import type { DockItem } from '../components/shared/PanelShell.vue'
@@ -37,13 +30,7 @@ const dockItems = computed<DockItem[]>(() => {
 
 const activeLabel = computed(() => dockItems.value.find(d => d.id === activeTab.value)?.label || '')
 
-// Settings state
-const editName = ref('')
-const savingName = ref(false)
-const nameMsg = ref('')
-const newPwd = ref('')
-const savingPwd = ref(false)
-const pwdMsg = ref('')
+// Email change state (not in AccountSettingsModal)
 const newEmail = ref('')
 const savingEmail = ref(false)
 const emailMsg = ref('')
@@ -69,36 +56,6 @@ const loadCards = async () => {
   try { cards.value = await fetchHomeCards() } catch { /* ignore */ } finally { loading.value = false }
 }
 
-async function handleSaveName() {
-  if (editName.value.trim().length < 2) return
-  savingName.value = true; nameMsg.value = ''
-  try {
-    const res = await fetchJson<{ success: boolean; user?: any }>('/api/auth/profile', {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: editName.value.trim() }),
-    })
-    if (res.success) { nameMsg.value = t('shared.dsSaved'); if (res.user) auth.user = res.user }
-    else nameMsg.value = t('shared.dsSaveFailed')
-  } catch { nameMsg.value = t('shared.dsSaveFailed') }
-  savingName.value = false
-}
-
-async function handleChangePassword() {
-  if (newPwd.value.length < 8) { pwdMsg.value = t('shared.dsPwdTooShort'); return }
-  savingPwd.value = true; pwdMsg.value = ''
-  try {
-    const res = await fetchJson<{ success: boolean }>('/api/auth/password', {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id: auth.user!.id, new_password: newPwd.value }),
-    })
-    if (res.success) { pwdMsg.value = t('shared.dsPwdChanged'); newPwd.value = '' }
-    else pwdMsg.value = t('shared.dsPwdChangeFailed')
-  } catch { pwdMsg.value = t('shared.dsPwdChangeFailed') }
-  savingPwd.value = false
-}
-
 async function handleEmailChange() {
   if (!newEmail.value.trim()) return
   savingEmail.value = true; emailMsg.value = ''
@@ -121,7 +78,6 @@ onMounted(async () => {
   if (auth.isAdmin && route.query.view !== 'experiments') { router.push('/admin'); return }
   if (auth.isStudent && !auth.isGuest) { router.push('/student'); return }
   if (auth.isTeacher && !auth.isGuest) { router.push('/teacher'); return }
-  if (auth.user) editName.value = auth.user.name
   await loadCards()
 })
 </script>
@@ -156,11 +112,7 @@ onMounted(async () => {
 
     <!-- Classes Tab (teacher/student only) -->
     <div v-if="activeTab === 'classes' && !auth.isAdmin" class="tab-panel">
-      <TeacherDashboard v-if="auth.isTeacher" @navigate="activeTab = 'experiments'" />
-      <StudentDashboard v-else-if="auth.isStudent" @navigate="activeTab = 'experiments'" />
-      <ClassManager v-if="auth.isTeacher" />
-      <TeacherGrading v-if="auth.isTeacher" />
-      <TeacherStats v-if="auth.isTeacher" />
+      <p class="loading-text">{{ t('shared.navMyClasses') }}</p>
     </div>
 
     <!-- Approvals Tab -->
@@ -168,21 +120,9 @@ onMounted(async () => {
       <ApprovalPanel :mode="auth.isTeacher ? 'teacher' : 'student'" />
     </div>
 
-    <!-- Settings Tab -->
+    <!-- Settings Tab (email change only — name/password/avatar via AccountSettingsModal in top bar) -->
     <div v-if="activeTab === 'settings'" class="tab-panel">
       <div class="settings-grid">
-        <div class="settings-card">
-          <h3>{{ t('shared.dsEditName') }}</h3>
-          <input v-model="editName" type="text" class="settings-input" :placeholder="t('shared.dsNamePlaceholder')" />
-          <button class="settings-btn" :disabled="savingName" @click="handleSaveName">{{ savingName ? '...' : t('shared.dsSave') }}</button>
-          <p v-if="nameMsg" class="settings-msg">{{ nameMsg }}</p>
-        </div>
-        <div class="settings-card">
-          <h3>{{ t('shared.dsChangePassword') }}</h3>
-          <input v-model="newPwd" type="password" class="settings-input" :placeholder="t('shared.dsNewPwdPlaceholder')" />
-          <button class="settings-btn" :disabled="savingPwd" @click="handleChangePassword">{{ savingPwd ? '...' : t('shared.dsChange') }}</button>
-          <p v-if="pwdMsg" class="settings-msg">{{ pwdMsg }}</p>
-        </div>
         <div class="settings-card">
           <h3>{{ t('shared.dsEmailChange') }}</h3>
           <p class="settings-hint">{{ t('shared.dsCurrentEmail') }} <strong>{{ auth.user?.email }}</strong></p>

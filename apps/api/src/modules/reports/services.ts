@@ -139,7 +139,7 @@ export async function getReports(filters: { class_id?: string; student_id?: numb
 }
 
 export async function getReportById(id: number) {
-  return db.get(`SELECT r.*, u.name as student_name FROM experiment_reports r JOIN users u ON r.student_id = u.id WHERE r.id = ?`, id);
+  return db.get(`SELECT r.*, u.name as student_name, u.avatar_url as student_avatar_url FROM experiment_reports r JOIN users u ON r.student_id = u.id WHERE r.id = ?`, id);
 }
 
 export async function markReportAsSeen(id: number) {
@@ -308,6 +308,17 @@ export async function getClassReportsForExport(classId: string) {
   return db.all(
     `SELECT r.*, u.name as student_name FROM experiment_reports r
      JOIN users u ON r.student_id = u.id WHERE r.class_id = ? ORDER BY r.submitted_at DESC`, classId);
+}
+
+export async function markFeedbackSeen(id: number) {
+  const report = await db.get<{ student_id: number; feedback_seen: number }>(
+    `SELECT student_id, feedback_seen FROM experiment_reports WHERE id = ?`, id,
+  );
+  if (!report) return { success: false };
+  if (report.feedback_seen === 0) {
+    await db.run(`UPDATE experiment_reports SET feedback_seen = 1 WHERE id = ?`, id);
+  }
+  return { success: true };
 }
 
 export async function deleteReport(id: number, requester?: { role: string; id: number }) {

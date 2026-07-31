@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useI18n } from '../../composables/useI18n'
 import { apiUrl } from '../../services/http'
 import {
@@ -9,9 +10,11 @@ import {
 } from '../../services/school-notification.service'
 
 const { t, locale } = useI18n()
+const router = useRouter()
 const open = ref(false)
 const notifications = ref<SchoolNotification[]>([])
 const unreadCount = ref(0)
+const bellRef = ref<HTMLElement | null>(null)
 let eventSource: EventSource | null = null
 let fallbackIntervalId: ReturnType<typeof setInterval> | null = null
 
@@ -32,6 +35,20 @@ async function loadNotifications() {
 function toggle() {
   open.value = !open.value
   if (open.value) loadNotifications()
+}
+
+function handleClickOutside(e: MouseEvent) {
+  if (bellRef.value && !bellRef.value.contains(e.target as Node)) {
+    open.value = false
+  }
+}
+
+async function handleNotificationClick(n: SchoolNotification) {
+  if (!n.is_read) await markRead(n.id)
+  if (n.report_id) {
+    open.value = false
+    router.push(`/report/${n.report_id}`)
+  }
 }
 
 async function markRead(id: number) {
@@ -108,17 +125,19 @@ function stopFallback() {
 onMounted(() => {
   loadUnread()
   connectSSE()
+  document.addEventListener('click', handleClickOutside)
 })
 
 onUnmounted(() => {
   eventSource?.close()
   stopFallback()
+  document.removeEventListener('click', handleClickOutside)
 })
 </script>
 
 <template>
-  <div class="notif-bell">
-    <button class="bell-btn" @click="toggle">
+  <div class="notif-bell" ref="bellRef">
+    <button class="bell-btn" @click.stop="toggle">
       <span>🔔</span>
       <span v-if="unreadCount > 0" class="bell-badge">{{ unreadCount > 99 ? '99+' : unreadCount }}</span>
     </button>
@@ -133,21 +152,22 @@ onUnmounted(() => {
         <div
           v-for="n in notifications.slice(0, 30)"
           :key="n.id"
-          :class="['notif-item', { unread: !n.is_read, pinned: n.is_pinned }]"
+          :class="['notif-item', { unread: !n.is_read, pinned: n.is_pinned, clickable: n.report_id }]"
+          @click="handleNotificationClick(n)"
         >
           <div class="notif-item-header">
             <span class="notif-title">
               <span v-if="n.is_pinned" class="pin-indicator">📌</span>
               {{ n.title }}
             </span>
-            <div class="notif-actions">
-              <button class="notif-pin" @click="togglePin(n.id)" :title="n.is_pinned ? t('common.unpin') : t('common.pin')">{{ n.is_pinned ? '📌' : '📍' }}</button>
-              <button class="notif-del" @click="remove(n.id)">✕</button>
+            <div class="notif-actions" @click.stop>
+              <button class="notif-pin" @click.stop="togglePin(n.id)" :title="n.is_pinned ? t('common.unpin') : t('common.pin')">{{ n.is_pinned ? '📌' : '📍' }}</button>
+              <button class="notif-del" @click.stop="remove(n.id)">✕</button>
             </div>
           </div>
           <p v-if="n.message" class="notif-msg">{{ n.message }}</p>
           <span class="notif-time">{{ formatTime(n.created_at) }}</span>
-          <button v-if="!n.is_read" class="notif-read-btn" @click="markRead(n.id)">{{ t('common.markRead') }}</button>
+          <button v-if="!n.is_read" class="notif-read-btn" @click.stop="markRead(n.id)">{{ t('common.markRead') }}</button>
         </div>
       </div>
     </div>
@@ -213,6 +233,7 @@ onUnmounted(() => {
   transition: background 0.12s;
 }
 .notif-item.unread { background: rgba(56,189,248,0.04); }
+.notif-item.clickable { cursor: pointer; }
 .notif-item:hover { background: rgba(255,255,255,0.02); }
 .notif-item-header { display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; }
 .notif-title { font-size: 0.8rem; font-weight: 700; color: #e2e8f0; flex: 1; }

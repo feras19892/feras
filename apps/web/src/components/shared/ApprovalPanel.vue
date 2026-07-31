@@ -34,7 +34,7 @@ const filteredApprovals = computed<ApprovalRequest[]>(() => {
 
 // Escalation only allowed on rejected status — enforce in UI
 function canEscalate(a: ApprovalRequest): boolean {
-  return (props.mode === 'student' || props.mode === 'teacher') && a.status === 'rejected';
+  return (props.mode === 'student' || props.mode === 'teacher' || props.mode === 'school') && a.status === 'rejected';
 }
 
 const typeLabel = computed<Record<string, string>>(() => ({
@@ -42,6 +42,12 @@ const typeLabel = computed<Record<string, string>>(() => ({
   grade_change: t('approval.typeGradeChange'),
   student_removal: t('approval.typeStudentRemoval'),
   grade_appeal: t('approval.typeGradeAppeal'),
+  class_creation: 'إنشاء فصل',
+  class_deletion: 'حذف فصل',
+  class_edit: 'تعديل فصل',
+  user_creation: 'إضافة مستخدم',
+  user_edit: 'تعديل مستخدم',
+  report_deletion: 'حذف تقرير',
 }));
 
 const statusLabel = computed<Record<string, string>>(() => ({

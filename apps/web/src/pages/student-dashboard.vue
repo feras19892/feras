@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, defineAsyncComponent } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from '../composables/useI18n'
 import { useAuthStore } from '../modules/auth/stores/auth'
@@ -9,19 +9,20 @@ import type { SidebarGroup } from '../components/shared/AppSidebar.vue'
 import NotificationBell from '../components/shared/NotificationBell.vue'
 import AccountSettingsModal from '../components/shared/AccountSettingsModal.vue'
 import StudentOverviewTab from '../components/student/StudentOverviewTab.vue'
-import StudentReportsTab from '../components/student/StudentReportsTab.vue'
-import StudentClassesTab from '../components/student/StudentClassesTab.vue'
-import StudentProfileTab from '../components/student/StudentProfileTab.vue'
-import StudentQuizzesTab from '../components/student/StudentQuizzesTab.vue'
-import StudentEnhancementsTab from '../components/student/StudentEnhancementsTab.vue'
 import SystemBanner from '../components/shared/SystemBanner.vue'
-import AnnouncementsPanel from '../components/shared/AnnouncementsPanel.vue'
-import DeadlinesPanel from '../components/student/DeadlinesPanel.vue'
-import ApprovalPanel from '../components/shared/ApprovalPanel.vue'
-import ClassChat from '../components/shared/ClassChat.vue'
 import BranchCard from '../components/ui/BranchCard.vue'
 import { fetchHomeCards } from '../services/home.service'
 import type { HomeCard } from '../types/physics'
+
+const StudentReportsTab = defineAsyncComponent(() => import('../components/student/StudentReportsTab.vue'))
+const StudentClassesTab = defineAsyncComponent(() => import('../components/student/StudentClassesTab.vue'))
+const StudentProfileTab = defineAsyncComponent(() => import('../components/student/StudentProfileTab.vue'))
+const StudentQuizzesTab = defineAsyncComponent(() => import('../components/student/StudentQuizzesTab.vue'))
+const StudentEnhancementsTab = defineAsyncComponent(() => import('../components/student/StudentEnhancementsTab.vue'))
+const AnnouncementsPanel = defineAsyncComponent(() => import('../components/shared/AnnouncementsPanel.vue'))
+const DeadlinesPanel = defineAsyncComponent(() => import('../components/student/DeadlinesPanel.vue'))
+const ApprovalPanel = defineAsyncComponent(() => import('../components/shared/ApprovalPanel.vue'))
+const ClassChat = defineAsyncComponent(() => import('../components/shared/ClassChat.vue'))
 
 const router = useRouter()
 const { t, locale } = useI18n()

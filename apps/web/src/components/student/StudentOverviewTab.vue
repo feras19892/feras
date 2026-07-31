@@ -15,7 +15,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'open-report', id: number): void
-  (e: 'open-tab', tab: 'overview' | 'reports' | 'classes' | 'profile'): void
+  (e: 'open-tab', tab: string): void
   (e: 'navigate', tab: string): void
 }>()
 

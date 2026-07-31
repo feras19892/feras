@@ -6,6 +6,7 @@ export interface User {
   name: string
   role: UserRole
   school_id?: number | null
+  avatar_url?: string | null
   created_at?: string
 }
 

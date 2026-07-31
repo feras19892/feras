@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useI18n } from '../../composables/useI18n'
 import { useAuthStore } from '../../modules/auth/stores/auth'
 import AccountSettingsModal from '../shared/AccountSettingsModal.vue'
+import { updateAvatar } from '../../services/enhancements.service'
 import type { StudentKPI, StudentReportRow } from '../../composables/student/useStudentDashboard'
 
 defineProps<{
@@ -10,6 +12,48 @@ defineProps<{
 }>()
 const { t } = useI18n()
 const auth = useAuthStore()
+
+const avatarUploading = ref(false)
+const avatarError = ref('')
+const fileInput = ref<HTMLInputElement | null>(null)
+
+function triggerAvatarUpload() {
+  fileInput.value?.click()
+}
+
+async function handleAvatarChange(e: Event) {
+  const input = e.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file) return
+  if (file.size > 2 * 1024 * 1024) {
+    avatarError.value = t('shared.avatarTooLarge')
+    return
+  }
+  avatarUploading.value = true
+  avatarError.value = ''
+  try {
+    const reader = new FileReader()
+    reader.onload = async () => {
+      const dataUrl = reader.result as string
+      const res = await updateAvatar(dataUrl)
+      if (res.success) {
+        if (auth.user) auth.user.avatar_url = dataUrl
+      } else {
+        avatarError.value = res.message || t('shared.avatarUploadFailed')
+      }
+      avatarUploading.value = false
+    }
+    reader.onerror = () => {
+      avatarError.value = t('shared.avatarReadFailed')
+      avatarUploading.value = false
+    }
+    reader.readAsDataURL(file)
+  } catch {
+    avatarError.value = t('shared.avatarUploadFailed')
+    avatarUploading.value = false
+  }
+  input.value = ''
+}
 
 function statusLabel(s: string): string {
   if (s === 'graded') return t('dashboard.statusGraded')
@@ -23,13 +67,21 @@ function statusLabel(s: string): string {
   <div class="tab-panel">
     <!-- Profile header -->
     <div class="panel-card profile-card">
-      <div class="avatar">🎓</div>
+      <img v-if="auth.user?.avatar_url" :src="auth.user.avatar_url" class="avatar-img" alt="avatar" />
+      <div v-else class="avatar">🎓</div>
       <div class="info">
         <h2>{{ auth.user?.name }}</h2>
         <p class="email">{{ auth.user?.email }}</p>
         <span class="role-badge">{{ t('dashboard.student') }}</span>
       </div>
-      <AccountSettingsModal />
+      <div class="profile-actions">
+        <input ref="fileInput" type="file" accept="image/*" style="display:none" @change="handleAvatarChange" />
+        <button class="avatar-btn" :disabled="avatarUploading" @click="triggerAvatarUpload">
+          {{ avatarUploading ? '...' : t('shared.avatarBtn') }}
+        </button>
+        <p v-if="avatarError" class="avatar-error">{{ avatarError }}</p>
+        <AccountSettingsModal />
+      </div>
     </div>
 
     <!-- Stats grid -->
@@ -62,6 +114,12 @@ function statusLabel(s: string): string {
 .profile-card { display: flex; align-items: center; gap: 1rem; }
 .profile-card .info { flex: 1; }
 .avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #4f46e5, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+.avatar-img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(99,102,241,0.3); flex-shrink: 0; }
+.profile-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 0.3rem; }
+.avatar-btn { padding: 0.35rem 0.8rem; border-radius: 0.4rem; border: 1px solid rgba(99,102,241,0.3); background: rgba(99,102,241,0.1); color: #c7d2fe; font-size: 0.78rem; font-weight: 700; cursor: pointer; font-family: inherit; }
+.avatar-btn:hover { background: rgba(99,102,241,0.2); }
+.avatar-btn:disabled { opacity: 0.6; cursor: wait; }
+.avatar-error { color: #f87171; font-size: 0.72rem; margin: 0; }
 .info h2 { margin: 0; font-size: 1.1rem; color: #f1f5f9; }
 .email { margin: 0.2rem 0 0; font-size: 0.8rem; color: #94a3b8; }
 .role-badge { font-size: 0.7rem; color: #67e8f9; background: rgba(99,102,241,0.1); padding: 0.15rem 0.5rem; border-radius: 999px; display: inline-block; margin-top: 0.3rem; }

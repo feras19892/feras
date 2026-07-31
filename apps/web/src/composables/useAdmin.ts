@@ -61,6 +61,12 @@ export function useAdmin() {
   const { t } = useI18n();
   const loading = ref(false);
   const errorMsg = ref('');
+  const toast = ref<{ type: 'success' | 'error' | 'info'; message: string } | null>(null);
+
+  function showToast(type: 'success' | 'error' | 'info', message: string) {
+    toast.value = { type, message };
+    setTimeout(() => { toast.value = null; }, 4000);
+  }
 
   const users = ref<AdminUser[]>([]);
   const classes = ref<AdminClassItem[]>([]);
@@ -93,12 +99,12 @@ export function useAdmin() {
   }
 
   async function handleRemoveUser(id: number) {
-    if (!confirm(t('admin.confirmDeleteUser'))) return;
     const res = await deleteUser(id);
     if (res.success) {
       loadAll();
+      showToast('success', t('admin.delete') + ' ✓');
     } else {
-      alert(res.message || t('admin.loadError'));
+      showToast('error', res.message || t('admin.loadError'));
     }
   }
 
@@ -107,7 +113,7 @@ export function useAdmin() {
     if (res.success) {
       loadAll();
     } else {
-      alert(res.message || t('admin.loadError'));
+      showToast('error', res.message || t('admin.loadError'));
     }
   }
 
@@ -115,15 +121,20 @@ export function useAdmin() {
     const res = await createAdminUser(name, email, password, role);
     if (res.success) {
       loadAll();
+      showToast('success', '✓');
     } else {
-      alert(res.message || t('admin.loadError'));
+      showToast('error', res.message || t('admin.loadError'));
     }
   }
 
   async function handleRemoveClass(id: string) {
-    if (!confirm(t('admin.confirmDeleteClass'))) return;
     const res = await deleteAdminClass(id);
-    if (res.success) loadAll();
+    if (res.success) {
+      loadAll();
+      showToast('success', t('admin.delete') + ' ✓');
+    } else {
+      showToast('error', t('admin.loadError'));
+    }
   }
 
   let refreshTimer: ReturnType<typeof setInterval> | null = null;
@@ -135,6 +146,7 @@ export function useAdmin() {
   return {
     loading,
     errorMsg,
+    toast,
     users,
     classes,
     reports,

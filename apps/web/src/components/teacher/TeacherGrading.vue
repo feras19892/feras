@@ -2,7 +2,7 @@
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { getMyClasses, getPendingCount } from '../../services/class.service'
-import { getReports, deleteReport } from '../../services/report.service'
+import { getReports } from '../../services/report.service'
 import { fetchJson } from '../../services/http'
 import type { ClassItem } from '../../services/class.service'
 import type { Report } from '../../services/report.service'
@@ -12,6 +12,8 @@ import GradeModal from './GradeModal.vue'
 import CreateApprovalButton from '../shared/CreateApprovalButton.vue'
 
 const router = useRouter()
+
+const emit = defineEmits<{ graded: [] }>()
 
 const auth = useAuthStore()
 const { t } = useI18n()
@@ -67,9 +69,11 @@ async function submitBulkGrade() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        report_ids: Array.from(selectedIds.value),
-        grade: bulkGrade.value,
-        feedback: bulkFeedback.value || undefined,
+        grades: Array.from(selectedIds.value).map(id => ({
+          report_id: id,
+          grade: bulkGrade.value!,
+          feedback: bulkFeedback.value || undefined,
+        })),
       }),
     })
     if (res.success) {
@@ -78,10 +82,11 @@ async function submitBulkGrade() {
       bulkGrade.value = null
       bulkFeedback.value = ''
       loadReports()
+      emit('graded')
     }
   } catch (err) {
     if (import.meta.env.DEV) console.error('bulk grade failed:', err);
-    alert(t('teacher.bulkGradeFailed') || 'Bulk grade failed');
+    alert(t('teacher.bulkGradeFailed'));
   }
   bulkSaving.value = false
 }
@@ -97,18 +102,7 @@ function openGrade(r: Report) {
 
 function onGraded() {
   loadReports()
-}
-
-async function confirmDelete(r: Report) {
-  if (!confirm(t('teacher.deleteConfirm') + ` "${r.experiment_name}" — ${r.student_name}?`)) return
-  try {
-    const res = await deleteReport(r.id)
-    if (res.success) loadReports()
-    else alert((res as any).message || 'Failed to delete report')
-  } catch (err) {
-    if (import.meta.env.DEV) console.error('delete failed:', err);
-    alert('Failed to delete report')
-  }
+  emit('graded')
 }
 
 async function loadClasses() {
@@ -225,7 +219,7 @@ watch(() => auth.user, (u) => {
           @click="bulkMode = !bulkMode; selectedIds = new Set()"
           style="margin-inline-start: auto"
         >
-          ⚡ تصحيح جماعي
+          {{ t('teacher.bulkGrade') }}
         </button>
       </div>
 
@@ -233,21 +227,21 @@ watch(() => auth.user, (u) => {
       <div v-if="bulkMode" class="bulk-bar">
         <label class="bulk-check">
           <input type="checkbox" :checked="selectedIds.size === filteredReports.length && filteredReports.length > 0" @change="toggleAll" />
-          تحديد الكل
+          {{ t('teacher.bulkSelectAll') }}
         </label>
-        <span class="bulk-count">{{ selectedIds.size }} محدد</span>
+        <span class="bulk-count">{{ selectedIds.size }} {{ t('teacher.bulkSelected') }}</span>
         <input
           v-model.number="bulkGrade"
           type="number"
           min="0"
           max="100"
-          placeholder="الدرجة"
+          :placeholder="t('teacher.bulkGradePlaceholder')"
           class="bulk-input"
           :disabled="selectedIds.size === 0"
         />
         <input
           v-model="bulkFeedback"
-          placeholder="ملاحظات (اختياري)"
+          :placeholder="t('teacher.bulkFeedbackPlaceholder')"
           class="bulk-input feedback"
           :disabled="selectedIds.size === 0"
         />
@@ -256,7 +250,7 @@ watch(() => auth.user, (u) => {
           :disabled="bulkSaving || selectedIds.size === 0 || bulkGrade === null"
           class="bulk-submit"
         >
-          {{ bulkSaving ? 'جاري...' : 'تطبيق' }}
+          {{ bulkSaving ? t('teacher.bulkSaving') : t('teacher.bulkApply') }}
         </button>
       </div>
 
@@ -284,9 +278,19 @@ watch(() => auth.user, (u) => {
             >
               <button class="penalty-btn" @click.stop>⚠️</button>
             </CreateApprovalButton>
-            <button class="delete-btn" @click.stop="confirmDelete(r)" :title="t('teacher.deleteBtn')">
-              🗑️
-            </button>
+            <CreateApprovalButton
+              type="report_deletion"
+              approverType="school"
+              :targetUserId="r.student_id"
+              :targetUserName="r.student_name || ''"
+              :classId="r.class_id || ''"
+              :reportId="r.id"
+              :metadata="JSON.stringify({ report_id: r.id, experiment_name: r.experiment_name })"
+            >
+              <button class="delete-btn" @click.stop :title="t('teacher.deleteBtn')">
+                🗑️
+              </button>
+            </CreateApprovalButton>
           </div>
         </div>
       </div>

@@ -3,9 +3,10 @@ import { ref } from 'vue';
 import { useI18n } from '../../composables/useI18n';
 import { useRouter } from 'vue-router';
 import {
-  removeSchoolUser, blockSchoolUser, unblockSchoolUser,
+  blockSchoolUser, unblockSchoolUser,
   type SchoolUser, type SchoolClass,
 } from '../../services/school.service';
+import SchoolApprovalButton from '../shared/SchoolApprovalButton.vue';
 
 interface SchoolReportRow {
   id: number;
@@ -69,19 +70,6 @@ const router = useRouter();
 
 const actionError = ref('');
 
-async function handleRemoveUser(userId: number) {
-  if (!confirm(t('school.confirmRemoveUser'))) return;
-  actionError.value = '';
-  try {
-    const res = await removeSchoolUser(userId);
-    if (res.success) emit('userRemoved', userId);
-    else actionError.value = res.message || 'Failed to remove user';
-  } catch (err) {
-    actionError.value = 'Failed to remove user';
-    if (import.meta.env.DEV) console.error('removeUser failed:', err);
-  }
-}
-
 async function handleBlockUser(userId: number) {
   actionError.value = '';
   try {
@@ -111,6 +99,14 @@ async function handleUnblockUser(userId: number) {
   <div v-if="actionError" class="action-error">⚠️ {{ actionError }}</div>
   <!-- Users Tab -->
   <div v-if="activeTab === 'users'" class="tab-panel">
+    <div class="tab-header-row">
+      <SchoolApprovalButton
+        type="user_creation"
+        :targetUserId="0"
+        targetUserName="New User"
+        :label="'+ ' + t('school.requestAddUser')"
+      />
+    </div>
     <div v-if="users.length === 0" class="empty-state">
       <div class="empty-icon">👥</div>
       <p>{{ t('school.noUsers') }}</p>
@@ -137,7 +133,13 @@ async function handleUnblockUser(userId: number) {
             <button class="mini-btn view" @click="router.push(`/school/user/${u.id}`)" :title="t('school.btnView')">👁️</button>
             <button v-if="u.blocked_at" class="mini-btn unblock" @click="handleUnblockUser(u.id)" :title="t('school.btnUnblock')">🔓</button>
             <button v-else class="mini-btn block" @click="handleBlockUser(u.id)" :title="t('school.btnBlock')">🚫</button>
-            <button class="mini-btn remove" @click="handleRemoveUser(u.id)" :title="t('school.btnRemove')">✕</button>
+            <SchoolApprovalButton
+              type="user_edit"
+              :targetUserId="u.id"
+              :targetUserName="u.name"
+              :metadata="JSON.stringify({ action: 'remove', user_id: u.id, user_email: u.email })"
+              label="✕"
+            />
           </td>
         </tr>
       </tbody>
@@ -146,6 +148,14 @@ async function handleUnblockUser(userId: number) {
 
   <!-- Classes Tab -->
   <div v-if="activeTab === 'classes'" class="tab-panel">
+    <div class="tab-header-row">
+      <SchoolApprovalButton
+        type="class_creation"
+        :targetUserId="0"
+        targetUserName="New Class"
+        :label="'+ ' + t('school.requestAddClass')"
+      />
+    </div>
     <div v-if="classes.length === 0" class="empty-state">
       <div class="empty-icon">🏫</div>
       <p>{{ t('school.noClasses') }}</p>
@@ -171,6 +181,22 @@ async function handleUnblockUser(userId: number) {
           <td @click.stop>
             <button v-if="!c.is_frozen" class="freeze-btn" :disabled="freezeLoading" @click="emit('freeze', c.id)" :title="t('school.freezeClass')">{{ t('school.freezeClass') }}</button>
             <button v-else class="unfreeze-btn" :disabled="freezeLoading" @click="emit('unfreeze', c.id)" :title="t('school.unfreezeClass')">{{ t('school.unfreezeClass') }}</button>
+            <SchoolApprovalButton
+              type="class_edit"
+              :targetUserId="0"
+              targetUserName="Edit Class"
+              :classId="c.id"
+              :metadata="JSON.stringify({ class_id: c.id, class_name: c.name })"
+              label="✏️"
+            />
+            <SchoolApprovalButton
+              type="class_deletion"
+              :targetUserId="0"
+              targetUserName="Class"
+              :classId="c.id"
+              :metadata="JSON.stringify({ class_id: c.id, class_name: c.name })"
+              label="🗑️"
+            />
           </td>
         </tr>
       </tbody>
@@ -190,7 +216,17 @@ async function handleUnblockUser(userId: number) {
           <td><span class="status-tag" :class="r.status">{{ r.status }}</span></td>
           <td>{{ r.grade != null ? r.grade : '—' }}</td>
           <td>{{ new Date(r.created_at).toLocaleDateString(dateLocaleStr) }}</td>
-          <td @click.stop><button class="mini-btn view" @click="router.push(`/report/${r.id}`)" :title="t('school.btnOpen')">👁️</button></td>
+          <td @click.stop>
+            <button class="mini-btn view" @click="router.push(`/report/${r.id}`)" :title="t('school.btnOpen')">👁️</button>
+            <SchoolApprovalButton
+              type="report_deletion"
+              :targetUserId="0"
+              targetUserName="Report"
+              :reportId="r.id"
+              :metadata="JSON.stringify({ report_id: r.id, experiment_name: r.experiment_name })"
+              label="🗑️"
+            />
+          </td>
         </tr>
       </tbody>
     </table>
@@ -269,6 +305,8 @@ async function handleUnblockUser(userId: number) {
 .mini-btn.block:hover { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.3); }
 .mini-btn.unblock:hover { background: rgba(34,197,94,0.15); border-color: rgba(34,197,94,0.3); }
 .mini-btn.remove:hover { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.3); }
+.mini-btn.remove.confirm { background: rgba(245,158,11,0.2); border-color: rgba(245,158,11,0.5); animation: pulse 1s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 .ua-cell { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #475569; font-size: 0.72rem; }
 .freeze-btn { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); border-radius: 0.3rem; padding: 0.2rem 0.5rem; font-size: 0.72rem; cursor: pointer; }
 .freeze-btn:hover { background: rgba(59,130,246,0.25); }
@@ -301,4 +339,5 @@ async function handleUnblockUser(userId: number) {
 .empty-state { text-align: center; padding: 3rem; color: #64748b; }
 .empty-icon { font-size: 3rem; margin-bottom: 0.5rem; }
 .action-error { background: rgba(239,68,68,0.1); color: #f87171; padding: 0.6rem 1rem; border-radius: 0.5rem; border: 1px solid rgba(239,68,68,0.2); margin-bottom: 0.8rem; font-size: 0.85rem; }
+.tab-header-row { display: flex; justify-content: flex-end; margin-bottom: 0.8rem; }
 </style>

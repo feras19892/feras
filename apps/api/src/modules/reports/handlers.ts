@@ -294,6 +294,19 @@ app.get('/class/:class_id/export', async (c) => {
   return c.json({ success: true, reports });
 });
 
+// PATCH /:id/feedback-seen — student marks feedback as seen
+app.patch('/:id/feedback-seen', async (c) => {
+  const user = c.get('user');
+  const id = Number(c.req.param('id'));
+  const report = await svc.getReportById(id);
+  if (!report) return c.json({ success: false, message: 'التقرير غير موجود' }, 404);
+  if (user.role === 'student' && report.student_id !== user.id) {
+    return c.json({ success: false, message: 'غير مصرح' }, 403);
+  }
+  await svc.markFeedbackSeen(id);
+  return c.json({ success: true });
+});
+
 // DELETE /:id
 app.delete('/:id', async (c) => {
   const user = c.get('user');

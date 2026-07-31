@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { getReport, getGradeHistory, markReportSeen, gradeReport } from '../services/report.service'
+import { getReport, getGradeHistory, markReportSeen, markFeedbackSeen, gradeReport } from '../services/report.service'
 import type { Report, GradeHistoryEntry } from '../services/report.service'
 import { useI18n } from '../composables/useI18n'
 import { useAuthStore } from '../modules/auth/stores/auth'
@@ -12,6 +12,7 @@ import ReportCalculationsSection from '../components/teacher/ReportCalculationsS
 import ReportConclusionSection from '../components/teacher/ReportConclusionSection.vue'
 import ReportAIAnalyzer from '../components/teacher/ReportAIAnalyzer.vue'
 import CreateApprovalButton from '../components/shared/CreateApprovalButton.vue'
+import { updateAvatar } from '../services/enhancements.service'
 
 const route = useRoute()
 const router = useRouter()
@@ -29,8 +30,51 @@ const gradeOpen = ref(false)
 const gradeValue = ref(0)
 const feedbackValue = ref('')
 const saving = ref(false)
+const avatarUploading = ref(false)
+const avatarError = ref('')
 
 const parser = useReportParser(report as any)
+
+const fileInput = ref<HTMLInputElement | null>(null)
+
+function triggerAvatarUpload() {
+  fileInput.value?.click()
+}
+
+async function handleAvatarChange(e: Event) {
+  const input = e.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file) return
+  if (file.size > 2 * 1024 * 1024) {
+    avatarError.value = t('shared.avatarTooLarge')
+    return
+  }
+  avatarUploading.value = true
+  avatarError.value = ''
+  try {
+    const reader = new FileReader()
+    reader.onload = async () => {
+      const dataUrl = reader.result as string
+      const res = await updateAvatar(dataUrl)
+      if (res.success) {
+        if (report.value) report.value.student_avatar_url = dataUrl
+        if (auth.user) auth.user.avatar_url = dataUrl
+      } else {
+        avatarError.value = res.message || t('shared.avatarUploadFailed')
+      }
+      avatarUploading.value = false
+    }
+    reader.onerror = () => {
+      avatarError.value = t('shared.avatarReadFailed')
+      avatarUploading.value = false
+    }
+    reader.readAsDataURL(file)
+  } catch {
+    avatarError.value = t('shared.avatarUploadFailed')
+    avatarUploading.value = false
+  }
+  input.value = ''
+}
 
 async function loadReport() {
   const id = Number(route.params.id)
@@ -46,6 +90,10 @@ async function loadReport() {
       if (!res.report.teacher_seen && isTeacher.value) {
         markReportSeen(id).catch(() => {})
         res.report.teacher_seen = true
+      }
+      if (res.report.feedback && !res.report.feedback_seen && auth.user?.role === 'student') {
+        markFeedbackSeen(id).catch(() => {})
+        res.report.feedback_seen = true
       }
       loadHistory(id)
     } else { error.value = true }
@@ -145,6 +193,25 @@ watch(() => route.params.id, loadReport)
             </CreateApprovalButton>
           </div>
         </section>
+
+        <!-- Avatar Upload (student only, for their own reports) -->
+        <section v-if="auth.isStudent && report.student_id === auth.user?.id" class="rp-section">
+          <div class="avatar-upload-box">
+            <h3 class="sec-title">📷 صورة البروفايل</h3>
+            <div class="avatar-upload-row">
+              <img v-if="report.student_avatar_url" :src="report.student_avatar_url" class="avatar-preview" alt="avatar" />
+              <div v-else class="avatar-preview-placeholder">{{ (auth.user?.name || '?').charAt(0).toUpperCase() }}</div>
+              <div class="avatar-upload-actions">
+                <input ref="fileInput" type="file" accept="image/*" style="display:none" @change="handleAvatarChange" />
+                <button class="avatar-upload-btn" :disabled="avatarUploading" @click="triggerAvatarUpload">
+                  {{ avatarUploading ? '...' : '📷 إضافة / تغيير الصورة' }}
+                </button>
+                <p v-if="avatarError" class="avatar-error">{{ avatarError }}</p>
+                <p class="avatar-hint">يمكنك رفع صورة بروفايل (JPG, PNG - أقل من 2MB)</p>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       <!-- Grade Modal (teacher/admin only) -->
@@ -200,4 +267,15 @@ watch(() => route.params.id, loadReport)
 
 .appeal-box { background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.15); border-radius: 0.6rem; padding: 1rem; }
 .appeal-hint { font-size: 0.8rem; color: #94a3b8; margin: 0 0 0.8rem; line-height: 1.5; }
+
+.avatar-upload-box { background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.6rem; padding: 1rem; }
+.avatar-upload-row { display: flex; align-items: center; gap: 1rem; }
+.avatar-preview { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(99,102,241,0.3); flex-shrink: 0; }
+.avatar-preview-placeholder { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 800; flex-shrink: 0; }
+.avatar-upload-actions { flex: 1; }
+.avatar-upload-btn { padding: 0.5rem 1rem; border-radius: 0.5rem; border: 1px solid rgba(99,102,241,0.3); background: rgba(99,102,241,0.1); color: #c7d2fe; font-size: 0.85rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+.avatar-upload-btn:hover { background: rgba(99,102,241,0.2); }
+.avatar-upload-btn:disabled { opacity: 0.6; cursor: wait; }
+.avatar-error { color: #f87171; font-size: 0.78rem; margin: 0.3rem 0 0; }
+.avatar-hint { color: #64748b; font-size: 0.72rem; margin: 0.3rem 0 0; }
 </style>

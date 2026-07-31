@@ -39,8 +39,14 @@ const sections = [
 
     <!-- Report Summary -->
     <div class="sb-summary">
-      <div class="sb-exp">{{ report.experiment_name }}</div>
-      <div class="sb-student">🎓 {{ report.student_name }}</div>
+      <div class="sb-avatar-row">
+        <img v-if="report.student_avatar_url" :src="report.student_avatar_url" class="sb-avatar" alt="avatar" />
+        <div v-else class="sb-avatar-placeholder">{{ (report.student_name || '?').charAt(0).toUpperCase() }}</div>
+        <div class="sb-avatar-info">
+          <div class="sb-exp">{{ report.experiment_name }}</div>
+          <div class="sb-student">🎓 {{ report.student_name }}</div>
+        </div>
+      </div>
       <div class="sb-date">📅 {{ report.submitted_at?.slice(0, 10) }}</div>
       <div :class="['sb-status', 'st-' + report.status]">
         <span v-if="report.status === 'graded'">✅ {{ report.grade }}/100</span>
@@ -97,6 +103,10 @@ const sections = [
 .back-btn:hover { background: rgba(99, 102, 241, 0.15); }
 
 .sb-summary { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 0.6rem; padding: 0.8rem; }
+.sb-avatar-row { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem; }
+.sb-avatar { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(99, 102, 241, 0.3); flex-shrink: 0; }
+.sb-avatar-placeholder { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 800; flex-shrink: 0; }
+.sb-avatar-info { flex: 1; min-width: 0; }
 .sb-exp { font-size: 0.9rem; font-weight: 800; color: #e5e7eb; margin-bottom: 0.2rem; }
 .sb-student { font-size: 0.8rem; color: #94a3b8; }
 .sb-date { font-size: 0.75rem; color: #64748b; margin-bottom: 0.4rem; }

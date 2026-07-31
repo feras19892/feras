@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, defineAsyncComponent } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from '../composables/useI18n'
 import { useAuthStore } from '../modules/auth/stores/auth'
@@ -9,31 +9,33 @@ import type { SidebarGroup } from '../components/shared/AppSidebar.vue'
 import NotificationBell from '../components/shared/NotificationBell.vue'
 import AccountSettingsModal from '../components/shared/AccountSettingsModal.vue'
 import NameRequestBadge from '../components/shared/NameRequestBadge.vue'
-import ApprovalPanel from '../components/shared/ApprovalPanel.vue'
-import AnnouncementsPanel from '../components/shared/AnnouncementsPanel.vue'
-import ClassChat from '../components/shared/ClassChat.vue'
 import BranchCard from '../components/ui/BranchCard.vue'
 import DashboardOverviewTab from '../components/teacher/DashboardOverviewTab.vue'
 import DashboardDailyTab from '../components/teacher/DashboardDailyTab.vue'
-import DashboardClassesTab from '../components/teacher/DashboardClassesTab.vue'
-import DashboardStudentsTab from '../components/teacher/DashboardStudentsTab.vue'
-import TeacherGrading from '../components/teacher/TeacherGrading.vue'
-import ClassManager from '../components/teacher/ClassManager.vue'
-import TeacherStats from '../components/teacher/TeacherStats.vue'
-import CreateAnnouncementForm from '../components/teacher/CreateAnnouncementForm.vue'
-import TeacherQuizBuilder from '../components/teacher/TeacherQuizBuilder.vue'
-import TeacherEnhancementsTab from '../components/teacher/TeacherEnhancementsTab.vue'
 import SystemBanner from '../components/shared/SystemBanner.vue'
 import { fetchHomeCards } from '../services/home.service'
 import { getUnreadChatCounts, markChatRead } from '../services/chat.service'
+import { useApprovalBadge } from '../composables/useApprovalBadge'
 import type { HomeCard } from '../types/physics'
+
+const ApprovalPanel = defineAsyncComponent(() => import('../components/shared/ApprovalPanel.vue'))
+const AnnouncementsPanel = defineAsyncComponent(() => import('../components/shared/AnnouncementsPanel.vue'))
+const ClassChat = defineAsyncComponent(() => import('../components/shared/ClassChat.vue'))
+const DashboardClassesTab = defineAsyncComponent(() => import('../components/teacher/DashboardClassesTab.vue'))
+const DashboardStudentsTab = defineAsyncComponent(() => import('../components/teacher/DashboardStudentsTab.vue'))
+const TeacherGrading = defineAsyncComponent(() => import('../components/teacher/TeacherGrading.vue'))
+const ClassManager = defineAsyncComponent(() => import('../components/teacher/ClassManager.vue'))
+const TeacherStats = defineAsyncComponent(() => import('../components/teacher/TeacherStats.vue'))
+const CreateAnnouncementForm = defineAsyncComponent(() => import('../components/teacher/CreateAnnouncementForm.vue'))
+const TeacherQuizBuilder = defineAsyncComponent(() => import('../components/teacher/TeacherQuizBuilder.vue'))
+const TeacherEnhancementsTab = defineAsyncComponent(() => import('../components/teacher/TeacherEnhancementsTab.vue'))
 
 const router = useRouter()
 const { t, locale } = useI18n()
 const auth = useAuthStore()
-const { kpi, classRows, studentRows, todayUnopened, overdueUngraded, loading } = useTeacherDashboard()
+const { kpi, classRows, studentRows, todayUnopened, overdueUngraded, loading, reload } = useTeacherDashboard()
 
-type Section = 'overview' | 'experiments' | 'grading' | 'classes' | 'students' | 'quizzes' | 'stats' | 'enhancements' | 'announcements' | 'approvals' | 'settings'
+type Section = 'overview' | 'daily' | 'experiments' | 'grading' | 'classes' | 'students' | 'quizzes' | 'stats' | 'enhancements' | 'announcements' | 'approvals' | 'settings'
 const active = ref<Section>('overview')
 const sidebarCollapsed = ref(false)
 const cards = ref<HomeCard[]>([])
@@ -41,6 +43,7 @@ const chatClassId = ref<string | null>(null)
 const chatClassName = ref('')
 const unreadChatCounts = ref<Record<string, number>>({})
 const selectedClassForAnnouncement = ref<string>('')
+const { pendingCount: approvalPendingCount } = useApprovalBadge()
 
 const dateLocaleStr = computed(() => locale.value === 'ar' ? 'ar-SA' : locale.value === 'es' ? 'es-ES' : 'en-US')
 
@@ -58,6 +61,7 @@ const groups = computed<SidebarGroup[]>(() => [
     icon: '🏠',
     items: [
       { id: 'overview', icon: '📊', label: t('shared.navOverview') },
+      { id: 'daily', icon: '📅', label: t('shared.navDaily') },
       { id: 'experiments', icon: '🔬', label: t('shared.navExperiments') },
     ],
   },
@@ -80,7 +84,7 @@ const groups = computed<SidebarGroup[]>(() => [
     icon: '💬',
     items: [
       { id: 'announcements', icon: '📢', label: t('shared.navAnnouncements') },
-      { id: 'approvals', icon: '✋', label: t('shared.navApprovals') },
+      { id: 'approvals', icon: '✋', label: t('shared.navApprovals'), badge: approvalPendingCount.value > 0 ? approvalPendingCount.value : undefined },
     ],
   },
   {
@@ -267,9 +271,14 @@ onMounted(async () => {
             </div>
           </div>
 
+          <!-- Daily -->
+          <div v-else-if="active === 'daily'" class="section-panel">
+            <DashboardDailyTab :unopened="todayUnopened" :overdue="overdueUngraded" :locale="locale" @open-report="openReport" />
+          </div>
+
           <!-- Grading -->
           <div v-else-if="active === 'grading'" class="section-panel">
-            <TeacherGrading />
+            <TeacherGrading @graded="reload" />
           </div>
 
           <!-- Classes -->
@@ -334,9 +343,32 @@ onMounted(async () => {
           <div v-else-if="active === 'settings'" class="section-panel">
             <div class="panel-card settings-card">
               <h3>{{ t('shared.tdProfile') }}</h3>
+              <div class="settings-avatar">{{ auth.user?.name?.charAt(0)?.toUpperCase() || 'T' }}</div>
               <p class="settings-name">{{ auth.user?.name }}</p>
               <p class="settings-email">{{ auth.user?.email }}</p>
               <p class="settings-role">{{ t('shared.roleTeacher') }}</p>
+            </div>
+            <div class="panel-card">
+              <div class="pc-header"><h3>{{ t('shared.navOverview') }}</h3></div>
+              <div class="settings-kpi-grid">
+                <div class="settings-kpi-item"><span class="kpi-icon">🏫</span><span class="kpi-val">{{ kpi.totalClasses }}</span><span class="kpi-lab">{{ t('shared.kpiClasses') }}</span></div>
+                <div class="settings-kpi-item"><span class="kpi-icon">🎓</span><span class="kpi-val">{{ kpi.totalStudents }}</span><span class="kpi-lab">{{ t('shared.kpiStudents') }}</span></div>
+                <div class="settings-kpi-item"><span class="kpi-icon">📄</span><span class="kpi-val">{{ kpi.totalReports }}</span><span class="kpi-lab">{{ t('shared.kpiReports') }}</span></div>
+                <div class="settings-kpi-item"><span class="kpi-icon">⏳</span><span class="kpi-val">{{ kpi.pendingCount }}</span><span class="kpi-lab">{{ t('shared.kpiPendingGrading') }}</span></div>
+                <div class="settings-kpi-item"><span class="kpi-icon">📊</span><span class="kpi-val">{{ kpi.avgGrade }}%</span><span class="kpi-lab">{{ t('shared.kpiAvg') }}</span></div>
+                <div class="settings-kpi-item"><span class="kpi-icon">📥</span><span class="kpi-val">{{ kpi.submittedToday }}</span><span class="kpi-lab">{{ t('shared.kpiSubmittedToday') }}</span></div>
+              </div>
+            </div>
+            <div class="panel-card">
+              <div class="pc-header"><h3>{{ t('shared.navWork') }}</h3></div>
+              <div class="settings-actions">
+                <button class="settings-action-btn" @click="active = 'grading'">✅ {{ t('shared.navGrading') }} ({{ kpi.pendingCount }})</button>
+                <button class="settings-action-btn" @click="active = 'classes'">🏫 {{ t('shared.navClasses') }} ({{ kpi.totalClasses }})</button>
+                <button class="settings-action-btn" @click="active = 'students'">🎓 {{ t('shared.navStudents') }}</button>
+                <button class="settings-action-btn" @click="active = 'stats'">📈 {{ t('shared.navStats') }}</button>
+                <button class="settings-action-btn" @click="active = 'quizzes'">📝 {{ t('shared.navQuizzes') }}</button>
+                <button class="settings-action-btn" @click="active = 'enhancements'">🏆 {{ t('shared.navEnhancements') }}</button>
+              </div>
             </div>
           </div>
         </div>
@@ -519,9 +551,43 @@ onMounted(async () => {
 /* Settings */
 .settings-card { text-align: center; padding: 2rem; }
 .settings-card h3 { margin: 0 0 0.8rem; }
+.settings-avatar {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem; font-weight: 800; color: #fff;
+  margin: 0 auto 0.8rem;
+}
 .settings-name { font-size: 1.1rem; font-weight: 700; color: #f1f5f9; margin: 0.3rem 0; }
 .settings-email { font-size: 0.85rem; color: #94a3b8; margin: 0.2rem 0; }
 .settings-role { font-size: 0.78rem; color: #a5b4fc; margin: 0.3rem 0; }
+.settings-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.6rem;
+}
+.settings-kpi-item {
+  display: flex; flex-direction: column; align-items: center; gap: 0.15rem;
+  padding: 0.6rem 0.4rem; border-radius: 0.6rem;
+  background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.05);
+}
+.settings-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.6rem;
+}
+.settings-action-btn {
+  padding: 0.7rem 1rem; border-radius: 0.6rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(15,23,42,0.5); color: #e2e8f0;
+  font-family: inherit; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; transition: all 0.15s; text-align: start;
+}
+.settings-action-btn:hover {
+  border-color: rgba(165,180,252,0.3);
+  background: rgba(165,180,252,0.06);
+  transform: translateY(-1px);
+}
 
 /* Loading */
 .loading-state { display: flex; justify-content: center; padding: 3rem; }

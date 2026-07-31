@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { useI18n } from '../../composables/useI18n'
 import type { StudentRow } from '../../composables/teacher/useTeacherDashboard'
+import CreateApprovalButton from '../shared/CreateApprovalButton.vue'
 
 const props = defineProps<{ rows: StudentRow[] }>()
 const { t } = useI18n()
@@ -39,7 +40,7 @@ function lastSub(dateStr: string | null): string {
       <div class="full-table">
         <table>
           <thead><tr>
-            <th>{{ t('dashboard.dash.studentName') }}</th><th>{{ t('dashboard.dash.class') }}</th><th>📄</th><th>✅</th><th>⏳</th><th>📊</th><th>{{ t('dashboard.dash.lastSubmission') }}</th>
+            <th>{{ t('dashboard.dash.studentName') }}</th><th>{{ t('dashboard.dash.class') }}</th><th>📄</th><th>✅</th><th>⏳</th><th>📊</th><th>{{ t('dashboard.dash.lastSubmission') }}</th><th>⚙️</th>
           </tr></thead>
           <tbody>
             <tr v-for="s in filtered" :key="s.id" :class="{ 'row-missing': s.missingReports, 'row-pending': s.pendingCount > 0 }">
@@ -49,6 +50,17 @@ function lastSub(dateStr: string | null): string {
               <td :class="{ 't-pending': s.pendingCount > 0 }">{{ s.pendingCount }}</td>
               <td :class="{ 't-avg': s.avgGrade > 0 }">{{ s.avgGrade > 0 ? s.avgGrade + '%' : '—' }}</td>
               <td class="t-last">{{ lastSub(s.lastSubmission) }}</td>
+              <td class="t-actions">
+                <CreateApprovalButton
+                  type="student_removal"
+                  approverType="school"
+                  :targetUserId="s.id"
+                  :targetUserName="s.name"
+                  :classId="s.classId"
+                >
+                  <button class="remove-btn" @click.stop>🚫</button>
+                </CreateApprovalButton>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -79,4 +91,7 @@ function lastSub(dateStr: string | null): string {
 .t-last { color: #64748b; font-size: 0.72rem; }
 .row-missing { background: rgba(239,68,68,0.03); }
 .row-pending { background: rgba(251,191,36,0.02); }
+.t-actions { text-align: center; }
+.remove-btn { border: none; border-radius: 0.35rem; padding: 0.2rem 0.4rem; background: rgba(239,68,68,0.12); color: #f87171; font-size: 0.8rem; cursor: pointer; transition: all 0.15s; }
+.remove-btn:hover { background: rgba(239,68,68,0.22); }
 </style>

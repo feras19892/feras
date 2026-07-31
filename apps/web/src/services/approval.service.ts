@@ -2,7 +2,7 @@ import { fetchJson } from './http';
 
 export interface ApprovalRequest {
   id: number;
-  type: 'penalty' | 'grade_change' | 'student_removal' | 'grade_appeal';
+  type: 'penalty' | 'grade_change' | 'student_removal' | 'grade_appeal' | 'class_creation' | 'class_deletion' | 'class_edit' | 'user_creation' | 'user_edit' | 'report_deletion';
   requester_type: string;
   requester_id: number;
   requester_name: string;
@@ -41,6 +41,7 @@ export async function createApproval(data: {
   description: string;
   proposed_grade?: number;
   severity?: string;
+  metadata?: string;
 }) {
   return fetchJson<{ success: boolean; id?: number; message?: string }>('/api/approvals', {
     method: 'POST',
@@ -103,6 +104,24 @@ export async function schoolReject(id: number, response: string) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ response }),
+  });
+}
+
+// School-specific creation (School → Admin)
+export async function schoolCreateApproval(data: {
+  type: 'class_creation' | 'class_deletion' | 'class_edit' | 'user_creation' | 'user_edit' | 'report_deletion';
+  target_user_id: number;
+  target_user_name: string;
+  class_id?: string;
+  report_id?: number;
+  title: string;
+  description: string;
+  metadata?: string;
+}) {
+  return fetchJson<{ success: boolean; id?: number; message?: string }>('/api/approvals/school/create', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
   });
 }
 

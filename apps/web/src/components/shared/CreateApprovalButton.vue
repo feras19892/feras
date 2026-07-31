@@ -6,13 +6,14 @@ import { useI18n } from '../../composables/useI18n';
 const { t } = useI18n();
 
 const props = defineProps<{
-  type: 'penalty' | 'grade_change' | 'student_removal' | 'grade_appeal';
+  type: 'penalty' | 'grade_change' | 'student_removal' | 'grade_appeal' | 'class_creation' | 'class_deletion' | 'class_edit' | 'user_creation' | 'user_edit' | 'report_deletion';
   approverType: 'teacher' | 'school' | 'admin';
   targetUserId: number;
   targetUserName: string;
   classId?: string;
   reportId?: number;
   schoolId?: number;
+  metadata?: string;
 }>();
 
 const show = ref(false);
@@ -29,6 +30,12 @@ const typeLabels = computed<Record<string, string>>(() => ({
   grade_change: t('approval.createGradeChange'),
   student_removal: t('approval.createStudentRemoval'),
   grade_appeal: t('approval.createGradeAppeal'),
+  class_creation: t('approval.createClassCreation') || 'طلب إنشاء فصل',
+  class_deletion: t('approval.createClassDeletion') || 'طلب حذف فصل',
+  class_edit: t('approval.createClassEdit') || 'طلب تعديل فصل',
+  user_creation: t('approval.createUserCreation') || 'طلب إضافة مستخدم',
+  user_edit: t('approval.createUserEdit') || 'طلب تعديل مستخدم',
+  report_deletion: t('approval.createReportDeletion') || 'طلب حذف تقرير',
 }));
 
 async function submit() {
@@ -49,6 +56,7 @@ async function submit() {
       description: description.value,
       proposed_grade: proposedGrade.value ?? undefined,
       severity: props.type === 'penalty' ? severity.value : undefined,
+      metadata: props.metadata,
     });
     if (res.success) {
       successMsg.value = t('approval.createSuccess');

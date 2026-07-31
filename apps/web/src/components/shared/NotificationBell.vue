@@ -75,10 +75,10 @@ function handleNotificationClick(n: { id: number; report_id?: number; type: stri
           <div v-if="n.message" class="msg">{{ n.message }}</div>
           <div class="time">{{ formatTime(n.created_at) }}</div>
           <div class="item-actions" @click.stop>
-            <button class="action-btn pin" @click="togglePin(n.id)" :title="n.is_pinned ? t('common.unpin') : t('common.pin')">
+            <button class="action-btn pin" @click.stop="togglePin(n.id)" :title="n.is_pinned ? t('common.unpin') : t('common.pin')">
               {{ n.is_pinned ? '📌' : '📍' }}
             </button>
-            <button class="action-btn del" @click="deleteOne(n.id)" :title="t('common.delete')">🗑️</button>
+            <button class="action-btn del" @click.stop="deleteOne(n.id)" :title="t('common.delete')">🗑️</button>
           </div>
         </div>
       </div>

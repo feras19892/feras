@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { getStudentDeadlines, type Deadline } from '../../services/deadline.service';
+import { useI18n } from '../../composables/useI18n';
+
+const { t } = useI18n();
 
 const deadlines = ref<Deadline[]>([]);
 const loading = ref(false);
@@ -20,30 +23,36 @@ async function load() {
 function timeRemaining(dueAt: string): { text: string; overdue: boolean; urgent: boolean } {
   const due = new Date(dueAt).getTime();
   const diff = due - now.value;
-  if (diff <= 0) return { text: 'انتهى الموعد', overdue: true, urgent: false };
+  if (diff <= 0) return { text: t('dashboard.dash.deadlineOverdue'), overdue: true, urgent: false };
   const hours = Math.floor(diff / (1000 * 60 * 60));
   const days = Math.floor(hours / 24);
-  if (days > 0) return { text: `${days} يوم`, overdue: false, urgent: days <= 1 };
-  if (hours > 0) return { text: `${hours} ساعة`, overdue: false, urgent: true };
+  if (days > 0) return { text: `${days} ${t('dashboard.dash.deadlineDay')}`, overdue: false, urgent: days <= 1 };
+  if (hours > 0) return { text: `${hours} ${t('dashboard.dash.deadlineHour')}`, overdue: false, urgent: true };
   const minutes = Math.floor(diff / (1000 * 60));
-  return { text: `${minutes} دقيقة`, overdue: false, urgent: true };
+  return { text: `${minutes} ${t('dashboard.dash.deadlineMinute')}`, overdue: false, urgent: true };
 }
 
 const sortedDeadlines = computed(() => {
   return [...deadlines.value].sort((a, b) => new Date(a.due_at).getTime() - new Date(b.due_at).getTime());
 });
 
+let nowInterval: ReturnType<typeof setInterval> | null = null;
+
 onMounted(() => {
   load();
-  setInterval(() => { now.value = Date.now(); }, 60000);
+  nowInterval = setInterval(() => { now.value = Date.now(); }, 60000);
+});
+
+onUnmounted(() => {
+  if (nowInterval) clearInterval(nowInterval);
 });
 </script>
 
 <template>
   <div class="deadlines-panel">
-    <h3>⏰ مواعيد التسليم</h3>
-    <div v-if="loading" class="loading">جاري التحميل...</div>
-    <div v-else-if="sortedDeadlines.length === 0" class="empty">لا توجد مواعيد قادمة</div>
+    <h3>{{ t('dashboard.dash.deadlineTitle') }}</h3>
+    <div v-if="loading" class="loading">{{ t('dashboard.dash.deadlineLoading') }}</div>
+    <div v-else-if="sortedDeadlines.length === 0" class="empty">{{ t('dashboard.dash.deadlineEmpty') }}</div>
     <div v-else class="list">
       <div
         v-for="d in sortedDeadlines"

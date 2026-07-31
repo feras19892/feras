@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useI18n } from '../../composables/useI18n';
 import { fetchJson } from '../../services/http';
 import type { School, SchoolStats } from '../../services/school.service';
@@ -15,7 +15,16 @@ const { t } = useI18n();
 const capacityForm = ref({ requested_max_students: null as number | null, requested_max_teachers: null as number | null, reason: '' });
 const capacitySaving = ref(false);
 const capacityMsg = ref('');
-const capacityRequests = ref<any[]>([]);
+interface CapacityRequest {
+  id: number;
+  requested_max_students: number | null;
+  requested_max_teachers: number | null;
+  reason: string;
+  status: string;
+  created_at: string;
+}
+
+const capacityRequests = ref<CapacityRequest[]>([]);
 
 async function submitCapacityRequest() {
   if (!capacityForm.value.reason.trim()) return;
@@ -40,14 +49,14 @@ async function submitCapacityRequest() {
 
 async function loadCapacityRequests() {
   try {
-    const res = await fetchJson<{ success: boolean; requests: any[] }>('/api/school/capacity-requests');
+    const res = await fetchJson<{ success: boolean; requests: CapacityRequest[] }>('/api/school/capacity-requests');
     if (res.success) capacityRequests.value = res.requests;
   } catch {
     // ignore
   }
 }
 
-loadCapacityRequests();
+onMounted(loadCapacityRequests);
 </script>
 
 <template>

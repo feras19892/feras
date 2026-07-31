@@ -16,6 +16,14 @@ const { t } = useI18n()
   <div class="section">
     <!-- Student & Report Meta -->
     <h3 class="sec-title">👤 {{ t('report.studentAndMeta') }}</h3>
+    <div class="student-header">
+      <img v-if="report.student_avatar_url" :src="report.student_avatar_url" class="student-avatar" alt="avatar" />
+      <div v-else class="student-avatar-placeholder">{{ (report.student_name || studentInfo.name || '?').charAt(0).toUpperCase() }}</div>
+      <div class="student-header-info">
+        <div class="student-header-name">{{ report.student_name || studentInfo.name || '—' }}</div>
+        <div v-if="studentInfo.email" class="student-header-email">{{ studentInfo.email }}</div>
+      </div>
+    </div>
     <div class="meta-grid">
       <div class="meta-item">
         <span class="meta-label">{{ t('report.studentName') }}</span>
@@ -108,6 +116,13 @@ const { t } = useI18n()
 <style scoped>
 .section { margin-bottom: 1.2rem; }
 .sec-title { font-size: 0.95rem; font-weight: 700; color: #fbbf24; margin: 0 0 0.6rem; padding-bottom: 0.3rem; border-bottom: 1px solid rgba(251, 191, 36, 0.15); }
+
+.student-header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem; padding: 0.6rem; background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 0.6rem; }
+.student-avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(99, 102, 241, 0.3); flex-shrink: 0; }
+.student-avatar-placeholder { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 800; flex-shrink: 0; }
+.student-header-info { flex: 1; }
+.student-header-name { font-size: 1rem; font-weight: 800; color: #f1f5f9; }
+.student-header-email { font-size: 0.78rem; color: #64748b; }
 
 .meta-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.5rem; margin-bottom: 0.8rem; }
 .meta-item { background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 0.4rem; padding: 0.4rem 0.6rem; display: flex; flex-direction: column; gap: 0.1rem; }

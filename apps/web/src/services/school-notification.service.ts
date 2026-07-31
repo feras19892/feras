@@ -8,6 +8,7 @@ export interface SchoolNotification {
   message: string | null;
   is_read: number;
   is_pinned?: number;
+  report_id?: number | null;
   created_at: string;
 }
 

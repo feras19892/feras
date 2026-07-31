@@ -371,8 +371,8 @@ export async function logoutSchool(schoolId: number): Promise<void> {
 }
 
 export async function getUserById(id: number): Promise<User | null> {
-  const rows = await db.all<{ id: number; email: string; name: string; role: string; school_id: number | null }[]>(
-    'SELECT id, email, name, role, school_id FROM users WHERE id = ?',
+  const rows = await db.all<{ id: number; email: string; name: string; role: string; school_id: number | null; avatar_url: string | null }[]>(
+    'SELECT id, email, name, role, school_id, avatar_url FROM users WHERE id = ?',
     id
   );
   if (rows.length === 0) return null;
@@ -383,6 +383,7 @@ export async function getUserById(id: number): Promise<User | null> {
     name: u.name,
     role: u.role as User['role'],
     school_id: u.school_id,
+    avatar_url: u.avatar_url,
   };
 }
 

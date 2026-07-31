@@ -385,15 +385,24 @@ app.patch('/alerts/:id/resolve', async (c) => {
 });
 
 // ─── Emergency Controls ───
-const EMERGENCY_PASSWORD = process.env.EMERGENCY_PASSWORD || '';
-if (!EMERGENCY_PASSWORD && process.env.NODE_ENV === 'production') {
-  console.warn('[SECURITY] EMERGENCY_PASSWORD env variable is not set — emergency controls will be disabled in production');
+const EMERGENCY_PASSWORD_ENV = process.env.EMERGENCY_PASSWORD || '';
+const DEV_DEFAULT_PASSWORD = 'admin123';
+
+async function getEmergencyPassword(): Promise<string> {
+  if (EMERGENCY_PASSWORD_ENV) return EMERGENCY_PASSWORD_ENV;
+  try {
+    const row = await db.get<{ value: string }>('SELECT value FROM system_settings WHERE key = ?', 'emergency_password');
+    if (row?.value) return row.value;
+  } catch { /* ignore */ }
+  if (process.env.NODE_ENV !== 'production') return DEV_DEFAULT_PASSWORD;
+  return '';
 }
 
 async function verifyEmergencyPassword(c: any): Promise<boolean> {
-  if (!EMERGENCY_PASSWORD) return false;
+  const password = await getEmergencyPassword();
+  if (!password) return false;
   const body = await c.req.json().catch(() => ({}));
-  return body.emergency_password === EMERGENCY_PASSWORD;
+  return body.emergency_password === password;
 }
 
 async function broadcastEmergency(user: User, title: string, content: string) {
@@ -476,6 +485,21 @@ app.post('/emergency/unfreeze-all', async (c) => {
   await svc.unfreezeAllClasses();
   await broadcastEmergency(user, 'إلغاء تجميد الفصول', 'تم إلغاء تجميد جميع الفصول. يمكنكم متابعة العمل بشكل طبيعي.');
   return c.json({ success: true, message: 'تم إلغاء التجميد وإرسال إشعار لجميع المستخدمين' });
+});
+
+app.post('/emergency/change-password', async (c) => {
+  const user = c.get('user') as User;
+  const body = await c.req.json().catch(() => ({}));
+  const current = await getEmergencyPassword();
+  if (!current || body.current_password !== current) {
+    return c.json({ success: false, message: 'كلمة المرور الحالية غير صحيحة' }, 403);
+  }
+  const newPwd = body.new_password;
+  if (!newPwd || typeof newPwd !== 'string' || newPwd.length < 6) {
+    return c.json({ success: false, message: 'كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل' }, 400);
+  }
+  await svc.updateSystemSetting('emergency_password', newPwd, user.id);
+  return c.json({ success: true, message: 'تم تغيير كلمة مرور الطوارئ بنجاح' });
 });
 
 // ─── Admin Detailed Reports ───

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useI18n } from '../../composables/useI18n'
+import { useAuthStore } from '../../modules/auth/stores/auth'
 import type { ClassItem } from '../../services/class.service'
+import CreateApprovalButton from '../shared/CreateApprovalButton.vue'
 
 interface ClassStatItem { student_count: number; total_reports: number; pending_count: number; class_average: number }
 
@@ -13,11 +15,11 @@ defineProps<{
 const emit = defineEmits<{
   (e: 'open', id: string): void
   (e: 'copy', code: string): void
-  (e: 'delete', id: string): void
   (e: 'rename', cls: ClassItem): void
 }>()
 
 const { t } = useI18n()
+const auth = useAuthStore()
 </script>
 
 <template>
@@ -47,8 +49,26 @@ const { t } = useI18n()
         </div>
         <div class="class-card-footer">
           <button class="card-action" type="button" @click.stop="emit('copy', cls.code)" :title="t('dashboard.copyCode')">📋</button>
-          <button class="card-action" type="button" @click.stop="emit('rename', cls)" :title="t('dashboard.renameClass')">✏️</button>
-          <button class="card-action danger" type="button" @click.stop="emit('delete', cls.id)" :title="t('dashboard.deleteClass')">🗑️</button>
+          <CreateApprovalButton
+              type="class_edit"
+              approverType="school"
+              :targetUserId="auth.user?.id || 0"
+              :targetUserName="auth.user?.name || ''"
+              :classId="cls.id"
+              :metadata="JSON.stringify({ class_id: cls.id, class_name: cls.name })"
+            >
+              <button class="card-action" type="button" @click.stop :title="t('dashboard.renameClass')">✏️</button>
+            </CreateApprovalButton>
+          <CreateApprovalButton
+              type="class_deletion"
+              approverType="school"
+              :targetUserId="auth.user?.id || 0"
+              :targetUserName="auth.user?.name || ''"
+              :classId="cls.id"
+              :metadata="JSON.stringify({ class_id: cls.id, class_name: cls.name })"
+            >
+              <button class="card-action danger" type="button" @click.stop :title="t('dashboard.deleteClass')">🗑️</button>
+            </CreateApprovalButton>
         </div>
       </button>
     </div>

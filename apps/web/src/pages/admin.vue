@@ -1,50 +1,54 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, computed } from 'vue';
+import { ref, onMounted, watch, computed, defineAsyncComponent } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../modules/auth/stores/auth';
 import { useI18n } from '../composables/useI18n';
 import { useAdmin } from '../composables/useAdmin';
 import { useNotifications } from '../composables/useNotifications';
 import AdminDashboard from '../components/admin/AdminDashboard.vue';
-import AdminUserManager from '../components/admin/AdminUserManager.vue';
-import AdminUserDetail from '../components/admin/AdminUserDetail.vue';
-import AdminFeedbackPanel from '../components/admin/AdminFeedbackPanel.vue';
-import AdminSystemHealth from '../components/admin/AdminSystemHealth.vue';
-import AdminExportPanel from '../components/admin/AdminExportPanel.vue';
-import AdminSystemSettings from '../components/admin/AdminSystemSettings.vue';
-import AdminChatMonitor from '../components/admin/AdminChatMonitor.vue';
 import AdminGlobalSearch from '../components/admin/AdminGlobalSearch.vue';
-import AdminAuditLog from '../components/admin/AdminAuditLog.vue';
-import AdminSchoolManager from '../components/admin/AdminSchoolManager.vue';
-import AdminRequests from '../components/admin/AdminRequests.vue';
-import AdminSmartReports from '../components/admin/AdminSmartReports.vue';
-import AdminDetailedReports from '../components/admin/AdminDetailedReports.vue';
-import EmergencyControls from '../components/admin/EmergencyControls.vue';
-import AdminEnhancements from '../components/admin/AdminEnhancements.vue';
 import SystemBanner from '../components/shared/SystemBanner.vue';
-import ApprovalPanel from '../components/shared/ApprovalPanel.vue';
 import AppSidebar from '../components/shared/AppSidebar.vue';
 import type { SidebarGroup } from '../components/shared/AppSidebar.vue';
-import AnnouncementsPanel from '../components/shared/AnnouncementsPanel.vue';
 import NotificationBell from '../components/shared/NotificationBell.vue';
 import NotificationToast from '../components/shared/NotificationToast.vue';
 import AccountSettingsModal from '../components/shared/AccountSettingsModal.vue';
 import NameRequestBadge from '../components/shared/NameRequestBadge.vue';
 import BranchCard from '../components/ui/BranchCard.vue';
 import { fetchHomeCards } from '../services/home.service';
+import { useApprovalBadge } from '../composables/useApprovalBadge';
 import type { HomeCard } from '../types/physics';
+
+const AdminUserManager = defineAsyncComponent(() => import('../components/admin/AdminUserManager.vue'));
+const AdminUserDetail = defineAsyncComponent(() => import('../components/admin/AdminUserDetail.vue'));
+const AdminClassManager = defineAsyncComponent(() => import('../components/admin/AdminClassManager.vue'));
+const AdminReportViewer = defineAsyncComponent(() => import('../components/admin/AdminReportViewer.vue'));
+const AdminFeedbackPanel = defineAsyncComponent(() => import('../components/admin/AdminFeedbackPanel.vue'));
+const AdminSystemHealth = defineAsyncComponent(() => import('../components/admin/AdminSystemHealth.vue'));
+const AdminExportPanel = defineAsyncComponent(() => import('../components/admin/AdminExportPanel.vue'));
+const AdminSystemSettings = defineAsyncComponent(() => import('../components/admin/AdminSystemSettings.vue'));
+const AdminChatMonitor = defineAsyncComponent(() => import('../components/admin/AdminChatMonitor.vue'));
+const AdminAuditLog = defineAsyncComponent(() => import('../components/admin/AdminAuditLog.vue'));
+const AdminSchoolManager = defineAsyncComponent(() => import('../components/admin/AdminSchoolManager.vue'));
+const AdminRequests = defineAsyncComponent(() => import('../components/admin/AdminRequests.vue'));
+const AdminSmartReports = defineAsyncComponent(() => import('../components/admin/AdminSmartReports.vue'));
+const AdminDetailedReports = defineAsyncComponent(() => import('../components/admin/AdminDetailedReports.vue'));
+const EmergencyControls = defineAsyncComponent(() => import('../components/admin/EmergencyControls.vue'));
+const AdminEnhancements = defineAsyncComponent(() => import('../components/admin/AdminEnhancements.vue'));
+const ApprovalPanel = defineAsyncComponent(() => import('../components/shared/ApprovalPanel.vue'));
+const AnnouncementsPanel = defineAsyncComponent(() => import('../components/shared/AnnouncementsPanel.vue'));
 
 const router = useRouter();
 const auth = useAuthStore();
 const { t, locale } = useI18n();
 if (!auth.isAdmin) { router.push('/home'); }
 
-type Section = 'overview' | 'experiments' | 'users' | 'schools' | 'requests' | 'approvals' | 'announcements' | 'health' | 'settings' | 'export' | 'feedback' | 'audit' | 'chat' | 'smart' | 'detailed' | 'emergency' | 'enhancements';
+type Section = 'overview' | 'experiments' | 'users' | 'classes' | 'reports' | 'schools' | 'requests' | 'approvals' | 'announcements' | 'health' | 'settings' | 'export' | 'feedback' | 'audit' | 'chat' | 'smart' | 'detailed' | 'emergency' | 'enhancements';
 const active = ref<Section>('overview');
 const selectedUserId = ref<number | null>(null);
-const hovered = ref<string | null>(null);
 const sidebarCollapsed = ref(false);
 const cards = ref<HomeCard[]>([]);
+const { pendingCount: approvalPendingCount } = useApprovalBadge();
 
 const groups = computed<SidebarGroup[]>(() => [
   {
@@ -62,9 +66,11 @@ const groups = computed<SidebarGroup[]>(() => [
     icon: '👥',
     items: [
       { id: 'users', icon: '👥', label: t('shared.navUsers'), badge: users.value.length || undefined },
+      { id: 'classes', icon: '📚', label: t('shared.navClasses'), badge: classes.value.length || undefined },
+      { id: 'reports', icon: '📄', label: t('shared.navReports'), badge: reports.value.length || undefined },
       { id: 'schools', icon: '🏫', label: t('shared.navSchools') },
       { id: 'requests', icon: '📋', label: t('shared.navRequests') },
-      { id: 'approvals', icon: '✅', label: t('shared.navApprovals') },
+      { id: 'approvals', icon: '✅', label: t('shared.navApprovals'), badge: approvalPendingCount.value > 0 ? approvalPendingCount.value : undefined },
     ],
   },
   {
@@ -118,15 +124,15 @@ watch(notifications, (val, old) => {
 }, { deep: false });
 
 const {
-  loading, errorMsg,
+  loading, errorMsg, toast,
   users, classes, reports, feedback, stats,
-  loadAll, handleRemoveUser, handleChangeRole, handleAddUser,
+  loadAll, handleRemoveUser, handleChangeRole, handleAddUser, handleRemoveClass,
 } = useAdmin();
 
 function select(s: Section) { selectedUserId.value = null; active.value = s; }
 function openUserDetail(id: number) { selectedUserId.value = id; }
 function closeUserDetail() { selectedUserId.value = null; }
-function selectClass(_id: string) { select('users'); }
+function selectClass(_id: string) { select('classes'); }
 function selectReport(id: number) { router.push(`/report/${id}`); }
 
 function goToBranch(branchId: string) {
@@ -194,6 +200,11 @@ onMounted(() => {
         <div class="kpi-item"><span class="kpi-icon">📊</span><span class="kpi-val">{{ stats.reports.average }}%</span><span class="kpi-lab">{{ t('shared.kpiAvg') }}</span></div>
       </div>
 
+      <!-- Admin Toast -->
+      <Transition name="toast">
+        <div v-if="toast" :class="['admin-toast', toast.type]">{{ toast.message }}</div>
+      </Transition>
+
       <!-- Content -->
       <div class="content-area">
         <AdminGlobalSearch :users="users" :classes="classes" :reports="reports" :feedback="feedback"
@@ -227,6 +238,8 @@ onMounted(() => {
               @change-role="handleChangeRole" @add="handleAddUser" @view="openUserDetail" />
           </div>
 
+          <div v-else-if="active === 'classes'" class="panel"><AdminClassManager :classes="classes" @delete="handleRemoveClass" @refresh="loadAll" /></div>
+          <div v-else-if="active === 'reports'" class="panel"><AdminReportViewer :reports="reports" @refresh="loadAll" /></div>
           <div v-else-if="active === 'schools'" class="panel"><AdminSchoolManager /></div>
           <div v-else-if="active === 'requests'" class="panel"><AdminRequests /></div>
           <div v-else-if="active === 'approvals'" class="panel"><ApprovalPanel mode="admin" /></div>
@@ -327,4 +340,15 @@ onMounted(() => {
   padding: 1rem; border-radius: 0.5rem; border: 1px solid rgba(239,68,68,0.2); text-align: center;
 }
 .toast-zone { position: fixed; top: 1rem; inset-inline-end: 1rem; z-index: 10000; }
+
+.admin-toast {
+  position: fixed; top: 4rem; inset-inline-end: 1rem; z-index: 9999;
+  padding: 0.7rem 1.2rem; border-radius: 0.5rem; font-size: 0.85rem; font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.admin-toast.success { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+.admin-toast.error { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+.admin-toast.info { background: rgba(99,102,241,0.15); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.3); }
+.toast-enter-active, .toast-leave-active { transition: all 0.3s ease; }
+.toast-enter-from, .toast-leave-to { opacity: 0; transform: translateY(-10px); }
 </style>

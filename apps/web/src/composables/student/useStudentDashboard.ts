@@ -25,6 +25,7 @@ export interface StudentReportRow {
   submittedAt: string | null
   feedback: string | null
   hasFeedback: boolean
+  feedbackSeen: boolean
 }
 
 function daysSince(dateStr?: string): number {
@@ -52,7 +53,7 @@ export function useStudentDashboard() {
           gradeCount++
           if (r.grade > best) best = r.grade
         }
-        if (r.feedback) newFeedback++
+        if (r.feedback && !r.feedback_seen) newFeedback++
       } else if (r.status === 'submitted' || r.status === 'resubmitted') {
         pendingCount++
       } else if (r.status === 'draft') {
@@ -84,6 +85,7 @@ export function useStudentDashboard() {
         submittedAt: r.submitted_at || r.created_at || null,
         feedback: r.feedback || null,
         hasFeedback: !!r.feedback,
+        feedbackSeen: !!r.feedback_seen,
       }
     }).sort((a, b) => (b.submittedAt || '').localeCompare(a.submittedAt || ''))
   })

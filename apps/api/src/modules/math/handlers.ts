@@ -3,8 +3,13 @@ import { zValidator } from '@hono/zod-validator';
 import { SolveSchema, GraphDataSchema, PracticeSchema } from './schemas.js';
 import * as svc from './services.js';
 import { solveEquation, generateGraphData, generatePracticeProblem } from '@my-modern-app/math-engine';
+import { authMiddleware } from '../auth/middleware.js';
+import type { User } from '@my-modern-app/shared-types';
 
-const app = new Hono();
+type Variables = { user: User };
+const app = new Hono<{ Variables: Variables }>();
+
+app.use(authMiddleware);
 
 // GET /api/math/branches
 app.get('/branches', async (c) => {

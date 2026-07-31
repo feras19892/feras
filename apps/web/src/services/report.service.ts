@@ -20,6 +20,7 @@ export interface Report {
   status: 'draft' | 'submitted' | 'graded' | 'resubmitted';
   version: number;
   teacher_seen: boolean;
+  feedback_seen?: boolean;
   grade?: number;
   feedback?: string;
   graded_by?: number;
@@ -27,6 +28,7 @@ export interface Report {
   submitted_at?: string;
   graded_at?: string;
   student_name?: string;
+  student_avatar_url?: string | null;
   created_at?: string;
 }
 
@@ -162,4 +164,8 @@ export async function exportClassReports(classId: string) {
 
 export async function deleteReport(id: number) {
   return fetchJson<{ success: boolean }>(`/api/reports/${id}`, { method: 'DELETE' });
+}
+
+export async function markFeedbackSeen(id: number) {
+  return fetchJson<{ success: boolean }>(`/api/reports/${id}/feedback-seen`, { method: 'PATCH' });
 }

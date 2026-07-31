@@ -1,7 +1,10 @@
 import { db } from '../../db/index.js';
 import { createNotification } from '../notifications/services.js';
 
-export type ApprovalType = 'penalty' | 'grade_change' | 'student_removal' | 'grade_appeal';
+export type ApprovalType =
+  | 'penalty' | 'grade_change' | 'student_removal' | 'grade_appeal'
+  | 'class_creation' | 'class_deletion' | 'class_edit'
+  | 'user_creation' | 'user_edit' | 'report_deletion';
 export type RequesterType = 'student' | 'teacher' | 'school' | 'admin';
 export type ApproverType = 'teacher' | 'school' | 'admin';
 export type ApprovalStatus = 'pending' | 'approved' | 'rejected' | 'escalated' | 'auto_escalated';
@@ -22,6 +25,7 @@ export interface CreateApprovalInput {
   description: string;
   proposed_grade?: number;
   severity?: string;
+  metadata?: string;
 }
 
 // Escalation chain: teacher → school → admin
@@ -43,14 +47,14 @@ export async function createApprovalRequest(input: CreateApprovalInput) {
     `INSERT INTO approval_requests
      (type, requester_type, requester_id, requester_name, approver_type, approver_id,
       target_user_id, target_user_name, class_id, report_id, school_id,
-      title, description, proposed_grade, severity, status, escalation_deadline)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?)`,
+      title, description, proposed_grade, severity, status, escalation_deadline, metadata)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?)`,
     input.type, input.requester_type, input.requester_id, input.requester_name,
     input.approver_type, input.approver_id || null,
     input.target_user_id, input.target_user_name,
     input.class_id || null, input.report_id || null, input.school_id || null,
     input.title, input.description, input.proposed_grade || null, input.severity || null,
-    escalationDeadline,
+    escalationDeadline, input.metadata || null,
   );
 
   const id = result.lastID;
@@ -315,6 +319,70 @@ async function executeApprovedAction(req: any): Promise<string> {
         });
       }
       return 'appeal_accepted';
+    }
+    case 'class_creation': {
+      const meta = JSON.parse(req.metadata || '{}');
+      const teacherId = meta.teacher_id || req.requester_id;
+      const classCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+      const classResult = await db.run(
+        `INSERT INTO classes (name, code, teacher_id, is_active) VALUES (?, ?, ?, 1)`,
+        meta.name || 'New Class', classCode, teacherId,
+      );
+      if (meta.school_id) {
+        await db.run(`UPDATE classes SET school_id = ? WHERE id = ?`, meta.school_id, classResult.lastID);
+      }
+      return 'class_created';
+    }
+    case 'class_deletion': {
+      if (req.class_id) {
+        await db.run(`DELETE FROM class_students WHERE class_id = ?`, req.class_id);
+        await db.run(`DELETE FROM classes WHERE id = ?`, req.class_id);
+      }
+      return 'class_deleted';
+    }
+    case 'class_edit': {
+      if (req.class_id) {
+        const meta = JSON.parse(req.metadata || '{}');
+        if (meta.name) {
+          await db.run(`UPDATE classes SET name = ? WHERE id = ?`, meta.name, req.class_id);
+        }
+        if (meta.teacher_id) {
+          await db.run(`UPDATE classes SET teacher_id = ? WHERE id = ?`, meta.teacher_id, req.class_id);
+        }
+      }
+      return 'class_edited';
+    }
+    case 'user_creation': {
+      const meta = JSON.parse(req.metadata || '{}');
+      if (meta.name && meta.email) {
+        const { hashPassword } = await import('../auth/crypto.js');
+        const passwordHash = await hashPassword(meta.password || 'DefaultPass123!');
+        await db.run(
+          `INSERT INTO users (name, email, password_hash, role, school_id) VALUES (?, ?, ?, ?, ?)`,
+          meta.name, meta.email, passwordHash, meta.role || 'teacher', req.school_id || null,
+        );
+      }
+      return 'user_created';
+    }
+    case 'user_edit': {
+      const meta = JSON.parse(req.metadata || '{}');
+      if (req.target_user_id) {
+        if (meta.name) {
+          await db.run(`UPDATE users SET name = ? WHERE id = ?`, meta.name, req.target_user_id);
+        }
+        if (meta.email) {
+          await db.run(`UPDATE users SET email = ? WHERE id = ?`, meta.email, req.target_user_id);
+        }
+      }
+      return 'user_edited';
+    }
+    case 'report_deletion': {
+      if (req.report_id) {
+        await db.run(`DELETE FROM report_comments WHERE report_id = ?`, req.report_id);
+        await db.run(`DELETE FROM grade_history WHERE report_id = ?`, req.report_id);
+        await db.run(`DELETE FROM experiment_reports WHERE id = ?`, req.report_id);
+      }
+      return 'report_deleted';
     }
     default:
       return 'unknown';

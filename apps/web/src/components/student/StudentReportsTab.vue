@@ -59,7 +59,7 @@ function timeShort(dateStr: string | null): string {
           </tr></thead>
           <tbody>
             <tr v-for="r in filtered" :key="r.id" class="t-row" @click="emit('open-report', r.id)">
-              <td><span class="t-name">{{ r.experimentName }}</span><span v-if="r.hasFeedback" class="t-feedback">💬 {{ t('dashboard.dash.hasFeedback') }}</span></td>
+              <td><span class="t-name">{{ r.experimentName }}</span><span v-if="r.hasFeedback" :class="['t-feedback', { unseen: !r.feedbackSeen }]">💬 {{ r.feedbackSeen ? t('dashboard.dash.hasFeedback') : t('dashboard.dash.newFeedback') }}</span></td>
               <td><span :class="['badge', statusClass(r.status)]">{{ statusLabel(r.status) }}</span></td>
               <td :class="{ 't-grade': r.grade !== null }">{{ r.grade !== null ? r.grade + '/100' : '—' }}</td>
               <td class="t-date">{{ timeShort(r.submittedAt) }}</td>
@@ -89,6 +89,7 @@ function timeShort(dateStr: string | null): string {
 .t-row:hover { background: rgba(99,102,241,0.04); }
 .t-name { font-weight: 700; color: #f1f5f9; display: block; }
 .t-feedback { display: block; font-size: 0.62rem; color: #a5b4fc; }
+.t-feedback.unseen { color: #fbbf24; font-weight: 700; }
 .badge { padding: 0.15rem 0.5rem; border-radius: 999px; font-size: 0.7rem; font-weight: 700; }
 .badge.graded { background: rgba(34,197,94,0.15); color: #22c55e; }
 .badge.pending { background: rgba(245,158,11,0.15); color: #fbbf24; }

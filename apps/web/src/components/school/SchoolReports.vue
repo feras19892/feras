@@ -24,7 +24,7 @@ async function loadDaily() {
   try {
     const res = await getSchoolDetailedReports(selectedDate.value);
     if (res.success) dailyReport.value = res.report;
-  } catch (e: any) { error.value = e?.message || t('school.loadError'); }
+  } catch (e: unknown) { error.value = e instanceof Error ? e.message : t('school.loadError'); }
   loading.value = false;
 }
 
@@ -33,7 +33,7 @@ async function loadOutstanding() {
   try {
     const res = await getOutstandingStudents();
     if (res.success) outstandingStudents.value = res.students;
-  } catch (e: any) { error.value = e?.message || t('school.loadError'); }
+  } catch (e: unknown) { error.value = e instanceof Error ? e.message : t('school.loadError'); }
   loading.value = false;
 }
 
@@ -42,7 +42,7 @@ async function loadStruggling() {
   try {
     const res = await getStrugglingStudents();
     if (res.success) strugglingStudents.value = res.students;
-  } catch (e: any) { error.value = e?.message || t('school.loadError'); }
+  } catch (e: unknown) { error.value = e instanceof Error ? e.message : t('school.loadError'); }
   loading.value = false;
 }
 
@@ -51,7 +51,7 @@ async function loadTeacherEvals() {
   try {
     const res = await getTeacherEvaluation();
     if (res.success) teacherEvals.value = res.evaluations;
-  } catch (e: any) { error.value = e?.message || t('school.loadError'); }
+  } catch (e: unknown) { error.value = e instanceof Error ? e.message : t('school.loadError'); }
   loading.value = false;
 }
 

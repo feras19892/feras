@@ -69,8 +69,9 @@ export function usePendulumLab(params: PendulumParams, onTick?: () => void) {
   async function runPendulumLab(recordTrial: () => void, calcFitG: () => void) {
     if (labFlowRunning.value) return
     labFlowRunning.value = true
+    const saved = { g: params.g, theta0: params.theta0, theta0Deg: params.theta0Deg, damping: params.damping, measureCycles: params.measureCycles, length: params.length }
     try {
-      params.g = 9.81; params.theta0 = 10 * Math.PI / 180; params.damping = 0; params.measureCycles = 20
+      params.g = 9.81; params.theta0 = 10 * Math.PI / 180; params.theta0Deg = 10; params.damping = 0; params.measureCycles = 20
       for (const L of [0.20, 0.30, 0.40, 0.50, 0.60, 0.70]) {
         params.length = L
         reset()
@@ -84,6 +85,12 @@ export function usePendulumLab(params: PendulumParams, onTick?: () => void) {
       calcFitG()
     } finally {
       labFlowRunning.value = false
+      params.g = saved.g
+      params.theta0 = saved.theta0
+      params.theta0Deg = saved.theta0Deg
+      params.damping = saved.damping
+      params.measureCycles = saved.measureCycles
+      params.length = saved.length
       resetSim()
     }
   }

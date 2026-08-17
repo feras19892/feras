@@ -1,10 +1,13 @@
 import { ref, reactive, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import type { AnalysisPayload } from '../../types/physics'
+import { sendToAnalysis } from '../analysis/sendToAnalysis'
 import { useBiotSavartLayout } from './useBiotSavartLayout'
 import { useBiotSavartTrials } from './useBiotSavartTrials'
 import { magneticFieldWire, magneticFieldLoop, magneticFieldSolenoid } from './useBiotSavartCalculations'
 
 export function useBiotSavartExperiment() {
+  const router = useRouter()
   const params = reactive({
     I: 5,        // A
     r: 0.05,     // m
@@ -55,10 +58,10 @@ export function useBiotSavartExperiment() {
   )
 
   function exportToAnalysis() {
-    if (trials.trials.value.length < 2) return
+    if (trials.trials.value.length < 2) { alert('تحتاج إلى تسجيل قراءتين على الأقل قبل التحليل'); return }
     const payload: AnalysisPayload = {
       sourceExperiment: 'biot-savart', sourceNameAr: 'بيوسافار',
-      readings: trials.trials.value.map(t => ({ I: t.I, r: t.r, B: t.B, shape: t.shape })),
+      readings: trials.trials.value.map(tr => ({ I: tr.I, r: tr.r, B: tr.B, shape: tr.shape })),
       columns: [
         { key: 'I', label: 'I (A)', unit: 'A' },
         { key: 'r', label: 'r (m)', unit: 'm' },
@@ -70,8 +73,7 @@ export function useBiotSavartExperiment() {
       ],
       suggestedPlots: [{ xKey: 'r', yKey: 'B', xLabel: 'r (m)', yLabel: 'B (T)', type: 'scatter' }],
     }
-    localStorage.setItem('analysis_payload', JSON.stringify(payload))
-    window.open('/analysis', '_blank')
+    sendToAnalysis(router, payload)
   }
   function handleDrop(fromId: string, x?: number, y?: number) {
     if (x === undefined || y === undefined) return
@@ -82,7 +84,7 @@ export function useBiotSavartExperiment() {
     for (const col of Object.keys(layout.columnMap)) {
       const arr = layout.columnMap[col]
       const fi = arr.indexOf(fromId), ti = arr.indexOf(toId)
-      if (fi >= 0 && ti >= 0) { const t = arr[fi]; arr[fi] = arr[ti]; arr[ti] = t }
+      if (fi >= 0 && ti >= 0) { const tmp = arr[fi]; arr[fi] = arr[ti]; arr[ti] = tmp }
     }
   }
   function onResizeStart(col: string, e: MouseEvent) {

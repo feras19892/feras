@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { LightRayTrial } from '../../../composables/lightray/useLightRayExperiment'
 import LightRayChart from './LightRayChart.vue'
 import { useI18n } from '../../../composables/useI18n'
@@ -27,7 +28,7 @@ const emit = defineEmits<{
   (e: 'update:params', params: { angleIncidence: number; n1: number; n2: number }): void
 }>()
 
-const chartPoints = props.trials.map((t) => ({ sinI: t.sinI, sinT: t.sinT, thetaI: t.angleIncidence }))
+const chartPoints = computed(() => props.trials.map((tr) => ({ sinI: tr.sinI, sinT: tr.sinT, thetaI: tr.angleIncidence })))
 </script>
 
 <template>

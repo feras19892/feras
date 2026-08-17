@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { useI18n } from '../../composables/useI18n';
+import { useConfirmDialog } from '../../composables/useConfirmDialog';
+import { getActiveSessions } from '../../services/admin.service';
 
 interface AdminUser { id: number; name: string; email: string; role: string; created_at?: string }
 
 const props = defineProps<{
   users: AdminUser[];
   currentUserId?: number;
+  initialSearch?: string;
 }>();
 
 const emit = defineEmits<{
@@ -18,7 +21,9 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
-const searchQuery = ref('');
+const searchQuery = ref(props.initialSearch || '');
+watch(() => props.initialSearch, (v) => { if (v !== undefined) searchQuery.value = v; });
+const roleFilter = ref('all');
 const showAddUser = ref(false);
 const newUser = ref({ name: '', email: '', password: '', role: 'student' as string });
 const addUserLoading = ref(false);
@@ -28,9 +33,12 @@ const bulkRole = ref<string>('');
 
 const filteredUsers = computed(() => {
   const q = searchQuery.value.trim().toLowerCase();
-  const list = props.currentUserId
+  let list = props.currentUserId
     ? props.users.filter((u) => u.id !== props.currentUserId)
     : props.users;
+  if (roleFilter.value !== 'all') {
+    list = list.filter((u) => u.role === roleFilter.value);
+  }
   if (!q) return list;
   return list.filter((u) =>
     u.name?.toLowerCase().includes(q) ||
@@ -55,11 +63,41 @@ function toggleOne(id: number) {
   selectedIds.value = next;
 }
 
+const onlineUserIds = ref<Set<number>>(new Set());
+let pollTimer: ReturnType<typeof setInterval> | null = null;
+
+async function refreshOnlineUsers() {
+  try {
+    const res = await getActiveSessions();
+    if (res.success && res.sessions) {
+      onlineUserIds.value = new Set(res.sessions.map(s => s.user_id));
+    }
+  } catch { /* ignore */ }
+}
+
+onMounted(() => {
+  refreshOnlineUsers();
+  pollTimer = setInterval(refreshOnlineUsers, 15000);
+});
+onUnmounted(() => { if (pollTimer) clearInterval(pollTimer); });
+
+function isOnline(id: number) { return onlineUserIds.value.has(id); }
+
+const { confirmDialog } = useConfirmDialog();
+
+function confirmDelete(id: number) {
+  confirmDialog({ message: t('admin.confirmDeleteUser'), variant: 'danger' }).then(ok => {
+    if (ok) emit('delete', id);
+  });
+}
+
 function bulkDelete() {
   if (selectedIds.value.size === 0) return;
-  if (!confirm(t('admin.confirmBulkDelete', { count: selectedIds.value.size }))) return;
-  for (const id of selectedIds.value) emit('delete', id);
-  selectedIds.value = new Set();
+  confirmDialog({ message: t('admin.confirmBulkDelete', { count: selectedIds.value.size }), variant: 'danger' }).then(ok => {
+    if (!ok) return;
+    for (const id of selectedIds.value) emit('delete', id);
+    selectedIds.value = new Set();
+  });
 }
 
 function bulkChangeRole() {
@@ -90,6 +128,12 @@ async function addUser() {
       <h3>{{ t('admin.users', { count: users.length }) }}</h3>
       <div class="section-actions">
         <input v-model="searchQuery" class="search-input" :placeholder="t('adminUser.search')" />
+        <select v-model="roleFilter" class="role-filter-select">
+          <option value="all">{{ t('adminUser.allRoles') }}</option>
+          <option value="student">{{ t('admin.roleStudent') }}</option>
+          <option value="teacher">{{ t('admin.roleTeacher') }}</option>
+          <option value="admin">{{ t('admin.roleAdmin') }}</option>
+        </select>
         <button class="btn-primary" @click="showAddUser = true">{{ t('adminUser.addUser') }}</button>
       </div>
     </div>
@@ -130,14 +174,17 @@ async function addUser() {
         <thead>
           <tr>
             <th class="col-check"><input type="checkbox" :checked="allSelected" @change="toggleAll" /></th>
-            <th>ID</th><th>{{ t('admin.name') }}</th><th>{{ t('adminUser.email') }}</th><th>{{ t('adminUser.role') }}</th><th>{{ t('adminUser.from') }}</th><th>{{ t('admin.actions') }}</th>
+            <th>ID</th><th>{{ t('admin.name') }}</th><th>{{ t('adminUser.email') }}</th><th>{{ t('adminUser.role') }}</th><th>{{ t('adminUser.from') }}</th><th>الحالة</th><th>{{ t('admin.actions') }}</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="u in filteredUsers" :key="u.id" :class="{ 'row-selected': selectedIds.has(u.id) }">
             <td class="col-check"><input type="checkbox" :checked="selectedIds.has(u.id)" @change="toggleOne(u.id)" /></td>
             <td>{{ u.id }}</td>
-            <td>{{ u.name }}</td>
+            <td>
+              <span v-if="isOnline(u.id)" class="online-dot" title="متصل الآن"></span>
+              {{ u.name }}
+            </td>
             <td>{{ u.email }}</td>
             <td>
               <select :value="u.role" @change="emit('change-role', u.id, ($event.target as HTMLSelectElement).value)">
@@ -149,8 +196,12 @@ async function addUser() {
             </td>
             <td>{{ u.created_at?.slice(0, 10) }}</td>
             <td>
+              <span v-if="isOnline(u.id)" class="status-online">🟢 متصل</span>
+              <span v-else class="status-offline">⚫ غير متصل</span>
+            </td>
+            <td>
               <button class="btn-view" @click="emit('view', u.id)">{{ t('adminUser.view') }}</button>
-              <button class="btn-danger" @click="emit('delete', u.id)">{{ t('admin.delete') }}</button>
+              <button class="btn-danger" @click="confirmDelete(u.id)">{{ t('admin.delete') }}</button>
             </td>
           </tr>
         </tbody>
@@ -180,6 +231,7 @@ async function addUser() {
 .section-header h3 { margin: 0; font-size: 1.1rem; }
 .section-actions { display: flex; gap: 0.5rem; align-items: center; }
 .search-input { padding: 0.4rem 0.8rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; font-size: 0.85rem; min-width: 200px; }
+.role-filter-select { padding: 0.4rem 0.6rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; font-size: 0.85rem; cursor: pointer; }
 .btn-primary { padding: 0.45rem 0.9rem; border-radius: 0.5rem; border: none; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 0.85rem; }
 .empty { text-align: center; color: #64748b; padding: 2rem; }
 .table-wrapper { overflow-x: auto; }
@@ -218,4 +270,9 @@ async function addUser() {
 .btn-cancel { background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); }
 .btn-submit { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none; }
 .msg.error { color: #f87171; font-size: 0.85rem; margin: 0.5rem 0; }
+
+.online-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #22c55e; margin-inline-end: 0.4rem; box-shadow: 0 0 6px rgba(34,197,94,0.6); animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+.status-online { color: #22c55e; font-size: 0.78rem; font-weight: 600; }
+.status-offline { color: #64748b; font-size: 0.78rem; }
 </style>

@@ -2,20 +2,23 @@
 import { computed } from 'vue'
 import type { LatentHeatTrial } from '../../../../composables/latent-heat/useLatentHeatTrials'
 const props = defineProps<{ trials: LatentHeatTrial[] }>()
+
+// Calculate L from Q/m for each trial (measured value)
+const measuredLs = computed(() =>
+  props.trials
+    .filter(tr => tr.mass > 0 && tr.meltedMass > 0)
+    .map(tr => tr.Q / tr.meltedMass)
+)
 const avgL = computed(() => {
-  if (!props.trials.length) return 0
-  return props.trials.reduce((s, t) => s + t.L, 0) / props.trials.length
+  if (!measuredLs.value.length) return 0
+  return measuredLs.value.reduce((s, v) => s + v, 0) / measuredLs.value.length
 })
-const _avgMelted = computed(() => {
-  if (!props.trials.length) return 0
-  return props.trials.reduce((s, t) => s + t.meltedMass, 0) / props.trials.length
-})
-const totalQ = computed(() => props.trials.reduce((s, t) => s + t.Q, 0))
+const totalQ = computed(() => props.trials.reduce((s, tr) => s + tr.Q, 0))
 const cv = computed(() => {
-  if (props.trials.length < 2) return 0
+  if (measuredLs.value.length < 2) return 0
   const mean = avgL.value
-  const variance = props.trials.reduce((s, t) => s + Math.pow(t.L - mean, 2), 0) / (props.trials.length - 1)
-  return Math.sqrt(variance) / mean * 100
+  const variance = measuredLs.value.reduce((s, v) => s + Math.pow(v - mean, 2), 0) / (measuredLs.value.length - 1)
+  return mean > 0 ? Math.sqrt(variance) / mean * 100 : 0
 })
 const trueL = computed(() => props.trials.length > 0 ? props.trials[0].L : 0)
 const errorPct = computed(() => trueL.value > 0 ? Math.abs(avgL.value - trueL.value) / trueL.value * 100 : 0)
@@ -33,7 +36,7 @@ const errorPct = computed(() => trueL.value > 0 ? Math.abs(avgL.value - trueL.va
         <div class="stat-value">{{ trials.length }}</div>
       </div>
       <div class="stat-box highlight">
-        <div class="stat-label">متوسط L</div>
+        <div class="stat-label">متوسط L المقاس</div>
         <div class="stat-value green">{{ (avgL/1000).toFixed(0) }} kJ/kg</div>
       </div>
       <div class="stat-box">

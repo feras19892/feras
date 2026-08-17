@@ -52,16 +52,17 @@ export function useReportParser(report: Ref<Report>) {
   const errorCalcData = computed(() => params.value.error_calc_data ?? null)
 
   const columnStats = computed<ColumnStat[]>(() => {
-    return columns.value.map((col: Any) => {
-      const vals = readings.value.map(r => r[col.key]).filter(v => typeof v === 'number' && !isNaN(v)) as number[]
-      if (!vals.length) return { key: col.key, label: col.label, unit: col.unit, mean: 0, std: 0, min: 0, max: 0, range: 0, median: 0, count: 0, outliers: [], consistency: 0 }
+    return columns.value.map((col: Record<string, unknown>) => {
+      const key = String(col.key)
+      const vals = readings.value.map(r => r[key]).filter(v => typeof v === 'number' && !isNaN(v)) as number[]
+      if (!vals.length) return { key, label: String(col.label), unit: String(col.unit), mean: 0, std: 0, min: 0, max: 0, range: 0, median: 0, count: 0, outliers: [], consistency: 0 }
       const mean = vals.reduce((a, b) => a + b, 0) / vals.length
       const std = Math.sqrt(vals.reduce((s, v) => s + (v - mean) ** 2, 0) / vals.length)
       const sorted = [...vals].sort((a, b) => a - b)
       const median = sorted.length % 2 ? sorted[Math.floor(sorted.length / 2)] : (sorted[sorted.length / 2 - 1] + sorted[sorted.length / 2]) / 2
       const outliers = vals.filter(v => std > 0 && Math.abs(v - mean) > 2 * std)
       const consistency = std > 0 ? Math.round((1 - std / Math.abs(mean || 1)) * 100) : 100
-      return { key: col.key, label: col.label, unit: col.unit, mean, std, min: Math.min(...vals), max: Math.max(...vals), range: Math.max(...vals) - Math.min(...vals), median, count: vals.length, outliers, consistency: Math.max(0, Math.min(100, consistency)) }
+      return { key, label: String(col.label), unit: String(col.unit), mean, std, min: Math.min(...vals), max: Math.max(...vals), range: Math.max(...vals) - Math.min(...vals), median, count: vals.length, outliers, consistency: Math.max(0, Math.min(100, consistency)) }
     })
   })
 

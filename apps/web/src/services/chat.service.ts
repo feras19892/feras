@@ -19,9 +19,10 @@ export async function getClassMessages(classId: string) {
 export async function sendClassMessage(classId: string, content: string) {
   return fetchJson<{
     success: boolean;
-    message?: ClassMessage;
+    message?: ClassMessage | string;
     flagged?: boolean;
     warning?: string;
+    muted?: boolean;
   }>(`/api/chat/${classId}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

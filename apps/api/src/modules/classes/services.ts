@@ -1,17 +1,29 @@
 import { db } from '../../db/index.js';
+import { randomInt } from 'crypto';
+import { getSystemSetting } from '../../shared/system-settings.js';
+import { createNotification } from '../notifications/services.js';
 
 function generateCode(): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let code = '';
   for (let i = 0; i < 6; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length));
+    code += chars.charAt(randomInt(0, chars.length));
   }
   return code;
 }
 
+async function generateUniqueCode(): Promise<string> {
+  for (let attempt = 0; attempt < 10; attempt++) {
+    const code = generateCode();
+    const existing = await db.get('SELECT 1 FROM classes WHERE code = ?', code);
+    if (!existing) return code;
+  }
+  return generateCode() + randomInt(0, 9);
+}
+
 export async function createClass(teacherId: number, name: string) {
   const id = 'cls-' + Date.now();
-  const code = generateCode();
+  const code = await generateUniqueCode();
   await db.run(
     'INSERT INTO classes (id, name, code, teacher_id) VALUES (?, ?, ?, ?)',
     id, name, code, teacherId
@@ -82,8 +94,18 @@ export async function joinClassByCode(studentId: number, code: string) {
   );
   if (existing) return { success: false, message: 'أنت مشترك في هذا الفصل مسبقاً' };
 
+  // Check max class size from system settings
+  const maxVal = await getSystemSetting('max_class_size');
+  const maxSize = maxVal ? parseInt(maxVal, 10) : 50;
+  if (maxSize > 0) {
+    const countRow = await db.get<{ cnt: number }>('SELECT COUNT(*) as cnt FROM class_students WHERE class_id = ?', cls.id);
+    if (countRow && countRow.cnt >= maxSize) {
+      return { success: false, message: `هذا الفصل ممتلئ (الحد الأقصى ${maxSize} طالب)` };
+    }
+  }
+
   // School linkage check: if student belongs to a school, teacher must belong to same school
-  const student = await db.get<{ school_id: number | null }>('SELECT school_id FROM users WHERE id = ?', studentId);
+  const student = await db.get<{ name: string; school_id: number | null }>('SELECT name, school_id FROM users WHERE id = ?', studentId);
   if (student?.school_id) {
     const teacher = await db.get<{ school_id: number | null }>('SELECT school_id FROM users WHERE id = ?', cls.teacher_id);
     if (teacher?.school_id && teacher.school_id !== student.school_id) {
@@ -95,6 +117,18 @@ export async function joinClassByCode(studentId: number, code: string) {
     'INSERT INTO class_students (class_id, student_id) VALUES (?, ?)',
     cls.id, studentId
   );
+
+  // Notify the teacher that a new student joined their class
+  if (student?.name) {
+    await createNotification({
+      user_id: cls.teacher_id,
+      type: 'class_joined',
+      title: 'انضمام طالب جديد',
+      message: `انضم الطالب ${student.name} إلى فصل "${cls.name}"`,
+      class_id: cls.id,
+    });
+  }
+
   return { success: true, class_id: cls.id, name: cls.name, code: cls.code };
 }
 
@@ -113,27 +147,29 @@ export async function leaveClass(classId: string, studentId: number) {
 }
 
 export async function deleteClass(classId: string, teacherId: number) {
-  const cls = await db.get('SELECT teacher_id FROM classes WHERE id = ?', classId);
+  const cls = await db.get<{ teacher_id: number }>('SELECT teacher_id FROM classes WHERE id = ?', classId);
   if (!cls) return { success: false, message: 'الفصل غير موجود' };
   if (cls.teacher_id !== teacherId) return { success: false, message: 'غير مصرح' };
 
-  // Clean up quizzes and their questions/submissions
-  const quizIds = await db.all<{ id: number }[]>('SELECT id FROM quizzes WHERE class_id = ?', classId);
-  if (quizIds.length > 0) {
-    const qIds = quizIds.map(q => q.id);
-    const qPlaceholders = qIds.map(() => '?').join(',');
-    await db.run(`DELETE FROM quiz_submissions WHERE quiz_id IN (${qPlaceholders})`, ...qIds);
-    await db.run(`DELETE FROM quiz_questions WHERE quiz_id IN (${qPlaceholders})`, ...qIds);
-    await db.run(`DELETE FROM quizzes WHERE id IN (${qPlaceholders})`, ...qIds);
+  await db.run('BEGIN IMMEDIATE');
+  try {
+    const quizIds = await db.all<{ id: number }[]>('SELECT id FROM quizzes WHERE class_id = ?', classId);
+    if (quizIds.length > 0) {
+      const qIds = quizIds.map(q => q.id);
+      const qPlaceholders = qIds.map(() => '?').join(',');
+      await db.run(`DELETE FROM quiz_submissions WHERE quiz_id IN (${qPlaceholders})`, ...qIds);
+      await db.run(`DELETE FROM quiz_questions WHERE quiz_id IN (${qPlaceholders})`, ...qIds);
+      await db.run(`DELETE FROM quizzes WHERE id IN (${qPlaceholders})`, ...qIds);
+    }
+    await db.run('DELETE FROM announcements WHERE class_id = ?', classId);
+    await db.run('DELETE FROM experiment_reports WHERE class_id = ?', classId);
+    await db.run('DELETE FROM class_students WHERE class_id = ?', classId);
+    await db.run('DELETE FROM classes WHERE id = ?', classId);
+    await db.run('COMMIT');
+  } catch (err) {
+    await db.run('ROLLBACK');
+    throw err;
   }
-  // Clean up announcements for this class
-  await db.run('DELETE FROM announcements WHERE class_id = ?', classId);
-  // Clean up reports
-  await db.run('DELETE FROM experiment_reports WHERE class_id = ?', classId);
-  // Clean up class students
-  await db.run('DELETE FROM class_students WHERE class_id = ?', classId);
-  // Delete the class
-  await db.run('DELETE FROM classes WHERE id = ?', classId);
   return { success: true };
 }
 

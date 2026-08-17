@@ -10,6 +10,7 @@ import { useAuthStore } from '../../modules/auth/stores/auth'
 import { useI18n } from '../../composables/useI18n'
 import GradeModal from './GradeModal.vue'
 import CreateApprovalButton from '../shared/CreateApprovalButton.vue'
+import ReportPreviewModal from '../shared/ReportPreviewModal.vue'
 
 const router = useRouter()
 
@@ -24,6 +25,7 @@ const reports = ref<Report[]>([])
 const loading = ref(false)
 const pendingCount = ref(0)
 const statusFilter = ref<'all' | 'pending' | 'graded' | 'resubmitted'>('all')
+const studentSearch = ref('')
 
 const stats = computed(() => {
   const total = reports.value.length
@@ -35,8 +37,18 @@ const stats = computed(() => {
 })
 
 const filteredReports = computed(() => {
-  if (statusFilter.value === 'all') return reports.value
-  return reports.value.filter(r => r.status === statusFilter.value)
+  let result = reports.value
+  if (statusFilter.value !== 'all') {
+    result = result.filter(r => r.status === statusFilter.value)
+  }
+  const q = studentSearch.value.trim().toLowerCase()
+  if (q) {
+    result = result.filter(r =>
+      r.student_name?.toLowerCase().includes(q) ||
+      r.experiment_name?.toLowerCase().includes(q)
+    )
+  }
+  return result
 })
 
 const gradeOpen = ref(false)
@@ -46,6 +58,7 @@ const bulkMode = ref(false)
 const bulkGrade = ref<number | null>(null)
 const bulkFeedback = ref('')
 const bulkSaving = ref(false)
+const bulkError = ref('')
 
 function toggleSelect(id: number) {
   if (selectedIds.value.has(id)) selectedIds.value.delete(id)
@@ -64,6 +77,7 @@ function toggleAll() {
 async function submitBulkGrade() {
   if (bulkGrade.value === null || selectedIds.value.size === 0) return
   bulkSaving.value = true
+  bulkError.value = ''
   try {
     const res = await fetchJson<{ success: boolean }>('/api/reports/bulk-grade', {
       method: 'POST',
@@ -86,13 +100,25 @@ async function submitBulkGrade() {
     }
   } catch (err) {
     if (import.meta.env.DEV) console.error('bulk grade failed:', err);
-    alert(t('teacher.bulkGradeFailed'));
+    bulkError.value = t('teacher.bulkGradeFailed');
   }
   bulkSaving.value = false
 }
 
 function openView(r: Report) {
   router.push(`/report/${r.id}`)
+}
+
+const previewReportId = ref<number | null>(null)
+function openPreview(r: Report) {
+  previewReportId.value = r.id
+}
+function closePreview() {
+  previewReportId.value = null
+}
+function openFullFromPreview(id: number) {
+  closePreview()
+  router.push(`/report/${id}`)
 }
 
 function openGrade(r: Report) {
@@ -201,6 +227,7 @@ watch(() => auth.user, (u) => {
     </div>
     <div v-else>
       <div class="filter-row">
+        <input v-model="studentSearch" class="student-search" :placeholder="t('teacher.searchStudent')" />
         <button
           v-for="f in ['all','pending','graded','resubmitted']"
           :key="f"
@@ -252,6 +279,7 @@ watch(() => auth.user, (u) => {
         >
           {{ bulkSaving ? t('teacher.bulkSaving') : t('teacher.bulkApply') }}
         </button>
+        <span v-if="bulkError" class="bulk-error-msg">{{ bulkError }}</span>
       </div>
 
       <div class="report-list">
@@ -265,26 +293,27 @@ watch(() => auth.user, (u) => {
           <div class="report-status">
             <span v-if="r.status === 'graded'" class="badge graded">{{ r.grade }}/100</span>
             <span v-else class="badge pending">{{ t('teacher.pendingStatus') }}</span>
+            <button class="preview-btn" @click.stop="openPreview(r)" :title="t('admin.openReport', 'معاينة')">👁️</button>
             <button class="grade-btn" @click.stop="openGrade(r)">
               {{ r.status === 'graded' ? t('teacher.editBtn') : t('teacher.gradeBtn') }}
             </button>
             <CreateApprovalButton
               type="penalty"
-              approverType="school"
-              :targetUserId="r.student_id"
-              :targetUserName="r.student_name || ''"
-              :classId="r.class_id || ''"
-              :reportId="r.id"
+              approver-type="school"
+              :target-user-id="r.student_id"
+              :target-user-name="r.student_name || ''"
+              :class-id="r.class_id || ''"
+              :report-id="r.id"
             >
               <button class="penalty-btn" @click.stop>⚠️</button>
             </CreateApprovalButton>
             <CreateApprovalButton
               type="report_deletion"
-              approverType="school"
-              :targetUserId="r.student_id"
-              :targetUserName="r.student_name || ''"
-              :classId="r.class_id || ''"
-              :reportId="r.id"
+              approver-type="school"
+              :target-user-id="r.student_id"
+              :target-user-name="r.student_name || ''"
+              :class-id="r.class_id || ''"
+              :report-id="r.id"
               :metadata="JSON.stringify({ report_id: r.id, experiment_name: r.experiment_name })"
             >
               <button class="delete-btn" @click.stop :title="t('teacher.deleteBtn')">
@@ -302,6 +331,12 @@ watch(() => auth.user, (u) => {
       @close="gradeOpen = false"
       @graded="onGraded"
     />
+
+    <ReportPreviewModal
+      :report-id="previewReportId"
+      @close="closePreview"
+      @open-full="openFullFromPreview"
+    />
   </div>
 </template>
 
@@ -315,7 +350,9 @@ watch(() => auth.user, (u) => {
 .stat { text-align: center; padding: 0.6rem; border-radius: 0.5rem; background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.05); }
 .stat-val { display: block; font-size: 1.3rem; font-weight: 800; color: #67e8f9; }
 .stat-label { font-size: 0.75rem; color: #94a3b8; }
-.filter-row { display: flex; gap: 0.4rem; margin-bottom: 0.8rem; }
+.filter-row { display: flex; gap: 0.4rem; margin-bottom: 0.8rem; align-items: center; flex-wrap: wrap; }
+.student-search { padding: 0.35rem 0.7rem; border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; font-size: 0.8rem; min-width: 180px; flex: 0 1 220px; }
+.student-search:focus { outline: none; border-color: rgba(99,102,241,0.4); }
 .pill { padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: #94a3b8; cursor: pointer; font-size: 0.8rem; font-weight: 700; }
 .pill.active { background: rgba(99,102,241,0.15); color: #c7d2fe; border-color: rgba(99,102,241,0.25); }
 .bulk-bar { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.8rem; margin-bottom: 0.8rem; background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.15); border-radius: 0.5rem; flex-wrap: wrap; }
@@ -326,6 +363,7 @@ watch(() => auth.user, (u) => {
 .bulk-input:disabled { opacity: 0.4; }
 .bulk-submit { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none; border-radius: 0.35rem; padding: 0.35rem 1rem; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
 .bulk-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+.bulk-error-msg { color: #f87171; font-size: 0.8rem; margin-left: 0.5rem; }
 .bulk-checkbox { width: 16px; height: 16px; cursor: pointer; accent-color: #6366f1; }
 .report-row.selected { background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.25); }
 .empty { text-align: center; padding: 3rem 1rem; color: #64748b; }
@@ -343,6 +381,8 @@ watch(() => auth.user, (u) => {
 .badge.pending { background: rgba(245,158,11,0.15); color: #fbbf24; }
 .grade-btn { padding: 0.3rem 0.8rem; border-radius: 0.4rem; border: none; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
 .grade-btn:hover { opacity: 0.9; }
+.preview-btn { padding: 0.3rem 0.5rem; border-radius: 0.4rem; border: none; background: rgba(59,130,246,0.15); color: #60a5fa; font-size: 0.8rem; cursor: pointer; transition: all 0.15s; }
+.preview-btn:hover { background: rgba(59,130,246,0.25); }
 .delete-btn { padding: 0.3rem 0.5rem; border-radius: 0.4rem; border: none; background: rgba(239,68,68,0.15); color: #f87171; font-size: 0.8rem; cursor: pointer; transition: all 0.15s; }
 .delete-btn:hover { background: rgba(239,68,68,0.25); }
 .penalty-btn { padding: 0.3rem 0.5rem; border-radius: 0.4rem; border: none; background: rgba(245,158,11,0.15); color: #fcd34d; font-size: 0.8rem; cursor: pointer; transition: all 0.15s; }

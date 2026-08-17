@@ -115,13 +115,13 @@ export function useSpecificHeatExperiment() {
   // Slope = Δ(Tm-Tf) / Δm_w
   // c_m = c_w * avg(Tf-Tw) / (m_m * Slope)
   const regression = computed(() => {
-    const valid = trials.trials.value.filter((t) => t.cExtracted > 0 && t.finalTemp > t.waterTemp)
+    const valid = trials.trials.value.filter((tr) => tr.cExtracted > 0 && tr.finalTemp > tr.waterTemp)
     if (valid.length < 2) return { m: 0, b: 0, r2: 0, avgDeltaT: 0 }
-    const pts = valid.map((t) => ({
-      x: t.waterMass,
-      y: t.metalTemp - t.finalTemp,
+    const pts = valid.map((tr) => ({
+      x: tr.waterMass,
+      y: tr.metalTemp - tr.finalTemp,
     }))
-    const avgDeltaT = valid.reduce((s, t) => s + (t.finalTemp - t.waterTemp), 0) / valid.length
+    const avgDeltaT = valid.reduce((s, tr) => s + (tr.finalTemp - tr.waterTemp), 0) / valid.length
     const reg = linearRegression(pts)
     return { ...reg, avgDeltaT }
   })
@@ -136,13 +136,13 @@ export function useSpecificHeatExperiment() {
 
   const router = useRouter()
   function exportToAnalysis() {
-    if (trials.trials.value.length < 2) return
+    if (trials.trials.value.length < 2) { alert('تحتاج إلى تسجيل قراءتين على الأقل قبل التحليل'); return }
     const payload: AnalysisPayload = {
       sourceExperiment: 'specific-heat', sourceNameAr: 'السعة الحرارية النوعية (طريقة الخلط)',
       hasCalcTab: true,
-      readings: trials.trials.value.map(t => ({
-        metalType: t.metalType, metalMass: t.metalMass, waterMass: t.waterMass,
-        waterTemp: t.waterTemp, finalTemp: t.finalTemp, cExtracted: t.cExtracted, cTrue: t.cTrue,
+      readings: trials.trials.value.map(tr => ({
+        metalType: tr.metalType, metalMass: tr.metalMass, waterMass: tr.waterMass,
+        waterTemp: tr.waterTemp, finalTemp: tr.finalTemp, cExtracted: tr.cExtracted, cTrue: tr.cTrue,
       })),
       columns: [
         { key: 'metalType', label: 'Metal', unit: '' },

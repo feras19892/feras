@@ -10,14 +10,6 @@ export const anatomyTopics: BiologyTopic[] = [
     available: true,
   },
   {
-    id: 'brain',
-    titleKey: 'biology.topic.brain.title',
-    descriptionKey: 'biology.topic.brain.description',
-    icon: '🧠',
-    route: '/biology/anatomy/brain',
-    available: true,
-  },
-  {
     id: 'lungs',
     titleKey: 'biology.topic.lungs.title',
     descriptionKey: 'biology.topic.lungs.description',
@@ -55,14 +47,6 @@ export const anatomyTopics: BiologyTopic[] = [
     descriptionKey: 'biology.topic.eye.description',
     icon: '👁️',
     route: '/biology/anatomy/eye',
-    available: true,
-  },
-  {
-    id: 'ear',
-    titleKey: 'biology.topic.ear.title',
-    descriptionKey: 'biology.topic.ear.description',
-    icon: '👂',
-    route: '/biology/anatomy/ear',
     available: true,
   },
 ];

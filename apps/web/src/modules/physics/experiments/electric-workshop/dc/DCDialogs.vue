@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import type { WorkshopComponent } from '../shared/types'
+import { computed } from 'vue'
+import type { WorkshopComponent, FaultInfo } from '../shared/types'
 import type { useWorkshop } from '../shared/useWorkshop'
+import { sanitizeHtml } from '../../../../../utils/sanitizeHtml'
 
-defineProps<{
-  t: (key: string, vars?: Record<string, string>) => string
+const props = defineProps<{
+  t: (key: string, vars?: Record<string, string | number>) => string
   workshop: ReturnType<typeof useWorkshop>
   showCalcExplanation: boolean
   calcExplanationHtml: string
@@ -18,9 +20,12 @@ defineProps<{
   resistorBandExplanation: string
   resistorColorChart: { name: string; hex: string; digit: number | null; multiplier: string | null; tolerance: number | null }[]
   showHelp: boolean
-  selectedFault: any
+  selectedFault: FaultInfo | null
   canvasFullscreen: boolean
 }>()
+
+const fault = computed(() => props.selectedFault ?? ({} as FaultInfo))
+const safeCalcHtml = computed(() => sanitizeHtml(props.calcExplanationHtml))
 
 const emit = defineEmits<{
   (e: 'update:showCalcExplanation', v: boolean): void
@@ -29,7 +34,7 @@ const emit = defineEmits<{
   (e: 'update:circuitName', v: string): void
   (e: 'update:showResistorTutorial', v: boolean): void
   (e: 'update:showHelp', v: boolean): void
-  (e: 'update:selectedFault', v: any): void
+  (e: 'update:selectedFault', v: FaultInfo | null): void
   (e: 'update:canvasFullscreen', v: boolean): void
   (e: 'doSaveCircuit'): void
   (e: 'doLoadCircuit', name: string): void
@@ -51,7 +56,7 @@ const emit = defineEmits<{
           <div class="fs-canvas-side">
             <img v-if="canvasSnapshot" :src="canvasSnapshot" class="fs-snapshot" alt="circuit" />
           </div>
-          <div class="fs-calc-side" v-html="calcExplanationHtml"></div>
+          <div class="fs-calc-side" v-html="safeCalcHtml"></div>
         </div>
       </div>
     </div>
@@ -134,9 +139,9 @@ const emit = defineEmits<{
                   <span class="rt-color-swatch" :style="{ background: row.hex }"></span>
                   {{ row.name }}
                 </td>
-                <td>{{ row.digit !== null ? row.digit : 'â€”' }}</td>
-                <td>{{ row.multiplier !== null ? row.multiplier : 'â€”' }}</td>
-                <td>{{ row.tolerance !== null ? row.tolerance + '%' : 'â€”' }}</td>
+                <td>{{ row.digit !== null ? row.digit : '—' }}</td>
+                <td>{{ row.multiplier !== null ? row.multiplier : '—' }}</td>
+                <td>{{ row.tolerance !== null ? row.tolerance + '%' : '—' }}</td>
               </tr>
             </tbody>
           </table>
@@ -215,36 +220,36 @@ const emit = defineEmits<{
   <Teleport to="body">
     <div class="fs-overlay" v-if="selectedFault" @click.self="emit('update:selectedFault', null)">
       <div class="fs-container" style="max-width: 550px;">
-        <div class="fs-header" :class="selectedFault.severity">
+        <div class="fs-header" :class="fault.severity">
           <span class="fs-title">
-            {{ selectedFault.severity === 'danger' ? 'ðŸ"´' : 'ðŸŸ¡' }}
+            {{ fault.severity === 'danger' ? 'ðŸ"´' : 'ðŸŸ¡' }}
             {{ t('ew.faultTitle') }}
           </span>
           <button class="fs-close" @click="emit('update:selectedFault', null)">{{ t('ew.close') }}</button>
         </div>
         <div class="fs-body" style="flex-direction: column; overflow-y: auto; padding: 20px;">
-          <div class="fault-detail-msg" :class="selectedFault.severity">
-            <span class="fd-icon">{{ selectedFault.severity === 'danger' ? 'ðŸ"´' : 'ðŸŸ¡' }}</span>
-            <span>{{ t(selectedFault.messageKey, selectedFault.vars ?? {}) }}</span>
+          <div class="fault-detail-msg" :class="fault.severity">
+            <span class="fd-icon">{{ fault.severity === 'danger' ? 'ðŸ"´' : 'ðŸŸ¡' }}</span>
+            <span>{{ t(fault.messageKey, fault.vars ?? {}) }}</span>
           </div>
 
           <h4 class="rt-section-title">{{ t('ew.faultWhatIsIt') }}</h4>
-          <p class="fault-detail-text">{{ t('ew.faultExplain.' + selectedFault.type, selectedFault.vars ?? {}) }}</p>
+          <p class="fault-detail-text">{{ t('ew.faultExplain.' + fault.type, fault.vars ?? {}) }}</p>
 
           <h4 class="rt-section-title">{{ t('ew.faultHowToFix') }}</h4>
-          <p class="fault-detail-text">{{ t('ew.faultFix.' + selectedFault.type, selectedFault.vars ?? {}) }}</p>
+          <p class="fault-detail-text">{{ t('ew.faultFix.' + fault.type, fault.vars ?? {}) }}</p>
 
           <h4 class="rt-section-title">{{ t('ew.faultComponent') }}</h4>
           <div class="fault-detail-comp">
-            <template v-if="workshop.components.find(c => c.id === selectedFault.componentId)">
-              <span class="fdc-type">{{ t('ew.comp.' + workshop.components.find(c => c.id === selectedFault.componentId)?.type) }}</span>
-              <span class="fdc-value" v-if="workshop.components.find(c => c.id === selectedFault.componentId)?.value">
-                {{ workshop.components.find(c => c.id === selectedFault.componentId)?.value }}{{ workshop.components.find(c => c.id === selectedFault.componentId)?.unit }}
+            <template v-if="workshop.components.find(c => c.id === fault.componentId)">
+              <span class="fdc-type">{{ t('ew.comp.' + workshop.components.find(c => c.id === fault.componentId)?.type) }}</span>
+              <span class="fdc-value" v-if="workshop.components.find(c => c.id === fault.componentId)?.value">
+                {{ workshop.components.find(c => c.id === fault.componentId)?.value }}{{ workshop.components.find(c => c.id === fault.componentId)?.unit }}
               </span>
               <span class="fdc-readings">
-                V: {{ (workshop.components.find(c => c.id === selectedFault.componentId)?.voltage ?? 0).toFixed(3) }}V |
-                A: {{ (workshop.components.find(c => c.id === selectedFault.componentId)?.current ?? 0).toFixed(4) }}A |
-                W: {{ workshop.getPower(workshop.components.find(c => c.id === selectedFault.componentId)!).toFixed(3) }}W
+                V: {{ (workshop.components.find(c => c.id === fault.componentId)?.voltage ?? 0).toFixed(3) }}V |
+                A: {{ (workshop.components.find(c => c.id === fault.componentId)?.current ?? 0).toFixed(4) }}A |
+                W: {{ workshop.getPower(workshop.components.find(c => c.id === fault.componentId)!).toFixed(3) }}W
               </span>
             </template>
           </div>

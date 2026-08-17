@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TitrationReading } from '../../../composables/chemistry/useExperiments';
+import type { TitrationReading } from '../../../composables/chemistry/experiments';
 import { useI18n } from '../../../composables/useI18n';
 const { t } = useI18n();
 

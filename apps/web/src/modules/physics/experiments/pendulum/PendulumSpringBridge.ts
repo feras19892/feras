@@ -29,10 +29,8 @@ export function computeCouplingTorque(
   const x1 = length * Math.sin(theta1)
   const x2 = length * Math.sin(theta2)
   const { force1, force2 } = computeCouplingForce(x1, x2, params)
-  // Torque = F * L * cos(theta)  [horizontal force × vertical lever arm component]
-  const lever = length * Math.cos(theta1)  // approximate, both have similar angle
   return {
-    torque1: (force1 / mass) * lever,
-    torque2: (force2 / mass) * lever,
+    torque1: (force1 / mass) * length * Math.cos(theta1),
+    torque2: (force2 / mass) * length * Math.cos(theta2),
   }
 }

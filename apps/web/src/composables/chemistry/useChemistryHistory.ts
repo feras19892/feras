@@ -12,7 +12,7 @@ import {
 } from './useChemistryLab';
 
 const MAX_MACRO = 100;
-const MAX_MICRO = 1000;
+const MAX_MICRO = 200;
 
 interface HistorySnapshot {
   items: LabItem[];
@@ -52,7 +52,7 @@ const microPast = ref<HistorySnapshot[]>([]);
 const microFuture = ref<HistorySnapshot[]>([]);
 
 function clone<T>(obj: T): T {
-  return JSON.parse(JSON.stringify(obj));
+  return structuredClone(obj);
 }
 
 function capture(): HistorySnapshot {
@@ -218,11 +218,6 @@ export function redoMicro(): boolean {
 /* ════════════════════════════════════════════
    BACKWARD COMPAT
    ════════════════════════════════════════════ */
-
-/** @deprecated Use pushMacroHistory() or pushMicroHistory() explicitly */
-export function pushHistory() {
-  pushMacroHistory();
-}
 
 export function clearHistory() {
   macroPast.value = [];

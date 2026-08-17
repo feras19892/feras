@@ -13,7 +13,7 @@ import { useAnimationLoop } from '../shared/useAnimationLoop'
 import { createRedraw, resizeCanvas as _resizeCanvas } from '../shared/workshopRedraw'
 import { exportPNG as _exportPNG, openCanvasFullscreen as _openCanvasFullscreen, printCircuit as _printCircuit } from '../shared/workshopExport'
 import { useLabActions } from '../shared/useLabActions'
-import type { WorkshopComponent, WorkshopWire } from '../shared/types'
+import type { WorkshopComponent, WorkshopWire, FaultInfo } from '../shared/types'
 import { buildACCalcExplanation } from './acExplainCalcs'
 import { createACCanvasState, type ACCanvasState } from './acCanvasState'
 import { onMouseDown, onMouseMove, onMouseUp } from './acMouseEvents'
@@ -33,7 +33,7 @@ const zoom = ref(1)
 const panX = ref(0)
 const panY = ref(0)
 
-const dragState: ACCanvasState = { wireStart: null, junctionStart: null, tempWireEnd: { x: 0, y: 0 }, hoverWireId: null, pendingWireStart: null } as any
+const dragState = { wireStart: null, junctionStart: null, tempWireEnd: { x: 0, y: 0 }, hoverWireId: null, pendingWireStart: null } as unknown as ACCanvasState
 
 const showValueEditor = ref(false)
 const editingComp = ref<WorkshopComponent | null>(null)
@@ -57,10 +57,11 @@ const showNodeNumbers = ref(false)
 const showReadings = ref(false)
 const showResistorTutorial = ref(false)
 const showHelp = ref(false)
-const selectedFault = ref<any>(null)
+const selectedFault = ref<FaultInfo | null>(null)
 
 watch(() => workshop.faults.value, (newFaults) => {
-  if (selectedFault.value && !newFaults.some(f => f.componentId === selectedFault.value.componentId && f.type === selectedFault.value.type)) {
+  const sf = selectedFault.value;
+  if (sf && !newFaults.some(f => f.componentId === sf.componentId && f.type === sf.type)) {
     selectedFault.value = null
   }
 })
@@ -105,7 +106,7 @@ function onAddComponent(type: string) {
   const c = canvasRef.value; if (!c) return
   const x = c.width / 2 - panX.value
   const y = c.height / 2 - panY.value
-  workshop.addComponent(type as any, x / zoom.value, y / zoom.value)
+  workshop.addComponent(type as unknown as WorkshopComponent['type'], x / zoom.value, y / zoom.value)
   redraw()
 }
 
@@ -159,7 +160,9 @@ const selectedSpec = computed(() => {
   if (!workshop.selectedComponentId.value) return null
   const comp = workshop.components.find(c => c.id === workshop.selectedComponentId.value)
   if (!comp) return null
-  return { comp, spec: getSpec(comp.type) }
+  const spec = getSpec(comp.type)
+  if (!spec) return null
+  return { comp, spec }
 })
 const selectedCompFault = computed(() => {
   if (!workshop.selectedComponentId.value) return null
@@ -187,7 +190,7 @@ onUnmounted(() => {
     <ACPalette
       :t="t"
       :workshop="workshop"
-      @addComponent="onAddComponent($event)"
+      @add-component="onAddComponent($event)"
     />
 
     <!-- Center: Canvas -->
@@ -209,57 +212,57 @@ onUnmounted(() => {
       <ACTopBar
         :t="t"
         :workshop="workshop"
-        :showValueEditor="showValueEditor"
-        :editingComp="editingComp"
-        :editValue="editValue"
-        :editRotation="editRotation"
-        :showWireEditor="showWireEditor"
-        :editingWire="editingWire"
-        :editWireColor="editWireColor"
-        :editWireThickness="editWireThickness"
-        :renderMode="renderMode"
-        :showNodeNumbers="showNodeNumbers"
-        :showReadings="showReadings"
+        :show-value-editor="showValueEditor"
+        :editing-comp="editingComp"
+        :edit-value="editValue"
+        :edit-rotation="editRotation"
+        :show-wire-editor="showWireEditor"
+        :editing-wire="editingWire"
+        :edit-wire-color="editWireColor"
+        :edit-wire-thickness="editWireThickness"
+        :render-mode="renderMode"
+        :show-node-numbers="showNodeNumbers"
+        :show-readings="showReadings"
         :redraw="redraw"
-        @update:editValue="editValue = $event"
-        @update:editRotation="editRotation = $event"
-        @update:editWireColor="editWireColor = $event"
-        @update:editWireThickness="editWireThickness = $event"
-        @update:renderMode="renderMode = $event"
-        @applyEditValue="applyEditValue"
-        @applyRotate="applyRotate"
-        @zoomComp="zoomComp"
-        @zoomCompVal="zoomCompVal"
-        @showResistorTutorial="showResistorTutorial = true"
-        @deleteSelectedComp="deleteSelectedComp"
-        @deleteSelectedWire="deleteSelectedWire"
-        @openCanvasFullscreen="openCanvasFullscreen"
-        @toggleNodeNumbers="showNodeNumbers = !showNodeNumbers; redraw()"
-        @toggleReadings="showReadings = !showReadings; redraw()"
-        @exportSVG="doExportSVG"
+        @update:edit-value="editValue = $event"
+        @update:edit-rotation="editRotation = $event"
+        @update:edit-wire-color="editWireColor = $event"
+        @update:edit-wire-thickness="editWireThickness = $event"
+        @update:render-mode="renderMode = $event"
+        @apply-edit-value="applyEditValue"
+        @apply-rotate="applyRotate"
+        @zoom-comp="zoomComp"
+        @zoom-comp-val="zoomCompVal"
+        @show-resistor-tutorial="showResistorTutorial = true"
+        @delete-selected-comp="deleteSelectedComp"
+        @delete-selected-wire="deleteSelectedWire"
+        @open-canvas-fullscreen="openCanvasFullscreen"
+        @toggle-node-numbers="showNodeNumbers = !showNodeNumbers; redraw()"
+        @toggle-readings="showReadings = !showReadings; redraw()"
+        @export-s-v-g="doExportSVG"
       />
       <ACBottomBar
         :t="t"
         :workshop="workshop"
-        :showExperiments="showExperiments"
-        :currentExperiment="currentExperiment"
-        :elapsedSeconds="elapsedSeconds"
-        :energyKWh="energyKWh"
-        :hasDanger="hasDanger"
-        :hasWarning="hasWarning"
+        :show-experiments="showExperiments"
+        :current-experiment="currentExperiment"
+        :elapsed-seconds="elapsedSeconds"
+        :energy-k-wh="energyKWh"
+        :has-danger="hasDanger"
+        :has-warning="hasWarning"
         :redraw="redraw"
-        @update:showExperiments="showExperiments = $event"
-        @update:currentExperiment="currentExperiment = $event"
-        @toggleRun="toggleRun"
-        @loadExp="loadExp"
-        @explainCalcs="explainCalcs"
-        @showSaveDialog="showSaveDialog = true"
-        @openLoadDialog="openLoadDialog"
-        @exportPNG="exportPNG"
-        @printCircuit="printCircuit"
-        @showHelp="showHelp = true"
-        @explainMNA="showMNAExplanation"
-        @selectFault="selectedFault = $event"
+        @update:show-experiments="showExperiments = $event"
+        @update:current-experiment="currentExperiment = $event"
+        @toggle-run="toggleRun"
+        @load-exp="loadExp"
+        @explain-calcs="explainCalcs"
+        @show-save-dialog="showSaveDialog = true"
+        @open-load-dialog="openLoadDialog"
+        @export-p-n-g="exportPNG"
+        @print-circuit="printCircuit"
+        @show-help="showHelp = true"
+        @explain-m-n-a="showMNAExplanation"
+        @select-fault="selectedFault = $event"
       />
 
     </div>
@@ -268,42 +271,42 @@ onUnmounted(() => {
     <ACReadingsPanel
       :t="t"
       :workshop="workshop"
-      :selectedSpec="selectedSpec"
-      :selectedCompFault="selectedCompFault"
-      @selectComponent="workshop.selectedComponentId.value = $event; redraw()"
+      :selected-spec="selectedSpec"
+      :selected-comp-fault="selectedCompFault"
+      @select-component="workshop.selectedComponentId.value = $event; redraw()"
     />
   </div>
 
   <ACDialogs
     :t="t"
     :workshop="workshop"
-    :showCalcExplanation="showCalcExplanation"
-    :calcExplanationHtml="calcExplanationHtml"
-    :canvasSnapshot="canvasSnapshot"
-    :showSaveDialog="showSaveDialog"
-    :showLoadDialog="showLoadDialog"
-    :circuitName="circuitName"
-    @update:circuitName="circuitName = $event"
-    :savedCircuits="savedCircuits"
-    :showResistorTutorial="showResistorTutorial"
-    :editingComp="editingComp"
-    :resistorBandPreview="resistorBandPreview"
-    :resistorBandExplanation="resistorBandExplanation"
-    :resistorColorChart="resistorColorChart"
-    :showHelp="showHelp"
-    :selectedFault="selectedFault"
-    :canvasFullscreen="canvasFullscreen"
-    @update:showCalcExplanation="showCalcExplanation = $event"
-    @update:showSaveDialog="showSaveDialog = $event"
-    @update:showLoadDialog="showLoadDialog = $event"
-    @update:showResistorTutorial="showResistorTutorial = $event"
-    @update:showHelp="showHelp = $event"
-    @update:selectedFault="selectedFault = $event"
-    @update:canvasFullscreen="canvasFullscreen = $event"
-    @doSaveCircuit="doSaveCircuit"
-    @doLoadCircuit="doLoadCircuit"
-    @doDeleteCircuit="doDeleteCircuit"
-    @exportPNG="exportPNG"
+    :show-calc-explanation="showCalcExplanation"
+    :calc-explanation-html="calcExplanationHtml"
+    :canvas-snapshot="canvasSnapshot"
+    :show-save-dialog="showSaveDialog"
+    :show-load-dialog="showLoadDialog"
+    :circuit-name="circuitName"
+    @update:circuit-name="circuitName = $event"
+    :saved-circuits="savedCircuits"
+    :show-resistor-tutorial="showResistorTutorial"
+    :editing-comp="editingComp"
+    :resistor-band-preview="resistorBandPreview"
+    :resistor-band-explanation="resistorBandExplanation"
+    :resistor-color-chart="resistorColorChart"
+    :show-help="showHelp"
+    :selected-fault="selectedFault"
+    :canvas-fullscreen="canvasFullscreen"
+    @update:show-calc-explanation="showCalcExplanation = $event"
+    @update:show-save-dialog="showSaveDialog = $event"
+    @update:show-load-dialog="showLoadDialog = $event"
+    @update:show-resistor-tutorial="showResistorTutorial = $event"
+    @update:show-help="showHelp = $event"
+    @update:selected-fault="selectedFault = $event"
+    @update:canvas-fullscreen="canvasFullscreen = $event"
+    @do-save-circuit="doSaveCircuit"
+    @do-load-circuit="doLoadCircuit"
+    @do-delete-circuit="doDeleteCircuit"
+    @export-p-n-g="exportPNG"
   />
 
 

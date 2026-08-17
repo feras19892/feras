@@ -14,16 +14,16 @@ defineProps<Props>()
   <div class="panel-body">
     <div v-if="trials.length >= 2" class="results">
       <div class="res-row">
-        <span class="res-label">Trials</span>
+        <span class="res-label">{{ t('experiments.dfTrials') }}</span>
         <span class="res-val">{{ trials.length }}</span>
       </div>
       <div class="res-row">
-        <span class="res-label">Avg θ₁</span>
-        <span class="res-val green">{{ (trials.reduce((s, t) => s + t.firstOrderAngle, 0) / trials.length).toFixed(3) }}°</span>
+        <span class="res-label">{{ t('experiments.dfAvgTheta1') }}</span>
+        <span class="res-val green">{{ (trials.reduce((s, tr) => s + tr.firstOrderAngle, 0) / trials.length).toFixed(3) }}°</span>
       </div>
       <div class="res-row">
-        <span class="res-label">Avg y₁</span>
-        <span class="res-val green">{{ (trials.reduce((s, t) => s + t.firstOrderY, 0) / trials.length).toFixed(3) }} mm</span>
+        <span class="res-label">{{ t('experiments.dfAvgY1') }}</span>
+        <span class="res-val green">{{ (trials.reduce((s, tr) => s + tr.firstOrderY, 0) / trials.length).toFixed(3) }} mm</span>
       </div>
     </div>
     <p v-else class="empty">{{ t('experiments.recordAtLeastTwo') }}</p>

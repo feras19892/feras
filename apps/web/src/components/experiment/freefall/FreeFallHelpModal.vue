@@ -25,7 +25,7 @@ const emit = defineEmits<{ (e: 'close'): void }>()
             <p>
               {{ t('experiments.ffHelpS1P2') }}
             </p>
-            <div class="formula">y = Â½ Â· g Â· tÂ²</div>
+            <div class="formula">y = ½ · g · t²</div>
           </section>
 
           <!-- 2. Mathematical Equations -->
@@ -57,11 +57,11 @@ const emit = defineEmits<{ (e: 'close'): void }>()
               <li>{{ t('experiments.ffHelpS4L1') }}</li>
               <li>
                 {{ t('experiments.ffHelpS4L2') }}
-                <div class="formula">Slope = Î”y / Î”tÂ²</div>
+                <div class="formula">Slope = Δy / Δt²</div>
               </li>
               <li>
                 {{ t('experiments.ffHelpS4L3') }}
-                <div class="formula">Slope = Â½ Â· g  â†’  g = 2 Ã— Slope</div>
+                <div class="formula">Slope = ½ · g  →  g = 2 × Slope</div>
               </li>
             </ul>
           </section>

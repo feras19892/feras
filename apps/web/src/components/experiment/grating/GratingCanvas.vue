@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 
 const props = defineProps<{
   linesPerMm: number
@@ -12,6 +15,18 @@ const props = defineProps<{
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const W = 800, H = 400
+let resizeObs: ResizeObserver | null = null
+
+function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+  if (typeof ctx.roundRect === 'function') { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); return }
+  ctx.beginPath()
+  ctx.moveTo(x + r, y)
+  ctx.arcTo(x + w, y, x + w, y + h, r)
+  ctx.arcTo(x + w, y + h, x, y + h, r)
+  ctx.arcTo(x, y + h, x, y, r)
+  ctx.arcTo(x, y, x + w, y, r)
+  ctx.closePath()
+}
 
 function draw() {
   const c = canvasRef.value; if (!c) return
@@ -31,7 +46,7 @@ function draw() {
   ctx.fillRect(10, midY - 18, 60, 36)
   ctx.globalAlpha = 1
   ctx.fillStyle = '#8B95A5'; ctx.font = '10px sans-serif'
-  ctx.fillText('Laser', 24, midY - 28)
+  ctx.fillText(t('experiments.dfLaser'), 24, midY - 28)
 
   /* grating: multiple slits */
   ctx.fillStyle = '#161B22'
@@ -77,8 +92,8 @@ function draw() {
 
   /* labels */
   ctx.fillStyle = '#8B95A5'; ctx.font = '12px sans-serif'
-  ctx.fillText('Grating (' + props.linesPerMm + '/mm)', gratingX - 50, H - 10)
-  ctx.fillText('Screen', screenX - 18, H - 10)
+  ctx.fillText(t('experiments.dfGrating') + ' (' + props.linesPerMm + '/mm)', gratingX - 50, H - 10)
+  ctx.fillText(t('experiments.dfScreen'), screenX - 18, H - 10)
 
   /* order labels */
   for (const p of props.orderPositions) {
@@ -88,7 +103,7 @@ function draw() {
     const tw = ctx.measureText(lbl).width
     const tx = screenX - 40
     ctx.fillStyle = 'rgba(255,255,255,0.08)'
-    ctx.beginPath(); ctx.roundRect(tx - 3, yPx - 7, tw + 6, 14, 4); ctx.fill()
+    ctx.beginPath(); roundRect(ctx, tx - 3, yPx - 7, tw + 6, 14, 4); ctx.fill()
     ctx.fillStyle = p.m === 0 ? '#fff' : '#8B95A5'
     ctx.font = p.m === 0 ? 'bold 11px sans-serif' : '10px sans-serif'
     ctx.fillText(lbl, tx, yPx + 3)
@@ -100,7 +115,19 @@ function animate() { draw(); if (props.running) animId = requestAnimationFrame(a
 
 watch(() => props.running, (v) => { cancelAnimationFrame(animId); v ? animate() : draw() })
 watch(() => [props.linesPerMm, props.screenDistance, props.wavelength, props.orderPositions.length, props.lightColor], draw, { deep: true })
-onMounted(() => draw()); onUnmounted(() => cancelAnimationFrame(animId))
+onMounted(() => {
+  const c = canvasRef.value; if (!c) return
+  const dpr = window.devicePixelRatio || 1
+  c.width = W * dpr; c.height = H * dpr
+  const ctx = c.getContext('2d'); if (ctx) ctx.scale(dpr, dpr)
+  resizeObs = new ResizeObserver(() => {
+    const parent = c.parentElement; if (!parent) return
+    const pw = parent.clientWidth, ph = parent.clientHeight
+    c.style.width = pw + 'px'; c.style.height = ph + 'px'
+  })
+  resizeObs.observe(c.parentElement!)
+  draw()
+}); onUnmounted(() => { cancelAnimationFrame(animId); if (resizeObs) resizeObs.disconnect() })
 </script>
 
 <template>

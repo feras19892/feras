@@ -1,5 +1,7 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '../../../../composables/useI18n'
 
+const { t } = useI18n()
 
 interface Props {
   polarizerAngle: number
@@ -16,16 +18,16 @@ defineProps<Props>()
   <div class="panel-body">
     <div class="reading-group">
       <div class="reading-row">
-        <span class="reading-label">θ₁ — Polarizer</span>
+        <span class="reading-label">{{ t('experiments.poPolarizerAngle') }}</span>
         <span class="reading-val cyan">{{ polarizerAngle }}°</span>
       </div>
       <div class="reading-row">
-        <span class="reading-label">θ₂ — Analyzer</span>
+        <span class="reading-label">{{ t('experiments.poAnalyzerAngle') }}</span>
         <span class="reading-val amber">{{ analyzerAngle }}°</span>
       </div>
     </div>
     <div class="reading-row highlight-row">
-      <span class="reading-label bold">Δθ = θ₂ − θ₁</span>
+      <span class="reading-label bold">{{ t('experiments.poDeltaTheta') }}</span>
       <span class="reading-val green bold">{{ relativeAngle }}°</span>
     </div>
     <div class="reading-row highlight-row" style="background: rgba(251,191,36,0.06); border-color: rgba(251,191,36,0.2);">
@@ -34,17 +36,17 @@ defineProps<Props>()
     </div>
     <div class="reading-group">
       <div class="reading-row">
-        <span class="reading-label">I₀ — Input intensity</span>
+        <span class="reading-label">{{ t('experiments.poInputIntensity') }}</span>
         <span class="reading-val">{{ I0 }}</span>
       </div>
       <div class="reading-row">
-        <span class="reading-label">I — Output intensity</span>
+        <span class="reading-label">{{ t('experiments.poOutputIntensity') }}</span>
         <span class="reading-val green">{{ outputIntensity.toFixed(2) }}</span>
       </div>
     </div>
     <div class="reading-group">
       <div class="reading-row">
-        <span class="reading-label">Transmission T</span>
+        <span class="reading-label">{{ t('experiments.poTransmission') }}</span>
         <span class="reading-val bold">{{ transmissionPercent.toFixed(1) }}%</span>
       </div>
     </div>

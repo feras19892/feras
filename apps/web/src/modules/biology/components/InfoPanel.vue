@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import type { HotspotState } from '../../../types/biology.types';
 import { useI18n } from '../../../composables/useI18n';
 
@@ -13,6 +13,10 @@ const panelKey = computed(() => (props.hotspot ? props.hotspot.partId : 'empty')
 const hasDetails = computed(() =>
   Boolean(props.hotspot?.longDescription || (props.hotspot?.facts && props.hotspot.facts.length > 0))
 );
+
+watch(panelKey, () => {
+  expanded.value = false;
+});
 </script>
 
 <template>

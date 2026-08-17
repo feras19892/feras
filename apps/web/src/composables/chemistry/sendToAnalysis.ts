@@ -21,15 +21,28 @@ export function consumePendingPayload(): ChemAnalysisPayload | null {
     if (raw) {
       localStorage.removeItem(KEY);
       const parsed = JSON.parse(raw);
-      if (parsed && parsed.payload) return parsed.payload as ChemAnalysisPayload;
+      if (parsed && typeof parsed === 'object' && isValidPayload(parsed.payload)) {
+        return parsed.payload as ChemAnalysisPayload;
+      }
     }
     const last = localStorage.getItem(LAST_KEY);
     if (last) {
       const parsed = JSON.parse(last);
-      if (parsed && parsed.payload) return parsed.payload as ChemAnalysisPayload;
+      if (parsed && typeof parsed === 'object' && isValidPayload(parsed.payload)) {
+        return parsed.payload as ChemAnalysisPayload;
+      }
     }
   } catch { /* ignore */ }
   return null;
+}
+
+function isValidPayload(p: unknown): p is ChemAnalysisPayload {
+  if (!p || typeof p !== 'object') return false;
+  const obj = p as Record<string, unknown>;
+  return typeof obj.sourceExperiment === 'string'
+    && typeof obj.sourceNameAr === 'string'
+    && Array.isArray(obj.readings)
+    && Array.isArray(obj.columns);
 }
 
 export function clearAnalysisStorage() {

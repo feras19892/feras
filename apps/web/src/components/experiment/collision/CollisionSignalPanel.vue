@@ -10,6 +10,7 @@ const props = defineProps<{
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const wrapRef = ref<HTMLDivElement | null>(null)
+let cssW = 400, cssH = 180
 
 function draw() {
   const canvas = canvasRef.value
@@ -17,7 +18,7 @@ function draw() {
   const ctx = canvas.getContext('2d')
   if (!ctx) return
 
-  const w = canvas.width, h = canvas.height
+  const w = cssW, h = cssH
   ctx.clearRect(0, 0, w, h)
   ctx.fillStyle = '#0f172a'
   ctx.fillRect(0, 0, w, h)
@@ -104,8 +105,11 @@ onMounted(() => {
   const wrap = wrapRef.value
   if (!canvas || !wrap) return
   const resize = () => {
-    canvas.width = wrap.clientWidth
-    canvas.height = wrap.clientHeight
+    const dpr = window.devicePixelRatio || 1
+    cssW = wrap.clientWidth; cssH = wrap.clientHeight
+    canvas.width = cssW * dpr; canvas.height = cssH * dpr
+    canvas.style.width = cssW + 'px'; canvas.style.height = cssH + 'px'
+    const ctx = canvas.getContext('2d'); if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
     draw()
   }
   resize()

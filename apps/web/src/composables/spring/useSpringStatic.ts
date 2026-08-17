@@ -14,9 +14,8 @@ export interface StaticReading {
 
 export type StaticPhase = 'setup' | 'loading' | 'unloading' | 'done'
 
-let nextId = 1
-
 export function useSpringStatic(params: SpringParams) {
+  let nextId = 1
   const y0 = computed(() => {
     // Natural equilibrium position in cm (arbitrary scale)
     return 10.0

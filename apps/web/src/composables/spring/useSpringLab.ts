@@ -69,6 +69,7 @@ export function useSpringLab(params: SpringParams, onTick?: () => void) {
   async function runSpringLab(recordTrial: () => void, calcFitK: () => void) {
     if (labFlowRunning.value) return
     labFlowRunning.value = true
+    const saved = { k: params.k, amplitude: params.amplitude, damping: params.damping, measureCycles: params.measureCycles, mass: params.mass }
     try {
       params.k = 20; params.amplitude = 0.12; params.damping = 0; params.measureCycles = 3
       for (const m of [0.3, 0.5, 0.8, 1.0, 1.3, 1.6]) {
@@ -84,6 +85,11 @@ export function useSpringLab(params: SpringParams, onTick?: () => void) {
       calcFitK()
     } finally {
       labFlowRunning.value = false
+      params.k = saved.k
+      params.amplitude = saved.amplitude
+      params.damping = saved.damping
+      params.measureCycles = saved.measureCycles
+      params.mass = saved.mass
       resetSim()
     }
   }

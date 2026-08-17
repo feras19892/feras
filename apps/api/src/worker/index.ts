@@ -1,3 +1,7 @@
+// Embedded worker — runs inside the API process.
+// A standalone alternative exists at apps/worker/src/index.ts.
+// Only ONE should be active in any deployment.
+
 import { runAutoEscalation } from '../modules/approvals/services.js';
 import { db } from '../db/index.js';
 import { createNotification } from '../modules/notifications/services.js';
@@ -19,44 +23,45 @@ async function runAutoReminders(): Promise<void> {
     const dueDate = new Date(deadline.due_at);
     const diffHours = (dueDate.getTime() - now.getTime()) / (1000 * 60 * 60);
 
-    // Find students in the class who haven't submitted this experiment
+    // Skip if not in reminder window
+    if (diffHours > 24 || diffHours <= -24) continue;
+
+    // Find students who haven't submitted AND haven't been reminded recently — single query
     const students = await db.all<{ student_id: number; student_name: string }[]>(
       `SELECT cs.student_id, u.name as student_name
        FROM class_students cs
        JOIN users u ON cs.student_id = u.id
-       WHERE cs.class_id = ? AND u.blocked_at IS NULL`,
-      deadline.class_id,
+       WHERE cs.class_id = ? AND u.blocked_at IS NULL
+         AND NOT EXISTS (
+           SELECT 1 FROM experiment_reports r
+           WHERE r.student_id = cs.student_id AND r.class_id = ? AND r.experiment_name = ?
+             AND r.status IN ('submitted','graded','resubmitted')
+         )
+         AND NOT EXISTS (
+           SELECT 1 FROM notifications n
+           WHERE n.user_id = cs.student_id AND n.type = 'deadline_reminder'
+             AND n.class_id = ? AND n.message LIKE ?
+             AND n.created_at > datetime('now', '-1 day')
+         )`,
+      deadline.class_id, deadline.class_id, deadline.experiment_name,
+      deadline.class_id, `%${deadline.experiment_name}%`,
     );
 
     for (const student of students) {
-      const submitted = await db.get(
-        `SELECT 1 FROM experiment_reports WHERE student_id = ? AND class_id = ? AND experiment_name = ? AND status IN ('submitted','graded','resubmitted') LIMIT 1`,
-        student.student_id, deadline.class_id, deadline.experiment_name,
-      );
-      if (submitted) continue;
-
-      // Check if we already sent a reminder for this deadline+student
-      const existingReminder = await db.get(
-        `SELECT 1 FROM notifications WHERE user_id = ? AND type = 'deadline_reminder' AND class_id = ? AND message LIKE ? AND created_at > datetime('now', '-1 day')`,
-        student.student_id, deadline.class_id, `%${deadline.experiment_name}%`,
-      );
-      if (existingReminder) continue;
-
-      // Send reminders at 24h before, 1h before, and after deadline
-      if (diffHours <= 24 && diffHours > 0) {
-        await createNotification({
-          user_id: student.student_id,
-          type: 'deadline_reminder',
-          title: '⏰ تذكير: موعد تسليم قريب',
-          message: `موعد تسليم تجربة "${deadline.experiment_name}" خلال أقل من 24 ساعة`,
-          class_id: deadline.class_id,
-        });
-      } else if (diffHours <= 1 && diffHours > 0) {
+      if (diffHours <= 1 && diffHours > 0) {
         await createNotification({
           user_id: student.student_id,
           type: 'deadline_reminder',
           title: '⚠️ آخر ساعة للتسليم',
           message: `موعد تسليم تجربة "${deadline.experiment_name}" خلال أقل من ساعة!`,
+          class_id: deadline.class_id,
+        });
+      } else if (diffHours <= 24 && diffHours > 1) {
+        await createNotification({
+          user_id: student.student_id,
+          type: 'deadline_reminder',
+          title: '⏰ تذكير: موعد تسليم قريب',
+          message: `موعد تسليم تجربة "${deadline.experiment_name}" خلال أقل من 24 ساعة`,
           class_id: deadline.class_id,
         });
       } else if (diffHours <= 0 && diffHours > -24) {
@@ -160,6 +165,41 @@ async function runSystemAlerts(): Promise<void> {
   }
 }
 
+async function runExpiredTokenCleanup(): Promise<void> {
+  const now = new Date().toISOString();
+
+  const expiredRefresh = await db.run(
+    `DELETE FROM refresh_tokens WHERE expires_at < ?`,
+    now,
+  );
+  const expiredSchoolRefresh = await db.run(
+    `DELETE FROM school_refresh_tokens WHERE expires_at < ?`,
+    now,
+  );
+  const expiredVerification = await db.run(
+    `DELETE FROM email_verification_codes WHERE expires_at < ?`,
+    now,
+  );
+  const expiredReset = await db.run(
+    `DELETE FROM password_reset_codes WHERE expires_at < ?`,
+    now,
+  );
+
+  const total = (expiredRefresh.changes || 0) + (expiredSchoolRefresh.changes || 0)
+    + (expiredVerification.changes || 0) + (expiredReset.changes || 0);
+  if (total > 0) {
+    console.log(`[worker] Cleaned up ${total} expired tokens/codes`);
+  }
+
+  // Clean up old chat spam tracker entries (older than 30 days)
+  const oldSpamEntries = await db.run(
+    `DELETE FROM chat_spam_tracker WHERE last_message_at < datetime('now', '-30 days')`,
+  );
+  if ((oldSpamEntries.changes || 0) > 0) {
+    console.log(`[worker] Cleaned up ${oldSpamEntries.changes} old spam tracker entries`);
+  }
+}
+
 async function runWorkerTasks(): Promise<void> {
   try {
     await runAutoEscalation();
@@ -178,6 +218,12 @@ async function runWorkerTasks(): Promise<void> {
   } catch (err) {
     console.error('[worker] system-alerts failed:', err);
   }
+
+  try {
+    await runExpiredTokenCleanup();
+  } catch (err) {
+    console.error('[worker] token-cleanup failed:', err);
+  }
 }
 
 export function startWorker(): void {
@@ -185,7 +231,7 @@ export function startWorker(): void {
   // Run immediately on start
   runWorkerTasks();
   intervalId = setInterval(runWorkerTasks, CHECK_INTERVAL_MS);
-  console.log('[worker] Background worker started (escalation + reminders + alerts)');
+  console.log('[worker] Background worker started (escalation + reminders + alerts + token cleanup)');
 }
 
 export function stopWorker(): void {

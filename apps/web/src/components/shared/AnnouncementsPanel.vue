@@ -1,23 +1,24 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { getAnnouncements, deleteAnnouncement, createAnnouncement, type Announcement } from '../../services/announcement.service';
 import { useAuthStore } from '../../modules/auth/stores/auth';
 import { useI18n } from '../../composables/useI18n';
+import { useConfirmDialog } from '../../composables/useConfirmDialog';
 
 const { t, locale } = useI18n();
 const auth = useAuthStore();
 const announcements = ref<Announcement[]>([]);
 const loading = ref(false);
 const showForm = ref(false);
-const formData = ref({ title: '', content: '', scope: (auth.user?.role === 'admin' ? 'global' : auth.isSchool ? 'school' : 'class') as 'global' | 'class' | 'school', is_pinned: false });
+const formData = ref({ title: '', content: '', scope: (auth.isAdmin ? 'global' : auth.isSchool ? 'school' : 'class') as 'global' | 'class' | 'school', is_pinned: false });
 const saving = ref(false);
 
-const canCreate = computed(() => auth.user?.role === 'admin' || auth.user?.role === 'teacher' || auth.isSchool);
+const canCreate = computed(() => auth.isAdmin || auth.isTeacher || auth.isSchool);
 
 const availableScopes = computed(() => {
-  if (auth.user?.role === 'admin') return ['global', 'school', 'class'] as const;
+  if (auth.isAdmin) return ['global', 'school', 'class'] as const;
   if (auth.isSchool) return ['school'] as const;
-  if (auth.user?.role === 'teacher') return ['class'] as const;
+  if (auth.isTeacher) return ['class'] as const;
   return [] as const;
 });
 
@@ -32,7 +33,11 @@ async function load() {
   loading.value = false;
 }
 
+const { confirmDialog } = useConfirmDialog();
+
 async function remove(id: number) {
+  const ok = await confirmDialog({ message: t('shared.annConfirmDelete'), variant: 'danger' });
+  if (!ok) return;
   await deleteAnnouncement(id);
   announcements.value = announcements.value.filter(a => a.id !== id);
 }
@@ -44,13 +49,14 @@ async function submit() {
     const res = await createAnnouncement({
       scope: formData.value.scope,
       school_id: auth.isSchool ? auth.schoolSession?.id : undefined,
+      class_id: auth.isTeacher ? auth.currentClassId ?? undefined : undefined,
       title: formData.value.title.trim(),
       content: formData.value.content.trim(),
       is_pinned: formData.value.is_pinned,
     });
     if (res.success) {
       announcements.value.unshift(res.announcement);
-      formData.value = { title: '', content: '', scope: (auth.user?.role === 'admin' ? 'global' : auth.isSchool ? 'school' : 'class') as 'global' | 'class' | 'school', is_pinned: false };
+      formData.value = { title: '', content: '', scope: (auth.isAdmin ? 'global' : auth.isSchool ? 'school' : 'class') as 'global' | 'class' | 'school', is_pinned: false };
       showForm.value = false;
     }
   } catch { /* ignore */ }
@@ -63,9 +69,18 @@ function formatTime(dateStr: string) {
   return new Date(dateStr).toLocaleString(dateLocaleStr.value, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
 
-const canDelete = (a: Announcement) => auth.user?.role === 'admin' || auth.user?.id === a.author_id;
+const canDelete = (a: Announcement) => auth.isAdmin || auth.user?.id === a.author_id || (auth.isSchool && a.scope === 'school');
 
-onMounted(load);
+let refreshTimer: ReturnType<typeof setInterval> | null = null;
+
+onMounted(() => {
+  load();
+  refreshTimer = setInterval(() => load(), 60000);
+});
+
+onUnmounted(() => {
+  if (refreshTimer) clearInterval(refreshTimer);
+});
 </script>
 
 <template>

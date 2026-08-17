@@ -38,19 +38,19 @@ const emit = defineEmits<{ (e: 'close'): void }>()
             </ul>
             <p>{{ t('experiments.ssHelpS2P3') }}</p>
             <p>{{ t('experiments.ssHelpS2P4') }}</p>
-            <div class="formula">L = Î» / 4</div>
+            <div class="formula">L = λ / 4</div>
             <p>{{ t('experiments.ssHelpS2P5') }}</p>
-            <div class="formula">L + e = Î» / 4 &nbsp;&nbsp;&rArr;&nbsp;&nbsp; L = Î»/4 âˆ’ e</div>
+            <div class="formula">L + e = λ / 4 &nbsp;&nbsp;&rArr;&nbsp;&nbsp; L = λ/4 − e</div>
           </section>
 
           <!-- 3. Mathematical Equations -->
           <section>
             <h4>{{ t('experiments.ssHelpS3Title') }}</h4>
             <p>{{ t('experiments.ssHelpS3P1') }}</p>
-            <div class="formula">v = f Â· Î» &nbsp;&nbsp;&rArr;&nbsp;&nbsp; Î» = v / f</div>
+            <div class="formula">v = f · λ &nbsp;&nbsp;&rArr;&nbsp;&nbsp; λ = v / f</div>
             <p>{{ t('experiments.ssHelpS3P2') }}</p>
             <p>{{ t('experiments.ssHelpS3P3') }}</p>
-            <div class="formula">L = (v/4) Â· (1/f) âˆ’ e</div>
+            <div class="formula">L = (v/4) · (1/f) − e</div>
             <p>{{ t('experiments.ssHelpS3P4') }}</p>
           </section>
 
@@ -76,12 +76,12 @@ const emit = defineEmits<{ (e: 'close'): void }>()
               <li>{{ t('experiments.ssHelpS5L1') }}</li>
               <li>
                 {{ t('experiments.ssHelpS5L2') }}
-                <div class="formula">Slope = Î”L / Î”(1/f)</div>
+                <div class="formula">Slope = ΔL / Δ(1/f)</div>
               </li>
               <li>
                 {{ t('experiments.ssHelpS5L3') }}
                 <div class="formula">Slope = v / 4</div>
-                <div class="formula">v = 4 Ã— Slope</div>
+                <div class="formula">v = 4 × Slope</div>
               </li>
               <li>{{ t('experiments.ssHelpS5L4') }}</li>
             </ul>

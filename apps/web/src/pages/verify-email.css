@@ -1,0 +1,124 @@
+.verify-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #020617, #0f172a, #1e293b);
+  padding: 1rem;
+}
+
+.verify-card {
+  width: 360px;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  background: rgba(15, 23, 42, 0.96);
+  color: #e2e8f0;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.9);
+}
+
+.title {
+  margin: 0 0 0.5rem;
+  font-size: 1.35rem;
+  color: #7dd3fc;
+}
+
+.subtitle {
+  margin: 0 0 1.5rem;
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
+
+.field {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  font-size: 0.8rem;
+  margin-bottom: 0.35rem;
+  color: #cbd5e1;
+}
+
+input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.5rem;
+  border: 1px solid #334155;
+  background: #020617;
+  color: #e5e7eb;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+input:focus {
+  outline: none;
+  border-color: #06b6d4;
+}
+
+.error {
+  color: #fecaca;
+  font-size: 0.8rem;
+  margin: 0.4rem 0;
+}
+
+.success {
+  color: #bbf7d0;
+  font-size: 0.8rem;
+  margin: 0.4rem 0;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: linear-gradient(135deg, #06b6d4, #22c55e);
+  color: #f9fafb;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.back-link {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+  text-align: center;
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.back-link:hover {
+  color: #7dd3fc;
+}
+
+.resend-link {
+  display: block;
+  width: 100%;
+  margin-top: 0.5rem;
+  text-align: center;
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.resend-link:hover:not(:disabled) {
+  color: #7dd3fc;
+}
+
+.resend-link:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}

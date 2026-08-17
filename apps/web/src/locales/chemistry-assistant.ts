@@ -115,5 +115,4 @@ export const chemistryAssistant = {
     factHCl: '🔬 HCl: ácido fuerte, pH ≈ 1. ¡Disuelve metales!',
     factNaOH: '🔬 NaOH: sosa cáustica, pH ≈ 13. ¡Hace jabón!',
     factPhenolphthalein: '🔬 Fenolftaleína: incolora → rosa a pH > 8.2',
-  },
-} as const
+  }} as const

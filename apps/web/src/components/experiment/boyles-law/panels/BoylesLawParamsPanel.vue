@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '../../../../composables/useI18n'
+const { t } = useI18n()
 const props = defineProps<{
   params: { p: number; v: number; n: number; T: number }
 }>()
@@ -8,11 +10,11 @@ const emit = defineEmits<{
 </script>
 <template>
   <div class="panel-body">
-    <div class="param-row read-only"><label>الضغط P</label>
+    <div class="param-row read-only"><label>{{ t('experiments.blPressure') }}</label>
       <span class="computed">{{ params.p.toFixed(2) }} atm</span>
-      <span class="hint">محسوب من P = nRT/V</span>
+      <span class="hint">{{ t('experiments.blComputedHint') }}</span>
     </div>
-    <div class="param-row"><label>الحجم V (L)</label>
+    <div class="param-row"><label>{{ t('experiments.blVolume') }} (L)</label>
       <input type="range" :value="params.v" min="0.3" max="2" step="0.05" @input="emit('update:params', { ...params, v: +($event.target as HTMLInputElement).value })" />
       <span>{{ params.v.toFixed(2) }} L</span>
     </div>

@@ -86,7 +86,8 @@ export function usePendulumPhysics(params: PendulumParams) {
       trackCrossings(prevTheta, state.theta, prevTime, state.t)
       accum -= sdt
     }
-    state.signalSeries = [...state.signalSeries.slice(-1499), { t: state.t, theta: state.theta }]
+    state.signalSeries.push({ t: state.t, theta: state.theta })
+    if (state.signalSeries.length > 1500) state.signalSeries.shift()
     if (params.damping > 0.001 && state.t > 0.3 && Math.abs(state.theta) < 0.01 && Math.abs(state.omega) < 0.005) stop()
 
     watcher.inspect({ t: state.t, theta: state.theta, omega: state.omega, mass: params.mass })

@@ -1,4 +1,6 @@
 import { Hono } from 'hono';
+import { zValidator } from '@hono/zod-validator';
+import { z } from 'zod';
 import { authMiddleware } from '../auth/middleware.js';
 import * as svc from '../admin/feedback-service.js';
 import { db } from '../../db/index.js';
@@ -10,9 +12,17 @@ const app = new Hono<{ Variables: Variables }>();
 // POST /api/feedback — any authenticated user can submit
 app.use(authMiddleware);
 
-app.post('/', async (c) => {
+const feedbackSchema = z.object({
+  type: z.enum(['bug', 'feature', 'content', 'other']),
+  message: z.string().min(1).max(5000),
+  experimentId: z.string().optional(),
+  experimentName: z.string().max(200).optional(),
+  rating: z.number().int().min(1).max(5).optional(),
+});
+
+app.post('/', zValidator('json', feedbackSchema), async (c) => {
   const user = c.get('user');
-  const { type, message, experimentId, experimentName, rating } = await c.req.json();
+  const { type, message, experimentId, experimentName, rating } = c.req.valid('json');
 
   // Auto-fill school_id from the user's school
   let schoolId: number | null = null;

@@ -40,7 +40,7 @@ const emit = defineEmits<{ (e: 'close'): void }>()
               <li>{{ t('experiments.miHelpS2L3') }}</li>
             </ul>
             <p>{{ t('experiments.miHelpS2P4') }}</p>
-            <div class="formula">M = háµ¢/hâ‚’ = âˆ’v/u</div>
+            <div class="formula">M = hᵢ/hₒ = −v/u</div>
           </section>
 
           <!-- 3. Laboratory Procedure -->
@@ -64,7 +64,7 @@ const emit = defineEmits<{ (e: 'close'): void }>()
               <li>{{ t('experiments.miHelpS4L1') }}</li>
               <li>
                 {{ t('experiments.miHelpS4L2') }}
-                <div class="formula">Slope = âˆ’1</div>
+                <div class="formula">Slope = −1</div>
               </li>
               <li>
                 {{ t('experiments.miHelpS4L3') }}

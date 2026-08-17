@@ -1,7 +1,8 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useDiffractionExperiment } from '../../../../composables/diffraction/useDiffractionExperiment'
 import { useI18n } from '../../../../composables/useI18n'
+import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import DiffractionMenuBar from '../../../../components/experiment/diffraction/DiffractionMenuBar.vue'
 import DiffractionCanvas from '../../../../components/experiment/diffraction/DiffractionCanvas.vue'
 import DiffractionPanelBody from '../../../../components/experiment/diffraction/DiffractionPanelBody.vue'
@@ -10,12 +11,20 @@ import DiffractionControlBar from '../../../../components/experiment/diffraction
 import DiffractionHelpModal from '../../../../components/experiment/diffraction/DiffractionHelpModal.vue'
 import DiffractionGuidePanel from '../../../../components/experiment/diffraction/DiffractionGuidePanel.vue'
 import DiffractionOverlayPanels from '../../../../components/experiment/diffraction/DiffractionOverlayPanels.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
+import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
 const ex = useDiffractionExperiment()
 const { t } = useI18n()
+const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)
+
+function onReset() { 
+  confirmReset().then(ok => { 
+    if (ok) ex.resetSim() 
+  }) 
+}
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
@@ -24,7 +33,7 @@ function onKeyDown(e: KeyboardEvent) {
     e.preventDefault()
     ex.lab.togglePause()
   } else if (e.key === 'r' || e.key === 'R') {
-    if (confirm(t('experiments.resetConfirm'))) ex.resetSim()
+    confirmReset().then(ok => { if (ok) ex.resetSim() })
   } else if (e.key === 's' || e.key === 'S') {
     ex.trials.recordTrial()
   } else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
@@ -52,14 +61,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <DiffractionMenuBar
       :title="t('experiments.expDiffraction')"
       icon="&#x1F52E;"
-      experiment-route="/physics/waves/diffraction"
-      experiment-name="Diffraction Lab"
-      @toggle-panel="ex.layout.togglePanel"
       @show-all-panels="ex.layout.showAllPanels"
-      @export-csv="ex.trials.exportCsv"
-      @toggle-pause="ex.lab.togglePause"
-      @reset="ex.resetSim"
-      @record-trial="ex.trials.recordTrial"
       @toggle-help="helpOpen = !helpOpen"
       @analyze-results="ex.exportToAnalysis"
     />
@@ -67,8 +69,8 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <DiffractionHelpModal :open="helpOpen" @close="helpOpen = false" />
 
     <div class="mode-bar">
-      <button class="mode-btn" :class="{ active: ex.mode.value === 'single' }" @click="ex.mode.value = 'single'">&#x1F52E; Single Slit</button>
-      <button class="mode-btn" :class="{ active: ex.mode.value === 'grating' }" @click="ex.mode.value = 'grating'">&#x2728; Multiple Slits (Grating)</button>
+      <button class="mode-btn" :class="{ active: ex.mode.value === 'single' }" @click="ex.mode.value = 'single'">&#x1F52E; {{ t('experiments.dfSingleSlit') }}</button>
+      <button class="mode-btn" :class="{ active: ex.mode.value === 'grating' }" @click="ex.mode.value = 'grating'">&#x2728; {{ t('experiments.dfGratingMode') }}</button>
     </div>
 
     <div class="lab-grid">
@@ -127,7 +129,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
           :can-undo="ex.trials.canUndo()"
           :can-redo="ex.trials.canRedo()"
           @toggle-pause="ex.lab.togglePause"
-          @reset="ex.resetSim"
+          @reset="onReset"
           @record-trial="ex.trials.recordTrial"
           @clear-trials="ex.trials.clearTrials"
           @export-csv="ex.trials.exportCsv"
@@ -238,6 +240,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       :first-order-angle="ex.lab.firstOrderAngle.value"
     />
   </div>
+  <ResetConfirmModal />
 </template>
 
 <style scoped>

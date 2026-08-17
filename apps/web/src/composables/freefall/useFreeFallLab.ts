@@ -74,8 +74,9 @@ export function useFreeFallLab(params: FreeFallParams, onTick?: () => void) {
   async function runFreeFallLab(recordTrial: () => void, calcFitG: () => void) {
     if (labFlowRunning.value) return
     labFlowRunning.value = true
+    const saved = { g: params.g, h: params.h, airResistance: params.airResistance, dragCoeff: params.dragCoeff, mass: params.mass }
     try {
-      params.g = 9.81
+      params.g = 9.81; params.airResistance = false
       for (const h of [0.20, 0.40, 0.60, 0.80, 1.00]) {
         params.h = h
         reset()
@@ -89,6 +90,11 @@ export function useFreeFallLab(params: FreeFallParams, onTick?: () => void) {
       calcFitG()
     } finally {
       labFlowRunning.value = false
+      params.g = saved.g
+      params.h = saved.h
+      params.airResistance = saved.airResistance
+      params.dragCoeff = saved.dragCoeff
+      params.mass = saved.mass
       resetSim()
     }
   }

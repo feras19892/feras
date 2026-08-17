@@ -8,11 +8,15 @@ const props = defineProps<{ rows: StudentRow[] }>()
 const { t } = useI18n()
 
 const filter = ref<'all' | 'pending' | 'missing'>('all')
+const searchQuery = ref('')
 
 const filtered = computed(() => {
-  if (filter.value === 'pending') return props.rows.filter(r => r.pendingCount > 0)
-  if (filter.value === 'missing') return props.rows.filter(r => r.missingReports)
-  return props.rows
+  let result = props.rows
+  if (filter.value === 'pending') result = result.filter(r => r.pendingCount > 0)
+  if (filter.value === 'missing') result = result.filter(r => r.missingReports)
+  const q = searchQuery.value.trim().toLowerCase()
+  if (q) result = result.filter(r => r.name?.toLowerCase().includes(q) || r.className?.toLowerCase().includes(q))
+  return result
 })
 
 function lastSub(dateStr: string | null): string {
@@ -31,10 +35,13 @@ function lastSub(dateStr: string | null): string {
     <div class="panel-card">
       <div class="pc-header">
         <h3>🎓 {{ t('dashboard.dash.studentsReport') }}</h3>
-        <div class="filter-pills">
-          <button :class="['fp', { active: filter === 'all' }]" @click="filter = 'all'">{{ t('dashboard.dash.allStudents') }}</button>
-          <button :class="['fp', { active: filter === 'pending' }]" @click="filter = 'pending'">{{ t('dashboard.dash.withPending') }}</button>
-          <button :class="['fp', { active: filter === 'missing' }]" @click="filter = 'missing'">{{ t('dashboard.dash.noReports') }}</button>
+        <div class="pc-filters">
+          <input v-model="searchQuery" class="student-search" :placeholder="t('teacher.searchStudent')" />
+          <div class="filter-pills">
+            <button :class="['fp', { active: filter === 'all' }]" @click="filter = 'all'">{{ t('dashboard.dash.allStudents') }}</button>
+            <button :class="['fp', { active: filter === 'pending' }]" @click="filter = 'pending'">{{ t('dashboard.dash.withPending') }}</button>
+            <button :class="['fp', { active: filter === 'missing' }]" @click="filter = 'missing'">{{ t('dashboard.dash.noReports') }}</button>
+          </div>
         </div>
       </div>
       <div class="full-table">
@@ -53,10 +60,10 @@ function lastSub(dateStr: string | null): string {
               <td class="t-actions">
                 <CreateApprovalButton
                   type="student_removal"
-                  approverType="school"
-                  :targetUserId="s.id"
-                  :targetUserName="s.name"
-                  :classId="s.classId"
+                  approver-type="school"
+                  :target-user-id="s.id"
+                  :target-user-name="s.name"
+                  :class-id="s.classId"
                 >
                   <button class="remove-btn" @click.stop>🚫</button>
                 </CreateApprovalButton>
@@ -73,6 +80,9 @@ function lastSub(dateStr: string | null): string {
 .panel-card { background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.8rem; padding: 1rem; margin-bottom: 0.8rem; }
 .pc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem; }
 .pc-header h3 { margin: 0; font-size: 0.9rem; font-weight: 700; color: #e5e7eb; }
+.pc-filters { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+.student-search { padding: 0.35rem 0.7rem; border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; font-size: 0.78rem; min-width: 160px; }
+.student-search:focus { outline: none; border-color: rgba(99,102,241,0.4); }
 .filter-pills { display: flex; gap: 0.25rem; }
 .fp { padding: 0.2rem 0.5rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); color: #64748b; cursor: pointer; font-size: 0.68rem; font-weight: 700; font-family: inherit; }
 .fp.active { background: rgba(99,102,241,0.12); color: #c7d2fe; border-color: rgba(99,102,241,0.2); }

@@ -4,8 +4,8 @@ import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import type { ToolState } from '../../../composables/chemistry/chemLabTypes';
 import {
   items, receivingMap, itemZoomMap, pourFlowMap, stopperMap, retortStandMap,
-  getLiquid, getBurnerState, getItemZoom, buildToolState,
-  isContainer, isRetortStandAssembly,
+  getLiquid, getBurette, getBurnerState, getItemZoom, buildToolState,
+  isContainer, isBurette, isRetortStandAssembly,
   hasSelectedChemicalMap,
   loadSession, clearSession, setupInitialLabLayout
 } from '../../../composables/chemistry/useChemistryLab';
@@ -213,7 +213,7 @@ defineExpose({
       @intensity-change="(val) => { if(selectedItem){getBurnerState(selectedItem.uid).intensity = val; emit('select', selectedItem, buildToolState(selectedItem));} }"
       @undo="undo()"
       @redo="redo()"
-      @label-change="(label) => { if(selectedItem){getLiquid(selectedItem.uid).label = label; emit('select', selectedItem, buildToolState(selectedItem));} }"
+      @label-change="(label) => { if(selectedItem){ if (isBurette(selectedItem.id)) { const bur = getBurette(selectedItem.uid); if (bur) bur.label = label; } else { const liq = getLiquid(selectedItem.uid); if (liq) liq.label = label; } emit('select', selectedItem, buildToolState(selectedItem));} }"
       @spatula-select-solid="_spatulaSelectSolid()"
       @spatula-add-to="(targetUid: string, grams: number) => _spatulaAddTo(targetUid, grams)"
     />

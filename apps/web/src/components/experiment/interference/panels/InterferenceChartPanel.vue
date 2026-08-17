@@ -15,8 +15,8 @@ const props = defineProps<Props>()
 
 // Δy vs 1/d scatter for trials
 const chartPoints = computed(() => props.trials
-  .filter(t => t.fringeSpacing > 0)
-  .map(t => ({ invD: 1 / t.slitDistance, deltaY: t.fringeSpacing })))
+  .filter(tr => tr.fringeSpacing > 0)
+  .map(tr => ({ invD: 1 / tr.slitDistance, deltaY: tr.fringeSpacing })))
 
 const chartBounds = computed(() => {
   const pts = chartPoints.value

@@ -1,7 +1,9 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useCollisionExperiment } from '../../../../composables/collision/useCollisionExperiment'
+import { useCollisionReport } from '../../../../composables/collision/useCollisionReport'
 import { useI18n } from '../../../../composables/useI18n'
+import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import CollisionMenuBar from '../../../../components/experiment/collision/CollisionMenuBar.vue'
 import CollisionCanvas from '../../../../components/experiment/collision/CollisionCanvas.vue'
 import CollisionControlBar from '../../../../components/experiment/collision/CollisionControlBar.vue'
@@ -10,18 +12,23 @@ import CollisionHelpModal from '../../../../components/experiment/collision/Coll
 import CollisionGuidePanel from '../../../../components/experiment/collision/CollisionGuidePanel.vue'
 import CollisionPanelBody from '../../../../components/experiment/collision/CollisionPanelBody.vue'
 import CollisionOverlayPanels from '../../../../components/experiment/collision/CollisionOverlayPanels.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import CollisionReport from '../../../../components/experiment/collision/CollisionReport.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
+import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
 const { t } = useI18n()
+const { confirmReset } = useResetConfirm()
 const ex = useCollisionExperiment()
+const rep = useCollisionReport()
 const helpOpen = ref(false)
 const showGuide = ref(true)
+const reportOpen = ref(false)
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return
   if (e.code === 'Space') { e.preventDefault(); ex.lab.togglePause() }
-  else if (e.key === 'r' || e.key === 'R') { if (confirm(t('experiments.confirmResetSimulation'))) ex.resetSim() }
+  else if (e.key === 'r' || e.key === 'R') { confirmReset().then(ok => { if (ok) ex.resetSim() }) }
   else if (e.key === 's' || e.key === 'S') { ex.trials.recordTrial() }
   else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); if (e.shiftKey) ex.trials.redo(); else ex.trials.undo() }
   else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ex.trials.redo() }
@@ -37,13 +44,8 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <CollisionMenuBar
       :title="t('experiments.collision1DTitle')"
       icon="💥"
-      experiment-route="/physics/mechanics/collision"
-      experiment-name="1D Collision"
-      @toggle-pause="ex.lab.togglePause" @reset="ex.resetSim" @record-trial="ex.trials.recordTrial"
-      @toggle-help="helpOpen = !helpOpen"
-      @export-csv="ex.trials.exportCsv" @toggle-panel="ex.layout.togglePanel"
       @show-all-panels="ex.layout.showAllPanels"
-      @run-lab="ex.runCollisionLab"
+      @toggle-help="helpOpen = !helpOpen"
       @analyze-results="ex.exportToAnalysis"
     />
 
@@ -102,6 +104,11 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 
     <CollisionStatusBar :running="ex.lab.sim.running" :paused="ex.lab.sim.paused" :collided="ex.lab.sim.collided" />
 
+    <CollisionReport v-if="reportOpen" style="position:fixed;inset:5%;z-index:200;overflow:auto;background:#0d1117;border-radius:12px;border:1px solid #2D3645;box-shadow:0 20px 60px rgba(0,0,0,.5)"
+      :trials="ex.trials.trials.value" :trial-stats="ex.trials.trialStats.value"
+      @close="reportOpen = false" @open-full-report="rep.openFullReport(ex)"
+    />
+
     <CollisionControlBar
       :launch-label="ex.lab.sim.running && !ex.lab.sim.paused ? '⏸️ ' + t('experiments.pauseBtn') : '▶️ ' + t('experiments.startBtn')"
       :speed="ex.lab.speed.value"
@@ -117,6 +124,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @update:speed="v => ex.lab.speed.value = v"
     />
   </div>
+  <ResetConfirmModal />
 </template>
 
 <style scoped>

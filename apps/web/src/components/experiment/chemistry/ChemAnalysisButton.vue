@@ -34,7 +34,7 @@ function onClick() {
 .analysis-btn {
   position: fixed;
   top: 0.5rem;
-  left: calc(var(--left-width, 300px) + 15rem);
+  left: calc(var(--left-width, 300px) + 20rem);
   transform: none;
   padding: 0.5rem 1.2rem;
   border: none;

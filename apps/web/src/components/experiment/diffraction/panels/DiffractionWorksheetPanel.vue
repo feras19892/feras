@@ -12,7 +12,7 @@ const showSteps = ref<Record<string, boolean>>({
   step1: false,
 })
 
-const wCalc = computed(() => {
+const centralWidthCalc = computed(() => {
   return (2 * props.wavelength * 1e-9 * props.screenDistance) / (props.slitWidth * 1e-3) * 1000
 })
 
@@ -23,17 +23,17 @@ function toggleStep(step: string) {
 
 <template>
   <div class="panel-body">
-    <div class="ws-title">📐 خطوات حيود الشق الواحد</div>
+    <div class="ws-title">📐 خطوات حيود الشق المفرد</div>
 
     <div class="step-row">
       <button class="step-toggle" @click="toggleStep('step1')">
-        {{ showSteps.step1 ? '▼' : '▶' }} الخطوة 1: عرض القمّة المركزية
+        {{ showSteps.step1 ? '▼' : '▶' }} الخطوة 1: عرض الحيد المركزي
       </button>
       <div v-if="showSteps.step1" class="step-content">
         <div class="formula">w = 2λD / a</div>
         <div class="calc">
           <div>w = 2 × {{ wavelength }} nm × {{ screenDistance }} m / {{ slitWidth }} mm</div>
-          <div class="result">w = {{ wCalc.toFixed(3) }} mm</div>
+          <div class="result">w = {{ centralWidthCalc.toFixed(3) }} mm</div>
           <div>المقاس: {{ centralWidth.toFixed(3) }} mm</div>
         </div>
       </div>

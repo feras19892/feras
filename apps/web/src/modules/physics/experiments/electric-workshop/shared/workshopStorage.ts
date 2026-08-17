@@ -34,7 +34,7 @@ export function loadState(storageKey: string): PersistedWorkshopState | null {
   try {
     const raw = localStorage.getItem(storageKey)
     if (!raw) return null
-    const data = JSON.parse(raw)
+    const data = JSON.parse(raw) as PersistedWorkshopState
     if (!data || data.version !== STORAGE_VERSION || !data.components || !data.wires) {
       localStorage.removeItem(storageKey)
       return null
@@ -56,7 +56,7 @@ export function saveCircuit(
 ): boolean {
   try {
     const raw = localStorage.getItem(CIRCUITS_KEY)
-    const list: { name: string; data: any }[] = raw ? JSON.parse(raw) : []
+    const list: { name: string; data: unknown }[] = raw ? JSON.parse(raw) : []
     const data = {
       version: STORAGE_VERSION,
       components: components.map(c => ({ ...c, terminals: c.terminals.map(t => ({ ...t })) })),
@@ -77,7 +77,7 @@ export function getSavedCircuits(): string[] {
   try {
     const raw = localStorage.getItem(CIRCUITS_KEY)
     if (!raw) return []
-    const list: { name: string; data: any }[] = JSON.parse(raw)
+    const list: { name: string; data: unknown }[] = JSON.parse(raw)
     return list.map(c => c.name)
   } catch (e) {
     return []
@@ -88,7 +88,7 @@ export function deleteCircuit(name: string): boolean {
   try {
     const raw = localStorage.getItem(CIRCUITS_KEY)
     if (!raw) return false
-    const list: { name: string; data: any }[] = JSON.parse(raw)
+    const list: { name: string; data: unknown }[] = JSON.parse(raw)
     const idx = list.findIndex(c => c.name === name)
     if (idx < 0) return false
     list.splice(idx, 1)
@@ -103,7 +103,7 @@ export function loadCircuitData(name: string): PersistedWorkshopState | null {
   try {
     const raw = localStorage.getItem(CIRCUITS_KEY)
     if (!raw) return null
-    const list: { name: string; data: any }[] = JSON.parse(raw)
+    const list: { name: string; data: PersistedWorkshopState }[] = JSON.parse(raw)
     const found = list.find(c => c.name === name)
     if (!found) return null
     if (!found.data || found.data.version !== STORAGE_VERSION) return null

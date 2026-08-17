@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import type { ScreenPosition } from './useBiology3D';
 
 const mouse = new THREE.Vector2();
+const raycaster = new THREE.Raycaster();
 
 export const pickOrganelle = (
   scene: THREE.Scene,
@@ -14,7 +15,6 @@ export const pickOrganelle = (
   mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1;
   mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
 
-  const raycaster = new THREE.Raycaster();
   raycaster.setFromCamera(mouse, camera);
   const intersects = raycaster.intersectObjects(scene.children, true);
   for (const hit of intersects) {
@@ -62,7 +62,6 @@ export const resetCamera = (
   controls: { autoRotate: boolean },
   targets: CameraTargets
 ): void => {
-  controls.autoRotate = true;
   targets.position = defaultPosition.clone();
   targets.lookAt = defaultLookAt.clone();
 };

@@ -32,7 +32,7 @@ app.post('/', zValidator('json', createSchema), async (c) => {
   if (body.scope === 'school' && user.role !== 'admin' && user.role !== 'school') {
     return c.json({ success: false, message: 'غير مصرح' }, 403);
   }
-  if (body.scope === 'class' && user.role !== 'teacher' && user.role !== 'admin') {
+  if (body.scope === 'class' && user.role !== 'teacher' && user.role !== 'admin' && user.role !== 'school') {
     return c.json({ success: false, message: 'غير مصرح' }, 403);
   }
 
@@ -41,6 +41,17 @@ app.post('/', zValidator('json', createSchema), async (c) => {
     const classRow = await db.get<{ teacher_id: number }>('SELECT teacher_id FROM classes WHERE id = ?', body.class_id);
     if (!classRow || classRow.teacher_id !== user.id) {
       return c.json({ success: false, message: 'غير مصرح — لا يمكنك إنشاء إعلان لفصل لا تملكه' }, 403);
+    }
+  }
+
+  // Verify school owns the class for class-scoped announcements
+  if (body.scope === 'class' && user.role === 'school' && body.class_id) {
+    const classRow = await db.get<{ school_id: number | null }>(
+      'SELECT u.school_id FROM classes c JOIN users u ON c.teacher_id = u.id WHERE c.id = ?',
+      body.class_id,
+    );
+    if (!classRow || classRow.school_id !== user.id) {
+      return c.json({ success: false, message: 'غير مصرح — لا يمكنك إنشاء إعلان لفصل لا ينتمي لمدرستك' }, 403);
     }
   }
 
@@ -84,30 +95,30 @@ app.get('/', async (c) => {
     const teacherClasses = await db.all<{ id: string }[]>(
       `SELECT id FROM classes WHERE teacher_id = ?`, user.id,
     );
-    let results: any[] = [];
-    for (const c of teacherClasses) {
-      const anns = await svc.getClassAnnouncements(c.id);
-      results.push(...anns);
-    }
-    // Include school announcements if teacher belongs to a school
     const teacher = await db.get<{ school_id: number | null }>(`SELECT school_id FROM users WHERE id = ?`, user.id);
-    if (teacher?.school_id) {
-      const schoolAnns = await svc.getSchoolAnnouncements(teacher.school_id);
-      results.push(...schoolAnns);
+
+    const parts: string[] = [];
+    const params: (string | number)[] = [];
+    if (teacherClasses.length > 0) {
+      const placeholders = teacherClasses.map(() => '?').join(',');
+      parts.push(`(scope = 'class' AND class_id IN (${placeholders}))`);
+      params.push(...teacherClasses.map(c => c.id));
     }
-    const global = await svc.getGlobalAnnouncements();
-    results.push(...global);
-    results.sort((a, b) => {
-      if (a.is_pinned !== b.is_pinned) return b.is_pinned - a.is_pinned;
-      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-    });
+    if (teacher?.school_id) {
+      parts.push(`(scope = 'school' AND school_id = ?)`);
+      params.push(teacher.school_id);
+    }
+    parts.push(`scope = 'global'`);
+
+    const results = await db.all(
+      `SELECT * FROM announcements WHERE (${parts.join(' OR ')}) AND (expires_at IS NULL OR expires_at > datetime('now')) ORDER BY is_pinned DESC, created_at DESC`,
+      ...params,
+    );
     return c.json({ success: true, announcements: results });
   }
 
   if (user.role === 'school') {
-    // School sees their school announcements + global
-    const schoolId = Number(c.req.query('school_id') || user.id);
-    const list = await svc.getSchoolAnnouncements(schoolId);
+    const list = await svc.getSchoolAnnouncements(user.id);
     const global = await svc.getGlobalAnnouncements();
     return c.json({ success: true, announcements: [...list, ...global] });
   }

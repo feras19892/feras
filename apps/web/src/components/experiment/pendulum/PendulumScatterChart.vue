@@ -15,8 +15,8 @@ const canvasRef = ref<HTMLCanvasElement | null>(null)
 const xLabel = computed(() => scatterXKey.value==='length'?'L (m)':scatterXKey.value==='g'?'g (m/s²)':scatterXKey.value==='T'?'T (s)':scatterXKey.value==='f'?'f (Hz)':'ω (rad/s)')
 const yLabel = computed(() => scatterYKey.value==='length'?'L (m)':scatterYKey.value==='g'?'g (m/s²)':scatterYKey.value==='T'?'T (s)':scatterYKey.value==='T2'?'T² (s²)':scatterYKey.value==='f'?'f (Hz)':'ω (rad/s)')
 
-const xs = computed(() => props.trials.map(t => { const k=scatterXKey.value; return k==='T'?t.T:k==='f'?t.f:k==='omega'?t.omega:k==='g'?t.g:t.length }))
-const ys = computed(() => props.trials.map(t => { const k=scatterYKey.value; return k==='T2'?t.T*t.T:k==='T'?t.T:k==='f'?t.f:k==='omega'?t.omega:k==='g'?t.g:t.length }))
+const xs = computed(() => props.trials.map(tr => { const k=scatterXKey.value; return k==='T'?tr.T:k==='f'?tr.f:k==='omega'?tr.omega:k==='g'?tr.g:tr.length }))
+const ys = computed(() => props.trials.map(tr => { const k=scatterYKey.value; return k==='T2'?tr.T*tr.T:k==='T'?tr.T:k==='f'?tr.f:k==='omega'?tr.omega:k==='g'?tr.g:tr.length }))
 
 const fit = computed(() => linearRegression(xs.value, ys.value))
 const emit = defineEmits<{ (e: 'calcSlope', slope: number, intercept: number, r2: number): void }>()

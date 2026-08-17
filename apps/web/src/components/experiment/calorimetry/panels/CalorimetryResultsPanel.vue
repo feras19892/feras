@@ -4,20 +4,20 @@ import { useI18n } from '../../../../composables/useI18n'
 import type { CalorimetryTrial } from '../../../../composables/calorimetry/useCalorimetryTrials'
 const { t } = useI18n()
 const props = defineProps<{ trials: CalorimetryTrial[] }>()
-const avgTf = computed(() => props.trials.length ? props.trials.reduce((s, t) => s + t.tf, 0) / props.trials.length : 0)
-const avgC = computed(() => props.trials.length ? props.trials.reduce((s, t) => s + t.cMetal, 0) / props.trials.length : 0)
+const avgTf = computed(() => props.trials.length ? props.trials.reduce((s, tr) => s + tr.tf, 0) / props.trials.length : 0)
+const avgC = computed(() => props.trials.length ? props.trials.reduce((s, tr) => s + tr.cMetal, 0) / props.trials.length : 0)
 const stdDev = computed(() => {
   if (props.trials.length < 2) return 0
   const mean = avgC.value
-  const sq = props.trials.reduce((s, t) => s + Math.pow(t.cMetal - mean, 2), 0)
+  const sq = props.trials.reduce((s, tr) => s + Math.pow(tr.cMetal - mean, 2), 0)
   return Math.sqrt(sq / (props.trials.length - 1))
 })
 const cv = computed(() => avgC.value > 0 ? (stdDev.value / avgC.value * 100) : 0)
 const constancy = computed(() => {
   if (props.trials.length < 2) return { label: '', color: '' }
-  if (cv.value < 2) return { label: 'ممتاز ✅', color: 'green' }
-  if (cv.value < 5) return { label: 'جيد', color: 'amber' }
-  return { label: 'يحتاج مزيداً', color: 'red' }
+  if (cv.value < 2) return { label: t('experiments.blConstancyExcellent'), color: 'green' }
+  if (cv.value < 5) return { label: t('experiments.blConstancyGood'), color: 'amber' }
+  return { label: t('experiments.blConstancyNeedsMore'), color: 'red' }
 })
 const lastTrial = computed(() => props.trials.length ? props.trials[props.trials.length - 1] : null)
 const errorPercent = computed(() => {
@@ -32,9 +32,9 @@ const errorPercent = computed(() => {
     <div class="stat"><span class="label">c̄</span><span class="val highlight">{{ avgC.toFixed(0) }} J/kg·K</span></div>
     <div v-if="trials.length >= 2" class="stat"><span class="label">σ(c)</span><span class="val">±{{ stdDev.toFixed(0) }}</span></div>
     <div v-if="trials.length >= 2" class="stat"><span class="label">CV</span><span class="val" :class="constancy.color">{{ cv.toFixed(1) }}%</span></div>
-    <div v-if="trials.length >= 2" class="stat"><span class="label">ثبات c</span><span class="val" :class="constancy.color">{{ constancy.label }}</span></div>
-    <div v-if="lastTrial && errorPercent !== null" class="stat"><span class="label">خطأ آخر تجربة</span><span class="val" :class="errorPercent < 5 ? 'green' : errorPercent < 15 ? 'amber' : 'red'">{{ errorPercent.toFixed(1) }}%</span></div>
-    <div v-if="lastTrial && lastTrial.cTrue" class="stat"><span class="label">c الحقيقي</span><span class="val green">{{ lastTrial.cTrue }} J/kg·K</span></div>
+    <div v-if="trials.length >= 2" class="stat"><span class="label">{{ t('experiments.calCConstancy') }}</span><span class="val" :class="constancy.color">{{ constancy.label }}</span></div>
+    <div v-if="lastTrial && errorPercent !== null" class="stat"><span class="label">{{ t('experiments.calLastTrialError') }}</span><span class="val" :class="errorPercent < 5 ? 'green' : errorPercent < 15 ? 'amber' : 'red'">{{ errorPercent.toFixed(1) }}%</span></div>
+    <div v-if="lastTrial && lastTrial.cTrue" class="stat"><span class="label">{{ t('experiments.calTrueC') }}</span><span class="val green">{{ lastTrial.cTrue }} J/kg·K</span></div>
   </div>
 </template>
 <style scoped>

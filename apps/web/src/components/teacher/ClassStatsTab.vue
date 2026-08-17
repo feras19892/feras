@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { getClassStats, exportClassReports } from '../../services/report.service'
+import { getClassStats, exportClassReports, downloadGradebook } from '../../services/report.service'
 import type { Report } from '../../services/report.service'
 import { useI18n } from '../../composables/useI18n'
 import TeacherStatsSummary from './TeacherStatsSummary.vue'
@@ -145,7 +145,7 @@ function toggleCompare(id: number) {
         v-if="comparedStudents.length >= 2"
         :students="comparedStudents"
       />
-      <TeacherStatsExport @export-csv="exportCsv" @export-full="exportFullReports" />
+      <TeacherStatsExport @export-csv="exportCsv" @export-full="exportFullReports" @export-gradebook="downloadGradebook(classId)" />
     </template>
     <div v-else class="st-empty">
       <p>{{ t('teacher.noReports') }}</p>

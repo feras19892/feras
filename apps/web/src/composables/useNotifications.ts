@@ -8,6 +8,7 @@ const unreadCount = ref(0);
 const loading = ref(false);
 let eventSource: EventSource | null = null;
 let fallbackIntervalId: ReturnType<typeof setInterval> | null = null;
+let reconnectTimer: ReturnType<typeof setTimeout> | null = null;
 let activeInstances = 0;
 
 async function loadNotifications() {
@@ -31,13 +32,14 @@ async function refreshUnread() {
 }
 
 async function markAllRead() {
+  unreadCount.value = 0;
   try {
     await markAllAsRead();
     // Remove all non-pinned, keep pinned as read
     notifications.value = notifications.value.filter(n => n.is_pinned).map(n => ({ ...n, is_read: true }));
-    unreadCount.value = 0;
   } catch (err) {
     if (import.meta.env.DEV) console.error('mark all read failed:', err);
+    refreshUnread();
   }
 }
 
@@ -87,6 +89,10 @@ function startSSE() {
     eventSource = new EventSource(url, { withCredentials: true });
 
     eventSource.addEventListener('connected', () => {
+      if (fallbackIntervalId) {
+        clearInterval(fallbackIntervalId);
+        fallbackIntervalId = null;
+      }
       refreshUnread();
       loadNotifications();
     });
@@ -116,7 +122,8 @@ function startSSE() {
           loadNotifications();
         }, 30000);
       }
-      setTimeout(() => {
+      if (reconnectTimer) clearTimeout(reconnectTimer);
+      reconnectTimer = setTimeout(() => {
         if (!eventSource) startSSE();
       }, 10000);
     };
@@ -143,6 +150,10 @@ function stopAll() {
   if (fallbackIntervalId) {
     clearInterval(fallbackIntervalId);
     fallbackIntervalId = null;
+  }
+  if (reconnectTimer) {
+    clearTimeout(reconnectTimer);
+    reconnectTimer = null;
   }
 }
 

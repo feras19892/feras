@@ -18,8 +18,8 @@ const canvasRef = ref<HTMLCanvasElement | null>(null)
 const xLabel = computed(() => 'm (kg)')
 const yLabel = computed(() => 'T² (s²)')
 
-const xs = computed(() => props.trials.map(t => t.mass))
-const ys = computed(() => props.trials.map(t => t.T * t.T))
+const xs = computed(() => props.trials.map(tr => tr.mass))
+const ys = computed(() => props.trials.map(tr => tr.T * tr.T))
 
 const fit = computed(() => linearRegression(xs.value, ys.value))
 

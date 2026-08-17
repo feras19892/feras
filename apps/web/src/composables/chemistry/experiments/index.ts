@@ -26,6 +26,8 @@ export type {
   SetupHint,
   ExperimentStep,
   TitrationReading,
+  ReportData,
+  ResolvedExperimentTheory,
 } from './types';
 
 export {

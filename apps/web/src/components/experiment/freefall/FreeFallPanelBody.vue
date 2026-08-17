@@ -93,10 +93,10 @@ const errorSources = [
     <div class="stat-row"><span class="stat-label">v<sub>impact</sub></span><span class="stat-value">{{ simState.landed ? (Math.abs(simState.vy)?.toFixed(2) ?? '--') : '--' }} m/s</span></div>
     <template v-if="trials.length > 0 && trialStats">
       <div class="stat-section-title">{{ t('experiments.measurementStatistics') }} ({{ trials.length }})</div>
-      <div class="stat-row"><span class="stat-label">tÌ„</span><span class="stat-value">{{ trialStats.time_mean.toFixed(4) }} s</span></div>
-      <div class="stat-row"><span class="stat-label">Ïƒ<sub>t</sub></span><span class="stat-value">{{ trialStats.time_std.toFixed(4) }} s</span></div>
-      <div class="stat-row"><span class="stat-label">gÌ„<sub>calc</sub></span><span class="stat-value highlight">{{ trialStats.g_mean.toFixed(2) }} m/sÂ²</span></div>
-      <div class="stat-row"><span class="stat-label">Ïƒ<sub>g</sub></span><span class="stat-value">{{ trialStats.g_std.toFixed(2) }} m/sÂ²</span></div>
+      <div class="stat-row"><span class="stat-label">t̄</span><span class="stat-value">{{ trialStats.time_mean.toFixed(4) }} s</span></div>
+      <div class="stat-row"><span class="stat-label">σ<sub>t</sub></span><span class="stat-value">{{ trialStats.time_std.toFixed(4) }} s</span></div>
+      <div class="stat-row"><span class="stat-label">ḡ<sub>calc</sub></span><span class="stat-value highlight">{{ trialStats.g_mean.toFixed(2) }} m/s²</span></div>
+      <div class="stat-row"><span class="stat-label">σ<sub>g</sub></span><span class="stat-value">{{ trialStats.g_std.toFixed(2) }} m/s²</span></div>
     </template>
   </template>
 

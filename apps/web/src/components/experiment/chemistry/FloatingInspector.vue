@@ -1,21 +1,19 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import type { ToolState } from '../../../composables/chemistry/chemLabTypes';
 import {
-  items, isContainer,
-  getPipette, getBurnerState, getBalanceTare, getContainerTare, getLiquid, getHotPlateState,
-  isGradCylinder, tiltAngleMap,
-  selectedChemical, hasSelectedChemicalMap, simSpeed,
-  spatulaSelectedSolid, solidMap,
+  getPipette, getBurnerState, getBalanceTare, getContainerTare, getHotPlateState,
+  simSpeed,
   isBunsenBurner, isHeatingMantle, isHotPlate, isBalance, isPhMeter, isThermometer,
 } from '../../../composables/chemistry/useChemistryLab';
 import { computeBalanceWeight, getBalanceReading, getPhReading, getTemperatureReading } from '../../../composables/chemistry/useLabSimulation';
 import { useI18n } from '../../../composables/useI18n';
-import { useChemicalLocale } from '../../../composables/chemistry/useChemicalLocale';
+import InspectorContainer from './InspectorContainer.vue';
+import InspectorBurette from './InspectorBurette.vue';
+import InspectorPipette from './InspectorPipette.vue';
+import InspectorSpatula from './InspectorSpatula.vue';
 
 const { t } = useI18n();
-const { getName, resolveLabel } = useChemicalLocale();
 const props = defineProps<{
   item: LabItem | null;
   state: ToolState | null;
@@ -76,53 +74,10 @@ function tempColor(): string {
   if (r < 95) return '#f59e0b';
   return '#dc2626';
 }
-function tiltLeft() {
-  if (!props.item) return;
-  const current = tiltAngleMap[props.item.uid] || 0;
-  tiltAngleMap[props.item.uid] = Math.max(-180, current - 15);
-}
-function tiltRight() {
-  if (!props.item) return;
-  const current = tiltAngleMap[props.item.uid] || 0;
-  tiltAngleMap[props.item.uid] = Math.min(180, current + 15);
-}
-function resetTilt() {
-  if (!props.item) return;
-  delete tiltAngleMap[props.item.uid];
-}
-
 function pipetteStatus(): string {
   if (!props.item) return '';
   const v = getPipette(props.item.uid).volume;
   return v > 0 ? t('chemistry.contains') + ' ' + v.toFixed(1) + t('chemistry.mL') : t('chemistry.emptyF');
-}
-
-const pipetteTargetUid = ref<string>('');
-
-const spatulaTargetUid = ref<string>('');
-
-const spatulaContainerList = computed(() => {
-  if (!props.item) return [];
-  return items.value.filter((i: LabItem) => i.uid !== props.item!.uid && isContainer(i.id));
-});
-
-function spatulaContainerLabel(c: LabItem): string {
-  const liq = getLiquid(c.uid);
-  const vol = liq.volume > 0 ? ` (${liq.volume.toFixed(1)} ${t('chemistry.mL')})` : ` (${t('chemistry.emptyF')})`;
-  const solid = solidMap[c.uid];
-  const solidInfo = solid && solid.amount > 0 ? ` + ${solid.amount.toFixed(1)}${t('chemistry.g')}` : '';
-  return t(c.name) + vol + solidInfo;
-}
-
-const containerList = computed(() => {
-  if (!props.item) return [];
-  return items.value.filter((i: LabItem) => i.uid !== props.item!.uid && isContainer(i.id));
-});
-
-function containerLabel(c: LabItem): string {
-  const liq = getLiquid(c.uid);
-  const vol = liq.volume > 0 ? ` (${liq.volume.toFixed(1)} ${t('chemistry.mL')})` : ` (${t('chemistry.emptyF')})`;
-  return t(c.name) + vol;
 }
 </script>
 
@@ -149,141 +104,50 @@ function containerLabel(c: LabItem): string {
     <div class="fi-body">
       <!-- Container -->
       <template v-if="state.type === 'beaker'">
-        <div class="fi-row"><span>{{ t('chemistry.volume') }}</span><b>{{ state.volume.toFixed(1) }} / {{ state.maxVolume }} {{ t('chemistry.mL') }}</b></div>
-        <div class="fi-bar"><div class="fi-fill" :style="{ width: (state.volume/state.maxVolume*100).toFixed(0) + '%', background: state.color }" /></div>
-        <div class="fi-row"><span>{{ t('chemistry.color') }}</span><span class="fi-dot" :style="{ background: state.color }" /></div>
-        <div class="fi-row">
-          <span>{{ t('chemistry.solution') }}</span>
-          <input
-            v-if="item"
-            class="fi-input"
-            :value="resolveLabel(state.label || '')"
-            :placeholder="t('chemistry.solutionPlaceholder')"
-            @input="(e: Event) => emit('labelChange', (e.target as HTMLInputElement).value)"
-            @click.stop
-          />
-        </div>
-        <div v-if="item && isGradCylinder(item.id)" class="fi-row hint">
-          <span>⚠️</span><small>{{ t('chemistry.gradCylinderHint') }}</small>
-        </div>
-        <!-- Current chemical indicator -->
-        <div v-if="item && hasSelectedChemicalMap[item.uid]" class="fi-row fi-chem-row">
-          <span>{{ t('chemistry.selectedSolution') }}</span>
-          <span class="fi-chem-name">
-            <span class="fi-dot" :style="{ background: selectedChemical.color }" />
-            {{ getName(selectedChemical.id) }}
-          </span>
-        </div>
+        <InspectorContainer
+          :item="item"
+          :state="state"
+          @action="(type, uid) => emit('action', type, uid)"
+          @remove="(uid) => emit('remove', uid)"
+          @label-change="(label) => emit('labelChange', label)"
+        />
+      </template>
+      <!-- Sep Funnel -->
+      <template v-else-if="state.type === 'sep-funnel'">
+        <InspectorContainer
+          :item="item"
+          :state="state"
+          @action="(type, uid) => emit('action', type, uid)"
+          @remove="(uid) => emit('remove', uid)"
+          @label-change="(label) => emit('labelChange', label)"
+        />
+        <div class="fi-row"><span>{{ t('chemistry.valve') }}</span><b :class="state.valveOpen ? 'open' : ''">{{ state.valveOpen ? '🔓 ' + t('chemistry.open') : '🔒 ' + t('chemistry.closed') }}</b></div>
         <div class="fi-actions">
-          <button @click="emit('action', 'fill5', item.uid)">💧 +5</button>
-          <button @click="emit('action', 'fill10', item.uid)">💧 +10</button>
-          <button @click="emit('action', 'fill50', item.uid)">💧 +50</button>
-          <button @click="emit('action', 'fill100', item.uid)">💧 +100</button>
-        </div>
-        <div class="fi-actions">
-          <button class="remove" @click="emit('action', 'remove5', item.uid)">💨 −5</button>
-          <button class="remove" @click="emit('action', 'remove10', item.uid)">💨 −10</button>
-          <button class="remove" @click="emit('action', 'remove50', item.uid)">💨 −50</button>
-          <button class="remove" @click="emit('action', 'remove100', item.uid)">💨 −100</button>
-        </div>
-        <div class="fi-actions">
-          <button class="empty" @click="emit('action', 'empty', item.uid)">🗑️ {{ t('chemistry.drain') }}</button>
-          <button class="delete" @click="emit('remove', item.uid)">❌ {{ t('chemistry.remove') }}</button>
-        </div>
-        <!-- Tilt controls -->
-        <div class="fi-row">
-          <span>🔄 {{ t('chemistry.tilt') }}</span>
-          <b v-if="item && tiltAngleMap[item.uid]" class="tilt-value">{{ tiltAngleMap[item.uid] > 0 ? '↻ ' : '↺ ' }}{{ Math.abs(tiltAngleMap[item.uid]).toFixed(0) }}°</b>
-          <b v-else>⬆ {{ t('chemistry.straightUp') }}</b>
-        </div>
-        <div class="fi-actions tilt-actions">
-          <button class="tilt-left" @click="tiltLeft">↺ {{ t('chemistry.left') }}</button>
-          <button class="tilt-reset" @click="resetTilt">⬆ {{ t('chemistry.tiltReset') }}</button>
-          <button class="tilt-right" @click="tiltRight">↻ {{ t('chemistry.right') }}</button>
+          <button :class="state.valveOpen ? 'danger' : 'success'" @click="emit('action', 'toggleValve', item.uid)">{{ state.valveOpen ? '🔒 ' + t('chemistry.closeAction') : '🚰 ' + t('chemistry.openAction') }}</button>
         </div>
       </template>
       <!-- Burette -->
       <template v-else-if="state.type === 'burette'">
-        <div class="fi-row"><span>{{ t('chemistry.solution') }}</span><b>{{ state.volume.toFixed(1) }} / {{ state.maxVolume }} {{ t('chemistry.mL') }}</b></div>
-        <div class="fi-bar"><div class="fi-fill" :style="{ width: (state.volume/state.maxVolume*100).toFixed(0) + '%', background: state.color }" /></div>
-        <div class="fi-row"><span>{{ t('chemistry.valve') }}</span><b :class="state.valveOpen ? 'open' : ''">{{ state.valveOpen ? '🔓 ' + t('chemistry.open') : '🔒 ' + t('chemistry.closed') }}</b></div>
-        <div class="fi-actions">
-          <button @click="emit('action', 'fill5', item.uid)">💧 +5</button>
-          <button @click="emit('action', 'fill10', item.uid)">💧 +10</button>
-          <button @click="emit('action', 'fill50', item.uid)">💧 +50</button>
-          <button @click="emit('action', 'fill100', item.uid)">💧 +100</button>
-        </div>
-        <div class="fi-actions">
-          <button :class="state.valveOpen ? 'danger' : 'success'" @click="emit('action', 'toggleValve', item.uid)">{{ state.valveOpen ? '🔒 ' + t('chemistry.closeAction') : '🚰 ' + t('chemistry.openAction') }}</button>
-          <button class="refill" @click="emit('action', 'refill', item.uid)">♻️ {{ t('chemistry.refill') }}</button>
-        </div>
-        <div class="fi-actions">
-          <button class="drop-one" @click="emit('buretteDrop')">💧 {{ t('chemistry.dropByDrop') }}</button>
-        </div>
-        <div class="fi-actions">
-          <button class="remove" @click="emit('action', 'remove5', item.uid)">💨 −5</button>
-          <button class="remove" @click="emit('action', 'remove10', item.uid)">💨 −10</button>
-          <button class="remove" @click="emit('action', 'remove50', item.uid)">💨 −50</button>
-          <button class="remove" @click="emit('action', 'remove100', item.uid)">💨 −100</button>
-        </div>
-        <div class="fi-actions">
-          <button class="empty" @click="emit('action', 'empty', item.uid)">🗑️ {{ t('chemistry.drain') }}</button>
-          <button class="delete" @click="emit('remove', item.uid)">❌ {{ t('chemistry.remove') }}</button>
-        </div>
+        <InspectorBurette
+          :item="item"
+          :state="state"
+          @action="(type, uid) => emit('action', type, uid)"
+          @remove="(uid) => emit('remove', uid)"
+          @burette-drop="emit('buretteDrop')"
+          @label-change="(label) => emit('labelChange', label)"
+        />
       </template>
       <!-- Pipette -->
       <template v-else-if="state.type === 'pipette'">
-        <div class="fi-row"><span>{{ t('chemistry.solution') }}</span><b>{{ state.volume.toFixed(1) }} / {{ state.maxVolume }} {{ t('chemistry.mL') }}</b></div>
-        <div class="fi-bar"><div class="fi-fill" :style="{ width: (state.volume/state.maxVolume*100).toFixed(0) + '%', background: state.color }" /></div>
-        <div class="fi-row"><span>{{ t('chemistry.color') }}</span><span class="fi-dot" :style="{ background: state.color }" /></div>
-        <!-- Current chemical indicator -->
-        <div v-if="item && hasSelectedChemicalMap[item.uid]" class="fi-row fi-chem-row">
-          <span>{{ t('chemistry.selectedSolution') }}</span>
-          <span class="fi-chem-name">
-            <span class="fi-dot" :style="{ background: selectedChemical.color }" />
-            {{ getName(selectedChemical.id) }}
-          </span>
-        </div>
-        <!-- Fill from chemical shelf -->
-        <div class="fi-row"><span>🧪 {{ t('chemistry.fillFromShelf') }}</span></div>
-        <div class="fi-actions">
-          <button @click="emit('pipetteFill', 5)">💧 +5</button>
-          <button @click="emit('pipetteFill', 10)">💧 +10</button>
-          <button @click="emit('pipetteFill', 50)">💧 +50</button>
-          <button @click="emit('pipetteFill', 100)">💧 +100</button>
-        </div>
-        <!-- Select target container -->
-        <div class="fi-row"><span>🎯 {{ t('chemistry.selectContainer') }}</span></div>
-        <div class="fi-actions">
-          <select v-model="pipetteTargetUid" class="fi-select" @click.stop>
-            <option value="">{{ t('chemistry.chooseContainer') }}</option>
-            <option v-for="c in containerList" :key="c.uid" :value="c.uid">{{ containerLabel(c) }}</option>
-          </select>
-        </div>
-        <!-- Draw from selected container -->
-        <div class="fi-row"><span>💉 {{ t('chemistry.drawFrom') }}</span></div>
-        <div class="fi-actions">
-          <button class="success" :disabled="!pipetteTargetUid" @click="emit('pipetteDrawFrom', pipetteTargetUid, 1)">💉 1</button>
-          <button class="success" :disabled="!pipetteTargetUid" @click="emit('pipetteDrawFrom', pipetteTargetUid, 3)">💉 3</button>
-          <button class="success" :disabled="!pipetteTargetUid" @click="emit('pipetteDrawFrom', pipetteTargetUid, 5)">💉 5</button>
-          <button class="success" :disabled="!pipetteTargetUid" @click="emit('pipetteDrawFrom', pipetteTargetUid, 10)">💉 10</button>
-        </div>
-        <!-- Dispense to selected container -->
-        <div class="fi-row"><span>💧 {{ t('chemistry.dispenseTo') }}</span></div>
-        <div class="fi-actions">
-          <button class="success" :disabled="!pipetteTargetUid" @click="emit('pipetteDispenseTo', pipetteTargetUid, 1)">💧 1</button>
-          <button class="success" :disabled="!pipetteTargetUid" @click="emit('pipetteDispenseTo', pipetteTargetUid, 3)">💧 3</button>
-          <button class="success" :disabled="!pipetteTargetUid" @click="emit('pipetteDispenseTo', pipetteTargetUid, 5)">💧 5</button>
-          <button class="success" :disabled="!pipetteTargetUid" @click="emit('pipetteDispenseTo', pipetteTargetUid, 10)">💧 10</button>
-        </div>
-        <!-- Quick actions -->
-        <div class="fi-actions">
-          <button class="empty" @click="emit('pipetteEmpty')">🗑️ {{ t('chemistry.drain') }}</button>
-          <button class="delete" @click="emit('remove', item.uid)">❌ {{ t('chemistry.remove') }}</button>
-        </div>
-        <div class="fi-row hint">
-          <span>📖</span><small>{{ t('chemistry.pipetteHintNew') }}</small>
-        </div>
+        <InspectorPipette
+          :item="item"
+          :state="state"
+          @pipette-fill="(amount: number) => emit('pipetteFill', amount)"
+          @pipette-draw-from="(targetUid: string, amount: number) => emit('pipetteDrawFrom', targetUid, amount)"
+          @pipette-dispense-to="(targetUid: string, amount: number) => emit('pipetteDispenseTo', targetUid, amount)"
+          @pipette-empty="emit('pipetteEmpty')"
+          @remove="(uid) => emit('remove', uid)"
+        />
       </template>
       <!-- Bunsen Burner -->
       <template v-else-if="isBunsenBurner(item.id)">
@@ -369,53 +233,12 @@ function containerLabel(c: LabItem): string {
       </template>
       <!-- Spatula -->
       <template v-else-if="item.id === 'spatula'">
-        <div class="fi-row"><span>{{ t('chemistry.tool') }}</span><b>{{ t('chemistry.spatula') }}</b></div>
-        <div class="fi-row"><span>{{ t('chemistry.usage') }}</span><b>{{ t('chemistry.transferSolids') }}</b></div>
-
-        <!-- Selected solid indicator -->
-        <div v-if="spatulaSelectedSolid" class="fi-row fi-chem-row">
-          <span>{{ t('chemistry.selectedSolid') }}</span>
-          <span class="fi-chem-name">
-            <span class="fi-dot" :style="{ background: spatulaSelectedSolid.color }" />
-            {{ spatulaSelectedSolid.name }}
-          </span>
-        </div>
-
-        <!-- Select solid button -->
-        <div class="fi-actions">
-          <button class="success" @click="emit('spatulaSelectSolid')">
-            🧪 {{ spatulaSelectedSolid ? t('chemistry.changeSolid') : t('chemistry.selectSolid') }}
-          </button>
-        </div>
-
-        <!-- Target container selector -->
-        <div class="fi-row"><span>🎯 {{ t('chemistry.selectContainer') }}</span></div>
-        <div class="fi-actions">
-          <select v-model="spatulaTargetUid" class="fi-select" @click.stop>
-            <option value="">{{ t('chemistry.chooseContainer') }}</option>
-            <option v-for="c in spatulaContainerList" :key="c.uid" :value="c.uid">{{ spatulaContainerLabel(c) }}</option>
-          </select>
-        </div>
-
-        <!-- Grams buttons -->
-        <div class="fi-row"><span>⚖️ {{ t('chemistry.addGrams') }}</span></div>
-        <div class="fi-actions">
-          <button class="success" :disabled="!spatulaSelectedSolid || !spatulaTargetUid" @click="emit('spatulaAddTo', spatulaTargetUid, 0.5)">🥄 +0.5g</button>
-          <button class="success" :disabled="!spatulaSelectedSolid || !spatulaTargetUid" @click="emit('spatulaAddTo', spatulaTargetUid, 1)">🥄 +1g</button>
-          <button class="success" :disabled="!spatulaSelectedSolid || !spatulaTargetUid" @click="emit('spatulaAddTo', spatulaTargetUid, 2)">🥄 +2g</button>
-          <button class="success" :disabled="!spatulaSelectedSolid || !spatulaTargetUid" @click="emit('spatulaAddTo', spatulaTargetUid, 5)">🥄 +5g</button>
-        </div>
-
-        <!-- Show total solid in target -->
-        <div v-if="spatulaTargetUid && solidMap[spatulaTargetUid] && solidMap[spatulaTargetUid].amount > 0" class="fi-row">
-          <span>{{ t('chemistry.totalSolid') }}</span>
-          <b>{{ solidMap[spatulaTargetUid].amount.toFixed(2) }} {{ t('chemistry.g') }}</b>
-        </div>
-
-        <div class="fi-row hint"><span>📖</span><small>{{ t('chemistry.spatulaHintNew') }}</small></div>
-        <div class="fi-actions">
-          <button class="delete" @click="emit('remove', item.uid)">❌ {{ t('chemistry.remove') }}</button>
-        </div>
+        <InspectorSpatula
+          :item="item"
+          @spatula-select-solid="emit('spatulaSelectSolid')"
+          @spatula-add-to="(targetUid: string, grams: number) => emit('spatulaAddTo', targetUid, grams)"
+          @remove="(uid) => emit('remove', uid)"
+        />
       </template>
       <!-- Hot Plate -->
       <template v-else-if="isHotPlate(item.id)">
@@ -441,4 +264,4 @@ function containerLabel(c: LabItem): string {
     </div>
   </div>
 </template>
-<style src="./floating-inspector.css" scoped></style>
+<style src="./floating-inspector.css"></style>

@@ -3,6 +3,8 @@ import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
 import { getCookie } from 'hono/cookie';
 import { verifyAccessToken } from '../auth/jwt.js';
+import { authMiddleware as centralAuthMiddleware, adminAuthMiddleware } from '../auth/middleware.js';
+import { schoolCreateRoutes } from './handlers-school.js';
 import { db } from '../../db/index.js';
 import {
   createApprovalRequest, getApprovalsForUser, getPendingApprovals,
@@ -11,20 +13,10 @@ import {
 
 const approvalRoutes = new Hono<{ Variables: { user: { id: number; email: string; role: string }; schoolId: number } }>();
 
-// Auth middleware
-const authMiddleware = async (c: any, next: any) => {
-  const token = getCookie(c, 'access_token');
-  if (!token) return c.json({ success: false, message: 'Unauthorized' }, 401);
-  try {
-    const payload = await verifyAccessToken(token);
-    c.set('user', { id: Number(payload.sub), email: payload.email, role: payload.role });
-    await next();
-  } catch {
-    return c.json({ success: false, message: 'Invalid token' }, 401);
-  }
-};
+// Auth middleware — use centralized version
+const authMiddleware = centralAuthMiddleware;
 
-// School auth middleware
+// School auth middleware (sets schoolId for school-scoped routes)
 const schoolAuth = async (c: any, next: any) => {
   const token = getCookie(c, 'access_token');
   if (!token) return c.json({ success: false, message: 'Unauthorized' }, 401);
@@ -63,49 +55,51 @@ approvalRoutes.post('/', authMiddleware, zValidator('json', createSchema), async
   const user = c.get('user');
   const body = c.req.valid('json');
 
-  // ─── Enforce hierarchical escalation ───
+  // Enforce hierarchical escalation
+  const payload = { ...body };
+
   // Students → teacher first (or school if no teacher context)
   // Teachers → school first
   // School → admin
   // Nobody below school can send directly to admin
   if (user.role === 'student' || user.role === 'teacher') {
-    if (body.approver_type === 'admin') {
+    if (payload.approver_type === 'admin') {
       return c.json({ success: false, message: 'لا يمكنك إرسال طلب مباشرة للأدمن. يجب أن يمر عبر المدرسة أولاً. إذا رفضت المدرسة طلبك، يمكنك التصعيد للأدمن.' }, 403);
     }
     // Students must go to teacher first (if class context) or school
-    if (user.role === 'student' && body.approver_type === 'school' && body.class_id) {
+    if (user.role === 'student' && payload.approver_type === 'school' && payload.class_id) {
       // Redirect to teacher instead
-      body.approver_type = 'teacher';
+      payload.approver_type = 'teacher';
       const cls = await db.get<{ teacher_id: number }>(
-        'SELECT teacher_id FROM classes WHERE id = ?', body.class_id,
+        'SELECT teacher_id FROM classes WHERE id = ?', payload.class_id,
       );
-      if (cls) body.approver_id = cls.teacher_id;
+      if (cls) payload.approver_id = cls.teacher_id;
     }
   }
 
   // Auto-fill school_id from target user if not provided
-  if (!body.school_id) {
+  if (!payload.school_id) {
     const targetUser = await db.get<{ school_id: number | null }>(
-      'SELECT school_id FROM users WHERE id = ?', body.target_user_id,
+      'SELECT school_id FROM users WHERE id = ?', payload.target_user_id,
     );
-    if (targetUser?.school_id) body.school_id = targetUser.school_id;
+    if (targetUser?.school_id) payload.school_id = targetUser.school_id;
   }
 
   // Auto-fill approver_id for teacher approver
-  if (body.approver_type === 'teacher' && !body.approver_id && body.class_id) {
+  if (payload.approver_type === 'teacher' && !payload.approver_id && payload.class_id) {
     const cls = await db.get<{ teacher_id: number }>(
-      'SELECT teacher_id FROM classes WHERE id = ?', body.class_id,
+      'SELECT teacher_id FROM classes WHERE id = ?', payload.class_id,
     );
-    if (cls) body.approver_id = cls.teacher_id;
+    if (cls) payload.approver_id = cls.teacher_id;
   }
 
   const result = await createApprovalRequest({
-    ...body,
+    ...payload,
     requester_type: user.role as any,
     requester_id: user.id,
     requester_name: '',
-    school_id: body.school_id,
-    metadata: body.metadata,
+    school_id: payload.school_id,
+    metadata: payload.metadata,
   });
 
   // Get requester name
@@ -149,8 +143,22 @@ approvalRoutes.get('/pending', authMiddleware, async (c) => {
 // ─── Get Approval by ID ───
 approvalRoutes.get('/:id', authMiddleware, async (c) => {
   const id = Number(c.req.param('id'));
-  const approval = await getApprovalById(id);
+  const user = c.get('user');
+  const approval = await getApprovalById(id) as {
+    requester_id: number; target_user_id: number; approver_type: string;
+    approver_id: number | null; school_id: number | null;
+  } | null;
   if (!approval) return c.json({ success: false, message: 'Not found' }, 404);
+
+  const isOwner = approval.requester_id === user.id || approval.target_user_id === user.id;
+  const isApprover = approval.approver_type === user.role &&
+    (approval.approver_id === user.id || approval.approver_id == null);
+  const isSchoolOwner = user.role === 'school' && approval.school_id === user.id;
+
+  if (!isOwner && !isApprover && !isSchoolOwner && user.role !== 'admin') {
+    return c.json({ success: false, message: 'غير مصرح' }, 403);
+  }
+
   return c.json({ success: true, approval });
 });
 
@@ -193,7 +201,17 @@ const escalateSchema = z.object({
 
 approvalRoutes.post('/:id/escalate', authMiddleware, zValidator('json', escalateSchema), async (c) => {
   const id = Number(c.req.param('id'));
+  const user = c.get('user');
   const { reason } = c.req.valid('json');
+
+  const approval = await getApprovalById(id) as {
+    requester_id: number; status: string;
+  } | null;
+  if (!approval) return c.json({ success: false, message: 'Not found' }, 404);
+  if (approval.requester_id !== user.id) {
+    return c.json({ success: false, message: 'غير مصرح — يمكنك تصعيد طلباتك فقط' }, 403);
+  }
+
   const result = await escalateRequest(id, reason);
   if (!result.success) return c.json({ success: false, message: result.message }, 400);
   return c.json({ success: true });
@@ -231,17 +249,7 @@ approvalRoutes.post('/school/:id/reject', schoolAuth, zValidator('json', approve
 });
 
 // ─── Admin: Get All Approvals ───
-const adminAuth = async (c: any, next: any) => {
-  const token = getCookie(c, 'access_token');
-  if (!token) return c.json({ success: false, message: 'Unauthorized' }, 401);
-  try {
-    const payload = await verifyAccessToken(token);
-    if (payload.role !== 'admin') return c.json({ success: false, message: 'Admin access required' }, 403);
-    await next();
-  } catch {
-    return c.json({ success: false, message: 'Invalid token' }, 401);
-  }
-};
+const adminAuth = adminAuthMiddleware;
 
 approvalRoutes.get('/admin/all', adminAuth, async (c) => {
   const approvals = await getAllApprovals();
@@ -250,62 +258,25 @@ approvalRoutes.get('/admin/all', adminAuth, async (c) => {
 
 approvalRoutes.post('/admin/:id/approve', adminAuth, zValidator('json', approveSchema), async (c) => {
   const id = Number(c.req.param('id'));
-  const user = c.get('user') || { id: 0, name: 'Admin' };
+  const user = c.get('user') as { id: number; name: string; email: string; role: string };
   const { response } = c.req.valid('json');
 
-  const admin = await db.get<{ name: string }>('SELECT name FROM users WHERE id = ?', user.id);
-  const result = await approveRequest(id, user.id, admin?.name || 'Admin', 'admin', response);
+  const result = await approveRequest(id, user.id, user.name, 'admin', response);
   if (!result.success) return c.json({ success: false, message: result.message }, 400);
   return c.json({ success: true, action: result.action });
 });
 
 approvalRoutes.post('/admin/:id/reject', adminAuth, zValidator('json', approveSchema), async (c) => {
   const id = Number(c.req.param('id'));
-  const user = c.get('user') || { id: 0, name: 'Admin' };
+  const user = c.get('user') as { id: number; name: string; email: string; role: string };
   const { response } = c.req.valid('json');
 
-  const admin = await db.get<{ name: string }>('SELECT name FROM users WHERE id = ?', user.id);
-  const result = await rejectRequest(id, user.id, admin?.name || 'Admin', 'admin', response);
+  const result = await rejectRequest(id, user.id, user.name, 'admin', response);
   if (!result.success) return c.json({ success: false, message: result.message }, 400);
   return c.json({ success: true });
 });
 
-// ─── School: Create Approval Request (School → Admin) ───
-const schoolCreateSchema = z.object({
-  type: z.enum(['class_creation', 'class_deletion', 'class_edit', 'user_creation', 'user_edit', 'report_deletion']),
-  target_user_id: z.number().int(),
-  target_user_name: z.string().min(1),
-  class_id: z.string().optional(),
-  report_id: z.number().int().optional(),
-  title: z.string().min(1).max(200),
-  description: z.string().min(1).max(2000),
-  metadata: z.string().optional(),
-});
-
-approvalRoutes.post('/school/create', schoolAuth, zValidator('json', schoolCreateSchema), async (c) => {
-  const schoolId = c.get('schoolId');
-  const body = c.req.valid('json');
-
-  const school = await db.get<{ id: number; name: string; email: string }>('SELECT id, name, email FROM schools WHERE id = ?', schoolId);
-  if (!school) return c.json({ success: false, message: 'School not found' }, 404);
-
-  const result = await createApprovalRequest({
-    type: body.type as any,
-    requester_type: 'school',
-    requester_id: school.id,
-    requester_name: school.name,
-    approver_type: 'admin',
-    target_user_id: body.target_user_id || school.id,
-    target_user_name: body.target_user_name,
-    class_id: body.class_id,
-    report_id: body.report_id,
-    school_id: school.id,
-    title: body.title,
-    description: body.description,
-    metadata: body.metadata,
-  });
-
-  return c.json({ success: true, id: result.id });
-});
+// ─── Merge sub-routers ───
+approvalRoutes.route('/', schoolCreateRoutes);
 
 export { approvalRoutes };

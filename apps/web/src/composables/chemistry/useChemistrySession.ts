@@ -4,7 +4,7 @@ import {
   solidMap, stopperMap, pourFlowMap, tiltAngleMap, rackSlotsMap,
   buretteInitialVolumeMap, buretteTotalConsumedMap, buretteConsumedThisRefill,
   hasSelectedChemicalMap, beakerClampMap, hotPlateMap, woodenBaseMap,
-  retortStandMap, spillParticles, receivingMap
+  retortStandMap, spillParticles, receivingMap, resetUid
 } from './useChemistryLab';
 import { buretteWarning } from './useLabSimulation';
 
@@ -57,6 +57,8 @@ export function loadSession(): void {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
     const data = JSON.parse(raw);
+    if (!data || typeof data !== 'object') return;
+    if (!Array.isArray(data.items)) return;
     // Clear existing state before loading to avoid stale keys
     items.value = [];
     Object.keys(liquidMap).forEach(k => delete liquidMap[k]);
@@ -81,6 +83,8 @@ export function loadSession(): void {
     Object.keys(hotPlateMap).forEach(k => delete hotPlateMap[k]);
     Object.keys(woodenBaseMap).forEach(k => delete woodenBaseMap[k]);
     Object.keys(retortStandMap).forEach(k => delete retortStandMap[k]);
+    Object.keys(receivingMap).forEach(k => delete receivingMap[k]);
+    spillParticles.splice(0, spillParticles.length);
     // Now load saved data
     if (data.items) items.value = data.items;
     if (data.liquids) Object.assign(liquidMap, data.liquids);
@@ -90,7 +94,7 @@ export function loadSession(): void {
     if (data.burners) Object.assign(burnerMap, data.burners);
     if (data.balanceTares) Object.assign(balanceTareMap, data.balanceTares);
     if (data.containerTares) Object.assign(containerTareMap, data.containerTares);
-    if (data.simSpeed) simSpeed.value = data.simSpeed;
+    if (typeof data.simSpeed === 'number') simSpeed.value = data.simSpeed;
     if (data.itemZooms) Object.assign(itemZoomMap, data.itemZooms);
     if (data.phProbeTips) Object.assign(phProbeTipMap, data.phProbeTips);
     if (data.solids) Object.assign(solidMap, data.solids);
@@ -139,5 +143,6 @@ export function clearSession(): void {
   Object.keys(receivingMap).forEach(k => delete receivingMap[k]);
   spillParticles.splice(0, spillParticles.length);
   buretteWarning.value = null;
+  resetUid();
   localStorage.removeItem(STORAGE_KEY);
 }

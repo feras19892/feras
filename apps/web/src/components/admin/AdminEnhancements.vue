@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
+import { useI18n } from '../../composables/useI18n';
+import { useConfirmDialog } from '../../composables/useConfirmDialog';
 import { getAllBadges, createBadge, deleteBadge, type Badge } from '../../services/gamification.service';
 import { getAllPenalties, dismissPenalty, deletePenalty, getAllRatings, type Penalty, type Rating } from '../../services/enhancements.service';
 import { adminGetAllQuizzes, deleteQuiz } from '../../services/quiz.service';
 import type { Quiz } from '../../services/quiz.service';
 
+const { t, locale } = useI18n();
 const activeTab = ref<'quizzes' | 'badges' | 'penalties' | 'ratings'>('quizzes');
 const loading = ref(false);
 
@@ -36,14 +39,18 @@ async function handleCreateBadge() {
   await loadAll();
 }
 
+const { confirmDialog } = useConfirmDialog();
+
 async function handleDeleteBadge(id: number) {
-  if (!confirm('حذف هذه الشارة؟')) return;
+  const ok = await confirmDialog({ message: t('adminExtras.enhConfirmDeleteBadge'), variant: 'danger' });
+  if (!ok) return;
   await deleteBadge(id);
   await loadAll();
 }
 
 async function handleDeleteQuiz(id: number) {
-  if (!confirm('حذف هذا الامتحان؟')) return;
+  const ok = await confirmDialog({ message: t('adminExtras.enhConfirmDeleteQuiz'), variant: 'danger' });
+  if (!ok) return;
   await deleteQuiz(id);
   await loadAll();
 }
@@ -54,38 +61,44 @@ async function handleDismissPenalty(id: number) {
 }
 
 async function handleDeletePenalty(id: number) {
-  if (!confirm('حذف هذه العقوبة؟')) return;
+  const ok = await confirmDialog({ message: t('adminExtras.enhConfirmDeletePenalty'), variant: 'danger' });
+  if (!ok) return;
   await deletePenalty(id);
   await loadAll();
 }
 
-onMounted(loadAll);
+let refreshTimer: ReturnType<typeof setInterval> | null = null;
+onMounted(() => {
+  loadAll();
+  refreshTimer = setInterval(() => loadAll(), 30000);
+});
+onUnmounted(() => { if (refreshTimer) clearInterval(refreshTimer); });
 </script>
 
 <template>
   <div class="admin-enh">
     <div class="sub-tabs">
-      <button :class="{ active: activeTab === 'quizzes' }" @click="activeTab = 'quizzes'">📝 الامتحانات ({{ quizzes.length }})</button>
-      <button :class="{ active: activeTab === 'badges' }" @click="activeTab = 'badges'">🏆 الشارات ({{ badges.length }})</button>
-      <button :class="{ active: activeTab === 'penalties' }" @click="activeTab = 'penalties'">⚠️ العقوبات ({{ penalties.length }})</button>
-      <button :class="{ active: activeTab === 'ratings' }" @click="activeTab = 'ratings'">⭐ التقييمات ({{ ratings.length }})</button>
+      <button :class="{ active: activeTab === 'quizzes' }" @click="activeTab = 'quizzes'">{{ t('adminExtras.enhQuizzes') }} ({{ quizzes.length }})</button>
+      <button :class="{ active: activeTab === 'badges' }" @click="activeTab = 'badges'">{{ t('adminExtras.enhBadges') }} ({{ badges.length }})</button>
+      <button :class="{ active: activeTab === 'penalties' }" @click="activeTab = 'penalties'">{{ t('adminExtras.enhPenalties') }} ({{ penalties.length }})</button>
+      <button :class="{ active: activeTab === 'ratings' }" @click="activeTab = 'ratings'">{{ t('adminExtras.enhRatings') }} ({{ ratings.length }})</button>
     </div>
 
-    <div v-if="loading" class="loading">جاري التحميل...</div>
+    <div v-if="loading" class="loading">{{ t('admin.loading') }}</div>
 
     <!-- Quizzes -->
     <div v-if="activeTab === 'quizzes' && !loading">
-      <div v-if="quizzes.length === 0" class="empty">لا توجد امتحانات</div>
+      <div v-if="quizzes.length === 0" class="empty">{{ t('adminExtras.enhNoQuizzes') }}</div>
       <table v-else class="data-table">
-        <thead><tr><th>العنوان</th><th>المدرس</th><th>الفصل</th><th>الحالة</th><th>الوقت</th><th>إجراءات</th></tr></thead>
+        <thead><tr><th>{{ t('adminExtras.enhTitle') }}</th><th>{{ t('adminExtras.enhTeacherCol') }}</th><th>{{ t('adminExtras.enhClassCol') }}</th><th>{{ t('admin.status') }}</th><th>{{ t('adminExtras.enhTime') }}</th><th>{{ t('admin.actions') }}</th></tr></thead>
         <tbody>
           <tr v-for="q in quizzes" :key="q.id">
             <td>{{ q.title }}</td>
             <td>{{ q.teacher_name }}</td>
             <td>{{ q.class_name || '—' }}</td>
             <td><span :class="['status-tag', q.status]">{{ q.status }}</span></td>
-            <td>{{ q.time_limit_minutes }} د</td>
-            <td><button class="btn-mini delete" @click="handleDeleteQuiz(q.id)">حذف</button></td>
+            <td>{{ q.time_limit_minutes }} {{ t('adminExtras.enhTime') }}</td>
+            <td><button class="btn-mini delete" @click="handleDeleteQuiz(q.id)">{{ t('adminExtras.enhDeleteBtn') }}</button></td>
           </tr>
         </tbody>
       </table>
@@ -94,21 +107,21 @@ onMounted(loadAll);
     <!-- Badges -->
     <div v-if="activeTab === 'badges' && !loading">
       <div class="header-row">
-        <h4>إدارة الشارات</h4>
-        <button class="btn-create" @click="showBadgeForm = !showBadgeForm">{{ showBadgeForm ? 'إلغاء' : '+ شارة جديدة' }}</button>
+        <h4>{{ t('adminExtras.enhManageBadges') }}</h4>
+        <button class="btn-create" @click="showBadgeForm = !showBadgeForm">{{ showBadgeForm ? t('adminExtras.enhCancel') : t('adminExtras.enhNewBadge') }}</button>
       </div>
       <div v-if="showBadgeForm" class="badge-form">
         <div class="form-row">
-          <input v-model="newBadge.name" placeholder="اسم الشارة" />
-          <input v-model="newBadge.icon" placeholder="أيقونة" style="width: 60px" />
+          <input v-model="newBadge.name" :placeholder="t('adminExtras.enhBadgeName')" />
+          <input v-model="newBadge.icon" :placeholder="t('adminExtras.enhBadgeIcon')" style="width: 60px" />
           <select v-model="newBadge.type">
-            <option value="manual">يدوية</option>
-            <option value="auto">تلقائية</option>
+            <option value="manual">{{ t('adminExtras.enhManual') }}</option>
+            <option value="auto">{{ t('adminExtras.enhAuto') }}</option>
           </select>
         </div>
-        <input v-model="newBadge.description" placeholder="الوصف" />
-        <input v-if="newBadge.type === 'auto'" v-model="newBadge.criteria" placeholder="المعيار (criteria)" />
-        <button class="btn-save" @click="handleCreateBadge">حفظ</button>
+        <input v-model="newBadge.description" :placeholder="t('adminExtras.enhDescription')" />
+        <input v-if="newBadge.type === 'auto'" v-model="newBadge.criteria" :placeholder="t('adminExtras.enhCriteria')" />
+        <button class="btn-save" @click="handleCreateBadge">{{ t('adminExtras.enhSave') }}</button>
       </div>
       <div class="badges-grid">
         <div v-for="b in badges" :key="b.id" class="badge-item">
@@ -116,29 +129,29 @@ onMounted(loadAll);
           <div class="badge-info">
             <strong>{{ b.name }}</strong>
             <p>{{ b.description }}</p>
-            <span class="badge-type">{{ b.type === 'auto' ? 'تلقائية' : 'يدوية' }}</span>
+            <span class="badge-type">{{ b.type === 'auto' ? t('adminExtras.enhAuto') : t('adminExtras.enhManual') }}</span>
           </div>
-          <button class="btn-mini delete" @click="handleDeleteBadge(b.id)">حذف</button>
+          <button class="btn-mini delete" @click="handleDeleteBadge(b.id)">{{ t('adminExtras.enhDeleteBtn') }}</button>
         </div>
       </div>
     </div>
 
     <!-- Penalties -->
     <div v-if="activeTab === 'penalties' && !loading">
-      <div v-if="penalties.length === 0" class="empty">لا توجد عقوبات أو مكافآت</div>
+      <div v-if="penalties.length === 0" class="empty">{{ t('adminExtras.enhNoPenalties') }}</div>
       <table v-else class="data-table">
-        <thead><tr><th>النوع</th><th>الطالب</th><th>المدرس</th><th>السبب</th><th>النقاط</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+        <thead><tr><th>{{ t('adminExtras.enhTypeCol') }}</th><th>{{ t('adminExtras.enhStudent') }}</th><th>{{ t('adminExtras.enhTeacherCol') }}</th><th>{{ t('adminExtras.reqReason') }}</th><th>{{ t('adminExtras.enhPoints') }}</th><th>{{ t('admin.status') }}</th><th>{{ t('admin.actions') }}</th></tr></thead>
         <tbody>
           <tr v-for="p in penalties" :key="p.id">
-            <td><span :class="['type-tag', p.type]">{{ p.type === 'penalty' ? 'عقوبة' : 'مكافأة' }}</span></td>
+            <td><span :class="['type-tag', p.type]">{{ p.type === 'penalty' ? t('adminExtras.enhPenalty') : t('adminExtras.enhReward') }}</span></td>
             <td>{{ p.student_name }}</td>
             <td>{{ p.teacher_name }}</td>
             <td>{{ p.reason }}</td>
             <td>{{ p.points }}</td>
-            <td>{{ p.status === 'active' ? 'نشط' : 'ملغي' }}</td>
+            <td>{{ p.status === 'active' ? t('adminExtras.enhActive') : t('adminExtras.enhDismissed') }}</td>
             <td>
-              <button v-if="p.status === 'active'" class="btn-mini" @click="handleDismissPenalty(p.id)">إلغاء</button>
-              <button class="btn-mini delete" @click="handleDeletePenalty(p.id)">حذف</button>
+              <button v-if="p.status === 'active'" class="btn-mini" @click="handleDismissPenalty(p.id)">{{ t('adminExtras.enhDismiss') }}</button>
+              <button class="btn-mini delete" @click="handleDeletePenalty(p.id)">{{ t('adminExtras.enhDeleteBtn') }}</button>
             </td>
           </tr>
         </tbody>
@@ -147,9 +160,9 @@ onMounted(loadAll);
 
     <!-- Ratings -->
     <div v-if="activeTab === 'ratings' && !loading">
-      <div v-if="ratings.length === 0" class="empty">لا توجد تقييمات</div>
+      <div v-if="ratings.length === 0" class="empty">{{ t('adminExtras.enhNoRatings') }}</div>
       <table v-else class="data-table">
-        <thead><tr><th>الهدف</th><th>النوع</th><th>المقيّم</th><th>التقييم</th><th>التعليق</th><th>التاريخ</th></tr></thead>
+        <thead><tr><th>{{ t('adminExtras.enhTarget') }}</th><th>{{ t('adminExtras.enhTypeCol') }}</th><th>{{ t('adminExtras.enhRater') }}</th><th>{{ t('adminExtras.enhRatingCol') }}</th><th>{{ t('adminExtras.enhComment') }}</th><th>{{ t('admin.date') }}</th></tr></thead>
         <tbody>
           <tr v-for="r in ratings" :key="r.id">
             <td>{{ r.target_id }}</td>
@@ -157,7 +170,7 @@ onMounted(loadAll);
             <td>{{ r.rater_name || r.rater_type }}</td>
             <td><span class="stars">{{ '⭐'.repeat(r.rating) }}</span></td>
             <td>{{ r.comment || '—' }}</td>
-            <td>{{ new Date(r.created_at).toLocaleDateString('ar-SA') }}</td>
+            <td>{{ new Date(r.created_at).toLocaleDateString(locale === 'ar' ? 'ar-SA' : locale) }}</td>
           </tr>
         </tbody>
       </table>

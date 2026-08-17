@@ -54,8 +54,15 @@ export async function markSchoolNotificationAsRead(id: number, schoolId: number)
 
 export async function markAllSchoolNotificationsAsRead(schoolId: number) {
   // Delete all non-pinned, mark pinned as read
-  await db.run(`DELETE FROM school_notifications WHERE school_id = ? AND is_pinned = 0`, schoolId);
-  await db.run(`UPDATE school_notifications SET is_read = 1 WHERE school_id = ?`, schoolId);
+  await db.run('BEGIN IMMEDIATE');
+  try {
+    await db.run(`DELETE FROM school_notifications WHERE school_id = ? AND is_pinned = 0`, schoolId);
+    await db.run(`UPDATE school_notifications SET is_read = 1 WHERE school_id = ?`, schoolId);
+    await db.run('COMMIT');
+  } catch (err) {
+    await db.run('ROLLBACK');
+    throw err;
+  }
   return { success: true };
 }
 
@@ -96,8 +103,15 @@ export async function markAsRead(id: number, userId: number) {
 
 export async function markAllAsRead(userId: number) {
   // Delete all non-pinned, mark pinned as read
-  await db.run(`DELETE FROM notifications WHERE user_id = ? AND is_pinned = 0`, userId);
-  await db.run(`UPDATE notifications SET is_read = 1 WHERE user_id = ?`, userId);
+  await db.run('BEGIN IMMEDIATE');
+  try {
+    await db.run(`DELETE FROM notifications WHERE user_id = ? AND is_pinned = 0`, userId);
+    await db.run(`UPDATE notifications SET is_read = 1 WHERE user_id = ?`, userId);
+    await db.run('COMMIT');
+  } catch (err) {
+    await db.run('ROLLBACK');
+    throw err;
+  }
   return { success: true };
 }
 

@@ -117,7 +117,7 @@ export function inclinedStepWithDrag(
   area: number,
 ): { s: number; v: number; a: number; fd: number } {
   const fd = calculateDragForce(v, cd, area)
-  const a = g * (sin - mu * cos) - fd / mass
+  const a = g * (sin - mu * cos) - fd / Math.max(mass, 1e-9)
   const newV = v + a * dt
   const newS = s + v * dt + 0.5 * a * dt * dt
   return { s: newS, v: newV, a, fd }

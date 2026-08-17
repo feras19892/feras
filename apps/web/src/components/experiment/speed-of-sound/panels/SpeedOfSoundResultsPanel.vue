@@ -14,8 +14,8 @@ interface Props {
 }
 const props = defineProps<Props>()
 
-const avgV = computed(() => props.trials.length > 0 ? props.trials.reduce((s, t) => s + t.vMeasured, 0) / props.trials.length : 0)
-const avgVTheory = computed(() => props.trials.length > 0 ? props.trials.reduce((s, t) => s + t.vTheory, 0) / props.trials.length : 0)
+const avgV = computed(() => props.trials.length > 0 ? props.trials.reduce((s, tr) => s + tr.vMeasured, 0) / props.trials.length : 0)
+const avgVTheory = computed(() => props.trials.length > 0 ? props.trials.reduce((s, tr) => s + tr.vTheory, 0) / props.trials.length : 0)
 const percentError = computed(() => {
   if (props.vFromRegression === null || avgVTheory.value <= 0) return null
   return Math.abs((props.vFromRegression - avgVTheory.value) / avgVTheory.value) * 100

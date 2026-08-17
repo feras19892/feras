@@ -10,7 +10,6 @@ export interface ToolState {
   color: string;
   opacity?: number;
   label?: string;
-  temp?: number;
   ph?: number;
   buretteNumber?: number;
   gasEvolution?: boolean;

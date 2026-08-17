@@ -1,8 +1,9 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useProjectileExperiment } from '../../../../composables/projectile/useProjectileExperiment'
 import { useProjectileReport } from '../../../../composables/projectile/useProjectileReport'
 import { useI18n } from '../../../../composables/useI18n'
+import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import ProjectileMenuBar from '../../../../components/experiment/projectile/ProjectileMenuBar.vue'
 import ProjectileCanvas from '../../../../components/experiment/projectile/ProjectileCanvas.vue'
 import ProjectilePanelBody from '../../../../components/experiment/projectile/ProjectilePanelBody.vue'
@@ -13,11 +14,13 @@ import ProjectileGuidePanel from '../../../../components/experiment/projectile/P
 import ProjectileReport from '../../../../components/experiment/projectile/ProjectileReport.vue'
 import ProjectileStepTracker from '../../../../components/experiment/projectile/ProjectileStepTracker.vue'
 import ProjectileStatusBar from '../../../../components/experiment/projectile/ProjectileStatusBar.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
+import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
 const ex = useProjectileExperiment()
 const rep = useProjectileReport()
 const { t } = useI18n()
+const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)
 const reportOpen = ref(false)
@@ -27,7 +30,7 @@ function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return
   if (e.code === 'Space') { e.preventDefault(); ex.lab.togglePause() }
-  else if (e.key === 'r' || e.key === 'R') { if (confirm(t('experiments.resetConfirm'))) ex.resetSim() }
+  else if (e.key === 'r' || e.key === 'R') { confirmReset().then(ok => { if (ok) ex.resetSim() }) }
   else if (e.key === 's' || e.key === 'S') { ex.trials.recordTrial() }
   else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); if (e.shiftKey) ex.trials.redo(); else ex.trials.undo() }
   else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ex.trials.redo() }
@@ -40,11 +43,9 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 <template>
   <div class="projectile-lab">
     <ProjectileMenuBar
-      :title="t('experiments.projectileTitle')" icon="🚀" experiment-route="/physics/mechanics/projectile" experiment-name="Projectile"
-      @toggle-panel="ex.layout.togglePanel" @show-all-panels="ex.layout.showAllPanels" @export-csv="ex.trials.exportCsv"
-      @toggle-pause="ex.lab.togglePause" @reset="ex.resetSim" @record-trial="ex.trials.recordTrial" @run-lab="ex.runProjectileLab"
-      @calc-flight-time="ex.trials.calcFlightTime" @calc-max-height="ex.trials.calcMaxHeight" @calc-range="ex.trials.calcRange" @calc-fit-range="ex.trials.calcFitRange"
-      @toggle-help="helpOpen = !helpOpen" @print-report="reportOpen = true"
+      :title="t('experiments.projectileTitle')" icon="🚀"
+      @show-all-panels="ex.layout.showAllPanels"
+      @toggle-help="helpOpen = !helpOpen"
       @analyze-results="ex.exportToAnalysis"
     />
 
@@ -83,7 +84,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       <div class="resizer" @mousedown="ex.onResizeStart('vis', $event)"></div>
       <div class="lab-col ctrl-col" :style="{ width: ex.colWidths.ctrl + 'px' }">
         <template v-for="id in ex.getColumnPanels('ctrl')" :key="id">
-          <DraggablePanel v-if="id !== 'params' && ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id)"
+          <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id)"
             @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
             <ProjectilePanelBody :id="id" :trials="ex.trials.trials.value" :calc-result="ex.trials.calcResult.value" :params="ex.params" :sim="ex.lab.sim"
               :measured="ex.getMeasured()" :trial-stats="ex.trials.trialStats.value" :tutor-type="ex.tutorType.value" :tutor-message="ex.tutorMessage.value" :fit-result="ex.trials.fitResult.value"
@@ -91,19 +92,13 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
               @calc-flight-time="ex.trials.calcFlightTime" @calc-max-height="ex.trials.calcMaxHeight" @calc-range="ex.trials.calcRange" @calc-fit-range="ex.trials.calcFitRange" @show-calc="html => ex.trials.calcResult.value = html"
             />
           </DraggablePanel>
-          <div v-else-if="id === 'params'" class="params-embedded">
-            <ProjectilePanelBody id="params" :trials="ex.trials.trials.value" :calc-result="ex.trials.calcResult.value" :params="ex.params" :sim="ex.lab.sim"
-              :measured="ex.getMeasured()" :trial-stats="ex.trials.trialStats.value" :tutor-type="ex.tutorType.value" :tutor-message="ex.tutorMessage.value" :fit-result="ex.trials.fitResult.value"
-              @update:params="Object.assign(ex.params, $event)"
-            />
-          </div>
         </template>
         <ProjectileGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
 
     <ProjectileOverlayPanels :maximized="ex.layout.maximized" :panel-title="(id: string) => ex.layout.panelTitle(String(id))" :trials="ex.trials.trials.value" :calc-result="ex.trials.calcResult.value" :fit-result="ex.trials.fitResult.value"
-      :params="ex.params" :sim="ex.lab.sim" :measured="ex.getMeasured()" :trial-stats="ex.trials.trialStats.value"
+      :params="ex.params" :sim="ex.lab.sim" :measured="ex.getMeasured()" :trial-stats="ex.trials.trialStats.value" :tutor-type="ex.tutorType.value" :tutor-message="ex.tutorMessage.value"
       @maximize="ex.layout.maximizePanel" @drop="ex.handleDrop" @update:trials="ex.trials.trials.value = $event" @update:params="Object.assign(ex.params, $event)"
       @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials" @calc-flight-time="ex.trials.calcFlightTime" @calc-max-height="ex.trials.calcMaxHeight" @calc-range="ex.trials.calcRange" @calc-fit-range="ex.trials.calcFitRange" @show-calc="html => ex.trials.calcResult.value = html"
     />
@@ -136,6 +131,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @close="reportOpen = false" @open-full-report="rep.openFullReport(ex)"
     />
   </div>
+  <ResetConfirmModal />
 </template>
 
 <style scoped>
@@ -145,7 +141,6 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 .data-col { background: rgba(255,255,255,0.02); }
 .vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 0; }
 .ctrl-col { background: rgba(255,255,255,0.02); }
-.params-embedded { padding: .6rem; }
 .resizer { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0; }
 .resizer:hover, .resizer:active { background: #5B8DB8; }
 .chart-row { display: flex; gap: .5rem; width: 100%; margin-top: .3rem; flex: 0 0 180px; min-height: 0; align-items: stretch; }

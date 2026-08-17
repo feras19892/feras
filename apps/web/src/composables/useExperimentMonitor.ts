@@ -81,11 +81,11 @@ function hookCanvas() {
   if (canvasHookInstalled) return;
   canvasHookInstalled = true;
   const origGetContext = HTMLCanvasElement.prototype.getContext;
-  (HTMLCanvasElement.prototype as any).getContext = function (
+  (HTMLCanvasElement.prototype as unknown as { getContext: (contextId: string, options?: unknown) => RenderingContext | null }).getContext = function (
     contextId: string,
     options?: unknown
   ) {
-    const ctx = (origGetContext as any).call(this, contextId, options);
+    const ctx = (origGetContext as unknown as (contextId: string, options?: unknown) => RenderingContext | null).call(this, contextId, options);
     if (!ctx) return null;
     if (contextId === '2d') {
       const c2d = ctx as CanvasRenderingContext2D;

@@ -6,14 +6,14 @@ import ACLab from './ac/ACLab.vue'
 
 const { t } = useI18n()
 
-type TabId = 'dc' | 'ac' | 'home' | 'industrial'
+type TabId = 'dc' | 'ac'
 
 const STORAGE_KEY_TAB = 'electric-workshop-active-tab'
 
 const savedTab = (() => {
   try {
     const v = localStorage.getItem(STORAGE_KEY_TAB)
-    if (v === 'dc' || v === 'ac' || v === 'home' || v === 'industrial') return v
+    if (v === 'dc' || v === 'ac') return v
   } catch (e) { /* ignore */ }
   return 'dc'
 })()
@@ -27,8 +27,6 @@ watch(activeTab, (v) => {
 const tabs: { id: TabId; labelKey: string; icon: string; color: string }[] = [
   { id: 'dc',         labelKey: 'ew.tabDc',         icon: '⚡',  color: '#f59e0b' },
   { id: 'ac',         labelKey: 'ew.tabAc',         icon: '〰️', color: '#3b82f6' },
-  { id: 'home',       labelKey: 'ew.tabHome',       icon: '🏠', color: '#22c55e' },
-  { id: 'industrial', labelKey: 'ew.tabIndustrial', icon: '🏭', color: '#ef4444' },
 ]
 </script>
 
@@ -58,23 +56,6 @@ const tabs: { id: TabId; labelKey: string; icon: string; color: string }[] = [
 
       <ACLab v-else-if="activeTab === 'ac'" />
 
-      <div v-else-if="activeTab === 'home'" class="tab-content">
-        <div class="coming-soon">
-          <span class="cs-icon">🏠</span>
-          <h2>{{ t('ew.homeWiringTitle') }}</h2>
-          <p>{{ t('ew.homeWiringDesc') }}</p>
-          <p class="cs-status">{{ t('ew.underConstruction') }}</p>
-        </div>
-      </div>
-
-      <div v-else-if="activeTab === 'industrial'" class="tab-content">
-        <div class="coming-soon">
-          <span class="cs-icon">🏭</span>
-          <h2>{{ t('ew.industrialWiringTitle') }}</h2>
-          <p>{{ t('ew.industrialWiringDesc') }}</p>
-          <p class="cs-status">{{ t('ew.underConstruction') }}</p>
-        </div>
-      </div>
     </div>
   </div>
 </template>

@@ -110,8 +110,8 @@ export function useMirrorExperiment() {
 
   const regression = computed(() => {
     const pts = trials.trials.value
-      .filter((t: MirrorTrial) => t.imageDistance !== 0 && t.mirrorType === params.mirrorType)
-      .map((t: MirrorTrial) => ({ x: t.invDo, y: t.invDi }))
+      .filter((tr: MirrorTrial) => tr.imageDistance !== 0 && tr.mirrorType === params.mirrorType)
+      .map((tr: MirrorTrial) => ({ x: tr.invDo, y: tr.invDi }))
     return linearRegression(pts)
   })
 
@@ -173,17 +173,17 @@ export function useMirrorExperiment() {
   const router = useRouter()
   function exportToAnalysis() {
     const tList = trials.trials.value
-    if (tList.length === 0) { console.warn('[exportToAnalysis] no trials recorded'); return }
+    if (tList.length === 0) { alert('تحتاج إلى تسجيل قراءة واحدة على الأقل قبل التحليل'); return }
 
-    const readings = tList.map((t: MirrorTrial) => ({
-      mirror_type: t.mirrorType,
-      f: t.focalLength,
-      do: t.objectDistance,
-      di: t.imageDistance,
-      ho: t.objectHeight,
-      hi: t.imageHeight,
-      inv_do: t.invDo,
-      inv_di: t.invDi,
+    const readings = tList.map((tr: MirrorTrial) => ({
+      mirror_type: tr.mirrorType,
+      f: tr.focalLength,
+      do: tr.objectDistance,
+      di: tr.imageDistance,
+      ho: tr.objectHeight,
+      hi: tr.imageHeight,
+      inv_do: tr.invDo,
+      inv_di: tr.invDi,
     })) as Record<string, string | number>[]
 
     const payload: AnalysisPayload = {

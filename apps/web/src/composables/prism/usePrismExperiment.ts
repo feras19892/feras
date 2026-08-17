@@ -94,15 +94,15 @@ export function usePrismExperiment() {
   )
 
   const regression = computed(() => {
-    const valid = trials.trials.value.filter(t => t.deviation !== null)
+    const valid = trials.trials.value.filter(tr => tr.deviation !== null)
     if (valid.length < 2) return { m: 0, b: 0, r2: 0 }
-    const pts = valid.map(t => ({ x: 1 / (t.wavelength * t.wavelength), y: t.n }))
+    const pts = valid.map(tr => ({ x: 1 / (tr.wavelength * tr.wavelength), y: tr.n }))
     return linearRegression(pts)
   })
 
   const avgN = computed(() => {
     if (trials.trials.value.length === 0) return null
-    const sum = trials.trials.value.reduce((s, t) => s + t.n, 0)
+    const sum = trials.trials.value.reduce((s, tr) => s + tr.n, 0)
     return sum / trials.trials.value.length
   })
 
@@ -140,14 +140,14 @@ export function usePrismExperiment() {
 
   const router = useRouter()
   function exportToAnalysis() {
-    if (trials.trials.value.length < 2) return
+    if (trials.trials.value.length < 2) { alert('تحتاج إلى تسجيل قراءتين على الأقل قبل التحليل'); return }
     const tList = trials.trials.value
-    const readings = tList.map(t => ({
-      angleIncidence: t.angleIncidence,
-      prismAngle: t.prismAngle,
-      wavelength: t.wavelength,
-      deviation: t.deviation ?? 0,
-      n: t.n,
+    const readings = tList.map(tr => ({
+      angleIncidence: tr.angleIncidence,
+      prismAngle: tr.prismAngle,
+      wavelength: tr.wavelength,
+      deviation: tr.deviation ?? 0,
+      n: tr.n,
     }))
     const payload: AnalysisPayload = {
       sourceExperiment: 'prism',
@@ -172,16 +172,7 @@ export function usePrismExperiment() {
   }
 
   function downloadCsv() {
-    const csv = trials.exportCsv()
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = 'prism-trials.csv'
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
+    trials.exportCsv()
   }
 
   const materials = getMaterialList()

@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '../../../../composables/useI18n'
 import type { BoylesLawTrial } from '../../../../composables/boyles-law/useBoylesLawTrials'
-const props = defineProps<{ trials: BoylesLawTrial[] }>()
+const { t } = useI18n()
+defineProps<{ trials: BoylesLawTrial[] }>()
 const emit = defineEmits<{
   (e: 'remove', id: number): void
   (e: 'clear'): void
@@ -15,10 +17,10 @@ const emit = defineEmits<{
     </div>
     <div v-if="!trials.length" class="no-trials">
       <div class="no-icon">📝</div>
-      <div class="no-title">لا توجد تجارب</div>
-      <div class="no-hint">اضغط Start → Record لتسجيل قيم P و V</div>
+      <div class="no-title">{{ t('experiments.noTrials') }}</div>
+      <div class="no-hint">{{ t('experiments.blNoTrialsHint') }}</div>
     </div>
-    <div class="trials-actions"><button class="clear-btn" @click="emit('clear')">مسح الكل</button></div>
+    <div class="trials-actions"><button class="clear-btn" @click="emit('clear')">{{ t('experiments.clearAll') }}</button></div>
   </div>
 </template>
 <style scoped>

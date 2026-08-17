@@ -5,16 +5,8 @@ export const cellBiologyTopics: BiologyTopic[] = [
     id: 'dna-structure',
     titleKey: 'biology.topic.dnaStructure.title',
     descriptionKey: 'biology.topic.dnaStructure.description',
-    icon: '🧪',
+    icon: '�',
     route: '/biology/cell/dna-structure',
-    available: true,
-  },
-  {
-    id: 'mitosis',
-    titleKey: 'biology.topic.mitosis.title',
-    descriptionKey: 'biology.topic.mitosis.description',
-    icon: '🔬',
-    route: '/biology/cell/mitosis',
     available: true,
   },
   {

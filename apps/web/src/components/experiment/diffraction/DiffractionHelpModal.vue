@@ -43,12 +43,12 @@ const emit = defineEmits<{ (e: 'close'): void }>()
           <section>
             <h4>{{ t('experiments.dfHelpS3Title') }}</h4>
             <p>{{ t('experiments.dfHelpS3P1') }}</p>
-            <div class="formula">a Â· sin(Î¸) = m Â· Î»</div>
+            <div class="formula">a · sin(θ) = m · λ</div>
             <p>{{ t('experiments.dfHelpS3P2') }}</p>
             <p>{{ t('experiments.dfHelpS3P3') }}</p>
-            <div class="formula">sin(Î¸) â‰ˆ tan(Î¸) = y / D</div>
+            <div class="formula">sin(θ) ≈ tan(θ) = y / D</div>
             <p>{{ t('experiments.dfHelpS3P4') }}</p>
-            <div class="formula">y = (Î»D) Â· (1/a)</div>
+            <div class="formula">y = (λD) · (1/a)</div>
           </section>
 
           <!-- 4. Laboratory Procedure -->
@@ -71,12 +71,12 @@ const emit = defineEmits<{ (e: 'close'): void }>()
               <li>{{ t('experiments.dfHelpS5L1') }}</li>
               <li>
                 {{ t('experiments.dfHelpS5L2') }}
-                <div class="formula">Slope = Î”y / Î”(1/a)</div>
+                <div class="formula">Slope = Δy / Δ(1/a)</div>
               </li>
               <li>
                 {{ t('experiments.dfHelpS5L3') }}
-                <div class="formula">Slope = Î» Â· D</div>
-                <div class="formula">Î» = Slope / D</div>
+                <div class="formula">Slope = λ · D</div>
+                <div class="formula">λ = Slope / D</div>
               </li>
             </ul>
           </section>

@@ -34,7 +34,6 @@ export function useInclinedExperiment() {
   watch(() => [params.thetaDeg, params.length, params.mass, params.g, params.mu, params.airResistance, params.bodyTypeId, params.cd, params.area], () => { if (!lab.running.value) resetSim() })
 
   onMounted(() => {
-    localStorage.removeItem('inclined:layout:v1')
     layout.applyPersistedLayout()
     trials.autoLoad()
     resetSim()
@@ -89,12 +88,12 @@ export function useInclinedExperiment() {
 
   function exportToAnalysis() {
     const tList = trials.trials.value
-    if (tList.length === 0) { console.warn('[exportToAnalysis] no trials recorded'); return }
-    const readings = tList.map(t => ({
-      thetaDeg: t.thetaDeg,
-      sinTheta: Math.sin(t.thetaDeg * Math.PI / 180),
-      length: t.length, mass: t.mass,
-      acceleration: t.acceleration, timeOfArrival: t.timeOfArrival, finalVelocity: t.finalVelocity,
+    if (tList.length === 0) { alert('تحتاج إلى تسجيل قراءة واحدة على الأقل قبل التحليل'); return }
+    const readings = tList.map(tr => ({
+      thetaDeg: tr.thetaDeg,
+      sinTheta: Math.sin(tr.thetaDeg * Math.PI / 180),
+      length: tr.length, mass: tr.mass,
+      acceleration: tr.acceleration, timeOfArrival: tr.timeOfArrival, finalVelocity: tr.finalVelocity,
     }))
     const payload: AnalysisPayload = {
       sourceExperiment: 'inclined', sourceNameAr: t('experiments.expInclined'), hasCalcTab: true, readings,

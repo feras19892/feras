@@ -136,5 +136,4 @@ export const schoolReportsLocale = {
     thNeedsEncouragement: 'Necesita Apoyo',
     daysUnit: 'días',
     encourageYes: '💪 Sí',
-  },
-} as const
+  }} as const

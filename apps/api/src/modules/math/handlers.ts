@@ -13,31 +13,51 @@ app.use(authMiddleware);
 
 // GET /api/math/branches
 app.get('/branches', async (c) => {
-  const branches = await svc.getBranches();
-  return c.json({ success: true, branches });
+  try {
+    const branches = await svc.getBranches();
+    return c.json({ success: true, branches });
+  } catch (err) {
+    if (process.env.NODE_ENV !== 'production') console.error('math getBranches error:', err);
+    return c.json({ success: false, message: 'Failed to load branches' }, 500);
+  }
 });
 
 // GET /api/math/branches/:slug
 app.get('/branches/:slug', async (c) => {
   const slug = c.req.param('slug');
-  const branch = await svc.getBranch(slug);
-  if (!branch) return c.json({ success: false, error: 'Branch not found' }, 404);
-  return c.json({ success: true, branch });
+  try {
+    const branch = await svc.getBranch(slug);
+    if (!branch) return c.json({ success: false, error: 'Branch not found' }, 404);
+    return c.json({ success: true, branch });
+  } catch (err) {
+    if (process.env.NODE_ENV !== 'production') console.error('math getBranch error:', err);
+    return c.json({ success: false, message: 'Failed to load branch' }, 500);
+  }
 });
 
 // GET /api/math/branches/:slug/equations
 app.get('/branches/:slug/equations', async (c) => {
   const slug = c.req.param('slug');
-  const equations = await svc.getEquationsByBranchSlug(slug);
-  return c.json({ success: true, equations });
+  try {
+    const equations = await svc.getEquationsByBranchSlug(slug);
+    return c.json({ success: true, equations });
+  } catch (err) {
+    if (process.env.NODE_ENV !== 'production') console.error('math getEquations error:', err);
+    return c.json({ success: false, message: 'Failed to load equations' }, 500);
+  }
 });
 
 // GET /api/math/equations/:id
 app.get('/equations/:id', async (c) => {
   const id = c.req.param('id');
-  const equation = await svc.getEquation(id);
-  if (!equation) return c.json({ success: false, error: 'Equation not found' }, 404);
-  return c.json({ success: true, equation });
+  try {
+    const equation = await svc.getEquation(id);
+    if (!equation) return c.json({ success: false, error: 'Equation not found' }, 404);
+    return c.json({ success: true, equation });
+  } catch (err) {
+    if (process.env.NODE_ENV !== 'production') console.error('math getEquation error:', err);
+    return c.json({ success: false, message: 'Failed to load equation' }, 500);
+  }
 });
 
 // POST /api/math/solve

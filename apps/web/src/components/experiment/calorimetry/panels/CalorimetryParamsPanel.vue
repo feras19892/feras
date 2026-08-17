@@ -52,7 +52,7 @@ function onMetalSelect(e: Event) {
         <td class="label">{{ t('experiments.calorimetrySpecificHeat') }}</td>
         <td colspan="2">
           <span class="val read-only">{{ params.cMetal }} J/kg·K</span>
-          <span class="hint">(القيمة الحقيقية المعروفة)</span>
+          <span class="hint">{{ t('experiments.calTrueValueHint') }}</span>
         </td>
       </tr>
     </table>

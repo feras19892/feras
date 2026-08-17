@@ -32,7 +32,7 @@ const emit = defineEmits<{
     <div class="tabs">
       <button
         v-for="tab in [
-          { id: 'glassware', label: t('chemistryLab.glasswareTools'), icon: '🧪' },
+          { id: 'glassware', label: t('chemistryLab.glasswareTools'), icon: '⚗️' },
           { id: 'chemicals', label: t('chemistryLab.chemicalShelf'), icon: '🧪' },
         ]"
         :key="tab.id"

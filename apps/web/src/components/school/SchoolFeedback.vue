@@ -1,32 +1,22 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { getSchoolFeedback, updateSchoolFeedbackStatus } from '../../services/school.service';
+import { getSchoolFeedback, updateSchoolFeedbackStatus, type SchoolFeedbackItem, type SchoolFeedbackStats } from '../../services/school.service';
 import { useI18n } from '../../composables/useI18n';
 
 const { t, locale } = useI18n();
 
-interface FeedbackItem {
-  id: number;
-  user_id: number | null;
-  user_name: string;
-  type: string;
-  experiment_id: string | null;
-  experiment_name: string | null;
-  rating: number | null;
-  message: string;
-  status: string;
-  created_at: string;
-}
+type FeedbackItem = SchoolFeedbackItem;
 
 const feedback = ref<FeedbackItem[]>([]);
-const stats = ref({ total: 0, open: 0, resolved: 0, average: 0 });
+const stats = ref<SchoolFeedbackStats>({ total: 0, open: 0, resolved: 0, dismissed: 0, avg_rating: 0 });
 const loading = ref(false);
 const filter = ref<'all' | 'open' | 'resolved' | 'dismissed'>('all');
 
 const typeLabels = computed<Record<string, string>>(() => ({
-  rating: '⭐ ' + t('common.rating'),
-  complaint: '⚠️ ' + t('common.complaint'),
-  suggestion: '💡 ' + t('common.suggestion'),
+  bug: '🐛 ' + t('admin.feedbackTypeBug'),
+  feature: '✨ ' + t('admin.feedbackTypeFeature'),
+  content: '📚 ' + t('admin.feedbackTypeContent'),
+  other: '� ' + t('admin.feedbackTypeOther'),
 }));
 
 const statusLabels = computed<Record<string, string>>(() => ({
@@ -76,7 +66,7 @@ onMounted(load);
         <span class="sf-stat">{{ t('school.feedbackTotal') }}: {{ stats.total }}</span>
         <span class="sf-stat open">{{ t('school.feedbackOpen') }}: {{ stats.open }}</span>
         <span class="sf-stat resolved">{{ t('school.feedbackResolved') }}: {{ stats.resolved }}</span>
-        <span class="sf-stat" v-if="stats.average > 0">{{ t('school.feedbackAvgRating') }}: {{ stats.average }}⭐</span>
+        <span class="sf-stat" v-if="stats.avg_rating > 0">{{ t('school.feedbackAvgRating') }}: {{ stats.avg_rating }}⭐</span>
       </div>
     </div>
 

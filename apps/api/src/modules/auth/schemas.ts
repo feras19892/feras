@@ -1,11 +1,21 @@
 import { z } from 'zod';
 
+export const passwordComplexity = z
+  .string()
+  .min(8, 'Password must be at least 8 characters')
+  .max(128)
+  .regex(/[a-z]/, 'Password must contain a lowercase letter')
+  .regex(/[A-Z]/, 'Password must contain an uppercase letter')
+  .regex(/[0-9]/, 'Password must contain a number');
+
 export const loginSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(8),
+  password: z.string().min(1),
 });
 
-export const registerSchema = loginSchema.extend({
+export const registerSchema = z.object({
+  email: z.string().email(),
+  password: passwordComplexity,
   name: z.string().min(2),
   role: z.enum(['student', 'teacher']).optional().default('student'),
   school_code: z.string().optional().nullable(),
@@ -14,14 +24,14 @@ export const registerSchema = loginSchema.extend({
 export const schoolRegisterSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
-  password: z.string().min(8),
+  password: passwordComplexity,
   max_students: z.number().int().min(1).max(10000).optional().default(50),
   max_teachers: z.number().int().min(1).max(500).optional().default(10),
 });
 
 export const schoolLoginSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(8),
+  password: z.string().min(1),
 });
 
 export const verifyEmailSchema = z.object({
@@ -31,7 +41,8 @@ export const verifyEmailSchema = z.object({
 
 export const passwordUpdateSchema = z.object({
   user_id: z.number().int().positive(),
-  new_password: z.string().min(8).max(128),
+  new_password: passwordComplexity,
+  current_password: z.string().min(1).max(128).optional(),
 });
 
 export const profileUpdateSchema = z.object({

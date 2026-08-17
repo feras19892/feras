@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { getSchoolDetailedReports, getOutstandingStudents, getStrugglingStudents, getTeacherEvaluation } from '../../services/school.service';
+import { getSchoolDetailedReports, getOutstandingStudents, getStrugglingStudents, getTeacherEvaluation, type OutstandingStudent, type StrugglingStudent, type TeacherEvaluation } from '../../services/school.service';
 import { useI18n } from '../../composables/useI18n';
-import type { DailyReport, OutstandingStudent, StrugglingStudent, TeacherEval } from './school-reports-types';
+import type { DailyReport } from './school-reports-types';
 import SchoolReportsDaily from './SchoolReportsDaily.vue';
 import SchoolReportsStudents from './SchoolReportsStudents.vue';
 
@@ -17,7 +17,7 @@ const activeSection = ref<'daily' | 'teachers' | 'outstanding' | 'struggling'>('
 const dailyReport = ref<DailyReport | null>(null);
 const outstandingStudents = ref<OutstandingStudent[]>([]);
 const strugglingStudents = ref<StrugglingStudent[]>([]);
-const teacherEvals = ref<TeacherEval[]>([]);
+const teacherEvals = ref<TeacherEvaluation[]>([]);
 
 async function loadDaily() {
   loading.value = true; error.value = '';

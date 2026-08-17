@@ -10,10 +10,10 @@ const props = defineProps<{
 }>()
 
 const chartPoints = computed(() => props.trials
-  .filter(t => t.cExtracted > 0 && t.finalTemp > t.waterTemp)
-  .map(t => ({
-    x: t.waterMass * 1000, // m_w in grams
-    y: t.metalTemp - t.finalTemp, // Tm - Tf
+  .filter(tr => tr.cExtracted > 0 && tr.finalTemp > tr.waterTemp)
+  .map(tr => ({
+    x: tr.waterMass * 1000, // m_w in grams
+    y: tr.metalTemp - tr.finalTemp, // Tm - Tf
   })))
 
 const chartBounds = computed(() => {

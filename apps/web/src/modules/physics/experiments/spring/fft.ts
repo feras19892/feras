@@ -5,7 +5,8 @@
 export function fft(signal: number[], sampleRate: number) {
   const n = signal.length;
   if (n === 0) return null;
-  const N = n;
+  if (n > 2048) signal = signal.slice(-2048);
+  const N = signal.length;
   const half = Math.floor(N / 2) + 1;
   const freqs: number[] = [];
   const amplitudes: number[] = [];

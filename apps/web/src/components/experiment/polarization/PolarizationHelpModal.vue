@@ -43,7 +43,7 @@ const emit = defineEmits<{ (e: 'close'): void }>()
           <section>
             <h4>{{ t('experiments.poHelpS3Title') }}</h4>
             <p>{{ t('experiments.poHelpS3P1') }}</p>
-            <div class="formula">I = Iâ‚€ Â· cosÂ²(Î¸)</div>
+            <div class="formula">I = I₀ · cos²(θ)</div>
             <p>{{ t('experiments.poHelpS3P2') }}</p>
           </section>
 
@@ -66,11 +66,11 @@ const emit = defineEmits<{ (e: 'close'): void }>()
               <li>{{ t('experiments.poHelpS5L1') }}</li>
               <li>
                 {{ t('experiments.poHelpS5L2') }}
-                <div class="formula">Slope = Î”I / Î”cosÂ²Î¸</div>
+                <div class="formula">Slope = ΔI / Δcos²θ</div>
               </li>
               <li>
                 {{ t('experiments.poHelpS5L3') }}
-                <div class="formula">Slope = Iâ‚€</div>
+                <div class="formula">Slope = I₀</div>
               </li>
             </ul>
           </section>

@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { useI18n } from '../../composables/useI18n'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 defineProps<{
-  equations: any[]
-  solvedEquations: any[]
+  equations: Record<string, unknown>[]
+  solvedEquations: Record<string, unknown>[]
   regressionData: { slope: number; intercept: number; r2: number } | null
   slopeCalcData: { label: string; formula: string; value: number; unit: string; expr: string } | null
   axesData: { x: string; y: string; xLabel: string; yLabel: string } | null

@@ -1,20 +1,18 @@
 <script setup lang="ts">
 import { useI18n } from '../../composables/useI18n'
 import LandingLoginForm from './LandingLoginForm.vue'
-import LandingGuestButtons from './LandingGuestButtons.vue'
 
 const { t } = useI18n()
 
-defineProps<{
+const props = defineProps<{
   formError: string
   authError: string | null
+  loading?: boolean
 }>()
 
 const emit = defineEmits<{
   (e: 'login', payload: { email: string; password: string }): void
   (e: 'register'): void
-  (e: 'enterAsTeacher'): void
-  (e: 'enterAsStudent'): void
 }>()
 </script>
 
@@ -33,22 +31,11 @@ const emit = defineEmits<{
       </div>
 
       <div class="login-card-wrap">
-        <LandingLoginForm @login="emit('login', $event)" @register="emit('register')" />
+        <LandingLoginForm :loading="props.loading" @login="emit('login', $event)" @register="emit('register')" />
       </div>
 
       <p v-if="formError" class="error">{{ formError }}</p>
       <p v-else-if="authError" class="error">{{ authError }}</p>
-
-      <div class="login-divider"><span>{{ t('auth.or') }}</span></div>
-
-      <LandingGuestButtons @enter-as-teacher="emit('enterAsTeacher')" @enter-as-student="emit('enterAsStudent')" />
-
-      <router-link to="/school/register" class="school-link">
-        🏫 {{ t('school.registerTitle') }}
-      </router-link>
-      <router-link to="/school/login" class="school-login-link">
-        🔑 {{ t('school.loginTitle') }}
-      </router-link>
 
     </div>
 

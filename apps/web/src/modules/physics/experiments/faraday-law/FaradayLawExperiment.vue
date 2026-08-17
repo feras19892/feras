@@ -10,7 +10,7 @@ import FaradayLawReadingsPanel from '../../../../components/experiment/electroma
 import FaradayLawDataPanel from '../../../../components/experiment/electromagnetism/FaradayLawDataPanel.vue'
 import FaradayLawGuidePanel from '../../../../components/experiment/electromagnetism/FaradayLawGuidePanel.vue'
 import ElectromagnetismHelpModal from '../../../../components/experiment/electromagnetism/ElectromagnetismHelpModal.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import { ref } from 'vue'
 
 const ex = useFaradayLawExperiment()
@@ -36,13 +36,6 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <MenuBar
       :title="activeTab === 'lenz' ? t('experiments.lenzTitle') : t('experiments.faradayTitle')"
       icon="🔋"
-      experiment-route="/physics/electromagnetism/faraday-law"
-      :experiment-name="activeTab === 'lenz' ? t('experiments.lenzTitle') : t('experiments.faradayTitle')"
-      @export-csv="ex.exportCsv"
-      @toggle-pause="ex.togglePause"
-      @reset="ex.resetSim"
-      @record-trial="ex.recordTrial"
-      @analyze-results="ex.exportToAnalysis"
       @toggle-help="helpOpen = !helpOpen"
     />
 

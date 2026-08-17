@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '../../../composables/useI18n'
 import type { BiotSavartTrial } from '../../../composables/biot-savart/useBiotSavartTrials'
 
+const { t } = useI18n()
 interface Props { id: string; trials: BiotSavartTrial[]; params: { I: number; r: number; R: number; n: number; shape: 'wire' | 'loop' | 'solenoid' }; B: number }
 defineProps<Props>()
 const emit = defineEmits<{
@@ -12,39 +14,39 @@ const emit = defineEmits<{
 <template>
   <div>
     <div v-if="id === 'readings'" class="panel-body">
-      <div class="read-row"><span class="label">التيار I</span><span class="value">{{ params.I.toFixed(1) }} A</span></div>
-      <div class="read-row"><span class="label">المسافة r</span><span class="value">{{ params.r.toFixed(3) }} m</span></div>
+      <div class="read-row"><span class="label">{{ t('experiments.currentI') }}</span><span class="value">{{ params.I.toFixed(1) }} A</span></div>
+      <div class="read-row"><span class="label">{{ t('experiments.distanceR') }}</span><span class="value">{{ params.r.toFixed(3) }} m</span></div>
       <div class="read-row"><span class="label">B</span><span class="value">{{ B.toExponential(2) }} T</span></div>
-      <div class="read-row"><span class="label">الشكل</span><span class="value">{{ params.shape }}</span></div>
+      <div class="read-row"><span class="label">{{ t('experiments.shapeLabel') }}</span><span class="value">{{ params.shape }}</span></div>
     </div>
-    <div v-else-if="id === 'chart'" class="panel-body center">{{ trials.length < 2 ? 'سجل تجربتين على الأقل' : 'رسم B vs r' }}</div>
+    <div v-else-if="id === 'chart'" class="panel-body center">{{ trials.length < 2 ? t('experiments.needTwoTrials') : t('experiments.chartBvsR') }}</div>
     <div v-else-if="id === 'trials'" class="panel-body">
       <div class="trials-header"><span>#</span><span>I</span><span>r</span><span>B</span><span>shape</span><span></span></div>
       <div v-for="t in trials" :key="t.id" class="trial-row">
         <span>{{ t.id }}</span><span>{{ t.I.toFixed(1) }}</span><span>{{ t.r.toFixed(3) }}</span><span>{{ t.B.toExponential(2) }}</span><span>{{ t.shape }}</span>
         <button class="del-btn" @click="emit('remove', t.id)">x</button>
       </div>
-      <div v-if="!trials.length" class="no-trials">لا توجد تجارب</div>
-      <div class="trials-actions"><button class="clear-btn" @click="emit('clear')">مسح الكل</button></div>
+      <div v-if="!trials.length" class="no-trials">{{ t('experiments.noTrials') }}</div>
+      <div class="trials-actions"><button class="clear-btn" @click="emit('clear')">{{ t('experiments.clearAll') }}</button></div>
     </div>
     <div v-else-if="id === 'params'" class="panel-body">
-      <div class="param-row"><label>الشكل</label>
+      <div class="param-row"><label>{{ t('experiments.shapeLabel') }}</label>
         <select :value="params.shape" @change="emit('update:params', { ...params, shape: ($event.target as HTMLSelectElement).value as 'wire' | 'loop' | 'solenoid' })">
-          <option value="wire">سلك</option><option value="loop">حلقة</option><option value="solenoid">ملف</option>
+          <option value="wire">{{ t('experiments.shapeWire') }}</option><option value="loop">{{ t('experiments.shapeLoop') }}</option><option value="solenoid">{{ t('experiments.shapeSolenoid') }}</option>
         </select>
       </div>
-      <div class="param-row"><label>التيار I (A)</label><input type="range" :value="params.I" min="0.1" max="20" step="0.1" @input="emit('update:params', { ...params, I: +($event.target as HTMLInputElement).value })" /><span>{{ params.I.toFixed(1) }}</span></div>
-      <div class="param-row"><label>المسافة r (m)</label><input type="range" :value="params.r" min="0.001" max="1" step="0.001" @input="emit('update:params', { ...params, r: +($event.target as HTMLInputElement).value })" /><span>{{ params.r.toFixed(3) }}</span></div>
-      <div class="param-row"><label>نصف قطر الحلقة R (m)</label><input type="range" :value="params.R" min="0.01" max="1" step="0.01" @input="emit('update:params', { ...params, R: +($event.target as HTMLInputElement).value })" /><span>{{ params.R.toFixed(2) }}</span></div>
-      <div class="param-row"><label>لفات/متر n</label><input type="range" :value="params.n" min="10" max="1000" step="10" @input="emit('update:params', { ...params, n: +($event.target as HTMLInputElement).value })" /><span>{{ params.n }}</span></div>
+      <div class="param-row"><label>{{ t('experiments.currentI') }} (A)</label><input type="range" :value="params.I" min="0.1" max="20" step="0.1" @input="emit('update:params', { ...params, I: +($event.target as HTMLInputElement).value })" /><span>{{ params.I.toFixed(1) }}</span></div>
+      <div class="param-row"><label>{{ t('experiments.distanceR') }} (m)</label><input type="range" :value="params.r" min="0.001" max="1" step="0.001" @input="emit('update:params', { ...params, r: +($event.target as HTMLInputElement).value })" /><span>{{ params.r.toFixed(3) }}</span></div>
+      <div class="param-row"><label>{{ t('experiments.loopRadiusR') }} (m)</label><input type="range" :value="params.R" min="0.01" max="1" step="0.01" @input="emit('update:params', { ...params, R: +($event.target as HTMLInputElement).value })" /><span>{{ params.R.toFixed(2) }}</span></div>
+      <div class="param-row"><label>{{ t('experiments.turnsPerMeter') }}</label><input type="range" :value="params.n" min="10" max="1000" step="10" @input="emit('update:params', { ...params, n: +($event.target as HTMLInputElement).value })" /><span>{{ params.n }}</span></div>
     </div>
     <div v-else-if="id === 'laws'" class="panel-body">
-      <div class="law-box"><div class="law-title">قانون بيوسافار — سلك</div><div class="formula">B = μ₀I / 2πr</div></div>
-      <div class="law-box"><div class="law-title">حلقة</div><div class="formula">B = μ₀IR² / 2(R²+x²)^³⁄₂</div></div>
-      <div class="law-box"><div class="law-title">ملف</div><div class="formula">B = μ₀nI</div></div>
+      <div class="law-box"><div class="law-title">{{ t('experiments.biotSavartWire') }}</div><div class="formula">B = μ₀I / 2πr</div></div>
+      <div class="law-box"><div class="law-title">{{ t('experiments.biotSavartLoop') }}</div><div class="formula">B = μ₀IR² / 2(R²+x²)^³⁄₂</div></div>
+      <div class="law-box"><div class="law-title">{{ t('experiments.biotSavartSolenoid') }}</div><div class="formula">B = μ₀nI</div></div>
     </div>
     <div v-else-if="id === 'results'" class="panel-body">
-      <div class="stat-box"><div class="stat-label">عدد التجارب</div><div class="stat-value">{{ trials.length }}</div></div>
+      <div class="stat-box"><div class="stat-label">{{ t('experiments.trialCount') }}</div><div class="stat-value">{{ trials.length }}</div></div>
     </div>
   </div>
 </template>

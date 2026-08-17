@@ -154,7 +154,7 @@ export function useFaradayLawExperiment() {
   }
 
   function exportToAnalysis() {
-    if (trials.value.length < 2) return
+    if (trials.value.length < 2) { alert('تحتاج إلى تسجيل قراءتين على الأقل قبل التحليل'); return }
     const readings = trials.value.map(t => ({
       B: t.B,
       N: t.N,

@@ -1,5 +1,6 @@
-import { db } from '../../db/index.js';
+import { db, dbRun, dbGet } from '../../db/index.js';
 import { createNotification } from '../notifications/services.js';
+import { broadcastEvent } from '../sse/event-bus.js';
 import { filterMessage } from './filter.js';
 
 const SPAM_WINDOW_MS = 10_000; // 10 seconds
@@ -18,10 +19,10 @@ export interface ClassMessage {
   created_at: string;
 }
 
-export async function getClassMessages(classId: string, limit = 100): Promise<ClassMessage[]> {
+export async function getClassMessages(classId: string, limit = 100, offset = 0): Promise<ClassMessage[]> {
   return db.all(
-    `SELECT * FROM class_messages WHERE class_id = ? ORDER BY created_at DESC LIMIT ?`,
-    classId, limit
+    `SELECT * FROM class_messages WHERE class_id = ? ORDER BY created_at DESC LIMIT ? OFFSET ?`,
+    classId, limit, offset
   );
 }
 
@@ -58,23 +59,30 @@ async function checkSpamRate(userId: number, classId: string): Promise<{ muted: 
 
 async function updateSpamTracker(userId: number, classId: string): Promise<void> {
   const now = new Date().toISOString();
-  const row = await db.get<{ message_count: number; last_message_at: string }>(
-    `SELECT message_count, last_message_at FROM chat_spam_tracker WHERE user_id = ? AND class_id = ?`,
-    userId, classId,
-  );
+  await dbRun('BEGIN IMMEDIATE');
+  try {
+    const row = await dbGet<{ message_count: number; last_message_at: string }>(
+      `SELECT message_count, last_message_at FROM chat_spam_tracker WHERE user_id = ? AND class_id = ?`,
+      userId, classId,
+    );
 
-  if (!row) {
-    await db.run(
-      `INSERT INTO chat_spam_tracker (user_id, class_id, message_count, last_message_at) VALUES (?, ?, 1, ?)`,
-      userId, classId, now,
-    );
-  } else {
-    const lastAt = new Date(row.last_message_at).getTime();
-    const withinWindow = Date.now() - lastAt < SPAM_WINDOW_MS;
-    await db.run(
-      `UPDATE chat_spam_tracker SET message_count = ?, last_message_at = ?, muted_until = NULL WHERE user_id = ? AND class_id = ?`,
-      withinWindow ? row.message_count + 1 : 1, now, userId, classId,
-    );
+    if (!row) {
+      await dbRun(
+        `INSERT INTO chat_spam_tracker (user_id, class_id, message_count, last_message_at) VALUES (?, ?, 1, ?)`,
+        userId, classId, now,
+      );
+    } else {
+      const lastAt = new Date(row.last_message_at).getTime();
+      const withinWindow = Date.now() - lastAt < SPAM_WINDOW_MS;
+      await dbRun(
+        `UPDATE chat_spam_tracker SET message_count = ?, last_message_at = ?, muted_until = NULL WHERE user_id = ? AND class_id = ?`,
+        withinWindow ? row.message_count + 1 : 1, now, userId, classId,
+      );
+    }
+    await dbRun('COMMIT');
+  } catch (err) {
+    await dbRun('ROLLBACK');
+    throw err;
   }
 }
 
@@ -113,6 +121,11 @@ export async function sendMessage(
         title: `تنبيه: رسالة مخالفة في الدردشة`,
         message: `المستخدم "${userName}" (${userRole}) حاول إرسال كلمات غير لائقة في دردشة الفصل. الكلمات: ${result.flaggedWords.join(', ')}`,
         class_id: classId,
+      });
+      broadcastEvent({
+        type: 'chat_flagged',
+        payload: { classId, userName, userRole, flaggedWords: result.flaggedWords },
+        targetUserId: admin.id,
       });
     }
   }
@@ -181,33 +194,56 @@ export async function deleteMessage(messageId: number, userId: number, userRole:
   if (msg.user_id !== userId && userRole !== 'teacher' && userRole !== 'admin') {
     return { success: false };
   }
+  // Teachers can only delete messages in their own classes
+  if (userRole === 'teacher' && msg.user_id !== userId) {
+    const cls = await db.get<{ teacher_id: number }>(
+      'SELECT teacher_id FROM classes WHERE id = ?', msg.class_id,
+    );
+    if (!cls || cls.teacher_id !== userId) {
+      return { success: false };
+    }
+  }
 
   await db.run(`DELETE FROM class_messages WHERE id = ?`, messageId);
   return { success: true };
 }
 
 export async function getUnreadCounts(userId: number, role: string): Promise<Record<string, number>> {
-  let classIds: string[] = [];
+  let classIdsQuery: string;
+  let classIdsParams: (string | number)[];
+
   if (role === 'teacher') {
-    const rows = await db.all(`SELECT id FROM classes WHERE teacher_id = ?`, userId);
-    classIds = rows.map((r: any) => r.id);
+    classIdsQuery = `SELECT id FROM classes WHERE teacher_id = ?`;
+    classIdsParams = [userId];
   } else if (role === 'student') {
-    const rows = await db.all(`SELECT class_id FROM class_students WHERE student_id = ?`, userId);
-    classIds = rows.map((r: any) => r.class_id);
+    classIdsQuery = `SELECT class_id FROM class_students WHERE student_id = ?`;
+    classIdsParams = [userId];
   } else if (role === 'admin') {
-    const rows = await db.all(`SELECT id FROM classes`);
-    classIds = rows.map((r: any) => r.id);
+    classIdsQuery = `SELECT id FROM classes`;
+    classIdsParams = [];
+  } else if (role === 'school') {
+    classIdsQuery = `SELECT c.id FROM classes c JOIN users u ON c.teacher_id = u.id WHERE u.school_id = ?`;
+    classIdsParams = [userId];
+  } else {
+    return {};
   }
 
+  const rows = await db.all<{ class_id: string; unread: number }[]>(
+    `WITH user_classes AS (${classIdsQuery})
+     SELECT uc.id AS class_id,
+            COUNT(m.id) AS unread
+     FROM user_classes uc
+     LEFT JOIN class_chat_reads r ON r.user_id = ? AND r.class_id = uc.id
+     LEFT JOIN class_messages m ON m.class_id = uc.id
+       AND m.created_at > COALESCE(r.last_read_at, '1970-01-01 00:00:00')
+       AND m.user_id != ?
+     GROUP BY uc.id`,
+    ...classIdsParams, userId, userId,
+  );
+
   const result: Record<string, number> = {};
-  for (const classId of classIds) {
-    const readRow = await db.get(`SELECT last_read_at FROM class_chat_reads WHERE user_id = ? AND class_id = ?`, userId, classId);
-    const readAt = readRow?.last_read_at || '1970-01-01 00:00:00';
-    const countRow = await db.get(
-      `SELECT COUNT(*) as count FROM class_messages WHERE class_id = ? AND created_at > ? AND user_id != ?`,
-      classId, readAt, userId
-    );
-    result[classId] = countRow?.count || 0;
+  for (const row of rows) {
+    result[row.class_id] = row.unread || 0;
   }
   return result;
 }

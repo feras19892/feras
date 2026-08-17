@@ -12,10 +12,10 @@ const emit = defineEmits<{
 
 const errorPercent = computed(() => {
   if (theoretical.value === null || experimental.value === null) return null;
-  const t = theoretical.value;
-  const e = experimental.value;
-  if (t === 0) return null;
-  return Math.abs((t - e) / t) * 100;
+  const theo = theoretical.value;
+  const exp = experimental.value;
+  if (theo === 0) return null;
+  return Math.abs((theo - exp) / theo) * 100;
 });
 
 watch([theoretical, experimental, errorPercent], () => {

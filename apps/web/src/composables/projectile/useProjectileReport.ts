@@ -17,14 +17,14 @@ export function useProjectileReport() {
     const table: LabReportTable = {
       caption: t('experiments.projectileReportCaption'),
       headers: ['#', t('experiments.angleLabel') + ' (°)', 'v₀ (m/s)', t('experiments.flightTimeLabel') + ' (s)', t('experiments.maxHeight') + ' (m)', t('experiments.rangeLabel') + ' (m)', t('experiments.errorPercentage') + ' (%)'],
-      rows: trials.map((t, i: number) => [
+      rows: trials.map((trial, i: number) => [
         i + 1,
-        t.angleDegrees.toFixed(1),
-        t.initialVelocity.toFixed(2),
-        t.flightTimeSec.toFixed(2),
-        t.maxHeightMeters.toFixed(2),
-        t.rangeMeters.toFixed(2),
-        t.err.toFixed(2) + '%',
+        trial.angleDegrees.toFixed(1),
+        trial.initialVelocity.toFixed(2),
+        trial.flightTimeSec.toFixed(2),
+        trial.maxHeightMeters.toFixed(2),
+        trial.rangeMeters.toFixed(2),
+        trial.err.toFixed(2) + '%',
       ]),
     }
 

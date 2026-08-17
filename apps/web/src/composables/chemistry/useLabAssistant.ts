@@ -1,8 +1,11 @@
 import { ref } from 'vue';
 import { useI18n } from '../useI18n';
 
+let _t: ((key: string, params?: Record<string, string>) => string) | null = null;
+
 function getT() {
-  return useI18n().t;
+  if (!_t) _t = useI18n().t;
+  return _t;
 }
 
 export type AssistantMessageType = 'warning' | 'info' | 'success' | 'tip';
@@ -17,6 +20,7 @@ let msgId = 0;
 
 // Only ONE message visible at a time
 export const currentMessage = ref<AssistantMessage | null>(null);
+export const messageHistory = ref<AssistantMessage[]>([]);
 export const assistantOpen = ref(true);
 
 let dismissTimer: ReturnType<typeof setTimeout> | null = null;
@@ -28,6 +32,8 @@ function showMessage(text: string, type: AssistantMessageType) {
     text,
     type,
   };
+  // Push to history (keep last 5)
+  messageHistory.value = [currentMessage.value, ...messageHistory.value].slice(0, 5);
   // Clear previous timer
   if (dismissTimer) clearTimeout(dismissTimer);
   // Auto-dismiss after 6 seconds
@@ -73,7 +79,7 @@ export function startIdleMessages() {
 }
 
 export function stopIdleMessages() {
-  if (idleTimer) clearInterval(idleTimer);
+  if (idleTimer) { clearInterval(idleTimer); idleTimer = null; }
 }
 
 // ── Contextual message helpers (SHORT & RICH) ──

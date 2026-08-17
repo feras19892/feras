@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import * as THREE from 'three';
 import { useI18n } from '../../../composables/useI18n';
 import { useProteinSynthesis3D } from '../../../composables/biology/useProteinSynthesis3D';
@@ -8,9 +9,10 @@ import type { HotspotState } from '../../../types/biology.types';
 import InfoPanel from './InfoPanel.vue';
 import StageStepper from './StageStepper.vue';
 
+const router = useRouter();
 const { t } = useI18n();
 const containerRef = ref<HTMLDivElement | null>(null);
-const { currentStageIndex, setStage, error, autoRotate, toggleAutoRotate, resetCamera } = useProteinSynthesis3D(containerRef);
+const { currentStageIndex, setStage, error, isLoading, autoRotate, toggleAutoRotate, resetCamera, resetAll } = useProteinSynthesis3D(containerRef);
 
 const stage = computed(() => proteinSynthesisStages[currentStageIndex.value]);
 
@@ -43,7 +45,7 @@ const isFirstStage = computed(() => currentStageIndex.value === 0);
 const isLastStage = computed(() => currentStageIndex.value === proteinSynthesisStages.length - 1);
 
 const goBack = (): void => {
-  window.history.back();
+  router.push('/biology/cell');
 };
 
 const isFullscreen = ref(false);
@@ -92,8 +94,12 @@ const toggleFullscreen = (): void => {
       </aside>
 
       <section class="canvas-section">
-        <div ref="containerRef" class="protein-canvas" />
+        <div ref="containerRef" class="cell-canvas" />
 
+        <div v-if="isLoading" class="loading-overlay" role="status">
+          <div class="spinner" />
+          <span>{{ t('biology.loadingModel') }}</span>
+        </div>
         <div v-if="error" class="webgl-error" role="alert">{{ error }}</div>
 
         <div class="floating-toolbar">
@@ -119,12 +125,21 @@ const toggleFullscreen = (): void => {
               <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
             </svg>
           </button>
+          <button
+            class="tool-btn danger"
+            :title="t('biology.resetAllLabel')"
+            @click.stop="resetAll"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            </svg>
+          </button>
         </div>
       </section>
 
-      <aside class="side-panel stage-side">
-        <div class="stage-section">
-          <h3 class="stage-title">
+      <aside class="side-panel parts-side">
+        <div class="parts-card">
+          <h2 class="panel-title">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="8" y1="6" x2="21" y2="6" />
               <line x1="8" y1="12" x2="21" y2="12" />
@@ -134,7 +149,7 @@ const toggleFullscreen = (): void => {
               <line x1="3" y1="18" x2="3.01" y2="18" />
             </svg>
             {{ t('biology.proteinSynthesisStageLabel') }}
-          </h3>
+          </h2>
           <StageStepper
             :model-value="currentStageIndex"
             :stages="stageItems"
@@ -169,133 +184,8 @@ const toggleFullscreen = (): void => {
   </div>
 </template>
 
+<style scoped src="./glb-experiment.css"></style>
 <style scoped>
-.experiment-page {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0a0f1c 0%, #111827 40%, #0f172a 100%);
-  color: #e2e8f0;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  font-family: 'Segoe UI', 'Helvetica Neue', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.experiment-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.header-content {
-  flex: 1;
-  text-align: center;
-}
-
-.back-button {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: rgba(30, 41, 59, 0.8);
-  border: 1px solid #334155;
-  color: #e2e8f0;
-  padding: 0.55rem 1rem;
-  border-radius: 0.6rem;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.back-button:hover {
-  background: rgba(51, 65, 85, 0.9);
-  border-color: #475569;
-}
-
-.header-action {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(30, 41, 59, 0.8);
-  border: 1px solid #334155;
-  color: #94a3b8;
-  width: 40px;
-  height: 40px;
-  border-radius: 0.6rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.header-action:hover {
-  background: rgba(51, 65, 85, 0.9);
-  color: #e2e8f0;
-}
-
-.experiment-title {
-  font-size: 1.75rem;
-  margin: 0 0 0.2rem;
-  color: #4ade80;
-  font-weight: 700;
-}
-
-.experiment-subtitle {
-  margin: 0;
-  color: #94a3b8;
-  font-size: 0.95rem;
-}
-
-.experiment-body {
-  display: grid;
-  grid-template-columns: 280px 1fr 280px;
-  gap: 1rem;
-  flex: 1;
-  min-height: 0;
-}
-
-.side-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  background: rgba(10, 15, 28, 0.98);
-  border: 1px solid #1e293b;
-  border-radius: 1rem;
-  padding: 1.25rem;
-  overflow-y: auto;
-}
-
-.info-side .info-card {
-  flex: 1;
-}
-
-.stage-side .stage-section {
-  flex-shrink: 0;
-}
-
-.info-card {
-  background: rgba(15, 23, 42, 0.8);
-  border: 1px solid #334155;
-  border-radius: 0.75rem;
-  padding: 1.25rem;
-}
-
-.stage-section {
-  background: rgba(15, 23, 42, 0.8);
-  border: 1px solid #334155;
-  border-radius: 0.75rem;
-  padding: 1rem;
-  flex-shrink: 0;
-}
-
-.stage-title {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0 0 0.75rem;
-  color: #e2e8f0;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
 .stage-actions {
   display: flex;
   gap: 0.5rem;
@@ -337,96 +227,5 @@ const toggleFullscreen = (): void => {
 .action-button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
-}
-
-.canvas-section {
-  position: relative;
-  min-height: 500px;
-  border: 1px solid #1e293b;
-  border-radius: 1rem;
-  overflow: hidden;
-  background: radial-gradient(ellipse at center, #0f172a 0%, #0a0f1c 100%);
-  cursor: grab;
-}
-
-.canvas-section:active {
-  cursor: grabbing;
-}
-
-.protein-canvas {
-  width: 100%;
-  height: 100%;
-  min-height: 500px;
-}
-
-.floating-toolbar {
-  position: absolute;
-  bottom: 1.25rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  background: rgba(15, 23, 42, 0.92);
-  backdrop-filter: blur(12px);
-  border: 1px solid #334155;
-  border-radius: 0.75rem;
-  padding: 0.5rem 0.6rem;
-  z-index: 15;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-}
-
-.tool-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  border: none;
-  border-radius: 0.5rem;
-  background: transparent;
-  color: #94a3b8;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.tool-btn:hover {
-  background: rgba(51, 65, 85, 0.8);
-  color: #e2e8f0;
-}
-
-.tool-btn.active {
-  background: rgba(74, 222, 128, 0.15);
-  color: #4ade80;
-}
-
-.tool-divider {
-  width: 1px;
-  height: 24px;
-  background: #334155;
-  margin: 0 0.2rem;
-}
-
-.webgl-error {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-  background: rgba(10, 15, 28, 0.95);
-  color: #ef4444;
-  font-weight: 600;
-  z-index: 20;
-}
-
-@media (max-width: 900px) {
-  .experiment-body {
-    grid-template-columns: 1fr;
-  }
-
-  .side-panel {
-    max-height: 50vh;
-  }
 }
 </style>

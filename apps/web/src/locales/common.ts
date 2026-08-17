@@ -33,7 +33,15 @@ export const common = {
     delete: 'حذف',
     pinned: 'مثبت',
     loading: 'جاري التحميل...',
-    markRead: 'تعليم كمقروء',
+    markRead: 'تحديد الكل كمقروء',
+    clear: 'مسح',
+    reportTemplates: {
+      title: 'قوالب جاهزة',
+      standard: 'قياسي',
+      detailed: 'مفصل',
+      minimal: 'مختصر',
+      chemistry: 'كيميائي',
+    },
   },
   en: {
     chartTitle: '📈 Chart',
@@ -70,6 +78,14 @@ export const common = {
     pinned: 'Pinned',
     loading: 'Loading...',
     markRead: 'Mark as read',
+    clear: 'Clear',
+    reportTemplates: {
+      title: 'Templates',
+      standard: 'Standard',
+      detailed: 'Detailed',
+      minimal: 'Minimal',
+      chemistry: 'Chemistry',
+    },
   },
   es: {
     chartTitle: '📈 Gráfico',
@@ -106,5 +122,13 @@ export const common = {
     pinned: 'Fijado',
     loading: 'Cargando...',
     markRead: 'Marcar como leído',
+    clear: 'Limpiar',
+    reportTemplates: {
+      title: 'Plantillas',
+      standard: 'Estándar',
+      detailed: 'Detallado',
+      minimal: 'Minimalista',
+      chemistry: 'Química',
+    },
   },
 } as const

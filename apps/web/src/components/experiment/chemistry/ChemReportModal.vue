@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import type { ReportData } from '../../../composables/chemistry/useExperiments';
+import type { ReportData, TitrationReading } from '../../../composables/chemistry/experiments';
 import { useI18n } from '../../../composables/useI18n';
+import TitrationCurveChart from './TitrationCurveChart.vue';
 
 const { t } = useI18n();
 
@@ -8,6 +9,7 @@ const props = defineProps<{
   data: ReportData | null;
   fields?: Record<string, string | number | null>;
   template?: { type: string; fields: { key: string; labelKey: string; source: string }[] } | null;
+  readings?: TitrationReading[];
 }>();
 
 const emit = defineEmits<{
@@ -77,6 +79,9 @@ function formatValue(val: string | number | null): string {
           </div>
           </template>
         </div>
+        <div v-if="readings && readings.length >= 2" class="report-chart-section">
+          <TitrationCurveChart :readings="readings" />
+        </div>
         <div class="report-actions">
           <button class="restart-btn" @click="emit('restart')">{{ t('chemistryReport.restartExperiment') }}</button>
           <button class="close-btn2" @click="emit('close')">{{ t('chemistryReport.close') }}</button>
@@ -143,6 +148,11 @@ function formatValue(val: string | number | null): string {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+.report-chart-section {
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem 0;
 }
 .report-row {
   display: flex;

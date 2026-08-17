@@ -18,6 +18,7 @@ export interface AdminClassItem {
   teacher_name: string;
   student_count: number;
   created_at?: string;
+  is_frozen?: number;
 }
 
 export interface AdminReportItem {
@@ -53,6 +54,7 @@ export interface AdminStats {
   users: { total: number; byRole: { role: string; count: number }[] };
   classes: { total: number };
   reports: { total: number; graded: number; pending: number; resubmitted: number; average: number };
+  activity?: { today_logins: number; active_now: number; active_users_week: number; total_sessions: number };
 }
 
 export interface AdminActivityItem {
@@ -70,15 +72,19 @@ export interface AdminActivityStats {
   logins: number;
   signups: number;
   reports: number;
+  classes: number;
+  feedback: number;
+  activeNow: number;
 }
 
 export interface AdminInsights {
   topUsers?: { id: number; name: string; role: string; report_count: number }[];
-  recentActivity?: { actor_name: string; action: string; created_at?: string }[];
+  recentActivity?: { actor_name: string; actor_role?: string; action: string; created_at?: string; details?: string }[];
   inactiveUsers?: { id: number; name: string; role: string }[];
   emptyClasses?: { id: number; name: string; teacher_name: string }[];
   ungradedCount?: number;
   noReportsTeachers?: { id: number; name: string }[];
+  activeNow?: number;
 }
 
 export interface AdminSystemHealth {
@@ -237,8 +243,12 @@ export async function getAdminExport(type: string) {
   return res.text();
 }
 
-export async function impersonateUser(userId: number) {
-  return fetchJson<{ success: boolean; token: string; user: AdminUser }>(`/api/admin/impersonate/${userId}`, { method: 'POST' });
+export async function impersonateUser(userId: number, password: string) {
+  return fetchJson<{ success: boolean; token: string; user: AdminUser }>(`/api/admin/impersonate/${userId}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password }),
+  });
 }
 
 export async function resetUserPassword(userId: number, password: string) {
@@ -249,88 +259,37 @@ export async function resetUserPassword(userId: number, password: string) {
   });
 }
 
-export async function getAdminClassStudents(classId: string) {
-  return fetchJson<{ success: boolean; students: { id: number; name: string; email: string; joined_at: string; report_count: number }[] }>(`/api/admin/classes/${classId}/students`);
+export {
+  getAdminAuditLog, getDetailedStats, getAcademicTracking, getAdminDetailedReports,
+  getAdminClassStudents, updateAdminClass, updateAdminReportGrade,
+  getAdminTeachers, getAdminSettings, updateAdminSetting, updateAdminUser,
+  createAdminClass, deleteAdminReport,
+  type AuditLogEntry,
+} from './admin-reports.service';
+
+export {
+  sendDirectMessage, getConversation, getConversations, getUnreadMessageCount, markAllMessagesRead,
+  type DirectMessage, type ConversationItem,
+} from './admin-messages.service';
+
+export async function triggerBackup() {
+  return fetchJson<{ success: boolean; message?: string }>('/api/admin/backup', { method: 'POST' });
 }
 
-export async function updateAdminClass(classId: string, data: { name?: string; teacher_id?: number }) {
-  return fetchJson<{ success: boolean; message?: string }>(`/api/admin/classes/${classId}`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
+export async function listBackups() {
+  return fetchJson<{ success: boolean; backups: { name: string; size: number; created: string }[] }>('/api/admin/backups');
 }
 
-export async function updateAdminReportGrade(reportId: number, grade: number, feedback?: string) {
-  return fetchJson<{ success: boolean; message?: string }>(`/api/admin/reports/${reportId}/grade`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ grade, feedback }),
-  });
-}
-
-export async function getAdminTeachers() {
-  return fetchJson<{ success: boolean; teachers: { id: number; name: string; email: string }[] }>('/api/admin/teachers');
-}
-
-export async function getAdminSettings() {
-  return fetchJson<{ success: boolean; settings: Record<string, string> }>('/api/admin/settings');
-}
-
-export async function updateAdminSetting(key: string, value: string) {
-  return fetchJson<{ success: boolean }>('/api/admin/settings', {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ key, value }),
-  });
-}
-
-export async function updateAdminUser(userId: number, data: { name?: string; email?: string }) {
-  return fetchJson<{ success: boolean; message?: string }>(`/api/admin/users/${userId}`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
-}
-
-export async function createAdminClass(name: string, code: string | undefined, teacherId: number) {
-  return fetchJson<{ success: boolean; id?: number; code?: string; message?: string }>('/api/admin/classes', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, code, teacher_id: teacherId }),
-  });
-}
-
-export async function deleteAdminReport(reportId: number) {
-  return fetchJson<{ success: boolean; message?: string }>(`/api/admin/reports/${reportId}`, { method: 'DELETE' });
-}
-
-export interface AuditLogEntry {
+export interface ActiveSession {
   id: number;
-  table_name: string;
-  record_id: string;
-  action: string;
-  old_values?: string | null;
-  new_values?: string | null;
-  actor_id?: number | null;
-  actor_name?: string;
-  created_at: string;
+  user_id: number;
+  name: string;
+  email: string;
+  role: string;
+  login_at: string;
+  ip?: string;
 }
 
-export async function getAdminAuditLog() {
-  return fetchJson<{ success: boolean; audit: AuditLogEntry[] }>('/api/admin/audit');
-}
-
-// ─── Detailed Reports ───
-export async function getDetailedStats(period: string = 'today') {
-  return fetchJson<{ success: boolean; stats: any }>(`/api/admin/detailed-stats?period=${period}`);
-}
-
-export async function getAcademicTracking() {
-  return fetchJson<{ success: boolean; tracking: any }>('/api/admin/academic-tracking');
-}
-
-export async function getAdminDetailedReports(date?: string) {
-  const query = date ? `?date=${date}` : '';
-  return fetchJson<{ success: boolean; report: any }>(`/api/admin/detailed-reports${query}`);
+export async function getActiveSessions() {
+  return fetchJson<{ success: boolean; sessions: ActiveSession[] }>('/api/admin/sessions');
 }

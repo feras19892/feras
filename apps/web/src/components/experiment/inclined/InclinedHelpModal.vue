@@ -25,13 +25,13 @@ const emit = defineEmits<{ (e: 'close'): void }>()
               <li>{{ t('experiments.inHelpS1L2') }}</li>
             </ul>
             <p>{{ t('experiments.inHelpS1P2') }}</p>
-            <div class="formula">f_k = Î¼_k Â· N = Î¼_k Â· m Â· g Â· cos(Î¸)</div>
+            <div class="formula">f_k = μ_k · N = μ_k · m · g · cos(θ)</div>
             <p>{{ t('experiments.inHelpS1P3') }}</p>
             <p>{{ t('experiments.inHelpS1P4') }}</p>
             <div class="formula">
-              mÂ·gÂ·sinÎ¸ âˆ’ f_k = mÂ·a<br>
-              mÂ·gÂ·sinÎ¸ âˆ’ Î¼_kÂ·mÂ·gÂ·cosÎ¸ = mÂ·a<br>
-              <b>a = g (sinÎ¸ âˆ’ Î¼_kÂ·cosÎ¸)</b>
+              m·g·sinθ − f_k = m·a<br>
+              m·g·sinθ − μ_k·m·g·cosθ = m·a<br>
+              <b>a = g (sinθ − μ_k·cosθ)</b>
             </div>
           </section>
 
@@ -64,7 +64,7 @@ const emit = defineEmits<{ (e: 'close'): void }>()
               <li>{{ t('experiments.inHelpS4L1') }}</li>
               <li>
                 {{ t('experiments.inHelpS4L2') }}
-                <div class="formula">Slope = Î”a / Î”sin(Î¸)</div>
+                <div class="formula">Slope = Δa / Δsin(θ)</div>
               </li>
               <li>
                 {{ t('experiments.inHelpS4L3') }}

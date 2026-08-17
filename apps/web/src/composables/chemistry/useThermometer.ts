@@ -1,6 +1,6 @@
 import type { LabItem } from './useChemistryTools';
 import { items, liquidMap, burnerMap, hotPlateMap, isContainer } from './useChemistryLab';
-import { isBunsenBurner, isHeatingMantle, isHotPlate } from './chemLabIds';
+import { isBunsenBurner, isHeatingMantle, isHotPlate, getContainerHalfWidth } from './chemLabIds';
 
 const AMBIENT = 25;
 const IMMERSION_RADIUS = 50;
@@ -24,7 +24,7 @@ export function getEnvironmentTemp(thermometer: LabItem): ThermEnv {
     if (i.uid === thermometer.uid || !isContainer(i.id)) continue;
     const liq = liquidMap[i.uid];
     if (!liq || liq.volume <= 0) continue;
-    const cx = i.x + 40;
+    const cx = i.x + getContainerHalfWidth(i.id);
     const cy = i.y + 30;
     const d = Math.sqrt((cx - tx) ** 2 + (cy - ty) ** 2);
     if (d < nearestLiqDist) {
@@ -45,7 +45,7 @@ export function getEnvironmentTemp(thermometer: LabItem): ThermEnv {
   for (const i of items.value) {
     if (i.uid === thermometer.uid) continue;
 
-    const ix = i.x + 40;
+    const ix = i.x + getContainerHalfWidth(i.id);
     const iy = i.y + 30;
     const dist = Math.sqrt((ix - tx) ** 2 + (iy - ty) ** 2);
     if (dist < 5) continue;

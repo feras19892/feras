@@ -15,7 +15,7 @@ const emit = defineEmits<{ (e: 'remove', id: number): void; (e: 'clear'): void }
         <tr v-for="tr in trials" :key="tr.id">
           <td>{{ tr.id }}</td><td>{{ tr.stringLength.toFixed(3) }}</td><td>{{ tr.tension }}</td><td>{{ tr.harmonic }}</td>
           <td>{{ tr.frequency.toFixed(1) }}</td><td>{{ tr.wavelength.toFixed(3) }}</td>
-          <td><button class="rm" @click="emit('remove', tr.id)">x</button></td>
+          <td><button class="rm" @click="emit('remove', tr.id)">&#x00D7;</button></td>
         </tr>
       </tbody>
     </table>

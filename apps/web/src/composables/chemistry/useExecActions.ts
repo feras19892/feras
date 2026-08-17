@@ -10,8 +10,32 @@ import { pushMacroHistory, pushMicroHistory } from './useChemistryHistory';
 import { computeBalanceWeight, getContainerWeight, findContainerBelow, buretteWarning } from './useLabSimulation';
 import { handleDropMixWithRecording } from './useBuretteMixRecorder';
 import { isHotPlate } from './chemLabIds';
+import { updateBuretteWarning } from './buretteWarningUtils';
 import type { LabItem } from './useChemistryTools';
 import type { ToolState } from './chemLabTypes';
+import type { LiquidState } from '@my-modern-app/chemistry-engine';
+
+/** Reset a LiquidState to empty-water defaults */
+function resetLiquidState(liq: LiquidState): void {
+  liq.volume = 0;
+  liq.chemicalId = undefined;
+  liq.indicators = [];
+  liq.ph = null;
+  liq.reactants = {};
+  liq.equation = undefined;
+  liq.precipitate = false;
+  liq.precipitateColor = undefined;
+  liq.gasEvolution = false;
+  liq.gasType = undefined;
+  liq.baseColor = undefined;
+  liq.label = 'water';
+  liq.color = '#e0f2fe';
+  liq.opacity = 0.35;
+  liq.temperature = 25;
+  liq.heated = false;
+  liq.reactionBaseTemp = undefined;
+  liq.stirred = 0;
+}
 
 /** Commit any pending burette consumption to the running total */
 function commitBuretteConsumption(uid: string) {
@@ -43,8 +67,8 @@ export function execAction(type: ActionType, uid: string, selectedItemRef: { val
     buretteInitialVolumeMap[uid] = b.maxVolume;
   }
   if (type === 'empty' && (isContainer(item.id) || isBurette(item.id))) {
-    if (isBurette(item.id)) { const s = getBurette(uid); s.volume = 0; s.chemicalId = undefined; }
-    else { const liq = getLiquid(uid); liq.volume = 0; liq.chemicalId = undefined; liq.indicators = []; liq.ph = null; liq.reactants = {}; liq.equation = undefined; liq.precipitate = false; liq.precipitateColor = undefined; liq.gasEvolution = false; liq.baseColor = undefined; liq.label = 'water'; }
+    if (isBurette(item.id)) { const s = getBurette(uid); s.volume = 0; s.chemicalId = undefined; s.color = '#94a3b8'; s.opacity = 0.3; s.label = ''; }
+    else { resetLiquidState(getLiquid(uid)); }
   }
   if ((type === 'fill5' || type === 'fill10' || type === 'fill50' || type === 'fill100') && (isContainer(item.id) || isBurette(item.id))) {
     const amount = type === 'fill5' ? 5 : type === 'fill10' ? 10 : type === 'fill50' ? 50 : 100;
@@ -57,9 +81,17 @@ export function execAction(type: ActionType, uid: string, selectedItemRef: { val
         s.chemicalId = selectedChemical.id;
       } else {
         const s = getLiquid(uid);
-        if (selectedChemical.category === 'indicator') {
-          const dropAmount = 5;
-          s.volume = Math.min(s.maxVolume, s.volume + dropAmount);
+        if (selectedChemical.physicalState === 'solid') {
+          if (!solidMap[uid]) solidMap[uid] = { amount: 0, type: selectedChemical.id };
+          if (solidMap[uid].type !== selectedChemical.id) solidMap[uid] = { amount: 0, type: selectedChemical.id };
+          solidMap[uid].amount = +(solidMap[uid].amount + amount).toFixed(2);
+          if (!s.reactants) s.reactants = {};
+          s.reactants[selectedChemical.id] = (s.reactants[selectedChemical.id] || 0) + amount;
+          if (!s.label || s.label === 'water') s.label = selectedChemical.id;
+          else if (!s.label.includes(selectedChemical.id)) s.label = s.label + ' + ' + selectedChemical.id;
+        } else if (selectedChemical.category === 'indicator') {
+          const indicatorAmount = Math.min(amount, 5);
+          s.volume = Math.min(s.maxVolume, s.volume + indicatorAmount);
           if (!s.indicators) s.indicators = [];
           if (!s.indicators.includes(selectedChemical.id)) s.indicators.push(selectedChemical.id);
           if (!s.chemicalId) { s.label = selectedChemical.id; }
@@ -131,12 +163,7 @@ export function buretteDropOne(item: LabItem, selectedItemRef: { value: LabItem 
       targetChemicalId: bLiquid.chemicalId || '',
       dropVolume: transfer,
     });
-    if (bLiquid.ph !== null && bLiquid.ph !== undefined) {
-      if (bLiquid.ph >= 9.0) buretteWarning.value = 'exceeded';
-      else if (bLiquid.ph >= 8.0) buretteWarning.value = 'equivalence';
-      else if (bLiquid.ph >= 7.5) buretteWarning.value = 'approaching';
-      else buretteWarning.value = null;
-    }
+    updateBuretteWarning(bLiquid.ph, bLiquid.indicators);
   } else {
     bLiquid.color = b.color;
     bLiquid.opacity = b.opacity;

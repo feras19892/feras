@@ -3,9 +3,14 @@ import { ref, onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useI18n } from '../composables/useI18n';
 import { useAuthStore } from '../modules/auth/stores/auth';
-import { getSchoolClassDetail } from '../services/school.service';
+import {
+  getSchoolClassDetail, 
+  type SchoolClass, 
+  type SchoolUser,
+  type SchoolReportItem,
+} from '../services/school.service';
 import AccountSettingsModal from '../components/shared/AccountSettingsModal.vue';
-import NotificationBell from '../components/shared/NotificationBell.vue';
+import SchoolNotificationBell from '../components/shared/SchoolNotificationBell.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -16,11 +21,26 @@ const classId = route.params.id as string;
 const loading = ref(true);
 const error = ref('');
 
-const cls = ref<any>(null);
-const students = ref<any[]>([]);
-const messages = ref<any[]>([]);
-const reports = ref<any[]>([]);
-const stats = ref<any>({});
+interface ClassMessage {
+  id: number;
+  user_name: string;
+  user_role?: string;
+  content: string;
+  created_at: string;
+  is_flagged?: boolean;
+  flagged_reason?: string;
+}
+
+interface ClassStudent extends SchoolUser {
+  report_count?: number;
+  joined_at?: string;
+}
+
+const cls = ref<(SchoolClass & { is_active?: boolean; teacher_email?: string }) | null>(null);
+const students = ref<ClassStudent[]>([]);
+const messages = ref<ClassMessage[]>([]);
+const reports = ref<SchoolReportItem[]>([]);
+const stats = ref<Record<string, unknown>>({});
 
 const activeTab = ref<'overview' | 'students' | 'chat' | 'reports'>('overview');
 
@@ -48,7 +68,7 @@ async function loadData() {
   }
 }
 
-function fmtDate(s: string) {
+function fmtDate(s?: string | null) {
   if (!s) return '—';
   return new Date(s).toLocaleDateString(dateLocaleStr.value, { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
 }
@@ -65,7 +85,7 @@ onMounted(loadData);
       </div>
       <div class="scd-header-right">
         <AccountSettingsModal />
-        <NotificationBell />
+        <SchoolNotificationBell />
         <button class="logout-btn" @click="auth.clearSchoolSession(); router.push('/')">{{ t('shared.logout') }}</button>
       </div>
     </div>
@@ -184,77 +204,5 @@ onMounted(loadData);
   </div>
 </template>
 
-<style scoped>
-.scd-page { min-height: 100vh; background: #0a0f1e; color: #e2e8f0; padding: 1rem; max-width: 1100px; margin: 0 auto; }
-.scd-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-.scd-back { cursor: pointer; color: #94a3b8; font-size: 0.85rem; transition: color 0.15s; }
-.scd-back:hover { color: #c7d2fe; }
-.scd-header-right { display: flex; align-items: center; gap: 0.6rem; }
-.logout-btn { padding: 0.4rem 0.8rem; border-radius: 0.4rem; border: 1px solid rgba(239,68,68,0.2); background: rgba(239,68,68,0.05); color: #f87171; font-size: 0.78rem; cursor: pointer; font-family: inherit; }
-.scd-loading { display: flex; justify-content: center; padding: 3rem; }
-.spinner { width: 32px; height: 32px; border: 3px solid rgba(99,102,241,0.2); border-top-color: #6366f1; border-radius: 50%; animation: spin 0.8s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.scd-error { text-align: center; color: #f87171; padding: 2rem; }
 
-.scd-class-card { display: flex; align-items: center; gap: 1rem; background: rgba(15,23,42,0.6); border: 1px solid rgba(99,102,241,0.12); border-radius: 0.8rem; padding: 1.2rem; margin-bottom: 1rem; }
-.scd-class-icon { font-size: 2rem; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2); flex-shrink: 0; }
-.scd-class-info { flex: 1; }
-.scd-class-info h2 { margin: 0 0 0.3rem; font-size: 1.1rem; color: #f1f5f9; }
-.scd-class-meta { display: flex; gap: 1rem; flex-wrap: wrap; }
-.meta-item { font-size: 0.78rem; color: #64748b; }
-.meta-item strong { color: #94a3b8; }
-.meta-item code { background: rgba(99,102,241,0.1); padding: 0.1rem 0.3rem; border-radius: 0.2rem; color: #a5b4fc; font-size: 0.75rem; }
-
-.scd-stats-strip { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; background: rgba(15,23,42,0.4); border-radius: 0.6rem; padding: 0.8rem; }
-.stat-item { display: flex; flex-direction: column; align-items: center; flex: 1; min-width: 80px; }
-.stat-icon { font-size: 1rem; }
-.stat-val { font-size: 1.2rem; font-weight: 800; color: #f1f5f9; }
-.stat-lab { font-size: 0.68rem; color: #64748b; }
-
-.scd-tabs { display: flex; gap: 0.3rem; flex-wrap: wrap; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 0.5rem; }
-.tab { padding: 0.5rem 0.8rem; border: none; background: transparent; color: #64748b; font-size: 0.78rem; font-weight: 600; cursor: pointer; border-radius: 0.4rem; font-family: inherit; transition: all 0.15s; display: flex; align-items: center; gap: 0.3rem; }
-.tab:hover { background: rgba(99,102,241,0.06); color: #c7d2fe; }
-.tab.active { background: rgba(99,102,241,0.15); color: #a5b4fc; }
-.tab-badge { background: rgba(99,102,241,0.2); color: #a5b4fc; font-size: 0.65rem; padding: 0.1rem 0.35rem; border-radius: 0.3rem; }
-
-.scd-tab-panel { animation: fadeIn 0.2s; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-.scd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
-@media (max-width: 700px) { .scd-grid { grid-template-columns: 1fr; } }
-.scd-card { background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.6rem; padding: 1rem; }
-.scd-card h3 { margin: 0 0 0.6rem; font-size: 0.9rem; color: #c7d2fe; }
-.info-row { display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 0.8rem; }
-.info-row span { color: #64748b; }
-.info-row strong { color: #e2e8f0; }
-.mini-stat { display: flex; justify-content: space-between; padding: 0.3rem 0; font-size: 0.8rem; }
-.mini-stat span { color: #64748b; }
-.mini-stat strong { color: #e2e8f0; }
-
-.scd-empty { text-align: center; color: #475569; padding: 1.5rem; font-size: 0.82rem; }
-
-.scd-table-wrap { overflow-x: auto; }
-.scd-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
-.scd-table th { text-align: right; padding: 0.5rem; color: #64748b; border-bottom: 1px solid rgba(255,255,255,0.08); font-weight: 600; }
-.scd-table td { padding: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.03); color: #cbd5e1; }
-.clickable-row { cursor: pointer; transition: background 0.12s; }
-.clickable-row:hover { background: rgba(99,102,241,0.06); }
-
-.status-tag { padding: 0.1rem 0.4rem; border-radius: 0.3rem; font-size: 0.68rem; font-weight: 600; }
-.status-tag.graded { background: rgba(34,197,94,0.15); color: #86efac; }
-.status-tag.submitted { background: rgba(245,158,11,0.15); color: #fcd34d; }
-.status-tag.draft { background: rgba(100,116,139,0.15); color: #94a3b8; }
-.status-tag.resubmitted { background: rgba(168,85,247,0.15); color: #c4b5fd; }
-
-.scd-chat { display: flex; flex-direction: column; gap: 0.4rem; max-height: 600px; overflow-y: auto; }
-.chat-msg { background: rgba(15,23,42,0.4); border: 1px solid rgba(255,255,255,0.04); border-radius: 0.5rem; padding: 0.6rem 0.8rem; }
-.chat-msg.flagged { border-color: rgba(239,68,68,0.2); background: rgba(239,68,68,0.04); }
-.chat-msg-header { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.2rem; }
-.chat-author { font-size: 0.8rem; font-weight: 700; color: #c7d2fe; }
-.chat-author.teacher { color: #93c5fd; }
-.chat-author.student { color: #86efac; }
-.chat-role { font-size: 0.75rem; }
-.chat-flag { font-size: 0.68rem; color: #fca5a5; background: rgba(239,68,68,0.1); padding: 0.1rem 0.3rem; border-radius: 0.2rem; }
-.chat-date { font-size: 0.68rem; color: #475569; margin-inline-start: auto; }
-.chat-content { font-size: 0.8rem; color: #cbd5e1; margin: 0.2rem 0 0; }
-</style>
+<style scoped src='./school-class-detail.css'></style>

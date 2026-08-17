@@ -28,9 +28,24 @@ const markers = ref<MarkerPosition[]>([]);
 let dragStartX = 0;
 let dragStartY = 0;
 let dragDistance = 0;
+let lastCameraX = 0;
+let lastCameraY = 0;
+let lastCameraZ = 0;
 const DRAG_THRESHOLD = 5;
+const CAMERA_THRESHOLD = 0.01;
 
 const updateMarkers = (): void => {
+  if (!camera) return;
+  const camPos = camera.position;
+  if (Math.abs(camPos.x - lastCameraX) < CAMERA_THRESHOLD &&
+      Math.abs(camPos.y - lastCameraY) < CAMERA_THRESHOLD &&
+      Math.abs(camPos.z - lastCameraZ) < CAMERA_THRESHOLD) {
+    return;
+  }
+  lastCameraX = camPos.x;
+  lastCameraY = camPos.y;
+  lastCameraZ = camPos.z;
+
   markers.value = props.organelles
     .filter((organelle) => organelle.selectable !== false)
     .map((organelle) => {
@@ -59,6 +74,7 @@ const {
   resetCamera,
   resize,
   error,
+  camera,
 } = useBiology3D(containerRef, props.organelles, updateMarkers);
 
 defineExpose({

@@ -53,13 +53,4 @@ tr.latest td { background:rgba(91,141,184,.1); }
 .empty-msg { color:#8B95A5; font-style:italic; padding:.5rem; text-align:center; }
 .btn-danger { background:rgba(212,117,107,.15); color:#D4756B; border:1px solid rgba(212,117,107,.3); border-radius:4px; cursor:pointer; }
 .btn-danger.small { padding:.1rem .35rem; font-size:.7rem; }
-.equation-header { display:flex; align-items:center; gap:.3rem; margin-bottom:.3rem; }
-.equation-list { display:flex; flex-direction:column; gap:.25rem; }
-.equation-item { display:flex; flex-direction:column; gap:.1rem; background:rgba(37,45,58,.4); border-radius:5px; padding:.25rem .35rem; }
-.eq-type { font-size:.55rem; color:#8B95A5; font-weight:700; }
-.eq-formula { font-size:.7rem; color:#D1D7E0; font-weight:600; font-family:monospace; }
-.calc-row { display:flex; flex-wrap:wrap; gap:.3rem; margin:.3rem 0; }
-.btn-calc { flex:1; min-width:80px; padding:.35rem .4rem; background:#252D3A; border:1px solid #2D3645; border-radius:6px; color:#8B95A5; cursor:pointer; font-size:.65rem; font-weight:600; transition:all .15s; }
-.btn-calc:hover { background:rgba(91,141,184,.12); color:#D1D7E0; border-color:rgba(91,141,184,.3); }
-.calc-result { background:rgba(37,45,58,.5); border:1px solid #2D3645; border-radius:6px; padding:.4rem .5rem; margin:.3rem 0; font-size:.72rem; color:#D1D7E0; line-height:1.6; min-height:2.5rem; }
 </style>

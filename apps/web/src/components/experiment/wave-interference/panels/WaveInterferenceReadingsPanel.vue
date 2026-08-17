@@ -1,4 +1,6 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '../../../../composables/useI18n'
+const { t } = useI18n()
 interface Props { sourceDistance: number; wavelength: number; frequency: number; screenDistance: number; vWave: number; constructive: { m: number; yMm: number }[]; destructive: { m: number; yMm: number }[] }
 defineProps<Props>()
 </script>
@@ -6,14 +8,14 @@ defineProps<Props>()
 <template>
   <div class="panel-body">
     <div class="reading-group">
-      <div class="reading-row"><span class="reading-label">d - Source distance</span><span class="reading-val cyan">{{ sourceDistance.toFixed(3) }} m</span></div>
-      <div class="reading-row"><span class="reading-label">lambda</span><span class="reading-val amber">{{ (wavelength * 1000).toFixed(1) }} mm</span></div>
-      <div class="reading-row"><span class="reading-label">f - Frequency</span><span class="reading-val green">{{ frequency }} Hz</span></div>
+      <div class="reading-row"><span class="reading-label">{{ t('experiments.wiSourceDistance') }}</span><span class="reading-val cyan">{{ sourceDistance.toFixed(3) }} m</span></div>
+      <div class="reading-row"><span class="reading-label">λ</span><span class="reading-val amber">{{ (wavelength * 1000).toFixed(1) }} mm</span></div>
+      <div class="reading-row"><span class="reading-label">{{ t('experiments.wiFrequency') }}</span><span class="reading-val green">{{ frequency }} Hz</span></div>
     </div>
-    <div class="reading-row highlight-row"><span class="reading-label bold">v - Wave speed</span><span class="reading-val green bold">{{ vWave.toFixed(1) }} m/s</span></div>
+    <div class="reading-row highlight-row"><span class="reading-label bold">{{ t('experiments.wiWaveSpeed') }}</span><span class="reading-val green bold">{{ vWave.toFixed(1) }} m/s</span></div>
     <div class="reading-group">
-      <div class="reading-row"><span class="reading-label">Constructive (max)</span><span class="reading-val">{{ constructive.length }} points</span></div>
-      <div class="reading-row"><span class="reading-label">Destructive (min)</span><span class="reading-val">{{ destructive.length }} points</span></div>
+      <div class="reading-row"><span class="reading-label">{{ t('experiments.wiConstructiveMax') }}</span><span class="reading-val">{{ constructive.length }} {{ t('experiments.wiPoints') }}</span></div>
+      <div class="reading-row"><span class="reading-label">{{ t('experiments.wiDestructiveMin') }}</span><span class="reading-val">{{ destructive.length }} {{ t('experiments.wiPoints') }}</span></div>
     </div>
   </div>
 </template>

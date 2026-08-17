@@ -1,5 +1,6 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useI18n } from './useI18n';
+import { useToast } from './useToast';
 import {
   getAdminUsers,
   getAdminStats,
@@ -10,63 +11,18 @@ import {
   updateUserRole,
   createAdminUser,
   deleteAdminClass,
+  type AdminUser,
+  type AdminClassItem,
+  type AdminReportItem,
+  type AdminFeedbackItem,
+  type AdminStats,
 } from '../services/admin.service';
-
-interface AdminUser {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-  created_at?: string;
-}
-
-interface AdminClassItem {
-  id: string;
-  name: string;
-  code: string;
-  teacher_name: string;
-  student_count: number;
-  created_at?: string;
-}
-
-interface AdminReportItem {
-  id: number;
-  student_name: string;
-  experiment_name: string;
-  class_name: string;
-  teacher_name: string;
-  status: string;
-  grade?: number | null;
-  submitted_at?: string;
-}
-
-interface AdminFeedbackItem {
-  id: number;
-  type: string;
-  user_name: string;
-  experiment_name?: string;
-  rating?: number | null;
-  message: string;
-  status: string;
-  created_at?: string;
-}
-
-interface AdminStats {
-  users: { total: number; byRole: { role: string; count: number }[] };
-  classes: { total: number };
-  reports: { total: number; graded: number; pending: number; resubmitted: number; average: number };
-}
 
 export function useAdmin() {
   const { t } = useI18n();
+  const toast = useToast();
   const loading = ref(false);
   const errorMsg = ref('');
-  const toast = ref<{ type: 'success' | 'error' | 'info'; message: string } | null>(null);
-
-  function showToast(type: 'success' | 'error' | 'info', message: string) {
-    toast.value = { type, message };
-    setTimeout(() => { toast.value = null; }, 4000);
-  }
 
   const users = ref<AdminUser[]>([]);
   const classes = ref<AdminClassItem[]>([]);
@@ -102,9 +58,9 @@ export function useAdmin() {
     const res = await deleteUser(id);
     if (res.success) {
       loadAll();
-      showToast('success', t('admin.delete') + ' ✓');
+      toast.success(t('admin.delete') + ' ✓');
     } else {
-      showToast('error', res.message || t('admin.loadError'));
+      toast.error(res.message || t('admin.loadError'));
     }
   }
 
@@ -113,7 +69,7 @@ export function useAdmin() {
     if (res.success) {
       loadAll();
     } else {
-      showToast('error', res.message || t('admin.loadError'));
+      toast.error(res.message || t('admin.loadError'));
     }
   }
 
@@ -121,9 +77,9 @@ export function useAdmin() {
     const res = await createAdminUser(name, email, password, role);
     if (res.success) {
       loadAll();
-      showToast('success', '✓');
+      toast.success('✓');
     } else {
-      showToast('error', res.message || t('admin.loadError'));
+      toast.error(res.message || t('admin.loadError'));
     }
   }
 
@@ -131,22 +87,22 @@ export function useAdmin() {
     const res = await deleteAdminClass(id);
     if (res.success) {
       loadAll();
-      showToast('success', t('admin.delete') + ' ✓');
+      toast.success(t('admin.delete') + ' ✓');
     } else {
-      showToast('error', t('admin.loadError'));
+      toast.error(t('admin.loadError'));
     }
   }
 
   let refreshTimer: ReturnType<typeof setInterval> | null = null;
   onMounted(() => {
-    refreshTimer = setInterval(() => { loadAll(); }, 60000);
+    loadAll();
+    refreshTimer = setInterval(() => { if (document.visibilityState === 'visible') loadAll(); }, 300000);
   });
   onUnmounted(() => { if (refreshTimer) clearInterval(refreshTimer); });
 
   return {
     loading,
     errorMsg,
-    toast,
     users,
     classes,
     reports,

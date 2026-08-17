@@ -6,7 +6,9 @@ export interface ChatMessage {
   content: string;
 }
 
-export async function ollamaChat(messages: ChatMessage[]): Promise<string> {
+const OLLAMA_TIMEOUT_MS = 120_000;
+
+export async function ollamaChat(messages: ChatMessage[], signal?: AbortSignal): Promise<string> {
   const res = await fetch(`${OLLAMA_URL}/api/chat`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -15,6 +17,7 @@ export async function ollamaChat(messages: ChatMessage[]): Promise<string> {
       messages,
       stream: false,
     }),
+    signal: signal ?? AbortSignal.timeout(OLLAMA_TIMEOUT_MS),
   });
 
   if (!res.ok) {
@@ -24,11 +27,15 @@ export async function ollamaChat(messages: ChatMessage[]): Promise<string> {
 
   const data = await res.json() as { message?: { content?: string }; error?: string };
   if (data.error) throw new Error(data.error);
-  return data.message?.content ?? '';
+  const content = data.message?.content ?? '';
+  if (!content.trim()) throw new Error('Ollama returned an empty response');
+  return content;
 }
 
 export async function ollamaTags(): Promise<string[]> {
-  const res = await fetch(`${OLLAMA_URL}/api/tags`);
+  const res = await fetch(`${OLLAMA_URL}/api/tags`, {
+    signal: AbortSignal.timeout(10_000),
+  });
   if (!res.ok) throw new Error(`Ollama tags request failed: ${res.status}`);
   const data = await res.json() as { models?: { name: string }[] };
   return (data.models ?? []).map((m) => m.name);

@@ -1,9 +1,10 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { getReports, getStudentStats } from '../../services/report.service'
 import type { Report } from '../../services/report.service'
-import { getMyClasses, getClassDetails, joinClass as apiJoinClass, leaveClass as apiLeaveClass } from '../../services/class.service'
+import { getMyClasses, getBatchStudentData, joinClass as apiJoinClass, leaveClass as apiLeaveClass } from '../../services/class.service'
 import type { ClassItem, ClassStudent } from '../../services/class.service'
 import { useAuthStore } from '../../modules/auth/stores/auth'
+import { useI18n } from '../useI18n'
 
 export interface StudentKPI {
   totalReports: number
@@ -35,6 +36,7 @@ function daysSince(dateStr?: string): number {
 
 export function useStudentDashboard() {
   const auth = useAuthStore()
+  const { t } = useI18n()
   const reports = ref<Report[]>([])
   const classes = ref<ClassItem[]>([])
   const classStudentsMap = ref<Record<string, ClassStudent[]>>({})
@@ -79,7 +81,7 @@ export function useStudentDashboard() {
       return {
         id: r.id,
         experimentName: r.experiment_name,
-        className: cls?.name || r.class_id,
+        className: cls?.name || t('dashboard.unnamedClass', 'فصل بدون اسم'),
         status: r.status,
         grade: r.grade ?? null,
         submittedAt: r.submitted_at || r.created_at || null,
@@ -97,30 +99,22 @@ export function useStudentDashboard() {
   const recentReports = computed(() => reportRows.value.slice(0, 5))
 
   const overduePending = computed(() =>
-    reportRows.value.filter(r => (r.status === 'submitted' || r.status === 'resubmitted') && daysSince(r.submittedAt || undefined) >= 2)
+    reportRows.value.filter(r => (r.status === 'submitted' || r.status === 'resubmitted') && r.submittedAt && daysSince(r.submittedAt) >= 7)
   )
 
   async function loadAll() {
     loading.value = true
     try {
-      const [rRes, cRes] = await Promise.all([
+      const [rRes, cRes, batchRes, sRes] = await Promise.all([
         getReports(),
         getMyClasses(),
+        getBatchStudentData(),
+        auth.user ? getStudentStats(auth.user.id) : Promise.resolve(null),
       ])
       if (rRes.success) reports.value = rRes.reports
-      if (cRes.success) {
-        classes.value = cRes.classes
-        await Promise.all(cRes.classes.map(async (cls) => {
-          try {
-            const dr = await getClassDetails(cls.id)
-            if (dr.success) classStudentsMap.value[cls.id] = dr.students
-          } catch { /* ignore */ }
-        }))
-      }
-      if (auth.user) {
-        const sRes = await getStudentStats(auth.user.id)
-        if (sRes.success) stats.value = sRes.stats
-      }
+      if (cRes.success) classes.value = cRes.classes
+      if (batchRes.success) classStudentsMap.value = batchRes.studentsMap
+      if (sRes?.success) stats.value = sRes.stats
     } catch (err) {
       if (import.meta.env.DEV) console.error('student dashboard load failed:', err);
     } finally {
@@ -148,7 +142,7 @@ export function useStudentDashboard() {
   let refreshTimer: ReturnType<typeof setInterval> | null = null
   onMounted(() => {
     loadAll()
-    refreshTimer = setInterval(() => { loadAll() }, 60000)
+    refreshTimer = setInterval(() => { if (document.visibilityState === 'visible') loadAll() }, 300000)
   })
   onUnmounted(() => { if (refreshTimer) clearInterval(refreshTimer) })
 

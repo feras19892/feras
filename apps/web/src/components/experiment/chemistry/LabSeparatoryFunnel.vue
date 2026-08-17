@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useSpillDrops } from '../../../composables/chemistry/useSpillDrops';
+import ReactionEffects from './ReactionEffects.vue';
 
 interface Props {
   volume?: number;        // 0–250 mL (total in funnel)
@@ -15,6 +16,10 @@ interface Props {
   itemUid?: string;
   itemX?: number;
   itemY?: number;
+  gasEvolution?: boolean;
+  gasType?: string;
+  precipitate?: boolean;
+  precipitateColor?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -30,6 +35,10 @@ const props = withDefaults(defineProps<Props>(), {
   itemX: 0,
   itemY: 0,
   itemUid: '',
+  gasEvolution: false,
+  gasType: '',
+  precipitate: false,
+  precipitateColor: '#c0c0c0',
 });
 
 const emit = defineEmits<{ click: []; toggleStopcock: []; spill: [amount: number]; dropExited: [worldX: number, worldY: number, color: string]; }>();
@@ -200,6 +209,17 @@ const marks = computed<Mark[]>(() => [
 
       <!-- Glass highlights -->
       <line :x1="centerX - bodyW/2 + 6" :y1="bodyTop + 10" :x2="centerX - bodyW/2 + 10" :y2="bodyBottom - 20" stroke="rgba(255,255,255,0.3)" stroke-width="2" stroke-linecap="round" />
+
+      <!-- Reaction effects: gas bubbles & precipitate -->
+      <ReactionEffects
+        :gas-evolution="gasEvolution"
+        :gas-type="gasType"
+        :precipitate="precipitate"
+        :precipitate-color="precipitateColor"
+        :center-x="centerX"
+        :liquid-y="topLayerY"
+        :width="40"
+      />
     </svg>
 
     <canvas

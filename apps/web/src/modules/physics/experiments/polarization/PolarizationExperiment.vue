@@ -1,7 +1,8 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { usePolarizationExperiment } from '../../../../composables/polarization/usePolarizationExperiment'
 import { useI18n } from '../../../../composables/useI18n'
+import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import PolarizationMenuBar from '../../../../components/experiment/polarization/PolarizationMenuBar.vue'
 import PolarizationCanvas from '../../../../components/experiment/polarization/PolarizationCanvas.vue'
 import PolarizationPanelBody from '../../../../components/experiment/polarization/PolarizationPanelBody.vue'
@@ -10,18 +11,24 @@ import PolarizationControlBar from '../../../../components/experiment/polarizati
 import PolarizationHelpModal from '../../../../components/experiment/polarization/PolarizationHelpModal.vue'
 import PolarizationGuidePanel from '../../../../components/experiment/polarization/PolarizationGuidePanel.vue'
 import PolarizationOverlayPanels from '../../../../components/experiment/polarization/PolarizationOverlayPanels.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
+import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
 const ex = usePolarizationExperiment()
 const { t } = useI18n()
+const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)
+
+function onReset() {
+  confirmReset().then(ok => { if (ok) ex.resetSim() })
+}
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return
   if (e.code === 'Space') { e.preventDefault(); ex.lab.togglePause() }
-  else if (e.key === 'r' || e.key === 'R') { if (confirm(t('experiments.resetConfirm'))) ex.resetSim() }
+  else if (e.key === 'r' || e.key === 'R') { confirmReset().then(ok => { if (ok) ex.resetSim() }) }
   else if (e.key === 's' || e.key === 'S') ex.trials.recordTrial()
   else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); if (e.shiftKey) ex.trials.redo(); else ex.trials.undo() }
   else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ex.trials.redo() }
@@ -37,14 +44,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <PolarizationMenuBar
       :title="t('experiments.expPolarization')"
       icon="&#x1F576;"
-      experiment-route="/physics/waves/polarization"
-      experiment-name="Light Polarization"
-      @toggle-panel="ex.layout.togglePanel"
       @show-all-panels="ex.layout.showAllPanels"
-      @export-csv="ex.trials.exportCsv"
-      @toggle-pause="ex.lab.togglePause"
-      @reset="ex.resetSim"
-      @record-trial="ex.trials.recordTrial"
       @toggle-help="helpOpen = !helpOpen"
       @analyze-results="ex.exportToAnalysis"
     />
@@ -98,7 +98,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
           :can-undo="ex.trials.canUndo()"
           :can-redo="ex.trials.canRedo()"
           @toggle-pause="ex.lab.togglePause"
-          @reset="ex.resetSim"
+          @reset="onReset"
           @record-trial="ex.trials.recordTrial"
           @clear-trials="ex.trials.clearTrials"
           @export-csv="ex.trials.exportCsv"
@@ -188,6 +188,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       :transmission-percent="ex.lab.transmissionPercent.value"
     />
   </div>
+  <ResetConfirmModal />
 </template>
 
 <style scoped>

@@ -1,7 +1,8 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useMirrorExperiment } from '../../../../composables/mirror/useMirrorExperiment'
 import { useI18n } from '../../../../composables/useI18n'
+import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import MirrorCanvas from '../../../../components/experiment/mirror/MirrorCanvas.vue'
 import MirrorPanelBody from '../../../../components/experiment/mirror/MirrorPanelBody.vue'
 import LightRayMenuBar from '../../../../components/experiment/lightray/LightRayMenuBar.vue'
@@ -9,9 +10,11 @@ import LightRayStatusBar from '../../../../components/experiment/lightray/LightR
 import LightRayControlBar from '../../../../components/experiment/lightray/LightRayControlBar.vue'
 import MirrorHelpModal from '../../../../components/experiment/mirror/MirrorHelpModal.vue'
 import MirrorGuidePanel from '../../../../components/experiment/mirror/MirrorGuidePanel.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
+import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
 const { t } = useI18n()
+const { confirmReset } = useResetConfirm()
 const ex = useMirrorExperiment()
 const helpOpen = ref(false)
 const showGuide = ref(true)
@@ -23,7 +26,7 @@ function onKeyDown(e: KeyboardEvent) {
     e.preventDefault()
     ex.lab.togglePause()
   } else if (e.key === 'r' || e.key === 'R') {
-    if (confirm(t('experiments.confirmResetSimulation'))) ex.resetSim()
+    confirmReset().then(ok => { if (ok) ex.resetSim() })
   } else if (e.key === 's' || e.key === 'S') {
     ex.trials.recordTrial()
   } else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
@@ -51,14 +54,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <LightRayMenuBar
       :title="t('experiments.sphericalMirrorTitle')"
       icon="🪞"
-      experiment-route="/physics/waves/mirrors"
-      experiment-name="Spherical Mirrors"
-      @toggle-panel="ex.layout.togglePanel"
       @show-all-panels="ex.layout.showAllPanels"
-      @export-csv="ex.trials.exportCsv"
-      @toggle-pause="ex.lab.togglePause"
-      @reset="ex.resetSim"
-      @record-trial="ex.trials.recordTrial"
       @toggle-help="helpOpen = !helpOpen"
       @analyze-results="ex.exportToAnalysis"
     />
@@ -189,6 +185,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @redo="ex.trials.redo"
     />
   </div>
+  <ResetConfirmModal />
 </template>
 
 <style scoped>

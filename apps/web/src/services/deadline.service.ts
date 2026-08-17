@@ -14,6 +14,14 @@ export async function getClassDeadlines(classId: string) {
   return fetchJson<{ success: boolean; deadlines: Deadline[] }>(`/api/deadlines/class/${classId}`);
 }
 
+export interface TeacherDeadline extends Deadline {
+  class_name: string;
+}
+
+export async function getTeacherDeadlines() {
+  return fetchJson<{ success: boolean; deadlines: TeacherDeadline[] }>('/api/deadlines/teacher');
+}
+
 export async function getStudentDeadlines() {
   return fetchJson<{ success: boolean; deadlines: Deadline[] }>('/api/deadlines/student');
 }

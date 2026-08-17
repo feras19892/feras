@@ -21,12 +21,12 @@ const SIGNS = [
 
 <template>
   <div class="panel-body">
-    <div class="ref-title">📊 قانونا كيرشوف</div>
+    <div class="ref-title">⚡ قانونا كيرشوف</div>
 
     <div class="ref-table">
       <div class="ref-header">
-        <span>Ø§Ù„Ù‚Ø§Ù†ÙˆÙ†</span>
-        <span>Ø§Ù„Ù…Ø¹Ø§Ø¯Ù„Ø©</span>
+        <span>القانون</span>
+        <span>المعادلة</span>
       </div>
       <div v-for="law in LAWS" :key="law.law" class="ref-row">
         <div class="law-info">
@@ -56,13 +56,13 @@ const SIGNS = [
     </div>
 
     <div class="ref-note">
-      💡 عدد المعادلات = عدد الحلقات المستقلة + (عدد العقد − 1)
+      📐 عدد المعادلات = عدد الحلقات المستقلة + (عدد العقد − 1)
     </div>
     <div class="ref-note">
       ⚡ في دائرتين بحلقتين: معادلة KCL واحدة + معادلتان KVL = 3 معادلات لـ 3 مجاهيل
     </div>
     <div class="ref-note">
-      🔄 إذا كانت قيمة التيار سالبة، فإن الاتجاه الفعلي عكس الاتجاه المفترض
+      ⚠️ إذا كانت قيمة التيار سالبة، فإن الاتجاه الفعلي عكس الاتجاه المفترض
     </div>
   </div>
 </template>

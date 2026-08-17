@@ -2,6 +2,7 @@ import { ref, computed, type Ref } from 'vue'
 import { useI18n } from '../../composables/useI18n'
 import { downloadCsv } from '../../components/experiment/spring/downloadCsv'
 import { linearRegression } from '../../components/experiment/spring/linearRegression'
+import { useExperimentTrials } from '../experiment/shared/useExperimentTrials'
 import type { ProjectileParams } from '../../modules/physics/experiments/projectile/useProjectilePhysics'
 
 export interface ProjectileTrial {
@@ -24,52 +25,24 @@ export const SAVE_KEY = 'projectile:trials:v1'
 
 export function useProjectileTrials(params: ProjectileParams, measured: Ref<ProjectileMeasured>) {
   const { t } = useI18n()
-  const trials = ref<ProjectileTrial[]>([])
-  let nextTrialId = 1
+  const calcResult = ref(t('experiments.clickBtnShowCalc'))
+  const fitResult = ref<{ slope: number; intercept: number; r2: number } | null>(null)
 
-  const history = ref<ProjectileTrial[][]>([])
-  const historyIndex = ref(-1)
-
-  function pushHistory() {
-    if (historyIndex.value < history.value.length - 1) {
-      history.value = history.value.slice(0, historyIndex.value + 1)
-    }
-    history.value.push([...trials.value])
-    historyIndex.value++
-    if (history.value.length > 20) {
-      history.value.shift()
-      historyIndex.value--
-    }
-  }
-
-  function undo() {
-    if (historyIndex.value > 0) {
-      historyIndex.value--
-      trials.value = [...history.value[historyIndex.value]]
-      nextTrialId = trials.value.length > 0 ? Math.max(...trials.value.map(t => t.id)) + 1 : 1
-    }
-  }
-
-  function redo() {
-    if (historyIndex.value < history.value.length - 1) {
-      historyIndex.value++
-      trials.value = [...history.value[historyIndex.value]]
-      nextTrialId = trials.value.length > 0 ? Math.max(...trials.value.map(t => t.id)) + 1 : 1
-    }
-  }
-
-  function canUndo() { return historyIndex.value > 0 }
-  function canRedo() { return historyIndex.value < history.value.length - 1 }
+  const base = useExperimentTrials<ProjectileTrial>({
+    storageKey: 'projectile:trials:v1',
+    getExtraData: () => calcResult.value,
+    setExtraData: (data) => { if (typeof data === 'string') calcResult.value = data },
+  })
 
   const trialStats = computed(() => {
-    if (trials.value.length === 0) return { range_mean: 0, range_std: 0, flightTime_mean: 0, flightTime_std: 0 }
+    if (base.trials.value.length === 0) return { range_mean: 0, range_std: 0, flightTime_mean: 0, flightTime_std: 0 }
     const mean = (arr: number[]) => arr.reduce((a, b) => a + b, 0) / arr.length
     const std = (arr: number[]) => { const m = mean(arr); return Math.sqrt(arr.reduce((sum, v) => sum + (v - m) ** 2, 0) / arr.length) }
     return {
-      range_mean: mean(trials.value.map(t => t.rangeMeters)),
-      range_std: std(trials.value.map(t => t.rangeMeters)),
-      flightTime_mean: mean(trials.value.map(t => t.flightTimeSec)),
-      flightTime_std: std(trials.value.map(t => t.flightTimeSec)),
+      range_mean: mean(base.trials.value.map(tr => tr.rangeMeters)),
+      range_std: std(base.trials.value.map(tr => tr.rangeMeters)),
+      flightTime_mean: mean(base.trials.value.map(tr => tr.flightTimeSec)),
+      flightTime_std: std(base.trials.value.map(tr => tr.flightTimeSec)),
     }
   })
 
@@ -83,66 +56,28 @@ export function useProjectileTrials(params: ProjectileParams, measured: Ref<Proj
 
   function recordTrial() {
     if (!measured.value.range) return
-    pushHistory()
     const noiseLevel = 0.02
     const noisyRange = gaussianNoise(measured.value.range, measured.value.range * noiseLevel)
     const noisyTime = gaussianNoise(measured.value.flightTime ?? 0, (measured.value.flightTime ?? 0) * noiseLevel)
     const noisyHeight = gaussianNoise(measured.value.maxHeight ?? 0, (measured.value.maxHeight ?? 0) * noiseLevel)
     const err = Math.abs((noisyRange - measured.value.range) / measured.value.range) * 100
-    trials.value = [...trials.value, {
-      id: nextTrialId++, angleDegrees: params.angleDeg, initialVelocity: params.v0,
+    base.addTrial({
+      angleDegrees: params.angleDeg, initialVelocity: params.v0,
       flightTimeSec: noisyTime, maxHeightMeters: noisyHeight, rangeMeters: noisyRange, err,
-    }]
-    autoSave()
-  }
-
-  function removeTrial(id: number) {
-    pushHistory()
-    trials.value = trials.value.filter(t => t.id !== id)
-    autoSave()
-  }
-  function clearTrials() {
-    pushHistory()
-    trials.value = []
-    autoSave()
-  }
-
-  function autoSave() {
-    try {
-      localStorage.setItem(SAVE_KEY, JSON.stringify({ trials: trials.value, nextId: nextTrialId, calcResult: calcResult.value }))
-    } catch { /* ignore */ }
-  }
-
-  function autoLoad() {
-    try {
-      const raw = localStorage.getItem(SAVE_KEY)
-      if (!raw) return
-      const parsed = JSON.parse(raw)
-      if (Array.isArray(parsed.trials)) {
-        const valid = parsed.trials.filter((t: Record<string, unknown>) => t && typeof t.angleDegrees === 'number' && t.angleDegrees >= 0 && t.angleDegrees <= 90)
-        trials.value = valid
-        nextTrialId = parsed.nextId ?? (valid.length > 0 ? Math.max(...valid.map((t: Record<string, unknown>) => Number(t.id))) + 1 : 1)
-        if (parsed.calcResult) calcResult.value = parsed.calcResult
-        history.value = [[...valid]]
-        historyIndex.value = 0
-      }
-    } catch { /* ignore */ }
+    })
   }
 
   function exportCsv() {
-    if (!trials.value.length) return
+    if (!base.trials.value.length) return
     downloadCsv('projectile_data.csv', [
       ['#', 'angle', 'v0', 'flightTime', 'maxHeight', 'range', 'error'],
-      ...trials.value.map((t, i) => [
-        i + 1, t.angleDegrees.toFixed(1), t.initialVelocity.toFixed(2),
-        t.flightTimeSec.toFixed(3), t.maxHeightMeters.toFixed(3), t.rangeMeters.toFixed(3),
-        t.err.toFixed(2) + '%',
+      ...base.trials.value.map((tr, i) => [
+        i + 1, tr.angleDegrees.toFixed(1), tr.initialVelocity.toFixed(2),
+        tr.flightTimeSec.toFixed(3), tr.maxHeightMeters.toFixed(3), tr.rangeMeters.toFixed(3),
+        tr.err.toFixed(2) + '%',
       ]),
     ])
   }
-
-  const calcResult = ref(t('experiments.clickBtnShowCalc'))
-  const fitResult = ref<{ slope: number; intercept: number; r2: number } | null>(null)
 
   function calcFlightTime() {
     const rad = (params.angleDeg * Math.PI) / 180
@@ -163,9 +98,9 @@ export function useProjectileTrials(params: ProjectileParams, measured: Ref<Proj
   }
 
   function calcFitRange() {
-    if (trials.value.length < 2) { calcResult.value = t('experiments.atLeastTwoTrials'); return }
-    const xs = trials.value.map(t => Math.sin(2 * (t.angleDegrees * Math.PI) / 180))
-    const ys = trials.value.map(t => t.rangeMeters)
+    if (base.trials.value.length < 2) { calcResult.value = t('experiments.atLeastTwoTrials'); return }
+    const xs = base.trials.value.map(tr => Math.sin(2 * (tr.angleDegrees * Math.PI) / 180))
+    const ys = base.trials.value.map(tr => tr.rangeMeters)
     const fit = linearRegression(xs, ys)
     if (!fit || Math.abs(fit.slope) < 1e-12) { calcResult.value = t('experiments.insufficientData'); fitResult.value = null; return }
     fitResult.value = { slope: fit.slope, intercept: fit.intercept, r2: fit.r2 }
@@ -175,10 +110,10 @@ export function useProjectileTrials(params: ProjectileParams, measured: Ref<Proj
   }
 
   return {
-    trials, trialStats,
-    recordTrial, removeTrial, clearTrials, exportCsv,
-    undo, redo, canUndo, canRedo,
-    autoLoad,
+    trials: base.trials, trialStats,
+    recordTrial, removeTrial: base.removeTrial, clearTrials: base.clearTrials, exportCsv,
+    undo: base.undo, redo: base.redo, canUndo: base.canUndo, canRedo: base.canRedo,
+    autoLoad: base.autoLoad,
     calcResult, fitResult, calcFlightTime, calcMaxHeight, calcRange, calcFitRange,
   }
 }

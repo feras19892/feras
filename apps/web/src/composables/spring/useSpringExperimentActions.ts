@@ -1,14 +1,15 @@
-import type { SpringExperimentState } from './useSpringExperimentState'
+import type { SpringExperimentState, SpringStaticReading } from './useSpringExperimentState'
 import type { ColumnId } from './useSpringLayout'
 import { useRouter } from 'vue-router'
 import { sendToAnalysis } from '../analysis/sendToAnalysis'
 import { useI18n } from '../../composables/useI18n'
 import type { AnalysisPayload } from '../../types/physics'
+import type { SpringTrial } from './useSpringTrials'
 
 export function useSpringExperimentActions(
   state: SpringExperimentState,
   lab: { resetSim: () => void; sim: { running: boolean; paused: boolean; x: number; v: number }; runSpringLab: (recordTrial: () => void, calcFitK: () => void) => void; cleanup: () => void },
-  trials: { recordTrial: () => void; calcFitK: () => void; autoLoad: () => void; trials: { value: Record<string, unknown>[] } },
+  trials: { recordTrial: () => void; calcFitK: () => void; autoLoad: () => void; trials: { value: SpringTrial[] } },
   layout: { applyPersistedLayout: () => void; movePanel: (id: string, col: ColumnId, afterId?: string | null) => void },
 ) {
   const { t } = useI18n()
@@ -25,27 +26,21 @@ export function useSpringExperimentActions(
 
   function pullDown() {
     if (lab.sim.running && !lab.sim.paused) return
-    const step = 0.005
-    state.ignoreParamsWatch.value = true
-    lab.sim.x = Math.round((lab.sim.x + step) * 1000) / 1000
+    lab.sim.x = Math.round((lab.sim.x + 0.005) * 1000) / 1000
     lab.sim.v = 0
-    setTimeout(() => { state.ignoreParamsWatch.value = false }, 0)
   }
 
   function pushUp() {
     if (lab.sim.running && !lab.sim.paused) return
-    const step = 0.005
-    state.ignoreParamsWatch.value = true
-    lab.sim.x = Math.round((lab.sim.x - step) * 1000) / 1000
+    lab.sim.x = Math.round((lab.sim.x - 0.005) * 1000) / 1000
     lab.sim.v = 0
-    setTimeout(() => { state.ignoreParamsWatch.value = false }, 0)
   }
 
-  function onStaticComplete(readings: Record<string, unknown>[], k: number | null) {
+  function onStaticComplete(readings: SpringStaticReading[], k: number | null) {
     state.staticReadings.value = readings
     state.staticK.value = k
   }
-  function onDynamicComplete(_t: Record<string, unknown>[], _k: number | null) { /* no-op */ }
+  function onDynamicComplete(_tr: Record<string, unknown>[], _k: number | null) { /* no-op */ }
 
   function onResizeStart(side: 'data' | 'vis', e: MouseEvent) {
     const startX = e.clientX
@@ -87,10 +82,10 @@ export function useSpringExperimentActions(
 
   function exportToAnalysis() {
     const tList = trials.trials.value
-    if (tList.length === 0) { console.warn('[exportToAnalysis] no trials recorded'); return }
+    if (tList.length === 0) { alert('تحتاج إلى تسجيل قراءة واحدة على الأقل قبل التحليل'); return }
 
-    const readings = tList.map((t: Record<string, unknown>) => {
-      const mass = Number(t.mass), T = Number(t.T), kCalc = Number(t.kCalc)
+    const readings = tList.map((tr) => {
+      const mass = tr.mass, T = tr.T, kCalc = tr.kCalc
       return { mass, T, T2: T * T, kCalc }
     })
 

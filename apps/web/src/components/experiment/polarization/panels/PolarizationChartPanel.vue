@@ -16,7 +16,7 @@ const props = defineProps<Props>()
 
 // I vs cos²θ scatter plot points
 const chartPoints = computed(() => props.trials
-  .map(t => ({ cos2: Math.pow(Math.cos(t.relativeAngle * Math.PI / 180), 2), I: t.outputIntensity })))
+  .map(tr => ({ cos2: Math.pow(Math.cos(tr.relativeAngle * Math.PI / 180), 2), I: tr.outputIntensity })))
 
 const chartBounds = computed(() => {
   const pts = chartPoints.value
@@ -70,7 +70,7 @@ function toSvgY(val: number) {
           {{ (chartBounds.yMin + (chartBounds.yMax - chartBounds.yMin) * (i - 1) / 4).toFixed(0) }}
         </text>
         <text :x="svgW / 2" :y="svgH - 2" fill="#8B95A5" font-size="9" text-anchor="middle">cos²θ</text>
-        <text x="8" :y="svgH / 2" fill="#8B95A5" font-size="9" text-anchor="middle" transform="rotate(-90 8,${svgH / 2})">I</text>
+        <text x="8" :y="svgH / 2" fill="#8B95A5" font-size="9" text-anchor="middle" :transform="`rotate(-90 8,${svgH / 2})`">I</text>
         <g v-for="(p, i) in chartPoints" :key="i">
           <circle :cx="toSvgX(p.cos2)" :cy="toSvgY(p.I)" r="4" fill="#22c55e"/>
         </g>

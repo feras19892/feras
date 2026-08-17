@@ -12,6 +12,7 @@ const badges = ref<StudentBadge[]>([]);
 const penalties = ref<Penalty[]>([]);
 const leaderboard = ref<LeaderboardEntry[]>([]);
 const myRank = ref<number | null>(null);
+const lbError = ref(false);
 const loading = ref(false);
 const error = ref('');
 const activeTab = ref<'badges' | 'penalties' | 'leaderboard'>('badges');
@@ -38,6 +39,7 @@ async function load() {
 
 async function loadLeaderboard() {
   if (!selectedClass.value) return;
+  lbError.value = false;
   try {
     const res = await getLeaderboard(selectedClass.value);
     if (res.success) {
@@ -45,6 +47,7 @@ async function loadLeaderboard() {
       myRank.value = res.myRank;
     }
   } catch (err) {
+    lbError.value = true;
     if (import.meta.env.DEV) console.error('loadLeaderboard failed:', err);
   }
 }
@@ -112,7 +115,11 @@ onMounted(load);
         </select>
       </div>
       <div v-if="myRank !== null" class="my-rank">{{ t('dashboard.dash.enhMyRank') }}: {{ myRank }}</div>
-      <div v-if="leaderboard.length > 0" class="lb-list">
+      <div v-if="lbError" class="error-retry">
+        <span>⚠️ {{ t('dashboard.dash.leaderboardError', 'تعذر تحميل لوحة المتصدرين') }}</span>
+        <button @click="loadLeaderboard">🔄 {{ t('common.retry', 'إعادة') }}</button>
+      </div>
+      <div v-else-if="leaderboard.length > 0" class="lb-list">
         <div v-for="(entry, i) in leaderboard" :key="entry.id" :class="['lb-row', { 'is-me': myRank === i + 1 }]">
           <span :class="['lb-rank', { gold: i === 0, silver: i === 1, bronze: i === 2 }]">{{ i + 1 }}</span>
           <span class="lb-name">{{ entry.name }}</span>
@@ -135,6 +142,8 @@ onMounted(load);
 
 .loading, .empty { text-align: center; color: #64748b; padding: 2rem; }
 .error-box { background: rgba(239,68,68,0.1); color: #f87171; padding: 1rem; border-radius: 0.5rem; text-align: center; }
+.error-retry { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; padding: 1rem; color: #f87171; font-size: 0.8rem; }
+.error-retry button { padding: 0.3rem 0.8rem; border-radius: 0.4rem; border: 1px solid rgba(99,102,241,0.3); background: rgba(99,102,241,0.1); color: #c7d2fe; cursor: pointer; font-family: inherit; font-size: 0.75rem; }
 
 .badges-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.8rem; }
 .badge-card { display: flex; gap: 0.8rem; background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.6rem; padding: 1rem; }

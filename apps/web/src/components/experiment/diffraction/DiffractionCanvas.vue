@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 
 const props = defineProps<{
   mode: 'single' | 'grating'
@@ -15,7 +18,22 @@ const props = defineProps<{
 }>()
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
-const W = 800, H = 400
+let W = 800, H = 400
+let resizeObserver: ResizeObserver | null = null
+
+function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+  ctx.beginPath()
+  ctx.moveTo(x + r, y)
+  ctx.lineTo(x + w - r, y)
+  ctx.arcTo(x + w, y, x + w, y + r, r)
+  ctx.lineTo(x + w, y + h - r)
+  ctx.arcTo(x + w, y + h, x + w - r, y + h, r)
+  ctx.lineTo(x + r, y + h)
+  ctx.arcTo(x, y + h, x, y + h - r, r)
+  ctx.lineTo(x, y + r)
+  ctx.arcTo(x, y, x + r, y, r)
+  ctx.closePath()
+}
 
 /* dynamic scale so everything fits */
 const scaleY = computed(() => {
@@ -27,6 +45,20 @@ const scaleY = computed(() => {
   }
   return Math.min(3.5, (H / 2 - 40) / Math.max(maxY, 1))
 })
+
+function resize() {
+  const c = canvasRef.value; if (!c) return
+  const wrap = c.parentElement; if (!wrap) return
+  const dpr = window.devicePixelRatio || 1
+  W = wrap.clientWidth
+  H = wrap.clientHeight
+  c.width = W * dpr
+  c.height = H * dpr
+  c.style.width = W + 'px'
+  c.style.height = H + 'px'
+  const ctx = c.getContext('2d'); if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  draw()
+}
 
 function draw() {
   const c = canvasRef.value; if (!c) return
@@ -47,7 +79,7 @@ function draw() {
   ctx.fillRect(10, midY - 18, 60, 36)
   ctx.globalAlpha = 1
   ctx.fillStyle = '#8B95A5'; ctx.font = '10px sans-serif'
-  ctx.fillText('Laser', 24, midY - 28)
+  ctx.fillText(t('experiments.dfLaser'), 24, midY - 28)
 
   if (props.mode === 'single') {
     const barW = 12
@@ -63,9 +95,9 @@ function draw() {
     /* animated wavefronts */
     if (props.running) {
       ctx.strokeStyle = props.lightColor; ctx.globalAlpha = 0.12
-      const t = Date.now() / 400
+      const now = Date.now() / 400
       for (let i = 0; i < 10; i++) {
-        const r = ((t + i) % 10) * 28
+        const r = ((now + i) % 10) * 28
         ctx.beginPath(); ctx.arc(slitX, midY, r, -Math.PI / 3, Math.PI / 3); ctx.stroke()
         ctx.beginPath(); ctx.arc(slitX, midY - gapH / 2, r * 0.5, -0.5, 0.5); ctx.stroke()
         ctx.beginPath(); ctx.arc(slitX, midY + gapH / 2, r * 0.5, -0.5, 0.5); ctx.stroke()
@@ -87,11 +119,11 @@ function draw() {
 
     if (props.running) {
       ctx.strokeStyle = props.lightColor; ctx.globalAlpha = 0.1
-      const t = Date.now() / 400
+      const now = Date.now() / 400
       for (let i = 0; i < nSlits; i++) {
         const sy_ = midY - ((nSlits - 1) * spacing) / 2 + i * spacing
         for (let j = 0; j < 8; j++) {
-          const r = ((t + j) % 10) * 28
+          const r = ((now + j) % 10) * 28
           ctx.beginPath(); ctx.arc(slitX, sy_, r, -Math.PI / 4, Math.PI / 4); ctx.stroke()
         }
       }
@@ -136,7 +168,7 @@ function draw() {
       const tw = ctx.measureText(lbl).width
       const tx = screenX - 48
       ctx.fillStyle = 'rgba(255,255,255,0.08)'
-      ctx.beginPath(); ctx.roundRect(tx - 3, yPx - 7, tw + 6, 14, 4); ctx.fill()
+      ctx.beginPath(); roundRect(ctx, tx - 3, yPx - 7, tw + 6, 14, 4); ctx.fill()
       ctx.fillStyle = f.m === 0 ? '#fff' : '#8B95A5'
       ctx.font = f.m === 0 ? 'bold 11px sans-serif' : '10px sans-serif'
       ctx.fillText(lbl, tx, yPx + 3)
@@ -163,7 +195,7 @@ function draw() {
         const tw = ctx.measureText(lbl).width
         const tx = screenX - 40
         ctx.fillStyle = 'rgba(255,255,255,0.08)'
-        ctx.beginPath(); ctx.roundRect(tx - 3, yPx - 7, tw + 6, 14, 4); ctx.fill()
+        ctx.beginPath(); roundRect(ctx, tx - 3, yPx - 7, tw + 6, 14, 4); ctx.fill()
         ctx.fillStyle = p.m === 0 ? '#fff' : '#8B95A5'
         ctx.font = p.m === 0 ? 'bold 11px sans-serif' : '10px sans-serif'
         ctx.fillText(lbl, tx, yPx + 3)
@@ -173,9 +205,9 @@ function draw() {
 
   /* bottom labels */
   ctx.fillStyle = '#8B95A5'; ctx.font = '12px sans-serif'
-  const label = props.mode === 'single' ? 'Single Slit' : `Grating (${props.linesPerMm}/mm)`
+  const label = props.mode === 'single' ? t('experiments.dfSingleSlit') : `${t('experiments.dfGrating')} (${props.linesPerMm}/mm)`
   ctx.fillText(label, slitX - (props.mode === 'single' ? 28 : 45), H - 10)
-  ctx.fillText('Screen', screenX - 18, H - 10)
+  ctx.fillText(t('experiments.dfScreen'), screenX - 18, H - 10)
 
   ctx.restore()
 }
@@ -185,9 +217,17 @@ function animate() { draw(); if (props.running) animId = requestAnimationFrame(a
 
 watch(() => props.running, (v) => { cancelAnimationFrame(animId); v ? animate() : draw() })
 watch(() => [props.mode, props.slitWidth, props.linesPerMm, props.screenDistance, props.wavelength, props.intensityPattern.length, props.orderPositions.length, props.lightColor], draw, { deep: true })
-onMounted(() => draw()); onUnmounted(() => cancelAnimationFrame(animId))
+onMounted(() => {
+  resize()
+  resizeObserver = new ResizeObserver(() => resize())
+  if (canvasRef.value?.parentElement) resizeObserver.observe(canvasRef.value.parentElement)
+})
+onUnmounted(() => {
+  cancelAnimationFrame(animId)
+  resizeObserver?.disconnect()
+})
 </script>
 
 <template>
-  <canvas ref="canvasRef" :width="W" :height="H" style="width: 100%; height: 100%;" />
+  <canvas ref="canvasRef" />
 </template>

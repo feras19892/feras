@@ -10,7 +10,7 @@ import MagneticFluxReadingsPanel from '../../../../components/experiment/electro
 import MagneticFluxDataPanel from '../../../../components/experiment/electromagnetism/MagneticFluxDataPanel.vue'
 import MagneticFluxGuidePanel from '../../../../components/experiment/electromagnetism/MagneticFluxGuidePanel.vue'
 import ElectromagnetismHelpModal from '../../../../components/experiment/electromagnetism/ElectromagnetismHelpModal.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 
 const ex = useMagneticFluxExperiment()
 const { t } = useI18n()
@@ -34,13 +34,6 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <MenuBar
       :title="t('experiments.fluxTitle')"
       icon="🌐"
-      experiment-route="/physics/electromagnetism/magnetic-flux"
-      :experiment-name="t('experiments.fluxTitle')"
-      @export-csv="ex.exportCsv"
-      @toggle-pause="ex.togglePause"
-      @reset="ex.resetSim"
-      @record-trial="ex.recordTrial"
-      @analyze-results="ex.exportToAnalysis"
       @toggle-help="helpOpen = !helpOpen"
     />
 

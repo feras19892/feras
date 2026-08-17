@@ -42,12 +42,12 @@ const emit = defineEmits<{ (e: 'close'): void }>()
           <section>
             <h4>{{ t('experiments.ifHelpS3Title') }}</h4>
             <p>{{ t('experiments.ifHelpS3P1') }}</p>
-            <div class="formula">d Â· sin(Î¸) = m Â· Î»</div>
+            <div class="formula">d · sin(θ) = m · λ</div>
             <p>{{ t('experiments.ifHelpS3P2') }}</p>
             <p>{{ t('experiments.ifHelpS3P3') }}</p>
-            <div class="formula">Î”y = Î» Â· D / d</div>
+            <div class="formula">Δy = λ · D / d</div>
             <p>{{ t('experiments.ifHelpS3P4') }}</p>
-            <div class="formula">Î”y = (Î»D) Â· (1/d)</div>
+            <div class="formula">Δy = (λD) · (1/d)</div>
           </section>
 
           <!-- 4. Laboratory Procedure -->
@@ -70,12 +70,12 @@ const emit = defineEmits<{ (e: 'close'): void }>()
               <li>{{ t('experiments.ifHelpS5L1') }}</li>
               <li>
                 {{ t('experiments.ifHelpS5L2') }}
-                <div class="formula">Slope = Î”(Î”y) / Î”(1/d)</div>
+                <div class="formula">Slope = Δ(Δy) / Δ(1/d)</div>
               </li>
               <li>
                 {{ t('experiments.ifHelpS5L3') }}
-                <div class="formula">Slope = Î» Â· D</div>
-                <div class="formula">Î» = Slope / D</div>
+                <div class="formula">Slope = λ · D</div>
+                <div class="formula">λ = Slope / D</div>
               </li>
             </ul>
           </section>

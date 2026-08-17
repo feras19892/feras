@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { getReports, deleteReport } from '../../services/report.service'
 import type { Report } from '../../services/report.service'
 import { useI18n } from '../../composables/useI18n'
+import { useConfirmDialog } from '../../composables/useConfirmDialog'
 import GradeModal from './GradeModal.vue'
 
 const router = useRouter()
@@ -45,8 +46,11 @@ function onGraded() {
   loadReports()
 }
 
+const { confirmDialog } = useConfirmDialog()
+
 async function confirmDelete(r: Report) {
-  if (!confirm(t('teacher.deleteConfirm') + ` "${r.experiment_name}" — ${r.student_name}?`)) return
+  const ok = await confirmDialog({ message: t('teacher.deleteConfirm') + ` "${r.experiment_name}" — ${r.student_name}?`, variant: 'danger' })
+  if (!ok) return
   try {
     const res = await deleteReport(r.id)
     if (res.success) loadReports()

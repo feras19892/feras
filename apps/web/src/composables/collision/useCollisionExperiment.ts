@@ -25,7 +25,7 @@ export function useCollisionExperiment() {
   const hasVisibleVisPanels = computed(() => getColumnPanels('vis').some(id => layout.isPanelVisible(id)))
 
   function getColumnPanels(col: ColumnId): PanelId[] {
-    return layout.columnOrder[col] ?? []
+    return (layout.columnOrder[col] ?? []) as PanelId[]
   }
 
   const colWidths = reactive({ data: 280, vis: 0, ctrl: 280 })
@@ -80,10 +80,10 @@ export function useCollisionExperiment() {
   function exportToAnalysis() {
     layout.showPanels(['params', 'data'])
     const tList = trials.trials.value
-    if (tList.length === 0) { console.warn('[exportToAnalysis] no trials recorded'); return }
-    const readings = tList.map(t => ({
-      m1: t.m1, m2: t.m2, v1i: t.v1i, v2i: t.v2i,
-      v1f: t.v1f, v2f: t.v2f, Pi: t.Pi, Pf: t.Pf, KEi: t.KEi, KEf: t.KEf, lossPercent: t.lossPercent,
+    if (tList.length === 0) { alert('تحتاج إلى تسجيل قراءة واحدة على الأقل قبل التحليل'); return }
+    const readings = tList.map(tr => ({
+      m1: tr.m1, m2: tr.m2, v1i: tr.v1i, v2i: tr.v2i,
+      v1f: tr.v1f, v2f: tr.v2f, Pi: tr.Pi, Pf: tr.Pf, KEi: tr.KEi, KEf: tr.KEf, lossPercent: tr.lossPercent,
     }))
     const payload: AnalysisPayload = {
       sourceExperiment: 'collision', sourceNameAr: t('experiments.expCollision'), hasCalcTab: true, readings,

@@ -120,7 +120,7 @@ function drawScatter(canvas: HTMLCanvasElement | null, data: {x:number,y:number}
   // Points
   ctx.fillStyle=color; data.forEach(p=>{ ctx.beginPath();ctx.arc(sx(p.x),sy(p.y),4,0,Math.PI*2);ctx.fill() })
 
-  // Fit line: R = slopeÂ·x + intercept  (where x = sin(2Î¸))
+  // Fit line: R = slope·x + intercept  (where x = sin(2θ))
   if (fit) {
     ctx.strokeStyle = '#f97316'; ctx.lineWidth = 2
     ctx.beginPath()
@@ -142,7 +142,7 @@ function drawScatter(canvas: HTMLCanvasElement | null, data: {x:number,y:number}
 
   // Labels
   ctx.fillStyle='#94a3b8'; ctx.font='bold 10px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='top'
-  ctx.fillText('sin(2Î¸)', w/2, h-12)
+  ctx.fillText('sin(2θ)', w/2, h-12)
   ctx.save(); ctx.translate(10, h/2); ctx.rotate(-Math.PI/2); ctx.textAlign='center'; ctx.fillText('R (m)', 0, 0); ctx.restore()
 }
 
@@ -163,11 +163,11 @@ onMounted(drawCharts)
   <div class="panel-body">
     <!-- params panel -->
     <template v-if="id === 'params'">
-      <div class="param-row"><label>vâ‚€ (m/s)</label><div class="param-inputs"><input type="range" min="1" max="100" step="0.1" :value="params.v0" @input="emit('update:params', { ...params, v0: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.v0" @input="emit('update:params', { ...params, v0: +($event.target as HTMLInputElement).value })"></div></div>
-      <div class="param-row"><label>{{ t('experiments.angle') }} (Â°)</label><div class="param-inputs"><input type="range" min="0" max="90" step="0.1" :value="params.angleDeg" @input="emit('update:params', { ...params, angleDeg: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.angleDeg" @input="emit('update:params', { ...params, angleDeg: +($event.target as HTMLInputElement).value })"></div></div>
-      <div class="param-row"><label>g (m/sÂ²)</label><div class="param-inputs"><input type="range" min="1" max="50" step="0.1" :value="params.g" @input="emit('update:params', { ...params, g: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.g" @input="emit('update:params', { ...params, g: +($event.target as HTMLInputElement).value })"></div></div>
-      <div class="param-row"><label>xâ‚€ (m)</label><div class="param-inputs"><input type="range" min="0" max="500" step="0.1" :value="params.x0" @input="emit('update:params', { ...params, x0: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.x0" @input="emit('update:params', { ...params, x0: +($event.target as HTMLInputElement).value })"></div></div>
-      <div class="param-row"><label>yâ‚€ (m)</label><div class="param-inputs"><input type="range" min="0" max="200" step="0.1" :value="params.y0" @input="emit('update:params', { ...params, y0: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.y0" @input="emit('update:params', { ...params, y0: +($event.target as HTMLInputElement).value })"></div></div>
+      <div class="param-row"><label>v₀ (m/s)</label><div class="param-inputs"><input type="range" min="1" max="100" step="0.1" :value="params.v0" @input="emit('update:params', { ...params, v0: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.v0" @input="emit('update:params', { ...params, v0: +($event.target as HTMLInputElement).value })"></div></div>
+      <div class="param-row"><label>{{ t('experiments.angle') }} (°)</label><div class="param-inputs"><input type="range" min="0" max="90" step="0.1" :value="params.angleDeg" @input="emit('update:params', { ...params, angleDeg: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.angleDeg" @input="emit('update:params', { ...params, angleDeg: +($event.target as HTMLInputElement).value })"></div></div>
+      <div class="param-row"><label>g (m/s²)</label><div class="param-inputs"><input type="range" min="1" max="50" step="0.1" :value="params.g" @input="emit('update:params', { ...params, g: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.g" @input="emit('update:params', { ...params, g: +($event.target as HTMLInputElement).value })"></div></div>
+      <div class="param-row"><label>x₀ (m)</label><div class="param-inputs"><input type="range" min="0" max="500" step="0.1" :value="params.x0" @input="emit('update:params', { ...params, x0: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.x0" @input="emit('update:params', { ...params, x0: +($event.target as HTMLInputElement).value })"></div></div>
+      <div class="param-row"><label>y₀ (m)</label><div class="param-inputs"><input type="range" min="0" max="200" step="0.1" :value="params.y0" @input="emit('update:params', { ...params, y0: +($event.target as HTMLInputElement).value })"><input type="number" step="0.1" :value="params.y0" @input="emit('update:params', { ...params, y0: +($event.target as HTMLInputElement).value })"></div></div>
       <div class="param-row"><label>{{ t('experiments.airResistanceK') }}</label><div class="param-inputs"><input type="range" min="0" max="2" step="0.01" :value="params.dragCoeff" @input="emit('update:params', { ...params, dragCoeff: +($event.target as HTMLInputElement).value })"><input type="number" step="0.01" :value="params.dragCoeff" @input="emit('update:params', { ...params, dragCoeff: +($event.target as HTMLInputElement).value })"></div></div>
     </template>
 
@@ -175,9 +175,9 @@ onMounted(drawCharts)
     <template v-else-if="id === 'table'">
       <div v-if="!trials.length" class="empty">{{ t('experiments.noReadings') }}</div>
       <table v-else>
-        <thead><tr><th>#</th><th>{{ t('experiments.angle') }}</th><th>vâ‚€</th><th>{{ t('experiments.time') }}</th><th>{{ t('experiments.height') }}</th><th>{{ t('experiments.rangeLabel') }}</th><th></th></tr></thead>
+        <thead><tr><th>#</th><th>{{ t('experiments.angle') }}</th><th>v₀</th><th>{{ t('experiments.time') }}</th><th>{{ t('experiments.height') }}</th><th>{{ t('experiments.rangeLabel') }}</th><th></th></tr></thead>
         <tbody>
-          <tr v-for="trial in trials" :key="trial.id"><td>{{ trial.id }}</td><td>{{ trial.angleDegrees }}Â°</td><td>{{ trial.initialVelocity }}</td><td>{{ trial.flightTimeSec.toFixed(2) }}</td><td>{{ trial.maxHeightMeters.toFixed(2) }}</td><td>{{ trial.rangeMeters.toFixed(2) }}</td><td><button @click="emit('remove', trial.id)">Ã—</button></td></tr>
+          <tr v-for="trial in trials" :key="trial.id"><td>{{ trial.id }}</td><td>{{ trial.angleDegrees }}°</td><td>{{ trial.initialVelocity }}</td><td>{{ trial.flightTimeSec.toFixed(2) }}</td><td>{{ trial.maxHeightMeters.toFixed(2) }}</td><td>{{ trial.rangeMeters.toFixed(2) }}</td><td><button @click="emit('remove', trial.id)">×</button></td></tr>
         </tbody>
       </table>
       <button class="btn-clear" @click="emit('clear')">{{ t('experiments.clearAll') }}</button>
@@ -234,7 +234,7 @@ onMounted(drawCharts)
     <template v-else-if="id === 'vySignal'">
       <canvas ref="vyCanvas" class="chart-canvas" width="300" height="140" />
     </template>
-    <!-- scatter: R vs sin(2Î¸) -->
+    <!-- scatter: R vs sin(2θ) -->
     <template v-else-if="id === 'scatter'">
       <canvas ref="scatterCanvas" class="chart-canvas" width="300" height="140" />
     </template>

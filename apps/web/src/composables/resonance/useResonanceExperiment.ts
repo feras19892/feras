@@ -2,11 +2,13 @@ import { ref, reactive, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import type { AnalysisPayload } from '../../types/physics'
 import { sendToAnalysis } from '../analysis/sendToAnalysis'
+import { useI18n } from '../useI18n'
 import { useResonanceLayout } from './useResonanceLayout'
 import { useResonanceTrials } from './useResonanceTrials'
 import { standingWaveFreq, wavelengthOpenString, waveSpeedFromTension } from './useResonanceCalculations'
 
 export function useResonanceExperiment() {
+  const { t } = useI18n()
   const params = reactive({
     stringLength: 1.0,
     tension: 10,
@@ -61,12 +63,15 @@ export function useResonanceExperiment() {
   }
   const router = useRouter()
   function exportToAnalysis() {
-    if (trials.trials.value.length < 2) return
+    if (trials.trials.value.length < 2) {
+      alert('تحتاج إلى تسجيل قراءتين على الأقل قبل التحليل')
+      return
+    }
     const payload: AnalysisPayload = {
       sourceExperiment: 'resonance',
-      sourceNameAr: 'الموجات القائمة',
+      sourceNameAr: t('experiments.expResonance'),
       hasCalcTab: true,
-      readings: trials.trials.value.map(t => ({ L: t.stringLength, T: t.tension, n: t.harmonic, f: t.frequency, lambda: t.wavelength })),
+      readings: trials.trials.value.map(tr => ({ L: tr.stringLength, T: tr.tension, n: tr.harmonic, f: tr.frequency, lambda: tr.wavelength })),
       columns: [
         { key: 'L', label: 'L (m)', unit: 'm' },
         { key: 'T', label: 'T (N)', unit: 'N' },
@@ -87,11 +92,24 @@ export function useResonanceExperiment() {
     const toPanel = el?.closest('.draggable-panel')
     const toId = toPanel?.getAttribute('data-id')
     if (!toId || fromId === toId) return
+    let fromCol = '', toCol = ''
     for (const col of Object.keys(layout.columnMap)) {
-      const arr = layout.columnMap[col]
+      if (layout.columnMap[col].includes(fromId)) fromCol = col
+      if (layout.columnMap[col].includes(toId)) toCol = col
+    }
+    if (fromCol === toCol) {
+      const arr = layout.columnMap[fromCol]
       const fi = arr.indexOf(fromId)
       const ti = arr.indexOf(toId)
-      if (fi >= 0 && ti >= 0) { const t = arr[fi]; arr[fi] = arr[ti]; arr[ti] = t }
+      if (fi >= 0 && ti >= 0) { const tmp = arr[fi]; arr[fi] = arr[ti]; arr[ti] = tmp }
+    } else {
+      const fromArr = layout.columnMap[fromCol]
+      const toArr = layout.columnMap[toCol]
+      const fi = fromArr.indexOf(fromId)
+      if (fi >= 0) {
+        fromArr.splice(fi, 1)
+        toArr.push(fromId)
+      }
     }
   }
   function onResizeStart(col: string, e: MouseEvent) {

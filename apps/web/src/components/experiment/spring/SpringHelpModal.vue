@@ -21,7 +21,7 @@ const emit = defineEmits<{ (e: 'close'): void }>()
             <h4>{{ t('experiments.spHelpS1Title') }}</h4>
             <p>{{ t('experiments.spHelpS1P1') }}</p>
             <p>{{ t('experiments.spHelpS1P2') }}</p>
-            <div class="formula">F = -k Â· x</div>
+            <div class="formula">F = -k · x</div>
             <p>{{ t('experiments.spHelpS1P3') }}</p>
           </section>
 
@@ -55,12 +55,12 @@ const emit = defineEmits<{ (e: 'close'): void }>()
               <li>{{ t('experiments.spHelpS4L1') }}</li>
               <li>
                 {{ t('experiments.spHelpS4L2') }}
-                <div class="formula">Slope = Î”TÂ² / Î”m</div>
+                <div class="formula">Slope = ΔT² / Δm</div>
               </li>
               <li>
                 {{ t('experiments.spHelpS4L3') }}
-                <div class="formula">Slope = 4Ï€Â² / k</div>
-                <div class="formula">k = 4Ï€Â² / Slope</div>
+                <div class="formula">Slope = 4π² / k</div>
+                <div class="formula">k = 4π² / Slope</div>
               </li>
             </ul>
           </section>

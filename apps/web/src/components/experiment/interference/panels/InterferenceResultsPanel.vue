@@ -37,7 +37,7 @@ const errorPercent = computed(() => {
 
       <div class="res-row">
         <span class="res-label">Avg Δy</span>
-        <span class="res-val">{{ (trials.reduce((s, t) => s + t.fringeSpacing, 0) / trials.length).toFixed(3) }} mm</span>
+        <span class="res-val">{{ (trials.reduce((s, tr) => s + tr.fringeSpacing, 0) / trials.length).toFixed(3) }} mm</span>
       </div>
     </div>
     <p v-else class="empty">{{ t('experiments.recordAtLeastTwo') }}</p>

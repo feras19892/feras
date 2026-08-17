@@ -82,7 +82,7 @@ const emit = defineEmits<{
         <div class="step">
           <span class="step-num">10</span>
           <div class="step-text">
-            {{ t('experiments.ccGuideS9') }}
+            {{ t('experiments.ccGuideS10') }}
           </div>
         </div>
 

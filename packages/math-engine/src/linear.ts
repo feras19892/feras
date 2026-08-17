@@ -42,10 +42,9 @@ export function solveLinear(A: number[], b: number[], n: number): number[] | nul
     }
     const diag = M[row * n + row]
     if (Math.abs(diag) < 1e-15) {
-      x[row] = 0
-    } else {
-      x[row] = sum / diag
+      return null
     }
+    x[row] = sum / diag
   }
 
   return x

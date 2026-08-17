@@ -13,6 +13,7 @@ const router = useRouter()
 const auth = useAuthStore()
 
 const formError = ref('')
+const loginLoading = ref(false)
 const showFeedback = ref(false)
 const activeFeat = ref<number | null>(null)
 const featColors = ['#3b82f6','#10b981','#f59e0b','#8b5cf6','#ec4899','#ef4444']
@@ -20,15 +21,28 @@ const featColors = ['#3b82f6','#10b981','#f59e0b','#8b5cf6','#ec4899','#ef4444']
 async function handleLogin(payload: { email: string; password: string }) {
   formError.value = ''
   auth.error = null
-  const ok = await auth.login(payload.email, payload.password)
-  if (ok === true) {
-    if (auth.isStudent) { router.push('/student'); return }
-    if (auth.isTeacher) { router.push('/teacher'); return }
-    router.push('/home')
-  } else if (ok && typeof ok === 'object' && (ok as any).school) {
-    router.push('/school')
-  } else {
-    formError.value = t('auth.errors.invalidCredentials')
+  loginLoading.value = true
+  try {
+    const ok = await auth.login(payload.email, payload.password)
+    if (ok === true) {
+      if (auth.isStudent) { router.push('/student'); return }
+      if (auth.isTeacher) { router.push('/teacher'); return }
+      router.push('/home')
+    } else if (ok && typeof ok === 'object' && (ok as any).school) {
+      router.push('/school')
+    } else {
+      const errMsg = auth.error || t('auth.errors.invalidCredentials')
+      formError.value = errMsg.includes('blocked') ? t('auth.errors.accountBlocked', 'حسابك موقوف. تواصل مع الإدارة.')
+        : errMsg.includes('verify') ? t('auth.errors.emailNotVerified', 'يجب تأكيد بريدك الإلكتروني أولاً')
+        : errMsg.includes('network') || errMsg.includes('fetch') ? t('auth.errors.networkError', 'تعذر الاتصال بالخادم')
+        : t('auth.errors.invalidCredentials')
+    }
+  } catch (err) {
+    formError.value = err instanceof Error && err.message.includes('fetch')
+      ? t('auth.errors.networkError', 'تعذر الاتصال بالخادم')
+      : t('auth.errors.invalidCredentials')
+  } finally {
+    loginLoading.value = false
   }
 }
 
@@ -38,9 +52,6 @@ function scrollToLoginAfterDetail() {
   activeFeat.value = null
   document.querySelector('.login-side')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
 }
-
-function enterAsTeacher() { auth.loginAsGuest('teacher'); router.push('/teacher') }
-function enterAsStudent() { auth.loginAsGuest('student'); router.push('/student') }
 </script>
 
 <template>
@@ -63,10 +74,9 @@ function enterAsStudent() { auth.loginAsGuest('student'); router.push('/student'
     <LandingLoginSide
       :form-error="formError"
       :auth-error="auth.error"
+      :loading="loginLoading"
       @login="handleLogin"
       @register="handleJoin"
-      @enter-as-teacher="enterAsTeacher"
-      @enter-as-student="enterAsStudent"
     />
   </div>
 </template>

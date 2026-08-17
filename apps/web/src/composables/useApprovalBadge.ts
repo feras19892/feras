@@ -1,29 +1,21 @@
-import { ref, onMounted, onUnmounted } from 'vue'
-import { useAuthStore } from '../modules/auth/stores/auth'
-import { getPendingApprovals, getSchoolPendingApprovals } from '../services/approval.service'
+import { onMounted, onUnmounted } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useNotificationsStore } from '../stores/notifications.store'
 
 export function useApprovalBadge() {
-  const auth = useAuthStore()
-  const pendingCount = ref(0)
-  let timer: ReturnType<typeof setInterval> | null = null
+  const store = useNotificationsStore()
+  const { pendingCount } = storeToRefs(store)
 
-  async function load() {
-    try {
-      if (auth.isSchool) {
-        const res = await getSchoolPendingApprovals()
-        if (res.success) pendingCount.value = res.pending.length
-      } else if (auth.isTeacher || auth.isAdmin) {
-        const res = await getPendingApprovals()
-        if (res.success) pendingCount.value = res.pending.length
-      }
-    } catch { /* ignore */ }
-  }
+  function onApprovalChanged() { store.onApprovalChanged() }
 
   onMounted(() => {
-    load()
-    timer = setInterval(load, 30000)
+    store.startPolling(30000)
+    window.addEventListener('approval:changed', onApprovalChanged)
   })
-  onUnmounted(() => { if (timer) clearInterval(timer) })
+  onUnmounted(() => {
+    window.removeEventListener('approval:changed', onApprovalChanged)
+    store.stopPolling()
+  })
 
-  return { pendingCount, reload: load }
+  return { pendingCount, reload: store.loadApprovals }
 }

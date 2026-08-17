@@ -1,7 +1,8 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useIdealGasExperiment } from '../../../../composables/ideal-gas/useIdealGasExperiment'
 import { useI18n } from '../../../../composables/useI18n'
+import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import IdealGasMenuBar from '../../../../components/experiment/ideal-gas/IdealGasMenuBar.vue'
 import IdealGasCanvas from '../../../../components/experiment/ideal-gas/IdealGasCanvas.vue'
 import IdealGasPanelBody from '../../../../components/experiment/ideal-gas/IdealGasPanelBody.vue'
@@ -10,10 +11,12 @@ import IdealGasControlBar from '../../../../components/experiment/ideal-gas/Idea
 import IdealGasHelpModal from '../../../../components/experiment/ideal-gas/IdealGasHelpModal.vue'
 import IdealGasGuidePanel from '../../../../components/experiment/ideal-gas/IdealGasGuidePanel.vue'
 import IdealGasOverlayPanels from '../../../../components/experiment/ideal-gas/IdealGasOverlayPanels.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
+import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
 const ex = useIdealGasExperiment()
 const { t } = useI18n()
+const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)
 
@@ -21,7 +24,7 @@ function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return
   if (e.code === 'Space') { e.preventDefault(); ex.lab.togglePause() }
-  else if (e.key === 'r' || e.key === 'R') { if (confirm(t('experiments.resetConfirm'))) ex.resetSim() }
+  else if (e.key === 'r' || e.key === 'R') { confirmReset().then(ok => { if (ok) ex.resetSim() }) }
   else if (e.key === 's' || e.key === 'S') ex.trials.recordTrial()
   else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); if (e.shiftKey) ex.trials.redo(); else ex.trials.undo() }
   else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ex.trials.redo() }
@@ -37,14 +40,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <IdealGasMenuBar
       :title="t('experiments.expIdealGas')"
       icon="&#x1F4A8;"
-      experiment-route="/physics/heat/ideal-gas"
-      experiment-name="Ideal Gas"
-      @toggle-panel="ex.layout.togglePanel"
       @show-all-panels="ex.layout.showAllPanels"
-      @export-csv="ex.trials.exportCsv"
-      @toggle-pause="ex.lab.togglePause"
-      @reset="ex.resetSim"
-      @record-trial="ex.trials.recordTrial"
       @toggle-help="helpOpen = !helpOpen"
       @analyze-results="ex.exportToAnalysis"
     />
@@ -171,6 +167,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       :P="ex.lab.P.value"
     />
   </div>
+  <ResetConfirmModal />
 </template>
 
 <style scoped>

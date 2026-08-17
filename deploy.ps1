@@ -15,8 +15,9 @@ Pop-Location
 
 Write-Host "2. نشر dist على Vercel..." -ForegroundColor Cyan
 Push-Location apps\web
-$env:VERCEL_PROJECT_ID = "prj_YdO1WzgpfvhVvUUieVLwTjJbFpZe"
-$env:VERCEL_ORG_ID = "team_AxzkGv6j3H6wXz6BZ5q66N4I"
+$projectConfig = Get-Content "..\..\.vercel\project.json" | ConvertFrom-Json
+$env:VERCEL_PROJECT_ID = $projectConfig.projectId
+$env:VERCEL_ORG_ID = $projectConfig.orgId
 npx vercel deploy dist --prod --yes
 Pop-Location
 

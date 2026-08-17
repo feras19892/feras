@@ -30,6 +30,7 @@ const emit = defineEmits<{
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const wrapRef = ref<HTMLDivElement | null>(null)
+let cssW = 700, cssH = 420
 const { draw } = useProjectileDraw(canvasRef, props.params, props.simState)
 const { toScreen } = useProjectileGrid(props.params)
 const draggingTarget = ref(false)
@@ -59,8 +60,11 @@ function resizeCanvas() {
   const canvas = canvasRef.value, wrap = wrapRef.value
   if (!canvas || !wrap) return
   const rect = wrap.getBoundingClientRect()
-  canvas.width = rect.width
-  canvas.height = Math.max(rect.height, 300)
+  const dpr = window.devicePixelRatio || 1
+  cssW = rect.width; cssH = Math.max(rect.height, 300)
+  canvas.width = cssW * dpr; canvas.height = cssH * dpr
+  canvas.style.width = cssW + 'px'; canvas.style.height = cssH + 'px'
+  const ctx = canvas.getContext('2d'); if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 }
 
 function getCanvasPos(e: MouseEvent) {
@@ -74,8 +78,8 @@ function onMouseDown(e: MouseEvent) {
   if (!props.params.targetMode || !props.params.targetVisible) return
   if (props.simState.running) return
   const pos = getCanvasPos(e)
-  const w = canvasRef.value?.width ?? 0
-  const h = canvasRef.value?.height ?? 0
+  const w = cssW ?? 0
+  const h = cssH ?? 0
   const ts = toScreen(w, h, 0, 0)
   const tx = ts.margin + props.params.targetX * ts.scale
   const ty = ts.groundY - props.params.targetY * ts.scale
@@ -109,9 +113,9 @@ function onMouseUp() {
 function onDblClick(e: MouseEvent) {
   if (!props.params.targetMode || !props.params.targetVisible || props.simState.running) return
   const pos = getCanvasPos(e)
-  const w = canvasRef.value?.width ?? 0
-  const h = canvasRef.value?.height ?? 0
-  const ts = toScreen(w, h, 0, 0)
+  const w2 = cssW ?? 0
+  const h2 = cssH ?? 0
+  const ts = toScreen(w2, h2, 0, 0)
   const tx = ts.margin + props.params.targetX * ts.scale
   const ty = ts.groundY - props.params.targetY * ts.scale
   const dx = pos.x - tx

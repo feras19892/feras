@@ -1,22 +1,23 @@
-<script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useI18n } from '../../composables/useI18n';
-
-const { t } = useI18n();
-
+<script lang="ts">
 export interface SidebarItem {
   id: string;
   icon: string;
   label: string;
   badge?: number;
 }
-
 export interface SidebarGroup {
   id: string;
   title: string;
   icon: string;
   items: SidebarItem[];
 }
+</script>
+
+<script setup lang="ts">
+import { computed, ref } from 'vue';
+import { useI18n } from '../../composables/useI18n';
+
+const { t } = useI18n();
 
 const props = defineProps<{
   groups: SidebarGroup[];
@@ -31,71 +32,56 @@ const emit = defineEmits<{
   (e: 'home'): void;
   (e: 'logout'): void;
   (e: 'toggle-collapse'): void;
+  (e: 'group-select', id: string): void;
 }>();
 
-const collapsedGroups = ref<Set<string>>(new Set());
+const roleColor = computed(() => ({
+  student: '#4ade80',
+  teacher: '#a5b4fc',
+  school: '#67e8f9',
+  admin: '#f87171',
+}[props.role]));
 
-function toggleGroup(groupId: string) {
-  const next = new Set(collapsedGroups.value);
-  if (next.has(groupId)) next.delete(groupId);
-  else next.add(groupId);
-  collapsedGroups.value = next;
+const openGroups = ref<Set<string>>(new Set());
+
+function toggleGroup(id: string) {
+  if (openGroups.value.has(id)) openGroups.value.delete(id);
+  else openGroups.value.add(id);
 }
 
-function isGroupCollapsed(groupId: string) {
-  return collapsedGroups.value.has(groupId);
-}
-
-function groupHasActive(groupId: string) {
-  const group = props.groups.find(g => g.id === groupId);
-  return group?.items.some(item => item.id === props.activeId);
-}
-
-const roleConfig = computed(() => ({
-  student: { icon: '🎓', label: t('shared.roleStudent'), color: '#4ade80', accent: 'rgba(74,222,128,0.12)', border: 'rgba(74,222,128,0.25)' },
-  teacher: { icon: '👨‍🏫', label: t('shared.roleTeacher'), color: '#a5b4fc', accent: 'rgba(165,180,252,0.12)', border: 'rgba(165,180,252,0.25)' },
-  school: { icon: '🏫', label: t('shared.roleSchool'), color: '#67e8f9', accent: 'rgba(103,232,249,0.12)', border: 'rgba(103,232,249,0.25)' },
-  admin: { icon: '🛡️', label: t('shared.roleAdmin'), color: '#f87171', accent: 'rgba(248,113,113,0.12)', border: 'rgba(248,113,113,0.25)' },
-}));
-
-const rc = computed(() => roleConfig.value[props.role]);
+const navGroups = computed(() => props.groups.map(g => ({
+  ...g,
+  isOpen: openGroups.value.has(g.id) || g.items.some(i => i.id === props.activeId),
+  hasActive: g.items.some(i => i.id === props.activeId),
+  totalBadge: g.items.reduce((s, i) => s + (i.badge || 0), 0) || undefined,
+})));
 </script>
 
 <template>
-  <aside class="app-sidebar" :class="{ collapsed: collapsed }">
-    <!-- Brand -->
-    <div class="sidebar-brand" @click="emit('home')">
-      <span class="brand-icon">⚛</span>
-      <span v-if="!collapsed" class="brand-text">PhysLab</span>
+  <aside class="app-sidebar" :class="[role, { collapsed }]">
+    <div class="sidebar-head">
+      <button class="brand" @click="emit('home')">
+        <span class="brand-dot" :style="{ background: roleColor }"></span>
+        <span v-if="!collapsed" class="brand-text">PhysLab</span>
+      </button>
+      <button v-if="!collapsed" class="collapse-btn" @click="emit('toggle-collapse')">◀</button>
     </div>
 
-    <!-- Role Badge -->
-    <div class="sidebar-role" :style="{ background: rc.accent, borderColor: rc.border }">
-      <span class="role-icon">{{ rc.icon }}</span>
-      <div v-if="!collapsed" class="role-info">
-        <span class="role-name">{{ userName }}</span>
-        <span class="role-tag" :style="{ color: rc.color }">{{ rc.label }}</span>
-      </div>
-    </div>
+    <button v-if="collapsed" class="expand-btn" @click="emit('toggle-collapse')">▶</button>
 
-    <!-- Groups -->
     <nav class="sidebar-nav">
-      <div v-for="group in groups" :key="group.id" class="sidebar-group">
-        <button
-          class="group-header"
-          :class="{ active: groupHasActive(group.id) }"
-          @click="toggleGroup(group.id)"
-        >
+      <div v-for="group in navGroups" :key="group.id" class="nav-group">
+        <button class="group-header" :class="{ active: group.hasActive }" @click="toggleGroup(group.id)">
           <span class="group-icon">{{ group.icon }}</span>
           <span v-if="!collapsed" class="group-title">{{ group.title }}</span>
-          <span v-if="!collapsed" class="group-chevron" :class="{ rotated: isGroupCollapsed(group.id) }">▾</span>
+          <span v-if="!collapsed && group.totalBadge" class="group-badge">{{ group.totalBadge }}</span>
+          <span v-if="!collapsed" class="group-arrow" :class="{ open: group.isOpen }">▾</span>
         </button>
-
-        <div v-if="!isGroupCollapsed(group.id) && !collapsed" class="group-items">
+        <div v-if="!collapsed && group.isOpen" class="group-items">
           <button
             v-for="item in group.items"
             :key="item.id"
-            :class="['item-btn', { active: activeId === item.id }]"
+            :class="['nav-item', { active: activeId === item.id }]"
             @click="emit('select', item.id)"
           >
             <span class="item-icon">{{ item.icon }}</span>
@@ -103,29 +89,15 @@ const rc = computed(() => roleConfig.value[props.role]);
             <span v-if="item.badge" class="item-badge">{{ item.badge }}</span>
           </button>
         </div>
-
-        <!-- Collapsed mode: show icons only -->
-        <div v-if="!isGroupCollapsed(group.id) && collapsed" class="group-items collapsed">
-          <button
-            v-for="item in group.items"
-            :key="item.id"
-            :class="['item-btn-icon', { active: activeId === item.id }]"
-            @click="emit('select', item.id)"
-            :title="item.label"
-          >
-            <span class="item-icon">{{ item.icon }}</span>
-            <span v-if="item.badge" class="item-badge">{{ item.badge }}</span>
-          </button>
-        </div>
       </div>
     </nav>
 
-    <!-- Footer -->
-    <div class="sidebar-footer">
-      <button class="footer-btn" @click="emit('toggle-collapse')" :title="collapsed ? t('shared.sidebarExpand') : t('shared.sidebarCollapse')">
-        <span>{{ collapsed ? '▸' : '◂' }}</span>
-      </button>
-      <button class="footer-btn logout" @click="emit('logout')" :title="t('shared.logout')">
+    <div class="sidebar-foot">
+      <div v-if="!collapsed" class="user-info">
+        <span class="user-avatar">👤</span>
+        <span class="user-name">{{ userName }}</span>
+      </div>
+      <button class="logout-btn" @click="emit('logout')" :title="t('shared.logout')">
         <span>⏻</span>
       </button>
     </div>
@@ -134,229 +106,59 @@ const rc = computed(() => roleConfig.value[props.role]);
 
 <style scoped>
 .app-sidebar {
-  width: 240px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  background: rgba(10, 15, 28, 0.95);
-  border-inline-end: 1px solid rgba(255,255,255,0.06);
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  transition: width 0.2s ease;
-  z-index: 100;
+  width: 240px; flex-shrink: 0; display: flex; flex-direction: column;
+  background: #0a0f1c; border-inline-end: 1px solid rgba(255,255,255,0.06);
+  position: sticky; top: 0; height: 100vh; transition: width 0.18s ease; z-index: 100; overflow: hidden;
 }
-.app-sidebar.collapsed {
-  width: 64px;
-}
+.app-sidebar.collapsed { width: 56px; }
+.app-sidebar.student { border-top: 3px solid #22c55e; }
+.app-sidebar.teacher { border-top: 3px solid #6366f1; }
+.app-sidebar.school { border-top: 3px solid #06b6d4; }
+.app-sidebar.admin { border-top: 3px solid #ef4444; }
 
-.sidebar-brand {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 1rem 1.2rem;
-  cursor: pointer;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-}
-.brand-icon {
-  width: 36px; height: 36px;
-  border-radius: 0.6rem;
-  background: linear-gradient(135deg, #6366f1, #a855f7);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem; font-weight: 900; color: #fff;
-  flex-shrink: 0;
-}
-.brand-text {
-  font-size: 1rem; font-weight: 800; color: #f1f5f9;
-  white-space: nowrap;
-}
+.sidebar-head { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.brand { display: flex; align-items: center; gap: 0.5rem; border: none; background: transparent; cursor: pointer; font-family: inherit; }
+.brand-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.brand-text { font-size: 1rem; font-weight: 800; color: #f1f5f9; letter-spacing: -0.5px; }
+.collapse-btn { border: none; background: transparent; color: #475569; cursor: pointer; font-size: 0.7rem; padding: 0.2rem; border-radius: 4px; }
+.collapse-btn:hover { color: #94a3b8; }
+.expand-btn { border: none; background: transparent; color: #475569; cursor: pointer; font-size: 0.8rem; padding: 0.5rem; }
+.expand-btn:hover { color: #94a3b8; }
 
-.sidebar-role {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1rem;
-  margin: 0.6rem;
-  border-radius: 0.6rem;
-  border: 1px solid;
-}
-.role-icon { font-size: 1.3rem; flex-shrink: 0; }
-.role-info { display: flex; flex-direction: column; min-width: 0; }
-.role-name {
-  font-size: 0.82rem; font-weight: 700; color: #e2e8f0;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.role-tag { font-size: 0.68rem; font-weight: 600; }
-
-.sidebar-nav {
-  flex: 1;
-  overflow-y: auto;
-  padding: 0.4rem 0;
-}
+.sidebar-nav { flex: 1; overflow-y: auto; padding: 0.5rem; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) transparent; }
 .sidebar-nav::-webkit-scrollbar { width: 4px; }
 .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
 
-.sidebar-group {
-  margin-bottom: 0.2rem;
-}
+.nav-group { margin-bottom: 0.3rem; }
+.group-header { display: flex; align-items: center; gap: 0.5rem; width: 100%; padding: 0.5rem 0.6rem; border: none; background: transparent; border-radius: 6px; color: #64748b; font-size: 0.78rem; font-weight: 700; cursor: pointer; font-family: inherit; text-align: start; transition: background 0.12s, color 0.12s; }
+.group-header:hover { background: rgba(255,255,255,0.04); color: #e2e8f0; }
+.group-header.active { color: #c7d2fe; }
+.group-icon { font-size: 1rem; flex-shrink: 0; }
+.group-title { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.group-badge { min-width: 18px; height: 18px; border-radius: 999px; background: rgba(239,68,68,0.15); color: #f87171; font-size: 0.6rem; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
+.group-arrow { font-size: 0.6rem; transition: transform 0.15s; opacity: 0.5; }
+.group-arrow.open { transform: rotate(180deg); }
 
-.group-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-  padding: 0.5rem 1.2rem;
-  border: none;
-  background: transparent;
-  color: #64748b;
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  font-family: inherit;
-  transition: color 0.15s;
-}
-.group-header:hover { color: #94a3b8; }
-.group-header.active { color: #e2e8f0; }
-.group-icon { font-size: 0.9rem; flex-shrink: 0; }
-.group-title { flex: 1; text-align: start; white-space: nowrap; }
-.group-chevron {
-  font-size: 0.7rem;
-  transition: transform 0.2s;
-}
-.group-chevron.rotated { transform: rotate(-90deg); }
+.group-items { display: flex; flex-direction: column; gap: 0.1rem; padding-inline-start: 1.5rem; padding-top: 0.2rem; }
+.nav-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.6rem; border: none; background: transparent; border-radius: 6px; color: #64748b; font-size: 0.75rem; font-weight: 600; cursor: pointer; font-family: inherit; text-align: start; width: 100%; transition: background 0.12s, color 0.12s; }
+.nav-item:hover { background: rgba(255,255,255,0.04); color: #e2e8f0; }
+.nav-item.active { background: rgba(99,102,241,0.12); color: #c7d2fe; }
+.item-icon { font-size: 0.85rem; flex-shrink: 0; }
+.item-label { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.item-badge { min-width: 16px; height: 16px; border-radius: 999px; background: #ef4444; color: #fff; font-size: 0.58rem; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
 
-.group-items {
-  display: flex;
-  flex-direction: column;
-  padding: 0.1rem 0;
-}
-.group-items.collapsed {
-  align-items: center;
-}
+.sidebar-foot { display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 1rem; border-top: 1px solid rgba(255,255,255,0.04); }
+.user-info { display: flex; align-items: center; gap: 0.5rem; min-width: 0; }
+.user-avatar { font-size: 0.9rem; }
+.user-name { font-size: 0.75rem; font-weight: 600; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.logout-btn { width: 28px; height: 28px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); background: transparent; color: #64748b; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color 0.15s, color 0.15s; }
+.logout-btn:hover { border-color: rgba(239,68,68,0.3); color: #f87171; }
 
-.item-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.5rem 1.2rem 0.5rem 2.2rem;
-  border: none;
-  background: transparent;
-  color: #94a3b8;
-  font-size: 0.82rem;
-  font-weight: 500;
-  cursor: pointer;
-  font-family: inherit;
-  transition: all 0.15s;
-  position: relative;
-  white-space: nowrap;
-}
-.item-btn:hover {
-  background: rgba(255,255,255,0.04);
-  color: #e2e8f0;
-}
-.item-btn.active {
-  background: rgba(99,102,241,0.1);
-  color: #c7d2fe;
-}
-.item-btn.active::before {
-  content: '';
-  position: absolute;
-  inset-inline-start: 0;
-  width: 3px;
-  height: 60%;
-  background: #818cf8;
-  border-radius: 0 2px 2px 0;
-}
-.item-icon { font-size: 0.95rem; flex-shrink: 0; width: 20px; text-align: center; }
-.item-label { flex: 1; text-align: start; }
-.item-badge {
-  min-width: 18px; height: 18px;
-  border-radius: 999px;
-  background: #ef4444;
-  color: #fff;
-  font-size: 0.65rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 4px;
-  flex-shrink: 0;
-}
-
-.item-btn-icon {
-  width: 40px; height: 40px;
-  border-radius: 0.5rem;
-  border: none;
-  background: transparent;
-  color: #94a3b8;
-  font-size: 1rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s;
-  position: relative;
-  margin: 0.15rem 0;
-}
-.item-btn-icon:hover {
-  background: rgba(255,255,255,0.04);
-  color: #e2e8f0;
-}
-.item-btn-icon.active {
-  background: rgba(99,102,241,0.12);
-  color: #c7d2fe;
-}
-
-.sidebar-footer {
-  display: flex;
-  gap: 0.3rem;
-  padding: 0.6rem;
-  border-top: 1px solid rgba(255,255,255,0.04);
-}
-.footer-btn {
-  flex: 1;
-  height: 36px;
-  border-radius: 0.5rem;
-  border: 1px solid rgba(255,255,255,0.06);
-  background: transparent;
-  color: #64748b;
-  font-size: 0.85rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s;
-}
-.footer-btn:hover { background: rgba(255,255,255,0.04); color: #e2e8f0; }
-.footer-btn.logout:hover {
-  background: rgba(239,68,68,0.1);
-  border-color: rgba(239,68,68,0.2);
-  color: #f87171;
-}
+.app-sidebar.collapsed .sidebar-head { justify-content: center; }
+.app-sidebar.collapsed .sidebar-foot { justify-content: center; padding: 0.6rem; }
 
 @media (max-width: 768px) {
-  .app-sidebar {
-    width: 100%;
-    height: auto;
-    position: fixed;
-    bottom: 0;
-    top: auto;
-    flex-direction: row;
-    overflow-x: auto;
-    border-inline-end: none;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    padding: 0.3rem;
-    z-index: 200;
-  }
-  .app-sidebar.collapsed { width: 100%; }
-  .sidebar-brand, .sidebar-role, .group-header, .sidebar-footer { display: none; }
-  .sidebar-nav { flex-direction: row; padding: 0; }
-  .sidebar-group { margin: 0; }
-  .group-items { flex-direction: row; }
-  .group-items:not(.collapsed) { display: none; }
-  .group-items.collapsed { display: flex; flex-direction: row; }
-  .item-btn-icon { width: 44px; height: 44px; }
+  .app-sidebar { width: 56px; }
+  .app-sidebar:not(.collapsed) { width: 200px; }
 }
 </style>

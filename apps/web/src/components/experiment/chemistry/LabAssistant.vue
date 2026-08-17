@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { currentMessage, assistantOpen, toggleAssistant } from '../../../composables/chemistry/useLabAssistant';
+import { computed } from 'vue';
+import { currentMessage, messageHistory, assistantOpen, toggleAssistant } from '../../../composables/chemistry/useLabAssistant';
 import { useI18n } from '../../../composables/useI18n';
 const { t } = useI18n();
 
@@ -16,6 +17,13 @@ const typeClasses: Record<string, string> = {
   success: 'msg-success',
   tip: 'msg-tip',
 };
+
+const visibleMessages = computed(() => {
+  if (currentMessage.value) {
+    return [currentMessage.value, ...messageHistory.value.filter(m => m.id !== currentMessage.value!.id)];
+  }
+  return messageHistory.value;
+});
 </script>
 
 <template>
@@ -34,13 +42,20 @@ const typeClasses: Record<string, string> = {
       </button>
     </div>
     <div v-if="assistantOpen" class="assistant-body">
-      <div v-if="!currentMessage" class="assistant-empty">
+      <div v-if="!currentMessage && messageHistory.length === 0" class="assistant-empty">
         <span class="empty-icon">🧪</span>
         <p>{{ t('chemistryLab.assistantWelcome') }}</p>
       </div>
-      <div v-else class="assistant-single" :class="typeClasses[currentMessage.type]">
-        <span class="msg-icon">{{ typeIcons[currentMessage.type] }}</span>
-        <span class="msg-text">{{ currentMessage.text }}</span>
+      <div v-else class="assistant-messages">
+        <div
+          v-for="msg in visibleMessages"
+          :key="msg.id"
+          class="assistant-single"
+          :class="typeClasses[msg.type]"
+        >
+          <span class="msg-icon">{{ typeIcons[msg.type] }}</span>
+          <span class="msg-text">{{ msg.text }}</span>
+        </div>
       </div>
     </div>
   </div>

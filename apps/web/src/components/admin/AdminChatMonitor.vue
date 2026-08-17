@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useI18n } from '../../composables/useI18n';
+import { useConfirmDialog } from '../../composables/useConfirmDialog';
 import { getAdminAllMessages, getAdminChatStats, deleteClassMessage } from '../../services/chat.service';
 import type { ClassMessage } from '../../services/chat.service';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const messages = ref<(ClassMessage & { class_name?: string })[]>([]);
 const stats = ref<{ total: number; flagged: number; byClass: { id: string; name: string; msg_count: number; flagged_count: number }[] } | null>(null);
 const loading = ref(false);
@@ -46,8 +47,11 @@ async function load() {
   }
 }
 
+const { confirmDialog } = useConfirmDialog();
+
 async function removeMessage(id: number) {
-  if (!confirm(t('admin.confirmDeleteMessage'))) return;
+  const ok = await confirmDialog({ message: t('admin.confirmDeleteMessage'), variant: 'danger' });
+  if (!ok) return;
   try {
     await deleteClassMessage(id);
     messages.value = messages.value.filter(m => m.id !== id);
@@ -55,10 +59,15 @@ async function removeMessage(id: number) {
 }
 
 function formatTime(dateStr: string) {
-  return new Date(dateStr).toLocaleString('ar-SA', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  return new Date(dateStr).toLocaleString(locale.value === 'ar' ? 'ar-SA' : locale.value, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
 
-onMounted(load);
+let refreshTimer: ReturnType<typeof setInterval> | null = null;
+onMounted(() => {
+  load();
+  refreshTimer = setInterval(() => load(), 15000);
+});
+onUnmounted(() => { if (refreshTimer) clearInterval(refreshTimer); });
 </script>
 
 <template>

@@ -1,249 +1,67 @@
-import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from './modules/auth/stores/auth';
+import { getSystemStatus, type SystemStatus } from './services/system-status.service';
+import { routes } from './router/routes';
 import './types/router'; // augmentation
 
-const routes: RouteRecordRaw[] = [
-  {
-    path: '/',
-    name: 'Landing',
-    component: () => import('./pages/index.vue'),
-  },
-  {
-    path: '/language',
-    name: 'Language',
-    component: () => import('./pages/language.vue'),
-  },
-  {
-    path: '/login',
-    redirect: '/',
-  },
-  {
-    path: '/register',
-    name: 'Register',
-    component: () => import('./pages/register.vue'),
-  },
-  {
-    path: '/verify-email',
-    name: 'VerifyEmail',
-    component: () => import('./pages/verify-email.vue'),
-  },
-  {
-    path: '/dashboard',
-    redirect: '/home',
-  },
-  {
-    path: '/home',
-    name: 'Home',
-    meta: { requiresAuth: true, roles: ['student', 'teacher', 'admin'] },
-    component: () => import('./pages/dashboard.vue'),
-  },
-  {
-    path: '/student',
-    name: 'StudentDashboard',
-    meta: { requiresAuth: true, roles: ['student'] },
-    component: () => import('./pages/student-dashboard.vue'),
-  },
-  {
-    path: '/teacher',
-    name: 'TeacherDashboard',
-    meta: { requiresAuth: true, roles: ['teacher'] },
-    component: () => import('./pages/teacher-dashboard.vue'),
-  },
-  {
-    path: '/chemistry',
-    name: 'Chemistry',
-    component: () => import('./modules/chemistry/ChemistryLanding.vue'),
-  },
-  {
-    path: '/chemistry/analysis-calc',
-    name: 'ChemistryAnalysis',
-    meta: { requiresAuth: true },
-    component: () => import('./modules/chemistry/analysis-calc/ChemAnalysisPage.vue'),
-  },
-  {
-    path: '/physics',
-    name: 'Branches',
-    component: () => import('./modules/physics/branches-page.vue'),
-  },
-  {
-    path: '/physics/:branchId',
-    name: 'Branch',
-    component: () => import('./modules/physics/branch-page.vue'),
-  },
-  {
-    path: '/physics/:branchId/:experimentId',
-    name: 'Experiment',
-    component: () => import('./modules/physics/experiment-page.vue'),
-  },
-  {
-    path: '/admin',
-    name: 'Admin',
-    meta: { requiresAuth: true, roles: ['admin'] },
-    component: () => import('./pages/admin.vue'),
-  },
-  {
-    path: '/school/register',
-    name: 'SchoolRegister',
-    component: () => import('./pages/school-register.vue'),
-  },
-  {
-    path: '/school/login',
-    name: 'SchoolLogin',
-    component: () => import('./pages/school-login.vue'),
-  },
-  {
-    path: '/school',
-    name: 'SchoolDashboard',
-    meta: { requiresAuth: true, roles: ['school'] },
-    component: () => import('./pages/school.vue'),
-  },
-  {
-    path: '/school/user/:id',
-    name: 'SchoolUserDetail',
-    meta: { requiresAuth: true, roles: ['school'] },
-    component: () => import('./pages/school-user-detail.vue'),
-  },
-  {
-    path: '/school/class/:id',
-    name: 'SchoolClassDetail',
-    meta: { requiresAuth: true, roles: ['school'] },
-    component: () => import('./pages/school-class-detail.vue'),
-  },
-  {
-    path: '/approvals',
-    name: 'Approvals',
-    meta: { requiresAuth: true },
-    component: () => import('./pages/approvals.vue'),
-  },
-  {
-    path: '/analysis',
-    name: 'Analysis',
-    meta: { requiresAuth: true },
-    component: () => import('./modules/physics/experiments/analysis-calc/AnalysisCalcExperiment.vue'),
-  },
-  {
-    path: '/monitor',
-    name: 'Monitor',
-    component: () => import('./components/dev/ExperimentMonitorPage.vue'),
-  },
-  {
-    path: '/report/:id',
-    name: 'TeacherReport',
-    meta: { requiresAuth: true, roles: ['student', 'teacher', 'admin'] },
-    component: () => import('./pages/report-view.vue'),
-  },
-  {
-    path: '/math',
-    name: 'MathHome',
-    component: () => import('./pages/math/index.vue'),
-  },
-  {
-    path: '/biology',
-    name: 'BiologyHome',
-    component: () => import('./pages/biology/index.vue'),
-  },
-  {
-    path: '/biology/cell',
-    name: 'BiologyCell',
-    component: () => import('./pages/biology/cell/index.vue'),
-  },
-  {
-    path: '/biology/cell/dna-structure',
-    name: 'BiologyDnaStructure',
-    component: () => import('./pages/biology/cell/dna-structure.vue'),
-  },
-  {
-    path: '/biology/cell/mitosis',
-    name: 'BiologyMitosis',
-    component: () => import('./pages/biology/cell/mitosis.vue'),
-  },
-  {
-    path: '/biology/cell/plant-cell',
-    name: 'BiologyPlantCell',
-    component: () => import('./pages/biology/cell/plant-cell.vue'),
-  },
-  {
-    path: '/biology/cell/protein-synthesis',
-    name: 'BiologyProteinSynthesis',
-    component: () => import('./pages/biology/cell/protein-synthesis.vue'),
-  },
-  {
-    path: '/biology/anatomy',
-    name: 'BiologyAnatomy',
-    component: () => import('./pages/biology/anatomy/index.vue'),
-  },
-  {
-    path: '/biology/anatomy/heart',
-    name: 'BiologyHeart',
-    component: () => import('./pages/biology/anatomy/heart.vue'),
-  },
-  {
-    path: '/biology/anatomy/brain',
-    name: 'BiologyBrain',
-    component: () => import('./pages/biology/anatomy/brain.vue'),
-  },
-  {
-    path: '/biology/anatomy/lungs',
-    name: 'BiologyLungs',
-    component: () => import('./pages/biology/anatomy/lungs.vue'),
-  },
-  {
-    path: '/biology/anatomy/skeleton',
-    name: 'BiologySkeleton',
-    component: () => import('./pages/biology/anatomy/skeleton.vue'),
-  },
-  {
-    path: '/biology/anatomy/digestive',
-    name: 'BiologyDigestive',
-    component: () => import('./pages/biology/anatomy/digestive.vue'),
-  },
-  {
-    path: '/biology/anatomy/kidney',
-    name: 'BiologyKidney',
-    component: () => import('./pages/biology/anatomy/kidney.vue'),
-  },
-  {
-    path: '/biology/anatomy/eye',
-    name: 'BiologyEye',
-    component: () => import('./pages/biology/anatomy/eye.vue'),
-  },
-  {
-    path: '/biology/anatomy/ear',
-    name: 'BiologyEar',
-    component: () => import('./pages/biology/anatomy/ear.vue'),
-  },
-  {
-    path: '/privacy',
-    name: 'PrivacyPolicy',
-    component: () => import('./pages/PrivacyPolicy.vue'),
-  },
-  {
-    path: '/terms',
-    name: 'TermsOfService',
-    component: () => import('./pages/TermsOfService.vue'),
-  },
-  {
-    path: '/:pathMatch(.*)*',
-    name: 'NotFound',
-    component: () => import('./pages/NotFound.vue'),
-  },
-];
+let cachedStatus: SystemStatus | null = null;
+let statusPromise: Promise<void> | null = null;
+let statusLastFetch = 0;
+const STATUS_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
+async function ensureSystemStatus() {
+  const now = Date.now();
+  if (cachedStatus && now - statusLastFetch < STATUS_TTL_MS) return;
+  if (statusPromise) { await statusPromise; return; }
+  statusPromise = getSystemStatus()
+    .then(s => { cachedStatus = s; statusLastFetch = Date.now(); })
+    .catch(() => { statusPromise = null; });
+  await statusPromise;
+}
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const auth = useAuthStore();
+
+  await ensureSystemStatus();
+
+  // Block registration pages if registration is disabled
+  if ((to.path === '/register' || to.path === '/school/register') && cachedStatus && !cachedStatus.registration_enabled) {
+    return next('/');
+  }
+
+  // Block experiment sections if disabled by admin
+  if (cachedStatus) {
+    if (to.path.startsWith('/physics') && !cachedStatus.experiment_physics_enabled) return next('/dashboard');
+    if (to.path.startsWith('/chemistry') && !cachedStatus.experiment_chemistry_enabled) return next('/dashboard');
+    if (to.path.startsWith('/biology') && !cachedStatus.experiment_biology_enabled) return next('/dashboard');
+    if (to.path.startsWith('/math') && !cachedStatus.experiment_math_enabled) return next('/dashboard');
+  }
 
   if (to.meta.requiresAuth && !auth.isAuthenticated && !auth.isGuest) {
     return next('/');
   }
 
   const requiredRoles = to.meta.roles;
-  if (requiredRoles && auth.role && !requiredRoles.includes(auth.role)) {
-    return next('/');
+  if (requiredRoles && auth.role) {
+    if (auth.isGuest && to.path !== '/home' && to.path !== '/approvals') {
+      return next('/home');
+    }
+    if (!requiredRoles.includes(auth.role)) {
+      return next('/');
+    }
+  }
+
+  // Redirect role-specific dashboards from /home
+  if (to.path === '/home' && !to.query.view) {
+    if (auth.isAdmin) return next('/admin');
+    if (auth.isStudent && !auth.isGuest) return next('/student');
+    if (auth.isTeacher && !auth.isGuest) return next('/teacher');
+    if (auth.isSchool) return next('/school');
   }
 
   next();

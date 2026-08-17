@@ -124,8 +124,7 @@ export const chemistryChemicals: Record<string, Record<string, { name: string; d
     o2: { name: 'Oxígeno', desc: 'Gas incoloro que soporta la combustión' },
     h2: { name: 'Hidrógeno', desc: 'Gas inflamable' },
     co2: { name: 'Dióxido de carbono', desc: 'Gas incoloro' },
-  },
-} as const
+  }} as const
 
 export function getChemicalTranslation(id: string, locale: string) {
   const l = (chemistryChemicals[locale as keyof typeof chemistryChemicals] || chemistryChemicals.ar) as Record<string, { name: string; desc: string }>

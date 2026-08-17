@@ -5,11 +5,11 @@ import { createNotification } from '../notifications/services.js';
 export async function createPenalty(studentId: number, teacherId: number, classId: string | null, type: string, reason: string, points: number) {
   const result = await db.run(
     `INSERT INTO penalties (student_id, teacher_id, class_id, type, reason, points) VALUES (?, ?, ?, ?, ?, ?)`,
-    [studentId, teacherId, classId, type, reason, points],
+    studentId, teacherId, classId, type, reason, points,
   );
   const penalty = await db.get(
     `SELECT p.*, u.name as teacher_name FROM penalties p JOIN users u ON u.id = p.teacher_id WHERE p.id = ?`,
-    [result.lastID],
+    result.lastID,
   );
   // Notify the student
   await createNotification({
@@ -29,7 +29,7 @@ export async function getStudentPenalties(studentId: number) {
      JOIN users u ON u.id = p.teacher_id
      LEFT JOIN classes c ON c.id = p.class_id
      WHERE p.student_id = ? ORDER BY p.created_at DESC`,
-    [studentId],
+    studentId,
   );
 }
 
@@ -40,12 +40,12 @@ export async function getClassPenalties(classId: string) {
      JOIN users u ON u.id = p.student_id
      JOIN users t ON t.id = p.teacher_id
      WHERE p.class_id = ? ORDER BY p.created_at DESC`,
-    [classId],
+    classId,
   );
 }
 
 export async function dismissPenalty(id: number) {
-  await db.run(`UPDATE penalties SET status = 'dismissed' WHERE id = ?`, [id]);
+  await db.run(`UPDATE penalties SET status = 'dismissed' WHERE id = ?`, id);
 }
 
 export async function getAllPenalties() {
@@ -60,7 +60,7 @@ export async function getAllPenalties() {
 }
 
 export async function deletePenalty(id: number) {
-  await db.run(`DELETE FROM penalties WHERE id = ?`, [id]);
+  await db.run(`DELETE FROM penalties WHERE id = ?`, id);
 }
 
 // ─── Ratings ───
@@ -68,7 +68,7 @@ export async function createRating(targetId: number, targetType: string, raterId
   try {
     await db.run(
       `INSERT OR REPLACE INTO ratings (target_id, target_type, rater_id, rater_type, rating, comment) VALUES (?, ?, ?, ?, ?, ?)`,
-      [targetId, targetType, raterId, raterType, rating, comment],
+      targetId, targetType, raterId, raterType, rating, comment,
     );
     return true;
   } catch {
@@ -79,11 +79,11 @@ export async function createRating(targetId: number, targetType: string, raterId
 export async function getRatings(targetId: number, targetType: string) {
   const ratings = await db.all(
     `SELECT r.*, u.name as rater_name FROM ratings r LEFT JOIN users u ON u.id = r.rater_id WHERE r.target_id = ? AND r.target_type = ? ORDER BY r.created_at DESC`,
-    [targetId, targetType],
+    targetId, targetType,
   );
   const avg = await db.get(
     `SELECT AVG(rating) as avg, COUNT(*) as count FROM ratings WHERE target_id = ? AND target_type = ?`,
-    [targetId, targetType],
+    targetId, targetType,
   );
   return { ratings, average: avg?.avg || 0, count: avg?.count || 0 };
 }
@@ -100,9 +100,9 @@ export async function getAllRatings() {
 
 // ─── Profile Pictures ───
 export async function updateAvatar(userId: number, avatarUrl: string) {
-  await db.run(`UPDATE users SET avatar_url = ? WHERE id = ?`, [avatarUrl, userId]);
+  await db.run(`UPDATE users SET avatar_url = ? WHERE id = ?`, avatarUrl, userId);
 }
 
 export async function updateSchoolAvatar(schoolId: number, avatarUrl: string) {
-  await db.run(`UPDATE schools SET avatar_url = ? WHERE id = ?`, [avatarUrl, schoolId]);
+  await db.run(`UPDATE schools SET avatar_url = ? WHERE id = ?`, avatarUrl, schoolId);
 }

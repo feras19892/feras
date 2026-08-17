@@ -7,10 +7,11 @@ import {
   buretteConsumedThisRefill,
   isContainer, retortStandMap,
 } from './useChemistryLab';
-import { isBeaker, isTestTube, isBurette, isBunsenBurner, isHeatingMantle, isHotPlate, isPhMeter } from './chemLabIds';
+import { isBeaker, isTestTube, isBurette, isBunsenBurner, isHeatingMantle, isHotPlate, isPhMeter, getContainerHalfWidth } from './chemLabIds';
 import { handleDropMixWithRecording } from './useBuretteMixRecorder';
 import { getPhReading } from './usePhMeter';
 import { pushMicroHistory } from './useChemistryHistory';
+import { updateBuretteWarning } from './buretteWarningUtils';
 
 // Re-export extracted functions for backward compatibility
 export { phColor, getPhReading } from './usePhMeter';
@@ -22,10 +23,26 @@ export { stepUndo, stepRedo } from './useStepControl';
 export type BuretteWarning = 'approaching' | 'equivalence' | 'exceeded' | null;
 export const buretteWarning = ref<BuretteWarning>(null);
 
+// ================== DRIP RATE MODES ==================
+export type DripRateMode = 'drop' | 'slow' | 'fast';
+export const dripRateMode = ref<DripRateMode>('drop');
+const FLOW_RATES: Record<DripRateMode, number> = { drop: 0.05, slow: 0.3, fast: 1.0 };
+
 // ================== BURETTE FIND ==================
+const BURETTE_TIP_OFFSET_X = 30;
+const BURETTE_TIP_OFFSET_Y = 170;
+const TIP_TOLERANCE_Y = 30;
+
+const CONTAINER_GEOMETRY = {
+  beaker:     { halfWidth: 70, openingRadius: 35, height: 200 },
+  beakerSlot: { halfWidth: 35, openingRadius: 24, height: 100 },
+  testTube:   { halfWidth: 20, openingRadius: 20, height: 80 },
+  default:    { halfWidth: 40, openingRadius: 40, height: 100 },
+} as const;
+
 export function findContainerBelow(burette: LabItem): LabItem | null {
-  const buretteTipX = burette.x + 30; // center of burette tip (width=60)
-  const buretteTipY = burette.y + 170; // tip Y position
+  const buretteTipX = burette.x + BURETTE_TIP_OFFSET_X;
+  const buretteTipY = burette.y + BURETTE_TIP_OFFSET_Y;
 
   // Check if burette is attached to a retort stand
   let attachedStand: string | null = null;
@@ -40,22 +57,24 @@ export function findContainerBelow(burette: LabItem): LabItem | null {
   const candidates = items.value.filter((i: LabItem) => {
     if (i.uid === burette.uid || !isContainer(i.id)) return false;
 
-    // Detect if beaker is attached to bottom clamp (scale=0.5, width=70)
     let isBottomSlot = false;
     for (const st of Object.values(retortStandMap)) {
       if (st.bottomSlotOccupant === i.uid) { isBottomSlot = true; break; }
     }
 
-    // Container opening center and radius
-    const containerCenterX = i.x + (isBeaker(i.id) ? (isBottomSlot ? 35 : 70) : isTestTube(i.id) ? 20 : 40);
+    const geo = isBeaker(i.id)
+      ? (isBottomSlot ? CONTAINER_GEOMETRY.beakerSlot : CONTAINER_GEOMETRY.beaker)
+      : isTestTube(i.id)
+        ? CONTAINER_GEOMETRY.testTube
+        : CONTAINER_GEOMETRY.default;
+
+    const containerCenterX = i.x + geo.halfWidth;
     const dx = Math.abs(containerCenterX - buretteTipX);
-    const openingRadius = isBeaker(i.id) ? (isBottomSlot ? 24 : 35) : isTestTube(i.id) ? 20 : 40;
-
-    // Allow tip slightly above or inside the container
     const containerTopY = i.y;
-    const containerHeight = isBeaker(i.id) ? (isBottomSlot ? 100 : 200) : isTestTube(i.id) ? 80 : 100;
 
-    return dx <= openingRadius && buretteTipY >= containerTopY - 30 && buretteTipY <= containerTopY + containerHeight;
+    return dx <= geo.openingRadius
+      && buretteTipY >= containerTopY - TIP_TOLERANCE_Y
+      && buretteTipY <= containerTopY + geo.height;
   });
 
   if (candidates.length === 0) return null;
@@ -80,17 +99,36 @@ export function isHeated(item: LabItem): boolean {
   if (item.type !== 'container') return false;
   return items.value.some((other: LabItem) =>
     other.uid !== item.uid &&
-    (isBunsenBurner(other.id) || isHeatingMantle(other.id)) &&
-    getBurnerState(other.uid).on &&
-    Math.abs(other.x - item.x) < 80 && other.y > item.y && other.y < item.y + 250
+    ((isBunsenBurner(other.id) || isHeatingMantle(other.id)) || isHotPlate(other.id)) &&
+    Math.abs(other.x - item.x) < 80 && other.y > item.y && other.y < item.y + 250 &&
+    (isHotPlate(other.id) ? getHotPlateState(other.uid).on : getBurnerState(other.uid).on)
   );
 }
 
 // ================== SIMULATION LOOP ==================
 let simTimer = 0;
+let simRunning = false;
 
 export function startSimulation(_onSync: (item: LabItem | null) => void) {
+  if (simRunning) return;
+  simRunning = true;
   function run() {
+    // Check if any burette is actively dripping this frame
+    let anyDripping = false;
+    for (const item of items.value) {
+      if (!isBurette(item.id)) continue;
+      const bState = getBurette(item.uid);
+      if (!bState.valveOpen || bState.volume <= 0) continue;
+      const container = findContainerBelow(item);
+      if (!container) continue;
+      const bLiquid = getLiquid(container.uid);
+      if (bLiquid.volume >= bLiquid.maxVolume) continue;
+      anyDripping = true;
+      break;
+    }
+    // Record a single micro-history snapshot per frame before any drops
+    if (anyDripping) pushMicroHistory();
+
     // Burette dripping
     for (const item of items.value) {
       if (!isBurette(item.id)) continue;
@@ -102,10 +140,7 @@ export function startSimulation(_onSync: (item: LabItem | null) => void) {
       const bLiquid = getLiquid(container.uid);
       if (bLiquid.volume >= bLiquid.maxVolume) continue;
 
-      // Record micro-history snapshot before each drop
-      pushMicroHistory();
-
-      const flowRate = 0.05;
+      const flowRate = FLOW_RATES[dripRateMode.value];
       const transfer = Math.min(flowRate, bState.volume, bLiquid.maxVolume - bLiquid.volume);
 
       bState.volume = +(bState.volume - transfer).toFixed(2);
@@ -126,17 +161,7 @@ export function startSimulation(_onSync: (item: LabItem | null) => void) {
         });
 
         // Update burette warning based on target pH
-        if (bLiquid.ph !== null && bLiquid.ph !== undefined) {
-          if (bLiquid.ph >= 9.0) {
-            buretteWarning.value = 'exceeded';
-          } else if (bLiquid.ph >= 8.0) {
-            buretteWarning.value = 'equivalence';
-          } else if (bLiquid.ph >= 7.5) {
-            buretteWarning.value = 'approaching';
-          } else {
-            buretteWarning.value = null;
-          }
-        }
+        updateBuretteWarning(bLiquid.ph, bLiquid.indicators);
       } else {
         // No chemical in burette, just copy color
         bLiquid.color = bState.color;
@@ -159,11 +184,17 @@ export function startSimulation(_onSync: (item: LabItem | null) => void) {
       if (!activeReceivers.has(uid)) delete receivingMap[uid];
     }
 
-    // Temperature + pH simulation
+    // Temperature + pH simulation — pre-filter heat sources & pH meters once
+    const heatSources = items.value.filter((o: LabItem) =>
+      (isBunsenBurner(o.id) || isHeatingMantle(o.id) || isHotPlate(o.id))
+    );
+    const phMeters = items.value.filter((o: LabItem) =>
+      isPhMeter(o.id) && phProbeTipMap[o.uid]
+    );
     for (const item of items.value) {
       if (!isContainer(item.id)) continue;
       const liq = getLiquid(item.uid);
-      const burner = items.value.find((o: LabItem) => {
+      const burner = heatSources.find((o: LabItem) => {
         if (o.uid === item.uid) return false;
         if (isBunsenBurner(o.id) || isHeatingMantle(o.id)) {
           return getBurnerState(o.uid).on &&
@@ -181,23 +212,21 @@ export function startSimulation(_onSync: (item: LabItem | null) => void) {
         liq.heated = true;
         const isHotPlateItem = isHotPlate(burner.id);
         const intensity = isHotPlateItem ? 0.8 : getBurnerState(burner.uid).intensity;
-        // Faster heating: ~3°C/sec at intensity 1, scaled by simSpeed
-        const rate = 0.05 * intensity * simSpeed.value;
+        const volumeFactor = 10 / Math.max(liq.volume, 10);
+        const rate = 0.05 * intensity * simSpeed.value * volumeFactor;
         if (liq.temperature < 100) liq.temperature = Math.min(100, +(liq.temperature + rate).toFixed(2));
-        // Evaporation: lose ~1.2mL/min when heated, blocked by rubber stopper
         if (!hasStopper && liq.volume > 0 && liq.temperature > 50) {
-          const evapRate = 0.02 * intensity * simSpeed.value;
+          const evapRate = 0.02 * intensity * simSpeed.value * volumeFactor;
           liq.volume = Math.max(0, +(liq.volume - evapRate).toFixed(2));
         }
       } else {
         liq.heated = false;
-        // Slower cooling so temperature is more stable
-        const coolRate = 0.008 * simSpeed.value;
+        const volumeFactor = 10 / Math.max(liq.volume, 10);
+        const coolRate = 0.008 * simSpeed.value * volumeFactor;
         if (liq.temperature > 25) liq.temperature = Math.max(25, +(liq.temperature - coolRate).toFixed(2));
       }
-      const phItem = items.value.find((other: LabItem) =>
-        isPhMeter(other.id) && phProbeTipMap[other.uid] &&
-        Math.abs((item.x + 40) - phProbeTipMap[other.uid].x) < 60 &&
+      const phItem = phMeters.find((other: LabItem) =>
+        Math.abs((item.x + getContainerHalfWidth(item.id)) - phProbeTipMap[other.uid].x) < 60 &&
         Math.abs((item.y + 10) - phProbeTipMap[other.uid].y) < 50
       );
       if (phItem) {
@@ -229,6 +258,10 @@ export function startSimulation(_onSync: (item: LabItem | null) => void) {
           });
         } else if (src.chemicalId && !dst.chemicalId) {
           dst.chemicalId = src.chemicalId;
+          dst.color = src.color; dst.opacity = src.opacity;
+          dst.baseColor = src.baseColor || src.color;
+          dst.ph = src.ph;
+          if (!dst.label || dst.label === 'water') dst.label = src.label;
         }
         receivingMap[dstUid] = true;
       } else {
@@ -262,5 +295,6 @@ export function startSimulation(_onSync: (item: LabItem | null) => void) {
 
 export function stopSimulation() {
   cancelAnimationFrame(simTimer);
+  simRunning = false;
 }
 

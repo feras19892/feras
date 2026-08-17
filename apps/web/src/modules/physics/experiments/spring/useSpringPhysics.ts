@@ -23,7 +23,6 @@ export interface SpringState {
   zeroCrossings: number[];
   measurementPeriod: number | null;
   signalSeries: { t: number; x: number }[];
-  trail: number[];
 }
 
 export function useSpringPhysics(params: SpringParams) {
@@ -37,11 +36,10 @@ export function useSpringPhysics(params: SpringParams) {
     zeroCrossings: [],
     measurementPeriod: null,
     signalSeries: [],
-    trail: [],
   });
 
   function derivatives(x: number, v: number, tLocal: number) {
-    const m = effectiveMass.value;
+    const m = Math.max(effectiveMass.value, 1e-9);
     const k = params.k;
     const c = params.damping;
     const model = params.dampingModel ?? 'linear';
@@ -103,10 +101,8 @@ export function useSpringPhysics(params: SpringParams) {
       accum -= sdt;
     }
 
-    state.signalSeries = [...state.signalSeries.slice(-1499), { t: state.t, x: state.x }];
-
-    state.trail.push(state.x);
-    if (state.trail.length > 400) state.trail.shift();
+    state.signalSeries.push({ t: state.t, x: state.x });
+    if (state.signalSeries.length > 1500) state.signalSeries.shift();
 
     // Auto-stop when damping is active and no forcing
     const stillDriven = !!params.forcingEnabled && (params.F0 ?? 0) > 1e-6;
@@ -123,9 +119,12 @@ export function useSpringPhysics(params: SpringParams) {
     state.paused = false;
     // Keep current displacement (set by pull/push), only reset if no mass
     if (params.mass <= 1e-6) state.x = 0;
+    // If no displacement was set manually, use amplitude as initial displacement
+    if (Math.abs(state.x) < 1e-9 && Math.abs(state.v) < 1e-9 && params.mass > 1e-6) {
+      state.x = params.amplitude;
+    }
     state.v = 0;
     state.t = 0;
-    state.trail = [];
     state.zeroCrossings = [];
     state.measurementPeriod = null;
     state.signalSeries = [];
@@ -146,7 +145,6 @@ export function useSpringPhysics(params: SpringParams) {
     state.t = 0;
     state.x = 0;  // equilibrium position (not stretched)
     state.v = 0;
-    state.trail = [];
     state.zeroCrossings = [];
     state.measurementPeriod = null;
     state.signalSeries = [];

@@ -13,6 +13,7 @@ const props = defineProps<{
   joinFn: (code: string) => Promise<JoinResult>
   leaveFn: (id: string) => Promise<LeaveResult>
   activeChatId?: string | null
+  unreadChatCounts?: Record<string, number>
 }>()
 
 const emit = defineEmits<{ (e: 'open-chat', cls: { id: string; name: string }): void }>()
@@ -47,9 +48,36 @@ async function handleJoin() {
   joinLoading.value = false
 }
 
+const showLeaveModal = ref(false)
+const leaveTarget = ref<ClassItem | null>(null)
+const leaveLoading = ref(false)
+const leaveError = ref('')
+
 async function handleLeave(cls: ClassItem) {
-  await props.leaveFn(cls.id)
-  if (expandedId.value === cls.id) expandedId.value = null
+  leaveTarget.value = cls
+  leaveError.value = ''
+  showLeaveModal.value = true
+}
+
+async function confirmLeave() {
+  if (!leaveTarget.value) return
+  leaveLoading.value = true
+  leaveError.value = ''
+  try {
+    await props.leaveFn(leaveTarget.value.id)
+    if (expandedId.value === leaveTarget.value.id) expandedId.value = null
+    showLeaveModal.value = false
+    leaveTarget.value = null
+  } catch {
+    leaveError.value = t('dashboard.leaveFailed', 'فشل مغادرة الفصل')
+  }
+  leaveLoading.value = false
+}
+
+function maskEmail(email: string): string {
+  const [name, domain] = email.split('@')
+  if (!domain || name.length <= 2) return email
+  return name.slice(0, 2) + '•••@' + domain
 }
 </script>
 
@@ -84,7 +112,7 @@ async function handleLeave(cls: ClassItem) {
         <div class="cls-meta">
           <span class="cls-count">👥 {{ c.student_count || classStudentsMap[c.id]?.length || 0 }}</span>
           <span v-if="c.is_frozen" class="frozen-badge">🧊 {{ t('dashboard.dash.frozen') }}</span>
-          <button :class="['chat-toggle-btn', { active: props.activeChatId === c.id }]" @click.stop="emit('open-chat', { id: c.id, name: c.name })">💬</button>
+          <button :class="['chat-toggle-btn', { active: props.activeChatId === c.id }]" @click.stop="emit('open-chat', { id: c.id, name: c.name })">💬<span v-if="props.unreadChatCounts?.[c.id]" class="chat-unread-dot">{{ props.unreadChatCounts[c.id] }}</span></button>
           <span class="cls-expand">{{ expandedId === c.id ? '▼' : '◀' }}</span>
         </div>
       </div>
@@ -103,7 +131,7 @@ async function handleLeave(cls: ClassItem) {
             <span class="mate-avatar">{{ s.id === props.currentUserId ? '😎' : '🎓' }}</span>
             <div class="mate-info">
               <span class="mate-name">{{ s.name }}<span v-if="s.id === props.currentUserId" class="me-tag">({{ t('dashboard.dash.you') }})</span></span>
-              <span class="mate-email">{{ s.email }}</span>
+              <span class="mate-email">{{ maskEmail(s.email) }}</span>
             </div>
             <span class="mate-date">{{ s.joined_at?.slice(0, 10) }}</span>
           </div>
@@ -127,6 +155,20 @@ async function handleLeave(cls: ClassItem) {
           <button class="join-cancel" @click="showJoinModal = false">{{ t('dashboard.close') }}</button>
           <button class="join-confirm" :disabled="joinLoading" @click="handleJoin">
             {{ joinLoading ? '...' : t('dashboard.joinAction') }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Leave Modal -->
+    <div v-if="showLeaveModal" class="modal-overlay" @click.self="showLeaveModal = false">
+      <div class="join-modal">
+        <h3>{{ t('dashboard.confirmLeaveClass') }}</h3>
+        <p class="leave-class-name">{{ leaveTarget?.name }}</p>
+        <p v-if="leaveError" class="join-error">{{ leaveError }}</p>
+        <div class="join-actions">
+          <button class="join-cancel" @click="showLeaveModal = false">{{ t('dashboard.close') }}</button>
+          <button class="leave-confirm-btn" :disabled="leaveLoading" @click="confirmLeave">
+            {{ leaveLoading ? '...' : t('dashboard.leaveClass') }}
           </button>
         </div>
       </div>
@@ -158,6 +200,8 @@ async function handleLeave(cls: ClassItem) {
 .chat-toggle-btn { width: 28px; height: 28px; border-radius: 0.4rem; border: 1px solid rgba(99,102,241,0.15); background: rgba(99,102,241,0.06); color: #c7d2fe; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; padding: 0; }
 .chat-toggle-btn:hover { background: rgba(99,102,241,0.15); border-color: rgba(99,102,241,0.3); }
 .chat-toggle-btn.active { background: rgba(99,102,241,0.25); border-color: rgba(99,102,241,0.4); }
+.chat-unread-dot { position: absolute; top: -4px; inset-inline-end: -4px; min-width: 14px; height: 14px; border-radius: 999px; background: #ef4444; color: #fff; font-size: 0.5rem; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0 3px; }
+.chat-toggle-btn { position: relative; }
 .cls-expand { font-size: 0.7rem; color: #64748b; }
 .cls-body { padding: 0.6rem 1rem 0.8rem; border-top: 1px solid rgba(255,255,255,0.04); }
 .cls-empty { text-align: center; color: #64748b; padding: 0.8rem; font-size: 0.8rem; }
@@ -185,4 +229,8 @@ async function handleLeave(cls: ClassItem) {
 .join-cancel { background: rgba(255,255,255,0.05); color: #94a3b8; }
 .join-confirm { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none; }
 .join-confirm:disabled { opacity: 0.6; cursor: wait; }
+.leave-class-name { text-align: center; color: #e2e8f0; font-size: 0.9rem; font-weight: 600; margin: 0; }
+.leave-confirm-btn { flex: 1; padding: 0.55rem; border-radius: 0.5rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.2s; border: 1px solid rgba(239,68,68,0.3); background: rgba(239,68,68,0.1); color: #f87171; }
+.leave-confirm-btn:hover { background: rgba(239,68,68,0.2); }
+.leave-confirm-btn:disabled { opacity: 0.6; cursor: wait; }
 </style>

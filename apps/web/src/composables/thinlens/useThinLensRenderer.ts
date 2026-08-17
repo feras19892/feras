@@ -9,11 +9,18 @@ export interface LensRenderProps {
 }
 
 export function drawThinLens(canvas: HTMLCanvasElement, props: LensRenderProps) {
+  const rect = canvas.getBoundingClientRect()
+  if (rect.width === 0 || rect.height === 0) return
+  const dpr = window.devicePixelRatio || 1
+  const w = rect.width
+  const h = rect.height
+  if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
+    canvas.width = Math.round(w * dpr)
+    canvas.height = Math.round(h * dpr)
+  }
   const ctx = canvas.getContext('2d')
   if (!ctx) return
-
-  const w = canvas.width
-  const h = canvas.height
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
   const cx = w / 2
   const cy = h / 2
   const scale = Math.min(w, h) / 60

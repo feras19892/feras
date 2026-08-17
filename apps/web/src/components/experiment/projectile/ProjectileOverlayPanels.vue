@@ -16,6 +16,8 @@ const props = defineProps<{
   sim: SimState
   measured: MeasuredState
   trialStats: TrialStats | null
+  tutorType?: string
+  tutorMessage?: string
 }>()
 
 const emit = defineEmits<{
@@ -45,7 +47,7 @@ import ProjectilePanelBody from './ProjectilePanelBody.vue'
         </div>
         <ProjectilePanelBody
           :id="id" :trials="trials" :calc-result="calcResult" :params="params" :sim="sim"
-          :measured="measured" :trial-stats="trialStats" :fit-result="fitResult"
+          :measured="measured" :trial-stats="trialStats" :fit-result="fitResult" :tutor-type="tutorType" :tutor-message="tutorMessage"
           @update:trials="emit('update:trials', $event)" @update:params="emit('update:params', $event)"
           @remove="emit('remove', $event)" @clear="emit('clear')"
           @calc-flight-time="emit('calcFlightTime')" @calc-max-height="emit('calcMaxHeight')"

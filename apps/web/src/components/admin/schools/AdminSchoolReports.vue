@@ -1,9 +1,30 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue';
 import { useI18n } from '../../../composables/useI18n';
+import type { SchoolReportItem } from '../../../services/school.service';
 
 const { t, locale } = useI18n();
 
-defineProps<{ reports: any[] }>();
+const props = defineProps<{ reports: SchoolReportItem[] }>();
+
+const searchQuery = ref('');
+const filterStatus = ref<'all' | 'submitted' | 'graded' | 'draft'>('all');
+
+const filteredReports = computed(() => {
+  let list = props.reports;
+  const q = searchQuery.value.trim().toLowerCase();
+  if (q) {
+    list = list.filter(r =>
+      r.student_name?.toLowerCase().includes(q) ||
+      r.experiment_name?.toLowerCase().includes(q) ||
+      r.class_name?.toLowerCase().includes(q)
+    );
+  }
+  if (filterStatus.value !== 'all') {
+    list = list.filter(r => r.status === filterStatus.value);
+  }
+  return list;
+});
 
 function formatDate(dateStr: string) {
   if (!dateStr) return '';
@@ -23,8 +44,17 @@ function statusLabel(s: string) {
 
 <template>
   <div class="tab-content">
-    <div v-if="reports.length === 0" class="empty-state">
-      <p>{{ t('admin.schoolNoReports') }}</p>
+    <div class="filters-row">
+      <input v-model="searchQuery" class="search-input" placeholder="بحث بالطالب، التجربة، الفصل..." />
+      <select v-model="filterStatus">
+        <option value="all">كل الحالات</option>
+        <option value="submitted">معلقة</option>
+        <option value="graded">مصححة</option>
+        <option value="draft">مسودة</option>
+      </select>
+    </div>
+    <div v-if="filteredReports.length === 0" class="empty-state">
+      <p>{{ reports.length === 0 ? t('admin.schoolNoReports') : 'لا توجد نتائج مطابقة' }}</p>
     </div>
     <table v-else class="data-table">
       <thead>
@@ -38,7 +68,7 @@ function statusLabel(s: string) {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="r in reports" :key="r.id">
+        <tr v-for="r in filteredReports" :key="r.id">
           <td>{{ r.experiment_name }}</td>
           <td>{{ r.student_name }}</td>
           <td>{{ r.class_name || '—' }}</td>
@@ -57,6 +87,9 @@ function statusLabel(s: string) {
 
 <style scoped>
 .tab-content { padding: 0.5rem 0; }
+.filters-row { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.search-input { padding: 0.4rem 0.8rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; font-size: 0.85rem; min-width: 250px; }
+.filters-row select { padding: 0.4rem 0.6rem; border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; font-size: 0.85rem; }
 .empty-state { text-align: center; padding: 2rem; color: #64748b; }
 .data-table { width: 100%; border-collapse: collapse; }
 .data-table th { text-align: start; padding: 0.6rem 0.8rem; font-size: 0.75rem; color: #64748b; border-bottom: 1px solid rgba(255,255,255,0.06); text-transform: uppercase; letter-spacing: 0.5px; }

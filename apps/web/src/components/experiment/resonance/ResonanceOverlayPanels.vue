@@ -23,14 +23,15 @@ const ids = ['readings', 'chart', 'trials', 'params', 'laws', 'results']
 </script>
 
 <template>
-  <div class="overlay-panels">
+  <Teleport to="body">
     <template v-for="id in ids" :key="id">
-      <div v-if="props.maximized[id]" class="overlay-panel" @click="emit('maximize', id)">
-        <div class="overlay-header">
-          <span>{{ panelTitle(id) }}</span>
-          <button class="overlay-close" @click.stop="emit('maximize', id)">&#x2715;</button>
-        </div>
-        <ResonancePanelBody
+      <div v-if="props.maximized[id]" class="overlay-backdrop" @click="emit('maximize', id)">
+        <div class="overlay-panel" @click.stop>
+          <div class="overlay-header">
+            <span>{{ panelTitle(id) }}</span>
+            <button class="overlay-close" @click.stop="emit('maximize', id)">&#x2715;</button>
+          </div>
+          <ResonancePanelBody
           :id="id"
           :trials="trials"
           :params="params"
@@ -42,14 +43,15 @@ const ids = ['readings', 'chart', 'trials', 'params', 'laws', 'results']
           @clear="emit('clear')"
           @update:params="emit('update:params', $event)"
         />
+        </div>
       </div>
     </template>
-  </div>
+  </Teleport>
 </template>
 
 <style scoped>
-.overlay-panels { position: fixed; inset: 0; z-index: 9998; pointer-events: none; }
-.overlay-panel { position: absolute; inset: 2rem; background: #1A1F27; border: 1px solid #2D3645; border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; pointer-events: auto; }
+.overlay-backdrop { position: fixed; inset: 0; z-index: 9998; background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center; padding: 2rem; }
+.overlay-panel { position: relative; width: 100%; height: 100%; max-width: 900px; max-height: 90vh; background: #1A1F27; border: 1px solid #2D3645; border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; overflow-y: auto; }
 .overlay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: .5rem; font-weight: 700; color: #5B8DB8; }
 .overlay-close { background: none; border: none; color: #8B95A5; cursor: pointer; font-size: 1rem; }
 </style>

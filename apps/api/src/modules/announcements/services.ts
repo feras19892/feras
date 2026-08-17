@@ -110,32 +110,30 @@ export async function getAllAnnouncements(): Promise<Announcement[]> {
 }
 
 export async function getStudentAnnouncements(studentId: number): Promise<Announcement[]> {
-  // Get class announcements for student's classes + school announcements + global
+  const student = await db.get<{ school_id: number | null }>(`SELECT school_id FROM users WHERE id = ?`, studentId);
+
   const classIds = await db.all<{ class_id: string }[]>(
     `SELECT class_id FROM class_students WHERE student_id = ?`, studentId,
   );
-  const student = await db.get<{ school_id: number | null }>(`SELECT school_id FROM users WHERE id = ?`, studentId);
 
-  let results: Announcement[] = [];
+  const parts: string[] = [];
+  const params: (string | number)[] = [];
 
-  for (const c of classIds) {
-    const anns = await getClassAnnouncements(c.class_id);
-    results.push(...anns);
+  if (classIds.length > 0) {
+    const placeholders = classIds.map(() => '?').join(',');
+    parts.push(`(scope = 'class' AND class_id IN (${placeholders}))`);
+    params.push(...classIds.map(c => c.class_id));
   }
-
   if (student?.school_id) {
-    const schoolAnns = await getSchoolAnnouncements(student.school_id);
-    results.push(...schoolAnns);
+    parts.push(`(scope = 'school' AND school_id = ?)`);
+    params.push(student.school_id);
   }
+  parts.push(`scope = 'global'`);
 
-  const globalAnns = await getGlobalAnnouncements();
-  results.push(...globalAnns);
-
-  // Sort by pinned then date
-  results.sort((a, b) => {
-    if (a.is_pinned !== b.is_pinned) return b.is_pinned - a.is_pinned;
-    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-  });
+  const results = await db.all<Announcement[]>(
+    `SELECT * FROM announcements WHERE (${parts.join(' OR ')}) AND (expires_at IS NULL OR expires_at > datetime('now')) ORDER BY is_pinned DESC, created_at DESC`,
+    ...params,
+  );
 
   return results;
 }

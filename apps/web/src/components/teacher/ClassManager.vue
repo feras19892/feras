@@ -59,13 +59,16 @@ async function confirmRename() {
 }
 
 async function loadAllStats() {
-  for (const cls of classes.value) {
-    if (classStats.value[cls.id]) continue
-    try {
-      const res = await getClassStats(cls.id)
-      if (res.success) classStats.value = { ...classStats.value, [cls.id]: res.stats }
-    } catch { /* ignore */ }
+  const missing = classes.value.filter(c => !classStats.value[c.id])
+  const results = await Promise.all(
+    missing.map(c => getClassStats(c.id).catch(() => null))
+  )
+  const next = { ...classStats.value }
+  for (let i = 0; i < missing.length; i++) {
+    const res = results[i]
+    if (res?.success) next[missing[i].id] = res.stats
   }
+  classStats.value = next
 }
 
 onMounted(() => {

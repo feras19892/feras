@@ -2,10 +2,9 @@
 import { useI18n } from '../../composables/useI18n'
 import type { ColumnStat, DataQuality } from '../../composables/teacher/useReportParser'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 defineProps<{
   readings: Record<string, number>[]
-  columns: any[]
+  columns: ColumnStat[]
   columnStats: ColumnStat[]
   quality: DataQuality
 }>()

@@ -17,7 +17,10 @@ const forgotNewPassword = ref('')
 const forgotStep = ref<'email' | 'code' | 'done'>('email')
 const forgotLoading = ref(false)
 const forgotError = ref('')
-const devResetCode = ref('')
+
+const props = defineProps<{
+  loading?: boolean
+}>()
 
 const emit = defineEmits<{
   (e: 'login', payload: { email: string; password: string }): void
@@ -25,6 +28,7 @@ const emit = defineEmits<{
 }>()
 
 function handleLogin() {
+  if (props.loading) return
   formError.value = ''
   if (!email.value.trim() || !password.value) {
     formError.value = t('auth.errors.fillAll')
@@ -37,17 +41,16 @@ async function sendForgotEmail() {
   forgotError.value = ''
   forgotLoading.value = true
   try {
-    const res = await fetchJson<{ success: boolean; devResetCode?: string }>('/api/auth/forgot-password', {
+    const res = await fetchJson<{ success: boolean }>('/api/auth/forgot-password', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: forgotEmail.value.trim() }),
     })
     if (res.success) {
       forgotStep.value = 'code'
-      if (res.devResetCode) devResetCode.value = res.devResetCode
     }
-  } catch (e: any) {
-    forgotError.value = e.message || 'Error'
+  } catch (e: unknown) {
+    forgotError.value = e instanceof Error ? e.message : String(e) || 'Error'
   }
   forgotLoading.value = false
 }
@@ -74,8 +77,8 @@ async function resetPassword() {
     } else {
       forgotError.value = res.message || 'Error'
     }
-  } catch (e: any) {
-    forgotError.value = e.message || 'Error'
+  } catch (e: unknown) {
+    forgotError.value = e instanceof Error ? e.message : String(e) || 'Error'
   }
   forgotLoading.value = false
 }
@@ -100,8 +103,8 @@ async function resetPassword() {
         </div>
         <p v-if="formError" class="error">{{ formError }}</p>
         <div class="btn-row">
-          <button type="submit" class="btn-submit">
-            {{ t('auth.loginBtn') }}
+          <button type="submit" class="btn-submit" :disabled="props.loading">
+            {{ props.loading ? '...' : t('auth.loginBtn') }}
           </button>
         </div>
         <div class="forgot-link">
@@ -132,7 +135,6 @@ async function resetPassword() {
         <!-- Step 2: Code + New Password -->
         <div v-if="forgotStep === 'code'">
           <p class="forgot-hint">{{ t('auth.forgotCodeHint', 'أدخل رمز التحقق وكلمة المرور الجديدة') }}</p>
-          <p v-if="devResetCode" class="dev-code">رمز التحقق (تجريبي): <strong>{{ devResetCode }}</strong></p>
           <input v-model="forgotCode" type="text" :placeholder="t('auth.verificationCode', 'رمز التحقق')" class="forgot-input" />
           <input v-model="forgotNewPassword" type="password" :placeholder="t('auth.newPassword', 'كلمة المرور الجديدة')" class="forgot-input" />
           <p v-if="forgotError" class="error">{{ forgotError }}</p>
@@ -226,6 +228,11 @@ async function resetPassword() {
   transform: translateY(-1px);
   box-shadow: 0 6px 24px rgba(99,102,241,0.35);
 }
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
 .register-link {
   text-align: center;
   margin-top: 1rem;
@@ -270,7 +277,6 @@ async function resetPassword() {
   font-size: 0.9rem; box-sizing: border-box; margin-bottom: 0.7rem;
 }
 .forgot-input:focus { outline: none; border-color: #06b6d4; }
-.dev-code { font-size: 0.8rem; color: #fbbf24; text-align: center; margin: 0.5rem 0; }
 .done-step { text-align: center; }
 .done-step p { color: #4ade80; margin-bottom: 1rem; }
 </style>

@@ -27,7 +27,7 @@ const emit = defineEmits<{
           <td>{{ Math.pow(Math.cos(tr.relativeAngle * Math.PI / 180), 2).toFixed(3) }}</td>
           <td>{{ tr.I0 }}</td>
           <td>{{ tr.outputIntensity.toFixed(2) }}</td>
-          <td><button class="rm" @click="emit('remove', tr.id)">x</button></td>
+          <td><button class="rm" @click="emit('remove', tr.id)">&#x00D7;</button></td>
         </tr>
       </tbody>
     </table>

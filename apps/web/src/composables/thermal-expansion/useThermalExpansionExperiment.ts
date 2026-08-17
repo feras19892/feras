@@ -4,7 +4,7 @@ import type { AnalysisPayload } from '../../types/physics'
 import { sendToAnalysis } from '../analysis/sendToAnalysis'
 import { useThermalExpansionLayout } from './useThermalExpansionLayout'
 import { useThermalExpansionTrials } from './useThermalExpansionTrials'
-import { ALPHA, deltaL, finalLength } from './useThermalExpansionCalculations'
+import { ALPHA, deltaL, finalLength, findAlpha } from './useThermalExpansionCalculations'
 
 export function useThermalExpansionExperiment() {
   const params = reactive({
@@ -17,6 +17,11 @@ export function useThermalExpansionExperiment() {
   const alpha = computed(() => ALPHA[params.material] ?? 16.5)
   const dL = computed(() => deltaL(params.L0, alpha.value, params.t1 - params.t0))
   const L1 = computed(() => finalLength(params.L0, alpha.value, params.t1 - params.t0))
+  const alphaMeasured = computed(() => {
+    const dt = params.t1 - params.t0
+    if (dt === 0 || params.L0 === 0) return 0
+    return findAlpha(dL.value, params.L0, dt)
+  })
 
   watch(() => params.L0, (v) => { params.L0 = Math.max(0.1, Math.min(3, Math.round(v * 100) / 100)) })
   watch(() => params.t0, (v) => { params.t0 = Math.max(0, Math.min(30, Math.round(v))) })
@@ -56,16 +61,16 @@ export function useThermalExpansionExperiment() {
 
   const layout = useThermalExpansionLayout()
   const trials = useThermalExpansionTrials(
-    { get value() { return { material: params.material, L0: params.L0, t0: params.t0, t1: params.t1, deltaL: dL.value, alpha: alpha.value } } }
+    { get value() { return { material: params.material, L0: params.L0, t0: params.t0, t1: params.t1, deltaL: dL.value, alpha: alpha.value, alphaMeasured: alphaMeasured.value } } }
   )
 
   const router = useRouter()
   function exportToAnalysis() {
-    if (trials.trials.value.length < 2) return
+    if (trials.trials.value.length < 2) { alert('تحتاج إلى تسجيل قراءتين على الأقل قبل التحليل'); return }
     const payload: AnalysisPayload = {
       sourceExperiment: 'thermal-expansion', sourceNameAr: 'التمدد الحراري',
       hasCalcTab: true,
-      readings: trials.trials.value.map(t => ({ material: t.material, L0: t.L0, t0: t.t0, t1: t.t1, deltaL: t.deltaL, alpha: t.alpha })),
+      readings: trials.trials.value.map(tr => ({ material: tr.material, L0: tr.L0, t0: tr.t0, t1: tr.t1, deltaL: tr.deltaL, alpha: tr.alpha })),
       columns: [
         { key: 'material', label: 'Material', unit: '' },
         { key: 'L0', label: 'L0 (m)', unit: 'm' },

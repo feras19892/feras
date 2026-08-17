@@ -2,11 +2,10 @@
 import { useI18n } from '../../composables/useI18n'
 import type { Report } from '../../services/report.service'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 defineProps<{
   report: Report
-  studentInfo: any
-  plots: any[]
+  studentInfo: Record<string, unknown>
+  plots: Record<string, unknown>[]
 }>()
 
 const { t } = useI18n()
@@ -18,7 +17,7 @@ const { t } = useI18n()
     <h3 class="sec-title">👤 {{ t('report.studentAndMeta') }}</h3>
     <div class="student-header">
       <img v-if="report.student_avatar_url" :src="report.student_avatar_url" class="student-avatar" alt="avatar" />
-      <div v-else class="student-avatar-placeholder">{{ (report.student_name || studentInfo.name || '?').charAt(0).toUpperCase() }}</div>
+      <div v-else class="student-avatar-placeholder">{{ String(report.student_name || studentInfo.name || '?').charAt(0).toUpperCase() }}</div>
       <div class="student-header-info">
         <div class="student-header-name">{{ report.student_name || studentInfo.name || '—' }}</div>
         <div v-if="studentInfo.email" class="student-header-email">{{ studentInfo.email }}</div>

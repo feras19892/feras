@@ -52,8 +52,9 @@ async function submit() {
       show.value = false;
       title.value = '';
       description.value = '';
+      window.dispatchEvent(new CustomEvent('approval:changed'));
     } else {
-      errorMsg.value = (res as any).message || t('school.approvalSendFailed');
+      errorMsg.value = (res as { message?: string }).message || t('school.approvalSendFailed');
     }
   } catch {
     errorMsg.value = t('school.approvalSendFailed');

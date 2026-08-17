@@ -5,10 +5,11 @@ import {
   adminUpdateSchool, adminDeleteSchool, adminGetSchoolUsers,
   adminGetSchoolClasses, adminGetSchoolReports,
   adminRemoveSchoolUser, adminBlockSchoolUser, adminUnblockSchoolUser,
-  type AdminSchool,
+  type AdminSchool, type CapacityRequest, type SchoolUser, type SchoolClass, type SchoolReportItem, type SchoolStats,
 } from '../../services/school.service';
 import { fetchJson } from '../../services/http';
 import { useI18n } from '../../composables/useI18n';
+import { useConfirmDialog } from '../../composables/useConfirmDialog';
 import AdminSchoolList from './schools/AdminSchoolList.vue';
 import AdminSchoolOverview from './schools/AdminSchoolOverview.vue';
 import AdminSchoolUsers from './schools/AdminSchoolUsers.vue';
@@ -16,19 +17,19 @@ import AdminSchoolClasses from './schools/AdminSchoolClasses.vue';
 import AdminSchoolReports from './schools/AdminSchoolReports.vue';
 import AdminSchoolEdit from './schools/AdminSchoolEdit.vue';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const schools = ref<AdminSchool[]>([]);
 const loading = ref(true);
 const errorMsg = ref('');
 const selectedSchool = ref<AdminSchool | null>(null);
 const detailLoading = ref(false);
 const detailTab = ref<'overview' | 'users' | 'classes' | 'reports' | 'edit' | 'capacity'>('overview');
-const capacityRequests = ref<any[]>([]);
+const capacityRequests = ref<CapacityRequest[]>([]);
 const capacityLoading = ref(false);
-const schoolUsers = ref<any[]>([]);
-const schoolClasses = ref<any[]>([]);
-const schoolReports = ref<any[]>([]);
-const schoolStats = ref<any>(null);
+const schoolUsers = ref<SchoolUser[]>([]);
+const schoolClasses = ref<SchoolClass[]>([]);
+const schoolReports = ref<SchoolReportItem[]>([]);
+const schoolStats = ref<SchoolStats | null>(null);
 
 async function loadSchools() {
   loading.value = true;
@@ -89,9 +90,12 @@ async function handleSaveEdit(data: { name: string; email: string; max_students:
   }
 }
 
+const { confirmDialog } = useConfirmDialog();
+
 async function handleDelete() {
   if (!selectedSchool.value) return;
-  if (!confirm(t('admin.schoolConfirmDelete', { name: selectedSchool.value.name }))) return;
+  const ok = await confirmDialog({ message: t('admin.schoolConfirmDelete', { name: selectedSchool.value.name }), variant: 'danger' });
+  if (!ok) return;
   const res = await adminDeleteSchool(selectedSchool.value.id);
   if (res.success) {
     schools.value = schools.value.filter(s => s.id !== selectedSchool.value!.id);
@@ -100,7 +104,9 @@ async function handleDelete() {
 }
 
 async function handleRemoveUser(userId: number) {
-  if (!selectedSchool.value || !confirm(t('admin.schoolRemoveUser'))) return;
+  if (!selectedSchool.value) return;
+  const ok = await confirmDialog({ message: t('admin.schoolRemoveUser'), variant: 'danger' });
+  if (!ok) return;
   const res = await adminRemoveSchoolUser(selectedSchool.value.id, userId);
   if (res.success) schoolUsers.value = schoolUsers.value.filter(u => u.id !== userId);
 }
@@ -122,7 +128,7 @@ onMounted(loadSchools);
 async function loadCapacityRequests() {
   capacityLoading.value = true;
   try {
-    const res = await fetchJson<{ success: boolean; requests: any[] }>('/api/school/admin/capacity-requests');
+    const res = await fetchJson<{ success: boolean; requests: CapacityRequest[] }>('/api/school/admin/capacity-requests');
     if (res.success) capacityRequests.value = res.requests;
   } catch {
     // ignore
@@ -171,7 +177,7 @@ async function reviewCapacityRequest(id: number, status: 'approved' | 'rejected'
         <button :class="{ active: detailTab === 'classes' }" @click="detailTab = 'classes'">📚 {{ t('admin.schoolClassesTab') }} ({{ schoolClasses.length }})</button>
         <button :class="{ active: detailTab === 'reports' }" @click="detailTab = 'reports'">📄 {{ t('admin.schoolReportsTab') }} ({{ schoolReports.length }})</button>
         <button :class="{ active: detailTab === 'edit' }" @click="detailTab = 'edit'">{{ t('admin.schoolEditTab') }}</button>
-        <button :class="{ active: detailTab === 'capacity' }" @click="detailTab = 'capacity'; loadCapacityRequests()">📦 طلبات السعة ({{ capacityRequests.filter(r => r.status === 'pending').length }})</button>
+        <button :class="{ active: detailTab === 'capacity' }" @click="detailTab = 'capacity'; loadCapacityRequests()">📦 {{ t('adminExtras.capRequests') }} ({{ capacityRequests.filter(r => r.status === 'pending').length }})</button>
       </div>
 
       <div v-if="detailLoading" class="loading-state">{{ t('admin.loading') }}</div>
@@ -184,11 +190,11 @@ async function reviewCapacityRequest(id: number, status: 'approved' | 'rejected'
 
       <!-- Capacity Requests Tab -->
       <div v-else-if="detailTab === 'capacity'" class="capacity-admin">
-        <div v-if="capacityLoading" class="loading-state">...</div>
-        <div v-else-if="capacityRequests.length === 0" class="loading-state">لا توجد طلبات</div>
+        <div v-if="capacityLoading" class="loading-state">{{ t('admin.loading') }}</div>
+        <div v-else-if="capacityRequests.length === 0" class="loading-state">{{ t('adminExtras.capNoData') }}</div>
         <table v-else class="data-table">
           <thead>
-            <tr><th>المدرسة</th><th>الطلاب</th><th>المدرسين</th><th>السبب</th><th>الحالة</th><th>التاريخ</th><th>إجراء</th></tr>
+            <tr><th>{{ t('adminExtras.capSchool') }}</th><th>{{ t('admin.schoolStudentsLabel') }}</th><th>{{ t('admin.schoolTeachersLabel') }}</th><th>{{ t('adminExtras.reqReason') }}</th><th>{{ t('admin.status') }}</th><th>{{ t('admin.date') }}</th><th>{{ t('admin.actions') }}</th></tr>
           </thead>
           <tbody>
             <tr v-for="req in capacityRequests" :key="req.id">
@@ -197,10 +203,10 @@ async function reviewCapacityRequest(id: number, status: 'approved' | 'rejected'
               <td>{{ req.current_max_teachers }} → {{ req.requested_max_teachers || '—' }}</td>
               <td>{{ req.reason }}</td>
               <td><span class="cap-status" :class="req.status">{{ req.status }}</span></td>
-              <td>{{ new Date(req.created_at).toLocaleDateString('ar-SA') }}</td>
+              <td>{{ new Date(req.created_at).toLocaleDateString(locale === 'ar' ? 'ar-SA' : locale) }}</td>
               <td v-if="req.status === 'pending'">
-                <button class="approve-btn" @click="reviewCapacityRequest(req.id, 'approved')">✓ موافقة</button>
-                <button class="reject-btn" @click="reviewCapacityRequest(req.id, 'rejected')">✕ رفض</button>
+                <button class="approve-btn" @click="reviewCapacityRequest(req.id, 'approved')">{{ t('adminExtras.capApprove') }}</button>
+                <button class="reject-btn" @click="reviewCapacityRequest(req.id, 'rejected')">{{ t('adminExtras.capReject') }}</button>
               </td>
               <td v-else>—</td>
             </tr>

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { ExperimentTheory } from '../../../composables/chemistry/useExperiments';
+import type { ResolvedExperimentTheory } from '../../../composables/chemistry/experiments';
 import { useI18n } from '../../../composables/useI18n';
 
 const { t, locale } = useI18n();
 
 const props = defineProps<{
-  theory: ExperimentTheory | null;
+  theory: ResolvedExperimentTheory | null;
 }>();
 
 const emit = defineEmits<{

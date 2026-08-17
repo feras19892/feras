@@ -69,6 +69,21 @@ export async function getClassStats(id: string) {
   } }>(`/api/classes/${id}/stats`);
 }
 
+export async function getBatchClassData() {
+  return fetchJson<{ success: boolean; statsMap: Record<string, {
+    student_count: number;
+    total_reports: number;
+    graded_count: number;
+    pending_count: number;
+    class_average: number;
+    top_students: { student_id: number; avg: number; report_count: number }[];
+  }>; studentsMap: Record<string, ClassStudent[]> }>('/api/classes/batch-data');
+}
+
+export async function getBatchStudentData() {
+  return fetchJson<{ success: boolean; studentsMap: Record<string, ClassStudent[]> }>('/api/classes/batch-student-data');
+}
+
 export async function updateClass(id: string, data: { name?: string; is_active?: boolean }) {
   return fetchJson<{ success: boolean }>(`/api/classes/${id}`, {
     method: 'PATCH',

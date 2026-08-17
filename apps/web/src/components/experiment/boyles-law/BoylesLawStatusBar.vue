@@ -10,7 +10,11 @@ defineProps<{
   phase?: string
 }>()
 const phaseAr = (p?: string) => {
-  const map: Record<string, string> = { ready: 'جاهز', compressing: 'ضغط', done: 'اكتمل' }
+  const map: Record<string, string> = {
+    ready: t('experiments.blPhaseReadyShort'),
+    compressing: t('experiments.blPhaseCompressingShort'),
+    done: t('experiments.blPhaseDoneShort'),
+  }
   return map[p ?? ''] ?? p ?? ''
 }
 </script>

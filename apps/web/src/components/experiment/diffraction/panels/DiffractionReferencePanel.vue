@@ -1,25 +1,27 @@
 <script setup lang="ts">
-const MODES = [
-  { name: 'شق واحد', formula: 'w = 2λD/a', color: '#22c55e' },
-  { name: 'محبز', formula: 'd·sinθ = mλ', color: '#5B8DB8' },
+const COLORS = [
+  { name: 'أحمر', lambda: 650, color: '#ef4444' },
+  { name: 'أخضر', lambda: 530, color: '#22c55e' },
+  { name: 'أزرق', lambda: 470, color: '#3b82f6' },
+  { name: 'بنفسجي', lambda: 400, color: '#8b5cf6' },
 ]
 </script>
 
 <template>
   <div class="panel-body">
-    <div class="ref-title">📊 معادلات الحيود</div>
+    <div class="ref-title">📊 أطوال موجية مرئية</div>
     <div class="ref-table">
       <div class="ref-header">
-        <span>النوع</span>
-        <span>المعادلة</span>
+        <span>اللون</span>
+        <span>λ (nm)</span>
       </div>
-      <div v-for="ref in MODES" :key="ref.name" class="ref-row">
+      <div v-for="ref in COLORS" :key="ref.name" class="ref-row">
         <span :style="{ color: ref.color }">{{ ref.name }}</span>
-        <span>{{ ref.formula }}</span>
+        <span>{{ ref.lambda }}</span>
       </div>
     </div>
     <div class="ref-note">
-      💡 للشق الواحد: عرض القمة ∝ 1/a. للمحبز: θ ∝ λ/d.
+      💡 المجال المرئي: 380-700 nm. w ∝ λ.
     </div>
   </div>
 </template>

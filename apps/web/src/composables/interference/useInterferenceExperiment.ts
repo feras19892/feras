@@ -97,16 +97,16 @@ export function useInterferenceExperiment() {
 
   const router = useRouter()
   function exportToAnalysis() {
-    if (trials.trials.value.length < 2) return
+    if (trials.trials.value.length < 2) { alert('تحتاج إلى تسجيل قراءتين على الأقل قبل التحليل'); return }
     const payload: AnalysisPayload = {
       sourceExperiment: 'interference',
       sourceNameAr: 'تداخل يونغ',
       hasCalcTab: true,
-      readings: trials.trials.value.map(t => ({
-        d: t.slitDistance,
-        D: t.screenDistance,
-        lambda: t.wavelength,
-        delta_y: t.fringeSpacing,
+      readings: trials.trials.value.map(tr => ({
+        d: tr.slitDistance,
+        D: tr.screenDistance,
+        lambda: tr.wavelength,
+        delta_y: tr.fringeSpacing,
       })),
       columns: [
         { key: 'd', label: 'd (mm)', unit: 'mm' },
@@ -139,9 +139,9 @@ export function useInterferenceExperiment() {
   // Regression: Δy vs 1/d  →  Δy = (λD/1000) · (1/d)
   // slope = λD/1000,  λ(nm) = slope · 1000 / D
   const regression = computed(() => {
-    const valid = trials.trials.value.filter((t) => t.fringeSpacing > 0)
+    const valid = trials.trials.value.filter((tr) => tr.fringeSpacing > 0)
     if (valid.length < 2) return { m: 0, b: 0, r2: 0 }
-    const pts = valid.map((t) => ({ x: 1 / t.slitDistance, y: t.fringeSpacing }))
+    const pts = valid.map((tr) => ({ x: 1 / tr.slitDistance, y: tr.fringeSpacing }))
     return linearRegression(pts)
   })
 

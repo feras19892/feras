@@ -1,5 +1,7 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '../../../../composables/useI18n'
 
+const { t } = useI18n()
 
 interface Props {
   params: { polarizerAngle: number; analyzerAngle: number; I0: number }
@@ -18,7 +20,7 @@ function set(key: string, val: number) {
   <div class="panel-body">
     <div class="param-row">
       <div class="param-header">
-        <span class="param-label">θ₁ — Polarizer angle</span>
+        <span class="param-label">{{ t('experiments.poPolarizerAngle') }}</span>
         <span class="param-val cyan">{{ params.polarizerAngle }}°</span>
       </div>
       <input class="slider" type="range" min="0" max="180" step="1"
@@ -27,7 +29,7 @@ function set(key: string, val: number) {
     </div>
     <div class="param-row">
       <div class="param-header">
-        <span class="param-label">θ₂ — Analyzer angle</span>
+        <span class="param-label">{{ t('experiments.poAnalyzerAngle') }}</span>
         <span class="param-val amber">{{ params.analyzerAngle }}°</span>
       </div>
       <input class="slider" type="range" min="0" max="180" step="1"
@@ -36,7 +38,7 @@ function set(key: string, val: number) {
     </div>
     <div class="param-row">
       <div class="param-header">
-        <span class="param-label">I₀ — Input intensity</span>
+        <span class="param-label">{{ t('experiments.poInputIntensity') }}</span>
         <span class="param-val green">{{ params.I0 }}</span>
       </div>
       <input class="slider" type="range" min="10" max="200" step="5"

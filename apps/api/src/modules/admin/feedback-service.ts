@@ -39,12 +39,14 @@ export async function getSchoolFeedbackStats(schoolId: number) {
   const total = await db.get(`SELECT COUNT(*) as count FROM feedback WHERE school_id = ?`, schoolId);
   const open = await db.get(`SELECT COUNT(*) as count FROM feedback WHERE school_id = ? AND status = 'open'`, schoolId);
   const resolved = await db.get(`SELECT COUNT(*) as count FROM feedback WHERE school_id = ? AND status = 'resolved'`, schoolId);
+  const dismissed = await db.get(`SELECT COUNT(*) as count FROM feedback WHERE school_id = ? AND status = 'dismissed'`, schoolId);
   const avgRating = await db.get(`SELECT AVG(rating) as avg FROM feedback WHERE school_id = ? AND rating IS NOT NULL`, schoolId);
   return {
     total: total?.count || 0,
     open: open?.count || 0,
     resolved: resolved?.count || 0,
-    average: Math.round((avgRating?.avg || 0) * 10) / 10,
+    dismissed: dismissed?.count || 0,
+    avg_rating: Math.round((avgRating?.avg || 0) * 10) / 10,
   };
 }
 
@@ -52,11 +54,13 @@ export async function getFeedbackStats() {
   const total = await db.get(`SELECT COUNT(*) as count FROM feedback`);
   const open = await db.get(`SELECT COUNT(*) as count FROM feedback WHERE status = 'open'`);
   const resolved = await db.get(`SELECT COUNT(*) as count FROM feedback WHERE status = 'resolved'`);
+  const dismissed = await db.get(`SELECT COUNT(*) as count FROM feedback WHERE status = 'dismissed'`);
   const avgRating = await db.get(`SELECT AVG(rating) as avg FROM feedback WHERE rating IS NOT NULL`);
   return {
     total: total?.count || 0,
     open: open?.count || 0,
     resolved: resolved?.count || 0,
+    dismissed: dismissed?.count || 0,
     average: Math.round((avgRating?.avg || 0) * 10) / 10,
   };
 }

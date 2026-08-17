@@ -59,11 +59,18 @@ export async function getMyQuizzes() {
 }
 
 export async function getQuiz(quizId: number) {
-  return fetchJson<{ success: boolean; quiz: Quiz; questions: QuizQuestion[]; submission?: any }>(`/api/quizzes/${quizId}`);
+  return fetchJson<{ success: boolean; quiz: Quiz; questions: QuizQuestion[]; submission?: Record<string, unknown>; message?: string }>(`/api/quizzes/${quizId}`);
+}
+
+export interface QuizSubmission {
+  id: number;
+  student_name: string;
+  score: number;
+  submitted_at: string | null;
 }
 
 export async function getQuizSubmissions(quizId: number) {
-  return fetchJson<{ success: boolean; submissions: any[] }>(`/api/quizzes/${quizId}/submissions`);
+  return fetchJson<{ success: boolean; submissions: QuizSubmission[] }>(`/api/quizzes/${quizId}/submissions`);
 }
 
 export async function getAvailableQuizzes() {
@@ -71,7 +78,7 @@ export async function getAvailableQuizzes() {
 }
 
 export async function startQuiz(quizId: number) {
-  return fetchJson<{ success: boolean; submission?: any; message?: string }>(`/api/quizzes/${quizId}/start`, { method: 'POST' });
+  return fetchJson<{ success: boolean; submission?: Record<string, unknown>; message?: string }>(`/api/quizzes/${quizId}/start`, { method: 'POST' });
 }
 
 export async function submitQuiz(quizId: number, answers: Record<number, string>) {

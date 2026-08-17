@@ -1,17 +1,39 @@
 <script setup lang="ts">
-import { onMounted, defineAsyncComponent } from 'vue';
+import { onMounted, onUnmounted, defineAsyncComponent } from 'vue';
+import { useRouter } from 'vue-router';
 import { RouterView } from 'vue-router';
 import { useI18nStore } from './stores/i18n.store';
 import { runStartupDiagnostics } from './composables/experiment/useStartupDiagnostics';
+import { useAuthStore } from './modules/auth/stores/auth';
+import { useKeyboardShortcuts } from './composables/useKeyboardShortcuts';
+import CommandPalette from './components/shared/CommandPalette.vue';
+import GlobalConfirmDialog from './components/shared/GlobalConfirmDialog.vue';
+import ToastContainer from './components/shared/ToastContainer.vue';
 
 const i18n = useI18nStore();
+const router = useRouter();
+const auth = useAuthStore();
+useKeyboardShortcuts();
 
 const ExperimentMonitorWidget = import.meta.env.DEV
   ? defineAsyncComponent(() => import('./components/dev/ExperimentMonitorWidget.vue'))
   : null;
 
+function onSessionExpired() {
+  auth.clearSession();
+  auth.clearSchoolSession();
+  if (router.currentRoute.value.meta.requiresAuth) {
+    router.push('/');
+  }
+}
+
 onMounted(() => {
   runStartupDiagnostics();
+  window.addEventListener('auth:session-expired', onSessionExpired);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('auth:session-expired', onSessionExpired);
 });
 </script>
 
@@ -27,6 +49,9 @@ onMounted(() => {
       </template>
     </Suspense>
     <component :is="ExperimentMonitorWidget" v-if="ExperimentMonitorWidget" />
+    <CommandPalette />
+    <GlobalConfirmDialog />
+    <ToastContainer />
   </div>
 </template>
 

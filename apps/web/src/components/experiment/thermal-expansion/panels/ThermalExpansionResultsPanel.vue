@@ -4,13 +4,13 @@ import { ALPHA } from '../../../../composables/thermal-expansion/useThermalExpan
 import type { ThermalExpansionTrial } from '../../../../composables/thermal-expansion/useThermalExpansionTrials'
 const props = defineProps<{ trials: ThermalExpansionTrial[] }>()
 
-const avgAlpha = computed(() => props.trials.length ? props.trials.reduce((s, t) => s + t.alpha, 0) / props.trials.length : 0)
-const avgDL = computed(() => props.trials.length ? props.trials.reduce((s, t) => s + t.deltaL, 0) / props.trials.length : 0)
+const avgAlpha = computed(() => props.trials.length ? props.trials.reduce((s, tr) => s + tr.alphaMeasured, 0) / props.trials.length : 0)
+const avgDL = computed(() => props.trials.length ? props.trials.reduce((s, tr) => s + tr.deltaL, 0) / props.trials.length : 0)
 const trueAlpha = computed(() => props.trials.length ? ALPHA[props.trials[0].material] ?? 0 : 0)
 const stdAlpha = computed(() => {
   if (props.trials.length < 2) return 0
   const mean = avgAlpha.value
-  return Math.sqrt(props.trials.reduce((s, t) => s + Math.pow(t.alpha - mean, 2), 0) / (props.trials.length - 1))
+  return Math.sqrt(props.trials.reduce((s, tr) => s + Math.pow(tr.alphaMeasured - mean, 2), 0) / (props.trials.length - 1))
 })
 const cvAlpha = computed(() => avgAlpha.value > 0 ? (stdAlpha.value / avgAlpha.value * 100) : 0)
 const errPercent = computed(() => trueAlpha.value > 0 ? (Math.abs(avgAlpha.value - trueAlpha.value) / trueAlpha.value * 100) : 0)
@@ -25,7 +25,7 @@ const errPercent = computed(() => trueAlpha.value > 0 ? (Math.abs(avgAlpha.value
     <template v-else>
       <div class="stat"><span class="label">عدد التجارب</span><span class="val">{{ trials.length }}</span></div>
       <div class="stat"><span class="label">متوسط ΔL</span><span class="val">{{ (avgDL * 1000).toFixed(2) }} mm</span></div>
-      <div class="stat"><span class="label">ᾱ (محسوب)</span><span class="val highlight">{{ avgAlpha.toFixed(1) }} × 10⁻⁶/K</span></div>
+      <div class="stat"><span class="label">ᾱ (مقاس)</span><span class="val highlight">{{ avgAlpha.toFixed(1) }} × 10⁻⁶/K</span></div>
       <div v-if="trials.length >= 2" class="stat"><span class="label">σ(α)</span><span class="val">±{{ stdAlpha.toFixed(2) }}</span></div>
       <div v-if="trials.length >= 2" class="stat"><span class="label">CV</span><span class="val" :class="cvAlpha < 5 ? 'green' : 'amber'">{{ cvAlpha.toFixed(1) }}%</span></div>
       <div class="stat"><span class="label">α (حقيقي)</span><span class="val green">{{ trueAlpha.toFixed(1) }} × 10⁻⁶/K</span></div>

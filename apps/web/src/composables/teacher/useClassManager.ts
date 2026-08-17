@@ -1,5 +1,6 @@
 import { ref, onMounted } from 'vue'
 import { useI18n } from '../useI18n'
+import { useConfirmDialog } from '../useConfirmDialog'
 import {
   createClass as apiCreateClass,
   getMyClasses,
@@ -47,7 +48,9 @@ export function useClassManager() {
   }
 
   async function deleteClass(id: string) {
-    if (!confirm(t('admin.confirmDeleteClassShort'))) return
+    const { confirmDialog } = useConfirmDialog()
+    const ok = await confirmDialog({ message: t('admin.confirmDeleteClassShort'), variant: 'danger' })
+    if (!ok) return
     try {
       const res = await apiDeleteClass(id)
       if (res.success) classes.value = classes.value.filter(c => c.id !== id)

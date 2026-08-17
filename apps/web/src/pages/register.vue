@@ -11,11 +11,9 @@ const { t } = useI18n();
 
 onMounted(() => {
   // Clear user/guest session via auth store, preserve school session
-  auth.user = null;
-  auth.guestMode = false;
-  auth.guestRole = null;
-  auth.currentClassId = null;
-  auth.classes = [];
+  if (auth.isLoggedIn && !auth.isSchool) {
+    auth.logout();
+  }
 });
 
 const firstName = ref('');
@@ -96,7 +94,6 @@ async function handleRegister() {
       path: '/verify-email',
       query: {
         email: trimmedEmail,
-        devCode: result.devCode ?? undefined,
       },
     });
   } else {
@@ -245,166 +242,12 @@ async function handleRegister() {
           {{ auth.loading ? t('auth.loading') : isSchool ? t('school.registerBtn') : t('auth.registerBtn') }}
         </button>
       </form>
-      <router-link to="/login" class="back-link">
+      <router-link to="/" class="back-link">
         ← {{ t('auth.backToLogin') }}
       </router-link>
     </div>
   </div>
 </template>
 
-<style scoped>
-.register-page {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0b1220, #0f172a, #1e3a5f);
-  padding: 1rem;
-}
-.register-card {
-  width: 400px;
-  padding: 2rem;
-  border-radius: 1.5rem;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #e2e8f0;
-}
-.app-header { text-align: center; margin-bottom: 1.5rem; }
-.app-header h1 { margin: 0 0 0.4rem; font-size: 1.3rem; color: #67e8f9; }
-.app-header .subtitle { margin: 0; font-size: 0.9rem; color: #94a3b8; }
-.field { margin-bottom: 1rem; }
-label { display: block; font-size: 0.8rem; margin-bottom: 0.35rem; color: #cbd5e1; }
-input {
-  width: 100%;
-  padding: 0.6rem 0.8rem;
-  border-radius: 0.5rem;
-  border: 1px solid #334155;
-  background: #0f172a;
-  color: #e2e8f0;
-  font-size: 0.9rem;
-  box-sizing: border-box;
-}
-input:focus { outline: none; border-color: #06b6d4; }
-.field-row { display: flex; gap: 0.5rem; }
-.field.half { flex: 1; margin-bottom: 0; }
-.password-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-.password-wrapper input {
-  flex: 1;
-  padding-inline-end: 2.4rem;
-}
-.eye-btn {
-  position: absolute;
-  inset-inline-end: 0.5rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  padding: 0;
-  color: #94a3b8;
-  line-height: 1;
-}
-.eye-btn:hover { color: #e2e8f0; }
-.error { color: #fca5a5; font-size: 0.8rem; margin: 0.5rem 0; }
-.field-hint { font-size: 0.72rem; color: #64748b; margin: 0.3rem 0 0; }
-.terms-check {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-  margin: 0.8rem 0;
-  font-size: 0.78rem;
-  color: #94a3b8;
-  cursor: pointer;
-  line-height: 1.5;
-}
-.terms-check input {
-  width: auto;
-  margin-top: 0.2rem;
-  accent-color: #06b6d4;
-}
-.terms-check a {
-  color: #67e8f9;
-  text-decoration: none;
-}
-.terms-check a:hover { text-decoration: underline; }
-.btn-submit {
-  width: 100%;
-  padding: 0.8rem;
-  border: none;
-  border-radius: 0.5rem;
-  background: linear-gradient(135deg, #06b6d4, #0891b2);
-  color: #fff;
-  font-weight: 700;
-  cursor: pointer;
-  margin-top: 0.5rem;
-  font-size: 0.95rem;
-}
-.btn-submit:disabled { opacity: 0.6; cursor: wait; }
-.btn-secondary {
-  width: 100%;
-  padding: 0.7rem;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 0.5rem;
-  background: rgba(255,255,255,0.04);
-  color: #94a3b8;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-}
-.btn-secondary:hover { background: rgba(255,255,255,0.08); color: #e2e8f0; }
-.role-toggle { display: flex; gap: 0.5rem; }
-.role-option {
-  flex: 1;
-  padding: 0.6rem;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 0.5rem;
-  background: rgba(255,255,255,0.04);
-  color: #94a3b8;
-  cursor: pointer;
-  font-size: 0.85rem;
-  transition: all 0.2s;
-}
-.role-option:hover { background: rgba(255,255,255,0.08); }
-.role-option.active {
-  background: rgba(99,102,241,0.2);
-  border-color: rgba(99,102,241,0.4);
-  color: #e0e7ff;
-}
-.role-option.school.active {
-  background: rgba(6,182,212,0.2);
-  border-color: rgba(6,182,212,0.4);
-  color: #67e8f9;
-}
-.success-box { text-align: center; padding: 1rem 0; }
-.success-box h2 { color: #4ade80; font-size: 1.1rem; margin: 0 0 0.8rem; }
-.code-display {
-  font-size: 2rem;
-  font-weight: 800;
-  letter-spacing: 0.2rem;
-  color: #67e8f9;
-  background: rgba(6, 182, 212, 0.1);
-  border: 1px solid rgba(6, 182, 212, 0.3);
-  border-radius: 0.8rem;
-  padding: 0.8rem;
-  margin: 0.8rem 0;
-  font-family: monospace;
-}
-.code-hint { font-size: 0.8rem; color: #94a3b8; margin: 0.5rem 0 1rem; }
-.back-link {
-  display: block;
-  text-align: center;
-  background: none;
-  border: none;
-  color: #94a3b8;
-  cursor: pointer;
-  font-size: 0.85rem;
-  margin-top: 1rem;
-  text-decoration: none;
-}
-.back-link:hover { color: #67e8f9; }
-</style>
+
+<style scoped src='./register.css'></style>

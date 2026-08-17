@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { createAnnouncement } from '../../services/announcement.service';
-import { useI18n } from '../../composables/useI18n';
-
-const { t } = useI18n();
 const props = defineProps<{ classId: string }>();
 const emit = defineEmits<{ created: [] }>();
 

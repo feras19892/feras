@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { Experiment } from '../../../composables/chemistry/useExperiments';
+import type { ExperimentDefinition } from '../../../composables/chemistry/experiments';
 import { useI18n } from '../../../composables/useI18n';
 const { t } = useI18n();
 
 const props = defineProps<{
-  experiment: Experiment | null;
+  experiment: ExperimentDefinition | null;
 }>();
 
 const emit = defineEmits<{
@@ -32,8 +32,8 @@ const emit = defineEmits<{
       <div class="exp-active-header">
         <span class="exp-active-icon">{{ experiment.icon }}</span>
         <div class="exp-active-info">
-          <span class="exp-active-name">{{ t((experiment as any).nameKey || (experiment as any).nameAr) }}</span>
-          <span class="exp-active-desc">{{ t((experiment as any).descKey || (experiment as any).description) }}</span>
+          <span class="exp-active-name">{{ t(experiment.nameKey) }}</span>
+          <span class="exp-active-desc">{{ t(experiment.descKey) }}</span>
         </div>
       </div>
       <div class="exp-active-actions">

@@ -62,14 +62,25 @@ export const createMaterial = (
 };
 
 export const addLights = (scene: THREE.Scene): void => {
-  const ambient = new THREE.AmbientLight(0xffffff, 0.6);
+  const hemi = new THREE.HemisphereLight(0xeaf2ff, 0x1a1a2e, 0.7);
+  scene.add(hemi);
+
+  const ambient = new THREE.AmbientLight(0xffffff, 0.35);
   scene.add(ambient);
 
-  const keyLight = new THREE.DirectionalLight(0xffffff, 1.2);
-  keyLight.position.set(5, 8, 5);
+  const keyLight = new THREE.DirectionalLight(0xfff4e6, 1.4);
+  keyLight.position.set(6, 10, 6);
   scene.add(keyLight);
 
-  const fillLight = new THREE.DirectionalLight(0xb4c6ef, 0.5);
-  fillLight.position.set(-5, 2, -5);
+  const fillLight = new THREE.DirectionalLight(0x88aaff, 0.6);
+  fillLight.position.set(-6, 4, -4);
   scene.add(fillLight);
+
+  const rimLight = new THREE.DirectionalLight(0xffccaa, 0.5);
+  rimLight.position.set(0, -2, -8);
+  scene.add(rimLight);
+
+  const sideLight = new THREE.DirectionalLight(0xffffff, 0.4);
+  sideLight.position.set(8, 2, -2);
+  scene.add(sideLight);
 };

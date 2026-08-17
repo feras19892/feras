@@ -23,7 +23,7 @@ export function useEquationSolver(
     for (const row of readings()) {
       let hasValue = false
       for (const v of eq.variables) {
-        if (row[v.symbol] !== undefined && row[v.symbol] !== 0) {
+        if (row[v.symbol] !== undefined && !isNaN(row[v.symbol])) {
           varValues.value[v.symbol] = round3(row[v.symbol])
           hasValue = true
         }
@@ -122,9 +122,9 @@ export function useEquationSolver(
       const m1 = vals['m1'] ?? 0; const m2 = vals['m2'] ?? 0
       const v1i = vals['v1i'] ?? 0; const v2i = vals['v2i'] ?? 0
       const v1f = vals['v1f'] ?? 0; const v2f = vals['v2f'] ?? 0
-      if (missing === 'v1f') {
+      if (missing === 'v1f' && m1 > 0) {
         result.value = steps('v₁f', `(m₁v₁i+m₂v₂i−m₂v₂f)/m₁`, (m1 * v1i + m2 * v2i - m2 * v2f) / m1)
-      } else if (missing === 'v2f') {
+      } else if (missing === 'v2f' && m2 > 0) {
         result.value = steps('v₂f', `(m₁v₁i+m₂v₂i−m₁v₁f)/m₂`, (m1 * v1i + m2 * v2i - m1 * v1f) / m2)
       } else result.value = t('analysis.enterValidValues')
     }
@@ -195,7 +195,7 @@ export function useEquationSolver(
   watch([varValues, targetVar], () => {
     const eq = activeEquation.value
     if (!eq || !targetVar.value) return
-    const known = eq.variables.filter(v => varValues.value[v.symbol] !== undefined && varValues.value[v.symbol] !== 0).length
+    const known = eq.variables.filter(v => varValues.value[v.symbol] !== undefined && !isNaN(varValues.value[v.symbol])).length
     const total = eq.variables.length
     if (known >= total - 1) solve()
   }, { deep: true })

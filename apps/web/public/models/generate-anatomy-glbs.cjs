@@ -143,40 +143,192 @@ function createBrain() {
   return group;
 }
 
-// ── Lungs ──────────────────────────────────────────────
+// ── Lungs (detailed) ───────────────────────────────────
 function createLungs() {
   const group = new THREE.Group();
 
-  // Trachea
-  addMesh(group,
-    new THREE.CylinderGeometry(0.35, 0.35, 2.5, 16),
-    0xc8d8e8, 'trachea',
-    [0, 2.5, 0]
-  );
-  // Left bronchus
-  addMesh(group,
-    new THREE.CylinderGeometry(0.25, 0.2, 1.5, 12),
-    0xb8c8d8, 'left_bronchus',
-    [-0.8, 1.2, 0], [0, 0, 0.5]
-  );
-  // Right bronchus
-  addMesh(group,
-    new THREE.CylinderGeometry(0.25, 0.2, 1.5, 12),
-    0xb8c8d8, 'right_bronchus',
-    [0.8, 1.2, 0], [0, 0, -0.5]
-  );
-  // Left lung
-  const leftLungGeo = new THREE.SphereGeometry(2.2, 24, 20);
-  leftLungGeo.scale(0.7, 1.4, 0.9);
-  addMesh(group, leftLungGeo, 0xe8a0a8, 'left_lung', [-2.2, -1, 0]);
-  // Right lung
-  const rightLungGeo = new THREE.SphereGeometry(2.4, 24, 20);
-  rightLungGeo.scale(0.7, 1.5, 0.9);
-  addMesh(group, rightLungGeo, 0xe8a0a8, 'right_lung', [2.2, -1, 0]);
-  // Pleura (thin outer shell)
-  const pleuraGeo = new THREE.SphereGeometry(2.3, 24, 20);
-  pleuraGeo.scale(0.72, 1.45, 0.92);
-  addMesh(group, pleuraGeo, 0xd0e0f0, 'pleura', [-2.2, -1, 0]);
+  // ── Trachea with cartilage rings ──
+  const tracheaMat = createMaterial(0xd8c8b8, 0.4, 0.0);
+  const tracheaGeo = new THREE.CylinderGeometry(0.38, 0.42, 3.2, 24, 1, true);
+  const tracheaMesh = new THREE.Mesh(tracheaGeo, tracheaMat);
+  tracheaMesh.name = 'trachea';
+  tracheaMesh.position.set(0, 3.0, 0);
+  group.add(tracheaMesh);
+
+  // Cartilage rings (C-shaped)
+  const ringMat = createMaterial(0xe8d8c8, 0.35, 0.0);
+  for (let i = 0; i < 8; i++) {
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(0.42, 0.06, 8, 20, Math.PI * 1.4),
+      ringMat
+    );
+    ring.name = `trachea_ring_${i}`;
+    ring.position.set(0, 1.8 + i * 0.35, 0);
+    ring.rotation.y = Math.PI * 0.3;
+    group.add(ring);
+  }
+
+  // ── Bronchial tree (left) ──
+  const bronchusMat = createMaterial(0xd4c0b0, 0.4, 0.0);
+
+  function addBronchus(parent, points, radius, name) {
+    const curve = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(...p)));
+    const geo = new THREE.TubeGeometry(curve, 20, radius, 8, false);
+    const mesh = new THREE.Mesh(geo, bronchusMat);
+    mesh.name = name;
+    parent.add(mesh);
+    return mesh;
+  }
+
+  // Main left bronchus
+  addBronchus(group, [
+    [0, 1.4, 0], [-0.3, 1.1, 0], [-0.8, 0.7, 0.2], [-1.3, 0.3, 0.3]
+  ], 0.28, 'left_main_bronchus');
+
+  // Left lobar bronchi (3 branches)
+  addBronchus(group, [
+    [-1.3, 0.3, 0.3], [-1.6, 0.6, 0.4], [-1.9, 0.9, 0.5]
+  ], 0.18, 'left_upper_bronchus');
+
+  addBronchus(group, [
+    [-1.3, 0.3, 0.3], [-1.5, -0.1, 0.2], [-1.7, -0.5, 0.1]
+  ], 0.18, 'left_lower_bronchus');
+
+  // Sub-branches left
+  addBronchus(group, [
+    [-1.9, 0.9, 0.5], [-2.2, 1.1, 0.6], [-2.5, 1.2, 0.5]
+  ], 0.10, 'left_apical_bronchus');
+
+  addBronchus(group, [
+    [-1.7, -0.5, 0.1], [-2.0, -0.9, 0.0], [-2.3, -1.2, -0.1]
+  ], 0.10, 'left_basal_bronchus');
+
+  addBronchus(group, [
+    [-1.7, -0.5, 0.1], [-1.9, -0.8, 0.4], [-2.1, -1.0, 0.6]
+  ], 0.08, 'left_lateral_bronchus');
+
+  // ── Bronchial tree (right) ──
+  addBronchus(group, [
+    [0, 1.4, 0], [0.3, 1.1, 0], [0.8, 0.7, -0.2], [1.3, 0.3, -0.3]
+  ], 0.28, 'right_main_bronchus');
+
+  // Right lobar bronchi (3 branches)
+  addBronchus(group, [
+    [1.3, 0.3, -0.3], [1.6, 0.7, -0.4], [1.9, 1.0, -0.5]
+  ], 0.18, 'right_upper_bronchus');
+
+  addBronchus(group, [
+    [1.3, 0.3, -0.3], [1.5, 0.1, -0.2], [1.7, -0.2, -0.1]
+  ], 0.16, 'right_middle_bronchus');
+
+  addBronchus(group, [
+    [1.3, 0.3, -0.3], [1.5, -0.2, -0.4], [1.7, -0.7, -0.5]
+  ], 0.18, 'right_lower_bronchus');
+
+  // Sub-branches right
+  addBronchus(group, [
+    [1.9, 1.0, -0.5], [2.2, 1.2, -0.6], [2.5, 1.3, -0.5]
+  ], 0.10, 'right_apical_bronchus');
+
+  addBronchus(group, [
+    [1.7, -0.7, -0.5], [2.0, -1.1, -0.6], [2.3, -1.4, -0.7]
+  ], 0.10, 'right_basal_bronchus');
+
+  addBronchus(group, [
+    [1.7, -0.2, -0.1], [2.0, -0.3, 0.2], [2.2, -0.4, 0.4]
+  ], 0.08, 'right_lateral_bronchus');
+
+  // ── Left Lung Lobes (upper + lower) ──
+  const lungTissueMat = createMaterial(0xd4707a, 0.5, 0.0);
+  const lungInnerMat = createMaterial(0xc25a64, 0.45, 0.0);
+
+  // Left upper lobe — organic shape using LatheGeometry
+  const leftUpperProfile = [];
+  for (let i = 0; i <= 20; i++) {
+    const t = i / 20;
+    const r = Math.sin(t * Math.PI) * (1.6 - t * 0.3) * (1 + Math.sin(t * 8) * 0.05);
+    leftUpperProfile.push(new THREE.Vector2(Math.max(r, 0.01), t * 2.2));
+  }
+  const leftUpperGeo = new THREE.LatheGeometry(leftUpperProfile, 24);
+  const leftUpper = new THREE.Mesh(leftUpperGeo, lungTissueMat);
+  leftUpper.name = 'left_lung_upper_lobe';
+  leftUpper.position.set(-2.0, 0.2, 0.2);
+  leftUpper.rotation.z = 0.3;
+  leftUpper.scale.set(1.0, 1.0, 0.65);
+  group.add(leftUpper);
+
+  // Left lower lobe
+  const leftLowerProfile = [];
+  for (let i = 0; i <= 20; i++) {
+    const t = i / 20;
+    const r = Math.sin(t * Math.PI) * (1.4 - t * 0.2) * (1 + Math.sin(t * 6) * 0.06);
+    leftLowerProfile.push(new THREE.Vector2(Math.max(r, 0.01), t * 2.0));
+  }
+  const leftLowerGeo = new THREE.LatheGeometry(leftLowerProfile, 24);
+  const leftLower = new THREE.Mesh(leftLowerGeo, lungInnerMat);
+  leftLower.name = 'left_lung_lower_lobe';
+  leftLower.position.set(-1.8, -1.8, 0.1);
+  leftLower.rotation.z = 0.35;
+  leftLower.scale.set(1.0, 1.0, 0.7);
+  group.add(leftLower);
+
+  // ── Right Lung Lobes (upper, middle, lower) ──
+  // Right upper lobe
+  const rightUpperProfile = [];
+  for (let i = 0; i <= 20; i++) {
+    const t = i / 20;
+    const r = Math.sin(t * Math.PI) * (1.5 - t * 0.25) * (1 + Math.sin(t * 7) * 0.05);
+    rightUpperProfile.push(new THREE.Vector2(Math.max(r, 0.01), t * 2.0));
+  }
+  const rightUpperGeo = new THREE.LatheGeometry(rightUpperProfile, 24);
+  const rightUpper = new THREE.Mesh(rightUpperGeo, lungTissueMat);
+  rightUpper.name = 'right_lung_upper_lobe';
+  rightUpper.position.set(2.0, 0.4, -0.2);
+  rightUpper.rotation.z = -0.3;
+  rightUpper.scale.set(1.0, 1.0, 0.65);
+  group.add(rightUpper);
+
+  // Right middle lobe (smaller)
+  const rightMidProfile = [];
+  for (let i = 0; i <= 16; i++) {
+    const t = i / 16;
+    const r = Math.sin(t * Math.PI) * 1.0 * (1 + Math.sin(t * 6) * 0.06);
+    rightMidProfile.push(new THREE.Vector2(Math.max(r, 0.01), t * 1.3));
+  }
+  const rightMidGeo = new THREE.LatheGeometry(rightMidProfile, 20);
+  const rightMid = new THREE.Mesh(rightMidGeo, lungInnerMat);
+  rightMid.name = 'right_lung_middle_lobe';
+  rightMid.position.set(1.8, -0.8, 0.0);
+  rightMid.rotation.z = -0.4;
+  rightMid.scale.set(1.0, 1.0, 0.7);
+  group.add(rightMid);
+
+  // Right lower lobe
+  const rightLowerProfile = [];
+  for (let i = 0; i <= 20; i++) {
+    const t = i / 20;
+    const r = Math.sin(t * Math.PI) * (1.5 - t * 0.2) * (1 + Math.sin(t * 6) * 0.06);
+    rightLowerProfile.push(new THREE.Vector2(Math.max(r, 0.01), t * 2.2));
+  }
+  const rightLowerGeo = new THREE.LatheGeometry(rightLowerProfile, 24);
+  const rightLower = new THREE.Mesh(rightLowerGeo, lungInnerMat);
+  rightLower.name = 'right_lung_lower_lobe';
+  rightLower.position.set(1.9, -2.0, -0.1);
+  rightLower.rotation.z = -0.35;
+  rightLower.scale.set(1.0, 1.0, 0.7);
+  group.add(rightLower);
+
+  // ── Hilum (where bronchi enter lungs) ──
+  const hilumMat = createMaterial(0xa04050, 0.5, 0.0);
+  const leftHilum = new THREE.Mesh(new THREE.SphereGeometry(0.35, 16, 12), hilumMat);
+  leftHilum.name = 'left_hilum';
+  leftHilum.position.set(-1.3, 0.3, 0.3);
+  group.add(leftHilum);
+
+  const rightHilum = new THREE.Mesh(new THREE.SphereGeometry(0.35, 16, 12), hilumMat);
+  rightHilum.name = 'right_hilum';
+  rightHilum.position.set(1.3, 0.3, -0.3);
+  group.add(rightHilum);
 
   return group;
 }

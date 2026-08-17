@@ -15,19 +15,8 @@ export function usePendulumExperiment() {
   const params = reactive<PendulumParams>({ length: 0.50, g: 9.81, theta0: 10 * Math.PI / 180, theta0Deg: 10, mass: 0.05, damping: 0.02, measureCycles: 20, bobRadius: 0.02, airDensity: 1.225, springK: 10, springRestLength: 0.08 })
 
   // Sync theta0 <-> theta0Deg (avoid circular loop)
-  let ignoreThetaWatch = false
-  watch(() => params.theta0Deg, (deg) => {
-    if (ignoreThetaWatch) return
-    ignoreThetaWatch = true
-    params.theta0 = deg * Math.PI / 180
-    setTimeout(() => { ignoreThetaWatch = false }, 0)
-  })
-  watch(() => params.theta0, (rad) => {
-    if (ignoreThetaWatch) return
-    ignoreThetaWatch = true
-    params.theta0Deg = Math.round(rad * 180 / Math.PI)
-    setTimeout(() => { ignoreThetaWatch = false }, 0)
-  })
+  watch(() => params.theta0Deg, (deg) => { params.theta0 = deg * Math.PI / 180 }, { flush: 'sync' })
+  watch(() => params.theta0, (rad) => { params.theta0Deg = Math.round(rad * 180 / Math.PI) }, { flush: 'sync' })
 
   const lab = usePendulumLab(params)
   const layout = usePendulumLayout()
@@ -45,7 +34,6 @@ export function usePendulumExperiment() {
   watch(() => [params.length, params.g, params.theta0, params.mass, params.damping], () => { if (!lab.running.value) resetSim() })
 
   onMounted(() => {
-    localStorage.removeItem('pendulum:layout:v1')
     layout.applyPersistedLayout()
     trials.autoLoad()
     resetSim()
@@ -100,8 +88,8 @@ export function usePendulumExperiment() {
 
   function exportToAnalysis() {
     const tList = trials.trials.value
-    if (tList.length === 0) { console.warn('[exportToAnalysis] no trials recorded'); return }
-    const readings = tList.map(t => ({ length: t.length, T: t.T, T2: t.T * t.T, gCalc: t.gCalc }))
+    if (tList.length === 0) { alert('تحتاج إلى تسجيل قراءة واحدة على الأقل قبل التحليل'); return }
+    const readings = tList.map(tr => ({ length: tr.length, T: tr.T, T2: tr.T * tr.T, gCalc: tr.gCalc }))
     const payload: AnalysisPayload = {
       sourceExperiment: 'pendulum', sourceNameAr: t('experiments.expPendulum'), hasCalcTab: true, readings,
       columns: [

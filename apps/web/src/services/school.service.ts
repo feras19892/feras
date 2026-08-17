@@ -148,6 +148,9 @@ export interface SchoolUserDetail {
   role: string;
   created_at: string;
   blocked_at?: string | null;
+  email_verified_at?: string | null;
+  school_id?: number;
+  block_reason?: string | null;
 }
 
 export interface SchoolUserDetailResult {
@@ -233,6 +236,12 @@ export async function getSchoolSessions() {
   return fetchJson<{ success: boolean; sessions: SchoolSessionItem[] }>('/api/school/sessions');
 }
 
+export async function getSchoolExport(type: string) {
+  const res = await fetch(`/api/school/export/${type}`, { credentials: 'include' });
+  if (!res.ok) throw new Error('Export failed');
+  return res.text();
+}
+
 export async function getSchoolActivity() {
   return fetchJson<{ success: boolean; activity: SchoolActivityItem[] }>('/api/school/activity');
 }
@@ -265,191 +274,19 @@ export async function adminGetSchoolDetail(id: number) {
   return fetchJson<{ success: boolean; school: School; stats: SchoolStats }>(`/api/school/admin/${id}`);
 }
 
-export async function adminUpdateSchool(id: number, updates: { name?: string; email?: string; max_students?: number; max_teachers?: number }) {
-  return fetchJson<{ success: boolean; message?: string }>(`/api/school/admin/${id}`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(updates),
-  });
-}
+export {
+  adminUpdateSchool, adminDeleteSchool,
+  adminGetSchoolUsers, adminGetSchoolClasses, adminGetSchoolReports,
+  adminRemoveSchoolUser, adminBlockSchoolUser, adminUnblockSchoolUser,
+  adminGetEmailRequests, adminReviewEmailRequest,
+  adminGetCapacityRequests, schoolCreateCapacityRequest, getSchoolCapacityRequests, adminReviewCapacityRequest,
+  type EmailChangeRequest, type CapacityRequest,
+} from './school-admin.service';
 
-export async function adminDeleteSchool(id: number) {
-  return fetchJson<{ success: boolean; message?: string }>(`/api/school/admin/${id}`, {
-    method: 'DELETE',
-  });
-}
-
-export async function adminGetSchoolUsers(id: number) {
-  return fetchJson<{ success: boolean; users: SchoolUser[] }>(`/api/school/admin/${id}/users`);
-}
-
-export async function adminGetSchoolClasses(id: number) {
-  return fetchJson<{ success: boolean; classes: SchoolClass[] }>(`/api/school/admin/${id}/classes`);
-}
-
-export async function adminGetSchoolReports(id: number) {
-  return fetchJson<{ success: boolean; reports: SchoolReportItem[] }>(`/api/school/admin/${id}/reports`);
-}
-
-export async function adminRemoveSchoolUser(schoolId: number, userId: number) {
-  return fetchJson<{ success: boolean; message?: string }>(`/api/school/admin/${schoolId}/users/${userId}`, {
-    method: 'DELETE',
-  });
-}
-
-export async function adminBlockSchoolUser(schoolId: number, userId: number) {
-  return fetchJson<{ success: boolean; message?: string }>(`/api/school/admin/${schoolId}/users/${userId}/block`, {
-    method: 'PATCH',
-  });
-}
-
-export async function adminUnblockSchoolUser(schoolId: number, userId: number) {
-  return fetchJson<{ success: boolean; message?: string }>(`/api/school/admin/${schoolId}/users/${userId}/unblock`, {
-    method: 'PATCH',
-  });
-}
-
-export interface EmailChangeRequest {
-  id: number;
-  account_type: string;
-  account_id: number;
-  current_email: string;
-  requested_email: string;
-  status: 'pending' | 'approved' | 'rejected';
-  created_at: string;
-}
-
-export async function adminGetEmailRequests() {
-  return fetchJson<{ success: boolean; requests: EmailChangeRequest[] }>('/api/school/admin/email-requests');
-}
-
-export async function adminReviewEmailRequest(id: number, status: 'approved' | 'rejected') {
-  return fetchJson<{ success: boolean; message?: string }>(`/api/school/admin/email-requests/${id}`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ status }),
-  });
-}
-
-export interface CapacityRequest {
-  id: number;
-  school_id: number;
-  school_name: string;
-  current_max_students: number;
-  current_max_teachers: number;
-  requested_max_students?: number;
-  requested_max_teachers?: number;
-  reason: string;
-  status: 'pending' | 'approved' | 'rejected';
-  response?: string;
-  created_at: string;
-}
-
-export async function adminGetCapacityRequests(status?: string) {
-  const query = status ? `?status=${status}` : '';
-  return fetchJson<{ success: boolean; requests: CapacityRequest[] }>(`/api/school/admin/capacity-requests${query}`);
-}
-
-export async function schoolCreateCapacityRequest(data: {
-  requested_max_students?: number;
-  requested_max_teachers?: number;
-  reason: string;
-}) {
-  return fetchJson<{ success: boolean; message?: string }>('/api/school/capacity-request', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
-}
-
-export async function getSchoolCapacityRequests(status?: string) {
-  const query = status ? `?status=${status}` : '';
-  return fetchJson<{ success: boolean; requests: CapacityRequest[] }>(`/api/school/capacity-requests${query}`);
-}
-
-export async function adminReviewCapacityRequest(id: number, status: 'approved' | 'rejected', response?: string) {
-  return fetchJson<{ success: boolean; message?: string }>(`/api/school/admin/capacity-requests/${id}`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ status, response }),
-  });
-}
-
-// ─── School Detailed Reports ───
-export interface SchoolDetailedReport {
-  date: string;
-  total_reports: number;
-  graded_reports: number;
-  pending_reports: number;
-  avg_grade: number;
-  by_class: { class_name: string; report_count: number; avg_grade: number }[];
-}
-
-export async function getSchoolDetailedReports(date?: string) {
-  const query = date ? `?date=${date}` : '';
-  return fetchJson<{ success: boolean; report: SchoolDetailedReport }>(`/api/school/reports/detailed${query}`);
-}
-
-export interface OutstandingStudent {
-  id: number;
-  name: string;
-  class_name: string;
-  avg_grade: number;
-  report_count: number;
-}
-
-export async function getOutstandingStudents(limit?: number) {
-  const query = limit ? `?limit=${limit}` : '';
-  return fetchJson<{ success: boolean; students: OutstandingStudent[] }>(`/api/school/reports/outstanding-students${query}`);
-}
-
-export async function getStrugglingStudents(limit?: number) {
-  const query = limit ? `?limit=${limit}` : '';
-  return fetchJson<{ success: boolean; students: OutstandingStudent[] }>(`/api/school/reports/struggling-students${query}`);
-}
-
-export interface TeacherEvaluation {
-  teacher_id: number;
-  teacher_name: string;
-  class_count: number;
-  student_count: number;
-  total_reports: number;
-  graded_reports: number;
-  avg_grade: number;
-}
-
-export async function getTeacherEvaluation() {
-  return fetchJson<{ success: boolean; evaluations: TeacherEvaluation[] }>('/api/school/reports/teacher-evaluation');
-}
-
-// ─── School Feedback ───
-export interface SchoolFeedbackItem {
-  id: number;
-  type: string;
-  user_name: string;
-  experiment_name?: string;
-  rating?: number | null;
-  message: string;
-  status: string;
-  created_at: string;
-}
-
-export interface SchoolFeedbackStats {
-  total: number;
-  open: number;
-  resolved: number;
-  dismissed: number;
-  avg_rating: number;
-}
-
-export async function getSchoolFeedback() {
-  return fetchJson<{ success: boolean; feedback: SchoolFeedbackItem[]; stats: SchoolFeedbackStats }>('/api/school/feedback');
-}
-
-export async function updateSchoolFeedbackStatus(id: number, status: string) {
-  return fetchJson<{ success: boolean }>(`/api/school/feedback/${id}/status`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ status }),
-  });
-}
+export {
+  getSchoolDetailedReports, getOutstandingStudents, getStrugglingStudents,
+  getTeacherEvaluation,
+  type SchoolDetailedReport, type OutstandingStudent, type StrugglingStudent, type TeacherEvaluation,
+  getSchoolFeedback, updateSchoolFeedbackStatus,
+  type SchoolFeedbackItem, type SchoolFeedbackStats,
+} from './school-reports.service';

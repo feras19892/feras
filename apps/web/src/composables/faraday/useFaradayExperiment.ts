@@ -1,10 +1,15 @@
 import { ref, reactive, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import type { AnalysisPayload } from '../../types/physics'
+import { sendToAnalysis } from '../analysis/sendToAnalysis'
+import { useI18n } from '../useI18n'
 import { useFaradayLayout } from './useFaradayLayout'
 import { useFaradayTrials } from './useFaradayTrials'
 import { magneticFlux, inducedEMF } from './useFaradayCalculations'
 
 export function useFaradayExperiment() {
+  const { t } = useI18n()
+  const router = useRouter()
   const params = reactive({
     N: 100,      // turns
     B: 0.5,      // T
@@ -52,10 +57,11 @@ export function useFaradayExperiment() {
   )
 
   function exportToAnalysis() {
-    if (trials.trials.value.length < 2) return
+    if (trials.trials.value.length < 2) { alert('تحتاج إلى تسجيل قراءتين على الأقل قبل التحليل'); return }
     const payload: AnalysisPayload = {
-      sourceExperiment: 'faraday', sourceNameAr: 'حث فارادي',
-      readings: trials.trials.value.map(t => ({ N: t.N, B: t.B, A: t.A, omega: t.omega, emf: t.emf })),
+      sourceExperiment: 'faraday', sourceNameAr: t('experiments.expFaraday'),
+      hasCalcTab: true,
+      readings: trials.trials.value.map(tr => ({ N: tr.N, B: tr.B, A: tr.A, omega: tr.omega, emf: tr.emf })),
       columns: [
         { key: 'N', label: 'N', unit: 'turns' },
         { key: 'B', label: 'B (T)', unit: 'T' },
@@ -68,8 +74,7 @@ export function useFaradayExperiment() {
       ],
       suggestedPlots: [{ xKey: 'omega', yKey: 'emf', xLabel: 'ω (rad/s)', yLabel: 'EMF (V)', type: 'scatter' }],
     }
-    localStorage.setItem('analysis_payload', JSON.stringify(payload))
-    window.open('/analysis', '_blank')
+    sendToAnalysis(router, payload)
   }
   function handleDrop(fromId: string, x?: number, y?: number) {
     if (x === undefined || y === undefined) return
@@ -80,7 +85,7 @@ export function useFaradayExperiment() {
     for (const col of Object.keys(layout.columnMap)) {
       const arr = layout.columnMap[col]
       const fi = arr.indexOf(fromId), ti = arr.indexOf(toId)
-      if (fi >= 0 && ti >= 0) { const t = arr[fi]; arr[fi] = arr[ti]; arr[ti] = t }
+      if (fi >= 0 && ti >= 0) { const tmp = arr[fi]; arr[fi] = arr[ti]; arr[ti] = tmp }
     }
   }
   function onResizeStart(col: string, e: MouseEvent) {

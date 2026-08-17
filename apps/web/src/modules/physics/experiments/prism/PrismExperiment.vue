@@ -1,7 +1,8 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { usePrismExperiment } from '../../../../composables/prism/usePrismExperiment'
 import { useI18n } from '../../../../composables/useI18n'
+import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import PrismMenuBar from '../../../../components/experiment/prism/PrismMenuBar.vue'
 import PrismCanvas from '../../../../components/experiment/prism/PrismCanvas.vue'
 import PrismPanelBody from '../../../../components/experiment/prism/PrismPanelBody.vue'
@@ -10,10 +11,12 @@ import PrismControlBar from '../../../../components/experiment/prism/PrismContro
 import PrismHelpModal from '../../../../components/experiment/prism/PrismHelpModal.vue'
 import PrismGuidePanel from '../../../../components/experiment/prism/PrismGuidePanel.vue'
 import PrismOverlayPanels from '../../../../components/experiment/prism/PrismOverlayPanels.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
+import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
 const ex = usePrismExperiment()
 const { t } = useI18n()
+const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)
 
@@ -24,7 +27,7 @@ function onKeyDown(e: KeyboardEvent) {
     e.preventDefault()
     ex.lab.togglePause()
   } else if (e.key === 'r' || e.key === 'R') {
-    if (confirm(t('prism.resetConfirm'))) ex.resetSim()
+    confirmReset().then(ok => { if (ok) ex.resetSim() })
   } else if (e.key === 's' || e.key === 'S') {
     ex.trials.recordTrial()
   } else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
@@ -52,14 +55,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <PrismMenuBar
       :title="t('prism.title')"
       icon="&#x1F308;"
-      experiment-route="/physics/waves/prism"
-      experiment-name="Prism Dispersion"
-      @toggle-panel="ex.layout.togglePanel"
       @show-all-panels="ex.layout.showAllPanels"
-      @export-csv="ex.downloadCsv"
-      @toggle-pause="ex.lab.togglePause"
-      @reset="ex.resetSim"
-      @record-trial="ex.trials.recordTrial"
       @toggle-help="helpOpen = !helpOpen"
       @analyze-results="ex.exportToAnalysis"
     />
@@ -238,6 +234,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       :total-internal-reflection="ex.lab.totalInternalReflection.value"
     />
   </div>
+  <ResetConfirmModal />
 </template>
 
 <style scoped>

@@ -1,6 +1,7 @@
 import { onMounted, onUnmounted, ref, type Ref } from 'vue';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { addLights } from './biology-geometry';
 
 const STAGE_NAMES = ['initiation', 'elongation-1', 'elongation-2', 'elongation-3', 'termination'] as const;
 export type ProteinSynthesisStageName = (typeof STAGE_NAMES)[number];
@@ -14,9 +15,18 @@ const CODON_COLORS: Record<string, number> = {
 
 const AMINO_ACID_COLORS = [0xf59e0b, 0x22c55e, 0x3b82f6];
 
+const STAGE_CODON_INDEX: Record<string, number> = {
+  initiation: 0,
+  'elongation-1': 0,
+  'elongation-2': 1,
+  'elongation-3': 2,
+  termination: 3,
+};
+
 export function useProteinSynthesis3D(containerRef: Ref<HTMLDivElement | null>) {
   const currentStageIndex = ref(0);
   const error = ref<string | null>(null);
+  const isLoading = ref(true);
   const autoRotate = ref(true);
   let renderer: THREE.WebGLRenderer | null = null;
   let scene: THREE.Scene | null = null;
@@ -27,16 +37,6 @@ export function useProteinSynthesis3D(containerRef: Ref<HTMLDivElement | null>) 
   let ribosomeGroup: THREE.Group | null = null;
   let chainGroup: THREE.Group | null = null;
   const aminoAcids: THREE.Mesh[] = [];
-
-  const addLights = (s: THREE.Scene): void => {
-    s.add(new THREE.AmbientLight(0xffffff, 0.55));
-    const key = new THREE.DirectionalLight(0xffffff, 1.1);
-    key.position.set(5, 6, 8);
-    s.add(key);
-    const fill = new THREE.DirectionalLight(0x93c5fd, 0.4);
-    fill.position.set(-6, -3, -5);
-    s.add(fill);
-  };
 
   const createNucleotide = (base: string, x: number): THREE.Group => {
     const group = new THREE.Group();
@@ -114,7 +114,7 @@ export function useProteinSynthesis3D(containerRef: Ref<HTMLDivElement | null>) 
   const updateScene = (): void => {
     if (!mrnaGroup || !ribosomeGroup || !chainGroup) return;
     const stage = STAGE_NAMES[currentStageIndex.value];
-    const codonIndex = stage === 'initiation' ? 0 : stage === 'elongation-1' ? 0 : stage === 'elongation-2' ? 1 : stage === 'elongation-3' ? 2 : 3;
+    const codonIndex = STAGE_CODON_INDEX[stage] ?? 0;
     const targetRibosomeX = -0.63 + codonIndex * 1.26;
 
     ribosomeGroup.position.x += (targetRibosomeX - ribosomeGroup.position.x) * 0.08;
@@ -149,11 +149,14 @@ export function useProteinSynthesis3D(containerRef: Ref<HTMLDivElement | null>) 
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     } catch {
       error.value = 'WebGL is not supported or has been disabled in this browser.';
+      isLoading.value = false;
       return;
     }
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     containerRef.value.appendChild(renderer.domElement);
+
+    isLoading.value = false;
 
     controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
@@ -193,10 +196,26 @@ export function useProteinSynthesis3D(containerRef: Ref<HTMLDivElement | null>) 
   const dispose = (): void => {
     cancelAnimationFrame(animationId);
     controls?.dispose();
+    const groups = [mrnaGroup, ribosomeGroup, chainGroup];
+    for (const group of groups) {
+      if (!group) continue;
+      group.traverse((child) => {
+        const mesh = child as THREE.Mesh;
+        if (mesh.geometry) mesh.geometry.dispose();
+        if (mesh.material) {
+          const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+          for (const mat of materials) mat.dispose();
+        }
+      });
+    }
     renderer?.dispose();
     if (renderer?.domElement && containerRef.value) {
       containerRef.value.removeChild(renderer.domElement);
     }
+    mrnaGroup = null;
+    ribosomeGroup = null;
+    chainGroup = null;
+    aminoAcids.length = 0;
     scene = null;
     camera = null;
     renderer = null;
@@ -225,12 +244,29 @@ export function useProteinSynthesis3D(containerRef: Ref<HTMLDivElement | null>) 
     if (controls) controls.reset();
   };
 
+  const resetAll = (): void => {
+    setStage(0);
+    autoRotate.value = true;
+    if (controls) {
+      controls.autoRotate = true;
+      controls.reset();
+    }
+  };
+
+  let resizeObserver: ResizeObserver | null = null;
+
   onMounted(() => {
     init();
     window.addEventListener('resize', resize);
+    if (containerRef.value) {
+      resizeObserver = new ResizeObserver(() => resize());
+      resizeObserver.observe(containerRef.value);
+    }
   });
   onUnmounted(() => {
     window.removeEventListener('resize', resize);
+    resizeObserver?.disconnect();
+    resizeObserver = null;
     dispose();
   });
 
@@ -238,8 +274,10 @@ export function useProteinSynthesis3D(containerRef: Ref<HTMLDivElement | null>) 
     currentStageIndex,
     setStage,
     error,
+    isLoading,
     autoRotate,
     toggleAutoRotate,
     resetCamera,
+    resetAll,
   };
 }

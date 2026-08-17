@@ -12,7 +12,7 @@ export function sendToAnalysis(router: Router, payload: AnalysisPayload) {
     localStorage.setItem(LAST_KEY, data);
     localStorage.setItem(REFERRER_KEY, window.location.pathname);
   } catch { /* ignore */ }
-  router.push('/physics/mechanics/analysis-calc');
+  router.push('/analysis');
 }
 
 export function consumePendingPayload(): AnalysisPayload | null {

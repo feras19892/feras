@@ -25,7 +25,7 @@ const emit = defineEmits<{ (e: 'close'): void }>()
               <li>{{ t('experiments.pjHelpS1L2') }}</li>
             </ul>
             <p>{{ t('experiments.pjHelpS1P2') }}</p>
-            <div class="formula">vâ‚€â‚“ = vâ‚€ Â· cos(Î¸) &nbsp;&nbsp;&nbsp;&nbsp; vâ‚€áµ§ = vâ‚€ Â· sin(Î¸)</div>
+            <div class="formula">v₀ₓ = v₀ · cos(θ) &nbsp;&nbsp;&nbsp;&nbsp; v₀ᵧ = v₀ · sin(θ)</div>
           </section>
 
           <!-- 2. Mathematical Equations -->
@@ -55,12 +55,12 @@ const emit = defineEmits<{ (e: 'close'): void }>()
               <li>{{ t('experiments.pjHelpS4L1') }}</li>
               <li>
                 {{ t('experiments.pjHelpS4L2') }}
-                <div class="formula">Slope = Î”R / Î”sin(2Î¸)</div>
+                <div class="formula">Slope = ΔR / Δsin(2θ)</div>
               </li>
               <li>
                 {{ t('experiments.pjHelpS4L3') }}
-                <div class="formula">Slope = vâ‚€Â² / g</div>
-                <div class="formula">vâ‚€ = âˆš(Slope Ã— g)</div>
+                <div class="formula">v₀² / g</div>
+                <div class="formula">v₀ = √(Slope × g)</div>
               </li>
             </ul>
           </section>

@@ -21,7 +21,7 @@ const emit = defineEmits<{ (e: 'close'): void }>()
             <h4>{{ t('experiments.pdHelpS1Title') }}</h4>
             <p>{{ t('experiments.pdHelpS1P1') }}</p>
             <p>{{ t('experiments.pdHelpS1P2') }}</p>
-            <div class="formula">F = -m Â· g Â· sin(Î¸)</div>
+            <div class="formula">F = -m · g · sin(θ)</div>
             <p>{{ t('experiments.pdHelpS1P3') }}</p>
           </section>
 
@@ -29,13 +29,13 @@ const emit = defineEmits<{ (e: 'close'): void }>()
           <section>
             <h4>{{ t('experiments.pdHelpS2Title') }}</h4>
             <p>{{ t('experiments.pdHelpS2P1') }}</p>
-            <div class="formula">T = 2Ï€ âˆš(L / g)</div>
+            <div class="formula">T = 2π √(L / g)</div>
             <p>{{ t('experiments.pdHelpS2P2') }}</p>
-            <div class="formula">TÂ² = (4Ï€Â² / g) Â· L</div>
+            <div class="formula">T² = (4π² / g) · L</div>
             <p>{{ t('experiments.pdHelpS2P3') }}</p>
-            <div class="formula">f = 1 / T = (1 / 2Ï€) âˆš(g / L)</div>
+            <div class="formula">f = 1/T = (1/2π) √(g/L)</div>
             <p>{{ t('experiments.pdHelpS2P4') }}</p>
-            <div class="formula">Ï‰â‚€ = âˆš(g / L)</div>
+            <div class="formula">ω₀ = √(g/L)</div>
           </section>
 
           <!-- 3. Laboratory Procedure -->
@@ -57,12 +57,12 @@ const emit = defineEmits<{ (e: 'close'): void }>()
               <li>{{ t('experiments.pdHelpS4L1') }}</li>
               <li>
                 {{ t('experiments.pdHelpS4L2') }}
-                <div class="formula">Slope = Î”TÂ² / Î”L</div>
+                <div class="formula">Slope = ΔT² / ΔL</div>
               </li>
               <li>
                 {{ t('experiments.pdHelpS4L3') }}
-                <div class="formula">Slope = 4Ï€Â² / g</div>
-                <div class="formula">g = 4Ï€Â² / Slope</div>
+                <div class="formula">Slope = 4π² / g</div>
+                <div class="formula">g = 4π² / Slope</div>
               </li>
             </ul>
           </section>

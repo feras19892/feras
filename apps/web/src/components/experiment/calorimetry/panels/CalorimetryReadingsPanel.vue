@@ -25,7 +25,7 @@ const metalName = computed(() => {
     <div class="sep"></div>
     <div class="read-row"><span class="label"><span class="dot amber"></span>{{ t('experiments.calorimetryMetalMass') }}</span><span class="value">{{ mMetal.toFixed(3) }} kg</span></div>
     <div class="read-row"><span class="label"><span class="dot amber"></span>{{ t('experiments.calorimetryMetalTemp') }}</span><span class="value">{{ tMetal }} °C</span></div>
-    <div class="read-row"><span class="label"><span class="dot amber"></span>نوع المعدن</span><span class="value">{{ metalName || '—' }}</span></div>
+    <div class="read-row"><span class="label"><span class="dot amber"></span>{{ t('experiments.calMetalType') }}</span><span class="value">{{ metalName || '—' }}</span></div>
     <div class="sep"></div>
     <div class="read-row highlight"><span class="label"><span class="dot green"></span>{{ t('experiments.calorimetryFinalTemp') }}</span><span class="value green">{{ tf.toFixed(1) }} °C</span></div>
     <div class="read-row highlight"><span class="label"><span class="dot green"></span>{{ t('experiments.calorimetrySpecificHeat') }}</span><span class="value green">{{ cMetal.toFixed(0) }} J/kg·K</span></div>

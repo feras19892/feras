@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { createQuiz, addQuestion, publishQuiz, closeQuiz, deleteQuiz, getMyQuizzes, getQuizSubmissions, type Quiz } from '../../services/quiz.service';
+import { useI18n } from '../../composables/useI18n';
+import { useConfirmDialog } from '../../composables/useConfirmDialog';
+import { createQuiz, addQuestion, publishQuiz, closeQuiz, deleteQuiz, getMyQuizzes, getQuizSubmissions, type Quiz, type QuizSubmission } from '../../services/quiz.service';
+
+const { locale } = useI18n();
 
 const quizzes = ref<Quiz[]>([]);
 const loading = ref(false);
@@ -16,15 +20,15 @@ const newQ = ref({ question_text: '', option_a: '', option_b: '', option_c: '', 
 const saving = ref(false);
 
 const viewSubmissions = ref<Quiz | null>(null);
-const submissions = ref<any[]>([]);
+const submissions = ref<QuizSubmission[]>([]);
 
 async function load() {
   loading.value = true;
   try {
     const res = await getMyQuizzes();
     if (res.success) quizzes.value = res.quizzes;
-  } catch (e: any) {
-    error.value = e?.message || 'Failed to load';
+  } catch (e: unknown) {
+    error.value = e instanceof Error ? e.message : 'Failed to load';
   }
   loading.value = false;
 }
@@ -80,8 +84,11 @@ async function close(id: number) {
   await load();
 }
 
+const { confirmDialog } = useConfirmDialog();
+
 async function remove(id: number) {
-  if (!confirm('هل أنت متأكد من حذف هذا الامتحان؟')) return;
+  const ok = await confirmDialog({ message: 'هل أنت متأكد من حذف هذا الامتحان؟', variant: 'danger' });
+  if (!ok) return;
   await deleteQuiz(id);
   await load();
 }
@@ -226,7 +233,7 @@ onMounted(load);
           <tr v-for="s in submissions" :key="s.id">
             <td>{{ s.student_name }}</td>
             <td>{{ s.score }} / {{ viewSubmissions.max_score }}</td>
-            <td>{{ s.submitted_at ? new Date(s.submitted_at).toLocaleString('ar-SA') : '—' }}</td>
+            <td>{{ s.submitted_at ? new Date(s.submitted_at).toLocaleDateString(locale === 'ar' ? 'ar-SA' : locale) : '—' }}</td>
           </tr>
         </tbody>
       </table>

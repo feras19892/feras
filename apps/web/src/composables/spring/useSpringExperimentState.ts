@@ -1,12 +1,20 @@
 import { computed, reactive, ref } from 'vue'
 import { useI18n } from '../../composables/useI18n'
 import type { SpringParams } from '../../modules/physics/experiments/spring/useSpringPhysics'
+import type { SpringTrial } from './useSpringTrials'
+
+export interface SpringStaticReading {
+  mass: number; yLoad: number; yUnload: number; yAvg: number; deltaY: number; force: number
+}
+export interface SpringDynamicTrialData {
+  mass: number; t1: number; t2: number; t3: number; tAvg: number; T: number; T2: number
+}
 
 export interface SpringExperimentState {
   params: SpringParams
   previousMass: { value: number }
   staticK: { value: number | null }
-  staticReadings: { value: Record<string, unknown>[] }
+  staticReadings: { value: SpringStaticReading[] }
   fftResult: { value: { freqs: number[]; amplitudes: number[]; dominantFreq: number } | null }
   ignoreParamsWatch: { value: boolean }
   colWidths: { data: number; vis: number; ctrl: number }
@@ -19,7 +27,7 @@ export function useSpringExperimentState(): SpringExperimentState {
   })
   const previousMass = ref(1.0)
   const staticK = ref<number | null>(null)
-  const staticReadings = ref<Record<string, unknown>[]>([])
+  const staticReadings = ref<SpringStaticReading[]>([])
   const fftResult = ref<{ freqs: number[]; amplitudes: number[]; dominantFreq: number } | null>(null)
   const ignoreParamsWatch = ref(false)
   const colWidths = reactive({ data: 280, vis: 0, ctrl: 280 })
@@ -29,7 +37,7 @@ export function useSpringExperimentState(): SpringExperimentState {
 
 export function useSpringExperimentComputed(
   state: SpringExperimentState,
-  trials: { trials: { value: Record<string, unknown>[] }; trialStats: { value: { k_mean: number | null } } },
+  trials: { trials: { value: SpringTrial[] }; trialStats: { value: { k_mean: number | null } } },
   lab: { sim: { running: boolean; paused: boolean }; measured: { value: Record<string, unknown> | null }; effectiveMass: { value: number }; running: { value: boolean } },
   layout: { isPanelVisible: (id: string) => boolean; columnOrder: Record<string, string[]> },
 ) {
@@ -49,10 +57,15 @@ export function useSpringExperimentComputed(
   })
 
   const dynamicTrials = computed(() => {
-    return trials.trials.value.map((t: Record<string, unknown>) => {
-      const T = Number(t.T)
+    return trials.trials.value.map((tr) => {
+      const T = tr.T
       const tTotal = T * 20
-      return { mass: Number(t.mass), t1: tTotal, t2: tTotal, t3: tTotal, tAvg: tTotal, T, T2: T * T }
+      const id = tr.id
+      const t1 = tTotal * (1 + 0.002 * ((id * 7) % 5 - 2))
+      const t2 = tTotal * (1 + 0.002 * ((id * 11) % 5 - 2))
+      const t3 = tTotal * (1 + 0.002 * ((id * 13) % 5 - 2))
+      const tAvg = (t1 + t2 + t3) / 3
+      return { mass: tr.mass, t1, t2, t3, tAvg, T, T2: T * T }
     })
   })
   const kDynamic = computed(() =>

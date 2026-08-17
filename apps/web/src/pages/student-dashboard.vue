@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, defineAsyncComponent } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, defineAsyncComponent } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from '../composables/useI18n'
+import { useGoToBranch } from '../composables/useGoToBranch'
 import { useAuthStore } from '../modules/auth/stores/auth'
 import { useStudentDashboard } from '../composables/student/useStudentDashboard'
 import AppSidebar from '../components/shared/AppSidebar.vue'
 import type { SidebarGroup } from '../components/shared/AppSidebar.vue'
 import NotificationBell from '../components/shared/NotificationBell.vue'
+import LiveToastContainer from '../components/shared/LiveToastContainer.vue'
 import AccountSettingsModal from '../components/shared/AccountSettingsModal.vue'
 import StudentOverviewTab from '../components/student/StudentOverviewTab.vue'
+import LearningProgressCard from '../components/student/LearningProgressCard.vue'
 import SystemBanner from '../components/shared/SystemBanner.vue'
 import BranchCard from '../components/ui/BranchCard.vue'
 import { fetchHomeCards } from '../services/home.service'
+import { getUnreadChatCounts, markChatRead } from '../services/chat.service'
 import type { HomeCard } from '../types/physics'
 
 const StudentReportsTab = defineAsyncComponent(() => import('../components/student/StudentReportsTab.vue'))
@@ -20,23 +24,30 @@ const StudentProfileTab = defineAsyncComponent(() => import('../components/stude
 const StudentQuizzesTab = defineAsyncComponent(() => import('../components/student/StudentQuizzesTab.vue'))
 const StudentEnhancementsTab = defineAsyncComponent(() => import('../components/student/StudentEnhancementsTab.vue'))
 const AnnouncementsPanel = defineAsyncComponent(() => import('../components/shared/AnnouncementsPanel.vue'))
+const AITutorWidget = defineAsyncComponent(() => import('../components/student/AITutorWidget.vue'))
 const DeadlinesPanel = defineAsyncComponent(() => import('../components/student/DeadlinesPanel.vue'))
 const ApprovalPanel = defineAsyncComponent(() => import('../components/shared/ApprovalPanel.vue'))
 const ClassChat = defineAsyncComponent(() => import('../components/shared/ClassChat.vue'))
 
 const router = useRouter()
 const { t, locale } = useI18n()
+const { goToBranch } = useGoToBranch()
 const auth = useAuthStore()
 const { kpi, reportRows, recentReports, overduePending, classes, classStudentsMap, joinClassByCode, leaveClassById, loading } = useStudentDashboard()
 
 type Section = 'overview' | 'experiments' | 'reports' | 'classes' | 'quizzes' | 'badges' | 'announcements' | 'approvals' | 'settings'
-const active = ref<Section>('overview')
+const savedTab = localStorage.getItem('student-active-tab') as Section | null
+const active = ref<Section>(savedTab && ['overview','experiments','reports','classes','quizzes','badges','announcements','approvals','settings'].includes(savedTab) ? savedTab : 'overview')
+watch(active, (v) => { localStorage.setItem('student-active-tab', v) })
 const sidebarCollapsed = ref(false)
 const cards = ref<HomeCard[]>([])
 const chatClassId = ref<string | null>(null)
 const chatClassName = ref('')
+const unreadChatCounts = ref<Record<string, number>>({})
 
 const dateLocaleStr = computed(() => locale.value === 'ar' ? 'ar-SA' : locale.value === 'es' ? 'es-ES' : 'en-US')
+const currentDate = ref(new Date())
+let dateInterval: ReturnType<typeof setInterval> | null = null
 
 const translatedCards = computed(() => cards.value.map(card => ({
   ...card,
@@ -63,13 +74,6 @@ const groups = computed<SidebarGroup[]>(() => [
       { id: 'reports', icon: '📋', label: t('shared.navMyReports'), badge: kpi.value.pendingCount > 0 ? kpi.value.pendingCount : undefined },
       { id: 'classes', icon: '🏫', label: t('shared.navMyClasses') },
       { id: 'quizzes', icon: '📝', label: t('shared.navQuizzes') },
-    ],
-  },
-  {
-    id: 'achieve',
-    title: t('shared.navAchieve'),
-    icon: '🏆',
-    items: [
       { id: 'badges', icon: '🏅', label: t('shared.navBadges') },
     ],
   },
@@ -80,13 +84,6 @@ const groups = computed<SidebarGroup[]>(() => [
     items: [
       { id: 'announcements', icon: '📢', label: t('shared.navAnnouncements') },
       { id: 'approvals', icon: '✋', label: t('shared.navObjections') },
-    ],
-  },
-  {
-    id: 'account',
-    title: t('shared.navAccount'),
-    icon: '⚙️',
-    items: [
       { id: 'settings', icon: '👤', label: t('shared.navSettings') },
     ],
   },
@@ -100,26 +97,31 @@ const activeLabel = computed(() => {
   return ''
 })
 
-function goToBranch(branchId: string) {
-  if (branchId === 'physics') router.push('/physics')
-  if (branchId === 'chemistry') router.push('/chemistry')
-  if (branchId === 'mathematics') router.push('/math')
-  if (branchId === 'general') router.push('/biology')
-}
-
 function openChat(cls: { id: string; name: string }) {
   if (chatClassId.value === cls.id) {
     chatClassId.value = null
     chatClassName.value = ''
+    loadUnreadCounts()
   } else {
     chatClassId.value = cls.id
     chatClassName.value = cls.name
+    markChatRead(cls.id).then(() => {
+      unreadChatCounts.value = { ...unreadChatCounts.value, [cls.id]: 0 }
+    }).catch(() => {})
   }
 }
 
 function closeChat() {
   chatClassId.value = null
   chatClassName.value = ''
+  loadUnreadCounts()
+}
+
+async function loadUnreadCounts() {
+  try {
+    const res = await getUnreadChatCounts()
+    if (res.success) unreadChatCounts.value = res.counts
+  } catch { /* ignore */ }
 }
 
 function openReport(id: number) {
@@ -131,8 +133,15 @@ async function loadCards() {
 }
 
 onMounted(async () => {
+  if (!auth.isStudent && !auth.isGuest) { router.push('/'); return }
   if (!auth.isGuest) { await auth.fetchMe() }
   await loadCards()
+  await Promise.all([loadUnreadCounts()])
+  dateInterval = setInterval(() => { currentDate.value = new Date() }, 60000)
+})
+
+onUnmounted(() => {
+  if (dateInterval) clearInterval(dateInterval)
 })
 </script>
 
@@ -146,7 +155,7 @@ onMounted(async () => {
       :user-name="auth.user?.name || ''"
       :collapsed="sidebarCollapsed"
       @select="active = $event as Section"
-      @home="router.push('/home')"
+      @home="router.push({ path: '/home', query: { view: 'experiments' } })"
       @logout="auth.logout(); router.push('/')"
       @toggle-collapse="sidebarCollapsed = !sidebarCollapsed"
     />
@@ -156,7 +165,7 @@ onMounted(async () => {
       <header class="topbar">
         <div class="topbar-left">
           <h1 class="topbar-title">{{ activeLabel }}</h1>
-          <span class="topbar-date">{{ new Date().toLocaleDateString(dateLocaleStr, { weekday: 'long', day: 'numeric', month: 'long' }) }}</span>
+          <span class="topbar-date">{{ currentDate.toLocaleDateString(dateLocaleStr, { weekday: 'long', day: 'numeric', month: 'long' }) }}</span>
         </div>
         <div class="topbar-right">
           <NotificationBell />
@@ -164,54 +173,12 @@ onMounted(async () => {
         </div>
       </header>
 
-      <!-- KPI Strip -->
-      <div class="kpi-strip" v-if="active === 'overview' || active === 'reports'">
-        <div class="kpi-item" :class="{ click: kpi.pendingCount > 0 }" @click="kpi.pendingCount > 0 && (active = 'reports')">
-          <span class="kpi-icon">⏳</span>
-          <span class="kpi-val">{{ kpi.pendingCount }}</span>
-          <span class="kpi-lab">{{ t('shared.kpiPendingShort') }}</span>
-        </div>
-        <div class="kpi-item" :class="{ click: kpi.newFeedback > 0 }" @click="kpi.newFeedback > 0 && (active = 'reports')">
-          <span class="kpi-icon">💬</span>
-          <span class="kpi-val">{{ kpi.newFeedback }}</span>
-          <span class="kpi-lab">{{ t('shared.kpiFeedback') }}</span>
-        </div>
-        <div class="kpi-item">
-          <span class="kpi-icon">✅</span>
-          <span class="kpi-val">{{ kpi.gradedCount }}</span>
-          <span class="kpi-lab">{{ t('shared.kpiGradedShort') }}</span>
-        </div>
-        <div class="kpi-item">
-          <span class="kpi-icon">📝</span>
-          <span class="kpi-val">{{ kpi.draftCount }}</span>
-          <span class="kpi-lab">{{ t('shared.kpiDraft') }}</span>
-        </div>
-        <div class="kpi-item">
-          <span class="kpi-icon">📄</span>
-          <span class="kpi-val">{{ kpi.totalReports }}</span>
-          <span class="kpi-lab">{{ t('shared.kpiTotal') }}</span>
-        </div>
-        <div class="kpi-item">
-          <span class="kpi-icon">🏫</span>
-          <span class="kpi-val">{{ kpi.totalClasses }}</span>
-          <span class="kpi-lab">{{ t('shared.kpiClasses') }}</span>
-        </div>
-        <div class="kpi-item">
-          <span class="kpi-icon">📊</span>
-          <span class="kpi-val">{{ kpi.avgGrade }}%</span>
-          <span class="kpi-lab">{{ t('shared.kpiAvg') }}</span>
-        </div>
-        <div class="kpi-item">
-          <span class="kpi-icon">⭐</span>
-          <span class="kpi-val">{{ kpi.bestGrade }}%</span>
-          <span class="kpi-lab">{{ t('shared.kpiBest') }}</span>
-        </div>
-      </div>
+      <LiveToastContainer />
 
       <!-- Content -->
       <div :class="['content-area', { 'chat-open': chatClassId }]">
         <div class="content-main">
-          <div v-if="loading && active === 'overview'" class="loading-state">
+          <div v-if="loading" class="loading-state">
             <div class="spinner"></div>
           </div>
 
@@ -226,17 +193,19 @@ onMounted(async () => {
                 <button class="empty-cta secondary" @click="active = 'classes'">{{ t('dashboard.joinClass') }}</button>
               </div>
             </div>
-            <StudentOverviewTab
-              v-else
-              :kpi="kpi"
-              :recent="recentReports"
-              :overdue="overduePending"
-              :classes="classes"
-              :locale="locale"
-              @open-report="openReport"
-              @open-tab="active = $event as Section"
-              @navigate="active = $event as Section"
-            />
+            <template v-else>
+              <LearningProgressCard v-if="kpi.totalReports > 0" style="margin-bottom: 1rem" />
+              <StudentOverviewTab
+                :kpi="kpi"
+                :recent="recentReports"
+                :overdue="overduePending"
+                :classes="classes"
+                :locale="locale"
+                @open-report="openReport"
+                @open-tab="active = $event as Section"
+                @navigate="active = $event as Section"
+              />
+            </template>
           </div>
 
           <!-- Experiments -->
@@ -269,24 +238,40 @@ onMounted(async () => {
               :join-fn="joinClassByCode"
               :leave-fn="leaveClassById"
               :active-chat-id="chatClassId"
+              :unread-chat-counts="unreadChatCounts"
               @open-chat="openChat"
             />
           </div>
 
           <!-- Quizzes -->
           <div v-else-if="active === 'quizzes'" class="section-panel">
-            <StudentQuizzesTab />
+            <Suspense>
+              <StudentQuizzesTab />
+              <template #fallback>
+                <div class="loading-state"><div class="spinner"></div></div>
+              </template>
+            </Suspense>
           </div>
 
           <!-- Badges & Enhancements -->
           <div v-else-if="active === 'badges'" class="section-panel">
-            <StudentEnhancementsTab />
+            <Suspense>
+              <StudentEnhancementsTab />
+              <template #fallback>
+                <div class="loading-state"><div class="spinner"></div></div>
+              </template>
+            </Suspense>
           </div>
 
           <!-- Announcements -->
           <div v-else-if="active === 'announcements'" class="section-panel">
             <div class="panel-card">
-              <AnnouncementsPanel />
+              <Suspense>
+                <AnnouncementsPanel />
+                <template #fallback>
+                  <div class="loading-state"><div class="spinner"></div></div>
+                </template>
+              </Suspense>
             </div>
             <div class="panel-card">
               <DeadlinesPanel />
@@ -295,7 +280,12 @@ onMounted(async () => {
 
           <!-- Approvals -->
           <div v-else-if="active === 'approvals'" class="section-panel">
-            <ApprovalPanel mode="student" />
+            <Suspense>
+              <ApprovalPanel mode="student" />
+              <template #fallback>
+                <div class="loading-state"><div class="spinner"></div></div>
+              </template>
+            </Suspense>
           </div>
 
           <!-- Settings -->
@@ -314,190 +304,10 @@ onMounted(async () => {
         </div>
       </div>
     </div>
+
+    <AITutorWidget />
   </div>
 </template>
 
-<style scoped>
-.student-layout {
-  display: flex;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0a0f1c 0%, #111827 40%, #0f172a 100%);
-  color: #e2e8f0;
-}
 
-.student-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-/* Top Bar */
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.8rem 1.5rem;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-  background: rgba(10,15,28,0.5);
-  backdrop-filter: blur(12px);
-  position: sticky;
-  top: 0;
-  z-index: 50;
-}
-.topbar-left { display: flex; align-items: center; gap: 0.8rem; }
-.topbar-title {
-  margin: 0;
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: #f1f5f9;
-}
-.topbar-date {
-  font-size: 0.75rem;
-  color: #64748b;
-}
-.topbar-right { display: flex; align-items: center; gap: 0.4rem; }
-
-/* KPI Strip */
-.kpi-strip {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 0.5rem;
-  padding: 0.8rem 1.5rem;
-  border-bottom: 1px solid rgba(255,255,255,0.03);
-}
-.kpi-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.15rem;
-  padding: 0.5rem 0.4rem;
-  border-radius: 0.6rem;
-  background: rgba(15,23,42,0.5);
-  border: 1px solid rgba(255,255,255,0.05);
-  transition: all 0.15s;
-}
-.kpi-item.click { cursor: pointer; }
-.kpi-item.click:hover {
-  border-color: rgba(251,191,36,0.3);
-  background: rgba(251,191,36,0.04);
-  transform: translateY(-1px);
-}
-.kpi-icon { font-size: 1rem; }
-.kpi-val { font-size: 1.05rem; font-weight: 800; color: #e5e7eb; line-height: 1; }
-.kpi-lab { font-size: 0.6rem; color: #64748b; text-align: center; white-space: nowrap; }
-
-/* Content */
-.content-area {
-  flex: 1;
-  display: flex;
-  padding: 1.5rem;
-  gap: 0.8rem;
-  overflow-y: auto;
-}
-.content-area.chat-open { max-width: 1600px; }
-.content-main { flex: 1; min-width: 0; }
-.content-area.chat-open .content-main { flex: 0 0 66%; }
-
-.chat-col {
-  flex: 0 0 34%;
-  display: flex;
-  flex-direction: column;
-  position: sticky;
-  top: 80px;
-  height: calc(100vh - 100px);
-}
-.chat-col-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.6rem 0.8rem;
-  background: rgba(74,222,128,0.08);
-  border: 1px solid rgba(74,222,128,0.12);
-  border-radius: 0.6rem 0.6rem 0 0;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #86efac;
-}
-.chat-close-btn {
-  width: 26px; height: 26px;
-  border-radius: 0.35rem;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.05);
-  color: #94a3b8;
-  cursor: pointer;
-  font-size: 0.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.chat-close-btn:hover { background: rgba(239,68,68,0.15); color: #f87171; }
-.chat-col :deep(.chat-panel) { border-radius: 0 0 0.6rem 0.6rem; flex: 1; }
-.chat-col :deep(.chat-header) { display: none; }
-.chat-col :deep(.chat-body) { max-height: none; flex: 1; }
-
-/* Section Panel */
-.section-panel { animation: fadeIn 0.2s; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-.panel-card {
-  background: rgba(15,23,42,0.5);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 0.8rem;
-  padding: 1rem;
-  margin-bottom: 0.8rem;
-}
-
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  justify-items: center;
-  max-width: 1000px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-/* Loading */
-.loading-state { display: flex; justify-content: center; padding: 3rem; }
-.spinner {
-  width: 36px; height: 36px;
-  border: 3px solid rgba(74,222,128,0.2);
-  border-top-color: #4ade80;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* Empty Welcome */
-.empty-welcome {
-  text-align: center;
-  padding: 3rem 1.5rem;
-}
-.empty-icon { font-size: 3rem; margin-bottom: 0.8rem; }
-.empty-welcome h3 { margin: 0 0 0.4rem; color: #e5e7eb; }
-.empty-welcome p { margin: 0 0 1.2rem; color: #64748b; font-size: 0.85rem; }
-.empty-actions { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
-.empty-cta {
-  padding: 0.6rem 1.5rem;
-  border: none;
-  border-radius: 0.6rem;
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-  color: #fff;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: inherit;
-  transition: all 0.2s;
-}
-.empty-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(34,197,94,0.3); }
-.empty-cta.secondary {
-  background: linear-gradient(135deg, #4f46e5, #7c3aed);
-}
-
-@media (max-width: 768px) {
-  .kpi-strip { grid-template-columns: repeat(4, 1fr); }
-  .content-area { padding: 0.8rem; }
-  .content-area.chat-open .content-main { flex: 1; }
-  .chat-col { display: none; }
-}
-</style>
+<style scoped src='./student-dashboard.css'></style>

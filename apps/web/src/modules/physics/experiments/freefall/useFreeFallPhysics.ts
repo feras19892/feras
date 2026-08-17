@@ -49,7 +49,7 @@ export function useFreeFallPhysics(params: FreeFallParams) {
       const vMag = Math.abs(sim.vy)
       const drag = 0.5 * 1.225 * area * params.dragCoeff * vMag * vMag
       const netForce = params.g * params.mass - drag
-      const a = netForce / params.mass
+      const a = netForce / Math.max(params.mass, 1e-9)
       sim.vy -= a * sDt
       sim.y += sim.vy * sDt
     }

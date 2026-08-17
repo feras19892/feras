@@ -2,6 +2,7 @@ import { ref, computed, type Ref } from 'vue'
 import { useI18n } from '../../composables/useI18n'
 import { downloadCsv } from '../../components/experiment/spring/downloadCsv'
 import { linearRegression } from '../../components/experiment/spring/linearRegression'
+import { useExperimentTrials } from '../experiment/shared/useExperimentTrials'
 import type { FreeFallParams } from '../../modules/physics/experiments/freefall/useFreeFallPhysics'
 
 export interface FreeFallTrial {
@@ -19,31 +20,21 @@ export interface FreeFallMeasured {
   impactVelocity: number | null
 }
 
-const SAVE_KEY = 'freefall:trials:v1'
-
-export function useFreeFallTrials(params: FreeFallParams, measured: Ref<FreeFallMeasured>, enableNoise: Ref<boolean> = ref(true)) {
+export function useFreeFallTrials(params: FreeFallParams, measured: Ref<FreeFallMeasured>, enableNoise: Ref<boolean>) {
   const { t } = useI18n()
-  const trials = ref<FreeFallTrial[]>([])
-  let nextTrialId = 1
-  const history = ref<FreeFallTrial[][]>([])
-  const historyIndex = ref(-1)
+  const calcResult = ref(t('experiments.clickBtnShowCalc'))
 
-  function pushHistory() {
-    if (historyIndex.value < history.value.length - 1) history.value = history.value.slice(0, historyIndex.value + 1)
-    history.value.push([...trials.value])
-    historyIndex.value++
-    if (history.value.length > 20) { history.value.shift(); historyIndex.value-- }
-  }
-  function undo() { if (historyIndex.value > 0) { historyIndex.value--; trials.value = [...history.value[historyIndex.value]]; nextTrialId = trials.value.length > 0 ? Math.max(...trials.value.map(t => t.id)) + 1 : 1 } }
-  function redo() { if (historyIndex.value < history.value.length - 1) { historyIndex.value++; trials.value = [...history.value[historyIndex.value]]; nextTrialId = trials.value.length > 0 ? Math.max(...trials.value.map(t => t.id)) + 1 : 1 } }
-  function canUndo() { return historyIndex.value > 0 }
-  function canRedo() { return historyIndex.value < history.value.length - 1 }
+  const base = useExperimentTrials<FreeFallTrial>({
+    storageKey: 'freefall:trials:v1',
+    getExtraData: () => calcResult.value,
+    setExtraData: (data) => { if (typeof data === 'string') calcResult.value = data },
+  })
 
   const trialStats = computed(() => {
-    if (trials.value.length === 0) return { time_mean: 0, time_std: 0, g_mean: 0, g_std: 0 }
+    if (base.trials.value.length === 0) return { time_mean: 0, time_std: 0, g_mean: 0, g_std: 0 }
     const mean = (arr: number[]) => arr.reduce((a, b) => a + b, 0) / arr.length
     const std = (arr: number[]) => { const m = mean(arr); return Math.sqrt(arr.reduce((sum, v) => sum + (v - m) ** 2, 0) / arr.length) }
-    return { time_mean: mean(trials.value.map(t => t.timeSec)), time_std: std(trials.value.map(t => t.timeSec)), g_mean: mean(trials.value.map(t => t.gCalc)), g_std: std(trials.value.map(t => t.gCalc)) }
+    return { time_mean: mean(base.trials.value.map(tr => tr.timeSec)), time_std: std(base.trials.value.map(tr => tr.timeSec)), g_mean: mean(base.trials.value.map(tr => tr.gCalc)), g_std: std(base.trials.value.map(tr => tr.gCalc)) }
   })
 
   function gaussianNoise(mean: number, stdDev: number) {
@@ -54,50 +45,27 @@ export function useFreeFallTrials(params: FreeFallParams, measured: Ref<FreeFall
 
   function recordTrial() {
     if (!measured.value.flightTime) return
-    pushHistory()
     const noiseLevel = 0.02
     const timeToRecord = enableNoise.value
       ? gaussianNoise(measured.value.flightTime, measured.value.flightTime * noiseLevel)
       : measured.value.flightTime
     const gCalc = (2 * params.h) / (timeToRecord * timeToRecord)
     const err = Math.abs((gCalc - params.g) / params.g) * 100
-    trials.value = [...trials.value, {
-      id: nextTrialId++, heightMeters: params.h, timeSec: timeToRecord,
+    base.addTrial({
+      heightMeters: params.h, timeSec: timeToRecord,
       timeSquaredSec2: timeToRecord * timeToRecord,
-      impactVelocityMs: params.g * timeToRecord,
-      gCalc, err,
-    }]
-    autoSave()
-  }
-
-  function removeTrial(id: number) { pushHistory(); trials.value = trials.value.filter(t => t.id !== id); autoSave() }
-  function clearTrials() { pushHistory(); trials.value = []; autoSave() }
-
-  function autoSave() { try { localStorage.setItem(SAVE_KEY, JSON.stringify({ trials: trials.value, nextId: nextTrialId, calcResult: calcResult.value })) } catch { /* ignore */ } }
-  function autoLoad() {
-    try {
-      const raw = localStorage.getItem(SAVE_KEY)
-      if (!raw) return
-      const parsed = JSON.parse(raw)
-      if (Array.isArray(parsed.trials)) {
-        const valid = parsed.trials.filter((t: Record<string, unknown>) => t && typeof t.heightMeters === 'number' && t.heightMeters > 0)
-        trials.value = valid
-        nextTrialId = parsed.nextId ?? (valid.length > 0 ? Math.max(...valid.map((t: Record<string, unknown>) => Number(t.id))) + 1 : 1)
-        if (parsed.calcResult) calcResult.value = parsed.calcResult
-        history.value = [[...valid]]; historyIndex.value = 0
-      }
-    } catch { /* ignore */ }
+      impactVelocityMs: params.g * timeToRecord, gCalc, err,
+    })
   }
 
   function exportCsv() {
-    if (!trials.value.length) return
+    if (!base.trials.value.length) return
     downloadCsv('freefall_data.csv', [
       ['#', 'h (m)', 't (s)', 't² (s²)', 'v_impact (m/s)', 'g_calc (m/s²)', 'error'],
-      ...trials.value.map((t, i) => [i + 1, t.heightMeters.toFixed(2), t.timeSec.toFixed(3), t.timeSquaredSec2.toFixed(4), t.impactVelocityMs.toFixed(2), t.gCalc.toFixed(2), t.err.toFixed(2) + '%']),
+      ...base.trials.value.map((tr, i) => [i + 1, tr.heightMeters.toFixed(2), tr.timeSec.toFixed(3), tr.timeSquaredSec2.toFixed(4), tr.impactVelocityMs.toFixed(2), tr.gCalc.toFixed(2), tr.err.toFixed(2) + '%']),
     ])
   }
 
-  const calcResult = ref(t('experiments.clickBtnShowCalc'))
   function calcG() {
     if (!measured.value.flightTime) { calcResult.value = t('experiments.measureTimeFirst'); return }
     const g = (2 * params.h) / (measured.value.flightTime * measured.value.flightTime)
@@ -113,9 +81,9 @@ export function useFreeFallTrials(params: FreeFallParams, measured: Ref<FreeFall
     calcResult.value = `<b>${t('experiments.equationLabel')}:</b> v = √(2gh)<br><b>${t('experiments.substitutionLabel')}:</b> v = √(2×${params.g.toFixed(2)}×${params.h.toFixed(2)})<br><b>${t('experiments.resultLabel')}:</b> v = <b>${v.toFixed(2)} m/s</b>`
   }
   function calcFitG() {
-    if (trials.value.length < 2) { calcResult.value = t('experiments.atLeastTwoTrials'); return }
-    const xs = trials.value.map(t => t.timeSquaredSec2)
-    const ys = trials.value.map(t => t.heightMeters)
+    if (base.trials.value.length < 2) { calcResult.value = t('experiments.atLeastTwoTrials'); return }
+    const xs = base.trials.value.map(tr => tr.timeSquaredSec2)
+    const ys = base.trials.value.map(tr => tr.heightMeters)
     const fit = linearRegression(xs, ys)
     if (!fit || Math.abs(fit.slope) < 1e-12) { calcResult.value = t('experiments.insufficientData'); return }
     const g = 2 * fit.slope
@@ -125,8 +93,8 @@ export function useFreeFallTrials(params: FreeFallParams, measured: Ref<FreeFall
   }
 
   return {
-    trials, trialStats, recordTrial, removeTrial, clearTrials, exportCsv,
-    undo, redo, canUndo, canRedo, autoLoad,
+    trials: base.trials, trialStats, recordTrial, removeTrial: base.removeTrial, clearTrials: base.clearTrials, exportCsv,
+    undo: base.undo, redo: base.redo, canUndo: base.canUndo, canRedo: base.canRedo, autoLoad: base.autoLoad,
     calcResult, calcG, calcT, calcV, calcFitG,
   }
 }

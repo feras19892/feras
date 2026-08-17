@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 import type { FreeFallParams } from '../../../modules/physics/experiments/freefall/useFreeFallPhysics'
 import type { FreeFallState } from '../../../modules/physics/experiments/freefall/useFreeFallPhysics'
 
@@ -9,13 +9,14 @@ const props = defineProps<{
 }>()
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
+let cssW = 400, cssH = 400
 
 function draw() {
   const c = canvasRef.value
   if (!c) return
   const ctx = c.getContext('2d')
   if (!ctx) return
-  const w = c.width, h = c.height
+  const w = cssW, h = cssH
 
   // Gradient background
   const bgGrad = ctx.createLinearGradient(0, 0, 0, h)
@@ -223,6 +224,20 @@ function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
   ctx.closePath()
 }
 
+function resizeCanvas() {
+  const canvas = canvasRef.value
+  if (!canvas) return
+  const rect = canvas.getBoundingClientRect()
+  const dpr = window.devicePixelRatio || 1
+  cssW = Math.max(rect.width, 100); cssH = Math.max(rect.height, 100)
+  canvas.width = cssW * dpr; canvas.height = cssH * dpr
+  canvas.style.width = cssW + 'px'; canvas.style.height = cssH + 'px'
+  const ctx = canvas.getContext('2d'); if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  draw()
+}
+
+let resizeObs: ResizeObserver | null = null
+
 watch(() => [props.simState.t, props.simState.y, props.simState.vy, props.params.h], draw, { immediate: true })
 
 function captureSnapshot() {
@@ -231,7 +246,16 @@ function captureSnapshot() {
 
 defineExpose({ captureSnapshot })
 
-onMounted(draw)
+onMounted(() => {
+  resizeCanvas()
+  resizeObs = new ResizeObserver(() => resizeCanvas())
+  if (canvasRef.value) resizeObs.observe(canvasRef.value)
+})
+
+onUnmounted(() => {
+  resizeObs?.disconnect()
+  resizeObs = null
+})
 </script>
 
 <template>

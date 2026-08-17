@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
-import { adminGetEmailRequests, adminReviewEmailRequest, adminGetCapacityRequests, adminReviewCapacityRequest } from '../../services/school.service';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
+import { adminGetEmailRequests, adminReviewEmailRequest, adminGetCapacityRequests, adminReviewCapacityRequest, type EmailChangeRequest, type CapacityRequest } from '../../services/school.service';
 import { useI18n } from '../../composables/useI18n';
 
 const { t } = useI18n();
-
-const emailRequests = ref<any[]>([]);
-const capacityRequests = ref<any[]>([]);
+const emailRequests = ref<EmailChangeRequest[]>([]);
+const capacityRequests = ref<CapacityRequest[]>([]);
 const loading = ref(true);
 const errorMsg = ref('');
 const activeSub = ref<'email' | 'capacity'>('email');
@@ -41,53 +40,58 @@ async function reviewCapacity(id: number, status: 'approved' | 'rejected') {
 const pendingEmailCount = computed(() => emailRequests.value.filter(r => r.status === 'pending').length);
 const pendingCapacityCount = computed(() => capacityRequests.value.filter(r => r.status === 'pending').length);
 
-onMounted(loadRequests);
+let refreshTimer: ReturnType<typeof setInterval> | null = null;
+onMounted(() => {
+  loadRequests();
+  refreshTimer = setInterval(() => loadRequests(), 30000);
+});
+onUnmounted(() => { if (refreshTimer) clearInterval(refreshTimer); });
 </script>
 
 <template>
   <div class="requests-panel">
-    <h2>📋 الطلبات</h2>
+    <h2>{{ t('admin.requests') }}</h2>
 
     <div class="sub-tabs">
       <button :class="['sub-tab', { active: activeSub === 'email' }]" @click="activeSub = 'email'">
-        📧 تغيير البريد
+        {{ t('adminExtras.reqEmailChange') }}
         <span v-if="pendingEmailCount > 0" class="sub-badge">{{ pendingEmailCount }}</span>
       </button>
       <button :class="['sub-tab', { active: activeSub === 'capacity' }]" @click="activeSub = 'capacity'">
-        📦 طلبات السعة
+        {{ t('adminExtras.reqCapacity') }}
         <span v-if="pendingCapacityCount > 0" class="sub-badge">{{ pendingCapacityCount }}</span>
       </button>
     </div>
 
-    <div v-if="loading" class="loading">جاري التحميل...</div>
+    <div v-if="loading" class="loading">{{ t('admin.loading') }}</div>
     <div v-else-if="errorMsg" class="error">❌ {{ errorMsg }}</div>
 
     <div v-else-if="activeSub === 'email'">
       <div v-if="emailRequests.length === 0" class="empty">
         <div class="empty-icon">📭</div>
-        <p>لا توجد طلبات</p>
+        <p>{{ t('adminExtras.reqNoData') }}</p>
       </div>
       <table v-else class="req-table">
         <thead>
           <tr>
-            <th>النوع</th>
-            <th>البريد الحالي</th>
-            <th>البريد الجديد</th>
-            <th>الحالة</th>
-            <th>التاريخ</th>
+            <th>{{ t('admin.requestsType') }}</th>
+            <th>{{ t('admin.requestsCurrent') }}</th>
+            <th>{{ t('admin.requestsRequested') }}</th>
+            <th>{{ t('admin.requestsStatus') }}</th>
+            <th>{{ t('admin.requestsDate') }}</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="r in emailRequests" :key="r.id">
-            <td><span class="type-tag" :class="r.requester_type">{{ r.requester_type === 'school' ? 'مدرسة' : 'مستخدم' }}</span></td>
+            <td><span class="type-tag" :class="r.account_type">{{ r.account_type === 'school' ? t('admin.typeSchool') : t('admin.typeUser') }}</span></td>
             <td>{{ r.current_email }}</td>
             <td>{{ r.requested_email }}</td>
             <td><span class="status-tag" :class="r.status">{{ r.status }}</span></td>
             <td>{{ new Date(r.created_at).toLocaleDateString() }}</td>
             <td v-if="r.status === 'pending'" class="action-cell">
-              <button class="mini-btn approve" @click="reviewEmail(r.id, 'approved')" title="موافقة">✅</button>
-              <button class="mini-btn reject" @click="reviewEmail(r.id, 'rejected')" title="رفض">❌</button>
+              <button class="mini-btn approve" @click="reviewEmail(r.id, 'approved')" :title="t('admin.requestsApprove')">✅</button>
+              <button class="mini-btn reject" @click="reviewEmail(r.id, 'rejected')" :title="t('admin.requestsReject')">❌</button>
             </td>
             <td v-else>—</td>
           </tr>
@@ -98,19 +102,19 @@ onMounted(loadRequests);
     <div v-else-if="activeSub === 'capacity'">
       <div v-if="capacityRequests.length === 0" class="empty">
         <div class="empty-icon">📭</div>
-        <p>لا توجد طلبات سعة</p>
+        <p>{{ t('adminExtras.reqNoCapacity') }}</p>
       </div>
       <table v-else class="req-table">
         <thead>
           <tr>
-            <th>المدرسة</th>
-            <th>الطلاب الحالي</th>
-            <th>طلب الطلاب</th>
-            <th>المدرسين الحالي</th>
-            <th>طلب المدرسين</th>
-            <th>السبب</th>
-            <th>الحالة</th>
-            <th>التاريخ</th>
+            <th>{{ t('adminExtras.capSchool') }}</th>
+            <th>{{ t('adminExtras.reqCurrentStudents') }}</th>
+            <th>{{ t('adminExtras.reqRequestedStudents') }}</th>
+            <th>{{ t('adminExtras.reqCurrentTeachers') }}</th>
+            <th>{{ t('adminExtras.reqRequestedTeachers') }}</th>
+            <th>{{ t('adminExtras.reqReason') }}</th>
+            <th>{{ t('admin.requestsStatus') }}</th>
+            <th>{{ t('admin.requestsDate') }}</th>
             <th></th>
           </tr>
         </thead>
@@ -125,8 +129,8 @@ onMounted(loadRequests);
             <td><span class="status-tag" :class="r.status">{{ r.status }}</span></td>
             <td>{{ new Date(r.created_at).toLocaleDateString() }}</td>
             <td v-if="r.status === 'pending'" class="action-cell">
-              <button class="mini-btn approve" @click="reviewCapacity(r.id, 'approved')" title="موافقة">✅</button>
-              <button class="mini-btn reject" @click="reviewCapacity(r.id, 'rejected')" title="رفض">❌</button>
+              <button class="mini-btn approve" @click="reviewCapacity(r.id, 'approved')" :title="t('admin.requestsApprove')">✅</button>
+              <button class="mini-btn reject" @click="reviewCapacity(r.id, 'rejected')" :title="t('admin.requestsReject')">❌</button>
             </td>
             <td v-else>—</td>
           </tr>

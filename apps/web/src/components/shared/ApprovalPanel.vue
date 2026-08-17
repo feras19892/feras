@@ -7,7 +7,6 @@ import {
   getSchoolPendingApprovals, schoolApprove, schoolReject,
   adminGetAllApprovals, adminApprove, adminReject,
 } from '../../services/approval.service';
-import { useAuthStore } from '../../modules/auth/stores/auth';
 import { useI18n } from '../../composables/useI18n';
 
 const { t, locale } = useI18n();
@@ -16,7 +15,6 @@ const props = defineProps<{
   mode: 'student' | 'teacher' | 'school' | 'admin';
 }>();
 
-const auth = useAuthStore();
 const loading = ref(true);
 const error = ref('');
 const approvals = ref<ApprovalRequest[]>([]);
@@ -42,12 +40,12 @@ const typeLabel = computed<Record<string, string>>(() => ({
   grade_change: t('approval.typeGradeChange'),
   student_removal: t('approval.typeStudentRemoval'),
   grade_appeal: t('approval.typeGradeAppeal'),
-  class_creation: 'إنشاء فصل',
-  class_deletion: 'حذف فصل',
-  class_edit: 'تعديل فصل',
-  user_creation: 'إضافة مستخدم',
-  user_edit: 'تعديل مستخدم',
-  report_deletion: 'حذف تقرير',
+  class_creation: t('approval.typeClassCreation') || 'إنشاء فصل',
+  class_deletion: t('approval.typeClassDeletion') || 'حذف فصل',
+  class_edit: t('approval.typeClassEdit') || 'تعديل فصل',
+  user_creation: t('approval.typeUserCreation') || 'إضافة مستخدم',
+  user_edit: t('approval.typeUserEdit') || 'تعديل مستخدم',
+  report_deletion: t('approval.typeReportDeletion') || 'حذف تقرير',
 }));
 
 const statusLabel = computed<Record<string, string>>(() => ({
@@ -81,6 +79,10 @@ async function loadData() {
     } else {
       const [all, pending] = await Promise.all([getMyApprovals(), getPendingApprovals()]);
       if (all.success) approvals.value = all.approvals;
+      if (pending.success) {
+        const pendingIds = new Set(pending.pending.map(p => p.id));
+        approvals.value.forEach(a => { if (pendingIds.has(a.id)) a.status = 'pending'; });
+      }
     }
   } catch (err) {
     error.value = t('approval.loadingError');
@@ -123,6 +125,7 @@ async function handleResponse() {
       submitMsg.value = type === 'approve' ? t('approval.approveSuccess') : type === 'reject' ? t('approval.rejectSuccess') : t('approval.escalateSuccess');
       responseModal.value = null;
       await loadData();
+      window.dispatchEvent(new CustomEvent('approval:changed'));
     } else {
       submitMsg.value = res.message || t('approval.operationFailed');
     }

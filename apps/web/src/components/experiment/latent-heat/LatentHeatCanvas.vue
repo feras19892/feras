@@ -251,22 +251,22 @@ function draw() {
   // Phase proportions
   const meltRatio = props.mass > 0 ? props.meltedMass / props.mass : 0
   const remainRatio = props.mass > 0 ? props.remainingMass / props.mass : 1
-  const iceH = innerH * remainRatio
-  const waterH = innerH * meltRatio
+  const solidH = innerH * remainRatio
+  const liquidH = innerH * meltRatio
 
-  // Ice at bottom
-  if (iceH > s(1)) {
-    drawIceBlocks(ctx, innerX, innerBottom - iceH, innerW, iceH, s)
-  }
-
-  // Water above ice (or full beaker if all melted)
-  if (waterH > s(1)) {
-    if (iceH > s(1)) {
-      // Water sits on top of ice
-      drawWaterFill(ctx, innerX, innerBottom - iceH - waterH, innerW, waterH, s)
-    } else {
-      // All water, fills from bottom
-      drawWaterFill(ctx, innerX, innerBottom - waterH, innerW, waterH, s)
+  if (props.phaseType === 'fusion') {
+    // Fusion: water at bottom (denser), ice floating on top
+    if (liquidH > s(1)) {
+      drawWaterFill(ctx, innerX, innerBottom - liquidH, innerW, liquidH, s)
+    }
+    if (solidH > s(1)) {
+      // Ice floats on top of water
+      drawIceBlocks(ctx, innerX, innerBottom - liquidH - solidH, innerW, solidH, s)
+    }
+  } else {
+    // Vaporization: water at bottom (shrinking), steam rises from surface
+    if (solidH > s(1)) {
+      drawWaterFill(ctx, innerX, innerBottom - solidH, innerW, solidH, s)
     }
   }
 
@@ -281,9 +281,14 @@ function draw() {
   ctx.fillText('🌡️ الحرارة', thermX + s(10), tableY + s(12))
 
   // Bubbles / Steam
-  if (waterH > s(1)) {
-    const waterTop = iceH > s(1) ? innerBottom - iceH - waterH : innerBottom - waterH
-    drawBubblesSteam(ctx, innerX, waterTop, innerW, waterH, s, props.phaseType, props.ratio)
+  if (props.phaseType === 'fusion' && liquidH > s(1)) {
+    // Bubbles at ice-water boundary
+    const waterTop = innerBottom - liquidH - solidH
+    drawBubblesSteam(ctx, innerX, waterTop, innerW, liquidH, s, props.phaseType, props.ratio)
+  } else if (props.phaseType === 'vaporization' && solidH > s(1)) {
+    // Steam rising from water surface
+    const waterTop = innerBottom - solidH
+    drawBubblesSteam(ctx, innerX, waterTop, innerW, solidH, s, props.phaseType, props.ratio)
   }
 
   // Labels above beaker
@@ -321,7 +326,8 @@ function draw() {
   ctx.textAlign = 'left'
   ctx.fillStyle = '#8B95A5'; ctx.font = `${s(7.5)}px sans-serif`
   const phaseAr = props.phaseType === 'fusion' ? 'انصهار' : 'تبخر'
-  ctx.fillText(`${phaseAr} | m=${props.mass.toFixed(2)}kg | Q=${(props.currentQ/1000).toFixed(1)}kJ | متحولة=${props.meltedMass.toFixed(3)}kg | متبقية=${props.remainingMass.toFixed(3)}kg`, s(10), h - s(10))
+  const solidLabel = props.phaseType === 'fusion' ? 'متبقية' : 'متبقية'
+  ctx.fillText(`${phaseAr} | m=${props.mass.toFixed(2)}kg | Q=${(props.currentQ/1000).toFixed(1)}kJ | متحولة=${props.meltedMass.toFixed(3)}kg | ${solidLabel}=${props.remainingMass.toFixed(3)}kg`, s(10), h - s(10))
 
   // === HIGHLIGHT EFFECTS (linked from ReadingsPanel hover) ===
   const hf = props.highlightField

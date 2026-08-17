@@ -9,9 +9,9 @@ defineProps<Props>()
 <template>
   <div class="panel-body">
     <div v-if="trials.length >= 2" class="results">
-      <div class="res-row"><span class="res-label">Trials</span><span class="res-val">{{ trials.length }}</span></div>
-      <div class="res-row"><span class="res-label">Avg v</span><span class="res-val green">{{ (trials.reduce((s, t) => s + t.pathDiffCentral, 0) / trials.length * 1000).toFixed(2) }} mm</span></div>
-      <div class="res-row"><span class="res-label">Avg lambda</span><span class="res-val">{{ (trials.reduce((s, t) => s + t.wavelength, 0) / trials.length * 1000).toFixed(2) }} mm</span></div>
+      <div class="res-row"><span class="res-label">{{ t('experiments.wiTrials') }}</span><span class="res-val">{{ trials.length }}</span></div>
+      <div class="res-row"><span class="res-label">{{ t('experiments.wiAvgV') }}</span><span class="res-val green">{{ (trials.reduce((s, tr) => s + tr.pathDiffCentral, 0) / trials.length * 1000).toFixed(2) }} mm</span></div>
+      <div class="res-row"><span class="res-label">{{ t('experiments.wiAvgLambda') }}</span><span class="res-val">{{ (trials.reduce((s, tr) => s + tr.wavelength, 0) / trials.length * 1000).toFixed(2) }} mm</span></div>
     </div>
     <p v-else class="empty">{{ t('experiments.recordAtLeastTwo') }}</p>
   </div>

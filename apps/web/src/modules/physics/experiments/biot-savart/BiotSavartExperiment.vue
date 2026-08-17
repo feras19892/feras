@@ -1,22 +1,26 @@
-<script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
+﻿<script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useBiotSavartExperiment } from '../../../../composables/biot-savart/useBiotSavartExperiment'
 import { useI18n } from '../../../../composables/useI18n'
+import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import BiotSavartMenuBar from '../../../../components/experiment/biot-savart/BiotSavartMenuBar.vue'
 import BiotSavartCanvas from '../../../../components/experiment/biot-savart/BiotSavartCanvas.vue'
 import BiotSavartPanelBody from '../../../../components/experiment/biot-savart/BiotSavartPanelBody.vue'
 import BiotSavartStatusBar from '../../../../components/experiment/biot-savart/BiotSavartStatusBar.vue'
 import BiotSavartControlBar from '../../../../components/experiment/biot-savart/BiotSavartControlBar.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
+import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
 const ex = useBiotSavartExperiment()
 const { t } = useI18n()
+const { confirmReset } = useResetConfirm()
+const helpOpen = ref(false)
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return
   if (e.code === 'Space') { e.preventDefault(); ex.lab.togglePause() }
-  else if (e.key === 'r' || e.key === 'R') { if (confirm(t('experiments.resetConfirm'))) ex.resetSim() }
+  else if (e.key === 'r' || e.key === 'R') { confirmReset().then(ok => { if (ok) ex.resetSim() }) }
   else if (e.key === 's' || e.key === 'S') ex.trials.recordTrial()
 }
 
@@ -29,15 +33,9 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown) })
     <BiotSavartMenuBar
       :title="t('experiments.expBiotSavart')"
       icon="🧲"
-      experiment-route="/physics/electricity/biot-savart"
-      experiment-name="Biot-Savart"
-      @togglePanel="ex.layout.togglePanel"
-      @showAllPanels="ex.layout.showAllPanels"
-      @exportCsv="ex.trials.exportCsv"
-      @togglePause="ex.lab.togglePause"
-      @reset="ex.resetSim"
-      @recordTrial="ex.trials.recordTrial"
-      @analyzeResults="ex.exportToAnalysis"
+      @show-all-panels="ex.layout.showAllPanels"
+      @toggle-help="helpOpen = !helpOpen"
+      @analyze-results="ex.exportToAnalysis"
     />
 
     <div class="lab-grid">
@@ -134,6 +132,7 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown) })
       :shape="ex.params.shape"
     />
   </div>
+  <ResetConfirmModal />
 </template>
 
 <style scoped>

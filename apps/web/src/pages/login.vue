@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../modules/auth/stores/auth';
 import { useI18n } from '../composables/useI18n';
+import { getSystemStatus } from '../services/system-status.service';
 
 const router = useRouter();
 const auth = useAuthStore();
@@ -12,6 +13,14 @@ const email = ref('');
 const password = ref('');
 const showPassword = ref(false);
 const formError = ref('');
+const registrationEnabled = ref(true);
+
+onMounted(async () => {
+  try {
+    const status = await getSystemStatus();
+    registrationEnabled.value = status.registration_enabled;
+  } catch { /* ignore */ }
+});
 
 async function handleLogin() {
   formError.value = '';
@@ -28,7 +37,9 @@ async function handleLogin() {
     return;
   }
   if (result) {
-    router.push('/dashboard');
+    if (auth.isTeacher) { router.push('/teacher'); return; }
+    if (auth.isStudent) { router.push('/student'); return; }
+    router.push('/home');
     return;
   }
 
@@ -64,7 +75,7 @@ function enterAsGuest() {
           <button type="submit" class="btn-submit" :disabled="auth.loading">
             {{ auth.loading ? t('auth.loading') : t('auth.loginBtn') }}
           </button>
-          <router-link to="/register" class="btn-register">
+          <router-link v-if="registrationEnabled" to="/register" class="btn-register">
             {{ t('auth.createAccount') }}
           </router-link>
         </div>

@@ -83,6 +83,7 @@ export function useProjectileLab(params: ProjectileParams, onTick?: () => void) 
   async function runProjectileLab(recordTrial: () => void, calcFitRange: () => void) {
     if (labFlowRunning.value) return
     labFlowRunning.value = true
+    const saved = { v0: params.v0, angleDeg: params.angleDeg, g: params.g, x0: params.x0, y0: params.y0, dragCoeff: params.dragCoeff }
     try {
       // Scenario 1: constant v0=10, varying angle
       params.v0 = 10; params.g = 9.81; params.x0 = 0; params.y0 = 0
@@ -99,6 +100,12 @@ export function useProjectileLab(params: ProjectileParams, onTick?: () => void) 
       calcFitRange()
     } finally {
       labFlowRunning.value = false
+      params.v0 = saved.v0
+      params.angleDeg = saved.angleDeg
+      params.g = saved.g
+      params.x0 = saved.x0
+      params.y0 = saved.y0
+      params.dragCoeff = saved.dragCoeff
       resetSim()
     }
   }

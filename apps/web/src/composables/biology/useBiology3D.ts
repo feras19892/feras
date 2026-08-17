@@ -22,6 +22,7 @@ export interface Biology3DApi {
   resetCamera: () => void;
   resize: () => void;
   error: Ref<string | null>;
+  camera: THREE.PerspectiveCamera | null;
 }
 
 export function useBiology3D(
@@ -104,6 +105,14 @@ export function useBiology3D(
   const dispose = (): void => {
     cancelAnimationFrame(animationId);
     controls?.dispose();
+    meshMap.forEach((item) => {
+      const mesh = item.mesh as THREE.Mesh | THREE.InstancedMesh;
+      if (mesh.geometry) mesh.geometry.dispose();
+      if (mesh.material) {
+        const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+        for (const mat of materials) mat.dispose();
+      }
+    });
     renderer?.dispose();
     if (renderer?.domElement && containerRef.value) {
       containerRef.value.removeChild(renderer.domElement);
@@ -124,12 +133,20 @@ export function useBiology3D(
     renderer.setSize(width, height);
   };
 
+  let resizeObserver: ResizeObserver | null = null;
+
   onMounted(() => {
     init();
     window.addEventListener('resize', resize);
+    if (containerRef.value) {
+      resizeObserver = new ResizeObserver(() => resize());
+      resizeObserver.observe(containerRef.value);
+    }
   });
   onUnmounted(() => {
     window.removeEventListener('resize', resize);
+    resizeObserver?.disconnect();
+    resizeObserver = null;
     dispose();
   });
 
@@ -160,5 +177,6 @@ export function useBiology3D(
     },
     resize,
     error,
+    get camera() { return camera; },
   };
 }

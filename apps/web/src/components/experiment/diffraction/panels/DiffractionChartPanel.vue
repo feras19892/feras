@@ -17,8 +17,8 @@ const props = defineProps<Props>()
 
 // y vs 1/a scatter for single slit trials
 const chartPoints = computed(() => props.trials
-  .filter(t => t.mode === 'single' && t.darkFringe1 > 0)
-  .map(t => ({ invA: 1 / t.slitWidth, y: t.darkFringe1 })))
+  .filter(tr => tr.mode === 'single' && tr.darkFringe1 > 0)
+  .map(tr => ({ invA: 1 / tr.slitWidth, y: tr.darkFringe1 })))
 
 const chartBounds = computed(() => {
   const pts = chartPoints.value
@@ -70,7 +70,7 @@ function toSvgY(val: number) {
           {{ (chartBounds.yMin + (chartBounds.yMax - chartBounds.yMin) * (i - 1) / 4).toFixed(0) }}
         </text>
         <text :x="svgW / 2" :y="svgH - 2" fill="#8B95A5" font-size="9" text-anchor="middle">1/a (1/mm)</text>
-        <text x="8" :y="svgH / 2" fill="#8B95A5" font-size="9" text-anchor="middle" transform="rotate(-90 8,${svgH / 2})">y (mm)</text>
+        <text x="8" :y="svgH / 2" fill="#8B95A5" font-size="9" text-anchor="middle" :transform="`rotate(-90 8,${svgH / 2})`">y (mm)</text>
         <g v-for="(p, i) in chartPoints" :key="i">
           <circle :cx="toSvgX(p.invA)" :cy="toSvgY(p.y)" r="4" fill="#22c55e"/>
         </g>
@@ -82,7 +82,7 @@ function toSvgY(val: number) {
               stroke="#fbbf24" stroke-width="1.5"/>
       </svg>
       <div class="reg-summary">
-        <span class="reg-badge">Slope = {{ regressionSlope.toFixed(3) }}</span>
+        <span class="reg-badge">{{ t('experiments.dfSlopeLabel') }} {{ regressionSlope.toFixed(3) }}</span>
         <span class="reg-badge">R² = {{ rSquared.toFixed(4) }}</span>
       </div>
     </div>

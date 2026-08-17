@@ -83,7 +83,6 @@ export function analyzeReportBuiltIn(input: AnalysisInput): { analysis: string; 
 
   const sections: string[] = [];
   let grade = 0;
-  const gradeBreakdown: string[] = [];
 
   // ── 1. Summary ──
   sections.push(`## 📋 ملخص التقرير`);
@@ -107,7 +106,7 @@ export function analyzeReportBuiltIn(input: AnalysisInput): { analysis: string; 
     }
   }
 
-  let dataQualityScore = 0;
+  let analysisScore = 0;
 
   if (readings.length === 0) {
     sections.push('- ⚠️ **لا توجد قراءات** — التقرير لا يحتوي على بيانات تجريبية');
@@ -115,16 +114,16 @@ export function analyzeReportBuiltIn(input: AnalysisInput): { analysis: string; 
     // Check data quantity
     if (readings.length >= 10) {
       sections.push(`- ✅ **عدد القراءات ممتاز** (${readings.length} قراءة) — بيانات كافية لتحليل موثوق`);
-      dataQualityScore += 25;
+      analysisScore += 25;
     } else if (readings.length >= 5) {
       sections.push(`- ✅ **عدد القراءات جيد** (${readings.length} قراءة)`);
-      dataQualityScore += 18;
+      analysisScore += 18;
     } else if (readings.length >= 3) {
       sections.push(`- ⚠️ **عدد القراءات مقبول** (${readings.length} قراءة) — يُنصح بجمع المزيد من البيانات`);
-      dataQualityScore += 10;
+      analysisScore += 10;
     } else {
       sections.push(`- ❌ **عدد القراءات غير كافٍ** (${readings.length} قراءة فقط)`);
-      dataQualityScore += 3;
+      analysisScore += 3;
     }
 
     // Analyze each numeric column
@@ -148,9 +147,9 @@ export function analyzeReportBuiltIn(input: AnalysisInput): { analysis: string; 
       }
 
       if (cv < 5) {
-        dataQualityScore += 5;
+        analysisScore += 5;
       } else if (cv < 15) {
-        dataQualityScore += 3;
+        analysisScore += 3;
       }
     }
 
@@ -167,15 +166,15 @@ export function analyzeReportBuiltIn(input: AnalysisInput): { analysis: string; 
           const strength = Math.abs(r) > 0.9 ? 'ارتباط قوي جداً' : Math.abs(r) > 0.7 ? 'ارتباط قوي' : Math.abs(r) > 0.5 ? 'ارتباط متوسط' : Math.abs(r) > 0.3 ? 'ارتباط ضعيف' : 'لا يوجد ارتباط';
           const direction = r > 0 ? 'طردي' : r < 0 ? 'عكسي' : '';
           sections.push(`- **${pair.x} ↔ ${pair.y}**: معامل الارتباط (r) = ${r.toFixed(4)} — ${strength} ${direction}`);
-          if (Math.abs(r) > 0.7) dataQualityScore += 5;
+          if (Math.abs(r) > 0.7) analysisScore += 5;
         }
       }
     }
   }
 
-  dataQualityScore = Math.min(dataQualityScore, 40);
+  analysisScore = Math.min(analysisScore, 40);
   sections.push('');
-  sections.push(`**درجة جودة البيانات: ${dataQualityScore}/40**`);
+  sections.push(`**درجة جودة البيانات: ${analysisScore}/40**`);
   sections.push('');
 
   // ── 3. Equations Analysis ──
@@ -190,7 +189,7 @@ export function analyzeReportBuiltIn(input: AnalysisInput): { analysis: string; 
         sections.push(`  - ${typeof name === 'string' ? name : 'معادلة'}`);
       }
     }
-    dataQualityScore += 10;
+    analysisScore += 10;
   }
   sections.push('');
 
@@ -198,13 +197,13 @@ export function analyzeReportBuiltIn(input: AnalysisInput): { analysis: string; 
   sections.push('## 📉 تحليل الرسومات');
   if (plots.length > 0) {
     sections.push(`- ✅ يوجد ${plots.length} رسم بياني`);
-    dataQualityScore += 5;
+    analysisScore += 5;
   } else {
     sections.push('- ❌ **لا توجد رسومات بيانية**');
   }
   if (hasChart) {
     sections.push('- ✅ يوجد رسم بياني (chart snapshot)');
-    dataQualityScore += 5;
+    analysisScore += 5;
   } else {
     sections.push('- ❌ لا يوجد لقطة للرسم البياني');
   }
@@ -216,20 +215,20 @@ export function analyzeReportBuiltIn(input: AnalysisInput): { analysis: string; 
     sections.push('- ❌ **لا توجد خاتمة** — الطالب لم يكتب خاتمة للتقرير');
   } else if (conclusion.length < 50) {
     sections.push(`- ⚠️ **خاتمة قصيرة جداً** (${conclusion.length} حرف) — تحتاج إلى تفصيل أكثر`);
-    dataQualityScore += 3;
+    analysisScore += 3;
   } else if (conclusion.length < 150) {
     sections.push(`- ✅ **خاتمة مقبولة** (${conclusion.length} حرف)`);
-    dataQualityScore += 8;
+    analysisScore += 8;
   } else {
-    sections.push(`- ✅ **خاتلة ممتازة ومفصلة** (${conclusion.length} حرف)`);
-    dataQualityScore += 12;
+    sections.push(`- ✅ **خاتمة ممتازة ومفصلة** (${conclusion.length} حرف)`);
+    analysisScore += 12;
   }
   sections.push('');
 
   // ── 6. Grade Calculation ──
   sections.push('## 🎯 التقييم النهائي');
 
-  grade = Math.min(100, dataQualityScore + 20); // base 20 for submitting
+  grade = Math.min(100, analysisScore + 20); // base 20 for submitting
 
   // Bonus for completeness
   if (equations.length > 0) grade += 10;

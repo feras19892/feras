@@ -1,21 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { experiments as legacyExperiments, type Experiment } from '../../../composables/chemistry/useExperiments';
-import { listExperiments as listRegistryExperiments, type ExperimentDefinition, type ExperimentLevel } from '../../../composables/chemistry/experiments';
+import { listExperiments, type ExperimentDefinition, type ExperimentLevel } from '../../../composables/chemistry/experiments';
 import { useI18n } from '../../../composables/useI18n';
 import '../../../composables/chemistry/experiments'; // side-effect: registers all definitions
 const { t, locale } = useI18n();
 
-const emit = defineEmits<{ select: [exp: Experiment | ExperimentDefinition]; close: [] }>();
+const emit = defineEmits<{ select: [exp: ExperimentDefinition]; close: [] }>();
 
-// Merge: registry experiments + legacy experiments (deduped by id)
-const mergedExperiments = computed(() => {
-  const registryIds = new Set(listRegistryExperiments().map((e) => e.id));
-  return [
-    ...listRegistryExperiments(),
-    ...legacyExperiments.filter((e) => !registryIds.has(e.id)),
-  ];
-});
+const allExperiments = computed(() => listExperiments());
 
 // Group experiments by level
 const levelOrder: ExperimentLevel[] = ['middle', 'high', 'university'];
@@ -26,24 +18,19 @@ const levelLabels: Record<ExperimentLevel, { ar: string; en: string; es: string;
 };
 
 const groupedExperiments = computed(() => {
-  const groups: { level: ExperimentLevel; label: string; icon: string; items: (Experiment | ExperimentDefinition)[] }[] = [];
+  const groups: { level: ExperimentLevel; label: string; icon: string; items: ExperimentDefinition[] }[] = [];
   for (const level of levelOrder) {
-    const items = mergedExperiments.value.filter((e: Experiment | ExperimentDefinition) => 'level' in e && e.level === level);
+    const items = allExperiments.value.filter((e) => e.level === level);
     if (items.length === 0) continue;
     const lbl = levelLabels[level];
     const label = locale.value === 'ar' ? lbl.ar : locale.value === 'es' ? lbl.es : lbl.en;
     groups.push({ level, label, icon: lbl.icon, items });
   }
-  // Add experiments without level (legacy) to a misc group
-  const noLevel = mergedExperiments.value.filter((e: Experiment | ExperimentDefinition) => !('level' in e));
-  if (noLevel.length > 0) {
-    groups.push({ level: 'high' as ExperimentLevel, label: '—', icon: '🔬', items: noLevel });
-  }
   return groups;
 });
 
-function onSelect(exp: Experiment | ExperimentDefinition) {
-  emit('select', exp as Experiment);
+function onSelect(exp: ExperimentDefinition) {
+  emit('select', exp);
 }
 function onClose() {
   emit('close');
@@ -58,6 +45,11 @@ function onClose() {
         <button class="close-btn" @click="onClose">✕</button>
       </div>
       <div class="experiments-scroll">
+        <div class="free-play-card" @click="onClose">
+          <div class="exp-icon">🔬</div>
+          <div class="exp-name">{{ t('chemistryLab.freePlay') }}</div>
+          <div class="exp-desc">{{ t('chemistryLab.freePlayDesc') }}</div>
+        </div>
         <div v-for="group in groupedExperiments" :key="group.level" class="level-group">
           <div class="level-header">
             <span class="level-icon">{{ group.icon }}</span>
@@ -72,8 +64,8 @@ function onClose() {
               @click="onSelect(exp)"
             >
               <div class="exp-icon">{{ exp.icon }}</div>
-              <div class="exp-name">{{ t('nameKey' in exp ? exp.nameKey : exp.nameAr) }}</div>
-              <div class="exp-desc">{{ t('descKey' in exp ? exp.descKey : exp.description) }}</div>
+              <div class="exp-name">{{ t(exp.nameKey) }}</div>
+              <div class="exp-desc">{{ t(exp.descKey) }}</div>
               <div class="exp-steps-count">{{ exp.steps.length }} {{ t('chemistryLab.steps') }}</div>
             </div>
           </div>
@@ -133,6 +125,25 @@ function onClose() {
 .experiments-scroll {
   padding: 1.25rem;
   overflow-y: auto;
+}
+.free-play-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  border: 2px solid #93c5fd;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+.free-play-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 16px rgba(59,130,246,0.2);
+  transform: translateY(-2px);
 }
 .level-group {
   margin-bottom: 1.5rem;

@@ -15,9 +15,10 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'maximize', id: string): void; (e: 'update:trials', val: PendulumTrial[]): void
   (e: 'update:params', val: PendulumParams): void; (e: 'remove', id: number): void; (e: 'clear'): void
+  (e: 'drop', id: string, x: number, y: number): void
 }>()
 
-const allIds: PanelId[] = ['table', 'signal', 'params']
+const allIds: PanelId[] = ['table', 'equations', 'error', 'scatter', 'tutor', 'report', 'signal', 'fft', 'phase', 'params', 'guide', 'stats']
 function isMaximized(id: string) { return (props.maximized as Record<string, boolean>)[id] as boolean }
 function emitMaximize(id: string) { emit('maximize', id) }
 </script>

@@ -63,3 +63,14 @@ export function pushToUsers(userIds: number[], event: string, data: unknown): vo
 export function getConnectedUserIds(): number[] {
   return Array.from(clients.keys());
 }
+
+export function getConnectedSchoolIds(): number[] {
+  return Array.from(schoolClients.keys());
+}
+
+export function getTotalConnections(): number {
+  let count = 0;
+  for (const set of clients.values()) count += set.size;
+  for (const set of schoolClients.values()) count += set.size;
+  return count;
+}

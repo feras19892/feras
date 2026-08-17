@@ -12,7 +12,12 @@ defineProps<{
   phase?: string
 }>()
 const phaseAr = (p?: string) => {
-  const map: Record<string, string> = { ready: 'جاهز', dropping: 'إسقاط', mixing: 'خلط', done: 'اكتمل' }
+  const map: Record<string, string> = {
+    ready: t('experiments.calPhaseReadyShort'),
+    dropping: t('experiments.calPhaseDroppingShort'),
+    mixing: t('experiments.calPhaseMixingShort'),
+    done: t('experiments.calPhaseDoneShort'),
+  }
   return map[p ?? ''] ?? p ?? ''
 }
 </script>
@@ -23,9 +28,9 @@ const phaseAr = (p?: string) => {
     <span class="sep">|</span>
     <span class="badge phase">{{ phaseAr(phase) }}</span>
     <span class="sep">|</span>
-    <span>ماء={{ mWater.toFixed(3) }}kg</span>
+    <span>{{ t('experiments.calWaterShort') }}={{ mWater.toFixed(3) }}kg</span>
     <span class="sep">|</span>
-    <span>معدن={{ mMetal.toFixed(3) }}kg</span>
+    <span>{{ t('experiments.calMetalShort') }}={{ mMetal.toFixed(3) }}kg</span>
     <span class="sep">|</span>
     <span class="badge tf">Tf={{ tf.toFixed(1) }}°C</span>
   </div>

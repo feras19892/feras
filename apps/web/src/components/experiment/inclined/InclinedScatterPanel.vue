@@ -13,10 +13,10 @@ const canvasRef = ref<HTMLCanvasElement | null>(null)
 const wrapRef = ref<HTMLDivElement | null>(null)
 
 // Focus on smooth-surface trials (mu ≈ 0) for the a = g·sinθ linear relation
-const validTrials = computed(() => props.trials.filter(t => t.mu < 0.05))
+const validTrials = computed(() => props.trials.filter(tr => tr.mu < 0.05))
 
-const xs = computed(() => validTrials.value.map(t => Math.sin(t.thetaDeg * Math.PI / 180)))
-const ys = computed(() => validTrials.value.map(t => t.acceleration))
+const xs = computed(() => validTrials.value.map(tr => Math.sin(tr.thetaDeg * Math.PI / 180)))
+const ys = computed(() => validTrials.value.map(tr => tr.acceleration))
 const fit = computed(() => linearRegression(xs.value, ys.value))
 
 function resizeCanvas() {

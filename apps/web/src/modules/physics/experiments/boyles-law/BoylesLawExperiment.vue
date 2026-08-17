@@ -1,7 +1,8 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useBoylesLawExperiment } from '../../../../composables/boyles-law/useBoylesLawExperiment'
 import { useI18n } from '../../../../composables/useI18n'
+import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import BoylesLawMenuBar from '../../../../components/experiment/boyles-law/BoylesLawMenuBar.vue'
 import BoylesLawCanvas from '../../../../components/experiment/boyles-law/BoylesLawCanvas.vue'
 import BoylesLawPanelBody from '../../../../components/experiment/boyles-law/BoylesLawPanelBody.vue'
@@ -10,10 +11,12 @@ import BoylesLawControlBar from '../../../../components/experiment/boyles-law/Bo
 import BoylesLawOverlayPanels from '../../../../components/experiment/boyles-law/BoylesLawOverlayPanels.vue'
 import BoylesLawGuidePanel from '../../../../components/experiment/boyles-law/BoylesLawGuidePanel.vue'
 import BoylesLawHelpModal from '../../../../components/experiment/boyles-law/BoylesLawHelpModal.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
+import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
 const ex = useBoylesLawExperiment()
 const { t } = useI18n()
+const { confirmReset } = useResetConfirm()
 const showGuide = ref(true)
 const helpOpen = ref(false)
 
@@ -21,7 +24,7 @@ function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return
   if (e.code === 'Space') { e.preventDefault(); ex.lab.togglePause() }
-  else if (e.key === 'r' || e.key === 'R') { if (confirm(t('experiments.resetConfirm'))) ex.resetSim() }
+  else if (e.key === 'r' || e.key === 'R') { confirmReset().then(ok => { if (ok) ex.resetSim() }) }
   else if (e.key === 's' || e.key === 'S') ex.trials.recordTrial()
   else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); if (e.shiftKey) ex.trials.redo(); else ex.trials.undo() }
   else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ex.trials.redo() }
@@ -37,16 +40,9 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown) })
     <BoylesLawMenuBar
       :title="t('experiments.expBoylesLaw')"
       icon="💨"
-      experiment-route="/physics/heat/boyles-law"
-      experiment-name="Boyle's Law"
-      @toggle-panel="ex.layout.togglePanel"
       @show-all-panels="ex.layout.showAllPanels"
-      @export-csv="ex.trials.exportCsv"
-      @toggle-pause="ex.lab.togglePause"
-      @reset="ex.resetSim"
-      @record-trial="ex.trials.recordTrial"
-      @analyze-results="ex.exportToAnalysis"
       @toggle-help="helpOpen = !helpOpen"
+      @analyze-results="ex.exportToAnalysis"
     />
 
     <BoylesLawHelpModal :open="helpOpen" @close="helpOpen = false" />
@@ -166,6 +162,7 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown) })
       :phase="ex.lab.phase.value"
     />
   </div>
+  <ResetConfirmModal />
 </template>
 
 <style scoped>

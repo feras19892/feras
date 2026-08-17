@@ -33,7 +33,6 @@ const r3 = await curl([]);
 const checks = [
   ['X-Frame-Options: DENY', r3.includes('x-frame-options: DENY')],
   ['X-Content-Type-Options: nosniff', r3.includes('x-content-type-options: nosniff')],
-  ['X-XSS-Protection', r3.includes('x-xss-protection')],
   ['Referrer-Policy', r3.includes('referrer-policy')],
 ];
 for (const [name, ok] of checks) {

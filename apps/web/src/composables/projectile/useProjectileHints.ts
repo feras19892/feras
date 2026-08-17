@@ -5,7 +5,8 @@ export function useProjectileHints() {
 
   function getHint(v0: number, angleDeg: number, g: number, targetX: number) {
     const rad = (angleDeg * Math.PI) / 180
-    const R = (v0 * v0 * Math.sin(2 * rad)) / g
+    const safeG = Math.max(g, 1e-9)
+    const R = (v0 * v0 * Math.sin(2 * rad)) / safeG
     const diff = R - targetX
     const sin2 = Math.sin(2 * rad)
 
@@ -57,7 +58,8 @@ export function useProjectileHints() {
 
   function checkStudentGuess(studentV0: number, studentAngle: number, g: number, targetX: number) {
     const rad = (studentAngle * Math.PI) / 180
-    const R = (studentV0 * studentV0 * Math.sin(2 * rad)) / g
+    const safeG = Math.max(g, 1e-9)
+    const R = (studentV0 * studentV0 * Math.sin(2 * rad)) / safeG
     const diff = R - targetX
     if (Math.abs(diff) < 2) return t('experiments.projHintExcellent')
     if (diff > 0) {

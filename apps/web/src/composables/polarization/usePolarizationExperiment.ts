@@ -2,11 +2,13 @@ import { ref, reactive, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import type { AnalysisPayload } from '../../types/physics'
 import { sendToAnalysis } from '../analysis/sendToAnalysis'
+import { useI18n } from '../useI18n'
 import { usePolarizationLayout } from './usePolarizationLayout'
 import { usePolarizationTrials } from './usePolarizationTrials'
 import { malusLaw, degToRad, linearRegression } from './usePolarizationCalculations'
 
 export function usePolarizationExperiment() {
+  const { t } = useI18n()
   const params = reactive({
     polarizerAngle: 0,
     analyzerAngle: 45,
@@ -39,11 +41,11 @@ export function usePolarizationExperiment() {
   // Regression: I vs cos²θ  →  I = I₀ · cos²θ
   // slope = I₀, intercept ≈ 0
   const regression = computed(() => {
-    const valid = trials.trials.value.filter((t) => t.outputIntensity >= 0)
+    const valid = trials.trials.value.filter((tr) => tr.outputIntensity >= 0)
     if (valid.length < 2) return { m: 0, b: 0, r2: 0 }
-    const pts = valid.map((t) => ({
-      x: Math.pow(Math.cos(degToRad(t.relativeAngle)), 2),
-      y: t.outputIntensity,
+    const pts = valid.map((tr) => ({
+      x: Math.pow(Math.cos(degToRad(tr.relativeAngle)), 2),
+      y: tr.outputIntensity,
     }))
     return linearRegression(pts)
   })
@@ -71,13 +73,16 @@ export function usePolarizationExperiment() {
   }
   const router = useRouter()
   function exportToAnalysis() {
-    if (trials.trials.value.length < 2) return
+    if (trials.trials.value.length < 2) {
+      alert('تحتاج إلى تسجيل قراءتين على الأقل قبل التحليل')
+      return
+    }
     const payload: AnalysisPayload = {
       sourceExperiment: 'polarization',
-      sourceNameAr: 'استقطاب الضوء',
+      sourceNameAr: t('experiments.expPolarization'),
       hasCalcTab: true,
-      readings: trials.trials.value.map(t => ({
-        theta1: t.polarizerAngle, theta2: t.analyzerAngle, I0: t.I0, Iout: t.outputIntensity, delta: t.relativeAngle,
+      readings: trials.trials.value.map(tr => ({
+        theta1: tr.polarizerAngle, theta2: tr.analyzerAngle, I0: tr.I0, Iout: tr.outputIntensity, delta: tr.relativeAngle,
       })),
       columns: [
         { key: 'theta1', label: 'θ₁ (°)', unit: '°' },
@@ -99,11 +104,24 @@ export function usePolarizationExperiment() {
     const toPanel = el?.closest('.draggable-panel')
     const toId = toPanel?.getAttribute('data-id')
     if (!toId || fromId === toId) return
+    let fromCol = '', toCol = ''
     for (const col of Object.keys(layout.columnMap)) {
-      const arr = layout.columnMap[col]
+      if (layout.columnMap[col].includes(fromId)) fromCol = col
+      if (layout.columnMap[col].includes(toId)) toCol = col
+    }
+    if (fromCol === toCol) {
+      const arr = layout.columnMap[fromCol]
       const fi = arr.indexOf(fromId)
       const ti = arr.indexOf(toId)
-      if (fi >= 0 && ti >= 0) { const t = arr[fi]; arr[fi] = arr[ti]; arr[ti] = t }
+      if (fi >= 0 && ti >= 0) { const tmp = arr[fi]; arr[fi] = arr[ti]; arr[ti] = tmp }
+    } else {
+      const fromArr = layout.columnMap[fromCol]
+      const toArr = layout.columnMap[toCol]
+      const fi = fromArr.indexOf(fromId)
+      if (fi >= 0) {
+        fromArr.splice(fi, 1)
+        toArr.push(fromId)
+      }
     }
   }
   function onResizeStart(col: string, e: MouseEvent) {

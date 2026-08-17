@@ -20,6 +20,7 @@ export interface LiquidState {
   precipitateColor?: string;
   gasEvolution?: boolean;
   gasType?: string;
+  reactionBaseTemp?: number;
 }
 
 export interface BuretteState {
@@ -29,6 +30,7 @@ export interface BuretteState {
   color: string;
   opacity: number;
   chemicalId?: string;
+  label: string;
 }
 
 export interface PipetteState {

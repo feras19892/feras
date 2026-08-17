@@ -28,7 +28,6 @@ export function useProjectileExperiment() {
   watch(() => [params.v0, params.angleDeg, params.g, params.x0, params.y0, params.dragCoeff], () => { if (!lab.running.value) lab.resetSim() })
 
   onMounted(() => {
-    localStorage.removeItem('projectile:layout:v1')
     layout.applyPersistedLayout()
     trials.autoLoad()
     resetSim()
@@ -83,12 +82,12 @@ export function useProjectileExperiment() {
 
   function exportToAnalysis() {
     const tList = trials.trials.value
-    if (tList.length === 0) { console.warn('[exportToAnalysis] no trials recorded'); return }
-    const readings = tList.map(t => ({
-      angleDegrees: t.angleDegrees, initialVelocity: t.initialVelocity,
-      v0Squared: t.initialVelocity * t.initialVelocity,
-      sin2Theta: Math.sin(2 * t.angleDegrees * Math.PI / 180),
-      flightTimeSec: t.flightTimeSec, maxHeightMeters: t.maxHeightMeters, rangeMeters: t.rangeMeters,
+    if (tList.length === 0) { alert('تحتاج إلى تسجيل قراءة واحدة على الأقل قبل التحليل'); return }
+    const readings = tList.map(tr => ({
+      angleDegrees: tr.angleDegrees, initialVelocity: tr.initialVelocity,
+      v0Squared: tr.initialVelocity * tr.initialVelocity,
+      sin2Theta: Math.sin(2 * tr.angleDegrees * Math.PI / 180),
+      flightTimeSec: tr.flightTimeSec, maxHeightMeters: tr.maxHeightMeters, rangeMeters: tr.rangeMeters,
     }))
     const payload: AnalysisPayload = {
       sourceExperiment: 'projectile', sourceNameAr: t('experiments.expProjectile'), hasCalcTab: true, readings,

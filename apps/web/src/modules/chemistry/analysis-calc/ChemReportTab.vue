@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useI18n } from '../../../composables/useI18n';
-import { fetchJson } from '../../../services/http';
+import { analyzeReport } from '../../../services/ai.service';
+import { sanitizeHtml } from '../../../utils/sanitizeHtml';
 import type { ChemAnalysisColumnMeta, ChemAnalysisEquation, ChemAnalysisPlotConfig } from '../../../types/chemistry';
 import type { ChemStudentInfo } from '../../../types/chemistry';
 import ChemAnalysisConclusionPanel from './ChemAnalysisConclusionPanel.vue';
@@ -47,22 +48,18 @@ async function runAiAnalysis() {
   aiError.value = '';
   aiAnalysis.value = '';
   try {
-    const res = await fetchJson<{ success: boolean; analysis?: string; message?: string }>('/api/ai/analyze', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        experiment_name: props.sourceName,
-        student_name: props.studentInfo.name || undefined,
-        readings: JSON.stringify(props.readings),
-        columns: JSON.stringify(props.columns),
-        equations: JSON.stringify(props.equations),
-        plots: JSON.stringify(props.plots),
-        conclusion: conclusionData.value.conclusion || undefined,
-        chart_snapshot: props.chartSnapshot || undefined,
-      }),
+    const res = await analyzeReport({
+      experiment_name: props.sourceName,
+      student_name: props.studentInfo.name || undefined,
+      readings: JSON.stringify(props.readings),
+      columns: JSON.stringify(props.columns),
+      equations: JSON.stringify(props.equations),
+      plots: JSON.stringify(props.plots),
+      conclusion: conclusionData.value.conclusion || undefined,
+      chart_snapshot: props.chartSnapshot || undefined,
     });
     if (res.success && res.analysis) {
-      aiAnalysis.value = res.analysis;
+      aiAnalysis.value = sanitizeHtml(res.analysis);
     } else {
       aiError.value = res.message || t('chemistryAnalysis.aiAnalysisFailed');
     }

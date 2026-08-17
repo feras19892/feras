@@ -1,4 +1,5 @@
 ﻿<script setup lang="ts">
+import type { FaultInfo } from '../shared/types'
 import type { useWorkshop } from '../shared/useWorkshop'
 
 defineProps<{
@@ -25,7 +26,7 @@ const emit = defineEmits<{
   (e: 'printCircuit'): void
   (e: 'showHelp'): void
   (e: 'explainMNA'): void
-  (e: 'selectFault', fault: any): void
+  (e: 'selectFault', fault: FaultInfo): void
 }>()
 </script>
 
@@ -74,11 +75,11 @@ const emit = defineEmits<{
 
       <!-- Warning Lamps (top-right corner) -->
       <div class="warning-lamps" v-if="workshop.running.value">
-        <div class="wlamp clickable" :class="{ on: hasDanger, off: !hasDanger }" :title="t('ew.danger')" @click="hasDanger && emit('selectFault', workshop.faults.value.find(f => f.severity === 'danger'))">
+        <div class="wlamp clickable" :class="{ on: hasDanger, off: !hasDanger }" :title="t('ew.danger')" @click="() => { const f = workshop.faults.value.find(f => f.severity === 'danger'); if (f) emit('selectFault', f) }">
           <span class="wl-icon">🔴</span>
           <span class="wl-label" v-if="hasDanger">{{ t('ew.danger') }}</span>
         </div>
-        <div class="wlamp clickable" :class="{ on: hasWarning && !hasDanger, off: !hasWarning }" :title="t('ew.warning')" @click="hasWarning && !hasDanger && emit('selectFault', workshop.faults.value.find(f => f.severity === 'warning'))">
+        <div class="wlamp clickable" :class="{ on: hasWarning && !hasDanger, off: !hasWarning }" :title="t('ew.warning')" @click="() => { const f = workshop.faults.value.find(f => f.severity === 'warning'); if (f) emit('selectFault', f) }">
           <span class="wl-icon">🟡</span>
           <span class="wl-label" v-if="hasWarning && !hasDanger">{{ t('ew.warning') }}</span>
         </div>

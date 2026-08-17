@@ -1,6 +1,7 @@
-import { fetchJson } from '../../services/http'
+import { fetchJson, ApiError, setTokens, clearTokens } from '../../services/http'
 import { useI18n } from '../useI18n'
-import type { User, ClassInfo, School } from '@my-modern-app/shared-types'
+import { useClassActions } from './useClassActions'
+import type { User, School } from '@my-modern-app/shared-types'
 
 export function useAuthActions(
   user: { value: User | null },
@@ -10,7 +11,9 @@ export function useAuthActions(
   setSchoolSession?: (s: School | null) => void,
 ) {
   const { t } = useI18n()
+  const classActions = useClassActions(user, loading, error)
   function extractStatusCode(err: unknown): number | null {
+    if (err instanceof ApiError) return err.status;
     const msg = err instanceof Error ? err.message : String(err)
     const match = msg.match(/Request failed:\s*(\d{3})\b/)
     return match ? Number(match[1]) : null
@@ -25,17 +28,21 @@ export function useAuthActions(
     loading.value = true
     error.value = null
     try {
-      const data = await fetchJson<{ success: boolean; user?: User; school?: School }>('/api/auth/login', {
+      const data = await fetchJson<{ success: boolean; user?: User; school?: School; accessToken?: string; refreshToken?: string }>('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       })
       clearGuestState()
+      if (data.accessToken || data.refreshToken) {
+        setTokens(data.accessToken, data.refreshToken)
+      }
       if (data.school) {
         if (setSchoolSession) setSchoolSession(data.school)
-        return { ok: true, school: data.school } as any
+        return { ok: true as const, school: data.school }
       }
       if (data.user) {
+        if (setSchoolSession) setSchoolSession(null)
         user.value = data.user
         return true
       }
@@ -57,24 +64,24 @@ export function useAuthActions(
     try {
       const body: Record<string, string> = { email, password, name, role: roleVal }
       if (schoolCode) body.school_code = schoolCode
-      const data = await fetchJson<{ success: boolean; user?: User; devVerificationCode?: string }>('/api/auth/register', {
+      const data = await fetchJson<{ success: boolean; user?: User }>('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       })
       if (!data.success || !data.user) {
         error.value = t('auth.errors.registerFailed')
-        return { ok: false as const, devCode: null as string | null }
+        return { ok: false as const }
       }
       clearGuestState()
-      return { ok: true as const, devCode: data.devVerificationCode ?? null }
+      return { ok: true as const }
     } catch (err) {
       const status = extractStatusCode(err)
       if (status === 409) error.value = t('auth.errors.emailAlreadyUsed')
       else if (status === 400) error.value = t('auth.errors.invalidRegistrationData')
       else if (isNetworkError(err)) error.value = t('auth.errors.cannotConnectToServer')
       else error.value = t('auth.errors.registerFailed')
-      return { ok: false as const, devCode: null as string | null }
+      return { ok: false as const }
     } finally {
       loading.value = false
     }
@@ -82,30 +89,44 @@ export function useAuthActions(
 
   async function fetchMe() {
     try {
-      const data = await fetchJson<{ user: User }>('/api/auth/me')
-      user.value = data.user
-    } catch {
-      logout()
+      const data = await fetchJson<{ success: boolean; user: User }>('/api/auth/me');
+      if (data.success && data.user) {
+        if (setSchoolSession) setSchoolSession(null)
+        user.value = data.user;
+      }
+    } catch (err) {
+      if (!isNetworkError(err)) {
+        logout()
+      }
     }
   }
 
   async function init() {
     try {
-      const data = await fetchJson<{ user: User }>('/api/auth/me')
-      user.value = data.user
+      const data = await fetchJson<{ success: boolean; user: User }>('/api/auth/me');
+      if (data.success && data.user) {
+        if (setSchoolSession) setSchoolSession(null)
+        user.value = data.user;
+      } else {
+        user.value = null;
+      }
     } catch {
       // auth failed (token expired and refresh failed) — clear user to force re-login
-      user.value = null
+      user.value = null;
     }
   }
 
   async function tryRestore() {
     try {
-      const data = await fetchJson<{ user: User }>('/api/auth/me')
-      user.value = data.user
-      return true
+      const data = await fetchJson<{ success: boolean; user: User }>('/api/auth/me');
+      if (data.success && data.user) {
+        if (setSchoolSession) setSchoolSession(null)
+        user.value = data.user;
+        return true;
+      }
+      return false;
     } catch {
-      return false
+      return false;
     }
   }
 
@@ -176,80 +197,20 @@ export function useAuthActions(
     }
   }
 
-  async function updatePassword(userId: number, newPassword: string) {
+  async function updatePassword(userId: number, newPassword: string, currentPassword?: string) {
     if (user.value?.id !== userId && user.value?.role !== 'admin') return false
     try {
+      const body: Record<string, unknown> = { user_id: userId, new_password: newPassword }
+      if (currentPassword) body.current_password = currentPassword
       await fetchJson('/api/auth/password', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: userId, new_password: newPassword }),
+        body: JSON.stringify(body),
       })
       return true
     } catch {
       return false
     }
-  }
-
-  async function joinClass(classCode: string, classes: { value: ClassInfo[] }, currentClassId: { value: string | null }) {
-    loading.value = true
-    error.value = null
-    try {
-      const data = await fetchJson<{ class_id: string; name: string; code: string; already_joined?: boolean }>('/api/classes/join', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code: classCode, student_id: user.value?.id }),
-      })
-      const cls: ClassInfo = {
-        id: data.class_id || classCode,
-        name: data.name || classCode,
-        code: classCode,
-        role: 'student',
-      }
-      if (!classes.value.find((c) => c.code === classCode)) {
-        classes.value.push(cls)
-      }
-      currentClassId.value = cls.id
-      return true
-    } catch (err) {
-      const status = extractStatusCode(err)
-      if (status === 404) error.value = t('auth.errors.invalidCode')
-      else if (isNetworkError(err)) error.value = t('auth.errors.cannotConnectToServer')
-      else error.value = t('auth.errors.serverConnectionError')
-      return false
-    } finally {
-      loading.value = false
-    }
-  }
-
-  async function createClass(className: string, classes: { value: ClassInfo[] }, currentClassId: { value: string | null }) {
-    loading.value = true
-    error.value = null
-    try {
-      const data = await fetchJson<{ id: string; name: string; code: string }>('/api/classes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: className, teacher_id: user.value?.id }),
-      })
-      const cls: ClassInfo = {
-        id: data.id || data.code,
-        name: className,
-        code: data.code,
-        role: 'teacher',
-      }
-      classes.value.push(cls)
-      currentClassId.value = cls.id
-      return data.code
-    } catch (err) {
-      console.error('createClass failed:', err)
-      error.value = 'Server connection error'
-      return null
-    } finally {
-      loading.value = false
-    }
-  }
-
-  function selectClass(classId: string, currentClassId: { value: string | null }) {
-    currentClassId.value = classId
   }
 
   async function logout() {
@@ -258,8 +219,10 @@ export function useAuthActions(
     } catch {
       // ignore
     }
+    clearTokens()
     clearGuestState()
     user.value = null
+    if (setSchoolSession) setSchoolSession(null)
   }
 
   function setSession(u: User) {
@@ -277,9 +240,9 @@ export function useAuthActions(
     updateProfileName,
     submitNameRequest,
     deleteMyAccount,
-    joinClass,
-    createClass,
-    selectClass,
+    joinClass: classActions.joinClass,
+    createClass: classActions.createClass,
+    selectClass: classActions.selectClass,
     logout,
     setSession,
   }

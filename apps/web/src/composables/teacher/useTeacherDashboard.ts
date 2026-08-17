@@ -1,5 +1,5 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { getMyClasses, getClassStats, getClassDetails } from '../../services/class.service'
+import { getMyClasses, getBatchClassData } from '../../services/class.service'
 import type { ClassItem, ClassStudent } from '../../services/class.service'
 import { getReports } from '../../services/report.service'
 import type { Report } from '../../services/report.service'
@@ -38,6 +38,7 @@ export interface ClassRow {
   gradedCount: number
   pendingCount: number
   classAverage: number
+  isFrozen: boolean
 }
 
 function isToday(dateStr?: string): boolean {
@@ -84,7 +85,7 @@ export function useTeacherDashboard() {
       if (isToday(r.submitted_at)) submittedToday++
       if (isToday(r.graded_at)) gradedToday++
       if (!r.teacher_seen && r.status !== 'draft') unopenedCount++
-      if (r.status === 'submitted' && daysSince(r.submitted_at) >= 2) overdueCount++
+      if ((r.status === 'submitted' || r.status === 'resubmitted') && r.submitted_at && daysSince(r.submitted_at) >= 2) overdueCount++
     }
 
     return {
@@ -112,6 +113,7 @@ export function useTeacherDashboard() {
         gradedCount: s?.graded_count || 0,
         pendingCount: s?.pending_count || 0,
         classAverage: s?.class_average || 0,
+        isFrozen: !!cls.is_frozen,
       }
     })
   })
@@ -156,29 +158,23 @@ export function useTeacherDashboard() {
 
   const overdueUngraded = computed(() =>
     allReports.value
-      .filter(r => r.status === 'submitted' && daysSince(r.submitted_at) >= 2)
+      .filter(r => (r.status === 'submitted' || r.status === 'resubmitted') && r.submitted_at && daysSince(r.submitted_at) >= 2)
       .sort((a, b) => (a.submitted_at || '').localeCompare(b.submitted_at || ''))
   )
 
   async function loadAll() {
     loading.value = true
     try {
-      const clsRes = await getMyClasses()
-      if (clsRes.success) {
-        classes.value = clsRes.classes
-        const statsMap: Record<string, ClassStats> = {}
-        const studentsMap: Record<string, ClassStudent[]> = {}
-        await Promise.all(clsRes.classes.map(async (cls) => {
-          try {
-            const [sr, dr] = await Promise.all([getClassStats(cls.id), getClassDetails(cls.id)])
-            if (sr.success) statsMap[cls.id] = sr.stats
-            if (dr.success) studentsMap[cls.id] = dr.students
-          } catch { /* ignore */ }
-        }))
-        classStatsMap.value = statsMap
-        classStudentsMap.value = studentsMap
+      const [clsRes, batchRes, rRes] = await Promise.all([
+        getMyClasses(),
+        getBatchClassData(),
+        getReports(),
+      ])
+      if (clsRes.success) classes.value = clsRes.classes
+      if (batchRes.success) {
+        classStatsMap.value = batchRes.statsMap
+        classStudentsMap.value = batchRes.studentsMap
       }
-      const rRes = await getReports()
       if (rRes.success) allReports.value = rRes.reports
     } catch (err) {
       if (import.meta.env.DEV) console.error('dashboard load failed:', err);
@@ -190,7 +186,7 @@ export function useTeacherDashboard() {
   let refreshTimer: ReturnType<typeof setInterval> | null = null
   onMounted(() => {
     loadAll()
-    refreshTimer = setInterval(() => { loadAll() }, 60000)
+    refreshTimer = setInterval(() => { if (document.visibilityState === 'visible') loadAll() }, 300000)
   })
   onUnmounted(() => { if (refreshTimer) clearInterval(refreshTimer) })
 

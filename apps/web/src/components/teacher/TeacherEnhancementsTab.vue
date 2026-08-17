@@ -14,7 +14,6 @@ const props = defineProps<{
 
 const activeTab = ref<'badges' | 'penalties' | 'leaderboard'>('badges');
 const loading = ref(false);
-const error = ref('');
 
 // Badges
 const allBadges = ref<Badge[]>([]);

@@ -3,17 +3,17 @@
 
 // --- Arabic bad words ---
 const AR_BAD = [
-  'كلب', 'كلاب', 'ابن', 'ختي', 'اخ', 'حمار', 'حمار', 'غبي', 'غبا', 'احمق', 'احمقا',
+  'كلب', 'كلاب', 'ابن', 'ختي', 'اخ', 'حمار', 'غبي', 'غبا', 'احمق', 'احمقا',
   'زاني', 'زانية', 'عاهر', 'عاهرة', 'قواد', 'شرموطة', 'شرموط', 'كس', 'كسك',
-  'زب', 'زبك', 'زبك', 'طيز', 'طيزك', 'نيك', 'نيكك', 'منيك', 'متناك', 'متناكة',
+  'زب', 'زبك', 'طيز', 'طيزك', 'نيك', 'نيكك', 'منيك', 'متناك', 'متناكة',
   'خرا', 'خرى', 'وسخ', 'وسخة', 'حقير', 'حقيرة', 'داعر', 'داعرة', 'سافل', 'سافلة',
-  'لعين', 'ملعون', 'كلب ابن', 'يا ابن', 'ختيست', 'كسمك', 'كسمه', 'كسمك',
+  'لعين', 'ملعون', 'كلب ابن', 'يا ابن', 'ختيست', 'كسمك', 'كسمه',
   'متخلف', 'معاق', 'شاذ', 'شاذة', 'داعشي', 'ارهابي', 'ارهاب',
-  'اللعنة', 'تبا', 'تباً', 'سحقا', 'سحقاً', 'يلعن', 'يلعنك', 'يلعنك',
-  'حيوان', 'بهيمة', 'رخيص', 'رخيصة', 'قذر', 'قذارة', 'وسخ',
+  'اللعنة', 'تبا', 'تباً', 'سحقا', 'سحقاً', 'يلعن', 'يلعنك',
+  'حيوان', 'بهيمة', 'رخيص', 'رخيصة', 'قذر', 'قذارة',
   'مخنث', 'لوطي', 'منحرف', 'منحرفة', 'سكير', 'سكيرة', 'عربيد',
   'حشاش', 'مدمن', 'تافه', 'تافهة', 'سخيف', 'سخيفة', 'رديء', 'رديئة',
-  'بليد', 'بليدة', 'احمق', 'حمقا', 'غبا', 'غبياء',
+  'بليد', 'بليدة', 'حمقا', 'غبياء',
 ];
 
 // --- English bad words ---
@@ -26,7 +26,7 @@ const EN_BAD = [
   'cock', 'cocksucker', 'cockhead',
   'pussy', 'pussies',
   'cunt', 'cunty',
-  'bastard', 'bitch',
+  'bastard',
   'damn', 'goddamn', 'goddamnit',
   'hell', 'what the hell',
   'crap', 'crappy',
@@ -46,7 +46,7 @@ const EN_BAD = [
   'suck', 'sucks', 'sucker',
   'lame', 'idiot', 'idiotic', 'imbecile',
   'moron', 'stupid', 'dumb',
-  'hate', 'kill yourself', 'kys',
+  'kill yourself', 'kys',
   'rape', 'raping', 'rapist',
   'nazi', 'hitler',
 ];
@@ -63,32 +63,29 @@ const ES_BAD = [
   'verga', 'vergas',
   'pene', 'pito', 'pitos',
   'culo', 'culos',
-  'maricón', 'maricon', 'maricón', 'maricona', 'maricones',
+  'maricón', 'maricon', 'maricona', 'maricones',
   'marica', 'maricas',
   'pendejo', 'pendeja', 'pendejos', 'pendejas',
   'idiota', 'idiotas',
   'estúpido', 'estupido', 'estúpida', 'estupida', 'estúpidos', 'estupidos',
   'imbecil', 'imbécil', 'imbeciles', 'imbéciles',
-  'gilipollas', 'gilipollas',
+  'gilipollas',
   'capullo', 'capullos',
   'hijo de puta', 'hija de puta',
   'me cago', 'me cago en',
   'la hostia', 'hostia', 'hostias',
-  'tío', 'tia',
   'borracho', 'borracha',
   'pervertido', 'pervertida',
   'maldito', 'maldita', 'malditos', 'malditas',
   'diablo', 'demonio',
   'chinga', 'chingar', 'chingón', 'chingon',
   'pinche', 'pinches',
-  'pendejo', 'cabrón',
   'vergación', 'vergacion',
   'cojones', 'cojon',
   'follar', 'follando',
   'zorra', 'zorro', 'zorras', 'zorros',
   'guarra', 'guarras', 'guarro', 'guarros',
   'cerdo', 'cerda', 'cerdos', 'cerdas',
-  'loco', 'loca',
 ];
 
 // --- Normalization helpers ---
@@ -132,11 +129,27 @@ function normalizeLatin(text: string): string {
     .toLowerCase();
 }
 
-function checkList(text: string, list: string[]): string[] {
+const ARABIC_LETTER = /[ء-ي]/;
+
+function checkList(text: string, list: string[], lang: 'ar' | 'latin' = 'latin'): string[] {
   const matches: string[] = [];
   for (const word of list) {
-    if (text.includes(word)) {
-      matches.push(word);
+    if (lang === 'latin') {
+      const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      if (new RegExp(`\\b${escaped}\\b`, 'i').test(text)) {
+        matches.push(word);
+      }
+    } else {
+      let idx = text.indexOf(word);
+      while (idx !== -1) {
+        const afterIdx = idx + word.length;
+        const after = afterIdx < text.length ? text[afterIdx] : '';
+        if (!ARABIC_LETTER.test(after)) {
+          matches.push(word);
+          break;
+        }
+        idx = text.indexOf(word, idx + 1);
+      }
     }
   }
   return matches;
@@ -152,7 +165,7 @@ export interface FilterResult {
 
 // Patterns for URLs, phone numbers, and social media handles
 const URL_PATTERN = /https?:\/\/[\w\S]+|www\.[\w\S]+\.[a-z]{2,}/gi;
-const PHONE_PATTERN = /\+?\d[\d\s\-]{7,}\d/g;
+const PHONE_PATTERN = /\+?\d[\d\s-]{7,}\d/g;
 const SOCIAL_PATTERNS = [
   /@[a-zA-Z0-9_.]{3,}\b/g, // @handles (Twitter, Instagram, etc.)
   /\b(snapchat|snap|insta|instagram|telegram|tiktok|whatsapp|facebook|youtube|twitter|discord)\b[\s:]*[@\w]+/gi,
@@ -176,9 +189,9 @@ export function filterMessage(content: string): FilterResult {
   const arText = normalizeArabic(content);
   const latinText = normalizeLatin(content);
 
-  const arHits = checkList(arText, AR_BAD);
-  const enHits = checkList(latinText, EN_BAD);
-  const esHits = checkList(latinText, ES_BAD);
+  const arHits = checkList(arText, AR_BAD, 'ar');
+  const enHits = checkList(latinText, EN_BAD, 'latin');
+  const esHits = checkList(latinText, ES_BAD, 'latin');
 
   const allHits = [...arHits, ...enHits, ...esHits];
 
@@ -196,9 +209,17 @@ export function filterMessage(content: string): FilterResult {
 
   let cleanedContent = content;
   if (allHits.length > 0) {
-    for (const word of [...AR_BAD, ...EN_BAD, ...ES_BAD]) {
+    for (const word of AR_BAD) {
       const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      cleanedContent = cleanedContent.replace(new RegExp(escaped, 'gi'), '***');
+      cleanedContent = cleanedContent.replace(
+        new RegExp(`${escaped}(?![\u0621-\u064A])`, 'gi'), '***',
+      );
+    }
+    for (const word of [...EN_BAD, ...ES_BAD]) {
+      const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      cleanedContent = cleanedContent.replace(
+        new RegExp(`\\b${escaped}\\b`, 'gi'), '***',
+      );
     }
   }
   // Clean URLs and phones

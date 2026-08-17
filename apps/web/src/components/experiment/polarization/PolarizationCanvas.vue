@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 
 const props = defineProps<{
   polarizerAngle: number
@@ -11,6 +14,18 @@ const props = defineProps<{
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const W = 800, H = 400
+let resizeObs: ResizeObserver | null = null
+
+function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+  if (typeof ctx.roundRect === 'function') { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); return }
+  ctx.beginPath()
+  ctx.moveTo(x + r, y)
+  ctx.arcTo(x + w, y, x + w, y + h, r)
+  ctx.arcTo(x + w, y + h, x, y + h, r)
+  ctx.arcTo(x, y + h, x, y, r)
+  ctx.arcTo(x, y, x + w, y, r)
+  ctx.closePath()
+}
 
 function drawArrow(ctx: CanvasRenderingContext2D, x: number, y: number, angle: number, len: number, color: string, label: string) {
   ctx.save()
@@ -73,7 +88,7 @@ function draw() {
   ctx.globalAlpha = 1
 
   /* detector */
-  ctx.fillStyle = '#4ade80'; ctx.beginPath(); ctx.roundRect(detX - 10, beamY - 20, 20, 40, 4); ctx.fill()
+  ctx.fillStyle = '#4ade80'; ctx.beginPath(); roundRect(ctx, detX - 10, beamY - 20, 20, 40, 4); ctx.fill()
   ctx.fillStyle = '#0d1117'; ctx.font = 'bold 10px sans-serif'; ctx.fillText('I', detX - 3, beamY + 4)
 
   /* wave animation */
@@ -90,10 +105,10 @@ function draw() {
 
   /* labels */
   ctx.fillStyle = '#8B95A5'; ctx.font = '12px sans-serif'
-  ctx.fillText('Source', sourceX - 8, H - 12)
-  ctx.fillText('Polarizer', polX - 22, H - 12)
-  ctx.fillText('Analyzer', anaX - 22, H - 12)
-  ctx.fillText('Detector', detX - 20, H - 12)
+  ctx.fillText(t('experiments.poSource'), sourceX - 8, H - 12)
+  ctx.fillText(t('experiments.poPolarizer'), polX - 22, H - 12)
+  ctx.fillText(t('experiments.poAnalyzer'), anaX - 22, H - 12)
+  ctx.fillText(t('experiments.poDetector'), detX - 20, H - 12)
 
   /* value labels */
   ctx.fillStyle = '#5B8DB8'; ctx.font = 'bold 11px sans-serif'
@@ -109,7 +124,19 @@ function animate() { draw(); if (props.running) animId = requestAnimationFrame(a
 
 watch(() => props.running, (v) => { cancelAnimationFrame(animId); v ? animate() : draw() })
 watch(() => [props.polarizerAngle, props.analyzerAngle, props.inputIntensity, props.outputIntensity], draw, { deep: true })
-onMounted(() => draw()); onUnmounted(() => cancelAnimationFrame(animId))
+onMounted(() => {
+  const c = canvasRef.value; if (!c) return
+  const dpr = window.devicePixelRatio || 1
+  c.width = W * dpr; c.height = H * dpr
+  const ctx = c.getContext('2d'); if (ctx) ctx.scale(dpr, dpr)
+  resizeObs = new ResizeObserver(() => {
+    const parent = c.parentElement; if (!parent) return
+    const pw = parent.clientWidth, ph = parent.clientHeight
+    c.style.width = pw + 'px'; c.style.height = ph + 'px'
+  })
+  resizeObs.observe(c.parentElement!)
+  draw()
+}); onUnmounted(() => { cancelAnimationFrame(animId); if (resizeObs) resizeObs.disconnect() })
 </script>
 
 <template>

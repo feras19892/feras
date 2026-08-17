@@ -30,7 +30,10 @@ async function verifyClassAccess(userId: number, role: string, classId: string):
     return !!row;
   }
   if (role === 'school') {
-    const row = await db.get<{ school_id: number | null }>('SELECT c.school_id FROM classes c WHERE c.id = ?', classId);
+    const row = await db.get<{ school_id: number | null }>(
+      'SELECT u.school_id FROM classes c JOIN users u ON c.teacher_id = u.id WHERE c.id = ?',
+      classId,
+    );
     return !!row && row.school_id === userId;
   }
   return false;

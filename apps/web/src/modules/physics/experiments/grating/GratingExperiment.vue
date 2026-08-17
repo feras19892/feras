@@ -1,7 +1,8 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useGratingExperiment } from '../../../../composables/grating/useGratingExperiment'
 import { useI18n } from '../../../../composables/useI18n'
+import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import GratingMenuBar from '../../../../components/experiment/grating/GratingMenuBar.vue'
 import GratingCanvas from '../../../../components/experiment/grating/GratingCanvas.vue'
 import GratingPanelBody from '../../../../components/experiment/grating/GratingPanelBody.vue'
@@ -9,11 +10,17 @@ import GratingStatusBar from '../../../../components/experiment/grating/GratingS
 import GratingControlBar from '../../../../components/experiment/grating/GratingControlBar.vue'
 import GratingHelpModal from '../../../../components/experiment/grating/GratingHelpModal.vue'
 import GratingOverlayPanels from '../../../../components/experiment/grating/GratingOverlayPanels.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
+import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
 const ex = useGratingExperiment()
 const { t } = useI18n()
+const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
+
+function onReset() {
+  confirmReset().then(ok => { if (ok) ex.resetSim() })
+}
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
@@ -22,7 +29,7 @@ function onKeyDown(e: KeyboardEvent) {
     e.preventDefault()
     ex.lab.togglePause()
   } else if (e.key === 'r' || e.key === 'R') {
-    if (confirm(t('experiments.resetConfirm'))) ex.resetSim()
+    confirmReset().then(ok => { if (ok) ex.resetSim() })
   } else if (e.key === 's' || e.key === 'S') {
     ex.trials.recordTrial()
   } else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
@@ -50,14 +57,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <GratingMenuBar
       :title="t('experiments.expGrating')"
       icon="&#x1F4A1;"
-      experiment-route="/physics/waves/grating"
-      experiment-name="Diffraction Grating"
-      @toggle-panel="ex.layout.togglePanel"
       @show-all-panels="ex.layout.showAllPanels"
-      @export-csv="ex.trials.exportCsv"
-      @toggle-pause="ex.lab.togglePause"
-      @reset="ex.resetSim"
-      @record-trial="ex.trials.recordTrial"
       @toggle-help="helpOpen = !helpOpen"
       @analyze-results="ex.exportToAnalysis"
     />
@@ -108,7 +108,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
           :can-undo="ex.trials.canUndo()"
           :can-redo="ex.trials.canRedo()"
           @toggle-pause="ex.lab.togglePause"
-          @reset="ex.resetSim"
+          @reset="onReset"
           @record-trial="ex.trials.recordTrial"
           @clear-trials="ex.trials.clearTrials"
           @export-csv="ex.trials.exportCsv"
@@ -179,6 +179,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       :first-order-angle="ex.lab.firstOrderAngle.value"
     />
   </div>
+  <ResetConfirmModal />
 </template>
 
 <style scoped>

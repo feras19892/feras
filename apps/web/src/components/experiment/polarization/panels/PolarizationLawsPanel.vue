@@ -1,5 +1,7 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '../../../../composables/useI18n'
 
+const { t } = useI18n()
 
 interface Props {
   polarizerAngle: number
@@ -14,7 +16,7 @@ defineProps<Props>()
 <template>
   <div class="panel-body">
     <div class="eq-block">
-      <div class="eq-title">Malus's Law</div>
+      <div class="eq-title">{{ t('experiments.poMalusLaw') }}</div>
       <div class="eq">I = I₀ cos²(θ₂ − θ₁)</div>
       <div class="eq-values">
         I₀ = {{ I0 }}<br>
@@ -25,15 +27,15 @@ defineProps<Props>()
       </div>
     </div>
     <div class="eq-block">
-      <div class="eq-title">Maximum Transmission</div>
+      <div class="eq-title">{{ t('experiments.poMaxTransmission') }}</div>
       <div class="eq">I_max = I₀  (when Δθ = 0°)</div>
     </div>
     <div class="eq-block">
-      <div class="eq-title">Complete Extinction</div>
+      <div class="eq-title">{{ t('experiments.poCompleteExtinction') }}</div>
       <div class="eq">I = 0  (when Δθ = 90°)</div>
     </div>
     <div class="eq-block">
-      <div class="eq-title">Transmission Ratio</div>
+      <div class="eq-title">{{ t('experiments.poTransmissionRatio') }}</div>
       <div class="eq">T = cos²(Δθ) × 100%</div>
     </div>
   </div>

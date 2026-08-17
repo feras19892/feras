@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { getBranch } from './catalog';
 import { useI18n } from '../../composables/useI18n';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const route = useRoute();
 const router = useRouter();
 
@@ -65,7 +65,7 @@ function expNameKey(id: string): string {
     freefall: 'experiments.expFreeFall',
     inclined: 'experiments.expInclined',
     collision: 'experiments.expCollision',
-    lever: 'experiments.expLever',
+    netforce: 'experiments.expNetForce',
     'light-ray': 'experiments.expLightRay',
     'thin-lens': 'experiments.expThinLens',
     mirrors: 'experiments.expMirrors',
@@ -112,7 +112,7 @@ function expNameKey(id: string): string {
         >
           <div class="card-icon">{{ exp.icon }}</div>
           <h4>{{ t(expNameKey(exp.id)) }}</h4>
-          <p class="en">{{ exp.name }}</p>
+          <p v-if="locale !== 'ar'" class="en">{{ exp.name }}</p>
           <div class="tags">
             <span class="tag difficulty" :class="exp.difficulty">
               {{ difficultyLabel(exp.difficulty) }}

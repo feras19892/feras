@@ -120,3 +120,19 @@ export interface TitrationReading {
   ph: number | null;
   color: string;
 }
+
+export interface ReportData {
+  experimentName: string;
+  consumedVolume: number;
+  acidVolume: number;
+  baseMolarity: number;
+  calculatedAcidMolarity: number;
+  phAtEquivalence: number | null;
+  colorAtEquivalence: string;
+  readingsCount: number;
+}
+
+export interface ResolvedExperimentTheory {
+  title: string;
+  sections: { heading: string; content: string }[];
+}

@@ -14,8 +14,9 @@ let lastPh: number | null = null;
 export function recordTitrationStep(targetUid: string, vAdded: number) {
   const liq = getLiquid(targetUid);
   if (!liq || liq.ph == null) return;
-  const step = 0.5; // only record if pH changed by at least 0.5 or V changed by 1ml
-  if (readings.length === 0 || Math.abs(liq.ph - (lastPh ?? liq.ph)) >= step || readings[readings.length - 1].vAdded + 1 <= vAdded) {
+  const phStep = (liq.ph >= 6 && liq.ph <= 9) ? 0.1 : 0.3;
+  const volStep = 0.5;
+  if (readings.length === 0 || Math.abs(liq.ph - (lastPh ?? liq.ph)) >= phStep || readings[readings.length - 1].vAdded + volStep <= vAdded) {
     readings.push({ vAdded, ph: liq.ph, temperature: liq.temperature });
     lastPh = liq.ph;
   }

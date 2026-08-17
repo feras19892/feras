@@ -1,7 +1,8 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useResonanceExperiment } from '../../../../composables/resonance/useResonanceExperiment'
 import { useI18n } from '../../../../composables/useI18n'
+import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import ResonanceMenuBar from '../../../../components/experiment/resonance/ResonanceMenuBar.vue'
 import ResonanceCanvas from '../../../../components/experiment/resonance/ResonanceCanvas.vue'
 import ResonancePanelBody from '../../../../components/experiment/resonance/ResonancePanelBody.vue'
@@ -10,18 +11,24 @@ import ResonanceControlBar from '../../../../components/experiment/resonance/Res
 import ResonanceHelpModal from '../../../../components/experiment/resonance/ResonanceHelpModal.vue'
 import ResonanceGuidePanel from '../../../../components/experiment/resonance/ResonanceGuidePanel.vue'
 import ResonanceOverlayPanels from '../../../../components/experiment/resonance/ResonanceOverlayPanels.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
+import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
 const ex = useResonanceExperiment()
 const { t } = useI18n()
+const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)
+
+function onReset() {
+  confirmReset().then(ok => { if (ok) ex.resetSim() })
+}
 
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return
   if (e.code === 'Space') { e.preventDefault(); ex.lab.togglePause() }
-  else if (e.key === 'r' || e.key === 'R') { if (confirm(t('experiments.resetConfirm'))) ex.resetSim() }
+  else if (e.key === 'r' || e.key === 'R') { confirmReset().then(ok => { if (ok) ex.resetSim() }) }
   else if (e.key === 's' || e.key === 'S') ex.trials.recordTrial()
   else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); if (e.shiftKey) ex.trials.redo(); else ex.trials.undo() }
   else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ex.trials.redo() }
@@ -37,14 +44,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <ResonanceMenuBar
       :title="t('experiments.expResonance')"
       icon="&#x1F3B5;"
-      experiment-route="/physics/waves/resonance"
-      experiment-name="Standing Waves"
-      @toggle-panel="ex.layout.togglePanel"
       @show-all-panels="ex.layout.showAllPanels"
-      @export-csv="ex.trials.exportCsv"
-      @toggle-pause="ex.lab.togglePause"
-      @reset="ex.resetSim"
-      @record-trial="ex.trials.recordTrial"
       @toggle-help="helpOpen = !helpOpen"
       @analyze-results="ex.exportToAnalysis"
     />
@@ -95,7 +95,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
           :can-undo="ex.trials.canUndo()"
           :can-redo="ex.trials.canRedo()"
           @toggle-pause="ex.lab.togglePause"
-          @reset="ex.resetSim"
+          @reset="onReset"
           @record-trial="ex.trials.recordTrial"
           @clear-trials="ex.trials.clearTrials"
           @export-csv="ex.trials.exportCsv"
@@ -174,6 +174,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       :wavelength="ex.lab.wavelength.value"
     />
   </div>
+  <ResetConfirmModal />
 </template>
 
 <style scoped>

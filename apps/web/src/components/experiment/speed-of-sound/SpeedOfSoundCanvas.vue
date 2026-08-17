@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { useCanvasDPR } from '../../../composables/experiment/shared/useCanvasDPR'
 
 const props = defineProps<{
   tubeLength: number
@@ -11,6 +12,8 @@ const props = defineProps<{
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const W = 800, H = 400
+
+useCanvasDPR(canvasRef, W, H, () => draw());
 
 function draw() {
   const c = canvasRef.value; if (!c) return

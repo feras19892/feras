@@ -26,7 +26,7 @@ const stats = ref<FeedbackStats | null>(null);
 const loading = ref(false);
 const error = ref('');
 const searchQuery = ref('');
-const filterType = ref<'all'|'complaint'|'rating'|'suggestion'>('all');
+const filterType = ref<'all'|'bug'|'feature'|'content'|'other'>('all');
 const filterStatus = ref<'all'|'open'|'resolved'|'dismissed'>('all');
 
 const filteredFeedback = computed(() => {
@@ -61,9 +61,10 @@ async function changeStatus(id: number, status: string) {
 
 function typeLabel(type: string) {
   switch (type) {
-    case 'rating': return t('admin.feedbackTypeRating');
-    case 'complaint': return t('admin.feedbackTypeComplaint');
-    case 'suggestion': return t('admin.feedbackTypeSuggestion');
+    case 'bug': return '🐛 ' + t('admin.feedbackTypeBug');
+    case 'feature': return '✨ ' + t('admin.feedbackTypeFeature');
+    case 'content': return '📚 ' + t('admin.feedbackTypeContent');
+    case 'other': return '📝 ' + t('admin.feedbackTypeOther');
     default: return type;
   }
 }
@@ -86,9 +87,10 @@ onMounted(load);
         <input v-model="searchQuery" class="search-input" :placeholder="t('admin.searchPlaceholder')" />
         <select v-model="filterType">
           <option value="all">{{ t('admin.allTypes') }}</option>
-          <option value="complaint">{{ t('admin.complaints') }}</option>
-          <option value="rating">{{ t('admin.ratings') }}</option>
-          <option value="suggestion">{{ t('admin.suggestions') }}</option>
+          <option value="bug">🐛 {{ t('admin.feedbackTypeBug') }}</option>
+          <option value="feature">✨ {{ t('admin.feedbackTypeFeature') }}</option>
+          <option value="content">📚 {{ t('admin.feedbackTypeContent') }}</option>
+          <option value="other">📝 {{ t('admin.feedbackTypeOther') }}</option>
         </select>
         <select v-model="filterStatus">
           <option value="all">{{ t('admin.allStatuses') }}</option>

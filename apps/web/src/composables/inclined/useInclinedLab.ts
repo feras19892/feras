@@ -74,6 +74,7 @@ export function useInclinedLab(params: InclinedParams, onTick?: () => void) {
   async function runInclinedLab(recordTrial: () => void) {
     if (labFlowRunning.value) return
     labFlowRunning.value = true
+    const saved = { thetaDeg: params.thetaDeg, length: params.length, mass: params.mass, g: params.g, mu: params.mu, airResistance: params.airResistance, bodyTypeId: params.bodyTypeId, cd: params.cd, area: params.area }
     try {
       for (const theta of [15, 30, 45, 60]) {
         params.thetaDeg = theta
@@ -87,6 +88,15 @@ export function useInclinedLab(params: InclinedParams, onTick?: () => void) {
       }
     } finally {
       labFlowRunning.value = false
+      params.thetaDeg = saved.thetaDeg
+      params.length = saved.length
+      params.mass = saved.mass
+      params.g = saved.g
+      params.mu = saved.mu
+      params.airResistance = saved.airResistance
+      params.bodyTypeId = saved.bodyTypeId
+      params.cd = saved.cd
+      params.area = saved.area
       resetSim()
     }
   }

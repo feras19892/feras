@@ -43,9 +43,9 @@ export function useSpeedOfSoundExperiment() {
   // Regression: L vs 1/f  →  L = (v/4)·(1/f) − e
   // slope = v/4, intercept = −e
   const regression = computed(() => {
-    const valid = trials.trials.value.filter((t) => t.frequency > 0)
+    const valid = trials.trials.value.filter((tr) => tr.frequency > 0)
     if (valid.length < 2) return { m: 0, b: 0, r2: 0 }
-    const pts = valid.map((t) => ({ x: 1 / t.frequency, y: t.tubeLength }))
+    const pts = valid.map((tr) => ({ x: 1 / tr.frequency, y: tr.tubeLength }))
     return linearRegression(pts)
   })
 
@@ -79,12 +79,12 @@ export function useSpeedOfSoundExperiment() {
   }
   const router = useRouter()
   function exportToAnalysis() {
-    if (trials.trials.value.length < 2) return
+    if (trials.trials.value.length < 2) { alert('تحتاج إلى تسجيل قراءتين على الأقل قبل التحليل'); return }
     const payload: AnalysisPayload = {
       sourceExperiment: 'speed-of-sound',
       sourceNameAr: 'سرعة الصوت',
       hasCalcTab: true,
-      readings: trials.trials.value.map(t => ({ L: t.tubeLength, f: t.frequency, T: t.temperature, lambda: t.wavelength, v: t.vMeasured })),
+      readings: trials.trials.value.map(tr => ({ L: tr.tubeLength, f: tr.frequency, T: tr.temperature, lambda: tr.wavelength, v: tr.vMeasured })),
       columns: [
         { key: 'L', label: 'L (m)', unit: 'm' },
         { key: 'f', label: 'f (Hz)', unit: 'Hz' },

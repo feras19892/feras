@@ -25,7 +25,7 @@ function set(key: string, val: number) {
   <div class="panel-body">
     <div v-if="mode === 'single'" class="param-row">
       <div class="param-header">
-        <span class="param-label">Slit width a</span>
+        <span class="param-label">{{ t('experiments.dfSlitWidth') }}</span>
         <span class="param-val">{{ params.slitWidth }} mm</span>
       </div>
       <input class="slider" type="range" min="0.02" max="1.0" step="0.01"
@@ -34,7 +34,7 @@ function set(key: string, val: number) {
     </div>
     <div v-else class="param-row">
       <div class="param-header">
-        <span class="param-label">Grating N (lines/mm)</span>
+        <span class="param-label">{{ t('experiments.dfGratingN') }}</span>
         <span class="param-val">{{ params.linesPerMm }}</span>
       </div>
       <input class="slider" type="range" min="100" max="2000" step="50"
@@ -43,7 +43,7 @@ function set(key: string, val: number) {
     </div>
     <div class="param-row">
       <div class="param-header">
-        <span class="param-label">Screen distance D</span>
+        <span class="param-label">{{ t('experiments.dfScreenDistance') }}</span>
         <span class="param-val cyan">{{ params.screenDistance }} m</span>
       </div>
       <input class="slider" type="range" min="0.1" max="5.0" step="0.1"

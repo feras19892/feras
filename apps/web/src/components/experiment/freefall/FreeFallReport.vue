@@ -18,30 +18,30 @@ const emit = defineEmits<{ (e: 'close'): void; (e: 'open-full-report'): void }>(
 const trialsEdit = shallowRef<FreeFallTrial[]>([])
 const isEditing = shallowRef(false)
 
-watch(() => props.trials, (v) => { if (!isEditing.value) trialsEdit.value = v.map(t => ({ ...t })) }, { immediate: true, deep: true })
+watch(() => props.trials, (v) => { if (!isEditing.value) trialsEdit.value = v.map(tr => ({ ...tr })) }, { immediate: true, deep: true })
 
 function updateTrial(i: number, key: keyof FreeFallTrial, raw: string) {
   const n = parseFloat(raw)
   if (Number.isNaN(n)) return
-  const t = { ...trialsEdit.value[i] }
-  ;(t as Record<string, unknown>)[key] = n
+  const tr = { ...trialsEdit.value[i] }
+  ;(tr as Record<string, unknown>)[key] = n
   if (key === 'timeSec') {
-    t.timeSquaredSec2 = n * n
-    t.gCalc = (2 * t.heightMeters) / (n * n)
-    t.err = Math.abs((t.gCalc - props.gTheoretical) / props.gTheoretical) * 100
+    tr.timeSquaredSec2 = n * n
+    tr.gCalc = (2 * tr.heightMeters) / (n * n)
+    tr.err = Math.abs((tr.gCalc - props.gTheoretical) / props.gTheoretical) * 100
   }
   if (key === 'heightMeters') {
-    t.gCalc = (2 * n) / (t.timeSec * t.timeSec)
-    t.err = Math.abs((t.gCalc - props.gTheoretical) / props.gTheoretical) * 100
+    tr.gCalc = (2 * n) / (tr.timeSec * tr.timeSec)
+    tr.err = Math.abs((tr.gCalc - props.gTheoretical) / props.gTheoretical) * 100
   }
-  trialsEdit.value[i] = t
+  trialsEdit.value[i] = tr
   trialsEdit.value = [...trialsEdit.value]
 }
 
 const hasData = computed(() => props.trials.length > 0)
 const gAvg = computed(() => {
   if (!trialsEdit.value.length) return null
-  const gs = trialsEdit.value.map(t => t.gCalc)
+  const gs = trialsEdit.value.map(tr => tr.gCalc)
   return gs.reduce((a, b) => a + b, 0) / gs.length
 })
 const errorPercent = computed(() => {

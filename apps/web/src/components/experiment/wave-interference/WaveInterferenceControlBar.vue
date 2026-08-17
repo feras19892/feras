@@ -12,6 +12,8 @@ const emit = defineEmits<{
   (e: 'undo'): void
   (e: 'redo'): void
 }>()
+
+function onClear() { emit('clearTrials') }
 </script>
 
 <template>
@@ -22,7 +24,7 @@ const emit = defineEmits<{
     <button class="ctrl-btn" :disabled="!canUndo" @click="emit('undo')">&#x21A9;<kbd>Ctrl+Z</kbd></button>
     <button class="ctrl-btn" :disabled="!canRedo" @click="emit('redo')">&#x21AA;<kbd>Ctrl+Y</kbd></button>
     <div class="ctrl-sep" />
-    <button class="ctrl-btn danger" @click="emit('clearTrials')">&#x1F5D1; {{ t('experiments.clearAll') }}</button>
+    <button class="ctrl-btn danger" @click="onClear">&#x1F5D1; {{ t('experiments.clearAll') }}</button>
     <button class="ctrl-btn" @click="emit('exportCsv')">&#x1F4BE; CSV</button>
     <button class="ctrl-btn" @click="emit('reset')">&#x1F504; {{ t('experiments.resetBtn') }}<kbd>R</kbd></button>
   </div>

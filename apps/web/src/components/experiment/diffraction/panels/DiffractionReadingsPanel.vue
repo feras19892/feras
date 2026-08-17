@@ -1,6 +1,8 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '../../../../composables/useI18n'
 import { wavelengthToColor } from '../../../../composables/diffraction/useDiffractionCalculations'
 
+const { t } = useI18n()
 
 interface Props {
   mode: 'single' | 'grating'
@@ -21,11 +23,11 @@ defineProps<Props>()
   <div class="panel-body">
     <div class="reading-group">
       <div v-if="mode === 'single'" class="reading-row">
-        <span class="reading-label">a — Slit width</span>
+        <span class="reading-label">{{ t('experiments.dfSlitWidth') }}</span>
         <span class="reading-val cyan">{{ slitWidth.toFixed(2) }} mm</span>
       </div>
       <div v-else class="reading-row">
-        <span class="reading-label">N — Lines per mm</span>
+        <span class="reading-label">{{ t('experiments.dfLinesPerMm') }}</span>
         <span class="reading-val cyan">{{ linesPerMm }}</span>
       </div>
       <div v-if="mode === 'single'" class="reading-row">
@@ -33,39 +35,39 @@ defineProps<Props>()
         <span class="reading-val amber">{{ (1 / slitWidth).toFixed(1) }} 1/mm</span>
       </div>
       <div class="reading-row">
-        <span class="reading-label">D — Screen distance</span>
+        <span class="reading-label">{{ t('experiments.dfScreenDistance') }}</span>
         <span class="reading-val cyan">{{ screenDistance.toFixed(2) }} m</span>
       </div>
     </div>
     <div v-if="mode === 'single'" class="reading-row highlight-row">
-      <span class="reading-label bold">w — Central width</span>
+      <span class="reading-label bold">{{ t('experiments.dfCentralWidth') }}</span>
       <span class="reading-val green bold">{{ centralWidth.toFixed(3) }} mm</span>
     </div>
     <div v-else class="reading-row highlight-row">
-      <span class="reading-label bold">θ₁ — 1st order angle</span>
+      <span class="reading-label bold">{{ t('experiments.dfFirstOrderAngle') }}</span>
       <span class="reading-val green bold">{{ firstOrderAngle.toFixed(3) }}°</span>
     </div>
     <div class="reading-group">
       <div v-if="mode === 'single'" class="reading-row">
-        <span class="reading-label">Central maximum</span>
-        <span class="reading-val green">Max intensity</span>
+        <span class="reading-label">{{ t('experiments.dfCentralMax') }}</span>
+        <span class="reading-val green">{{ t('experiments.dfMaxIntensity') }}</span>
       </div>
       <div v-else class="reading-row">
-        <span class="reading-label">y₁ — 1st order position</span>
+        <span class="reading-label">{{ t('experiments.dfFirstOrderPos') }}</span>
         <span class="reading-val green">{{ firstOrderY.toFixed(2) }} mm</span>
       </div>
       <div v-if="mode === 'single'" class="reading-row">
-        <span class="reading-label">1st dark fringe</span>
+        <span class="reading-label">{{ t('experiments.dfFirstDarkFringe') }}</span>
         <span class="reading-val">{{ darkFringes.find(f => f.m === 1)?.yMm.toFixed(3) ?? '—' }} mm</span>
       </div>
       <div v-else class="reading-row">
-        <span class="reading-label">Max visible order</span>
+        <span class="reading-label">{{ t('experiments.dfMaxOrder') }}</span>
         <span class="reading-val">m = {{ maxOrder }}</span>
       </div>
     </div>
     <div class="reading-group">
       <div class="reading-row">
-        <span class="reading-label">λ — Wavelength</span>
+        <span class="reading-label">{{ t('experiments.wavelength') }} λ</span>
         <span class="reading-val bold" :style="{ color: wavelengthToColor(wavelength) }">{{ wavelength }} nm</span>
       </div>
       <div v-if="mode === 'grating'" class="reading-row">

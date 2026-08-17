@@ -13,6 +13,8 @@ interface InsightsData {
   emptyClasses?: EmptyClass[];
   ungradedCount?: number;
   noReportsTeachers?: NoReportsTeacher[];
+  topUsers?: { id: number; name: string; role: string; report_count: number }[];
+  activeNow?: number;
 }
 interface ActivityItem {
   id: number;
@@ -23,7 +25,7 @@ interface ActivityItem {
   target_id?: number;
   created_at?: string;
 }
-interface ActivityStatsData { today: number; logins: number; signups: number; reports: number }
+interface ActivityStatsData { today: number; logins: number; signups: number; reports: number; classes: number; feedback: number; activeNow: number }
 
 const { t } = useI18n();
 const insights = ref<InsightsData | null>(null);
@@ -83,45 +85,59 @@ onMounted(load);
       <!-- Activity Stats -->
       <div v-if="activityStats" class="stats-row">
         <div class="mini-card">
-          <div class="mini-value">{{ activityStats.today }}</div>
-          <div class="mini-label">{{ t('admin.todayActivity') }}</div>
+          <div class="mini-value">{{ activityStats.activeNow }}</div>
+          <div class="mini-label">نشط الآن</div>
         </div>
         <div class="mini-card">
           <div class="mini-value">{{ activityStats.logins }}</div>
-          <div class="mini-label">{{ t('admin.todayLogins') }}</div>
+          <div class="mini-label">دخول اليوم</div>
         </div>
         <div class="mini-card">
           <div class="mini-value">{{ activityStats.signups }}</div>
-          <div class="mini-label">{{ t('admin.todaySignups') }}</div>
+          <div class="mini-label">تسجيل جديد</div>
         </div>
         <div class="mini-card">
           <div class="mini-value">{{ activityStats.reports }}</div>
-          <div class="mini-label">{{ t('admin.todayReports') }}</div>
+          <div class="mini-label">تقارير اليوم</div>
+        </div>
+        <div class="mini-card">
+          <div class="mini-value">{{ activityStats.classes }}</div>
+          <div class="mini-label">فصول جديدة</div>
+        </div>
+        <div class="mini-card">
+          <div class="mini-value">{{ activityStats.feedback }}</div>
+          <div class="mini-label">ملاحظات اليوم</div>
         </div>
       </div>
 
       <!-- Insights -->
       <div v-if="insights" class="insights-grid">
         <div class="insight-card warning" v-if="insights.inactiveUsers?.length">
-          <h4>{{ t('adminUser.inactiveUsers7') }}</h4>
+          <h4>مستخدمين غير نشطين (7 أيام)</h4>
           <ul>
             <li v-for="u in insights.inactiveUsers" :key="u.id">{{ u.name }} ({{ u.role }})</li>
           </ul>
         </div>
         <div class="insight-card warning" v-if="insights.emptyClasses?.length">
-          <h4>{{ t('adminUser.emptyClassesLabel') }}</h4>
+          <h4>فصول بدون طلاب</h4>
           <ul>
             <li v-for="c in insights.emptyClasses" :key="c.id">{{ c.name }} — {{ c.teacher_name }}</li>
           </ul>
         </div>
         <div class="insight-card alert" v-if="insights.ungradedCount">
-          <h4>{{ t('adminUser.pendingReports3') }}</h4>
-          <p>{{ insights.ungradedCount }} {{ t('admin.needsGrading') }}</p>
+          <h4>تقارير متأخرة (>3 أيام)</h4>
+          <p>{{ insights.ungradedCount }} تقرير يحتاج تصحيح</p>
         </div>
         <div class="insight-card info" v-if="insights.noReportsTeachers?.length">
-          <h4>{{ t('adminUser.teachersNoReportsLabel') }}</h4>
+          <h4>مدرسون بدون تقارير</h4>
           <ul>
             <li v-for="teacher in insights.noReportsTeachers" :key="teacher.id">{{ teacher.name }}</li>
+          </ul>
+        </div>
+        <div class="insight-card success" v-if="insights.topUsers?.length">
+          <h4>أكثر الطلاب نشاطاً (30 يوم)</h4>
+          <ul>
+            <li v-for="u in insights.topUsers" :key="u.id">{{ u.name }} — {{ u.report_count }} تقرير</li>
           </ul>
         </div>
       </div>
@@ -161,6 +177,7 @@ onMounted(load);
 .insight-card.warning { background: rgba(251,191,36,0.08); border-color: rgba(251,191,36,0.15); }
 .insight-card.alert { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.15); }
 .insight-card.info { background: rgba(59,130,246,0.08); border-color: rgba(59,130,246,0.15); }
+.insight-card.success { background: rgba(52,211,153,0.08); border-color: rgba(52,211,153,0.15); }
 .insight-card h4 { margin: 0 0 0.5rem; font-size: 0.9rem; }
 .insight-card ul { margin: 0; padding-inline-start: 1.2rem; font-size: 0.85rem; color: #cbd5e1; }
 .insight-card li { margin-bottom: 0.2rem; }

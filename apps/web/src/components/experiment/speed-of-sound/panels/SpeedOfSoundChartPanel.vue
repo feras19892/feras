@@ -15,8 +15,8 @@ const props = defineProps<Props>()
 
 // L vs 1/f scatter plot points
 const chartPoints = computed(() => props.trials
-  .filter(t => t.frequency > 0)
-  .map(t => ({ invF: 1 / t.frequency, L: t.tubeLength })))
+  .filter(tr => tr.frequency > 0)
+  .map(tr => ({ invF: 1 / tr.frequency, L: tr.tubeLength })))
 
 const chartBounds = computed(() => {
   const pts = chartPoints.value

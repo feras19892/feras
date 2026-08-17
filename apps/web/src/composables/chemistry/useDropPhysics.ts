@@ -81,9 +81,11 @@ export function handleDropExited(
     tLiq.chemicalId = sourceChemicalId;
     if (!isIndicator(sourceChemicalId)) {
       tLiq.label = sourceChemicalId;
-      tLiq.baseColor = tLiq.color;
       const chem = chemicals.find(c => c.id === sourceChemicalId);
       if (chem) {
+        tLiq.color = chem.color;
+        tLiq.opacity = chem.opacity;
+        tLiq.baseColor = chem.color;
         tLiq.ph = chem.ph ?? null;
       }
       if (!tLiq.reactants) tLiq.reactants = {};
@@ -101,6 +103,7 @@ export function handleDropExited(
   }
 
   receivingMap[target.uid] = true;
-  setTimeout(() => { delete receivingMap[target.uid]; }, 400);
+  const targetUid = target.uid;
+  setTimeout(() => { delete receivingMap[targetUid]; }, 400);
   if (selectedItemRef.value?.uid === target.uid) emit('select', target, buildToolState(target));
 }

@@ -25,7 +25,7 @@ const emit = defineEmits<{
   (e: 'update:speed', val: number): void
 }>()
 
-function onClear() { if (confirm(t('experiments.confirmClearAll'))) emit('clearTrials') }
+function onClear() { emit('clearTrials') }
 
 function incSpeed() { const next = Math.round((props.speed + 0.25) * 100) / 100; emit('update:speed', Math.min(3, next)) }
 function decSpeed() { const next = Math.round((props.speed - 0.25) * 100) / 100; emit('update:speed', Math.max(0.25, next)) }

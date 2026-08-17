@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { useExperimentTrials } from '../experiment/shared/useExperimentTrials'
 
 export interface FaradayTrial {
   id: number
@@ -12,54 +12,30 @@ export interface FaradayTrial {
 export function useFaradayTrials(
   paramsGetter: { get value(): { N: number; B: number; A: number; omega: number; emf: number } },
 ) {
-  const trials = ref<FaradayTrial[]>([])
-  const history = ref<FaradayTrial[][]>([])
-  const historyIndex = ref(-1)
-  let nextId = 1
-
-  function snapshot() {
-    if (historyIndex.value < history.value.length - 1) history.value = history.value.slice(0, historyIndex.value + 1)
-    history.value.push([...trials.value])
-    historyIndex.value++
-  }
+  const base = useExperimentTrials<FaradayTrial>({ storageKey: 'faraday_trials_v1' })
 
   function recordTrial() {
     const p = paramsGetter.value
-    const t: FaradayTrial = { id: nextId++, N: p.N, B: p.B, A: p.A, omega: p.omega, emf: p.emf }
-    snapshot()
-    trials.value.push(t)
-    save()
-  }
-  function removeTrial(id: number) { snapshot(); trials.value = trials.value.filter(t => t.id !== id); save() }
-  function clearTrials() { snapshot(); trials.value = []; nextId = 1; save() }
-
-  function undo() { if (canUndo()) { historyIndex.value--; trials.value = [...history.value[historyIndex.value]] } }
-  function redo() { if (canRedo()) { historyIndex.value++; trials.value = [...history.value[historyIndex.value]] } }
-  function canUndo() { return historyIndex.value > 0 }
-  function canRedo() { return historyIndex.value < history.value.length - 1 }
-
-  const STORAGE_KEY = 'faraday_trials_v1'
-  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(trials.value)) }
-  function autoLoad() {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) return
-    try {
-      const arr = JSON.parse(raw) as FaradayTrial[]
-      trials.value = arr
-      nextId = arr.length ? Math.max(...arr.map(t => t.id)) + 1 : 1
-      snapshot()
-    } catch { /* ignore */ }
+    base.addTrial({ N: p.N, B: p.B, A: p.A, omega: p.omega, emf: p.emf })
   }
 
   function exportCsv() {
-    const headers = 'ID,N,B(T),A(m2),omega(rad/s),emf(V)\n'
-    const rows = trials.value.map(t => `${t.id},${t.N},${t.B.toFixed(2)},${t.A.toFixed(3)},${t.omega.toFixed(1)},${t.emf.toFixed(2)}`).join('\n')
-    const blob = new Blob([headers + rows], { type: 'text/csv' })
-    const a = document.createElement('a')
-    a.href = URL.createObjectURL(blob)
-    a.download = 'faraday_trials.csv'
-    a.click()
+    base.exportCsv('faraday_trials.csv', [
+      ['ID', 'N', 'B(T)', 'A(m2)', 'omega(rad/s)', 'emf(V)'],
+      ...base.trials.value.map(tr => [tr.id, tr.N, tr.B.toFixed(2), tr.A.toFixed(3), tr.omega.toFixed(1), tr.emf.toFixed(2)]),
+    ])
   }
 
-  return { trials, recordTrial, removeTrial, clearTrials, undo, redo, canUndo, canRedo, autoLoad, exportCsv }
+  return {
+    trials: base.trials,
+    recordTrial,
+    removeTrial: base.removeTrial,
+    clearTrials: base.clearTrials,
+    undo: base.undo,
+    redo: base.redo,
+    canUndo: base.canUndo,
+    canRedo: base.canRedo,
+    autoLoad: base.autoLoad,
+    exportCsv,
+  }
 }

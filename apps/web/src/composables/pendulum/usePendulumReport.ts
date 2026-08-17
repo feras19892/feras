@@ -4,7 +4,7 @@ import { linearRegression } from '../../components/experiment/spring/linearRegre
 import type { PendulumTrial } from './usePendulumTrials'
 import type { LabReportTable, LabReportStat } from '../../utils/lab-report'
 
-interface PendulumReportInput { params: { length: number; angle: number; mass: number; g: number; theta0: number }; trials: { trials: { value: PendulumTrial[] }; trialStats: { value: { T_mean: number; T_std: number; g_mean: number; g_std: number } }; calcResult: { value: string } } }
+interface PendulumReportInput { params: { length: number; mass: number; g: number; theta0: number }; trials: { trials: { value: PendulumTrial[] }; trialStats: { value: { T_mean: number; T_std: number; g_mean: number; g_std: number } }; calcResult: { value: string } } }
 
 export function usePendulumReport() {
   const { t } = useI18n()
@@ -16,7 +16,7 @@ export function usePendulumReport() {
     const table: LabReportTable = {
       caption: t('experiments.pendulumReportCaption'),
       headers: ['#', 'L (m)', 'T (s)', 'f (Hz)', 'g (m/s²)'],
-      rows: trials.map((t, i: number) => [i + 1, t.length.toFixed(3), t.T.toFixed(3), t.f.toFixed(3), t.gCalc.toFixed(2)]),
+      rows: trials.map((trial, i: number) => [i + 1, trial.length.toFixed(3), trial.T.toFixed(3), trial.f.toFixed(3), trial.gCalc.toFixed(2)]),
     }
 
     const statsVal = ex.trials.trialStats.value

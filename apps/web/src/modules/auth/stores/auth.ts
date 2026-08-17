@@ -29,6 +29,18 @@ export const useAuthStore = defineStore('auth', () => {
     clearGuestState();
   }
 
+  // Runtime check: clear guest mode if it expires while app is open
+  if (guestMode.value && guestExpiresAt.value) {
+    const msUntilExpiry = guestExpiresAt.value - Date.now();
+    if (msUntilExpiry > 0) {
+      setTimeout(() => {
+        if (guestMode.value && guestExpiresAt.value && Date.now() > guestExpiresAt.value) {
+          clearGuestState();
+        }
+      }, msUntilExpiry + 1000);
+    }
+  }
+
   watch(user, (u) => {
     try { localStorage.setItem('auth_user', JSON.stringify(u)); } catch { /* ignore */ }
   }, { deep: true });
@@ -46,7 +58,6 @@ export const useAuthStore = defineStore('auth', () => {
   const isGuest = computed(() => guestMode.value);
   const isStudent = computed(() => role.value === 'student');
   const isTeacher = computed(() => role.value === 'teacher');
-  const isResearcher = computed(() => role.value === 'researcher');
   const isAdmin = computed(() => role.value === 'admin');
   const isSchool = computed(() => role.value === 'school' || !!schoolSession.value);
 
@@ -89,6 +100,13 @@ export const useAuthStore = defineStore('auth', () => {
     guestMode.value = true
     guestRole.value = role || null
     guestExpiresAt.value = Date.now() + 24 * 60 * 60 * 1000 // 24 hours
+
+    const msUntilExpiry = 24 * 60 * 60 * 1000;
+    setTimeout(() => {
+      if (guestMode.value && guestExpiresAt.value && Date.now() > guestExpiresAt.value) {
+        clearGuestState();
+      }
+    }, msUntilExpiry + 1000);
   }
 
   function selectClass(classId: string) {
@@ -105,7 +123,7 @@ export const useAuthStore = defineStore('auth', () => {
     user, schoolSession, loading, error,
     guestMode, guestRole, currentClassId, classes,
     isLoggedIn, isAuthenticated, role,
-    isGuest, isStudent, isTeacher, isResearcher, isAdmin, isSchool,
+    isGuest, isStudent, isTeacher, isAdmin, isSchool,
     setSchoolSession, clearSchoolSession,
     login: actions.login,
     registerWithRole: actions.registerWithRole,

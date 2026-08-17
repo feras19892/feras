@@ -113,7 +113,9 @@ export function useProjectileDraw(canvasRef: { value: HTMLCanvasElement | null }
     if (!canvas) return
     const ctx = canvas.getContext('2d')
     if (!ctx) return
-    const w = canvas.width, h = canvas.height
+    const rect = canvas.getBoundingClientRect()
+    const w = rect.width, h = rect.height
+    if (w === 0 || h === 0) return
     ctx.clearRect(0, 0, w, h)
 
     // Dark theme canvas background

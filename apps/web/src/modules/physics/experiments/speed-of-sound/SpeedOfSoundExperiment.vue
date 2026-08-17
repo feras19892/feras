@@ -1,7 +1,8 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useSpeedOfSoundExperiment } from '../../../../composables/speed-of-sound/useSpeedOfSoundExperiment'
 import { useI18n } from '../../../../composables/useI18n'
+import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import SpeedOfSoundMenuBar from '../../../../components/experiment/speed-of-sound/SpeedOfSoundMenuBar.vue'
 import SpeedOfSoundCanvas from '../../../../components/experiment/speed-of-sound/SpeedOfSoundCanvas.vue'
 import SpeedOfSoundPanelBody from '../../../../components/experiment/speed-of-sound/SpeedOfSoundPanelBody.vue'
@@ -10,10 +11,12 @@ import SpeedOfSoundControlBar from '../../../../components/experiment/speed-of-s
 import SpeedOfSoundHelpModal from '../../../../components/experiment/speed-of-sound/SpeedOfSoundHelpModal.vue'
 import SpeedOfSoundGuidePanel from '../../../../components/experiment/speed-of-sound/SpeedOfSoundGuidePanel.vue'
 import SpeedOfSoundOverlayPanels from '../../../../components/experiment/speed-of-sound/SpeedOfSoundOverlayPanels.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
+import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
 const ex = useSpeedOfSoundExperiment()
 const { t } = useI18n()
+const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)
 
@@ -21,7 +24,7 @@ function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return
   if (e.code === 'Space') { e.preventDefault(); ex.lab.togglePause() }
-  else if (e.key === 'r' || e.key === 'R') { if (confirm(t('experiments.resetConfirm'))) ex.resetSim() }
+  else if (e.key === 'r' || e.key === 'R') { confirmReset().then(ok => { if (ok) ex.resetSim() }) }
   else if (e.key === 's' || e.key === 'S') ex.trials.recordTrial()
   else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); if (e.shiftKey) ex.trials.redo(); else ex.trials.undo() }
   else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ex.trials.redo() }
@@ -37,14 +40,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <SpeedOfSoundMenuBar
       :title="t('experiments.expSpeedOfSound')"
       icon="&#x1F50A;"
-      experiment-route="/physics/waves/speed-of-sound"
-      experiment-name="Speed of Sound"
-      @toggle-panel="ex.layout.togglePanel"
       @show-all-panels="ex.layout.showAllPanels"
-      @export-csv="ex.trials.exportCsv"
-      @toggle-pause="ex.lab.togglePause"
-      @reset="ex.resetSim"
-      @record-trial="ex.trials.recordTrial"
       @toggle-help="helpOpen = !helpOpen"
       @analyze-results="ex.exportToAnalysis"
     />
@@ -197,6 +193,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       :percent-error="ex.lab.percentError.value"
     />
   </div>
+  <ResetConfirmModal />
 </template>
 
 <style scoped>

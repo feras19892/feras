@@ -1,17 +1,28 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useI18n } from '../../composables/useI18n'
 import { useAuthStore } from '../../modules/auth/stores/auth'
 import AccountSettingsModal from '../shared/AccountSettingsModal.vue'
 import { updateAvatar } from '../../services/enhancements.service'
 import type { StudentKPI, StudentReportRow } from '../../composables/student/useStudentDashboard'
 
-defineProps<{
+const props = defineProps<{
   kpi: StudentKPI
   recent: StudentReportRow[]
 }>()
 const { t } = useI18n()
 const auth = useAuthStore()
+
+const personalAvg = computed(() => {
+  const graded = props.recent.filter(r => r.status === 'graded' && r.grade !== null)
+  if (graded.length === 0) return null
+  return Math.round(graded.reduce((s, r) => s + (r.grade as number), 0) / graded.length)
+})
+
+const avgDiff = computed(() => {
+  if (personalAvg.value === null) return null
+  return props.kpi.avgGrade - personalAvg.value
+})
 
 const avatarUploading = ref(false)
 const avatarError = ref('')
@@ -89,7 +100,13 @@ function statusLabel(s: string): string {
       <div class="stat-card"><span class="stat-val">{{ kpi.totalReports }}</span><span class="stat-label">{{ t('dashboard.totalReports') }}</span></div>
       <div class="stat-card"><span class="stat-val">{{ kpi.gradedCount }}</span><span class="stat-label">{{ t('dashboard.graded') }}</span></div>
       <div class="stat-card"><span class="stat-val">{{ kpi.pendingCount }}</span><span class="stat-label">{{ t('dashboard.pending') }}</span></div>
-      <div class="stat-card highlight"><span class="stat-val">{{ kpi.avgGrade }}%</span><span class="stat-label">{{ t('dashboard.average') }}</span></div>
+      <div class="stat-card highlight">
+        <span class="stat-val">{{ kpi.avgGrade }}%</span>
+        <span class="stat-label">{{ t('dashboard.average') }}</span>
+        <span v-if="avgDiff !== null" :class="['avg-badge', avgDiff >= 0 ? 'above' : 'below']">
+          {{ avgDiff >= 0 ? '▲' : '▼' }} {{ Math.abs(avgDiff) }}% {{ avgDiff >= 0 ? t('dashboard.aboveRecentAvg', 'فوق متوسطك الأخير') : t('dashboard.belowRecentAvg', 'تحت متوسطك الأخير') }}
+        </span>
+      </div>
       <div class="stat-card highlight"><span class="stat-val">{{ kpi.bestGrade }}%</span><span class="stat-label">{{ t('dashboard.bestGrade') }}</span></div>
       <div class="stat-card"><span class="stat-val">{{ kpi.totalClasses }}</span><span class="stat-label">{{ t('dashboard.classes') }}</span></div>
     </div>
@@ -130,6 +147,9 @@ function statusLabel(s: string): string {
 .stat-val { display: block; font-size: 1.2rem; font-weight: 800; color: #67e8f9; }
 .stat-card.highlight .stat-val { color: #a5b4fc; }
 .stat-label { font-size: 0.7rem; color: #94a3b8; }
+.avg-badge { display: inline-block; margin-top: 0.25rem; padding: 0.1rem 0.4rem; border-radius: 999px; font-size: 0.62rem; font-weight: 700; }
+.avg-badge.above { background: rgba(34,197,94,0.12); color: #22c55e; }
+.avg-badge.below { background: rgba(248,113,113,0.12); color: #f87171; }
 .pc-header { margin-bottom: 0.6rem; }
 .pc-header h3 { margin: 0; font-size: 0.9rem; font-weight: 700; color: #e5e7eb; }
 .pc-empty { text-align: center; color: #64748b; padding: 1rem; font-size: 0.82rem; }

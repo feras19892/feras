@@ -112,8 +112,8 @@ export function useThinLensExperiment() {
 
   const regression = computed(() => {
     const pts = trials.trials.value
-      .filter((t) => t.imageDistance !== 0 && t.lensType === params.lensType)
-      .map((t) => ({ x: t.invDo, y: t.invDi }))
+      .filter((tr) => tr.imageDistance !== 0 && tr.lensType === params.lensType)
+      .map((tr) => ({ x: tr.invDo, y: tr.invDi }))
     return linearRegression(pts)
   })
 
@@ -174,17 +174,17 @@ export function useThinLensExperiment() {
   const router = useRouter()
   function exportToAnalysis() {
     const tList = trials.trials.value
-    if (tList.length === 0) { console.warn('[exportToAnalysis] no trials recorded'); return }
+    if (tList.length === 0) { alert('تحتاج إلى تسجيل قراءة واحدة على الأقل قبل التحليل'); return }
 
-    const readings = tList.map((t) => ({
-      lens_type: t.lensType,
-      f: t.focalLength,
-      do: t.objectDistance,
-      di: t.imageDistance,
-      ho: t.objectHeight,
-      hi: t.imageHeight,
-      inv_do: t.invDo,
-      inv_di: t.invDi,
+    const readings = tList.map((tr) => ({
+      lens_type: tr.lensType,
+      f: tr.focalLength,
+      do: tr.objectDistance,
+      di: tr.imageDistance,
+      ho: tr.objectHeight,
+      hi: tr.imageHeight,
+      inv_do: tr.invDo,
+      inv_di: tr.invDi,
     })) as Record<string, string | number>[]
 
     const payload: AnalysisPayload = {

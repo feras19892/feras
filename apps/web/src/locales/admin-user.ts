@@ -46,6 +46,7 @@ export const adminUser = {
     passwordResetSuccess: '✅ تم إعادة تعيين كلمة المرور',
     searchQuick: '🔍 بحث سريع عن مستخدم، فصل، تقرير...',
     search: '🔍 بحث...',
+    allRoles: 'كل الأدوار',
     addUser: '➕ إضافة',
     addUserTitle: '➕ إضافة مستخدم جديد',
     fullName: 'الاسم الكامل',
@@ -137,6 +138,7 @@ export const adminUser = {
     passwordResetSuccess: '✅ Password reset successfully',
     searchQuick: '🔍 Quick search for user, class, report...',
     search: '🔍 Search...',
+    allRoles: 'All Roles',
     addUser: '➕ Add',
     addUserTitle: '➕ Add New User',
     fullName: 'Full name',
@@ -228,6 +230,7 @@ export const adminUser = {
     passwordResetSuccess: '✅ Contraseña restablecida',
     searchQuick: '🔍 Búsqueda rápida de usuario, clase, informe...',
     search: '🔍 Buscar...',
+    allRoles: 'Todos los Roles',
     addUser: '➕ Añadir',
     addUserTitle: '➕ Añadir Nuevo Usuario',
     fullName: 'Nombre completo',
@@ -271,5 +274,4 @@ export const adminUser = {
     actionDeleteClass: '🗑️ Eliminar Clase',
     editProfile: '✏️ Editar Perfil',
     fillFields: 'Por favor complete todos los campos',
-  },
-} as const
+  }} as const

@@ -1,7 +1,5 @@
 import type { User, UserRole } from './user.js';
 
-export { User, UserRole };
-
 export interface JWTPayload {
   sub: string;
   email: string;

@@ -40,6 +40,7 @@ export const useAnalysisStore = defineStore('analysis', () => {
     mediumN2.value = data.mediumN2 ?? null;
     calculatedN2.value = data.calculatedN2 ?? null;
     expectedN2.value = data.expectedN2 ?? null;
+    reportDate.value = new Date().toLocaleDateString('ar-SA');
   }
 
   function updateCell(rowIndex: number, key: string, value: number) {

@@ -2,7 +2,10 @@
   "name": "my-modern-app",
   "private": true,
   "packageManager": "pnpm@9.0.0",
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "start": "node node_modules/turbo/bin/turbo run dev",
     "build": "turbo run build",
@@ -12,6 +15,7 @@
     "gen": "node toolbox/generators/index.js"
   },
   "devDependencies": {
+    "terser": "^5.50.0",
     "turbo": "^2.10.8",
     "typescript": "^5.4.0"
   },

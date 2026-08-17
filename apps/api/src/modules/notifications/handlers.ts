@@ -13,27 +13,60 @@ app.get('/stream', (c) => {
   const user = c.get('user');
   return streamSSE(c, async (stream) => {
     let aborted = false;
-    const cleanup = addSSEClient(user.id, stream.aborted as unknown as ReadableStreamDefaultController);
+    const fakeController = {
+      enqueue: (chunk: Uint8Array) => {
+        const text = new TextDecoder().decode(chunk);
+        let eventName = 'message';
+        let dataStr = '';
+        for (const line of text.trim().split('\n')) {
+          if (line.startsWith('event: ')) eventName = line.slice(7);
+          else if (line.startsWith('data: ')) dataStr = dataStr ? dataStr + '\n' + line.slice(6) : line.slice(6);
+        }
+        stream.writeSSE({ event: eventName, data: dataStr });
+      },
+      close: () => {},
+      error: () => {},
+      desiredSize: null,
+    } as unknown as ReadableStreamDefaultController;
+    const cleanup = addSSEClient(user.id, fakeController);
 
     // Send initial heartbeat
     await stream.writeSSE({ event: 'connected', data: JSON.stringify({ userId: user.id }) });
 
     // Heartbeat every 30s to keep connection alive
+    let heartbeatErrors = 0;
     const heartbeat = setInterval(async () => {
       if (aborted) return;
       try {
         await stream.writeSSE({ event: 'ping', data: String(Date.now()) });
+        heartbeatErrors = 0;
       } catch {
-        aborted = true;
+        heartbeatErrors++;
+        if (heartbeatErrors >= 3) {
+          aborted = true;
+          cleanup();
+          clearInterval(heartbeat);
+        }
       }
     }, 30000);
 
-    // Wait for abort
+    // Wait for abort or max lifetime
     await new Promise<void>((resolve) => {
+      // Auto-disconnect after 10 minutes to prevent socket exhaustion
+      const maxLifetime = setTimeout(() => {
+        if (aborted) return;
+        aborted = true;
+        cleanup();
+        clearInterval(heartbeat);
+        stream.writeSSE({ event: 'reconnect', data: '{} ' }).catch(() => {});
+        resolve();
+      }, 10 * 60 * 1000);
+
       stream.onAbort(() => {
         aborted = true;
         cleanup();
         clearInterval(heartbeat);
+        clearTimeout(maxLifetime);
         resolve();
       });
     });

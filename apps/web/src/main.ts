@@ -38,6 +38,8 @@ const auth = useAuthStore();
 const i18n = useI18nStore();
 
 (async () => {
+  app.mount('#app');
+
   try {
     await i18n.bootstrap();
   } catch (e) {
@@ -48,7 +50,6 @@ const i18n = useI18nStore();
   } catch (e) {
     if (import.meta.env.DEV) console.error('[main] auth.init failed:', e);
   }
-  app.mount('#app');
 
   if (import.meta.env.DEV) {
     console.log(
@@ -57,5 +58,17 @@ const i18n = useI18nStore();
       'color: #646cff; font-weight: bold;',
       'color: #42b883; font-weight: bold;'
     );
+  } else {
+    console.clear();
+    console.warn = () => {};
+    console.info = () => {};
+    console.debug = () => {};
+    console.log = () => {};
+  }
+
+  if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch((e) => {
+      if (import.meta.env.DEV) console.warn('[SW] registration failed:', e);
+    });
   }
 })();

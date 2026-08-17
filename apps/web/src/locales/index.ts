@@ -12,8 +12,17 @@ export const localeNames: Record<Locale, string> = {
 
 export async function loadLocaleMessages(locale: Locale): Promise<TranslationDict> {
   switch (locale) {
-    case 'ar': return (await import('./ar')).default as TranslationDict;
-    case 'en': return (await import('./en')).default as TranslationDict;
-    case 'es': return (await import('./es')).default as TranslationDict;
+    case 'ar': {
+      const [c, a, s, m] = await Promise.all([import('./ar-core'), import('./ar-admin'), import('./ar-science'), import('./ar-misc')]);
+      return { ...c.default, ...a.default, ...s.default, ...m.default } as TranslationDict;
+    }
+    case 'en': {
+      const [c, a, s, m] = await Promise.all([import('./en-core'), import('./en-admin'), import('./en-science'), import('./en-misc')]);
+      return { ...c.default, ...a.default, ...s.default, ...m.default } as TranslationDict;
+    }
+    case 'es': {
+      const [c, a, s, m] = await Promise.all([import('./es-core'), import('./es-admin'), import('./es-science'), import('./es-misc')]);
+      return { ...c.default, ...a.default, ...s.default, ...m.default } as TranslationDict;
+    }
   }
 }

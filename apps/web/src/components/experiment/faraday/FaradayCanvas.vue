@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 
 const props = defineProps<{
   N: number
@@ -73,7 +76,7 @@ function draw() {
   ctx.fillStyle = 'rgba(251,191,36,0.1)'; ctx.fillRect(-coilW / 2, -coilH / 2, coilW, coilH)
   // Turns
   ctx.fillStyle = '#fbbf24'; ctx.font = `${s(7)}px sans-serif`
-  ctx.fillText(`${props.N} turns`, 0, 0)
+  ctx.fillText(`${props.N} ${t('experiments.farTurnsShort')}`, 0, 0)
   ctx.restore()
 
   // Labels
@@ -83,9 +86,9 @@ function draw() {
   ctx.fillText(`EMF = ${props.emf.toFixed(2)} V`, cx, cy + s(60) + s(26))
 
   const labels: Record<string, { text: string; color: string }> = {
-    ready: { text: '⚡ جاهز — اضغط Start', color: '#64748b' },
-    running: { text: '🔄 جاري الدوران...', color: '#fbbf24' },
-    done: { text: '✅ اكتمل', color: '#22c55e' },
+    ready: { text: t('experiments.farReady'), color: '#64748b' },
+    running: { text: t('experiments.farRunning'), color: '#fbbf24' },
+    done: { text: t('experiments.farDone'), color: '#22c55e' },
   }
   const pl = labels[props.phase]
   ctx.fillStyle = pl.color; ctx.font = `bold ${s(12)}px sans-serif`

@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 
 const props = defineProps<{
   mWater: number
@@ -185,20 +188,20 @@ function draw() {
   // === PHASE LABEL (top center) ===
   ctx.textAlign = 'center'
   const phaseLabels: Record<string, { text: string; color: string }> = {
-    ready: { text: '🔥 جاهز — اضغط Start', color: '#64748b' },
-    dropping: { text: '⬇️ إسقاط المعدن...', color: '#fbbf24' },
-    mixing: { text: '🔥 خلط — انتقال الحرارة', color: '#22c55e' },
-    done: { text: '✅ اكتمل التوازن الحراري', color: '#5B8DB8' },
+    ready: { text: t('experiments.calPhaseReady'), color: '#64748b' },
+    dropping: { text: t('experiments.calPhaseDropping'), color: '#fbbf24' },
+    mixing: { text: t('experiments.calPhaseMixing'), color: '#22c55e' },
+    done: { text: t('experiments.calPhaseDone'), color: '#5B8DB8' },
   }
   const pl = phaseLabels[props.phase]
   ctx.fillStyle = pl.color; ctx.font = `bold ${s(12)}px sans-serif`
   ctx.fillText(pl.text, cx, s(20))
   ctx.textAlign = 'start'
 
-  // bottom info (Arabic)
+  // bottom info
   ctx.fillStyle = '#8B95A5'; ctx.font = `${s(8)}px sans-serif`
-  ctx.fillText(`💧 ماء ${props.mWater.toFixed(3)}kg من ${props.tWater}°C → ${Math.round(displayWaterTemp)}°C`, s(10), H - s(10))
-  ctx.fillText(`🔩 معدن ${props.mMetal.toFixed(3)}kg من ${props.tMetal}°C → ${Math.round(displayMetalTemp)}°C`, s(200), H - s(10))
+  ctx.fillText(`💧 ${t('experiments.calWaterLabel')} ${props.mWater.toFixed(3)}kg ${props.tWater}°C → ${Math.round(displayWaterTemp)}°C`, s(10), H - s(10))
+  ctx.fillText(`🔩 ${t('experiments.calMetalLabel')} ${props.mMetal.toFixed(3)}kg ${props.tMetal}°C → ${Math.round(displayMetalTemp)}°C`, s(200), H - s(10))
   ctx.fillText(`Tf = ${props.tf.toFixed(1)}°C`, s(390), H - s(10))
 }
 

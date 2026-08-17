@@ -2,7 +2,7 @@ import { watch, onMounted, onUnmounted } from 'vue'
 import { useSpringLab } from './useSpringLab'
 import { useSpringLayout } from './useSpringLayout'
 import { useSpringTrials } from './useSpringTrials'
-import { useSpringExperimentState, useSpringExperimentComputed } from './useSpringExperimentState'
+import { useSpringExperimentState, useSpringExperimentComputed, type SpringStaticReading } from './useSpringExperimentState'
 import { useSpringExperimentActions } from './useSpringExperimentActions'
 
 export function useSpringExperiment() {
@@ -30,7 +30,6 @@ export function useSpringExperiment() {
   }, { deep: true })
 
   onMounted(() => {
-    localStorage.removeItem('spring:layout:v1')
     layout.applyPersistedLayout()
     trials.autoLoad()
     try {
@@ -41,7 +40,7 @@ export function useSpringExperiment() {
         if (Array.isArray(parsed.staticReadings)) {
           state.staticReadings.value = parsed.staticReadings.filter((r: Record<string, unknown>) =>
             r && typeof r.mass === 'number' && r.mass >= 0 && r.mass <= 20
-          )
+          ) as SpringStaticReading[]
         }
       }
     } catch { /* ignore */ }

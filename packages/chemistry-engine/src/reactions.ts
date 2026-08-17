@@ -4,7 +4,7 @@ import type { LiquidState } from './types.js';
 
 // pKa values for acids (lower = stronger)
 const acidPKa: Record<string, number> = {
-  hcl: -7, h2so4: -3, hno3: -1.4, ch3cooh: 4.76, h2o2: 11.6,
+  hcl: -7, h2so4: -3, hno3: -1.4, ch3cooh: 4.76,
 };
 // pKb values for bases (lower = stronger)
 const basePKb: Record<string, number> = {
@@ -22,6 +22,7 @@ export function calculateTitrationPh(
   baseId: string,
   acidConc?: number,
   baseConc?: number,
+  totalVolume?: number,
 ): number {
   const aConc = acidConc ?? 0.1;
   const bConc = baseConc ?? 0.1;
@@ -30,7 +31,7 @@ export function calculateTitrationPh(
   const acidMoles = acidVol * aConc;
   const baseMoles = baseVol * bConc;
 
-  const totalVol = acidVol + baseVol;
+  const totalVol = totalVolume ?? (acidVol + baseVol);
   if (totalVol <= 0) return 7.0;
 
   const excess = baseMoles - acidMoles;
@@ -63,11 +64,8 @@ export function calculateTitrationPh(
       const oh = Math.sqrt(kb * ohConc);
       return Math.min(13, 14 + Math.log10(Math.max(oh, 1e-14)));
     }
-    // Strong base excess
-    if (ohConc < 0.001) return 7.0 + ohConc * 2000;
-    if (ohConc < 0.01) return 9.0 + ohConc * 300;
-    if (ohConc < 0.1) return 11.0 + ohConc * 20;
-    return 13.0;
+    // Strong base excess: pOH = -log[OH-], pH = 14 - pOH
+    return Math.min(13, 14 + Math.log10(Math.max(ohConc, 1e-14)));
   } else {
     // ===== BEFORE EQUIVALENCE: excess acid =====
     const remainingAcid = Math.abs(excess);
@@ -90,12 +88,9 @@ export function calculateTitrationPh(
       return Math.max(0, -Math.log10(Math.max(h, 1e-14)));
     }
 
-    // Strong acid excess
+    // Strong acid excess: pH = -log[H+]
     const hConc = remainingAcid / totalVol;
-    if (hConc < 0.001) return 7.0 - hConc * 2000;
-    if (hConc < 0.01) return 5.0 - hConc * 300;
-    if (hConc < 0.1) return 3.0 - hConc * 20;
-    return 1.0;
+    return Math.max(0, -Math.log10(Math.max(hConc, 1e-14)));
   }
 }
 

@@ -10,7 +10,7 @@ const experimentMap: Record<string, () => Promise<any>> = {
   'freefall': () => import('./experiments/freefall/FreeFallExperiment.vue'),
   'inclined': () => import('./experiments/inclined/InclinedExperiment.vue'),
   'collision': () => import('./experiments/collision/CollisionExperiment.vue'),
-  'lever': () => import('./experiments/lever/LeverExperiment.vue'),
+  'netforce': () => import('./experiments/netforce/NetForceExperiment.vue'),
   'light-ray': () => import('./experiments/lightray/LightRayExperiment.vue'),
   'thin-lens': () => import('./experiments/thinlens/ThinLensExperiment.vue'),
   'mirrors': () => import('./experiments/mirror/MirrorExperiment.vue'),
@@ -23,6 +23,8 @@ const experimentMap: Record<string, () => Promise<any>> = {
   'solenoid': () => import('./experiments/solenoid/SolenoidExperiment.vue'),
   'lorentz-force': () => import('./experiments/lorentz-force/LorentzForceExperiment.vue'),
   'torque-coil': () => import('./experiments/torque-coil/TorqueCoilExperiment.vue'),
+  'biot-savart': () => import('./experiments/biot-savart/BiotSavartExperiment.vue'),
+  'faraday': () => import('./experiments/faraday/FaradayExperiment.vue'),
   'faraday-law': () => import('./experiments/faraday-law/FaradayLawExperiment.vue'),
   'generator': () => import('./experiments/generator/GeneratorExperiment.vue'),
   'magnetic-flux': () => import('./experiments/magnetic-flux/MagneticFluxExperiment.vue'),
@@ -45,7 +47,7 @@ export function loadExperiment(id: string) {
   return defineAsyncComponent({
     loader,
     loadingComponent: () => import('./experiment-template/ExperimentShell.vue'),
-    errorComponent: () => import('./experiment-template/ExperimentShell.vue'),
+    errorComponent: () => import('./experiment-template/ExperimentError.vue'),
     onError(error) {
       if (import.meta.env.DEV) console.error(`Failed to load experiment "${id}":`, error);
     },

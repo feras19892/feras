@@ -9,7 +9,7 @@ const { t } = useI18n()
 const props = defineProps<{ trials: PendulumTrial[]; gTheoretical: number }>()
 const emit = defineEmits<{ (e: 'close'): void; (e: 'open-full-report'): void }>()
 
-const gAvg = computed(() => { if (!props.trials.length) return null; const gs = props.trials.map(t => t.gCalc); return gs.reduce((a, b) => a + b, 0) / gs.length })
+const gAvg = computed(() => { if (!props.trials.length) return null; const gs = props.trials.map(tr => tr.gCalc); return gs.reduce((a, b) => a + b, 0) / gs.length })
 const errorPercent = computed(() => { if (gAvg.value === null) return null; return Math.abs((gAvg.value - props.gTheoretical) / props.gTheoretical) * 100 })
 
 const sourcesOfError = [

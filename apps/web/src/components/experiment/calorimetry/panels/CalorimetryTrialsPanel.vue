@@ -24,8 +24,8 @@ const emit = defineEmits<{ (e: 'remove', id: number): void; (e: 'clear'): void }
     </table>
     <div v-else class="no-trials">
       <div class="no-icon">📝</div>
-      <div class="no-title">لا توجد تجارب</div>
-      <div class="no-hint">اضغط Start → Record بعد كل تشغيل</div>
+      <div class="no-title">{{ t('experiments.noTrials') }}</div>
+      <div class="no-hint">{{ t('experiments.calNoTrialsHint') }}</div>
     </div>
     <button v-if="trials.length" class="clear-btn" @click="emit('clear')">{{ t('experiments.clearAll') }}</button>
   </div>

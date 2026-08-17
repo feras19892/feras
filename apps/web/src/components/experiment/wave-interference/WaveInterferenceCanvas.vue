@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 
 const props = defineProps<{
   mode?: 'ripple' | 'young' | 'sources'
@@ -18,6 +21,7 @@ const W = 800, H = 400
 let time = 0
 let animId = 0
 let lastTs = 0
+let resizeObs: ResizeObserver | null = null
 
 function getCtx() {
   const c = canvasRef.value
@@ -61,7 +65,7 @@ function draw() {
   ctx.strokeStyle = '#2D3645'; ctx.lineWidth = 2
   ctx.strokeRect(screenX - 4, 30, 8, H - 60)
   ctx.fillStyle = '#8B95A5'; ctx.font = 'bold 11px sans-serif'
-  ctx.fillText('Screen', screenX - 18, 22)
+  ctx.fillText(t('experiments.wiScreen'), screenX - 18, 22)
 
   /* === FRINGE PATTERN === */
   if (props.constructive.length) {
@@ -104,11 +108,11 @@ function draw() {
 
   /* === LEGEND === */
   ctx.fillStyle = '#8B95A5'; ctx.font = '11px sans-serif'
-  ctx.fillText('●  Constructive (bright)', W - 200, 30)
-  ctx.fillStyle = '#475569'; ctx.fillText('●  Destructive (dark)', W - 200, 48)
+  ctx.fillText(t('experiments.wiConstructive'), W - 200, 30)
+  ctx.fillStyle = '#475569'; ctx.fillText(t('experiments.wiDestructive'), W - 200, 48)
 
   /* === MODE LABEL === */
-  const modeLabel = props.mode === 'ripple' ? 'Ripple Tank' : props.mode === 'young' ? "Young's Double Slit" : 'Two Wave Sources'
+  const modeLabel = props.mode === 'ripple' ? t('experiments.wiRippleTank') : props.mode === 'young' ? t('experiments.wiYoungSlits') : t('experiments.wiTwoSources')
   ctx.fillStyle = '#5B8DB8'; ctx.font = 'bold 12px sans-serif'
   ctx.fillText(modeLabel, 15, H - 10)
 }
@@ -127,8 +131,20 @@ watch(() => props.running, (running) => {
 
 watch(() => [props.mode, props.sourceDistance, props.wavelength, props.frequency, props.amplitudeMap.length], draw, { deep: true })
 
-onMounted(() => { draw(); animId = requestAnimationFrame(loop) })
-onUnmounted(() => cancelAnimationFrame(animId))
+onMounted(() => {
+  const c = canvasRef.value; if (!c) return
+  const dpr = window.devicePixelRatio || 1
+  c.width = W * dpr; c.height = H * dpr
+  const ctx = c.getContext('2d'); if (ctx) ctx.scale(dpr, dpr)
+  resizeObs = new ResizeObserver(() => {
+    const parent = c.parentElement; if (!parent) return
+    const pw = parent.clientWidth, ph = parent.clientHeight
+    c.style.width = pw + 'px'; c.style.height = ph + 'px'
+  })
+  resizeObs.observe(c.parentElement!)
+  draw(); animId = requestAnimationFrame(loop)
+})
+onUnmounted(() => { cancelAnimationFrame(animId); if (resizeObs) resizeObs.disconnect() })
 </script>
 
 <template>

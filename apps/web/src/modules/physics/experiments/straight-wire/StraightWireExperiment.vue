@@ -8,7 +8,7 @@ import StraightWireCanvas from '../../../../components/experiment/electromagneti
 import StraightWireParamPanel from '../../../../components/experiment/electromagnetism/StraightWireParamPanel.vue'
 import StraightWireReadingsPanel from '../../../../components/experiment/electromagnetism/StraightWireReadingsPanel.vue'
 import StraightWireDataPanel from '../../../../components/experiment/electromagnetism/StraightWireDataPanel.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import StraightWireGuidePanel from '../../../../components/experiment/electromagnetism/StraightWireGuidePanel.vue'
 import ElectromagnetismHelpModal from '../../../../components/experiment/electromagnetism/ElectromagnetismHelpModal.vue'
 import { ref } from 'vue'
@@ -35,13 +35,6 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <MenuBar
       :title="t('experiments.swTitle')"
       icon="📏"
-      experiment-route="/physics/electromagnetism/straight-wire"
-      :experiment-name="t('experiments.swTitle')"
-      @export-csv="ex.exportCsv"
-      @toggle-pause="ex.togglePause"
-      @reset="ex.resetSim"
-      @record-trial="ex.recordTrial"
-      @analyze-results="ex.exportToAnalysis"
       @toggle-help="helpOpen = !helpOpen"
     />
 

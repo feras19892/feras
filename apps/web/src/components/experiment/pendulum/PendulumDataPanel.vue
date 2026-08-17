@@ -21,7 +21,7 @@ const tableHeaders = ['#', 'L', 'T', 'f', 'ω', 'gcalc', t('experiments.error')]
               <td>{{ tr.f.toFixed(2) }}</td><td>{{ tr.omega.toFixed(2) }}</td><td>{{ tr.gCalc.toFixed(2) }}</td><td>{{ tr.err.toFixed(2) }}%</td>
               <td><button class="btn-danger small" @click="emit('remove', tr.id)">&#xD7;</button></td>
             </tr>
-            <tr v-if="!trials.length"><td colspan="10" class="empty-msg">{{ t('experiments.noMeasurements') }}</td></tr>
+            <tr v-if="!trials.length"><td colspan="8" class="empty-msg">{{ t('experiments.noMeasurements') }}</td></tr>
           </tbody>
         </table>
       </div>

@@ -1,22 +1,23 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, computed, defineAsyncComponent } from 'vue';
+import { ref, onMounted, computed, defineAsyncComponent, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../modules/auth/stores/auth';
 import { useI18n } from '../composables/useI18n';
+import { useGoToBranch } from '../composables/useGoToBranch';
 import { useAdmin } from '../composables/useAdmin';
-import { useNotifications } from '../composables/useNotifications';
-import AdminDashboard from '../components/admin/AdminDashboard.vue';
-import AdminGlobalSearch from '../components/admin/AdminGlobalSearch.vue';
+import { useUrlTab } from '../composables/useUrlTab';
+import { useAdminDashboard } from '../components/admin/dashboard/useAdminDashboard';
+import AdminSidebar from '../components/admin/AdminSidebar.vue';
+import type { NavGroup } from '../components/admin/AdminSidebar.vue';
+import AdminTopHeader from '../components/admin/AdminTopHeader.vue';
+import TabSystemActivity from '../components/admin/tabs/TabSystemActivity.vue';
+import TabAcademicPerf from '../components/admin/tabs/TabAcademicPerf.vue';
+import TabAlertsReports from '../components/admin/tabs/TabAlertsReports.vue';
 import SystemBanner from '../components/shared/SystemBanner.vue';
-import AppSidebar from '../components/shared/AppSidebar.vue';
-import type { SidebarGroup } from '../components/shared/AppSidebar.vue';
-import NotificationBell from '../components/shared/NotificationBell.vue';
-import NotificationToast from '../components/shared/NotificationToast.vue';
-import AccountSettingsModal from '../components/shared/AccountSettingsModal.vue';
-import NameRequestBadge from '../components/shared/NameRequestBadge.vue';
 import BranchCard from '../components/ui/BranchCard.vue';
 import { fetchHomeCards } from '../services/home.service';
 import { useApprovalBadge } from '../composables/useApprovalBadge';
+import { useSubTabs } from '../composables/useSubTabs';
 import type { HomeCard } from '../types/physics';
 
 const AdminUserManager = defineAsyncComponent(() => import('../components/admin/AdminUserManager.vue'));
@@ -37,67 +38,58 @@ const EmergencyControls = defineAsyncComponent(() => import('../components/admin
 const AdminEnhancements = defineAsyncComponent(() => import('../components/admin/AdminEnhancements.vue'));
 const ApprovalPanel = defineAsyncComponent(() => import('../components/shared/ApprovalPanel.vue'));
 const AnnouncementsPanel = defineAsyncComponent(() => import('../components/shared/AnnouncementsPanel.vue'));
+const AdminMessages = defineAsyncComponent(() => import('../components/admin/AdminMessages.vue'));
+const AdminBackupPanel = defineAsyncComponent(() => import('../components/admin/AdminBackupPanel.vue'));
 
 const router = useRouter();
+const { goToBranch } = useGoToBranch();
 const auth = useAuthStore();
 const { t, locale } = useI18n();
-if (!auth.isAdmin) { router.push('/home'); }
 
-type Section = 'overview' | 'experiments' | 'users' | 'classes' | 'reports' | 'schools' | 'requests' | 'approvals' | 'announcements' | 'health' | 'settings' | 'export' | 'feedback' | 'audit' | 'chat' | 'smart' | 'detailed' | 'emergency' | 'enhancements';
-const active = ref<Section>('overview');
+type Section = 'overview' | 'users' | 'academics' | 'system';
+type DashTab = 'system' | 'academic' | 'alerts' | 'experiments';
+type UsersSub = 'users' | 'requests' | 'approvals';
+type AcademicsSub = 'schools' | 'classes' | 'reports' | 'detailed' | 'smart' | 'experiments';
+type SystemSub = 'health' | 'audit' | 'emergency' | 'chat' | 'messages' | 'feedback' | 'announcements' | 'export' | 'enhancements' | 'settings' | 'backup';
+
+const validSections: Section[] = ['overview', 'users', 'academics', 'system'];
+const active = useUrlTab('tab', 'overview', validSections) as Ref<Section>;
+const dashTab = useUrlTab('dash', 'system', ['system', 'academic', 'alerts', 'experiments']) as Ref<DashTab>;
+const { subTab: usersSub, setSubTab: setUsersSub } = useSubTabs<UsersSub>('users', ['users', 'requests', 'approvals']);
+const { subTab: academicsSub, setSubTab: setAcademicsSub } = useSubTabs<AcademicsSub>('schools', ['schools', 'classes', 'reports', 'detailed', 'smart', 'experiments']);
+const { subTab: systemSub, setSubTab: setSystemSub } = useSubTabs<SystemSub>('health', ['health', 'audit', 'emergency', 'chat', 'messages', 'feedback', 'announcements', 'export', 'enhancements', 'settings', 'backup']);
 const selectedUserId = ref<number | null>(null);
 const sidebarCollapsed = ref(false);
+const globalSearchQuery = ref('');
 const cards = ref<HomeCard[]>([]);
 const { pendingCount: approvalPendingCount } = useApprovalBadge();
 
-const groups = computed<SidebarGroup[]>(() => [
-  {
-    id: 'main',
-    title: t('shared.navHome'),
-    icon: '🏠',
-    items: [
-      { id: 'overview', icon: '📊', label: t('shared.navOverview') },
-      { id: 'experiments', icon: '🔬', label: t('shared.navExperiments') },
-    ],
-  },
-  {
-    id: 'manage',
-    title: t('shared.navManage'),
-    icon: '👥',
-    items: [
-      { id: 'users', icon: '👥', label: t('shared.navUsers'), badge: users.value.length || undefined },
-      { id: 'classes', icon: '📚', label: t('shared.navClasses'), badge: classes.value.length || undefined },
-      { id: 'reports', icon: '📄', label: t('shared.navReports'), badge: reports.value.length || undefined },
-      { id: 'schools', icon: '🏫', label: t('shared.navSchools') },
-      { id: 'requests', icon: '📋', label: t('shared.navRequests') },
-      { id: 'approvals', icon: '✅', label: t('shared.navApprovals'), badge: approvalPendingCount.value > 0 ? approvalPendingCount.value : undefined },
-    ],
-  },
-  {
-    id: 'comm',
-    title: t('shared.navComm'),
-    icon: '💬',
-    items: [
-      { id: 'announcements', icon: '📢', label: t('shared.navAnnouncements') },
-      { id: 'feedback', icon: '💬', label: t('shared.navFeedback') },
-      { id: 'chat', icon: '🖥️', label: t('shared.navChat') },
-    ],
-  },
-  {
-    id: 'system',
-    title: t('shared.navSystem'),
-    icon: '🖥️',
-    items: [
-      { id: 'smart', icon: '🧠', label: t('shared.navSmart') },
-      { id: 'detailed', icon: '📈', label: t('shared.navDetailed') },
-      { id: 'enhancements', icon: '✨', label: t('shared.navAdvancedFeatures') },
-      { id: 'health', icon: '🩺', label: t('shared.navHealth') },
-      { id: 'emergency', icon: '🚨', label: t('shared.navEmergency') },
-      { id: 'audit', icon: '📜', label: t('shared.navAudit') },
-      { id: 'export', icon: '📤', label: t('shared.navExport') },
-      { id: 'settings', icon: '⚙️', label: t('shared.navSettings') },
-    ],
-  },
+const {
+  loading, errorMsg,
+  users, classes, reports, stats,
+  loadAll, handleRemoveUser, handleChangeRole, handleAddUser, handleRemoveClass,
+} = useAdmin();
+
+const statsComputed = computed(() => stats.value);
+const {
+  detailed, health, insights, loading: dashLoading, load: dashLoad,
+  usersByRole, topSchools, topClasses, completionRate, gradingRate, activityRate,
+  systemStatus, totalAlerts, hasAlerts, recentActivityList, healthTables,
+} = useAdminDashboard(statsComputed);
+
+const groups = computed<NavGroup[]>(() => [
+  { id: 'dashboard', title: t('shared.adminGroupDashboard'), icon: '🏠', items: [
+    { id: 'overview', icon: '📊', label: t('shared.navOverview') },
+  ]},
+  { id: 'users', title: t('shared.adminGroupUsers'), icon: '👥', items: [
+    { id: 'users', icon: '👥', label: t('shared.navUsers'), badge: users.value.length || undefined },
+  ]},
+  { id: 'academics', title: t('shared.adminGroupAcademics'), icon: '🏫', items: [
+    { id: 'academics', icon: '🏫', label: t('shared.navSchools') },
+  ]},
+  { id: 'system', title: t('shared.adminGroupSystem'), icon: '🛡️', items: [
+    { id: 'system', icon: '🛡️', label: t('shared.navHealth'), badge: approvalPendingCount.value > 0 ? approvalPendingCount.value : undefined },
+  ]},
 ]);
 
 const activeLabel = computed(() => {
@@ -108,38 +100,29 @@ const activeLabel = computed(() => {
   return '';
 });
 
-const { notifications } = useNotifications();
-const toastShow = ref(false);
-const toastTitle = ref('');
-const toastMessage = ref('');
-const toastType = ref<'info' | 'success' | 'warning' | 'error'>('info');
-
-watch(notifications, (val, old) => {
-  if (val.length > (old?.length || 0)) {
-    const latest = val[0];
-    toastTitle.value = latest?.title || t('common.notifications');
-    toastMessage.value = latest?.message || '';
-    toastShow.value = true;
-  }
-}, { deep: false });
-
-const {
-  loading, errorMsg, toast,
-  users, classes, reports, feedback, stats,
-  loadAll, handleRemoveUser, handleChangeRole, handleAddUser, handleRemoveClass,
-} = useAdmin();
-
-function select(s: Section) { selectedUserId.value = null; active.value = s; }
+function select(s: string) { selectedUserId.value = null; active.value = s as Section; }
 function openUserDetail(id: number) { selectedUserId.value = id; }
 function closeUserDetail() { selectedUserId.value = null; }
-function selectClass(_id: string) { select('classes'); }
-function selectReport(id: number) { router.push(`/report/${id}`); }
 
-function goToBranch(branchId: string) {
-  if (branchId === 'physics') router.push('/physics');
-  if (branchId === 'chemistry') router.push('/chemistry');
-  if (branchId === 'mathematics') router.push('/math');
-  if (branchId === 'general') router.push('/biology');
+function onGlobalSearch(q: string) {
+  const query = q.trim();
+  if (!query) return;
+  const queryLower = query.toLowerCase();
+  globalSearchQuery.value = query;
+  if (users.value.some(u => u.name.toLowerCase().includes(queryLower) || u.email.toLowerCase().includes(queryLower))) {
+    active.value = 'users'; setUsersSub('users');
+  } else if (classes.value.some(c => c.name.toLowerCase().includes(queryLower))) {
+    active.value = 'academics'; setAcademicsSub('classes');
+  } else if (reports.value.some(r => r.student_name?.toLowerCase().includes(queryLower) || r.experiment_name?.toLowerCase().includes(queryLower))) {
+    active.value = 'academics'; setAcademicsSub('reports');
+  } else {
+    active.value = 'users'; setUsersSub('users');
+  }
+}
+
+function goBackToOverview() {
+  selectedUserId.value = null;
+  active.value = 'overview';
 }
 
 async function loadCards() {
@@ -147,6 +130,7 @@ async function loadCards() {
 }
 
 const dateLocaleStr = computed(() => locale.value === 'ar' ? 'ar-SA' : locale.value === 'es' ? 'es-ES' : 'en-US')
+const dateStr = computed(() => new Date().toLocaleDateString(dateLocaleStr.value, { weekday: 'long', day: 'numeric', month: 'long' }))
 
 const translatedCards = computed(() => cards.value.map(card => ({
   ...card,
@@ -155,200 +139,121 @@ const translatedCards = computed(() => cards.value.map(card => ({
   stats: t(`dashboard.${card.id}Stats`),
 })))
 
-onMounted(() => {
-  loadAll();
-  loadCards();
+onMounted(async () => {
+  if (!auth.isAdmin) { router.push('/home'); return; }
+  await auth.fetchMe();
+  await Promise.all([loadCards(), dashLoad()]);
 });
 </script>
 
 <template>
   <div class="admin-layout">
     <SystemBanner />
-    <AppSidebar
+    <AdminSidebar
       :groups="groups"
       :active-id="active"
-      role="admin"
       :user-name="auth.user?.name || ''"
       :collapsed="sidebarCollapsed"
-      @select="select($event as Section)"
+      @select="select($event)"
       @home="router.push({ path: '/home', query: { view: 'experiments' } })"
       @logout="auth.logout(); router.push('/')"
       @toggle-collapse="sidebarCollapsed = !sidebarCollapsed"
     />
 
     <div class="admin-main">
-      <!-- Top Bar -->
-      <header class="topbar">
-        <div class="topbar-left">
-          <h1 class="topbar-title">{{ activeLabel }}</h1>
-          <span class="topbar-date">{{ new Date().toLocaleDateString(dateLocaleStr, { weekday: 'long', day: 'numeric', month: 'long' }) }}</span>
-        </div>
-        <div class="topbar-right">
-          <NameRequestBadge />
-          <NotificationBell />
-          <AccountSettingsModal />
-        </div>
-      </header>
+      <AdminTopHeader :title="activeLabel" :date-str="dateStr" @search="onGlobalSearch" @back="goBackToOverview" />
 
-      <!-- KPI Strip -->
-      <div class="kpi-strip" v-if="stats">
-        <div class="kpi-item"><span class="kpi-icon">👥</span><span class="kpi-val">{{ stats.users.total }}</span><span class="kpi-lab">{{ t('shared.kpiUsers') }}</span></div>
-        <div class="kpi-item"><span class="kpi-icon">📚</span><span class="kpi-val">{{ stats.classes.total }}</span><span class="kpi-lab">{{ t('shared.kpiClasses') }}</span></div>
-        <div class="kpi-item"><span class="kpi-icon">📄</span><span class="kpi-val">{{ stats.reports.total }}</span><span class="kpi-lab">{{ t('shared.kpiReports') }}</span></div>
-        <div class="kpi-item"><span class="kpi-icon">⏳</span><span class="kpi-val">{{ stats.reports.pending }}</span><span class="kpi-lab">{{ t('shared.kpiPending') }}</span></div>
-        <div class="kpi-item"><span class="kpi-icon">✅</span><span class="kpi-val">{{ stats.reports.graded }}</span><span class="kpi-lab">{{ t('shared.kpiGraded') }}</span></div>
-        <div class="kpi-item"><span class="kpi-icon">📊</span><span class="kpi-val">{{ stats.reports.average }}%</span><span class="kpi-lab">{{ t('shared.kpiAvg') }}</span></div>
-      </div>
-
-      <!-- Admin Toast -->
-      <Transition name="toast">
-        <div v-if="toast" :class="['admin-toast', toast.type]">{{ toast.message }}</div>
-      </Transition>
-
-      <!-- Content -->
       <div class="content-area">
-        <AdminGlobalSearch :users="users" :classes="classes" :reports="reports" :feedback="feedback"
-          @select-user="openUserDetail" @select-class="selectClass" @select-report="selectReport" />
-
         <div v-if="loading" class="loading"><div class="spinner"></div></div>
         <div v-else-if="errorMsg" class="error-box">❌ {{ errorMsg }}</div>
 
         <template v-else-if="stats">
-          <div v-if="active === 'overview'" class="panel"><AdminDashboard /></div>
-
-          <!-- Experiments -->
-          <div v-else-if="active === 'experiments'" class="panel">
-            <div class="cards-grid">
-              <BranchCard
-                v-for="card in translatedCards"
-                :key="card.id"
-                :id="card.id"
-                :icon="card.icon"
-                :title="card.title"
-                :desc="card.desc"
-                :stats="card.stats"
-                :action="() => goToBranch(card.branchId)"
-              />
+          <!-- Tab 1: Overview (with existing dash-tabs + experiments sub-tab) -->
+          <div v-if="active === 'overview'" class="panel">
+            <div class="dash-tabs">
+              <button :class="['dash-tab', { active: dashTab === 'system' }]" @click="dashTab = 'system'"><span>🖥️</span><span>{{ t('shared.adminTabSystem') }}</span></button>
+              <button :class="['dash-tab', { active: dashTab === 'academic' }]" @click="dashTab = 'academic'"><span>🎓</span><span>{{ t('shared.adminTabAcademic') }}</span></button>
+              <button :class="['dash-tab', { active: dashTab === 'alerts' }]" @click="dashTab = 'alerts'"><span>🚨</span><span>{{ t('shared.adminTabAlerts') }}</span><span v-if="totalAlerts > 0" class="tab-badge">{{ totalAlerts }}</span></button>
+              <button :class="['dash-tab', { active: dashTab === 'experiments' }]" @click="dashTab = 'experiments'"><span>🔬</span><span>{{ t('shared.navExperiments') }}</span></button>
             </div>
+            <TabSystemActivity v-if="dashTab === 'system' && health" :health="health" :detailed="detailed" :system-status="systemStatus" :recent-activity-list="recentActivityList" :health-tables="healthTables" />
+            <TabAcademicPerf v-if="dashTab === 'academic'" :stats="stats" :detailed="detailed" :users-by-role="usersByRole" :completion-rate="completionRate" :grading-rate="gradingRate" :activity-rate="activityRate" :top-schools="topSchools" :top-classes="topClasses" />
+            <TabAlertsReports v-if="dashTab === 'alerts'" :insights="insights" :has-alerts="hasAlerts" :total-alerts="totalAlerts" />
+            <div v-if="dashTab === 'experiments'" class="cards-grid">
+              <BranchCard v-for="card in translatedCards" :key="card.id" :id="card.id" :icon="card.icon" :title="card.title" :desc="card.desc" :stats="card.stats" :action="() => goToBranch(card.branchId)" />
+            </div>
+            <div v-if="dashLoading" class="loading"><div class="spinner"></div></div>
           </div>
 
-          <div v-else-if="active === 'users'" class="panel">
-            <AdminUserDetail v-if="selectedUserId" :user-id="selectedUserId" @back="closeUserDetail" @refresh="loadAll" />
-            <AdminUserManager v-else :users="users" :current-user-id="auth.user?.id" @refresh="loadAll" @delete="handleRemoveUser"
-              @change-role="handleChangeRole" @add="handleAddUser" @view="openUserDetail" />
-          </div>
+          <!-- Tab 2: Users (sub-tabs: users + requests + approvals) -->
+          <template v-else-if="active === 'users'">
+            <div class="sub-tabs">
+              <button :class="['sub-tab', { active: usersSub === 'users' }]" @click="setUsersSub('users')">👥 {{ t('shared.navUsers') }}</button>
+              <button :class="['sub-tab', { active: usersSub === 'requests' }]" @click="setUsersSub('requests')">📋 {{ t('shared.navRequests') }}</button>
+              <button :class="['sub-tab', { active: usersSub === 'approvals' }]" @click="setUsersSub('approvals')">✅ {{ t('shared.navApprovals') }}</button>
+            </div>
+            <div v-if="usersSub === 'users'" class="panel">
+              <AdminUserDetail v-if="selectedUserId" :user-id="selectedUserId" @back="closeUserDetail" @refresh="loadAll" />
+              <AdminUserManager v-else :users="users" :current-user-id="auth.user?.id" :initial-search="globalSearchQuery" @refresh="loadAll" @delete="handleRemoveUser" @change-role="handleChangeRole" @add="handleAddUser" @view="openUserDetail" />
+            </div>
+            <div v-else-if="usersSub === 'requests'" class="panel"><AdminRequests /></div>
+            <div v-else-if="usersSub === 'approvals'" class="panel"><ApprovalPanel mode="admin" /></div>
+          </template>
 
-          <div v-else-if="active === 'classes'" class="panel"><AdminClassManager :classes="classes" @delete="handleRemoveClass" @refresh="loadAll" /></div>
-          <div v-else-if="active === 'reports'" class="panel"><AdminReportViewer :reports="reports" @refresh="loadAll" /></div>
-          <div v-else-if="active === 'schools'" class="panel"><AdminSchoolManager /></div>
-          <div v-else-if="active === 'requests'" class="panel"><AdminRequests /></div>
-          <div v-else-if="active === 'approvals'" class="panel"><ApprovalPanel mode="admin" /></div>
-          <div v-else-if="active === 'announcements'" class="panel"><AnnouncementsPanel /></div>
-          <div v-else-if="active === 'health'" class="panel"><AdminSystemHealth /></div>
-          <div v-else-if="active === 'settings'" class="panel"><AdminSystemSettings /></div>
-          <div v-else-if="active === 'export'" class="panel"><AdminExportPanel /></div>
-          <div v-else-if="active === 'feedback'" class="panel"><AdminFeedbackPanel /></div>
-          <div v-else-if="active === 'smart'" class="panel"><AdminSmartReports /></div>
-          <div v-else-if="active === 'detailed'" class="panel"><AdminDetailedReports /></div>
-          <div v-else-if="active === 'emergency'" class="panel"><EmergencyControls /></div>
-          <div v-else-if="active === 'enhancements'" class="panel"><AdminEnhancements /></div>
-          <div v-else-if="active === 'audit'" class="panel"><AdminAuditLog /></div>
-          <div v-else-if="active === 'chat'" class="panel"><AdminChatMonitor /></div>
+          <!-- Tab 3: Academics (sub-tabs: schools + classes + reports + detailed + smart + experiments) -->
+          <template v-else-if="active === 'academics'">
+            <div class="sub-tabs">
+              <button :class="['sub-tab', { active: academicsSub === 'schools' }]" @click="setAcademicsSub('schools')">🏫 {{ t('shared.navSchools') }}</button>
+              <button :class="['sub-tab', { active: academicsSub === 'classes' }]" @click="setAcademicsSub('classes')">📚 {{ t('shared.navClasses') }}</button>
+              <button :class="['sub-tab', { active: academicsSub === 'reports' }]" @click="setAcademicsSub('reports')">📄 {{ t('shared.navReports') }}</button>
+              <button :class="['sub-tab', { active: academicsSub === 'detailed' }]" @click="setAcademicsSub('detailed')">📈 {{ t('shared.navDetailed') }}</button>
+              <button :class="['sub-tab', { active: academicsSub === 'smart' }]" @click="setAcademicsSub('smart')">🧠 {{ t('shared.navSmart') }}</button>
+              <button :class="['sub-tab', { active: academicsSub === 'experiments' }]" @click="setAcademicsSub('experiments')">🔬 {{ t('shared.navExperiments') }}</button>
+            </div>
+            <div v-if="academicsSub === 'schools'" class="panel"><AdminSchoolManager /></div>
+            <div v-else-if="academicsSub === 'classes'" class="panel"><AdminClassManager :classes="classes" :initial-search="globalSearchQuery" @delete="handleRemoveClass" @refresh="loadAll" /></div>
+            <div v-else-if="academicsSub === 'reports'" class="panel"><AdminReportViewer :reports="reports" :initial-search="globalSearchQuery" @refresh="loadAll" /></div>
+            <div v-else-if="academicsSub === 'detailed'" class="panel"><AdminDetailedReports /></div>
+            <div v-else-if="academicsSub === 'smart'" class="panel"><AdminSmartReports /></div>
+            <div v-else-if="academicsSub === 'experiments'" class="panel">
+              <div class="cards-grid">
+                <BranchCard v-for="card in translatedCards" :key="card.id" :id="card.id" :icon="card.icon" :title="card.title" :desc="card.desc" :stats="card.stats" :action="() => goToBranch(card.branchId)" />
+              </div>
+            </div>
+          </template>
+
+          <!-- Tab 4: System (sub-tabs: health + audit + emergency + chat + messages + feedback + announcements + export + enhancements + settings) -->
+          <template v-else-if="active === 'system'">
+            <div class="sub-tabs">
+              <button :class="['sub-tab', { active: systemSub === 'health' }]" @click="setSystemSub('health')">🩺 {{ t('shared.navHealth') }}</button>
+              <button :class="['sub-tab', { active: systemSub === 'audit' }]" @click="setSystemSub('audit')">📜 {{ t('shared.navAudit') }}</button>
+              <button :class="['sub-tab', { active: systemSub === 'emergency' }]" @click="setSystemSub('emergency')">🚨 {{ t('shared.navEmergency') }}</button>
+              <button :class="['sub-tab', { active: systemSub === 'chat' }]" @click="setSystemSub('chat')">💬 {{ t('shared.navChat') }}</button>
+              <button :class="['sub-tab', { active: systemSub === 'messages' }]" @click="setSystemSub('messages')">✉️ {{ t('shared.navMessages') }}</button>
+              <button :class="['sub-tab', { active: systemSub === 'feedback' }]" @click="setSystemSub('feedback')">💬 {{ t('shared.navFeedback') }}</button>
+              <button :class="['sub-tab', { active: systemSub === 'announcements' }]" @click="setSystemSub('announcements')">📢 {{ t('shared.navAnnouncements') }}</button>
+              <button :class="['sub-tab', { active: systemSub === 'export' }]" @click="setSystemSub('export')">📁 {{ t('shared.navExport') }}</button>
+              <button :class="['sub-tab', { active: systemSub === 'enhancements' }]" @click="setSystemSub('enhancements')">✨ {{ t('shared.navAdvancedFeatures') }}</button>
+              <button :class="['sub-tab', { active: systemSub === 'settings' }]" @click="setSystemSub('settings')">⚙️ {{ t('shared.navSettings') }}</button>
+              <button :class="['sub-tab', { active: systemSub === 'backup' }]" @click="setSystemSub('backup')">💾 النسخ الاحتياطي</button>
+            </div>
+            <div v-if="systemSub === 'health'" class="panel"><AdminSystemHealth /></div>
+            <div v-else-if="systemSub === 'audit'" class="panel"><AdminAuditLog /></div>
+            <div v-else-if="systemSub === 'emergency'" class="panel"><EmergencyControls /></div>
+            <div v-else-if="systemSub === 'chat'" class="panel"><AdminChatMonitor /></div>
+            <div v-else-if="systemSub === 'messages'" class="panel"><AdminMessages /></div>
+            <div v-else-if="systemSub === 'feedback'" class="panel"><AdminFeedbackPanel /></div>
+            <div v-else-if="systemSub === 'announcements'" class="panel"><AnnouncementsPanel /></div>
+            <div v-else-if="systemSub === 'export'" class="panel"><AdminExportPanel /></div>
+            <div v-else-if="systemSub === 'enhancements'" class="panel"><AdminEnhancements /></div>
+            <div v-else-if="systemSub === 'settings'" class="panel"><AdminSystemSettings /></div>
+            <div v-else-if="systemSub === 'backup'" class="panel"><AdminBackupPanel /></div>
+          </template>
         </template>
       </div>
     </div>
   </div>
-
-    <div class="toast-zone">
-      <NotificationToast :show="toastShow" :title="toastTitle" :message="toastMessage"
-        :type="toastType" :timeout-ms="4500" @close="toastShow = false" />
-    </div>
 </template>
 
-<style scoped>
-.admin-layout {
-  display: flex;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0a0f1c 0%, #111827 40%, #0f172a 100%);
-  color: #e2e8f0;
-}
-.admin-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.8rem 1.5rem;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-  background: rgba(10,15,28,0.5);
-  backdrop-filter: blur(12px);
-  position: sticky;
-  top: 0;
-  z-index: 50;
-}
-.topbar-left { display: flex; align-items: center; gap: 0.8rem; }
-.topbar-title { margin: 0; font-size: 1.15rem; font-weight: 800; color: #f1f5f9; }
-.topbar-date { font-size: 0.75rem; color: #64748b; }
-.topbar-right { display: flex; align-items: center; gap: 0.4rem; }
-.kpi-strip {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-  gap: 0.5rem;
-  padding: 0.8rem 1.5rem;
-  border-bottom: 1px solid rgba(255,255,255,0.03);
-}
-.kpi-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.15rem;
-  padding: 0.5rem 0.4rem;
-  border-radius: 0.6rem;
-  background: rgba(15,23,42,0.5);
-  border: 1px solid rgba(255,255,255,0.05);
-}
-.kpi-icon { font-size: 1rem; }
-.kpi-val { font-size: 1.05rem; font-weight: 800; color: #e5e7eb; line-height: 1; }
-.kpi-lab { font-size: 0.6rem; color: #64748b; text-align: center; white-space: nowrap; }
-.content-area {
-  flex: 1;
-  padding: 1.5rem;
-  overflow-y: auto;
-}
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1rem;
-}
 
-.panel { animation: slideUp 0.2s ease-out; }
-@keyframes slideUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-.loading { text-align: center; padding: 3rem; }
-.spinner {
-  width: 36px; height: 36px; border: 3px solid rgba(99,102,241,0.2);
-  border-top-color: #818cf8; border-radius: 50%;
-  animation: spin 0.8s linear infinite; margin: 0 auto;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.error-box {
-  background: rgba(239,68,68,0.1); color: #f87171;
-  padding: 1rem; border-radius: 0.5rem; border: 1px solid rgba(239,68,68,0.2); text-align: center;
-}
-.toast-zone { position: fixed; top: 1rem; inset-inline-end: 1rem; z-index: 10000; }
-
-.admin-toast {
-  position: fixed; top: 4rem; inset-inline-end: 1rem; z-index: 9999;
-  padding: 0.7rem 1.2rem; border-radius: 0.5rem; font-size: 0.85rem; font-weight: 600;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
-.admin-toast.success { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
-.admin-toast.error { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
-.admin-toast.info { background: rgba(99,102,241,0.15); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.3); }
-.toast-enter-active, .toast-leave-active { transition: all 0.3s ease; }
-.toast-enter-from, .toast-leave-to { opacity: 0; transform: translateY(-10px); }
-</style>
+<style scoped src='./admin.css'></style>

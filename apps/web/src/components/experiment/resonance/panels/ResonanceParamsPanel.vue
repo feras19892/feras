@@ -1,4 +1,6 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '../../../../composables/useI18n'
+const { t } = useI18n()
 interface Props { params: { stringLength: number; tension: number; harmonic: number; damping: number } }
 const props = defineProps<Props>()
 const emit = defineEmits<{ (e: 'update:params', p: { stringLength: number; tension: number; harmonic: number; damping: number }): void }>()
@@ -8,19 +10,19 @@ function set(key: string, val: number) { emit('update:params', { ...props.params
 <template>
   <div class="panel-body">
     <div class="param-row">
-      <div class="param-header"><span class="param-label">L - String length</span><span class="param-val cyan">{{ params.stringLength.toFixed(2) }} m</span></div>
+      <div class="param-header"><span class="param-label">{{ t('experiments.reStringLength') }}</span><span class="param-val cyan">{{ params.stringLength.toFixed(2) }} m</span></div>
       <input class="slider" type="range" min="0.1" max="3.0" step="0.01" :value="params.stringLength" @input="set('stringLength', Number(($event.target as HTMLInputElement).value))" />
     </div>
     <div class="param-row">
-      <div class="param-header"><span class="param-label">T - Tension</span><span class="param-val amber">{{ params.tension }} N</span></div>
+      <div class="param-header"><span class="param-label">{{ t('experiments.reTension') }}</span><span class="param-val amber">{{ params.tension }} N</span></div>
       <input class="slider" type="range" min="1" max="100" step="1" :value="params.tension" @input="set('tension', Number(($event.target as HTMLInputElement).value))" />
     </div>
     <div class="param-row">
-      <div class="param-header"><span class="param-label">n - Harmonic</span><span class="param-val green">{{ params.harmonic }}</span></div>
+      <div class="param-header"><span class="param-label">{{ t('experiments.reHarmonic') }}</span><span class="param-val green">{{ params.harmonic }}</span></div>
       <input class="slider" type="range" min="1" max="10" step="1" :value="params.harmonic" @input="set('harmonic', Number(($event.target as HTMLInputElement).value))" />
     </div>
     <div class="param-row">
-      <div class="param-header"><span class="param-label">gamma - Damping</span><span class="param-val red">{{ params.damping.toFixed(2) }}</span></div>
+      <div class="param-header"><span class="param-label">{{ t('experiments.reDamping') }}</span><span class="param-val red">{{ params.damping.toFixed(2) }}</span></div>
       <input class="slider" type="range" min="0" max="2" step="0.01" :value="params.damping" @input="set('damping', Number(($event.target as HTMLInputElement).value))" />
     </div>
   </div>

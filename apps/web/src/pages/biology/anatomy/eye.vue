@@ -1,8 +1,17 @@
 <script setup lang="ts">
-import AnatomyViewerExperiment from '../../../modules/biology/components/AnatomyViewerExperiment.vue';
-import { eyeData } from '../../../services/anatomy-viewer-data';
+import GLBExperiment from '../../../modules/biology/components/GLBExperiment.vue';
+import { eyeParts } from '../../../services/eye-glb-parts';
+import { enhanceEyeModel } from '../../../services/eye-texture-enhancer';
 </script>
 
 <template>
-  <AnatomyViewerExperiment :organ-data="eyeData" />
+  <GLBExperiment
+    model-path="/models/eye-hubmap-realistic.glb"
+    title-key="biology.anatomy.eye.title"
+    subtitle-key="biology.anatomy.eye.subtitle"
+    back-route="/biology/anatomy"
+    back-label-key="biology.backToAnatomySection"
+    :parts="eyeParts"
+    :model-enhancer="enhanceEyeModel"
+  />
 </template>

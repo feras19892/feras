@@ -1,10 +1,16 @@
 import { ref, reactive, computed, watch } from 'vue'
 import type { AnalysisPayload } from '../../types/physics'
+import { sendToAnalysis } from '../analysis/sendToAnalysis'
+import { useI18n } from '../useI18n'
+import { useRouter } from 'vue-router'
 import { useGratingLayout } from './useGratingLayout'
 import { useGratingTrials } from './useGratingTrials'
 import { wavelengthToColor } from './useGratingCalculations'
 
 export function useGratingExperiment() {
+  const { t } = useI18n()
+  const router = useRouter()
+
   const params = reactive({
     linesPerMm: 500,
     screenDistance: 1.0,
@@ -73,13 +79,16 @@ export function useGratingExperiment() {
   }
 
   function exportToAnalysis() {
-    if (trials.trials.value.length < 2) return
+    if (trials.trials.value.length < 2) {
+      alert('تحتاج إلى تسجيل قراءتين على الأقل قبل التحليل')
+      return
+    }
     const payload: AnalysisPayload = {
       sourceExperiment: 'grating',
-      sourceNameAr: 'محبز الحيود',
-      readings: trials.trials.value.map(t => ({
-        N: t.linesPerMm, D: t.screenDistance, lambda: t.wavelength,
-        theta1: t.firstOrderAngle, y1: t.firstOrderY,
+      sourceNameAr: t('experiments.expGrating'),
+      readings: trials.trials.value.map(tr => ({
+        N: tr.linesPerMm, D: tr.screenDistance, lambda: tr.wavelength,
+        theta1: tr.firstOrderAngle, y1: tr.firstOrderY,
       })),
       columns: [
         { key: 'N', label: 'N (lines/mm)', unit: 'lines/mm' },
@@ -93,8 +102,7 @@ export function useGratingExperiment() {
       ],
       suggestedPlots: [{ xKey: 'N', yKey: 'theta1', xLabel: 'N (lines/mm)', yLabel: 'θ₁ (°)', type: 'scatter' }],
     }
-    localStorage.setItem('analysis_payload', JSON.stringify(payload))
-    window.open('/analysis', '_blank')
+    sendToAnalysis(router, payload)
   }
 
   function handleDrop(fromId: string, x?: number, y?: number) {
@@ -103,11 +111,24 @@ export function useGratingExperiment() {
     const toPanel = el?.closest('.draggable-panel')
     const toId = toPanel?.getAttribute('data-id')
     if (!toId || fromId === toId) return
+    let fromCol = '', toCol = ''
     for (const col of Object.keys(layout.columnMap)) {
-      const arr = layout.columnMap[col]
+      if (layout.columnMap[col].includes(fromId)) fromCol = col
+      if (layout.columnMap[col].includes(toId)) toCol = col
+    }
+    if (fromCol === toCol) {
+      const arr = layout.columnMap[fromCol]
       const fi = arr.indexOf(fromId)
       const ti = arr.indexOf(toId)
-      if (fi >= 0 && ti >= 0) { const t = arr[fi]; arr[fi] = arr[ti]; arr[ti] = t }
+      if (fi >= 0 && ti >= 0) { const tmp = arr[fi]; arr[fi] = arr[ti]; arr[ti] = tmp }
+    } else {
+      const fromArr = layout.columnMap[fromCol]
+      const toArr = layout.columnMap[toCol]
+      const fi = fromArr.indexOf(fromId)
+      if (fi >= 0) {
+        fromArr.splice(fi, 1)
+        toArr.push(fromId)
+      }
     }
   }
 

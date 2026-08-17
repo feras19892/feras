@@ -18,6 +18,7 @@ const emit = defineEmits<{
       {{ t('auth.guestStudent') }}
     </button>
   </div>
+  <p class="guest-hint">{{ t('auth.guestLimitations', 'وضع تجريبي: يمكنك تصفح التجارب ولكن لا يمكن حفظ التقارير أو التدرجات') }}</p>
 </template>
 
 <style scoped>
@@ -53,5 +54,11 @@ const emit = defineEmits<{
   border-color: rgba(16,185,129,0.35);
   background: rgba(16,185,129,0.08);
   color: #86efac;
+}
+.guest-hint {
+  margin-top: 0.5rem;
+  font-size: 0.7rem;
+  color: #64748b;
+  text-align: center;
 }
 </style>

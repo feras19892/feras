@@ -27,18 +27,26 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div v-if="status && (status.maintenance_mode || status.stop_registration || status.freeze_all_classes)" class="system-banner">
+  <div v-if="status && (status.maintenance_mode || status.stop_registration || status.freeze_all_classes || !status.chat_enabled || !status.registration_enabled || !status.experiment_physics_enabled || !status.experiment_chemistry_enabled || !status.experiment_biology_enabled || !status.experiment_math_enabled)" class="system-banner">
     <div v-if="status.maintenance_mode" class="banner-item maintenance">
       <span class="banner-icon">🔧</span>
       <span class="banner-text">{{ t('shared.bannerMaintenance') }}</span>
     </div>
-    <div v-if="status.stop_registration" class="banner-item registration">
+    <div v-if="status.stop_registration || !status.registration_enabled" class="banner-item registration">
       <span class="banner-icon">🛑</span>
       <span class="banner-text">{{ t('shared.bannerRegistration') }}</span>
     </div>
     <div v-if="status.freeze_all_classes" class="banner-item freeze">
       <span class="banner-icon">❄️</span>
       <span class="banner-text">{{ t('shared.bannerFreeze') }}</span>
+    </div>
+    <div v-if="!status.chat_enabled" class="banner-item chat">
+      <span class="banner-icon">💬</span>
+      <span class="banner-text">{{ t('shared.bannerChatDisabled') }}</span>
+    </div>
+    <div v-if="!status.experiment_physics_enabled || !status.experiment_chemistry_enabled || !status.experiment_biology_enabled || !status.experiment_math_enabled" class="banner-item experiments">
+      <span class="banner-icon">🔬</span>
+      <span class="banner-text">{{ t('shared.bannerExperimentsDisabled') }}</span>
     </div>
   </div>
 </template>
@@ -76,6 +84,16 @@ onUnmounted(() => {
   background: rgba(103, 232, 249, 0.12);
   color: #67e8f9;
   border: 1px solid rgba(103, 232, 249, 0.2);
+}
+.banner-item.chat {
+  background: rgba(168, 85, 247, 0.12);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.2);
+}
+.banner-item.experiments {
+  background: rgba(250, 204, 21, 0.12);
+  color: #facc15;
+  border: 1px solid rgba(250, 204, 21, 0.2);
 }
 .banner-icon { font-size: 1rem; flex-shrink: 0; }
 .banner-text { line-height: 1.4; }

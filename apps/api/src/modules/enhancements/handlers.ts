@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
 import { authMiddleware } from '../auth/middleware.js';
+import { db } from '../../db/index.js';
 import type { User } from '@my-modern-app/shared-types';
 import * as svc from './services.js';
 
@@ -9,6 +10,14 @@ type Variables = { user: User };
 const enhRoutes = new Hono<{ Variables: Variables }>();
 
 enhRoutes.use(authMiddleware);
+
+async function verifyTeacherOwnsStudent(teacherId: number, studentId: number): Promise<boolean> {
+  const row = await db.get<{ cnt: number }>(
+    'SELECT COUNT(*) as cnt FROM class_students cs JOIN classes c ON c.id = cs.class_id WHERE cs.student_id = ? AND c.teacher_id = ?',
+    studentId, teacherId,
+  );
+  return !!row && row.cnt > 0;
+}
 
 // ─── Penalties & Rewards ───
 const penaltySchema = z.object({
@@ -25,6 +34,10 @@ enhRoutes.post('/penalties', zValidator('json', penaltySchema), async (c) => {
     return c.json({ success: false, message: 'Not authorized' }, 403);
   }
   const body = c.req.valid('json');
+  if (user.role === 'teacher') {
+    const owns = await verifyTeacherOwnsStudent(user.id, body.student_id);
+    if (!owns) return c.json({ success: false, message: 'غير مصرح — هذا الطالب ليس في فصولك' }, 403);
+  }
   const penalty = await svc.createPenalty(body.student_id, user.id, body.class_id || null, body.type, body.reason, body.points);
   return c.json({ success: true, penalty }, 201);
 });
@@ -41,7 +54,12 @@ enhRoutes.get('/penalties/student/:id', async (c) => {
   if (user.role !== 'teacher' && user.role !== 'admin' && user.role !== 'school') {
     return c.json({ success: false, message: 'Not authorized' }, 403);
   }
-  const penalties = await svc.getStudentPenalties(Number(c.req.param('id')));
+  const studentId = Number(c.req.param('id'));
+  if (user.role === 'teacher') {
+    const owns = await verifyTeacherOwnsStudent(user.id, studentId);
+    if (!owns) return c.json({ success: false, message: 'غير مصرح — هذا الطالب ليس في فصولك' }, 403);
+  }
+  const penalties = await svc.getStudentPenalties(studentId);
   return c.json({ success: true, penalties });
 });
 
@@ -50,7 +68,21 @@ enhRoutes.get('/penalties/class/:classId', async (c) => {
   if (user.role !== 'teacher' && user.role !== 'admin' && user.role !== 'school') {
     return c.json({ success: false, message: 'Not authorized' }, 403);
   }
-  const penalties = await svc.getClassPenalties(c.req.param('classId'));
+  const classId = c.req.param('classId');
+  if (user.role === 'teacher') {
+    const cls = await db.get<{ teacher_id: number }>('SELECT teacher_id FROM classes WHERE id = ?', classId);
+    if (!cls || cls.teacher_id !== user.id) {
+      return c.json({ success: false, message: 'غير مصرح — هذا الفصل ليس من فصولك' }, 403);
+    }
+  } else if (user.role === 'school') {
+    const cls = await db.get<{ school_id: number | null }>(
+      'SELECT u.school_id FROM classes c JOIN users u ON c.teacher_id = u.id WHERE c.id = ?', classId,
+    );
+    if (!cls || cls.school_id !== user.id) {
+      return c.json({ success: false, message: 'غير مصرح — هذا الفصل لا ينتمي لمدرستك' }, 403);
+    }
+  }
+  const penalties = await svc.getClassPenalties(classId);
   return c.json({ success: true, penalties });
 });
 
@@ -86,6 +118,12 @@ const ratingSchema = z.object({
 enhRoutes.post('/ratings', zValidator('json', ratingSchema), async (c) => {
   const user = c.get('user');
   const body = c.req.valid('json');
+  if (body.target_id === user.id && body.target_type !== 'class') {
+    return c.json({ success: false, message: 'لا يمكنك تقييم نفسك' }, 400);
+  }
+  if (user.role === 'student' && body.target_type !== 'teacher' && body.target_type !== 'class') {
+    return c.json({ success: false, message: 'غير مصرح' }, 403);
+  }
   const ok = await svc.createRating(body.target_id, body.target_type, user.id, user.role, body.rating, body.comment || null);
   if (!ok) return c.json({ success: false, message: 'Failed to rate' }, 400);
   return c.json({ success: true });
@@ -104,8 +142,23 @@ enhRoutes.get('/ratings/all', async (c) => {
 });
 
 // ─── Avatar ───
+const ALLOWED_AVATAR_HOSTS = [
+  'localhost', '127.0.0.1',
+  'i.pravatar.cc', 'api.dicebear.com', 'api.adorable.io',
+  'ui-avatars.com', 'robohash.org',
+];
+
 const avatarSchema = z.object({
-  avatar_url: z.string().min(1).max(2000),
+  avatar_url: z.string().min(1).max(2000).refine((url) => {
+    if (url.startsWith('data:image/')) return true;
+    try {
+      const parsed = new URL(url);
+      if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return false;
+      return ALLOWED_AVATAR_HOSTS.some(h => parsed.hostname === h || parsed.hostname.endsWith('.' + h));
+    } catch {
+      return false;
+    }
+  }, 'avatar_url must be a valid image URL from an allowed host'),
 });
 
 enhRoutes.post('/avatar', zValidator('json', avatarSchema), async (c) => {

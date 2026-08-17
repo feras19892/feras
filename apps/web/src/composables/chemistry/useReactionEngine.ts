@@ -1,4 +1,4 @@
-import { liquidMap } from './useChemistryLab';
+import { liquidMap, solidMap } from './useChemistryLab';
 import { findEquation, isAcid, isBase, isIndicator, mixColor, calculateTitrationPh, getIndicatorColor, applyIndicatorsToContainer as engineApplyIndicators } from '@my-modern-app/chemistry-engine';
 import { chemicals } from './chemDatabase';
 
@@ -38,6 +38,7 @@ export function handleDropMix(event: MixEvent): void {
 
   const src = event.sourceChemicalId;
   const tgt = target.chemicalId || '';
+  const solidType = solidMap[event.targetUid]?.type || '';
 
   // ===== INDICATOR DROPS: don't react chemically, just add to indicators =====
   if (isIndicator(src)) {
@@ -64,18 +65,27 @@ export function handleDropMix(event: MixEvent): void {
     let acidId = '', baseId = '';
 
     for (const [chemId, vol] of Object.entries(target.reactants)) {
+      if (chemId.startsWith('_')) continue;
       if (isAcid(chemId)) { acidVol += vol; acidId = chemId; }
       if (isBase(chemId)) { baseVol += vol; baseId = chemId; }
     }
 
     const acidConc = chemicals.find(c => c.id === acidId)?.concentration ?? 0.1;
     const baseConc = chemicals.find(c => c.id === baseId)?.concentration ?? 0.1;
-    const newPh = calculateTitrationPh(acidVol, acidId, baseVol, baseId, acidConc, baseConc);
+    const acidMoles = acidVol * acidConc;
+    const baseMoles = baseVol * baseConc;
+    const newPh = calculateTitrationPh(acidVol, acidId, baseVol, baseId, acidConc, baseConc, target.volume);
     target.ph = newPh;
-    target.temperature = Math.min(100, target.temperature + 0.5);
 
     // Find and store the reaction equation
     const eq = findEquation([acidId, baseId].filter(Boolean));
+
+    // Non-cumulative temperature: based on reaction progress
+    if (target.reactionBaseTemp === undefined) target.reactionBaseTemp = target.temperature;
+    const tempRise = eq ? eq.temperatureRise : 5;
+    const heatFraction = acidMoles > 0 ? Math.min(1, baseMoles / acidMoles) : 0;
+    target.temperature = Math.min(100, target.reactionBaseTemp + tempRise * heatFraction);
+
     if (eq) {
       target.equation = eq.equation;
       target.precipitate = eq.precipitate || false;
@@ -89,8 +99,10 @@ export function handleDropMix(event: MixEvent): void {
     return;
   }
 
-  // ===== OTHER CHEMICAL REACTIONS (precipitation, redox, etc.) =====
-  const allReactants = [src, tgt].filter(Boolean);
+  // ===== OTHER CHEMICAL REACTIONS (precipitation, redox, gas, etc.) =====
+  // Include solid from solidMap if target has no liquid chemicalId
+  const effectiveTarget = tgt || solidType || '';
+  const allReactants = [src, effectiveTarget].filter(Boolean);
   const eq = findEquation(allReactants);
 
   if (eq) {
@@ -100,27 +112,27 @@ export function handleDropMix(event: MixEvent): void {
     // Update reactants tracking
     if (!target.reactants) target.reactants = {};
     target.reactants[src] = (target.reactants[src] || 0) + event.dropVolume;
-    if (!target.reactants[tgt]) {
+    if (!target.reactants[effectiveTarget]) {
       const trackedVol = Object.values(target.reactants).reduce((s, v) => s + v, 0) - target.reactants[src];
-      target.reactants[tgt] = Math.max(0, target.volume - event.dropVolume - trackedVol);
+      target.reactants[effectiveTarget] = Math.max(0, target.volume - event.dropVolume - trackedVol);
     }
 
     // Calculate stoichiometric ratio for gradual color transition
     // ratio = moles of src added / moles of src required for complete reaction
     const srcConc = chemicals.find(c => c.id === src)?.concentration || 0.1;
-    const tgtConc = chemicals.find(c => c.id === tgt)?.concentration || 0.1;
+    const tgtConc = chemicals.find(c => c.id === effectiveTarget)?.concentration || 0.1;
     const srcMoles = target.reactants[src] * srcConc;
-    const tgtMoles = target.reactants[tgt] * tgtConc;
+    const tgtMoles = target.reactants[effectiveTarget] * tgtConc;
     // For precipitation: src is titrant (naoh), tgt is analyte (cuso4)
     // Equation: CuSO4 + 2NaOH → ... so ratio is 2:1 (naoh:cuso4)
     // Determine ratio from equation products
     let stoichRatio = 1;
     if (eq.reactants.length === 2) {
       const srcIdx = eq.reactants.indexOf(src);
-      const tgtIdx = eq.reactants.indexOf(tgt);
+      const tgtIdx = eq.reactants.indexOf(effectiveTarget);
       if (srcIdx >= 0 && tgtIdx >= 0 && eq.coefficients) {
         const srcCoeff = eq.coefficients[src] ?? 1;
-        const tgtCoeff = eq.coefficients[tgt] ?? 1;
+        const tgtCoeff = eq.coefficients[effectiveTarget] ?? 1;
         stoichRatio = srcCoeff / tgtCoeff;
       }
     }
@@ -136,7 +148,9 @@ export function handleDropMix(event: MixEvent): void {
     // Gradual opacity transition
     const originalOpacity = target.opacity;
     target.opacity = originalOpacity + (eq.opacity - originalOpacity) * reactionFraction;
-    target.temperature = Math.min(100, target.temperature + eq.temperatureRise * reactionFraction);
+    // Non-cumulative temperature: based on reaction progress from base temp
+    if (target.reactionBaseTemp === undefined) target.reactionBaseTemp = target.temperature;
+    target.temperature = Math.min(100, target.reactionBaseTemp + eq.temperatureRise * reactionFraction);
 
     // Precipitate only starts forming after 10% reaction, increases gradually
     if (eq.precipitate && reactionFraction > 0.1) {
@@ -155,7 +169,18 @@ export function handleDropMix(event: MixEvent): void {
   }
 
   // ===== NO REACTION: simple mixing =====
-  // Just add the new chemical to reactants without visual change
   if (!target.reactants) target.reactants = {};
   target.reactants[src] = (target.reactants[src] || 0) + event.dropVolume;
+  // If target had no chemical, adopt source chemical properties
+  if (!target.chemicalId) {
+    target.chemicalId = src;
+    const srcChem = chemicals.find(c => c.id === src);
+    if (srcChem) {
+      target.color = srcChem.color;
+      target.opacity = srcChem.opacity;
+      target.baseColor = srcChem.color;
+      target.ph = srcChem.ph ?? null;
+    }
+    if (!target.label || target.label === 'water') target.label = src;
+  }
 }

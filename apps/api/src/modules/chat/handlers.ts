@@ -5,10 +5,15 @@ import { authMiddleware } from '../auth/middleware.js';
 import * as svc from './services.js';
 import type { User } from '@my-modern-app/shared-types';
 import { db } from '../../db/index.js';
+import { getSystemSettingBool } from '../../shared/system-settings.js';
 
 type Variables = { user: User };
 const app = new Hono<{ Variables: Variables }>();
 app.use(authMiddleware);
+
+async function isChatEnabled(): Promise<boolean> {
+  return getSystemSettingBool('chat_enabled', true);
+}
 
 // Verify user is member of class (student) or teacher of class
 async function verifyClassAccess(classId: string, userId: number, role: string): Promise<boolean> {
@@ -16,6 +21,14 @@ async function verifyClassAccess(classId: string, userId: number, role: string):
   if (role === 'teacher') {
     const cls = await db.get(`SELECT id FROM classes WHERE id = ? AND teacher_id = ?`, classId, userId);
     return !!cls;
+  }
+  if (role === 'school') {
+    const cls = await db.get<{ school_id: number | null }>(
+      `SELECT u.school_id FROM classes c JOIN users u ON c.teacher_id = u.id WHERE c.id = ?`,
+      classId,
+    );
+    if (!cls || !cls.school_id) return false;
+    return cls.school_id === userId;
   }
   // student
   const member = await db.get(`SELECT 1 FROM class_students WHERE class_id = ? AND student_id = ?`, classId, userId);
@@ -30,7 +43,9 @@ app.get('/:classId', async (c) => {
   const hasAccess = await verifyClassAccess(classId, user.id, user.role);
   if (!hasAccess) return c.json({ success: false, message: 'غير مصرح' }, 403);
 
-  const messages = await svc.getClassMessages(classId);
+  const limit = Math.min(200, Math.max(1, Number(c.req.query('limit') || '100')));
+  const offset = Math.max(0, Number(c.req.query('offset') || '0'));
+  const messages = await svc.getClassMessages(classId, limit, offset);
   return c.json({ success: true, messages });
 });
 
@@ -44,8 +59,17 @@ app.post('/:classId', zValidator('json', sendMessageSchema), async (c) => {
   const classId = c.req.param('classId');
   const body = c.req.valid('json');
 
+  const enabled = await isChatEnabled();
+  if (!enabled) return c.json({ success: false, message: 'تم تعطيل الدردشة مؤقتاً بواسطة الإدارة' }, 403);
+
   const hasAccess = await verifyClassAccess(classId, user.id, user.role);
   if (!hasAccess) return c.json({ success: false, message: 'غير مصرح' }, 403);
+
+  // Block messages if class is frozen
+  const cls = await db.get<{ is_frozen: number }>('SELECT is_frozen FROM classes WHERE id = ?', classId);
+  if (cls?.is_frozen) {
+    return c.json({ success: false, message: 'هذا الفصل مُجمّد — لا يمكن إرسال رسائل' }, 403);
+  }
 
   const result = await svc.sendMessage(classId, user.id, user.name, user.role, body.content);
 

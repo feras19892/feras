@@ -15,10 +15,10 @@ export function useFreeFallReport() {
     const table: LabReportTable = {
       caption: t('experiments.freeFallReportCaption'),
       headers: ['#', 'h (m)', 't (s)', 't² (s²)', 'v_impact (m/s)', 'g_calc (m/s²)', t('experiments.errorPercentage') + ' (%)'],
-      rows: trials.map((t, i: number) => [
-        i + 1, t.heightMeters.toFixed(2), t.timeSec.toFixed(3),
-        t.timeSquaredSec2.toFixed(4), t.impactVelocityMs.toFixed(2),
-        t.gCalc.toFixed(2), t.err.toFixed(2) + '%',
+      rows: trials.map((trial, i: number) => [
+        i + 1, trial.heightMeters.toFixed(2), trial.timeSec.toFixed(3),
+        trial.timeSquaredSec2.toFixed(4), trial.impactVelocityMs.toFixed(2),
+        trial.gCalc.toFixed(2), trial.err.toFixed(2) + '%',
       ]),
     }
 

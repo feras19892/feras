@@ -48,6 +48,16 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': 'off',
       },
     },
+    {
+      files: [
+        'src/modules/physics/experiments/**/*.vue',
+        'src/components/experiment/**/*.vue',
+      ],
+      rules: {
+        'vue/attribute-hyphenation': 'off',
+        'vue/prop-name-casing': 'off',
+      },
+    },
   ],
   globals: {
     RequestInit: 'readonly',

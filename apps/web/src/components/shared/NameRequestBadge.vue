@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { useI18n } from '../../composables/useI18n';
 import { fetchJson } from '../../services/http';
 
@@ -16,7 +16,6 @@ interface NameRequest {
 
 const requests = ref<NameRequest[]>([]);
 const show = ref(false);
-const loading = ref(false);
 const error = ref('');
 const resolving = ref<number | null>(null);
 
@@ -45,8 +44,15 @@ async function resolve(id: number, approved: boolean) {
   resolving.value = null;
 }
 
+let refreshTimer: ReturnType<typeof setInterval> | null = null;
+
 onMounted(() => {
   loadRequests();
+  refreshTimer = setInterval(() => loadRequests(), 30000);
+});
+
+onUnmounted(() => {
+  if (refreshTimer) clearInterval(refreshTimer);
 });
 </script>
 

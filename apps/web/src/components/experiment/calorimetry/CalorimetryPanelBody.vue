@@ -28,7 +28,7 @@ const emit = defineEmits<{
     <CalorimetryChartPanel v-else-if="id === 'chart'" :trials="trials" />
     <CalorimetryTrialsPanel v-else-if="id === 'trials'" :trials="trials" @remove="emit('remove', $event)" @clear="emit('clear')" />
     <CalorimetryParamsPanel v-else-if="id === 'params'" :params="params" :metal-options="metalOptions" @update:params="emit('update:params', $event)" />
-    <CalorimetryLawsPanel v-else-if="id === 'laws'" :m-water="params.mWater" :t-water="params.tWater" :m-metal="params.mMetal" :t-metal="params.tMetal" :tf="tf" :c-metal="params.cMetal" />
+    <CalorimetryLawsPanel v-else-if="id === 'laws'" :m-water="params.mWater" :t-water="params.tWater" :m-metal="params.mMetal" :t-metal="params.tMetal" :tf="tf" :c-metal="params.cMetal" :m-cup="params.mCup" />
     <CalorimetryResultsPanel v-else-if="id === 'results'" :trials="trials" />
   </div>
 </template>

@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from '../../../../composables/useI18n'
 import type { BoylesLawTrial } from '../../../../composables/boyles-law/useBoylesLawTrials'
 
+const { t } = useI18n()
 const props = defineProps<{ trials: BoylesLawTrial[] }>()
 
 const chartPoints = computed(() => props.trials
-  .filter(t => t.v > 0 && t.p > 0)
-  .map(t => ({ x: t.v, y: t.p })))
+  .filter(tr => tr.v > 0 && tr.p > 0)
+  .map(tr => ({ x: tr.v, y: tr.p })))
 
 const chartBounds = computed(() => {
   const pts = chartPoints.value
@@ -29,7 +31,7 @@ function toY(v: number) {
 
 // Hyperbola curve: P = k/V where k = avg PV
 const curvePts = computed(() => {
-  const k = props.trials.length ? (props.trials.reduce((s, t) => s + t.pv, 0) / props.trials.length) : 1
+  const k = props.trials.length ? (props.trials.reduce((s, tr) => s + tr.pv, 0) / props.trials.length) : 1
   const b = chartBounds.value
   const pts: string[] = []
   for (let v = b.xMin; v <= b.xMax; v += (b.xMax - b.xMin) / 40) {
@@ -64,7 +66,7 @@ const curvePts = computed(() => {
         <span class="axis-y">P (atm)</span>
       </div>
     </div>
-    <p v-else class="center">سجل تجربتين على الأقل لإظهار الرسم</p>
+    <p v-else class="center">{{ t('experiments.needTwoTrials') }}</p>
   </div>
 </template>
 <style scoped>

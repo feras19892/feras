@@ -38,7 +38,7 @@ export const branches: Branch[] = [
       { id: 'freefall', name: 'Free Fall', nameAr: 'experiments.expFreeFall', icon: '🍎', difficulty: 'easy', tags: ['gravity', 'kinematics'], route: '', enabled: true },
       { id: 'inclined', name: 'Inclined Plane', nameAr: 'experiments.expInclined', icon: '📐', difficulty: 'easy', tags: ['kinematics', 'forces', 'friction'], route: '', enabled: true },
       { id: 'collision', name: '1D Collision', nameAr: 'experiments.expCollision', icon: '💥', difficulty: 'medium', tags: ['momentum', 'energy', 'collision'], route: '', enabled: true },
-      { id: 'lever', name: 'Force Resultant Balance', nameAr: 'experiments.expLever', icon: '⚖️', difficulty: 'easy', tags: ['equilibrium', 'torque', 'lever'], route: '', enabled: true },
+      { id: 'netforce', name: 'Net Force', nameAr: 'experiments.expNetForce', icon: '⚖️', difficulty: 'medium', tags: ['forces', 'equilibrium', 'circular'], route: '', enabled: true },
     ],
   },
   {

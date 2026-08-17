@@ -10,7 +10,7 @@ import SolenoidReadingsPanel from '../../../../components/experiment/electromagn
 import SolenoidDataPanel from '../../../../components/experiment/electromagnetism/SolenoidDataPanel.vue'
 import SolenoidGuidePanel from '../../../../components/experiment/electromagnetism/SolenoidGuidePanel.vue'
 import ElectromagnetismHelpModal from '../../../../components/experiment/electromagnetism/ElectromagnetismHelpModal.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import { ref } from 'vue'
 
 const ex = useSolenoidExperiment()
@@ -35,13 +35,6 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <MenuBar
       :title="t('experiments.solTitle')"
       icon="🌀"
-      experiment-route="/physics/electromagnetism/solenoid"
-      :experiment-name="t('experiments.solTitle')"
-      @export-csv="ex.exportCsv"
-      @toggle-pause="ex.togglePause"
-      @reset="ex.resetSim"
-      @record-trial="ex.recordTrial"
-      @analyze-results="ex.exportToAnalysis"
       @toggle-help="helpOpen = !helpOpen"
     />
 

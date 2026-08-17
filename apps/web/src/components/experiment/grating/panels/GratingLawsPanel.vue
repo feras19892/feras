@@ -1,5 +1,7 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '../../../../composables/useI18n'
 
+const { t } = useI18n()
 
 interface Props {
   linesPerMm: number
@@ -13,7 +15,7 @@ defineProps<Props>()
 <template>
   <div class="panel-body">
     <div class="eq-block">
-      <div class="eq-title">Grating Equation</div>
+      <div class="eq-title">{{ t('experiments.dfGratingEq') }}</div>
       <div class="eq">d·sinθ = m·λ</div>
       <div class="eq-values">
         d = {{ (1/linesPerMm).toFixed(4) }} mm<br>
@@ -22,18 +24,18 @@ defineProps<Props>()
       </div>
     </div>
     <div class="eq-block">
-      <div class="eq-title">First Order Angle</div>
+      <div class="eq-title">{{ t('experiments.dfFirstOrderAngle') }}</div>
       <div class="eq">θ₁ = arcsin(λ/d)</div>
       <div class="eq-values">
         θ₁ = {{ firstOrderAngle.toFixed(3) }}°
       </div>
     </div>
     <div class="eq-block">
-      <div class="eq-title">Position on Screen</div>
+      <div class="eq-title">{{ t('experiments.dfPositionOnScreen') }}</div>
       <div class="eq">y = D·tanθ</div>
     </div>
     <div class="eq-block">
-      <div class="eq-title">Max Visible Order</div>
+      <div class="eq-title">{{ t('experiments.dfMaxOrder') }}</div>
       <div class="eq">m_max = floor(d/λ)</div>
     </div>
   </div>

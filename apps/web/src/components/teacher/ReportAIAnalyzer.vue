@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useI18n } from '../../composables/useI18n';
 import type { Report } from '../../services/report.service';
 import { analyzeReport } from '../../services/ai.service';
+import { sanitizeHtml } from '../../utils/sanitizeHtml';
 
 const props = defineProps<{
   report: Report;
@@ -14,31 +15,6 @@ const aiResult = ref<string>('');
 const aiGrade = ref<number | null>(null);
 const aiError = ref<string>('');
 const showDetail = ref(false);
-
-function safeParse(str: string | undefined) {
-  try { return str ? JSON.parse(str) : []; } catch { return []; }
-}
-
-const readings = computed(() => safeParse(props.report.readings));
-const columns = computed(() => safeParse(props.report.columns));
-const equations = computed(() => safeParse(props.report.equations));
-const plots = computed(() => safeParse(props.report.plots));
-
-const hasConclusion = computed(() => !!props.report.conclusion && props.report.conclusion.length > 20);
-const hasEquations = computed(() => Array.isArray(equations.value) && equations.value.length > 0);
-const hasPlots = computed(() => Array.isArray(plots.value) && plots.value.length > 0);
-const hasChart = computed(() => !!props.report.chart_snapshot);
-
-const dataQuality = computed(() => {
-  let score = 0;
-  if (readings.value.length >= 3) score += 25;
-  if (readings.value.length >= 5) score += 15;
-  if (hasEquations.value) score += 20;
-  if (hasPlots.value) score += 15;
-  if (hasConclusion.value) score += 15;
-  if (hasChart.value) score += 10;
-  return Math.min(100, score);
-});
 
 function gradeLabel(grade: number): string {
   if (grade >= 90) return t('ai.excellent');
@@ -57,13 +33,14 @@ function briefComment(grade: number): string {
 }
 
 function renderMarkdown(md: string): string {
-  return md
+  const raw = md
     .replace(/^## (.+)$/gm, '<h4 class="md-h4">$1</h4>')
     .replace(/^### (.+)$/gm, '<h5 class="md-h5">$1</h5>')
     .replace(/^- (.+)$/gm, '<div class="md-li">$1</div>')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\n\n/g, '<br><br>')
     .replace(/\n/g, '<br>');
+  return sanitizeHtml(raw);
 }
 
 async function generateAnalysis() {
@@ -142,6 +119,7 @@ onMounted(() => {
             <button class="detail-close" @click="showDetail = false">✕</button>
           </div>
           <div class="detail-body">
+            <!-- eslint-disable-next-line vue/no-v-html -->
             <div v-if="aiResult" class="detail-content" v-html="renderMarkdown(aiResult)"></div>
           </div>
           <div class="detail-footer">

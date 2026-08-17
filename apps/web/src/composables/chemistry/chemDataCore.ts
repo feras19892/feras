@@ -70,7 +70,7 @@ export const chemDataCore: Chemical[] = [
   },
   {
     id: 'cuso4', nameAr: 'كبريتات النحاس', formula: 'CuSO₄',
-    category: 'salt', physicalState: 'liquid', concentration: 0.1, ph: 4.5,
+    category: 'salt', physicalState: 'solid', concentration: 0.1, ph: 4.5,
     color: '#3b82f6', opacity: 0.5, density: 1.12, molarMass: 159.61,
     boilingPoint: 650, hazardLevel: 'caution', description: 'محلول أزرق فاتح'
   },

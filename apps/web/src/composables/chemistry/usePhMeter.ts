@@ -1,5 +1,6 @@
 import type { LabItem } from './useChemistryTools';
 import { items, isContainer, getLiquid, phProbeTipMap } from './useChemistryLab';
+import { getContainerHalfWidth } from './chemLabIds';
 
 export function phColor(ph: number | null): string {
   if (ph === null) return '#94a3b8';
@@ -15,7 +16,8 @@ export function getPhReading(phMeter: LabItem): number | null {
   if (!tip) return null;
   const target = items.value.find((i: LabItem) => {
     if (i.uid === phMeter.uid || !isContainer(i.id)) return false;
-    const dx = Math.abs((i.x + 40) - tip.x);
+    const cx = i.x + getContainerHalfWidth(i.id);
+    const dx = Math.abs(cx - tip.x);
     const dy = Math.abs((i.y + 10) - tip.y);
     return dx < 60 && dy < 50;
   });

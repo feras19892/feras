@@ -1,7 +1,8 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useInclinedExperiment } from '../../../../composables/inclined/useInclinedExperiment'
 import { useI18n } from '../../../../composables/useI18n'
+import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import InclinedMenuBar from '../../../../components/experiment/inclined/InclinedMenuBar.vue'
 import InclinedCanvas from '../../../../components/experiment/inclined/InclinedCanvas.vue'
 import InclinedPanelBody from '../../../../components/experiment/inclined/InclinedPanelBody.vue'
@@ -11,9 +12,11 @@ import InclinedHelpModal from '../../../../components/experiment/inclined/Inclin
 import InclinedGuidePanel from '../../../../components/experiment/inclined/InclinedGuidePanel.vue'
 import InclinedReport from '../../../../components/experiment/inclined/InclinedReport.vue'
 import InclinedStatusBar from '../../../../components/experiment/inclined/InclinedStatusBar.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
+import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
 const { t } = useI18n()
+const { confirmReset } = useResetConfirm()
 const ex = useInclinedExperiment()
 const helpOpen = ref(false)
 const showGuide = ref(true)
@@ -24,7 +27,7 @@ function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return
   if (e.code === 'Space') { e.preventDefault(); ex.lab.togglePause() }
-  else if (e.key === 'r' || e.key === 'R') { if (confirm(t('experiments.confirmResetSimulation'))) ex.resetSim() }
+  else if (e.key === 'r' || e.key === 'R') { confirmReset().then(ok => { if (ok) ex.resetSim() }) }
   else if (e.key === 's' || e.key === 'S') { ex.trials.recordTrial() }
   else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); if (e.shiftKey) ex.trials.redo(); else ex.trials.undo() }
   else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ex.trials.redo() }
@@ -37,9 +40,9 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 <template>
   <div class="inclined-lab">
     <InclinedMenuBar
-      @toggle-panel="ex.layout.togglePanel" @show-all-panels="ex.layout.showAllPanels" @export-csv="ex.trials.exportCsv"
-      @toggle-pause="ex.lab.togglePause" @reset="ex.resetSim" @record-trial="ex.trials.recordTrial" @run-lab="ex.runInclinedLab"
-      @toggle-help="helpOpen = !helpOpen" @print-report="reportOpen = true"
+      :title="t('experiments.inclinedTitle')" icon="📐"
+      @show-all-panels="ex.layout.showAllPanels"
+      @toggle-help="helpOpen = !helpOpen"
       @analyze-results="ex.exportToAnalysis"
     />
 
@@ -89,19 +92,13 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       <div class="resizer" @mousedown="ex.onResizeStart('vis', $event)"></div>
       <div class="lab-col ctrl-col" :style="{ width: ex.colWidths.ctrl + 'px' }">
         <template v-for="id in ex.getColumnPanels('ctrl')" :key="id">
-          <DraggablePanel v-if="id !== 'params' && ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id)"
+          <DraggablePanel v-if="ex.layout.isPanelVisible(id)" class="lab-card" :id="id" :title="ex.layout.panelTitle(id)"
             @maximize="ex.layout.maximizePanel" @hide="ex.layout.togglePanel" @drop="ex.handleDrop">
             <InclinedPanelBody :id="id" :trials="ex.trials.trials.value" :params="ex.params" :sim="ex.lab.sim"
               :measured="ex.getMeasured()" :trial-stats="ex.trials.trialStats.value" :calc-result="ex.trials.calcResult.value"
               @update:params="Object.assign(ex.params, $event)" @remove="ex.trials.removeTrial" @calc-acceleration="ex.trials.calcAcceleration" @calc-time="ex.trials.calcTime" @calc-velocity="ex.trials.calcVelocity" @calc-normal="ex.trials.calcNormal" @calc-g-from-slope="ex.trials.calcGFromSlope"
             />
           </DraggablePanel>
-          <div v-else-if="id === 'params'" class="params-embedded">
-            <InclinedPanelBody id="params" :trials="ex.trials.trials.value" :params="ex.params" :sim="ex.lab.sim"
-              :measured="ex.getMeasured()" :trial-stats="ex.trials.trialStats.value" :calc-result="ex.trials.calcResult.value"
-              @update:params="Object.assign(ex.params, $event)"
-            />
-          </div>
         </template>
         <InclinedGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
@@ -119,6 +116,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @close="reportOpen = false"
     />
   </div>
+  <ResetConfirmModal />
 </template>
 
 <style scoped>
@@ -128,7 +126,6 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 .data-col { background: rgba(255,255,255,0.02); }
 .vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 0; }
 .ctrl-col { background: rgba(255,255,255,0.02); }
-.params-embedded { padding: .6rem; }
 .resizer { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0; }
 .resizer:hover, .resizer:active { background: #5B8DB8; }
 .chart-row { display: flex; gap: .5rem; width: 100%; margin-top: .3rem; flex: 0 0 220px; min-height: 0; align-items: stretch; }

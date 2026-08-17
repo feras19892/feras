@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '../../../../composables/useI18n'
+const { t } = useI18n()
 const props = defineProps<{
   p: number
   v: number
@@ -13,36 +15,36 @@ const isConst = () => Math.abs(props.pv - props.constTarget) < 0.05
 const constancyLabel = () => {
   if (!props.constTarget) return ''
   const dev = Math.abs(props.pv - props.constTarget) / props.constTarget * 100
-  if (dev < 1) return 'ممتاز ✅'
-  if (dev < 5) return 'جيد'
-  return 'يحتاج مزيداً'
+  if (dev < 1) return t('experiments.blConstancyExcellent')
+  if (dev < 5) return t('experiments.blConstancyGood')
+  return t('experiments.blConstancyNeedsMore')
 }
 </script>
 <template>
   <div class="panel-body">
     <div class="law-box boyle">
-      <div class="law-title">قانون بويل</div>
+      <div class="law-title">{{ t('experiments.blBoylesLaw') }}</div>
       <div class="formula">P × V = constant</div>
-      <div class="sub">(عند T, n ثابتة — عملية إحترارية)</div>
+      <div class="sub">{{ t('experiments.blIsothermalHint') }}</div>
       <div class="data-grid">
         <div class="data-item"><span class="data-label">P</span><span class="data-val">{{ props.p.toFixed(2) }} atm</span></div>
         <div class="data-item"><span class="data-label">V</span><span class="data-val">{{ props.v.toFixed(2) }} L</span></div>
         <div class="data-item highlight"><span class="data-label">P·V</span><span class="data-val green">{{ props.pv.toFixed(2) }} atm·L</span></div>
-        <div class="data-item"><span class="data-label">الثابت k</span><span class="data-val amber">{{ props.constTarget.toFixed(2) }}</span></div>
-        <div class="data-item"><span class="data-label">الانحراف</span><span class="data-val" :class="isConst() ? 'green' : 'red'">{{ constancyLabel() }}</span></div>
+        <div class="data-item"><span class="data-label">{{ t('experiments.blConstantK') }}</span><span class="data-val amber">{{ props.constTarget.toFixed(2) }}</span></div>
+        <div class="data-item"><span class="data-label">{{ t('experiments.blDeviation') }}</span><span class="data-val" :class="isConst() ? 'green' : 'red'">{{ constancyLabel() }}</span></div>
       </div>
     </div>
     <div class="law-box ideal">
-      <div class="law-title">قانون الغاز المثالي</div>
+      <div class="law-title">{{ t('experiments.blIdealGasLaw') }}</div>
       <div class="formula">P·V = n·R·T</div>
       <div class="data-grid">
         <div class="data-item"><span class="data-label">n·R·T</span><span class="data-val">{{ nrt_atmL().toFixed(2) }} atm·L</span></div>
-        <div class="data-item"><span class="data-label">P·V الحقيقي</span><span class="data-val green">{{ props.pv.toFixed(2) }} atm·L</span></div>
-        <div class="data-item"><span class="data-label">ملاحظة</span><span class="data-val" style="color:#64748b;font-size:.65rem">ثابت k = nRT في المحاكاة</span></div>
+        <div class="data-item"><span class="data-label">{{ t('experiments.blActualPv') }}</span><span class="data-val green">{{ props.pv.toFixed(2) }} atm·L</span></div>
+        <div class="data-item"><span class="data-label">{{ t('experiments.blNote') }}</span><span class="data-val" style="color:#64748b;font-size:.65rem">{{ t('experiments.blNoteText') }}</span></div>
       </div>
     </div>
     <div class="law-box const">
-      <div class="law-title">ثوابت فيزيائية</div>
+      <div class="law-title">{{ t('experiments.blPhysicalConstants') }}</div>
       <div class="const-grid">
         <div class="const-item"><span class="const-sym">R</span><span class="const-val">{{ R_L_atm }} L·atm/(mol·K)</span></div>
         <div class="const-item"><span class="const-sym">n</span><span class="const-val">{{ props.n }} mol</span></div>

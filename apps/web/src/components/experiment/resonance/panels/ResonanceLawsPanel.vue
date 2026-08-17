@@ -1,4 +1,6 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '../../../../composables/useI18n'
+const { t } = useI18n()
 interface Props { stringLength: number; tension: number; harmonic: number; frequency: number; wavelength: number; waveSpeed: number }
 defineProps<Props>()
 </script>
@@ -6,18 +8,18 @@ defineProps<Props>()
 <template>
   <div class="panel-body">
     <div class="eq-block">
-      <div class="eq-title">Standing Wave Frequency</div>
+      <div class="eq-title">{{ t('experiments.reStandingWaveFreq') }}</div>
       <div class="eq">f_n = n v / (2L)</div>
       <div class="eq-values">n = {{ harmonic }}, L = {{ stringLength.toFixed(2) }} m, f = {{ frequency.toFixed(1) }} Hz</div>
     </div>
     <div class="eq-block">
-      <div class="eq-title">Wavelength</div>
-      <div class="eq">lambda_n = 2L / n</div>
-      <div class="eq-values">lambda = {{ wavelength.toFixed(3) }} m</div>
+      <div class="eq-title">{{ t('experiments.reWavelengthEq') }}</div>
+      <div class="eq">λ_n = 2L / n</div>
+      <div class="eq-values">λ = {{ wavelength.toFixed(3) }} m</div>
     </div>
     <div class="eq-block">
-      <div class="eq-title">Wave Speed</div>
-      <div class="eq">v = f * lambda</div>
+      <div class="eq-title">{{ t('experiments.reWaveSpeedEq') }}</div>
+      <div class="eq">v = f × λ</div>
       <div class="eq-values">v = {{ waveSpeed.toFixed(1) }} m/s</div>
     </div>
   </div>

@@ -57,7 +57,18 @@ export async function getStudentDeadlines(studentId: number): Promise<Deadline[]
   const placeholders = classIds.map(() => '?').join(',');
   return db.all(
     `SELECT * FROM experiment_deadlines WHERE class_id IN (${placeholders}) AND due_at > datetime('now', '-7 days') ORDER BY due_at ASC`,
-    ...classIds.map(c => c.class_id),
+    ...classIds.map((cs) => cs.class_id),
+  );
+}
+
+export async function getTeacherDeadlines(teacherId: number): Promise<(Deadline & { class_name: string })[]> {
+  return db.all(
+    `SELECT d.*, c.name as class_name
+     FROM experiment_deadlines d
+     JOIN classes c ON d.class_id = c.id
+     WHERE c.teacher_id = ? AND d.due_at > datetime('now', '-7 days')
+     ORDER BY d.due_at ASC`,
+    teacherId,
   );
 }
 

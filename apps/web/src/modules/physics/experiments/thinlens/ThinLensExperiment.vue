@@ -1,7 +1,8 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useThinLensExperiment } from '../../../../composables/thinlens/useThinLensExperiment'
 import { useI18n } from '../../../../composables/useI18n'
+import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import ThinLensCanvas from '../../../../components/experiment/thinlens/ThinLensCanvas.vue'
 import ThinLensPanelBody from '../../../../components/experiment/thinlens/ThinLensPanelBody.vue'
 import LightRayMenuBar from '../../../../components/experiment/lightray/LightRayMenuBar.vue'
@@ -9,10 +10,12 @@ import LightRayStatusBar from '../../../../components/experiment/lightray/LightR
 import LightRayControlBar from '../../../../components/experiment/lightray/LightRayControlBar.vue'
 import ThinLensHelpModal from '../../../../components/experiment/thinlens/ThinLensHelpModal.vue'
 import ThinLensGuidePanel from '../../../../components/experiment/thinlens/ThinLensGuidePanel.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
+import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
 const ex = useThinLensExperiment()
 const { t } = useI18n()
+const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)
 
@@ -23,7 +26,7 @@ function onKeyDown(e: KeyboardEvent) {
     e.preventDefault()
     ex.lab.togglePause()
   } else if (e.key === 'r' || e.key === 'R') {
-    if (confirm(t('experiments.resetConfirm'))) ex.resetSim()
+    confirmReset().then(ok => { if (ok) ex.resetSim() })
   } else if (e.key === 's' || e.key === 'S') {
     ex.trials.recordTrial()
   } else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
@@ -51,14 +54,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <LightRayMenuBar
       :title="t('experiments.thinLensTitle')"
       icon="🔍"
-      experiment-route="/physics/waves/thin-lens"
-      experiment-name="Thin Lens"
-      @toggle-panel="ex.layout.togglePanel"
       @show-all-panels="ex.layout.showAllPanels"
-      @export-csv="ex.trials.exportCsv"
-      @toggle-pause="ex.lab.togglePause"
-      @reset="ex.resetSim"
-      @record-trial="ex.trials.recordTrial"
       @toggle-help="helpOpen = !helpOpen"
       @analyze-results="ex.exportToAnalysis"
     />
@@ -189,6 +185,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @redo="ex.trials.redo"
     />
   </div>
+  <ResetConfirmModal />
 </template>
 
 <style scoped>

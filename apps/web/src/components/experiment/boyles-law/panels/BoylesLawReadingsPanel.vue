@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '../../../../composables/useI18n'
+const { t } = useI18n()
 const props = defineProps<{
   p: number
   v: number
@@ -9,8 +11,8 @@ const props = defineProps<{
 </script>
 <template>
   <div class="panel-body">
-    <div class="read-row"><span class="label"><span class="dot blue"></span>الضغط P</span><span class="value">{{ props.p.toFixed(2) }} atm</span></div>
-    <div class="read-row"><span class="label"><span class="dot amber"></span>الحجم V</span><span class="value">{{ props.v.toFixed(2) }} L</span></div>
+    <div class="read-row"><span class="label"><span class="dot blue"></span>{{ t('experiments.blPressure') }}</span><span class="value">{{ props.p.toFixed(2) }} atm</span></div>
+    <div class="read-row"><span class="label"><span class="dot amber"></span>{{ t('experiments.blVolume') }}</span><span class="value">{{ props.v.toFixed(2) }} L</span></div>
     <div class="read-row highlight"><span class="label"><span class="dot green"></span>P·V</span><span class="value green">{{ props.pv.toFixed(2) }} atm·L</span></div>
     <div class="sep"></div>
     <div class="read-row"><span class="label"><span class="dot purple"></span>n</span><span class="value">{{ props.n }} mol</span></div>

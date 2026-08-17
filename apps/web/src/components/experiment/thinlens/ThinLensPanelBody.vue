@@ -27,8 +27,8 @@ const emit = defineEmits<{
 }>()
 
 const chartPoints = computed(() => props.trials
-  .filter(t => t.imageDistance !== 0 && t.lensType === props.params.lensType && Number.isFinite(t.invDo) && Number.isFinite(t.invDi))
-  .map((t) => ({ invDo: t.invDo, invDi: t.invDi })))
+  .filter(tr => tr.imageDistance !== 0 && tr.lensType === props.params.lensType && Number.isFinite(tr.invDo) && Number.isFinite(tr.invDi))
+  .map((tr) => ({ invDo: tr.invDo, invDi: tr.invDi })))
 
 const chartBounds = computed(() => {
   const pts = chartPoints.value

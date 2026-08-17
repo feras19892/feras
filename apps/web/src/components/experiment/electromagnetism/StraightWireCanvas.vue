@@ -32,6 +32,7 @@ if (typeof CanvasRenderingContext2D !== 'undefined' && !CanvasRenderingContext2D
 }
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
+let cssW = 800, cssH = 400
 let rafId = 0
 let watchdogId = 0
 let resizeObserver: ResizeObserver | null = null
@@ -57,9 +58,7 @@ function getCanvasPos(e: MouseEvent): { x: number; y: number } {
 }
 
 function screenToWorld(sx: number, sy: number): { x: number; y: number } {
-  const canvas = canvasRef.value!
-  const w = canvas.width
-  const h = canvas.height
+  const w = cssW, h = cssH
   const tx = (sx - w / 2 - panX) / zoom + w / 2
   const ty = (sy - h / 2 - panY) / zoom + h / 2
   return { x: tx, y: ty }
@@ -88,8 +87,8 @@ function onMouseDown(e: MouseEvent) {
   }
 
   if (probeState === 'placed') {
-    const sx = (probePos.x - canvasRef.value!.width / 2) * zoom + canvasRef.value!.width / 2 + panX
-    const sy = (probePos.y - canvasRef.value!.height / 2) * zoom + canvasRef.value!.height / 2 + panY
+    const sx = (probePos.x - cssW / 2) * zoom + cssW / 2 + panX
+    const sy = (probePos.y - cssH / 2) * zoom + cssH / 2 + panY
     const dx = pos.x - sx
     const dy = pos.y - sy
     if (Math.abs(dx) < 18 && Math.abs(dy) < 18) {
@@ -121,9 +120,9 @@ function onMouseUp() {
   if (probeState === 'dragging') {
     probeState = 'placed'
     const canvas = canvasRef.value!
-    const cx = canvas.width / 2
+    const cx = cssW / 2
     const dxPx = Math.abs(probePos.x - cx)
-    const rMeters = dxPx * (0.05 / 100) // 100px = 0.05m reference distance
+    const rMeters = dxPx * (0.05 / 100)
     const B = (MU0 * currentI) / (2 * Math.PI * Math.max(rMeters, 1e-6))
     probeMeasured = { r: rMeters, B }
     emit('probe-placed', rMeters, B)
@@ -144,10 +143,10 @@ function draw() {
   if (!canvas) return
   const ctx = canvas.getContext('2d')
   if (!ctx) return
-  if (canvas.width === 0 || canvas.height === 0) return
+  if (cssW === 0 || cssH === 0) return
 
-  const w = canvas.width
-  const h = canvas.height
+  const w = cssW
+  const h = cssH
 
   ctx.fillStyle = '#0b1220'
   ctx.fillRect(0, 0, w, h)
@@ -417,8 +416,11 @@ function resize() {
   if (!canvas) return
   const parent = canvas.parentElement
   if (!parent) return
-  canvas.width = parent.clientWidth
-  canvas.height = parent.clientHeight
+  const dpr = window.devicePixelRatio || 1
+  cssW = parent.clientWidth; cssH = parent.clientHeight
+  canvas.width = cssW * dpr; canvas.height = cssH * dpr
+  canvas.style.width = cssW + 'px'; canvas.style.height = cssH + 'px'
+  const ctx = canvas.getContext('2d'); if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
   draw()
 }
 
@@ -472,9 +474,9 @@ watch(() => [props.I], () => {
   if (probeState === 'placed') {
     const canvas = canvasRef.value
     if (!canvas) return
-    const cx = canvas.width / 2
+    const cx = cssW / 2
     const dxPx = Math.abs(probePos.x - cx)
-    const rMeters = dxPx * (0.05 / 100) // 100px = 0.05m
+    const rMeters = dxPx * (0.05 / 100)
     const B = (MU0 * currentI) / (2 * Math.PI * Math.max(rMeters, 1e-6))
     probeMeasured = { r: rMeters, B }
     emit('probe-placed', rMeters, B)

@@ -21,6 +21,10 @@ export const createReportSchema = z.object({
 export const gradeReportSchema = z.object({
   grade: z.number().int().min(0).max(100),
   feedback: z.string().max(2000).optional(),
+  grade_accuracy: z.number().int().min(0).max(25).optional(),
+  grade_presentation: z.number().int().min(0).max(25).optional(),
+  grade_conclusion: z.number().int().min(0).max(25).optional(),
+  grade_innovation: z.number().int().min(0).max(25).optional(),
 });
 
 export const addCommentSchema = z.object({

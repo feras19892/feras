@@ -2,6 +2,7 @@
 import { ref, onMounted, computed, onUnmounted } from 'vue';
 import { getAvailableQuizzes, getQuiz, startQuiz, submitQuiz, type Quiz, type QuizQuestion } from '../../services/quiz.service';
 import { useI18n } from '../../composables/useI18n';
+import { useConfirmDialog } from '../../composables/useConfirmDialog';
 
 const { t } = useI18n();
 
@@ -16,6 +17,7 @@ const quizLoading = ref(false);
 const quizError = ref('');
 const result = ref<{ score: number; total: number } | null>(null);
 const timeLeft = ref(0);
+const timeUpWarning = ref(false);
 let timer: ReturnType<typeof setInterval> | null = null;
 
 async function loadQuizzes() {
@@ -42,13 +44,16 @@ async function openQuiz(quiz: Quiz) {
       activeQuiz.value = res.quiz;
       questions.value = res.questions;
       if (res.submission?.submitted_at) {
-        result.value = { score: res.submission.score, total: quiz.max_score };
+        result.value = { score: Number(res.submission.score), total: quiz.max_score };
       } else {
         await startQuiz(quiz.id);
         timeLeft.value = res.quiz.time_limit_minutes * 60;
         if (timer) clearInterval(timer);
         timer = setInterval(() => {
           timeLeft.value--;
+          if (timeLeft.value === 30) {
+            timeUpWarning.value = true;
+          }
           if (timeLeft.value <= 0) {
             handleSubmit();
           }
@@ -64,12 +69,29 @@ async function openQuiz(quiz: Quiz) {
   quizLoading.value = false;
 }
 
+const { confirmDialog } = useConfirmDialog();
+
 function closeQuiz() {
+  if (answeredCount.value > 0 && !result.value) {
+    confirmDialog({ message: t('dashboard.dash.quizConfirmClose', 'هل تريد الخروج؟ سيتم فقدان إجاباتك.'), variant: 'danger' }).then(ok => {
+      if (!ok) return;
+      if (timer) { clearInterval(timer); timer = null; }
+      quizLoading.value = false;
+      activeQuiz.value = null;
+      questions.value = [];
+      answers.value = {};
+      result.value = null;
+      timeUpWarning.value = false;
+    });
+    return;
+  }
+  if (timer) { clearInterval(timer); timer = null; }
+  quizLoading.value = false;
   activeQuiz.value = null;
   questions.value = [];
   answers.value = {};
   result.value = null;
-  if (timer) { clearInterval(timer); timer = null; }
+  timeUpWarning.value = false;
 }
 
 async function handleSubmit() {
@@ -107,7 +129,10 @@ onUnmounted(() => { if (timer) clearInterval(timer); });
     <!-- Quiz List -->
     <div v-if="!activeQuiz">
       <div v-if="loading" class="loading">{{ t('dashboard.dash.quizLoading') }}</div>
-      <div v-else-if="error" class="error-box">❌ {{ error }}</div>
+      <div v-else-if="error" class="error-retry-box">
+        <span>❌ {{ error }}</span>
+        <button class="retry-btn" @click="loadQuizzes">🔄 {{ t('common.retry', 'إعادة') }}</button>
+      </div>
       <div v-else-if="quizzes.length === 0" class="empty">{{ t('dashboard.dash.quizNoAvailable') }}</div>
       <div v-else class="quiz-list">
         <div v-for="q in quizzes" :key="q.id" :class="['quiz-card', { submitted: q.submitted }]">
@@ -143,12 +168,15 @@ onUnmounted(() => { if (timer) clearInterval(timer); });
           <span class="score-sep">/</span>
           <span class="score-total">{{ result.total }}</span>
         </div>
-        <p class="score-percent">{{ Math.round((result.score / result.total) * 100) }}%</p>
+        <p class="score-percent">{{ result.total > 0 ? Math.round((result.score / result.total) * 100) : 0 }}%</p>
         <button class="btn-back" @click="closeQuiz(); loadQuizzes()">{{ t('dashboard.dash.quizBackToList') }}</button>
       </div>
 
       <div v-else>
         <div v-if="quizError" class="error-box">❌ {{ quizError }}</div>
+        <div v-if="timeUpWarning && timeLeft <= 30 && timeLeft > 0" class="time-warning">
+          ⚠️ {{ t('dashboard.dash.quizTimeWarning', 'تبقى أقل من 30 ثانية! سيتم الإرسال تلقائياً.') }}
+        </div>
         <div class="progress-bar">
           <span>{{ answeredCount }} / {{ totalQuestions }} {{ t('dashboard.dash.quizAnswered') }}</span>
         </div>
@@ -198,6 +226,9 @@ onUnmounted(() => { if (timer) clearInterval(timer); });
 .quizzes-tab { color: #e2e8f0; }
 .loading, .empty { text-align: center; color: #64748b; padding: 2rem; }
 .error-box { background: rgba(239,68,68,0.1); color: #f87171; padding: 1rem; border-radius: 0.5rem; text-align: center; }
+.error-retry-box { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; padding: 1.5rem; color: #f87171; font-size: 0.85rem; }
+.retry-btn { padding: 0.3rem 0.8rem; border-radius: 0.4rem; border: 1px solid rgba(99,102,241,0.3); background: rgba(99,102,241,0.1); color: #c7d2fe; cursor: pointer; font-family: inherit; font-size: 0.78rem; }
+.time-warning { background: rgba(251,146,60,0.15); color: #fb923c; padding: 0.6rem 1rem; border-radius: 0.5rem; text-align: center; font-size: 0.82rem; font-weight: 700; margin-bottom: 0.8rem; animation: pulse 1s infinite; }
 
 .quiz-list { display: flex; flex-direction: column; gap: 0.8rem; }
 .quiz-card { background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.8rem; padding: 1.2rem; }

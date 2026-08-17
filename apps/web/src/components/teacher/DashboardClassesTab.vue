@@ -18,7 +18,7 @@ const { t } = useI18n()
           </tr></thead>
           <tbody>
             <tr v-for="c in rows" :key="c.id" class="t-row">
-              <td><span class="t-name">{{ c.name }}</span><code class="t-code">{{ c.code }}</code></td>
+              <td><span class="t-name">{{ c.name }}<span v-if="c.isFrozen" class="freeze-badge">🧊 مُجمّد</span></span><code class="t-code">{{ c.code }}</code></td>
               <td>{{ c.studentCount }}</td><td>{{ c.totalReports }}</td>
               <td class="t-graded">{{ c.gradedCount }}</td>
               <td :class="{ 't-pending': c.pendingCount > 0 }">{{ c.pendingCount }}</td>
@@ -47,6 +47,7 @@ const { t } = useI18n()
 .t-row { cursor: pointer; transition: background 0.12s; }
 .t-row:hover { background: rgba(99,102,241,0.04); }
 .t-name { font-weight: 700; color: #f1f5f9; display: block; }
+.freeze-badge { display: inline-flex; align-items: center; gap: 0.2rem; padding: 0.1rem 0.4rem; border-radius: 4px; background: rgba(6,182,212,0.15); color: #67e8f9; font-size: 0.65rem; font-weight: 700; margin-inline-start: 0.4rem; }
 .t-code { font-size: 0.68rem; color: #67e8f9; }
 .t-graded { color: #4ade80; font-weight: 700; }
 .t-pending { color: #fbbf24; font-weight: 700; }

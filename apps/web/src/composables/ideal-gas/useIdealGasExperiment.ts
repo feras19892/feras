@@ -86,12 +86,12 @@ export function useIdealGasExperiment() {
   }
   const router = useRouter()
   function exportToAnalysis() {
-    if (trials.trials.value.length < 2) return
+    if (trials.trials.value.length < 2) { alert('تحتاج إلى تسجيل قراءتين على الأقل قبل التحليل'); return }
     const payload: AnalysisPayload = {
       sourceExperiment: 'ideal-gas',
       sourceNameAr: 'الغاز المثالي',
       hasCalcTab: true,
-      readings: trials.trials.value.map(t => ({ n: t.n, T: t.T, V: t.V, P: t.P })),
+      readings: trials.trials.value.map(tr => ({ n: tr.n, T: tr.T, V: tr.V, P: tr.P })),
       columns: [
         { key: 'n', label: 'n (mol)', unit: 'mol' },
         { key: 'T', label: 'T (K)', unit: 'K' },

@@ -25,6 +25,10 @@ export interface Report {
   feedback?: string;
   graded_by?: number;
   graded_by_name?: string;
+  grade_accuracy?: number;
+  grade_presentation?: number;
+  grade_conclusion?: number;
+  grade_innovation?: number;
   submitted_at?: string;
   graded_at?: string;
   student_name?: string;
@@ -100,9 +104,11 @@ export async function resubmitReport(reportId: number, data: {
   });
 }
 
-export async function getReports(params?: { class_id?: string; student_id?: string; status?: string }) {
-  const qs = params ? '?' + new URLSearchParams(params as Record<string, string>).toString() : '';
-  return fetchJson<{ success: boolean; reports: Report[] }>(`/api/reports${qs}`);
+export async function getReports(params?: { class_id?: string; student_id?: string; status?: string; search?: string; page?: number; limit?: number }) {
+  const qs = params ? '?' + new URLSearchParams(
+    Object.fromEntries(Object.entries(params).map(([k, v]) => [k, String(v)]))
+  ).toString() : '';
+  return fetchJson<{ success: boolean; reports: Report[]; total: number; page: number; limit: number; totalPages: number }>(`/api/reports${qs}`);
 }
 
 export async function getReport(id: number) {
@@ -113,7 +119,7 @@ export async function markReportSeen(id: number) {
   return fetchJson<{ success: boolean }>(`/api/reports/${id}/seen`, { method: 'PATCH' });
 }
 
-export async function gradeReport(id: number, data: { grade: number; feedback?: string }) {
+export async function gradeReport(id: number, data: { grade: number; feedback?: string; grade_accuracy?: number; grade_presentation?: number; grade_conclusion?: number; grade_innovation?: number }) {
   return fetchJson<{ success: boolean }>(`/api/reports/${id}/grade`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
@@ -168,4 +174,20 @@ export async function deleteReport(id: number) {
 
 export async function markFeedbackSeen(id: number) {
   return fetchJson<{ success: boolean }>(`/api/reports/${id}/feedback-seen`, { method: 'PATCH' });
+}
+
+export async function downloadGradebook(classId: string) {
+  const res = await fetch(`/api/reports/class/${classId}/gradebook.csv`, {
+    credentials: 'include',
+  });
+  if (!res.ok) throw new Error('Failed to download gradebook');
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `gradebook_${classId}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }

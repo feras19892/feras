@@ -144,7 +144,7 @@ watch(() => props.show, (val) => {
 
       <div class="form-row">
         <label>{{ t('experiments.readingsCountLabel') }}</label>
-        <p class="readonly">{{ JSON.parse(readings || '[]').length }} {{ t('experiments.readingUnit') }}</p>
+        <p class="readonly">{{ safeParse(readings)?.length ?? 0 }} {{ t('experiments.readingUnit') }}</p>
       </div>
 
       <div class="form-row">

@@ -8,10 +8,13 @@ const router = useRouter();
 
 function goToBranch(id: string) {
   const branch = branches.find(b => b.id === id)
-  if (branch && branch.experiments.filter(e => e.enabled).length === 1) {
-    router.push(`/physics/${id}/${branch.experiments[0].id}`)
-  } else {
-    router.push(`/physics/${id}`)
+  if (branch) {
+    const enabled = branch.experiments.filter(e => e.enabled)
+    if (enabled.length === 1) {
+      router.push(`/physics/${id}/${enabled[0].id}`)
+    } else {
+      router.push(`/physics/${id}`)
+    }
   }
 }
 
@@ -58,7 +61,7 @@ function branchDescKey(id: string): string {
         <h3>{{ t(branchNameKey(branch.id)) }}</h3>
         <p class="desc">{{ t(branchDescKey(branch.id)) }}</p>
         <div class="meta">
-          <span class="badge">{{ branch.experiments.length }} {{ branch.experiments.length === 1 ? t('experiments.experimentsCount') : t('experiments.experimentsCountPlural') }}</span>
+          <span class="badge">{{ branch.experiments.filter(e => e.enabled).length }} {{ branch.experiments.filter(e => e.enabled).length === 1 ? t('experiments.experimentsCount') : t('experiments.experimentsCountPlural') }}</span>
         </div>
       </div>
     </div>

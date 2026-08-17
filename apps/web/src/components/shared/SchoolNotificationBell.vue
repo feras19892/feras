@@ -2,39 +2,21 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from '../../composables/useI18n'
-import { apiUrl } from '../../services/http'
-import {
-  getSchoolNotifications, getSchoolUnreadCount,
-  markSchoolNotificationRead, markAllSchoolNotificationsRead,
-  deleteSchoolNotification, pinSchoolNotification, type SchoolNotification,
-} from '../../services/school-notification.service'
+import { useSchoolNotifications } from '../../composables/useSchoolNotifications'
+import type { SchoolNotification } from '../../services/school-notification.service'
 
 const { t, locale } = useI18n()
 const router = useRouter()
 const open = ref(false)
-const notifications = ref<SchoolNotification[]>([])
-const unreadCount = ref(0)
 const bellRef = ref<HTMLElement | null>(null)
-let eventSource: EventSource | null = null
-let fallbackIntervalId: ReturnType<typeof setInterval> | null = null
 
-async function loadUnread() {
-  try {
-    const res = await getSchoolUnreadCount()
-    if (res.success) unreadCount.value = res.count
-  } catch { /* ignore */ }
-}
-
-async function loadNotifications() {
-  try {
-    const res = await getSchoolNotifications()
-    if (res.success) notifications.value = res.notifications
-  } catch { /* ignore */ }
-}
+const { notifications, unreadCount, markAllRead, markOneRead, deleteOne, togglePin } = useSchoolNotifications()
 
 function toggle() {
   open.value = !open.value
-  if (open.value) loadNotifications()
+  if (open.value && unreadCount.value > 0) {
+    markAllRead()
+  }
 }
 
 function handleClickOutside(e: MouseEvent) {
@@ -44,93 +26,30 @@ function handleClickOutside(e: MouseEvent) {
 }
 
 async function handleNotificationClick(n: SchoolNotification) {
-  if (!n.is_read) await markRead(n.id)
+  if (!n.is_read) await markOneRead(n.id)
   if (n.report_id) {
     open.value = false
     router.push(`/report/${n.report_id}`)
   }
 }
 
-async function markRead(id: number) {
-  await markSchoolNotificationRead(id)
-  const n = notifications.value.find(x => x.id === id)
-  if (!n) return
-  if (n.is_pinned) {
-    n.is_read = 1
-  } else {
-    notifications.value = notifications.value.filter(x => x.id !== id)
-  }
-  unreadCount.value = Math.max(0, unreadCount.value - 1)
-}
-
 async function markAll() {
-  await markAllSchoolNotificationsRead()
-  notifications.value = notifications.value.filter(n => n.is_pinned).map(n => ({ ...n, is_read: 1 }))
-  unreadCount.value = 0
+  await markAllRead()
 }
 
 async function remove(id: number) {
-  await deleteSchoolNotification(id)
-  notifications.value = notifications.value.filter(n => n.id !== id)
-  await loadUnread()
-}
-
-async function togglePin(id: number) {
-  try {
-    const res = await pinSchoolNotification(id)
-    if (res.success) {
-      const n = notifications.value.find(x => x.id === id)
-      if (n) n.is_pinned = res.is_pinned ? 1 : 0
-    }
-  } catch { /* ignore */ }
+  await deleteOne(id)
 }
 
 function formatTime(dateStr: string) {
   return new Date(dateStr).toLocaleString(locale.value === 'ar' ? 'ar-SA' : locale.value, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
 }
 
-function connectSSE() {
-  eventSource = new EventSource(apiUrl('/api/school/notifications/stream'))
-  eventSource.addEventListener('notification', (e) => {
-    try {
-      const data = JSON.parse((e as MessageEvent).data)
-      notifications.value.unshift(data)
-      unreadCount.value++
-    } catch { /* ignore */ }
-  })
-  eventSource.onerror = () => {
-    eventSource?.close()
-    eventSource = null
-    if (!fallbackIntervalId) {
-      loadUnread()
-      loadNotifications()
-      fallbackIntervalId = setInterval(() => {
-        loadUnread()
-        loadNotifications()
-      }, 30000)
-    }
-    setTimeout(() => {
-      if (!eventSource) connectSSE()
-    }, 10000)
-  }
-}
-
-function stopFallback() {
-  if (fallbackIntervalId) {
-    clearInterval(fallbackIntervalId)
-    fallbackIntervalId = null
-  }
-}
-
 onMounted(() => {
-  loadUnread()
-  connectSSE()
   document.addEventListener('click', handleClickOutside)
 })
 
 onUnmounted(() => {
-  eventSource?.close()
-  stopFallback()
   document.removeEventListener('click', handleClickOutside)
 })
 </script>
@@ -167,7 +86,7 @@ onUnmounted(() => {
           </div>
           <p v-if="n.message" class="notif-msg">{{ n.message }}</p>
           <span class="notif-time">{{ formatTime(n.created_at) }}</span>
-          <button v-if="!n.is_read" class="notif-read-btn" @click.stop="markRead(n.id)">{{ t('common.markRead') }}</button>
+          <button v-if="!n.is_read" class="notif-read-btn" @click.stop="markOneRead(n.id)">{{ t('common.markRead') }}</button>
         </div>
       </div>
     </div>
@@ -202,8 +121,7 @@ onUnmounted(() => {
 }
 .notif-dropdown {
   position: absolute;
-  top: 100%; left: 50%;
-  transform: translateX(-50%);
+  top: 100%; right: 0;
   width: 340px;
   max-height: 420px;
   background: rgba(15,23,42,0.97);

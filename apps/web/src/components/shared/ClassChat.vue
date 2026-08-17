@@ -2,15 +2,16 @@
 import { ref, onMounted, onUnmounted, nextTick, computed } from 'vue'
 import { useI18n } from '../../composables/useI18n'
 import { useAuthStore } from '../../modules/auth/stores/auth'
-import { getClassMessages, sendClassMessage, deleteClassMessage } from '../../services/chat.service'
+import { getClassMessages, sendClassMessage, deleteClassMessage, markChatRead } from '../../services/chat.service'
 import type { ClassMessage } from '../../services/chat.service'
+import { fetchJson } from '../../services/http'
 
-const props = defineProps<{
-  classId: string
-  className: string
-}>()
+const props = defineProps({
+  classId: { type: String, required: true },
+  className: { type: String, required: true },
+})
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const auth = useAuthStore()
 
 const messages = ref<ClassMessage[]>([])
@@ -19,39 +20,61 @@ const loading = ref(false)
 const sending = ref(false)
 const warning = ref('')
 const chatBody = ref<HTMLElement | null>(null)
+const isFrozen = ref(false)
 let pollTimer: ReturnType<typeof setInterval> | null = null
+let isInitialLoad = true
 
 const sortedMessages = computed(() =>
   [...messages.value].sort((a, b) => a.created_at.localeCompare(b.created_at))
 )
 
 async function load() {
-  loading.value = true
+  if (isInitialLoad) loading.value = true
   try {
     const res = await getClassMessages(props.classId)
-    if (res.success) messages.value = res.messages
+    if (res.success) {
+      if (isInitialLoad) {
+        messages.value = res.messages
+        isInitialLoad = false
+        scrollToBottom()
+      } else {
+        const existingIds = new Set(messages.value.map(m => m.id))
+        const newMsgs = res.messages.filter(m => !existingIds.has(m.id))
+        if (newMsgs.length > 0) {
+          messages.value.push(...newMsgs)
+          scrollToBottom()
+        }
+      }
+      markChatRead(props.classId).catch(() => {})
+    }
   } catch (err) {
     console.error('chat load failed:', err)
   }
   loading.value = false
-  scrollToBottom()
 }
 
 async function send() {
+  if (isFrozen.value) return
   const text = input.value.trim()
   if (!text || sending.value) return
   sending.value = true
   warning.value = ''
   try {
     const res = await sendClassMessage(props.classId, text)
-    if (res.success && res.message) {
-      messages.value.unshift(res.message)
+    if (res.success && res.message && typeof res.message === 'object') {
+      messages.value.push(res.message)
       input.value = ''
       if (res.flagged) {
         warning.value = res.warning || t('dashboard.dash.chatFlagged')
         setTimeout(() => { warning.value = '' }, 5000)
       }
       scrollToBottom()
+    } else if (!res.success && typeof res.message === 'string') {
+      if (res.message.includes('مُجمّد')) {
+        isFrozen.value = true
+      }
+      warning.value = res.message
+      setTimeout(() => { warning.value = '' }, 5000)
     }
   } catch (err) {
     console.error('send failed:', err)
@@ -72,7 +95,7 @@ async function remove(msgId: number) {
 
 function canDelete(msg: ClassMessage): boolean {
   if (!auth.user) return false
-  return msg.user_id === auth.user.id || auth.isTeacher || auth.isAdmin
+  return msg.user_id === auth.user.id || auth.isTeacher || auth.isAdmin || auth.isSchool
 }
 
 function scrollToBottom() {
@@ -83,7 +106,7 @@ function scrollToBottom() {
 
 function formatTime(dateStr: string): string {
   const d = new Date(dateStr)
-  return d.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
+  return d.toLocaleTimeString(locale.value === 'ar' ? 'ar-SA' : locale.value, { hour: '2-digit', minute: '2-digit' })
 }
 
 function roleIcon(role: string): string {
@@ -92,13 +115,22 @@ function roleIcon(role: string): string {
   return '🎓'
 }
 
+async function checkFrozen() {
+  try {
+    const res = await fetchJson<{ is_frozen: number }>(`/api/classes/${props.classId}/frozen-status`)
+    isFrozen.value = !!res.is_frozen
+  } catch { /* ignore */ }
+}
+
 onMounted(() => {
   load()
-  pollTimer = setInterval(() => load(), 10000)
+  checkFrozen()
+  pollTimer = setInterval(() => load(), 30000)
 })
 
 onUnmounted(() => {
   if (pollTimer) clearInterval(pollTimer)
+  isInitialLoad = true
 })
 </script>
 
@@ -111,6 +143,10 @@ onUnmounted(() => {
 
     <div v-if="warning" class="chat-warning">
       ⚠️ {{ warning }}
+    </div>
+
+    <div v-if="isFrozen" class="chat-frozen-banner">
+      🧊 {{ t('dashboard.dash.classFrozen') }}
     </div>
 
     <div ref="chatBody" class="chat-body">
@@ -137,12 +173,12 @@ onUnmounted(() => {
       <input
         v-model="input"
         type="text"
-        :placeholder="t('dashboard.dash.typeMessage')"
+        :placeholder="isFrozen ? t('dashboard.dash.classFrozen') : t('dashboard.dash.typeMessage')"
         maxlength="500"
         @keyup.enter="send"
-        :disabled="sending"
+        :disabled="sending || isFrozen"
       />
-      <button class="send-btn" :disabled="!input.trim() || sending" @click="send">
+      <button class="send-btn" :disabled="!input.trim() || sending || isFrozen" @click="send">
         {{ sending ? '...' : '➤' }}
       </button>
     </div>
@@ -155,6 +191,7 @@ onUnmounted(() => {
 .chat-icon { font-size: 1rem; }
 .chat-title { font-size: 0.82rem; font-weight: 700; color: #c7d2fe; }
 .chat-warning { padding: 0.5rem 0.8rem; background: rgba(239,68,68,0.1); border-bottom: 1px solid rgba(239,68,68,0.15); color: #f87171; font-size: 0.75rem; font-weight: 600; }
+.chat-frozen-banner { padding: 0.5rem 0.8rem; background: rgba(99,102,241,0.1); border-bottom: 1px solid rgba(99,102,241,0.15); color: #a5b4fc; font-size: 0.75rem; font-weight: 600; text-align: center; }
 .chat-body { flex: 1; overflow-y: auto; padding: 0.6rem; display: flex; flex-direction: column; gap: 0.4rem; min-height: 200px; max-height: 400px; }
 .chat-loading { text-align: center; color: #64748b; padding: 1rem; }
 .chat-empty { text-align: center; color: #64748b; padding: 1.5rem 1rem; font-size: 0.8rem; }

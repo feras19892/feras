@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { useCanvasDPR } from '../../../composables/experiment/shared/useCanvasDPR'
 
 const props = defineProps<{
   slitDistance: number
@@ -15,6 +16,8 @@ const props = defineProps<{
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const width = 800
 const height = 400
+
+useCanvasDPR(canvasRef, width, height, () => draw());
 
 function draw() {
   const canvas = canvasRef.value

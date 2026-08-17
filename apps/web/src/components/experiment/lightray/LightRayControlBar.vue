@@ -19,7 +19,7 @@ const emit = defineEmits<{
 }>()
 
 function onClear() {
-  if (confirm(t('experiments.confirmClearAll'))) emit('clearTrials')
+  emit('clearTrials')
 }
 </script>
 

@@ -1,11 +1,13 @@
 ﻿<script setup lang="ts">
 import { componentDefs } from '../shared/componentDefs'
+import type { ComponentSpec } from '../shared/componentSpecTypes'
+import type { WorkshopComponent } from '../shared/types'
 import type { useWorkshop } from '../shared/useWorkshop'
 
 defineProps<{
   t: (key: string, vars?: Record<string, string | number>) => string
   workshop: ReturnType<typeof useWorkshop>
-  selectedSpec: { comp: any; spec: any } | null
+  selectedSpec: { comp: WorkshopComponent; spec: ComponentSpec } | null
   selectedCompFault: string | null
 }>()
 

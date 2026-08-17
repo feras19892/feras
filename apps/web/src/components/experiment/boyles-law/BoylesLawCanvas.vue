@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 
 const props = defineProps<{
   p: number
@@ -100,9 +103,9 @@ function draw() {
 
   // Phase label with spinner
   const labels: Record<string, { text: string; color: string }> = {
-    ready: { text: '💨 جاهز — اضغط Start لبدء الضغط', color: '#64748b' },
-    compressing: { text: '🔧 جاري الضغط...', color: '#fbbf24' },
-    done: { text: '✅ اكتمل — اضغط Record لتسجيل القراءة', color: '#22c55e' },
+    ready: { text: t('experiments.blPhaseReady'), color: '#64748b' },
+    compressing: { text: t('experiments.blPhaseCompressing'), color: '#fbbf24' },
+    done: { text: t('experiments.blPhaseDone'), color: '#22c55e' },
   }
   const pl = labels[props.phase]
   ctx.fillStyle = pl.color; ctx.font = `bold ${s(13)}px sans-serif`

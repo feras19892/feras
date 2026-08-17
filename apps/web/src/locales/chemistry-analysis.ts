@@ -43,5 +43,4 @@ export const chemistryAnalysis = {
     aiAnalysisFailed: 'Falló el análisis inteligente',
     serverConnectionError: 'Error de conexión con el servidor',
     concentrationTable: '📊 Tabla de Concentraciones',
-  },
-} as const
+  }} as const

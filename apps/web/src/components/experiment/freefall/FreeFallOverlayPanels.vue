@@ -46,7 +46,7 @@ const emit = defineEmits<{
   (e: 'openFullReport'): void
 }>()
 
-const allIds: PanelId[] = ['table', 'equations', 'scatter', 'tutor', 'signal', 'params', 'stats', 'error', 'report']
+const allIds: PanelId[] = ['table', 'equations', 'scatter', 'tutor', 'signal', 'params', 'stats', 'error', 'report', 'guide']
 function isMaximized(id: string) { return (props.maximized as Record<string, boolean>)[id] as boolean }
 function emitMaximize(id: string) { emit('maximize', id) }
 </script>

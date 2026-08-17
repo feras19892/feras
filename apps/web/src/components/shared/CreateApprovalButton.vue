@@ -65,8 +65,9 @@ async function submit() {
       description.value = '';
       proposedGrade.value = null;
       severity.value = 'normal';
+      window.dispatchEvent(new CustomEvent('approval:changed'));
     } else {
-      errorMsg.value = (res as any).message || t('approval.createFailed');
+      errorMsg.value = (res as { message?: string }).message || t('approval.createFailed');
     }
   } catch {
     errorMsg.value = t('approval.createFailed');

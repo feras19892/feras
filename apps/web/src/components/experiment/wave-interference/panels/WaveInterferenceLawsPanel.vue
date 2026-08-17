@@ -1,4 +1,6 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '../../../../composables/useI18n'
+const { t } = useI18n()
 interface Props { sourceDistance: number; wavelength: number; frequency: number; screenDistance: number; vWave: number }
 defineProps<Props>()
 </script>
@@ -6,19 +8,19 @@ defineProps<Props>()
 <template>
   <div class="panel-body">
     <div class="eq-block">
-      <div class="eq-title">Wave Speed</div>
-      <div class="eq">v = f * lambda</div>
-      <div class="eq-values">v = {{ vWave.toFixed(1) }} m/s, f = {{ frequency }} Hz, lambda = {{ (wavelength * 1000).toFixed(1) }} mm</div>
+      <div class="eq-title">{{ t('experiments.wiWaveSpeedEq') }}</div>
+      <div class="eq">v = f × λ</div>
+      <div class="eq-values">v = {{ vWave.toFixed(1) }} m/s, f = {{ frequency }} Hz, λ = {{ (wavelength * 1000).toFixed(1) }} mm</div>
     </div>
     <div class="eq-block">
-      <div class="eq-title">Constructive Interference</div>
-      <div class="eq">delta_r = m * lambda</div>
-      <div class="eq-values">Path difference equals integer wavelength</div>
+      <div class="eq-title">{{ t('experiments.wiConstructiveEq') }}</div>
+      <div class="eq">Δr = m × λ</div>
+      <div class="eq-values">{{ t('experiments.wiPathDiffInteger') }}</div>
     </div>
     <div class="eq-block">
-      <div class="eq-title">Destructive Interference</div>
-      <div class="eq">delta_r = (m + 1/2) * lambda</div>
-      <div class="eq-values">Path difference equals half-integer wavelength</div>
+      <div class="eq-title">{{ t('experiments.wiDestructiveEq') }}</div>
+      <div class="eq">Δr = (m + 1/2) × λ</div>
+      <div class="eq-values">{{ t('experiments.wiPathDiffHalf') }}</div>
     </div>
   </div>
 </template>

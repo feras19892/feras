@@ -10,7 +10,7 @@ import GeneratorReadingsPanel from '../../../../components/experiment/electromag
 import GeneratorDataPanel from '../../../../components/experiment/electromagnetism/GeneratorDataPanel.vue'
 import GeneratorGuidePanel from '../../../../components/experiment/electromagnetism/GeneratorGuidePanel.vue'
 import ElectromagnetismHelpModal from '../../../../components/experiment/electromagnetism/ElectromagnetismHelpModal.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 
 const ex = useGeneratorExperiment()
 const { t } = useI18n()
@@ -34,13 +34,6 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <MenuBar
       :title="t('experiments.genTitle')"
       icon="⚙️"
-      experiment-route="/physics/electromagnetism/generator"
-      :experiment-name="t('experiments.genTitle')"
-      @export-csv="ex.exportCsv"
-      @toggle-pause="ex.togglePause"
-      @reset="ex.resetSim"
-      @record-trial="ex.recordTrial"
-      @analyze-results="ex.exportToAnalysis"
       @toggle-help="helpOpen = !helpOpen"
     />
 

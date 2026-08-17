@@ -20,7 +20,7 @@ const emit = defineEmits<{
       <thead>
         <tr>
           <th>#</th>
-          <th>Mode</th>
+          <th>{{ t('experiments.dfMode') }}</th>
           <th>a (mm)</th>
           <th>1/a</th>
           <th>D</th>
@@ -38,7 +38,7 @@ const emit = defineEmits<{
           <td>{{ tr.screenDistance }}</td>
           <td>{{ tr.wavelength }}</td>
           <td>{{ tr.mode === 'grating' ? tr.firstOrderY.toFixed(3) : tr.darkFringe1.toFixed(3) }}</td>
-          <td><button class="rm" @click="emit('remove', tr.id)">x</button></td>
+          <td><button class="rm" @click="emit('remove', tr.id)">&#x00D7;</button></td>
         </tr>
       </tbody>
     </table>

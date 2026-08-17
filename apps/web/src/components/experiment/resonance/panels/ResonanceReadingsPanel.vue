@@ -1,4 +1,6 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '../../../../composables/useI18n'
+const { t } = useI18n()
 interface Props { stringLength: number; tension: number; harmonic: number; frequency: number; wavelength: number; waveSpeed: number }
 defineProps<Props>()
 </script>
@@ -6,16 +8,16 @@ defineProps<Props>()
 <template>
   <div class="panel-body">
     <div class="reading-group">
-      <div class="reading-row"><span class="reading-label">L - String length</span><span class="reading-val cyan">{{ stringLength.toFixed(2) }} m</span></div>
-      <div class="reading-row"><span class="reading-label">T - Tension</span><span class="reading-val amber">{{ tension }} N</span></div>
+      <div class="reading-row"><span class="reading-label">{{ t('experiments.reStringLength') }}</span><span class="reading-val cyan">{{ stringLength.toFixed(2) }} m</span></div>
+      <div class="reading-row"><span class="reading-label">{{ t('experiments.reTension') }}</span><span class="reading-val amber">{{ tension }} N</span></div>
     </div>
-    <div class="reading-row highlight-row"><span class="reading-label bold">f - Frequency</span><span class="reading-val green bold">{{ frequency.toFixed(1) }} Hz</span></div>
+    <div class="reading-row highlight-row"><span class="reading-label bold">{{ t('experiments.reFrequency') }}</span><span class="reading-val green bold">{{ frequency.toFixed(1) }} Hz</span></div>
     <div class="reading-group">
-      <div class="reading-row"><span class="reading-label">lambda - Wavelength</span><span class="reading-val">{{ wavelength.toFixed(3) }} m</span></div>
-      <div class="reading-row"><span class="reading-label">v - Wave speed</span><span class="reading-val green">{{ waveSpeed.toFixed(1) }} m/s</span></div>
+      <div class="reading-row"><span class="reading-label">{{ t('experiments.reWavelength') }}</span><span class="reading-val">{{ wavelength.toFixed(3) }} m</span></div>
+      <div class="reading-row"><span class="reading-label">{{ t('experiments.reWaveSpeed') }}</span><span class="reading-val green">{{ waveSpeed.toFixed(1) }} m/s</span></div>
     </div>
     <div class="reading-group">
-      <div class="reading-row"><span class="reading-label">Harmonic n</span><span class="reading-val">{{ harmonic }}</span></div>
+      <div class="reading-row"><span class="reading-label">{{ t('experiments.reHarmonic') }}</span><span class="reading-val">{{ harmonic }}</span></div>
     </div>
   </div>
 </template>

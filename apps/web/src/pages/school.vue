@@ -15,10 +15,15 @@ import HelpModal from '../components/shared/HelpModal.vue';
 import AppSidebar from '../components/shared/AppSidebar.vue';
 import type { SidebarGroup } from '../components/shared/AppSidebar.vue';
 import SchoolNotificationBell from '../components/shared/SchoolNotificationBell.vue';
+import SchoolLiveToastContainer from '../components/shared/SchoolLiveToastContainer.vue';
+import SchoolAccountSettingsModal from '../components/shared/SchoolAccountSettingsModal.vue';
+import NameRequestBadge from '../components/shared/NameRequestBadge.vue';
 import SystemBanner from '../components/shared/SystemBanner.vue';
 import SchoolOverview from '../components/school/SchoolOverview.vue';
+import SchoolCapacitySection from '../components/school/SchoolCapacitySection.vue';
 import SchoolTables from '../components/school/SchoolTables.vue';
 import { useApprovalBadge } from '../composables/useApprovalBadge';
+import { useSubTabs } from '../composables/useSubTabs';
 
 const ApprovalPanel = defineAsyncComponent(() => import('../components/shared/ApprovalPanel.vue'));
 const AnnouncementsPanel = defineAsyncComponent(() => import('../components/shared/AnnouncementsPanel.vue'));
@@ -26,6 +31,7 @@ const TeacherPerformance = defineAsyncComponent(() => import('../components/scho
 const SchoolReports = defineAsyncComponent(() => import('../components/school/SchoolReports.vue'));
 const SchoolFeedback = defineAsyncComponent(() => import('../components/school/SchoolFeedback.vue'));
 const SchoolSettings = defineAsyncComponent(() => import('../components/school/SchoolSettings.vue'));
+const SchoolExportPanel = defineAsyncComponent(() => import('../components/school/SchoolExportPanel.vue'));
 
 const router = useRouter();
 const { t, locale } = useI18n();
@@ -37,7 +43,14 @@ const users = ref<SchoolUser[]>([]);
 const classes = ref<SchoolClass[]>([]);
 const loading = ref(true);
 const errorMsg = ref('');
-const activeTab = ref<string>('overview');
+type SchoolTab = 'overview' | 'users' | 'classes' | 'reports' | 'settings';
+const activeTab = ref<SchoolTab>('overview');
+type UsersSub = 'users' | 'teachers';
+type ReportsSub = 'reports' | 'detailed';
+type SettingsSub = 'settings' | 'sessions' | 'activity' | 'warnings' | 'feedback' | 'announcements' | 'approvals' | 'export';
+const { subTab: usersSub, setSubTab: setUsersSub } = useSubTabs<UsersSub>('users', ['users', 'teachers']);
+const { subTab: reportsSub, setSubTab: setReportsSub } = useSubTabs<ReportsSub>('reports', ['reports', 'detailed']);
+const { subTab: settingsSub, setSubTab: setSettingsSub } = useSubTabs<SettingsSub>('settings', ['settings', 'sessions', 'activity', 'warnings', 'feedback', 'announcements', 'approvals', 'export']);
 const freezeReason = ref('');
 const freezeLoading = ref(false);
 const helpOpen = ref(false);
@@ -45,6 +58,7 @@ const sidebarCollapsed = ref(false);
 
 const reports = ref<SchoolReportItem[]>([]);
 const sessions = ref<SchoolSessionItem[]>([]);
+const dataTruncated = ref(false);
 const activityLog = ref<SchoolActivityItem[]>([]);
 const schoolWarnings = ref<SchoolWarningItem[]>([]);
 const { pendingCount: approvalPendingCount } = useApprovalBadge();
@@ -52,26 +66,12 @@ const { pendingCount: approvalPendingCount } = useApprovalBadge();
 const groups = computed<SidebarGroup[]>(() => [
   { id: 'main', title: t('school.sidebarMain'), icon: '🏠', items: [
     { id: 'overview', icon: '📊', label: t('school.navOverview') },
-  ]},
-  { id: 'manage', title: t('school.sidebarManage'), icon: '👥', items: [
     { id: 'users', icon: '👥', label: t('school.navUsers'), badge: users.value.length || undefined },
     { id: 'classes', icon: '📚', label: t('school.navClasses'), badge: classes.value.length || undefined },
     { id: 'reports', icon: '📄', label: t('school.navReports'), badge: reports.value.length || undefined },
-    { id: 'teachers', icon: '🎓', label: t('school.navTeachers') },
-    { id: 'detailed-reports', icon: '📊', label: t('school.navDetailedReports') },
   ]},
-  { id: 'monitor', title: t('school.sidebarMonitor'), icon: '🔍', items: [
-    { id: 'sessions', icon: '🔑', label: t('school.navSessions'), badge: sessions.value.length || undefined },
-    { id: 'activity', icon: '📝', label: t('school.navActivity'), badge: activityLog.value.length || undefined },
-    { id: 'warnings', icon: '⚠️', label: t('school.navWarnings'), badge: schoolWarnings.value.length || undefined },
-    { id: 'feedback', icon: '💬', label: t('school.navFeedback') },
-  ]},
-  { id: 'comm', title: t('school.sidebarComm'), icon: '💬', items: [
-    { id: 'announcements', icon: '📢', label: t('school.navAnnouncements') },
-    { id: 'approvals', icon: '📋', label: t('school.navApprovals'), badge: approvalPendingCount.value > 0 ? approvalPendingCount.value : undefined },
-  ]},
-  { id: 'account', title: t('school.sidebarAccount'), icon: '⚙️', items: [
-    { id: 'settings', icon: '⚙️', label: t('school.navSettings') },
+  { id: 'system', title: t('school.sidebarMonitor'), icon: '⚙️', items: [
+    { id: 'settings', icon: '⚙️', label: t('school.navSettings'), badge: approvalPendingCount.value > 0 ? approvalPendingCount.value : undefined },
   ]},
 ]);
 
@@ -101,7 +101,7 @@ async function loadAll() {
   errorMsg.value = '';
   try {
     const results = await Promise.allSettled([
-      getSchoolStats(), getSchoolUsers(), getSchoolClasses(), getSchoolReports(),
+      getSchoolStats(), getSchoolUsers(1, 200), getSchoolClasses(), getSchoolReports(1, 200),
       getSchoolSessions(), getSchoolActivity(), getSchoolWarnings(),
     ]);
     if (results[0].status === 'fulfilled' && results[0].value.success) {
@@ -111,8 +111,11 @@ async function loadAll() {
     if (results[1].status === 'fulfilled' && results[1].value.success) users.value = results[1].value.users;
     if (results[2].status === 'fulfilled' && results[2].value.success) classes.value = results[2].value.classes;
     if (results[3].status === 'fulfilled' && results[3].value.success) reports.value = results[3].value.reports;
-    if (results[4].status === 'fulfilled' && results[4].value.success) sessions.value = results[4].value.sessions;
-    if (results[5].status === 'fulfilled' && results[5].value.success) activityLog.value = results[5].value.activity;
+    const usersTruncated = results[1].status === 'fulfilled' && results[1].value.success && (results[1].value.total ?? results[1].value.users.length) > results[1].value.users.length;
+    const reportsTruncated = results[3].status === 'fulfilled' && results[3].value.success && (results[3].value.total ?? results[3].value.reports.length) > results[3].value.reports.length;
+    dataTruncated.value = usersTruncated || reportsTruncated;
+    if (results[4].status === 'fulfilled' && results[4].value.success) sessions.value = results[4].value.sessions.slice(0, 200);
+    if (results[5].status === 'fulfilled' && results[5].value.success) activityLog.value = results[5].value.activity.slice(0, 200);
     if (results[6].status === 'fulfilled' && results[6].value.success) schoolWarnings.value = results[6].value.warnings;
   } catch (err) {
     errorMsg.value = t('school.loadFailed');
@@ -124,16 +127,24 @@ async function loadAll() {
 
 const freezeError = ref('');
 
+async function refreshClassesAndStats() {
+  try {
+    const [cls, st] = await Promise.all([getSchoolClasses(), getSchoolStats()]);
+    if (cls.success) classes.value = cls.classes;
+    if (st.success) stats.value = st.stats;
+  } catch { /* ignore partial refresh errors */ }
+}
+
 async function freezeClass(classId: string) {
-  if (!freezeReason.value.trim()) freezeReason.value = t('school.freezeDefault');
+  const reason = freezeReason.value.trim() || t('school.freezeDefault');
   freezeLoading.value = true;
   freezeError.value = '';
   try {
     const res = await fetchJson<{ success: boolean; message?: string }>('/api/school/freeze-class', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ class_id: classId, reason: freezeReason.value }),
+      body: JSON.stringify({ class_id: classId, reason }),
     });
-    if (res.success) { freezeReason.value = ''; await loadAll(); }
+    if (res.success) { freezeReason.value = ''; await refreshClassesAndStats(); }
     else { freezeError.value = res.message || t('school.freezeFailed'); }
   } catch (err) {
     freezeError.value = t('school.freezeFailed');
@@ -150,7 +161,7 @@ async function unfreezeClass(classId: string) {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ class_id: classId }),
     });
-    if (res.success) await loadAll();
+    if (res.success) await refreshClassesAndStats();
     else { freezeError.value = res.message || t('school.unfreezeFailed'); }
   } catch (err) {
     freezeError.value = t('school.unfreezeFailed');
@@ -171,9 +182,13 @@ async function handleLogout() {
 
 let refreshTimer: ReturnType<typeof setInterval> | null = null;
 
-onMounted(() => {
-  loadAll();
-  refreshTimer = setInterval(() => { loadAll(); }, 60000);
+onMounted(async () => {
+  if (!auth.isSchool) { router.push('/'); return; }
+  await auth.fetchMe();
+  await loadAll();
+  refreshTimer = setInterval(() => {
+    if (document.visibilityState === 'visible') loadAll();
+  }, 300000);
 });
 
 onUnmounted(() => { if (refreshTimer) clearInterval(refreshTimer); });
@@ -182,14 +197,15 @@ onUnmounted(() => { if (refreshTimer) clearInterval(refreshTimer); });
 <template>
   <div class="school-layout">
     <SystemBanner />
+    <SchoolLiveToastContainer />
     <AppSidebar
       :groups="groups"
       :active-id="activeTab"
       role="school"
       :user-name="school?.name || ''"
       :collapsed="sidebarCollapsed"
-      @select="activeTab = $event as string"
-      @home="router.push('/')"
+      @select="(e: string) => { freezeError = ''; activeTab = e as SchoolTab }"
+      @home="router.push({ path: '/home', query: { view: 'experiments' } })"
       @logout="handleLogout"
       @toggle-collapse="sidebarCollapsed = !sidebarCollapsed"
     />
@@ -201,17 +217,12 @@ onUnmounted(() => { if (refreshTimer) clearInterval(refreshTimer); });
           <span class="topbar-date">{{ new Date().toLocaleDateString(dateLocaleStr, { weekday: 'long', day: 'numeric', month: 'long' }) }}</span>
         </div>
         <div class="topbar-right">
+          <NameRequestBadge />
           <SchoolNotificationBell />
+          <SchoolAccountSettingsModal />
           <button class="help-btn-top" @click="helpOpen = true" :title="t('school.helpBtn')">❓</button>
         </div>
       </header>
-
-      <div class="kpi-strip" v-if="stats">
-        <div class="kpi-item"><span class="kpi-icon">🎓</span><span class="kpi-val">{{ stats.students }}</span><span class="kpi-lab">{{ t('school.kpiStudents') }}</span></div>
-        <div class="kpi-item"><span class="kpi-icon">👨‍🏫</span><span class="kpi-val">{{ stats.teachers }}</span><span class="kpi-lab">{{ t('school.kpiTeachers') }}</span></div>
-        <div class="kpi-item"><span class="kpi-icon">🏫</span><span class="kpi-val">{{ stats.classes }}</span><span class="kpi-lab">{{ t('school.kpiClasses') }}</span></div>
-        <div class="kpi-item"><span class="kpi-icon">📄</span><span class="kpi-val">{{ stats.reports }}</span><span class="kpi-lab">{{ t('school.kpiReports') }}</span></div>
-      </div>
 
       <div class="content-area">
         <div v-if="school" class="code-box">
@@ -225,29 +236,58 @@ onUnmounted(() => { if (refreshTimer) clearInterval(refreshTimer); });
         <div v-else-if="errorMsg" class="error-box">❌ {{ errorMsg }}</div>
 
         <template v-else>
-          <SchoolOverview v-if="activeTab === 'overview'" :school="school" :stats="stats" :date-locale-str="dateLocaleStr" />
-          <div v-else-if="activeTab === 'teachers'" class="tab-panel"><TeacherPerformance /></div>
-          <div v-else-if="activeTab === 'detailed-reports'" class="tab-panel"><SchoolReports /></div>
-          <SchoolTables
-            v-else-if="['users', 'classes', 'reports', 'sessions', 'activity', 'warnings'].includes(activeTab)"
-            :active-tab="activeTab"
-            :users="users"
-            :classes="classes"
-            :reports="reports"
-            :sessions="sessions"
-            :activity-log="activityLog"
-            :school-warnings="schoolWarnings"
-            :date-locale-str="dateLocaleStr"
-            :freeze-loading="freezeLoading"
-            @user-removed="handleUserRemoved"
-            @reload="loadAll"
-            @freeze="freezeClass"
-            @unfreeze="unfreezeClass"
-          />
-          <div v-else-if="activeTab === 'feedback'" class="tab-panel"><SchoolFeedback /></div>
-          <div v-else-if="activeTab === 'announcements'" class="tab-panel"><AnnouncementsPanel /></div>
-          <div v-else-if="activeTab === 'approvals'" class="tab-panel"><ApprovalPanel mode="school" /></div>
-          <SchoolSettings v-else-if="activeTab === 'settings'" :school="school" @school-updated="school = $event" />
+          <!-- Tab 1: Overview (includes capacity) -->
+          <template v-if="activeTab === 'overview'">
+            <SchoolOverview :school="school" :stats="stats" :date-locale-str="dateLocaleStr" :users="users" :classes="classes" :reports="reports" :warnings="schoolWarnings" @navigate="activeTab = $event as SchoolTab" />
+            <SchoolCapacitySection :school="school" :date-locale-str="dateLocaleStr" />
+          </template>
+
+          <!-- Tab 2: Users (sub-tabs: users table + teacher performance) -->
+          <template v-else-if="activeTab === 'users'">
+            <div class="sub-tabs">
+              <button :class="['sub-tab', { active: usersSub === 'users' }]" @click="setUsersSub('users')">{{ t('school.navUsers') }}</button>
+              <button :class="['sub-tab', { active: usersSub === 'teachers' }]" @click="setUsersSub('teachers')">{{ t('school.navTeachers') }}</button>
+            </div>
+            <div v-if="dataTruncated && usersSub === 'users'" class="truncation-notice">⚠️ {{ t('school.dataTruncated') }}</div>
+            <SchoolTables v-if="usersSub === 'users'" active-tab="users" :users="users" :classes="classes" :reports="reports" :sessions="sessions" :activity-log="activityLog" :school-warnings="schoolWarnings" :date-locale-str="dateLocaleStr" :freeze-loading="freezeLoading" @user-removed="handleUserRemoved" @reload="loadAll" @freeze="freezeClass" @unfreeze="unfreezeClass" />
+            <TeacherPerformance v-else />
+          </template>
+
+          <!-- Tab 3: Classes -->
+          <template v-else-if="activeTab === 'classes'">
+            <SchoolTables active-tab="classes" :users="users" :classes="classes" :reports="reports" :sessions="sessions" :activity-log="activityLog" :school-warnings="schoolWarnings" :date-locale-str="dateLocaleStr" :freeze-loading="freezeLoading" @user-removed="handleUserRemoved" @reload="loadAll" @freeze="freezeClass" @unfreeze="unfreezeClass" />
+          </template>
+
+          <!-- Tab 4: Reports (sub-tabs: reports table + detailed reports) -->
+          <template v-else-if="activeTab === 'reports'">
+            <div class="sub-tabs">
+              <button :class="['sub-tab', { active: reportsSub === 'reports' }]" @click="setReportsSub('reports')">{{ t('school.navReports') }}</button>
+              <button :class="['sub-tab', { active: reportsSub === 'detailed' }]" @click="setReportsSub('detailed')">{{ t('school.navDetailedReports') }}</button>
+            </div>
+            <div v-if="dataTruncated && reportsSub === 'reports'" class="truncation-notice">⚠️ {{ t('school.dataTruncated') }}</div>
+            <SchoolTables v-if="reportsSub === 'reports'" active-tab="reports" :users="users" :classes="classes" :reports="reports" :sessions="sessions" :activity-log="activityLog" :school-warnings="schoolWarnings" :date-locale-str="dateLocaleStr" :freeze-loading="freezeLoading" @user-removed="handleUserRemoved" @reload="loadAll" @freeze="freezeClass" @unfreeze="unfreezeClass" />
+            <SchoolReports v-else />
+          </template>
+
+          <!-- Tab 5: Settings (sub-tabs: settings + monitoring + admin) -->
+          <template v-else-if="activeTab === 'settings'">
+            <div class="sub-tabs">
+              <button :class="['sub-tab', { active: settingsSub === 'settings' }]" @click="setSettingsSub('settings')">⚙️ {{ t('school.navSettings') }}</button>
+              <button :class="['sub-tab', { active: settingsSub === 'sessions' }]" @click="setSettingsSub('sessions')">🔑 {{ t('school.navSessions') }}</button>
+              <button :class="['sub-tab', { active: settingsSub === 'activity' }]" @click="setSettingsSub('activity')">📝 {{ t('school.navActivity') }}</button>
+              <button :class="['sub-tab', { active: settingsSub === 'warnings' }]" @click="setSettingsSub('warnings')">⚠️ {{ t('school.navWarnings') }}</button>
+              <button :class="['sub-tab', { active: settingsSub === 'feedback' }]" @click="setSettingsSub('feedback')">💬 {{ t('school.navFeedback') }}</button>
+              <button :class="['sub-tab', { active: settingsSub === 'announcements' }]" @click="setSettingsSub('announcements')">📢 {{ t('school.navAnnouncements') }}</button>
+              <button :class="['sub-tab', { active: settingsSub === 'approvals' }]" @click="setSettingsSub('approvals')">📋 {{ t('school.navApprovals') }}</button>
+              <button :class="['sub-tab', { active: settingsSub === 'export' }]" @click="setSettingsSub('export')">📁 {{ t('school.navExport') }}</button>
+            </div>
+            <SchoolSettings v-if="settingsSub === 'settings'" :school="school" @school-updated="school = $event" />
+            <SchoolTables v-else-if="['sessions', 'activity', 'warnings'].includes(settingsSub)" :active-tab="settingsSub" :users="users" :classes="classes" :reports="reports" :sessions="sessions" :activity-log="activityLog" :school-warnings="schoolWarnings" :date-locale-str="dateLocaleStr" :freeze-loading="freezeLoading" @user-removed="handleUserRemoved" @reload="loadAll" @freeze="freezeClass" @unfreeze="unfreezeClass" />
+            <SchoolFeedback v-else-if="settingsSub === 'feedback'" />
+            <AnnouncementsPanel v-else-if="settingsSub === 'announcements'" />
+            <ApprovalPanel v-else-if="settingsSub === 'approvals'" mode="school" />
+            <SchoolExportPanel v-else-if="settingsSub === 'export'" />
+          </template>
         </template>
 
         <HelpModal v-if="helpOpen" :title="t('school.helpTitle')" :sections="helpSections" @close="helpOpen = false" />
@@ -256,30 +296,5 @@ onUnmounted(() => { if (refreshTimer) clearInterval(refreshTimer); });
   </div>
 </template>
 
-<style scoped>
-.school-layout { display: flex; min-height: 100vh; background: linear-gradient(135deg, #0a0f1c 0%, #111827 40%, #0f172a 100%); color: #e2e8f0; }
-.school-main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-.topbar { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.04); background: rgba(10,15,28,0.5); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 50; }
-.topbar-left { display: flex; align-items: center; gap: 0.8rem; }
-.topbar-title { margin: 0; font-size: 1.15rem; font-weight: 800; color: #f1f5f9; }
-.topbar-date { font-size: 0.75rem; color: #64748b; }
-.topbar-right { display: flex; align-items: center; gap: 0.4rem; }
-.help-btn-top { width: 38px; height: 38px; border-radius: 0.6rem; border: 1px solid rgba(255,255,255,0.08); background: rgba(15,23,42,0.6); font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.help-btn-top:hover { border-color: rgba(6,182,212,0.3); background: rgba(6,182,212,0.08); }
-.kpi-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 0.5rem; padding: 0.8rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.03); }
-.kpi-item { display: flex; flex-direction: column; align-items: center; gap: 0.15rem; padding: 0.5rem 0.4rem; border-radius: 0.6rem; background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.05); }
-.kpi-icon { font-size: 1rem; }
-.kpi-val { font-size: 1.05rem; font-weight: 800; color: #e5e7eb; line-height: 1; }
-.kpi-lab { font-size: 0.6rem; color: #64748b; text-align: center; white-space: nowrap; }
-.content-area { flex: 1; padding: 1.5rem; overflow-y: auto; }
-.code-box { display: flex; align-items: center; gap: 0.8rem; padding: 0.8rem 1.2rem; margin-bottom: 1.5rem; border-radius: 0.8rem; background: rgba(6, 182, 212, 0.08); border: 1px solid rgba(6, 182, 212, 0.2); }
-.code-label { font-size: 0.85rem; color: #94a3b8; }
-.code-value { font-size: 1.4rem; font-weight: 800; color: #67e8f9; font-family: monospace; letter-spacing: 0.15rem; }
-.code-hint { font-size: 0.75rem; color: #64748b; }
-.loading { text-align: center; padding: 3rem; }
-.spinner { width: 36px; height: 36px; border: 3px solid rgba(99,102,241,0.2); border-top-color: #818cf8; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.error-box { background: rgba(239,68,68,0.1); color: #f87171; padding: 1rem; border-radius: 0.5rem; border: 1px solid rgba(239,68,68,0.2); text-align: center; }
-.tab-panel { animation: fadeIn 0.2s; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-</style>
+
+<style scoped src='./school.css'></style>

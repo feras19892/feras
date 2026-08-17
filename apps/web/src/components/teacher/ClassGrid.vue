@@ -51,20 +51,20 @@ const auth = useAuthStore()
           <button class="card-action" type="button" @click.stop="emit('copy', cls.code)" :title="t('dashboard.copyCode')">📋</button>
           <CreateApprovalButton
               type="class_edit"
-              approverType="school"
-              :targetUserId="auth.user?.id || 0"
-              :targetUserName="auth.user?.name || ''"
-              :classId="cls.id"
+              approver-type="school"
+              :target-user-id="auth.user?.id || 0"
+              :target-user-name="auth.user?.name || ''"
+              :class-id="cls.id"
               :metadata="JSON.stringify({ class_id: cls.id, class_name: cls.name })"
             >
               <button class="card-action" type="button" @click.stop :title="t('dashboard.renameClass')">✏️</button>
             </CreateApprovalButton>
           <CreateApprovalButton
               type="class_deletion"
-              approverType="school"
-              :targetUserId="auth.user?.id || 0"
-              :targetUserName="auth.user?.name || ''"
-              :classId="cls.id"
+              approver-type="school"
+              :target-user-id="auth.user?.id || 0"
+              :target-user-name="auth.user?.name || ''"
+              :class-id="cls.id"
               :metadata="JSON.stringify({ class_id: cls.id, class_name: cls.name })"
             >
               <button class="card-action danger" type="button" @click.stop :title="t('dashboard.deleteClass')">🗑️</button>

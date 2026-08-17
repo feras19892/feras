@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, onUnmounted } from 'vue';
 
 interface Props {
   angleIncidence: number;
@@ -20,8 +20,9 @@ function draw() {
   const ctx = cvs.getContext('2d');
   if (!ctx) return;
 
-  const w = cvs.width;
-  const h = cvs.height;
+  const rect = cvs.getBoundingClientRect();
+  const w = rect.width || cvs.width;
+  const h = rect.height || cvs.height;
   ctx.clearRect(0, 0, w, h);
 
   // Background
@@ -161,18 +162,23 @@ watch(
   { immediate: true }
 );
 
-onMounted(() => {
+function setupCanvas() {
   const cvs = canvasRef.value;
-  if (cvs) {
-    const dpr = window.devicePixelRatio || 1;
-    const rect = cvs.getBoundingClientRect();
-    cvs.width = rect.width * dpr;
-    cvs.height = rect.height * dpr;
-    const ctx = cvs.getContext('2d');
-    if (ctx) ctx.scale(dpr, dpr);
-    draw();
-  }
+  if (!cvs) return;
+  const dpr = window.devicePixelRatio || 1;
+  const rect = cvs.getBoundingClientRect();
+  cvs.width = rect.width * dpr;
+  cvs.height = rect.height * dpr;
+  const ctx = cvs.getContext('2d');
+  if (ctx) ctx.scale(dpr, dpr);
+  draw();
+}
+
+onMounted(() => {
+  setupCanvas();
+  window.addEventListener('resize', setupCanvas);
 });
+onUnmounted(() => window.removeEventListener('resize', setupCanvas));
 </script>
 
 <template>

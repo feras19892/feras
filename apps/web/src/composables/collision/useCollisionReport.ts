@@ -2,10 +2,10 @@ import { ref } from 'vue'
 import { useI18n } from '../../composables/useI18n'
 import type { CollisionTrial } from './useCollisionTrials'
 
-interface CollisionReportInput { params: { m1: number; m2: number; v1: number; v2: number }; trials: { trials: { value: CollisionTrial[] }; trialStats: { value: { e_mean: number } }; calcResult: { value: string } } }
+interface CollisionReportInput { params: { m1: number; m2: number; v1i: number; v2i: number }; trials: { trials: { value: CollisionTrial[] }; trialStats: { value: { count: number; avgV1f: number; avgV2f: number; avgLoss: number; momentumDiff: number } }; calcResult: { value: string } } }
 
 export function useCollisionReport() {
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
   const canvasSnapshot = ref<string | null>(null)
 
   function captureSnapshot(canvasRef: { captureSnapshot?: () => string } | null) {
@@ -38,13 +38,13 @@ th { background: #f1f5f9; font-weight: 600; }
 <body>
 <div class="container">
 <h1>${t('experiments.collisionReportTitle')}</h1>
-<p><strong>${t('experiments.dateLabel')}:</strong> ${new Date().toLocaleString('ar-SA')}</p>
+<p><strong>${t('experiments.dateLabel')}:</strong> ${new Date().toLocaleString(locale.value === 'ar' ? 'ar-SA' : locale.value)}</p>
 ${imgTag}
 <h2>${t('experiments.collisionReportData')}</h2>
 <table>
 <tr><th>#</th><th>m₁ (kg)</th><th>m₂ (kg)</th><th>v₁i (m/s)</th><th>v₂i (m/s)</th><th>e</th><th>v₁f (m/s)</th><th>v₂f (m/s)</th><th>Loss %</th></tr>
-${trials.map((t, i: number) =>
-  `<tr><td>${i + 1}</td><td>${t.m1}</td><td>${t.m2}</td><td>${t.v1i}</td><td>${t.v2i}</td><td>${t.e}</td><td>${t.v1f}</td><td>${t.v2f}</td><td>${t.lossPercent}%</td></tr>`
+${trials.map((tr, i: number) =>
+  `<tr><td>${i + 1}</td><td>${tr.m1}</td><td>${tr.m2}</td><td>${tr.v1i}</td><td>${tr.v2i}</td><td>${tr.e}</td><td>${tr.v1f}</td><td>${tr.v2f}</td><td>${tr.lossPercent}%</td></tr>`
 ).join('')}
 </table>
 </div>

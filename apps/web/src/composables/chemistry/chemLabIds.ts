@@ -36,6 +36,17 @@ export function isReactionVessel(id: string): boolean {
     || isVolumetricFlask(id) || isRoundBottomFlask(id) || isSeparatoryFunnel(id);
 }
 
+export function getContainerHalfWidth(id: string): number {
+  if (isBeaker(id)) return 70;
+  if (isTestTube(id)) return 20;
+  if (isErlenmeyer(id)) return 40;
+  if (isGradCylinder(id)) return 30;
+  if (isVolumetricFlask(id)) return 30;
+  if (isRoundBottomFlask(id)) return 35;
+  if (isSeparatoryFunnel(id)) return 30;
+  return 40;
+}
+
 export function getMaxVolume(id: string): number {
   if (id === 'beaker-100') return 100;
   if (id === 'beaker-250') return 250;

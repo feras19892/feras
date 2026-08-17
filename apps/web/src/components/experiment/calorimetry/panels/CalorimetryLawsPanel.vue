@@ -1,6 +1,8 @@
 ﻿<script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from '../../../../composables/useI18n'
 import { SPECIFIC_HEAT_WATER, SPECIFIC_HEAT_ALUMINUM } from '../../../../composables/calorimetry/useCalorimetryCalculations'
+const { t } = useI18n()
 const props = defineProps<{
   mWater: number
   tWater: number
@@ -8,32 +10,34 @@ const props = defineProps<{
   tMetal: number
   tf: number
   cMetal: number
+  mCup?: number
 }>()
 
 const qLost = computed(() => props.mMetal * props.cMetal * (props.tMetal - props.tf))
-const qGained = computed(() => (props.mWater * SPECIFIC_HEAT_WATER + 0.05 * SPECIFIC_HEAT_ALUMINUM) * (props.tf - props.tWater))
+const cupMass = computed(() => props.mCup ?? 0.05)
+const qGained = computed(() => (props.mWater * SPECIFIC_HEAT_WATER + cupMass.value * SPECIFIC_HEAT_ALUMINUM) * (props.tf - props.tWater))
 const balance = computed(() => Math.abs(qLost.value - qGained.value))
 </script>
 <template>
   <div class="panel-body">
     <div class="law-box balance">
-      <div class="law-title">موازنة الطاقة الحرارية</div>
-      <div class="formula">Q_{مفقود} = Q_{مكتسب}</div>
+      <div class="law-title">{{ t('experiments.calHeatBalance') }}</div>
+      <div class="formula">Q_lost = Q_gained</div>
       <div class="data-grid">
-        <div class="data-item"><span class="data-label">Q_{مفقود}</span><span class="data-val">{{ qLost.toFixed(1) }} J</span></div>
-        <div class="data-item"><span class="data-label">Q_{مكتسب}</span><span class="data-val">{{ qGained.toFixed(1) }} J</span></div>
+        <div class="data-item"><span class="data-label">{{ t('experiments.calQLost') }}</span><span class="data-val">{{ qLost.toFixed(1) }} J</span></div>
+        <div class="data-item"><span class="data-label">{{ t('experiments.calQGained') }}</span><span class="data-val">{{ qGained.toFixed(1) }} J</span></div>
         <div class="data-item"><span class="data-label">ΔQ</span><span class="data-val" :class="balance < 1 ? 'green' : 'red'">{{ balance.toFixed(2) }} J</span></div>
-        <div class="data-item"><span class="data-label">الحالة</span><span class="data-val" :class="balance < 1 ? 'green' : 'red'">{{ balance < 1 ? 'متوازن ✅' : 'غير متوازن' }}</span></div>
+        <div class="data-item"><span class="data-label">{{ t('experiments.calStatus') }}</span><span class="data-val" :class="balance < 1 ? 'green' : 'red'">{{ balance < 1 ? t('experiments.calBalanced') : t('experiments.calNotBalanced') }}</span></div>
       </div>
     </div>
     <div class="law-box calc">
-      <div class="law-title">حساب السعة الحرائية</div>
+      <div class="law-title">{{ t('experiments.calCalcSpecificHeat') }}</div>
       <div class="formula">c = Q / (m · ΔT)</div>
       <div class="data-grid">
         <div class="data-item"><span class="data-label">Q</span><span class="data-val">{{ qGained.toFixed(1) }} J</span></div>
         <div class="data-item"><span class="data-label">m</span><span class="data-val">{{ mMetal.toFixed(3) }} kg</span></div>
         <div class="data-item"><span class="data-label">ΔT</span><span class="data-val">{{ (tMetal - tf).toFixed(1) }} °C</span></div>
-        <div class="data-item highlight"><span class="data-label">c_{مقاس}</span><span class="data-val green">{{ (qGained / (mMetal * (tMetal - tf))).toFixed(0) }} J/kg·K</span></div>
+        <div class="data-item highlight"><span class="data-label">{{ t('experiments.calCMeasured') }}</span><span class="data-val green">{{ (qGained / (mMetal * (tMetal - tf))).toFixed(0) }} J/kg·K</span></div>
       </div>
     </div>
   </div>

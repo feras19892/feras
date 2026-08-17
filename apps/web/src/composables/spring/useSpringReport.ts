@@ -4,7 +4,7 @@ import { linearRegression } from '../../components/experiment/spring/linearRegre
 import type { SpringTrial } from './useSpringTrials'
 import type { LabReportTable, LabReportStat } from '../../utils/lab-report'
 
-interface SpringReading { mass: number; deltaY: number; force: number }
+interface SpringReading { mass: number; yLoad: number; yUnload: number; yAvg: number; deltaY: number; force: number }
 interface SpringDynamicTrial { mass: number; t1: number; t2: number; t3: number; tAvg: number; T: number; T2: number }
 interface SpringReportInput { params: { k: number; mass: number; amplitude: number; measureCycles: number }; staticK: { value: number | null }; kDynamic: { value: number | null }; staticReadings: { value: SpringReading[] }; dynamicTrials: { value: SpringDynamicTrial[] }; trials: { trials: { value: SpringTrial[] }; trialStats: { value: { T_mean: number; T_std: number; k_mean: number; k_std: number } }; calcResult: { value: string } } }
 
@@ -30,15 +30,15 @@ export function useSpringReport() {
     const dynamicTable: LabReportTable = {
       caption: t('experiments.springDynamicCaption'),
       headers: ['#', 'm (g)', 't₁ (s)', 't₂ (s)', 't₃ (s)', 't̄ (s)', 'T (s)', 'T² (s²)'],
-      rows: dynamicTrials.map((t, i: number) => [
+      rows: dynamicTrials.map((trial, i: number) => [
         i + 1,
-        (t.mass * 1000).toFixed(0),
-        (t.t1 ?? 0).toFixed(2),
-        (t.t2 ?? 0).toFixed(2),
-        (t.t3 ?? 0).toFixed(2),
-        (t.tAvg ?? 0).toFixed(2),
-        (t.T ?? 0).toFixed(3),
-        (t.T2 ?? 0).toFixed(4),
+        (trial.mass * 1000).toFixed(0),
+        (trial.t1 ?? 0).toFixed(2),
+        (trial.t2 ?? 0).toFixed(2),
+        (trial.t3 ?? 0).toFixed(2),
+        (trial.tAvg ?? 0).toFixed(2),
+        (trial.T ?? 0).toFixed(3),
+        (trial.T2 ?? 0).toFixed(4),
       ]),
     }
 
@@ -103,7 +103,7 @@ export function useSpringReport() {
         { label: t('experiments.dynamicReadingsCount'), value: dynamicTrials.length },
       ],
       summaryStats: stats,
-      tables: [staticTable, dynamicTable].filter(t => t.rows.length > 0),
+      tables: [staticTable, dynamicTable].filter(tbl => tbl.rows.length > 0),
       htmlBlocks: [
         { title: t('experiments.lawsTitle'), html: lawsBlock },
         calculationsBlock ? { title: t('experiments.calculationsTitle'), html: calculationsBlock } : null,

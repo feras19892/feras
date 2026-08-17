@@ -95,7 +95,7 @@ export function useLightRayExperiment() {
   )
 
   const regression = computed(() => {
-    const pts = trials.trials.value.map((t) => ({ x: t.sinT, y: t.sinI }))
+    const pts = trials.trials.value.map((tr) => ({ x: tr.sinT, y: tr.sinI }))
     return linearRegression(pts)
   })
 
@@ -159,13 +159,13 @@ export function useLightRayExperiment() {
   const router = useRouter()
   function exportToAnalysis() {
     const tList = trials.trials.value
-    if (tList.length === 0) { console.warn('[exportToAnalysis] no trials recorded'); return }
+    if (tList.length === 0) { alert('تحتاج إلى تسجيل قراءة واحدة على الأقل قبل التحليل'); return }
 
-    const readings = tList.map((t) => ({
-      theta_i: t.angleIncidence,
-      theta_t: t.angleRefraction,
-      sin_i: t.sinI,
-      sin_t: t.sinT,
+    const readings = tList.map((tr) => ({
+      theta_i: tr.angleIncidence,
+      theta_t: tr.angleRefraction,
+      sin_i: tr.sinI,
+      sin_t: tr.sinT,
     }))
 
     const payload: AnalysisPayload = {

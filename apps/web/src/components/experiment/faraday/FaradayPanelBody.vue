@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type { FaradayTrial } from '../../../composables/faraday/useFaradayTrials'
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 
 interface Props { id: string; trials: FaradayTrial[]; params: { N: number; B: number; A: number; omega: number }; theta: number; flux: number; emf: number }
 defineProps<Props>()
@@ -12,7 +15,7 @@ const emit = defineEmits<{
 <template>
   <div>
     <div v-if="id === 'readings'" class="panel-body">
-      <div class="read-row"><span class="label">عدد اللفات N</span><span class="value">{{ params.N }}</span></div>
+      <div class="read-row"><span class="label">{{ t('experiments.farTurns') }}</span><span class="value">{{ params.N }}</span></div>
       <div class="read-row"><span class="label">B</span><span class="value">{{ params.B.toFixed(1) }} T</span></div>
       <div class="read-row"><span class="label">A</span><span class="value">{{ params.A.toFixed(3) }} m²</span></div>
       <div class="read-row"><span class="label">ω</span><span class="value">{{ params.omega.toFixed(1) }} rad/s</span></div>
@@ -20,29 +23,29 @@ const emit = defineEmits<{
       <div class="read-row"><span class="label">Φ</span><span class="value">{{ flux.toFixed(4) }} Wb</span></div>
       <div class="read-row"><span class="label">EMF</span><span class="value">{{ emf.toFixed(2) }} V</span></div>
     </div>
-    <div v-else-if="id === 'chart'" class="panel-body center">{{ trials.length < 2 ? 'سجل تجربتين على الأقل' : 'رسم EMF vs ω' }}</div>
+    <div v-else-if="id === 'chart'" class="panel-body center">{{ trials.length < 2 ? t('experiments.farRecordTwo') : t('experiments.farEmfVsOmega') }}</div>
     <div v-else-if="id === 'trials'" class="panel-body">
       <div class="trials-header"><span>#</span><span>N</span><span>B</span><span>ω</span><span>EMF</span><span></span></div>
-      <div v-for="t in trials" :key="t.id" class="trial-row">
-        <span>{{ t.id }}</span><span>{{ t.N }}</span><span>{{ t.B.toFixed(1) }}</span><span>{{ t.omega.toFixed(1) }}</span><span>{{ t.emf.toFixed(2) }}</span>
-        <button class="del-btn" @click="emit('remove', t.id)">x</button>
+      <div v-for="tr in trials" :key="tr.id" class="trial-row">
+        <span>{{ tr.id }}</span><span>{{ tr.N }}</span><span>{{ tr.B.toFixed(1) }}</span><span>{{ tr.omega.toFixed(1) }}</span><span>{{ tr.emf.toFixed(2) }}</span>
+        <button class="del-btn" @click="emit('remove', tr.id)">x</button>
       </div>
-      <div v-if="!trials.length" class="no-trials">لا توجد تجارب</div>
-      <div class="trials-actions"><button class="clear-btn" @click="emit('clear')">مسح الكل</button></div>
+      <div v-if="!trials.length" class="no-trials">{{ t('experiments.noTrialsYet') }}</div>
+      <div class="trials-actions"><button class="clear-btn" @click="emit('clear')">{{ t('experiments.clearData') }}</button></div>
     </div>
     <div v-else-if="id === 'params'" class="panel-body">
-      <div class="param-row"><label>عدد اللفات N</label><input type="range" :value="params.N" min="10" max="500" step="10" @input="emit('update:params', { ...params, N: +($event.target as HTMLInputElement).value })" /><span>{{ params.N }}</span></div>
+      <div class="param-row"><label>{{ t('experiments.farTurns') }}</label><input type="range" :value="params.N" min="10" max="500" step="10" @input="emit('update:params', { ...params, N: +($event.target as HTMLInputElement).value })" /><span>{{ params.N }}</span></div>
       <div class="param-row"><label>B (T)</label><input type="range" :value="params.B" min="0.1" max="2" step="0.1" @input="emit('update:params', { ...params, B: +($event.target as HTMLInputElement).value })" /><span>{{ params.B.toFixed(1) }}</span></div>
       <div class="param-row"><label>A (m²)</label><input type="range" :value="params.A" min="0.001" max="0.1" step="0.001" @input="emit('update:params', { ...params, A: +($event.target as HTMLInputElement).value })" /><span>{{ params.A.toFixed(3) }}</span></div>
       <div class="param-row"><label>ω (rad/s)</label><input type="range" :value="params.omega" min="0.5" max="10" step="0.5" @input="emit('update:params', { ...params, omega: +($event.target as HTMLInputElement).value })" /><span>{{ params.omega.toFixed(1) }}</span></div>
     </div>
     <div v-else-if="id === 'laws'" class="panel-body">
-      <div class="law-box"><div class="law-title">قانون فارادي</div><div class="formula">ε = -N · dΦ/dt</div></div>
-      <div class="law-box"><div class="law-title">الفلوس المغناطيسي</div><div class="formula">Φ = B · A · cos(θ)</div></div>
+      <div class="law-box"><div class="law-title">{{ t('experiments.farLawTitle') }}</div><div class="formula">ε = -N · dΦ/dt</div></div>
+      <div class="law-box"><div class="law-title">{{ t('experiments.farFluxTitle') }}</div><div class="formula">Φ = B · A · cos(θ)</div></div>
     </div>
     <div v-else-if="id === 'results'" class="panel-body">
-      <div class="stat-box"><div class="stat-label">عدد التجارب</div><div class="stat-value">{{ trials.length }}</div></div>
-      <div class="stat-box"><div class="stat-label">متوسط EMF</div><div class="stat-value">{{ trials.length ? (trials.reduce((s,t)=>s+t.emf,0)/trials.length).toFixed(2) : '0' }} V</div></div>
+      <div class="stat-box"><div class="stat-label">{{ t('experiments.farTrialCount') }}</div><div class="stat-value">{{ trials.length }}</div></div>
+      <div class="stat-box"><div class="stat-label">{{ t('experiments.farAvgEmf') }}</div><div class="stat-value">{{ trials.length ? (trials.reduce((s,tr)=>s+tr.emf,0)/trials.length).toFixed(2) : '0' }} V</div></div>
     </div>
   </div>
 </template>

@@ -37,5 +37,4 @@ export const chemistryReport = {
     readingsCount: 'Número de Lecturas',
     restartExperiment: '🔄 Reiniciar Experimento',
     close: 'Cerrar',
-  },
-} as const
+  }} as const

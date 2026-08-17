@@ -1,6 +1,8 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '../../../../composables/useI18n'
 import { wavelengthToColor } from '../../../../composables/grating/useGratingCalculations'
 
+const { t } = useI18n()
 
 interface Props {
   linesPerMm: number
@@ -17,31 +19,31 @@ defineProps<Props>()
   <div class="panel-body">
     <div class="reading-group">
       <div class="reading-row">
-        <span class="reading-label">N — Lines per mm</span>
+        <span class="reading-label">{{ t('experiments.dfLinesPerMm') }}</span>
         <span class="reading-val cyan">{{ linesPerMm }}</span>
       </div>
       <div class="reading-row">
-        <span class="reading-label">D — Screen distance</span>
+        <span class="reading-label">{{ t('experiments.dfScreenDistance') }}</span>
         <span class="reading-val cyan">{{ screenDistance.toFixed(2) }} m</span>
       </div>
     </div>
     <div class="reading-row highlight-row">
-      <span class="reading-label bold">θ₁ — 1st order angle</span>
+      <span class="reading-label bold">{{ t('experiments.dfFirstOrderAngle') }}</span>
       <span class="reading-val green bold">{{ firstOrderAngle.toFixed(3) }}°</span>
     </div>
     <div class="reading-group">
       <div class="reading-row">
-        <span class="reading-label">y₁ — 1st order position</span>
+        <span class="reading-label">{{ t('experiments.dfFirstOrderPos') }}</span>
         <span class="reading-val green">{{ firstOrderY.toFixed(2) }} mm</span>
       </div>
       <div class="reading-row">
-        <span class="reading-label">Max visible order</span>
+        <span class="reading-label">{{ t('experiments.dfMaxOrder') }}</span>
         <span class="reading-val">m = {{ maxOrder }}</span>
       </div>
     </div>
     <div class="reading-group">
       <div class="reading-row">
-        <span class="reading-label">λ — Wavelength</span>
+        <span class="reading-label">{{ t('experiments.wavelength') }} λ</span>
         <span class="reading-val bold" :style="{ color: wavelengthToColor(wavelength) }">{{ wavelength }} nm</span>
       </div>
       <div class="reading-row">

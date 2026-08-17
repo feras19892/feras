@@ -184,7 +184,20 @@ export async function getPlagiarismFlags(
   classId?: string,
   status?: string,
   limit = 100,
+  schoolId?: number,
 ): Promise<any[]> {
+  if (schoolId) {
+    let sql = `SELECT pf.* FROM plagiarism_flags pf
+      JOIN classes c ON pf.class_id = c.id
+      JOIN users u ON c.teacher_id = u.id
+      WHERE u.school_id = ?`;
+    const params: (string | number)[] = [schoolId];
+    if (classId) { sql += ' AND pf.class_id = ?'; params.push(classId); }
+    if (status) { sql += ' AND pf.status = ?'; params.push(status); }
+    sql += ' ORDER BY pf.created_at DESC LIMIT ?';
+    params.push(limit);
+    return db.all(sql, ...params);
+  }
   if (classId) {
     return db.all(
       `SELECT * FROM plagiarism_flags WHERE class_id = ? ${status ? 'AND status = ?' : ''} ORDER BY created_at DESC LIMIT ?`,
@@ -200,12 +213,14 @@ export async function getPlagiarismFlags(
 export async function updatePlagiarismStatus(
   id: number,
   status: string,
-  reviewerId: number,
+  // eslint-disable-next-line no-unused-vars
+  _reviewerId: number,
+  note?: string,
 ): Promise<{ success: boolean; message?: string }> {
   const valid = ['pending', 'reviewed', 'confirmed', 'dismissed'];
   if (!valid.includes(status)) return { success: false, message: 'حالة غير صالحة' };
 
-  await db.run(`UPDATE plagiarism_flags SET status = ? WHERE id = ?`, status, id);
+  await db.run(`UPDATE plagiarism_flags SET status = ?, note = ? WHERE id = ?`, status, note ?? null, id);
 
   // If confirmed, notify both students' teachers
   if (status === 'confirmed') {

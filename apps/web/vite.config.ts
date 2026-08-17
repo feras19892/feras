@@ -12,7 +12,26 @@ export default defineConfig(({ mode }) => ({
       build: false,
       outputDir: '.vite-inspect',
     }),
-    VueDevtools({ launchEditor: 'code' }),
+    ...(mode === 'development' ? [VueDevtools({ launchEditor: 'code' })] : []),
+    {
+      name: 'production-protection',
+      apply: 'build',
+      transformIndexHtml(html) {
+        return html.replace('</head>', `
+  <script>
+  (function(){
+    setInterval(()=>{
+      const w=window,f=Function,b=setInterval;
+      if(w.outerWidth-w.innerWidth>200||w.outerHeight-w.innerHeight>200){
+        document.body.style.filter='blur(15px)';
+        document.body.innerHTML='<div style="position:fixed;inset:0;background:#0d1117;color:#f87171;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-direction:column;gap:1rem;z-index:999999"><div>⚠️</div><div>DevTools معطول</div></div>';
+      }
+    },1500);
+  })();
+  </script>
+  </head>`);
+      },
+    },
   ],
   resolve: {
     alias: {
@@ -25,7 +44,22 @@ export default defineConfig(({ mode }) => ({
     exclude: ['@my-modern-app/math-engine'],
   },
   build: {
+    sourcemap: false,
     chunkSizeWarningLimit: 700,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        pure_funcs: ['console.log', 'console.info', 'console.debug'],
+      },
+      mangle: {
+        toplevel: true,
+      },
+      format: {
+        comments: false,
+      },
+    },
     rollupOptions: {
       output: {
         manualChunks(id: string) {
@@ -42,6 +76,11 @@ export default defineConfig(({ mode }) => ({
           }
           if (id.includes('/modules/chemistry/')) return 'chemistry';
           if (id.includes('/pages/admin')) return 'admin';
+          if (id.includes('/pages/teacher') || id.includes('/components/teacher/')) return 'teacher';
+          if (id.includes('/pages/school') || id.includes('/components/school/')) return 'school';
+          if (id.includes('/pages/student') || id.includes('/components/student/')) return 'student';
+          if (id.includes('/modules/physics/')) return 'physics';
+          if (id.includes('/modules/biology/')) return 'biology';
           if (id.includes('/locales/electric-workshop') || id.includes('/locales/electricWorkshop')) return 'locale-electric-workshop';
           if (id.includes('/locales/biology')) return 'locale-biology';
           if (id.includes('/locales/chemistry')) return 'locale-chemistry';

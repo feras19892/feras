@@ -34,9 +34,9 @@ const emit = defineEmits<{ (e: 'close'): void }>()
             <p>{{ t('experiments.shHelpS2P2') }}</p>
             <div class="formula">Q_lost = Q_gained</div>
             <p>{{ t('experiments.shHelpS2P3') }}</p>
-            <div class="formula">Q_lost = m_m Â· c_m Â· (T_m - T_f)</div>
+            <div class="formula">Q_lost = m_m · c_m · (T_m - T_f)</div>
             <p>{{ t('experiments.shHelpS2P4') }}</p>
-            <div class="formula">Q_gained = m_w Â· c_w Â· (T_f - T_w)</div>
+            <div class="formula">Q_gained = m_w · c_w · (T_f - T_w)</div>
             <p>{{ t('experiments.shHelpS2P5') }}</p>
           </section>
 

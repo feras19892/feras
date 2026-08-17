@@ -8,6 +8,27 @@ export function apiUrl(path: string): string {
   return `${getApiBaseUrl()}${normalized}`;
 }
 
+const ACCESS_TOKEN_KEY = 'auth_access_token';
+const REFRESH_TOKEN_KEY = 'auth_refresh_token';
+
+export function getAccessToken(): string | null {
+  return localStorage.getItem(ACCESS_TOKEN_KEY);
+}
+
+export function getRefreshToken(): string | null {
+  return localStorage.getItem(REFRESH_TOKEN_KEY);
+}
+
+export function setTokens(access?: string, refresh?: string) {
+  if (access) localStorage.setItem(ACCESS_TOKEN_KEY, access);
+  if (refresh) localStorage.setItem(REFRESH_TOKEN_KEY, refresh);
+}
+
+export function clearTokens() {
+  localStorage.removeItem(ACCESS_TOKEN_KEY);
+  localStorage.removeItem(REFRESH_TOKEN_KEY);
+}
+
 export interface FetchOptions extends RequestInit {
   signal?: AbortSignal;
 }
@@ -28,40 +49,107 @@ function normalizeHeaders(headers: RequestInit['headers']): Record<string, strin
   return headers as Record<string, string>;
 }
 
-export async function fetchJson<T>(path: string, options: FetchOptions = {}): Promise<T> {
-  const mergedHeaders: Record<string, string> = {
-    Accept: 'application/json',
-    ...(options.headers ? normalizeHeaders(options.headers) : {}),
-  };
+export class ApiError extends Error {
+  status: number;
+  constructor(message: string, status: number) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+  }
+}
 
-  let response = await fetch(apiUrl(path), {
-    ...options,
-    headers: mergedHeaders,
-    credentials: 'include',
-  });
+export type ApiResult<T> = T & { success?: boolean; message?: string };
 
-  if (response.status === 401) {
+let refreshPromise: Promise<boolean> | null = null;
+
+async function singleFlightRefresh(): Promise<boolean> {
+  if (refreshPromise) return refreshPromise;
+  refreshPromise = (async () => {
     try {
+      const refreshTok = getRefreshToken();
+      const refreshHeaders: Record<string, string> = {
+        'ngrok-skip-browser-warning': 'true',
+      };
+      if (refreshTok) refreshHeaders['Authorization'] = `Bearer ${refreshTok}`;
       const refreshRes = await fetch(apiUrl('/api/auth/refresh'), {
         method: 'POST',
         credentials: 'include',
+        headers: refreshHeaders,
+        signal: AbortSignal.timeout(10_000),
       });
       if (refreshRes.ok) {
-        // Server set a new access_token cookie; retry original request
-        response = await fetch(apiUrl(path), {
-          ...options,
-          headers: mergedHeaders,
-          credentials: 'include',
-        });
+        const data = await refreshRes.json();
+        if (data.accessToken) setTokens(data.accessToken, data.refreshToken);
       }
+      return refreshRes.ok;
     } catch {
-      // ignore refresh failure; the response below will remain 401
+      return false;
+    } finally {
+      refreshPromise = null;
+    }
+  })();
+  return refreshPromise;
+}
+
+export async function fetchJson<T>(path: string, options: FetchOptions = {}): Promise<T> {
+  const mergedHeaders: Record<string, string> = {
+    Accept: 'application/json',
+    'ngrok-skip-browser-warning': 'true',
+    ...(options.headers ? normalizeHeaders(options.headers) : {}),
+  };
+
+  const accessToken = getAccessToken();
+  if (accessToken && !mergedHeaders['Authorization']) {
+    mergedHeaders['Authorization'] = `Bearer ${accessToken}`;
+  }
+
+  const fetchOpts: RequestInit = {
+    ...options,
+    headers: mergedHeaders,
+    credentials: 'include',
+  };
+
+  if (!options.signal && !options.body) {
+    fetchOpts.signal = AbortSignal.timeout(30_000);
+  }
+
+  let response = await fetch(apiUrl(path), fetchOpts);
+
+  if (response.status === 401) {
+    const refreshed = await singleFlightRefresh();
+    if (refreshed) {
+      const newAccessToken = getAccessToken();
+      const retryHeaders: Record<string, string> = {
+        ...mergedHeaders,
+        Accept: 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      };
+      if (newAccessToken) {
+        retryHeaders['Authorization'] = `Bearer ${newAccessToken}`;
+      }
+      const retryOpts: FetchOptions = { ...options, headers: retryHeaders, credentials: 'include' };
+      if (options.body) {
+        if (typeof options.body === 'string' || options.body instanceof FormData || options.body instanceof Blob) {
+          retryOpts.body = options.body;
+        } else {
+          retryOpts.body = JSON.stringify(options.body);
+        }
+      }
+      response = await fetch(apiUrl(path), retryOpts);
+      if (response.status === 401) {
+        window.dispatchEvent(new CustomEvent('auth:session-expired'));
+        return { success: false, message: 'Session expired' } as T;
+      }
+    } else {
+      window.dispatchEvent(new CustomEvent('auth:session-expired'));
+      return { success: false, message: 'Session expired' } as T;
     }
   }
 
   if (!response.ok) {
     if (response.status === 404) {
-      return { success: false, message: 'API not available' } as unknown as T;
+      const body = await response.json().catch(() => null);
+      return { success: false, message: body?.message || 'Resource not found' } as T;
     }
     let msg = `Request failed: ${response.status} ${response.statusText}`;
     try {
@@ -71,7 +159,7 @@ export async function fetchJson<T>(path: string, options: FetchOptions = {}): Pr
         return body as T;
       }
     } catch { /* ignore */ }
-    throw new Error(msg);
+    throw new ApiError(msg, response.status);
   }
   return (await response.json()) as T;
 }

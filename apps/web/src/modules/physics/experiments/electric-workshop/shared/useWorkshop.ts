@@ -1,5 +1,5 @@
 import { ref, reactive, computed, watch } from 'vue'
-import type { WorkshopComponent, WorkshopWire, ComponentType, SolveResult, FaultInfo, TransientResult } from './types'
+import type { WorkshopComponent, WorkshopWire, ComponentType, SolveResult, FaultInfo, TransientResult, Terminal } from './types'
 import { WIRE_COLORS } from './types'
 import { solve as solverSolve, solveAC as solverSolveAC, solveTransient as solverSolveTransient, solveTransientDC as solverSolveTransientDC, getPower as solverGetPower, type SolverContext } from './workshopSolver'
 import {
@@ -178,7 +178,7 @@ export function useWorkshop(labId: 'dc' | 'ac' = 'dc') {
     clearAll()
     idCounterRef.value = data.idCounter ?? 1
     for (const c of data.components) {
-      components.push({ ...c, terminals: c.terminals.map((t: any) => ({ ...t })) })
+      components.push({ ...c, terminals: c.terminals.map((t: Terminal) => ({ ...t })) })
     }
     for (const w of data.wires) {
       wires.push({ ...w, points: [...w.points] })

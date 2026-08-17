@@ -38,8 +38,8 @@ function draw() {
     ctx.textAlign = 'start'; return
   }
 
-  const xs = props.trials.map(t => t.timeSquaredSec2)
-  const ys = props.trials.map(t => t.heightMeters)
+  const xs = props.trials.map(tr => tr.timeSquaredSec2)
+  const ys = props.trials.map(tr => tr.heightMeters)
   const xMin = Math.min(...xs), xMax = Math.max(...xs)
   const yMin = Math.min(...ys), yMax = Math.max(...ys)
   const xSpan = Math.max(1e-9, xMax - xMin), ySpan = Math.max(1e-9, yMax - yMin)

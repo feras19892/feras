@@ -14,11 +14,11 @@ const canvasRef = ref<HTMLCanvasElement | null>(null)
 
 // Filter inelastic trials with v2i ≈ 0 (report scenario)
 const validTrials = computed(() => props.trials.filter(
-  t => t.e < 0.15 && Math.abs(t.v2i) < 0.15 && t.v1f !== undefined
+  tr => tr.e < 0.15 && Math.abs(tr.v2i) < 0.15 && tr.v1f !== undefined
 ))
 
-const xs = computed(() => validTrials.value.map(t => t.v1f))
-const ys = computed(() => validTrials.value.map(t => t.Pi))
+const xs = computed(() => validTrials.value.map(tr => tr.v1f))
+const ys = computed(() => validTrials.value.map(tr => tr.Pi))
 
 const fit = computed(() => linearRegression(xs.value, ys.value))
 
@@ -26,7 +26,7 @@ const m2Calc = computed(() => {
   if (!fit.value || fit.value.slope <= 0) return null
   // slope = m1 + m2 (for inelastic with v2i=0: Pi = (m1+m2)*vf)
   // But m1 varies across trials, so we use average m1
-  const avgM1 = validTrials.value.reduce((s, t) => s + t.m1, 0) / validTrials.value.length
+  const avgM1 = validTrials.value.reduce((s, tr) => s + tr.m1, 0) / validTrials.value.length
   return fit.value.slope - avgM1
 })
 
@@ -119,7 +119,7 @@ onMounted(draw)
         <span>R² = {{ fit.r2.toFixed(4) }}</span>
       </div>
       <div v-if="m2Calc != null" class="m2-calc">
-        m₂ = slope − m̄₁ = <b>{{ fit?.slope.toFixed(3) }}</b> − {{ (validTrials.reduce((s,t)=>s+t.m1,0)/validTrials.length).toFixed(2) }} = <b>{{ m2Calc.toFixed(2) }} kg</b>
+        m₂ = slope − m̄₁ = <b>{{ fit?.slope.toFixed(3) }}</b> − {{ (validTrials.reduce((s,tr)=>s+tr.m1,0)/validTrials.length).toFixed(2) }} = <b>{{ m2Calc.toFixed(2) }} kg</b>
       </div>
       <div v-else-if="validTrials.length < 2" class="hint">
         {{ t('experiments.needInelasticTrials') }}

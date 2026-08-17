@@ -9,7 +9,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{ (e: 'open-report', id: number): void }>()
-const { t, locale } = useI18n()
+const { t } = useI18n()
 
 function daysSince(dateStr?: string): number {
   if (!dateStr) return 0
@@ -19,7 +19,7 @@ function daysSince(dateStr?: string): number {
 function timeShort(dateStr?: string): string {
   if (!dateStr) return ''
   const d = new Date(dateStr)
-  const loc = props.locale || locale.value
+  const loc = props.locale || 'ar'
   const localeStr = loc === 'ar' ? 'ar-SA' : loc === 'es' ? 'es-ES' : 'en-US'
   return d.toLocaleDateString(localeStr) + ' ' + d.toLocaleTimeString(localeStr, { hour: '2-digit', minute: '2-digit' })
 }

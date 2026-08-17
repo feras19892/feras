@@ -100,5 +100,4 @@ export const chemistryTools = {
     rubberStopper: 'Tapón de Goma',
     thermometerMercury: 'Termómetro de Mercurio',
     thermometerDigital: 'Termómetro Digital',
-  },
-} as const
+  }} as const

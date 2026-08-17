@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useI18n } from '../../../composables/useI18n'
+
+const { t } = useI18n()
 
 const props = defineProps<{
   I: number
@@ -93,9 +96,9 @@ function draw() {
   ctx.fillText(`B = ${props.B.toExponential(2)} T`, cx, h - s(20))
 
   const labels: Record<string, { text: string; color: string }> = {
-    ready: { text: '🧲 جاهز — اضغط Start', color: '#64748b' },
-    running: { text: '⚡ جاري...', color: '#fbbf24' },
-    done: { text: '✅ اكتمل', color: '#22c55e' },
+    ready: { text: t('experiments.phaseReady'), color: '#64748b' },
+    running: { text: t('experiments.phaseRunning'), color: '#fbbf24' },
+    done: { text: t('experiments.phaseDone'), color: '#22c55e' },
   }
   const pl = labels[props.phase]
   ctx.fillStyle = pl.color; ctx.font = `bold ${s(12)}px sans-serif`

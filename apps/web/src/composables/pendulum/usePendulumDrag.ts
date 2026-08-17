@@ -27,8 +27,8 @@ export function computeDragAcceleration(
 ): number {
   const force = computeDragForce(velocity, params)
   if (force === 0) return 0
-  // Convert force to angular acceleration: α = F·L / (m·L²) = F / (m·L)
-  // But velocity = L·ω, so drag opposes motion
+  const safeMass = Math.max(mass, 1e-9)
+  const safeLength = Math.max(length, 1e-9)
   const direction = velocity > 0 ? -1 : 1
-  return (direction * force) / (mass * length)
+  return (direction * force) / (safeMass * safeLength)
 }

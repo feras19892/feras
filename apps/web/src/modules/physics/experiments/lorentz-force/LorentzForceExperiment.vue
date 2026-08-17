@@ -10,7 +10,7 @@ import LorentzForceReadingsPanel from '../../../../components/experiment/electro
 import LorentzForceDataPanel from '../../../../components/experiment/electromagnetism/LorentzForceDataPanel.vue'
 import LorentzForceGuidePanel from '../../../../components/experiment/electromagnetism/LorentzForceGuidePanel.vue'
 import ElectromagnetismHelpModal from '../../../../components/experiment/electromagnetism/ElectromagnetismHelpModal.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import { ref } from 'vue'
 
 const ex = useLorentzForceExperiment()
@@ -35,13 +35,6 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <MenuBar
       :title="t('experiments.lfTitle')"
       icon="⚡"
-      experiment-route="/physics/electromagnetism/lorentz-force"
-      :experiment-name="t('experiments.lfTitle')"
-      @export-csv="ex.exportCsv"
-      @toggle-pause="ex.togglePause"
-      @reset="ex.resetSim"
-      @record-trial="ex.recordTrial"
-      @analyze-results="ex.exportToAnalysis"
       @toggle-help="helpOpen = !helpOpen"
     />
 

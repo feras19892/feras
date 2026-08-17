@@ -67,5 +67,4 @@ export const chemistryShelf = {
     pH: 'pH',
     density: 'Densidad',
     boilingPoint: 'P.E.',
-  },
-} as const
+  }} as const

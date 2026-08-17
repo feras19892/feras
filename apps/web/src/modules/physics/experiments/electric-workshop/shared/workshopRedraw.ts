@@ -1,19 +1,27 @@
 import type { Ref } from 'vue'
 import type { useWorkshop } from './useWorkshop'
+import type { WorkshopComponent } from './types'
 
 type Workshop = ReturnType<typeof useWorkshop>
 
+interface TempWire {
+  fromX: number
+  fromY: number
+  toX: number
+  toY: number
+}
+
 interface DragStateLike {
-  wireStart: { comp: any; termIndex: number } | null
+  wireStart: { comp: WorkshopComponent; termIndex: number } | null
   junctionStart: { worldX: number; worldY: number } | null
   tempWireEnd: { x: number; y: number }
   hoverWireId: number | null
-  pendingWireStart: { comp: any; termIndex: number } | null
+  pendingWireStart: { comp: WorkshopComponent; termIndex: number } | null
 }
 
 interface CanvasHelpers {
   worldToScreen: (x: number, y: number) => [number, number]
-  draw: (canvas: HTMLCanvasElement, selectedCompId: number | null, selectedWireId: number | null, tempW: any) => void
+  draw: (canvas: HTMLCanvasElement, selectedCompId: number | null, selectedWireId: number | null, tempW: TempWire | null) => void
 }
 
 export function createRedraw(

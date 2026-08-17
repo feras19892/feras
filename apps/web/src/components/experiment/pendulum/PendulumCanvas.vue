@@ -3,7 +3,7 @@ import { useI18n } from '../../../composables/useI18n'
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import type { PendulumParams } from '../../../modules/physics/experiments/pendulum/usePendulumPhysics'
 
-interface SimState { theta: number; omega: number; t: number; running: boolean; paused: boolean }
+interface SimState { theta: number; omega: number; t: number; running: boolean; paused: boolean; measurementPeriod: number | null }
 
 const { t } = useI18n()
 const props = defineProps<{ params: PendulumParams; simState: SimState; oscillationCount?: number }>()
@@ -26,13 +26,14 @@ function captureSnapshot() {
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const wrapRef = ref<HTMLDivElement | null>(null)
+let cssW = 700, cssH = 420
 
 function draw() {
   const canvas = canvasRef.value
   if (!canvas) return
   const ctx = canvas.getContext('2d')
   if (!ctx) return
-  const w = canvas.width, h = canvas.height
+  const w = cssW, h = cssH
   ctx.clearRect(0, 0, w, h)
 
   // Background gradient
@@ -77,13 +78,14 @@ function draw() {
   ctx.stroke()
 
   // Bob shadow
+  const shadowR = Math.max(6, Math.min(40, props.params.bobRadius * 400 + Math.min(props.params.mass * 20, 10)))
   ctx.fillStyle = 'rgba(0,0,0,0.08)'
   ctx.beginPath()
-  ctx.ellipse(px + 3, py + 4, 10, 4, 0, 0, Math.PI * 2)
+  ctx.ellipse(px + 3, py + 4, shadowR, shadowR * 0.4, 0, 0, Math.PI * 2)
   ctx.fill()
 
-  // Bob body (metallic sphere)
-  const bobR = 10 + Math.min(props.params.mass * 80, 14)
+  // Bob body (metallic sphere) — size based on bobRadius + mass
+  const bobR = Math.max(6, Math.min(40, props.params.bobRadius * 400 + Math.min(props.params.mass * 20, 10)))
   const bobGrad = ctx.createRadialGradient(px - bobR * 0.3, py - bobR * 0.3, bobR * 0.1, px, py, bobR)
   bobGrad.addColorStop(0, '#93c5fd')
   bobGrad.addColorStop(0.5, '#3b82f6')
@@ -128,7 +130,8 @@ function draw() {
   ctx.fillStyle = '#e2e8f0'
   ctx.font = '12px monospace'
   ctx.textAlign = 'center'
-  const info = `L = ${props.params.length.toFixed(2)} m  |  θ = ${(props.simState.theta * 180 / Math.PI).toFixed(1)}°  |  T = ${props.simState.running ? (2 * Math.PI * Math.sqrt(props.params.length / props.params.g)).toFixed(3) : '--'} s`
+  const measuredT = props.simState.measurementPeriod ?? null
+  const info = `L = ${props.params.length.toFixed(2)} m  |  θ = ${(props.simState.theta * 180 / Math.PI).toFixed(1)}°  |  T = ${measuredT !== null ? measuredT.toFixed(3) : (props.simState.running ? (2 * Math.PI * Math.sqrt(props.params.length / props.params.g)).toFixed(3) : '--')} s`
   ctx.fillText(info, w / 2, h - 18)
 }
 
@@ -136,11 +139,14 @@ function resizeCanvas() {
   const canvas = canvasRef.value, wrap = wrapRef.value
   if (!canvas || !wrap) return
   const rect = wrap.getBoundingClientRect()
-  canvas.width = rect.width
-  canvas.height = Math.max(rect.height, 300)
+  const dpr = window.devicePixelRatio || 1
+  cssW = rect.width; cssH = Math.max(rect.height, 300)
+  canvas.width = cssW * dpr; canvas.height = cssH * dpr
+  canvas.style.width = cssW + 'px'; canvas.style.height = cssH + 'px'
+  const ctx = canvas.getContext('2d'); if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 }
 
-watch(() => [props.params.length, props.params.mass, props.simState.theta, props.simState.t], draw, { flush: 'post' })
+watch(() => [props.params.length, props.params.mass, props.params.bobRadius, props.params.g, props.simState.theta, props.simState.t], draw, { flush: 'post' })
 
 let resizeObs: ResizeObserver | null = null
 onMounted(() => {

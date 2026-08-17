@@ -10,7 +10,7 @@ import TorqueCoilReadingsPanel from '../../../../components/experiment/electroma
 import TorqueCoilDataPanel from '../../../../components/experiment/electromagnetism/TorqueCoilDataPanel.vue'
 import TorqueCoilGuidePanel from '../../../../components/experiment/electromagnetism/TorqueCoilGuidePanel.vue'
 import ElectromagnetismHelpModal from '../../../../components/experiment/electromagnetism/ElectromagnetismHelpModal.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import { ref } from 'vue'
 
 const ex = useTorqueCoilExperiment()
@@ -35,13 +35,6 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <MenuBar
       :title="t('experiments.tcTitle')"
       icon="🔄"
-      experiment-route="/physics/electromagnetism/torque-coil"
-      :experiment-name="t('experiments.tcTitle')"
-      @export-csv="ex.exportCsv"
-      @toggle-pause="ex.togglePause"
-      @reset="ex.resetSim"
-      @record-trial="ex.recordTrial"
-      @analyze-results="ex.exportToAnalysis"
       @toggle-help="helpOpen = !helpOpen"
     />
 

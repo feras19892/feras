@@ -63,11 +63,11 @@ export function useLatentHeatExperiment() {
 
   const router = useRouter()
   function exportToAnalysis() {
-    if (trials.trials.value.length < 2) return
+    if (trials.trials.value.length < 2) { alert('تحتاج إلى تسجيل قراءتين على الأقل قبل التحليل'); return }
     const payload: AnalysisPayload = {
       sourceExperiment: 'latent-heat', sourceNameAr: 'الحرارة الكامنة',
       hasCalcTab: true,
-      readings: trials.trials.value.map(t => ({ mass: t.mass, Q: t.Q, L: t.L, melted: t.meltedMass })),
+      readings: trials.trials.value.map(tr => ({ mass: tr.mass, Q: tr.Q, L: tr.L, melted: tr.meltedMass })),
       columns: [
         { key: 'mass', label: 'm (kg)', unit: 'kg' },
         { key: 'Q', label: 'Q (J)', unit: 'J' },

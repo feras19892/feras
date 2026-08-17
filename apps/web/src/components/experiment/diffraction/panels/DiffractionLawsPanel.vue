@@ -1,5 +1,7 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '../../../../composables/useI18n'
 
+const { t } = useI18n()
 
 interface Props {
   mode: 'single' | 'grating'
@@ -17,7 +19,7 @@ defineProps<Props>()
   <div class="panel-body">
     <template v-if="mode === 'single'">
       <div class="eq-block">
-        <div class="eq-title">Central Width</div>
+        <div class="eq-title">{{ t('experiments.dfCentralWidth') }}</div>
         <div class="eq">w = 2λD / a</div>
         <div class="eq-values">
           w = {{ centralWidth.toFixed(3) }} mm<br>
@@ -27,17 +29,17 @@ defineProps<Props>()
         </div>
       </div>
       <div class="eq-block">
-        <div class="eq-title">Dark Fringes</div>
+        <div class="eq-title">{{ t('experiments.dfDarkFringes') }}</div>
         <div class="eq">a·sinθ = mλ</div>
       </div>
       <div class="eq-block">
-        <div class="eq-title">Intensity</div>
+        <div class="eq-title">{{ t('experiments.dfIntensity') }}</div>
         <div class="eq">I = I₀ sinc²(πa·sinθ/λ)</div>
       </div>
     </template>
     <template v-else>
       <div class="eq-block">
-        <div class="eq-title">Grating Equation</div>
+        <div class="eq-title">{{ t('experiments.dfGratingEq') }}</div>
         <div class="eq">d·sinθ = m·λ</div>
         <div class="eq-values">
           d = {{ (1/linesPerMm).toFixed(4) }} mm<br>
@@ -46,12 +48,12 @@ defineProps<Props>()
         </div>
       </div>
       <div class="eq-block">
-        <div class="eq-title">First Order Angle</div>
+        <div class="eq-title">{{ t('experiments.dfFirstOrderAngle') }}</div>
         <div class="eq">θ₁ = arcsin(λ/d)</div>
         <div class="eq-values">θ₁ = {{ firstOrderAngle.toFixed(3) }}°</div>
       </div>
       <div class="eq-block">
-        <div class="eq-title">Position on Screen</div>
+        <div class="eq-title">{{ t('experiments.dfPositionOnScreen') }}</div>
         <div class="eq">y = D·tanθ</div>
       </div>
     </template>

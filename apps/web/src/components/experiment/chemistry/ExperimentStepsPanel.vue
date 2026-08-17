@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type { Experiment } from '../../../composables/chemistry/useExperiments';
+import { computed } from 'vue';
+import type { ExperimentDefinition } from '../../../composables/chemistry/experiments';
 import { useI18n } from '../../../composables/useI18n';
 const { t } = useI18n();
 
 const props = defineProps<{
-  experiment: Experiment | null;
+  experiment: ExperimentDefinition | null;
   stepCompletion: boolean[];
 }>();
 
@@ -12,14 +13,24 @@ const emit = defineEmits<{
   clear: [];
   showReport: [];
 }>();
+
+const completedCount = computed(() => props.stepCompletion.filter(Boolean).length);
+const totalCount = computed(() => props.experiment?.steps.length || 0);
+const progressPct = computed(() => totalCount.value > 0 ? Math.round((completedCount.value / totalCount.value) * 100) : 0);
 </script>
 
 <template>
   <div class="right-exp-panel">
     <div v-if="experiment" class="right-exp-content">
       <div class="right-exp-header">
-        <span class="right-exp-title">📋 {{ t((experiment as any).nameKey || (experiment as any).nameAr) }}</span>
+        <span class="right-exp-title">📋 {{ t(experiment.nameKey) }}</span>
         <button class="right-exp-reset" @click="emit('clear')">❌</button>
+      </div>
+      <div class="progress-bar-wrapper">
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" :style="{ width: progressPct + '%' }" />
+        </div>
+        <span class="progress-bar-label">{{ completedCount }}/{{ totalCount }} ({{ progressPct }}%)</span>
       </div>
       <ol class="right-exp-list">
         <li
@@ -35,7 +46,7 @@ const emit = defineEmits<{
             <span v-if="stepCompletion[idx]">✓</span>
             <span v-else>{{ step.id }}</span>
           </span>
-          <span class="right-exp-text">{{ t((step as any).textKey || (step as any).text) }}</span>
+          <span class="right-exp-text">{{ t(step.textKey) }}</span>
         </li>
       </ol>
       <button
@@ -89,6 +100,32 @@ const emit = defineEmits<{
   font-size: 0.6rem;
   cursor: pointer;
   color: #065f46;
+}
+.progress-bar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.25rem;
+}
+.progress-bar-track {
+  flex: 1;
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #059669);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+.progress-bar-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #64748b;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 .right-exp-list {
   margin: 0;

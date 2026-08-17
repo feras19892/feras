@@ -1,21 +1,27 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useSpringExperiment } from '../../../../composables/spring/useSpringExperiment'
+import { useSpringReport } from '../../../../composables/spring/useSpringReport'
 import { useI18n } from '../../../../composables/useI18n'
+import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import SpringMenuBar from '../../../../components/experiment/spring/SpringMenuBar.vue'
 import SpringCanvas from '../../../../components/experiment/spring/SpringCanvas.vue'
 import SpringStatusBar from '../../../../components/experiment/spring/SpringStatusBar.vue'
 import SpringControlBar from '../../../../components/experiment/spring/SpringControlBar.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import SpringPanelBody from '../../../../components/experiment/spring/SpringPanelBody.vue'
-import SpringParamPanel from '../../../../components/experiment/spring/SpringParamPanel.vue'
 import SpringHelpModal from '../../../../components/experiment/spring/SpringHelpModal.vue'
 import SpringGuidePanel from '../../../../components/experiment/spring/SpringGuidePanel.vue'
+import SpringOverlayPanels from '../../../../components/experiment/spring/SpringOverlayPanels.vue'
+import SpringReport from '../../../../components/experiment/spring/SpringReport.vue'
+import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 const ex = useSpringExperiment()
+const rep = useSpringReport()
 const { t } = useI18n()
+const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)
-const canvasRef = ref<InstanceType<typeof SpringCanvas> | null>(null)
+const reportOpen = ref(false)
 function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return
@@ -24,7 +30,7 @@ function onKeyDown(e: KeyboardEvent) {
     e.preventDefault()
     ex.lab.togglePause()
   } else if (e.key === 'r' || e.key === 'R') {
-    if (confirm(t('experiments.resetConfirm'))) ex.resetSim()
+    confirmReset().then(ok => { if (ok) ex.resetSim() })
   } else if (e.key === 's' || e.key === 'S') {
     ex.trials.recordTrial()
   } else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
@@ -48,15 +54,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <SpringMenuBar
       :title="t('experiments.springTitle')"
       icon="🍃"
-      experiment-route="/physics/mechanics/spring"
-      experiment-name="Basic Spring"
-      @toggle-panel="ex.layout.togglePanel"
       @show-all-panels="ex.layout.showAllPanels"
-      @export-csv="ex.trials.exportCsv"
-      @toggle-pause="ex.lab.togglePause"
-      @reset="ex.resetSim"
-      @record-trial="ex.trials.recordTrial"
-      @run-lab="ex.runSpringLab"
       @toggle-help="helpOpen = !helpOpen"
       @analyze-results="ex.exportToAnalysis"
     />
@@ -82,19 +80,23 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
               :sim="ex.lab.sim"
               :measured="ex.getMeasured()"
               :effective-mass="ex.getEffectiveMass()"
+              @update:trials="ex.trials.trials.value = $event"
+              @remove="ex.trials.removeTrial($event)"
+              @clear="ex.trials.clearTrials()"
+              @update:params="Object.assign(ex.params, $event)"
             />
           </DraggablePanel>
         </template>
       </div>
       <div class="resizer" @mousedown="ex.onResizeStart('data', $event)"></div>
       <div class="lab-col vis-col">
-        <SpringCanvas ref="canvasRef" :params="ex.params" :sim-state="ex.lab.sim" :oscillation-count="Math.floor(ex.lab.sim.zeroCrossings.length / 2)" @toggle-mass="ex.toggleMass" @pull-down="ex.pullDown" @push-up="ex.pushUp" />
+        <SpringCanvas :params="ex.params" :sim-state="ex.lab.sim" :oscillation-count="Math.floor(ex.lab.sim.zeroCrossings.length / 2)" @toggle-mass="ex.toggleMass" @pull-down="ex.pullDown" @push-up="ex.pushUp" />
       </div>
       <div class="resizer" @mousedown="ex.onResizeStart('vis', $event)"></div>
       <div class="lab-col ctrl-col" :style="{ width: ex.colWidths.ctrl + 'px' }">
         <template v-for="id in ex.getColumnPanels('ctrl')" :key="id">
           <DraggablePanel
-            v-if="id !== 'params' && ex.layout.isPanelVisible(id)"
+            v-if="ex.layout.isPanelVisible(id)"
             class="lab-card"
             :id="id"
             :title="ex.layout.panelTitle(id)"
@@ -109,18 +111,22 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
               :sim="ex.lab.sim"
               :measured="ex.getMeasured()"
               :effective-mass="ex.getEffectiveMass()"
+              @update:trials="ex.trials.trials.value = $event"
+              @remove="ex.trials.removeTrial($event)"
+              @clear="ex.trials.clearTrials()"
+              @update:params="Object.assign(ex.params, $event)"
             />
           </DraggablePanel>
-          <div v-else-if="id === 'params'" class="params-embedded">
-            <SpringParamPanel
-              :model-value="ex.params"
-              @update:model-value="Object.assign(ex.params, $event)"
-            />
-          </div>
         </template>
         <SpringGuidePanel :visible="showGuide" @close="showGuide = false" />
       </div>
     </div>
+
+    <SpringOverlayPanels :maximized="ex.layout.maximized" :panel-title="(id: string) => ex.layout.panelTitle(String(id))"
+      :trials="ex.trials.trials.value" :params="ex.params" :sim="ex.lab.sim" :measured="ex.getMeasured()" :effective-mass="ex.getEffectiveMass()"
+      @maximize="ex.layout.maximizePanel" @update:trials="ex.trials.trials.value = $event" @update:params="Object.assign(ex.params, $event)"
+      @remove="ex.trials.removeTrial" @clear="ex.trials.clearTrials"
+    />
 
     <div class="hint-bar" v-if="!ex.lab.running.value">
       <span>💡 {{ t('experiments.hintStart') }}</span>
@@ -150,7 +156,13 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @push-up="ex.pushUp"
     />
 
-  </div></template>
+    <SpringReport v-if="reportOpen" style="position:fixed;inset:5%;z-index:200;overflow:auto;background:#0d1117;border-radius:12px;border:1px solid #2D3645;box-shadow:0 20px 60px rgba(0,0,0,.5)"
+      :static-readings="ex.staticReadings.value" :dynamic-trials="ex.dynamicTrials.value" :k-static="ex.staticK.value" :k-dynamic="ex.kDynamic.value" :theoretical-k="ex.params.k"
+      @close="reportOpen = false" @open-full-report="rep.openFullReport(ex)"
+    />
+  </div>
+  <ResetConfirmModal />
+</template>
 
 <style scoped>
 .spring-lab { background: #161B22; color: #D1D7E0; padding: .6rem .8rem; height: 100vh; display: flex; flex-direction: column; gap: .5rem; overflow: hidden; }
@@ -159,7 +171,6 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 .data-col { background: rgba(255,255,255,0.02); }
 .vis-col { align-items: stretch; justify-content: flex-start; background: transparent; flex: 1; min-width: 0; }
 .ctrl-col { background: rgba(255,255,255,0.02); }
-.params-embedded { padding: .6rem; }
 .resizer { width: 6px; cursor: col-resize; background: #2D3645; transition: background .2s; flex-shrink: 0; }
 .resizer:hover, .resizer:active { background: #5B8DB8; }
 .chart-row { display: flex; gap: .5rem; width: 100%; margin-top: .3rem; flex: 0 0 180px; min-height: 0; align-items: stretch; }

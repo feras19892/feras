@@ -26,7 +26,7 @@ const emit = defineEmits<{
           <td>{{ tr.wavelength }}</td>
           <td>{{ tr.firstOrderAngle.toFixed(3) }}</td>
           <td>{{ tr.firstOrderY.toFixed(3) }}</td>
-          <td><button class="rm" @click="emit('remove', tr.id)">x</button></td>
+          <td><button class="rm" @click="emit('remove', tr.id)">&#x00D7;</button></td>
         </tr>
       </tbody>
     </table>

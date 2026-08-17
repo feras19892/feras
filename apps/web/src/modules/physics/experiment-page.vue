@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, onErrorCaptured } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getExperiment } from './catalog';
 import { loadExperiment } from './experiment-loader';
@@ -14,6 +14,13 @@ const branchId = computed(() => route.params.branchId as string);
 const expId = computed(() => route.params.experimentId as string);
 const experiment = computed(() => getExperiment(branchId.value, expId.value));
 const showFeedback = ref(false);
+const loadError = ref<string | null>(null);
+
+onErrorCaptured((err) => {
+  console.error('[ExperimentPage] Error caught:', err);
+  loadError.value = err instanceof Error ? err.message : String(err);
+  return false;
+});
 
 const ExperimentComponent = computed(() => {
   if (!expId.value) return null;
@@ -32,7 +39,7 @@ function expNameKey(id: string): string {
     freefall: 'experiments.expFreeFall',
     inclined: 'experiments.expInclined',
     collision: 'experiments.expCollision',
-    lever: 'experiments.expLever',
+    netforce: 'experiments.expNetForce',
     'light-ray': 'experiments.expLightRay',
     'thin-lens': 'experiments.expThinLens',
     mirrors: 'experiments.expMirrors',
@@ -44,7 +51,6 @@ function expNameKey(id: string): string {
     resonance: 'experiments.expResonance',
     'ideal-gas': 'experiments.expIdealGas',
     calorimetry: 'experiments.expCalorimetry',
-    'rc-circuit': 'experiments.expRcCircuit',
     'biot-savart': 'experiments.expBiotSavart',
     faraday: 'experiments.expFaraday',
     'electric-workshop': 'experiments.expElectricWorkshop',
@@ -75,16 +81,39 @@ function expNameKey(id: string): string {
     <!-- Floating feedback button (always visible) -->
     <button class="feedback-fab" @click="showFeedback = true" :title="t('experiments.reportProblem')">🚩</button>
 
-    <!-- If experiment component exists, render it full-screen -->
-    <component v-if="ExperimentComponent" :is="ExperimentComponent" />
+    <!-- Error display -->
+    <div v-if="loadError" class="exp-error-display">
+      <div class="error-icon">⚠️</div>
+      <h2>خطأ في تحميل التجربة</h2>
+      <pre class="error-msg">{{ loadError }}</pre>
+      <button class="btn-action" @click="goBack">← العودة</button>
+    </div>
 
-    <!-- Otherwise show stub -->
-    <div v-else-if="experiment" class="shell-placeholder">
+    <!-- If experiment component exists, render it full-screen -->
+    <Suspense v-else-if="ExperimentComponent">
+      <component :is="ExperimentComponent" />
+      <template #fallback>
+        <div class="exp-loading">
+          <div class="exp-spinner"></div>
+          <p>{{ t('experiments.loadingExperiment', 'جاري تحميل التجربة...') }}</p>
+        </div>
+      </template>
+    </Suspense>
+
+    <!-- Disabled experiment -->
+    <div v-if="!ExperimentComponent && experiment && experiment.enabled === false" class="shell-placeholder">
+      <p>{{ t('experiments.experimentDisabled', 'هذه التجربة معطّلة حالياً') }}</p>
+      <button class="btn-action" @click="goBack">{{ t('experiments.goBack') }}</button>
+    </div>
+
+    <!-- Stub for unimplemented experiment -->
+    <div v-if="!ExperimentComponent && experiment && experiment.enabled !== false" class="shell-placeholder">
       <p>{{ t('experiments.experiment') }} <strong>{{ experiment ? t(expNameKey(experiment.id)) : '' }}</strong> {{ t('experiments.experimentInDevelopment') }}</p>
       <button class="btn-action" @click="goBack">{{ t('experiments.goBack') }}</button>
     </div>
 
-    <div v-else class="not-found">
+    <!-- Not found -->
+    <div v-if="!ExperimentComponent && !experiment" class="not-found">
       <p>{{ t('experiments.experimentNotFound') }}</p>
       <button class="btn-action" @click="goBack">{{ t('experiments.goBack') }}</button>
     </div>
@@ -130,4 +159,11 @@ function expNameKey(id: string): string {
   transform: scale(1.1);
   box-shadow: 0 6px 20px rgba(239,68,68,0.3);
 }
+.exp-loading { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; gap: 1rem; color: #94a3b8; }
+.exp-spinner { width: 40px; height: 40px; border: 3px solid rgba(99,102,241,0.2); border-top-color: #6366f1; border-radius: 50%; animation: exp-spin 0.8s linear infinite; }
+@keyframes exp-spin { to { transform: rotate(360deg); } }
+.exp-error-display { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; gap: 1rem; text-align: center; padding: 2rem; }
+.exp-error-display .error-icon { font-size: 3rem; }
+.exp-error-display h2 { color: #f87171; margin: 0; }
+.exp-error-display .error-msg { background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 0.5rem; color: #fca5a5; font-size: 0.85rem; max-width: 600px; overflow-x: auto; text-align: left; direction: ltr; white-space: pre-wrap; }
 </style>

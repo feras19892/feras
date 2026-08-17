@@ -36,16 +36,16 @@ export async function getActivityStats() {
   const todayFeedback = await db.get(
     `SELECT COUNT(*) as count FROM feedback WHERE date(created_at) = date('now')`
   );
-  const totalLogins = await db.get(`SELECT COUNT(*) as count FROM session_log`);
+  const todayLogins = await db.get(`SELECT COUNT(*) as count FROM session_log WHERE date(login_at) = date('now')`);
   const activeNow = await db.get(`SELECT COUNT(*) as count FROM session_log WHERE logout_at IS NULL`);
 
   return {
-    today: todayUsers?.count + todayReports?.count + todayClasses?.count + todayFeedback?.count || 0,
+    today: (todayLogins?.count || 0) + (todayReports?.count || 0) + (todayClasses?.count || 0) + (todayFeedback?.count || 0),
     signups: todayUsers?.count || 0,
     reports: todayReports?.count || 0,
     classes: todayClasses?.count || 0,
     feedback: todayFeedback?.count || 0,
-    logins: totalLogins?.count || 0,
+    logins: todayLogins?.count || 0,
     activeNow: activeNow?.count || 0,
   };
 }
@@ -53,9 +53,12 @@ export async function getActivityStats() {
 export async function getSmartInsights() {
   const inactiveUsers = await db.all(
     `SELECT id, name, email, role, created_at FROM users
-     WHERE id NOT IN (SELECT DISTINCT user_id FROM session_log WHERE login_at > datetime('now', '-7 days'))
+     WHERE role != 'admin'
+     AND id NOT IN (SELECT DISTINCT user_id FROM session_log WHERE login_at > datetime('now', '-7 days'))
      AND id NOT IN (SELECT DISTINCT student_id FROM experiment_reports WHERE submitted_at > datetime('now', '-7 days'))
-     AND id NOT IN (SELECT DISTINCT teacher_id FROM classes WHERE created_at > datetime('now', '-7 days'))
+     AND id NOT IN (SELECT DISTINCT teacher_id FROM classes c
+                    JOIN experiment_reports r ON c.id = r.class_id
+                    WHERE r.submitted_at > datetime('now', '-7 days'))
      ORDER BY created_at DESC LIMIT 20`
   );
 
@@ -83,14 +86,19 @@ export async function getSmartInsights() {
   const topUsers = await db.all(
     `SELECT u.id, u.name, u.role, COUNT(r.id) as report_count
      FROM users u LEFT JOIN experiment_reports r ON u.id = r.student_id
-     GROUP BY u.id ORDER BY report_count DESC LIMIT 10`
+     WHERE r.submitted_at > datetime('now', '-30 days') OR r.id IS NULL
+     GROUP BY u.id HAVING COUNT(r.id) > 0
+     ORDER BY report_count DESC LIMIT 10`
   );
 
   const recentActivity = await db.all(
-    `SELECT 'login' as action, u.name as actor_name, s.login_at as created_at, NULL as details
-     FROM session_log s JOIN users u ON s.user_id = u.id
-     ORDER BY s.login_at DESC LIMIT 5`
+    `SELECT a.action, a.actor_name, a.actor_role, a.created_at, a.details
+     FROM activity_log a
+     WHERE a.action IN ('login', 'logout', 'create_report', 'create_class', 'join_class', 'grade_report', 'signup', 'impersonate')
+     ORDER BY a.created_at DESC LIMIT 10`
   );
 
-  return { inactiveUsers, emptyClasses, ungradedCount: ungradedReports?.count || 0, noReportsTeachers, topUsers, recentActivity };
+  const activeNow = await db.get(`SELECT COUNT(*) as count FROM session_log WHERE logout_at IS NULL`);
+
+  return { inactiveUsers, emptyClasses, ungradedCount: ungradedReports?.count || 0, noReportsTeachers, topUsers, recentActivity, activeNow: activeNow?.count || 0 };
 }

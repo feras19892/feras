@@ -2,20 +2,21 @@ import { deleteCookie, setCookie, getCookie } from 'hono/cookie';
 import type { Context } from 'hono';
 
 const isProd = process.env.NODE_ENV === 'production';
+const crossOrigin = process.env.CORS_ORIGIN !== undefined;
 
 const REFRESH_COOKIE_OPTS = {
   path: '/',
   httpOnly: true,
-  secure: isProd,
-  sameSite: isProd ? 'Strict' as const : 'Lax' as const,
+  secure: isProd || crossOrigin,
+  sameSite: (crossOrigin ? 'None' : 'Lax') as 'None' | 'Lax',
   maxAge: 7 * 24 * 60 * 60,
 };
 
 const ACCESS_COOKIE_OPTS = {
   path: '/',
   httpOnly: true,
-  secure: isProd,
-  sameSite: isProd ? 'Strict' as const : 'Lax' as const,
+  secure: isProd || crossOrigin,
+  sameSite: (crossOrigin ? 'None' : 'Lax') as 'None' | 'Lax',
   maxAge: 15 * 60,
 };
 

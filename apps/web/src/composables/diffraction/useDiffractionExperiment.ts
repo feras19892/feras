@@ -2,11 +2,13 @@ import { ref, reactive, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import type { AnalysisPayload } from '../../types/physics'
 import { sendToAnalysis } from '../analysis/sendToAnalysis'
+import { useI18n } from '../useI18n'
 import { useDiffractionLayout } from './useDiffractionLayout'
 import { useDiffractionTrials } from './useDiffractionTrials'
 import { sincSq, wavelengthToColor, linearRegression } from './useDiffractionCalculations'
 
 export function useDiffractionExperiment() {
+  const { t } = useI18n()
   const mode = ref<'single' | 'grating'>('single')
 
   const params = reactive({
@@ -85,9 +87,9 @@ export function useDiffractionExperiment() {
   // Regression for single slit: y (dark fringe 1) vs 1/a
   // Theory: y = (λD/1000) · (1/a)  →  slope = λD/1000,  λ(nm) = slope·1000/D
   const regression = computed(() => {
-    const singleTrials = trials.trials.value.filter((t) => t.mode === 'single' && t.darkFringe1 > 0)
+    const singleTrials = trials.trials.value.filter((tr) => tr.mode === 'single' && tr.darkFringe1 > 0)
     if (singleTrials.length < 2) return { m: 0, b: 0, r2: 0 }
-    const pts = singleTrials.map((t) => ({ x: 1 / t.slitWidth, y: t.darkFringe1 }))
+    const pts = singleTrials.map((tr) => ({ x: 1 / tr.slitWidth, y: tr.darkFringe1 }))
     return linearRegression(pts)
   })
 
@@ -120,17 +122,20 @@ export function useDiffractionExperiment() {
 
   const router = useRouter()
   function exportToAnalysis() {
-    if (trials.trials.value.length < 2) return
+    if (trials.trials.value.length < 2) {
+      alert('تحتاج إلى تسجيل قراءتين على الأقل قبل التحليل')
+      return
+    }
     const isGrating = mode.value === 'grating'
     const payload: AnalysisPayload = {
       sourceExperiment: 'diffraction',
-      sourceNameAr: isGrating ? 'محبز الحيود' : 'حيود الشق الواحد',
+      sourceNameAr: t('experiments.expDiffraction'),
       hasCalcTab: true,
-      readings: trials.trials.value.map(t => ({
-        a: isGrating ? t.linesPerMm : t.slitWidth,
-        D: t.screenDistance, lambda: t.wavelength,
-        w: isGrating ? t.firstOrderAngle : t.centralWidth,
-        y1: isGrating ? t.firstOrderY : t.darkFringe1,
+      readings: trials.trials.value.map(tr => ({
+        a: isGrating ? tr.linesPerMm : tr.slitWidth,
+        D: tr.screenDistance, lambda: tr.wavelength,
+        w: isGrating ? tr.firstOrderAngle : tr.centralWidth,
+        y1: isGrating ? tr.firstOrderY : tr.darkFringe1,
       })),
       columns: [
         { key: 'a', label: isGrating ? 'N (lines/mm)' : 'a (mm)', unit: isGrating ? 'lines/mm' : 'mm' },
@@ -153,11 +158,24 @@ export function useDiffractionExperiment() {
     const toPanel = el?.closest('.draggable-panel')
     const toId = toPanel?.getAttribute('data-id')
     if (!toId || fromId === toId) return
+    let fromCol = '', toCol = ''
     for (const col of Object.keys(layout.columnMap)) {
-      const arr = layout.columnMap[col]
+      if (layout.columnMap[col].includes(fromId)) fromCol = col
+      if (layout.columnMap[col].includes(toId)) toCol = col
+    }
+    if (fromCol === toCol) {
+      const arr = layout.columnMap[fromCol]
       const fi = arr.indexOf(fromId)
       const ti = arr.indexOf(toId)
-      if (fi >= 0 && ti >= 0) { const t = arr[fi]; arr[fi] = arr[ti]; arr[ti] = t }
+      if (fi >= 0 && ti >= 0) { const tmp = arr[fi]; arr[fi] = arr[ti]; arr[ti] = tmp }
+    } else {
+      const fromArr = layout.columnMap[fromCol]
+      const toArr = layout.columnMap[toCol]
+      const fi = fromArr.indexOf(fromId)
+      if (fi >= 0) {
+        fromArr.splice(fi, 1)
+        toArr.push(fromId)
+      }
     }
   }
 

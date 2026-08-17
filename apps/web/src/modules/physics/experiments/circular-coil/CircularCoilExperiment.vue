@@ -10,7 +10,7 @@ import CircularCoilReadingsPanel from '../../../../components/experiment/electro
 import CircularCoilDataPanel from '../../../../components/experiment/electromagnetism/CircularCoilDataPanel.vue'
 import CircularCoilGuidePanel from '../../../../components/experiment/electromagnetism/CircularCoilGuidePanel.vue'
 import ElectromagnetismHelpModal from '../../../../components/experiment/electromagnetism/ElectromagnetismHelpModal.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import { ref } from 'vue'
 
 const ex = useCircularCoilExperiment()
@@ -35,13 +35,6 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
     <MenuBar
       :title="t('experiments.ccTitle')"
       icon="⭕"
-      experiment-route="/physics/electromagnetism/circular-coil"
-      :experiment-name="t('experiments.ccTitle')"
-      @export-csv="ex.exportCsv"
-      @toggle-pause="ex.togglePause"
-      @reset="ex.resetSim"
-      @record-trial="ex.recordTrial"
-      @analyze-results="ex.exportToAnalysis"
       @toggle-help="helpOpen = !helpOpen"
     />
 

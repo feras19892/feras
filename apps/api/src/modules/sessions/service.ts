@@ -10,12 +10,7 @@ export async function logLogin(userId: number, ip?: string, userAgent?: string) 
 export async function logLogout(userId: number) {
   await db.run(
     `UPDATE session_log SET logout_at = datetime('now')
-     WHERE id = (
-       SELECT id FROM session_log
-       WHERE user_id = ? AND logout_at IS NULL
-       ORDER BY login_at DESC
-       LIMIT 1
-     )`,
+     WHERE user_id = ? AND logout_at IS NULL`,
     userId
   );
 }

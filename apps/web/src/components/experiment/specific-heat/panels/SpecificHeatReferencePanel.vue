@@ -18,12 +18,12 @@ const METALS = [
 
 <template>
   <div class="panel-body">
-    <div class="ref-title">ðŸ“‹ Ø¬Ø¯ÙˆÙ„ Ø§Ù„Ø³Ø¹Ø§Øª Ø§Ù„Ø­Ø±Ø§Ø±ÙŠØ© Ø§Ù„Ù†ÙˆØ¹ÙŠØ©</div>
-    <div class="ref-subtitle">Ù„Ù„Ù…Ù‚Ø§Ø±Ù†Ø© ÙˆØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…Ø¹Ø¯Ù† Ø§Ù„Ù…Ø¬Ù‡ÙˆÙ„</div>
+    <div class="ref-title">📋 جدول السعات الحرارية النوعية</div>
+    <div class="ref-subtitle">للمقارنة وتحديد المعدن المجهول</div>
 
     <div class="ref-table">
       <div class="ref-header">
-        <span>Ø§Ù„Ù…Ø¹Ø¯Ù†</span>
+        <span>المعدن</span>
         <span>الرمز</span>
         <span>c (J/kg·°C)</span>
       </div>
@@ -38,11 +38,11 @@ const METALS = [
     </div>
 
     <div class="ref-hint">
-      <div class="hint-title">ðŸ’¡ Ø·Ø±ÙŠÙ‚Ø© Ø§Ù„Ø§Ø³ØªØ®Ø¯Ø§Ù…:</div>
+      <div class="hint-title">💡 طريقة الاستخدام:</div>
       <ol>
-        <li>Ø§Ø­Ø³Ø¨ c_m Ù…Ù† ØªØ¬Ø±Ø¨ØªÙƒ</li>
-        <li>Ù‚Ø§Ø±Ù† Ø§Ù„Ù‚ÙŠÙ…Ø© Ù…Ø¹ Ø§Ù„Ø¬Ø¯ÙˆÙ„</li>
-        <li>Ø§Ø®ØªØ± Ø£Ù‚Ø±Ø¨ Ù…Ø¹Ø¯Ù†</li>
+        <li>احسب c_m من تجربتك</li>
+        <li>قارن القيمة مع الجدول</li>
+        <li>اختر أقرب معدن</li>
       </ol>
     </div>
   </div>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { AdminSchool } from '../../../services/school.service';
+import type { AdminSchool, SchoolStats } from '../../../services/school.service';
 import { useI18n } from '../../../composables/useI18n';
 
 const { t, locale } = useI18n();
 
-defineProps<{ school: AdminSchool; stats: any }>();
+defineProps<{ school: AdminSchool; stats: SchoolStats | null }>();
 const emit = defineEmits<{ delete: []; toggle: [id: number] }>();
 
 function formatDate(dateStr: string) {

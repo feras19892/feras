@@ -1,8 +1,15 @@
 <script setup lang="ts">
-import AnatomyViewerExperiment from '../../../modules/biology/components/AnatomyViewerExperiment.vue';
-import { digestiveData } from '../../../services/anatomy-viewer-data';
+import GLBExperiment from '../../../modules/biology/components/GLBExperiment.vue';
+import { digestiveParts } from '../../../services/digestive-glb-parts';
 </script>
 
 <template>
-  <AnatomyViewerExperiment :organ-data="digestiveData" />
+  <GLBExperiment
+    model-path="/models/digestive.glb"
+    title-key="biology.anatomy.digestive.title"
+    subtitle-key="biology.anatomy.digestive.subtitle"
+    back-route="/biology/anatomy"
+    back-label-key="biology.backToAnatomySection"
+    :parts="digestiveParts"
+  />
 </template>

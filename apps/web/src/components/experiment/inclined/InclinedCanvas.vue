@@ -11,6 +11,7 @@ const props = defineProps<{
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const wrapRef = ref<HTMLDivElement | null>(null)
+let cssW = 400, cssH = 400
 
 function resizeCanvas() {
   const canvas = canvasRef.value
@@ -18,9 +19,12 @@ function resizeCanvas() {
   if (!canvas || !wrap) return
   const w = wrap.clientWidth
   const h = wrap.clientHeight
-  if (canvas.width !== w || canvas.height !== h) {
-    canvas.width = w
-    canvas.height = h
+  if (cssW !== w || cssH !== h) {
+    const dpr = window.devicePixelRatio || 1
+    cssW = w; cssH = h
+    canvas.width = w * dpr; canvas.height = h * dpr
+    canvas.style.width = w + 'px'; canvas.style.height = h + 'px'
+    const ctx = canvas.getContext('2d'); if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
   }
 }
 
@@ -47,7 +51,7 @@ function draw() {
   const ctx = canvas.getContext('2d')
   if (!ctx) return
   const c = ctx
-  const W = canvas.width, H = canvas.height
+  const W = cssW, H = cssH
   c.clearRect(0, 0, W, H)
   c.fillStyle = '#0d1117'
   c.fillRect(0, 0, W, H)
@@ -207,7 +211,7 @@ function draw() {
   drawCell(2, 'v (' + t('experiments.speedShort') + ')', `${props.simState.v.toFixed(2)} m/s`, '#f59e0b')
   // Live acceleration: subtract drag force dynamically
   const fdLive = props.params.airResistance ? calculateDragForce(props.simState.v, props.params.cd, props.params.area) : 0
-  const aLive = (summary.parallelForce - summary.frictionForce - fdLive) / props.params.mass
+  const aLive = (summary.parallelForce - summary.frictionForce - fdLive) / Math.max(props.params.mass, 1e-9)
   drawCell(3, 'a (' + t('experiments.accelerationShort') + ')', `${aLive.toFixed(2)}`, '#ef4444')
   drawCell(4, 'N (' + t('experiments.normalForceShort') + ')', `${summary.normalForce.toFixed(1)} N`, '#06b6d4')
   drawCell(5, 'F∥ (' + t('experiments.parallelForceShort') + ')', `${summary.parallelForce.toFixed(1)} N`, '#ec4899')

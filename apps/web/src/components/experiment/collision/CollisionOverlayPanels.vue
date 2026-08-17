@@ -19,6 +19,7 @@ const emit = defineEmits<{
   (e: 'update:params', val: Partial<CollisionParams>): void
   (e: 'remove', id: number): void
   (e: 'clear'): void
+  (e: 'drop', id: string, x: number, y: number): void
 }>()
 </script>
 

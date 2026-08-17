@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { addComment, getComments } from '../../services/report.service';
 import { useI18n } from '../../composables/useI18n';
 import type { ReportComment } from '../../services/report.service';
+import VoiceRecorderButton from './VoiceRecorderButton.vue';
 
 const props = defineProps<{
   reportId: number;
@@ -10,11 +11,12 @@ const props = defineProps<{
   userName: string;
 }>();
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const comments = ref<ReportComment[]>([]);
 const newComment = ref('');
 const loading = ref(false);
 const sending = ref(false);
+const voiceBlob = ref<Blob | null>(null);
 
 async function load() {
   loading.value = true;
@@ -44,7 +46,7 @@ async function send() {
 
 function formatTime(dateStr: string) {
   const d = new Date(dateStr);
-  return d.toLocaleString('ar-SA', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  return d.toLocaleString(locale.value === 'ar' ? 'ar-SA' : locale.value, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
 
 function authorLabel(role: string) {
@@ -78,6 +80,7 @@ load();
     </div>
 
     <div class="input-row">
+      <VoiceRecorderButton v-model="voiceBlob" />
       <input
         v-model="newComment"
         type="text"

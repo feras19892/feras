@@ -3,40 +3,40 @@ import { db } from '../../db/index.js';
 export async function createQuiz(teacherId: number, classId: string | null, title: string, description: string, timeLimit: number) {
   const result = await db.run(
     `INSERT INTO quizzes (teacher_id, class_id, title, description, time_limit_minutes) VALUES (?, ?, ?, ?, ?)`,
-    [teacherId, classId, title, description, timeLimit],
+    teacherId, classId, title, description, timeLimit,
   );
-  return await db.get(`SELECT * FROM quizzes WHERE id = ?`, [result.lastID]);
+  return await db.get(`SELECT * FROM quizzes WHERE id = ?`, result.lastID);
 }
 
 export async function addQuestion(quizId: number, questionText: string, optionA: string, optionB: string, optionC: string | null, optionD: string | null, correctAnswer: string, points: number) {
   const result = await db.run(
     `INSERT INTO quiz_questions (quiz_id, question_text, option_a, option_b, option_c, option_d, correct_answer, points) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-    [quizId, questionText, optionA, optionB, optionC, optionD, correctAnswer, points],
+    quizId, questionText, optionA, optionB, optionC, optionD, correctAnswer, points,
   );
-  return await db.get(`SELECT * FROM quiz_questions WHERE id = ?`, [result.lastID]);
+  return await db.get(`SELECT * FROM quiz_questions WHERE id = ?`, result.lastID);
 }
 
 export async function getQuizById(id: number) {
-  return await db.get(`SELECT * FROM quizzes WHERE id = ?`, [id]);
+  return await db.get(`SELECT * FROM quizzes WHERE id = ?`, id);
 }
 
 export async function getQuizQuestions(quizId: number) {
-  return await db.all(`SELECT * FROM quiz_questions WHERE quiz_id = ? ORDER BY id`, [quizId]);
+  return await db.all(`SELECT * FROM quiz_questions WHERE quiz_id = ? ORDER BY id`, quizId);
 }
 
 export async function getQuizQuestionsForStudent(quizId: number) {
   return await db.all(
     `SELECT id, quiz_id, question_text, option_a, option_b, option_c, option_d, points FROM quiz_questions WHERE quiz_id = ? ORDER BY id`,
-    [quizId],
+    quizId,
   );
 }
 
 export async function getTeacherQuizzes(teacherId: number) {
-  return await db.all(`SELECT * FROM quizzes WHERE teacher_id = ? ORDER BY created_at DESC`, [teacherId]);
+  return await db.all(`SELECT * FROM quizzes WHERE teacher_id = ? ORDER BY created_at DESC`, teacherId);
 }
 
 export async function getClassQuizzes(classId: string) {
-  return await db.all(`SELECT * FROM quizzes WHERE class_id = ? AND status IN ('published','active','closed') ORDER BY created_at DESC`, [classId]);
+  return await db.all(`SELECT * FROM quizzes WHERE class_id = ? AND status IN ('published','active','closed') ORDER BY created_at DESC`, classId);
 }
 
 export async function getStudentQuizzes(studentId: number) {
@@ -49,20 +49,29 @@ export async function getStudentQuizzes(studentId: number) {
      LEFT JOIN quiz_submissions qs ON qs.quiz_id = q.id AND qs.student_id = ?
      WHERE cs.student_id = ? AND q.status IN ('published','active','closed')
      ORDER BY q.created_at DESC`,
-    [studentId, studentId],
+    studentId, studentId,
   );
 }
 
 export async function publishQuiz(quizId: number) {
-  await db.run(`UPDATE quizzes SET status = 'published', updated_at = CURRENT_TIMESTAMP WHERE id = ?`, [quizId]);
+  await db.run(`UPDATE quizzes SET status = 'published', updated_at = CURRENT_TIMESTAMP WHERE id = ?`, quizId);
 }
 
 export async function closeQuiz(quizId: number) {
-  await db.run(`UPDATE quizzes SET status = 'closed', updated_at = CURRENT_TIMESTAMP WHERE id = ?`, [quizId]);
+  await db.run(`UPDATE quizzes SET status = 'closed', updated_at = CURRENT_TIMESTAMP WHERE id = ?`, quizId);
 }
 
 export async function deleteQuiz(quizId: number) {
-  await db.run(`DELETE FROM quizzes WHERE id = ?`, [quizId]);
+  await db.run('BEGIN IMMEDIATE');
+  try {
+    await db.run(`DELETE FROM quiz_submissions WHERE quiz_id = ?`, quizId);
+    await db.run(`DELETE FROM quiz_questions WHERE quiz_id = ?`, quizId);
+    await db.run(`DELETE FROM quizzes WHERE id = ?`, quizId);
+    await db.run('COMMIT');
+  } catch (err) {
+    await db.run('ROLLBACK');
+    throw err;
+  }
 }
 
 export async function startSubmission(quizId: number, studentId: number) {
@@ -73,17 +82,17 @@ export async function startSubmission(quizId: number, studentId: number) {
   if (quiz.class_id) {
     const member = await db.get(
       `SELECT 1 FROM class_students WHERE class_id = ? AND student_id = ?`,
-      [quiz.class_id, studentId],
+      quiz.class_id, studentId,
     );
     if (!member) return null;
   }
-  const existing = await db.get(`SELECT * FROM quiz_submissions WHERE quiz_id = ? AND student_id = ?`, [quizId, studentId]);
+  const existing = await db.get(`SELECT * FROM quiz_submissions WHERE quiz_id = ? AND student_id = ?`, quizId, studentId);
   if (existing) return existing;
   const result = await db.run(
     `INSERT INTO quiz_submissions (quiz_id, student_id) VALUES (?, ?)`,
-    [quizId, studentId],
+    quizId, studentId,
   );
-  return await db.get(`SELECT * FROM quiz_submissions WHERE id = ?`, [result.lastID]);
+  return await db.get(`SELECT * FROM quiz_submissions WHERE id = ?`, result.lastID);
 }
 
 export async function submitQuiz(quizId: number, studentId: number, answers: Record<number, string>) {
@@ -96,7 +105,7 @@ export async function submitQuiz(quizId: number, studentId: number, answers: Rec
   if (quiz.class_id) {
     const member = await db.get(
       `SELECT 1 FROM class_students WHERE class_id = ? AND student_id = ?`,
-      [quiz.class_id, studentId],
+      quiz.class_id, studentId,
     );
     if (!member) return { score: 0, total: 0, error: 'Not enrolled in this class' };
   }
@@ -112,13 +121,13 @@ export async function submitQuiz(quizId: number, studentId: number, answers: Rec
   }
   await db.run(
     `UPDATE quiz_submissions SET answers = ?, score = ?, submitted_at = CURRENT_TIMESTAMP WHERE quiz_id = ? AND student_id = ?`,
-    [JSON.stringify(answers), score, quizId, studentId],
+    JSON.stringify(answers), score, quizId, studentId,
   );
   return { score, total };
 }
 
 export async function getSubmission(quizId: number, studentId: number) {
-  return await db.get(`SELECT * FROM quiz_submissions WHERE quiz_id = ? AND student_id = ?`, [quizId, studentId]);
+  return await db.get(`SELECT * FROM quiz_submissions WHERE quiz_id = ? AND student_id = ?`, quizId, studentId);
 }
 
 export async function getQuizSubmissions(quizId: number) {
@@ -127,7 +136,7 @@ export async function getQuizSubmissions(quizId: number) {
      FROM quiz_submissions qs 
      JOIN users u ON u.id = qs.student_id 
      WHERE qs.quiz_id = ? ORDER BY qs.score DESC`,
-    [quizId],
+    quizId,
   );
 }
 

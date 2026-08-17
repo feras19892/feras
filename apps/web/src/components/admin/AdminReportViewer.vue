@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from '../../composables/useI18n';
+import { useConfirmDialog } from '../../composables/useConfirmDialog';
 import { updateAdminReportGrade, deleteAdminReport } from '../../services/admin.service';
+import ReportPreviewModal from '../shared/ReportPreviewModal.vue';
 
 interface AdminReportItem {
   id: number;
@@ -16,12 +18,13 @@ interface AdminReportItem {
   submitted_at?: string;
 }
 
-const props = defineProps<{ reports: AdminReportItem[] }>();
+const props = defineProps<{ reports: AdminReportItem[]; initialSearch?: string }>();
 const emit = defineEmits<{ (e: 'refresh'): void; (e: 'delete', id: number): void }>();
 
 const router = useRouter();
 const { t } = useI18n();
-const searchQuery = ref('');
+const searchQuery = ref(props.initialSearch || '');
+watch(() => props.initialSearch, (v) => { if (v !== undefined) searchQuery.value = v; });
 const filterStatus = ref<'all' | 'submitted' | 'graded' | 'resubmitted' | 'draft'>('all');
 const showGradeModal = ref(false);
 const gradeReport = ref<AdminReportItem | null>(null);
@@ -60,8 +63,23 @@ function openReport(id: number) {
   router.push(`/report/${id}`);
 }
 
+const previewReportId = ref<number | null>(null);
+function openPreview(id: number) {
+  previewReportId.value = id;
+}
+function closePreview() {
+  previewReportId.value = null;
+}
+function openFullFromPreview(id: number) {
+  closePreview();
+  router.push(`/report/${id}`);
+}
+
+const { confirmDialog } = useConfirmDialog();
+
 async function onDeleteReport(id: number) {
-  if (!confirm(t('admin.confirmDeleteReport'))) return;
+  const ok = await confirmDialog({ message: t('admin.confirmDeleteReport'), variant: 'danger' });
+  if (!ok) return;
   const res = await deleteAdminReport(id);
   if (res.success) emit('refresh');
 }
@@ -128,7 +146,7 @@ async function saveGrade() {
             <td>{{ r.grade ?? '—' }}</td>
             <td>{{ r.submitted_at?.slice(0, 10) }}</td>
             <td class="action-cell">
-              <button class="btn-view" @click="openReport(r.id)">{{ t('admin.openReport') }}</button>
+              <button class="btn-view" @click="openPreview(r.id)">👁️</button>
               <button class="btn-edit" @click="openGradeModal(r)">{{ t('admin.gradeReport') }}</button>
               <button class="btn-danger" @click="onDeleteReport(r.id)">{{ t('admin.delete') }}</button>
             </td>
@@ -158,6 +176,12 @@ async function saveGrade() {
         </div>
       </div>
     </div>
+
+    <ReportPreviewModal
+      :report-id="previewReportId"
+      @close="closePreview"
+      @open-full="openFullFromPreview"
+    />
   </div>
 </template>
 

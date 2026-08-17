@@ -10,7 +10,7 @@ export async function getSystemHealth() {
 
   const dbSize = await db.get(`SELECT page_count * page_size as size FROM pragma_page_count(), pragma_page_size()`);
 
-  const todayLogins = await db.get(`SELECT COUNT(*) as count FROM activity_log WHERE action = 'login' AND date(created_at) = date('now')`);
+  const todayLogins = await db.get(`SELECT COUNT(*) as count FROM session_log WHERE date(login_at) = date('now')`);
   const todayReports = await db.get(`SELECT COUNT(*) as count FROM experiment_reports WHERE date(submitted_at) = date('now')`);
   const todaySignups = await db.get(`SELECT COUNT(*) as count FROM users WHERE date(created_at) = date('now')`);
 

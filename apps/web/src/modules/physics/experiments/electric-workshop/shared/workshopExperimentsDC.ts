@@ -1,4 +1,4 @@
-import type { WorkshopComponent, WorkshopWire } from './types'
+import type { WorkshopComponent, WorkshopWire, ComponentType } from './types'
 import { WIRE_COLORS } from './types'
 import { loadDCExperiment2, type ExperimentName2 } from './workshopExperimentsDC2'
 import { loadDCExperiment3, type ExperimentName3 } from './workshopExperimentsDC3'
@@ -8,7 +8,7 @@ export type ExperimentName = 'ohm' | 'series' | 'parallel' | 'mixed' | Experimen
 export interface ExperimentContext {
   components: WorkshopComponent[]
   wires: WorkshopWire[]
-  addComponent: (type: any, x: number, y: number) => void
+  addComponent: (type: ComponentType, x: number, y: number) => void
   rotateComponent: (id: number) => void
   addWire: (fromCompId: number, fromTermIndex: number, toCompId: number, toTermIndex: number, color: string, manualPoints?: { x: number; y: number }[]) => void
 }

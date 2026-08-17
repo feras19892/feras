@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, computed, watch } from 'vue';
 import { useI18n } from '../../composables/useI18n';
-import { getAdminClassStudents, updateAdminClass, getAdminTeachers, createAdminClass } from '../../services/admin.service';
+import { useConfirmDialog } from '../../composables/useConfirmDialog';
+import { getAdminClassStudents } from '../../services/admin.service';
+import ClassModals from './classes/ClassModals.vue';
 
 interface AdminClassItem {
   id: string;
   name: string;
   code: string;
   teacher_name: string;
-  teacher_email?: string;
   student_count: number;
   created_at?: string;
+  is_frozen?: number;
 }
 
 interface ClassStudent {
@@ -22,34 +23,18 @@ interface ClassStudent {
   report_count: number;
 }
 
-interface Teacher {
-  id: number;
-  name: string;
-  email: string;
-}
-
-const props = defineProps<{ classes: AdminClassItem[] }>();
+const props = defineProps<{ classes: AdminClassItem[]; initialSearch?: string }>();
 const emit = defineEmits<{ (e: 'delete', id: string): void; (e: 'refresh'): void }>();
 
-const router = useRouter();
 const { t } = useI18n();
-const searchQuery = ref('');
+const searchQuery = ref(props.initialSearch || '');
+watch(() => props.initialSearch, (v) => { if (v !== undefined) searchQuery.value = v; });
 const expandedClassId = ref<string | null>(null);
 const students = ref<ClassStudent[]>([]);
 const studentsLoading = ref(false);
 const showEditModal = ref(false);
-const editClass = ref<AdminClassItem | null>(null);
-const editName = ref('');
-const editTeacherId = ref<number | null>(null);
-const teachers = ref<Teacher[]>([]);
-const editLoading = ref(false);
-const editError = ref('');
 const showCreateModal = ref(false);
-const newName = ref('');
-const newCode = ref('');
-const newTeacherId = ref<number | null>(null);
-const createLoading = ref(false);
-const createError = ref('');
+const editClass = ref<AdminClassItem | null>(null);
 
 const filteredClasses = computed(() => {
   const q = searchQuery.value.trim().toLowerCase();
@@ -60,6 +45,14 @@ const filteredClasses = computed(() => {
     c.teacher_name?.toLowerCase().includes(q)
   );
 });
+
+const { confirmDialog } = useConfirmDialog();
+
+function confirmDeleteClass(id: string) {
+  confirmDialog({ message: t('admin.confirmDeleteClassShort'), variant: 'danger' }).then(ok => {
+    if (ok) emit('delete', id);
+  });
+}
 
 async function toggleStudents(classId: string) {
   if (expandedClassId.value === classId) {
@@ -77,79 +70,13 @@ async function toggleStudents(classId: string) {
   finally { studentsLoading.value = false; }
 }
 
-async function openEditModal(cls: AdminClassItem) {
+function openEditModal(cls: AdminClassItem) {
   editClass.value = cls;
-  editName.value = cls.name;
-  editTeacherId.value = null;
-  editError.value = '';
   showEditModal.value = true;
-  if (teachers.value.length === 0) {
-    try {
-      const res = await getAdminTeachers();
-      if (res.success) teachers.value = res.teachers;
-    } catch { /* ignore */ }
-  }
 }
 
-async function saveEdit() {
-  if (!editClass.value) return;
-  editLoading.value = true;
-  editError.value = '';
-  try {
-    const data: { name?: string; teacher_id?: number } = {};
-    if (editName.value.trim() && editName.value.trim() !== editClass.value.name) {
-      data.name = editName.value.trim();
-    }
-    if (editTeacherId.value !== null) {
-      data.teacher_id = editTeacherId.value;
-    }
-    if (Object.keys(data).length === 0) {
-      showEditModal.value = false;
-      return;
-    }
-    const res = await updateAdminClass(editClass.value.id, data);
-    if (!res.success) {
-      editError.value = res.message || 'Failed';
-    } else {
-      showEditModal.value = false;
-      emit('refresh');
-    }
-  } catch (err: unknown) {
-    editError.value = (err instanceof Error ? err.message : '') || 'Failed';
-  } finally {
-    editLoading.value = false;
-  }
-}
-
-function openReport(reportId: number) {
-  router.push(`/report/${reportId}`);
-}
-
-async function openCreateModal() {
-  newName.value = '';
-  newCode.value = '';
-  newTeacherId.value = null;
-  createError.value = '';
+function openCreateModal() {
   showCreateModal.value = true;
-  if (teachers.value.length === 0) {
-    try {
-      const res = await getAdminTeachers();
-      if (res.success) teachers.value = res.teachers;
-    } catch { /* ignore */ }
-  }
-}
-
-async function saveCreate() {
-  if (!newName.value.trim() || !newTeacherId.value) { createError.value = t('admin.fillFields'); return; }
-  createLoading.value = true;
-  createError.value = '';
-  try {
-    const res = await createAdminClass(newName.value.trim(), newCode.value.trim() || undefined, newTeacherId.value);
-    if (!res.success) { createError.value = res.message || 'Failed'; }
-    else { showCreateModal.value = false; emit('refresh'); }
-  } catch (err: unknown) {
-    createError.value = (err instanceof Error ? err.message : '') || 'Failed';
-  } finally { createLoading.value = false; }
 }
 </script>
 
@@ -173,7 +100,7 @@ async function saveCreate() {
         <tbody>
           <template v-for="c in filteredClasses" :key="c.id">
             <tr :class="{ 'row-expanded': expandedClassId === c.id }">
-              <td>{{ c.name }}</td>
+              <td>{{ c.name }} <span v-if="c.is_frozen" class="freeze-badge">🧊 مُجمّد</span></td>
               <td><code>{{ c.code }}</code></td>
               <td>{{ c.teacher_name }}</td>
               <td>{{ c.student_count }}</td>
@@ -181,7 +108,7 @@ async function saveCreate() {
               <td class="action-cell">
                 <button class="btn-view" @click="toggleStudents(c.id)">{{ t('admin.viewStudents') }}</button>
                 <button class="btn-edit" @click="openEditModal(c)">{{ t('admin.editClass') }}</button>
-                <button class="btn-danger" @click="$emit('delete', c.id)">{{ t('admin.delete') }}</button>
+                <button class="btn-danger" @click="confirmDeleteClass(c.id)">{{ t('admin.delete') }}</button>
               </td>
             </tr>
             <tr v-if="expandedClassId === c.id" class="expanded-row">
@@ -211,55 +138,14 @@ async function saveCreate() {
       <p v-if="filteredClasses.length === 0" class="empty">{{ t('admin.noResults') }}</p>
     </div>
 
-    <!-- Edit Modal -->
-    <div v-if="showEditModal" class="modal-overlay" @click.self="showEditModal = false">
-      <div class="modal-content">
-        <h4>{{ t('admin.editClass') }}</h4>
-        <div class="form-row">
-          <label>{{ t('admin.renameClass') }}</label>
-          <input v-model="editName" />
-        </div>
-        <div class="form-row">
-          <label>{{ t('admin.transferTeacher') }}</label>
-          <select v-model="editTeacherId">
-            <option :value="null">— {{ t('admin.selectTeacher') }} —</option>
-            <option v-for="tc in teachers" :key="tc.id" :value="tc.id">{{ tc.name }} ({{ tc.email }})</option>
-          </select>
-        </div>
-        <p v-if="editError" class="msg error">{{ editError }}</p>
-        <div class="modal-actions">
-          <button class="btn-cancel" @click="showEditModal = false">{{ t('admin.cancel') }}</button>
-          <button class="btn-submit" :disabled="editLoading" @click="saveEdit">{{ editLoading ? '...' : t('admin.save') }}</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Create Class Modal -->
-    <div v-if="showCreateModal" class="modal-overlay" @click.self="showCreateModal = false">
-      <div class="modal-content">
-        <h4>{{ t('admin.createClass') }}</h4>
-        <div class="form-row">
-          <label>{{ t('admin.className') }}</label>
-          <input v-model="newName" :placeholder="t('admin.classNamePlaceholder')" />
-        </div>
-        <div class="form-row">
-          <label>{{ t('admin.classCode') }}</label>
-          <input v-model="newCode" :placeholder="t('admin.classCodePlaceholder')" />
-        </div>
-        <div class="form-row">
-          <label>{{ t('admin.teacher') }}</label>
-          <select v-model="newTeacherId">
-            <option :value="null">— {{ t('admin.selectTeacher') }} —</option>
-            <option v-for="tc in teachers" :key="tc.id" :value="tc.id">{{ tc.name }} ({{ tc.email }})</option>
-          </select>
-        </div>
-        <p v-if="createError" class="msg error">{{ createError }}</p>
-        <div class="modal-actions">
-          <button class="btn-cancel" @click="showCreateModal = false">{{ t('admin.cancel') }}</button>
-          <button class="btn-submit" :disabled="createLoading" @click="saveCreate">{{ createLoading ? '...' : t('admin.create') }}</button>
-        </div>
-      </div>
-    </div>
+    <ClassModals
+      :edit-class="editClass"
+      :show-edit="showEditModal"
+      :show-create="showCreateModal"
+      @close-edit="showEditModal = false"
+      @close-create="showCreateModal = false"
+      @saved="emit('refresh')"
+    />
   </div>
 </template>
 
@@ -291,17 +177,5 @@ async function saveCreate() {
 .students-table th { text-align: end; padding: 0.4rem 0.6rem; color: #94a3b8; border-bottom: 1px solid rgba(255,255,255,0.06); font-weight: 600; }
 .students-table td { padding: 0.4rem 0.6rem; border-bottom: 1px solid rgba(255,255,255,0.03); color: #cbd5e1; }
 .empty { text-align: center; color: #64748b; padding: 2rem; }
-
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 200; }
-.modal-content { background: #111827; border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; padding: 1.5rem; width: 100%; max-width: 420px; }
-.modal-content h4 { margin: 0 0 1rem; color: #e2e8f0; font-size: 1rem; }
-.form-row { margin-bottom: 0.75rem; }
-.form-row label { display: block; font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.25rem; }
-.form-row input, .form-row select { width: 100%; padding: 0.5rem; border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; font-size: 0.85rem; box-sizing: border-box; }
-.modal-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
-.modal-actions button { flex: 1; padding: 0.55rem; border-radius: 0.5rem; font-family: inherit; font-weight: 700; cursor: pointer; }
-.btn-cancel { background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); }
-.btn-submit { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none; }
-.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
-.msg.error { color: #f87171; font-size: 0.85rem; margin: 0.5rem 0; }
+.freeze-badge { display: inline-flex; align-items: center; gap: 0.2rem; padding: 0.1rem 0.4rem; border-radius: 4px; background: rgba(6,182,212,0.15); color: #67e8f9; font-size: 0.65rem; font-weight: 700; margin-inline-start: 0.4rem; }
 </style>

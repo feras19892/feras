@@ -34,7 +34,7 @@ const dynamicEdit = shallowRef<DynamicTrial[]>([])
 const isEditing = shallowRef(false)
 
 watch(() => props.staticReadings, (v) => { if (!isEditing.value) staticEdit.value = v.map(r => ({ ...r })) }, { immediate: true, deep: true })
-watch(() => props.dynamicTrials, (v) => { if (!isEditing.value) dynamicEdit.value = v.map(t => ({ ...t })) }, { immediate: true, deep: true })
+watch(() => props.dynamicTrials, (v) => { if (!isEditing.value) dynamicEdit.value = v.map(tr => ({ ...tr })) }, { immediate: true, deep: true })
 
 function emitStatic() {
   isEditing.value = true
@@ -43,7 +43,7 @@ function emitStatic() {
 }
 function emitDynamic() {
   isEditing.value = true
-  emit('update:dynamicTrials', dynamicEdit.value.map(t => ({ ...t })))
+  emit('update:dynamicTrials', dynamicEdit.value.map(tr => ({ ...tr })))
   setTimeout(() => isEditing.value = false, 0)
 }
 
@@ -65,19 +65,19 @@ function updateStatic(i: number, key: keyof StaticReading, raw: string) {
 function updateDynamic(i: number, key: keyof DynamicTrial, raw: string) {
   const n = parseFloat(raw)
   if (Number.isNaN(n)) return
-  const t = { ...dynamicEdit.value[i] }
+  const tr = { ...dynamicEdit.value[i] }
   if (key === 'mass') {
-    t.mass = n / 1000  // input shows grams, store in kg
+    tr.mass = n / 1000  // input shows grams, store in kg
   } else if (key.startsWith('t')) {
-    (t as Record<string, unknown>)[key] = n
-    const times = [t.t1, t.t2, t.t3].filter(v => v > 0)
-    t.tAvg = times.length ? times.reduce((a, b) => a + b, 0) / times.length : 0
-    t.T = t.tAvg / 20
-    t.T2 = t.T * t.T
+    (tr as Record<string, unknown>)[key] = n
+    const times = [tr.t1, tr.t2, tr.t3].filter(v => v > 0)
+    tr.tAvg = times.length ? times.reduce((a, b) => a + b, 0) / times.length : 0
+    tr.T = tr.tAvg / 20
+    tr.T2 = tr.T * tr.T
   } else {
-    (t as Record<string, unknown>)[key] = n
+    (tr as Record<string, unknown>)[key] = n
   }
-  dynamicEdit.value[i] = t
+  dynamicEdit.value[i] = tr
   dynamicEdit.value = [...dynamicEdit.value]
   emitDynamic()
 }

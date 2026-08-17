@@ -1,7 +1,6 @@
 {
   "buildCommand": "pnpm install --no-frozen-lockfile && cd apps/web && pnpm exec vite build",
   "outputDirectory": "apps/web/dist",
-  "framework": "vite",
   "rewrites": [
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]

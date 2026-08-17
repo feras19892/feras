@@ -1,19 +1,22 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useThermalExpansionExperiment } from '../../../../composables/thermal-expansion/useThermalExpansionExperiment'
 import { useI18n } from '../../../../composables/useI18n'
+import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import ThermalExpansionMenuBar from '../../../../components/experiment/thermal-expansion/ThermalExpansionMenuBar.vue'
 import ThermalExpansionCanvas from '../../../../components/experiment/thermal-expansion/ThermalExpansionCanvas.vue'
 import ThermalExpansionStatusBar from '../../../../components/experiment/thermal-expansion/ThermalExpansionStatusBar.vue'
 import ThermalExpansionControlBar from '../../../../components/experiment/thermal-expansion/ThermalExpansionControlBar.vue'
-import DraggablePanel from '../../../../components/experiment/spring/DraggablePanel.vue'
+import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import ThermalExpansionPanelBody from '../../../../components/experiment/thermal-expansion/ThermalExpansionPanelBody.vue'
 import ThermalExpansionOverlayPanels from '../../../../components/experiment/thermal-expansion/ThermalExpansionOverlayPanels.vue'
 import ThermalExpansionHelpModal from '../../../../components/experiment/thermal-expansion/ThermalExpansionHelpModal.vue'
 import ThermalExpansionGuidePanel from '../../../../components/experiment/thermal-expansion/ThermalExpansionGuidePanel.vue'
+import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
 const ex = useThermalExpansionExperiment()
 const { t } = useI18n()
+const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)
 const hoveredField = ref('')
@@ -22,7 +25,7 @@ function onKeyDown(e: KeyboardEvent) {
   const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return
   if (e.code === 'Space') { e.preventDefault(); ex.lab.togglePause() }
-  else if (e.key === 'r' || e.key === 'R') { if (confirm(t('experiments.resetConfirm'))) ex.resetSim() }
+  else if (e.key === 'r' || e.key === 'R') { confirmReset().then(ok => { if (ok) ex.resetSim() }) }
   else if (e.key === 's' || e.key === 'S') { ex.trials.recordTrial() }
   else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); e.shiftKey ? ex.trials.redo() : ex.trials.undo() }
   else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); ex.trials.redo() }
@@ -38,14 +41,7 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown) })
     <ThermalExpansionMenuBar
       :title="t('experiments.thermalTitle')"
       icon="🔥"
-      experiment-route="/physics/heat/thermal-expansion"
-      experiment-name="Thermal Expansion"
-      @toggle-panel="ex.layout.togglePanel"
       @show-all-panels="ex.layout.showAllPanels"
-      @export-csv="ex.trials.exportCsv"
-      @toggle-pause="ex.lab.togglePause"
-      @reset="ex.resetSim"
-      @record-trial="ex.trials.recordTrial"
       @toggle-help="helpOpen = !helpOpen"
       @analyze-results="ex.exportToAnalysis"
     />
@@ -123,6 +119,7 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown) })
       :phase="ex.lab.phase.value"
     />
   </div>
+  <ResetConfirmModal />
 </template>
 
 <style scoped>

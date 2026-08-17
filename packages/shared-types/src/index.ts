@@ -4,3 +4,6 @@ export * from './auth.js';
 export * from './class.js';
 export * from './experiment.js';
 export * from './experiment-result.js';
+export * from './quiz.js';
+export * from './gamification.js';
+export * from './domain.js';

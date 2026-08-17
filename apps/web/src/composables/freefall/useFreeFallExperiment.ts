@@ -29,7 +29,6 @@ export function useFreeFallExperiment() {
   watch(() => [params.h, params.g, params.mass, params.airResistance, params.dragCoeff], () => { if (!lab.running.value) resetSim() })
 
   onMounted(() => {
-    localStorage.removeItem('freefall:layout:v1')
     layout.applyPersistedLayout()
     trials.autoLoad()
     resetSim()
@@ -84,8 +83,8 @@ export function useFreeFallExperiment() {
 
   function exportToAnalysis() {
     const tList = trials.trials.value
-    if (tList.length === 0) { console.warn('[exportToAnalysis] no trials recorded'); return }
-    const readings = tList.map(t => ({ h: t.heightMeters, t: t.timeSec, t2: t.timeSquaredSec2, gCalc: t.gCalc }))
+    if (tList.length === 0) { alert('تحتاج إلى تسجيل قراءة واحدة على الأقل قبل التحليل'); return }
+    const readings = tList.map(tr => ({ h: tr.heightMeters, t: tr.timeSec, t2: tr.timeSquaredSec2, gCalc: tr.gCalc }))
     const payload: AnalysisPayload = {
       sourceExperiment: 'freefall', sourceNameAr: t('experiments.expFreeFall'), hasCalcTab: true, readings,
       columns: [

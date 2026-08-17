@@ -5,15 +5,43 @@ import type { StudentReportRow } from '../../composables/student/useStudentDashb
 
 const props = defineProps<{ rows: StudentReportRow[]; locale?: string }>()
 const emit = defineEmits<{ (e: 'open-report', id: number): void }>()
-const { t, locale } = useI18n()
+const { t, locale: i18nLocale } = useI18n()
 
 const filter = ref<'all' | 'graded' | 'pending' | 'draft'>('all')
+const searchQuery = ref('')
+const dateFilter = ref<'all' | 'week' | 'month' | 'semester'>('all')
+const sortBy = ref<'date-desc' | 'date-asc' | 'grade-desc' | 'grade-asc' | 'name-asc'>('date-desc')
 
 const filtered = computed(() => {
-  if (filter.value === 'graded') return props.rows.filter(r => r.status === 'graded')
-  if (filter.value === 'pending') return props.rows.filter(r => r.status === 'submitted' || r.status === 'resubmitted')
-  if (filter.value === 'draft') return props.rows.filter(r => r.status === 'draft')
-  return props.rows
+  let result = props.rows
+  if (filter.value === 'graded') result = result.filter(r => r.status === 'graded')
+  if (filter.value === 'pending') result = result.filter(r => r.status === 'submitted' || r.status === 'resubmitted')
+  if (filter.value === 'draft') result = result.filter(r => r.status === 'draft')
+
+  const q = searchQuery.value.trim().toLowerCase()
+  if (q) {
+    result = result.filter(r =>
+      r.experimentName?.toLowerCase().includes(q)
+    )
+  }
+
+  if (dateFilter.value !== 'all') {
+    const now = new Date()
+    const days = dateFilter.value === 'week' ? 7 : dateFilter.value === 'month' ? 30 : 120
+    const cutoff = new Date(now.getTime() - days * 24 * 60 * 60 * 1000)
+    result = result.filter(r => {
+      if (!r.submittedAt) return false
+      return new Date(r.submittedAt) >= cutoff
+    })
+  }
+
+  const sorted = [...result]
+  if (sortBy.value === 'date-desc') sorted.sort((a, b) => (b.submittedAt || '').localeCompare(a.submittedAt || ''))
+  else if (sortBy.value === 'date-asc') sorted.sort((a, b) => (a.submittedAt || '').localeCompare(b.submittedAt || ''))
+  else if (sortBy.value === 'grade-desc') sorted.sort((a, b) => (b.grade ?? -1) - (a.grade ?? -1))
+  else if (sortBy.value === 'grade-asc') sorted.sort((a, b) => (a.grade ?? 999) - (b.grade ?? 999))
+  else if (sortBy.value === 'name-asc') sorted.sort((a, b) => (a.experimentName || '').localeCompare(b.experimentName || ''))
+  return sorted
 })
 
 function statusLabel(s: string): string {
@@ -33,7 +61,7 @@ function statusClass(s: string): string {
 function timeShort(dateStr: string | null): string {
   if (!dateStr) return '—'
   const d = new Date(dateStr)
-  const loc = props.locale || locale.value
+  const loc = props.locale || i18nLocale.value
   const localeStr = loc === 'ar' ? 'ar-SA' : loc === 'es' ? 'es-ES' : 'en-US'
   return d.toLocaleDateString(localeStr)
 }
@@ -50,6 +78,22 @@ function timeShort(dateStr: string | null): string {
           <button :class="['fp', { active: filter === 'pending' }]" @click="filter = 'pending'">{{ t('dashboard.dash.pendingReview') }}</button>
           <button :class="['fp', { active: filter === 'draft' }]" @click="filter = 'draft'">{{ t('dashboard.statusDraft') }}</button>
         </div>
+      </div>
+      <div class="search-row">
+        <input v-model="searchQuery" class="search-input" :placeholder="t('dashboard.dash.searchReports')" />
+        <select v-model="dateFilter" class="date-select">
+          <option value="all">{{ t('dashboard.dash.allTime') }}</option>
+          <option value="week">{{ t('dashboard.dash.lastWeek') }}</option>
+          <option value="month">{{ t('dashboard.dash.lastMonth') }}</option>
+          <option value="semester">{{ t('dashboard.dash.lastSemester') }}</option>
+        </select>
+        <select v-model="sortBy" class="date-select">
+          <option value="date-desc">⬇️ {{ t('dashboard.dash.sortDateDesc') || 'الأحدث' }}</option>
+          <option value="date-asc">⬆️ {{ t('dashboard.dash.sortDateAsc') || 'الأقدم' }}</option>
+          <option value="grade-desc">⬇️ {{ t('dashboard.dash.sortGradeDesc') || 'أعلى درجة' }}</option>
+          <option value="grade-asc">⬆️ {{ t('dashboard.dash.sortGradeAsc') || 'أقل درجة' }}</option>
+          <option value="name-asc">🔤 {{ t('dashboard.dash.sortNameAsc') || 'الاسم' }}</option>
+        </select>
       </div>
       <div v-if="filtered.length === 0" class="pc-empty">📝 {{ t('dashboard.noReportsSent') }}</div>
       <div v-else class="full-table">
@@ -75,6 +119,10 @@ function timeShort(dateStr: string | null): string {
 .panel-card { background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.8rem; padding: 1rem; margin-bottom: 0.8rem; }
 .pc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem; }
 .pc-header h3 { margin: 0; font-size: 0.9rem; font-weight: 700; color: #e5e7eb; }
+.search-row { display: flex; gap: 0.5rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
+.search-input { flex: 1; min-width: 150px; padding: 0.35rem 0.7rem; border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; font-size: 0.78rem; }
+.search-input:focus { outline: none; border-color: rgba(99,102,241,0.4); }
+.date-select { padding: 0.35rem 0.5rem; border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.3); color: #e2e8f0; font-family: inherit; font-size: 0.78rem; cursor: pointer; }
 .filter-pills { display: flex; gap: 0.25rem; flex-wrap: wrap; }
 .fp { padding: 0.2rem 0.5rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); color: #64748b; cursor: pointer; font-size: 0.68rem; font-weight: 700; font-family: inherit; }
 .fp.active { background: rgba(99,102,241,0.12); color: #c7d2fe; border-color: rgba(99,102,241,0.2); }

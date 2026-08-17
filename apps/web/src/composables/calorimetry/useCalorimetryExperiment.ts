@@ -92,7 +92,7 @@ export function useCalorimetryExperiment() {
   }
   const router = useRouter()
   function exportToAnalysis() {
-    if (trials.trials.value.length < 2) return
+    if (trials.trials.value.length < 2) { alert('تحتاج إلى تسجيل قراءتين على الأقل قبل التحليل'); return }
     const payload: AnalysisPayload = {
       sourceExperiment: 'calorimetry', sourceNameAr: 'الكالوريمتري',
       hasCalcTab: true,
@@ -121,7 +121,7 @@ export function useCalorimetryExperiment() {
     for (const col of Object.keys(layout.columnMap)) {
       const arr = layout.columnMap[col]
       const fi = arr.indexOf(fromId), ti = arr.indexOf(toId)
-      if (fi >= 0 && ti >= 0) { const t = arr[fi]; arr[fi] = arr[ti]; arr[ti] = t }
+      if (fi >= 0 && ti >= 0) { const tmp = arr[fi]; arr[fi] = arr[ti]; arr[ti] = tmp }
     }
   }
   function onResizeStart(col: string, e: MouseEvent) {

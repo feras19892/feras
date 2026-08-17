@@ -1,5 +1,4 @@
 import { Hono } from 'hono';
-import { getStats } from './services.js';
 import { authMiddleware } from '../auth/middleware.js';
 import { getPendingNameRequests, resolveNameRequest } from '../auth/services.js';
 import type { User } from '@my-modern-app/shared-types';
@@ -7,15 +6,6 @@ import type { User } from '@my-modern-app/shared-types';
 const dashboardRoutes = new Hono();
 
 dashboardRoutes.use(authMiddleware);
-
-dashboardRoutes.get('/stats', async (c) => {
-  const user = (c as any).get('user') as User;
-  if (user.role !== 'admin') {
-    return c.json({ success: false, message: 'Forbidden' }, 403);
-  }
-  const stats = await getStats();
-  return c.json({ success: true, data: stats });
-});
 
 dashboardRoutes.get('/name-requests', async (c) => {
   const user = (c as any).get('user') as User;

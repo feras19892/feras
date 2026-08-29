@@ -1,7 +1,29 @@
 {
   "outputDirectory": "dist",
   "framework": null,
+  "installCommand": "cd ../.. && pnpm install --no-frozen-lockfile",
+  "buildCommand": "node node_modules/vite/bin/vite.js build",
+  "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
     { "source": "/((?!api/).*)", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+        { "key": "Permissions-Policy", "value": "geolocation=(), microphone=(), camera=()" }
+      ]
+    },
+    {
+      "source": "/(.*).(js|css|svg|png|jpg|jpeg|webp|woff2|ttf)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
   ]
 }

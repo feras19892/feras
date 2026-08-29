@@ -1,5 +1,6 @@
 .vercel
 .env*
+!.env.example
 node_modules
 .DS_Store
 *.log
@@ -17,3 +18,4 @@ docs
 **/*.test.tsx
 **/*.spec.ts
 **/*.spec.tsx
+!e2e/integration/*.spec.ts

@@ -1,0 +1,26 @@
+# Environment files (keep .env.example as a template)
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db

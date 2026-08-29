@@ -134,6 +134,8 @@ function onConclusionUpdate(data: { conclusion: string; errors: string; improvem
             </div>
             <div v-if="chartSnapshot" class="preview-chart"><img :src="chartSnapshot" alt="chart" /></div>
             <div v-if="conclusionData.conclusion" class="preview-conclusion"><h4>{{ t('analysis.mainConclusion') }}</h4><p>{{ conclusionData.conclusion }}</p></div>
+          <div v-if="conclusionData.errors" class="preview-conclusion"><h4>{{ t('analysis.errorSources') }}</h4><p>{{ conclusionData.errors }}</p></div>
+          <div v-if="conclusionData.improvements" class="preview-conclusion"><h4>{{ t('analysis.improvements') }}</h4><p>{{ conclusionData.improvements }}</p></div>
           </div>
         </div>
         <ChemAnalysisReportExport

@@ -1,6 +1,8 @@
 export function getApiBaseUrl(): string {
-  const env = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? ''
-  return env.trim() ? env : 'http://localhost:3000'
+  const env = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.trim() ?? ''
+  if (env) return env
+  // التطوير المحلي: الافتراضي 3000 — النشر (Vercel): نفس الأصل عبر rewrite /api في vercel.json
+  return import.meta.env.DEV ? 'http://localhost:3000' : ''
 }
 
 export function apiUrl(path: string): string {

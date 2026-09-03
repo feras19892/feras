@@ -82,13 +82,14 @@ export async function createReport(data: CreateReportData) {
       payload: { reportId, classId: data.class_id },
     });
 
+    // Auto-check badges (non-blocking)
+    checkAutoBadges(data.student_id).catch(() => {});
+
     return { id: reportId, ...data };
   } catch (err: unknown) {
     if (process.env.NODE_ENV !== 'production') console.error('[createReport] DB error:', err);
     return { error: 'فشل حفظ التقرير في قاعدة البيانات. تأكد من صحة البيانات وحاول مرة أخرى.' };
   }
-  // Auto-check badges (non-blocking, after successful return)
-  checkAutoBadges(data.student_id).catch(() => {});
 }
 
 export async function resubmitReport(reportId: number, data: CreateReportData) {

@@ -2,11 +2,11 @@
   "framework": "vue",
   "outputDirectory": "dist",
   "installCommand": "cd ../.. && pnpm install --no-frozen-lockfile",
-  "buildCommand": "node node_modules/vite/bin/vite.js build",
+  "buildCommand": "VITE_API_BASE_URL= node node_modules/vite/bin/vite.js build",
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/api/(.*)", "destination": "https://wafery-veristic-samiyah.ngrok-free.dev/api/$1" },
     { "source": "/assets/:path*", "destination": "/assets/:path*" },
     { "source": "/sw.js", "destination": "/sw.js" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }

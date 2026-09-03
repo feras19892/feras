@@ -48,8 +48,8 @@ export async function getTeacherStats(teacherId: number): Promise<TeacherLiveSta
        SUM(CASE WHEN r.teacher_seen = 0 AND r.status != 'draft' THEN 1 ELSE 0 END) as unopened,
        SUM(CASE WHEN r.status IN ('submitted','resubmitted') AND r.submitted_at IS NOT NULL
                 AND julianday('now') - julianday(r.submitted_at) >= 2 THEN 1 ELSE 0 END) as overdue,
-       SUM(CASE WHEN date(r.submitted_at) = date('now') THEN 1 ELSE 0 END) as submitted_today,
-       SUM(CASE WHEN r.graded_at IS NOT NULL AND date(r.graded_at) = date('now') THEN 1 ELSE 0 END) as graded_today
+       SUM(CASE WHEN date(r.submitted_at) = date('now', 'localtime') THEN 1 ELSE 0 END) as submitted_today,
+       SUM(CASE WHEN r.graded_at IS NOT NULL AND date(r.graded_at) = date('now', 'localtime') THEN 1 ELSE 0 END) as graded_today
      FROM experiment_reports r
      JOIN classes c ON r.class_id = c.id
      WHERE c.teacher_id = ?`,

@@ -32,24 +32,50 @@ export interface ArchivedClassRow {
 }
 
 export async function archiveReport(reportId: number, archivedBy: number, reason?: string): Promise<{ id: number }> {
-  const report = await db.get(
-    `SELECT * FROM reports WHERE id = ?`,
+  const report = await db.get<Record<string, unknown>>(
+    `SELECT * FROM experiment_reports WHERE id = ?`,
     reportId,
   );
-  
+
   if (!report) {
     throw new Error('Report not found');
   }
 
+  // لا تؤرشف تقريراً تشير إليه إصدارات أحدث (parent_id) — أرشف الأحدث فقط
+  const children = await db.get<{ cnt: number }>(
+    'SELECT COUNT(*) as cnt FROM experiment_reports WHERE parent_id = ?',
+    reportId,
+  );
+  if (children && children.cnt > 0) {
+    throw new Error('Report has newer versions — archive the latest version instead');
+  }
+
+  // حزمة المحتوى الكاملة JSON — تضمن استرجاع كل أعمدة experiment_reports عند الاستعادة
+  const content = JSON.stringify({
+    readings: report.readings ?? null,
+    params: report.params ?? null,
+    student_info: report.student_info ?? null,
+    conclusion: report.conclusion ?? null,
+    conclusion_errors: report.conclusion_errors ?? null,
+    conclusion_improvements: report.conclusion_improvements ?? null,
+    columns: report.columns ?? null,
+    equations: report.equations ?? null,
+    plots: report.plots ?? null,
+    chart_snapshot: report.chart_snapshot ?? null,
+    submitted_at: report.submitted_at ?? null,
+    graded_at: report.graded_at ?? null,
+    version: report.version ?? 1,
+  });
+
   const result = await db.run(
-    `INSERT INTO archived_reports 
+    `INSERT INTO archived_reports
      (original_report_id, user_id, class_id, experiment_type, experiment_id, title, content, grade, status, teacher_notes, archived_by, reason)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    report.id, report.user_id, report.class_id, report.experiment_type, report.experiment_id,
-    report.title, report.content, report.grade, report.status, report.teacher_notes, archivedBy, reason || null,
+    report.id, report.student_id, report.class_id, report.experiment_type, report.experiment_id,
+    report.experiment_name, content, report.grade, report.status, report.feedback, archivedBy, reason || null,
   );
 
-  await db.run('DELETE FROM reports WHERE id = ?', reportId);
+  await db.run('DELETE FROM experiment_reports WHERE id = ?', reportId);
 
   return { id: Number(result.lastID) };
 }
@@ -140,13 +166,23 @@ export async function restoreReport(archivedId: number): Promise<void> {
     throw new Error('Archived report not found');
   }
 
+  // فك حزمة المحتوى إلى أعمدة experiment_reports الأصلية
+  let bundle: Record<string, unknown> = {};
+  try { bundle = JSON.parse(archived.content || '{}') as Record<string, unknown>; } catch { bundle = {}; }
+
   await db.run(
-    `INSERT INTO reports 
-     (user_id, class_id, experiment_type, experiment_id, title, content, grade, status, teacher_notes, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    archived.user_id, archived.class_id, archived.experiment_type, archived.experiment_id,
-    archived.title, archived.content, archived.grade, archived.status, archived.teacher_notes,
-    archived.archived_at, archived.archived_at,
+    `INSERT INTO experiment_reports
+     (student_id, class_id, experiment_type, experiment_name, experiment_id,
+      readings, params, student_info, conclusion, conclusion_errors, conclusion_improvements,
+      columns, equations, plots, chart_snapshot, status, grade, feedback, teacher_seen, submitted_at, graded_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)`,
+    archived.user_id, archived.class_id, archived.experiment_type, archived.title,
+    archived.experiment_id ?? null,
+    bundle.readings ?? null, bundle.params ?? null, bundle.student_info ?? null,
+    bundle.conclusion ?? null, bundle.conclusion_errors ?? null, bundle.conclusion_improvements ?? null,
+    bundle.columns ?? null, bundle.equations ?? null, bundle.plots ?? null, bundle.chart_snapshot ?? null,
+    archived.status, archived.grade, archived.teacher_notes,
+    bundle.submitted_at ?? archived.archived_at, bundle.graded_at ?? null,
   );
 
   await db.run('DELETE FROM archived_reports WHERE id = ?', archivedId);
@@ -192,7 +228,9 @@ export async function autoArchiveOldReports(): Promise<number> {
   cutoffDate.setMonth(cutoffDate.getMonth() - monthsNum);
 
   const oldReports = await db.all(
-    `SELECT id FROM reports WHERE created_at < ? AND status = 'graded'`,
+    `SELECT id FROM experiment_reports
+     WHERE submitted_at < ? AND status = 'graded'
+       AND id NOT IN (SELECT DISTINCT parent_id FROM experiment_reports WHERE parent_id IS NOT NULL)`,
     cutoffDate.toISOString(),
   );
 
@@ -221,7 +259,8 @@ export async function autoArchiveOldClasses(): Promise<number> {
   cutoffDate.setMonth(cutoffDate.getMonth() - monthsNum);
 
   const oldClasses = await db.all(
-    `SELECT id FROM classes WHERE created_at < ? AND is_active = 0`,
+    `SELECT id FROM classes WHERE created_at < ? AND is_active = 0
+       AND id NOT IN (SELECT DISTINCT class_id FROM experiment_reports)`,
     cutoffDate.toISOString(),
   );
 

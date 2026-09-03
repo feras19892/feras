@@ -7,7 +7,8 @@ import { fileURLToPath } from 'url';
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
 const db = await open({
-  filename: process.env.DB_PATH || './data/app.db',
+  // مسار مطلق مشتق من موقع الملف — لا يعتمد على مجلد التشغيل (يمنع فتح قاعدة خاطئة)
+  filename: process.env.DB_PATH || join(__dirname, '../../data/app.db'),
   driver: sqlite3.Database,
 });
 

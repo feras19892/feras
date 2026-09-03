@@ -1,12 +1,12 @@
 {
   "framework": "vue",
-  "buildCommand": "cd apps/web && pnpm exec vite build",
+  "buildCommand": "cd apps/web && VITE_API_BASE_URL= pnpm exec vite build",
   "outputDirectory": "apps/web/dist",
   "installCommand": "pnpm install",
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/api/(.*)", "destination": "https://wafery-veristic-samiyah.ngrok-free.dev/api/$1" },
     { "source": "/assets/:path*", "destination": "/assets/:path*" },
     { "source": "/sw.js", "destination": "/sw.js" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }

@@ -47,7 +47,8 @@ function isToday(dateStr?: string): boolean {
   const d = new Date(dateStr)
   if (Number.isNaN(d.getTime())) return false
   const now = new Date()
-  return d.toISOString().split('T')[0] === now.toISOString().split('T')[0]
+  // توقيت محلي — "اليوم" كما يراها المستخدم فعلاً (كان UTC سابقاً)
+  return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate()
 }
 
 function daysSince(dateStr?: string): number {

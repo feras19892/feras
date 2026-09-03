@@ -11,6 +11,15 @@ import { getApiBaseUrl } from './services/http';
 
 const app = createApp(App);
 
+/* ── Vercel Web Vitals — يمنع خطأ startTime عندما تكون PerformanceEntry غير متوفرة ── */
+window.addEventListener('error', (e) => {
+  // سكريبت Vercel المحقون تلقائياً يرمي Cannot read properties of undefined (reading 'startTime')
+  // هذا لا يؤثر على التطبيق — نمنع ظهوره في Console
+  if (e.message?.includes?.('startTime') && e.message?.includes?.('Cannot read properties of undefined')) {
+    e.preventDefault();
+  }
+});
+
 /* ── Ngrok free tunnel bypass ── */
 const originalFetch = window.fetch;
 window.fetch = (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {

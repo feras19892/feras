@@ -7,6 +7,7 @@ import {
 } from '@/services/notification.service';
 import type { Notification } from '@/services/notification.service'
 import { eventBus } from './useEventBus'
+import { useAuthStore } from '@/modules/auth/stores/auth'
 
 const POLL_INTERVAL = 30_000
 
@@ -17,6 +18,8 @@ let pollTimer: ReturnType<typeof setInterval> | null = null
 
 async function fetchAll() {
   if (document.hidden) return // تبويب مخفي: أوقف الجلب مؤقتاً — تُستأنف الدورة تلقائياً عند العودة
+  const auth = useAuthStore()
+  if (!auth.isAuthenticated) return // لا تجلب إشعارات لزائر غير مسجل — 401 صامت
   try {
     const [nRes, cRes] = await Promise.all([getNotifications(), getUnreadCount()]);
     if (nRes.success) notifications.value = nRes.notifications;

@@ -102,3 +102,5 @@ vitest.config.ts.timestamp-*
 eslint-report.json
 eslint-errors-only.json
 *.tsbuildinfo
+*.db-wal
+*.db-shm

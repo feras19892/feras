@@ -3,7 +3,6 @@
   "buildCommand": "cd apps/web && VITE_API_BASE_URL= pnpm exec vite build",
   "outputDirectory": "apps/web/dist",
   "installCommand": "pnpm install",
-  "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
     { "source": "/api/(.*)", "destination": "https://wafery-veristic-samiyah.ngrok-free.dev/api/$1" },

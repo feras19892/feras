@@ -10,7 +10,7 @@ export function sendToAnalysis(router: Router, payload: ChemAnalysisPayload) {
   try {
     localStorage.setItem(KEY, data);
     localStorage.setItem(LAST_KEY, data);
-    localStorage.setItem(REFERRER_KEY, window.location.pathname);
+    localStorage.setItem(REFERRER_KEY, window.location.hash.replace(/^#/, '') || '/');
   } catch { /* ignore */ }
   router.push('/chemistry/analysis-calc');
 }

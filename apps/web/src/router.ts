@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 import { useAuthStore } from './modules/auth/stores/auth';
 import { getSystemStatus, type SystemStatus } from './services/system-status.service';
 import { routes } from './router/routes';
@@ -39,8 +39,10 @@ async function ensureSystemStatus() {
   await statusPromise;
 }
 
+// hash history: يجعل كل المسارات داخل التطبيق (#/admin) بلا طلب إلى السيرفر،
+// فيتجاوز نهائياً 404/CORS/حماية Vercel للمسارات العميقة (تعمل حتى لو كانت rewrites معطلة).
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes,
 });
 

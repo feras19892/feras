@@ -27,7 +27,7 @@ export function useDashboard(role: 'admin' | 'school' | 'teacher' | 'student', c
     localStorage.removeItem('lastTab_teacher')
     localStorage.removeItem('lastTab_admin')
     localStorage.removeItem('lastTab_school')
-    window.location.href = '/'
+    window.location.replace('/#/')
   }
 
   onMounted(() => {

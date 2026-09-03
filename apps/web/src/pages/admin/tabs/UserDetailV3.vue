@@ -265,7 +265,7 @@ async function handleImpersonate() {
   impersonateLoading.value = true
   try {
     const res = await impersonateUser(selectedUserId.value, impersonatePassword.value)
-    if (res.success && res.token) { setTokens(res.token, res.refreshToken); localStorage.setItem('auth_user', JSON.stringify(res.user)); localStorage.removeItem('school_session'); showImpersonateModal.value = false; window.location.href = `/${res.user.role}` }
+    if (res.success && res.token) { setTokens(res.token, res.refreshToken); localStorage.setItem('auth_user', JSON.stringify(res.user)); localStorage.removeItem('school_session'); showImpersonateModal.value = false; window.location.href = `/#/${res.user.role}` }
     else toast.error(t('dashboard.dashNew.adminCheckFailed'))
   } catch (e: any) { toast.error(e?.message || t('dashboard.dashNew.checkFailed')) }
   finally { impersonateLoading.value = false }

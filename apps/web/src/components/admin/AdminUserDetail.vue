@@ -41,7 +41,7 @@ async function onImpersonate() {
   if (!password) return;
   try {
     const res = await impersonateUser(props.userId, password);
-    if (res.success && res.token) { setTokens(res.token, res.refreshToken); localStorage.setItem('auth_user', JSON.stringify(res.user)); localStorage.removeItem('school_session'); window.location.href = `/${res.user.role}`; }
+    if (res.success && res.token) { setTokens(res.token, res.refreshToken); localStorage.setItem('auth_user', JSON.stringify(res.user)); localStorage.removeItem('school_session'); window.location.href = `/#/${res.user.role}`; }
   } catch {
     await confirmDialog({ message: t('auth.errors.invalidCredentials'), variant: 'danger', icon: '⚠️' });
   }

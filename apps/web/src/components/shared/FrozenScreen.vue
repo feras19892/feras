@@ -29,7 +29,7 @@ function onBlocked(e: Event) {
 function doLogout() {
   localStorage.removeItem('access_token')
   localStorage.removeItem('refresh_token')
-  window.location.href = '/'
+  window.location.replace('/#/')
 }
 
 onMounted(() => {
